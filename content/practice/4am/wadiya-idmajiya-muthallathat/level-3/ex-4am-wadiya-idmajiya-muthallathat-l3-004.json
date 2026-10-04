@@ -1,0 +1,116 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l3-004",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — مئذنة ارتفاعها 60 مترا",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الظل",
+      "خاصية فيثاغورس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "مئذنة شاقولية ارتفاعها $60\\,\\mathrm{m}$ . يقف كريم على الأرض على بعد $75\\,\\mathrm{m}$ من قاعدتها وينظر إلى قمتها (نهمل طوله)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المدوّر إلى الدرجة لقيس زاوية النظر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "39",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث قائم عند قاعدة المئذنة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الارتفاع يقابل الزاوية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الظل ثم اللمسة العكسية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{60}{75} = 0{,}8$ ومنه $x \\approx 38{,}66^{\\circ}$ ، أي $39^{\\circ}$ .",
+        "incorrect": "المقابل على المجاور، ثم القيس."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "51",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        },
+        {
+          "value": "0.8",
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما طول خط النظر من كريم إلى قمة المئذنة مدوّرا إلى الوحدة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (مدوّر إلى الوحدة)",
+      "expectedAnswer": "96",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "خط النظر وتر المثلث."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضلعان 60 و 75."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خاصية فيثاغورس."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{75^2 + 60^2} = \\sqrt{9225} \\approx 96{,}05$ ، أي $96\\,\\mathrm{m}$ .",
+        "incorrect": "الوتر ليس مجموع الضلعين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "135",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+        }
+      ]
+    }
+  ]
+}

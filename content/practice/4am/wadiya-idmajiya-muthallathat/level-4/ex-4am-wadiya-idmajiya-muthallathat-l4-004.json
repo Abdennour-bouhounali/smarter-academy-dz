@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l4-004",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — خط النظر وطوله",
+    "estimatedMinutes": 5,
+    "tags": [
+      "خاصية طالس",
+      "خاصية فيثاغورس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "يقف أنس على الأرض على بعد $1{,}6\\,\\mathrm{m}$ من عمود شاقولي طوله $2\\,\\mathrm{m}$ ، والعمود على بعد $46{,}4\\,\\mathrm{m}$ من قاعدة عمارة، ويرى قمتي العمود والعمارة على استقامة واحدة (نهمل طوله)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع العمارة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "60",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المسافة الكلية من أنس إلى العمارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المثلثان رأسهما موضع أنس."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبة h إلى طول العمود تساوي نسبة المسافة الكلية إلى بعد أنس عن العمود."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{h}{2} = \\dfrac{48}{1{,}6}$ ومنه $h = 60\\,\\mathrm{m}$ .",
+        "incorrect": "استعمل المسافة الكلية $48\\,\\mathrm{m}$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "58",
+          "id": "MISC-MUTH-TALIS-NAZAR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما طول خط النظر من أنس إلى قمة العمارة مدوّرا إلى الجزء من 10 (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 10)",
+      "expectedAnswer": "76.8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "خط النظر وتر المثلث الكبير."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ضلعاه $48\\,\\mathrm{m}$ والارتفاع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خاصية فيثاغورس."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{48^2 + 60^2} = \\sqrt{5904} \\approx 76{,}8\\,\\mathrm{m}$ .",
+        "incorrect": "الوتر ليس مجموع الضلعين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "108",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+        }
+      ]
+    }
+  ]
+}

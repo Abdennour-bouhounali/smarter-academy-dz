@@ -1,0 +1,163 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l3-001",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 26 — AC ثم AB",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حل المثلث"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-26",
+      "page": 125,
+      "section": "أتعمّق",
+      "number": 26
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 125، تمرين 26): ABC مثلث قائم في A حيث $\\widehat{B} = 18^{\\circ}$ و $BC = 6\\,\\mathrm{cm}$ (الشكل).",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          5.706,
+          0
+        ],
+        "C": [
+          0,
+          1.854
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B"
+        },
+        {
+          "from": "A",
+          "to": "C"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "label": "6cm"
+        }
+      ],
+      "rightAngles": [
+        [
+          "B",
+          "A",
+          "C"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "B",
+          "from": "C",
+          "to": "A",
+          "label": "18°"
+        }
+      ],
+      "labels": {
+        "A": "sw",
+        "B": "se",
+        "C": "nw"
+      },
+      "ariaLabel": "مثلث ABC قائم في A، قيس الزاوية B يساوي 18 درجة، والوتر BC طوله 6cm",
+      "maxWidth": 320
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب AC بالسنتيمتر، إلى الجزء من 10.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "expectedAnswer": "1.9",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "5.7"
+        },
+        {
+          "id": "MISC-MUTH-DARB-BADAL-QISMA",
+          "value": "19.4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$AC = 6 \\times \\sin 18^{\\circ} \\approx 1{,}85$ أي $1{,}9\\,\\mathrm{cm}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب AB باستعمال $\\cos\\widehat{B}$ ، إلى الجزء من 10.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "expectedAnswer": "5.7",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-DARB-BADAL-QISMA",
+          "value": "6.3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$AB = 6 \\times \\cos 18^{\\circ} \\approx 5{,}71$ أي $5{,}7\\,\\mathrm{cm}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

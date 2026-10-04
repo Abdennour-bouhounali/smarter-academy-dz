@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l4-007",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 4,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — مثلث متقايس الساقين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ارتفاع",
+      "حل المثلث"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P3",
+      "modelledOn": "ex-28"
+    }
+  },
+  "statement": {
+    "content": "ABC مثلث متقايس الساقين رأسه A حيث $AB = AC = 10\\,\\mathrm{cm}$ و $BC = 12\\,\\mathrm{cm}$ . H منتصف [BC] ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الارتفاع AH بالسنتيمتر:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "8",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-WATAR-MUQABIL",
+          "value": "12"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الوتر: الضلع المقابل للزاوية القائمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية فيثاغورس: مربع الوتر يساوي مجموع مربعي الضلعين الآخرين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لحساب ضلع للزاوية القائمة نطرح مربع الضلع المعلوم من مربع الوتر، ثم نأخذ الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "المتوسط [AH] ارتفاع: ABH قائم في H ، $AH = \\sqrt{100 - 36} = 8\\,\\mathrm{cm}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قيس الزاوية $\\widehat{ABC}$ بالدرجة، إلى الوحدة:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "53",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "37"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلعين المعلومين بالنسبة إلى الزاوية المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمعهما واحسب قيمتها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عيّن الزاوية باللمسة العكسية (2nd ثم sin⁻¹ أو cos⁻¹ أو tan⁻¹) ودوّر إلى الدرجة."
+        }
+      ],
+      "feedback": {
+        "correct": "في ABH : BH مجاور و AB وتر، $\\cos\\widehat{B} = \\dfrac{6}{10}$ ومنه $\\widehat{B} \\approx 53^{\\circ}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

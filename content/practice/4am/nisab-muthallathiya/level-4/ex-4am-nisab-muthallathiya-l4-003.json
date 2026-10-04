@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l4-003",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 5 — الطول EL",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جيب التمام",
+      "عزل طول"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 124,
+      "section": "أؤكّد تعلّماتي",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 124): في الشكل، المثلث LIE قائم في I حيث $IL = 6\\,\\mathrm{cm}$ و $\\widehat{L} = 50^{\\circ}$ .",
+    "figure": {
+      "points": {
+        "L": [
+          0.0,
+          0.0
+        ],
+        "I": [
+          -0.0,
+          5.035
+        ],
+        "E": [
+          6.0,
+          5.035
+        ]
+      },
+      "segments": [
+        {
+          "from": "L",
+          "to": "I",
+          "label": "6 cm"
+        },
+        {
+          "from": "I",
+          "to": "E"
+        },
+        {
+          "from": "L",
+          "to": "E"
+        }
+      ],
+      "rightAngles": [
+        [
+          "L",
+          "I",
+          "E"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "L",
+          "from": "I",
+          "to": "E",
+          "label": "50°"
+        }
+      ],
+      "ariaLabel": "مثلث LIE قائم في I حيث IL = 6 سنتيمتر والزاوية L قيسها 50 درجة",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لدينا:",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$EL = \\dfrac{6}{\\cos 50^{\\circ}}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$EL = 6 \\times \\sin 50^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-UKHRA"
+        },
+        {
+          "id": "C",
+          "content": "$EL = 6 \\times \\cos 50^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-DARB-BADAL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "بالنسبة إلى L: [IL] مجاور معلوم و [EL] وتر: $\\cos 50^{\\circ} = \\dfrac{6}{EL}$ ومنه $EL = \\dfrac{6}{\\cos 50^{\\circ}}$ .",
+        "incorrect": "الوتر EL في المقام: نقسم المجاور على جيب التمام."
+      },
+      "difficulty": 4
+    }
+  ]
+}

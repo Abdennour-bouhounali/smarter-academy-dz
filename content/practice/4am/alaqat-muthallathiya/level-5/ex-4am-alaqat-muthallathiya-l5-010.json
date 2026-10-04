@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l5-010",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — خيمة الكشافة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "إنشاء"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P3",
+      "modelledOn": "method-construct"
+    }
+  },
+  "statement": {
+    "content": "في مخيّم كشفي بتيكجدة، يُشدّ حبل طوله $5\\,\\mathrm{m}$ من قمة عمود إلى وتد في الأرض على بعد $3\\,\\mathrm{m}$ من أسفل العمود. الحبل وتر مثلث قائم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\cos x = \\dfrac{3}{5}$ حيث x زاوية الحبل مع الأرض. بالحاسبة، قيس x مدوّرا إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "قيس بالدرجات، عدد عشري بالفاصلة (مثل 12,5)",
+      "expectedAnswer": "53.1",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "36.9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "3 مجاور للزاوية عند الوتد، و 5 وتر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل $\\cos^{-1}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos^{-1}(0{,}6) \\approx 53{,}13^{\\circ}$ ، وارتفاع العمود $4\\,\\mathrm{m}$ (خاصية فيثاغورس).",
+        "incorrect": "الزاوية عند الوتد: جيب تمامها $\\dfrac{3}{5}$ ، لا جيبها."
+      }
+    }
+  ]
+}

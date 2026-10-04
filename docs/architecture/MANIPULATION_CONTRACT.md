@@ -389,6 +389,33 @@ the first most frequent value in cell order and #N/A when nothing repeats. **`gr
 (groups per class, `'2|2'`), `theme` (`quiz` | `school`); a tank's height is budgeted from the lesson viewport minus what the
 glance block MEASURES besides the tanks, so the block stays in the screen when the reading grows after the valve.
 
+## 2duodecies. The trigonometry laboratories (unit 10, 2026-10-04)
+
+Four types, every verdict from `packages/core/arithmetic/trigonometry.js` (no lab computes a ratio itself), each with a `logic/` module,
+its tests and a render test; glance blocks `data-rr|tc|ac|cl-glance`, measured by `e2e/lesson-kit/4am-hisab-muthallathat.mjs`.
+
+- **`ramp-ratios`** (`geometry/RampRatios.jsx`, `skatepark`) — the first CHAINED carry inside one level: pick the acute angle → name the
+  sides → compose the ratios, then a stretch (the rise at مبتدئ; board and angle plus a PREDICTION judged before reading at متقدم). Resistance:
+  the right angle refused, a mislabelled side returned with its reason, the hypotenuse over a sine refused with its value > 1; the bound
+  0 < sin, cos < 1 is SEEN (the board swung onto the ground lands beyond A). Invariant: at a fixed angle, the ratios do not move with the size.
+- **`trig-calculator`** (`geometry/TrigCalculator.jsx`, `drone`) — the hand holds a real KEY SEQUENCE on a drawn calculator (19 keys ≥ 44 px,
+  LTR) and a cut line on the screen digits (`role="slider"`). It starts in RAD on purpose: `trigonometry.ratioRad / angleRad` give the
+  absurd value that the drone's triangle contradicts; forgetting 2nd, the wrong inverse, an impossible sin⁻¹ (« خطأ رياضي »), truncation and
+  the wrong precision are each refused. Narrow screens: under 250 px the glance block takes back the stage padding and the keypad goes to
+  4 columns; under 380 px one shared control row carries the decisions / tasks / next button.
+- **`angle-compass`** (`geometry/AngleCompass.jsx`, `kite`) — construction without a protractor, for real: set square, a carried length,
+  the compass opening and a pencil lowered from 90° so the arc cuts the other leg at the exact √(r² − a²) (`r·cos θ = a`); a ruler path for
+  tan. Resistance: `short` / `touch` (the string never reaches), `legs` (sin built on two legs = a tangent), `vertex`, `hypTan`. Invariant on
+  every triangle, refused ones included: cos² + sin² fills a bar to exactly 1, tan = sin / cos. Layout lessons worth reusing: the scene's
+  scale is RATCHETED DOWN only (a control row appearing never moves a handle under the finger), handles are clamped inside the scene, the
+  reading floats in a `MovablePanel` on the sky side, compacted with `\tfrac` on phones.
+- **`clinometer`** (`geometry/Clinometer.jsx`, `floodlight` / `mural` / `maqam`) — ONE plan engine (`logic/clinometer.js`: `planFor` =
+  `lengthPlan`, `ratioVerdict` names the missing side, `chooseOp` refuses with the value it would give) for three modes: `height` (distance and
+  phone tilt held, the shutter accepts the aim to the degree, the height is the same from every distance), `ladder` (the تحدّ: a telescopic
+  length bracketed by hand before sin ÷), `align` (the observer slides until the pole hides the monument: Thales then tan). Props flat or
+  grouped in `numbers`, contract fixed in the unit's brief; the synthesis reuses it with its own `LAB` and `lab.render.test.jsx`. The phone is a
+  `MovablePanel`, compact under 380 px.
+
 ## 2undecies. The geometry laboratories (unit 9, 2026-10-02)
 
 Unit 9 « خاصية طالس », the first unit under the programme's « ميدان الهندسة » (`handasa`), added five types by the §7ter

@@ -1,0 +1,116 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l4-008",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — لوح شمسي بورقلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية فيثاغورس",
+      "الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "لوح شمسي مستو بورقلة يرتكز على حامل: قاعدة أفقية طولها $1{,}2\\,\\mathrm{m}$ وقائم شاقولي طوله $0{,}9\\,\\mathrm{m}$ ، واللوح يصل طرفيهما."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول اللوح (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "1.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اللوح وتر مثلث قائم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضلعان 1,2 و 0,9."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خاصية فيثاغورس."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{1{,}2^2 + 0{,}9^2} = \\sqrt{2{,}25} = 1{,}5\\,\\mathrm{m}$ .",
+        "incorrect": "الوتر ليس مجموع الضلعين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "2.1",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما المدوّر إلى الدرجة لقيس زاوية ميل اللوح على الأفق؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "37",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الزاوية عند طرف القاعدة الأفقية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القائم يقابلها والقاعدة تجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الظل ثم اللمسة العكسية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{0{,}9}{1{,}2} = 0{,}75$ ومنه $x \\approx 36{,}87^{\\circ}$ ، أي $37^{\\circ}$ .",
+        "incorrect": "حدّد المقابل والمجاور بالنسبة إلى زاوية الميل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "53",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        },
+        {
+          "value": "0.75",
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ]
+    }
+  ]
+}

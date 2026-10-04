@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l4-002",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 18 (ص 123) — العمود 3",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمرين 18",
+      "إن أمكن"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-18",
+      "page": 123,
+      "section": "العلاقات المثلثية",
+      "number": 18
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: x قيس بالدرجات لزاوية حادة. بدون حساب قيمة x، أتمم إن أمكن الجدول: العمود 3 فيه $\\sin x = \\dfrac{\\sqrt{5}}{2}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا نكتب في العمود 3؟",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\cos x = \\dfrac{1}{2}$ و $\\tan x = \\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKBAR-MIN-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "غير ممكن: $\\sqrt{5} > 2$ فـ $\\dfrac{\\sqrt{5}}{2} > 1$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(\\sqrt{5})^2 = 5$ و $2^2 = 4$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل $\\dfrac{\\sqrt{5}}{2}$ أصغر من 1؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(\\dfrac{\\sqrt{5}}{2}\\right)^2 = \\dfrac{5}{4} > 1$ : الجيب أكبر من 1، مستحيل.",
+        "incorrect": "لاحظ: $\\dfrac{\\sqrt{5}}{2} \\approx 1{,}118$ ."
+      }
+    }
+  ]
+}

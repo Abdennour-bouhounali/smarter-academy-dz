@@ -1,0 +1,130 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l5-001",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مئذنة من موضعين",
+    "estimatedMinutes": 6,
+    "tags": [
+      "الظل",
+      "معادلة",
+      "نمذجة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "من نقطة A على الأرض، يرى عادل قمة S لمئذنة بالمدية بزاوية $30^{\\circ}$ . يتقدّم $20\\,\\mathrm{m}$ نحو المئذنة إلى النقطة B فيراها بزاوية $45^{\\circ}$ . نسمّي M قاعدة المئذنة و h ارتفاعها (A و B و M على استقامة، ونهمل طوله)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المسافة AM بدلالة h هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$AM = h \\times \\tan 30^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-DARB-BADAL-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$AM = h \\times \\cos 30^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "id": "C",
+          "content": "$AM = \\dfrac{h}{\\tan 30^{\\circ}}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$AM = 2h$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المثلث AMS القائم في M."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "h يقابل الزاوية في A و AM يجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجهول AM في مقام الظل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan 30^{\\circ} = \\dfrac{h}{AM}$ ومنه $AM = \\dfrac{h}{\\tan 30^{\\circ}}$ ؛ ومن B: $BM = h$ لأنّ $\\tan 45^{\\circ} = 1$ .",
+        "incorrect": "المسافة تجاور الزاوية، والارتفاع يقابلها."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "ما ارتفاع المئذنة مدوّرا إلى الجزء من 10 (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 10)",
+      "expectedAnswer": "27.3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AM = BM + 20$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$BM = h$ لأنّ الزاوية في B قيسها $45^{\\circ}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة $\\dfrac{h}{\\tan 30^{\\circ}} = h + 20$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{h}{\\tan 30^{\\circ}} = h + 20$ ومنه $h = \\dfrac{20}{\\sqrt{3} - 1} \\approx 27{,}3\\,\\mathrm{m}$ .",
+        "incorrect": "اكتب AM بطريقتين ثم ساوِ بينهما."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "20",
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        }
+      ]
+    }
+  ]
+}

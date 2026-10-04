@@ -1,0 +1,118 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l3-008",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 5 — جيب تمام الزاوية CKB",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جيب التمام",
+      "التدوير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-5",
+      "page": 122,
+      "section": "النسب المثلثية - استعمال حاسبة",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 122): في الشكل، المثلث KBC قائم في B حيث $KB = 14\\,\\mathrm{cm}$ و $BC = 17\\,\\mathrm{cm}$ ، ووتره $KC = \\sqrt{485}$ .",
+    "figure": {
+      "points": {
+        "K": [
+          0.0,
+          0.0
+        ],
+        "B": [
+          4.643,
+          -1.69
+        ],
+        "C": [
+          6.695,
+          3.948
+        ]
+      },
+      "segments": [
+        {
+          "from": "K",
+          "to": "B",
+          "label": "14 cm"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "label": "17 cm"
+        },
+        {
+          "from": "K",
+          "to": "C"
+        }
+      ],
+      "rightAngles": [
+        [
+          "K",
+          "B",
+          "C"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "K",
+          "from": "B",
+          "to": "C"
+        }
+      ],
+      "ariaLabel": "مثلث KBC قائم في B حيث KB = 14 سنتيمتر و BC = 17 سنتيمتر",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أعط المدوّر إلى الجزء من 100 للعدد $\\cos\\widehat{CKB}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "0.64",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "0.63"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "0.77"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الوتر والمقابل والمجاور بالنسبة إلى الزاوية المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الوتر في مقام الجيب وجيب التمام، والظل لا يستعمل الوتر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض كل ضلع بطوله ثم اختزل الكسر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos\\widehat{CKB} = \\dfrac{14}{\\sqrt{485}} \\approx 0{,}6357$ ، فالمدوّر 0{,}64 .",
+        "incorrect": "المجاور للزاوية K هو [KB]، ثم ندوّر: الرقم الموالي 5."
+      },
+      "difficulty": 3
+    }
+  ]
+}

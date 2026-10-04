@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l5-009",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — نتيجة تُرفض دون حساب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حدود الجيب",
+      "التحقق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nisab-muthallathiya_P2",
+      "modelledOn": "ex-10"
+    }
+  },
+  "statement": {
+    "content": "في مسألة عن عمود إنارة في ملعب، وجد ياسين أن جيب زاوية حادة في المثلث القائم المرسوم يساوي $1{,}2$ ، فحسب به طول الحبل."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا تقول له؟",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يكفي أن تدوّر 1,2 إلى 1",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-TADWIR-BATR"
+        },
+        {
+          "id": "B",
+          "content": "أعد الحساب: جيب زاوية حادة لا يتجاوز 1، فالخطأ قبل حساب الطول",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "نتيجتك صحيحة لأن العمود طويل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKBAR-MIN-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما هو أطول ضلع في المثلث القائم؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجيب وجيب التمام نسبتان مقامهما الوتر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن البسط بالمقام: هل يمكن أن يكون البسط أكبر؟"
+        }
+      ],
+      "feedback": {
+        "correct": "الجيب = المقابل ÷ الوتر < 1: قيمة 1,2 تكشف خطأ (غالبا نسبة مقلوبة) قبل أي حساب.",
+        "incorrect": "هل يمكن أن يكون المقابل أطول من الوتر؟"
+      },
+      "difficulty": 5
+    }
+  ]
+}

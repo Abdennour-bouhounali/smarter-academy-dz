@@ -1,0 +1,79 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l1-004",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 1,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — منحدر الكراسي المتحركة في المدرسة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ضرب أم قسمة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "منحدر لولوج الكراسي المتحركة في مدخل مدرسة طوله $6\\,\\mathrm{m}$ ويصنع مع الأرض الأفقية زاوية قيسها $5^{\\circ}$ . نسمّي h ارتفاع المنحدر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نحسب h بالعبارة:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$h = \\dfrac{6}{\\sin 5^{\\circ}}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-DARB-BADAL-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$h = 6 \\times \\sin 5^{\\circ}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$h = 6 \\times \\cos 5^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المقابل والوتر: الجيب؛ المجاور والوتر: جيب التمام؛ المقابل والمجاور: الظل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختر النسبة التي يظهر فيها الضلعان معًا، ولا تحتاج ضلعا ثالثا مجهولا."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin 5^{\\circ} = \\dfrac{h}{6}$ : المجهول في البسط فنضرب، $h = 6 \\sin 5^{\\circ}$ .",
+        "incorrect": "سمِّ الأضلاع بالنسبة إلى الزاوية المعلومة، ثم اختر النسبة التي تجمع المعلوم والمطلوب."
+      }
+    }
+  ]
+}

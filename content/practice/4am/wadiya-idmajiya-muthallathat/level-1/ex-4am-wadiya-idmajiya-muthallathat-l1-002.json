@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l1-002",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 2 — جيب زاوية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الجيب",
+      "الضلع المقابل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 124,
+      "section": "أؤكّد تعلّماتي",
+      "number": 2
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "في المثلث LMN القائم في M (الشكل).",
+    "figure": {
+      "points": {
+        "L": [
+          0,
+          3
+        ],
+        "M": [
+          0,
+          0
+        ],
+        "N": [
+          7,
+          0
+        ]
+      },
+      "segments": [
+        [
+          "L",
+          "M"
+        ],
+        [
+          "M",
+          "N"
+        ],
+        [
+          "L",
+          "N"
+        ]
+      ],
+      "rightAngles": [
+        [
+          "L",
+          "M",
+          "N"
+        ]
+      ],
+      "labels": {
+        "L": "nw",
+        "M": "sw",
+        "N": "e"
+      },
+      "ariaLabel": "مثلث LMN قائم في M: النقطة L في الأعلى و M تحتها و N بعيدة على اليمين",
+      "maxWidth": 320
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لدينا:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sin\\widehat{L} = \\dfrac{LM}{LN}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "id": "B",
+          "content": "$\\sin\\widehat{L} = \\dfrac{MN}{LM}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        },
+        {
+          "id": "C",
+          "content": "$\\sin\\widehat{L} = \\dfrac{MN}{LN}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الزاوية القائمة في M."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضلع المقابل للزاوية L لا يمرّ برأسها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجيب = المقابل ÷ الوتر."
+        }
+      ],
+      "feedback": {
+        "correct": "المقابل للزاوية L هو [MN] والوتر [LN]: $\\sin\\widehat{L} = \\dfrac{MN}{LN}$ .",
+        "incorrect": "المقابل لا يمرّ بالرأس L، والوتر يقابل الزاوية القائمة."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ]
+}

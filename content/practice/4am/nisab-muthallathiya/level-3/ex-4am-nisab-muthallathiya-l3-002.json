@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l3-002",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "طرائق — باستعمال جيب التمام",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب طول",
+      "جيب التمام"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-cos",
+      "page": 119,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 119): RST مثلث قائم في S حيث $RT = 3{,}5\\,\\mathrm{cm}$ و $\\widehat{R} = 37^{\\circ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب RS، المدوّر إلى الجزء من 10 (بالسنتيمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "2.8",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-QISMA-BADAL-DARB",
+          "value": "4.4"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "2.1"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos 37^{\\circ} = \\dfrac{RS}{3{,}5}$ ومنه $RS = 3{,}5 \\times \\cos 37^{\\circ} \\approx 2{,}8$ .",
+        "incorrect": "[RS] مجاور للزاوية R و [RT] وتر: جيب التمام، والمطلوب في البسط فنضرب."
+      },
+      "difficulty": 3
+    }
+  ]
+}

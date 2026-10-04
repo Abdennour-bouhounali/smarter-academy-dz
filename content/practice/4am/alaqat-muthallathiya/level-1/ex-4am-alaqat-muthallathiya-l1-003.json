@@ -1,0 +1,72 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l1-003",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "معارف 4 (ص 120) — الكتابة sin²x",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معارف 4",
+      "ترميز"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-4",
+      "page": 120,
+      "section": "معارف",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: الكتابة $\\sin^2 x + \\cos^2 x = 1$ تعني $(\\sin x)^2 + (\\cos x)^2 = 1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الكتابة $\\sin^2 x$ تعني:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2\\sin x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JAMA-NISAB"
+        },
+        {
+          "id": "B",
+          "content": "$(\\sin x)^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\sin(x^2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-TARBI-BASTI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الأس مكتوب فوق الرمز sin."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل نربّع الزاوية أم العدد $\\sin x$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin^2 x = \\sin x \\times \\sin x$ : نربّع العدد $\\sin x$ لا الزاوية.",
+        "incorrect": "لـ $x = 30^{\\circ}$ : $\\sin^2 30^{\\circ} = \\dfrac{1}{4}$ ، بينما $2\\sin 30^{\\circ} = 1$ ."
+      }
+    }
+  ]
+}

@@ -27,7 +27,10 @@ generated and checked by `docs/sources/4am/unit7/build-extraction.py`) and unit 
 extraction generated and checked by `docs/sources/4am/unit8/build-extraction.py`, exact arithmetic `packages/core/arithmetic/statistics.js`) and unit 9 « خاصية طالس » (`handasa/khassiyat-talis/`, 3 lessons + a
 synthesis, 2026-10-02, the first unit of the programme's « ميدان الهندسة »; extraction generated and checked by
 `docs/sources/4am/unit9/build-extraction.py`, exact Thales `packages/core/arithmetic/thales.js`, figures drawn by the shared
-`GeoFigure`, also in practice statements as `statement.figure`) — the **only** lesson
+`GeoFigure`, also in practice statements as `statement.figure`) and unit 10 « حساب المثلثات في المثلث القائم » (`handasa/hisab-muthallathat/`,
+4 lessons + a synthesis, 2026-10-04, the second unit of « ميدان الهندسة »; extraction generated and checked by
+`docs/sources/4am/unit10/build-extraction.py`, exact trigonometry with surds `packages/core/arithmetic/trigonometry.js`, the authors'
+brief and shared-file lock kept next to it) — the **only** lesson
 content in the repository. The
 French-era lessons (`lessons/college/`, `lessons/lycee/`), their practice
 content, specs, e2e scripts, French-only engines and the French reference

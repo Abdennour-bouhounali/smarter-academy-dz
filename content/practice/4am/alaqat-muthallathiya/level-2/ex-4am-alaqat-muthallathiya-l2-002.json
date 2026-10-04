@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l2-002",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "دوري الآن (ص 121) — جيبها 0,4",
+    "estimatedMinutes": 3,
+    "tags": [
+      "دوري الآن",
+      "قيمة مضبوطة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-121",
+      "page": 121,
+      "section": "دوري الآن"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: x هو قيس زاوية حادة حيث $\\sin x = 0{,}4$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المضبوطة للعدد $\\cos x$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{21}{25}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JADHR-NASI"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{\\sqrt{21}}{25}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-TARBI-BASTI"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{\\sqrt{21}}{5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$0{,}6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JAMA-NISAB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\cos^2 x = 1 - 0{,}4^2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0{,}84 = \\dfrac{21}{25}$ ، ثم الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos^2 x = 0{,}84 = \\dfrac{21}{25}$ ، فـ $\\cos x = \\dfrac{\\sqrt{21}}{5}$ .",
+        "incorrect": "جذر كسر: جذر البسط على جذر المقام، و $\\sqrt{25} = 5$ ."
+      }
+    }
+  ]
+}

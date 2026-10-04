@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l5-003",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 5,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — حبل متسلّق في الطاسيلي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ارتفاع",
+      "حل المثلث"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P1",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "في الطاسيلي ناجر، حبل مشدود مستقيم طوله $50\\,\\mathrm{m}$ يربط قمة جرف صخري شاقولي بنقطة على الأرض الأفقية، ويصنع مع الأرض زاوية قيسها $62^{\\circ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ارتفاع الجرف بالمتر، إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "expectedAnswer": "44.1",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "23.5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "الحبل وتر والجرف مقابل: $50 \\sin 62^{\\circ} \\approx 44{,}1\\,\\mathrm{m}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بعد نقطة التثبيت عن قاعدة الجرف بالمتر، إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "expectedAnswer": "23.5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "44.1"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "البعد مجاور: $50 \\cos 62^{\\circ} \\approx 23{,}5\\,\\mathrm{m}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l4-010",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — الظل في جيب التمام",
+    "estimatedMinutes": 3,
+    "tags": [
+      "العلاقة",
+      "جذور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P1",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "x قيس زاوية حادة حيث $\\cos x = \\dfrac{1}{4}$ و $\\tan x = \\sqrt{15}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\tan x \\times \\cos x$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sin x = \\dfrac{\\sqrt{15}}{4}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JAMA-NISAB"
+        },
+        {
+          "id": "C",
+          "content": "$4\\sqrt{15}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-DARB-BADAL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\tan x = \\dfrac{\\sin x}{\\cos x}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب الطرفين في $\\cos x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x \\times \\cos x = \\sin x = \\dfrac{\\sqrt{15}}{4}$ ، وتحقّق: $\\dfrac{1}{16} + \\dfrac{15}{16} = 1$ .",
+        "incorrect": "$\\sqrt{15} \\times \\dfrac{1}{4}$ ، لا قسمة على $\\dfrac{1}{4}$ ."
+      }
+    }
+  ]
+}

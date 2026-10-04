@@ -1,0 +1,169 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l5-001",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تصويب إجابة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تصويب خطأ"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P2",
+      "modelledOn": "ex-23"
+    }
+  },
+  "statement": {
+    "content": "ABC قائم في C حيث $AC = 7\\,\\mathrm{cm}$ و $AB = 10\\,\\mathrm{cm}$ (الشكل). كتب رياض: $\\cos\\widehat{A} = \\dfrac{7}{10}$ ومنه $\\widehat{A} = 0{,}7$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "C": [
+          7,
+          0
+        ],
+        "B": [
+          7,
+          7.141
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "C",
+          "label": "7 cm"
+        },
+        [
+          "C",
+          "B"
+        ],
+        {
+          "from": "A",
+          "to": "B",
+          "label": "10 cm"
+        }
+      ],
+      "rightAngles": [
+        [
+          "A",
+          "C",
+          "B"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "A",
+          "from": "C",
+          "to": "B",
+          "label": "?"
+        }
+      ],
+      "ariaLabel": "مثلث ABC قائم في C، الضلع AC طوله 7 سم والوتر AB طوله 10 سم، والزاوية المطلوبة عند A",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إجابة رياض:",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "النسبة صحيحة، لكن $0{,}7$ جيب تمام الزاوية وليس قيسها",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "النسبة خاطئة: $\\cos\\widehat{A} = \\dfrac{10}{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "صحيحة: $\\widehat{A} = 0{,}7^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "[AC] يجاور A و [AB] وتر: $\\cos\\widehat{A} = 0{,}7$ ، والقيس يُعيَّن باللمسة العكسية.",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قيس $\\widehat{A}$ مدوّرا إلى الوحدة (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "46",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "44"
+        },
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "45"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦ON 2nd cos⁻¹ 0,7 =⁩ يعطي $45{,}572996$ ، إذن $\\widehat{A} \\approx 46^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

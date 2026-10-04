@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l2-010",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — سلّم على جدار",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جيب التمام",
+      "الحاسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "سلّم طوله $4\\,\\mathrm{m}$ مستند إلى جدار شاقولي، وقدمه على بعد $1{,}5\\,\\mathrm{m}$ من أسفل الجدار على أرض أفقية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المدوّر إلى الدرجة لقيس الزاوية بين السلّم والأرض؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "68",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "السلّم وتر المثلث القائم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة إلى الجدار تجاور الزاوية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جيب التمام = المجاور ÷ الوتر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos x = \\dfrac{1{,}5}{4} = 0{,}375$ ومنه $x \\approx 67{,}98^{\\circ}$ ، أي $68^{\\circ}$ .",
+        "incorrect": "النسبة التي تربط المجاور بالوتر."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "22",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        },
+        {
+          "value": "0.375",
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ]
+    }
+  ]
+}

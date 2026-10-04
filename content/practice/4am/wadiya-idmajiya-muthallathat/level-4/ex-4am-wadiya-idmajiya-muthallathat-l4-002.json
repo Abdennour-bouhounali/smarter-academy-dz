@@ -1,0 +1,159 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l4-002",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — «مقام الشهيد» وعين الملاحظ",
+    "estimatedMinutes": 6,
+    "tags": [
+      "خاصية طالس",
+      "الظل",
+      "ارتفاع العين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "هذه المرة لا نهمل طول نسيم: عيناه على ارتفاع $1{,}5\\,\\mathrm{m}$ . يقف على بعد $2\\,\\mathrm{m}$ من عمود شاقولي طوله $4\\,\\mathrm{m}$ ، والعمود على بعد $70{,}4\\,\\mathrm{m}$ من قاعدة «مقام الشهيد»، ويرى قمتي العمود والمقام على استقامة واحدة. نرسم الخط الأفقي المارّ بعينه."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بكم تعلو قمة العمود الخط الأفقي المارّ بعين نسيم (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "2.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الخط الأفقي على ارتفاع العين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العمود يبدأ من الأرض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح ارتفاع العين من طول العمود."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 - 1{,}5 = 2{,}5\\,\\mathrm{m}$ .",
+        "incorrect": "المثلث القائم أفقيّه على مستوى العين لا على الأرض."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-MUTH-IRTIFA3-AYN"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما ارتفاع المقام (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "92",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مثلثان في وضعية طالس رأسهما العين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة الأفقية الكلية $72{,}4\\,\\mathrm{m}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الارتفاع فوق العين ثم أضف ارتفاعها."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{h - 1{,}5}{2{,}5} = \\dfrac{72{,}4}{2}$ ومنه $h - 1{,}5 = 90{,}5$ و $h = 92\\,\\mathrm{m}$ .",
+        "incorrect": "لا تنسَ ارتفاع العين في البداية وفي النهاية."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "144.8",
+          "id": "MISC-MUTH-IRTIFA3-AYN"
+        },
+        {
+          "value": "90.5",
+          "id": "MISC-MUTH-IRTIFA3-AYN"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "ما المدوّر إلى الدرجة لقيس الزاوية بين الخط الأفقي وخط النظر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "51",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المثلث الصغير فوق الخط الأفقي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المقابل 2,5 والمجاور 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الظل ثم اللمسة العكسية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{2{,}5}{2} = 1{,}25$ ومنه $x \\approx 51{,}34^{\\circ}$ ، أي $51^{\\circ}$ .",
+        "incorrect": "المقابل هو جزء العمود فوق العين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "63",
+          "id": "MISC-MUTH-IRTIFA3-AYN"
+        }
+      ]
+    }
+  ]
+}

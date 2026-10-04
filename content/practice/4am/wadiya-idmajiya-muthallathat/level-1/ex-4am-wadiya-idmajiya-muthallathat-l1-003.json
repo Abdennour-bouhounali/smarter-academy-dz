@@ -1,0 +1,141 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l1-003",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 3 — إجابتان صحيحتان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الجيب",
+      "مجهول في المقام"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 124,
+      "section": "أؤكّد تعلّماتي",
+      "number": 3
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "في المثلث ABC القائم في B (الشكل): $AB = 7$ و $\\widehat{C} = 35^{\\circ}$ . الإجابات المقترحة: (1) $\\sin 35^{\\circ} = \\dfrac{7}{AC}$ ؛ (2) $\\sin 35^{\\circ} = \\dfrac{AC}{7}$ ؛ (3) $\\sin 35^{\\circ} \\times AC = 7$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          3.5
+        ],
+        "B": [
+          0,
+          0
+        ],
+        "C": [
+          5,
+          0
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "7"
+        },
+        [
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "C"
+        ]
+      ],
+      "rightAngles": [
+        [
+          "A",
+          "B",
+          "C"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "C",
+          "from": "B",
+          "to": "A",
+          "label": "35°"
+        }
+      ],
+      "labels": {
+        "A": "nw",
+        "B": "sw",
+        "C": "se"
+      },
+      "ariaLabel": "مثلث ABC قائم في B: A فوق B و C على اليمين؛ AB = 7 وقيس الزاوية C يساوي 35 درجة",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الإجابات الصحيحة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "(1) و (3)",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "(1) فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-KITABA-MUTAKAFIA"
+        },
+        {
+          "id": "C",
+          "content": "(2) فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "id": "D",
+          "content": "(2) و (3)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الزاوية المعطاة في C."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المقابل للزاوية C هو [AB] والوتر [AC]."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مساواة نسبتين تكافئ الجداء التصالبي."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin 35^{\\circ} = \\dfrac{7}{AC}$ ، وبضرب الطرفين في AC نجد $\\sin 35^{\\circ} \\times AC = 7$ : (1) و (3) صحيحتان.",
+        "incorrect": "اكتب الجيب للزاوية C ثم احكم على كل كتابة مكافئة."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    }
+  ]
+}

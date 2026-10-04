@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l4-006",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 4,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — مثلث من ضلعين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حل المثلث"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P3",
+      "modelledOn": "ex-13"
+    }
+  },
+  "statement": {
+    "content": "RST مثلث قائم في R حيث $RS = 7\\,\\mathrm{cm}$ و $RT = 4\\,\\mathrm{cm}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ST بالسنتيمتر، إلى الجزء من 100:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,35 (المدوّر إلى الجزء من 100)",
+      "expectedAnswer": "8.06",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-WATAR-MUQABIL",
+          "value": "5.74"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الوتر: الضلع المقابل للزاوية القائمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية فيثاغورس: مربع الوتر يساوي مجموع مربعي الضلعين الآخرين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لحساب ضلع للزاوية القائمة نطرح مربع الضلع المعلوم من مربع الوتر، ثم نأخذ الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$ST = \\sqrt{49 + 16} = \\sqrt{65} \\approx 8{,}06\\,\\mathrm{cm}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قيس الزاوية $\\widehat{S}$ بالدرجة، إلى الوحدة:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-MAQLUBA",
+          "value": "60"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلعين المعلومين بالنسبة إلى الزاوية المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمعهما واحسب قيمتها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عيّن الزاوية باللمسة العكسية (2nd ثم sin⁻¹ أو cos⁻¹ أو tan⁻¹) ودوّر إلى الدرجة."
+        }
+      ],
+      "feedback": {
+        "correct": "بالنسبة إلى S : RT مقابل و RS مجاور، $\\tan\\widehat{S} = \\dfrac{4}{7}$ ومنه $\\widehat{S} \\approx 30^{\\circ}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

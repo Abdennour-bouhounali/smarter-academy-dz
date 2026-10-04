@@ -1354,5 +1354,195 @@
     "relatedLearningPoints": [
       "4am_inshaat-talis_P2"
     ]
+  },
+  "MISC-MUTH-WATAR-MUQABIL": {
+    "label": "الوتر بدل الضلع المقابل",
+    "explanation": "الوتر هو الضلع المقابل للزاوية القائمة، لا للزاوية الحادة: المقابل لزاوية حادة هو ضلع الزاوية القائمة الذي لا يمر برأسها.",
+    "relatedLearningPoints": [
+      "4am_nisab-muthallathiya_P1"
+    ]
+  },
+  "MISC-MUTH-MUQABIL-MUJAWIR": {
+    "label": "تبديل المقابل والمجاور",
+    "explanation": "المجاور لزاوية حادة هو ضلع الزاوية القائمة الذي يمرّ برأسها، والمقابل هو الذي لا يمرّ به؛ تبديلهما يحوّل جيب التمام إلى جيب والظل إلى مقلوبه.",
+    "relatedLearningPoints": [
+      "4am_nisab-muthallathiya_P1",
+      "4am_tarrid-muthallathiya_P2"
+    ]
+  },
+  "MISC-MUTH-NISBA-MAQLUBA": {
+    "label": "النسبة مقلوبة",
+    "explanation": "الوتر في مقام الجيب وجيب التمام دائما (وليس في البسط)، والمجاور في مقام الظل: $\\dfrac{BC}{AC}$ ليس $\\sin\\widehat{B}$ بل مقلوبه، وهو أكبر من 1.",
+    "relatedLearningPoints": [
+      "4am_nisab-muthallathiya_P1",
+      "4am_nisab-muthallathiya_P2"
+    ]
+  },
+  "MISC-MUTH-AKBAR-MIN-WAHID": {
+    "label": "جيب أو جيب تمام أكبر من 1",
+    "explanation": "الوتر أطول أضلاع المثلث القائم، فالجيب وجيب التمام لزاوية حادة محصوران تماما بين 0 و 1؛ قيمة مثل 1,5 أو $\\dfrac{\\sqrt{5}}{2}$ مستحيلة.",
+    "relatedLearningPoints": [
+      "4am_nisab-muthallathiya_P2",
+      "4am_alaqat-muthallathiya_P2"
+    ]
+  },
+  "MISC-MUTH-DARB-BADAL-QISMA": {
+    "label": "الضرب بدل القسمة",
+    "explanation": "من $\\sin 25^{\\circ} = \\dfrac{2{,}5}{BC}$ نستنتج $BC = \\dfrac{2{,}5}{\\sin 25^{\\circ}}$ وليس $2{,}5 \\times \\sin 25^{\\circ}$ : المجهول في المقام.",
+    "relatedLearningPoints": [
+      "4am_nisab-muthallathiya_P3",
+      "4am_tarrid-muthallathiya_P2"
+    ]
+  },
+  "MISC-MUTH-HASIBA-RAD": {
+    "label": "الحاسبة غير مبرمجة بالدرجة",
+    "explanation": "قبل الحساب تُبرمج الحاسبة على الدرجة (DEG أو d°)؛ بوحدة أخرى تعطي $\\sin 30$ قيمة سالبة أو بعيدة جدا عن 0,5.",
+    "relatedLearningPoints": [
+      "4am_hasiba-muthallathiya_P1"
+    ]
+  },
+  "MISC-MUTH-NISBA-BADAL-QAYS": {
+    "label": "النسبة بدل قيس الزاوية",
+    "explanation": "$\\cos\\widehat{A} = 0{,}6$ ليست قيس الزاوية: القيس يُعيَّن باللمسة العكسية $\\cos^{-1}$ فنجد $\\widehat{A} \\approx 53^{\\circ}$.",
+    "relatedLearningPoints": [
+      "4am_hasiba-muthallathiya_P2"
+    ]
+  },
+  "MISC-MUTH-AKS-BADAL-MUBASHIR": {
+    "label": "اللمسة المباشرة بدل العكسية",
+    "explanation": "لإيجاد زاوية من نسبتها نستعمل 2nd (أو Shift) ثم $\\sin^{-1}$ ؛ كتابة sin 0,52 تحسب جيب زاوية قيسها 0,52° وتعطي عددا قريبا من 0.",
+    "relatedLearningPoints": [
+      "4am_hasiba-muthallathiya_P2"
+    ]
+  },
+  "MISC-MUTH-TADWIR-BATR": {
+    "label": "البتر بدل التدوير",
+    "explanation": "المدوّر إلى الجزء من 10 للعدد 1,267 هو 1,3 لأن الرقم الموالي 6 ≥ 5؛ 1,2 هو قيمة مقربة بالنقصان (بتر).",
+    "relatedLearningPoints": [
+      "4am_hasiba-muthallathiya_P3"
+    ]
+  },
+  "MISC-MUTH-TADWIR-MUBAKKIR": {
+    "label": "تدوير قبل نهاية الحساب",
+    "explanation": "استعمال قيمة مدوّرة في حساب لاحق يراكم الخطأ؛ نحتفظ بالقيمة المضبوطة أو بكل أرقام الحاسبة ولا ندوّر إلا النتيجة النهائية.",
+    "relatedLearningPoints": [
+      "4am_hasiba-muthallathiya_P3",
+      "4am_tarrid-muthallathiya_P3"
+    ]
+  },
+  "MISC-MUTH-JADHR-NASI": {
+    "label": "نسيان الجذر في العلاقة",
+    "explanation": "من $\\cos^2 x + \\sin^2 x = 1$ نحصل على $\\sin^2 x = 1 - \\cos^2 x$ ثم $\\sin x = \\sqrt{1 - \\cos^2 x}$ ؛ $1 - \\cos x$ أو $1 - \\cos^2 x$ دون جذر ليس $\\sin x$.",
+    "relatedLearningPoints": [
+      "4am_alaqat-muthallathiya_P1",
+      "4am_alaqat-muthallathiya_P2"
+    ]
+  },
+  "MISC-MUTH-JAMA-NISAB": {
+    "label": "جمع النسبتين بدل جمع مربعيهما",
+    "explanation": "العلاقة تخص المربعين: $\\cos^2 x + \\sin^2 x = 1$ ؛ أما $\\cos 30^{\\circ} + \\sin 30^{\\circ} \\approx 1{,}37$.",
+    "relatedLearningPoints": [
+      "4am_alaqat-muthallathiya_P1"
+    ]
+  },
+  "MISC-MUTH-TAN-QISMA-MAQLUBA": {
+    "label": "الظل = جيب التمام ÷ الجيب",
+    "explanation": "$\\tan x = \\dfrac{\\sin x}{\\cos x}$ (المقابل على المجاور بعد اختزال الوتر)، وليس $\\dfrac{\\cos x}{\\sin x}$.",
+    "relatedLearningPoints": [
+      "4am_alaqat-muthallathiya_P1",
+      "4am_alaqat-muthallathiya_P2"
+    ]
+  },
+  "MISC-MUTH-INSHA-WATAR": {
+    "label": "الوتر على ضلع الزاوية القائمة",
+    "explanation": "لإنشاء زاوية جيبها $\\dfrac{2}{5}$ نضع 2 على ضلع للزاوية القائمة ونجعل 5 وترا (دائرة نصف قطرها 5)؛ وضع 5 على الضلع الآخر يعطي ظلا قيمته $\\dfrac{2}{5}$ لا جيبا.",
+    "relatedLearningPoints": [
+      "4am_alaqat-muthallathiya_P3"
+    ]
+  },
+  "MISC-MUTH-NISBA-GHAYR-MUNASIBA": {
+    "label": "نسبة لا تربط المعلوم بالمجهول",
+    "explanation": "نختار النسبة التي تجمع الضلع المعلوم والضلع المطلوب بالنسبة للزاوية المعلومة: الارتفاع (المقابل) والمسافة الأفقية (المجاور) يربطهما الظل، لا الجيب.",
+    "relatedLearningPoints": [
+      "4am_tarrid-muthallathiya_P2",
+      "4am_wadiya-idmajiya-muthallathat_P3"
+    ]
+  },
+  "MISC-MUTH-ZAWIYA-KHATI": {
+    "label": "الزاوية الحادة الأخرى",
+    "explanation": "المقابل والمجاور يُعيَّنان بالنسبة للزاوية المعطاة؛ استعمال الزاوية الحادة الأخرى (المتممة) يبادل بينهما.",
+    "relatedLearningPoints": [
+      "4am_tarrid-muthallathiya_P1",
+      "4am_nisab-muthallathiya_P1"
+    ]
+  },
+  "MISC-MUTH-TALIS-NAZAR": {
+    "label": "نسيان وضعية طالس في خط النظر",
+    "explanation": "العمود والمعلم شاقوليان فهما متوازيان، ورأساهما على خط نظر واحد: المثلثان في وضعية طالس والمسافة الكلية من الملاحظ هي مجموع المسافتين.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-muthallathat_P1",
+      "4am_wadiya-idmajiya-muthallathat_P3"
+    ]
+  },
+  "MISC-MUTH-NISF-DIL-QUTR": {
+    "label": "الخلط بين نصف الضلع ونصف القطر في قاعدة مربعة",
+    "explanation": "في هرم منتظم قاعدته مربع ضلعه a ، المسافة من مركز القاعدة إلى رأس منها نصف القطر $\\dfrac{a\\sqrt{2}}{2}$ ، وإلى منتصف ضلع نصف الضلع $\\dfrac{a}{2}$ : الحرف الجانبي يستعمل الأولى، وارتفاع الوجه الجانبي يستعمل الثانية.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-muthallathat_P1",
+      "4am_wadiya-idmajiya-muthallathat_P2"
+    ]
+  },
+  "MISC-MUTH-QUTR-WAJH": {
+    "label": "قطر وجه بدل قطر المجسّم",
+    "explanation": "قطر متوازي المستطيلات يصل رأسين متقابلين لا يقعان على وجه واحد: نحسب قطر القاعدة أولا ثم نطبّق خاصية فيثاغورس في المثلث القائم الذي يضمّه والحرف الشاقولي، فيكون $AD^2 = AB^2 + BC^2 + CD^2$ .",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-muthallathat_P1",
+      "4am_wadiya-idmajiya-muthallathat_P2"
+    ]
+  },
+  "MISC-MUTH-IRTIFA3-AYN": {
+    "label": "نسيان ارتفاع عين الملاحظ",
+    "explanation": "إذا لم تكن العين على الأرض فالمثلث القائم أفقيّه على مستوى العين: نحسب الارتفاع فوق العين ثم نضيف ارتفاع العين، ونطرحه من طول العمود قبل كتابة النسب.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-muthallathat_P1",
+      "4am_wadiya-idmajiya-muthallathat_P2"
+    ]
+  },
+  "MISC-MUTH-TARBI-BASTI": {
+    "label": "تربيع البسط وحده",
+    "explanation": "مربع كسر هو مربع البسط على مربع المقام: $\\left(\\dfrac{\\sqrt{3}}{2}\\right)^2 = \\dfrac{3}{4}$ وليس $\\dfrac{3}{2}$ ؛ وجذر كسر هو جذر البسط على جذر المقام: $\\sqrt{\\dfrac{21}{25}} = \\dfrac{\\sqrt{21}}{5}$ .",
+    "relatedLearningPoints": [
+      "4am_alaqat-muthallathiya_P1",
+      "4am_alaqat-muthallathiya_P2"
+    ]
+  },
+  "MISC-MUTH-ISHARA-ALAQA": {
+    "label": "نقل حدّ في العلاقة دون تغيير إشارته",
+    "explanation": "من $\\cos^2 x + \\sin^2 x = 1$ نطرح $\\sin^2 x$ من الطرفين: $\\cos^2 x = 1 - \\sin^2 x$ ؛ الكتابة $\\cos^2 x = \\sin^2 x - 1$ تعطي عددا سالبا، والمربع لا يكون سالبا.",
+    "relatedLearningPoints": [
+      "4am_alaqat-muthallathiya_P1"
+    ]
+  },
+  "MISC-MUTH-NISBA-UKHRA": {
+    "label": "نسبة مثلثية بدل أخرى",
+    "explanation": "لكل نسبة ضلعاها: جيب التمام = المجاور ÷ الوتر، الجيب = المقابل ÷ الوتر، الظل = المقابل ÷ المجاور. استعمال الجيب مكان جيب التمام (أو العكس) يحسب الضلع الآخر من ضلعي الزاوية القائمة.",
+    "relatedLearningPoints": [
+      "4am_nisab-muthallathiya_P1",
+      "4am_nisab-muthallathiya_P3"
+    ]
+  },
+  "MISC-MUTH-QIMA-MUQARRABA": {
+    "label": "القيمة المقربة بدل المضبوطة",
+    "explanation": "القيمة المضبوطة تُكتب بالكسر أو بالجذر ($\\dfrac{3}{\\sqrt{13}}$ ، $\\dfrac{\\sqrt{3}}{3}$)؛ ما تعطيه الحاسبة بعد التدوير (0,83 أو 0,58) قيمة مقربة فقط.",
+    "relatedLearningPoints": [
+      "4am_nisab-muthallathiya_P1"
+    ]
+  },
+  "MISC-MUTH-QISMA-BADAL-DARB": {
+    "label": "القسمة بدل الضرب",
+    "explanation": "إذا كان الطول المطلوب في البسط ($\\cos 37^{\\circ} = \\dfrac{RS}{3{,}5}$) نضرب: $RS = 3{,}5 \\times \\cos 37^{\\circ}$ ؛ القسمة على النسبة تعطي طولا أكبر من الوتر.",
+    "relatedLearningPoints": [
+      "4am_nisab-muthallathiya_P3"
+    ]
   }
 }

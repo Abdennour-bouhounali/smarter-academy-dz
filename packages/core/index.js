@@ -69,6 +69,9 @@ export * as statistics from './arithmetic/statistics.js';
 // Thalès exact de l'unité 9 « خاصية طالس » : rapports égaux, quatrième proportionnel, k (تكبير / تصغير), la
 // réciproque sur abscisses SIGNÉES (rapports ET ordre), partage d'un segment, longueur construite, ombre, cylindre dans un cône.
 export * as thales from './arithmetic/thales.js';
+// La trigonométrie du triangle rectangle de l'unité 10 « حساب المثلثات في المثلث القائم » : côtés relatifs à un
+// angle aigu, cos / sin / tan exacts (surds q·√r), relations, choix du rapport, calculatrice et arrondis.
+export * as trigonometry from './arithmetic/trigonometry.js';
 
 // Moteur d'exercices (pratique) — arithmétique exacte et évaluation des
 // réponses. Exporté sous un espace de noms : `Rational.parse` et

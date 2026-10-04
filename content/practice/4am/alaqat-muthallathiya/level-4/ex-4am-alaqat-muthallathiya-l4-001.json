@@ -1,0 +1,72 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l4-001",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 18 (ص 123) — العمود 2",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمرين 18",
+      "إن أمكن"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-18",
+      "page": 123,
+      "section": "العلاقات المثلثية",
+      "number": 18
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: x قيس بالدرجات لزاوية حادة. بدون حساب قيمة x، أتمم إن أمكن الجدول: العمود 2 فيه $\\sin x = \\dfrac{3}{2}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا نكتب في العمود 2؟",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\cos x = -\\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKBAR-MIN-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "غير ممكن: $\\dfrac{3}{2} > 1$ ولا يكون جيب زاوية حادة أكبر من 1",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\cos x = \\dfrac{\\sqrt{5}}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKBAR-MIN-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن $\\dfrac{3}{2}$ بالعدد 1."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجيب = المقابل ÷ الوتر، والوتر أطول الأضلاع."
+        }
+      ],
+      "feedback": {
+        "correct": "الوتر أطول أضلاع المثلث القائم، فالجيب أصغر من 1: لا توجد زاوية، و $1 - \\dfrac{9}{4} < 0$ .",
+        "incorrect": "قبل أي حساب نتأكّد أن النسبة ممكنة."
+      }
+    }
+  ]
+}

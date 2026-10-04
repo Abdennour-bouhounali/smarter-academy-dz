@@ -1,0 +1,654 @@
+{
+  "lesson": "mutatabiqat-shahira",
+  "grade": "4am",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "nashr-qawsayn",
+    "tabsit-hudud",
+    "murabba-adad",
+    "quwa-ashara"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "murabba-majmu",
+      "type": "regles",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+        "line": 175,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "murabba-farq",
+      "type": "regles",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+        "line": 301,
+        "step": 9,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "jidaa-majmu-farq",
+      "type": "regles",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module02NashatJidaa.jsx",
+        "line": 143,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "mutatabiqa",
+      "type": "concepts",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module03Maarif.jsx",
+        "line": 43,
+        "step": 1,
+        "variant": "new"
+      }
+    }
+  ],
+  "vocabularyIntroduced": [],
+  "proceduresIntroduced": [
+    {
+      "id": "hisab-mutamaan",
+      "type": "methodes",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+        "line": 230,
+        "step": 6,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "tariqat-nashr",
+      "type": "methodes",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module04Awazzif.jsx",
+        "line": 50,
+        "step": 1,
+        "variant": "new"
+      }
+    }
+  ],
+  "memorisation": [],
+  "questions": [
+    {
+      "questionId": "prep-1",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module00Astaidd.jsx",
+      "line": 39,
+      "requires": [
+        "nashr-qawsayn"
+      ],
+      "prerequisiteStatus": {
+        "nashr-qawsayn": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-2",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module00Astaidd.jsx",
+      "line": 40,
+      "requires": [
+        "nashr-qawsayn"
+      ],
+      "prerequisiteStatus": {
+        "nashr-qawsayn": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-3",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module00Astaidd.jsx",
+      "line": 41,
+      "requires": [
+        "tabsit-hudud"
+      ],
+      "prerequisiteStatus": {
+        "tabsit-hudud": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-4",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module00Astaidd.jsx",
+      "line": 42,
+      "requires": [
+        "tabsit-hudud"
+      ],
+      "prerequisiteStatus": {
+        "tabsit-hudud": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-5",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module00Astaidd.jsx",
+      "line": 43,
+      "requires": [
+        "murabba-adad"
+      ],
+      "prerequisiteStatus": {
+        "murabba-adad": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-6",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module00Astaidd.jsx",
+      "line": 44,
+      "requires": [
+        "murabba-adad"
+      ],
+      "prerequisiteStatus": {
+        "murabba-adad": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-7",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module00Astaidd.jsx",
+      "line": 45,
+      "requires": [
+        "quwa-ashara"
+      ],
+      "prerequisiteStatus": {
+        "quwa-ashara": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-8",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module00Astaidd.jsx",
+      "line": 46,
+      "requires": [
+        "quwa-ashara"
+      ],
+      "prerequisiteStatus": {
+        "quwa-ashara": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S1-Q1",
+      "module": 1,
+      "step": 1,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+      "line": 110,
+      "requires": [
+        "nashr-qawsayn",
+        "murabba-adad"
+      ],
+      "prerequisiteStatus": {
+        "nashr-qawsayn": "prior",
+        "murabba-adad": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S2-Q2",
+      "module": 1,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+      "line": 139,
+      "requires": [
+        "nashr-qawsayn"
+      ],
+      "prerequisiteStatus": {
+        "nashr-qawsayn": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q3",
+      "module": 1,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+      "line": 160,
+      "requires": [
+        "nashr-qawsayn",
+        "tabsit-hudud"
+      ],
+      "prerequisiteStatus": {
+        "nashr-qawsayn": "prior",
+        "tabsit-hudud": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S4-Q4",
+      "module": 1,
+      "step": 4,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+      "line": 182,
+      "requires": [
+        "murabba-majmu",
+        "murabba-adad"
+      ],
+      "prerequisiteStatus": {
+        "murabba-majmu": "established@M1",
+        "murabba-adad": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S5-Q5",
+      "module": 1,
+      "step": 5,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+      "line": 203,
+      "requires": [
+        "murabba-majmu",
+        "tabsit-hudud"
+      ],
+      "prerequisiteStatus": {
+        "murabba-majmu": "established@M1",
+        "tabsit-hudud": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S6-Q6",
+      "module": 1,
+      "step": 6,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+      "line": 220,
+      "requires": [
+        "murabba-majmu",
+        "quwa-ashara"
+      ],
+      "prerequisiteStatus": {
+        "murabba-majmu": "established@M1",
+        "quwa-ashara": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S7-Q7",
+      "module": 1,
+      "step": 7,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+      "line": 237,
+      "requires": [
+        "nashr-qawsayn",
+        "murabba-adad"
+      ],
+      "prerequisiteStatus": {
+        "nashr-qawsayn": "prior",
+        "murabba-adad": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S8-Q8",
+      "module": 1,
+      "step": 8,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+      "line": 266,
+      "requires": [
+        "nashr-qawsayn"
+      ],
+      "prerequisiteStatus": {
+        "nashr-qawsayn": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S9-Q9",
+      "module": 1,
+      "step": 9,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+      "line": 286,
+      "requires": [
+        "nashr-qawsayn",
+        "tabsit-hudud"
+      ],
+      "prerequisiteStatus": {
+        "nashr-qawsayn": "prior",
+        "tabsit-hudud": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S10-Q10",
+      "module": 1,
+      "step": 10,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+      "line": 308,
+      "requires": [
+        "murabba-farq",
+        "hisab-mutamaan"
+      ],
+      "prerequisiteStatus": {
+        "murabba-farq": "established@M1",
+        "hisab-mutamaan": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S11-Q11",
+      "module": 1,
+      "step": 11,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module01NashatMurabba.jsx",
+      "line": 330,
+      "requires": [
+        "murabba-majmu",
+        "hisab-mutamaan"
+      ],
+      "prerequisiteStatus": {
+        "murabba-majmu": "established@M1",
+        "hisab-mutamaan": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S1-Q1",
+      "module": 2,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module02NashatJidaa.jsx",
+      "line": 109,
+      "requires": [
+        "murabba-majmu",
+        "nashr-qawsayn"
+      ],
+      "prerequisiteStatus": {
+        "murabba-majmu": "established@M1",
+        "nashr-qawsayn": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S2-Q2",
+      "module": 2,
+      "step": 2,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module02NashatJidaa.jsx",
+      "line": 129,
+      "requires": [
+        "nashr-qawsayn",
+        "tabsit-hudud"
+      ],
+      "prerequisiteStatus": {
+        "nashr-qawsayn": "prior",
+        "tabsit-hudud": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q3",
+      "module": 2,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module02NashatJidaa.jsx",
+      "line": 150,
+      "requires": [
+        "jidaa-majmu-farq",
+        "murabba-adad"
+      ],
+      "prerequisiteStatus": {
+        "jidaa-majmu-farq": "established@M2",
+        "murabba-adad": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S4-Q4",
+      "module": 2,
+      "step": 4,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module02NashatJidaa.jsx",
+      "line": 167,
+      "requires": [
+        "jidaa-majmu-farq",
+        "hisab-mutamaan"
+      ],
+      "prerequisiteStatus": {
+        "jidaa-majmu-farq": "established@M2",
+        "hisab-mutamaan": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S5-Q5",
+      "module": 2,
+      "step": 5,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module02NashatJidaa.jsx",
+      "line": 183,
+      "requires": [
+        "jidaa-majmu-farq"
+      ],
+      "prerequisiteStatus": {
+        "jidaa-majmu-farq": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S1-Q1",
+      "module": 3,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module03Maarif.jsx",
+      "line": 44,
+      "requires": [
+        "mutatabiqa"
+      ],
+      "prerequisiteStatus": {
+        "mutatabiqa": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S2-Q2",
+      "module": 3,
+      "step": 2,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module03Maarif.jsx",
+      "line": 69,
+      "requires": [
+        "murabba-majmu",
+        "murabba-farq",
+        "jidaa-majmu-farq"
+      ],
+      "prerequisiteStatus": {
+        "murabba-majmu": "established@M1",
+        "murabba-farq": "established@M1",
+        "jidaa-majmu-farq": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S3-Q3",
+      "module": 3,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module03Maarif.jsx",
+      "line": 87,
+      "requires": [
+        "mutatabiqa",
+        "murabba-majmu",
+        "murabba-farq",
+        "jidaa-majmu-farq"
+      ],
+      "prerequisiteStatus": {
+        "mutatabiqa": "established@M3",
+        "murabba-majmu": "established@M1",
+        "murabba-farq": "established@M1",
+        "jidaa-majmu-farq": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S1-Q1",
+      "module": 4,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module04Awazzif.jsx",
+      "line": 51,
+      "requires": [
+        "tariqat-nashr"
+      ],
+      "prerequisiteStatus": {
+        "tariqat-nashr": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E1",
+      "module": 5,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module05Itqan.jsx",
+      "line": 42,
+      "requires": [
+        "murabba-majmu"
+      ],
+      "prerequisiteStatus": {
+        "murabba-majmu": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E2",
+      "module": 5,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module05Itqan.jsx",
+      "line": 51,
+      "requires": [
+        "murabba-farq"
+      ],
+      "prerequisiteStatus": {
+        "murabba-farq": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E3",
+      "module": 5,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module05Itqan.jsx",
+      "line": 60,
+      "requires": [
+        "jidaa-majmu-farq"
+      ],
+      "prerequisiteStatus": {
+        "jidaa-majmu-farq": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E4",
+      "module": 5,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module05Itqan.jsx",
+      "line": 69,
+      "requires": [
+        "jidaa-majmu-farq",
+        "hisab-mutamaan"
+      ],
+      "prerequisiteStatus": {
+        "jidaa-majmu-farq": "established@M2",
+        "hisab-mutamaan": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E5",
+      "module": 5,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/modules/Module05Itqan.jsx",
+      "line": 78,
+      "requires": [
+        "murabba-farq",
+        "hisab-mutamaan"
+      ],
+      "prerequisiteStatus": {
+        "murabba-farq": "established@M1",
+        "hisab-mutamaan": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": []
+}

@@ -1,0 +1,79 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l1-002",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 1,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — طائرة ورقية على شاطئ تيقزيرت",
+    "estimatedMinutes": 3,
+    "tags": [
+      "اختيار النسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P2",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "على شاطئ تيقزيرت، خيط طائرة ورقية مشدود طوله $30\\,\\mathrm{m}$ ، ويصنع مع الأفق زاوية قيسها $50^{\\circ}$ . نسمّي h ارتفاع الطائرة فوق يد ممسكها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المساواة التي تترجم الوضعية هي:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sin 50^{\\circ} = \\dfrac{h}{30}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\cos 50^{\\circ} = \\dfrac{h}{30}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "id": "C",
+          "content": "$\\tan 50^{\\circ} = \\dfrac{h}{30}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المقابل والوتر: الجيب؛ المجاور والوتر: جيب التمام؛ المقابل والمجاور: الظل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختر النسبة التي يظهر فيها الضلعان معًا، ولا تحتاج ضلعا ثالثا مجهولا."
+        }
+      ],
+      "feedback": {
+        "correct": "الخيط هو الوتر والارتفاع h مقابل للزاوية $50^{\\circ}$ : الجيب.",
+        "incorrect": "سمِّ الأضلاع بالنسبة إلى الزاوية المعلومة، ثم اختر النسبة التي تجمع المعلوم والمطلوب."
+      }
+    }
+  ]
+}

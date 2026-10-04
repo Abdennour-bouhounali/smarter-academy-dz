@@ -1,0 +1,116 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l2-008",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — قطر صندوق",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية فيثاغورس",
+      "مجسّم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "ex-31"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "صندوق على شكل متوازي مستطيلات ABCDEFGH أبعاده $AB = 8\\,\\mathrm{cm}$ و $BC = 6\\,\\mathrm{cm}$ والحرف الشاقولي $CD = 24\\,\\mathrm{cm}$ ، و [AC] قطر قاعدته و [AD] قطره."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الطول AC (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قاعدة الصندوق مستطيل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المثلث ABC قائم في B."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مربع الوتر = مجموع المربعين."
+        }
+      ],
+      "feedback": {
+        "correct": "$AC = \\sqrt{8^2 + 6^2} = \\sqrt{100} = 10\\,\\mathrm{cm}$ .",
+        "incorrect": "الوتر ليس مجموع الضلعين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "14",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما الطول AD (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "26",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "[CD] عمودي على القاعدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المثلث ACD قائم في C."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل AC والحرف CD."
+        }
+      ],
+      "feedback": {
+        "correct": "$AD = \\sqrt{10^2 + 24^2} = \\sqrt{676} = 26\\,\\mathrm{cm}$ .",
+        "incorrect": "المثلث ACD قائم في C: الوتر AD."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "34",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+        },
+        {
+          "value": "676",
+          "id": "MISC-MUTH-JADHR-NASI"
+        }
+      ]
+    }
+  ]
+}

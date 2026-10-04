@@ -11,7 +11,7 @@
 
 ## Périmètre courant — classes actives (4am, terminale_dz)
 
-9 leçon(s) · critiques 0 · hautes 0 · moyennes 3 · basses 0
+54 leçon(s) · critiques 2 · hautes 0 · moyennes 9 · basses 0
 
 | Leçon | Carte | Bricks | requires | Contrat | C | H | M | L |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -24,6 +24,51 @@
 | `4am:qawasim-adad-tabii` | ✅ | 4 | 15/15 | 0 | 0 | 0 | 1 | 0 |
 | `4am:tayin-pgcd` | ✅ | 8 | 11/11 | 0 | 0 | 0 | 0 | 0 |
 | `4am:wadiya-idmajiya-aadad` | ✅ | 2 | 11/11 | 0 | 0 | 0 | 1 | 0 |
+| `4am:mutatabiqat-shahira` | ✅ | 10 | 33/33 | 0 | 0 | 0 | 0 | 0 |
+| `4am:nashr-tabsit` | ✅ | 6 | 25/25 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tahlil-ibara` | ✅ | 10 | 29/29 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-harfi` | ✅ | 5 | 33/33 | 0 | 0 | 0 | 0 | 0 |
+| `4am:amaliyat-judhur` | ✅ | 9 | 27/27 | 0 | 0 | 0 | 0 | 0 |
+| `4am:jidhr-tarbii` | ✅ | 5 | 23/23 | 0 | 0 | 0 | 0 | 0 |
+| `4am:muadalat-x-murabba` | ✅ | 5 | 22/22 | 0 | 0 | 0 | 0 | 0 |
+| `4am:natiqa-ghayr-natiqa` | ✅ | 4 | 15/15 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tawzif-khawass-judhur` | ✅ | 7 | 21/21 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-judhur` | ✅ | 3 | 25/25 | 0 | 0 | 0 | 0 | 0 |
+| `4am:hall-jabri` | ✅ | 9 | 21/21 | 0 | 0 | 0 | 0 | 0 |
+| `4am:mafhum-jumla` | ✅ | 9 | 23/23 | 0 | 0 | 0 | 0 | 0 |
+| `4am:mushkilat-jumla` | ✅ | 7 | 17/17 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-jumal` | ✅ | 7 | 23/23 | 0 | 0 | 0 | 0 | 0 |
+| `4am:jidaa-maadum` | ✅ | 8 | 29/29 | 0 | 0 | 0 | 0 | 0 |
+| `4am:muadala-ula` | ✅ | 7 | 18/18 | 0 | 0 | 0 | 0 | 0 |
+| `4am:mutarajiha-ula` | ✅ | 13 | 30/30 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tarrid-mushkila` | ✅ | 8 | 20/20 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-muadalat` | ✅ | 7 | 28/28 | 0 | 0 | 0 | 0 | 0 |
+| `4am:alaqat-muthallathiya` | ✅ | 11 | 26/26 | 0 | 0 | 0 | 0 | 0 |
+| `4am:hasiba-muthallathiya` | ✅ | 8 | 20/20 | 0 | 2 | 0 | 0 | 0 |
+| `4am:nisab-muthallathiya` | ✅ | 0 | 0/0 | 0 | 0 | 0 | 6 | 0 |
+| `4am:tarrid-muthallathiya` | ✅ | 10 | 22/22 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-muthallathat` | ✅ | 5 | 26/26 | 0 | 0 | 0 | 0 | 0 |
+| `4am:aksiya-talis` | ✅ | 10 | 23/23 | 0 | 0 | 0 | 0 | 0 |
+| `4am:inshaat-talis` | ✅ | 9 | 23/23 | 0 | 0 | 0 | 0 | 0 |
+| `4am:talis-hisab-atwal` | ✅ | 9 | 26/26 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-talis` | ✅ | 6 | 26/26 | 0 | 0 | 0 | 0 | 0 |
+| `4am:mafhum-taalufiya` | ✅ | 13 | 26/26 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tafsir-bayani-jumla` | ✅ | 10 | 24/24 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tamthil-bayani-taalufi` | ✅ | 8 | 34/34 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tanasub-taghayyurat` | ✅ | 11 | 28/28 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tarrid-taalufi` | ✅ | 10 | 25/25 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-taalufiya` | ✅ | 10 | 35/35 | 0 | 0 | 0 | 0 | 0 |
+| `4am:mada-wasit-mutawassit` | ✅ | 11 | 26/26 | 0 | 0 | 0 | 0 | 0 |
+| `4am:majdulat-ihsaiya` | ✅ | 10 | 17/17 | 0 | 0 | 0 | 0 | 0 |
+| `4am:qiraat-wadiyat-ihsaiya` | ✅ | 12 | 19/19 | 0 | 0 | 0 | 0 | 0 |
+| `4am:takrar-mujamma` | ✅ | 11 | 26/26 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-ihsa` | ✅ | 7 | 29/29 | 0 | 0 | 0 | 0 | 0 |
+| `4am:dala-khattiya` | ✅ | 9 | 25/25 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tamthil-bayani-khatti` | ✅ | 10 | 24/24 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tanasub-muamil` | ✅ | 12 | 23/23 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tarrid-khatti` | ✅ | 10 | 21/21 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tatbiqat-tanasub` | ✅ | 14 | 30/30 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-khattiya` | ✅ | 8 | 31/31 | 0 | 0 | 0 | 0 | 0 |
 
 ### `4am:qasim-mushtarak-akbar`
 
@@ -39,5 +84,27 @@
 
 - **MEDIUM** `W_UNPARSEABLE_STEPS` — apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module02Uakkid.jsx:0  
   module 2: could not resolve 'steps' to a literal array — its content is invisible to the audit
+
+### `4am:hasiba-muthallathiya`
+
+- **CRITICAL** `C_TARGET_DEMANDED_BEFORE_TAUGHT` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module01Nashat.jsx:164 · terme « cosinus »  
+  « cosinus » is a target concept of this lesson but its first appearance is q.explain (module 1, étape 1); it is only taught later at apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module02Maarif.jsx:70
+- **CRITICAL** `C_TARGET_DEMANDED_BEFORE_TAUGHT` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module04Itqan.jsx:46 · terme « tangente »  
+  « tangente » is a target concept of this lesson but its first appearance is boss.explain (module 4) and it is never taught in a teaching position
+
+### `4am:nisab-muthallathiya`
+
+- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js:0  
+  priorKnowledge declares 'majmu-zawaya' but no Module 0 question diagnoses it
+- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js:0  
+  priorKnowledge declares 'watar' but no Module 0 question diagnoses it
+- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js:0  
+  priorKnowledge declares 'muqabil-mujawir' but no Module 0 question diagnoses it
+- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js:0  
+  priorKnowledge declares 'jayb-tamam-3am' but no Module 0 question diagnoses it
+- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js:0  
+  priorKnowledge declares 'fithaghuras' but no Module 0 question diagnoses it
+- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js:0  
+  priorKnowledge declares 'talis-wahda-9' but no Module 0 question diagnoses it
 
 

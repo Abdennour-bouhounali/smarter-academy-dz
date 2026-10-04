@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l4-008",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 4,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — زاوية المعيّن",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معيّن",
+      "تدوير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P3",
+      "modelledOn": "ex-26"
+    }
+  },
+  "statement": {
+    "content": "ABCD معيّن قطراه متعامدان ومتناصفان في O، حيث $AC = 7\\,\\mathrm{cm}$ و $BD = 4\\,\\mathrm{cm}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول ضلع المعيّن بالسنتيمتر، إلى الجزء من 100:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,35 (المدوّر إلى الجزء من 100)",
+      "expectedAnswer": "4.03",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الوتر: الضلع المقابل للزاوية القائمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية فيثاغورس: مربع الوتر يساوي مجموع مربعي الضلعين الآخرين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لحساب ضلع للزاوية القائمة نطرح مربع الضلع المعلوم من مربع الوتر، ثم نأخذ الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "AOB قائم في O : $AB = \\sqrt{3{,}5^2 + 2^2} = \\sqrt{16{,}25} \\approx 4{,}03\\,\\mathrm{cm}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قيس الزاوية $\\widehat{BAD}$ بالدرجة، إلى الوحدة (لا تدوّر قبل النهاية).",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "reason",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "59",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TADWIR-MUBAKKIR",
+          "value": "60"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-MAQLUBA",
+          "value": "121"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلعين المعلومين بالنسبة إلى الزاوية المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمعهما واحسب قيمتها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عيّن الزاوية باللمسة العكسية (2nd ثم sin⁻¹ أو cos⁻¹ أو tan⁻¹) ودوّر إلى الدرجة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan\\widehat{OAB} = \\dfrac{2}{3{,}5}$ فـ $\\widehat{OAB} \\approx 29{,}74^{\\circ}$ و $\\widehat{BAD} = 2\\widehat{OAB} \\approx 59{,}5^{\\circ}$ أي $59^{\\circ}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

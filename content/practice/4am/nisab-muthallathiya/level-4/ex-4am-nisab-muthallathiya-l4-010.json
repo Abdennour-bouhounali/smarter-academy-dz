@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l4-010",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — ظل أكبر من 1",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nisab-muthallathiya_P2",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "قالت سارة: «كل النسب المثلثية لزاوية حادة في مثلث قائم أصغر من 1»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما رأيك؟",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح: الوتر أطول ضلع، فكل نسبة أصغر من 1",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKBAR-MIN-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "صحيح للجيب فقط، وجيب التمام قد يتجاوز 1",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKBAR-MIN-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "خطأ: الظل قد يكون أكبر من 1، مثل $\\tan 60^{\\circ} \\approx 1{,}73$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أيّ نسبة لا تستعمل الوتر؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في الظل نقارن المقابل بالمجاور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يمكن أن يكون المقابل أطول من المجاور؟"
+        }
+      ],
+      "feedback": {
+        "correct": "الجيب وجيب التمام بين 0 و 1 لأن مقامهما الوتر؛ أما الظل (المقابل ÷ المجاور) فموجب وقد يتجاوز 1.",
+        "incorrect": "الظل لا يستعمل الوتر."
+      },
+      "difficulty": 4
+    }
+  ]
+}

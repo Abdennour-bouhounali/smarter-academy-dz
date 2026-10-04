@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l4-008",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "وضعية — برنامج أحمد",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تصويب خطأ",
+      "اللمسات العكسية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P2",
+      "modelledOn": "ex-23"
+    }
+  },
+  "statement": {
+    "content": "أحمد يبحث عن الزاوية الحادة x حيث $\\tan x = 2{,}4$ . ضغط ⁦ON tan 2,4 =⁩ فوجد $0{,}04191241804$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ عبارة صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "حسب ظل زاوية قيسها $2{,}4^{\\circ}$ ؛ كان عليه ضغط ⁦2nd⁩ ثم ⁦tan⁻¹⁩ فيجد $x \\approx 67^{\\circ}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الحاسبة مبرمجة بالراديان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-HASIBA-RAD"
+        },
+        {
+          "id": "C",
+          "content": "$x \\approx 0{,}04^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKS-BADAL-MUBASHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦ON 2nd tan⁻¹ 2,4 =⁩ يعطي $67{,}38013505$ ، إذن $x \\approx 67^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

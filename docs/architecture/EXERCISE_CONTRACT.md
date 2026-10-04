@@ -420,6 +420,15 @@ textbook QCM with two or three correct options becomes ONE choice among combinat
 evaluator; `names: ['a', 'b']` for the textbook's (a ; b) and (d ; t)). New misconceptions: `MISC-JUMLA-*`,
 `MISC-TAWID-*`, `MISC-JAM-*`, `MISC-TAKHFID-NISBA` (`content/practice/misconceptions.json`).
 
+**Unit 10 « حساب المثلثات في المثلث القائم » (2026-10-04) — approximate and exact values, without a new answer type.**
+Trigonometry answers are of two natures. A **rounded value** (BC ≈ 5,92 cm, x ≈ 43°) is `answerType: "rational"` whose key is the
+ROUNDED number (`"5.92"`), the statement stating the precision (« المدوّر إلى الجزء من 100 », « إلى الوحدة ») — rounding is the skill
+assessed, so 5,915 is wrong; its oracle recomputes the value with `Math.sin/cos/tan` in degrees and rounds it with its own code (never
+`packages/core/arithmetic/trigonometry.js`). An **exact surd** (3√13/13, √21/5, 10 cos 55°) has no answer type: it is asked as a
+`choice` whose distractors are the meaningful errors (inverted ratio `MISC-MUTH-NISBA-MAQLUBA`, the wrong side, the forgotten root
+`MISC-MUTH-JADHR-NASI`, the impossible value > 1 `MISC-MUTH-AKBAR-MIN-WAHID`). An exact rational ratio (4/3, 35/37) stays `rational`.
+The unit's misconceptions are `MISC-MUTH-*` (`content/practice/misconceptions.json`).
+
 **Unit 9 « خاصية طالس » (2026-10-02) — a statement may carry a drawn GEOMETRIC FIGURE.** Geometry exercises
 depend on a figure, and the practice player had only `visual` (a `CoordPlane`: a repère with axes). An exercise
 statement may now carry **`statement.figure`**, a DECLARATIVE figure drawn in SVG by the shared

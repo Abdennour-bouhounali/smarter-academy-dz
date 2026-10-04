@@ -1,0 +1,171 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l3-005",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 23 — خطأ ليلى",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تصويب خطأ",
+      "قيس زاوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-23",
+      "page": 123,
+      "section": "إنشاءات هندسية",
+      "number": 23
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 123): KLM قائم في K حيث $ML = 9\\,\\mathrm{cm}$ و $MK = 5\\,\\mathrm{cm}$ . كتبت ليلى: $\\cos\\widehat{KML} = \\dfrac{MK}{ML} = \\dfrac{5}{9}$ ثم $\\widehat{KML} = 0{,}6$ .",
+    "figure": {
+      "points": {
+        "M": [
+          0,
+          0
+        ],
+        "K": [
+          5,
+          0
+        ],
+        "L": [
+          5,
+          7.483
+        ]
+      },
+      "segments": [
+        {
+          "from": "M",
+          "to": "L",
+          "label": "9 cm"
+        },
+        {
+          "from": "M",
+          "to": "K",
+          "label": "5 cm"
+        },
+        [
+          "K",
+          "L"
+        ]
+      ],
+      "rightAngles": [
+        [
+          "M",
+          "K",
+          "L"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "M",
+          "from": "K",
+          "to": "L",
+          "label": "?"
+        }
+      ],
+      "ariaLabel": "المثلث KLM قائم في K، الوتر ML طوله 9 سم والضلع MK طوله 5 سم، والزاوية المطلوبة عند M",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "خطأ ليلى:",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$0{,}6$ هو جيب تمام الزاوية (مدوّرا) وليس قيسها",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "كان عليها أن تستعمل الظل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{5}{9}$ يجب أن يكون $\\dfrac{9}{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "اختيار جيب التمام صحيح، لكن القيس يُعيَّن باللمسة العكسية: $\\cos^{-1}\\left(\\dfrac{5}{9}\\right)$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "القيمة المقربة إلى الوحدة لقيس $\\widehat{KML}$ (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "56",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
+          "value": "29"
+        },
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "34"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦ON 2nd cos⁻¹ ( 5 ÷ 9 ) =⁩ يعطي $56{,}2510114$ ، إذن $\\widehat{KML} \\approx 56^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l3-009",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 15 — من أحسن الاختيار؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "اختيار النسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-15",
+      "page": 123,
+      "section": "البرهان باستعمال النسب المثلثية",
+      "number": 15
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 123): في الشكل، ABC مثلث قائم في B حيث $BC = 8{,}4\\,\\mathrm{cm}$ و $AC = 10{,}5\\,\\mathrm{cm}$ . لحساب قيس الزاوية $\\widehat{A}$ اختار عمر جيب التمام، وليلى الجيب، ورضا الظل.",
+    "figure": {
+      "points": {
+        "A": [
+          0.0,
+          0.0
+        ],
+        "B": [
+          -4.5,
+          0.0
+        ],
+        "C": [
+          -4.5,
+          6.0
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "label": "8,4 cm"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "label": "10,5 cm"
+        }
+      ],
+      "rightAngles": [
+        [
+          "A",
+          "B",
+          "C"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "A",
+          "from": "B",
+          "to": "C"
+        }
+      ],
+      "ariaLabel": "مثلث ABC قائم في B حيث BC = 8,4 سنتيمتر و AC = 10,5 سنتيمتر",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من الذي أحسن الاختيار؟",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "عمر: جيب التمام يستعمل الوتر",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "B",
+          "content": "رضا: الظل يستعمل [BC]",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "C",
+          "content": "ليلى: [BC] مقابل للزاوية A و [AC] وتر",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما هما الضلعان المعلومان؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "سمِّهما بالنسبة إلى الزاوية A."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أيّ نسبة تجمع هذين الضلعين بالضبط؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin\\widehat{A} = \\dfrac{8{,}4}{10{,}5} = 0{,}8$ ؛ جيب التمام والظل يحتاجان [AB] غير المعلوم.",
+        "incorrect": "نختار النسبة التي تجمع الضلعين المعلومين بالنسبة إلى الزاوية المطلوبة."
+      },
+      "difficulty": 3
+    }
+  ]
+}

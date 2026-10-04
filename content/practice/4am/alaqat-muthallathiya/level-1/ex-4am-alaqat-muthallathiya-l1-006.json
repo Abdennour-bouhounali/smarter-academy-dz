@@ -1,0 +1,71 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l1-006",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — أداة الوتر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "إنشاء",
+      "المدور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P3",
+      "modelledOn": "method-construct"
+    }
+  },
+  "statement": {
+    "content": "نريد إنشاء زاوية حادة x دون منقلة، علمنا جيبها $\\sin x = \\dfrac{4}{9}$ . نرسم بالكوس زاوية قائمة وننقل 4 على أحد ضلعيها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بأيّ أداة ننقل الطول 9 ؟",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "بالمسطرة على الضلع الآخر للزاوية القائمة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-INSHA-WATAR"
+        },
+        {
+          "id": "B",
+          "content": "بالمنقلة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-BADAL-QAYS"
+        },
+        {
+          "id": "C",
+          "content": "بالمدور: دائرة نصف قطرها 9 مركزها طرف القطعة، فيصير 9 وترًا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في $\\sin x$ ، ما الضلع الذي في المقام؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الوتر ليس ضلعا للزاوية القائمة."
+        }
+      ],
+      "feedback": {
+        "correct": "مقام الجيب هو الوتر، والمدور ينقل طوله من طرف القطعة إلى الضلع الآخر.",
+        "incorrect": "9 على الضلع الآخر يعطي ظلا $\\dfrac{4}{9}$ لا جيبا، والمنقلة ممنوعة."
+      }
+    }
+  ]
+}

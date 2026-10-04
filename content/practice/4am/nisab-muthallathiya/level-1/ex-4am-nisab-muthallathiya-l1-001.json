@@ -1,0 +1,122 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l1-001",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "أستعدّ 4 — الوتر",
+    "estimatedMinutes": 2,
+    "tags": [
+      "الوتر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "prep",
+      "page": 115,
+      "section": "أستعدّ",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 115): في الشكل، المثلث ABC قائم في A.",
+    "figure": {
+      "points": {
+        "C": [
+          0.0,
+          0.0
+        ],
+        "A": [
+          -6.0,
+          0.0
+        ],
+        "B": [
+          -6.0,
+          4.0
+        ]
+      },
+      "segments": [
+        {
+          "from": "C",
+          "to": "A"
+        },
+        {
+          "from": "A",
+          "to": "B"
+        },
+        {
+          "from": "C",
+          "to": "B"
+        }
+      ],
+      "rightAngles": [
+        [
+          "C",
+          "A",
+          "B"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "C",
+          "from": "A",
+          "to": "B"
+        }
+      ],
+      "ariaLabel": "مثلث ABC قائم في A",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "وتر المثلث ABC هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "[BC]",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "[AB]",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        },
+        {
+          "id": "C",
+          "content": "[AC]",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الزاوية القائمة: الوتر هو الضلع المقابل لها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالنسبة إلى الزاوية الحادة: المجاور يمرّ برأسها، والمقابل لا يمرّ به."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب أسماء الأضلاع الثلاثة بجانب الشكل قبل أن تختار."
+        }
+      ],
+      "feedback": {
+        "correct": "الوتر [BC] هو الضلع المقابل للزاوية القائمة A، وهو أطول الأضلاع.",
+        "incorrect": "الوتر يقابل الزاوية القائمة: ابحث عن الضلع الذي لا يمرّ بالرأس A."
+      },
+      "difficulty": 1
+    }
+  ]
+}

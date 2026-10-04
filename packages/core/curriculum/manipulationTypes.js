@@ -349,6 +349,37 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'متوسط مجموعتين مجتمعتين هو المتوسط المتوازن: مجموع (التكرار × المتوسط) مقسوم على التكرار الكلي ، وليس متوسط المتوسطين',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // Unité 10 « حساب المثلثات في المثلث القائم » (2026-10-04) — l'angle aigu se TIENT, les rapports se LISENT.
+  'ramp-ratios': {
+    // LA RAMPE DU SKATEPARK : un triangle rectangle (la planche = l'hypoténuse, la hauteur, le sol) ; l'élève tourne
+    // l'angle et allonge la rampe. Il désigne lui-même, pour l'angle CHOISI, le côté opposé, adjacent et l'hypoténuse
+    // (désigner l'hypoténuse comme opposé est refusé), puis compose cos / sin / tan ; agrandir la rampe à angle fixe ne
+    // change aucun rapport (نشاط 2), tourner l'angle les change ; la hauteur ne dépasse jamais la planche (0 < sin, cos < 1).
+    shows: 'في مثلث قائم: جيب التمام = المجاور ÷ الوتر ، الجيب = المقابل ÷ الوتر ، الظل = المقابل ÷ المجاور ؛ هذه النسب لا تتعلق إلا بقيس الزاوية ، والجيب وجيب التمام محصوران بين 0 و 1',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'trig-calculator': {
+    // LA CALCULATRICE DU DRONE : la nacelle d'une caméra de drone s'incline d'un angle ; l'élève tape lui-même les
+    // touches (sin / cos / tan, puis 2nd + sin⁻¹ …) sur une calculatrice dessinée réglée en DEG — un réglage RAD ou
+    // l'oubli de 2nd donne un nombre absurde que la nacelle CONTREDIT — et arrondit l'écran à la précision demandée.
+    shows: 'الحاسبة المبرمجة بالدرجة تعطي قيمة مقربة لنسبة زاوية معلومة (sin ، cos ، tan) ، واللمسات العكسية (2nd ثم sin⁻¹ ، cos⁻¹ ، tan⁻¹) تعطي قيس الزاوية من نسبتها ، ثم ندوّر حسب الدقة المطلوبة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'angle-compass': {
+    // LA FICELLE DU CERF-VOLANT : construire, sans rapporteur, l'angle dont on connaît un rapport — l'élève pose
+    // l'équerre (angle droit), reporte une longueur sur un côté, ouvre le compas (le fil = l'hypoténuse) et coupe
+    // l'autre côté ; le troisième côté se lit par Pythagore, et cos² + sin² = 1 se voit sur les carrés des côtés.
+    shows: 'لإنشاء زاوية علمت إحدى نسبها نرسم مثلثا قائما أطوال أضلاعه تحقق النسبة ؛ وفي كل مثلث قائم: مربع جيب التمام + مربع الجيب = 1 ، والظل = الجيب ÷ جيب التمام',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'clinometer': {
+    // LE CLINOMÈTRE DU TÉLÉPHONE : l'élève vise le sommet d'un objet inaccessible (projecteur du stade, échelle des
+    // graffeurs, مقام الشهيد) avec un téléphone, recule ou avance (la distance est tenue), lit l'angle d'élévation,
+    // CHOISIT le rapport qui lie le connu et l'inconnu (un mauvais choix est refusé et dit pourquoi) et calcule ;
+    // la hauteur trouvée reste la même à toute distance (l'invariant). Réutilisé par la synthèse (mode « align »).
+    shows: 'نترجم الوضعية إلى مثلث قائم ، ونختار النسبة التي تربط الطول المعلوم بالطول المجهول (أو بالزاوية) ثم نحسب ونقرّب النتيجة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

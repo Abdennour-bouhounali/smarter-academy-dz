@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l5-004",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — الطائرة الورقية والريح",
+    "estimatedMinutes": 5,
+    "tags": [
+      "الجيب",
+      "ارتفاع اليد"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "على شاطئ تيبازة يمسك إلياس خيط طائرته الورقية على ارتفاع $1\\,\\mathrm{m}$ فوق الرمل. الخيط مشدود مستقيم طوله $60\\,\\mathrm{m}$ ويصنع زاوية $50^{\\circ}$ مع الأفق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع الطائرة عن الرمل مدوّرا إلى الوحدة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (مدوّر إلى الوحدة)",
+      "expectedAnswer": "47",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث القائم يبدأ من اليد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الخيط وتر والارتفاع فوق اليد يقابل الزاوية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أضف ارتفاع اليد في الأخير."
+        }
+      ],
+      "feedback": {
+        "correct": "$1 + 60 \\times \\sin 50^{\\circ} \\approx 1 + 45{,}96 = 46{,}96$ ، أي $47\\,\\mathrm{m}$ .",
+        "incorrect": "لا تنسَ ارتفاع اليد."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "46",
+          "id": "MISC-MUTH-IRTIFA3-AYN"
+        },
+        {
+          "value": "40",
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "هبّت الريح فصارت الزاوية $40^{\\circ}$ (الخيط بالطول نفسه). بكم انخفضت الطائرة؟ (مدوّرا إلى الجزء من 10، بالمتر)",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 10)",
+      "expectedAnswer": "7.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الارتفاع الجديد بالطريقة نفسها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ارتفاع اليد لا يتغيّر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الارتفاعين."
+        }
+      ],
+      "feedback": {
+        "correct": "$60 \\times (\\sin 50^{\\circ} - \\sin 40^{\\circ}) \\approx 7{,}4\\,\\mathrm{m}$ .",
+        "incorrect": "قارن الارتفاعين بالقيم غير المدوّرة."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 5
+    }
+  ]
+}

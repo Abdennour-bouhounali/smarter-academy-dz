@@ -1,0 +1,133 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l3-010",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — طائرة ورقية بتيبازة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الجيب",
+      "نمذجة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "على شاطئ تيبازة، خيط طائرة ورقية مشدود مستقيم طوله $50\\,\\mathrm{m}$ ويصنع زاوية $40^{\\circ}$ مع الأرض الأفقية (نعتبر يد الطفل على الأرض)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ارتفاع الطائرة h يحقّق:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$h = 50 \\times \\sin 40^{\\circ}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$h = 50 \\times \\cos 40^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "id": "C",
+          "content": "$h = 50 \\times \\tan 40^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "D",
+          "content": "$h = \\dfrac{50}{\\sin 40^{\\circ}}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الخيط وتر المثلث القائم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الارتفاع يقابل الزاوية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المقابل = الوتر × الجيب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin 40^{\\circ} = \\dfrac{h}{50}$ ومنه $h = 50 \\times \\sin 40^{\\circ}$ .",
+        "incorrect": "الخيط هو الوتر، والارتفاع يقابل الزاوية."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "ما ارتفاع الطائرة مدوّرا إلى الجزء من 10 (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 10)",
+      "expectedAnswer": "32.1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل المساواة السابقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحاسبة مبرمجة بالدرجة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر في الأخير."
+        }
+      ],
+      "feedback": {
+        "correct": "$50 \\times \\sin 40^{\\circ} \\approx 32{,}1\\,\\mathrm{m}$ .",
+        "incorrect": "المقابل = الوتر × الجيب."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "38.3",
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "value": "42",
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        }
+      ]
+    }
+  ]
+}

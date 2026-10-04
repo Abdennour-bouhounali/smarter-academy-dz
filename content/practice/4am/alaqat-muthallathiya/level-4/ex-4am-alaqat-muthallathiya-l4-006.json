@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l4-006",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — إنشاء سارة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "إنشاء",
+      "خطأ"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P3",
+      "modelledOn": "method-construct"
+    }
+  },
+  "statement": {
+    "content": "أرادت سارة إنشاء زاوية جيبها $\\dfrac{3}{8}$ ، فنقلت 3 و 8 على ضلعي زاوية قائمة ووصلت طرفيهما، ثم أخذت الزاوية التي يقابلها الضلع 3."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بالحاسبة، قيس الزاوية التي أنشأتها سارة فعلا، مدوّرا إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "قيس بالدرجات، عدد عشري بالفاصلة (مثل 12,5)",
+      "expectedAnswer": "20.6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-INSHA-WATAR",
+          "value": "22"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما النسبة التي تحققها هذه الزاوية: 3 مقابل و 8 مجاور؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل $\\tan^{-1}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "أنشأت زاوية ظلها $\\dfrac{3}{8}$ : $\\tan^{-1}(0{,}375) \\approx 20{,}6^{\\circ}$ ، لا $22{,}0^{\\circ}$ (زاوية جيبها $\\dfrac{3}{8}$ ). كان عليها أن ترسم دائرة نصف قطرها 8.",
+        "incorrect": "الضلعان 3 و 8 كلاهما ضلعا الزاوية القائمة: لا وتر بينهما."
+      }
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l5-003",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مخطط مئذنة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وضعية",
+      "إنشاء"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P3",
+      "modelledOn": "method-construct"
+    }
+  },
+  "statement": {
+    "content": "يرسم مهندس على ورقة، دون منقلة، ميل حبل من قمة مئذنة إلى الأرض: زاوية حادة x مع الأرض حيث $\\cos x = \\dfrac{5}{13}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الإنشاء الصحيح على الورقة:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "زاوية قائمة رأسها O ، و $OA = 13$ ، ودائرة مركزها A ونصف قطرها 5",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKBAR-MIN-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "زاوية قائمة رأسها O ، و $OA = 5$ على ضلع، ودائرة مركزها A ونصف قطرها 13 تقطع الضلع الآخر في B ؛ $x = \\widehat{OAB}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "زاوية قائمة رأسها O ، و $OA = 5$ و $OB = 13$ على الضلعين؛ $x = \\widehat{OAB}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-INSHA-WATAR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جيب التمام = المجاور ÷ الوتر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل يمكن لدائرة نصف قطرها 5 أن تقطع الضلع الآخر إذا كان $OA = 13$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "المقام 13 وتر يرسمه المدور، و $\\cos\\widehat{OAB} = \\dfrac{OA}{AB} = \\dfrac{5}{13}$ .",
+        "incorrect": "على الضلعين نحصل على ظل $\\dfrac{13}{5}$ ، ودائرة 5 أقصر من 13 لا تقطع الضلع الآخر."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بالحاسبة: قيس x مدوّرا إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "قيس بالدرجات، عدد عشري بالفاصلة (مثل 12,5)",
+      "expectedAnswer": "67.4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "22.6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل $\\cos^{-1}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{5}{13} \\approx 0{,}3846$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos^{-1}\\left(\\dfrac{5}{13}\\right) \\approx 67{,}38^{\\circ}$ ، أي $67{,}4^{\\circ}$ .",
+        "incorrect": "المطلوب الزاوية التي جيب تمامها $\\dfrac{5}{13}$ ، لا الزاوية الأخرى."
+      }
+    }
+  ]
+}

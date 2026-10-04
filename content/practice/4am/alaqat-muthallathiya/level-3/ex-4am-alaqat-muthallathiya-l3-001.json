@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l3-001",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "طرائق (ص 121) — تمرين 1: جيبها 2 على 5",
+    "estimatedMinutes": 3,
+    "tags": [
+      "طرائق",
+      "إنشاء",
+      "حاسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-construct",
+      "page": 121,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: أنشأنا دون منقلة زاوية قائمة $\\widehat{AOB}$ ، و $OA = 2\\,\\mathrm{cm}$ ، والدائرة التي مركزها A ونصف قطرها $5\\,\\mathrm{cm}$ تقطع الضلع الثاني في B. في المثلث AOB القائم في O : $\\sin\\widehat{B} = \\dfrac{2}{5}$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "A": [
+          2,
+          0
+        ],
+        "B": [
+          0,
+          4.583
+        ]
+      },
+      "segments": [
+        {
+          "from": "O",
+          "to": "A",
+          "label": "2"
+        },
+        [
+          "O",
+          "B"
+        ],
+        {
+          "from": "A",
+          "to": "B",
+          "label": "5",
+          "tone": "violet",
+          "bold": true
+        }
+      ],
+      "rightAngles": [
+        [
+          "A",
+          "O",
+          "B"
+        ]
+      ],
+      "labels": {
+        "O": "sw",
+        "A": "se",
+        "B": "n"
+      },
+      "ariaLabel": "مثلث AOB قائم في O، الضلع OA طوله 2 والوتر AB طوله 5",
+      "maxWidth": 220
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عند التحقق بحاسبة، قيس الزاوية $\\widehat{B}$ مدوّرا إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "قيس بالدرجات، عدد عشري بالفاصلة (مثل 12,5)",
+      "expectedAnswer": "23.6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-INSHA-WATAR",
+          "value": "21.8"
+        },
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "66.4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل $\\sin^{-1}$ (اللمسة 2nd ثم sin)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحاسبة مبرمجة بالدرجة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin^{-1}(0{,}4) \\approx 23{,}58^{\\circ}$ ، أي $23{,}6^{\\circ}$ ، وبالمنقلة نحو $24^{\\circ}$ .",
+        "incorrect": "ابحث عن الزاوية التي جيبها 0,4 ، لا عن جيب 0,4."
+      }
+    }
+  ]
+}

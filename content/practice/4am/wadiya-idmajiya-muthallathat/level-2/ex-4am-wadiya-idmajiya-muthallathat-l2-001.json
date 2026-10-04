@@ -1,0 +1,270 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l2-001",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 2,
+  "metadata": {
+    "title": "وضعية «مقام الشهيد»",
+    "estimatedMinutes": 5,
+    "tags": [
+      "خاصية طالس",
+      "الظل",
+      "التدوير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "situation",
+      "page": 124,
+      "section": "أدمج تعلّماتي"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "يريد أريس قياس ارتفاع «مقام الشهيد» بالجزائر العاصمة. استعان بعمود كهربائي شاقولي طوله $PQ = 2{,}30\\,\\mathrm{m}$ ووقف في النقطة A حيث يشاهد قمة العمود Q وقمة المقام S على استقامة واحدة (الشكل؛ نهمل طول أريس). $PM = 95{,}65\\,\\mathrm{m}$ و $AP = 2{,}45\\,\\mathrm{m}$ ، و x قيس الزاوية بين الأرض وخط النظر.",
+    "figure": {
+      "points": {
+        "M": [
+          0,
+          0
+        ],
+        "S": [
+          0,
+          5.2
+        ],
+        "P": [
+          7.2,
+          0
+        ],
+        "Q": [
+          7.2,
+          1.5
+        ],
+        "A": [
+          10,
+          0
+        ]
+      },
+      "segments": [
+        {
+          "from": "M",
+          "to": "P",
+          "label": "95,65"
+        },
+        {
+          "from": "P",
+          "to": "A",
+          "label": "2,45"
+        },
+        {
+          "from": "P",
+          "to": "Q",
+          "label": "2,30",
+          "bold": true,
+          "arrows": 1
+        },
+        {
+          "from": "M",
+          "to": "S",
+          "label": "h",
+          "bold": true,
+          "arrows": 1
+        },
+        {
+          "from": "A",
+          "to": "S",
+          "dashed": true,
+          "tone": "amber"
+        }
+      ],
+      "polygons": [
+        {
+          "points": [
+            "A",
+            "P",
+            "Q"
+          ],
+          "tone": "sky"
+        },
+        {
+          "points": [
+            "A",
+            "M",
+            "S"
+          ],
+          "tone": "amber"
+        }
+      ],
+      "rightAngles": [
+        [
+          "S",
+          "M",
+          "P"
+        ],
+        [
+          "Q",
+          "P",
+          "A"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "A",
+          "from": "P",
+          "to": "Q",
+          "label": "x"
+        }
+      ],
+      "labels": {
+        "M": "s",
+        "S": "n",
+        "P": "s",
+        "Q": "n",
+        "A": "s"
+      },
+      "ariaLabel": "نموذج الوضعية: المقام [MS] ارتفاعه h والعمود [PQ] طوله 2,30 عموديان على الأرض؛ MP = 95,65 و PA = 2,45؛ خط النظر من A يمر بالقمة Q ويصل القمة S؛ x الزاوية بين الأرض وخط النظر في A",
+      "maxWidth": 360
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المسافة AM بين أريس وقاعدة المقام (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "98.1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "A و P و M على استقامة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العمود بين أريس والمقام."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المسافتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$AM = 2{,}45 + 95{,}65 = 98{,}1\\,\\mathrm{m}$ .",
+        "incorrect": "المسافة من أريس إلى المقام تمرّ بالعمود."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "95.65",
+          "id": "MISC-MUTH-TALIS-NAZAR"
+        },
+        {
+          "value": "93.2",
+          "id": "MISC-MUTH-TALIS-NAZAR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما ارتفاع المقام h مدوّرا إلى الجزء من 100 (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 100)",
+      "expectedAnswer": "92.09",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العمود والمقام متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المثلثان APQ و AMS في وضعية طالس."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ارتفاع ÷ ارتفاع = مسافة من A ÷ مسافة من A."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{h}{2{,}30} = \\dfrac{98{,}1}{2{,}45}$ ومنه $h \\approx 92{,}09\\,\\mathrm{m}$ — الارتفاع الحقيقي للمقام $92\\,\\mathrm{m}$.",
+        "incorrect": "نقارن الضلعين اللذين رأسهما A في كل مثلث."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "89.79",
+          "id": "MISC-MUTH-TALIS-NAZAR"
+        },
+        {
+          "value": "0.06",
+          "id": "MISC-MUTH-NISBA-MAQLUBA"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "ما المدوّر إلى الدرجة لقيس الزاوية x؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "43",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المثلث APQ القائم في P."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "PQ يقابل x و AP يجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الظل ثم استعمل اللمسة العكسية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{2{,}30}{2{,}45}$ ومنه $x \\approx 43{,}19^{\\circ}$ ، أي $43^{\\circ}$ .",
+        "incorrect": "الظل نسبة، والقيس يعطيه اللمسة العكسية للظل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "47",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        },
+        {
+          "value": "0.94",
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ]
+    }
+  ]
+}

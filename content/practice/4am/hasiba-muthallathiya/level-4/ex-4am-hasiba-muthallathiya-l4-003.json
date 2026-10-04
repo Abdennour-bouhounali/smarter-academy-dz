@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l4-003",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "وضعية — منحدر مدرسة بالبليدة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "قيس زاوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P2",
+      "modelledOn": "ex-8"
+    }
+  },
+  "statement": {
+    "content": "منحدر للكراسي المتحركة أمام مدرسة بالبليدة: طوله (الوتر) $6\\,\\mathrm{m}$ ويرتفع $0{,}5\\,\\mathrm{m}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس زاوية ميل المنحدر على الأرض مدوّرا إلى الجزء من 10 (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "4.8",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "85,2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin x = \\dfrac{0{,}5}{6}$ ، و ⁦ON 2nd sin⁻¹ ( 0,5 ÷ 6 ) =⁩ يعطي $4{,}780191847$ ، إذن $x \\approx 4{,}8^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l5-010",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "وضعية — لوح شمسي في أدرار",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "التدوير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P3",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "لوح شمسي في أدرار مائل: طوله $2\\,\\mathrm{m}$ وظلّه الأفقي (المسافة الأفقية بين طرفيه) $0{,}6\\,\\mathrm{m}$ . x زاوية ميله على الأفق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس x مدوّرا إلى الجزء من 100 (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "72.54",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "17,46"
+        },
+        {
+          "id": "MISC-MUTH-TADWIR-MUBAKKIR",
+          "value": "72,5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "المسافة الأفقية تجاور x واللوح وتر: $\\cos x = \\dfrac{0{,}6}{2} = 0{,}3$ ، و ⁦ON 2nd cos⁻¹ 0,3 =⁩ يعطي $72{,}54239688$ : الرقم الموالي 2، إذن $x \\approx 72{,}54^{\\circ}$ .",
+        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
+      }
+    }
+  ]
+}

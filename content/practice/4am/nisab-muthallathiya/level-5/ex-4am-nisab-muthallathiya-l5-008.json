@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l5-008",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — شاشة الهاتف",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حساب طول",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nisab-muthallathiya_P3",
+      "modelledOn": "method-sin"
+    }
+  },
+  "statement": {
+    "content": "شاشة هاتف مستطيلة قطرها $15{,}5\\,\\mathrm{cm}$ . القطر يصنع مع الضلع الصغير للشاشة زاوية قيسها $62^{\\circ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب طول الضلع الكبير للشاشة، مدوّرا إلى الجزء من 10 (بالسنتيمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "13.7",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "7.3"
+        },
+        {
+          "id": "MISC-MUTH-QISMA-BADAL-DARB",
+          "value": "17.6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القطر يقسم المستطيل إلى مثلثين قائمين: ما هو الوتر؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضلع الكبير مقابل للزاوية 62° (الزاوية عند الضلع الصغير)."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المقابل والوتر يربطهما الجيب؛ المطلوب في البسط."
+        }
+      ],
+      "feedback": {
+        "correct": "القطر وتر، والضلع الكبير مقابل للزاوية 62°: $15{,}5 \\times \\sin 62^{\\circ} \\approx 13{,}7\\,\\mathrm{cm}$ .",
+        "incorrect": "الزاوية عند الضلع الصغير: الضلع الصغير مجاور لها والضلع الكبير مقابل."
+      },
+      "difficulty": 5
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l5-004",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — كثيب تاغيت",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية",
+      "الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P2",
+      "modelledOn": "method-relations"
+    }
+  },
+  "statement": {
+    "content": "كثيب رملي في تاغيت يصنع منحدره مع الأفق زاوية حادة x حيث $\\sin x = 0{,}6$ بالضبط."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب القيمة المضبوطة للعدد $\\tan x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر مثل 5/7 أو عشري بالفاصلة)",
+      "expectedAnswer": "0.75",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-JADHR-NASI",
+          "value": "1.5"
+        },
+        {
+          "id": "MISC-MUTH-TAN-QISMA-MAQLUBA",
+          "value": "4/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $\\cos x$ أولا: $\\cos^2 x = 1 - 0{,}36$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم $\\tan x = \\dfrac{\\sin x}{\\cos x}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos x = \\sqrt{0{,}64} = 0{,}8$ ، و $\\tan x = \\dfrac{0{,}6}{0{,}8} = 0{,}75$ .",
+        "incorrect": "لا تقسم على $1 - 0{,}6$ : $\\cos x = 0{,}8$ ."
+      }
+    }
+  ]
+}

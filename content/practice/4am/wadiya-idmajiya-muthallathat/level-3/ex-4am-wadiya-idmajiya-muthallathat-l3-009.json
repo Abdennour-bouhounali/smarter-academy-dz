@@ -1,0 +1,87 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l3-009",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — منحدر بكورنيش وهران",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الجيب",
+      "التدوير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P3",
+      "modelledOn": "ex-31"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "منحدر للكراسي المتحركة بكورنيش وهران طوله $7\\,\\mathrm{m}$ ويرتفع $0{,}9\\,\\mathrm{m}$ . حسب تلميذ $\\sin x = \\dfrac{0{,}9}{7}$ ثم دوّره إلى $0{,}1$ قبل اللمسة العكسية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المدوّر إلى الدرجة الصحيح لقيس زاوية المنحدر هو:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-TADWIR-MUBAKKIR"
+        },
+        {
+          "id": "B",
+          "content": "$7^{\\circ}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$0{,}13^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-BADAL-QAYS"
+        },
+        {
+          "id": "D",
+          "content": "$83^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-ZAWIYA-KHATI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الارتفاع يقابل الزاوية والمنحدر وتر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لا تدوّر الجيب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اللمسة العكسية على القيمة المضبوطة ثم دوّر القيس."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin x = \\dfrac{0{,}9}{7} \\approx 0{,}1286$ ومنه $x \\approx 7{,}39^{\\circ}$ ، أي $7^{\\circ}$ ؛ تدوير الجيب إلى $0{,}1$ يعطي $6^{\\circ}$ .",
+        "incorrect": "ندوّر النتيجة النهائية فقط."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 3
+    }
+  ]
+}

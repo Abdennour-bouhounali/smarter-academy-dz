@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l5-001",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 5,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — برج المياه في بسكرة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ارتفاع",
+      "ترييض"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P1",
+      "modelledOn": "ex-29"
+    }
+  },
+  "statement": {
+    "content": "يقف مراد على بعد $40\\,\\mathrm{m}$ من قاعدة برج مياه شاقولي في بسكرة، ويحمل هاتفه أمام عينيه على ارتفاع $1{,}5\\,\\mathrm{m}$ من الأرض. يقرأ تطبيق «مقياس الميل» زاوية النظر إلى قمة البرج: $28^{\\circ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ارتفاع قمة البرج فوق مستوى عيني مراد بالمتر، إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "expectedAnswer": "21.3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-DARB-BADAL-QISMA",
+          "value": "75.2"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
+          "value": "18.8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "المثلث القائم يبدأ من العين: $40 \\times \\tan 28^{\\circ} \\approx 21{,}27$ أي $21{,}3\\,\\mathrm{m}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ارتفاع البرج عن الأرض بالمتر، إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "expectedAnswer": "22.8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "نضيف ارتفاع العين: $1{,}5 + 40 \\tan 28^{\\circ} \\approx 22{,}77$ أي $22{,}8\\,\\mathrm{m}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l2-006",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 4 — sin x = 0,52",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قيس زاوية",
+      "اللمسات العكسية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4",
+      "page": 117,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 117): x زاوية حادة حيث $\\sin x = 0{,}52$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدوّر x إلى الوحدة (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "31",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "59"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS",
+          "value": "0,52"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦ON 2nd sin⁻¹ 0,52 =⁩ يعطي $31{,}3322515$ ، إذن $x \\approx 31^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l4-004",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 20 (ص 123)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمرين 20",
+      "إنشاء"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-20",
+      "page": 123,
+      "section": "إنشاءات هندسية",
+      "number": 20
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: أنشئ، بدون استعمال منقلة، زاوية بحيث جيبها التمام يساوي 0,18. عيّن قيس هذه الزاوية (بالحاسبة وبالمنقلة). تدوّر النتيجة إلى الدرجة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس هذه الزاوية مدوّرا إلى الدرجة:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "قيس بالدرجات، عدد طبيعي",
+      "expectedAnswer": "80",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "10"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$0{,}18 = \\dfrac{1{,}8}{10}$ : مجاور 1,8 ووتر 10."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل $\\cos^{-1}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos^{-1}(0{,}18) \\approx 79{,}63^{\\circ}$ ، أي $80^{\\circ}$ .",
+        "incorrect": "المطلوب الزاوية التي جيب تمامها 0,18 ، وهي قريبة من $90^{\\circ}$ لأن المجاور قصير جدا."
+      }
+    }
+  ]
+}

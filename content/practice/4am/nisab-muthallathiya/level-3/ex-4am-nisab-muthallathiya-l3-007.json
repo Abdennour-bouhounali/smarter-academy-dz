@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l3-007",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 9 — الطول AC",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حساب طول",
+      "الجيب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-9",
+      "page": 123,
+      "section": "النسب المثلثية - استعمال حاسبة",
+      "number": 9
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 123): ABC مثلث قائم في A حيث $BC = 5{,}2\\,\\mathrm{cm}$ و $\\widehat{ABC} = 23^{\\circ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب المدوّر إلى $\\dfrac{1}{10}$ للطول AC (بالسنتيمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "2.0",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "4.8"
+        },
+        {
+          "id": "MISC-MUTH-QISMA-BADAL-DARB",
+          "value": "13.3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "$AC = 5{,}2 \\times \\sin 23^{\\circ} \\approx 2{,}0$ .",
+        "incorrect": "[AC] لا يمرّ بالرأس B: إنه المقابل، والنسبة هي الجيب."
+      },
+      "difficulty": 3
+    }
+  ]
+}

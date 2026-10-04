@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l1-004",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — الظل من الجيب وجيب التمام",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الظل",
+      "العلاقة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P1",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "x قيس زاوية حادة حيث $\\sin x = 0{,}6$ و $\\cos x = 0{,}8$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\tan x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر مثل 5/7 أو عشري بالفاصلة)",
+      "expectedAnswer": "0.75",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TAN-QISMA-MAQLUBA",
+          "value": "4/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\tan x = \\dfrac{\\sin x}{\\cos x}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أيّ العددين في البسط؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{0{,}6}{0{,}8} = \\dfrac{3}{4} = 0{,}75$ .",
+        "incorrect": "الجيب في البسط وجيب التمام في المقام."
+      }
+    }
+  ]
+}

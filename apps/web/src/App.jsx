@@ -219,6 +219,11 @@ import talisHisabAtwalRoutes from './lessons/moyen/4am/handasa/khassiyat-talis/t
 import aksiyaTalisRoutes from './lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/routes';
 import inshaatTalisRoutes from './lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/routes';
 import wadiyaIdmajiyaTalisRoutes from './lessons/moyen/4am/handasa/khassiyat-talis/wadiya-idmajiya-talis/routes';
+import nisabMuthallathiyaRoutes from './lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/routes';
+import hasibaMuthallathiyaRoutes from './lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/routes';
+import alaqatMuthallathiyaRoutes from './lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/routes';
+import tarridMuthallathiyaRoutes from './lessons/moyen/4am/handasa/hisab-muthallathat/tarrid-muthallathiya/routes';
+import wadiyaIdmajiyaMuthallathatRoutes from './lessons/moyen/4am/handasa/hisab-muthallathat/wadiya-idmajiya-muthallathat/routes';
 
 export default function App() {
   return (
@@ -503,6 +508,11 @@ export default function App() {
             {aksiyaTalisRoutes()}
             {inshaatTalisRoutes()}
             {wadiyaIdmajiyaTalisRoutes()}
+            {nisabMuthallathiyaRoutes()}
+            {hasibaMuthallathiyaRoutes()}
+            {alaqatMuthallathiyaRoutes()}
+            {tarridMuthallathiyaRoutes()}
+            {wadiyaIdmajiyaMuthallathatRoutes()}
 
             {/* ── SURFACE DE QA — jamais en production ────────────────
                 Le moteur de leçon n'a jamais été rendu sous RTL, faute de

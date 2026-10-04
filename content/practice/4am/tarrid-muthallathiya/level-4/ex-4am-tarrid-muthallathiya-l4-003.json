@@ -1,0 +1,175 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l4-003",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 25 — عرض المستطيل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحقق",
+      "حل المثلث"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-25",
+      "page": 125,
+      "section": "أتعمّق",
+      "number": 25
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 125، تمرين 25): ABCD مستطيل طولا قطريه $10\\,\\mathrm{cm}$ ، يتقاطع قطراه في O، و $\\widehat{AOD} = 30^{\\circ}$ (الشكل). وجدنا $\\widehat{OAB} = 15^{\\circ}$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          2.588
+        ],
+        "B": [
+          9.659,
+          2.588
+        ],
+        "C": [
+          9.659,
+          0
+        ],
+        "D": [
+          0,
+          0
+        ],
+        "O": [
+          4.83,
+          1.294
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        {
+          "from": "A",
+          "to": "C",
+          "tone": "indigo"
+        },
+        {
+          "from": "B",
+          "to": "D",
+          "tone": "indigo"
+        }
+      ],
+      "angles": [
+        {
+          "at": "O",
+          "from": "A",
+          "to": "D",
+          "label": "30°"
+        }
+      ],
+      "labels": {
+        "A": "nw",
+        "B": "ne",
+        "C": "se",
+        "D": "sw",
+        "O": "s"
+      },
+      "ariaLabel": "مستطيل ABCD قطراه [AC] و [BD] يتقاطعان في O، والزاوية AOD قيسها 30 درجة",
+      "maxWidth": 340
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب عرض المستطيل AD بالسنتيمتر، إلى الجزء من 100.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,35 (المدوّر إلى الجزء من 100)",
+      "expectedAnswer": "2.59",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
+          "value": "2.68"
+        },
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "9.66"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "في ABC القائم في B : $BC = AD = 10 \\times \\sin 15^{\\circ} \\approx 2{,}59\\,\\mathrm{cm}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "تحقّق بخاصية فيثاغورس: $AB^2 + AD^2$ يساوي (مدوّرا إلى الوحدة):",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "reason",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الوتر: الضلع المقابل للزاوية القائمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية فيثاغورس: مربع الوتر يساوي مجموع مربعي الضلعين الآخرين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لحساب ضلع للزاوية القائمة نطرح مربع الضلع المعلوم من مربع الوتر، ثم نأخذ الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$AB^2 + AD^2 = AC^2 = 10^2 = 100$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

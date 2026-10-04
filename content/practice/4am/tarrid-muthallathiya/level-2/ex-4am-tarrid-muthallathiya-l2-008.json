@@ -1,0 +1,72 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l2-008",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 2,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — ميل لوح السكيت",
+    "estimatedMinutes": 3,
+    "tags": [
+      "زاوية من ضلعين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P2",
+      "modelledOn": "ex-11"
+    }
+  },
+  "statement": {
+    "content": "في حديقة التزلج، لوح منحدر طوله $3\\,\\mathrm{m}$ يرتفع طرفه الأعلى $1{,}2\\,\\mathrm{m}$ عن الأرض الأفقية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس زاوية المنحدر مع الأرض بالدرجة، إلى الوحدة.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "24",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
+          "value": "22"
+        },
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "66"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلعين المعلومين بالنسبة إلى الزاوية المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمعهما واحسب قيمتها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عيّن الزاوية باللمسة العكسية (2nd ثم sin⁻¹ أو cos⁻¹ أو tan⁻¹) ودوّر إلى الدرجة."
+        }
+      ],
+      "feedback": {
+        "correct": "اللوح وتر والارتفاع مقابل: $\\sin x = \\dfrac{1{,}2}{3} = 0{,}4$ ومنه $x \\approx 23{,}6^{\\circ}$ أي $24^{\\circ}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

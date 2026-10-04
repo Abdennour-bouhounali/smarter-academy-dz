@@ -1,0 +1,296 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l3-001",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 3,
+  "metadata": {
+    "title": "أتعمّق 31 — قطر متوازي المستطيلات",
+    "estimatedMinutes": 5,
+    "tags": [
+      "خاصية فيثاغورس",
+      "مجسّم",
+      "التدوير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-31",
+      "page": 125,
+      "section": "أتعمّق",
+      "number": 31
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "ABCDEFGH متوازي مستطيلات (الشكل): $AB = 3{,}15\\,\\mathrm{cm}$ ، $FG = 2{,}35\\,\\mathrm{cm}$ ، $AF = 1{,}55\\,\\mathrm{cm}$ ؛ [AC] قطر الوجه ABCH و [AD] قطر المجسّم.",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          6,
+          0
+        ],
+        "E": [
+          6,
+          2.952
+        ],
+        "F": [
+          0,
+          2.952
+        ],
+        "H": [
+          3.357,
+          2.014
+        ],
+        "C": [
+          9.357,
+          2.014
+        ],
+        "D": [
+          9.357,
+          4.967
+        ],
+        "G": [
+          3.357,
+          4.967
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "3,15 cm"
+        },
+        {
+          "from": "B",
+          "to": "E"
+        },
+        {
+          "from": "E",
+          "to": "F"
+        },
+        {
+          "from": "F",
+          "to": "A",
+          "label": "1,55 cm"
+        },
+        {
+          "from": "B",
+          "to": "C"
+        },
+        {
+          "from": "C",
+          "to": "D"
+        },
+        {
+          "from": "E",
+          "to": "D"
+        },
+        {
+          "from": "F",
+          "to": "G",
+          "label": "2,35 cm"
+        },
+        {
+          "from": "G",
+          "to": "D"
+        },
+        {
+          "from": "A",
+          "to": "H",
+          "dashed": true
+        },
+        {
+          "from": "H",
+          "to": "C",
+          "dashed": true
+        },
+        {
+          "from": "H",
+          "to": "G",
+          "dashed": true
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "dashed": true,
+          "tone": "sky"
+        },
+        {
+          "from": "A",
+          "to": "D",
+          "tone": "rose",
+          "bold": true
+        }
+      ],
+      "rightAngles": [
+        [
+          "A",
+          "C",
+          "D"
+        ]
+      ],
+      "labels": {
+        "A": "sw",
+        "B": "s",
+        "E": "n",
+        "F": "w",
+        "H": "n",
+        "C": "e",
+        "D": "ne",
+        "G": "nw"
+      },
+      "ariaLabel": "متوازي مستطيلات ABCDEFGH: الوجه الأمامي ABEF و AB = 3,15 cm و AF = 1,55 cm و FG = 2,35 cm؛ القطعتان [AC] قطر القاعدة و [AD] قطر المجسّم مرسومتان، والمثلث ACD قائم في C",
+      "maxWidth": 340
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المضبوطة للطول AC هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-FITHAGHURIS-JAM"
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{12{,}325}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-QUTR-WAJH"
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{15{,}445}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\sqrt{17{,}8475}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-QUTR-WAJH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الوجه ABCH مستطيل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$BC = FG$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المثلث ABC قائم في B."
+        }
+      ],
+      "feedback": {
+        "correct": "$AC^2 = 3{,}15^2 + 2{,}35^2 = 15{,}445$ .",
+        "incorrect": "AC قطر القاعدة: ضلعاه AB و BC."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "ما المدوّر إلى الوحدة للطول AC (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (مدوّر إلى الوحدة)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الجذر بالحاسبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي للوحدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تبتر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{15{,}445} \\approx 3{,}93$ ، والمدوّر إلى الوحدة 4.",
+        "incorrect": "التدوير إلى الوحدة ليس البتر."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-MUTH-TADWIR-BATR"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "ما المدوّر إلى الوحدة للطول AD (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (مدوّر إلى الوحدة)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "[CD] عمودي على الوجه ABCH."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المثلث ACD قائم في C و $CD = AF$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل القيمة المضبوطة لـ AC."
+        }
+      ],
+      "feedback": {
+        "correct": "$AD^2 = 15{,}445 + 1{,}55^2 = 17{,}8475$ و $\\sqrt{17{,}8475} \\approx 4{,}22$ ، أي 4.",
+        "incorrect": "المثلث ACD قائم في C."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "6",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+        }
+      ]
+    }
+  ]
+}

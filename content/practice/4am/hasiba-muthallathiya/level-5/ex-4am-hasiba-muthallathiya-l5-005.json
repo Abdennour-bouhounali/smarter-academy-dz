@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l5-005",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — شاشة قريبة من 45",
+    "estimatedMinutes": 3,
+    "tags": [
+      "التدوير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P3",
+      "modelledOn": "prep"
+    }
+  },
+  "statement": {
+    "content": "زاوية تعرضها الشاشة: $44{,}99736$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدوّرها إلى الجزء من 100 (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "45",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "44,99"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "نحتفظ بـ 44,99 والرقم الموالي 7: نضيف 1 فنجد $45{,}00$ ، أي $45^{\\circ}$ .",
+        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
+      }
+    }
+  ]
+}

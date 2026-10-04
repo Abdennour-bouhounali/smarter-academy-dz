@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l1-010",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — مربع جيب تمام",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مربع",
+      "جذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P2",
+      "modelledOn": "method-relations"
+    }
+  },
+  "statement": {
+    "content": "x قيس زاوية حادة حيث $\\cos x = \\dfrac{\\sqrt{3}}{2}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\cos^2 x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر مثل 5/7 أو عشري بالفاصلة)",
+      "expectedAnswer": "3/4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TARBI-BASTI",
+          "value": "3/2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\cos^2 x = (\\cos x)^2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ربّع البسط والمقام: $(\\sqrt{3})^2 = 3$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(\\dfrac{\\sqrt{3}}{2}\\right)^2 = \\dfrac{3}{4}$ .",
+        "incorrect": "مربع المقام 2 هو 4."
+      }
+    }
+  ]
+}

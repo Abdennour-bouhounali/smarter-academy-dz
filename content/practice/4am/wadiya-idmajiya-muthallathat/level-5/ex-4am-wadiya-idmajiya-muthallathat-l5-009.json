@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l5-009",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — «مقام الشهيد» بتطبيق الهاتف",
+    "estimatedMinutes": 5,
+    "tags": [
+      "الظل",
+      "ارتفاع العين",
+      "التحقّق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "يقف ياسين على بعد $104\\,\\mathrm{m}$ من محور «مقام الشهيد»، وعيناه على ارتفاع $1{,}6\\,\\mathrm{m}$ ، ويقرأ تطبيق الهاتف زاوية النظر إلى القمة: $41^{\\circ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع المقام مدوّرا إلى الوحدة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (مدوّر إلى الوحدة)",
+      "expectedAnswer": "92",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث القائم فوق الأفق المارّ بالعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجزء فوق العين = المسافة × الظل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أضف ارتفاع العين."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}6 + 104 \\times \\tan 41^{\\circ} \\approx 92{,}0$ ، أي $92\\,\\mathrm{m}$ : ارتفاعه الحقيقي.",
+        "incorrect": "لا تنسَ ارتفاع العين."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "90",
+          "id": "MISC-MUTH-IRTIFA3-AYN"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "لو قرأ التطبيق $40^{\\circ}$ بدل $41^{\\circ}$ ، ما الارتفاع الذي يجده ياسين مدوّرا إلى الوحدة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (مدوّر إلى الوحدة)",
+      "expectedAnswer": "89",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحساب نفسه بزاوية أخرى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "درجة واحدة على بعد $104\\,\\mathrm{m}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بالارتفاع الحقيقي."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}6 + 104 \\times \\tan 40^{\\circ} \\approx 88{,}9$ ، أي $89\\,\\mathrm{m}$ : خطأ درجة واحدة يغيّر النتيجة بثلاثة أمتار تقريبا.",
+        "incorrect": "أعد الحساب بالزاوية الجديدة."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "87",
+          "id": "MISC-MUTH-IRTIFA3-AYN"
+        }
+      ]
+    }
+  ]
+}

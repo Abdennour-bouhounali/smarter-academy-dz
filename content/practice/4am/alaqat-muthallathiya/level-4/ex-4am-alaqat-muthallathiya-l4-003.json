@@ -1,0 +1,72 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l4-003",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 18 (ص 123) — العمود 1",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمرين 18",
+      "الظل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-18",
+      "page": 123,
+      "section": "العلاقات المثلثية",
+      "number": 18
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: x قيس بالدرجات لزاوية حادة حيث $\\cos x = 0{,}4$ ، فـ $\\sin x = \\dfrac{\\sqrt{21}}{5}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المضبوطة للعدد $\\tan x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{\\sqrt{21}}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{2\\sqrt{21}}{21}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-TAN-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{\\sqrt{21}}{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$0{,}4 = \\dfrac{2}{5}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\tan x = \\dfrac{\\sqrt{21}}{5} \\div \\dfrac{2}{5}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{\\sqrt{21}}{5} \\times \\dfrac{5}{2} = \\dfrac{\\sqrt{21}}{2}$ .",
+        "incorrect": "$\\dfrac{2\\sqrt{21}}{21} = \\dfrac{\\cos x}{\\sin x}$ ، و $\\dfrac{\\sqrt{21}}{5}$ هو $\\sin x$ نفسه."
+      }
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 // 4AM — les figures d'OUVERTURE d'unité (2026-10-02). Un تحدّ ou un encadré dont le texte dit « الشكل المقابل »,
-// « البيان المقابل », « التمثيل البياني المقابل » ou « نظم العمل في جدول » doit montrer cette figure sur la page
+// « البيان المقابل », « التمثيل البياني المقابل », « اعتمادا على الشكل » ou « نظم العمل في جدول » doit montrer cette figure sur la page
 // d'unité (pages/unit/UnitOpenerFigure.jsx) ; une unité sans renvoi n'en montre aucune.
 //
 // Run : KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-unit-opener-figures.mjs
@@ -18,8 +18,10 @@ const UNITS = [
   [T, 'dala-taalufiya', ['challenge']],
   [T, 'ihsa', ['challenge']],
   [H, 'khassiyat-talis', ['challenge']],
+  [H, 'hisab-muthallathat', ['challenge']],
 ];
-const REFERS = /المقابل|نظم العمل في جدول/;
+// Unité 10 : « اعتمادا على الشكل » renvoie aussi à une figure.
+const REFERS = /المقابل|نظم العمل في جدول|على الشكل/;
 const errors = [];
 const { browser } = await launch();
 

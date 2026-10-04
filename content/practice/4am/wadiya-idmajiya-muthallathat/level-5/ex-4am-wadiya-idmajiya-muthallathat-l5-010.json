@@ -1,0 +1,128 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l5-010",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ثلاثة حلول، أيّها الصحيح؟",
+    "estimatedMinutes": 6,
+    "tags": [
+      "التدوير",
+      "مجسّم",
+      "الجيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P3",
+      "modelledOn": "ex-31"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "ABCDEFGH متوازي مستطيلات: $AB = 4\\,\\mathrm{cm}$ ، $BC = 2\\,\\mathrm{cm}$ والحرف الشاقولي $CD = 1{,}5\\,\\mathrm{cm}$ . طُلب المدوّر إلى الدرجة لقيس الزاوية DAC. ياسمين أبقت القيم المضبوطة حتى النهاية، وإلياس دوّر AD إلى 5 ، ونور دوّرت AC إلى 4 ثم استعملت الظل."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الطول AD مدوّرا إلى الجزء من 100 (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 100)",
+      "expectedAnswer": "4.72",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قطر القاعدة أولا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المثلث ACD قائم في C."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "فيثاغورس مرتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$AD = \\sqrt{4^2 + 2^2 + 1{,}5^2} = \\sqrt{22{,}25} \\approx 4{,}72\\,\\mathrm{cm}$ .",
+        "incorrect": "قطر المجسّم لا قطر القاعدة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "7.5",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+        },
+        {
+          "value": "4.47",
+          "id": "MISC-MUTH-QUTR-WAJH"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "من وجد الجواب الصحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "إلياس: $17^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-TADWIR-MUBAKKIR"
+        },
+        {
+          "id": "B",
+          "content": "ياسمين: $19^{\\circ}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "نور: $21^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-TADWIR-MUBAKKIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الجيب بالقيمة المضبوطة لـ AD."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم اللمسة العكسية للجيب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر القيس في الأخير فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin\\widehat{DAC} = \\dfrac{1{,}5}{\\sqrt{22{,}25}}$ ومنه $\\widehat{DAC} \\approx 18{,}5^{\\circ}$ ، أي $19^{\\circ}$ : التدوير المبكّر يعطي 17 أو 21.",
+        "incorrect": "التدوير قبل نهاية الحساب يغيّر القيس."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5
+    }
+  ]
+}

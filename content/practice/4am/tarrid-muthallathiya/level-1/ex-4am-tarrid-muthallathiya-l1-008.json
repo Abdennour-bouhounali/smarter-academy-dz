@@ -1,0 +1,130 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l1-008",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 29 — المساواة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-29",
+      "page": 125,
+      "section": "أتعمّق",
+      "number": 29
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 125، تمرين 29): نخلة شاقولية ارتفاعها h. من نقطة على الأرض على بعد $10\\,\\mathrm{m}$ من قاعدتها يُرى رأسها بزاوية قيسها $36^{\\circ}$ مع الأرض (الشكل).",
+    "figure": {
+      "points": {
+        "P": [
+          0,
+          0
+        ],
+        "T": [
+          0,
+          7.265
+        ],
+        "O": [
+          10,
+          0
+        ]
+      },
+      "segments": [
+        {
+          "from": "P",
+          "to": "O",
+          "label": "10m"
+        },
+        {
+          "from": "P",
+          "to": "T",
+          "label": "h"
+        },
+        {
+          "from": "O",
+          "to": "T"
+        }
+      ],
+      "rightAngles": [
+        [
+          "O",
+          "P",
+          "T"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "O",
+          "from": "T",
+          "to": "P",
+          "label": "36°"
+        }
+      ],
+      "labels": {
+        "P": "sw",
+        "T": "nw",
+        "O": "se"
+      },
+      "ariaLabel": "نخلة شاقولية PT ارتفاعها h، ومن النقطة O على الأرض على بعد 10m من قاعدتها يُرى رأسها بزاوية 36 درجة",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المساواة التي تترجم الوضعية:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sin 36^{\\circ} = \\dfrac{h}{10}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "B",
+          "content": "$\\tan 36^{\\circ} = \\dfrac{10}{h}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\tan 36^{\\circ} = \\dfrac{h}{10}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المقابل والوتر: الجيب؛ المجاور والوتر: جيب التمام؛ المقابل والمجاور: الظل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختر النسبة التي يظهر فيها الضلعان معًا، ولا تحتاج ضلعا ثالثا مجهولا."
+        }
+      ],
+      "feedback": {
+        "correct": "بالنسبة إلى $36^{\\circ}$ : 10 مجاور و h مقابل، $\\tan 36^{\\circ} = \\dfrac{h}{10}$ .",
+        "incorrect": "سمِّ الأضلاع بالنسبة إلى الزاوية المعلومة، ثم اختر النسبة التي تجمع المعلوم والمطلوب."
+      }
+    }
+  ]
+}

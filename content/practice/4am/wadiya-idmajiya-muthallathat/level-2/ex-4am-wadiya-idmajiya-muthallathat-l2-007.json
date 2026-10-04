@@ -1,0 +1,87 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l2-007",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — طول بالظل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الظل",
+      "مجهول في المقام"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P3",
+      "modelledOn": "qcm"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "ABC مثلث قائم في B حيث $\\widehat{A} = 35^{\\circ}$ و $BC = 7\\,\\mathrm{cm}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الطول AB يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$AB = 7 \\times \\tan 35^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-DARB-BADAL-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$AB = \\dfrac{7}{\\tan 35^{\\circ}}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$AB = \\dfrac{7}{\\sin 35^{\\circ}}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "D",
+          "content": "$AB = \\dfrac{\\tan 35^{\\circ}}{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الزاوية المعطاة في A."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "BC يقابل A و AB يجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجهول في مقام الظل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan 35^{\\circ} = \\dfrac{7}{AB}$ ومنه $AB = \\dfrac{7}{\\tan 35^{\\circ}}$ ؛ و $\\dfrac{7}{\\sin 35^{\\circ}}$ هو الوتر AC.",
+        "incorrect": "المجهول AB في المقام."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

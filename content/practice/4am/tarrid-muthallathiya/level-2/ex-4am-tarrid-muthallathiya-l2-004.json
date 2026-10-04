@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l2-004",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 2,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — ظلّ عمود الإنارة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ارتفاع",
+      "الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P1",
+      "modelledOn": "ex-29"
+    }
+  },
+  "statement": {
+    "content": "في واجهة البحر بوهران، ظلّ عمود إنارة شاقولي على الأرض الأفقية طوله $8\\,\\mathrm{m}$ ، وأشعة الشمس تصنع مع الأرض زاوية قيسها $35^{\\circ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ارتفاع العمود بالمتر، إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "expectedAnswer": "5.6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-DARB-BADAL-QISMA",
+          "value": "11.4"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
+          "value": "4.6"
+        },
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "6.6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "الظل مجاور والعمود مقابل: $h = 8 \\times \\tan 35^{\\circ} \\approx 5{,}60$ أي $5{,}6\\,\\mathrm{m}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

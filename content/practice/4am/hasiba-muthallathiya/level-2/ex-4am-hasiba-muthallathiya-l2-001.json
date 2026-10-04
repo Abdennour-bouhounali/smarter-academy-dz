@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l2-001",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 4 — جيب تمام 40°",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جدول النسب",
+      "الحاسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4",
+      "page": 117,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 117): انقل وأتمم جدول النسب المثلثية (المدوّر إلى الجزء من 100). الحاسبة مبرمجة بالدرجة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المدوّر إلى الجزء من 100 لـ $\\cos 40^{\\circ}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "0.77",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "0,76"
+        },
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "0,64"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تأكّد أن الحاسبة مبرمجة بالدرجة: الحرف D في أعلى الشاشة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضغط الدالة ثم قيس الزاوية ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر ما يظهر على الشاشة: انظر إلى الرقم الموالي للرقم الذي تحتفظ به."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦ON cos 40 =⁩ ثم ندوّر الشاشة إلى رقمين بعد الفاصلة: $\\cos 40^{\\circ} \\approx 0{,}77$ .",
+        "incorrect": "راجع: هل الحاسبة بالدرجة، وهل ضغطت الدالة المناسبة ثم دوّرت الشاشة؟"
+      }
+    }
+  ]
+}

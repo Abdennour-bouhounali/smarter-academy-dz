@@ -321,6 +321,16 @@ equations, divisions and algorithm chains all declare `dir="ltr"`.
   a bidi reversal corrected in the lesson.
 
 
+### Word fractions and calculator keys (unit 10, 2026-10-04)
+
+- **Arabic never goes inside KaTeX.** The textbook defines « جيب زاوية حادة = طول الضلع المقابل / طول الوتر » as a fraction of WORDS;
+  `\dfrac{\text{طول …}}{…}` would put Arabic in an LTR KaTeX island (unshaped, unchecked by `check-katex`). Use the shared
+  `lessons/common/components/WordFraction.jsx` (`<WordFraction lhs="$\cos\widehat{B}$" num="طول الضلع المجاور" den="طول الوتر" />`):
+  two lines of DOM Arabic and a bar, inline, read « … على … » by a screen reader. The extraction marks such fractions `wordFraction: { num, den }`.
+- **Angles and functions are islands**: `$\widehat{B}$`, `$25^{\circ}$`, `$\cos\widehat{C}$`, `$\sin^{-1}$` — never a bare « cos » in an Arabic sentence.
+- **Calculator keys are LTR code** (ON, 2nd, sin⁻¹, DEG, « ON 2,5 ÷ sin 25 ») like spreadsheet formulas below: `<code dir="ltr">` / `<bdi>`
+  in JSX, LRI … PDI inside strings; the key SEQUENCE reads left to right, as the textbook says (« من اليسار إلى اليمين »).
+
 ### Geometry names: the prime and « // » (unit 9, 2026-10-02)
 
 The prime ′ (U+2032) is a NEUTRAL bidi character: in plain Arabic text « نقطتين B′ من (d) » rendered « 'B », « (B′C′) » came out

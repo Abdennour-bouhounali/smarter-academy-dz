@@ -1,0 +1,71 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l5-008",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — لماذا 1 ؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "برهان",
+      "فيثاغورس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P1",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "في مثلث قائم ضلعا زاويته القائمة a و b ووتره c ، و x زاوية حادة يقابلها الضلع a : $\\cos x = \\dfrac{b}{c}$ و $\\sin x = \\dfrac{a}{c}$ ، و $\\cos^2 x + \\sin^2 x = \\dfrac{a^2 + b^2}{c^2}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لماذا يساوي هذا العدد 1 دائمًا؟",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لأن $a + b = c$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JAMA-NISAB"
+        },
+        {
+          "id": "B",
+          "content": "لأن $a^2 = b^2 + c^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        },
+        {
+          "id": "C",
+          "content": "لأن $a^2 + b^2 = c^2$ (خاصية فيثاغورس)",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أيّ خاصية تربط مربعات أضلاع المثلث القائم؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "البسط $a^2 + b^2$ والمقام $c^2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "خاصية فيثاغورس: $a^2 + b^2 = c^2$ ، فالبسط يساوي المقام.",
+        "incorrect": "في المثلث 3 و 4 و 5 : $3 + 4 = 7 \\neq 5$ ، لكن $9 + 16 = 25$ ."
+      }
+    }
+  ]
+}

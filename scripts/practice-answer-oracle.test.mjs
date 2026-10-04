@@ -58,6 +58,11 @@ import { ORACLE as ORACLE_TALIS_HISAB } from './practice-oracle/talis-hisab-atwa
 import { ORACLE as ORACLE_AKSIYA_TALIS } from './practice-oracle/aksiya-talis.mjs';
 import { ORACLE as ORACLE_INSHAAT_TALIS } from './practice-oracle/inshaat-talis.mjs';
 import { ORACLE as ORACLE_WADIYA_TALIS } from './practice-oracle/wadiya-idmajiya-talis.mjs';
+import { ORACLE as ORACLE_NISAB_MUTH } from './practice-oracle/nisab-muthallathiya.mjs';
+import { ORACLE as ORACLE_HASIBA_MUTH } from './practice-oracle/hasiba-muthallathiya.mjs';
+import { ORACLE as ORACLE_ALAQAT_MUTH } from './practice-oracle/alaqat-muthallathiya.mjs';
+import { ORACLE as ORACLE_TARRID_MUTH } from './practice-oracle/tarrid-muthallathiya.mjs';
+import { ORACLE as ORACLE_WADIYA_MUTH } from './practice-oracle/wadiya-idmajiya-muthallathat.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice/4am');
 
@@ -948,6 +953,11 @@ const ORACLE = {
   ...ORACLE_AKSIYA_TALIS,
   ...ORACLE_INSHAAT_TALIS,
   ...ORACLE_WADIYA_TALIS,
+  ...ORACLE_NISAB_MUTH,
+  ...ORACLE_HASIBA_MUTH,
+  ...ORACLE_ALAQAT_MUTH,
+  ...ORACLE_TARRID_MUTH,
+  ...ORACLE_WADIYA_MUTH,
 };
 
 /**

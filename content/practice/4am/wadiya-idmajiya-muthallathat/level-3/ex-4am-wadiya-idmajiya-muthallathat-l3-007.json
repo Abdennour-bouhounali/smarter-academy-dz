@@ -1,0 +1,116 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l3-007",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — تيليفيريك قسنطينة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الجيب",
+      "جيب التمام"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "مقطع مستقيم من كابل تيليفيريك قسنطينة طوله $750\\,\\mathrm{m}$ ويصنع زاوية $12^{\\circ}$ مع الأفق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الارتفاع الذي تصعده العربة على هذا المقطع، مدوّرا إلى الجزء من 10 (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 10)",
+      "expectedAnswer": "155.9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الكابل وتر المثلث القائم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الارتفاع يقابل الزاوية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الارتفاع = الوتر × الجيب."
+        }
+      ],
+      "feedback": {
+        "correct": "$750 \\times \\sin 12^{\\circ} \\approx 155{,}9\\,\\mathrm{m}$ .",
+        "incorrect": "المقابل والوتر يربطهما الجيب."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "159.4",
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "value": "733.6",
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما المسافة الأفقية التي يقطعها هذا المقطع، مدوّرة إلى الجزء من 10 (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 10)",
+      "expectedAnswer": "733.6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المسافة الأفقية تجاور الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الكابل هو الوتر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجاور = الوتر × جيب التمام."
+        }
+      ],
+      "feedback": {
+        "correct": "$750 \\times \\cos 12^{\\circ} \\approx 733{,}6\\,\\mathrm{m}$ .",
+        "incorrect": "المجاور والوتر يربطهما جيب التمام."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "155.9",
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR"
+        }
+      ]
+    }
+  ]
+}

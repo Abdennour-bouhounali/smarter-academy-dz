@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l2-001",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "تحدّ الوحدة — طول السلّم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الوتر",
+      "قسمة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "challenge",
+      "page": 115,
+      "section": "تحدّ"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (تحدّ ص 115): سلّم مستند إلى جدار شاقولي؛ رأسه على الجدار على ارتفاع $1{,}60\\,\\mathrm{m}$ من الأرض الأفقية، والسلّم يصنع مع الأرض زاوية قيسها $59^{\\circ}$ (الشكل).",
+    "figure": {
+      "points": {
+        "W": [
+          0,
+          0
+        ],
+        "T": [
+          0,
+          1.6
+        ],
+        "F": [
+          0.961,
+          0
+        ]
+      },
+      "segments": [
+        {
+          "from": "W",
+          "to": "T",
+          "label": "1,60m"
+        },
+        {
+          "from": "W",
+          "to": "F"
+        },
+        {
+          "from": "F",
+          "to": "T"
+        }
+      ],
+      "rightAngles": [
+        [
+          "F",
+          "W",
+          "T"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "F",
+          "from": "T",
+          "to": "W",
+          "label": "59°"
+        }
+      ],
+      "labels": {
+        "W": "sw",
+        "T": "nw",
+        "F": "se"
+      },
+      "ariaLabel": "سلّم [FT] مستند إلى جدار شاقولي [WT]: رأسه T على ارتفاع 1,60m، والسلّم يصنع مع الأرض زاوية قيسها 59 درجة",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب طول السلّم بالمتر، إلى الجزء من 10.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "expectedAnswer": "1.9",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-DARB-BADAL-QISMA",
+          "value": "1.4"
+        },
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "1.8"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
+          "value": "3.1"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin 59^{\\circ} = \\dfrac{1{,}6}{L}$ ومنه $L = \\dfrac{1{,}6}{\\sin 59^{\\circ}} \\approx 1{,}87$ أي $1{,}9\\,\\mathrm{m}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l2-009",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — قراءة النموذج",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خط النظر",
+      "المقابل والمجاور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "في الشكل: العمود [PQ] والمعلم [MS] عموديان على الأرض، والملاحظ في A يرى القمتين Q و S على استقامة واحدة.",
+    "figure": {
+      "points": {
+        "M": [
+          0,
+          0
+        ],
+        "S": [
+          0,
+          5.2
+        ],
+        "P": [
+          7.2,
+          0
+        ],
+        "Q": [
+          7.2,
+          1.5
+        ],
+        "A": [
+          10,
+          0
+        ]
+      },
+      "segments": [
+        {
+          "from": "M",
+          "to": "P"
+        },
+        {
+          "from": "P",
+          "to": "A"
+        },
+        {
+          "from": "P",
+          "to": "Q",
+          "bold": true,
+          "arrows": 1
+        },
+        {
+          "from": "M",
+          "to": "S",
+          "bold": true,
+          "arrows": 1
+        },
+        {
+          "from": "A",
+          "to": "S",
+          "dashed": true,
+          "tone": "amber"
+        }
+      ],
+      "polygons": [
+        {
+          "points": [
+            "A",
+            "P",
+            "Q"
+          ],
+          "tone": "sky"
+        },
+        {
+          "points": [
+            "A",
+            "M",
+            "S"
+          ],
+          "tone": "amber"
+        }
+      ],
+      "rightAngles": [
+        [
+          "S",
+          "M",
+          "P"
+        ],
+        [
+          "Q",
+          "P",
+          "A"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "A",
+          "from": "P",
+          "to": "Q",
+          "label": "x"
+        }
+      ],
+      "labels": {
+        "M": "s",
+        "S": "n",
+        "P": "s",
+        "Q": "n",
+        "A": "s"
+      },
+      "ariaLabel": "عمود [PQ] ومعلم [MS] عموديان على الأرض؛ خط النظر من A يمرّ بالقمة Q ويصل القمة S؛ x الزاوية بين الأرض وخط النظر في A",
+      "maxWidth": 360
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الضلع المقابل للزاوية x في المثلث APQ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "[AP]",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "id": "B",
+          "content": "[AQ]",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        },
+        {
+          "id": "C",
+          "content": "[PQ]",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "[MS]",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-TALIS-NAZAR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رأس الزاوية x هو A."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المقابل لا يمرّ برأس الزاوية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث داخل المثلث APQ وحده."
+        }
+      ],
+      "feedback": {
+        "correct": "العمود [PQ] لا يمرّ بالرأس A: هو المقابل للزاوية x، و [AP] المجاور، و [AQ] الوتر.",
+        "incorrect": "المقابل ضلع للزاوية القائمة لا يمرّ برأس x."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ]
+}

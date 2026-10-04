@@ -1,0 +1,171 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l3-004",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 11 — الزاوية R",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قيس زاوية",
+      "التدوير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-11",
+      "page": 123,
+      "section": "النسب المثلثية - استعمال حاسبة",
+      "number": 11
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 123): TRI مثلث قائم في I حيث $IT = 2\\,\\mathrm{cm}$ و $IR = 5\\,\\mathrm{cm}$ (الشكل باليد الحرة).",
+    "figure": {
+      "points": {
+        "I": [
+          0,
+          0
+        ],
+        "R": [
+          5,
+          0
+        ],
+        "T": [
+          0,
+          2
+        ]
+      },
+      "segments": [
+        {
+          "from": "I",
+          "to": "R",
+          "label": "5 cm"
+        },
+        {
+          "from": "I",
+          "to": "T",
+          "label": "2 cm"
+        },
+        [
+          "T",
+          "R"
+        ]
+      ],
+      "rightAngles": [
+        [
+          "R",
+          "I",
+          "T"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "R",
+          "from": "I",
+          "to": "T",
+          "label": "?"
+        }
+      ],
+      "ariaLabel": "المثلث TRI قائم في I، الضلع IT طوله 2 سم والضلع IR طوله 5 سم، والزاوية المطلوبة عند R",
+      "maxWidth": 320
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النسبة المناسبة للزاوية $\\widehat{R}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\tan\\widehat{R} = \\dfrac{IT}{IR} = 0{,}4$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\tan\\widehat{R} = \\dfrac{IR}{IT} = 2{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\sin\\widehat{R} = \\dfrac{IT}{IR} = 0{,}4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "[IT] يقابل R و [IR] يجاورها، والوتر غير معلوم: الظل.",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قيس $\\widehat{R}$ مدوّرا إلى الجزء من 10 (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "21.8",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "68,2"
+        },
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "21"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦ON 2nd tan⁻¹ 0,4 =⁩ يعطي $21{,}80140949$ : رقم الأجزاء من 100 هو 0، إذن $\\widehat{R} \\approx 21{,}8^{\\circ}$ .",
+        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
+      }
+    }
+  ]
+}

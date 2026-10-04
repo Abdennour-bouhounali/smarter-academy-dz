@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l4-002",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "وضعية — تلفريك قسنطينة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "التدوير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P3",
+      "modelledOn": "ex-11"
+    }
+  },
+  "statement": {
+    "content": "في مقطع من تلفريك قسنطينة يرتفع الكابل $40\\,\\mathrm{m}$ عندما نتقدّم أفقيا $150\\,\\mathrm{m}$ (مثلث قائم). x زاوية ميل الكابل على الأفق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس x مدوّرا إلى الجزء من 10 (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "14.9",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-MAQLUBA",
+          "value": "75,1"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS",
+          "value": "0,27"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{40}{150}$ ، و ⁦ON 2nd tan⁻¹ ( 40 ÷ 150 ) =⁩ يعطي $14{,}93141718$ : رقم الأجزاء من 100 هو 3، إذن $x \\approx 14{,}9^{\\circ}$ .",
+        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
+      }
+    }
+  ]
+}

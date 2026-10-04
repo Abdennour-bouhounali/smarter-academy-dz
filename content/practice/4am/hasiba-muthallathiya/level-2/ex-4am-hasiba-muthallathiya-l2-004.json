@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l2-004",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "معارف 3 — ظل 54°",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الحاسبة",
+      "التدوير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-3",
+      "page": 120,
+      "section": "معارف",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 120): نحسب $\\tan 54^{\\circ}$ بالمراحل ⁦ON tan 54 =⁩ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المدوّر إلى الجزء من 100 لـ $\\tan 54^{\\circ}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "1.38",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "1,37"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تأكّد أن الحاسبة مبرمجة بالدرجة: الحرف D في أعلى الشاشة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضغط الدالة ثم قيس الزاوية ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر ما يظهر على الشاشة: انظر إلى الرقم الموالي للرقم الذي تحتفظ به."
+        }
+      ],
+      "feedback": {
+        "correct": "الشاشة $1{,}37638192$ : الرقم الموالي 6، فنضيف 1: $\\tan 54^{\\circ} \\approx 1{,}38$ .",
+        "incorrect": "راجع: هل الحاسبة بالدرجة، وهل ضغطت الدالة المناسبة ثم دوّرت الشاشة؟"
+      }
+    }
+  ]
+}

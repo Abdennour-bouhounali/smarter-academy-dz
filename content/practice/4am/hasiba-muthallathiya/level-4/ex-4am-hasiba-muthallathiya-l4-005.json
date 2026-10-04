@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l4-005",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "وضعية — كثيب تاغيت",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "قيس زاوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P2",
+      "modelledOn": "ex-8"
+    }
+  },
+  "statement": {
+    "content": "متزلّج على الرمال في تاغيت ينزل كثيبا: طول المنحدر $50\\,\\mathrm{m}$ وارتفاع الكثيب $15\\,\\mathrm{m}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس زاوية ميل المنحدر على الأرض مدوّرا إلى الوحدة (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "17",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS",
+          "value": "0,3"
+        },
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "73"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin x = \\dfrac{15}{50} = 0{,}3$ ، و ⁦ON 2nd sin⁻¹ 0,3 =⁩ يعطي $17{,}45760312$ ، إذن $x \\approx 17^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

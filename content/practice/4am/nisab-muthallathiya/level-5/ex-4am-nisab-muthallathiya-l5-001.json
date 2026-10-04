@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l5-001",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — كثيب رملي في تاغيت",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حساب طول",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nisab-muthallathiya_P3",
+      "modelledOn": "method-sin"
+    }
+  },
+  "statement": {
+    "content": "في تاغيت (بشار)، ينزلق متزلج على الرمل على وجه كثيب مستقيم طوله $45\\,\\mathrm{m}$ يصنع مع الأرض الأفقية زاوية قيسها $32^{\\circ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب ارتفاع الكثيب، مدوّرا إلى الجزء من 10 (بالمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "23.8",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "38.2"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "28.1"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "وجه الكثيب وتر والارتفاع مقابل للزاوية 32°: $h = 45 \\times \\sin 32^{\\circ} \\approx 23{,}8\\,\\mathrm{m}$ .",
+        "incorrect": "الارتفاع مقابل للزاوية التي عند الأرض."
+      },
+      "difficulty": 5
+    }
+  ]
+}

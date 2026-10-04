@@ -1,0 +1,104 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l5-005",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 5,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — طريق جبلي في القبائل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "انحدار",
+      "زاوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P2",
+      "modelledOn": "ex-11"
+    }
+  },
+  "statement": {
+    "content": "لافتة على طريق جبلي في منطقة القبائل تقول: «انحدار 9 %»، أي أن الطريق يرتفع $9\\,\\mathrm{m}$ كلما تقدّمنا $100\\,\\mathrm{m}$ أفقيا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس زاوية الطريق مع الأفق بالدرجة، إلى الوحدة:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-MAQLUBA",
+          "value": "85"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلعين المعلومين بالنسبة إلى الزاوية المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمعهما واحسب قيمتها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عيّن الزاوية باللمسة العكسية (2nd ثم sin⁻¹ أو cos⁻¹ أو tan⁻¹) ودوّر إلى الدرجة."
+        }
+      ],
+      "feedback": {
+        "correct": "9 مقابل و 100 مجاور: $\\tan x = 0{,}09$ ومنه $x \\approx 5{,}1^{\\circ}$ أي $5^{\\circ}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "طول الطريق المقطوع لتقدّم أفقي قدره $100\\,\\mathrm{m}$ ، بالمتر، إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "expectedAnswer": "100.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الوتر: الضلع المقابل للزاوية القائمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية فيثاغورس: مربع الوتر يساوي مجموع مربعي الضلعين الآخرين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لحساب ضلع للزاوية القائمة نطرح مربع الضلع المعلوم من مربع الوتر، ثم نأخذ الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "الطريق وتر: $\\sqrt{100^2 + 9^2} = \\sqrt{10081} \\approx 100{,}4\\,\\mathrm{m}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

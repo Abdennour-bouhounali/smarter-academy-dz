@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l3-003",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "طرائق — باستعمال الظل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب طول",
+      "الظل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-tan",
+      "page": 119,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 119): EFG مثلث قائم في F حيث $EF = 4{,}5\\,\\mathrm{cm}$ و $\\widehat{E} = 53^{\\circ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب FG، المدوّر إلى الجزء من 100 (بالسنتيمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "5.97",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-QISMA-BADAL-DARB",
+          "value": "3.39"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "3.59"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan 53^{\\circ} = \\dfrac{FG}{4{,}5}$ ومنه $FG = 4{,}5 \\times \\tan 53^{\\circ} \\approx 5{,}97$ .",
+        "incorrect": "[EF] مجاور و [FG] مقابل للزاوية E: النسبة التي تجمعهما هي الظل."
+      },
+      "difficulty": 3
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l1-004",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 4 — المجهول في المقام",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جيب التمام",
+      "مجهول في المقام"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 124,
+      "section": "أؤكّد تعلّماتي",
+      "number": 4
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "نعلم أنّ $\\cos 70^{\\circ} = \\dfrac{2}{MN}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ينتج:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$MN = 2 \\times \\cos 70^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-DARB-BADAL-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$MN = \\dfrac{\\cos 70^{\\circ}}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$MN = \\dfrac{2}{\\cos 70^{\\circ}}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجهول MN في المقام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب الطرفين في MN."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اقسم على العدد الذي يضرب MN."
+        }
+      ],
+      "feedback": {
+        "correct": "$MN \\times \\cos 70^{\\circ} = 2$ ومنه $MN = \\dfrac{2}{\\cos 70^{\\circ}}$ .",
+        "incorrect": "المجهول في المقام: لا نضرب في جيب التمام."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ]
+}

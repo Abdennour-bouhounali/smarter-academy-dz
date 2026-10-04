@@ -308,6 +308,30 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { H: 12, R: 4 }, ...P },
     advanced: { numbers: { H: 18, R: 6 }, ...T('situation') },
   },
+  // ── Unité 10 « حساب المثلثات في المثلث القائم » (2026-10-04) — paires PROVISOIRES semées par le lead, les auteurs
+  // les affinent (sous verrou). La rampe : مبتدئ un angle de 30° et une planche de 4 m ; متقدم (نشاط 2) l'angle de 40°,
+  // trois rampes de tailles différentes (hypoténuses 4, 6, 8) pour que l'élève constate l'invariance.
+  'ramp-ratios': {
+    beginner: { numbers: { angle: 30, hyp: 4, mode: 'name' }, ...P },
+    advanced: { numbers: { angle: 40, hyps: [4, 6, 8], mode: 'scale' }, ...T('act-2') },
+  },
+  // La calculatrice : مبتدئ trois angles (30°, 45°, 60°) au centième ; متقدم (نشاط 4) le tableau 10°…75° puis les trois
+  // angles inverses sin x = 0,52, cos x = 0,25, tan x = 1,33 aux trois précisions.
+  'trig-calculator': {
+    beginner: { numbers: { angles: [30, 45, 60], digits: 2 }, ...P },
+    advanced: { numbers: { angles: [10, 20, 30, 40, 45, 60, 75], inverse: { sin: 0.52, cos: 0.25, tan: 1.33 }, digits: 2 }, ...T('act-4') },
+  },
+  // Le compas : مبتدئ sin x = 3/5 (un 3-4-5 qui se lit) ; متقدم (طرائق ص 121) sin x = 2/5 puis tan x = 7/3.
+  'angle-compass': {
+    beginner: { numbers: { targets: [{ ratio: 'sin', value: '3/5' }] }, ...P },
+    advanced: { numbers: { targets: [{ ratio: 'sin', value: '2/5' }, { ratio: 'tan', value: '7/3' }] }, ...T('method-construct') },
+  },
+  // Le clinomètre : مبتدئ le projecteur du stade (hauteur 24 m, distance choisie 10…40 m) ; متقدم (تحدّ) l'échelle des
+  // graffeurs : 1,60 m de mur, 59° au sol — la longueur de l'échelle (sin, division).
+  'clinometer': {
+    beginner: { numbers: { height: 24, minDistance: 10, maxDistance: 40, mode: 'height' }, ...P },
+    advanced: { numbers: { height: 1.6, angle: 59, mode: 'ladder' }, ...T('challenge') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

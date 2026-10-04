@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l1-008",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — اللمسة العكسية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "اللمسات العكسية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P2",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "x زاوية حادة حيث $\\sin x = 0{,}7$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لإيجاد قيس x نضغط:",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "⁦ON 2nd sin⁻¹ 0,7 =⁩",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "⁦ON sin 0,7 =⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKS-BADAL-MUBASHIR"
+        },
+        {
+          "id": "C",
+          "content": "⁦ON 2nd cos⁻¹ 0,7 =⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "نعرف الجيب ونريد الزاوية: ⁦2nd⁩ ثم ⁦sin⁻¹⁩ ، فنجد $x \\approx 44{,}4^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

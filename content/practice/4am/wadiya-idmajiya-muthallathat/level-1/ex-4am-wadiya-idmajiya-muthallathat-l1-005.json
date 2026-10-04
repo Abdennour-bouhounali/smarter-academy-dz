@@ -1,0 +1,188 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l1-005",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 5 — سطران",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الظل",
+      "جيب التمام"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 124,
+      "section": "أؤكّد تعلّماتي",
+      "number": 5
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "في المثلث LIE القائم في I (الشكل): $IL = 6\\,\\mathrm{cm}$ و $\\widehat{L} = 50^{\\circ}$ .",
+    "figure": {
+      "points": {
+        "L": [
+          0,
+          3
+        ],
+        "I": [
+          0,
+          0
+        ],
+        "E": [
+          3.575,
+          0
+        ]
+      },
+      "segments": [
+        {
+          "from": "L",
+          "to": "I",
+          "label": "6 cm"
+        },
+        [
+          "I",
+          "E"
+        ],
+        [
+          "L",
+          "E"
+        ]
+      ],
+      "rightAngles": [
+        [
+          "L",
+          "I",
+          "E"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "L",
+          "from": "I",
+          "to": "E",
+          "label": "50°"
+        }
+      ],
+      "labels": {
+        "L": "nw",
+        "I": "sw",
+        "E": "se"
+      },
+      "ariaLabel": "مثلث LIE قائم في I: L فوق I و E على اليمين؛ IL = 6 cm وقيس الزاوية L يساوي 50 درجة",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الطول IE يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$IE = \\dfrac{6}{\\tan 50^{\\circ}}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "id": "B",
+          "content": "$IE = 6 \\times \\tan 50^{\\circ}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$IE = 6 \\times \\sin 50^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الزاوية المعطاة في L."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "IE يقابل L و IL يجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "النسبة التي تربط المقابل بالمجاور."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan 50^{\\circ} = \\dfrac{IE}{6}$ ومنه $IE = 6 \\times \\tan 50^{\\circ}$ .",
+        "incorrect": "المقابل والمجاور يربطهما الظل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    },
+    {
+      "id": "q2",
+      "statement": "الطول EL يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$EL = \\dfrac{6}{\\cos 50^{\\circ}}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$EL = 6 \\times \\sin 50^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "C",
+          "content": "$EL = 6 \\times \\cos 50^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-DARB-BADAL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "EL هو الوتر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجاور IL معلوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جيب التمام يربط المجاور بالوتر، والوتر في المقام."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos 50^{\\circ} = \\dfrac{6}{EL}$ ومنه $EL = \\dfrac{6}{\\cos 50^{\\circ}}$ .",
+        "incorrect": "الوتر مجهول في مقام جيب التمام."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

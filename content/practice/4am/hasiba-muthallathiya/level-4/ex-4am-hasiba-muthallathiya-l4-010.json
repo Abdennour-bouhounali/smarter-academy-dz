@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l4-010",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "وضعية — كاشف ملعب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية",
+      "الحاسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "مهندس في ملعب 19 ماي بعنابة يحسب ارتفاع كاشف ضوئي يراه بزاوية $25^{\\circ}$ ، فيحتاج إلى $\\tan 25^{\\circ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\tan 25^{\\circ}$ مدوّرا إلى الجزء من 100:",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "0.47",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "0,46"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-MAQLUBA",
+          "value": "2,14"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تأكّد أن الحاسبة مبرمجة بالدرجة: الحرف D في أعلى الشاشة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضغط الدالة ثم قيس الزاوية ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر ما يظهر على الشاشة: انظر إلى الرقم الموالي للرقم الذي تحتفظ به."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦ON tan 25 =⁩ يعطي $0{,}4663076582$ : الرقم الموالي 6، إذن $\\tan 25^{\\circ} \\approx 0{,}47$ .",
+        "incorrect": "راجع: هل الحاسبة بالدرجة، وهل ضغطت الدالة المناسبة ثم دوّرت الشاشة؟"
+      }
+    }
+  ]
+}

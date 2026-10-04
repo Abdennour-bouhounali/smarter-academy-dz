@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l3-010",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — زاوية جيب تمامها 0,9",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قيس زاوية",
+      "التدوير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P3",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "x زاوية حادة حيث $\\cos x = 0{,}9$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس x مدوّرا إلى الجزء من 10 (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "25.8",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS",
+          "value": "0,9"
+        },
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "64,2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦ON 2nd cos⁻¹ 0,9 =⁩ يعطي $25{,}84193276$ : رقم الأجزاء من 100 هو 4، إذن $x \\approx 25{,}8^{\\circ}$ .",
+        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
+      }
+    }
+  ]
+}

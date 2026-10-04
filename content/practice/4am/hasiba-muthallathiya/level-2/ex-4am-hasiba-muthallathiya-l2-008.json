@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l2-008",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 4 — tan x = 1,33",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قيس زاوية",
+      "اللمسات العكسية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4",
+      "page": 117,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 117): x زاوية حادة حيث $\\tan x = 1{,}33$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدوّر x إلى $\\dfrac{1}{100}$ (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "53.06",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-MAQLUBA",
+          "value": "36,94"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦ON 2nd tan⁻¹ 1,33 =⁩ يعطي $53{,}06123727$ ، إذن $x \\approx 53{,}06^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

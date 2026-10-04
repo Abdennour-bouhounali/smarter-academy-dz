@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l2-009",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "معارف 3 مثال 2 — الزاوية B",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قيس زاوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-3",
+      "page": 120,
+      "section": "معارف",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 120): B زاوية حادة حيث $\\tan\\widehat{B} = 0{,}3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس $\\widehat{B}$ بالتدوير إلى الوحدة (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "17",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "16"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦ON 2nd tan⁻¹ 0,3 =⁩ يعطي $16{,}69924423$ ، إذن $\\widehat{B} \\approx 17^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

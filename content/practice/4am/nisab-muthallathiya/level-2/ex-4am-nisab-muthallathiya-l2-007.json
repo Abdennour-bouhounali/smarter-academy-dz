@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l2-007",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 2 — مثلث أكبر بالزاوية نفسها",
+    "estimatedMinutes": 3,
+    "tags": [
+      "النسب لا تتعلق بالطول"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 116,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 116): في مثلث ABC قائم في A حيث $\\widehat{ABC} = 40^{\\circ}$ وجد سليم $\\dfrac{AC}{BC} \\approx 0{,}64$ . رسمت أمينة مثلثا قائما آخر بالزاوية $40^{\\circ}$ نفسها وأضلاعه ضعف أضلاع مثلث سليم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النسبة $\\dfrac{AC}{BC}$ في مثلث أمينة تساوي تقريبا:",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$1{,}28$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKBAR-MIN-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$0{,}32$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-UKHRA"
+        },
+        {
+          "id": "C",
+          "content": "$0{,}64$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ماذا يتغيّر حين نضاعف كل الأضلاع؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في النسبة يتضاعف البسط والمقام معا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تذكّر المنحدرات بالزاوية 40°: هل تغيّرت النسبتان؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2 \\times AC}{2 \\times BC} = \\dfrac{AC}{BC}$ : النسبة لا تتعلق إلا بالزاوية، فهي $\\sin 40^{\\circ} \\approx 0{,}64$ .",
+        "incorrect": "النسبة لا تتعلق بطول الأضلاع بل بقيس الزاوية."
+      },
+      "difficulty": 2
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l1-003",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 1,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — ظلّ عمود إنارة في وهران",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تسمية الأضلاع",
+      "ترييض"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P1",
+      "modelledOn": "ex-29"
+    }
+  },
+  "statement": {
+    "content": "في واجهة البحر بوهران، عمود إنارة شاقولي وظلّه على الأرض الأفقية. أشعة الشمس تصنع مع الأرض زاوية قيسها $35^{\\circ}$ عند نهاية الظل."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "في المثلث القائم الذي رؤوسه قاعدة العمود ورأسه ونهاية ظلّه، الظلّ بالنسبة إلى الزاوية $35^{\\circ}$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "recall",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الضلع المقابل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "id": "B",
+          "content": "الوتر",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        },
+        {
+          "id": "C",
+          "content": "الضلع المجاور",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وعيّن عليه الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الوتر يقابل الزاوية القائمة؛ المجاور يمرّ برأس الزاوية المعلومة؛ المقابل لا يمرّ به."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "سمِّ الأضلاع بالنسبة إلى الزاوية المعلومة لا بالنسبة إلى الزاوية الأخرى."
+        }
+      ],
+      "feedback": {
+        "correct": "الظل يمرّ برأس الزاوية $35^{\\circ}$ (نهاية الظل) وهو ضلع للزاوية القائمة: المجاور؛ الشعاع هو الوتر والعمود هو المقابل.",
+        "incorrect": "سمِّ الأضلاع بالنسبة إلى الزاوية المعلومة، ثم اختر النسبة التي تجمع المعلوم والمطلوب."
+      }
+    }
+  ]
+}

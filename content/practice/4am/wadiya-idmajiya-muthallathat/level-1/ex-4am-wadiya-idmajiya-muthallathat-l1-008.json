@@ -1,0 +1,87 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l1-008",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — النسبة المناسبة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الظل",
+      "اختيار النسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "في المثلث APQ القائم في P: العمود $PQ = 3{,}5\\,\\mathrm{m}$ و $AP = 2{,}8\\,\\mathrm{m}$ ، و x قيس الزاوية $\\widehat{PAQ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النسبة التي تعطي x مباشرة من الطولين المعلومين:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sin x = \\dfrac{3{,}5}{2{,}8}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "B",
+          "content": "$\\tan x = \\dfrac{2{,}8}{3{,}5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\tan x = \\dfrac{3{,}5}{2{,}8}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\cos x = \\dfrac{2{,}8}{3{,}5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطولان المعلومان ضلعا الزاوية القائمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "PQ يقابل x و AP يجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أيّ نسبة لا تحتاج الوتر؟"
+        }
+      ],
+      "feedback": {
+        "correct": "المقابل $3{,}5$ والمجاور $2{,}8$ : $\\tan x = \\dfrac{3{,}5}{2{,}8}$ .",
+        "incorrect": "الوتر AQ غير معلوم: النسبة المناسبة لا تحتويه."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ]
+}

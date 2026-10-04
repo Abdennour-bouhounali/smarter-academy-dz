@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l3-010",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — زاوية ظلها 2,5",
+    "estimatedMinutes": 3,
+    "tags": [
+      "إنشاء",
+      "الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P3",
+      "modelledOn": "method-construct"
+    }
+  },
+  "statement": {
+    "content": "لإنشاء زاوية حادة x دون منقلة حيث $\\tan x = 2{,}5$ ، نرسم زاوية قائمة وننقل على أحد ضلعيها الطول 5 (الضلع المقابل للزاوية x)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الطول الذي ننقله على الضلع الآخر (المجاور)؟",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-DARB-BADAL-QISMA",
+          "value": "12.5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الظل = المقابل ÷ المجاور."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{5}{\\ldots} = 2{,}5$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5}{2} = 2{,}5$ : ننقل 2 على الضلع الآخر، ولا حاجة إلى المدور.",
+        "incorrect": "المجاور = المقابل ÷ الظل."
+      }
+    }
+  ]
+}

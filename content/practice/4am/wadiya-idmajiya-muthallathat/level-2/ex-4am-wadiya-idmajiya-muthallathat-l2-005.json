@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l2-005",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — برج اتصالات بالجلفة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الظل",
+      "زاوية الارتفاع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "من نقطة على الأرض تبعد $30\\,\\mathrm{m}$ عن قاعدة برج اتصالات شاقولي بالجلفة، قاس تطبيق في الهاتف زاوية النظر إلى قمة البرج فوجدها $52^{\\circ}$ (نهمل طول الملاحظ)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع البرج مدوّرا إلى الجزء من 10 (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 10)",
+      "expectedAnswer": "38.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث قائم عند قاعدة البرج."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الارتفاع يقابل الزاوية والمسافة تجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الارتفاع = المسافة × ظل الزاوية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan 52^{\\circ} = \\dfrac{h}{30}$ ومنه $h = 30 \\times \\tan 52^{\\circ} \\approx 38{,}4\\,\\mathrm{m}$ .",
+        "incorrect": "المقابل والمجاور يربطهما الظل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "23.6",
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "value": "23.4",
+          "id": "MISC-MUTH-DARB-BADAL-QISMA"
+        }
+      ]
+    }
+  ]
+}

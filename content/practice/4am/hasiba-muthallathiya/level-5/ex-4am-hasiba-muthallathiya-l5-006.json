@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l5-006",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "وضعية — تلفريك تلمسان",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "التدوير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P3",
+      "modelledOn": "ex-8"
+    }
+  },
+  "statement": {
+    "content": "كابل تلفريك تلمسان بين محطتين طوله $1050\\,\\mathrm{m}$ ، والفرق في الارتفاع بينهما $260\\,\\mathrm{m}$ (نعتبر الكابل مستقيما)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس زاوية ميل الكابل على الأفق مدوّرا إلى الجزء من 10 (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "14.3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
+          "value": "13,9"
+        },
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "75,7"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "الفرق في الارتفاع يقابل الزاوية والكابل وتر: $\\sin x = \\dfrac{260}{1050}$ ، و ⁦ON 2nd sin⁻¹ ( 260 ÷ 1050 ) =⁩ يعطي $14{,}3366643$ ، إذن $x \\approx 14{,}3^{\\circ}$ .",
+        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
+      }
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l1-002",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 1 — المجاور للزاوية C",
+    "estimatedMinutes": 2,
+    "tags": [
+      "الضلع المجاور"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 116,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 116): في الشكل، المثلث ABC قائم في A و $\\widehat{C} = 25^{\\circ}$ .",
+    "figure": {
+      "points": {
+        "C": [
+          0.0,
+          0.0
+        ],
+        "A": [
+          -6.0,
+          0.0
+        ],
+        "B": [
+          -6.0,
+          2.798
+        ]
+      },
+      "segments": [
+        {
+          "from": "C",
+          "to": "A"
+        },
+        {
+          "from": "A",
+          "to": "B"
+        },
+        {
+          "from": "C",
+          "to": "B"
+        }
+      ],
+      "rightAngles": [
+        [
+          "C",
+          "A",
+          "B"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "C",
+          "from": "A",
+          "to": "B",
+          "label": "25°"
+        }
+      ],
+      "ariaLabel": "مثلث ABC قائم في A والزاوية C قيسها 25 درجة",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الضلع المجاور للزاوية $\\widehat{C}$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "[AB]",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "id": "B",
+          "content": "[BC]",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        },
+        {
+          "id": "C",
+          "content": "[AC]",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الزاوية القائمة: الوتر هو الضلع المقابل لها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالنسبة إلى الزاوية الحادة: المجاور يمرّ برأسها، والمقابل لا يمرّ به."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب أسماء الأضلاع الثلاثة بجانب الشكل قبل أن تختار."
+        }
+      ],
+      "feedback": {
+        "correct": "[AC] ضلع للزاوية القائمة يمرّ بالرأس C: إنه المجاور. [AB] هو المقابل و [BC] الوتر.",
+        "incorrect": "المجاور للزاوية C ضلع للزاوية القائمة يمرّ بالرأس C (ليس الوتر)."
+      },
+      "difficulty": 1
+    }
+  ]
+}

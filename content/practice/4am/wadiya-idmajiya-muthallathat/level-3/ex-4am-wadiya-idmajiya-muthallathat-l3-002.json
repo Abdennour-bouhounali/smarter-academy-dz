@@ -1,0 +1,254 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l3-002",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 3,
+  "metadata": {
+    "title": "أتعمّق 31 — جيب الزاوية DAC",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الجيب",
+      "القيمة المضبوطة",
+      "التدوير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-31",
+      "page": 125,
+      "section": "أتعمّق",
+      "number": 31
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "ABCDEFGH متوازي مستطيلات (الشكل): $AB = 3{,}15\\,\\mathrm{cm}$ ، $FG = 2{,}35\\,\\mathrm{cm}$ ، $AF = 1{,}55\\,\\mathrm{cm}$ ، و $AD = \\sqrt{17{,}8475}\\,\\mathrm{cm}$ . المثلث ACD قائم في C.",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          6,
+          0
+        ],
+        "E": [
+          6,
+          2.952
+        ],
+        "F": [
+          0,
+          2.952
+        ],
+        "H": [
+          3.357,
+          2.014
+        ],
+        "C": [
+          9.357,
+          2.014
+        ],
+        "D": [
+          9.357,
+          4.967
+        ],
+        "G": [
+          3.357,
+          4.967
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "3,15 cm"
+        },
+        {
+          "from": "B",
+          "to": "E"
+        },
+        {
+          "from": "E",
+          "to": "F"
+        },
+        {
+          "from": "F",
+          "to": "A",
+          "label": "1,55 cm"
+        },
+        {
+          "from": "B",
+          "to": "C"
+        },
+        {
+          "from": "C",
+          "to": "D"
+        },
+        {
+          "from": "E",
+          "to": "D"
+        },
+        {
+          "from": "F",
+          "to": "G",
+          "label": "2,35 cm"
+        },
+        {
+          "from": "G",
+          "to": "D"
+        },
+        {
+          "from": "A",
+          "to": "H",
+          "dashed": true
+        },
+        {
+          "from": "H",
+          "to": "C",
+          "dashed": true
+        },
+        {
+          "from": "H",
+          "to": "G",
+          "dashed": true
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "dashed": true,
+          "tone": "sky"
+        },
+        {
+          "from": "A",
+          "to": "D",
+          "tone": "rose",
+          "bold": true
+        }
+      ],
+      "rightAngles": [
+        [
+          "A",
+          "C",
+          "D"
+        ]
+      ],
+      "labels": {
+        "A": "sw",
+        "B": "s",
+        "E": "n",
+        "F": "w",
+        "H": "n",
+        "C": "e",
+        "D": "ne",
+        "G": "nw"
+      },
+      "ariaLabel": "متوازي مستطيلات ABCDEFGH: الوجه الأمامي ABEF و AB = 3,15 cm و AF = 1,55 cm و FG = 2,35 cm؛ القطعتان [AC] قطر القاعدة و [AD] قطر المجسّم مرسومتان، والمثلث ACD قائم في C",
+      "maxWidth": 340
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المضبوطة للعدد $\\sin\\widehat{DAC}$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{1{,}55}{\\sqrt{15{,}445}}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{\\sqrt{15{,}445}}{\\sqrt{17{,}8475}}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{\\sqrt{17{,}8475}}{1{,}55}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{1{,}55}{\\sqrt{17{,}8475}}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الزاوية في A والقائمة في C."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "CD يقابل الزاوية A والوتر AD."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجيب = المقابل ÷ الوتر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin\\widehat{DAC} = \\dfrac{CD}{AD} = \\dfrac{1{,}55}{\\sqrt{17{,}8475}}$ .",
+        "incorrect": "الوتر هو AD لا AC."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما المدوّر إلى الدرجة لقيس الزاوية $\\widehat{DAC}$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "22",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل القيمة المضبوطة للجيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اللمسة العكسية للجيب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر القيس فقط، في الأخير."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\widehat{DAC} \\approx 21{,}52^{\\circ}$ ، أي $22^{\\circ}$ . تدوير AD إلى 4 أولا يعطي $23^{\\circ}$ .",
+        "incorrect": "لا تدوّر AD قبل حساب الجيب."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "23",
+          "id": "MISC-MUTH-TADWIR-MUBAKKIR"
+        }
+      ]
+    }
+  ]
+}

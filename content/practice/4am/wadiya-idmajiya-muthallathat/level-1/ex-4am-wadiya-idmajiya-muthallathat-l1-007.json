@@ -1,0 +1,87 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l1-007",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — مثلثان في خط النظر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية طالس",
+      "خط النظر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "في ساحة الأمير عبد القادر بالجزائر العاصمة وقف أمين في نقطة A من الأرض بحيث يرى قمة عمود إنارة شاقولي [PQ] وقمة تمثال شاقولي [MS] على استقامة واحدة (P و M على الأرض، و P بين A و M)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المثلثان اللذان في وضعية طالس هما:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "APQ و PMS",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-TALIS-NAZAR"
+        },
+        {
+          "id": "B",
+          "content": "AQS و APM",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        },
+        {
+          "id": "C",
+          "content": "PQS و MSQ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "id": "D",
+          "content": "APQ و AMS",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العمود والتمثال شاقوليان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خط النظر والأرض يتقاطعان في A."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن مثلثين رأسهما المشترك A."
+        }
+      ],
+      "feedback": {
+        "correct": "العمود والتمثال متوازيان، و A ، P ، M على استقامة و A ، Q ، S على استقامة: APQ و AMS في وضعية طالس.",
+        "incorrect": "الرأس المشترك هو موضع أمين."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ]
+}

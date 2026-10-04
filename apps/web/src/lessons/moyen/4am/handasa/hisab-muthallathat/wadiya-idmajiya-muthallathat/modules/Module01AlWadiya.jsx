@@ -1,0 +1,246 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { parseDec } from '@smarter-academy/core';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
+import MathText from '../../../../../../common/components/MathText';
+import GeoFigure from '../../../../../../common/components/GeoFigure';
+import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
+import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { MODULE_CTX, getNavLinks } from '../moduleContext';
+import { SITUATION, REMARKS, LAB, LESSON_TITLES, analysisText } from '../content/textbook';
+import { MODEL } from '../content/figures';
+import { BASE } from '../../_unit/unitMeta';
+import SightLineFigure from '../components/SightLineFigure';
+
+/**
+ * Module 1 — la وضعية « مقام الشهيد » (p. 124) lue dans les TROIS étapes du « تحليل الوضعية » du manuel (قراءة
+ * الوضعية وفهمها · تحليل الوضعية واختيار استراتيجية حل مناسبة · تنفيذ استراتيجية الحل), chaque partie renvoyée au درس
+ * qui l'enseigne (Thalès = unité 9 ; la tangente = درس 1 ; la touche inverse et l'arrondi = درس 2 ; la modélisation =
+ * درس 4), comme les synthèses des unités 2 à 9.
+ *
+ * LE WORKSPACE (un type, deux niveaux — `clinometer` de la leçon 4 réutilisé SANS modification, mode `align`, monde
+ * `maqam` ; props dans content/textbook.js › LAB) :
+ *   متقدم  la وضعية du manuel : poteau de 2,30 m à 95,65 m ; l'élève glisse أريس au sol jusqu'à ce que le sommet du
+ *          poteau cache celui du مقام (2,45 m), puis le lab montre les deux triangles et l'angle x ;
+ *   مبتدئ  un réverbère de 3 m à 89 m : le même مقام, l'alignement à 3 m (tan x = 1, x = 45°).
+ * Ouvert sur متقدم (`defaultLevel="advanced"`) : c'est la وضعية du module. Les essais de l'élève (`onTrial`) sont
+ * listés au-dessus des questions d'exécution (`[data-activity-evidence]`). Aucune étape n'attend le lab (`onFinished`).
+ * LP : P2 (lire, modéliser), P1 (mobiliser Thalès, la tangente, la calculatrice), P3 (écrire, calculer, arrondir, vérifier).
+ */
+const M = (s) => <MathText key={s}>{s}</MathText>;
+const TRUE_FALSE = ['صحيح', 'خاطئ'];
+const close = (target) => (n) => Number.isFinite(n) && Math.abs(n - target) < 1e-9;
+
+/**
+ * Un essai du clinomètre (`onTrial`, logic/clinometer.js › evidenceOf), en une ligne LTR : la place d'أريس derrière le
+ * poteau (✓ alignés, ↑ le sommet du poteau passe au-dessus du sommet du مقام, ↓ en dessous), puis le rapport choisi.
+ */
+const ALIGN_MARK = { aligned: '✓', over: '↑', under: '↓' };
+function trialLine(e) {
+  if (!e || typeof e !== 'object') return null;
+  if (e.stage === 'align') return `d = ${e.d} m ${ALIGN_MARK[e.kind] ?? ''}`;
+  if (e.stage === 'angle') return `tan x → x ≈ ${e.x}° ; h ≈ ${e.H} m`;
+  if (e.stage === 'refusal' && e.ratio) return `${e.ratio} x ✗`;
+  return null;
+}
+
+function Evidence({ trials, title, empty, id }) {
+  const shown = trials.map(trialLine).filter(Boolean).slice(-6);
+  return (
+    <div className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence={id}>
+      {shown.length === 0 && <p className="text-slate-500" data-tried="false">{empty}</p>}
+      {shown.length > 0 && (
+        <div data-tried="true">
+          <p>{title}</p>
+          <ul className="ms-4 list-disc">{shown.map((s, i) => <li key={i}><bdi dir="ltr" className="font-mono">{s}</bdi></li>)}</ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Le renvoi d'une partie de la وضعية vers le درس qui l'enseigne. */
+const BackLink = ({ lesson, what }) => (
+  <p className="text-xs text-slate-500" data-back-link={lesson}>{what} — <Link to={`${BASE}/${lesson}`} className="text-blue-700 underline">{LESSON_TITLES[lesson]}</Link></p>
+);
+
+/** Une étape du « تحليل الوضعية » du manuel, au mot près. */
+const Phase = ({ i }) => (
+  <TextbookBox kind="remark" title={SITUATION.analysis[i].label} text={analysisText(SITUATION.analysis[i])} source={SITUATION.source} compact />
+);
+
+export default function Module01AlWadiya() {
+  const [trials, setTrials] = useState([]);
+  const [q, setQ] = useState({});
+  const mark = (n) => () => setQ((s) => ({ ...s, [n]: true }));
+  const keep = (e) => setTrials((list) => [...list, e]);
+
+  return (
+    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="الوضعية وتحليلها" moduleSubtitle="ارتفاع «مقام الشهيد» بعمود كهربائي وخط نظر" estimatedTime="20 دقيقة"
+      brief={{
+        tag: 'أدمج تعلّماتي — الكتاب ص 124', headline: 'معلم لا نصعده: كم ارتفاع «مقام الشهيد»؟', emoji: '🏛️',
+        title: 'وضعية واحدة وأدوات الوحدة كلها: طالس للارتفاع، والظل للزاوية، والحاسبة للتدوير', tone: 'amber',
+        body: (
+          <div className="space-y-2" data-situation="maqam-echahid">
+            <p className="font-bold">{SITUATION.title}</p>
+            <p><MathText>{SITUATION.text}</MathText></p>
+            <SightLineFigure {...SITUATION.figure} landmark="maqam" />
+            <p className="text-xs text-slate-500" data-reading-note="95,65"><MathText>{REMARKS.reading}</MathText></p>
+          </div>
+        ),
+        footer: <SourceTag source={SITUATION.source} />,
+      }}
+      intro={
+        <ManipulationWorkspace
+          title="الأنشطة التفاعلية"
+          defaultLevel="advanced"
+          lead="المستوى المتقدّم هو وضعية الكتاب: حرّك أريس على الأرض حتى تختفي قمة المقام خلف قمة العمود. في المستوى المبتدئ عمود إنارة آخر طوله 3 أمتار أمام المعلم نفسه."
+          levels={{
+            beginner: () => (
+              <Manipulation type="clinometer" level="beginner" {...LAB.beginner} title="عمود إنارة طوله 3 أمتار على بعد 89 مترا من «مقام الشهيد»" onTrial={keep} />
+            ),
+            advanced: () => (
+              <Manipulation type="clinometer" level="advanced" {...LAB.advanced} title="وضعية الكتاب: عمود كهربائي طوله 2,30 مترا على بعد 95,65 مترا من «مقام الشهيد»" onTrial={keep} />
+            ),
+          }}
+        />
+      }
+      steps={[
+        { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1 من الكتاب: ما المطلوب؟', done: !!q[1],
+          content: (
+            <div className="space-y-3">
+              <Phase i={0} />
+              <TapQuestion
+                prompt="ما المطلوب في نص الوضعية؟"
+                options={[
+                  'ارتفاع «مقام الشهيد»، وقيس الزاوية x بين الأرض وخط النظر عند أريس',
+                  'طول العمود الكهربائي',
+                  'المسافة بين أريس وقاعدة المقام فقط',
+                  'ارتفاع المقام فقط',
+                ].map(M)}
+                correct={0} cols={1} requires={['talis-nazar']}
+                explain={<MathText>{'النص يطلب أمرين: «ساعد أريس على إيجاد ارتفاع هذا المقام» و «عيّن قيس الزاوية x». طول العمود $2{,}30\\,\\mathrm{m}$ معطى، والمسافتان على الشكل معطاتان.'}</MathText>}
+                onAnswered={mark(1)} />
+            </div>
+          ) },
+        { num: 2, title: 'تحليل الوضعية واختيار استراتيجية', subtitle: 'المرحلة 2 من الكتاب: أيّ معرفة؟', done: !!q[2],
+          content: (
+            <div className="space-y-3">
+              <Phase i={1} />
+              <p className="text-sm"><MathText>{REMARKS.names}</MathText></p>
+              <GeoFigure {...MODEL} />
+              <BatchChoiceQuestion
+                intro={<p className="text-sm font-semibold text-slate-700">في نموذج الوضعية (الشكل أعلاه)، احكم على كل عبارة.</p>}
+                rows={[
+                  { id: 's1', label: 'العمود [PQ] والمقام [MS] عموديان على الأرض فهما متوازيان.', options: TRUE_FALSE, correct: 0, correction: 'مستقيمان عموديان على مستقيم واحد (الأرض) متوازيان.' },
+                  { id: 's2', label: 'النقط A و Q و S على استقامة (خط النظر)، والنقط A و P و M على استقامة (الأرض).', options: TRUE_FALSE, correct: 0, correction: 'أريس يرى القمتين على خط واحد، والقاعدتان وموضعه على الأرض.' },
+                  { id: 's3', label: 'نحسب h بخاصية فيثاغورس في المثلث APQ وحده.', options: TRUE_FALSE, correct: 1, correction: 'فيثاغورس في APQ يعطي الطول AQ ولا يذكر h: نحتاج المثلثين APQ و AMS معًا، أي خاصية طالس.' },
+                  { id: 's4', label: 'الزاوية x زاوية في المثلثين APQ و AMS معًا.', options: TRUE_FALSE, correct: 0, correction: 'رأس الزاوية x هو A، الرأس المشترك للمثلثين، وضلعاها الأرض وخط النظر.' },
+                ]}
+                requires={['talis-nazar', 'nisab-tarif']}
+                feedback={({ allRight }) => <MathText>{allRight ? 'أحسنت: مستقيمان متوازيان يقطعان مستقيمين متقاطعين في A — وضعية طالس، والمثلث APQ قائم في P.' : REMARKS.nazar}</MathText>}
+                onAnswered={mark(2)} />
+              <BackLink lesson="tarrid-muthallathiya" what="ترجمة وضعية إلى مثلث قائم" />
+              {q[2] && <KnowledgeBrick id="talis-khatt-nazar" />}
+            </div>
+          ) },
+        { num: 3, title: 'تنفيذ: مساواة طالس', subtitle: 'المرحلة 3 — على الأرض، ثم بالقلم', done: !!q[3],
+          content: (
+            <div className="space-y-3">
+              <Phase i={2} />
+              <Evidence id="maqam" trials={trials} title="مواضعك أمام المقام (المختبر):"
+                empty="لم تحرّك أريس بعد: في المختبر اسحبه على الأرض حتى تختفي قمة المقام خلف قمة العمود." />
+              <TapQuestion
+                prompt="المساواة التي تعطيها خاصية طالس في المثلثين APQ و AMS:"
+                options={[
+                  '$\\dfrac{h}{2{,}30} = \\dfrac{98{,}1}{2{,}45}$',
+                  '$\\dfrac{h}{2{,}30} = \\dfrac{95{,}65}{2{,}45}$',
+                  '$\\dfrac{2{,}30}{h} = \\dfrac{98{,}1}{2{,}45}$',
+                  '$h = 2{,}30 + 95{,}65$',
+                ].map(M)}
+                correct={0} cols={2} requires={['talis-khatt-nazar']}
+                explain={<MathText>{`${REMARKS.AM} ثم ${REMARKS.talisEq} . ${REMARKS.nazarWhy} وقلب نسبة واحدة يعطي مساواة خاطئة، والأطوال لا تُجمع.`}</MathText>}
+                onAnswered={mark(3)} />
+              <BackLink lesson="talis-hisab-atwal" what="كتابة النسب المتساوية في وضعية طالس" />
+              {q[3] && <p className="text-xs text-slate-600" data-misconception-note="nazar"><MathText>{`خطأ شائع: ${REMARKS.nazarWrong} ${REMARKS.nazarWhy}`}</MathText></p>}
+            </div>
+          ) },
+        { num: 4, title: 'تنفيذ: ارتفاع المقام', subtitle: 'نحسب ثم ندوّر', done: !!q[4],
+          content: (
+            <div className="space-y-3">
+              <NumericQuestion
+                prompt="ما ارتفاع المقام h مدوّرا إلى الجزء من 100 (بالمتر)؟"
+                expected={close(92.09)} display="92,09" parse={parseDec}
+                requires={['talis-khatt-nazar', 'tadwir']}
+                explain={<MathText>{REMARKS.hCalc}</MathText>}
+                explainFor={(n) => <MathText>{close(89.79)(n) ? `استعملت المسافة 95,65 بين العمود والمقام. ${REMARKS.nazarWhy} ${REMARKS.hCalc}` : close(92)(n) || close(92.1)(n) ? `المطلوب التدوير إلى الجزء من 100. ${REMARKS.hCalc}` : REMARKS.hCalc}</MathText>}
+                onAnswered={mark(4)} />
+              {q[4] && <p className="rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900" data-real-height="92"><MathText>{REMARKS.real}</MathText></p>}
+            </div>
+          ) },
+        { num: 5, title: 'تنفيذ: الزاوية x', subtitle: 'أيّ نسبة في المثلث الصغير؟', done: !!q[5],
+          content: (
+            <div className="space-y-3">
+              <TapQuestion
+                prompt="في المثلث APQ القائم في P، المساواة الصحيحة هي:"
+                options={[
+                  '$\\tan x = \\dfrac{2{,}30}{2{,}45}$',
+                  '$\\sin x = \\dfrac{2{,}30}{2{,}45}$',
+                  '$\\tan x = \\dfrac{2{,}45}{2{,}30}$',
+                  '$\\cos x = \\dfrac{2{,}30}{2{,}45}$',
+                ].map(M)}
+                correct={0} cols={2} requires={['nisab-tarif']}
+                explain={<MathText>{`${REMARKS.tanX} الجيب يحتاج الوتر AQ وهو غير معطى، و $\\dfrac{2{,}45}{2{,}30}$ هو مقلوب الظل.`}</MathText>}
+                onAnswered={mark(5)} />
+              <BackLink lesson="nisab-muthallathiya" what="الظل: الضلع المقابل على الضلع المجاور" />
+            </div>
+          ) },
+        { num: 6, title: 'تنفيذ: قيس الزاوية x', subtitle: 'الحاسبة ثم التدوير إلى الدرجة', done: !!q[6],
+          content: (
+            <div className="space-y-3">
+              <Evidence id="maqam-angle" trials={trials} title="مواضعك أمام المقام (المختبر):"
+                empty="جرّب في المختبر: عندما تختفي قمة المقام خلف قمة العمود اختر النسبة التي تعطي الزاوية x." />
+              <NumericQuestion
+                prompt="ما المدوّر إلى الدرجة لقيس الزاوية x؟"
+                expected={close(43)} display="43" parse={parseDec}
+                requires={['hasiba-aks', 'tadwir']}
+                explain={<MathText>{REMARKS.xCalc}</MathText>}
+                explainFor={(n) => <MathText>{close(0.94)(n) ? `${REMARKS.qaysWhy} ${REMARKS.xCalc}` : close(47)(n) ? `${REMARKS.mutammima} ${REMARKS.xCalc}` : close(42)(n) ? `${REMARKS.tadwirMubakkir} ${REMARKS.xCalc}` : REMARKS.xCalc}</MathText>}
+                onAnswered={mark(6)} />
+              <BackLink lesson="hasiba-muthallathiya" what="تعيين قيس زاوية بالحاسبة وتدويره" />
+              {q[6] && (
+                <>
+                  <KnowledgeBrick id="zawiya-bi-zill" />
+                  <p className="text-xs text-slate-600" data-misconception-note="qays"><MathText>{`خطأ شائع: ${REMARKS.qaysWrong} ${REMARKS.qaysWhy}`}</MathText></p>
+                </>
+              )}
+            </div>
+          ) },
+        { num: 7, title: 'التحقّق وتحرير الحل', subtitle: 'آخر المرحلة 3: هل النتيجة ملائمة للواقع؟', done: !!q[7],
+          content: (
+            <div className="space-y-3">
+              <BatchChoiceQuestion
+                intro={<p className="text-sm font-semibold text-slate-700">قبل أن نكتب الجواب، احكم على كل عبارة.</p>}
+                rows={[
+                  { id: 'v1', label: <MathText>{'في المثلث الكبير، $\\tan x = \\dfrac{h}{98{,}1}$ يعطي القيس نفسه.'}</MathText>, options: TRUE_FALSE, correct: 0, correction: <MathText>{REMARKS.check}</MathText> },
+                  { id: 'v2', label: <MathText>{'يمكن تدوير $\\tan x$ إلى $0{,}9$ قبل اللمسة العكسية دون أن يتغيّر المدوّر إلى الدرجة.'}</MathText>, options: TRUE_FALSE, correct: 1, correction: <MathText>{REMARKS.tadwirMubakkir}</MathText> },
+                  { id: 'v3', label: 'الزاوية بين خط النظر والمقام في القمة S ليست x بل متمّمتها.', options: TRUE_FALSE, correct: 0, correction: <MathText>{REMARKS.mutammima}</MathText> },
+                  { id: 'v4', label: <MathText>{'لو وجدنا $h \\approx 2{,}35\\,\\mathrm{m}$ لقبلنا النتيجة.'}</MathText>, options: TRUE_FALSE, correct: 1, correction: <MathText>{'المقام أعلى بكثير من العمود ( $2{,}30\\,\\mathrm{m}$ ): نتيجة كهذه غير ملائمة للواقع، فنبحث عن الخطأ في المساواة.'}</MathText> },
+                ]}
+                requires={['zawiya-bi-zill', 'talis-khatt-nazar']}
+                feedback={({ allRight }) => <MathText>{allRight ? REMARKS.jumla : REMARKS.check}</MathText>}
+                onAnswered={mark(7)} />
+              {q[7] && (
+                <>
+                  <KnowledgeBrick id="mulaamat-natija" />
+                  <p className="rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900"><MathText>{REMARKS.jumla}</MathText></p>
+                  <KnowledgeBrick id="tariqat-wadiya" />
+                </>
+              )}
+            </div>
+          ) },
+      ]}
+      footer={<KnowledgeSnapshot moduleNumber={1} />} />
+  );
+}

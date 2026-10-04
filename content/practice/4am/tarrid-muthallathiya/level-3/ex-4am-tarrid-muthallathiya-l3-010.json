@@ -1,0 +1,186 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l3-010",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 13 — برهن ثم احسب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "برهان",
+      "زاوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-13",
+      "page": 123,
+      "section": "البرهان باستعمال النسب المثلثية",
+      "number": 13
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 123، تمرين 13): شكل منجز باليد الحرة: B من [AC] و E من [AD] ، $CB = 1{,}25$ و $BA = 3$ و $AE = 2{,}4$ و $ED = 1$ و $CD = 2{,}55$ (بالسنتيمتر).",
+    "figure": {
+      "points": {
+        "A": [
+          3.4,
+          0
+        ],
+        "C": [
+          0,
+          2.55
+        ],
+        "D": [
+          0,
+          0
+        ],
+        "B": [
+          1.0,
+          1.8
+        ],
+        "E": [
+          1,
+          0
+        ]
+      },
+      "segments": [
+        {
+          "from": "C",
+          "to": "B",
+          "label": "1,25cm"
+        },
+        {
+          "from": "B",
+          "to": "A",
+          "label": "3cm"
+        },
+        {
+          "from": "A",
+          "to": "E",
+          "label": "2,4cm",
+          "labelSide": -1
+        },
+        {
+          "from": "E",
+          "to": "D",
+          "label": "1cm",
+          "labelSide": -1
+        },
+        {
+          "from": "C",
+          "to": "D",
+          "label": "2,55cm"
+        },
+        {
+          "from": "B",
+          "to": "E",
+          "tone": "indigo"
+        }
+      ],
+      "labels": {
+        "A": "e",
+        "C": "nw",
+        "D": "sw",
+        "B": "n",
+        "E": "s"
+      },
+      "ariaLabel": "شكل منجز باليد الحرة: B على [AC] و E على [AD]، CB = 1,25cm و BA = 3cm و AE = 2,4cm و ED = 1cm و CD = 2,55cm",
+      "maxWidth": 340
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لماذا يمكن استعمال النسب المثلثية في المثلث ACD؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لأن $3{,}4^2 + 2{,}55^2 = 4{,}25^2$ ، فالمثلث ACD قائم في D (الخاصية العكسية لخاصية فيثاغورس)",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لأن الشكل يبدو قائما في D",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "C",
+          "content": "لأن $3 + 1{,}25 = 4{,}25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن النتيجة بأطوال المثلث المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الوتر أطول أضلاع المثلث القائم، والجيب وجيب التمام أصغر من 1."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نتيجة لا تحترم هذه الشروط تعني خطأ في اختيار النسبة أو في العملية."
+        }
+      ],
+      "feedback": {
+        "correct": "$AC = 4{,}25$ و $AD = 3{,}4$ : $11{,}56 + 6{,}5025 = 18{,}0625 = 4{,}25^2$ ؛ الشكل منجز باليد الحرة فلا يُثبت شيئا.",
+        "incorrect": "سمِّ الأضلاع بالنسبة إلى الزاوية المعلومة، ثم اختر النسبة التي تجمع المعلوم والمطلوب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب قيس الزاوية $\\widehat{A}$ بالدرجة، إلى الوحدة.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "37",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "53"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلعين المعلومين بالنسبة إلى الزاوية المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمعهما واحسب قيمتها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عيّن الزاوية باللمسة العكسية (2nd ثم sin⁻¹ أو cos⁻¹ أو tan⁻¹) ودوّر إلى الدرجة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos\\widehat{A} = \\dfrac{AD}{AC} = \\dfrac{3{,}4}{4{,}25} = 0{,}8$ ومنه $\\widehat{A} \\approx 37^{\\circ}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

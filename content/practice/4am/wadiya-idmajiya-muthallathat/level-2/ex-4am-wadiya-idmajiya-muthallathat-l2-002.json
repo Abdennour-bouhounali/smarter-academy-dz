@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l2-002",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — عمود إنارة أمام المقام",
+    "estimatedMinutes": 4,
+    "tags": [
+      "خاصية طالس",
+      "الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "أمام «مقام الشهيد» عمود إنارة شاقولي طوله $3\\,\\mathrm{m}$ على بعد $89\\,\\mathrm{m}$ من قاعدة المقام. وقفت سلمى على الأرض على بعد $3\\,\\mathrm{m}$ من العمود (العمود بينها وبين المقام)، فرأت قمة العمود وقمة المقام على استقامة واحدة (نهمل طولها)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع المقام (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "92",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المسافة من سلمى إلى المقام تمرّ بالعمود."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المثلثان رأسهما موضع سلمى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبة h إلى 3 تساوي نسبة المسافة الكلية إلى 3."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{h}{3} = \\dfrac{3 + 89}{3}$ ومنه $h = 92\\,\\mathrm{m}$ .",
+        "incorrect": "استعمل المسافة الكلية من سلمى إلى المقام."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "89",
+          "id": "MISC-MUTH-TALIS-NAZAR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما قيس الزاوية x بين الأرض وخط نظر سلمى (بالدرجة)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "45",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العمود $3\\,\\mathrm{m}$ والمسافة إليه $3\\,\\mathrm{m}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الظل = المقابل ÷ المجاور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ظلّ يساوي 1: أيّ زاوية خاصة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{3}{3} = 1$ ومنه $x = 45^{\\circ}$ .",
+        "incorrect": "الظل يساوي 1، والقيس يعطيه اللمسة العكسية."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "1",
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ]
+    }
+  ]
+}

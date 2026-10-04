@@ -1,0 +1,181 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l3-007",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 25 — المستطيل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مستطيل",
+      "حل المثلث"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-25",
+      "page": 125,
+      "section": "أتعمّق",
+      "number": 25
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 125، تمرين 25): ABCD مستطيل طولا قطريه $10\\,\\mathrm{cm}$ ، يتقاطع قطراه في O، و $\\widehat{AOD} = 30^{\\circ}$ (الشكل).",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          2.588
+        ],
+        "B": [
+          9.659,
+          2.588
+        ],
+        "C": [
+          9.659,
+          0
+        ],
+        "D": [
+          0,
+          0
+        ],
+        "O": [
+          4.83,
+          1.294
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        {
+          "from": "A",
+          "to": "C",
+          "tone": "indigo"
+        },
+        {
+          "from": "B",
+          "to": "D",
+          "tone": "indigo"
+        }
+      ],
+      "angles": [
+        {
+          "at": "O",
+          "from": "A",
+          "to": "D",
+          "label": "30°"
+        }
+      ],
+      "labels": {
+        "A": "nw",
+        "B": "ne",
+        "C": "se",
+        "D": "sw",
+        "O": "s"
+      },
+      "ariaLabel": "مستطيل ABCD قطراه [AC] و [BD] يتقاطعان في O، والزاوية AOD قيسها 30 درجة",
+      "maxWidth": 340
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب قيس الزاوية $\\widehat{OAB}$ بالدرجة.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "reason",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "15",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "75"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث قائم: إحدى زواياه $90^{\\circ}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مجموع أقياس زوايا المثلث $180^{\\circ}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الزاويتان الحادتان في مثلث قائم مجموعهما $90^{\\circ}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$OA = OD = 5$ : $\\widehat{OAD} = \\dfrac{180^{\\circ} - 30^{\\circ}}{2} = 75^{\\circ}$ و $\\widehat{OAB} = 90^{\\circ} - 75^{\\circ} = 15^{\\circ}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب طول المستطيل AB بالسنتيمتر، إلى الجزء من 100.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,35 (المدوّر إلى الجزء من 100)",
+      "expectedAnswer": "9.66",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "2.59"
+        },
+        {
+          "id": "MISC-MUTH-DARB-BADAL-QISMA",
+          "value": "10.35"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "في المثلث ABC القائم في B : $AB = 10 \\times \\cos 15^{\\circ} \\approx 9{,}66\\,\\mathrm{cm}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l5-003",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — أيّهما أكبر؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الحاسبة",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "حاسبة مبرمجة بالدرجة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ عبارة صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\cos 40^{\\circ} > \\sin 40^{\\circ}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\sin 40^{\\circ} > \\cos 40^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "id": "C",
+          "content": "$\\sin 40^{\\circ} = \\cos 40^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-ZAWIYA-KHATI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تأكّد أن الحاسبة مبرمجة بالدرجة: الحرف D في أعلى الشاشة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضغط الدالة ثم قيس الزاوية ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر ما يظهر على الشاشة: انظر إلى الرقم الموالي للرقم الذي تحتفظ به."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos 40^{\\circ} \\approx 0{,}77$ و $\\sin 40^{\\circ} \\approx 0{,}64$ ؛ الجيب وجيب التمام متساويان فقط عند $45^{\\circ}$ .",
+        "incorrect": "راجع: هل الحاسبة بالدرجة، وهل ضغطت الدالة المناسبة ثم دوّرت الشاشة؟"
+      }
+    }
+  ]
+}

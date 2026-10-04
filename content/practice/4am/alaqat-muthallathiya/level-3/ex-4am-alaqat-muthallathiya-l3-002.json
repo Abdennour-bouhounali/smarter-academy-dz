@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l3-002",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "طرائق (ص 121) — تمرين 2: ظلها 7 على 3",
+    "estimatedMinutes": 3,
+    "tags": [
+      "طرائق",
+      "إنشاء",
+      "حاسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-construct",
+      "page": 121,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: أنشأنا دون منقلة زاوية قائمة $\\widehat{MNP}$ رأسها N ، و $MN = 7\\,\\mathrm{cm}$ و $NP = 3\\,\\mathrm{cm}$ . في المثلث MNP القائم في N : $\\tan\\widehat{P} = \\dfrac{NM}{NP} = \\dfrac{7}{3}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عند التحقق بحاسبة، قيس الزاوية $\\widehat{P}$ مدوّرا إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "قيس بالدرجات، عدد عشري بالفاصلة (مثل 12,5)",
+      "expectedAnswer": "66.8",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "23.2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل $\\tan^{-1}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{7}{3} \\approx 2{,}333$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan^{-1}\\left(\\dfrac{7}{3}\\right) \\approx 66{,}80^{\\circ}$ ، وبالمنقلة $67^{\\circ}$ .",
+        "incorrect": "الزاوية عند P يقابلها الضلع 7 ويجاورها 3."
+      }
+    }
+  ]
+}

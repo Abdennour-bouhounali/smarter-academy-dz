@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l5-009",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — نسبة مستحيلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "اللمسات العكسية",
+      "خطأ رياضي"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P2",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "تلميذ ضغط ⁦ON 2nd sin⁻¹ 1,2 =⁩ فظهرت رسالة خطأ رياضي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "السبب:",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا توجد زاوية حادة جيبها $1{,}2$ ، لأن جيب زاوية حادة أصغر من 1",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الحاسبة مبرمجة بالراديان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-HASIBA-RAD"
+        },
+        {
+          "id": "C",
+          "content": "كان عليه ألّا يضغط ⁦2nd⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKS-BADAL-MUBASHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "في مثلث قائم الوتر أطول الأضلاع، فالجيب أصغر من 1: النسبة $1{,}2$ مستحيلة، في أيّ وضع كانت الحاسبة.",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

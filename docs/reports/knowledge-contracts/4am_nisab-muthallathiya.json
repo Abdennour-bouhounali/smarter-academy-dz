@@ -1,0 +1,220 @@
+{
+  "lesson": "nisab-muthallathiya",
+  "grade": "4am",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "majmu-zawaya",
+    "watar",
+    "muqabil-mujawir",
+    "jayb-tamam-3am",
+    "fithaghuras",
+    "talis-wahda-9"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "cos-nashat",
+      "type": "concepts",
+      "module": 1,
+      "brick": null
+    },
+    {
+      "id": "nisab-zawiya",
+      "type": "regles",
+      "module": 1,
+      "brick": null
+    },
+    {
+      "id": "jayb",
+      "type": "concepts",
+      "module": 2,
+      "brick": null
+    },
+    {
+      "id": "thill",
+      "type": "concepts",
+      "module": 2,
+      "brick": null
+    },
+    {
+      "id": "qiyam-madbuta",
+      "type": "concepts",
+      "module": 2,
+      "brick": null
+    },
+    {
+      "id": "hudud",
+      "type": "regles",
+      "module": 2,
+      "brick": null
+    }
+  ],
+  "vocabularyIntroduced": [],
+  "proceduresIntroduced": [
+    {
+      "id": "hisab-tul",
+      "type": "methodes",
+      "module": 3,
+      "brick": null
+    }
+  ],
+  "memorisation": [],
+  "questions": [],
+  "findings": [
+    {
+      "code": "W_PRIOR_NOT_DIAGNOSED",
+      "severity": "medium",
+      "message": "priorKnowledge declares 'majmu-zawaya' but no Module 0 question diagnoses it",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js",
+      "line": 0,
+      "module": null,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_PRIOR_NOT_DIAGNOSED",
+      "severity": "medium",
+      "message": "priorKnowledge declares 'watar' but no Module 0 question diagnoses it",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js",
+      "line": 0,
+      "module": null,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_PRIOR_NOT_DIAGNOSED",
+      "severity": "medium",
+      "message": "priorKnowledge declares 'muqabil-mujawir' but no Module 0 question diagnoses it",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js",
+      "line": 0,
+      "module": null,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_PRIOR_NOT_DIAGNOSED",
+      "severity": "medium",
+      "message": "priorKnowledge declares 'jayb-tamam-3am' but no Module 0 question diagnoses it",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js",
+      "line": 0,
+      "module": null,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_PRIOR_NOT_DIAGNOSED",
+      "severity": "medium",
+      "message": "priorKnowledge declares 'fithaghuras' but no Module 0 question diagnoses it",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js",
+      "line": 0,
+      "module": null,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_PRIOR_NOT_DIAGNOSED",
+      "severity": "medium",
+      "message": "priorKnowledge declares 'talis-wahda-9' but no Module 0 question diagnoses it",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js",
+      "line": 0,
+      "module": null,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_ITEM_WITHOUT_BRICK",
+      "severity": "info",
+      "message": "knowledge item 'cos-nashat' (module 1) is never established by a brick — it only appears in the end-of-module snapshot",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/knowledge.jsx",
+      "line": 22,
+      "module": 1,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_ITEM_WITHOUT_BRICK",
+      "severity": "info",
+      "message": "knowledge item 'nisab-zawiya' (module 1) is never established by a brick — it only appears in the end-of-module snapshot",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/knowledge.jsx",
+      "line": 33,
+      "module": 1,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_ITEM_WITHOUT_BRICK",
+      "severity": "info",
+      "message": "knowledge item 'jayb' (module 2) is never established by a brick — it only appears in the end-of-module snapshot",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/knowledge.jsx",
+      "line": 46,
+      "module": 2,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_ITEM_WITHOUT_BRICK",
+      "severity": "info",
+      "message": "knowledge item 'thill' (module 2) is never established by a brick — it only appears in the end-of-module snapshot",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/knowledge.jsx",
+      "line": 59,
+      "module": 2,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_ITEM_WITHOUT_BRICK",
+      "severity": "info",
+      "message": "knowledge item 'qiyam-madbuta' (module 2) is never established by a brick — it only appears in the end-of-module snapshot",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/knowledge.jsx",
+      "line": 72,
+      "module": 2,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_ITEM_WITHOUT_BRICK",
+      "severity": "info",
+      "message": "knowledge item 'hudud' (module 2) is never established by a brick — it only appears in the end-of-module snapshot",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/knowledge.jsx",
+      "line": 83,
+      "module": 2,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_ITEM_WITHOUT_BRICK",
+      "severity": "info",
+      "message": "knowledge item 'hisab-tul' (module 3) is never established by a brick — it only appears in the end-of-module snapshot",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/knowledge.jsx",
+      "line": 97,
+      "module": 3,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    }
+  ]
+}

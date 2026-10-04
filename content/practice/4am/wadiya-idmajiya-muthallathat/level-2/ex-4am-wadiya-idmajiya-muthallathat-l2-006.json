@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l2-006",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — قطر ملعب 5 جويلية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية فيثاغورس",
+      "الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "ex-31"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "أرضية ملعب كرة القدم مستطيل طوله $105\\,\\mathrm{m}$ وعرضه $68\\,\\mathrm{m}$ . يجري لاعب من راية الركن إلى الراية المقابلة لها على القطر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول القطر مدوّرا إلى الوحدة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (مدوّر إلى الوحدة)",
+      "expectedAnswer": "125",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القطر وتر مثلث قائم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ضلعا الزاوية القائمة هما الطول والعرض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مربع الوتر = مجموع المربعين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{105^2 + 68^2} = \\sqrt{15649} \\approx 125{,}1$ ، أي $125\\,\\mathrm{m}$ .",
+        "incorrect": "الوتر ليس مجموع الضلعين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "173",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما المدوّر إلى الدرجة لقيس الزاوية بين القطر وخط التماس (الطول)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "33",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المثلث القائم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العرض يقابل الزاوية والطول يجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الظل ثم اللمسة العكسية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{68}{105}$ ومنه $x \\approx 32{,}9^{\\circ}$ ، أي $33^{\\circ}$ .",
+        "incorrect": "حدّد المقابل والمجاور بالنسبة إلى هذه الزاوية."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "57",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        }
+      ]
+    }
+  ]
+}

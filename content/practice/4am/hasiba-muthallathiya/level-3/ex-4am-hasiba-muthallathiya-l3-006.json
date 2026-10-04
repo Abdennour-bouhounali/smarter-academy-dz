@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l3-006",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — زاوية من ضلعين قائمين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قيس زاوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P2",
+      "modelledOn": "ex-11"
+    }
+  },
+  "statement": {
+    "content": "ABC مثلث قائم في B حيث $AB = 6\\,\\mathrm{cm}$ و $BC = 8\\,\\mathrm{cm}$ (الشكل).",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          6,
+          0
+        ],
+        "C": [
+          6,
+          8
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "6 cm"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "label": "8 cm"
+        },
+        [
+          "A",
+          "C"
+        ]
+      ],
+      "rightAngles": [
+        [
+          "A",
+          "B",
+          "C"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "A",
+          "from": "B",
+          "to": "C",
+          "label": "?"
+        }
+      ],
+      "ariaLabel": "مثلث ABC قائم في B، الضلع AB طوله 6 سم والضلع BC طوله 8 سم، والزاوية المطلوبة عند A",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس $\\widehat{BAC}$ مدوّرا إلى الوحدة (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "53",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-MAQLUBA",
+          "value": "37"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "[BC] يقابل A و [AB] يجاورها: $\\tan\\widehat{BAC} = \\dfrac{8}{6}$ ، و ⁦ON 2nd tan⁻¹ ( 8 ÷ 6 ) =⁩ يعطي $53{,}13010235$ ، إذن $\\widehat{BAC} \\approx 53^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

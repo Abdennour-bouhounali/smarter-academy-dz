@@ -299,6 +299,28 @@ Unit-count assertions that read the real catalogue (`unitGrouping.test.js`, `fin
   Figure readings decided in the builder: the تحدّ minaret 7,25 m (shadow method), ex-9 needs the converse of Pythagoras, ex-13
   « not parallel » under either label reading, ex-23 equality marks read at 500 dpi.
 
+**Unit 10 « حساب المثلثات في المثلث القائم » (2026-10-04) — five authors on a seeded foundation — added:**
+
+- **One exact module for trigonometry**, `packages/core/arithmetic/trigonometry.js` on `linear.js` fractions and `squareRoots.js`: SURDS
+  `{ q, r }` = q·√r (3/√13 = 3√13/13 stays exact), the sides relative to an acute angle (`sides`), the three ratios (`ratioExact`), the bounds
+  (`isPossible`: sin, cos ∈ ]0 ; 1[), the relations (`fromRatio`: the two other exact ratios from one), the choice of ratio (`lengthPlan`,
+  `anglePlan`), the calculator world (`sinDeg` …, `ratioRad` / `angleRad` (what a calculator left in RAD shows), `roundTo` with the decimal comma, `screen`, the textbook's key sequences) — tested on every
+  textbook number first. The extraction builder asserts every printed screen value (5,915503958 …) with Python's own `math`.
+- **The brief and the lock live in the repository** (`docs/sources/4am/unit10/brief-authors.md`, `locked_edit.py`): unit 8's scratchpad was
+  wiped mid-session; nothing the authors need sits in a temporary directory any more.
+- **Stubs for EVERYTHING a sibling imports**: `routes.jsx` per lesson (App.jsx) AND each new lab component (`manipulationRegistry.js` imports it
+  lazily — Vite transforms the import even before it is called). Each stub says it is one and is replaced by its owner.
+- **A lab shared by a lesson and the synthesis with a FIXED props contract** (`clinometer`: `height | ladder | align`), the synthesis keeping
+  its numbers in `content/textbook.js › LAB` (unit 6's pattern).
+- **Arabic never inside KaTeX**: the textbook's word fractions (« طول الضلع المقابل / طول الوتر ») use the new shared
+  `lessons/common/components/WordFraction.jsx` (ARABIC_RTL_CONTRACT « Word fractions and calculator keys »).
+- **Rounded values are `rational` keys, exact surds are `choice`** — no new answer type (EXERCISE_CONTRACT « Unit 10 »).
+- **`levels.test.js` measures lists and objects** (angle tables, construction targets) by their numeric leaves.
+- **A تحدّ that says « اعتمادا على الشكل » refers to a figure** too: `4am-unit-opener-figures.mjs` now detects it.
+- **Misprints and readings**: معارف 2 example `tan B = AC/BC` → `AC/AB`; معارف 4 box `sin²x + sin²x = 1` → `cos²x + sin²x = 1`; the
+  situation's distance read 95,65 m (h ≈ 92 m, the real height of مقام الشهيد; 96,65 would give 93 m); ex-25's 30° is at O (∠AOD), so
+  ∠OAB = 15°; ex-18's sin x = 3/2 and √5/2 are deliberate impossibilities (« إن أمكن »); ex-15 names its third pupil « رضا ».
+
 ### `routes.jsx` — the whole file
 
 ```jsx
@@ -577,7 +599,8 @@ number)` helper from `_unit/unitMeta.js`; anything the platform adds carries
 label when `textbook.additionReason.<reason>` exists (« عبارة إضافية من المنصّة »
 for `prerequisite_diagnostic`). Render them with
 `TextbookBox` (`kind`: definition, example, …), `SourceTag` and `MethodSteps`
-from `lessons/common/textbook`. `npm run check:textbook` fails if an extracted
+from `lessons/common/textbook` (a `MethodSteps` line may be a React node since unit 10 — e.g. a calculator key sequence as LTR
+`<kbd>`, never KaTeX; a fraction of Arabic WORDS is `WordFraction`). `npm run check:textbook` fails if an extracted
 element has anything other than exactly one destination.
 
 ---
@@ -664,7 +687,7 @@ before touching one (how). In short:
   divisor lists), keep it at both levels and vary the cognitive demand
   instead. A theme bolted onto a list of divisors hides the mathematics.
 - The type registry is **closed**. Content names a `type`; it never supplies a
-  component. The forty types (ten for unit 1, three for unit 2, two for unit 3, four for unit 4, three for unit 5, four for unit 6, five for unit 7, four for unit 8, five for unit 9) live in
+  component. The forty-four types (ten for unit 1, three for unit 2, two for unit 3, four for unit 4, three for unit 5, four for unit 6, five for unit 7, four for unit 8, five for unit 9, four for unit 10) live in
   `packages/core/curriculum/manipulationTypes.js` (data) and
   `manipulations/manipulationRegistry.js` (components).
 - **Reuse before writing.** The existing types are reused across lessons by
@@ -1048,13 +1071,24 @@ geometry unit, under the programme's « ميدان الهندسة »:
 | **`inshaat-talis`** | a lesson with NO textbook activity whose entry is `segment-divider` (`platform_adaptation`, `tifo` banner): real ruler, compass and set square, a parallel off a mark refused, unequal bands measured exactly; the ratio point inside AND outside on two graduated parallels; دوري الآن done in the lab posed alone; the owner's « نسبة غير ناطقة » taught by one declared example (√13, then 2√13/3 by Thales); a bank that checks the REASONING of constructions |
 | **`wadiya-idmajiya-talis`** | the synthesis with a textbook situation: the تحدّ on `shadow-stick` (plant the stick where both shadows end together — the method — then a pole riding the ray reads 7,25 m) and the cylinder in the cone on `cone-cylinder` (piercing refused, h = r → V = 91,125π), two types in one workspace; `MinaretFigure` drawn once for the unit page, M1 and the final test; QCM cells judged one by one; the pyramid of Khufu by its shadow as transfer; the final test transposes cone and minaret |
 
+Unit 10 « حساب المثلثات في المثلث القائم » (`lessons/moyen/4am/handasa/hisab-muthallathat/`, 2026-10-04), five authors on a seeded
+foundation, the second geometry unit:
+
+| Lesson | Read it for |
+|---|---|
+| **`nisab-muthallathiya`** | the unit ENTRY on `ramp-ratios` (`skatepark`): a CHAINED carry inside one level — tap the acute angle (the right angle refused), carry the labels الوتر / المقابل / المجاور onto the sides (the board as « المقابل » refused with its reason), compose cos / sin / tan from the named sides (the hypotenuse over a sine refused, > 1), then lift the rise — the board swung down and stood up always outruns it (0 < sin, cos < 1); at متقدم (act-2) the student JUDGES three ramps at 40° before reading 0,64 / 0,84; the textbook's word definitions through `WordFraction`; the طرائق key sequences as LTR `<kbd>` through `MethodSteps` node lines (`components/KeySequence.jsx`) |
+| **`hasiba-muthallathiya`** | `trig-calculator` (`drone`): a drawn calculator that STARTS IN RAD (sin 30 = −0,988 drawn as a side going under the ground), real key sequences, forgetting 2nd contradicted by the drone lying on the ground, rounding as a CUT LINE dragged across the screen digits (truncation refused); act-4's table and its three inverse angles answered from the student's own presses; the know-3 screen misprint corrected; the narrow-screen recipe (4-column keypad, one shared control row under 380 px) |
+| **`alaqat-muthallathiya`** | `angle-compass` (`kite`): set square, a carried length, the compass opening and a pencil LOWERED from 90° until the arc cuts the other leg at the exact √(r² − a²); a string shorter than the height never lands; sin 2/5 built on the two legs refused as a tangent (21,8° vs 23,6°); the vertex of x designated by the student; cos² + sin² shown as a bar filling exactly 1 on every triangle, refused ones included; act-5 from lesson B's rounded table (0,87² + 0,5² = 1,0069 — hence the proof); know-4's misprint corrected; « إن أمكن » (ex-18) taught as a declared brick |
+| **`tarrid-muthallathiya`** | a lesson with NO textbook activity whose entry is the تحدّ on `clinometer`: the ladder (`mural`) bracketed by hand (1,8 < L < 1,9) before sin ÷ gives 1,9 m; the floodlight (`floodlight`) gives the same height from two distances, the wobble explained by the angle read to the degree; a wrong ratio refused naming the side it would need, a wrong operation refused with the value it would give; platform طرائق on ex-26 (rounding early: 5,8 vs 5,7) and ex-27; the unit page's `LadderFigure` |
+| **`wadiya-idmajiya-muthallathat`** | the synthesis REUSING lesson D's lab (`clinometer` `mode: 'align'`, `maqam`, numbers in `content/textbook.js › LAB`, `lab.render.test.jsx`): the observer slides until the pole's top hides مقام الشهيد's — Thales gives 92,09 m, the real height, then tan gives 43° — in the textbook's three phases; the six QCM items (item 3 two correct, item 5's two rows judged separately); أتعمّق's right triangles inside solids, rounding only at the end (22° vs 23°); the final test transposed to the minaret of جامع الجزائر (265 m) |
+
 **Textbook misprints are CORRECTED, not only noted (owner decision, 2026-09-30).**
 The extraction keeps the book's verbatim `text` and adds a `correction`
 `{ decidedBy, decidedOn, text | analysis1, answer?, note }`; `discrepancies`
 records the resolution. The lesson displays the corrected version with one
 discreet line (« صحّحت المنصّة خطأً مطبعيًا … »), never a long note. Unit 2:
 act-2 (L2), ex-27 and now-30 (L5 — now-30 is a reconstructed, complete
-exercise), the situation's analysis (synthesis). Unit 5: ex-31 (« x + y = 216 » → 270, synthesis). Unit 6: act-1 (2 % → 20 %, L1–L2), act-6 (copper 6 → 8 cm³, L4), know-4 (« kw/h » → kWh, L4), ex-13 (missing x, L3), ex-17 (question 2 on P و r, L1). Unit 7: act-3 2-أ (« (1 ; 0) » → (0 ; 1), a bidi-reversed couple, L2), act-1 4-ب (« أضيف » → « أضف », L1). Unit 8: ex-20 (median « 6 » impossible → 6,5, synthesis), ex-7 (the spreadsheet screenshot's other series and four formulas in one cell, L3), know-4 (« نفس التكرار 4 » → 5, « بالمتر » → بالسنتيمتر, the median class written as the table's, L2). Unit 9: prep 5 (« ADE » → ADF, L1), know-2 example (MN/AC → MN/BC, L1), method-lengths (« 1/2 = 5/DN » → 2/1, L1).
+exercise), the situation's analysis (synthesis). Unit 5: ex-31 (« x + y = 216 » → 270, synthesis). Unit 6: act-1 (2 % → 20 %, L1–L2), act-6 (copper 6 → 8 cm³, L4), know-4 (« kw/h » → kWh, L4), ex-13 (missing x, L3), ex-17 (question 2 on P و r, L1). Unit 7: act-3 2-أ (« (1 ; 0) » → (0 ; 1), a bidi-reversed couple, L2), act-1 4-ب (« أضيف » → « أضف », L1). Unit 8: ex-20 (median « 6 » impossible → 6,5, synthesis), ex-7 (the spreadsheet screenshot's other series and four formulas in one cell, L3), know-4 (« نفس التكرار 4 » → 5, « بالمتر » → بالسنتيمتر, the median class written as the table's, L2). Unit 9: prep 5 (« ADE » → ADF, L1), know-2 example (MN/AC → MN/BC, L1), method-lengths (« 1/2 = 5/DN » → 2/1, L1). Unit 10: know-2 example (« tan B = AC/BC » → AC/AB, L1), know-4 box (« sin²x + sin²x = 1 » → cos²x + sin²x = 1, L3), know-3 example 2's screen (16,69924453 → 16,69924423, L2), ex-15's third pupil (« رضا », L1), QCM item 5's duplicated option (shown once, L1 and synthesis).
 
 ---
 
@@ -1206,6 +1240,7 @@ KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-dala-taalufiya.m
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-ihsa.mjs                       # unit 8: unit page + every module at 1280/320 px + the four labs' glance blocks (stat-balance twice) in one screen at 4 viewports, both levels
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-khassiyat-talis.mjs              # unit 9: unit page + every module at 1280/320 px + the five geometry labs' glance blocks in one screen at 4 viewports (the synthesis switches type with the level)
 #   LABS_ONLY=1 skips the mounts; MOUNT_ONLY=1 (unit 9) skips the labs; MOUNT_LESSONS=a,b mounts only those lessons (the full run is ~35 min — split it)
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-hisab-muthallathat.mjs          # unit 10: unit page + every module at 1280/320 px + the four trigonometry labs (clinometer twice) in one screen at 4 viewports × 2 levels; LAB_MODULES=lesson:N moves a lab's module
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/manipulations.mjs
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/classroom.mjs
 ```

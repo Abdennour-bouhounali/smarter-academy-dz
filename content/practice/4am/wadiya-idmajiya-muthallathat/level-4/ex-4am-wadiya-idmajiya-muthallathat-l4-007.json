@@ -1,0 +1,169 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l4-007",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — طولان من زاوية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الظل",
+      "جيب التمام"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "في المثلث LIE القائم في I (الشكل): $IL = 8\\,\\mathrm{cm}$ و $\\widehat{L} = 35^{\\circ}$ .",
+    "figure": {
+      "points": {
+        "L": [
+          0,
+          3
+        ],
+        "I": [
+          0,
+          0
+        ],
+        "E": [
+          2.1,
+          0
+        ]
+      },
+      "segments": [
+        {
+          "from": "L",
+          "to": "I",
+          "label": "8 cm"
+        },
+        [
+          "I",
+          "E"
+        ],
+        [
+          "L",
+          "E"
+        ]
+      ],
+      "rightAngles": [
+        [
+          "L",
+          "I",
+          "E"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "L",
+          "from": "I",
+          "to": "E",
+          "label": "35°"
+        }
+      ],
+      "labels": {
+        "L": "nw",
+        "I": "sw",
+        "E": "se"
+      },
+      "ariaLabel": "مثلث LIE قائم في I: L فوق I و E على اليمين؛ IL = 8 cm وقيس الزاوية L يساوي 35 درجة",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الطول IE مدوّرا إلى الجزء من 10 (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 10)",
+      "expectedAnswer": "5.6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "IE يقابل الزاوية L."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "IL يجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المقابل = المجاور × الظل."
+        }
+      ],
+      "feedback": {
+        "correct": "$IE = 8 \\times \\tan 35^{\\circ} \\approx 5{,}6\\,\\mathrm{cm}$ .",
+        "incorrect": "المقابل والمجاور يربطهما الظل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "11.4",
+          "id": "MISC-MUTH-DARB-BADAL-QISMA"
+        },
+        {
+          "value": "4.6",
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما الطول EL مدوّرا إلى الجزء من 10 (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 10)",
+      "expectedAnswer": "9.8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "EL هو الوتر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجاور IL معلوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الوتر = المجاور ÷ جيب التمام."
+        }
+      ],
+      "feedback": {
+        "correct": "$EL = \\dfrac{8}{\\cos 35^{\\circ}} \\approx 9{,}8\\,\\mathrm{cm}$ .",
+        "incorrect": "الوتر مجهول في مقام جيب التمام."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "6.6",
+          "id": "MISC-MUTH-DARB-BADAL-QISMA"
+        }
+      ]
+    }
+  ]
+}

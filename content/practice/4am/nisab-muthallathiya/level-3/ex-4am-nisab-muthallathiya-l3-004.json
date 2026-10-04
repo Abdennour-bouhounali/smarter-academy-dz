@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l3-004",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "دوري الآن 1 — المثلث المتقايس الساقين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب طول",
+      "زاوية 45°"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-119",
+      "page": 119,
+      "section": "دوري الآن",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 119): KLM مثلث قائم في L ومتقايس الساقين حيث $KM = 6\\,\\mathrm{cm}$ ، فزاويتاه الحادتان قيس كل منهما $45^{\\circ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب LM، المدوّر إلى الجزء من 10 (بالسنتيمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "4.2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-QISMA-BADAL-DARB",
+          "value": "8.5"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "$LM = 6 \\times \\cos 45^{\\circ} = 3\\sqrt{2} \\approx 4{,}2$ (وكذلك بخاصية فيثاغورس: $2LM^2 = 36$).",
+        "incorrect": "[LM] مجاور للزاوية K و [KM] وتر: $LM = 6 \\times \\cos 45^{\\circ}$ ."
+      },
+      "difficulty": 3
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l3-003",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — كثيب رملي بتاغيت",
+    "estimatedMinutes": 4,
+    "tags": [
+      "خاصية طالس",
+      "الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "لتقدير ارتفاع كثيب رملي بتاغيت، غرست مريم عصا شاقولية طولها $1{,}2\\,\\mathrm{m}$ على بعد $98\\,\\mathrm{m}$ من النقطة M التي تقع قمة الكثيب شاقوليا فوقها، ثم استلقت على الأرض على بعد $2\\,\\mathrm{m}$ من العصا حيث ترى قمة العصا وقمة الكثيب على استقامة واحدة (العصا بينها وبين M)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع الكثيب (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "60",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العصا وارتفاع الكثيب شاقوليان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة الكلية من مريم إلى M."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبة h إلى طول العصا تساوي نسبة المسافة الكلية إلى بعد مريم عن العصا."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{h}{1{,}2} = \\dfrac{100}{2}$ ومنه $h = 60\\,\\mathrm{m}$ .",
+        "incorrect": "المسافة الكلية من مريم إلى M تمرّ بالعصا."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "58.8",
+          "id": "MISC-MUTH-TALIS-NAZAR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما المدوّر إلى الدرجة لقيس الزاوية بين الأرض وخط نظر مريم؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "31",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المثلث الصغير."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العصا تقابل الزاوية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الظل ثم اللمسة العكسية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{1{,}2}{2} = 0{,}6$ ومنه $x \\approx 30{,}96^{\\circ}$ ، أي $31^{\\circ}$ .",
+        "incorrect": "استعمل الظل في المثلث الذي تعرف ضلعيه."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "59",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        },
+        {
+          "value": "0.6",
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ]
+    }
+  ]
+}

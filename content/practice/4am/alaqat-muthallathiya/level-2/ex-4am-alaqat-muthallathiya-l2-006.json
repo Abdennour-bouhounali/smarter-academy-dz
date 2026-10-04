@@ -1,0 +1,72 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l2-006",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 17 (ص 123) — جيب التمام",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمرين 17",
+      "قيمة مضبوطة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-17",
+      "page": 123,
+      "section": "العلاقات المثلثية",
+      "number": 17
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: x هو قيس زاوية حادة حيث $\\sin x = \\dfrac{\\sqrt{3}}{2}$ . بدون استعمال حاسبة، عيّن القيمة المضبوطة للعدد $\\cos x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المضبوطة للعدد $\\cos x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{1}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JADHR-NASI"
+        },
+        {
+          "id": "B",
+          "content": "$1 - \\dfrac{\\sqrt{3}}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JAMA-NISAB"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{1}{2}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sin^2 x = \\dfrac{3}{4}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\cos^2 x = 1 - \\dfrac{3}{4}$ ، ثم الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos^2 x = \\dfrac{1}{4}$ فـ $\\cos x = \\dfrac{1}{2}$ (إنها الزاوية $60^{\\circ}$ ).",
+        "incorrect": "$\\dfrac{1}{4}$ هو $\\cos^2 x$ ، و $1 - \\dfrac{\\sqrt{3}}{2}$ يطرح النسبة دون تربيع."
+      }
+    }
+  ]
+}

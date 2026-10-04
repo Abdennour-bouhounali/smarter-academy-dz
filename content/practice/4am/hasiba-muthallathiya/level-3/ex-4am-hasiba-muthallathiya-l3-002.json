@@ -1,0 +1,171 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l3-002",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 7 — البرنامج والزاوية ACB",
+    "estimatedMinutes": 4,
+    "tags": [
+      "برنامج الحاسبة",
+      "قيس زاوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-7",
+      "page": 122,
+      "section": "النسب المثلثية - استعمال حاسبة",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 122): في الشكل، المثلث ABC قائم في B حيث $CA = 4{,}4\\,\\mathrm{cm}$ و $CB = 4\\,\\mathrm{cm}$ .",
+    "figure": {
+      "points": {
+        "C": [
+          0,
+          0
+        ],
+        "B": [
+          4,
+          0
+        ],
+        "A": [
+          4,
+          1.833
+        ]
+      },
+      "segments": [
+        {
+          "from": "C",
+          "to": "A",
+          "label": "4,4 cm"
+        },
+        {
+          "from": "C",
+          "to": "B",
+          "label": "4 cm"
+        },
+        [
+          "B",
+          "A"
+        ]
+      ],
+      "rightAngles": [
+        [
+          "C",
+          "B",
+          "A"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "C",
+          "from": "B",
+          "to": "A",
+          "label": "?"
+        }
+      ],
+      "ariaLabel": "المثلث ABC قائم في B، الوتر CA طوله 4,4 سم والضلع CB طوله 4 سم، والزاوية المطلوبة عند C",
+      "maxWidth": 320
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "البرنامج الذي يعطي قيس $\\widehat{ACB}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "⁦ON 2nd cos⁻¹ ( 4 ÷ 4,4 ) =⁩",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "⁦ON cos ( 4 ÷ 4,4 ) =⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKS-BADAL-MUBASHIR"
+        },
+        {
+          "id": "C",
+          "content": "⁦ON 2nd sin⁻¹ ( 4 ÷ 4,4 ) =⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "[CB] يجاور الزاوية C و [CA] هو الوتر: $\\cos\\widehat{ACB} = \\dfrac{4}{4{,}4}$ ، والزاوية تُعيَّن باللمسة العكسية.",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "القيمة المقربة إلى الوحدة لـ $\\widehat{ACB}$ (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "25",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "24"
+        },
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "65"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "الشاشة $24{,}61997733$ : رقم الأجزاء من 10 هو 6، إذن $\\widehat{ACB} \\approx 25^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

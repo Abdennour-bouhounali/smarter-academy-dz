@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l2-010",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — نصف قطر الدائرة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "إنشاء",
+      "الوتر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P3",
+      "modelledOn": "method-construct"
+    }
+  },
+  "statement": {
+    "content": "لإنشاء زاوية حادة x دون منقلة حيث $\\sin x = \\dfrac{4}{7}$ ، رسمنا زاوية قائمة ونقلنا الطول 4 على أحد ضلعيها، ثم رسمنا دائرة مركزها طرف هذه القطعة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما نصف قطر هذه الدائرة؟",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-INSHA-WATAR",
+          "value": "4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في الجيب، ما الضلع الذي في المقام؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الدائرة ترسم الوتر."
+        }
+      ],
+      "feedback": {
+        "correct": "مقام الجيب هو الوتر: نصف القطر 7، فيصير $\\sin x = \\dfrac{4}{7}$ عند الرأس الذي يقابله الضلع 4.",
+        "incorrect": "الضلع المنقول 4 هو البسط؛ الوتر هو المقام."
+      }
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l2-010",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "معارف 2 — القيمة المضبوطة لظل 30°",
+    "estimatedMinutes": 3,
+    "tags": [
+      "القيمة المضبوطة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-2",
+      "page": 118,
+      "section": "معارف",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 118): EFG مثلث قائم في F حيث $FG = 3$ ، $EG = 6$ ، $EF = 3\\sqrt{3}$ و $\\widehat{E} = 30^{\\circ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المضبوطة للعدد $\\tan 30^{\\circ}$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$0{,}58$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-QIMA-MUQARRABA"
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-ZAWIYA-KHATI"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{\\sqrt{3}}{3}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الوتر والمقابل والمجاور بالنسبة إلى الزاوية المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الوتر في مقام الجيب وجيب التمام، والظل لا يستعمل الوتر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض كل ضلع بطوله ثم اختزل الكسر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan 30^{\\circ} = \\dfrac{FG}{EF} = \\dfrac{3}{3\\sqrt{3}} = \\dfrac{\\sqrt{3}}{3}$ ؛ 0,58 قيمة مقربة، و $\\sqrt{3}$ هو $\\tan 60^{\\circ}$ .",
+        "incorrect": "بالنسبة إلى E: المقابل [FG] = 3 والمجاور [EF] = $3\\sqrt{3}$ ."
+      },
+      "difficulty": 2
+    }
+  ]
+}

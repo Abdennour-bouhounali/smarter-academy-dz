@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l4-005",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — سلّم على شرفة في الجزائر العاصمة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب طول",
+      "الجيب",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nisab-muthallathiya_P3",
+      "modelledOn": "method-sin"
+    }
+  },
+  "statement": {
+    "content": "سلّم طوله $4\\,\\mathrm{m}$ مسنود إلى حائط عمارة في الجزائر العاصمة، ويصنع مع الأرض الأفقية زاوية قيسها $70^{\\circ}$ . الحائط عمودي على الأرض."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب الارتفاع الذي يبلغه أعلى السلّم على الحائط، مدوّرا إلى الجزء من 100 (بالمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "3.76",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "1.37"
+        },
+        {
+          "id": "MISC-MUTH-QISMA-BADAL-DARB",
+          "value": "4.26"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "السلّم وتر والارتفاع مقابل للزاوية 70°: $h = 4 \\times \\sin 70^{\\circ} \\approx 3{,}76\\,\\mathrm{m}$ .",
+        "incorrect": "الارتفاع مقابل للزاوية التي عند الأرض، والسلّم هو الوتر."
+      },
+      "difficulty": 4
+    }
+  ]
+}

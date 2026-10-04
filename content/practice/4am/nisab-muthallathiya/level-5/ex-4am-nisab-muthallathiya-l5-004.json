@@ -1,0 +1,162 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l5-004",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ضلعان من ضلع وزاوية",
+    "estimatedMinutes": 6,
+    "tags": [
+      "حساب طول",
+      "سؤالان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nisab-muthallathiya_P3",
+      "modelledOn": "method-tan"
+    }
+  },
+  "statement": {
+    "content": "في الشكل، ABC مثلث قائم في A حيث $AB = 6\\,\\mathrm{cm}$ و $\\widehat{B} = 35^{\\circ}$ .",
+    "figure": {
+      "points": {
+        "B": [
+          0.0,
+          0.0
+        ],
+        "A": [
+          5.942,
+          0.835
+        ],
+        "C": [
+          5.357,
+          4.995
+        ]
+      },
+      "segments": [
+        {
+          "from": "B",
+          "to": "A",
+          "label": "6"
+        },
+        {
+          "from": "A",
+          "to": "C"
+        },
+        {
+          "from": "B",
+          "to": "C"
+        }
+      ],
+      "rightAngles": [
+        [
+          "B",
+          "A",
+          "C"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "B",
+          "from": "A",
+          "to": "C",
+          "label": "35°"
+        }
+      ],
+      "ariaLabel": "مثلث ABC قائم في A حيث AB = 6 والزاوية B قيسها 35 درجة",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب AC، مدوّرا إلى الجزء من 100 (بالسنتيمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "4.20",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-QISMA-BADAL-DARB",
+          "value": "8.57"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "3.44"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "[AB] مجاور و [AC] مقابل: $AC = 6 \\times \\tan 35^{\\circ} \\approx 4{,}20$ .",
+        "incorrect": "المقابل والمجاور يربطهما الظل."
+      },
+      "difficulty": 5
+    },
+    {
+      "id": "q2",
+      "statement": "احسب الوتر BC بنسبة مثلثية، مدوّرا إلى الجزء من 100 (بالسنتيمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "7.32",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-DARB-BADAL-QISMA",
+          "value": "4.91"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "10.46"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos 35^{\\circ} = \\dfrac{6}{BC}$ ومنه $BC = \\dfrac{6}{\\cos 35^{\\circ}} \\approx 7{,}32$ (القيمة المضبوطة للحساب، لا القيمة المدوّرة لـ AC).",
+        "incorrect": "الوتر في المقام: نقسم المجاور 6 على جيب تمام 35°."
+      },
+      "difficulty": 5
+    }
+  ]
+}

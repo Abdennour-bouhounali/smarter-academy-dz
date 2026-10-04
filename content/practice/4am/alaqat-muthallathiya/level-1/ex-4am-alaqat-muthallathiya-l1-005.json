@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l1-005",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — نتحقّق من العلاقة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "العلاقة",
+      "تحقّق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P1",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "في مثلث قائم، زاوية حادة x حيث $\\cos x = \\dfrac{12}{13}$ و $\\sin x = \\dfrac{5}{13}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\left(\\dfrac{12}{13}\\right)^2 + \\left(\\dfrac{5}{13}\\right)^2$ :",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر مثل 5/7 أو عشري بالفاصلة)",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-JAMA-NISAB",
+          "value": "17/13"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع كسر: مربع البسط على مربع المقام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المقام المشترك 169."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{144}{169} + \\dfrac{25}{169} = \\dfrac{169}{169} = 1$ ، كما تقول العلاقة.",
+        "incorrect": "ربّع البسط والمقام: $\\dfrac{144}{169}$ و $\\dfrac{25}{169}$ ."
+      }
+    }
+  ]
+}

@@ -146,6 +146,17 @@ export const VISUAL_THEMES = Object.freeze({
   river: { kind: 'objects', shows: 'تقدير عرض وادٍ بالتسديد البصري' },
   //   tifo     la banderole géante des ultras du quartier, partagée en bandes égales (ou p : q) au compas (segment-divider)
   tifo: { kind: 'lengths', shows: 'لافتة تيفو للأنصار تُقسَّم إلى أشرطة بالمسطرة غير المدرّجة والمدور' },
+  // Unité 10 « حساب المثلثات في المثلث القائم » (2026-10-04) :
+  //   skatepark  les rampes du skatepark : la planche (hypoténuse), la hauteur, le sol ; trois rampes au même angle (نشاط 2)
+  //   drone      la nacelle inclinée d'une caméra de drone : l'angle tapé sur la calculatrice (نشاط 4)
+  //   kite       le cerf-volant sur la plage : le fil (compas, hypoténuse) et la hauteur (إنشاء زاوية)
+  //   floodlight le projecteur du stade visé au clinomètre du téléphone depuis la ligne de touche
+  //   maqam      مقام الشهيد visé par-dessus un poteau électrique (أدمج تعلّماتي) ; l'échelle du تحدّ réutilise `mural`
+  skatepark: { kind: 'objects', shows: 'منحدرات حديقة التزلج: اللوح والارتفاع والأرض' },
+  drone: { kind: 'objects', shows: 'كاميرا طائرة مسيّرة تميل بزاوية تُكتب على الحاسبة' },
+  kite: { kind: 'objects', shows: 'طائرة ورقية على الشاطئ: الخيط والارتفاع' },
+  floodlight: { kind: 'objects', shows: 'كشّاف إنارة الملعب يُسدَّد بمقياس الميل في الهاتف' },
+  maqam: { kind: 'objects', shows: 'مقام الشهيد يُرى من فوق عمود كهربائي' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

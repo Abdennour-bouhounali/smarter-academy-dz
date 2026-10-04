@@ -1,0 +1,71 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l4-008",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — صحيح أم خاطئ؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "العلاقة",
+      "خطأ شائع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P1",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "كتب يونس: « من أجل كل زاوية حادة x : $\\cos x + \\sin x = 1$ »."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما رأيك؟",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيحة لـ $45^{\\circ}$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JAMA-NISAB"
+        },
+        {
+          "id": "B",
+          "content": "خاطئة: لـ $x = 30^{\\circ}$ نجد $\\cos x + \\sin x \\approx 1{,}37$ ؛ الصحيح $\\cos^2 x + \\sin^2 x = 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "صحيحة لكل زاوية حادة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JAMA-NISAB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جرّب زاوية تعرف نسبها: $30^{\\circ}$ أو $45^{\\circ}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن بالعلاقة الصحيحة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{3}}{2} + \\dfrac{1}{2} \\approx 1{,}37$ و $\\dfrac{\\sqrt{2}}{2} + \\dfrac{\\sqrt{2}}{2} \\approx 1{,}41$ : الجمع لا يعطي 1؛ المربعان فقط.",
+        "incorrect": "حتى لـ $45^{\\circ}$ : $\\cos 45^{\\circ} + \\sin 45^{\\circ} = \\sqrt{2} \\neq 1$ ."
+      }
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l3-006",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 3,
+  "metadata": {
+    "title": "أتعمّق 32 — هرم خوفو",
+    "estimatedMinutes": 5,
+    "tags": [
+      "خاصية فيثاغورس",
+      "هرم",
+      "التدوير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-32",
+      "page": 125,
+      "section": "أتعمّق",
+      "number": 32
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "هرم «خوفو» هرم منتظم قاعدته مربع ABCD طول ضلعه $231\\,\\mathrm{m}$ ، رأسه S على المستقيم العمودي على القاعدة في مركزها O، ويبعد بنفس المسافة $220\\,\\mathrm{m}$ عن رؤوس القاعدة (الشكل).",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          5,
+          0
+        ],
+        "C": [
+          6.6,
+          1.4
+        ],
+        "D": [
+          1.6,
+          1.4
+        ],
+        "O": [
+          3.3,
+          0.7
+        ],
+        "S": [
+          3.3,
+          5.6
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "231 m"
+        },
+        [
+          "B",
+          "C"
+        ],
+        {
+          "from": "C",
+          "to": "D",
+          "dashed": true
+        },
+        {
+          "from": "D",
+          "to": "A",
+          "dashed": true
+        },
+        {
+          "from": "S",
+          "to": "A",
+          "label": "220 m",
+          "tone": "rose",
+          "bold": true
+        },
+        [
+          "S",
+          "B"
+        ],
+        [
+          "S",
+          "C"
+        ],
+        {
+          "from": "S",
+          "to": "D",
+          "dashed": true
+        },
+        {
+          "from": "S",
+          "to": "O",
+          "dashed": true
+        },
+        {
+          "from": "O",
+          "to": "A",
+          "dashed": true,
+          "tone": "sky"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "dashed": true
+        }
+      ],
+      "rightAngles": [
+        [
+          "S",
+          "O",
+          "A"
+        ]
+      ],
+      "labels": {
+        "A": "sw",
+        "B": "se",
+        "C": "e",
+        "D": "w",
+        "O": "se",
+        "S": "n"
+      },
+      "hidden": [],
+      "ariaLabel": "هرم منتظم رأسه S وقاعدته المربع ABCD الذي طول ضلعه 231 m ومركزه O؛ الحرف الجانبي SA طوله 220 m؛ الارتفاع [SO] عمودي على القاعدة والمثلث SOA قائم في O",
+      "maxWidth": 320
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "في المثلث SOA القائم في O، الطول OA هو:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{231\\sqrt{2}}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{231}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISF-DIL-QUTR"
+        },
+        {
+          "id": "C",
+          "content": "$231\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QUTR-BADAL-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "O مركز المربع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "O منتصف القطر [AC]."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قطر مربع ضلعه a هو a√2."
+        }
+      ],
+      "feedback": {
+        "correct": "قطر المربع $231\\sqrt{2}$ و O منتصفه: $OA = \\dfrac{231\\sqrt{2}}{2}$ .",
+        "incorrect": "المسافة من المركز إلى رأس المربع نصف القطر لا نصف الضلع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما ارتفاع الهرم SO مدوّرا إلى الوحدة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (مدوّر إلى الوحدة)",
+      "expectedAnswer": "147",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$SA = 220$ وتر المثلث SOA."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل OA من السؤال السابق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مربع SO = مربع SA − مربع OA."
+        }
+      ],
+      "feedback": {
+        "correct": "$SO^2 = 220^2 - \\dfrac{231^2 \\times 2}{4} = 21719{,}5$ ومنه $SO \\approx 147\\,\\mathrm{m}$ .",
+        "incorrect": "الحرف الجانبي SA هو الوتر."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "187",
+          "id": "MISC-MUTH-NISF-DIL-QUTR"
+        }
+      ]
+    }
+  ]
+}

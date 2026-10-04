@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l2-004",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — زاوية خط النظر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الظل",
+      "الحاسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "وقفت إيناس على الأرض على بعد $4\\,\\mathrm{m}$ من عمود شاقولي طوله $2{,}5\\,\\mathrm{m}$ ، ونظرت إلى قمته (نهمل طولها)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المدوّر إلى الدرجة لقيس الزاوية بين الأرض وخط نظرها؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "32",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث قائم عند قاعدة العمود."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العمود يقابل الزاوية والمسافة تجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الظل ثم اللمسة العكسية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{2{,}5}{4} = 0{,}625$ ومنه $x \\approx 32{,}01^{\\circ}$ ، أي $32^{\\circ}$ .",
+        "incorrect": "اكتب الظل ثم عيّن القيس بالحاسبة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "58",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        },
+        {
+          "value": "0.625",
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ]
+    }
+  ]
+}

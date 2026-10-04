@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l3-008",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — شاشة غريبة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "برمجة الحاسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "نسيمة ضغطت ⁦ON sin 37 =⁩ فظهر على الشاشة $-0{,}6435381334$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا تستنتج؟",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الحاسبة مبرمجة بالراديان: جيب زاوية حادة لا يكون سالبا",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\sin 37^{\\circ} \\approx -0{,}64$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-HASIBA-RAD"
+        },
+        {
+          "id": "C",
+          "content": "كان عليها ضغط ⁦2nd⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKS-BADAL-MUBASHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تأكّد أن الحاسبة مبرمجة بالدرجة: الحرف D في أعلى الشاشة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضغط الدالة ثم قيس الزاوية ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر ما يظهر على الشاشة: انظر إلى الرقم الموالي للرقم الذي تحتفظ به."
+        }
+      ],
+      "feedback": {
+        "correct": "جيب زاوية حادة محصور بين 0 و 1. بالدرجة نجد $\\sin 37^{\\circ} \\approx 0{,}60$ .",
+        "incorrect": "راجع: هل الحاسبة بالدرجة، وهل ضغطت الدالة المناسبة ثم دوّرت الشاشة؟"
+      }
+    }
+  ]
+}

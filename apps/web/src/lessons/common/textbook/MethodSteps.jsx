@@ -26,7 +26,8 @@ export default function MethodSteps({ method, onAllRevealed }) {
         <ol className="space-y-1.5">
           {method.solution.slice(0, shown).map((line, i) => (
             <li key={i} className="text-sm sm:text-base leading-relaxed text-slate-800" data-method-line={i}>
-              <MathText>{line}</MathText>
+              {/* une ligne peut être un nœud (unité 10 : une séquence de touches de calculatrice, code LTR) */}
+              {typeof line === 'string' ? <MathText>{line}</MathText> : line}
             </li>
           ))}
         </ol>

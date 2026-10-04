@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l4-009",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — نتيجة غير ملائمة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "التحقّق",
+      "قيس زاوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "في وضعية «مقام الشهيد» ( $PQ = 2{,}30\\,\\mathrm{m}$ و $AP = 2{,}45\\,\\mathrm{m}$ ) كتب تلميذ: «$\\tan x = \\dfrac{2{,}30}{2{,}45} \\approx 0{,}94$ ، إذن $x \\approx 0{,}94^{\\circ}$ »."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما رأيك في جوابه؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح: الحاسبة مبرمجة بالدرجة فالنتيجة بالدرجة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-BADAL-QAYS"
+        },
+        {
+          "id": "B",
+          "content": "خاطئ: كان عليه أن يقسم 2,45 على 2,30",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "خاطئ: 0,94 هو ظل الزاوية؛ القيس يعطيه اللمسة العكسية للظل، أي حوالي $43^{\\circ}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "زاوية قيسها أقل من درجة: هل هذا ممكن هنا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الظل نسبة بين طولين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "من النسبة إلى القيس: اللمسة العكسية."
+        }
+      ],
+      "feedback": {
+        "correct": "زاوية $0{,}94^{\\circ}$ تكاد تكون أفقية، وهذا غير ملائم للشكل. $\\tan x \\approx 0{,}94$ ومنه $x \\approx 43^{\\circ}$ .",
+        "incorrect": "الظل ليس قيس الزاوية."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 3
+    }
+  ]
+}

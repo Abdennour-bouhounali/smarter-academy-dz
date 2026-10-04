@@ -1,0 +1,123 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l5-002",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 5,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — نخلة من موضعين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ارتفاع",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P1",
+      "modelledOn": "ex-29"
+    }
+  },
+  "statement": {
+    "content": "في واحة تيميمون، يرى سفيان قمة نخلة شاقولية بزاوية $30^{\\circ}$ مع الأفق، ثم يتقدّم $20\\,\\mathrm{m}$ نحوها على أرض أفقية فيراها بزاوية $45^{\\circ}$ . نهمل ارتفاع عينيه، ونسمّي h ارتفاع النخلة و x بعد الموضع الثاني عن قاعدتها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلتان اللتان تترجمان الوضعية:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$h = x$ و $h = (x + 20)\\tan 30^{\\circ}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$h = x$ و $h = 20\\tan 30^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-TALIS-NAZAR"
+        },
+        {
+          "id": "C",
+          "content": "$h = x\\tan 30^{\\circ}$ و $h = (x + 20)\\tan 45^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-ZAWIYA-KHATI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المقابل والوتر: الجيب؛ المجاور والوتر: جيب التمام؛ المقابل والمجاور: الظل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختر النسبة التي يظهر فيها الضلعان معًا، ولا تحتاج ضلعا ثالثا مجهولا."
+        }
+      ],
+      "feedback": {
+        "correct": "من الموضع الثاني $\\tan 45^{\\circ} = \\dfrac{h}{x} = 1$ ؛ ومن الأول البعد $x + 20$ : $\\tan 30^{\\circ} = \\dfrac{h}{x + 20}$ .",
+        "incorrect": "سمِّ الأضلاع بالنسبة إلى الزاوية المعلومة، ثم اختر النسبة التي تجمع المعلوم والمطلوب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ارتفاع النخلة h بالمتر، إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "expectedAnswer": "27.3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TALIS-NAZAR",
+          "value": "11.5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = (x + 20)\\tan 30^{\\circ}$ ومنه $x = \\dfrac{20\\tan 30^{\\circ}}{1 - \\tan 30^{\\circ}} \\approx 27{,}3$ ، و $h = x \\approx 27{,}3\\,\\mathrm{m}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

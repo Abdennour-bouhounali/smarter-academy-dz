@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l3-005",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "دوري الآن 2 — الطول PQ",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب طول",
+      "الظل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-119",
+      "page": 119,
+      "section": "دوري الآن",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 119): PQR مثلث قائم في Q حيث $QR = 2{,}8\\,\\mathrm{cm}$ و $\\widehat{P} = 72^{\\circ}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب PQ، المدوّر إلى الجزء من 10 (بالسنتيمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "0.9",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-DARB-BADAL-QISMA",
+          "value": "8.6"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "2.7"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan 72^{\\circ} = \\dfrac{QR}{PQ}$ ومنه $PQ = \\dfrac{2{,}8}{\\tan 72^{\\circ}} \\approx 0{,}9$ .",
+        "incorrect": "PQ مجاور (في المقام): نقسم 2,8 على ظل 72°."
+      },
+      "difficulty": 3
+    }
+  ]
+}

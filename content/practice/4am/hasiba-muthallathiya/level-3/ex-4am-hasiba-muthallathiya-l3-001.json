@@ -1,0 +1,197 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l3-001",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 3 — الزاوية 40° بالحاسبة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "القياس والحاسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-3",
+      "page": 122,
+      "section": "النسب المثلثية - استعمال حاسبة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 122): أنشأ تلميذ المثلث ABC القائم في C حيث $\\widehat{A} = 40^{\\circ}$ (الشكل). باستعمال حاسبة مبرمجة بالدرجة، دوّر النتائج إلى الجزء من 100.",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "C": [
+          6.128,
+          0
+        ],
+        "B": [
+          6.128,
+          5.142
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "8 cm"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "label": "6,1 cm"
+        },
+        {
+          "from": "C",
+          "to": "B",
+          "label": "5,1 cm"
+        }
+      ],
+      "rightAngles": [
+        [
+          "A",
+          "C",
+          "B"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "A",
+          "from": "C",
+          "to": "B",
+          "label": "40°"
+        }
+      ],
+      "ariaLabel": "مثلث ABC قائم في C أنشأه تلميذ: الزاوية عند A قيسها 40 درجة، وأطوال الأضلاع المقيسة 8 سم و 6,1 سم و 5,1 سم",
+      "maxWidth": 320
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sin 40^{\\circ}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "0.64",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "0,77"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تأكّد أن الحاسبة مبرمجة بالدرجة: الحرف D في أعلى الشاشة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضغط الدالة ثم قيس الزاوية ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر ما يظهر على الشاشة: انظر إلى الرقم الموالي للرقم الذي تحتفظ به."
+        }
+      ],
+      "feedback": {
+        "correct": "الشاشة $0{,}6427876097$ ، إذن $\\sin 40^{\\circ} \\approx 0{,}64$ (وبالقياس $\\dfrac{5{,}1}{8} \\approx 0{,}64$).",
+        "incorrect": "راجع: هل الحاسبة بالدرجة، وهل ضغطت الدالة المناسبة ثم دوّرت الشاشة؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\cos 40^{\\circ}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "0.77",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "0,76"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تأكّد أن الحاسبة مبرمجة بالدرجة: الحرف D في أعلى الشاشة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضغط الدالة ثم قيس الزاوية ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر ما يظهر على الشاشة: انظر إلى الرقم الموالي للرقم الذي تحتفظ به."
+        }
+      ],
+      "feedback": {
+        "correct": "الشاشة $0{,}7660444431$ : الرقم الموالي 6، إذن $\\cos 40^{\\circ} \\approx 0{,}77$ .",
+        "incorrect": "راجع: هل الحاسبة بالدرجة، وهل ضغطت الدالة المناسبة ثم دوّرت الشاشة؟"
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$\\tan 40^{\\circ}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "0.84",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-MAQLUBA",
+          "value": "1,19"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تأكّد أن الحاسبة مبرمجة بالدرجة: الحرف D في أعلى الشاشة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضغط الدالة ثم قيس الزاوية ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر ما يظهر على الشاشة: انظر إلى الرقم الموالي للرقم الذي تحتفظ به."
+        }
+      ],
+      "feedback": {
+        "correct": "الشاشة $0{,}8390996312$ ، إذن $\\tan 40^{\\circ} \\approx 0{,}84$ (وبالقياس $\\dfrac{5{,}1}{6{,}1} \\approx 0{,}84$).",
+        "incorrect": "راجع: هل الحاسبة بالدرجة، وهل ضغطت الدالة المناسبة ثم دوّرت الشاشة؟"
+      }
+    }
+  ]
+}

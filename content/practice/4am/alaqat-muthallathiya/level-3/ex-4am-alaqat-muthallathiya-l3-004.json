@@ -1,0 +1,107 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l3-004",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "دوري الآن (ص 121) — جيب تمامها 3 على 4",
+    "estimatedMinutes": 4,
+    "tags": [
+      "دوري الآن",
+      "إنشاء"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-121",
+      "page": 121,
+      "section": "دوري الآن"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: أنشئ، بدون استعمال منقلة، الزاوية التي قيسها x حيث $\\cos x = \\dfrac{3}{4}$ . تحقق بحاسبة ثم بمنقلة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الإنشاء الصحيح:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "زاوية قائمة رأسها O ، و $OA = 3$ و $OB = 4$ على الضلعين؛ $x = \\widehat{OAB}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-INSHA-WATAR"
+        },
+        {
+          "id": "B",
+          "content": "زاوية قائمة رأسها O ، و $OA = 3$ ، ودائرة مركزها A ونصف قطرها 4 تقطع الضلع الآخر في B ؛ $x = \\widehat{OBA}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-ZAWIYA-KHATI"
+        },
+        {
+          "id": "C",
+          "content": "زاوية قائمة رأسها O ، و $OA = 3$ على ضلع، ودائرة مركزها A ونصف قطرها 4 تقطع الضلع الآخر في B ؛ $x = \\widehat{OAB}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جيب التمام = المجاور ÷ الوتر: أيّ العددين وتر؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عند أيّ رأس يكون 3 مجاورا؟"
+        }
+      ],
+      "feedback": {
+        "correct": "عند A : OA = 3 مجاور و AB = 4 وتر، فـ $\\cos\\widehat{OAB} = \\dfrac{3}{4}$ .",
+        "incorrect": "على الضلعين نحصل على $\\tan\\widehat{OAB} = \\dfrac{4}{3}$ ؛ وعند B يكون $\\dfrac{3}{4}$ هو الجيب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بالحاسبة: قيس x مدوّرا إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "قيس بالدرجات، عدد عشري بالفاصلة (مثل 12,5)",
+      "expectedAnswer": "41.4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "48.6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل $\\cos^{-1}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{3}{4} = 0{,}75$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos^{-1}(0{,}75) \\approx 41{,}41^{\\circ}$ ، وبالمنقلة نحو $41^{\\circ}$ .",
+        "incorrect": "المطلوب الزاوية التي جيب تمامها 0,75."
+      }
+    }
+  ]
+}

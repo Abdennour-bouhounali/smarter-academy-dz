@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l5-003",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — منحدر حديقة التزلج",
+    "estimatedMinutes": 6,
+    "tags": [
+      "حساب طول",
+      "وضعية",
+      "سؤالان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nisab-muthallathiya_P3",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "لوح منحدر في حديقة التزلج طوله $3{,}2\\,\\mathrm{m}$ ، ويصنع مع الأرض زاوية قيسها $25^{\\circ}$ . الارتفاع عمودي على الأرض."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب ارتفاع المنحدر، مدوّرا إلى الجزء من 100 (بالمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "1.35",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "2.90"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "1.49"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "$h = 3{,}2 \\times \\sin 25^{\\circ} \\approx 1{,}35\\,\\mathrm{m}$ .",
+        "incorrect": "اللوح وتر والارتفاع مقابل للزاوية 25°."
+      },
+      "difficulty": 5
+    },
+    {
+      "id": "q2",
+      "statement": "احسب الطول الذي يغطيه المنحدر على الأرض، مدوّرا إلى الجزء من 100 (بالمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "2.90",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-UKHRA",
+          "value": "1.35"
+        },
+        {
+          "id": "MISC-MUTH-QISMA-BADAL-DARB",
+          "value": "3.53"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "الأرض مجاورة للزاوية 25°: $d = 3{,}2 \\times \\cos 25^{\\circ} \\approx 2{,}90\\,\\mathrm{m}$ .",
+        "incorrect": "الطول على الأرض مجاور للزاوية والوتر معلوم: جيب التمام."
+      },
+      "difficulty": 5
+    }
+  ]
+}

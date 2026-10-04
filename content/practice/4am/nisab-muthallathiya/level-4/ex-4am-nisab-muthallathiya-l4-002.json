@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l4-002",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 4 — عزل MN",
+    "estimatedMinutes": 3,
+    "tags": [
+      "عزل طول"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 124,
+      "section": "أؤكّد تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 124): $\\cos 70^{\\circ} = \\dfrac{2}{MN}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إذن:",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$MN = \\dfrac{\\cos 70^{\\circ}}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "id": "B",
+          "content": "$MN = \\dfrac{2}{\\cos 70^{\\circ}}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$MN = 2 \\times \\cos 70^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-DARB-BADAL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أين يقع MN في المساواة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب الطرفين في MN."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اقسم على جيب تمام 70°."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos 70^{\\circ} \\times MN = 2$ ومنه $MN = \\dfrac{2}{\\cos 70^{\\circ}}$ .",
+        "incorrect": "المجهول في المقام: نقسم ولا نضرب."
+      },
+      "difficulty": 4
+    }
+  ]
+}

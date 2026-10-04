@@ -1,0 +1,160 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l4-002",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 24 — حل المثلث",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نصف دائرة",
+      "حل المثلث"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-24",
+      "page": 125,
+      "section": "أتعمّق",
+      "number": 24
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 125، تمرين 24): دائرة مركزها O ونصف قطرها $2{,}5\\,\\mathrm{cm}$ ، و [AB] قطر لها، و C نقطة من الدائرة حيث $AC = 3\\,\\mathrm{cm}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما نوع المثلث ABC؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "قائم في A لأن A طرف القطر",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        },
+        {
+          "id": "B",
+          "content": "متقايس الساقين لأن $OA = OB$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "C",
+          "content": "قائم في C لأنه مرسوم في نصف دائرة قطرها [AB]",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن النتيجة بأطوال المثلث المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الوتر أطول أضلاع المثلث القائم، والجيب وجيب التمام أصغر من 1."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نتيجة لا تحترم هذه الشروط تعني خطأ في اختيار النسبة أو في العملية."
+        }
+      ],
+      "feedback": {
+        "correct": "مثلث رؤوسه على دائرة وأحد أضلاعه قطر لها قائم في الرأس الثالث C.",
+        "incorrect": "سمِّ الأضلاع بالنسبة إلى الزاوية المعلومة، ثم اختر النسبة التي تجمع المعلوم والمطلوب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب BC بالسنتيمتر.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-WATAR-MUQABIL",
+          "value": "6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الوتر: الضلع المقابل للزاوية القائمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية فيثاغورس: مربع الوتر يساوي مجموع مربعي الضلعين الآخرين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لحساب ضلع للزاوية القائمة نطرح مربع الضلع المعلوم من مربع الوتر، ثم نأخذ الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$AB = 5$ وتر: $BC = \\sqrt{25 - 9} = 4\\,\\mathrm{cm}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "احسب قيس الزاوية $\\widehat{A}$ بالدرجة، إلى الوحدة.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "53",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "37"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلعين المعلومين بالنسبة إلى الزاوية المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمعهما واحسب قيمتها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عيّن الزاوية باللمسة العكسية (2nd ثم sin⁻¹ أو cos⁻¹ أو tan⁻¹) ودوّر إلى الدرجة."
+        }
+      ],
+      "feedback": {
+        "correct": "AC مجاور للزاوية A و AB وتر: $\\cos\\widehat{A} = \\dfrac{3}{5}$ ومنه $\\widehat{A} \\approx 53^{\\circ}$ (و $\\widehat{B} \\approx 37^{\\circ}$ ).",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

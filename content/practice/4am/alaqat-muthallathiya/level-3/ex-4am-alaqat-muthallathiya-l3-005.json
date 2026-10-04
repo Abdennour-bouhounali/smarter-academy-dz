@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l3-005",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 19 (ص 123) — جيب 60°",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمرين 19",
+      "60°"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-19",
+      "page": 123,
+      "section": "العلاقات المثلثية",
+      "number": 19
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: ABC مثلث متقايس الأضلاع طول ضلعه 1، [AH] الارتفاع المتعلّق بالضلع [BC]، فـ $BH = \\dfrac{1}{2}$ و $\\cos 60^{\\circ} = \\dfrac{1}{2}$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0.5,
+          0.866
+        ],
+        "B": [
+          0,
+          0
+        ],
+        "C": [
+          1,
+          0
+        ],
+        "H": [
+          0.5,
+          0
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        {
+          "from": "A",
+          "to": "H",
+          "dashed": true
+        }
+      ],
+      "rightAngles": [
+        [
+          "A",
+          "H",
+          "C"
+        ]
+      ],
+      "labels": {
+        "A": "n",
+        "B": "sw",
+        "C": "se",
+        "H": "s"
+      },
+      "ariaLabel": "مثلث ABC متقايس الأضلاع طول ضلعه 1 و [AH] ارتفاعه المتعلق بالضلع [BC]",
+      "maxWidth": 260
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "استنتج $\\sin 60^{\\circ}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JAMA-NISAB"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{\\sqrt{3}}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{3}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JADHR-NASI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sin^2 60^{\\circ} = 1 - \\cos^2 60^{\\circ}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم الجذر الموجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin^2 60^{\\circ} = 1 - \\dfrac{1}{4} = \\dfrac{3}{4}$ ، فـ $\\sin 60^{\\circ} = \\dfrac{\\sqrt{3}}{2}$ .",
+        "incorrect": "$\\dfrac{3}{4}$ هو المربع، و $1 - \\dfrac{1}{2}$ طرح النسبة دون تربيع."
+      }
+    }
+  ]
+}

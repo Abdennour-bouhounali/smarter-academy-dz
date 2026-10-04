@@ -1,0 +1,116 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l5-007",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — الشمس فوق باب الوادي",
+    "estimatedMinutes": 5,
+    "tags": [
+      "الظل",
+      "خاصية طالس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "في لحظة ما بباب الوادي، ظلّ رجل طوله $1{,}8\\,\\mathrm{m}$ على الأرض الأفقية $2{,}4\\,\\mathrm{m}$ ، وظلّ عمارة في اللحظة نفسها $16\\,\\mathrm{m}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المدوّر إلى الدرجة لقيس زاوية ارتفاع الشمس فوق الأفق؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "37",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أشعة الشمس تمرّ برأس الرجل ونهاية ظلّه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الرجل يقابل الزاوية والظل يجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الظل ثم اللمسة العكسية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{1{,}8}{2{,}4} = 0{,}75$ ومنه $x \\approx 36{,}87^{\\circ}$ ، أي $37^{\\circ}$ .",
+        "incorrect": "المقابل هو طول الرجل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "53",
+          "id": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "value": "0.75",
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما ارتفاع العمارة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الزاوية نفسها للعمارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نسبة الارتفاع إلى الظل هي نفسها للرجل وللعمارة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أو: الارتفاع = الظل × الظل المثلثي."
+        }
+      ],
+      "feedback": {
+        "correct": "$h = 16 \\times \\dfrac{1{,}8}{2{,}4} = 12\\,\\mathrm{m}$ .",
+        "incorrect": "النسبة ارتفاع ÷ ظل نفسها لكل الأجسام الشاقولية في اللحظة نفسها."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "64/3",
+          "id": "MISC-MUTH-NISBA-MAQLUBA"
+        }
+      ]
+    }
+  ]
+}

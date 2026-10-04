@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l1-003",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "معارف 3 — المدوّر إلى الجزء من 100",
+    "estimatedMinutes": 3,
+    "tags": [
+      "التدوير",
+      "الحاسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-3",
+      "page": 120,
+      "section": "معارف",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 120): بالمراحل ⁦ON sin 54 =⁩ يظهر على الشاشة $0{,}8090169944$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المدوّر إلى الجزء من 100 لـ $\\sin 54^{\\circ}$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "0.81",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "0,80"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "نحتفظ برقمين بعد الفاصلة (0,80) والرقم الموالي 9: نضيف 1، فنجد $0{,}81$ .",
+        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
+      }
+    }
+  ]
+}

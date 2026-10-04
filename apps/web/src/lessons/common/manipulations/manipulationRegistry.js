@@ -59,6 +59,11 @@ export const MANIPULATION_COMPONENTS = {
   'segment-divider': lazy(() => import('./geometry/SegmentDivider')),
   'shadow-stick': lazy(() => import('./geometry/ShadowStick')),
   'cone-cylinder': lazy(() => import('./geometry/ConeCylinder')),
+  // Unité 10 « حساب المثلثات في المثلث القائم » (2026-10-04).
+  'ramp-ratios': lazy(() => import('./geometry/RampRatios')),
+  'trig-calculator': lazy(() => import('./geometry/TrigCalculator')),
+  'angle-compass': lazy(() => import('./geometry/AngleCompass')),
+  'clinometer': lazy(() => import('./geometry/Clinometer')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

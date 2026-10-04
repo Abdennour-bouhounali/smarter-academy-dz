@@ -1,0 +1,177 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l3-008",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 28 — الارتفاع والزاوية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوازي أضلاع"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-28",
+      "page": 125,
+      "section": "أتعمّق",
+      "number": 28
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 125، تمرين 28): ABCD متوازي أضلاع حيث $CD = 4{,}5\\,\\mathrm{cm}$ و $BC = 2{,}7\\,\\mathrm{cm}$ ، و [AH] الارتفاع المتعلّق بالضلع [CD] ، ومساحته $10{,}35\\,\\mathrm{cm}^2$ (الشكل).",
+    "figure": {
+      "points": {
+        "D": [
+          0,
+          0
+        ],
+        "C": [
+          4.5,
+          0
+        ],
+        "A": [
+          1.414,
+          2.3
+        ],
+        "B": [
+          5.914,
+          2.3
+        ],
+        "H": [
+          1.414,
+          0
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "B"
+        ],
+        {
+          "from": "B",
+          "to": "C",
+          "label": "2,7cm"
+        },
+        {
+          "from": "D",
+          "to": "C",
+          "label": "4,5cm",
+          "labelSide": -1
+        },
+        [
+          "D",
+          "A"
+        ],
+        {
+          "from": "A",
+          "to": "H",
+          "dashed": true,
+          "tone": "rose"
+        }
+      ],
+      "rightAngles": [
+        [
+          "A",
+          "H",
+          "C"
+        ]
+      ],
+      "labels": {
+        "A": "nw",
+        "B": "ne",
+        "C": "se",
+        "D": "sw",
+        "H": "s"
+      },
+      "ariaLabel": "متوازي أضلاع ABCD فيه CD = 4,5cm و BC = 2,7cm، و [AH] الارتفاع المتعلق بالضلع [CD]",
+      "maxWidth": 320
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب الارتفاع AH بالسنتيمتر.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "expectedAnswer": "2.3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
+          "value": "3.8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن النتيجة بأطوال المثلث المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الوتر أطول أضلاع المثلث القائم، والجيب وجيب التمام أصغر من 1."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نتيجة لا تحترم هذه الشروط تعني خطأ في اختيار النسبة أو في العملية."
+        }
+      ],
+      "feedback": {
+        "correct": "المساحة = القاعدة × الارتفاع: $AH = \\dfrac{10{,}35}{4{,}5} = 2{,}3\\,\\mathrm{cm}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "استنتج قيس الزاوية $\\widehat{ADC}$ بالدرجة، إلى الوحدة.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "58",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
+          "value": "40"
+        },
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "32"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلعين المعلومين بالنسبة إلى الزاوية المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمعهما واحسب قيمتها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عيّن الزاوية باللمسة العكسية (2nd ثم sin⁻¹ أو cos⁻¹ أو tan⁻¹) ودوّر إلى الدرجة."
+        }
+      ],
+      "feedback": {
+        "correct": "$AD = BC = 2{,}7$ ؛ في ADH القائم في H : $\\sin\\widehat{ADC} = \\dfrac{2{,}3}{2{,}7}$ ومنه $\\widehat{ADC} \\approx 58^{\\circ}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

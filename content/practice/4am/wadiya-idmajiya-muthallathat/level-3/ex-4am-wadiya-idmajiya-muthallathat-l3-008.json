@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l3-008",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — من الجيب إلى النسبتين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "العلاقات بين النسب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "x قيس زاوية حادة حيث $\\sin x = \\dfrac{5}{13}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما القيمة المضبوطة للعدد cos x (كسر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "12/13",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العلاقة بين مربعي النسبتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب مربع جيب التمام أولا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جيب التمام موجب لزاوية حادة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos^2 x = 1 - \\dfrac{25}{169} = \\dfrac{144}{169}$ ومنه $\\cos x = \\dfrac{12}{13}$ .",
+        "incorrect": "لا تنسَ الجذر، ولا تطرح النسبتين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "8/13",
+          "id": "MISC-MUTH-JAMA-NISAB"
+        },
+        {
+          "value": "144/169",
+          "id": "MISC-MUTH-JADHR-NASI"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما القيمة المضبوطة للعدد tan x (كسر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "5/12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الظل بدلالة الجيب وجيب التمام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجيب في البسط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الجيب على جيب التمام."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{\\sin x}{\\cos x} = \\dfrac{5}{12}$ .",
+        "incorrect": "الظل = الجيب ÷ جيب التمام."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "12/5",
+          "id": "MISC-MUTH-TAN-QISMA-MAQLUBA"
+        }
+      ]
+    }
+  ]
+}

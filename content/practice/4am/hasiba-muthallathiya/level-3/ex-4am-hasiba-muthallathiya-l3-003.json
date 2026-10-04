@@ -1,0 +1,173 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l3-003",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 8 — الزاوية FED",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قيس زاوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-8",
+      "page": 123,
+      "section": "النسب المثلثية - استعمال حاسبة",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 123): FDE مثلث قائم في D (الشكل) حيث $DF = 4{,}2\\,\\mathrm{cm}$ و $EF = 7\\,\\mathrm{cm}$ .",
+    "figure": {
+      "points": {
+        "E": [
+          0,
+          0
+        ],
+        "F": [
+          7,
+          0
+        ],
+        "D": [
+          4.48,
+          3.36
+        ]
+      },
+      "segments": [
+        {
+          "from": "E",
+          "to": "F",
+          "label": "7 cm"
+        },
+        {
+          "from": "D",
+          "to": "F",
+          "label": "4,2 cm"
+        },
+        [
+          "E",
+          "D"
+        ]
+      ],
+      "rightAngles": [
+        [
+          "E",
+          "D",
+          "F"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "E",
+          "from": "F",
+          "to": "D",
+          "label": "?"
+        }
+      ],
+      "labels": {
+        "D": "n"
+      },
+      "ariaLabel": "المثلث FDE قائم في D، الوتر EF طوله 7 سم والضلع DF طوله 4,2 سم، والزاوية المطلوبة عند E",
+      "maxWidth": 320
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النسبة التي تربط الطولين المعلومين بالزاوية $\\widehat{FED}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sin\\widehat{FED} = \\dfrac{DF}{EF} = 0{,}6$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\cos\\widehat{FED} = \\dfrac{DF}{EF} = 0{,}6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "id": "C",
+          "content": "$\\tan\\widehat{FED} = \\dfrac{EF}{DF}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "[DF] يقابل الزاوية E و [EF] هو الوتر: $\\sin\\widehat{FED} = \\dfrac{4{,}2}{7} = 0{,}6$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "القيمة المقربة إلى الوحدة لقيس $\\widehat{FED}$ (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "37",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "53"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS",
+          "value": "0,6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦ON 2nd sin⁻¹ 0,6 =⁩ يعطي $36{,}86989765$ ، إذن $\\widehat{FED} \\approx 37^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

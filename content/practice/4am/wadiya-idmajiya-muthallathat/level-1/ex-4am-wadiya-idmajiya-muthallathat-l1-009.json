@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l1-009",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — تدوير قيس زاوية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الحاسبة",
+      "التدوير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "لتعيين x حيث $\\tan x = 0{,}616$ استعملنا اللمسة العكسية للظل في حاسبة مبرمجة بالدرجة، فظهر على الشاشة $31{,}6330693$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المدوّر إلى الدرجة لقيس x؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "32",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى الرقم الذي يلي الوحدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إن كان 5 أو أكثر نزيد الوحدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تبتر العدد."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\approx 31{,}63^{\\circ}$ ، والرقم الموالي للوحدة 6 فالمدوّر $32^{\\circ}$ .",
+        "incorrect": "التدوير إلى الدرجة ليس البتر."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "31",
+          "id": "MISC-MUTH-TADWIR-BATR"
+        },
+        {
+          "value": "0.616",
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ]
+    }
+  ]
+}

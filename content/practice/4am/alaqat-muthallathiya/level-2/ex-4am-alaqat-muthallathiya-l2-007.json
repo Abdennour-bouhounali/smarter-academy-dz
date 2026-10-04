@@ -1,0 +1,63 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l2-007",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — جيب التمام من الجيب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة من نسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P2",
+      "modelledOn": "method-relations"
+    }
+  },
+  "statement": {
+    "content": "x قيس زاوية حادة حيث $\\sin x = \\dfrac{5}{13}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب القيمة المضبوطة للعدد $\\cos x$ (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر مثل 5/7 أو عشري بالفاصلة)",
+      "expectedAnswer": "12/13",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-JADHR-NASI",
+          "value": "8/13"
+        },
+        {
+          "id": "MISC-MUTH-JADHR-NASI",
+          "value": "144/169"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\cos^2 x = 1 - \\dfrac{25}{169}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$144 = 12^2$ و $169 = 13^2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos^2 x = \\dfrac{144}{169}$ فـ $\\cos x = \\dfrac{12}{13}$ .",
+        "incorrect": "لا تطرح $\\dfrac{5}{13}$ من 1: العلاقة بين المربعين."
+      }
+    }
+  ]
+}

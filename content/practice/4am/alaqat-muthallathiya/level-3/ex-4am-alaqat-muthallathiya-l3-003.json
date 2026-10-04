@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l3-003",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 22 (ص 123)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمرين 22",
+      "إنشاء"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-22",
+      "page": 123,
+      "section": "إنشاءات هندسية",
+      "number": 22
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: أنشئ، بدون استعمال منقلة، زاوية قيسها x يحقق $\\sin x = \\dfrac{3}{5}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أعط المدوّر إلى الجزء من 10 لهذا القيس (بالحاسبة):",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "قيس بالدرجات، عدد عشري بالفاصلة (مثل 12,5)",
+      "expectedAnswer": "36.9",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "53.1"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل 3 على ضلع ونرسم دائرة نصف قطرها 5 : الزاوية عند نقطة التقاطع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل $\\sin^{-1}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin^{-1}(0{,}6) \\approx 36{,}87^{\\circ}$ ، أي $36{,}9^{\\circ}$ .",
+        "incorrect": "الزاوية الأخرى ($53{,}1^{\\circ}$) جيب تمامها هو $\\dfrac{3}{5}$ ."
+      }
+    }
+  ]
+}

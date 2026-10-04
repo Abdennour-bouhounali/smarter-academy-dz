@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l1-001",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "أستعدّ 2 — التدوير إلى الوحدة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "التدوير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "prep",
+      "page": 115,
+      "section": "أستعدّ",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 115): العدد $1{,}267103$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدوّر هذا العدد إلى الوحدة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "1,2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "رقم الأجزاء من 10 هو 2، وهو أصغر من 5: المدوّر إلى الوحدة هو $1$ .",
+        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
+      }
+    }
+  ]
+}

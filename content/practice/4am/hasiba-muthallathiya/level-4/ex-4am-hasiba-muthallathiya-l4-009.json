@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l4-009",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "وضعية — التدوير المبكّر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "التدوير",
+      "تصويب خطأ"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P3",
+      "modelledOn": "ex-23"
+    }
+  },
+  "statement": {
+    "content": "زاوية حادة x حيث $\\cos x = \\dfrac{5}{9}$ . حسبت سارة $\\dfrac{5}{9} \\approx 0{,}56$ ثم ⁦ON 2nd cos⁻¹ 0,56 =⁩ ، وحسب يونس ⁦ON 2nd cos⁻¹ ( 5 ÷ 9 ) =⁩ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس x مدوّرا إلى الجزء من 10 هو:",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$56{,}3^{\\circ}$ (جواب يونس)",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$55{,}9^{\\circ}$ (جواب سارة)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-TADWIR-MUBAKKIR"
+        },
+        {
+          "id": "C",
+          "content": "$0{,}6^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "يونس يحصل على $56{,}2510114$ أي $56{,}3^{\\circ}$ ؛ سارة دوّرت $\\dfrac{5}{9}$ قبل النهاية فوجدت $55{,}94$ . ندوّر النتيجة النهائية فقط.",
+        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
+      }
+    }
+  ]
+}

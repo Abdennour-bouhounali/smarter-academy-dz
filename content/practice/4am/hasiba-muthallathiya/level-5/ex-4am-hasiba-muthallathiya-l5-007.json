@@ -1,0 +1,166 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l5-007",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — اكتب البرنامج ثم احسب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "برنامج الحاسبة",
+      "قيس زاوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P2",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "EGH قائم في G حيث $EG = 4{,}5\\,\\mathrm{cm}$ و $EH = 7{,}2\\,\\mathrm{cm}$ (الشكل).",
+    "figure": {
+      "points": {
+        "E": [
+          0,
+          0
+        ],
+        "G": [
+          4.5,
+          0
+        ],
+        "H": [
+          4.5,
+          5.62
+        ]
+      },
+      "segments": [
+        {
+          "from": "E",
+          "to": "G",
+          "label": "4,5 cm"
+        },
+        [
+          "G",
+          "H"
+        ],
+        {
+          "from": "E",
+          "to": "H",
+          "label": "7,2 cm"
+        }
+      ],
+      "rightAngles": [
+        [
+          "E",
+          "G",
+          "H"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "E",
+          "from": "G",
+          "to": "H",
+          "label": "?"
+        }
+      ],
+      "ariaLabel": "مثلث EGH قائم في G، الضلع EG طوله 4,5 سم والوتر EH طوله 7,2 سم، والزاوية المطلوبة عند E",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "البرنامج الذي يعطي قيس $\\widehat{GEH}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "⁦ON 2nd cos⁻¹ ( 4,5 ÷ 7,2 ) =⁩",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "⁦ON 2nd tan⁻¹ ( 4,5 ÷ 7,2 ) =⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "C",
+          "content": "⁦ON 2nd cos⁻¹ ( 7,2 ÷ 4,5 ) =⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "[EG] يجاور E و [EH] وتر: $\\cos\\widehat{GEH} = \\dfrac{4{,}5}{7{,}2}$ . ( $\\dfrac{7{,}2}{4{,}5} > 1$ يعطي خطأ رياضيا.)",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قيس $\\widehat{GEH}$ مدوّرا إلى الوحدة (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "51",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "39"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "البرنامج يعطي $51{,}31781255$ ، إذن $\\widehat{GEH} \\approx 51^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

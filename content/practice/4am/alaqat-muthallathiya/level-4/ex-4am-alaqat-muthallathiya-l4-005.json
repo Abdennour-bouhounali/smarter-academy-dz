@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l4-005",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 21 (ص 123)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمرين 21",
+      "إنشاء"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-21",
+      "page": 123,
+      "section": "إنشاءات هندسية",
+      "number": 21
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: أنشئ، بدون استعمال منقلة، زاوية ظلها يساوي 5,4. تحقق بالحاسبة وبالمنقلة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بالحاسبة، قيس هذه الزاوية مدوّرا إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "قيس بالدرجات، عدد عشري بالفاصلة (مثل 12,5)",
+      "expectedAnswer": "79.5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "10.5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ضلعا الزاوية القائمة 5,4 و 1 (أو 27 و 5)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل $\\tan^{-1}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan^{-1}(5{,}4) \\approx 79{,}51^{\\circ}$ ، وبالمنقلة نحو $80^{\\circ}$ .",
+        "incorrect": "الزاوية المطلوبة يقابلها الضلع الطويل 5,4."
+      }
+    }
+  ]
+}

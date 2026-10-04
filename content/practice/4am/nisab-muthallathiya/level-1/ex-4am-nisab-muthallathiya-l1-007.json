@@ -1,0 +1,122 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l1-007",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 2 — جيب L",
+    "estimatedMinutes": 2,
+    "tags": [
+      "الجيب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 124,
+      "section": "أؤكّد تعلّماتي",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 124): في الشكل، المثلث LMN قائم في M.",
+    "figure": {
+      "points": {
+        "N": [
+          0.0,
+          0.0
+        ],
+        "M": [
+          -6.0,
+          0.0
+        ],
+        "L": [
+          -6.0,
+          2.5
+        ]
+      },
+      "segments": [
+        {
+          "from": "N",
+          "to": "M"
+        },
+        {
+          "from": "M",
+          "to": "L"
+        },
+        {
+          "from": "N",
+          "to": "L"
+        }
+      ],
+      "rightAngles": [
+        [
+          "N",
+          "M",
+          "L"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "N",
+          "from": "M",
+          "to": "L"
+        }
+      ],
+      "ariaLabel": "مثلث LMN قائم في M",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لدينا:",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sin\\widehat{L} = \\dfrac{MN}{LN}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\sin\\widehat{L} = \\dfrac{LM}{LN}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "id": "C",
+          "content": "$\\sin\\widehat{L} = \\dfrac{MN}{LM}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-UKHRA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الوتر والمقابل والمجاور بالنسبة إلى الزاوية المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الوتر في مقام الجيب وجيب التمام، والظل لا يستعمل الوتر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض كل ضلع بطوله ثم اختزل الكسر."
+        }
+      ],
+      "feedback": {
+        "correct": "بالنسبة إلى L: المقابل [MN] والوتر [LN].",
+        "incorrect": "الجيب = المقابل ÷ الوتر؛ [LM] يمرّ بالرأس L فهو المجاور."
+      },
+      "difficulty": 1
+    }
+  ]
+}

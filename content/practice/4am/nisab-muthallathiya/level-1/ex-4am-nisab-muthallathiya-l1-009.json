@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l1-009",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — قيمة ممكنة للجيب",
+    "estimatedMinutes": 2,
+    "tags": [
+      "حدود الجيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nisab-muthallathiya_P2",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "في مثلث قائم، $\\widehat{x}$ زاوية حادة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ هذه الأعداد يمكن أن يكون $\\sin\\widehat{x}$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$1{,}35$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKBAR-MIN-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$-0{,}35$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKBAR-MIN-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$0{,}35$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما هو أطول ضلع في المثلث القائم؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجيب وجيب التمام نسبتان مقامهما الوتر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن البسط بالمقام: هل يمكن أن يكون البسط أكبر؟"
+        }
+      ],
+      "feedback": {
+        "correct": "الجيب نسبة طولين موجبين والمقام (الوتر) أكبر: $0 < \\sin\\widehat{x} < 1$ .",
+        "incorrect": "الجيب محصور تماما بين 0 و 1: لا سالب ولا أكبر من 1."
+      },
+      "difficulty": 1
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l1-007",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — زاوية ظلها معلوم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "إنشاء",
+      "الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P3",
+      "modelledOn": "method-construct"
+    }
+  },
+  "statement": {
+    "content": "نريد إنشاء زاوية حادة x دون منقلة حيث $\\tan x = \\dfrac{3}{4}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نرسم مثلثا قائما:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ضلعا زاويته القائمة 3 و 4",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "أحد ضلعي زاويته القائمة 3 ووتره 4",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-INSHA-WATAR"
+        },
+        {
+          "id": "C",
+          "content": "أحد ضلعي زاويته القائمة 4 ووتره 3",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-AKBAR-MIN-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الظل = المقابل ÷ المجاور."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل في الظل وتر؟"
+        }
+      ],
+      "feedback": {
+        "correct": "الظل نسبة ضلعي الزاوية القائمة: 3 مقابل و 4 مجاور.",
+        "incorrect": "مع وتر 4 نحصل على جيب أو جيب تمام $\\dfrac{3}{4}$ ؛ ووتر 3 أقصر من 4: مستحيل."
+      }
+    }
+  ]
+}

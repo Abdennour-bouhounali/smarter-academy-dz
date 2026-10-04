@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l4-001",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "وضعية — درون فوق كورنيش وهران",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "قيس زاوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "درون يصوّر مباراة على شاطئ كورنيش وهران. المسافة بين الكاميرا والكرة (الشعاع) $100\\,\\mathrm{m}$ ، وارتفاع الدرون عن الأرض $60\\,\\mathrm{m}$ . x هي الزاوية بين الأرض والشعاع عند الكرة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس x مدوّرا إلى الوحدة (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "37",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "53"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS",
+          "value": "0,6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "الارتفاع يقابل x والشعاع هو الوتر: $\\sin x = \\dfrac{60}{100} = 0{,}6$ ، و ⁦ON 2nd sin⁻¹ 0,6 =⁩ يعطي $36{,}87$ ، إذن $x \\approx 37^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

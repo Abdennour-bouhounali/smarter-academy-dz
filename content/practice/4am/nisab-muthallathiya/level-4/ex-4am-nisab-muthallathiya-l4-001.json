@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l4-001",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 3 — الكتابتان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الجيب",
+      "كتابة مساواة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 124,
+      "section": "أؤكّد تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 124): في الشكل، المثلث ABC قائم في B حيث $AB = 7$ و $\\widehat{C} = 35^{\\circ}$ . اختر الإجابة أو الإجابات الصحيحة.",
+    "figure": {
+      "points": {
+        "C": [
+          0.0,
+          0.0
+        ],
+        "B": [
+          6.0,
+          0.0
+        ],
+        "A": [
+          6.0,
+          4.201
+        ]
+      },
+      "segments": [
+        {
+          "from": "C",
+          "to": "B"
+        },
+        {
+          "from": "B",
+          "to": "A",
+          "label": "7"
+        },
+        {
+          "from": "C",
+          "to": "A"
+        }
+      ],
+      "rightAngles": [
+        [
+          "C",
+          "B",
+          "A"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "C",
+          "from": "B",
+          "to": "A",
+          "label": "35°"
+        }
+      ],
+      "ariaLabel": "مثلث ABC قائم في B حيث AB = 7 والزاوية C قيسها 35 درجة",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الإجابات الصحيحة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sin 35^{\\circ} = \\dfrac{AC}{7}$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "id": "B",
+          "content": "$\\sin 35^{\\circ} = \\dfrac{7}{AC}$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-DARB-BADAL-QISMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\sin 35^{\\circ} = \\dfrac{7}{AC}$ و $\\sin 35^{\\circ} \\times AC = 7$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin 35^{\\circ} = \\dfrac{AB}{AC} = \\dfrac{7}{AC}$ ، والجداء المتصالب يعطي $\\sin 35^{\\circ} \\times AC = 7$ : الكتابتان صحيحتان.",
+        "incorrect": "بالنسبة إلى C: [AB] مقابل و [AC] وتر؛ والمساواة نفسها تُكتب بجداء."
+      },
+      "difficulty": 4
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l2-003",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — مئذنة بقسنطينة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية طالس",
+      "خط النظر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "لتقدير ارتفاع مئذنة مسجد الأمير عبد القادر بقسنطينة، غُرست عصا شاقولية طولها $2\\,\\mathrm{m}$ على بعد $78{,}75\\,\\mathrm{m}$ من قاعدة المئذنة، ووقف يوسف على الأرض على بعد $1{,}5\\,\\mathrm{m}$ من العصا في المكان الذي يرى فيه قمة العصا وقمة المئذنة على استقامة واحدة (العصا بينه وبين المئذنة، ونهمل طوله)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع المئذنة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "107",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العصا والمئذنة متوازيتان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة الكلية من يوسف إلى المئذنة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبة h إلى طول العصا تساوي نسبة المسافة الكلية إلى بعد يوسف عن العصا."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{h}{2} = \\dfrac{1{,}5 + 78{,}75}{1{,}5} = \\dfrac{80{,}25}{1{,}5}$ ومنه $h = 107\\,\\mathrm{m}$ ، وهو فعلا ارتفاع مئذنتي المسجد.",
+        "incorrect": "استعمل المسافة الكلية لا المسافة بين العصا والمئذنة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "105",
+          "id": "MISC-MUTH-TALIS-NAZAR"
+        }
+      ]
+    }
+  ]
+}

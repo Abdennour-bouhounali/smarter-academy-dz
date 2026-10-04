@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l1-007",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — ظل الزاوية 45°",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الحاسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "حاسبة مبرمجة بالدرجة: نضغط ⁦ON tan 45 =⁩."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي يظهر على الشاشة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-HASIBA-RAD",
+          "value": "1,62"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تأكّد أن الحاسبة مبرمجة بالدرجة: الحرف D في أعلى الشاشة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضغط الدالة ثم قيس الزاوية ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر ما يظهر على الشاشة: انظر إلى الرقم الموالي للرقم الذي تحتفظ به."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan 45^{\\circ} = 1$ : في المثلث القائم المتساوي الساقين الضلعان القائمان متساويان.",
+        "incorrect": "راجع: هل الحاسبة بالدرجة، وهل ضغطت الدالة المناسبة ثم دوّرت الشاشة؟"
+      }
+    }
+  ]
+}

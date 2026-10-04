@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l1-001",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 1 — جيب تمام زاوية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جيب التمام",
+      "الوتر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 124,
+      "section": "أؤكّد تعلّماتي",
+      "number": 1
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "في المثلث MOB القائم في O (الشكل).",
+    "figure": {
+      "points": {
+        "M": [
+          0,
+          0
+        ],
+        "O": [
+          6,
+          0
+        ],
+        "B": [
+          6,
+          3
+        ]
+      },
+      "segments": [
+        [
+          "M",
+          "O"
+        ],
+        [
+          "O",
+          "B"
+        ],
+        [
+          "M",
+          "B"
+        ]
+      ],
+      "rightAngles": [
+        [
+          "M",
+          "O",
+          "B"
+        ]
+      ],
+      "labels": {
+        "M": "w",
+        "O": "se",
+        "B": "ne"
+      },
+      "ariaLabel": "مثلث MOB قائم في O: النقطة M على اليسار و O على اليمين و B فوق O",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لدينا:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\cos\\widehat{M} = \\dfrac{OM}{OB}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        },
+        {
+          "id": "B",
+          "content": "$\\cos\\widehat{M} = \\dfrac{OM}{MB}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\cos\\widehat{M} = \\dfrac{OB}{MB}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الزاوية القائمة في O."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الوتر يقابل الزاوية القائمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جيب التمام = المجاور ÷ الوتر."
+        }
+      ],
+      "feedback": {
+        "correct": "الوتر [MB] والمجاور للزاوية M هو [OM]: $\\cos\\widehat{M} = \\dfrac{OM}{MB}$ .",
+        "incorrect": "حدّد الوتر أولا، ثم الضلع المجاور للزاوية M."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ]
+}

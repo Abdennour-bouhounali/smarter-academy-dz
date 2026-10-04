@@ -1,0 +1,122 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l4-010",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 4,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — مثلث 7، 24، 25",
+    "estimatedMinutes": 3,
+    "tags": [
+      "برهان",
+      "زاوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P3",
+      "modelledOn": "ex-13"
+    }
+  },
+  "statement": {
+    "content": "مثلث EFG أطوال أضلاعه $EF = 7\\,\\mathrm{cm}$ و $FG = 24\\,\\mathrm{cm}$ و $EG = 25\\,\\mathrm{cm}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل المثلث قائم؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، قائم في F لأن $7^2 + 24^2 = 625 = 25^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم، قائم في E لأن 25 أكبر الأطوال",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        },
+        {
+          "id": "C",
+          "content": "لا نستطيع أن نعرف دون منقلة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن النتيجة بأطوال المثلث المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الوتر أطول أضلاع المثلث القائم، والجيب وجيب التمام أصغر من 1."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نتيجة لا تحترم هذه الشروط تعني خطأ في اختيار النسبة أو في العملية."
+        }
+      ],
+      "feedback": {
+        "correct": "الخاصية العكسية لخاصية فيثاغورس: $49 + 576 = 625$ ، والزاوية القائمة تقابل أطول ضلع [EG] فهي في F.",
+        "incorrect": "سمِّ الأضلاع بالنسبة إلى الزاوية المعلومة، ثم اختر النسبة التي تجمع المعلوم والمطلوب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قيس أصغر زوايا المثلث بالدرجة، إلى الوحدة:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "16",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "74"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلعين المعلومين بالنسبة إلى الزاوية المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمعهما واحسب قيمتها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عيّن الزاوية باللمسة العكسية (2nd ثم sin⁻¹ أو cos⁻¹ أو tan⁻¹) ودوّر إلى الدرجة."
+        }
+      ],
+      "feedback": {
+        "correct": "أصغر زاوية تقابل أصغر ضلع: $\\sin\\widehat{G} = \\dfrac{7}{25}$ ومنه $\\widehat{G} \\approx 16^{\\circ}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

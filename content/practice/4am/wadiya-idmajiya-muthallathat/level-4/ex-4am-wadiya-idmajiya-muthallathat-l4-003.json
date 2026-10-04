@@ -1,0 +1,117 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l4-003",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — قطر قسم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية فيثاغورس",
+      "الظل",
+      "مجسّم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "ex-31"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "قسم على شكل متوازي مستطيلات ABCDEFGH : طوله $AB = 8\\,\\mathrm{m}$ ، عرضه $BC = 6\\,\\mathrm{m}$ ، وارتفاعه $CD = 3\\,\\mathrm{m}$ ( [CD] حرف شاقولي)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول القطر AD مدوّرا إلى الجزء من 10 (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 10)",
+      "expectedAnswer": "10.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب قطر الأرضية أولا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المثلث ACD قائم في C."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "فيثاغورس مرتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$AC = \\sqrt{8^2 + 6^2} = 10$ ثم $AD = \\sqrt{10^2 + 3^2} = \\sqrt{109} \\approx 10{,}4\\,\\mathrm{m}$ .",
+        "incorrect": "القطر يمرّ داخل القسم: ليس قطر الأرضية."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-MUTH-QUTR-WAJH"
+        },
+        {
+          "value": "17",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما المدوّر إلى الدرجة لقيس الزاوية بين القطر [AD] والأرضية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "17",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الزاوية DAC."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "CD يقابلها و AC يجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الظل ثم اللمسة العكسية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan\\widehat{DAC} = \\dfrac{3}{10}$ ومنه $\\widehat{DAC} \\approx 16{,}7^{\\circ}$ ، أي $17^{\\circ}$ .",
+        "incorrect": "الزاوية مع الأرضية رأسها A في المثلث ACD."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "73",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        }
+      ]
+    }
+  ]
+}

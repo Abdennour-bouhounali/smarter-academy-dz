@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l5-002",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — خط نظر أريس",
+    "estimatedMinutes": 5,
+    "tags": [
+      "خاصية فيثاغورس",
+      "الزاوية المتممة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "في وضعية «مقام الشهيد»: أريس في A على بعد $AM = 98{,}1\\,\\mathrm{m}$ من قاعدة المقام، والعمود $PQ = 2{,}30\\,\\mathrm{m}$ على بعد $AP = 2{,}45\\,\\mathrm{m}$ منه، والمقام [MS] ارتفاعه h حيث $\\dfrac{h}{2{,}30} = \\dfrac{98{,}1}{2{,}45}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول خط النظر AS مدوّرا إلى الجزء من 10 (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 10)",
+      "expectedAnswer": "134.6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "AS وتر المثلث AMS."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب h دون تدوير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خاصية فيثاغورس."
+        }
+      ],
+      "feedback": {
+        "correct": "$h \\approx 92{,}094$ و $AS = \\sqrt{98{,}1^2 + h^2} \\approx 134{,}6\\,\\mathrm{m}$ .",
+        "incorrect": "الوتر ليس مجموع الضلعين، ولا تدوّر h قبل الأوان."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "190.2",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما المدوّر إلى الدرجة لقيس الزاوية ASM بين خط النظر والمقام؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "47",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مجموع الزاويتين الحادتين في مثلث قائم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزاوية في A قيسها حوالي $43{,}19^{\\circ}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أو: ظل الزاوية في S هو AM على h."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\widehat{ASM} = 90^{\\circ} - x \\approx 90^{\\circ} - 43{,}19^{\\circ} = 46{,}81^{\\circ}$ ، أي $47^{\\circ}$ .",
+        "incorrect": "الزاوية في S تتمّم الزاوية في A."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "43",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        }
+      ]
+    }
+  ]
+}

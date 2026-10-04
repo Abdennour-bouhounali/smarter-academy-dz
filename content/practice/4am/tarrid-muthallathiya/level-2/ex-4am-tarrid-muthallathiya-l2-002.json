@@ -1,0 +1,128 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l2-002",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 29 — ارتفاع النخلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ارتفاع",
+      "الظل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-29",
+      "page": 125,
+      "section": "أتعمّق",
+      "number": 29
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 125، تمرين 29): نخلة شاقولية ارتفاعها h. من نقطة على الأرض على بعد $10\\,\\mathrm{m}$ من قاعدتها يُرى رأسها بزاوية قيسها $36^{\\circ}$ مع الأرض (الشكل).",
+    "figure": {
+      "points": {
+        "P": [
+          0,
+          0
+        ],
+        "T": [
+          0,
+          7.265
+        ],
+        "O": [
+          10,
+          0
+        ]
+      },
+      "segments": [
+        {
+          "from": "P",
+          "to": "O",
+          "label": "10m"
+        },
+        {
+          "from": "P",
+          "to": "T",
+          "label": "h"
+        },
+        {
+          "from": "O",
+          "to": "T"
+        }
+      ],
+      "rightAngles": [
+        [
+          "O",
+          "P",
+          "T"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "O",
+          "from": "T",
+          "to": "P",
+          "label": "36°"
+        }
+      ],
+      "labels": {
+        "P": "sw",
+        "T": "nw",
+        "O": "se"
+      },
+      "ariaLabel": "نخلة شاقولية PT ارتفاعها h، ومن النقطة O على الأرض على بعد 10m من قاعدتها يُرى رأسها بزاوية 36 درجة",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب ارتفاع النخلة h بالمتر، إلى الجزء من 10.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "expectedAnswer": "7.3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-DARB-BADAL-QISMA",
+          "value": "13.8"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
+          "value": "5.9"
+        },
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "7.2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$h = 10 \\times \\tan 36^{\\circ} \\approx 7{,}27$ أي $7{,}3\\,\\mathrm{m}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

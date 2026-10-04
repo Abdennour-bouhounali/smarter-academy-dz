@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l3-008",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الجيب من الظل وجيب التمام",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الظل",
+      "العلاقة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P1",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "x قيس زاوية حادة حيث $\\tan x = \\dfrac{3}{4}$ و $\\cos x = \\dfrac{4}{5}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من $\\tan x = \\dfrac{\\sin x}{\\cos x}$ ، احسب $\\sin x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر مثل 5/7 أو عشري بالفاصلة)",
+      "expectedAnswer": "3/5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-DARB-BADAL-QISMA",
+          "value": "15/16"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sin x = \\tan x \\times \\cos x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب الكسرين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin x = \\dfrac{3}{4} \\times \\dfrac{4}{5} = \\dfrac{3}{5}$ ، وتحقّق: $\\dfrac{9}{25} + \\dfrac{16}{25} = 1$ .",
+        "incorrect": "من $\\tan x = \\dfrac{\\sin x}{\\cos x}$ نضرب الطرفين في $\\cos x$ ."
+      }
+    }
+  ]
+}

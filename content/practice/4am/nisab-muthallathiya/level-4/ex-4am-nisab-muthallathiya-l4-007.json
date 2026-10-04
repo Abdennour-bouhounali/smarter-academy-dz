@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l4-007",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — طائرة ورقية على شاطئ تيبازة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "اختيار النسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nisab-muthallathiya_P1",
+      "modelledOn": "method-sin"
+    }
+  },
+  "statement": {
+    "content": "على شاطئ تيبازة، خيط طائرة ورقية مشدود طوله $30\\,\\mathrm{m}$ ، ويصنع مع الأفق زاوية قيسها $40^{\\circ}$ . نريد ارتفاع الطائرة فوق يد ريم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النسبة التي تربط المعلوم بالمطلوب هي:",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "جيب التمام: الخيط وتر",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-UKHRA"
+        },
+        {
+          "id": "B",
+          "content": "الظل: الارتفاع مقابل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "C",
+          "content": "الجيب: الخيط وتر والارتفاع مقابل للزاوية",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ الخيط والارتفاع بالنسبة إلى الزاوية 40°."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أيّ نسبة تجمع الوتر والمقابل؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جيب التمام يجمع المجاور والوتر، والظل يجمع المقابل والمجاور."
+        }
+      ],
+      "feedback": {
+        "correct": "الارتفاع مقابل والخيط وتر: $h = 30 \\times \\sin 40^{\\circ}$ .",
+        "incorrect": "الظل يحتاج المجاور (المسافة الأفقية) وهو غير معلوم."
+      },
+      "difficulty": 4
+    }
+  ]
+}

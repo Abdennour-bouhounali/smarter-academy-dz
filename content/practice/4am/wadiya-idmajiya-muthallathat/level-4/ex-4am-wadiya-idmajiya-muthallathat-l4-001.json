@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l4-001",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — وجه هرم خوفو",
+    "estimatedMinutes": 5,
+    "tags": [
+      "خاصية فيثاغورس",
+      "جيب التمام",
+      "هرم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "ex-32"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "هرم منتظم قاعدته مربع ABCD طول ضلعه $231\\,\\mathrm{m}$ ومركزه O، وأحرفه الجانبية طول كل منها $220\\,\\mathrm{m}$ (أبعاد هرم خوفو). H منتصف الضلع [AB] و S رأس الهرم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع الوجه الجانبي SH مدوّرا إلى الوحدة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (مدوّر إلى الوحدة)",
+      "expectedAnswer": "187",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الوجه SAB متساوي الساقين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "SH عمودي على [AB] في منتصفه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المثلث SHA قائم في H و $HA = \\dfrac{231}{2}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$SH^2 = 220^2 - 115{,}5^2$ ومنه $SH \\approx 187{,}24$ ، أي $187\\,\\mathrm{m}$ .",
+        "incorrect": "في المثلث SHA القائم في H نستعمل نصف الضلع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "147",
+          "id": "MISC-MUTH-NISF-DIL-QUTR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما المدوّر إلى الدرجة لقيس الزاوية بين الوجه الجانبي والقاعدة (الزاوية SHO)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "52",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث SOH قائم في O."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$OH = 115{,}5$ والوتر SH."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جيب التمام = المجاور ÷ الوتر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos\\widehat{SHO} = \\dfrac{115{,}5}{SH} \\approx 0{,}617$ ومنه $\\widehat{SHO} \\approx 51{,}9^{\\circ}$ ، أي $52^{\\circ}$ .",
+        "incorrect": "استعمل القيمة غير المدوّرة لـ SH."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "38",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        }
+      ]
+    }
+  ]
+}

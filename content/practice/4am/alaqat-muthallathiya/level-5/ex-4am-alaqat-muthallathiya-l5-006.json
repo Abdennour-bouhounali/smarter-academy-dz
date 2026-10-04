@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l5-006",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — صورة قوس في الطاسيلي",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "إنشاء"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P3",
+      "modelledOn": "method-construct"
+    }
+  },
+  "statement": {
+    "content": "في رحلة إلى الطاسيلي، أراد مراد أن يرسم في دفتره، دون منقلة، زاوية التصوير x حيث $\\tan x = \\dfrac{2}{3}$ ، فرسم زاوية قائمة ونقل 2 على ضلع و 3 على الضلع الآخر ووصل طرفيهما."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بالحاسبة: قيس الزاوية x التي يقابلها الضلع 2 ، مدوّرا إلى الجزء من 10:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "قيس بالدرجات، عدد عشري بالفاصلة (مثل 12,5)",
+      "expectedAnswer": "33.7",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "56.3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "2 مقابل و 3 مجاور: ظل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل $\\tan^{-1}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan^{-1}\\left(\\dfrac{2}{3}\\right) \\approx 33{,}69^{\\circ}$ ، أي $33{,}7^{\\circ}$ .",
+        "incorrect": "الزاوية الأخرى ($56{,}3^{\\circ}$) ظلها $\\dfrac{3}{2}$ ."
+      }
+    }
+  ]
+}

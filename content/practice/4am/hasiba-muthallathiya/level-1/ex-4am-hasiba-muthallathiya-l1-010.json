@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l1-010",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "معارف 3 مثال 2 — الزاوية A",
+    "estimatedMinutes": 3,
+    "tags": [
+      "التدوير",
+      "قيس زاوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-3",
+      "page": 120,
+      "section": "معارف",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 120): $\\sin\\widehat{A} = 0{,}4$ . بالمراحل ⁦ON 2nd sin⁻¹ 0,4 =⁩ يظهر على الشاشة $23{,}57817848$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس $\\widehat{A}$ بالتدوير إلى الوحدة (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "24",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "23"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "رقم الأجزاء من 10 هو 5: نضيف 1، $\\widehat{A} \\approx 24^{\\circ}$ .",
+        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
+      }
+    }
+  ]
+}

@@ -2489,6 +2489,253 @@
       "difficulty": "صعب",
       "status": "available",
       "icon": "🕌"
+    },
+    {
+      "code": "nisab-muthallathiya",
+      "sourceTopicId": "nisab_muthallathiya",
+      "chapterId": "handasa",
+      "unitId": "hisab-muthallathat",
+      "order": 49,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "النسب المثلثية لزاوية حادة في مثلث قائم (جيب التمام، الجيب والظل)",
+      "description": "مدخل الوحدة: في مثلث قائم، نسمّي الوتر والضلعين المقابل والمجاور لزاوية حادة، فنعرّف $\\cos$ و $\\sin$ و $\\tan$ كنسب أطوال لا تتعلق إلا بقيس الزاوية، ونبيّن أن الجيب وجيب التمام محصوران بين 0 و 1، ثم نوظّفها لحساب أطوال مجهولة.",
+      "prerequisites": [
+        "عناصر المثلث القائم (الزاوية القائمة، الوتر، والضلعان القائمان)",
+        "تعيين الضلع المجاور والضلع المقابل بالنسبة لزاوية حادة معينة",
+        "خاصية فيثاغورس لحساب أطوال الأضلاع في مثلث قائم"
+      ],
+      "prerequisiteLessonCodes": [
+        "talis-hisab-atwal"
+      ],
+      "pointsToLearn": [
+        "التعرف على النسب المثلثية لزاوية حادة في مثلث قائم وتحديد قوانينها: جيب التمام $\\cos\\widehat{x}$ = طول الضلع المجاور ÷ طول الوتر ، الجيب $\\sin\\widehat{x}$ = طول الضلع المقابل ÷ طول الوتر ، الظل $\\tan\\widehat{x}$ = طول الضلع المقابل ÷ طول الضلع المجاور",
+        "إدراك أن جيب وجيب تمام زاوية حادة هما عددان موجبان تماماً ومحصوران دائماً بين 0 و 1 (لأن الوتر هو أطول أضلاع المثلث القائم)",
+        "توظيف النسب المثلثية لحساب أطوال مجهولة في مثلث قائم"
+      ],
+      "pointPrerequisites": {
+        "P1": [],
+        "P2": [
+          "4am_nisab-muthallathiya_P1"
+        ],
+        "P3": [
+          "4am_nisab-muthallathiya_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 10,
+        "pages": {
+          "prep": 115,
+          "activity": 116,
+          "knowledge": 118,
+          "method": 119,
+          "exercises": 122
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "📐"
+    },
+    {
+      "code": "hasiba-muthallathiya",
+      "sourceTopicId": "nisab_muthallathiya",
+      "chapterId": "handasa",
+      "unitId": "hisab-muthallathat",
+      "order": 50,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "استعمال الحاسبة لحساب النسب المثلثية وتعيين قياس زاوية",
+      "description": "الحاسبة مبرمجة بالدرجة: اللمسات $\\sin$ و $\\cos$ و $\\tan$ تعطي قيمة مقربة لنسبة زاوية معلومة، واللمسات العكسية (2nd أو Shift ثم $\\sin^{-1}$ ، $\\cos^{-1}$ ، $\\tan^{-1}$) تعيّن قيس زاوية حادة من إحدى نسبها، ثم ندوّر النتيجة إلى الدقة المطلوبة.",
+      "prerequisites": [
+        "التعرف على النسب المثلثية (cos، sin، tan)",
+        "إتقان الاستعمال الأساسي للآلة الحاسبة العلمية وقواعد تدوير الأعداد"
+      ],
+      "prerequisiteLessonCodes": [
+        "nisab-muthallathiya"
+      ],
+      "pointsToLearn": [
+        "استعمال اللمسات الأساسية ($\\sin$ ، $\\cos$ ، $\\tan$) على الحاسبة العلمية لاستخراج القيم المضبوطة أو المقربة للنسب المثلثية لزاوية معطاة بالدرجات",
+        "استعمال اللمسات العكسية ($\\sin^{-1}$ ، $\\cos^{-1}$ ، $\\tan^{-1}$ أو 2nd/Shift) لتعيين قيس زاوية حادة انطلاقاً من قيمة إحدى نسبها المثلثية",
+        "تدوير النتائج (النسب المثلثية أو قياسات الزوايا) إلى الجزء من عشرة، المائة، أو إلى الوحدة بحسب الدقة المطلوبة"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_nisab-muthallathiya_P1"
+        ],
+        "P2": [
+          "4am_hasiba-muthallathiya_P1"
+        ],
+        "P3": []
+      },
+      "textbookRef": {
+        "unit": 10,
+        "pages": {
+          "prep": 115,
+          "activity": 117,
+          "knowledge": 120,
+          "exercises": 122
+        }
+      },
+      "durationMinutes": 45,
+      "difficulty": "سهل",
+      "status": "available",
+      "icon": "🧮"
+    },
+    {
+      "code": "alaqat-muthallathiya",
+      "sourceTopicId": "alaqat_nisab",
+      "chapterId": "handasa",
+      "unitId": "hisab-muthallathat",
+      "order": 51,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "العلاقات بين النسب المثلثية والإنشاءات الهندسية",
+      "description": "من خاصية فيثاغورس نثبت $\\cos^2 x + \\sin^2 x = 1$ و $\\tan x = \\dfrac{\\sin x}{\\cos x}$ ، فنحسب القيمة المضبوطة لنسبة من نسبة أخرى دون حساب قيس الزاوية، وننشئ بالمسطرة والمدور، دون منقلة، زاوية حادة علمت إحدى نسبها.",
+      "prerequisites": [
+        "قوانين النسب المثلثية وتطبيق خاصية فيثاغورس",
+        "الحساب العددي والجبري وتبسيط الجذور والكسور"
+      ],
+      "prerequisiteLessonCodes": [
+        "nisab-muthallathiya"
+      ],
+      "pointsToLearn": [
+        "إثبات وتطبيق العلاقتين الأساسيتين بين النسب المثلثية لزاوية حادة x: $\\cos^2 x + \\sin^2 x = 1$ و $\\tan x = \\dfrac{\\sin x}{\\cos x}$ (حيث $\\cos x \\neq 0$)",
+        "حساب القيمة المضبوطة لإحدى النسب المثلثية إذا علمت نسبة أخرى دون الحاجة لحساب قيس الزاوية بالدرجات",
+        "إنشاء زاوية حادة ذات قيس معلوم بإنشاء مثلث قائم أطوال أضلاعه تحقق نسبة مثلثية معطاة (دون استعمال المنقلة)"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_nisab-muthallathiya_P1"
+        ],
+        "P2": [
+          "4am_alaqat-muthallathiya_P1"
+        ],
+        "P3": [
+          "4am_nisab-muthallathiya_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 10,
+        "pages": {
+          "activity": 117,
+          "knowledge": 120,
+          "method": 121,
+          "exercises": 123
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🪁"
+    },
+    {
+      "code": "tarrid-muthallathiya",
+      "sourceTopicId": "nisab_muthallathiya",
+      "chapterId": "handasa",
+      "unitId": "hisab-muthallathat",
+      "order": 52,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "حل مشكلات وترييض وضعيات بتوظيف النسب المثلثية",
+      "description": "ارتفاعات لا نصل إليها، زوايا نظر، ومسافات أفقية وعمودية: نترجم الوضعية إلى مثلث قائم، نختار النسبة المناسبة للمعطيات (أو خاصية فيثاغورس) ونحلّ المثلث القائم كاملا.",
+      "prerequisites": [
+        "التحكم في النسب المثلثية والعلاقات بينها والقدرة على استعمال الحاسبة",
+        "خطوات ترييض مشكلة وتحليل المخططات والأشكال الهندسية"
+      ],
+      "prerequisiteLessonCodes": [
+        "nisab-muthallathiya",
+        "hasiba-muthallathiya"
+      ],
+      "pointsToLearn": [
+        "صياغة ونمذجة مسائل هندسية ووضعيّات واقعية (مثل حساب ارتفاعات غير مباشرة، زوايا نظر، ومسافات أفقية وعمودية)",
+        "اختيار النسبة المثلثية المناسبة ($\\sin$ أو $\\cos$ أو $\\tan$) لحساب طول مجهول أو قيس زاوية بناءً على معطيات الشكل المتاحة",
+        "الدمج بين خاصية فيثاغورس والنسب المثلثية لحل المثلث القائم وحساب جميع عناصره المجهولة"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_nisab-muthallathiya_P3"
+        ],
+        "P2": [
+          "4am_nisab-muthallathiya_P3",
+          "4am_hasiba-muthallathiya_P2"
+        ],
+        "P3": [
+          "4am_tarrid-muthallathiya_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 10,
+        "pages": {
+          "challenge": 115,
+          "exercises": 123,
+          "deepen": 125
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "📱"
+    },
+    {
+      "code": "wadiya-idmajiya-muthallathat",
+      "sourceTopicId": "nisab_muthallathiya",
+      "chapterId": "handasa",
+      "unitId": "hisab-muthallathat",
+      "order": 53,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — إدماج المعارف والحل المنهجي للوضعية المركبة",
+      "description": "إدماج المعارف: ارتفاع «مقام الشهيد» بعمود كهربائي وخط نظر (خاصية طالس ثم الظل)، وأبعاد مجسمات (متوازي مستطيلات، هرم خوفو) — بالتحليل المنهجي (قراءة · تحليل · تنفيذ)، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه.",
+      "prerequisites": [
+        "التحكم الشامل في مفاهيم وتطبيقات النسب المثلثية في المثلث القائم والخاصيات الهندسية المكملة",
+        "الترييض المنهجي للوضعيات المشكلة وقواعد التدوير والحساب العددي"
+      ],
+      "prerequisiteLessonCodes": [
+        "nisab-muthallathiya",
+        "hasiba-muthallathiya",
+        "alaqat-muthallathiya",
+        "tarrid-muthallathiya"
+      ],
+      "pointsToLearn": [
+        "تجنيد وتوظيف الموارد المكتسبة في الوحدة (النسب المثلثية، استعمال الحاسبة، العلاقة بين النسب، وخاصية فيثاغورس وطاليس) لحل وضعيات ومشكلات واقعية مركبة (مثل قياس ارتفاع معلم تاريخي كـ «مقام الشهيد» أو حساب أبعاد مجسمات هندسية)",
+        "تحليل الوضعية وقراءتها: فهم نص المشكلة، تحديد المعطيات والأبعاد والزوايا، والربط بين الواقع والنمذجة الهندسية",
+        "اختيار وتنفيذ استراتيجية الحل: صياغة المساواة الرياضية المناسبة، اختيار الموارد الخاصة (خاصية طاليس، النسب المثلثية، أو فيثاغورس)، ثم حساب الأطوال والزوايا وتدوير النتائج وتفسيرها"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_tarrid-muthallathiya_P2",
+          "4am_talis-hisab-atwal_P2"
+        ],
+        "P2": [
+          "4am_tarrid-muthallathiya_P1"
+        ],
+        "P3": [
+          "4am_wadiya-idmajiya-muthallathat_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 10,
+        "pages": {
+          "qcm": 124,
+          "situation": 124,
+          "deepen": 125
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🏛️"
     }
   ],
   "publishedScope": {
@@ -2503,7 +2750,8 @@
       "tanasubiya-dala-khattiya",
       "dala-taalufiya",
       "ihsa",
-      "khassiyat-talis"
+      "khassiyat-talis",
+      "hisab-muthallathat"
     ],
     "removedTopicCount": 25
   }

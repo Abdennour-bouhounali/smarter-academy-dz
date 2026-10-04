@@ -1,0 +1,72 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l2-004",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 16 (ص 123)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمرين 16",
+      "قيمة مضبوطة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-16",
+      "page": 123,
+      "section": "العلاقات المثلثية",
+      "number": 16
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: x هو قيس زاوية حادة حيث $\\cos x = \\dfrac{\\sqrt{2}}{2}$ . احسب، بدون استعمال حاسبة، القيمة المضبوطة للعدد $\\sin x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المضبوطة للعدد $\\sin x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{\\sqrt{2}}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JADHR-NASI"
+        },
+        {
+          "id": "C",
+          "content": "$1 - \\dfrac{\\sqrt{2}}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JAMA-NISAB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\cos^2 x = \\dfrac{2}{4}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لا تنس الجذر في النهاية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin^2 x = 1 - \\dfrac{1}{2} = \\dfrac{1}{2}$ و $\\sin x = \\dfrac{1}{\\sqrt{2}} = \\dfrac{\\sqrt{2}}{2}$ (فالزاوية $45^{\\circ}$ و $\\tan x = 1$ ).",
+        "incorrect": "$\\dfrac{1}{2}$ هو $\\sin^2 x$ ، لا $\\sin x$ ."
+      }
+    }
+  ]
+}

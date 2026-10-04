@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l2-009",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 24 — زاوية في نصف دائرة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "زاوية من ضلعين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-24",
+      "page": 125,
+      "section": "أتعمّق",
+      "number": 24
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 125، تمرين 24): دائرة مركزها O ونصف قطرها $2{,}5\\,\\mathrm{cm}$ ، و [AB] قطر لها، و C نقطة من الدائرة حيث $AC = 3\\,\\mathrm{cm}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المثلث ABC قائم في C. احسب قيس الزاوية $\\widehat{B}$ بالدرجة، إلى الوحدة.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "expectedAnswer": "37",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-ZAWIYA-KHATI",
+          "value": "53"
+        },
+        {
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
+          "value": "31"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلعين المعلومين بالنسبة إلى الزاوية المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر النسبة التي تجمعهما واحسب قيمتها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عيّن الزاوية باللمسة العكسية (2nd ثم sin⁻¹ أو cos⁻¹ أو tan⁻¹) ودوّر إلى الدرجة."
+        }
+      ],
+      "feedback": {
+        "correct": "$AB = 5$ ؛ بالنسبة إلى B : AC مقابل و AB وتر، $\\sin\\widehat{B} = \\dfrac{3}{5}$ ومنه $\\widehat{B} \\approx 37^{\\circ}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

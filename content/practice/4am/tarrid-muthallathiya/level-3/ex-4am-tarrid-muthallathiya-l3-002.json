@@ -1,0 +1,167 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l3-002",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 27 — MS ثم SF",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حل المثلث"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-27",
+      "page": 125,
+      "section": "أتعمّق",
+      "number": 27
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 125، تمرين 27): MSF مثلث قائم في M حيث $\\widehat{S} = 32^{\\circ}$ و $MF = 9\\,\\mathrm{cm}$ (الشكل).",
+    "figure": {
+      "points": {
+        "M": [
+          0,
+          0
+        ],
+        "S": [
+          14.403,
+          0
+        ],
+        "F": [
+          0,
+          9
+        ]
+      },
+      "segments": [
+        {
+          "from": "M",
+          "to": "S"
+        },
+        {
+          "from": "M",
+          "to": "F",
+          "label": "9cm"
+        },
+        {
+          "from": "S",
+          "to": "F"
+        }
+      ],
+      "rightAngles": [
+        [
+          "S",
+          "M",
+          "F"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "S",
+          "from": "F",
+          "to": "M",
+          "label": "32°"
+        }
+      ],
+      "labels": {
+        "M": "sw",
+        "S": "se",
+        "F": "nw"
+      },
+      "ariaLabel": "مثلث MSF قائم في M، قيس الزاوية S يساوي 32 درجة، والضلع MF طوله 9cm",
+      "maxWidth": 320
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب MS بالسنتيمتر، إلى الجزء من 100.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,35 (المدوّر إلى الجزء من 100)",
+      "expectedAnswer": "14.40",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-DARB-BADAL-QISMA",
+          "value": "5.62"
+        },
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "16.98"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "MF مقابل و MS مجاور للزاوية S: $MS = \\dfrac{9}{\\tan 32^{\\circ}} \\approx 14{,}40\\,\\mathrm{cm}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب SF بحساب $\\sin\\widehat{S}$ ، إلى الجزء من 10.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "expectedAnswer": "17.0",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-DARB-BADAL-QISMA",
+          "value": "4.8"
+        },
+        {
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
+          "value": "10.6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin 32^{\\circ} = \\dfrac{9}{SF}$ ومنه $SF = \\dfrac{9}{\\sin 32^{\\circ}} \\approx 16{,}98$ أي $17{,}0\\,\\mathrm{cm}$ .",
+        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
+      }
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l5-005",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تيليفيريك تلمسان",
+    "estimatedMinutes": 5,
+    "tags": [
+      "خاصية فيثاغورس",
+      "الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "تنطلق عربة تيليفيريك تلمسان من محطة على ارتفاع $800\\,\\mathrm{m}$ (عن سطح البحر) إلى هضبة لالة ستي على ارتفاع $1150\\,\\mathrm{m}$ ، والمسافة الأفقية بين المحطتين $1200\\,\\mathrm{m}$ . نعتبر الكابل مستقيما."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول الكابل (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "1250",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الفرق بين الارتفاعين ضلع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة الأفقية ضلع آخر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الكابل وتر: فيثاغورس."
+        }
+      ],
+      "feedback": {
+        "correct": "$1150 - 800 = 350$ و $\\sqrt{1200^2 + 350^2} = \\sqrt{1562500} = 1250\\,\\mathrm{m}$ .",
+        "incorrect": "الضلع الشاقولي هو الفرق بين الارتفاعين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "1550",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما المدوّر إلى الدرجة لقيس زاوية ميل الكابل على الأفق؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الضلع الشاقولي يقابل الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة الأفقية تجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الظل ثم اللمسة العكسية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{350}{1200}$ ومنه $x \\approx 16{,}26^{\\circ}$ ، أي $16^{\\circ}$ .",
+        "incorrect": "المقابل هو الفرق بين الارتفاعين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "74",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        }
+      ]
+    }
+  ]
+}

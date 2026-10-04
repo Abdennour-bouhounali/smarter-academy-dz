@@ -1,0 +1,100 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l5-005",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — كابل عمود الإنارة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وضعية",
+      "تدوير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_alaqat-muthallathiya_P2",
+      "modelledOn": "method-relations"
+    }
+  },
+  "statement": {
+    "content": "كابل يثبّت عمود إنارة في ملعب 5 جويلية، ويصنع مع الأرض زاوية حادة x حيث $\\sin x = \\dfrac{4}{5}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب القيمة المضبوطة للعدد $\\cos x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر مثل 5/7 أو عشري بالفاصلة)",
+      "expectedAnswer": "3/5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-JADHR-NASI",
+          "value": "1/5"
+        },
+        {
+          "id": "MISC-MUTH-JADHR-NASI",
+          "value": "9/25"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\cos^2 x = 1 - \\dfrac{16}{25}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{9}{25}$ مربع أيّ كسر؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos^2 x = \\dfrac{9}{25}$ فـ $\\cos x = \\dfrac{3}{5}$ .",
+        "incorrect": "$1 - \\dfrac{4}{5} = \\dfrac{1}{5}$ ليس $\\cos x$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "استنتج المدوّر إلى الجزء من 100 للعدد $\\tan x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5)",
+      "expectedAnswer": "1.33",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TAN-QISMA-MAQLUBA",
+          "value": "0.75"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\tan x = \\dfrac{\\sin x}{\\cos x}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم ثم دوّر إلى الجزء من 100 في النهاية فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{4}{5} \\div \\dfrac{3}{5} = \\dfrac{4}{3} \\approx 1{,}33$ .",
+        "incorrect": "الجيب في البسط: $\\dfrac{4}{3}$ لا $\\dfrac{3}{4}$ ."
+      }
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l3-009",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — بتر أم تدوير؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "التدوير",
+      "البتر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P3",
+      "modelledOn": "prep"
+    }
+  },
+  "statement": {
+    "content": "الشاشة تعرض $\\tan 35^{\\circ} = 0{,}7002075382$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المدوّر إلى الجزء من 100 هو:",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$0{,}70$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$0{,}71$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-TADWIR-BATR"
+        },
+        {
+          "id": "C",
+          "content": "$0{,}7002$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-TADWIR-MUBAKKIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "نحتفظ بـ 0,70 والرقم الموالي 0 أصغر من 5: المدوّر هو $0{,}70$ .",
+        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
+      }
+    }
+  ]
+}

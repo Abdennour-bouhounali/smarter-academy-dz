@@ -1,0 +1,166 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l5-003",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — سقف هرمي زجاجي",
+    "estimatedMinutes": 6,
+    "tags": [
+      "هرم",
+      "خاصية فيثاغورس",
+      "الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P2",
+      "modelledOn": "ex-32"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "سقف مركز تجاري بباب الزوار هرم منتظم من الزجاج قاعدته مربع ABCD طول ضلعه $20\\,\\mathrm{m}$ ومركزه O، وارتفاعه $SO = 12\\,\\mathrm{m}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الطول OA هو:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$10\\,\\mathrm{m}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISF-DIL-QUTR"
+        },
+        {
+          "id": "B",
+          "content": "$10\\sqrt{2}\\,\\mathrm{m}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$20\\sqrt{2}\\,\\mathrm{m}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QUTR-BADAL-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "O منتصف القطر [AC]."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قطر المربع 20√2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نصف القطر."
+        }
+      ],
+      "feedback": {
+        "correct": "$AC = 20\\sqrt{2}$ و $OA = 10\\sqrt{2}$ .",
+        "incorrect": "المسافة من المركز إلى رأس نصف القطر."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "ما طول الحرف الجانبي SA مدوّرا إلى الجزء من 10 (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 10)",
+      "expectedAnswer": "18.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث SOA قائم في O."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$OA^2 = 200$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "فيثاغورس."
+        }
+      ],
+      "feedback": {
+        "correct": "$SA = \\sqrt{12^2 + 200} = \\sqrt{344} \\approx 18{,}5\\,\\mathrm{m}$ .",
+        "incorrect": "استعمل نصف القطر لا نصف الضلع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "15.6",
+          "id": "MISC-MUTH-NISF-DIL-QUTR"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "ما المدوّر إلى الدرجة لقيس الزاوية SAO بين الحرف والقاعدة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المثلث SOA."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "SO يقابل الزاوية و OA يجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الظل ثم اللمسة العكسية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan\\widehat{SAO} = \\dfrac{12}{10\\sqrt{2}} \\approx 0{,}849$ ومنه $\\widehat{SAO} \\approx 40{,}3^{\\circ}$ ، أي $40^{\\circ}$ .",
+        "incorrect": "المجاور هو OA."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "50",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        }
+      ]
+    }
+  ]
+}

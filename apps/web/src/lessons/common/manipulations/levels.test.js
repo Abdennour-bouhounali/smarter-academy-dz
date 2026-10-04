@@ -42,7 +42,14 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         const digits = Math.max(...sys.map((e) => String(Math.abs(Math.round(e.c.n / e.c.d))).length));
         return nonUnit + (v.match(/\(/g) ?? []).length + (v.match(/,/g) ?? []).length + fractional + digits;
       };
-      const size = (n) => Math.max(...Object.values(n).map((v) => (typeof v !== 'string' ? v : v.includes('=') && v.includes('|') ? jumla(v) : algebraic(v))));
+      const scalar = (v) => (typeof v !== 'string' ? v : v.includes('=') && v.includes('|') ? jumla(v) : algebraic(v));
+      // Unité 10 : des listes et des objets (angles du tableau, cibles { ratio, value: '7/3' }) se mesurent par leurs
+      // feuilles ; À L'INTÉRIEUR d'eux, un rapport écrit « 7/3 » ou « 0,52 » vaut le plus grand de ses entiers.
+      const nested = (v) => (Array.isArray(v) ? Math.max(...v.map(nested))
+        : v && typeof v === 'object' ? Math.max(...Object.values(v).map(nested))
+          : typeof v === 'string' && /^\d+(?:[.,]\d+)?(?:\/\d+)?$/.test(v) ? Math.max(...v.split(/[/.,]/).map(Number))
+            : scalar(v));
+      const size = (n) => Math.max(...Object.values(n).map((v) => (v && typeof v === 'object' ? nested(v) : scalar(v))));
       expect(size(advanced.numbers), type).toBeGreaterThan(size(beginner.numbers));
       expect(advanced.source, type).toBe('textbook');
       expect(typeof advanced.ref, type).toBe('string');

@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l5-004",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — فرق زاويتين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قيس زاوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P2",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "x و y زاويتان حادّتان حيث $\\cos x = 0{,}5$ و $\\sin y = 0{,}5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس $x - y$ بالدرجة:",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS",
+          "value": "0"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦ON 2nd cos⁻¹ 0,5 =⁩ يعطي $60$ و ⁦ON 2nd sin⁻¹ 0,5 =⁩ يعطي $30$ : $x - y = 60^{\\circ} - 30^{\\circ} = 30^{\\circ}$ .",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

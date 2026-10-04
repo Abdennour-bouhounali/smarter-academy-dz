@@ -1,0 +1,133 @@
+{
+  "id": "ex-4am-tarrid-muthallathiya-l1-005",
+  "lessonCode": "tarrid-muthallathiya",
+  "level": 1,
+  "generator": {
+    "tool": "unit10-tarrid-gen.py",
+    "version": "1"
+  },
+  "metadata": {
+    "title": "تدريب — أيّ نسبة؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "اختيار النسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-muthallathiya_P2",
+      "modelledOn": "method-tan"
+    }
+  },
+  "statement": {
+    "content": "ABC مثلث قائم في A حيث $\\widehat{B} = 40^{\\circ}$ و $AB = 5\\,\\mathrm{cm}$ . نريد حساب AC (الشكل).",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          5,
+          0
+        ],
+        "C": [
+          0,
+          4.195
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "5cm"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "label": "?"
+        },
+        {
+          "from": "B",
+          "to": "C"
+        }
+      ],
+      "rightAngles": [
+        [
+          "B",
+          "A",
+          "C"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "B",
+          "from": "C",
+          "to": "A",
+          "label": "40°"
+        }
+      ],
+      "labels": {
+        "A": "sw",
+        "B": "se",
+        "C": "nw"
+      },
+      "ariaLabel": "مثلث ABC قائم في A، الزاوية B قيسها 40 درجة، AB = 5cm والمطلوب AC",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النسبة التي تربط AB بـ AC هي:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\tan\\widehat{B}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\sin\\widehat{B}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\cos\\widehat{B}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المقابل والوتر: الجيب؛ المجاور والوتر: جيب التمام؛ المقابل والمجاور: الظل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختر النسبة التي يظهر فيها الضلعان معًا، ولا تحتاج ضلعا ثالثا مجهولا."
+        }
+      ],
+      "feedback": {
+        "correct": "بالنسبة إلى B : AB مجاور و AC مقابل، والظل يجمعهما: $\\tan\\widehat{B} = \\dfrac{AC}{AB}$ .",
+        "incorrect": "سمِّ الأضلاع بالنسبة إلى الزاوية المعلومة، ثم اختر النسبة التي تجمع المعلوم والمطلوب."
+      }
+    }
+  ]
+}

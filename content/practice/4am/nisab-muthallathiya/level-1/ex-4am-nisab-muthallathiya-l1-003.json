@@ -1,0 +1,121 @@
+{
+  "id": "ex-4am-nisab-muthallathiya-l1-003",
+  "lessonCode": "nisab-muthallathiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — المقابل لزاوية حادة",
+    "estimatedMinutes": 2,
+    "tags": [
+      "الضلع المقابل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nisab-muthallathiya_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "في الشكل، المثلث DEF قائم في E.",
+    "figure": {
+      "points": {
+        "D": [
+          0.0,
+          0.0
+        ],
+        "E": [
+          5.909,
+          1.042
+        ],
+        "F": [
+          5.18,
+          5.178
+        ]
+      },
+      "segments": [
+        {
+          "from": "D",
+          "to": "E"
+        },
+        {
+          "from": "E",
+          "to": "F"
+        },
+        {
+          "from": "D",
+          "to": "F"
+        }
+      ],
+      "rightAngles": [
+        [
+          "D",
+          "E",
+          "F"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "D",
+          "from": "E",
+          "to": "F"
+        }
+      ],
+      "ariaLabel": "مثلث DEF قائم في E",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الضلع المقابل للزاوية $\\widehat{D}$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "[DF]",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        },
+        {
+          "id": "B",
+          "content": "[EF]",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "[DE]",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الزاوية القائمة: الوتر هو الضلع المقابل لها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالنسبة إلى الزاوية الحادة: المجاور يمرّ برأسها، والمقابل لا يمرّ به."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب أسماء الأضلاع الثلاثة بجانب الشكل قبل أن تختار."
+        }
+      ],
+      "feedback": {
+        "correct": "[EF] لا يمرّ بالرأس D وهو ليس الوتر: إنه المقابل للزاوية D.",
+        "incorrect": "المقابل لزاوية حادة ضلع للزاوية القائمة لا يمرّ برأسها."
+      },
+      "difficulty": 1
+    }
+  ]
+}

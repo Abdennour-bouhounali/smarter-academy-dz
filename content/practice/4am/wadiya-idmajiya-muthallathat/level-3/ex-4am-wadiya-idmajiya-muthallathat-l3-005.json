@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l3-005",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — منارة رأس كاكسين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الظل",
+      "مجهول في المقام"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "قمة منارة رأس كاكسين ترتفع $64\\,\\mathrm{m}$ عن سطح البحر. من قارب صيد يرى الصيّاد القمة بزاوية $8^{\\circ}$ فوق الأفق (نهمل ارتفاع عينه)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المسافة الأفقية بين القارب وأسفل المنارة مدوّرة إلى الوحدة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (مدوّر إلى الوحدة)",
+      "expectedAnswer": "455",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الارتفاع يقابل الزاوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة المطلوبة تجاورها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجهول في مقام الظل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan 8^{\\circ} = \\dfrac{64}{d}$ ومنه $d = \\dfrac{64}{\\tan 8^{\\circ}} \\approx 455\\,\\mathrm{m}$ .",
+        "incorrect": "المجهول في المقام: نقسم على الظل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "9",
+          "id": "MISC-MUTH-DARB-BADAL-QISMA"
+        }
+      ]
+    }
+  ]
+}

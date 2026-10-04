@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l2-005",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 17 (ص 123)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمرين 17",
+      "تدوير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-17",
+      "page": 123,
+      "section": "العلاقات المثلثية",
+      "number": 17
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: x هو قيس زاوية حادة حيث $\\sin x = \\dfrac{\\sqrt{3}}{2}$ ، فـ $\\cos x = \\dfrac{1}{2}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "استنتج قيمة مقربة للعدد $\\tan x$ تدوّر النتيجة إلى الجزء من 100:",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5)",
+      "expectedAnswer": "1.73",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-TAN-QISMA-MAQLUBA",
+          "value": "0.58"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\tan x = \\dfrac{\\sin x}{\\cos x}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القسمة على $\\dfrac{1}{2}$ ضرب في 2."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\sqrt{3} \\approx 1{,}7320$ ، والمدوّر $1{,}73$ .",
+        "incorrect": "$\\dfrac{\\sqrt{3}}{2} \\div \\dfrac{1}{2} = \\sqrt{3}$ ."
+      }
+    }
+  ]
+}

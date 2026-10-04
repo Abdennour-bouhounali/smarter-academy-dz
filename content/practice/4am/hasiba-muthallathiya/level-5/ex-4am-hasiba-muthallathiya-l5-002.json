@@ -1,0 +1,159 @@
+{
+  "id": "ex-4am-hasiba-muthallathiya-l5-002",
+  "lessonCode": "hasiba-muthallathiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — الزاويتان الحادّتان",
+    "estimatedMinutes": 5,
+    "tags": [
+      "قيس زاوية",
+      "التدوير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hasiba-muthallathiya_P3",
+      "modelledOn": "ex-11"
+    }
+  },
+  "statement": {
+    "content": "RIS قائم في I حيث $RI = 7\\,\\mathrm{cm}$ و $IS = 3\\,\\mathrm{cm}$ (الشكل).",
+    "figure": {
+      "points": {
+        "R": [
+          0,
+          0
+        ],
+        "I": [
+          7,
+          0
+        ],
+        "S": [
+          7,
+          3
+        ]
+      },
+      "segments": [
+        {
+          "from": "R",
+          "to": "I",
+          "label": "7 cm"
+        },
+        {
+          "from": "I",
+          "to": "S",
+          "label": "3 cm"
+        },
+        [
+          "R",
+          "S"
+        ]
+      ],
+      "rightAngles": [
+        [
+          "R",
+          "I",
+          "S"
+        ]
+      ],
+      "angles": [
+        {
+          "at": "R",
+          "from": "I",
+          "to": "S",
+          "label": "?"
+        }
+      ],
+      "ariaLabel": "مثلث RIS قائم في I، الضلع RI طوله 7 سم والضلع IS طوله 3 سم، والزاوية المطلوبة عند R",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيس $\\widehat{R}$ مدوّرا إلى الجزء من 10 (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "23.2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-MAQLUBA",
+          "value": "66,8"
+        },
+        {
+          "id": "MISC-MUTH-TADWIR-BATR",
+          "value": "23,1"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan\\widehat{R} = \\dfrac{3}{7}$ ، و ⁦ON 2nd tan⁻¹ ( 3 ÷ 7 ) =⁩ يعطي $23{,}19859051$ ، إذن $\\widehat{R} \\approx 23{,}2^{\\circ}$ .",
+        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قيس $\\widehat{S}$ مدوّرا إلى الجزء من 10 (بالدرجة):",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "expectedAnswer": "66.8",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTH-NISBA-MAQLUBA",
+          "value": "23,2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النسبة المعلومة: جيب أو جيب تمام أو ظل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة ⁦2nd⁩ ثم الدالة العكسية ثم النسبة ثم ⁦=⁩."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر قيس الزاوية إلى الدقة المطلوبة في نهاية الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "بالنسبة إلى S: $\\tan\\widehat{S} = \\dfrac{7}{3}$ يعطي $66{,}80140949$ ، إذن $\\widehat{S} \\approx 66{,}8^{\\circ}$ (والمجموع $90^{\\circ}$).",
+        "incorrect": "راجع: النسبة المعلومة تُعطى للّمسة العكسية بعد ⁦2nd⁩، ثم ندوّر القيس."
+      }
+    }
+  ]
+}

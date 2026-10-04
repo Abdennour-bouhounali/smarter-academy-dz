@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-muthallathat-l1-010",
+  "lessonCode": "wadiya-idmajiya-muthallathat",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — المسافة الكلية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خط النظر",
+      "المسافة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "generator": {
+    "tool": "gen_bank.py",
+    "version": "1"
+  },
+  "statement": {
+    "content": "وقف رضا على بعد $3{,}2\\,\\mathrm{m}$ من عمود، والعمود على بعد $46{,}8\\,\\mathrm{m}$ من قاعدة عمارة، والنقط الثلاث على استقامة (العمود بين رضا والعمارة)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المسافة بين رضا وقاعدة العمارة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "50",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العمود بين رضا والعمارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافتان متتاليتان على الخط نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المسافتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$3{,}2 + 46{,}8 = 50\\,\\mathrm{m}$ : هذه هي المسافة التي تظهر في خاصية طالس.",
+        "incorrect": "المسافة من الملاحظ إلى العمارة تمرّ بالعمود."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "46.8",
+          "id": "MISC-MUTH-TALIS-NAZAR"
+        },
+        {
+          "value": "43.6",
+          "id": "MISC-MUTH-TALIS-NAZAR"
+        }
+      ]
+    }
+  ]
+}

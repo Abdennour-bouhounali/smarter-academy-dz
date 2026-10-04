@@ -1,0 +1,130 @@
+{
+  "id": "ex-4am-alaqat-muthallathiya-l3-006",
+  "lessonCode": "alaqat-muthallathiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 30 (ص 125) — 45°",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمرين 30",
+      "45°"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-30",
+      "page": 125,
+      "section": "أتعمّق",
+      "number": 30
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: ABCD مربع طول ضلعه 1، فـ $AC = \\sqrt{2}$ . في المثلث ABC القائم في B ، $\\widehat{BAC} = 45^{\\circ}$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          1,
+          0
+        ],
+        "C": [
+          1,
+          1
+        ],
+        "D": [
+          0,
+          1
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        {
+          "from": "A",
+          "to": "C",
+          "tone": "violet"
+        }
+      ],
+      "rightAngles": [
+        [
+          "A",
+          "B",
+          "C"
+        ]
+      ],
+      "labels": {
+        "A": "sw",
+        "B": "se",
+        "C": "ne",
+        "D": "nw"
+      },
+      "ariaLabel": "مربع ABCD طول ضلعه 1 وقطره [AC]",
+      "maxWidth": 220
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المضبوطة للعدد $\\cos 45^{\\circ}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_alaqat-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{\\sqrt{2}}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-JADHR-NASI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\cos 45^{\\circ} = \\dfrac{AB}{AC}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب البسط والمقام في $\\sqrt{2}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1}{\\sqrt{2}} = \\dfrac{\\sqrt{2}}{2}$ ، و $\\cos^2 45^{\\circ} + \\sin^2 45^{\\circ} = \\dfrac{1}{2} + \\dfrac{1}{2} = 1$ .",
+        "incorrect": "$\\sqrt{2} = \\dfrac{AC}{AB}$ مقلوبة وأكبر من 1، و $\\dfrac{1}{2}$ هو $\\cos^2 45^{\\circ}$ ."
+      }
+    }
+  ]
+}
