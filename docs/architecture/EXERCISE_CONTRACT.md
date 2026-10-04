@@ -420,6 +420,13 @@ textbook QCM with two or three correct options becomes ONE choice among combinat
 evaluator; `names: ['a', 'b']` for the textbook's (a ; b) and (d ; t)). New misconceptions: `MISC-JUMLA-*`,
 `MISC-TAWID-*`, `MISC-JAM-*`, `MISC-TAKHFID-NISBA` (`content/practice/misconceptions.json`).
 
+**Units 11–12 « الأشعة » (2026-10-04) — vectors in statements, components as pairs.** A `statement.figure` may carry
+`vectors` (arrows), `grid` (squared paper), `axes` (the repère), `arcs` (semicircles) and `circles`, and every bank figure passes `figureQuality(fig)` (no strip, no colliding label — the owner's
+figure rule, LESSON_DEVELOPMENT_GUIDE §5); a coordinate figure may instead be `visual` (CoordPlane `arrows`). A pair of components or of
+coordinates is `answerType: "point"` (unit 5's type); an exact distance (√13, 3√2) is a `choice`, a rounded one `rational`; a vector
+expression (« AB + BC = ? ») and a nature (« ما طبيعة الرباعي؟ ») are `choice` with meaningful false distractors. Misconceptions
+`MISC-SHUAA-*` (unit 11) and `MISC-MAALAM-*` (unit 12).
+
 **Unit 10 « حساب المثلثات في المثلث القائم » (2026-10-04) — approximate and exact values, without a new answer type.**
 Trigonometry answers are of two natures. A **rounded value** (BC ≈ 5,92 cm, x ≈ 43°) is `answerType: "rational"` whose key is the
 ROUNDED number (`"5.92"`), the statement stating the precision (« المدوّر إلى الجزء من 100 », « إلى الوحدة ») — rounding is the skill

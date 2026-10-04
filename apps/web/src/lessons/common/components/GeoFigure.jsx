@@ -1,9 +1,9 @@
 import {
-  layoutGeoFigure, tickMarks, parallelArrows, rightAngleSquare, angleArc,
+  layoutGeoFigure, tickMarks, parallelArrows, rightAngleSquare, angleArc, vectorArrow, semicirclePath,
 } from './geoFigure';
 
 /**
- * Une figure de géométrie DÉCLARATIVE (points nommés, segments, droites, demi-droites, polygones,
+ * Une figure de géométrie DÉCLARATIVE (vecteurs fléchés et quadrillage depuis les unités 11–12, points nommés, segments, droites, demi-droites, polygones,
  * angles droits, angles, traits d'égalité, chevrons de parallélisme) — la donnée est décrite dans
  * geoFigure.js. Dessinée en SVG, jamais une image ; les noms de points et les longueurs sont du
  * texte LTR (`direction="ltr"`), l'élément porte un `aria-label` arabe.
@@ -22,7 +22,9 @@ const asSegment = (s) => (Array.isArray(s) ? { from: s[0], to: s[1] } : s);
 const pts = (list) => list.map((p) => p.join(',')).join(' ');
 
 export default function GeoFigure(fig) {
-  const { ariaLabel, maxWidth = 360, caption, inline = false } = fig;
+  // Une figure quadrillée (unités 11–12) porte beaucoup de noms : elle s'affiche plus grande par défaut (règle du 2026-10-04,
+  // « une figure doit être grande et facile à voir »).
+  const { ariaLabel, maxWidth = fig.grid ? 540 : 360, caption, inline = false } = fig;
   // `inline` : la figure posée DANS un paragraphe (l'énoncé d'une épreuve du BossFinal est un <p>) —
   // des <span> blocs au lieu de <figure>/<figcaption>, que le HTML refuse dans un <p>.
   const Fig = inline ? 'span' : 'figure';
@@ -39,8 +41,37 @@ export default function GeoFigure(fig) {
         role="img"
         aria-label={ariaLabel}
       >
+        {L.gridLines.map(([a, b], i) => (
+          <line key={`gd${i}`} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#cbd5e1" strokeWidth={0.8} data-geo-grid />
+        ))}
+        {L.axes && (
+          <g data-geo-axes>
+            {[L.axes.x, L.axes.y].map(([a, b], i) => {
+              const ar = vectorArrow(a, [b[0] + (i === 0 ? 8 : 0), b[1] - (i === 1 ? 8 : 0)], 8);
+              return (
+                <g key={`ax${i}`}>
+                  <line x1={ar.shaft[0][0]} y1={ar.shaft[0][1]} x2={ar.shaft[1][0]} y2={ar.shaft[1][1]} stroke="#475569" strokeWidth={1.5} />
+                  <polygon points={pts(ar.head)} fill="#475569" />
+                </g>
+              );
+            })}
+            {L.axes.ticks.map((tk) => (
+              <g key={`tk${tk.axis}${tk.text}`}>
+                <line x1={tk.at[0] - (tk.axis === 'y' ? 3 : 0)} y1={tk.at[1] - (tk.axis === 'x' ? 3 : 0)} x2={tk.at[0] + (tk.axis === 'y' ? 3 : 0)} y2={tk.at[1] + (tk.axis === 'x' ? 3 : 0)} stroke="#475569" strokeWidth={1.2} />
+                {tk.label && <text x={tk.label[0]} y={tk.label[1]} fontSize={10} fill="#64748b" textAnchor={tk.axis === 'y' ? 'end' : 'middle'} style={textProps}>{tk.text}</text>}
+              </g>
+            ))}
+          </g>
+        )}
         {(fig.polygons ?? []).map((p, i) => (
           <polygon key={`pg${i}`} points={pts(p.points.map((n) => L.P[n]))} fill={FILL[p.tone ?? 'indigo']} stroke="none" />
+        ))}
+        {(fig.circles ?? []).map((c, i) => {
+          const o = L.P[c.center]; const t = L.P[c.through];
+          return <circle key={`ci${i}`} cx={o[0]} cy={o[1]} r={Math.hypot(t[0] - o[0], t[1] - o[1])} fill="none" stroke={STROKE[c.tone ?? 'slate']} strokeWidth={1.4} strokeDasharray={c.dashed ? '5 4' : undefined} data-geo-circle />;
+        })}
+        {(fig.arcs ?? []).map((a, i) => (
+          <path key={`ar${i}`} d={semicirclePath(L.P[a.from], L.P[a.to], a.sweep ?? 'cw')} fill="none" stroke={STROKE[a.tone ?? 'rose']} strokeWidth={a.bold ? 2.8 : 2} strokeDasharray={a.dashed ? '5 4' : undefined} strokeLinecap="round" data-geo-arc />
         ))}
         {(fig.lines ?? []).map((l, i) => {
           const [a, b] = L.lineEnds(l);
@@ -81,6 +112,25 @@ export default function GeoFigure(fig) {
               )) : null}
               {lab && (
                 <text x={lab[0]} y={lab[1]} fontSize={13} fontWeight={600} fill={s.tone ? c : '#0f172a'} textAnchor="middle" style={textProps}>{s.label}</text>
+              )}
+            </g>
+          );
+        })}
+        {(fig.vectors ?? []).map((v, i) => {
+          const a = L.P[v.from]; const b = L.P[v.to];
+          const c = STROKE[v.tone ?? 'indigo'];
+          const ar = vectorArrow(a, b);
+          const lab = v.label != null ? L.segmentLabel(v.from, v.to, v.labelSide) : null;
+          return (
+            <g key={`vc${i}`} data-geo-vector>
+              <line x1={ar.shaft[0][0]} y1={ar.shaft[0][1]} x2={ar.shaft[1][0]} y2={ar.shaft[1][1]} stroke={c} strokeWidth={2.4} strokeDasharray={v.dashed ? '6 4' : undefined} />
+              <polygon points={pts(ar.head)} fill={c} />
+              {lab && (
+                <g>
+                  <text x={lab[0]} y={lab[1]} fontSize={14} fontWeight={700} fontStyle="italic" fill={c} textAnchor="middle" style={textProps}>{v.label}</text>
+                  <line x1={lab[0] - 6} y1={lab[1] - 14} x2={lab[0] + 5} y2={lab[1] - 14} stroke={c} strokeWidth={1.2} />
+                  <polyline points={`${lab[0] + 2},${lab[1] - 16.5} ${lab[0] + 6},${lab[1] - 14} ${lab[0] + 2},${lab[1] - 11.5}`} fill="none" stroke={c} strokeWidth={1.2} />
+                </g>
               )}
             </g>
           );

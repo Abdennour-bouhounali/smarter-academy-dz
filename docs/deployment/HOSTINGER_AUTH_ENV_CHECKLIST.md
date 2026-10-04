@@ -68,8 +68,8 @@ c'est la **dernière** qui gagne : n'en garder qu'une.
 ### 3.1 Documents légaux
 
 ```dotenv
-LEGAL_TERMS_VERSION=2026-09-12
-LEGAL_PRIVACY_VERSION=2026-09-12
+LEGAL_TERMS_VERSION=2026-10-04
+LEGAL_PRIVACY_VERSION=2026-10-04
 ```
 
 Ces deux valeurs ont un défaut identique dans `config/legal.php` : si elles sont

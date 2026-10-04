@@ -11,7 +11,7 @@
 
 ## Périmètre courant — classes actives (4am, terminale_dz)
 
-54 leçon(s) · critiques 2 · hautes 0 · moyennes 9 · basses 0
+64 leçon(s) · critiques 0 · hautes 0 · moyennes 3 · basses 0
 
 | Leçon | Carte | Bricks | requires | Contrat | C | H | M | L |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -43,9 +43,19 @@
 | `4am:mutarajiha-ula` | ✅ | 13 | 30/30 | 0 | 0 | 0 | 0 | 0 |
 | `4am:tarrid-mushkila` | ✅ | 8 | 20/20 | 0 | 0 | 0 | 0 | 0 |
 | `4am:wadiya-idmajiya-muadalat` | ✅ | 7 | 28/28 | 0 | 0 | 0 | 0 | 0 |
+| `4am:barahin-ashia` | ✅ | 10 | 23/23 | 0 | 0 | 0 | 0 | 0 |
+| `4am:insihab-shuaa` | ✅ | 9 | 23/23 | 0 | 0 | 0 | 0 | 0 |
+| `4am:majmu-shuaayn` | ✅ | 7 | 27/27 | 0 | 0 | 0 | 0 | 0 |
+| `4am:shuaayn-mutasawiyayn` | ✅ | 9 | 25/25 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-ashia` | ✅ | 5 | 29/29 | 0 | 0 | 0 | 0 | 0 |
+| `4am:hisab-murakkibatay` | ✅ | 9 | 23/23 | 0 | 0 | 0 | 0 | 0 |
+| `4am:ithbat-khawas-maalam` | ✅ | 10 | 25/25 | 0 | 0 | 0 | 0 | 0 |
+| `4am:muntasaf-masafa` | ✅ | 6 | 18/18 | 0 | 0 | 0 | 0 | 0 |
+| `4am:murakkibata-shuaa` | ✅ | 7 | 23/23 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-maalam` | ✅ | 6 | 26/26 | 0 | 0 | 0 | 0 | 0 |
 | `4am:alaqat-muthallathiya` | ✅ | 11 | 26/26 | 0 | 0 | 0 | 0 | 0 |
-| `4am:hasiba-muthallathiya` | ✅ | 8 | 20/20 | 0 | 2 | 0 | 0 | 0 |
-| `4am:nisab-muthallathiya` | ✅ | 0 | 0/0 | 0 | 0 | 0 | 6 | 0 |
+| `4am:hasiba-muthallathiya` | ✅ | 8 | 20/20 | 0 | 0 | 0 | 0 | 0 |
+| `4am:nisab-muthallathiya` | ✅ | 14 | 35/35 | 0 | 0 | 0 | 0 | 0 |
 | `4am:tarrid-muthallathiya` | ✅ | 10 | 22/22 | 0 | 0 | 0 | 0 | 0 |
 | `4am:wadiya-idmajiya-muthallathat` | ✅ | 5 | 26/26 | 0 | 0 | 0 | 0 | 0 |
 | `4am:aksiya-talis` | ✅ | 10 | 23/23 | 0 | 0 | 0 | 0 | 0 |
@@ -84,27 +94,5 @@
 
 - **MEDIUM** `W_UNPARSEABLE_STEPS` — apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module02Uakkid.jsx:0  
   module 2: could not resolve 'steps' to a literal array — its content is invisible to the audit
-
-### `4am:hasiba-muthallathiya`
-
-- **CRITICAL** `C_TARGET_DEMANDED_BEFORE_TAUGHT` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module01Nashat.jsx:164 · terme « cosinus »  
-  « cosinus » is a target concept of this lesson but its first appearance is q.explain (module 1, étape 1); it is only taught later at apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module02Maarif.jsx:70
-- **CRITICAL** `C_TARGET_DEMANDED_BEFORE_TAUGHT` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module04Itqan.jsx:46 · terme « tangente »  
-  « tangente » is a target concept of this lesson but its first appearance is boss.explain (module 4) and it is never taught in a teaching position
-
-### `4am:nisab-muthallathiya`
-
-- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js:0  
-  priorKnowledge declares 'majmu-zawaya' but no Module 0 question diagnoses it
-- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js:0  
-  priorKnowledge declares 'watar' but no Module 0 question diagnoses it
-- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js:0  
-  priorKnowledge declares 'muqabil-mujawir' but no Module 0 question diagnoses it
-- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js:0  
-  priorKnowledge declares 'jayb-tamam-3am' but no Module 0 question diagnoses it
-- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js:0  
-  priorKnowledge declares 'fithaghuras' but no Module 0 question diagnoses it
-- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/nisab-muthallathiya/lesson.config.js:0  
-  priorKnowledge declares 'talis-wahda-9' but no Module 0 question diagnoses it
 
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { validateGeoFigure, layoutGeoFigure, rightAngleSquare } from './geoFigure';
+import { validateGeoFigure, layoutGeoFigure, rightAngleSquare, vectorArrow, figureQuality } from './geoFigure';
 
 const TRIANGLE = {
   points: { A: [0, 4], B: [-2, 0], C: [3, 0], M: [-1, 2], N: [1.5, 2] },
@@ -33,4 +33,58 @@ describe('geoFigure — la figure déclarative', () => {
     const sq = rightAngleSquare([10, 0], [0, 0], [0, 10], 4);
     expect(sq).toEqual([[4, 0], [4, 4], [0, 4]]);
   });
+  it('vecteurs et quadrillage (unités 11–12)', () => {
+    const fig = { points: { A: [0, 0], B: [3, 1] }, vectors: [{ from: 'A', to: 'B', label: 'u' }], grid: true, ariaLabel: 'شعاع' };
+    expect(validateGeoFigure(fig)).toEqual([]);
+    expect(validateGeoFigure({ ...fig, vectors: [{ from: 'A', to: 'Z' }] }).join('|')).toMatch(/point inconnu « Z »/);
+    expect(validateGeoFigure({ ...fig, grid: { step: 0 } }).join('|')).toMatch(/grid/);
+    const L = layoutGeoFigure(fig, { size: 300, pad: 0 });
+    // Cadre élargi d'une demi-maille puis aligné : x ∈ [-1 ; 4], y ∈ [-1 ; 2] → 6 + 4 lignes.
+    expect(L.gridLines).toHaveLength(10);
+    const ar = vectorArrow(L.P.A, L.P.B, 10);
+    expect(ar.head[0]).toEqual(L.P.B);
+    expect(Math.hypot(ar.shaft[1][0] - L.P.B[0], ar.shaft[1][1] - L.P.B[1])).toBeCloseTo(10, 5);
+  });
+  it('figureQuality : bande étroite et étiquettes qui se chevauchent (règle du 2026-10-04)', () => {
+    const strip = { points: { A: [0, 0], B: [0, 1], C: [0, 2], D: [0, 9], E: [0.2, 9.1] }, segments: [['A', 'D']], ariaLabel: 'شريط' };
+    const issues = figureQuality(strip);
+    expect(issues.some((i) => i.startsWith('aspect'))).toBe(true);
+    expect(issues.some((i) => i.includes('D / E'))).toBe(true);
+    const ok = { points: { A: [0, 0], B: [4, 0], C: [4, 3], D: [0, 3] }, polygons: [{ points: ['A', 'B', 'C', 'D'] }], grid: true, ariaLabel: 'مستطيل' };
+    expect(figureQuality(ok)).toEqual([]);
+  });
+  it('demi-cercles et cercles (unité 12, أدمج تعلّماتي) : le sens, le cadre, la validation', async () => {
+    const { semicirclePoints, semicirclePath } = await import('./geoFigure');
+    const fig = { points: { A: [-2, 0], O: [0, 0], E: [2, 0], I: [-1, 0] }, arcs: [{ from: 'A', to: 'O', sweep: 'cw' }, { from: 'O', to: 'E', sweep: 'ccw', dashed: true }], circles: [{ center: 'I', through: 'A', dashed: true }], grid: true, axes: true, ariaLabel: 'نصفا دائرتين' };
+    expect(validateGeoFigure(fig)).toEqual([]);
+    expect(validateGeoFigure({ ...fig, arcs: [{ from: 'A', to: 'Z' }] }).join('|')).toMatch(/point inconnu « Z »/);
+    expect(validateGeoFigure({ ...fig, arcs: [{ from: 'A', to: 'O', sweep: 'up' }] }).join('|')).toMatch(/sweep/);
+    expect(validateGeoFigure({ ...fig, circles: [{ center: 'I', through: 'I' }] }).join('|')).toMatch(/center = through/);
+    // cw de (−2 ; 0) à (0 ; 0) passe par le HAUT (−1 ; 1) ; ccw de (0 ; 0) à (2 ; 0) par le BAS (1 ; −1)
+    const up = semicirclePoints([-2, 0], [0, 0], 'cw', 2); expect(up[1][0]).toBeCloseTo(-1); expect(up[1][1]).toBeCloseTo(1);
+    const down = semicirclePoints([0, 0], [2, 0], 'ccw', 2); expect(down[1][0]).toBeCloseTo(1); expect(down[1][1]).toBeCloseTo(-1);
+    expect(semicirclePath([0, 0], [4, 0], 'cw')).toBe('M 0 0 A 2 2 0 0 1 4 0');
+    // le cadre contient le sommet des arcs (y = ±1) même si aucun point n'y est
+    const L = layoutGeoFigure(fig, { size: 300, pad: 0 });
+    expect(L.height).toBeGreaterThan(L.scale * 2);
+    expect(figureQuality(fig)).toEqual([]);
+  });
+  it('axes (unité 12) : le cadre contient l’origine, graduations entières sauf 0, aucune sous un nom de point', () => {
+    const fig = { points: { A: [2, 3], B: [5, 1], I: [1, 0] }, grid: true, axes: true, vectors: [{ from: 'A', to: 'B' }], ariaLabel: 'معلم' };
+    expect(validateGeoFigure(fig)).toEqual([]);
+    expect(validateGeoFigure({ ...fig, axes: { every: 0 } }).join('|')).toMatch(/axes/);
+    const L = layoutGeoFigure(fig);
+    // l'origine est dans le cadre même si aucun point n'est à gauche de x = 1
+    expect(L.axes.y[0][0]).toBeGreaterThan(0);
+    expect(L.axes.y[0][0]).toBeLessThan(L.width);
+    const texts = L.axes.ticks.filter((t) => t.label).map((t) => `${t.axis}${t.text}`);
+    expect(texts).not.toContain('x0');
+    expect(texts).toContain('x2');
+    expect(texts).toContain('y−1');
+    // « 1 » sur l'axe des abscisses est sous le point I : la graduation s'efface
+    expect(texts).not.toContain('x1');
+    expect(layoutGeoFigure({ ...fig, axes: { every: 2 } }).axes.ticks.filter((t) => t.label && t.axis === 'x').map((t) => t.text)).toEqual(['2', '4']);
+    expect(figureQuality(fig)).toEqual([]);
+  });
 });
+

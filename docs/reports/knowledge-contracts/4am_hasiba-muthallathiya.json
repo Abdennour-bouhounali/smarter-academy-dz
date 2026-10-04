@@ -167,10 +167,8 @@
       "prerequisiteStatus": {
         "tadwir-adad": "prior"
       },
-      "lexiconHits": [
-        "cosinus"
-      ],
-      "pedagogicallyValid": false
+      "lexiconHits": [],
+      "pedagogicallyValid": true
     },
     {
       "questionId": "M01-S1-Q2",
@@ -297,10 +295,8 @@
       "prerequisiteStatus": {
         "hasiba-nisba": "established@M1"
       },
-      "lexiconHits": [
-        "tangente"
-      ],
-      "pedagogicallyValid": false
+      "lexiconHits": [],
+      "pedagogicallyValid": true
     },
     {
       "questionId": "E2",
@@ -383,30 +379,5 @@
       "pedagogicallyValid": true
     }
   ],
-  "findings": [
-    {
-      "code": "C_TARGET_DEMANDED_BEFORE_TAUGHT",
-      "severity": "critical",
-      "message": "« cosinus » is a target concept of this lesson but its first appearance is q.explain (module 1, étape 1); it is only taught later at apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module02Maarif.jsx:70",
-      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module01Nashat.jsx",
-      "line": 164,
-      "module": 1,
-      "step": 1,
-      "term": "cosinus",
-      "questionId": "M01-S1-Q1",
-      "position": 11
-    },
-    {
-      "code": "C_TARGET_DEMANDED_BEFORE_TAUGHT",
-      "severity": "critical",
-      "message": "« tangente » is a target concept of this lesson but its first appearance is boss.explain (module 4) and it is never taught in a teaching position",
-      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module04Itqan.jsx",
-      "line": 46,
-      "module": 4,
-      "step": null,
-      "term": "tangente",
-      "questionId": "E1",
-      "position": 78
-    }
-  ]
+  "findings": []
 }

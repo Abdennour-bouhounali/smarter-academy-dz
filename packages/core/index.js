@@ -72,6 +72,9 @@ export * as thales from './arithmetic/thales.js';
 // La trigonométrie du triangle rectangle de l'unité 10 « حساب المثلثات في المثلث القائم » : côtés relatifs à un
 // angle aigu, cos / sin / tan exacts (surds q·√r), relations, choix du rapport, calculatrice et arrondis.
 export * as trigonometry from './arithmetic/trigonometry.js';
+// Les vecteurs exacts des unités 11 « الأشعة والانسحاب » et 12 « الأشعة في معلم » : مركبتان، انسحاب، تساوي شعاعين
+// (منحى، اتجاه، طول)، متوازي أضلاع، علاقة شال sur des vecteurs nommés, منتصف، مسافة exacte (surds), natures analytiques.
+export * as vectors from './arithmetic/vectors.js';
 
 // Moteur d'exercices (pratique) — arithmétique exacte et évaluation des
 // réponses. Exporté sous un espace de noms : `Rational.parse` et

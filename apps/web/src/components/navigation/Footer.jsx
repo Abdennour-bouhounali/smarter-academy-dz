@@ -89,7 +89,6 @@ export default function Footer() {
           <nav aria-label={tm('footer.legalAria')} className="mb-5">
             <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 sm:justify-start">
               {[
-                { to: '/mentions-legales', label: tm('footer.legalNotice') },
                 { to: '/confidentialite', label: tm('footer.privacy') },
                 { to: '/cgu', label: tm('footer.terms') },
               ].map((item) => (

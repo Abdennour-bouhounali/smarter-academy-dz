@@ -30,7 +30,10 @@ synthesis, 2026-10-02, the first unit of the programme's « ميدان الهن�
 `GeoFigure`, also in practice statements as `statement.figure`) and unit 10 « حساب المثلثات في المثلث القائم » (`handasa/hisab-muthallathat/`,
 4 lessons + a synthesis, 2026-10-04, the second unit of « ميدان الهندسة »; extraction generated and checked by
 `docs/sources/4am/unit10/build-extraction.py`, exact trigonometry with surds `packages/core/arithmetic/trigonometry.js`, the authors'
-brief and shared-file lock kept next to it) — the **only** lesson
+brief and shared-file lock kept next to it) and units 11 « الأشعة والانسحاب » (`handasa/ashia-insihab/`) and 12 « الأشعة في معلم »
+(`handasa/ashia-maalam/`), 4 lessons + a synthesis each, 2026-10-04, the third and fourth units of « ميدان الهندسة »; extractions generated
+and checked by `docs/sources/4am/unit11|unit12/build-extraction.py`, exact vectors `packages/core/arithmetic/vectors.js`, one authors' brief
+and lock for both in `docs/sources/4am/unit11/`) — the **only** lesson
 content in the repository. The
 French-era lessons (`lessons/college/`, `lessons/lycee/`), their practice
 content, specs, e2e scripts, French-only engines and the French reference

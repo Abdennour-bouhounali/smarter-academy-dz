@@ -389,6 +389,46 @@ the first most frequent value in cell order and #N/A when nothing repeats. **`gr
 (groups per class, `'2|2'`), `theme` (`quiz` | `school`); a tank's height is budgeted from the lesson viewport minus what the
 glance block MEASURES besides the tanks, so the block stays in the screen when the reading grows after the valve.
 
+## 2terdecies. The vector laboratories (units 11–12, 2026-10-04)
+
+Every verdict comes from `packages/core/arithmetic/vectors.js` (`relation`, `simplifyNamed`, `isParallelogram`, `midpoint`, `distance`,
+`crossing`, `shortestCrossing`…); each lab has a `logic/` module with its tests and a render test, files in `manipulations/vectors/`; glance
+blocks `data-tg|pp|vs|vc|bp-glance` (unit 11) measured by `e2e/lesson-kit/4am-ashia-insihab.mjs`. A refusal always NAMES the element that
+differs (direction, sense, length) — the textbook's definition of equal vectors turned into the lab's voice.
+
+- **`translation-glide`** (`TranslationGlide.jsx`, `drone-show`) — grid-node placement (plane-pin pattern: pointer capture, a per-object
+  button for tap and keyboard); kinds equal / direction / sense / length / senseLength / zero / outside / tooFar; a rogue drone flying −u
+  appears once the images are placed and opens the discovery when repaired; the complete formation glides as one block.
+- **`parallelogram-pin`** (`ParallelogramPin.jsx`, `tifo`) — the stretch engine for I on [AB], grid pins for D then E; the banner's shape and
+  the merging of the two diagonals' midpoints come from `isParallelogram` / `midpoint`; the E stage is opened by the student and has a way back.
+- **`vector-sum`** (`VectorSum.jsx`, `scooter` / `swim`) — a carry-to-station chain (only the head of the first vector accepts the second's
+  tail) and a rotation held with the stretch engine (θ from the pointer's angle on a half-disc track); 30° is decided exactly
+  (`crossing` / `crossingSide`); the speeds float in a `MovablePanel` that becomes a line under 380 px when it would cover the handle.
+- **`vector-chain`** (`VectorChain.jsx`, `metro`) — one carry engine whose drop zones are the train's two ends and the map's stations;
+  equalities judged on exact points PLUS a graph of givens (reversal, transitivity): a swap needs the equality AND its justification
+  (« الشكل لا يبرهن »); `construct` mode builds a sum of representatives head to tail.
+- **`bridge-path`** (`BridgePath.jsx`, `crosswalk` / `bridge`) — one scene in three phases (explore / translate / straight), the second opened
+  by the student; the crossing's position held by the stretch engine, then B′ as a plane pin; the discovery needs the straight line AND a
+  longer position tried; the length-vs-position chart in a `LabFold`.
+
+Unit 12 (glance blocks `data-cs|cc|md|sp|rc-glance`, measured by `e2e/lesson-kit/4am-ashia-maalam.mjs`):
+
+- **`component-steps`** (`ComponentSteps.jsx`, `delivery`) — orders `walk | walkCode | code | pin`: the rider walked node by node (drag along
+  a street, tap, pad, arrows), a trip code on two signed spinbuttons judged by WHERE the scooter stops (refusals `sign`, `swap`, `coords`,
+  `reverse`, `zero`, `outside`); the invariant is that the code depends only on the displacement; under 260 px the order tabs become a
+  « ‹ n/5 › » stepper.
+- **`component-calc`** (`ComponentCalc.jsx`, `game-map`) — chained missions `calc | place` inside one level with an explicit next-mission
+  gesture (§7quater); `live: false` is how متقدم removes the component lamps until validation; the map width is fitted to the island.
+- **`midpoint-distance`** (`MidpointDistance.jsx`, `gps-meet`) — two stages, the second opened by the student; verdicts from
+  `relation` / `distance`; narrow-screen recipe: `smallmatrix` components, value-only claims, icon buttons, the shared-positions
+  `MovablePanel` becomes a row under 380 px. The advanced reading guard lives in `logic/midpointDistance.js › meetReadingLive` (regression-tested).
+- **`shape-prover`** (`ShapeProver.jsx`, `football`) — a claim plus proof cards judged by `REQUIRE` groups in a fixed order: flat →
+  other vertex / apex → unbalanced card (« false ») → missing card; under 640 px the verdict floats on the scene as a transient
+  `MovablePanel` cleared on the next move — a reusable pattern for §8bis.
+- **`route-compare`** (`RouteCompare.jsx`, `cross` / `rally`) — one pin whose step depends on the piece (a semicircle's centre at ½, a
+  checkpoint at 1); refusals `miss` (centre not the midpoint: the arc ends at 2C − P), `atEnd`, `off`, `skip`; the bet gates the build,
+  the discovery needs both routes; verdicts from `vectors.routeLength` / `arcEnd` / `semicircle`.
+
 ## 2duodecies. The trigonometry laboratories (unit 10, 2026-10-04)
 
 Four types, every verdict from `packages/core/arithmetic/trigonometry.js` (no lab computes a ratio itself), each with a `logic/` module,

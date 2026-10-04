@@ -380,6 +380,70 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'نترجم الوضعية إلى مثلث قائم ، ونختار النسبة التي تربط الطول المعلوم بالطول المجهول (أو بالزاوية) ثم نحسب ونقرّب النتيجة',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // Unités 11 « الأشعة والانسحاب » et 12 « الأشعة في معلم » (2026-10-04) — la flèche se TIENT, ses مركبتان se LISENT.
+  'translation-glide': {
+    // LE SPECTACLE DE DRONES : une formation de drones au-dessus de la baie d'Alger glisse d'un bloc ; l'élève fixe la flèche AA′ d'un drone puis place
+    // l'image de chaque autre drone — une image dont la flèche diffère par le منحى, le اتجاه ou le طول est refusée et le lab dit lequel ; ABB′A′ se révèle متوازي أضلاع.
+    shows: 'الانسحاب ينقل كل نقاط الشكل بنفس الحركة: شعاع واحد له منحى واتجاه وطول ، وكل نقطة وصورتها تعطيان شعاعا مساويا له ، فيتكوّن متوازي أضلاع',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'parallelogram-pin': {
+    // LA BANDEROLE DU TIFO : quatre supporters tiennent une banderole ; l'élève déplace le quatrième coin D (ou le point I sur [AB]) ; la banderole
+    // ne se tend en متوازي أضلاع que si AB = DC — les milieux des deux diagonales se confondent alors ; AI = IB n'arrive qu'au milieu.
+    shows: 'تساوي شعاعين يترجم متوازي الأضلاع: AB = DC يعني أن ABCD متوازي أضلاع (قطراه متناصفان) ، و I منتصف [AB] يعني AI = IB',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'vector-sum': {
+    // DEUX MOUVEMENTS, UN SEUL : l'élève enchaîne deux flèches bout à bout (علاقة شال, la trottinette qui fait deux trajets) ou les pose sur la même
+    // origine (قاعدة متوازي الأضلاع, le nageur et le courant de l'oued) ; la somme se lit, un enchaînement mal raccordé est refusé ; AB + BA = 0.
+    shows: 'مجموع شعاعين هو شعاع الانسحاب الناتج عن انسحابين متتابعين: AB + BC = AC (علاقة شال) ، و AB + AD = AC إذا كان ABCD متوازي أضلاع ، و AB + BA = 0',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'vector-chain': {
+    // LES CORRESPONDANCES DU MÉTRO : l'élève assemble une somme de plusieurs vecteurs nommés (des tronçons du métro d'Alger) et la réduit en
+    // raccordant les tronçons (Chasles), en remplaçant un vecteur par un égal (متوازي أضلاع) ou en annulant deux opposés ; la figure suit chaque étape.
+    shows: 'نبسّط عبارة شعاعية بعلاقة شال وبتعويض شعاع بشعاع يساويه وبحذف شعاعين متعاكسين ، ثم نستنتج منها استقامية نقط أو طبيعة رباعي',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'bridge-path': {
+    // LE PLUS COURT PASSAGE (وضعية « ممر الراجلين » ; passerelle du Rhummel à مبتدئ) : le passage [MN], perpendiculaire aux deux bords, se
+    // déplace le long de la route (la position est tenue) ; la longueur A → M → N → B se lit ; B′, image de B par le انسحاب de vecteur NM,
+    // est posée par l'élève (jugée par `vectors.relation`) : MB′BN متوازي أضلاع, NB = MB′, et le trajet le plus court a M sur [AB′].
+    shows: 'لإيجاد أقصر مسلك يعبر ممرا عرضه ثابت ننقل نقطة الوصول B بالانسحاب الذي شعاعه NM ، فيصبح المسلك من A إلى B′ مرورا بالنقطة M خطا مستقيما',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'component-steps': {
+    // L'APPLI DE LIVRAISON : le livreur va de A à B sur le quadrillage d'un quartier en pas horizontaux puis verticaux ; les pas comptés (avec leur
+    // signe) SONT les deux composantes ; depuis l'origine O, les composantes de OM sont les coordonnées de M ; dessiner un vecteur de composantes données.
+    shows: 'مركبتا شعاع في معلم متعامد ومتجانس هما الإزاحة الأفقية والإزاحة العمودية (بإشارتيهما) من مبدئه إلى نهايته ، ومركبتا OM هما إحداثيتا M',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'component-calc': {
+    // LE PORTAIL DU JEU : deux portails A et B d'une carte de jeu mobile ; l'élève calcule x_B − x_A et y_B − y_A (le signe compte) et le portail
+    // ne s'ouvre que sur les bonnes composantes ; puis il place D pour que AB = DC (deux coordonnées inconnues).
+    shows: 'مركبتا AB هما (xB − xA ; yB − yA) ، ويتساوى شعاعان إذا تساوت مركباتهما ، ومنه نحسب إحداثيتي نقطة مجهولة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'midpoint-distance': {
+    // LE RENDEZ-VOUS GPS : deux amis partagent leur position ; l'élève place le point de rencontre à mi-chemin (moyenne des abscisses et des
+    // ordonnées) puis mesure la distance en dessinant l'escalier Δx, Δy (le triangle rectangle) — Pythagore donne AB.
+    shows: 'منتصف [AB] إحداثيتاه متوسطا إحداثيتي الطرفين ، والمسافة AB هي وتر مثلث قائم ضلعاه |xB − xA| و |yB − yA|',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'shape-prover': {
+    // LE TERRAIN DE FOOT : des plots posés sur le terrain quadrillé forment un triangle ou un quadrilatère ; l'élève déplace les plots et choisit
+    // les preuves (carrés des distances, composantes égales, milieux des diagonales) qui établissent la nature — une conclusion sans preuve suffisante est refusée.
+    shows: 'نثبت طبيعة مثلث بحساب المسافات (وعكس فيثاغورس) وطبيعة رباعي بتساوي مركبات شعاعين وتناصف القطرين وتقايسها أو تقايس ضلعين متتاليين ، وانتماء نقطة لدائرة بمقارنة بعدها عن المركز بنصف القطر',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'route-compare': {
+    // DEUX PARCOURS (wadiya-idmajiya-maalam, وضعية « عدّاءان » p. 148 ; rallye au Sahara à مبتدئ) : l'élève parie, puis construit
+    // chaque parcours morceau par morceau — la balise suivante d'une ligne brisée (composantes et √(Δx² + Δy²) sous la main),
+    // le CENTRE d'un demi-cercle (l'arc ne se referme sur le parcours qu'au milieu du diamètre) — ; deux montres additionnent
+    // exactement (3π ; √13 + √5 + √17) puis en valeur approchée, et le pari est confronté au calcul. Manuel : chaque pose est un essai.
+    shows: 'نقارن مسارين في معلم: نبني كل مسار قطعة بقطعة — طول قطعة مستقيمة هو المسافة بين طرفيها، ونصف الدائرة مركزه منتصف قطرها وطوله πr — ثم نجمع الأطوال ونقارن',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

@@ -321,6 +321,43 @@ Unit-count assertions that read the real catalogue (`unitGrouping.test.js`, `fin
   situation's distance read 95,65 m (h ≈ 92 m, the real height of مقام الشهيد; 96,65 would give 93 m); ex-25's 30° is at O (∠AOD), so
   ∠OAB = 15°; ex-18's sin x = 3/2 and √5/2 are deliberate impossibilities (« إن أمكن »); ex-15 names its third pupil « رضا ».
 
+**Units 11 « الأشعة والانسحاب » and 12 « الأشعة في معلم » (2026-10-04) — two units in one run, ten authors in two waves — added:**
+
+- **One exact module for both units**, `packages/core/arithmetic/vectors.js` (exported `vectors`) on `linear.js` fractions and
+  `trigonometry.js` surds: points and vectors `{ x, y }`, `vec`, `translate`, `relation(u, v)` → the textbook's three elements
+  (منحى / اتجاه / طول — every « same vector? » verdict of every lab), `fourthVertex`, `parallelogramSum`, `midpoint`, exact `distance`
+  (√13, 3√2), `triangleNature`, `quadNature`, `onCircle`, and NAMED vectors as formal point combinations — `simplifyNamed(['AB', 'BC'])`
+  → 'AC', opposites → '0', irreducible → null — so Chasles needs no special case. Authors added the crossing problems (`crossing`,
+  `crossingSide` for the تحدّ swimmer, `shortestCrossing` for the synthesis) through the lock.
+- **GeoFigure draws vectors and grid paper** (`vectors: [{ from, to, label }]` — arrowhead and the \vec-capped name; `grid: true |
+  { step }`), used by every figure of both units, in modules, final tests and `statement.figure`. A grid figure displays at 540 px by default.
+- **Figures are analysed, then reproduced or REDESIGNED** (owner rule born here, §5 « Textbook figures »): unit 11's act-1 (a 4 × 11 strip,
+  C′ on C, E on L, H on P) was redrawn 14 × 8 with the same concept and recomputed answers; `figureQuality(fig)` is asserted empty in every
+  lesson's `content/figures.test.js` — and content globs (`loadLessonMemoSources.js`, `check-textbook-coverage.mjs`) now skip `content/*.test.js`.
+- **Two waves of five authors** on one seeded foundation and ONE lock (`docs/sources/4am/unit11/locked_edit.py`, brief
+  `docs/sources/4am/unit11/brief-authors.md` for both units): ten parallel authors do not fit a 13 GB machine (dev server + browser each).
+  The second extraction twice stalled the API reading full-page 300 dpi images: an extraction agent writes its builder page by page and
+  Reads crops ≤ 1400 px.
+- **A workspace mounts both levels**: SVG gradient / clip ids come from React `useId` (a constant id blanked the hidden level's twin sky),
+  and Playwright uses `:visible` locators.
+- **GeoFigure grew three keys during unit 12** (each through the lock, each tested): `axes: true | { every }` (the repère's two axes,
+  arrows, graduations — a number is dropped when it would sit on a point name), `arcs: [{ from, to, sweep }]` (a semicircle on a
+  diameter) and `circles: [{ center, through }]`. A unit-12 coordinate figure is GeoFigure `grid` + `axes`, never a third repère.
+- **`BatchChoiceQuestion` rows grow with their label** (owner report, unit 12): the label column was a fixed 14 rem, so three formulas
+  « EF² = 20 ، FG² = 20 ، EG² = 40 » broke after « = » and covered the choices; it is now `min 14rem, max 55 %`, formulas never break
+  inside (`[&_.katex]:whitespace-nowrap`), the options take the rest and wrap.
+- **Unit e2e and the smooth scroll**: the site scrolls with `scroll-behavior: smooth` and a module resumes at its step
+  (`utils/scrollToStep.js`); under load Playwright's level-tab click landed mid-scroll (« element is not stable »). The unit files
+  `4am-ashia-insihab.mjs` / `4am-ashia-maalam.mjs` centre the tab with `behavior: 'instant'`, wait for `scrollY` to settle and click in
+  the page — the real tap was verified with `elementFromPoint` at three scroll positions.
+- **Misprints and readings (unit 12)**: method-equal concludes AB = CD → AB = DC; know-origin's A printed « (2,5 ; -3-) » (an RTL
+  reversal) → A(−3 ; 2,5); ex-8 « CD(2;-5) » is the vector CD; ex-12 and ex-26 name a crossed quadrilateral (→ ABDC, ACBD); ex-21
+  « أربع نقط » → three; the situation's « ≈ 9,96 » is right only if rounding comes LAST (the rounded terms add to 9,97 — used as the
+  rounding trap).
+- **Misprints and readings (unit 11)**: ex-21's conclusion (the midpoint of [ED] is K, not L); ex-4 / ex-8 ask for more equal vectors than
+  exist (5 and 3); act-1's grid read on a curled page; the GeoGebra TP's missing « ارسم نقطة D »; ex-13 « AC + AA » kept as printed.
+  The unit page's « ستعود إلى هذا التحدّي في الدرس 6 » (true for unit 1 only) became « …خلال دروس الوحدة ».
+
 ### `routes.jsx` — the whole file
 
 ```jsx
@@ -602,6 +639,31 @@ for `prerequisite_diagnostic`). Render them with
 from `lessons/common/textbook` (a `MethodSteps` line may be a React node since unit 10 — e.g. a calculator key sequence as LTR
 `<kbd>`, never KaTeX; a fraction of Arabic WORDS is `WordFraction`). `npm run check:textbook` fails if an extracted
 element has anything other than exactly one destination.
+
+**Textbook figures — analyse, then reproduce or REDESIGN (owner rule, 2026-10-04, binding on every future lesson).**
+The textbook gives the CONCEPT of a figure, not its drawing. Scanned figures are often cramped: a narrow strip, shapes
+piled on one another, labels colliding with other labels or points (unit 11 act-1: C′ on C, E on L, H on P in a
+2 : 1 strip). Before drawing any textbook figure:
+
+1. **Analyse it**: what does each question need to SEE (which points, which arrows, which equalities)? Is the
+   textbook drawing readable at 320 px — near-square, every label free, every shape distinct?
+2. **Good → reproduce it** as GeoFigure data, faithfully.
+3. **Not good → generate a better one with the SAME concept**: same mathematical situation, same named points and the
+   same questions where possible, but a layout that reads — spread the shapes over a near-square grid, separate
+   images that overlapped, move points so that no label collides, one tone per image. Then RECOMPUTE every answer
+   on the new coordinates with the unit's exact module (never reuse the textbook's answers blindly), keep citing
+   the same element (`src(...)`), and say it in ONE discreet line under the figure (`caption`: « أعادت المنصّة رسم شكل
+   الكتاب بوضوح أكبر، بنفس المعطيات »). If the redesign changes an answer, the lesson shows the new one.
+4. **Make it BIG and easy to see** (owner, the same day): a figure is read, not glanced at. A grid figure displays at
+   540 px by default (`GeoFigure` `maxWidth`), any figure with more than ~6 named points at ≥ 480 px; never shrink it
+   to fit beside text — put it on its own row. On a phone it takes the full width.
+5. **Measure it**: `figureQuality(fig)` (`lessons/common/components/geoFigure.js`) returns the defects — a strip
+   (aspect > 2 : 1) or a label colliding with another label or point. Every lesson's `content/figures.test.js` asserts
+   `figureQuality(fig)` is empty for each figure (a figure of collinear points passes `{ maxAspect: Infinity }`
+   with a comment saying why).
+
+The rule holds everywhere a figure is drawn: modules, the final test, the practice bank (`statement.figure`),
+the unit page's تحدّ, and a lab's textbook level.
 
 ---
 
@@ -1081,6 +1143,16 @@ foundation, the second geometry unit:
 | **`alaqat-muthallathiya`** | `angle-compass` (`kite`): set square, a carried length, the compass opening and a pencil LOWERED from 90° until the arc cuts the other leg at the exact √(r² − a²); a string shorter than the height never lands; sin 2/5 built on the two legs refused as a tangent (21,8° vs 23,6°); the vertex of x designated by the student; cos² + sin² shown as a bar filling exactly 1 on every triangle, refused ones included; act-5 from lesson B's rounded table (0,87² + 0,5² = 1,0069 — hence the proof); know-4's misprint corrected; « إن أمكن » (ex-18) taught as a declared brick |
 | **`tarrid-muthallathiya`** | a lesson with NO textbook activity whose entry is the تحدّ on `clinometer`: the ladder (`mural`) bracketed by hand (1,8 < L < 1,9) before sin ÷ gives 1,9 m; the floodlight (`floodlight`) gives the same height from two distances, the wobble explained by the angle read to the degree; a wrong ratio refused naming the side it would need, a wrong operation refused with the value it would give; platform طرائق on ex-26 (rounding early: 5,8 vs 5,7) and ex-27; the unit page's `LadderFigure` |
 | **`wadiya-idmajiya-muthallathat`** | the synthesis REUSING lesson D's lab (`clinometer` `mode: 'align'`, `maqam`, numbers in `content/textbook.js › LAB`, `lab.render.test.jsx`): the observer slides until the pole's top hides مقام الشهيد's — Thales gives 92,09 m, the real height, then tan gives 43° — in the textbook's three phases; the six QCM items (item 3 two correct, item 5's two rows judged separately); أتعمّق's right triangles inside solids, rounding only at the end (22° vs 23°); the final test transposed to the minaret of جامع الجزائر (265 m) |
+| **`insihab-shuaa`** | unit 11 ENTRY on `translation-glide` (`drone-show`): the hand holds the leader drone's arrow and each image node; a refusal names the differing element (`vectors.relation`: direction / sense / length); a rogue drone flying −u is the built-in contrast; moving A′ glides every placed image; advanced = act-1 REDRAWN 14 × 8 (the textbook's strip had C′ on C, E on L, H on P — Q / S / T name the images that coincided), its questions answered from the student's own placements; ex-4 / ex-8 count misprints corrected |
+| **`shuaayn-mutasawiyayn`** | `parallelogram-pin` (`tifo`): I slid along a scarf (AI vs IB vs BI), then the banner's corner D as the image of C — CD = AB tightens the banner and merges the diagonals' midpoints, DC = AB twists it into a bow-tie —, then E with EB = AC (E on D refused); one workspace mounted twice (M1 مبتدئ, M3 متقدم because it is the طريقة); ex-12's sum prepared and deferred to the next lesson |
+| **`majmu-shuaayn`** | the تحدّ (swimmer) on `vector-sum` (`swim`): the velocity's direction turned until the parallelogram's diagonal lies on (AB) — 30° decided exactly (`vectors.crossing`), real speed 2√3, then solved by trigonometry (bridge to unit 10); Chasles by carrying the second leg's tail onto the first leg's head (`scooter`; same origin or a jump refused; return trip → 0); the unit page's `RiverFigure` |
+| **`barahin-ashia`** | a lesson with no textbook activity entered by `vector-chain` (`metro`): tickets coupled by Chasles, carried as translations, an equality true on the drawing but not GIVEN refused (« الشكل لا يبرهن »), the proof written line by line by the gestures; `construct` mode for دوري الآن 138 (sums of several vectors head to tail); ex-21 corrected (K) |
+| **`wadiya-idmajiya-ashia`** | the synthesis on its own lab `bridge-path` (`crosswalk` / `bridge`): the crossing slid along the road (lengths read), the translation opened by the student, B′ placed and judged by `relation(BB′, NM)`, the bent A–M–B′ straightened (√85 + 2, the extraction's declared example); the textbook street redrawn near-square; QCM one step per item; the final test transposed to an Oran motorway footbridge |
+| **`murakkibata-shuaa`** | unit 12 ENTRY on `component-steps` (`delivery`): a rider walked street by street whose signed counters ARE the column vector; codes typed before leaving and judged by where the scooter stops (sign / swap / address-instead-of-trip refused); the depot O where the code equals the address; a destination pin for given components; act-1 without counters at متقدم, D off the figure; the four معالم as vignettes; know-origin's reversed pair corrected; دوري الآن 1 in the lab posed alone (`story: 'draw'`) |
+| **`hisab-murakkibatay`** | `component-calc` (`game-map`): the portal's code PREDICTED on signed counters before the hero jumps (a reversed subtraction is drawn backwards), then a portal with two unknown coordinates placed with live (مبتدئ) or deferred (متقدم, `live: false`) component lamps — CD = AB crosses ABCD and is refused; act-2's twin portals DE = CF; method-equal, ex-8, ex-12 misprints corrected; a platform « نقطة مجهولة » method |
+| **`muntasaf-masafa`** | `midpoint-distance` (`gps-meet`): two stages opened by the student — the meeting pin (accepted only where AM = MB; the group chat's « sum without ÷ 2 » and « half-difference » refused by name), then the right-angle staircase and the distance claim (the street « taxi » distance and the square refused, only √(Δx² + Δy²) accepted); act-3 / act-4 answered from the student's own trials; the تحدّ as hook, solved at the end (√365 / 3) |
+| **`ithbat-khawas-maalam`** | a lesson with no textbook activity entered by `shape-prover` (the فار of the neighbourhood pitch): proof cards sent to the video referee, sufficiency refused card by card (equal diagonals alone are not a parallelogram), the « looks right-angled » start refused by its numbers (10 + 5 ≠ 17); method-unknown (C slides on x = −2 to y = −4) as متقدم, then the square and the circle; perpendicularity without dot product as a declared formalization; the method-unknown figure redrawn so it no longer shows the answer |
+| **`wadiya-idmajiya-maalam`** | the synthesis on its own lab `route-compare` (`cross` / `rally`): a BET first, then each route built piece by piece — a semicircle closes only when its centre is the midpoint (wrong centre: the lab names where the arc would end), a skipped checkpoint refused as a shortcut; two smartwatches add exact then rounded lengths (3π ≈ 9,42 vs √13 + √5 + √17 ≈ 9,96); the two levels disagree on the winner on purpose; the final test transposed to جبل الوحش (Constantine), where the broken line wins |
 
 **Textbook misprints are CORRECTED, not only noted (owner decision, 2026-09-30).**
 The extraction keeps the book's verbatim `text` and adds a `correction`
@@ -1430,10 +1502,11 @@ for every element the lesson cites. Mastery criteria are the server's
 | Module shape | `ContentModule` for content, `PrerequisiteDiagnostic` for « أستعدّ » (module 0, `priorKnowledge` only, questions as literal objects with `requires` — §4 « The « أستعدّ » pattern »), `BossFinal` for « إختبار أولي » — never a hand-rolled module shell, test UI, fullscreen, toolbar or progress write |
 | Steps | `done` on ANSWERED, never on correct (`check:non-blocking`); a step may wait on `onFinished` only per §6; never pass `locked` |
 | Questions | kit components only (`TapQuestion`, `BatchChoiceQuestion`, `NumericQuestion`, `TextbookExercise` for the textbook's exercises); explicit `correct`; every distractor FALSE; `requires` on every question; the parsers of §5, never a custom one |
-| Manipulation | a type from the closed registry (26 types), two levels in one `ManipulationWorkspace`, the lesson's world as a `theme` (§6); a new type only by the recipe of MANIPULATION_CONTRACT §7ter |
+| Manipulation | a type from the closed registry (`MANIPULATION_TYPE_IDS`, 54 types on 2026-10-04), two levels in one `ManipulationWorkspace`, the lesson's world as a `theme` (§6); a new type only by the recipe of MANIPULATION_CONTRACT §7ter |
 | Knowledge | `knowledge.jsx` with a plain-text `summary` per item; a brick at the point of teaching; `knowledgeMap: true`; every content module's footer `<KnowledgeSnapshot moduleNumber={N} />`; the final test's `synthese={<KnowledgeSnapshot complete variant="complete" />}`; **and** the progressive map from the start (owner decision, 2026-09-29): a `knowledgeGraph.js` exporting `KNOWLEDGE_GRAPH`, re-exported by `knowledge.jsx`, and `knowledgeMapMode: 'progressive'` — every item carried by a `notebook` node, labelled relationships, guidance only where the lesson's own exercises / questions / « أستعدّ » support it, authored per `KNOWLEDGE_MAP.md` A.10 (rules 1–16) and passing A.14. Enforced: `validate-lessons.mjs` refuses a lesson with a map but no mode / graph / re-export, and `lessonGraphs.test.js` runs the A.14 invariants on every lesson without any per-lesson code |
 | Final test | only in the `evaluation` module; every question assessed with ONE primary LP of this lesson; every LP covered; 4–6 questions; timer ≈ 1 min per question + 1; `badges`, `completion`, `skills` as in the reference lessons |
 | Textbook | every pedagogical block carries a `source` (`src()` / `addition()`); `check:textbook` maps each extracted element to exactly one destination |
+| Figures | every textbook figure ANALYSED, then reproduced if readable or REDESIGNED with the same concept (answers recomputed, one-line caption), and `figureQuality(fig)` empty in `content/figures.test.js` (§5 « Textbook figures ») |
 | Practice | a separate bank under `content/practice/**` with provenance, oracle entries for constructed answers (§11) |
 | Arabic/RTL | all user-visible text Arabic (including `aria-label`, `title`, placeholders, KaTeX `\text{}` — put words in DOM, not in KaTeX); numbers and equations `dir="ltr"`; `PGCD` Latin |
 | Responsive / a11y | no horizontal scroll at 320 px; controls ≥ 44 px; every gesture has a tap and keyboard path; visible focus; reduced motion honoured |

@@ -63,6 +63,16 @@ import { ORACLE as ORACLE_HASIBA_MUTH } from './practice-oracle/hasiba-muthallat
 import { ORACLE as ORACLE_ALAQAT_MUTH } from './practice-oracle/alaqat-muthallathiya.mjs';
 import { ORACLE as ORACLE_TARRID_MUTH } from './practice-oracle/tarrid-muthallathiya.mjs';
 import { ORACLE as ORACLE_WADIYA_MUTH } from './practice-oracle/wadiya-idmajiya-muthallathat.mjs';
+import { ORACLE as ORACLE_INSIHAB_SHUAA } from './practice-oracle/insihab-shuaa.mjs';
+import { ORACLE as ORACLE_SHUAAYN_MUT } from './practice-oracle/shuaayn-mutasawiyayn.mjs';
+import { ORACLE as ORACLE_MAJMU_SHUAAYN } from './practice-oracle/majmu-shuaayn.mjs';
+import { ORACLE as ORACLE_BARAHIN_ASHIA } from './practice-oracle/barahin-ashia.mjs';
+import { ORACLE as ORACLE_WADIYA_ASHIA } from './practice-oracle/wadiya-idmajiya-ashia.mjs';
+import { ORACLE as ORACLE_MURAKKIBATA } from './practice-oracle/murakkibata-shuaa.mjs';
+import { ORACLE as ORACLE_HISAB_MURAKKIBATAY } from './practice-oracle/hisab-murakkibatay.mjs';
+import { ORACLE as ORACLE_MUNTASAF_MASAFA } from './practice-oracle/muntasaf-masafa.mjs';
+import { ORACLE as ORACLE_ITHBAT_KHAWAS } from './practice-oracle/ithbat-khawas-maalam.mjs';
+import { ORACLE as ORACLE_WADIYA_MAALAM } from './practice-oracle/wadiya-idmajiya-maalam.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice/4am');
 
@@ -958,6 +968,16 @@ const ORACLE = {
   ...ORACLE_ALAQAT_MUTH,
   ...ORACLE_TARRID_MUTH,
   ...ORACLE_WADIYA_MUTH,
+  ...ORACLE_INSIHAB_SHUAA,
+  ...ORACLE_SHUAAYN_MUT,
+  ...ORACLE_MAJMU_SHUAAYN,
+  ...ORACLE_BARAHIN_ASHIA,
+  ...ORACLE_WADIYA_ASHIA,
+  ...ORACLE_MURAKKIBATA,
+  ...ORACLE_HISAB_MURAKKIBATAY,
+  ...ORACLE_MUNTASAF_MASAFA,
+  ...ORACLE_ITHBAT_KHAWAS,
+  ...ORACLE_WADIYA_MAALAM,
 };
 
 /**

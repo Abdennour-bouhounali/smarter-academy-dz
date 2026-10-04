@@ -332,6 +332,175 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { height: 24, minDistance: 10, maxDistance: 40, mode: 'height' }, ...P },
     advanced: { numbers: { height: 1.6, angle: 59, mode: 'ladder' }, ...T('challenge') },
   },
+  // ── Unités 11 « الأشعة والانسحاب » et 12 « الأشعة في معلم » (2026-10-04) — paires PROVISOIRES semées par le lead
+  // (les auteurs les affinent sous verrou ; les `ref` suivent les extractions).
+  // Le spectacle de drones (insihab-shuaa). مبتدئ : trois drones A(1 ; 1), B(3 ; 1), C(2 ; 3) sur un ciel 9 × 6 ; l'élève
+  // CHOISIT la flèche du meneur A (la balise du plan, (3 ; 1), n'oriente que), pose B′ et C′, puis répare le drone égaré
+  // (−u). متقدم (نشاط 1, p. 128) : la figure du manuel REDESSINÉE sur 14 × 8 (A, B, C, K ; images séparées) et ses QUATRE
+  // translations données A ↦ G, C ↦ R, A ↦ M, A ↦ A′ — neuf images à poser sans voyants pendant le geste.
+  'translation-glide': {
+    beginner: { numbers: { scene: 'show', grid: [9, 6], drones: { A: [1, 1], B: [3, 1], C: [2, 3] }, vector: [3, 1] }, ...P },
+    advanced: { numbers: { scene: 'act1', grid: [14, 8] }, ...T('act-1') },
+  },
+  // La banderole du tifo (shuaayn-mutasawiyayn). مبتدئ : I tenu sur [AB] coupé en 8 parts égales (A(0 ; 0), B(4 ; 2)),
+  // AI = IB au seul milieu ; متقدم (طرائق p. 131) : le triangle du manuel sur la ورقة مرصوفة (translaté d'une maille),
+  // D image de C par le انسحاب de vecteur AB, puis E tel que EB = AC — deux points à poser, deux pièges d'ordre.
+  'parallelogram-pin': {
+    beginner: { numbers: { mode: 'midpoint', A: [0, 0], B: [4, 2] }, ...P },
+    advanced: { numbers: { mode: 'parallelogram', A: [1, 4], B: [2, 1], C: [5, 3] }, ...T('method-image') },
+  },
+  // La somme de deux vecteurs (majmu-shuaayn) : مبتدئ (plateforme) la trottinette dans Alger — AB = (3 ; 1) fait, trois
+  // cartes de second trajet (virage, même direction, retour −AB) dont la QUEUE se pose sur une station (A, B ou deux
+  // autres) ; متقدم (تحدّ p. 127) le nageur : 4 km/h dont l'élève tourne la direction, courant 2 km/h, rivière de 60 m
+  // (donnée de la plateforme pour lire l'écart en mètres) — la cible exacte 30°, plus lourde : un angle à trouver, aucune case.
+  'vector-sum': {
+    beginner: { numbers: { mode: 'chasles', A: [1, 1], u: [3, 1], legs: [[1, 3], [3, 1], [-3, -1]], decoys: [[1, 4], [6, 0]] }, ...P },
+    advanced: { numbers: { mode: 'parallelogram', swim: 4, current: 2, width: 60 }, ...T('challenge') },
+  },
+  // Le métro (barahin-ashia) : مبتدئ un parallélogramme de 4 stations, deux tickets à réduire (BC + AB → AC par
+  // l'ordre de Chasles ; AB + AD qui ne se raccorde pas → l'égalité AD = BC donnée par ABCD) ; متقدم (ex-18) huit
+  // stations, six données, et deux PREUVES à mener jusqu'au vecteur demandé (OL = AC, HK = AC) — une égalité vraie
+  // sur la figure mais non donnée y est refusée. Plus de stations, de données et de gestes : la demande monte.
+  'vector-chain': {
+    beginner: {
+      numbers: {
+        mode: 'reduce', stations: { A: [0, 0], B: [5, 1], C: [7, 4], D: [2, 3] },
+        segments: [['A', 'B'], ['B', 'C'], ['C', 'D'], ['D', 'A']],
+        givens: [{ para: 'ABCD' }],
+        missions: [{ start: ['BC', 'AB'] }, { start: ['AB', 'AD'] }],
+      },
+      ...P,
+    },
+    advanced: {
+      numbers: {
+        mode: 'reduce',
+        stations: { A: [0, 0], B: [6, 0], C: [2, 4], D: [-4, 4], O: [1, 2], H: [7, 2], L: [3, 6], K: [9, 6] },
+        segments: [['A', 'B'], ['B', 'C'], ['C', 'D'], ['D', 'A'], ['A', 'C'], ['B', 'D']],
+        givens: [{ mid: ['O', 'A', 'C'] }, { sym: ['D', 'B', 'O'] }, { para: 'ABCD' }, { eq: ['BH', 'AO'] }, { eq: ['CL', 'OC'] }, { def: 'CK', sum: ['AB', 'AO'] }],
+        missions: [
+          { lhs: 'OL', start: ['OC', 'CL'], target: 'AC' },
+          { lhs: 'HK', pre: ['HB', 'BC', 'CK'], start: ['HB', 'BC', 'AB', 'AO'], target: 'AC' },
+        ],
+      },
+      ...T('ex-18'),
+    },
+  },
+  // LE PLUS COURT PASSAGE (« أدمج تعلّماتي », وضعية « ممر الراجلين »). مبتدئ : une passerelle sur la gorge du Rhummel,
+  // A 1 carreau au-dessus, B 2 carreaux au-dessous, écart 3 — la place optimale (x = 1) n'est PAS au milieu de A et B,
+  // 11 places, un fantôme de NM attaché à B guide la translation. متقدم : la وضعية du manuel avec les nombres de
+  // l'extraction (A(−3 ; 5), B(4 ; −3), largeur 2, minimum √85 + 2), 19 places, aucune aide pour poser B′.
+  'bridge-path': {
+    beginner: { numbers: { width: 2, A: [0, 3], B: [3, -2] }, ...P },
+    advanced: { numbers: { width: 2, A: [-3, 5], B: [4, -3] }, ...T('situation') },
+  },
+  // L'APPLI DE LIVRAISON (murakkibata-shuaa). مبتدئ (plateforme) : un quartier 8 × 7 autour du dépôt O ; cinq commandes —
+  // CONDUIRE le livreur de A à B (compteurs signés en direct : (3 ; 2)), puis trois CODES écrits avant de partir (C → D le
+  // même (3 ; 2) depuis un autre restaurant ; E → F vers la gauche et le bas (−2 ; −3) ; O → M : le code = l'adresse), puis
+  // POSER la destination d'un code donné (3 ; −2) depuis P. متقدم (نشاط 1, p. 140) : la figure du manuel (A, B, C) sur
+  // 10 × 8, le trajet A → B SANS compteurs (« +8 puis −2 » écrit après coup), B → D vers D(3 ; −2) qu'on ne voit pas,
+  // OA et OD depuis le dépôt, puis u(3 ; −4) à représenter depuis A — plus grand, sans aide, des signes partout.
+  'component-steps': {
+    beginner: {
+      numbers: {
+        grid: [-4, 4, -3, 4],
+        points: { A: [-4, -3], B: [-1, -1], C: [1, 1], D: [4, 3], E: [3, 1], F: [1, -2], M: [-3, 2], P: [-4, 4], Q: [-1, 2] },
+        orders: [
+          { id: '1', kind: 'walk', from: 'A', to: 'B' },
+          { id: '2', kind: 'code', from: 'C', to: 'D' },
+          { id: '3', kind: 'code', from: 'E', to: 'F' },
+          { id: '4', kind: 'code', from: 'O', to: 'M' },
+          { id: '5', kind: 'pin', from: 'P', u: [3, -2], to: 'Q' },
+        ],
+        live: true,
+      },
+      ...P,
+    },
+    advanced: {
+      numbers: {
+        grid: [-3, 7, -3, 5],
+        points: { A: [-2, 4], B: [6, 2], C: [6, 4], D: [3, -2], E: [1, 0] },
+        orders: [
+          { id: 'AB', kind: 'walkCode', from: 'A', to: 'B' },
+          { id: 'BD', kind: 'code', from: 'B', to: 'D', hidden: true },
+          { id: 'OA', kind: 'code', from: 'O', to: 'A' },
+          { id: 'OD', kind: 'code', from: 'O', to: 'D' },
+          { id: 'u', kind: 'pin', from: 'A', u: [3, -4], to: 'E' },
+        ],
+        live: false,
+      },
+      ...T('act-1'),
+    },
+  },
+  // LES PORTAILS DE LA CARTE DE JEU (hisab-murakkibatay). مبتدئ (plateforme, coordonnées positives) : le code du portail
+  // A(1 ; 2) → B(4 ; 3) PRÉDIT au pavé signé, puis D posé pour que AB = DC (le piège CD = AB croise ABCD, sur la carte) ;
+  // voyants des composantes en direct. متقدم (نشاط 2 p. 140) : le code de CD, E tel que DE(3 ; 4), le code de CF comparé
+  // à DE (portails jumeaux) — trois missions, des négatifs, et les voyants seulement à la validation (`live: false`).
+  'component-calc': {
+    beginner: {
+      numbers: {
+        points: { A: [1, 2], B: [4, 3], C: [5, 5] },
+        missions: [{ kind: 'calc', from: 'A', to: 'B' }, { kind: 'place', point: 'D', vec: ['D', 'C'], ref: ['A', 'B'] }],
+      },
+      ...P,
+    },
+    advanced: {
+      numbers: {
+        points: { C: [3, 1], D: [2, -5], F: [6, 5] },
+        missions: [
+          { kind: 'calc', from: 'C', to: 'D' },
+          { kind: 'place', point: 'E', vec: ['D', 'E'], ref: [3, 4] },
+          { kind: 'calc', from: 'C', to: 'F', compare: ['D', 'E'] },
+        ],
+        live: false,
+      },
+      ...T('act-2'),
+    },
+  },
+  // LE RENDEZ-VOUS GPS (muntasaf-masafa). مبتدئ (plateforme) : deux amis A(1 ; −1) et B(4 ; 3) aux Sablettes — le milieu
+  // (2,5 ; 1) n'est pas un nœud, l'escalier 3 puis 4 donne 5 ; projections et composantes lues en direct. متقدم : le نشاط 3
+  // (K(5 ; 3), L(−3 ; 1) → J(1 ; 2), KJ = JL) puis le نشاط 4 (L(1 ; −2), K(5 ; 1), le coin M(5 ; −2), 4, 3, 5) sur le front
+  // de mer d'Oran — deux paires de points, des coordonnées négatives, aucune lecture avant la validation.
+  'midpoint-distance': {
+    beginner: { numbers: { A: [1, -1], B: [4, 3] }, ...P },
+    advanced: { numbers: { A: [5, 3], B: [-3, 1], names: ['K', 'L', 'J'], dist: { A: [1, -2], B: [5, 1], names: ['L', 'K', 'M'] } }, ...T('act-3') },
+  },
+  // LE فار DU ملعب الحي (درس « توظيف الحساب الشعاعي والإحداثيات لإثبات الخواص الهندسية »). مبتدئ : A, B fixes, C tenu ; le
+  // départ C(−1 ; 2) a l'AIR droit en A (98°) et le فار le refuse (10 + 5 ≠ 17) ; objectifs « قائم في A » puis « متساوي
+  // الساقين رأسه C ». متقدم : la طريقة p. 145 « حساب مسافات » — C(−2 ; y) glisse sur sa droite (y de −5 à 4, l'inconnue à
+  // trouver : −4), puis l'étape ouverte par l'élève : D tenu, ABCD مربع et B, D sur le cercle de diamètre [AC] ; plus
+  // d'étapes, des cartes-preuves à choisir sans aide, un départ D(2 ; 2) piège (diagonales égales, pas de parallélogramme).
+  'shape-prover': {
+    beginner: { numbers: { mode: 'triangle', A: [0, 0], B: [3, 1], C: [-1, 2] }, ...P },
+    advanced: { numbers: { mode: 'unknown', A: [0, 2], B: [-4, 0], rail: { x: -2, min: -5, max: 4, start: 4 }, D: [2, 2] }, ...T('method-unknown') },
+  },
+  // DEUX PARCOURS (wadiya-idmajiya-maalam, « أدمج تعلّماتي »). Chaque parcours : un départ et des morceaux — droits (une
+  // balise) ou DEMI-CERCLES de diamètre [from, to] (`arc`, le sens vu sur la figure). مبتدئ (rallye au Sahara, plateforme) :
+  // deux morceaux par parcours, A et B communs — un demi-cercle autour d'une dune (centre I(−1 ; 0), 2π) puis 2, contre deux
+  // lignes droites par le puits D (2√2 + 2√5 ≈ 7,30 : la ligne brisée gagne). متقدم (وضعية p. 148, cross des Sablettes) :
+  // TROIS demi-cercles de A à B (3π ≈ 9,42) contre la ligne brisée M → P → Q → N (√13 + √5 + √17 ≈ 9,96 : les arcs gagnent),
+  // trois centres à trouver sans balise aux jonctions, deux départs différents.
+  'route-compare': {
+    beginner: {
+      numbers: {
+        routes: [
+          { start: [-3, 0], pieces: [{ to: [1, 0], arc: 'cw' }, { to: [3, 0] }], names: ['A', 'C', 'B'], centres: ['I'] },
+          { start: [-3, 0], pieces: [{ to: [-1, -2] }, { to: [3, 0] }], names: ['A', 'D', 'B'] },
+        ],
+        unit: 'km',
+      },
+      ...P,
+    },
+    advanced: {
+      numbers: {
+        routes: [
+          { start: [-2, 0], pieces: [{ to: [0, 0], arc: 'cw' }, { to: [2, 0], arc: 'ccw' }, { to: [4, 0], arc: 'cw' }], names: ['A', 'O', 'E', 'B'], centres: ['I', 'J', 'K'] },
+          { start: [-2, 3], pieces: [{ to: [1, 1] }, { to: [3, 2] }, { to: [4, -2] }], names: ['M', 'P', 'Q', 'N'] },
+        ],
+        unit: 'km',
+      },
+      ...T('situation'),
+    },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

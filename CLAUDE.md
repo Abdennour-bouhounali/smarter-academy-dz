@@ -3,8 +3,12 @@
 Arabic-first, RTL mathematics platform for the Algerian curriculum (المتوسط,
 starting with 4AM). Lesson content lives in `apps/web/src/lessons/moyen/`;
 shared engine in `apps/web/src/lessons/common/`; pure logic in `packages/core`;
-API in `apps/api` (Laravel). The lesson content in the repository is ten 4AM
-textbook units. Since 2026-10-04 unit 10 « حساب المثلثات في المثلث القائم » (4 lessons + its synthesis,
+API in `apps/api` (Laravel). The lesson content in the repository is twelve 4AM
+textbook units. Since 2026-10-04 units 11 « الأشعة والانسحاب » and 12 « الأشعة في معلم » (4 lessons + a synthesis each,
+`lessons/moyen/4am/handasa/ashia-insihab/` and `…/ashia-maalam/`) are the third and fourth units under « ميدان الهندسة » (exact vectors
+in `packages/core/arithmetic/vectors.js`, labs in `lessons/common/manipulations/vectors/`, GeoFigure `vectors`/`grid`/`axes`/`arcs`/`circles`;
+one brief and one lock for both in `docs/sources/4am/unit11/`; textbook figures are ANALYSED then reproduced or REDESIGNED, guide §5).
+Also since 2026-10-04 unit 10 « حساب المثلثات في المثلث القائم » (4 lessons + its synthesis,
 `lessons/moyen/4am/handasa/hisab-muthallathat/`) is the second unit under « ميدان الهندسة » (exact trigonometry with
 surds in `packages/core/arithmetic/trigonometry.js`; authors' brief and lock in `docs/sources/4am/unit10/`). Since 2026-10-02 unit 9 « خاصية طالس » (3 lessons + its synthesis,
 `lessons/moyen/4am/handasa/khassiyat-talis/`) is the first unit under the programme's « ميدان الهندسة »

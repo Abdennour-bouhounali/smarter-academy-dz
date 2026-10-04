@@ -19,9 +19,10 @@ const UNITS = [
   [T, 'ihsa', ['challenge']],
   [H, 'khassiyat-talis', ['challenge']],
   [H, 'hisab-muthallathat', ['challenge']],
+  [H, 'ashia-insihab', ['challenge']],
 ];
-// Unité 10 : « اعتمادا على الشكل » renvoie aussi à une figure.
-const REFERS = /المقابل|نظم العمل في جدول|على الشكل/;
+// Unité 10 : « اعتمادا على الشكل » renvoie aussi à une figure ; unité 11 : « (الشكل) » entre parenthèses.
+const REFERS = /المقابل|نظم العمل في جدول|على الشكل|\(الشكل\)/;
 const errors = [];
 const { browser } = await launch();
 

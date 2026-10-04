@@ -1544,5 +1544,371 @@
     "relatedLearningPoints": [
       "4am_nisab-muthallathiya_P3"
     ]
+  },
+  "MISC-SHUAA-TUL-FAQAT": {
+    "label": "تساوي الطولين يكفي",
+    "explanation": "شعاعان لهما نفس الطول ليسا متساويين بالضرورة: يجب أيضا نفس المنحى ونفس الاتجاه.",
+    "relatedLearningPoints": [
+      "4am_insihab-shuaa_P2",
+      "4am_insihab-shuaa_P3"
+    ]
+  },
+  "MISC-SHUAA-ITTIJAH-MUAKKAS": {
+    "label": "إهمال الاتجاه",
+    "explanation": "$\\overrightarrow{AB}$ و $\\overrightarrow{BA}$ لهما نفس المنحى ونفس الطول لكن اتجاهين متعاكسين: هما شعاعان متعاكسان لا متساويان.",
+    "relatedLearningPoints": [
+      "4am_insihab-shuaa_P2",
+      "4am_majmu-shuaayn_P4"
+    ]
+  },
+  "MISC-SHUAA-MANHA-MUSTAQIM": {
+    "label": "خلط المنحى بالاتجاه",
+    "explanation": "المنحى هو المستقيم الحامل (أو أي مستقيم يوازيه)، والاتجاه هو جهة السير عليه من المبدأ نحو النهاية.",
+    "relatedLearningPoints": [
+      "4am_insihab-shuaa_P2"
+    ]
+  },
+  "MISC-SHUAA-TARTIB-RUUS": {
+    "label": "ترتيب رؤوس متوازي الأضلاع",
+    "explanation": "$\\overrightarrow{AB} = \\overrightarrow{CD}$ يعني أن $ABDC$ (لا $ABCD$) متوازي أضلاع؛ و $\\overrightarrow{AB} = \\overrightarrow{DC}$ يعني أن $ABCD$ متوازي أضلاع.",
+    "relatedLearningPoints": [
+      "4am_insihab-shuaa_P3",
+      "4am_shuaayn-mutasawiyayn_P2"
+    ]
+  },
+  "MISC-SHUAA-MUNTASAF-IB-IA": {
+    "label": "منتصف بشعاعين متعاكسين",
+    "explanation": "$I$ منتصف $[AB]$ يعني $\\overrightarrow{AI} = \\overrightarrow{IB}$ (نفس الاتجاه من $A$ نحو $B$)، لا $\\overrightarrow{AI} = \\overrightarrow{BI}$.",
+    "relatedLearningPoints": [
+      "4am_shuaayn-mutasawiyayn_P1"
+    ]
+  },
+  "MISC-SHUAA-ISTIQAMA": {
+    "label": "نسيان حالة الاستقامة",
+    "explanation": "إذا كانت $A$ و $B$ و $C$ و $D$ على استقامة واحدة فإن $\\overrightarrow{AB} = \\overrightarrow{DC}$ لا يعطي متوازي أضلاع (متوازي أضلاع «مسطّح»).",
+    "relatedLearningPoints": [
+      "4am_shuaayn-mutasawiyayn_P2",
+      "4am_barahin-ashia_P2"
+    ]
+  },
+  "MISC-SHUAA-SHAL-RABT": {
+    "label": "علاقة شال دون تعاقب",
+    "explanation": "$\\overrightarrow{AB} + \\overrightarrow{CD}$ لا تُختصر بعلاقة شال إلا إذا كانت نهاية الأول هي بداية الثاني ($B = C$).",
+    "relatedLearningPoints": [
+      "4am_majmu-shuaayn_P2",
+      "4am_barahin-ashia_P1"
+    ]
+  },
+  "MISC-SHUAA-SHAL-AKS": {
+    "label": "عكس نتيجة شال",
+    "explanation": "$\\overrightarrow{AB} + \\overrightarrow{BC} = \\overrightarrow{AC}$ وليس $\\overrightarrow{CA}$: المجموع يبدأ من مبدأ الأول وينتهي عند نهاية الثاني.",
+    "relatedLearningPoints": [
+      "4am_majmu-shuaayn_P2"
+    ]
+  },
+  "MISC-SHUAA-JAM-ATWAL": {
+    "label": "جمع الأطوال بدل الأشعة",
+    "explanation": "طول الشعاع المجموع ليس مجموع الطولين: $AC \\leq AB + BC$، والمساواة فقط إذا كانت $B$ على $[AC]$.",
+    "relatedLearningPoints": [
+      "4am_majmu-shuaayn_P1",
+      "4am_majmu-shuaayn_P2"
+    ]
+  },
+  "MISC-SHUAA-QAIDA-QUTR": {
+    "label": "القطر الخطأ في قاعدة متوازي الأضلاع",
+    "explanation": "$\\overrightarrow{AB} + \\overrightarrow{AD} = \\overrightarrow{AC}$ حيث $[AC]$ هو القطر الصادر من المبدأ المشترك $A$، لا القطر الآخر $[BD]$.",
+    "relatedLearningPoints": [
+      "4am_majmu-shuaayn_P3"
+    ]
+  },
+  "MISC-SHUAA-SIFR-ADAD": {
+    "label": "الشعاع المعدوم عدد",
+    "explanation": "$\\overrightarrow{AB} + \\overrightarrow{BA}$ هو الشعاع المعدوم $\\overrightarrow{0}$ (مبدؤه ونهايته نفس النقطة)، لا العدد 0.",
+    "relatedLearningPoints": [
+      "4am_majmu-shuaayn_P4"
+    ]
+  },
+  "MISC-SHUAA-INSIHAB-SURA": {
+    "label": "خلط النقطة بصورتها",
+    "explanation": "صورة $M$ بالانسحاب الذي شعاعه $\\overrightarrow{AB}$ هي $M'$ حيث $\\overrightarrow{MM'} = \\overrightarrow{AB}$، لا $\\overrightarrow{M'M} = \\overrightarrow{AB}$.",
+    "relatedLearningPoints": [
+      "4am_insihab-shuaa_P1",
+      "4am_shuaayn-mutasawiyayn_P3"
+    ]
+  },
+  "MISC-SHUAA-MAMAR-MUBASHIR": {
+    "label": "المسار المستقيم يعبر الممر مائلا",
+    "explanation": "الممر (الجسر) عمودي على الحافتين وطوله ثابت: نُزيح نقطة البداية بشعاع الممر ثم نصل بخط مستقيم.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-ashia_P3"
+    ]
+  },
+  "MISC-MAALAM-TARH-MAQLUB": {
+    "label": "طرح مقلوب",
+    "explanation": "مركبتا $\\overrightarrow{AB}$ هما $(x_B - x_A\\,;\\,y_B - y_A)$: النهاية ناقص المبدأ، لا المبدأ ناقص النهاية.",
+    "relatedLearningPoints": [
+      "4am_hisab-murakkibatay_P1"
+    ]
+  },
+  "MISC-MAALAM-TABDIL-X-Y": {
+    "label": "تبديل المركبتين",
+    "explanation": "المركبة الأولى أفقية (على محور الفواصل) والثانية عمودية (على محور التراتيب).",
+    "relatedLearningPoints": [
+      "4am_murakkibata-shuaa_P1"
+    ]
+  },
+  "MISC-MAALAM-ISHARA": {
+    "label": "إهمال الإشارة",
+    "explanation": "إزاحة نحو اليسار أو نحو الأسفل مركبتها سالبة.",
+    "relatedLearningPoints": [
+      "4am_murakkibata-shuaa_P1",
+      "4am_hisab-murakkibatay_P1"
+    ]
+  },
+  "MISC-MAALAM-IHDATHIYAT-MURAKKIBAT": {
+    "label": "إحداثيتا النهاية بدل المركبتين",
+    "explanation": "مركبتا $\\overrightarrow{AB}$ ليستا إحداثيتي $B$ إلا إذا كان المبدأ $A$ هو مبدأ المعلم $O$.",
+    "relatedLearningPoints": [
+      "4am_murakkibata-shuaa_P2",
+      "4am_hisab-murakkibatay_P1"
+    ]
+  },
+  "MISC-MAALAM-MUNTASAF-TARH": {
+    "label": "المنتصف بالطرح",
+    "explanation": "إحداثيتا المنتصف هما نصف مجموع إحداثيتي الطرفين $\\dfrac{x_A + x_B}{2}$، لا نصف فرقهما.",
+    "relatedLearningPoints": [
+      "4am_muntasaf-masafa_P1"
+    ]
+  },
+  "MISC-MAALAM-MUNTASAF-NISF": {
+    "label": "نسيان القسمة على 2",
+    "explanation": "$x_I = \\dfrac{x_A + x_B}{2}$: بدون القسمة على 2 نحصل على مجموع لا على منتصف.",
+    "relatedLearningPoints": [
+      "4am_muntasaf-masafa_P1"
+    ]
+  },
+  "MISC-MAALAM-MASAFA-JADHR-JAM": {
+    "label": "جذر المجموع = مجموع الجذور",
+    "explanation": "$\\sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$ ليس $|x_B - x_A| + |y_B - y_A|$.",
+    "relatedLearningPoints": [
+      "4am_muntasaf-masafa_P2"
+    ]
+  },
+  "MISC-MAALAM-MASAFA-TARBI": {
+    "label": "نسيان التربيع",
+    "explanation": "في قانون المسافة نربّع كل فرق قبل الجمع ثم نأخذ الجذر.",
+    "relatedLearningPoints": [
+      "4am_muntasaf-masafa_P2"
+    ]
+  },
+  "MISC-MAALAM-MASAFA-JADHR-NASI": {
+    "label": "نسيان الجذر",
+    "explanation": "$(x_B - x_A)^2 + (y_B - y_A)^2$ هو مربع المسافة $AB^2$ لا المسافة نفسها.",
+    "relatedLearningPoints": [
+      "4am_muntasaf-masafa_P2",
+      "4am_ithbat-khawas-maalam_P1"
+    ]
+  },
+  "MISC-MAALAM-FITHAGHURAS-WATAR": {
+    "label": "عكس فيثاغورس بالضلع الخطأ",
+    "explanation": "نقارن مربع أطول ضلع بمجموع مربعي الضلعين الآخرين؛ والزاوية القائمة مقابلة لأطول ضلع.",
+    "relatedLearningPoints": [
+      "4am_ithbat-khawas-maalam_P1"
+    ]
+  },
+  "MISC-MAALAM-MUTAWAZI-KAFI": {
+    "label": "متوازي أضلاع = مستطيل",
+    "explanation": "متوازي الأضلاع يصبح مستطيلا إذا تقايس قطراه، ومعينا إذا تقايس ضلعان متتاليان، ومربعا إذا تحقق الشرطان.",
+    "relatedLearningPoints": [
+      "4am_ithbat-khawas-maalam_P2"
+    ]
+  },
+  "MISC-MAALAM-DAIRA-QUTR": {
+    "label": "القطر بدل نصف القطر",
+    "explanation": "تنتمي $M$ إلى الدائرة إذا كان بعدها عن المركز يساوي نصف القطر $r$، لا القطر $2r$.",
+    "relatedLearningPoints": [
+      "4am_ithbat-khawas-maalam_P3"
+    ]
+  },
+  "MISC-MAALAM-TARTIB-NUQAT": {
+    "label": "ترتيب النقاط في تساوي شعاعين",
+    "explanation": "لإيجاد $D$ حتى يكون $ABCD$ متوازي أضلاع نكتب $\\overrightarrow{AB} = \\overrightarrow{DC}$ (لا $\\overrightarrow{AB} = \\overrightarrow{CD}$).",
+    "relatedLearningPoints": [
+      "4am_hisab-murakkibatay_P3"
+    ]
+  },
+  "MISC-SHUAA-SHAKL-BURHAN": {
+    "label": "الاستدلال بالشكل",
+    "explanation": "ما يبدو على الشكل ليس برهانا: لا نستعمل المساواة المطلوبة قبل إثباتها، بل المعطيات (منتصف، متوازي أضلاع، تعريف نقطة) وعلاقة شال.",
+    "relatedLearningPoints": [
+      "4am_barahin-ashia_P2"
+    ]
+  },
+  "MISC-SHUAA-SHAL-ISTIQAMA": {
+    "label": "علاقة شال تثبت الاستقامية",
+    "explanation": "$\\overrightarrow{AB} + \\overrightarrow{BC} = \\overrightarrow{AC}$ صحيحة مهما كانت النقطة B: وحدها لا تثبت أن B تقع على [AC].",
+    "relatedLearningPoints": [
+      "4am_barahin-ashia_P2"
+    ]
+  },
+  "MISC-SHUAA-INSHA-MABDA": {
+    "label": "ممثّلا المجموع من نقطة واحدة",
+    "explanation": "لإنشاء ممثّل $\\vec{u} + \\vec{v}$ يبدأ ممثّل $\\vec{v}$ من نهاية ممثّل $\\vec{u}$ (علاقة شال)، لا من مبدئه؛ رسم الممثّلين من نقطة واحدة يعطي ضلعي متوازي أضلاع.",
+    "relatedLearningPoints": [
+      "4am_barahin-ashia_P3"
+    ]
+  },
+  "MISC-SHUAA-DAIRA-QUTR": {
+    "label": "الانسحاب يغيّر نصف القطر",
+    "explanation": "صورة دائرة بانسحاب دائرة لها نفس نصف القطر ومركزها صورة المركز: الانسحاب يحافظ على الأطوال.",
+    "relatedLearningPoints": [
+      "4am_barahin-ashia_P3"
+    ]
+  },
+  "MISC-SHUAA-TIYAR-MUBASHIR": {
+    "label": "التصويب نحو الهدف مباشرة رغم التيار",
+    "explanation": "الحركة الفعلية هي مجموع السرعة الذاتية وسرعة التيار (قاعدة متوازي الأضلاع): من يصوّب نحو B مباشرة يجرفه التيار، فيجب أن يصوّب مائلا عكس التيار.",
+    "relatedLearningPoints": [
+      "4am_majmu-shuaayn_P1",
+      "4am_majmu-shuaayn_P3"
+    ]
+  },
+  "MISC-SHUAA-INSIHAB-NISYAN": {
+    "label": "نسيان أحد الانسحابين",
+    "explanation": "الانسحاب الذي شعاعه $\\overrightarrow{AB}$ متبوعا بالانسحاب الذي شعاعه $\\overrightarrow{BC}$ هو الانسحاب الذي شعاعه مجموعهما $\\overrightarrow{AC}$ ، لا أحدهما فقط.",
+    "relatedLearningPoints": [
+      "4am_majmu-shuaayn_P1"
+    ]
+  },
+  "MISC-SHUAA-MAMAR-NASI": {
+    "label": "نسيان طول الممر",
+    "explanation": "بعد نقل $B$ إلى $B'$ يصبح طول المسلك $AM + MB' + MN$ : أقصر طول هو $AB' + MN$ لا $AB'$ وحده، لأنّ عرض الطريق يُقطع في كل الأحوال.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-ashia_P1",
+      "4am_wadiya-idmajiya-ashia_P3"
+    ]
+  },
+  "MISC-SHUAA-MAMAR-WASAT": {
+    "label": "الممر في منتصف المسافة الأفقية",
+    "explanation": "الموضع الأمثل للممر هو حيث تقطع $[AB']$ الحافة، ولا يكون في منتصف المسافة الأفقية بين $A$ و $B$ إلا إذا كانت $A$ و $B$ على نفس البعد من الطريق.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-ashia_P3"
+    ]
+  },
+  "MISC-SHUAA-HARAKA-UKHRA": {
+    "label": "صورة بحركة أخرى",
+    "explanation": "صورة نقطة بالانسحاب تُعيَّن بالحركة المعطاة نفسها (نفس العدّ أفقيا وشاقوليا ونفس الجهة)، لا بحركة انسحاب آخر ولا بحركة أفقية أو شاقولية وحدها.",
+    "relatedLearningPoints": [
+      "4am_insihab-shuaa_P1"
+    ]
+  },
+  "MISC-SHUAA-TABIA-RUBAI": {
+    "label": "طبيعة رباعي دون حجة",
+    "explanation": "متوازي أضلاع قطراه متقايسان مستطيل، وضلعاه المتتاليان المتقايسان يجعلانه معينا: لا نستنتج طبيعة الرباعي دون الحجة التي تخصها.",
+    "relatedLearningPoints": [
+      "4am_insihab-shuaa_P3"
+    ]
+  },
+  "MISC-SHUAA-MABDA": {
+    "label": "نفس المبدأ لشعاعين متساويين",
+    "explanation": "شعاعان متساويان لا يحتاجان نفس المبدأ: يكفي نفس المنحى ونفس الاتجاه ونفس الطول (كل ممثّل للشعاع له مبدؤه).",
+    "relatedLearningPoints": [
+      "4am_insihab-shuaa_P3"
+    ]
+  },
+  "MISC-MAALAM-NISF-DAIRA-MUHIT": {
+    "label": "محيط الدائرة بدل نصفه",
+    "explanation": "طول نصف دائرة نصف قطرها $r$ هو $\\pi r$ ، لا $2\\pi r$ (محيط الدائرة كاملة) ولا $\\pi d$ بقطرها $d$ .",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-maalam_P3"
+    ]
+  },
+  "MISC-MAALAM-MUQARANA-AYN": {
+    "label": "المقارنة بالعين أو بعدد القطع",
+    "explanation": "مساران متقاربان لا يُقارنان بالنظر ولا بعدد قطعهما ولا لأن أحدهما «مستقيم»: نحسب طول كل جزء ثم نجمع ونقارن.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-maalam_P1",
+      "4am_wadiya-idmajiya-maalam_P3"
+    ]
+  },
+  "MISC-MAALAM-IKHTISAR": {
+    "label": "طول الاختصار بدل طول المسار",
+    "explanation": "طول خط منكسر هو مجموع أطوال قطعه؛ المسافة المستقيمة بين بدايته ونهايته أقصر منه وليست طوله.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-maalam_P2",
+      "4am_wadiya-idmajiya-maalam_P3"
+    ]
+  },
+  "MISC-MAALAM-JAM-IHDATHIYAT": {
+    "label": "جمع الإحداثيات بدل طرحها",
+    "explanation": "مركبتا $\\overrightarrow{AB}$ هما فرقا الإحداثيات $x_B - x_A$ و $y_B - y_A$، لا مجموعاهما.",
+    "relatedLearningPoints": [
+      "4am_hisab-murakkibatay_P1"
+    ]
+  },
+  "MISC-MAALAM-MAJHUL-AMALIYA": {
+    "label": "العملية المعاكسة لإيجاد نقطة مجهولة",
+    "explanation": "إذا عُلم $\\overrightarrow{AB}$ ونهايته B فالمبدأ A هو B ناقص المركبتين ($x_A = x_B - a$)، وإذا عُلم المبدأ A فالنهاية B هي A زائد المركبتين.",
+    "relatedLearningPoints": [
+      "4am_hisab-murakkibatay_P3"
+    ]
+  },
+  "MISC-MAALAM-TASAWI-MURAKKABA": {
+    "label": "تساوي شعاعين بمركبة واحدة",
+    "explanation": "يتساوى شعاعان إذا تساوت مركبتاهما الأولى والثانية معًا؛ تساوي مركبة واحدة لا يكفي.",
+    "relatedLearningPoints": [
+      "4am_hisab-murakkibatay_P2"
+    ]
+  },
+  "MISC-MAALAM-KUSUR": {
+    "label": "طرح الكسور دون توحيد المقامات",
+    "explanation": "لطرح كسرين نوحّد المقامين أولا: $\\dfrac{13}{3} - \\dfrac{1}{2} = \\dfrac{26 - 3}{6}$، لا نطرح البسطين والمقامين.",
+    "relatedLearningPoints": [
+      "4am_hisab-murakkibatay_P1"
+    ]
+  },
+  "MISC-MAALAM-SHAKL-DALIL": {
+    "label": "الشكل دليلا",
+    "explanation": "ما يبدو على المرصوفة (زاوية قائمة، أضلاع متساوية) لا يثبت شيئا: الدليل مساواة محسوبة من الإحداثيات.",
+    "relatedLearningPoints": [
+      "4am_ithbat-khawas-maalam_P1",
+      "4am_ithbat-khawas-maalam_P2"
+    ]
+  },
+  "MISC-MAALAM-SAQAYN-QAIM": {
+    "label": "متساوي الساقين = قائم",
+    "explanation": "ضلعان متقايسان يثبتان أن المثلث متساوي الساقين؛ الزاوية القائمة تحتاج مساواة عكس فيثاغورس.",
+    "relatedLearningPoints": [
+      "4am_ithbat-khawas-maalam_P1"
+    ]
+  },
+  "MISC-MAALAM-MISAHA-BADAL-TUL": {
+    "label": "المساحة بدل الطول",
+    "explanation": "$\\pi r^2$ مساحة قرص؛ طول نصف الدائرة (القوس) هو $\\pi r$ .",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-maalam_P3"
+    ]
+  },
+  "MISC-MAALAM-PI-MANSI": {
+    "label": "نسيان π في طول القوس",
+    "explanation": "طول نصف دائرة نصف قطرها $r$ هو $\\pi r$ : العدد $r$ وحده هو نصف القطر لا طول القوس.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-maalam_P3"
+    ]
+  },
+  "MISC-MAALAM-SHAKL-JIDHR": {
+    "label": "عدم التعرّف على نفس العدد بكتابتين",
+    "explanation": "$\\sqrt{72} = \\sqrt{36 \\times 2} = 6\\sqrt{2}$ : الكتابتان لنفس العدد، فإذا صحّت إحداهما صحّت الأخرى.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-maalam_P3"
+    ]
+  },
+  "MISC-MAALAM-SULLAM": {
+    "label": "خطأ في استعمال السلّم",
+    "explanation": "الطول الحقيقي = الطول على الخريطة × ما يمثّله السنتيمتر الواحد (أو تحويل الوحدة الصحيح بين km و m).",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-maalam_P1",
+      "4am_wadiya-idmajiya-maalam_P2"
+    ]
   }
 }

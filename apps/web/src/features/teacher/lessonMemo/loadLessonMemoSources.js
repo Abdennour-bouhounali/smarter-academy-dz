@@ -13,7 +13,8 @@
  * Le dossier d'une leçon porte son id (lesson.config.js `id`) — c'est la clé.
  */
 const knowledgeFiles = import.meta.glob('../../../lessons/moyen/4am/**/knowledge.jsx');
-const contentFiles = import.meta.glob('../../../lessons/moyen/4am/**/content/*.js');
+// Les tests de figures (content/figures.test.js, règle du propriétaire 2026-10-04) ne sont pas du contenu : exclus.
+const contentFiles = import.meta.glob(['../../../lessons/moyen/4am/**/content/*.js', '!../../../lessons/moyen/4am/**/content/*.test.js']);
 
 const lessonIdOf = (path, marker) => {
   const parts = path.split('/');

@@ -64,6 +64,17 @@ export const MANIPULATION_COMPONENTS = {
   'trig-calculator': lazy(() => import('./geometry/TrigCalculator')),
   'angle-compass': lazy(() => import('./geometry/AngleCompass')),
   'clinometer': lazy(() => import('./geometry/Clinometer')),
+  // Unités 11 « الأشعة والانسحاب » et 12 « الأشعة في معلم » (2026-10-04).
+  'translation-glide': lazy(() => import('./vectors/TranslationGlide')),
+  'parallelogram-pin': lazy(() => import('./vectors/ParallelogramPin')),
+  'vector-sum': lazy(() => import('./vectors/VectorSum')),
+  'vector-chain': lazy(() => import('./vectors/VectorChain')),
+  'bridge-path': lazy(() => import('./vectors/BridgePath')),
+  'component-steps': lazy(() => import('./vectors/ComponentSteps')),
+  'component-calc': lazy(() => import('./vectors/ComponentCalc')),
+  'midpoint-distance': lazy(() => import('./vectors/MidpointDistance')),
+  'shape-prover': lazy(() => import('./vectors/ShapeProver')),
+  'route-compare': lazy(() => import('./vectors/RouteCompare')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

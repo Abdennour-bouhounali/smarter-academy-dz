@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 /**
- * LE CADRE DES TROIS PAGES LÉGALES — mentions légales, confidentialité, CGU.
+ * LE CADRE DES DEUX PAGES LÉGALES — confidentialité, CGU.
  *
  * Pourquoi un composant partagé : trois documents qui se citent l'un l'autre
  * doivent se RESSEMBLER. Un lecteur qui passe des CGU à la politique de
@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
  * et le même pied de page — sinon il croit avoir changé de site.
  *
  * Le cadre ne fournit QUE la mise en page : en-tête, largeur de lecture,
- * navigation entre les trois documents. Le texte juridique vit dans chaque
+ * navigation entre les documents. Le texte juridique vit dans chaque
  * page, parce que c'est lui qui fait foi.
  *
  * Ce composant s'affiche à l'intérieur de MainLayout, qui porte déjà la barre
@@ -20,7 +20,6 @@ import { Link } from 'react-router-dom';
 
 // Des CLÉS : constant de module, donc résolu au rendu (voir CommandPalette).
 const LEGAL_LINKS = [
-  { to: '/mentions-legales', labelKey: 'legal.legalNoticeShort' },
   { to: '/confidentialite', labelKey: 'legal.privacyShort' },
   { to: '/cgu', labelKey: 'legal.termsShort' },
 ];

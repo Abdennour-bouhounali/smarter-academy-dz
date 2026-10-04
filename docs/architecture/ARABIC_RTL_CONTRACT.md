@@ -331,6 +331,16 @@ equations, divisions and algorithm chains all declare `dir="ltr"`.
 - **Calculator keys are LTR code** (ON, 2nd, sin⁻¹, DEG, « ON 2,5 ÷ sin 25 ») like spreadsheet formulas below: `<code dir="ltr">` / `<bdi>`
   in JSX, LRI … PDI inside strings; the key SEQUENCE reads left to right, as the textbook says (« من اليسار إلى اليمين »).
 
+### Vectors, components and letter pairs (units 11–12, 2026-10-04)
+
+- A vector is an island: `$\overrightarrow{AB}$`, `$\vec{u}$`, the zero vector `$\overrightarrow{0}$`, components
+  `$\vec{u}\begin{pmatrix} 3 \\ -2 \end{pmatrix}$`; a point with coordinates `$A(-3\,;\,2{,}5)$` — the unit-12 textbook itself printed
+  « (2,5 ; -3-) », the RTL reversal of A(−3 ; 2,5).
+- **« • » bullets between Latin letter pairs reorder them** (unit 11 act-1: « A إلى G • C إلى A » came out scrambled): separate pairs with
+  Arabic words (« ثم بالذي يحوّل ») or write each pair as an island (`$(A\,;\,A')$`).
+- **Two islands joined by « = » in an Arabic sentence reverse** (« {{am}} = {{mb}} » printed MB = AM): write the whole equality as ONE island.
+- In a drawn figure the vector's name carries a small SVG arrow (GeoFigure `vectors[].label`), never a Unicode combining arrow (u⃗).
+
 ### Geometry names: the prime and « // » (unit 9, 2026-10-02)
 
 The prime ′ (U+2032) is a NEUTRAL bidi character: in plain Arabic text « نقطتين B′ من (d) » rendered « 'B », « (B′C′) » came out

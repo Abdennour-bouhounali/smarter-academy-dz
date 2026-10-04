@@ -199,7 +199,6 @@
     "joinBody": "أنشئ حسابًا مجانيًا وجرّب درسًا كاملًا الآن.",
     "startFree": "ابدأ مجانًا",
     "legalAria": "معلومات قانونية",
-    "legalNotice": "معلومات قانونية",
     "privacy": "سياسة الخصوصية",
     "terms": "شروط الاستعمال",
     "rights": "© {{year}} Smarter Academy — جميع الحقوق محفوظة",
@@ -245,7 +244,6 @@
     "continueWith": "المتابعة باستخدام Google"
   },
   "legal": {
-    "legalNoticeShort": "معلومات قانونية",
     "privacyShort": "الخصوصية",
     "termsShort": "شروط الاستعمال",
     "lastUpdated": "آخر تحديث: {{date}}",

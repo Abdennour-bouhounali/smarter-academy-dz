@@ -2736,6 +2736,507 @@
       "difficulty": "صعب",
       "status": "available",
       "icon": "🏛️"
+    },
+    {
+      "code": "insihab-shuaa",
+      "sourceTopicId": "insihab_shuaa",
+      "chapterId": "handasa",
+      "unitId": "ashia-insihab",
+      "order": 54,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "مفهوم الانسحاب والشعاع وتساوي شعاعين",
+      "description": "مدخل الوحدة: الانسحاب ينقل كل نقاط الشكل بنفس الحركة، والشعاع $\\overrightarrow{AB}$ الذي يميّزه له منحى (المستقيم الحامل) واتجاه (من A نحو B) وطول ؛ ويتساوى شعاعان إذا كان لهما نفس المنحى ونفس الاتجاه ونفس الطول، أي $\\overrightarrow{AB} = \\overrightarrow{CD}$ يعني أن $ABDC$ متوازي أضلاع.",
+      "prerequisites": [
+        "مفهوم الانسحاب الذي يحول نقطة إلى نقطة أخرى",
+        "خواص متوازي الأضلاع وتحديد الاتجاهات والمنحنيات في الأشكال الهندسية"
+      ],
+      "prerequisiteLessonCodes": [
+        "tarrid-muthallathiya"
+      ],
+      "pointsToLearn": [
+        "التعرف على مفهوم الانسحاب والربط بينه وبين الشعاع الممكِّن له",
+        "تحديد العناصر الأساسية للشعاع: المنحى (المستقيم الحامل)، الاتجاه، والطول (الطويلة)",
+        "التعرف على مفهوم تساوي شعاعين (لهما نفس المنحى، نفس الاتجاه، ونفس الطول) والربط بينه وبين متوازي الأضلاع ($\\overrightarrow{AB} = \\overrightarrow{CD}$ يعني أن $ABDC$ متوازي أضلاع)"
+      ],
+      "pointPrerequisites": {
+        "P1": [],
+        "P2": [
+          "4am_insihab-shuaa_P1"
+        ],
+        "P3": [
+          "4am_insihab-shuaa_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 11,
+        "pages": {
+          "prep": 127,
+          "activity": 128,
+          "knowledge": 130,
+          "method": 131,
+          "exercises": 134
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "سهل",
+      "status": "available",
+      "icon": "➡️"
+    },
+    {
+      "code": "shuaayn-mutasawiyayn",
+      "sourceTopicId": "insihab_shuaa",
+      "chapterId": "handasa",
+      "unitId": "ashia-insihab",
+      "order": 55,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "الشعاعان المتساويان ومتوازي الأضلاع ومنتصف قطعة",
+      "description": "نترجم بالأشعة ما نعرفه عن متوازي الأضلاع والمنتصف: $I$ منتصف $[AB]$ يعني $\\overrightarrow{AI} = \\overrightarrow{IB}$، و$\\overrightarrow{AB} = \\overrightarrow{DC}$ يثبت أن $ABCD$ متوازي أضلاع، ثم ننشئ صورة نقطة أو شكل بتساوي شعاعين.",
+      "prerequisites": [
+        "خواص متوازي الأضلاع (تناصف القطرين وتوازي وتطابق الأضلاع المتقابلة)",
+        "التناظر المركزي ومفهوم منتصف قطعة مستقيم"
+      ],
+      "prerequisiteLessonCodes": [
+        "insihab-shuaa"
+      ],
+      "pointsToLearn": [
+        "التعبير عن منتصف قطعة مستقيم باستعمال الأشعة المتساوية: $I$ منتصف $[AB]$ يعني $\\overrightarrow{AI} = \\overrightarrow{IB}$",
+        "إثبات أن رباعياً متوازي أضلاع باستعمال تساوي شعاعين ($\\overrightarrow{AB} = \\overrightarrow{DC}$)",
+        "إنشاء صورة نقطة أو شكل باستعمال التساوي الشعاعي وخواص متوازي الأضلاع"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_insihab-shuaa_P3"
+        ],
+        "P2": [
+          "4am_insihab-shuaa_P3"
+        ],
+        "P3": [
+          "4am_shuaayn-mutasawiyayn_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 11,
+        "pages": {
+          "prep": 127,
+          "activity": 129,
+          "knowledge": 132,
+          "method": 131,
+          "exercises": 134
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "▱"
+    },
+    {
+      "code": "majmu-shuaayn",
+      "sourceTopicId": "insihab_shuaa",
+      "chapterId": "handasa",
+      "unitId": "ashia-insihab",
+      "order": 56,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "مجموع شعاعين (علاقة شال وقاعدة متوازي الأضلاع)",
+      "description": "انسحابان متتابعان يعطيان انسحابا واحدا: شعاعه هو مجموع الشعاعين. نجمع شعاعين متعاقبين بعلاقة شال $\\overrightarrow{AB} + \\overrightarrow{BC} = \\overrightarrow{AC}$، وشعاعين لهما نفس المبدأ بقاعدة متوازي الأضلاع، ونتعرف على الشعاعين المتعاكسين والشعاع المعدوم.",
+      "prerequisites": [
+        "تركيب التحويلات النقطية (الانسحاب)",
+        "إنشاء ممثل لشعاع وتبسيط العبارات الشعاعية"
+      ],
+      "prerequisiteLessonCodes": [
+        "shuaayn-mutasawiyayn"
+      ],
+      "pointsToLearn": [
+        "التعرف على تركيب انسحابين متتابعين ومفهوم مجموع شعاعين",
+        "تطبيق علاقة شال: $\\overrightarrow{AB} + \\overrightarrow{BC} = \\overrightarrow{AC}$ لجمع شعاعين متعاقبين (نهاية الأول هي بداية الثاني)",
+        "تطبيق قاعدة متوازي الأضلاع: $\\overrightarrow{AB} + \\overrightarrow{AD} = \\overrightarrow{AC}$ لجمع شعاعين لهما نفس المبدأ (حيث $ABCD$ متوازي أضلاع)",
+        "التعرف على الشعاعين المتعاكسين ($\\overrightarrow{AB} + \\overrightarrow{BA} = \\overrightarrow{0}$) والشعاع المعدوم $\\overrightarrow{0}$"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_insihab-shuaa_P1"
+        ],
+        "P2": [
+          "4am_majmu-shuaayn_P1"
+        ],
+        "P3": [
+          "4am_majmu-shuaayn_P1",
+          "4am_shuaayn-mutasawiyayn_P2"
+        ],
+        "P4": [
+          "4am_majmu-shuaayn_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 11,
+        "pages": {
+          "activity": 129,
+          "knowledge": 132,
+          "method": 133,
+          "exercises": 135
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "➕"
+    },
+    {
+      "code": "barahin-ashia",
+      "sourceTopicId": "insihab_shuaa",
+      "chapterId": "handasa",
+      "unitId": "ashia-insihab",
+      "order": 57,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "حل مشكلات وإنجاز براهين بتوظيف الأشعة والانسحاب",
+      "description": "نوظّف علاقة شال وقاعدة متوازي الأضلاع وتساوي الأشعة لتبسيط عبارات شعاعية مركبة، ولإثبات استقامية نقط وتوازي مستقيمات وطبيعة رباعيات، ولإنجاز إنشاءات دقيقة لمجموع عدة أشعة.",
+      "prerequisites": [
+        "التحكم الكامل في علاقة شال وقاعدة متوازي الأضلاع وتساوي شعاعين",
+        "خطوات البرهان الهندسي وخواص الأشكال الرباعية الشهيرة"
+      ],
+      "prerequisiteLessonCodes": [
+        "majmu-shuaayn"
+      ],
+      "pointsToLearn": [
+        "توظيف علاقة شال وقاعدة متوازي الأضلاع وتساوي الأشعة لتبسيط العبارات الشعاعية المركبة",
+        "إثبات واستنتاج استقامية نقط وتوازي مستقيمات أو تحديد طبيعة الرباعيات باستعمال التعبير الشعاعي",
+        "إنجاز إنشاءات هندسية دقيقة تتضمن مجموع عدة أشعة"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_majmu-shuaayn_P2",
+          "4am_majmu-shuaayn_P3"
+        ],
+        "P2": [
+          "4am_barahin-ashia_P1",
+          "4am_shuaayn-mutasawiyayn_P2"
+        ],
+        "P3": [
+          "4am_barahin-ashia_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 11,
+        "pages": {
+          "method": 133,
+          "exercises": 137
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🧩"
+    },
+    {
+      "code": "wadiya-idmajiya-ashia",
+      "sourceTopicId": "insihab_shuaa",
+      "chapterId": "handasa",
+      "unitId": "ashia-insihab",
+      "order": 58,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — ترييض وضعية هندسية مركبة بتوظيف الأشعة والانسحاب",
+      "description": "إدماج المعارف: وضعية مركبة (مثل أقصر مسار يعبر ممرا بين حافتين) تُحلّ بالانسحاب وتساوي الأشعة وعلاقة شال وخواص متوازي الأضلاع — بالتحليل المنهجي (قراءة · تحليل · تنفيذ)، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه.",
+      "prerequisites": [
+        "التحكم الشامل في مفاهيم الأشعة والانسحاب وخاصيات المجموع الشعاعي",
+        "مهارات التحويل النقطي والهندسة المستوية والحل المنهجي للوضعيات المركبة"
+      ],
+      "prerequisiteLessonCodes": [
+        "insihab-shuaa",
+        "shuaayn-mutasawiyayn",
+        "majmu-shuaayn",
+        "barahin-ashia"
+      ],
+      "pointsToLearn": [
+        "تجنيد وتوظيف كافة الموارد المكتسبة في الوحدة (تساوي شعاعين، علاقة شال، قاعدة متوازي الأضلاع، والانسحاب) لحل وضعيات ومشكلات هندسية وواقعية مركبة (مثل تحديد أقصر مسار لممر بين حافتين)",
+        "تحليل الوضعية وقراءتها: التعبير عن المسارات والأطوال شعاعياً، وتعيين النقاط الثابتة والمتغيرة، ونمذجة المشكلة",
+        "اختيار وتنفيذ استراتيجية الحل: إنشاء نقطة محولة بالانسحاب لتسهيل حساب أقصر مسافة، وتوظيف خواص متوازي الأضلاع والانسحاب لاستخلاص موقع النقاط وتفسير النتائج"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_barahin-ashia_P1",
+          "4am_shuaayn-mutasawiyayn_P3"
+        ],
+        "P2": [
+          "4am_barahin-ashia_P2"
+        ],
+        "P3": [
+          "4am_wadiya-idmajiya-ashia_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 11,
+        "pages": {
+          "qcm": 136,
+          "situation": 136,
+          "deepen": 137
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🌉"
+    },
+    {
+      "code": "murakkibata-shuaa",
+      "sourceTopicId": "maalam",
+      "chapterId": "handasa",
+      "unitId": "ashia-maalam",
+      "order": 59,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "قراءة مركبتي شعاع وتمثيلهما في معلم",
+      "description": "مدخل الوحدة: في معلم متعامد ومتجانس، يُقرأ الشعاع إزاحتين — أفقية $x$ وعمودية $y$ — هما مركبتاه $\\begin{pmatrix} x \\\\ y \\end{pmatrix}$ ؛ مركبتا $\\overrightarrow{OM}$ هما إحداثيتا $M$، ونمثّل شعاعا عُلمت مركبتاه انطلاقا من أي نقطة.",
+      "prerequisites": [
+        "تعليم نقط في معلم متعامد ومتجانس وقراءة إحداثياتها",
+        "مفهوم الشعاع والانسحاب والمستوى المنسوب إلى معلم"
+      ],
+      "prerequisiteLessonCodes": [
+        "barahin-ashia"
+      ],
+      "pointsToLearn": [
+        "القراءة البيانية لمركبتي شعاع $\\vec{u}\\begin{pmatrix} x \\\\ y \\end{pmatrix}$ في معلم متعامد ومتجانس (الإزاحة الأفقية $x$ والعمودية $y$)",
+        "تعيين مركبتي شعاع مبدؤه مبدأ المعلم $\\overrightarrow{OM}\\begin{pmatrix} x \\\\ y \\end{pmatrix}$ من خلال إحداثيتي النقطة $M(x\\,;\\,y)$",
+        "تمثيل شعاع عُلِمَت مركبتاه انطلاقاً من نقطة معطاة في المعلم"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_insihab-shuaa_P2"
+        ],
+        "P2": [
+          "4am_murakkibata-shuaa_P1"
+        ],
+        "P3": [
+          "4am_murakkibata-shuaa_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 12,
+        "pages": {
+          "prep": 139,
+          "activity": 140,
+          "knowledge": 142,
+          "method": 143,
+          "exercises": 146
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "سهل",
+      "status": "available",
+      "icon": "🧭"
+    },
+    {
+      "code": "hisab-murakkibatay",
+      "sourceTopicId": "maalam",
+      "chapterId": "handasa",
+      "unitId": "ashia-maalam",
+      "order": 60,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "حساب مركبتي شعاع وتساوي شعاعين في معلم",
+      "description": "نحسب مركبتي $\\overrightarrow{AB}$ بطرح الإحداثيات: $\\begin{pmatrix} x_B - x_A \\\\ y_B - y_A \\end{pmatrix}$، ونترجم تساوي شعاعين بتساوي مركباتهما، فنحسب إحداثيتي نقطة مجهولة لتكوين شعاع مساوٍ أو متوازي أضلاع.",
+      "prerequisites": [
+        "قراءة وفهم مركبتي شعاع",
+        "الحساب على الأعداد النسبية وطرح الأعداد النسبية"
+      ],
+      "prerequisiteLessonCodes": [
+        "murakkibata-shuaa"
+      ],
+      "pointsToLearn": [
+        "حساب مركبتي الشعاع $\\overrightarrow{AB}$ المعرف بالنقطتين $A(x_A\\,;\\,y_A)$ و $B(x_B\\,;\\,y_B)$ باستعمال القانون: $\\overrightarrow{AB}\\begin{pmatrix} x_B - x_A \\\\ y_B - y_A \\end{pmatrix}$",
+        "تطبيق شرط تساوي شعاعين في معلم: $\\overrightarrow{AB} = \\overrightarrow{CD}$ يعني $x_B - x_A = x_D - x_C$ و $y_B - y_A = y_D - y_C$",
+        "حساب إحداثيتي نقطة علمت إحداثيات النقاط الأخرى لتكوين شعاع مساوٍ أو متوازي أضلاع"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_murakkibata-shuaa_P1"
+        ],
+        "P2": [
+          "4am_hisab-murakkibatay_P1",
+          "4am_insihab-shuaa_P3"
+        ],
+        "P3": [
+          "4am_hisab-murakkibatay_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 12,
+        "pages": {
+          "prep": 139,
+          "activity": 140,
+          "knowledge": 142,
+          "method": 143,
+          "exercises": 146
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🧮"
+    },
+    {
+      "code": "muntasaf-masafa",
+      "sourceTopicId": "maalam",
+      "chapterId": "handasa",
+      "unitId": "ashia-maalam",
+      "order": 61,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "إحداثيتا منتصف قطعة مستقيم والمسافة بين نقطتين في معلم",
+      "description": "منتصف $[AB]$ إحداثيتاه متوسطا إحداثيات طرفيه، والمسافة $AB$ في معلم متعامد ومتجانس هي وتر مثلث قائم ضلعاه مركبتا $\\overrightarrow{AB}$: $AB = \\sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$.",
+      "prerequisites": [
+        "خاصية فيثاغورس والحساب على الجذور التربيعية",
+        "منتصف قطعة مستقيم وحساب مركبتي شعاع"
+      ],
+      "prerequisiteLessonCodes": [
+        "hisab-murakkibatay"
+      ],
+      "pointsToLearn": [
+        "حساب إحداثيتي النقطة $I$ منتصف القطعة $[AB]$ باستعمال القانون: $x_I = \\dfrac{x_A + x_B}{2}$ ، $y_I = \\dfrac{y_A + y_B}{2}$",
+        "حساب المسافة بين نقطتين $A$ و $B$ (طول القطعة $[AB]$ أو طويلة الشعاع $\\overrightarrow{AB}$) في معلم متعامد ومتجانس بتطبيق خاصية فيثاغورس: $AB = \\sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_shuaayn-mutasawiyayn_P1",
+          "4am_hisab-murakkibatay_P1"
+        ],
+        "P2": [
+          "4am_hisab-murakkibatay_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 12,
+        "pages": {
+          "prep": 139,
+          "activity": 141,
+          "knowledge": 144,
+          "exercises": 146
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "📏"
+    },
+    {
+      "code": "ithbat-khawas-maalam",
+      "sourceTopicId": "maalam",
+      "chapterId": "handasa",
+      "unitId": "ashia-maalam",
+      "order": 62,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "توظيف الحساب الشعاعي والإحداثيات لإثبات الخواص الهندسية",
+      "description": "نثبت بالحساب في معلم طبيعة مثلث (بالمسافات وعكس خاصية فيثاغورس) وطبيعة رباعي (بتساوي مركبات الأشعة، تناصف القطرين، تقايس الأقطار أو الأضلاع المتتالية)، وانتماء نقطة إلى دائرة.",
+      "prerequisites": [
+        "قوانين إحداثيات المنتصف والمسافة بين نقطتين ومركبات الأشعة",
+        "الخواص الهندسيّة للرباعيات الشهيرة والمثلثات"
+      ],
+      "prerequisiteLessonCodes": [
+        "muntasaf-masafa"
+      ],
+      "pointsToLearn": [
+        "إثبات طبيعة مثلث (قائم، متساوي الساقين، أو متقايس الأضلاع) باستعمال حساب المسافات وتطبيق الخاصية العكسية لفيثاغورس",
+        "إثبات طبيعة رباعي (متوازي أضلاع، مستطيل، معين، أو مربع) باستعمال تساوي مركبات الأشعة أو تناصف أقطاره وتعامدها وتساوي أطوالها",
+        "إثبات انتمائية نقطة إلى دائرة علم مركزها ونصف قطرها"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_muntasaf-masafa_P2"
+        ],
+        "P2": [
+          "4am_hisab-murakkibatay_P2",
+          "4am_muntasaf-masafa_P1",
+          "4am_muntasaf-masafa_P2"
+        ],
+        "P3": [
+          "4am_muntasaf-masafa_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 12,
+        "pages": {
+          "method": 145,
+          "exercises": 147
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "📐"
+    },
+    {
+      "code": "wadiya-idmajiya-maalam",
+      "sourceTopicId": "maalam",
+      "chapterId": "handasa",
+      "unitId": "ashia-maalam",
+      "order": 63,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — ترييض وضعيات هندسية وحساب مسارات في معلم",
+      "description": "إدماج المعارف: وضعية مركبة في معلم (مثل مقارنة مسارين لحركتين) تُحلّ بالمركبات وإحداثيات المنتصف والمسافات وإثبات الخواص — بالتحليل المنهجي (قراءة · تحليل · تنفيذ)، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه.",
+      "prerequisites": [
+        "التحكم الشامل في قوانين الحساب الشعاعي والإحداثيات في معلم",
+        "مهارات الهندسة التحليلية والربط بين الحساب العددي، الهندسي، والتفسير البياني"
+      ],
+      "prerequisiteLessonCodes": [
+        "murakkibata-shuaa",
+        "hisab-murakkibatay",
+        "muntasaf-masafa",
+        "ithbat-khawas-maalam"
+      ],
+      "pointsToLearn": [
+        "تجنيد وتوظيف كافة الموارد المكتسبة في الوحدة (قراءة المركبات، إحداثيات المنتصف، حساب المسافات، وإثبات الخواص الهندسية) لحل وضعيات مشكلة هندسية وواقعية (مثل مقارنة مسارين لحركتين)",
+        "تحليل الوضعية وقراءتها: فهم نص الوضعية والتمثيل البياني، ترتيب المعطيات، وتحديد نقاط التقاطع مع محاور المعلم",
+        "اختيار وتنفيذ استراتيجية الحل: حساب إحداثيات النقاط، حساب أطوال المسارات والدوائر، وتفسير النتائج لإيجاد الحل المناسب"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_ithbat-khawas-maalam_P1",
+          "4am_muntasaf-masafa_P2"
+        ],
+        "P2": [
+          "4am_ithbat-khawas-maalam_P2"
+        ],
+        "P3": [
+          "4am_wadiya-idmajiya-maalam_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 12,
+        "pages": {
+          "qcm": 148,
+          "situation": 148,
+          "deepen": 149
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🗺️"
     }
   ],
   "publishedScope": {
@@ -2751,7 +3252,9 @@
       "dala-taalufiya",
       "ihsa",
       "khassiyat-talis",
-      "hisab-muthallathat"
+      "hisab-muthallathat",
+      "ashia-insihab",
+      "ashia-maalam"
     ],
     "removedTopicCount": 25
   }

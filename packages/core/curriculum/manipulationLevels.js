@@ -157,6 +157,29 @@ export const VISUAL_THEMES = Object.freeze({
   kite: { kind: 'objects', shows: 'طائرة ورقية على الشاطئ: الخيط والارتفاع' },
   floodlight: { kind: 'objects', shows: 'كشّاف إنارة الملعب يُسدَّد بمقياس الميل في الهاتف' },
   maqam: { kind: 'objects', shows: 'مقام الشهيد يُرى من فوق عمود كهربائي' },
+  // Unités 11 « الأشعة والانسحاب » et 12 « الأشعة في معلم » (2026-10-04) :
+  //   drone-show  une formation de drones lumineux au-dessus de la baie d'Alger qui glisse d'un bloc (انسحاب)
+  //   scooter     (déjà déclaré plus haut) réutilisé : deux trajets de trottinette enchaînés dans Alger (علاقة شال)
+  //   swim        un nageur traverse l'oued et le courant le déporte (قاعدة متوازي الأضلاع, تحدّ)
+  //   metro       les tronçons et correspondances du métro d'Alger (sommes de plusieurs vecteurs)
+  //   bridge      un pont jeté sur le Rhummel de Constantine (le plus court chemin par translation)
+  //   delivery    l'appli de livraison : le livreur sur le quadrillage d'un quartier (مركبتا شعاع)
+  //   game-map    deux portails d'une carte de jeu mobile (حساب المركبتين)
+  //   gps-meet    deux amis partagent leur position GPS et se retrouvent à mi-chemin (المنتصف والمسافة)
+  //   rally       deux itinéraires d'un rallye dans le Sahara (مقارنة مسارين)
+  'drone-show': { kind: 'objects', shows: 'عرض طائرات مسيّرة مضيئة فوق خليج الجزائر' },
+  swim: { kind: 'people', shows: 'سبّاح يعبر الوادي والتيار يجرفه' },
+  metro: { kind: 'objects', shows: 'محطات وخطوط مترو الجزائر' },
+  bridge: { kind: 'objects', shows: 'جسر فوق وادي الرمال بقسنطينة' },
+  // crosswalk  la rue de l'école du manuel (أدمج تعلّماتي) : deux trottoirs, la cité, l'école, un passage piéton qu'on déplace
+  crosswalk: { kind: 'objects', shows: 'شارع المدرسة: رصيفان وحيّ ومدرسة وممر للراجلين' },
+  delivery: { kind: 'objects', shows: 'تطبيق توصيل: سائق على شبكة شوارع حيّ' },
+  'game-map': { kind: 'objects', shows: 'بوابتا عبور في خريطة لعبة على الهاتف' },
+  'gps-meet': { kind: 'people', shows: 'صديقان يتشاركان موقعيهما ويلتقيان في منتصف الطريق' },
+  rally: { kind: 'objects', shows: 'مساران لرالي في الصحراء الجزائرية' },
+  // cross       le cross-country des Sablettes (أدمج تعلّماتي, وضعية p. 148) : deux coureurs et leurs montres connectées, trois
+  //             bassins ronds contournés par des demi-cercles, une ligne brisée de balises
+  cross: { kind: 'people', shows: 'عدّاءان بساعتين ذكيتين في سباق الضاحية على واجهة الصابلات' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

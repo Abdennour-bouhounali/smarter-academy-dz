@@ -104,7 +104,7 @@ for (const gradeDir of existsSync(SOURCES) ? readdirSync(SOURCES) : []) {
         const rel = relative(unitLessonsDir, f).split('/');
         const lesson = rel[0].startsWith('_') ? 'unit' : rel[0];
         const isEvaluation = /modules\/Module\d+.*(Itqan|Boss|Ahill)/.test(f);
-        const isContentData = rel[1] === 'content' && f.endsWith('.js');
+        const isContentData = rel[1] === 'content' && f.endsWith('.js') && !f.endsWith('.test.js'); // un test (vitest) n'est pas une donnée
         const ids = isContentData ? await citedByContentModule(f) : citedIds(readFileSync(f, 'utf8'));
         for (const id of ids) cite(lesson, id, isEvaluation ? 'evaluation' : 'other');
       }

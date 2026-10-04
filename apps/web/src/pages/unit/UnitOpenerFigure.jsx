@@ -44,6 +44,9 @@ const FIGURES = {
   // p. 115 — « اعتمادا على الشكل » : le mur, l'échelle posée contre lui, 1,60 m et 59° — dessinée par la leçon 4
   // (tarrid-muthallathiya) qui reprend le تحدّ (doublon déclaré) ; la longueur de l'échelle n'y est pas écrite (c'est la question).
   'hisab-muthallathat:challenge': () => import('../../lessons/moyen/4am/handasa/hisab-muthallathat/tarrid-muthallathiya/components/LadderFigure.jsx'),
+  // p. 127 — « (الشكل) » : le fleuve, A et B face à face, [AB] perpendiculaire aux rives, le courant 2 km/h — dessiné par la
+  // leçon 3 (majmu-shuaayn) qui reprend le تحدّ (doublon déclaré) ; ni la direction de nage ni 30° (c'est la question).
+  'ashia-insihab:challenge': () => import('../../lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/components/RiverFigure.jsx'),
 };
 
 const lazyCache = {};

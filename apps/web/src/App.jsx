@@ -21,7 +21,6 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 const VerificationEmail = lazy(() => import('./pages/VerificationEmail'));
 const AuthGoogle = lazy(() => import('./pages/AuthGoogle'));
-const MentionsLegales = lazy(() => import('./pages/legal/MentionsLegales'));
 const Confidentialite = lazy(() => import('./pages/legal/Confidentialite'));
 const CGU = lazy(() => import('./pages/legal/CGU'));
 const AdminLayout = lazy(() => import('./components/layout/AdminLayout'));
@@ -224,6 +223,16 @@ import hasibaMuthallathiyaRoutes from './lessons/moyen/4am/handasa/hisab-muthall
 import alaqatMuthallathiyaRoutes from './lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/routes';
 import tarridMuthallathiyaRoutes from './lessons/moyen/4am/handasa/hisab-muthallathat/tarrid-muthallathiya/routes';
 import wadiyaIdmajiyaMuthallathatRoutes from './lessons/moyen/4am/handasa/hisab-muthallathat/wadiya-idmajiya-muthallathat/routes';
+import insihabShuaaRoutes from './lessons/moyen/4am/handasa/ashia-insihab/insihab-shuaa/routes';
+import shuaaynMutasawiyaynRoutes from './lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/routes';
+import majmuShuaaynRoutes from './lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/routes';
+import barahinAshiaRoutes from './lessons/moyen/4am/handasa/ashia-insihab/barahin-ashia/routes';
+import wadiyaIdmajiyaAshiaRoutes from './lessons/moyen/4am/handasa/ashia-insihab/wadiya-idmajiya-ashia/routes';
+import murakkibataShuaaRoutes from './lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/routes';
+import hisabMurakkibatayRoutes from './lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/routes';
+import muntasafMasafaRoutes from './lessons/moyen/4am/handasa/ashia-maalam/muntasaf-masafa/routes';
+import ithbatKhawasMaalamRoutes from './lessons/moyen/4am/handasa/ashia-maalam/ithbat-khawas-maalam/routes';
+import wadiyaIdmajiyaMaalamRoutes from './lessons/moyen/4am/handasa/ashia-maalam/wadiya-idmajiya-maalam/routes';
 
 export default function App() {
   return (
@@ -440,7 +449,6 @@ export default function App() {
                 Publiques et accessibles SANS compte : on doit pouvoir lire
                 ce que l'on accepte avant de l'accepter. Elles sont liées
                 depuis le pied de page et depuis la case de consentement. */}
-            <Route path="/mentions-legales" element={<MentionsLegales />} />
             <Route path="/confidentialite"  element={<Confidentialite />} />
             <Route path="/cgu"              element={<CGU />} />
 
@@ -513,6 +521,16 @@ export default function App() {
             {alaqatMuthallathiyaRoutes()}
             {tarridMuthallathiyaRoutes()}
             {wadiyaIdmajiyaMuthallathatRoutes()}
+            {insihabShuaaRoutes()}
+            {shuaaynMutasawiyaynRoutes()}
+            {majmuShuaaynRoutes()}
+            {barahinAshiaRoutes()}
+            {wadiyaIdmajiyaAshiaRoutes()}
+            {murakkibataShuaaRoutes()}
+            {hisabMurakkibatayRoutes()}
+            {muntasafMasafaRoutes()}
+            {ithbatKhawasMaalamRoutes()}
+            {wadiyaIdmajiyaMaalamRoutes()}
 
             {/* ── SURFACE DE QA — jamais en production ────────────────
                 Le moteur de leçon n'a jamais été rendu sous RTL, faute de
