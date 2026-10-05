@@ -3,8 +3,11 @@
 Arabic-first, RTL mathematics platform for the Algerian curriculum (المتوسط,
 starting with 4AM). Lesson content lives in `apps/web/src/lessons/moyen/`;
 shared engine in `apps/web/src/lessons/common/`; pure logic in `packages/core`;
-API in `apps/api` (Laravel). The lesson content in the repository is twelve 4AM
-textbook units. Since 2026-10-04 units 11 « الأشعة والانسحاب » and 12 « الأشعة في معلم » (4 lessons + a synthesis each,
+API in `apps/api` (Laravel). The lesson content in the repository is thirteen 4AM
+textbook units. Since 2026-10-04 unit 13 « الدوران - الزوايا - المضلّعات المنتظمة » (4 lessons + a synthesis,
+`lessons/moyen/4am/handasa/dawaran-mudalaat/`) is the fifth unit under « ميدان الهندسة » (exact rotations, inscribed angles and regular
+polygons in `packages/core/arithmetic/rotation.js`, labs in `lessons/common/manipulations/rotation/`, GeoFigure centred `arcs` with `arrow`,
+`angles[].arrow`, `circles[].radius`; brief and lock in `docs/sources/4am/unit13/`). Since 2026-10-04 units 11 « الأشعة والانسحاب » and 12 « الأشعة في معلم » (4 lessons + a synthesis each,
 `lessons/moyen/4am/handasa/ashia-insihab/` and `…/ashia-maalam/`) are the third and fourth units under « ميدان الهندسة » (exact vectors
 in `packages/core/arithmetic/vectors.js`, labs in `lessons/common/manipulations/vectors/`, GeoFigure `vectors`/`grid`/`axes`/`arcs`/`circles`;
 one brief and one lock for both in `docs/sources/4am/unit11/`; textbook figures are ANALYSED then reproduced or REDESIGNED, guide §5).

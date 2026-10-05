@@ -7,7 +7,7 @@
 > found it (root `CLAUDE.md`, Documentation Synchronization Rule).
 
 The platform is Arabic-first (ar-DZ, RTL) and follows the Algerian curriculum.
-The live content is nine 4AM textbook units, starting under
+The live content is thirteen 4AM textbook units, starting under
 `apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/` — unit 1 « الأعداد
 الطبيعيّة والأعداد النّاطقة » (`aadad-tabiiya-natiqa/`, 9 lessons) and unit 2
 « الحساب على الجذور » (`hisab-judhur/`, 5 lessons + a synthesis, 2026-09-30; textbook
@@ -33,7 +33,9 @@ synthesis, 2026-10-02, the first unit of the programme's « ميدان الهن�
 brief and shared-file lock kept next to it) and units 11 « الأشعة والانسحاب » (`handasa/ashia-insihab/`) and 12 « الأشعة في معلم »
 (`handasa/ashia-maalam/`), 4 lessons + a synthesis each, 2026-10-04, the third and fourth units of « ميدان الهندسة »; extractions generated
 and checked by `docs/sources/4am/unit11|unit12/build-extraction.py`, exact vectors `packages/core/arithmetic/vectors.js`, one authors' brief
-and lock for both in `docs/sources/4am/unit11/`) — the **only** lesson
+and lock for both in `docs/sources/4am/unit11/`) and unit 13 « الدوران - الزوايا - المضلّعات المنتظمة » (`handasa/dawaran-mudalaat/`, 4 lessons +
+a synthesis, 2026-10-04, the fifth unit of « ميدان الهندسة »; extraction generated and checked by `docs/sources/4am/unit13/build-extraction.py`,
+exact rotations, inscribed angles and regular polygons `packages/core/arithmetic/rotation.js`, brief and lock in `docs/sources/4am/unit13/`) — the **only** lesson
 content in the repository. The
 French-era lessons (`lessons/college/`, `lessons/lycee/`), their practice
 content, specs, e2e scripts, French-only engines and the French reference

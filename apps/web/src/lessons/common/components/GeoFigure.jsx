@@ -1,5 +1,5 @@
 import {
-  layoutGeoFigure, tickMarks, parallelArrows, rightAngleSquare, angleArc, vectorArrow, semicirclePath,
+  layoutGeoFigure, tickMarks, parallelArrows, rightAngleSquare, angleArc, vectorArrow, semicirclePath, centeredArc,
 } from './geoFigure';
 
 /**
@@ -67,12 +67,23 @@ export default function GeoFigure(fig) {
           <polygon key={`pg${i}`} points={pts(p.points.map((n) => L.P[n]))} fill={FILL[p.tone ?? 'indigo']} stroke="none" />
         ))}
         {(fig.circles ?? []).map((c, i) => {
-          const o = L.P[c.center]; const t = L.P[c.through];
-          return <circle key={`ci${i}`} cx={o[0]} cy={o[1]} r={Math.hypot(t[0] - o[0], t[1] - o[1])} fill="none" stroke={STROKE[c.tone ?? 'slate']} strokeWidth={1.4} strokeDasharray={c.dashed ? '5 4' : undefined} data-geo-circle />;
+          const o = L.P[c.center];
+          const r = c.radius != null ? Number(c.radius) * L.scale : Math.hypot(L.P[c.through][0] - o[0], L.P[c.through][1] - o[1]);
+          return <circle key={`ci${i}`} cx={o[0]} cy={o[1]} r={r} fill="none" stroke={STROKE[c.tone ?? 'slate']} strokeWidth={1.4} strokeDasharray={c.dashed ? '5 4' : undefined} data-geo-circle />;
         })}
-        {(fig.arcs ?? []).map((a, i) => (
-          <path key={`ar${i}`} d={semicirclePath(L.P[a.from], L.P[a.to], a.sweep ?? 'cw')} fill="none" stroke={STROKE[a.tone ?? 'rose']} strokeWidth={a.bold ? 2.8 : 2} strokeDasharray={a.dashed ? '5 4' : undefined} strokeLinecap="round" data-geo-arc />
-        ))}
+        {(fig.arcs ?? []).map((a, i) => {
+          const c = STROKE[a.tone ?? 'rose'];
+          const common = { fill: 'none', stroke: c, strokeWidth: a.bold ? 2.8 : 2, strokeDasharray: a.dashed ? '5 4' : undefined, strokeLinecap: 'round' };
+          if (a.center == null) return <path key={`ar${i}`} d={semicirclePath(L.P[a.from], L.P[a.to], a.sweep ?? 'cw')} {...common} data-geo-arc />;
+          const arc = centeredArc(L.P[a.center], L.P[a.from], L.P[a.to], a.sweep ?? 'ccw');
+          return (
+            <g key={`ar${i}`} data-geo-arc>
+              <path d={arc.path} {...common} />
+              {a.arrow && <polygon points={pts(arc.arrow)} fill={c} />}
+              {a.label && <text x={arc.label[0]} y={arc.label[1]} fontSize={12} fontWeight={600} fill={c} textAnchor="middle" style={textProps}>{a.label}</text>}
+            </g>
+          );
+        })}
         {(fig.lines ?? []).map((l, i) => {
           const [a, b] = L.lineEnds(l);
           const c = STROKE[l.tone ?? 'slate'];
@@ -144,6 +155,7 @@ export default function GeoFigure(fig) {
           return (
             <g key={`an${i}`}>
               <path d={arc.path} fill="none" stroke={c} strokeWidth={1.6} />
+              {g.arrow && <polygon points={pts(arc.arrow)} fill={c} />}
               {g.label && <text x={arc.label[0]} y={arc.label[1]} fontSize={12} fill={c} textAnchor="middle" style={textProps}>{g.label}</text>}
             </g>
           );

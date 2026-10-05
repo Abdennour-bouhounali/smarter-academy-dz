@@ -233,6 +233,11 @@ import hisabMurakkibatayRoutes from './lessons/moyen/4am/handasa/ashia-maalam/hi
 import muntasafMasafaRoutes from './lessons/moyen/4am/handasa/ashia-maalam/muntasaf-masafa/routes';
 import ithbatKhawasMaalamRoutes from './lessons/moyen/4am/handasa/ashia-maalam/ithbat-khawas-maalam/routes';
 import wadiyaIdmajiyaMaalamRoutes from './lessons/moyen/4am/handasa/ashia-maalam/wadiya-idmajiya-maalam/routes';
+import mafhumDawaranRoutes from './lessons/moyen/4am/handasa/dawaran-mudalaat/mafhum-dawaran/routes';
+import khawasDawaranRoutes from './lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/routes';
+import zawiyaMuhitiyaRoutes from './lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/routes';
+import mudalaatMuntazamaRoutes from './lessons/moyen/4am/handasa/dawaran-mudalaat/mudalaat-muntazama/routes';
+import wadiyaIdmajiyaDawaranRoutes from './lessons/moyen/4am/handasa/dawaran-mudalaat/wadiya-idmajiya-dawaran/routes';
 
 export default function App() {
   return (
@@ -531,6 +536,11 @@ export default function App() {
             {muntasafMasafaRoutes()}
             {ithbatKhawasMaalamRoutes()}
             {wadiyaIdmajiyaMaalamRoutes()}
+            {mafhumDawaranRoutes()}
+            {khawasDawaranRoutes()}
+            {zawiyaMuhitiyaRoutes()}
+            {mudalaatMuntazamaRoutes()}
+            {wadiyaIdmajiyaDawaranRoutes()}
 
             {/* ── SURFACE DE QA — jamais en production ────────────────
                 Le moteur de leçon n'a jamais été rendu sous RTL, faute de

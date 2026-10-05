@@ -47,6 +47,10 @@ const FIGURES = {
   // p. 127 — « (الشكل) » : le fleuve, A et B face à face, [AB] perpendiculaire aux rives, le courant 2 km/h — dessiné par la
   // leçon 3 (majmu-shuaayn) qui reprend le تحدّ (doublon déclaré) ; ni la direction de nage ni 30° (c'est la question).
   'ashia-insihab:challenge': () => import('../../lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/components/RiverFigure.jsx'),
+  // p. 151 — « نجمة العلم الجزائري » : le manuel montre la PHOTO du drapeau ; dessinée par la leçon 4 (mudalaat-muntazama)
+  // qui porte le تحدّ — le drapeau seul (moitié verte, moitié blanche, croissant et étoile rouges), ni cercle, ni 72°, ni
+  // rayon (c'est la question).
+  'dawaran-mudalaat:challenge': () => import('../../lessons/moyen/4am/handasa/dawaran-mudalaat/mudalaat-muntazama/components/FlagStarFigure.jsx'),
 };
 
 const lazyCache = {};

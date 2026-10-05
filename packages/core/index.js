@@ -75,6 +75,7 @@ export * as trigonometry from './arithmetic/trigonometry.js';
 // Les vecteurs exacts des unités 11 « الأشعة والانسحاب » et 12 « الأشعة في معلم » : مركبتان، انسحاب، تساوي شعاعين
 // (منحى، اتجاه، طول)، متوازي أضلاع، علاقة شال sur des vecteurs nommés, منتصف، مسافة exacte (surds), natures analytiques.
 export * as vectors from './arithmetic/vectors.js';
+export * as rotation from './arithmetic/rotation.js';
 
 // Moteur d'exercices (pratique) — arithmétique exacte et évaluation des
 // réponses. Exporté sous un espace de noms : `Rational.parse` et

@@ -3237,6 +3237,260 @@
       "difficulty": "صعب",
       "status": "available",
       "icon": "🗺️"
+    },
+    {
+      "code": "mafhum-dawaran",
+      "sourceTopicId": "dawaran_zawaya",
+      "chapterId": "handasa",
+      "unitId": "dawaran-mudalaat",
+      "order": 64,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "مفهوم الدوران وإنشاء صور أشكال هندسية بدوران",
+      "description": "مدخل الوحدة: الدوران تحويل نقطي يُعرَّف بمركز $O$ وزاوية $\\alpha$ واتجاه (مباشر أو غير مباشر)؛ صورة النقطة $M$ هي $M'$ بحيث $OM = OM'$ و $\\widehat{MOM'} = \\alpha$، ومنها ننشئ صور القطعة والمستقيم ونصف المستقيم والدائرة.",
+      "prerequisites": [
+        "التحويلات النقطية السابقة (التناظر المحوري، التناظر المركزي، والانسحاب)",
+        "قياس الزوايا وإنشاء القطع المستقيمة باستعمال المنقلة، المسطرة، والمدور"
+      ],
+      "prerequisiteLessonCodes": [
+        "insihab-shuaa"
+      ],
+      "pointsToLearn": [
+        "التعرف على مفهوم الدوران المميّز بـ: المركز $O$، الزاوية $\\alpha$، والاتجاه (المباشر/الموجب ضد عقارب الساعة، أو غير المباشر/السالب مع عقارب الساعة)",
+        "إنشاء صورة نقطة $M$ بدوران مركزه $O$ وزاويته $\\alpha$ (بحيث $OM = OM'$ والزاوية $\\widehat{MOM'} = \\alpha$)",
+        "إنشاء صورة قطعة مستقيم، مستقيم، نصف مستقيم، ودائرة بدوران"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_insihab-shuaa_P1"
+        ],
+        "P2": [
+          "4am_mafhum-dawaran_P1"
+        ],
+        "P3": [
+          "4am_mafhum-dawaran_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 13,
+        "pages": {
+          "prep": 151,
+          "activity": 152,
+          "knowledge": 154,
+          "method": 155,
+          "exercises": 158
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🎡"
+    },
+    {
+      "code": "khawas-dawaran",
+      "sourceTopicId": "dawaran_zawaya",
+      "chapterId": "handasa",
+      "unitId": "dawaran-mudalaat",
+      "order": 65,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "خواص الدوران وتوظيفها في الأشكال الهندسية",
+      "description": "الدوران يحافظ على الأطوال واستقامية النقط وأقياس الزوايا والمساحات؛ نوظّف هذه الخواص لإثبات تقايس أطوال وتوازي أو تعامد مستقيمات وتساوي زوايا ومساحات، ولإنشاء صور أشكال مركّبة.",
+      "prerequisites": [
+        "إنشاء صورة نقطة وقطعة مستقيم بدوران",
+        "خواص الأشكال الهندسية المألوفة (المثلثات والرباعيات) وقواعد البرهان الهندسي"
+      ],
+      "prerequisiteLessonCodes": [
+        "mafhum-dawaran"
+      ],
+      "pointsToLearn": [
+        "إدراك خواص الدوران: الحفاظ على الأطوال، استقامية النقط، قياسات الزوايا، والمساحات",
+        "توظيف خواص الدوران لإثبات تقايس أطوال، تعامد أو توازي مستقيمات، وتساوي زوايا ومساحات",
+        "إنشاء صور أشكال هندسية مركبة (مثلثات، أشكال رباعية) بتوظيف الخواص"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_mafhum-dawaran_P3"
+        ],
+        "P2": [
+          "4am_khawas-dawaran_P1"
+        ],
+        "P3": [
+          "4am_khawas-dawaran_P1",
+          "4am_mafhum-dawaran_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 13,
+        "pages": {
+          "prep": 151,
+          "knowledge": 154,
+          "method": 155,
+          "exercises": 158
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🔄"
+    },
+    {
+      "code": "zawiya-muhitiya",
+      "sourceTopicId": "dawaran_zawaya",
+      "chapterId": "handasa",
+      "unitId": "dawaran-mudalaat",
+      "order": 66,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "الزاوية المحيطية والزاوية المركزية والعلاقة بينهما",
+      "description": "في دائرة مركزها $O$: الزاوية المركزية رأسها $O$، والزاوية المحيطية رأسها على الدائرة وضلعاها يقطعانها؛ قيس الزاوية المحيطية نصف قيس الزاوية المركزية التي تحصر معها نفس القوس، والزاويتان المحيطيتان اللتان تحصران نفس القوس متقايستان.",
+      "prerequisites": [
+        "الدائرة وعناصرها (المركز، نصف القطر، القطر، الوتر، والقوس)",
+        "مجموع قياسات زوايا المثلث وحساب قياسات الزوايا"
+      ],
+      "prerequisiteLessonCodes": [
+        "khawas-dawaran"
+      ],
+      "pointsToLearn": [
+        "التمييز بين الزاوية المركزية (رأسها مركز الدائرة $O$) والزاوية المحيطية (رأسها ينتمي للدائرة وضلعاها يقطعانها)",
+        "تطبيق خاصية العلاقة بينهما: قيس الزاوية المحيطية يساوي نصف قيس الزاوية المركزية التي تحصر معها نفس القوس ($\\widehat{AMB} = \\frac{1}{2} \\widehat{AOB}$)",
+        "إدراك وتطبيق خاصية أن الزاويتين المحيطيتين اللتين تحصران نفس القوس في دائرة متقايستان"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_mafhum-dawaran_P1"
+        ],
+        "P2": [
+          "4am_zawiya-muhitiya_P1"
+        ],
+        "P3": [
+          "4am_zawiya-muhitiya_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 13,
+        "pages": {
+          "prep": 151,
+          "activity": 153,
+          "knowledge": 156,
+          "exercises": 159
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "⭕"
+    },
+    {
+      "code": "mudalaat-muntazama",
+      "sourceTopicId": "dawaran_zawaya",
+      "chapterId": "handasa",
+      "unitId": "dawaran-mudalaat",
+      "order": 67,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "المضلعات المنتظمة وتطبيقاتها",
+      "description": "المضلع المنتظم أضلاعه متقايسة وزواياه متقايسة، ورؤوسه على دائرة مركزها مركزه؛ الزاوية المركزية التي تحصر ضلعا قيسها $\\frac{360^\\circ}{n}$، ومنها نحسب زوايا المضلع وننشئ المثلث المتقايس الأضلاع والمربع والسداسي والخماسي المنتظم بالمدور أو بالدوران.",
+      "prerequisites": [
+        "مفهوم الدوران وصورة نقطة بدوران",
+        "العلاقات بين الزوايا المركزية والمحيطية وتقسيم الدائرة"
+      ],
+      "prerequisiteLessonCodes": [
+        "zawiya-muhitiya"
+      ],
+      "pointsToLearn": [
+        "التعرف على المضلع المنتظم (مضلع أضلاعه كلها متقايسة وزواياه كلها متقايسة) والدائرة المحيطة به",
+        "حساب قيس الزاوية المركزية التي تحصر ضلعاً في مضلع منتظم ذي $n$ ضلعاً ($\\frac{360^\\circ}{n}$) وحساب قياسات زوايا المضلع",
+        "إنشاء المضلعات المنتظمة الشهيرة (المثلث متقايس الأضلاع، المربع، السداسي المنتظم، الخماسي...) بالمسطرة والمدور أو بتوظيف الدوران"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_zawiya-muhitiya_P1"
+        ],
+        "P2": [
+          "4am_mudalaat-muntazama_P1",
+          "4am_zawiya-muhitiya_P2"
+        ],
+        "P3": [
+          "4am_mudalaat-muntazama_P2",
+          "4am_mafhum-dawaran_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 13,
+        "pages": {
+          "prep": 151,
+          "activity": 153,
+          "knowledge": 156,
+          "method": 157,
+          "exercises": 159
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "⬡"
+    },
+    {
+      "code": "wadiya-idmajiya-dawaran",
+      "sourceTopicId": "dawaran_zawaya",
+      "chapterId": "handasa",
+      "unitId": "dawaran-mudalaat",
+      "order": 68,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — ترييض وضعيات هندسية مركبة بتوظيف الدوران والمضلعات المنتظمة",
+      "description": "إدماج المعارف: وضعية مركبة (أعمدة إنارة موزعة بانتظام حول حوض أزهار دائري، رؤوس نجمة أو مضلع منتظم) تُحلّ بالدوران وخواصه والزوايا المركزية والمحيطية والمضلعات المنتظمة والنسب المثلثية — بالتحليل المنهجي (قراءة · تحليل · تنفيذ)، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه.",
+      "prerequisites": [
+        "التحكم الشامل في مفهوم الدوران وخاصياته والمضلعات المنتظمة وحساب الزوايا",
+        "حساب المثلثات في المثلث القائم وترييض الوضعيات الهندسية المركبة"
+      ],
+      "prerequisiteLessonCodes": [
+        "mafhum-dawaran",
+        "khawas-dawaran",
+        "zawiya-muhitiya",
+        "mudalaat-muntazama"
+      ],
+      "pointsToLearn": [
+        "تجنيد وتوظيف كافة الموارد المكتسبة في الوحدة (الدوران، خواصه، الزوايا المحيطية والمركزية، والمضلعات المنتظمة) لحل وضعيات ومشكلات واقعية وهندسية مركبة (مثل توزيع أعمدة إنارة على محيط حيز دائري لغرس الأزهار أو حساب مسافات بين رؤوس نجمة أو مضلع)",
+        "تحليل الوضعية وقراءتها: نمذجة المشكلة واقعياً، صياغة المخطط الهندسي، وتحديد عدد الأعمدة/الرؤوس ونصف قطر الدائرة",
+        "اختيار وتنفيذ استراتيجية الحل: إنشاء مضلع منتظم مناسب، حساب قيس الزوايا المركزية والأطوال، وتطبيق النسب المثلثية في المثلثات القائمة المتشكلة لحساب المسافات وتفسير النتائج"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_mudalaat-muntazama_P2",
+          "4am_khawas-dawaran_P2"
+        ],
+        "P2": [
+          "4am_mudalaat-muntazama_P1"
+        ],
+        "P3": [
+          "4am_wadiya-idmajiya-dawaran_P2",
+          "4am_mudalaat-muntazama_P3"
+        ]
+      },
+      "textbookRef": {
+        "unit": 13,
+        "pages": {
+          "qcm": 160,
+          "situation": 160,
+          "deepen": 161
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🌸"
     }
   ],
   "publishedScope": {
@@ -3254,7 +3508,8 @@
       "khassiyat-talis",
       "hisab-muthallathat",
       "ashia-insihab",
-      "ashia-maalam"
+      "ashia-maalam",
+      "dawaran-mudalaat"
     ],
     "removedTopicCount": 25
   }

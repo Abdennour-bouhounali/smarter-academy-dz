@@ -444,6 +444,37 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'نقارن مسارين في معلم: نبني كل مسار قطعة بقطعة — طول قطعة مستقيمة هو المسافة بين طرفيها، ونصف الدائرة مركزه منتصف قطرها وطوله πr — ثم نجمع الأطوال ونقارن',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // Unité 13 « الدوران - الزوايا - المضلّعات المنتظمة » (2026-10-04) — calcul exact : packages/core/arithmetic/rotation.js.
+  'rotation-dial': {
+    // LA GRANDE ROUE : l'élève fait tourner une nacelle M autour du moyeu O ; l'image M′ n'est acceptée que si OM′ = OM, \widehat{MOM′} = α ET le
+    // sens est le bon (`rotation.imageCheck` dit lequel manque) ; puis les images d'un segment, d'une droite, d'un cercle.
+    shows: 'صورة النقطة M بالدوران الذي مركزه O وزاويته α هي النقطة M′ بحيث OM′ = OM و الزاوية MOM′ = α في الاتجاه المعطى ، ومنها صور القطعة والمستقيم والدائرة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'shape-turn': {
+    // LE ZELLIGE : l'élève fait tourner un motif (triangle, quadrilatère) autour d'un centre ; les jauges montrent ce qui RESTE (longueurs, angles,
+    // alignement, aire) et ce qui change (position, direction) ; une « fausse rotation » qui déforme est refusée.
+    shows: 'الدوران يحافظ على الأطوال وأقياس الزوايا واستقامية النقط والمساحات ، ونوظّف ذلك لإثبات تقايس قطع أو زوايا وتعامد أو توازي مستقيمات',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'inscribed-angle': {
+    // L'ANGLE DE TIR : les poteaux A et B sur un cercle ; l'élève déplace le tireur M sur le cercle — l'angle \widehat{AMB} ne change pas tant
+    // que M reste sur le même arc, et vaut la moitié de l'angle au centre \widehat{AOB} ; hors du cercle, il change.
+    shows: 'الزاوية المحيطية قيسها نصف قيس الزاوية المركزية التي تحصر معها نفس القوس ، وكل الزوايا المحيطية التي تحصر نفس القوس متقايسة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'polygon-forge': {
+    // LA FORGE DE POLYGONES : l'élève choisit l'angle du دوران (ou n) et fait tourner un sommet autour du centre, image après image ; la figure ne
+    // se REFERME en polygone régulier que si l'angle vaut 360°/n ; l'étoile du drapeau en est le cas à 72°.
+    shows: 'رؤوس مضلع منتظم ذي n ضلعا على دائرة مركزها مركزه ، وكل رأس صورة الذي قبله بالدوران الذي زاويته 360°/n ، ومنه زاوية المضلع وطول ضلعه',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'lamp-ring': {
+    // LES LAMPADAIRES DU ROND-POINT (أدمج تعلّماتي) : n lampadaires régulièrement espacés autour d'un massif circulaire ; l'élève règle n et le
+    // rayon, l'angle au centre et l'écart entre deux lampadaires se calculent (triangle rectangle, sin) ; un espacement inégal est refusé.
+    shows: 'نوزّع n نقطة بانتظام على دائرة: الزاوية المركزية 360°/n ، والمسافة بين نقطتين متتاليتين 2r·sin(180°/n) بالمثلث القائم',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

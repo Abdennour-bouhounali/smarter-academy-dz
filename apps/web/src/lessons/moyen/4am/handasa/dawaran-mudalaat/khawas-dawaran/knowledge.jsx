@@ -1,0 +1,94 @@
+import React from 'react';
+import MathText from '../../../../../common/components/MathText';
+import { SourceTag } from '../../../../../common/textbook';
+import { ACTIVITY, KNOW3, PERP, METHOD, NOW155, CENTER } from './content/textbook';
+
+// La carte progressive de la leçon (structure, relations, aides) — KNOWLEDGE_MAP.md, Part A.
+export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
+
+/**
+ * Les connaissances du درس « خواص الدوران وتوظيفها في الأشكال الهندسية » — SOURCE UNIQUE.
+ *
+ *   module 1 (le papier calque)   thabat-dawaran — ce que la feuille qui tourne garde et ce qu'elle change (la
+ *                                 situation de la plateforme, nommée après le geste) ;
+ *   module 2 (معارف 3 + ajout)    khawas-dawaran (la propriété du manuel, p. 154), zawiya-sura (une droite et son image :
+ *                                 l'angle α ; 90° ⇒ ⊥, 180° ⇒ ∥ — معارف من المنصّة) ;
+ *   module 3 (طرائق p. 155)       istimal-khawas (prouver AC = BD et (BD) ⊥ (AC) par un دوران), surat-zawiya (l'image
+ *                                 d'un angle, دوري الآن), markaz-dawaran (le centre : deux médiatrices — معارف من المنصّة).
+ */
+export const LESSON_KNOWLEDGE = {
+  modules: {
+    1: [
+      {
+        id: 'thabat-dawaran', type: 'concepts', title: 'ما يبقى وما يتغيّر',
+        summary: 'حين تدور الورقة الشفافة حول دبوسها لا يتغيّر طول ولا زاوية ولا مساحة ولا استقامية؛ يتغيّر موضع الشكل ومنحى مستقيماته فقط. والورقة الممطّطة تغيّر الأطوال، فليست دورانا.',
+        body: (
+          <div className="space-y-1.5">
+            <p>{ACTIVITY.closing}</p>
+            <p>الورقة الممطّطة تغيّر الطول والزاوية والمساحة: ما تعطيه ليس صورة بدوران.</p>
+            <SourceTag source={ACTIVITY.source} />
+          </div>
+        ),
+      },
+    ],
+    2: [
+      {
+        id: 'khawas-dawaran', type: 'regles', title: KNOW3.title,
+        summary: 'الدوران يحافظ على الأطوال، وعلى استقامية النقط، وعلى أقياس الزوايا، وعلى المساحات.',
+        body: (
+          <div className="space-y-1.5">
+            <p className="font-semibold">{KNOW3.property}</p>
+            <ul className="list-disc space-y-0.5 ps-5">{KNOW3.items.map((l) => <li key={l}>{l}</li>)}</ul>
+            <p className="text-sm"><MathText>{KNOW3.example}</MathText></p>
+            <SourceTag source={KNOW3.source} />
+          </div>
+        ),
+      },
+      {
+        id: 'zawiya-sura', type: 'regles', title: PERP.title,
+        summary: 'المستقيم وصورته بدوران زاويته ألفا يصنعان زاوية ألفا: صورة مستقيم بدوران زاويته قائمة تعامده، وبدوران زاويته مستقيمة (نصف دورة) توازيه.',
+        body: (
+          <div className="space-y-1.5">
+            <p><MathText>{PERP.text}</MathText></p>
+            <ul className="list-disc space-y-0.5 ps-5">{PERP.cases.map((l) => <li key={l}><MathText>{l}</MathText></li>)}</ul>
+            <SourceTag source={PERP.source} />
+          </div>
+        ),
+      },
+    ],
+    3: [
+      {
+        id: 'istimal-khawas', type: 'methodes', title: METHOD.title,
+        summary: 'لإثبات تقايس قطعتين أو تعامد مستقيمين نبيّن أن إحدى القطعتين صورة الأخرى بدوران نعيّن مركزه وزاويته، ثم نطبّق خواص الدوران.',
+        body: (
+          <div className="space-y-1.5">
+            <ol className="list-decimal space-y-0.5 ps-5">{METHOD.solution.map((l) => <li key={l}><MathText>{l}</MathText></li>)}</ol>
+            <p className="text-sm"><MathText>{METHOD.remark}</MathText></p>
+            <SourceTag source={METHOD.source} />
+          </div>
+        ),
+      },
+      {
+        id: 'surat-zawiya', type: 'methodes', title: 'صورة زاوية بدوران',
+        summary: 'لإنشاء صورة زاوية بدوران ننشئ صور رأسها ونقطتين من ضلعيها؛ والصورة زاوية لها نفس القيس لأن الدوران يحافظ على الزوايا.',
+        body: (
+          <div className="space-y-1.5">
+            <p><MathText>{NOW155.answer}</MathText></p>
+            <SourceTag source={NOW155.source} />
+          </div>
+        ),
+      },
+      {
+        id: 'markaz-dawaran', type: 'methodes', title: CENTER.title,
+        summary: 'مركز الدوران على نفس البعد من كل نقطة ومن صورتها: هو نقطة تقاطع محوري قطعتين تصل كل منهما نقطة بصورتها.',
+        body: (
+          <div className="space-y-1.5">
+            <ol className="list-decimal space-y-0.5 ps-5">{CENTER.lines.map((l) => <li key={l}><MathText>{l}</MathText></li>)}</ol>
+            <p className="text-sm text-orange-800"><MathText>{CENTER.warning}</MathText></p>
+            <SourceTag source={CENTER.source} />
+          </div>
+        ),
+      },
+    ],
+  },
+};

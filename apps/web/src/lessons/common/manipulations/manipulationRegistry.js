@@ -75,6 +75,12 @@ export const MANIPULATION_COMPONENTS = {
   'midpoint-distance': lazy(() => import('./vectors/MidpointDistance')),
   'shape-prover': lazy(() => import('./vectors/ShapeProver')),
   'route-compare': lazy(() => import('./vectors/RouteCompare')),
+  // Unité 13 « الدوران - الزوايا - المضلّعات المنتظمة » (2026-10-04).
+  'rotation-dial': lazy(() => import('./rotation/RotationDial')),
+  'shape-turn': lazy(() => import('./rotation/ShapeTurn')),
+  'inscribed-angle': lazy(() => import('./rotation/InscribedAngle')),
+  'polygon-forge': lazy(() => import('./rotation/PolygonForge')),
+  'lamp-ring': lazy(() => import('./rotation/LampRing')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

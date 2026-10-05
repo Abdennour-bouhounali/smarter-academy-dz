@@ -180,6 +180,18 @@ export const VISUAL_THEMES = Object.freeze({
   // cross       le cross-country des Sablettes (أدمج تعلّماتي, وضعية p. 148) : deux coureurs et leurs montres connectées, trois
   //             bassins ronds contournés par des demi-cercles, une ligne brisée de balises
   cross: { kind: 'people', shows: 'عدّاءان بساعتين ذكيتين في سباق الضاحية على واجهة الصابلات' },
+  // Unité 13 « الدوران - الزوايا - المضلّعات المنتظمة » (2026-10-04) :
+  //   ferris-wheel  la grande roue du parc d'attractions de Ben Aknoun : les nacelles tournent autour du moyeu (صورة نقطة بدوران)
+  //   zellige       un motif de zellige de Tlemcen qu'on fait tourner autour d'un centre pour composer une rosace (خواص الدوران)
+  //   football      (déjà déclaré) réutilisé : l'angle de tir vers le but depuis l'arc de cercle (الزاوية المحيطية)
+  //   flag-star     l'étoile du drapeau algérien tracée sur un tifo (الخماسي المنتظم، تحدّ)
+  //   honeycomb     les alvéoles d'une ruche de Kabylie (السداسي المنتظم)
+  //   flower-bed    un massif de fleurs circulaire d'un jardin public et ses lampadaires (أدمج تعلّماتي)
+  'ferris-wheel': { kind: 'objects', shows: 'عجلة دوّارة في حديقة التسلية ببن عكنون' },
+  zellige: { kind: 'objects', shows: 'زخرفة زليج تلمساني تدور حول مركزها' },
+  'flag-star': { kind: 'objects', shows: 'نجمة العلم الجزائري ترسم على لوحة مشجعين' },
+  honeycomb: { kind: 'objects', shows: 'خلايا خلية نحل في القبائل' },
+  'flower-bed': { kind: 'objects', shows: 'حوض أزهار دائري وأعمدة إنارة في حديقة عمومية' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

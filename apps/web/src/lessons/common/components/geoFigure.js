@@ -23,6 +23,9 @@
  * Unité 12 « الأشعة في معلم » : `axes: true` (ou `{ every: 2 }`) — les deux axes du معلم passant par l'origine (le cadre
  * la contient), flèche au bout positif, graduations entières (sauf 0 ; omises sous un nom de point). Nommer O, I, J reste
  * l'affaire de la figure (des points ordinaires).
+ * Unité 13 « الدوران - الزوايا - المضلّعات المنتظمة » : un arc CENTRÉ `arcs: [{ center: 'O', from: 'M', to: 'M2', sweep: 'ccw',
+ * arrow: true, label: '70°' }]` (le chemin de M vers M′ autour de O, l'arc intercepté d'un angle inscrit) ; `angles[].arrow`
+ * (une pointe au bout `to` : le sens du دوران) ; `circles: [{ center: 'O', radius: 3 }]` (un rayon en unités de la figure).
  */
 export const GEO_FIGURE_KEYS = Object.freeze([
   'points', 'segments', 'lines', 'rays', 'polygons', 'rightAngles', 'angles', 'labels', 'hidden',
@@ -59,8 +62,11 @@ export function validateGeoFigure(fig) {
   (fig.rightAngles ?? []).forEach((a, i) => { if (!Array.isArray(a) || a.length !== 3) errors.push(`rightAngles[${i}] : trois points`); else a.forEach((n) => need(n, `rightAngles[${i}]`)); });
   (fig.angles ?? []).forEach((a, i) => ['at', 'from', 'to'].forEach((k) => need(a[k], `angles[${i}].${k}`)));
   for (const n of Object.keys(fig.labels ?? {})) { need(n, 'labels'); if (!DIRS[fig.labels[n]]) errors.push(`labels.${n} : direction inconnue`); }
-  (fig.arcs ?? []).forEach((a, i) => { need(a.from, `arcs[${i}]`); need(a.to, `arcs[${i}]`); tone(a.tone, `arcs[${i}]`); if (a.from === a.to) errors.push(`arcs[${i}] : from = to`); if (a.sweep != null && !['cw', 'ccw'].includes(a.sweep)) errors.push(`arcs[${i}] : sweep = cw ou ccw`); });
-  (fig.circles ?? []).forEach((c, i) => { need(c.center, `circles[${i}]`); need(c.through, `circles[${i}]`); tone(c.tone, `circles[${i}]`); if (c.center === c.through) errors.push(`circles[${i}] : center = through`); });
+  (fig.arcs ?? []).forEach((a, i) => { if (a.center != null) need(a.center, `arcs[${i}].center`); need(a.from, `arcs[${i}]`); need(a.to, `arcs[${i}]`); tone(a.tone, `arcs[${i}]`); if (a.from === a.to) errors.push(`arcs[${i}] : from = to`); if (a.sweep != null && !['cw', 'ccw'].includes(a.sweep)) errors.push(`arcs[${i}] : sweep = cw ou ccw`); });
+  (fig.circles ?? []).forEach((c, i) => {
+    need(c.center, `circles[${i}]`); tone(c.tone, `circles[${i}]`);
+    if (c.radius != null) { if (!(Number(c.radius) > 0)) errors.push(`circles[${i}] : radius > 0`); } else { need(c.through, `circles[${i}]`); if (c.center === c.through) errors.push(`circles[${i}] : center = through`); }
+  });
   (fig.hidden ?? []).forEach((n) => need(n, 'hidden'));
   if (typeof fig.ariaLabel !== 'string' || !/[؀-ۿ]/.test(fig.ariaLabel)) errors.push('ariaLabel arabe obligatoire');
   return errors;
@@ -91,9 +97,11 @@ export function layoutGeoFigure(fig, { size = 300, pad = 34 } = {}) {
   // Les axes (unité 12 « الأشعة في معلم ») passent par l'origine : le cadre la contient toujours.
   if (fig.axes) extra.push([0, 0]);
   // Les demi-cercles et cercles (unité 12, أدمج تعلّماتي) dépassent leurs points : leur tracé entre dans le cadre.
-  for (const a of fig.arcs ?? []) extra.push(...semicirclePoints(pts[a.from], pts[a.to], a.sweep ?? 'cw', 8));
+  for (const a of fig.arcs ?? []) {
+    extra.push(...(a.center != null ? centeredArcPoints(pts[a.center], pts[a.from], pts[a.to], a.sweep ?? 'ccw', 12) : semicirclePoints(pts[a.from], pts[a.to], a.sweep ?? 'cw', 8)));
+  }
   for (const c of fig.circles ?? []) {
-    const o = pts[c.center]; const r = len(sub(pts[c.through], o));
+    const o = pts[c.center]; const r = circleRadius(c, pts);
     extra.push([o[0] - r, o[1]], [o[0] + r, o[1]], [o[0], o[1] - r], [o[0], o[1] + r]);
   }
   const allX = [...xs, ...extra.map((p) => p[0])];
@@ -194,6 +202,48 @@ export function semicirclePath(a, b, sweep = 'cw') {
   return `M ${a[0]} ${a[1]} A ${r} ${r} 0 0 ${sweep === 'cw' ? 1 : 0} ${b[0]} ${b[1]}`;
 }
 
+/** Le rayon d'un cercle de la figure : `radius` (unités de la figure) ou la distance centre → `through`. */
+export const circleRadius = (c, pts) => (c.radius != null ? Number(c.radius) : len(sub(pts[c.through], pts[c.center])));
+
+/**
+ * Un arc CENTRÉ (unité 13) en unités de la figure (y vers le HAUT) : de `a` autour du centre `o`, rayon |oa|, jusqu'à la
+ * direction de `b`, dans le sens `sweep` tel qu'on le VOIT (`ccw` = le sens direct du manuel, `cw` = indirect).
+ */
+export function centeredArcPoints(o, a, b, sweep = 'ccw', n = 16) {
+  const r = len(sub(a, o));
+  const t0 = Math.atan2(a[1] - o[1], a[0] - o[0]);
+  const t1 = Math.atan2(b[1] - o[1], b[0] - o[0]);
+  let d = sweep === 'ccw' ? t1 - t0 : t0 - t1;
+  while (d <= 0) d += 2 * Math.PI;
+  while (d > 2 * Math.PI) d -= 2 * Math.PI;
+  const sg = sweep === 'ccw' ? 1 : -1;
+  return Array.from({ length: n + 1 }, (_, i) => { const t = t0 + (sg * d * i) / n; return [o[0] + r * Math.cos(t), o[1] + r * Math.sin(t)]; });
+}
+/**
+ * Le même arc en coordonnées SVG (y vers le BAS) : chemin, pointe de flèche à l'arrivée (si demandée) et place d'une
+ * étiquette au milieu de l'arc, à l'extérieur. `cw` à l'écran = angle SVG croissant.
+ */
+export function centeredArc(o, a, b, sweep = 'ccw', { head = 9, labelOffset = 14 } = {}) {
+  const r = len(sub(a, o));
+  const t0 = Math.atan2(a[1] - o[1], a[0] - o[0]);
+  const t1 = Math.atan2(b[1] - o[1], b[0] - o[0]);
+  const sg = sweep === 'cw' ? 1 : -1; // SVG : y vers le bas
+  let d = sg > 0 ? t1 - t0 : t0 - t1;
+  while (d <= 0) d += 2 * Math.PI;
+  while (d > 2 * Math.PI) d -= 2 * Math.PI;
+  const te = t0 + sg * d;
+  const end = [o[0] + r * Math.cos(te), o[1] + r * Math.sin(te)];
+  const path = `M ${a[0]} ${a[1]} A ${r} ${r} 0 ${d > Math.PI ? 1 : 0} ${sg > 0 ? 1 : 0} ${end[0]} ${end[1]}`;
+  const tan = [-Math.sin(te) * sg, Math.cos(te) * sg];
+  const nrm = [-tan[1], tan[0]];
+  const foot = [end[0] - tan[0] * head, end[1] - tan[1] * head];
+  const w = head * 0.45;
+  const arrow = [end, [foot[0] + nrm[0] * w, foot[1] + nrm[1] * w], [foot[0] - nrm[0] * w, foot[1] - nrm[1] * w]];
+  const tm = t0 + (sg * d) / 2;
+  const label = [o[0] + (r + labelOffset) * Math.cos(tm), o[1] + (r + labelOffset) * Math.sin(tm) + 4];
+  return { path, arrow, label, end };
+}
+
 /** Les petits traits d'égalité (1 à 3) au milieu d'un segment, en coordonnées SVG. */
 export function tickMarks(a, b, count = 1) {
   const m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
@@ -235,9 +285,14 @@ export function angleArc(a, v, b, r = 20) {
   const start = [v[0] + r * Math.cos(a1), v[1] + r * Math.sin(a1)];
   const end = [v[0] + r * Math.cos(a1 + d), v[1] + r * Math.sin(a1 + d)];
   const mid = a1 + d / 2;
+  // La pointe (unité 13, `angles[].arrow`) : au bout `b`, tangente à l'arc dans le sens du parcours.
+  const sg = d > 0 ? 1 : -1; const te = a1 + d;
+  const tan = [-Math.sin(te) * sg, Math.cos(te) * sg]; const nrm = [-tan[1], tan[0]];
+  const foot = [end[0] - tan[0] * 8, end[1] - tan[1] * 8];
   return {
     path: `M ${start[0]} ${start[1]} A ${r} ${r} 0 0 ${d > 0 ? 1 : 0} ${end[0]} ${end[1]}`,
     label: [v[0] + (r + 14) * Math.cos(mid), v[1] + (r + 14) * Math.sin(mid) + 4],
+    arrow: [end, [foot[0] + nrm[0] * 3.6, foot[1] + nrm[1] * 3.6], [foot[0] - nrm[0] * 3.6, foot[1] - nrm[1] * 3.6]],
   };
 }
 

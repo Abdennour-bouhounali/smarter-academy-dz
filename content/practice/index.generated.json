@@ -876,6 +876,68 @@
       "ex-4am-jidhr-tarbii-l5-010"
     ]
   },
+  "khawas-dawaran": {
+    "1": [
+      "ex-4am-khawas-dawaran-l1-001",
+      "ex-4am-khawas-dawaran-l1-002",
+      "ex-4am-khawas-dawaran-l1-003",
+      "ex-4am-khawas-dawaran-l1-004",
+      "ex-4am-khawas-dawaran-l1-005",
+      "ex-4am-khawas-dawaran-l1-006",
+      "ex-4am-khawas-dawaran-l1-007",
+      "ex-4am-khawas-dawaran-l1-008",
+      "ex-4am-khawas-dawaran-l1-009",
+      "ex-4am-khawas-dawaran-l1-010"
+    ],
+    "2": [
+      "ex-4am-khawas-dawaran-l2-001",
+      "ex-4am-khawas-dawaran-l2-002",
+      "ex-4am-khawas-dawaran-l2-003",
+      "ex-4am-khawas-dawaran-l2-004",
+      "ex-4am-khawas-dawaran-l2-005",
+      "ex-4am-khawas-dawaran-l2-006",
+      "ex-4am-khawas-dawaran-l2-007",
+      "ex-4am-khawas-dawaran-l2-008",
+      "ex-4am-khawas-dawaran-l2-009",
+      "ex-4am-khawas-dawaran-l2-010"
+    ],
+    "3": [
+      "ex-4am-khawas-dawaran-l3-001",
+      "ex-4am-khawas-dawaran-l3-002",
+      "ex-4am-khawas-dawaran-l3-003",
+      "ex-4am-khawas-dawaran-l3-004",
+      "ex-4am-khawas-dawaran-l3-005",
+      "ex-4am-khawas-dawaran-l3-006",
+      "ex-4am-khawas-dawaran-l3-007",
+      "ex-4am-khawas-dawaran-l3-008",
+      "ex-4am-khawas-dawaran-l3-009",
+      "ex-4am-khawas-dawaran-l3-010"
+    ],
+    "4": [
+      "ex-4am-khawas-dawaran-l4-001",
+      "ex-4am-khawas-dawaran-l4-002",
+      "ex-4am-khawas-dawaran-l4-003",
+      "ex-4am-khawas-dawaran-l4-004",
+      "ex-4am-khawas-dawaran-l4-005",
+      "ex-4am-khawas-dawaran-l4-006",
+      "ex-4am-khawas-dawaran-l4-007",
+      "ex-4am-khawas-dawaran-l4-008",
+      "ex-4am-khawas-dawaran-l4-009",
+      "ex-4am-khawas-dawaran-l4-010"
+    ],
+    "5": [
+      "ex-4am-khawas-dawaran-l5-001",
+      "ex-4am-khawas-dawaran-l5-002",
+      "ex-4am-khawas-dawaran-l5-003",
+      "ex-4am-khawas-dawaran-l5-004",
+      "ex-4am-khawas-dawaran-l5-005",
+      "ex-4am-khawas-dawaran-l5-006",
+      "ex-4am-khawas-dawaran-l5-007",
+      "ex-4am-khawas-dawaran-l5-008",
+      "ex-4am-khawas-dawaran-l5-009",
+      "ex-4am-khawas-dawaran-l5-010"
+    ]
+  },
   "khawass-qawasim": {
     "1": [
       "ex-4am-khawass-qawasim-l1-001"
@@ -957,6 +1019,68 @@
       "ex-4am-mada-wasit-mutawassit-l5-008",
       "ex-4am-mada-wasit-mutawassit-l5-009",
       "ex-4am-mada-wasit-mutawassit-l5-010"
+    ]
+  },
+  "mafhum-dawaran": {
+    "1": [
+      "ex-4am-mafhum-dawaran-l1-001",
+      "ex-4am-mafhum-dawaran-l1-002",
+      "ex-4am-mafhum-dawaran-l1-003",
+      "ex-4am-mafhum-dawaran-l1-004",
+      "ex-4am-mafhum-dawaran-l1-005",
+      "ex-4am-mafhum-dawaran-l1-006",
+      "ex-4am-mafhum-dawaran-l1-007",
+      "ex-4am-mafhum-dawaran-l1-008",
+      "ex-4am-mafhum-dawaran-l1-009",
+      "ex-4am-mafhum-dawaran-l1-010"
+    ],
+    "2": [
+      "ex-4am-mafhum-dawaran-l2-001",
+      "ex-4am-mafhum-dawaran-l2-002",
+      "ex-4am-mafhum-dawaran-l2-003",
+      "ex-4am-mafhum-dawaran-l2-004",
+      "ex-4am-mafhum-dawaran-l2-005",
+      "ex-4am-mafhum-dawaran-l2-006",
+      "ex-4am-mafhum-dawaran-l2-007",
+      "ex-4am-mafhum-dawaran-l2-008",
+      "ex-4am-mafhum-dawaran-l2-009",
+      "ex-4am-mafhum-dawaran-l2-010"
+    ],
+    "3": [
+      "ex-4am-mafhum-dawaran-l3-001",
+      "ex-4am-mafhum-dawaran-l3-002",
+      "ex-4am-mafhum-dawaran-l3-003",
+      "ex-4am-mafhum-dawaran-l3-004",
+      "ex-4am-mafhum-dawaran-l3-005",
+      "ex-4am-mafhum-dawaran-l3-006",
+      "ex-4am-mafhum-dawaran-l3-007",
+      "ex-4am-mafhum-dawaran-l3-008",
+      "ex-4am-mafhum-dawaran-l3-009",
+      "ex-4am-mafhum-dawaran-l3-010"
+    ],
+    "4": [
+      "ex-4am-mafhum-dawaran-l4-001",
+      "ex-4am-mafhum-dawaran-l4-002",
+      "ex-4am-mafhum-dawaran-l4-003",
+      "ex-4am-mafhum-dawaran-l4-004",
+      "ex-4am-mafhum-dawaran-l4-005",
+      "ex-4am-mafhum-dawaran-l4-006",
+      "ex-4am-mafhum-dawaran-l4-007",
+      "ex-4am-mafhum-dawaran-l4-008",
+      "ex-4am-mafhum-dawaran-l4-009",
+      "ex-4am-mafhum-dawaran-l4-010"
+    ],
+    "5": [
+      "ex-4am-mafhum-dawaran-l5-001",
+      "ex-4am-mafhum-dawaran-l5-002",
+      "ex-4am-mafhum-dawaran-l5-003",
+      "ex-4am-mafhum-dawaran-l5-004",
+      "ex-4am-mafhum-dawaran-l5-005",
+      "ex-4am-mafhum-dawaran-l5-006",
+      "ex-4am-mafhum-dawaran-l5-007",
+      "ex-4am-mafhum-dawaran-l5-008",
+      "ex-4am-mafhum-dawaran-l5-009",
+      "ex-4am-mafhum-dawaran-l5-010"
     ]
   },
   "mafhum-jumla": {
@@ -1329,6 +1453,68 @@
       "ex-4am-muadalat-x-murabba-l5-008",
       "ex-4am-muadalat-x-murabba-l5-009",
       "ex-4am-muadalat-x-murabba-l5-010"
+    ]
+  },
+  "mudalaat-muntazama": {
+    "1": [
+      "ex-4am-mudalaat-muntazama-l1-001",
+      "ex-4am-mudalaat-muntazama-l1-002",
+      "ex-4am-mudalaat-muntazama-l1-003",
+      "ex-4am-mudalaat-muntazama-l1-004",
+      "ex-4am-mudalaat-muntazama-l1-005",
+      "ex-4am-mudalaat-muntazama-l1-006",
+      "ex-4am-mudalaat-muntazama-l1-007",
+      "ex-4am-mudalaat-muntazama-l1-008",
+      "ex-4am-mudalaat-muntazama-l1-009",
+      "ex-4am-mudalaat-muntazama-l1-010"
+    ],
+    "2": [
+      "ex-4am-mudalaat-muntazama-l2-001",
+      "ex-4am-mudalaat-muntazama-l2-002",
+      "ex-4am-mudalaat-muntazama-l2-003",
+      "ex-4am-mudalaat-muntazama-l2-004",
+      "ex-4am-mudalaat-muntazama-l2-005",
+      "ex-4am-mudalaat-muntazama-l2-006",
+      "ex-4am-mudalaat-muntazama-l2-007",
+      "ex-4am-mudalaat-muntazama-l2-008",
+      "ex-4am-mudalaat-muntazama-l2-009",
+      "ex-4am-mudalaat-muntazama-l2-010"
+    ],
+    "3": [
+      "ex-4am-mudalaat-muntazama-l3-001",
+      "ex-4am-mudalaat-muntazama-l3-002",
+      "ex-4am-mudalaat-muntazama-l3-003",
+      "ex-4am-mudalaat-muntazama-l3-004",
+      "ex-4am-mudalaat-muntazama-l3-005",
+      "ex-4am-mudalaat-muntazama-l3-006",
+      "ex-4am-mudalaat-muntazama-l3-007",
+      "ex-4am-mudalaat-muntazama-l3-008",
+      "ex-4am-mudalaat-muntazama-l3-009",
+      "ex-4am-mudalaat-muntazama-l3-010"
+    ],
+    "4": [
+      "ex-4am-mudalaat-muntazama-l4-001",
+      "ex-4am-mudalaat-muntazama-l4-002",
+      "ex-4am-mudalaat-muntazama-l4-003",
+      "ex-4am-mudalaat-muntazama-l4-004",
+      "ex-4am-mudalaat-muntazama-l4-005",
+      "ex-4am-mudalaat-muntazama-l4-006",
+      "ex-4am-mudalaat-muntazama-l4-007",
+      "ex-4am-mudalaat-muntazama-l4-008",
+      "ex-4am-mudalaat-muntazama-l4-009",
+      "ex-4am-mudalaat-muntazama-l4-010"
+    ],
+    "5": [
+      "ex-4am-mudalaat-muntazama-l5-001",
+      "ex-4am-mudalaat-muntazama-l5-002",
+      "ex-4am-mudalaat-muntazama-l5-003",
+      "ex-4am-mudalaat-muntazama-l5-004",
+      "ex-4am-mudalaat-muntazama-l5-005",
+      "ex-4am-mudalaat-muntazama-l5-006",
+      "ex-4am-mudalaat-muntazama-l5-007",
+      "ex-4am-mudalaat-muntazama-l5-008",
+      "ex-4am-mudalaat-muntazama-l5-009",
+      "ex-4am-mudalaat-muntazama-l5-010"
     ]
   },
   "muntasaf-masafa": {
@@ -2982,6 +3168,68 @@
       "ex-4am-wadiya-idmajiya-ashia-l5-010"
     ]
   },
+  "wadiya-idmajiya-dawaran": {
+    "1": [
+      "ex-4am-wadiya-idmajiya-dawaran-l1-001",
+      "ex-4am-wadiya-idmajiya-dawaran-l1-002",
+      "ex-4am-wadiya-idmajiya-dawaran-l1-003",
+      "ex-4am-wadiya-idmajiya-dawaran-l1-004",
+      "ex-4am-wadiya-idmajiya-dawaran-l1-005",
+      "ex-4am-wadiya-idmajiya-dawaran-l1-006",
+      "ex-4am-wadiya-idmajiya-dawaran-l1-007",
+      "ex-4am-wadiya-idmajiya-dawaran-l1-008",
+      "ex-4am-wadiya-idmajiya-dawaran-l1-009",
+      "ex-4am-wadiya-idmajiya-dawaran-l1-010"
+    ],
+    "2": [
+      "ex-4am-wadiya-idmajiya-dawaran-l2-001",
+      "ex-4am-wadiya-idmajiya-dawaran-l2-002",
+      "ex-4am-wadiya-idmajiya-dawaran-l2-003",
+      "ex-4am-wadiya-idmajiya-dawaran-l2-004",
+      "ex-4am-wadiya-idmajiya-dawaran-l2-005",
+      "ex-4am-wadiya-idmajiya-dawaran-l2-006",
+      "ex-4am-wadiya-idmajiya-dawaran-l2-007",
+      "ex-4am-wadiya-idmajiya-dawaran-l2-008",
+      "ex-4am-wadiya-idmajiya-dawaran-l2-009",
+      "ex-4am-wadiya-idmajiya-dawaran-l2-010"
+    ],
+    "3": [
+      "ex-4am-wadiya-idmajiya-dawaran-l3-001",
+      "ex-4am-wadiya-idmajiya-dawaran-l3-002",
+      "ex-4am-wadiya-idmajiya-dawaran-l3-003",
+      "ex-4am-wadiya-idmajiya-dawaran-l3-004",
+      "ex-4am-wadiya-idmajiya-dawaran-l3-005",
+      "ex-4am-wadiya-idmajiya-dawaran-l3-006",
+      "ex-4am-wadiya-idmajiya-dawaran-l3-007",
+      "ex-4am-wadiya-idmajiya-dawaran-l3-008",
+      "ex-4am-wadiya-idmajiya-dawaran-l3-009",
+      "ex-4am-wadiya-idmajiya-dawaran-l3-010"
+    ],
+    "4": [
+      "ex-4am-wadiya-idmajiya-dawaran-l4-001",
+      "ex-4am-wadiya-idmajiya-dawaran-l4-002",
+      "ex-4am-wadiya-idmajiya-dawaran-l4-003",
+      "ex-4am-wadiya-idmajiya-dawaran-l4-004",
+      "ex-4am-wadiya-idmajiya-dawaran-l4-005",
+      "ex-4am-wadiya-idmajiya-dawaran-l4-006",
+      "ex-4am-wadiya-idmajiya-dawaran-l4-007",
+      "ex-4am-wadiya-idmajiya-dawaran-l4-008",
+      "ex-4am-wadiya-idmajiya-dawaran-l4-009",
+      "ex-4am-wadiya-idmajiya-dawaran-l4-010"
+    ],
+    "5": [
+      "ex-4am-wadiya-idmajiya-dawaran-l5-001",
+      "ex-4am-wadiya-idmajiya-dawaran-l5-002",
+      "ex-4am-wadiya-idmajiya-dawaran-l5-003",
+      "ex-4am-wadiya-idmajiya-dawaran-l5-004",
+      "ex-4am-wadiya-idmajiya-dawaran-l5-005",
+      "ex-4am-wadiya-idmajiya-dawaran-l5-006",
+      "ex-4am-wadiya-idmajiya-dawaran-l5-007",
+      "ex-4am-wadiya-idmajiya-dawaran-l5-008",
+      "ex-4am-wadiya-idmajiya-dawaran-l5-009",
+      "ex-4am-wadiya-idmajiya-dawaran-l5-010"
+    ]
+  },
   "wadiya-idmajiya-harfi": {
     "1": [
       "ex-4am-wadiya-idmajiya-harfi-l1-001",
@@ -3600,6 +3848,68 @@
       "ex-4am-wadiya-idmajiya-talis-l5-008",
       "ex-4am-wadiya-idmajiya-talis-l5-009",
       "ex-4am-wadiya-idmajiya-talis-l5-010"
+    ]
+  },
+  "zawiya-muhitiya": {
+    "1": [
+      "ex-4am-zawiya-muhitiya-l1-001",
+      "ex-4am-zawiya-muhitiya-l1-002",
+      "ex-4am-zawiya-muhitiya-l1-003",
+      "ex-4am-zawiya-muhitiya-l1-004",
+      "ex-4am-zawiya-muhitiya-l1-005",
+      "ex-4am-zawiya-muhitiya-l1-006",
+      "ex-4am-zawiya-muhitiya-l1-007",
+      "ex-4am-zawiya-muhitiya-l1-008",
+      "ex-4am-zawiya-muhitiya-l1-009",
+      "ex-4am-zawiya-muhitiya-l1-010"
+    ],
+    "2": [
+      "ex-4am-zawiya-muhitiya-l2-001",
+      "ex-4am-zawiya-muhitiya-l2-002",
+      "ex-4am-zawiya-muhitiya-l2-003",
+      "ex-4am-zawiya-muhitiya-l2-004",
+      "ex-4am-zawiya-muhitiya-l2-005",
+      "ex-4am-zawiya-muhitiya-l2-006",
+      "ex-4am-zawiya-muhitiya-l2-007",
+      "ex-4am-zawiya-muhitiya-l2-008",
+      "ex-4am-zawiya-muhitiya-l2-009",
+      "ex-4am-zawiya-muhitiya-l2-010"
+    ],
+    "3": [
+      "ex-4am-zawiya-muhitiya-l3-001",
+      "ex-4am-zawiya-muhitiya-l3-002",
+      "ex-4am-zawiya-muhitiya-l3-003",
+      "ex-4am-zawiya-muhitiya-l3-004",
+      "ex-4am-zawiya-muhitiya-l3-005",
+      "ex-4am-zawiya-muhitiya-l3-006",
+      "ex-4am-zawiya-muhitiya-l3-007",
+      "ex-4am-zawiya-muhitiya-l3-008",
+      "ex-4am-zawiya-muhitiya-l3-009",
+      "ex-4am-zawiya-muhitiya-l3-010"
+    ],
+    "4": [
+      "ex-4am-zawiya-muhitiya-l4-001",
+      "ex-4am-zawiya-muhitiya-l4-002",
+      "ex-4am-zawiya-muhitiya-l4-003",
+      "ex-4am-zawiya-muhitiya-l4-004",
+      "ex-4am-zawiya-muhitiya-l4-005",
+      "ex-4am-zawiya-muhitiya-l4-006",
+      "ex-4am-zawiya-muhitiya-l4-007",
+      "ex-4am-zawiya-muhitiya-l4-008",
+      "ex-4am-zawiya-muhitiya-l4-009",
+      "ex-4am-zawiya-muhitiya-l4-010"
+    ],
+    "5": [
+      "ex-4am-zawiya-muhitiya-l5-001",
+      "ex-4am-zawiya-muhitiya-l5-002",
+      "ex-4am-zawiya-muhitiya-l5-003",
+      "ex-4am-zawiya-muhitiya-l5-004",
+      "ex-4am-zawiya-muhitiya-l5-005",
+      "ex-4am-zawiya-muhitiya-l5-006",
+      "ex-4am-zawiya-muhitiya-l5-007",
+      "ex-4am-zawiya-muhitiya-l5-008",
+      "ex-4am-zawiya-muhitiya-l5-009",
+      "ex-4am-zawiya-muhitiya-l5-010"
     ]
   }
 }

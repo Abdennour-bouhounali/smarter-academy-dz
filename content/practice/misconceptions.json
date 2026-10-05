@@ -1910,5 +1910,246 @@
       "4am_wadiya-idmajiya-maalam_P1",
       "4am_wadiya-idmajiya-maalam_P2"
     ]
+  },
+  "MISC-DAWARAN-ITTIJAH": {
+    "label": "اتجاه دوران مقلوب",
+    "explanation": "الاتجاه المباشر (الموجب) هو عكس اتجاه حركة عقارب الساعة؛ الدوران في الاتجاه غير المباشر (السالب) يعطي صورة أخرى.",
+    "relatedLearningPoints": [
+      "4am_mafhum-dawaran_P1",
+      "4am_mafhum-dawaran_P2"
+    ]
+  },
+  "MISC-DAWARAN-MASAFA": {
+    "label": "الصورة ليست على نفس البعد من المركز",
+    "explanation": "صورة $M$ بدوران مركزه $O$ هي $M'$ بحيث $OM' = OM$: النقطة وصورتها على دائرة واحدة مركزها $O$.",
+    "relatedLearningPoints": [
+      "4am_mafhum-dawaran_P2"
+    ]
+  },
+  "MISC-DAWARAN-RAS-ZAWIYA": {
+    "label": "الزاوية مقيسة في غير المركز",
+    "explanation": "زاوية الدوران رأسها المركز $O$: نقيس $\\widehat{MOM'}$، لا زاوية رأسها $M$ أو $M'$.",
+    "relatedLearningPoints": [
+      "4am_mafhum-dawaran_P2"
+    ]
+  },
+  "MISC-DAWARAN-MARKAZ": {
+    "label": "مركز دوران خاطئ",
+    "explanation": "يدور كل نقطة حول نفس المركز $O$ المعطى، لا حول نقطة من الشكل ولا حول مبدأ المعلم.",
+    "relatedLearningPoints": [
+      "4am_mafhum-dawaran_P1",
+      "4am_mafhum-dawaran_P3"
+    ]
+  },
+  "MISC-DAWARAN-INSIHAB": {
+    "label": "خلط الدوران بالانسحاب",
+    "explanation": "في الانسحاب تتحرك كل النقط بنفس الشعاع؛ في الدوران تدور كل نقطة بنفس الزاوية حول المركز فتتغير منحى القطع.",
+    "relatedLearningPoints": [
+      "4am_mafhum-dawaran_P1"
+    ]
+  },
+  "MISC-DAWARAN-TANAZUR": {
+    "label": "خلط الدوران بالتناظر المحوري",
+    "explanation": "التناظر المحوري يقلب الشكل (يعكس ترتيب الرؤوس)، أما الدوران فيحافظ على اتجاه الدوران حول الشكل.",
+    "relatedLearningPoints": [
+      "4am_mafhum-dawaran_P1",
+      "4am_khawas-dawaran_P1"
+    ]
+  },
+  "MISC-DAWARAN-DAIRA": {
+    "label": "صورة دائرة بنصف قطر آخر أو بنفس المركز",
+    "explanation": "صورة دائرة مركزها $I$ ونصف قطرها $r$ هي الدائرة التي مركزها $I'$ صورة $I$ ونصف قطرها نفسه $r$.",
+    "relatedLearningPoints": [
+      "4am_mafhum-dawaran_P3"
+    ]
+  },
+  "MISC-DAWARAN-TAWAZI": {
+    "label": "صورة مستقيم توازيه دائما",
+    "explanation": "صورة مستقيم بدوران زاويته $\\alpha$ مستقيم يصنع معه زاوية $\\alpha$؛ لا يوازيه إلا إذا كانت $\\alpha = 180^\\circ$.",
+    "relatedLearningPoints": [
+      "4am_mafhum-dawaran_P3",
+      "4am_khawas-dawaran_P2"
+    ]
+  },
+  "MISC-DAWARAN-KHAWAS": {
+    "label": "الدوران يغيّر الأطوال أو المساحات",
+    "explanation": "الدوران تقايس: يحافظ على الأطوال وأقياس الزوايا والاستقامية والمساحات؛ يتغير الموضع فقط.",
+    "relatedLearningPoints": [
+      "4am_khawas-dawaran_P1",
+      "4am_khawas-dawaran_P2"
+    ]
+  },
+  "MISC-DAWARAN-TARTIB": {
+    "label": "ترتيب رؤوس الصورة غير مطابق",
+    "explanation": "صورة $A$ هي $A'$ وصورة $B$ هي $B'$: إذن $AB = A'B'$، لا $AB = A'C'$.",
+    "relatedLearningPoints": [
+      "4am_khawas-dawaran_P2",
+      "4am_khawas-dawaran_P3"
+    ]
+  },
+  "MISC-MUHITIYA-DIF": {
+    "label": "المحيطية ضعف المركزية",
+    "explanation": "العكس هو الصحيح: الزاوية المحيطية نصف الزاوية المركزية التي تحصر معها نفس القوس.",
+    "relatedLearningPoints": [
+      "4am_zawiya-muhitiya_P2"
+    ]
+  },
+  "MISC-MUHITIYA-QAWS": {
+    "label": "زاويتان لا تحصران نفس القوس",
+    "explanation": "تطبق الخاصية فقط إذا حصرت الزاويتان نفس القوس؛ تحقق من القوس قبل أن تقسم على 2.",
+    "relatedLearningPoints": [
+      "4am_zawiya-muhitiya_P2",
+      "4am_zawiya-muhitiya_P3"
+    ]
+  },
+  "MISC-MUHITIYA-RAS": {
+    "label": "رأس الزاوية ليس على الدائرة",
+    "explanation": "الزاوية المحيطية رأسها نقطة من الدائرة وضلعاها يقطعانها؛ زاوية رأسها داخل الدائرة ليست محيطية، والتي رأسها $O$ مركزية.",
+    "relatedLearningPoints": [
+      "4am_zawiya-muhitiya_P1"
+    ]
+  },
+  "MISC-MUHITIYA-MUTASAWIYA": {
+    "label": "زاويتان محيطيتان تحصران نفس القوس مختلفتان",
+    "explanation": "كل الزوايا المحيطية التي تحصر نفس القوس متقايسة: قيس كل منها نصف الزاوية المركزية نفسها.",
+    "relatedLearningPoints": [
+      "4am_zawiya-muhitiya_P3"
+    ]
+  },
+  "MISC-MUNTAZAM-ADLA": {
+    "label": "تقايس الأضلاع وحده يكفي",
+    "explanation": "المضلع المنتظم أضلاعه متقايسة وزواياه متقايسة: المعين غير المربع أضلاعه متقايسة لكنه ليس منتظما.",
+    "relatedLearningPoints": [
+      "4am_mudalaat-muntazama_P1"
+    ]
+  },
+  "MISC-MUNTAZAM-MARKAZIYA": {
+    "label": "خلط الزاوية المركزية بزاوية المضلع",
+    "explanation": "الزاوية المركزية التي تحصر ضلعا قيسها $\\frac{360^\\circ}{n}$؛ زاوية المضلع (الداخلية) قيسها $180^\\circ - \\frac{360^\\circ}{n}$.",
+    "relatedLearningPoints": [
+      "4am_mudalaat-muntazama_P2"
+    ]
+  },
+  "MISC-MUNTAZAM-180": {
+    "label": "قسمة 180° بدل 360°",
+    "explanation": "الزوايا المركزية الـ $n$ تملأ دورة كاملة حول المركز: $360^\\circ$، فقيس كل واحدة $\\frac{360^\\circ}{n}$.",
+    "relatedLearningPoints": [
+      "4am_mudalaat-muntazama_P2"
+    ]
+  },
+  "MISC-MUNTAZAM-DIL": {
+    "label": "طول الضلع يساوي نصف القطر دائما",
+    "explanation": "هذا صحيح للسداسي المنتظم فقط (مثلثاته متقايسة الأضلاع)؛ في غيره نحسب الضلع بالنسب المثلثية: $2r\\sin\\frac{180^\\circ}{n}$.",
+    "relatedLearningPoints": [
+      "4am_mudalaat-muntazama_P3",
+      "4am_wadiya-idmajiya-dawaran_P3"
+    ]
+  },
+  "MISC-MUNTAZAM-NAJMA": {
+    "label": "خلط المسافة بين رأسين متتاليين بطول ضلع النجمة",
+    "explanation": "رؤوس النجمة الخماسية رؤوس خماسي منتظم: المسافة بين رأسين متتاليين هي ضلع الخماسي، لا القطعة المرسومة في النجمة.",
+    "relatedLearningPoints": [
+      "4am_mudalaat-muntazama_P3",
+      "4am_wadiya-idmajiya-dawaran_P1"
+    ]
+  },
+  "MISC-MUNTAZAM-AMDA": {
+    "label": "عدد الأقواس لا يساوي عدد الأعمدة",
+    "explanation": "على دائرة مغلقة، $n$ عمود يقسمها إلى $n$ قوسا متقايسة (لا $n-1$): الزاوية المركزية $\\frac{360^\\circ}{n}$.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-dawaran_P2",
+      "4am_wadiya-idmajiya-dawaran_P3"
+    ]
+  },
+  "MISC-MUNTAZAM-ZAWAYA": {
+    "label": "تقايس الزوايا وحده يكفي",
+    "explanation": "المضلع المنتظم زواياه متقايسة وأضلاعه متقايسة: المستطيل الذي ليس مربعا زواياه قائمة كلها لكنه ليس منتظما.",
+    "relatedLearningPoints": [
+      "4am_mudalaat-muntazama_P1"
+    ]
+  },
+  "MISC-MUNTAZAM-DAWRA": {
+    "label": "تدوير عدد الأضلاع حين لا يكون 360 ÷ α عددا صحيحا",
+    "explanation": "الحلقة تنغلق مضلعا منتظما فقط إذا كان $n \\times \\alpha = 360^\\circ$ تماما: إذا لم يكن $360 \\div \\alpha$ عددا صحيحا فلا يوجد مضلع منتظم زاويته المركزية α، ولا يكفي تدوير الناتج.",
+    "relatedLearningPoints": [
+      "4am_mudalaat-muntazama_P2",
+      "4am_mudalaat-muntazama_P3"
+    ]
+  },
+  "MISC-MUNTAZAM-QAWS-WATAR": {
+    "label": "طول القوس بدل المسافة المستقيمة (الوتر)",
+    "explanation": "المسافة بين نقطتين متتاليتين على دائرة هي طول القطعة المستقيمة بينهما (الوتر) $2r\\sin\\frac{180^\\circ}{n}$؛ طول القوس $\\frac{2\\pi r}{n}$ هو الطريق على المحيط، وهو أطول.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-dawaran_P3",
+      "4am_mudalaat-muntazama_P3"
+    ]
+  },
+  "MISC-MUNTAZAM-NISF-ZAWIYA": {
+    "label": "نسيان تنصيف الزاوية المركزية في المثلث القائم",
+    "explanation": "الارتفاع النازل من المركز ينصّف الزاوية المركزية: في المثلث القائم الزاوية عند المركز $\\frac{180^\\circ}{n}$ لا $\\frac{360^\\circ}{n}$، ومنه $d = 2r\\sin\\frac{180^\\circ}{n}$.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-dawaran_P3",
+      "4am_mudalaat-muntazama_P3"
+    ]
+  },
+  "MISC-DAWARAN-JAM-ZAWAYA": {
+    "label": "جمع زاويتي دورانين بدل طرحهما (أو العكس)",
+    "explanation": "صورتا نقطة بدورانين لهما نفس المركز: في نفس الاتجاه نطرح الزاويتين، وفي اتجاهين متعاكسين نجمعهما ($139^\\circ - 50^\\circ = 89^\\circ$).",
+    "relatedLearningPoints": [
+      "4am_mafhum-dawaran_P2"
+    ]
+  },
+  "MISC-DAWARAN-MUKAMMIL": {
+    "label": "الخلط بين α و 360° − α",
+    "explanation": "الدوران بزاوية $\\alpha$ في اتجاه هو الدوران بزاوية $360^\\circ - \\alpha$ في الاتجاه الآخر، لا بنفس الزاوية في الاتجاه الآخر ($270^\\circ$ في الاتجاه المباشر = $90^\\circ$ في الاتجاه غير المباشر).",
+    "relatedLearningPoints": [
+      "4am_mafhum-dawaran_P1"
+    ]
+  },
+  "MISC-DAWARAN-SABIQA": {
+    "label": "الخلط بين صورة الشكل والشكل الذي صورته هو",
+    "explanation": "«صورة M» هي نقطة الوصول؛ «النقطة التي صورتها M» هي نقطة الانطلاق: نجدها بالدوران المعاكس (نفس الزاوية في الاتجاه الآخر).",
+    "relatedLearningPoints": [
+      "4am_mafhum-dawaran_P2",
+      "4am_mafhum-dawaran_P3"
+    ]
+  },
+  "MISC-DAWARAN-ZAWIYA-UKHRA": {
+    "label": "صورة بزاوية غير زاوية الدوران",
+    "explanation": "الصورة على الدائرة التي مركزها $O$ وتشمل $M$، لكن في المكان الذي تعيّنه الزاوية: نقيس $\\widehat{MOM'}$ بالمنقلة انطلاقا من $[OM)$ في الاتجاه المطلوب، ولا نكتفي بنقطة من الدائرة.",
+    "relatedLearningPoints": [
+      "4am_mafhum-dawaran_P1",
+      "4am_mafhum-dawaran_P2"
+    ]
+  },
+  "MISC-MUHITIYA-MUSAWIYA": {
+    "label": "الزاوية المحيطية تساوي المركزية",
+    "explanation": "الزاويتان تحصران نفس القوس لكنهما غير متساويتين: قيس الزاوية المحيطية نصف قيس الزاوية المركزية، أي $\\widehat{AMB} = \\dfrac{1}{2}\\widehat{AOB}$.",
+    "relatedLearningPoints": [
+      "4am_zawiya-muhitiya_P2"
+    ]
+  },
+  "MISC-MUHITIYA-JUZ": {
+    "label": "جزء من الزاوية بدل الزاوية كلها",
+    "explanation": "زاوية ضلعاها يحويان نصف مستقيم ثالثا تساوي مجموع الزاويتين اللتين يقسمها إليهما؛ نحدّد ضلعي الزاوية المطلوبة قبل الحساب.",
+    "relatedLearningPoints": [
+      "4am_zawiya-muhitiya_P2",
+      "4am_zawiya-muhitiya_P3"
+    ]
+  },
+  "MISC-DAWARAN-MIHWAR": {
+    "label": "مركز الدوران منتصف قطعة أو تقاطع مستقيمين",
+    "explanation": "مركز الدوران على نفس البعد من كل نقطة ومن صورتها: هو نقطة تقاطع محوري $[AA']$ و $[BB']$ ، لا منتصف $[AA']$ ولا تقاطع المستقيمين $(AA')$ و $(BB')$ .",
+    "relatedLearningPoints": [
+      "4am_khawas-dawaran_P2",
+      "4am_khawas-dawaran_P3"
+    ]
+  },
+  "MISC-DAWARAN-TASAWI-TAAMUD": {
+    "label": "تساوي الطولين يكفي للتعامد",
+    "explanation": "الدوران يحافظ على الأطوال في كل زاوية؛ التعامد يأتي من زاوية الدوران: صورة مستقيم بدوران زاويته $90^\\circ$ تعامده.",
+    "relatedLearningPoints": [
+      "4am_khawas-dawaran_P2"
+    ]
   }
 }

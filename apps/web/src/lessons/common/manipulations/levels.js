@@ -501,6 +501,66 @@ export const LEVELS = Object.freeze({
       ...T('situation'),
     },
   },
+  // ── Unité 13 « الدوران - الزوايا - المضلّعات المنتظمة » (2026-10-04) — paires PROVISOIRES semées par le lead ; chaque
+  // auteur les affine (refs = ids de docs/sources/4am/unit13/extraction.json). Angles en degrés, orientation 'direct' | 'indirect'.
+  // LA GRANDE ROUE (mafhum-dawaran, affiné par l'auteur) : six nacelles, des rotations d'un ou deux PAS de 60° (60°, 120°),
+  // chacune dans les deux sens (le jumeau horaire est le contraste), l'image posée sur un nœud EXACT de la roue ; متقدم : le
+  // نشاط 2 (70°, un point puis un autre) et le نشاط 3 (72° : une قطعة, une دائرة) sur une feuille, au compas et à la منقلة —
+  // des angles qui ne tombent sur aucun rayon, trois gestes par point, aucun voyant pendant le geste.
+  'rotation-dial': {
+    beginner: { numbers: { scene: 'wheel', r: 3, inner: 1.8, gondolas: 6, step: 60, tasks: [['A', 1, 'direct'], ['A', 1, 'indirect'], ['C', 2, 'direct'], ['C', 2, 'indirect']] }, ...P },
+    advanced: {
+      numbers: {
+        scene: 'plane',
+        missions: [
+          { id: 'point', alpha: 70, direction: 'direct', points: { A: [3, 1], B: [-1, 2.5] } },
+          { id: 'segment', alpha: 72, direction: 'direct', points: { A: [-3, 2], B: [1, 2] } },
+          { id: 'circle', alpha: 72, direction: 'direct', points: { W: [-2.5, 2], A: [-2.5, 3.5] } },
+        ],
+      },
+      ...T('act-2'),
+    },
+  },
+  // LE PAPIER CALQUE épinglé en O (khawas-dawaran). مبتدئ : une rosace de zellige de Tlemcen — un pétale ABC tourné de 60°
+  // dans le sens direct, cinq copies imprimées de proche en proche (60° plutôt que 90° : le 90° ⇒ ⊥ reste la découverte du
+  // manuel au niveau متقدم). متقدم : la طريقة p. 155 — OAB, OCD rectangles isocèles en O, la copie de [AC] tombe sur [BD]
+  // pour (O, 90°, direct) seulement ; AC = BD et (AC) ⊥ (BD) prouvés par cartes ; puis le centre W de l'exercice 18.
+  'shape-turn': {
+    beginner: { numbers: { mode: 'rosette', center: [0, 0], alpha: 60, direction: 'direct', shape: { A: [1, 0], B: [4, 0], C: [2, 2] } }, ...P },
+    advanced: {
+      numbers: {
+        mode: 'prove', center: [0, 0], alpha: 90, direction: 'direct', points: { A: [4, -2], B: [2, 4], C: [-1, 2], D: [-2, -1] },
+        centerTask: { M: [1, 3], N: [0, 2], P: [2, 2], "M'": [3, 3], "N'": [4, 2], "P'": [4, 4], grid: 5, start: [0, 0] },
+      },
+      ...T('method-properties'),
+    },
+  },
+  // L'ANGLE DE TIR (zawiya-muhitiya, affiné par son auteur) : مبتدئ = les poteaux A (150°) et B (30°) sur un cercle de rayon 4,
+  // angle au centre 120°, le tireur M part de 250° — un PARI puis deux positions du grand arc et un contraste ; متقدم = le
+  // نشاط 4 (A 140°, B 40° : la figure du manuel tournée de 10° pour que la ligne de but soit horizontale, angle au centre 100°),
+  // D part de 280° et TROIS étapes ouvertes par l'élève (le diamètre de مزيان, la relation choisie, les trois D de هوارية avec O
+  // dedans et dehors, puis le D intérieur de l'exercice 12) : plus d'étapes, aucune valeur donnée d'avance.
+  'inscribed-angle': {
+    beginner: { numbers: { r: 4, A: 150, B: 30, M: 250 }, ...P },
+    advanced: { numbers: { r: 5, A: 140, B: 40, D: 280, stages: ['mezian', 'houaria', 'interior'] }, ...T('act-4') },
+  },
+  // LA FORGE DE POLYGONES (mudalaat-muntazama). مبتدئ (plateforme) : une alvéole de ruche de Kabylie — l'élève cherche
+  // l'angle α qui referme un HEXAGONE de rayon 3 cm (60°, côté = rayon : l'astuce des abeilles) ; départ à 50° (360 ÷ 50 =
+  // 7,2 : la figure ne se ferme jamais). متقدم (le تحدّ p. 151) : l'étoile du drapeau sur un tifo — cinq pointes (72°),
+  // puis le rayon qui met deux pointes consécutives à 10 cm (R = 5 / sin 36° ≈ 8,51, au centième près), puis les branches
+  // (un sommet sur deux) : trois étapes ouvertes par l'élève, aucune lecture avant le geste, départ à 60° (une ruche).
+  'polygon-forge': {
+    beginner: { numbers: { n: 6, r: 3 }, ...P },
+    advanced: { numbers: { n: 5, tip: 10, star: 2 }, ...T('challenge') },
+  },
+  // LES LAMPADAIRES DU MASSIF (wadiya-idmajiya-dawaran, « أدمج تعلّماتي »). مبتدئ (plateforme) : 4 poteaux sur un massif de
+  // 2 m — un carré, l'angle au centre droit, 2√2 ≈ 2,83 m par Pythagore ou le sinus de 45°. متقدم (وضعية p. 160) : 6 poteaux sur
+  // 3 m — l'hexagone, 60°, d = r = 3 m ; six poteaux à placer à la main au lieu de quatre, et un dernier écart qui ne se voit plus
+  // à l'œil ; `extra` : le nombre de poteaux proposé APRÈS la règle (12 : 30°, d = 6·sin 15° ≈ 1,55 m, approché seulement — jamais les 8 poteaux du إختبار).
+  'lamp-ring': {
+    beginner: { numbers: { n: 4, r: 2 }, ...P },
+    advanced: { numbers: { n: 6, r: 3, extra: 12 }, ...T('situation') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

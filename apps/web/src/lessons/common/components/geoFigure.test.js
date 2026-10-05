@@ -86,5 +86,32 @@ describe('geoFigure — la figure déclarative', () => {
     expect(layoutGeoFigure({ ...fig, axes: { every: 2 } }).axes.ticks.filter((t) => t.label && t.axis === 'x').map((t) => t.text)).toEqual(['2', '4']);
     expect(figureQuality(fig)).toEqual([]);
   });
+  it('arcs centrés, flèche d’angle, cercle de rayon donné (unité 13 « الدوران »)', async () => {
+    const { centeredArcPoints, centeredArc, angleArc, circleRadius } = await import('./geoFigure');
+    const fig = {
+      points: { O: [0, 0], M: [3, 0], N: [0, 3] },
+      arcs: [{ center: 'O', from: 'M', to: 'N', sweep: 'ccw', arrow: true, label: '90°' }],
+      angles: [{ at: 'O', from: 'M', to: 'N', arrow: true }],
+      circles: [{ center: 'O', radius: 3, dashed: true }],
+      ariaLabel: 'دوران النقطة M حول O',
+    };
+    expect(validateGeoFigure(fig)).toEqual([]);
+    expect(validateGeoFigure({ ...fig, arcs: [{ center: 'Z', from: 'M', to: 'N' }] }).join('|')).toMatch(/point inconnu « Z »/);
+    expect(validateGeoFigure({ ...fig, circles: [{ center: 'O', radius: 0 }] }).join('|')).toMatch(/radius > 0/);
+    expect(circleRadius({ center: 'O', through: 'M' }, fig.points)).toBe(3);
+    // ccw (sens direct) de M(3 ; 0) vers la direction de N passe par (3cos45° ; 3sin45°) — le quart de cercle du HAUT
+    const q = centeredArcPoints([0, 0], [3, 0], [0, 3], 'ccw', 2);
+    expect(q[1][0]).toBeCloseTo(3 * Math.SQRT1_2); expect(q[1][1]).toBeCloseTo(3 * Math.SQRT1_2); expect(q[2][1]).toBeCloseTo(3);
+    // cw (indirect) : les trois quarts de tour, par le bas
+    const w = centeredArcPoints([0, 0], [3, 0], [0, 3], 'cw', 2);
+    expect(w[1][0]).toBeCloseTo(-3 * Math.SQRT1_2); expect(w[1][1]).toBeCloseTo(-3 * Math.SQRT1_2);
+    // en SVG (y vers le bas) : ccw à l'écran = sweep-flag 0, grand arc quand le parcours dépasse 180°
+    expect(centeredArc([0, 0], [3, 0], [0, -3], 'ccw').path).toMatch(/A 3 3 0 0 0 /);
+    expect(centeredArc([0, 0], [3, 0], [0, -3], 'cw').path).toMatch(/A 3 3 0 1 1 /);
+    expect(centeredArc([0, 0], [3, 0], [0, -3], 'ccw').arrow[0][1]).toBeCloseTo(-3);
+    expect(angleArc([20, 0], [0, 0], [0, 20]).arrow).toHaveLength(3);
+    const L = layoutGeoFigure(fig, { size: 300, pad: 0 });
+    expect(L.width).toBeCloseTo(L.height); // le cercle entier entre dans le cadre
+    expect(figureQuality(fig)).toEqual([]);
+  });
 });
-

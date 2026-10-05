@@ -358,6 +358,32 @@ Unit-count assertions that read the real catalogue (`unitGrouping.test.js`, `fin
   exist (5 and 3); act-1's grid read on a curled page; the GeoGebra TP's missing « ارسم نقطة D »; ex-13 « AC + AA » kept as printed.
   The unit page's « ستعود إلى هذا التحدّي في الدرس 6 » (true for unit 1 only) became « …خلال دروس الوحدة ».
 
+**Unit 13 « الدوران - الزوايا - المضلّعات المنتظمة » (2026-10-04) — five authors on a seeded foundation — added:**
+
+- **One exact module for rotations, angles and regular polygons**, `packages/core/arithmetic/rotation.js` (exported `rotation`) on `vectors.js`
+  points and `trigonometry.js` surds: angles in degrees, orientation `'direct'` (anticlockwise, الموجب) | `'indirect'`; `rotate` EXACT for
+  multiples of 90° (grid figures), `rotateApprox` for drawing only; **`imageCheck(O, M, M′, α, dir)` → `{ ok, length, angle, sense, measured }`**,
+  the textbook's three conditions (OM = OM′, \widehat{MOM′} = α, the sense) — every « is this the image? » verdict of every lab names the failing
+  one; inscribed / central (`arcAngles`, `inscribedFromCentral`, `sameArc`); regular polygons (`centralAngle`, `interiorAngle`,
+  `sidesFromCentral` → null when no polygon exists, `sideFromRadius` exact for n = 3, 4, 6, `regularVertices`, `star`, `radiusForChord`).
+  Authors added through the lock `lineAngle`, `polygonArea`, `rotationCenter`, `onBisector` (khawas-dawaran), `circlePosition`,
+  `vertexAngle` (an angle whose vertex is inside / outside the circle, zawiya-muhitiya), `circleGaps`, `ringByRotation`, `chordOfArc`,
+  `arcLength` (the synthesis).
+- **GeoFigure grew three keys** (tested in `geoFigure.test.js`): centred arcs `arcs: [{ center, from, to, sweep: 'ccw' | 'cw', arrow, label }]`
+  (the path of M to M′ around O; `ccw` = direct as SEEN; the intercepted arc of an inscribed angle), `angles[].arrow` (the rotation's sense),
+  `circles: [{ center, radius }]`. A regular polygon's points come from `rotation.regularVertices` in `content/figures.js`.
+- **A تحدّ that shows a photo**: the unit's تحدّ (the star of the flag) has no « الشكل المقابل » but the book shows the flag; the unit page draws it
+  (`mudalaat-muntazama/components/FlagStarFigure.jsx`, no measurement), registered as `'dawaran-mudalaat:challenge'`.
+- **A scan with gaps decided by computation**: ex-10 and ex-16 leave an angle unfixed (the lessons state the figure's 45° / 40° as data),
+  ex-18's grid is almost erased (rebuilt from the only rotation that fits), ex-5's angles were measured on the scan (120°, 150°, 90°, 60°).
+  Misprints: معارف 4 example 3 « AOB » → AMB; method-angle « 180° » → 108°; ex-12's missing angle name (AMD); ex-15 « ABCDEF » → BCDEF (A is
+  the centre); ex-17 (BEM) « ABCD » → ABDC; QCM item 1 « صورة A » → B. The تحدّ « رأسين متتاليين » is read as the five tips (pentagon of side
+  10 cm, R ≈ 8,51 cm; the other reading R ≈ 13,76 cm is kept in the extraction).
+- **The extraction agent stalled once** (API watchdog after « render pages »): resumed by message with crops ≤ 900 px, the builder having been
+  written page by page — nothing was lost.
+- **Lead review by screenshots found what tests do not**: a stretch handle on a named point, a bidi-reversed « 0 × 50° = 0° » counter, a hub
+  label under the image handle, crowded gap labels at a lab's start — sent back to the authors by message.
+
 ### `routes.jsx` — the whole file
 
 ```jsx
@@ -1153,6 +1179,11 @@ foundation, the second geometry unit:
 | **`muntasaf-masafa`** | `midpoint-distance` (`gps-meet`): two stages opened by the student — the meeting pin (accepted only where AM = MB; the group chat's « sum without ÷ 2 » and « half-difference » refused by name), then the right-angle staircase and the distance claim (the street « taxi » distance and the square refused, only √(Δx² + Δy²) accepted); act-3 / act-4 answered from the student's own trials; the تحدّ as hook, solved at the end (√365 / 3) |
 | **`ithbat-khawas-maalam`** | a lesson with no textbook activity entered by `shape-prover` (the فار of the neighbourhood pitch): proof cards sent to the video referee, sufficiency refused card by card (equal diagonals alone are not a parallelogram), the « looks right-angled » start refused by its numbers (10 + 5 ≠ 17); method-unknown (C slides on x = −2 to y = −4) as متقدم, then the square and the circle; perpendicularity without dot product as a declared formalization; the method-unknown figure redrawn so it no longer shows the answer |
 | **`wadiya-idmajiya-maalam`** | the synthesis on its own lab `route-compare` (`cross` / `rally`): a BET first, then each route built piece by piece — a semicircle closes only when its centre is the midpoint (wrong centre: the lab names where the arc would end), a skipped checkpoint refused as a shortcut; two smartwatches add exact then rounded lengths (3π ≈ 9,42 vs √13 + √5 + √17 ≈ 9,96); the two levels disagree on the winner on purpose; the final test transposed to جبل الوحش (Constantine), where the broken line wins |
+| **`mafhum-dawaran`** | unit 13 ENTRY on `rotation-dial` (`ferris-wheel`): the hand holds the IMAGE point; every drop judged by `rotation.imageCheck`, the refusal naming the missing condition (sense / OM′ ≠ OM / the measure read); مبتدئ = the Ben Aknoun wheel, each rotation asked in both senses (60° ↺ A → B vs 60° ↻ A → F); متقدم = act-2 then act-3 with a real compass (snapped onto OP) and a protractor ruler, the magnet attracting only toward the student's OWN constructions; QCM 1 corrected; ex-5 redrawn with the scan's angles given as gaps |
+| **`khawas-dawaran`** | a lesson with no textbook activity entered by `shape-turn` (`zellige`): a tracing-paper sheet turned around a pin, a stretch handle as the counter-example (« ليس دورانا: تغيّر الطول »), invariant gauges (length, angle, area, alignment, the angle between a line and its image), a six-petal rosette stamped by `imageCheck`; متقدم = method-properties ([AC] lands on [BD] only for 90° direct, then property cards prove AC = BD and ⊥) and ex-18's centre pin (two perpendicular bisectors); two declared formalizations (the line-and-image angle, finding the centre) |
+| **`zawiya-muhitiya`** | `inscribed-angle` (`football`): the shooting angle — a BET before the reading, the striker held in polar coordinates and snapped to the circle, off-circle vertices refused with their changed measure, the other arc (180° − x); متقدم = act-4's stages (مزيان's equalities with the student's numbers, هوارية with O inside / outside the angle, ex-12's interior point as the half-sum of arcs via `rotation.vertexAngle`); a declared طريقة « من القوس إلى الزاوية »; know-4 and ex-12 corrected, ex-10 / ex-16 data stated |
+| **`mudalaat-muntazama`** | the تحدّ (the flag's star) as entry on `polygon-forge` (`honeycomb` / `flag-star`): the rotation angle held, each « دوّر » places the next vertex — the figure closes only when n·α = 360° (50° spirals with its reason, 144° makes a star); متقدم opens three stages (72°, R to 0,01 via sin 36°, the branches with a pentagon side refused); method-angle (108°) and ex-15 corrected; the unit page's `FlagStarFigure` |
+| **`wadiya-idmajiya-dawaran`** | the synthesis on its own lab `lamp-ring` (`flower-bed`): posts placed by hand and refused while the gaps differ, then one second post sets the rotation and each « دوّر » places the next image (the ring closes only when n·α = 360°), then the distance chosen by card (half-angle sine; equilateral for n = 6) against the arc, « d = r » and the unhalved angle; the extra after the rule is 12 posts so the final test's numbers (8 posts around an Oran roundabout, 5 m: 45°, ≈ 3,83 m) appear nowhere else |
 
 **Textbook misprints are CORRECTED, not only noted (owner decision, 2026-09-30).**
 The extraction keeps the book's verbatim `text` and adds a `correction`

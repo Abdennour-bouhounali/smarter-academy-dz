@@ -389,6 +389,31 @@ the first most frequent value in cell order and #N/A when nothing repeats. **`gr
 (groups per class, `'2|2'`), `theme` (`quiz` | `school`); a tank's height is budgeted from the lesson viewport minus what the
 glance block MEASURES besides the tanks, so the block stays in the screen when the reading grows after the valve.
 
+## 2quaterdecies. The rotation laboratories (unit 13, 2026-10-04)
+
+Five types in `manipulations/rotation/`, every verdict from `packages/core/arithmetic/rotation.js` (`imageCheck`, `arcAngles`, `vertexAngle`,
+`sidesFromCentral`, `circleGaps`, `ringByRotation`…), each with a `logic/` module, its tests and a render test; glance blocks
+`data-rd|st|ia|pf|lr-glance`, measured by `e2e/lesson-kit/4am-dawaran-mudalaat.mjs` (module 1, both levels, four viewports). A refusal of an
+image always NAMES the failing condition of the textbook's definition (OM′ = OM, the angle, the sense) — `imageCheck` returns all three.
+
+- **`rotation-dial`** (`RotationDial.jsx`, `ferris-wheel`) — two scenes, one variable (the image point): `wheel` (nodes on 2k spokes × rim /
+  inner ring, exact, `tasks` in steps of `step`) and `plane` (missions point / segment / circle with a compass snapped onto OP and a protractor
+  ruler whose zero lies on [OP)). Verdict kinds `ok | sense | radius | angle | both | zero | center`. Reusable pattern: an instrument MAGNET that
+  attracts only toward the student's own constructions, never toward the answer.
+- **`shape-turn`** (`ShapeTurn.jsx`, `zellige`) — a rotation held with the stretch engine (θ read from the pointer, unwound near the current
+  value), a second stretch engine for the FAKE handle (a dilation: the counter-example), invariant gauges in a `MovablePanel` that become chips
+  under 420 px; claims proved by carrying property cards (`judgeClaim` refuses on drop, nothing leaks on hover); the centre pin is a stage the
+  student opens (§7quater).
+- **`inscribed-angle`** (`InscribedAngle.jsx`, `football`) — a free plane pin with a polar `legal()` (±7 % magnet to the circle, pushed off the
+  posts, snapped to the diameter in the مزيان stage), keyboard as a `role="slider"` validated after 700 ms or on Enter, an inside / on / outside
+  toggle as the tap path; a bet gates the reading; chained stages (§7quater).
+- **`polygon-forge`** (`PolygonForge.jsx`, `honeycomb` / `flag-star`) — α held by the stretch engine with the handle drawn as the NEXT image on
+  the circle; each « دوّر » is a trial; the run's outcome from `sidesFromCentral` / `normalize` (closes, spirals, star); α locked during a run;
+  advanced chains three stages (angle, radius from the tips' distance, branches).
+- **`lamp-ring`** (`LampRing.jsx`, `flower-bed`) — one scene in three phases (by hand → by rotation → the distance), the second opened by the
+  student; refusal kinds `handUnequal`, `overshoot`, `ringOpen`, `formulaKo` from `circleGaps` / `ringByRotation`; the rotation angle is held
+  through the position of the SECOND post, not a dial, so the lab does not converge with `polygon-forge` (MANIPULATION_DNA §12).
+
 ## 2terdecies. The vector laboratories (units 11–12, 2026-10-04)
 
 Every verdict comes from `packages/core/arithmetic/vectors.js` (`relation`, `simplifyNamed`, `isParallelogram`, `midpoint`, `distance`,

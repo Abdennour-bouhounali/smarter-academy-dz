@@ -73,6 +73,11 @@ import { ORACLE as ORACLE_HISAB_MURAKKIBATAY } from './practice-oracle/hisab-mur
 import { ORACLE as ORACLE_MUNTASAF_MASAFA } from './practice-oracle/muntasaf-masafa.mjs';
 import { ORACLE as ORACLE_ITHBAT_KHAWAS } from './practice-oracle/ithbat-khawas-maalam.mjs';
 import { ORACLE as ORACLE_WADIYA_MAALAM } from './practice-oracle/wadiya-idmajiya-maalam.mjs';
+import { ORACLE as ORACLE_MAFHUM_DAWARAN } from './practice-oracle/mafhum-dawaran.mjs';
+import { ORACLE as ORACLE_KHAWAS_DAWARAN } from './practice-oracle/khawas-dawaran.mjs';
+import { ORACLE as ORACLE_ZAWIYA_MUHITIYA } from './practice-oracle/zawiya-muhitiya.mjs';
+import { ORACLE as ORACLE_MUDALAAT_MUNTAZAMA } from './practice-oracle/mudalaat-muntazama.mjs';
+import { ORACLE as ORACLE_WADIYA_DAWARAN } from './practice-oracle/wadiya-idmajiya-dawaran.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice/4am');
 
@@ -978,6 +983,11 @@ const ORACLE = {
   ...ORACLE_MUNTASAF_MASAFA,
   ...ORACLE_ITHBAT_KHAWAS,
   ...ORACLE_WADIYA_MAALAM,
+  ...ORACLE_MAFHUM_DAWARAN,
+  ...ORACLE_KHAWAS_DAWARAN,
+  ...ORACLE_ZAWIYA_MUHITIYA,
+  ...ORACLE_MUDALAAT_MUNTAZAMA,
+  ...ORACLE_WADIYA_DAWARAN,
 };
 
 /**
