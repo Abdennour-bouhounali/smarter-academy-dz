@@ -7,7 +7,7 @@
 > found it (root `CLAUDE.md`, Documentation Synchronization Rule).
 
 The platform is Arabic-first (ar-DZ, RTL) and follows the Algerian curriculum.
-The live content is thirteen 4AM textbook units, starting under
+The live content is fourteen 4AM textbook units, starting under
 `apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/` — unit 1 « الأعداد
 الطبيعيّة والأعداد النّاطقة » (`aadad-tabiiya-natiqa/`, 9 lessons) and unit 2
 « الحساب على الجذور » (`hisab-judhur/`, 5 lessons + a synthesis, 2026-09-30; textbook
@@ -35,7 +35,10 @@ brief and shared-file lock kept next to it) and units 11 « الأشعة وال�
 and checked by `docs/sources/4am/unit11|unit12/build-extraction.py`, exact vectors `packages/core/arithmetic/vectors.js`, one authors' brief
 and lock for both in `docs/sources/4am/unit11/`) and unit 13 « الدوران - الزوايا - المضلّعات المنتظمة » (`handasa/dawaran-mudalaat/`, 4 lessons +
 a synthesis, 2026-10-04, the fifth unit of « ميدان الهندسة »; extraction generated and checked by `docs/sources/4am/unit13/build-extraction.py`,
-exact rotations, inscribed angles and regular polygons `packages/core/arithmetic/rotation.js`, brief and lock in `docs/sources/4am/unit13/`) — the **only** lesson
+exact rotations, inscribed angles and regular polygons `packages/core/arithmetic/rotation.js`, brief and lock in `docs/sources/4am/unit13/`) and unit 14
+« الهندسة في الفضاء » (`handasa/handasa-fada/`, 4 lessons + a synthesis, 2026-10-05, the sixth unit of « ميدان الهندسة » and the first in space;
+extraction `docs/sources/4am/unit14/build-extraction.py`, exact maths `packages/core/arithmetic/space.js`, figures `SpaceFigure`, live 3D labs on
+`lessons/common/manipulations/space/stage3d/`, brief and lock in `docs/sources/4am/unit14/`) — the **only** lesson
 content in the repository. The
 French-era lessons (`lessons/college/`, `lessons/lycee/`), their practice
 content, specs, e2e scripts, French-only engines and the French reference

@@ -192,6 +192,19 @@ export const VISUAL_THEMES = Object.freeze({
   'flag-star': { kind: 'objects', shows: 'نجمة العلم الجزائري ترسم على لوحة مشجعين' },
   honeycomb: { kind: 'objects', shows: 'خلايا خلية نحل في القبائل' },
   'flower-bed': { kind: 'objects', shows: 'حوض أزهار دائري وأعمدة إنارة في حديقة عمومية' },
+  // Unité 14 « الهندسة في الفضاء » (2026-10-05) :
+  //   glass-globe      une boule lumineuse RGB de chambre de gamer : la كرة creuse (verre) face à la جلّة pleine
+  //   shot-put         le lancer du poids (الجلّة) d'une athlète algérienne au stade : la boule PLEINE
+  //   boufarik-orange  une orange de Boufarik épluchée : sa peau couvre quatre disques (مساحة الكرة)
+  //   3d-printer       l'imprimante 3D du fablab du lycée : chaque couche imprimée est une SECTION plane du solide
+  //   voxel-blocks     des blocs de construction d'un jeu sur téléphone : agrandir un pavé cube par cube (k, k², k³)
+  //   beach-bucket     le seau de plage (tronc de cône) sur le sable de Tipaza : l'eau qu'il contient (أدمج تعلّماتي)
+  'glass-globe': { kind: 'objects', shows: 'كرة زجاجية مضيئة في غرفة ألعاب' },
+  'shot-put': { kind: 'people', shows: 'رمي الجلة في ملعب لألعاب القوى' },
+  'boufarik-orange': { kind: 'objects', shows: 'برتقالة من بوفاريك تقشّر قشرتها' },
+  '3d-printer': { kind: 'objects', shows: 'طابعة ثلاثية الأبعاد في نادي العلوم تطبع مجسما طبقة بعد طبقة' },
+  'voxel-blocks': { kind: 'objects', shows: 'مكعبات بناء في لعبة على الهاتف' },
+  'beach-bucket': { kind: 'objects', shows: 'دلو رمل على شاطئ تيبازة' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

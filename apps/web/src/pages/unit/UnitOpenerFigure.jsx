@@ -50,6 +50,10 @@ const FIGURES = {
   // p. 151 — « نجمة العلم الجزائري » : le manuel montre la PHOTO du drapeau ; dessinée par la leçon 4 (mudalaat-muntazama)
   // qui porte le تحدّ — le drapeau seul (moitié verte, moitié blanche, croissant et étoile rouges), ni cercle, ni 72°, ni
   // rayon (c'est la question).
+  // p. 163 — « يُمثّل الشكل المقابل دلوًا فيه ماء » : le seau en tronc de cône, son eau et les cotes du manuel (40 / 30 / 7 / 28)
+  // — dessiné par la synthèse (wadiya-idmajiya-fada) qui porte le تحدّ ; ni le rayon de la surface, ni le sommet, ni le volume
+  // (c'est la question).
+  'handasa-fada:challenge': () => import('../../lessons/moyen/4am/handasa/handasa-fada/wadiya-idmajiya-fada/components/BucketFigure.jsx'),
   'dawaran-mudalaat:challenge': () => import('../../lessons/moyen/4am/handasa/dawaran-mudalaat/mudalaat-muntazama/components/FlagStarFigure.jsx'),
 };
 

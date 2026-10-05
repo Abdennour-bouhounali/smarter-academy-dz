@@ -2151,5 +2151,309 @@
     "relatedLearningPoints": [
       "4am_khawas-dawaran_P2"
     ]
+  },
+  "MISC-KURA-JULLA": {
+    "label": "الخلط بين الكرة والجلة",
+    "explanation": "الكرة سطح أجوف: نقطها تحقق $OM = R$ فقط؛ الجلة مجسم مملوء: نقطها تحقق $OM \\le R$. نقطة داخلية تنتمي إلى الجلة ولا تنتمي إلى الكرة.",
+    "relatedLearningPoints": [
+      "4am_kura-julla_P1"
+    ]
+  },
+  "MISC-KURA-QUTR": {
+    "label": "الخلط بين القطر ونصف القطر",
+    "explanation": "القطر يساوي $2R$؛ نصف القطر هو المسافة بين المركز ونقطة من الكرة.",
+    "relatedLearningPoints": [
+      "4am_kura-julla_P2"
+    ]
+  },
+  "MISC-KURA-DAIRA-KUBRA": {
+    "label": "دائرة كبرى لا تمر بالمركز",
+    "explanation": "الدائرة الكبرى مركزها مركز الكرة ونصف قطرها $R$؛ كل دائرة أخرى من الكرة دائرة صغرى نصف قطرها أصغر من $R$.",
+    "relatedLearningPoints": [
+      "4am_kura-julla_P2",
+      "4am_kura-julla_P3"
+    ]
+  },
+  "MISC-KURA-MASAFA": {
+    "label": "حكم على الانتماء دون حساب المسافة",
+    "explanation": "لمعرفة موقع نقطة نقارن المسافة $OM$ بنصف القطر $R$ (أو $OM^2$ بـ $R^2$)، لا نكتفي بالنظر إلى الرسم.",
+    "relatedLearningPoints": [
+      "4am_kura-julla_P1",
+      "4am_kura-julla_P4"
+    ]
+  },
+  "MISC-MISAHA-DAIRA": {
+    "label": "مساحة القرص بدل مساحة الكرة",
+    "explanation": "مساحة الكرة $4\\pi R^2$ أي أربعة أضعاف مساحة الدائرة الكبرى $\\pi R^2$.",
+    "relatedLearningPoints": [
+      "4am_misaha-hajm-kura_P1"
+    ]
+  },
+  "MISC-MISAHA-MUHIT": {
+    "label": "محيط الدائرة بدل المساحة",
+    "explanation": "$2\\pi R$ طول (محيط الدائرة الكبرى) وليست مساحة؛ المساحة تقاس بوحدة مربعة.",
+    "relatedLearningPoints": [
+      "4am_misaha-hajm-kura_P1"
+    ]
+  },
+  "MISC-MISAHA-QUTR": {
+    "label": "التعويض بالقطر بدل نصف القطر",
+    "explanation": "القانونان $4\\pi R^2$ و $\\frac{4}{3}\\pi R^3$ يستعملان نصف القطر؛ إن أعطي القطر نقسمه على $2$ أولا.",
+    "relatedLearningPoints": [
+      "4am_misaha-hajm-kura_P1",
+      "4am_misaha-hajm-kura_P2"
+    ]
+  },
+  "MISC-HAJM-QUWA": {
+    "label": "أس خاطئ في الحجم",
+    "explanation": "حجم الجلة $\\frac{4}{3}\\pi R^3$: نصف القطر مرفوع إلى القوة $3$ (الحجم بوحدة مكعبة).",
+    "relatedLearningPoints": [
+      "4am_misaha-hajm-kura_P2"
+    ]
+  },
+  "MISC-HAJM-MUAMIL": {
+    "label": "معامل خاطئ في حجم الجلة",
+    "explanation": "المعامل هو $\\frac{4}{3}$ وليس $\\frac{3}{4}$ ولا $4$.",
+    "relatedLearningPoints": [
+      "4am_misaha-hajm-kura_P2"
+    ]
+  },
+  "MISC-TADWIR": {
+    "label": "تدوير خاطئ",
+    "explanation": "ندوّر في آخر الحساب وإلى الرتبة المطلوبة (الجزء من عشرة أو من مائة)، والقيمة المضبوطة تبقى بدلالة $\\pi$.",
+    "relatedLearningPoints": [
+      "4am_misaha-hajm-kura_P3"
+    ]
+  },
+  "MISC-WAHDA": {
+    "label": "وحدة قياس خاطئة",
+    "explanation": "الطول بـ $\\mathrm{cm}$، المساحة بـ $\\mathrm{cm}^2$، الحجم بـ $\\mathrm{cm}^3$.",
+    "relatedLearningPoints": [
+      "4am_misaha-hajm-kura_P1",
+      "4am_misaha-hajm-kura_P2"
+    ]
+  },
+  "MISC-MAQTA-TARH": {
+    "label": "نصف قطر المقطع $R - h$",
+    "explanation": "نصف قطر مقطع الكرة يحسب بخاصية فيثاغورس: $r = \\sqrt{R^2 - h^2}$، وليس $R - h$.",
+    "relatedLearningPoints": [
+      "4am_maqati-mustawiya_P1"
+    ]
+  },
+  "MISC-MAQTA-JAM": {
+    "label": "جمع المربعين بدل طرحهما",
+    "explanation": "في المثلث القائم الذي وتره نصف قطر الكرة: $r^2 = R^2 - h^2$ وليس $R^2 + h^2$.",
+    "relatedLearningPoints": [
+      "4am_maqati-mustawiya_P1"
+    ]
+  },
+  "MISC-MAQTA-MUMAS": {
+    "label": "مستو بعيد يقطع الكرة",
+    "explanation": "إذا كان $h > R$ فالمستوي لا يقطع الكرة، وإذا كان $h = R$ فهو مماس لها في نقطة.",
+    "relatedLearningPoints": [
+      "4am_maqati-mustawiya_P1"
+    ]
+  },
+  "MISC-MAQTA-SHAKL": {
+    "label": "طبيعة مقطع خاطئة",
+    "explanation": "مقطع أسطوانة الدوران بمستو موازٍ للمحور مستطيل وبمستو موازٍ للقاعدة دائرة؛ مقطع بلاطة قائمة بمستو موازٍ لوجه أو لحرف مستطيل.",
+    "relatedLearningPoints": [
+      "4am_maqati-mustawiya_P2",
+      "4am_maqati-mustawiya_P3"
+    ]
+  },
+  "MISC-MAQTA-BUUD": {
+    "label": "أبعاد مقطع البلاطة",
+    "explanation": "المقطع الموازي لوجه له نفس بعدي هذا الوجه؛ المقطع الموازي لحرف أحد بعديه طول هذا الحرف.",
+    "relatedLearningPoints": [
+      "4am_maqati-mustawiya_P2"
+    ]
+  },
+  "MISC-MAQTA-HARAM": {
+    "label": "مقطع الهرم بنفس أبعاد القاعدة",
+    "explanation": "مقطع الهرم أو المخروط بمستو موازٍ للقاعدة تصغير للقاعدة نسبته $k = \\frac{SE}{SA}$.",
+    "relatedLearningPoints": [
+      "4am_maqati-mustawiya_P4"
+    ]
+  },
+  "MISC-TAKBIR-MISAHA-K": {
+    "label": "المساحة تضرب في $k$",
+    "explanation": "في تكبير أو تصغير نسبته $k$ تضرب المساحات في $k^2$ وليس في $k$.",
+    "relatedLearningPoints": [
+      "4am_takbir-tasghir_P1"
+    ]
+  },
+  "MISC-TAKBIR-HAJM-K": {
+    "label": "الحجم يضرب في $k$ أو $k^2$",
+    "explanation": "في تكبير أو تصغير نسبته $k$ تضرب الحجوم في $k^3$.",
+    "relatedLearningPoints": [
+      "4am_takbir-tasghir_P1",
+      "4am_takbir-tasghir_P2"
+    ]
+  },
+  "MISC-TAKBIR-ITTIJAH": {
+    "label": "خلط التكبير بالتصغير",
+    "explanation": "إذا كان $k > 1$ فهو تكبير، وإذا كان $0 < k < 1$ فهو تصغير؛ النسبة $k$ = طول في المجسم الناتج ÷ الطول الموافق في الأصلي.",
+    "relatedLearningPoints": [
+      "4am_takbir-tasghir_P1"
+    ]
+  },
+  "MISC-TAKBIR-JAM": {
+    "label": "إضافة عدد بدل الضرب",
+    "explanation": "التكبير يضرب كل الأطوال في نفس العدد $k$، لا يضيف نفس الطول إلى كل بعد.",
+    "relatedLearningPoints": [
+      "4am_takbir-tasghir_P1",
+      "4am_takbir-tasghir_P2"
+    ]
+  },
+  "MISC-MABTUR-FARQ": {
+    "label": "حجم المخروط المبتور بالفرق الخاطئ",
+    "explanation": "حجم المخروط المبتور = حجم المخروط الكبير − حجم المخروط الصغير، والصغير تصغير للكبير حجمه $k^3$ مرة حجم الكبير.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-fada_P3"
+    ]
+  },
+  "MISC-MABTUR-TALIS": {
+    "label": "نصف قطر سطح الماء بالمتوسط",
+    "explanation": "نصف قطر سطح الماء يحسب بخاصية طالس في المقطع المحوري، لا بمتوسط نصفي قطري القاعدتين إلا إذا كان الماء في المنتصف.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-fada_P2",
+      "4am_wadiya-idmajiya-fada_P3"
+    ]
+  },
+  "MISC-SAA-WAHDA": {
+    "label": "تحويل السعة",
+    "explanation": "$1\\,\\mathrm{L} = 1\\,\\mathrm{dm}^3 = 1000\\,\\mathrm{cm}^3$.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-fada_P3"
+    ]
+  },
+  "MISC-MABTUR-THULTH": {
+    "label": "نسيان المعامل $\\frac{1}{3}$ في حجم المخروط",
+    "explanation": "حجم المخروط $\\frac{1}{3}\\pi r^2 h$ : ثلث حجم الأسطوانة التي لها نفس القاعدة ونفس الارتفاع.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-fada_P3"
+    ]
+  },
+  "MISC-MABTUR-RAS": {
+    "label": "خلط بعد الرأس عن القاع بارتفاع المجسم",
+    "explanation": "في المقطع المحوري $\\frac{SO}{SO_1} = \\frac{r}{R}$ : $SO$ بعد الرأس عن القاعدة الصغرى، و $SO_1 = SO + H$ ، وكلاهما غير ارتفاع المخروط المبتور $H$ .",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-fada_P2",
+      "4am_wadiya-idmajiya-fada_P3"
+    ]
+  },
+  "MISC-MABTUR-SHAKL": {
+    "label": "خلط المخروط المبتور بالأسطوانة أو بالمخروط",
+    "explanation": "المخروط المبتور جزء من مخروط بين قاعدته ومستو مواز لها: قاعدتاه دائرتان مختلفتا نصف القطر، فليس أسطوانة ولا مخروطا.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-fada_P2"
+    ]
+  },
+  "MISC-MABTUR-QIRAA": {
+    "label": "قراءة خاطئة لأبعاد الشكل",
+    "explanation": "نميّز ارتفاع المجسم من عمق الماء ومن بعد الماء عن الحافة: سهمان متتاليان على الشكل يُجمعان.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-fada_P2"
+    ]
+  },
+  "MISC-MURAKKAB-NISF": {
+    "label": "نصف الجلة كجلة كاملة",
+    "explanation": "حجم نصف جلة نصف حجم الجلة $\\frac{2}{3}\\pi R^3$ ، ومساحة نصف كرة $2\\pi R^2$ ؛ ونعدّ كل جزء من المجسم المركب مرة واحدة.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-fada_P1"
+    ]
+  },
+  "MISC-MISAHA-JADHR": {
+    "label": "نسيان الجذر التربيعي",
+    "explanation": "من $4\\pi R^2 = k\\pi$ نجد $R^2 = \\frac{k}{4}$ ، ثم $R = \\sqrt{\\frac{k}{4}}$ : العدد $\\frac{k}{4}$ هو مربع نصف القطر لا نصف القطر.",
+    "relatedLearningPoints": [
+      "4am_misaha-hajm-kura_P1"
+    ]
+  },
+  "MISC-HAJM-JADHR": {
+    "label": "نسيان الجذر التكعيبي",
+    "explanation": "من $\\frac{4}{3}\\pi R^3 = k\\pi$ نجد $R^3 = \\frac{3k}{4}$ ، ثم نبحث عن العدد الذي مكعّبه $\\frac{3k}{4}$ : العدد $\\frac{3k}{4}$ نفسه هو مكعّب نصف القطر لا نصف القطر.",
+    "relatedLearningPoints": [
+      "4am_misaha-hajm-kura_P2"
+    ]
+  },
+  "MISC-MISAHA-RUB": {
+    "label": "نسيان القسمة على 4",
+    "explanation": "مساحة الكرة $4\\pi R^2$ لا $\\pi R^2$ : نقسم العدد $k$ على $4$ قبل أخذ الجذر، $R = \\sqrt{\\frac{k}{4}}$ .",
+    "relatedLearningPoints": [
+      "4am_misaha-hajm-kura_P1"
+    ]
+  },
+  "MISC-KURA-INTIMA": {
+    "label": "نقطة من الكرة ليست من الجلة",
+    "explanation": "الجلة هي النقط M حيث $OM \\le R$ : تشمل الكرة ($OM = R$) وكل ما بداخلها، فكل نقطة من الكرة هي نقطة من الجلة.",
+    "relatedLearningPoints": [
+      "4am_kura-julla_P1"
+    ]
+  },
+  "MISC-KURA-WATAR": {
+    "label": "قطعة طرفاها على الكرة تُعدّ قطرا",
+    "explanation": "القطر قطعة طرفاها على الكرة ومنتصفها المركز O، وطوله $2R$ ؛ قطعة لا تمر بـ O طرفاها على الكرة أقصر من القطر.",
+    "relatedLearningPoints": [
+      "4am_kura-julla_P2"
+    ]
+  },
+  "MISC-KURA-TAMTHIL": {
+    "label": "قاعدة الخط المتقطّع معكوسة أو منسية",
+    "explanation": "في تمثيل الكرة: الكفاف دائرة كبرى، والدائرة الكبرى الأخرى شكل بيضوي جزؤه الأمامي بخط مستمر والخلفي بخط متقطّع.",
+    "relatedLearningPoints": [
+      "4am_kura-julla_P3"
+    ]
+  },
+  "MISC-KURA-MURABBA": {
+    "label": "جمع الإحداثيات بدل مربعاتها",
+    "explanation": "في معلم متعامد ومتجانس مبدؤه O: $OM^2 = x^2 + y^2 + z^2$ (فيثاغورس مرتين)، ثم نقارن $OM^2$ بـ $R^2$ لا بـ R.",
+    "relatedLearningPoints": [
+      "4am_kura-julla_P4"
+    ]
+  },
+  "MISC-KURA-MUHIT": {
+    "label": "محيط الدائرة الكبرى دون π",
+    "explanation": "الدائرة الكبرى نصف قطرها R، محيطها $2\\pi R$ ومساحة القرص الذي تحدّه $\\pi R^2$ : لا ننسى العدد $\\pi$.",
+    "relatedLearningPoints": [
+      "4am_kura-julla_P2"
+    ]
+  },
+  "MISC-MAQTA-MAJMU": {
+    "label": "الوتر مجموع الضلعين",
+    "explanation": "في المقطع الموازي لحرف، البعد MN وتر مثلث قائم: $MN^2 = CM^2 + CN^2$ ، وليس $MN = CM + CN$ .",
+    "relatedLearningPoints": [
+      "4am_maqati-mustawiya_P2"
+    ]
+  },
+  "MISC-MAQTA-NISBA": {
+    "label": "نسبة التصغير من القاعدة",
+    "explanation": "مقطع الهرم أو المخروط بمستو موازٍ للقاعدة تصغير لها بنسبة $k = \\frac{SE}{SA}$ تُقاس من الرأس S، وليس $\\frac{EA}{SA}$ .",
+    "relatedLearningPoints": [
+      "4am_maqati-mustawiya_P4"
+    ]
+  },
+  "MISC-MAQTA-NISF": {
+    "label": "نصف الوتر بدل الوتر",
+    "explanation": "عرض مقطع أسطوانة بمستو موازٍ لمحورها وتر كامل: $2\\sqrt{r^2 - d^2}$ ؛ و $\\sqrt{r^2 - d^2}$ نصفه فقط.",
+    "relatedLearningPoints": [
+      "4am_maqati-mustawiya_P3"
+    ]
+  },
+  "MISC-TAKBIR-BUUD": {
+    "label": "خلط عدد أبعاد المقدار",
+    "explanation": "الطول بعد واحد فيُضرب في $k$ ، والمساحة بعدان فتُضرب في $k^2$ ، والحجم ثلاثة أبعاد فيُضرب في $k^3$ ؛ لا نضرب طولا في $k^2$ ولا مساحة في $k^3$ .",
+    "relatedLearningPoints": [
+      "4am_takbir-tasghir_P1",
+      "4am_takbir-tasghir_P2"
+    ]
+  },
+  "MISC-TAKBIR-JADHR": {
+    "label": "نسبة المساحات أو الحجوم مكان k",
+    "explanation": "نسبة مساحتين تساوي $k^2$ فنأخذ جذرها التربيعي، ونسبة حجمين تساوي $k^3$ فنبحث عن العدد الذي مكعّبه هذه النسبة؛ لا نأخذ النسبة نفسها، ولا نقسمها على 2 أو على 3.",
+    "relatedLearningPoints": [
+      "4am_takbir-tasghir_P1"
+    ]
   }
 }

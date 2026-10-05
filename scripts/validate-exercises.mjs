@@ -29,6 +29,7 @@ import { parseAffineAnswer } from '../packages/core/practice/affineCanonical.js'
 import { parseInterval } from '../packages/core/practice/intervalCompare.js';
 import { SUPPORTED_ANSWER_TYPES, parseIntegerSet, evaluateAnswer, isSuccessOutcome } from '../packages/core/practice/answerEvaluator.js';
 import { validateGeoFigure } from '../apps/web/src/lessons/common/components/geoFigure.js';
+import { validateSpaceFigure } from '../apps/web/src/lessons/common/components/spaceFigure.js';
 
 const argv = process.argv.slice(2);
 const STRICT = argv.includes('--strict');
@@ -470,7 +471,8 @@ function validateExercise(file, data, ctx) {
   }
   checkVisualSize(data.statement?.visual, where);
   if (data.statement?.figure !== undefined) {
-    for (const e of validateGeoFigure(data.statement.figure)) err(where, `statement.figure : ${e}`);
+    const validateFigure = data.statement.figure?.kind === 'space' ? validateSpaceFigure : validateGeoFigure;
+    for (const e of validateFigure(data.statement.figure)) err(where, `statement.figure : ${e}`);
   }
   if (data.statement?.support && !SUPPORT_LABS.has(data.statement.support.lab)) {
     err(where, `statement.support.lab « ${data.statement.support.lab} » hors du registre fermé`);

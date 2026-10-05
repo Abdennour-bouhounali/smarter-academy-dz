@@ -118,8 +118,11 @@ describe('catalogue algérien (dzCourseLevels)', () => {
     for (const c of ownerDomains) expect(programme4am.domains.some((d) => d.id === c.id), c.id).toBe(false);
   });
 
-  it('porte, au mot près, les sujets du programme des domaines montrés — et le programme garde ses 28', () => {
-    expect(sourceTopics).toHaveLength(28);
+  it('porte, au mot près, les sujets du programme des domaines montrés — et le programme garde ses 29', () => {
+    // 28 transcrits le 2026-09-16 + « الهندسة في الفضاء » (unité 14), ajouté à la demande du propriétaire le 2026-10-05 et
+    // DÉCLARÉ dans le fichier (`addedBy`, `addedOn`, `note`) — jamais un ajout silencieux.
+    expect(sourceTopics).toHaveLength(29);
+    expect(sourceTopics.filter((t) => t.addedBy).map((t) => t.id)).toEqual(['handasa_fada']);
     const catalogueTopics = grade4am.chapters.flatMap((c) => c.topics);
     expect(catalogueTopics).toHaveLength(domainsWithLessons.flatMap((d) => d.topics).length);
 

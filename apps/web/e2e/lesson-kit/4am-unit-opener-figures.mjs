@@ -21,6 +21,7 @@ const UNITS = [
   [H, 'hisab-muthallathat', ['challenge']],
   [H, 'ashia-insihab', ['challenge']],
   [H, 'dawaran-mudalaat', ['challenge']],
+  [H, 'handasa-fada', ['challenge']],
 ];
 // Unité 10 : « اعتمادا على الشكل » renvoie aussi à une figure ; unité 11 : « (الشكل) » entre parenthèses.
 const REFERS = /المقابل|نظم العمل في جدول|على الشكل|\(الشكل\)/;

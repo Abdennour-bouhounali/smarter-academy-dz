@@ -475,6 +475,38 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'نوزّع n نقطة بانتظام على دائرة: الزاوية المركزية 360°/n ، والمسافة بين نقطتين متتاليتين 2r·sin(180°/n) بالمثلث القائم',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // Unité 14 « الهندسة في الفضاء » (2026-10-05) — calcul exact : packages/core/arithmetic/space.js ; scène 3D commune :
+  // lessons/common/manipulations/space/stage3d/ (three.js, repli SpaceFigure).
+  'sphere-probe': {
+    // LA SONDE : l'élève déplace un point M dans l'espace autour du centre O ; la كرة (surface creuse) ne l'accepte que si
+    // OM = R, la جلّة (boule pleine) dès que OM ≤ R (comparaison exacte de OM² et R²) ; puis un plan par O découpe un grand cercle.
+    shows: 'الكرة التي مركزها O ونصف قطرها R هي مجموعة النقط M من الفضاء حيث OM = R ، والجلة هي مجموعة النقط M حيث OM ≤ R ، والدائرة الكبرى مركزها O ونصف قطرها R',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'orange-peel': {
+    // ARCHIMÈDE ET L'ORANGE : l'élève règle R ; la peau de la sphère couvre exactement QUATRE disques de rayon R (4πR²) et l'eau
+    // de la boule remplit les DEUX TIERS du cylindre de hauteur 2R qui l'enveloppe (4/3·πR³).
+    shows: 'مساحة الكرة 4πR² تساوي المساحة الجانبية للأسطوانة التي تحيط بها ، وحجم الجلة 4/3·πR³ يساوي ثلثي حجم هذه الأسطوانة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'section-slicer': {
+    // LA TRANCHEUSE : l'élève monte un plan (ou le fait glisser parallèlement à une face, à une arête, à l'axe) à travers un
+    // solide ; la section se dessine et se mesure en direct — cercle de rayon √(R² − h²), rectangle, réduction de la base.
+    shows: 'مقطع كرة بمستو دائرة نصف قطرها √(R² − h²) ، ومقطع بلاطة قائمة أو أسطوانة دوران مستطيل أو دائرة ، ومقطع هرم أو مخروط بمستو موازٍ للقاعدة تصغير لها',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'scale-blocks': {
+    // LES BLOCS : l'élève règle le rapport k d'un pavé construit en cubes unités ; on COMPTE les arêtes (× k), les carrés d'une
+    // face (× k²), les cubes (× k³) — le piège « le volume est multiplié par k » est refusé par le décompte.
+    shows: 'في تكبير أو تصغير نسبته k تضرب الأطوال في k والمساحات في k² والحجوم في k³',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'bucket-fill': {
+    // LE SEAU (أدمج تعلّماتي, le تحدّ) : un tronc de cône rempli jusqu'à un niveau ; l'élève prolonge les génératrices jusqu'au
+    // sommet du cône (Thalès), lit le rapport k du petit cône et calcule le volume d'eau V = V_grand·(1 − k³).
+    shows: 'حجم مخروط مبتور = حجم المخروط الكبير − حجم المخروط الصغير ، والمخروط الصغير تصغير للكبير نسبته k فحجمه k³ مرة حجم الكبير',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

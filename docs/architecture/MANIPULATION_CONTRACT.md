@@ -389,6 +389,57 @@ the first most frequent value in cell order and #N/A when nothing repeats. **`gr
 (groups per class, `'2|2'`), `theme` (`quiz` | `school`); a tank's height is budgeted from the lesson viewport minus what the
 glance block MEASURES besides the tanks, so the block stays in the screen when the reading grows after the valve.
 
+## 2quindecies. The space laboratories and the 3D kit (unit 14, 2026-10-05)
+
+The first unit IN SPACE. Its labs show REAL solids — light, transparency, an orbit under the finger — and every one of them stands on ONE
+kit, `manipulations/space/stage3d/` (three.js, already a dependency of the Math Lab's 3D tool; never a second renderer):
+
+- **`SpaceStage`** (`spaceStage.js`, no React) — the conventions of the Math Lab scene (`features/mathlab/tools/geometry3d/solidScene.js`):
+  the mathematical frame has z UP and is translated to three.js (`toThree` (x, y, z) → (x, z, −y), `fromThree`), rendering is ON DEMAND (no
+  permanent loop; `animate(fn)` for a short animation), labels are DOM (`CSS2DRenderer`, LTR, `aria-hidden`), everything is disposed on unmount,
+  the background is TRANSPARENT (the lab's decor sits behind the canvas). The mathematical gesture in the scene is
+  **`draggable(obj, { start, move({ onPlane(n, p), onLine(p, d) }), end })`**: the orbit pauses while the student holds an object; the handler
+  projects the ray on a plane or a line of the mathematics (a point M on a horizontal plane, a cutting plane along an axis, a water level).
+- **`solids3d.js`** — factories in mathematical coordinates: `sphere` (glass surface: the كرة), `ball` (solid: the جلّة), `box`, `cylinder`,
+  `cone`, `frustum` (an open bucket), `pyramid`, `edges`, `line` / `segment` (dashed or not), `ring`, `disc`, `polygon` (a filled section),
+  `plane`, `dot`, `handle`.
+- **`Stage3D.jsx`** — the React bridge: `build(stage)` runs ONCE and returns `{ update(state), dispose? }`, each `state` change calls `update`
+  (never a new scene); the stage is focusable (arrows orbit the VIEW — an aid, not the mathematical gesture — and ↺ resets it,
+  `lesson.json › manipulation.stage3d`). **Until the WebGL scene exists the `fallback` fills the window** — a `SpaceFigure` of the same
+  situation: the server render of the render tests sees it (no WebGL in Node), a browser without WebGL keeps a readable lab, and the scene is
+  born in a LAYOUT effect, before the first paint (no flash). `prefersReducedMotion()` cuts the orbit damping; the labs read it for their
+  animations.
+- **Rules.** Every gesture of the scene ALSO exists as an HTML control (slider, stepper, buttons) with its keyboard — the canvas is never the
+  only way and the render test sees every control. The stage takes the finger on a phone (`touch-action: none`): it stays ≤ ~55 % of the
+  viewport height so the page can scroll around it (§8bis). A workspace mounts both levels → two scenes: never a global singleton. The unit
+  e2e (`e2e/lesson-kit/4am-handasa-fada.mjs`) fails when a glance block's `[data-stage3d]` is not live (`data-stage3d-ready`): a lab left on
+  its fallback is not the lab.
+- Verdicts and values come from `packages/core/arithmetic/space.js` (exact π-multiples, `ballPosition` comparing OM² and R² exactly,
+  `sphereSection`, `cuboidSection`, `cylinderSection`, `apexSection`, `scaleEffect`, `bucketWater`).
+
+Five types in `manipulations/space/` (glance `data-sp|op|sl|sb|bf-glance`, measured by `e2e/lesson-kit/4am-handasa-fada.mjs`, module 1, both
+levels, four viewports, scene live), each with a `logic/` module, its tests and a render test:
+
+- **`sphere-probe`** (`SphereProbe.jsx` + `sphereProbeScene.js`, `glass-globe` / `shot-put`) — the probe M on whole grid points: dragged on its
+  horizontal plane (`onPlane`), ▲/▼ for the height (`onLine`), x/y/z spinbuttons (a 3-tile row with one −/+ pair under 380 px); the scene
+  controller is a plain module bridged through a ref; verdicts by `ballPosition` naming the comparison; a كرة / جلّة toggle on the stage;
+  stage 2 (opened by the student): diameter [MM′] and the plane z = h with its live section.
+- **`orange-peel`** (`OrangePeel.jsx`, `boufarik-orange`) — R held in tenths (exact) by a rim handle; phases `peel | pour | book` (the last two
+  opened by the student, `book` advanced only); a prediction locked by the gesture; cards judged on DIMENSION before value (reusable: a length or
+  a volume is refused as an area even when the number coincides); the camera frames the bounding box of every possible disc so the view does
+  not jump.
+- **`section-slicer`** (`SectionSlicer.jsx`, `3d-printer`) — stages `sphere | cuboid-face | cuboid-edge | cylinder-base | cylinder-axis |
+  pyramid`, each variable an integer index on an exact fraction grid; predict-then-print with 3 cards, a refused card left as a dashed GHOST
+  layer; `sceneFigure(lab)` is the swept Stage3D fallback with a declutter pass; camera distance fitted to the aspect by a ResizeObserver in
+  `build`; per-world `Group.scale` so one camera serves every solid; a fixed-height verdict area so the stage never jumps.
+- **`scale-blocks`** (`ScaleBlocks.jsx`, `voxel-blocks`) — k held by a handle on the image's far corner (snapped list) and a stepper; the image
+  volume predicted then refuted by the count (InstancedMesh voxels revealed layer by layer through `stage.animate`, k³ same-colour blocks); the
+  « +1 cm » contrast; the stage host exposes the handle's projected screen position (`data-sb-handle`) so an e2e can drive the 3D drag;
+  narrow (< 380 px) and tiny (< 250 px) recipes.
+- **`bucket-fill`** (`BucketFill.jsx`, `beach-bucket`) — three phases opened by the student (level / apex / volume) with a back button on the
+  stage; the water and the apex S both dragged on the axis (`onLine`); the apex verdict from the exact reach r(a + H)/a against R; a flat
+  axial-section `MovablePanel` beside the 3D (affine magnification, said in its note); the camera reframes on release, never during the drag.
+
 ## 2quaterdecies. The rotation laboratories (unit 13, 2026-10-04)
 
 Five types in `manipulations/rotation/`, every verdict from `packages/core/arithmetic/rotation.js` (`imageCheck`, `arcAngles`, `vertexAngle`,

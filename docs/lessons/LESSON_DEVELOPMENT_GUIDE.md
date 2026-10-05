@@ -384,6 +384,37 @@ Unit-count assertions that read the real catalogue (`unitGrouping.test.js`, `fin
 - **Lead review by screenshots found what tests do not**: a stretch handle on a named point, a bidi-reversed « 0 × 50° = 0° » counter, a hub
   label under the image handle, crowded gap labels at a lab's start — sent back to the authors by message.
 
+**Unit 14 « الهندسة في الفضاء » (2026-10-05) — five authors on a seeded foundation, the FIRST unit in space — added:**
+
+- **A programme topic the owner's transcription did not have.** `programme_4am_2026_2027.json` had no space-geometry topic under
+  « ميدان الهندسة »; `handasa_fada` « الهندسة في الفضاء » was added at the owner's request and DECLARED in the file (`addedBy:
+  'owner_request'`, `addedOn`, `note`); `coursesData.test.js` counts 29 topics and names the only added one.
+- **One exact module for space**, `packages/core/arithmetic/space.js` (exported `space`) on `linear.js` fractions and `trigonometry.js`
+  surds: π-MULTIPLES `{ k, latex, number }` (exact AND rounded: 1372π/375 and 11,494), `ballPosition` (OM² vs R² compared exactly — every
+  « on / in / outside » verdict), sphere area / ball volume and their inverses, Archimedes' ratios, the familiar solids, the sections
+  (`sphereSection`, `cuboidSection`, `cylinderSection`, `apexSection`), `scaleEffect` / `scaled` / `ratioFrom` (k, k², k³, exact roots or
+  null), `bucketWater` (Thales + V_big(1 − k³)) — tested on every textbook number first.
+- **Figures in space: `SpaceFigure`** (`lessons/common/components/SpaceFigure.jsx` + `spaceFigure.js`, `kind: 'space'`): an orthographic
+  projection that dashes HIDDEN lines by computation (polyhedron edges by back faces, the back half of an equator, a cylinder's bottom rim,
+  contour generators of cones and frustums), dispatched by `ExerciseStatement` and `validate-exercises.mjs`; `spaceFigureQuality(fig)` = [] in
+  each lesson's `content/figures.test.js`; `segments[].labelOffset` added by the synthesis author.
+- **Live 3D labs on ONE kit** `lessons/common/manipulations/space/stage3d/` (three.js, already a dependency of the Math Lab's 3D tool):
+  `SpaceStage` (z-up maths ⟷ three.js, render on demand, DOM labels, `draggable` + `onPlane` / `onLine` as the in-scene gesture),
+  `solids3d.js` factories, `Stage3D.jsx` whose `fallback` (a SpaceFigure) fills the window until the WebGL scene exists — so the server render
+  of the render tests sees it. The unit e2e fails when a glance block's scene is not live (`data-stage3d-ready`). MANIPULATION_CONTRACT
+  §2quindecies.
+- **A scan with no exercises, no QCM, no situation** (pp. 163–169 only; the pyramid / cone sections and enlargement knowledge missing):
+  unit 7's recipe — declared `knowledge_formalization` / `interaction_generation` / `synthesis_generation` / `practice_generation`; the
+  synthesis's situation is the unit's تحدّ (the bucket), whose figure the unit page draws (`'handasa-fada:challenge'`).
+- **Readings and corrections** (extraction, 13 discrepancies): the تحدّ is 7 cm (rim → water) + 28 cm (water → bottom), so H = 35 and
+  V = 24388π/3 ≈ 25,54 L (the other reading kept in `answer.alternative`); act-1's photo is a pétanque boule, not a shot put; « حجم الكرة »
+  in the Archimedes text means الجلّة; act-3's stray « I »; act-5's F, G, H defined; know-3's missing « ب) »; فيثاغورس.
+- **Lessons learned**: `ManipulationShell` prints a lab TITLE raw (no bidi isolation) — write lab titles in words, never « 40 cm » or
+  « r = 4 »; judge a 3D lab on VIEWPORT screenshots (a full-page Playwright screenshot resizes and the on-demand canvas comes out empty);
+  a long-running dev server can keep serving a stale `packages/core/index.js` after a new export — restart it with a cleared
+  `node_modules/.vite`; a lock `replace` must take its old text from a fresh read, never from remembered line numbers (one author
+  overwrote a sibling's level pair and restored it).
+
 ### `routes.jsx` — the whole file
 
 ```jsx
@@ -690,6 +721,15 @@ piled on one another, labels colliding with other labels or points (unit 11 act-
 
 The rule holds everywhere a figure is drawn: modules, the final test, the practice bank (`statement.figure`),
 the unit page's تحدّ, and a lab's textbook level.
+
+**Figures in SPACE (unit 14, 2026-10-05).** A solid is never a GeoFigure: it is `SpaceFigure`
+(`lessons/common/components/SpaceFigure.jsx` + `spaceFigure.js`, `kind: 'space'`) — 3D points with z up, an orthographic
+`view { azimuth, elevation }`, `solids` (sphere + equator, polyhedron from faces — `cuboidPoints` / `cuboidFaces` name a pavé the
+textbook's way —, vertical cylinder / cone / frustum), `circles` (`on` a sphere: back half dashed), `planes`, `sections`, `segments`,
+`rightAngles`. Hidden lines are dashed BY COMPUTATION, as the textbook draws them (« الجزء الخلفي بخط متقطّع »). The same rules apply —
+analyse, redesign when needed (a plane seen edge-on: turn the view), big, measured by `spaceFigureQuality(fig)` = [] in
+`content/figures.test.js`. A flat figure inside a space problem (the right triangle OAM of a section, the axial section of a frustum
+for Thales) stays a GeoFigure.
 
 ---
 
@@ -1184,6 +1224,11 @@ foundation, the second geometry unit:
 | **`zawiya-muhitiya`** | `inscribed-angle` (`football`): the shooting angle — a BET before the reading, the striker held in polar coordinates and snapped to the circle, off-circle vertices refused with their changed measure, the other arc (180° − x); متقدم = act-4's stages (مزيان's equalities with the student's numbers, هوارية with O inside / outside the angle, ex-12's interior point as the half-sum of arcs via `rotation.vertexAngle`); a declared طريقة « من القوس إلى الزاوية »; know-4 and ex-12 corrected, ex-10 / ex-16 data stated |
 | **`mudalaat-muntazama`** | the تحدّ (the flag's star) as entry on `polygon-forge` (`honeycomb` / `flag-star`): the rotation angle held, each « دوّر » places the next vertex — the figure closes only when n·α = 360° (50° spirals with its reason, 144° makes a star); متقدم opens three stages (72°, R to 0,01 via sin 36°, the branches with a pentagon side refused); method-angle (108°) and ex-15 corrected; the unit page's `FlagStarFigure` |
 | **`wadiya-idmajiya-dawaran`** | the synthesis on its own lab `lamp-ring` (`flower-bed`): posts placed by hand and refused while the gaps differ, then one second post sets the rotation and each « دوّر » places the next image (the ring closes only when n·α = 360°), then the distance chosen by card (half-angle sine; equilateral for n = 6) against the arc, « d = r » and the unhalved angle; the extra after the rule is 12 posts so the final test's numbers (8 posts around an Oran roundabout, 5 m: 45°, ≈ 3,83 m) appear nowhere else |
+| **`kura-julla`** | unit 14 ENTRY on `sphere-probe` (`glass-globe` / `shot-put`): the hand holds a point M on whole grid points around a real 3D sphere (drag on its horizontal plane, ▲/▼ for the height, x/y/z spinbuttons); every claim judged EXACTLY by `space.ballPosition`, the refusal naming the comparison (« OB = √3 < 3 = R »); the كرة / جلّة toggle on the stage is act-1's contrast; at متقدم OM is never shown during the gesture; a second stage opened by the student: a diameter [MM′] (a chord refused), great and small circles with a plane z = h; know-1's egg-shaped figures redrawn |
+| **`misaha-hajm-kura`** | a lesson with NO textbook activity entered through the Archimedes introduction (declared duplicate), on `orange-peel` (`boufarik-orange`): the student predicts how many discs of radius R the peel covers (locked by the gesture; the peel overflows into red ghost discs or leaves one empty), then the juice of the ball poured into the wrapping cylinder stops at 2/3; cards judged on DIMENSION then value (the R = 3 « 36π cm² = 36π cm³ » trap); the book's rounding as a number of decimals; the method « القيمة المضبوطة ثم المدوّرة » and its reverse declared `knowledge_formalization` |
+| **`maqati-mustawiya`** | `section-slicer` (`3d-printer`): each printed layer is a plane section; the student holds the plane (the printer's nozzle dragged on `onLine` + an HTML rail) and PREDICTS each layer by card before it prints — a wrong card stays as a dashed ghost layer that misses the surface or sticks out of the solid (OM = √(h² + ρ²) written against R); the sphere's discovery needs a great circle, a small one and contact / nothing; the act-3/4/5 solids are tabs of ONE lab at متقدم; the missing pyramid / cone page declared `knowledge_formalization`; act-3 part 2 redrawn |
+| **`takbir-tasghir`** | `scale-blocks` (`voxel-blocks`): act-6's cuboid built in unit cubes; k held by a 3D handle on the image's far corner (snapped to a list) + a stepper; the image volume predicted (×k, ×k², ×k³) before « ابنِ » and refuted by the COUNT (each cube becomes a same-colour block of k³); the « +1 cm لكل حرف » contrast (6/5 ; 5/4 ; 4/3: not an enlargement); the missing knowledge and methods declared `knowledge_formalization`; act-5 as a duplicate (the pyramid's section = a reduction of ratio 3/4) |
+| **`wadiya-idmajiya-fada`** | the synthesis whose situation is the unit's تحدّ (the scan has no « أدمج تعلّماتي »): the frustum bucket on `bucket-fill` (`beach-bucket`) in three phases the student opens — the water level read from the drawing (7 cm from the BOTTOM refused), the apex S lowered until the generators pass through the rim (SO = 105, Thales in an axial-section `MovablePanel`), V = V₁(1 − k³) = 24388π/3 ≈ 25,54 L chosen by card against k and the mean-radius cylinder; QCM one per lesson, أتعمّق the reverse path (k³ → k, a melting ice cream), the final test a frappé glass in Oran |
 
 **Textbook misprints are CORRECTED, not only noted (owner decision, 2026-09-30).**
 The extraction keeps the book's verbatim `text` and adds a `correction`

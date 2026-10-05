@@ -420,6 +420,18 @@ textbook QCM with two or three correct options becomes ONE choice among combinat
 evaluator; `names: ['a', 'b']` for the textbook's (a ; b) and (d ; t)). New misconceptions: `MISC-JUMLA-*`,
 `MISC-TAWID-*`, `MISC-JAM-*`, `MISC-TAKHFID-NISBA` (`content/practice/misconceptions.json`).
 
+**Unit 14 « الهندسة في الفضاء » (2026-10-05) — figures in SPACE, values with π.** A `statement.figure` may be a figure of space:
+`{ kind: 'space', … }` is drawn by `SpaceFigure` (`lessons/common/components/SpaceFigure.jsx` + `spaceFigure.js`: 3D points with z up,
+an orthographic view, spheres with their equator, polyhedra from faces, vertical cylinders / cones / frustums, circles, planes, sections,
+segments — the textbook's convention: SEEN lines solid, HIDDEN lines dashed, computed from the view) and validated by `validateSpaceFigure`
+(`ExerciseStatement` and `validate-exercises.mjs` dispatch on `kind`); every bank figure passes `spaceFigureQuality(fig)`. A value « بدلالة π »
+is either a `choice` (36π vs 12π, 4π/3 …, distractors = the formula errors `MISC-MISAHA-*`, `MISC-HAJM-*`) or a `rational` asking the
+COEFFICIENT k of kπ, the statement saying so; a rounded area / volume is `rational` with the rounded key (unit 10's rule); an exact surd radius
+(√119/4, 2√3) is a `choice`. The oracle recomputes with `Math.PI` and its own formulas, never `packages/core/arithmetic/space.js`.
+Misconceptions `MISC-KURA-*`, `MISC-MISAHA-*`, `MISC-HAJM-*`, `MISC-MAQTA-*`, `MISC-TAKBIR-*`, `MISC-MABTUR-*`, `MISC-MURAKKAB-NISF`,
+`MISC-TADWIR`, `MISC-WAHDA`, `MISC-SAA-WAHDA` (each lesson's author added its own: the reverse calculations `MISC-MISAHA-JADHR` / `-RUB`,
+`MISC-HAJM-JADHR`, the ratio taken from the base `MISC-MAQTA-NISBA`, `MISC-TAKBIR-BUUD` / `-JADHR`, the forgotten ⅓ `MISC-MABTUR-THULTH`…).
+
 **Units 11–12 « الأشعة » (2026-10-04) — vectors in statements, components as pairs.** A `statement.figure` may carry
 `vectors` (arrows), `grid` (squared paper), `axes` (the repère), `arcs` (semicircles) and `circles`, and every bank figure passes `figureQuality(fig)` (no strip, no colliding label — the owner's
 figure rule, LESSON_DEVELOPMENT_GUIDE §5); a coordinate figure may instead be `visual` (CoordPlane `arrows`). A pair of components or of

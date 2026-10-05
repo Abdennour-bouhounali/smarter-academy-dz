@@ -561,6 +561,43 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { n: 4, r: 2 }, ...P },
     advanced: { numbers: { n: 6, r: 3, extra: 12 }, ...T('situation') },
   },
+  // Unité 14 « الهندسة في الفضاء » — paires PROVISOIRES semées par le lead (2026-10-05) ; chaque auteur les affine.
+  // LA SONDE (kura-julla, affinée par l'auteur) : مبتدئ (plateforme) = la lampe-globe de verre de rayon 3 et trois sondes à
+  // classer, A(1 ; 2 ; 2), B(1 ; 1 ; 1), C(2 ; 2 ; 2) — OM = 3, √3, 2√3 (sur / dans / hors), OM² lu en direct ; متقدم = le نشاط 1
+  // (r = 4) et l'exemple de معارف 1 : l'élève PLACE M sur la كرة, P dans la جلة, Q dehors sans lecture de OM pendant le geste
+  // (il la calcule), puis ouvre le قطر [MM′] et les دوائر كبرى / صغرى (plan z = h). Nœuds entiers de [−bound ; bound]³.
+  'sphere-probe': {
+    beginner: { numbers: { R: 3, bound: 4, probes: [[1, 2, 2], [1, 1, 1], [2, 2, 2]] }, ...P },
+    advanced: { numbers: { R: 4, bound: 5, tasks: ['surface', 'inside', 'outside', 'diameter', 'great-circle', 'small-circle'] }, ...T('act-1') },
+  },
+  // ARCHIMÈDE ET L'ORANGE (misaha-hajm-kura) : مبتدئ = une orange de rayon 3 cm (peau = 4 disques, 36π) ; متقدم = l'introduction
+  // d'Archimède (cylindre de hauteur 2R) puis l'exemple de معارف 2 (R = 1,4 cm : 24,63 cm² et 11,494 cm³).
+  'orange-peel': {
+    beginner: { numbers: { R: 3 }, ...P },
+    advanced: { numbers: { R: 5, example: '1,4', rounding: [2, 3] }, ...T('intro-archimedes') },
+  },
+  // LA TRANCHEUSE (maqati-mustawiya) — l'imprimante 3D du fablab dépose le solide couche par couche, chaque couche est une
+  // section plane. مبتدئ (plateforme) : une sphère de rayon 5, des couches au centimètre (h = 0 … 6) ; les marques 0, 3, 4, 5
+  // donnent les rayons entiers 5, 4, 3 et le contact. متقدم (le manuel) : le نشاط 2 (R = 3, x = OI au vingtième pour atteindre
+  // 0 ; 1,25 ; 2 ; 2,8 ; 3 — des rayons irrationnels √119/4, √5, √29/5), puis, ouverts par l'élève, la بلاطة 25 × 20 × 6 du
+  // نشاط 3 (parallèle à CBFG, puis à [CG] avec DM = 21, BN = 17), la أسطوانة r = 1,7, h = 6 du نشاط 4 (d = 0,8) et le هرم
+  // AB = 4, SE = 3/4 SA du نشاط 5 : plus de solides, des racines, et chaque prédiction sans marque d'aide.
+  'section-slicer': {
+    beginner: { numbers: { solids: ['sphere'], R: 5, step: 1, stops: [0, 3, 4, 5], start: 2 }, ...P },
+    advanced: { numbers: { solids: ['sphere', 'cuboid', 'cylinder', 'pyramid'], R: 3, step: '1/20', stops: [0, 1.25, 2, 2.8, 3], start: 1.5, foot: 'I', cuboid: { dims: [25, 20, 6], dm: 21, bn: 17 }, cylinder: { r: 1.7, h: 6, d: 0.8 }, pyramid: { side: 4, height: 6, ratio: '3/4' } }, ...T('act-2') },
+  },
+  // LES BLOCS (takbir-tasghir) : مبتدئ = un cube d'arête 1 agrandi k = 2, 3 (8, 27 cubes) ; متقدم = le نشاط 6 (pavé 5 × 4 × 3,
+  // réduction k = 3/5 : 3 ; 2,4 ; 1,8 ; 𝒱′ = 12,96 ; 𝒜′ = 33,84).
+  'scale-blocks': {
+    beginner: { numbers: { dims: [1, 1, 1], ks: [2, 3] }, ...P },
+    advanced: { numbers: { dims: [5, 4, 3], ks: ['3/5', 2] }, ...T('act-6') },
+  },
+  // LE SEAU (wadiya-idmajiya-fada) : مبتدئ = un gobelet tronc de cône (r 3, R 4, H 6) ; متقدم = le تحدّ (fond 30 cm, ouverture
+  // 40 cm ; lecture de l'extraction : 7 cm du bord à l'eau + 28 cm de l'eau au fond ⇒ H = 35, eau profonde de 28 cm, V = 24388π/3).
+  'bucket-fill': {
+    beginner: { numbers: { r: 3, R: 4, H: 6, depth: 6 }, ...P },
+    advanced: { numbers: { r: 15, R: 20, H: 35, depth: 28 }, ...T('challenge') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

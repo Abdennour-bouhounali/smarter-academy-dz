@@ -98,7 +98,15 @@
           "titleAr": "الانسحاب والشعاع",
           "namedPartsAr": ["مركبة شعاع", "مجموع شعاعين"]
         },
-        { "id": "dawaran_zawaya", "titleAr": "الدوران والزوايا" }
+        { "id": "dawaran_zawaya", "titleAr": "الدوران والزوايا" },
+        {
+          "id": "handasa_fada",
+          "titleAr": "الهندسة في الفضاء",
+          "namedPartsAr": ["الكرة والجلة", "مساحة الكرة وحجم الجلة", "المقاطع المستوية لمجسمات مألوفة", "التكبير والتصغير"],
+          "addedBy": "owner_request",
+          "addedOn": "2026-10-05",
+          "note": "Absent de la transcription fournie le 2026-09-16. Le propriétaire a demandé l'unité 14 « الهندسة في الفضاء » du manuel officiel (pp. 163–169) sous « ميدان الهندسة » ; le sujet est ajouté ici, DÉCLARÉ comme tel (addedBy / addedOn), avec l'intitulé de l'unité du manuel et ses parties (« سأتعلّم في هذا الباب »)."
+        }
       ]
     },
     {

@@ -81,6 +81,13 @@ Nothing below a line is fetched until the level above needs it.
 6. **Heavy engines stay behind their feature**: three.js, Excalidraw, mafs +
    MathLive, Nerdamer (via its facade) are only imported from their Math Lab
    tool or lesson module.
+   Since unit 14 « الهندسة في الفضاء » (2026-10-05) the lesson labs of space
+   import three.js through ONE kit, `lessons/common/manipulations/space/stage3d/`
+   (`SpaceStage`, `solids3d`, `Stage3D`), reached only from the lab components
+   that `manipulationRegistry.js` loads with `lazy()` — three.js lands in the
+   labs' chunk (shared with the Math Lab 3D tool), never in the entry. The
+   static figures of the same lessons (`SpaceFigure`) are SVG and import no
+   engine.
 7. **Data built by function calls at module top level is kept even when
    unused** (Rollup cannot prove the calls pure). Annotate with
    `/* @__PURE__ */` or move it out of product modules.

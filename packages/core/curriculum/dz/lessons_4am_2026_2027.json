@@ -3491,6 +3491,260 @@
       "difficulty": "صعب",
       "status": "available",
       "icon": "🌸"
+    },
+    {
+      "code": "kura-julla",
+      "sourceTopicId": "handasa_fada",
+      "chapterId": "handasa",
+      "unitId": "handasa-fada",
+      "order": 69,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "الكرة والجلة (مفهوم والتمثيل الهندسي)",
+      "description": "مدخل الوحدة: الكرة $\\mathcal{S}(O, R)$ سطح كروي أجوف (كل نقط الفضاء $M$ حيث $OM = R$) والجلة $\\mathcal{B}(O, R)$ مجسم كروي مملوء ($OM \\le R$)؛ عناصرهما (المركز، نصف القطر، القطر، الدوائر الكبرى والصغرى)، تمثيلهما في المستوي وتمثيل نقطة من كرة أو من جلة.",
+      "prerequisites": [
+        "مفاهيم الدائرة والقرص في الهندسة المستوية (المركز، نصف القطر، والقطر)",
+        "قواعد التمثيل بالمنظور متساوي القياس للأشكال ثنائية وثلاثية الأبعاد"
+      ],
+      "prerequisiteLessonCodes": [
+        "mudalaat-muntazama"
+      ],
+      "pointsToLearn": [
+        "التمييز بين مفهوم الكرة $\\mathcal{S}(O, R)$ كسطح كروي أجوف يضم جميع نقاط الفضاء التي تبعد بمسافة $OM = R$ عن المركز $O$، ومفهوم الجلة $\\mathcal{B}(O, R)$ كمجسم كروي مملوء يضم جميع نقاط الفضاء التي تبعد بمسافة $OM \\le R$",
+        "التعرف على عناصر الكرة والجلة الأساسية: المركز $O$، نصف القطر $R$، القطر $2R$، والدوائر الكبرى والصغرى",
+        "تمثيل الكرة والجلة هندسياً في المستوى باستعمال الدوائر الكبرى والخطوط البيضاوية المنحنية",
+        "تعيين وتمثيل موقع نقطة تنتمي للكرة أو داخل الجلة في المعلم الفضائي"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_mudalaat-muntazama_P1"
+        ],
+        "P2": [
+          "4am_kura-julla_P1"
+        ],
+        "P3": [
+          "4am_kura-julla_P2"
+        ],
+        "P4": [
+          "4am_kura-julla_P1",
+          "4am_kura-julla_P3"
+        ]
+      },
+      "textbookRef": {
+        "unit": 14,
+        "pages": {
+          "prep": 163,
+          "activity": 164,
+          "knowledge": 166,
+          "method": 167
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "سهل",
+      "status": "available",
+      "icon": "🔮"
+    },
+    {
+      "code": "misaha-hajm-kura",
+      "sourceTopicId": "handasa_fada",
+      "chapterId": "handasa",
+      "unitId": "handasa-fada",
+      "order": 70,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "مساحة الكرة وحجم الجلة",
+      "description": "اكتشاف أرخميدس (كرة داخل أسطوانة ارتفاعها $2R$) ثم حساب مساحة الكرة $\\mathcal{A} = 4\\pi R^2$ وحجم الجلة $\\mathcal{V} = \\frac{4}{3}\\pi R^3$، بقيمة مضبوطة بدلالة $\\pi$ أو مدوّرة إلى الجزء من عشرة أو من مائة.",
+      "prerequisites": [
+        "الحساب على القوى وقوانين حساب الحجوم والمساحات للمجسمات المألوفة (المكعب، متوازي المستطيلات، والأسطوانة)",
+        "قواعد التدوير والقيم المقربة والمضبوطة في الحساب العددي"
+      ],
+      "prerequisiteLessonCodes": [
+        "kura-julla"
+      ],
+      "pointsToLearn": [
+        "حساب المساحة الجانبية للكرة باستعمال القانون: $\\mathcal{A} = 4\\pi R^2$",
+        "حساب الحجم الداخلي للجلة باستعمال القانون: $\\mathcal{V} = \\frac{4}{3}\\pi R^3$",
+        "تطبيق قواعد التدوير إلى أجزاء العشرة والمائة للحصول على القيم التقريبية أو إبقاء القيم المضبوطة بدلالة $\\pi$"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_kura-julla_P2"
+        ],
+        "P2": [
+          "4am_kura-julla_P1"
+        ],
+        "P3": [
+          "4am_misaha-hajm-kura_P1",
+          "4am_misaha-hajm-kura_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 14,
+        "pages": {
+          "prep": 163,
+          "activity": 163,
+          "knowledge": 166
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🍊"
+    },
+    {
+      "code": "maqati-mustawiya",
+      "sourceTopicId": "handasa_fada",
+      "chapterId": "handasa",
+      "unitId": "handasa-fada",
+      "order": 71,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "المقاطع المستوية للمجسمات المألوفة (الكرة، البلاطة القائمة، أسطوانة الدوران، والهرم)",
+      "description": "نقطع مجسما بمستو ونتعرّف على طبيعة المقطع وأبعاده: مقطع كرة دائرة نصف قطرها $r = \\sqrt{R^2 - h^2}$، مقطع بلاطة قائمة مستطيل، مقطع أسطوانة دوران دائرة أو مستطيل، ومقطع هرم أو مخروط دوران بمستو موازٍ للقاعدة تصغير لها.",
+      "prerequisites": [
+        "خواص المجسمات الفضائية المألوفة وأوجهها وأحرفها",
+        "تطبيق خاصية فيثاغورس لحساب أطوال الأضلاع وأنصاف أقطار المقاطع الدائرية"
+      ],
+      "prerequisiteLessonCodes": [
+        "kura-julla"
+      ],
+      "pointsToLearn": [
+        "التعرف على طبيعة مقطع كرة بمستوى: وهو دائرة نصف قطرها $r = \\sqrt{R^2 - h^2}$ (حيث $h$ هو بعد المستوى عن المركز)",
+        "التعرف على المقاطع المستوية للبلاطة القائمة بمستوى موازٍ لأحد الأوجه أو الأحرف (وهو مستطيل)",
+        "التعرف على مقطع أسطوانة دوران بمستوى موازٍ للمحور (مستطيل) أو موازٍ للقاعدة (دائرة)",
+        "التعرف على مقطع هرم ومخروط دوران بمستوى موازٍ للقاعدة (تصغير للقاعدة)"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_kura-julla_P2",
+          "4am_kura-julla_P4"
+        ],
+        "P2": [
+          "4am_maqati-mustawiya_P1"
+        ],
+        "P3": [
+          "4am_maqati-mustawiya_P2"
+        ],
+        "P4": [
+          "4am_talis-hisab-atwal_P3"
+        ]
+      },
+      "textbookRef": {
+        "unit": 14,
+        "pages": {
+          "activity": 164,
+          "knowledge": 168,
+          "method": 169
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🔪"
+    },
+    {
+      "code": "takbir-tasghir",
+      "sourceTopicId": "handasa_fada",
+      "chapterId": "handasa",
+      "unitId": "handasa-fada",
+      "order": 72,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "التكبير والتصغير وأثره على المقادير الفضائية",
+      "description": "تكبير أو تصغير مجسم بنسبة $k$ (عدد موجب تماما): تضرب الأطوال في $k$ والمساحات في $k^2$ والحجوم في $k^3$؛ نحسب أبعاد ومساحة وحجم المجسم الناتج.",
+      "prerequisites": [
+        "التناسبية وتناسب الأطوال (خاصية طاليس)",
+        "قوانين حساب المساحات والحجوم للمجسمات الفضائية المألوفة"
+      ],
+      "prerequisiteLessonCodes": [
+        "maqati-mustawiya",
+        "talis-hisab-atwal"
+      ],
+      "pointsToLearn": [
+        "التعرف على أثر نسبة التكبير أو التصغير $k$ (عدد موجب تماماً) على الأبعاد الفضائية للمجسمات: تضرب الأطوال في النسبة $k$، تضرب المساحات في المربع $k^2$، تضرب الحجوم في المكعب $k^3$",
+        "حساب أبعاد ومساحات وحجوم مجسم ناتج عن تكبير أو تصغير لمجسم أصلي معطى"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_talis-hisab-atwal_P3",
+          "4am_maqati-mustawiya_P4"
+        ],
+        "P2": [
+          "4am_takbir-tasghir_P1",
+          "4am_misaha-hajm-kura_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 14,
+        "pages": {
+          "prep": 163,
+          "activity": 165
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🧊"
+    },
+    {
+      "code": "wadiya-idmajiya-fada",
+      "sourceTopicId": "handasa_fada",
+      "chapterId": "handasa",
+      "unitId": "handasa-fada",
+      "order": 73,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — ترييض وضعيات فضائية مركبة بتوظيف المقاطع والحجوم والتكبير والتصغير",
+      "description": "إدماج المعارف: وضعية مركبة (دلو على شكل مخروط مبتور فيه ماء، أوانٍ ومجسمات مقتطعة) تُحلّ بالمقاطع المستوية وخاصيتي طالس وفيثاغورس وقوانين الحجوم والتكبير والتصغير ($k^3$) — بالتحليل المنهجي (قراءة · تحليل · تنفيذ)، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه.",
+      "prerequisites": [
+        "التحكم الشامل في مفاهيم وقوانين الهندسة في الفضاء",
+        "مهارات الحساب الهندسي الفضائي، خاصية طاليس، خاصية فيثاغورس، والترييض المنهجي للوضعيات الفضائية"
+      ],
+      "prerequisiteLessonCodes": [
+        "kura-julla",
+        "misaha-hajm-kura",
+        "maqati-mustawiya",
+        "takbir-tasghir"
+      ],
+      "pointsToLearn": [
+        "تجنيد وتوظيف كافة الموارد المكتسبة في الوحدة (الكرة، مساحة الكرة وحجم الجلة، المقاطع المستوية، والتكبير والتصغير) لحل وضعيات ومشكلات فضائية وواقعية مركبة (مثل حساب سعة أوانٍ، دلاء، أو مجسمات مقتطعة كالمخروط والأسطوانة)",
+        "تحليل الوضعية وقراءتها: فهم نص الوضعية، صياغة النموذج الهندسي الفضائي، والربط بين أجزاء المجسم الأصلي والمجسم المقتطع أو المصغر",
+        "اختيار وتنفيذ استراتيجية الحل: توظيف خاصية طاليس أو فيثاغورس لحساب أبعاد المقاطع المستوية، تطبيق قوانين الحجوم والمساحات وعلاقات التكبير والتصغير ($k^3$)، ثم حساب الحجوم الكلية والمتبقية وتفسير النتائج للوصول إلى الحل الدقيق"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_takbir-tasghir_P2",
+          "4am_maqati-mustawiya_P4",
+          "4am_misaha-hajm-kura_P2"
+        ],
+        "P2": [
+          "4am_wadiya-idmajiya-fada_P1"
+        ],
+        "P3": [
+          "4am_wadiya-idmajiya-fada_P2",
+          "4am_takbir-tasghir_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 14,
+        "pages": {
+          "challenge": 163
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🪣"
     }
   ],
   "publishedScope": {
@@ -3509,7 +3763,8 @@
       "hisab-muthallathat",
       "ashia-insihab",
       "ashia-maalam",
-      "dawaran-mudalaat"
+      "dawaran-mudalaat",
+      "handasa-fada"
     ],
     "removedTopicCount": 25
   }

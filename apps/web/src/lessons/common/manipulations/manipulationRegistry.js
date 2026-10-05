@@ -81,6 +81,11 @@ export const MANIPULATION_COMPONENTS = {
   'inscribed-angle': lazy(() => import('./rotation/InscribedAngle')),
   'polygon-forge': lazy(() => import('./rotation/PolygonForge')),
   'lamp-ring': lazy(() => import('./rotation/LampRing')),
+  'sphere-probe': lazy(() => import('./space/SphereProbe')),
+  'orange-peel': lazy(() => import('./space/OrangePeel')),
+  'section-slicer': lazy(() => import('./space/SectionSlicer')),
+  'scale-blocks': lazy(() => import('./space/ScaleBlocks')),
+  'bucket-fill': lazy(() => import('./space/BucketFill')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

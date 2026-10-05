@@ -76,6 +76,7 @@ export * as trigonometry from './arithmetic/trigonometry.js';
 // (منحى، اتجاه، طول)، متوازي أضلاع، علاقة شال sur des vecteurs nommés, منتصف، مسافة exacte (surds), natures analytiques.
 export * as vectors from './arithmetic/vectors.js';
 export * as rotation from './arithmetic/rotation.js';
+export * as space from './arithmetic/space.js';
 
 // Moteur d'exercices (pratique) — arithmétique exacte et évaluation des
 // réponses. Exporté sous un espace de noms : `Rational.parse` et

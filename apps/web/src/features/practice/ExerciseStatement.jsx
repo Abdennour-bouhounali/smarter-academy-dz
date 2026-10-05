@@ -1,5 +1,6 @@
 import CoordPlane from '../../lessons/common/components/CoordPlane';
 import GeoFigure from '../../lessons/common/components/GeoFigure';
+import SpaceFigure from '../../lessons/common/components/SpaceFigure';
 import RichText from './RichText';
 import PracticeLab from './PracticeLab';
 
@@ -15,7 +16,8 @@ import PracticeLab from './PracticeLab';
  *
  * `figure` (unité 9, 2026-10-02) est une figure de géométrie DÉCLARATIVE dessinée par GeoFigure —
  * points nommés, segments, droites, angles — pour qu'un énoncé « في الشكل المقابل » montre le shape ;
- * le validateur la vérifie avec `validateGeoFigure`.
+ * le validateur la vérifie avec `validateGeoFigure`. Une figure de l'ESPACE (unité 14, 2026-10-05) porte `kind: 'space'` et
+ * est dessinée par SpaceFigure (pointillés pour les parties cachées) ; le validateur la vérifie avec `validateSpaceFigure`.
  */
 export default function ExerciseStatement({ content, visual, figure, support }) {
   return (
@@ -30,7 +32,7 @@ export default function ExerciseStatement({ content, visual, figure, support }) 
         </div>
       )}
 
-      {figure && <GeoFigure {...figure} />}
+      {figure && (figure.kind === 'space' ? <SpaceFigure {...figure} /> : <GeoFigure {...figure} />)}
 
       {visual && (
         <div className="overflow-x-auto">

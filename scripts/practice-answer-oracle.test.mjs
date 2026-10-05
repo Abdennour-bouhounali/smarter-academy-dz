@@ -78,6 +78,11 @@ import { ORACLE as ORACLE_KHAWAS_DAWARAN } from './practice-oracle/khawas-dawara
 import { ORACLE as ORACLE_ZAWIYA_MUHITIYA } from './practice-oracle/zawiya-muhitiya.mjs';
 import { ORACLE as ORACLE_MUDALAAT_MUNTAZAMA } from './practice-oracle/mudalaat-muntazama.mjs';
 import { ORACLE as ORACLE_WADIYA_DAWARAN } from './practice-oracle/wadiya-idmajiya-dawaran.mjs';
+import { ORACLE as ORACLE_KURA_JULLA } from './practice-oracle/kura-julla.mjs';
+import { ORACLE as ORACLE_MISAHA_HAJM } from './practice-oracle/misaha-hajm-kura.mjs';
+import { ORACLE as ORACLE_MAQATI } from './practice-oracle/maqati-mustawiya.mjs';
+import { ORACLE as ORACLE_TAKBIR } from './practice-oracle/takbir-tasghir.mjs';
+import { ORACLE as ORACLE_WADIYA_FADA } from './practice-oracle/wadiya-idmajiya-fada.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice/4am');
 
@@ -988,6 +993,11 @@ const ORACLE = {
   ...ORACLE_ZAWIYA_MUHITIYA,
   ...ORACLE_MUDALAAT_MUNTAZAMA,
   ...ORACLE_WADIYA_DAWARAN,
+  ...ORACLE_KURA_JULLA,
+  ...ORACLE_MISAHA_HAJM,
+  ...ORACLE_MAQATI,
+  ...ORACLE_TAKBIR,
+  ...ORACLE_WADIYA_FADA,
 };
 
 /**
