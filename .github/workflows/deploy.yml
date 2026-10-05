@@ -142,7 +142,9 @@ jobs:
         if: ${{ vars.PRODUCTION_URL != '' }}
         run: |
           set -euo pipefail
-          served="$(curl -sI --max-time 30 "${{ vars.PRODUCTION_URL }}/" \
+          # Un serveur lent (curl exit 28) ne doit pas faire échouer le déploiement.
+          headers="$(curl -sI --retry 2 --max-time 30 "${{ vars.PRODUCTION_URL }}/" || true)"
+          served="$(printf '%s' "$headers" \
             | tr -d '\r' | awk -F'PHP/' '/[Xx]-[Pp]owered-[Bb]y/ {print $2}')"
           if [ -z "$served" ]; then
             echo "::warning::The server does not advertise its PHP version; skipping the check."

@@ -42,7 +42,10 @@ après coup, sans rien dans les journaux de déploiement.
 hPanel → **Avancé → Configuration PHP → 8.4**.
 
 `deploy.yml` lit désormais l'en-tête `x-powered-by` du domaine avant de
-construire `vendor/`, et s'arrête avec ce remède écrit en clair.
+construire `vendor/`, et s'arrête avec ce remède écrit en clair. Si le
+domaine ne répond pas (curl exit 28, 2 essais de 30 s), la vérification est
+sautée avec un avertissement : un serveur lent ne bloque plus le déploiement
+(échec du 2026-10-02 sur les unités 5-8).
 
 ---
 
