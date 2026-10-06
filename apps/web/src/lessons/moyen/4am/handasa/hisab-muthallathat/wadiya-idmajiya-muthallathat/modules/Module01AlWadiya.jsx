@@ -142,7 +142,9 @@ export default function Module01AlWadiya() {
                 feedback={({ allRight }) => <MathText>{allRight ? 'أحسنت: مستقيمان متوازيان يقطعان مستقيمين متقاطعين في A — وضعية طالس، والمثلث APQ قائم في P.' : REMARKS.nazar}</MathText>}
                 onAnswered={mark(2)} />
               <BackLink lesson="tarrid-muthallathiya" what="ترجمة وضعية إلى مثلث قائم" />
-              {q[2] && <KnowledgeBrick id="talis-khatt-nazar" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : Thalès est un prérequis (`talis-nazar`, unité 9) ; les corrections s1–s4 et le retour de la question
+                  ci-dessus (REMARKS.nazar) viennent de le dire pour cette ligne de visée. */}
+              {q[2] && <KnowledgeBrick id="talis-khatt-nazar" variant="rappel" />}
             </div>
           ) },
         { num: 3, title: 'تنفيذ: مساواة طالس', subtitle: 'المرحلة 3 — على الأرض، ثم بالقلم', done: !!q[3],
@@ -211,7 +213,9 @@ export default function Module01AlWadiya() {
               <BackLink lesson="hasiba-muthallathiya" what="تعيين قيس زاوية بالحاسبة وتدويره" />
               {q[6] && (
                 <>
-                  <KnowledgeBrick id="zawiya-bi-zill" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la tangente (`nisab-tarif`, درس nisab-muthallathiya) et la touche inverse (`hasiba-aks`,
+                      درس hasiba-muthallathiya) ; les explications des étapes 5 et 6 (REMARKS.tanX / xCalc) viennent de l’énoncer. */}
+                  <KnowledgeBrick id="zawiya-bi-zill" variant="rappel" />
                   <p className="text-xs text-slate-600" data-misconception-note="qays"><MathText>{`خطأ شائع: ${REMARKS.qaysWrong} ${REMARKS.qaysWhy}`}</MathText></p>
                 </>
               )}
@@ -233,9 +237,13 @@ export default function Module01AlWadiya() {
                 onAnswered={mark(7)} />
               {q[7] && (
                 <>
-                  <KnowledgeBrick id="mulaamat-natija" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : arrondir en fin de calcul est `tadwir` (prérequis) ; les corrections v1–v4 de la question ci-dessus
+                      (REMARKS.check / tadwirMubakkir) et REMARKS.real (étape 4) viennent de le dire. */}
+                  <KnowledgeBrick id="mulaamat-natija" variant="rappel" />
                   <p className="rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900"><MathText>{REMARKS.jumla}</MathText></p>
-                  <KnowledgeBrick id="tariqat-wadiya" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche remet en ordre les trois étapes du « تحليل الوضعية » que l’élève vient de lire
+                      (encadrés des étapes 1, 2 et 3). */}
+                  <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                 </>
               )}
             </div>

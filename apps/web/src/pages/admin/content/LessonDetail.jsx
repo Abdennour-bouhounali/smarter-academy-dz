@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
-import { Layers, Dumbbell, Target } from 'lucide-react';
+import { Layers, Dumbbell, Target, ExternalLink } from 'lucide-react';
+import { getLessonPath } from '@smarter-academy/core';
 import { ArrowBack } from '../../../components/common/DirectionalIcons';
 import { AdminPage, AdminSection, useAdminLabels, Num, btnSecondary } from '../adminUi';
 import DataTable from '../../../components/admin/ui/DataTable';
@@ -41,11 +42,20 @@ export default function AdminLessonDetail() {
       title={lesson?.title ?? code}
       subtitle={lesson ? `${lesson.gradeName ?? lesson.grade ?? ''} · ${lesson.chapterTitle ?? ''}` : undefined}
       actions={(
-        <Link to="/admin/contenu/lecons" className={btnSecondary}>
-          {/* Flèche DIRECTIONNELLE : elle pointe vers l'arrière, donc elle
-              se retourne en RTL. Voir DirectionalIcons. */}
-          <ArrowBack size={14} /> {t('lessons.backToAll')}
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          {/* « Ouvrir la leçon » (spec §9) : l'administrateur relit tout,
+              brouillon et masqué compris (ContentAccess::bypassesPublication). */}
+          {getLessonPath(code) && (
+            <Link to={getLessonPath(code)} className={btnSecondary} data-open-lesson>
+              <ExternalLink size={14} /> {t('lessons.openLesson')}
+            </Link>
+          )}
+          <Link to="/admin/contenu/lecons" className={btnSecondary}>
+            {/* Flèche DIRECTIONNELLE : elle pointe vers l'arrière, donc elle
+                se retourne en RTL. Voir DirectionalIcons. */}
+            <ArrowBack size={14} /> {t('lessons.backToAll')}
+          </Link>
+        </div>
       )}
     >
       {loading && <LoadingState label={t('lessons.loadingLesson')} />}

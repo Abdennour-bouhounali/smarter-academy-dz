@@ -1,6 +1,7 @@
 /**
  * الدرس 7 — العددان الأوّليّان فيما بينهما
- * Manuel 4AM, unité 1 : activité 7 (p. 9), معارف 5 (p. 12), exercices 23–27, 39 (p. 15).
+ * Manuel 4AM, unité 1 : activité 7 (p. 9), معارف 5 (p. 12), exercices 23–27, 39 (p. 15),
+ * puis trois « مسائل » de la plateforme (modules 4–6).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/awwaliyan-fima-baynahuma';
 
@@ -27,6 +28,15 @@ export const LESSON_CONFIG = {
     'إثبات أن عددين ليسا أوليين فيما بينهما بإظهار قاسم مشترك يختلف عن 1',
   ],
   teachingScope: { include: ['تعريف الكتاب ومثاله (22 و 15)', 'الإثبات والنفي'], exclude: ['الأعداد الأولية (موضوع رسمي آخر)', 'الكسور غير القابلة للاختزال (الدرس 8)'] },
+  // « مسألة الدرس » (rollout مسائل, 2026-10-06) : montrée dès le sommaire,
+  // rappelée au module 1, résolue pas à pas au module 4 (content/problems.js).
+  // Prolonge le laboratoire du niveau متقدم (22 et 35 sur les listes) : on
+  // confronte les diviseurs du plus petit à l'autre, avec d'autres nombres.
+  lessonProblem: {
+    module: 4,
+    title: 'نادي الرياضيات: لعبة «الزوج الرابح»',
+    statement: 'في نادي الرياضيات بالمتوسطة لعبة اسمها «الزوج الرابح»: في علبة 99 بطاقة مرقّمة من 1 إلى 99، ويسحب كل لاعب بطاقتين. يبدأ كل لاعب برصيد 100 نقطة؛ إذا كان العددان المسحوبان أوليين فيما بينهما ربح 50 نقطة، وإلا خسر 20 نقطة. تدوم الجولة 15 دقيقة. سحب ياسين البطاقتين 26 و 45، وسحبت سلمى البطاقتين 39 و 65 وقالت: «عدداي فرديان، إذن هما أوليان فيما بينهما».',
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -55,6 +65,11 @@ export const LESSON_CONFIG = {
       autonomy: 'لا مجموعات ولا توجيه: التلميذ يواجه قواسم العدد الأصغر بالعدد الآخر واحدًا واحدًا، ولا يُقبل حكمه إلا بعد أن يكتمل الدليل',
       experience: { type: 'textbook', reason: '', theme: 'abstract' },
       learningPointIds: ['4am_awwaliyan-fima-baynahuma_P1', '4am_awwaliyan-fima-baynahuma_P3'], sourceElementIds: ['act-7'] },
+    // Modules 4–6 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — لعبة «الزوج الرابح»: 26 و 45، 39 و 65', learningPointIds: ['4am_awwaliyan-fima-baynahuma_P1', '4am_awwaliyan-fima-baynahuma_P2', '4am_awwaliyan-fima-baynahuma_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — مكتبة البلدية: 91 رواية و 120 قصة مصوّرة', learningPointIds: ['4am_awwaliyan-fima-baynahuma_P1', '4am_awwaliyan-fima-baynahuma_P2', '4am_awwaliyan-fima-baynahuma_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — ورشة النجارة: لوحان من 391 سم و 323 سم', learningPointIds: ['4am_awwaliyan-fima-baynahuma_P2', '4am_awwaliyan-fima-baynahuma_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -69,7 +84,22 @@ export const LESSON_CONFIG = {
     { id: '03', number: 3, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 23 ← 27 و 39.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_awwaliyan-fima-baynahuma_P2', '4am_awwaliyan-fima-baynahuma_P3'], color: 'amber', style: 'featured', estimatedMin: 13, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمس أسئلة تُقيّم نقاط التعلّم الثلاث.', stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — لعبة «الزوج الرابح»', desc: 'مسألة الدرس: بطاقتان لكل لاعب، وقول سلمى. حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_awwaliyan-fima-baynahuma_P1', '4am_awwaliyan-fima-baynahuma_P2', '4am_awwaliyan-fima-baynahuma_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — حصص الكتب للمدارس الريفية', desc: '91 رواية و 120 قصة مصوّرة: كم حصة متماثلة؟ وماذا تغيّر هبة دار نشر؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_awwaliyan-fima-baynahuma_P1', '4am_awwaliyan-fima-baynahuma_P2', '4am_awwaliyan-fima-baynahuma_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — ورشة النجارة', desc: 'لوحان من 391 سم و 323 سم: هل المتعلّم على صواب؟ وكم قطعة؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_awwaliyan-fima-baynahuma_P2', '4am_awwaliyan-fima-baynahuma_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمس أسئلة تُقيّم الكفاءات الثلاث.', stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

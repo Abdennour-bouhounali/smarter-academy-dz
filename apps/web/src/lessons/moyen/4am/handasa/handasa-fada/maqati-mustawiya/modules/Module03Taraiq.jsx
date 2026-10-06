@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { parseDec } from '@smarter-academy/core';
 import MathText from '../../../../../../common/components/MathText';
@@ -15,6 +15,9 @@ import { FIG_METHOD, FIG_NOW169 } from '../content/figures';
  * TOUCH THE MATH : le تمرين (R = 2,5 ; OO′ = 1,5 → 2) révélé ligne à ligne (MethodSteps), la brique, puis un rayon à calculer
  * (13 et 5 → 12) ; le دوري الآن (cylindre h = 3, r = 2, plan à 1 de l'axe : ABCD rectangle, AB = 2√3, aire 6√3) et la méthode
  * de la plateforme qui le généralise (brique tariqat-ustuwana). « فيثاغورث » uniformisé (une ligne le dit). LP : P1, P3.
+ * « أتوقّع القاعدة » : le حل du manuel ÉNONCE la méthode juste avant sa brique — il est enveloppé dans une PredictRule portant
+ * l'id de la brique (tariqat-nisf-qutr) : l'élève écrit d'abord sa méthode (predictPrompt de knowledge.jsx, qui redonne les
+ * données du تمرين), puis le حل et la brique s'affichent, une seule « توقّعك ». La figure reste AVANT : la prompt s'y appuie.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const near = (v) => (n) => Number.isFinite(n) && Math.abs(n - v) < 1e-9;
@@ -42,7 +45,9 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <SpaceFigure {...FIG_METHOD} />
-              <MethodSteps method={METHOD_RADIUS} />
+              <PredictRule id="tariqat-nisf-qutr">
+                <MethodSteps method={METHOD_RADIUS} />
+              </PredictRule>
               <p className="text-xs text-slate-500" data-correction>{METHOD_RADIUS.spelling}</p>
               <KnowledgeBrick id="tariqat-nisf-qutr" lead="الطريقة، في سطر واحد:" />
               <NumericQuestion

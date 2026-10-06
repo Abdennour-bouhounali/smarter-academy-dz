@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -93,7 +93,8 @@ export default function Module03Taraiq() {
             <div className="space-y-3">
               <GeoFigure {...FIG_METHOD_TAN} />
               <MethodSteps method={lines(METHODS.tan)} />
-              <TextbookBox kind="method" lines={METHOD_RULE.lines} source={METHOD_RULE.source} compact />
+              {/* La boîte ÉNONCE la méthode juste avant sa brique : l'élève l'écrit d'abord (item hisab-tul). */}
+              <PredictRule id="hisab-tul"><TextbookBox kind="method" lines={METHOD_RULE.lines} source={METHOD_RULE.source} compact /></PredictRule>
               <KnowledgeBrick id="hisab-tul" lead="الطرائق الثلاث، بالخطوات نفسها:" />
               <TapQuestion
                 prompt="مثلث قائم فيه المجاور للزاوية المعلومة معلوم، والمطلوب الوتر. نكتب:"

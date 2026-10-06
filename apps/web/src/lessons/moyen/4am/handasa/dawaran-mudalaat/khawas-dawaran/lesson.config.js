@@ -17,7 +17,9 @@
  *   M3 طرائق         — TOUCH THE MATH (le lab au niveau متقدم : [AC] sur [BD]) puis la طريقة ligne à ligne, دوري الآن,
  *                      et le centre d'un دوران (ajout déclaré) ;
  *   M4 أوظّف تعلّماتي — AUTOMATIZE (ex-4, 6, 8) et TRANSFER (ex-17 BEM corrigé, ex-18 figure complétée) ;
- *   M5 إختبار أولي   — cinq épreuves de la plateforme ; P1, P2, P3 couverts.
+ *   M5–M7 مسائل      — puis trois « مسائل » de la plateforme (modules 5–7) : la نجمة du zellige (مسألة الدرس), le باب
+ *                      دوّار, l'عنفة ريحية (content/problems.js) ;
+ *   M8 إختبار أولي   — cinq épreuves de la plateforme ; P1, P2, P3 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -58,6 +60,23 @@ export const LESSON_CONFIG = {
       'الزاوية المحيطية والزاوية المركزية (الدرس 3)',
       'المضلعات المنتظمة (الدرس 4) والوضعية الإدماجية (أدمج تعلّماتي)',
     ],
+  },
+  // « مسألة الدرس » (module 5) : la طريقة du niveau متقدم (deux triangles rectangles isocèles en O), autres nombres ;
+  // montrée au sommaire et rappelée à la fin du module 1. Son support (la figure) vit ICI, problems.js le référence.
+  lessonProblem: {
+    module: 5,
+    title: 'نجمة الزليج على الورقة الشفافة',
+    statement: 'على ورقة شفافة يرسم معلّم زليج في تلمسان نموذج نجمة: المثلثان $OAB$ و $OCD$ كلّ منهما قائم في $O$ ومتساوي الساقين، حيث $OA = 6\\,\\mathrm{cm}$ و $OC = 8\\,\\mathrm{cm}$ ، والنقطة $B$ تنتمي إلى القطعة $[OC]$ ، و $B$ و $D$ في الاتجاه المباشر من $A$ و $C$ ، كما في الشكل. اشترى المعلّم الورقة الشفافة بـ 120 دج. يصل المعلّم $[AC]$ و $[BD]$ بخيطين نحاسيين، ثم يغطّي المثلث $OBD$ بطلاء ذهبي ثمنه 25 دج للسنتيمتر المربّع.',
+    figure: {
+      points: { O: [0, 0], A: [6, 0], B: [0, 6], C: [0, 8], D: [-8, 0] },
+      polygons: [{ points: ['O', 'A', 'B'], tone: 'emerald' }, { points: ['O', 'C', 'D'], tone: 'indigo' }],
+      segments: [{ from: 'O', to: 'A', label: '6 cm' }, { from: 'O', to: 'C', label: '8 cm' }, ['A', 'B'], ['O', 'D'], ['C', 'D'],
+        { from: 'A', to: 'C', tone: 'amber', bold: true }, { from: 'B', to: 'D', tone: 'rose', bold: true }],
+      rightAngles: [['A', 'O', 'B'], ['C', 'O', 'D']],
+      labels: { O: 's' },
+      ariaLabel: 'المثلثان OAB و OCD قائمان في O ومتساويا الساقين، حيث OA = 6 cm و OC = 8 cm والنقطة B على القطعة [OC]، والقطعتان [AC] و [BD]',
+      maxWidth: 420,
+    },
   },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
@@ -108,6 +127,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_khawas-dawaran_P2', '4am_khawas-dawaran_P3'],
       sourceElementIds: ['method-properties', 'ex-18'],
     },
+    // Les « مسائل » (modules 5–7) : des ajouts de la plateforme (content/problems.js).
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — نجمة الزليج: [AC] و [BD]', learningPointIds: ['4am_khawas-dawaran_P1', '4am_khawas-dawaran_P2'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — الباب الدوّار: أين المحور؟', learningPointIds: ['4am_khawas-dawaran_P1', '4am_khawas-dawaran_P2', '4am_khawas-dawaran_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — العنفة الريحية بكابرتن', learningPointIds: ['4am_khawas-dawaran_P1', '4am_khawas-dawaran_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -129,8 +152,22 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 4 و 6 و 8 و 17 و 18.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_khawas-dawaran_P1', '4am_khawas-dawaran_P2', '4am_khawas-dawaran_P3'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui reste toujours ouvert. Elles comptent dans la
+    // complétion, jamais dans la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — نجمة الزليج', desc: 'مسألة الدرس: [BD] صورة [AC] بدوران؛ الأطوال والتعامد والمساحة. حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_khawas-dawaran_P1', '4am_khawas-dawaran_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — الباب الدوّار', desc: 'أين محور الباب؟ ماذا يحدث للمقبض بعد ربع دورة ونصف دورة؟ وكم يكلّف الزجاج؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_khawas-dawaran_P1', '4am_khawas-dawaran_P2', '4am_khawas-dawaran_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — العنفة الريحية', desc: 'شفرات تدور $120^\\circ$ : أطوال وزوايا، نصف دورة للصيانة، ومساحة الطلاء.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_khawas-dawaran_P1', '4am_khawas-dawaran_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

@@ -7,7 +7,7 @@
 Le premier chapitre algérien construit **à partir du manuel scolaire** et non d'une décomposition inférée, et avec lui la hiérarchie canonique réutilisable pour tous les chapitres suivants :
 
 ```
-المجال (chapters)  →  الوحدة (units)  →  الدرس (lessons)  →  نقاط التعلّم (learning_points)
+المجال (chapters)  →  الوحدة (units)  →  الدرس (lessons)  →  الكفاءات (learning_points)
                                               ├── المتطلبات السابقة (lesson_prerequisites, learning_point_prerequisites — pédagogiques, jamais bloquants)
                                               ├── الطريقة / المناولة / الوضعية (lesson_resources, déclarées dans lesson.config.js → resources[])
                                               ├── التمارين (content/*.js dans la leçon + content/practice/4am/<leçon>/)
@@ -61,7 +61,7 @@ Les LP sont listés dans `packages/core/curriculum/dz/lessons_4am_2026_2027.json
 - **Catalogue** : `dz/units_4am_2026_2027.json` (nouveau), `lessons_4am_2026_2027.json` (règle `one_lesson_per_official_topic_unless_textbook_unit`), `coursesData.js` (`chapter.units`, `getUnitById`, `getUnitOfLesson`, chemin `/courses/moyen/4am/<ميدان>/units/<وحدة>`), `freeLessons.js` (les trois premières leçons de l'unité sont gratuites — modifiable en une ligne).
 - **Base** (additif, migrations `2026_09_21_00000{1..5}`) : `units`, `lessons.unit_id/kind/title_source/textbook_ref`, `lesson_prerequisites`, `learning_point_prerequisites` (`required_mastery`), `lesson_resources`. Importateurs étendus ; `ScopeCurriculum::DEPENDENT_TABLES` complété.
 - **API** (auth, e-mail vérifié) : `GET /api/v1/curriculum/grades/{code}` (arbre complet, chargement anticipé), `GET /api/v1/lessons/{code}/structure` (leçon + unité + LP + prérequis + ressources + modules + exercices).
-- **Surfaces de navigation** (toutes lisent le même catalogue, aucune ne verrouille) : la page des cours (`Courses.jsx`, cartes d'unité « وحدات الكتاب المدرسي » sous le ميدان, puis « مواضيع أخرى ») → la page d'unité (`UnitPage.jsx`) → l'index de leçon (`LessonIndex.jsx`, fil d'Ariane avec l'unité, section نقاط التعلم / المتطلبات / المناولات), et les pages de l'espace élève « دروسي » (`MesCours.jsx`) et « استكشاف » (`Explorer.jsx`) qui, sous un ميدان, montrent les mêmes cartes d'unité puis les autres leçons (helper partagé `components/student/unitGrouping.js`).
+- **Surfaces de navigation** (toutes lisent le même catalogue, aucune ne verrouille) : la page des cours (`Courses.jsx`, cartes d'unité « وحدات الكتاب المدرسي » sous le ميدان, puis « مواضيع أخرى ») → la page d'unité (`UnitPage.jsx`) → l'index de leçon (`LessonIndex.jsx`, fil d'Ariane avec l'unité, section الكفاءات / المتطلبات / المناولات), et les pages de l'espace élève « دروسي » (`MesCours.jsx`) et « استكشاف » (`Explorer.jsx`) qui, sous un ميدان, montrent les mêmes cartes d'unité puis les autres leçons (helper partagé `components/student/unitGrouping.js`).
 - **Déploiement sans artisan** : `php artisan smarter:curriculum-sql --grade=4am --retire-lesson=pgcd --out=…` émet des upserts PAR CODE (FK résolues par sous-requête, jamais de DELETE, `publication_status` jamais écrasé). Voir `docs/deployment/HOSTINGER_UNIT1_MIGRATION.sql` et `HOSTINGER_UNIT1_CURRICULUM_DATA.sql`.
 
 ## 6. Pratique

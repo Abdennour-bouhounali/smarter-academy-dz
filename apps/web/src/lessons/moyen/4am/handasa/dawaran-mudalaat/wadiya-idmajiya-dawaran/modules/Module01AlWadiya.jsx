@@ -152,7 +152,8 @@ export default function Module01AlWadiya() {
               {q[3] && (
                 <>
                   <p className="text-xs text-slate-600" data-misconception-note="amda"><MathText>{`خطأ شائع: ${REMARKS.amdaWrong} ${REMARKS.amdaWhy}`}</MathText></p>
-                  <KnowledgeBrick id="tawzi-dawaran" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : sommets = images par rotation et angle 360°/n sont ruus-bidawaran et markaziya-360 (درس المضلعات المنتظمة) ; l’explication de la question ci-dessus (REMARKS.zawiya) vient de le dire. */}
+                  <KnowledgeBrick id="tawzi-dawaran" variant="rappel" />
                 </>
               )}
               <BackLink lesson="mafhum-dawaran" what="صورة نقطة بدوران" />
@@ -188,7 +189,8 @@ export default function Module01AlWadiya() {
                 expected={3} display="3" requires={['zawaya-mutasawi-saqayn', 'tawzi-dawaran']}
                 explain={<MathText>{REMARKS.mutaqayis}</MathText>}
                 onAnswered={mark(5)} />
-              {q[5] && <KnowledgeBrick id="masafa-amudayn" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : côté de l’hexagone = rayon est dans dil-mudalla (درس المضلعات المنتظمة) ; l’explication des deux questions ci-dessus (REMARKS.mutaqayis) vient de le démontrer. */}
+              {q[5] && <KnowledgeBrick id="masafa-amudayn" variant="rappel" />}
             </div>
           ) },
         { num: 6, title: 'المسافة بالنسب المثلثية', subtitle: 'الارتفاع يرسم مثلثا قائما', done: !!q[6],
@@ -204,7 +206,8 @@ export default function Module01AlWadiya() {
                 requires={['jaib-zawiya', 'irtifa-mutasawi-saqayn', 'masafa-amudayn']}
                 feedback={({ allRight }) => <MathText>{allRight ? `أحسنت. ${REMARKS.jaib}` : REMARKS.jaib}</MathText>}
                 onAnswered={mark(6)} />
-              {q[6] && <KnowledgeBrick id="qanun-masafa" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : d = 2r·sin(180°/n) est le cas général de dil-mudalla (METHOD_SIDE.general, درس المضلعات المنتظمة) ; le retour de la question ci-dessus (REMARKS.jaib) vient de faire le calcul. */}
+              {q[6] && <KnowledgeBrick id="qanun-masafa" variant="rappel" />}
               <BackLink lesson="mudalaat-muntazama" what="حساب طول ضلع مضلع منتظم من نصف قطر دائرته" />
             </div>
           ) },
@@ -244,7 +247,8 @@ export default function Module01AlWadiya() {
                   <p className="text-xs text-slate-600" data-misconception-note="qaws"><MathText>{`خطأ شائع: ${REMARKS.qawsWrong} ${REMARKS.qawsWhy}`}</MathText></p>
                   <p className="text-xs text-slate-600" data-misconception-note="dil"><MathText>{`خطأ شائع: ${REMARKS.dilWrong} ${REMARKS.dilWhy}`}</MathText></p>
                   <p className="rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900"><MathText>{SITUATION.closing}</MathText></p>
-                  <KnowledgeBrick id="tariqat-wadiya" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche remet en ordre les trois étapes du « تحليل الوضعية » que l’élève vient de lire (encadrés des étapes 1, 2 et 7) et le plan à l’échelle (REMARKS.sullam, étape 7). */}
+                  <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                 </>
               )}
               <BackLink lesson="mudalaat-muntazama" what="المضلعات المنتظمة وتطبيقاتها" />

@@ -5,6 +5,8 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { GardenScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, STARTER } from '../content/textbook';
 
@@ -88,6 +90,9 @@ export default function Module01Baqat() {
                 options={['18 باقة: 5 حمراء و 3 بيضاء', '9 باقات: 10 حمراء و 6 بيضاء', '6 باقات: 15 حمراء و 9 بيضاء', '54 باقة']} correct={0} cols={1} requires={['qawasim-mushtaraka']}
                 explain={<span>القواسم المشتركة لـ 90 و 54 هي 1 ، 2 ، 3 ، 6 ، 9 ، 18؛ أكبرها 18.</span>} onAnswered={() => setQ2(true)} />
               {q2 && <TextbookBox kind="remark" text={ACTIVITY.closing} compact />}
+              {/* La « مسألة الدرس » prolonge ces bouquets : 120 roses rouges et
+                  84 blanches — résolue au module 4. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
       ]}

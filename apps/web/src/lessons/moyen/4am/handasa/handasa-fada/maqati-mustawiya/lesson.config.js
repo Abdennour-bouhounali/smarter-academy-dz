@@ -13,7 +13,9 @@
  *   M2 معارف 3       — FORMALIZE : la sphère (le tableau des cas h), la بلاطة, la أسطوانة ; la pyramide et le cône (ajout) ;
  *   M3 طرائق         — TOUCH THE MATH : le rayon d'une section (R = 2,5 ; OO′ = 1,5) révélé ligne à ligne, دوري الآن (6√3) ;
  *   M4 أوظّف تعلّماتي — AUTOMATIZE / TRANSFER (ajouts) : la pastèque, le silo, le gâteau, la couche de l'imprimante ;
- *   M5 إختبار أولي   — cinq épreuves de la plateforme, P1–P4 couverts.
+ *   M5–M7 مسائل      — puis trois « مسائل » de la plateforme (modules 5–7) : l'abat-jour sphérique imprimé (« مسألة الدرس »),
+ *                      le bloc de fromage tranché, la verrière pyramidale et ses deux cadres ;
+ *   M8 إختبار أولي   — cinq épreuves de la plateforme, P1–P4 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -60,6 +62,38 @@ export const LESSON_CONFIG = {
   knowledgeMapMode: 'progressive',
   // Les acquis que « أستعدّ » diagnostique (les المكتسبات القبلية du propriétaire et la leçon « الكرة والجلة ») :
   // Pythagore, le pavé droit, le cylindre de révolution, la diagonale d'un carré, la sphère (OM = R), Thalès.
+  lessonProblem: {
+    module: 5,
+    title: 'غطاء مصباح من الطابعة: كرة مقطوعة بمستويين',
+    statement: 'في نادي العلوم بمتوسطتنا تطبع الطابعة ثلاثية الأبعاد غطاء مصباح على شكل كرة مركزها $O$ ونصف قطرها $6{,}5\\,\\mathrm{cm}$ ، طبقةً بعد طبقة من الأسفل إلى الأعلى. لكي يستقرّ الغطاء على صفيحة الطابعة تُقطع الكرة من الأسفل بمستو أفقي $(P)$ يبعد عن $O$ بـ $6\\,\\mathrm{cm}$ ، وتُفتح من الأعلى بمستو أفقي $(Q)$ فوق $O$ تُركَّب على حافته حلقة المصباح، كما في الشكل المقابل. نسمّي $A$ و $B$ المسقطين العموديين لـ $O$ على $(P)$ و $(Q)$ . قطر حلقة المصباح $7{,}8\\,\\mathrm{cm}$ ، وسُمك كل طبقة $0{,}2\\,\\mathrm{mm}$ ، وتدوم طباعة الطبقة الواحدة 15 ثانية. طول خيط البلاستيك في البكرة $330\\,\\mathrm{m}$ ، ولون الغطاء أبيض.',
+    figure: {
+      kind: 'space',
+      view: { azimuth: -62, elevation: 18 },
+      points: {
+        O: [0, 0, 0], A: [0, 0, -6], B: [0, 0, 5.2], M: [2.5, 0, -6], E: [-3.9, 0, 5.2],
+        P1: [-5, -5, -6], P2: [5, -5, -6], P3: [5, 5, -6], P4: [-5, 5, -6],
+        Q1: [-5, -5, 5.2], Q2: [5, -5, 5.2], Q3: [5, 5, 5.2], Q4: [-5, 5, 5.2],
+      },
+      solids: [{ type: 'sphere', center: 'O', radius: 6.5, tone: 'slate', equator: false }],
+      circles: [
+        { center: 'A', radius: 2.5, normal: 'z', on: 0, tone: 'rose', bold: true },
+        { center: 'B', radius: 3.9, normal: 'z', on: 0, tone: 'rose', bold: true },
+      ],
+      planes: [{ points: ['P1', 'P2', 'P3', 'P4'], tone: 'sky', label: '(P)' }, { points: ['Q1', 'Q2', 'Q3', 'Q4'], tone: 'sky', label: '(Q)' }],
+      segments: [
+        { from: 'O', to: 'A', label: '6 cm', tone: 'indigo' },
+        { from: 'O', to: 'M', label: '6,5 cm', labelSide: 'in' },
+        { from: 'A', to: 'M', tone: 'rose' },
+        { from: 'O', to: 'B', dashed: true },
+        { from: 'B', to: 'E', tone: 'rose' },
+      ],
+      rightAngles: [['O', 'A', 'M'], ['O', 'B', 'E']],
+      labels: { O: 'w', A: 'sw', B: 'ne', M: 'se', E: 'w' },
+      hidden: ['P1', 'P2', 'P3', 'P4', 'Q1', 'Q2', 'Q3', 'Q4'],
+      ariaLabel: 'غطاء المصباح: كرة مركزها O ونصف قطرها 6,5 cm، يقطعها من الأسفل المستوي الأفقي (P) على بعد OA = 6 cm وفق دائرة عليها M، ومن الأعلى المستوي الأفقي (Q) وفق دائرة مركزها B عليها E؛ المثلثان OAM و OBE قائمان في A و B',
+      maxWidth: 380,
+    },
+  },
   priorKnowledge: ['fithaghuras', 'balata-qaima', 'ustuwana-dawaran', 'qutr-murabba', 'kura-markaz', 'talis-nisab'],
   resources: [
     // Le module 1 ouvre sur L'IMPRIMANTE 3D (section-slicer). متقدم (ouvert par défaut : le نشاط 2 — puis la بلاطة, la أسطوانة,
@@ -84,6 +118,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_maqati-mustawiya_P1', '4am_maqati-mustawiya_P2', '4am_maqati-mustawiya_P3', '4am_maqati-mustawiya_P4'],
       sourceElementIds: ['act-2', 'act-3', 'act-4', 'act-5'],
     },
+    // Les trois « مسائل » (modules 5–7) : des exercices COMPLETS de type امتحان, ajouts DÉCLARÉS de la plateforme
+    // (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — غطاء مصباح من الطابعة', learningPointIds: ['4am_maqati-mustawiya_P1'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — قالب الجبن في محل الألبان', learningPointIds: ['4am_maqati-mustawiya_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — المنور الهرمي وإطاراه', learningPointIds: ['4am_maqati-mustawiya_P4'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -105,8 +144,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين من المنصّة: شريحة دلّاع، صومعة الحبوب، كعكة العيد، وطبقة الطابعة في هرم ومخروط.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_maqati-mustawiya_P1', '4am_maqati-mustawiya_P2', '4am_maqati-mustawiya_P3', '4am_maqati-mustawiya_P4'],
       color: 'amber', style: 'featured', estimatedMin: 7, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الأربع.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — غطاء مصباح من الطابعة', desc: 'مسألة الدرس: قاعدة الغطاء مقطع كرة بمستو، موضع مستوي الفتحة، ثم عدد الطبقات ومدة الطباعة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_maqati-mustawiya_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — قالب الجبن في محل الألبان', desc: 'مقطع بلاطة قائمة بمستو موازٍ لوجه ثم لحرف، ثم عدد الشرائح وثمن الشريحة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_maqati-mustawiya_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — المنور الهرمي وإطاراه', desc: 'مقطعا هرم منتظم بمستويين موازيين للقاعدة: نسبة التصغير من الرأس، ثم طول قضبان الإطارين وتكلفتها.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_maqati-mustawiya_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الأربع.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

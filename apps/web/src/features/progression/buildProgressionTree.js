@@ -3,7 +3,7 @@ import { resolveMasteryState, findLessonMasteryRows } from '../../lessons/common
 
 /**
  * L'ARBRE de la page « تقدّمي » : classe → ميدان (chapter) → وحدة (unit) →
- * درس → نقاط التعلّم, construit à partir de DEUX sources existantes et de
+ * درس → الكفاءات, construit à partir de DEUX sources existantes et de
  * rien d'autre :
  *
  *  - le catalogue (`courseLevels`, packages/core) donne la STRUCTURE et

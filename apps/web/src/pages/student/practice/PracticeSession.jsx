@@ -26,6 +26,8 @@ import QuestionHistory from '../../../features/practice/QuestionHistory';
 import QuestionArrival from '../../../features/practice/QuestionArrival';
 import QuestionContextPanel from '../../../features/practice/QuestionContextPanel';
 import LearningPointProgress from '../../../features/practice/LearningPointProgress';
+import SideColumnToggle from '../../../features/practice/SideColumnToggle';
+import { useSideColumn, practiceGridClass } from '../../../features/practice/useSideColumn';
 import { currentLearningPoint } from '../../../features/practice/learningPointProgress';
 import { historyEntry, recordQuestion, exerciseScore, outcomeTone } from '../../../features/practice/questionHistory';
 import { ClassroomPresentation, ClassroomEntryButton, ClassroomFrame, ClassroomHidden } from '../../../lessons/common/classroom';
@@ -69,6 +71,8 @@ const reducedMotion = () => typeof window !== 'undefined'
  */
 export default function PracticeSession() {
   const { t } = useTranslation('student');
+  // La colonne du point d'apprentissage se replie : l'exercice prend toute la largeur.
+  const [sideHidden, toggleSide] = useSideColumn();
   const { lessonCode, sessionId } = useParams();
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -498,7 +502,10 @@ export default function PracticeSession() {
             seulement). Le bouton est hors de la coquille, le contenu dedans :
             entrer ne remonte rien, la réponse en cours et la correction
             restent. */}
-        <ClassroomEntryButton scope="exercise" title={exerciseHeading} tone="quiet" />
+        <span className="flex flex-wrap items-center gap-1">
+          <SideColumnToggle hidden={sideHidden} onToggle={toggleSide} label={t('practice.sideLearningPoint')} />
+          <ClassroomEntryButton scope="exercise" title={exerciseHeading} tone="quiet" />
+        </span>
       </nav></ClassroomHidden>
 
       {/* ── L'ESPACE DE TRAVAIL ─────────────────────────────────────────────
@@ -508,9 +515,9 @@ export default function PracticeSession() {
           l'exercice qui prend tout le reste — la tâche mathématique est ce
           qui compte. En وضع القسم (`data-sa-classroom` sur <html>), la grille
           redevient un bloc et la colonne est retirée. */}
-      <div className="grid grid-cols-1 gap-3 xl:grid-cols-[28rem_minmax(0,1fr)] xl:items-start xl:gap-5 2xl:grid-cols-[30.6rem_minmax(0,1fr)] [[data-sa-classroom]_&]:block">
+      <div className={practiceGridClass(sideHidden)}>
 
-      <ClassroomHidden><aside className="space-y-3 xl:sticky xl:top-4" data-practice-side>
+      <ClassroomHidden><aside className={`space-y-3 xl:sticky xl:top-4 ${sideHidden ? 'xl:hidden' : ''}`} data-practice-side>
         {/* ── 1 — CE QUE J'ENTRAÎNE, et où j'en suis : toujours en tête. ── */}
         <LearningPointProgress point={point} />
         {/* ── « سياق السؤال » — grand écran seulement ─────────────────── */}

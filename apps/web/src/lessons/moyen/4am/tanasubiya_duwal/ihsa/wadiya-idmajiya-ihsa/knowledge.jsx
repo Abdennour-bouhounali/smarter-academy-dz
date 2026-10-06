@@ -61,7 +61,9 @@ export const LESSON_KNOWLEDGE = {
         ) },
     ],
     3: [
-      { id: 'takrar-majhul', type: 'methodes', title: 'تكراران مجهولان', summary: 'التكرار الكلي يعطي مجموع التكرارين المجهولين، ثم تحدّد رتبتا الوسيط أيّ توزيع هو الصحيح.',
+      { id: 'takrar-majhul', type: 'methodes', title: 'تكراران مجهولان',
+        predictPrompt: 'وجدت $a + b = 3$ ، ورتبتا الوسيط 5 و 6 ، والوسيط $6{,}5$. لكنّ $a$ و $b$ يمكن أن يكونا 0 و 3 ، أو 1 و 2 ، أو 2 و 1 ، أو 3 و 0. كيف تعرف أيّ توزيع هو الصحيح؟ اكتب الطريقة.',
+        summary: 'التكرار الكلي يعطي مجموع التكرارين المجهولين، ثم تحدّد رتبتا الوسيط أيّ توزيع هو الصحيح.',
         body: <p><MathText>{REMARKS.majhul}</MathText></p> },
       { id: 'tajnid-mawarid', type: 'regles', title: 'أيّ مؤشر لأيّ سؤال؟', summary: 'على الأكثر وعلى الأقل تكرار مجمع، التشتت مدى، النصف وسيط، والمجموع متوسط.',
         body: <p><MathText>{REMARKS.tajnid}</MathText></p> },

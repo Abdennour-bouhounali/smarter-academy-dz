@@ -19,6 +19,8 @@ import { addition } from '../../_unit/unitMeta';
  *   3. l'مثال OM/OR = ON/OP = 1,25 : l'élève refait les deux calculs et la conclusion ;
  *   4. وضعية الفراشة : 2/3 ≠ 1/2 — brique nisbatan-mukhtalifatan.
  * LP : P1 (1, 3, 4), P2 (2, 3).
+ * « أتوقّع القاعدة » : khassiya-aksiya re-pose la règle déjà écrite et nommée au module 1 (aksiya-nashat) et
+ * nisbatan-mukhtalifatan la ملاحظة 1 de la leçon 1 (adam-tawazi) → `variant="rappel"` ; shart-tartib est prédite.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const PLATFORM = addition('interaction_generation');
@@ -46,7 +48,7 @@ export default function Module02Maarif() {
           num: 1, title: 'الخاصية', subtitle: 'معارف 3', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="khassiya-aksiya" lead="الكتاب يكتب ما رأيته على الحامل:" />
+              <KnowledgeBrick id="khassiya-aksiya" variant="rappel" lead="الكتاب يكتب ما رأيته على الحامل:" />
               <p className="text-sm text-slate-700">{KNOWLEDGE3.figuresText}</p>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2" data-know3-figures>
                 <GeoFigure {...FIG_KNOW3_BETWEEN} />
@@ -110,7 +112,7 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_KNOW1_REMARK1} />
-              <KnowledgeBrick id="nisbatan-mukhtalifatan" lead="ومن خاصية طالس نفسها (الدرس السابق):" />
+              <KnowledgeBrick id="nisbatan-mukhtalifatan" variant="rappel" lead="ومن خاصية طالس نفسها (الدرس السابق):" />
               <TapQuestion
                 prompt={<MathText>{'في وضعية الفراشة: $AN = 1$ ، $AM = 2$ ، $AB = 3$ ، $AC = 2$ . ماذا ينتج؟'}</MathText>}
                 options={['(MN) و (BC) غير متوازيين', '$(MN) \\parallel (BC)$', 'لا يمكن الحكم لأن النقط من جهتين مختلفتين'].map(M)}

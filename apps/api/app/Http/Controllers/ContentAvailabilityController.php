@@ -90,8 +90,11 @@ class ContentAvailabilityController extends Controller
             abort(404);
         }
 
+        // Le RELECTEUR (admin, سفير) voit aussi le non-publié, avec son état.
+        $reviewer = ContentAccess::bypassesPublication($request->user());
+
         // Une leçon fermée ne liste rien du tout.
-        if (! $this->lessonIsOpen($lessonCode)) {
+        if (! $reviewer && ! $this->lessonIsOpen($lessonCode)) {
             return response()->json([
                 'success' => true,
                 'available' => false,
@@ -145,7 +148,7 @@ class ContentAvailabilityController extends Controller
                 // Inconnu du registre : servi (la base miroite le contenu,
                 // elle n'en est pas l'autorité). Connu mais non publié :
                 // retiré de la liste, sans dire pourquoi.
-                if ($row && ! $row->isVisibleToStudents()) {
+                if ($row && ! $row->isVisibleToStudents() && ! $reviewer) {
                     continue;
                 }
 
@@ -167,6 +170,9 @@ class ContentAvailabilityController extends Controller
                     'questionCount' => $locked ? null : $row?->question_count,
                     'tier' => $tier,
                     'locked' => $locked,
+                    // L'état de publication — rendu au seul relecteur, pour
+                    // qu'il voie ce qui est en ligne et ce qui ne l'est pas.
+                    ...($reviewer ? ['publicationStatus' => $row?->publication_status ?? 'published'] : []),
                 ];
 
                 if (! $locked) {

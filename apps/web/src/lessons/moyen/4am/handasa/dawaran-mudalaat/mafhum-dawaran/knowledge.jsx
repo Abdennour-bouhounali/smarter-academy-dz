@@ -30,6 +30,9 @@ export const LESSON_KNOWLEDGE = {
     1: [
       {
         id: 'dawaran-tajribi', type: 'concepts', title: 'الدوران: نقطة وصورتها',
+        // Pas de prédiction : le texte du نشاط 1 NOMME la notion (« نقول إنّ … ») dans l'encadré juste avant, et les lignes du
+        // questionnaire font énoncer chaque élément (A sur A′, OA = OA′, les angles égaux) ; la règle générale est prédite au module 2 (surat-nuqta).
+        predict: false,
         summary: 'بتدوير الورق الشفاف حول النقطة O تنطبق A على A′: نقول إن A′ صورة A بالدوران الذي مركزه O وزاويته AOA′، و OA′ = OA.',
         body: <Body lines={[ACTIVITY.naming, ACTIVITY.closing]} source={ACTIVITY.source} />,
       },
@@ -37,6 +40,7 @@ export const LESSON_KNOWLEDGE = {
     2: [
       {
         id: 'dawaran', type: 'concepts', title: 'الدوران: مركز وزاوية واتجاه',
+        predictPrompt: 'في نشاط 1 وضعت إبرة المدور على $O$ ودوّرت الورق الشفاف حتى انطبق (F) على (F′)، وعلى الورقة أنشأت صورة نقطة بزاوية $70^\\circ$. لو قال لك زميل فقط: «دوّر الشكل بزاوية $70^\\circ$»، ماذا ينقصه لتعرف أين يصل الشكل؟ اكتب بكلماتك ما الذي يحدّد دورانًا.',
         summary: 'تحويل شكل بدوران هو تدويره بزاوية معيّنة حول نقطة ثابتة وفي اتجاه معيّن؛ يتميّز الدوران بمركز وزاوية واتجاه.',
         body: <Body lines={[KNOW1.definition, KNOW1.remark]} source={KNOW1.source} />,
       },
@@ -47,11 +51,13 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'surat-nuqta', type: 'concepts', title: 'صورة نقطة بدوران',
+        predictPrompt: 'في المستوى «متقدم» فتحت المدور على $O$ وأدرت المنقلة $70^\\circ$ قبل أن تضع $A\'$، ورفض المختبر بعض المواضع. متى تكون نقطة $M\'$ صورة نقطة $M$ بالدوران الذي مركزه $O$ وزاويته $\\alpha$ في اتجاه معيّن؟ وما صورة $O$ نفسها؟ اكتب الشروط بكلماتك.',
         summary: 'صورة نقطة M تختلف عن O بالدوران الذي مركزه O وزاويته ألفا في اتجاه معيّن هي النقطة M′ حيث OM′ = OM والزاوية MOM′ تساوي ألفا؛ وصورة O هي O نفسها.',
         body: <Body lines={[KNOW2.definition, KNOW2.remark]} source={KNOW2.source} />,
       },
       {
         id: 'nisf-dawra', type: 'regles', title: 'دوران زاويته 180 درجة',
+        predictPrompt: 'في العجلة ذات المقصورات الست، دوران بزاوية $60^\\circ$ يوصل المقصورة A إلى مكانين مختلفين بحسب الاتجاه. ماذا يحدث لو كانت الزاوية $180^\\circ$: أين تصل A في كل من الاتجاهين؟ وأيّ تحويل درسته من قبل يعطي نفس الصورة؟ اكتب القاعدة.',
         summary: 'الدوران الذي مركزه O وزاويته 180 درجة هو التناظر بالنسبة إلى النقطة O، والاتجاهان يعطيان نفس الصورة.',
         body: <Body lines={[KNOW2.special, KNOW2.example2]} source={KNOW2.source} />,
       },
@@ -59,16 +65,19 @@ export const LESSON_KNOWLEDGE = {
     3: [
       {
         id: 'tariqat-nuqta', type: 'methodes', title: 'إنشاء صورة نقطة',
+        predictPrompt: '$O$ و $A$ نقطتان متمايزتان. على الورقة أنشأت صورة نقطة بزاوية $70^\\circ$ بالمدور والمنقلة. كيف تنشئ $A\'$ صورة $A$ بالدوران الذي مركزه $O$ وزاويته $50^\\circ$ في الاتجاه المباشر؟ اكتب خطوات الطريقة بالترتيب.',
         summary: 'نرسم نصف المستقيم [OA)، ثم بالمنقلة نصف المستقيم [Ox) بالزاوية المطلوبة في الاتجاه المطلوب، ثم بالمدور النقطة A′ على [Ox) حيث OA′ = OA.',
         body: <Body lines={METHOD_POINT.solution} source={METHOD_POINT.source} />,
       },
       {
         id: 'tariqat-qitaa', type: 'methodes', title: 'إنشاء صورة قطعة',
+        predictPrompt: 'في الشكل قطعة $[AB]$ ونقطة $O$. في نشاط 3 أنشأت صورة قطعة بزاوية $72^\\circ$. كيف تنشئ صورة $[AB]$ بالدوران الذي مركزه $O$ وزاويته $40^\\circ$ في الاتجاه غير المباشر، دون أن تدير كل نقطها؟ اكتب الطريقة.',
         summary: 'لإنشاء صورة قطعة مستقيم بدوران يكفي إنشاء صورتي طرفيها ورسم القطعة المحدّدة بالصورتين.',
         body: <Body lines={[METHOD_SEGMENT.rule]} source={METHOD_SEGMENT.source} />,
       },
       {
         id: 'suwar-ashkal', type: 'regles', title: 'صور القطعة والمستقيم والدائرة',
+        predictPrompt: 'في نشاط 3 أنشأت بزاوية $72^\\circ$ صور قطعة ومستقيم ونصف مستقيم ودائرة. لكل شكل: ما نوع صورته؟ ما الذي يبقى محفوظًا؟ وأيّ النقط تكفي لإنشائها؟ اكتب القاعدة.',
         summary: 'صورة قطعة قطعة لها نفس الطول، وصورة مستقيم مستقيم يكفي لإنشائه صورتا نقطتين منه، وصورة نصف مستقيم نصف مستقيم مبدؤه صورة المبدأ، وصورة دائرة دائرة مركزها صورة المركز ولها نفس نصف القطر.',
         body: <Body lines={[ACTIVITY_3_LINES.segment, ACTIVITY_3_LINES.line2, ACTIVITY_3_LINES.ray, ACTIVITY_3_LINES.circle]} source={ACTIVITY_3.source} />,
       },

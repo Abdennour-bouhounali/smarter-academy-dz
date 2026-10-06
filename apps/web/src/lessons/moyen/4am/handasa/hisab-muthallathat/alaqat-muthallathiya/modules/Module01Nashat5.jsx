@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KITE, LAB, ACT5, TABLE_TEX, LINES } from '../content/textbook';
 import KiteVignette from '../components/KiteVignette';
@@ -23,6 +25,11 @@ import TrialsEvidence from '../components/TrialsEvidence';
  * UNDERSTAND  1. le cosinus lu sur le triangle construit ; 2. نشاط 5 (1) avec le tableau de نشاط 4 (valeurs ARRONDIES :
  *   0,87² + 0,50² = 1,0069 — d'où la preuve) ; 3. la conjecture → brique takhmin-alaqat ;
  * FORMALIZE  4. نشاط 5 (2) : les rapports en fonction des côtés et Pythagore ; 5. tan = sin / cos → brique burhan-alaqat.
+ * « أتوقّع القاعدة » : la bonne option de l'étape 3 EST la conjecture, et l'étape 4 EST la preuve (ses corrections
+ * l'écrivent) : la question de l'étape 3 est enveloppée dans <PredictRule id="takhmin-alaqat">, celle de l'étape 4 dans
+ * <PredictRule id="burhan-alaqat"> — l'élève écrit la conjecture, puis la preuve, AVANT de voir les options
+ * (predictPrompt de knowledge.jsx). La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape : le laboratoire est
+ * dans `intro` (les deux niveaux) ; même instrument que le niveau متقدم (sin x = 3/7 au compas), résolue au module 5.
  * LP : P1 (étapes 2–5), P3 (le laboratoire, étape 1).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -120,6 +127,7 @@ export default function Module01Nashat5() {
           content: (
             <div className="space-y-3">
               <TrialsEvidence trials={trials} />
+              <PredictRule id="takhmin-alaqat">
               <TapQuestion
                 prompt="من الجدول ومن المثلثات التي بنيتها، أيّ تخمين نضع لكل زاوية حادة x ؟"
                 options={[
@@ -133,6 +141,7 @@ export default function Module01Nashat5() {
                 explain={<MathText>{`${LINES.table} ${LINES.sumWhy}`}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              </PredictRule>
               {q3 && <KnowledgeBrick id="takhmin-alaqat" lead="التخمين، بكلمات الكتاب:" />}
             </div>
           ),
@@ -143,6 +152,7 @@ export default function Module01Nashat5() {
             <div className="space-y-3">
               <TextbookBox kind="exercise" text={ACT5.part2} source={ACT5.source} compact />
               <GeoFigure {...ACT5.figure} />
+              <PredictRule id="burhan-alaqat">
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'في المثلث ABC القائم في A ، و x قيس الزاوية $\\widehat{B}$ :'}</MathText></p>}
                 rows={[
@@ -155,6 +165,7 @@ export default function Module01Nashat5() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: التخمين صحيح لكل زاوية حادة، لا لـ 30° و 45° و 60° فقط.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ4(true)}
               />
+              </PredictRule>
             </div>
           ),
         },
@@ -172,6 +183,7 @@ export default function Module01Nashat5() {
                 onAnswered={() => setQ5(true)}
               />
               {q5 && <KnowledgeBrick id="burhan-alaqat" lead="ما بنيته يداك، مبرهنًا:" />}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

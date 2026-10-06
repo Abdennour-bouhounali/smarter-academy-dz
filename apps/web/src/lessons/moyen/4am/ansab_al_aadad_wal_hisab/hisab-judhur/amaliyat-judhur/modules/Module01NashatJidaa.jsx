@@ -8,6 +8,8 @@ import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_B, TILING_BEGINNER } from '../content/textbook';
 import RootTable from '../components/RootTable';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 
 /**
  * Module 1 — نشاط 4 (p. 21) : جداء جذرين تربيعيين، ثم حاصل قسمتهما.
@@ -264,7 +266,8 @@ export default function Module01NashatJidaa() {
                 requires={['murabba-jidhr', 'quwa-jidaa-kasr']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
-                    <MathText>{'جـ) العددان موجبان، ولهما نفس المربع $\\dfrac{a}{b}$ ، إذن هما متساويان.'}</MathText>
+                    {/* La conclusion (« إذن هما متساويان ») est laissée à la prédiction de l'élève : la brique suit. */}
+                    <MathText>{'جـ) العددان موجبان، ولهما نفس المربع $\\dfrac{a}{b}$.'}</MathText>
                   </Feedback>
                 )}
                 onAnswered={() => setProofB(true)}
@@ -272,6 +275,9 @@ export default function Module01NashatJidaa() {
               {proofB && (
                 <KnowledgeBrick id="qismat-jidhrayn" lead="هذا ما استنتجته في جـ): الخاصية 2 من الكتاب." />
               )}
+              {/* La « مسألة الدرس » prolonge le carré dallé (labs dans l'intro : dernière étape) :
+                  un carré couvert de dalles carrées, 180 = 36 × 5 — résolue au module 5. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

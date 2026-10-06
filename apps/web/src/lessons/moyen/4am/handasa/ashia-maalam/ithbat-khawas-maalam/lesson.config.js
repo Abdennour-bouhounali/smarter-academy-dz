@@ -13,7 +13,8 @@
  *   2 نثبت بالحساب (discovery)    TOUCH → FORMALIZE : triangle, perpendicularité sans produit scalaire, quadrilatère, cercle
  *   3 طرائق (formalization)        la طريقة p. 145 ligne à ligne, l'inconnue y, دوري الآن 1 et 2 prouvés par l'élève
  *   4 أوظّف تعلّماتي (practice_lab) AUTOMATIZE → TRANSFER : تمارين 13, 18, 19, 21 (corrigé), 24, 26 (corrigé), 27
- *   5 إختبار أولي (evaluation)
+ *   5–7 مسائل                     puis trois « مسائل » de la plateforme (modules 5–7) ;
+ *   8 إختبار أولي (evaluation)
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -54,6 +55,25 @@ export const LESSON_CONFIG = {
       'معادلة الدائرة (السنوات اللاحقة)',
     ],
   },
+  // « مسألة الدرس » (module 5) : le monde du niveau متقدم (C sur une droite, puis le carré et le cercle de diamètre
+  // [AC]) avec d'autres nombres ; montrée dès le sommaire et rappelée au module 1. Sa figure (littéraux) est dessinée
+  // par la carte et par la مسألة (content/problems.js la reprend) : C n'y figure PAS (c'est la réponse).
+  lessonProblem: {
+    module: 5,
+    title: 'ملعب الحي: شاخص على الخطّ، مربّع ودائرة',
+    statement: 'في ملعب الحي، الأرضية المرصوفة مَعلم متعامد ومتجانس، الوحدة فيه ضلع بلاطة طوله 1 m. لتمرين التمرير، وضع المدرّب الشاخصين $A(3\\,;\\,4)$ و $B(-1\\,;\\,2)$ ، ويريد وضع شاخص ثالث $C(1\\,;\\,y)$ على الخطّ $(d)$ المرسوم في الشكل، الذي فاصلة كل نقطة منه 1 ، بحيث يكون المستقيمان $(AB)$ و $(BC)$ متعامدين. ثم يضع شاخصا رابعا في $D(5\\,;\\,0)$ ، ويرسم بحبل مشدود دائرة قطرها $[AC]$ يجري حولها اللاعبون. يشارك في التمرين 14 لاعبا، ويدوم 20 دقيقة.',
+    figure: {
+      grid: true,
+      axes: true,
+      points: { A: [3, 4], B: [-1, 2], D: [5, 0], d1: [1, 5], d2: [1, -4] },
+      hidden: ['d1', 'd2'],
+      segments: [['A', 'B']],
+      lines: [{ through: ['d1', 'd2'], name: '(d)', tone: 'amber', extend: 0 }],
+      labels: { A: 'ne', B: 'nw', D: 'se' },
+      ariaLabel: 'أرضية الملعب المرصوفة في معلم متعامد ومتجانس: الشاخصان A و B ، الشاخص D ، والخطّ (d) الذي يوضع عليه الشاخص C ، كل نقطة منه فاصلتها 1',
+      maxWidth: 420,
+    },
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -82,6 +102,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_ithbat-khawas-maalam_P1', '4am_ithbat-khawas-maalam_P2', '4am_ithbat-khawas-maalam_P3'],
       sourceElementIds: ['method-unknown'],
     },
+    // Les trois « مسائل » (track: 'problem') : situations de la plateforme, résolues pas à pas.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — ملعب الحي: شاخص على الخطّ، مربّع ودائرة', learningPointIds: ['4am_ithbat-khawas-maalam_P1', '4am_ithbat-khawas-maalam_P2', '4am_ithbat-khawas-maalam_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — قطعة أرض في سطيف: هل هي مستطيلة؟', learningPointIds: ['4am_ithbat-khawas-maalam_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — ساحة رمي الجلة: علامات قوس التدريب', learningPointIds: ['4am_ithbat-khawas-maalam_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -103,8 +127,22 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 13 و 18 و 19 (ص 147) و 21 و 24 و 26 و 27 (ص 149).',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_ithbat-khawas-maalam_P1', '4am_ithbat-khawas-maalam_P2', '4am_ithbat-khawas-maalam_P3'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم نقاط التعلّم الثلاث: طبيعة مثلث، طبيعة رباعي، الانتماء إلى دائرة.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert ; jamais de preuve de maîtrise (MASAIL_GENERATION_GUIDE.md).
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — ملعب الحي', desc: 'مسألة الدرس: أين نضع الشاخص C ليتعامد المستقيمان؟ ثم نبرهن أنّ الشواخص الأربعة رؤوس مربّع، وأنّ اثنين منها على دائرة الحبل.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_ithbat-khawas-maalam_P1', '4am_ithbat-khawas-maalam_P2', '4am_ithbat-khawas-maalam_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — قطعة أرض في سطيف', desc: 'هل القطعة مستطيلة كما قال البائع؟ متوازي أضلاع أولا، ثم القطران والضلعان، ثم المساحة ومدخول القمح.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_ithbat-khawas-maalam_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — ساحة رمي الجلة', desc: 'علمان على قوس التدريب: أحدهما عليه والآخر داخل الدائرة رغم ما يبدو؛ ثم أين ننقله ليصير عليه.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_ithbat-khawas-maalam_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الثلاث: طبيعة مثلث، طبيعة رباعي، الانتماء إلى دائرة.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

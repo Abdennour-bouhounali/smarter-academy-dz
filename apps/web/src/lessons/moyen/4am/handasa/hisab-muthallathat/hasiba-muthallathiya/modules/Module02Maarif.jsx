@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -18,6 +18,9 @@ import KeySequence from '../components/KeySequence';
  *      dont on connaît le cosinus (les distracteurs : sin⁻¹, et cos sans 2nd) ;
  *   3. FORMALIZE : la règle d'arrondi (plateforme, déclarée), brique tadwir-dalaqa, l'écran de A arrondi à trois précisions.
  * Les questions utilisent d'AUTRES nombres que les encadrés, sauf l'arrondi de l'étape 3 (l'écran même du manuel).
+ * « أتوقّع القاعدة » (2026-10-06) : la phrase du manuel (la programmation en degrés) et la règle d'arrondi sont deux
+ * TextbookBox posés juste AVANT leur brique : ils sont enveloppés dans PredictRule (id de la brique ; prompt :
+ * knowledge.jsx › predictPrompt) ; le titre de l'étape 1 et le brief ne disent plus la règle.
  * LP : P1 (1), P2 (2), P3 (3).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -54,15 +57,15 @@ export default function Module02Maarif() {
       estimatedTime="10 دقائق"
       brief={{
         tag: 'معارف — الكتاب ص 120', title: KNOW3.title, tone: 'violet',
-        body: <p>حاسبة الدرون أعطتك النسب من الزوايا والزوايا من النسب. الكتاب يكتب ذلك في مثالين، ويبدأ بشرط: برمجة الحاسبة بالدرجة.</p>,
+        body: <p>حاسبة الدرون أعطتك النسب من الزوايا والزوايا من النسب. الكتاب يكتب ذلك في مثالين، ويبدأ بشرط قبل أيّ حساب.</p>,
       }}
       steps={[
         {
-          num: 1, title: 'الحاسبة مبرمجة بالدرجة', subtitle: 'مثال 1', done: q1,
+          num: 1, title: 'قبل أيّ حساب', subtitle: 'مثال 1', done: q1,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="hasiba-nisba" variant="rappel" compact />
-              <TextbookBox kind="property" title={KNOW3.title} text={KNOW3.intro} source={KNOW3.source} compact />
+              <PredictRule id="barmaja-daraja"><TextbookBox kind="property" title={KNOW3.title} text={KNOW3.intro} source={KNOW3.source} compact /></PredictRule>
               <TextbookBox kind="example" text={KNOW3.example1.text} source={KNOW3.source} compact>
                 <Steps steps={KNOW3.example1.steps} />
               </TextbookBox>
@@ -122,7 +125,7 @@ export default function Module02Maarif() {
           num: 3, title: 'تدوير نتيجة الحاسبة', subtitle: 'الدقة المطلوبة', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="method" title={ROUNDING_RULE.title} lines={ROUNDING_RULE.lines} source={ROUNDING_RULE.source} compact />
+              <PredictRule id="tadwir-dalaqa"><TextbookBox kind="method" title={ROUNDING_RULE.title} lines={ROUNDING_RULE.lines} source={ROUNDING_RULE.source} compact /></PredictRule>
               <KnowledgeBrick id="tadwir-dalaqa" lead="ما فعلته بخط القطع ✂ على الشاشة، بالكلمات:" />
               <p className="text-sm font-semibold text-slate-800"><MathText>{'شاشة المثال 2: $\\widehat{A} = 23{,}57817848^{\\circ}$ .'}</MathText></p>
               <BatchChoiceQuestion

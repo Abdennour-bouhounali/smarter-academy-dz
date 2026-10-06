@@ -99,7 +99,7 @@ export default function Module02Majmu() {
                 requires={['jidhr-taarif', 'murabba-jidhr']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
-                    <MathText>{'مثال مضاد واحد يكفي لنفي «دائمًا»: $16 + 9$ ثم $100 - 36$. وتتحقق المساواة فقط في حالات خاصّة يكون فيها أحد الجذرين معدومًا (أو $a = b$ في الفرق).'}</MathText>
+                    <MathText>{'مثال مضاد واحد يكفي لنفي «دائمًا»: $16 + 9$ ثم $100 - 36$.'}</MathText>
                   </Feedback>
                 )}
                 onAnswered={() => setQ3(true)}

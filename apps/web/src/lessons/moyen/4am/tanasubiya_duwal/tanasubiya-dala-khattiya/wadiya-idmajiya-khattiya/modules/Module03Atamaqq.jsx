@@ -34,14 +34,18 @@ export default function Module03Atamaqq() {
           content: (
             <div className="space-y-3">
               <TextbookExercise exercise={part('ex-32-1')} requires={['shakl-khatti']} onAnswered={mark('ex-32-1')} />
-              <KnowledgeBrick id="ikhtibar-khattiya" lead="لا نحكم على الدستور كما كُتب: ننشر ونبسّط ثم ننظر إلى شكله." />
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : le critère « de la forme $ax$ » est shakl-khatti (درس 2), et la question 32-1 juste
+                  au-dessus vient de faire développer et simplifier (« ننشر ونبسّط العبارة أولا »). */}
+              <KnowledgeBrick id="ikhtibar-khattiya" variant="rappel" lead="لا نحكم على الدستور كما كُتب: ننشر ونبسّط ثم ننظر إلى شكله." />
               <TextbookExercise exercise={part('ex-32-2')} requires={['ikhtibar-khattiya']} onAnswered={mark('ex-32-2')} />
             </div>
           ) },
         { num: 2, title: 'تمرين 37 — نترات مياه الشرب', done: all('37'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tarkiz" lead="الحد المسموح كتلة في كل لتر: نحسب كتلة النترات في لتر من هذا الماء." />
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : الكتلة الحجمية = كتلة ÷ حجم est posée par « تطبيقات التناسبية » (المقادير المركّبة, درس 4)
+                  et le changement d’unité par tahwil-murakkab. */}
+              <KnowledgeBrick id="tarkiz" variant="rappel" lead="الحد المسموح كتلة في كل لتر: نحسب كتلة النترات في لتر من هذا الماء." />
               <TextbookExercise exercise={part('ex-37-1')} requires={['tarkiz', 'maqadir-murakkaba']} onAnswered={mark('ex-37-1')} />
               <TextbookExercise exercise={part('ex-37-2')} requires={['tarkiz']} onAnswered={mark('ex-37-2')} />
             </div>
@@ -49,7 +53,8 @@ export default function Module03Atamaqq() {
         { num: 3, title: 'تمرين 38 — الناخبون', done: all('38'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="nisba-juz" />
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : le pourcentage d’une partie d’un tout est nisba-akhdh de « تطبيقات التناسبية » (درس 4). */}
+              <KnowledgeBrick id="nisba-juz" variant="rappel" />
               <TextbookExercise exercise={part('ex-38-1')} requires={['nisba-juz', 'nisba-mia']} onAnswered={mark('ex-38-1')} />
               <TextbookExercise exercise={part('ex-38-2')} requires={['nisba-juz']} onAnswered={mark('ex-38-2')} />
             </div>

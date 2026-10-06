@@ -147,7 +147,7 @@ async function open({ mobile = false, lesson = LESSON, width = 1280 } = {}) {
   }).then((r) => r.json()).catch(() => null);
   const { ctx, page } = await open({ lesson: HISTORY_LESSON });
   const lp = page.locator('[data-learning-point]');
-  check('le module « نقطة التعلّم » est affiché', (await lp.count()) === 1);
+  check('le module « الكفاءة » est affiché', (await lp.count()) === 1);
   const code = await lp.getAttribute('data-learning-point').catch(() => null);
   const row = overview?.learningPoints?.find((p) => p.code === code);
   const text = (await lp.innerText().catch(() => '')).replace(/\s+/g, ' ');

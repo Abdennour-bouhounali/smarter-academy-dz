@@ -4,7 +4,7 @@
  * (تحليل عبارة باستخراج عامل مشترك, دوري الآن 2 p. 35, تحليل عبارة باستعمال
  * المتطابقات الشهيرة, تمرين 2, دوري الآن 2 p. 36), exercices 20–27, 28 (ب),
  * 29–33 (pp. 38–39), « أستعدّ » items 9–10 (p. 31), QCM 4, 5, 6, 9, 10, 11,
- * 12 (p. 40).
+ * 12 (p. 40), puis trois « مسائل » de la plateforme (modules 5–7).
  * Source de vérité : docs/sources/4am/unit3/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -47,6 +47,14 @@ export const LESSON_CONFIG = {
       'نشر المتطابقات الشهيرة والحساب المتمعّن فيه للجداءات (الدرس 2، تمرين 28 أ)',
       'حل المعادلات من الشكل جداء معدوم (غير مبرمج في هذه الوحدة)',
     ],
+  },
+  // « مسألة الدرس » : l'énoncé de la مسألة 1 (module 5), montré au sommaire et
+  // à la fin du module 1 (LessonProblemCard) — le monde du niveau متقدم (le
+  // gazon en rangées identiques, 6x² + 4x), d'autres nombres.
+  lessonProblem: {
+    module: 5,
+    title: 'الملعب الجواري: كم صفًّا من العشب؟',
+    statement: 'وصلت إلى الملعب الجواري لحيّنا قطع من العشب الاصطناعي: 10 مربّعات كبيرة، طول ضلع كل منها $x$ مترًا، و 15 شريطًا، طول كل منها $x$ مترًا وعرضه متر واحد. يريد العمّال فرشها كلّها في ملعب واحد مستطيل، صفوفًا متماثلة ارتفاع كل صفّ منها $x$ مترًا، دون قطع أيّ قطعة. في هذا الملعب $x = 6$، وسيُحاط الملعب بسياج ثمن المتر الواحد منه 1500 دج. يتّسع مدرّج الملعب لـ 200 متفرّج، وأنجز الأشغال 4 عمّال.',
   },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
@@ -94,6 +102,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_tahlil-ibara_P3'],
       sourceElementIds: ['know-3', 'qcm'],
     },
+    // Modules 5–7 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — الملعب الجواري: كم صفًّا من العشب؟', learningPointIds: ['4am_tahlil-ibara_P2', '4am_tahlil-ibara_P1'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — مصنع البسكويت: أبعاد العلب', learningPointIds: ['4am_tahlil-ibara_P3', '4am_tahlil-ibara_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — ساحة المتوسطة: حديقة مربّعة وجزء مبلّط', learningPointIds: ['4am_tahlil-ibara_P1', '4am_tahlil-ibara_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -115,8 +128,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 20 ← 27، 28 (ب)، 29 ← 33، وسؤالا أؤكّد تعلّماتي 5 و 9.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tahlil-ibara_P1', '4am_tahlil-ibara_P2', '4am_tahlil-ibara_P3'],
       color: 'amber', style: 'featured', estimatedMin: 11, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم نقاط التعلّم الثلاث، منها خمسة من أؤكّد تعلّماتي.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — عشب الملعب الجواري', desc: 'مسألة الدرس: قطع عشب في صفوف متماثلة. العامل المشترك كاملًا، بعدا الملعب، وثمن السياج.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tahlil-ibara_P2', '4am_tahlil-ibara_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — مصنع البسكويت', desc: 'مساحتا قاعدتين بدلالة x: أبعاد العلبتين بالمتطابقات الشهيرة، ثم الكراتين وثمنها.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tahlil-ibara_P3', '4am_tahlil-ibara_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — ساحة المتوسطة', desc: 'ساحة مستطيلة يُقتطع منها مربّع: تحليل مساحة الجزء المبلّط، خطأ زميل، وثمن التبليط.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tahlil-ibara_P1', '4am_tahlil-ibara_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الثلاث، منها خمسة من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

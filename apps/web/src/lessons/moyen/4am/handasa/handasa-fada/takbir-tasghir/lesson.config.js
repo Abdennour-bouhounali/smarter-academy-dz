@@ -16,7 +16,9 @@
  *   M3 طرائق          — TOUCH THE MATH : k depuis deux longueurs, depuis un rapport d'aires (√) ou de volumes (∛), les mesures
  *                      de l'image sans recalculer ;
  *   M4 أوظّف تعلّماتي  — AUTOMATIZE / TRANSFER : cinq exercices de la plateforme ;
- *   M5 إختبار أولي    — cinq épreuves ; P1 et P2 couverts.
+ *   M5–M7 مسائل       — puis trois « مسائل » de la plateforme (modules 5–7) : le صندوق du jeu de construction (مسألة الدرس),
+ *                      la maquette d'un نصب تذكاري, l'aquarium agrandi (content/problems.js) ;
+ *   M8 إختبار أولي    — cinq épreuves ; P1 et P2 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -39,6 +41,21 @@ export const LESSON_CONFIG = {
   emoji: '🧊',
   estimatedDurationMin: 50,
   textbookRef: { unit: 14, activity: 6, pages: '163, 165' },
+  lessonProblem: {
+    module: 5,
+    title: 'صندوق الكنز في لعبة البناء: نصغّره ثم نطبعه',
+    statement: 'في لعبة البناء على الهاتف، بنى أنس صندوق كنز على شكل متوازي مستطيلات $ABCDEFGH$ من مكعبات حرف كل منها $1\\,\\mathrm{cm}$ ، حيث $AB = 8\\,\\mathrm{cm}$ و $BC = 6\\,\\mathrm{cm}$ و $AE = 4\\,\\mathrm{cm}$ ، كما في الشكل المقابل؛ استغرق بناؤه 12 دقيقة، وفي اللعبة 250 مستوى. تسمح اللعبة بتكبير المجسّم أو تصغيره بنسبة $k$ ، فصغّر أنس الصندوق بالنسبة $k = \\dfrac{3}{4}$ ، ثم أراد طبع المجسّم المصغّر مملوءا بالطابعة ثلاثية الأبعاد لنادي المتوسطة: ثمن الراتنج 12 دج لكل $1\\,\\mathrm{cm}^3$ ، وثمن دهن الأوجه 5 دج لكل $1\\,\\mathrm{cm}^2$ . يملك أنس 1500 دج.',
+    figure: {
+      kind: 'space',
+      view: { azimuth: -58, elevation: 22 },
+      points: { A: [0, 0, 4], B: [8, 0, 4], C: [8, 6, 4], D: [0, 6, 4], E: [0, 0, 0], F: [8, 0, 0], G: [8, 6, 0], H: [0, 6, 0] },
+      solids: [{ type: 'polyhedron', faces: [['A', 'B', 'C', 'D'], ['E', 'F', 'G', 'H'], ['A', 'B', 'F', 'E'], ['B', 'C', 'G', 'F'], ['C', 'D', 'H', 'G'], ['D', 'A', 'E', 'H']], tone: 'amber' }],
+      segments: [{ from: 'E', to: 'F', label: '8 cm', tone: 'amber' }, { from: 'F', to: 'G', label: '6 cm', tone: 'amber' }, { from: 'B', to: 'F', label: '4 cm', tone: 'amber' }],
+      labels: { A: 'nw', B: 'n', C: 'ne', D: 'n', E: 'sw', F: 's', G: 'se', H: 'nw' },
+      ariaLabel: 'صندوق الكنز: متوازي مستطيلات ABCDEFGH، الوجه ABCD في الأعلى والوجه EFGH في الأسفل، AB = 8 و BC = 6 و AE = 4 بالسنتيمتر',
+      maxWidth: 480,
+    },
+  },
   skills: [
     'معرفة أثر نسبة التكبير أو التصغير k على الأطوال (× k) والمساحات (× k²) والحجوم (× k³)',
     'حساب أبعاد ومساحة وحجم مجسّم ناتج عن تكبير أو تصغير مجسّم معطى',
@@ -84,6 +101,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_takbir-tasghir_P1', '4am_takbir-tasghir_P2'],
       sourceElementIds: ['act-6'],
     },
+    // Les trois « مسائل » (modules 5–7) : des exercices COMPLETS de type امتحان, ajouts DÉCLARÉS de la plateforme
+    // (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — صندوق الكنز في لعبة البناء', learningPointIds: ['4am_takbir-tasghir_P1', '4am_takbir-tasghir_P2'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — مجسّم النصب التذكاري', learningPointIds: ['4am_takbir-tasghir_P1', '4am_takbir-tasghir_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — حوض الأسماك المكبَّر', learningPointIds: ['4am_takbir-tasghir_P1', '4am_takbir-tasghir_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -105,8 +127,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'خمسة تمارين: كرة الفريق الوطني، لعبة البناء، هرم مقطوع، مخطّط شقة، ميدالية مطبوعة.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_takbir-tasghir_P1', '4am_takbir-tasghir_P2'],
       color: 'amber', style: 'featured', estimatedMin: 7, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقطتي التعلّم.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — صندوق الكنز في لعبة البناء', desc: 'مسألة الدرس: حجم الصندوق المصغّر ومساحته، اقتراح «ننقص 2 cm من كل حرف»، ثم ثمن طبعه.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_takbir-tasghir_P1', '4am_takbir-tasghir_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — مجسّم النصب التذكاري', desc: 'نسبة التصغير من ارتفاعين، مساحة الأوجه الجانبية للمجسّم، ثم أكياس الجبس اللازمة لصبّه.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_takbir-tasghir_P1', '4am_takbir-tasghir_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — حوض الأسماك المكبَّر', desc: 'سعة الحوض المكبَّر وزجاجه دون حساب أبعاده، ثم عدد الأسماك وثمنها.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_takbir-tasghir_P1', '4am_takbir-tasghir_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

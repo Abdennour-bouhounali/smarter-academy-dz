@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -95,7 +95,10 @@ export default function Module02Tayin() {
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tanasub-taghayyurat" variant="rappel" compact />
-              <TextbookBox kind="property" title={KNOWLEDGE.burhan.title} lines={[...KNOWLEDGE.burhan.lines, KNOWLEDGE.burhan.remark]} source={KNOWLEDGE.burhan.source} compact />
+              {/* La preuve ÉNONCE la règle burhan-taghayyurat : l'élève la prédit d'abord (une prédiction, puis boîte + brique). */}
+              <PredictRule id="burhan-taghayyurat">
+                <TextbookBox kind="property" title={KNOWLEDGE.burhan.title} lines={[...KNOWLEDGE.burhan.lines, KNOWLEDGE.burhan.remark]} source={KNOWLEDGE.burhan.source} compact />
+              </PredictRule>
               <KnowledgeBrick id="burhan-taghayyurat" lead="ما رأيته في كل درجاتك، مبرهنًا:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'أكمل البرهان من أجل $f(x) = 5x - 2$ :'}</MathText></p>}
@@ -194,7 +197,10 @@ export default function Module02Tayin() {
               <MethodSteps method={METHOD} onAllRevealed={() => setRead(true)} />
               {read && (
                 <>
-                  <TextbookBox kind="method" title={KNOWLEDGE.jumla.title} lines={[KNOWLEDGE.jumla.rule, KNOWLEDGE.jumla.example]} source={KNOWLEDGE.jumla.source} compact />
+                  {/* La boîte ÉNONCE la méthode tariqat-jumla-ab : l'élève la prédit d'abord. */}
+                  <PredictRule id="tariqat-jumla-ab">
+                    <TextbookBox kind="method" title={KNOWLEDGE.jumla.title} lines={[KNOWLEDGE.jumla.rule, KNOWLEDGE.jumla.example]} source={KNOWLEDGE.jumla.source} compact />
+                  </PredictRule>
                   <KnowledgeBrick id="tariqat-jumla-ab" lead="الطريقة التي تعلّمتها في جمل المعادلتين، بمجهولين a و b :" />
                   <TextbookExercise exercise={SYSTEM_EXERCISE} requires={['tariqat-jumla-ab', 'hall-jumla']} onAnswered={() => setQ3(true)} />
                 </>

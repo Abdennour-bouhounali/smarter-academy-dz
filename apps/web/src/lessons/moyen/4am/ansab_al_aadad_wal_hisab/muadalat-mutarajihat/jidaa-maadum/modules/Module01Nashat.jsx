@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { PitchScene } from '../../../../../../common/manipulations/primitives/PitchBackdrop';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_A, ELIAS_AMINE, HOOK } from '../content/textbook';
 
@@ -25,6 +27,13 @@ import { ACTIVITY, ACTIVITY_A, ELIAS_AMINE, HOOK } from '../content/textbook';
  * terrain disparaît-il ? — س 3 « عبّر لغويا », puis la brique khassiya-jidaa-maadum ;
  * (3) إلياس et أمين (تطبيق أ، س 1) ; (4) −1,2(3x + 2,7) = 0 des deux façons (س 2) ;
  * (5) (x − 2)(x + 5) = 0 (س 3) : le نشر d'إلياس échoue, la propriété réussit.
+ *
+ * « أتوقّع القاعدة » : la bonne option de س 3 (étape 2) EST la règle (« عبّر لغويا ») ;
+ * la question est donc enveloppée dans <PredictRule id="khassiya-jidaa-maadum"> —
+ * l'élève écrit la propriété avec ses mots (predictPrompt de knowledge.jsx) AVANT de
+ * voir les options, puis la question et la brique s'affichent.
+ * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape : le même ملعب à deux
+ * côtés variables, d'autres nombres, résolu au module 5.
  * LP : P1, P2.
  */
 const { beginner: BEGINNER, advanced: ADVANCED } = ACTIVITY.numbers;
@@ -163,19 +172,21 @@ export default function Module01Nashat() {
             <div className="space-y-3">
               {/* LES ESSAIS DE L'ÉLÈVE, et rien d'autre. */}
               {evidence([BEGINNER, ADVANCED])}
-              <TapQuestion
-                prompt={<MathText>{ACTIVITY_A.questions[2]}</MathText>}
-                options={[
-                  M('إذا كان جداء عاملين معدوما فإن العاملين معدومان معًا.'),
-                  M('إذا كان أحد العاملين سالبًا فإن الجداء معدوم.'),
-                  M(ACTIVITY_A.statement),
-                ]}
-                correct={2}
-                cols={1}
-                requires={['darb-nisbiya']}
-                explain={<MathText>{'في المختبر اختفى الملعب كلّما صار أحد ضلعيه $0$ ، ولو بقي الضلع الآخر غير معدوم: في $3(x - 5)$ الضلع $3$ لا ينعدم أبدًا والملعب يختفي عند $x = 5$. وضلع سالب يعطي مساحة سالبة، لا معدومة.'}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
+              <PredictRule id="khassiya-jidaa-maadum">
+                <TapQuestion
+                  prompt={<MathText>{ACTIVITY_A.questions[2]}</MathText>}
+                  options={[
+                    M('إذا كان جداء عاملين معدوما فإن العاملين معدومان معًا.'),
+                    M('إذا كان أحد العاملين سالبًا فإن الجداء معدوم.'),
+                    M(ACTIVITY_A.statement),
+                  ]}
+                  correct={2}
+                  cols={1}
+                  requires={['darb-nisbiya']}
+                  explain={<MathText>{'في المختبر اختفى الملعب كلّما صار أحد ضلعيه $0$ ، ولو بقي الضلع الآخر غير معدوم: في $3(x - 5)$ الضلع $3$ لا ينعدم أبدًا والملعب يختفي عند $x = 5$. وضلع سالب يعطي مساحة سالبة، لا معدومة.'}</MathText>}
+                  onAnswered={() => setQ2(true)}
+                />
+              </PredictRule>
               {q2 && <KnowledgeBrick id="khassiya-jidaa-maadum" lead="ما رأيته في الملعب يسمّيه الكتاب:" />}
             </div>
           ),
@@ -254,6 +265,9 @@ export default function Module01Nashat() {
                   onAnswered={() => setQ5(true)}
                 />
               )}
+              {/* La « مسألة الدرس » prolonge le ملعب du niveau متقدم : deux côtés
+                  qui varient avec x, d'autres nombres — module 5. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

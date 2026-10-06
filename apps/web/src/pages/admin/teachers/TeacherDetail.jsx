@@ -7,6 +7,7 @@ import StatusBadge from '../../../components/admin/ui/StatusBadge';
 import DataTable from '../../../components/admin/ui/DataTable';
 import { LoadingState, ErrorState, EmptyState } from '../../../components/admin/ui/states';
 import { ConfirmDialog } from '../../../components/admin/ui/Modal';
+import AmbassadorSwitch from '../../../components/admin/ui/AmbassadorSwitch';
 import CommercialPanel from '../../../components/admin/commercial/CommercialPanel';
 import FeatureUsagePanel from '../../../components/admin/commercial/FeatureUsagePanel';
 import { AuthContext } from '../../../context/AuthContext';
@@ -107,6 +108,11 @@ export default function AdminTeacherDetail() {
                 <button key={v} type="button" onClick={() => setPendingStatus(v)} className={btnGhost}>{statusActionLabel(v)}</button>
               ))}
               <span className="font-inter text-[11px] text-slate-400">{t('teachers.statusVsPlanHint')}</span>
+            </div>
+            <div className="mt-3 flex flex-wrap items-center gap-3 border-t border-slate-100 pt-3" data-ambassador-block>
+              <span className="font-inter text-xs font-semibold text-slate-700">{t('teachers.ambassador.column')}</span>
+              <AmbassadorSwitch teacher={teacher} withLabel onChange={(updated) => setData((c) => ({ ...c, teacher: { ...c.teacher, ...updated } }))} />
+              <span className="font-inter text-[11px] text-slate-400">{t('teachers.ambassador.hint')}</span>
             </div>
           </section>
 

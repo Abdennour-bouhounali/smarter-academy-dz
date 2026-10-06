@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -34,7 +34,7 @@ export default function Module03Taraiq() {
       estimatedTime="9 دقائق"
       brief={{
         tag: 'طرائق — الكتاب ص 143', title: METHOD_DRAW.title, tone: 'emerald',
-        body: <p>في تطبيق التوصيل وضعت دبوس الوجهة انطلاقا من كود معطى. الكتاب يكتب الحركة نفسها انسحابين: أفقيا ثم عموديا.</p>,
+        body: <p>في تطبيق التوصيل وضعت دبوس الوجهة انطلاقا من كود معطى. الكتاب يكتب الحركة نفسها بلغة الانسحابات.</p>,
         footer: <SourceTag source={METHOD_DRAW.source} />,
       }}
       steps={[
@@ -42,7 +42,10 @@ export default function Module03Taraiq() {
           num: 1, title: 'ممثّل أول للشعاع u', subtitle: 'الطريقة، السؤال 1', done: q1,
           content: (
             <div className="space-y-3">
-              <MethodSteps method={{ ...METHOD_DRAW, solution: METHOD_DRAW.solution.slice(0, 4) }} />
+              {/* « أتوقّع القاعدة » AVANT la solution du manuel : ses lignes appliquent déjà la طريقة (un exemple résolu). */}
+              <PredictRule id="tamthil-shuaa">
+                <MethodSteps method={{ ...METHOD_DRAW, solution: METHOD_DRAW.solution.slice(0, 4) }} />
+              </PredictRule>
               <p className="text-xs text-slate-500"><MathText>{METHOD_DRAW.rename}</MathText></p>
               <KnowledgeBrick id="tamthil-shuaa" lead="ما فعله الطيار الآلي في التطبيق، بكلمات الطريقة:" />
               <TapQuestion

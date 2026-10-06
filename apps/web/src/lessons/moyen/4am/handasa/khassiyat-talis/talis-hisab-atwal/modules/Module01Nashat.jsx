@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, CINEMA } from '../content/textbook';
 import { FIG_ACT1_CASE1, FIG_ACT1_CASE2 } from '../content/figures';
@@ -20,7 +22,10 @@ import CinemaVignette from '../components/CinemaVignette';
  *   مبتدئ : la projection du quartier, AB = 4, AC = 5, BC = 3, graduations entières.
  * UNDERSTAND  les questions de la حالة الأولى et de la حالة الثانية, sous les arrêts jugés de l'élève (`onTrial`,
  *           `[data-activity-evidence]`) ; la حالة الثانية garde les nombres du manuel (AB = 3,2 …, k = 1/2).
- * FORMALIZE  le texte du نشاط complété (س 3) puis la brique talis-nashat : « يسمى هذا النص خاصية طالس ».
+ * FORMALIZE  le texte du نشاط complété (س 3) puis la brique talis-nashat : « يسمى هذا النص خاصية طالس ». La question
+ *           « النص المكتمل هو » ÉNONCE la règle dans sa bonne option : elle est enveloppée dans
+ *           PredictRule « talis-nashat » (l'élève écrit d'abord le texte, puis la question et la brique suivent).
+ * « مسألة الدرس » (LessonProblemCard) à la fin de la dernière étape : le lab vit dans `intro` (deux niveaux).
  * AUCUNE étape n'attend `onFinished`. LP : P1 (س 1, 3), P2 (les longueurs).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -220,20 +225,23 @@ export default function Module01Nashat() {
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY.part3} source={ACTIVITY.source} compact />
-              <TapQuestion
-                prompt="النص المكتمل هو:"
-                options={[
-                  "إذا كان $(BC)$ و $(B'C')$ متوازيين فإن $\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC} = \\dfrac{B'C'}{BC}$",
-                  "إذا كان $(BC)$ و $(B'C')$ متوازيين فإن $\\dfrac{AB'}{B'B} = \\dfrac{AC'}{C'C} = \\dfrac{B'C'}{BC}$",
-                  "إذا كان $(BC)$ و $(B'C')$ متوازيين فإن $AB - AB' = AC - AC'$",
-                ].map(M)}
-                correct={0}
-                cols={1}
-                requires={['jadwal-tanasub']}
-                explain={<MathText>{'في الحالة الأولى $\\dfrac{3{,}2}{6} = \\dfrac{8}{15}$ لكن $\\dfrac{3{,}2}{2{,}8} = \\dfrac{8}{7}$ ، و $6 - 3{,}2 = 2{,}8$ بينما $7 - \\dfrac{56}{15} = \\dfrac{49}{15}$ : الأطوال تُضرب في العدد نفسه ولا يُطرح منها العدد نفسه.'}</MathText>}
-                onAnswered={() => setQ4(true)}
-              />
+              <PredictRule id="talis-nashat">
+                <TapQuestion
+                  prompt="النص المكتمل هو:"
+                  options={[
+                    "إذا كان $(BC)$ و $(B'C')$ متوازيين فإن $\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC} = \\dfrac{B'C'}{BC}$",
+                    "إذا كان $(BC)$ و $(B'C')$ متوازيين فإن $\\dfrac{AB'}{B'B} = \\dfrac{AC'}{C'C} = \\dfrac{B'C'}{BC}$",
+                    "إذا كان $(BC)$ و $(B'C')$ متوازيين فإن $AB - AB' = AC - AC'$",
+                  ].map(M)}
+                  correct={0}
+                  cols={1}
+                  requires={['jadwal-tanasub']}
+                  explain={<MathText>{'في الحالة الأولى $\\dfrac{3{,}2}{6} = \\dfrac{8}{15}$ لكن $\\dfrac{3{,}2}{2{,}8} = \\dfrac{8}{7}$ ، و $6 - 3{,}2 = 2{,}8$ بينما $7 - \\dfrac{56}{15} = \\dfrac{49}{15}$ : الأطوال تُضرب في العدد نفسه ولا يُطرح منها العدد نفسه.'}</MathText>}
+                  onAnswered={() => setQ4(true)}
+                />
+              </PredictRule>
               {q4 && <KnowledgeBrick id="talis-nashat" lead="ما وجدته بالشاشة وبالحساب، في الحالتين:" />}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

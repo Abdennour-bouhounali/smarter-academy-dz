@@ -184,7 +184,9 @@ export default function Module01AlWadiya() {
                 correct={0} cols={1} requires={['taqatu-jumla']}
                 explain={<MathText>{`${REMARKS.jumla} النقطة $(36 ; 0)$ على $(d_1)$ وحده ($300 \\times 36 = 10800 \\neq 12000$)، و $(40 ; 0)$ على $(d_2)$ وحده ($40 + 0 \\neq 36$).`}</MathText>}
                 onAnswered={mark('3b')} />
-              {q['3a'] && q['3b'] && <KnowledgeBrick id="jumla-bayaniya" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : c’est hall-bayani de « التفسير البياني لحل جملة معادلتين » (درس 4) ; les explications
+                  des deux questions ci-dessus (REMARKS.eqY, REMARKS.jumla) viennent de la dire. */}
+              {q['3a'] && q['3b'] && <KnowledgeBrick id="jumla-bayaniya" variant="rappel" />}
               <BackTo lesson="tafsir-bayani-jumla" />
             </div>
           ) },
@@ -206,7 +208,9 @@ export default function Module01AlWadiya() {
                 explain={<MathText>{REMARKS.amalMax}</MathText>}
                 explainFor={(n) => <MathText>{n === 80 ? `$\\dfrac{12000}{150} = 80$ ينسى المبلغ الثابت: نطرح 6000 أولا. ${REMARKS.amalMax}` : REMARKS.amalMax}</MathText>}
                 onAnswered={mark('4b')} />
-              {q['4a'] && q['4b'] && <KnowledgeBrick id="taklifa-taalufiya" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : « مبلغ ثابت + مبلغ عن كل وحدة » est dala-ujra / sura-taalufiya / sabiq-taalufiya (درس 1) ;
+                  l’encadré en tête de l’étape et les explications (REMARKS.amal, amalMax) viennent de le dire. */}
+              {q['4a'] && q['4b'] && <KnowledgeBrick id="taklifa-taalufiya" variant="rappel" />}
               <BackTo lesson="mafhum-taalufiya" />
             </div>
           ) },
@@ -219,7 +223,9 @@ export default function Module01AlWadiya() {
                 correct={0} cols={2} requires={['tanasub-taghayyurat']}
                 explain={<MathText>{`${REMARKS.nawras} تحقق: $200 \\times 36 + 5000 = 12200$. الفرق 2400 ثمن 12 تلميذا لا تلميذ واحد، و 9800 صورة 24 لا صورة 0.`}</MathText>}
                 onAnswered={mark(5)} />
-              {q[5] && <KnowledgeBrick id="min-thunaiyatayn" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : c’est hisab-muamil-a puis hisab-b de « تعيين دالة تآلفية انطلاقًا من عددين وصورتيهما » (درس 3) ;
+                  l’explication ci-dessus (REMARKS.nawras) vient de faire le calcul. */}
+              {q[5] && <KnowledgeBrick id="min-thunaiyatayn" variant="rappel" />}
               <BackTo lesson="tanasub-taghayyurat" />
             </div>
           ) },
@@ -244,7 +250,9 @@ export default function Module01AlWadiya() {
                 correct={0} cols={1} requires={['mufadala', 'taklifa-taalufiya', 'min-thunaiyatayn']}
                 explain={<MathText>{`${REMARKS.choice} ${REMARKS.afdalWhy}`}</MathText>}
                 onAnswered={mark('6b')} />
-              {q['6a'] && q['6b'] && <KnowledgeBrick id="ikhtiyar-sigha" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : c’est tasawi-taqatu + sigha-afdal de « حل مشكلات وترييض وضعيات » (درس 5) ; les explications
+                  ci-dessus (REMARKS.cross, REMARKS.choice) viennent de la dire. */}
+              {q['6a'] && q['6b'] && <KnowledgeBrick id="ikhtiyar-sigha" variant="rappel" />}
               <BackTo lesson="tamthil-bayani-taalufi" />
               <BackTo lesson="tarrid-taalufi" />
             </div>
@@ -274,7 +282,9 @@ export default function Module01AlWadiya() {
                 requires={['ikhtiyar-sigha']}
                 feedback={() => <MathText>{REMARKS.kayakRanges}</MathText>}
                 onAnswered={mark('7b')} />
-              {q['7a'] && q['7b'] && <KnowledgeBrick id="thalath-sigh" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : « la moins chère = la droite la plus basse » est sigha-afdal (درس 5), et le retour de la
+                  question ci-dessus (REMARKS.kayakRanges) vient de donner les trois plages. */}
+              {q['7a'] && q['7b'] && <KnowledgeBrick id="thalath-sigh" variant="rappel" />}
               <BackTo lesson="tarrid-taalufi" />
             </div>
           ) },
@@ -299,9 +309,13 @@ export default function Module01AlWadiya() {
                 onAnswered={mark('8b')} />
               {q['8a'] && q['8b'] && (
                 <>
-                  <KnowledgeBrick id="tafsir-natija" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : interpréter dans le contexte est la dernière étape de khutuwat-mufadala (درس 5) ;
+                      l’explication ci-dessus (REMARKS.rest) vient de conclure en dinars. */}
+                  <KnowledgeBrick id="tafsir-natija" variant="rappel" />
                   <TextbookBox kind="remark" title={SITUATION.analysis[2].label} text={SITUATION.analysis[2].text} source={SITUATION.source} compact />
-                  <KnowledgeBrick id="tariqat-wadiya" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche ne fait que remettre en ordre les trois encadrés « تحليل الوضعية »
+                      que l’élève vient de lire (étapes 1, 2 et celui juste au-dessus). */}
+                  <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                   <TextbookBox kind="remark" text={REMARKS.notTheTest} compact />
                 </>
               )}

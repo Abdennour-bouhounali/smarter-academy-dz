@@ -274,17 +274,20 @@ class HardeningRegressionTest extends TestCase
     }
 
     /** Le contexte vient des CODES : un identifiant posté n'est jamais lu. */
-    public function test_un_eleve_ne_peut_pas_designer_le_contenu_d_une_autre_lecon(): void
+    public function test_un_relecteur_ne_peut_pas_designer_le_contenu_d_une_autre_lecon(): void
     {
         $autre = Lesson::create([
             'chapter_id' => $this->lesson->chapter_id, 'code' => 'autre-lecon',
             'title' => 'Autre', 'status' => 'available', 'order' => 1,
         ]);
-        $student = User::factory()->create(['role' => User::ROLE_STUDENT]);
+        // Depuis 2026-10-05 seuls les relecteurs signalent : un ambassadeur.
+        $reviewer = User::factory()->create(['role' => User::ROLE_TEACHER]);
+        $reviewer->forceFill(['is_ambassador' => true])->save();
 
-        $signal = $this->actingAs($student, 'sanctum')->postJson('/api/v1/reports', [
+        $this->actingAs($reviewer, 'sanctum')->postJson('/api/v1/reports', [
             'source' => 'lesson',
             'lessonCode' => 'fractions',
+            'category' => 'typo',
             'lesson_id' => $autre->id,
             'lesson_module_id' => 999,
             'question_attempt_id' => 999,
@@ -292,13 +295,9 @@ class HardeningRegressionTest extends TestCase
             'user_id' => $this->admin->id,
         ])->assertStatus(201);
 
-        $this->actingAs($student, 'sanctum')
-            ->patchJson('/api/v1/reports/'.$signal->json('report.id'), ['category' => 'typo'])
-            ->assertStatus(200);
-
         $report = StudentReport::first();
         $this->assertSame($this->lesson->id, $report->lesson_id);
-        $this->assertSame($student->id, $report->user_id);
+        $this->assertSame($reviewer->id, $report->user_id);
         $this->assertNull($report->lesson_module_id);
         $this->assertNull($report->question_attempt_id);
         $this->assertNotSame('forge', $report->fingerprint);

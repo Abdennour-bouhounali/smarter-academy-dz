@@ -346,6 +346,11 @@ Visibility changes must be backend-enforced.
 > module were corrected on 2026-09-25. (« وحدة البيع », the unit of sale of a
 > teacher plan, is a different word use and stays.)
 
+> **« Open lesson » — implemented 2026-10-05.** The lesson detail page
+> (`/admin/contenu/lecons/{code}`) has a « فتح الدرس » link to the lesson
+> itself. The administrator is a reviewer: a draft / hidden / archived lesson
+> opens for them, with its state badge (Annexe A8).
+
 Lesson list must support:
 
 - search
@@ -430,6 +435,18 @@ Do not create a second exercise engine specifically for the Admin Panel.
 
 # 12. Student reporting system
 
+> **Superseded (2026-10-05) — see Annexe A8.** Reporting is no longer a
+> student feature. Only **reviewers** — the administrator and teachers flagged
+> as **ambassadors** (« سفراء ») — see the button and may call the API
+> (middleware `reviewer`, 403 `not_a_reviewer` otherwise). Clicking the button
+> only opens the form; ONE multipart `POST /api/v1/reports` sends context +
+> category + optional note + optional **screenshot** (the reviewer captures
+> the page or uploads an image and frames the problem area in red). The
+> categories actually offered are `math_error, manipulation_not_working,
+> unclear_question, answer_correction_problem, display_problem, typo, other`
+> (`StudentReport::OFFERED_CATEGORIES`); the list below is the original
+> wish-list.
+
 Every student-facing module must provide:
 
 **Signaler un problème**
@@ -463,6 +480,13 @@ The note is optional.
 ---
 
 # 13. Automatic report context
+
+> **As implemented.** The client sends content CODES only (`lessonCode`,
+> `grade`, `moduleNumber`, `step`, `exerciseCode`, `questionId`, `sessionId`,
+> `attemptUuid`) plus `route`, `browser`, `os`, `screen`; the server resolves
+> every foreign key itself (`ReportService::resolveContext`). `app_version`
+> and `error_ref` exist as columns and are validated but **no client sends
+> them today**. Browser / OS / screen are kept only for technical categories.
 
 The student must not manually identify the problematic content.
 
@@ -998,6 +1022,12 @@ The first implementation step must be a schema/API audit.
 ---
 
 # 31. API requirements
+
+> **Paths as implemented** are under `/api/v1/admin/…` (not `/api/admin`).
+> Publication is `PATCH /api/v1/admin/content/{lesson|module|exercise}/{id}/status`;
+> reports add `GET /api/v1/admin/reports/clusters`, `POST …/reports/{id}/notes`
+> and `GET …/reports/{id}/screenshot`; teachers add
+> `PATCH /api/v1/admin/teachers/{id}/ambassador` (Annexe A8).
 
 The backend should expose protected admin endpoints for:
 
@@ -1817,3 +1847,90 @@ journalisé dans la même transaction (`plan.*`, `plan_version.*`,
   ou offre plus petite : le résolveur retombe sur l'offre par défaut et
   `overLimit` bloque la création (classe, adhésion par lien ou par code). Classes,
   membres, visibilités et progression restent lisibles.
+
+## A8. Les relecteurs : ambassadeurs, état de publication, signalement (2026-10-05)
+
+Un **relecteur** est l'administrateur ou un enseignant **ambassadeur**
+(« سفير ») — `User::canReviewAllContent()`. Un ambassadeur reste un
+enseignant : ses classes, son offre et son statut de compte ne changent pas.
+
+### Désigner un ambassadeur
+
+- Colonnes `users.is_ambassador` (booléen, défaut faux) et
+  `users.ambassador_since`. `User::isAmbassador()` exige AUSSI le rôle
+  enseignant : un drapeau resté sur un autre compte n'ouvre rien.
+- `PATCH /api/v1/admin/teachers/{id}/ambassador` `{ambassador: bool}`
+  (`can:admin`) → `AmbassadorService::set` : enseignants seulement (422
+  sinon), transaction, journal `teacher.ambassador_changed` ; redemander
+  l'état courant ne journalise rien.
+- Panneau : interrupteur « سفير » (`components/admin/ui/AmbassadorSwitch.jsx`)
+  dans la liste `/admin/enseignants` (colonne, compteur `counts.ambassadors`,
+  filtre `?ambassador=1`) et dans la fiche enseignant.
+- `/auth/me` (UserPresenter) porte `isAmbassador` et `canReviewContent`
+  (vrai aussi pour l'admin). L'interface lit `canReviewContent` ; le serveur
+  décide.
+
+### Voir tout le contenu, avec son état
+
+- `ContentAccess::bypassesPublication($user)` : pour un relecteur, l'axe
+  PUBLICATION est levé — et lui seul. Classe active et palier restent évalués
+  (l'admin passe le palier comme l'enseignant : `AccessDecision::VIA_ADMIN_ROLE`).
+  La visibilité par classe ne concerne que les élèves.
+- `GET /content/availability` rend au relecteur `closed.lessons = []`,
+  `closed.modules = []` et `closed.statuses = {lessons: {code: état},
+  modules: {code: {numéro: état}}}` — seulement le NON publié ; un code dont
+  une version est publiée n'y figure pas. Aucun autre compte ne reçoit
+  `statuses`.
+- `GET /lessons/{code}/exercises` liste au relecteur les exercices non publiés
+  avec `publicationStatus`.
+- Frontend : `ContentAvailabilityContext` expose `lessonStatus(code)` et
+  `moduleStatus(code, n)` (« published » par défaut) ; la pastille
+  `components/content/PublicationBadge.jsx` (couleurs de `StatusBadge`) est
+  posée sur `LessonCard`, la page d'unité, le sommaire (en-tête + cartes de
+  module) et l'en-tête de module. Elle ne rend rien pour un contenu publié.
+- Pour tous les autres, le sommaire d'une leçon non publiée ouverte par URL
+  directe affiche désormais « هذا الدرس غير متاح حالياً » (le trou connu de
+  `LessonIndex`, qui ne lisait pas `isLessonClosed`, est fermé).
+- **Aucune écriture ne s'ouvre** : progression, preuves, test final et
+  pratique restent derrière `learner`.
+
+### Le signalement
+
+- Middleware `reviewer` (`EnsureContentReviewer`) sur `POST /reports` ;
+  `PATCH /reports/{id}` (l'ancienne complétion) est supprimée.
+- UN envoi multipart → `ReportService::submit` : catégorie obligatoire
+  (`OFFERED_CATEGORIES` seulement — les anciennes ne se créent plus), note
+  ≤ 2000, capture facultative. Plus de signal posé au clic, plus de
+  brouillon réutilisé : chaque envoi crée une ligne complète
+  (`details_completed_at` posé à la création).
+- **Capture d'écran** : `student_reports.screenshot_path`, disque privé
+  `local` sous `reports/{id}/`, PNG / JPEG / WebP lus sur le CONTENU (finfo
+  + getimagesize, jamais de SVG), 2 Mo au plus (`ReportScreenshotStore`). Une
+  capture refusée annule l'envoi entier. Servie par
+  `GET /admin/reports/{id}/screenshot` (`can:admin`, `nosniff`).
+- **Où est le bouton** : variante `prominent` (ambre, libellé visible) EN
+  HAUT — dans la rangée de repères du module (`ModuleLayout`) et du sommaire
+  (`LessonIndex`) ; le pied de page du module n'en porte plus.
+- **La capture, comme l'outil d'un système d'exploitation** : « التقاط منطقة من
+  الصفحة » retire la fenêtre (le défilement est libéré) et ouvre
+  `ScreenSnipper` : le relecteur fait défiler la page (molette ; au doigt, mode
+  « تمرير ») puis glisse pour tracer la région, ou prend « الشاشة كاملة » ; la
+  fenêtre revient avec l'image, la catégorie et la note conservées. Il peut
+  encore y encadrer des détails (`ScreenshotAnnotator`) et les cadres sont
+  brûlés dans l'image (WebP, ≤ 1600 px de large) à l'envoi. `captureRegion`
+  (`features/reports/screenshot.js`) sérialise la page en SVG avec
+  `html-to-image` **chargé à la demande** et ne dessine QUE la région sur la
+  toile — une longue leçon ne produit jamais une toile géante. La fenêtre et
+  l'outil portent `data-report-ignore` (exclus de l'image) et sont rendus dans
+  `<body>` par un portail : la rangée de repères du module forme un contexte
+  d'empilement que la barre de navigation recouvrait.
+- **Dev Vite** : `html-to-image` est dans `optimizeDeps.include`
+  (`vite.config.js`) — découvert en cours de session, sa ré-optimisation
+  rendait des 504 « Outdated Optimize Dep » aux onglets ouverts (liens qui
+  changent l'URL sans changer la page).
+- Liste admin : colonne et filtre « لقطة الشاشة » (`?screenshot=1`,
+  `counts.withScreenshot`) ; la colonne « اكتمال البلاغ » et le filtre
+  `completion` ont disparu. La fiche montre la capture et le rôle de
+  l'auteur (`student.role`, `student.isAmbassador`).
+- Les signalements antérieurs étaient des tests : la migration
+  `2026_10_05_000002` les a effacés, notes comprises.

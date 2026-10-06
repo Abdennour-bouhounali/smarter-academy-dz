@@ -13,7 +13,8 @@
  *                         → FORMALIZE (معارف 2, « التواتر », ce que montrent les deux bouts des colonnes) ;
  *   M3 طرائق            — FORMALIZE (les deux طرائق du manuel : valeurs, puis فئات) + دوري الآن ;
  *   M4 أوظّف تعلّماتي   — AUTOMATIZE (ex-1, 2, 4, 5, 21) et TRANSFER (ex-3 accidents en %, ex-6 électricité) ;
- *   M5 إختبار أولي      — QCM 1–2 et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
+ *   M5–M7 مسائل         — puis trois « مسائل » de la plateforme (modules 5–7) ;
+ *   M8 إختبار أولي      — QCM 1–2 et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -54,6 +55,19 @@ export const LESSON_CONFIG = {
       'تفسير المؤشرات ومقارنة السلاسل (الدرس 4)',
     ],
   },
+  // « مسألة الدرس » (déploiement des مسائل, 2026-10-06) : montrée dès le sommaire, rappelée au module 1,
+  // résolue pas à pas au module 5 (content/problems.js). Prolonge le niveau متقدم de la toise : des
+  // قامات devant deux seuils, « على الأقل » et « على الأكثر », d'autres nombres.
+  lessonProblem: {
+    module: 5,
+    title: 'حديقة التسلية: قامات 25 طفلًا أمام لعبتين',
+    statement: 'نظّم مخيّم صيفي رحلة إلى حديقة التسلية لـ 25 طفلًا، يرافقهم 3 مؤطّرين. انطلقت الحافلة على الساعة 8 صباحًا. عند المدخل قيست قامات الأطفال (بالسنتيمتر) ونُظّمت في الجدول المقابل. يشترط «المنزلق المائي» قامة 140cm على الأقل، أمّا «القطار الصغير» فمخصّص للأطفال الذين قامتهم 135cm على الأكثر. ثمن تذكرة المنزلق 300 دج وثمن تذكرة القطار 150 دج، وقد خصّص المخيّم 6500 دج لتذاكر اللعبتين.',
+    // Le support de la مسألة 1, montré aussi par la carte « مسألة الدرس » (une seule source).
+    table: {
+      head: ['القامة (cm)', '130', '135', '140', '145', '150'],
+      rows: [['عدد الأطفال', '2', '4', '7', '8', '4']],
+    },
+  },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
   // Les acquis que « أستعدّ » diagnostique (années antérieures) : le تكرار d'une valeur, le تواتر (= التكرار
@@ -82,6 +96,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_takrar-mujamma_P1', '4am_takrar-mujamma_P3'],
       sourceElementIds: ['act-1'],
     },
+    // Les trois « مسائل » (track: 'problem') : situations de la plateforme, résolues pas à pas.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — حديقة التسلية: المنزلق والقطار', learningPointIds: ['4am_takrar-mujamma_P1', '4am_takrar-mujamma_P2', '4am_takrar-mujamma_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — نادي الجيدو: أعمار 40 منخرطًا', learningPointIds: ['4am_takrar-mujamma_P1', '4am_takrar-mujamma_P2', '4am_takrar-mujamma_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — مزرعة الدلاع: أوزان 200 حبّة في فئات', learningPointIds: ['4am_takrar-mujamma_P2', '4am_takrar-mujamma_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -103,8 +121,22 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 1 إلى 6 و 21: درجات الحرارة، العلامات، حوادث المرور، القامات، مدة التنقل، استهلاك الكهرباء.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_takrar-mujamma_P1', '4am_takrar-mujamma_P2', '4am_takrar-mujamma_P3'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم نقاط التعلّم الثلاث، منها السؤالان 1 و 2 من أؤكّد تعلّماتي.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert ; jamais de preuve de maîtrise (MASAIL_GENERATION_GUIDE.md).
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — حديقة التسلية', desc: 'مسألة الدرس: قامات 25 طفلًا أمام المنزلق والقطار — كم طفلًا يركب كل لعبة، بأيّ نسبة، وهل تكفي ميزانية التذاكر؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_takrar-mujamma_P1', '4am_takrar-mujamma_P2', '4am_takrar-mujamma_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — نادي الجيدو', desc: 'أعمار 40 منخرطًا: المشاركون في بطولة الأشبال ونسبتهم، خطأ في جدول الأمين، والموسم القادم.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_takrar-mujamma_P1', '4am_takrar-mujamma_P2', '4am_takrar-mujamma_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — مزرعة الدلاع', desc: 'أوزان 200 حبّة دلاع في فئات: التواتر المجمع بنسبة مئوية، ادّعاء عامل، ومدخول الفلاح.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_takrar-mujamma_P2', '4am_takrar-mujamma_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الثلاث، منها السؤالان 1 و 2 من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

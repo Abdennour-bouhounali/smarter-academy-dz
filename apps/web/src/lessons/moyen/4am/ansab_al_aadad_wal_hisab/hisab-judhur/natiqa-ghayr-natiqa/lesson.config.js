@@ -2,7 +2,8 @@
  * الدرس 2 — الأعداد الناطقة والأعداد غير الناطقة
  * Unité 2 du manuel (4AM), نشاط 2 (p. 20), معارف 2 (p. 22), exercices 9, 10
  * (p. 26), 25 (p. 27), 31-1 et 35 (p. 29), أوظّف تكنولوجيات الإعلام والاتصال
- * « √2 » (p. 30). Source de vérité : docs/sources/4am/unit2/extraction.json.
+ * « √2 » (p. 30), puis trois « مسائل » de la plateforme (modules 4–6).
+ * Source de vérité : docs/sources/4am/unit2/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -44,6 +45,15 @@ export const LESSON_CONFIG = {
       'برهان أنّ عددًا ما غير ناطق: الكتاب يكتفي بالنتيجة',
     ],
   },
+  // « مسألة الدرس » : montrée dès le sommaire, rappelée au module 1, résolue
+  // pas à pas au module 4 (content/problems.js). Prolonge la règle graduée du
+  // niveau متقدم : des carrés d'aire connue, un côté qui tombe ou non sur une
+  // graduation (le mètre ruban du tisserand).
+  lessonProblem: {
+    module: 4,
+    title: 'ورشة الزرابي: ثلاث زرابي مربّعة',
+    statement: 'في ورشة لنسج الزرابي، يقيس الحرفي أطوال زرابيه بشريط متري مدرّج بالسنتيمتر. طُلبت منه ثلاث زرابي مربّعة الشكل: الزربية A مساحتها 2,89 m²، والزربية B مساحتها 4 m² وتتكوّن من 9 قطع مربّعة متقايسة (3 صفوف في كل صفّ 3 قطع)، والزربية C مساحتها 3 m². يستغرق نسج المتر المربّع الواحد 12 يومًا. يخيط الحرفي على كل ضلع من أضلاع الزربية C شريطًا من الصوف، ثمن المتر منه 500 دج.',
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -75,6 +85,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_natiqa-ghayr-natiqa_P1', '4am_natiqa-ghayr-natiqa_P2', '4am_natiqa-ghayr-natiqa_P3'],
       sourceElementIds: ['act-2'],
     },
+    // Modules 4–6 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — ورشة الزرابي: ثلاث زرابي مربّعة', learningPointIds: ['4am_natiqa-ghayr-natiqa_P1', '4am_natiqa-ghayr-natiqa_P2', '4am_natiqa-ghayr-natiqa_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — ورشة الحدادة: قضبان التقوية', learningPointIds: ['4am_natiqa-ghayr-natiqa_P1', '4am_natiqa-ghayr-natiqa_P2', '4am_natiqa-ghayr-natiqa_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — مطبعة الحيّ: ملصقان مربّعان', learningPointIds: ['4am_natiqa-ghayr-natiqa_P1', '4am_natiqa-ghayr-natiqa_P2', '4am_natiqa-ghayr-natiqa_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -92,8 +107,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'قيم مقرّبة بالنقصان وبالزيادة ومدوّرات: تمارين الكتاب 9، 10، 25، 35 و 31.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_natiqa-ghayr-natiqa_P1', '4am_natiqa-ghayr-natiqa_P3'],
       color: 'amber', style: 'featured', estimatedMin: 11, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — ورشة الزرابي', desc: 'مسألة الدرس: ثلاث زرابي مربّعة، ضلع عشري وضلع ناطق وضلع غير ناطق. حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_natiqa-ghayr-natiqa_P1', '4am_natiqa-ghayr-natiqa_P2', '4am_natiqa-ghayr-natiqa_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — ورشة الحدادة', desc: 'قطر شبّاك مستطيل وقطر شبّاك مربّع: أيّهما ناطق؟ وكم قضيبًا يشتري الحدّاد؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_natiqa-ghayr-natiqa_P1', '4am_natiqa-ghayr-natiqa_P2', '4am_natiqa-ghayr-natiqa_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — مطبعة الحيّ', desc: 'ملصقان مربّعان: هل ضلع الثاني 29,7 cm بالضبط؟ وعلى أيّ ورقة يُطبع؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_natiqa-ghayr-natiqa_P1', '4am_natiqa-ghayr-natiqa_P2', '4am_natiqa-ghayr-natiqa_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

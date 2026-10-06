@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -16,6 +16,10 @@ import { ACTIVITY2 } from '../content/textbook';
  *   3. le cas a = 0 (plateforme, déclaré) : un tarif fixe — la brique thabita (ce que l'étape 3 du
  *      compteur a fait toucher).
  * LP : P1 (a et b), P4 (les deux cas particuliers).
+ * « أتوقّع القاعدة » : les questions des étapes 2 et 3 ont pour BONNE OPTION la règle elle-même (b = 0 : la
+ * linéaire est affine ; a = 0 : la constante est affine) — chacune est donc enveloppée dans
+ * <PredictRule id="khattiya-taalufiya"> / <PredictRule id="thabita"> : l'élève écrit d'abord (predictPrompt
+ * de knowledge.jsx), puis la question et la brique s'affichent, une seule « توقّعك ».
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const PLATFORM = addition('interactive_example');
@@ -60,19 +64,21 @@ export default function Module02Tamyiz() {
           num: 2, title: 'الدالة الخطية', subtitle: 'السؤال 2', done: q2,
           content: (
             <div className="space-y-3">
-              <TapQuestion
-                prompt={<MathText>{`ما رأيك في التصريح: ${ACTIVITY2.statement}؟`}</MathText>}
-                options={[
-                  M('صحيح: الدالة الخطية $x \\longmapsto ax$ هي $x \\longmapsto ax + b$ مع $b = 0$'),
-                  M('خاطئ: الدالة الخطية ليس فيها $b$'),
-                  M('صحيح فقط إذا كان $a = 1$'),
-                ]}
-                correct={0}
-                cols={1}
-                requires={['muamilan']}
-                explain={<MathText>{`${ACTIVITY2.q2} مثلا ج) $x \\longmapsto 5x$ : $a = 5$ و $b = 0$ .`}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
+              <PredictRule id="khattiya-taalufiya">
+                <TapQuestion
+                  prompt={<MathText>{`ما رأيك في التصريح: ${ACTIVITY2.statement}؟`}</MathText>}
+                  options={[
+                    M('صحيح: الدالة الخطية $x \\longmapsto ax$ هي $x \\longmapsto ax + b$ مع $b = 0$'),
+                    M('خاطئ: الدالة الخطية ليس فيها $b$'),
+                    M('صحيح فقط إذا كان $a = 1$'),
+                  ]}
+                  correct={0}
+                  cols={1}
+                  requires={['muamilan']}
+                  explain={<MathText>{`${ACTIVITY2.q2} مثلا ج) $x \\longmapsto 5x$ : $a = 5$ و $b = 0$ .`}</MathText>}
+                  onAnswered={() => setQ2(true)}
+                />
+              </PredictRule>
               {q2 && <KnowledgeBrick id="khattiya-taalufiya" lead="في المرحلة 3 من العدّاد، حين جعلت b = 0 بدأ العدّاد من 0:" />}
             </div>
           ),
@@ -82,19 +88,21 @@ export default function Module02Tamyiz() {
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{'في قاعة ألعاب، تذكرة الدخول 300DA مهما كان عدد الألعاب $x$ التي يلعبها التلميذ. نسمّي $g(x)$ المبلغ المدفوع.'}</MathText> <SourceTag source={PLATFORM} /></p>
-              <TapQuestion
-                prompt={<MathText>{'الدالة $g : x \\longmapsto 300$ هي:'}</MathText>}
-                options={[
-                  M('دالة تآلفية: $a = 0$ و $b = 300$'),
-                  M('ليست دالة لأنّ $x$ لا يظهر في عبارتها'),
-                  M('دالة خطية معاملها $300$'),
-                ]}
-                correct={0}
-                cols={1}
-                requires={['muamilan']}
-                explain={<MathText>{'$300 = 0 \\times x + 300$ : صورة كل عدد هي 300. أما الدالة الخطية التي معاملها 300 فتعطي $g(2) = 600$ ، لا 300.'}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
+              <PredictRule id="thabita">
+                <TapQuestion
+                  prompt={<MathText>{'الدالة $g : x \\longmapsto 300$ هي:'}</MathText>}
+                  options={[
+                    M('دالة تآلفية: $a = 0$ و $b = 300$'),
+                    M('ليست دالة لأنّ $x$ لا يظهر في عبارتها'),
+                    M('دالة خطية معاملها $300$'),
+                  ]}
+                  correct={0}
+                  cols={1}
+                  requires={['muamilan']}
+                  explain={<MathText>{'$300 = 0 \\times x + 300$ : صورة كل عدد هي 300. أما الدالة الخطية التي معاملها 300 فتعطي $g(2) = 600$ ، لا 300.'}</MathText>}
+                  onAnswered={() => setQ3(true)}
+                />
+              </PredictRule>
               {q3 && <KnowledgeBrick id="thabita" lead="وحين جعلت a = 0 في العدّاد، لم يعد يتحرّك مع x:" />}
             </div>
           ),

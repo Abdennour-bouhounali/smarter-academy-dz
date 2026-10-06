@@ -21,6 +21,7 @@ export const LESSON_KNOWLEDGE = {
     1: [
       {
         id: 'jumla-tarjama', type: 'concepts', title: 'ترجمة مشكلة بجملة معادلتين',
+        predictPrompt: 'في المختبر رفض المتحف أن تضع 300 أو 150 في معادلة «140 زائرا»، وقبلهما في معادلة المداخيل 30300. كيف تترجم قصة فيها مجهولان إلى جملة معادلتين؟ اكتب القاعدة بكلماتك: من أين تأتي كل معادلة، وأيّ الأعداد تجتمع في المعادلة الواحدة؟',
         summary: 'نسمّي المجهولين x و y، ونترجم كل معلومة من النص بمعادلة بدلالتهما، بوحدة واحدة في المعادلة الواحدة: عدد مع عدد، ودنانير مع دنانير.',
         body: (
           <div className="space-y-2">
@@ -31,6 +32,10 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'khutuwat-hall', type: 'methodes', title: 'مراحل حل مشكلة بجملة معادلتين',
+        // Les cinq étapes SONT le tableau du manuel (StepsTable, colonne « مراحل الحل »), à l'écran dès
+        // l'étape 1 du module, et les titres des étapes 1 → 4 les nomment : une prédiction ne ferait
+        // que recopier le tableau. La règle prédictible du module 1 est jumla-tarjama.
+        predict: false,
         summary: 'خمس مراحل: نختار المجهولين، نترجم المشكلة بجملة معادلتين، نحل الجملة بطريقة مناسبة، نتحقق من النتيجة، ثم نجيب عن السؤال.',
         body: (
           <ol className="space-y-1">
@@ -42,6 +47,7 @@ export const LESSON_KNOWLEDGE = {
     2: [
       {
         id: 'tahaqquq-nas', type: 'regles', title: 'نتحقق في نص المشكلة ونجيب بجملة',
+        predictPrompt: 'في التحدّي وجدت 24 قطعة من فئة 20 و 13 قطعة من فئة 10، لكنّ العددين مقلوبين يعطيان هما أيضًا 37 قطعة. أين تعوّض العددين لتتحقّق من النتيجة؟ وما الذي يجب أن يتحقّق فيهما ليكونا جوابًا عن القصة، وكيف تكتب هذا الجواب؟ اكتب القاعدة بكلماتك.',
         summary: 'نعوّض العددين في معطيات النص نفسه، ونتأكد أن الجواب يلائم القصة (عدد أشخاص أو قطع يكون عددا طبيعيا)، ثم نجيب عن السؤال بجملة تذكر العددين.',
         body: <p><MathText>{CHECK_RULE.text}</MathText></p>,
       },

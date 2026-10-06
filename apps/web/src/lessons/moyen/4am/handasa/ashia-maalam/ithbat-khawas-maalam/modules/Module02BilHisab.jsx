@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -15,6 +15,9 @@ import { TRIANGLE, PERP, QUAD, CIRCLE } from '../content/textbook';
  *   2. la perpendicularité sans produit scalaire (réciproque de Pythagore)                       → taamud            (P1)
  *   3. l'échelle des quadrilatères : parallélogramme d'abord, puis diagonales / côtés            → tabiat-rubai      (P2)
  *   4. un point d'un cercle : distance au centre = rayon (pas le diamètre)                        → intima-daira      (P3)
+ * « أتوقّع القاعدة » (2026-10-06) : chaque étape OUVRE sur l'encadré qui énonce la règle ; il est donc enveloppé dans
+ * une PredictRule portant l'id de l'item (prompt : knowledge.jsx › predictPrompt, ancré sur le laboratoire du module 1) — l'élève écrit
+ * la règle, puis lit l'encadré et l'applique ; la brique qui suit ne redemande rien (règle déjà établie).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -34,7 +37,7 @@ export default function Module02BilHisab() {
         { num: 1, title: 'طبيعة مثلث', subtitle: 'ثلاثة مربعات نقارنها', done: !!q[1],
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="method" title={TRIANGLE.title} lines={TRIANGLE.lines} source={TRIANGLE.source} compact />
+              <PredictRule id="tabiat-muthallath"><TextbookBox kind="method" title={TRIANGLE.title} lines={TRIANGLE.lines} source={TRIANGLE.source} compact /></PredictRule>
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">ما طبيعة كل مثلث؟ (مربعات أطوال أضلاعه محسوبة من الإحداثيات)</p>}
                 rows={[
@@ -54,7 +57,7 @@ export default function Module02BilHisab() {
         { num: 2, title: 'تعامد مستقيمين', subtitle: 'دون جداء سلمي', done: !!q[2],
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="definition" title={PERP.title} lines={PERP.lines} source={PERP.source} compact />
+              <PredictRule id="taamud"><TextbookBox kind="definition" title={PERP.title} lines={PERP.lines} source={PERP.source} compact /></PredictRule>
               <TapQuestion
                 prompt={<MathText>{'لإثبات أن $(PQ) \\perp (QR)$ ، نتحقق أن:'}</MathText>}
                 options={['$QP^2 + QR^2 = PR^2$', '$PQ^2 + PR^2 = QR^2$', '$PQ = QR$', '$PR^2 + QR^2 = PQ^2$'].map(M)}
@@ -67,7 +70,7 @@ export default function Module02BilHisab() {
         { num: 3, title: 'طبيعة رباعي', subtitle: 'متوازي أضلاع أولا', done: !!q[3],
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="method" title={QUAD.title} lines={[...QUAD.lines, QUAD.warning]} source={QUAD.source} compact />
+              <PredictRule id="tabiat-rubai"><TextbookBox kind="method" title={QUAD.title} lines={[...QUAD.lines, QUAD.warning]} source={QUAD.source} compact /></PredictRule>
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">ماذا يكفي أن نستنتج من كل دليل عن الرباعي ABCD؟</p>}
                 rows={[
@@ -89,7 +92,7 @@ export default function Module02BilHisab() {
         { num: 4, title: 'نقطة على دائرة', subtitle: 'البعد عن المركز', done: !!q[4],
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="definition" title={CIRCLE.title} lines={[...CIRCLE.lines, CIRCLE.trap]} source={CIRCLE.source} compact />
+              <PredictRule id="intima-daira"><TextbookBox kind="definition" title={CIRCLE.title} lines={[...CIRCLE.lines, CIRCLE.trap]} source={CIRCLE.source} compact /></PredictRule>
               <TapQuestion
                 prompt={<MathText>{'دائرة مركزها $\\Omega(1\\,;\\,2)$ ونصف قطرها $5$ . أيّ نقطة تنتمي إليها؟'}</MathText>}
                 options={['$(4\\,;\\,6)$', '$(5\\,;\\,6)$', '$(1\\,;\\,12)$', '$(3\\,;\\,5)$'].map(M)}

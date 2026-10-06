@@ -13,7 +13,7 @@ import { mathToPlain } from '../../../utils/mathPlain';
 const ALL = '*';
 
 /**
- * « نقاط التعلّم » — la CARTE d'apprentissage de la classe.
+ * « الكفاءات » — la CARTE d'apprentissage de la classe.
  *
  * Par défaut « كل الدروس » : tous les points du périmètre, groupés par leçon
  * (une seule requête). Une leçon peut être choisie parmi les leçons VISIBLES

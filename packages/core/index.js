@@ -31,6 +31,7 @@ export * from './validation/validateScientificNotation.js';
 export * from './progress/calculateCompletionPercentage.js';
 export * from './progress/getNextIncompleteModule.js';
 export * from './progress/isValidModuleNumber.js';
+export * from './progress/moduleLayoutMigrations.js';
 export * from './progress/getNextLesson.js';
 export * from './exercise/adaptiveExerciseState.js';
 export * from './api/errors.js';

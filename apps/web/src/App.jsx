@@ -59,6 +59,7 @@ const AdminSubscriptions = lazy(() => import('./pages/admin/subscriptions/Subscr
 // L'ESPACE ENSEIGNANT (« فضاء الأستاذ ») : arabe, RTL, sa propre coquille.
 const TeacherLayout = lazy(() => import('./components/layout/TeacherLayout'));
 const TeacherHome = lazy(() => import('./pages/teacher/TeacherHome'));
+const TeacherPracticePlayer = lazy(() => import('./pages/teacher/practice/TeacherPracticePlayer'));
 const TeacherClassGroupList = lazy(() => import('./pages/teacher/ClassGroupList'));
 const TeacherClassGroupCreate = lazy(() => import('./pages/teacher/ClassGroupCreate'));
 const TeacherClassGroupDetail = lazy(() => import('./pages/teacher/ClassGroupDetail'));
@@ -414,6 +415,13 @@ export default function App() {
                   les notes « كرّاسي » qu'elle affiche sont servies par le
                   serveur au seul propriétaire. */}
               <Route path="cours/:lessonId/memoire" element={<TeacherLessonMemo />} />
+              {/* La pratique de la leçon, côté ENSEIGNANT : on y entre PAR LA
+                  LEÇON, et le Hub est la MÊME page que celle de l'élève
+                  (PracticeHub, mode enseignant : aucun suivi). Le lecteur
+                  vérifie localement et montre les réponses de SES élèves ;
+                  le serveur garde les écritures derrière `learner`. */}
+              <Route path="pratique/:lessonCode" element={<PracticeHub />} />
+              <Route path="pratique/:lessonCode/:level/:exerciseId" element={<TeacherPracticePlayer />} />
               <Route path="atelier" element={<MathLabHome />} />
               <Route path="atelier/:toolSlug" element={<MathLabToolPage />} />
               <Route path="atelier/:toolSlug/:documentId" element={<MathLabToolPage />} />

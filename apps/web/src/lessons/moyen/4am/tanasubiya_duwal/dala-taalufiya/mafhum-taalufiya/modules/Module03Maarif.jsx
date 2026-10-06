@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox, SourceTag, MethodSteps } from '../../../../../../common/textbook';
@@ -16,6 +16,8 @@ import { KNOWLEDGE, METHOD, CONSTANT_NOTE, MISTAKES } from '../content/textbook'
  *      compteur), la brique sabiq-taalufiya, l'ordre inverse ;
  *   4. les deux cas particuliers rappelés, et la condition a ≠ 0 (une fonction constante).
  * Les questions utilisent d'AUTRES nombres que les encadrés. LP : P1, P2, P3.
+ * « أتوقّع القاعدة » : taarif-taalufiya n'est pas prédite (`predict: false` : le nom vient du module 1, le
+ * reste est notation) ; la méthode résolue de l'étape 3 est enveloppée dans <PredictRule id="sabiq-taalufiya">.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -89,7 +91,10 @@ export default function Module03Maarif() {
           num: 3, title: 'العدد الذي صورته معلومة', subtitle: 'البرنامج العكسي', done: q3,
           content: (
             <div className="space-y-3">
-              <MethodSteps method={METHOD} onAllRevealed={() => setLines(true)} />
+              {/* La méthode résolue (37775 → 15) dit la règle avant sa brique : l'élève l'écrit d'abord. */}
+              <PredictRule id="sabiq-taalufiya">
+                <MethodSteps method={METHOD} onAllRevealed={() => setLines(true)} />
+              </PredictRule>
               <KnowledgeBrick id="sabiq-taalufiya" lead="ما فعلته حين حرّكت الساعات حتى بلغ العدّاد 37775:" />
               <p className="text-xs text-slate-600"><MathText>{METHOD.program}</MathText></p>
               <NumericQuestion

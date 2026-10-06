@@ -135,7 +135,9 @@ export default function Module01AlWadiya() {
                 explain={<MathText>{REMARKS.takrarKulli}</MathText>}
                 explainFor={(n) => <MathText>{n === 14 ? `العدد 14 عدد أعمدة الجدول (القيم المختلفة) لا عدد الدول. ${REMARKS.takrarKulli}` : n === 27 ? `لا ننسى تكراري العمودين المخفيين (2 و 1). ${REMARKS.takrarKulli}` : REMARKS.takrarKulli}</MathText>}
                 onAnswered={mark(2)} />
-              {q[2] && <KnowledgeBrick id="qiraat-jadwal" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : valeur / effectif / effectif total est un prérequis (takrar-kulli, 3AM) ; les
+                  explications des étapes 1 et 2 (REMARKS.jadwal, REMARKS.takrarKulli) viennent de le dire. */}
+              {q[2] && <KnowledgeBrick id="qiraat-jadwal" variant="rappel" />}
             </div>
           ) },
         { num: 3, title: 'تحليل الوضعية واختيار استراتيجية', subtitle: 'المرحلة 2 من الكتاب: أيّ معطى يكشف أيّ قيمة؟', done: !!q[3],
@@ -166,7 +168,9 @@ export default function Module01AlWadiya() {
                 requires={['wasit-rutba', 'takrar-mujamma']}
                 explain={<MathText>{`${REMARKS.mujamma} ${REMARKS.wasitX}`}</MathText>}
                 onAnswered={mark(4)} />
-              {q[4] && <KnowledgeBrick id="qima-makhfiya-wasit" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : rangs de la médiane et effectifs cumulés sont wasit-rutba / takrar-mujamma (درسان 1 و 2) ;
+                  les corrections s1 et s3 de l’étape 3 et l’explication ci-dessus (REMARKS.mujamma, wasitX) viennent de dire la méthode. */}
+              {q[4] && <KnowledgeBrick id="qima-makhfiya-wasit" variant="rappel" />}
             </div>
           ) },
         { num: 5, title: 'تنفيذ: معادلة المتوسط', subtitle: 'المجهول y هو القيمة المخفية الثانية', done: !!q[5],
@@ -199,7 +203,9 @@ export default function Module01AlWadiya() {
                 onAnswered={mark(6)} />
               {q[6] && (
                 <>
-                  <KnowledgeBrick id="qima-makhfiya-mutawassit" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : moyenne pondérée (mutawassit-murajjah, درس 2) + équation du 1er degré (muadala-ula) ;
+                      l’encadré REMARKS.maloum, l’explication de l’étape 5 (muadala) et celle ci-dessus (halY, tahqiq) viennent de la dérouler. */}
+                  <KnowledgeBrick id="qima-makhfiya-mutawassit" variant="rappel" />
                   <p className="text-xs text-slate-600"><MathText>{`خطأ شائع: ${REMARKS.tarjihWrong} ${REMARKS.tarjihWhy}`}</MathText></p>
                 </>
               )}
@@ -231,7 +237,9 @@ export default function Module01AlWadiya() {
                 onAnswered={mark(8)} />
               {q[8] && (
                 <>
-                  <KnowledgeBrick id="kull-min-nisba" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : « أخذ نسبة من عدد » est un prérequis (nisba-min-adad) ; les explications des étapes 7
+                      (REMARKS.nisbaEq) et 8 (nisbaT, nisbaFaqat) viennent d’écrire l’équation, de la résoudre et d’arrondir. */}
+                  <KnowledgeBrick id="kull-min-nisba" variant="rappel" />
                   <p className="text-xs text-slate-600"><MathText>{`خطأ شائع: ${REMARKS.nisbaWrong} ${REMARKS.nisbaWhy} ${REMARKS.nisbaRight}`}</MathText></p>
                 </>
               )}
@@ -254,7 +262,9 @@ export default function Module01AlWadiya() {
               {q[9] && (
                 <>
                   <Phase i={2} />
-                  <KnowledgeBrick id="tariqat-wadiya" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche ne fait que remettre en ordre les trois phases « تحليل الوضعية »
+                      que l’élève vient de lire (Phase 0, 1 et celle juste au-dessus). */}
+                  <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                 </>
               )}
             </div>

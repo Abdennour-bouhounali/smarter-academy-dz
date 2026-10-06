@@ -79,7 +79,7 @@ chunk. Never import something heavy from `routes.jsx` or `_unit/lessonRoutes.jsx
               └── المحور   module   (the engine's word for a module)
                     └── steps / units of presentation
                           └── questions, manipulations, exercises
-              └── نقاط التعلّم   learning points
+              └── الكفاءات   learning points
 ```
 
 **الوحدة is a unit of the textbook, never a module. المحور is a module, never a
@@ -561,7 +561,7 @@ The recurring module roles in the 4AM unit, by their Arabic names:
 | `Module01…` — the activity | `trigger` | the textbook activity, opening on the signature manipulation in the `intro` slot |
 | `Module02Maarif` — معارف | `discovery` | the textbook's definitions, each laid by a `KnowledgeBrick` at the moment it is needed |
 | `Module0xAwazzif` — أوظّف تعلّماتي | `practice_lab` | the textbook's exercises via `TextbookExercise` |
-| `Module0xItqan` — إختبار أولي | `evaluation` | the only source of assessment evidence (displayed title « إختبار أولي » since 2026-09-24; the slug `itqan` and the file name are unchanged, so URLs and saved progress are stable) |
+| `Module0xItqan` — إختبار أولي | `evaluation` | the only source of assessment evidence (displayed title « إختبار أولي » since 2026-09-24; the slug `itqan` and the file name are unchanged, so URLs and saved progress are stable); its `desc` names learning points « الكفاءات », e.g. « خمسة أسئلة تُقيّم الكفاءات الثلاث. » — never « نقاط التعلّم », see ARABIC_RTL_CONTRACT §terminology) |
 
 **Two rules the evaluation module must follow**, both learned from shipped
 defects:
@@ -948,7 +948,7 @@ never a lock.
 
 **The results screen of the final test shows two different things**, and
 never mixes them: « نتيجة هذا التحدي » (this attempt's score, and per skill
-with neutral ✓ / ~ / ✗) and « حالتك على نقاط التعلّم »
+with neutral ✓ / ~ / ✗) and « حالتك على الكفاءات »
 (`LessonLearningPointsStatus`, the Learning Point states from the server).
 
 ---
@@ -1611,6 +1611,29 @@ evidence, a raster image under `lessons/`, a `tier` anywhere in the lesson.
 | Interaction | the manipulation by drag, tap and keyboard; a deliberately wrong run still progresses; reload keeps progress |
 | Knowledge Map | the checklist of `KNOWLEDGE_MAP.md` A.14 — core items all carried, relationships labelled, guidance grounded in the lesson (automated: each aid quotes the lesson word for word; relevance reviewed by a human), mistakes with wrong / why / right, the map not overloaded, ① first in « المعارف مفصّلة », every equality inside `$…$` and arithmetically true, mathematics never truncated or mirrored, locked until taught, no evaluation answer in the map; browser QA `node apps/web/e2e/knowledge-map.mjs` |
 | Documentation | a new reusable pattern is documented here and in its contract in the same task |
+
+### 14.3bis Modules « مسائل » (2026-10-05, prototype validated 2026-10-06)
+
+A lesson adds three exam-style problem modules (`track: 'problem'`, before the
+evaluation), built from data with `GuidedProblem`, never hand-written JSX.
+**Everything — owner rules, design method, schema, wiring, validation, pitfalls,
+parallel rollout — is in [`MASAIL_GENERATION_GUIDE.md`](./MASAIL_GENERATION_GUIDE.md).**
+Reference lesson: `qasim-adad-tabii`. **Since 2026-10-07 every regular 4AM lesson (60) has its
+three مسائل** — a new lesson ships with them (MASAIL guide §7–§8; statement support `figure` /
+`visual` / `table`, problem 1's support in `lessonProblem`). Synthesis lessons have none.
+
+### 14.3ter « أتوقّع القاعدة » — the student writes the rule before reading it (2026-10-06)
+
+Every new `KnowledgeBrick` of a rule the student can conclude is gated by default
+in ALL lessons: the student writes the rule in their own words, then sees it.
+When you author a lesson: give each predictable `knowledge.jsx` item a
+`predictPrompt` built on what the student has just done; wrap a `TextbookBox`
+that introduces a rule (no brick before it) in `<PredictRule id prompt>`; never
+place a box stating the rule right before its brick. Full contract:
+[`../architecture/KNOWLEDGE_DEPENDENCY.md`](../architecture/KNOWLEDGE_DEPENDENCY.md) § « أتوقّع القاعدة »;
+how to write the prompts: [`PREDICT_PROMPT_GUIDE.md`](./PREDICT_PROMPT_GUIDE.md).
+**Since 2026-10-07 every gated rule of every lesson has its own prompt (296 / 296) and
+`check:lessons` runs `audit-predict-prompts.mjs --strict`: a new lesson without its prompts fails.**
 
 ### 14.4 Known open items (do not block generation)
 

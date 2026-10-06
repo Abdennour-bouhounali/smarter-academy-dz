@@ -2,7 +2,8 @@
  * الدرس 2 — مفهوم وتعيين الدالة الخطية
  * Unité 6 du manuel (4AM) : « أستعدّ » items 1–3 (p. 65), نشاط 1 (corrigé 2 % → 20 %) et نشاط 2
  * (p. 66), معارف 1 et 2 (p. 68), طرائق « تعيين دالة خطية انطلاقا من عدد وصورته » (p. 69),
- * exercices 1, 6, 7, 8, 9 (p. 72), QCM 2, 3, 5, 6 (p. 74).
+ * exercices 1, 6, 7, 8, 9 (p. 72), QCM 2, 3, 5, 6 (p. 74),
+ * puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit6/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -46,6 +47,21 @@ export const LESSON_CONFIG = {
       'التمثيل البياني لوضعية والترييض (الدرس 5)',
     ],
   },
+  lessonProblem: {
+    module: 4,
+    title: 'آلات الألغاز في السوق: أيّها دالة خطية؟',
+    statement: 'في ركن الألغاز بسوق المدينة ثلاث آلات أعداد أ و ب و ج، لكلّ منها قاعدة مخفية لا تتغيّر: نُدخل فيها عددًا فتُخرج عددًا. ثمن المحاولة 20 دج. أدخل أمين في كل آلة الأعداد $-2$ ثم $0$ ثم $3$: فأخرجت الآلة أ الأعداد $-5$ ثم $1$ ثم $10$، وأخرجت الآلة ب الأعداد $2$ ثم $0$ ثم $4{,}5$، وأخرجت الآلة ج الأعداد $3$ ثم $0$ ثم $-4{,}5$. يربح اللاعب جائزة إذا عرف أيّ الآلات تعمل كدالة خطية، واستعملها ليُخرج العدد الذي يطلبه البائع.',
+    // Le support de la مسألة 1, montré aussi par la carte « مسألة الدرس » (une seule source).
+    table: {
+      caption: 'ما سجّله أمين',
+      head: ['العدد المُدخَل', '-2', '0', '3'],
+      rows: [
+        ['ما تُخرجه الآلة أ', '-5', '1', '10'],
+        ['ما تُخرجه الآلة ب', '2', '0', '4,5'],
+        ['ما تُخرجه الآلة ج', '3', '0', '-4,5'],
+      ],
+    },
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -77,6 +93,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_dala-khattiya_P1', '4am_dala-khattiya_P3'],
       sourceElementIds: ['act-2'],
     },
+    // Les trois « مسائل » (modules 4–6) : la 1re prolonge les trois machines du niveau متقدم.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — آلات الألغاز: أيّها دالة خطية؟', learningPointIds: ['4am_dala-khattiya_P1', '4am_dala-khattiya_P2', '4am_dala-khattiya_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — محطّة الوقود: سعر لتر البنزين', learningPointIds: ['4am_dala-khattiya_P1', '4am_dala-khattiya_P2', '4am_dala-khattiya_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — محلّ الأقمشة: متر الساتان وثمن القندورة', learningPointIds: ['4am_dala-khattiya_P1', '4am_dala-khattiya_P2', '4am_dala-khattiya_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -94,8 +114,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 1، 6، 7، 8، 9: تعيين دالة خطية، تمييزها، صور الأعداد والأعداد التي صورها معلومة.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_dala-khattiya_P3', '4am_dala-khattiya_P1', '4am_dala-khattiya_P2'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم نقاط التعلّم الثلاث، منها أربعة من أؤكّد تعلّماتي.',
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — آلات الألغاز', desc: 'مسألة الدرس: ثلاث آلات بقواعد مخفية، أيّها دالة خطية؟ آلة رابعة تُعيَّن من عدد وصورته، ثم الأعداد التي تربح الجائزة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_dala-khattiya_P1', '4am_dala-khattiya_P2', '4am_dala-khattiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — محطّة الوقود', desc: 'سعر لتر البنزين معامل دالة خطية: الجدول، وصل خاطئ، ثم ملء خزّان سيارة أجرة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_dala-khattiya_P1', '4am_dala-khattiya_P2', '4am_dala-khattiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — محلّ الأقمشة', desc: 'متر الساتان من عدد وصورته، ثمن قندورة مع أجرة الخياطة ليس دالة خطية، ثم أطول قطعة تسمح بها الميزانية.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_dala-khattiya_P1', '4am_dala-khattiya_P2', '4am_dala-khattiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الثلاث، منها أربعة من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

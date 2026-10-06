@@ -5,8 +5,10 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag, PairQuestion } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, HOOK, IDEAS } from '../content/textbook';
+import { ACTIVITY, HOOK } from '../content/textbook';
 import KioskVignette from '../components/KioskVignette';
 
 /**
@@ -180,7 +182,7 @@ export default function Module01Nashat() {
                 requires={['naql-hudud', 'darb-tarafayn']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
-                    <MathText>{allRight ? 'في العملين اختفى أحد المجهولين.' : 'أعد قراءة سطري التلميذين: ماذا صار $y$ في كل منهما؟'}</MathText>
+                    <MathText>{allRight ? 'صحيح: هذا ما كتبه كل من التلميذين.' : 'أعد قراءة سطري التلميذين: ماذا صار $y$ في كل منهما؟'}</MathText>
                   </Feedback>
                 )}
                 onAnswered={() => setQ3(true)}
@@ -197,7 +199,7 @@ export default function Module01Nashat() {
                 prompt={<MathText>{'استنتج حل الجملة $\\begin{cases} 2x + y = 7 \\\\ 3x - 2y = 4{,}2 \\end{cases}$ :'}</MathText>}
                 expected={{ x: '2,6', y: '1,8' }}
                 requires={['takhallus-majhul']}
-                explain={IDEAS.thunaiya}
+                explain={'$7x = 18{,}2$ أي $x = 2{,}6$ ، و $y = 7 - 2 \\times 2{,}6 = 1{,}8$ .'}
                 onAnswered={() => setQ4(true)}
               />
               {q4 && <KnowledgeBrick id="hall-thunaiya" lead="لا نتوقّف عند x:" />}
@@ -264,6 +266,10 @@ export default function Module01Nashat() {
                 onAnswered={() => setQ6(true)}
               />
               )}
+              {/* La « مسألة الدرس » prolonge les cartes du kiosque des deux niveaux
+                  (laboratoire dans l'intro) : deux nouvelles cartes du vendeur, d'autres
+                  nombres — résolue au module 4. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

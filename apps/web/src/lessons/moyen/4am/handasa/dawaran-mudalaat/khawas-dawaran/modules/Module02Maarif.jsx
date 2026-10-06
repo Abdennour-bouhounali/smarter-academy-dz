@@ -16,6 +16,8 @@ import { FIG_KNOW3, FIG_PERP } from '../content/figures';
  * FORMALIZE : 1) la propriété (brique khawas-dawaran) et son exemple de 20° (figure REDESSINÉE : dans le manuel les points
  * et leurs images étaient collés sur deux demi-droites à 20°) ; 2) la droite et son image (brique zawiya-sura).
  * LP : P1 (les quatre conservations), P2 (perpendiculaire / parallèle).
+ * « أتوقّع القاعدة » : khawas-dawaran est un RAPPEL (variant="rappel") — la brique thabat-dawaran du module 1 a déjà fait
+ * écrire puis posé ces quatre conservations, et la consigne du module les redit ; zawiya-sura se prédit (knowledge.jsx).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -42,7 +44,7 @@ export default function Module02Maarif() {
           num: 1, title: 'الدوران يحافظ على…', subtitle: 'معارف 3 ومثالها', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="khawas-dawaran" lead="أربع خواص، كأسطر اللوحة الأربعة:" />
+              <KnowledgeBrick id="khawas-dawaran" variant="rappel" lead="أربع خواص، كأسطر اللوحة الأربعة:" />
               <GeoFigure {...FIG_KNOW3} />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'في المثال: الدوران الذي مركزه O وزاويته $20^\\circ$ في الاتجاه المباشر، و $AB = 2\\,\\mathrm{cm}$ و A، B، C على استقامية.'}</MathText></p>}

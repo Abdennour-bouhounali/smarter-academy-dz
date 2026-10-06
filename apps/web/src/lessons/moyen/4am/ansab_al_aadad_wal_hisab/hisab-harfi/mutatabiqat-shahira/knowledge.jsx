@@ -26,6 +26,7 @@ export const LESSON_KNOWLEDGE = {
     1: [
       {
         id: 'murabba-majmu', type: 'regles', title: 'مربع مجموع',
+        predictPrompt: 'على ملعبك $(x + 3)^2$ سحبت أربع مناطق: $x^2$ و $3x$ و $3x$ و $9$، وفي السلسلة ظهر $ab$ و $ba$. لو أعطيناك حدّين آخرين $a$ و $b$، كيف تكتب $(a + b)^2$ دون قوسين؟ اكتب القاعدة بكلماتك: ماذا تأخذ من كل حدّ، وما الحدّ الذي في الوسط؟',
         summary: 'مربع مجموع حدّين يساوي مربع الأول زائد ضعف جداء الحدّين زائد مربع الثاني.',
         body: (
           <div className="space-y-2">
@@ -36,6 +37,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'hisab-mutamaan', type: 'methodes', title: 'الحساب الذهني بمتطابقة',
+        predictPrompt: 'حسبت $21^2$ و $53^2$ دون وضع العملية. لو أعطيناك عددًا آخر مثل $102^2$ أو $31^2$، بأيّ خطوة تبدأ؟ وماذا تفعل بعدها لتحسبه ذهنيًا؟ اكتب الطريقة.',
         summary: 'نكتب العدد مجموعًا أو فرقًا لعدد مدوّر وعدد صغير، ثم نستعمل متطابقة شهيرة فنحسب دون وضع العملية.',
         body: (
           <div className="space-y-2">
@@ -47,6 +49,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'murabba-farq', type: 'regles', title: 'مربع فرق',
+        predictPrompt: 'على ملعبك $(x - 2)^2$ اقتُطع شريطان $2x$ وبقي الركن $4$ الذي اقتُطع مرّتين، وفي السلسلة وجدت $-ab - ba$ ثم $(-b) \\times (-b)$. كيف تكتب $(a - b)^2$ دون قوسين؟ اكتب القاعدة، وانتبه إلى إشارة كل حدّ.',
         summary: 'مربع فرق حدّين يساوي مربع الأول ناقص ضعف جداء الحدّين زائد مربع الثاني.',
         body: (
           <div className="space-y-2">
@@ -60,6 +63,7 @@ export const LESSON_KNOWLEDGE = {
     2: [
       {
         id: 'jidaa-majmu-farq', type: 'regles', title: 'جداء مجموع حدين وفرقهما',
+        predictPrompt: 'على الملعب $(2x + 5)(2x - 5)$ وضعت المنطقة $10x$ على المنطقة $-10x$، وفي البرهان اجتمع $-ab$ و $ba$. لو أعطيناك حدّين آخرين $a$ و $b$، كيف تكتب $(a + b)(a - b)$ دون قوسين؟ اكتب القاعدة بكلماتك.',
         summary: 'جداء مجموع حدّين في فرقهما يساوي مربع الأول ناقص مربع الثاني.',
         body: (
           <div className="space-y-2">
@@ -74,6 +78,7 @@ export const LESSON_KNOWLEDGE = {
     3: [
       {
         id: 'mutatabiqa', type: 'concepts', title: 'المتطابقة',
+        predictPrompt: 'على الملعب صحّت المساواة $(x + 3)^2 = x^2 + 6x + 9$ من أجل كل قيمة جرّبتها لـ $x$، أمّا المساواة $x^2 = 9$ فتصحّ من أجل $x = 3$ ولا تصحّ من أجل $x = 1$. ما الذي يميّز النوع الأول من المساواة؟ اكتب بكلماتك متى نسمّي مساواة فيها حروف «متطابقة».',
         summary: KNOWLEDGE.identity,
         body: (
           <div className="space-y-2">
@@ -89,6 +94,7 @@ export const LESSON_KNOWLEDGE = {
     4: [
       {
         id: 'tariqat-nashr', type: 'methodes', title: 'نشر عبارة بمتطابقة شهيرة',
+        predictPrompt: 'كشفت حلول الكتاب الثلاثة سطرًا سطرًا. لو أعطيناك عبارة أخرى مثل $(2x - 7)^2$ أو $(x + 4)(x - 4)$، بماذا تبدأ قبل أن تنشر؟ وماذا تفعل بعد ذلك؟ اكتب الطريقة في خطوات.',
         summary: METHOD.rule,
         body: (
           <div className="space-y-2">

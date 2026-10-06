@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -21,6 +21,9 @@ import TrialsEvidence from '../components/TrialsEvidence';
  *   5. LP2 « نسبة غير ناطقة » : √13 hypoténuse d'un 2 × 3, puis ses deux tiers (exemple DÉCLARÉ de la plateforme)
  *      → brique tul-ghayr-natiq.
  * LP : P1 (1–3), P2 (4–5).
+ * « أتوقّع القاعدة » (2026-10-06) : les deux طرائق du manuel (figure + solution révélée) et l'exemple √13 énoncent la méthode
+ * AVANT sa brique — ils sont enveloppés dans <PredictRule id="nuqta-nisba">, <PredictRule id="insha-tul">,
+ * <PredictRule id="tul-ghayr-natiq"> : l'élève écrit sa construction, puis lit celle du livre.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -50,8 +53,10 @@ export default function Module02Taraiq() {
           num: 1, title: 'نقطة تقسم [AB] بنسبة 3 إلى 2', subtitle: 'طرائق ص 109', done: q1,
           content: (
             <div className="space-y-3">
-              <GeoFigure {...METHOD_RATIO.figure} />
-              <MethodSteps method={{ source: METHOD_RATIO.source, exercise: METHOD_RATIO.exercise, solution: METHOD_RATIO.solution }} />
+              <PredictRule id="nuqta-nisba">
+                <GeoFigure {...METHOD_RATIO.figure} />
+                <MethodSteps method={{ source: METHOD_RATIO.source, exercise: METHOD_RATIO.exercise, solution: METHOD_RATIO.solution }} />
+              </PredictRule>
               <TapQuestion
                 prompt={<MathText>{'M من [AB] و $\\dfrac{MA}{MB} = \\dfrac{3}{2}$ . إذن $\\dfrac{AM}{AB} =$'}</MathText>}
                 options={['$\\dfrac{3}{5}$', '$\\dfrac{3}{2}$', '$\\dfrac{2}{5}$'].map(M)}
@@ -109,8 +114,10 @@ export default function Module02Taraiq() {
           num: 4, title: 'قطعة طولها معلوم', subtitle: 'طرائق ص 107', done: q4,
           content: (
             <div className="space-y-3">
-              <GeoFigure {...METHOD_LENGTH.figure} />
-              <MethodSteps method={{ source: METHOD_LENGTH.source, exercise: METHOD_LENGTH.exercise, solution: METHOD_LENGTH.solution }} />
+              <PredictRule id="insha-tul">
+                <GeoFigure {...METHOD_LENGTH.figure} />
+                <MethodSteps method={{ source: METHOD_LENGTH.source, exercise: METHOD_LENGTH.exercise, solution: METHOD_LENGTH.solution }} />
+              </PredictRule>
               <TapQuestion
                 prompt={<MathText>{'لماذا $AB = \\dfrac{14}{3}$ ؟ لأن (CE) // (DB) ، فحسب خاصية طالس:'}</MathText>}
                 options={[
@@ -142,8 +149,10 @@ export default function Module02Taraiq() {
           num: 5, title: 'طول غير ناطق', subtitle: 'مثال من المنصّة', done: q5,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="example" lines={ROOT13.lines} source={ROOT13.source} compact />
-              <GeoFigure {...ROOT13.figure} />
+              <PredictRule id="tul-ghayr-natiq">
+                <TextbookBox kind="example" lines={ROOT13.lines} source={ROOT13.source} compact />
+                <GeoFigure {...ROOT13.figure} />
+              </PredictRule>
               <TapQuestion
                 prompt={<MathText>{'قسّمنا الوتر الذي طوله $\\sqrt{13}$ إلى 3 قطع متقايسة وأخذنا قطعتين. طول القطعة الناتجة:'}</MathText>}
                 options={['$\\dfrac{2\\sqrt{13}}{3}$', '$\\dfrac{2 \\times 13}{3}$', '$\\dfrac{3\\sqrt{13}}{2}$'].map(M)}

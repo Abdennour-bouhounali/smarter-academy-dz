@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -47,8 +47,12 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="jumla-nashat" variant="rappel" compact />
-              <TextbookBox kind="definition" text={KNOWLEDGE.system.definition} source={KNOWLEDGE.system.source} compact />
-              <TextbookBox kind="example" text={KNOWLEDGE.system.example} source={KNOWLEDGE.system.source} compact />
+              {/* La définition ÉNONCE la règle juste avant sa brique : l'élève l'écrit d'abord
+                  (predictPrompt de jumla-tarif), puis boîtes et brique — une seule « توقّعك ». */}
+              <PredictRule id="jumla-tarif">
+                <TextbookBox kind="definition" text={KNOWLEDGE.system.definition} source={KNOWLEDGE.system.source} compact />
+                <TextbookBox kind="example" text={KNOWLEDGE.system.example} source={KNOWLEDGE.system.source} compact />
+              </PredictRule>
               <KnowledgeBrick id="jumla-tarif" lead="جملة النشاط 1 من هذا الشكل:" />
               <TapQuestion
                 prompt={<MathText>{'في الجملة $\\begin{cases} 3x + y = 5 \\\\ x - 4y = -2 \\end{cases}$ ، المعامل $b\'$ يساوي:'}</MathText>}
@@ -76,7 +80,7 @@ export default function Module02Maarif() {
           num: 2, title: 'حل الجملة', subtitle: 'معارف 2 — المعادلتان في آن واحد', done: q2,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="definition" title={KNOWLEDGE.solution.title} lines={[KNOWLEDGE.solution.definition, KNOWLEDGE.solution.rule]} source={KNOWLEDGE.solution.source} compact />
+              <PredictRule id="hall-jumla" prompt={"ما الذي جعل الثنائية التي قبلتها اللوحتان في النشاط 1 حلًّا للجملة؟ متى نقول إنّ ثنائية $(x_0 ; y_0)$ حلّ لجملة معادلتين؟ وماذا يعني «حلّ الجملة»؟"}><TextbookBox kind="definition" title={KNOWLEDGE.solution.title} lines={[KNOWLEDGE.solution.definition, KNOWLEDGE.solution.rule]} source={KNOWLEDGE.solution.source} compact /></PredictRule>
               <KnowledgeBrick id="hall-jumla" lead="ما قبلته لوحتا النشاط 1، معرَّفًا:" />
               <TextbookBox kind="example" lines={KNOWLEDGE.solution.examples} source={KNOWLEDGE.solution.source} compact />
               <KnowledgeBrick id="ikhtibar-thunaiya" lead="ما فعله الكتاب في المثالين، طريقةً:" />
@@ -96,7 +100,7 @@ export default function Module02Maarif() {
           num: 3, title: 'الترتيب في الثنائية', subtitle: 'ملاحظة الكتاب', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" text={KNOWLEDGE.solution.note} source={KNOWLEDGE.solution.source} compact />
+              <PredictRule id="tartib-thunaiya"><TextbookBox kind="remark" text={KNOWLEDGE.solution.note} source={KNOWLEDGE.solution.source} compact /></PredictRule>
               <KnowledgeBrick id="tartib-thunaiya" />
               <TapQuestion
                 prompt={<MathText>{'الثنائية $(3 ; 2)$ حل للجملة $\\begin{cases} x + 2y = 7 \\\\ 3x - y = 7 \\end{cases}$. هل الثنائية $(2 ; 3)$ حل لها؟'}</MathText>}
@@ -111,21 +115,25 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 4, title: 'حالات خاصة', subtitle: 'لا حل، أو حلول لا تنتهي', done: q4,
+          num: 4, title: 'حالات خاصة', subtitle: 'جملتان تُبسَّطان', done: q4,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" title={KNOWLEDGE.cases.title} lines={KNOWLEDGE.cases.items} source={KNOWLEDGE.cases.source} compact />
-              <div className="grid gap-2 sm:grid-cols-2" data-cases-lines>
-                <div className="rounded-xl border-2 border-sky-200 bg-sky-50/60 p-3 text-sm" data-case="infinite">
-                  <p className="mb-1 font-bold text-sky-900">1) معادلة واحدة مرّتين</p>
-                  <ol className="space-y-1">{CASES_LINES.infinite.map((l) => <li key={l}><MathText>{l}</MathText></li>)}</ol>
+              {/* L'encadré et les calculs écrits concluent déjà (« لا حلول » / « عدد غير منته ») :
+                  enveloppés, l'élève simplifie et prédit d'abord (predictPrompt de halat-khassa). */}
+              <PredictRule id="halat-khassa">
+                <TextbookBox kind="remark" title={KNOWLEDGE.cases.title} lines={KNOWLEDGE.cases.items} source={KNOWLEDGE.cases.source} compact />
+                <div className="grid gap-2 sm:grid-cols-2" data-cases-lines>
+                  <div className="rounded-xl border-2 border-sky-200 bg-sky-50/60 p-3 text-sm" data-case="infinite">
+                    <p className="mb-1 font-bold text-sky-900">1) معادلة واحدة مرّتين</p>
+                    <ol className="space-y-1">{CASES_LINES.infinite.map((l) => <li key={l}><MathText>{l}</MathText></li>)}</ol>
+                  </div>
+                  <div className="rounded-xl border-2 border-rose-200 bg-rose-50/60 p-3 text-sm" data-case="none">
+                    <p className="mb-1 font-bold text-rose-900">2) معادلتان متناقضتان</p>
+                    <ol className="space-y-1">{CASES_LINES.none.map((l) => <li key={l}><MathText>{l}</MathText></li>)}</ol>
+                  </div>
                 </div>
-                <div className="rounded-xl border-2 border-rose-200 bg-rose-50/60 p-3 text-sm" data-case="none">
-                  <p className="mb-1 font-bold text-rose-900">2) معادلتان متناقضتان</p>
-                  <ol className="space-y-1">{CASES_LINES.none.map((l) => <li key={l}><MathText>{l}</MathText></li>)}</ol>
-                </div>
-              </div>
-              <p className="text-xs text-slate-500"><MathText>{CASES_LINES.unique}</MathText> <SourceTag source={CASES_LINES.source} /></p>
+                <p className="text-xs text-slate-500"><MathText>{CASES_LINES.unique}</MathText> <SourceTag source={CASES_LINES.source} /></p>
+              </PredictRule>
               <KnowledgeBrick id="halat-khassa" lead="ما يقوله الكتاب عن هاتين الحالتين:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">صنّف كل جملة:</p>}

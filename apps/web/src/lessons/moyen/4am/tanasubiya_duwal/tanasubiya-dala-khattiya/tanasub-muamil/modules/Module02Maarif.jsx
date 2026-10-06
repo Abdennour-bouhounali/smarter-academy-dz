@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -18,6 +18,8 @@ import DataTable, { texTable } from '../components/DataTable';
  *   3. الرابع المتناسب, × a ou الجداءان المتصالبان (rabi-mutanasib) — l'erreur « + le FARQ » (17) expliquée ;
  *   4. le CONTRASTE : le tarif 50DA + 10DA la minute, son tableau, ses quotients (mablagh-thabit) ;
  *   5. y = a × x (y-ax).
+ * « أتوقّع القاعدة » : chaque encadré qui énonce la règle juste avant sa brique est enveloppé dans
+ * PredictRule (avec l’id de la brique ; prompt : knowledge.jsx › predictPrompt) ; les titres d'étape ne disent plus la règle.
  * Les questions utilisent d'AUTRES nombres que les encadrés. LP : P1 (1–3), P2 (4), P3 (5).
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
@@ -48,11 +50,11 @@ export default function Module02Maarif() {
       }}
       steps={[
         {
-          num: 1, title: 'معامل التناسبية', subtitle: 'نقسم السطر الثاني على الأول', done: q1a && q1b,
+          num: 1, title: 'معامل التناسبية', subtitle: 'كيف نقرّر؟ وكيف نحسبه؟', done: q1a && q1b,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="jadwal-tanasub" variant="rappel" compact />
-              <TextbookBox kind="method" title={KNOWLEDGE.muamil.title} lines={[KNOWLEDGE.muamil.rule, KNOWLEDGE.muamil.example]} source={KNOWLEDGE.muamil.source} compact />
+              <PredictRule id="muamil-tanasub"><TextbookBox kind="method" title={KNOWLEDGE.muamil.title} lines={[KNOWLEDGE.muamil.rule, KNOWLEDGE.muamil.example]} source={KNOWLEDGE.muamil.source} compact /></PredictRule>
               <KnowledgeBrick id="muamil-tanasub" lead="الطريقة، كما طبّقتها على جدولك:" />
               <DataTable rows={[{ label: '$x$', values: [4, 6, 10] }, { label: '$y$', values: [10, 15, 25] }]} />
               <TapQuestion
@@ -85,10 +87,10 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 2, title: 'خواص الجدول', subtitle: 'نجمع عمودين، نضرب عمودا', done: q2,
+          num: 2, title: 'خواص الجدول', subtitle: 'ما تقوله الأعمدة بعضها عن بعض', done: q2,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="property" title={KNOWLEDGE.khawass.title} lines={[...KNOWLEDGE.khawass.lines, KNOWLEDGE.khawass.example]} source={KNOWLEDGE.khawass.source} compact />
+              <PredictRule id="khawass-tanasub" prompt={"في جدول التناسبية لرحلات التروتينة اجمع عمودين: هل العمود الناتج عمود من الجدول؟ وماذا يحدث إذا ضربت عمودًا في عدد $k$؟ اكتب القاعدة."}><TextbookBox kind="property" title={KNOWLEDGE.khawass.title} lines={[...KNOWLEDGE.khawass.lines, KNOWLEDGE.khawass.example]} source={KNOWLEDGE.khawass.source} compact /></PredictRule>
               <KnowledgeBrick id="khawass-tanasub" lead="ما تقوله أعمدة جدول التناسبية بعضها عن بعض:" />
               <DataTable rows={[{ label: '$x$', values: [3, 5, 8, 30] }, { label: '$y$', values: ['7,2', '12', '…', '…'] }]} />
               <BatchChoiceQuestion
@@ -110,7 +112,7 @@ export default function Module02Maarif() {
           num: 3, title: 'الرابع المتناسب', subtitle: 'نكمل عمودا ناقصا', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="method" title={KNOWLEDGE.rabi.title} lines={[KNOWLEDGE.rabi.rule, KNOWLEDGE.rabi.example]} source={KNOWLEDGE.rabi.source} compact />
+              <PredictRule id="rabi-mutanasib"><TextbookBox kind="method" title={KNOWLEDGE.rabi.title} lines={[KNOWLEDGE.rabi.rule, KNOWLEDGE.rabi.example]} source={KNOWLEDGE.rabi.source} compact /></PredictRule>
               <KnowledgeBrick id="rabi-mutanasib" lead="العمود الناقص في المخبر (12 دقيقة)، طريقةً:" />
               <DataTable rows={[{ label: '$x$', values: [6, 14] }, { label: '$y$', values: [9, '?'] }]} />
               <NumericQuestion
@@ -127,7 +129,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 4, title: 'مبلغ ثابت', subtitle: 'يزداد السعر… وليست تناسبية', done: q4,
+          num: 4, title: 'مبلغ ثابت', subtitle: 'يزداد السعر… فهل هي تناسبية؟', done: q4,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{'على الكورنيش صيغتان: (أ) 15DA للدقيقة، (ب) 50DA لفتح القفل ثم 10DA للدقيقة. الجدولان للمدد نفسها:'}</MathText></p>
@@ -138,7 +140,7 @@ export default function Module02Maarif() {
                 { label: 'السعر (ب)', values: mb.b },
                 { label: '$y \\div x$ (ب)', values: mb.ratiosB },
               ]} />
-              <TextbookBox kind="remark" title={KNOWLEDGE.mablagh.title} lines={[KNOWLEDGE.mablagh.rule, KNOWLEDGE.mablagh.example]} source={KNOWLEDGE.mablagh.source} compact />
+              <PredictRule id="mablagh-thabit"><TextbookBox kind="remark" title={KNOWLEDGE.mablagh.title} lines={[KNOWLEDGE.mablagh.rule, KNOWLEDGE.mablagh.example]} source={KNOWLEDGE.mablagh.source} compact /></PredictRule>
               <KnowledgeBrick id="mablagh-thabit" lead="ما يرفضه المخبر في الصيغة ب، قاعدةً:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">وضعية تناسبية أم لا؟</p>}
@@ -158,10 +160,10 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 5, title: 'العلاقة y = a × x', subtitle: 'نكتب الجدول بعبارة', done: q5,
+          num: 5, title: 'العلاقة بين السطرين', subtitle: 'نكتب الجدول بعبارة', done: q5,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="property" title={KNOWLEDGE.yax.title} lines={[KNOWLEDGE.yax.rule, KNOWLEDGE.yax.example]} source={KNOWLEDGE.yax.source} compact />
+              <PredictRule id="y-ax"><TextbookBox kind="property" title={KNOWLEDGE.yax.title} lines={[KNOWLEDGE.yax.rule, KNOWLEDGE.yax.example]} source={KNOWLEDGE.yax.source} compact /></PredictRule>
               <KnowledgeBrick id="y-ax" lead="العلاقة التي يكتبها المخبر في مستواه المتقدّم:" />
               <DataTable rows={[{ label: '$x$', values: [2, 5, 8] }, { label: '$y$', values: ['7', '17,5', '28'] }]} />
               <TapQuestion

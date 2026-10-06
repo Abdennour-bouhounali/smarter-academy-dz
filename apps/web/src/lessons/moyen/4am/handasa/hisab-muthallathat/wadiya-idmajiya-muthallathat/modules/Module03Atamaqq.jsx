@@ -43,7 +43,9 @@ export default function Module03Atamaqq() {
         { num: 1, title: 'تمرين 31 — قطر متوازي المستطيلات', done: all('ex-31'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="muthallath-fada" lead="الطول AD ليس على وجه واحد: في أيّ مثلث قائم يظهر؟" />
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : Pythagore dans un solide est un prérequis (`fithaghuris-fada`, répété dans « أستعدّ », prep-5) et
+                  garder les valeurs exactes jusqu’au bout est `mulaamat-natija` (module 1). */}
+              <KnowledgeBrick id="muthallath-fada" variant="rappel" lead="الطول AD ليس على وجه واحد: في أيّ مثلث قائم يظهر؟" />
               <GeoFigure {...EX31} />
               <TextbookExercise exercise={part('ex-31-1')} requires={['fithaghuris-fada']} onAnswered={mark('ex-31-1')} />
               <TextbookExercise exercise={part('ex-31-2')} requires={['tadwir']} onAnswered={mark('ex-31-2')} />

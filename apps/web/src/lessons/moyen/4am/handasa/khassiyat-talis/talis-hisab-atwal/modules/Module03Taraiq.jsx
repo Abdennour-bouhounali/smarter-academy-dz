@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -12,7 +12,8 @@ import { FIG_METHOD, FIG_NOW107 } from '../content/figures';
 /**
  * Module 3 — طرائق (p. 107) « حساب أطوال » : l'exercice résolu du parallélogramme révélé ligne à ligne
  * (MethodSteps), la ligne 2/1 CORRIGÉE (une ligne discrète), les quatre gestes nommés (plateforme, déclaré —
- * brique hisab-atwal), puis دوري الآن (EW = 3,15). LP : P2.
+ * brique hisab-atwal), puis دوري الآن (EW = 3,15). LP : P2. L'encadré des quatre gestes ÉNONCE la méthode juste
+ * avant sa brique : il est enveloppé dans PredictRule « hisab-atwal » (l'élève écrit d'abord sa méthode).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -42,7 +43,7 @@ export default function Module03Taraiq() {
               <GeoFigure {...FIG_METHOD} />
               <MethodSteps method={{ source: METHOD.source, exercise: METHOD.exercise, solution: METHOD.solution }} onAllRevealed={() => setSeen(true)} />
               {seen && <p className="text-xs text-slate-500" data-correction><MathText>{METHOD.correction}</MathText></p>}
-              <TextbookBox kind="method" lines={METHOD_RULE.lines} source={METHOD_RULE.source} compact />
+              <PredictRule id="hisab-atwal"><TextbookBox kind="method" lines={METHOD_RULE.lines} source={METHOD_RULE.source} compact /></PredictRule>
               <KnowledgeBrick id="hisab-atwal" lead={seen ? 'الأسطر الثلاثة، مسمّاة:' : 'الطريقة التي ستكشفها سطرا سطرا:'} />
               <TapQuestion
                 prompt={<MathText>{'لماذا نحتفظ بالمساواة $\\dfrac{MA}{MD} = \\dfrac{AB}{DN}$ دون $\\dfrac{MB}{MN}$ ؟'}</MathText>}

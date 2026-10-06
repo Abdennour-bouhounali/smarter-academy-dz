@@ -5,7 +5,9 @@ import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, PairQuestion } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
+import { LESSON_CONFIG } from '../lesson.config';
 import { ACTIVITY, ACTIVITY_LINES, ACT_FIGURE, HOOK, UNKNOWNS } from '../content/textbook';
 import ClassFundVignette from '../components/ClassFundVignette';
 import LinesFigure from '../components/LinesFigure';
@@ -26,6 +28,8 @@ import LinesFigure from '../components/LinesFigure';
  * TOUCH / FORMALIZE  la brique tafsir-nashat (« نقول إنّ … ») nomme ce que les lampes ont montré.
  * TRANSFER  د) l'interprétation dans la situation ; l'étape des cas prépare le module 2.
  * AUCUNE étape n'attend `onFinished`. LP : P1 (س 2 أ), P2 (جـ, د), P3 (l'étape des cas du lab).
+ * Les labs vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس » (LessonProblemCard) clôt la
+ * DERNIÈRE étape ; la مسألة se résout au module 4.
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -256,6 +260,9 @@ export default function Module01Nashat() {
                   <MathText>{'كتبت كل شرط على الشكل $y = ax + b$ ، فصار مستقيمًا، ووجدت الحل في نقطة تقاطع المستقيمين. وفي المستوى المتقدّم، هل جرّبت «الحالات الثلاث»؟ المحور التالي يقول ذلك لكل جملة: متى يكون لها حل وحيد، ومتى لا يكون، ومتى تكون لها حلول كثيرة.'}</MathText>
                 </p>
               )}
+              {/* La « مسألة الدرس » prolonge le lab متقدم (labs dans l'intro : dernière étape) :
+                  un autre صندوق, 40 pièces de 20 et 50 دج, 1250 دج — résolue au module 4. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

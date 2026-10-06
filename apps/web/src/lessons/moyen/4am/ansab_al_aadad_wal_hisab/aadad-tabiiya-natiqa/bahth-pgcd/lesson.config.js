@@ -1,7 +1,8 @@
 /**
  * الدرس 6 — البحث عن القاسم المشترك الأكبر لعددين طبيعيين
  * Manuel 4AM, unité 1 : activité 6 أ/ب (p. 9), معارف 4 خاصيتان (p. 12), طرائق p. 13 (الفروق المتتابعة، خوارزمية إقليدس),
- * دوري الآن p. 13 (1), exercices 19, 20, 21 (p. 14), et le تحدّ d'ouverture (p. 7).
+ * دوري الآن p. 13 (1), exercices 19, 20, 21 (p. 14), et le تحدّ d'ouverture (p. 7),
+ * puis trois « مسائل » de la plateforme (modules 5–7).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/bahth-pgcd';
 
@@ -30,6 +31,15 @@ export const LESSON_CONFIG = {
     'مقارنة الخوارزميتين من حيث عدد الخطوات واختيار الأنسب',
   ],
   teachingScope: { include: ['الخاصيتان وخوارزميتا الكتاب', 'مقارنة عدد الخطوات (765 و 135)'], exclude: ['التحليل إلى عوامل أولية', 'المضاعف المشترك الأصغر (غير وارد في البرنامج)'] },
+  // « مسألة الدرس » (rollout مسائل, 2026-10-06) : montrée dès le sommaire,
+  // rappelée au module 1, résolue pas à pas au module 5 (content/problems.js).
+  // Prolonge l'atelier de couture du niveau متقدم : deux rubans, les différences
+  // successives, d'autres nombres.
+  lessonProblem: {
+    module: 5,
+    title: 'ورشة الخياطة: شريطان من 210 سم و 150 سم',
+    statement: 'في ورشة خياطة، لدى الخيّاطة شريطان مطرّزان بخيط ذهبي: الأوّل طوله 210 سم والثاني طوله 150 سم. تفتح الورشة أبوابها 6 أيام في الأسبوع. تريد الخيّاطة قصّ الشريطين إلى قطع لها كلّها الطول نفسه، أطول ما يمكن، دون أن يضيع أيّ جزء من الشريطين. تزيّن بكل قطعة قندورة واحدة، وتتقاضى 450 دج عن تزيين القندورة الواحدة.',
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -79,6 +89,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_bahth-pgcd_P3', '4am_bahth-pgcd_P4', '4am_bahth-pgcd_P5'], sourceElementIds: ['act-6b'] },
     { kind: 'method', code: 'method-euclid-1938-836', module: 3, title: 'طريقة: خوارزمية إقليدس (836 و 1938)', learningPointIds: ['4am_bahth-pgcd_P4'], sourceElementIds: ['method-euclid'] },
     { kind: 'situation', code: 'challenge-936-845', module: 4, title: 'تحدّ: 936 مئزرًا ورديًا و 845 مئزرًا أزرقًا', learningPointIds: ['4am_bahth-pgcd_P5'], sourceElementIds: ['challenge'] },
+    // Modules 5–7 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — ورشة الخياطة: شريطان من 210 سم و 150 سم', learningPointIds: ['4am_bahth-pgcd_P1', '4am_bahth-pgcd_P2'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — التعاونية الحليبية: 1170 قطعة جبن و 702 قارورة لبن', learningPointIds: ['4am_bahth-pgcd_P3', '4am_bahth-pgcd_P4'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — تبليط قاعة: 585 سم و 405 سم', learningPointIds: ['4am_bahth-pgcd_P3', '4am_bahth-pgcd_P4', '4am_bahth-pgcd_P5'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -96,7 +111,23 @@ export const LESSON_CONFIG = {
     { id: '04', number: 4, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
       title: 'أوظّف تعلّماتي', desc: 'دوري الآن (285 و 45)، تمارين 19 ← 21، والعودة إلى تحدّي المآزر.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_bahth-pgcd_P2', '4am_bahth-pgcd_P4', '4am_bahth-pgcd_P5'], color: 'amber', style: 'featured', estimatedMin: 14, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ست أسئلة تُقيّم نقاط التعلّم الخمس.', stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 8, difficulty: 4, actionText: 'أدخل التقويم' },
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    // 6 min chacune : la leçon est déjà à 71 min (plafond 90).
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — ورشة الخياطة', desc: 'مسألة الدرس: شريطان من 210 سم و 150 سم، والفروق المتتابعة. حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_bahth-pgcd_P1', '4am_bahth-pgcd_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — صناديق التعاونية الحليبية', desc: 'خوارزمية إقليدس: كم صندوقًا متماثلًا للمطاعم المدرسية؟ ماذا في كل صندوق؟ وكم قيمته؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_bahth-pgcd_P3', '4am_bahth-pgcd_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — تبليط قاعة', desc: 'أيّ خوارزمية أنسب؟ أكبر بلاطة مربّعة، عدد البلاطات، والثمن.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_bahth-pgcd_P3', '4am_bahth-pgcd_P4', '4am_bahth-pgcd_P5'],
+      color: 'amber', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'ست أسئلة تُقيّم الكفاءات الخمس.', stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 8, difficulty: 4, actionText: 'أدخل التقويم' },
   ],
 };

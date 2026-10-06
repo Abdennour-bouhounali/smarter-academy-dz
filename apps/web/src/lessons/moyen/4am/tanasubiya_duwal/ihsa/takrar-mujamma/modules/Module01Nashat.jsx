@@ -5,7 +5,9 @@ import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
+import { LESSON_CONFIG } from '../lesson.config';
 import { ACTIVITY, ACTIVITY_LINES, FUNPARK } from '../content/textbook';
 import FreqTable from '../components/FreqTable';
 import { BarChart } from '../components/Charts';
@@ -185,7 +187,7 @@ export default function Module01Nashat() {
                   { id: 'd159', label: <MathText>{'أكبر من أو تساوي $159$'}</MathText>, options: ['$13$', '$8$', '$12$'].map(M), correct: 0, correction: <MathText>{'$5 + 5 + 3 = 13$'}</MathText> },
                 ]}
                 requires={['ala-aqal-akthar']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: الصاعد 3 ، 7 ، 12 ، 17 ، 20 والنازل 20 ، 17 ، 13 ، 8 ، 3.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
+                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: السطر الأول 3 ، 7 ، 12 ، 17 ، 20 والسطر الثاني 20 ، 17 ، 13 ، 8 ، 3.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ3(true)}
               />
               {q3 && <KnowledgeBrick id="mujamma-nashat" lead="الكتاب يسمّي ما عددته عند البوابة:" />}
@@ -218,6 +220,7 @@ export default function Module01Nashat() {
                   onAnswered={() => setQ4(true)}
                 />
               )}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

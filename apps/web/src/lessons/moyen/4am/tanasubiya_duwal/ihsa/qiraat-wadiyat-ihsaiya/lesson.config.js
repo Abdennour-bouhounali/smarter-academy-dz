@@ -14,7 +14,8 @@
  *   3 أقارن وأقرّر (formalization) FORMALIZE : ex-14 (deux villes, position ET dispersion), ex-22 (retirer des
  *                             valeurs → N = 31), la méthode « أقرأ · أحسب المؤشرات · أقارن · أقرّر »
  *   4 أوظّف (practice_lab)     AUTOMATIZE → TRANSFER : temps d'écran, derby, plage (plateforme)
- *   5 إختبار أولي (evaluation)
+ *   puis trois « مسائل » de la plateforme (modules 5–7), avant
+ *   8 إختبار أولي (evaluation)
  * Les exercices sont rangés aux modules 2–3 (et non tous au module 2 comme le plan l'esquissait) : la
  * lecture (P1) précède la comparaison (P2) et la modélisation (P3).
  *
@@ -66,6 +67,21 @@ export const LESSON_CONFIG = {
   // Les acquis des leçons 1 et 2 que « أستعدّ » diagnostique : المتوسط، المتوسط المتوازن (par les effectifs),
   // الوسيط، المدى، التواتر، la lecture d'un مخطط بالأعمدة.
   priorKnowledge: ['mutawassit-silsila', 'mutawassit-mutawazin', 'wasit-silsila', 'mada-silsila', 'tawatur', 'qiraat-mukhattat-aamida'],
+  // « مسألة الدرس » (MASAIL_GENERATION_GUIDE.md) : l'énoncé de la مسألة 1, montré au sommaire et à la fin du
+  // module 1 ; elle prolonge le تحدّ du niveau متقدم (deux classes, deux groupes chacune, autres nombres).
+  lessonProblem: {
+    module: 5,
+    title: 'قسمان: مجموعات أفضل وقسم أضعف؟',
+    statement: 'في فرض الرياضيات لقسمين من السنة الرابعة متوسط، في كل قسم 30 تلميذًا. في القسم (أ): 10 ذكور معدّلهم 8 و 20 أنثى معدّلهنّ $12{,}5$. في القسم (ب): 20 ذكرًا معدّلهم 9 و 10 إناث معدّلهنّ $13{,}5$. دام الفرض 90 دقيقة، وأُجري يوم الأحد. يقول تلميذ من القسم (ب): «ذكورنا أفضل من ذكوركم، وإناثنا أفضل من إناثكم، إذن قسمنا هو الأفضل».',
+    // Le support de la مسألة 1, montré aussi par la carte « مسألة الدرس » (une seule source).
+    table: {
+      head: ['', 'ذكور — العدد', 'ذكور — المعدّل', 'إناث — العدد', 'إناث — المعدّل'],
+      rows: [
+        ['القسم (أ)', '10', '8', '20', '12,5'],
+        ['القسم (ب)', '20', '9', '10', '13,5'],
+      ],
+    },
+  },
   resources: [
     // Module 1 : le تحدّ (p. 91). مبتدئ : مسابقة القسم, deux équipes d'amis (plateforme, plus petits nombres) ;
     // متقدم (défaut) : les deux classes du manuel.
@@ -89,6 +105,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_qiraat-wadiyat-ihsaiya_P2', '4am_qiraat-wadiyat-ihsaiya_P3'],
       sourceElementIds: ['challenge'],
     },
+    // Les trois « مسائل » (modules 5–7) — ajouts de la plateforme, content/problems.js.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — قسمان: مجموعات أفضل وقسم أضعف؟', learningPointIds: ['4am_qiraat-wadiyat-ihsaiya_P1', '4am_qiraat-wadiyat-ihsaiya_P2', '4am_qiraat-wadiyat-ihsaiya_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — أمطار تيزي وزو: المتوسط أم الوسيط؟', learningPointIds: ['4am_qiraat-wadiyat-ihsaiya_P1', '4am_qiraat-wadiyat-ihsaiya_P2', '4am_qiraat-wadiyat-ihsaiya_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — معرض الكتاب: متوسط واحد ومعرضان مختلفان', learningPointIds: ['4am_qiraat-wadiyat-ihsaiya_P1', '4am_qiraat-wadiyat-ihsaiya_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -110,8 +130,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'مدّة استعمال الهاتف، تذاكر الدربي، حملة تنظيف الشاطئ: أحسب، أقارن وأقرّر.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_qiraat-wadiyat-ihsaiya_P2', '4am_qiraat-wadiyat-ihsaiya_P3'],
       color: 'amber', style: 'featured', estimatedMin: 7, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث: القراءة والترجمة، المقارنة، النمذجة.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — فرض الرياضيات في قسمين', desc: 'مسألة الدرس: كل مجموعة من القسم (ب) أفضل، فأيّ القسمين أفضل؟ حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_qiraat-wadiyat-ihsaiya_P1', '4am_qiraat-wadiyat-ihsaiya_P2', '4am_qiraat-wadiyat-ihsaiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — أمطار تيزي وزو', desc: 'عاصفة نوفمبر: أيّ المؤشرين يصف الشهر العادي؟ وماذا يتغيّر إذا حذفناها؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_qiraat-wadiyat-ihsaiya_P1', '4am_qiraat-wadiyat-ihsaiya_P2', '4am_qiraat-wadiyat-ihsaiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — معرض الكتاب', desc: 'معرضان بالمتوسط نفسه: المدى والوسيط يقرّران أين يشارك الناشر.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_qiraat-wadiyat-ihsaiya_P1', '4am_qiraat-wadiyat-ihsaiya_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث: القراءة والترجمة، المقارنة، النمذجة.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

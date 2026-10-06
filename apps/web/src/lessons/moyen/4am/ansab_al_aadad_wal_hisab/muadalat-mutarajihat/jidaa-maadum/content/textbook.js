@@ -143,7 +143,7 @@ export const EX19_NOTE = {
 
 /**
  * « أؤكّد تعلّماتي » (p. 52) — les items 3 et 4 (destinations › qcm › duplicatedIn ›
- * jidaa-maadum, module 5) : l'إختبار أولي.
+ * jidaa-maadum, module 8) : l'إختبار أولي.
  */
 const QCM_SRC = (n) => src('qcm', 52, 'أؤكّد تعلّماتي', n);
 export const QCM = {

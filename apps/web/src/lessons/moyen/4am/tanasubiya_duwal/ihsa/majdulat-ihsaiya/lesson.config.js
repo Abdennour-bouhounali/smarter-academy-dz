@@ -14,7 +14,8 @@
  *                                       الوسيطية et la commande Histogramme (ex-16), les أعمدة d'une série (ex-1 هـ)
  *   M3 معارف (formalization)           FORMALIZE : cellule, plage, دستور, les quatre دساتير, les noms FR/EN, quel graphique
  *   M4 أدوات أخرى (practice_lab)       AUTOMATIZE / TRANSFER : la mémoire de la calculatrice (ex-23), =ALEA() (ex-24)
- *   M5 إختبار أولي (evaluation)        la seule preuve
+ *   M5–M7 مسائل (practice_lab)         puis trois « مسائل » de la plateforme (modules 5–7)
+ *   M8 إختبار أولي (evaluation)        la seule preuve
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -57,6 +58,19 @@ export const LESSON_CONFIG = {
       'تنسيق الخلايا، الدوال الشرطية، الجداول المحورية',
     ],
   },
+  // « مسألة الدرس » (MASAIL_GENERATION_GUIDE.md) : le monde du sheet-lab متقدم (une série dans la ligne 1,
+  // quatre دساتير en B2 ← B5), d'autres nombres ; montrée au sommaire et au module 1, résolue au module 5.
+  lessonProblem: {
+    module: 5,
+    title: 'مسابقة الرقن: تسعة مشاركين في مجدول',
+    statement: 'في نادي الإعلام الآلي بالمتوسطة، وفيه 16 حاسوبًا، نُظّمت يوم الخميس مسابقة في الرقن على لوحة المفاتيح. حجز الأستاذ عدد الكلمات التي رقنها كل واحد من المشاركين التسعة في دقيقة واحدة، في السطر الأول من مجدول بدءًا من الخلية A1 ، قيمة في كل خلية: 28 ، 35 ، 22 ، 33 ، 40 ، 31 ، 35 ، 26 ، 38 . ثم حجز في الخلايا B2 ، B3 ، B4 ، B5 دساتير المدى والوسيط والمتوسط والمنوال، بالترتيب، على مجال السلسلة كاملة. يمنح النادي شهادة لكل مشارك يفوق عدد كلماته متوسط السلسلة.',
+    // Le support de la مسألة 1, montré aussi par la carte « مسألة الدرس » (une seule source).
+    table: {
+      caption: 'السطر الأول من المجدول: عدد الكلمات في دقيقة',
+      head: ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'],
+      rows: [['1', '28', '35', '22', '33', '40', '31', '35', '26', '38']],
+    },
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -87,6 +101,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_majdulat-ihsaiya_P1', '4am_majdulat-ihsaiya_P2', '4am_majdulat-ihsaiya_P3'],
       sourceElementIds: ['ex-7', 'ex-15', 'ex-16'],
     },
+    // Les trois « مسائل » (content/problems.js), avant le test.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — مسابقة الرقن: تسعة مشاركين في مجدول', learningPointIds: ['4am_majdulat-ihsaiya_P1', '4am_majdulat-ihsaiya_P2'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — أطوال التلاميذ في حصة التربية البدنية', learningPointIds: ['4am_majdulat-ihsaiya_P1', '4am_majdulat-ihsaiya_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — محلّ الأحذية الرياضية: مبيعات ستة أشهر', learningPointIds: ['4am_majdulat-ihsaiya_P2', '4am_majdulat-ihsaiya_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -108,8 +126,20 @@ export const LESSON_CONFIG = {
       title: 'أدوات أخرى — أتعمّق', desc: 'تمرين 23: متوسط بذاكرة الحاسبة؛ تمرين 24: سلسلة عشوائية من 50 عددًا بالدستور \u2066=ALEA()\u2069.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_majdulat-ihsaiya_P2'],
       color: 'amber', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — مسابقة الرقن', desc: 'مسألة الدرس: تسعة مشاركين في مجدول، أربعة دساتير، دستور زميل ناقص وصفر زائد. حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_majdulat-ihsaiya_P1', '4am_majdulat-ihsaiya_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — أطوال التلاميذ', desc: 'ثلاثة عشر طولًا في عمود: دستور المتوسط، تلميذ جديد خارج المجال، والوسيط لاختيار الفريق.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_majdulat-ihsaiya_P1', '4am_majdulat-ihsaiya_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — محلّ الأحذية الرياضية', desc: 'مبيعات ستة أشهر: المتوسط والمنوال، التمثيل المناسب وزاوية قطاع، ومدخول السداسي.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_majdulat-ihsaiya_P2', '4am_majdulat-ihsaiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

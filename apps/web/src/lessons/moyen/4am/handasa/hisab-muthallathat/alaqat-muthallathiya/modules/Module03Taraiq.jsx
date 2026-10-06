@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -19,6 +19,9 @@ import TrialsEvidence from '../components/TrialsEvidence';
  *   3. « إن أمكن » (FORMULÉ, déclaré) : cos x = 7/6 n'existe pas → shart-imkan ;
  *   4. « إنشاء هندسي لزاوية حادة… » : sin 2/5 (compas) et tan 7/3 (règle) → insha-zawiya ;
  *   5. دوري الآن 2 : cos x = 3/4 FAIT au laboratoire posé seul (`levels={false}`), questions sur les essais de l'élève.
+ * « أتوقّع القاعدة » : la solution du manuel (MethodSteps, étape 1) et les deux constructions résolues (étape 4) écrivent
+ * la méthode avant sa brique : elles sont enveloppées dans <PredictRule id="hisab-nisba"> et <PredictRule id="insha-zawiya">.
+ * shart-imkan est `rappel` : les bornes 0 < sin, cos < 1 sont la règle « hudud » du درس 1 (prérequis hasr-nisab).
  * LP : P2 (1–3), P3 (4–5).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -59,7 +62,11 @@ export default function Module03Taraiq() {
                 explain={<MathText>{`${LINES.rootRight} ($0{,}4 = 1 - 0{,}6$ نسي المربعين: ${LINES.rootWhy} و $0{,}36$ هو $\\cos^2 x$ .)`}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
-              {q1 && <MethodSteps method={{ source: METHOD_REL.source, exercise: METHOD_REL.exercise, solution: METHOD_REL.solution }} />}
+              {q1 && (
+                <PredictRule id="hisab-nisba">
+                  <MethodSteps method={{ source: METHOD_REL.source, exercise: METHOD_REL.exercise, solution: METHOD_REL.solution }} />
+                </PredictRule>
+              )}
               {q1 && <KnowledgeBrick id="hisab-nisba" lead="الطريقة كما يكتبها الكتاب:" />}
             </div>
           ),
@@ -117,7 +124,7 @@ export default function Module03Taraiq() {
                 explain={<MathText>{'$\\dfrac{7}{6} > 1$ و $1 - \\dfrac{49}{36} = -\\dfrac{13}{36} < 0$ : لا جذر ولا زاوية. (و $\\dfrac{13}{36}$ خطأ في الإشارة؛ والنسبة لا تتغيّر مع حجم المثلث.)'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
-              {q3 && <KnowledgeBrick id="shart-imkan" lead="سؤال نطرحه قبل الحساب:" />}
+              {q3 && <KnowledgeBrick id="shart-imkan" variant="rappel" lead="سؤال نطرحه قبل الحساب:" />}
               {q3 && <p className="text-xs text-slate-500"><SourceTag source={POSSIBLE.source} /></p>}
             </div>
           ),
@@ -126,6 +133,7 @@ export default function Module03Taraiq() {
           num: 4, title: 'إنشاء زاوية دون منقلة', subtitle: 'طرائق ص 121', done: q4,
           content: (
             <div className="space-y-3">
+              <PredictRule id="insha-zawiya">
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="space-y-2">
                   <GeoFigure {...METHOD_CONSTRUCT.ex1.figure} />
@@ -136,6 +144,7 @@ export default function Module03Taraiq() {
                   <MethodSteps method={{ source: METHOD_CONSTRUCT.source, exercise: METHOD_CONSTRUCT.ex2.exercise, solution: METHOD_CONSTRUCT.ex2.solution }} />
                 </div>
               </div>
+              </PredictRule>
               <TapQuestion
                 prompt={<MathText>{'لماذا رسم الكتاب دائرة في التمرين 1 ولم يرسمها في التمرين 2؟'}</MathText>}
                 options={[

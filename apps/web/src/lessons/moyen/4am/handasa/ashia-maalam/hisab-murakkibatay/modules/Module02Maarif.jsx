@@ -43,7 +43,8 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-600"><MathText>{KNOW3B.intro}</MathText></p>
-              <KnowledgeBrick id="qanun-murakkibatayn" lead="معارف 3 ب، كما في الكتاب:" />
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la règle a été écrite puis posée au module 1 (farq-ihdathiyat). */}
+              <KnowledgeBrick id="qanun-murakkibatayn" variant="rappel" lead="معارف 3 ب، كما في الكتاب:" />
               <TapQuestion
                 prompt={<span><MathText>{'$K(-1\\,;\\,2)$ و $L(3\\,;\\,-4)$ . مركبتا $\\overrightarrow{KL}$ :'}</MathText> <SourceTag source={PLATFORM_SOURCE} /></span>}
                 options={[
@@ -100,7 +101,8 @@ export default function Module02Maarif() {
           num: 3, title: 'معارف جـ', subtitle: 'الشعاعان المتساويان', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tasawi-murakkibat" lead="معارف جـ، كما في الكتاب:" />
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : « نفس المركبتين ⇔ متساويان » est posé au module 1 (farq-ihdathiyat, DE = CF). */}
+              <KnowledgeBrick id="tasawi-murakkibat" variant="rappel" lead="معارف جـ، كما في الكتاب:" />
               <p className="text-sm"><MathText>{KNOW_EQUAL.example1}</MathText> <span className="text-slate-500">{KNOW_EQUAL.example1Note}</span></p>
               <TextbookBox kind="example" text={KNOW_EQUAL.example2} source={KNOW_EQUAL.source} compact />
               <GeoFigure {...FIG_KNOW_EQUAL} />

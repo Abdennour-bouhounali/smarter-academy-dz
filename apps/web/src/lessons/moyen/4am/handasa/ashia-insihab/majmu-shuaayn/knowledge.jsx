@@ -24,7 +24,9 @@ const Lines = ({ lines }) => (
 export const LESSON_KNOWLEDGE = {
   modules: {
     1: [
-      { id: 'tarkib-insihabayn', type: 'concepts', title: 'انسحابان متتابعان', summary: 'الانسحاب الذي شعاعه AB متبوعا بالانسحاب الذي شعاعه BC هو انسحاب واحد شعاعه AC: صورة نقطة بالأول ثم بالثاني هي صورتها بهذا الانسحاب.',
+      { id: 'tarkib-insihabayn', type: 'concepts', title: 'انسحابان متتابعان',
+        predictPrompt: 'على المرصوفة نقلتَ $M$ إلى $M\'$ بالانسحاب الذي شعاعه $\\overrightarrow{AB}$ ، ثم $M\'$ إلى $M\'\'$ بالانسحاب الذي شعاعه $\\overrightarrow{BC}$ . ماذا يفعل هذان الانسحابان المتتابعان بأيّ نقطة أخرى؟ اكتب القاعدة بكلماتك، واذكر الشعاع الذي يعوّضهما.',
+        summary: 'الانسحاب الذي شعاعه AB متبوعا بالانسحاب الذي شعاعه BC هو انسحاب واحد شعاعه AC: صورة نقطة بالأول ثم بالثاني هي صورتها بهذا الانسحاب.',
         body: <Lines lines={[ACT3.after]} /> },
     ],
     2: [
@@ -39,7 +41,9 @@ export const LESSON_KNOWLEDGE = {
             <GeoFigure {...FIG_KNOW5} />
           </div>
         ) },
-      { id: 'qaidat-mutawazi', type: 'regles', title: 'قاعدة متوازي الأضلاع', summary: 'إذا كانت A و B و C ليست على استقامة: مجموع AB و AC هو AD معناه ABDC متوازي أضلاع، أي القطر الصادر من المبدأ المشترك A.',
+      { id: 'qaidat-mutawazi', type: 'regles', title: 'قاعدة متوازي الأضلاع',
+        predictPrompt: 'سرعة السبّاح وسرعة التيار تنطلقان من نفس النقطة $A$ ، مثل $\\overrightarrow{AB}$ و $\\overrightarrow{AD}$ في نشاط 4. إذا كان لشعاعين نفس المبدأ، كيف تنشئ ممثلًا لمجموعهما دون أن تنقل أحدهما؟ اكتب القاعدة: أيّ رباعي تكمل، وأين يقع المجموع؟',
+        summary: 'إذا كانت A و B و C ليست على استقامة: مجموع AB و AC هو AD معناه ABDC متوازي أضلاع، أي القطر الصادر من المبدأ المشترك A.',
         body: (
           <div className="space-y-2">
             <Lines lines={[KNOW6.property, KNOW6.remark]} />
@@ -48,7 +52,9 @@ export const LESSON_KNOWLEDGE = {
         ) },
     ],
     3: [
-      { id: 'insha-mumaththil', type: 'methodes', title: METHOD.title, summary: 'لإنشاء ممثل لمجموع شعاعين نستعمل علاقة شال (ننقل الثاني إلى نهاية الأول بشعاع يساويه) أو قاعدة متوازي الأضلاع (شعاعان لهما نفس المبدأ).',
+      { id: 'insha-mumaththil', type: 'methodes', title: METHOD.title,
+        predictPrompt: 'في التمرين المحلول نقلتَ $\\overrightarrow{AD}$ إلى النقطة $B$ قبل أن تجمعه مع $\\overrightarrow{AB}$ . لو أعطيناك شعاعين آخرين، متعاقبين أو لهما نفس المبدأ، بأيّ خطوات تنشئ ممثلًا لمجموعهما؟ اكتب الطريقة في الحالتين.',
+        summary: 'لإنشاء ممثل لمجموع شعاعين نستعمل علاقة شال (ننقل الثاني إلى نهاية الأول بشعاع يساويه) أو قاعدة متوازي الأضلاع (شعاعان لهما نفس المبدأ).',
         body: <Lines lines={[METHOD.rule, METHOD.solution[2], METHOD.solution[3]]} /> },
     ],
   },

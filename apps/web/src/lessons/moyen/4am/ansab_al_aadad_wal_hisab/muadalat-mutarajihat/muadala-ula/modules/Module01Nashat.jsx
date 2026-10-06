@@ -8,6 +8,8 @@ import { TextbookBox, SourceTag, FractionQuestion } from '../../../../../../comm
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, HOOK, HISTORY, HISTORY_NOTE, BALANCE_LINES } from '../content/textbook';
 import BalanceVignette from '../components/BalanceVignette';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 
 /**
  * Module 1 — نشاط 1 (p. 44) : « المعادلات من الدرجة الأولى بمجهول واحد », ouvert sur la
@@ -26,6 +28,9 @@ import BalanceVignette from '../components/BalanceVignette';
  * nomme ce que la main a fait (TOUCH THE MATH) ; le خوارزمي en aparté. Le س 4 (مصطفى,
  * 9x + 1 = 2x → −1/7) est le CONTRASTE : la balance demanderait des septièmes de baudruche,
  * l'algèbre le fait en une ligne — ce qui mène à معارف (ax = b → b/a).
+ * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape (les deux niveaux du
+ * laboratoire vivent dans l'intro) : la même balance, des sacs dans les DEUX plateaux,
+ * résolue au module 5.
  * AUCUNE étape n'attend `onFinished`. LP : P1, P2.
  */
 const BEGINNER = '3x+2=11';
@@ -203,6 +208,7 @@ export default function Module01Nashat() {
                   <MathText>{'في الحالتين وصلنا إلى معادلة يكون فيها المجهول في طرف واحد مضروبًا في عدد: $9x = -27$ ثم $7x = -1$. المحور التالي يعطي هذا الشكل اسمه وحلّه.'}</MathText>
                 </p>
               )}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

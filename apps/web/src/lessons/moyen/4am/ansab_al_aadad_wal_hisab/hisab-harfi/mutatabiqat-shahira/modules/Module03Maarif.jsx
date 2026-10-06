@@ -33,7 +33,7 @@ export default function Module03Maarif() {
       estimatedTime="7 دقائق"
       brief={{
         tag: 'معارف — الكتاب ص 34', title: KNOWLEDGE.title, tone: 'violet',
-        body: <p>تحقّقت على الملعب من مساواة من أجل عدّة قيم لـ <MathText>{'$x$'}</MathText>، ثم برهنتها من أجل كل عددين. للمساواة التي تصحّ دائمًا اسم في الكتاب.</p>,
+        body: <p>تحقّقت على الملعب من مساواة من أجل عدّة قيم لـ <MathText>{'$x$'}</MathText>، ثم برهنتها بالنشر. لهذا النوع من المساواة اسم في الكتاب.</p>,
       }}
       steps={[
         {

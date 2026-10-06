@@ -2,7 +2,8 @@
  * الدرس 2 من الوحدة 3 — المتطابقات الشهيرة
  * Manuel 4AM, unité 3 : نشاط 2 (pp. 32–33), ديكارت (p. 31), معارف 2 (p. 34),
  * طرائق (p. 35), دوري الآن 1 (p. 36), تمارين 9–19 (pp. 37–38), 28 أ (p. 39),
- * أتعمّق 35–36 (p. 41), أؤكّد تعلّماتي 7, 8, 13 (p. 40), أستعدّ 5–6 (p. 31).
+ * أتعمّق 35–36 (p. 41), أؤكّد تعلّماتي 7, 8, 13 (p. 40), أستعدّ 5–6 (p. 31),
+ * puis trois « مسائل » de la plateforme (modules 5–7).
  * Source de vérité : docs/sources/4am/unit3/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -43,6 +44,13 @@ export const LESSON_CONFIG = {
       'التحليل باستعمال المتطابقات الشهيرة (الدرس 3)، ومنه التمرين 28 ب',
       'النشر بالخاصية التوزيعية وحدها دون متطابقة (الدرس 1)',
     ],
+  },
+  // « مسألة الدرس » : montrée dès le sommaire et au module 1, résolue au module 5
+  // (content/problems.js › masala-1 reprend ce texte tel quel).
+  lessonProblem: {
+    module: 5,
+    title: 'ملعب الحيّ: مدرّجات على ضلعين',
+    statement: 'ملعب جواري في أحد أحياء مدينة سطيف مربّع الشكل، طول ضلعه $x$ مترًا. قرّرت البلدية أن تقتطع منه، على طول ضلعين متجاورين، شريطين عرض كل منهما $3\\,m$ لتبني عليهما مدرّجات للمتفرّجين، فتبقى أرضية اللعب مربّعة الشكل. طول ضلع الملعب الحالي $30\\,m$. ستُغطّى أرضية اللعب بعشب اصطناعي ثمن المتر المربّع منه 1200 دج، وتُبلَّط المدرّجات ببلاط ثمن المتر المربّع منه 900 دج. يلعب في الملعب فريقان من 5 لاعبين، وقد فُتح سنة 2016.',
   },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
@@ -98,6 +106,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_mutatabiqat-shahira_P3'],
       sourceElementIds: ['act-2c'],
     },
+    // Les « مسائل » (modules 5–7) : situations de la plateforme, de type امتحان.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — ملعب الحيّ: مدرّجات على ضلعين', learningPointIds: ['4am_mutatabiqat-shahira_P2', '4am_mutatabiqat-shahira_P4'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — المسبح البلدي: ممرّ حول الحوض', learningPointIds: ['4am_mutatabiqat-shahira_P1', '4am_mutatabiqat-shahira_P4'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — جولة الحساب الذهني في مسابقة المتوسطة', learningPointIds: ['4am_mutatabiqat-shahira_P1', '4am_mutatabiqat-shahira_P2', '4am_mutatabiqat-shahira_P3', '4am_mutatabiqat-shahira_P4'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -119,8 +131,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'الطريقة سطرًا سطرًا، دوري الآن، التمارين 9–19 و 28 أ، وأتعمّق 35 و 36.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_mutatabiqat-shahira_P1', '4am_mutatabiqat-shahira_P2', '4am_mutatabiqat-shahira_P3', '4am_mutatabiqat-shahira_P4'],
       color: 'amber', style: 'featured', estimatedMin: 15, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الأربع.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — ملعب الحيّ', desc: 'مسألة الدرس: شريطان يُقتطعان من ملعب مربّع. مساحة أرضية اللعب، كلام العامل، وثمن العشب والمدرّجات.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mutatabiqat-shahira_P2', '4am_mutatabiqat-shahira_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — المسبح البلدي', desc: 'ممرّ عرضه x حول حوض مربّع: مساحته بدلالة x، وهل يكفي البلاط الموجود؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mutatabiqat-shahira_P1', '4am_mutatabiqat-shahira_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — مسابقة الحساب الذهني', desc: 'أربعة أعداد تُحسب دون وضع العملية، جواب خاطئ، ونقاط الفريق.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mutatabiqat-shahira_P1', '4am_mutatabiqat-shahira_P2', '4am_mutatabiqat-shahira_P3', '4am_mutatabiqat-shahira_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الأربع.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

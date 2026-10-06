@@ -1,6 +1,6 @@
 /**
  * QA navigateur de « تقدّمي » (/espace/progression) — l'arbre الميدان →
- * الوحدة → الدرس → نقاط التعلّم, la section « للعمل الآن », la recherche,
+ * الوحدة → الدرس → الكفاءات, la section « للعمل الآن », la recherche,
  * les filtres, les états vide / erreur / chargement, le mobile.
  *
  *   node apps/web/e2e/progression.mjs [dossier-captures]

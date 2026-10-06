@@ -39,7 +39,7 @@ export default function Module02Maarif() {
           num: 1, title: 'مساحة الكرة', subtitle: 'تعريف', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="misahat-kura" lead="أربعة أقراص كبرى، في قانون واحد:" />
+              <KnowledgeBrick id="misahat-kura" variant="rappel" lead="أربعة أقراص كبرى، في قانون واحد:" />
               <TapQuestion
                 prompt={<MathText>{'مساحة كرة نصف قطرها $7\\,\\mathrm{cm}$ (القيمة المضبوطة) هي:'}</MathText>}
                 options={[
@@ -62,7 +62,7 @@ export default function Module02Maarif() {
           num: 2, title: 'حجم الجلة', subtitle: 'تعريف', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="hajm-julla" lead="ثلثا الأسطوانة، في قانون واحد:" />
+              <KnowledgeBrick id="hajm-julla" variant="rappel" lead="ثلثا الأسطوانة، في قانون واحد:" />
               <TapQuestion
                 prompt={<MathText>{'حجم جلة نصف قطرها $6\\,\\mathrm{cm}$ (القيمة المضبوطة) هو:'}</MathText>}
                 options={[

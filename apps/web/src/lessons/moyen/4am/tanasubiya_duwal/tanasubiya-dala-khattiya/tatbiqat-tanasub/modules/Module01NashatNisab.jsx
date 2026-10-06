@@ -8,6 +8,8 @@ import { parseDec } from '@smarter-academy/core';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACT5_ANSWERS, LAB } from '../content/textbook';
 import SoldesVignette from '../components/SoldesVignette';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 
 /**
  * Module 1 — نشاط 5 (p. 67) « استعمال النسبة المئوية », ouvert sur L'ÉTIQUETTE QU'ON ÉTIRE
@@ -179,7 +181,7 @@ export default function Module01NashatNisab() {
                 correct={0}
                 cols={1}
                 requires={['nisba-akhdh']}
-                explain={<MathText>{`${ACT5_ANSWERS.fuel} الفرق $0{,}6L$ ليس نسبة مئوية، والنسبة تُحسب من الاستهلاك قبل الانخفاض ( $6{,}7L$ ) لا بعده.`}</MathText>}
+                explain={<MathText>{'الانخفاض $6{,}7 - 6{,}1 = 0{,}6L$ من أصل $6{,}7L$ : $\\dfrac{0{,}6}{6{,}7} \\times 100 \\simeq 8{,}96$ ، أي انخفاض بحوالي $8{,}96\\%$ . الفرق $0{,}6L$ ليس نسبة مئوية، والنسبة تُحسب من الاستهلاك قبل الانخفاض ( $6{,}7L$ ) لا بعده.'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
               {q2 && <KnowledgeBrick id="takhfid-darb" lead="الاستهلاك الجديد هو القديم مضروبًا في عدد أصغر من 1:" />}
@@ -218,7 +220,7 @@ export default function Module01NashatNisab() {
                 correct={0}
                 cols={2}
                 requires={['ziyada-darb']}
-                explain={<MathText>{`${ACT5_ANSWERS.fn} أمّا $y = x + 60$ فلا تصحّ إلا لسعر 1200DA (لقميص بـ 3000DA تكون الزيادة 150DA)، و $y = 0{,}05x$ هي مقدار الزيادة وحده.`}</MathText>}
+                explain={<MathText>{`السعر بعد الزيادة هو السعر قبلها مضروبًا في $1 + \\dfrac{5}{100} = 1{,}05$ : $y = 1{,}05x$ . أمّا $y = x + 60$ فلا تصحّ إلا لسعر 1200DA (لقميص بـ 3000DA تكون الزيادة 150DA)، و $y = 0{,}05x$ هي مقدار الزيادة وحده.`}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
               {q4 && <KnowledgeBrick id="dala-murfaqa" lead="في جدولك حاصل القسمة نفسه لكل القطع:" />}
@@ -243,6 +245,7 @@ export default function Module01NashatNisab() {
                 explain={<MathText>{'$1000 \\times 0{,}8 = 800$ ، ثم $800 \\times 1{,}2 = 960$ : الزيادة 20% تُحسب من 800 لا من 1000، فلا نعود إلى السعر الأول.'}</MathText>}
                 onAnswered={() => setQ5(true)}
               />
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

@@ -7,7 +7,8 @@
  *
  * Parcours (owner) : REAL → DISCOVER → MANIPULATE (module 1 : la paie, le compteur à partie fixe) →
  * UNDERSTAND / TOUCH THE MATH (module 2 : les six règles, a et b, les cas particuliers) → FORMALIZE
- * (module 3) → AUTOMATIZE / TRANSFER (module 4) → évaluation (module 5).
+ * (module 3) → AUTOMATIZE / TRANSFER (module 4), puis trois « مسائل » de la plateforme (modules 5–7) →
+ * évaluation (module 8).
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -58,6 +59,13 @@ export const LESSON_CONFIG = {
   // par une fonction linéaire (items 2, 3, 5 — leçon dala-khattiya), reconnaître une fonction linéaire
   // (item 4), résoudre ax + b = c (item 6 de la plateforme — leçon muadala-ula).
   priorKnowledge: ['taawid-qima', 'sura-khattiya', 'mafhum-khattiya', 'hal-muadala-ula'],
+  // « مسألة الدرس » (MASAIL_GENERATION_GUIDE.md) : l'énoncé de la مسألة 1, montré au sommaire et à la fin du
+  // module 1, prolongement de la paie du niveau متقدم (autres nombres), résolu au module 5.
+  lessonProblem: {
+    module: 5,
+    title: 'مصنع النسيج: أجرة قاعدية وساعات إضافية',
+    statement: 'يقترح مصنع للنسيج في تلمسان على كل عامل أجرة شهرية تُحسب كما يلي: أجرة قاعدية قدرها 38000 دج، يضاف إليها 240 دج عن كل ساعة إضافية منجزة في الشهر. يشغّل المصنع 120 عاملًا، ولا يسمح نظامه الداخلي بأكثر من 20 ساعة إضافية في الشهر للعامل الواحد. نسمّي $x$ عدد الساعات الإضافية التي ينجزها عامل في شهر، و $S(x)$ أجرته الشهرية بالدينار.',
+  },
   resources: [
     // Le module 1 ouvre sur LE COMPTEUR À PARTIE FIXE (affine-meter). مبتدئ : une course en
     // taxi-application (plateforme, petits nombres) ; متقدم (ouvert par défaut : c'est le نشاط 1) : la
@@ -82,6 +90,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_mafhum-taalufiya_P1', '4am_mafhum-taalufiya_P2', '4am_mafhum-taalufiya_P3', '4am_mafhum-taalufiya_P4'],
       sourceElementIds: ['act-1'],
     },
+    // Les trois « مسائل » (modules 5–7) : ajouts de la plateforme (content/problems.js).
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — مصنع النسيج: الأجرة والساعات الإضافية', learningPointIds: ['4am_mafhum-taalufiya_P1', '4am_mafhum-taalufiya_P2', '4am_mafhum-taalufiya_P3', '4am_mafhum-taalufiya_P4'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — فاتورة الماء: جزء ثابت وثمن للمتر المكعّب', learningPointIds: ['4am_mafhum-taalufiya_P1', '4am_mafhum-taalufiya_P2', '4am_mafhum-taalufiya_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — حظيرة السيارات: ثلاث صيغ للدفع', learningPointIds: ['4am_mafhum-taalufiya_P1', '4am_mafhum-taalufiya_P2', '4am_mafhum-taalufiya_P3', '4am_mafhum-taalufiya_P4'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -103,8 +115,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'صيغة هاتف نقال، صور بإشارات وكسور، عدد صورته معلومة، وتصنيف دوال: خطية، ثابتة أو تآلفية.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_mafhum-taalufiya_P2', '4am_mafhum-taalufiya_P3', '4am_mafhum-taalufiya_P4', '4am_mafhum-taalufiya_P1'],
       color: 'emerald', style: 'featured', estimatedMin: 6, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الأربع.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — مصنع النسيج', desc: 'مسألة الدرس: أجرة قاعدية 38000 دج يضاف إليها 240 دج عن كل ساعة إضافية. حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mafhum-taalufiya_P1', '4am_mafhum-taalufiya_P2', '4am_mafhum-taalufiya_P3', '4am_mafhum-taalufiya_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — فاتورة الماء', desc: 'جزء ثابت وثمن للمتر المكعّب: أتمّ الجدول، ثم كم كلّف التسرّب؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mafhum-taalufiya_P1', '4am_mafhum-taalufiya_P2', '4am_mafhum-taalufiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — حظيرة السيارات', desc: 'ثلاث صيغ للدفع: تآلفية، خطية وثابتة. أيّها أقل تكلفة؟ وكم ساعة توقّف الزائر؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mafhum-taalufiya_P1', '4am_mafhum-taalufiya_P2', '4am_mafhum-taalufiya_P3', '4am_mafhum-taalufiya_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الأربع.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

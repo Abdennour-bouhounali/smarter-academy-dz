@@ -18,6 +18,8 @@ export const LESSON_KNOWLEDGE = {
     1: [
       {
         id: 'qasim-baqi', type: 'concepts', title: 'قاسم عدد طبيعي (بالباقي)',
+        // « أتوقّع القاعدة » : ce que l'élève conclut des rayons avant de lire la définition.
+        predictPrompt: 'على الرفوف: مع 28 كتابًا في كل رفّ لم يبقَ أيّ كتاب على الأرض، ومع 26 بقيت 4 كتب. متى نقول إنّ عددًا $b$ «قاسم» لعدد $a$؟ اكتب القاعدة بكلماتك.',
         summary: 'b قاسم لـ a معناه أن باقي القسمة الإقليدية لـ a على b هو 0.',
         body: (
           <div className="space-y-2">
@@ -30,6 +32,7 @@ export const LESSON_KNOWLEDGE = {
     2: [
       {
         id: 'qasim-jidaa', type: 'concepts', title: 'قاسم عدد طبيعي (بالجداء)',
+        predictPrompt: 'على الرفّ: $143 = 11 \\times 13$ ولم يبقَ شيء. كيف تكتب «$b$ قاسم لـ $a$» بمساواة فيها جداء، دون أن تذكر الباقي؟',
         summary: 'b قاسم لـ a معناه يوجد عدد طبيعي q حيث a = b × q.',
         body: (
           <div className="space-y-2">
@@ -50,6 +53,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'wahid-wa-nafsuh', type: 'memoriser', title: '1 والعدد نفسه قاسمان دائمًا',
+        predictPrompt: 'هل العدد 1 قاسم لكل عدد طبيعي؟ وهل كل عدد قاسم لنفسه؟ جرّب بأعداد مختلفة (مثلًا 7 ، 20 ، 143) ثم اكتب ما تستنتجه.',
         summary: '1 قاسم لكل عدد طبيعي، وكل عدد غير معدوم قاسم لنفسه.',
         body: (
           <div className="space-y-2">

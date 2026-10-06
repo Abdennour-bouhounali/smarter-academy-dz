@@ -8,11 +8,15 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
 export const LESSON_KNOWLEDGE = {
   modules: {
     1: [
-      { id: 'tayin-bil-hasr', type: 'methodes', title: 'تعيين PGCD بحصر القواسم', summary: 'قواسم كل عدد ← القواسم المشتركة ← أكبرها.',
+      { id: 'tayin-bil-hasr', type: 'methodes', title: 'تعيين PGCD بحصر القواسم',
+        predictPrompt: 'في المناولة وصلتَ إلى القاسم المشترك الأكبر للعددين 42 و 60. لو أعطيناك عددين آخرين (مثلًا 36 و 48)، بأيّ خطوة تبدأ؟ وماذا تفعل بعدها حتى تصل إليه؟ اكتب الطريقة خطوة بخطوة.',
+        summary: 'قواسم كل عدد ← القواسم المشتركة ← أكبرها.',
         body: <div className="space-y-1"><p>1) أوجد قواسم كلٍّ من العددين. 2) أوجد القواسم المشتركة. 3) أكبرها هو القاسم المشترك الأكبر.</p><p className="text-sm text-slate-600">مثال الكتاب: 42 و 60 → القواسم المشتركة 1 ، 2 ، 3 ، 6 → <MathText>{'$\\mathrm{PGCD}(42\\ ;\\ 60) = 6$'}</MathText>.</p></div> },
     ],
     2: [
-      { id: 'nataij-mubashira', type: 'regles', title: 'نتائج مباشرة', summary: 'PGCD(a ; a) = a · PGCD(a ; 0) = a · PGCD(a ; b) = PGCD(b ; a).',
+      { id: 'nataij-mubashira', type: 'regles', title: 'نتائج مباشرة',
+        predictPrompt: 'في النشاط وجدتَ $\\mathrm{PGCD}(42\\ ;\\ 60) = 6$ بحصر القواسم. دون أيّ قائمة، ما القاسم المشترك الأكبر لكلّ من: 42 و 42؟ 42 و 0 (تذكّر أنّ $0 = 42 \\times 0$)؟ 42 و 6؟ وهل يتغيّر إذا بدّلنا ترتيب العددين؟ اكتب ما تستنتجه بالحرفين $a$ و $b$.',
+        summary: 'PGCD(a ; a) = a · PGCD(a ; 0) = a · PGCD(a ; b) = PGCD(b ; a).',
         body: <div className="space-y-1"><p><MathText>{RESULTS.intro}</MathText></p><ul className="list-disc ms-5">{RESULTS.items.map((it) => <li key={it}><MathText>{it}</MathText></li>)}</ul></div> },
       { id: 'pgcd-idha-qasim', type: 'regles', title: 'إذا كان b قاسمًا لـ a', summary: 'PGCD(a ; b) = b — مثال: PGCD(40 ; 8) = 8.',
         body: <p>إذا كان <MathText>{'$b$'}</MathText> قاسما للعدد <MathText>{'$a$'}</MathText> فإن <MathText>{'$\\mathrm{PGCD}(a\\ ;\\ b) = b$'}</MathText>: لا قاسم مشترك أكبر من b نفسه.</p> },

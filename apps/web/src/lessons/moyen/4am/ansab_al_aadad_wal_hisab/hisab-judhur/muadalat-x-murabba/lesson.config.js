@@ -4,6 +4,7 @@
  * طرائق (p. 23), دوري الآن 2 (p. 23), تمارين 11–14 (p. 26),
  * QCM 4, 5, 6, 10, 11 (p. 28), أستعدّ item 3 (p. 19). (La وضعية p. 28 :
  * leçon de synthèse wadiya-idmajiya-judhur.)
+ * puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit2/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -45,6 +46,14 @@ export const LESSON_CONFIG = {
       'المعادلات من الدرجة الثانية العامة (ax² + bx + c = 0)',
     ],
   },
+  // « مسألة الدرس » : montrée dès le sommaire, rappelée à la fin du module 1,
+  // résolue pas à pas au module 4 (content/problems.js). Prolonge la droite
+  // qui se plie du niveau متقدم : mêmes cartes x² = a, d'autres nombres.
+  lessonProblem: {
+    module: 4,
+    title: 'أسبوع العلوم: خمس بطاقات على المستقيم الذي ينطوي',
+    statement: 'في أسبوع العلوم بالمتوسطة، نصب نادي العلوم ورشة «المستقيم الذي ينطوي»: يحرّك اللاعب العدد $x$ على مستقيم مدرّج، فيحمله سهم إلى مربّعه $x^2$ على مستقيم ثانٍ. شارك في الورشة 42 تلميذًا، وتدوم الجولة الواحدة 8 دقائق. سحبت سلمى خمس بطاقات: $x^2 = 64$ ، $x^2 = 0{,}09$ ، $x^2 = 11$ ، $x^2 = 0$ ، $x^2 = -36$. قبل التحقّق على المستقيم، يكتب اللاعب على ورقته حلول كل بطاقة، أو يكتب «لا تقبل أي حل». كل حل صحيح يربح 10 نقاط، وكل «لا تقبل أي حل» صحيحة تربح 15 نقطة، وكل عدد خاطئ يُفقد 5 نقاط. على ورقة سلمى: للبطاقة $x^2 = 64$ العددان 8 و $-8$، وللبطاقة $x^2 = 0{,}09$ العدد $0{,}3$، وللبطاقة $x^2 = 11$ العددان $3{,}3$ و $-3{,}3$، وللبطاقة $x^2 = 0$ العدد 0، وللبطاقة $x^2 = -36$ العدد $-6$.',
+  },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
   // Ce que « أستعدّ » diagnostique : carré d'un nombre (et opposé), √ (leçon 1), équations du 1er degré.
@@ -83,6 +92,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_muadalat-x-murabba_P1'],
       sourceElementIds: ['know-3'],
     },
+    // Modules 4–6 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — بطاقات سلمى على المستقيم الذي ينطوي', learningPointIds: ['4am_muadalat-x-murabba_P1'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — ساحة ألعاب مربّعة: الضلع والسياج', learningPointIds: ['4am_muadalat-x-murabba_P1'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — حبل تثبيت الهوائي: على أيّ ارتفاع يُربط؟', learningPointIds: ['4am_muadalat-x-murabba_P1', '4am_muadalat-x-murabba_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -100,8 +114,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي — أحل معادلات', desc: 'الطريقة، دوري الآن والتمارين 11–14.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_muadalat-x-murabba_P1', '4am_muadalat-x-murabba_P2'],
       color: 'amber', style: 'featured', estimatedMin: 13, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة من «أؤكّد تعلّماتي» تُقيّم نقطتي التعلّم.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — بطاقات سلمى', desc: 'مسألة الدرس: خمس بطاقات x² = a، ورقة فيها أخطاء، وكم نقطة؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_muadalat-x-murabba_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — ساحة الألعاب', desc: 'ساحة مربّعة مساحتها 1225 m²: أيّ الحلّين طول ضلعها؟ وكم يكلّف السياج؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_muadalat-x-murabba_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — حبل تثبيت الهوائي', desc: 'حبل طوله 10 m: هل يُربط بالصاري على ارتفاع 9 m؟ ومتى يكون الوضع مستحيلًا؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_muadalat-x-murabba_P1', '4am_muadalat-x-murabba_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة من «أؤكّد تعلّماتي» تُقيّم الكفاءتين.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

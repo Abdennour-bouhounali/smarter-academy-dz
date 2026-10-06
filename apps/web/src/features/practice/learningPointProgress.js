@@ -1,7 +1,7 @@
 import { resolveMasteryState } from '../../lessons/common/components/LearningPointMastery';
 
 /**
- * Ce que le module « نقطة التعلّم » du lecteur affiche — pur, testé.
+ * Ce que le module « الكفاءة » du lecteur affiche — pur, testé.
  *
  * Deux mesures DISTINCTES, jamais confondues (ARABIC_RTL_CONTRACT « Mastery
  * and completion never share words ») :

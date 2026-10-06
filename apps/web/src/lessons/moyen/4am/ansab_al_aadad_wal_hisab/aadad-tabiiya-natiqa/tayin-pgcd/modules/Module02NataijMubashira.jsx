@@ -36,7 +36,9 @@ export default function Module02NataijMubashira() {
         { num: 2, title: 'إذا كان b قاسمًا للعدد a', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="pgcd-idha-qasim" />
+              {/* « rappel » : la règle est déjà posée à l'étape 1 (corps de « nataij-mubashira »,
+                  3e résultat du manuel) et appliquée à PGCD(8 ; 40) — la redemander serait factice. */}
+              <KnowledgeBrick id="pgcd-idha-qasim" variant="rappel" />
               <TextbookBox kind="example" text="PGCD(40 ; 8) = 8 لأن 8 قاسم للعدد 40." source={RESULTS.source} compact />
               <TapQuestion prompt={<span>21 قاسم للعدد 63. إذن <MathText>{'$\\mathrm{PGCD}(63\\ ;\\ 21)$'}</MathText> يساوي ...</span>}
                 options={['21', '63', '3', '1']} correct={0} cols={2} requires={['pgcd-idha-qasim']}

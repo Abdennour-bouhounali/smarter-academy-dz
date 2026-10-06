@@ -4,6 +4,7 @@ import { AuthContext } from '../../../context/AuthContext';
 import { scheduleProgressSync } from '../progressQueue';
 import { LESSON_PROGRESS_SYNCED_EVENT } from '../../../hooks/useLessonProgressSync';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
+import { migrateLessonProgress, emptyLessonProgress } from '@smarter-academy/core';
 
 /**
  * useProgress — Smarter Academy progression system.
@@ -41,13 +42,15 @@ export function useProgress(lessonId) {
 
   // ── Read initial state from storage ──────────────────────────────────────
   const readLessonData = () => {
+    // Une leçon RENUMÉROTÉE (modules insérés) migre ses anciens numéros une
+    // seule fois — @smarter-academy/core › moduleLayoutMigrations.
     const saved = storage.getItem(storageKey);
     try {
       return saved
-        ? JSON.parse(saved)
-        : { completedModules: [], completedExercises: [] };
+        ? migrateLessonProgress(lessonId, JSON.parse(saved))
+        : emptyLessonProgress(lessonId);
     } catch {
-      return { completedModules: [], completedExercises: [] };
+      return emptyLessonProgress(lessonId);
     }
   };
 

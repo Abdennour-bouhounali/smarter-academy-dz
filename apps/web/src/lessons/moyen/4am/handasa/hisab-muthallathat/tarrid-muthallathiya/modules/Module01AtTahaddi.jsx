@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { CHALLENGE, LAB, STADIUM, REMARKS } from '../content/textbook';
 import LadderFigure from '../components/LadderFigure';
@@ -25,6 +27,11 @@ import LabEvidence from '../components/LabEvidence';
  *   2. choisir le rapport : sin (cos demande le pied, tan oublie l'échelle) → brique ikhtiyar-nisba (LP P2)
  *   3. calculer L au dixième : 1,9 (× donne 1,4 ; 1,8 est une troncature) → brique majhul-maqam       (LP P2)
  *   4. le projecteur : pourquoi les hauteurs diffèrent un peu ; le sinus refusé → brique zawiyat-nazar (LP P1)
+ * « أتوقّع القاعدة » : ikhtiyar-nisba et majhul-maqam sont des RAPPELS (la méthode `hisab-tul` du درس 1 les pose déjà :
+ * nommer, choisir le rapport qui les contient, multiplier ou diviser) ; la question 4 écrit h = d × tan α et sa bonne
+ * option dit la règle zawiyat-nazar : elle est enveloppée dans <PredictRule id="zawiyat-nazar"> (une seule prédiction,
+ * puis question et brique). La « مسألة الدرس » (même échelle, autres nombres — module 4) clôt la dernière étape : le
+ * laboratoire vit dans l'`intro`, aux deux niveaux.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const close = (v) => (n) => Number.isFinite(n) && Math.abs(n - v) < 1e-9;
@@ -93,7 +100,7 @@ export default function Module01AtTahaddi() {
                 correct={0} cols={3} requires={['tarid-muthallath', 'tarif-nisab']}
                 explain={<MathText>{REMARKS.sinChoice}</MathText>}
                 onAnswered={mark(2)} />
-              {q[2] && <KnowledgeBrick id="ikhtiyar-nisba" lead="النسبة التي تجمع المعلوم والمطلوب:" />}
+              {q[2] && <KnowledgeBrick id="ikhtiyar-nisba" variant="rappel" lead="النسبة التي تجمع المعلوم والمطلوب:" />}
             </div>
           ) },
         { num: 3, title: 'احسب طول السلّم', subtitle: 'قيمة مقربة إلى الجزء من 10', done: !!q[3],
@@ -114,7 +121,7 @@ export default function Module01AtTahaddi() {
                 onAnswered={mark(3)} />
               {q[3] && (
                 <>
-                  <KnowledgeBrick id="majhul-maqam" lead="المجهول في المقام:" />
+                  <KnowledgeBrick id="majhul-maqam" variant="rappel" lead="المجهول في المقام:" />
                   <p className="text-xs text-slate-600" data-misconception-note="darb"><MathText>{`خطأ شائع: ${REMARKS.darbWrong} ${REMARKS.darbWhy}`}</MathText></p>
                 </>
               )}
@@ -125,23 +132,28 @@ export default function Module01AtTahaddi() {
             <div className="space-y-3">
               <LabEvidence id="beginner" trials={trials} filter={isHeight} title="قياساتك للكشّاف (المستوى المبتدئ):"
                 empty="افتح المستوى المبتدئ: ضع الهاتف على خط التماس، سدّد إلى رأس الكشّاف واضغط زرّ القياس، ثم قِس من مسافة أخرى." />
-              <TapQuestion
-                prompt={<MathText>{'قاس عمر الكشّاف من $10\\,\\mathrm{m}$ فقرأ الهاتف $67^{\\circ}$ ، ثم من $30\\,\\mathrm{m}$ فقرأ $39^{\\circ}$ . بـ $h = d \\times \\tan\\alpha$ وجد $23{,}6\\,\\mathrm{m}$ ثم $24{,}3\\,\\mathrm{m}$ . لماذا يختلف الناتجان قليلا؟'}</MathText>}
-                options={[
-                  'لأن الهاتف يقرأ الزاوية مدوّرة إلى الدرجة',
-                  'لأن ارتفاع الكشّاف يتغيّر حسب مكان الهاتف',
-                  'لأن $h = d \\times \\tan\\alpha$ لا تصلح إلا من مسافة $10\\,\\mathrm{m}$',
-                  'لأن الجيب كان يجب أن يُستعمل بدل الظل',
-                ].map(M)}
-                correct={0} cols={1} requires={['ikhtiyar-nisba', 'majhul-maqam']}
-                explain={<MathText>{`${REMARKS.wobble} ${REMARKS.nisbaRight}`}</MathText>}
-                onAnswered={mark(4)} />
+              {/* La question écrit h = d × tan α et sa bonne option dit la règle : l'élève la prédit d'abord. */}
+              <PredictRule id="zawiyat-nazar">
+                <TapQuestion
+                  prompt={<MathText>{'قاس عمر الكشّاف من $10\\,\\mathrm{m}$ فقرأ الهاتف $67^{\\circ}$ ، ثم من $30\\,\\mathrm{m}$ فقرأ $39^{\\circ}$ . بـ $h = d \\times \\tan\\alpha$ وجد $23{,}6\\,\\mathrm{m}$ ثم $24{,}3\\,\\mathrm{m}$ . لماذا يختلف الناتجان قليلا؟'}</MathText>}
+                  options={[
+                    'لأن الهاتف يقرأ الزاوية مدوّرة إلى الدرجة',
+                    'لأن ارتفاع الكشّاف يتغيّر حسب مكان الهاتف',
+                    'لأن $h = d \\times \\tan\\alpha$ لا تصلح إلا من مسافة $10\\,\\mathrm{m}$',
+                    'لأن الجيب كان يجب أن يُستعمل بدل الظل',
+                  ].map(M)}
+                  correct={0} cols={1} requires={['ikhtiyar-nisba', 'majhul-maqam']}
+                  explain={<MathText>{`${REMARKS.wobble} ${REMARKS.nisbaRight}`}</MathText>}
+                  onAnswered={mark(4)} />
+              </PredictRule>
               {q[4] && (
                 <>
                   <KnowledgeBrick id="zawiyat-nazar" />
                   <p className="text-xs text-slate-600" data-misconception-note="nisba"><MathText>{`خطأ شائع: ${REMARKS.nisbaWrong} ${REMARKS.nisbaWhy}`}</MathText></p>
                 </>
               )}
+              {/* La « مسألة الدرس » prolonge l'échelle du تحدّ : 2,40 m, 65°, 2,50 m au plus — résolue au module 4. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
       ]}

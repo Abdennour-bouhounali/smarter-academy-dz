@@ -6,6 +6,8 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 
@@ -25,6 +27,10 @@ import { ACTIVITY } from '../content/textbook';
  *
  * Étapes : (1) س 1 : 21, 20, 16 rasā'il ; (2) س 2 أ et ب : quelle متباينة, et deux valeurs ;
  * (3) l'encadré « متراجحة » ; (4) l'encadré « حل » et س جـ : 2 et 21. LP : P1.
+ *
+ * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape : le même رصيد de téléphone
+ * sur le même instrument, d'autres nombres (600 دج, 3 دج la رسالة, 200 دج au moins) et la
+ * division par un négatif de l'atelier متقدم du module 2 — résolue au module 6.
  */
 const COST = Lin.linear('2,5x+100');
 const CREDIT = ACTIVITY.numbers.credit;
@@ -204,6 +210,7 @@ export default function Module01RasailYunus() {
                 )}
                 onAnswered={() => setQ4(true)}
               />
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

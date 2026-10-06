@@ -140,6 +140,63 @@ question, et comme clé sur les objets `QUESTIONS` (module 0) et `EPREUVES` (tes
 
 ---
 
+## « أتوقّع القاعدة » — l'élève écrit la règle AVANT de la lire (2026-10-06)
+
+**Décision du propriétaire, toutes les leçons, présentes et futures.** L'élève doit
+TROUVER la règle lui-même : après la manipulation et les questions guidées, avant
+qu'une règle ne s'affiche, il l'écrit avec ses mots ; dès qu'il a écrit un minimum,
+la règle complète apparaît, sa prédiction au-dessus pour comparer. **Rien n'est
+validé, noté ni envoyé** (stockage local de l'élève : `smarter_predictions_<leçon>`).
+
+**Où, sans rien écrire dans la leçon.** `KnowledgeBrick` l'applique d'office
+(`kit/PredictRule.jsx`, décision pure `kit/predictRule.js › shouldPredict`) :
+- seulement une brique `variant="new"` dont l'item est d'une sorte qu'on peut
+  CONCLURE : `concepts`, `regles`, `methodes`, `memoriser`, `formules` — jamais
+  `vocabulaire` (un nom ne se devine pas) ;
+- jamais pour un enseignant / administrateur (`freeNavigation`), jamais pour une
+  règle déjà acquise (module validé, ou établie ailleurs dans la page) ni déjà
+  prédite (la revisite rappelle « توقّعك » et ne redemande rien) ;
+- pendant l'attente, NI titre, NI `lead`, NI corps (ils diraient la règle), et la
+  carte ne reçoit l'item qu'à la révélation (`unlockItem` différé) ;
+- ce qui SUIT la brique dans le même conteneur (la question d'application) reste
+  masqué (`.sa-predict-pending ~ *`, `index.css`) : on ne répond pas avant d'avoir
+  vu la règle.
+
+**Le bouton** « أظهر القاعدة » s'active après `PREDICT_MIN_CHARS` (8) caractères
+écrits. **La zone** est `components/MathTextArea.jsx` (partagée avec la rédaction
+des مسائل) : RTL, calculs isolés en LTR au fil de la frappe (`isolateMath`), et une
+palette des **seuls symboles qu'utilise la règle**, déduits de son texte
+(`components/mathSymbols.js › symbolsFor` : titre, résumé, corps de l'item, ou la
+boîte du manuel enveloppée ; LaTeX `$…$` compris ; parenthèses de prose arabe
+ignorées ; les sigles PGCD / PPCM restent des mots, jamais éclatés en lettres P, G, C, D — corrigé le 2026-10-06). Une règle sans mathématiques n'a pas de palette.
+
+**Ce que l'auteur écrit (leçon nouvelle ou reprise) :**
+1. `predictPrompt` sur chaque item prédictible de `knowledge.jsx` — la question qui
+   fait conclure la règle à partir de ce que l'élève VIENT de faire (nombres de la
+   manipulation), sans donner la réponse. Sans lui, un texte générique s'affiche
+   (`predict.prompt`) : acceptable, jamais aussi bon.
+2. Une règle posée par un `TextbookBox kind="definition|property"` SANS brique
+   avant elle s'enveloppe : `<PredictRule id="<item>" prompt="…"><TextbookBox …/></PredictRule>`.
+   Une boîte qui ne fait que reformuler une règle déjà posée par une brique
+   antérieure, ou qui ne donne qu'un nom, reste telle quelle.
+3. **Jamais une boîte qui énonce la règle juste AVANT sa brique** (elle la
+   dévoilerait) : envelopper la boîte avec l'id de la brique — une seule
+   prédiction, puis boîte et brique, une seule « توقّعك ».
+   Même règle pour une QUESTION dont la bonne option énonce la règle (« ما هو معيار التصنيف؟ ») :
+   `<PredictRule id="<item>"><TapQuestion …/></PredictRule>` — l'élève écrit d'abord, puis la question et la
+   brique suivent, une seule « توقّعك » (`natiqa-ghayr-natiqa`, module 1, 2026-10-06).
+4. `predict={false}` (brique, item, PredictRule) quand prédire n'a pas de sens ;
+   `predict` (vrai) pour forcer un vocabulaire qu'on peut raisonnablement conclure.
+
+**Couverture au 2026-10-06 :** ~417 briques nouvelles (toutes les leçons) par
+défaut ; 12 boîtes du manuel enveloppées après audit des 34 boîtes sans brique
+(22 reformulent une règle déjà posée ou ne donnent qu'un nom) ; prompts précis
+écrits pour `qasim-adad-tabii` (prototype) et les 12 boîtes — les autres leçons
+utilisent le texte générique jusqu'à ce que leurs `predictPrompt` soient écrits.
+Suivi : `npm run audit:predict` (15 / 410 au 2026-10-06 avant la reprise ; 296 / 296 le 2026-10-07 : toutes les règles demandées ont leur prompt, et `check:lessons` exécute `audit-predict-prompts.mjs --strict`). **Écrire les prompts :
+[`../lessons/PREDICT_PROMPT_GUIDE.md`](../lessons/PREDICT_PROMPT_GUIDE.md).**
+Vérification navigateur : `apps/web/e2e/lesson-kit/predict-rule.mjs`.
+
 ## L'audit
 
 ```bash

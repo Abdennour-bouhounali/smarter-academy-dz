@@ -139,7 +139,9 @@ export default function Module01AlWadiya() {
               {q1 && (
                 <>
                   <TextbookBox kind="remark" title={SITUATION.analysis[0].label} text={SITUATION.analysis[0].text} source={SITUATION.source} compact />
-                  <KnowledgeBrick id="tahdid-majahil" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : choisir les inconnues est l’étape 1 de khutuwat-hall / jumla-tarjama (درس 3), et
+                      l’explication de la question ci-dessus vient de nommer les deux prix. */}
+                  <KnowledgeBrick id="tahdid-majahil" variant="rappel" />
                 </>
               )}
             </div>
@@ -161,7 +163,9 @@ export default function Module01AlWadiya() {
                 requires={['tahdid-majahil', 'tarjama-jumla']}
                 feedback={({ allRight }) => <MathText>{allRight ? 'أحسنت: كل معلومة عن مبلغ تعطي معادلة، وكل عدد يُضرب في سعر الشيء الذي يعدّه.' : 'كل عدد يُضرب في سعر الشيء الذي يعدّه، والمبلغ هو المذكور في المعلومة نفسها.'}</MathText>}
                 onAnswered={() => setQ2(true)} />
-              {q2 && <KnowledgeBrick id="tarjamat-maalumat" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : une information → une équation est jumla-tarjama (درس 3), et le retour de la question
+                  ci-dessus vient de le dire (« كل معلومة عن مبلغ تعطي معادلة … »). */}
+              {q2 && <KnowledgeBrick id="tarjamat-maalumat" variant="rappel" />}
             </div>
           ) },
         { num: 3, title: 'اختيار استراتيجية حل مناسبة', subtitle: 'المرحلة 2 من الكتاب', done: q3,
@@ -179,7 +183,9 @@ export default function Module01AlWadiya() {
                 correct={0} cols={1} requires={['tarjamat-maalumat', 'tawid', 'jam']}
                 explain={<MathText>{'$11250 \\div 150 = 75$ : المعادلة الأولى تكافئ $x + y = 75$ ، ومعامل $y$ فيها 1 فالتعويض سهل. الجمع المباشر يعطي $174x + 180y = 13350$ ولا يختفي شيء؛ والتعويض في المعادلة نفسها يعطي مساواة صحيحة دائما؛ والقسمة تشمل الطرفين معا.'}</MathText>}
                 onAnswered={() => setQ3(true)} />
-              {q3 && <KnowledgeBrick id="ikhtiyar-tariqa" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : le choix de méthode est ikhtiyar-tariqa de الحل الجبري (درس 2), et l’explication de la
+                  question ci-dessus vient de simplifier puis de choisir la substitution (التعويض). */}
+              {q3 && <KnowledgeBrick id="ikhtiyar-tariqa" variant="rappel" />}
             </div>
           ) },
         { num: 4, title: 'تنفيذ استراتيجية الحل', subtitle: 'المرحلة 3 من الكتاب — على رحلة القسم', done: q4,
@@ -213,8 +219,12 @@ export default function Module01AlWadiya() {
                 onAnswered={() => setQ5(true)} />
               {q5 && (
                 <>
-                  <KnowledgeBrick id="tahaqquq-tafsir" />
-                  <KnowledgeBrick id="tariqat-wadiya" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : vérifier dans le texte et répondre par une phrase est tahaqquq-nas (درس 3), redit par
+                      l’explication de la question ci-dessus. */}
+                  <KnowledgeBrick id="tahaqquq-tafsir" variant="rappel" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche remet en ordre les trois étapes du « تحليل الوضعية » que l’élève vient de
+                      lire — et khutuwat-hall (درس 3). */}
+                  <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                   <TextbookBox kind="remark" text={REMARKS.notSolvedHere} compact />
                 </>
               )}

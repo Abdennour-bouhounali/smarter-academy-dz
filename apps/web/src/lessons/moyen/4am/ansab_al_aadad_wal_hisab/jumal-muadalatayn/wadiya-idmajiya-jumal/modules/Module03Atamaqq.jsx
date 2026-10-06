@@ -36,7 +36,9 @@ export default function Module03Atamaqq() {
           content: (
             <div className="space-y-3">
               <TextbookExercise exercise={part('ex-29-1')} requires={['tarjamat-maalumat']} onAnswered={mark('ex-29-1')} />
-              <KnowledgeBrick id="wihda-wahida" lead="الكتلة الكلية بالكيلوغرام، وكتلة العلبة بالغرام: نوحّد الوحدة قبل كتابة المعادلة." />
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : « une seule unité par équation » est déjà dans jumla-tarjama (درس 3) ; le lead et le brief
+                  du module viennent de le redire pour 7kg / 500g. */}
+              <KnowledgeBrick id="wihda-wahida" variant="rappel" lead="الكتلة الكلية بالكيلوغرام، وكتلة العلبة بالغرام: نوحّد الوحدة قبل كتابة المعادلة." />
               <TextbookExercise exercise={part('ex-29-2')} requires={['ikhtiyar-tariqa', 'wihda-wahida']} onAnswered={mark('ex-29-2')} />
             </div>
           ) },
@@ -53,7 +55,9 @@ export default function Module03Atamaqq() {
               <TextbookExercise exercise={part('ex-31-1')} requires={['tahdid-majahil']} onAnswered={mark('ex-31-1')} />
               <p className="text-xs text-slate-500" data-correction="ex-31"><MathText>{EX31_CORRECTION}</MathText></p>
               <TextbookExercise exercise={part('ex-31-2a')} requires={['nisba-mia']} onAnswered={mark('ex-31-2a')} />
-              <KnowledgeBrick id="takhfid" />
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la bonne option de la question 2) أ) juste au-dessus énonce la règle (80 % = 0,8), et le
+                  pourcentage est un prérequis (nisba-mia). */}
+              <KnowledgeBrick id="takhfid" variant="rappel" />
               <TextbookExercise exercise={part('ex-31-2b')} requires={['takhfid', 'tarjamat-maalumat']} onAnswered={mark('ex-31-2b')} />
               <TextbookExercise exercise={part('ex-31-2c')} requires={['takhfid']} onAnswered={mark('ex-31-2c')} />
               <TextbookExercise exercise={part('ex-31-3')} requires={['ikhtiyar-tariqa', 'jam']} onAnswered={mark('ex-31-3')} />

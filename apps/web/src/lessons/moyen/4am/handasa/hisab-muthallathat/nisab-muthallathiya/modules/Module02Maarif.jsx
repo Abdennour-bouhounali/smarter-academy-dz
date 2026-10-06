@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -127,23 +127,27 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 4, title: 'بين 0 و 1', subtitle: 'نشاط 3، السؤال 2', done: q4,
+          num: 4, title: 'الجيب وجيب التمام: أيّ قيم؟', subtitle: 'نشاط 3، السؤال 2', done: q4,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="situation" text={ACT3.part2} source={ACT3.source} compact />
-              <TapQuestion
-                prompt="لماذا؟"
-                options={[
-                  'الأطوال موجبة تماما، والوتر أطول من كل ضلع من ضلعي الزاوية القائمة، فالبسط أصغر من المقام',
-                  'لأن قيس الزاوية الحادة أصغر من $90^{\\circ}$', // un angle n'est pas un rapport de longueurs
-                  'لأن الضلع المقابل أصغر دائما من الضلع المجاور', // faux : à 60° l'opposé est plus long
-                ].map(M)}
-                correct={0}
-                cols={1}
-                requires={['jayb', 'fithaghuras']}
-                explain={<MathText>{`${ACT3.bounds} (والمقابل قد يكون أطول من المجاور: $\\tan 60^{\\circ} \\approx 1{,}73$ .)`}</MathText>}
-                onAnswered={() => setQ4a(true)}
-              />
+              {/* La consigne du manuel ÉNONCE la règle et la bonne option donne sa raison : l'élève écrit d'abord
+                  (« أتوقّع القاعدة », item hudud), puis consigne, question et brique — une seule « توقّعك ». */}
+              <PredictRule id="hudud">
+                <TextbookBox kind="situation" text={ACT3.part2} source={ACT3.source} compact />
+                <TapQuestion
+                  prompt="لماذا؟"
+                  options={[
+                    'الأطوال موجبة تماما، والوتر أطول من كل ضلع من ضلعي الزاوية القائمة، فالبسط أصغر من المقام',
+                    'لأن قيس الزاوية الحادة أصغر من $90^{\\circ}$', // un angle n'est pas un rapport de longueurs
+                    'لأن الضلع المقابل أصغر دائما من الضلع المجاور', // faux : à 60° l'opposé est plus long
+                  ].map(M)}
+                  correct={0}
+                  cols={1}
+                  requires={['jayb', 'fithaghuras']}
+                  explain={<MathText>{`${ACT3.bounds} (والمقابل قد يكون أطول من المجاور: $\\tan 60^{\\circ} \\approx 1{,}73$ .)`}</MathText>}
+                  onAnswered={() => setQ4a(true)}
+                />
+              </PredictRule>
               {q4a && <KnowledgeBrick id="hudud" lead="ما رأيته حين رفعت المنحدر: اللوح يبقى أطول." />}
               {q4a && (
                 <TapQuestion

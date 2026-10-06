@@ -100,7 +100,9 @@ export default function Module01AlWadiya() {
         { num: 2, title: 'ضلع المربع الخارجي', subtitle: 'نمذجة: كل طول بدلالة x', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="namdhaja" lead="لنمذجة الوضعية نعبّر عن الأطوال بدلالة المجهول:" />
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : nommer l’inconnue et exprimer une longueur en fonction d’elle est la
+                  modélisation littérale déjà acquise (3AM, situations des leçons de l’unité) ; la brique guide la question qui suit. */}
+              <KnowledgeBrick id="namdhaja" variant="rappel" lead="لنمذجة الوضعية نعبّر عن الأطوال بدلالة المجهول:" />
               <TapQuestion
                 prompt={<span>الحوض مع الشريط يشكّلان مربعًا كبيرًا. طول ضلعه بدلالة <MathText>{'$x$'}</MathText> هو ...</span>}
                 options={['$10 + 2x$', '$10 + x$', '$10x$', '$2(10 + 2x)$'].map(M)}
@@ -136,7 +138,9 @@ export default function Module01AlWadiya() {
                 correct={0} cols={2} requires={['mutatabiqat', 'nashr-jadaa']}
                 explain={<span><MathText>{'$(10 + 2x)^2 - 10^2 = 100 + 40x + 4x^2 - 100 = 4x^2 + 40x$'}</MathText> ، ونجد النتيجة نفسها بالطريقة الثانية: <MathText>{'$40x + 4x^2$'}</MathText>. {REMARKS.murabbaWhy}</span>}
                 onAnswered={() => setQ4(true)} />
-              {q4 && <KnowledgeBrick id="masaha-tariqatan" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : les deux façons viennent d’être dites par la correction de la question 3
+                  (REMARKS.twoWays) et l’explication de la question 4. */}
+              {q4 && <KnowledgeBrick id="masaha-tariqatan" variant="rappel" />}
             </div>
           ) },
         { num: 5, title: 'ماذا يقول الملعب؟', subtitle: 'من محاولاتك', done: q5,
@@ -167,7 +171,9 @@ export default function Module01AlWadiya() {
               {q6 && (
                 <>
                   <KnowledgeBrick id="musaada-jadaa" />
-                  <KnowledgeBrick id="tariqat-wadiya" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche ne fait que remettre en ordre les trois étapes du
+                      « تحليل الوضعية » que l’élève vient de lire (encadrés des étapes 1, 3 et 6) et la vérification par substitution. */}
+                  <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                   <TextbookBox kind="remark" text={REMARKS.notSolvedHere} compact />
                 </>
               )}

@@ -2,7 +2,7 @@
  * الدرس 3 — العلاقات بين النسب المثلثية والإنشاءات الهندسية (unité 10 « حساب المثلثات في المثلث القائم », manuel
  * pp. 117, 120, 121, 123–125). Ses éléments du manuel (extraction › destinations) : نشاط 5 (p. 117) → module 1,
  * معارف 4 (p. 120) → module 2, طرائق « استعمال العلاقات المثلثية » et « إنشاء هندسي لزاوية حادة… », دوري الآن
- * (p. 121) → module 3, تمارين 16–22 (p. 123) et 30 (p. 125) → module 4, l'item 6 du QCM (p. 124) → module 5.
+ * (p. 121) → module 3, تمارين 16–22 (p. 123) et 30 (p. 125) → module 4, l'item 6 du QCM (p. 124) → module 8.
  *
  * Le parcours, module par module (REAL → DISCOVER → MANIPULATE → UNDERSTAND → TOUCH → FORMALIZE → AUTOMATIZE → TRANSFER) :
  *   0 أستعدّ               diagnostic : Pythagore, carrés de fractions et de racines, racine d'un quotient, définitions
@@ -14,7 +14,8 @@
  *   3 طرائق (formalization) TOUCH → AUTOMATIZE : cos 0,6 → sin 0,8 → tan 4/3 ; دوري الآن 1 ; « إن أمكن » ;
  *                          la construction (sin 2/5, tan 7/3) ; دوري الآن 2 (cos 3/4) FAIT au laboratoire posé seul
  *   4 أوظّف (practice_lab)  AUTOMATIZE → TRANSFER : تمارين 16–22 و 30
- *   5 إختبار أولي (evaluation)
+ *   puis trois « مسائل » de la plateforme (modules 5–7 ; content/problems.js)
+ *   8 إختبار أولي (evaluation)
  *
  * Le laboratoire est dans le module 1 (choix de l'auteur) : construire l'angle d'un rapport, c'est construire un
  * triangle rectangle — et c'est sur CE triangle que cos² + sin² = 1 se voit avant d'être prouvé ; l'activité 5 du
@@ -31,6 +32,22 @@ export const LESSON_CONFIG = {
   unit: 'hisab-muthallathat',
   unitTitle: 'حساب المثلثات في المثلث القائم',
   sequentialUnlock: true,
+  // « مسألة الدرس » : le monde du laboratoire متقدم (construire au compas l'angle d'un sinus donné), d'autres nombres ;
+  // montrée dès le sommaire et rappelée à la fin du module 1, résolue au module 5 (content/problems.js).
+  lessonProblem: {
+    module: 5,
+    title: 'طائرة يونس الورقية: زاوية جيبها 3 على 7',
+    statement: 'على شاطئ تيشي ببجاية، يطيّر يونس طائرته الورقية والخيط مشدود، كما في الشكل المقابل: الخيط $[YT]$ وتر مثلث قائم في $H$ ، و $[TH]$ ارتفاع الطائرة، و $[YH]$ المسافة على الرمل. يقيس جهاز صغير مثبّت في بكرة الخيط جيب الزاوية $x$ بين الخيط والرمل، فيقرأ: $\\sin x = \\dfrac{3}{7}$ . فكّ يونس من البكرة 35 m من الخيط، واشترى طائرته بـ 1200 دج. يريد يونس أن يرسم الزاوية $x$ في كرّاسه دون منقلة، ثم أن يعرف نسبها الأخرى بالضبط.',
+    figure: {
+      points: { Y: [0, 0], H: [6.32, 0], T: [6.32, 3] },
+      segments: [{ from: 'Y', to: 'T', bold: true, tone: 'indigo' }, ['T', 'H'], ['Y', 'H']],
+      rightAngles: [['Y', 'H', 'T']],
+      angles: [{ at: 'Y', from: 'H', to: 'T', label: 'x' }],
+      labels: { Y: 'sw', H: 'se', T: 'n' },
+      ariaLabel: 'الخيط YT وتر مثلث قائم في H: T الطائرة، و TH ارتفاعها، و YH المسافة على الرمل، و x قيس الزاوية بين الخيط والرمل عند Y',
+      maxWidth: 320,
+    },
+  },
   title: 'العلاقات بين النسب المثلثية والإنشاءات الهندسية',
   description: 'من خاصية فيثاغورس نثبت $\\cos^2 x + \\sin^2 x = 1$ و $\\tan x = \\dfrac{\\sin x}{\\cos x}$ ، فنحسب القيمة المضبوطة لنسبة من نسبة أخرى دون حساب قيس الزاوية، وننشئ بالمسطرة والمدور، دون منقلة، زاوية حادة علمت إحدى نسبها.',
   level: 'moyen',
@@ -88,6 +105,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_alaqat-muthallathiya_P3'],
       sourceElementIds: ['method-construct'],
     },
+    // Les trois « مسائل » (modules 5–7) : exercices complets de type امتحان, ajouts de la plateforme (content/problems.js),
+    // sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — طائرة يونس الورقية: زاوية جيبها 3 على 7', learningPointIds: ['4am_alaqat-muthallathiya_P1', '4am_alaqat-muthallathiya_P2', '4am_alaqat-muthallathiya_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — لافتة الطريق الجبلي: ميل بالنسبة المئوية', learningPointIds: ['4am_alaqat-muthallathiya_P1', '4am_alaqat-muthallathiya_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — ميل اللوح الشمسي وقالب الحدّاد', learningPointIds: ['4am_alaqat-muthallathiya_P1', '4am_alaqat-muthallathiya_P2', '4am_alaqat-muthallathiya_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -109,8 +131,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 16 إلى 22 (العلاقات والإنشاءات) و 30 (أتعمّق).',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_alaqat-muthallathiya_P1', '4am_alaqat-muthallathiya_P2', '4am_alaqat-muthallathiya_P3'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث: العلاقتان، نسبة من نسبة، إنشاء زاوية.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — طائرة يونس الورقية', desc: 'مسألة الدرس: ننشئ دون منقلة زاوية جيبها $\\dfrac{3}{7}$ ، ثم نحسب جيب تمامها وظلها، ونحكم على زاوية أمين.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_alaqat-muthallathiya_P1', '4am_alaqat-muthallathiya_P2', '4am_alaqat-muthallathiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — لافتة الطريق الجبلي', desc: 'من الجيب إلى جيب التمام ثم الظل: ميل الطريق بالنسبة المئوية، لافتة خاطئة، وطريق التفافي للشاحنات.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_alaqat-muthallathiya_P1', '4am_alaqat-muthallathiya_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — اللوح الشمسي', desc: 'نسب زاوية ميل لوح شمسي، تقرير مستحيل نكشفه بالعلاقة، وقالب للزاوية بالكوس والمسطرة وحدهما.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_alaqat-muthallathiya_P1', '4am_alaqat-muthallathiya_P2', '4am_alaqat-muthallathiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث: العلاقتان، نسبة من نسبة، إنشاء زاوية.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

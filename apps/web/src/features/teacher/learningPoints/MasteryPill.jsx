@@ -4,7 +4,7 @@ import { confidencePercent } from './lpBar';
 /**
  * Le VOCABULAIRE visuel de la maîtrise, écrit une fois : la pastille de
  * statut (quatre couleurs), la puce de motif, la marque de fraîcheur et la
- * fine barre de confiance. L'onglet « نقاط التعلّم », le détail d'un point et
+ * fine barre de confiance. L'onglet « الكفاءات », le détail d'un point et
  * le dossier de l'élève lisent tous ces quatre composants — deux écrans qui
  * coloreraient « صعوبة » différemment mentiraient à l'enseignant.
  *

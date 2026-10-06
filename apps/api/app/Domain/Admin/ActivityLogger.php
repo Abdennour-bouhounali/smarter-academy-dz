@@ -155,6 +155,9 @@ class ActivityLogger
 
     public const TEACHER_STATUS = 'teacher.status_changed';
 
+    /** L'administrateur a désigné, ou retiré, un ambassadeur. */
+    public const TEACHER_AMBASSADOR = 'teacher.ambassador_changed';
+
     /** « الوصول والحدود » : le réglage d'une fonctionnalité par palier (FeatureAccessAdminService). */
     public const ACCESS_POLICY_UPDATED = 'access_policy.updated';
 

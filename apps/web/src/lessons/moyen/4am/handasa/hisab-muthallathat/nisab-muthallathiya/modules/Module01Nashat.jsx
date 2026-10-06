@@ -7,6 +7,8 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, ACTIVITY_2, ACTIVITY_2_LINES, LAB } from '../content/textbook';
 import { FIG_ACT1, FIG_ACT2 } from '../content/figures';
@@ -22,7 +24,8 @@ import SkateparkVignette from '../components/SkateparkVignette';
  *          l'élève lit cos 25° (Ĉ = 25°, B̂ = 65°) et cos 75° (Ĉ = 75°).
  * UNDERSTAND  les questions du نشاط 1 puis du نشاط 2 sous les lectures de l'élève (`onTrial`, `[data-activity-evidence]`) ;
  *           la preuve par Thalès sur la figure du manuel (FIG_ACT2).
- * FORMALIZE  les briques cos-nashat (نشاط 1) et nisab-zawiya (نشاط 2 : sin et tan nommés).
+ * FORMALIZE  les briques cos-nashat (نشاط 1, rappel du cosinus de 3AM) et nisab-zawiya (نشاط 2 : sin et tan nommés) ;
+ *           puis la « مسألة الدرس » (LessonProblemCard, module 5 : trois rampes, mêmes gestes, autres nombres).
  * AUCUNE étape n'attend `onFinished`. LP : P1.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -213,7 +216,8 @@ export default function Module01Nashat() {
                   onAnswered={() => setQ3(true)}
                 />
               )}
-              {q3 && <KnowledgeBrick id="cos-nashat" lead="ما قرأته على المنحدر، بكلمات الكتاب:" />}
+              {/* Le cosinus est un acquis de 3AM (priorKnowledge jayb-tamam-3am, déjà utilisé à l'étape 2) : un rappel, pas une prédiction. */}
+              {q3 && <KnowledgeBrick id="cos-nashat" variant="rappel" lead="ما قرأته على المنحدر، بكلمات الكتاب:" />}
             </div>
           ),
         },
@@ -273,6 +277,8 @@ export default function Module01Nashat() {
                 onAnswered={() => setQ5(true)}
               />
               {q5 && <KnowledgeBrick id="nisab-zawiya" lead="التخمين أصبح خاصية، وللنسبتين اسمان:" />}
+              {/* Les labs vivent dans `intro` (deux niveaux) : le rappel de la « مسألة الدرس » ferme la dernière étape. */}
+              {q5 && <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />}
             </div>
           ),
         },

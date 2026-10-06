@@ -135,7 +135,7 @@ export const CHECK_METHOD = {
 
 /**
  * « أؤكّد تعلّماتي » (p. 62) — les items 1 à 4 (extraction.json → destinations › qcm ›
- * duplicatedIn › mafhum-jumla, module 4) : l'إختبار أولي.
+ * duplicatedIn › mafhum-jumla, module 4 de l’extraction) : l’إختبار أولي, module 7 depuis les « مسائل ».
  */
 const QCM_SRC = (n) => src('qcm', 62, 'أؤكّد تعلّماتي', n);
 export const QCM = {

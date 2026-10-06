@@ -16,7 +16,8 @@
  *   M3 طرائق           — TOUCH THE MATH : représenter un vecteur de composantes données (la طريقة révélée ligne à ligne,
  *                        EABF), puis دوري الآن 1 dans le lab posé seul ;
  *   M4 أوظّف تعلّماتي  — AUTOMATIZE (ex-1, 2) et TRANSFER (ex-3, 4, 5) ;
- *   M5 إختبار أولي     — QCM 1 et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
+ *   M5–M7 مسائل        — puis trois « مسائل » de la plateforme (modules 5–7) ;
+ *   M8 إختبار أولي     — QCM 1 et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -39,6 +40,23 @@ export const LESSON_CONFIG = {
   emoji: '🧭',
   estimatedDurationMin: 50,
   textbookRef: { unit: 12, activity: 1, pages: '139, 140, 142, 143, 144, 146, 148' },
+  // « مسألة الدرس » (déploiement des مسائل, 2026-10-06) : montrée dès le sommaire, rappelée au module 1 (le monde du lab
+  // متقدم : l'appli de livraison, d'autres nombres), résolue au module 5 (content/problems.js). Sa figure vit ICI (source
+  // unique, dessinée aussi par la carte) : R(−3 ; 2), K(4 ; −1), la flèche RK.
+  lessonProblem: {
+    module: 5,
+    title: 'تطبيق التوصيل: من المطعم إلى منزل الزبون',
+    statement: 'يستعمل سائق توصيل تطبيقًا يرسم شوارع الحيّ شبكةً في معلم متعامد ومتجانس مبدؤه المستودع O، ووحدته طول شارع بين تقاطعين متتاليين. في الشكل المقابل: المطعم R ومنزل الزبون K. يسير السائق دائمًا بموازاة محوري المعلم، أفقيًا ثم عموديًا، ويتقاضى 40 دج عن كل وحدة يقطعها. أوصل السائق في هذا اليوم 25 طلبًا.',
+    figure: {
+      points: { O: [0, 0], R: [-3, 2], K: [4, -1] },
+      grid: true,
+      axes: true,
+      vectors: [{ from: 'R', to: 'K', tone: 'indigo' }],
+      labels: { O: 'sw' },
+      ariaLabel: 'شوارع الحيّ في معلم مبدؤه المستودع O: المطعم R فوق محور الفواصل على يسار محور التراتيب، ومنزل الزبون K تحت محور الفواصل على يمينه، وسهم من R إلى K',
+      maxWidth: 480,
+    },
+  },
   skills: [
     'قراءة مركبتي شعاع بيانيا في معلم متعامد ومتجانس: الإزاحة الأفقية ثم العمودية بإشارتيهما',
     'تعيين مركبتي الشعاع OM من إحداثيتي النقطة M، والعكس',
@@ -86,6 +104,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_murakkibata-shuaa_P1', '4am_murakkibata-shuaa_P2', '4am_murakkibata-shuaa_P3'],
       sourceElementIds: ['act-1'],
     },
+    // Les trois « مسائل » (track: 'problem') : situations de la plateforme, résolues pas à pas (content/problems.js),
+    // sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — تطبيق التوصيل: من المطعم إلى منزل الزبون', learningPointIds: ['4am_murakkibata-shuaa_P1', '4am_murakkibata-shuaa_P2', '4am_murakkibata-shuaa_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — الروبوت المكنسة على أرضية مبلّطة', learningPointIds: ['4am_murakkibata-shuaa_P1', '4am_murakkibata-shuaa_P2', '4am_murakkibata-shuaa_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — البحث عن الكنز في حديقة المتوسطة', learningPointIds: ['4am_murakkibata-shuaa_P1', '4am_murakkibata-shuaa_P2', '4am_murakkibata-shuaa_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -107,8 +130,22 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 1 و 2 و 3 و 4 و 5.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_murakkibata-shuaa_P1', '4am_murakkibata-shuaa_P2', '4am_murakkibata-shuaa_P3'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث، منها السؤال 1 من أؤكّد تعلّماتي.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert ; jamais de preuve de maîtrise (MASAIL_GENERATION_GUIDE.md).
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — تطبيق التوصيل', desc: 'مسألة الدرس: رحلة السائق من المطعم إلى منزل الزبون بعددين، رمز يعطي عنوانًا من المستودع فقط، وأجرة رحلتين.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_murakkibata-shuaa_P1', '4am_murakkibata-shuaa_P2', '4am_murakkibata-shuaa_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — الروبوت المكنسة', desc: 'روبوت ينظّف أرضية مبلّطة: حركته بعددين، هل يستطيع تكرارها دون أن يصطدم بالجدار، وكم تدوم عودته إلى قاعدة الشحن؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_murakkibata-shuaa_P1', '4am_murakkibata-shuaa_P2', '4am_murakkibata-shuaa_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — البحث عن الكنز', desc: 'خريطة حديقة في معلم: ثلاثة أدلّة مكتوبة بأشعة، رمز خاطئ كتبه تلميذ، والمسافة حتى الكنز.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_murakkibata-shuaa_P1', '4am_murakkibata-shuaa_P2', '4am_murakkibata-shuaa_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث، منها السؤال 1 من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

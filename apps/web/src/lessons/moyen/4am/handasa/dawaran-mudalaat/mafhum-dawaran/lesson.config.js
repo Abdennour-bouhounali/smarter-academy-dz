@@ -2,7 +2,7 @@
  * الدرس 1 — مفهوم الدوران وإنشاء صور أشكال هندسية بدوران (مدخل الوحدة 13 « الدوران - الزوايا - المضلّعات المنتظمة »)
  * Manuel (4AM) : « أستعدّ » 3 (p. 151, module 0), نشاط 1, 2, 3 (pp. 152–153, module 1), معارف 1 et 2 (p. 154, module 2),
  * طرائق تمرين 1 et 2 + دوري الآن (p. 155, doublon, module 3), exercices 1, 2, 3, 5, 7 (pp. 158–159, module 4), QCM 1 (p. 160,
- * doublon CORRIGÉ « صورة B », module 5). Source de vérité : docs/sources/4am/unit13/extraction.json.
+ * doublon CORRIGÉ « صورة B », module 8). Source de vérité : docs/sources/4am/unit13/extraction.json.
  *
  * LE PARCOURS (REAL → DISCOVER → MANIPULATE → UNDERSTAND → TOUCH THE MATH → FORMALIZE → AUTOMATIZE → TRANSFER) :
  *   M0 أستعدّ        — l'angle supplémentaire (item 3), les symétries, la translation, le compas, la منقلة ;
@@ -13,7 +13,9 @@
  *   M3 طرائق         — TOUCH THE MATH : la construction d'une image de point, d'une قطعة (révélées ligne à ligne), les
  *                      images des figures (le نشاط 3 formalisé), دوري الآن (doublon) ;
  *   M4 أوظّف تعلّماتي — AUTOMATIZE (ex-1, 2, 7) et TRANSFER (ex-3, 5) ;
- *   M5 إختبار أولي   — QCM 1 corrigé et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
+ *   M5–M7 مسائل      — puis trois « مسائل » de la plateforme (modules 5–7) : le plan de la grande roue (مسألة الدرس), l'horloge de
+ *                      la mairie, le plateau tournant de la Foire d'Alger — content/problems.js ;
+ *   M8 إختبار أولي   — QCM 1 corrigé et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -54,6 +56,26 @@ export const LESSON_CONFIG = {
       'الزاوية المحيطية والزاوية المركزية (الدرس 3) والمضلعات المنتظمة (الدرس 4)',
     ],
   },
+  // « مسألة الدرس » (module 5) : le monde du niveau متقدم (la feuille, le compas, la منقلة, la roue) avec d'autres nombres ;
+  // sa figure vit ICI (littéraux) et content/problems.js la référence. Coordonnées : P = A tourné de 40° dans le sens
+  // indirect, Q = dans le sens direct, R sur [OP] avec OR = 3 (re-vérifiées par content/problems.test.js, rotation.imageCheck).
+  lessonProblem: {
+    module: 5,
+    title: 'مخطّط العجلة الدوّارة: أين تصل المقصورة؟',
+    statement: 'ترسم مهندسة بالمدور والمنقلة مخطّط عجلة دوّارة جديدة لحديقة التسلية. في الشكل: $O$ مركز العجلة، والدائرة التي مركزها $O$ ونصف قطرها $5\\,\\mathrm{cm}$ هي مسار المقصورات، و $A$ موضع مقصورة في أسفل العجلة تمامًا، على الشاقول المار بـ $O$. على المخطّط أيضًا ثلاث نقط $P$ و $Q$ و $R$ حيث $OP = OQ = 5\\,\\mathrm{cm}$ و $OR = 3\\,\\mathrm{cm}$ و $\\widehat{AOP} = \\widehat{AOQ} = 40^\\circ$ ، والنقطة $R$ تنتمي إلى القطعة $[OP]$. كل $1\\,\\mathrm{cm}$ على المخطّط يمثّل $2\\,\\mathrm{m}$ في الواقع، ومحور العجلة $O$ على ارتفاع $11\\,\\mathrm{m}$ عن سطح الأرض. تتّسع كل مقصورة لـ 4 أشخاص، وثمن التذكرة 150 دج.',
+    figure: {
+      points: { O: [0, 0], A: [0, -5], P: [-3.214, -3.83], Q: [3.214, -3.83], R: [-1.928, -2.298] },
+      circles: [{ center: 'O', radius: 5, tone: 'indigo' }],
+      segments: [['O', 'A'], ['O', 'P'], ['O', 'Q']],
+      angles: [
+        { at: 'O', from: 'A', to: 'P', label: '40°', radius: 30, tone: 'amber' },
+        { at: 'O', from: 'A', to: 'Q', label: '40°', radius: 30, tone: 'amber' },
+      ],
+      labels: { O: 'n', A: 's', P: 'w', Q: 'e', R: 'nw' },
+      ariaLabel: 'مخطّط العجلة: دائرة مركزها O، والنقطة A في أسفلها على الشاقول المار بـ O؛ النقطة P على الدائرة إلى يسار A والنقطة Q على الدائرة إلى يمينها، وكل من الزاويتين AOP و AOQ قيسها 40 درجة؛ والنقطة R على القطعة [OP] داخل الدائرة',
+      maxWidth: 360,
+    },
+  },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
   // Les acquis que « أستعدّ » diagnostique (prérequis du propriétaire) : les angles supplémentaires (item 3 du manuel), les
@@ -82,6 +104,9 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_mafhum-dawaran_P2', '4am_mafhum-dawaran_P3'],
       sourceElementIds: ['act-2', 'act-3'],
     },
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — مخطّط العجلة الدوّارة: أين تصل المقصورة؟', learningPointIds: ['4am_mafhum-dawaran_P1', '4am_mafhum-dawaran_P2'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — ساعة مقرّ البلدية: عقرب الدقائق يدور', learningPointIds: ['4am_mafhum-dawaran_P1', '4am_mafhum-dawaran_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — المنصّة الدوّارة في معرض الجزائر الدولي', learningPointIds: ['4am_mafhum-dawaran_P1', '4am_mafhum-dawaran_P2', '4am_mafhum-dawaran_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -103,8 +128,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 1 و 2 و 3 و 5 و 7.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_mafhum-dawaran_P1', '4am_mafhum-dawaran_P2', '4am_mafhum-dawaran_P3'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث، منها السؤال 1 من أؤكّد تعلّماتي.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — مخطّط العجلة الدوّارة', desc: 'مسألة الدرس: أيّ النقط صورة المقصورة؟ نصف دورة، ثم الارتفاع الحقيقي.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mafhum-dawaran_P1', '4am_mafhum-dawaran_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — ساعة مقرّ البلدية', desc: 'عقرب الدقائق يدور: زاوية الدوران واتجاهه، إرجاع الساعة، ونصف دورة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mafhum-dawaran_P1', '4am_mafhum-dawaran_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — المنصّة الدوّارة', desc: 'سيارة على منصّة تدور في الاتجاه المباشر: صورة المقدّمة، صورة السيارة، ومتى تواجه الباب؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mafhum-dawaran_P1', '4am_mafhum-dawaran_P2', '4am_mafhum-dawaran_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث، منها السؤال 1 من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

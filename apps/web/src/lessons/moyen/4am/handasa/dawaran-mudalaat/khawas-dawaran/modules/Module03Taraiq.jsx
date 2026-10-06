@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -17,6 +17,10 @@ import { FIG_METHOD, FIG_METHOD_TURN, FIG_NOW155, FIG_NOW155_SOL } from '../cont
  * ligne (MethodSteps) → brique istimal-khawas ; 2) دوري الآن : l'image d'un angle de 45° par (K, 60°) — figure REDESSINÉE
  * (avec le K du manuel, B′ tombait sur A) → brique surat-zawiya ; 3) le centre : deux médiatrices → brique markaz-dawaran.
  * LP : P2 (prouver), P3 (construire des images, trouver le centre).
+ * « أتوقّع القاعدة » : la solution du manuel (MethodSteps) énonce la méthode avant sa brique → enveloppée dans
+ * <PredictRule id="istimal-khawas"> ; ni la question ni l'explain de دوري الآن ne décrivent plus la construction (« ننشئ O′ و A′ و
+ * B′ », NOW155.answer : la brique surat-zawiya la montre APRÈS la prédiction, la figure-solution la suit), seulement la
+ * conservation de l'angle (déjà posée au module 2).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -61,7 +65,9 @@ export default function Module03Taraiq() {
             <div className="space-y-3">
               <GeoFigure {...FIG_METHOD} />
               <p className="text-xs text-slate-500" data-correction><MathText>{METHOD.stated}</MathText></p>
-              <MethodSteps method={METHOD} />
+              {/* La solution du manuel ÉNONCE la méthode avant sa brique : une seule prédiction (istimal-khawas), puis
+                  la solution, la question et la brique — guide PREDICT §3.5. */}
+              <PredictRule id="istimal-khawas"><MethodSteps method={METHOD} /></PredictRule>
               <TapQuestion
                 prompt={<MathText>{'لماذا B صورة A بالدوران الذي مركزه O وزاويته $90^\\circ$ ؟'}</MathText>}
                 options={[
@@ -91,17 +97,19 @@ export default function Module03Taraiq() {
               <TextbookBox kind="exercise" text={NOW155.text} source={NOW155.source} compact />
               <GeoFigure {...FIG_NOW155} />
               <NumericQuestion
-                prompt={<MathText>{"ننشئ O′ و A′ و B′ صور O و A و B. ما قيس الزاوية $\\widehat{A'O'B'}$ بالدرجات؟"}</MathText>}
+                prompt={<MathText>{"ما قيس صورة الزاوية $\\widehat{AOB}$ بهذا الدوران، بالدرجات؟"}</MathText>}
                 expected={45}
                 requires={['khawas-dawaran']}
-                explain={<MathText>{NOW155.answer}</MathText>}
+                explain={<MathText>{"الدوران يحافظ على الزوايا: قيس صورة $\\widehat{AOB}$ هو أيضا $45^\\circ$ ، مهما كانت زاوية الدوران."}</MathText>}
                 explainFor={(n) => <MathText>{n === 105 ? 'لا نضيف زاوية الدوران: الدوران يحافظ على الزوايا.' : n === 60 ? 'هذه زاوية الدوران، لا قيس الصورة.' : 'الدوران يحافظ على الزوايا.'}</MathText>}
                 onAnswered={mark(2)}
               />
               {q[2] && (
                 <>
-                  <GeoFigure {...FIG_NOW155_SOL} />
+                  {/* la brique d'abord : tant que la prédiction est attendue, la figure-solution (qui MONTRE la
+                      construction) reste masquée — elle la suit dans le même conteneur */}
                   <KnowledgeBrick id="surat-zawiya" />
+                  <GeoFigure {...FIG_NOW155_SOL} />
                 </>
               )}
             </div>

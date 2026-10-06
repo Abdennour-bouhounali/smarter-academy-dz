@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { MethodSteps, SourceTag } from '../../../../../../common/textbook';
@@ -12,6 +12,9 @@ import { METHOD_K, METHOD_ROOTS, METHOD_IMAGE, KNOWLEDGE_SOURCE } from '../conte
  *   1) k depuis deux longueurs (le مقام الشهيد imprimé par le club de la ثانوية) — brique tariqat-k ;
  *   2) k depuis un rapport d'aires (√) ou de volumes (le nombre dont le cube est le rapport) — brique tariqat-judhur ;
  *   3) les mesures de l'image sans recalcul (le خزّان مائي agrandi de 3/2) — brique tariqat-maqadir. LP : P1, P2.
+ * « أتوقّع القاعدة » : chaque MethodSteps se termine sur l'encadré de SA règle, avant la brique ; elle est donc enveloppée
+ * dans un PredictRule (id de sa brique) — l'élève écrit la méthode (predictPrompt, ancré sur les modules 1 et 2) avant de lire le
+ * corrigé ; la brique qui suit n'est plus bloquée.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -38,7 +41,7 @@ export default function Module03Taraiq() {
           num: 1, title: 'إيجاد k من طولين', subtitle: 'مجسّم مقام الشهيد', done: q1,
           content: (
             <div className="space-y-3">
-              <MethodSteps method={METHOD_K} />
+              <PredictRule id="tariqat-k"><MethodSteps method={METHOD_K} /></PredictRule>
               <KnowledgeBrick id="tariqat-k" lead="الطريقة:" />
               <TapQuestion
                 prompt={<MathText>{'مكعّب حرفه $4\\,\\mathrm{cm}$ ، وتكبيره حرفه $10\\,\\mathrm{cm}$ . نسبة التكبير:'}</MathText>}
@@ -62,7 +65,7 @@ export default function Module03Taraiq() {
           num: 2, title: 'من نسبة المساحات أو الحجوم إلى k', subtitle: 'جذر تربيعي، ومكعّب', done: q2,
           content: (
             <div className="space-y-3">
-              <MethodSteps method={METHOD_ROOTS} />
+              <PredictRule id="tariqat-judhur"><MethodSteps method={METHOD_ROOTS} /></PredictRule>
               <KnowledgeBrick id="tariqat-judhur" lead="الطريقة:" />
               <TapQuestion
                 prompt={<MathText>{'مساحة أوجه مجسّم تصغير ضُربت في $\\dfrac{4}{9}$ . نسبة التصغير:'}</MathText>}
@@ -86,7 +89,7 @@ export default function Module03Taraiq() {
           num: 3, title: 'مقادير المجسّم الناتج', subtitle: 'الخزّان المائي', done: q3,
           content: (
             <div className="space-y-3">
-              <MethodSteps method={METHOD_IMAGE} />
+              <PredictRule id="tariqat-maqadir"><MethodSteps method={METHOD_IMAGE} /></PredictRule>
               <KnowledgeBrick id="tariqat-maqadir" lead="الطريقة:" />
               <TapQuestion
                 prompt={<MathText>{'جرّة زيت زيتون سعتها $40\\,\\mathrm{L}$ ، وجرّة أخرى هي تكبير لها بالنسبة $\\dfrac{3}{2}$ . سعة الجرّة الكبيرة:'}</MathText>}

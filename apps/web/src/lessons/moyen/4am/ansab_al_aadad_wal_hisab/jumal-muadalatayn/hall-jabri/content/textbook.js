@@ -120,7 +120,7 @@ export const CHOICE = {
 
 /**
  * « أؤكّد تعلّماتي » (p. 62) — les items 5 et 6 (extraction.json → destinations › qcm ›
- * duplicatedIn › hall-jabri, module 4) : l'إختبار أولي.
+ * duplicatedIn › hall-jabri, module 4 de l'extraction) : l'إختبار أولي, module 7 depuis les « مسائل ».
  */
 const QCM_SRC = (n) => src('qcm', 62, 'أؤكّد تعلّماتي', n);
 export const QCM = {

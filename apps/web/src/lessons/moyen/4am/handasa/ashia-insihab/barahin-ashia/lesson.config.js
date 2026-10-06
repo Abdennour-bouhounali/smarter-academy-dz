@@ -14,7 +14,8 @@
  *                                ce qu'on conclut ; دوري الآن 1 prouvé par l'élève
  *   3 إنشاءات (manipulation)      دوري الآن p. 138 FAIT au laboratoire (mode construct) : les centres de (Γ₁) et (Γ₂)
  *   4 أوظّف تعلّماتي (practice_lab) AUTOMATIZE → TRANSFER : تمارين 20, 17, 23, 21 (corrigé), 24, 18
- *   5 إختبار أولي (evaluation)
+ *   puis trois « مسائل » de la plateforme (modules 5–7) : le métro d'Alger (« مسألة الدرس »), une table pliante, une nacelle à ciseaux
+ *   8 إختبار أولي (evaluation)
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -60,6 +61,23 @@ export const LESSON_CONFIG = {
   knowledgeMapMode: 'progressive',
   // Les acquis que « أستعدّ » diagnostique (leçons 1–3 de l'unité et années précédentes).
   priorKnowledge: ['shal', 'qaidat-mutawazi', 'tasawi-shuaayn', 'muntasaf-shuaa', 'mutaakisan', 'khawass-rubaiyat'],
+  // « مسألة الدرس » (module 5) : le monde du niveau متقدم du laboratoire (le métro, un parallélogramme et son centre, des
+  // stations définies par des tickets égaux), d'autres points — montrée au sommaire et à la fin du module 1.
+  lessonProblem: {
+    module: 5,
+    title: 'مترو الجزائر: محطتان جديدتان ونفق جديد',
+    statement: 'في مخطّط لتوسعة مترو الجزائر، كل محطة نقطة وكل تذكرة شعاع: $\\overrightarrow{XY}$ تعني «من $X$ إلى $Y$». المحطات $A$ و $B$ و $C$ و $D$ رؤوس متوازي الأضلاع $ABCD$ الذي مركزه $O$ ، محطة التبادل. تُبنى محطتان جديدتان: $E$ حيث $\\overrightarrow{BE} = \\overrightarrow{AO}$ ، و $F$ حيث $\\overrightarrow{DF} = \\overrightarrow{OC}$ (الشكل المقابل). طول النفق $[BD]$ هو 3 km، وتحفر الآلة 250 m من النفق في الأسبوع. افتُتح الخط الأول سنة 2011، وثمن التذكرة 50 دج.',
+    // Le support de la مسألة 1, montré aussi par la carte « مسألة الدرس » (une seule source) — A(0;0), B(4;0), D(2;4),
+    // C = B + AD = (6;4), O = (3;2), E = B + AO = (7;2), F = D + OC = (5;6) ; recalculés dans content/problems.test.js.
+    figure: {
+      points: { A: [0, 0], B: [4, 0], C: [6, 4], D: [2, 4], O: [3, 2], E: [7, 2], F: [5, 6] },
+      segments: [['A', 'B'], ['B', 'C'], ['C', 'D'], ['D', 'A'], { from: 'A', to: 'C', dashed: true }, { from: 'B', to: 'D', dashed: true }],
+      vectors: [{ from: 'B', to: 'E', label: '', tone: 'rose' }, { from: 'D', to: 'F', label: '', tone: 'emerald' }],
+      labels: { A: 'sw', B: 's', C: 'e', D: 'w', O: 'w', E: 'e', F: 'n' },
+      ariaLabel: 'مخطّط المترو: متوازي الأضلاع ABCD مركزه O، والتذكرتان من B إلى E ومن D إلى F',
+      maxWidth: 380,
+    },
+  },
   resources: [
     // Module 1 : l'entrée (pas d'activité du manuel). مبتدئ : le parallélogramme du métro (plateforme) — BC + AB, AB + AD ;
     // متقدم : l'exercice 18 — prouver OL = AC et HK = AC avec les seules données.
@@ -91,6 +109,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_barahin-ashia_P3'],
       sourceElementIds: ['now-138'],
     },
+    // Les trois « مسائل » de la plateforme (modules 5–7), avant le test.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — مترو الجزائر: محطتان جديدتان ونفق جديد', learningPointIds: ['4am_barahin-ashia_P1', '4am_barahin-ashia_P2'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — طاولة قابلة للطيّ: هل السطح أفقي؟', learningPointIds: ['4am_barahin-ashia_P1', '4am_barahin-ashia_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — الرافعة المقصّية: هل يصل العامل إلى السقف؟', learningPointIds: ['4am_barahin-ashia_P1', '4am_barahin-ashia_P2', '4am_barahin-ashia_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -112,8 +134,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 20 و 17 و 23 و 21 و 24 و 18 (ص 137).',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_barahin-ashia_P1', '4am_barahin-ashia_P2', '4am_barahin-ashia_P3'],
       color: 'amber', style: 'featured', estimatedMin: 11, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم نقاط التعلّم الثلاث: التبسيط، البرهان والاستنتاج، الإنشاء.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — مترو الجزائر', desc: 'مسألة الدرس: محطتان جديدتان تعرّفهما تذاكر متساوية. برهانان، طبيعة رباعيين، ومدّة حفر النفق.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_barahin-ashia_P1', '4am_barahin-ashia_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — الطاولة القابلة للطيّ', desc: 'رِجلان متقاطعتان في منتصفهما: برهن أن السطح يوازي الأرض، صحّح برهانًا خاطئًا، واحسب ثمن الألواح.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_barahin-ashia_P1', '4am_barahin-ashia_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — الرافعة المقصّية', desc: 'طابقان من الأذرع المتقاطعة: لماذا يبقى السطح أفقيًا؟ وعلى أيّ ارتفاع يصل العامل؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_barahin-ashia_P1', '4am_barahin-ashia_P2', '4am_barahin-ashia_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الثلاث: التبسيط، البرهان والاستنتاج، الإنشاء.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { BookOpen, Compass, Layers, Wand2, ListChecks, Landmark } from 'lucide-react';
+import { BookOpen, Compass, Layers, Wand2, ListChecks, Landmark, Lock } from 'lucide-react';
 import { getUnitById, getLessonById, formatTextbookPages } from '@smarter-academy/core';
 import { getLessonProgress } from '../lessons/common/utils/progress/getLessonProgress';
 import { getTotalModules, getLessonConfig } from '../lessons/registry';
@@ -14,6 +14,7 @@ import { usePrefetchLessonRuntime } from '../lessons/common/lessonRuntimeLoader'
 import { useLearningViewer } from '../features/learning/learningViewer';
 import { LessonModuleChips, TeacherLessonActions } from '../components/teacher/TeacherLessonActions';
 import MathLabel from '../lessons/common/components/MathLabel';
+import PublicationBadge from '../components/content/PublicationBadge';
 import UnitOpenerFigure from './unit/UnitOpenerFigure';
 
 /**
@@ -44,7 +45,7 @@ function masteryIndex(profile) {
 }
 
 function LessonBlock({ lesson, index, mastery, t }) {
-  const { isLessonClosed, isLessonHiddenByClass } = useContentAvailability();
+  const { isLessonClosed, isLessonHiddenByClass, lessonStatus } = useContentAvailability();
   // L'enseignant voit, sur chaque leçon de l'unité, ses محاور et ses deux
   // gestes (مذكرة الدرس · وضع القسم). Le catalogue reste au niveau de la
   // وحدة ; c'est ici, une fois l'unité ouverte, qu'il choisit une leçon.
@@ -72,7 +73,7 @@ function LessonBlock({ lesson, index, mastery, t }) {
           </span>
           <div>
             <div className="text-[11px] font-mono uppercase tracking-wider text-slate-500">{isSynthesis ? t('unit.synthesisTag') : t('unit.lessonTag', { n: index })}</div>
-            <h3 className="text-lg font-bold text-slate-900"><MathLabel>{lesson.title}</MathLabel></h3>
+            <h3 className="flex flex-wrap items-center gap-2 text-lg font-bold text-slate-900"><MathLabel>{lesson.title}</MathLabel><PublicationBadge status={lessonStatus(lesson.id)} /></h3>
             <p className="mt-1 text-sm text-slate-600"><MathLabel>{lesson.description}</MathLabel></p>
           </div>
         </div>
@@ -150,6 +151,19 @@ function LessonBlock({ lesson, index, mastery, t }) {
           <Link to={lesson.path} className="inline-flex items-center gap-1 rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white hover:bg-blue-700">
             {progressPercent > 0 ? t('unit.continue') : t('unit.start')} <ArrowForward className="h-4 w-4" aria-hidden="true" />
           </Link>
+        )}
+        {/* Non ouverte (non publiée, pas encore écrite, ou masquée par
+            l'enseignant) : le geste reste à SA place, désactivé, et dit
+            pourquoi — la rangée ne change pas de forme d'une leçon à l'autre. */}
+        {!available && (
+          <span
+            aria-disabled="true"
+            className="inline-flex cursor-not-allowed items-center gap-1 rounded-xl bg-slate-200 px-4 py-2 text-sm font-bold text-slate-500"
+            data-lesson-soon={lesson.id}
+          >
+            <Lock className="h-4 w-4" aria-hidden="true" />
+            {isLessonHiddenByClass(lesson.id) ? t('hiddenByTeacherBadge', { ns: 'access' }) : t('unit.soon')}
+          </span>
         )}
       </footer>
     </article>

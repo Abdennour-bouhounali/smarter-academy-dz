@@ -5,6 +5,7 @@
  * (p. 53, أتعمّق). Le manuel n'a ni نشاط ni « أستعدّ » pour ce sujet : le laboratoire
  * est l'entrée de la PLATEFORME dans la طريقة, déclarée (`platform_adaptation`) ;
  * « أستعدّ » est fait d'affirmations de la plateforme.
+ * Puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit4/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -47,6 +48,14 @@ export const LESSON_CONFIG = {
       'تقنيات حل المتراجحة وتمثيل حلولها (الدرس 3)',
     ],
   },
+  // « مسألة الدرس » (rollout مسائل, 2026-10-06) : montrée dès le sommaire,
+  // rappelée au module 1, résolue pas à pas au module 4 (content/problems.js).
+  // Prolonge la course des âges du niveau متقدم : un père et trois enfants, d'autres nombres.
+  lessonProblem: {
+    module: 4,
+    title: 'عائلة مراد: الأب وأبناؤه الثلاثة يكبرون معًا',
+    statement: 'نحن في سنة 2026. عمر السيّد مراد 44 سنة، وعمر زوجته 39 سنة، وقد تزوّجا منذ 18 سنة. لهما ثلاثة أبناء أعمارهم 5 و 9 و 16 سنة. يحبّ مراد أن يطرح على أبنائه ألغازًا عن أعمارهم.',
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -88,6 +97,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_tarrid-mushkila_P2'],
       sourceElementIds: ['method-modelling'],
     },
+    // Modules 4–6 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — عائلة مراد: متى يتساوى عمر الأب ومجموع أعمار أبنائه؟', learningPointIds: ['4am_tarrid-mushkila_P1', '4am_tarrid-mushkila_P2'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — السوق الأسبوعي: ثمن الخضر، كيس البطاطا والبرتقال', learningPointIds: ['4am_tarrid-mushkila_P1', '4am_tarrid-mushkila_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — خزّانا الماء على السطح: متى يتساويان؟', learningPointIds: ['4am_tarrid-mushkila_P1', '4am_tarrid-mushkila_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -105,8 +119,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 10، 11، 12، 13، 30، 33 وأتعمّق 37، 38، 39، 40: أعداد، أعمار، سدّ، محيطات ومساحات.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tarrid-mushkila_P1', '4am_tarrid-mushkila_P2'],
       color: 'amber', style: 'featured', estimatedMin: 15, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقطتي التعلّم: الترييض، ثم الحل والتفسير.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — أعمار عائلة مراد', desc: 'مسألة الدرس: أب وثلاثة أبناء. نسمّي، نترجم، نحلّ، نتحقّق — وحلّ سالب يجب تفسيره.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tarrid-mushkila_P1', '4am_tarrid-mushkila_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — السوق الأسبوعي', desc: 'ثمن الطماطم والبطاطا، ثم كيس الفلاح: متى يكون أربح؟ وكم كيلوغرامًا من البرتقال بما بقي؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tarrid-mushkila_P1', '4am_tarrid-mushkila_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — خزّانا الماء', desc: 'خزّانان يمتلئان بمعدّلين مختلفين: متى يتساويان؟ حلّ لا يلائم الواقع، ومدّة تكفي العائلتين.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tarrid-mushkila_P1', '4am_tarrid-mushkila_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين: الترييض، ثم الحل والتفسير.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

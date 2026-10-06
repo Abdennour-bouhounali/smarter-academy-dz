@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
@@ -143,9 +143,9 @@ export default function Module03MaarifTarayiq() {
           num: 4, title: 'مقدار جداء', subtitle: 'معارف ص 70', done: q4,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="definition" title="المقادير المركّبة" lines={[KNOW.productQuantity, ...KNOW.productExamples]} source={KNOW.source}>
+              <PredictRule id="miqdar-jida" prompt={"تعلّمت أنّ حاصل قسمة مقدارين (كالسرعة المتوسطة) يعطي «مقدار حاصل القسمة». بالقياس: ماذا نحصل عليه عندما نضرب مقدارين؟ أعطِ مثالًا من الهندسة وآخر من الكهرباء."}><TextbookBox kind="definition" title="المقادير المركّبة" lines={[KNOW.productQuantity, ...KNOW.productExamples]} source={KNOW.source}>
                 <p className="text-[11px] text-slate-500" data-correction-note><MathText>{KNOW.correctionNote}</MathText></p>
-              </TextbookBox>
+              </TextbookBox></PredictRule>
               <KnowledgeBrick id="miqdar-jida" lead="الطاقة والمساحة يُحسبان بجداء مقدارين:" />
               <NumericQuestion
                 prompt={<MathText>{'مكيّف هواء استطاعته $2kW$ يشتغل مدة $3{,}5h$ . الطاقة التي يستهلكها (بالكيلوواط ساعي):'}</MathText>}

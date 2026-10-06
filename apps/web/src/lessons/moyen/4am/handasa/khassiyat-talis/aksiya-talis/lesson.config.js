@@ -17,7 +17,8 @@
  *                        non parallèles par l'absurde) ; un exercice de la plateforme ;
  *   M4 أوظّف تعلّماتي  — AUTOMATIZE (ex-7, 10–15) et TRANSFER (ex-16 la justification, ex-14 Pythagore, ex-23
  *                        Thalès puis sa réciproque, ex-24 centres de gravité, ex-25 Thalès deux fois) ;
- *   M5 إختبار أولي     — l'item 3 de أؤكّد تعلّماتي et quatre épreuves de la plateforme ; P1 et P2 couverts.
+ *   M5–M7 مسائل        — puis trois « مسائل » de la plateforme (modules 5–7) ;
+ *   M8 إختبار أولي     — l'item 3 de أؤكّد تعلّماتي et quatre épreuves de la plateforme ; P1 et P2 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -58,6 +59,20 @@ export const LESSON_CONFIG = {
       'الوضعية الإدماجية: المئذنة والأسطوانة داخل المخروط (أدمج تعلّماتي)',
     ],
   },
+  // « مسألة الدرس » (module 5) : le monde du niveau متقدم (le tréteau en X, l'ordre des points), d'autres nombres.
+  // Son support (la figure) vit ICI, en littéraux : la carte « مسألة الدرس » le dessine (une seule source).
+  lessonProblem: {
+    module: 5,
+    title: 'حامل الدهّانين على شكل X: هل لوح العمل أفقي؟',
+    statement: 'يدهن عمّال البلدية جدار ملعب الحيّ، وطول الجدار 25 m. يقف الدهّان على لوح عمل يحمله حامل على شكل X: عارضتان مستقيمتان متقاطعتان في النقطة $A$ ، طرفاهما السفليان $B$ و $C$ على الأرض الأفقية، حيث $AB = 80$ و $AC = 100$ (الأطوال بالسنتيمتر). تستمرّ العارضتان فوق $A$ ، وفي كل عارضة ثقوب يُثبَّت فيها طرفا اللوح، ويكون اللوح أفقيًا عندما يوازي الأرض $(BC)$ . وزن الحامل 9 kg. في الشكل: طرف اللوح $M$ في ثقب من $[AB]$ حيث $AM = 24$ ، وطرفه $N$ في ثقب من $[AC]$ حيث $AN = 30$ .',
+    figure: {
+      points: { A: [0, 0], B: [-5.2915, -6], C: [8, -6], M: [-1.58745, -1.8], N: [2.4, -1.8] },
+      lines: [{ through: ['B', 'A'], extend: [0.05, 0.6] }, { through: ['C', 'A'], extend: [0.05, 0.5] }],
+      segments: [{ from: 'B', to: 'C' }, { from: 'M', to: 'N', tone: 'amber' }],
+      ariaLabel: 'حامل على شكل X: عارضتان متقاطعتان في A، طرفاهما B و C على الأرض، ولوح العمل [MN] بين النقطتين M من [AB] و N من [AC]',
+      maxWidth: 300,
+    },
+  },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
   // Les acquis que « أستعدّ » diagnostique : produit en croix, ordre de points alignés, Thalès (leçon 1), droite des
@@ -86,6 +101,9 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_aksiya-talis_P1', '4am_aksiya-talis_P2'],
       sourceElementIds: ['act-2'],
     },
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — حامل الدهّانين على شكل X: هل لوح العمل أفقي؟', learningPointIds: ['4am_aksiya-talis_P1', '4am_aksiya-talis_P2'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — كتائف رفوف المحلّ: هل القضيب يوازي الدعامة؟', learningPointIds: ['4am_aksiya-talis_P1', '4am_aksiya-talis_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — حبال الخيمة وأوتادها في المخيّم الصيفي', learningPointIds: ['4am_aksiya-talis_P1', '4am_aksiya-talis_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -107,8 +125,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 7 و 10 إلى 16 و 23 إلى 25: نسب، ترتيب، يونس وإيناس، فيثاغورس، مراكز الثقل.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_aksiya-talis_P1', '4am_aksiya-talis_P2'],
       color: 'amber', style: 'featured', estimatedMin: 13, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقطتي التعلّم، منها السؤال 3 من أؤكّد تعلّماتي.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — حامل الدهّانين', desc: 'مسألة الدرس: لوح عمل على حامل على شكل X. نسبتان متساويتان، ترتيب مختلف، وجداءان متقاربان: أيّ ثقب يجعل اللوح أفقيًا؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_aksiya-talis_P1', '4am_aksiya-talis_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — كتائف رفوف المحلّ', desc: 'قضيب التقوية يوازي الدعامة أم لا؟ قيمتان مقرّبتان متساويتان لا تثبتان شيئًا، ثم طول القضيب وثمن الحديد.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_aksiya-talis_P1', '4am_aksiya-talis_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — حبال الخيمة', desc: 'حبلان من عمود الخيمة إلى وتدين: متوازيان أم لا؟ وتد في الجهة الأخرى للعمود، ثم طول الحبال وعدد اللفّات.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_aksiya-talis_P1', '4am_aksiya-talis_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين، منها السؤال 3 من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

@@ -3,7 +3,7 @@
  * données pures (aucun JSX), au mot près ; chaque bloc cite son élément de docs/sources/4am/unit13/extraction.json :
  * أستعدّ 3 (p. 151, module 0), نشاط 1, 2, 3 (pp. 152–153, module 1), معارف 1 et 2 (p. 154, module 2), طرائق تمرين 1 et 2 et
  * دوري الآن (p. 155, module 3 ; le دوري الآن est un doublon déclaré du درس « خواص الدوران »), أؤكّد تعلّماتي 1 (p. 160, doublon,
- * CORRIGÉ « صورة B » — module 5). Ce que la plateforme ajoute est déclaré (`addition(…)`).
+ * CORRIGÉ « صورة B » — module 8). Ce que la plateforme ajoute est déclaré (`addition(…)`).
  */
 import { src, addition } from '../../_unit/unitMeta.js';
 

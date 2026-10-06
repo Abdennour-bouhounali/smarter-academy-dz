@@ -95,6 +95,13 @@ class EntitlementService
             return AccessDecision::allow(AccessDecision::VIA_TEACHER_ROLE);
         }
 
+        // L'ADMINISTRATEUR relit tout le contenu (ContentAccess::
+        // bypassesPublication) : le palier ne doit pas lui cacher ce que
+        // la publication lui montre.
+        if ($user->isAdmin()) {
+            return AccessDecision::allow(AccessDecision::VIA_ADMIN_ROLE);
+        }
+
         $now = Carbon::now();
 
         // Les droits sont cumulatifs et non exclusifs : on cherche s'il en

@@ -41,3 +41,6 @@ export { default as PredictionChips } from './PredictionChips';
 // knowledge.jsx à l'instant où l'élève en a besoin, et la fait entrer dans la
 // carte à ce moment-là.
 export { default as KnowledgeBrick } from './KnowledgeBrick';
+// « أتوقّع القاعدة » : l'élève écrit la règle avant de la lire (KnowledgeBrick l'applique
+// d'office ; PredictRule enveloppe une règle qui n'est pas une brique).
+export { default as PredictRule, usePredictGate, PredictPanel, PredictionEcho } from './PredictRule';

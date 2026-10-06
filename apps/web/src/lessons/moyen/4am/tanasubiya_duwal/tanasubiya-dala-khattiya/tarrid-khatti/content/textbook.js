@@ -129,7 +129,7 @@ export const BRIDGE = {
 };
 
 /**
- * « صياغة … وتفسير النتائج في سياق الوضعية » (نقطة التعلّم 3) : le manuel répond en phrase et avec
+ * « صياغة … وتفسير النتائج في سياق الوضعية » (الكفاءة 3) : le manuel répond en phrase et avec
  * l'unité (« عندما نعلق جسما كتلته 10g نتحصل على استطالة النابض قدرها 3cm ») ; la plausibilité
  * (une masse n'est pas négative, un nombre de personnes est entier) vient de la leçon 4 de l'unité 4.
  */

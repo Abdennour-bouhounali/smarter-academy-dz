@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation } from '../../../../../../common/manipulations';
@@ -40,7 +40,8 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="muadala-tarafayn" variant="rappel" compact />
-              <TextbookBox kind="property" text={KNOWLEDGE.property} source={KNOWLEDGE.source} compact />
+              {/* La propriété du livre ÉNONCE la règle hal-ax-b : l'élève la prédit d'abord. */}
+              <PredictRule id="hal-ax-b"><TextbookBox kind="property" text={KNOWLEDGE.property} source={KNOWLEDGE.source} compact /></PredictRule>
               <KnowledgeBrick id="hal-ax-b" lead="آخر خطوة في كل ميزان: كيس واحد وحده، أي القسمة على عدد الأكياس." />
               <TapQuestion
                 prompt={<MathText>{'ما الحل الوحيد للمعادلة $5x = 3$؟'}</MathText>}

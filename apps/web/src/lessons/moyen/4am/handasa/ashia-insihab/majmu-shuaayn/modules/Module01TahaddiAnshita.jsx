@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { CHALLENGE, SCOOTER, ACT3, ACT4, LAB } from '../content/textbook';
 import { FIG_ACT3, FIG_ACT3_SOL, FIG_ACT4, FIG_ACT4_SOL } from '../content/figures';
@@ -126,13 +128,14 @@ export default function Module01TahaddiAnshita() {
                         correction: <MathText>{'الانسحابان المتتابعان ينقلان M إلى M″ ، والانسحاب الذي شعاعه $\\overrightarrow{AC}$ ينقلها مباشرة إلى M″ ( $\\overrightarrow{CA}$ يعيدها في الاتجاه المعاكس).'}</MathText> },
                     ]}
                     requires={['surat-insihab', 'tasawi-mutawazi']}
-                    feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}><MathText>{allRight ? 'الحركتان المتتابعتان حركة واحدة: من M إلى M″ مباشرة.' : 'راجع التصحيح تحت كل سطر.'}</MathText></Feedback>}
+                    feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}><MathText>{allRight ? 'كل الأسطر صحيحة: انظر إلى الأسهم الثلاثة المنطلقة من M على الشكل.' : 'راجع التصحيح تحت كل سطر.'}</MathText></Feedback>}
                     onAnswered={mark(2)} />
                 </>
               )}
               {q[2] && (
                 <>
-                  <TextbookBox kind="remark" text={ACT3.after} source={ACT3.source} compact />
+                  {/* La remarque du livre ÉNONCE la règle (AB + BC = AC) : l'élève la prédit d'abord (أتوقّع القاعدة). */}
+                  <PredictRule id="tarkib-insihabayn"><TextbookBox kind="remark" text={ACT3.after} source={ACT3.source} compact /></PredictRule>
                   <KnowledgeBrick id="tarkib-insihabayn" lead="7) «مجموع الشعاعين … و … يساوي الشعاع …»:" />
                 </>
               )}
@@ -169,6 +172,8 @@ export default function Module01TahaddiAnshita() {
                   <TextbookBox kind="remark" lines={[ACT4.afterZero, ACT4.afterOpposite]} source={ACT4.source} compact />
                 </>
               )}
+              {/* « مسألة الدرس » : le monde du lab متقدم (le nageur), d'autres nombres — résolue au module 5. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
       ]}

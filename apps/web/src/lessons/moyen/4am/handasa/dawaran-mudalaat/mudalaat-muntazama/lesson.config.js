@@ -3,7 +3,7 @@
  * Manuel (4AM) : أستعدّ 1 (p. 151, module 0), le تحدّ « نجمة العلم » (p. 151, l'ENTRÉE) et مدخل الباب « نجمة البحر »
  * (doublon déclaré), نشاط 5 (p. 153) — module 1 ; معارف 5 (p. 156, module 2) ; طرائق et دوري الآن (p. 157, module 3) ;
  * تمارين 9, 13, 14 (p. 159), 19 et 15 (p. 161, doublon déclaré) — module 4 ; أؤكّد تعلّماتي 4 (p. 160, doublon déclaré,
- * module 5). Source de vérité : docs/sources/4am/unit13/extraction.json.
+ * module 8). Source de vérité : docs/sources/4am/unit13/extraction.json.
  *
  * LE PARCOURS (REAL → DISCOVER → MANIPULATE → UNDERSTAND → TOUCH THE MATH → FORMALIZE → AUTOMATIZE → TRANSFER) :
  *   M0 أستعدّ        — le triangle équilatéral par ses angles (manuel), le triangle isocèle, l'image d'un point par une
@@ -15,7 +15,9 @@
  *   M3 طرائق         — TOUCH THE MATH / FORMALIZE : l'angle 108° (coquille corrigée), la construction par une rotation de
  *                      108° autour de A, le côté à partir de R = √3, دوري الآن (l'heptagone) ;
  *   M4 أوظّف تعلّماتي — AUTOMATIZE (ex-13, ex-19) et TRANSFER (ex-9, ex-14, ex-15 corrigé) ;
- *   M5 إختبار أولي   — l'item 4 de أؤكّد تعلّماتي et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
+ *   M5–M7 مسائل      — puis trois « مسائل » de la plateforme (modules 5–7) : l'étoile du tifo (مسألة الدرس), le kiosque
+ *                      hexagonal, les panneaux « قف » octogonaux (content/problems.js) ;
+ *   M8 إختبار أولي   — l'item 4 de أؤكّد تعلّماتي et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -56,6 +58,25 @@ export const LESSON_CONFIG = {
       'الوضعية الإدماجية: أعمدة الإنارة حول حوض الأزهار (أدمج تعلّماتي)',
     ],
   },
+  // « مسألة الدرس » (module 5) : le monde du lab متقدم (l'étoile du drapeau en tifo), d'autres nombres ; montrée au sommaire
+  // et à la fin du module 1. Sa figure (sommets = rotation.regularVertices(O, 5, 5, 90°) au millième) vit ICI (une source).
+  lessonProblem: {
+    module: 5,
+    title: 'تيفو المدرجات: نجمة العلم على دائرة نصف قطرها 5 m',
+    statement: 'يحضّر مشجّعو فريق المدينة تيفو لنجمة العلم الجزائري يُفرش على مدرجات الملعب. رسموا على القماش دائرة مركزها $O$ ونصف قطرها $5\\,\\mathrm{m}$، ثم عيّنوا عليها رؤوس النجمة الخمسة $A$ و $B$ و $C$ و $D$ و $E$، كل رأس صورة الذي قبله بالدوران الذي مركزه $O$ بنفس الزاوية، فهي رؤوس خماسي منتظم $ABCDE$ (الشكل المقابل). سيُلصقون شريطًا أحمر على فروع النجمة الخمسة $[AC]$ و $[CE]$ و $[EB]$ و $[BD]$ و $[DA]$. يُباع الشريط في لفّات طول كل منها $10\\,\\mathrm{m}$، ثمن اللفّة 450 دج. عدد أعضاء مجموعة المشجّعين 36 مشجّعًا. نعطي: $\\sin 36^\\circ \\approx 0{,}59$ و $\\sin 72^\\circ \\approx 0{,}95$.',
+    figure: {
+      points: { O: [0, 0], A: [0, 5], B: [-4.755, 1.545], C: [-2.939, -4.045], D: [2.939, -4.045], E: [4.755, 1.545] },
+      circles: [{ center: 'O', radius: 5 }],
+      segments: [
+        ['A', 'B'], ['B', 'C'], ['C', 'D'], ['D', 'E'], ['E', 'A'],
+        { from: 'A', to: 'C', tone: 'rose' }, { from: 'C', to: 'E', tone: 'rose' }, { from: 'E', to: 'B', tone: 'rose' },
+        { from: 'B', to: 'D', tone: 'rose' }, { from: 'D', to: 'A', tone: 'rose' },
+        { from: 'O', to: 'A', dashed: true, label: '5 m' },
+      ],
+      ariaLabel: 'دائرة مركزها O ونصف قطرها 5 m، عليها رؤوس خماسي منتظم ABCDE (A في الأعلى ثم B و C و D و E في الاتجاه المباشر)، وفروع النجمة الخمسة [AC] و [CE] و [EB] و [BD] و [DA] بالأحمر',
+      maxWidth: 360,
+    },
+  },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
   // Les acquis que « أستعدّ » diagnostique : les angles d'un triangle (équilatéral), le triangle isocèle, l'image d'un
@@ -84,6 +105,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_mudalaat-muntazama_P3'],
       sourceElementIds: ['challenge'],
     },
+    // Les trois « مسائل » (modules 5–7) : exercices complets de type امتحان, ajouts de la plateforme (content/problems.js).
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — تيفو نجمة العلم: الزوايا والضلع والفروع', learningPointIds: ['4am_mudalaat-muntazama_P2', '4am_mudalaat-muntazama_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — كشك ساحة البلدية: أرضية سداسية منتظمة', learningPointIds: ['4am_mudalaat-muntazama_P1', '4am_mudalaat-muntazama_P2', '4am_mudalaat-muntazama_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — لافتات «قف»: ثماني منتظم', learningPointIds: ['4am_mudalaat-muntazama_P2', '4am_mudalaat-muntazama_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -105,8 +130,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 13 و 19 و 9 و 14 و 15.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_mudalaat-muntazama_P1', '4am_mudalaat-muntazama_P2', '4am_mudalaat-muntazama_P3'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث، منها السؤال 4 من أؤكّد تعلّماتي.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — تيفو نجمة العلم', desc: 'مسألة الدرس: زاوية الدوران وزاوية الخماسي، المسافة بين رأسين متتاليين، وطول الشريط على فروع النجمة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mudalaat-muntazama_P2', '4am_mudalaat-muntazama_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — كشك ساحة البلدية', desc: 'أرضية سداسية منتظمة: الزاوية المركزية، المثلث المتقايس الأضلاع، زاوية السداسي، وثمن السياج.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mudalaat-muntazama_P1', '4am_mudalaat-muntazama_P2', '4am_mudalaat-muntazama_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — لافتات «قف»', desc: 'ثماني منتظم: زاوية دوران الآلة وزاوية اللافتة، طول الضلع، والشريط العاكس.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mudalaat-muntazama_P2', '4am_mudalaat-muntazama_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث، منها السؤال 4 من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

@@ -15,7 +15,8 @@
  *                     parallélogramme ; retour au تحدّ : sin θ = 2/4 → 30°, 2√3 ≈ 3,46 km/h (pont vers l'unité 10)
  *   3 طرائق (formalization) TOUCH : la méthode du manuel révélée ligne à ligne, دوري الآن 2, le TP GeoGebra (optionnel)
  *   4 أوظّف تعلّماتي (practice_lab) AUTOMATIZE → TRANSFER : تمارين 10, 11, 13, 14, 15, 16
- *   5 إختبار أولي (evaluation)
+ *   puis trois « مسائل » de la plateforme (modules 5–7 : content/problems.js), avant le test
+ *   8 إختبار أولي (evaluation)
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -37,6 +38,24 @@ export const LESSON_CONFIG = {
   masteryThreshold: 0.8,
   emoji: '➕',
   estimatedDurationMin: 55,
+  lessonProblem: {
+    module: 5,
+    title: 'نادي السباحة: عبور نهر عرضه 60 m',
+    statement: 'في حصّة تدريب لنادي السباحة على نهر، ينطلق كل سبّاح من النقطة $A$ على إحدى الحافتين ليصل إلى النقطة $B$ المقابلة لها على الحافة الأخرى: المسار $[AB]$ عمودي على الحافتين وطوله 60 m (الشكل المقابل). يجري الماء موازيًا للحافتين بسرعة $0{,}8\\,\\mathrm{m/s}$ ، وهي طول الشعاع $\\vec{c}$ . سرعة أنس في ماء ساكن $0{,}6\\,\\mathrm{m/s}$ ، وسرعة وليد في ماء ساكن $1{,}7\\,\\mathrm{m/s}$ . درجة حرارة الماء 19 درجة، وانطلقت الحصّة على الساعة 10 صباحًا.',
+    // Le support de la مسألة 1, montré aussi par la carte « مسألة الدرس » (une seule source) — unités : 1 = 10 m.
+    figure: {
+      points: { A: [0, 0], B: [0, 6], P: [-4, 0], Q: [6, 0], R: [-4, 6], S: [6, 6], U: [1.5, 3], V: [5.5, 3] },
+      hidden: ['P', 'Q', 'R', 'S', 'U', 'V'],
+      segments: [
+        { from: 'P', to: 'Q', tone: 'sky', bold: true }, { from: 'R', to: 'S', tone: 'sky', bold: true },
+        { from: 'A', to: 'B', dashed: true, label: '60 m' },
+      ],
+      rightAngles: [['Q', 'A', 'B']],
+      vectors: [{ from: 'U', to: 'V', label: 'c', tone: 'sky' }],
+      labels: { A: 's', B: 'n' },
+      ariaLabel: 'نهر بين حافتين متوازيتين: النقطة A على الحافة السفلى والنقطة B مقابلتها على الحافة العليا، والمسار [AB] طوله 60 m عمودي على الحافتين، وشعاع سرعة التيار c موازٍ للحافتين نحو اليمين',
+    },
+  },
   textbookRef: { unit: 11, activity: 3, pages: '127, 129, 132, 133, 135, 136, 138' },
   skills: [
     'إدراك أن انسحابين متتابعين يعطيان انسحابا واحدا شعاعه مجموع الشعاعين',
@@ -84,6 +103,9 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_majmu-shuaayn_P1', '4am_majmu-shuaayn_P3'],
       sourceElementIds: ['challenge'],
     },
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — نادي السباحة: عبور نهر عرضه 60 m', learningPointIds: ['4am_majmu-shuaayn_P1', '4am_majmu-shuaayn_P2', '4am_majmu-shuaayn_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — مروحية الإسعاف: إجلاء مريض ثم العودة إلى القاعدة', learningPointIds: ['4am_majmu-shuaayn_P1', '4am_majmu-shuaayn_P2', '4am_majmu-shuaayn_P4'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — قارب يعبر الخليج والتيار البحري', learningPointIds: ['4am_majmu-shuaayn_P1', '4am_majmu-shuaayn_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -105,8 +127,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 10 و 11 و 13 و 14 و 15 و 16 (ص 135).',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_majmu-shuaayn_P1', '4am_majmu-shuaayn_P2', '4am_majmu-shuaayn_P3', '4am_majmu-shuaayn_P4'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الأربع: انسحابان متتابعان، علاقة شال، قاعدة متوازي الأضلاع، الشعاعان المتعاكسان.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — عبور النهر', desc: 'مسألة الدرس: سبّاحان وتيار؛ قاعدة متوازي الأضلاع، علاقة شال، وطول المجموع ليس مجموع الطولين.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_majmu-shuaayn_P1', '4am_majmu-shuaayn_P2', '4am_majmu-shuaayn_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — مروحية الإسعاف', desc: 'من القاعدة إلى قرية جبلية ثم إلى المستشفى، ثم العودة: علاقة شال، الشعاعان المتعاكسان، والمسافة المقطوعة أمام الوقود المتوفّر.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_majmu-shuaayn_P1', '4am_majmu-shuaayn_P2', '4am_majmu-shuaayn_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — قارب يعبر الخليج', desc: 'المحرّك والتيار البحري: قاعدة متوازي الأضلاع على خريطة مرصوفة، السرعة الفعلية وثمن الوقود الضائع.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_majmu-shuaayn_P1', '4am_majmu-shuaayn_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الأربع: انسحابان متتابعان، علاقة شال، قاعدة متوازي الأضلاع، الشعاعان المتعاكسان.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

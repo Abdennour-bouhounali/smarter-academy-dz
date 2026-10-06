@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -46,8 +46,10 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tartib-mabda" variant="rappel" compact />
-              <TextbookBox kind="property" text={KNOWLEDGE.property} source={KNOWLEDGE.source} compact />
-              <TextbookBox kind="remark" text={KNOWLEDGE.special} source={KNOWLEDGE.source} compact />
+              <PredictRule id="tamthil-taalufi">
+                <TextbookBox kind="property" text={KNOWLEDGE.property} source={KNOWLEDGE.source} compact />
+                <TextbookBox kind="remark" text={KNOWLEDGE.special} source={KNOWLEDGE.source} compact />
+              </PredictRule>
               <KnowledgeBrick id="tamthil-taalufi" lead="ما رأيته في النشاط 3، لكل دالة تآلفية:" />
               <TapQuestion
                 prompt={<MathText>{'التمثيل البياني للدالة $k : x \\longmapsto 0{,}5x - 4$ يقطع محور التراتيب في النقطة:'}</MathText>}
@@ -77,7 +79,7 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <TextbookBox kind="definition" text={KNOWLEDGE.names} source={KNOWLEDGE.source} compact />
-              <TextbookBox kind="property" text={KNOWLEDGE.slope} source={KNOWLEDGE.source} compact />
+              <PredictRule id="muamil-tawjih" prompt={"على المستقيمات $y = ax + b$ التي رأيتها: عندما نتقدّم وحدة واحدة إلى اليمين، بكم يتغيّر الترتيب؟ ومتى «يصعد» المستقيم، ومتى «ينزل»، ومتى يوازي محور الفواصل؟"}><TextbookBox kind="property" text={KNOWLEDGE.slope} source={KNOWLEDGE.source} compact /></PredictRule>
               <TextbookBox kind="example" text={KNOWLEDGE.example} source={KNOWLEDGE.source} compact />
               <AffineFigure testId="know-example" win={{ xMin: -1, xMax: 3, yMin: -4, yMax: 3 }} height={220} width={200}
                 lines={[{ a: 2, b: -3, label: '(Δ)', color: '#7C2D12' }]}
@@ -127,7 +129,8 @@ export default function Module02Maarif() {
                 title="نرسم تمثيل الدالة f(x) = 2x − 3"
                 lead={<MathText>{'ضع نقطتين من تمثيل $f(x) = 2x - 3$ . جرّب أيضًا المبدأ O: هل يقبله المعلم؟'}</MathText>}
               />
-              <MethodSteps method={METHOD_DRAW} />
+              {/* La طريقة révèle sa règle (encadré final) juste avant la brique : prédiction d'abord. */}
+              <PredictRule id="rasm-taalufi"><MethodSteps method={METHOD_DRAW} /></PredictRule>
               <KnowledgeBrick id="rasm-taalufi" lead="الطريقة:" />
               <TapQuestion
                 prompt={<MathText>{'لرسم التمثيل البياني للدالة $f : x \\longmapsto 3x - 1$ نرسم المستقيم الذي يشمل النقطتين:'}</MathText>}

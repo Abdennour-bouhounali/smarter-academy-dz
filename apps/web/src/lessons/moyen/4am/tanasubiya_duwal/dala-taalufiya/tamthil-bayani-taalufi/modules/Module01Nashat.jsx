@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
@@ -8,6 +8,8 @@ import { parseDec } from '@smarter-academy/core';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, HOOK, RAMP2 } from '../content/textbook';
 import SkateVignette from '../components/SkateVignette';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 
 /**
  * Module 1 — نشاط 3 (p. 78) « تمثيل دالة تآلفية », ouvert sur LA DROITE QUI A QUITTÉ L'ORIGINE (affine-line).
@@ -23,6 +25,8 @@ import SkateVignette from '../components/SkateVignette';
  * TOUCH / FORMALIZE  les briques irtifa-b et tartib-mabda (« نسمّي العدد b … الترتيب عند المبدأ »).
  * TRANSFER  le second laboratoire : où (D) coupe l'axe des ordonnées, et ce que fait sa marche.
  * AUCUNE étape n'attend `onFinished`. LP : P1 (étapes 1–4), P2 (étape 5).
+ * Les labs vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس » (LessonProblemCard)
+ * clôt donc la DERNIÈRE étape.
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
 const Evidence = ({ items, empty, title, kind }) => (
@@ -150,20 +154,23 @@ export default function Module01Nashat() {
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[1]}</MathText></p>
               <Evidence items={probes.filter((p) => p.kind === 'probe')} kind="reads" title="قراءاتك بالمسبار:" empty="جرّب المسبار عند فاصلتين مختلفتين، إحداهما سالبة." />
-              <TapQuestion
-                prompt={<MathText>{'نجد ترتيب نقطة من $(d\')$ انطلاقا من نقطة $(d)$ التي لها نفس الفاصلة:'}</MathText>}
-                options={[
-                  'نضيف $1$ إلى ترتيب نقطة $(d)$ ، مهما كانت الفاصلة.',
-                  'نضيف $1$ إلى فاصلة نقطة $(d)$ .',
-                  'نضيف عددًا يكبر كلما كبرت الفاصلة.',
-                  'نضرب ترتيب نقطة $(d)$ في $1$ .',
-                ].map(Opt)}
-                correct={0}
-                cols={1}
-                requires={['notation-fx']}
-                explain={<MathText>{`${ACTIVITY_LINES.rule} أمّا ضرب الترتيب في $1$ فلا يغيّره، وإضافة $1$ إلى الفاصلة تعطي نقطة أخرى من $(d)$ لا من $(d')$ .`}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
+              {/* « أتوقّع القاعدة » : les options et l'explication de س 1 ب énoncent irtifa-b — l'élève l'écrit d'abord. */}
+              <PredictRule id="irtifa-b">
+                <TapQuestion
+                  prompt={<MathText>{'نجد ترتيب نقطة من $(d\')$ انطلاقا من نقطة $(d)$ التي لها نفس الفاصلة:'}</MathText>}
+                  options={[
+                    'نضيف $1$ إلى ترتيب نقطة $(d)$ ، مهما كانت الفاصلة.',
+                    'نضيف $1$ إلى فاصلة نقطة $(d)$ .',
+                    'نضيف عددًا يكبر كلما كبرت الفاصلة.',
+                    'نضرب ترتيب نقطة $(d)$ في $1$ .',
+                  ].map(Opt)}
+                  correct={0}
+                  cols={1}
+                  requires={['notation-fx']}
+                  explain={<MathText>{`${ACTIVITY_LINES.rule} أمّا ضرب الترتيب في $1$ فلا يغيّره، وإضافة $1$ إلى الفاصلة تعطي نقطة أخرى من $(d)$ لا من $(d')$ .`}</MathText>}
+                  onAnswered={() => setQ2(true)}
+                />
+              </PredictRule>
               {q2 && <KnowledgeBrick id="irtifa-b" lead="ما رأيته على المختبر: المستقيم كلّه صعد." />}
             </div>
           ),
@@ -237,6 +244,9 @@ export default function Module01Nashat() {
                   <MathText>{'رفعت مستقيمًا، ورأيت أنّه يقطع محور التراتيب في $(0 ; b)$ ، وقرأت على منحدر ثانٍ أين يقطع هذا المحور وكم ينزل لكل وحدة. المحور التالي يعطي ذلك كلّه أسماءه: معامل التوجيه والترتيب عند المبدأ.'}</MathText>
                 </p>
               )}
+              {/* La « مسألة الدرس » prolonge le lab متقدم (labs dans l'intro : dernière étape) :
+                  une autre rampe du skatepark, sur une base, à lire sur son graphe — résolue au module 5. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

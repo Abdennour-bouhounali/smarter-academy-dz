@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox, MethodSteps } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { TIFO, LAB, METHOD_RAY, METHOD_DIVIDE, LINES } from '../content/textbook';
 import TifoVignette from '../components/TifoVignette';
@@ -22,6 +24,9 @@ import TrialsEvidence from '../components/TrialsEvidence';
  *             `[data-activity-evidence]`) ; 2. pourquoi : Thalès dans le triangle A P₃ B ; 3. l'ouverture n'importe pas.
  * FORMALIZE  briques taqsim-qitaa (la méthode — formulée, déclarée), tabrir-taqsim (k/n) ; puis la méthode du
  *            MANUEL (طرائق ص 107, D symétrique de B…) révélée ligne à ligne → brique tariqat-kitab-taqsim.
+ * « أتوقّع القاعدة » : la طريقة du manuel (remarque, figure, solution) est enveloppée dans <PredictRule id="tariqat-kitab-taqsim"> :
+ * l'élève écrit comment utiliser C, D, E AVANT de lire la solution (2026-10-06).
+ * Fin de l'étape 4 (les deux niveaux du laboratoire sont dans `intro`) : la carte « مسألة الدرس » (module 4).
  * AUCUNE étape n'attend `onFinished` (pas d'activité du manuel). LP : P1.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -142,9 +147,11 @@ export default function Module01Lafita() {
           num: 4, title: 'طريقة الكتاب', subtitle: 'طرائق ص 107', done: q4,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" compact text="الكتاب يقسم الضلع [AB] بطريقة أخرى: النقط المتقايسة على مستقيم يشمل B، والموازيات للمستقيم (AE). اقرأ الحل سطرًا سطرًا." />
-              <GeoFigure {...METHOD_DIVIDE.figure} />
-              <MethodSteps method={{ source: METHOD_DIVIDE.source, exercise: METHOD_DIVIDE.exercise, solution: METHOD_DIVIDE.solution }} />
+              <PredictRule id="tariqat-kitab-taqsim">
+                <TextbookBox kind="remark" compact text="الكتاب يقسم الضلع [AB] بطريقة أخرى: النقط المتقايسة على مستقيم يشمل B، والموازيات للمستقيم (AE). اقرأ الحل سطرًا سطرًا." />
+                <GeoFigure {...METHOD_DIVIDE.figure} />
+                <MethodSteps method={{ source: METHOD_DIVIDE.source, exercise: METHOD_DIVIDE.exercise, solution: METHOD_DIVIDE.solution }} />
+              </PredictRule>
               <TapQuestion
                 prompt="لماذا القطع [BC] و [CD] و [DE] متقايسة؟"
                 options={[
@@ -174,6 +181,9 @@ export default function Module01Lafita() {
                 />
               )}
               {q4 && <KnowledgeBrick id="tariqat-kitab-taqsim" lead="طريقتان، والفكرة واحدة: قطع متقايسة وموازيات." />}
+              {/* La « مسألة الدرس » prolonge le laboratoire متقدم : deux parallèles graduées, rapport 4/3 sur 10 cm —
+                  résolue au module 4. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

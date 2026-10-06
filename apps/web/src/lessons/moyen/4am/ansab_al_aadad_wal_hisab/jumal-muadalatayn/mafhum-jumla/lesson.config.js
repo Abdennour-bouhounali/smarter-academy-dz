@@ -1,7 +1,8 @@
 /**
  * الدرس 1 — مفهوم جملة معادلتين من الدرجة الأولى بمجهولين
  * Unité 5 du manuel (4AM) : تحدّ (p. 55, repris), « أستعدّ » items 1–8 (p. 55), نشاط 1 (p. 56),
- * معارف 1, 2 et حالات خاصة (p. 58), exercices 1 → 4 (p. 60), QCM 1 → 4 (p. 62).
+ * معارف 1, 2 et حالات خاصة (p. 58), exercices 1 → 4 (p. 60), QCM 1 → 4 (p. 62),
+ * puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit5/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -53,6 +54,13 @@ export const LESSON_CONFIG = {
   // du premier degré à une inconnue (leçon muadala-ula), tester un nombre dans une équation,
   // remplacer DEUX lettres pour tester une égalité.
   priorKnowledge: ['hal-muadala-ula', 'taawid-qima', 'taawid-majhulayn'],
+  // « مسألة الدرس » (MASAIL_GENERATION_GUIDE.md) : le monde du lab متقدم (les agents d'une مصلحة
+  // avant et après le تقاعد, deux conditions à la fois) avec d'autres nombres — résolue au module 4.
+  lessonProblem: {
+    module: 4,
+    title: 'مصلحة الحالة المدنية: 42 عاملًا وشرطان',
+    statement: 'تشغّل مصلحة الحالة المدنية بإحدى البلديات 42 عاملًا، رجالًا ونساءً، وتستقبل المواطنين ابتداءً من الساعة 8 صباحًا. أُحيل 6 رجال و 4 نساء على التقاعد ولم يُعوَّضوا، فأصبح عدد الرجال بالمصلحة ثلاثة أضعاف عدد النساء. بعد ذلك قرّرت البلدية توظيف 10 عمّال جدد، بحيث يصبح عدد الرجال بالمصلحة ضعف عدد النساء.',
+  },
   resources: [
     // Le module 1 ouvre sur le TABLEAU DES DEUX CONDITIONS (pair-scoreboard). متقدم = le نشاط 1
     // (32 agents), ouvert par défaut ; مبتدئ = la carte de saison d'un club (plateforme).
@@ -84,6 +92,9 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_mafhum-jumla_P2', '4am_mafhum-jumla_P3'],
       sourceElementIds: ['challenge'],
     },
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — مصلحة الحالة المدنية: 42 عاملًا', learningPointIds: ['4am_mafhum-jumla_P1', '4am_mafhum-jumla_P2', '4am_mafhum-jumla_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — مكتبة الحيّ: كراريس كبيرة وصغيرة', learningPointIds: ['4am_mafhum-jumla_P1', '4am_mafhum-jumla_P2', '4am_mafhum-jumla_P3', '4am_mafhum-jumla_P4'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — مزرعة الدجاج والأرانب: رؤوس وأرجل', learningPointIds: ['4am_mafhum-jumla_P1', '4am_mafhum-jumla_P2', '4am_mafhum-jumla_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -101,8 +112,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 1 ← 4: ثنائيات تحقق معادلة، حلول كثيرة لمعادلة واحدة، وثنائية تحقق جملة.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_mafhum-jumla_P3', '4am_mafhum-jumla_P2'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم نقاط التعلّم الأربع، منها أربعة من أؤكّد تعلّماتي.',
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — مصلحة الحالة المدنية', desc: 'مسألة الدرس: 42 عاملًا قبل التقاعد وبعده، ثم توظيف 10 عمّال. حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mafhum-jumla_P1', '4am_mafhum-jumla_P2', '4am_mafhum-jumla_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — مكتبة الحيّ في الدخول المدرسي', desc: 'كراريس كبيرة وصغيرة: أيّ تسجيل صحيح؟ وتصريح بمدخول مستحيل.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mafhum-jumla_P1', '4am_mafhum-jumla_P2', '4am_mafhum-jumla_P3', '4am_mafhum-jumla_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — مزرعة الدجاج والأرانب', desc: '50 رأسًا و 140 رِجلًا: قول خاطئ، تجريب، ثم ثمن البيع.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mafhum-jumla_P1', '4am_mafhum-jumla_P2', '4am_mafhum-jumla_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الأربع، منها أربعة من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

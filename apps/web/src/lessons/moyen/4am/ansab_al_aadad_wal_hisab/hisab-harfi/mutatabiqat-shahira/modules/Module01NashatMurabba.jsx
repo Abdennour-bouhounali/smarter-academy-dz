@@ -9,6 +9,8 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import TrialEvidence, { upsertTrial } from '../components/TrialEvidence';
 import { ACTIVITY, ACTIVITY_B, DESCARTES, HOOK, LABS } from '../content/textbook';
 import DescartesTable from '../components/DescartesTable';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 
 /**
  * Module 1 — نشاط 2 (p. 32) : 1) مربع مجموع، 2) مربع فرق — et ديكارت (p. 31).
@@ -327,6 +329,7 @@ export default function Module01NashatMurabba() {
         {
           num: 11, title: 'عودة إلى الملعب الجواري', subtitle: 'هل العامل على حق؟', done: !!d.h,
           content: (
+            <div className="space-y-3">
             <TapQuestion
               prompt={<span>ضلع الملعب صار <MathText>{`$${side} + ${extra} = ${side + extra}\\,m$`}</MathText>. ما مساحته الجديدة؟</span>}
               options={[`$${workersClaim}\\,m^2$`, `$${(side + extra) ** 2}\\,m^2$`, `$${side * side + 2 * side * extra}\\,m^2$`, `$${side * side + side * extra + extra * extra}\\,m^2$`].map(m)}
@@ -336,6 +339,10 @@ export default function Module01NashatMurabba() {
               explain={<MathText>{`$(${side} + ${extra})^2 = ${side * side} + ${2 * side * extra} + ${extra * extra} = ${(side + extra) ** 2}$ : العامل نسي الشريطين، مساحة كل منهما $${side} \\times ${extra} = ${side * extra}\\,m^2$.`}</MathText>}
               onAnswered={done('h')}
             />
+            {/* La « مسألة الدرس » prolonge le terrain du niveau متقدم (labs dans l'intro : dernière étape) :
+                deux bandes de 3 m retranchées d'un terrain carré, x = 30 — résolue au module 5. */}
+            <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
+            </div>
           ),
         },
       ]}

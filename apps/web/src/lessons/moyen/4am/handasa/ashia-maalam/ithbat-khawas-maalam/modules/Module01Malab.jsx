@@ -4,6 +4,8 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { LAB, PITCH, REMARKS, METHOD_UNKNOWN } from '../content/textbook';
 import LabEvidence from '../components/LabEvidence';
@@ -24,6 +26,10 @@ import PitchVignette from '../components/PitchVignette';
  *   2. le côté seul : AB² + AC² = BC² (pas AB² + BC² = AC²)               → brique qaim-fithaghuras  (P1)
  *   3. l'isocèle : l'élève calcule CB² lui-même                           → brique mutasawi-saqayn   (P1)
  *   4. des preuves suffisantes : D(2 ; 2), diagonales égales, pas de parallélogramme → brique adilla-kafiya (P2)
+ *      puis la « مسألة الدرس » (LessonProblemCard) : le même monde que le niveau متقدم, d'autres nombres (module 5).
+ * « أتوقّع القاعدة » (2026-10-06) : chaque brique est précédée d'une prédiction ; les `explain` des questions juste
+ * avant donnent donc le CAS calculé, jamais la règle (REMARKS.look / watarRight / diagAlone + kafiRight sont dans le
+ * corps des briques).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -76,7 +82,7 @@ export default function Module01Malab() {
                   'لأن الفار يحكم بما يراه على الشكل',
                 ].map(M)}
                 correct={0} cols={1} requires={['aks-fithaghuras', 'masafa-maalam']}
-                explain={<MathText>{`$AB^2 + AC^2 = 10 + 5 = 15$ و $BC^2 = 17$ : المساواة غير محققة. ${REMARKS.look}`}</MathText>}
+                explain={<MathText>{'$AB^2 + AC^2 = 10 + 5 = 15$ و $BC^2 = 17$ : المساواة غير محققة، فالمثلث ABC ليس قائما في A مهما بدا كذلك.'}</MathText>}
                 onAnswered={mark(1)} />
               {q[1] && <KnowledgeBrick id="dalil-hisabi" lead="ما فعله الفار:" />}
             </div>
@@ -90,7 +96,7 @@ export default function Module01Malab() {
                 prompt={<MathText>{'لإثبات أن المثلث ABC قائم في A ، نتحقق أن:'}</MathText>}
                 options={['$AB^2 + AC^2 = BC^2$', '$AB^2 + BC^2 = AC^2$', '$AC^2 + BC^2 = AB^2$', '$AB = AC$'].map(M)}
                 correct={0} cols={2} requires={['dalil-hisabi', 'aks-fithaghuras']}
-                explain={<MathText>{`${REMARKS.watarRight} ${REMARKS.watarWhy}`}</MathText>}
+                explain={<MathText>{'عند $C(-1\\,;\\,3)$ قبل الفار «قائم في A» : $AB^2 + AC^2 = 10 + 10 = 20 = BC^2$ .'}</MathText>}
                 onAnswered={mark(2)} />
               {q[2] && (
                 <>
@@ -127,7 +133,7 @@ export default function Module01Malab() {
                   'لأن الفار لا يقبل إلا المربّع',
                 ].map(M)}
                 correct={0} cols={1} requires={['khawass-rubaiyat', 'tasawi-mutawazi', 'dalil-hisabi']}
-                explain={<MathText>{`${REMARKS.diagAlone} ${REMARKS.kafiRight}`}</MathText>}
+                explain={<MathText>{'عند $D(2\\,;\\,2)$ : $\\overrightarrow{AB}\\begin{pmatrix} -4 \\\\ -2 \\end{pmatrix}$ و $\\overrightarrow{DC}\\begin{pmatrix} -4 \\\\ -6 \\end{pmatrix}$ غير متساويين: الرباعي ABCD ليس متوازي أضلاع، رغم أن قطريه متقايسان.'}</MathText>}
                 onAnswered={mark(4)} />
               {q[4] && (
                 <>
@@ -135,6 +141,9 @@ export default function Module01Malab() {
                   <p className="text-xs text-slate-600" data-misconception-note="kafi"><MathText>{`خطأ شائع: ${REMARKS.kafiWrong} ${REMARKS.kafiWhy}`}</MathText></p>
                 </>
               )}
+              {/* La « مسألة الدرس » prolonge le niveau متقدم : un شاخص sur une droite, le carré, le cercle de diamètre
+                  [AC] — d'autres nombres, résolue au module 5. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
       ]}

@@ -3,7 +3,8 @@
  * Le manuel fournit نشاط 4 « تناسب التغيّرات » (p. 79 : l'abonnement des supporters, 2000 DA + 200 DA par
  * match, les quotients, l'escalier de la figure) et le تحدّ de la page d'ouverture (p. 77, °C → °F,
  * doublon DÉCLARÉ : deux points lus). Il n'a ni معارف ni طرائق ni exercices : la propriété, sa preuve et
- * les deux méthodes sont une formalisation DÉCLARÉE de la plateforme (`knowledge_formalization`).
+ * les deux méthodes sont une formalisation DÉCLARÉE de la plateforme (`knowledge_formalization`),
+ * puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit7/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -26,6 +27,14 @@ export const LESSON_CONFIG = {
   masteryThreshold: 0.8,
   emoji: '🏟️',
   estimatedDurationMin: 45,
+  // « مسألة الدرس » : montrée dès le sommaire (LessonProblemCard), rappelée au module 1 (prolongement de
+  // l'abonnement des supporters du niveau متقدم, d'autres nombres), résolue pas à pas au module 4
+  // (content/problems.js).
+  lessonProblem: {
+    module: 4,
+    title: 'الموسم الجديد: اشتراك المناصرين بعبارة مجهولة',
+    statement: 'في الموسم الرياضي الجديد غيّر المركّب الرياضي صيغة اشتراك مناصري فريق المدينة: مبلغ سنوي ثابت يُدفع مرّة واحدة، يضاف إليه ثمن ثابت عند كل دخول للملعب. لم يُعلن المركّب عن المبلغين، لكنّ كريم تابع 6 مقابلات فدفع في الموسم 4100 دج، ووليد تابع 15 مقابلة فدفع 6800 دج. يتّسع الملعب لـ 20000 متفرّج، وتُلعب المقابلات يوم الجمعة على الساعة 16. نرمز بـ $f(x)$ إلى المبلغ (بالدينار) الذي يدفعه مناصر تابع $x$ مقابلة، فتكون $f$ دالة تآلفية عبارتها $f(x) = ax + b$ .',
+  },
   textbookRef: { unit: 7, activity: 4, pages: '77, 79' },
   skills: [
     'حساب المعامل a بخاصية تناسب التغيّرات من عددين متمايزين وصورتيهما',
@@ -99,6 +108,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_tanasub-taghayyurat_P1', '4am_tanasub-taghayyurat_P2'],
       sourceElementIds: ['challenge'],
     },
+    // Modules 4–6 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — الموسم الجديد: اشتراك المناصرين بعبارة مجهولة', learningPointIds: ['4am_tanasub-taghayyurat_P1', '4am_tanasub-taghayyurat_P2'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — شتلة عبّاد الشمس: طول ينمو كل أسبوع', learningPointIds: ['4am_tanasub-taghayyurat_P1', '4am_tanasub-taghayyurat_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — شحن الهاتف: نسبة البطارية والدقائق', learningPointIds: ['4am_tanasub-taghayyurat_P1', '4am_tanasub-taghayyurat_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -116,8 +130,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'ستّة تمارين من المنصّة: جدول، معامل سالب أو كسري، مستقيم يمرّ بنقطتين، جملة معادلتين، رحلة بسيارة أجرة.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tanasub-taghayyurat_P1', '4am_tanasub-taghayyurat_P2'],
       color: 'amber', style: 'featured', estimatedMin: 9, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقطتي التعلّم.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — اشتراك الموسم الجديد', desc: 'مسألة الدرس: من مبلغي مناصرَين، ثمن المقابلة والاشتراك، ثم وصلان نتحقّق منهما وميزانية الموسم القادم.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tanasub-taghayyurat_P1', '4am_tanasub-taghayyurat_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — شتلة عبّاد الشمس', desc: 'جدول قياسات: سرعة النموّ وطول الغرس، قياس خاطئ، ومتى تبلغ الشتلة الشبكة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tanasub-taghayyurat_P1', '4am_tanasub-taghayyurat_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — شحن الهاتف', desc: 'قراءتان للشاشة: جملة معادلتين بمجهولين، قراءة ثالثة نتحقّق منها، ومتى يتوقّف الشحن السريع.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tanasub-taghayyurat_P1', '4am_tanasub-taghayyurat_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation } from '../../../../../../common/manipulations';
@@ -17,6 +17,8 @@ import LabEvidence from '../components/LabEvidence';
  *   2. le rayon de (Γ₂) : 2, comme (Γ)                              → brique surat-daira (P3)
  *   3. l'ordre des représentants ne change pas l'arrivée              (P3)
  * Aucune étape n'attend le laboratoire : les gestes de l'élève sont listés au-dessus des questions.
+ * « أتوقّع القاعدة » : l'explication des questions 1 et 2 ÉNONCE la règle de la brique qui suit ; chaque question est
+ * enveloppée dans une PredictRule (même id que la brique) — l'élève écrit la règle après le laboratoire, avant la question.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -50,16 +52,18 @@ export default function Module03Inshaat() {
             <div className="space-y-3">
               <LabEvidence id="construct-g1" trials={trials} level="construct" title="ما أنشأته في المختبر:"
                 empty="في المختبر: اسحب $\\overrightarrow{AB}$ إلى المحطة E ، ثم $\\overrightarrow{AC}$ إلى نهاية الممثّل." />
-              <TapQuestion
-                prompt={<MathText>{'مركز $(\\Gamma_1)$ هو النقطة $E_1$ حيث:'}</MathText>}
-                options={[
-                  '$\\overrightarrow{EE_1} = \\overrightarrow{AB} + \\overrightarrow{AC}$',
-                  '$\\overrightarrow{E_1E} = \\overrightarrow{AB} + \\overrightarrow{AC}$',
-                  '$\\overrightarrow{AE_1} = \\overrightarrow{AB} + \\overrightarrow{AC}$',
-                ].map(M)}
-                correct={0} cols={1} requires={['rabt-shal', 'qaidat-mutawazi']}
-                explain={<MathText>{`صورة E بالانسحاب الذي شعاعه $\\vec{u}$ هي النقطة $E_1$ حيث $\\overrightarrow{EE_1} = \\vec{u}$ . ${CONSTRUCT.startRight}`}</MathText>}
-                onAnswered={mark(1)} />
+              <PredictRule id="insha-majmu">
+                <TapQuestion
+                  prompt={<MathText>{'مركز $(\\Gamma_1)$ هو النقطة $E_1$ حيث:'}</MathText>}
+                  options={[
+                    '$\\overrightarrow{EE_1} = \\overrightarrow{AB} + \\overrightarrow{AC}$',
+                    '$\\overrightarrow{E_1E} = \\overrightarrow{AB} + \\overrightarrow{AC}$',
+                    '$\\overrightarrow{AE_1} = \\overrightarrow{AB} + \\overrightarrow{AC}$',
+                  ].map(M)}
+                  correct={0} cols={1} requires={['rabt-shal', 'qaidat-mutawazi']}
+                  explain={<MathText>{`صورة E بالانسحاب الذي شعاعه $\\vec{u}$ هي النقطة $E_1$ حيث $\\overrightarrow{EE_1} = \\vec{u}$ . ${CONSTRUCT.startRight}`}</MathText>}
+                  onAnswered={mark(1)} />
+              </PredictRule>
               {q[1] && (
                 <>
                   <KnowledgeBrick id="insha-majmu" lead="ما فعله القطار على المرصوفة:" />
@@ -71,12 +75,14 @@ export default function Module03Inshaat() {
         { num: 2, title: 'نصف قطر الصورة', subtitle: 'الانسحاب يحافظ على الأطوال', done: !!q[2],
           content: (
             <div className="space-y-3">
-              <TapQuestion
-                prompt={<MathText>{'نصف قطر الدائرة $(\\Gamma_2)$ هو:'}</MathText>}
-                options={['2', '$2 + EE_2$', '1'].map(M)}
-                correct={0} cols={3} requires={['insha-majmu']}
-                explain={<MathText>{CONSTRUCT.circle}</MathText>}
-                onAnswered={mark(2)} />
+              <PredictRule id="surat-daira">
+                <TapQuestion
+                  prompt={<MathText>{'نصف قطر الدائرة $(\\Gamma_2)$ هو:'}</MathText>}
+                  options={['2', '$2 + EE_2$', '1'].map(M)}
+                  correct={0} cols={3} requires={['insha-majmu']}
+                  explain={<MathText>{CONSTRUCT.circle}</MathText>}
+                  onAnswered={mark(2)} />
+              </PredictRule>
               {q[2] && <KnowledgeBrick id="surat-daira" />}
             </div>
           ) },

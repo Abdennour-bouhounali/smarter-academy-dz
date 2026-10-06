@@ -5,6 +5,8 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { PitchScene } from '../../../../../../common/manipulations/primitives/PitchBackdrop';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, SHELF_RANGE, TEAM_EXPERIENCE } from '../content/textbook';
 
@@ -178,6 +180,9 @@ export default function Module01AlMaktaba() {
                 onAnswered={() => setQ2(true)}
               />
               <TextbookBox kind="remark" text="أما 26 فليس قاسمًا للعدد 420: الباقي 4 ليس معدومًا." compact />
+              {/* La « مسألة الدرس » prolonge ce rayon : mêmes rayons, 756 livres,
+                  deux tailles — résolue au module 4. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

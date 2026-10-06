@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -21,6 +21,8 @@ import FreqTable from '../components/FreqTable';
  *             الفئات, 1816/41 ≈ 44,29, la classe médiane par les effectifs cumulés).
  * FORMALIZE   معارف 4 (définition, quatre ملاحظات, les deux exemples CORRIGÉS en une ligne chacun) et معارف 3.
  * AUCUNE étape n'attend `onFinished`. LP : P3, P1, P2.
+ * « أتوقّع القاعدة » : la question des 41 poids est enveloppée (<PredictRule id="markaz-fia">) — ses corrections
+ * énoncent la méthode des مراكز الفئات juste avant la brique ; la brique `mada` est un rappel (posée au module 1).
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -136,7 +138,7 @@ export default function Module02Nashat4() {
               />
               {q1b && (
                 <>
-                  <TextbookBox kind="definition" title={KNOW4.title} text={KNOW4.definition} source={KNOW4.source} compact />
+                  <PredictRule id="wasit" prompt={"وجدت قيمة تقسم سلسلة الرواتب إلى جزأين لهما نفس التكرار. بكلماتك: كيف نعرّف هذه القيمة؟ وكيف نجدها في سلسلة مرتّبة؟"}><TextbookBox kind="definition" title={KNOW4.title} text={KNOW4.definition} source={KNOW4.source} compact /></PredictRule>
                   <KnowledgeBrick id="wasit" lead="الراتب 42000 هو وسيط هذه السلسلة:" />
                 </>
               )}
@@ -204,7 +206,7 @@ export default function Module02Nashat4() {
               <TextbookBox kind="definition" title={KNOW3.title} text={KNOW3.definition} source={KNOW3.source} compact />
               <TextbookBox kind="remark" text={KNOW3.note} source={KNOW3.source} compact />
               <TextbookBox kind="example" text={KNOW3.example} source={KNOW3.source} compact />
-              <KnowledgeBrick id="mada" lead="ما سمّيناه في نشاط 3، لكل سلسلة:" />
+              <KnowledgeBrick id="mada" variant="rappel" lead="ما سمّيناه في نشاط 3، لكل سلسلة:" />
               <NumericQuestion
                 prompt={<MathText>{'مدى السلسلة $-3$ ، $7$ ، $2$ ، $-8$ ، $5$ هو:'}</MathText>}
                 expected={15}
@@ -223,19 +225,21 @@ export default function Module02Nashat4() {
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACT4.weightsText}</MathText></p>
               <FreqTable testId="weights" rows={[{ head: 'الوزن P (kg)', cells: ACT4.classes }, { head: 'عدد التلاميذ', cells: ACT4.classFreqs.map(String) }]} />
-              <BatchChoiceQuestion
-                rows={[
-                  // 4 = l'amplitude ; 34 = la borne inférieure
-                  { id: 'c', label: <MathText>{'مركز الفئة $34 \\le P < 38$'}</MathText>, options: ['$34$', '$4$', '$36$'].map(Opt), correct: 2, correction: <MathText>{ACT4_LINES.centers}</MathText> },
-                  // 44 = moyenne des cinq centres sans effectifs ; 1816/5 divise par le nombre de classes
-                  { id: 'm', label: 'الوزن المتوسط (تقدير)', options: ['$\\dfrac{1816}{41} \\approx 44{,}29$', '$44$', '$\\dfrac{1816}{5} = 363{,}2$'].map(Opt), correct: 0, correction: <MathText>{`${ACT4_LINES.weightsMean} . العدد $44$ متوسط المراكز الخمسة دون أعداد التلاميذ.`}</MathText> },
-                  // 38–42 : le cumul 14 < 21 ; 46–50 : 35 dépasse déjà
-                  { id: 'f', label: 'الفئة الوسيطية', options: ['$38 \\le P < 42$', '$42 \\le P < 46$', '$46 \\le P < 50$'].map(Opt), correct: 1, correction: <MathText>{ACT4_LINES.medianClass}</MathText> },
-                ]}
-                requires={['mutawassit-mutawazin', 'takrar-mujamma-said']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'كل فئة يمثّلها مركزها، بقدر تكرارها.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
-                onAnswered={() => setQ5(true)}
-              />
+              <PredictRule id="markaz-fia">
+                <BatchChoiceQuestion
+                  rows={[
+                    // 4 = l'amplitude ; 34 = la borne inférieure
+                    { id: 'c', label: <MathText>{'مركز الفئة $34 \\le P < 38$'}</MathText>, options: ['$34$', '$4$', '$36$'].map(Opt), correct: 2, correction: <MathText>{ACT4_LINES.centers}</MathText> },
+                    // 44 = moyenne des cinq centres sans effectifs ; 1816/5 divise par le nombre de classes
+                    { id: 'm', label: 'الوزن المتوسط (تقدير)', options: ['$\\dfrac{1816}{41} \\approx 44{,}29$', '$44$', '$\\dfrac{1816}{5} = 363{,}2$'].map(Opt), correct: 0, correction: <MathText>{`${ACT4_LINES.weightsMean} . العدد $44$ متوسط المراكز الخمسة دون أعداد التلاميذ.`}</MathText> },
+                    // 38–42 : le cumul 14 < 21 ; 46–50 : 35 dépasse déjà
+                    { id: 'f', label: 'الفئة الوسيطية', options: ['$38 \\le P < 42$', '$42 \\le P < 46$', '$46 \\le P < 50$'].map(Opt), correct: 1, correction: <MathText>{ACT4_LINES.medianClass}</MathText> },
+                  ]}
+                  requires={['mutawassit-mutawazin', 'takrar-mujamma-said']}
+                  feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'كل فئة يمثّلها مركزها، بقدر تكرارها.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
+                  onAnswered={() => setQ5(true)}
+                />
+              </PredictRule>
               {q5 && (
                 <>
                   <KnowledgeBrick id="markaz-fia" lead="في سلسلة مجمّعة في فئات:" />

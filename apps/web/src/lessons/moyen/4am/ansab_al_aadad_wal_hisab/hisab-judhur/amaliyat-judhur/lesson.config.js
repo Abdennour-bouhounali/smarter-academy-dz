@@ -1,7 +1,8 @@
 /**
  * الدرس 4 من الوحدة 2 — العمليات على الجذور التربيعية (الجداء والقسمة)
  * Manuel 4AM, unité 2 : نشاط 4 (p. 21), معارف 4 (p. 24), تمارين 15, 16, 17,
- * 20, 21 (p. 26–27), 33 (p. 29), أؤكّد تعلّماتي 8–9 (p. 28), أستعدّ 5–6 (p. 19).
+ * 20, 21 (p. 26–27), 33 (p. 29), أؤكّد تعلّماتي 8–9 (p. 28), أستعدّ 5–6 (p. 19),
+ * puis trois « مسائل » de la plateforme (modules 5–7).
  * Source de vérité : docs/sources/4am/unit2/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -43,6 +44,15 @@ export const LESSON_CONFIG = {
       'حل المعادلة x² = a (الدرس 3)',
     ],
   },
+  // « مسألة الدرس » (rollout مسائل, 2026-10-06) : montrée dès le sommaire,
+  // rappelée au module 1, résolue pas à pas au module 5 (content/problems.js).
+  // Prolonge le carré dallé du niveau متقدم : un carré couvert de dalles
+  // carrées identiques, d'autres nombres (180 = 36 × 5 : √180 = 6√5).
+  lessonProblem: {
+    module: 5,
+    title: 'لوحة الزليج: بلاطات مربّعة على مربّع',
+    statement: 'يصنع حِرَفيّ في تلمسان لوحة زليج مربّعة الشكل مساحتها $180\\,dm^2$ لمدخل دار الثقافة، ويريد أن يغطّيها كلّها ببلاطات مربّعة متماثلة، مصفوفة في صفوف وأعمدة، دون أن يقطع أيّ بلاطة. في ورشته نوعان من البلاطات: بلاطات مساحة الواحدة منها $5\\,dm^2$، وبلاطات مساحة الواحدة منها $12\\,dm^2$. ثمن البلاطة الواحدة 150 دج مهما كان نوعها، وسُمكها $1\\,cm$. يعمل في الورشة 3 متربّصين.',
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -73,6 +83,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_amaliyat-judhur_P1'],
       sourceElementIds: ['act-4a'],
     },
+    // Modules 5–7 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — لوحة الزليج: أيّ البلاطات تصلح؟', learningPointIds: ['4am_amaliyat-judhur_P1'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — الحديقة العمومية: ممرّ قطري وسياج', learningPointIds: ['4am_amaliyat-judhur_P1', '4am_amaliyat-judhur_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — شارات المسابقة الولائية', learningPointIds: ['4am_amaliyat-judhur_P1', '4am_amaliyat-judhur_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -94,8 +109,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 15، 16، 17، 20، 21 و 33 (العدد الذهبي).',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_amaliyat-judhur_P1', '4am_amaliyat-judhur_P2'],
       color: 'amber', style: 'featured', estimatedMin: 12, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم نقاط التعلّم الثلاث.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — لوحة الزليج', desc: 'مسألة الدرس: لوحة مربّعة وبلاطات مربّعة. أيّ البلاطات تصلح؟ حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_amaliyat-judhur_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — الحديقة العمومية', desc: 'ضلع الحديقة، طول الممرّ القطري، وثمن السياج.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_amaliyat-judhur_P1', '4am_amaliyat-judhur_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — شارات المسابقة الولائية', desc: 'من الملصق إلى الشارة: كم مرّة صغُر الضلع؟ وكم ورقة يلزم؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_amaliyat-judhur_P1', '4am_amaliyat-judhur_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الثلاث.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

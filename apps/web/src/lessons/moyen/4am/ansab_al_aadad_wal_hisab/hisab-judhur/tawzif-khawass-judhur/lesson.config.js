@@ -3,7 +3,8 @@
  * Unité 2 du manuel (4AM) : طرائق p. 25 (تمرين 1, تمرين 2, نسبة مقامها عدد
  * غير ناطق, دوري الآن 1–2), exercices 18, 19, 22, 23, 24, 26, 27 (p. 27),
  * 28, 29, 30 (p. 27), 31 (2), 32, 34, 36, 37, 38 (p. 29), دوري الآن p. 30,
- * « أستعدّ » items 7–9 (p. 19), QCM item 7 (p. 28).
+ * « أستعدّ » items 7–9 (p. 19), QCM item 7 (p. 28),
+ * puis trois « مسائل » de la plateforme (modules 6–8).
  * Source de vérité : docs/sources/4am/unit2/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -27,6 +28,14 @@ export const LESSON_CONFIG = {
   emoji: '🧱',
   estimatedDurationMin: 71,
   textbookRef: { unit: 2, activity: null, pages: '25, 27, 29, 30' },
+  // « مسألة الدرس » : l'énoncé de la مسألة 1 (content/problems.js), montré au
+  // sommaire et à la fin du module 1 (LessonProblemCard), résolu au module 6.
+  // Elle prolonge le carré dallé du niveau متقدم : même instrument, autre aire.
+  lessonProblem: {
+    module: 6,
+    title: 'طاولة فسيفساء مربّعة: أصغر قطعة ممكنة',
+    statement: 'في ورشة بغرداية، يصنع حِرفيّ طاولة سطحها مربّع الشكل مساحته $200\\,dm^2$، ويغطّيه كلّه بفسيفساء: قطع مربّعة متماثلة، مساحة كل منها عدد طبيعي من $dm^2$، مرصوفة صفوفًا وأعمدة. تُنجز الطاولة في 12 يومًا، وثمن القطعة الواحدة 120 دج مهما كان مقاسها. يريد الزبون أن تكون القطع أصغر ما يمكن.',
+  },
   skills: [
     'كتابة الجذر التربيعي لعدد طبيعي على الشكل a√b حيث b أصغر ما يمكن',
     'تبسيط مجموع جذور متشابهة بالخاصية التوزيعية',
@@ -78,6 +87,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_tawzif-khawass-judhur_P1'],
       sourceElementIds: ['method-simplify', 'ex-18'],
     },
+    // Les « مسائل » : exercices complets de type امتحان, AJOUTS de la
+    // plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 6, title: 'مسألة الدرس — طاولة فسيفساء مربّعة: أصغر قطعة ممكنة', learningPointIds: ['4am_tawzif-khawass-judhur_P1'] },
+    { kind: 'situation', code: 'masala-2', module: 7, title: 'مسألة — أحواض حديقة المتوسطة: هل يتّسع الممرّ؟', learningPointIds: ['4am_tawzif-khawass-judhur_P1', '4am_tawzif-khawass-judhur_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 8, title: 'مسألة — الطائرات الورقية: ضلع وشريط', learningPointIds: ['4am_tawzif-khawass-judhur_P2', '4am_tawzif-khawass-judhur_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -103,8 +117,24 @@ export const LESSON_CONFIG = {
       title: 'أتعمّق', desc: 'نشر وتبسيط، المكعّب، المثلث القائم، ومسائل من امتحان شهادة التعليم المتوسط: تمارين 28، 29، 30، 32، 34، 36، 37، 38.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tawzif-khawass-judhur_P2', '4am_tawzif-khawass-judhur_P3'],
       color: 'rose', style: 'featured', estimatedMin: 12, difficulty: 4, actionText: 'أتعمّق' },
-    { id: '06', number: 6, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    // 6 min chacune : la leçon est déjà à 71 min (71 + 18 = 89 ≤ 90).
+    { id: '06', number: 6, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — طاولة الفسيفساء', desc: 'مسألة الدرس: سطح مربّع مساحته 200 مغطّى بقطع مربّعة متماثلة. أيّ قطعة أصغر ما يمكن؟ وكم تكلّف القطع؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tawzif-khawass-judhur_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — أحواض حديقة المتوسطة', desc: 'أحواض مربّعة متلاصقة: ما الطول الذي تشغله؟ وهل يتّسع الممرّ لحوض آخر؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tawzif-khawass-judhur_P1', '4am_tawzif-khawass-judhur_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — الطائرات الورقية', desc: 'من القطر إلى الضلع بمقام ناطق، ثم كم مترًا من الشريط يشتري النادي؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tawzif-khawass-judhur_P2', '4am_tawzif-khawass-judhur_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '09', number: 9, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

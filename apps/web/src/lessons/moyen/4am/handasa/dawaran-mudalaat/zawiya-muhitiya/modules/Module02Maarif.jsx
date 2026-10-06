@@ -42,7 +42,7 @@ export default function Module02Maarif() {
           num: 1, title: 'تعريف الزاويتين', subtitle: 'معارف 4 — تعريف', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tarif" lead="الزاويتان اللتان قستهما في اللوحة:" />
+              <KnowledgeBrick id="tarif" variant="rappel" lead="الزاويتان اللتان قستهما في اللوحة:" />
               <GeoFigure {...FIG_KNOW4_EX1} />
               <TextbookBox kind="example" text={KNOW4.example1} source={KNOW4.source} compact />
               <BatchChoiceQuestion
@@ -66,7 +66,7 @@ export default function Module02Maarif() {
           num: 2, title: 'الخاصية 1: المحيطية نصف المركزية', subtitle: 'معارف 4 — مثال 2', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="khassiya-nisf" lead="ما رأيته في كل مواضع الرامي:" />
+              <KnowledgeBrick id="khassiya-nisf" variant="rappel" lead="ما رأيته في كل مواضع الرامي:" />
               <GeoFigure {...FIG_KNOW4_EX2} />
               <TextbookBox kind="example" text={KNOW4.example2} source={KNOW4.source} compact />
               <NumericQuestion

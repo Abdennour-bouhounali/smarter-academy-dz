@@ -224,7 +224,7 @@ sees the ranking, the students see only their own rank.
   continuation = share of today's participants whose streak is ≥ 2), a date
   picker over the class's challenge days, **question analysis** (⚠ under 60 %),
   **struggling Learning Points** with the students who failed them and two
-  gestures — « افتح نقطة التعلّم » (the existing learning-map tab, `focusCode`)
+  gestures — « افتح الكفاءة » (the existing learning-map tab, `focusCode`)
   and « اقترح تمرينًا موجَّهًا » (the existing `InterventionForm`, prefilled
   `recommend_practice`, `sourceSignal: daily_challenge`) —, the full ranking,
   the per-student table, and the settings panel (switches with ON/OFF text,

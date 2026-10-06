@@ -6,6 +6,8 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { PitchScene } from '../../../../../../common/manipulations/primitives/PitchBackdrop';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, HOOK } from '../content/textbook';
 
@@ -30,6 +32,9 @@ import { ACTIVITY, HOOK } from '../content/textbook';
  * terrain 6x² + 4x ; (3) le cahier d'إيمان (س 1) ; (4) س 2, puis l'encadré
  * du livre posé en brique (tahlil-taarif) ; (5) س 3 : le carré x² + 6x + 9
  * fermé à la main (mode square), إيمان et les trois متطابقات.
+ * Les deux niveaux du laboratoire vivent dans l'`intro` : la « مسألة الدرس »
+ * (LessonProblemCard — le gazon en rangées du niveau متقدم, d'autres nombres,
+ * résolue au module 5) clôt donc la DERNIÈRE étape.
  * LP : P1, P2, P3.
  */
 const BEGINNER = '9x+3';
@@ -311,6 +316,8 @@ export default function Module01Nashat() {
                   onAnswered={() => setQ5(true)}
                 />
               )}
+              {/* « مسألة الدرس » : les rangées de gazon du niveau متقدم, d'autres nombres (module 5). */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

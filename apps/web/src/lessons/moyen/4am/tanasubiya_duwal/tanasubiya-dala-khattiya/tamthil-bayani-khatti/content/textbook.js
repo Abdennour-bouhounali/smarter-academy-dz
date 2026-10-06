@@ -2,7 +2,7 @@
  * Le contenu du MANUEL pour le درس 3 « التمثيل البياني لدالة خطية وقراءته بيانيًا » — données pures
  * (aucun JSX), au mot près ; chaque bloc cite son élément de docs/sources/4am/unit6/extraction.json
  * (destinations : act-3, tech-76 → module 1 ; know-3, method-draw, method-read, now-69 → module 2 ;
- * QCM 1 et 4 → module 4). Ce que la plateforme ajoute est déclaré (`addition(…)`).
+ * QCM 1 et 4 → module 7, l’إختبار أولي, ex-module 4). Ce que la plateforme ajoute est déclaré (`addition(…)`).
  */
 import { src, addition } from '../../_unit/unitMeta.js';
 
@@ -117,7 +117,7 @@ export const NOW = {
 
 /**
  * « أؤكّد تعلّماتي » (p. 74) — les items 1 et 4 (extraction.json → destinations › qcm › duplicatedIn ›
- * tamthil-bayani-khatti, module 4) : l'إختبار أولي. L'item 4 a sa figure (components/GraphFigure).
+ * tamthil-bayani-khatti, module 4 de l’extraction = module 7 depuis les مسائل) : l'إختبار أولي. L'item 4 a sa figure (components/GraphFigure).
  */
 const QCM_SRC = (n) => src('qcm', 74, 'أؤكّد تعلّماتي', n);
 export const QCM = {

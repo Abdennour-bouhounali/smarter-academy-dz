@@ -63,7 +63,7 @@
     "checking": "…",
     "next": "السؤال التالي",
     "finish": "اعرض نتيجتي",
-    "learningPoint": "نقطة التعلّم",
+    "learningPoint": "الكفاءة",
     "state": {
       "correct": "صحيح",
       "wrong": "خطأ",
@@ -110,7 +110,7 @@
     "viewProgress": "اعرض تقدّمي",
     "history": "سجلّ التحدّيات",
     "insightsTitle": "ما بعد التحدّي",
-    "weakest": "أضعف نقطة اليوم",
+    "weakest": "أضعف كفاءة اليوم",
     "slowCorrect": "صحيح لكن ببطء",
     "suggestion": "الخطوة المقترحة: تمرين موجَّه لبضع دقائق على «{{title}}».",
     "practiceNow": "تدرّب الآن",
@@ -177,8 +177,8 @@
     "noAnswer": "لم تُجب",
     "time": "الوقت",
     "points": "النقاط",
-    "notReplayable": "لا يُعاد التحدّي لجمع النقاط. لتقوية نقطة، تدرّب عليها في التمارين.",
-    "practice": "تدرّب على هذه النقطة",
+    "notReplayable": "لا يُعاد التحدّي لجمع النقاط. لتقوية كفاءة، تدرّب عليها في التمارين.",
+    "practice": "تدرّب على هذه الكفاءة",
     "back": "السجلّ"
   },
   "teacher": {
@@ -214,7 +214,7 @@
         "question_count": "عدد أسئلة غير مسموح.",
         "window": "يجب أن تسبق بدايةُ النافذة نهايتَها.",
         "lesson_out_of_scope": "أحد الدروس خارج دروس القسم.",
-        "learning_point_out_of_scope": "إحدى نقاط التعلّم خارج دروس القسم.",
+        "learning_point_out_of_scope": "إحدى الكفاءات خارج دروس القسم.",
         "generic": "تعذّر الحفظ."
       }
     },
@@ -243,7 +243,7 @@
       "answered_few": "{{count}} إجابات",
       "answered_many": "{{count}} إجابة",
       "answered_other": "{{count}} إجابة",
-      "points": "نقاط التعلّم في تحدّي اليوم",
+      "points": "الكفاءات في تحدّي اليوم",
       "struggling_zero": "",
       "struggling_one": "تلميذ واحد تعثّر في:",
       "struggling_two": "تلميذان تعثّرا في:",
@@ -251,7 +251,7 @@
       "struggling_many": "{{count}} تلميذًا تعثّروا في:",
       "struggling_other": "{{count}} تلميذ تعثّروا في:",
       "correctRate": "صحيحة: {{rate}}",
-      "openPoint": "افتح نقطة التعلّم",
+      "openPoint": "افتح الكفاءة",
       "assignPractice": "اقترح تمرينًا موجَّهًا",
       "students": "التلاميذ",
       "status": {

@@ -2,7 +2,7 @@
  * Le contenu du MANUEL pour le درس 3 « حل مشكلات بتوظيف جمل معادلتين من الدرجة الأولى بمجهولين » —
  * données pures (aucun JSX), au mot près ; chaque bloc cite son élément de
  * docs/sources/4am/unit5/extraction.json (destinations : act-3 → module 1 ; le تحدّ et أبو كامل
- * dupliqués en module 2 ; ex-14 → 21 et 24 → 28 → module 3 ; QCM 7 → module 4).
+ * dupliqués en module 2 ; ex-14 → 21 et 24 → 28 → module 3 ; QCM 7 → module 7 ; مسائل → modules 4–6, content/problems.js).
  */
 import { src, addition } from '../../_unit/unitMeta.js';
 

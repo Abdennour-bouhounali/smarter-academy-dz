@@ -4,6 +4,8 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import DataTable from '../components/DataTable';
 import { CHALLENGE, LAB, MISTAKE_MM } from '../content/textbook';
@@ -22,7 +24,8 @@ import { CHALLENGE, LAB, MISTAKE_MM } from '../content/textbook';
  *
  * Étapes : (1) la brique « mutawassit-majmuat » et les points du القسم (أ) ; (2) son معدّل (le piège
  * 11,5) ; (3) la brique « silsila-kamila » et la question du manuel ; (4) le cas des effectifs égaux.
- * LP : P3 (1, 2, 4), P2 (3).
+ * LP : P3 (1, 2, 4), P2 (3). À la fin de l'étape 4 (les deux niveaux du labo sont dans l'intro) : « مسألة الدرس »
+ * (LessonProblemCard), résolue au module 5.
  */
 export default function Module01Tahaddi() {
   const [ev, setEv] = useState(null);
@@ -149,6 +152,7 @@ export default function Module01Tahaddi() {
                 explain={<MathText>{'$\\dfrac{16 \\times 11 + 16 \\times 13}{32} = \\dfrac{176 + 208}{32} = \\dfrac{384}{32} = 12$ : التكراران متساويان، فالمعدّل هو متوسط المعدّلين $\\dfrac{11 + 13}{2} = 12$ .'}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

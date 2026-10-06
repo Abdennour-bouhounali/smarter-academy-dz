@@ -26,7 +26,7 @@ const TABS = ['overview', 'students', 'learningPoints', 'interventions', 'dailyC
  * LIEN de classe d'abord (la voie recommandée), le CODE juste en dessous
  * (le repli manuel) — JoinAccessCard. Elle s'ouvre
  * sur « نظرة عامة » : ce qui mérite un regard, ce qui a changé, la carte —
- * DÉTECTER d'abord. Les autres onglets servent à COMPRENDRE (نقاط التعلّم),
+ * DÉTECTER d'abord. Les autres onglets servent à COMPRENDRE (الكفاءات),
  * INTERVENIR et MESURER (التدخّلات), et administrer (التلاميذ, الدروس,
  * الإعدادات).
  */

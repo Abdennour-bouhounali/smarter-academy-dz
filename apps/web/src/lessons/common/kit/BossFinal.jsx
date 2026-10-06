@@ -194,7 +194,7 @@ function BossReview({ epreuves, answers, onContinue, onRedo }) {
 /**
  * « نتيجة هذا التحدي حسب المهارة » — les erreurs de CETTE tentative, par
  * compétence déclarée dans le module. Ce n'est PAS la maîtrise : les glyphes
- * sont neutres (✓ / ~ / ✗, jamais les 🟢🟡🔴 des نقاط التعلّم) pour que
+ * sont neutres (✓ / ~ / ✗, jamais les 🟢🟡🔴 des الكفاءات) pour que
  * l'élève ne confonde pas le score d'un essai avec l'état calculé par le
  * serveur, rendu juste en dessous (LessonLearningPointsStatus).
  */
@@ -279,7 +279,7 @@ export default function BossFinal({
   const [bossAnswers, setBossAnswers] = useState({});
   const [bossSubmitted, setBossSubmitted] = useState(false);
   const [misses, setMisses] = useState({});
-  // Incrémenté à chaque envoi : le bloc « حالتك على نقاط التعلّم » relit le
+  // Incrémenté à chaque envoi : le bloc « حالتك على الكفاءات » relit le
   // profil serveur après un court délai (les preuves partent en arrière-plan).
   const [evidenceBatch, setEvidenceBatch] = useState(0);
   // CE QUI EST RÉVÉLÉ, épreuve par épreuve — UNIQUEMENT en « وضع القسم ».
@@ -561,7 +561,7 @@ export default function BossFinal({
               <ProfilMaitrise skills={skills} scores={misses} lessonConfig={lessonConfig} />
 
               {/* La MAÎTRISE, à part et nommée comme telle : l'état serveur des
-                  نقاط التعلّم de la leçon, jamais confondu avec le score de
+                  الكفاءات de la leçon, jamais confondu avec le score de
                   cet essai. Un enseignant qui prépare le test n'a pas de
                   profil à lire ici. */}
               {viewer.tracksProgress && (

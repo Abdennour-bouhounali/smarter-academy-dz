@@ -5,6 +5,8 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { METHOD_MODELLING, RACE, MISTAKE_ONE_X } from '../content/textbook';
 
@@ -145,23 +147,28 @@ export default function Module01Sibaq() {
         {
           num: 3, title: 'التحقق', subtitle: 'نعوّض الحل في نص المشكلة', done: q3,
           content: (
-            <BatchChoiceQuestion
-              intro={<p className="text-sm font-semibold text-slate-700">بعد 9 سنوات:</p>}
-              rows={[
-                { id: 'father', label: 'عمر الأب', options: ['45 سنة', '36 سنة', '54 سنة'], correct: 0, correction: <MathText>{'$36 + 9 = 45$'}</MathText> },
-                { id: 'kids', label: 'أعمار الأبناء', options: ['13 و 15 و 17', '4 و 6 و 17', '13 و 15 و 8'], correct: 0, correction: 'كل ابن يكبر بـ 9 سنوات.' },
-                { id: 'sum', label: 'مجموع أعمار الأبناء', options: [<MathText key="a">{'$13 + 15 + 17 = 45$'}</MathText>, <MathText key="b">{'$4 + 6 + 8 + 9 = 27$'}</MathText>, <MathText key="c">{'$13 + 15 + 17 = 54$'}</MathText>], correct: 0, correction: <MathText>{METHOD_MODELLING.solution[3]}</MathText> },
-              ]}
-              requires={['tarrid-namdhaja']}
-              feedback={({ allRight }) => (
-                <Feedback tone={allRight ? 'ok' : 'ko'}>
-                  <MathText>{allRight
-                    ? 'تمامًا: $45 = 13 + 15 + 17$ ، فالعدد 9 يحقّق نص المشكلة نفسه، لا المعادلة فقط.'
-                    : 'بعد 9 سنوات يكبر كل واحد بـ 9 سنوات: الأب 45، والأبناء 13 و 15 و 17.'}</MathText>
-                </Feedback>
-              )}
-              onAnswered={() => setQ3(true)}
-            />
+            <div className="space-y-3">
+              <BatchChoiceQuestion
+                intro={<p className="text-sm font-semibold text-slate-700">بعد 9 سنوات:</p>}
+                rows={[
+                  { id: 'father', label: 'عمر الأب', options: ['45 سنة', '36 سنة', '54 سنة'], correct: 0, correction: <MathText>{'$36 + 9 = 45$'}</MathText> },
+                  { id: 'kids', label: 'أعمار الأبناء', options: ['13 و 15 و 17', '4 و 6 و 17', '13 و 15 و 8'], correct: 0, correction: 'كل ابن يكبر بـ 9 سنوات.' },
+                  { id: 'sum', label: 'مجموع أعمار الأبناء', options: [<MathText key="a">{'$13 + 15 + 17 = 45$'}</MathText>, <MathText key="b">{'$4 + 6 + 8 + 9 = 27$'}</MathText>, <MathText key="c">{'$13 + 15 + 17 = 54$'}</MathText>], correct: 0, correction: <MathText>{METHOD_MODELLING.solution[3]}</MathText> },
+                ]}
+                requires={['tarrid-namdhaja']}
+                feedback={({ allRight }) => (
+                  <Feedback tone={allRight ? 'ok' : 'ko'}>
+                    <MathText>{allRight
+                      ? 'تمامًا: $45 = 13 + 15 + 17$ ، فالعدد 9 يحقّق نص المشكلة نفسه، لا المعادلة فقط.'
+                      : 'بعد 9 سنوات يكبر كل واحد بـ 9 سنوات: الأب 45، والأبناء 13 و 15 و 17.'}</MathText>
+                  </Feedback>
+                )}
+                onAnswered={() => setQ3(true)}
+              />
+              {/* La « مسألة الدرس » prolonge la course du niveau متقدم (laboratoire dans
+                  l'intro) : un père et trois enfants, d'autres âges — résolue au module 4. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
+            </div>
           ),
         },
       ]}

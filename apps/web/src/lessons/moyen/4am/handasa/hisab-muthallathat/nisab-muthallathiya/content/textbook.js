@@ -3,7 +3,7 @@
  * données pures (aucun JSX), au mot près ; chaque bloc cite son élément de docs/sources/4am/unit10/extraction.json :
  * أستعدّ 1, 4–6 (p. 115, module 0), نشاط 1 et 2 (p. 116, module 1), نشاط 3, معارف 1 et 2 (pp. 116–118, module 2) et
  * l'encadré « نصير الدين الطوسي » (p. 115, doublon déclaré : les noms), طرائق sin / cos / tan et دوري الآن (p. 119,
- * module 3), أؤكّد تعلّماتي 1–5 (p. 124, doublon déclaré, module 5). Ce que la plateforme ajoute est déclaré (`addition(…)`).
+ * module 3), أؤكّد تعلّماتي 1–5 (p. 124, doublon déclaré, module 8). Ce que la plateforme ajoute est déclaré (`addition(…)`).
  * Une coquille du manuel est CORRIGÉE ici (extraction › know-2 › correction) : l'exemple « tan B = AC/BC » → AC/AB.
  * Les séquences de touches de la calculatrice sont des DONNÉES ({ keys, screen }) : le module les montre en code LTR.
  */
@@ -167,7 +167,7 @@ export const NOW = {
   answer: { LM: 4.2, PQ: 0.9 },
 };
 
-/** « أؤكّد تعلّماتي » (p. 124) — items 1 à 5 (extraction › destinations › qcm : duplicatedIn ce درس, module 5). */
+/** « أؤكّد تعلّماتي » (p. 124) — items 1 à 5 (extraction › destinations › qcm : duplicatedIn ce درس, module 8). */
 const QCM_SRC = (n) => src('qcm', 124, 'أؤكّد تعلّماتي', n);
 export const QCM = {
   1: { source: QCM_SRC(1), text: 'في المثلث MOB القائم في O، لدينا:' },

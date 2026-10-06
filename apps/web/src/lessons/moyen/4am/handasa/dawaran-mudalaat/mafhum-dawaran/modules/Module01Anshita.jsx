@@ -6,6 +6,8 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, ACTIVITY_2, ACTIVITY_3, ACTIVITY_3_LINES, LAB } from '../content/textbook';
 import {
@@ -281,6 +283,8 @@ export default function Module01Anshita() {
                   <GeoFigure {...FIG_ACT3_CIRCLE_SOL} />
                 </div>
               )}
+              {/* « مسألة الدرس » (module 5) : la feuille du niveau متقدم, d'autres nombres — les labs vivent dans l'intro, donc ici, à la fin du dernier pas. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

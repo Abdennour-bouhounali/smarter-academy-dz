@@ -14,7 +14,9 @@
  *   M3 نشاط 2 أ + معارف 2 — TOUCH THE MATH (construire D, AB = DC) puis FORMALIZE (ABCD متوازي أضلاع, l'ordre des
  *                        lettres, les milieux, le cas aligné) ;
  *   M4 أوظّف تعلّماتي  — AUTOMATIZE (ex-1, 2, 4) et TRANSFER (ex-3, 5, 8 ; deux coquilles corrigées : ex-4, ex-8) ;
- *   M5 إختبار أولي     — QCM 1–3 et deux épreuves de la plateforme ; P1, P2, P3 couverts.
+ *   M5–M7 مسائل        — puis trois « مسائل » de la plateforme (modules 5–7) : le spectacle de drones (مسألة الدرس), un
+ *                        portail coulissant, un drone de cartographie en ligne droite (content/problems.js) ;
+ *   M8 إختبار أولي     — QCM 1–3 et deux épreuves de la plateforme ; P1, P2, P3 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -54,6 +56,24 @@ export const LESSON_CONFIG = {
       'البراهين بالأشعة (الدرس 4) والوضعية الإدماجية (أدمج تعلّماتي)',
     ],
   },
+  // « مسألة الدرس » (déploiement مسائل, 2026-10-06) : montrée dès le sommaire, rappelée à la fin du module 1, résolue
+  // pas à pas au module 5 (content/problems.js). Le monde du niveau متقدم : un triangle de drones sur le quadrillage,
+  // une translation donnée par un point et son image — d'autres points, une flèche (4 ; 3). La figure vit ICI (la carte
+  // « مسألة الدرس » la dessine) ; chaque réponse est recalculée dans content/problems.test.js (vectors.js).
+  lessonProblem: {
+    module: 5,
+    title: 'عرض المسيّرات: مشهد الانسحاب',
+    statement: 'في عرض مسيّرات مضيئة فوق خليج الجزائر تشارك 150 مسيّرة، ويدوم العرض 12 دقيقة. رسم المُخرج خطّة أحد المشاهد على ورقة مرصوفة (الشكل المقابل): المسيّرات $A$ و $B$ و $C$ تشكّل مثلثًا، والمسيّرة $D$ منفردة، والنقط $E$ و $F$ و $G$ و $K$ و $L$ و $M$ مواضع في سماء العرض. في هذا المشهد تنتقل المسيّرات الأربع كلّها بالانسحاب الذي يحوّل $A$ إلى $E$. ضلع مربع الرصف يمثّل 10 m في السماء، وتطير كل مسيّرة بسرعة 2 m في الثانية.',
+    figure: {
+      points: { A: [1, 2], B: [3, 0], C: [4, 3], D: [0, 6], E: [5, 5], F: [7, 3], G: [8, 6], K: [6, 4], L: [3, 10], M: [4, 9] },
+      grid: true,
+      polygons: [{ points: ['A', 'B', 'C'], tone: 'slate' }],
+      segments: [{ from: 'A', to: 'B', bold: true }, { from: 'B', to: 'C', bold: true }, { from: 'C', to: 'A', bold: true }],
+      vectors: [{ from: 'A', to: 'E', tone: 'rose' }],
+      ariaLabel: 'ورقة مرصوفة: المثلث ABC من المسيّرات، السهم من A نحو E (أربعة مربعات نحو اليمين وثلاثة نحو الأعلى)، المسيّرة D في الأعلى على اليسار، والنقط F و G و K و L و M',
+      maxWidth: 420,
+    },
+  },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
   // Les acquis que « أستعدّ » diagnostique : le parallélogramme (diagonales, définition), la translation de 3AM (et la
@@ -82,6 +102,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_insihab-shuaa_P1'],
       sourceElementIds: ['act-1'],
     },
+    // Modules 5–7 — les « مسائل » : exercices complets de type امتحان, ajouts de la plateforme (content/problems.js),
+    // sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — عرض المسيّرات: مشهد الانسحاب', learningPointIds: ['4am_insihab-shuaa_P1', '4am_insihab-shuaa_P2', '4am_insihab-shuaa_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — الباب المنزلق للمستودع', learningPointIds: ['4am_insihab-shuaa_P1', '4am_insihab-shuaa_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — مسيّرة تصوير بستان الزيتون', learningPointIds: ['4am_insihab-shuaa_P2', '4am_insihab-shuaa_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -103,8 +128,22 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 1 و 2 و 3 و 4 و 5 و 8.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_insihab-shuaa_P1', '4am_insihab-shuaa_P2', '4am_insihab-shuaa_P3'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث، منها الأسئلة 1 إلى 3 من أؤكّد تعلّماتي.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui reste toujours ouvert. Elles comptent dans la
+    // complétion, jamais dans la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — عرض المسيّرات', desc: 'مسألة الدرس: مثلث من المسيّرات ينسحب، ومسيّرة ضلّت مكانها. حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_insihab-shuaa_P1', '4am_insihab-shuaa_P2', '4am_insihab-shuaa_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — الباب المنزلق', desc: 'باب مستودع ينسحب على سكّته: أين تذهب أركانه؟ متوازي أضلاع العارضة، وطول السكّة وثمنها.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_insihab-shuaa_P1', '4am_insihab-shuaa_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — مسيّرة تصوير البستان', desc: 'نقاط تصوير على خطّ مستقيم: أيّها في مكانه؟ منتصف المسار، وهل تكفي البطارية؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_insihab-shuaa_P2', '4am_insihab-shuaa_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث، منها الأسئلة 1 إلى 3 من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

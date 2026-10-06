@@ -2,7 +2,8 @@
  * الدرس 3 — التمثيل البياني لدالة خطية وقراءته بيانيًا
  * Unité 6 du manuel (4AM) : نشاط 3 (p. 66), معارف (p. 68), طرائق et دوري الآن (p. 69),
  * exercices 2, 10 → 15 (p. 72–73), 30 et 33 (أتعمّق, p. 75), QCM 1 et 4 (p. 74), le زالق de
- * جيوجيبرا (p. 76). Source de vérité : docs/sources/4am/unit6/extraction.json.
+ * جيوجيبرا (p. 76), puis trois « مسائل » de la plateforme (modules 4–6).
+ * Source de vérité : docs/sources/4am/unit6/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -52,6 +53,30 @@ export const LESSON_CONFIG = {
   // Les acquis que « أستعدّ » diagnostique : تعليم نقطة وقراءة إحداثياتها (السنوات السابقة), la صورة
   // d'un nombre par x ⟼ ax et le معامل depuis un couple (الدرس 2 dala-khattiya), les règles des signes.
   priorKnowledge: ['talim-nuqta', 'notation-fx', 'qawaid-ishara', 'tayin-muamil'],
+  // « مسألة الدرس » : l'énoncé de la مسألة 1 (module 4), montré au sommaire et à la fin du module 1 —
+  // le monde du niveau متقدم (le زالق du téléphérique : des droites épinglées à O, qui montent ou
+  // descendent), avec deux câbles et d'autres nombres. Résolue pas à pas au module 4 (content/problems.js).
+  lessonProblem: {
+    module: 4,
+    title: 'تلفريك الوادي: حبلان من المحطّة الوسطى',
+    statement: 'يربط تلفريك بين تلّتين يفصل بينهما واد، وفي قاع الوادي محطّة وسطى $O$ ينطلق منها حبلان مستقيمان: حبل شرقي وحبل غربي. نأخذ المحطّة $O$ مبدأ معلم: الفاصلة $x$ هي المسافة الأفقية بالمتر (موجبة نحو الشرق وسالبة نحو الغرب)، والترتيب $y$ هو الارتفاع بالمتر بالنسبة إلى المحطّة $O$. الحبل الشرقي جزء من المستقيم $(D_1)$ والحبل الغربي جزء من المستقيم $(D_2)$، وهما في الشكل التمثيلان البيانيان لدالتين خطيتين $f$ و $g$. المحطّة $O$ على ارتفاع 380 m عن سطح البحر، والمحطّة الشرقية على بعد أفقي 1000 m شرق $O$، والمحطّة الغربية على بعد أفقي 800 m غرب $O$. تتّسع كل عربة لـ 6 ركّاب.',
+    // Le support de la مسألة 1, montré aussi par la carte « مسألة الدرس » (une seule source).
+    visual: {
+      range: { xMin: -400, xMax: 400, yMin: -200, yMax: 200 },
+      unit: 0.5,
+      unitY: 0.5,
+      functions: [
+        { id: 'd1', a: 0.5, b: 0, label: '(D₁)', tone: 'indigo' },
+        { id: 'd2', a: -0.25, b: 0, label: '(D₂)', tone: 'rose' },
+      ],
+      points: [],
+      xStep: 100,
+      yStep: 50,
+      frozen: true,
+      ariaLabel: 'معلم مبدؤه المحطّة الوسطى O: المستقيم (D₁) يصعد من اليسار إلى اليمين والمستقيم (D₂) ينزل، وكلاهما يشمل O',
+      caption: false,
+    },
+  },
   resources: [
     // Le module 1 ouvre sur LA DROITE ÉPINGLÉE À O (origin-line). مبتدئ = le نشاط 3 (f = 0,5x, ouvert
     // par défaut : c'est l'activité du module) ; متقدم = le زالق de جيوجيبرا (p. 76) dans sa version
@@ -91,6 +116,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_tamthil-bayani-khatti_P1'],
       sourceElementIds: ['now-69'],
     },
+    // Les trois « مسائل » (content/problems.js) — ajouts de la plateforme, de type امتحان.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — تلفريك الوادي: حبلان من المحطّة الوسطى', learningPointIds: ['4am_tamthil-bayani-khatti_P2', '4am_tamthil-bayani-khatti_P1', '4am_tamthil-bayani-khatti_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — مكتب الصرف: من الأورو إلى الدينار', learningPointIds: ['4am_tamthil-bayani-khatti_P2', '4am_tamthil-bayani-khatti_P1'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — الدرّاج: المسافة والمدّة', learningPointIds: ['4am_tamthil-bayani-khatti_P2', '4am_tamthil-bayani-khatti_P1'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -108,8 +137,22 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 2، 10 ← 15، 30 و 33: نرسم، نقرأ على الشكل، ونحذر من إشارة المعامل.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tamthil-bayani-khatti_P2', '4am_tamthil-bayani-khatti_P1', '4am_tamthil-bayani-khatti_P3'],
       color: 'amber', style: 'featured', estimatedMin: 12, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث، منها اثنان من أؤكّد تعلّماتي.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui reste toujours ouvert.
+    // Elles comptent dans la complétion, jamais dans la maîtrise — LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — حبلا التلفريك', desc: 'مسألة الدرس: حبل يصعد وحبل «ينزل» من المحطّة الوسطى. نقرأ على الشكل، نعيّن المعادلتين، ونحسب ارتفاع المحطّتين.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tamthil-bayani-khatti_P2', '4am_tamthil-bayani-khatti_P1', '4am_tamthil-bayani-khatti_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — مكتب الصرف', desc: 'من الأورو إلى الدينار على مستقيم: كم دينارًا؟ كم أورو؟ وهل يكفي المبلغ؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tamthil-bayani-khatti_P2', '4am_tamthil-bayani-khatti_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — الدرّاج', desc: 'المسافة بدلالة المدّة: نقرأ، نحسب السرعة، ونتوقّع ساعة الوصول إلى نهاية السباق.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tamthil-bayani-khatti_P2', '4am_tamthil-bayani-khatti_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث، منها اثنان من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

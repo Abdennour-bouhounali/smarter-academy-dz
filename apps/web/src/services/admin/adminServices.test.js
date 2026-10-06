@@ -51,8 +51,7 @@ describe('signalement côté élève', () => {
     // Le serveur re-résout tout : un lesson_id envoyé par le client ne serait
     // même pas validé. Le service ne doit donc pas prétendre en fournir.
     expect(source).not.toMatch(/lesson_id|lessonId\s*[:,]/);
-    expect(source).toContain('lessonCode');
-    expect(source).toContain('initiateReport');
+    expect(source).toContain('submitReport');
   });
 
   it('ne collecte aucune donnée personnelle dans le contexte technique', () => {

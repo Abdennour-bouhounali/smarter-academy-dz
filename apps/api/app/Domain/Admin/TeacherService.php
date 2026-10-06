@@ -49,6 +49,9 @@ class TeacherService
         if ($status = ($filters['status'] ?? null)) {
             $query->where('account_status', $status);
         }
+        if (in_array((string) ($filters['ambassador'] ?? ''), ['1', 'true'], true)) {
+            $query->where('is_ambassador', true);
+        }
         if (($filters['requests'] ?? null) === 'pending') {
             $query->whereHas('subscriptionRequests', fn ($q) => $q->where('status', SubscriptionRequest::STATUS_PENDING));
         }
@@ -82,6 +85,8 @@ class TeacherService
             'lastName' => $t->last_name,
             'email' => $t->email,
             'accountStatus' => $t->account_status,
+            'isAmbassador' => (bool) $t->is_ambassador,
+            'ambassadorSince' => optional($t->ambassador_since)->toIso8601String(),
             'emailVerified' => $t->hasVerifiedEmail(),
             'createdAt' => optional($t->created_at)->toIso8601String(),
             'lastActivityAt' => optional($t->last_activity_at)->toIso8601String(),

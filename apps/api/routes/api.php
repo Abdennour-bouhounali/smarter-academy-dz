@@ -47,6 +47,7 @@ use App\Http\Controllers\StudentClassroomController;
 use App\Http\Controllers\ClassJoinLinkController;
 use App\Http\Controllers\StudentReportController;
 use App\Http\Controllers\Teacher\TeacherClassroomController;
+use App\Http\Controllers\Teacher\TeacherPracticeResponseController;
 use App\Http\Controllers\Teacher\TeacherClassroomInsightController;
 use App\Http\Controllers\Teacher\TeacherClassroomInterventionController;
 use App\Http\Controllers\Teacher\TeacherClassroomLearningPointController;
@@ -209,15 +210,21 @@ Route::prefix('v1')->group(function () {
             // une leçon sans contenu, sur les deux seuls points d'entrée qui
             // créent quelque chose — le reste exige une séance, donc en hérite.
             Route::get('/lessons/{lessonCode}/practice/overview', [PracticeSessionController::class, 'overview']);
-            Route::post('/lessons/{lessonCode}/practice/sessions', [PracticeSessionController::class, 'store']);
             Route::get('/practice/sessions/{sessionId}', [PracticeSessionController::class, 'show']);
             // Le prochain exercice conseillé — le sélecteur lit la maîtrise, ne l'écrit jamais.
             Route::get('/practice/sessions/{sessionId}/next', [PracticeSessionController::class, 'next']);
-            Route::post('/practice/sessions/{sessionId}/questions', [PracticeAnswerController::class, 'openQuestion']);
-            Route::post('/practice/sessions/{sessionId}/answers', [PracticeAnswerController::class, 'store']);
-            Route::post('/practice/sessions/{sessionId}/exercise-completions', [PracticeAnswerController::class, 'completeExercise']);
-            Route::post('/practice/sessions/{sessionId}/complete', [PracticeSessionController::class, 'complete']);
-            Route::post('/practice/question-attempts/{attemptUuid}/hints', [PracticeAnswerController::class, 'storeHint']);
+            // Les ÉCRITURES de la pratique (séances, tentatives, indices,
+            // maîtrise) : élève seulement (2026-10-05). L'enseignant parcourt
+            // le بنك التمارين sans suivi — tout est évalué dans son navigateur,
+            // rien n'est écrit (TEACHER_CLASSROOM_ARCHITECTURE.md §8b).
+            Route::middleware('learner')->group(function () {
+                Route::post('/lessons/{lessonCode}/practice/sessions', [PracticeSessionController::class, 'store']);
+                Route::post('/practice/sessions/{sessionId}/questions', [PracticeAnswerController::class, 'openQuestion']);
+                Route::post('/practice/sessions/{sessionId}/answers', [PracticeAnswerController::class, 'store']);
+                Route::post('/practice/sessions/{sessionId}/exercise-completions', [PracticeAnswerController::class, 'completeExercise']);
+                Route::post('/practice/sessions/{sessionId}/complete', [PracticeSessionController::class, 'complete']);
+                Route::post('/practice/question-attempts/{attemptUuid}/hints', [PracticeAnswerController::class, 'storeHint']);
+            });
             Route::get('/practice/notes', [PracticeNotebookController::class, 'index']);
             Route::post('/practice/notes', [PracticeNotebookController::class, 'store']);
             // « Mon cahier » : actions groupées AVANT `{id}` pour que « bulk »
@@ -261,15 +268,12 @@ Route::prefix('v1')->group(function () {
             Route::get('/math-lab/files/{id}/content', [MathLabFileController::class, 'content'])->whereNumber('id');
             Route::delete('/math-lab/files/{id}', [MathLabFileController::class, 'destroy'])->whereNumber('id');
 
-            // « Signaler un problème ». Limité en débit : un signalement est un
-            // geste rare, et cette limite empêche qu'un script en produise mille.
-            // Deux temps : le clic pose le signal, l'envoi le complète. La
-            // limite couvre les deux — un signalement est un geste rare.
+            // « Signaler un problème » — administrateur et AMBASSADEURS
+            // seulement (2026-10-05). UN envoi (multipart, capture d'écran
+            // facultative) : plus de signal posé au clic. Limité en débit :
+            // un signalement est un geste rare.
             Route::post('/reports', [StudentReportController::class, 'store'])
-                ->middleware('throttle:30,1');
-            Route::patch('/reports/{id}', [StudentReportController::class, 'update'])
-                ->whereNumber('id')
-                ->middleware('throttle:30,1');
+                ->middleware(['reviewer', 'throttle:30,1']);
 
             // L'autorité de publication, servie au frontend : le catalogue vit
             // dans le bundle, donc sans ces deux appels l'élève continuerait
@@ -401,6 +405,10 @@ Route::prefix('v1')->group(function () {
             // Renouveler le LIEN de classe : l'ancien n'ouvre plus rien.
             Route::post('/classrooms/{id}/join-link/rotate', [TeacherClassroomController::class, 'rotateJoinLink'])->whereNumber('id');
 
+            // « بنك التمارين » : qui, parmi MES élèves, a fait cet exercice — et
+            // ce qu'il a répondu. Lecture seule (TeacherPracticeResponses).
+            Route::get('/practice/{lessonCode}/exercises/{exerciseId}/students', [TeacherPracticeResponseController::class, 'index']);
+            Route::get('/practice/{lessonCode}/exercises/{exerciseId}/students/{studentId}', [TeacherPracticeResponseController::class, 'show'])->whereNumber('studentId');
             Route::get('/classrooms/{id}/students', [TeacherClassroomStudentController::class, 'index'])->whereNumber('id');
             Route::get('/classrooms/{id}/students/{studentId}/progress', [TeacherClassroomStudentController::class, 'progress'])
                 ->whereNumber('id')->whereNumber('studentId');
@@ -499,6 +507,7 @@ Route::prefix('v1')->group(function () {
             Route::get('/reports/{id}', [AdminReportController::class, 'show'])->whereNumber('id');
             Route::patch('/reports/{id}', [AdminReportController::class, 'update'])->whereNumber('id');
             Route::post('/reports/{id}/notes', [AdminReportController::class, 'addNote'])->whereNumber('id');
+            Route::get('/reports/{id}/screenshot', [AdminReportController::class, 'screenshot'])->whereNumber('id');
 
             Route::get('/students', [AdminStudentController::class, 'index']);
             Route::get('/students/{id}', [AdminStudentController::class, 'show'])->whereNumber('id');
@@ -547,6 +556,8 @@ Route::prefix('v1')->group(function () {
             Route::get('/teachers', [AdminTeacherController::class, 'index']);
             Route::get('/teachers/{id}', [AdminTeacherController::class, 'show'])->whereNumber('id');
             Route::patch('/teachers/{id}/status', [AdminTeacherController::class, 'changeStatus'])->whereNumber('id');
+            // Ambassadeur (« سفير ») : voit tout le contenu, signale les problèmes.
+            Route::patch('/teachers/{id}/ambassador', [AdminTeacherController::class, 'setAmbassador'])->whereNumber('id');
             Route::get('/teachers/{id}/entitlements', [AdminTeacherController::class, 'entitlements'])->whereNumber('id');
             Route::post('/teachers/{id}/entitlements/overrides', [AdminTeacherController::class, 'grantOverride'])->whereNumber('id');
             Route::delete('/teachers/{id}/entitlements/overrides/{overrideId}', [AdminTeacherController::class, 'revokeOverride'])

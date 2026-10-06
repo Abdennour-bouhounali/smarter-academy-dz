@@ -15,12 +15,17 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
  *                                 l'angle α ; 90° ⇒ ⊥, 180° ⇒ ∥ — معارف من المنصّة) ;
  *   module 3 (طرائق p. 155)       istimal-khawas (prouver AC = BD et (BD) ⊥ (AC) par un دوران), surat-zawiya (l'image
  *                                 d'un angle, دوري الآن), markaz-dawaran (le centre : deux médiatrices — معارف من المنصّة).
+ *
+ * « أتوقّع القاعدة » (2026-10-06) : chaque règle prédictible a son `predictPrompt` (ancré sur le geste du laboratoire),
+ * sauf khawas-dawaran, RAPPEL au module 2 (thabat-dawaran l'a déjà fait écrire au module 1) ; istimal-khawas est
+ * prédite par la <PredictRule> qui enveloppe la solution du manuel (Module03Taraiq).
  */
 export const LESSON_KNOWLEDGE = {
   modules: {
     1: [
       {
         id: 'thabat-dawaran', type: 'concepts', title: 'ما يبقى وما يتغيّر',
+        predictPrompt: 'طبعت نسخًا للبتلة $ABC$ وأنت تدير الورقة حول الدبوس، وقارنت كلّ نسخة بالبتلة سطرًا سطرًا على اللوحة. اكتب بكلماتك: ما الذي لا يتغيّر أبدًا مهما أدرت الورقة، وما الذي يتغيّر؟',
         summary: 'حين تدور الورقة الشفافة حول دبوسها لا يتغيّر طول ولا زاوية ولا مساحة ولا استقامية؛ يتغيّر موضع الشكل ومنحى مستقيماته فقط. والورقة الممطّطة تغيّر الأطوال، فليست دورانا.',
         body: (
           <div className="space-y-1.5">
@@ -46,6 +51,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'zawiya-sura', type: 'regles', title: PERP.title,
+        predictPrompt: 'على اللوحة قرأت «الزاوية بين المستقيمين» $(AB)$ و $(A\'B\')$ : $60^\\circ$ للنسخة الأولى من الوردة، ثم أدرت الورقة $90^\\circ$ و $180^\\circ$ . كيف ترتبط الزاوية بين مستقيم وصورته بزاوية الدوران؟ وما وضع المستقيمين في هاتين الحالتين؟',
         summary: 'المستقيم وصورته بدوران زاويته ألفا يصنعان زاوية ألفا: صورة مستقيم بدوران زاويته قائمة تعامده، وبدوران زاويته مستقيمة (نصف دورة) توازيه.',
         body: (
           <div className="space-y-1.5">
@@ -59,6 +65,7 @@ export const LESSON_KNOWLEDGE = {
     3: [
       {
         id: 'istimal-khawas', type: 'methodes', title: METHOD.title,
+        predictPrompt: 'في المستوى «متقدم» أدرت نسخة $[AC]$ حول $O$ حتى انطبقت على $[BD]$ ، ثم أثبتّ $AC = BD$ و $(BD) \\perp (AC)$ ببطاقات الخواص. لو أعطيناك قطعتين أخريين وطُلب منك أن تثبت أنهما متقايستان ومتعامدتان، بأيّ خطوات تبدأ؟ اكتب الطريقة.',
         summary: 'لإثبات تقايس قطعتين أو تعامد مستقيمين نبيّن أن إحدى القطعتين صورة الأخرى بدوران نعيّن مركزه وزاويته، ثم نطبّق خواص الدوران.',
         body: (
           <div className="space-y-1.5">
@@ -70,6 +77,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'surat-zawiya', type: 'methodes', title: 'صورة زاوية بدوران',
+        predictPrompt: 'وجدت قيس صورة الزاوية $\\widehat{AOB}$ دون أن ترسمها. لو طُلب منك أن ترسمها فعلًا بالدوران الذي مركزه $K$ وزاويته $60^\\circ$ ، هل تدير كلّ نقط ضلعيها؟ أيّ النقط تكفي، وكيف تكمل الرسم؟ اكتب الطريقة.',
         summary: 'لإنشاء صورة زاوية بدوران ننشئ صور رأسها ونقطتين من ضلعيها؛ والصورة زاوية لها نفس القيس لأن الدوران يحافظ على الزوايا.',
         body: (
           <div className="space-y-1.5">
@@ -80,6 +88,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'markaz-dawaran', type: 'methodes', title: CENTER.title,
+        predictPrompt: 'في آخر المستوى «متقدم» (التمرين 18) كان الدبوس مخفيًّا، ولم يكن أمامك إلا نقط وصورها. على أيّ خطّ يقع مركز دوران يحوّل $M$ إلى $M\'$ ، ولماذا؟ وكيف تعيّن المركز نفسه بالضبط؟',
         summary: 'مركز الدوران على نفس البعد من كل نقطة ومن صورتها: هو نقطة تقاطع محوري قطعتين تصل كل منهما نقطة بصورتها.',
         body: (
           <div className="space-y-1.5">

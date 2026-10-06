@@ -16,6 +16,8 @@ import { FIG_EX20, FIG_EX17, FIG_EX23, FIG_EX23_DONE, FIG_EX21, FIG_EX24, FIG_EX
  * muntasaf-mutaakisan), ex-21 (posé CORRIGÉ : K milieu de [ED], une ligne dit la coquille), ex-24 (I et les longueurs ne
  * servent pas, une ligne), ex-18 (la preuve du laboratoire, la nature de OHKL, le centre de gravité rédigé). Une étape par
  * exercice, faite quand chaque partie a reçu une réponse (juste ou fausse).
+ * « أتوقّع القاعدة » : la brique muntasaf-mutaakisan est un RAPPEL — elle résume ce que l'élève vient de prouver (ex-23 ; sa
+ * correction l'écrit) et combine le milieu par vecteurs égaux (leçon 2) et les opposés (leçon 3).
  */
 const FIGURES = {
   ex20: <GeoFigure {...FIG_EX20} />,
@@ -74,7 +76,7 @@ export default function Module04Awazzif() {
               {all('23') && (
                 <>
                   <GeoFigure {...FIG_EX23_DONE} />
-                  <KnowledgeBrick id="muntasaf-mutaakisan" lead="ما برهنته:" />
+                  <KnowledgeBrick id="muntasaf-mutaakisan" variant="rappel" lead="ما برهنته:" />
                 </>
               )}
             </div>

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, DESCARTES, LAB } from '../content/textbook';
 import { FIG_ACT1, FIG_ACT1_D } from '../content/figures';
@@ -177,7 +179,7 @@ export default function Module01Nashat() {
               />
               {q3 && (
                 <>
-                  <TextbookBox kind="definition" text={ACTIVITY.part3} source={ACTIVITY.source} compact />
+                  <PredictRule id="murakkibatan" prompt={"وجدت للتوّ $\\begin{pmatrix} 8 \\\\ -2 \\end{pmatrix}$ للانتقال من نقطة إلى أخرى. ماذا يمثّل كل عدد من العددين بالنسبة إلى الشعاع؟ اكتب بكلماتك كيف نقرأ هذين العددين، ولماذا قد يكون أحدهما سالبًا."}><TextbookBox kind="definition" text={ACTIVITY.part3} source={ACTIVITY.source} compact /></PredictRule>
                   <KnowledgeBrick id="murakkibatan" lead="ما كتبته في التطبيق، بكلمات الكتاب:" />
                 </>
               )}
@@ -226,6 +228,8 @@ export default function Module01Nashat() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}><MathText>{allRight ? `أحسنت: ${ACTIVITY_LINES.om}` : 'راجع التصحيح تحت كل سطر: من O تبدأ كل رحلة.'}</MathText></Feedback>}
                 onAnswered={() => setQ5(true)}
               />
+              {/* « مسألة الدرس » : le lab vit dans l'intro (deux niveaux) — le rappel ferme la DERNIÈRE étape du module. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

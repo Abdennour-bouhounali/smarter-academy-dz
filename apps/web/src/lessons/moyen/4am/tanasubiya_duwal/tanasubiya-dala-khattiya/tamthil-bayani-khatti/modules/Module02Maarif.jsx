@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -19,6 +19,8 @@ import GraphFigure from '../components/GraphFigure';
  *      nombre dont l'image est 3,5, puis la règle (brique qiraa-bayaniya) ;
  *   5. دوري الآن : a = 9/4 par A(−2/3 ; −3/2), la droite tracée dans le lab, B(√32 ; √162).
  * Les questions utilisent d'AUTRES nombres que les encadrés (la réponse n'est jamais au-dessus).
+ * « أتوقّع القاعدة » : chaque encadré du livre qui ÉNONCE une règle (propriété, ملاحظة, les deux طرائق)
+ * est enveloppé dans une PredictRule (même id que la brique) — l'élève écrit la règle (predictPrompt de knowledge.jsx), puis la lit.
  * LP : P1, P3, P2.
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
@@ -52,7 +54,8 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tamthil-nashat" variant="rappel" compact />
-              <TextbookBox kind="property" text={KNOWLEDGE.property} source={KNOWLEDGE.source} compact />
+              {/* « أتوقّع القاعدة » : l'encadré du livre ÉNONCE la règle — l'élève la prédit d'abord. */}
+              <PredictRule id="tamthil-mustaqim"><TextbookBox kind="property" text={KNOWLEDGE.property} source={KNOWLEDGE.source} compact /></PredictRule>
               <KnowledgeBrick id="tamthil-mustaqim" lead="ما رأيته في النشاط 3، لكل دالة خطية:" />
               <TextbookBox kind="example" text={KNOWLEDGE.example} source={KNOWLEDGE.source} compact />
               <GraphFigure testId="know-3" win={{ xMin: -3, xMax: 3, yMin: -5, yMax: 5 }} height={240}
@@ -86,7 +89,7 @@ export default function Module02Maarif() {
           num: 2, title: 'يصعد أم ينزل؟', subtitle: 'معارف — ملاحظة', done: q2,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" text={KNOWLEDGE.note} source={KNOWLEDGE.source} compact />
+              <PredictRule id="munha-mustaqim"><TextbookBox kind="remark" text={KNOWLEDGE.note} source={KNOWLEDGE.source} compact /></PredictRule>
               <KnowledgeBrick id="munha-mustaqim" lead="ما رأيته على الزالق، بكلمات الكتاب:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">من اليسار إلى اليمين، التمثيل البياني للدالة:</p>}
@@ -107,7 +110,7 @@ export default function Module02Maarif() {
           num: 3, title: 'نرسم بنقطة ثانية', subtitle: 'طرائق — تمثيل دالة خطية بيانيا', done: q3,
           content: (
             <div className="space-y-3">
-              <MethodSteps method={METHOD_DRAW} />
+              <PredictRule id="rasm-tamthil"><MethodSteps method={METHOD_DRAW} /></PredictRule>
               <KnowledgeBrick id="rasm-tamthil" lead="الطريقة، كما تعلّمها الكتاب:" />
               <TapQuestion
                 prompt={<MathText>{'لرسم التمثيل البياني للدالة $h : x \\longmapsto -2{,}5x$ نرسم المستقيم الذي يشمل O والنقطة:'}</MathText>}
@@ -137,7 +140,7 @@ export default function Module02Maarif() {
                 lead="حرّك المسبار تحت محور الفواصل إلى 4، ثم المسبار على يسار محور التراتيب إلى 3,5، واتبع الخط المتقطع."
               />
               <p className="text-xs text-slate-500"><MathText>{METHOD_READ_WINDOW.note}</MathText> <SourceTag source={METHOD_READ_WINDOW.source} /></p>
-              <MethodSteps method={METHOD_READ} />
+              <PredictRule id="qiraa-bayaniya"><MethodSteps method={METHOD_READ} /></PredictRule>
               <KnowledgeBrick id="qiraa-bayaniya" lead="ما فعلته بالمسبارين، طريقةً:" />
               <NumericQuestion
                 prompt={<MathText>{'على المستقيم (D) نفسه، اقرأ صورة $7{,}5$ :'}</MathText>}

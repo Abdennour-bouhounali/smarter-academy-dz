@@ -10,6 +10,8 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import { FIG_ACT2B } from '../content/figures';
 import TifoVignette from '../components/TifoVignette';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 
 /**
  * Module 1 — نشاط 2 ب (p. 129), ouvert sur LA BANDEROLE DU TIFO (parallelogram-pin).
@@ -192,6 +194,7 @@ export default function Module01Nashat() {
                 onAnswered={() => setQ4(true)}
               />
               {q4 && <Feedback tone="ok">كما على الوشاح: الطول وحده لا يكفي، والاتجاه يحسم.</Feedback>}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

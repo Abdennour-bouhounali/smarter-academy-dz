@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -18,6 +18,9 @@ import { FIG_KNOW1, FIG_REMARK1, FIG_KNOW2, FIG_M2Q1 } from '../content/figures'
  *   3. TOUCH THE MATH : ملاحظة 1 (deux rapports inégaux ⇒ non parallèles) sur la figure du manuel, brique
  *      adam-tawazi, puis d'autres nombres ;
  *   4. FORMALIZE : معارف 2 — k, تكبير / تصغير, l'exemple CORRIGÉ (MN/AC → MN/BC), brique muamil-tanasub.
+ * « أتوقّع القاعدة » : les encadrés du manuel qui ÉNONCENT une règle juste avant sa brique sont enveloppés
+ * (PredictRule : khassiyat-talis, adam-tawazi, muamil-tanasub) — l'élève écrit d'abord ; le rappel de
+ * talis-nashat vient APRÈS l'encadré (il dirait les rapports égaux), la figure de ملاحظة 1 AVANT (le prompt la lit).
  * Les questions utilisent d'AUTRES nombres que les encadrés. LP : P1 (1–3), P3 (4).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -46,8 +49,8 @@ export default function Module02Maarif() {
           num: 1, title: 'الخاصية في ثلاث وضعيات', subtitle: 'معارف 1', done: q1,
           content: (
             <div className="space-y-3">
+              <PredictRule id="khassiyat-talis"><TextbookBox kind="property" title={KNOW1.title} text={KNOW1.property} source={KNOW1.source} compact /></PredictRule>
               <KnowledgeBrick id="talis-nashat" variant="rappel" compact />
-              <TextbookBox kind="property" title={KNOW1.title} text={KNOW1.property} source={KNOW1.source} compact />
               <div className="grid gap-2 sm:grid-cols-3">
                 {FIG_KNOW1.map((f, i) => (
                   <div key={f.ariaLabel} className="rounded-xl border border-violet-100 bg-white p-1">
@@ -99,8 +102,8 @@ export default function Module02Maarif() {
           num: 3, title: 'متى لا يتوازيان؟', subtitle: 'ملاحظة 1 و 2', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" lines={[KNOW1.remark1]} source={KNOW1.source} compact />
               <GeoFigure {...FIG_REMARK1} />
+              <PredictRule id="adam-tawazi"><TextbookBox kind="remark" lines={[KNOW1.remark1]} source={KNOW1.source} compact /></PredictRule>
               <p className="rounded-xl bg-violet-50 px-3 py-2 text-sm text-violet-900"><MathText>{KNOW1.remark1Answer}</MathText></p>
               <KnowledgeBrick id="adam-tawazi" lead="إذا مالت الشاشة اختلفت النسب. والعكس يفيدنا:" />
               <p className="text-sm font-semibold text-slate-800"><MathText>{'النقطة M من $[AB]$ و N من $[AC]$ حيث $AM = 3$ ، $AB = 5$ ، $AN = 4$ و $AC = 7$ .'}</MathText> <SourceTag source={PLATFORM_SOURCE} /></p>
@@ -120,7 +123,7 @@ export default function Module02Maarif() {
           num: 4, title: 'معامل التناسبية k', subtitle: 'معارف 2', done: q4,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="property" title={KNOW2.title} lines={KNOW2.lines} source={KNOW2.source} compact />
+              <PredictRule id="muamil-tanasub" prompt={"في الخطوة 2 ضربت كل أطوال المثلث في العدد نفسه. إذا كان $AB' = k \\times AB$ و $AC' = k \\times AC$، فمتى يكون المثلث $AB'C'$ تكبيرًا للمثلث $ABC$، ومتى يكون تصغيرًا له؟"}><TextbookBox kind="property" title={KNOW2.title} lines={KNOW2.lines} source={KNOW2.source} compact /></PredictRule>
               <TextbookBox kind="example" text={KNOW2.example} source={KNOW2.source} compact />
               <GeoFigure {...FIG_KNOW2} />
               <p className="text-xs text-slate-500" data-correction><MathText>{KNOW2.correction}</MathText></p>

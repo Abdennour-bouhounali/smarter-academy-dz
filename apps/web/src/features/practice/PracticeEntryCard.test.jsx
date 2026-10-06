@@ -5,9 +5,10 @@ import { AuthContext } from '../../context/AuthContext';
 import '../../i18n';
 import PracticeEntryCard from './PracticeEntryCard';
 
-// La pratique est un espace ÉLÈVE : la carte d'entrée ne doit jamais envoyer
-// un enseignant ou un administrateur vers /espace/pratique (route élève →
+// La pratique SUIVIE est un espace ÉLÈVE : la carte ne doit jamais envoyer un
+// enseignant ou un administrateur vers /espace/pratique (route élève →
 // /login → accueil : le « renvoi vers l'accueil » constaté le 2026-09-25).
+// Depuis 2026-10-05 l'enseignant a son بنك التمارين sans suivi.
 const render = (user, token = user ? 't' : null) => renderToStaticMarkup(
   <AuthContext.Provider value={{ user, token, loading: false }}>
     <MemoryRouter><PracticeEntryCard lessonId="qasim-adad-tabii" /></MemoryRouter>
@@ -25,8 +26,14 @@ describe('PracticeEntryCard — qui voit l’entrée de la pratique', () => {
     expect(html).not.toContain('/espace/pratique');
   });
 
-  it('un enseignant et un administrateur ne voient AUCUNE entrée', () => {
-    expect(render({ role: 'teacher' })).toBe('');
+  it('un enseignant est envoyé vers SON بنك التمارين, jamais vers /espace/pratique', () => {
+    const html = render({ role: 'teacher' });
+    expect(html).toContain('href="/enseignant/pratique/qasim-adad-tabii"');
+    expect(html).toContain('data-teacher-practice-entry');
+    expect(html).not.toContain('/espace/pratique');
+  });
+
+  it('un administrateur ne voit AUCUNE entrée', () => {
     expect(render({ role: 'admin' })).toBe('');
   });
 });

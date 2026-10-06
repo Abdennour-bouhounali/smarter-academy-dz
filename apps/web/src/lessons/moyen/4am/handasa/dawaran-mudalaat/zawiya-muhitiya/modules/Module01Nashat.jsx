@@ -6,6 +6,8 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import { FIG_ACT4, FIG_ACT4_MEZIAN } from '../content/figures';
@@ -188,6 +190,9 @@ export default function Module01Nashat() {
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY.part2} source={ACTIVITY.source} compact />
               {evidence}
+              {/* « أتوقّع القاعدة » : la brique AVANT la question — la réponse et l'explication de « هل هوارية على صواب؟ »
+                  énoncent la règle ; l'élève l'écrit d'abord à partir de ses mesures, la question vient après. */}
+              <KnowledgeBrick id="alaqa-nashat" lead="ما وجدته في النشاط:" />
               <TapQuestion
                 prompt="هل هوارية على صواب؟"
                 options={[
@@ -201,7 +206,9 @@ export default function Module01Nashat() {
                 explain={<MathText>{ACTIVITY_LINES.houaria}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
-              {q3 && <KnowledgeBrick id="alaqa-nashat" lead="ما وجدته في النشاط:" />}
+              {/* La « مسألة الدرس » prolonge le lab متقدم : un tireur sur le grand arc, puis l'extrémité d'un diamètre —
+                  résolue au module 5. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

@@ -7,6 +7,7 @@ import AddToNotebookButton from '../../../features/practice/notebook/AddToNotebo
 import { bidi } from '../../../utils/bidi';
 import MathLabel from '../components/MathLabel';
 import { mathToPlain } from '../../../utils/mathPlain';
+import { usePredictGate, PredictPanel, PredictionEcho } from './PredictRule';
 
 /**
  * KnowledgeBrick — pose UNE connaissance à l'instant où l'élève en a besoin.
@@ -31,6 +32,14 @@ import { mathToPlain } from '../../../utils/mathPlain';
  * Au montage, la connaissance entre dans la carte (`unlockItem`) : l'élève
  * voit sa carte grandir au moment où il apprend, pas à la fin du module.
  *
+ * « أتوقّع القاعدة » (2026-10-06, toutes les leçons) : une connaissance NOUVELLE
+ * que l'élève peut conclure (concepts, règles, méthodes, à retenir, formules —
+ * pas le vocabulaire) n'est montrée qu'après qu'il l'a écrite avec ses mots
+ * (PredictRule.jsx, predictRule.js). Jusque-là : ni titre, ni `lead`, ni corps
+ * — ils la diraient — et la carte ne la reçoit qu'à la révélation. Sa
+ * prédiction reste ensuite affichée au-dessus de la règle. Jamais pour un
+ * enseignant, un rappel, une règle déjà acquise ou déjà prédite.
+ *
  * @param {string} id            id de l'item dans LESSON_KNOWLEDGE (clé de l'audit)
  * @param {string[]} [establishes] ids de concepts rendus disponibles pour `requires` (défaut : [id])
  * @param {'new'|'rappel'|'enrichment'} [variant]
@@ -38,6 +47,8 @@ import { mathToPlain } from '../../../utils/mathPlain';
  * @param {boolean} [unlock=true] faire entrer l'item dans la carte au montage
  * @param {boolean} [compact=false] masquer le visuel (étapes denses)
  * @param {React.ReactNode} [children] l'essai immédiat : une petite question, une manipulation
+ * @param {boolean} [predict] forcer (true) ou supprimer (false) « أتوقّع القاعدة » pour cette brique
+ * @param {string} [predictPrompt] la question qui fait conclure la règle (défaut : `item.predictPrompt`, puis générique)
  *
  * TAILLE DU VISUEL. Elle vient de l'item (`visualSize`), pas de la brique :
  * une même connaissance se lit pareil dans la brique et dans la carte.
@@ -50,15 +61,21 @@ export default function KnowledgeBrick({
   lead,
   unlock = true,
   compact = false,
+  predict,
+  predictPrompt,
   children,
 }) {
   const { t } = useTranslation('lesson');
   const { getItem, unlockItem, lessonId } = useLessonKnowledge();
   const item = getItem(id);
+  const { gated, saved, reveal } = usePredictGate({
+    id, itemType: item?.type, itemPredict: item?.predict, brickPredict: predict, variant, ready: Boolean(item),
+  });
 
+  // La carte ne reçoit la connaissance qu'une fois montrée (après la prédiction).
   useEffect(() => {
-    if (unlock) unlockItem(id);
-  }, [id, unlock, unlockItem]);
+    if (unlock && item && !gated) unlockItem(id);
+  }, [id, unlock, unlockItem, item, gated]);
 
   if (!item) {
     // Une brique sans item est une erreur d'auteur : l'audit la signale
@@ -71,6 +88,11 @@ export default function KnowledgeBrick({
       );
     }
     return children ?? null;
+  }
+
+  if (gated) {
+    // La palette ne propose que les symboles de CETTE règle.
+    return <PredictPanel prompt={predictPrompt ?? item.predictPrompt} onReveal={reveal} symbolsFrom={[item.title, item.summary, item.body]} data-predict-for={id} data-knowledge-brick-pending={id} />;
   }
 
   const style = VARIANTS[variant] ?? VARIANTS.new;
@@ -101,6 +123,9 @@ export default function KnowledgeBrick({
               carte, elle, ne bouge pas. */}
           <AddToNotebookButton item={item} lessonCode={lessonId} categoryLabel={category ? t(category.labelKey) : null} />
         </div>
+
+        {/* Ce que l'élève avait conclu, à comparer avec la règle. */}
+        {variant === 'new' && <PredictionEcho id={id} text={saved} />}
 
         {lead && <p className={`text-sm leading-relaxed ${style.lead}`}>{lead}</p>}
 

@@ -25,7 +25,7 @@ import { BASE, launch, check, summary, watchErrors } from './helpers.mjs';
 const CH = `${BASE}/courses/moyen/4am/ansab_al_aadad_wal_hisab`;
 const LESSON = `${CH}/qasim-adad-tabii`;
 const DIAGNOSTIC = `${LESSON}/astaidd`;      // module 0 — PrerequisiteDiagnostic
-const FINAL = `${LESSON}/itqan`;             // module 4 — BossFinal
+const FINAL = `${LESSON}/itqan`;             // module 7 — BossFinal (4–6 : مسائل)
 const errors = [];
 const { browser } = await launch();
 

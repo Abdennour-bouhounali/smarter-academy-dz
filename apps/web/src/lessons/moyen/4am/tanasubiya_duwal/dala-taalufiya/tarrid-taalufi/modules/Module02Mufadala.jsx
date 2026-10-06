@@ -23,6 +23,10 @@ import TaxiGraph from '../components/TaxiGraph';
  * Étapes : (1) l'égalité trouvée ; (2) la brique « tasawi-taqatu », un autre couple de tarifs ;
  * (3) avant / après le croisement, puis la brique « sigha-afdal » ; (4) lire deux tarifs sur un graphique ;
  * (5) trois formules. LP : P2.
+ *
+ * « أتوقّع القاعدة » : ni la consigne de l'atelier ni le retour de l'étape 3 ne disent les règles avant leurs
+ * briques (l'ancienne consigne énonçait « tasawi-taqatu », l'ancien retour « sigha-afdal » : MISTAKE_ALWAYS.right
+ * reste dans la carte des erreurs).
  */
 export default function Module02Mufadala() {
   const [marks, setMarks] = useState({});
@@ -72,7 +76,7 @@ export default function Module02Mufadala() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          lead="نفس الفكرة في المستويين: تتساوى تكلفتان عند فاصلة نقطة تقاطع المستقيمين، وعندها تتغيّر الصيغة الأرخص."
+          lead="نفس السؤال في المستويين: متى تتساوى التكلفتان؟ وأيّ صيغة أرخص؟ حرّك x وراقب العمودين والمستقيمين."
           levels={{
             beginner: () => <Manipulation type="plan-compare" level="beginner" {...LAB.m2.beginner} onTrial={onTrial('beginner')} />,
             advanced: () => <Manipulation type="plan-compare" level="advanced" {...LAB.m2.advanced} onTrial={onTrial('advanced')} />,
@@ -124,7 +128,7 @@ export default function Module02Mufadala() {
                 requires={['tasawi-taqatu', 'hall-mutarajiha']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
-                    <MathText>{allRight ? MISTAKE_ALWAYS.right : 'قارن المبلغين بالصيغتين من أجل عدد المقابلات نفسه، ولا تقارن 2000 بـ 400.'}</MathText>
+                    <MathText>{allRight ? 'صحيح في الحالات الثلاث: قارنت المبلغين بالصيغتين من أجل عدد المقابلات نفسه.' : 'قارن المبلغين بالصيغتين من أجل عدد المقابلات نفسه، ولا تقارن 2000 بـ 400.'}</MathText>
                   </Feedback>
                 )}
                 onAnswered={mark('side')}

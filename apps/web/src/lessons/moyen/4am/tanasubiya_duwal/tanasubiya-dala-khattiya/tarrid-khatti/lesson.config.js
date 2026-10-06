@@ -3,6 +3,7 @@
  * Unité 6 du manuel (4AM) : نشاط 4 p. 67 (trois graphiques), طرائق p. 71 (le ressort), le تحدّ
  * de la page d'unité p. 65 (doublon déclaré), أتعمّق 28, 29, 31, 34, 35, 36 (p. 75). Le manuel n'a
  * pas d'item « أستعدّ » pour ce sujet : module 0 fait d'affirmations de la plateforme.
+ * Puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit6/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -45,6 +46,13 @@ export const LESSON_CONFIG = {
       'تعريف النسبة المئوية والمقادير المركبة (الدرس 4)',
     ],
   },
+  // « مسألة الدرس » (module 4) : montrée dès le sommaire et rappelée au module 1, prolongement du
+  // ressort du niveau متقدم (même instrument, d'autres nombres) — content/problems.js.
+  lessonProblem: {
+    module: 4,
+    title: 'نابض في مخبر العلوم: من قياسين إلى الدستور',
+    statement: 'في مخبر العلوم بالمتوسطة، يجرّب فوج من 4 تلاميذ نابضًا جديدًا طوله دون أيّ جسم 12cm. يستطيل النابض بشكل متناسب مع الكتلة المعلّقة به: كتلة 6g تعطي استطالة 1,5cm، وكتلة 16g تعطي استطالة 4cm. نسمّي $x$ الكتلة المعلّقة (بالغرام) و $y$ استطالة النابض (بالسنتيمتر). يفسد النابض إذا تجاوزت استطالته 7cm.',
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -77,6 +85,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_tarrid-khatti_P1', '4am_tarrid-khatti_P2'],
       sourceElementIds: ['act-4', 'method-spring'],
     },
+    // Les trois « مسائل » (modules 4–6) : exercices complets de type امتحان, ajouts déclarés
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — نابض في مخبر العلوم: الدستور، الصورة، وأكبر كتلة', learningPointIds: ['4am_tarrid-khatti_P1', '4am_tarrid-khatti_P2', '4am_tarrid-khatti_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — محلّ نسخ الوثائق: ثمن الصفحة من التمثيل البياني', learningPointIds: ['4am_tarrid-khatti_P1', '4am_tarrid-khatti_P2', '4am_tarrid-khatti_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — عسل النحّال: جدول الأثمان والقارورات ومدخول الموسم', learningPointIds: ['4am_tarrid-khatti_P1', '4am_tarrid-khatti_P2', '4am_tarrid-khatti_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -94,8 +107,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين أتعمّق 28، 29، 31، 34، 35، 36: درّاج، تسعيرتان، سدّ، تخفيضات وقسم يلعب كرة القدم.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tarrid-khatti_P1', '4am_tarrid-khatti_P2', '4am_tarrid-khatti_P3'],
       color: 'amber', style: 'featured', estimatedMin: 13, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث: النمذجة، الانتقال بين الأشكال، التفسير.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — النابض الجديد', desc: 'مسألة الدرس: من قياسين إلى الدستور، صورة كتلة، الكتلة التي تعطي استطالة، وأكبر كتلة يتحمّلها النابض.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tarrid-khatti_P1', '4am_tarrid-khatti_P2', '4am_tarrid-khatti_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — محلّ نسخ الوثائق', desc: 'ثمن الصفحة من التمثيل البياني، ثمن سلاسل القسم، وكم سلسلة بالميزانية؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tarrid-khatti_P1', '4am_tarrid-khatti_P2', '4am_tarrid-khatti_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — عسل النحّال', desc: 'من جدول الأثمان إلى الدستور، قارورات كاملة، ومدخول الموسم.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tarrid-khatti_P1', '4am_tarrid-khatti_P2', '4am_tarrid-khatti_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث: النمذجة، الانتقال بين الأشكال، التفسير.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

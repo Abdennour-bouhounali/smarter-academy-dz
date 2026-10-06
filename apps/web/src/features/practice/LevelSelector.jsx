@@ -33,7 +33,7 @@ function previousLevel(levels, n) {
   return i > 0 ? sorted[i - 1] : null;
 }
 
-export default function LevelSelector({ levels, recommendedLevel, onSelect, busyLevel }) {
+export default function LevelSelector({ levels, recommendedLevel, onSelect, busyLevel, showProgress = true }) {
   const { t } = useTranslation('student');
 
   return (
@@ -59,7 +59,13 @@ export default function LevelSelector({ levels, recommendedLevel, onSelect, busy
           </span>
         );
 
-        const progress = (
+        // `showProgress = false` (l'enseignant, rien n'est suivi) : le nombre
+        // d'exercices du niveau, sans barre ni « 0 / N ».
+        const progress = !showProgress ? (
+          <span className="mt-1 block text-xs font-semibold text-slate-600" data-level-count>
+            {t('practice.levelExerciseCount', { count: level.exerciseCount })}
+          </span>
+        ) : (
           <span className="mt-1 flex items-center gap-2">
             <span className="block h-1.5 w-full max-w-[10rem] overflow-hidden rounded-full bg-slate-100" aria-hidden="true">
               <span className={`block h-full rounded-full ${done ? 'bg-emerald-500' : 'bg-indigo-500'}`} style={{ width: `${Math.round(ratio * 100)}%` }} />

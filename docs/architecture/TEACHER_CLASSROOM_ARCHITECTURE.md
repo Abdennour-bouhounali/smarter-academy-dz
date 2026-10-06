@@ -42,6 +42,14 @@ teacher     /register?type=enseignant, Google   /enseignant      can:teacher
 student     /register, Google                   /espace          (default)
 ```
 
+- **Ambassador (« سفير », 2026-10-05)** is not a role: it is a flag
+  (`users.is_ambassador`) the administrator toggles on a **teacher**
+  (`PATCH /admin/teachers/{id}/ambassador`). An ambassador is a *reviewer*
+  like the admin (`User::canReviewAllContent()`): they see every lesson,
+  module and exercise whatever its publication state, with a state badge,
+  and only reviewers can report problems. Classes, plan and account status
+  are untouched. Contract: `ADMIN_PANEL_ARCHITECTURE.md` Annexe A8.
+
 - `users.role` stays a free string. `User::SELF_REGISTERABLE_ROLES` is
   `['student', 'teacher']`; `POST /auth/register` accepts an optional
   `accountType` from that list and **ignores any `role` field**. Nothing else
@@ -304,7 +312,7 @@ below and « نظرة عامة ».
 
 The teacher's space is organised around one loop — **DETECT → UNDERSTAND →
 INTERVENE → MEASURE** — and three entry points onto the SAME data: the class
-(« نظرة عامة »), the learning point (« نقاط التعلّم ») and the student (the
+(« نظرة عامة »), the learning point (« الكفاءات ») and the student (the
 dossier). None of them computes a status of its own.
 
 ### Class × Learning Point — the learning map (Mastery V2)
@@ -765,7 +773,7 @@ padding on desktop (`.sa-workspace-main .sa-page`):
 /enseignant                      TeacherHome          usage tiles (UsageMeter, N / M in dir="ltr"), classes, next steps
 /enseignant/classes              ClassGroupList       « قسم جديد » opens ClassGroupForm in a centred Modal, on the page
 /enseignant/classes/nouveau      ClassGroupCreate     same form full-page (direct links, bookmarks); grade from getAllGrades() ∩ allowedGrades
-/enseignant/classes/:id          ClassGroupDetail     JoinAccessCard on top (join LINK, then the CODE below), then tabs نظرة عامة (default) / التلاميذ / نقاط التعلّم / التدخّلات / التحدّي اليومي / الدروس / الإعدادات
+/enseignant/classes/:id          ClassGroupDetail     JoinAccessCard on top (join LINK, then the CODE below), then tabs نظرة عامة (default) / التلاميذ / الكفاءات / التدخّلات / التحدّي اليومي / الدروس / الإعدادات
 /enseignant/classes/:id/eleves/:studentId   StudentProgressPage   « لمحة », signals, interventions, completion, mastery, timeline
 /enseignant/classes/:id/eleves/:studentId/cahier   StudentNotebookPage   read-only, paginated
 /enseignant/classes/:id/defi/affichage   ChallengeDisplayPage   the daily challenge on the classroom screen — outside TeacherLayout, full screen (DAILY_CHALLENGE.md §10)
@@ -823,7 +831,7 @@ Teachers may present in Classroom Mode: `'teacher'` is in
 
 ### 8a. Mastery in the teacher space (Mastery V2, 2026-09-24)
 
-- **« نقاط التعلّم » tab** (`features/teacher/learningPoints/LearningPointsTab.jsx`,
+- **« الكفاءات » tab** (`features/teacher/learningPoints/LearningPointsTab.jsx`,
   gated by `progress.class` like « نظرة عامة »): a lesson picker (visible class
   lessons), one row per LP with a four-segment bar (mastered / reinforce / gap
   / unassessed) and chips « دليل ناقص », « بحاجة إلى اختبار », « متقن لكن
@@ -870,7 +878,7 @@ Reusable pieces — every screen imports them, none redefines them:
   non-causal disclaimer.
 - `snapshot/StudentSnapshot.jsx` — « لمحة » at the top of the dossier.
 
-« نقاط التعلّم » opens on « كل الدروس » (the map) and accepts a `focusCode`
+« الكفاءات » opens on « كل الدروس » (the map) and accepts a `focusCode`
 to open one LP directly (from a signal or a change). The drill-down adds the
 week-by-week trajectory, the items the class fails, the prerequisites, each
 student's direction, and « تدخّل مع من هم في ثغرة ». The evidence panel
@@ -1026,14 +1034,46 @@ usesWorkspaceShell   StudentLayout  MainLayout     TeacherLayout  MainLayout
   a teacher never sees a student's or another teacher's note. An exercise
   note opened from the teacher's notebook links to the lesson, since practice
   is a student surface (`sourceLinkFor(note, base)`).
-- **Practice sessions** (`/espace/pratique`) remain a student surface: not
-  mounted for teachers, and their rows would be the teacher's own anyway.
-  They are therefore **not offered** either (2026-09-25): `PracticeEntryCard`
-  and the « next steps » practice link of `LessonLearningPointsStatus` render
-  only when `useLearningViewer().tracksProgress` (student, or visitor → login
-  invitation). Before, a teacher clicking « التمارين » on a lesson hit the
-  student-only route guard and landed on `/login`, then on their home
-  (`PracticeEntryCard.test.jsx`).
+- **Practice sessions** (`/espace/pratique`) remain a student surface. Since
+  2026-10-05 the server enforces it: every practice WRITE (open a session,
+  open a question, answer, hint, complete an exercise or a session) is behind
+  `learner` — 403 `not_a_learner` for a teacher, an ambassador or an admin
+  (`PracticeLearnerGuardTest`). Before, only the web route guard kept teachers
+  out.
+- **The teacher's practice (2026-10-05) — not a separate space.** The teacher
+  enters it THROUGH THE LESSON, exactly like the student: the lesson summary's
+  `PracticeEntryCard` (teacher variant) links to `/enseignant/pratique/:lessonCode`,
+  which renders the **student's own `PracticeHub`** in teacher mode: the
+  overview is built locally (`teacherBank.teacherOverview`: every level open,
+  no progress, the lesson's learning points with unlit stars and no counters;
+  `LevelSelector showProgress={false}` shows « N تمارين », never « أنهيتها »).
+  Choosing a level opens its first exercise in
+  `/enseignant/pratique/:lessonCode/:level/:exerciseId` —
+  `TeacherPracticePlayer`, the same layout as `PracticeSession` (grid, side
+  column, header, question card with `SessionProgress`, same buttons, same
+  classroom presentation). It checks answers in the browser
+  (`checkLocally` → `packages/core/practice/answerEvaluator.js`), shows hints
+  from the content and can reveal the expected answer; nothing is written.
+  There is no « بنك التمارين » nav entry or lesson list any more.
+- **« إجابات تلاميذي »** — the player's side column (where the student sees
+  their learning point) lists how many of the teacher's students did this
+  exercise; a click unfolds one student's answers question by question, each
+  attempt with its outcome and hints (`StudentResponsesPanel`). API, read-only,
+  `can:teacher`:
+  `GET /teacher/practice/{lessonCode}/exercises/{exerciseId}/students` and
+  `…/students/{studentId}` (`TeacherPracticeResponses`). Scope: ACTIVE members
+  of the teacher's NON-archived classes; identity via
+  `ClassroomAccess::identity` (never the email); a student outside that scope
+  is a 404; the last attempt of each question counts in the summary
+  (`TeacherPracticeResponsesTest`). Answers are rendered by
+  `teacherBank.formatStudentAnswer` (choice → its text, point → `(x ; y)`,
+  composite forms → the server's normalized answer).
+- **Collapsible side column** — in both players (student and teacher) a
+  button (from `xl`, where the column sits beside the exercise) hides the side
+  column so the exercise takes the full width (`useSideColumn`, remembered per
+  browser in `localStorage`, guarded; below `xl` the column stays stacked
+  above the exercise).
+
 
 ## 9. The admin control surface (French)
 
@@ -1121,9 +1161,10 @@ GET  /teacher/classrooms/{id}/students/{studentId}/learning-points/{code}/explan
 GET  /teacher/classrooms/{id}/attention                            (signals + recent changes; progress.class)
 GET|POST /teacher/classrooms/{id}/interventions   GET|PATCH /teacher/classrooms/{id}/interventions/{interventionId}
 GET|PATCH /teacher/classrooms/{id}/daily-challenge/settings   GET …/daily-challenge/results?date=   GET …/daily-challenge/display?date=   (DAILY_CHALLENGE.md)
+GET  /teacher/practice/{lessonCode}/exercises/{exerciseId}/students[/{studentId}]   (« إجابات تلاميذي »: who did it, then one student's answers — §8b)
 
 # admin  (can:admin)
-GET  /admin/teachers  GET /admin/teachers/{id}  PATCH /admin/teachers/{id}/status
+GET  /admin/teachers[?ambassador=1]  GET /admin/teachers/{id}  PATCH /admin/teachers/{id}/status  PATCH /admin/teachers/{id}/ambassador
 GET  /admin/teachers/{id}/entitlements   POST …/entitlements/overrides   DELETE …/entitlements/overrides/{overrideId}
 GET  /admin/{teachers|students}/{id}/subscription            (+ capacity for a teacher)
 POST /admin/{teachers|students}/{id}/subscriptions {planId, studentSeats?, …}   (activate directly)

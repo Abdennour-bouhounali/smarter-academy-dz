@@ -89,7 +89,7 @@ export const INEQUALITY_RULE = {
 };
 
 /**
- * « التأكد من ملاءمتها للواقع » (نقطة التعلّم 2) : ce que les exercices du manuel
+ * « التأكد من ملاءمتها للواقع » (الكفاءة 2) : ce que les exercices du manuel
  * imposent — une longueur est positive (تمرين 30 : $0 < x < 12$), une solution négative
  * est refusée (تمرين 40 : $x = -7$ مرفوض), un nombre d'années « après » est positif.
  */

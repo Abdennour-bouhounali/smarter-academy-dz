@@ -23,12 +23,31 @@ export const ContentAvailabilityContext = createContext({
   isLessonPremium: () => false,
   isLessonHiddenByClass: () => false,
   hiddenByClassCount: 0,
+  lessonStatus: () => 'published',
+  moduleStatus: () => 'published',
   access: null,
   loaded: false,
   refresh: async () => {},
 });
 
-const EMPTY_CLOSED = { lessons: [], modules: {}, locked: [], premium: [], hiddenByClass: [] };
+const EMPTY_CLOSED = { lessons: [], modules: {}, locked: [], premium: [], hiddenByClass: [], statuses: null };
+
+/**
+ * L'ÉTAT DE PUBLICATION, servi au seul RELECTEUR (administrateur, ou
+ * enseignant ambassadeur — « سفير »). Pour lui le serveur ne ferme rien et
+ * rend à la place `statuses` : l'état de chaque contenu non publié. Absent
+ * de la carte = publié. Pour tout autre compte, `statuses` est absent.
+ */
+function readClosed(result) {
+  return {
+    lessons: result.lessons ?? [],
+    modules: result.modules ?? {},
+    locked: result.locked ?? [],
+    premium: result.premium ?? [],
+    hiddenByClass: result.hiddenByClass ?? [],
+    statuses: result.statuses ?? null,
+  };
+}
 
 /**
  * Délai minimal entre deux relectures déclenchées par le RETOUR sur l'onglet.
@@ -68,13 +87,7 @@ export function ContentAvailabilityProvider({ children }) {
     const result = await fetchClosedContent(token);
     if (ticket !== sequence.current) return result;
 
-    setClosed({
-      lessons: result.lessons ?? [],
-      modules: result.modules ?? {},
-      locked: result.locked ?? [],
-      premium: result.premium ?? [],
-      hiddenByClass: result.hiddenByClass ?? [],
-    });
+    setClosed(readClosed(result));
     setAccess(result.access ?? null);
     setLoaded(true);
 
@@ -97,13 +110,7 @@ export function ContentAvailabilityProvider({ children }) {
     fetchClosedContent(token)
       .then((result) => {
         if (cancelled || ticket !== sequence.current) return;
-        setClosed({
-          lessons: result.lessons ?? [],
-          modules: result.modules ?? {},
-          locked: result.locked ?? [],
-          premium: result.premium ?? [],
-          hiddenByClass: result.hiddenByClass ?? [],
-        });
+        setClosed(readClosed(result));
         setAccess(result.access ?? null);
         setLoaded(true);
       })
@@ -171,6 +178,15 @@ export function ContentAvailabilityProvider({ children }) {
        * être en retard sur la base jusqu'au prochain déploiement.
        */
       isLessonPremium: (lessonCode) => premiumSet.has(lessonCode),
+      /**
+       * L'état de publication d'une leçon, pour le relecteur seulement :
+       * 'published' | 'draft' | 'hidden' | 'archived'. Toujours
+       * 'published' pour un autre compte — il ne voit pas le non-publié.
+       */
+      lessonStatus: (lessonCode) => closed.statuses?.lessons?.[lessonCode] ?? 'published',
+      moduleStatus: (lessonCode, moduleNumber) => (
+        closed.statuses?.modules?.[lessonCode]?.[Number(moduleNumber)] ?? 'published'
+      ),
       isModuleClosed: (lessonCode, moduleNumber) => {
         const numbers = closed.modules?.[lessonCode];
         if (!numbers) return false;

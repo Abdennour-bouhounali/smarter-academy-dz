@@ -20,6 +20,8 @@ export const LESSON_KNOWLEDGE = {
     1: [
       {
         id: 'farq-ihdathiyat', type: 'regles', title: 'رمز القفزة: النهاية ناقص المبدأ',
+        // « أتوقّع القاعدة » : posée par PredictRule autour de la question نشاط 2 ب 1 (module 1, étape 4), dont la bonne option EST la règle.
+        predictPrompt: 'على الخريطة فتحتَ البوابة CD بالرمز $\\begin{pmatrix} -1 \\\\ -6 \\end{pmatrix}$ مع $C(3\\,;\\,1)$ و $D(2\\,;\\,-5)$ ، ثم وجدتَ E من رمز $\\overrightarrow{DE}$. كيف تحسب رمز بوابة تنقل البطل من $A(x_A\\,;\\,y_A)$ إلى $B(x_B\\,;\\,y_B)$ دون أن تعدّ المربعات؟ اكتب القاعدة بكلماتك، لكل مركبة.',
         summary: 'مركبتا الشعاع AB نحصل عليهما دون عدّ: فاصلة B ناقص فاصلة A، وترتيب B ناقص ترتيب A. وشعاعان لهما نفس المركبتين متساويان.',
         body: (
           <div className="space-y-1.5">
@@ -32,6 +34,7 @@ export const LESSON_KNOWLEDGE = {
     2: [
       {
         id: 'qanun-murakkibatayn', type: 'regles', title: 'حساب مركبتي شعاع',
+        // « أتوقّع القاعدة » : non — معارف 3 ب re-pose farq-ihdathiyat (module 1) : brique variant="rappel" (Module02Maarif).
         summary: 'إذا كانت إحداثيتا A هما xA و yA وإحداثيتا B هما xB و yB فإن مركبتي الشعاع AB هما xB − xA و yB − yA.',
         body: (
           <div className="space-y-1.5">
@@ -44,6 +47,8 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'tasawi-murakkibat', type: 'regles', title: 'الشعاعان المتساويان في معلم',
+        // « أتوقّع القاعدة » : non — « شعاعان لهما نفس المركبتين متساويان » est déjà posé par farq-ihdathiyat (module 1, DE = CF) :
+        // brique variant="rappel" (Module02Maarif).
         summary: 'يتساوى شعاعان إذا وفقط إذا تساوت مركبتاهما: المركبة الأولى مع الأولى والثانية مع الثانية.',
         body: (
           <div className="space-y-1.5">
@@ -56,6 +61,7 @@ export const LESSON_KNOWLEDGE = {
     3: [
       {
         id: 'tahaqquq-tasawi', type: 'methodes', title: 'التحقق من تساوي شعاعين',
+        predictPrompt: 'في حلّ الكتاب، مع $A(1\\,;\\,0)$ و $B(0\\,;\\,3)$ و $C(-3\\,;\\,0)$ و $D(-2\\,;\\,-3)$ ، وصلنا إلى $\\overrightarrow{AB} = \\overrightarrow{DC}$. لو أعطيناك شعاعين آخرين في معلم، بأيّ خطوات تتحقّق من تساويهما؟ وإلامَ تنتبه حين تكتب كل شعاع؟ اكتب الطريقة.',
         summary: 'للتحقق من تساوي شعاعين نحسب مركبتي كل منهما ونقارنهما، مع احترام ترتيب الحروف (المبدأ ثم النهاية).',
         body: (
           <div className="space-y-1.5">
@@ -67,6 +73,8 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'nuqta-majhula', type: 'methodes', title: 'حساب إحداثيتي نقطة مجهولة',
+        // « أتوقّع القاعدة » : posée par PredictRule autour de la طريقة de la plateforme (module 3, étape 2), qui l'écrit ligne à ligne.
+        predictPrompt: 'في المختبر وضعتَ البوابة D حتى يكون ABCD متوازي أضلاع، مع $A(1\\,;\\,2)$ و $B(4\\,;\\,3)$ و $C(5\\,;\\,5)$. لو لم يكن معك المختبر ولا الشبكة، بأيّ خطوات تحسب إحداثيتي D؟ اكتب الطريقة.',
         summary: 'لحساب إحداثيتي نقطة مجهولة نكتب تساوي شعاعين بترتيب الحروف الصحيح، ثم نساوي المركبتين فنحصل على معادلتين نحلّهما.',
         body: (
           <div className="space-y-1.5">

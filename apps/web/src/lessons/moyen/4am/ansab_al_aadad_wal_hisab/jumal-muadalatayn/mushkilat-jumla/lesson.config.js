@@ -4,6 +4,7 @@
  * أبو كامل (p. 55, dupliqués en module 2), exercices 14–21 (p. 61) et 24–28 (p. 63, أتعمّق),
  * أؤكّد تعلّماتي item 7 (p. 62, test final). Le manuel n'a pas d'item « أستعدّ » pour ce sujet :
  * module 0 fait d'affirmations de la plateforme.
+ * puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit5/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -46,6 +47,11 @@ export const LESSON_CONFIG = {
       'الحل البياني لجملة معادلتين',
     ],
   },
+  lessonProblem: {
+    module: 4,
+    title: 'متحف الولاية: 180 زائرًا و 33000 دج',
+    statement: 'يقترح متحف الولاية تذكرتين يوم الجمعة: 250 دج للبالغين و 100 دج للصغار. يوم الجمعة الماضي استقبل المتحف 180 زائرًا، وبلغت مداخيله 33000 دج. يضمّ المتحف 12 قاعة عرض، ويُفتح على الساعة 9 صباحًا. يريد المدير أن يعرف عدد البالغين وعدد الصغار الذين زاروا المتحف ذلك اليوم.',
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -76,6 +82,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'],
       sourceElementIds: ['act-3'],
     },
+    // Les trois « مسائل » (MASAIL_GENERATION_GUIDE.md) : la 1 prolonge le musée du niveau متقدم.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — متحف الولاية: 180 زائرًا', learningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — تعاونية المتوسطة: الحلوى والعصير', learningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — خليط التمور: دقلة نور والغرس', learningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -93,8 +103,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 14 ← 21 وأتعمّق 24 ← 28: أعداد ونسب، حقول ومستطيلات، زوايا وطالس، مزرعة وأعمار وأوزان وعلامات.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'],
       color: 'amber', style: 'featured', estimatedMin: 18, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقطتي التعلّم: الترجمة بجملة، ثم المراحل حتى الإجابة.',
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — زوار المتحف', desc: 'مسألة الدرس: 180 زائرًا و 33000 دج. نختار، نترجم، نحلّ، نتحقق ونجيب — ثم تسجيل مستحيل ودخول مجاني للصغار.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — تعاونية المتوسطة', desc: 'يوم الأبواب المفتوحة: ثمن قطعة الحلوى وثمن قارورة العصير، ما بيع وما بقي، ثم الربح.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — خليط التمور', desc: 'دقلة نور والغرس: كم كيلوغرامًا من كل نوع؟ طلب لا يلبّيه المخزن، ثم الربح.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين: الترجمة بجملة، ثم المراحل حتى الإجابة.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

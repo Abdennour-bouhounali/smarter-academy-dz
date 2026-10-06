@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -39,7 +39,8 @@ export default function Module03Taraiq() {
           num: 1, title: 'تمرين 1: صورة نقطة', subtitle: 'زاوية 50 درجة في الاتجاه المباشر', done: q1,
           content: (
             <div className="space-y-3">
-              <MethodSteps method={METHOD_POINT} />
+              {/* La طريقة du livre ÉNONCE la méthode tariqat-nuqta : l'élève l'écrit d'abord (prompt dans knowledge.jsx). */}
+              <PredictRule id="tariqat-nuqta"><MethodSteps method={METHOD_POINT} /></PredictRule>
               <GeoFigure {...FIG_METHOD_POINT} />
               <KnowledgeBrick id="tariqat-nuqta" lead="الطريقة، ثلاث خطوات:" />
               <TapQuestion
@@ -65,7 +66,8 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_METHOD_SEG} />
-              <MethodSteps method={METHOD_SEGMENT} />
+              {/* Idem pour tariqat-qitaa : la solution et l'encadré « طريقة » la disent. */}
+              <PredictRule id="tariqat-qitaa"><MethodSteps method={METHOD_SEGMENT} /></PredictRule>
               <KnowledgeBrick id="tariqat-qitaa" lead="يكفي طرفان:" />
               <TapQuestion
                 prompt="صورة القطعة [AB] بالدوران الذي مركزه O وزاويته 40 درجة في الاتجاه غير المباشر:"

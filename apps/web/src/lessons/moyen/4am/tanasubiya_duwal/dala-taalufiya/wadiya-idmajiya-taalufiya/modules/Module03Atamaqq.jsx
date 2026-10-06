@@ -36,7 +36,9 @@ export default function Module03Atamaqq() {
             <div className="space-y-3">
               <TextbookExercise exercise={part('internet-1')} requires={['muamil-tawjih', 'taqatu-jumla']} onAnswered={mark('internet-1')} />
               <TextbookExercise exercise={part('internet-2')} requires={['taqatu-jumla', 'mufadala']} onAnswered={mark('internet-2')} />
-              {done['internet-2'] && <KnowledgeBrick id="tawazi" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : droites parallèles = pas de solution est halat-thalath (درس 4) ; les explications
+                  de internet-1 et internet-2 juste au-dessus viennent de le dire (même $a$, écart constant 150 DA). */}
+              {done['internet-2'] && <KnowledgeBrick id="tawazi" variant="rappel" />}
             </div>
           ) },
         { num: 2, title: 'بطارية الهاتف', subtitle: 'من قراءتين إلى لحظة الانطفاء', done: all('batterie'),
@@ -52,7 +54,9 @@ export default function Module03Atamaqq() {
             <div className="space-y-3">
               <TextbookExercise exercise={part('salle-1')} requires={['ikhtiyar-sigha']} onAnswered={mark('salle-1')} />
               <TextbookExercise exercise={part('salle-2')} requires={['ikhtiyar-sigha', 'tafsir-natija']} onAnswered={mark('salle-2')} />
-              {done['salle-2'] && <KnowledgeBrick id="mutarajiha-ikhtiyar" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : « moins cher » = inégalité est sigha-afdal (درس 5) ; l’explication de salle-2 juste
+                  au-dessus vient de résoudre $x > 10$ et de conclure à 11 séances. */}
+              {done['salle-2'] && <KnowledgeBrick id="mutarajiha-ikhtiyar" variant="rappel" />}
             </div>
           ) },
       ]}

@@ -115,7 +115,9 @@ export default function Module01AlWadiya() {
                 requires={['bud-mutawaziyayn']}
                 feedback={({ allRight }) => <MathText>{allRight ? `أحسنت. ${REMARKS.thabit}` : REMARKS.thabit}</MathText>}
                 onAnswered={mark(1)} />
-              {q[1] && <KnowledgeBrick id="thabit-mutaghayyir" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : le retour de la question ci-dessus (REMARKS.thabit) et la correction de MN (REMARKS.bud, prérequis
+                  `bud-mutawaziyayn`) viennent de dire ce qui est fixe et ce qui varie. */}
+              {q[1] && <KnowledgeBrick id="thabit-mutaghayyir" variant="rappel" />}
             </div>
           ) },
         { num: 2, title: 'تحليل الوضعية: أقصر مسافة', subtitle: 'المرحلة 2 من الكتاب: ما الأداة؟', done: !!q[2],
@@ -172,7 +174,9 @@ export default function Module01AlWadiya() {
                 feedback={({ allRight }) => <MathText>{allRight ? `أحسنت. ${REMARKS.masar}` : REMARKS.mutawazi}</MathText>}
                 onAnswered={mark(4)} />
               <BackLink lesson="shuaayn-mutasawiyayn" what="الشعاعان المتساويان ومتوازي الأضلاع" />
-              {q[4] && <KnowledgeBrick id="insihab-mamar" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : image par translation et égalité de vecteurs (`sura-insihab`), parallélogramme (`mutawazi-tartib`,
+                  درس shuaayn-mutasawiyayn) ; l’étape 3 et les corrections p1–p4 (REMARKS.mutawazi / masar) viennent de le dire. */}
+              {q[4] && <KnowledgeBrick id="insihab-mamar" variant="rappel" />}
             </div>
           ) },
         { num: 5, title: 'تنفيذ: موقع M', subtitle: 'متى يكون AM + MB′ أقصر ما يمكن؟', done: !!q[5],
@@ -206,7 +210,9 @@ export default function Module01AlWadiya() {
                 correct={0} cols={1} requires={['insihab-mamar']}
                 explain={<MathText>{`${REMARKS.N} النقطة التي تقطع فيها $[AB']$ الحافة السفلى ليست تحت M، والممر [MN] عمودي على الحافتين؛ وصورة B هي B′ لا N.`}</MathText>}
                 onAnswered={mark(6)} />
-              {q[6] && <KnowledgeBrick id="aqsar-masar" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : l’inégalité triangulaire (`mutabayina-muthallathiya`, étape 2 : REMARKS.mutabayina) ; les explications
+                  des étapes 5 et 6 (REMARKS.M / N) viennent de placer M et N. */}
+              {q[6] && <KnowledgeBrick id="aqsar-masar" variant="rappel" />}
               <BackLink lesson="barahin-ashia" what="حل مشكلات بتوظيف الأشعة والانسحاب" />
             </div>
           ) },
@@ -246,7 +252,9 @@ export default function Module01AlWadiya() {
               {q[8] && (
                 <>
                   <p className="rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900"><MathText>{SITUATION.closing}</MathText></p>
-                  <KnowledgeBrick id="tariqat-wadiya" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche remet en ordre les trois étapes du « تحليل الوضعية » que l’élève vient de lire
+                      (encadrés des étapes 1, 2 et 4). */}
+                  <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                 </>
               )}
             </div>

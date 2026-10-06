@@ -46,7 +46,8 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <p className="font-mono text-sm text-slate-700" dir="ltr">{METHOD_VALUES.series.join('  ')}</p>
-              <MethodSteps method={{ ...METHOD_VALUES, rule: METHOD_VALUES.rule }} />
+              {/* sans `rule` : la طريقة (encadré « طريقة ») ne s'affiche qu'avec la brique, après « أتوقّع القاعدة » */}
+              <MethodSteps method={{ ...METHOD_VALUES, rule: undefined }} />
               <FreqTable head="شدّة الزلزال" values={tv.values} rows={[
                 { label: 'التكرار', cells: tv.freqs },
                 { label: 'التكرار المجمع الصاعد', cells: tv.up },
@@ -73,7 +74,7 @@ export default function Module03Taraiq() {
             <div className="space-y-3">
               <Histogram edges={METHOD_CLASSES.edges} freqs={METHOD_CLASSES.freqs} yMax={60} yStep={10} xLabel="العمر a" yLabel="التكرار"
                 label="مدرّج تكراري: من 25 إلى 60 بسعة 5، التكرارات 20 و 30 و 40 و 20 و 60 و 20 و 10" />
-              <MethodSteps method={{ source: METHOD_CLASSES.source, exercise: METHOD_CLASSES.exercise, solution: METHOD_CLASSES.solution, rule: METHOD_CLASSES.rule }} />
+              <MethodSteps method={{ source: METHOD_CLASSES.source, exercise: METHOD_CLASSES.exercise, solution: METHOD_CLASSES.solution }} />
               <FreqTable head="العمر $a$" values={tc.classes} rows={[
                 { label: 'التكرار', cells: tc.freqs },
                 { label: 'التواتر', cells: tc.rel },

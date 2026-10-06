@@ -122,7 +122,7 @@
     "title": "📈 تقدّمي",
     "subtitleWithGrade": "سنتك <0>{{grade}}</0> — تابع مسارك، واعرف ما تتحكّم فيه فعلًا، وما يمكنك أن تعمل عليه بعد.",
     "subtitleLead": "تابع مسارك، واعرف ما تتحكّم فيه فعلًا، وما يمكنك أن تعمل عليه بعد.",
-    "subtitleHint": "الميدان ← الوحدة ← الدرس ← نقاط التعلّم.",
+    "subtitleHint": "الميدان ← الوحدة ← الدرس ← الكفاءات.",
     "gradeChip": "سنتك الدراسية",
     "statLessonsCompleted": "دروس مُنجزة",
     "statLessonsInProgress": "دروس قيد الإنجاز",
@@ -165,7 +165,7 @@
     },
     "curriculum": {
       "title": "📚 تقدّمي في البرنامج",
-      "subtitle": "الميدان، ثم الوحدة، ثم الدرس، ثم نقاط التعلّم — بالترتيب الرسمي للبرنامج.",
+      "subtitle": "الميدان، ثم الوحدة، ثم الدرس، ثم الكفاءات — بالترتيب الرسمي للبرنامج.",
       "searchPlaceholder": "🔎 ابحث عن درس أو كفاءة…",
       "searchAria": "البحث في البرنامج",
       "clearSearch": "مسح البحث",
@@ -302,7 +302,7 @@
       "stale": "يحتاج تذكيرًا"
     },
     "loadingDot": "جارٍ التحميل",
-    "errorDot": "تعذّر تحميل حالة نقاط التعلّم",
+    "errorDot": "تعذّر تحميل حالة الكفاءات",
     "explain": {
       "why": "لماذا؟",
       "whyAria": "لماذا هذه الحالة: {{title}}",
@@ -313,7 +313,7 @@
       "retry": "أعِد المحاولة",
       "confidence": "الثقة: {{percent}}٪",
       "evidenceTitle": "الأدلّة",
-      "noEvidence": "لا أدلّة بعد: لم تُجب عن سؤال يقيس هذه النقطة.",
+      "noEvidence": "لا أدلّة بعد: لم تُجب عن سؤال يقيس هذه الكفاءة.",
       "distinctSuccess": "{{done}} من {{needed}} أسئلة متنوعة أُنجزت بنجاح",
       "distinctSuccessNoNeed": "{{done}} أسئلة متنوعة أُنجزت بنجاح",
       "attempts": "المحاولات: {{count}}",
@@ -352,6 +352,15 @@
     "breadcrumbMyCourses": "دروسي",
     "backToMyCourses": "رجوع إلى دروسي",
     "backToPractice": "رجوع إلى التمارين",
+    "levelExerciseCount_zero": "لا تمارين",
+    "levelExerciseCount_one": "تمرين واحد",
+    "levelExerciseCount_two": "تمرينان",
+    "levelExerciseCount_few": "{{count}} تمارين",
+    "levelExerciseCount_many": "{{count}} تمريناً",
+    "levelExerciseCount_other": "{{count}} تمرين",
+    "sideHide": "إخفاء {{what}}",
+    "sideShow": "إظهار {{what}}",
+    "sideLearningPoint": "الكفاءة",
     "backToLevels": "رجوع إلى المستويات",
     "hubSubtitle": "اختر مستوى. تقدر ترجع لأي مستوى أتممته، وقت ما تحبّ.",
     "reviewLesson": "راجع الدرس",
@@ -378,7 +387,7 @@
     "statHints": "الإرشادات",
     "serverVerdict": "تم التحقق من إجابتك على الخادم",
     "selectedBecause": {
-      "weak_learning_point": "اخترنا لك هذا التمرين لأنه يتناول نقطة تحتاج إلى تدعيم",
+      "weak_learning_point": "اخترنا لك هذا التمرين لأنه يتناول كفاءة تحتاج إلى تدعيم",
       "recent_misconception": "اخترنا لك هذا التمرين لمراجعة خطأ ظهر مؤخرًا"
     },
     "whatResisted": "ما صعُب عليك",
@@ -517,9 +526,9 @@
       "minutes_other": "{{count}} دقيقة"
     },
     "lp": {
-      "eyebrow": "نقطة التعلّم",
-      "untitled": "نقطة تعلّم هذا السؤال",
-      "starsAria": "حالة التحكّم في نقطة التعلّم: {{state}} — المرحلة {{stage}} من {{total}}",
+      "eyebrow": "الكفاءة",
+      "untitled": "كفاءة هذا السؤال",
+      "starsAria": "حالة التحكّم في الكفاءة: {{state}} — المرحلة {{stage}} من {{total}}",
       "exercises": "تمارين أنهيتها",
       "questions": "أسئلة أجبت عنها"
     },
@@ -922,7 +931,7 @@
     "synthesisTitle": "أدمج تعلّماتي",
     "synthesisTag": "أؤكّد وأدمج تعلّماتي",
     "lessonTag": "الدرس {{n}}",
-    "learningPoints": "نقاط التعلّم",
+    "learningPoints": "الكفاءات",
     "prerequisites": "المتطلبات السابقة",
     "prerequisitesNote": "متطلبات تعلّمية للفهم، لا تمنع فتح الدرس.",
     "manipulationsAndMethods": "المناولات والطرائق",
@@ -931,6 +940,7 @@
     "textbookPages": "الكتاب ص {{pages}}",
     "start": "أبدأ الدرس",
     "continue": "أواصل",
+    "soon": "قريبًا",
     "unitCard": {
       "open": "افتح الوحدة",
       "lessonsOf": "دروس الوحدة",
@@ -986,7 +996,7 @@
       "intro": "بانضمامك إلى هذا القسم، توافق على أن يطّلع أستاذك في Smarter Academy على معلومات تعلّمك في دروس هذا القسم:",
       "items": {
         "progress": "تقدّمك في الدروس",
-        "mastery": "مستوى تمكّنك من كل نقطة تعلّم",
+        "mastery": "مستوى تمكّنك من كل كفاءة",
         "answers": "إجاباتك في التمارين والاختبارات النهائية",
         "notebook": "ما تدوّنه في كرّاسي خلال هذه الدروس (دون الملاحظات المؤرشفة)"
       },
@@ -1005,11 +1015,11 @@
       "intro": "نصائح من أستاذك لمساعدتك، وليست إلزامية: لا شيء يُقفَل ولا موعد نهائي.",
       "from": "من الأستاذ {{teacher}} · {{classroom}}",
       "kinds": {
-        "review_prerequisite": "راجِع هذه النقطة الأساسية قبل أن تواصل",
+        "review_prerequisite": "راجِع هذه الكفاءة القبلية قبل أن تواصل",
         "recommend_lesson": "أعِد قراءة هذا الدرس",
-        "recommend_practice": "تمرّن أكثر على هذه النقطة"
+        "recommend_practice": "تمرّن أكثر على هذه الكفاءة"
       },
-      "learningPointLabel": "نقطة التعلّم",
+      "learningPointLabel": "الكفاءة",
       "lessonLabel": "الدرس",
       "messageLabel": "رسالة أستاذك",
       "openLesson": "افتح الدرس"

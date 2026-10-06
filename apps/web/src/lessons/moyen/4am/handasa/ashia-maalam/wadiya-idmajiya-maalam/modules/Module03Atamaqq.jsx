@@ -72,7 +72,8 @@ export default function Module03Atamaqq() {
               <TextbookExercise exercise={part('ex-25-2')} requires={['aks-fithaghuris']} onAnswered={mark('ex-25-2')} />
               <TextbookExercise exercise={part('ex-25-3')} requires={['hisab-murakkibat']} onAnswered={mark('ex-25-3')} />
               <TextbookExercise exercise={part('ex-25-4')} requires={['mutawazi-tartib']} onAnswered={mark('ex-25-4')} />
-              {done['ex-25-4'] && <KnowledgeBrick id="burhan-tahlili" lead="التمارين 22 و 23 و 25 بنفس الطريقة: ما هي؟" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : prouver une nature par le calcul = tabiat-muthallath, tabiat-rubai, intima-daira de ithbat-khawas-maalam (درس 4), et le brief du module vient de le dire. */}
+              {done['ex-25-4'] && <KnowledgeBrick id="burhan-tahlili" variant="rappel" lead="التمارين 22 و 23 و 25 بنفس الطريقة: ما هي؟" />}
               <BackLink lesson="ithbat-khawas-maalam" what="توظيف الحساب الشعاعي والإحداثيات لإثبات الخواص" />
             </div>
           ) },

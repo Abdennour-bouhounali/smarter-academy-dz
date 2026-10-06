@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureAccountIsActive;
 use App\Http\Middleware\EnsureEmailIsVerified;
+use App\Http\Middleware\EnsureContentReviewer;
 use App\Http\Middleware\EnsureLearnerRole;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -36,6 +37,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'email.verified' => EnsureEmailIsVerified::class,
             // Les écritures du trajet d'apprentissage : élève seulement.
             'learner' => EnsureLearnerRole::class,
+            // Le signalement de problèmes : administrateur et ambassadeurs.
+            'reviewer' => EnsureContentReviewer::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

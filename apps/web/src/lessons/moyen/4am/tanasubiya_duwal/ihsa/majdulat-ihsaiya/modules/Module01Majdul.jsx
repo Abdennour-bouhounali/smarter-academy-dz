@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookExercise } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { EX7, EX7_OUTLIER, EX7_RANGE_TRAP, LAB } from '../content/textbook';
 import { byId } from '../content/exercises';
@@ -20,6 +22,12 @@ import { Dustur, SeriesRow } from '../components/Figures';
  * UNDERSTAND → أ) ب) à la main (le منوال défini par le livre), la plage A1:G1 (P1), le bon دستور avec les
  * PROPRES دساتير de l'élève au-dessus (`[data-activity-evidence]`), le recalcul avec ses propres
  * modifications. AUCUNE étape n'attend `onFinished`. LP : P1, P2.
+ *
+ * « أتوقّع القاعدة » : l'explication de la question de l'étape 4 ÉNONCE la règle `iadat-hisab` (la moyenne
+ * bouge, la médiane reste, le nombre écrit à la main ne bouge pas) ; la question est donc enveloppée dans
+ * <PredictRule id="iadat-hisab"> — l'élève écrit la règle d'après SA modification du lab avant de répondre.
+ * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape (les labs vivent dans `intro`) : une autre
+ * série dans la ligne 1, les quatre دساتير en B2 ← B5, résolue au module 5.
  */
 const D = (f) => <Dustur key={f}>{f}</Dustur>;
 
@@ -182,20 +190,23 @@ export default function Module01Majdul() {
           content: (
             <div className="space-y-3">
               {evidenceEdit}
-              <TapQuestion
-                prompt={<MathText>{`${EX7_OUTLIER.text} ماذا تُظهر الخليتان B3 (الوسيط) و B4 (المتوسط)؟`}</MathText>}
-                options={[
-                  <MathText key="a">{'الوسيط 4 والمتوسط $\\dfrac{65}{7} \\approx 9{,}29$'}</MathText>,
-                  <MathText key="b">{'الوسيط 4 والمتوسط 5 : لم نعد كتابة الدساتير'}</MathText>,
-                  <MathText key="c">{'الوسيط 8 والمتوسط $\\dfrac{65}{7} \\approx 9{,}29$'}</MathText>,
-                ]}
-                correct={0}
-                cols={1}
-                requires={['dustur', 'dasatir-arbaa']}
-                explain={<MathText>{`${EX7_OUTLIER.mean} ${EX7_OUTLIER.median} ${EX7_OUTLIER.hand}`}</MathText>}
-                onAnswered={() => setQ4(true)}
-              />
+              <PredictRule id="iadat-hisab">
+                <TapQuestion
+                  prompt={<MathText>{`${EX7_OUTLIER.text} ماذا تُظهر الخليتان B3 (الوسيط) و B4 (المتوسط)؟`}</MathText>}
+                  options={[
+                    <MathText key="a">{'الوسيط 4 والمتوسط $\\dfrac{65}{7} \\approx 9{,}29$'}</MathText>,
+                    <MathText key="b">{'الوسيط 4 والمتوسط 5 : لم نعد كتابة الدساتير'}</MathText>,
+                    <MathText key="c">{'الوسيط 8 والمتوسط $\\dfrac{65}{7} \\approx 9{,}29$'}</MathText>,
+                  ]}
+                  correct={0}
+                  cols={1}
+                  requires={['dustur', 'dasatir-arbaa']}
+                  explain={<MathText>{`${EX7_OUTLIER.mean} ${EX7_OUTLIER.median} ${EX7_OUTLIER.hand}`}</MathText>}
+                  onAnswered={() => setQ4(true)}
+                />
+              </PredictRule>
               {q4 && <KnowledgeBrick id="iadat-hisab" lead="ما رأيته في المجدول:" />}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

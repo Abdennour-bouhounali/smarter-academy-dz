@@ -7,6 +7,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { practiceHubPath } from './practiceCapability';
 import { useLearningViewer } from '../learning/learningViewer';
 import { levelCounts } from './practiceContent';
+import { teacherBankPath } from './teacherBank';
 
 /**
  * « Commencer à pratiquer » — le pont entre une leçon et son entraînement.
@@ -32,9 +33,35 @@ export default function PracticeEntryCard({ lessonId }) {
   // § 8b) : un enseignant ou un administrateur qui lit la leçon n'y a pas de
   // route — le lien le renvoyait vers /login puis vers son accueil.
   // `tracksProgress` = élève ou visiteur (qui reçoit l'invitation à se connecter).
-  const { tracksProgress } = useLearningViewer();
+  const { tracksProgress, isTeacher } = useLearningViewer();
+  const { t: tt } = useTranslation('teacher');
 
-  if (total === 0 || !tracksProgress) return null;
+  if (total === 0) return null;
+
+  // L'ENSEIGNANT a son propre بنك التمارين : parcourir et essayer, sans
+  // suivi (/enseignant/pratique). L'administrateur, lui, n'a pas de carte.
+  if (isTeacher) {
+    return (
+      <section className="rounded-3xl border-2 border-indigo-200 bg-gradient-to-br from-indigo-50 to-violet-50 p-6 sm:p-8" data-teacher-practice-entry>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+          <div className="space-y-2 min-w-0">
+            <h2 className="flex items-center gap-2 text-xl sm:text-2xl font-space font-extrabold text-slate-900">
+              <Dumbbell className="w-5 h-5 text-indigo-600" aria-hidden="true" /> {tt('practice.entryTitle')}
+            </h2>
+            <p className="text-sm text-slate-600 max-w-lg">{tt('practice.entryBody', { total })}</p>
+          </div>
+          <Link
+            to={teacherBankPath(lessonId)}
+            className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold min-h-[52px] transition-colors"
+          >
+            {tt('practice.entryOpen')} <ArrowForward className="w-4 h-4" aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
+  if (!tracksProgress) return null;
 
   const levelCount = Object.keys(counts).length;
 

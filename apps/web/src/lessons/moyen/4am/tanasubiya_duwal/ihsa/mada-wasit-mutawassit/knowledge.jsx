@@ -19,6 +19,8 @@ export const LESSON_KNOWLEDGE = {
     1: [
       {
         id: 'mada-nashat', type: 'concepts', title: 'مدى سلسلة الرواتب',
+        // Un NOM : la question du manuel le donne elle-même (« يسمى هذا الفرق مدى سلسلة الرواتب ») — rien à prédire.
+        predict: false,
         summary: 'الفرق بين أكبر قيمة وأصغر قيمة في سلسلة يسمّى مداها: في نشاط 3 مدى الرواتب خمسة وأربعون ألف دينار.',
         body: (
           <div className="space-y-2">
@@ -61,6 +63,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'markaz-fia', type: 'methodes', title: 'المتوسط بمراكز الفئات',
+        predictPrompt: 'الأوزان مجمّعة في فئات: نعرف فئة كل تلميذ، لا وزنه الدقيق. بأيّ عدد تعوّض كل فئة (مثلًا $34 \\le P < 38$) لتقدّر الوزن المتوسط للتلاميذ الـ 41؟ اكتب طريقتك خطوة بخطوة.',
         summary: 'في سلسلة مجمّعة في فئات نعوّض كل فئة بمركزها، نصف مجموع حدّيها، ثم نحسب المتوسط المتوازن: نحصل على تقدير للمتوسط.',
         body: (
           <div className="space-y-2">
@@ -71,6 +74,9 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'fia-wasitiya', type: 'concepts', title: 'الفئة الوسيطية',
+        // Un NOM déjà donné deux fois avant la brique (ملاحظات de معارف 4 à l'étape 3, مثال 2 juste avant) et
+        // l'élève vient de choisir « الفئة الوسيطية » par son nom dans la question des 41 poids — rien à prédire.
+        predict: false,
         summary: 'في سلسلة مجمّعة في فئات نبحث عن الفئة التي تشمل الوسيط وتسمّى الفئة الوسيطية؛ التكرارات المجمّعة الصاعدة تدلّ عليها.',
         body: (
           <div className="space-y-2">
@@ -83,6 +89,7 @@ export const LESSON_KNOWLEDGE = {
     3: [
       {
         id: 'wasit-rutba', type: 'methodes', title: 'الوسيط بالرتب',
+        predictPrompt: 'في رواتب العمال الـ 11 أخذت القيمة السادسة، وفي حرارة الوادي (10 قيم) منتصف القيمتين الخامسة والسادسة. لسلسلة مرتّبة من $57$ قيمة، ثم من $60$ قيمة: كيف تعيّن رتبة الوسيط دون كتابة كل القيم؟ اكتب الطريقة بدلالة عدد القيم $N$.',
         summary: 'نرتّب السلسلة: إذا كان التكرار الكلّي فرديًا فالوسيط القيمة ذات الرتبة الوسطى، وإذا كان زوجيًا فهو منتصف القيمتين اللتين في الوسط.',
         body: (
           <div className="space-y-2">
@@ -93,6 +100,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'qiyam-mutatarrifa', type: 'regles', title: 'قيمة بعيدة: المتوسط والوسيط',
+        predictPrompt: 'أضفت إلى السلسلة القيمتين $3$ و $43$ وحسبت المؤشّرات الثلاثة من جديد. قارن المتوسط والوسيط والمدى قبل الإضافة وبعدها: ماذا تستنتج عن أثر قيمة بعيدة جدًّا في كل مؤشّر؟ ولماذا؟',
         summary: 'إضافة قيمة بعيدة جدًّا تغيّر المتوسط والمدى كثيرًا ولا تغيّر الوسيط إلّا قليلًا أو لا تغيّره: الوسيط يتعلّق بالرتب.',
         body: (
           <div className="space-y-2">

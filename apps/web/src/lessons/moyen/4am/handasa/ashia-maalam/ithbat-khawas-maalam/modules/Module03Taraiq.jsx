@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -18,6 +18,9 @@ import { FIG_METHOD_PROOF, FIG_METHOD_UNKNOWN, FIG_METHOD_UNKNOWN_DONE, FIG_NOW1
  *      « après » (C et l'angle droit)                                                       → brique tariqat-majhul (P1)
  *   3. دوري الآن 1 : ABCD مربّع, preuve en quatre lignes (P2)
  *   4. دوري الآن 2 : I(−1 ; −1) puis O sur le cercle (P3)
+ * « أتوقّع القاعدة » (2026-10-06) : tariqat-burhan redit, dans les mots du manuel, la méthode tabiat-muthallath posée au
+ * module 2 → brique `rappel`. tariqat-majhul est neuve, mais la solution du manuel (MethodSteps) l'énonce juste avant sa
+ * brique : MethodSteps + développement + vérification sont enveloppés dans une PredictRule (id tariqat-majhul).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -51,7 +54,7 @@ export default function Module03Taraiq() {
                 correct={0} cols={1} requires={['tabiat-muthallath', 'qaim-fithaghuras']}
                 explain={<MathText>{'الزاوية القائمة في A تقابل الضلع [BC]، فهو الذي يكون وحده: $32 + 32 = 64$ . بترتيب آخر نختبر زاوية أخرى: $AB^2 + BC^2 = 96 \\neq 32$ .'}</MathText>}
                 onAnswered={mark(1)} />
-              {q[1] && <KnowledgeBrick id="tariqat-burhan" />}
+              {q[1] && <KnowledgeBrick id="tariqat-burhan" variant="rappel" />}
             </div>
           ) },
         { num: 2, title: 'حساب مسافات', subtitle: 'إحداثية مجهولة y', done: !!q[2],
@@ -68,10 +71,12 @@ export default function Module03Taraiq() {
                 onAnswered={mark(2)} />
               {q[2] && (
                 <>
-                  <MethodSteps method={{ source: METHOD_UNKNOWN.source, exercise: 'عيّن y حتى يكون المستقيمان (AB) و (BC) متعامدين.', solution: METHOD_UNKNOWN.solution }} />
-                  <p className="text-sm text-slate-700" data-platform-note="expand"><MathText>{METHOD_UNKNOWN.expand}</MathText></p>
-                  <p className="text-sm text-emerald-800"><MathText>{METHOD_UNKNOWN.check}</MathText></p>
-                  <GeoFigure {...FIG_METHOD_UNKNOWN_DONE} />
+                  <PredictRule id="tariqat-majhul">
+                    <MethodSteps method={{ source: METHOD_UNKNOWN.source, exercise: 'عيّن y حتى يكون المستقيمان (AB) و (BC) متعامدين.', solution: METHOD_UNKNOWN.solution }} />
+                    <p className="text-sm text-slate-700" data-platform-note="expand"><MathText>{METHOD_UNKNOWN.expand}</MathText></p>
+                    <p className="text-sm text-emerald-800"><MathText>{METHOD_UNKNOWN.check}</MathText></p>
+                    <GeoFigure {...FIG_METHOD_UNKNOWN_DONE} />
+                  </PredictRule>
                   <KnowledgeBrick id="tariqat-majhul" lead="ما فعلته في المختبر، مكتوبا:" />
                 </>
               )}

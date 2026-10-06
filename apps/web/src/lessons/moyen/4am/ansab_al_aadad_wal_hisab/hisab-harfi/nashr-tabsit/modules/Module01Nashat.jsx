@@ -6,7 +6,9 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
 import { bidi } from '../../../../../../../utils/bidi';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, HOOK, PLATFORM_NOTES } from '../content/textbook';
 
@@ -222,13 +224,17 @@ export default function Module01Nashat() {
         {
           num: 5, title: 'عودة إلى ملعب المتوسطة', subtitle: 'شكلان لعبارة واحدة', done: q5,
           content: (
-            <NumericQuestion
-              prompt={<MathText>{'من أجل $x = 4$ ، احسب مساحة الملعب $3x^2 + 8x - 3$ (الشكل المنشور):'}</MathText>}
-              expected={3 * 4 * 4 + 8 * 4 - 3}
-              requires={['nashr-qawsayn']}
-              explain={<MathText>{'$3 \\times 16 + 32 - 3 = 77$ ، وبالشكل الأول: $(3 \\times 4 - 1)(3 + 4) = 11 \\times 7 = 77$. الشكلان متساويان مهما كان $x$.'}</MathText>}
-              onAnswered={() => setQ5(true)}
-            />
+            <div className="space-y-3">
+              <NumericQuestion
+                prompt={<MathText>{'من أجل $x = 4$ ، احسب مساحة الملعب $3x^2 + 8x - 3$ (الشكل المنشور):'}</MathText>}
+                expected={3 * 4 * 4 + 8 * 4 - 3}
+                requires={['nashr-qawsayn']}
+                explain={<MathText>{'$3 \\times 16 + 32 - 3 = 77$ ، وبالشكل الأول: $(3 \\times 4 - 1)(3 + 4) = 11 \\times 7 = 77$. الشكلان متساويان مهما كان $x$.'}</MathText>}
+                onAnswered={() => setQ5(true)}
+              />
+              {/* « مسألة الدرس » : le même terrain découpé, d'autres nombres (module 4). */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
+            </div>
           ),
         },
       ]}

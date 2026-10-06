@@ -21,7 +21,7 @@ const MASTERY_MESSAGE_KEY = {
 };
 
 /**
- * « حالتك على نقاط التعلّم » — l'état de maîtrise des points d'UNE leçon, lu
+ * « حالتك على الكفاءات » — l'état de maîtrise des points d'UNE leçon, lu
  * dans le profil serveur (`?lesson=`), rendu avec les mêmes cartes que
  * « تقدّمي ». Ce bloc est la seule chose qui a le droit de parler de maîtrise
  * dans le test final : la « نتيجة التحدي » au-dessus est le score d'UNE

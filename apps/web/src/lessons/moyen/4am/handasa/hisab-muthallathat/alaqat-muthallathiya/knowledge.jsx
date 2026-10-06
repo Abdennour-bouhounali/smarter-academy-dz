@@ -15,6 +15,10 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
  *             mithal-60 (l'exemple du manuel) ;
  *   module 3  hisab-nisba (طرائق « استعمال العلاقات المثلثية »), shart-imkan (« إن أمكن » — formulé, déclaré),
  *             insha-zawiya (طرائق « إنشاء هندسي لزاوية حادة… »).
+ *
+ * « أتوقّع القاعدة » : takhmin-alaqat, burhan-alaqat, hisab-nisba, insha-zawiya ont leur predictPrompt (posé par une
+ * <PredictRule> autour de la question / de la solution du manuel qui les écrirait) ; alaqatan (module 2) et shart-imkan
+ * (module 3, la règle « hudud » du درس 1) sont posées en `rappel` ; mithal-60 est un exemple (`predict: false`).
  */
 const Lines = ({ lines }) => lines.map((l) => <p key={l}><MathText>{l}</MathText></p>);
 
@@ -23,6 +27,7 @@ export const LESSON_KNOWLEDGE = {
     1: [
       {
         id: 'takhmin-alaqat', type: 'concepts', title: 'تخمين من جدول النشاط 4',
+        predictPrompt: 'بقيم جدول النشاط 4 حسبت $\\dfrac{0{,}50}{0{,}87}$ و $0{,}87^2 + 0{,}50^2$ ، ثم الشيء نفسه لـ $45^{\\circ}$ و $60^{\\circ}$ . قارن نتائجك بأعمدة الجدول: ماذا تخمّن لكل زاوية حادة $x$ ؟ اكتب علاقتين تربط $\\cos x$ و $\\sin x$ و $\\tan x$ .',
         summary: 'بقيم الجدول نجد أن جيب الزاوية مقسومًا على جيب تمامها قريب من ظلها، وأن مجموع مربعي جيب التمام والجيب قريب جدًا من 1؛ الفرق الصغير سببه التدوير، فنخمّن أن العلاقتين صحيحتان لكل زاوية حادة.',
         body: (
           <div className="space-y-1.5">
@@ -34,6 +39,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'burhan-alaqat', type: 'regles', title: 'البرهان بخاصية فيثاغورس',
+        predictPrompt: 'الجدول مدوّر، فتخمينك لم يُبرهن بعد. في المثلث $ABC$ القائم في $A$ حيث $x$ قيس الزاوية $\\widehat{B}$ : اكتب $\\cos x$ و $\\sin x$ بأطوال الأضلاع، ثم كيف تستعمل خاصية فيثاغورس لتثبت العلاقتين لكل زاوية حادة؟ اكتب خطوات برهانك.',
         summary: 'في المثلث ABC القائم في A حيث x قيس الزاوية B: مجموع مربعي AB و AC يساوي مربع الوتر BC، فمجموع مربعي جيب التمام والجيب يساوي 1؛ وقسمة الجيب على جيب التمام تختزل الوتر فتعطي AC على AB، أي الظل.',
         body: (
           <div className="space-y-1.5">
@@ -69,6 +75,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'mithal-60', type: 'concepts', title: 'مثال: الزاوية 60°',
+        predict: false, // un exemple que l'élève vient de calculer (tan 60° et la somme des carrés), pas une règle à formuler
         summary: 'في مثلث قائم وتره 2 وضلعه المجاور للزاوية 60° طوله 1: جيب التمام نصف والجيب جذر 3 على 2، والظل جذر 3، ومجموع المربعين ربع زائد ثلاثة أرباع، أي 1.',
         body: (
           <div className="space-y-1.5">
@@ -82,6 +89,7 @@ export const LESSON_KNOWLEDGE = {
     3: [
       {
         id: 'hisab-nisba', type: 'methodes', title: 'حساب نسبة من نسبة أخرى',
+        predictPrompt: 'من $\\cos x = 0{,}6$ وصلت إلى $\\sin^2 x = 0{,}64$ دون أن تعرف قيس الزاوية. كيف تكمل لتحصل على $\\sin x$ ثم على $\\tan x$ ؟ اكتب الطريقة خطوة بخطوة، كما تطبّقها على أيّ نسبة معلومة، ومتى تدوّر.',
         summary: 'إذا علمنا جيب التمام نحسب مربع الجيب بطرح مربع جيب التمام من 1، ثم نأخذ الجذر الموجب؛ ثم نحسب الظل بقسمة الجيب على جيب التمام — دون حساب قيس الزاوية، وندوّر في النهاية فقط.',
         body: (
           <div className="space-y-1.5">
@@ -103,6 +111,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'insha-zawiya', type: 'methodes', title: 'إنشاء زاوية علمت إحدى نسبها',
+        predictPrompt: 'في مختبر النشاط 5 بنيت دون منقلة زاوية جيبها $\\dfrac{3}{5}$ . لو طُلبت منك زاوية جيبها $\\dfrac{2}{5}$ ، ثم زاوية ظلها $\\dfrac{7}{3}$ : أين تنقل كل عدد، ومتى تحتاج المدور ومتى تكفي المسطرة، وأين يكون رأس الزاوية $x$ ؟ اكتب الطريقة.',
         summary: 'نرسم بالكوس زاوية قائمة؛ للجيب أو جيب التمام ننقل البسط على ضلع ونرسم بالمدور دائرة نصف قطرها المقام مركزها طرف القطعة؛ للظل ننقل البسط والمقام على الضلعين؛ ثم نعيّن رأس الزاوية ونتحقّق بالحاسبة وبالمنقلة.',
         body: (
           <div className="space-y-1.5">

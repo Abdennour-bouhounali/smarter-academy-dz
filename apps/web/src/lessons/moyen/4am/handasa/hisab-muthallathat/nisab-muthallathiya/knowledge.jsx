@@ -32,6 +32,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'nisab-zawiya', type: 'regles', title: 'نسب لا تتعلق إلا بالزاوية',
+        predictPrompt: 'بنيت منحدرات بالزاوية $\\widehat{B} = 40^{\\circ}$ وألواحها مختلفة الطول (4 ثم 6 ثم 8)، ثم أدرت الزاوية. ما الذي يغيّر النسبتين $\\dfrac{AC}{BC}$ و $\\dfrac{AC}{AB}$ ، وما الذي لا يغيّرهما؟ اكتب القاعدة بكلماتك.',
         summary: 'في كل المثلثات القائمة في A التي لها الزاوية B نفسها، النسبتان AC على BC و AC على AB هما نفسهما: الأولى جيب الزاوية B والثانية ظلها، ولا تتعلقان بطول الأضلاع.',
         body: (
           <div className="space-y-1.5">
@@ -45,6 +46,7 @@ export const LESSON_KNOWLEDGE = {
     2: [
       {
         id: 'jayb', type: 'concepts', title: 'جيب زاوية حادة',
+        predictPrompt: 'أتممت $\\sin\\widehat{B}$ في المثلث $ABC$ بالعبارات: الضلع المقابل، الضلع المجاور، الوتر. لو أعطيناك أيّ مثلث قائم وزاوية حادة فيه، كيف تحسب جيبها؟ وكيف تحسب جيب تمامها؟ اكتب التعريفين بكلماتك.',
         summary: 'في مثلث قائم، جيب زاوية حادة يساوي طول الضلع المقابل لها مقسوما على طول الوتر؛ وجيب تمامها يساوي طول الضلع المجاور لها مقسوما على طول الوتر.',
         body: (
           <div className="space-y-1.5">
@@ -58,6 +60,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'thill', type: 'concepts', title: 'ظل زاوية حادة',
+        predictPrompt: 'أتممت $\\tan\\widehat{B}$ في المثلث $ABC$ بعبارات الأضلاع. اكتب تعريف ظل زاوية حادة في أيّ مثلث قائم، ثم فكّر: هل يمكن أن يكون الظل أكبر من 1؟ متى؟',
         summary: 'في مثلث قائم، ظل زاوية حادة يساوي طول الضلع المقابل لها مقسوما على طول الضلع المجاور لها؛ وهو عدد موجب قد يكون أكبر من 1.',
         body: (
           <div className="space-y-1.5">
@@ -71,6 +74,9 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'qiyam-madbuta', type: 'concepts', title: 'القيمة المضبوطة والقيمة المقربة',
+        // Deux NOMS (valeur exacte / approchée) que le manuel pose deux fois avant la brique (معارف 1 à l'étape 2, les
+        // remarques de معارف 2 juste avant) : une convention de vocabulaire, rien à conclure.
+        predict: false,
         summary: 'نسبة أطوال تُكتب بقيمتها المضبوطة (مثل 3 على جذر 13، أو جذر 3 على 3)، والحاسبة تعطي قيمة مقربة نُدوّرها بالدقة المطلوبة (0,83 و 0,58).',
         body: (
           <div className="space-y-1.5">
@@ -82,6 +88,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'hudud', type: 'regles', title: 'الجيب وجيب التمام بين 0 و 1',
+        predictPrompt: 'قرأت على المنحدر $\\cos 25^{\\circ} \\approx 0{,}91$ و $\\cos 75^{\\circ} \\approx 0{,}26$ ، ومع $40^{\\circ}$ نسبة $\\dfrac{AC}{BC} \\approx 0{,}64$ . بين أيّ عددين يقع دائما جيب زاوية حادة وجيب تمامها؟ اكتب القاعدة وعلّلها بمقارنة أطوال أضلاع المثلث القائم.',
         summary: 'الأطوال موجبة تماما والوتر أطول أضلاع المثلث القائم، فالجيب وجيب التمام لزاوية حادة عددان محصوران تماما بين 0 و 1، والظل عدد موجب.',
         body: (
           <div className="space-y-1.5">
@@ -96,6 +103,7 @@ export const LESSON_KNOWLEDGE = {
     3: [
       {
         id: 'hisab-tul', type: 'methodes', title: 'حساب طول ضلع بنسبة مثلثية',
+        predictPrompt: 'رأيت $BC = \\dfrac{2{,}5}{\\sin 25^{\\circ}}$ ثم $RS = 3{,}5 \\times \\cos 37^{\\circ}$ ثم $FG = 4{,}5 \\times \\tan 53^{\\circ}$ . لو أعطيناك مثلثا قائما آخر فيه زاوية حادة وطول ضلع، بأيّ خطوات تحسب طول ضلع آخر؟ متى تضرب ومتى تقسم؟ اكتب الطريقة.',
         summary: 'نسمّي الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة، نختار النسبة التي تجمعهما، نعزل الطول المطلوب (نضرب إذا كان في البسط ونقسم إذا كان في المقام)، ثم نحسب ولا ندوّر إلا النتيجة.',
         body: (
           <div className="space-y-1.5">

@@ -4,6 +4,8 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACT_4, LAB, MISTAKE_FIXED } from '../content/textbook';
 
@@ -21,7 +23,11 @@ import { ACT_4, LAB, MISTAKE_FIXED } from '../content/textbook';
  * l'élève a fait lui-même au niveau متقدم (`[data-activity-evidence]`, MANIPULATION_DNA §9).
  *
  * Étapes : (1) la brique « namdhaja-taalufiya », puis quelle écriture ; (2) 7 matchs ; (3) 4800DA ;
- * (4) la brique « sura-fi-wadiya » et un autre budget. LP : P1.
+ * (4) la brique « sura-fi-wadiya » et un autre budget, puis le rappel de « مسألة الدرس » (module 5 ; les
+ * deux niveaux vivent dans `intro`, la carte clôt donc la DERNIÈRE étape). LP : P1.
+ *
+ * « أتوقّع القاعدة » : la consigne de l'atelier ne dit plus la règle (« ما يُدفع مرّة واحدة هو الجزء الثابت… »
+ * l'aurait donnée avant la brique « namdhaja-taalufiya ») ; elle pose la question.
  */
 export default function Module01Ishtirak() {
   const [model, setModel] = useState(null);
@@ -76,7 +82,7 @@ export default function Module01Ishtirak() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          lead="نفس الفكرة في المستويين: ما يُدفع مرّة واحدة هو الجزء الثابت، وما يُدفع عن كل وحدة يُضرب في x."
+          lead="نفس السؤال في المستويين: مبلغ يُدفع مرّة واحدة ومبلغ يُدفع عن كل وحدة، أين تضع كلًّا منهما في الفاتورة؟"
           defaultLevel="advanced"
           levels={{
             beginner: () => <Manipulation type="plan-compare" level="beginner" {...LAB.m1.beginner} />,
@@ -148,6 +154,7 @@ export default function Module01Ishtirak() {
                 explain={<MathText>{'$200x + 2000 = 3000$ أي $200x = 1000$ ومنه $x = 5$ مقابلات.'}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

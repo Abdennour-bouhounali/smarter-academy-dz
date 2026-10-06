@@ -23,6 +23,8 @@
 
 import { readFileSync, existsSync } from 'node:fs';
 import { relative, join } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { validateProblem } from '../apps/web/src/lessons/common/problems/guidedProblem.js';
 import {
   LESSON_STAGES,
   STAGE_ORDER,
@@ -287,6 +289,10 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
     errors.push(`${configPath}: LESSON_CONFIG.modules must be a non-empty array of module objects`);
   } else {
     let totalMin = 0;
+    // Les « مسائل » (track: 'problem') sont un AJOUT de la plateforme : elles
+    // comptent dans le plafond de 90 min, pas dans la comparaison avec la
+    // durée que le propriétaire a déclarée au catalogue.
+    let problemMin = 0;
     let prevOrder = -1;
     const presentStages = new Set();
 
@@ -308,6 +314,44 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
       }
       if (typeof m.slug !== 'string' || m.slug === '') {
         errors.push(`${where}: module slug must be a literal string (module files live at modules/<NN>_<slug>.jsx)`);
+      }
+      if (m.track != null && m.track !== 'problem') {
+        errors.push(`${where}: module track must be 'problem' when present (got ${JSON.stringify(m.track)})`);
+      }
+      if (m.track === 'problem') {
+        // Formatif par construction : jamais d'évaluation, toujours avant le test.
+        if (m.stage !== 'practice_lab') errors.push(`${where}: a 'problem' module must be stage 'practice_lab' (got ${JSON.stringify(m.stage)})`);
+        if (typeof m.estimatedMin === 'number') problemMin += m.estimatedMin;
+      }
+    }
+
+    // Le contenu des « مسائل » : content/problems.js, un problème par module
+    // « problem », dans l'ordre, chacun conforme au contrat GuidedProblem.
+    const problemModules = modules.filter((m) => m.track === 'problem');
+    if (problemModules.length > 0) {
+      const problemsFile = join(lessonDir, 'content', 'problems.js');
+      if (!existsSync(problemsFile)) {
+        errors.push(`${configPath}: ${problemModules.length} 'problem' module(s) but no content/problems.js`);
+      } else {
+        try {
+          const { PROBLEMS } = await import(pathToFileURL(problemsFile).href);
+          if (!Array.isArray(PROBLEMS) || PROBLEMS.length !== problemModules.length) {
+            errors.push(`${rel}/content/problems.js: PROBLEMS must list exactly ${problemModules.length} problem(s), one per 'problem' module`);
+          }
+          for (const p of PROBLEMS ?? []) {
+            for (const e of validateProblem(p)) errors.push(`${rel}/content/problems.js: ${e}`);
+          }
+          // La carte « مسألة الدرس » montre l'énoncé de la مسألة 1 : si celle-ci a un support
+          // (figure / repère / tableau), la carte doit le porter aussi — même donnée, une seule source.
+          const { LESSON_CONFIG } = await import(pathToFileURL(join(lessonDir, 'lesson.config.js')).href);
+          const lp = LESSON_CONFIG?.lessonProblem;
+          const first = PROBLEMS?.[0];
+          if (lp && first) for (const k of ['figure', 'visual', 'table']) {
+            if (first[k] && lp[k] !== first[k]) errors.push(`${configPath}: lessonProblem.${k} must be the مسألة 1 ${k} (problems.js: \`${k}: LESSON_CONFIG.lessonProblem.${k}\`) — the lesson card shows the statement, so it must show its support`);
+          }
+        } catch (err) {
+          errors.push(`${rel}/content/problems.js: cannot be loaded (${err.message})`);
+        }
       }
     }
 
@@ -364,8 +408,8 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
     if (totalMin > MAX_LESSON_MINUTES) {
       errors.push(`${configPath}: modules total ${totalMin} min — the cap is ${MAX_LESSON_MINUTES} min per lesson; split the lesson instead`);
     }
-    if (catalogEntry.durationMinutes != null && Math.abs(totalMin - catalogEntry.durationMinutes) > 10) {
-      warnings.push(`${configPath}: modules total ${totalMin} min but the catalogue declares ${catalogEntry.durationMinutes} min — realign coursesData.js`);
+    if (catalogEntry.durationMinutes != null && Math.abs(totalMin - problemMin - catalogEntry.durationMinutes) > 10) {
+      warnings.push(`${configPath}: modules total ${totalMin - problemMin} min (without مسائل) but the catalogue declares ${catalogEntry.durationMinutes} min — realign coursesData.js`);
     }
     if (strict || catalogEntry.status === 'available') {
       for (const required of (REQUIRED_STAGES_BY_KIND[kind] ?? REQUIRED_STAGES)) {

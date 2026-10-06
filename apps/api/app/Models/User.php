@@ -70,6 +70,8 @@ class User extends Authenticatable
             'suspended_at' => 'datetime',
             'last_activity_at' => 'datetime',
             'legal_consent_at' => 'datetime',
+            'is_ambassador' => 'boolean',
+            'ambassador_since' => 'datetime',
         ];
     }
 
@@ -122,6 +124,26 @@ class User extends Authenticatable
     public function isStudent(): bool
     {
         return $this->role === self::ROLE_STUDENT;
+    }
+
+    /**
+     * Un AMBASSADEUR (« سفير ») : un enseignant que l'administrateur a
+     * désigné. Le drapeau seul ne suffit pas — un compte qui cesse d'être
+     * enseignant cesse d'être ambassadeur, sans qu'on ait à l'effacer.
+     */
+    public function isAmbassador(): bool
+    {
+        return $this->isTeacher() && (bool) $this->is_ambassador;
+    }
+
+    /**
+     * Ceux qui RELISENT le contenu : l'administrateur et les ambassadeurs.
+     * Ils voient tout, quel qu'en soit l'état de publication (ContentAccess),
+     * et eux seuls peuvent signaler un problème (EnsureContentReviewer).
+     */
+    public function canReviewAllContent(): bool
+    {
+        return $this->isAdmin() || $this->isAmbassador();
     }
 
     /**

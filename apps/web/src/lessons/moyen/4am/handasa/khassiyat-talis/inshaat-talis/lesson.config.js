@@ -14,7 +14,8 @@
  *   2 طرائق (discovery)    TOUCH → FORMALIZE : le point de rapport 3/2 (ص 109) et le second point K/N, دوري الآن 2/5 au
  *                          laboratoire, la longueur 14/3 (ص 107), puis 2√13/3 (plateforme, déclaré)
  *   3 أوظّف (practice_lab)  AUTOMATIZE → TRANSFER : تمارين 17, 18, 19, 21
- *   4 إختبار أولي (evaluation)
+ *   puis trois « مسائل » de la plateforme (modules 4–6)
+ *   7 إختبار أولي (evaluation)
  *
  * Le module 2 porte le stage `discovery` (comme les طرائق de `tawzif-khawass-judhur`) : la leçon a sa carte
  * des connaissances, qui formalise en continu — aucun module `formalization` n'est requis (validate-lessons).
@@ -65,6 +66,35 @@ export const LESSON_CONFIG = {
   knowledgeMapMode: 'progressive',
   // Les acquis que « أستعدّ » diagnostique (années précédentes et leçons 1–2 de l'unité).
   priorKnowledge: ['insha-muwazi', 'qitaa-mutaqayisa', 'kitabat-tanasub', 'talis-nisab', 'talis-aksiya', 'mustaqim-muntasafayn', 'fithaghuris'],
+  // « مسألة الدرس » (MASAIL_GENERATION_GUIDE.md) : la banderole du laboratoire متقدم (deux parallèles graduées, rapport
+  // MA/MB), d'autres nombres (4/3 sur 10 cm). Montrée au sommaire et au module 1, résolue au module 4. Sa figure est ICI
+  // (littéraux ; content/problems.js la référence) : la carte de la leçon la dessine.
+  lessonProblem: {
+    module: 4,
+    title: 'لافتة الدربي: شريطان بنسبة 4 إلى 3',
+    statement: 'يحضّر أنصار فريق الحيّ لافتة «تيفو» جديدة للدربي تُخاط من شريطين: أخضر ثم أحمر. على ورقة التصميم رسموا اللافتة $[AB]$ بطول 10 cm، ويريدون النقطة $M$ من $[AB]$ التي تفصل الشريطين بحيث $\\dfrac{MA}{MB} = \\dfrac{4}{3}$ . الطول $AM$ لا يُقاس بالضبط بمسطرة مدرّجة، فأنشؤوا $M$ بالمسطرة غير المدرّجة والمدور كما في الشكل: $(d_1)$ و $(d_2)$ مستقيمان متوازيان يشملان $A$ و $B$ ومدرّجان بنفس الوحدة. سيحضر الدربي نحو 3000 مناصر. اللافتة الحقيقية طولها 35 m، والقماش الأخضر بـ 650 دج للمتر والقماش الأحمر بـ 600 دج للمتر.',
+    // u = (0,6 ; 0,8) : AF = 4 et BE = 3 graduations de part et d'autre de (AB) ; M = A + 40/7 (problems.test.js le recalcule).
+    figure: {
+      points: {
+        A: [3, 4], B: [13, 4], F: [0.6, 0.8], E: [14.8, 6.4], M: [8.714285714285714, 4],
+        f1: [2.4, 3.2], f2: [1.8, 2.4], f3: [1.2, 1.6], e1: [13.6, 4.8], e2: [14.2, 5.6],
+      },
+      lines: [
+        { through: ['F', 'A'], extend: [0.25, 0.9], tone: 'indigo', name: '(d₁)' },
+        { through: ['B', 'E'], extend: [1.4, 0.35], tone: 'indigo', name: '(d₂)' },
+      ],
+      segments: [
+        { from: 'A', to: 'B', bold: true },
+        { from: 'A', to: 'f1', ticks: 1 }, { from: 'f1', to: 'f2', ticks: 1 }, { from: 'f2', to: 'f3', ticks: 1 }, { from: 'f3', to: 'F', ticks: 1 },
+        { from: 'B', to: 'e1', ticks: 1 }, { from: 'e1', to: 'e2', ticks: 1 }, { from: 'e2', to: 'E', ticks: 1 },
+        { from: 'F', to: 'E', tone: 'rose' },
+      ],
+      hidden: ['f1', 'f2', 'f3', 'e1', 'e2'],
+      labels: { A: 'nw', B: 'se', F: 'w', E: 'e', M: 'n' },
+      ariaLabel: 'اللافتة [AB] ومستقيمان متوازيان (d1) و (d2) يشملان A و B ومدرّجان بنفس الوحدة، F على (d1) تحت A بأربع تدريجات و E على (d2) فوق B بثلاث تدريجات، والمستقيم (EF) يقطع [AB] في M',
+      maxWidth: 360,
+    },
+  },
   resources: [
     // Module 1 : l'entrée (pas d'activité du manuel). مبتدئ (défaut) : la banderole du tifo en 3 parts — la
     // méthode générale du rayon auxiliaire ; متقدم : le point M de rapport 3/2 de la طريقة p. 109 (et le second point).
@@ -88,6 +118,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_inshaat-talis_P1', '4am_inshaat-talis_P2'],
       sourceElementIds: ['method-ratio-point'],
     },
+    // Les trois « مسائل » (modules 4–6) : des ajouts de la plateforme, de type امتحان.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — لافتة الدربي: شريطان بنسبة 4 إلى 3', learningPointIds: ['4am_inshaat-talis_P1'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — ورشة النجارة: واجهة خزانة بثلاثة أدراج', learningPointIds: ['4am_inshaat-talis_P1'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — مخطّط ممرّ الحديقة وأحواض الزهور', learningPointIds: ['4am_inshaat-talis_P1', '4am_inshaat-talis_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -105,8 +139,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 17 و 18 و 19 (وضع نقط على مستقيم) و 21 (أتعمّق).',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_inshaat-talis_P1', '4am_inshaat-talis_P2'],
       color: 'amber', style: 'featured', estimatedMin: 9, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقطتي التعلّم: التقسيم بنسبة معطاة، وإنشاء طول معلوم.',
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — لافتة الدربي', desc: 'مسألة الدرس: نقطة تقسم اللافتة بنسبة 4 إلى 3، نقطة ثانية خارجها، وثمن القماش.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_inshaat-talis_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — ورشة النجارة', desc: 'واجهة خزانة تُقسم إلى أدراج دون قياس: متساوية، ثم بنسبة، ثم ثمن الشريط النحاسي.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_inshaat-talis_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — ممرّ الحديقة', desc: 'طول الممرّ على المخطّط بالرابع المتناسب، مواضع أحواض الزهور، وتكلفة التجهيز.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_inshaat-talis_P1', '4am_inshaat-talis_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين: التقسيم بنسبة معطاة، وإنشاء طول معلوم.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

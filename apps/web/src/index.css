@@ -635,3 +635,15 @@ html[data-sa-resizing] .sa-workspace-main {
   .sa-manip-object { transition: none; }
   .sa-manip-reject { animation: none; }
 }
+
+/* « أتوقّع القاعدة » (lessons/common/kit/PredictRule.jsx) — tant que l'élève n'a
+   pas écrit sa prédiction, ce qui SUIT la règle dans le même conteneur (la
+   question d'application) reste caché : on ne répond pas avant d'avoir vu la règle. */
+.sa-predict-pending ~ * {
+  display: none !important;
+}
+
+/* Une règle du manuel enveloppée (PredictRule) puis SA brique : une seule « توقّعك ». */
+[data-predict-revealed] ~ [data-knowledge-brick] [data-predict-own] {
+  display: none;
+}

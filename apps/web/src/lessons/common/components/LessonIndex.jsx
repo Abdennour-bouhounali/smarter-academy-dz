@@ -6,6 +6,7 @@ import { useProgress } from '../hooks/useProgress';
 import { lockedReasonData, getLessonById, getUnitById } from '@smarter-academy/core';
 import PremiumLessonLocked from './PremiumLessonLocked';
 import { resolveModuleStatus } from '../utils/moduleGate';
+import PublicationBadge from '../../../components/content/PublicationBadge';
 import { softGateHint, masteryStatusByIdFromProfile } from '../utils/softGate';
 import { getModulePath } from '../../registry';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
@@ -23,6 +24,7 @@ import { useContentAvailability } from '../../../context/ContentAvailabilityCont
 import { useClassroomMode, useClassroomStage, ClassroomEntryButton, ClassroomFrame } from '../classroom';
 import MathLabEntryButton from '../../../features/mathlab/overlay/MathLabEntryButton';
 import MathLabel from './MathLabel';
+import LessonProblemCard from '../problems/LessonProblemCard';
 import { mathToPlain } from '../../../utils/mathPlain';
 
 /**
@@ -139,7 +141,7 @@ export default function LessonIndex({ config, basePath }) {
   const masteryStatusById = useMemo(() => masteryStatusByIdFromProfile(profile), [profile]);
   const { t } = useTranslation('lesson');
   const { completedModules, isModuleCompleted, currentModule } = useProgress(config.id);
-  const { isModuleClosed, isLessonLocked, isLessonHiddenByClass } = useContentAvailability();
+  const { isModuleClosed, isLessonClosed, isLessonLocked, isLessonHiddenByClass, lessonStatus, moduleStatus } = useContentAvailability();
   // QUI lit : l'enseignant voit chaque module ouvert (le verrou séquentiel
   // est un guide pour l'élève) ; un module retiré reste fermé pour tous.
   const viewer = useLearningViewer();
@@ -166,7 +168,7 @@ export default function LessonIndex({ config, basePath }) {
   // sequentialUnlock gardent leur seuil existant, inchangé.
   //
   // C'est une COMPLÉTION (des modules parcourus), jamais une maîtrise : la
-  // maîtrise des نقاط التعلّم vient du profil serveur, plus bas. Le mot
+  // maîtrise des الكفاءات vient du profil serveur, plus bas. Le mot
   // إتقان n'apparaît donc nulle part ici.
   // Le PREMIER module de CETTE leçon : 0 quand elle ouvre par un diagnostic
   // (« أستعدّ »), 1 sinon. Sans cela, un module 0 était traité comme
@@ -261,6 +263,30 @@ export default function LessonIndex({ config, basePath }) {
     );
   }
 
+  // NON PUBLIÉE : la carte la montrait déjà « bientôt », mais l'URL directe
+  // ouvrait le sommaire. Jamais vrai pour un relecteur (admin, سفير) : son
+  // inventaire ne ferme rien, il voit la leçon avec sa pastille d'état.
+  if (isLessonClosed(config.id)) {
+    return (
+      <div className={`min-h-screen flex flex-col justify-between ${chrome.contentOffsetClass} bg-slate-50`}>
+        <main className="sa-page py-8 flex-1">
+          <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 mb-8">
+            <Link to="/courses" className="hover:text-blue-600">{t('index.home')}</Link>
+            <span>/</span>
+            <span className="text-slate-900 font-semibold"><MathLabel>{config.title}</MathLabel></span>
+          </nav>
+          <div className="mx-auto max-w-lg rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-xs" data-lesson-unpublished>
+            <h1 className="font-space text-xl font-bold text-slate-800 mb-2">{t('index.unavailableTitle')}</h1>
+            <p className="font-inter text-sm leading-relaxed text-slate-600 mb-6">{t('index.unavailableHint')}</p>
+            <Link to="/courses" className="inline-flex items-center gap-1 rounded-xl bg-blue-600 px-5 py-2.5 font-inter text-sm font-bold text-white transition-colors hover:bg-blue-700">
+              {t('index.home')}
+            </Link>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   // Masquée par l'ENSEIGNANT pour la classe de l'élève : le serveur refuse
   // déjà toute écriture ; cet écran l'explique avec les bons mots (ni
   // « premium », ni « indisponible »).
@@ -334,7 +360,7 @@ export default function LessonIndex({ config, basePath }) {
 
           <ReportButton
             source="lesson"
-            variant="icon"
+            variant="prominent"
             context={{ lessonCode: config.id, grade: config.grade, step: 'sommaire' }}
           />
         </div>
@@ -351,6 +377,8 @@ export default function LessonIndex({ config, basePath }) {
               <h1 className="text-3xl sm:text-4xl font-space font-extrabold text-slate-900 leading-tight">
                 <MathLabel>{config.title}</MathLabel>
               </h1>
+              {/* Relecteur seulement (admin, سفير) : l'état de publication. */}
+              <PublicationBadge status={lessonStatus(config.id)} />
 
               {/* Deux portes, deux publics, à ne pas confondre :
                   🎓 وضع القسم présente la leçon au projecteur (présentateur
@@ -487,6 +515,13 @@ export default function LessonIndex({ config, basePath }) {
           </section>
         )}
 
+        {/* « مسألة الدرس » (config.lessonProblem) : lue avant d'apprendre,
+            résolue pas à pas dans son module « مسألة ». */}
+        {config.lessonProblem && (() => {
+          const target = config.modules.find((m) => m.number === config.lessonProblem.module);
+          return <LessonProblemCard problem={config.lessonProblem} to={target ? `${basePath}/${target.slug}` : undefined} moduleTitle={target?.title} />;
+        })()}
+
         {isPracticeActive(config.id) && <PracticeEntryCard lessonId={config.id} />}
 
         {/* MODULES ROADMAP */}
@@ -556,10 +591,17 @@ export default function LessonIndex({ config, basePath }) {
                 );
               }
 
-              const inProgressBadge = status === 'in_progress' && (
-                <span className="text-[10px] font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-bold">
-                  {t('index.inProgress')}
-                </span>
+              // « En cours », et — pour le relecteur — l'état de publication
+              // du module : les mêmes emplacements dans les trois styles.
+              const inProgressBadge = (
+                <>
+                  {status === 'in_progress' && (
+                    <span className="text-[10px] font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-bold">
+                      {t('index.inProgress')}
+                    </span>
+                  )}
+                  <PublicationBadge status={moduleStatus(config.id, module.number)} />
+                </>
               );
 
               if (module.style === 'diagnostic') {

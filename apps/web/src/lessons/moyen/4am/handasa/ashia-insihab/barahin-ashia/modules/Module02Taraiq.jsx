@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -17,6 +17,9 @@ import { FIG_METHOD, FIG_NOW133 } from '../content/figures';
  *   2. la طريقة p. 133 révélée ligne à ligne ; pourquoi ABDC (l'ordre)        → brique tariqat-abdc    (P2)
  *   3. de l'égalité à la conclusion (milieu, parallélogramme, parallèles ; Chasles seule ne prouve rien) → istintajat (P2)
  *   4. دوري الآن 1 : l'élève enchaîne la preuve de BC = DE                     (P1/P2, sans nouvelle brique)
+ * « أتوقّع القاعدة » : les boîtes des étapes 1 et 3 ÉNONCENT la règle de leur brique ; boîte et question sont enveloppées
+ * dans une PredictRule (même id que la brique) — l'élève écrit d'abord (predictPrompt de knowledge.jsx), puis lit. La brique tariqat-abdc
+ * est un rappel : « AB = CD ⇔ ABDC متوازي أضلاع » et les diagonales de même milieu sont posées aux leçons 1 et 2.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -42,13 +45,15 @@ export default function Module02Taraiq() {
           num: 1, title: 'خطوات البرهان', subtitle: 'نترجم · نحوّل · نستنتج', done: !!q[1],
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="method" title={PROOF_STEPS.title} lines={PROOF_STEPS.lines} source={PROOF_STEPS.source} compact />
-              <TapQuestion
-                prompt={<MathText>{'لنبرهن أن النقطة I منتصف القطعة [AB]، نترجم المطلوب إلى:'}</MathText>}
-                options={['$\\overrightarrow{AI} = \\overrightarrow{IB}$', '$\\overrightarrow{AI} = \\overrightarrow{BI}$', 'الطولان AI و IB متساويان فقط'].map(M)}
-                correct={0} cols={1} requires={['muntasaf-shuaa', 'rabt-shal']}
-                explain={<MathText>{'I منتصف [AB] يعني $\\overrightarrow{AI} = \\overrightarrow{IB}$ : نفس المنحى ونفس الاتجاه ونفس الطول. $\\overrightarrow{BI}$ يعاكس $\\overrightarrow{IB}$ ، وتساوي الطولين وحده تحقّقه كل نقطة من محور [AB].'}</MathText>}
-                onAnswered={mark(1)} />
+              <PredictRule id="khatawat-burhan">
+                <TextbookBox kind="method" title={PROOF_STEPS.title} lines={PROOF_STEPS.lines} source={PROOF_STEPS.source} compact />
+                <TapQuestion
+                  prompt={<MathText>{'لنبرهن أن النقطة I منتصف القطعة [AB]، نترجم المطلوب إلى:'}</MathText>}
+                  options={['$\\overrightarrow{AI} = \\overrightarrow{IB}$', '$\\overrightarrow{AI} = \\overrightarrow{BI}$', 'الطولان AI و IB متساويان فقط'].map(M)}
+                  correct={0} cols={1} requires={['muntasaf-shuaa', 'rabt-shal']}
+                  explain={<MathText>{'I منتصف [AB] يعني $\\overrightarrow{AI} = \\overrightarrow{IB}$ : نفس المنحى ونفس الاتجاه ونفس الطول. $\\overrightarrow{BI}$ يعاكس $\\overrightarrow{IB}$ ، وتساوي الطولين وحده تحقّقه كل نقطة من محور [AB].'}</MathText>}
+                  onAnswered={mark(1)} />
+              </PredictRule>
               {q[1] && <KnowledgeBrick id="khatawat-burhan" lead="ما فعلته في المترو، مكتوبا:" />}
             </div>
           ),
@@ -69,7 +74,7 @@ export default function Module02Taraiq() {
                 correct={0} cols={1} requires={['khatawat-burhan', 'tasawi-shuaayn']}
                 explain={<MathText>{`${METHOD_PROOF.rule} ABCD بهذا الترتيب رباعي آخر: متقاطع الضلعين.`}</MathText>}
                 onAnswered={mark(2)} />
-              {q[2] && <KnowledgeBrick id="tariqat-abdc" />}
+              {q[2] && <KnowledgeBrick id="tariqat-abdc" variant="rappel" />}
             </div>
           ),
         },
@@ -77,22 +82,24 @@ export default function Module02Taraiq() {
           num: 3, title: 'ماذا نستنتج؟', subtitle: 'من المساواة إلى الخاصية', done: !!q[3],
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="definition" title={CONCLUSIONS.title} lines={CONCLUSIONS.lines} source={CONCLUSIONS.source} compact />
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">ماذا نستنتج من كل مساواة؟</p>}
-                rows={[
-                  { id: 'mid', label: <MathText>{'$\\overrightarrow{RS} = \\overrightarrow{ST}$'}</MathText>, options: ['S منتصف [RT]', 'R منتصف [ST]', 'RST مثلث متقايس الأضلاع'].map(M), correct: 0,
-                    correction: <MathText>{'$\\overrightarrow{RS} = \\overrightarrow{ST}$ : S منتصف [RT]، فالنقط R و S و T على استقامة واحدة (لا مثلث).'}</MathText> },
-                  { id: 'para', label: <MathText>{'$\\overrightarrow{MN} = \\overrightarrow{QP}$ (و M و N و P ليست على استقامة)'}</MathText>, options: ['MNPQ متوازي أضلاع', 'MNQP متوازي أضلاع', 'N منتصف [MP]'].map(M), correct: 0,
-                    correction: <MathText>{'$\\overrightarrow{MN} = \\overrightarrow{QP}$ : الرباعي MNPQ متوازي أضلاع (من M إلى N كما من Q إلى P).'}</MathText> },
-                  { id: 'par', label: <MathText>{'$\\overrightarrow{EF} = \\overrightarrow{GH}$'}</MathText>, options: ['(EF) و (GH) متوازيان أو منطبقان', '(EF) و (GH) متعامدان', 'EFGH متوازي أضلاع'].map(M), correct: 0,
-                    correction: <MathText>{'شعاعان متساويان لهما نفس المنحى: (EF) // (GH) أو منطبقان؛ ومتوازي الأضلاع هو EFHG لا EFGH.'}</MathText> },
-                  { id: 'shal', label: <MathText>{'$\\overrightarrow{XY} + \\overrightarrow{YZ} = \\overrightarrow{XZ}$'}</MathText>, options: ['لا نستنتج شيئا عن موضع Y', 'Y تقع على [XZ]', 'Y منتصف [XZ]'].map(M), correct: 0,
-                    correction: <MathText>{CONCLUSIONS.warning}</MathText> },
-                ]}
-                requires={['khatawat-burhan', 'muntasaf-shuaa', 'tasawi-shuaayn']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'كل مساواة تبرهن خاصية، ما عدا علاقة شال: صحيحة دائما.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
-                onAnswered={mark(3)} />
+              <PredictRule id="istintajat">
+                <TextbookBox kind="definition" title={CONCLUSIONS.title} lines={CONCLUSIONS.lines} source={CONCLUSIONS.source} compact />
+                <BatchChoiceQuestion
+                  intro={<p className="text-sm font-semibold text-slate-700">ماذا نستنتج من كل مساواة؟</p>}
+                  rows={[
+                    { id: 'mid', label: <MathText>{'$\\overrightarrow{RS} = \\overrightarrow{ST}$'}</MathText>, options: ['S منتصف [RT]', 'R منتصف [ST]', 'RST مثلث متقايس الأضلاع'].map(M), correct: 0,
+                      correction: <MathText>{'$\\overrightarrow{RS} = \\overrightarrow{ST}$ : S منتصف [RT]، فالنقط R و S و T على استقامة واحدة (لا مثلث).'}</MathText> },
+                    { id: 'para', label: <MathText>{'$\\overrightarrow{MN} = \\overrightarrow{QP}$ (و M و N و P ليست على استقامة)'}</MathText>, options: ['MNPQ متوازي أضلاع', 'MNQP متوازي أضلاع', 'N منتصف [MP]'].map(M), correct: 0,
+                      correction: <MathText>{'$\\overrightarrow{MN} = \\overrightarrow{QP}$ : الرباعي MNPQ متوازي أضلاع (من M إلى N كما من Q إلى P).'}</MathText> },
+                    { id: 'par', label: <MathText>{'$\\overrightarrow{EF} = \\overrightarrow{GH}$'}</MathText>, options: ['(EF) و (GH) متوازيان أو منطبقان', '(EF) و (GH) متعامدان', 'EFGH متوازي أضلاع'].map(M), correct: 0,
+                      correction: <MathText>{'شعاعان متساويان لهما نفس المنحى: (EF) // (GH) أو منطبقان؛ ومتوازي الأضلاع هو EFHG لا EFGH.'}</MathText> },
+                    { id: 'shal', label: <MathText>{'$\\overrightarrow{XY} + \\overrightarrow{YZ} = \\overrightarrow{XZ}$'}</MathText>, options: ['لا نستنتج شيئا عن موضع Y', 'Y تقع على [XZ]', 'Y منتصف [XZ]'].map(M), correct: 0,
+                      correction: <MathText>{CONCLUSIONS.warning}</MathText> },
+                  ]}
+                  requires={['khatawat-burhan', 'muntasaf-shuaa', 'tasawi-shuaayn']}
+                  feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'كل مساواة تبرهن خاصية، ما عدا علاقة شال: صحيحة دائما.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
+                  onAnswered={mark(3)} />
+              </PredictRule>
               {q[3] && (
                 <>
                   <KnowledgeBrick id="istintajat" />

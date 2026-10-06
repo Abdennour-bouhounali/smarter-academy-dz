@@ -166,7 +166,8 @@ export default function Module01AlWadiya() {
               {q[4] && (
                 <>
                   <p className="text-xs text-slate-600" data-misconception-note="avg"><MathText>{`خطأ شائع: ${REMARKS.avgWrong} ${REMARKS.avgWhy}`}</MathText></p>
-                  <KnowledgeBrick id="mukhrut-mukammal" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la phase « أكمل المخروط » du lab (bucket-fill, hint2) fait compléter le cône, Thalès est l’unité 9, et les explications des étapes 3–4 (REMARKS.takmil, talisRho) viennent de le dire. */}
+                  <KnowledgeBrick id="mukhrut-mukammal" variant="rappel" />
                 </>
               )}
             </div>
@@ -199,7 +200,8 @@ export default function Module01AlWadiya() {
               {q[6] && (
                 <>
                   <p className="text-xs text-slate-600" data-misconception-note="k"><MathText>{`خطأ شائع: ${REMARKS.kWrong} ${REMARKS.kWhy}`}</MathText></p>
-                  <KnowledgeBrick id="hajm-mabtur" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : nouveau pour l’unité, mais la phase « حجم الماء » du lab (bucket-fill › vCardOk, fRule) l’énonce déjà, et le retour de la question ci-dessus (REMARKS.k3) vient de le redire. */}
+                  <KnowledgeBrick id="hajm-mabtur" variant="rappel" />
                 </>
               )}
               <BackLink lesson="takbir-tasghir" what="أثر التصغير على الحجوم" />
@@ -232,7 +234,8 @@ export default function Module01AlWadiya() {
               {q[8] && (
                 <>
                   <p className="rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900"><MathText>{SITUATION.closing}</MathText></p>
-                  <KnowledgeBrick id="tariqat-wadiya-fada" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche remet en ordre les trois étapes du « تحليل الوضعية » lues aux étapes 1, 2 et 7, et l’arrondi final (REMARKS.tadwir) de misaha-hajm-kura. */}
+                  <KnowledgeBrick id="tariqat-wadiya-fada" variant="rappel" />
                 </>
               )}
               <BackLink lesson="misaha-hajm-kura" what="القيمة المضبوطة والقيمة المدوّرة" />

@@ -8,6 +8,7 @@ import { useContentAvailability } from '../../context/ContentAvailabilityContext
 import { getLessonProgress } from '../../lessons/common/utils/progress/getLessonProgress';
 import { getTotalModules } from '../../lessons/registry';
 import MathLabel from '../../lessons/common/components/MathLabel';
+import PublicationBadge from '../content/PublicationBadge';
 
 /**
  * The single lesson-tile renderer shared by the public /courses catalogue
@@ -30,7 +31,7 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
   // retirée par l'administration retombe donc dans l'état « bientôt
   // disponible » déjà géré plus bas — l'élève voit un message qu'il connaît,
   // pas une carte cliquable qui le mènera à un refus.
-  const { isLessonClosed, isLessonLocked, isLessonPremium, isLessonHiddenByClass } = useContentAvailability();
+  const { isLessonClosed, isLessonLocked, isLessonPremium, isLessonHiddenByClass, lessonStatus } = useContentAvailability();
   const isAvailable = lesson.status === 'available' && !isLessonClosed(lesson.id);
   // Le TROISIÈME axe : masquée par l'enseignant pour la classe de l'élève.
   // Publiée, dans son droit, mais « pas maintenant » — la carte le dit avec
@@ -144,6 +145,9 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
                 (elle vient d'`extension_objects`, pas d'`official_objects`) :
                 l'élève doit le savoir avant de la commencer, et rien ne doit la
                 présenter comme officielle. */}
+            {/* Le relecteur (admin, سفير) voit le non-publié : la pastille
+                dit son état. Rien pour un contenu publié. */}
+            <PublicationBadge status={lessonStatus(lesson.id)} className="mb-2" />
             <div className="flex items-start justify-between gap-3">
               {lesson.origin === 'extension' && (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 mb-3 rounded-full bg-violet-50 border border-violet-200 text-violet-700 font-mono-jetbrains text-[10px] font-bold" title={t('bonusChapter')}>

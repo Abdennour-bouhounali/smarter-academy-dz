@@ -183,7 +183,9 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
       {checked && !allRight && formative && (
         <p className="text-sm text-rose-700 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3">
           {t('infoSorter.formativeLead')}{' '}
-          <strong>{items.filter((it) => it.useful).map((it) => it.text).join(' ')}</strong>{' '}
+          {/* « ؛ » entre les données : jointes par une espace, des données longues
+              (les مسائل) se lisaient comme une seule phrase. */}
+          <strong>{items.filter((it) => it.useful).map((it) => it.text).join(' ؛ ')}</strong>.{' '}
           {t('infoSorter.formativeRest')}
         </p>
       )}

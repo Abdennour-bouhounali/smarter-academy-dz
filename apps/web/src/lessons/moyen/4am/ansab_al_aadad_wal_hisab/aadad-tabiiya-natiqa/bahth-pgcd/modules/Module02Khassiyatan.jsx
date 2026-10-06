@@ -28,7 +28,7 @@ export default function Module02Khassiyatan() {
           ) },
         { num: 2, title: 'طريقة الكتاب: 117 و 91، سطرًا سطرًا', done: read,
           content: <div className="space-y-3"><KnowledgeBrick id="khwarizmiyat-al-furuq" variant="rappel" compact /><MethodSteps method={METHOD_DIFF} onAllRevealed={() => setRead(true)} /></div> },
-        { num: 3, title: 'الخاصية الثانية: الباقي بدل الفرق', done: q2,
+        { num: 3, title: 'الخاصية الثانية: طرحات كثيرة في عملية واحدة', done: q2,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="pgcd-baqi" lead="عدة طرحات متتابعة للعدد نفسه هي قسمة واحدة: الباقي هو ما يتبقى." />

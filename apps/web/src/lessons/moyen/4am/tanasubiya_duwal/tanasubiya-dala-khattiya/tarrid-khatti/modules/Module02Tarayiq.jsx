@@ -14,12 +14,19 @@ import { SpringTable, ChallengeGraph } from '../components/Graphs';
  * Module 2 — طرائق p. 71 « تمثيل وقراءة وترجمة وضعية يتدخل فيها مقدار يعطى بدلالة مقدار آخر » :
  *   1. le tableau du ressort, à COMPLÉTER avant de lire la solution ;
  *   2. la solution du manuel ligne à ligne (MethodSteps), puis la brique « tariqat-jadwal » et la
- *      méthode appliquée à une autre masse (8 g) ;
+ *      méthode appliquée à une autre masse (8 g). « أتوقّع القاعدة » : l'encadré de la règle du manuel
+ *      (« لحساب مقدار بدلالة مقدار آخر يمكن الاستعانة بجدول تناسبية ») la DIRAIT juste avant la brique ;
+ *      MethodSteps le reçoit donc sans `rule`, et la brique (dont le corps porte cette même phrase
+ *      du manuel) n'apparaît qu'une fois la dernière ligne lue — l'élève formule la méthode après
+ *      l'avoir vue à l'œuvre, avant de la lire ;
  *   3. le pont des trois représentations (brique « tamthilat-thalath ») ;
  *   4. interpréter (brique « tafsir-siyaq ») : la phrase et l'unité, un résultat qui n'a pas de sens ;
  *   5. le تحدّ de la page d'unité (p. 65, doublon déclaré) comme transfert : B proportionnel, A non.
  * La leçon a `knowledgeMap: true` : pas de module de formalisation séparé. LP : P1, P2, P3.
  */
+// La طريقة sans son encadré de règle : la règle est posée par la brique « tariqat-jadwal » (même phrase).
+const METHOD_LINES = { ...METHOD_SPRING, rule: null };
+
 export default function Module02Tarayiq() {
   const [done, setDone] = useState({});
   const mark = (id) => () => setDone((d) => ({ ...d, [id]: true }));
@@ -53,17 +60,21 @@ export default function Module02Tarayiq() {
           num: 2, title: 'حلّ الكتاب سطرًا سطرًا', subtitle: 'اقرأ السطر، وحاول توقّع التالي قبل أن تكشفه', done: all('read', 'apply'),
           content: (
             <div className="space-y-3">
-              <MethodSteps method={METHOD_SPRING} onAllRevealed={mark('read')} />
-              <KnowledgeBrick id="tariqat-jadwal" lead="هذه هي طريقة الكتاب، وتصلح لكل مقدار يُعطى بدلالة مقدار آخر:" />
-              <NumericQuestion
-                prompt="بالطريقة نفسها: ما استطالة النابض (بالسنتيمتر) عندما نعلّق كتلة قدرها 8g؟"
-                expected={2.4}
-                display="2,4"
-                parse={parseDec}
-                requires={['tariqat-jadwal']}
-                explain={<MathText>{'$y = 0{,}3 \\times 8 = 2{,}4$ : كتلة 8g تعطي استطالة 2,4cm.'}</MathText>}
-                onAnswered={mark('apply')}
-              />
+              <MethodSteps method={METHOD_LINES} onAllRevealed={mark('read')} />
+              {done.read && (
+                <>
+                  <KnowledgeBrick id="tariqat-jadwal" lead="هذه هي طريقة الكتاب، وتصلح لكل مقدار يُعطى بدلالة مقدار آخر:" />
+                  <NumericQuestion
+                    prompt="بالطريقة نفسها: ما استطالة النابض (بالسنتيمتر) عندما نعلّق كتلة قدرها 8g؟"
+                    expected={2.4}
+                    display="2,4"
+                    parse={parseDec}
+                    requires={['tariqat-jadwal']}
+                    explain={<MathText>{'$y = 0{,}3 \\times 8 = 2{,}4$ : كتلة 8g تعطي استطالة 2,4cm.'}</MathText>}
+                    onAnswered={mark('apply')}
+                  />
+                </>
+              )}
             </div>
           ),
         },

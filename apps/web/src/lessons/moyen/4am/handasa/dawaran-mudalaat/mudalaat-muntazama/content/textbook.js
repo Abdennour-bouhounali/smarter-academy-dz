@@ -4,7 +4,7 @@
  *   تحدّ (p. 151, l'ENTRÉE, module 1 ; doublon déclaré : la page d'unité) et مدخل الباب « نجمة البحر » (p. 151, doublon
  *   déclaré, module 1) ; أستعدّ 1 (p. 151, module 0) ; نشاط 5 (p. 153, module 1) ; معارف 5 (p. 156, module 2) ;
  *   طرائق p. 157 (حساب قيس زاوية، إنشاء مضلع، حساب طول ضلع) et دوري الآن p. 157 (module 3) ; أؤكّد تعلّماتي 4 (p. 160,
- *   doublon déclaré, module 5).
+ *   doublon déclaré, module 8).
  * DEUX corrections (extraction › discrepancies) : طريقة « حساب قيس زاوية » imprime « $\widehat{BAE} = 180^\circ$ » pour
  * 2 × 54° = 108° ; طريقة « إنشاء مضلع » nomme les médiatrices (D1)/(D2) dans le texte et (Δ1)/(Δ2) sur la figure — la
  * leçon garde UN nom, celui de la figure. Une lecture déclarée : le تحدّ (« رأسين متتاليين » = deux pointes consécutives).
@@ -139,7 +139,7 @@ export const NOW157 = {
   answer: '$\\widehat{AOB} = \\dfrac{360^\\circ}{7} \\approx 51^\\circ$ و $\\widehat{ABC} = 180^\\circ - \\dfrac{360^\\circ}{7} = \\dfrac{900^\\circ}{7} \\approx 129^\\circ$ .',
 };
 
-/** أؤكّد تعلّماتي (p. 160) — l'item 4 (doublon déclaré dans ce درس, module 5). */
+/** أؤكّد تعلّماتي (p. 160) — l'item 4 (doublon déclaré dans ce درس, module 8). */
 export const QCM4 = {
   source: src('qcm', 160, 'أؤكّد تعلّماتي', 4),
   text: 'المضلع الآتي',

@@ -19,6 +19,9 @@ export const LESSON_KNOWLEDGE = {
     1: [
       {
         id: 'tasmiya', type: 'concepts', title: 'زاوية مركزية وزاوية محيطية',
+        // Deux NOMS (« زاوية مركزية », « زاوية محيطية », « تحصران نفس القوس ») : un nom ne se devine pas, et la boîte du نشاط 4
+        // juste au-dessus de la brique les donne déjà (« تسمى زاوية مركزية »).
+        predict: false,
         summary: 'الزاوية AOB رأسها مركز الدائرة: زاوية مركزية. الزاوية ADB رأسها D من الدائرة وضلعاها وتران: زاوية محيطية. نقول إنهما تحصران نفس القوس AB.',
         body: (
           <div className="space-y-1.5">
@@ -29,6 +32,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'alaqa-nashat', type: 'regles', title: 'المركزية ضعف المحيطية',
+        predictPrompt: 'في اللوحة كانت $\\widehat{AOB} = 100^\\circ$ ، ووضعت D طرفًا للقطر ثم في مواضع أخرى من القوس الكبير وقست $\\widehat{ADB}$ في كل مرة. هل تبقى علاقة مزيان صحيحة عندما لا يكون [AD] قطرًا؟ اكتب بكلماتك القاعدة التي تربط $\\widehat{AOB}$ بـ $\\widehat{ADB}$ .',
         summary: 'قول مزيان صحيح: إذا كان [AD] قطرا فإن AOB ضعف ADB؛ وهوارية على صواب: تبقى العلاقة صحيحة مهما كان موضع D على الدائرة خارج القوس الملونة.',
         body: (
           <div className="space-y-1.5">
@@ -67,6 +71,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'khassiya-tasawi', type: 'regles', title: 'محيطيتان تحصران نفس القوس',
+        predictPrompt: 'في اللوحة حرّكت D على القوس الكبير وقست $\\widehat{ADB}$ في عدّة مواضع، وفي السؤال السابق وجدت $\\widehat{AMB} = 40^\\circ$ . لو أخذنا نقطة أخرى N من نفس القوس، ماذا تتوقّع لقيس $\\widehat{ANB}$ ؟ اكتب القاعدة بكلماتك لزاويتين محيطيتين تحصران نفس القوس.',
         summary: 'إذا كانت زاويتان محيطيتان في دائرة تحصران القوس نفسه فهما متقايستان.',
         body: (
           <div className="space-y-1.5">
@@ -80,6 +85,7 @@ export const LESSON_KNOWLEDGE = {
     3: [
       {
         id: 'tariqa-qaws', type: 'methodes', title: 'من القوس إلى الزاوية',
+        predictPrompt: 'في مثال العجلة وجدت $\\widehat{PCQ}$ ثم $\\widehat{PKQ}$ انطلاقًا من $\\widehat{POQ} = 130^\\circ$ . لو أعطيناك زاوية أخرى في دائرة، بأيّ خطوات تبدأ لتجد قيسها؟ اكتب الطريقة مرتّبة.',
         summary: 'أحدد رأس الزاوية (مركزية أو محيطية أو غير ذلك)، ثم القوس الذي تحصره، ثم زاوية معلومة تحصر نفس القوس: المحيطية نصف المركزية، والمحيطيتان متقايستان.',
         body: (
           <div className="space-y-1.5">
@@ -90,6 +96,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'qutr-qaima', type: 'regles', title: 'حالة القطر',
+        predictPrompt: 'على الشكل [BC] قطر و A نقطة من الدائرة. ما الزاوية التي رأسها المركز O وضلعاها [OB] و [OC]؟ وماذا تستنتج عن قيس $\\widehat{BAC}$ ؟ اكتب القاعدة بكلماتك.',
         summary: 'إذا كان [BC] قطرا فالزاوية BOC مستقيمة قيسها 180 درجة، وكل زاوية محيطية BAC تحصر نصف الدائرة قيسها 90 درجة.',
         body: (
           <div className="space-y-1.5">

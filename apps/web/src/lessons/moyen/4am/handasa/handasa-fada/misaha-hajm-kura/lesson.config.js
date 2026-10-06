@@ -14,7 +14,9 @@
  *   M3 طرائق          — TOUCH THE MATH : la méthode déclarée « القيمة المضبوطة ثم المدوّرة » (depuis le diamètre), puis l'inverse
  *                      (de l'aire au rayon), révélées ligne à ligne ;
  *   M4 أوظّف تعلّماتي  — AUTOMATIZE et TRANSFER : ballon, coupole, château d'eau, bille, balle de ping-pong (ajouts déclarés) ;
- *   M5 إختبار أولي    — cinq épreuves de la plateforme ; P1, P2, P3 couverts.
+ *   M5–M7 مسائل      — puis trois « مسائل » de la plateforme (modules 5–7) : l'orange dans son verre (مسألة الدرس), la sphère
+ *                      de propane d'Arzew, la coupole de la mosquée à repeindre (content/problems.js) ;
+ *   M8 إختبار أولي    — cinq épreuves de la plateforme ; P1, P2, P3 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -36,6 +38,24 @@ export const LESSON_CONFIG = {
   masteryThreshold: 0.8,
   emoji: '🍊',
   estimatedDurationMin: 50,
+  lessonProblem: {
+    module: 5,
+    title: 'برتقالة في كأسها: القشرة والعصير',
+    statement: 'في محلّ عصائر بالبليدة يعرض البائع برتقالة كروية قطرها $7\\,\\mathrm{cm}$ وكتلتها $180\\,\\mathrm{g}$ ، موضوعة في كأس أسطوانية على مقاسها تماما: نصف قطر قاعدة الكأس يساوي نصف قطر البرتقالة، وارتفاعها يساوي قطرها، كما في الشكل المقابل. نعتبر البرتقالة جلة، وكل برتقالة من هذا المقاس تعطي عصيرا حجمه نصف حجمها تقريبا. يطلب زبون إبريقا من العصير سعته $1\\,\\mathrm{L}$ ، والبائع يحسب البرتقالة الواحدة بـ 30 دج. فتح المحلّ أبوابه منذ 15 سنة.',
+    figure: {
+      kind: 'space',
+      view: { azimuth: -62, elevation: 16 },
+      points: { O: [0, 0, 0], N: [0, 0, 3.5], S: [0, 0, -3.5], A: [-3.5, 0, 0], B: [3.5, 0, 0] },
+      hidden: ['O', 'N', 'S', 'A', 'B'],
+      solids: [
+        { type: 'cylinder', base: 'S', top: 'N', radius: 3.5, tone: 'sky' },
+        { type: 'sphere', center: 'O', radius: 3.5, tone: 'amber' },
+      ],
+      segments: [{ from: 'A', to: 'B', dashed: true, label: '7 cm' }],
+      ariaLabel: 'برتقالة كروية قطرها 7 cm داخل كأس أسطوانية على مقاسها: البرتقالة تمسّ قاع الكأس وأعلاها وجدارها، وقطرها الأفقي منقّط',
+      maxWidth: 300,
+    },
+  },
   textbookRef: { unit: 14, activity: 0, pages: '163, 166' },
   skills: [
     'حساب مساحة كرة علم نصف قطرها أو قطرها: 4πR²',
@@ -83,6 +103,9 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_misaha-hajm-kura_P1', '4am_misaha-hajm-kura_P2', '4am_misaha-hajm-kura_P3'],
       sourceElementIds: ['intro-archimedes', 'know-2'],
     },
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — برتقالة في كأسها', learningPointIds: ['4am_misaha-hajm-kura_P1', '4am_misaha-hajm-kura_P2', '4am_misaha-hajm-kura_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — خزّان غاز البروبان الكروي', learningPointIds: ['4am_misaha-hajm-kura_P2', '4am_misaha-hajm-kura_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — طلاء قبّة المسجد', learningPointIds: ['4am_misaha-hajm-kura_P1', '4am_misaha-hajm-kura_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -104,8 +127,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'كرة المنتخب، قبّة المسجد، خزان البلدية، كرية زجاجية، وكرة طاولة في علبتها.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_misaha-hajm-kura_P1', '4am_misaha-hajm-kura_P2', '4am_misaha-hajm-kura_P3'],
       color: 'rose', style: 'featured', estimatedMin: 8, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — برتقالة في كأسها', desc: 'مسألة الدرس: مساحة القشرة، حجم البرتقالة وحجم كأسها، ثم عدد البرتقالات لملء إبريق لتر وثمنها.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_misaha-hajm-kura_P1', '4am_misaha-hajm-kura_P2', '4am_misaha-hajm-kura_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — خزّان غاز البروبان', desc: 'حجم خزّان كروي، الحدّ المسموح بالمتر المكعب وباللتر، ثم عدد رحلات الشاحنات وتكلفتها.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_misaha-hajm-kura_P2', '4am_misaha-hajm-kura_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — طلاء قبّة المسجد', desc: 'مساحة قبّة على شكل نصف كرة، كمية الطلاء لطبقتين وعدد الدلاء، ثم هل يكفي المبلغ المجموع.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_misaha-hajm-kura_P1', '4am_misaha-hajm-kura_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

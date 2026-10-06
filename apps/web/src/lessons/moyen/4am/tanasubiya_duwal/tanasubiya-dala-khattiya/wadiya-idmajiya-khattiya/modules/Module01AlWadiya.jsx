@@ -158,7 +158,9 @@ export default function Module01AlWadiya() {
                 explain={<MathText>{REMARKS.pythagore}</MathText>}
                 explainFor={(n) => <MathText>{n === 1700 ? `${REMARKS.sumWhy} ${REMARKS.pythagore}` : REMARKS.pythagore}</MathText>}
                 onAnswered={mark(3)} />
-              {q[3] && <KnowledgeBrick id="masafa-fithaghuras" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : Pythagore est un prérequis (3AM, `fithaghuras`) ; la ligne s4 de l’étape 2
+                  ($AB^2 = AH^2 + BH^2$) et l’explication de la question ci-dessus (REMARKS.pythagore) viennent de l’énoncer. */}
+              {q[3] && <KnowledgeBrick id="masafa-fithaghuras" variant="rappel" />}
             </div>
           ) },
         { num: 4, title: 'تنفيذ: مدة الصعود', subtitle: 'المسافة على السرعة، ثم دقائق وثوان', done: !!q[4],
@@ -175,7 +177,9 @@ export default function Module01AlWadiya() {
                 correct={0} cols={1} requires={['masafa-fithaghuras', 'maqadir-murakkaba']}
                 explain={<MathText>{`${REMARKS.mudda} أمّا $2{,}6$ دقيقة فهي 2 دقيقة و 36 ثانية: الدقيقة 60 ثانية لا 100، و $340\\,\\mathrm{s}$ مدة حبل طوله $1700\\,\\mathrm{m}$.`}</MathText>}
                 onAnswered={mark(4)} />
-              {q[4] && <KnowledgeBrick id="mudda-sura" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : $t = d/v$ est la vitesse moyenne de « تطبيقات التناسبية » (درس 4, maqadir-murakkaba) ;
+                  la ligne s5 de l’étape 2 et l’explication ci-dessus (REMARKS.mudda) viennent de la dire, minutes comprises. */}
+              {q[4] && <KnowledgeBrick id="mudda-sura" variant="rappel" />}
             </div>
           ) },
         { num: 5, title: 'تنفيذ: التكلفة بدلالة x', subtitle: 'الجزء 2 — عائلة أخرى', done: !!q[5],
@@ -193,7 +197,9 @@ export default function Module01AlWadiya() {
                 correct={0} cols={1} requires={['nisba-takhfid', 'shakl-khatti']}
                 explain={<MathText>{`${REMARKS.tifl} البالغان يدفعان $2x$ والطفلان $2 \\times 0{,}5x$ : $C(x) = 3x$ دالة خطية معاملها 3. التخفيض بالنسبة المئوية لا بالدينار، ولا يخص البالغين.`}</MathText>}
                 onAnswered={mark(5)} />
-              {q[5] && <KnowledgeBrick id="taklifa-khattiya" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la forme $ax$ est shakl-khatti (درس 2) et le coût réduit est takhfid-darb (درس 4) ;
+                  l’explication ci-dessus vient d’écrire $C(x) = 3x$ « دالة خطية معاملها 3 ». */}
+              {q[5] && <KnowledgeBrick id="taklifa-khattiya" variant="rappel" />}
             </div>
           ) },
         { num: 6, title: 'وإذا كان التخفيض 25%؟', subtitle: 'ما يدفعه الطفل، لا ما يُخصم', done: !!q[6],
@@ -235,9 +241,13 @@ export default function Module01AlWadiya() {
                 onAnswered={mark(8)} />
               {q[8] && (
                 <>
-                  <KnowledgeBrick id="hadd-mizaniya" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la lecture de l’intersection est qiraa-bayaniya (درس 3) ; les explications des
+                      étapes 7 (REMARKS.mizaniya) et 8 (tadwirWhy + tadwirRight : arrondir vers le bas) viennent de la dire. */}
+                  <KnowledgeBrick id="hadd-mizaniya" variant="rappel" />
                   <TextbookBox kind="remark" title={SITUATION.analysis[2].label} text={SITUATION.analysis[2].text} source={SITUATION.source} compact />
-                  <KnowledgeBrick id="tariqat-wadiya" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche ne fait que remettre en ordre les trois encadrés « تحليل الوضعية »
+                      que l’élève vient de lire (étapes 1, 2 et celui juste au-dessus). */}
+                  <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                   <TextbookBox kind="remark" text={REMARKS.notSolvedHere} compact />
                 </>
               )}

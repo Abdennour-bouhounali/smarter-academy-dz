@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, LAB } from '../content/textbook';
 import { FIG_ACT2, FIG_ACT2_STUDENTS } from '../content/figures';
@@ -22,6 +24,11 @@ import MuralVignette from '../components/MuralVignette';
  *           (`onTrial` → `[data-activity-evidence]`, au-dessus des questions) ; 2) le texte complété.
  * FORMALIZE  la brique aksiya-nashat (le texte « الخاصية العكسية لخاصية طالس » et la ملاحظة sur l'ordre), puis une
  *           question sur l'ordre de la figure 3. AUCUNE étape n'attend `onFinished`. LP : P1 (ب، 2)), P2 (أ، l'ordre).
+ * « أتوقّع القاعدة » : le texte à compléter de la question 2) EST la règle (« انقل وأتمم ») ; il est donc enveloppé
+ * dans <PredictRule id="aksiya-nashat"> — l'élève écrit les conditions avec ses mots (predictPrompt de knowledge.jsx)
+ * AVANT de voir le texte, puis la question et la brique s'affichent.
+ * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape (les labs sont dans `intro`) : le même tréteau en X,
+ * d'autres nombres, résolu au module 5.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const FIG_NAME = { 1: 'الشكل 1', 2: 'الشكل 2', 3: 'الشكل 3', '3m': 'الشكل 3 (بالتبادل)' };
@@ -171,19 +178,21 @@ export default function Module01Nashat() {
           num: 3, title: '2) النص الكامل', subtitle: 'السؤال 2)', done: q3,
           content: (
             <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[2]}</MathText></p>
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">أتمم الفراغات:</p>}
-                rows={[
-                  // BB′ : القطعة بدل الطول من A ; AC′ : طول من المستقيم الآخر
-                  { id: 'n1', label: <MathText>{'$\\dfrac{\\ldots}{AB}$'}</MathText>, options: ["$AB'$", "$BB'$", "$AC'$"].map(M), correct: 0, correction: <MathText>{"البسط طول من A على المستقيم نفسه: $\\dfrac{AB'}{AB}$"}</MathText> },
-                  { id: 'n2', label: <MathText>{'$\\dfrac{\\ldots}{AC}$'}</MathText>, options: ["$AB'$", "$AC'$", "$CC'$"].map(M), correct: 1, correction: <MathText>{"$\\dfrac{AC'}{AC}$"}</MathText> },
-                  { id: 'n3', label: 'فإن المستقيمين (BC) و (B′C′) …', options: ['متقاطعان في A', 'متعامدان', 'متوازيان'], correct: 2, correction: 'متوازيان.' },
-                ]}
-                requires={['tartib-nuqat']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
-                onAnswered={() => setQ3(true)}
-              />
+              <PredictRule id="aksiya-nashat">
+                <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[2]}</MathText></p>
+                <BatchChoiceQuestion
+                  intro={<p className="text-sm font-semibold text-slate-700">أتمم الفراغات:</p>}
+                  rows={[
+                    // BB′ : القطعة بدل الطول من A ; AC′ : طول من المستقيم الآخر
+                    { id: 'n1', label: <MathText>{'$\\dfrac{\\ldots}{AB}$'}</MathText>, options: ["$AB'$", "$BB'$", "$AC'$"].map(M), correct: 0, correction: <MathText>{"البسط طول من A على المستقيم نفسه: $\\dfrac{AB'}{AB}$"}</MathText> },
+                    { id: 'n2', label: <MathText>{'$\\dfrac{\\ldots}{AC}$'}</MathText>, options: ["$AB'$", "$AC'$", "$CC'$"].map(M), correct: 1, correction: <MathText>{"$\\dfrac{AC'}{AC}$"}</MathText> },
+                    { id: 'n3', label: 'فإن المستقيمين (BC) و (B′C′) …', options: ['متقاطعان في A', 'متعامدان', 'متوازيان'], correct: 2, correction: 'متوازيان.' },
+                  ]}
+                  requires={['tartib-nuqat']}
+                  feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
+                  onAnswered={() => setQ3(true)}
+                />
+              </PredictRule>
               {q3 && <KnowledgeBrick id="aksiya-nashat" lead="النص كاملا، كما يسمّيه الكتاب:" />}
             </div>
           ),
@@ -203,6 +212,9 @@ export default function Module01Nashat() {
                 explain={<MathText>{'C′ من الجهة الأخرى للنقطة A: موقع B′ بالنسبة إلى A و B لا يماثل موقع C′ بالنسبة إلى A و C، فالشرط الثاني غير محقّق — ولهذا بقيت الفقاعة مائلة.'}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
+              {/* La « مسألة الدرس » prolonge le tréteau en X du niveau متقدم : d'autres nombres, des points des deux
+                  côtés de A — module 5. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

@@ -5,6 +5,7 @@
  * Le manuel n'a pas d'encadré « معارف » de proportionnalité dans l'unité : les connaissances enseignées
  * sont des rappels DÉCLARÉS de la plateforme (`addition('prior_year_reminder')`). Pas de f(x) ni de
  * x ⟼ ax (leçon 2). Source de vérité : docs/sources/4am/unit6/extraction.json.
+ * Puis trois « مسائل » de la plateforme (modules 4–6) ; l'إختبار أولي passe au module 7.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -53,6 +54,21 @@ export const LESSON_CONFIG = {
   // Les acquis que « أستعدّ » diagnostique : relatifs (×, ÷), fractions, proportionnalité des années
   // précédentes (tableau, quatrième proportionnel), pourcentage.
   priorKnowledge: ['darb-qisma-nisbiya', 'amaliyat-kusur', 'tanasub-sabiq', 'nisba-miawiya'],
+  // « مسألة الدرس » (MASAIL_GENERATION_GUIDE.md) : l'énoncé de la مسألة 1, montré au sommaire et à la fin
+  // du module 1, résolu au module 4 — le compteur de trajet du niveau متقدم avec d'autres tarifs.
+  lessonProblem: {
+    module: 4,
+    title: 'تروتينات كورنيش جيجل',
+    statement: 'على كورنيش جيجل تؤجّر وكالة تروتينات كهربائية بصيغتين: الصيغة (أ) 12 دج لكل دقيقة، والصيغة (ب) 60 دج لفتح القفل ثم 8 دج لكل دقيقة. تملك الوكالة 40 تروتينة، وسرعة التروتينة لا تتجاوز 20 كم في الساعة. سجّل سمير في جدول أسعار رحلات مدتها 5 و 10 و 15 و 20 دقيقة بالصيغتين. نرمز بـ $x$ إلى مدة الرحلة بالدقائق وبـ $y$ إلى سعرها بالدينار.',
+    // Le support de la مسألة 1, montré aussi par la carte « مسألة الدرس » (une seule source).
+    table: {
+      head: ['المدة $x$ (دقيقة)', '5', '10', '15', '20'],
+      rows: [
+        ['السعر بالصيغة (أ) (دج)', '60', '120', '180', '240'],
+        ['السعر بالصيغة (ب) (دج)', '100', '140', '180', '220'],
+      ],
+    },
+  },
   resources: [
     // Le module 1 ouvre sur le COMPTEUR DE TRAJET (ratio-ride), monde `scooter` (plateforme) : la
     // mathématique est celle de نشاط 1 س 1 (un tableau, son coefficient) et de l'exercice 18 (décider
@@ -78,6 +94,13 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_tanasub-muamil_P1', '4am_tanasub-muamil_P2', '4am_tanasub-muamil_P3'],
       sourceElementIds: ['act-1', 'ex-18'],
     },
+    // Les trois « مسائل » de la plateforme (content/problems.js), chacune une situation complète.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس: تروتينات كورنيش جيجل',
+      learningPointIds: ['4am_tanasub-muamil_P1', '4am_tanasub-muamil_P2', '4am_tanasub-muamil_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'كسكسي الجمعة',
+      learningPointIds: ['4am_tanasub-muamil_P1', '4am_tanasub-muamil_P2', '4am_tanasub-muamil_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'خريطة طرق ولاية بجاية',
+      learningPointIds: ['4am_tanasub-muamil_P1', '4am_tanasub-muamil_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -95,8 +118,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 16، 17، 18 (التعرف على وضعية تناسبية) وتمرين من المنصّة.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tanasub-muamil_P1', '4am_tanasub-muamil_P2', '4am_tanasub-muamil_P3'],
       color: 'amber', style: 'featured', estimatedMin: 9, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث.',
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — تروتينات كورنيش جيجل', desc: 'مسألة الدرس: صيغتان للكراء، أيّ الجدولين جدول تناسبية؟ معامله، والعلاقة y = 12 × x ، ثم أيّ صيغة تكفي مصروف سلمى.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tanasub-muamil_P1', '4am_tanasub-muamil_P2', '4am_tanasub-muamil_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — كسكسي الجمعة', desc: 'كمية السميد متناسبة مع عدد الأشخاص، ومدة الطهي ليست كذلك؛ ثم كم كيسًا تشتري الطبّاخة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tanasub-muamil_P1', '4am_tanasub-muamil_P2', '4am_tanasub-muamil_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — خريطة طرق ولاية بجاية', desc: 'معامل الخريطة، لافتات الطريق التي لا تتناسب معها، وثمن كراء الحافلة لكل منخرط.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tanasub-muamil_P1', '4am_tanasub-muamil_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

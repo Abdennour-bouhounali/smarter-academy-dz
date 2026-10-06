@@ -20,6 +20,7 @@ export const LESSON_KNOWLEDGE = {
     1: [
       {
         id: 'muntasaf-mushtarak', type: 'regles', title: 'منتصف مشترك وشعاعان متساويان',
+        predictPrompt: 'في النشاط كان للقطعتين $[AD]$ و $[BC]$ نفس المنتصف $O$، ووجدت $\\overrightarrow{AB} = \\overrightarrow{CD}$ رغم أنّ النقط على مستقيم واحد. ماذا تستنتج دائمًا إذا كان لقطعتين نفس المنتصف؟ اكتب القاعدة بكلماتك.',
         summary: 'إذا كان للقطعتين [AD] و [BC] نفس المنتصف فإن الشعاعين AB و CD متساويان، حتى لو كانت النقط الأربع على استقامة واحدة (متوازي أضلاع مسطّح).',
         body: (
           <div className="space-y-1.5">
@@ -32,6 +33,7 @@ export const LESSON_KNOWLEDGE = {
     2: [
       {
         id: 'muntasaf-shuaa', type: 'regles', title: 'المنتصف وتساوي شعاعين',
+        predictPrompt: 'على الوشاح المقسّم إلى 8 أقسام لم يتساوَ الشعاعان $\\overrightarrow{AI}$ و $\\overrightarrow{IB}$ إلا عندما وقف القائد $I$ عند القسم 4. اكتب القاعدة في الاتجاهين: متى يكون $\\overrightarrow{AI} = \\overrightarrow{IB}$؟ وماذا تكتب بالأشعة إذا علمت أنّ $I$ في هذا الموضع من $[AB]$؟',
         summary: 'I منتصف القطعة [AB] يعني أن الشعاعين AI و IB متساويان، وتساوي الشعاعين AI و IB يعني أن I منتصف [AB].',
         body: (
           <div className="space-y-1.5">
@@ -60,6 +62,7 @@ export const LESSON_KNOWLEDGE = {
     3: [
       {
         id: 'surat-nuqta', type: 'methodes', title: 'صورة نقطة بانسحاب علم شعاعه',
+        predictPrompt: 'على شبكة المدرّج وضعت الركن $D$ بنفسك: عددت المربعات من $A$ إلى $B$ ثم أعدت الحركة من $C$. لو أعطيناك ثلاث نقط $A$ و $B$ و $C$ على ورقة بيضاء دون شبكة، كيف تنشئ صورة $C$ بالانسحاب الذي شعاعه $\\overrightarrow{AB}$؟ اكتب الطريقة: أيّ شكل تكمله، وأيّ نقطة تستعملها؟',
         summary: 'D صورة C بالانسحاب الذي شعاعه AB يعني أن الشعاعين CD و AB متساويان: نكمل متوازي الأضلاع ABDC، أي D نظيرة A بالنسبة إلى منتصف [BC].',
         body: (
           <div className="space-y-1.5">
@@ -71,6 +74,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'ithbat-tasawi', type: 'methodes', title: 'إثبات تساوي شعاعين',
+        predictPrompt: 'في التمرين برهنّا $\\overrightarrow{OD} = \\overrightarrow{BC}$ دون أن نقيس أيّ طول ولا أيّ منحى، انطلاقًا من منتصفين فقط. لو طُلب منك أن تبرهن تساوي شعاعين آخرين، على ماذا تعتمد؟ اكتب الطريقة بكلماتك.',
         summary: 'لإثبات تساوي شعاعين نعتمد على متوازي أضلاع (قطراه متناصفان، أو ضلعان متقابلان) أو على الانسحاب الذي يحوّل مبدأ كل منهما إلى نهايته.',
         body: (
           <div className="space-y-1.5">

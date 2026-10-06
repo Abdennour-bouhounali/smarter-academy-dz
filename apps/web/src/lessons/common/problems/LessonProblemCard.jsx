@@ -1,0 +1,43 @@
+import React, { Suspense, lazy } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import MathText from '../components/MathText';
+
+// Le support (figure / repère / tableau) n'alourdit pas le sommaire : chargé seulement s'il existe.
+const ProblemSupport = lazy(() => import('./ProblemSupport'));
+
+/**
+ * « مسألة الدرس » — l'énoncé de la مسألة 1, montré AVANT d'apprendre : au
+ * sommaire (LessonIndex) et à la fin du laboratoire d'ouverture (module 1).
+ * L'élève la lit, y pense, et la résout pas à pas au module `lessonProblem.module`.
+ *
+ * @param {{ title: string, statement: string, figure?, visual?, table? }} problem  LESSON_CONFIG.lessonProblem
+ *        (le support, s'il existe, est la même donnée que celle de la مسألة 1 — une seule source)
+ * @param {string} [to]           lien vers le module qui la résout
+ * @param {string} [moduleTitle]  titre de ce module (pour le libellé du lien)
+ * @param {boolean} [compact]     variante dans un module
+ */
+export default function LessonProblemCard({ problem, to, moduleTitle, compact = false }) {
+  const { t } = useTranslation('lesson');
+  if (!problem) return null;
+  return (
+    <section className={`rounded-2xl border-2 border-amber-300 bg-amber-50 ${compact ? 'p-3' : 'p-5'} space-y-2 text-amber-950`} data-lesson-problem>
+      <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wide text-amber-800">
+        <span aria-hidden="true">🧩</span>{t('problem.lessonProblem')}
+      </p>
+      <h2 className={`font-space font-bold ${compact ? 'text-sm' : 'text-base'}`}>{problem.title}</h2>
+      <p className="text-sm leading-relaxed"><MathText>{problem.statement}</MathText></p>
+      {(problem.figure || problem.visual || problem.table) && (
+        <Suspense fallback={null}>
+          <ProblemSupport figure={problem.figure} visual={problem.visual} table={problem.table} />
+        </Suspense>
+      )}
+      <p className="text-xs text-amber-800">{t('problem.lessonProblemLead')}</p>
+      {to && moduleTitle && (
+        <Link to={to} className="inline-block text-xs font-bold text-amber-900 underline hover:text-amber-700">
+          {t('problem.lessonProblemOpen', { module: moduleTitle })}
+        </Link>
+      )}
+    </section>
+  );
+}

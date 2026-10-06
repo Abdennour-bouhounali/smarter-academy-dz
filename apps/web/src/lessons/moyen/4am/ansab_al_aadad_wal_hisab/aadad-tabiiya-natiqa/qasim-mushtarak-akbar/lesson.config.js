@@ -1,6 +1,7 @@
 /**
  * الدرس 4 — القاسم المشترك الأكبر لعددين طبيعيين
- * Manuel 4AM, unité 1 : activité 4 (p. 8), معارف 3 (p. 10), معارف 4 تعريف + ملاحظة (p. 12), دوري الآن p. 11 (1), exercice 10 (p. 14).
+ * Manuel 4AM, unité 1 : activité 4 (p. 8), معارف 3 (p. 10), معارف 4 تعريف + ملاحظة (p. 12), دوري الآن p. 11 (1), exercice 10 (p. 14),
+ * puis trois « مسائل » de la plateforme (modules 4–6).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/qasim-mushtarak-akbar';
 
@@ -31,6 +32,14 @@ export const LESSON_CONFIG = {
     include: ['القواسم المشتركة، القاسم المشترك الأكبر، الرمز PGCD (a ; b)', 'ملاحظة الكتاب: القواسم المشتركة هي قواسم PGCD'],
     exclude: ['طرق حساب PGCD بغير حصر القواسم (الدرسان 5 و 6)'],
   },
+  // « مسألة الدرس » : montrée dès le sommaire, rappelée au module 1, résolue
+  // pas à pas au module 4 (content/problems.js). Prolonge les bouquets du
+  // niveau متقدم : mêmes باقات متماثلة, d'autres nombres.
+  lessonProblem: {
+    module: 4,
+    title: 'بائع الورود: 120 وردة حمراء و 84 وردة بيضاء',
+    statement: 'اقتنى بائع زهور في البليدة 120 وردة حمراء بـ 40 دج للوردة الواحدة، و 84 وردة بيضاء بـ 30 دج للوردة الواحدة. يريد استعمالها كلّها في تشكيل باقات متماثلة: في كل باقة نفس عدد الورود الحمراء ونفس عدد الورود البيضاء. يكلّفه تغليف الباقة الواحدة 100 دج. يفتح محلّه كل يوم على الساعة 8 صباحًا.',
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -55,6 +64,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P3'], sourceElementIds: ['act-4'] },
     { kind: 'manipulation', code: 'common-divisors-28-42', type: 'common-divisors', module: 2, title: 'مثال الكتاب: 28 و 42',
       learningPointIds: ['4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P4'], sourceElementIds: ['know-4-def'] },
+    // Modules 4–6 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — باقات الورود: 120 حمراء و 84 بيضاء', learningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — صناديق السمك: 96 كغ سردين و 72 كغ جمبري', learningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P3', '4am_qasim-mushtarak-akbar_P4'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — تبليط قاعة المطالعة: أيّ البلاطات تصلح؟', learningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P3', '4am_qasim-mushtarak-akbar_P4'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -72,8 +86,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'دوري الآن (65 و 78) وتمرين 10.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمس أسئلة تُقيّم نقاط التعلّم الأربع.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — باقات الورود', desc: 'مسألة الدرس: 120 وردة حمراء و 84 بيضاء. 8 باقات أم 6؟ ما أكبر عدد؟ وكم الربح؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — صناديق السمك', desc: '96 كغ سردين و 72 كغ جمبري: كم صندوقًا متماثلًا؟ وما قيمة الصندوق؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P3', '4am_qasim-mushtarak-akbar_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — تبليط قاعة المطالعة', desc: 'أرضية طولها 480 سم وعرضها 360 سم: أيّ البلاطات المربعة تصلح؟ وكم تكلّف؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P3', '4am_qasim-mushtarak-akbar_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمس أسئلة تُقيّم الكفاءات الأربع.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 8, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

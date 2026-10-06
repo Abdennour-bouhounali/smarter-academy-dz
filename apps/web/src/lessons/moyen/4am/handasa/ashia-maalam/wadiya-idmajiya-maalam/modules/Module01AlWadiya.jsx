@@ -155,7 +155,8 @@ export default function Module01AlWadiya() {
                 correct={0} cols={1} requires={['ihdathiyat-nuqta']}
                 explain={<MathText>{`${REMARKS.axe} النقط $(-1\\,;\\,0)$ و $(1\\,;\\,0)$ و $(3\\,;\\,0)$ مراكز أنصاف الدوائر (المسار لا يمرّ بها)، و $(0\\,;\\,-2)$ تبديل للفاصلة والترتيب، و $(-1\\,;\\,1)$ أعلى نصف الدائرة الأولى.`}</MathText>}
                 onAnswered={mark(3)} />
-              {q[3] && <KnowledgeBrick id="qiraat-masarayn" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : lire un point = murakkibata-shuaa (درس 1) ; les corrections des étapes 2–3 juste au-dessus (REMARKS.tafsir1, REMARKS.axe) viennent de décrire les deux parcours. */}
+              {q[3] && <KnowledgeBrick id="qiraat-masarayn" variant="rappel" />}
               <BackLink lesson="murakkibata-shuaa" what="قراءة إحداثيتي نقطة في معلم" />
             </div>
           ) },
@@ -175,7 +176,8 @@ export default function Module01AlWadiya() {
               {q[4] && (
                 <>
                   <p className="text-xs text-slate-600" data-misconception-note="muhit"><MathText>{`خطأ شائع: ${REMARKS.muhitWrong} ${REMARKS.muhitWhy}`}</MathText></p>
-                  <KnowledgeBrick id="nisf-daira-markaz" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : centre = milieu = ihdathiyata-muntasaf (درس 3), longueur πr = prérequis tul-nisf-daira ; les corrections de l’étape 2 (REMARKS.markaz) et de l’étape 4 viennent de le dire. */}
+                  <KnowledgeBrick id="nisf-daira-markaz" variant="rappel" />
                 </>
               )}
               <BackLink lesson="muntasaf-masafa" what="إحداثيتا منتصف قطعة" />
@@ -215,7 +217,8 @@ export default function Module01AlWadiya() {
               {q[6] && (
                 <>
                   <p className="text-xs text-slate-600" data-misconception-note="jam"><MathText>{`خطأ شائع: ${REMARKS.jamWrong} ${REMARKS.jamWhy}`}</MathText></p>
-                  <KnowledgeBrick id="tul-khatt-munkasir" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la distance est masafa (درس 3) ; la correction de l’étape 2 et le retour de la question ci-dessus (REMARKS.qita, REMARKS.L2) viennent de l’énoncer. */}
+                  <KnowledgeBrick id="tul-khatt-munkasir" variant="rappel" />
                 </>
               )}
               <BackLink lesson="hisab-murakkibatay" what="حساب مركبتي شعاع" />
@@ -235,7 +238,8 @@ export default function Module01AlWadiya() {
                 correct={0} cols={1} requires={['nisf-daira-markaz', 'tul-khatt-munkasir', 'qima-muqarraba']}
                 explain={<MathText>{`${REMARKS.muqarana} مجموع الجذور ليس جذر المجموع ( $\\sqrt{13} + \\sqrt{5} + \\sqrt{17} \\neq \\sqrt{35}$ )، والقطع المستقيمة ليست دليلا: الحساب يفصل حتى لفرق $0{,}54$ .`}</MathText>}
                 onAnswered={mark(7)} />
-              {q[7] && <KnowledgeBrick id="muqaranat-masarayn" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : comparer par valeurs approchées est le prérequis qima-muqarraba ; l’explication de la question ci-dessus (REMARKS.muqarana) vient de le faire (9,42 < 9,96). */}
+              {q[7] && <KnowledgeBrick id="muqaranat-masarayn" variant="rappel" />}
             </div>
           ) },
         { num: 8, title: 'التحقّق وتفسير النتيجة', subtitle: 'آخر المرحلة 3: هل النتيجة ملائمة؟', done: !!q[8],
@@ -255,7 +259,8 @@ export default function Module01AlWadiya() {
               {q[8] && (
                 <>
                   <p className="rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900"><MathText>{SITUATION.closing}</MathText></p>
-                  <KnowledgeBrick id="tariqat-wadiya" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche remet en ordre les trois étapes du « تحليل الوضعية » que l’élève vient de lire (encadrés des étapes 1–3) et l’arrondi final (REMARKS.tadwir, étape 8). */}
+                  <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                 </>
               )}
               <BackLink lesson="ithbat-khawas-maalam" what="توظيف الحساب والإحداثيات للإجابة عن سؤال هندسي" />

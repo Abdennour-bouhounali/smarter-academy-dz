@@ -143,7 +143,7 @@ export const ZERO_NOTE = {
 
 /**
  * « أؤكّد تعلّماتي » (p. 74) — les items 2, 3, 5, 6 (extraction.json → destinations › qcm ›
- * duplicatedIn › dala-khattiya, module 4) : l'إختبار أولي.
+ * duplicatedIn › dala-khattiya, module 4 — module 7 depuis les « مسائل ») : l'إختبار أولي.
  */
 const QCM_SRC = (n) => src('qcm', 74, 'أؤكّد تعلّماتي', n);
 export const QCM = {

@@ -287,6 +287,15 @@ only spaces or such a word separate them. Arabic text or punctuation between
 two formulas (« $a$ و $b$ », « $a$ ، $b$ ») still separates two islands —
 nothing changes for them.
 
+### What the STUDENT types: `isolateMath` (2026-10-06)
+
+A calculation typed inside an Arabic sentence (« القسمة: 268 = 54 × 4 + 52 ») is
+displayed reversed by bidi; no CSS (`unicode-bidi: plaintext` included) fixes it
+mid-sentence — checked in Chromium. Every free-text math input goes through
+`lessons/common/components/MathTextArea.jsx`, which wraps each calculation in
+LRI…PDI as the student types, cursor preserved (`isolateMath.js`). Never use a raw
+`<textarea>` for mathematics.
+
 ### Numeric pairs need the same isolation
 
 In an RTL page, `{score} / {max}` renders reversed: `10/11` reads as
@@ -640,7 +649,17 @@ The engine's own vocabulary, settled by the owner:
 | **المحور** | a **module** inside a lesson | a unit |
 | **الدرس** | a lesson | — |
 | **الميدان** | a curriculum domain (chapter) | — |
-| **نقاط التعلّم** | learning points | — |
+| **الكفاءة / الكفاءات** | a learning point / learning points (renamed 2026-10-05) | never « نقطة التعلّم / نقاط التعلّم » — retired from the UI |
+
+**Learning points are « كفاءات » in every visible string** (owner decision,
+2026-10-05). « نقطة التعلّم / نقاط التعلّم / نقطة تعلّم » must not appear in
+the UI, nor the short « هذه النقطة / النقاط » used for a learning point: write
+« الكفاءة », « الكفاءات », « كفاءة », « هذه الكفاءة ». A prerequisite learning
+point is « كفاءة قبلية ». The noun is feminine, so ordinals stay feminine
+(« الكفاءات الثلاث / الأربع / الخمس »). Only the wording changed: code
+identifiers (`learningPoint`, `learning_points`, `LearningPointsTab`), i18n
+keys, API fields, DB columns and codes (`…_P1`) keep their names. « نقطة » for
+a geometric point or for daily-challenge **score** points is unaffected.
 
 The teacher and commercial register, settled by the owner (2026-09-22):
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -16,6 +16,8 @@ import FreqTable from '../components/FreqTable';
  *      puis la méthode sur d'AUTRES nombres (N = 35, N = 48) ;
  *   3. دوري الآن : diviseurs de 225, la série unique 3, 5, 9, 15, 45.
  * LP : P2, P3, P1.
+ * « أتوقّع القاعدة » : l'exercice résolu 2 se termine sur la boîte de la méthode (METHOD_2.rule) juste avant la
+ * brique wasit-rutba : il est enveloppé (<PredictRule id="wasit-rutba">) — l'élève écrit la méthode des rangs AVANT.
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -82,7 +84,7 @@ export default function Module03Taraiq() {
           num: 2, title: 'الوسيط بالرتب', subtitle: 'طرائق — التمرين 2', done: r2 && q2a && q2b,
           content: (
             <div className="space-y-3">
-              <MethodSteps method={METHOD_2} onAllRevealed={() => setR2(true)} />
+              <PredictRule id="wasit-rutba"><MethodSteps method={METHOD_2} onAllRevealed={() => setR2(true)} /></PredictRule>
               {r2 && (
                 <>
                   <KnowledgeBrick id="wasit-rutba" lead="الطريقة، كما تعلّمها الكتاب:" />

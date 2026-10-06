@@ -6,6 +6,8 @@ import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { HOOK, ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import StadiumVignette from '../components/StadiumVignette';
@@ -19,8 +21,11 @@ import StadiumVignette from '../components/StadiumVignette';
  *            مبتدئ : l'abonnement des cadets (100 DA + 50 DA par match), deux marches.
  * DISCOVER   questions 1 et 2 du manuel (7 matchs, 4800 DA, f(x), images, l'antécédent de 2000) ;
  * UNDERSTAND question 3 : les trois quotients du manuel, à côté des marches de l'ÉLÈVE (`onTrial`,
- *            `[data-activity-evidence]`) — la brique tanasub-taghayyurat NOMME ce qu'elles montrent ;
+ *            `[data-activity-evidence]`) — la brique tanasub-taghayyurat NOMME ce qu'elles montrent (l'élève
+ *            la PRÉDIT d'abord : l'explication de « ماذا تلاحظ؟ » n'énonce donc pas la règle générale,
+ *            ACTIVITY_LINES.observe, mais seulement les quotients) ;
  * TOUCH      question 4 : compléter les « … » de la figure — l'élève les a construites dans le lab.
+ * Fin de l'étape 4 : la « مسألة الدرس » (LessonProblemCard), résolue au module 4.
  * Aucune étape n'attend `onFinished` (non bloquant). LP : P1.
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
@@ -206,7 +211,7 @@ export default function Module01Mudarrajat() {
                   correct={1}
                   cols={1}
                   requires={['hisab-farq-nisbi']}
-                  explain={<MathText>{`${ACTIVITY_LINES.observe} ${ACTIVITY_LINES.ratios}`}</MathText>}
+                  explain={<MathText>{`${ACTIVITY_LINES.ratios} — والعدد نفسه في كل درجة بنيتها في المخبر: 200 هو معامل $x$ في $f(x) = 200x + 2000$ .`}</MathText>}
                   onAnswered={() => setQ3b(true)}
                 />
               )}
@@ -242,6 +247,10 @@ export default function Module01Mudarrajat() {
                   <MathText>{'في كل درجة الارتفاع يساوي $200 \\times$ الامتداد. المحور التالي يبيّن لماذا، ويستعمل هذه الخاصية لإيجاد دالة تآلفية لا نعرف منها إلا عددين وصورتيهما: من الدرجة سلسيوس إلى الفهرنهايت.'}</MathText>
                 </p>
               )}
+              {/* La « مسألة الدرس » prolonge l'abonnement des supporters des deux niveaux
+                  (laboratoire dans l'intro) : une nouvelle saison, deux montants connus,
+                  la formule inconnue — résolue au module 4. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

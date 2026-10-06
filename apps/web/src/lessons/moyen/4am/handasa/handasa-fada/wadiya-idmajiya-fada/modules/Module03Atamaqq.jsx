@@ -59,7 +59,8 @@ export default function Module03Atamaqq() {
               <TextbookExercise exercise={part('ice-3')} requires={['hajm-makhrut', 'hajm-julla']} onAnswered={mark('ice-3')} />
               <TextbookExercise exercise={part('ice-4')} requires={['takbir-k3', 'maqta-mukhrut']} onAnswered={mark('ice-4')} />
               <TextbookExercise exercise={part('ice-5')} requires={['takbir-k3', 'hajm-mabtur']} onAnswered={mark('ice-5')} />
-              {done['ice-5'] && <KnowledgeBrick id="adawat-wahda-fada" lead="الدلو والمثلجات يجمعان أدوات من دروس مختلفة: ما هي؟" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : boule, cône et k³ ⇒ k sont misaha-hajm-kura, hajm-makhrut et tariqat-judhur (درس التكبير والتصغير) ; les exercices juste au-dessus viennent de les combiner. */}
+              {done['ice-5'] && <KnowledgeBrick id="adawat-wahda-fada" variant="rappel" lead="الدلو والمثلجات يجمعان أدوات من دروس مختلفة: ما هي؟" />}
               <BackLink lesson="takbir-tasghir" what="التكبير والتصغير" />
             </div>
           ) },

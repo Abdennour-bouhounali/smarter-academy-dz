@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import BallsCutaway from '../components/BallsCutaway';
@@ -158,19 +160,23 @@ export default function Module01Nashat() {
           num: 3, title: 'نشاط 1: أتمم', subtitle: 'السؤال 4', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="situation" text={ACTIVITY.part4} source={ACTIVITY.source} compact />
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">اختر الكلمة التي تتمّ كل جملة:</p>}
-                rows={[
-                  // la دائرة : un objet du PLAN, pas de l'espace
-                  { id: 'r', label: 'النقط من الفضاء التي تبعد بمسافة ثابتة r عن O هي …', options: ['الكُرة', 'الجُلّة', 'الدائرة'], correct: 0, correction: 'النقط على البعد r تماما تشكّل سطحا أجوف: الكرة (والدائرة هي الحالة نفسها في المستوي).' },
-                  // le قرص : son analogue plan
-                  { id: 'le', label: 'النقط من الفضاء التي تبعد بمسافة أصغر من أو تساوي r عن O هي …', options: ['الجُلّة', 'الكُرة', 'القرص'], correct: 0, correction: 'السطح وكل ما بداخله: مجسّم مملوء، الجلة (والقرص هو نظيرها في المستوي).' },
-                ]}
-                requires={['daira-qurs']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: كما الدائرة والقرص في المستوي، الكرة والجلة في الفضاء.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
-                onAnswered={() => setQ3(true)}
-              />
+              {/* « أتوقّع القاعدة » : la consigne 4) du manuel donne déjà les deux conditions (bonne réponse = la règle) —
+                  l'élève écrit d'abord la règle, puis la consigne, la question et la brique suivent (une seule « توقّعك »). */}
+              <PredictRule id="kura-julla-nashat">
+                <TextbookBox kind="situation" text={ACTIVITY.part4} source={ACTIVITY.source} compact />
+                <BatchChoiceQuestion
+                  intro={<p className="text-sm font-semibold text-slate-700">اختر الكلمة التي تتمّ كل جملة:</p>}
+                  rows={[
+                    // la دائرة : un objet du PLAN, pas de l'espace
+                    { id: 'r', label: 'النقط من الفضاء التي تبعد بمسافة ثابتة r عن O هي …', options: ['الكُرة', 'الجُلّة', 'الدائرة'], correct: 0, correction: 'النقط على البعد r تماما تشكّل سطحا أجوف: الكرة (والدائرة هي الحالة نفسها في المستوي).' },
+                    // le قرص : son analogue plan
+                    { id: 'le', label: 'النقط من الفضاء التي تبعد بمسافة أصغر من أو تساوي r عن O هي …', options: ['الجُلّة', 'الكُرة', 'القرص'], correct: 0, correction: 'السطح وكل ما بداخله: مجسّم مملوء، الجلة (والقرص هو نظيرها في المستوي).' },
+                  ]}
+                  requires={['daira-qurs']}
+                  feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: كما الدائرة والقرص في المستوي، الكرة والجلة في الفضاء.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
+                  onAnswered={() => setQ3(true)}
+                />
+              </PredictRule>
               {q3 && <KnowledgeBrick id="kura-julla-nashat" lead="الجملتان كاملتين، بكلمات الكتاب:" />}
             </div>
           ),
@@ -195,6 +201,8 @@ export default function Module01Nashat() {
                 explain={<MathText>{'نقط الكرة تحقّق $OM = 4$ فقط (سطح أجوف)، ونقط الجلة تحقّق $OM \\le 4$ . النقطة P داخل الجلة وليست على سطحها: $OP < 4$ . ' + ACTIVITY_LINES.lab}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
+              {/* La « مسألة الدرس » prolonge la sonde متقدم : une جلّة de rayon 6 dans un repère, trois points, un قطر — module 5. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

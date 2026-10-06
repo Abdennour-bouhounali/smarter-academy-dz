@@ -76,7 +76,9 @@ export default function Module01AlWadiya() {
                 onAnswered={() => setQ3(true)} />
               {q3 && (
                 <>
-                  <KnowledgeBrick id="tariqat-wadiya" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche ne fait que remettre en ordre ce que les
+                      trois questions ci-dessus viennent d’établir (leurs explications) et la طريقة a√b du درس 5. */}
+                  <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                   <TextbookBox kind="remark" text={REMARKS.notSolvedHere} compact />
                 </>
               )}

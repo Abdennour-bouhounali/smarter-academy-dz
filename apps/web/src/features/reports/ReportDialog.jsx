@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
-import { X, Check, TriangleAlert } from 'lucide-react';
+import { X, Check, TriangleAlert, Camera, ImagePlus } from 'lucide-react';
 import { REPORT_CATEGORIES } from '../../services/reportService';
+import ScreenshotAnnotator from './ScreenshotAnnotator';
+import { captureRegion, capturePage, loadImageFile, exportAnnotated, IGNORE_ATTRIBUTE } from './screenshot';
+import ScreenSnipper from './ScreenSnipper';
 
 /**
  * Le formulaire de signalement.
@@ -16,17 +20,32 @@ import { REPORT_CATEGORIES } from '../../services/reportService';
  * fermeture, Échap ferme, Tab reste piégé, et les catégories sont de VRAIS
  * boutons radio (radiogroup) — pas des <div> cliquables, qui ne se
  * parcourent pas aux flèches.
+ *
+ * CAPTURE D'ÉCRAN (facultative, 2026-10-05) : « التقاط الصفحة » photographie
+ * la partie visible de la page SANS cette fenêtre (attribut
+ * data-report-ignore), « رفع صورة » prend une image du relecteur ; dans les
+ * deux cas il encadre la zone fautive (ScreenshotAnnotator) et les cadres
+ * sont brûlés dans l'image à l'envoi.
  */
 export default function ReportDialog({ open, onClose, onSubmit, busy, error, submitted }) {
   const { t } = useTranslation('common');
   const [category, setCategory] = useState(null);
   const [note, setNote] = useState('');
+  const [shot, setShot] = useState(null);
+  const [marks, setMarks] = useState([]);
+  const [capturing, setCapturing] = useState(false);
+  // L'outil de capture est ouvert : la fenêtre se RETIRE (ni fond, ni piège à
+  // focus, ni défilement bloqué) le temps que le relecteur choisisse sa région.
+  const [snipping, setSnipping] = useState(false);
+  const active = open && !snipping;
+  const [shotError, setShotError] = useState(null);
+  const fileRef = useRef(null);
   const panelRef = useRef(null);
   const firstRadioRef = useRef(null);
   const previouslyFocused = useRef(null);
 
   useEffect(() => {
-    if (!open) return undefined;
+    if (!active) return undefined;
 
     previouslyFocused.current = document.activeElement;
     // Le focus va sur la première option, pas sur le panneau : l'élève arrive
@@ -71,7 +90,7 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
       document.body.style.overflow = previousOverflow;
       previouslyFocused.current?.focus?.();
     };
-  }, [open, onClose]);
+  }, [active, onClose]);
 
   // Repart d'une page blanche à chaque ouverture : un choix laissé d'une fois
   // sur l'autre serait pris pour le signalement en cours.
@@ -79,20 +98,78 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
     if (open) {
       setCategory(null);
       setNote('');
+      setShot(null);
+      setMarks([]);
+      setShotError(null);
+      setSnipping(false);
     }
   }, [open]);
 
   if (!open) return null;
 
-  const submit = (event) => {
-    event.preventDefault();
-    if (!category || busy) return;
-    onSubmit({ category, note: note.trim() });
+  const adoptCanvas = (canvas) => {
+    setShot(canvas);
+    setMarks([]);
+    setShotError(null);
   };
 
-  return (
+  // « التقاط منطقة » : la fenêtre se retire, l'outil de capture prend la
+  // main ; la région choisie revient dans la fenêtre, qui réapparaît.
+  const capture = () => {
+    setShotError(null);
+    setSnipping(true);
+  };
+
+  const finishCapture = async (take) => {
+    setCapturing(true);
+    try {
+      adoptCanvas(await take());
+    } catch {
+      setShotError(t('report.screenshot.captureFailed'));
+    } finally {
+      setCapturing(false);
+      setSnipping(false);
+    }
+  };
+
+  const pickFile = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    try {
+      adoptCanvas(await loadImageFile(file));
+    } catch {
+      setShotError(t('report.screenshot.unsupported'));
+    }
+  };
+
+  const submit = async (event) => {
+    event.preventDefault();
+    if (!category || busy) return;
+    const screenshot = shot ? await exportAnnotated(shot, marks) : null;
+    onSubmit({ category, note: note.trim(), screenshot });
+  };
+
+  // Rendu dans <body> (portail) : le bouton vit dans la rangée de repères
+  // du module, qui forme son propre contexte d'empilement — sans portail, la
+  // barre de navigation du site passait PAR-DESSUS la fenêtre et l'outil.
+  const portal = (node) => (typeof document === 'undefined' ? node : createPortal(node, document.body));
+
+  if (snipping) {
+    return portal(
+      <ScreenSnipper
+        busy={capturing}
+        onSelect={(rect) => finishCapture(() => captureRegion(rect))}
+        onFullScreen={() => finishCapture(() => capturePage())}
+        onCancel={() => setSnipping(false)}
+      />,
+    );
+  }
+
+  return portal(
     <div
-      className="fixed inset-0 z-[60] flex items-end justify-center bg-slate-900/40 p-0 sm:items-center sm:p-4"
+      {...{ [IGNORE_ATTRIBUTE]: '' }}
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-slate-900/40 p-0 sm:items-center sm:p-4"
       onMouseDown={(event) => {
         // onMouseDown et non onClick : un glissement commencé DANS la fenêtre
         // et relâché sur le fond la fermerait.
@@ -205,6 +282,42 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
                 />
               </div>
 
+              <section aria-labelledby="report-screenshot-title" className="space-y-2">
+                <h3 id="report-screenshot-title" className="font-inter text-sm font-semibold text-slate-700">
+                  {t('report.screenshot.title')}{' '}
+                  <span className="font-normal text-slate-400">{t('report.noteOptional')}</span>
+                </h3>
+                {shot ? (
+                  <ScreenshotAnnotator
+                    source={shot}
+                    rects={marks}
+                    onChange={setMarks}
+                    onRemove={() => { setShot(null); setMarks([]); }}
+                  />
+                ) : (
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={capture}
+                      disabled={capturing}
+                      className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 font-inter text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+                    >
+                      <Camera size={16} aria-hidden="true" />
+                      {capturing ? t('report.screenshot.capturing') : t('report.screenshot.capture')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => fileRef.current?.click()}
+                      className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 font-inter text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                    >
+                      <ImagePlus size={16} aria-hidden="true" /> {t('report.screenshot.upload')}
+                    </button>
+                    <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={pickFile} />
+                  </div>
+                )}
+                {shotError && <p role="alert" className="font-inter text-xs text-rose-700">{shotError}</p>}
+              </section>
+
               {error && (
                 <p role="alert" className="flex items-start gap-2 rounded-xl bg-rose-50 p-2.5 font-inter text-xs text-rose-800">
                   <TriangleAlert size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
@@ -232,6 +345,6 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
           </form>
         )}
       </div>
-    </div>
+    </div>,
   );
 }

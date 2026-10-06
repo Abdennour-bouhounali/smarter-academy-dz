@@ -3,6 +3,7 @@
  * Unité 6 du manuel (4AM) : « أستعدّ » items 6–9 (p. 65), نشاط 5 et نشاط 6 (p. 67), معارف p. 70,
  * طرائق p. 71 (النسب المئوية، المقادير المركّبة، دوري الآن), exercices 3, 4, 5 (p. 72) et 19 → 27
  * (p. 73), QCM 7 et 8 (p. 74). Source de vérité : docs/sources/4am/unit6/extraction.json.
+ * Puis trois « مسائل » de la plateforme (modules 5–7), avant le إختبار أولي (module 8).
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -47,6 +48,11 @@ export const LESSON_CONFIG = {
       'الفائدة المركّبة والنسب المئوية على عدة سنوات',
     ],
   },
+  lessonProblem: {
+    module: 5,
+    title: 'صهريج السقي: سحب 25% ثم ضخّ 20% ممّا بقي',
+    statement: 'في بستان زيتون صهريج لسقي الأشجار سعته $40m^3$ ، كان مملوءًا تمامًا صباح يوم الإثنين. سحب الفلاح 25% من الماء لسقي 120 شجرة زيتون، ثم ضخّ في المساء كمية من الماء تساوي 20% ممّا بقي في الصهريج. تضخّ المضخّة الكهربائية الماء بتدفق ثابت قدره 800 لتر في الساعة، واستطاعتها $1{,}5kW$ . عمق البئر الذي تضخّ منه 35 مترًا.',
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -78,6 +84,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_tatbiqat-tanasub_P1', '4am_tatbiqat-tanasub_P3'],
       sourceElementIds: ['method-percent'],
     },
+    // Les trois « مسائل » (ajouts de la plateforme, content/problems.js).
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — صهريج السقي: سحب 25% ثم ضخّ 20%', learningPointIds: ['4am_tatbiqat-tanasub_P1', '4am_tatbiqat-tanasub_P2', '4am_tatbiqat-tanasub_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — ألبسة العيد: زيادة 20% ثم تخفيض 20%', learningPointIds: ['4am_tatbiqat-tanasub_P1'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — سكان البلدية: النموّ والكثافة وماء الشرب', learningPointIds: ['4am_tatbiqat-tanasub_P1', '4am_tatbiqat-tanasub_P2', '4am_tatbiqat-tanasub_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -99,8 +109,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 3، 4، 5 و 19 ← 27 في أربع مجموعات: تعيين دالة خطية، النسب المئوية، تغيّرات متتابعة، المقادير المركّبة.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tatbiqat-tanasub_P1', '4am_tatbiqat-tanasub_P2', '4am_tatbiqat-tanasub_P3'],
       color: 'amber', style: 'featured', estimatedMin: 12, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث، منها سؤالان من أؤكّد تعلّماتي.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — صهريج السقي', desc: 'مسألة الدرس: سحب 25% ثم ضخّ 20% ممّا بقي، هل نقص الماء بـ 5% فقط؟ ثم المدة والطاقة لملء الصهريج.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tatbiqat-tanasub_P1', '4am_tatbiqat-tanasub_P2', '4am_tatbiqat-tanasub_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — ألبسة العيد', desc: 'زيادة 20% ثم تخفيض 20%: هل عادت الأسعار إلى ما كانت عليه؟ وكم دفع الأب؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tatbiqat-tanasub_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — سكان البلدية', desc: 'نموّ السكان بـ 2,5%، الكثافة السكانية، وهل تكفي محطة المياه؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tatbiqat-tanasub_P1', '4am_tatbiqat-tanasub_P2', '4am_tatbiqat-tanasub_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث، منها سؤالان من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

@@ -49,6 +49,12 @@ final class UserPresenter
             'legalConsentAt' => optional($user->legal_consent_at)->toIso8601String(),
             'termsAcceptedVersion' => $user->terms_accepted_version,
             'privacyPolicyAcceptedVersion' => $user->privacy_policy_accepted_version,
+            // Ambassadeur (« سفير ») : un enseignant désigné par
+            // l'administrateur. `canReviewContent` couvre aussi l'admin :
+            // c'est lui que l'interface lit pour montrer l'état de
+            // publication et le bouton de signalement. Le serveur décide.
+            'isAmbassador' => $user->isAmbassador(),
+            'canReviewContent' => $user->canReviewAllContent(),
         ];
     }
 }

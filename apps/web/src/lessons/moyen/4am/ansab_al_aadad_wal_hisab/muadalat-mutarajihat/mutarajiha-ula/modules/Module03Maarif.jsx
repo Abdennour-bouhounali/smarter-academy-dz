@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
@@ -16,6 +16,12 @@ import { KNOWLEDGE_3, KNOWLEDGE_4 } from '../content/textbook';
  *   2. les trois règles (brique qawaid-ittijah) et l'exemple 2 — CORRIGÉ : « قد تغيّر » ;
  *   3. le dessin du manuel (brique tamthil-bayani) : 5x ≤ 3 et x > 6, puis 2x ≥ 6 à dessiner.
  * LP : P1, P2, P3.
+ *
+ * « أتوقّع القاعدة » : l'encadré تعريف (1) et les deux ملاحظة du manuel (3) ÉNONCENT la règle
+ * juste avant sa brique — ils sont enveloppés dans une PredictRule portant l'id de la brique
+ * (mutarajiha-ula, tamthil-bayani) : l'élève écrit d'abord (predictPrompt de knowledge.jsx),
+ * puis encadré et brique s'affichent, une seule « توقّعك ». L'exemple 1 de معارف 4 et son
+ * dessin restent AVANT la prédiction : la prompt s'appuie sur eux.
  */
 const KEEP = ['يبقى', 'يتغيّر'];
 
@@ -44,7 +50,9 @@ export default function Module03Maarif() {
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="hal-mutarajiha" variant="rappel" compact />
-              <TextbookBox kind="definition" lines={[...KNOWLEDGE_3.definition, KNOWLEDGE_3.firstDegree]} source={KNOWLEDGE_3.source} compact />
+              <PredictRule id="mutarajiha-ula">
+                <TextbookBox kind="definition" lines={[...KNOWLEDGE_3.definition, KNOWLEDGE_3.firstDegree]} source={KNOWLEDGE_3.source} compact />
+              </PredictRule>
               <KnowledgeBrick id="mutarajiha-ula" lead="تعريف الكتاب، كما جرّبته بمتراجحتي النشاط:" />
               <TextbookBox kind="example" text={KNOWLEDGE_3.example1} source={KNOWLEDGE_3.source} compact />
               <TapQuestion
@@ -108,10 +116,12 @@ export default function Module03Maarif() {
               <KnowledgeBrick id="tamthil-jadwal" variant="rappel" compact />
               <TextbookBox kind="example" text={KNOWLEDGE_4.example1} source={KNOWLEDGE_4.source} compact />
               <RayFigure {...KNOWLEDGE_4.figure1} label="الجزء الملوّن بالأحمر على يسار ثلاثة أخماس، والرمز موجّه نحوه" />
-              <TextbookBox kind="remark" text={KNOWLEDGE_4.note1} source={KNOWLEDGE_4.source} compact />
-              <TextbookBox kind="example" text={KNOWLEDGE_4.example2} source={KNOWLEDGE_4.source} compact />
-              <RayFigure {...KNOWLEDGE_4.figure2} label="الجزء الملوّن بالأحمر على يمين 6، والرمز غير موجّه نحوه" />
-              <TextbookBox kind="remark" text={KNOWLEDGE_4.note2} source={KNOWLEDGE_4.source} compact />
+              <PredictRule id="tamthil-bayani">
+                <TextbookBox kind="remark" text={KNOWLEDGE_4.note1} source={KNOWLEDGE_4.source} compact />
+                <TextbookBox kind="example" text={KNOWLEDGE_4.example2} source={KNOWLEDGE_4.source} compact />
+                <RayFigure {...KNOWLEDGE_4.figure2} label="الجزء الملوّن بالأحمر على يمين 6، والرمز غير موجّه نحوه" />
+                <TextbookBox kind="remark" text={KNOWLEDGE_4.note2} source={KNOWLEDGE_4.source} compact />
+              </PredictRule>
               <KnowledgeBrick id="tamthil-bayani" lead="القاعدة التي وجدتها حين وجّهت الرمز:" />
               <GraphChoice
                 prompt={<MathText>{'مثّل بيانيا حلول المتراجحة $2x \\geq 6$ .'}</MathText>}

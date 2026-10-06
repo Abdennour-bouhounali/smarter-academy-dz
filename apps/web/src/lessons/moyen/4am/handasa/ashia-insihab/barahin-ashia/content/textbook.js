@@ -183,7 +183,7 @@ export const PREP_ITEMS = [
   { skill: 'rubaiyat', text: 'متوازي أضلاع قطراه متقايسان هو مستطيل.', answer: true, why: 'من خواص الرباعيات الشهيرة: متوازي الأضلاع الذي قطراه متقايسان مستطيل، والذي قطراه متعامدان معين.', source: PREP },
 ];
 
-/* ── module 5 : « إختبار أولي » — des points et des situations qui n'apparaissent nulle part ailleurs ─── */
+/* ── module 8 : « إختبار أولي » — des points et des situations qui n'apparaissent nulle part ailleurs ─── */
 
 export const TEST = {
   source: PLATFORM,

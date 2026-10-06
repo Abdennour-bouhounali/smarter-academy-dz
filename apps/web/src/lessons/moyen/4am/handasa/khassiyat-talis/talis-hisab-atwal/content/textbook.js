@@ -109,7 +109,7 @@ export const NOW = {
   explain: 'المثلثان EUV و ETW في وضعية طالس: $\\dfrac{EW}{EV} = \\dfrac{ET}{EU}$ أي $\\dfrac{EW}{2{,}25} = \\dfrac{5{,}25}{3{,}75}$ ومنه $EW = \\dfrac{2{,}25 \\times 5{,}25}{3{,}75} = 3{,}15$ .',
 };
 
-/** « أؤكّد تعلّماتي » (p. 112) — items 1 et 2 (extraction › destinations › qcm : duplicatedIn ce درس, module 5). */
+/** « أؤكّد تعلّماتي » (p. 112) — items 1 et 2 (extraction › destinations › qcm : duplicatedIn ce درس, module 8 — ex-module 5 avant les « مسائل »). */
 const QCM_SRC = (n) => src('qcm', 112, 'أؤكّد تعلّماتي', n);
 export const QCM = {
   1: { source: QCM_SRC(1), text: 'في الشكل الآتي (BC)//(IJ). ينتج ………' },

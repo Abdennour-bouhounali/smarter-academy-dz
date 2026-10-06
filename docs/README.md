@@ -54,6 +54,8 @@ to read them.
 | Author or generate a lesson's **Knowledge Map** (the progressive map, its guidance layer, its quality checklist) | [`architecture/KNOWLEDGE_MAP.md`](./architecture/KNOWLEDGE_MAP.md) **Part A** |
 | Create or modify a lesson, module, manipulation or exercise | **[`lessons/LESSON_DEVELOPMENT_GUIDE.md`](./lessons/LESSON_DEVELOPMENT_GUIDE.md)** — the single entry point |
 | **Generate a new lesson** | [`lessons/LESSON_DEVELOPMENT_GUIDE.md`](./lessons/LESSON_DEVELOPMENT_GUIDE.md) **§14 — the reference architecture, frozen for generation on 2026-09-29**: the real structure, the generation contract (input, required output, what to reuse, what is prohibited) and the validation a generated lesson must pass |
+| **Generate the « مسائل »** (3 exam-style problem modules) of a lesson | **[`lessons/MASAIL_GENERATION_GUIDE.md`](./lessons/MASAIL_GENERATION_GUIDE.md)** — owner rules, design method, data schema, wiring checklist, validation, pitfalls |
+| **Write the « أتوقّع القاعدة » prompts** of a lesson (the rule the student writes before reading it) | **[`lessons/PREDICT_PROMPT_GUIDE.md`](./lessons/PREDICT_PROMPT_GUIDE.md)** — criteria, procedure, `npm run audit:predict` |
 | Understand the whole system | [`architecture/ARCHITECTURE.md`](./architecture/ARCHITECTURE.md) |
 | Work on Classroom Mode (وضع القسم) | [`architecture/CLASSROOM_MODE.md`](./architecture/CLASSROOM_MODE.md) |
 | **Design** a manipulation (what the hand controls, resistance, contrast, the design sheet, anti-template rules) | [`architecture/MANIPULATION_DNA.md`](./architecture/MANIPULATION_DNA.md) — read it before the contract |
@@ -64,6 +66,7 @@ to read them.
 | Work on the Math Lab (مختبر الرياضيات) or add an instrument to it | [`architecture/MATH_LAB.md`](./architecture/MATH_LAB.md) |
 | Work on teachers — how a teacher reads lessons (free navigation, no progress), classes (الأقسام), seat-based plans and pricing tiers, subscriptions, requests or plan-bound activation codes | [`architecture/TEACHER_CLASSROOM_ARCHITECTURE.md`](./architecture/TEACHER_CLASSROOM_ARCHITECTURE.md) |
 | Build or change an admin screen (Arabic, RTL, shared design system) | [`architecture/ADMIN_PANEL_ARCHITECTURE.md`](./architecture/ADMIN_PANEL_ARCHITECTURE.md) §33.0 |
+| Ambassadors (« سفراء »), who sees unpublished content and its state badge, problem reports with screenshots | [`architecture/ADMIN_PANEL_ARCHITECTURE.md`](./architecture/ADMIN_PANEL_ARCHITECTURE.md) Annexe A8 |
 | Regenerate or extend the recette/demo dataset (`DemoDataSeeder`) | [`architecture/DEMO_DATASET.md`](./architecture/DEMO_DATASET.md) |
 | Decide which tier may use a Math Lab instrument, the notebook or saved works, set a quota (notebook copies, document generations), or understand a « premium_required » / « quota_exceeded » refusal | [`architecture/ACCESS_AND_LIMITS.md`](./architecture/ACCESS_AND_LIMITS.md) — admin screen « الوصول والحدود » (`/admin/offres/acces`), never a condition in code |
 | Work on the teacher's « مذكرة الدرس » (lesson orchestration page), the teacher's lesson actions on the unit page, or the catalogue lesson search | [`architecture/TEACHER_CLASSROOM_ARCHITECTURE.md`](./architecture/TEACHER_CLASSROOM_ARCHITECTURE.md) §8b — and, for what a lesson must author to feed it, [`lessons/LESSON_DEVELOPMENT_GUIDE.md`](./lessons/LESSON_DEVELOPMENT_GUIDE.md) « Your lesson feeds the teacher's مذكرة الدرس » |
@@ -79,7 +82,7 @@ may describe it, but they defer to this one.
 
 | Subject | Authoritative document |
 |---|---|
-| Curriculum hierarchy (المجال → الوحدة → الدرس → نقاط التعلّم), lesson & module contract, stages, unlock rules, non-blocking progression | [`architecture/LESSON_CONTRACT.md`](./architecture/LESSON_CONTRACT.md) |
+| Curriculum hierarchy (المجال → الوحدة → الدرس → الكفاءات), lesson & module contract, stages, unlock rules, non-blocking progression | [`architecture/LESSON_CONTRACT.md`](./architecture/LESSON_CONTRACT.md) |
 | How a lesson is wired end to end (files, routes, registry, storage) | [`architecture/LESSON_INTEGRATION_GUIDE.md`](./architecture/LESSON_INTEGRATION_GUIDE.md) |
 | How a lesson should teach (interaction & manipulation pedagogy) | [`architecture/INTERACTION_PEDAGOGY.md`](./architecture/INTERACTION_PEDAGOGY.md) |
 | How a lesson is designed and built, end to end, by a human or an agent | [`architecture/LESSON_DESIGN_PLAYBOOK.md`](./architecture/LESSON_DESIGN_PLAYBOOK.md) |
@@ -90,6 +93,8 @@ may describe it, but they defer to this one.
 | Exercise validation boundary, answer shapes, practice engine | [`architecture/EXERCISE_CONTRACT.md`](./architecture/EXERCISE_CONTRACT.md) |
 | What the entry bundle may contain, lazy boundaries (lesson runtime, Math Lab overlay, notebook window, on-demand i18n namespaces), prefetch points, measured before/after | [`architecture/BUNDLE_BOUNDARIES.md`](./architecture/BUNDLE_BOUNDARIES.md) |
 | Question metadata, evidence, assessment rules for generated lessons | [`architecture/AI_LESSON_CONTRACT.md`](./architecture/AI_LESSON_CONTRACT.md) |
+| The « مسائل » modules: design, `content/problems.js` schema, one answer per demand, written answers, rollout | [`lessons/MASAIL_GENERATION_GUIDE.md`](./lessons/MASAIL_GENERATION_GUIDE.md) |
+| « أتوقّع القاعدة » — the student writes a rule before reading it (`KnowledgeBrick` default, `PredictRule`, `predictPrompt`) | [`architecture/KNOWLEDGE_DEPENDENCY.md`](./architecture/KNOWLEDGE_DEPENDENCY.md) § « أتوقّع القاعدة » |
 | Knowledge before demand (`priorKnowledge`, `KnowledgeBrick`, `requires`) | [`architecture/KNOWLEDGE_DEPENDENCY.md`](./architecture/KNOWLEDGE_DEPENDENCY.md) |
 | The Knowledge Map: **the approved progressive interactive learning map** (Mind Map « الخريطة » + linear « المعارف مفصّلة », one model; semantic knowledge types incl. خطأ شائع / انتبه / تحقّق / تذكّر / نصيحة / خلاصة; learning-synchronised reveal; data model `knowledgeGraph.js`; authoring rules, quality checklist, migration and generation — Part A; on all nine lessons since the 2026-09-29 migration, reference `qasim-adad-tabii`), the cumulative engine and `knowledge.jsx`, the column / drawer / full-screen panel | [`architecture/KNOWLEDGE_MAP.md`](./architecture/KNOWLEDGE_MAP.md) |
 | Completion vs mastery, progress storage and sync | [`architecture/PROGRESS_MODEL.md`](./architecture/PROGRESS_MODEL.md) |

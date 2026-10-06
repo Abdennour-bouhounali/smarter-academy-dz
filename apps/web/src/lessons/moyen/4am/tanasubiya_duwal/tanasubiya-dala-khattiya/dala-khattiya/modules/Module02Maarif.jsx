@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -133,7 +133,7 @@ export default function Module02Maarif() {
               />
               {q3a && (
                 <>
-                  <TextbookBox kind="definition" title={KNOWLEDGE.table.title} lines={KNOWLEDGE.table.definition} source={KNOWLEDGE.table.source} compact />
+                  <PredictRule id="jadwal-khattiya" prompt={"في آلة التخفيض كانت الدالة $f(x) = 0{,}8x$ وجدول الأسعار جدول تناسبية. ماذا تستنتج عن جدول قيم أيّ دالة خطية $f(x) = ax$؟ وما معامل التناسبية فيه؟"}><TextbookBox kind="definition" title={KNOWLEDGE.table.title} lines={KNOWLEDGE.table.definition} source={KNOWLEDGE.table.source} compact /></PredictRule>
                   <TextbookBox kind="example" text={KNOWLEDGE.table.example} source={KNOWLEDGE.table.source} compact />
                   <ValueTable caption="جدول قيم الدالة f" rows={[{ label: '$x$', cells: KNOWLEDGE.table.x }, { label: '$f(x)$', cells: KNOWLEDGE.table.y }]} arrow={KNOWLEDGE.table.arrow} />
                   <KnowledgeBrick id="jadwal-khattiya" lead="جدولك في آلة التخفيض كان جدول تناسبية معامله 0,8 — وهذه هي القاعدة:" />
@@ -155,7 +155,8 @@ export default function Module02Maarif() {
           num: 4, title: 'تعيين دالة خطية من عدد وصورته', subtitle: 'طرائق', done: q4,
           content: (
             <div className="space-y-3">
-              <MethodSteps method={METHOD} onAllRevealed={() => setLines(true)} />
+              {/* « أتوقّع القاعدة » : la طريقة (g(−2) = 6) énonce la méthode — l'élève l'écrit avant (prompt : knowledge.jsx). */}
+              <PredictRule id="tayin-dala"><MethodSteps method={METHOD} onAllRevealed={() => setLines(true)} /></PredictRule>
               <KnowledgeBrick id="tayin-dala" lead="ما فعلته حين وضعت زوجًا من جدولك على مقبض a:" />
               <p className="text-xs text-slate-600"><MathText>{IMAGE_METHOD.rule}</MathText> <SourceTag source={IMAGE_METHOD.source} /></p>
               <NumericQuestion

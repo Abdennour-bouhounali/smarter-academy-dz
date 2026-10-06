@@ -1,4 +1,5 @@
 import { call, get, send, query } from './adminClient';
+import { apiBlob } from '../apiClient';
 
 export function fetchReports(token, filters = {}) {
   return call(`/admin/reports${query(filters)}`, get(token), 'Impossible de charger les signalements.');
@@ -30,4 +31,14 @@ export function addReportNote(token, id, body) {
     send('POST', token, { body }),
     'Impossible d’ajouter la note.',
   ).then((data) => data.note);
+}
+
+/**
+ * La capture d'écran jointe, en URL d'objet (blob:) — la route est
+ * authentifiée, une balise <img> ne peut donc pas la charger directement.
+ * L'appelant révoque l'URL quand il n'en a plus besoin.
+ */
+export async function fetchReportScreenshotUrl(token, id) {
+  const blob = await apiBlob(`/admin/reports/${encodeURIComponent(id)}/screenshot`, get(token));
+  return URL.createObjectURL(blob);
 }

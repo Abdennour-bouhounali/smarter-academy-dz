@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import SpaceFigure from '../../../../../../common/components/SpaceFigure';
@@ -44,15 +44,18 @@ export default function Module03Taraiq() {
           num: 1, title: 'تمثيل كرة', subtitle: 'نصف قطرها 2,5 cm', done: q1,
           content: (
             <div className="space-y-3">
-              <MethodSteps method={METHOD_DRAW} />
-              <div className="grid gap-2 sm:grid-cols-3" data-draw-figures>
-                {[FIG_DRAW_1, FIG_DRAW_2, FIG_DRAW_3].map((f, i) => (
-                  <div key={f.ariaLabel} className="rounded-xl border border-slate-200 bg-white p-1 text-center">
-                    <SpaceFigure {...f} />
-                    <span className="text-xs font-bold text-slate-600">{`الشكل ${i + 1}`}</span>
-                  </div>
-                ))}
-              </div>
+              {/* « أتوقّع القاعدة » : la طريقة du manuel et ses trois figures DISENT la méthode — l'élève l'écrit d'abord. */}
+              <PredictRule id="tamthil-kura">
+                <MethodSteps method={METHOD_DRAW} />
+                <div className="grid gap-2 sm:grid-cols-3" data-draw-figures>
+                  {[FIG_DRAW_1, FIG_DRAW_2, FIG_DRAW_3].map((f, i) => (
+                    <div key={f.ariaLabel} className="rounded-xl border border-slate-200 bg-white p-1 text-center">
+                      <SpaceFigure {...f} />
+                      <span className="text-xs font-bold text-slate-600">{`الشكل ${i + 1}`}</span>
+                    </div>
+                  ))}
+                </div>
+              </PredictRule>
               <KnowledgeBrick id="tamthil-kura" lead="الطريقة في سطرين:" />
               <TapQuestion
                 prompt="في تمثيل الكرة، الجزء الخلفي من الشكل البيضوي (الدائرة الكبرى الأفقية) يُرسم:"
@@ -77,8 +80,11 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_POINT_GIVEN} />
-              <MethodSteps method={METHOD_POINT} />
-              <SpaceFigure {...FIG_POINT_SOLUTION} />
+              {/* La figure donnée reste visible (c'est le problème) ; la طريقة et sa solution dessinée viennent après la prédiction. */}
+              <PredictRule id="tamthil-nuqta">
+                <MethodSteps method={METHOD_POINT} />
+                <SpaceFigure {...FIG_POINT_SOLUTION} />
+              </PredictRule>
               <KnowledgeBrick id="tamthil-nuqta" lead="دائرة كبرى لكل نقطة:" />
               <TapQuestion
                 prompt="لماذا لا يكفي الشكل المعطى (الدائرة والنقط A و O و B) لنعرف أن A على الكرة و B داخلها؟"
@@ -102,7 +108,7 @@ export default function Module03Taraiq() {
           num: 3, title: 'موقع نقطة في معلم للفضاء', subtitle: 'طريقة من المنصّة', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="method" title={METHOD_DISTANCE.title} lines={METHOD_DISTANCE.lines} source={METHOD_DISTANCE.source} compact />
+              <PredictRule id="masafa-maalam"><TextbookBox kind="method" title={METHOD_DISTANCE.title} lines={METHOD_DISTANCE.lines} source={METHOD_DISTANCE.source} compact /></PredictRule>
               <KnowledgeBrick id="masafa-maalam" lead="ما كان المسبار يحسبه أمامك:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'كرة مركزها O ونصف قطرها $7$ ، في معلم متعامد ومتجانس مبدؤه O:'}</MathText></p>}

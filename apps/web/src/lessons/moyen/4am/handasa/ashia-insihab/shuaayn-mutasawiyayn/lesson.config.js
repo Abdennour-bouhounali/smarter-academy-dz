@@ -15,7 +15,9 @@
  *   M3 طرائق           — FORMALIZE : la طريقة « صورة نقطة » révélée ligne à ligne avec la banderole (متقدم, ouvert par
  *                        défaut), la construction au compas ligne à ligne, « إثبات تساوي شعاعين », دوري الآن ;
  *   M4 أوظّف تعلّماتي  — AUTOMATIZE (ex-6, 7, 9) et TRANSFER (ex-12 les cercles, ex-25 أتعمّق) ;
- *   M5 إختبار أولي     — l'item 6 de أؤكّد تعلّماتي et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
+ *   M5–M7 مسائل       — puis trois « مسائل » de la plateforme (modules 5–7) : la راية du tifo (مسألة الدرس), le سير ناقل
+ *                        d'une conserverie, la porte coulissante d'une armoire ;
+ *   M8 إختبار أولي     — l'item 6 de أؤكّد تعلّماتي et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -55,6 +57,22 @@ export const LESSON_CONFIG = {
       'مجموع شعاعين وعلاقة شال والشعاع المعدوم (الدرس 3)',
       'البراهين بمجموع أشعة (الدرس 4) والأشعة في معلم (الوحدة 12)',
     ],
+  },
+  // « مسألة الدرس » (module 5) : le monde du niveau متقدم du lab (la راية du tifo sur la شبكة المدرّج), d'autres nombres.
+  // Son support (la figure) vit ICI, en littéral : la carte « مسألة الدرس » le dessine (content/problems.js le référence).
+  lessonProblem: {
+    module: 5,
+    title: 'راية التيفو الجديدة: أين يقف المشجّع الرابع؟',
+    statement: 'في مدرّجات ملعب 5 جويلية يحضّر المشجّعون راية تيفو جديدة على شكل رباعي $ABDC$. يمسك ثلاثة مشجّعين الأركان $A$ و $B$ و $C$ على شبكة المدرّج (الشكل)، حيث يمثّل ضلع كل مربّع 1 m، وطول الضلع $[AB]$ هو 5 m. يجب أن يقف المشجّع الرابع في الركن $D$، صورة $C$ بالانسحاب الذي شعاعه $\\overrightarrow{AB}$، لكي تُشدّ الراية. سيخيط المشجّعون شريطًا لامعًا حول حافة الراية، ثمن المتر الواحد منه 450 دج. يتّسع الملعب لـ 64000 متفرّج.',
+    figure: {
+      points: { A: [0, 4], B: [4, 7], C: [0, 0] },
+      segments: [{ from: 'A', to: 'C' }],
+      vectors: [{ from: 'A', to: 'B', tone: 'indigo' }],
+      grid: true,
+      labels: { A: 'w', B: 'ne', C: 'sw' },
+      ariaLabel: 'شبكة المدرّج: الأركان A و B و C من الراية، والشعاع AB من A إلى B (4 مربعات نحو اليمين و 3 نحو الأعلى)، و C تحت A بأربعة مربعات',
+      maxWidth: 360,
+    },
   },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
@@ -104,6 +122,13 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_shuaayn-mutasawiyayn_P2', '4am_shuaayn-mutasawiyayn_P3'],
       sourceElementIds: ['method-image'],
     },
+    // Les trois « مسائل » de la plateforme (content/problems.js).
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'راية التيفو الجديدة: أين يقف المشجّع الرابع؟',
+      learningPointIds: ['4am_shuaayn-mutasawiyayn_P1', '4am_shuaayn-mutasawiyayn_P2', '4am_shuaayn-mutasawiyayn_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'السير الناقل في مصنع تعليب الطماطم',
+      learningPointIds: ['4am_shuaayn-mutasawiyayn_P1', '4am_shuaayn-mutasawiyayn_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'باب الخزانة المنزلق',
+      learningPointIds: ['4am_shuaayn-mutasawiyayn_P3', '4am_shuaayn-mutasawiyayn_P2', '4am_shuaayn-mutasawiyayn_P1'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -125,8 +150,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 6 و 7 و 9 و 12 و 25: صور نقط، متوازيات أضلاع، منتصفات، ودائرتان متماستان.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_shuaayn-mutasawiyayn_P1', '4am_shuaayn-mutasawiyayn_P2', '4am_shuaayn-mutasawiyayn_P3'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث، منها السؤال 6 من أؤكّد تعلّماتي.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — راية التيفو', desc: 'مسألة الدرس: الركن الرابع للراية صورة نقطة بانسحاب، متوازي أضلاع، منتصف، ثم ثمن الشريط.',
+      stage: 'practice_lab', track: 'problem',
+      teachesLearningPointIds: ['4am_shuaayn-mutasawiyayn_P1', '4am_shuaayn-mutasawiyayn_P2', '4am_shuaayn-mutasawiyayn_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — السير الناقل', desc: 'سير ناقل في مصنع لتعليب الطماطم: المستشعر في المنتصف، صندوقان ينقلهما الانسحاب نفسه، ثم المدد.',
+      stage: 'practice_lab', track: 'problem',
+      teachesLearningPointIds: ['4am_shuaayn-mutasawiyayn_P1', '4am_shuaayn-mutasawiyayn_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — باب الخزانة المنزلق', desc: 'باب خزانة ينزلق: صورة ركن بانسحاب، متوازي أضلاع وشعاعان متساويان، ثم فتحة نصف الطريق.',
+      stage: 'practice_lab', track: 'problem',
+      teachesLearningPointIds: ['4am_shuaayn-mutasawiyayn_P3', '4am_shuaayn-mutasawiyayn_P2', '4am_shuaayn-mutasawiyayn_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث، منها السؤال 6 من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

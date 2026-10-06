@@ -13,7 +13,9 @@
  *                      rectangle en C(x_B ; y_A)) ;
  *   M3 معارف د و هـ  — FORMALIZE : les deux propriétés et leurs exemples, puis le تحدّ résolu (√365 / 3) ;
  *   M4 أوظّف تعلّماتي — AUTOMATIZE (ex-10, 11, 17) et TRANSFER (ex-15, 16, 20 : valeurs exactes, cercle, preuve) ;
- *   M5 إختبار أولي   — QCM 2–5 et une épreuve de la plateforme ; P1 et P2 couverts.
+ *   M5–M7 مسائل      — puis trois « مسائل » de la plateforme (modules 5–7) : le rendez-vous GPS (مسألة الدرس), le point d'eau
+ *                      entre deux مشتتين, deux établissements sur un plan quadrillé ;
+ *   M8 إختبار أولي   — QCM 2–5 et une épreuve de la plateforme ; P1 et P2 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -36,6 +38,19 @@ export const LESSON_CONFIG = {
   emoji: '📏',
   estimatedDurationMin: 50,
   textbookRef: { unit: 12, activity: 3, pages: '139, 141, 144, 147, 148' },
+  lessonProblem: {
+    module: 5,
+    title: 'موعد GPS في الحيّ: نقطة اللقاء ومسار الشوارع',
+    statement: 'يستعمل صديقان تطبيق GPS يعرض الحيّ على خريطة مزوّدة بمعلم متعامد ومتجانس مبدؤه O، وحدة الطول فيه 100 m (الشكل). أنيس في النقطة $A(-3\\,;\\,-2)$ ووليد في النقطة $B(5\\,;\\,4)$ . يتّفقان على اللقاء على الساعة 17 في النقطة I منتصف القطعة [AB]. شوارع الحيّ كلّها موازية لمحوري المعلم، ويمشي أنيس بسرعة 70 m في الدقيقة.',
+    figure: {
+      points: { O: [0, 0], A: [-3, -2], B: [5, 4] },
+      segments: [{ from: 'A', to: 'B', tone: 'indigo' }],
+      labels: { O: 'sw' },
+      grid: true,
+      axes: true,
+      ariaLabel: 'معلم متعامد ومتجانس على ورق مرصوف: النقطتان A و B والقطعة [AB]',
+    },
+  },
   skills: [
     'حساب إحداثيتي منتصف قطعة مستقيم بمعرفة إحداثيتي طرفيها',
     'حساب المسافة بين نقطتين في معلم متعامد ومتجانس، بقيمتها المضبوطة',
@@ -81,6 +96,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_muntasaf-masafa_P1', '4am_muntasaf-masafa_P2'],
       sourceElementIds: ['act-3', 'act-4'],
     },
+    // Les trois « مسائل » (modules 5–7) : ajouts de la plateforme (content/problems.js).
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — موعد GPS في الحيّ', learningPointIds: ['4am_muntasaf-masafa_P1', '4am_muntasaf-masafa_P2'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — نقطة ماء بين مشتتين', learningPointIds: ['4am_muntasaf-masafa_P1', '4am_muntasaf-masafa_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — متوسطة وثانوية على مخطّط المدينة', learningPointIds: ['4am_muntasaf-masafa_P1', '4am_muntasaf-masafa_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -102,8 +121,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 10 و 11 و 15 و 16 و 17 و 20.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_muntasaf-masafa_P1', '4am_muntasaf-masafa_P2'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقطتي التعلّم، منها الأسئلة 2 إلى 5 من أؤكّد تعلّماتي.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — موعد GPS في الحيّ', desc: 'نقطة اللقاء في منتصف الطريق، المسافة في خط مستقيم، ثم مسار الشوارع ومدّته.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_muntasaf-masafa_P1', '4am_muntasaf-masafa_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — نقطة ماء بين مشتتين', desc: 'نقطة الماء في منتصف المشتتين: طول القناة، أيّ المزرعتين يمكن ربطها، وكلفة القنوات.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_muntasaf-masafa_P1', '4am_muntasaf-masafa_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — متوسطة وثانوية على مخطّط المدينة', desc: 'المسافة المضبوطة بين مؤسستين، موضع المكتبة بنظيرة نقطة، ثم طول ممرّ الدرّاجات وكلفته.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_muntasaf-masafa_P1', '4am_muntasaf-masafa_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين، منها الأسئلة 2 إلى 5 من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

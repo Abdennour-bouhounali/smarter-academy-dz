@@ -8,6 +8,8 @@ import { TextbookBox, SourceTag, PairQuestion } from '../../../../../../common/t
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, ACT_A_OPTIONS, CHALLENGE, HOOK } from '../content/textbook';
 import ChallengeVignette from '../components/ChallengeVignette';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 
 /**
  * Module 1 — نشاط 1 (p. 56) : « جملة معادلتين من الدرجة الأولى بمجهولين », ouvert sur le TABLEAU
@@ -25,6 +27,8 @@ import ChallengeVignette from '../components/ChallengeVignette';
  * TOUCH / FORMALIZE  la brique jumla-nashat (« نقول أنّ … ») nomme ce que les jauges ont montré.
  * TRANSFER  س د puis le تحدّ : le MÊME tableau, monde de la cagnotte (posé seul, un niveau).
  * AUCUNE étape n'attend `onFinished`. LP : P2, P3 (et P1 nommé par la brique).
+ * Les labs vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس » (LessonProblemCard)
+ * clôt donc la DERNIÈRE étape.
  */
 const BEGINNER = 'x+y=10|3x+y=22';
 const ADVANCED = ACTIVITY.system;
@@ -224,6 +228,9 @@ export default function Module01Nashat() {
                   <MathText>{'في النشاط وفي التحدّي معادلتان بمجهولين، وثنائية واحدة تحقّقهما معًا. المحور التالي يعطي هذا الشكل اسمه، ويقول متى تكون ثنائية حلا — ومتى لا يكون للجملة حل وحيد.'}</MathText>
                 </p>
               )}
+              {/* La « مسألة الدرس » prolonge le lab متقدم (labs dans l'intro : dernière étape) :
+                  une autre مصلحة, 42 agents avant et après le تقاعد — résolue au module 4. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

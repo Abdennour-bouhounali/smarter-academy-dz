@@ -15,7 +15,9 @@
  *   2 طرائق من المنصّة (discovery) TOUCH → FORMALIZE : ex-26 résolu ligne à ligne (l'arrondi précoce change le résultat),
  *                             ex-27 résolu par l'élève (le triangle entier), un angle à partir de deux côtés
  *   3 أوظّف تعلّماتي (practice_lab) AUTOMATIZE → TRANSFER : تمارين 29, 24, 25, 28, 13
- *   4 إختبار أولي (evaluation)
+ *   4–6 مسائل                 puis trois « مسائل » de la plateforme (modules 4–6) : l'échelle de la جدارية (مسألة
+ *                             الدرس), la grue du chantier, la descente de l'avion — content/problems.js
+ *   7 إختبار أولي (evaluation)
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -56,6 +58,28 @@ export const LESSON_CONFIG = {
       'وضعية مقام الشهيد (أدمج تعلّماتي)',
     ],
   },
+  // « مسألة الدرس » (déploiement مسائل, 2026-10-06) : montrée dès le sommaire, rappelée à la fin du module 1, résolue
+  // pas à pas au module 4 (content/problems.js). Prolonge le تحدّ du niveau متقدم : le même سلّم de la جدارية et le même
+  // مقياس الميل, d'autres nombres (2,40 m ; 65° ; 2,50 m au plus). La figure est ICI (littéraux, une seule source) :
+  // A(1,119 ; 0) = (2,4 ÷ tan 65° ; 0), recalculé dans content/problems.test.js.
+  lessonProblem: {
+    module: 4,
+    title: 'سلّم الجدارية: علامة على ارتفاع 2,40 m وسلّم لا يتجاوز 2,50 m',
+    statement: 'يسند رسّامو جدارية المتوسطة سلّمهم القابل للتمديد إلى جدار شاقولي، والأرض أفقية (الشكل المقابل). يجب أن يصل رأس السلّم $B$ إلى علامة على الجدار على ارتفاع $BH = 2{,}40\\,\\mathrm{m}$ من الأرض. نسمّي $L$ طول السلّم و $\\alpha$ قيس الزاوية $\\widehat{BAH}$ التي يصنعها مع الأرض، ويقرؤها تطبيق «مقياس الميل» في الهاتف. طول السلّم الممدّد كاملا $2{,}50\\,\\mathrm{m}$ ، ووزنه 9 kg. تعليمات السلامة: يجب أن يكون قيس الزاوية $\\alpha$ بين $65^{\\circ}$ و $75^{\\circ}$ . طول الجدار 15 m، وأمامه رصيف عرضه $0{,}80\\,\\mathrm{m}$ يجب أن تبقى عليه قاعدة السلّم $A$ .',
+    figure: {
+      points: { H: [0, 0], B: [0, 2.4], A: [1.119, 0] },
+      segments: [
+        { from: 'H', to: 'B', label: '2,40m' },
+        { from: 'A', to: 'B', label: 'L', tone: 'amber', bold: true },
+        { from: 'A', to: 'H' },
+      ],
+      rightAngles: [['A', 'H', 'B']],
+      angles: [{ at: 'A', from: 'H', to: 'B', label: 'α' }],
+      labels: { H: 'sw', B: 'nw', A: 'se' },
+      ariaLabel: 'سلّم [AB] مستند إلى جدار شاقولي [HB]: رأسه B على الجدار على ارتفاع 2,40m، وقاعدته A على الأرض الأفقية، والمثلث ABH قائم في H، والزاوية α بين السلّم والأرض عند A',
+      maxWidth: 260,
+    },
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -84,6 +108,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_tarrid-muthallathiya_P1', '4am_tarrid-muthallathiya_P2'],
       sourceElementIds: ['challenge'],
     },
+    // Modules 4–6 — les « مسائل » : exercices complets de type امتحان, ajouts de la plateforme (content/problems.js),
+    // sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — سلّم الجدارية: 2,40 m و 2,50 m', learningPointIds: ['4am_tarrid-muthallathiya_P1', '4am_tarrid-muthallathiya_P2', '4am_tarrid-muthallathiya_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — الرافعة البرجية: ذراع 40 m مائلة', learningPointIds: ['4am_tarrid-muthallathiya_P1', '4am_tarrid-muthallathiya_P2', '4am_tarrid-muthallathiya_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — هبوط الطائرة: زاوية نزول 3°', learningPointIds: ['4am_tarrid-muthallathiya_P1', '4am_tarrid-muthallathiya_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -101,8 +130,22 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 29 (النخلة) و 24 و 25 و 28 (ص 125) و 13 (ص 123).',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tarrid-muthallathiya_P1', '4am_tarrid-muthallathiya_P2', '4am_tarrid-muthallathiya_P3'],
       color: 'amber', style: 'featured', estimatedMin: 14, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث: ترييض وضعية، اختيار النسبة، حل المثلث القائم.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui reste toujours ouvert. Elles comptent dans la
+    // complétion, jamais dans la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — سلّم الجدارية', desc: 'مسألة الدرس: علامة على ارتفاع 2,40 m وسلّم لا يتجاوز 2,50 m. هل يكفي؟ بأيّ زاوية؟ وأين قاعدته؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tarrid-muthallathiya_P1', '4am_tarrid-muthallathiya_P2', '4am_tarrid-muthallathiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — الرافعة البرجية', desc: 'ذراع طولها 40 m مائلة بزاوية α: إلى أين تصل الحمولة؟ وهل يمرّ طرف الذراع فوق ساحة المدرسة؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tarrid-muthallathiya_P1', '4am_tarrid-muthallathiya_P2', '4am_tarrid-muthallathiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — هبوط الطائرة', desc: 'زاوية نزول 3° من ارتفاع 900 m: كم مترا قبل المدرج؟ هل نزول طائرة ثانية مقبول؟ وكم يدوم الهبوط؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tarrid-muthallathiya_P1', '4am_tarrid-muthallathiya_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث: ترييض وضعية، اختيار النسبة، حل المثلث القائم.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

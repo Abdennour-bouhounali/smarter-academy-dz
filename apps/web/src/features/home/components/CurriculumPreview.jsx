@@ -8,7 +8,7 @@ import PathProgress from '../../progression/components/PathProgress';
  * « 📚 أين أنت » — une TRANCHE du programme, pas l'arbre : le ميدان courant,
  * sa وحدة quand il y en a une, la leçon courante. Trois lignes, en escalier,
  * pour que la hiérarchie officielle (الميدان ← الوحدة ← الدرس) se lise
- * d'elle-même. Les نقاط التعلّم restent sur « تقدّمي ».
+ * d'elle-même. Les الكفاءات restent sur « تقدّمي ».
  *
  * La tranche est choisie par pickCurriculumContext (la leçon du héros,
  * sinon la plus récente, sinon le début du programme) ; les pourcentages

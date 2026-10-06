@@ -51,6 +51,9 @@ code that no longer exists.
 - `docs/architecture/BUNDLE_BOUNDARIES.md` before adding a provider, a route,
   a heavy dependency, an `import.meta.glob` or an i18n namespace — it says
   what may enter the entry bundle and where lazy boundaries sit.
+- Terminology: a learning point is « الكفاءة / الكفاءات » in every visible
+  string since 2026-10-05 — never « نقطة التعلّم / نقاط التعلّم »; identifiers
+  (`learningPoint`…) are unchanged (`docs/architecture/ARABIC_RTL_CONTRACT.md`).
 
 ## DOCUMENTATION SYNCHRONIZATION RULE (permanent, applies to every prompt)
 

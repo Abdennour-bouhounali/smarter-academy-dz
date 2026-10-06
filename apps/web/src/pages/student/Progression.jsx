@@ -25,7 +25,7 @@ import MasteryExplanationDrawer from '../../features/progression/components/Mast
  *
  *   où en suis-je ?            → en-tête + indicateurs
  *   que dois-je faire là ?     → « للعمل الآن »
- *   où suis-je dans le programme ? → الميدان → الوحدة → الدرس → نقاط التعلّم
+ *   où suis-je dans le programme ? → الميدان → الوحدة → الدرس → الكفاءات
  *
  * La page n'invente rien : la structure vient du catalogue, la progression
  * de getStudentActivity, la maîtrise du profil serveur (useLearningProfile).

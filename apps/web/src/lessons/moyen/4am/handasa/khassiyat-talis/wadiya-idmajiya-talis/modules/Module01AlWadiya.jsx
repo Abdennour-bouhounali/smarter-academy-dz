@@ -130,7 +130,9 @@ export default function Module01AlWadiya() {
                 onAnswered={mark(1)} />
               {q[1] && (
                 <>
-                  <KnowledgeBrick id="tariqat-zill" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la méthode de l’ombre est `hisab-atwal` (درس talis-hisab-atwal) appliquée à deux verticales ;
+                      la bonne option et l’explication de la question ci-dessus (REMARKS.zillMethod / zillWhy) viennent de l’énoncer. */}
+                  <KnowledgeBrick id="tariqat-zill" variant="rappel" />
                   <p className="text-xs text-slate-600" data-misconception-note="zill"><MathText>{`خطأ شائع: ${REMARKS.zillWrong} ${REMARKS.zillWrongWhy}`}</MathText></p>
                 </>
               )}
@@ -206,7 +208,9 @@ export default function Module01AlWadiya() {
                 requires={['talis-mubashira', 'maqta-mihwari']}
                 feedback={({ allRight }) => <MathText>{allRight ? 'أحسنت: مستقيمان متوازيان يقطعان مستقيمين متقاطعين في O — وضعية طالس.' : 'المستقيمان (TC) و (SK) متوازيان، والضلع الذي رأسه O في المثلث الصغير هو $18 - h$ .'}</MathText>}
                 onAnswered={mark(5)} />
-              {q[5] && <KnowledgeBrick id="maqta-mihwari-talis" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la coupe axiale est un prérequis (`maqta-mihwari`, étape 4 : REMARKS.maqta) et la situation de Thalès
+                  (`talis-mubashira`) ; les corrections et le retour de la question ci-dessus viennent de la dire. */}
+              {q[5] && <KnowledgeBrick id="maqta-mihwari-talis" variant="rappel" />}
             </div>
           ) },
         { num: 6, title: 'تنفيذ: مساواة طالس', subtitle: 'المرحلة 3 — على المخروط، ثم بالقلم', done: !!q[6],
@@ -240,7 +244,9 @@ export default function Module01AlWadiya() {
                 explain={<MathText>{`${REMARKS.muadala} ${REMARKS.halR}`}</MathText>}
                 explainFor={(n) => <MathText>{close(6)(n) ? `نصف قطر 6 هو نصف قطر قاعدة المخروط: أسطوانة به تخرق المخروط. ${REMARKS.muadala} ${REMARKS.halR}` : close(13.5)(n) ? `$13{,}5 = 18 - 4{,}5$ هو OT لا r. ${REMARKS.halR}` : `${REMARKS.muadala} ${REMARKS.halR}`}</MathText>}
                 onAnswered={mark(7)} />
-              {q[7] && <KnowledgeBrick id="muadala-bud" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : remplacer h par r puis résoudre est l’équation du premier degré (`muadala-ula`, unité 4) dans l’égalité
+                  de l’étape 6 ; l’explication de la question ci-dessus (REMARKS.muadala / halR) vient de la faire. */}
+              {q[7] && <KnowledgeBrick id="muadala-bud" variant="rappel" />}
             </div>
           ) },
         { num: 8, title: 'تنفيذ: حجم الأسطوانة', subtitle: 'القيمة المضبوطة ثم المقرّبة', done: !!q[8],
@@ -272,9 +278,13 @@ export default function Module01AlWadiya() {
                 onAnswered={mark(9)} />
               {q[9] && (
                 <>
-                  <KnowledgeBrick id="mulaamat-natija" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : le volume est `hajm-ustuwana` (prérequis, étape 8) ; la vérification vient d’être faite ligne par ligne
+                      dans la question ci-dessus (corrections v1–v3, REMARKS.mulaama). */}
+                  <KnowledgeBrick id="mulaamat-natija" variant="rappel" />
                   <p className="rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900"><MathText>{REMARKS.jumla}</MathText></p>
-                  <KnowledgeBrick id="tariqat-wadiya" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche remet en ordre les trois étapes du « تحليل الوضعية » que l’élève vient de lire
+                      (encadrés des étapes 3, 5 et 6). */}
+                  <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                 </>
               )}
             </div>

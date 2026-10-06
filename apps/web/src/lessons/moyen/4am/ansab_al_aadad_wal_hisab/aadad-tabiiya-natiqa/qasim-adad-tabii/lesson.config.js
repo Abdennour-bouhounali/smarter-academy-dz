@@ -1,6 +1,7 @@
 /**
  * الدرس 1 — التعرّف على قاسم لعدد طبيعي
- * Unité 1 du manuel (4AM), activité 1 (p. 8), معارف 1 (p. 10), exercices 1, 2, 5 (p. 14).
+ * Unité 1 du manuel (4AM), activité 1 (p. 8), معارف 1 (p. 10), exercices 1, 2, 5 (p. 14),
+ * puis trois « مسائل » de la plateforme (modules 4–6, pilote du 2026-10-05).
  * Source de vérité : docs/sources/4am/unit1/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -33,6 +34,14 @@ export const LESSON_CONFIG = {
   teachingScope: {
     include: ['قاسم عدد طبيعي: التعريفان (الباقي المعدوم، a = b × q) والصيغ المتكافئة', 'الملاحظات: 1 قاسم لكل عدد، وكل عدد غير معدوم قاسم لنفسه'],
     exclude: ['تعيين كل قواسم عدد (الدرس 2)', 'خواص القواسم (الدرس 3)', 'القاسم المشترك الأكبر (الدرس 4)'],
+  },
+  // « مسألة الدرس » (pilote مسائل, 2026-10-05) : montrée dès le sommaire,
+  // rappelée au module 1, résolue pas à pas au module 4 (content/problems.js).
+  // Prolonge le rayon du niveau متقدم : mêmes rayons, d'autres nombres.
+  lessonProblem: {
+    module: 4,
+    title: 'مكتبة المتوسطة: 756 كتابًا في رفوف',
+    statement: 'تلقّت مكتبة المتوسطة هبة من 756 كتابًا. المكتبة مفتوحة 5 أيام في الأسبوع. يريد القيّم ترتيب كل الكتب في رفوف مملوءة تمامًا، دون أن يبقى أيّ كتاب على الأرض. في المخزن نوعان من الرفوف: رفوف تتّسع لـ 32 كتابًا ورفوف تتّسع لـ 36 كتابًا، وثمن الرفّ الواحد 1850 دج مهما كان نوعه.',
   },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
@@ -78,6 +87,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_qasim-adad-tabii_P2'],
       sourceElementIds: ['know-1'],
     },
+    // Modules 4–6 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — رفوف المكتبة: 756 كتابًا', learningPointIds: ['4am_qasim-adad-tabii_P1', '4am_qasim-adad-tabii_P2', '4am_qasim-adad-tabii_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — التعاونية الفلاحية: 2028 بيضة', learningPointIds: ['4am_qasim-adad-tabii_P1', '4am_qasim-adad-tabii_P2', '4am_qasim-adad-tabii_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — الرحلة المدرسية: كم حافلة؟', learningPointIds: ['4am_qasim-adad-tabii_P1', '4am_qasim-adad-tabii_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -95,8 +109,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 1، 2 و5.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_qasim-adad-tabii_P1', '4am_qasim-adad-tabii_P2'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمس أسئلة تُقيّم نقاط التعلّم الأربع.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — رفوف المكتبة', desc: 'مسألة الدرس: 756 كتابًا ونوعان من الرفوف. حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_qasim-adad-tabii_P1', '4am_qasim-adad-tabii_P2', '4am_qasim-adad-tabii_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — التعاونية الفلاحية', desc: '2028 بيضة: أيّ الأوعية؟ وأيّ توضيب أربح؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_qasim-adad-tabii_P1', '4am_qasim-adad-tabii_P2', '4am_qasim-adad-tabii_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — الرحلة المدرسية', desc: 'كم حافلة؟ ماذا يعني الباقي؟ وكم يدفع كل تلميذ؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_qasim-adad-tabii_P1', '4am_qasim-adad-tabii_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمس أسئلة تُقيّم الكفاءات الأربع.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

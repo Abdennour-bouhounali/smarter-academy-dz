@@ -5,6 +5,8 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { KitchenScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 /**
@@ -70,6 +72,9 @@ export default function Module01Samir() {
                 options={['لأن 7 و 4 أوليان فيما بينهما: PGCD(7 ; 4) = 1', 'لأن 7 عدد أولي', 'لأن 4 أصغر من 7', 'لأن 7 − 4 = 3 عدد فردي']} correct={0} cols={1} requires={['kasr-ghayr-qabil']}
                 explain={<MathText>{ACTIVITY.questions[2]}</MathText>} onAnswered={() => setQ2(true)} />
               {q2 && <TextbookBox kind="remark" text={ACTIVITY.questions[2]} compact />}
+              {/* La « مسألة الدرس » prolonge la recette du niveau متقدم : mêmes
+                  حصص متماثلة, 105 ملاعق سكّر و 147 كوبًا — résolue au module 5. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
       ]}

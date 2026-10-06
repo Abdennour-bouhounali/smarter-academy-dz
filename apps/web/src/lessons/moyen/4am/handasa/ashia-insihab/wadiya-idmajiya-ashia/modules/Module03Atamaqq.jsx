@@ -62,7 +62,9 @@ export default function Module03Atamaqq() {
               {done['ex-22-2'] && (
                 <>
                   <p className="text-xs text-slate-600" data-misconception-note="tartib"><MathText>{`خطأ شائع: ${REMARKS.burhanWrong} ${REMARKS.burhanWhy}`}</MathText></p>
-                  <KnowledgeBrick id="burhan-shuai" lead="التمرينان 19 و 22 بنفس السلسلة: ما هي؟" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la chaîne de preuve est khatawat-burhan / istintajat (درس barahin-ashia), avec
+                      `alaqat-shal` et `mutawazi-tartib` ; l’ordre des sommets vient d’être redit (REMARKS.burhanWhy). */}
+                  <KnowledgeBrick id="burhan-shuai" variant="rappel" lead="التمرينان 19 و 22 بنفس السلسلة: ما هي؟" />
                 </>
               )}
               <BackLink lesson="barahin-ashia" what="إنجاز براهين بتوظيف الأشعة" />

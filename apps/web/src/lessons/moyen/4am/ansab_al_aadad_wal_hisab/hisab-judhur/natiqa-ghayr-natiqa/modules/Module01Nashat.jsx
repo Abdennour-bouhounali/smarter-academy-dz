@@ -1,9 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 
@@ -25,6 +27,13 @@ import { ACTIVITY } from '../content/textbook';
  * réponse se lit dans les ESSAIS DE L'ÉLÈVE, listés au-dessus de la question
  * (`data-activity-evidence`) — les options ne portent pas la preuve. La
  * brique `murabba-natiq` nomme ensuite ce que l'élève a vu (6bis.1).
+ *
+ * « أتوقّع القاعدة » : la question ب) a pour bonne option la règle elle-même ;
+ * elle est donc enveloppée dans <PredictRule id="murabba-natiq"> — l'élève
+ * écrit le critère avec ses mots (predictPrompt de knowledge.jsx) AVANT de
+ * voir les options, puis la question et la brique s'affichent.
+ * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape : même règle
+ * graduée, d'autres aires (les زرابي), résolue au module 4.
  *
  * Le laboratoire RÉDUIT chaque aire (logic/squareRootSide `init`) : la carte
  * de 0,25 s'affiche √(1/4). La leçon le dit dans le `lead` ; la liste des
@@ -173,21 +182,26 @@ export default function Module01Nashat() {
           content: (
             <div className="space-y-3">
               <Evidence trials={trials} entries={ENTRIES} />
-              <TapQuestion
-                prompt={<span>ما هو معيار التصنيف؟</span>}
-                options={[
-                  'الأعداد تحت الجذر في الصنف الأول أعداد طبيعية، وفي الصنف الثاني ليست أعدادًا طبيعية',
-                  'في الصنف الأول العدد تحت الجذر مربع لعدد ناطق، فجذره عدد ناطق؛ وفي الصنف الثاني ليس مربعًا لعدد ناطق، فجذره ليس عددًا ناطقًا',
-                  'الأعداد تحت الجذر في الصنف الأول أصغر من الأعداد تحت الجذر في الصنف الثاني',
-                  'الأعداد تحت الجذر في الصنف الثاني أعداد أولية',
-                ]}
-                correct={1}
-                cols={1}
-                requires={['jidhr-taarif', 'adad-natiq']}
-                explain={<span>جذور الصنف الأول وقعت على تدريجة: <MathText>{'$\\sqrt{100} = 10$ ، $\\sqrt{9} = 3$ ، $\\sqrt{\\dfrac{16}{9}} = \\dfrac{4}{3}$ ، $\\sqrt{0{,}25} = \\dfrac{1}{2}$'}</MathText>. أما جذور الصنف الثاني فلم تقع على أيّ تدريجة. (الصنف الأول فيه <MathText>{'$\\dfrac{16}{9}$'}</MathText> وليس عددًا طبيعيًا، وفيه 100 وهو أكبر من 7، و 6 في الصنف الثاني ليس عددًا أوليًا.)</span>}
-                onAnswered={() => setQ2(true)}
-              />
+              <PredictRule id="murabba-natiq">
+                <TapQuestion
+                  prompt={<span>ما هو معيار التصنيف؟</span>}
+                  options={[
+                    'الأعداد تحت الجذر في الصنف الأول أعداد طبيعية، وفي الصنف الثاني ليست أعدادًا طبيعية',
+                    'في الصنف الأول العدد تحت الجذر مربع لعدد ناطق، فجذره عدد ناطق؛ وفي الصنف الثاني ليس مربعًا لعدد ناطق، فجذره ليس عددًا ناطقًا',
+                    'الأعداد تحت الجذر في الصنف الأول أصغر من الأعداد تحت الجذر في الصنف الثاني',
+                    'الأعداد تحت الجذر في الصنف الثاني أعداد أولية',
+                  ]}
+                  correct={1}
+                  cols={1}
+                  requires={['jidhr-taarif', 'adad-natiq']}
+                  explain={<span>جذور الصنف الأول وقعت على تدريجة: <MathText>{'$\\sqrt{100} = 10$ ، $\\sqrt{9} = 3$ ، $\\sqrt{\\dfrac{16}{9}} = \\dfrac{4}{3}$ ، $\\sqrt{0{,}25} = \\dfrac{1}{2}$'}</MathText>. أما جذور الصنف الثاني فلم تقع على أيّ تدريجة. (الصنف الأول فيه <MathText>{'$\\dfrac{16}{9}$'}</MathText> وليس عددًا طبيعيًا، وفيه 100 وهو أكبر من 7، و 6 في الصنف الثاني ليس عددًا أوليًا.)</span>}
+                  onAnswered={() => setQ2(true)}
+                />
+              </PredictRule>
               {q2 && <KnowledgeBrick id="murabba-natiq" lead="ما رأيته على المسطرة يقوله الكتاب في «معارف»:" />}
+              {/* La « مسألة الدرس » prolonge la règle graduée : des carrés d'aire
+                  connue, un côté qui tombe ou non sur une graduation — module 4. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

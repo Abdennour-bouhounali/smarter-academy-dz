@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Domain\Admin\AccountStatusService;
 use App\Domain\Admin\ActivityLogger;
+use App\Domain\Admin\AmbassadorService;
 use App\Domain\Admin\TeacherService;
 use App\Domain\Plans\PlanAdminService;
 use App\Domain\Plans\PlanEntitlementResolver;
@@ -26,6 +27,7 @@ class AdminTeacherController extends Controller
         private AccountStatusService $accounts,
         private PlanAdminService $plans,
         private PlanEntitlementResolver $resolver,
+        private AmbassadorService $ambassadors,
     ) {}
 
     public function index(Request $request)
@@ -40,6 +42,7 @@ class AdminTeacherController extends Controller
                 'active' => User::where('role', User::ROLE_TEACHER)->where('account_status', User::STATUS_ACTIVE)->count(),
                 'suspended' => User::where('role', User::ROLE_TEACHER)->where('account_status', User::STATUS_SUSPENDED)->count(),
                 'disabled' => User::where('role', User::ROLE_TEACHER)->where('account_status', User::STATUS_DISABLED)->count(),
+                'ambassadors' => User::where('role', User::ROLE_TEACHER)->where('is_ambassador', true)->count(),
             ],
         ]);
     }
@@ -63,6 +66,22 @@ class AdminTeacherController extends Controller
 
         try {
             $teacher = $this->accounts->change($request->user(), $this->teachers->find($id), $validated['status'], ActivityLogger::TEACHER_STATUS, 'teacher');
+        } catch (DomainException $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
+        }
+
+        return response()->json(['success' => true, 'teacher' => $this->teachers->serializeRow($teacher)]);
+    }
+
+    /**
+     * Désigner ou retirer un ambassadeur (« سفير ») — un interrupteur.
+     */
+    public function setAmbassador(Request $request, int $id)
+    {
+        $validated = $request->validate(['ambassador' => 'required|boolean']);
+
+        try {
+            $teacher = $this->ambassadors->set($request->user(), $this->teachers->find($id), (bool) $validated['ambassador']);
         } catch (DomainException $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
         }

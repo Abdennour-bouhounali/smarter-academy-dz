@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -10,6 +10,8 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import { FIG_ACT2, FIG_ACT2_SOLVED } from '../content/figures';
 import GameMapVignette from '../components/GameMapVignette';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 
 /**
  * Module 1 — نشاط 2 (p. 140), ouvert sur LES PORTAILS DE LA CARTE DE JEU (component-calc).
@@ -21,6 +23,11 @@ import GameMapVignette from '../components/GameMapVignette';
  * UNDERSTAND  les questions du نشاط 2 sous les essais de l'élève (`onTrial`, `[data-activity-evidence]`) : lire C et D,
  *           les composantes de CD, E, puis la règle a = x_B − x_A (partie ب) et DE = CF.
  * FORMALIZE  la brique farq-ihdathiyat (« النهاية ناقص المبدأ »).
+ * « أتوقّع القاعدة » : la bonne option du نشاط 2 ب 1 (étape 4) EST la règle (a = x_B − x_A, b = y_B − y_A) ; la question
+ * est donc enveloppée dans <PredictRule id="farq-ihdathiyat"> — l'élève écrit la règle avec ses mots (predictPrompt de
+ * knowledge.jsx) AVANT de voir les options, puis la question et la brique s'affichent.
+ * Les deux niveaux du lab vivent dans l'`intro` : la « مسألة الدرس » (LessonProblemCard) clôt donc la DERNIÈRE étape —
+ * d'autres portails sur une autre carte, résolue au module 5.
  * AUCUNE étape n'attend `onFinished`. LP : P1, P2.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -174,19 +181,21 @@ export default function Module01Nashat() {
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY.partB} source={ACTIVITY.source} compact />
-              <TapQuestion
-                prompt={<MathText>{'عبّر عن $a$ و $b$ ، مركبتي $\\overrightarrow{AB}$ :'}</MathText>}
-                options={[
-                  '$a = x_B - x_A$ و $b = y_B - y_A$',
-                  '$a = x_A - x_B$ و $b = y_A - y_B$', // la soustraction à l'envers : le héros saute dans le sens contraire
-                  '$a = x_B$ و $b = y_B$', // seulement quand A = O
-                ].map(M)}
-                correct={0}
-                cols={1}
-                requires={['qiraat-murakkibatayn', 'tarh-nisbi']}
-                explain={<MathText>{`${ACTIVITY_LINES.ab} وهذا ما فتح كل بوابة: $x_D - x_C = -1$ و $y_D - y_C = -6$ .`}</MathText>}
-                onAnswered={() => setQ4(true)}
-              />
+              <PredictRule id="farq-ihdathiyat">
+                <TapQuestion
+                  prompt={<MathText>{'عبّر عن $a$ و $b$ ، مركبتي $\\overrightarrow{AB}$ :'}</MathText>}
+                  options={[
+                    '$a = x_B - x_A$ و $b = y_B - y_A$',
+                    '$a = x_A - x_B$ و $b = y_A - y_B$', // la soustraction à l'envers : le héros saute dans le sens contraire
+                    '$a = x_B$ و $b = y_B$', // seulement quand A = O
+                  ].map(M)}
+                  correct={0}
+                  cols={1}
+                  requires={['qiraat-murakkibatayn', 'tarh-nisbi']}
+                  explain={<MathText>{`${ACTIVITY_LINES.ab} وهذا ما فتح كل بوابة: $x_D - x_C = -1$ و $y_D - y_C = -6$ .`}</MathText>}
+                  onAnswered={() => setQ4(true)}
+                />
+              </PredictRule>
               {q4 && <KnowledgeBrick id="farq-ihdathiyat" lead="ما وجدته على الخريطة، بكلمات النشاط:" />}
             </div>
           ),
@@ -214,6 +223,9 @@ export default function Module01Nashat() {
                   <Feedback tone="ok">كما على الخريطة: بوابتان من موضعين مختلفين، ورمز واحد — شعاعان متساويان، والرباعي DEFC متوازي أضلاع.</Feedback>
                 </>
               )}
+              {/* La « مسألة الدرس » prolonge le lab متقدم (labs dans l'intro : dernière étape) : d'autres portails,
+                  des portails jumeaux ou non, une sortie à calculer — résolue au module 5. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

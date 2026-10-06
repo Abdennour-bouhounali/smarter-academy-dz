@@ -5,9 +5,9 @@ import { Star } from 'lucide-react';
 import { STAR_COUNT, masteryStage, practiceRatios } from './learningPointProgress';
 
 /**
- * « نقطة التعلّم » — l'identité de ce que l'élève entraîne, en tête du lecteur.
+ * « الكفاءة » — l'identité de ce que l'élève entraîne, en tête du lecteur.
  *
- *   نقطة التعلّم
+ *   الكفاءة
  *   حلّ وضعية إدماجية بتعبئة قابلية القسمة…          ← le nom, en titre
  *   ★━━★━━☆  قيد التحسّن                           ← le CHEMIN de maîtrise
  *   1 / 10  تمارين أنهيتها   ▰▱▱   4 / 23  أسئلة أجبت عنها ▰▱▱
@@ -78,7 +78,7 @@ function Metric({ done, total, ratio, label, bar, testId }) {
 
 /**
  * @param {object} point         une ligne `learningPoints[]` de l'aperçu de pratique
- * @param {boolean} [eyebrow]    le surtitre « نقطة التعلّم » (inutile dans une LISTE de points)
+ * @param {boolean} [eyebrow]    le surtitre « الكفاءة » (inutile dans une LISTE de points)
  * @param {'h2'|'h3'} [headingTag]
  */
 export default function LearningPointProgress({ point, eyebrow = true, headingTag: Heading = 'h2' }) {

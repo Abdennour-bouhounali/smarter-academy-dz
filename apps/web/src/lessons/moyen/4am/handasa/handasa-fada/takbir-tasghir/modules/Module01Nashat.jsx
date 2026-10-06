@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { ContentModule, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import SpaceFigure from '../../../../../../common/components/SpaceFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACT6, ACT6_LINES, LAB, PLATFORM_SOURCE } from '../content/textbook';
 import { FIG_ACT6, FIG_ACT6_SOL } from '../content/figures';
@@ -22,6 +24,11 @@ import VoxelVignette from '../components/VoxelVignette';
  * UNDERSTAND  les questions du نشاط 6 (1, 2 أ, 2 ب) sous les bâtis de l'élève (`onTrial`, `[data-activity-evidence]`), la figure
  *           solution (le pavé et sa réduction côte à côte) après la réponse ; la brique « takbir-tajribi » ; puis la même règle
  *           pour k = 2 (ajout de la plateforme). AUCUNE étape n'attend `onFinished`. LP : P1, P2.
+ * « أتوقّع القاعدة » : la question 2 ب du نشاط 6 ÉNONCE la règle (« تحقّق أنّ V′ = (3/5)³V و A′ = (3/5)²A ») ; elle est donc
+ * enveloppée, avec sa question, dans <PredictRule id="takbir-tajribi"> — l'élève écrit d'abord, sous ses bâtis, par quoi
+ * l'aire et le volume sont multipliés (predictPrompt de knowledge.jsx).
+ * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape : le même jeu de construction, un autre pavé (8 × 6 × 4)
+ * réduit de 3/4, résolu au module 5.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -156,21 +163,23 @@ export default function Module01Nashat() {
           num: 3, title: 'نشاط 6: حجم المصغّر ومساحته', subtitle: 'السؤال 2 ب', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="situation" text={ACT6.part2b} source={ACT6.source} compact />
               {evidence}
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">اختر لكل سطر:</p>}
-                rows={[
-                  // 36 : V × 3/5 ; 21,6 : V × (3/5)² (MISC-TAKBIR-HAJM-K)
-                  { id: 'v2', label: <MathText>{"الحجم $\\mathcal{V}'$"}</MathText>, options: ['$12{,}96\\,\\mathrm{cm}^3$', '$36\\,\\mathrm{cm}^3$', '$21{,}6\\,\\mathrm{cm}^3$'].map(M), correct: 0, correction: <MathText>{ACT6_LINES.v2}</MathText> },
-                  // 56,4 : A × 3/5 (MISC-TAKBIR-MISAHA-K) ; 20,304 : A × (3/5)³
-                  { id: 'a2', label: <MathText>{"المساحة الكلية $\\mathcal{A}'$"}</MathText>, options: ['$33{,}84\\,\\mathrm{cm}^2$', '$56{,}4\\,\\mathrm{cm}^2$', '$20{,}304\\,\\mathrm{cm}^2$'].map(M), correct: 0, correction: <MathText>{ACT6_LINES.a2}</MathText> },
-                  { id: 'chk', label: <MathText>{"$\\mathcal{V}' = \\left(\\dfrac{3}{5}\\right)^3\\mathcal{V}$ و $\\mathcal{A}' = \\left(\\dfrac{3}{5}\\right)^2\\mathcal{A}$"}</MathText>, options: ['المساواتان صحيحتان', 'الأولى فقط صحيحة', 'الثانية فقط صحيحة'], correct: 0, correction: <MathText>{`${ACT6_LINES.checkV} ؛ ${ACT6_LINES.checkA}`}</MathText> },
-                ]}
-                requires={['nisbat-takbir-mustawi']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: الأحرف × 3/5، المساحة × (3/5)²، الحجم × (3/5)³.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
-                onAnswered={() => setQ3(true)}
-              />
+              <PredictRule id="takbir-tajribi">
+                <TextbookBox kind="situation" text={ACT6.part2b} source={ACT6.source} compact />
+                <BatchChoiceQuestion
+                  intro={<p className="text-sm font-semibold text-slate-700">اختر لكل سطر:</p>}
+                  rows={[
+                    // 36 : V × 3/5 ; 21,6 : V × (3/5)² (MISC-TAKBIR-HAJM-K)
+                    { id: 'v2', label: <MathText>{"الحجم $\\mathcal{V}'$"}</MathText>, options: ['$12{,}96\\,\\mathrm{cm}^3$', '$36\\,\\mathrm{cm}^3$', '$21{,}6\\,\\mathrm{cm}^3$'].map(M), correct: 0, correction: <MathText>{ACT6_LINES.v2}</MathText> },
+                    // 56,4 : A × 3/5 (MISC-TAKBIR-MISAHA-K) ; 20,304 : A × (3/5)³
+                    { id: 'a2', label: <MathText>{"المساحة الكلية $\\mathcal{A}'$"}</MathText>, options: ['$33{,}84\\,\\mathrm{cm}^2$', '$56{,}4\\,\\mathrm{cm}^2$', '$20{,}304\\,\\mathrm{cm}^2$'].map(M), correct: 0, correction: <MathText>{ACT6_LINES.a2}</MathText> },
+                    { id: 'chk', label: <MathText>{"$\\mathcal{V}' = \\left(\\dfrac{3}{5}\\right)^3\\mathcal{V}$ و $\\mathcal{A}' = \\left(\\dfrac{3}{5}\\right)^2\\mathcal{A}$"}</MathText>, options: ['المساواتان صحيحتان', 'الأولى فقط صحيحة', 'الثانية فقط صحيحة'], correct: 0, correction: <MathText>{`${ACT6_LINES.checkV} ؛ ${ACT6_LINES.checkA}`}</MathText> },
+                  ]}
+                  requires={['nisbat-takbir-mustawi']}
+                  feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: الأحرف × 3/5، المساحة × (3/5)²، الحجم × (3/5)³.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
+                  onAnswered={() => setQ3(true)}
+                />
+              </PredictRule>
               {q3 && <KnowledgeBrick id="takbir-tajribi" lead="ما وجدته بالمكعبات وبالحساب:" />}
             </div>
           ),
@@ -192,6 +201,7 @@ export default function Module01Nashat() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: نفس القاعدة في التكبير والتصغير.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ4(true)}
               />
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

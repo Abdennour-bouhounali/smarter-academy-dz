@@ -14,6 +14,8 @@ import { KNOW4 } from '../content/textbook';
  *      correction) → briques alaqatan puis, après la question sur la notation, kitabat-murabba ;
  *   2. l'exemple 60° (figure redessinée en GeoFigure) → brique mithal-60 ;
  *   3. appliquer tan = sin / cos à une autre zone (5/13, 12/13 — plateforme, déclaré par l'énoncé).
+ * « أتوقّع القاعدة » : alaqatan est `rappel` (les deux relations ont été conjecturées puis PROUVÉES au module 1 —
+ * takhmin-alaqat, burhan-alaqat) ; mithal-60 est un exemple calculé juste avant (`predict: false`).
  * LP : P1.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -42,7 +44,7 @@ export default function Module02Maarif() {
             <div className="space-y-3">
               <TextbookBox kind="property" text={KNOW4.property} source={KNOW4.source} />
               <p className="text-xs text-slate-500" data-misprint-correction><MathText>{KNOW4.correction}</MathText></p>
-              <KnowledgeBrick id="alaqatan" lead="احفظهما:" />
+              <KnowledgeBrick id="alaqatan" variant="rappel" lead="احفظهما:" />
               <TextbookBox kind="remark" compact text={KNOW4.remark} />
               <TapQuestion
                 prompt={<MathText>{'الكتابة $\\cos^2 x$ تعني:'}</MathText>}

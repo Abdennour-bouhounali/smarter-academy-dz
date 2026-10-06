@@ -5,6 +5,8 @@ import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, LAB, MISTAKES } from '../content/textbook';
 import LabEvidence from '../components/LabEvidence';
@@ -24,6 +26,9 @@ import ZelligeVignette from '../components/ZelligeVignette';
  *   1. ce qui reste, ce qui change (le tableau de bord)     → brique thabat-dawaran (P1)
  *   2. la feuille étirée n'est pas un دوران                (P1)
  *   3. 90° : la droite et son image sont perpendiculaires   (P1, préparé pour معارف)
+ * Les deux niveaux vivent dans l'`intro` : le rappel de la « مسألة الدرس » (LessonProblemCard) clôt la DERNIÈRE étape.
+ * « أتوقّع القاعدة » : le feedback du tableau de bord ne dit PAS la règle (la brique thabat-dawaran la fait écrire), et
+ * l'explain de l'étape 3 rapporte la lecture (90° ⇒ متعامدان) sans énoncer la règle zawiya-sura (prédite au module 2).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -90,7 +95,7 @@ export default function Module01Waraqa() {
                   { id: 'manha', label: 'منحى المستقيم (A′B′)', options: ['يتغيّر: يصنع مع (AB) زاوية', 'لا يتغيّر: يوازي (AB) دائما'], correct: 0, correction: 'اللوحة تقرأ الزاوية بين (AB) و (A′B′): $60^\\circ$ للنسخة الأولى.' },
                 ]}
                 requires={['surat-qita-dawaran']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: البتلة لا تتشوّه؛ يتغيّر موضعها ومنحاها فقط.' : 'راجع التصحيح تحت كل سطر، ثم أدر الورقة من جديد وانظر إلى اللوحة.'}</Feedback>}
+                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: قارنت كل سطر من اللوحة بالبتلة الأصلية.' : 'راجع التصحيح تحت كل سطر، ثم أدر الورقة من جديد وانظر إلى اللوحة.'}</Feedback>}
                 onAnswered={mark(1)}
               />
               {q[1] && <KnowledgeBrick id="thabat-dawaran" lead="ما رأيته على اللوحة:" />}
@@ -131,9 +136,10 @@ export default function Module01Waraqa() {
                 correct={0}
                 cols={3}
                 requires={['thabat-dawaran']}
-                explain={<MathText>{'اللوحة تقرأ $90^\\circ$ : المستقيم وصورته يصنعان زاوية الدوران. وعند $180^\\circ$ تقرأ $0^\\circ$ : يتوازيان.'}</MathText>}
+                explain={<MathText>{'اللوحة تقرأ $90^\\circ$ بين $(AB)$ و $(A\'B\')$ : المستقيمان متعامدان. أدر الورقة الآن إلى $180^\\circ$ واقرأ اللوحة من جديد.'}</MathText>}
                 onAnswered={mark(3)}
               />
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

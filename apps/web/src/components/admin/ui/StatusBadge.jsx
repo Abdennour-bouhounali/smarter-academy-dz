@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
  * pour un `status` hors vocabulaire — auquel cas la pastille dit la clé
  * plutôt que de ne rien dire.
  */
-const TONES = {
+export const STATUS_TONES = {
   published: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   active: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   resolved: 'bg-emerald-50 text-emerald-700 border-emerald-200',
@@ -102,7 +102,7 @@ export const STATUS_LABELS = {
 
 export default function StatusBadge({ status, label }) {
   const { t } = useTranslation('admin');
-  const tone = TONES[status] ?? 'bg-slate-100 text-slate-600 border-slate-200';
+  const tone = STATUS_TONES[status] ?? 'bg-slate-100 text-slate-600 border-slate-200';
   // `returnEmptyString: false` est posé sur i18n, mais une clé ABSENTE revient
   // telle quelle : on la compare pour retomber sur le vocabulaire français
   // plutôt que d'afficher « status.foo » à l'écran.

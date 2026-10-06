@@ -5,6 +5,7 @@
  * en doublon déclaré (extraction → destinations › act-4 › duplicatedIn). Il n'a ni معارف, ni طرائق, ni
  * exercices pour ce sujet : la comparaison de deux tarifs, la méthode et les exercices sont des AJOUTS de
  * la plateforme, déclarés (`addition(...)`). Source de vérité : docs/sources/4am/unit7/extraction.json.
+ * Puis trois « مسائل » de la plateforme (modules 5–7), avant le إختبار أولي (module 8).
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -27,6 +28,12 @@ export const LESSON_CONFIG = {
   emoji: '🎮',
   estimatedDurationMin: 50,
   textbookRef: { unit: 7, activity: 4, pages: '79' },
+  // « مسألة الدرس » : montrée au sommaire et au module 1, résolue au module 5 (content/problems.js).
+  lessonProblem: {
+    module: 5,
+    title: 'ملعب المدينة: اشتراك 1800 دج أم تذكرة 350 دج؟',
+    statement: 'لموسم كرة القدم الجديد، يعرض المركّب الرياضي للمدينة على مناصري فريقها صيغتين. الصيغة A: اشتراك سنوي 1800 دج يُدفع مرّة واحدة، ثم 150 دج عند كل دخول إلى الملعب. الصيغة B: دون اشتراك، 350 دج عند كل دخول. يتّسع الملعب لـ 40000 متفرّج، وثمن قميص الفريق 2500 دج. نسمّي $x$ عدد المقابلات التي يتابعها مناصر خلال الموسم.',
+  },
   skills: [
     'نمذجة تكلفة بجزء ثابت يُدفع مرّة واحدة وجزء متغير بدالة تآلفية $f(x) = ax + b$',
     'حساب مبلغ لعدد معلوم (صورة عدد) وعدد الوحدات لمبلغ معلوم (العدد الذي صورته معلومة)',
@@ -101,6 +108,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_tarrid-taalufi_P2'],
       sourceElementIds: ['act-4'],
     },
+    // Les trois « مسائل » (modules 5–7) : ajouts de la plateforme (content/problems.js).
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — ملعب المدينة: اشتراك أم تذكرة؟', learningPointIds: ['4am_tarrid-taalufi_P1', '4am_tarrid-taalufi_P2'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — مدرسة الموسيقى: انخراط أم دفع عن كل حصة؟', learningPointIds: ['4am_tarrid-taalufi_P1', '4am_tarrid-taalufi_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — خزّانا الوقود في الطريق إلى غرداية', learningPointIds: ['4am_tarrid-taalufi_P1', '4am_tarrid-taalufi_P2'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -122,8 +133,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تطبيقا نقل، قاعة رياضة، كراء دراجة على الشاطئ: نمذج كل صيغة ثم اختر الأفضل.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tarrid-taalufi_P1', '4am_tarrid-taalufi_P2'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقطتي التعلّم: النمذجة بدالة تآلفية، والمفاضلة بين صيغتين.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — ملعب المدينة', desc: 'مسألة الدرس: اشتراك المناصر أم التذكرة وحدها؟ المبلغ لعدد من المقابلات، عدد المقابلات لمبلغ، ثم ميزانية الموسم.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tarrid-taalufi_P1', '4am_tarrid-taalufi_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — مدرسة الموسيقى', desc: 'انخراط سنوي أم دفع عن كل حصة؟ معنى العددين في الدالة، قراءة نقطة التقاطع، ثم ما وفّره تلميذ.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tarrid-taalufi_P1', '4am_tarrid-taalufi_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — خزّانا الوقود', desc: 'سيارتان في الطريق إلى غرداية: الوقود المتبقّي دالة تآلفية متناقصة، متى يتساوى الخزانان، ومتى يشتعل مصباح الاحتياط.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tarrid-taalufi_P1', '4am_tarrid-taalufi_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين: النمذجة بدالة تآلفية، والمفاضلة بين صيغتين.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

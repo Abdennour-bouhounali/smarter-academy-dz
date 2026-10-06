@@ -51,7 +51,9 @@ export default function Module03Atamaqq() {
         { num: 2, title: 'تمرين 22 — عرض نهر', done: all('ex-22'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="taqdir-masafa" lead="المجهول هنا جزء من ضلع: كيف نكتب الضلع كاملا؟" />
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : l’inconnue dans un côté puis une équation du premier degré, c’est le module 1 de cette leçon
+                  ($OT = 18 - h$, `muadala-bud`) et `hisab-atwal` (درس talis-hisab-atwal). */}
+              <KnowledgeBrick id="taqdir-masafa" variant="rappel" lead="المجهول هنا جزء من ضلع: كيف نكتب الضلع كاملا؟" />
               <GeoFigure {...EX22} />
               <TextbookExercise exercise={part('ex-22-1')} requires={['taqdir-masafa']} onAnswered={mark('ex-22-1')} />
               <TextbookExercise exercise={part('ex-22-2')} requires={['taqdir-masafa', 'muadala-ula']} onAnswered={mark('ex-22-2')} />

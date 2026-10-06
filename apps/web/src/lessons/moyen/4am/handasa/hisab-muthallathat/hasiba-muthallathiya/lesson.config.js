@@ -13,7 +13,9 @@
  *                        depuis un rapport : l'exemple 2 et sa coquille corrigée), FORMALIZE (l'arrondi, plateforme) ;
  *   M3 أوظّف تعلّماتي  — AUTOMATIZE (ex-3 mesure contre calculatrice, ex-7 le programme, ex-8, ex-11) et TRANSFER
  *                        (ex-23 : corriger ليلى et رضا) ;
- *   M4 إختبار أولي     — six épreuves de la plateforme ; P1, P2, P3 couverts.
+ *   M4–M6 مسائل        — puis trois « مسائل » de la plateforme (modules 4–6) : le drone de la Corniche (مسألة الدرس),
+ *                        la مئذنة du quartier, le pont sur l'oued — content/problems.js ;
+ *   M7 إختبار أولي     — six épreuves de la plateforme ; P1, P2, P3 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -54,6 +56,26 @@ export const LESSON_CONFIG = {
       'ترييض وضعيات وحساب أطوال غير مباشرة (الدرس 4)',
     ],
   },
+  // « مسألة الدرس » (MASAIL_GENERATION_GUIDE.md) : le monde du lab متقدم (la calculatrice du drone qui filme la
+  // Corniche : le faisceau DT, l'altitude DH, la distance au sol TH), d'autres nombres ; montrée au sommaire et au
+  // module 1, résolue au module 4. Sa figure (triangle 36 / 48 / 60, droit en H) vit ICI : une seule source.
+  lessonProblem: {
+    module: 4,
+    title: 'درون الكورنيش: زاوية الكاميرا وارتفاع الطيران',
+    statement: 'في مهرجان الصيف على الكورنيش، يصوّر درون $D$ منصّة العرض $T$ على الأرض. الدرون ثابت فوق النقطة $H$ من الأرض على ارتفاع $DH = 36$ m، والمسافة الأفقية $TH = 48$ m، ومستشعر الكاميرا يقيس طول الشعاع $DT = 60$ m (في الشكل المقابل، المثلث $DHT$ قائم في $H$). بطارية الدرون تكفي 25 دقيقة من الطيران. الحاسبة مبرمجة بالدرجة إلا إذا قيل غير ذلك.',
+    figure: {
+      points: { T: [0, 0], H: [48, 0], D: [48, 36] },
+      segments: [
+        { from: 'T', to: 'H', label: '48 m' },
+        { from: 'H', to: 'D', label: '36 m' },
+        { from: 'T', to: 'D', label: '60 m', tone: 'amber' },
+      ],
+      rightAngles: [['T', 'H', 'D']],
+      angles: [{ at: 'T', from: 'H', to: 'D', label: '?' }],
+      ariaLabel: 'المثلث DHT قائم في H: الدرون D على ارتفاع DH يساوي 36 m فوق النقطة H، والمسافة الأفقية TH تساوي 48 m، وشعاع الكاميرا DT يساوي 60 m، والزاوية المطلوبة عند المنصّة T',
+      maxWidth: 320,
+    },
+  },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
   // Les acquis que « أستعدّ » diagnostique : l'arrondi d'un décimal, arrondi et valeur approchée par défaut, les
@@ -82,6 +104,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_hasiba-muthallathiya_P1', '4am_hasiba-muthallathiya_P2', '4am_hasiba-muthallathiya_P3'],
       sourceElementIds: ['act-4'],
     },
+    // Modules 4–6 — les « مسائل » (content/problems.js) : exercices complets de type امتحان, ajouts de la plateforme.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — درون الكورنيش: زاوية الكاميرا وارتفاع الطيران', learningPointIds: ['4am_hasiba-muthallathiya_P1', '4am_hasiba-muthallathiya_P2', '4am_hasiba-muthallathiya_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — ارتفاع مئذنة مسجد الحيّ', learningPointIds: ['4am_hasiba-muthallathiya_P1', '4am_hasiba-muthallathiya_P2', '4am_hasiba-muthallathiya_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — جسر للراجلين فوق الوادي', learningPointIds: ['4am_hasiba-muthallathiya_P1', '4am_hasiba-muthallathiya_P2', '4am_hasiba-muthallathiya_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -99,8 +125,22 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 3 و 7 و 8 و 11 و 23: القياس والحاسبة، كتابة البرنامج، وتصويب أخطاء ليلى ورضا.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_hasiba-muthallathiya_P1', '4am_hasiba-muthallathiya_P2', '4am_hasiba-muthallathiya_P3'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم نقاط التعلّم الثلاث: النسبة بالحاسبة، الزاوية من نسبتها، والتدوير.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui reste toujours ouvert ; jamais de preuve de
+    // maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — درون الكورنيش', desc: 'مسألة الدرس: زاوية الكاميرا من ظلها، ارتفاع جديد بحاسبة كانت بالراديان، وأكبر زاوية يسمح بها شرط البلدية.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_hasiba-muthallathiya_P1', '4am_hasiba-muthallathiya_P2', '4am_hasiba-muthallathiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — مئذنة مسجد الحيّ', desc: 'ارتفاع المئذنة من زاوية الارتفاع، «خطأ رياضي» على حاسبة سليم، وثمن سلسلة المصابيح.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_hasiba-muthallathiya_P1', '4am_hasiba-muthallathiya_P2', '4am_hasiba-muthallathiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — جسر فوق الوادي', desc: 'عرض الوادي من زاوية التسديد، التحقّق بقياس الليزر، وعدد وحدات الجسر وثمنها.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_hasiba-muthallathiya_P1', '4am_hasiba-muthallathiya_P2', '4am_hasiba-muthallathiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الثلاث: النسبة بالحاسبة، الزاوية من نسبتها، والتدوير.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

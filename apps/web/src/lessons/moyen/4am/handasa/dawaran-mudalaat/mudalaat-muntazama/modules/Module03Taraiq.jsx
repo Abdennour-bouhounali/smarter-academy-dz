@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -66,10 +66,13 @@ export default function Module03Taraiq() {
               />
               {q1 && (
                 <div className="space-y-2" data-method-solution="angle">
-                  <Lines lines={METHOD_ANGLE.solution} />
-                  <p className="text-xs text-slate-500" data-correction><MathText>{METHOD_ANGLE.correction}</MathText></p>
-                  <p className="text-sm text-slate-700"><MathText>{METHOD_ANGLE.bisector}</MathText> <SourceTag source={FORMAL_SOURCE} /></p>
-                  <GeoFigure {...FIG_METHOD_ANGLE_SOL} />
+                  {/* « أتوقّع القاعدة » : la solution du manuel énonce la méthode — l'élève l'écrit avant (prompt : knowledge.jsx). */}
+                  <PredictRule id="zawiyat-mudalla">
+                    <Lines lines={METHOD_ANGLE.solution} />
+                    <p className="text-xs text-slate-500" data-correction><MathText>{METHOD_ANGLE.correction}</MathText></p>
+                    <p className="text-sm text-slate-700"><MathText>{METHOD_ANGLE.bisector}</MathText> <SourceTag source={FORMAL_SOURCE} /></p>
+                    <GeoFigure {...FIG_METHOD_ANGLE_SOL} />
+                  </PredictRule>
                   <KnowledgeBrick id="zawiyat-mudalla" lead="الطريقة، وما تعطيه لكل مضلع منتظم:" />
                 </div>
               )}
@@ -80,7 +83,8 @@ export default function Module03Taraiq() {
           num: 2, title: 'إنشاء مضلع منتظم عُلم طول ضلعه', subtitle: 'خماسي منتظم ضلعه 3 cm', done: q2,
           content: (
             <div className="space-y-3">
-              <MethodSteps method={{ exercise: METHOD_CONSTRUCT.exercise, source: METHOD_CONSTRUCT.source, solution: METHOD_CONSTRUCT.solution }} onAllRevealed={() => setRead2(true)} />
+              {/* « أتوقّع القاعدة » : la طريقة du manuel énonce la construction — l'élève l'écrit avant (prompt : knowledge.jsx). */}
+              <PredictRule id="insha-mudalla"><MethodSteps method={{ exercise: METHOD_CONSTRUCT.exercise, source: METHOD_CONSTRUCT.source, solution: METHOD_CONSTRUCT.solution }} onAllRevealed={() => setRead2(true)} /></PredictRule>
               <GeoFigure {...FIG_METHOD_CONSTRUCT} />
               <p className="text-xs text-slate-500" data-correction><MathText>{METHOD_CONSTRUCT.naming}</MathText></p>
               {!read2 && <p className="text-sm text-slate-600">اقرأ الحلّ سطرا بعد سطر، ثم أجب.</p>}
@@ -118,7 +122,8 @@ export default function Module03Taraiq() {
               />
               {q3 && (
                 <div className="space-y-2" data-method-solution="side">
-                  <Lines lines={METHOD_SIDE.solution} />
+                  {/* « أتوقّع القاعدة » : la solution du manuel énonce la méthode — l'élève l'écrit avant (prompt : knowledge.jsx). */}
+                  <PredictRule id="dil-mudalla"><Lines lines={METHOD_SIDE.solution} /></PredictRule>
                   <KnowledgeBrick id="dil-mudalla" lead="الطريقة، وما تعطيه للمضلعات الشهيرة:" />
                 </div>
               )}

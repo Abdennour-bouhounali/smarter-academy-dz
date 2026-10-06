@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -37,7 +37,7 @@ export default function Module02Maarif() {
       estimatedTime="8 دقائق"
       brief={{
         tag: 'معارف — الكتاب ص 132', title: 'الشعاعان المتساويان ومفهوم منتصف قطعة', tone: 'violet',
-        body: <p>على الوشاح رأيت أن الشعاعين لا يتساويان إلا في المنتصف. الكتاب يكتب ذلك خاصية في الاتجاهين، ثم نربطها بمتوازي الأضلاع الذي عرفته في الدرس السابق.</p>,
+        body: <p>على الوشاح قارنت الشعاعين في مواضع مختلفة للقائد. الكتاب يكتب ما وجدته خاصية في الاتجاهين، ثم نربطها بمتوازي الأضلاع الذي عرفته في الدرس السابق.</p>,
       }}
       steps={[
         {
@@ -97,7 +97,7 @@ export default function Module02Maarif() {
           num: 3, title: 'متوازي الأضلاع وقطراه', subtitle: 'تذكير بالدرس 1، وكيف نبرهن', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="property" text={KNOW2_REMINDER.property} source={KNOW2_REMINDER.source} compact />
+              <PredictRule id="mutawazi-shuaa" prompt={"وجدت في النشاط أنّ منتصفًا مشتركًا لقطرين يعطي شعاعين متساويين. إذا كانت $A$، $B$، $C$، $D$ أربع نقط كل ثلاث منها ليست على استقامة و $\\overrightarrow{AB} = \\overrightarrow{DC}$: ماذا تستنتج عن الرباعي $ABCD$ وعن قطريه؟"}><TextbookBox kind="property" text={KNOW2_REMINDER.property} source={KNOW2_REMINDER.source} compact /></PredictRule>
               <KnowledgeBrick id="mutawazi-shuaa" lead="نجمع ما نعرفه في معرفة واحدة نبرهن بها:" />
               <TapQuestion
                 prompt="ABCD رباعي قطراه [AC] و [BD] لهما نفس المنتصف. أيّ مساواة صحيحة؟"

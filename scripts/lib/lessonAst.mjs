@@ -248,6 +248,8 @@ export function parseLessonConfig(lessonDir) {
           stage: literalValue(propOf(el, 'stage')),
           estimatedMin: literalValue(propOf(el, 'estimatedMin')),
           slug: literalValue(propOf(el, 'slug')),
+          // 'problem' = un module « مسألة » (GuidedProblem) — LESSON_CONTRACT.md § Modules « مسائل ».
+          track: literalValue(propOf(el, 'track')),
           title: literalValue(propOf(el, 'title')),
           path: literalValue(propOf(el, 'path')),
           teachesLearningPointIds: literalValue(propOf(el, 'teachesLearningPointIds')),

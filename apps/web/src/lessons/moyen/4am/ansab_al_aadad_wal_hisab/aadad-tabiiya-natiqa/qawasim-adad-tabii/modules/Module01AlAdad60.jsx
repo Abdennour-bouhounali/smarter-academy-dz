@@ -5,6 +5,8 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { IntegerSetQuestion, SourceTag } from '../../../../../../common/textbook';
 import { LibraryScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 
@@ -73,6 +75,9 @@ export default function Module01AlAdad60() {
               <KnowledgeBrick id="jidaa-aamilayn" lead="كل سطر في الجدول أعطاك قاسمين: العاملين." />
               <IntegerSetQuestion prompt={<span>اكتب كل قواسم العدد <MathText>{'$60$'}</MathText>.</span>} expected={[1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]}
                 explain="ستّ كتابات على شكل جداء عاملين، اثنا عشر قاسمًا." requires={['jidaa-aamilayn']} onAnswered={() => setQ48('set60')} />
+              {/* La « مسألة الدرس » prolonge le rectangle de 60 livres (niveau
+                  متقدم) : 96 livres en rangées — résolue au module 4. */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
         { num: 2, title: 'ب) قواسم العدد 48، كذلك بالنسبة إلى العدد 17', done: q17,

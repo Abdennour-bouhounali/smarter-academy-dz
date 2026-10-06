@@ -46,7 +46,9 @@ export default function Module03Atamaqq() {
         { num: 2, title: 'زمن الشاشة في القسم', done: all('shasha'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tajnid-mawarid" lead="قبل الحساب: أيّ مؤشر يجيب عن كل سؤال؟" />
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : chaque association est une règle des leçons de l’unité : « على الأكثر / على الأقل » →
+                  التكرار المجمع (درس 1), المدى / الوسيط / المتوسط (درس 2), et le choix d’indicateurs de « قراءة وضعيات إحصائية ». */}
+              <KnowledgeBrick id="tajnid-mawarid" variant="rappel" lead="قبل الحساب: أيّ مؤشر يجيب عن كل سؤال؟" />
               <StatTable id="shasha" valueLabel="عدد الساعات" countLabel="عدد التلاميذ" values={SCREEN.table.values} counts={SCREEN.table.counts} />
               <p className="text-xs"><SourceTag source={SCREEN.source} /></p>
               <TextbookExercise exercise={part('shasha-1')} requires={['takrar-kulli']} onAnswered={mark('shasha-1')} />

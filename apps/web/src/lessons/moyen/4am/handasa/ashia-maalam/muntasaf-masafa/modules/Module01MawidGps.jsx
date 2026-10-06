@@ -6,6 +6,8 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { CHALLENGE, CHALLENGE_LINES, ACTIVITY, ACTIVITY_LINES, ACTIVITY_4, ACTIVITY_4_LINES, LAB } from '../content/textbook';
 import { FIG_CHALLENGE, FIG_ACT3_KL, FIG_ACT3, FIG_ACT4, FIG_ACT4_TRI } from '../content/figures';
@@ -23,6 +25,10 @@ import GpsVignette from '../components/GpsVignette';
  * UNDERSTAND  le تحدّ (la règle graduée ne donne qu'une valeur approchée) ; le نشاط 3 1) et le نشاط 4 أ répondus sous les
  *           essais de l'élève (`onTrial`, `[data-activity-evidence]`) ; la brique « المنتصف وتساوي شعاعين ».
  * AUCUNE étape n'attend `onFinished`. LP : P1 (milieu), P2 (distance).
+ * « أتوقّع القاعدة » : la brique « المنتصف وتساوي شعاعين » est un RAPPEL (`variant="rappel"`) — elle ne fait que combiner
+ * le milieu par les vecteurs (الوحدة 11, priorKnowledge muntasaf-shuaa, testé par l'item 5 de « أستعدّ ») et l'égalité de deux
+ * vecteurs par leurs composantes (درس 2) ; la ligne « ماذا تستنتج؟ » juste au-dessus vient de la faire conclure.
+ * Les labs vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس » (LessonProblemCard) ferme la DERNIÈRE étape.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const num = (v) => String(v).replace('.', '{,}');
@@ -157,7 +163,7 @@ export default function Module01MawidGps() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: نفس الحركة من K إلى J ومن J إلى L، كما في دبّوس اللقاء.' : 'راجع التصحيح تحت كل سطر، وقارن بدبّوسك في المستوى «متقدم».'}</Feedback>}
                 onAnswered={() => setQ2(true)}
               />
-              {q2 && <KnowledgeBrick id="muntasaf-murakkibat" lead="ما وجدته على الخريطة:" />}
+              {q2 && <KnowledgeBrick id="muntasaf-murakkibat" variant="rappel" lead="ما وجدته على الخريطة:" />}
             </div>
           ),
         },
@@ -179,6 +185,7 @@ export default function Module01MawidGps() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: المسافة في خط مستقيم وتر المثلث القائم، لا مجموع ضلعي الدرج.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ3(true)}
               />
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

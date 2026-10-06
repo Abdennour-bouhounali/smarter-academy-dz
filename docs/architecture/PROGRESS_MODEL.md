@@ -97,6 +97,28 @@ table, not migrated from the anonymous prefix at login. It is shown in the
 module header and « مساري ». No other feature awards XP (the daily challenge
 has its own score).
 
+### Renumérotation des modules — migration unique (2026-10-05)
+
+Les modules terminés sont stockés PAR NUMÉRO. Insérer des modules avant un
+module existant (pilote « مسائل » : le test de `qasim-adad-tabii` passe de 4 à
+7) change le sens des numéros déjà stockés. La migration est UNIQUE, jamais
+appliquée à chaque lecture (après le changement, « 4 » est légitimement la
+مسألة 1) :
+- client : `@smarter-academy/core › moduleLayoutMigrations` — les données
+  portent `layoutVersion` ; absente = ancienne disposition, migrée à la
+  lecture (`useProgress`, `progressQueue`, `getLessonProgress`) ; un stockage
+  vide naît à la version courante ;
+- serveur : une migration de données Laravel
+  (`2026_10_05_000003_remap_problem_modules_qasim_adad_tabii`) remappe les
+  lignes une fois, pour que l'union client ∪ serveur ne réintroduise jamais
+  l'ancien sens. Déploiement à toutes les leçons (2026-10-06) : UNE migration
+  par unité, qui porte la table de toutes ses leçons
+  (`2026_10_06_000001_remap_problem_modules_unit1_aadad` : 7 leçons, 4 → 7 ou 5 → 8 ; `…000002…unit2_judhur` : 5 leçons, jusqu'à 6 → 9 ; puis `…000003…unit3_harfi`, `…000004…unit4_muadalat`, `…000005…unit5_jumal`, `…000006…unit6_khattiya`, `…000007…unit7_taalufiya`, `…000008…unit8_ihsa`, puis `2026_10_07_000009` à `…000014` pour les unités 9–14 — 60 leçons au total, identiques à la table client).
+- Toute leçon renumérotée ajoute une étape aux DEUX tables, dans le même
+  changement.
+- Au déploiement, l'import du registre crée les nouveaux modules en `draft` :
+  les publier (le test renuméroté compris) sinon ils restent fermés aux élèves.
+
 ### Module counts come from the lesson registry
 
 `apps/web/src/lessons/registry.js` derives a lesson's module count from its
@@ -134,7 +156,7 @@ read as either. Its answers DO produce ordinary practice evidence. See
 
 - **Definition:** the mean of each available lesson's completion percentage within that chapter (`Courses.jsx`'s `getChapterProgress`, now itself calling `calculateCompletionPercentage` per lesson instead of the pre-cleanup inaccurate raw-length formula).
 - **Numerator/denominator:** `sum(calculateCompletionPercentage(lesson) for lesson in availableLessons) / availableLessons.length`.
-- **Edge case:** a chapter with zero available lessons (e.g. every lesson still `status: 'coming_soon'`, true for all of 5e today) → `0`, not `NaN` (`getChapterProgress` early-returns before dividing).
+- **Edge case:** a chapter with zero available lessons (every lesson still `status: 'coming_soon'` — no longer true of any 4AM chapter: all 74 lessons are `available` since the French grades were deleted on 2026-09-25) → `0`, not `NaN` (`getChapterProgress` early-returns before dividing).
 - **Weighting:** every *lesson* counts equally regardless of its module count — a 5-module lesson and an 11-module lesson each contribute one vote to the chapter average. This is a real modeling decision already baked into the existing code, documented here rather than changed (changing it would alter what number a student currently sees).
 
 ### Course completion (= grade, per the domain model in `ARCHITECTURE.md` §1)
@@ -215,4 +237,8 @@ parts 1–6 as done, for themselves or for any student. Server side the
 `POST …/evidence` and `PUT|DELETE …/final-test-attempt` for any non-student
 (403 `not_a_learner`), so a teacher can never create a `student_lesson_progress`
 or `learning_evidence` row — for themselves or for anyone. Locked by
-`TeacherLearningAccessTest`. See `TEACHER_CLASSROOM_ARCHITECTURE.md` §8b.
+`TeacherLearningAccessTest`. Since 2026-10-05 the **practice** writes
+(sessions, question attempts, hints, exercise and session completion) sit
+behind the same `learner` middleware (`PracticeLearnerGuardTest`); the
+teacher's practice view (the student's Hub in teacher mode) checks answers in the browser and writes nothing.
+See `TEACHER_CLASSROOM_ARCHITECTURE.md` §8b.

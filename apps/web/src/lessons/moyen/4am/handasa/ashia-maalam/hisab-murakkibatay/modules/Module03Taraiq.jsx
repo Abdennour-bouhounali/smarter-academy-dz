@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -15,6 +15,9 @@ import { FIG_METHOD_EQUAL } from '../content/figures';
  * ligne), la brique tahaqquq-tasawi ; puis « حساب إحداثيتي نقطة مجهولة » (méthode de la plateforme, déclarée) AVEC le
  * lab مبتدئ ouvert par défaut — la porte D aux deux coordonnées inconnues, AB = DC, le piège CD = AB qui croise ABCD — et
  * la brique nuqta-majhula ; enfin دوري الآن 2. AUCUNE étape n'attend `onFinished`. LP : P2 (1), P3 (2), P1 (3).
+ * « أتوقّع القاعدة » : la طريقة « نقطة مجهولة » s'écrit ligne à ligne dans MethodSteps, juste avant sa brique : elle est
+ * enveloppée dans <PredictRule id="nuqta-majhula"> (l'élève écrit la méthode d'abord) ; le brief ne dit plus la طريقة du
+ * livre (« نحسب مركبتي شعاعين ونقارنهما »), prédite à l'étape 1 (tahaqquq-tasawi).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -34,7 +37,7 @@ export default function Module03Taraiq() {
       estimatedTime="10 دقائق"
       brief={{
         tag: 'طرائق — الكتاب ص 143', title: METHOD_EQUAL.title, tone: 'emerald',
-        body: <p>أولا طريقة الكتاب: نحسب مركبتي شعاعين ونقارنهما. ثم نعكسها: البوابة D مجهولة الإحداثيتين، ونريد أن يكون ABCD متوازي أضلاع — ضعها في المختبر قبل أن تقرأ الطريقة سطرا سطرا.</p>,
+        body: <p>أولا طريقة الكتاب: كيف نتحقق من تساوي شعاعين في معلم؟ ثم نعكس السؤال: البوابة D مجهولة الإحداثيتين، ونريد أن يكون ABCD متوازي أضلاع — ضعها في المختبر قبل أن تقرأ الطريقة سطرا سطرا.</p>,
       }}
       intro={
         <ManipulationWorkspace
@@ -80,7 +83,10 @@ export default function Module03Taraiq() {
           num: 2, title: 'نقطة مجهولة', subtitle: 'البوابة D بالحساب', done: q2,
           content: (
             <div className="space-y-3">
-              <MethodSteps method={METHOD_UNKNOWN} />
+              {/* « أتوقّع القاعدة » : la طريقة écrit la méthode ligne à ligne — l'élève l'écrit d'abord (predictPrompt de nuqta-majhula). */}
+              <PredictRule id="nuqta-majhula">
+                <MethodSteps method={METHOD_UNKNOWN} />
+              </PredictRule>
               <TapQuestion
                 prompt={<MathText>{'في المختبر («مبتدئ»): $A(1\\,;\\,2)$ ، $B(4\\,;\\,3)$ ، $C(5\\,;\\,5)$ . أيّ معادلتين تعطيان D حيث ABCD متوازي أضلاع؟'}</MathText>}
                 options={[

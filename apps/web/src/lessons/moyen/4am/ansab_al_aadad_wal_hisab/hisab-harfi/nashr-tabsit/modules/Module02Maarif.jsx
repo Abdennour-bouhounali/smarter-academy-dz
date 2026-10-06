@@ -52,7 +52,7 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <TextbookBox kind="definition" text={KNOWLEDGE.definition} source={KNOWLEDGE.source} />
-              <KnowledgeBrick id="tawziiya-nashr" lead={<MathText>{'في النشاط ضربت $x$ في $3x + 1$ و $5x$ في $1 - x$. الكتاب يكتب القاعدة لكل الأعداد:'}</MathText>} />
+              <KnowledgeBrick id="tawziiya-nashr" variant="rappel" lead={<MathText>{'في النشاط ضربت $x$ في $3x + 1$ و $5x$ في $1 - x$. الكتاب يكتب القاعدة لكل الأعداد:'}</MathText>} />
               <TapQuestion
                 prompt={<MathText>{'$-4(2y - 3) = \\ldots$'}</MathText>}
                 options={['$-8y - 12$', '$-8y + 12$', '$-8y - 3$'].map(M)}

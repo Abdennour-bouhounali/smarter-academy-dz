@@ -61,7 +61,9 @@ export default function Module03Awazzif() {
           content: (
             <div className="space-y-3">
               {block('24', ['hall-muthallath', 'zawiya-min-dilain', 'fithaghuris'])}
-              {all('24') && <KnowledgeBrick id="burhan-qaim" lead="قبل أيّ نسبة مثلثية:" />}
+              {/* Rappel : « les rapports ne se définissent que dans un triangle rectangle » est la définition du درس 1, et
+                  l'erreur fréquente de l'ex-24 (affichée dès l'énoncé) la redit — rien à prédire. */}
+              {all('24') && <KnowledgeBrick id="burhan-qaim" variant="rappel" lead="قبل أيّ نسبة مثلثية:" />}
             </div>
           ) },
         { num: 3, title: 'تمرين 25 — قطرا مستطيل', done: all('25'),

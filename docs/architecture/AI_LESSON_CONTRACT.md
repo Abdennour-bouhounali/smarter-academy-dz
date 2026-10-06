@@ -153,7 +153,7 @@ A lesson's questions belong to one of three roles:
 Judge the role from the question's actual pedagogical function, not its
 location: a scaffolded, hint-laden, retry-until-correct sequence is practice
 even if it sits in a "Boss Final" module. A live assessment module to read:
-`apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module04Itqan.jsx`.
+`apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module07Itqan.jsx`.
 
 ## Knowledge map — generated WITH the lesson (2026-09-29)
 

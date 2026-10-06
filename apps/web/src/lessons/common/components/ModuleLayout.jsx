@@ -8,6 +8,7 @@ import { lockedReasonData, isValidModuleNumber } from '@smarter-academy/core';
 import { resolveModuleUnlock } from '../utils/moduleGate';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
 import ReportButton from '../../../features/reports/ReportButton';
+import PublicationBadge from '../../../components/content/PublicationBadge';
 import { scrollToStep } from '../utils/scrollToStep';
 import { LessonChromeContext, useLessonChromeLayout } from '../hooks/useLessonChrome';
 import { useClassroomMode, useClassroomStage, ClassroomEntryButton, ClassroomFrame } from '../classroom';
@@ -166,7 +167,7 @@ export default function ModuleLayout({
   // (lessons.tier, décidé par l'administrateur, lu via /content/availability) ;
   // le serveur refuse de toute façon chaque écriture (ContentAccess). Un
   // module verrouillé par le palier n'écrit donc ni visite ni complétion.
-  const { isLessonLocked } = useContentAvailability();
+  const { isLessonLocked, lessonStatus, moduleStatus } = useContentAvailability();
   const premiumLocked = Boolean(lessonId) && isLessonLocked(lessonId);
   const unlocked = sequentiallyUnlocked && !premiumLocked;
 
@@ -408,6 +409,19 @@ export default function ModuleLayout({
                 />
               </div>
             </div>
+            {/* « الإبلاغ عن مشكل » EN HAUT, à côté des repères (2026-10-05) :
+                seuls les relecteurs (admin, سفير) le voient, et ils doivent le
+                trouver sans dérouler jusqu'au pied de page. */}
+            <ReportButton
+              source="module"
+              variant="prominent"
+              context={{
+                lessonCode: lessonId,
+                grade: gradeId,
+                moduleNumber,
+                step: moduleTitle,
+              }}
+            />
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-mono text-xs font-bold shrink-0 shadow-sm">
               <span id="xpCount">{xp || 0}</span>
               <span aria-label={t('nav.experiencePoints')}>XP</span>
@@ -423,6 +437,13 @@ export default function ModuleLayout({
             {estimatedTime || `5 ${t('nav.minutesShort')}`} · {t('nav.module')} {moduleNumber}
           </div>
           <h1 className="text-3xl font-space font-extrabold text-slate-900"><MathLabel>{moduleTitle}</MathLabel></h1>
+          {/* Relecteur seulement (admin, سفير) : l'état de la leçon et du module. */}
+          {lessonId && (
+            <div className="flex flex-wrap justify-center gap-2">
+              <PublicationBadge status={lessonStatus(lessonId)} />
+              {hasModuleNumber && <PublicationBadge status={moduleStatus(lessonId, moduleNumber)} />}
+            </div>
+          )}
           <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto">
             <MathLabel>{moduleSubtitle}</MathLabel>
           </p>
@@ -485,41 +506,14 @@ export default function ModuleLayout({
 
       </main>
 
-      {/* « Signaler un problème » — présent sur CHAQUE module, parce qu'il
-          est ici, dans le shell partagé, et non recopié dans 1082 modules.
-          Le contexte est pris de ce que ModuleLayout a déjà en portée :
-          l'élève n'a rien à désigner.
-
-          DANS LE PIED DE PAGE, au bord de FIN : signaler est une action
-          rare, qu'on cherche après coup — elle n'a pas à occuper la rangée
-          de repères, où l'élève travaille. */}
+      {/* « Signaler un problème » est dans la rangée de repères EN HAUT
+          (variante « prominent », relecteurs seulement) depuis 2026-10-05 ;
+          le pied de page ne porte plus que la mention. */}
       {!presenting && <footer className="border-t border-slate-200 bg-white py-8 mt-12">
-        {/* Trois colonnes de largeur ÉGALE : la mention reste ainsi au
-            milieu de la PAGE, et non au milieu de la place que lui laisse le
-            bouton — un `justify-between` l'aurait décentrée d'une demi-
-            largeur de pastille. « إبلاغ » occupe la colonne de FIN, qui sous
-            RTL est la gauche physique ; `justify-self-end` l'y pousse sans
-            que la grille ait à connaître le sens de lecture.
-
-            Sur un téléphone, la grille se replie en deux rangées : la
-            mention centrée, la pastille au-dessus. */}
-        <div className="sa-page grid grid-cols-1 items-center justify-items-center gap-4 sm:grid-cols-[1fr_auto_1fr]">
-          <span className="hidden sm:block" aria-hidden="true" />
-          <p className="order-last text-center text-xs text-slate-500 sm:order-none">
+        <div className="sa-page flex justify-center">
+          <p className="text-center text-xs text-slate-500">
             © {new Date().getFullYear()} Abdennour BOUHOUNALI — {t('common:footerRole')}
           </p>
-          <div className="sm:justify-self-end">
-            <ReportButton
-              source="module"
-              variant="icon"
-              context={{
-                lessonCode: lessonId,
-                grade: gradeId,
-                moduleNumber,
-                step: moduleTitle,
-              }}
-            />
-          </div>
         </div>
       </footer>}
     </div>

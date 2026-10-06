@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation } from '../../../../../../common/manipulations';
@@ -48,7 +48,8 @@ export default function Module03Qiraa() {
                 lines={[{ a: -1.5, b: 2, label: '(D)' }]} points={[{ x: 0, y: 2 }, { x: 2, y: -1 }]}
                 caption="الشكل: المستقيم $(D)$ يشمل النقطتين $(0 ; 2)$ و $(2 ; -1)$ ."
                 ariaLabel="مستقيم (D) ينزل ويشمل النقطتين (0 ; 2) و (2 ; −1)" />
-              <MethodSteps method={METHOD_AB} />
+              {/* La طريقة révèle sa règle (encadré final) juste avant la brique : prédiction d'abord. */}
+              <PredictRule id="qiraa-ab"><MethodSteps method={METHOD_AB} /></PredictRule>
               <KnowledgeBrick id="qiraa-ab" lead="الطريقة:" />
               <AffineFigure testId="q-b" win={{ xMin: -1, xMax: 5, yMin: -3, yMax: 1 }} height={180} width={260}
                 lines={[{ a: 0.5, b: -2, label: '(L)' }]} points={[{ x: 0, y: -2 }, { x: 4, y: 0 }]}
@@ -118,10 +119,12 @@ export default function Module03Qiraa() {
                 title="المنحدر الثاني: صورة 4، والعدد الذي صورته 4"
                 lead="حرّك المسبار تحت محور الفواصل إلى 4، ثم المسبار على يسار محور التراتيب إلى 4، واتبع الخط المتقطع."
               />
-              <div className="space-y-1 rounded-xl border-2 border-emerald-200 bg-emerald-50/60 px-3 py-2 text-sm" data-method-read>
-                {METHOD_READ.rule.map((r) => <p key={r}><MathText>{r}</MathText></p>)}
-                <SourceTag source={METHOD_READ.source} />
-              </div>
+              <PredictRule id="qiraa-sura-taalufi">
+                <div className="space-y-1 rounded-xl border-2 border-emerald-200 bg-emerald-50/60 px-3 py-2 text-sm" data-method-read>
+                  {METHOD_READ.rule.map((r) => <p key={r}><MathText>{r}</MathText></p>)}
+                  <SourceTag source={METHOD_READ.source} />
+                </div>
+              </PredictRule>
               <KnowledgeBrick id="qiraa-sura-taalufi" lead="ما فعلته بالمسبارين، طريقةً:" />
               <NumericQuestion
                 prompt={<MathText>{'على المستقيم نفسه، اقرأ صورة $2$ :'}</MathText>}

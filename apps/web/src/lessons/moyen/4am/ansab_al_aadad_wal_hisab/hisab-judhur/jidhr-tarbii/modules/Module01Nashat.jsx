@@ -8,6 +8,8 @@ import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, CHALLENGE, ICT_CONSTRUCT } from '../content/textbook';
 import { TriangleABC, RootSpiral } from '../components/RootFigures';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 
 const { squareOf, squareOfDecimal, exactDecimal } = squareRoots;
 
@@ -28,6 +30,8 @@ const { squareOf, squareOfDecimal, exactDecimal } = squareRoots;
  * jamais depuis les options —, l'encadré « نرمز بـ √5 … » (brique
  * `qima-mudbuta`), la définition (brique `jidhr-taarif`) puis les questions 3
  * et 4, la spirale de la p. 30 et le retour au تحدّ. LP : P1, P2.
+ * Les ateliers vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس »
+ * (LessonProblemCard) clôt donc la DERNIÈRE étape.
  */
 const AREA_5 = '5/1';
 const LADDER = [1, 10, 100, 1000];
@@ -325,6 +329,8 @@ export default function Module01Nashat() {
                 onAnswered={() => setQ7(true)}
               />
               )}
+              {/* « مسألة الدرس » : le même carré construit sur un وتر, d'autres nombres (module 4). */}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

@@ -2,6 +2,7 @@
  * الدرس 2 — قواسم عدد طبيعي
  * Manuel 4AM, unité 1 : activité 2 (p. 8), معارف 1 (p. 10), طريقة « تعيين قواسم عدد طبيعي » (p. 11),
  * exercices 3, 4, 6, 7, 8, 9, 11 (p. 14). Source : docs/sources/4am/unit1/extraction.json.
+ * puis trois « مسائل » de la plateforme (modules 4–6).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/qawasim-adad-tabii';
 
@@ -32,6 +33,14 @@ export const LESSON_CONFIG = {
     include: ['كتابة عدد على شكل جداء عاملين واستنتاج قواسمه', 'طريقة الكتاب: اختبار الأعداد التي مربعها ≤ العدد، وقواعد قابلية القسمة'],
     exclude: ['التحليل إلى عوامل أولية (موضوع رسمي آخر)', 'القواسم المشتركة (الدرس 4)'],
   },
+  // « مسألة الدرس » : montrée dès le sommaire, rappelée au module 1, résolue
+  // pas à pas au module 4 (content/problems.js). Prolonge le niveau متقدم du
+  // module 1 : les mêmes livres en rangées formant un rectangle parfait.
+  lessonProblem: {
+    module: 4,
+    title: 'جدار المكتبة: 96 كتابًا في صفوف متساوية',
+    statement: 'تلقّت مكتبة المتوسطة 96 كتابًا جديدًا هديّةً من بلدية المدينة، ويريد القيّم عرضها على جدار المكتبة في صفوف متساوية: كل صفّ يحمل العدد نفسه من الكتب، فتشكّل الكتب مستطيلًا تامًّا دون صفّ ناقص. يوضع كل صفّ على رفّ عرض. في المخزن نوعان من رفوف العرض: رفّ قصير يتّسع لـ 12 كتابًا على الأكثر ثمنه 1400 دج، ورفّ طويل يتّسع لـ 20 كتابًا على الأكثر ثمنه 2200 دج. يدوم معرض الكتب 3 أسابيع.',
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -60,6 +69,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_qawasim-adad-tabii_P1', '4am_qawasim-adad-tabii_P2'], sourceElementIds: ['act-2'] },
     { kind: 'method', code: 'method-divisors-105', module: 2, title: 'طريقة: للبحث عن قواسم عدد طبيعي a',
       learningPointIds: ['4am_qawasim-adad-tabii_P3', '4am_qawasim-adad-tabii_P4'], sourceElementIds: ['method-divisors'] },
+    // Modules 4–6 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — جدار المكتبة: 96 كتابًا', learningPointIds: ['4am_qawasim-adad-tabii_P1', '4am_qawasim-adad-tabii_P2', '4am_qawasim-adad-tabii_P3', '4am_qawasim-adad-tabii_P4'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — المخيّم الكشفي: 135 كشّافًا', learningPointIds: ['4am_qawasim-adad-tabii_P1', '4am_qawasim-adad-tabii_P2', '4am_qawasim-adad-tabii_P3', '4am_qawasim-adad-tabii_P4'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — حلوى العرس: 90 حبّة مقروط', learningPointIds: ['4am_qawasim-adad-tabii_P1', '4am_qawasim-adad-tabii_P2', '4am_qawasim-adad-tabii_P3', '4am_qawasim-adad-tabii_P4'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -77,8 +91,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 3، 4، 6، 7، 8، 9 و11.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_qawasim-adad-tabii_P2', '4am_qawasim-adad-tabii_P4'],
       color: 'amber', style: 'featured', estimatedMin: 15, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ست أسئلة تُقيّم نقاط التعلّم الأربع.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — جدار المكتبة', desc: 'مسألة الدرس: 96 كتابًا في صفوف متساوية ونوعان من الرفوف. حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_qawasim-adad-tabii_P1', '4am_qawasim-adad-tabii_P2', '4am_qawasim-adad-tabii_P3', '4am_qawasim-adad-tabii_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — المخيّم الكشفي', desc: '135 كشّافًا في مجموعات متساوية: كم مجموعة؟ وكم يدفع كل كشّاف؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_qawasim-adad-tabii_P1', '4am_qawasim-adad-tabii_P2', '4am_qawasim-adad-tabii_P3', '4am_qawasim-adad-tabii_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — حلوى العرس', desc: '90 حبّة مقروط في علب متماثلة، ثم حبّة مكسورة: هل تبقى العلب ممكنة؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_qawasim-adad-tabii_P1', '4am_qawasim-adad-tabii_P2', '4am_qawasim-adad-tabii_P3', '4am_qawasim-adad-tabii_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'ست أسئلة تُقيّم الكفاءات الأربع.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 9, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

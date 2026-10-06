@@ -15,6 +15,11 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
  *                      nashr-qawsayn — (a + b)(c + d), posée quand l'élève a
  *                      vérifié son terrain (3x − 1)(3 + x).
  *   module 2 (معارف 1) tawziiya-nashr — k(a ± b) ; tabsit — réduire.
+ *
+ * « أتوقّع القاعدة » (2026-10-06) : nashr-taarif, nashr-qawsayn et tabsit ont
+ * leur `predictPrompt` ; la brique tawziiya-nashr du module 2 est un RAPPEL
+ * (k(a ± b) est l'acquis 3AM `khassiya-tawziiya`, et le module 1 l'a déjà
+ * nommée « الخاصية المعتمدة » à la question 3).
  */
 const [propSum, propDiff, propDouble] = KNOWLEDGE.properties;
 const [exSimple, exDouble] = KNOWLEDGE.examples;
@@ -24,6 +29,7 @@ export const LESSON_KNOWLEDGE = {
     1: [
       {
         id: 'nashr-taarif', type: 'concepts', title: 'نشر عبارة جداء',
+        predictPrompt: 'في السؤال 1 كتبت $3 \\times (9 + 5)$ على الشكل $3 \\times 9 + 3 \\times 5$، وفي الملعب حسبت المساحة منطقةً منطقة، ثم ميّزت في السؤال 2 بين نوعين من العبارات. يسمّي الكتاب هذا التحويل «نشرًا»: من أيّ نوع من العبارات ننطلق، وإلى أيّ نوع نصل؟ اكتب التعريف بكلماتك.',
         summary: 'نشر عبارة جداء يعني كتابة هذه العبارة على شكل مجموع (أو فرق).',
         body: (
           <div className="space-y-2">
@@ -34,6 +40,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'nashr-qawsayn', type: 'regles', title: 'نشر جداء قوسين',
+        predictPrompt: 'في الملعب $(3x - 1)(3 + x)$ حسبت كل المناطق، منها اثنتان مقتطعتان، فساوى مجموعها مساحة الملعب من أجل كل قيمة جرّبتها لـ $x$. لو كان بعدا الملعب $a + b$ و $c + d$: كم جداءً تكتب، وكيف تختار عاملَي كل جداء؟ اكتب القاعدة بكلماتك.',
         summary: 'نضرب كل حد من القوس الأول في كل حد من القوس الثاني: أربعة جداءات نجمعها.',
         body: (
           <div className="space-y-2">
@@ -57,6 +64,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'tabsit', type: 'methodes', title: 'تبسيط عبارة',
+        predictPrompt: 'في مثال الكتاب صار السطر $2x^2 + 8x - x - 4$ أقصر. لو أعطيناك عبارة طويلة فيها قوسان مسبوقان بإشارة $-$، وحدود فيها $x^2$ وحدود فيها $x$ وأعداد: بأيّ خطوات تبسّطها، وأيّ الحدود يحقّ لك أن تجمعها معًا؟ اكتب الطريقة.',
         summary: 'نبسّط عبارة بحذف الأقواس (قوسان مسبوقان بإشارة ناقص تتغيّر إشارة كل حد بداخلهما)، ثم بجمع الحدود المتشابهة، أي التي لها نفس قوة x.',
         body: (
           <div className="space-y-2">

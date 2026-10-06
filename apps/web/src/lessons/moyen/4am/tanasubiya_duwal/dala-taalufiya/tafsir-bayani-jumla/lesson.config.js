@@ -2,7 +2,7 @@
  * الدرس 4 — التفسير البياني لحل جملة معادلتين من الدرجة الأولى بمجهولين
  * Unité 7 du manuel (4AM) : نشاط 5 (p. 79) « التفسير البياني لحل جملة معادلتين ». Le manuel fourni (pp. 77–79)
  * n'a ni معارف, ni طرائق, ni exercices : la formalisation, les exercices et la « أستعدّ » sont des ajouts
- * DÉCLARÉS de la plateforme (`addition(...)`). Source de vérité : docs/sources/4am/unit7/extraction.json.
+ * DÉCLARÉS de la plateforme (`addition(...)`), puis trois « مسائل » de la plateforme (modules 4–6). Source de vérité : docs/sources/4am/unit7/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -25,6 +25,27 @@ export const LESSON_CONFIG = {
   emoji: '🔀',
   estimatedDurationMin: 50,
   textbookRef: { unit: 7, activity: 5, pages: '79' },
+  // « مسألة الدرس » : l'énoncé de la مسألة 1 (content/problems.js), montré au sommaire et à la fin du module 1,
+  // prolongement du lab متقدم « صندوق القسم » (des pièces de deux valeurs, d'autres nombres) ; résolue au module 4.
+  lessonProblem: {
+    module: 4,
+    title: 'صندوق نادي البيئة: 40 قطعة و 1250 دج',
+    statement: 'جمع نادي البيئة في المتوسطة تبرّعات لشراء حاويات لفرز النفايات. في صندوق النادي 40 قطعة نقدية من فئتي 20 دج و 50 دج، مبلغها 1250 دج. في النادي 18 عضوًا، ويجتمع كل يوم ثلاثاء. نرمز بـ $x$ إلى عدد قطع 20 دج وبـ $y$ إلى عدد قطع 50 دج.',
+    // Le support de la مسألة 1, montré aussi par la carte « مسألة الدرس » (une seule source).
+    visual: {
+      range: { xMin: 0, xMax: 50, yMin: 0, yMax: 45 },
+      unit: 9,
+      functions: [
+        { id: 'd1', a: -1, b: 40, label: '(d₁)', tone: 'indigo' },
+        { id: 'd2', a: -0.4, b: 25, label: '(d₂)', tone: 'amber' },
+      ],
+      xStep: 5,
+      yStep: 5,
+      frozen: true,
+      ariaLabel: 'التمثيل البياني المرفق: المستقيم (d₁) يقطع محور التراتيب في 40، والمستقيم (d₂) يقطعه في 25',
+      caption: false,
+    },
+  },
   skills: [
     'كتابة كل معادلة من جملة معادلتين على الشكل $y = ax + b$ وتمثيلها بيانيًا بمستقيم',
     'إدراك أنّ الثنائية حلّ الجملة هي إحداثيتا نقطة تقاطع المستقيمين',
@@ -75,6 +96,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_tafsir-bayani-jumla_P1', '4am_tafsir-bayani-jumla_P2', '4am_tafsir-bayani-jumla_P3'],
       sourceElementIds: ['act-5'],
     },
+    // Les trois « مسائل » (modules 4–6) : exercices complets de type امتحان, ajouts de la plateforme.
+    { kind: 'situation', code: 'masala-1', module: 4, title: 'مسألة الدرس — صندوق نادي البيئة: 40 قطعة و 1250 دج', learningPointIds: ['4am_tafsir-bayani-jumla_P1', '4am_tafsir-bayani-jumla_P2'] },
+    { kind: 'situation', code: 'masala-2', module: 5, title: 'مسألة — توصيل الطرود: خدمتان وتسعيرتان', learningPointIds: ['4am_tafsir-bayani-jumla_P1', '4am_tafsir-bayani-jumla_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 6, title: 'مسألة — بطاقات دعوة العرس: ثلاث مطابع', learningPointIds: ['4am_tafsir-bayani-jumla_P1', '4am_tafsir-bayani-jumla_P2', '4am_tafsir-bayani-jumla_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -92,8 +117,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'أربعة تمارين من المنصّة: حل بياني ثم تحقّق، نقطة تقاطع لا تُقرأ بدقة، عدد الحلول دون رسم، وتطبيقا سيارة أجرة.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tafsir-bayani-jumla_P2', '4am_tafsir-bayani-jumla_P1', '4am_tafsir-bayani-jumla_P3'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم نقاط التعلّم الثلاث.',
+    { id: '04', number: 4, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — صندوق نادي البيئة', desc: 'مسألة الدرس: 40 قطعة و 1250 دج. نكتب كل شرط على الشكل $y = ax + b$ ، نقرأ نقطة التقاطع، ونتحقّق بالحساب.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tafsir-bayani-jumla_P1', '4am_tafsir-bayani-jumla_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '05', number: 5, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — توصيل الطرود', desc: 'خدمتان للتوصيل: متى يتساوى الثمنان؟ وأيّ الخدمتين أرخص قبل نقطة التقاطع وبعدها؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tafsir-bayani-jumla_P1', '4am_tafsir-bayani-jumla_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — بطاقات دعوة العرس', desc: 'مطبعتان ونقطة تقاطع، ثم مطبعة ثالثة مستقيمها موازٍ: أيّ مطبعة تختار العائلة؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_tafsir-bayani-jumla_P1', '4am_tafsir-bayani-jumla_P2', '4am_tafsir-bayani-jumla_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الثلاث.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

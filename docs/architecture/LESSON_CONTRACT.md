@@ -288,7 +288,7 @@ Student and teacher modes use `pt-0` because their `<main>` already consumes the
 
 ### Module types observed (not enforced, described)
 
-In the 4AM unit: `style: 'featured'` (the default — activity, معارف, أوظّف تعلّماتي), `'diagnostic'` (the « أستعدّ » module 0 that opens each of the nine lessons, built on `PrerequisiteDiagnostic`) and `'boss'` (every « إختبار أولي », built on `BossFinal`, e.g. `qasim-adad-tabii/modules/Module04Itqan.jsx`). `'assessment'` is accepted but unused today. The style only changes the landing-page card.
+In the 4AM unit: `style: 'featured'` (the default — activity, معارف, أوظّف تعلّماتي), `'diagnostic'` (the « أستعدّ » module 0 that opens each of the nine lessons, built on `PrerequisiteDiagnostic`) and `'boss'` (every « إختبار أولي », built on `BossFinal`, e.g. `qasim-adad-tabii/modules/Module07Itqan.jsx`). `'assessment'` is accepted but unused today. The style only changes the landing-page card.
 
 
 ## Phase 8 additions — unit, kind, resources (2026-09-18)
@@ -324,6 +324,70 @@ soit ce qui précède (`isModuleClosed`). Après un import, publier
 
 
 ---
+
+## Modules « مسائل » (track: 'problem') — PILOTE, 2026-10-05/06
+
+**Statut :** prototype validé par le propriétaire le 2026-10-06 sur
+`qasim-adad-tabii` (modules 4–6) ; déployé ensuite unité par unité à toutes
+les leçons régulières (pas aux 14 synthèses) — état dans le guide ci-dessous. **Guide de génération faisant autorité :
+[`../lessons/MASAIL_GENERATION_GUIDE.md`](../lessons/MASAIL_GENERATION_GUIDE.md)** —
+cette section n'en résume que le contrat moteur.
+
+
+**Support de l'énoncé (2026-10-06).** Une مسألة peut porter `figure` (GeoFigure / SpaceFigure), `visual` (props de CoordPlane, même liste fermée et même plafond de 460 px que la pratique) et `table` (`{ head, rows }`), dessinés sous l'énoncé et validés par `validateProblem` ; un énoncé qui dit « الشكل / الجدول / التمثيل البياني » les montre (`validateProblem` refuse un renvoi sans support). Le support de la مسألة 1 vit dans `lessonProblem` (une seule source) : la carte « مسألة الدرس » le dessine aussi (`ProblemSupport`, chargé paresseusement).
+**Pourquoi.** Après les modules d'une leçon, l'élève n'a jamais résolu un
+exercice COMPLET de type امتحان : situation réelle → extraire les données →
+traduire en mathématiques → calculer → répondre → rédiger. Trois modules
+« مسألة » comblent ce manque, sans toucher à la maîtrise des الكفاءات.
+
+**Place et nature.**
+- `stage: 'practice_lab'`, `track: 'problem'`, AVANT le module `evaluation`
+  (le validateur exige l'ordre des stages ; le test reste toujours ouvert).
+- Comptent dans la complétion (décision du propriétaire), JAMAIS dans la
+  maîtrise : aucune question `assessment`, aucun envoi d'evidence.
+- Pas de `KnowledgeSnapshot` en pied de module (décision du propriétaire).
+- Hors durée catalogue : le validateur exclut leurs `estimatedMin` de la
+  comparaison avec `durationMinutes` du propriétaire, pas du plafond de 90 min.
+
+**« مسألة الدرس ».** `LESSON_CONFIG.lessonProblem = { module, title, statement }`
+(littéraux) : l'énoncé de la مسألة 1, montré au sommaire et à la fin du
+module 1 par `LessonProblemCard`, résolu au module indiqué. Elle prolonge la
+manipulation du niveau متقدم (même instrument, autres nombres).
+
+**Données, pas de JSX.** `content/problems.js` exporte `PROBLEMS` (un par
+module `problem`, dans l'ordre) ; chaque module fait
+`<GuidedProblem problem={PROBLEM[id]} … />` (`lessons/common/problems/`).
+Source : `addition('exam_style_problem')`.
+
+**Contrat d'une مسألة** (`common/problems/guidedProblem.js › validateProblem`,
+appliqué par `scripts/validate-lessons.mjs`) :
+- ≥ 2 parties (1), 2), 3)…), l'énoncé entier dans le brief comme sur la copie ;
+- sous-étapes, ouvertes une à une, faites dès qu'on y RÉPOND (non bloquant) :
+  `sort` (partie 1 seulement, données utiles ET inutiles, dont un nombre
+  piège), `choice` translate|conclude, `numeric` compute|answer, `batch`
+  (plusieurs phrases à compléter), `solution` ;
+- **chaque demande a sa réponse** (2026-10-06) : `asks` liste les demandes de
+  la question (au moins une par « ؟ » et par بيّن / احسب / استنتج / عبّر /
+  عيّن) ; chaque demande est couverte par une sous-étape `ask: k` qui n'est
+  pas la seule rédaction (valeur saisie ou conclusion choisie). « كم حافلة؟ وكم
+  مقعدًا؟ » = deux saisies, jamais une ; et c'est VISIBLE dès l'ouverture de la
+  partie : sous la question, la liste « المطلوب في هذا السؤال » (cochée avec la
+  valeur de l'élève au fil des réponses), et toutes les sous-étapes affichées,
+  les fermées grisées 🔒 avec leur consigne et la demande à laquelle elles
+  répondent (jamais leur réponse) ;
+- chaque partie se termine par `solution` : **`WrittenAnswer`** — l'élève
+  RÉDIGE dans une zone dédiée (`MathTextArea` : les seuls symboles de la
+  rédaction modèle), le bouton
+  « أظهر الإجابة النموذجية » n'est actif qu'après quelques mots, puis la
+  rédaction modèle (`lines`, ≥ 2) se révèle UNE LIGNE PAR CLIC sous le texte
+  de l'élève, conservé. Rien n'est noté : une rédaction ne se corrige pas par
+  mots-clés ;
+- chaque nombre est vérifié par calcul dans `content/problems.test.js`.
+
+**RTL.** Un calcul tapé dans une phrase arabe s'inverse (« 268 = 54 × 4 + 52 »
+→ « 52 + 4 × 54 = 268 ») ; aucun CSS ne le corrige en milieu de phrase.
+`isolateMath` l'isole en LTR (U+2066…U+2069) au fil de la frappe, curseur
+conservé. Les montants s'écrivent « دج » dans le texte arabe.
 
 ## L'unité 4AM — le câblage réel d'une leçon algérienne (2026-09-20)
 

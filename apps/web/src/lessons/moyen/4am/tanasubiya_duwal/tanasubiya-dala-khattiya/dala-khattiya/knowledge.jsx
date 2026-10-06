@@ -19,6 +19,7 @@ export const LESSON_KNOWLEDGE = {
     1: [
       {
         id: 'dala-nashat', type: 'concepts', title: 'دالة التخفيض',
+        predictPrompt: 'آلة التخفيض أخرجت 40 للسعر 50 و 96 للسعر 120، وعبارتها $f(x) = 0{,}8x$. لو غيّر التاجر نسبة التخفيض، ماذا يبقى من شكل هذه العبارة وماذا يتغيّر؟ اكتب بكلماتك ما يميّز هذا النوع من الدوال.',
         summary: 'الدالة f ترفق بكل سعر x قبل التخفيض السعر بعده f(x) = 0,8x؛ ونسمّي كل دالة من الشكل f(x) = ax، حيث a عدد معلوم، دالة خطية معاملها a.',
         body: (
           <div className="space-y-2">
@@ -32,6 +33,10 @@ export const LESSON_KNOWLEDGE = {
     2: [
       {
         id: 'dala-khattiya', type: 'concepts', title: 'الدالة الخطية',
+        // « أتوقّع القاعدة » : non. La définition reprend dala-nashat (module 1, rappelée juste au-dessus
+        // de la brique) et l'encadré معارف 1 la pose juste avant ; ce qu'elle ajoute est la NOTATION
+        // (f : x ⟼ ax, le mot صورة) — une convention : une prédiction ne ferait que recopier.
+        predict: false,
         summary: 'a عدد معطى: الدالة الخطية f التي معاملها a ترفق بكل عدد x الجداء ax، ونكتب f(x) = ax ونرمز لها بـ f : x ⟼ ax.',
         body: (
           <div className="space-y-1.5">
@@ -42,6 +47,9 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'hisab-sura', type: 'methodes', title: 'صورة عدد',
+        // « أتوقّع القاعدة » : non. « العدد a × x يسمى صورة x » vient d'être lu dans l'encadré معارف 1
+        // (étape 2 du module 2) et la brique le cite ; f(120) = 0,8 × 120 a été calculé au module 1.
+        predict: false,
         summary: 'صورة العدد m بالدالة الخطية التي معاملها a هي الجداء a × m.',
         body: (
           <div className="space-y-1.5">
@@ -61,6 +69,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'tayin-dala', type: 'methodes', title: 'تعيين دالة خطية من عدد وصورته',
+        predictPrompt: 'في آلة التخفيض وجدت المعامل $0{,}8$ من سعر واحد وصورته (50 يصبح 40). لو علمت فقط أنّ دالة خطية $g$ تحقّق $g(-2) = 6$ ، كيف تجد معاملها؟ اكتب الطريقة: أيّ معادلة تحلّ وما مجهولها؟ وهل تكفي معرفة صورة العدد $0$ ؟',
         summary: 'لتعيين دالة خطية g علمًا أنّ g(m) = n، حيث m عدد غير معدوم، نحل المعادلة am = n ذات المجهول a.',
         body: (
           <div className="space-y-1.5">

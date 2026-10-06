@@ -15,7 +15,8 @@
  *   M2 معارف 4       — UNDERSTAND / FORMALIZE : les définitions, خاصية 1 et 2, les trois exemples (مثال 3 corrigé) ;
  *   M3 طريقة         — FORMALIZE / TOUCH THE MATH : « من القوس إلى الزاوية » (plateforme, déclarée) et le cas du diamètre ;
  *   M4 أوظّف تعلّماتي — AUTOMATIZE (ex-10, 11) et TRANSFER (ex-12 : l'angle qui n'est pas inscrit, ex-16, ex-20 BEM) ;
- *   M5 إختبار أولي   — QCM 2–3 et trois épreuves de la plateforme ; P1, P2, P3 couverts.
+ *   M5–M7 مسائل      — puis trois « مسائل » de la plateforme (modules 5–7) : l'entraînement de tir (مسألة الدرس), le théâtre en plein air, le rond-point ;
+ *   M8 إختبار أولي   — QCM 2–3 et trois épreuves de la plateforme ; P1, P2, P3 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -56,6 +57,24 @@ export const LESSON_CONFIG = {
       'الزاوية المركزية المنعكسة (أكبر من $180^\\circ$) وزاوية المماس والوتر',
     ],
   },
+  // « مسألة الدرس » (module 5), annoncée dès le sommaire et rappelée au module 1 : le monde du lab متقدم (le نشاط 4 :
+  // A et B sur (𝒞), un point sur le grand arc, puis une extrémité de diamètre) avec d'autres nombres. Sa figure vit ICI
+  // (littéraux, une seule source : la carte « مسألة الدرس » la dessine) : A 128°, B 52°, S 215°, Y 308° sur le cercle de rayon 3.
+  lessonProblem: {
+    module: 5,
+    title: 'حصّة التسديد: الدائرة المرسومة أمام المرمى',
+    statement: 'في حصّة تدريب على التسديد، رسم مدرّب فريق الأشبال على العشب دائرة (𝒞) مركزها O ونصف قطرها 11 مترًا، تمرّ بالقائمين A و B للمرمى، بحيث $\\widehat{AOB} = 76^\\circ$ كما في الشكل. يقف سمير في النقطة S من (𝒞) خارج القوس الصغير $\\overset{\\frown}{AB}$ ، ويقف يونس في النقطة Y من (𝒞) بحيث [AY] قطر للدائرة. في الحصّة 14 لاعبًا. يرى المدرّب أنّ المبتدئين يحتاجون زاوية تسديد قيسها $42^\\circ$ على الأقل.',
+    figure: {
+      points: { O: [0, 0], A: [-1.847, 2.364], B: [1.847, 2.364], S: [-2.4575, -1.7207], Y: [1.847, -2.364] },
+      circles: [{ center: 'O', radius: 3 }],
+      arcs: [{ center: 'O', from: 'B', to: 'A', sweep: 'ccw', tone: 'rose', bold: true }],
+      segments: [{ from: 'O', to: 'A', tone: 'indigo' }, { from: 'O', to: 'B', tone: 'indigo' }, { from: 'S', to: 'A', tone: 'amber' }, { from: 'S', to: 'B', tone: 'amber' }, { from: 'A', to: 'Y', tone: 'emerald' }, { from: 'Y', to: 'B', tone: 'emerald' }],
+      angles: [{ at: 'O', from: 'B', to: 'A', tone: 'indigo', label: '76°' }, { at: 'S', from: 'B', to: 'A', tone: 'amber', radius: 26 }],
+      ariaLabel: 'دائرة (𝒞) مركزها O، القائمان A و B عليها والقوس الصغير AB ملوّن، الزاوية المركزية AOB قيسها 76 درجة، النقطة S على القوس الكبير، و [AY] قطر',
+      caption: 'شكل من المنصّة',
+      maxWidth: 400,
+    },
+  },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
   // Les acquis que « أستعدّ » diagnostique : le cercle circonscrit (أستعدّ 4–5), les éléments du cercle (corde, diamètre), la
@@ -84,6 +103,9 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_zawiya-muhitiya_P1', '4am_zawiya-muhitiya_P2'],
       sourceElementIds: ['act-4'],
     },
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — حصّة التسديد: الدائرة المرسومة أمام المرمى', learningPointIds: ['4am_zawiya-muhitiya_P1', '4am_zawiya-muhitiya_P2', '4am_zawiya-muhitiya_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — مسرح الهواء الطلق: زاوية رؤية الخشبة', learningPointIds: ['4am_zawiya-muhitiya_P1', '4am_zawiya-muhitiya_P2', '4am_zawiya-muhitiya_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — أعمدة إنارة الدوّار وحوض العشب', learningPointIds: ['4am_zawiya-muhitiya_P2', '4am_zawiya-muhitiya_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -105,8 +127,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 10 و 11 و 12 و 16 والسؤال الأول من التمرين 20 (شهادة التعليم المتوسط).',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_zawiya-muhitiya_P1', '4am_zawiya-muhitiya_P2', '4am_zawiya-muhitiya_P3'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث، منها السؤالان 2 و 3 من أؤكّد تعلّماتي.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — حصّة التسديد', desc: 'مسألة الدرس: زاوية تسديد سمير ويونس، وأيّ دائرة تناسب المبتدئين. حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_zawiya-muhitiya_P1', '4am_zawiya-muhitiya_P2', '4am_zawiya-muhitiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — مسرح الهواء الطلق', desc: 'زاوية رؤية الخشبة من كل كرسي، والمصوّر داخل الدائرة، ومصابيح برج الإضاءة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_zawiya-muhitiya_P1', '4am_zawiya-muhitiya_P2', '4am_zawiya-muhitiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — أعمدة إنارة الدوّار', desc: 'من عمود الإنارة إلى الزاوية المركزية، القطر والمثلث القائم، وثمن عشب الحوض.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_zawiya-muhitiya_P2', '4am_zawiya-muhitiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث، منها السؤالان 2 و 3 من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

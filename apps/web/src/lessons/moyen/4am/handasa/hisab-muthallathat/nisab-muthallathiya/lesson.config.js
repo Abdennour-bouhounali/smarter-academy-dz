@@ -2,7 +2,7 @@
  * الدرس 1 — النسب المثلثية لزاوية حادة في مثلث قائم (مدخل الوحدة 10 « حساب المثلثات في المثلث القائم »)
  * Manuel (4AM) : « أستعدّ » 1, 4–6 (p. 115, module 0), نشاط 1 et 2 (p. 116, module 1), نشاط 3, معارف 1 et 2 et
  * l'encadré « نصير الدين الطوسي » (doublon, les noms) (pp. 115–118, module 2), طرائق sin / cos / tan + دوري الآن (p. 119,
- * module 3), exercices 1, 2, 4, 5, 6, 9, 10, 12, 14, 15 (pp. 122–123, module 4), QCM 1–5 (p. 124, doublon, module 5).
+ * module 3), exercices 1, 2, 4, 5, 6, 9, 10, 12, 14, 15 (pp. 122–123, module 4), QCM 1–5 (p. 124, doublon, module 8).
  * Source de vérité : docs/sources/4am/unit10/extraction.json.
  *
  * LE PARCOURS (REAL → DISCOVER → MANIPULATE → UNDERSTAND → TOUCH THE MATH → FORMALIZE → AUTOMATIZE → TRANSFER) :
@@ -15,7 +15,8 @@
  *   M3 طرائق           — FORMALIZE (les trois longueurs révélées ligne à ligne, les touches en code LTR) + دوري الآن ;
  *   M4 أوظّف تعلّماتي  — AUTOMATIZE (ex-1, 2, 4, 5, 6, 9, 12) et TRANSFER (ex-10 l'impossible 1,5 ; ex-14 la preuve ;
  *                        ex-15 le bon rapport) ;
- *   M5 إختبار أولي     — QCM 1–5 et une épreuve de la plateforme ; P1, P2, P3 couverts.
+ *   M5–M7 مسائل        — puis trois « مسائل » de la plateforme (modules 5–7) : les trois rampes du skatepark (مسألة الدرس), la rampe d'accès d'une متوسطة, le toit d'une maison ;
+ *   M8 إختبار أولي     — QCM 1–5 et une épreuve de la plateforme ; P1, P2, P3 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -56,6 +57,21 @@ export const LESSON_CONFIG = {
       'ترييض وضعيات ومشكلات (الدرس 4) والوضعية الإدماجية (أدمج تعلّماتي)',
     ],
   },
+  // La « مسألة الدرس » (module 5) : le monde du lab متقدم (des rampes à angle fixé), d'autres nombres. Figure en
+  // littéraux : B(0, 0), A(2,4 ; 0), C(2,4 ; 1,8) — le triangle 1,8 / 2,4 / 3 dessiné vrai (problems.test.js).
+  lessonProblem: {
+    module: 5,
+    title: 'حديقة التزلّج: ثلاثة منحدرات وألواح المخزن',
+    statement: 'في حديقة التزلّج بالحيّ، يبني العمّال منحدرات خشبية، كلّ منحدر مثلث قائم: اللوح المائل، والارتفاع، والأرضية. المنحدر الأول (الشكل المقابل) مثلث $ABC$ قائم في $A$: طول لوحه $BC = 3$ m وارتفاعه $AC = 1{,}8$ m. منحدر المبتدئين $A\'B\'C\'$ قائم في $A\'$ ، له الزاوية نفسها $\\widehat{B\'} = \\widehat{B}$ ، وطول لوحه $B\'C\' = 2$ m. منحدر المحترفين $MNP$ قائم في $M$ ، زاويته $\\widehat{N} = 40^{\\circ}$ ، وارتفاعه $MP$ يساوي ارتفاع منحدر المبتدئين. في المخزن ألواح جاهزة بطولين فقط: 1,8 m و 2 m. تفتح الحديقة على الساعة 9 صباحًا وتستقبل نحو 200 متزلّج في الأسبوع.',
+    figure: {
+      points: { B: [0, 0], A: [2.4, 0], C: [2.4, 1.8] },
+      segments: [{ from: 'B', to: 'C', label: '3 m' }, { from: 'A', to: 'C', label: '1,8 m' }, ['A', 'B']],
+      rightAngles: [['B', 'A', 'C']],
+      angles: [{ at: 'B', from: 'A', to: 'C' }],
+      ariaLabel: 'المنحدر الأول: مثلث ABC قائم في A، طول اللوح BC هو 3 m والارتفاع AC هو 1,8 m',
+      maxWidth: 320,
+    },
+  },
   knowledgeMap: true,
   knowledgeMapMode: 'progressive',
   // Les acquis que « أستعدّ » diagnostique : la somme des angles d'un triangle, l'hypoténuse, côtés opposé et adjacent
@@ -84,6 +100,9 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_nisab-muthallathiya_P1'],
       sourceElementIds: ['act-2'],
     },
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — حديقة التزلّج: ثلاثة منحدرات', learningPointIds: ['4am_nisab-muthallathiya_P1', '4am_nisab-muthallathiya_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — منحدر الكرسي المتحرّك في المتوسطة', learningPointIds: ['4am_nisab-muthallathiya_P1', '4am_nisab-muthallathiya_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — سقف بيت بالقرميد', learningPointIds: ['4am_nisab-muthallathiya_P1', '4am_nisab-muthallathiya_P2', '4am_nisab-muthallathiya_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -105,8 +124,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 1 و 2 و 4 و 5 و 6 و 9 و 10 و 12 و 14 و 15.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_nisab-muthallathiya_P1', '4am_nisab-muthallathiya_P2', '4am_nisab-muthallathiya_P3'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم نقاط التعلّم الثلاث، منها الأسئلة 1 إلى 5 من أؤكّد تعلّماتي.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — منحدرات حديقة التزلّج', desc: 'مسألة الدرس: ثلاثة منحدرات، الجيب والظل لمنحدر أول، الزاوية نفسها بلوح أقصر، ثم أيّ لوح من المخزن يكفي منحدر المحترفين؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_nisab-muthallathiya_P1', '4am_nisab-muthallathiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — منحدر الكرسي المتحرّك', desc: 'منحدر بزاوية 5° نحو باب متوسطة: طوله، هل يتّسع له الفضاء أمام الباب، وثمن الدرابزين.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_nisab-muthallathiya_P1', '4am_nisab-muthallathiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — سقف البيت', desc: 'سقف مائل بزاوية 42°: ارتفاعه، طول وجهه ولماذا قول العامل خاطئ، ثم ثمن القرميد.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_nisab-muthallathiya_P1', '4am_nisab-muthallathiya_P2', '4am_nisab-muthallathiya_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'ستة أسئلة تُقيّم الكفاءات الثلاث، منها الأسئلة 1 إلى 5 من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

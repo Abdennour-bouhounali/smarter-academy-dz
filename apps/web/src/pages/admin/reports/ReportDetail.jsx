@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Lock, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,7 @@ import { AdminPage, AdminCard, Loading, ErrorBox, btnSecondary, btnPrimary, inpu
 import StatusBadge from '../../../components/admin/ui/StatusBadge';
 import { AuthContext } from '../../../context/AuthContext';
 import { useAdminResource } from '../../../hooks/useAdminResource';
-import { fetchReport, updateReport, addReportNote } from '../../../services/admin/reportService';
+import { fetchReport, updateReport, addReportNote, fetchReportScreenshotUrl } from '../../../services/admin/reportService';
 import { sourceKey, categoryKey } from './reportLabels';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 
@@ -25,6 +25,19 @@ export default function AdminReportDetail() {
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState(false);
   const [actionError, setActionError] = useState(null);
+
+  // La capture jointe : route authentifiée → URL d'objet, révoquée au départ.
+  const [screenshotUrl, setScreenshotUrl] = useState(null);
+  const hasScreenshot = Boolean(report?.hasScreenshot);
+  useEffect(() => {
+    if (!hasScreenshot || !token) return undefined;
+    let url = null;
+    let cancelled = false;
+    fetchReportScreenshotUrl(token, id)
+      .then((created) => { url = created; if (cancelled) URL.revokeObjectURL(created); else setScreenshotUrl(created); })
+      .catch(() => {});
+    return () => { cancelled = true; if (url) URL.revokeObjectURL(url); setScreenshotUrl(null); };
+  }, [hasScreenshot, token, id]);
 
   const mutate = async (changes) => {
     setBusy(true);
@@ -81,25 +94,14 @@ export default function AdminReportDetail() {
           <div className="space-y-5 lg:col-span-2">
             <AdminCard title={t('reports.whatWasReported')}>
               <div className="space-y-3">
-                <Field label={t('reports.columnCategory')}>
-                  {report.detailsCompleted
-                    ? labelForCategory(report.category)
-                    : (
-                      <span className="text-slate-500">
-                        <span className="italic">{t('reports.withoutDescription')}</span>
-                        <span className="mt-0.5 block font-inter text-xs text-slate-400">
-                          {t('reports.withoutDescriptionHint')}
-                        </span>
-                      </span>
-                    )}
-                </Field>
+                <Field label={t('reports.columnCategory')}>{labelForCategory(report.category)}</Field>
                 <Field label={t('reports.columnSource')}>
                   {sourceKey(report.source) ? t(sourceKey(report.source)) : report.source}
                 </Field>
-                <Field label={t('reports.columnCompleteness')}>
-                  {report.detailsCompleted
-                    ? <StatusBadge status="resolved" label={t('reports.describedByStudent')} />
-                    : <StatusBadge status="draft" label={t('reports.signalOnly')} />}
+                <Field label={t('reports.columnReporter')}>
+                  <span dir="ltr">{report.student?.email ?? t('common.dash')}</span>
+                  {report.student?.isAmbassador && <span className="ms-2"><StatusBadge status="teacher" label={t('teachers.ambassador.on')} /></span>}
+                  {report.student?.role === 'admin' && <span className="ms-2"><StatusBadge status="new" label={t('reports.reporterAdmin')} /></span>}
                 </Field>
                 <Field label={t('reports.columnMessage')}>
                   {report.note
@@ -109,6 +111,17 @@ export default function AdminReportDetail() {
                 <Field label={t('reports.sentAt')}>{formatMoment(report.createdAt)}</Field>
               </div>
             </AdminCard>
+
+            {hasScreenshot && (
+              <AdminCard title={t('reports.columnScreenshot')}>
+                {screenshotUrl ? (
+                  <a href={screenshotUrl} target="_blank" rel="noreferrer" className="block" data-report-screenshot>
+                    <img src={screenshotUrl} alt={t('reports.screenshotAlt')} className="w-full rounded-lg border border-slate-200" />
+                    <span className="mt-1 block font-inter text-xs text-violet-700">{t('reports.openFullSize')}</span>
+                  </a>
+                ) : <Loading label={t('reports.loadingScreenshot')} />}
+              </AdminCard>
+            )}
 
             <AdminCard title={t('reports.whereExactly')}>
               <div className="space-y-3">

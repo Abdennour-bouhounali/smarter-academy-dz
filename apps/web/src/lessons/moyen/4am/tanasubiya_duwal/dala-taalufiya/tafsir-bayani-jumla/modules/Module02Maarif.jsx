@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -19,6 +19,8 @@ import LinesFigure from '../components/LinesFigure';
  *   4. les trois cas sur le lab TENU (line-crossing, startWith="cases", x + y = 3 et 2x − y = 0), puis la brique
  *      halat-thalath et un classement de trois جمل.
  * Les questions utilisent d'AUTRES nombres que les encadrés (la réponse n'est jamais au-dessus).
+ * « أتوقّع القاعدة » : chaque encadré qui ÉNONCE la règle juste avant sa brique est enveloppé
+ * (PredictRule par id, prompt = item.predictPrompt de knowledge.jsx) — une seule prédiction, puis encadré et brique.
  * LP : P1, P2, P3.
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
@@ -50,7 +52,7 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tafsir-nashat" variant="rappel" compact />
-              <TextbookBox kind="property" title={KNOWLEDGE.equationLine.title} lines={[KNOWLEDGE.equationLine.text, KNOWLEDGE.equationLine.example]} source={KNOWLEDGE.equationLine.source} compact />
+              <PredictRule id="muadala-mustaqim"><TextbookBox kind="property" title={KNOWLEDGE.equationLine.title} lines={[KNOWLEDGE.equationLine.text, KNOWLEDGE.equationLine.example]} source={KNOWLEDGE.equationLine.source} compact /></PredictRule>
               <KnowledgeBrick id="muadala-mustaqim" lead="ما فعلته بالبطاقات في النشاط، لكل معادلة:" />
               <TapQuestion
                 prompt={<MathText>{'المعادلة $3x + 2y = 8$ تُكتب على الشكل $y = ax + b$ :'}</MathText>}
@@ -79,7 +81,7 @@ export default function Module02Maarif() {
           num: 2, title: 'الحل نقطة التقاطع', subtitle: 'الحل ونقطة التقاطع', done: q2,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="property" title={KNOWLEDGE.solutionPoint.title} text={KNOWLEDGE.solutionPoint.text} source={KNOWLEDGE.solutionPoint.source} compact />
+              <PredictRule id="hall-taqatu"><TextbookBox kind="property" title={KNOWLEDGE.solutionPoint.title} text={KNOWLEDGE.solutionPoint.text} source={KNOWLEDGE.solutionPoint.source} compact /></PredictRule>
               <KnowledgeBrick id="hall-taqatu" lead="ما رأيته بالمصباحين، لكل جملة:" />
               <LinesFigure testId="maarif-2" win={{ xMin: -1, xMax: 6, yMin: -2, yMax: 6 }}
                 lines={[{ a: 1, b: -1, label: '(d₁)' }, { a: -1, b: 5, label: '(d₂)' }]}
@@ -98,7 +100,7 @@ export default function Module02Maarif() {
           num: 3, title: 'نرسم، نقرأ، نتحقّق', subtitle: 'طريقة الحل البياني', done: q3a && q3b,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="method" title={KNOWLEDGE.method.title} lines={KNOWLEDGE.method.steps} source={KNOWLEDGE.method.source} compact />
+              <PredictRule id="hall-bayani"><TextbookBox kind="method" title={KNOWLEDGE.method.title} lines={KNOWLEDGE.method.steps} source={KNOWLEDGE.method.source} compact /></PredictRule>
               <KnowledgeBrick id="hall-bayani" lead="الطريقة، خطوةً خطوة:" />
               <TapQuestion
                 prompt={<MathText>{'قرأ أمين على الشكل أنّ نقطة تقاطع مستقيمي الجملة $\\begin{cases} x + 2y = 7 \\\\ 2x - y = 4 \\end{cases}$ هي $(3 ; 2)$ . نتحقّق:'}</MathText>}
@@ -113,7 +115,7 @@ export default function Module02Maarif() {
                 explain={<MathText>{'نعوّض $x$ بالفاصلة 3 و $y$ بالترتيب 2 في المعادلتين معًا: $3 + 4 = 7$ و $6 - 2 = 4$. والاقتراح الثالث يعوّض بالعكس ($x = 2$ ، $y = 3$).'}</MathText>}
                 onAnswered={() => setQ3a(true)}
               />
-              <TextbookBox kind="remark" title={KNOWLEDGE.approx.title} text={KNOWLEDGE.approx.text} source={KNOWLEDGE.approx.source} compact />
+              <PredictRule id="qiraa-taqribiya"><TextbookBox kind="remark" title={KNOWLEDGE.approx.title} text={KNOWLEDGE.approx.text} source={KNOWLEDGE.approx.source} compact /></PredictRule>
               <KnowledgeBrick id="qiraa-taqribiya" lead="لماذا نتحقّق دائمًا بالحساب:" />
               <TapQuestion
                 prompt={<MathText>{'قرأت سارة على الشكل أنّ مستقيمي الجملة $\\begin{cases} y = 2x \\\\ y = -x + 4 \\end{cases}$ يتقاطعان في $(1 ; 3)$ تقريبًا. ماذا نقول؟'}</MathText>}
@@ -145,7 +147,7 @@ export default function Module02Maarif() {
                 title="المستقيم (2) بيدك"
                 lead={<MathText>{'المستقيم (1) هو $y = -x + 3$ ولا يتحرّك. حرّك b و a للمستقيم (2): اجعله يقطع (1)، ثم يوازيه، ثم ينطبق عليه — وحرّك P في كل حالة.'}</MathText>}
               />
-              <TextbookBox kind="property" title={KNOWLEDGE.cases.title} lines={[...KNOWLEDGE.cases.items, KNOWLEDGE.cases.link]} source={KNOWLEDGE.cases.source} compact />
+              <PredictRule id="halat-thalath" prompt={"حرّكت المستقيم (2) فجعلته يقطع (1)، ثم يوازيه، ثم ينطبق عليه. كم حلًّا للجملة في كل حالة؟ وكيف نعرف الحالة بمقارنة $a$ و $b$ للمستقيمين؟"}><TextbookBox kind="property" title={KNOWLEDGE.cases.title} lines={[...KNOWLEDGE.cases.items, KNOWLEDGE.cases.link]} source={KNOWLEDGE.cases.source} compact /></PredictRule>
               <KnowledgeBrick id="halat-thalath" lead="ما صنعته بالمستقيم (2)، بالكلمات:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">عدد حلول الجملة:</p>}

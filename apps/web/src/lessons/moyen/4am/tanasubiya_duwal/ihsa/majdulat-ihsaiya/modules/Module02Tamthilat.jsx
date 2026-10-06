@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookExercise, SourceTag } from '../../../../../../common/textbook';
@@ -47,7 +47,10 @@ export default function Module02Tamthilat() {
                 { label: 'أنواع النفايات', cells: EX15.table.kinds },
                 { label: 'الكتلة (kg)', cells: EX15.table.masses },
               ]} />
-              <TextbookExercise exercise={byId['ex-15-1']} requires={['qiraat-tamthil']} onAnswered={mark('ex-15-1')} />
+              {/* Les options et l'explication de ex-15-1 ÉNONCENT la règle tamthil-munasib : l'élève la prédit d'abord. */}
+              <PredictRule id="tamthil-munasib">
+                <TextbookExercise exercise={byId['ex-15-1']} requires={['qiraat-tamthil']} onAnswered={mark('ex-15-1')} />
+              </PredictRule>
               {done['ex-15-1'] && <KnowledgeBrick id="tamthil-munasib" lead="كل نوع من المعطيات له تمثيله:" />}
               {done['ex-15-1'] && <TextbookExercise exercise={byId['ex-15-2']} requires={['zawiya-qita', 'tamthil-munasib']} onAnswered={mark('ex-15-2')} />}
             </div>

@@ -144,7 +144,9 @@ export default function Module01AlWadiya() {
                 requires={['tarrid-tarjama']}
                 feedback={({ allRight }) => <MathText>{allRight ? REMARKS.tarjamaRight : `${REMARKS.tarjamaWhy} ${REMARKS.tarjamaRight}`}</MathText>}
                 onAnswered={() => setQ2(true)} />
-              {q2 && <KnowledgeBrick id="tarjama-sigha" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la traduction est celle de ترييض مشكلة (درس 4, tarrid-namdhaja) et la correction de la
+                  question ci-dessus (REMARKS.tarjamaWhy / tarjamaRight) vient de la dire. */}
+              {q2 && <KnowledgeBrick id="tarjama-sigha" variant="rappel" />}
             </div>
           ) },
         { num: 3, title: 'التجريب', subtitle: 'المرحلة 2 من الكتاب — جرّب في السباق', done: q3,
@@ -162,7 +164,9 @@ export default function Module01AlWadiya() {
                   ? <MathText>{`ضربت الاشتراك أيضًا في 10. ${REMARKS.tarjamaWhy}`}</MathText>
                   : n === p1 * 10 ? <MathText>{'هذا ثمن الصيغة الأولى: $75 \\times 10$.'}</MathText> : undefined)}
                 onAnswered={() => setQ3(true)} />
-              {q3 && <KnowledgeBrick id="tajrib" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : l’encadré du manuel de cette étape nomme l’essai, et l’explication de la question vient
+                  de le faire (les deux coûts pour 10 séances) — une stratégie connue depuis le cycle moyen. */}
+              {q3 && <KnowledgeBrick id="tajrib" variant="rappel" />}
             </div>
           ) },
         { num: 4, title: 'كتابة متراجحة مناسبة', subtitle: 'المقارنة بين الصيغتين', done: q4,
@@ -175,7 +179,9 @@ export default function Module01AlWadiya() {
                 correct={0} cols={2} requires={['tarjama-sigha', 'tajrib', 'hall-mutarajiha']}
                 explain={<span><MathText>{REMARKS.mufadala}</MathText> المساواة تصف لحظة تساوي التكلفتين فقط، و <MathText>{'$560x + 5$'}</MathText> يجعل الاشتراك يُدفع في كل حصة.</span>}
                 onAnswered={() => setQ4(true)} />
-              {q4 && <KnowledgeBrick id="mutarajiha-mufadala" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : traduire une comparaison par une inéquation est tarrid-mutarajiha (درس 4), et
+                  l’explication de la question ci-dessus (REMARKS.mufadala) vient de l’énoncer. */}
+              {q4 && <KnowledgeBrick id="mutarajiha-mufadala" variant="rappel" />}
             </div>
           ) },
         { num: 5, title: 'تفسير النتائج', subtitle: 'المرحلة 3 من الكتاب — على مسبح الحيّ', done: q5,
@@ -193,8 +199,12 @@ export default function Module01AlWadiya() {
                 onAnswered={() => setQ5(true)} />
               {q5 && (
                 <>
-                  <KnowledgeBrick id="tafsir-natija" />
-                  <KnowledgeBrick id="tariqat-wadiya" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : garder les solutions qui conviennent (nombre naturel) est tahaqquq-waqi (درس 4), et
+                      l’explication de la question ci-dessus (REMARKS.tasawiWhy / tasawiRight) vient de le dire. */}
+                  <KnowledgeBrick id="tafsir-natija" variant="rappel" />
+                  {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : la démarche ne fait que remettre en ordre les trois étapes du « تحليل الوضعية » que
+                      l’élève vient de lire (encadrés des étapes 1, 3 et 5) — et tarrid-tariqa (درس 4). */}
+                  <KnowledgeBrick id="tariqat-wadiya" variant="rappel" />
                   <TextbookBox kind="remark" text={REMARKS.notSolvedHere} compact />
                 </>
               )}

@@ -5,6 +5,8 @@ import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACT3, ACT3_LINES, HOOK1, MEAN_REMINDER, LAB } from '../content/textbook';
 import BarChart from '../components/BarChart';
@@ -23,6 +25,9 @@ import FreqTable from '../components/FreqTable';
  *             المتوسط المتوازن ; س 2 أ (étendues 5 et 10), س 2 ب (482/30 pour les deux villes, la moyenne SANS
  *             pondération 17,25 réfutée), et la question honnête : même moyenne, (ب) plus dispersée.
  * AUCUNE étape n'attend `onFinished`. LP : P1 (étendue), P2 (moyenne pondérée).
+ * Les labs vivent dans l'`intro` (deux niveaux) : « مسألة الدرس » (la chaleur de juillet à El Oued, module 5) est
+ * rappelée à la fin de la DERNIÈRE étape. Le المتوسط المتوازن est un acquis des années précédentes : sa brique est
+ * un rappel (`variant="rappel"`), sans « أتوقّع القاعدة ».
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
 const TILT = { left: 'تميل يسارًا', right: 'تميل يمينًا', level: 'متوازنة ✓' };
@@ -143,7 +148,7 @@ export default function Module01Nashat3() {
               />
               {q2 && (
                 <>
-                  <KnowledgeBrick id="mutawassit-mutawazin" lead="ما وجدته على الميزان هو المتوسط:" />
+                  <KnowledgeBrick id="mutawassit-mutawazin" variant="rappel" lead="ما وجدته على الميزان هو المتوسط:" />
                   <p className="text-xs text-slate-500"><SourceTag source={MEAN_REMINDER.source} /></p>
                 </>
               )}
@@ -212,6 +217,7 @@ export default function Module01Nashat3() {
                   المتوسط وحده لا يصف السلسلة: سلسلتان لهما المتوسط نفسه قد تختلفان في تباعد قيمهما. في المحور التالي مؤشّر ثالث: القيمة التي تقسم السلسلة نصفين.
                 </p>
               )}
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

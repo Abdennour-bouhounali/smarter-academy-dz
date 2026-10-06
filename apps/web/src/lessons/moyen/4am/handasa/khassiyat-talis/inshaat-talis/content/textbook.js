@@ -6,7 +6,7 @@
  *   method-construct-length  طرائق p. 107 « إنشاء قطعة مستقيم طولها معلوم » : AB = 14/3 (module 2) ;
  *   method-ratio-point       طرائق p. 109 : M de [AB] avec MA/MB = 3/2, et le point K de la figure (module 2) ;
  *   now-109                  دوري الآن p. 109 : CA/CB = 2/5 (module 2) ;
- *   qcm item 4               أؤكّد تعلّماتي p. 112 (module 4, l'إختبار أولي — extraction › destinations › qcm).
+ *   qcm item 4               أؤكّد تعلّماتي p. 112 (module 7, l'إختبار أولي — extraction › destinations › qcm).
  * Les exercices ex-17, ex-18, ex-19, ex-21 sont dans content/exercises.js.
  *
  * La leçon n'a PAS d'activité du manuel : son entrée est le laboratoire segment-divider (déclaré
@@ -221,7 +221,7 @@ export const PREP_ITEMS = [
   { skill: 'fithaghuris', text: 'مثلث قائم ضلعا زاويته القائمة 1 و 4 : طول وتره 5.', answer: false, why: 'حسب خاصية فيثاغورس: $1^2 + 4^2 = 17$ ، فطول الوتر $\\sqrt{17}$ وليس 5 (لأن $5^2 = 25$ ).', source: addition('prerequisite_diagnostic') },
 ];
 
-/* ── module 4 : l'item 4 de « أؤكّد تعلّماتي » (p. 112) ──────────────────────── */
+/* ── module 7 : l'item 4 de « أؤكّد تعلّماتي » (p. 112) ──────────────────────── */
 
 const g = (x) => [x, 0];
 const h = (x) => [x * 0.7, x * 0.5];

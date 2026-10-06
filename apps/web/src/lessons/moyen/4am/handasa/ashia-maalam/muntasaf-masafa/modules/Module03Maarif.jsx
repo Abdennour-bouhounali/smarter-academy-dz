@@ -15,6 +15,7 @@ import { FIG_CHALLENGE, FIG_KNOW_DIST } from '../content/figures';
  * (PairQuestion, fractions acceptées) ; la brique masafa (propriété + exemple + « القيمة المضبوطة ») et une distance à
  * simplifier ; TRANSFER : le تحدّ de la page d'unité, enfin résolu (√365 / 3) — les fractions n'empêchent rien.
  * LP : P1, P2.
+ * « أتوقّع القاعدة » : les deux briques sont prédites (predictPrompt dans knowledge.jsx) ; le brief ne les énonce plus.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -33,7 +34,7 @@ export default function Module03Maarif() {
       estimatedTime="8 دقائق"
       brief={{
         tag: 'معارف — الكتاب ص 144', title: 'إحداثيتا المنتصف والمسافة بين نقطتين', tone: 'emerald',
-        body: <p>دبّوس اللقاء ودرج الشوارع صارا خاصيتين: المنتصف بمتوسطي الإحداثيات، والمسافة بجذر مجموع مربعي الفرقين.</p>,
+        body: <p>دبّوس اللقاء ودرج الشوارع صارا خاصيتين في الكتاب. قبل أن تقرأ كلّ واحدة منهما، اكتبها بكلماتك.</p>,
         footer: <SourceTag source={KNOW_MID.source} />,
       }}
       steps={[

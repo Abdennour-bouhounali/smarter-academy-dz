@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -58,8 +58,11 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_METHOD_IMAGE} />
-              <MethodSteps method={{ ...METHOD_IMAGE, solution: METHOD_IMAGE.solution.slice(0, 4) }} />
-              <p className="text-xs text-slate-500">{METHOD_IMAGE.note}</p>
+              {/* La طريقة du manuel ÉNONCE la règle surat-nuqta : l'élève l'écrit d'abord (« أتوقّع القاعدة »), après le lab. */}
+              <PredictRule id="surat-nuqta">
+                <MethodSteps method={{ ...METHOD_IMAGE, solution: METHOD_IMAGE.solution.slice(0, 4) }} />
+                <p className="text-xs text-slate-500">{METHOD_IMAGE.note}</p>
+              </PredictRule>
               <TapQuestion
                 prompt={<MathText>{'D صورة C بالانسحاب الذي شعاعه $\\overrightarrow{AB}$ يعني:'}</MathText>}
                 options={[
@@ -104,7 +107,8 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_METHOD_EQUAL} />
-              <MethodSteps method={METHOD_EQUAL} />
+              {/* Le cadre « طريقة » (METHOD_EQUAL.rule) est la règle ithbat-tasawi : il vient avec la brique, après la prédiction. */}
+              <MethodSteps method={{ ...METHOD_EQUAL, rule: undefined }} />
               <TapQuestion
                 prompt="لماذا A منتصف [BD]؟"
                 options={[

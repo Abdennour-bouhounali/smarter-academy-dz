@@ -566,7 +566,7 @@ correct-count tile, SVG encouragement) and the «تذكّر» card were removed 
 duplicates.
 
 **The Learning Point module (`LearningPointProgress.jsx`).** Always on top: the
-eyebrow «نقطة التعلّم», the point's name (the primary Learning Point of the
+eyebrow «الكفاءة», the point's name (the primary Learning Point of the
 **current question** — 25 of the 85 4AM exercises mix points —,
 `currentLearningPoint()`), a **star path** and two counters.
 

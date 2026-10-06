@@ -8,8 +8,11 @@ import { fetchPracticeOverview, startPracticeSession } from '../../../services/p
 import LevelSelector from '../../../features/practice/LevelSelector';
 import LearningPointProgress from '../../../features/practice/LearningPointProgress';
 import { resolveMasteryState, reasonLabel, freshnessLabel } from '../../../lessons/common/components/LearningPointMastery';
-import { getLessonPath } from '@smarter-academy/core';
+import { getLessonPath, getLessonById } from '@smarter-academy/core';
 import MathLabel from '../../../lessons/common/components/MathLabel';
+import { useLearningViewer } from '../../../features/learning/learningViewer';
+import { exerciseIdsFor } from '../../../features/practice/practiceContent';
+import { teacherOverview, teacherBankPath } from '../../../features/practice/teacherBank';
 
 /**
  * Le Hub de pratique d'une leçon : les niveaux, et l'état des connaissances
@@ -18,12 +21,20 @@ import MathLabel from '../../../lessons/common/components/MathLabel';
  * Rien de ludique ici — pas de pièces, pas de classement. La récompense
  * affichée est la seule qui compte : voir un point d'apprentissage passer de
  * « à renforcer » à « maîtrisé ».
+ *
+ * L'ENSEIGNANT (2026-10-05) arrive ici par la leçon, comme l'élève, et voit
+ * EXACTEMENT cette page (`/enseignant/pratique/:lessonCode`) — sans aucun
+ * suivi : l'aperçu est construit localement (teacherOverview, tous les
+ * niveaux ouverts), choisir un niveau ouvre son premier exercice dans le
+ * lecteur enseignant, rien n'est écrit sur le serveur.
  */
 export default function PracticeHub() {
   const { t } = useTranslation('student');
   const { lessonCode } = useParams();
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { isTeacher, workspaceBase } = useLearningViewer();
+  const coursesPath = `${workspaceBase ?? '/espace'}/cours`;
 
   const [overview, setOverview] = useState(null);
   const [error, setError] = useState(null);
@@ -39,6 +50,11 @@ export default function PracticeHub() {
 
   useEffect(() => {
     if (!token) return undefined;
+    // L'enseignant : aucun appel, aucun suivi — l'aperçu vient du contenu.
+    if (isTeacher) {
+      setOverview(teacherOverview(lessonCode));
+      return undefined;
+    }
     let cancelled = false;
     setError(null);
     fetchPracticeOverview(token, lessonCode)
@@ -47,9 +63,14 @@ export default function PracticeHub() {
 
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token, lessonCode]);
+  }, [token, lessonCode, isTeacher]);
 
   const start = useCallback(async (level) => {
+    if (isTeacher) {
+      const [first] = exerciseIdsFor(lessonCode, level);
+      if (first) navigate(teacherBankPath(lessonCode, level, first));
+      return;
+    }
     setBusyLevel(level);
     setError(null);
     try {
@@ -61,13 +82,13 @@ export default function PracticeHub() {
       setBusyLevel(null);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token, lessonCode, navigate]);
+  }, [token, lessonCode, navigate, isTeacher]);
 
   if (error && !overview) {
     return (
       <div className="sa-surface-plain sa-page sa-page--flush py-6 sm:py-8 space-y-6">
         <p className="text-rose-700 bg-rose-50 border-2 border-rose-200 rounded-xl p-4">{error}</p>
-        <Link to="/espace/cours" className="text-sm font-bold text-slate-600 hover:text-slate-900">
+        <Link to={coursesPath} className="text-sm font-bold text-slate-600 hover:text-slate-900">
           ← {t('practice.backToMyCourses')}
         </Link>
       </div>
@@ -78,7 +99,12 @@ export default function PracticeHub() {
     return <div className="sa-surface-plain sa-page sa-page--flush py-6 sm:py-8"><div className="h-64 rounded-2xl bg-slate-100 animate-pulse" /></div>;
   }
 
-  const { lesson, levels, recommendedLevel, learningPoints, openSession } = overview;
+  const { lesson, levels, recommendedLevel, openSession } = overview;
+  // L'enseignant voit les points d'apprentissage de la leçon, sans état :
+  // étoiles éteintes, aucun compteur (`practice: null`) — rien n'est suivi.
+  const learningPoints = isTeacher
+    ? (getLessonById(lessonCode)?.learningPoints ?? []).map((lp) => ({ code: lp.id, title: lp.title, status: 'unassessed', practice: null }))
+    : overview.learningPoints;
   // L'API de pratique ne renvoie que le code de la leçon ; le chemin de son
   // cours vient du catalogue, seule source de vérité des URLs de leçon.
   const lessonPath = getLessonPath(lessonCode);
@@ -88,7 +114,7 @@ export default function PracticeHub() {
     // chaque côté (`.sa-page--flush`), le même cadre que « التحدّي اليومي » (py-6 sm:py-8).
     <div className="sa-surface-plain sa-page sa-page--flush py-6 sm:py-8 space-y-4">
       <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-semibold text-slate-600" aria-label={t('nav.breadcrumb', { ns: 'lesson' })}>
-        <Link to="/espace/cours" className="inline-flex min-h-[44px] items-center gap-1.5 whitespace-nowrap hover:text-indigo-700">
+        <Link to={coursesPath} className="inline-flex min-h-[44px] items-center gap-1.5 whitespace-nowrap hover:text-indigo-700">
           <ArrowBack className="h-4 w-4" aria-hidden="true" /> {t('practice.breadcrumbMyCourses')}
         </Link>
         {lessonPath && (
@@ -105,7 +131,7 @@ export default function PracticeHub() {
             <Dumbbell className="h-4 w-4" aria-hidden="true" /> {t('practice.eyebrow')}
           </p>
           <h1 className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl"><MathLabel>{lesson.title}</MathLabel></h1>
-          <p className="text-sm text-slate-600">{t('practice.hubSubtitle')}</p>
+          <p className="text-sm text-slate-600">{isTeacher ? t('practice.noTracking', { ns: 'teacher' }) : t('practice.hubSubtitle')}</p>
         </div>
         {/* Le retour au cours. La pratique n'est pas une impasse : l'élève qui
             butte sur un niveau doit pouvoir relire la leçon en un geste, sans
@@ -150,14 +176,14 @@ export default function PracticeHub() {
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-[30.6rem_minmax(0,1fr)] xl:items-start xl:[grid-template-areas:'side_main']">
         <section className="space-y-2 xl:[grid-area:main]" aria-labelledby="practice-levels-title">
           <h2 id="practice-levels-title" className="text-base font-bold text-slate-900">{t('practice.levelsTitle')}</h2>
-          <LevelSelector levels={levels} recommendedLevel={recommendedLevel} onSelect={start} busyLevel={busyLevel} />
+          <LevelSelector levels={levels} recommendedLevel={recommendedLevel} onSelect={start} busyLevel={busyLevel} showProgress={!isTeacher} />
         </section>
 
         {learningPoints.length > 0 && (
           <section className="space-y-2 xl:sticky xl:top-4 xl:[grid-area:side]" aria-labelledby="practice-lps-title" data-practice-hub-lps>
             <div>
-              <h2 id="practice-lps-title" className="text-base font-bold text-slate-900">{t('practice.whatYouShowed')}</h2>
-              <p className="text-xs text-slate-600">{t('practice.whatYouShowedHint')}</p>
+              <h2 id="practice-lps-title" className="text-base font-bold text-slate-900">{isTeacher ? t('practice.lessonPoints', { ns: 'teacher' }) : t('practice.whatYouShowed')}</h2>
+              {!isTeacher && <p className="text-xs text-slate-600">{t('practice.whatYouShowedHint')}</p>}
             </div>
             {/* Le MÊME module que dans le lecteur : chemin d'étoiles (l'état
                 Mastery V2) et compteurs exercices / questions. Sous `xl`,

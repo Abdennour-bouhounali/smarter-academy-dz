@@ -9,7 +9,7 @@
  *   method-relations  طرائق p. 121 « استعمال العلاقات المثلثية » : cos x = 0,6 (module 3) ;
  *   method-construct  طرائق p. 121 « إنشاء هندسي لزاوية حادة… » : sin x = 2/5, tan x = 7/3 (modules 1 et 3) ;
  *   now-121           دوري الآن p. 121 : sin x = 0,4 ; cos x = 3/4 au laboratoire (module 3) ;
- *   qcm item 6        أؤكّد تعلّماتي p. 124 (module 5, l'إختبار أولي — extraction › destinations › qcm › duplicatedIn).
+ *   qcm item 6        أؤكّد تعلّماتي p. 124 (module 8, l'إختبار أولي — extraction › destinations › qcm › duplicatedIn).
  * Les exercices ex-16 … ex-22, ex-30 sont dans content/exercises.js.
  *
  * Ce que la plateforme AJOUTE est déclaré : le monde du laboratoire (le cerf-volant, `interaction_generation`),
@@ -177,7 +177,7 @@ export const POSSIBLE = {
   ],
 };
 
-/* ── module 5 : l'item 6 de « أؤكّد تعلّماتي » (p. 124) ────────────────────── */
+/* ── module 8 : l'item 6 de « أؤكّد تعلّماتي » (p. 124) ────────────────────── */
 
 export const QCM6 = {
   source: src('qcm', 124, 'أؤكّد تعلّماتي', 6),

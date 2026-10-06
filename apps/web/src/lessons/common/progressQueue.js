@@ -1,4 +1,4 @@
-import { calculateCompletionPercentage, isValidModuleNumber } from '@smarter-academy/core';
+import { calculateCompletionPercentage, isValidModuleNumber, migrateLessonProgress, emptyLessonProgress } from '@smarter-academy/core';
 import { scopedStorage as storage } from '../../utils/storage';
 import { putLessonProgress } from '../../services/lessonProgressService';
 import { getTotalModules } from '../registry';
@@ -25,7 +25,10 @@ const DEBOUNCE_MS = 3000;
 
 function readLessonData(lessonId) {
   try {
-    return JSON.parse(storage.getItem(`smarter_lesson_${lessonId}`)) || {};
+    // Migrée AVANT l'union avec le serveur : un « 4 » de l'ancienne
+    // disposition ne doit jamais s'y mêler (core › moduleLayoutMigrations).
+    const saved = JSON.parse(storage.getItem(`smarter_lesson_${lessonId}`));
+    return saved ? migrateLessonProgress(lessonId, saved) : emptyLessonProgress(lessonId);
   } catch {
     return {};
   }

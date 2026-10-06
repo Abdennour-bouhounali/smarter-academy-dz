@@ -1,7 +1,8 @@
 /**
  * الدرس 3 — خواص قواسم عدد طبيعي
  * Manuel 4AM, unité 1 : activité 3 (p. 8), معارف 2 (p. 10), « أتعلّم البرهنة » (p. 11), دوري الآن p. 11 (2),
- * exercices 12, 13, 14, 15, 16 (p. 14). Source : docs/sources/4am/unit1/extraction.json.
+ * exercices 12, 13, 14, 15, 16 (p. 14), puis trois « مسائل » de la plateforme (modules 5–7).
+ * Source : docs/sources/4am/unit1/extraction.json.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/khawass-qawasim';
 
@@ -31,6 +32,14 @@ export const LESSON_CONFIG = {
   teachingScope: {
     include: ['خاصية 1 وخاصية 2 من الكتاب', 'البرهنة: المعطيات، المطلوب، البرهان'],
     exclude: ['القاسم المشترك الأكبر (الدرس 4)', 'خوارزميات البحث عن PGCD (الدرس 6) — تُبرَّر لاحقًا بهذه الخواص'],
+  },
+  // « مسألة الدرس » (rollout مسائل, 2026-10-06) : montrée dès le sommaire,
+  // rappelée au module 1, résolue pas à pas au module 5 (content/problems.js).
+  // Prolonge le chantier du niveau متقدم : murs en briques entières, d'autres nombres.
+  lessonProblem: {
+    module: 5,
+    title: 'ورشة البناء: جداران بطوب طوله 25 سم',
+    statement: 'في ورشة بناء مسكن بالبليدة، يبني البنّاء جدارين بطوب طول الطوبة الواحدة منه 25 سم، ويرصّ كل صفّ على طول الجدار دون أن يقطع أيّ طوبة. طول الجدار الأول 875 سم وطول الجدار الثاني 350 سم، وفي كل جدار 15 صفًّا من الطوب. يشتغل في الورشة 4 عمّال، وثمن الطوبة الواحدة 40 دج.',
   },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
@@ -63,6 +72,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P3'], sourceElementIds: ['act-3'] },
     { kind: 'method', code: 'method-proof', module: 3, title: 'أتعلّم البرهنة: «إذا … فإنّ …»',
       learningPointIds: ['4am_khawass-qawasim_P4'], sourceElementIds: ['method-proof'] },
+    // Modules 5–7 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — ورشة البناء: جداران بطوب من 25 سم', learningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — تعاونية زيت الزيتون: صفائح من 15 لترًا', learningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P2'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — النادي الرياضي: أفواج متساوية', learningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P4'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -84,8 +98,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'دوري الآن، وتمارين الكتاب 12 ← 16.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P2', '4am_khawass-qawasim_P4'],
       color: 'amber', style: 'featured', estimatedMin: 12, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمس أسئلة تُقيّم نقاط التعلّم الأربع.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — ورشة البناء', desc: 'مسألة الدرس: جداران من 875 سم و 350 سم بطوب من 25 سم. حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — تعاونية زيت الزيتون', desc: 'خزّانان وصفائح من 15 أو 20 لترًا: أيّها يصلح؟ وكم صفيحة في أربعة أسابيع؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P2'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — النادي الرياضي', desc: 'أفواج متساوية في فرعين: أبرهن، ثم أختار، ثم أحسب ما يدفعه النادي.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمس أسئلة تُقيّم الكفاءات الأربع.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

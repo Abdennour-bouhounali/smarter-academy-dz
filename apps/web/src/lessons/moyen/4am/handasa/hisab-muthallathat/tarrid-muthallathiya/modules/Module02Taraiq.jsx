@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -19,6 +19,10 @@ import { FIG_EX26, FIG_EX27 } from '../content/figures';
  *   3. ex-27 résolu par l'élève : MS au centième, puis SF par quatre chemins et F̂ = 58° → hall-muthallath         (P3)
  *   4. un angle par deux côtés : le projecteur du module 1 (24 m vu de 30 m) → 39°, ce que lisait le téléphone
  *      → zawiya-min-dilain                                                                                     (P2)
+ * « أتوقّع القاعدة » : la boîte METHOD (début de l'étape 1) et la boîte SOLVE_ALL (étape 3) ÉNONCENT les règles de
+ * leurs briques : elles sont enveloppées dans <PredictRule id="khatawat-tarid"> / <PredictRule id="hall-muthallath">
+ * (une seule prédiction, puis boîte et brique). tadwir-akhir est un RAPPEL (درس 1 `hisab-tul`, درس 2 `tadwir-dalaqa` :
+ * « on n'arrondit que le résultat » ; ici le retour de la grille le redit avant la brique).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const close = (v) => (n) => Number.isFinite(n) && Math.abs(n - v) < 1e-9;
@@ -45,7 +49,8 @@ export default function Module02Taraiq() {
           num: 1, title: 'مثال محلول — التمرين 26 (1)', subtitle: 'نرسم، نسمّي، نختار', done: !!q[1],
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="definition" title={METHOD.title} lines={METHOD.lines} source={METHOD.source} compact />
+              {/* La boîte énonce les étapes de la brique khatawat-tarid : l'élève les prédit d'abord (l'échelle et le projecteur du module 1). */}
+              <PredictRule id="khatawat-tarid"><TextbookBox kind="definition" title={METHOD.title} lines={METHOD.lines} source={METHOD.source} compact /></PredictRule>
               <GeoFigure {...FIG_EX26} />
               <MethodSteps method={{ source: EX26.source, exercise: EX26.statement, solution: EX26.solution }} />
               <TapQuestion
@@ -83,7 +88,7 @@ export default function Module02Taraiq() {
                 onAnswered={mark(2)} />
               {q[2] && (
                 <>
-                  <KnowledgeBrick id="tadwir-akhir" lead="لماذا اختلفت طريقة واحدة؟" />
+                  <KnowledgeBrick id="tadwir-akhir" variant="rappel" lead="لماذا اختلفت طريقة واحدة؟" />
                   <p className="text-xs text-slate-600" data-misconception-note="tadwir"><MathText>{`خطأ شائع: ${CHECKS.earlyWrong} ${CHECKS.earlyWhy}`}</MathText></p>
                 </>
               )}
@@ -127,7 +132,8 @@ export default function Module02Taraiq() {
               )}
               {q[4] && (
                 <>
-                  <TextbookBox kind="remark" title={SOLVE_ALL.title} lines={SOLVE_ALL.lines} source={SOLVE_ALL.source} compact />
+                  {/* La remarque énonce la règle de la brique hall-muthallath : l'élève la prédit d'abord. */}
+                  <PredictRule id="hall-muthallath"><TextbookBox kind="remark" title={SOLVE_ALL.title} lines={SOLVE_ALL.lines} source={SOLVE_ALL.source} compact /></PredictRule>
                   <KnowledgeBrick id="hall-muthallath" />
                   <p className="text-xs text-slate-600"><MathText>{CHECKS.verify}</MathText></p>
                 </>

@@ -21,6 +21,7 @@ export const LESSON_KNOWLEDGE = {
     1: [
       {
         id: 'insihab-shuaa', type: 'concepts', title: 'الانسحاب يعرّف شعاعا',
+        predictPrompt: 'في اللوحة الرابعة حوّل الانسحاب نفسه $A$ إلى $A\'$ و $C$ إلى $D$ و $K$ إلى $H$. ماذا تشترك فيه الثنائيات $(A\\,;\\,A\')$ و $(C\\,;\\,D)$ و $(K\\,;\\,H)$؟ اكتب بكلماتك ما تعرّفه كل ثنائية من نقطة وصورتها، وما العلاقة بين هذه الثنائيات.',
         summary: 'الانسحاب يتعيّن بنقطة وصورتها؛ وكل ثنائية من نقطة وصورتها بهذا الانسحاب تعرّف نفس الشعاع u، وكل منها ممثّل لهذا الشعاع.',
         body: (
           <div className="space-y-1.5">
@@ -33,6 +34,9 @@ export const LESSON_KNOWLEDGE = {
     2: [
       {
         id: 'manha-ittijah', type: 'concepts', title: 'المنحى والاتجاه',
+        // Pas de prédiction : deux NOMS du manuel (« نقول إنّ لهما نفس المنحى » est déjà dans le texte du نشاط 1 ب, lu et
+        // utilisé au module 1, étape 2) — un nom ne se devine pas.
+        predict: false,
         summary: 'مستقيمان متوازيان لهما نفس المنحى؛ والنقطتان المتمايزتان A و B تعيّنان على المستقيم (AB) اتجاهين: من A نحو B، ومن B نحو A.',
         body: (
           <div className="space-y-1.5">
@@ -43,6 +47,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'shuaa', type: 'concepts', title: 'الشعاع: منحى واتجاه وطول',
+        predictPrompt: 'على الشكل أربعة أسهم من نفس الانسحاب: من $A$ إلى $B$، ومن $E$ إلى $F$، ومن $C$ إلى $D$، ومن $M$ إلى $N$. ماذا يتغيّر من سهم إلى آخر، وماذا يبقى نفسه؟ اكتب الأشياء الثلاثة التي تكفي لوصف هذه الحركة المشتركة، ودور النقطتين $A$ و $B$ في السهم الأوّل.',
         summary: 'الشعاع AB الذي يعرّفه الانسحاب الذي يحوّل A إلى B منحاه منحى المستقيم (AB)، واتجاهه من A نحو B، وطويلته طول القطعة [AB]؛ مبدؤه A ونهايته B، وكل ثنائية أخرى من نقطة وصورتها ممثّل له.',
         body: (
           <div className="space-y-1.5">
@@ -55,6 +60,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'tasawi-shuaayn', type: 'concepts', title: 'تساوي شعاعين',
+        predictPrompt: 'على الشكل السهمان من $A$ إلى $B$ ومن $C$ إلى $D$. في العرض رُفضت صورة كل مسيّرة اختلف سهمها عن سهم القائدة في شيء واحد فقط. متى نكتب $\\overrightarrow{AB} = \\overrightarrow{CD}$؟ اكتب كل الشروط، وما يعنيه ذلك للانسحاب الذي يحوّل $A$ إلى $B$.',
         summary: 'شعاعان متساويان يعني أن لهما نفس المنحى ونفس الاتجاه ونفس الطول؛ و AB = CD يعني أن الانسحاب الذي يحوّل A إلى B يحوّل أيضا C إلى D.',
         body: (
           <div className="space-y-1.5">
@@ -68,6 +74,7 @@ export const LESSON_KNOWLEDGE = {
     3: [
       {
         id: 'mutawazi-adlaa', type: 'regles', title: 'شعاعان متساويان ومتوازي أضلاع',
+        predictPrompt: 'في الرباعي الذي أنشأته وجدت $\\overrightarrow{AB} = \\overrightarrow{DC}$. لو أعطيناك أربع نقط $A$ و $B$ و $C$ و $D$، كل ثلاث منها ليست في استقامية، بحيث $\\overrightarrow{AB} = \\overrightarrow{DC}$: ماذا تقول عن الرباعي $ABCD$؟ اكتب القاعدة في الاتجاهين، وانتبه إلى ترتيب الحروف.',
         summary: 'إذا كانت A و B و C و D أربع نقط كل ثلاث منها ليست في استقامية، فإن الشعاع AB يساوي الشعاع DC يعني أن الرباعي ABCD متوازي أضلاع (انتبه إلى ترتيب الحروف).',
         body: (
           <div className="space-y-1.5">
@@ -78,6 +85,7 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'mulahazat', type: 'regles', title: 'المنتصف والحالة الخاصة',
+        predictPrompt: 'على الشكل $\\overrightarrow{AB} = \\overrightarrow{DC}$ والقطعتان $[AC]$ و $[BD]$ مرسومتان بخطّ متقطّع. ماذا تلاحظ عنهما؟ وأيّ شعاعين آخرين متساويان؟ ثم ماذا يبقى صحيحًا في رأيك لو كانت النقط الأربع على مستقيم واحد؟',
         summary: 'من أجل كل أربع نقط: الشعاع AB يساوي الشعاع DC يعني أن للقطعتين [AC] و [BD] نفس المنتصف، وعندها الشعاع AD يساوي الشعاع BC؛ وإذا كانت النقط في استقامية فلا يتكوّن رباعي.',
         body: (
           <div className="space-y-1.5">

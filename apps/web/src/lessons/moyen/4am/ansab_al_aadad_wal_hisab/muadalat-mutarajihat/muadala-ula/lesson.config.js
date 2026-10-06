@@ -2,7 +2,8 @@
  * الدرس 1 — حل معادلة من الدرجة الأولى بمجهول واحد
  * Unité 4 du manuel (4AM) : نشاط 1 (p. 44), معارف 1 (p. 46), طرائق p. 47 (حل معادلة من
  * الدرجة الأولى بمجهول واحد, دوري الآن 1), exercices 1 → 9 (p. 50), « أستعدّ » items 1–2
- * (p. 43), l'aparté du خوارزمي (p. 43, repris), QCM 1 et 2 (p. 52).
+ * (p. 43), l'aparté du خوارزمي (p. 43, repris), QCM 1 et 2 (p. 52),
+ * puis trois « مسائل » de la plateforme (modules 5–7).
  * Source de vérité : docs/sources/4am/unit4/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -47,6 +48,14 @@ export const LESSON_CONFIG = {
       'نظرية المعادلات التي ليس لها حل أو لها ما لا نهاية من الحلول: نكتفي بملاحظة أنّه لا يوجد أي عدد يحقّق المساواة',
     ],
   },
+  // « مسألة الدرس » : montrée dès le sommaire et rappelée au module 1 (la balance du
+  // vestiaire du niveau متقدم, d'autres nombres, l'inconnue dans les deux plateaux),
+  // résolue au module 5 (content/problems.js).
+  lessonProblem: {
+    module: 5,
+    title: 'ميزان غرفة الملابس: أكياس في الكفّتين',
+    statement: 'في غرفة ملابس فريق كرة القدم ميزان بكفّتين، وأكياس مغلقة متماثلة في كل منها العدد نفسه من الكرات. الكرة تزن $1$ ، والبالون المنفوخ يشدّ الكفّة إلى الأعلى فيزن $-1$ ، والكيس يزن ما فيه: $x$. وضع المدرّب في الكفّة اليسرى 7 أكياس و 4 بالونات، وفي الكفّة اليمنى كيسين و 26 كرة، فتوازن الميزان. في الفريق 22 لاعبًا. اشترى النادي الكرات التي في الأكياس التسعة بـ 70200 دج، وكل الكرات لها الثمن نفسه.',
+  },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
@@ -84,6 +93,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_muadala-ula_P1', '4am_muadala-ula_P2'],
       sourceElementIds: ['know-1'],
     },
+    // Modules 5–7 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — ميزان غرفة الملابس: أكياس في الكفّتين', learningPointIds: ['4am_muadala-ula_P2', '4am_muadala-ula_P1'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — سيارات الأجرة في وهران: أيّ تسعيرة؟', learningPointIds: ['4am_muadala-ula_P2', '4am_muadala-ula_P1'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — نادي الإنترنت: بطاقة الاشتراك أم لا؟', learningPointIds: ['4am_muadala-ula_P2', '4am_muadala-ula_P1'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -105,8 +119,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 1 ← 9: من ax = b إلى معادلات تُنشر وتُبسَّط، ومعادلة لا يحقّقها أي عدد.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_muadala-ula_P1', '4am_muadala-ula_P2'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقطتي التعلّم، منها سؤالان من أؤكّد تعلّماتي.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — ميزان غرفة الملابس', desc: 'مسألة الدرس: أكياس في الكفّتين، ثم أكياس من البالونات، ثم ثمن الكرة. حلّ كامل خطوة بخطوة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_muadala-ula_P2', '4am_muadala-ula_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — سيارات الأجرة', desc: 'ثلاث تسعيرات في وهران: كم كيلومترًا؟ متى تتساوى الأجرتان؟ وأيّها أرخص إلى المطار؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_muadala-ula_P2', '4am_muadala-ula_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — نادي الإنترنت', desc: 'بطاقة اشتراك أم لا؟ نتحقّق من ادّعاء بالتعويض، ثم معادلة فيها أقواس.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_muadala-ula_P2', '4am_muadala-ula_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءتين، منها سؤالان من أؤكّد تعلّماتي.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

@@ -15,7 +15,8 @@
  *   M3 طرائق           — FORMALIZE : la طريقة p. 143 (conclusion corrigée AB = DC), la méthode « نقطة مجهولة » (plateforme,
  *                        déclarée) avec le lab مبتدئ (D aux coordonnées inconnues), دوري الآن 2 ;
  *   M4 أوظّف تعلّماتي  — AUTOMATIZE (ex-6, 7) et TRANSFER (ex-8, 9, 12, 14 : points inconnus, متوازي أضلاع) ;
- *   M5 إختبار أولي     — cinq épreuves de la plateforme ; P1, P2, P3 couverts.
+ *   M5–M7 مسائل        — puis trois « مسائل » de la plateforme (modules 5–7, content/problems.js) ;
+ *   M8 إختبار أولي     — cinq épreuves de la plateforme ; P1, P2, P3 couverts.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -38,6 +39,21 @@ export const LESSON_CONFIG = {
   emoji: '🧮',
   estimatedDurationMin: 50,
   textbookRef: { unit: 12, activity: 2, pages: '139, 140, 142, 143, 144, 146, 147' },
+  // « مسألة الدرس » : montrée dès le sommaire et au module 1, résolue au module 5 (content/problems.js). Le même monde
+  // que le lab متقدم (les portails de la carte de jeu), d'autres nombres ; sa figure vit ICI (source unique, la carte la dessine).
+  lessonProblem: {
+    module: 5,
+    title: 'لعبة البوابات: هل البوابتان توأمان؟',
+    statement: 'في مستوى جديد من لعبة البوابات على الهاتف، الخريطة مزوّدة بمعلم متعامد ومتجانس مبدؤه O (الشكل المقابل). رمز كل بوابة هو مركبتا الشعاع الذي يقفز به البطل. البوابة الأولى تنقل البطل من $A(-3 ; 2)$ إلى $B(2 ; -1)$ ، والبوابة الثانية تنقله من $C(-1 ; 4)$ إلى $D(4 ; 2)$. يريد مصمّم اللعبة إضافة بوابة ثالثة تنطلق من $E(0 ; -3)$. في هذا المستوى جمع اللاعب 350 قطعة ذهبية.',
+    figure: {
+      points: { O: [0, 0], A: [-3, 2], B: [2, -1], C: [-1, 4], D: [4, 2], E: [0, -3] },
+      vectors: [{ from: 'A', to: 'B', tone: 'indigo' }, { from: 'C', to: 'D', tone: 'rose' }],
+      grid: true,
+      axes: true,
+      labels: { O: 'sw' },
+      ariaLabel: 'خريطة اللعبة في معلم على ورقة مرصوفة: سهم البوابة الأولى من A إلى B، وسهم البوابة الثانية من C إلى D، والنقطة E على محور التراتيب تحت O',
+    },
+  },
   skills: [
     'حساب مركبتي الشعاع AB انطلاقا من إحداثيتي A و B',
     'تطبيق شرط تساوي شعاعين في معلم بتساوي مركباتهما',
@@ -104,6 +120,10 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_hisab-murakkibatay_P1', '4am_hisab-murakkibatay_P2', '4am_hisab-murakkibatay_P3'],
       sourceElementIds: ['act-2'],
     },
+    // Les trois « مسائل » (modules 5–7) : situations d'examen de la plateforme (content/problems.js).
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — بوابات المستوى الجديد', learningPointIds: ['4am_hisab-murakkibatay_P1', '4am_hisab-murakkibatay_P2', '4am_hisab-murakkibatay_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — ساحة الحيّ الجديد', learningPointIds: ['4am_hisab-murakkibatay_P1', '4am_hisab-murakkibatay_P2', '4am_hisab-murakkibatay_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — فارس نادي الإعلام الآلي', learningPointIds: ['4am_hisab-murakkibatay_P1', '4am_hisab-murakkibatay_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -125,8 +145,20 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 6 و 7 و 8 و 9 و 12 و 14: مركبات، أشعة متساوية، نقط مجهولة ومتوازيات أضلاع.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_hisab-murakkibatay_P1', '4am_hisab-murakkibatay_P2', '4am_hisab-murakkibatay_P3'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 2, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث.',
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — بوابات المستوى الجديد', desc: 'مسألة الدرس: رمز بوابة من إحداثيتي طرفيها، هل البوابتان توأمان، مخرج بوابة توأم، ومتوازي أضلاع.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_hisab-murakkibatay_P1', '4am_hisab-murakkibatay_P2', '4am_hisab-murakkibatay_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — ساحة الحيّ الجديد', desc: 'ساحة على شكل متوازي أضلاع في مخطط حيّ: اقتراح المقاول، الرأس الرابع، وتكلفة قناة الماء.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_hisab-murakkibatay_P1', '4am_hisab-murakkibatay_P2', '4am_hisab-murakkibatay_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — فارس نادي الإعلام الآلي', desc: 'أوامر انزلاق فارس على شاشة بمعلم: مركبات لا إحداثيات، وأمر بالبكسل، وهل يبقى الفارس ظاهرًا؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_hisab-murakkibatay_P1', '4am_hisab-murakkibatay_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 5, difficulty: 2, actionText: 'أدخل التقويم' },
   ],
 };

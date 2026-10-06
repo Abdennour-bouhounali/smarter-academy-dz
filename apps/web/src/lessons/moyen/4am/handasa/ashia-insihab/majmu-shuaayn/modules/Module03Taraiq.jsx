@@ -44,7 +44,8 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...(solved ? FIG_METHOD_SOL : FIG_METHOD)} />
-              <MethodSteps method={METHOD} onAllRevealed={() => setSolved(true)} />
+              {/* Sans `rule` : la règle de méthode (insha-mumaththil) est prédite puis révélée par sa brique (أتوقّع القاعدة). */}
+              <MethodSteps method={{ ...METHOD, rule: null }} onAllRevealed={() => setSolved(true)} />
               <TapQuestion
                 prompt={<MathText>{'لماذا عيّنا في السؤال 2) شعاعا مبدؤه B ويساوي $\\overrightarrow{AD}$ ؟'}</MathText>}
                 options={[
@@ -53,7 +54,7 @@ export default function Module03Taraiq() {
                   'لأن $\\overrightarrow{AB} = \\overrightarrow{AD}$',
                 ].map(M)}
                 correct={0} cols={1} requires={['alaqat-shal', 'tasawi-mutawazi']}
-                explain={<MathText>{`$\\overrightarrow{AB}$ و $\\overrightarrow{AD}$ لهما نفس المبدأ A: ننقل $\\overrightarrow{AD}$ إلى نهاية $\\overrightarrow{AB}$ بشعاع يساويه، $\\overrightarrow{BE} = \\overrightarrow{AD}$ ، ثم شال. ${METHOD.rule}`}</MathText>}
+                explain={<MathText>{`$\\overrightarrow{AB}$ و $\\overrightarrow{AD}$ لهما نفس المبدأ A: ننقل $\\overrightarrow{AD}$ إلى نهاية $\\overrightarrow{AB}$ بشعاع يساويه، $\\overrightarrow{BE} = \\overrightarrow{AD}$ ، ثم شال.`}</MathText>}
                 onAnswered={mark(1)} />
               {q[1] && <KnowledgeBrick id="insha-mumaththil" lead="الطريقة، كما في الكتاب:" />}
             </div>

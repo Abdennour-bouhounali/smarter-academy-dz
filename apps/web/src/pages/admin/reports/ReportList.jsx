@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Flag } from 'lucide-react';
+import { Flag, Image as ImageIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { AdminPage, useAdminLabels, formatDate, Num } from '../adminUi';
 import DataTable from '../../../components/admin/ui/DataTable';
@@ -27,15 +27,15 @@ export default function AdminReportList() {
   const [priority, setPriority] = useState();
   const [category, setCategory] = useState();
   const [source, setSource] = useState();
-  const [completion, setCompletion] = useState();
+  const [screenshot, setScreenshot] = useState();
   const [page, setPage] = useState(1);
   const debouncedSearch = useDebounced(search, 300);
 
   const loader = useCallback(
     (token) => fetchReports(token, {
-      search: debouncedSearch, status, priority, category, source, completion, page,
+      search: debouncedSearch, status, priority, category, source, screenshot, page,
     }),
-    [debouncedSearch, status, priority, category, source, completion, page],
+    [debouncedSearch, status, priority, category, source, screenshot, page],
   );
   const { data, loading, error, reload } = useAdminResource(loader, [loader]);
 
@@ -115,12 +115,9 @@ export default function AdminReportList() {
             options={SOURCE_VALUES.map((value) => ({ value, label: t(sourceKey(value)) }))}
           />
           <SelectFilter
-            label={t('reports.columnCompleteness')} allLabel={t('common.all')} value={completion}
-            onChange={(v) => { setCompletion(v); setPage(1); }}
-            options={[
-              { value: 'complete', label: t('reports.completionDescribedOnly') },
-              { value: 'incomplete', label: t('reports.completionSignalOnly') },
-            ]}
+            label={t('reports.columnScreenshot')} allLabel={t('common.all')} value={screenshot}
+            onChange={(v) => { setScreenshot(v); setPage(1); }}
+            options={[{ value: '1', label: t('reports.withScreenshotOnly') }]}
           />
         </FilterBar>
 
@@ -155,21 +152,14 @@ export default function AdminReportList() {
             {
               key: 'category',
               label: t('reports.columnCategory'),
-              render: (r) => (r.detailsCompleted
-                ? labelForCategory(r.category)
-                // Un signal ouvert sans description : dire ce que c'est plutôt
-                // que d'afficher un vide qu'on lirait comme un bug.
-                : <span className="italic text-slate-400">{t('common.dash')}</span>),
+              render: (r) => labelForCategory(r.category),
             },
             {
-              key: 'detailsCompleted',
-              label: t('reports.columnCompleteness'),
-              render: (r) => (r.detailsCompleted
-                ? <StatusBadge status="resolved" label={t('reports.described')} />
-                // Étiqueté, pas masqué : « douze élèves ont ouvert la fenêtre
-                // ici sans rien écrire » est une information, à condition de
-                // ne pas la confondre avec un signalement abouti.
-                : <StatusBadge status="draft" label={t('reports.signalOnly')} />),
+              key: 'hasScreenshot',
+              label: t('reports.columnScreenshot'),
+              render: (r) => (r.hasScreenshot
+                ? <ImageIcon size={16} className="text-violet-600" aria-label={t('reports.hasScreenshot')} />
+                : <span className="text-slate-400">{t('common.dash')}</span>),
             },
             {
               key: 'note',
@@ -179,7 +169,7 @@ export default function AdminReportList() {
             {
               key: 'studentEmail',
               label: t('reports.columnReporter'),
-              render: (r) => <Link to={`/admin/eleves/${r.studentId}`} className="hover:underline"><Num>{r.studentEmail}</Num></Link>,
+              render: (r) => <Num>{r.studentEmail}</Num>,
             },
             { key: 'priority', label: t('reports.columnSeverity'), render: (r) => <StatusBadge status={r.priority} /> },
             { key: 'status', label: t('reports.columnStatus'), render: (r) => <StatusBadge status={r.status} /> },

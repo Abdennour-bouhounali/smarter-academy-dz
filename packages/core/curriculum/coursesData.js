@@ -203,10 +203,10 @@ function buildDzCourseLevels() {
         {
           id: programme4am.grade,
           name: programme4am.gradeLabelAr,
-          // Le programme ET son découpage en leçons sont arrêtés (phase 7) ;
-          // le CONTENU des leçons ne l'est pas. « Active » ne veut toujours
-          // pas dire « il y a un cours à ouvrir » — chaque leçon porte
-          // `status: 'coming_soon'`, et l'interface doit le dire. Voir I2.
+          // Le programme ET son découpage en leçons sont arrêtés (phase 7).
+          // Chaque leçon porte son propre `status` : `available` dès que son
+          // lesson.config.js existe (les 74 leçons 4AM l'ont aujourd'hui),
+          // `coming_soon` sinon — et l'interface le dit. Voir I2.
           curriculumStatus: 'lessons_planned',
           chapters,
         },

@@ -4,7 +4,8 @@
  * معارف 2 (p. 46), طرائق p. 47 (حل معادلة من الشكل (ax + b)(cx + d) = 0,
  * دوري الآن 2), exercices 14 → 20 (pp. 50–51), « أستعدّ » items 3–5 (p. 43),
  * QCM 3 et 4 (p. 52), et — déclarés `duplicatedIn` — le تحدّ (x² + 12x = 85) et
- * l'encadré الخوارزمي (x² + 21 = 10x) de la page d'ouverture (p. 43).
+ * l'encadré الخوارزمي (x² + 21 = 10x) de la page d'ouverture (p. 43),
+ * puis trois « مسائل » de la plateforme (modules 5–7).
  * Source de vérité : docs/sources/4am/unit4/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
@@ -47,6 +48,13 @@ export const LESSON_CONFIG = {
       'المتراجحات من الدرجة الأولى (الدرس 3)',
       'المعادلات من الدرجة الثانية بالمميّز (غير مبرمجة في المتوسط)',
     ],
+  },
+  // « مسألة الدرس » — l'énoncé de la مسألة 1 (content/problems.js), montré au sommaire
+  // et à la fin du module 1 : le ملعب du niveau متقدم, deux côtés qui varient avec x.
+  lessonProblem: {
+    module: 5,
+    title: 'ملعب التدريب: ضلعان يتغيّران معًا',
+    statement: 'في تطبيق لتخطيط الملاعب، يرسم مدرّب نادي الحيّ ملعب تدريب مستطيلًا طولا ضلعيه بالمتر $3x - 12$ و $x + 6$ ، حيث $x$ عدد يحرّكه المدرّب على مسطرة، فتكون مساحة الملعب $(3x - 12)(x + 6)$. يضمّ النادي 45 لاعبًا، وتدوم حصة التدريب 90 دقيقة. يريد المدرّب في النهاية ملعبًا مساحته $792\\,m^2$ ، ويطلي خطوط حدوده الأربعة بطلاء ثمنه 40 دج للمتر الواحد.',
   },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
@@ -94,6 +102,11 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_jidaa-maadum_P2'],
       sourceElementIds: ['now-47-2'],
     },
+    // Modules 5–7 — les « مسائل » : exercices complets de type امتحان, ajouts
+    // de la plateforme (content/problems.js), sans aucune preuve de maîtrise.
+    { kind: 'situation', code: 'masala-1', module: 5, title: 'مسألة الدرس — ملعب التدريب: متى يختفي؟', learningPointIds: ['4am_jidaa-maadum_P1', '4am_jidaa-maadum_P2', '4am_jidaa-maadum_P3'] },
+    { kind: 'situation', code: 'masala-2', module: 6, title: 'مسألة — نافورة الساحة: قوس الماء', learningPointIds: ['4am_jidaa-maadum_P2', '4am_jidaa-maadum_P3'] },
+    { kind: 'situation', code: 'masala-3', module: 7, title: 'مسألة — شريط الورود: عرض الحديقة', learningPointIds: ['4am_jidaa-maadum_P2', '4am_jidaa-maadum_P3'] },
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
@@ -115,8 +128,23 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 14 ← 20: معادلات جداء معدوم ومعادلات تؤول إليها.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_jidaa-maadum_P1', '4am_jidaa-maadum_P2', '4am_jidaa-maadum_P3'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أتدرّب' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الثلاث، منها سؤالا أؤكّد تعلّماتي 3 و 4.',
+    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
+    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
+    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
+    { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
+      title: 'مسألة 1 — ملعب التدريب', desc: 'مسألة الدرس: متى يختفي الملعب؟ أيّ الحلّين مقبول؟ ثم ملعب مساحته 792 مترًا مربّعًا.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_jidaa-maadum_P1', '4am_jidaa-maadum_P2', '4am_jidaa-maadum_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
+      title: 'مسألة 2 — نافورة الساحة', desc: 'أين يسقط الماء؟ أين تُعلَّق الحلقتان؟ وكم تكلّف حافة الحوض؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_jidaa-maadum_P2', '4am_jidaa-maadum_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
+      title: 'مسألة 3 — شريط الورود', desc: 'عشب ثلاثة أضعاف الورود: ما عرض الحديقة؟ وكم شتلة نشتري؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_jidaa-maadum_P2', '4am_jidaa-maadum_P3'],
+      color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
+    { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم الكفاءات الثلاث، منها سؤالا أؤكّد تعلّماتي 3 و 4.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

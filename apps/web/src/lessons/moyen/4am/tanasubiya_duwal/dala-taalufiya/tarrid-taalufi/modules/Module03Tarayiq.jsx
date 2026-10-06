@@ -16,6 +16,10 @@ import { METHOD } from '../content/textbook';
  *   3. la méthode appliquée à une carte de cinéma (1000 + 300x contre 500x → 5 films), jusqu'à la réponse
  *      en phrase. LP : P1, P2.
  */
+/** La solution SANS sa boîte « rule » : la règle de la méthode est posée par la brique « khutuwat-mufadala »
+ *  juste après (« أتوقّع القاعدة » : l'élève l'écrit d'abord ; la boîte l'aurait dite avant). */
+const METHOD_LINES = { ...METHOD, rule: undefined };
+
 const STEPS = ['نختار المتغير', 'نعبّر عن كل تكلفة', 'نحلّ ونقارن', 'نجيب في سياق الوضعية'];
 
 export default function Module03Tarayiq() {
@@ -39,7 +43,7 @@ export default function Module03Tarayiq() {
       steps={[
         {
           num: 1, title: 'الحلّ سطرًا سطرًا', subtitle: 'اقرأ السطر، وحاول توقّع التالي قبل أن تكشفه', done: !!done.read,
-          content: <MethodSteps method={METHOD} onAllRevealed={mark('read')} />,
+          content: <MethodSteps method={METHOD_LINES} onAllRevealed={mark('read')} />,
         },
         {
           num: 2, title: 'خطوات الطريقة', done: !!done.order,

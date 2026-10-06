@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { MethodSteps, TextbookBox } from '../../../../../../common/textbook';
@@ -7,6 +7,11 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { PROOF } from '../content/textbook';
 
 /** Module 3 — أتعلّم البرهنة (p. 11) : la preuve du manuel, ligne à ligne, puis sa structure. LP : P4. */
+// « أتوقّع القاعدة » : l'encadré « طريقة » du manuel (PROOF.rule) énonce la règle de
+// l'étape 3 (burhan-idha-fainna). Affiché par MethodSteps à la fin de l'étape 2, il la
+// dévoilerait avant sa brique : il est donc déplacé en tête de l'étape 3, enveloppé
+// par PredictRule (une seule prédiction, puis l'encadré et la brique).
+const PROOF_WITHOUT_RULE = { ...PROOF, rule: undefined };
 export default function Module03AtaallamAlBurhana() {
   const [read, setRead] = useState(false);
   const [q1, setQ1] = useState(false);
@@ -29,10 +34,11 @@ export default function Module03AtaallamAlBurhana() {
             </div>
           ) },
         { num: 2, title: 'البرهان، سطرًا سطرًا', done: read,
-          content: <div className="space-y-3"><KnowledgeBrick id="ithbat-qasim" lead="كل البرهان يدور حول جملة واحدة: إيجاد k حيث a + b = n × k." /><MethodSteps method={PROOF} onAllRevealed={() => setRead(true)} /></div> },
+          content: <div className="space-y-3"><KnowledgeBrick id="ithbat-qasim" lead="كل البرهان يدور حول جملة واحدة: إيجاد k حيث a + b = n × k." /><MethodSteps method={PROOF_WITHOUT_RULE} onAllRevealed={() => setRead(true)} /></div> },
         { num: 3, title: 'الطريقة', done: q2,
           content: (
             <div className="space-y-3">
+              <PredictRule id="burhan-idha-fainna"><TextbookBox kind="method" lines={PROOF.rule} source={PROOF.source} compact /></PredictRule>
               <KnowledgeBrick id="burhan-idha-fainna" />
               <TapQuestion prompt={<span>في البرهان، ما دور العدد <MathText>{'$k = q + q\'$'}</MathText>؟</span>}
                 options={['هو العدد الطبيعي الذي يحقّق a + b = n × k، فيثبت أن n يقسم a + b', 'هو باقي قسمة a + b على n', 'هو حاصل قسمة a على n', 'لا دور له']} correct={0} cols={1}

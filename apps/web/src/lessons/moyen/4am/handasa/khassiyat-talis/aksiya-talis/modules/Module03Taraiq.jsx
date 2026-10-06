@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
@@ -17,6 +17,9 @@ import { FIG_METHOD } from '../content/figures';
  *      solution par l'absurde — brique tariqa-adam-tawazi ;
  *   3. un exercice de la PLATEFORME (déclaré) : la même figure, une longueur changée, les deux sens.
  * LP : P1 (les trois étapes), P2 (l'ordre, première ligne de chaque solution).
+ * « أتوقّع القاعدة » : chaque MethodSteps porte la marche à suivre (`rule`) juste AVANT sa brique ; il est donc
+ * enveloppé dans <PredictRule id="tariqa-tawazi"> / <PredictRule id="tariqa-adam-tawazi"> — l'élève écrit la
+ * méthode (predictPrompt de knowledge.jsx) avant de lire la solution du manuel ; la brique suit sans redemander.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -55,7 +58,7 @@ export default function Module03Taraiq() {
               />
               {q1 && (
                 <>
-                  <MethodSteps method={{ source: METHOD.source, exercise: METHOD.exercise, solution: METHOD.part1, rule: METHOD.ruleParallel }} />
+                  <PredictRule id="tariqa-tawazi"><MethodSteps method={{ source: METHOD.source, exercise: METHOD.exercise, solution: METHOD.part1, rule: METHOD.ruleParallel }} /></PredictRule>
                   <KnowledgeBrick id="tariqa-tawazi" lead="الطريقة في ثلاث خطوات:" />
                 </>
               )}
@@ -81,7 +84,7 @@ export default function Module03Taraiq() {
               />
               {q2 && (
                 <>
-                  <MethodSteps method={{ source: METHOD.source, exercise: METHOD.exercise, solution: METHOD.part2, rule: METHOD.ruleNotParallel }} />
+                  <PredictRule id="tariqa-adam-tawazi"><MethodSteps method={{ source: METHOD.source, exercise: METHOD.exercise, solution: METHOD.part2, rule: METHOD.ruleNotParallel }} /></PredictRule>
                   <KnowledgeBrick id="tariqa-adam-tawazi" lead="والاتجاه الآخر:" />
                 </>
               )}

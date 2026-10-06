@@ -46,6 +46,9 @@ final class AccessDecision
      */
     public const VIA_TEACHER_ROLE = 'teacher_role';
 
+    /** L'administrateur relit tout le contenu, payant compris. */
+    public const VIA_ADMIN_ROLE = 'admin_role';
+
     /** Refus : contenu payant, aucun droit valide. */
     public const PREMIUM_REQUIRED = 'premium_required';
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
@@ -43,7 +43,7 @@ export default function Module02Maarif() {
       estimatedTime="11 دقيقة"
       brief={{
         tag: 'معارف ص 94 · أنشطة ص 92', title: KNOWLEDGE.cumul.title, tone: 'violet',
-        body: <p>عند البوابة جمعت تكرارات القامات المضاءة. الكتاب يكتب ذلك تعريفًا، ثم يقسم على التكرار الكلي.</p>,
+        body: <p>عند البوابة عددت التلاميذ المضائين. الكتاب يكتب ذلك تعريفًا بالتكرارات، ثم يقسم على التكرار الكلي.</p>,
       }}
       steps={[
         {
@@ -51,7 +51,7 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="mujamma-nashat" variant="rappel" compact />
-              <TextbookBox kind="definition" title={KNOWLEDGE.cumul.title} lines={[KNOWLEDGE.cumul.up, KNOWLEDGE.cumul.down]} source={KNOWLEDGE.cumul.source} compact />
+              <PredictRule id="takrar-mujamma"><TextbookBox kind="definition" title={KNOWLEDGE.cumul.title} lines={[KNOWLEDGE.cumul.up, KNOWLEDGE.cumul.down]} source={KNOWLEDGE.cumul.source} compact /></PredictRule>
               <KnowledgeBrick id="takrar-mujamma" lead="ما فعلته عند البوابة، بكلمات الكتاب:" />
               <TextbookBox kind="example" lines={[KNOWLEDGE.cumul.example, ...KNOWLEDGE.cumul.exampleLines]} source={KNOWLEDGE.cumul.source} compact />
               <FreqTable head="العلامة" values={t.values} rows={[
@@ -111,7 +111,7 @@ export default function Module02Maarif() {
           num: 3, title: 'التواتر المجمع', subtitle: 'معارف 2', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="definition" title={KNOWLEDGE.relative.title} lines={[KNOWLEDGE.relative.up, KNOWLEDGE.relative.down]} source={KNOWLEDGE.relative.source} compact />
+              <PredictRule id="tawatur-mujamma" prompt={"في النشاط 2 أتممت خانات «أصغر من أو تساوي $n$» بكسور مقامها 30. بكلماتك: كيف نحسب التكرار النسبي المجمّع الصاعد لقيمة؟ وكيف نحسب النازل؟"}><TextbookBox kind="definition" title={KNOWLEDGE.relative.title} lines={[KNOWLEDGE.relative.up, KNOWLEDGE.relative.down]} source={KNOWLEDGE.relative.source} compact /></PredictRule>
               <TextbookBox kind="example" text={KNOWLEDGE.relative.example} source={KNOWLEDGE.relative.source} compact />
               <FreqTable head="العلامة" values={r.values} rows={[
                 { label: 'التكرار', cells: r.freqs },
@@ -137,7 +137,7 @@ export default function Module02Maarif() {
           num: 4, title: 'طرفا الجدول', subtitle: 'ما نقرؤه في الجدول', done: q4,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="property" title={PROPERTY.title} lines={PROPERTY.lines} source={PROPERTY.source} compact />
+              <PredictRule id="khasiyat-mujamma" prompt={"انظر إلى جدول التكرارات المجمّعة الذي أتممته: ماذا يساوي الصاعد لأكبر قيمة والنازل لأصغر قيمة؟ ومن أجل قيمة $t$، بماذا يساوي مجموع الصاعد والنازل لها؟ (فكّر: كم مرّة عُدّت القيمة $t$؟)"}><TextbookBox kind="property" title={PROPERTY.title} lines={PROPERTY.lines} source={PROPERTY.source} compact /></PredictRule>
               <KnowledgeBrick id="khasiyat-mujamma" lead="ما رأيته عند البوابة حين عددت القيمة نفسها من الجهتين:" />
               <TapQuestion
                 prompt="في سلسلة تكرارها الكلي 40، التواتر المجمع الصاعد لأكبر قيمة هو:"

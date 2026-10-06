@@ -50,7 +50,7 @@ export default function Module02Maarif() {
               <TextbookBox kind="property" title={`1) ${KNOW4.title}: صورة نقطة بانسحابين متتابعين`} text={KNOW4.images} source={KNOW4.source} compact>
                 <GeoFigure {...FIG_KNOW4} />
               </TextbookBox>
-              <KnowledgeBrick id="alaqat-shal" lead="2) مجموع شعاعين، كما في الكتاب:" />
+              <KnowledgeBrick id="alaqat-shal" variant="rappel" lead="2) مجموع شعاعين، كما في الكتاب:" />
               <TextbookBox kind="remark" title={HISTORY.title} text={HISTORY.text} source={HISTORY.source} compact />
               <TapQuestion
                 prompt={<MathText>{'$\\overrightarrow{RS} + \\overrightarrow{ST} =$'}</MathText>}
@@ -77,8 +77,8 @@ export default function Module02Maarif() {
           num: 2, title: 'الشعاع المعدوم والشعاعان المتعاكسان', subtitle: 'معارف 4 (حالة خاصة) و 5', done: !!q[2],
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="shuaa-maadum" lead="حالة خاصة، كما في الكتاب: مشوار العودة." />
-              <KnowledgeBrick id="mutaakisan" lead="معارف 5:" />
+              <KnowledgeBrick id="shuaa-maadum" variant="rappel" lead="حالة خاصة، كما في الكتاب: مشوار العودة." />
+              <KnowledgeBrick id="mutaakisan" variant="rappel" lead="معارف 5:" />
               <TapQuestion
                 prompt={<MathText>{'$\\overrightarrow{EF} + \\overrightarrow{FE} =$'}</MathText>}
                 options={['$\\vec{0}$', 'العدد 0', '$2\\overrightarrow{EF}$'].map(M)}

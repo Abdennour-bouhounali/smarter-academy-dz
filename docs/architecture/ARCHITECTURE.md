@@ -14,15 +14,20 @@
 >   progress, learning evidence and mastery, the practice engine (sessions,
 >   attempts, hints), the notebook, reports, activation codes and entitlement,
 >   plus an admin surface.
-> - `ProtectedRoute` guards two areas, `/admin` and `/espace` — not one.
+> - `ProtectedRoute` guards three areas — `/admin`, `/espace` (student) and
+>   `/enseignant` (teacher).
 > - The student space also carries the **Math Lab** (`features/mathlab/`,
 >   `/espace/atelier`, table `math_lab_documents`): a standalone workspace of
 >   instruments outside the lesson engine — السبّورة for everyone, then مخبر
   المتوسط and مخبر الثانوي (`?lab=`), one registry with per-lab capabilities.
   See `MATH_LAB.md` §2.1.
 > - The `admin` Gate guards the whole `/api/v1/admin/*` group, alongside the
->   `account.active` and `email.verified` middlewares; it is no longer there
->   just for `GET /contact`.
+>   `account.active` middleware (`email.verified` is NOT applied there: admin
+>   accounts are created by `make:admin`, without an e-mail step); it is no
+>   longer there just for `GET /contact`.
+> - Roles are `student`, `teacher`, `admin`, plus a teacher FLAG,
+>   **ambassador** (`users.is_ambassador`, 2026-10-05): admin and ambassadors
+>   are content *reviewers* (see `ADMIN_PANEL_ARCHITECTURE.md` Annexe A8).
 > - Progress is **not** purely client-side: `localStorage` is a cache, and
 >   authenticated students sync through a debounced queue. See
 >   `PROGRESS_MODEL.md`.
@@ -76,7 +81,7 @@ src/
 ├── components/auth/ProtectedRoute.jsx  role-gated route guard (allowedRoles prop, defaults to ['admin'])
 ├── components/auth/GradeSwitcher.jsx    "Ma classe : 6e ▾" — changes a student's current grade (see §10)
 ├── components/student/StudentHomeBanner.jsx  homepage grade context for logged-in students (see §10)
-├── context/AuthContext.jsx auth state — admin or student, same session mechanism; user.grade is the current-grade source of truth
+├── context/AuthContext.jsx auth state — student, teacher or admin (+ `isAmbassador` / `canReviewContent`), same session mechanism; user.grade is the current-grade source of truth
 ├── data/                   portfolio/marketing content only (education.js, experience.js, projects.js, skills.js)
 ├── services/                apiClient, authService, contactService (see §5)
 └── lessons/

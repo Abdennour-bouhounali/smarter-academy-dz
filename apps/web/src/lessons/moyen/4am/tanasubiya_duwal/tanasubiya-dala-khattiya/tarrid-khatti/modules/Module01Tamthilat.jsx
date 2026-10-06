@@ -5,6 +5,8 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
+import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
+import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACT_4, LAB, MISTAKE_NOT_O } from '../content/textbook';
 import { Act4Graphs } from '../components/Graphs';
@@ -27,6 +29,9 @@ import { Act4Graphs } from '../components/Graphs';
  *
  * Étapes : (1) quel graphique est proportionnel ; (2) la brique « tanasub-bayan », puis a = 50 ;
  * (3) ce que signifie a ; (4) la brique « laysat-tanasub » et le contraste (2) / (3). LP : P1, P2.
+ * Les deux niveaux du lab vivent dans `intro` : le rappel de la « مسألة الدرس » (un autre ressort,
+ * module 4) clôt donc la DERNIÈRE étape. Le `lead` du workspace ne dit pas la règle « tanasub-bayan »
+ * (elle est prédite à l'étape 2 — « أتوقّع القاعدة ») : il ne donne que la consigne.
  */
 export default function Module01Tamthilat() {
   const [fitted, setFitted] = useState({});
@@ -74,7 +79,7 @@ export default function Module01Tamthilat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          lead="نفس الفكرة في المستويين: إذا مرّ مستقيم يشمل المبدأ بكل نقط القياس، فالوضعية تناسبية ومعامل توجيهه هو معاملها."
+          lead="المهمّة نفسها في المستويين: أدِر المستقيم حول المبدأ حتى يمرّ بكل نقط القياس، وراقب الدستور الذي يكتبه المختبر."
           levels={{
             beginner: () => (
               <Manipulation type="origin-line" level="beginner" {...LAB.beginner}
@@ -154,6 +159,7 @@ export default function Module01Tamthilat() {
                 )}
                 onAnswered={() => setQ4(true)}
               />
+              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

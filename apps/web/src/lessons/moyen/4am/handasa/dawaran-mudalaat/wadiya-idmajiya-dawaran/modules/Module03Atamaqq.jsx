@@ -60,7 +60,8 @@ export default function Module03Atamaqq() {
               <GeoFigure {...EX20} />
               <TextbookExercise exercise={part('ex-20-3')} requires={['khawas-dawaran-atwal']} onAnswered={mark('ex-20-3')} />
               <p className="text-xs text-slate-500">حساب الزاوية بالجيب يعود إلى الوحدة 10 «حساب المثلثات»، وحساب DF بخاصية طالس إلى الوحدة 9.</p>
-              {done['ex-20-3'] && <KnowledgeBrick id="adawat-wahda" lead="التمرينان 15 و 20 يجمعان أدوات من دروس مختلفة: ما هي؟" />}
+              {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : chaque outil est une règle des leçons de l’unité (ruus-bidawaran, khawas-dawaran, angle inscrit) ou des unités 9–10, et le brief du module vient de les nommer. */}
+              {done['ex-20-3'] && <KnowledgeBrick id="adawat-wahda" variant="rappel" lead="التمرينان 15 و 20 يجمعان أدوات من دروس مختلفة: ما هي؟" />}
               <BackLink lesson="zawiya-muhitiya" what="الزاوية المحيطية والزاوية المركزية" />
             </div>
           ) },
