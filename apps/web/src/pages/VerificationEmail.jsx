@@ -50,11 +50,12 @@ export default function VerificationEmail() {
 
   useDocumentMeta(t('verifyMetaTitle'), t('verifyMetaDescription'));
 
-  // Retour depuis le lien du courriel : l'adresse vient d'être prouvée côté
-  // serveur, mais la session chargée dans cet onglet l'ignore encore. On
-  // relit le compte plutôt que de deviner — c'est le serveur qui sait.
+  // On relit le compte à CHAQUE arrivée, pas seulement au retour du lien :
+  // l'élève a pu cliquer le lien sur son téléphone, et cet onglet — renvoyé
+  // ici par ProtectedRoute en tentant d'ouvrir فضائي — croirait encore
+  // l'adresse non vérifiée. C'est le serveur qui sait ; s'il dit « vérifiée »,
+  // l'effet suivant ouvre l'espace.
   useEffect(() => {
-    if (statut !== 'succes' && statut !== 'deja-verifie') return;
     if (!token) return;
 
     refreshUser?.();
