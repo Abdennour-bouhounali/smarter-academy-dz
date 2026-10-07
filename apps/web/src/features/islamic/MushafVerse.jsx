@@ -1,18 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ensureQuranFont } from './quranFont';
-import { BASMALA_UTHMANI } from './content/mushaf.js';
+import { BASMALA } from './content/mushaf.js';
 import { hasQuranSource } from './IslamicContentRenderer';
 
 /**
  * Un verset composé COMME DANS LE مصحف — en code, jamais en image : la
- * basmala en vert au-dessus, le verset en rasm ʿuthmānī (Amiri Quran), et à
+ * basmala en vert au-dessus, le verset (Amiri Quran), et à
  * sa fin le médaillon « ۝ » dessiné en SVG avec le numéro du verset en
  * chiffres arabes-indiens (la convention du مصحف ; la référence lisible sous
  * le verset garde les chiffres de la plateforme, isolés en LTR).
  *
  * Le texte n'est jamais modifié (pas de تطويل ajouté) : il vient de Tanzil
- * `quran-uthmani` (content/mushaf.js), vérifié par islamic.test.js.
+ * `quran-simple` (content/mushaf.js), vérifié par islamic.test.js.
  *
  *   basmala — la montrer au-dessus (par défaut : quand le passage ouvre une
  *             sourate autre qu'al-Fātiḥa et at-Tawba).
@@ -20,12 +20,38 @@ import { hasQuranSource } from './IslamicContentRenderer';
 const ARABIC_INDIC = '٠١٢٣٤٥٦٧٨٩';
 export const toArabicIndic = (n) => String(n).replace(/\d/g, (d) => ARABIC_INDIC[d]);
 
-/** Le médaillon de fin de verset : une rosace à douze lobes, deux cercles, le numéro. */
+/**
+ * Le médaillon de fin de verset : une rosace à douze lobes, deux cercles, le
+ * numéro. Le numéro est CENTRÉ PAR MESURE : les métriques d'Amiri Quran
+ * (ascendantes et descendantes très hautes) décalent un `dominant-baseline`
+ * central, et le décalage change quand la police arrive. On mesure donc la
+ * boîte réelle du chiffre (`getBBox`) et on la ramène au centre (20, 20), au
+ * montage puis quand les polices sont prêtes.
+ */
 export function AyahMarker({ number, className = '' }) {
+  const textRef = useRef(null);
   const lobes = Array.from({ length: 12 }, (_, i) => {
     const a = (i * Math.PI) / 6;
     return { cx: 20 + 15 * Math.cos(a), cy: 20 + 15 * Math.sin(a) };
   });
+  useLayoutEffect(() => {
+    const el = textRef.current;
+    if (!el?.getBBox) return undefined;
+    let alive = true;
+    const center = () => {
+      if (!alive) return;
+      el.removeAttribute('transform');
+      const box = el.getBBox();
+      if (!box.width) return;
+      const dx = 20 - (box.x + box.width / 2);
+      const dy = 20 - (box.y + box.height / 2);
+      el.setAttribute('transform', `translate(${dx.toFixed(2)} ${dy.toFixed(2)})`);
+    };
+    center();
+    document.fonts?.ready?.then(center);
+    document.fonts?.addEventListener?.('loadingdone', center);
+    return () => { alive = false; document.fonts?.removeEventListener?.('loadingdone', center); };
+  }, [number]);
   return (
     <svg viewBox="0 0 40 40" className={`sa-ayah-marker ${className}`} aria-hidden="true" focusable="false" data-ayah-marker={number}>
       <g fill="#fff" stroke="currentColor" strokeWidth="1.3">
@@ -34,7 +60,8 @@ export function AyahMarker({ number, className = '' }) {
       </g>
       <circle cx="20" cy="20" r="11.5" fill="none" stroke="currentColor" strokeWidth="1" />
       <text
-        x="20" y="21" textAnchor="middle" dominantBaseline="central"
+        ref={textRef}
+        x="20" y="20" textAnchor="middle" dominantBaseline="central"
         fontSize={String(number).length > 2 ? 11 : 16} fill="#334155"
         style={{ fontFamily: "'Amiri Quran', 'Amiri', 'Noto Naskh Arabic', serif" }}
       >
@@ -57,15 +84,15 @@ export default function MushafVerse({ item, basmala, showReference = true, class
         // allongée comme dans le مصحف. Le texte exact reste pour le lecteur d'écran.
         <p className="sa-mushaf sa-mushaf-basmala m-0" data-mushaf-basmala>
           <span aria-hidden="true">{'\uFDFD'}</span>
-          <span className="sr-only">{BASMALA_UTHMANI.text}</span>
+          <span className="sr-only">{BASMALA.text}</span>
         </p>
       )}
       <blockquote className="sa-mushaf sa-mushaf-verse m-0 text-slate-800">
         {item.verses.map((v) => (
           <span key={v.ayah}>
             {v.text}
-            {' '}
-            <AyahMarker number={v.ayah} />
+            {/* Insécable : le médaillon ne passe jamais seul à la ligne. */}
+            <span className="whitespace-nowrap">{'\u00A0'}<AyahMarker number={v.ayah} /></span>
             {v.ayah !== last && ' '}
           </span>
         ))}

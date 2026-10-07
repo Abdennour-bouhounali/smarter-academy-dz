@@ -864,6 +864,12 @@ html[data-sa-resizing] .sa-workspace-main {
   .sa-mushaf-basmala { font-size: 1.75rem; }
   .sa-mushaf-verse { font-size: 2.4rem; }
 }
+/* L'accueil élève, en trois colonnes (xl) : le verset partage le haut de page
+   avec la salutation — un cran plus petit pour tenir sur une ligne. */
+@media (min-width: 1280px) {
+  [data-home-verse] .sa-mushaf-verse { font-size: 2rem; }
+  [data-home-verse] .sa-mushaf-basmala { font-size: 1.5rem; }
+}
 .sa-ayah-marker {
   display: inline-block;
   width: 1.05em;

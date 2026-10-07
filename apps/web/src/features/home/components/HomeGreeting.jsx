@@ -18,7 +18,7 @@ export default function HomeGreeting({ name, gradeName }) {
       <p className="font-mono-jetbrains text-blue-500 text-xs font-semibold tracking-widest uppercase mb-2">
         {t('home.cycle')}
       </p>
-      <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900 text-balance">
+      <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900 text-balance xl:whitespace-nowrap">
         <IslamicGreeting name={name} />
       </h1>
       {gradeName ? (

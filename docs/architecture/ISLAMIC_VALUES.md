@@ -32,12 +32,12 @@ apps/web/src/features/islamic/
 ├── IslamicContentCard.jsx    the card (full or compact)
 ├── IslamicBreak.jsx          « 🌿 وقفة إيمانية » with « أكمل الدراسة »
 ├── IslamicMoment.jsx         the integration point a page uses
-├── MushafVerse.jsx           a verse set like the مصحف: ﷽, Uthmani rasm, SVG ayah medallion (student home)
+├── MushafVerse.jsx           a verse set like the مصحف: ﷽, the verse, SVG ayah medallion (student home)
 ├── quranFont.js              Amiri Quran, loaded on demand
 ├── index.js
 └── content/                  the declarative registry, LAZY-loaded (import())
     ├── quran.js  hadith.js  duas.js  values.js (values, wisdoms, reflections)
-    ├── mushaf.js             BASMALA_UTHMANI + HOME_VERSE (العلق 1, Tanzil quran-uthmani) — static, tiny
+    ├── mushaf.js             BASMALA + HOME_VERSE (العلق 1, Tanzil quran-simple) — static, tiny
     ├── index.js              ISLAMIC_CONTENT (defaults: status 'published', active, priority 1)
     └── __fixtures__/         source snapshots used by the tests only (never bundled)
 scripts/islamic-fetch-sources.mjs   regenerates the snapshots from the sources
@@ -143,7 +143,7 @@ anonymous visitors get **no** reminder.
 
 | Moment | Where (integration) | Who | Form | Policy |
 |---|---|---|---|---|
-| `home` (fixed verse) | `StudentHome`, under the greeting: « ٱقْرَأْ بِٱسْمِ رَبِّكَ ٱلَّذِى خَلَقَ » set as in the مصحف (`MushafVerse`, owner request 2026-10-07) — not a rotating reminder; the `home` moment stays in the selector for a future slot | student | mushaf | always |
+| `home` (fixed verse) | `StudentHome`, at the **top centre** beside the greeting from `xl` (grid `1fr · auto · 1fr`), under it below `xl`: « اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ » set as in the مصحف (`MushafVerse`, owner request 2026-10-07) — not a rotating reminder; the `home` moment stays in the selector for a future slot | student | mushaf | always |
 | `teacher_home` | `TeacherHome`, above the dashboard | teacher | card | same item 6 h |
 | `lesson_start` / `study_progress` / `lesson_completion` | `LessonIndex`, under the hero card (by path state: none / some / all modules done) | student | card | same item 1 h |
 | `teacher_start` | `LessonIndex` read by a teacher preparing a session | teacher | card | same item 6 h |
@@ -201,17 +201,24 @@ never « أنت لا تجتهد بما يكفي ». Religion is never a guilt me
 
 Coded, never an image. Above: the basmala as the single Unicode sign ﷽
 (U+FDFD), which Amiri Quran draws as the elongated green calligraphy of the
-مصحف; the exact Tanzil Uthmani text of 1:1 is in the DOM for screen readers
+مصحف; the exact Tanzil text of 1:1 is in the DOM for screen readers
 (`sr-only`). The glyph is ~10 em wide and unbreakable, so its size follows the
-viewport (`min(1.5rem, 6.4vw)`, 1.75rem from `sm`) — never overflowing at
-390 px. Then the verse in Uthmani rasm (Tanzil `quran-uthmani`, extracted by
-script, test-compared to `__fixtures__/tanzilUthmani.json`) in Amiri Quran
-(`.sa-mushaf`, `quranFont.js`, on demand), and at its end the ayah medallion:
-an SVG rosette (12 lobes, coral `currentColor`) around the number in
-**Arabic-Indic digits** (١) — the مصحف convention, the only place the platform
-uses them; the readable reference underneath keeps Western digits in `<bdi>`.
-The basmala shows when a passage opens a surah other than al-Fātiḥa and
-at-Tawba.
+viewport (`min(1.5rem, 6.4vw)`, 1.75rem from `sm`, 1.5rem in the `xl` top-centre
+slot) — never overflowing at 390 px. Then the verse in Amiri Quran
+(`.sa-mushaf`, `quranFont.js`, on demand) and, glued to its last word
+(`whitespace-nowrap`), the ayah medallion: an SVG rosette (12 lobes, coral
+`currentColor`) around the number in **Arabic-Indic digits** (١) — the مصحف
+convention, the only place the platform uses them; the readable reference
+underneath keeps Western digits in `<bdi>`. The digit is **centred by
+measurement** (`getBBox`, re-run when fonts load): Amiri Quran's tall
+ascent/descent make `dominant-baseline: central` sit visibly low.
+
+The text is Tanzil **`quran-simple`**, not `quran-uthmani` (owner,
+2026-10-07): the Uthmani rasm writes the final yāʾ undotted (« ٱلَّذِى »), which
+students read as a misspelling, and no Uthmani edition consulted (quran-uthmani,
+-min, quran-unicode, quran-academy) writes « الَّذِي ». We switched edition
+rather than edit the text. The basmala shows when a passage opens a surah
+other than al-Fātiḥa and at-Tawba.
 
 ## 10. Greeting
 

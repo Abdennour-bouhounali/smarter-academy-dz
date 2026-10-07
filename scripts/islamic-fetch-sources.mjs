@@ -7,7 +7,7 @@
  * source (features/islamic/islamic.test.js).
  *
  *   Coran  : Tanzil, texte « simple » (api.alquran.cloud, édition quran-simple),
- *            et « uthmani » pour le verset de l'accueil (content/mushaf.js).
+ *            registre ET verset de l'accueil (content/mushaf.js, avec sa basmala).
  *            La basmala que l'API préfixe au verset 1 (sauf al-Fātiḥa) est retirée.
  *   Ḥadīth : éditions arabes de fawazahmed0/hadith-api (jsDelivr). Muslim est
  *            indexé par la numérotation de ʿAbd al-Bāqī (`arabicnumber`), toutes
@@ -20,7 +20,7 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ISLAMIC_CONTENT } from '../apps/web/src/features/islamic/content/index.js';
-import { BASMALA_UTHMANI, HOME_VERSE } from '../apps/web/src/features/islamic/content/mushaf.js';
+import { BASMALA, HOME_VERSE } from '../apps/web/src/features/islamic/content/mushaf.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = resolve(ROOT, 'apps/web/src/features/islamic/content/__fixtures__');
@@ -35,7 +35,7 @@ async function json(url) {
   return res.json();
 }
 
-const quranRefs = new Set();
+const quranRefs = new Set([`${BASMALA.surah}:${BASMALA.ayah}`, ...HOME_VERSE.verses.map((v) => `${HOME_VERSE.surah}:${v.ayah}`)]);
 const hadithRefs = new Map(); // collection → Set(number)
 for (const item of ISLAMIC_CONTENT) {
   if (Array.isArray(item.verses)) for (const v of item.verses) quranRefs.add(`${item.surah}:${v.ayah}`);
@@ -48,27 +48,13 @@ for (const item of ISLAMIC_CONTENT) {
 const quran = {};
 for (const ref of [...quranRefs].sort()) {
   const { data } = await json(`https://api.alquran.cloud/v1/ayah/${ref}/quran-simple`);
-  let text = data.text;
+  let text = data.text.replace(/\uFEFF/g, ''); // Tanzil préfixe un BOM à 1:1
   const words = text.split(' ');
   if (data.numberInSurah === 1 && data.surah.number !== 1 && bare(words.slice(0, 4).join(' ')) === BASMALA_WORDS) {
     text = words.slice(4).join(' ');
   }
   quran[ref] = text;
   process.stdout.write('.');
-}
-
-// Le rasm ʿuthmānī de l'accueil (content/mushaf.js) : même nettoyage (BOM de
-// 1:1, basmala préfixée au verset 1).
-const uthmani = {};
-for (const ref of [`${BASMALA_UTHMANI.surah}:${BASMALA_UTHMANI.ayah}`, ...HOME_VERSE.verses.map((v) => `${HOME_VERSE.surah}:${v.ayah}`)]) {
-  const { data } = await json(`https://api.alquran.cloud/v1/ayah/${ref}/quran-uthmani`);
-  let text = data.text.replace(/\uFEFF/g, '');
-  const words = text.split(' ');
-  if (data.numberInSurah === 1 && data.surah.number !== 1 && bare(words.slice(0, 4).join(' ')).replace(/ٱ/g, 'ا') === BASMALA_WORDS) {
-    text = words.slice(4).join(' ');
-  }
-  uthmani[ref] = text;
-  process.stdout.write('*');
 }
 
 const hadith = {};
@@ -85,6 +71,5 @@ for (const [collection, numbers] of hadithRefs) {
 
 await mkdir(OUT, { recursive: true });
 await writeFile(resolve(OUT, 'tanzilSimple.json'), `${JSON.stringify(quran, null, 2)}\n`);
-await writeFile(resolve(OUT, 'tanzilUthmani.json'), `${JSON.stringify(uthmani, null, 2)}\n`);
 await writeFile(resolve(OUT, 'hadithSources.json'), `${JSON.stringify(hadith, null, 2)}\n`);
 console.log(`\n${Object.keys(quran).length} versets, ${Object.keys(hadith).length} ḥadīth → ${OUT}`);

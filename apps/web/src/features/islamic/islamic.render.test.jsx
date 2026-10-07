@@ -7,7 +7,7 @@ import IslamicContentCard from './IslamicContentCard';
 import IslamicBreak from './IslamicBreak';
 import IslamicGreeting from './IslamicGreeting';
 import MushafVerse, { AyahMarker, toArabicIndic } from './MushafVerse';
-import { BASMALA_UTHMANI, HOME_VERSE } from './content/mushaf.js';
+import { BASMALA, HOME_VERSE } from './content/mushaf.js';
 
 /**
  * Le RENDU : arabe RTL, trois habits distincts (verset, ḥadīth, phrase de
@@ -131,11 +131,11 @@ describe('IslamicContentCard / IslamicBreak', () => {
 });
 
 describe('MushafVerse — le verset de l’accueil, composé comme dans le مصحف', () => {
-  it('basmala calligraphiée (﷽) + texte exact pour le lecteur d’écran, verset ʿuthmānī, médaillon ١', () => {
+  it('basmala calligraphiée (﷽) + texte exact pour le lecteur d’écran, verset, médaillon ١', () => {
     const out = html(<MushafVerse item={HOME_VERSE} />);
     expect(out).toContain('dir="rtl"');
     expect(out).toContain('\uFDFD');
-    expect(out).toContain(`<span class="sr-only">${BASMALA_UTHMANI.text}</span>`);
+    expect(out).toContain(`<span class="sr-only">${BASMALA.text}</span>`);
     expect(out).toContain(HOME_VERSE.verses[0].text);
     expect(out).toContain('data-ayah-marker="1"');
     expect(out).toContain('>١</text>');

@@ -5,8 +5,7 @@ import { planMoment, recordShown, emptyFrequencyState, readFrequencyState, write
 import { THEME_VALUES, CONTEXT_VALUES, AUDIENCE_VALUES, TYPE_VALUES, CONTEXTS } from './islamicThemes.js';
 import TANZIL from './content/__fixtures__/tanzilSimple.json';
 import HADITH_SOURCES from './content/__fixtures__/hadithSources.json';
-import TANZIL_UTHMANI from './content/__fixtures__/tanzilUthmani.json';
-import { BASMALA_UTHMANI, HOME_VERSE } from './content/mushaf.js';
+import { BASMALA, HOME_VERSE } from './content/mushaf.js';
 
 /**
  * La couche « القيم الإسلامية » : le CHOIX (pur), la FRÉQUENCE (pure) et
@@ -247,10 +246,12 @@ describe('intégrité des sources — rien d’inventé', () => {
     }
   });
 
-  it('le verset de l’accueil (rasm ʿuthmānī) et sa basmala sont mot pour mot dans Tanzil quran-uthmani', () => {
-    expect(BASMALA_UTHMANI.text).toBe(TANZIL_UTHMANI['1:1']);
+  it('le verset de l’accueil et sa basmala sont mot pour mot dans Tanzil, « الَّذِي » avec sa yāʾ pointée', () => {
+    expect(BASMALA.text).toBe(TANZIL['1:1']);
     expect(HOME_VERSE.surah).toBe(96);
-    for (const v of HOME_VERSE.verses) expect(v.text).toBe(TANZIL_UTHMANI[`${HOME_VERSE.surah}:${v.ayah}`]);
+    for (const v of HOME_VERSE.verses) expect(v.text).toBe(TANZIL[`${HOME_VERSE.surah}:${v.ayah}`]);
+    expect(HOME_VERSE.verses[0].text).toMatch(/ي\s/);
+    expect(HOME_VERSE.verses[0].text).not.toMatch(/ى/);
   });
 
   it('al-Tirmidhī : jamais sans le jugement nommé (الترمذي / الألباني)', () => {

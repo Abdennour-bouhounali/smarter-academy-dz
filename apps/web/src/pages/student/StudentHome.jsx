@@ -145,12 +145,18 @@ export default function StudentHome() {
       {/* Même cadre que « تقدّمي » : `.sa-page`, sans colonne bornée. */}
       <div className="sa-page py-8 sm:py-10" aria-busy={status === 'loading'} data-student-home>
         <div>
-          <motion.div {...enter(0)} className="mb-7 sm:mb-8">
+          {/* La salutation et « ٱقْرَأْ » — le premier verset révélé, composé
+              comme dans le مصحف (basmala, rasm ʿuthmānī, médaillon ; en code,
+              jamais en image : features/islamic/MushafVerse.jsx). Sur grand
+              écran (xl), le verset occupe le HAUT-CENTRE, à côté de la
+              salutation, au lieu d'une rangée de plus : trois colonnes
+              1fr · auto · 1fr, la salutation dans la première (à droite en
+              RTL), la troisième vide pour que le verset reste au centre. En
+              dessous de xl la place manque (la salutation se brisait sur trois
+              lignes) : le verset passe sous la salutation, centré. */}
+          <motion.div {...enter(0)} className="mb-7 sm:mb-8 xl:grid xl:grid-cols-[1fr_auto_1fr] xl:items-start xl:gap-6">
             <HomeGreeting name={getDisplayName(user)} gradeName={grade?.name || null} />
-            {/* La salutation, puis « ٱقْرَأْ » — le premier verset révélé, composé
-                comme dans le مصحف (basmala, rasm ʿuthmānī, médaillon) : en
-                code, jamais en image (features/islamic/MushafVerse.jsx). */}
-            <div className="sa-islamic-surface mt-5 max-w-2xl rounded-2xl border border-emerald-100 px-4 py-4 sm:px-8" data-home-verse>
+            <div className="sa-islamic-surface mx-auto mt-5 max-w-2xl rounded-2xl border border-emerald-100 px-4 py-3 sm:px-8 xl:mt-0 xl:py-2" data-home-verse>
               <MushafVerse item={HOME_VERSE} />
             </div>
           </motion.div>
