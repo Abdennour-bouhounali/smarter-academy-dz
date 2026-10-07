@@ -112,6 +112,7 @@ const AdminDailyChallenge = lazy(() => import('./pages/admin/dailyChallenge/Dail
 const MathLabHome = lazy(() => import('./pages/student/MathLab'));
 const MathLabToolPage = lazy(() => import('./pages/student/MathLab').then((m) => ({ default: m.MathLabToolPage })));
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import RequireAccount from './components/auth/RequireAccount';
 
 /**
  * La surface de QA est-elle montée ?
@@ -484,6 +485,9 @@ export default function App() {
             {/* Un élève connecté n'atterrit pas sur la page de vente : il
                 est renvoyé vers /espace (voir HomeRedirect). */}
             <Route path="/"         element={<HomeRedirect />} />
+            {/* Catalogue, unités et leçons : compte obligatoire (RequireAccount).
+                Seul "/" reste ouvert au visiteur. */}
+            <Route element={<RequireAccount />}>
             <Route path="/courses"  element={<Courses />} />
             {/* La page d'une UNITÉ du manuel (الوحدة) : le niveau entre le ميدان et le درس (phase 8). */}
             <Route path="/courses/:levelId/:gradeId/:chapterId/units/:unitId" element={<UnitPage />} />
@@ -566,6 +570,7 @@ export default function App() {
             {maqatiMustawiyaRoutes()}
             {takbirTasghirRoutes()}
             {wadiyaIdmajiyaFadaRoutes()}
+            </Route>
 
             {/* ── SURFACE DE QA — jamais en production ────────────────
                 Le moteur de leçon n'a jamais été rendu sous RTL, faute de

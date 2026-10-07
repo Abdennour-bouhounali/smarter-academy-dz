@@ -50,7 +50,7 @@ export default function TrustRelevanceSection() {
             return (
               <Link
                 key={grade.id}
-                to={`/courses?level=${grade.levelId}&grade=${grade.id}`}
+                to="/register"
                 className={`px-5 py-3 rounded-2xl font-space font-bold text-sm transition-all ${
                   isFlagship
                     ? 'text-white shadow-md hover:-translate-y-0.5'
@@ -65,7 +65,7 @@ export default function TrustRelevanceSection() {
         </motion.div>
 
         <div className="text-center mt-8">
-          <Link to="/courses" className="inline-flex items-center gap-2 font-inter text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+          <Link to="/register" className="inline-flex items-center gap-2 font-inter text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
             {t('trust.seeFullProgramme')}
             <ArrowForward size={15} />
           </Link>

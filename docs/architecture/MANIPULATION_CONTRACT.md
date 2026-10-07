@@ -1017,6 +1017,18 @@ The vocabularies are closed and live in `packages/core/curriculum/manipulationLe
 
 Each failure was verified by deliberately breaking the config (2026-09-20).
 
+### The opening card tells ONE scene
+
+The module's opening card (`brief`: headline, drawing, text) describes the scene
+of the level the module OPENS on — the three never tell two different stories.
+When the beginner level replaces the textbook context, the card carries the
+platform situation, sourced `addition(...)` (shown « مثال تفاعلي إضافي »), and the
+textbook statement moves to the advanced level, verbatim, as a
+`TextbookBox kind="situation"` with its textbook source, above the manipulation
+that answers it. Fixed in `qasim-adad-tabii` Module 1 (2026-10-07): the card said
+« هيا نلعب كرة القدم! » over a pitch drawing, but its text was the 420-books
+statement; the football text now lives in `TEAM_EXPERIENCE.situation`.
+
 ### The default level serves the module's task
 
 `ManipulationWorkspace` defaults to **مبتدئ**, and a module may override it with

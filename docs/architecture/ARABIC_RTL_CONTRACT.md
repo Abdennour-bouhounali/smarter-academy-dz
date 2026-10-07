@@ -306,6 +306,15 @@ mid-sentence — checked in Chromium. Every free-text math input goes through
 LRI…PDI as the student types, cursor preserved (`isolateMath.js`). Never use a raw
 `<textarea>` for mathematics.
 
+### Equations inside an i18n string (2026-10-07)
+
+Marketing copy has no `MathText` (no `$…$` rendering): an equation inside an
+Arabic sentence of a locale file (« تظهر المساواة 16 = 3 × 5 + 1 ») is wrapped
+in LRI…PDI (U+2066 … U+2069) in the JSON itself — first case:
+`marketing.json › method.steps.observe/discover.story`. Verify with a range
+measurement in the browser (the first number must sit to the LEFT of the last),
+not by eye on a screenshot.
+
 ### Numeric pairs need the same isolation
 
 In an RTL page, `{score} / {max}` renders reversed: `10/11` reads as

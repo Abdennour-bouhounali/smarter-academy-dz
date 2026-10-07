@@ -51,6 +51,11 @@ export const PREP_ITEMS = [
  */
 export const TEAM_EXPERIENCE = {
   source: addition('interaction_generation'),
+  // La situation de la carte d'ouverture (« هيا نلعب كرة القدم! ») : celle du
+  // terrain, pas celle des livres — l'énoncé du manuel est rendu au niveau
+  // متقدم, là où l'élève range les 420 livres.
+  situation: 'جمع مدرّب الحيّ 15 لاعبًا، ويريد توزيعهم على 3 فرق بحيث يكون في كل فريق نفس العدد من اللاعبين.',
+  options: ['هل يمكنه ذلك؟ وكم لاعبًا في كل فريق؟', 'ثم يلتحق لاعب سادس عشر: أين يلعب؟'],
   numbers: { beginner: { total: 15, groups: 3 }, contrast: { total: 16, groups: 3 } },
 };
 

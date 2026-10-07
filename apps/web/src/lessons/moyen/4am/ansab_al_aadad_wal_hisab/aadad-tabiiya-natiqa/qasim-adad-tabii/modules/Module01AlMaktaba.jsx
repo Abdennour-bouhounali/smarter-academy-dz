@@ -65,7 +65,7 @@ export default function Module01AlMaktaba() {
       moduleSubtitle="نفس العدد من الكتب في كل رفّ"
       estimatedTime="10 دقائق"
       brief={{
-        tag: 'أنشطة — الكتاب ص 8',
+        tag: 'نشاط 1 — على أرضية الملعب',
         // L'ACCROCHE annonce l'expérience ; le TITRE garde l'objectif du
         // manuel. Les deux cohabitent : l'élève voit ce qu'il va faire, puis
         // ce qu'il va apprendre.
@@ -77,13 +77,15 @@ export default function Module01AlMaktaba() {
         // CLAUDE.md) : c'est le même terrain que la manipulation, donc la
         // carte et le laboratoire racontent la même scène.
         visual: <PitchScene />,
+        // La carte raconte LE TERRAIN (titre, dessin et texte disent la même
+        // scène). L'énoncé des 420 livres vit au niveau متقدم, où il sert.
         body: (
           <div className="space-y-1">
-            <p>{ACTIVITY.situation}</p>
-            <ul className="list-none space-y-0.5">{ACTIVITY.options.map((o) => <li key={o}>{o}</li>)}</ul>
+            <p>{TEAM_EXPERIENCE.situation}</p>
+            <ul className="list-none space-y-0.5">{TEAM_EXPERIENCE.options.map((o) => <li key={o}>{o}</li>)}</ul>
           </div>
         ),
-        footer: <SourceTag source={ACTIVITY.source} />,
+        footer: <SourceTag source={TEAM_EXPERIENCE.source} />,
       }}
       intro={
         <ManipulationWorkspace
@@ -104,17 +106,20 @@ export default function Module01AlMaktaba() {
               </div>
             ),
             advanced: () => (
-              <Manipulation
-                type="divisor-explorer-books"
-                total={total}
-                min={SHELF_RANGE.min}
-                max={SHELF_RANGE.max}
-                // Les deux tailles que le manuel fait comparer (نشاط 1) : des
-                // repères sur la réglette, pas des boutons-réponses.
-                marks={candidates}
-                lead="صاحب المكتبة تردّد بين 26 و 28 كتابًا في كل رفّ. اسحب مسند الكتب وجرّب بنفسك: متى لا يبقى أي كتاب على الأرض؟"
-                onVerdict={({ b, divides, quotient, remainder }) => setTried((t) => ({ ...t, [b]: { divides, quotient, remainder } }))}
-              />
+              <div className="space-y-2">
+                <TextbookBox kind="situation" lines={[ACTIVITY.situation, ...ACTIVITY.options]} source={ACTIVITY.source} compact />
+                <Manipulation
+                  type="divisor-explorer-books"
+                  total={total}
+                  min={SHELF_RANGE.min}
+                  max={SHELF_RANGE.max}
+                  // Les deux tailles que le manuel fait comparer (نشاط 1) : des
+                  // repères sur la réglette, pas des boutons-réponses.
+                  marks={candidates}
+                  lead="صاحب المكتبة تردّد بين 26 و 28 كتابًا في كل رفّ. اسحب مسند الكتب وجرّب بنفسك: متى لا يبقى أي كتاب على الأرض؟"
+                  onVerdict={({ b, divides, quotient, remainder }) => setTried((t) => ({ ...t, [b]: { divides, quotient, remainder } }))}
+                />
+              </div>
             ),
           }}
         />

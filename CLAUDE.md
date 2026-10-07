@@ -160,6 +160,19 @@ anything outside `lessons/`.
 - **`cf-image`** — only for photographic or illustrative art, and only when the
   image carries **no Arabic text**.
 
+### Showing the product: real captures, never generated screens
+
+When a marketing page shows what the student does (the `/methode` scroll
+journey), it shows the REAL lesson screens, captured by Playwright with a
+simulated session — `apps/web/scripts/capture-methode.mjs` (lesson
+« التعرّف على قاسم لعدد طبيعي », football lab: 15 players in 3 teams, then 16
+and one left out) then `apps/web/scripts/crop-methode.py` →
+`apps/web/public/images/methode/lesson/*.webp`. The copy beside each capture
+describes only what that lesson really does; if the lesson changes, re-run both
+scripts and re-read the story strings (`marketing.json › method.steps.*.story`).
+The page uses NO generated image at all (owner decision, 2026-10-07): hero and
+summit are typographic — simple and professional.
+
 ### OG share cards
 
 `scripts/og-card.py` renders branded share cards with correctly shaped Arabic

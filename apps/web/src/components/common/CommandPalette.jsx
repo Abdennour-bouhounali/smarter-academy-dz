@@ -14,7 +14,6 @@ const commands = [
   { id: 'login', labelKey: 'palette.login', path: '/login', icon: LogIn, groupKey: 'palette.groupMain' },
   { id: 'home', labelKey: 'palette.home', path: '/', icon: Compass, groupKey: 'palette.groupNavigation' },
   { id: 'methode', labelKey: 'palette.method', path: '/methode', icon: GraduationCap, groupKey: 'palette.groupNavigation' },
-  { id: 'courses', labelKey: 'palette.courses', path: '/courses', icon: GraduationCap, groupKey: 'palette.groupNavigation' },
   { id: 'about', labelKey: 'palette.about', path: '/about', icon: Users, groupKey: 'palette.groupNavigation' },
   { id: 'faq', labelKey: 'palette.faq', path: '/faq', icon: HelpCircle, groupKey: 'palette.groupNavigation' },
   { id: 'email', labelKey: 'palette.sendEmail', href: 'mailto:abdennour.bouhounali@gmail.com', external: true, icon: Mail, groupKey: 'palette.groupContact' },

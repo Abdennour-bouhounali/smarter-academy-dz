@@ -78,12 +78,11 @@ export default function StudentNavbar() {
             dessous, et « Accueil » y mène à /espace, qui est l'accueil que
             cet élève attend. */}
         <div className={`flex items-center h-16 border-b border-slate-100 flex-shrink-0 ${sidebarCollapsed ? 'justify-center px-0' : 'gap-2.5 px-6'}`}>
-          <img src="/smarter-academy-logo.webp" alt="Smarter Academy" className="h-9 w-auto rounded-lg object-contain flex-shrink-0" />
-          {!sidebarCollapsed && (
-            <div className="flex flex-col leading-none">
-              <span className="font-space font-bold text-slate-900 text-sm">Smarter Academy</span>
-              <span className="font-mono-jetbrains text-[10px] text-blue-500 font-semibold tracking-wider uppercase mt-0.5">{t('studentSpace')}</span>
-            </div>
+          {/* Ouverte : le nom seul. Réduite : le logo seul. */}
+          {sidebarCollapsed ? (
+            <img src="/smarter-academy-logo.webp" alt="Smarter Academy" className="h-9 w-auto rounded-lg object-contain flex-shrink-0" />
+          ) : (
+            <span dir="ltr" className="font-space font-bold text-slate-900 text-lg leading-none whitespace-nowrap">Smarter Academy</span>
           )}
         </div>
 
