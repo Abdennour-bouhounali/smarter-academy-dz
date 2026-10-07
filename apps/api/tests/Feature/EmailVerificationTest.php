@@ -383,7 +383,8 @@ class EmailVerificationTest extends TestCase
     // ── LE COURRIEL LUI-MÊME ────────────────────────────────────────────
 
     /**
-     * Arabe, RTL, et sans phrase anglaise du gabarit de Laravel.
+     * Arabe, RTL, au gabarit de marque (logo PNG du frontend), sans phrase
+     * anglaise du gabarit de Laravel, avec une version texte.
      */
     public function test_le_courriel_est_en_arabe_et_en_rtl(): void
     {
@@ -400,11 +401,15 @@ class EmailVerificationTest extends TestCase
 
             $this->assertStringContainsString('dir="rtl"', $html);
             $this->assertStringContainsString('تأكيد بريدي', $html);
-            $this->assertStringContainsString('انسخ الرابط أدناه', $html);
+            $this->assertStringContainsString('انسخ هذا الرابط', $html);
+            $this->assertStringContainsString(rtrim(config('app.frontend_url'), '/').'/email/logo.png', $html);
+            $this->assertStringContainsString('family=Amiri', $html);
+            $this->assertStringContainsString('أمين', $html, 'le prénom salue l’élève');
             $this->assertStringContainsString('جميع الحقوق محفوظة', $html);
             $this->assertStringNotContainsString("If you're having trouble", $html);
             $this->assertStringNotContainsString('All rights reserved', $html);
             $this->assertStringContainsString('/api/v1/auth/email/verify/'.$user->id.'/', $html);
+            $this->assertSame('emails.verify-email-text', $n->toMail($user)->view['text']);
 
             return true;
         });

@@ -13,10 +13,9 @@ use Throwable;
  * Le courriel « أكّد بريدك الإلكتروني ».
  *
  * Écrit en ARABE, comme tout ce que l'élève lit, et envoyé avec la locale
- * `ar` (User::preferredLocale) : le gabarit de Laravel traduit alors ses propres phrases (« If
- * you're having trouble clicking… », « All rights reserved. ») depuis
- * `lang/ar.json`, et la mise en page passe en RTL
- * (`resources/views/vendor/mail/html/layout.blade.php`).
+ * `ar` (User::preferredLocale). Mis en page par le gabarit de marque
+ * `resources/views/emails/layouts/brand.blade.php` (logo, Cairo / Amiri,
+ * couleurs de la plateforme, RTL), et non par le gabarit Markdown de Laravel.
  *
  * Ce courriel ne contient AUCUN secret réutilisable : le lien est signé et
  * expire (voir EmailVerificationLink). Il ne contient pas non plus de mot de
@@ -56,13 +55,17 @@ class VerifyEmailAddress extends Notification
         $url = EmailVerificationLink::for($notifiable);
         $hours = (int) (EmailVerificationLink::EXPIRES_AFTER_MINUTES / 60);
 
+        // Le gabarit de marque (logo, Cairo / Amiri, couleurs du logo),
+        // et sa version texte pour les clients qui n'affichent pas le HTML.
         return (new MailMessage)
             ->subject('أكّد بريدك الإلكتروني — Smarter Academy')
-            ->greeting('مرحبًا بك في Smarter Academy!')
-            ->line('بقيت خطوة واحدة: تأكيد أنّ هذا البريد الإلكتروني بريدك فعلًا.')
-            ->action('تأكيد بريدي', $url)
-            ->line("هذا الرابط صالح لمدة {$hours} ساعة.")
-            ->line('إن لم تكن صاحب هذا التسجيل، تجاهل هذه الرسالة: لن يُفعَّل أيّ حساب دون هذا التأكيد.')
-            ->salutation('إلى اللقاء قريبًا، فريق Smarter Academy');
+            ->view(
+                ['html' => 'emails.verify-email', 'text' => 'emails.verify-email-text'],
+                [
+                    'firstName' => trim((string) ($notifiable->first_name ?? '')),
+                    'url' => $url,
+                    'hours' => $hours,
+                ],
+            );
     }
 }

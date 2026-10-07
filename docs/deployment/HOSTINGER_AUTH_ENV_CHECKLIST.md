@@ -110,14 +110,25 @@ GOOGLE_REDIRECT_URI=https://smarter-academy.fr/api/v1/auth/google/callback
 
 ```dotenv
 MAIL_MAILER=smtp
-MAIL_HOST=<serveur SMTP du fournisseur>
-MAIL_PORT=<465 ou 587 selon le chiffrement>
-MAIL_USERNAME=contact@smarter-academy.fr
+MAIL_HOST=smtp.hostinger.com
+MAIL_PORT=465
+MAIL_SCHEME=smtps
+MAIL_USERNAME=contact@smarter-academy.com
 MAIL_PASSWORD=<mot de passe de la boîte>
-MAIL_ENCRYPTION=<ssl si port 465, tls si port 587>
-MAIL_FROM_ADDRESS=contact@smarter-academy.fr
+MAIL_FROM_ADDRESS=contact@smarter-academy.com
 MAIL_FROM_NAME="Smarter Academy"
 ```
+
+- **`MAIL_ENCRYPTION` n'existe plus** : ce Laravel (13) lit `MAIL_SCHEME`
+  (`config/mail.php`). Sans lui, le port 465 suffit à choisir `smtps`
+  (`MailManager`), mais l'écrire évite toute ambiguïté.
+- **`MAIL_FROM_ADDRESS` = `MAIL_USERNAME`** : Hostinger refuse un expéditeur
+  qui n'est pas la boîte authentifiée.
+- Le mot de passe est celui de la boîte (hPanel › E-mails › la boîte ›
+  « Changer le mot de passe » s'il est inconnu). S'il contient `#`, un espace
+  ou `"`, l'écrire entre guillemets.
+- La configuration n'est jamais mise en cache par le déploiement : une
+  modification du `.env` s'applique à la requête suivante.
 
 Voir le § SMTP du guide de déploiement pour ce qu'il faut récupérer chez
 l'hébergeur. **Aucune de ces valeurs n'est inventée ici** : elles viennent du
@@ -166,7 +177,7 @@ d'environnement, `VITE_API_URL`. Aucun secret n'y transite.
 - [ ] `STRIPE_WEBHOOK_TOLERANCE=300` **inchangée**
 - [ ] `DB_*` inchangées
 - [ ] `LEGAL_TERMS_VERSION` / `LEGAL_PRIVACY_VERSION` présentes
-- [ ] `MAIL_MAILER=smtp` (surtout pas `log`)
+- [ ] `MAIL_MAILER=smtp` (surtout pas `log`), `MAIL_SCHEME=smtps`, port 465
 - [ ] `MAIL_FROM_ADDRESS=contact@smarter-academy.fr`
 - [ ] `GOOGLE_*` présentes, ou volontairement laissées vides pour plus tard
 - [ ] aucune variable `VITE_*` secrète
