@@ -263,26 +263,29 @@ export const EXERCISES = [
     },
   },
   {
-    // 4 + 5 + x + y = 13,8 → x + y = 4,8 ; AD/BC = EA/EB = 10/14 → 14y = 10x → (14/5 ; 2) = (2,8 ; 2)
+    // COQUILLE DU MANUEL corrigée (propriétaire, 2026-10-07) : avec EA = 10, AB = 4, DC = 5 et un périmètre de 13,8
+    // le triangle EBC est impossible (EB = 14, BC = 2,8, EC = 17,5 et 14 + 2,8 < 17,5). Données cohérentes, les
+    // mêmes que la feuille de pratique l4-003 : EA = 6, AB = 4, DC = 5, périmètre 25.
+    // 4 + 5 + x + y = 25 → x + y = 16 ; AD/BC = EA/EB = 6/10 → 10y = 6x → (10 ; 6) ; triangles (10 ; 10 ; 12,5) et (6 ; 6 ; 7,5)
     id: 'ex-21', source: E(21, 61, 'أوظّف تعلّماتي'), learningPointId: LP.P1, difficulty: 'difficile',
-    statement: 'وحدة الطول هي السنتيمتر، والأطوال على الشكل ليست حقيقية. علما أنّ ABCD شبه منحرف محيطه يساوي 13,8cm احسب كلا من $x$ و $y$ .',
+    statement: 'وحدة الطول هي السنتيمتر، والأطوال على الشكل ليست حقيقية. علما أنّ ABCD شبه منحرف محيطه يساوي 25cm احسب كلا من $x$ و $y$ .',
     interaction: 'batch',
     question: {
-      prompt: 'في المثلث EBC: A من [EB] و D من [EC] و (AD) يوازي (BC) ؛ EA = 10 ، AB = 4 ، DC = 5 ، AD = $y$ ، BC = $x$ .',
+      prompt: 'في المثلث EBC: A من [EB] و D من [EC] و (AD) يوازي (BC) ؛ EA = 6 ، AB = 4 ، DC = 5 ، AD = $y$ ، BC = $x$ .',
       rows: [
-        { label: 'المحيط', options: ['$x + y = 13{,}8$', '$x + y + 9 = 13{,}8$', '$2(x + y) = 13{,}8$'], correct: 1, correction: 'محيط ABCD هو $AB + BC + CD + DA = 4 + x + 5 + y$ .' },
-        { label: 'خاصية طالس', options: ['$\\dfrac{y}{x} = \\dfrac{10}{4}$', '$\\dfrac{x}{y} = \\dfrac{10}{14}$', '$\\dfrac{y}{x} = \\dfrac{10}{14}$'], correct: 2, correction: '$\\dfrac{AD}{BC} = \\dfrac{EA}{EB}$ و $EB = 10 + 4 = 14$ : $\\dfrac{y}{x} = \\dfrac{10}{14}$ أي $14y = 10x$ .' },
+        { label: 'المحيط', options: ['$x + y = 25$', '$x + y + 9 = 25$', '$2(x + y) = 25$'], correct: 1, correction: 'محيط ABCD هو $AB + BC + CD + DA = 4 + x + 5 + y$ .' },
+        { label: 'خاصية طالس', options: ['$\\dfrac{y}{x} = \\dfrac{6}{4}$', '$\\dfrac{x}{y} = \\dfrac{6}{10}$', '$\\dfrac{y}{x} = \\dfrac{6}{10}$'], correct: 2, correction: '$\\dfrac{AD}{BC} = \\dfrac{EA}{EB}$ و $EB = 6 + 4 = 10$ : $\\dfrac{y}{x} = \\dfrac{6}{10}$ أي $10y = 6x$ .' },
       ],
     },
-    commonError: 'أخذ $\\dfrac{EA}{AB} = \\dfrac{10}{4}$ بدل $\\dfrac{EA}{EB} = \\dfrac{10}{14}$ .',
+    commonError: 'أخذ $\\dfrac{EA}{AB} = \\dfrac{6}{4}$ بدل $\\dfrac{EA}{EB} = \\dfrac{6}{10}$ .',
   },
   {
     id: 'ex-21-2', source: E(21, 61, 'أوظّف تعلّماتي'), learningPointId: LP.P2, difficulty: 'difficile',
     interaction: 'pair',
     question: {
       prompt: 'الطولان $(x ; y)$ بالسنتيمتر:',
-      expected: { x: '2,8', y: '2' },
-      explain: '$y = \\dfrac{5}{7}x$ : $x + \\dfrac{5}{7}x = 4{,}8$ أي $\\dfrac{12}{7}x = 4{,}8$ ومنه $x = 2{,}8$ و $y = 2$ . تحقق: $4 + 2{,}8 + 5 + 2 = 13{,}8$ .',
+      expected: { x: '10', y: '6' },
+      explain: '$y = \\dfrac{3}{5}x$ : $x + \\dfrac{3}{5}x = 16$ أي $\\dfrac{8}{5}x = 16$ ومنه $x = 10$ و $y = 6$ . تحقق: $4 + 10 + 5 + 6 = 25$ .',
     },
   },
   {

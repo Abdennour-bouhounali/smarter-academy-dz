@@ -3,67 +3,127 @@
   "lessonCode": "wadiya-idmajiya-taalufiya",
   "level": 1,
   "metadata": {
-    "title": "عرضان: المعامل",
-    "estimatedMinutes": 2,
+    "title": "محل لطباعة القمصان",
+    "estimatedMinutes": 6,
     "tags": [
       "تناسب التغيّرات",
-      "معامل"
+      "تعيين دالة تآلفية"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "محل لطباعة القمصان يحسب الثمن بدالة تآلفية لعدد القمصان: 5 قمصان بـ 4000 DA و 9 قمصان بـ 6400 DA."
+    "content": "يحسب محل لطباعة القمصان الثمن بدالة تآلفية $f$ لعدد القمصان $x$ : ثمن 5 قمصان 4000DA ، وثمن 9 قمصان 6400DA ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما ثمن القميص الواحد (المعامل $a$) بالدينار؟",
+      "step": "01",
+      "statement": "احسب المعامل $a$ للدالة $f$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد بالدينار",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
       "expectedAnswer": "600",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAGHAYYUR-BIDUN-QISMA",
+          "value": "2400"
+        },
+        {
+          "id": "MISC-BAYANI-MUAMIL-MAQLUB",
+          "value": "1/600"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "فرق الثمنين يقابل فرق عدد القمصان."
+          "content": "خاصية تناسب التغيّرات: $a = \\dfrac{f(x_2) - f(x_1)}{x_2 - x_1}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\dfrac{6400 - 4000}{9 - 5}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تناسب التغيّرات."
+          "content": "احسب $\\dfrac{6400 - 4000}{9 - 5}$ ."
         }
       ],
       "feedback": {
-        "correct": "$a = \\dfrac{2400}{4} = 600\\,\\mathrm{DA}$ للقميص.",
-        "incorrect": "نقسم فرق الصورتين على فرق العددين."
+        "correct": "$a = \\dfrac{2400}{4}$ .",
+        "incorrect": "اقسم فرق الثمنين على فرق عددي القمصان."
       },
+      "solution": {
+        "lines": [
+          "$a = \\dfrac{f(9) - f(5)}{9 - 5}$",
+          "$a = \\dfrac{6400 - 4000}{9 - 5}$",
+          "$a = \\dfrac{2400}{4}$",
+          "$a = 600$"
+        ],
+        "result": "a = 600"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج العدد $b$ ، ثم اكتب عبارة $f(x)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
       "cognitiveDemand": "apply",
-      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "1000",
       "misconceptionSignatures": [
         {
-          "value": "2400",
-          "id": "MISC-TAGHAYYUR-BIDUN-QISMA"
+          "id": "MISC-TAGHAYYUR-B-NISBA",
+          "value": "800"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(5) = 4000$ و $f(x) = ax + b$ ."
         },
         {
-          "value": "800",
-          "id": "MISC-TAGHAYYUR-B-NISBA"
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $a$ بقيمته و $x$ بالعدد 5 ، ثم حلّ المعادلة التي مجهولها $b$ ."
         }
-      ]
+      ],
+      "feedback": {
+        "correct": "$600 \\times 5 + b = 4000$ .",
+        "incorrect": "$b = f(5) - 5a$ ، وليس حاصل قسمة الثمن على عدد القمصان."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $f(5) = 4000$",
+          "أي: $600 \\times 5 + b = 4000$",
+          "$3000 + b = 4000$",
+          "$b = 1000$",
+          "ومنه: $f(x) = 600x + 1000$"
+        ],
+        "result": "f(x) = 600x + 1000"
+      },
+      "timeSeconds": 120
     }
   ]
 }

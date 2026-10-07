@@ -39,6 +39,12 @@ number is not getting the number wrong. Comparison is exact rational
 arithmetic — `Math.abs(a-b) < ε` is banned from the comparison path, so 0.1 +
 0.2 equals 0.3 and 7.5 equals 15/2.
 
+`correct` vs `equivalent_correct`: the same value written differently (« 3/2 » for « 1,5 ») is
+`equivalent_correct` (the student is told it is another valid writing). The decimal COMMA and the
+decimal POINT are the SAME writing (owner, 2026-10-07): « 1.5 », « 1,5 » and « 1٫5 » are all `correct`
+when the key is « 1,5 » (`sameWriting()` in JS, `AnswerEvaluator::sameWriting` in PHP, shared fixture
+`rational-decimal-dot-same-writing`).
+
 Answer types: `choice`, `multiChoice`, `rational`, `affine`, `interval`,
 `point`, `integerSet`.
 
@@ -522,6 +528,522 @@ off as the textbook:
    publishing is an admin act. The server caches `active.json` and the
    exercise index (`practice.cache_ttl`, 1 h): the deploy runs
    `cache:clear`; locally run `php artisan cache:clear` after adding files.
+
+## Présentation examen (BEM) — the exam sheet (2026-10-06; rollout to every lesson approved 2026-10-06)
+
+**Status: the standard practice format, rolled out UNIT BY UNIT.** The prototype lesson
+`bahth-pgcd` (« البحث عن القاسم المشترك الأكبر لعددين طبيعيين ») has it since 2026-10-06; the
+owner approved extending it to every lesson the same day. The owner wants the practice bank to
+feel like the شهادة التعليم المتوسط exam, in its look and its wording.
+Source: `docs/official-BREVET-exams/`, which holds the 2007–2025 annals and the solutions
+booklet. The PDF text layer is garbled, so render the pages with `pdftoppm -r 150` and read
+the images. **The corpus index** — every exercise of the 19 sessions, its points, pages, the
+lesson that owns it and the lessons of its steps — is
+`docs/sources/4am/bem-practice/annals-index.md` (+ `.json`). Authors' brief:
+`docs/sources/4am/bem-practice/brief-authors.md`; per-unit brief, lock and audit in
+`docs/sources/4am/bem-practice/rollout/unit<N>/`.
+
+**Switching a lesson on.** A lesson's levels page is the BEM page when the lesson is listed in
+`content/practice/exam-style.json` (read by `exam/examSheet.js` → `isExamLesson`). It is the
+only switch; nothing in the code names a lesson. `scripts/validate-exercises.mjs` refuses a
+listed lesson that is not active or whose bank still has an exercise without `metadata.exam`,
+and in `--strict` wants 10 sheets per level; a lesson whose bank is partly converted but not
+listed only warns and keeps the classic page. The server needs no switch: it reads
+`metadata.exam` exercise by exercise (`ExamSheetAnyLessonTest` proves the chain on another
+lesson).
+
+**Owner decisions for the rollout (2026-10-06).**
+- Each lesson's current bank is REPLACED IN PLACE, ids kept (`ex-4am-<lesson>-lN-NNN`): existing
+  exercises become `kind: adapted`. Attempts and mastery evidence stay attached to their ids;
+  no DB migration (cache clear + registry re-import).
+- Order: pilot unit 2; then, at the owner's request (2026-10-06), ONE LESSON AT A TIME (no parallel
+  authors), from the oldest lesson added to the platform to the newest: unit 1, then units 3 → 14.
+- A lesson with no annals exercise (all of units 8 and 14, regular polygons, most of unit 1)
+  gets « على منوال BEM <year> » and adapted sheets only, never an « official » badge.
+- A step of a paper that uses a skill of an earlier year or of another lesson (Pythagoras,
+  fraction arithmetic, scientific notation…) stays as printed with `counted: false`.
+- Level 5 receives NEW « الوضعية الإدماجية (08 ن) » sheets; the lesson's « مسائل » modules and
+  « أتوقّع القاعدة » stay in the lesson, unchanged.
+- Photo answers and teacher validation are on in every converted lesson; production runs the
+  scheduler (`smarter:answer-images:purge`). Free / premium status is unchanged.
+
+**Status by unit** (number of annals exercises the index assigns to the unit's lessons):
+
+| Unité | Leçons | Annales citées (index) | État |
+|---|---|---|---|
+| 1 « الأعداد الطبيعيّة والأعداد النّاطقة » | 9 | 9 | **basculée** (2026-10-07) — 9 leçons, 450 feuilles, aucune annale propre hors bahth-pgcd (« على منوال » + adapted) |
+| 2 « الحساب على الجذور » | 6 | 12 | **basculée** (pilote, 2026-10-06) — 6 leçons, 300 feuilles |
+| 3 « الحساب الحرفي » | 4 | 18 | **basculée** (2026-10-07) — 4 leçons, 200 feuilles, 18 sujets officiels |
+| 4 « معادلات ومتراجحات » | 5 | 3 | **basculée** (2026-10-07) — 5 leçons, 250 feuilles |
+| 5 « جمل معادلتين » | 4 | 5 | **basculée** (2026-10-07) — 4 leçons, 200 feuilles |
+| 6 « الدالة الخطية والتناسبية » | 6 | 0 | **basculée** (2026-10-07) — 6 leçons, 300 feuilles |
+| 7 « الدالة التآلفية » | 6 | 15 | **basculée** (2026-10-07) — 6 leçons, 300 feuilles, 15 sujets officiels |
+| 8 « الإحصاء » | 5 | 0 | **en cours** (leçon par leçon) — aucune annale |
+| 9 « خاصية طالس » | 4 | 10 | en attente (leçon par leçon, après l'unité 1) |
+| 10 « حساب المثلثات » | 5 | 7 | en attente (leçon par leçon, après l'unité 1) |
+| 11 « الأشعة والانسحاب » | 5 | 1 | en attente (leçon par leçon, après l'unité 1) |
+| 12 « الأشعة في معلم » | 5 | 12 | en attente (leçon par leçon, après l'unité 1) |
+| 13 « الدوران والزوايا والمضلّعات المنتظمة » | 5 | 3 | en attente (leçon par leçon, après l'unité 1) |
+| 14 « الهندسة في الفضاء » | 5 | 0 | en attente (leçon par leçon, après l'unité 1) |
+
+**Opt-in per exercise.** An exercise is rendered as an exam sheet if and only if it carries
+`metadata.exam`. Every other exercise keeps the classic card, unchanged.
+
+### Data
+
+The JSON schema file is not enforced; `scripts/validate-exercises.mjs`
+(`validateExamPresentation`) checks these fields.
+
+| Field | Values | Meaning |
+|---|---|---|
+| `metadata.exam.kind` | `official`, `excerpt`, `modelled`, `adapted` | `official`: an annal exercise, word for word. `excerpt`: the same, with steps outside unit 1 removed. `modelled`: « على منوال BEM <year> », the same wording with new numbers. `adapted`: an existing bank exercise rewritten in the exam register. |
+| `metadata.exam.badge` | `BEM <year>` (official, excerpt) · `على منوال BEM <year>` (modelled) · `null` (adapted) | The session ribbon. |
+| `metadata.exam.heading` | « التمرين الأول »، « التمرين »، « الوضعية الإدماجية »… | Rendered « <heading>:(<points> ن) », as in the annals. |
+| `metadata.exam.points` | « 03 »، « 02,5 »، « 08 » | Written as on the exam paper. |
+| `metadata.source` | `{type:"bem", year, part:1\|2, exercise}` | For official / excerpt exercises; `part 2` = الوضعية الإدماجية. |
+| | `{type:"platform_addition", reason:"bem_modelled", modelledOn}` | For modelled exercises. |
+| | the original source + `adaptedFrom` | For adapted exercises. |
+| `statement.formulas[]` | LaTeX strings | Centred on one line under the setup sentence. |
+| `statement.table` | `{head, rows}` | Same shape as a مسألة table (`ProblemTable`). |
+| `questions[].step` | « 01 »…« 06 » | Required, non-decreasing. |
+| `questions[].sub` | ا / ب / ج / د | Optional sub-item. |
+| `questions[].lead` | text | Optional. The step text that precedes its (ا)(ب). |
+| `questions[].solution` | `{lines[], result?}` | Required: the model answer in the solutions booklet's style. `result` is LaTeX shown in a box; when it contains Arabic it is shown as plain text instead. |
+| `questions[].counted: false` | boolean | The step is judged but is never mastery evidence. Used for a BEM step that belongs to another lesson, e.g. an irreducible fraction in a PGCD exercise. Such a step still carries one of the lesson's own learning points as its label (validator rule). |
+
+**`answerType: "selfCheck"`** is for « بيّن أن »، « برّر » steps: proofs that cannot be
+auto-checked. It has no `expectedAnswer`, `solution` is required, and it is never counted
+for mastery (`countsForMastery`, in both JS and PHP).
+
+| Step | Student does | Sent | Evaluator returns | Server |
+|---|---|---|---|---|
+| 1 | Writes the proof in a text box, clicks « سجّل إجابتي » | `{text}` | `abandoned`, `normalized: "self:pending"` | Records the attempt. The text is locked from now on. |
+| 2 | The model answer opens under the locked text; the student ticks « مطابق / غير مطابق » | `{text, selfMark}` with the same text | `correct` / `incorrect` | `PracticeEvidenceRecorder::recordSelfMark` accepts one mark, refuses (422) any different text, and replays the stored verdict afterwards. Text is capped at 5000 characters. |
+
+### Screen (`features/practice/exam/`)
+
+The components:
+- **`ExamSheet.jsx`** draws the sheet: paper, ruled header « التمرين الأول:(02,5 ن) », the
+  ribbon (dashed for `modelled`), « الجزء الثاني: » above a Part II problem, the setup
+  sentence, centred formulas, red step boxes « 01 » with (ا)(ب).
+- **`SolutionPanel.jsx`** is « الحل النموذجي »: collapsed after each answer, open in a
+  self-check.
+- **`inputs/SelfCheckInput.jsx`** is the self-check input.
+- **`examSheet.js`** holds the pure logic.
+
+Behaviour:
+- **Steps are progressive** (owner, 2026-10-06). Only step 01 is shown at first. Once it is
+  answered, step 02 is added below it and nothing above disappears. Done steps keep the
+  student's answer and its verdict.
+- **`PracticeSession.jsx` keeps its single exercise state.** Only the presentation branches
+  (`isExam`). The extracted `answerZone` is shared by the card and by the sheet's current
+  step.
+- **Side column.** On an exam sheet there is none: see « No side column on a sheet » below. Other lessons keep it.
+- **Font.** The sheet uses **Amiri**, loaded on demand (`examFont.js`) with system naskh
+  fallbacks, while inputs keep Cairo. KaTeX inside the sheet is forced to LTR, because a
+  wrapped formula's chunks used to be laid out right to left.
+- **The model answer is earned** (owner, 2026-10-06). « الحل النموذجي » opens only after a
+  real attempt. An unreadable entry (`syntax_error`) or a step skipped without an answer
+  shows nothing, and a proof shorter than 15 characters (`MIN_PROOF_CHARS`) cannot be saved.
+  Hints stay available before the attempt; they guide but never contain the answer (the
+  validator checks that).
+- **Steps area « مراحل الحساب »** (owner, 2026-10-06). It is set per question by `work`:
+  `required` when the statement asks for the steps (« مع كتابة مراحل الحساب »، « باستعمال
+  خوارزمية … »), `optional` on other PGCD computations; the validator accepts these two
+  values on constructed answers only. It is a ruled area (`WorkArea.jsx`) above the answer
+  line. The text is sent as `answer.work`, so it is saved in the database and locked with the
+  answer, and it is shown again under the answered step. It is capped at 5000 characters on
+  the server. While a required area is empty, « تحقّق » stays disabled.
+- **Writing maths: MathLive** (owner, 2026-10-06: Arabic right to left, formulas left to
+  right). On a sheet, a `rational` answer is a MathLive field (`exam/math/ExamMathField.jsx`):
+  - formulas are written left to right and « 7/9 » becomes a real fraction;
+  - « * » is typed as « × »;
+  - the virtual keyboard (`examKeyboard.js`) has digits, operations, fraction, root, « ; »
+    and « PGCD »;
+  - the value sent stays what the evaluator reads, `asciiToAnswer` (« 7/9 », « 135 »),
+    and the LaTeX is kept as `answer.latex` for the recap.
+
+  « مراحل الحساب » and the « بيّن أن » proof are a LINE editor (`MathLinesEditor.jsx`):
+  - each line is either Arabic text (an RTL input) or a formula (MathLive, LTR);
+  - Enter adds a line of the same kind, and two buttons add either kind;
+  - it is saved as a plain string, one line per line with formulas written `$…$`
+    (`linesModel.js`);
+  - when read back (`RedactionText.jsx`), every line is RTL and every formula an isolated
+    LTR KaTeX island.
+
+  MathLive is loaded lazily (`exam/math/lazy.jsx`; BUNDLE_BOUNDARIES §6). Each field is keyed
+  by question, so a field never carries a value over to the next question.
+- **« ابدأ »** (owner, 2026-10-06). The current step stays HIDDEN behind « ابدأ » (with its
+  time). Pressing it reveals the statement and starts the countdown. The start time is kept
+  per attempt in localStorage, so a reload never gives a fresh time. The button stays
+  disabled until the question is open on the server, because otherwise the server's late
+  reply erased the start.
+- **Field width** (owner, 2026-10-06). By default a field is exactly as wide as the correct
+  answer (`answerChars`, CSS `--answer-ch`), and that width is also its minimum. The student
+  widens it with the corner handle (`resize: horizontal`). Ruled areas resize vertically.
+- **Unreadable entry.** On a sheet an unreadable entry (`syntax_error`) is NOT sent: the
+  step would stay locked on it. The message « لم أستطع قراءة إجابتك… » appears and the field
+  stays editable.
+- **The paper** (owner's mock-up, 2026-10-06). The header is ONE row: the three centred
+  lines in the middle, « المستوى / دورة » on the right, « المدة / المصدر » on the left (on a
+  phone the title comes first). « التنقل في التمرين » lives in the centred window (see below).
+  The header's three lines are:
+  « الجمهورية الجزائرية الديمقراطية الشعبية », « اختبار تجريبي — محاكاة شهادة التعليم المتوسط »
+  (it says « trial »: a practice paper, not an official document) and « مادة الرياضيات ».
+  Then comes an information box (`data-exam-info`, two columns):
+  - المستوى;
+  - المدة المقترحة (`estimatedMinutes`);
+  - الدورة: the session year for `official` / `excerpt` (`examSession`), « تدريب » otherwise;
+  - المصدر: « BEM 2008 », « على منوال BEM 2015 » or « تمرين الدرس ».
+
+  The exercise sits in a grey band, « التمرين الأول: » on one side and « (02,5 ن) » on the
+  other, with « الجزء الثاني: » above it for a وضعية. The sheet ends with « بالتوفيق ».
+- **The answer is written on the paper** (owner, 2026-10-06: a small answer gets a small
+  field, a big answer a big one, and nothing should feel like a platform). The player sets
+  `data-answer-size` from `answerSize(question)`, and `index.css` styles each size inside
+  `.sa-exam-paper` only:
+
+  | Size | Used for | Looks like |
+  |---|---|---|
+  | `short` | a number of up to 5 characters | blue ink on a dotted line, 8rem |
+  | `medium` | a fraction, a large number, a pair, a short list | 13rem |
+  | `long` | a long list | full width |
+  | `proof` | a `selfCheck` step | ruled lines with the red copy margin, growing with the text |
+  | `choice` | a closed question | « ☐ نعم ☐ لا » boxes |
+
+  The text in every field is right-aligned, as one writes on an Arabic copy. The internal
+  direction of each line stays automatic, so « 7/9 » and « PGCD(…) » are not reversed. The
+  red margin of the proof area stays on the right.
+  « تحقّق » is a small outlined button next to the field. The « إرشاد » link sits beside it,
+  and the hints panel appears only once a hint has been asked for or after a wrong answer.
+- **Vertical budget.** The paper header, information box, band and gaps are compact. A
+  one-step exercise fits a 1366×768 screen without scrolling, and so does BEM 2008 I-1;
+  only long problems (a وضعية) scroll.
+- **Around the paper.** `ExamNavigator.jsx` « التنقل في التمرين » (in the centred window):
+  - the exercise and its points, and its questions (✓/✕ done, current, upcoming locked
+    until the previous one is solved); clicking one scrolls the sheet to it;
+  - the flag « أريد العودة إلى هذا السؤال لاحقًا », kept in localStorage only (it is never
+    server state);
+  - « تُحفظ إجاباتك تلقائيًا ».
+
+  The top bar reads « الدرس: <lesson title> » with the pill « محاكاة شهادة التعليم المتوسط
+  · رياضيات · 4 متوسط ». The main action is dark green. In the footer « السابق » is on the
+  right and « التالي » on the left, the natural RTL order (owner, 2026-10-06). (The countdown is per question; see the next bullet.)
+- **Countdown per question** (owner, 2026-10-06; this OVERRIDES the player's former « no
+  timer » rule, for exam sheets only). Each step has its own time, `timeSeconds` in the
+  content (30–3600, checked by the validator). The defaults were generated by splitting the
+  exercise's `estimatedMinutes` by weight (required steps and proofs ×2, optional steps
+  ×1.5, yes/no ×0.5, rounded to 30 s, at least 60 s) and can be edited per question.
+  - `StepTimer.jsx` counts down from the step's opening, which is kept per attempt in
+    localStorage so a reload does not reset it. It turns amber in the last fifth.
+  - At zero it shows « انتهى الوقت » and counts the overtime. It never blocks, because of
+    the non-blocking invariant.
+  - On answering, the time spent is sent as `answer.seconds`, so it is saved in the
+    database. It is shown frozen on the step: « أجبت في 01:20 من 03:00 » ✓, or the overtime.
+  - Helpers in `examSheet.js`: `stepSeconds`, `formatClock`, `clockState`.
+- **No side column on a sheet** (owner, 2026-10-06). The exercise keeps the full width. The
+  button « إظهار الكفاءة » (student) or « إظهار إجابات التلاميذ » (teacher) opens a CENTRED
+  window (the shared `components/admin/ui/Modal.jsx`: ✕, Escape, click outside). The window
+  is wide (`xl`) and stacks its blocks over its full width (الكفاءة first), so no label wraps. The window
+  holds « التنقل في التمرين » plus the الكفاءة (student) or the students' responses
+  (teacher). Clicking a question in it closes the window and scrolls to that step. Other
+  lessons keep their side column.
+- **Going back is always possible** (owner, 2026-10-06).
+  - Student: the finished steps stay on the sheet, and « السؤال السابق » scrolls to the
+    previous one. « التمرين السابق » reopens an exercise finished during this visit, read-only
+    (a snapshot of the student's answers, verdicts and model answers), with « العودة إلى
+    التمرين الحالي ». Answering it again would count twice for mastery, so it is never
+    replayed.
+  - Teacher: « السؤال السابق » reopens the previous step blank, and « التمرين السابق » links
+    to the previous exercise of the level.
+- **Teacher player.** `TeacherPracticePlayer.jsx` renders the same sheet, with the same
+  progressive steps and a local history. On a sheet, « إظهار الإجابة المنتظرة » stays
+  disabled (with a one-line reason) until an answer has been entered and checked with « تحقّق
+  من إجابتي ». An unreadable entry does not count; a saved proof does. Once enabled, it also
+  opens the full model answer. Other lessons keep the button always active.
+
+Tests:
+- `examSheet.test.js`
+- `answers.json` fixture cases `selfCheck-*` (JS ↔ PHP)
+- `EvidenceTrustBoundaryTest::test_self_checked_and_uncounted_exam_steps_never_become_evidence`
+- `scripts/practice-oracle/bahth-pgcd.mjs`
+- browser: `e2e/lesson-kit/practice-exam-sheet.mjs`, which walks levels 1→5, checks the
+  progressive steps and the self-check lock, and checks a phone at 360 px
+
+## Level unlocking and the student setting « open all levels » (2026-10-06)
+
+**Default.** `LevelPolicy::levels` opens level 1. Each later level opens once the student
+has finished one exercise of the level before it (`EXERCISES_TO_UNLOCK_NEXT`), and the
+locked level shows `previous_level_incomplete`. The practice overview is the only place
+that decides; nothing else enforces the lock.
+
+**The setting.** Different students start from different places, so the owner wanted the
+five levels openable from the start, as a per-student setting.
+
+| Piece | Where |
+|---|---|
+| Storage: one row per student, created on the first change; no row means the defaults | table `student_settings` (`practice_levels_open`, `practice_validation`, `updated_by`) |
+| Rules | `App\Domain\Settings\StudentSettingsService` |
+| Effect: when on, every level that has exercises is unlocked | `LevelPolicy::levels(..., $allOpen)` |
+
+Who decides:
+- **Student in a class** (an active member of an active class): the teacher, student by
+  student.
+  - API: `GET/PATCH /teacher/classrooms/{id}/students/{studentId}/settings`, with the
+    student resolved through the owned class (`ClassroomAccess::activeStudent`).
+  - Screen: the « إعدادات التلميذ » card on the student's page (`StudentSettingsCard.jsx`).
+  - The student sees the setting but cannot change it: `PATCH /me/settings` answers 422
+    with `managed_by_teacher`.
+- **Independent student:** the student, on « الإعدادات », a WINDOW rather than a page (owner,
+  2026-10-06). `features/settings/SettingsButton.jsx` opens `StudentSettingsPanel.jsx` in the
+  shared `Modal`, through `GET/PATCH /me/settings`. It opens from the gear next to logout in
+  the desktop sidebar, from the profile page, and from the BEM hub's header; there is no
+  route. The phone top bar has no gear, because it squeezed the bar. Future settings
+  get a section on this page.
+
+Tests: `tests/Feature/StudentSettingsTest.php` (default lock, independent student, class
+student refused while his teacher succeeds, another teacher refused).
+
+Second setting (2026-10-06): `practice_validation`, which decides who corrects photos and
+proofs. See « Image answers and teacher validation » below.
+
+### One step split into several questions — the model answer waits (2026-10-07)
+
+A paper step is often typed as several questions on the same `step` (and `sub`): the bound
+then the direction of an inequality, « الحل الأصغر » then « الأكبر », « 10cm ؟ » then « 18cm ؟ ».
+The step's model answer would give away the next question, so `solutionReady(questions, i,
+answeredThrough)` (`exam/examSheet.js`) keeps a question's `SolutionPanel` CLOSED while a later
+question of the same group is unanswered; when the last one is answered, all of them open. Used
+by `ExamSheet` (done steps, prop `answeredThrough`), the student player and the teacher player
+for the current step. Self-check panels (« بيّن أن », photo-only self-marking) are not affected:
+the student needs the model answer to mark himself. Authors still keep the first question's
+hints and `feedback.correct` free of the next answer.
+
+### The BEM levels page (2026-10-06)
+
+For the lessons listed in `content/practice/exam-style.json` (`isExamLesson`, `exam/examSheet.js`),
+`PracticeHub.jsx` renders the « محاكاة » page:
+- a header card with the pill « محاكاة شهادة التعليم المتوسط », the title, and the buttons
+  « ما أظهرته إلى حدّ الآن », « راجع الدرس » and « الإعدادات » (which opens the settings window);
+- the open-session banner;
+- the five levels as CARDS (`ExamLevelCards.jsx`). Each card shows its number and name, how
+  many exercises come from a real BEM paper (« تمرينان من الشهادة », counted from
+  `metadata.exam.kind`), its progress, and a « ابدأ » button (green on the suggested
+  level). A locked level gives its reason.
+
+The learning points open in a wide centred window, one column, so titles never wrap. There
+is no side column. A lesson not listed keeps the classic hub.
+
+### Medals — the motivation layer (2026-10-06)
+
+The owner wanted correct answers rewarded with medal tiers from bronze to gold. This
+overrides the hub's former « nothing playful » stance, for every exam-sheet lesson.
+
+**The rule.** `exam/medals.js` (`medalFor`) and `App\Domain\Practice\Medals` (PHP)
+implement it, both checked against `exam/medals.fixture.json`. A CORRECT answer on an exam
+step earns:
+
+| Medal | Condition | Points |
+|---|---|---|
+| 🥇 gold | no hint, within the step's time | 3 |
+| 🥈 silver | one fault: one hint OR over time | 2 |
+| 🥉 bronze | two faults or more | 1 |
+
+- A wrong answer earns nothing, and neither does a self-checked « بيّن أن » or a self-marked
+  photo answer (`evaluated_by = self`). A proof or a photo answer judged correct by the
+  TEACHER (`evaluated_by = teacher`, « تصحيح الأستاذ ») earns its medal, with the time
+  actually spent (`medalFor({…, evaluatedBy})`, `Medals::medalFor(…, $evaluatedBy)`).
+- The points make a rank (`rankFor`): مبتدئ 0 → مجتهد 15 → متفوّق 40 → بطل الشهادة 80.
+- Nothing is stored. Medals are DERIVED from the saved attempts (outcome, `hints_used`,
+  `answer.seconds`) against the content's `timeSeconds`. Only the first answer per question
+  counts. Endpoint: `GET /lessons/{code}/practice/medals` → `{total, levels}`.
+
+**Screen** (`features/practice/medals/`):
+- `MedalCelebration.jsx`: after a correct answer, the medal spins in, a shine crosses it,
+  gold throws confetti, and a line gives the reason and the points. It never blocks
+  (`pointer-events: none`), dismisses itself, and is quiet under reduced motion.
+- `Medal.jsx`: the SVG medal, with a ribbon in the Algerian flag's colours.
+- `MedalTray.jsx`: « ميدالياتي في هذا الدرس: » in the sheet's top band, live.
+- Each answered step shows its medal. The finished exercise shows its haul, plus « تمرين
+  ذهبي! » when every step is gold.
+- `MedalCabinet.jsx`: « خزانة الميداليات » on the levels page (totals, rank, progress to
+  the next rank, the rule in one line). The level cards show their medals.
+- The teacher view plays the celebration locally and records nothing.
+
+**Sound.** `medalSound.js` plays a short synthesised fanfare: gold gets the richest one,
+bronze the shortest. It plays only when « الصوت والمؤثرات » is on in the settings window.
+That is the device preference already used by the lessons (`useEffectsPreference`), off by
+default.
+
+## Saved answers and locked exam steps (2026-10-06)
+
+Every answer is saved on the server (`question_attempts.submitted_answer`).
+
+- **An answered step is locked.** On an exam sheet a step is answered once. Re-opening it
+  (going back, reloading) returns the same attempt with its saved answer, its outcome and
+  `normalized` (`PracticeSessionService::openQuestion`, `POST …/questions` → `attempt.answer`).
+  The student player adopts that attempt uuid and shows the answer locked. There is no
+  « أعد المحاولة » on a sheet, because the model answer is visible once the step has been
+  answered.
+- **« التمرين السابق » reads the database.** It is rebuilt from
+  `GET /practice/sessions/{id}/answers` (the session's exercises with the first saved answer
+  per question), so it survives a reload and shows only what was actually recorded.
+- **Teacher view.** On a sheet, « السؤال السابق » scrolls back to the locked step instead of
+  reopening it. The teacher view is still never recorded (« تصفّح دون تتبّع »).
+
+Test: `EvidenceTrustBoundaryTest::test_an_answered_exam_step_reopens_locked_with_its_saved_answer`.
+
+## Image answers and teacher validation (2026-10-06)
+
+The owner wanted students to be able to photograph their handwritten work, and teachers to
+correct it. It applies to every exam sheet (any lesson listed in `content/practice/exam-style.json`;
+the engine has no lesson list of its own). Classic cards have no photo picker.
+
+### Owner decisions (2026-10-06)
+
+| Question | Decision |
+|---|---|
+| Teacher mode, step with an auto-checkable typed answer | The automatic verdict and model answer appear IMMEDIATELY, as today |
+| Does the teacher's verdict count? | Yes: mastery evidence `evaluated_by = teacher` and a medal, with the time limit applied to the time actually spent |
+| Limits | 3 photos per step, 5 MB before compression, kept 12 months; a student who leaves the class takes the photos back (the teacher loses access) |
+| Review queue | A new teacher page « تصحيح الإجابات » (`/enseignant/tashih`), all classes, class filter, counter in the menu |
+| Notification | In the app only (a bell); NO e-mail |
+| Annotation | The teacher can DRAW on the photo (red pen), saved as a separate image |
+| What enters the queue | Photos, proofs (`selfCheck`) and steps with `work: required`; a typed answer alone stays automatic |
+
+### The photo
+
+- **Picker** (`exam/images/AnswerImagePicker.jsx`), under the answer field of every exam
+  step: « صوّر ورقتك » (`accept="image/*" capture="environment"`, the camera on a phone) and
+  « اختر صورة » (a file). Each photo is resized in the browser (`prepareAnswerImage`: JPEG,
+  1600 px longest side, EXIF orientation applied) and uploaded at once:
+  `POST /practice/question-attempts/{attemptUuid}/images` (multipart `image`). It can be
+  removed (`DELETE /practice/answer-images/{uuid}`) until the step is answered. After that it
+  is LOCKED with the answer (`answer_locked`).
+- **Answer = typed, photo, or both.** « تحقّق » opens with a photo alone. A photo also
+  satisfies `work: required`.
+- **Server** (`App\Domain\Practice\AnswerImageStore`):
+  - private disk `local` (`storage/app/private/answer-images/{userId}/`), never a public
+    URL;
+  - type read from the CONTENT (finfo + getimagesize: JPEG, PNG or WebP), with a guard
+    against decompression bombs;
+  - RE-ENCODED to JPEG by GD (EXIF orientation applied, then every metadata block, GPS
+    included, is gone), longest side ≤ 1600 px;
+  - 3 per step (`image_limit_reached`), 5 MB (`image_too_large`), `expires_at` = +12 months.
+  - Refusal codes are translated by the client (`practice.exam.images.errors.*`).
+- **Serving.** `GET /practice/answer-images/{uuid}` serves only the owner. `GET
+  /teacher/answer-images/{uuid}` serves only a teacher whose ACTIVE class contains the
+  student (`TeacherPracticeResponses::rosterOf`). Add `?annotated=1` for the teacher's
+  version. Responses carry `Cache-Control: private, no-store` and `nosniff`. The client loads
+  them with the token (`apiBlob`) and shows an object URL (`AnswerImageGallery.jsx`,
+  `BlobImage`).
+- **The saved answer.** `submitted_answer.images` = the image uuids, read from the
+  DATABASE. A list sent by the client is ignored. `imageOnly: true` is also a server key,
+  set when the photos come with nothing machine-checkable (an empty or unreadable field, a
+  `choice` / `multiChoice` step with no box ticked — `PracticeEvidenceRecorder::nothingPicked`,
+  2026-10-06 — or a proof with no text). Such a step waits (teacher or self-mark); it is
+  never answered « ليس بعد » on the spot.
+- **Retention.** `smarter:answer-images:purge` (scheduled daily at 04:10) deletes expired
+  photos, file and row, and the folders of deleted accounts (a cascade removes the rows,
+  not the files).
+
+### Who validates — `student_settings.practice_validation`
+
+`self` (« مستقل », the default) or `teacher` (« تصحيح الأستاذ »). It is set PER STUDENT
+by the teacher on the « إعدادات التلميذ » card (`PATCH
+/teacher/classrooms/{id}/students/{studentId}/settings` `{practiceValidation}`); a student
+cannot set it. It APPLIES only while the student is an active member of an active class:
+`StudentSettingsService::practiceValidation`, exposed as `effectiveValidation` by `GET
+/me/settings` and shown read-only in the student's settings window. Outside a class the
+student is always `self`.
+
+`PracticeEvidenceRecorder::route()` decides, on the FIRST answer to an exam step:
+
+| Mode | Step | Result |
+|---|---|---|
+| any | typed answer, no photo, no required work | judged by the server, as before |
+| `self` | photo only (`imageOnly`) | `abandoned` + `self:pending` → model answer + « مطابق / غير مطابق » (`SelfMarkChoice`) → `evaluated_by = self`, never evidence, never a medal |
+| `self` | proof (`selfCheck`) | unchanged self-check flow (`evaluated_by = self` once marked) |
+| `teacher` | proof, or photo only | `abandoned` + `review:pending`; an `answer_reviews` row with `kind = verdict`; no verdict, no model answer, no medal; the student CONTINUES; self-marking is refused (`review_pending`) |
+| `teacher` | typed answer + photo, or `work: required` | judged by the server now (evidence, medal, model answer) + an `answer_reviews` row with `kind = feedback` |
+
+While the server decides an exam step with a photo or a proof, the player shows NO local
+prediction: it cannot know who will judge, and showing it would flash the model answer.
+
+### The teacher's review — « تصحيح الإجابات »
+
+- `GET /teacher/reviews[?classroom=]` returns the pending copies of the teacher's students,
+  oldest first. A foreign `classroom` is 403. `GET /teacher/reviews/count` feeds the menu
+  badge (`useReviewCount`).
+- The page is `pages/teacher/TeacherReviewsPage.jsx`. For each copy it shows the student,
+  the class, the step statement read from the content, the typed answer, the proof, the
+  work, the photos, the time and the model answer (folded). Then the verdict (صحيحة / غير
+  صحيحة; for `feedback`: سليم / يحتاج مراجعة) and a comment (≤ 2000 characters).
+- **Annotation** (`features/teacher/reviews/AnnotationEditor.jsx`). A canvas at the photo's
+  real size, a red pen in three widths, undo and clear. « احفظ » composes a JPEG and sends
+  it to `POST /teacher/answer-images/{uuid}/annotation`, re-encoded like the photo and
+  stored NEXT TO the original, which never changes.
+- **Decision** (`POST /teacher/reviews/{id}` `{verdict, comment}`, `AnswerReviewService`).
+  A copy is judged once (409 `already_reviewed` after that).
+  - `verdict` kind: `PracticeEvidenceRecorder::recordTeacherVerdict`. The verdict becomes the
+    attempt's outcome (`normalized = teacher:<verdict>`, `evaluated_by = teacher`), and
+    evidence is written through `ProgressEngine` (`EvidenceEvent::EVALUATED_BY_TEACHER`,
+    full weight; never for `counted: false`). This is still the ONLY door from practice to
+    mastery.
+  - `feedback` kind: the outcome does not change.
+- **Scope.** The same scope as the whole student file: active members of the teacher's
+  non-archived classes. A student who leaves drops out of the queue, and the old teacher gets
+  404 on the photos. The student keeps everything, and can self-mark a copy that was still
+  pending (the request becomes `withdrawn`).
+
+### The notification and the read-only correction
+
+- When the teacher decides, the student gets `App\Notifications\AnswerReviewedNotification`
+  on Laravel's `database` channel (table `notifications`; no e-mail). Its data is
+  `{reviewId, verdict, lessonCode, exerciseId, questionId}`; no photo, no comment.
+- **Bell** (`features/notifications/NotificationBell.jsx`, `GET /me/notifications`, `POST
+  /me/notifications/{id}/read`, `…/read-all`). It sits in the desktop sidebar (opening
+  upward) and in the phone top bar. It refreshes every 2 minutes and when the tab becomes
+  visible; the mounted bells sync through the `sa:notifications-changed` event.
+- **Opening a notification** goes to `/espace/tashih/:reviewId`
+  (`pages/student/practice/AnswerReviewPage.jsx`, `GET /practice/reviews/{id}`, owner only).
+  It shows EXACTLY that exercise as an exam sheet up to that step, read-only: the earlier
+  steps with their answers, then the reviewed step with the saved answer, the photos (the
+  « مصحّحة » version first), the verdict and comment (`ReviewStatus.jsx`) and the model
+  answer.
+
+### Where the copy is read again
+
+`AttemptPresenter::answer` is the one shape: answer, outcome, `normalized`, `evaluatedBy`,
+`images`, `review`. It is used by « التمرين السابق », a reopened step (`POST …/questions`
+also returns the photos attached BEFORE the answer, so a reload keeps them), the
+correction page, the queue, and « إجابات تلاميذي » (`TeacherPracticeResponses`, photos plus
+`ReviewStatus` in `StudentResponsesPanel.jsx`). History entries carry `images`, `review` and
+`evaluatedBy` (`questionHistory.historyEntry`), and `ExamSheet` (`imageLoader` prop) shows them
+on the finished steps.
+
+Tests:
+- `tests/Feature/AnswerImagesAndTeacherReviewTest.php` covers re-encoding without EXIF,
+  1600 px, the limits, the scope, self-marking a photo, teacher mode end to end (queue,
+  annotation, verdict, `teacher` evidence, medal, notification, correction page), leaving
+  the class, the purge, and that a student cannot choose the mode.
+- The privacy suite (`TeacherPrivacyContractTest`) includes the queue and its counter.
+- `TeacherAuthorizationTest` maps `{uuid}`.
+- `exam/images/answerImages.test.js`.
+- `medals.fixture.json` has 5 new cases.
+- Browser: `apps/web/e2e/lesson-kit/practice-image-answers.mjs` (36 checks; needs a test
+  class, see its header).
+
+### Two zones on a step that asks for working (2026-10-06)
+
+When a step has `work` (required or optional), the answer area shows TWO numbered zones so the
+student sees where each thing goes:
+1. **« ١ مراحل الحساب »** — an amber panel with its ruled lines (`WorkArea`, the `ZoneNumber` badge).
+2. **« ٢ النتيجة النهائية »** — below a dashed divider, a green-framed box holding the answer
+   field and « تحقّق » (`data-result-zone`). Same markup in the student player and in
+   `TeacherPracticePlayer`.
+
+Steps without `work` keep the single field with no label.
 
 ### Which exercise next — the selector (Mastery V2)
 

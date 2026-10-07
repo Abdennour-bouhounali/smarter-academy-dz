@@ -1,124 +1,279 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l3-007",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — إطار صورة مستطيلة",
-    "estimatedMinutes": 3,
+    "title": "إطار صورة مستطيلة",
+    "estimatedMinutes": 10,
     "tags": [
       "نمذجة",
-      "إطار",
       "نشر"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
-      "modelledOn": "situation"
+      "modelledOn": "situation",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-harfi-l3-007"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "صورة مستطيلة بعداها 20cm و 30cm، نضعها في إطار عرضه $x$ (بالسنتيمتر) من كل الجهات."
+    "content": "صورة مستطيلة الشكل بعداها $20$ cm و $30$ cm ، نضعها في إطار عرضه $x$ cm من كل الجهات."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المساحة الكلية (الصورة مع الإطار) بدلالة $x$ هي ...",
+      "step": "01",
+      "lead": "عبّر بدلالة $x$ عن المساحة الكلية $S$ (الصورة مع الإطار)، ثم انشرها وبسّطها.",
+      "statement": "العدد $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $ax^2 + bx + c$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "value": "1",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعدا المستطيل الكبير: $(20 + 2x)$ و $(30 + 2x)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب كل حد من القوس الأول في كل حد من القوس الثاني."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود المتشابهة."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = 4x^2 + 100x + 600$ إذن $a = 4$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$S = (20 + 2x)(30 + 2x)$",
+          "$S = 600 + 40x + 60x + 4x^2$"
+        ],
+        "result": "S = 4x^2 + 100x + 600"
+      },
+      "work": "optional",
+      "timeSeconds": 210
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $ax^2 + bx + c$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "100",
+      "misconceptionSignatures": [
+        {
+          "value": "50",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $b$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = 4x^2 + 100x + 600$ إذن $b = 100$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$S = 4x^2 + 100x + 600$"
+        ],
+        "result": "b = 100"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "01",
+      "statement": "العدد $c$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $ax^2 + bx + c$ : اكتب العدد $c$ فقط",
+      "expectedAnswer": "600",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $c$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = 4x^2 + 100x + 600$ إذن $c = 600$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$S = 4x^2 + 100x + 600$"
+        ],
+        "result": "c = 600"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "lead": "استنتج بدلالة $x$ مساحة الإطار وحده $M$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$4x^2 + 600$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
-        },
-        {
-          "id": "B",
-          "content": "$4x^2 + 100x + 600$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x^2 + 50x + 600$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "D",
-          "content": "$4x^2 + 50x + 600$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $M$ على الشكل $ax^2 + bx$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "البعدان مع الإطار: $20 + 2x$ و $30 + 2x$."
+          "content": "مساحة الإطار = المساحة الكلية − مساحة الصورة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انشر الجداء بأربعة جداءات."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$40x + 60x$."
+          "content": "مساحة الصورة $20 \\times 30$ ."
         }
       ],
       "feedback": {
-        "correct": "$(20 + 2x)(30 + 2x) = 600 + 40x + 60x + 4x^2 = 4x^2 + 100x + 600$.",
-        "incorrect": "الإطار على جهتي كل بعد، والنشر فيه أربعة جداءات."
+        "correct": "$M = 4x^2 + 100x$ إذن $a = 4$ .",
+        "incorrect": "اطرح مساحة الصورة من المساحة الكلية التي وجدتها في 01."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$M = S - 20 \\times 30 = 4x^2 + 100x + 600 - 600$"
+        ],
+        "result": "M = 4x^2 + 100x"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
-      "id": "q2",
-      "statement": "احسب مساحة الإطار وحده (بـ $cm^2$) من أجل $x = 2$.",
+      "id": "q5",
+      "step": "02",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $M$ على الشكل $ax^2 + bx$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $b$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$M = 4x^2 + 100x$ إذن $b = 100$ .",
+        "incorrect": "اطرح مساحة الصورة من المساحة الكلية التي وجدتها في 01."
+      },
+      "solution": {
+        "lines": [
+          "$M = 4x^2 + 100x$"
+        ],
+        "result": "b = 100"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q6",
+      "step": "03",
+      "statement": "احسب مساحة الإطار من أجل $x = 2$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح",
+      "answerFormat": "عدد طبيعي: المساحة بـ $cm^2$",
       "expectedAnswer": "216",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المساحة الكلية من أجل $x = 2$ : $24 \\times 34$."
+          "content": "عوّض $x$ بالقيمة المعطاة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اطرح مساحة الصورة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "مساحة الصورة $20 \\times 30$."
+          "content": "اختر الشكل الذي يُسهّل الحساب: الشكل المحلّل إذا انعدم أحد عامليه، والشكل المنشور إذا كان $x = 0$ ."
         }
       ],
       "feedback": {
-        "correct": "$24 \\times 34 - 600 = 816 - 600 = 216$ ، أو $4 \\times 4 + 100 \\times 2 = 216$.",
-        "incorrect": "مساحة الإطار = المساحة الكلية ناقص مساحة الصورة."
+        "correct": "$M = 216\\,cm^2$ .",
+        "incorrect": "عوّض بالقيمة المعطاة في الشكل المناسب، واحسب بعناية مع احترام أولويات العمليات."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "816",
-          "id": "MISC-NAMDHAJA-MISAHA"
-        }
-      ],
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$M = 4 \\times 2^2 + 100 \\times 2 = 16 + 200$"
+        ],
+        "result": "M = 216\\,cm^2"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l3-007",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 3
+  ]
 }

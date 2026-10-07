@@ -1,4 +1,4 @@
-import { apiRequest, ApiError, classifyStatus } from './apiClient';
+import { apiBlob, apiRequest, ApiError, classifyStatus } from './apiClient';
 import { apiMessage } from './apiMessage';
 
 /**
@@ -123,6 +123,27 @@ export function fetchNextExercise(token, sessionId) {
   );
 }
 
+/** La « خزانة الميداليات » de l'élève pour une leçon (médailles déduites des réponses). */
+export function fetchLessonMedals(token, lessonCode) {
+  return call(
+    `/lessons/${encodeURIComponent(lessonCode)}/practice/medals`,
+    { headers: { Authorization: `Bearer ${token}` } },
+    'Impossible de lire les médailles.',
+  );
+}
+
+/**
+ * Les réponses ENREGISTRÉES de la séance, exercice par exercice — la source de
+ * « التمرين السابق » (feuille d'examen, 2026-10-06), lue en base.
+ */
+export function fetchSessionAnswers(token, sessionId) {
+  return call(
+    `/practice/sessions/${encodeURIComponent(sessionId)}/answers`,
+    { headers: { Authorization: `Bearer ${token}` } },
+    'Impossible de relire les réponses de la séance.',
+  );
+}
+
 /** Clôt la séance et renvoie son bilan. */
 export function completeSession(token, sessionId) {
   return call(
@@ -211,5 +232,51 @@ export function deleteNote(token, id) {
       headers: { Authorization: `Bearer ${token}` },
     },
     'Impossible de supprimer ta note.',
+  );
+}
+
+/* ── Photos de copie et correction de l'enseignant (prototype BEM, 2026-10-06) ── */
+
+/**
+ * Joint UNE photo à l'étape ouverte (avant la réponse). Le refus porte un
+ * `code` (`image_unsupported`, `image_too_large`, `image_limit_reached`,
+ * `answer_locked`) que l'écran traduit.
+ *
+ * @param {Blob} blob  la photo déjà réduite par prepareAnswerImage
+ * @returns {Promise<{success: boolean, image: {id: string, width: number, height: number, annotated: boolean}}>}
+ */
+export function uploadAnswerImage(token, attemptUuid, blob) {
+  const body = new FormData();
+  body.append('image', blob, 'copie.jpg');
+  return call(
+    `/practice/question-attempts/${encodeURIComponent(attemptUuid)}/images`,
+    { method: 'POST', headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' }, body },
+    'Impossible d’envoyer la photo.',
+  );
+}
+
+/** Retire une photo — seulement avant d'avoir répondu. */
+export function deleteAnswerImage(token, imageId) {
+  return call(
+    `/practice/answer-images/${encodeURIComponent(imageId)}`,
+    { method: 'DELETE', headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } },
+    'Impossible de retirer la photo.',
+  );
+}
+
+/** Les octets d'une photo de l'élève (`annotated` : la copie annotée par l'enseignant). */
+export function fetchAnswerImage(token, imageId, annotated = false) {
+  return apiBlob(
+    `/practice/answer-images/${encodeURIComponent(imageId)}${annotated ? '?annotated=1' : ''}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+}
+
+/** Une correction de l'enseignant, ouverte depuis la cloche (lecture seule). */
+export function fetchAnswerReview(token, reviewId) {
+  return call(
+    `/practice/reviews/${encodeURIComponent(reviewId)}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+    'Impossible d’ouvrir la correction.',
   );
 }

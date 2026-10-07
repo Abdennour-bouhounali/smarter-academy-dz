@@ -1,108 +1,227 @@
 {
+  "id": "ex-4am-jidhr-tarbii-l5-001",
+  "lessonCode": "jidhr-tarbii",
+  "level": 5,
   "metadata": {
-    "title": "طريقة — استعمال التعريف لإنجاز حساب",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2017 — سياج قطعة أرض مربعة",
+    "estimatedMinutes": 15,
     "tags": [
-      "طريقة",
-      "حساب"
+      "تعريف الجذر التربيعي",
+      "قيمة مقربة",
+      "وضعية"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "method-compute",
-      "page": 23,
-      "section": "طرائق"
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "BEM 2017 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2017",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 23): احسب ما يلي."
+    "content": "يملك فلاح من ولاية سطيف قطعة أرض مربعة الشكل $ABCD$ مساحتها $1225m^2$ .\nيريد إحاطتها بسياج ثمن المتر الواحد منه 450DA ، مع ترك مدخل عرضه $3m$ دون سياج."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$\\sqrt{0{,}81} \\times \\sqrt{(-0{,}03)^2} = \\ldots$",
+      "step": "01",
+      "statement": "احسب $a$ ، طول ضلع هذه القطعة.",
       "learningPoints": [
         {
-          "code": "4am_jidhr-tarbii_P3",
+          "code": "4am_jidhr-tarbii_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري",
-      "expectedAnswer": "0.027",
+      "answerFormat": "عدد بالمتر (m)",
+      "expectedAnswer": "35",
+      "misconceptionSignatures": [
+        {
+          "value": "612.5",
+          "id": "MISC-JIDHR-NISF"
+        },
+        {
+          "value": "306.25",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$0{,}81 = 0{,}9^2$."
+          "content": "مساحة المربع: $a^2 = 1225$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$(-0{,}03)^2 = (0{,}03)^2$."
+          "content": "$a$ هو العدد الموجب الذي مربعه 1225."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "استعمل $\\sqrt{a^2} = a$ لعددين موجبين ثم اضرب."
+          "content": "رقم آحاد $a$ هو 5: جرّب الأعداد بين 30 و 40."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{0{,}9^2} \\times \\sqrt{0{,}03^2} = 0{,}9 \\times 0{,}03 = 0{,}027$.",
-        "incorrect": "لا تنس أن الجذر التربيعي عدد موجب، ثم انتبه إلى الفاصلة في الجداء."
-      }
+        "correct": "$a = \\sqrt{1225} = 35$ m لأن $35^2 = 1225$.",
+        "incorrect": "طول الضلع هو العدد الموجب الذي مربعه 1225، لا نصف المساحة ولا ربعها."
+      },
+      "solution": {
+        "lines": [
+          "$a^2 = 1225$ و $a$ موجب",
+          "إذن $a = \\sqrt{1225}$ ، و $35^2 = 1225$"
+        ],
+        "result": "a = 35m"
+      },
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "$\\sqrt{(1 - \\sqrt{2})^2} + 1$ يساوي:",
+      "step": "02",
+      "statement": "أعط القيمة المقربة إلى الوحدة بالنقصان لطول القطر $[AC]$ .",
       "learningPoints": [
         {
-          "code": "4am_jidhr-tarbii_P3",
+          "code": "4am_jidhr-tarbii_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي بالمتر (m)",
+      "expectedAnswer": "49",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$2 - \\sqrt{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-ISHARA"
+          "value": "50",
+          "id": "MISC-TAQRIB-NAQS-ZIYADA"
         },
         {
-          "id": "B",
-          "content": "$\\sqrt{2}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\sqrt{2} + 2$",
-          "isCorrect": false
+          "value": "70",
+          "id": "MISC-JIDHR-JAMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$\\sqrt{2}$ أكبر من 1: ما إشارة $1 - \\sqrt{2}$ ؟"
+          "content": "في المثلث $ABC$ القائم في $B$: $AC^2 = AB^2 + BC^2$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$(1 - \\sqrt{2})^2 = (\\sqrt{2} - 1)^2$."
+          "content": "$AC = \\sqrt{2450}$ ؛ احسبه بالحاسبة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$\\sqrt{(\\sqrt{2} - 1)^2} = \\sqrt{2} - 1$ لأنه موجب؛ ثم أضف 1."
+          "content": "بالنقصان إلى الوحدة: احذف الجزء العشري."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{(1 - \\sqrt{2})^2} = \\sqrt{2} - 1$، إذن المجموع $(\\sqrt{2} - 1) + 1 = \\sqrt{2}$.",
-        "incorrect": "العدد $1 - \\sqrt{2}$ سالب: لا يساوي $\\sqrt{(1 - \\sqrt{2})^2}$."
-      }
+        "correct": "$AC^2 = 2450$ و $AC = \\sqrt{2450} = 49{,}49\\ldots$: القيمة المقربة بالنقصان $49$ m.",
+        "incorrect": "احسب $AC^2$ بخاصية فيثاغورس ثم $AC$ بالحاسبة، ولا تدوّر نحو الأعلى."
+      },
+      "solution": {
+        "lines": [
+          "حسب خاصية فيثاغورس: $AC^2 = 35^2 + 35^2 = 2450$",
+          "$AC = \\sqrt{2450} = 49{,}497\\ldots$",
+          "$49 \\leqslant AC < 50$"
+        ],
+        "result": "AC \\approx 49m"
+      },
+      "timeSeconds": 150,
+      "counted": false
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "احسب طول السياج اللازم.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر (m)",
+      "expectedAnswer": "137",
+      "misconceptionSignatures": [
+        {
+          "value": "140",
+          "id": "MISC-MURABBA-DIF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط القطعة أربع مرات طول ضلعها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لا تنس طرح عرض المدخل."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 \\times 35 - 3 = 137$ m.",
+        "incorrect": "احسب المحيط ثم اطرح عرض المدخل."
+      },
+      "solution": {
+        "lines": [
+          "المحيط: $4 \\times 35 = 140$",
+          "طول السياج: $140 - 3 = 137$"
+        ],
+        "result": "137m"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "04",
+      "statement": "احسب تكلفة السياج.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار (DA)",
+      "expectedAnswer": "61650",
+      "misconceptionSignatures": [
+        {
+          "value": "63000",
+          "id": "MISC-MURABBA-DIF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب طول السياج في ثمن المتر الواحد."
+        }
+      ],
+      "feedback": {
+        "correct": "$137 \\times 450 = 61650$ DA.",
+        "incorrect": "استعمل طول السياج الذي وجدته في السؤال 03 (دون المدخل)."
+      },
+      "solution": {
+        "lines": [
+          "$137 \\times 450 = 61650$"
+        ],
+        "result": "61650DA"
+      },
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-jidhr-tarbii-l5-001",
-  "lessonCode": "jidhr-tarbii",
-  "level": 5
+  ]
 }

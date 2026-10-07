@@ -5,42 +5,6 @@
   ],
   "defaultMinPerLevel": 3,
   "lessons": {
-    "qasim-adad-tabii": {
-      "minPerLevel": 1,
-      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
-    },
-    "qawasim-adad-tabii": {
-      "minPerLevel": 1,
-      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
-    },
-    "khawass-qawasim": {
-      "minPerLevel": 1,
-      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
-    },
-    "qasim-mushtarak-akbar": {
-      "minPerLevel": 1,
-      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
-    },
-    "tayin-pgcd": {
-      "minPerLevel": 1,
-      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
-    },
-    "bahth-pgcd": {
-      "minPerLevel": 1,
-      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
-    },
-    "awwaliyan-fima-baynahuma": {
-      "minPerLevel": 1,
-      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
-    },
-    "ikhtizal-kasr": {
-      "minPerLevel": 1,
-      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
-    },
-    "wadiya-idmajiya-aadad": {
-      "minPerLevel": 1,
-      "source": "سلسلة التفوق رقم 01 (BEM 2021)، الوضعيات 1–10 — docs/sources/4am/unit1/worksheet-tafawwuq-01.json"
-    },
     "jidhr-tarbii": {
       "minPerLevel": 10,
       "source": "الوحدة 2 «الحساب على الجذور»: تمارين الكتاب (ص 19–30، docs/sources/4am/unit2/extraction.json) مكمَّلة بتمارين تولّدها المنصّة لكل نقطة تعلّم — 10 تمارين × 5 مستويات (قرار المالك، 2026-09-30)"

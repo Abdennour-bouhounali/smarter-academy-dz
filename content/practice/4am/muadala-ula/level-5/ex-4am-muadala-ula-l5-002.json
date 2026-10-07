@@ -3,110 +3,166 @@
   "lessonCode": "muadala-ula",
   "level": 5,
   "metadata": {
-    "title": "تمرين 9 — معادلة بلا حل",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2010 — ملعب جواري بتيزي وزو",
+    "estimatedMinutes": 15,
     "tags": [
-      "كسور",
-      "مساواة خاطئة"
+      "محيط",
+      "معادلة",
+      "وضعية إدماجية"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "ex-9",
-      "page": 50,
-      "section": "أوظّف تعلّماتي",
-      "number": 9
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_muadala-ula_P2",
+      "modelledOn": "BEM 2010 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2010",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 50): حل كل معادلة من المعادلات الآتية."
+    "content": "قطعة أرض مستطيلة الشكل ملك لبلدية بتيزي وزو، طولها يزيد عن عرضها بـ $14\\,m$ ومحيطها $172\\,m$ . تريد البلدية تهيئتها ملعبًا جواريًا وتغطيتها بالعشب الاصطناعي، سعر المتر المربع منه 1200DA ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حل المعادلة $\\dfrac{2 + x}{2} = \\dfrac{2x + 1}{4}$ هو:",
+      "step": "01",
+      "statement": "نرمز بـ $x$ إلى عرض القطعة. اكتب معادلة تترجم المعطيات ثم احسب $x$ .",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 5,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: العرض بـ m",
+      "expectedAnswer": "36",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "لا يوجد أي عدد يحقّق المساواة",
-          "isCorrect": true
+          "value": "1/36",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
         },
         {
-          "id": "B",
-          "content": "$0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
-        },
-        {
-          "id": "C",
-          "content": "$-\\dfrac{3}{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+          "value": "50",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في المعادلة مقامات."
+          "content": "الطول $x + 14$ ، ومحيط المستطيل $2 \\times$ (الطول + العرض)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب الطرفين في عدد تقبل كل المقامات القسمة عليه، مع كل الحدود."
+          "content": "اكتب أن المحيط يساوي $172$ ، ثم انشر وبسّط."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم انشر وانقل المجاهيل إلى طرف والمعاليم إلى الآخر."
+          "content": "اعزل $4x$ ثم اقسم على 4."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{2 + x}{2} = \\dfrac{2x + 1}{4}$ : بعد حذف $x$ من الطرفين يبقى عددان مختلفان: لا يوجد أي عدد يحقّق المساواة.",
-        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
-      }
+        "correct": "عرض القطعة $36\\,m$ .",
+        "incorrect": "أعد النشر حدًّا حدًّا مع الإشارات، ثم انقل وجمّع واقسم على معامل $x$ . تحقّق بالتعويض في المعادلة الأولى."
+      },
+      "solution": {
+        "lines": [
+          "الطول $x + 14$ ، والمحيط: $2(x + x + 14) = 172$",
+          "$4x + 28 = 172$",
+          "$4x = 172 - 28$",
+          "$4x = 144$",
+          "$x = \\dfrac{144}{4}$"
+        ],
+        "result": "x = 36"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "حلّ المعادلة $\\dfrac{x + 4}{10} = \\dfrac{3}{10} - \\dfrac{2x}{5}$ .",
+      "step": "02",
+      "statement": "استنتج طول القطعة.",
       "learningPoints": [
         {
-          "code": "4am_muadala-ula_P2",
+          "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 4,
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
-      "expectedAnswer": "-1/5",
+      "answerFormat": "عدد: الطول بـ m",
+      "expectedAnswer": "50",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في المعادلة مقامات."
+          "content": "الطول يزيد عن العرض بـ 14m ."
+        }
+      ],
+      "feedback": {
+        "correct": "$50\\,m$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولويات العمليات والإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$36 + 14 = 50$"
+        ],
+        "result": "50\\,m"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "احسب التكلفة الإجمالية للعشب الاصطناعي.",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بـ DA",
+      "expectedAnswer": "2160000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب مساحة القطعة أولًا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب الطرفين في عدد تقبل كل المقامات القسمة عليه، مع كل الحدود."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم انشر وانقل المجاهيل إلى طرف والمعاليم إلى الآخر."
+          "content": "اضرب المساحة في سعر المتر المربع."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{x + 4}{10} = \\dfrac{3}{10} - \\dfrac{2x}{5}$ : ننقل المجاهيل إلى طرف والمعاليم إلى الآخر ونقسم على معامل $x$ : $x = -\\dfrac{1}{5}$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "$2160000DA$ .",
+        "incorrect": "المساحة = الطول × العرض، ثم اضربها في سعر المتر المربع."
+      },
+      "solution": {
+        "lines": [
+          "المساحة: $36 \\times 50 = 1800\\,m^2$",
+          "التكلفة: $1800 \\times 1200$"
+        ],
+        "result": "2160000DA"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

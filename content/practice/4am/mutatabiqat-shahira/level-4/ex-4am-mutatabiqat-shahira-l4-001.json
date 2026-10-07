@@ -1,10 +1,14 @@
 {
+  "id": "ex-4am-mutatabiqat-shahira-l4-001",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 4,
   "metadata": {
-    "title": "دوري الآن 1 — انشر وبسّط",
-    "estimatedMinutes": 7,
+    "title": "انشر وبسّط — متطابقات وجداءات",
+    "estimatedMinutes": 13,
     "tags": [
+      "مربع فرق",
       "مربع مجموع",
-      "مربع فرق"
+      "تبسيط"
     ],
     "source": {
       "type": "textbook",
@@ -12,66 +16,157 @@
       "page": 36,
       "section": "دوري الآن",
       "number": 1
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "انشر كل عبارة مما يلي وبسّطها: $A = (x - 2)^2 + 4(3x - 1)(3x + 3)$ و $B = 9x(9x + 1)^2 - x(x - 1)^2$ ."
+    "content": "لتكن العبارتان $A$ و $B$ حيث:",
+    "formulas": [
+      "A = (x - 2)^2 + 4(3x - 1)(3x + 3)",
+      "B = 9x(9x + 1)^2 - x(x - 1)^2"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "النشر المبسّط للعبارة $A$ هو:",
+      "step": "01",
+      "lead": "انشر ثم بسّط العبارة $A$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_mutatabiqat-shahira_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $mx^2 + nx + p$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "37",
+      "hints": [
         {
-          "id": "A",
-          "content": "$37x^2 + 28x - 8$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+          "id": "h1",
+          "type": "look",
+          "content": "تعرّف على مربع فرق: $(a - b)^2 = a^2 - 2ab + b^2$ ."
         },
         {
-          "id": "B",
-          "content": "$37x^2 + 20x - 8$",
-          "isCorrect": true
+          "id": "h2",
+          "type": "direction",
+          "content": "عيّن الحدّين $a$ و $b$ ، ولا تنسَ الحد المضاعف $2ab$ ولا تربيع المعامل."
         },
         {
-          "id": "C",
-          "content": "$37x^2 + 24x - 16$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود المتشابهة: حدود $x^2$ معًا، ثم حدود $x$، ثم الأعداد."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 37x^2 + 20x - 8$ إذن $m = 37$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$A = (x - 2)^2 + 4(3x - 1)(3x + 3)$",
+          "$A = x^2 - 2 \\times x \\times 2 + 2^2 + 4\\left[3x \\times 3x + 3x \\times 3 - 1 \\times 3x - 1 \\times 3\\right]$",
+          "$A = x^2 - 4x + 4 + 4(9x^2 + 9x - 3x - 3)$",
+          "$A = x^2 - 4x + 4 + 36x^2 + 36x - 12x - 12$"
+        ],
+        "result": "A = 37x^2 + 20x - 8"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $mx^2 + nx + p$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "20",
+      "misconceptionSignatures": [
+        {
+          "value": "24",
+          "id": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "value": "22",
+          "id": "MISC-MUTATABIQA-2AB-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر $(x - 2)^2$ بمتطابقة."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "انشر $(3x - 1)(3x + 3)$ بالخاصية التوزيعية ثم اضرب في $4$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع الحدود المتشابهة."
+          "content": "معامل $x$ يأتي من الحد المضاعف $2ab$ ومن الحدود الأخرى في $x$ ، بإشاراتها."
         }
       ],
       "feedback": {
-        "correct": "$x^2 - 4x + 4 + 36x^2 + 24x - 12 = 37x^2 + 20x - 8$",
-        "incorrect": "في $(x - 2)^2$ الحد المضاعف $-4x$ والحد الأخير $+4$."
-      }
+        "correct": "$A = 37x^2 + 20x - 8$ إذن $n = 20$ .",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $n$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$A = 37x^2 + 20x - 8$"
+        ],
+        "result": "n = 20"
+      },
+      "timeSeconds": 60
     },
     {
-      "id": "q2",
-      "statement": "ما معامل $x^2$ في النشر المبسّط للعبارة $B$ ؟",
+      "id": "q3",
+      "step": "01",
+      "statement": "العدد $p$ :",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $mx^2 + nx + p$ : اكتب العدد $p$ فقط",
+      "expectedAnswer": "-8",
+      "misconceptionSignatures": [
+        {
+          "value": "-16",
+          "id": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت هو مجموع الأعداد التي لا تحتوي على $x$ بعد النشر، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 37x^2 + 20x - 8$ إذن $p = -8$ .",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $p$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$A = 37x^2 + 20x - 8$"
+        ],
+        "result": "p = -8"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "lead": "انشر ثم بسّط العبارة $B$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_mutatabiqat-shahira_P1",
@@ -82,33 +177,138 @@
           "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "164",
+      "answerFormat": "يُكتب $B$ على الشكل $mx^3 + nx^2 + px$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "728",
+      "misconceptionSignatures": [
+        {
+          "value": "80",
+          "id": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر $(9x + 1)^2$ ثم اضرب في $9x$."
+          "content": "عيّن نوع كل متطابقة شهيرة في العبارة: مربع مجموع، مربع فرق، أو جداء مجموع وفرق."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انشر $(x - 1)^2$ ثم اضرب في $x$."
+          "content": "عيّن الحدّين $a$ و $b$ ، ولا تنسَ الحد المضاعف $2ab$ ولا تربيع المعامل."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اطرح، واجمع معاملات $x^2$ مع الانتباه إلى الإشارة."
+          "content": "ضع النشر بين قوسين عندما تسبقه إشارة $-$ ، ثم غيّر إشارة كل حد عند حذفهما، واجمع الحدود المتشابهة."
         }
       ],
       "feedback": {
-        "correct": "$B = 728x^3 + 164x^2 + 8x$",
-        "incorrect": "الحد في $x^2$ يأتي من الحدّين المضاعفين."
-      }
+        "correct": "$B = 728x^3 + 164x^2 + 8x$ إذن $m = 728$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$B = 9x(9x + 1)^2 - x(x - 1)^2$",
+          "$B = 9x\\left[(9x)^2 + 2 \\times 9x \\times 1 + 1^2\\right] - x\\left[x^2 - 2 \\times x \\times 1 + 1^2\\right]$",
+          "$B = 9x(81x^2 + 18x + 1) - x(x^2 - 2x + 1)$",
+          "$B = 729x^3 + 162x^2 + 9x - x^3 + 2x^2 - x$"
+        ],
+        "result": "B = 728x^3 + 164x^2 + 8x"
+      },
+      "work": "optional",
+      "timeSeconds": 300
+    },
+    {
+      "id": "q5",
+      "step": "02",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $mx^3 + nx^2 + px$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "164",
+      "misconceptionSignatures": [
+        {
+          "value": "0",
+          "id": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "value": "82",
+          "id": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل $x^2$ هو مجموع معاملات حدود $x^2$ بعد النشر."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = 728x^3 + 164x^2 + 8x$ إذن $n = 164$ .",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $n$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$B = 728x^3 + 164x^2 + 8x$"
+        ],
+        "result": "n = 164"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q6",
+      "step": "02",
+      "statement": "العدد $p$ :",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $mx^3 + nx^2 + px$ : اكتب العدد $p$ فقط",
+      "expectedAnswer": "8",
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل $x$ يأتي من الحد المضاعف $2ab$ ومن الحدود الأخرى في $x$ ، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = 728x^3 + 164x^2 + 8x$ إذن $p = 8$ .",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $p$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$B = 728x^3 + 164x^2 + 8x$"
+        ],
+        "result": "p = 8"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-mutatabiqat-shahira-l4-001",
-  "lessonCode": "mutatabiqat-shahira",
-  "level": 4
+  ]
 }

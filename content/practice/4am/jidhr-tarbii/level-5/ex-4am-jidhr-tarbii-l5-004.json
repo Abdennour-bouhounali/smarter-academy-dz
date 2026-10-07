@@ -1,124 +1,206 @@
 {
+  "id": "ex-4am-jidhr-tarbii-l5-004",
+  "lessonCode": "jidhr-tarbii",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — وتر مثلث قائم",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2017 — قسمة قطعة أرض بين أخوين",
+    "estimatedMinutes": 16,
     "tags": [
-      "فيثاغورس",
+      "تعريف الجذر التربيعي",
       "وضعية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_jidhr-tarbii_P1",
-      "modelledOn": "act-1"
+      "modelledOn": "BEM 2017 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2017",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "ABC مثلث قائم في A."
+    "content": "قطعة أرض مربعة الشكل $ABCD$ مساحتها $784m^2$ ملك للأخوين ياسين وأيوب. $E$ نقطة من الضلع $[BC]$ حيث $BE = 21m$ .\nيأخذ ياسين الجزء المثلث $ABE$ ، ويأخذ أيوب الجزء الباقي $AECD$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "إذا كان $AB = 1$ cm و $AC = 3$ cm، فإن طول الوتر $BC$ (بالسنتيمتر) هو:",
+      "step": "01",
+      "statement": "احسب $a$ ، طول ضلع القطعة $ABCD$ .",
       "learningPoints": [
         {
           "code": "4am_jidhr-tarbii_P1",
           "role": "primary"
-        },
-        {
-          "code": "4am_jidhr-tarbii_P2",
-          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر (m)",
+      "expectedAnswer": "28",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "4",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-JAMA"
-        },
-        {
-          "id": "B",
-          "content": "10",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "5",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-NISF"
-        },
-        {
-          "id": "D",
-          "content": "$\\sqrt{10}$",
-          "isCorrect": true
+          "value": "392",
+          "id": "MISC-JIDHR-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "طبّق خاصية فيثاغورس لحساب $BC^2$."
+          "content": "$a^2 = 784$ و $a$ موجب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$BC^2 = AB^2 + AC^2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$BC$ هو العدد الموجب الذي مربعه $BC^2$."
+          "content": "جرّب مربعات الأعداد بين 25 و 30."
         }
       ],
       "feedback": {
-        "correct": "$BC^2 = 1 + 9 = 10$، و $BC$ موجب، إذن $BC = \\sqrt{10}$ cm.",
-        "incorrect": "خاصية فيثاغورس تعطي $BC^2$ وليس $BC$، والوتر ليس مجموع الضلعين."
-      }
+        "correct": "$a = \\sqrt{784} = 28$ m.",
+        "incorrect": "طول الضلع هو العدد الموجب الذي مربعه 784."
+      },
+      "solution": {
+        "lines": [
+          "$a^2 = 784$ و $a$ موجب",
+          "$a = \\sqrt{784}$ و $28^2 = 784$"
+        ],
+        "result": "a = 28m"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "إذا كان $AB = 9$ cm و $AC = 12$ cm، فما طول $BC$ (بالسنتيمتر)؟",
+      "step": "02",
+      "statement": "احسب مساحة جزء ياسين $ABE$ .",
       "learningPoints": [
         {
           "code": "4am_jidhr-tarbii_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي (بالسنتيمتر)",
-      "expectedAnswer": "15",
+      "answerFormat": "عدد بالمتر المربع (m²)",
+      "expectedAnswer": "294",
+      "misconceptionSignatures": [
+        {
+          "value": "588",
+          "id": "MISC-MURABBA-DIF"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب $AB^2 + AC^2$."
+          "content": "المثلث $ABE$ قائم في $B$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تحصل على مربع تام."
+          "content": "مساحة المثلث القائم نصف جداء ضلعي الزاوية القائمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{28 \\times 21}{2} = 294 m^2$.",
+        "incorrect": "لا تنس القسمة على 2 في مساحة المثلث."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{AB \\times BE}{2} = \\dfrac{28 \\times 21}{2}$"
+        ],
+        "result": "294m^2"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "احسب مساحة جزء أيوب.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر المربع (m²)",
+      "expectedAnswer": "490",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح مساحة جزء ياسين من مساحة القطعة كلها."
+        }
+      ],
+      "feedback": {
+        "correct": "$784 - 294 = 490 m^2$.",
+        "incorrect": "مساحة جزء أيوب = مساحة القطعة − مساحة جزء ياسين."
+      },
+      "solution": {
+        "lines": [
+          "$784 - 294 = 490$"
+        ],
+        "result": "490m^2"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "04",
+      "statement": "يريد ياسين إحاطة جزئه $ABE$ بسياج. احسب طول السياج.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر (m)",
+      "expectedAnswer": "84",
+      "misconceptionSignatures": [
+        {
+          "value": "98",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا $AE$ بخاصية فيثاغورس في المثلث $ABE$ القائم في $B$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$AE$ هو العدد الموجب الذي مربعه $AE^2$."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "خذ العدد الموجب الذي مربعه هذا المجموع."
+          "content": "ثم اجمع أطوال الأضلاع الثلاثة."
         }
       ],
       "feedback": {
-        "correct": "$BC^2 = 81 + 144 = 225$ و $BC = \\sqrt{225} = 15$ cm.",
-        "incorrect": "لا تجمع الطولين مباشرة: اجمع مربعيهما ثم خذ الجذر التربيعي."
+        "correct": "$AE^2 = 28^2 + 21^2 = 1225$ و $AE = 35$ m، إذن السياج $28 + 21 + 35 = 84$ m.",
+        "incorrect": "$AE \\neq AB + BE$: احسب $AE^2$ ثم خذ العدد الموجب الذي مربعه $AE^2$."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "21",
-          "id": "MISC-JIDHR-JAMA"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "حسب خاصية فيثاغورس: $AE^2 = AB^2 + BE^2 = 784 + 441 = 1225$",
+          "$AE = \\sqrt{1225} = 35$ لأن $35^2 = 1225$",
+          "طول السياج: $28 + 21 + 35$"
+        ],
+        "result": "84m"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
-  ],
-  "id": "ex-4am-jidhr-tarbii-l5-004",
-  "lessonCode": "jidhr-tarbii",
-  "level": 5
+  ]
 }

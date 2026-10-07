@@ -39,8 +39,18 @@ export const isInertOutcome = (o) => o === OUTCOMES.SYNTAX_ERROR || o === OUTCOM
 
 /** Types de réponse gérés. Le validateur de contenu compare cette liste au schéma. */
 export const SUPPORTED_ANSWER_TYPES = Object.freeze([
-  'choice', 'multiChoice', 'rational', 'affine', 'interval', 'point', 'integerSet',
+  'choice', 'multiChoice', 'rational', 'affine', 'interval', 'point', 'integerSet', 'selfCheck',
 ]);
+
+/**
+ * Une question COMPTE-t-elle pour la maîtrise ? Non quand elle est
+ * auto-évaluée (`selfCheck` : « بيّن أن »، « برّر » — l'élève rédige sur sa
+ * feuille, lit le corrigé type et se note lui-même) ou quand le contenu la
+ * déclare `counted: false` (une étape d'exercice de BEM qui relève d'une autre
+ * leçon). Elle est jugée et affichée pareil ; seule la preuve de maîtrise
+ * n'est pas écrite (PracticeEvidenceRecorder.php).
+ */
+export const countsForMastery = (question) => question?.answerType !== 'selfCheck' && question?.counted !== false;
 
 /* ── Ensembles d'entiers naturels (« عيّن كل قواسم العدد 84 ») ──────────────
  *
@@ -167,7 +177,9 @@ function evaluateRational(answer, question) {
     }
     // Même valeur, écriture différente ("3/2" pour "1,5") : juste, et on peut
     // le dire à l'élève plutôt que de faire comme s'il avait recopié.
-    const sameText = String(question.expectedAnswer).trim() === String(answer.value).trim();
+    // La VIRGULE et le POINT décimaux sont la MÊME écriture (propriétaire,
+    // 2026-10-07 : « 1,5 » et « 1.5 » sont tous deux justes, sans remarque).
+    const sameText = sameWriting(question.expectedAnswer, answer.value);
     return result(sameText ? OUTCOMES.CORRECT : OUTCOMES.EQUIVALENT_CORRECT, { normalized: given.toString() });
   }
 
@@ -283,6 +295,28 @@ function evaluatePoint(answer, question) {
   return result(OUTCOMES.INCORRECT, { misconceptionId, normalized });
 }
 
+/* ── Auto-évaluation (« بيّن أن »، « برّر ») ──────────────────────────────
+ *
+ * Une démonstration ne se corrige pas automatiquement. Deux temps (décision
+ * du propriétaire, 2026-10-06) :
+ *  1. l'élève ÉCRIT sa démonstration et valide : `{ text }` est enregistré et
+ *     VERROUILLÉ — issue `abandoned` (inerte : aucune information
+ *     mathématique tant qu'il ne s'est pas noté), `normalized: 'self:pending'` ;
+ *  2. le corrigé type s'affiche, l'élève se note : `{ text, selfMark }` avec le
+ *     MÊME texte → `correct` / `incorrect`.
+ * Jamais compté pour la maîtrise (countsForMastery).
+ */
+function evaluateSelfCheck(answer) {
+  const mark = answer?.selfMark;
+  if (mark === 'correct') return result(OUTCOMES.CORRECT, { normalized: 'self:correct' });
+  if (mark === 'incorrect') return result(OUTCOMES.INCORRECT, { normalized: 'self:incorrect' });
+  if (mark === undefined || mark === null) {
+    const text = typeof answer?.text === 'string' ? answer.text.trim() : '';
+    if (text) return result(OUTCOMES.ABANDONED, { normalized: 'self:pending', feedbackKey: 'pending' });
+  }
+  return syntaxError(String(mark ?? ''));
+}
+
 const EVALUATORS = {
   choice: evaluateChoice,
   multiChoice: evaluateMultiChoice,
@@ -291,6 +325,7 @@ const EVALUATORS = {
   interval: evaluateInterval,
   point: evaluatePoint,
   integerSet: evaluateIntegerSet,
+  selfCheck: evaluateSelfCheck,
 };
 
 /**
@@ -307,13 +342,25 @@ export function evaluateAnswer(answer, question) {
   return evaluator(answer, question);
 }
 
-/** Le message à montrer, choisi par l'issue. */
-export function feedbackFor(question, evaluation, misconceptions = {}) {
+/** Deux écritures identiques au séparateur décimal près (« , » « . » « ٫ ») — jumeau PHP AnswerEvaluator::sameWriting. */
+export function sameWriting(a, b) {
+  const norm = (v) => String(v ?? '').trim().replace(/[.٫]/g, ',');
+  return norm(a) === norm(b);
+}
+
+/**
+ * Le message à montrer, choisi par l'issue.
+ *
+ * Le noyau ne traduit pas : une réponse illisible prend le texte que l'appelant
+ * passe (`messages.syntaxError`, clé i18n `practice.syntaxErrorFeedback`), sinon
+ * le format attendu de la question — jamais une phrase en dur.
+ */
+export function feedbackFor(question, evaluation, misconceptions = {}, messages = {}) {
   if (evaluation.misconceptionId && misconceptions[evaluation.misconceptionId]) {
     return misconceptions[evaluation.misconceptionId].explanation;
   }
   if (evaluation.outcome === OUTCOMES.SYNTAX_ERROR) {
-    return "Je n'ai pas réussi à lire ta réponse. Vérifie le format attendu.";
+    return messages.syntaxError ?? question.answerFormat ?? '';
   }
   const fb = question.feedback ?? {};
   return fb[evaluation.feedbackKey] ?? fb.incorrect ?? '';

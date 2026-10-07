@@ -1,10 +1,12 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-002",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 1,
   "metadata": {
-    "title": "تمرين 2 — المعادلة 4x = 5x (أؤكّد تعلّماتي)",
+    "title": "معادلتان: المجهول في الطرفين",
     "estimatedMinutes": 3,
     "tags": [
-      "معادلة",
-      "أؤكّد تعلّماتي"
+      "معادلة"
     ],
     "source": {
       "type": "textbook",
@@ -12,67 +14,117 @@
       "page": 52,
       "section": "أؤكّد تعلّماتي",
       "number": 2
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في كل حالة اختر الإجابة الصحيحة، وبرّر اختيارك."
+    "content": "حلّ كلا من المعادلتين الآتيتين:"
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حل المعادلة $4x = 5x$ هو ...",
+      "step": "01",
+      "sub": "ا",
+      "statement": "$4x = 5x$",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muadalat_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "0",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\dfrac{5}{4}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-QISMA-ALA-X"
-        },
-        {
-          "id": "B",
-          "content": "$0$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{4}{5}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+          "value": "5/4",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المجهول موجود في الطرفين."
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اجمع حدود $x$ في طرف واحد: $4x - 5x$."
+          "content": "عند نقل حدّ من طرف إلى آخر تتغيّر إشارته."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "عوّض كل اقتراح في الطرفين وقارن."
+          "content": "اقسم الطرفين في الأخير على معامل $x$ بإشارته، ثم تحقّق بالتعويض."
         }
       ],
       "feedback": {
-        "correct": "$4x - 5x = 0$ أي $-x = 0$ ، إذن $x = 0$ ؛ ونتحقق: $4 \\times 0 = 5 \\times 0$.",
-        "incorrect": "لا نقسم على $x$ : قد يكون معدومًا. ننقل الحدود ثم نحل."
+        "correct": "$x = 0$ .",
+        "incorrect": "انقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر مع تغيير الإشارة، ثم اقسم على معامل $x$ . تحقّق بالتعويض."
       },
+      "solution": {
+        "lines": [
+          "$4x - 5x = 0$",
+          "$-x = 0$",
+          "$x = \\dfrac{0}{-1}$"
+        ],
+        "result": "x = 0"
+      },
+      "work": "optional",
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "sub": "ب",
+      "statement": "$4x + 3 = 5x$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
       "cognitiveDemand": "apply",
-      "difficulty": 2
+      "answerType": "rational",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عند نقل حدّ من طرف إلى آخر تتغيّر إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الطرفين في الأخير على معامل $x$ بإشارته، ثم تحقّق بالتعويض."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 3$ .",
+        "incorrect": "انقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر مع تغيير الإشارة، ثم اقسم على معامل $x$ . تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$4x - 5x = -3$",
+          "$-x = -3$",
+          "$x = \\dfrac{-3}{-1}$"
+        ],
+        "result": "x = 3"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-002",
-  "lessonCode": "wadiya-idmajiya-muadalat",
-  "level": 1
+  ]
 }

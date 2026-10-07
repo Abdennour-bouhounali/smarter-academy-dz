@@ -3,147 +3,244 @@
   "lessonCode": "tawzif-khawass-judhur",
   "level": 5,
   "metadata": {
-    "title": "تدريب — مكعّب",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2022 — بيت بلاستيكي",
+    "estimatedMinutes": 12,
     "tags": [
-      "هندسة",
-      "فيثاغورس",
-      "a√b"
+      "a√b",
+      "وضعية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_tawzif-khawass-judhur_P1",
-      "modelledOn": "ex-32"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tawzif-khawass-judhur_P2",
+      "modelledOn": "BEM 2022 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2022",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "مكعّب ABCDEFGH طول حرفه $2\\sqrt{2}\\,cm$. المثلث ABC قائم في B، والمثلث ACG قائم في C."
+    "content": "يملك فلاح ببسكرة بيتًا بلاستيكيًا مستطيل الشكل بُعداه $\\sqrt{180}\\,m$ و $\\sqrt{80}\\,m$، يزرع فيه الطماطم.\n• ينتج كل متر مربع $2{,}5\\,kg$ من الطماطم.\n• يبيع الفلاح الكيلوغرام الواحد بـ 80DA."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "مكعّب ABCDEFGH طول حرفه $2\\sqrt{2}\\,cm$. احسب طول قطر الوجه $AC$ بالسنتيمتر.",
+      "step": "01",
+      "lead": "اكتب كلا من البُعدين على الشكل $a\\sqrt{5}$ حيث $a$ عدد طبيعي.",
+      "statement": "الطول $\\sqrt{180}$ :",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "4",
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-MUAMIL-DUN-TARBI",
-          "value": "8"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "المثلث ABC قائم في B و $AB = BC = 2\\sqrt{2}$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$AC^2 = AB^2 + BC^2$ و $(2\\sqrt{2})^2 = 2^2 \\times 2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $AC^2$ ثم خذ جذره."
-        }
-      ],
-      "feedback": {
-        "correct": "$AC^2 = 8 + 8 = 16$.",
-        "incorrect": "في $(2\\sqrt{2})^2$ نربّع المعامل 2 أيضًا."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "مكعّب ABCDEFGH طول حرفه $2\\sqrt{2}\\,cm$ ، والمثلث ACG قائم في C. نكتب $AG = a\\sqrt{b}$ حيث $b$ أصغر ما يمكن. ما قيمة $a$؟",
-      "learningPoints": [
-        {
-          "code": "4am_tawzif-khawass-judhur_P1",
-          "role": "primary"
-        }
-      ],
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "2",
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-JIDHR-MURABBA-MANSI",
-          "value": "4"
-        },
-        {
-          "id": "MISC-B-LAYSA-ASGHAR",
-          "value": "1"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "المثلث ACG قائم في C : $AG^2 = AC^2 + CG^2$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "مربع قطر الوجه هو $8 + 8$ ، و $CG^2 = 8$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب $\\sqrt{AG^2}$ على الشكل $a\\sqrt{b}$ مع أكبر مربع يقسم $AG^2$."
-        }
-      ],
-      "feedback": {
-        "correct": "$AG^2 = 16 + 8 = 24$ و $\\sqrt{24} = \\sqrt{4 \\times 6} = 2\\sqrt{6}$.",
-        "incorrect": "ابحث عن أكبر مربع يقسم $AG^2$، ومعامله هو جذر هذا المربع."
-      }
-    },
-    {
-      "id": "q3",
-      "statement": "مكعّب ABCDEFGH طول حرفه $2\\sqrt{2}\\,cm$ ، والمثلث ACG قائم في C. نكتب $AG = a\\sqrt{b}$ حيث $a$ و $b$ طبيعيان و $b$ أصغر ما يمكن. ما قيمة $b$؟",
-      "learningPoints": [
-        {
-          "code": "4am_tawzif-khawass-judhur_P1",
-          "role": "primary"
-        }
-      ],
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "اكتب العدد $a$ فقط (بالمتر)",
       "expectedAnswer": "6",
       "misconceptionSignatures": [
         {
-          "id": "MISC-B-LAYSA-ASGHAR",
-          "value": "24"
+          "value": "36",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب $AG^2$ بخاصية فيثاغورس في المثلث ACG."
+          "content": "ابحث عن أكبر مربع تامّ يقسم 180."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{180} = \\sqrt{36} \\times \\sqrt{5} = 6\\sqrt{5}$.",
+        "incorrect": "اكتب 180 على شكل (أكبر مربع تامّ) × 5."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{180} = \\sqrt{36} \\times \\sqrt{5}$"
+        ],
+        "result": "\\sqrt{180} = 6\\sqrt{5}"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "العرض $\\sqrt{80}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (بالمتر)",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "value": "16",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن أكبر مربع تامّ يقسم 80."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{80} = \\sqrt{16} \\times \\sqrt{5} = 4\\sqrt{5}$.",
+        "incorrect": "اكتب 80 على شكل (أكبر مربع تامّ) × 5."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{80} = \\sqrt{16} \\times \\sqrt{5}$"
+        ],
+        "result": "\\sqrt{80} = 4\\sqrt{5}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب محيط البيت البلاستيكي واكتبه على الشكل $a\\sqrt{5}$ حيث $a$ عدد طبيعي.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (بالمتر)",
+      "expectedAnswer": "20",
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-MUAMIL-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط المستطيل = 2 × (الطول + العرض)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مربع قطر الوجه هو $8 + 8$ ، و $CG^2 = 8$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "أخرج أكبر مربع يقسم $AG^2$ من تحت الجذر: ما يبقى هو $b$."
+          "content": "اجمع بالخاصية التوزيعية."
         }
       ],
       "feedback": {
-        "correct": "$AG^2 = 24 = 4 \\times 6$ و 6 لا يقبل القسمة على مربع غير 1.",
-        "incorrect": "يجب أن يبقى تحت الجذر عدد لا يقبل القسمة على أي مربع أكبر من 1."
-      }
+        "correct": "$2 \\times (6\\sqrt{5} + 4\\sqrt{5}) = 20\\sqrt{5}\\,m$.",
+        "incorrect": "استعمل الكتابتين من السؤال 01، اجمعهما ثم اضرب في 2."
+      },
+      "solution": {
+        "lines": [
+          "$P = 2 \\times (6\\sqrt{5} + 4\\sqrt{5})$",
+          "$P = 2 \\times 10\\sqrt{5}$"
+        ],
+        "result": "P = 20\\sqrt{5}\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "احسب مساحة البيت البلاستيكي.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بالمتر المربع)",
+      "expectedAnswer": "120",
+      "misconceptionSignatures": [
+        {
+          "value": "600",
+          "id": "MISC-JIDHR-FI-JIDHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة المستطيل = الطول × العرض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب المعاملين معًا، و $\\sqrt{5} \\times \\sqrt{5} = 5$."
+        }
+      ],
+      "feedback": {
+        "correct": "$6\\sqrt{5} \\times 4\\sqrt{5} = 24 \\times 5\\,m^2$.",
+        "incorrect": "اضرب المعاملين ثم استعمل $\\sqrt{5} \\times \\sqrt{5} = 5$."
+      },
+      "solution": {
+        "lines": [
+          "$S = 6\\sqrt{5} \\times 4\\sqrt{5}$",
+          "$S = 24 \\times \\sqrt{5} \\times \\sqrt{5} = 24 \\times 5$"
+        ],
+        "result": "S = 120\\,m^2"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q5",
+      "step": "04",
+      "statement": "☜ ما هو المبلغ الذي يتحصّل عليه الفلاح من بيع كل محصول الطماطم؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار (DA)",
+      "expectedAnswer": "24000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب كتلة المحصول: المساحة × الإنتاج في المتر المربع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب الكتلة في سعر الكيلوغرام."
+        }
+      ],
+      "feedback": {
+        "correct": "الكتلة $300\\,kg$ والمبلغ $300 \\times 80$ DA.",
+        "incorrect": "احسب كتلة المحصول أولًا انطلاقًا من المساحة، ثم اضرب في سعر الكيلوغرام."
+      },
+      "solution": {
+        "lines": [
+          "كتلة المحصول: $120 \\times 2{,}5 = 300\\,kg$",
+          "المبلغ: $300 \\times 80$"
+        ],
+        "result": "24000\\,DA"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

@@ -3,7 +3,7 @@
   "lessonCode": "tarrid-mushkila",
   "level": 1,
   "metadata": {
-    "title": "تمرين 10 — العدد المجهول",
+    "title": "العدد المجهول — ضرب ثم إضافة",
     "estimatedMinutes": 3,
     "tags": [
       "ترييض",
@@ -15,95 +15,79 @@
       "page": 50,
       "section": "أوظّف تعلّماتي",
       "number": 10
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 50): ما هو العدد الذي إذا ضربته في 6 و أضفت إلى الناتج 7، تحصل على 31؟ نسمّي $x$ هذا العدد."
+    "content": "نبحث عن العدد الذي إذا ضربته في 6 و أضفت إلى الناتج 7 ، تحصل على 31 ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ معادلة تترجم النص؟",
+      "step": "01",
+      "statement": "سمِّ $x$ هذا العدد، اكتب معادلة تترجم النص ثم حلّها.",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$6(x + 7) = 31$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
         },
-        {
-          "id": "B",
-          "content": "$6x + 7 = 31$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$7x + 6 = 31$",
-          "isCorrect": false
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "ما العملية الأولى التي تُجرى على العدد؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "نضرب أولًا في 6، ثم نضيف 7 إلى الناتج."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب العمليتين بالترتيب الذي يذكره النص."
-        }
-      ],
-      "feedback": {
-        "correct": "الضرب في 6 أولًا ثم إضافة 7: $6x + 7 = 31$ .",
-        "incorrect": "تتبّع ترتيب العمليات في النص: الضرب أولًا."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "ما هو هذا العدد؟",
-      "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P2",
-          "role": "primary"
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "عدد: قيمة $x$ (اكتب معادلتك في «مراحل الحساب»)",
       "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "value": "-11/6",
+          "id": "MISC-TARRID-DIF-MAJMU"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انطلق من $6x + 7 = 31$ ."
+          "content": "ما العملية الأولى التي تُجرى على العدد؟ وما الثانية؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اطرح 7 من الطرفين."
+          "content": "اكتب العمليتين بالترتيب الذي يذكره النص، ثم اجعل الناتج يساوي العدد المعطى."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم اقسم الطرفين على 6 وتحقّق في النص."
+          "content": "لحل المعادلة: اطرح من الطرفين العدد المضاف، ثم اقسم على معامل $x$ ."
         }
       ],
       "feedback": {
-        "correct": "$6x = 24$ أي $x = 4$ ، وتحقّق: $6 \\times 4 + 7 = 31$ .",
-        "incorrect": "اطرح 7 أولًا ثم اقسم على 6."
-      }
+        "correct": "المعادلة $6x + 7 = 31$ ، وحلها $x = 4$ : العدد المطلوب هو 4 .",
+        "incorrect": "تتبّع ترتيب العمليات في النص: الضرب أولًا، ثم الإضافة."
+      },
+      "solution": {
+        "lines": [
+          "نسمّي $x$ العدد المطلوب.",
+          "ضربه في 6 يعطي $6x$ ، ثم إضافة 7 إلى الناتج تعطي $6x + 7$ .",
+          "المعادلة: $6x + 7 = 31$",
+          "$6x = 31 - 7$",
+          "$6x = 24$",
+          "$x = \\dfrac{24}{6}$",
+          "$x = 4$",
+          "التحقق: $6 \\times 4 + 7 = 24 + 7 = 31$ .",
+          "إذن العدد المطلوب هو 4 ."
+        ],
+        "result": "x = 4"
+      },
+      "work": "required",
+      "timeSeconds": 240
     }
   ]
 }

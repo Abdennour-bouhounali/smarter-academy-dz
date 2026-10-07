@@ -3,220 +3,273 @@
   "lessonCode": "wadiya-idmajiya-khattiya",
   "level": 5,
   "metadata": {
-    "title": "أدمج تعلّماتي — المصعد الهوائي",
-    "estimatedMinutes": 10,
+    "title": "على منوال BEM 2025 — رحلة بالسيارة من تلمسان إلى الغزوات",
+    "estimatedMinutes": 25,
     "tags": [
-      "فيثاغورس",
-      "سرعة",
-      "دالة خطية",
-      "ميزانية"
+      "وضعية إدماجية",
+      "سلّم",
+      "سرعة متوسطة",
+      "دالة خطية"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "situation",
-      "page": 74,
-      "section": "أدمج تعلّماتي"
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "BEM 2025 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2025",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "1) ينطلق مصعد هوائي من ارتفاع 900m ليصل ارتفاع 1400m، والمسافة الأفقية بين نقطة الانطلاق A والنقطة H الواقعة على الشاقول المار بنقطة الوصول B هي $AH = 2500\\,\\mathrm{m}$ (المثلث $AHB$ قائم في $H$). ما هي المدة الزمنية لصعود واحد، إذا كانت سرعة المصعد الهوائي $5{,}5\\,\\mathrm{m/s}$؟ 2) ليكن $x$ سعر التذكرة لشخص بالغ لرحلة واحدة (ذهابا وإيابا). أ) عبّر عن تكلفة الرحلة بدلالة $x$ لعائلة متكوّنة من شخصين بالغين و 3 أطفال، علما أنّ كلّ طفل يستفيد من تخفيض قدرة 40% من قيمة $x$ . ب) ما هي أكبر قيمة لسعر التذكرة التي تسمح للعائلة بدفع ثمن الرحلة في حدود المبلغ المخصص لذلك والمقدر بـ 2000DA؟"
+    "content": "يحضّر رياض رحلة بالسيارة من تلمسان إلى مدينة الغزوات. على خريطة سلّمها $\\dfrac{1}{500000}$ ، طول الطريق بين المدينتين 14,4cm. تستهلك سيارة رياض 6,5L من البنزين لكل 100km، وسعر اللتر الواحد من البنزين 46DA."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "طول الحبل $AB$ هو:",
-      "learningPoints": [
-        {
-          "code": "4am_wadiya-idmajiya-khattiya_P3",
-          "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$500\\sqrt{26}\\,\\mathrm{m} \\approx 2549{,}51\\,\\mathrm{m}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$3000\\,\\mathrm{m}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-JAMA"
-        },
-        {
-          "id": "C",
-          "content": "$\\sqrt{2500^2 + 1400^2}\\,\\mathrm{m}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAFSIR"
-        },
-        {
-          "id": "D",
-          "content": "$\\sqrt{2500^2 - 500^2}\\,\\mathrm{m}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAFSIR"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "$BH$ هو فرق الارتفاعين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "فيثاغورس في المثلث $AHB$ القائم في $H$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بسّط $\\sqrt{6\\,500\\,000}$."
-        }
-      ],
-      "feedback": {
-        "correct": "$BH = 500$ و $AB^2 = 2500^2 + 500^2 = 6\\,500\\,000$ ، و $\\sqrt{6\\,500\\,000} = \\sqrt{250\\,000 \\times 26} = 500\\sqrt{26}$.",
-        "incorrect": "الوتر يُحسب بفيثاغورس على فرق الارتفاعين."
-      },
-      "cognitiveDemand": "apply",
-      "difficulty": 4
-    },
-    {
-      "id": "q2",
-      "statement": "مدة صعود واحد بالثواني (مدوّرة إلى 0,01):",
+      "step": "01",
+      "statement": "احسب المسافة الحقيقية بين المدينتين بالكيلومتر.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري مدوّر إلى 0,01",
-      "expectedAnswer": "463.55",
-      "evaluationPolicy": {
-        "tolerance": "0.01"
-      },
+      "answerFormat": "عدد: المسافة بـ km",
+      "expectedAnswer": "72",
+      "misconceptionSignatures": [
+        {
+          "value": "7.2",
+          "id": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "value": "720",
+          "id": "MISC-MAQADIR-WIHDA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المدة = المسافة ÷ السرعة."
+          "content": "السلّم $\\dfrac{1}{500000}$ : كل 1cm على الخريطة يمثّل 500000cm في الحقيقة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "استعمل طول الحبل من السؤال السابق."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم على $5{,}5$."
+          "content": "$1km = 100000cm$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{500\\sqrt{26}}{5{,}5} \\approx 463{,}55\\,\\mathrm{s}$ ، أي 7 دقائق و $43{,}55$ ثانية تقريبا.",
-        "incorrect": "اقسم طول الحبل على السرعة."
+        "correct": "$14{,}4 \\times 500000 = 7200000cm = 72km$ .",
+        "incorrect": "اضرب في 500000 ثم حوّل من cm إلى km."
       },
+      "solution": {
+        "lines": [
+          "المسافة الحقيقية: $14{,}4 \\times 500000 = 7200000cm$ .",
+          "$7200000cm = 72km$ ."
+        ],
+        "result": "72km"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "يسير رياض بسرعة متوسطة قدرها 80km/h. احسب مدة الرحلة بالدقائق.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
       "cognitiveDemand": "apply",
-      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد: المدة بالدقائق",
+      "expectedAnswer": "54",
       "misconceptionSignatures": [
         {
-          "value": "545.45",
-          "id": "MISC-JIDHR-JAMA"
+          "value": "0.9",
+          "id": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "value": "90",
+          "id": "MISC-MAQADIR-WIHDA"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدة = المسافة ÷ السرعة، بالساعات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل إلى دقائق: $1h = 60min$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$72 \\div 80 = 0{,}9h = 54min$ .",
+        "incorrect": "0,9 ساعة ليست 90 دقيقة: اضرب في 60."
+      },
+      "solution": {
+        "lines": [
+          "$t = \\dfrac{72}{80} = 0{,}9h$",
+          "$0{,}9 \\times 60 = 54$ ، مدة الرحلة 54 دقيقة."
+        ],
+        "result": "t = 54min"
+      },
+      "timeSeconds": 150
     },
     {
       "id": "q3",
-      "statement": "التكلفة $C(x) = ax$ : ما قيمة $a$ ؟",
+      "step": "03",
+      "sub": "ا",
+      "lead": "نسمّي $V(d)$ كمية البنزين (باللتر) التي تستهلكها السيارة لقطع $d$ كيلومترا.",
+      "statement": "عبّر عن $V(d)$ بدلالة $d$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P2",
           "role": "primary"
         }
       ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري",
-      "expectedAnswer": "3.8",
+      "answerFormat": "اكتب المعامل $a$ فقط في $V(d) = ad$ (عشري بالفاصلة)",
+      "expectedAnswer": "0,065",
+      "misconceptionSignatures": [
+        {
+          "value": "6.5",
+          "id": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "value": "200/13",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "كم يدفع كل طفل بدلالة $x$ ؟"
+          "content": "الاستهلاك متناسب مع المسافة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "بعد تخفيض 40% يدفع 60%."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع ما يدفعه البالغان والأطفال الثلاثة."
+          "content": "المعامل هو الاستهلاك في كيلومتر واحد."
         }
       ],
       "feedback": {
-        "correct": "$C(x) = 2x + 3 \\times 0{,}6x = 3{,}8x$.",
-        "incorrect": "الطفل يدفع ما يبقى بعد التخفيض، لا مقدار التخفيض."
+        "correct": "$V(d) = \\dfrac{6{,}5}{100}d = 0{,}065d$ .",
+        "incorrect": "6,5L لكل 100km: اقسم على 100 لتحصل على استهلاك كيلومتر واحد."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 4,
-      "misconceptionSignatures": [
-        {
-          "value": "3.2",
-          "id": "MISC-TAKHFID-NISBA"
-        },
-        {
-          "value": "5",
-          "id": "MISC-TARRID-NAMUDHAJ"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "الاستهلاك متناسب مع المسافة، والمعامل هو استهلاك 1km:",
+          "$\\dfrac{6{,}5}{100} = 0{,}065$",
+          "$V(d) = 0{,}065d$"
+        ],
+        "result": "V(d) = 0{,}065d"
+      },
+      "timeSeconds": 150
     },
     {
       "id": "q4",
-      "statement": "أكبر سعر للتذكرة بعدد طبيعي من الدنانير:",
+      "step": "03",
+      "sub": "ب",
+      "statement": "احسب كمية البنزين المستهلكة في رحلة الذهاب والإياب.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة: الكمية باللتر",
+      "expectedAnswer": "9,36",
+      "misconceptionSignatures": [
+        {
+          "value": "4.68",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مسافة الذهاب والإياب ضعف المسافة بين المدينتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$V(144) = 0{,}065 \\times 144 = 9{,}36L$ .",
+        "incorrect": "لا تنسَ الإياب: المسافة $2 \\times 72$ km."
+      },
+      "solution": {
+        "lines": [
+          "مسافة الذهاب والإياب: $2 \\times 72 = 144km$ .",
+          "$V(144) = 0{,}065 \\times 144 = 9{,}36$ ، أي $9{,}36L$ ."
+        ],
+        "result": "V(144) = 9{,}36L"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q5",
+      "step": "04",
+      "statement": "☜ يملأ رياض خزان سيارته بـ 500DA من البنزين قبل الانطلاق، ولا يتزوّد في الطريق. هل يكفيه ذلك لرحلة الذهاب والإياب؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P3",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي بالدينار",
-      "expectedAnswer": "526",
+      "difficulty": 5,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حل $3{,}8x \\leq 2000$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب $\\dfrac{2000}{3{,}8}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "السعر بعدد طبيعي لا يتجاوز الحد: دوّر نحو الأسفل."
+          "content": "احسب كمية البنزين التي يشتريها بـ 500DA، أو ثمن الكمية التي يحتاجها."
         }
       ],
       "feedback": {
-        "correct": "$x \\leq \\dfrac{10000}{19} \\approx 526{,}32$ ، و $3{,}8 \\times 526 = 1998{,}8 \\leq 2000$.",
-        "incorrect": "لا تدوّر نحو الأعلى: التكلفة ستتجاوز الميزانية."
+        "correct": "$9{,}36 \\times 46 = 430{,}56$ DA $< 500$ DA: البنزين يكفيه.",
+        "incorrect": "قارن ثمن البنزين اللازم (أو كميته) بما اشتراه."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 5,
-      "misconceptionSignatures": [
-        {
-          "value": "527",
-          "id": "MISC-TARRID-TAFSIR"
-        },
-        {
-          "value": "625",
-          "id": "MISC-TAKHFID-NISBA"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "ثمن البنزين اللازم: $9{,}36 \\times 46 = 430{,}56$ DA.",
+          "$430{,}56 < 500$ (أو: $500 \\div 46 \\approx 10{,}87L > 9{,}36L$).",
+          "نعم، يكفيه البنزين لرحلة الذهاب والإياب."
+        ],
+        "result": "نعم، يكفيه"
+      },
+      "timeSeconds": 180
     }
   ]
 }

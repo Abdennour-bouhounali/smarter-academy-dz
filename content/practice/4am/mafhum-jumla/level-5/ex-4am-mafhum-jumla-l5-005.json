@@ -3,122 +3,214 @@
   "lessonCode": "mafhum-jumla",
   "level": 5,
   "metadata": {
-    "title": "تدريب — جملة بلا حل؟",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2022 — رحلة إلى حديقة التجارب بالحامة",
+    "estimatedMinutes": 18,
     "tags": [
-      "حالات خاصة"
+      "جملة",
+      "ترجمة",
+      "ثنائية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_mafhum-jumla_P4",
-      "modelledOn": "know-cases"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_mafhum-jumla_P3",
+      "modelledOn": "BEM 2022 I-3"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2022",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "نعتبر الجملة $\\begin{cases} 3x - y = 2 \\\\ 6x - 2y = 5 \\end{cases}$ ."
+    "content": "نظّمت جمعية ثقافية من ولاية المدية رحلة إلى حديقة التجارب بالحامة (الجزائر العاصمة)، شارك فيها 52 شخصا بين بالغين وأطفال.\n• ثمن تذكرة الدخول 150DA للبالغ و 80DA للطفل.\n• دفعت الجمعية 5560DA ثمنا لكل التذاكر.\nنسمّي $x$ عدد البالغين و $y$ عدد الأطفال."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هذه الجملة ...",
+      "step": "01",
+      "statement": "ترجم المعطيات بجملة معادلتين مجهولاها $x$ و $y$ .",
       "learningPoints": [
         {
-          "code": "4am_mafhum-jumla_P4",
+          "code": "4am_mafhum-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
         {
-          "id": "A",
-          "content": "لها حل وحيد",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-HALAT"
+          "id": "h1",
+          "type": "look",
+          "content": "معلومة عن عدد الأشخاص ومعلومة عن المبلغ."
         },
         {
-          "id": "B",
-          "content": "ليس لها حلول",
-          "isCorrect": true
+          "id": "h2",
+          "type": "direction",
+          "content": "ثمن تذاكر البالغين $150x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "عدد المشاركين: $x + y = 52$",
+          "ثمن التذاكر: $150x + 80y = 5560$",
+          "ومنه الجملة: $\\begin{cases} x + y = 52 \\\\ 150x + 80y = 5560 \\end{cases}$"
+        ],
+        "result": "\\begin{cases} x + y = 52 \\\\ 150x + 80y = 5560 \\end{cases}"
+      },
+      "timeSeconds": 240
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "لتكن الثنائيتان $(32 ; 20)$ و $(20 ; 32)$ . أيهما حل لهذه الجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
         },
         {
-          "id": "C",
-          "content": "لها عدد غير منته من الحلول",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-HALAT"
+          "code": "4am_mafhum-jumla_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "point",
+      "answerFormat": "اكتب الثنائية التي هي حل للجملة: قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر)",
+      "expectedAnswer": {
+        "x": "20",
+        "y": "32"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "32",
+            "y": "20"
+          },
+          "id": "MISC-JUMLA-TARTIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قسّم طرفي المعادلة الثانية على 2."
+          "content": "جرّب كل ثنائية في المعادلتين معا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$3x - y = \\dfrac{5}{2}$ ."
+          "content": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "هل يساوي $3x - y$ العددين 2 و $\\dfrac{5}{2}$ معًا؟"
+          "content": "استبعد كل ثنائية لا تحقق إحدى المعادلتين."
         }
       ],
       "feedback": {
-        "correct": "$3x - y$ لا يساوي 2 و $\\dfrac{5}{2}$ في آن واحد: ليس لها حلول.",
-        "incorrect": "بسّط المعادلة الثانية ثم قارن."
-      }
+        "correct": "$20 + 32 = 52$ ؛ $150 \\times 20 + 80 \\times 32 = 5560$.",
+        "incorrect": "الحل يحقق المعادلتين في آن واحد، والترتيب في الثنائية مهم: عوّض كل ثنائية في المعادلتين."
+      },
+      "solution": {
+        "lines": [
+          "التحقق من الثنائية $(32 ; 20)$ :",
+          "$32 + 20 = 52$",
+          "$150 \\times 32 + 80 \\times 20 = 6400 \\neq 5560$",
+          "ومنه الثنائية $(32 ; 20)$ ليست حلا للجملة.",
+          "التحقق من الثنائية $(20 ; 32)$ :",
+          "$20 + 32 = 52$",
+          "$150 \\times 20 + 80 \\times 32 = 5560$",
+          "ومنه الثنائية $(20 ; 32)$ حل للجملة."
+        ],
+        "result": "(20 ; 32)"
+      },
+      "timeSeconds": 240
     },
     {
-      "id": "q2",
-      "statement": "قالت ريم: «الثنائية $(1 ; 1)$ حل للجملة». ما رأيك؟",
+      "id": "q3",
+      "step": "03",
+      "sub": "ا",
+      "statement": "استنتج المبلغ الذي دفعته الجمعية ثمنا لتذاكر الأطفال.",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "2560",
+      "misconceptionSignatures": [
+        {
+          "value": "1600",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عدد الأطفال هو قيمة $y$ في الثنائية حل الجملة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المبلغ هو $80y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$80 \\times 32 = 2560$ ، أي 2560DA .",
+        "incorrect": "عدد الأطفال هو العدد الثاني في الثنائية حل الجملة."
+      },
+      "solution": {
+        "lines": [
+          "الثنائية $(20 ; 32)$ حل للجملة: شارك 32 طفلا.",
+          "$80 \\times 32 = 2560$ أي 2560DA ."
+        ],
+        "result": "2560\\,DA"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "sub": "ب",
+      "statement": "تحقّق من النتيجة في نص الوضعية.",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "صحيح: $3 - 1 = 2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
-        },
-        {
-          "id": "B",
-          "content": "خطأ: $6 - 2 = 4 \\neq 5$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "خطأ: $3 - 1 \\neq 2$",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $(1 ; 1)$ في المعادلتين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "الأولى: $3 - 1$ ، الثانية: $6 - 2$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "معادلة واحدة لا تكفي."
+          "content": "عوّض في معطيات النص نفسه (عدد المشاركين والمبلغ)."
         }
       ],
       "feedback": {
-        "correct": "$(1 ; 1)$ تحقّق الأولى فقط: $6 - 2 = 4 \\neq 5$ — ولا حل لهذه الجملة أصلًا.",
-        "incorrect": "تحقّق من المعادلة الثانية أيضًا."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "عدد المشاركين: $20 + 32 = 52$",
+          "ثمن التذاكر: $150 \\times 20 + 80 \\times 32 = 3000 + 2560 = 5560$ أي 5560DA .",
+          "النتيجة توافق معطيات النص."
+        ]
+      },
+      "timeSeconds": 150
     }
   ]
 }

@@ -3,8 +3,8 @@
   "lessonCode": "mushkilat-jumla",
   "level": 2,
   "metadata": {
-    "title": "نشاط 3 (ص 57) — المتحف كاملا",
-    "estimatedMinutes": 5,
+    "title": "المتحف: المراحل الخمس",
+    "estimatedMinutes": 15,
     "tags": [
       "ترييض",
       "متحف",
@@ -16,150 +16,205 @@
       "page": 57,
       "section": "أنشطة",
       "number": 3
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 57): يقترح متحف تذكرتين لعطلة نهاية الأسبوع: 300 DA للبالغين و 150 DA للصّغار. في هذا اليوم، استقبل المتحف 140 زائرا وبلغت مداخيله 30300 DA. أوجد عدد البالغين وعدد الصغار الذين زاروا المتحف هذا اليوم. نسمّي $x$ عدد البالغين و $y$ عدد الصغار."
+    "content": "يقترح متحف تذكرتين لعطلة نهاية الأسبوع: 300DA للبالغين و 150DA للصغار. في هذا اليوم، استقبل المتحف 140 زائرا وبلغت مداخيله 30300DA. نريد معرفة عدد البالغين وعدد الصغار الذين زاروا المتحف هذا اليوم."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "جملة المعادلتين التي تترجم معطيات المشكلة هي:",
+      "step": "01",
+      "statement": "اختر المجهولين المناسبين، ثم ترجم المعطيات بجملة معادلتين.",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\begin{cases} x + y = 30300 \\\\ 300x + 150y = 140 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "B",
-          "content": "$\\begin{cases} x + y = 140 \\\\ 300x + 150y = 30300 \\end{cases}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\begin{cases} x + y = 140 \\\\ 150x + 300y = 30300 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ترجم كل معلومة وحدها."
+          "content": "المجهولان هما الكميتان اللتان يسأل عنهما النص، لا الأعداد المعطاة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "معلومة العدد: كل زائر يُعدّ مرة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "معلومة المال: كل بالغ 300 وكل صغير 150."
+          "content": "معادلة تعدّ الأشخاص، ومعادلة تحسب المال."
         }
       ],
       "feedback": {
-        "correct": "هي جملة الكتاب، وحلها $(62 ; 78)$ .",
-        "incorrect": "عدد الزوار مع عدد الزوار، والدنانير مع الدنانير."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "المطلوب عددان: نسمّي $x$ عدد البالغين و $y$ عدد الصغار.",
+          "عدد الزوار: $x + y = 140$",
+          "المداخيل: $300x + 150y = 30300$",
+          "ومنه الجملة: $\\begin{cases} x + y = 140 \\\\ 300x + 150y = 30300 \\end{cases}$"
+        ],
+        "result": "\\begin{cases} x + y = 140 \\\\ 300x + 150y = 30300 \\end{cases}"
+      },
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "حل الجملة واكتب الثنائية $(x ; y)$ .",
+      "step": "02",
+      "lead": "حل الجملة مبيّنا مراحل الحل، ثم جد عدد البالغين وعدد الصغار.",
+      "statement": "عدد البالغين:",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
-      "expectedAnswer": {
-        "x": "62",
-        "y": "78"
-      },
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "62",
+      "misconceptionSignatures": [
+        {
+          "value": "78",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "من المعادلة الأولى $y = 140 - x$ ."
+          "content": "اجعل معاملي $y$ متعاكسين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض في الثانية: تحصل على $150x = 9300$ ."
+          "content": "اضرب المعادلة الأولى في $150$ والثانية في $-1$ ثم اجمع."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم عوّض قيمة $x$ لإيجاد $y$ ."
+          "content": "بعد إيجاد $x$ عوّض في المعادلة الأولى."
         }
       ],
       "feedback": {
-        "correct": "$x = 62$ و $y = 140 - 62 = 78$ .",
-        "incorrect": "لا تتوقف عند $x$ : الحل ثنائية."
-      }
+        "correct": "زار المتحف 62 بالغا.",
+        "incorrect": "اضرب طرفي $x + y = 140$ في 150 ثم اطرح منها معادلة المداخيل."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} x + y = 140 & ...(1) \\\\ 300x + 150y = 30300 & ...(2) \\end{cases}$",
+          "بضرب طرفي المعادلة (1) في العدد $150$ وطرفي المعادلة (2) في العدد $-1$ نجد:",
+          "$\\begin{cases} 150x + 150y = 21000 \\\\ -300x - 150y = -30300 \\end{cases}$",
+          "بجمع المعادلتين طرفا لطرف نجد: $-150x = -9300$",
+          "ومنه: $x = \\dfrac{-9300}{-150} = 62$",
+          "بتعويض قيمة $x$ في المعادلة (1) نجد: $62 + y = 140$",
+          "$y = 78$",
+          "إذن زار المتحف 62 بالغا و 78 صغيرا."
+        ]
+      },
+      "work": "required",
+      "timeSeconds": 420
     },
     {
       "id": "q3",
-      "statement": "التحقق من النتيجة في النص:",
+      "step": "02",
+      "statement": "عدد الصغار:",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "78",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$62 + 78 = 140$ فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
-        },
-        {
-          "id": "B",
-          "content": "$300 \\times 78 + 150 \\times 62 = 30300$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARTIB"
-        },
-        {
-          "id": "C",
-          "content": "$62 + 78 = 140$ و $300 \\times 62 + 150 \\times 78 = 30300$",
-          "isCorrect": true
+          "value": "62",
+          "id": "MISC-JUMLA-TARTIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "كم معلومة في النص؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "كل معلومة تُعوَّض فيها القيمتان."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "البالغون يدفعون 300: يُضرب 300 في عددهم."
+          "content": "عدد الزوار 140 ."
         }
       ],
       "feedback": {
-        "correct": "المعلومتان محققتان: 140 زائرا و $18600 + 11700 = 30300$ DA.",
-        "incorrect": "نتحقق في المعلومتين، وكل عدد مع ثمنه."
-      }
+        "correct": "زار المتحف 78 صغيرا.",
+        "incorrect": "من $x + y = 140$ : $y = 140 - x$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} x + y = 140 & ...(1) \\\\ 300x + 150y = 30300 & ...(2) \\end{cases}$",
+          "بضرب طرفي المعادلة (1) في العدد $150$ وطرفي المعادلة (2) في العدد $-1$ نجد:",
+          "$\\begin{cases} 150x + 150y = 21000 \\\\ -300x - 150y = -30300 \\end{cases}$",
+          "بجمع المعادلتين طرفا لطرف نجد: $-150x = -9300$",
+          "ومنه: $x = \\dfrac{-9300}{-150} = 62$",
+          "بتعويض قيمة $x$ في المعادلة (1) نجد: $62 + y = 140$",
+          "$y = 78$",
+          "إذن زار المتحف 62 بالغا و 78 صغيرا."
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "تحقّق من النتيجة في نص المشكلة، ثم أجب عن سؤال المشكلة بجملة.",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق في النص نفسه، لا في الجملة فقط: عدد الزوار ثم المداخيل."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "عدد الزوار: $62 + 78 = 140$ زائرا.",
+          "المداخيل: $300 \\times 62 + 150 \\times 78 = 18600 + 11700 = 30300$ أي $30300DA$ .",
+          "العددان طبيعيان ويحققان معطيات النص.",
+          "الجواب: زار المتحف هذا اليوم 62 بالغا و 78 صغيرا."
+        ]
+      },
+      "timeSeconds": 180
     }
   ]
 }

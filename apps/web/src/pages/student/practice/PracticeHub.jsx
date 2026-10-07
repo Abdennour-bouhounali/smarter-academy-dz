@@ -1,10 +1,15 @@
 import { useContext, useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { BookOpen, Dumbbell, PlayCircle } from 'lucide-react';
+import { BookOpen, Dumbbell, PlayCircle, GraduationCap, Sparkles } from 'lucide-react';
+import SettingsButton from '../../../features/settings/SettingsButton';
+import ExamLevelCards from '../../../features/practice/exam/ExamLevelCards';
+import { isExamLesson } from '../../../features/practice/exam/examSheet';
+import Modal from '../../../components/admin/ui/Modal';
 import { ArrowBack, ArrowForward } from '../../../components/common/DirectionalIcons';
 import { AuthContext } from '../../../context/AuthContext';
-import { fetchPracticeOverview, startPracticeSession } from '../../../services/practiceService';
+import { fetchPracticeOverview, startPracticeSession, fetchLessonMedals } from '../../../services/practiceService';
+import MedalCabinet from '../../../features/practice/medals/MedalCabinet';
 import LevelSelector from '../../../features/practice/LevelSelector';
 import LearningPointProgress from '../../../features/practice/LearningPointProgress';
 import { resolveMasteryState, reasonLabel, freshnessLabel } from '../../../lessons/common/components/LearningPointMastery';
@@ -39,6 +44,15 @@ export default function PracticeHub() {
   const [overview, setOverview] = useState(null);
   const [error, setError] = useState(null);
   const [busyLevel, setBusyLevel] = useState(null);
+  // Prototype BEM : « ما أظهرته » dans une fenêtre centrale, pas en colonne.
+  const [lpsOpen, setLpsOpen] = useState(false);
+  const exam = isExamLesson(lessonCode);
+  // La « خزانة الميداليات » (prototype BEM) : élève seulement — l'enseignant n'est pas suivi.
+  const [medals, setMedals] = useState(null);
+  useEffect(() => {
+    if (!token || !exam || isTeacher) return;
+    fetchLessonMedals(token, lessonCode).then(setMedals).catch(() => {});
+  }, [token, lessonCode, exam, isTeacher]);
   // Un refus du serveur porte un motif clos (`code`) : « pas de pratique ici »
   // et « leçon non ouverte » se disent différemment ; sinon, le message
   // arabe générique du service (jamais la phrase française du serveur).
@@ -108,6 +122,117 @@ export default function PracticeHub() {
   // L'API de pratique ne renvoie que le code de la leçon ; le chemin de son
   // cours vient du catalogue, seule source de vérité des URLs de leçon.
   const lessonPath = getLessonPath(lessonCode);
+  const lpItems = (cols) => (
+    <ul className={`grid grid-cols-1 gap-2 ${cols}`}>
+      {learningPoints.map((lp) => {
+        const stateKey = resolveMasteryState(lp);
+        const reason = stateKey === 'reinforce' ? reasonLabel(lp, t) : '';
+        const freshness = stateKey === 'mastered' && lp.freshness && lp.freshness !== 'fresh' ? freshnessLabel(lp, t) : '';
+
+        return (
+          <li key={lp.code} data-mastery-state={stateKey} className="space-y-1">
+            <LearningPointProgress point={lp} eyebrow={false} headingTag="h3" />
+            {(reason || freshness) && (
+              <p className="px-1 text-xs text-slate-600">
+                {reason}{reason && freshness ? ' · ' : ''}{freshness && `⏳ ${freshness}`}
+              </p>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
+  const lpsTitle = isTeacher ? t('practice.lessonPoints', { ns: 'teacher' }) : t('practice.whatYouShowed');
+
+  // ── PROTOTYPE BEM (propriétaire, 2026-10-06) : en-tête « محاكاة », niveaux
+  // en cartes sur toute la largeur, « ما أظهرته » dans une fenêtre centrale.
+  if (exam) {
+    return (
+      <div className="sa-surface-plain sa-page sa-page--flush space-y-5 py-5 sm:py-6" data-practice-hub-exam>
+        <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-semibold text-slate-600" aria-label={t('nav.breadcrumb', { ns: 'lesson' })}>
+          <Link to={coursesPath} className="inline-flex min-h-[40px] items-center gap-1.5 whitespace-nowrap hover:text-[#1f5c4c]">
+            <ArrowBack className="h-4 w-4" aria-hidden="true" /> {t('practice.breadcrumbMyCourses')}
+          </Link>
+          {lessonPath && (
+            <>
+              <span aria-hidden="true" className="text-slate-300">/</span>
+              <Link to={lessonPath} className="min-w-0 truncate hover:text-[#1f5c4c]"><MathLabel>{lesson.title}</MathLabel></Link>
+            </>
+          )}
+        </nav>
+
+        <header className="relative overflow-hidden rounded-2xl bg-white px-5 py-5 ring-1 ring-slate-200 sm:px-7" data-practice-hub-header>
+          <span aria-hidden="true" className="absolute inset-y-0 start-0 w-1.5 bg-[#1f5c4c]" />
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+            <div className="min-w-0 space-y-1.5">
+              <p className="inline-flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-700">
+                <GraduationCap className="h-4 w-4 text-[#1f5c4c]" aria-hidden="true" />
+                {t('practice.exam.nav.simulation')}
+                <span className="text-slate-500">· {t('practice.exam.nav.subject')}</span>
+              </p>
+              <h1 className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl"><MathLabel>{lesson.title}</MathLabel></h1>
+              <p className="text-sm text-slate-600">{isTeacher ? t('practice.noTracking', { ns: 'teacher' }) : t('practice.exam.hub.subtitle')}</p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              {learningPoints.length > 0 && (
+                <button type="button" onClick={() => setLpsOpen(true)} className="inline-flex min-h-[40px] items-center gap-2 rounded-lg bg-[#1f5c4c] px-3.5 text-sm font-bold text-white hover:bg-[#174a3d] focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2" data-practice-hub-lps-open>
+                  <Sparkles className="h-4 w-4" aria-hidden="true" /> {lpsTitle}
+                </button>
+              )}
+              {lessonPath && (
+                <Link to={lessonPath} className="inline-flex min-h-[40px] items-center gap-2 rounded-lg px-3 text-sm font-bold text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50">
+                  <BookOpen className="h-4 w-4" aria-hidden="true" /> {t('practice.reviewLesson')}
+                </Link>
+              )}
+              {!isTeacher && (
+                <SettingsButton
+                  className="inline-flex min-h-[40px] items-center gap-2 rounded-lg px-3 text-sm font-bold text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"
+                  iconSize={16}
+                  testId="hub"
+                />
+              )}
+            </div>
+          </div>
+        </header>
+
+        {error && <p className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">{error}</p>}
+
+        {openSession && (
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-emerald-50/70 px-4 py-3 ring-1 ring-emerald-200" data-open-session>
+            <p className="flex items-center gap-2 text-sm font-semibold text-emerald-950">
+              <PlayCircle className="h-5 w-5 text-[#1f5c4c]" aria-hidden="true" />
+              {t('practice.openSession', { level: openSession.level })}
+            </p>
+            <Link
+              to={`/espace/pratique/${lessonCode}/session/${openSession.sessionId}`}
+              className="inline-flex min-h-[40px] items-center gap-2 rounded-lg bg-[#1f5c4c] px-4 text-sm font-bold text-white hover:bg-[#174a3d]"
+            >
+              {t('practice.resume')}
+              <ArrowForward className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
+        )}
+
+        {!isTeacher && medals && <MedalCabinet medals={medals} />}
+
+        <section className="space-y-3" aria-labelledby="practice-levels-title">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 id="practice-levels-title" className="text-lg font-bold text-slate-900">{t('practice.levelsTitle')}</h2>
+            <p className="text-xs text-slate-600">{t('practice.hubSubtitle')}</p>
+          </div>
+          <ExamLevelCards lessonCode={lessonCode} levels={levels} recommendedLevel={recommendedLevel} onSelect={start} busyLevel={busyLevel} showProgress={!isTeacher} medalsByLevel={medals?.levels} />
+        </section>
+
+        <Modal open={lpsOpen} onClose={() => setLpsOpen(false)} title={lpsTitle} closeLabel={t('practice.exam.panelClose')} size="xl">
+          <div className="space-y-3" data-practice-hub-lps>
+            {!isTeacher && <p className="text-xs text-slate-600">{t('practice.whatYouShowedHint')}</p>}
+            {/* Une colonne sur toute la largeur : les titres longs ne passent pas à la ligne. */}
+            {lpItems('')}
+          </div>
+        </Modal>
+      </div>
+    );
+  }
 
   return (
     // Même cadre que le lecteur d'exercices : toute la largeur, 20 px de

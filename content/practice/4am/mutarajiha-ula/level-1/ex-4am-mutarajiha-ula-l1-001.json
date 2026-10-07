@@ -3,11 +3,11 @@
   "lessonCode": "mutarajiha-ula",
   "level": 1,
   "metadata": {
-    "title": "نشاط 3 — رسائل يونس",
+    "title": "رسائل يونس",
     "estimatedMinutes": 4,
     "tags": [
       "متراجحة",
-      "حلّ"
+      "اختبار قيمة"
     ],
     "source": {
       "type": "textbook",
@@ -15,141 +15,112 @@
       "page": 45,
       "section": "أنشطة",
       "number": 3
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 45): متعامل للهاتف النقال يقترح $2{,}5$DA للرسالة الواحدة و 100DA اقتطاعًا جزافيًا من الرصيد. يرغب يونس في عدم تجاوز المبلغ 150DA الموجود في رصيده. نرمز إلى عدد الرسائل بـ $x$ ."
+    "content": "يقتطع متعامل للهاتف النقال من الرصيد مبلغًا جزافيًا قدره 100DA ثم $2{,}5$DA عن كل رسالة قصيرة. يرغب يونس في ألّا يتجاوز المبلغ المقتطع 150DA الموجودة في رصيده. نرمز بـ $x$ إلى عدد الرسائل التي يرسلها، فتُترجم رغبته بالمتراجحة:",
+    "formulas": [
+      "2{,}5x + 100 \\leqslant 150"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ متراجحة توافق رغبة يونس؟",
+      "step": "01",
+      "statement": "هل العدد $18$ حلّ لهذه المتراجحة؟",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$2{,}5x + 100 \\geq 150$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+          "content": "نعم",
+          "isCorrect": true
         },
         {
           "id": "B",
-          "content": "$150x + 100 \\leq 2{,}5$",
+          "content": "لا",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
-        },
-        {
-          "id": "C",
-          "content": "$2{,}5x + 100 \\leq 150$",
-          "isCorrect": true
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الكلفة: سعر الرسالة مضروبًا في عدد الرسائل، زائد الاقتطاع."
+          "content": "عوّض $x$ بالعدد المعطى في كل طرف من طرفي المتراجحة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الكلفة لا تتجاوز الرصيد: «أصغر من أو تساوي»."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب الكلفة بدلالة $x$ ثم قارنها بالرصيد."
+          "content": "احسب كل طرف، ثم قارن العددين: هل المتباينة المحصل عليها صحيحة؟"
         }
       ],
       "feedback": {
-        "correct": "الكلفة $2{,}5x + 100$ لا تتجاوز 150: $2{,}5x + 100 \\leq 150$.",
-        "incorrect": "اكتب أولًا الكلفة بدلالة $x$ ، ثم الرمز الذي يعني «لا يتجاوز»."
-      }
+        "correct": "$145 \\leqslant 150$ متباينة صحيحة.",
+        "incorrect": "احسب الطرفين بعد التعويض ثم قارن، وانتبه إلى نوع المتباينة (تامة أو غير تامة)."
+      },
+      "solution": {
+        "lines": [
+          "من أجل $x = 18$ : الطرف الأول يساوي $145$ والطرف الثاني يساوي $150$ .",
+          "$145 \\leqslant 150$ متباينة صحيحة، إذن $18$ حلّ للمتراجحة."
+        ],
+        "result": "نعم"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "هل العدد $18$ حلّ للمتراجحة $2{,}5x + 100 \\leq 150$ ؟",
+      "step": "02",
+      "statement": "ما هو أكبر عدد من الرسائل يمكن ليونس إرساله؟",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "نعم، هو حلّ",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "لا، ليس حلًّا",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "عوّض $x$ بالعدد في الطرفين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب كل طرف وحده."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
-        }
-      ],
-      "feedback": {
-        "correct": "من أجل $x = 18$ : الطرف الأول يساوي $145$ والطرف الثاني $150$ ، و $145 \\leq 150$ متباينة صحيحة.",
-        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
-      }
-    },
-    {
-      "id": "q3",
-      "statement": "ما أكبر عدد من الرسائل يمكن ليونس إرساله؟",
-      "learningPoints": [
-        {
-          "code": "4am_mutarajiha-ula_P1",
-          "role": "primary"
-        }
-      ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "عدد طبيعي: عدد الرسائل",
       "expectedAnswer": "20",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حلّ المتراجحة أولًا."
+          "content": "استعمل حلول المتراجحة التي وجدتها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مثّل الحلول على مستقيم مدرّج وانظر إلى الحدّ: هل هو نفسه حلّ؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ابحث عن أكبر عدد طبيعي في الجزء الملوّن."
+          "content": "انتبه إلى الحدّ: هل هو نفسه حلّ أم لا؟"
         }
       ],
       "feedback": {
-        "correct": "الحلول: $x \\leq 20$ ، و $2{,}5 \\times 20 + 100 = 150$ لا يتجاوز الرصيد: أكبر عدد هو 20.",
-        "incorrect": "حلّ المتراجحة، ثم انتبه إلى الحدّ: هل هو حلّ أم لا؟"
-      }
+        "correct": "$20$ رسالة.",
+        "incorrect": "ارجع إلى حلول المتراجحة، ثم اختبر الأعداد الصحيحة القريبة من الحدّ."
+      },
+      "solution": {
+        "lines": [
+          "$2{,}5x + 100 \\leqslant 150$",
+          "$2{,}5x \\leqslant 50$",
+          "$x \\leqslant \\dfrac{50}{2{,}5}$",
+          "$x \\leqslant 20$",
+          "و $x$ عدد طبيعي (عدد رسائل)، إذن أكبر عدد من الرسائل هو $20$ ."
+        ],
+        "result": "20 رسالة"
+      },
+      "timeSeconds": 120
     }
   ]
 }

@@ -3,11 +3,10 @@
   "lessonCode": "mushkilat-jumla",
   "level": 1,
   "metadata": {
-    "title": "تدريب — كشك الكرنتيكة",
-    "estimatedMinutes": 4,
+    "title": "كرنتيكة وقازوز",
+    "estimatedMinutes": 7,
     "tags": [
       "ترييض",
-      "كرنتيكة",
       "أثمان"
     ],
     "source": {
@@ -15,99 +14,156 @@
       "reason": "practice_generation",
       "learningPoint": "4am_mushkilat-jumla_P2",
       "modelledOn": "act-3"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في كشك قرب الثانوية، اشترى رياض 2 قطعتي كرنتيكة وقارورة قازوز بـ 160 DA، واشترى صديقه قطعة كرنتيكة وقارورة قازوز بـ 110 DA. نسمّي $x$ ثمن قطعة الكرنتيكة و $y$ ثمن قارورة القازوز (بالدينار)."
+    "content": "في كشك قرب المتوسطة، اشترى رياض قطعتي كرنتيكة وقارورة قازوز بـ 160DA، واشترى صديقه قطعة كرنتيكة وقارورة قازوز بـ 110DA."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "مشتريات رياض تُترجم بـ:",
+      "step": "01",
+      "lead": "نسمّي $x$ ثمن قطعة الكرنتيكة و $y$ ثمن قارورة القازوز (بالدينار).",
+      "statement": "ترجم المعطيات بجملة معادلتين مجهولاها $x$ و $y$ .",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x + 2y = 160$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "B",
-          "content": "$2x + y = 110$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "$2x + y = 160$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "كم قطعة كرنتيكة اشترى رياض؟"
+          "content": "لكل مشتر معادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كل قطعة تُضرب في ثمنها $x$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المجموع هو ما دفعه رياض هو."
+          "content": "ثمن قطعتين من الكرنتيكة هو $2x$ ."
         }
       ],
       "feedback": {
-        "correct": "قطعتان بـ $x$ وقارورة بـ $y$ : $2x + y = 160$ .",
-        "incorrect": "القطعتان قطعتا كرنتيكة لا قارورتان، و 110 ما دفعه الصديق."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "مشتريات رياض: $2x + y = 160$",
+          "مشتريات صديقه: $x + y = 110$",
+          "ومنه الجملة: $\\begin{cases} 2x + y = 160 \\\\ x + y = 110 \\end{cases}$"
+        ],
+        "result": "\\begin{cases} 2x + y = 160 \\\\ x + y = 110 \\end{cases}"
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "ما ثمن قطعة الكرنتيكة وثمن قارورة القازوز؟ اكتب الثنائية $(x ; y)$ .",
+      "step": "02",
+      "lead": "جد ثمن قطعة الكرنتيكة وثمن قارورة القازوز.",
+      "statement": "ثمن قطعة الكرنتيكة:",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
-      "expectedAnswer": {
-        "x": "50",
-        "y": "60"
-      },
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب الثمن بـ DA (عدد فقط)",
+      "expectedAnswer": "50",
+      "misconceptionSignatures": [
+        {
+          "value": "60",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب معادلة مشتريات الصديق."
+          "content": "ما الفرق بين مشتريات رياض ومشتريات صديقه؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اطرح المعادلتين طرفا لطرف: يختفي $y$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم عوّض لإيجاد $y$ ."
+          "content": "اطرح المعادلة الثانية من الأولى طرفا لطرف."
         }
       ],
       "feedback": {
-        "correct": "$2x + y = 160$ و $x + y = 110$ : بالطرح $x = 50$ ، ثم $y = 60$ .",
-        "incorrect": "الحل ثنائية تحقّق المعادلتين معا."
-      }
+        "correct": "ثمن قطعة الكرنتيكة $50DA$ : هو الفرق بين المبلغين.",
+        "incorrect": "اطرح $x + y = 110$ من $2x + y = 160$ طرفا لطرف."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} 2x + y = 160 & ...(1) \\\\ x + y = 110 & ...(2) \\end{cases}$",
+          "بطرح المعادلة (2) من المعادلة (1) طرفا لطرف نجد: $x = 160 - 110 = 50$",
+          "بتعويض قيمة $x$ في المعادلة (2) نجد: $50 + y = 110$ ومنه $y = 60$",
+          "التحقق في النص: $2 \\times 50 + 60 = 160$ و $50 + 60 = 110$ .",
+          "إذن ثمن قطعة الكرنتيكة $50DA$ وثمن قارورة القازوز $60DA$ ."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "ثمن قارورة القازوز:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب الثمن بـ DA (عدد فقط)",
+      "expectedAnswer": "60",
+      "misconceptionSignatures": [
+        {
+          "value": "50",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض ثمن الكرنتيكة في المعادلة $x + y = 110$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "ثمن قارورة القازوز $60DA$ ، ونتحقق: $2 \\times 50 + 60 = 160$ .",
+        "incorrect": "من $x + y = 110$ نجد $y = 110 - x$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} 2x + y = 160 & ...(1) \\\\ x + y = 110 & ...(2) \\end{cases}$",
+          "بطرح المعادلة (2) من المعادلة (1) طرفا لطرف نجد: $x = 160 - 110 = 50$",
+          "بتعويض قيمة $x$ في المعادلة (2) نجد: $50 + y = 110$ ومنه $y = 60$",
+          "التحقق في النص: $2 \\times 50 + 60 = 160$ و $50 + 60 = 110$ .",
+          "إذن ثمن قطعة الكرنتيكة $50DA$ وثمن قارورة القازوز $60DA$ ."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

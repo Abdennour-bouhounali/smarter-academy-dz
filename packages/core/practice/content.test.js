@@ -39,6 +39,8 @@ function wrapValue(q, value) {
 function answerFor(q) {
   if (q.answerType === 'choice') return { choiceId: q.choices.find((c) => c.isCorrect).id };
   if (q.answerType === 'multiChoice') return { choiceIds: q.choices.filter((c) => c.isCorrect).map((c) => c.id) };
+  // Auto-évaluation : pas de clé — l'élève déclare « حلّي مطابق ».
+  if (q.answerType === 'selfCheck') return { selfMark: 'correct' };
   return wrapValue(q, q.expectedAnswer);
 }
 

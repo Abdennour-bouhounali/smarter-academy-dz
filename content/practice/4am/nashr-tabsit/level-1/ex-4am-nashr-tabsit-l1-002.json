@@ -1,10 +1,13 @@
 {
+  "id": "ex-4am-nashr-tabsit-l1-002",
+  "lessonCode": "nashr-tabsit",
+  "level": 1,
   "metadata": {
-    "title": "نشاط 1 — بطريقتين، وجداء أم مجموع",
-    "estimatedMinutes": 4,
+    "title": "الحساب بطريقتين، جداء أم مجموع",
+    "estimatedMinutes": 5,
     "tags": [
-      "جداء",
-      "مجموع"
+      "الخاصية التوزيعية",
+      "جداء أم مجموع"
     ],
     "source": {
       "type": "textbook",
@@ -12,99 +15,127 @@
       "page": 32,
       "section": "أنشطة",
       "number": 1
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 32، نشاط 1): نحسب بطريقتين، ثم نميّز العبارات التي تدلّ على جداء من التي تدلّ على مجموع. (يُقرأ $3 \\times (9 + 5)$: الحرف x في الكتاب علامة ضرب.)"
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب $3 \\times (9 + 5)$.",
+      "step": "01",
+      "statement": "احسب بطريقتين العدد $3 \\times (9 + 5)$ .",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "42",
+      "misconceptionSignatures": [
+        {
+          "value": "32",
+          "id": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "يمكن الحساب داخل القوسين أولًا."
+          "content": "الطريقة الأولى: احسب ما بين القوسين أولًا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "أو يمكن ضرب 3 في كل حد."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الطريقتان تعطيان النتيجة نفسها."
+          "content": "الطريقة الثانية: وزّع 3 على حدّي القوس: $3 \\times 9 + 3 \\times 5$ ."
         }
       ],
       "feedback": {
-        "correct": "$3 \\times 14 = 42$ و $3 \\times 9 + 3 \\times 5 = 27 + 15 = 42$.",
-        "incorrect": "اضرب 3 في 9 وفي 5، أو اجمع داخل القوسين ثم اضرب."
-      }
+        "correct": "$3 \\times (9 + 5) = 3 \\times 14 = 42$ و $3 \\times 9 + 3 \\times 5 = 27 + 15 = 42$ .",
+        "incorrect": "إذا وزّعت 3 فاضربه في كل حد من حدّي القوس، لا في الأول فقط."
+      },
+      "solution": {
+        "lines": [
+          "الطريقة الأولى: $3 \\times (9 + 5) = 3 \\times 14 = 42$",
+          "الطريقة الثانية: $3 \\times (9 + 5) = 3 \\times 9 + 3 \\times 5 = 27 + 15 = 42$"
+        ],
+        "result": "3 \\times (9 + 5) = 42"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "احسب $(4 - 2{,}5)(3 + 1{,}2)$.",
+      "step": "02",
+      "statement": "احسب العدد $(4 - 2{,}5)(3 + 1{,}2)$ .",
       "learningPoints": [
         {
-          "code": "4am_nashr-tabsit_P2",
+          "code": "4am_nashr-tabsit_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري (بفاصلة)",
+      "answerFormat": "عدد عشري (بالفاصلة)",
       "expectedAnswer": "6.3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب داخل كل قوس."
+          "content": "احسب ما بين كل قوسين أولًا، ثم اضرب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "أو انشر: كل حد من القوس الأول في كل حد من الثاني."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$4 - 2{,}5$ و $3 + 1{,}2$ عددان عشريان بسيطان."
+          "content": "يمكن أيضًا النشر: $4 \\times 3 + 4 \\times 1{,}2 - 2{,}5 \\times 3 - 2{,}5 \\times 1{,}2$ ."
         }
       ],
       "feedback": {
-        "correct": "$1{,}5 \\times 4{,}2 = 6{,}3$.",
-        "incorrect": "احسب الفرق والمجموع أولًا ثم اضرب."
-      }
+        "correct": "$(4 - 2{,}5)(3 + 1{,}2) = 1{,}5 \\times 4{,}2 = 6{,}3$ .",
+        "incorrect": "احسب كل قوس على حدة، ثم اضرب النتيجتين."
+      },
+      "solution": {
+        "lines": [
+          "$(4 - 2{,}5)(3 + 1{,}2) = 1{,}5 \\times 4{,}2$",
+          "أو بالنشر: $= 12 + 4{,}8 - 7{,}5 - 3 = 6{,}3$"
+        ],
+        "result": "(4 - 2{,}5)(3 + 1{,}2) = 6{,}3"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "هل العبارة $x(3x + 1)$ مجموع أم جداء؟",
+      "step": "03",
+      "sub": "ا",
+      "lead": "ما نوع كل عبارة من العبارات التالية (جداء أم مجموع)؟",
+      "statement": "$x(3x + 1)$",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "recall",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "العبارة جداء",
+          "content": "جداء",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "العبارة مجموع",
+          "content": "مجموع",
           "isCorrect": false,
           "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
         }
@@ -113,44 +144,44 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى العملية الأخيرة التي تُنجز في العبارة."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "العمليات داخل الأقواس تُنجز أولًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "إن كانت آخر عملية ضربًا فالعبارة تدلّ على جداء، وإن كانت جمعًا أو طرحًا فهي تدلّ على مجموع."
+          "content": "ابحث عن آخر عملية تُنجز عند حساب العبارة من أجل قيمة لـ $x$."
         }
       ],
       "feedback": {
         "correct": "آخر عملية هي ضرب $x$ في القوس: العبارة جداء.",
-        "incorrect": "حدّد العملية التي تُنجز في آخر الحساب، لا العمليات التي داخل الأقواس."
-      }
+        "incorrect": "آخر عملية تُنجز هي التي تحدّد نوع العبارة: ضرب ← جداء، جمع أو طرح ← مجموع."
+      },
+      "solution": {
+        "lines": [
+          "آخر عملية هي ضرب $x$ في القوس: العبارة جداء."
+        ],
+        "result": "العبارة جداء"
+      },
+      "timeSeconds": 45
     },
     {
       "id": "q4",
-      "statement": "هل العبارة $x(x + 1) - 2 + (x + 1)$ مجموع أم جداء؟",
+      "step": "03",
+      "sub": "ب",
+      "statement": "$x(x + 1) - 2 + (x + 1)$",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "recall",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "العبارة جداء",
+          "content": "جداء",
           "isCorrect": false,
           "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
         },
         {
           "id": "B",
-          "content": "العبارة مجموع",
+          "content": "مجموع",
           "isCorrect": true
         }
       ],
@@ -158,43 +189,43 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى العملية الأخيرة التي تُنجز في العبارة."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "العمليات داخل الأقواس تُنجز أولًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "إن كانت آخر عملية ضربًا فالعبارة تدلّ على جداء، وإن كانت جمعًا أو طرحًا فهي تدلّ على مجموع."
+          "content": "ابحث عن آخر عملية تُنجز عند حساب العبارة من أجل قيمة لـ $x$."
         }
       ],
       "feedback": {
-        "correct": "آخر عملية جمع وطرح ثلاثة حدود: العبارة مجموع، وإن كان أحد حدودها جداء.",
-        "incorrect": "حدّد العملية التي تُنجز في آخر الحساب، لا العمليات التي داخل الأقواس."
-      }
+        "correct": "آخر عملية هي الجمع والطرح بين ثلاثة حدود: العبارة مجموع، وإن كان أحد حدودها جداء.",
+        "incorrect": "آخر عملية تُنجز هي التي تحدّد نوع العبارة: ضرب ← جداء، جمع أو طرح ← مجموع."
+      },
+      "solution": {
+        "lines": [
+          "آخر عملية هي الجمع والطرح بين ثلاثة حدود: العبارة مجموع، وإن كان أحد حدودها جداء."
+        ],
+        "result": "العبارة مجموع"
+      },
+      "timeSeconds": 45
     },
     {
       "id": "q5",
-      "statement": "هل العبارة $(3x - 1)(3 + x)$ مجموع أم جداء؟",
+      "step": "03",
+      "sub": "ج",
+      "statement": "$(3x - 1)(3 + x)$",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "recall",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "العبارة جداء",
+          "content": "جداء",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "العبارة مجموع",
+          "content": "مجموع",
           "isCorrect": false,
           "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
         }
@@ -203,26 +234,20 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى العملية الأخيرة التي تُنجز في العبارة."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "العمليات داخل الأقواس تُنجز أولًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "إن كانت آخر عملية ضربًا فالعبارة تدلّ على جداء، وإن كانت جمعًا أو طرحًا فهي تدلّ على مجموع."
+          "content": "ابحث عن آخر عملية تُنجز عند حساب العبارة من أجل قيمة لـ $x$."
         }
       ],
       "feedback": {
         "correct": "آخر عملية هي ضرب القوسين: العبارة جداء.",
-        "incorrect": "حدّد العملية التي تُنجز في آخر الحساب، لا العمليات التي داخل الأقواس."
-      }
+        "incorrect": "آخر عملية تُنجز هي التي تحدّد نوع العبارة: ضرب ← جداء، جمع أو طرح ← مجموع."
+      },
+      "solution": {
+        "lines": [
+          "آخر عملية هي ضرب القوسين: العبارة جداء."
+        ],
+        "result": "العبارة جداء"
+      },
+      "timeSeconds": 45
     }
-  ],
-  "id": "ex-4am-nashr-tabsit-l1-002",
-  "lessonCode": "nashr-tabsit",
-  "level": 1
+  ]
 }

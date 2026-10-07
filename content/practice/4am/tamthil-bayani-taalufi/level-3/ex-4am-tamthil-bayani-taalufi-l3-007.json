@@ -3,112 +3,227 @@
   "lessonCode": "tamthil-bayani-taalufi",
   "level": 3,
   "metadata": {
-    "title": "تنتمي أم لا",
-    "estimatedMinutes": 3,
+    "title": "مستقيم ينزل: عدد وصورة ثم المعامل",
+    "estimatedMinutes": 7,
     "tags": [
-      "رسم"
+      "قراءة بيانية",
+      "العدد الذي علمت صورته",
+      "معامل التوجيه"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
-      "learningPoint": "4am_tamthil-bayani-taalufi_P1"
+      "learningPoint": "4am_tamthil-bayani-taalufi_P3",
+      "adaptedFrom": "ex-4am-tamthil-bayani-taalufi-l3-005"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "نعتبر الدالة التآلفية $f : x \\longmapsto -\\dfrac{1}{2}x + 3$ ."
+    "content": "في المعلم المتعامد والمتجانس التالي، المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "K1": [
+          -2,
+          6
+        ],
+        "H1": [
+          4,
+          -3
+        ]
+      },
+      "lines": [
+        {
+          "through": [
+            "K1",
+            "H1"
+          ],
+          "name": "(D)",
+          "tone": "indigo",
+          "extend": [
+            0.04,
+            0.04
+          ]
+        }
+      ],
+      "grid": true,
+      "axes": true,
+      "labels": {
+        "O": "sw"
+      },
+      "hidden": [
+        "H1",
+        "K1"
+      ],
+      "ariaLabel": "معلم متعامد ومتجانس على ورقة مرصوفة: المستقيم (D) ينزل ويقطع محور التراتيب فوق المبدأ O"
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل النقطة $(4 ; 1)$ تنتمي إلى التمثيل البياني؟",
+      "step": "01",
+      "statement": "بقراءة بيانية، عيّن العدد الذي صورته $6$ بالدالة $f$ .",
       "learningPoints": [
         {
-          "code": "4am_tamthil-bayani-taalufi_P1",
+          "code": "4am_tamthil-bayani-taalufi_P3",
           "role": "primary"
         }
       ],
       "difficulty": 3,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "نعم",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "لا",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAALUFI-NISYAN-B"
+          "value": "-6",
+          "id": "MISC-BAYANI-FASILA-TARTIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "نقطة من التمثيل ترتيبها صورة فاصلتها."
+          "content": "ابدأ من العدد المعطى على محور التراتيب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب صورة $4$ ."
+          "content": "اتجه أفقيا حتى المستقيم $(D)$ ، ثم عموديا حتى محور الفواصل."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "قارن الصورة بترتيب النقطة."
+          "content": "العدد المطلوب هو فاصلة نقطة المستقيم التي ترتيبها الصورة المعطاة."
         }
       ],
       "feedback": {
-        "correct": "$f(4) = 1$ وهو ترتيبها: تنتمي.",
-        "incorrect": "احسب صورة الفاصلة وقارنها بالترتيب."
-      }
+        "correct": "النقطة من $(D)$ التي ترتيبها $6$ فاصلتها $-2$ .",
+        "incorrect": "العدد الذي عُلمت صورته يُقرأ على محور الفواصل: فاصلة نقطة المستقيم التي ترتيبها الصورة المعطاة."
+      },
+      "solution": {
+        "lines": [
+          "النقطة من المستقيم $(D)$ التي ترتيبها $6$ فاصلتها $-2$ .",
+          "إذن: $f(-2) = 6$ ."
+        ],
+        "result": "f(-2) = 6"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "هل النقطة $(-2 ; 2)$ تنتمي إلى التمثيل البياني؟",
+      "step": "02",
+      "statement": "بقراءة بيانية، عيّن صورة العدد $4$ بالدالة $f$ .",
       "learningPoints": [
         {
-          "code": "4am_tamthil-bayani-taalufi_P1",
+          "code": "4am_tamthil-bayani-taalufi_P3",
           "role": "primary"
         }
       ],
       "difficulty": 3,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "نعم",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAALUFI-NISYAN-B"
-        },
-        {
-          "id": "B",
-          "content": "لا",
-          "isCorrect": true
+          "value": "-2/3",
+          "id": "MISC-BAYANI-FASILA-TARTIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "نقطة من التمثيل ترتيبها صورة فاصلتها."
+          "content": "ابدأ من العدد المعطى على محور الفواصل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب صورة $-2$ ."
+          "content": "اتجه عموديا حتى المستقيم $(D)$ ، ثم أفقيا حتى محور التراتيب."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "قارن الصورة بترتيب النقطة."
+          "content": "الصورة هي ترتيب نقطة المستقيم التي فاصلتها العدد المعطى."
         }
       ],
       "feedback": {
-        "correct": "$f(-2) = 4$ وليس $2$ : لا تنتمي.",
-        "incorrect": "احسب صورة الفاصلة وقارنها بالترتيب."
-      }
+        "correct": "النقطة من $(D)$ التي فاصلتها $4$ ترتيبها $-3$ .",
+        "incorrect": "الصورة تُقرأ على محور التراتيب: ترتيب نقطة المستقيم، لا فاصلتها."
+      },
+      "solution": {
+        "lines": [
+          "النقطة من المستقيم $(D)$ التي فاصلتها $4$ ترتيبها $-3$ .",
+          "إذن: $f(4) = -3$ ."
+        ],
+        "result": "f(4) = -3"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "بقراءة بيانية، عيّن معامل التوجيه $a$ للمستقيم $(D)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-3/2",
+      "misconceptionSignatures": [
+        {
+          "value": "-2/3",
+          "id": "MISC-BAYANI-MUAMIL-MAQLUB"
+        },
+        {
+          "value": "3/2",
+          "id": "MISC-BAYANI-ISHARA-A"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اختر نقطتين من المستقيم تقعان على عقدتين من الشبكة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "من النقطة الأولى إلى الثانية: كم تزيد الفاصلة؟ وكم يصعد المستقيم أو ينزل؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "معامل التوجيه هو تغيّر الترتيب مقسوما على تغيّر الفاصلة، ويكون سالبا إذا نزل المستقيم."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = -1{,}5$ .",
+        "incorrect": "اقسم تغيّر الترتيب على تغيّر الفاصلة (وليس العكس)، وانتبه إلى الإشارة إذا نزل المستقيم."
+      },
+      "solution": {
+        "lines": [
+          "النقطتان $(0 ; 3)$ و $(2 ; 0)$ من المستقيم $(D)$ .",
+          "عندما نتقدّم $2$ وحدات إلى اليمين، ينزل المستقيم بـ $3$ وحدات.",
+          "إذن معامل التوجيه هو: $a = \\dfrac{-3}{2} = -1{,}5$ ."
+        ],
+        "result": "a = -1{,}5"
+      },
+      "timeSeconds": 90
     }
   ]
 }

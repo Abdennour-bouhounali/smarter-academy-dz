@@ -1,9 +1,13 @@
 {
+  "id": "ex-4am-khawass-qawasim-l3-001",
+  "lessonCode": "khawass-qawasim",
+  "level": 3,
   "metadata": {
     "title": "معارف — 5 يقسم 90 و 25",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 6,
     "tags": [
-      "خاصية 2"
+      "خاصية 2",
+      "قسمة إقليدية"
     ],
     "source": {
       "type": "textbook",
@@ -11,97 +15,96 @@
       "page": 10,
       "section": "معارف",
       "number": 2
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 10): 5 يقسم كلا من 90 و 25."
+    "content": "نعلم أن العدد 5 يقسم كلا من العددين 90 و 25."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "باقي القسمة الإقليدية للعدد 90 على 25 هو …",
+      "step": "01",
+      "statement": "أجرِ القسمة الإقليدية للعدد 90 على 25.",
       "learningPoints": [
         {
           "code": "4am_khawass-qawasim_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "اكتب الباقي فقط (عدد طبيعي)",
       "expectedAnswer": "15",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "25 × 3 = 75."
+          "content": "ابحث عن أكبر مضاعف للعدد 25 لا يتجاوز 90."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "90 − 75 = ?"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الباقي أصغر من 25."
+          "content": "الباقي هو الفرق بين 90 وهذا المضاعف، ويجب أن يكون أصغر تمامًا من 25."
         }
       ],
       "feedback": {
-        "correct": "90 = 25 × 3 + 15.",
-        "incorrect": "كم مرة يدخل 25 في 90؟"
-      }
+        "correct": "$90 = 25 \\times 3 + 15$ مع $15 < 25$.",
+        "incorrect": "في القسمة الإقليدية $90 = 25 \\times q + r$ يكون الباقي $r$ أصغر تمامًا من 25."
+      },
+      "solution": {
+        "lines": [
+          "$25 \\times 3 = 75$ و $25 \\times 4 = 100 > 90$",
+          "$90 - 75 = 15$",
+          "إذن $90 = 25 \\times 3 + 15$ مع $15 < 25$."
+        ],
+        "result": "90 = 25 \\times 3 + 15"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "هل يقسم 5 هذا الباقي؟",
+      "step": "02",
+      "statement": "برّر، باستعمال المساواة $15 = 90 - 25 \\times 3$ ، أن 5 يقسم 15 دون إجراء القسمة على 5.",
       "learningPoints": [
         {
           "code": "4am_khawass-qawasim_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "نعم: 15 = 5 × 3 — خاصية 2",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "لا",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "لا يمكن معرفة ذلك",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "15 = 5 × 3؟"
+          "content": "5 يقسم 25. ماذا تستنتج بالنسبة إلى $25 \\times 3$ ؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "15 = 90 − 3 × 25."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "خاصية 2 في الكتاب."
+          "content": "5 يقسم 90 و $25 \\times 3$: ماذا يقسم أيضًا؟"
         }
       ],
       "feedback": {
-        "correct": "القاسم المشترك لعددين يقسم باقي القسمة الإقليدية لأحدهما على الآخر.",
-        "incorrect": "15 = 90 − 25 × 3: فرق عددين يقسمهما 5."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى كل مرحلة من مراحل الاستدلال."
+      },
+      "solution": {
+        "lines": [
+          "5 يقسم 25، فهو يقسم كل مضاعف له، ومنه 5 يقسم $25 \\times 3 = 75$.",
+          "5 يقسم كلا من 90 و 75، فهو يقسم فرقهما $90 - 75 = 15$ (الخاصية 1).",
+          "إذن 5 يقسم باقي القسمة الإقليدية للعدد 90 على 25 (الخاصية 2)."
+        ]
+      },
+      "timeSeconds": 210
     }
-  ],
-  "id": "ex-4am-khawass-qawasim-l3-001",
-  "lessonCode": "khawass-qawasim",
-  "level": 3
+  ]
 }

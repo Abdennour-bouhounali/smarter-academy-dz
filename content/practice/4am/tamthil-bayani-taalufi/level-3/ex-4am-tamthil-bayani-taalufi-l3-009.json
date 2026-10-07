@@ -3,24 +3,74 @@
   "lessonCode": "tamthil-bayani-taalufi",
   "level": 3,
   "metadata": {
-    "title": "سابقة غير صحيحة",
-    "estimatedMinutes": 3,
+    "title": "عدد، صورة، ثم الترتيب عند المبدأ",
+    "estimatedMinutes": 7,
     "tags": [
-      "قراءة بيانية"
+      "قراءة بيانية",
+      "العدد الذي علمت صورته",
+      "الترتيب عند المبدأ"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
-      "learningPoint": "4am_tamthil-bayani-taalufi_P3"
+      "learningPoint": "4am_tamthil-bayani-taalufi_P3",
+      "adaptedFrom": "ex-4am-tamthil-bayani-taalufi-l3-009"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ ، ويشمل النقطتين $(0 ; -1)$ و $(2 ; 2)$ ."
+    "content": "في المعلم المتعامد والمتجانس التالي، المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "K1": [
+          -2,
+          -4
+        ],
+        "H1": [
+          4,
+          5
+        ]
+      },
+      "lines": [
+        {
+          "through": [
+            "K1",
+            "H1"
+          ],
+          "name": "(D)",
+          "tone": "indigo",
+          "extend": [
+            0.04,
+            0.04
+          ]
+        }
+      ],
+      "grid": true,
+      "axes": true,
+      "labels": {
+        "O": "sw"
+      },
+      "hidden": [
+        "H1",
+        "K1"
+      ],
+      "ariaLabel": "معلم متعامد ومتجانس على ورقة مرصوفة: المستقيم (D) يصعد ويقطع محور التراتيب تحت المبدأ O"
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "بقراءة بيانية، العدد الذي صورته $5$ :",
+      "step": "01",
+      "statement": "بقراءة بيانية، عيّن العدد الذي صورته $5$ بالدالة $f$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-taalufi_P3",
@@ -28,34 +78,50 @@
         }
       ],
       "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
       "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "value": "13/2",
+          "id": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العدد الذي صورته معلومة هو فاصلة النقطة من المستقيم التي ترتيبها هذه الصورة."
+          "content": "ابدأ من العدد المعطى على محور التراتيب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب عبارة الدالة، ثم حلّ $ax + b = m$ ."
+          "content": "اتجه أفقيا حتى المستقيم $(D)$ ، ثم عموديا حتى محور الفواصل."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اطرح $b$ أولًا ثم اقسم على $a$ ، وتحقّق بحساب الصورة."
+          "content": "العدد المطلوب هو فاصلة نقطة المستقيم التي ترتيبها الصورة المعطاة."
         }
       ],
       "feedback": {
-        "correct": "$f(x) = 1{,}5x - 1$ ، و $f(4) = 5$ : النقطة $(4 ; 5)$ على المستقيم.",
-        "incorrect": "العدد المطلوب فاصلة: انطلق من الصورة على محور التراتيب."
-      }
+        "correct": "النقطة من $(D)$ التي ترتيبها $5$ فاصلتها $4$ .",
+        "incorrect": "العدد الذي عُلمت صورته يُقرأ على محور الفواصل: فاصلة نقطة المستقيم التي ترتيبها الصورة المعطاة."
+      },
+      "solution": {
+        "lines": [
+          "النقطة من المستقيم $(D)$ التي ترتيبها $5$ فاصلتها $4$ .",
+          "إذن: $f(4) = 5$ ."
+        ],
+        "result": "f(4) = 5"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "بقراءة بيانية، العدد الذي صورته $0$ :",
+      "step": "02",
+      "statement": "بقراءة بيانية، عيّن صورة العدد $-2$ بالدالة $f$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-taalufi_P3",
@@ -63,30 +129,91 @@
         }
       ],
       "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
-      "expectedAnswer": "2/3",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-4",
+      "misconceptionSignatures": [
+        {
+          "value": "-2/3",
+          "id": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العدد الذي صورته معلومة هو فاصلة النقطة من المستقيم التي ترتيبها هذه الصورة."
+          "content": "ابدأ من العدد المعطى على محور الفواصل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب عبارة الدالة، ثم حلّ $ax + b = m$ ."
+          "content": "اتجه عموديا حتى المستقيم $(D)$ ، ثم أفقيا حتى محور التراتيب."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اطرح $b$ أولًا ثم اقسم على $a$ ، وتحقّق بحساب الصورة."
+          "content": "الصورة هي ترتيب نقطة المستقيم التي فاصلتها العدد المعطى."
         }
       ],
       "feedback": {
-        "correct": "$f(x) = 1{,}5x - 1$ ، و $f(\\dfrac{2}{3}) = 0$ : النقطة $(\\dfrac{2}{3} ; 0)$ على المستقيم.",
-        "incorrect": "العدد المطلوب فاصلة: انطلق من الصورة على محور التراتيب."
-      }
+        "correct": "النقطة من $(D)$ التي فاصلتها $-2$ ترتيبها $-4$ .",
+        "incorrect": "الصورة تُقرأ على محور التراتيب: ترتيب نقطة المستقيم، لا فاصلتها."
+      },
+      "solution": {
+        "lines": [
+          "النقطة من المستقيم $(D)$ التي فاصلتها $-2$ ترتيبها $-4$ .",
+          "إذن: $f(-2) = -4$ ."
+        ],
+        "result": "f(-2) = -4"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "بقراءة بيانية، عيّن الترتيب عند المبدأ $b$ للدالة التي يمثّلها المستقيم $(D)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-1",
+      "misconceptionSignatures": [
+        {
+          "value": "2/3",
+          "id": "MISC-BAYANI-B-FASILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الترتيب عند المبدأ هو ترتيب النقطة التي يقطع فيها المستقيم محور التراتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابحث على المستقيم عن النقطة التي فاصلتها 0، ثم اقرأ ترتيبها على محور التراتيب."
+        }
+      ],
+      "feedback": {
+        "correct": "المستقيم $(D)$ يقطع محور التراتيب في النقطة $(0 ; -1)$ .",
+        "incorrect": "اقرأ ترتيب نقطة تقاطع المستقيم مع محور التراتيب، لا فاصلة تقاطعه مع محور الفواصل."
+      },
+      "solution": {
+        "lines": [
+          "المستقيم $(D)$ يقطع محور التراتيب في النقطة $(0 ; -1)$ .",
+          "إذن الترتيب عند المبدأ هو: $b = -1$ ."
+        ],
+        "result": "b = -1"
+      },
+      "timeSeconds": 75
     }
   ]
 }

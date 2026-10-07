@@ -1,74 +1,121 @@
 {
+  "id": "ex-4am-jidhr-tarbii-l1-008",
+  "lessonCode": "jidhr-tarbii",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — جذر عدد سالب",
-    "estimatedMinutes": 2,
+    "title": "جذر عدد سالب",
+    "estimatedMinutes": 4,
     "tags": [
-      "تعريف",
-      "عدد سالب"
+      "تعريف الجذر التربيعي"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_jidhr-tarbii_P1",
-      "modelledOn": "ex-4"
+      "modelledOn": "ex-4",
+      "adaptedFrom": "ex-4am-jidhr-tarbii-l1-008"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "مربع أي عدد (موجب أو سالب) عدد موجب."
+    "content": "نعتبر الكتابتين: $\\sqrt{-9}$ و $\\sqrt{-(-9)}$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "العدد $\\sqrt{-9}$:",
+      "step": "01",
+      "statement": "هل للكتابة $\\sqrt{-9}$ معنى ؟ برّر إجابتك.",
       "learningPoints": [
         {
           "code": "4am_jidhr-tarbii_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "يساوي 3",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "يساوي $-3$",
+          "content": "نعم",
           "isCorrect": false,
           "misconceptionId": "MISC-JIDHR-SALIB"
         },
         {
-          "id": "C",
-          "content": "لا معنى له، لأنه لا يوجد عدد مربعه $-9$",
+          "id": "B",
+          "content": "لا",
           "isCorrect": true
+        }
+      ],
+      "answerFormat": "اختر نعم أو لا، ثم قارن تبريرك بالحل النموذجي",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع أي عدد (موجب أو سالب) هو عدد موجب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل يوجد عدد مربعه $-9$؟"
+        }
+      ],
+      "feedback": {
+        "correct": "لا يوجد عدد مربعه سالب، إذن $\\sqrt{-9}$ لا معنى لها.",
+        "incorrect": "الجذر التربيعي معرّف من أجل الأعداد الموجبة فقط: ما إشارة $-9$؟"
+      },
+      "solution": {
+        "lines": [
+          "مربع كل عدد هو عدد موجب، إذن لا يوجد عدد مربعه $-9$.",
+          "الكتابة $\\sqrt{-9}$ لا معنى لها."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "اكتب العدد $\\sqrt{-(-9)}$ دون استعمال الرمز $\\sqrt{\\;}$.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "-3",
+          "id": "MISC-JIDHR-SALIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تحقّق: ما مربع 3؟ وما مربع $-3$؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "هل يمكن أن يكون مربع عدد سالبًا؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "التعريف يخص الأعداد الموجبة $a$ فقط."
+          "content": "ابدأ بحساب العدد المكتوب تحت الرمز: $-(-9)$."
         }
       ],
       "feedback": {
-        "correct": "$3^2 = 9$ و $(-3)^2 = 9$: لا يوجد عدد مربعه $-9$، فالرمز $\\sqrt{-9}$ لا معنى له.",
-        "incorrect": "مربع العدد $-3$ يساوي 9 وليس $-9$."
-      }
+        "correct": "$-(-9) = 9$ و $\\sqrt{9} = 3$.",
+        "incorrect": "احسب ما تحت الرمز أولا ثم خذ العدد الموجب الذي مربعه هذا العدد."
+      },
+      "solution": {
+        "lines": [
+          "$-(-9) = 9$",
+          "$\\sqrt{-(-9)} = \\sqrt{9}$"
+        ],
+        "result": "\\sqrt{-(-9)} = 3"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-jidhr-tarbii-l1-008",
-  "lessonCode": "jidhr-tarbii",
-  "level": 1
+  ]
 }

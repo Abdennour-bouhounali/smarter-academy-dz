@@ -3,10 +3,11 @@
   "lessonCode": "mutarajiha-ula",
   "level": 1,
   "metadata": {
-    "title": "معارف 3 — المثال 1: هل العدد حلّ؟",
-    "estimatedMinutes": 4,
+    "title": "هل العدد حلّ للمتراجحة؟",
+    "estimatedMinutes": 3,
     "tags": [
-      "حلّ متراجحة"
+      "متراجحة",
+      "اختبار قيمة"
     ],
     "source": {
       "type": "textbook",
@@ -14,32 +15,45 @@
       "page": 48,
       "section": "معارف",
       "number": 3
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 48): المتباينة $4x > -3$ هي متراجحة ذات المجهول $x$ ."
+    "content": "لتكن المتراجحة ذات المجهول $x$ :",
+    "formulas": [
+      "4x > -3"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل العدد $-2$ حلّ للمتراجحة $4x > -3$ ؟",
+      "step": "01",
+      "sub": "ا",
+      "lead": "بالتعويض، أجب عمّا يلي:",
+      "statement": "هل العدد $-2$ حلّ لها؟",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "نعم، هو حلّ",
+          "content": "نعم",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
         },
         {
           "id": "B",
-          "content": "لا، ليس حلًّا",
+          "content": "لا",
           "isCorrect": true
         }
       ],
@@ -47,43 +61,49 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ بالعدد في الطرفين."
+          "content": "عوّض $x$ بالعدد المعطى في كل طرف من طرفي المتراجحة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب كل طرف وحده."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+          "content": "احسب كل طرف، ثم قارن العددين: هل المتباينة المحصل عليها صحيحة؟"
         }
       ],
       "feedback": {
-        "correct": "من أجل $x = -2$ : الطرف الأول يساوي $-8$ والطرف الثاني $-3$ ، و $-8 > -3$ متباينة خاطئة.",
-        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
-      }
+        "correct": "$-8 > -3$ متباينة خاطئة.",
+        "incorrect": "احسب الطرفين بعد التعويض ثم قارن، وانتبه إلى نوع المتباينة (تامة أو غير تامة)."
+      },
+      "solution": {
+        "lines": [
+          "من أجل $x = -2$ : الطرف الأول يساوي $-8$ والطرف الثاني يساوي $-3$ .",
+          "$-8 > -3$ متباينة خاطئة، إذن $-2$ ليس حلًّا للمتراجحة."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "هل العدد $0$ حلّ للمتراجحة $4x > -3$ ؟",
+      "step": "01",
+      "sub": "ب",
+      "statement": "هل العدد $0$ حلّ لها؟",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "نعم، هو حلّ",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "لا، ليس حلًّا",
+          "content": "لا",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
         }
@@ -92,74 +112,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ بالعدد في الطرفين."
+          "content": "عوّض $x$ بالعدد المعطى في كل طرف من طرفي المتراجحة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب كل طرف وحده."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+          "content": "احسب كل طرف، ثم قارن العددين: هل المتباينة المحصل عليها صحيحة؟"
         }
       ],
       "feedback": {
-        "correct": "من أجل $x = 0$ : الطرف الأول يساوي $0$ والطرف الثاني $-3$ ، و $0 > -3$ متباينة صحيحة.",
-        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
-      }
-    },
-    {
-      "id": "q3",
-      "statement": "أيّ عدد ليس حلًّا للمتراجحة $4x > -3$ ؟",
-      "learningPoints": [
-        {
-          "code": "4am_mutarajiha-ula_P1",
-          "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$-\\dfrac{1}{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
-        },
-        {
-          "id": "B",
-          "content": "$-1$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$1$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "اختبر كل عدد بتعويضه في الطرفين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب الطرفين ثم احكم على المتباينة العددية."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "العدد المطلوب وحده يعطي متباينة خاطئة."
-        }
-      ],
-      "feedback": {
-        "correct": "من أجل $x = -1$ : $-4 > -3$ خاطئة، أمّا القيم الأخرى فتحقّقها.",
-        "incorrect": "عوّض كل عدد في الطرفين واحسب، ثم قارن بالرمز نفسه."
-      }
+        "correct": "$0 > -3$ متباينة صحيحة.",
+        "incorrect": "احسب الطرفين بعد التعويض ثم قارن، وانتبه إلى نوع المتباينة (تامة أو غير تامة)."
+      },
+      "solution": {
+        "lines": [
+          "من أجل $x = 0$ : الطرف الأول يساوي $0$ والطرف الثاني يساوي $-3$ .",
+          "$0 > -3$ متباينة صحيحة، إذن $0$ حلّ للمتراجحة."
+        ],
+        "result": "نعم"
+      },
+      "timeSeconds": 90
     }
   ]
 }

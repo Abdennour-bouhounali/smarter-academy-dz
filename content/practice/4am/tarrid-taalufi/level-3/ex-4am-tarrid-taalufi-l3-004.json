@@ -3,78 +3,225 @@
   "lessonCode": "tarrid-taalufi",
   "level": 3,
   "metadata": {
-    "title": "تدريب — نمذجة باقة",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2011 — ثلاث صيغ لملعب التنس بالبليدة",
+    "estimatedMinutes": 12,
     "tags": [
-      "نمذجة"
+      "ثلاث صيغ",
+      "فترة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_tarrid-taalufi_P1",
-      "modelledOn": "act-4"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "BEM 2011 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2011",
+      "heading": "التمرين",
+      "points": "03,5"
     }
   },
   "statement": {
-    "content": "باقة شهرية: 900DA تُدفع مرّة واحدة في الشهر، ثم 70DA لكل جيغا إضافية. نسمّي $x$ عدد الجيغا الإضافية."
+    "content": "يقترح نادٍ للتنس بالبليدة على المنخرطين الصيغ الثلاث الآتية لكراء الملعب خلال شهر:\nالصيغة (أ) : 400DA للساعة.\nالصيغة (ب) : اشتراك شهري 1200DA و 250DA للساعة.\nالصيغة (ج) : اشتراك شهري 3000DA و 100DA للساعة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المبلغ الشهري هو:",
+      "step": "01",
+      "lead": "احسب تكلفة 10 ساعات في الشهر حسب كل صيغة.",
+      "statement": "الصيغة (أ):",
       "learningPoints": [
         {
           "code": "4am_tarrid-taalufi_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "4000",
+      "hints": [
         {
-          "id": "A",
-          "content": "$f(x) = 900x + 70$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-JUZ-THABIT"
-        },
+          "id": "h1",
+          "type": "look",
+          "content": "ثمن الساعات فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "$400 \\times 10$ .",
+        "incorrect": "اضرب عدد الساعات في ثمن الساعة."
+      },
+      "solution": {
+        "lines": [
+          "تكلفة 10 ساعات:",
+          "(أ): $400 \\times 10 = 4000DA$"
+        ],
+        "result": "4000DA"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "الصيغة (ب):",
+      "learningPoints": [
         {
-          "id": "B",
-          "content": "$f(x) = 970x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-JUZ-THABIT"
-        },
+          "code": "4am_tarrid-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "3700",
+      "misconceptionSignatures": [
         {
-          "id": "C",
-          "content": "$f(x) = 70x + 900$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$f(x) = 70x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAALUFI-NISYAN-B"
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "2500"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الجزء الثابت هو $b$ ."
+          "content": "ثمن الساعات ثم الاشتراك."
+        }
+      ],
+      "feedback": {
+        "correct": "$250 \\times 10 + 1200$ .",
+        "incorrect": "لا تنس الاشتراك."
+      },
+      "solution": {
+        "lines": [
+          "تكلفة 10 ساعات:",
+          "(ب): $250 \\times 10 + 1200 = 3700DA$"
+        ],
+        "result": "3700DA"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "01",
+      "statement": "الصيغة (ج):",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "4000",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "1000"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ثمن الساعات ثم الاشتراك."
+        }
+      ],
+      "feedback": {
+        "correct": "$100 \\times 10 + 3000$ .",
+        "incorrect": "لا تنس الاشتراك."
+      },
+      "solution": {
+        "lines": [
+          "تكلفة 10 ساعات:",
+          "(ج): $100 \\times 10 + 3000 = 4000DA$"
+        ],
+        "result": "4000DA"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "تكون الصيغة (ب) أقل تكلفة من الصيغتين الأخريين عندما: $m < x < M$ ، حيث $x$ عدد الساعات في الشهر.\nأعط العدد $m$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: عدد الساعات $m$",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن الصيغة (ب) بالصيغة (أ) أولا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ثمن الجيغا يُضرب في $x$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$f(x) = ax + b$ ."
+          "content": "حل المتراجحة $250x + 1200 < 400x$ ."
         }
       ],
       "feedback": {
-        "correct": "$f(x) = 70x + 900$ : الجزء الثابت 900 والمعامل 70.",
-        "incorrect": "900DA تُدفع مرّة واحدة، لا لكل جيغا."
-      }
+        "correct": "قبل هذا العدد تكون الصيغة (أ) أقل تكلفة.",
+        "incorrect": "اكتب المتراجحة التي تعني أن الصيغة (ب) أقل تكلفة من الصيغة (أ) ثم حلّها."
+      },
+      "solution": {
+        "lines": [
+          "الصيغة (ب) أقل تكلفة من (أ): $250x + 1200 < 400x$ ، $1200 < 150x$ ، $x > 8$ .",
+          "الصيغة (ب) أقل تكلفة من (ج): $250x + 1200 < 100x + 3000$ ، $150x < 1800$ ، $x < 12$ .",
+          "إذا تكون الصيغة (ب) أقل تكلفة عندما: $8 < x < 12$ (بيانيا: مستقيمها تحت المستقيمين الآخرين بين فاصلتي نقطتي التقاطع)."
+        ],
+        "result": "8 < x < 12"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q5",
+      "step": "02",
+      "statement": "ثم العدد $M$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: عدد الساعات $M$",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن الآن الصيغة (ب) بالصيغة (ج)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل المتراجحة $250x + 1200 < 100x + 3000$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "بعد هذا العدد تصبح الصيغة (ج) أقل تكلفة.",
+        "incorrect": "اكتب المتراجحة التي تعني أن الصيغة (ب) أقل تكلفة من الصيغة (ج) ثم حلّها."
+      },
+      "solution": {
+        "lines": [
+          "الصيغة (ب) أقل تكلفة من (أ): $250x + 1200 < 400x$ ، $1200 < 150x$ ، $x > 8$ .",
+          "الصيغة (ب) أقل تكلفة من (ج): $250x + 1200 < 100x + 3000$ ، $150x < 1800$ ، $x < 12$ .",
+          "إذا تكون الصيغة (ب) أقل تكلفة عندما: $8 < x < 12$ (بيانيا: مستقيمها تحت المستقيمين الآخرين بين فاصلتي نقطتي التقاطع)."
+        ],
+        "result": "8 < x < 12"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

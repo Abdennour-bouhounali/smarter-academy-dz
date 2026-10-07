@@ -3,10 +3,10 @@
   "lessonCode": "mafhum-jumla",
   "level": 1,
   "metadata": {
-    "title": "تدريب — كشك الكرنتيكة",
-    "estimatedMinutes": 3,
+    "title": "كشك الحي",
+    "estimatedMinutes": 4,
     "tags": [
-      "كرنتيكة",
+      "ترجمة",
       "ثنائية"
     ],
     "source": {
@@ -14,21 +14,69 @@
       "reason": "practice_generation",
       "learningPoint": "4am_mafhum-jumla_P3",
       "modelledOn": "ex-1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في كشك الحي، ثمن الكرنتيكة 20DA وثمن قارورة الماء 50DA. اشترت سارة $x$ كرنتيكة و $y$ قارورة ماء ودفعت 400DA: $20x + 50y = 400$ ، أي $2x + 5y = 40$ ."
+    "content": "في كشك الحي، ثمن الكرنتيكة 20DA وثمن قارورة الماء 50DA. اشترت سارة $x$ كرنتيكة و $y$ قارورة ماء ودفعت 400DA ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل الثنائية $(10 ; 4)$ حل للمعادلة $2x + 5y = 40$ ؟",
+      "step": "01",
+      "statement": "ترجم هذه الوضعية بمعادلة، ثم اكتبها على الشكل $2x + 5y = c$ . أعط العدد $c$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $c$ فقط",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ثمن $x$ كرنتيكة هو $20x$ وثمن $y$ قارورة هو $50y$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم طرفي المعادلة على 10."
+        }
+      ],
+      "feedback": {
+        "correct": "$20x + 50y = 400$ تعطي بالقسمة على 10: $2x + 5y = 40$ .",
+        "incorrect": "اكتب أولا المبلغ المدفوع بدلالة $x$ و $y$ ، ثم اقسم الطرفين على العدد نفسه."
+      },
+      "solution": {
+        "lines": [
+          "المبلغ المدفوع: $20x + 50y = 400$",
+          "بقسمة الطرفين على 10:"
+        ],
+        "result": "2x + 5y = 40"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "sub": "ا",
+      "statement": "هل الثنائية $(10 ; 4)$ حل لهذه المعادلة؟",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
@@ -46,33 +94,39 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "$x = 10$ و $y = 4$ ."
+          "content": "عوّض $x$ بـ $10$ و $y$ بـ $4$ في المعادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$2 \\times 10 + 5 \\times 4$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل تجد 40؟"
+          "content": "قارن قيمة الطرف الأول بالطرف الثاني."
         }
       ],
       "feedback": {
-        "correct": "$20 + 20 = 40$ : نعم.",
-        "incorrect": "احسب $2 \\times 10 + 5 \\times 4$ ."
-      }
+        "correct": "$2 \\times 10 + 5 \\times 4 = 40$ : الثنائية حل للمعادلة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض ثم قارن بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $10$ و $y$ بـ $4$ :",
+          "$2 \\times 10 + 5 \\times 4 = 40$",
+          "ومنه الثنائية $(10 ; 4)$ حل للمعادلة."
+        ]
+      },
+      "timeSeconds": 60
     },
     {
-      "id": "q2",
-      "statement": "هل الثنائية $(4 ; 10)$ حل للمعادلة $2x + 5y = 40$ ؟",
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "هل الثنائية $(4 ; 10)$ حل لهذه المعادلة؟",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
@@ -91,23 +145,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "$x = 4$ و $y = 10$ هذه المرة."
+          "content": "عوّض $x$ بـ $4$ و $y$ بـ $10$ في المعادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$2 \\times 4 + 5 \\times 10$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن بالعدد 40."
+          "content": "قارن قيمة الطرف الأول بالطرف الثاني."
         }
       ],
       "feedback": {
-        "correct": "$8 + 50 = 58 \\neq 40$ : لا. الترتيب مهم.",
-        "incorrect": "العدد الأول قيمة $x$ ."
-      }
+        "correct": "$2 \\times 4 + 5 \\times 10 = 58 \\neq 40$ : الثنائية ليست حلا للمعادلة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض ثم قارن بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $4$ و $y$ بـ $10$ :",
+          "$2 \\times 4 + 5 \\times 10 = 58 \\neq 40$",
+          "ومنه الثنائية $(4 ; 10)$ ليست حلا للمعادلة."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

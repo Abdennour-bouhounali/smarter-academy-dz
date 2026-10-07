@@ -3,103 +3,191 @@
   "lessonCode": "muadala-ula",
   "level": 5,
   "metadata": {
-    "title": "تدريب — مقامات وأقواس",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2014 — عرضان للرسائل القصيرة",
+    "estimatedMinutes": 14,
     "tags": [
-      "كسور",
-      "نشر"
+      "معادلة",
+      "أعداد عشرية",
+      "وضعية إدماجية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_muadala-ula_P2",
-      "modelledOn": "now-47-1"
+      "modelledOn": "BEM 2014 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2014",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "اضرب ثم انشر ثم حلّ."
+    "content": "يقترح متعامل للهاتف النقال على زبائنه عرضين للرسائل القصيرة: العرض الأول: 4DA للرسالة الواحدة. العرض الثاني: 2,5DA للرسالة الواحدة مع اشتراك شهري قدره 60DA ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّ المعادلة $\\dfrac{3x - 1}{4} = \\dfrac{x + 5}{2}$ .",
+      "step": "01",
+      "statement": "ليكن $x$ عدد الرسائل المرسلة خلال شهر. جد $x$ حتى تتساوى تكلفتا العرضين.",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 5,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
-      "expectedAnswer": "11",
+      "answerFormat": "عدد طبيعي: عدد الرسائل",
+      "expectedAnswer": "40",
+      "misconceptionSignatures": [
+        {
+          "value": "1/40",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "value": "120/13",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في المعادلة مقامات."
+          "content": "عبّر عن تكلفة $x$ رسالة بكل عرض."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب الطرفين في عدد تقبل كل المقامات القسمة عليه، مع كل الحدود."
+          "content": "اكتب أن التكلفتين متساويتان؛ انتبه إلى الفاصلة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم انشر وانقل المجاهيل إلى طرف والمعاليم إلى الآخر."
+          "content": "انقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر، ثم اقسم على معامل $x$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{3x - 1}{4} = \\dfrac{x + 5}{2}$ : ننقل المجاهيل إلى طرف والمعاليم إلى الآخر ونقسم على معامل $x$ : $x = 11$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "$x = 40$ .",
+        "incorrect": "انتبه إلى الفواصل وإلى الإشارات عند النقل، ثم اقسم على معامل $x$ . تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$4x = 2{,}5x + 60$",
+          "$4x - 2{,}5x = 60$",
+          "$1{,}5x = 60$",
+          "$x = \\dfrac{60}{1{,}5}$"
+        ],
+        "result": "x = 40"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "هل العدد $11$ حل للمعادلة $\\dfrac{3x - 1}{4} = \\dfrac{x + 5}{2}$ ؟",
+      "step": "02",
+      "statement": "اختارت سلمى العرض الثاني فدفعت خلال شهر 285DA . كم رسالة أرسلت؟",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
-        }
-      ],
-      "difficulty": 3,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "نعم، هو حل لها",
-          "isCorrect": true
         },
         {
-          "id": "B",
-          "content": "لا، ليس حلًّا لها",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد الرسائل",
+      "expectedAnswer": "90",
+      "misconceptionSignatures": [
+        {
+          "value": "1/90",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "value": "138",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "نعوّض $x$ بالعدد في الطرفين."
+          "content": "اكتب أن تكلفة العرض الثاني تساوي 285DA ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب كل طرف وحده."
+          "content": "اطرح الاشتراك من الطرفين."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "يكون العدد حلًّا إذا كان الطرفان متساويين."
+          "content": "اقسم على $2{,}5$ ."
         }
       ],
       "feedback": {
-        "correct": "من أجل $x = 11$ : الطرف الأول $8$ والطرف الثاني $8$ — متساويان.",
-        "incorrect": "احسب الطرفين معًا ثم قارن بينهما."
-      }
+        "correct": "$x = 90$ : أرسلت سلمى 90 رسالة.",
+        "incorrect": "انتبه إلى الفواصل وإلى الإشارات عند النقل، ثم اقسم على معامل $x$ . تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$2{,}5x + 60 = 285$",
+          "$2{,}5x = 285 - 60$",
+          "$2{,}5x = 225$",
+          "$x = \\dfrac{225}{2{,}5}$"
+        ],
+        "result": "x = 90"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "كم كانت ستدفع سلمى لو اختارت العرض الأول لنفس عدد الرسائل؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بـ DA",
+      "expectedAnswer": "360",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض عدد الوحدات في عبارة التكلفة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب الجداء ثم أضف المبلغ الثابت إن وُجد."
+        }
+      ],
+      "feedback": {
+        "correct": "$360DA$ .",
+        "incorrect": "اضرب عدد الوحدات في السعر، ثم أضف المبلغ الثابت (الاشتراك) إن وُجد."
+      },
+      "solution": {
+        "lines": [
+          "$4 \\times 90 = 360$",
+          "إذن كانت ستدفع 360DA ، أي أكثر مما دفعت بالعرض الثاني."
+        ],
+        "result": "360DA"
+      },
+      "timeSeconds": 90
     }
   ]
 }

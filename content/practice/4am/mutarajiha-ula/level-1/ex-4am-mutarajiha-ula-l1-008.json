@@ -3,49 +3,54 @@
   "lessonCode": "mutarajiha-ula",
   "level": 1,
   "metadata": {
-    "title": "تدريب — كتاب وأقلام",
+    "title": "كتاب وأقلام",
     "estimatedMinutes": 4,
     "tags": [
       "متراجحة",
-      "حلّ"
+      "اختبار قيمة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_mutarajiha-ula_P1",
       "modelledOn": "act-3a"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "يملك أمين 900DA. يريد شراء كتاب ثمنه 300DA وأقلام ثمن الواحد منها 60DA. نرمز إلى عدد الأقلام بـ $x$ ."
+    "content": "يملك أمين 900DA . يريد شراء كتاب ثمنه 300DA وأقلام ثمن الواحد منها 60DA . نرمز بـ $x$ إلى عدد الأقلام، فيُترجم الشرط «لا يتجاوز المبلغ المدفوع 900DA» بالمتراجحة:",
+    "formulas": [
+      "300 + 60x \\leqslant 900"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ متراجحة تعبّر عن «لا يتجاوز المبلغ 900DA»؟",
+      "step": "01",
+      "statement": "هل يمكن لأمين شراء $12$ قلمًا؟ (هل العدد $12$ حلّ للمتراجحة؟)",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$300x + 60 \\leq 900$",
+          "content": "نعم",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
         },
         {
           "id": "B",
-          "content": "$300 + 60x \\geq 900$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
-        },
-        {
-          "id": "C",
-          "content": "$300 + 60x \\leq 900$",
+          "content": "لا",
           "isCorrect": true
         }
       ],
@@ -53,102 +58,67 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب ثمن المشتريات بدلالة $x$."
+          "content": "عوّض $x$ بالعدد المعطى في كل طرف من طرفي المتراجحة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ثمن الأقلام: 60 مضروبًا في عددها."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "«لا يتجاوز» تعني «أصغر من أو يساوي»."
+          "content": "احسب كل طرف، ثم قارن العددين: هل المتباينة المحصل عليها صحيحة؟"
         }
       ],
       "feedback": {
-        "correct": "الثمن $300 + 60x$ لا يتجاوز 900: $300 + 60x \\leq 900$.",
-        "incorrect": "ثمن الكتاب مرّة واحدة، وثمن القلم مضروب في عدد الأقلام."
-      }
+        "correct": "$1020 \\leqslant 900$ متباينة خاطئة.",
+        "incorrect": "احسب الطرفين بعد التعويض ثم قارن، وانتبه إلى نوع المتباينة (تامة أو غير تامة)."
+      },
+      "solution": {
+        "lines": [
+          "من أجل $x = 12$ : الطرف الأول يساوي $1020$ والطرف الثاني يساوي $900$ .",
+          "$1020 \\leqslant 900$ متباينة خاطئة، إذن $12$ ليس حلًّا للمتراجحة."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "هل العدد $12$ حلّ للمتراجحة $300 + 60x \\leq 900$ ؟",
+      "step": "02",
+      "statement": "ما هو أكبر عدد من الأقلام يمكن لأمين شراؤه؟",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "نعم، هو حلّ",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
-        },
-        {
-          "id": "B",
-          "content": "لا، ليس حلًّا",
-          "isCorrect": true
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "عوّض $x$ بالعدد في الطرفين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب كل طرف وحده."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
-        }
-      ],
-      "feedback": {
-        "correct": "من أجل $x = 12$ : الطرف الأول يساوي $1020$ والطرف الثاني $900$ ، و $1020 \\leq 900$ متباينة خاطئة.",
-        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
-      }
-    },
-    {
-      "id": "q3",
-      "statement": "ما أكبر عدد من الأقلام يمكن لأمين شراؤه؟",
-      "learningPoints": [
-        {
-          "code": "4am_mutarajiha-ula_P1",
-          "role": "primary"
-        }
-      ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "عدد طبيعي: عدد الأقلام",
       "expectedAnswer": "10",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حلّ المتراجحة أولًا."
+          "content": "استعمل حلول المتراجحة التي وجدتها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مثّل الحلول على مستقيم مدرّج وانظر إلى الحدّ: هل هو نفسه حلّ؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ابحث عن أكبر عدد طبيعي في الجزء الملوّن."
+          "content": "انتبه إلى الحدّ: هل هو نفسه حلّ أم لا؟"
         }
       ],
       "feedback": {
-        "correct": "الحلول: $x \\leq 10$ ، و $300 + 60 \\times 10 = 900$ : أكبر عدد هو 10.",
-        "incorrect": "حلّ المتراجحة، ثم انتبه إلى الحدّ: هل هو حلّ أم لا؟"
-      }
+        "correct": "$10$ أقلام.",
+        "incorrect": "ارجع إلى حلول المتراجحة، ثم اختبر الأعداد الصحيحة القريبة من الحدّ."
+      },
+      "solution": {
+        "lines": [
+          "$300 + 60x \\leqslant 900$",
+          "$60x \\leqslant 600$",
+          "$x \\leqslant 10$",
+          "إذن أكبر عدد من الأقلام هو $10$ ."
+        ],
+        "result": "10 أقلام"
+      },
+      "timeSeconds": 120
     }
   ]
 }

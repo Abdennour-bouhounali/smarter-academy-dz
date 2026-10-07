@@ -3,8 +3,8 @@
   "lessonCode": "mafhum-jumla",
   "level": 1,
   "metadata": {
-    "title": "تمرين 1 — ثنائيات المعادلة x − 2y = 7",
-    "estimatedMinutes": 3,
+    "title": "ثنائيات تحقق المعادلة x − 2y = 7",
+    "estimatedMinutes": 4,
     "tags": [
       "ثنائية",
       "تعويض"
@@ -15,21 +15,34 @@
       "page": 60,
       "section": "أوظّف تعلّماتي",
       "number": 1
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 60): نعتبر المعادلة من الدرجة الأولى بمجهولين $x - 2y = 7$ . نريد أن نعرف إن كانت كل ثنائية حلا لها."
+    "content": "نعتبر المعادلة ذات المجهولين $x$ و $y$ التالية:",
+    "formulas": [
+      "x - 2y = 7"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل الثنائية $(7 ; 0)$ حل للمعادلة $x - 2y = 7$ ؟",
+      "step": "01",
+      "sub": "ا",
+      "lead": "بيّن إن كانت كل ثنائية من الثنائيات التالية حلا لهذه المعادلة:",
+      "statement": "هل الثنائية $(7 ; 0)$ حل لهذه المعادلة؟",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
@@ -47,40 +60,45 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "في $(7 ; 0)$ : $x = 7$ و $y = 0$ ."
+          "content": "عوّض $x$ بـ $7$ و $y$ بـ $0$ في المعادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض في الطرف الأول $x - 2y$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن النتيجة بالعدد 7."
+          "content": "قارن قيمة الطرف الأول بالطرف الثاني."
         }
       ],
       "feedback": {
-        "correct": "$7 - 2 \\times 0 = 7$ : المساواة محقّقة.",
-        "incorrect": "احسب $7 - 2 \\times 0$ ."
-      }
+        "correct": "$7 - 2 \\times 0 = 7$ : الثنائية حل للمعادلة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض ثم قارن بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $7$ و $y$ بـ $0$ :",
+          "$7 - 2 \\times 0 = 7$",
+          "ومنه الثنائية $(7 ; 0)$ حل للمعادلة."
+        ]
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "هل الثنائية $(0 ; 1)$ حل للمعادلة $x - 2y = 7$ ؟",
+      "step": "01",
+      "sub": "ب",
+      "statement": "هل الثنائية $(0 ; 1)$ حل لهذه المعادلة؟",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
           "content": "نعم",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARTIB"
+          "isCorrect": false
         },
         {
           "id": "B",
@@ -92,33 +110,39 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "في $(0 ; 1)$ : $x = 0$ و $y = 1$ ، وليس العكس."
+          "content": "عوّض $x$ بـ $0$ و $y$ بـ $1$ في المعادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $0 - 2 \\times 1$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "إذا لم تحصل على 7 فليست حلا."
+          "content": "قارن قيمة الطرف الأول بالطرف الثاني."
         }
       ],
       "feedback": {
-        "correct": "$0 - 2 \\times 1 = -2 \\neq 7$ : ليست حلا.",
-        "incorrect": "العدد الأول قيمة $x$ والثاني قيمة $y$ ."
-      }
+        "correct": "$0 - 2 \\times 1 = -2 \\neq 7$ : الثنائية ليست حلا للمعادلة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض ثم قارن بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $0$ و $y$ بـ $1$ :",
+          "$0 - 2 \\times 1 = -2 \\neq 7$",
+          "ومنه الثنائية $(0 ; 1)$ ليست حلا للمعادلة."
+        ]
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q3",
-      "statement": "هل الثنائية $(1 ; -3)$ حل للمعادلة $x - 2y = 7$ ؟",
+      "step": "01",
+      "sub": "ج",
+      "statement": "هل الثنائية $(1 ; -3)$ حل لهذه المعادلة؟",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
@@ -136,23 +160,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "$x = 1$ و $y = -3$ ."
+          "content": "عوّض $x$ بـ $1$ و $y$ بـ $-3$ في المعادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انتبه إلى الإشارة: $-2 \\times (-3) = 6$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم اجمع: $1 + 6$ ."
+          "content": "انتبه إلى الإشارة: $-2 \\times (-3)$ عدد موجب."
         }
       ],
       "feedback": {
-        "correct": "$1 - 2 \\times (-3) = 1 + 6 = 7$ : حل للمعادلة.",
-        "incorrect": "ضرب عددين سالبين يعطي عددا موجبا."
-      }
+        "correct": "$1 - 2 \\times (-3) = 7$ : الثنائية حل للمعادلة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض ثم قارن بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $1$ و $y$ بـ $-3$ :",
+          "$1 - 2 \\times (-3) = 7$",
+          "ومنه الثنائية $(1 ; -3)$ حل للمعادلة."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

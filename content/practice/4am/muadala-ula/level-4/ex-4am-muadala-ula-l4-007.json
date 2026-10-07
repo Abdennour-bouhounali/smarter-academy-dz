@@ -3,108 +3,153 @@
   "lessonCode": "muadala-ula",
   "level": 4,
   "metadata": {
-    "title": "تدريب — أعداد عشرية",
-    "estimatedMinutes": 4,
+    "title": "معاملات عشرية",
+    "estimatedMinutes": 6,
     "tags": [
-      "أعداد عشرية"
+      "أعداد عشرية",
+      "معادلة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_muadala-ula_P2",
       "modelledOn": "method-equation"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "حلّ المعادلات بمعاملات عشرية."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّ المعادلة $0{,}5x + 1{,}2 = 3{,}7$ .",
+      "step": "01",
+      "sub": "ا",
+      "lead": "حل كلا من المعادلتين الآتيتين:",
+      "statement": "$0{,}5x + 1{,}2 = 3{,}7$",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
       "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "value": "1/5",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "value": "49/5",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معاملات المعادلة أعداد عشرية."
+          "content": "يمكنك ضرب الطرفين في 10 للتخلّص من الفواصل، أو الحساب بالأعداد العشرية مباشرة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اعمل كما مع الأعداد الصحيحة: المجاهيل في طرف والمعاليم في الطرف الآخر."
+          "content": "انقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر مع تغيير الإشارة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "في النهاية قسّم على معامل $x$ (يمكنك ضرب البسط والمقام في 10)."
+          "content": "اقسم على معامل $x$ في الأخير."
         }
       ],
       "feedback": {
-        "correct": "$0{,}5x + 1{,}2 = 3{,}7$ : ننقل المجاهيل إلى طرف والمعاليم إلى الآخر ونقسم على معامل $x$ : $x = 5$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "$x = 5$ .",
+        "incorrect": "انتبه إلى الفواصل وإلى الإشارات عند النقل، ثم اقسم على معامل $x$ . تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$0{,}5x = 3{,}7 - 1{,}2$",
+          "$0{,}5x = 2{,}5$",
+          "$x = \\dfrac{2{,}5}{0{,}5}$"
+        ],
+        "result": "x = 5"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "حل المعادلة $1{,}4x - 2 = 0{,}4x + 3$ هو:",
+      "step": "01",
+      "sub": "ب",
+      "statement": "$1{,}4x - 2 = 0{,}4x + 3$",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 3,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\dfrac{25}{9}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+          "value": "1/5",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
         },
         {
-          "id": "B",
-          "content": "$5$",
-          "isCorrect": true
+          "value": "1",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
         },
         {
-          "id": "C",
-          "content": "$1$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+          "value": "25/9",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معاملات المعادلة أعداد عشرية."
+          "content": "يمكنك ضرب الطرفين في 10 للتخلّص من الفواصل، أو الحساب بالأعداد العشرية مباشرة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اعمل كما مع الأعداد الصحيحة: المجاهيل في طرف والمعاليم في الطرف الآخر."
+          "content": "انقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر مع تغيير الإشارة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "في النهاية قسّم على معامل $x$ (يمكنك ضرب البسط والمقام في 10)."
+          "content": "اقسم على معامل $x$ في الأخير."
         }
       ],
       "feedback": {
-        "correct": "$1{,}4x - 2 = 0{,}4x + 3$ : نصل إلى $x = 5$.",
-        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
-      }
+        "correct": "$x = 5$ .",
+        "incorrect": "انتبه إلى الفواصل وإلى الإشارات عند النقل، ثم اقسم على معامل $x$ . تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$1{,}4x - 0{,}4x = 3 + 2$"
+        ],
+        "result": "x = 5"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

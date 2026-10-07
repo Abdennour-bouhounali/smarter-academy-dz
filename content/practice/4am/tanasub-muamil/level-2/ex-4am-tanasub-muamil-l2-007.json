@@ -3,25 +3,119 @@
   "lessonCode": "tanasub-muamil",
   "level": 2,
   "metadata": {
-    "title": "تدريب — العمود (0 ; y)",
-    "estimatedMinutes": 3,
+    "title": "العمود (0 ; 20)",
+    "estimatedMinutes": 2,
     "tags": [
-      "مبلغ ثابت"
+      "وضعية غير تناسبية"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tanasub-muamil_P2",
-      "modelledOn": "ex-18"
+      "modelledOn": "ex-18",
+      "adaptedFrom": "ex-4am-tanasub-muamil-l2-007"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في جدول، من أجل $x = 0$ نجد $y = 20$ ."
+    "content": "نعتبر الجدول الآتي:",
+    "table": {
+      "head": [
+        "$x$",
+        "0",
+        "2",
+        "5"
+      ],
+      "rows": [
+        [
+          "$y$",
+          "20",
+          "30",
+          "45"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل يمكن أن يكون هذا الجدول جدول تناسبية؟",
+      "step": "01",
+      "sub": "ا",
+      "statement": "احسب $\\dfrac{y}{x}$ من أجل $x = 2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر من الشكل a/b)",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم عدد السطر الثاني على عدد السطر الأول."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{30}{2} = 15$ .",
+        "incorrect": "اقسم $y$ على $x$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{30}{2} = 15$"
+        ],
+        "result": "15"
+      },
+      "timeSeconds": 45
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "sub": "ب",
+      "statement": "احسب $\\dfrac{y}{x}$ من أجل $x = 5$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر من الشكل a/b)",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم عدد السطر الثاني على عدد السطر الأول."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{45}{5} = 9$ .",
+        "incorrect": "اقسم $y$ على $x$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{45}{5} = 9$"
+        ],
+        "result": "9"
+      },
+      "timeSeconds": 45
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "هل هذا الجدول جدول تناسبية؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_tanasub-muamil_P2",
@@ -34,41 +128,41 @@
       "choices": [
         {
           "id": "A",
-          "content": "نعم، إذا كانت باقي حواصل القسمة متساوية",
-          "isCorrect": false
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MABLAGH-THABIT"
         },
         {
           "id": "B",
-          "content": "لا: في جدول تناسبية $y = a \\times 0 = 0$ من أجل $x = 0$",
+          "content": "لا",
           "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "نعم، ومعامله 20",
-          "isCorrect": false
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "لا يكفي أن يزداد y كلما ازداد x."
+          "content": "قارن حاصلي القسمة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود وقارن."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "يكفي عمودان حاصلا قسمتهما مختلفان لنقول إنّ الوضعية ليست تناسبية؛ وانتبه إلى المبلغ الثابت."
+          "content": "في جدول تناسبية، ما هو العدد الذي يقابل $x = 0$ ؟"
         }
       ],
       "feedback": {
-        "correct": "في جدول تناسبية $y = a \\times x$ ، فمن أجل $x = 0$ يكون $y = 0$ دائما. $y = 20$ يعني مبلغا ثابتا.",
-        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
-      }
+        "correct": "حاصلا القسمة مختلفان، والعدد المقابل لـ 0 ليس 0 .",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: تزايد المقدارين معا لا يكفي."
+      },
+      "solution": {
+        "lines": [
+          "$15 \\neq 9$ : حواصل القسمة غير متساوية.",
+          "كذلك في جدول تناسبية يكون $y = a \\times 0 = 0$ من أجل $x = 0$ ، وهنا $y = 20$ .",
+          "إذن الجدول ليس جدول تناسبية."
+        ],
+        "result": "ليس جدول تناسبية"
+      },
+      "timeSeconds": 60
     }
   ]
 }

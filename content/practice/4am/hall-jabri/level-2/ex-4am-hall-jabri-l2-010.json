@@ -3,111 +3,171 @@
   "lessonCode": "hall-jabri",
   "level": 2,
   "metadata": {
-    "title": "تدريب — معاملان متساويان",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2024 — نقطة من قطعة مستقيمة",
+    "estimatedMinutes": 9,
     "tags": [
-      "اختيار الطريقة",
-      "الجمع"
+      "التعويض",
+      "أطوال"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_hall-jabri_P3",
-      "modelledOn": "ex-13"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_hall-jabri_P1",
+      "modelledOn": "BEM 2024 I-4"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2024",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "الجملة $\\begin{cases} 6x + 5y = 17 \\\\ 6x - 2y = 10 \\end{cases}$ ."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أنسب طريقة، مع سببها الصحيح:",
+      "step": "01",
+      "statement": "حل الجملة التالية: $\\begin{cases} x + y = 63 \\\\ x - 0{,}75y = 0 \\end{cases}$",
       "learningPoints": [
         {
-          "code": "4am_hall-jabri_P3",
+          "code": "4am_hall-jabri_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "secondary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "point",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
+      "expectedAnswer": {
+        "x": "27",
+        "y": "36"
+      },
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "الجمع بعد ضرب إحدى المعادلتين في $-1$ ، لأنّ معاملي $x$ متساويان",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "الجمع مباشرة، لأنّ معاملي $x$ متعاكسان",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JAM-LA-TAAKUS"
-        },
-        {
-          "id": "C",
-          "content": "التعويض، لأنّ معامل $y$ يساوي $1$",
-          "isCorrect": false
+          "value": {
+            "x": "36",
+            "y": "27"
+          },
+          "id": "MISC-JUMLA-TARTIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقرأ المعاملات قبل أن تبدأ."
+          "content": "في المعادلة (2) يمكن التعبير بسهولة عن $x$ بدلالة المجهول الآخر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+          "content": "عبّر عن $x$ بدلالة المجهول الآخر، ثم عوّض العبارة في المعادلة الأخرى (لا في المعادلة نفسها)."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+          "content": "حل المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
         }
       ],
       "feedback": {
-        "correct": "$6x$ و $6x$ متساويان: بعد الضرب في $-1$ يصيران متعاكسين. ولا يوجد معامل يساوي 1.",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "الثنائية $(27 ; 36)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "من المعادلة (2) نجد: $x = 0{,}75y$",
+          "نعوّض في المعادلة (1): $0{,}75y + y = 63$",
+          "$1{,}75y = 63$",
+          "ومنه $y = 36$",
+          "نعوّض قيمة $y$ في عبارة $x$: $x = 0{,}75 \\times 36 = 27$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(27 ; 36)"
+      },
+      "work": "optional",
+      "timeSeconds": 300
     },
     {
       "id": "q2",
-      "statement": "حل الجملة:",
+      "step": "02",
+      "lead": "$[AB]$ قطعة مستقيمة طولها $63\\,mm$ ، و $M$ نقطة منها بحيث: $AM = 0{,}75\\,MB$ .",
+      "statement": "استنتج الطولين $AM$ و $MB$ (يمكنك الاستعانة بالسؤال 01). الطول $AM$ :",
       "learningPoints": [
         {
-          "code": "4am_hall-jabri_P3",
+          "code": "4am_hall-jabri_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
-      "expectedAnswer": {
-        "x": "2",
-        "y": "1"
-      },
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب الطول $AM$ بـ mm (عدد فقط)",
+      "expectedAnswer": "27",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقرأ المعاملات قبل أن تبدأ."
+          "content": "$M$ نقطة من $[AB]$ : ماذا يساوي $AM + MB$ ؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+          "content": "قارن مع جملة السؤال 01."
         }
       ],
       "feedback": {
-        "correct": "بطرح المعادلتين $7y = 7$ ، ومنه $y = 1$ ثم $6x = 12$ أي $x = 2$ .",
-        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
-      }
+        "correct": "$AM$ هو المجهول الأول في جملة السؤال 01: $AM = 27\\,mm$ .",
+        "incorrect": "اكتب $AM + MB$ و $AM - 0{,}75\\,MB$ ، ثم استعمل حل السؤال 01."
+      },
+      "solution": {
+        "lines": [
+          "$M$ نقطة من $[AB]$ : $AM + MB = AB = 63$",
+          "و $AM = 0{,}75\\,MB$ أي $AM - 0{,}75\\,MB = 0$",
+          "إذن $AM$ و $MB$ حل الجملة $\\begin{cases} x + y = 63 \\\\ x - 0{,}75y = 0 \\end{cases}$ (السؤال 01)،",
+          "ومنه $AM = 27\\,mm$ و $MB = 36\\,mm$ ."
+        ]
+      },
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "الطول $MB$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب الطول $MB$ بـ mm (عدد فقط)",
+      "expectedAnswer": "36",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$MB$ هو المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$MB = 36\\,mm$ ، ونتحقق: $27 + 36 = 63$ .",
+        "incorrect": "$MB$ هو العدد الثاني في الثنائية حل جملة السؤال 01."
+      },
+      "solution": {
+        "lines": [
+          "$M$ نقطة من $[AB]$ : $AM + MB = AB = 63$",
+          "و $AM = 0{,}75\\,MB$ أي $AM - 0{,}75\\,MB = 0$",
+          "إذن $AM$ و $MB$ حل الجملة $\\begin{cases} x + y = 63 \\\\ x - 0{,}75y = 0 \\end{cases}$ (السؤال 01)،",
+          "ومنه $AM = 27\\,mm$ و $MB = 36\\,mm$ ."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

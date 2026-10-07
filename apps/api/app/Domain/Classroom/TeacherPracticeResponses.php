@@ -3,6 +3,8 @@
 namespace App\Domain\Classroom;
 
 use App\Domain\Practice\Support\AnswerEvaluator;
+use App\Models\AnswerImage;
+use App\Models\AnswerReview;
 use App\Models\Classroom;
 use App\Models\ClassroomMembership;
 use App\Models\User;
@@ -106,7 +108,11 @@ class TeacherPracticeResponses
 
         $attempts = $this->attempts($lessonCode, $exerciseId, [$studentId])
             ->orderBy('qa.question_id')->orderBy('qa.attempt_number')->orderBy('qa.submitted_at')
-            ->get(['qa.question_id', 'qa.attempt_number', 'qa.submitted_answer', 'qa.normalized_answer', 'qa.outcome', 'qa.hints_used', 'qa.submitted_at']);
+            ->get(['qa.id', 'qa.question_id', 'qa.attempt_number', 'qa.submitted_answer', 'qa.normalized_answer', 'qa.outcome', 'qa.evaluated_by', 'qa.hints_used', 'qa.submitted_at']);
+        // Photos de copie et correction (« تصحيح الأستاذ ») de chaque tentative.
+        $images = AnswerImage::whereIn('question_attempt_id', $attempts->pluck('id'))->orderBy('id')->get()
+            ->reject->isExpired()->groupBy('question_attempt_id');
+        $reviews = AnswerReview::whereIn('question_attempt_id', $attempts->pluck('id'))->get()->keyBy('question_attempt_id');
 
         $student = User::find($studentId, explode(',', ClassroomAccess::IDENTITY_COLUMNS));
 
@@ -119,8 +125,11 @@ class TeacherPracticeResponses
                     'answer' => is_string($a->submitted_answer) ? json_decode($a->submitted_answer, true) : $a->submitted_answer,
                     'normalized' => $a->normalized_answer,
                     'outcome' => $a->outcome,
+                    'evaluatedBy' => $a->evaluated_by,
                     'hintsUsed' => (int) $a->hints_used,
                     'submittedAt' => (string) $a->submitted_at,
+                    'images' => ($images[$a->id] ?? collect())->map->toClient()->values()->all(),
+                    'review' => isset($reviews[$a->id]) ? $reviews[$a->id]->toClient() : null,
                 ])->values()->all(),
             ])->values()->all(),
         ];

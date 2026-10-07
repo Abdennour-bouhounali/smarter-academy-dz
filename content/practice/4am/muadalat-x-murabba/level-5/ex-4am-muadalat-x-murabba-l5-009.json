@@ -1,180 +1,166 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l5-009",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — مسألة على نمط الشهادة",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2015 — علب الحلويات",
+    "estimatedMinutes": 15,
     "tags": [
-      "شهادة التعليم المتوسط",
-      "نشر",
-      "معادلة"
+      "مكعب",
+      "مساحة",
+      "وضعية إدماجية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_muadalat-x-murabba_P2",
-      "modelledOn": "ex-14"
+      "modelledOn": "BEM 2015 II ☜"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2015",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "لتكن العبارة $E = (2x + 1)^2 - 4x$."
+    "content": "تصنع ورشة بمدينة سطيف علبًا من الورق المقوّى على شكل مكعب، المساحة الكلية لأوجه العلبة الواحدة $864cm^2$."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "لتكن العبارة $E = (2x + 1)^2 - 4x$. انشر $E$ وبسّطها.",
+      "step": "01",
+      "statement": "جِد طول حرف العلبة.",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P2",
           "role": "primary"
-        }
-      ],
-      "cognitiveDemand": "apply",
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$E = 4x^2 + 8x + 1$",
-          "isCorrect": false
         },
-        {
-          "id": "B",
-          "content": "$E = 4x^2 + 1$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$E = 2x^2 + 1$",
-          "isCorrect": false
-        },
-        {
-          "id": "D",
-          "content": "$E = 4x^2 - 4x + 1$",
-          "isCorrect": false
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "$(a + b)^2 = a^2 + 2ab + b^2$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$(2x + 1)^2 = 4x^2 + 4x + 1$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم اطرح $4x$."
-        }
-      ],
-      "feedback": {
-        "correct": "$4x^2 + 4x + 1 - 4x = 4x^2 + 1$.",
-        "incorrect": "$(2x)^2 = 4x^2$، والحد $2 \\times 2x \\times 1 = 4x$."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "لتكن $E = (2x + 1)^2 - 4x$. ما هو الحل السالب للمعادلة $E = 10$؟",
-      "learningPoints": [
-        {
-          "code": "4am_muadalat-x-murabba_P2",
-          "role": "primary"
-        }
-      ],
-      "cognitiveDemand": "apply",
-      "answerType": "rational",
-      "answerFormat": "كسر على الشكل a/b أو عدد عشري",
-      "expectedAnswer": "-3/2",
-      "misconceptionSignatures": [
-        {
-          "value": "3/2",
-          "id": "MISC-HALL-WAHID"
-        },
-        {
-          "value": "-9/8",
-          "id": "MISC-HALL-QISMA"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "انشر $E$ وبسّطها أولا."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "تصبح المعادلة $4x^2 + 1 = 10$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اعزل $x^2$ ثم خذ الحل السالب."
-        }
-      ],
-      "feedback": {
-        "correct": "$4x^2 = 9$ ، $x^2 = \\dfrac{9}{4}$ ، والحلان $\\dfrac{3}{2}$ و $-\\dfrac{3}{2}$.",
-        "incorrect": "بعد التبسيط اعزل $x^2$ بعناية."
-      }
-    },
-    {
-      "id": "q3",
-      "statement": "لتكن $E = (2x + 1)^2 - 4x$. المعادلة $E = 0$ ...",
-      "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P1",
-          "role": "primary"
-        },
-        {
-          "code": "4am_muadalat-x-murabba_P2",
           "role": "secondary"
         }
       ],
-      "cognitiveDemand": "reason",
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: الطول بالسنتيمتر (cm)",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x = \\dfrac{1}{2}$ أو $x = -\\dfrac{1}{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-SALIB"
+          "value": "72",
+          "id": "MISC-HALL-QISMA"
         },
         {
-          "id": "B",
-          "content": "$x = -\\dfrac{1}{4}$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "لا تقبل أي حل",
-          "isCorrect": true
+          "value": "144",
+          "id": "MISC-TARBI-JIDHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "بسّط $E$ أولا."
+          "content": "للمكعب ستة أوجه مربعة متقايسة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$4x^2 + 1 = 0$ يعني $x^2 = -\\dfrac{1}{4}$."
+          "content": "إذا كان $c$ طول الحرف فإن $6c^2 = 864$: اعزل $c^2$."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ما إشارة الطرف الثاني؟"
+          "content": "الطول عدد موجب: احتفظ بالحل الموجب."
         }
       ],
       "feedback": {
-        "correct": "$x^2 = -\\dfrac{1}{4} < 0$: لا حل.",
-        "incorrect": "احسب $4 \\times \\left(\\dfrac{1}{2}\\right)^2 + 1$."
-      }
+        "correct": "$6c^2 = 864$ يعطي $c^2 = 144$، ومنه $c = 12cm$.",
+        "incorrect": "المساحة الكلية هي مساحة ستة مربعات: اعزل $c^2$ ثم احتفظ بالحل الموجب."
+      },
+      "solution": {
+        "lines": [
+          "ليكن $c$ طول حرف العلبة: $6c^2 = 864$",
+          "$c^2 = 864 \\div 6 = 144$",
+          "$c^2 = 12^2$ يعني $c = 12$ أو $c = -12$",
+          "وبما أن الطول موجب:"
+        ],
+        "result": "c = 12cm"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب حجم العلبة.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: الحجم بالسنتيمتر المكعب ($cm^3$)",
+      "expectedAnswer": "1728",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حجم المكعب $= c \\times c \\times c$."
+        }
+      ],
+      "feedback": {
+        "correct": "$12 \\times 12 \\times 12 = 1728cm^3$.",
+        "incorrect": "حجم المكعب هو مكعب طول حرفه."
+      },
+      "solution": {
+        "lines": [
+          "$V = 12 \\times 12 \\times 12$"
+        ],
+        "result": "V = 1728cm^3"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "☜ طلب محل للحلويات التقليدية 50 علبة. إذا كان ثمن الورق المقوّى $0{,}5DA$ للسنتيمتر المربع، فأعط ثمن الورق المقوّى اللازم لصنع هذه العلب.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بالدينار (DA)",
+      "expectedAnswer": "21600",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب مساحة الورق المقوّى اللازم لـ 50 علبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب المساحة في ثمن السنتيمتر المربع."
+        }
+      ],
+      "feedback": {
+        "correct": "$50 \\times 864 = 43200cm^2$، و $43200 \\times 0{,}5 = 21600DA$.",
+        "incorrect": "احسب المساحة الكلية للعلب الخمسين، ثم اضربها في ثمن السنتيمتر المربع."
+      },
+      "solution": {
+        "lines": [
+          "مساحة الورق المقوّى: $50 \\times 864 = 43200cm^2$",
+          "الثمن: $43200 \\times 0{,}5$"
+        ],
+        "result": "21600DA"
+      },
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l5-009",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 5
+  ]
 }

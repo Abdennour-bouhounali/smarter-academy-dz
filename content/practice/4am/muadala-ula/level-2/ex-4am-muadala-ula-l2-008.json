@@ -3,109 +3,125 @@
   "lessonCode": "muadala-ula",
   "level": 2,
   "metadata": {
-    "title": "تدريب — الحل كسر",
+    "title": "على منوال BEM 2010 — قطرا أرضية قاعة",
     "estimatedMinutes": 4,
     "tags": [
-      "ax + b = c",
-      "كسر"
+      "معادلة",
+      "وضعية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_muadala-ula_P1",
-      "modelledOn": "method-equation"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_muadala-ula_P2",
+      "modelledOn": "BEM 2010 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2010",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "الحل قد يكون كسرًا غير قابل للاختزال."
+    "content": "تتكوّن أرضية قاعة حفلات من مربع ومستطيل. طول قطر المستطيل يزيد عن طول قطر المربع بـ $3\\,m$ ، ومجموع طوليهما $35\\,m$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّ المعادلة $4x - 1 = 6$ .",
+      "step": "01",
+      "statement": "احسب طول قطر المربع.",
       "learningPoints": [
         {
-          "code": "4am_muadala-ula_P1",
+          "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
-      "expectedAnswer": "7/4",
+      "answerFormat": "عدد: الطول بـ m",
+      "expectedAnswer": "16",
+      "misconceptionSignatures": [
+        {
+          "value": "1/16",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "value": "19",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+          "content": "سمِّ $x$ طول قطر المربع، ثم عبّر عن طول قطر المستطيل بدلالة $x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
+          "content": "مجموع الطولين يساوي $35$ : اكتب المعادلة وبسّط طرفها الأول."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+          "content": "اطرح 3 من الطرفين ثم اقسم على 2."
         }
       ],
       "feedback": {
-        "correct": "$4x - 1 = 6$ : نصل إلى $4x = 7$ ، ومنه $x = \\dfrac{7}{4}$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "طول قطر المربع $16\\,m$ .",
+        "incorrect": "انقل كل حدّ بإشارة معاكسة، وجمّع الحدود المتشابهة، ثم اقسم على معامل $x$ بإشارته. تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "ليكن $x$ طول قطر المربع، فطول قطر المستطيل $x + 3$ :",
+          "$x + x + 3 = 35$",
+          "$2x + 3 = 35$",
+          "$2x = 35 - 3$",
+          "$2x = 32$",
+          "$x = \\dfrac{32}{2}$"
+        ],
+        "result": "x = 16\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "حل المعادلة $6x + 2 = -1$ هو:",
+      "step": "02",
+      "statement": "استنتج طول قطر المستطيل.",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 3,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\dfrac{1}{6}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
-        },
-        {
-          "id": "B",
-          "content": "$-2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
-        },
-        {
-          "id": "C",
-          "content": "$-\\dfrac{1}{2}$",
-          "isCorrect": true
-        }
-      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ m",
+      "expectedAnswer": "19",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+          "content": "قطر المستطيل يزيد عن قطر المربع بـ 3m ."
         }
       ],
       "feedback": {
-        "correct": "$6x + 2 = -1$ : نصل إلى $6x = -3$ ، ومنه $x = -\\dfrac{1}{2}$.",
-        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
-      }
+        "correct": "$19\\,m$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولويات العمليات والإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$16 + 3 = 19$"
+        ],
+        "result": "19\\,m"
+      },
+      "timeSeconds": 60
     }
   ]
 }

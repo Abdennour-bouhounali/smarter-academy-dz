@@ -3,72 +3,155 @@
   "lessonCode": "tamthil-bayani-taalufi",
   "level": 2,
   "metadata": {
-    "title": "مستقيمان متوازيان",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2014 — توصيل الطرود بالبريد السريع",
+    "estimatedMinutes": 6,
     "tags": [
-      "توازي"
+      "وضعية",
+      "قراءة بيانية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_tamthil-bayani-taalufi_P1"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P3",
+      "modelledOn": "BEM 2014 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2014",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نعتبر الدالة التآلفية $x \\longmapsto 2x + 1$ ."
+    "content": "تقترح وكالة للبريد السريع بالجزائر العاصمة توصيل الطرود بثمن يتعلّق بكتلة الطرد. يمثّل نصف المستقيم $(D)$ في المعلم التالي ثمن التوصيل $y$ (بالدينار) بدلالة كتلة الطرد $x$ (بالكيلوغرام) (وحدة محور التراتيب: 100DA).",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "K1": [
+          0,
+          2
+        ],
+        "H1": [
+          6,
+          8
+        ]
+      },
+      "rays": [
+        {
+          "from": "K1",
+          "through": "H1",
+          "name": "(D)",
+          "tone": "sky",
+          "extend": 0
+        }
+      ],
+      "grid": true,
+      "axes": true,
+      "labels": {
+        "O": "sw"
+      },
+      "hidden": [
+        "H1",
+        "K1"
+      ],
+      "ariaLabel": "معلم على ورقة مرصوفة: نصف المستقيم (D) ينطلق من محور التراتيب فوق المبدأ O ويصعد، يمثّل ثمن التوصيل بدلالة الكتلة",
+      "caption": "محور الفواصل: الكتلة بـ kg — محور التراتيب: الثمن بمئات الدنانير"
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ دالة تمثيلها البياني يوازي تمثيل الدالة $x \\longmapsto 2x + 1$ ؟",
+      "step": "01",
+      "statement": "بقراءة بيانية، عيّن ثمن توصيل طرد كتلته $3kg$ .",
       "learningPoints": [
         {
-          "code": "4am_tamthil-bayani-taalufi_P1",
+          "code": "4am_tamthil-bayani-taalufi_P3",
           "role": "primary"
         }
       ],
       "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x \\longmapsto 2x - 3$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$x \\longmapsto x + 2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAALUFI-A-B-MAQLUB"
-        },
-        {
-          "id": "C",
-          "content": "$x \\longmapsto -2x + 1$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-ISHARA-A"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الثمن بـ DA",
+      "expectedAnswer": "500",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "مستقيمان يمثّلان دالتين تآلفيتين متوازيان إذا كان لهما معامل التوجيه نفسه."
+          "content": "ابدأ من العدد المعطى على محور الفواصل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "قارن معامل $x$ في العبارتين."
+          "content": "اتجه عموديا حتى المستقيم $(D)$ ، ثم أفقيا حتى محور التراتيب."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "نفس $a$ و $b$ مختلف: متوازيان؛ نفس $a$ ونفس $b$ : منطبقان."
+          "content": "الصورة هي ترتيب نقطة المستقيم التي فاصلتها العدد المعطى."
         }
       ],
       "feedback": {
-        "correct": "لهما معامل التوجيه نفسه $2$ وترتيبان عند المبدأ مختلفان: متوازيان.",
-        "incorrect": "المنحى يعيّنه $a$ وحده: قارن معاملات $x$ ."
-      }
+        "correct": "النقطة من $(D)$ التي فاصلتها $3$ ترتيبها $5$ وحدات، أي $500DA$ .",
+        "incorrect": "الصورة تُقرأ على محور التراتيب: ترتيب نقطة المستقيم، لا فاصلتها."
+      },
+      "solution": {
+        "lines": [
+          "النقطة من نصف المستقيم $(D)$ التي فاصلتها $3$ ترتيبها $5$ وحدات.",
+          "وحدة محور التراتيب 100DA ، إذن ثمن توصيل طرد كتلته $3kg$ هو $500DA$ ."
+        ],
+        "result": "500DA"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "بقراءة بيانية، عيّن كتلة طرد ثمن توصيله $700DA$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الكتلة بـ kg",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ من العدد المعطى على محور التراتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اتجه أفقيا حتى المستقيم $(D)$ ، ثم عموديا حتى محور الفواصل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد المطلوب هو فاصلة نقطة المستقيم التي ترتيبها الصورة المعطاة."
+        }
+      ],
+      "feedback": {
+        "correct": "النقطة من $(D)$ التي ترتيبها $7$ وحدات ( $700DA$ ) فاصلتها $5$ .",
+        "incorrect": "العدد الذي عُلمت صورته يُقرأ على محور الفواصل: فاصلة نقطة المستقيم التي ترتيبها الصورة المعطاة."
+      },
+      "solution": {
+        "lines": [
+          "$700DA$ تمثّلها $7$ وحدات على محور التراتيب.",
+          "النقطة من نصف المستقيم $(D)$ التي ترتيبها $7$ فاصلتها $5$ .",
+          "إذن كتلة الطرد $5kg$ ."
+        ],
+        "result": "5kg"
+      },
+      "timeSeconds": 75
     }
   ]
 }

@@ -3,10 +3,11 @@
   "lessonCode": "mafhum-jumla",
   "level": 2,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 2 — الثنائية (0 ; 0)",
-    "estimatedMinutes": 3,
+    "title": "الثنائية (0 ; 0)",
+    "estimatedMinutes": 5,
     "tags": [
-      "ثنائية"
+      "ثنائية",
+      "جملة"
     ],
     "source": {
       "type": "textbook",
@@ -14,41 +15,44 @@
       "page": 62,
       "section": "أؤكّد تعلّماتي",
       "number": 2
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 62): الثنائية $(0 ; 0)$ هي حل للمعادلة ... (قد تكون أكثر من معادلة واحدة)"
+    "content": "نعتبر المعادلات الثلاث التالية:",
+    "formulas": [
+      "(1)\\quad 3x + y = 0",
+      "(2)\\quad x - 3y = 0",
+      "(3)\\quad \\dfrac{1}{3}x - y = 3"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "اختر الجواب الصحيح:",
+      "step": "01",
+      "statement": "هل الثنائية $(0 ; 0)$ حل للجملة المكوّنة من المعادلتين (1) و (2)؟",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$3x + y = 0$ فقط",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$3x + y = 0$ و $x - 3y = 0$",
+          "content": "نعم",
           "isCorrect": true
         },
         {
-          "id": "C",
-          "content": "$x - 3y = 0$ و $\\dfrac{1}{3}x - y = 3$",
-          "isCorrect": false
-        },
-        {
-          "id": "D",
-          "content": "المعادلات الثلاث $3x + y = 0$ و $x - 3y = 0$ و $\\dfrac{1}{3}x - y = 3$",
+          "id": "B",
+          "content": "لا",
           "isCorrect": false
         }
       ],
@@ -56,23 +60,121 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x = 0$ و $y = 0$ في كل معادلة."
+          "content": "عوّض $x$ بـ $0$ و $y$ بـ $0$ في كل معادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الطرف الأول يساوي 0 في كل معادلة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المعادلة محقّقة إذا كان طرفها الثاني 0."
+          "content": "الثنائية حل للجملة إذا حققت المعادلتين في آن واحد."
         }
       ],
       "feedback": {
-        "correct": "الطرفان الأولان يساويان 0: تتحقّق $3x + y = 0$ و $x - 3y = 0$ ، أما الثالثة فتعطي $0 \\neq 3$ .",
-        "incorrect": "جرّب الثنائية في المعادلات الثلاث."
-      }
+        "correct": "$3 \\times 0 + 0 = 0$ ؛ $0 - 3 \\times 0 = 0$ : الثنائية حل للجملة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض في المعادلتين معا وقارن كل نتيجة بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $0$ و $y$ بـ $0$ :",
+          "$3 \\times 0 + 0 = 0$",
+          "$0 - 3 \\times 0 = 0$",
+          "ومنه الثنائية $(0 ; 0)$ حل للجملة."
+        ]
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "هل الثنائية $(0 ; 0)$ حل للجملة المكوّنة من المعادلتين (2) و (3)؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $0$ و $y$ بـ $0$ في كل معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الثنائية حل للجملة إذا حققت المعادلتين في آن واحد."
+        }
+      ],
+      "feedback": {
+        "correct": "$0 - 3 \\times 0 = 0$ ؛ $\\dfrac{1}{3} \\times 0 - 0 = 0 \\neq 3$ : الثنائية ليست حلا للجملة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض في المعادلتين معا وقارن كل نتيجة بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $0$ و $y$ بـ $0$ :",
+          "$0 - 3 \\times 0 = 0$",
+          "$\\dfrac{1}{3} \\times 0 - 0 = 0 \\neq 3$",
+          "ومنه الثنائية $(0 ; 0)$ ليست حلا للجملة (لا تحقق المعادلتين معا)."
+        ]
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "جد العدد $y$ بحيث تكون الثنائية $(0 ; y)$ حلا للمعادلة (3).",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $y$ فقط",
+      "expectedAnswer": "-3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $0$ في المعادلة (3)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تبقى معادلة مجهولها $y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1}{3} \\times 0 - y = 3$ أي $y = -3$ .",
+        "incorrect": "عوّض $x$ بـ $0$ ثم حلّ المعادلة $-y = 3$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{1}{3} \\times 0 - y = 3$",
+          "$-y = 3$"
+        ],
+        "result": "y = -3"
+      },
+      "timeSeconds": 90
     }
   ]
 }

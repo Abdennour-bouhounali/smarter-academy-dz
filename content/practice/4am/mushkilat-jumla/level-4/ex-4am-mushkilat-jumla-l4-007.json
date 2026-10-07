@@ -3,8 +3,8 @@
   "lessonCode": "mushkilat-jumla",
   "level": 4,
   "metadata": {
-    "title": "أبو كامل (ص 55) — الأجير",
-    "estimatedMinutes": 5,
+    "title": "مسألة أبي كامل",
+    "estimatedMinutes": 11,
     "tags": [
       "ترييض",
       "تاريخ الرياضيات"
@@ -14,96 +14,156 @@
       "elementId": "history-abu-kamil",
       "page": 55,
       "section": "أبو كامل"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 55): «إذا وظفت أجيرا و اشترطت عليه أنه إذا عمل شهرا كاملا يتقاضى 6 دراهم و إذا انقطع عن العمل شهرا كاملا يدفع 4 دراهم و في أحد الشهور عمل و انقطع و في النهاية لم يدفع و لم يتقاض أي درهم. كم يوما عمل في الشهر؟» نقرأ: الشهر 30 يوما، والأجر والغرامة بعدد الأيام. نسمّي $x$ عدد أيام العمل و $y$ عدد أيام الانقطاع."
+    "content": "قال أبو كامل: «إذا وظفت أجيرا و اشترطت عليه أنه إذا عمل شهرا كاملا يتقاضى 6 دراهم و إذا انقطع عن العمل شهرا كاملا يدفع 4 دراهم و في أحد الشهور عمل و انقطع و في النهاية لم يدفع و لم يتقاض أي درهم. كم يوما عمل في الشهر؟»\nنعتبر أن الشهر 30 يوما، وأن الأجر والغرامة يُحسبان بعدد الأيام."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الجملة التي تترجم المسألة هي:",
+      "step": "01",
+      "lead": "نسمّي $x$ عدد أيام العمل و $y$ عدد أيام الانقطاع.",
+      "statement": "بيّن أن $x$ و $y$ يحققان الجملة: $\\begin{cases} x + y = 30 \\\\ 6x - 4y = 0 \\end{cases}$",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\begin{cases} x + y = 30 \\\\ 6x = 4y \\end{cases}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$\\begin{cases} x + y = 30 \\\\ 4x = 6y \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "$\\begin{cases} x + y = 30 \\\\ 6x + 4y = 0 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "كم يوما في الشهر؟"
+          "content": "ما يتقاضاه الأجير عن يوم عمل واحد هو $\\dfrac{6}{30}$ درهم."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "لم يتقاض ولم يدفع: ما كسبه يساوي ما دفعه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "العمل يُدفع 6 والانقطاع يُغرَّم 4 (بأجزاء الشهر)."
+          "content": "«لم يدفع ولم يتقاض»: الأجر يساوي الغرامة."
         }
       ],
       "feedback": {
-        "correct": "الحل $(12 ; 18)$ : $6 \\times 12 = 4 \\times 18$ .",
-        "incorrect": "الأجر 6 للعمل والغرامة 4 للانقطاع."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "أيام الشهر: $x + y = 30$",
+          "أجر يوم العمل $\\dfrac{6}{30}$ درهم، وغرامة يوم الانقطاع $\\dfrac{4}{30}$ درهم.",
+          "لم يدفع ولم يتقاض: $\\dfrac{6}{30}x - \\dfrac{4}{30}y = 0$",
+          "بضرب الطرفين في 30: $6x - 4y = 0$"
+        ]
+      },
+      "timeSeconds": 300
     },
     {
       "id": "q2",
-      "statement": "كم يوما عمل الأجير في الشهر؟",
+      "step": "02",
+      "lead": "كم يوما عمل الأجير في الشهر؟ وكم يوما انقطع؟",
+      "statement": "عدد أيام العمل:",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "اكتب عدد الأيام (عدد فقط)",
       "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "value": "18",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $y = 30 - x$ ."
+          "content": "من المعادلة الثانية: $6x = 4y$ أي $y = \\dfrac{3}{2}x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تحصل على $10x = 120$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "السؤال عن أيام العمل."
+          "content": "عوّض في معادلة أيام الشهر."
         }
       ],
       "feedback": {
-        "correct": "$x = 12$ : عمل 12 يوما وانقطع 18 يوما، و $72 = 72$ .",
-        "incorrect": "ما يكسبه في أيام العمل يساوي ما يدفعه في أيام الانقطاع."
-      }
+        "correct": "عمل الأجير 12 يوما.",
+        "incorrect": "عوّض $y = \\dfrac{3}{2}x$ في $x + y = 30$ ."
+      },
+      "solution": {
+        "lines": [
+          "من المعادلة الثانية: $6x = 4y$ أي $y = \\dfrac{3}{2}x$",
+          "بالتعويض في المعادلة الأولى: $x + \\dfrac{3}{2}x = 30$ أي $\\dfrac{5}{2}x = 30$ ومنه $x = 12$",
+          "ومنه: $y = 30 - 12 = 18$",
+          "التحقق: الأجر $\\dfrac{6}{30} \\times 12 = 2{,}4$ درهم والغرامة $\\dfrac{4}{30} \\times 18 = 2{,}4$ درهم: متساويان.",
+          "إذن عمل الأجير 12 يوما وانقطع 18 يوما."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 300
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "عدد أيام الانقطاع:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب عدد الأيام (عدد فقط)",
+      "expectedAnswer": "18",
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الشهر 30 يوما."
+        }
+      ],
+      "feedback": {
+        "correct": "انقطع 18 يوما، ونتحقق: $6 \\times 12 = 72 = 4 \\times 18$ .",
+        "incorrect": "من $x + y = 30$ : $y = 30 - x$ ."
+      },
+      "solution": {
+        "lines": [
+          "من المعادلة الثانية: $6x = 4y$ أي $y = \\dfrac{3}{2}x$",
+          "بالتعويض في المعادلة الأولى: $x + \\dfrac{3}{2}x = 30$ أي $\\dfrac{5}{2}x = 30$ ومنه $x = 12$",
+          "ومنه: $y = 30 - 12 = 18$",
+          "التحقق: الأجر $\\dfrac{6}{30} \\times 12 = 2{,}4$ درهم والغرامة $\\dfrac{4}{30} \\times 18 = 2{,}4$ درهم: متساويان.",
+          "إذن عمل الأجير 12 يوما وانقطع 18 يوما."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

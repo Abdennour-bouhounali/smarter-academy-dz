@@ -10,6 +10,7 @@ use App\Models\Grade;
 use App\Models\LearningEvidence;
 use App\Models\LearningPoint;
 use App\Models\Lesson;
+use App\Models\QuestionAttempt;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
@@ -170,13 +171,15 @@ class EvidenceTrustBoundaryTest extends TestCase
         $this->assertDatabaseHas('question_attempts', ['attempt_uuid' => $attempt, 'outcome' => 'incorrect', 'client_outcome' => 'correct']);
 
         // Et une vraie bonne réponse, écrite autrement, est reconnue équivalente.
+        // (Banc bahth-pgcd en feuille d'examen depuis 2026-10-06 : une étape
+        // répondue ne se rouvre plus — l'équivalence se vérifie sur l'étape
+        // suivante, PGCD(765 ; 135) = 45 écrit « 90/2 ».)
         $attempt2 = (string) Str::uuid();
         $this->postApi("/practice/sessions/{$sessionId}/questions", [
-            'exerciseId' => 'ex-4am-bahth-pgcd-l3-001', 'questionId' => 'q1', 'attemptUuid' => $attempt2,
+            'exerciseId' => 'ex-4am-bahth-pgcd-l3-001', 'questionId' => 'q2', 'attemptUuid' => $attempt2,
         ])->assertSuccessful();
-        $this->postApi("/practice/sessions/{$sessionId}/answers", ['attemptUuid' => $attempt2, 'answer' => ['value' => '180/2']])
+        $this->postApi("/practice/sessions/{$sessionId}/answers", ['attemptUuid' => $attempt2, 'answer' => ['value' => '90/2']])
             ->assertStatus(201)->assertJsonPath('evaluation.outcome', 'equivalent_correct');
-        $this->assertSame('retry_after_failure', LearningEvidence::where('attempt_id', $attempt2)->value('demonstration_kind'));
     }
 
     /**
@@ -213,6 +216,107 @@ class EvidenceTrustBoundaryTest extends TestCase
         $this->assertSame(1, LearningEvidence::where('attempt_id', $attempt)->count());
         $this->assertSame('incorrect', LearningEvidence::where('attempt_id', $attempt)->value('outcome'));
         $this->assertDatabaseHas('question_attempts', ['attempt_uuid' => $attempt, 'outcome' => 'incorrect']);
+    }
+
+    /**
+     * Feuille d'examen (BEM, 2026-10-06) : une étape auto-évaluée (`selfCheck`)
+     * et une étape `counted: false` sont JUGÉES et enregistrées comme
+     * tentatives, mais n'écrivent aucune preuve de maîtrise.
+     */
+    public function test_self_checked_and_uncounted_exam_steps_never_become_evidence(): void
+    {
+        $sessionId = (string) Str::uuid();
+        $this->postApi('/lessons/bahth-pgcd/practice/sessions', ['sessionId' => $sessionId, 'level' => 2])->assertSuccessful();
+
+        // « بيّن أن … » : l'élève se déclare juste après le corrigé type.
+        $self = (string) Str::uuid();
+        $this->postApi("/practice/sessions/{$sessionId}/questions", [
+            'exerciseId' => 'ex-4am-bahth-pgcd-l2-002', 'questionId' => 'q3', 'attemptUuid' => $self,
+        ])->assertSuccessful();
+        // 1. La démonstration écrite est enregistrée et VERROUILLÉE, en attente.
+        $proof = 'PGCD(117 ; 91) = PGCD(91 ; 26) لأن 117 − 91 = 26';
+        $this->postApi("/practice/sessions/{$sessionId}/answers", ['attemptUuid' => $self, 'answer' => ['text' => $proof]])
+            ->assertStatus(201)->assertJsonPath('evaluation.outcome', 'abandoned')->assertJsonPath('evaluation.normalized', 'self:pending');
+        // 2. Le texte ne se modifie plus.
+        $this->postApi("/practice/sessions/{$sessionId}/answers", ['attemptUuid' => $self, 'answer' => ['text' => 'autre chose', 'selfMark' => 'correct']])
+            ->assertStatus(422);
+        // 3. Corrigé type lu, l'élève se note : une seule fois.
+        $this->postApi("/practice/sessions/{$sessionId}/answers", ['attemptUuid' => $self, 'answer' => ['text' => $proof, 'selfMark' => 'correct']])
+            ->assertStatus(201)->assertJsonPath('evaluation.outcome', 'correct')->assertJsonPath('recorded', true);
+        $this->postApi("/practice/sessions/{$sessionId}/answers", ['attemptUuid' => $self, 'answer' => ['text' => $proof, 'selfMark' => 'incorrect']])
+            ->assertStatus(200)->assertJsonPath('recorded', false)->assertJsonPath('evaluation.outcome', 'correct');
+        $this->assertSame($proof, QuestionAttempt::where('attempt_uuid', $self)->first()->submitted_answer['text']);
+
+        // Le calcul de fraction d'un sujet de BEM : juste, mais hors de cette leçon.
+        $uncounted = (string) Str::uuid();
+        $this->postApi("/practice/sessions/{$sessionId}/questions", [
+            'exerciseId' => 'ex-4am-bahth-pgcd-l2-002', 'questionId' => 'q4', 'attemptUuid' => $uncounted,
+        ])->assertSuccessful();
+        $this->postApi("/practice/sessions/{$sessionId}/answers", ['attemptUuid' => $uncounted, 'answer' => ['value' => '9/7']])
+            ->assertStatus(201)->assertJsonPath('evaluation.outcome', 'correct');
+
+        $this->assertDatabaseHas('question_attempts', ['attempt_uuid' => $self, 'outcome' => 'correct']);
+        $this->assertDatabaseHas('question_attempts', ['attempt_uuid' => $uncounted, 'outcome' => 'correct']);
+        $this->assertSame(0, LearningEvidence::whereIn('attempt_id', [$self, $uncounted])->count());
+        $this->assertDatabaseMissing('student_learning_point_progress', ['user_id' => $this->student->id]);
+    }
+
+    /**
+     * Feuille d'examen (BEM, 2026-10-06) : une étape répondue est VERROUILLÉE.
+     * La rouvrir (retour en arrière, rechargement) rend la même tentative avec
+     * la réponse enregistrée — jamais une nouvelle tentative — et la séance
+     * relit ses réponses depuis la base.
+     */
+    public function test_an_answered_exam_step_reopens_locked_with_its_saved_answer(): void
+    {
+        $sessionId = (string) Str::uuid();
+        $this->postApi('/lessons/bahth-pgcd/practice/sessions', ['sessionId' => $sessionId, 'level' => 3])->assertSuccessful();
+
+        $first = (string) Str::uuid();
+        $this->postApi("/practice/sessions/{$sessionId}/questions", [
+            'exerciseId' => 'ex-4am-bahth-pgcd-l3-004', 'questionId' => 'q1', 'attemptUuid' => $first,
+        ])->assertSuccessful()->assertJsonPath('attempt.answered', false);
+        $this->postApi("/practice/sessions/{$sessionId}/answers", ['attemptUuid' => $first, 'answer' => ['value' => '270']])
+            ->assertStatus(201)->assertJsonPath('evaluation.outcome', 'incorrect');
+
+        // Rouvrir avec un AUTRE identifiant : on récupère la tentative d'origine, verrouillée.
+        $this->postApi("/practice/sessions/{$sessionId}/questions", [
+            'exerciseId' => 'ex-4am-bahth-pgcd-l3-004', 'questionId' => 'q1', 'attemptUuid' => (string) Str::uuid(),
+        ])->assertSuccessful()
+            ->assertJsonPath('attempt.attemptUuid', $first)
+            ->assertJsonPath('attempt.answered', true)
+            ->assertJsonPath('attempt.answer.value', '270')
+            ->assertJsonPath('attempt.outcome', 'incorrect');
+        $this->assertSame(1, \App\Models\QuestionAttempt::where('user_id', $this->student->id)->where('question_id', 'q1')->count());
+
+        $this->withToken($this->token)->getJson("/api/v1/practice/sessions/{$sessionId}/answers")
+            ->assertOk()
+            ->assertJsonPath('exercises.0.exerciseId', 'ex-4am-bahth-pgcd-l3-004')
+            ->assertJsonPath('exercises.0.questions.0.answer.value', '270')
+            ->assertJsonPath('exercises.0.questions.0.outcome', 'incorrect');
+    }
+
+    /** La « خزانة الميداليات » (2026-10-06) : déduite des réponses enregistrées. */
+    public function test_medals_are_derived_from_saved_answers(): void
+    {
+        $sessionId = (string) Str::uuid();
+        $this->postApi('/lessons/bahth-pgcd/practice/sessions', ['sessionId' => $sessionId, 'level' => 3])->assertSuccessful();
+
+        // q1 juste, sans إرشاد, en 20 s (temps de l'étape : 210 s) → or.
+        $gold = (string) Str::uuid();
+        $this->postApi("/practice/sessions/{$sessionId}/questions", ['exerciseId' => 'ex-4am-bahth-pgcd-l3-004', 'questionId' => 'q1', 'attemptUuid' => $gold])->assertSuccessful();
+        $this->postApi("/practice/sessions/{$sessionId}/answers", ['attemptUuid' => $gold, 'answer' => ['value' => '135', 'seconds' => 20]])->assertStatus(201);
+        // q2 fausse → rien.
+        $wrong = (string) Str::uuid();
+        $this->postApi("/practice/sessions/{$sessionId}/questions", ['exerciseId' => 'ex-4am-bahth-pgcd-l3-004', 'questionId' => 'q2', 'attemptUuid' => $wrong])->assertSuccessful();
+        $this->postApi("/practice/sessions/{$sessionId}/answers", ['attemptUuid' => $wrong, 'answer' => ['value' => '9/7', 'seconds' => 20]])->assertStatus(201);
+
+        $this->withToken($this->token)->getJson('/api/v1/lessons/bahth-pgcd/practice/medals')
+            ->assertOk()
+            ->assertJsonPath('total.gold', 1)
+            ->assertJsonPath('total.silver', 0)
+            ->assertJsonPath('total.points', 3)
+            ->assertJsonPath('levels.3.gold', 1);
     }
 
     public function test_a_teacher_cannot_write_evidence(): void

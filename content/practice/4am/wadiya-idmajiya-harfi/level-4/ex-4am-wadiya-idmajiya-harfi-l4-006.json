@@ -1,128 +1,191 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l4-006",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 4,
   "metadata": {
-    "title": "تدريب — ملعب مساحته 50",
-    "estimatedMinutes": 3,
+    "title": "أبعاد ملعب من مساحته",
+    "estimatedMinutes": 8,
     "tags": [
       "نمذجة",
-      "معادلة",
-      "مساعدة"
+      "تحقق بالنشر",
+      "معادلة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
-      "modelledOn": "situation"
+      "modelledOn": "situation",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-harfi-l4-006"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "ملعب مستطيل طوله يزيد على عرضه بـ 5m. نرمز بـ $x$ لعرضه (بالمتر)، ومساحته $50m^2$. مساعدة: $x^2 + 5x - 50 = (x - 5)(x + 10)$."
+    "content": "ملعب مستطيل الشكل طوله يزيد على عرضه بـ $5$ m ، ومساحته $50\\,m^2$ . نرمز بـ $x$ لعرضه بالمتر."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المساواة التي تترجم مساحة الملعب هي ...",
+      "step": "01",
+      "lead": "عبّر بدلالة $x$ عن مساحة الملعب على شكل مجموع مبسّط.",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x + x + 5 = 50$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "B",
-          "content": "$x(x + 5) = 50$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$2x + 2(x + 5) = 50$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "D",
-          "content": "$x^2 + 5 = 50$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "تُكتب المساحة على الشكل $x^2 + mx$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الطول $x + 5$ والعرض $x$."
+          "content": "الطول $= x + 5$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المساحة جداء البعدين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المحيط شيء آخر."
+          "content": "المساحة = الطول × العرض، ثم انشر."
         }
       ],
       "feedback": {
-        "correct": "المساحة $x(x + 5)$ ، فالمساواة $x(x + 5) = 50$ ، أي $x^2 + 5x - 50 = 0$.",
-        "incorrect": "المساحة جداء لا مجموع."
+        "correct": "$x^2 + 5x$ إذن $m = 5$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
       },
-      "cognitiveDemand": "reason"
+      "solution": {
+        "lines": [
+          "المساحة $= x(x + 5)$"
+        ],
+        "result": "x^2 + 5x"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "ما عرض الملعب (بالمتر)؟",
+      "step": "02",
+      "statement": "تحقّق بالنشر أنّ: $x^2 + 5x - 50 = (x - 5)(x + 10)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر الطرف الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع الحدود المتشابهة وقارن."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى الإشارات عند النشر."
+      },
+      "solution": {
+        "lines": [
+          "$(x - 5)(x + 10) = x^2 + 10x - 5x - 50 = x^2 + 5x - 50$"
+        ],
+        "result": "x^2 + 5x - 50 = (x - 5)(x + 10)"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "استنتج عرض الملعب.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P3",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح",
+      "answerFormat": "عدد طبيعي: العرض بـ m",
       "expectedAnswer": "5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب المساواة على الشكل «… = 0»."
+          "content": "المساحة $50$ تعطي المعادلة $x^2 + 5x - 50 = 0$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "استعمل المساعدة: جداء أحد عامليه معدوم."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "العرض طول موجب."
+          "content": "استعمل الشكل المحلّل، وتذكّر أن $x$ موجب."
         }
       ],
       "feedback": {
-        "correct": "$(x - 5)(x + 10) = 0$ من أجل $x = 5$ أو $x = -10$ ، والعرض موجب: $x = 5$. نتحقق: $5 \\times 10 = 50$.",
-        "incorrect": "من القيمتين اللتين تعدمان الجداء نحتفظ بالموجبة."
+        "correct": "$x = 5\\,m$ .",
+        "incorrect": "اكتب المعادلة على شكل جداء معدوم، واحتفظ بالحلّ الموجب فقط."
       },
-      "misconceptionSignatures": [
+      "solution": {
+        "lines": [
+          "$x^2 + 5x = 50$ يعني $x^2 + 5x - 50 = 0$ ، أي $(x - 5)(x + 10) = 0$",
+          "$x - 5 = 0$ أو $x + 10 = 0$ ، أي $x = 5$ أو $x = -10$",
+          "$x$ طول، فهو موجب"
+        ],
+        "result": "x = 5\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "04",
+      "statement": "احسب محيط الملعب.",
+      "learningPoints": [
         {
-          "value": "-10",
-          "id": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "value": "10",
-          "id": "MISC-NAMDHAJA-MISAHA"
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
         }
       ],
-      "cognitiveDemand": "reason"
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المحيط بـ m",
+      "expectedAnswer": "30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول يزيد على العرض بـ 5."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المحيط $= 2 \\times$ (الطول + العرض)."
+        }
+      ],
+      "feedback": {
+        "correct": "$30\\,m$ .",
+        "incorrect": "أعد قراءة المعطيات، واحسب كل كمية على حدة ثم اجمع."
+      },
+      "solution": {
+        "lines": [
+          "العرض $5$ m والطول $5 + 5 = 10$ m",
+          "المحيط $= 2 \\times (10 + 5)$"
+        ],
+        "result": "30\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l4-006",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 4
+  ]
 }

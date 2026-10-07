@@ -3,109 +3,163 @@
   "lessonCode": "muadala-ula",
   "level": 4,
   "metadata": {
-    "title": "تدريب — الشكل ax = b بعد التبسيط",
-    "estimatedMinutes": 4,
+    "title": "مقامات في الطرفين",
+    "estimatedMinutes": 8,
     "tags": [
-      "تبسيط",
-      "ax = b"
+      "مقامات",
+      "معادلة"
     ],
     "source": {
-      "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_muadala-ula_P1",
-      "modelledOn": "know-1"
+      "type": "textbook",
+      "elementId": "now-47-1",
+      "page": 47,
+      "section": "دوري الآن",
+      "number": 1,
+      "adaptedFrom": "ex-4am-muadala-ula-l5-003"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "بسّط كل طرف حتى الشكل $ax = b$ ."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حل المعادلة $3x + 5x - 2x = -9$ هو:",
+      "step": "01",
+      "sub": "ا",
+      "lead": "حل كلا من المعادلتين الآتيتين:",
+      "statement": "$\\dfrac{-x + 3}{2} = \\dfrac{2x + 1}{3}$",
       "learningPoints": [
         {
-          "code": "4am_muadala-ula_P1",
+          "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$-\\dfrac{3}{2}$",
-          "isCorrect": true
+          "value": "-1",
+          "id": "MISC-MUADALA-ISHARA-SALIBA"
         },
         {
-          "id": "B",
-          "content": "$-\\dfrac{2}{3}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+          "value": "-11/7",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
         },
         {
-          "id": "C",
-          "content": "$-15$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARH-MUAMIL"
+          "value": "-7",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المعادلة من الشكل $ax = b$ : حدّد العدد المضروب في $x$ والعدد الذي في الطرف الآخر."
+          "content": "اضرب الطرفين في مقام مشترك لتتخلّص من المقامات."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "نقسم الطرفين على معامل $x$ ، مع إشارته."
+          "content": "ضع كل بسط بين قوسين عند الضرب، ثم انشر وبسّط."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس."
+          "content": "انقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر حتى الشكل $ax = b$ ."
         }
       ],
       "feedback": {
-        "correct": "$3x + 5x - 2x = -9$ : نصل إلى $6x = -9$ ، ومنه $x = -\\dfrac{3}{2}$.",
-        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
-      }
+        "correct": "$x = 1$ .",
+        "incorrect": "اضرب كل حد من الطرفين في المقام المشترك، مع وضع البسوط بين قوسين، ثم انشر وحلّ. تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "نضرب الطرفين في $6$ : $3(-x + 3) = 2(2x + 1)$",
+          "$-3x + 9 = 4x + 2$",
+          "$-3x - 4x = 2 - 9$",
+          "$-7x = -7$",
+          "$x = \\dfrac{-7}{-7}$"
+        ],
+        "result": "x = 1"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "حلّ المعادلة $7x - 2(x + 1) = 8$ .",
+      "step": "01",
+      "sub": "ب",
+      "statement": "$2x - \\dfrac{1}{3} = \\dfrac{x}{5} + 2$",
       "learningPoints": [
         {
-          "code": "4am_muadala-ula_P1",
+          "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
-      "expectedAnswer": "2",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
+      "expectedAnswer": "35/27",
+      "misconceptionSignatures": [
+        {
+          "value": "27/35",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "value": "25/27",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "value": "35/33",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في المعادلة أقواس."
+          "content": "اضرب الطرفين في مقام مشترك لتتخلّص من المقامات."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انشر أولًا وبسّط كل طرف على حدة."
+          "content": "ضع كل بسط بين قوسين عند الضرب، ثم انشر وبسّط."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم انقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر، وقسّم على معامل $x$."
+          "content": "انقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر حتى الشكل $ax = b$ ."
         }
       ],
       "feedback": {
-        "correct": "$7x - 2(x + 1) = 8$ : نصل إلى $5x = 10$ ، ومنه $x = 2$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "$x = \\dfrac{35}{27}$ .",
+        "incorrect": "اضرب كل حد من الطرفين في المقام المشترك، مع وضع البسوط بين قوسين، ثم انشر وحلّ. تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "نضرب الطرفين في $15$ : $30x - 5 = 3x + 30$",
+          "$30x - 3x = 30 + 5$",
+          "$27x = 35$"
+        ],
+        "result": "x = \\dfrac{35}{27}"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
   ]
 }

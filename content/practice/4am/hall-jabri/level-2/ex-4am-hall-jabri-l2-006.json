@@ -3,95 +3,132 @@
   "lessonCode": "hall-jabri",
   "level": 2,
   "metadata": {
-    "title": "تدريب — باقات الإنترنت",
-    "estimatedMinutes": 4,
+    "title": "باقات الإنترنت",
+    "estimatedMinutes": 6,
     "tags": [
-      "الجمع",
-      "الهاتف"
+      "الجمع"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_hall-jabri_P2",
       "modelledOn": "act-2"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "اشترت سارة باقتي إنترنت أسبوعيتين وثلاث باقات يومية بـ 700 DA، والباقة الأسبوعية أغلى بـ 80 DA من ثلاث باقات يومية. نرمز بـ $x$ لثمن الأسبوعية وبـ $y$ لثمن اليومية: $\\begin{cases} 2x + 3y = 700 \\\\ x - 3y = 80 \\end{cases}$ ."
+    "content": "اشترت سارة باقتي إنترنت أسبوعيتين وثلاث باقات يومية بـ 700DA، وثمن الباقة الأسبوعية يزيد بـ 80DA عن ثمن ثلاث باقات يومية. نسمّي $x$ ثمن الباقة الأسبوعية و $y$ ثمن الباقة اليومية (بالدينار)، فنحصل على الجملة:",
+    "formulas": [
+      "\\begin{cases} 2x + 3y = 700 \\\\ x - 3y = 80 \\end{cases}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "بجمع المعادلتين طرفًا لطرف، ما قيمة $x$ ؟",
+      "step": "01",
+      "statement": "حل الجملة بطريقة الجمع.",
       "learningPoints": [
         {
           "code": "4am_hall-jabri_P2",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
-      "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
-      "expectedAnswer": "260",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
-        }
-      ],
-      "feedback": {
-        "correct": "$3y$ و $-3y$ يُلغيان: $3x = 780$ ، ومنه $x = 260$ .",
-        "incorrect": "أعد الحساب خطوة خطوة، وأجرِ كل عملية على طرفي المعادلة معًا."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "حل الجملة $(x ; y)$ :",
-      "learningPoints": [
-        {
-          "code": "4am_hall-jabri_P2",
-          "role": "primary"
-        }
-      ],
-      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": {
         "x": "260",
         "y": "60"
       },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "60",
+            "y": "260"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+          "content": "قارن معاملي $y$ في المعادلتين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+          "content": "معاملا $y$ متعاكسان: $3y$ و $-3y$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+          "content": "اجمع المعادلتين طرفا لطرف، ثم عوّض القيمة في إحدى المعادلتين لتجد المجهول الآخر."
         }
       ],
       "feedback": {
-        "correct": "$260 - 3y = 80$ أي $3y = 180$ ، ومنه $y = 60$ : الأسبوعية بـ 260 DA واليومية بـ 60 DA.",
-        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
-      }
+        "correct": "الثنائية $(260 ; 60)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "بجمع المعادلتين طرفا لطرف نجد: $3x = 780$",
+          "ومنه $x = 260$",
+          "نعوّض $x$ بـ $260$ في المعادلة (2): $260 - 3y = 80$",
+          "$-3y = -180$",
+          "ومنه $y = 60$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(260 ; 60)"
+      },
+      "work": "required",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج ثمن باقة أسبوعية واحدة وأربع باقات يومية.",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "500",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المبلغ المطلوب هو $x + 4y$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل حل الجملة."
+        }
+      ],
+      "feedback": {
+        "correct": "$260 + 4 \\times 60 = 500$ : المبلغ $500DA$ .",
+        "incorrect": "احسب $x + 4y$ باستعمال قيمتي $x$ و $y$ ."
+      },
+      "solution": {
+        "lines": [
+          "ثمن باقة أسبوعية وأربع باقات يومية: $x + 4y$",
+          "$260 + 4 \\times 60 = 260 + 240 = 500$",
+          "ومنه المبلغ $500DA$ ."
+        ],
+        "result": "500\\,DA"
+      },
+      "timeSeconds": 90
     }
   ]
 }

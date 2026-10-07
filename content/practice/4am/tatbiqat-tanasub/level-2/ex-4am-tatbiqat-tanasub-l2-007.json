@@ -3,26 +3,33 @@
   "lessonCode": "tatbiqat-tanasub",
   "level": 2,
   "metadata": {
-    "title": "تدريب — الدراجة النارية",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2025 — سباق الدراجات الهوائية",
+    "estimatedMinutes": 4,
     "tags": [
-      "تحويل الوحدات",
-      "السرعة"
+      "السرعة المتوسطة",
+      "المدة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_tatbiqat-tanasub_P2",
-      "modelledOn": "act-6"
+      "modelledOn": "BEM 2025 II 2"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2025",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "دراجة نارية تسير بسرعة متوسطة $54km/h$ ."
+    "content": "شارك سفيان في سباق للدراجات الهوائية بمناسبة عيد الاستقلال، فقطع مسافة $45km$ في ساعة ونصف."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "سرعتها بالمتر في الثانية:",
+      "step": "01",
+      "statement": "احسب السرعة المتوسطة لسفيان بـ km/h .",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P2",
@@ -30,30 +37,92 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "15",
+      "answerFormat": "اكتب السرعة بـ km/h (عدد فقط)",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
+        {
+          "value": "450/13",
+          "id": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "value": "1/30",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد وحدة البسط ووحدة المقام، قبل التحويل وبعده."
+          "content": "ساعة ونصف تساوي $1{,}5h$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "حوّل البسط والمقام كلًّا على حدة: $1h = 3600s$ ، $1km = 1000m$ ، $1m^3 = 1000L$ ، $1L = 1000cm^3$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب المقدار كحاصل قسمة بالوحدات الجديدة، ثم احسب."
+          "content": "$v = \\dfrac{d}{t}$ ."
         }
       ],
       "feedback": {
-        "correct": "$54km = 54\\,000m$ في $3600s$ : $\\dfrac{54\\,000}{3600} = 15m/s$ .",
-        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
-      }
+        "correct": "$v = \\dfrac{45}{1{,}5} = 30km/h$ .",
+        "incorrect": "حوّل المدة إلى ساعات بعدد عشري، ثم اقسم المسافة على المدة."
+      },
+      "solution": {
+        "lines": [
+          "ساعة ونصف $= 1{,}5h$",
+          "$v = \\dfrac{d}{t} = \\dfrac{45}{1{,}5}$",
+          "$v = 30km/h$"
+        ],
+        "result": "v = 30km/h"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "ما هي المدة (بالساعة) التي يستغرقها سفيان لقطع مسافة $75km$ بالسرعة نفسها؟",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب المدة بالساعة (عدد عشري بالفاصلة)",
+      "expectedAnswer": "2,5",
+      "misconceptionSignatures": [
+        {
+          "value": "0,4",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من $v = \\dfrac{d}{t}$ نستنتج $t = \\dfrac{d}{v}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم المسافة على السرعة المتوسطة."
+        }
+      ],
+      "feedback": {
+        "correct": "$t = \\dfrac{75}{30} = 2{,}5h$ ، أي ساعتان ونصف.",
+        "incorrect": "المدة هي المسافة مقسومة على السرعة: $t = \\dfrac{d}{v}$ ."
+      },
+      "solution": {
+        "lines": [
+          "$t = \\dfrac{d}{v}$",
+          "$t = \\dfrac{75}{30} = 2{,}5$",
+          "يستغرق سفيان $2{,}5h$ ، أي ساعتين ونصفا."
+        ],
+        "result": "t = 2{,}5h"
+      },
+      "timeSeconds": 90
     }
   ]
 }

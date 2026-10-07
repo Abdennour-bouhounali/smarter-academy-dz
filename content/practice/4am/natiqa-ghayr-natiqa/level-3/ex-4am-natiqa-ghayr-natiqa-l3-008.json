@@ -1,75 +1,171 @@
 {
+  "id": "ex-4am-natiqa-ghayr-natiqa-l3-008",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — عددان متشابهان",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2013 — بيّن أن A عدد طبيعي",
+    "estimatedMinutes": 8,
     "tags": [
-      "تصنيف",
-      "عدد عشري"
+      "عدد ناطق",
+      "عدد غير ناطق"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
-      "modelledOn": "know-2"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
+      "modelledOn": "BEM 2013 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2013",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "نعتبر العددين $A = \\sqrt{12{,}25}$ و $B = \\sqrt{1{,}225}$ ."
+    "content": "ليكن العدد الحقيقي $A$ حيث:",
+    "formulas": [
+      "A = \\sqrt{2}(\\sqrt{2} + 3) - 3\\sqrt{2}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ عبارة صحيحة؟",
+      "step": "01",
+      "statement": "بيّن أن $A$ عدد طبيعي.",
       "learningPoints": [
         {
-          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "code": "4am_natiqa-ghayr-natiqa_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة العدد $A$",
+      "expectedAnswer": "2",
+      "hints": [
         {
-          "id": "A",
-          "content": "$A$ عدد ناطق و $B$ ليس عددًا ناطقًا",
-          "isCorrect": true
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $\\sqrt{2}(\\sqrt{2} + 3)$ ."
         },
         {
-          "id": "B",
-          "content": "$A$ و $B$ عددان ناطقان لأن $B = 0{,}35$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-FASILA"
-        },
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{2} \\times \\sqrt{2} = 2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 2 + 3\\sqrt{2} - 3\\sqrt{2} = 2$ .",
+        "incorrect": "وزّع $\\sqrt{2}$ على حدّي القوس، ثم بسّط."
+      },
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{2} \\times \\sqrt{2} + 3\\sqrt{2} - 3\\sqrt{2}$",
+          "$= 2 + 3\\sqrt{2} - 3\\sqrt{2}$"
+        ],
+        "result": "A = 2"
+      },
+      "work": "required",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "ليكن العدد $B$ حيث: $B = A + \\dfrac{1}{4}$ . بيّن أن $\\sqrt{B}$ عدد ناطق.",
+      "learningPoints": [
         {
-          "id": "C",
-          "content": "$A$ و $B$ ليسا ناطقين لأنهما جذرا عددين عشريين",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة العدد $\\sqrt{B}$ على شكل كسر",
+      "expectedAnswer": "3/2",
+      "misconceptionSignatures": [
+        {
+          "value": "9/8",
+          "id": "MISC-JIDHR-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب $3{,}5^2$ و $0{,}35^2$."
+          "content": "احسب $B$ على شكل كسر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب 1,225 على شكل كسر مختزل: $\\dfrac{1225}{1000}$ ثم اختزل."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "طبّق المعيار على كل عدد: هل هو مربع لعدد ناطق؟"
+          "content": "ابحث عن كسر موجب مربعه $B$ ."
         }
       ],
       "feedback": {
-        "correct": "$3{,}5^2 = 12{,}25$ فـ $A = 3{,}5$ ناطق؛ و $1{,}225 = \\dfrac{49}{40}$ ليس مربعًا لعدد ناطق، و $0{,}35^2 = 0{,}1225$ .",
-        "incorrect": "تحقّق من موضع الفاصلة بتربيع العدد الذي تقترحه."
-      }
+        "correct": "$B = \\dfrac{9}{4} = \\left(\\dfrac{3}{2}\\right)^2$ ، إذن $\\sqrt{B} = \\dfrac{3}{2}$ .",
+        "incorrect": "اكتب $B$ على شكل كسر واحد، ثم خذ جذر البسط وجذر المقام."
+      },
+      "solution": {
+        "lines": [
+          "$B = 2 + \\dfrac{1}{4} = \\dfrac{9}{4}$",
+          "$\\left(\\dfrac{3}{2}\\right)^2 = \\dfrac{9}{4}$ إذن $\\sqrt{B} = \\dfrac{3}{2}$",
+          "إذن $\\sqrt{B}$ عدد ناطق."
+        ],
+        "result": "\\sqrt{B} = \\dfrac{3}{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "هل $\\sqrt{A}$ عدد ناطق؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-KULL-JIDHR"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "answerFormat": "اختر جوابك، ثم قارن تبريرك بالحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل نتيجة السؤال 01."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل 2 مربع لعدد ناطق؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{A} = \\sqrt{2}$ ، و 2 ليس مربعًا لعدد ناطق.",
+        "incorrect": "قارن 2 بالمربعين التامين 1 و 4."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{A} = \\sqrt{2}$ و $1 < 2 < 4$ : 2 ليس مربعًا لعدد ناطق.",
+          "إذن $\\sqrt{A}$ ليس عددًا ناطقًا."
+        ]
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-natiqa-ghayr-natiqa-l3-008",
-  "lessonCode": "natiqa-ghayr-natiqa",
-  "level": 3
+  ]
 }

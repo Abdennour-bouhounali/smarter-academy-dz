@@ -1,9 +1,13 @@
 {
+  "id": "ex-4am-ikhtizal-kasr-l1-001",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 1,
   "metadata": {
-    "title": "نشاط 8 — طريقة سمير",
-    "estimatedMinutes": 3,
+    "title": "نشاط 8 — اختزال الكسر 84/48 على مراحل",
+    "estimatedMinutes": 4,
     "tags": [
-      "اختزال"
+      "اختزال",
+      "قاسم مشترك"
     ],
     "source": {
       "type": "textbook",
@@ -11,101 +15,107 @@
       "page": 9,
       "section": "أنشطة",
       "number": 8
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "لاحظ كيف اختزل سمير الكسر $\\dfrac{84}{48}$: $\\dfrac{84}{48} = \\dfrac{84 \\div 4}{48 \\div 4} = \\dfrac{21}{12} = \\dfrac{21 \\div 3}{12 \\div 3} = \\dfrac{7}{4}$."
+    "content": "نريد اختزال الكسر $\\dfrac{84}{48}$ على مراحل، بقسمة بسطه ومقامه في كل مرة على قاسم مشترك لهما."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "بعد القسمة على 4 نحصل على الكسر …",
+      "step": "01",
+      "sub": "ا",
+      "statement": "اقسم بسط الكسر $\\dfrac{84}{48}$ ومقامه على 4، ثم اكتب الكسر الناتج.",
       "learningPoints": [
         {
           "code": "4am_ikhtizal-kasr_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        { "id": "A", "content": "$\\dfrac{21}{12}$", "isCorrect": true },
-        { "id": "B", "content": "$\\dfrac{7}{4}$", "isCorrect": false },
-        { "id": "C", "content": "$\\dfrac{42}{24}$", "isCorrect": false },
-        { "id": "D", "content": "$\\dfrac{21}{48}$", "isCorrect": false }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "21/12",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "84 ÷ 4 = ?"
+          "content": "العدد 4 يقسم 84 ويقسم 48."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "48 ÷ 4 = ?"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب الكسر الجديد على الشكل a/b بالبسط والمقام الجديدين."
+          "content": "احسب حاصل قسمة البسط على 4، ثم حاصل قسمة المقام على 4."
         }
       ],
       "feedback": {
-        "correct": "84 ÷ 4 = 21 و 48 ÷ 4 = 12.",
-        "incorrect": "اقسم البسط والمقام على 4."
-      }
+        "correct": "$84 \\div 4 = 21$ و $48 \\div 4 = 12$ .",
+        "incorrect": "اقسم البسط على 4 والمقام على 4، ولا تغيّر شيئًا آخر."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{84}{48} = \\dfrac{84 \\div 4}{48 \\div 4}$"
+        ],
+        "result": "\\dfrac{84}{48} = \\dfrac{21}{12}"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "لماذا لا يمكن مواصلة اختزال $\\dfrac{7}{4}$؟",
+      "step": "01",
+      "sub": "ب",
+      "statement": "واصل الاختزال إلى أن تحصل على كسر غير قابل للاختزال.",
       "learningPoints": [
         {
-          "code": "4am_ikhtizal-kasr_P2",
+          "code": "4am_ikhtizal-kasr_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "7/4",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "لأن 7 و 4 أوليان فيما بينهما",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "لأن 7 عدد أولي",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "لأن 4 أصغر من 7",
-          "isCorrect": false
+          "value": "21/12",
+          "id": "MISC-IKHTIZAL-NAQIS"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قواسم 7: 1 ، 7."
+          "content": "ابحث عن قاسم مشترك للبسط والمقام الجديدين أكبر من 1."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "قواسم 4: 1 ، 2 ، 4."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المشترك الوحيد 1."
+          "content": "اقسم عليه البسط والمقام، ثم أعد السؤال: هل بقي قاسم مشترك أكبر من 1؟"
         }
       ],
       "feedback": {
-        "correct": "PGCD(7 ; 4) = 1: الكسر غير قابل للاختزال.",
-        "incorrect": "هل لـ 7 و 4 قاسم مشترك يختلف عن 1؟"
-      }
+        "correct": "÷4 ثم ÷3: العددان 7 و 4 أوليان فيما بينهما، فالكسر غير قابل للاختزال.",
+        "incorrect": "انطلق من الكسر الذي وجدته في (ا) واقسم بسطه ومقامه على قاسم مشترك لهما.",
+        "notIrreducible": "الكسر صحيح لكن الاختزال لم ينته: ما زال للبسط والمقام قاسم مشترك أكبر من 1."
+      },
+      "solution": {
+        "lines": [
+          "العددان 21 و 12 يقبلان القسمة على 3:",
+          "$\\dfrac{21}{12} = \\dfrac{21 \\div 3}{12 \\div 3}$",
+          "العددان 7 و 4 أوليان فيما بينهما (قاسمهما المشترك الوحيد هو 1)، إذن لا يمكن مواصلة الاختزال."
+        ],
+        "result": "\\dfrac{84}{48} = \\dfrac{7}{4}"
+      },
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-ikhtizal-kasr-l1-001",
-  "lessonCode": "ikhtizal-kasr",
-  "level": 1
+  ]
 }

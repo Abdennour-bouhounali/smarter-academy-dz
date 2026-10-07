@@ -1,116 +1,79 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l1-010",
+  "lessonCode": "amaliyat-judhur",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — حاصل قسمة عددين سالبين",
+    "title": "على منوال BEM 2011 — حساب جداء",
     "estimatedMinutes": 3,
     "tags": [
-      "حاصل قسمة جذرين"
+      "جداء جذرين"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_amaliyat-judhur_P2",
-      "modelledOn": "know-4"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "BEM 2011 I-2"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2011",
+      "heading": "التمرين الثاني",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "$a$ و $b$ عددان سالبان تمامًا."
+    "content": "ليكن العدد $A$ حيث:",
+    "formulas": [
+      "A = 6\\sqrt{3}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب $\\sqrt{\\dfrac{-49}{-4}}$ .",
+      "step": "01",
+      "statement": "احسب الجداء $A \\times \\dfrac{\\sqrt{3}}{9}$ مبينا مراحل الحساب.",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P2",
+          "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "كسر على الشكل a/b",
-      "expectedAnswer": "7/2",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما إشارة حاصل قسمة عددين سالبين؟"
+          "content": "في الجداء يظهر $\\sqrt{3} \\times \\sqrt{3}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب $\\dfrac{-49}{-4}$ كسرًا موجبًا."
+          "content": "ما قيمة $\\sqrt{3} \\times \\sqrt{3}$ ؟"
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم احسب جذر البسط وجذر المقام."
+          "content": "اضرب البسطين ثم اختزل."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{-49}{-4} = \\dfrac{49}{4}$ و $\\sqrt{\\dfrac{49}{4}} = \\dfrac{7}{2}$ .",
-        "incorrect": "الجذر التربيعي عدد موجب: بسّط الإشارة أولًا."
+        "correct": "$6\\sqrt{3} \\times \\dfrac{\\sqrt{3}}{9} = \\dfrac{6 \\times 3}{9} = 2$",
+        "incorrect": "اكتب $\\sqrt{3} \\times \\sqrt{3} = \\sqrt{9}$ ثم اختزل الكسر."
       },
-      "evaluationPolicy": {
-        "requiredForm": "irreducible"
+      "solution": {
+        "lines": [
+          "$A \\times \\dfrac{\\sqrt{3}}{9} = 6\\sqrt{3} \\times \\dfrac{\\sqrt{3}}{9}$",
+          "$= \\dfrac{6 \\times \\sqrt{3} \\times \\sqrt{3}}{9}$",
+          "$= \\dfrac{6 \\times 3}{9}$",
+          "$= \\dfrac{18}{9}$"
+        ],
+        "result": "A \\times \\dfrac{\\sqrt{3}}{9} = 2"
       },
-      "misconceptionSignatures": [
-        {
-          "value": "-7/2",
-          "id": "MISC-JIDHR-SALIB"
-        }
-      ]
-    },
-    {
-      "id": "q2",
-      "statement": "الكتابة $\\dfrac{\\sqrt{-49}}{\\sqrt{-4}}$ :",
-      "learningPoints": [
-        {
-          "code": "4am_amaliyat-judhur_P2",
-          "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "لا معنى لها",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "تساوي $\\dfrac{7}{2}$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "تساوي $-\\dfrac{7}{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-SALIB"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "قارن هذه الكتابة بكتابة السؤال السابق: أين يقع الجذر؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "هل للعدد $-49$ جذر تربيعي؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الجذر التربيعي معرّف للأعداد الموجبة فقط."
-        }
-      ],
-      "feedback": {
-        "correct": "$\\sqrt{-49}$ و $\\sqrt{-4}$ لا معنى لهما، مع أن $\\sqrt{\\dfrac{-49}{-4}}$ موجود.",
-        "incorrect": "لا يوجد عدد مربعه سالب."
-      }
+      "work": "required",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l1-010",
-  "lessonCode": "amaliyat-judhur",
-  "level": 1
+  ]
 }

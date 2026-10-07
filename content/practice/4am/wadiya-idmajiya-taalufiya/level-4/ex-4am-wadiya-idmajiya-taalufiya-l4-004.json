@@ -4,151 +4,150 @@
   "level": 4,
   "metadata": {
     "title": "عرضان للإنترنت",
-    "estimatedMinutes": 5,
+    "estimatedMinutes": 12,
     "tags": [
       "مفاضلة",
-      "تفسير"
+      "في حدود مبلغ"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03,5"
     }
   },
   "statement": {
-    "content": "العرض أ: 600 DA ثم 100 DA للجيغابايت؛ العرض ب: 250 DA للجيغابايت ( $x$ عدد الجيغابايت)."
+    "content": "تقترح شركة عرضين للإنترنت، حيث $x$ عدد الجيغابايت في الشهر:\n- العرض الأول: اشتراك 600DA ثم 100DA عن كل جيغابايت.\n- العرض الثاني: 250DA عن كل جيغابايت دون اشتراك."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "من أجل كم جيغابايت يتساوى الثمنان؟",
+      "step": "01",
+      "statement": "من أجل كم جيغابايت يتساوى المبلغان؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "عدد: عدد الجيغابايت",
       "expectedAnswer": "4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$100x + 600 = 250x$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$150x = 600$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "نقطة التقاطع."
+          "content": "حلّ $100x + 600 = 250x$ ."
         }
       ],
       "feedback": {
-        "correct": "$x = 4$.",
-        "incorrect": "نساوي الثمنين."
+        "correct": "$600 = 150x$ .",
+        "incorrect": "ساوِ المبلغين ثم اجمع حدود $x$ ."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 4
+      "solution": {
+        "lines": [
+          "$f(x) = 100x + 600$ و $g(x) = 250x$",
+          "$100x + 600 = 250x$",
+          "$600 = 150x$",
+          "$x = 4$"
+        ],
+        "result": "x = 4"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "يستهلك أنس 6 جيغابايت. الأرخص له:",
+      "step": "02",
+      "statement": "يستهلك أنس 6 جيغابايت في الشهر. ما هو العرض الأقل تكلفة له؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "العرض أ: 1200 DA",
+          "content": "العرض الأول",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "العرض ب: 1500 DA",
+          "content": "العرض الثاني",
           "isCorrect": false,
           "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
-        },
-        {
-          "id": "C",
-          "content": "الثمن نفسه",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAFSIR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "6 أكبر من 4."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب الثمنين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بعد التقاطع."
+          "content": "احسب المبلغين من أجل 6 جيغابايت."
         }
       ],
       "feedback": {
-        "correct": "$600 + 600 = 1200 < 1500$.",
-        "incorrect": "بعد نقطة التقاطع يصبح العرض أ أرخص."
+        "correct": "1200DA و 1500DA .",
+        "incorrect": "احسب $f(6)$ و $g(6)$ ثم قارن."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 4
+      "solution": {
+        "lines": [
+          "$f(6) = 100 \\times 6 + 600 = 1200DA$",
+          "$g(6) = 250 \\times 6 = 1500DA$",
+          "العرض الأول هو الأقل تكلفة لأنس."
+        ]
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "بميزانية 1500 DA والعرض أ، أكبر عدد طبيعي من الجيغابايت:",
+      "step": "03",
+      "statement": "خصّص أنس 1500DA للإنترنت واختار العرض الأول. ما هو أكبر عدد طبيعي من الجيغابايت يمكنه شراؤه؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "عدد: عدد الجيغابايت",
       "expectedAnswer": "9",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$100x + 600 \\leq 1500$."
+          "content": "حلّ $100x + 600 \\leqslant 1500$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$x \\leq 9$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "عدد طبيعي."
+          "content": "خذ أكبر عدد طبيعي يحقّقها."
         }
       ],
       "feedback": {
-        "correct": "$x = 9$ ($100 \\times 9 + 600 = 1500$).",
-        "incorrect": "نطرح الاشتراك ثم نقسم."
+        "correct": "$100x \\leqslant 900$ .",
+        "incorrect": "اطرح الاشتراك من 1500 ثم اقسم على 100."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 4,
-      "misconceptionSignatures": [
-        {
-          "value": "15",
-          "id": "MISC-TAALUFI-SABIQ-QISMA"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$100x + 600 \\leqslant 1500$",
+          "$100x \\leqslant 900$",
+          "$x \\leqslant 9$",
+          "أكبر عدد هو 9 جيغابايت ($f(9) = 1500DA$)."
+        ],
+        "result": "9"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

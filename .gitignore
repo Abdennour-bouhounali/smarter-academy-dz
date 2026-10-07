@@ -50,3 +50,6 @@ apps/api/database/curriculum-sync/
 # PDFs are never versioned (official books, exercise sheets, etc.)
 *.pdf
 *.PDF
+
+# Annales BEM 2007–2025 (sujets + corrigés) : jamais versionnées — le fichier des corrigés n’a pas d’extension .pdf
+docs/official-BREVET-exams/

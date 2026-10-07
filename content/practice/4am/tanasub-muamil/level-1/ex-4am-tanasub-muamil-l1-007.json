@@ -3,25 +3,32 @@
   "lessonCode": "tanasub-muamil",
   "level": 1,
   "metadata": {
-    "title": "تدريب — رصيد الإنترنت",
-    "estimatedMinutes": 3,
+    "title": "باقة إنترنت دون مبلغ ثابت",
+    "estimatedMinutes": 2,
     "tags": [
-      "إنترنت"
+      "وضعية تناسبية"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tanasub-muamil_P2",
       "modelledOn": "act-1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "باقة إنترنت للهاتف: كل $1$Go بـ 100DA ، دون أي مبلغ ثابت."
+    "content": "تبيع شركة للهاتف النقال باقات إنترنت بـ 100DA لكل $1Go$ ، دون أي مبلغ ثابت."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ثمن 3Go بالدينار:",
+      "step": "01",
+      "statement": "احسب ثمن باقة سعتها $3Go$ .",
       "learningPoints": [
         {
           "code": "4am_tanasub-muamil_P1",
@@ -31,33 +38,32 @@
       "difficulty": 1,
       "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
       "expectedAnswer": "300",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الجدول جدول تناسبية: نضرب في المعامل، ولا نضيف الفرق."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب معامل التناسبية من عمود كامل."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اضرب العدد المعلوم في المعامل، أو استعمل تساوي الجداءين المتصالبين."
+          "content": "اضرب عدد الـ Go في ثمن الـ Go الواحد."
         }
       ],
       "feedback": {
-        "correct": "$3 \\times 100 = 300$ DA.",
-        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
-      }
+        "correct": "$3 \\times 100 = 300$ .",
+        "incorrect": "الثمن = عدد الـ Go × ثمن الواحد."
+      },
+      "solution": {
+        "lines": [
+          "$3 \\times 100 = 300$",
+          "الثمن $300DA$ ."
+        ],
+        "result": "300DA"
+      },
+      "timeSeconds": 45
     },
     {
       "id": "q2",
-      "statement": "هل ثمن الباقة متناسب مع عدد الـ Go ؟",
+      "step": "02",
+      "statement": "هل ثمن الباقة متناسب مع عدد الـ Go ؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_tanasub-muamil_P2",
@@ -65,22 +71,17 @@
         }
       ],
       "difficulty": 1,
-      "cognitiveDemand": "apply",
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "نعم، ومعامل التناسبية 100",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "لا، لأنّ الثمن يزداد",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "لا يمكن أن نعرف",
+          "content": "لا",
           "isCorrect": false
         }
       ],
@@ -88,23 +89,27 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "لا يكفي أن يزداد y كلما ازداد x."
+          "content": "هل يوجد مبلغ ثابت يُدفع مهما كانت السعة؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود وقارن."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "يكفي عمودان حاصلا قسمتهما مختلفان لنقول إنّ الوضعية ليست تناسبية؛ وانتبه إلى المبلغ الثابت."
+          "content": "احسب حاصل قسمة الثمن على عدد الـ Go لباقتين مختلفتين."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{100}{1} = \\dfrac{200}{2} = \\dfrac{300}{3} = 100$ : الثمن متناسب مع عدد الـ Go.",
-        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
-      }
+        "correct": "الثمن = $100 \\times$ عدد الـ Go : حاصل القسمة ثابت.",
+        "incorrect": "لا يوجد أي مبلغ ثابت: احسب حاصل القسمة لباقتين."
+      },
+      "solution": {
+        "lines": [
+          "الثمن $y$ لـ $x$ Go هو $y = 100 \\times x$ .",
+          "$\\dfrac{100}{1} = \\dfrac{300}{3} = 100$ : حاصل القسمة ثابت.",
+          "إذن الثمن متناسب مع عدد الـ Go ، ومعامل التناسبية 100 ."
+        ],
+        "result": "متناسب"
+      },
+      "timeSeconds": 60
     }
   ]
 }

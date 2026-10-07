@@ -3,174 +3,189 @@
   "lessonCode": "mutarajiha-ula",
   "level": 2,
   "metadata": {
-    "title": "تدريب — خطوة واحدة",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2019 — حل متراجحة وتمثيل حلولها",
+    "estimatedMinutes": 7,
     "tags": [
-      "حل متراجحة"
+      "متراجحة",
+      "حل متراجحة",
+      "تمثيل بياني"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_mutarajiha-ula_P2",
-      "modelledOn": "ex-24"
+      "modelledOn": "BEM 2019 I-2"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2019",
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "حلّ كل متراجحة بخطوة واحدة."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّ المتراجحة $5x > -15$ .",
+      "step": "01",
+      "lead": "حلّ المتراجحة: $3x + 7 \\geqslant 7x - 5$ .",
+      "statement": "حدّ الحلول $k$ :",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x < -3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
-        },
-        {
-          "id": "B",
-          "content": "$x > -3$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x > -10$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARH-MUAMIL"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "حلول المتراجحة من الشكل $x < k$ أو $x \\leqslant k$ أو $x > k$ أو $x \\geqslant k$ : اكتب العدد $k$ فقط (عدد صحيح أو كسر a/b، قد يكون سالبًا)",
+      "expectedAnswer": "3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر، كما في حل معادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+          "content": "إضافة عدد إلى الطرفين أو طرحه منهما لا تغيّر اتجاه المتباينة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+          "content": "الحدّ هو العدد الذي يحقّق المعادلة المرفقة (نضع «=» مكان رمز المتباينة): اقسم في الأخير على معامل $x$ ."
         }
       ],
       "feedback": {
-        "correct": "$5x > -15$ تؤول إلى $5x > -15$، ثم نقسم على $5$ (عدد موجب، فالاتجاه لا يتغيّر): $x > -3$.",
-        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
-      }
+        "correct": "حدّ الحلول هو $k = 3$ .",
+        "incorrect": "أعد الحل سطرًا سطرًا: العملية نفسها على الطرفين، ثم القسمة على معامل $x$ في الأخير."
+      },
+      "solution": {
+        "lines": [
+          "حدّ الحلول هو حلّ المعادلة المرفقة: $3x + 7 = 7x - 5$",
+          "$3x - 7x = -5 - 7$",
+          "$-4x = -12$",
+          "$\\dfrac{-4x}{-4} = \\dfrac{-12}{-4}$",
+          "إذن حدّ الحلول هو $3$ ."
+        ],
+        "result": "k = 3"
+      },
+      "work": "optional",
+      "timeSeconds": 210
     },
     {
       "id": "q2",
-      "statement": "حلّ المتراجحة $-6x \\leq 18$ .",
+      "step": "01",
+      "statement": "حلول المتراجحة هي الأعداد $x$ حيث:",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$x \\geq -3$",
-          "isCorrect": true
+          "content": "$x < 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
         },
         {
           "id": "B",
-          "content": "$x \\leq -3$",
+          "content": "$x \\leqslant 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x > 3$",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
         },
         {
-          "id": "C",
-          "content": "$x \\geq 3$",
+          "id": "D",
+          "content": "$x \\geqslant 3$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+          "content": "انظر إلى إشارة معامل $x$ في آخر سطر قبل القسمة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+          "content": "القسمة على عدد موجب تحافظ على الاتجاه، والقسمة على عدد سالب تغيّره."
         }
       ],
       "feedback": {
-        "correct": "$-6x \\leq 18$ تؤول إلى $-6x \\leq 18$، ثم نقسم على $-6$ (عدد سالب، فنغيّر الاتجاه): $x \\geq -3$.",
-        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
-      }
+        "correct": "$x \\leqslant 3$ .",
+        "incorrect": "تتبّع سطور الحل: الاتجاه يتغيّر فقط عند الضرب أو القسمة على عدد سالب، ونوع المتباينة (تامة أو غير تامة) لا يتغيّر أبدًا."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $3x + 7 \\geqslant 7x - 5$",
+          "$3x - 7x \\geqslant -5 - 7$",
+          "$-4x \\geqslant -12$",
+          "نقسم الطرفين على العدد السالب $-4$ فنغيّر اتجاه المتباينة:",
+          "$\\dfrac{-4x}{-4} \\leqslant \\dfrac{-12}{-4}$",
+          "إذن حلول المتراجحة هي كل قيم $x$ الأصغر من أو تساوي $3$ .",
+          "قسمنا الطرفين (أو ضربناهما) في آخر خطوة على عدد سالب، فتغيّر اتجاه المتباينة وبقي نوعها."
+        ],
+        "result": "x \\leqslant 3"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q3",
-      "statement": "حلّ المتراجحة $x + 7 < 2$ .",
+      "step": "02",
+      "statement": "مثّل حلولها بيانيًا على مستقيم مدرّج.",
       "learningPoints": [
         {
-          "code": "4am_mutarajiha-ula_P2",
+          "code": "4am_mutarajiha-ula_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x < -5$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$x < 9$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
-        },
-        {
-          "id": "C",
-          "content": "$x > -5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "selfCheck",
+      "answerFormat": "صف تمثيلك: جهة الجزء الملوّن بالأحمر والرمز عند الحدّ (أو صوّر ورقتك)، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+          "content": "ابدأ بحل المتراجحة لتعرف الحدّ وجهة الحلول."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+          "content": "الأعداد الأكبر من الحدّ على يمينه، والأصغر منه على يساره."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+          "content": "اختبر الحدّ نفسه: إن كان حلًّا فالرمز موجّه نحو الجزء الملوّن، وإلا فهو موجّه عكسه."
         }
       ],
       "feedback": {
-        "correct": "$x + 7 < 2$ تؤول إلى $x < -5$: $x < -5$.",
-        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
-      }
+        "correct": "تمثيلك مطابق للحل النموذجي.",
+        "incorrect": "راجع جهة الجزء الملوّن، ثم اتجاه الرمز عند الحدّ."
+      },
+      "solution": {
+        "lines": [
+          "حلول المتراجحة هي الأعداد $x$ حيث $x \\leqslant 3$ .",
+          "نلوّن بالأحمر جزء المستقيم المدرّج الواقع على يسار العدد $3$ .",
+          "العدد $3$ حلّ للمتراجحة، فنضع عنده الرمز $]$ موجّهًا نحو الجزء الملوّن."
+        ],
+        "result": "الجزء الملوّن على يسار 3 والرمز ] عنده"
+      },
+      "timeSeconds": 150
     }
   ]
 }

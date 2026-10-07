@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Domain\Access\ContentAccess;
+use App\Domain\Practice\AttemptPresenter;
 use App\Domain\Practice\ExerciseRepository;
 use App\Domain\Practice\LearningPointPracticeProgress;
 use App\Domain\Practice\ExerciseSelector;
 use App\Domain\Practice\PracticeCapability;
 use App\Domain\Practice\PracticeSessionService;
+use App\Domain\Practice\Medals;
 use App\Domain\Practice\Support\LevelPolicy;
+use App\Domain\Settings\StudentSettingsService;
 use App\Domain\Progress\Support\Freshness;
 use App\Domain\Progress\Support\OutcomeStats;
 use App\Models\LearningPoint;
@@ -72,7 +75,12 @@ class PracticeSessionController extends Controller
             ->map(fn ($n) => (int) $n)
             ->all();
 
-        $levels = LevelPolicy::levels($this->exercises->countsByLevel($lessonCode), $completedPerLevel);
+        // Les cinq niveaux ouverts d'emblée si l'élève (ou son enseignant) l'a réglé.
+        $levels = LevelPolicy::levels(
+            $this->exercises->countsByLevel($lessonCode),
+            $completedPerLevel,
+            app(StudentSettingsService::class)->practiceLevelsOpen($user),
+        );
 
         // TOUS les points de la leçon, évalués ou non : un point sans preuve
         // est « non évalué », pas absent — l'élève doit voir ce qui reste.
@@ -169,6 +177,50 @@ class PracticeSessionController extends Controller
             'session' => $this->serialize($session),
             'summary' => $session->status === 'completed' ? $this->summarize($session) : null,
         ]);
+    }
+
+    /**
+     * La « خزانة الميداليات » de l'élève pour une leçon (2026-10-06) : ses
+     * médailles (or / argent / bronze), déduites de ses réponses enregistrées.
+     */
+    public function medals(Request $request, string $lessonCode, Medals $medals)
+    {
+        $lesson = Lesson::where('code', $lessonCode)->first();
+        if ($lesson === null) {
+            abort(404);
+        }
+
+        return response()->json(['success' => true, ...$medals->forStudent($request->user(), $lesson)]);
+    }
+
+    /**
+     * Les réponses ENREGISTRÉES d'une séance, exercice par exercice (feuille
+     * d'examen, 2026-10-06) : « التمرين السابق » relit ce que l'élève a écrit
+     * depuis la base — pas depuis la mémoire du navigateur —, donc encore après
+     * un rechargement. Lecture seule ; une réponse par question (la première
+     * enregistrée : c'est elle que la maîtrise retient).
+     */
+    public function answers(Request $request, string $sessionId)
+    {
+        try {
+            $session = $this->sessions->ownedBy($request->user(), $sessionId);
+        } catch (DomainException) {
+            abort(404);
+        }
+
+        $exercises = $session->exerciseAttempts()->with(['questionAttempts.images', 'questionAttempts.review'])->orderBy('id')->get()
+            ->map(fn ($exercise) => [
+                'exerciseId' => $exercise->exercise_id,
+                'status' => $exercise->status,
+                'questions' => $exercise->questionAttempts
+                    ->whereNotNull('submitted_at')
+                    ->sortBy('attempt_number')
+                    ->unique('question_id')
+                    // Photos et correction de l'enseignant comprises (AttemptPresenter).
+                    ->map(fn ($q) => AttemptPresenter::answer($q))->values()->all(),
+            ])->values()->all();
+
+        return response()->json(['success' => true, 'exercises' => $exercises]);
     }
 
     /**

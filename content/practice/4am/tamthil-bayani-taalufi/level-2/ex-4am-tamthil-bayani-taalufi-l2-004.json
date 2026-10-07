@@ -3,24 +3,73 @@
   "lessonCode": "tamthil-bayani-taalufi",
   "level": 2,
   "metadata": {
-    "title": "درجة لوحدتين",
-    "estimatedMinutes": 3,
+    "title": "معامل توجيه كسري",
+    "estimatedMinutes": 5,
     "tags": [
+      "قراءة بيانية",
       "معامل التوجيه"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
-      "learningPoint": "4am_tamthil-bayani-taalufi_P2"
+      "learningPoint": "4am_tamthil-bayani-taalufi_P2",
+      "adaptedFrom": "ex-4am-tamthil-bayani-taalufi-l2-004"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ ، ويشمل النقطتين $(0 ; 3)$ و $(2 ; 4)$ ."
+    "content": "في المعلم المتعامد والمتجانس التالي، المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "K1": [
+          -4,
+          1
+        ],
+        "H1": [
+          4,
+          5
+        ]
+      },
+      "lines": [
+        {
+          "through": [
+            "K1",
+            "H1"
+          ],
+          "name": "(D)",
+          "tone": "indigo",
+          "extend": [
+            0.04,
+            0.04
+          ]
+        }
+      ],
+      "grid": true,
+      "axes": true,
+      "labels": {
+        "O": "sw"
+      },
+      "hidden": [
+        "H1",
+        "K1"
+      ],
+      "ariaLabel": "معلم متعامد ومتجانس على ورقة مرصوفة: المستقيم (D) يصعد ببطء ويقطع محور التراتيب فوق المبدأ O"
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "معامل التوجيه $a$ للمستقيم:",
+      "step": "01",
+      "statement": "بقراءة بيانية، عيّن معامل التوجيه $a$ للمستقيم $(D)$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-taalufi_P2",
@@ -28,34 +77,51 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
       "expectedAnswer": "1/2",
+      "misconceptionSignatures": [
+        {
+          "value": "2",
+          "id": "MISC-BAYANI-MUAMIL-MAQLUB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معامل التوجيه $a$ هو ما يصعده المستقيم (أو ينزله) عندما نتقدّم وحدة واحدة إلى اليمين."
+          "content": "اختر نقطتين من المستقيم تقعان على عقدتين من الشبكة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "خذ نقطتين من المستقيم: كم تغيّر الترتيب؟ وكم تغيّرت الفاصلة؟"
+          "content": "من النقطة الأولى إلى الثانية: كم تزيد الفاصلة؟ وكم يصعد المستقيم أو ينزل؟"
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اقسم تغيّر الترتيب على تغيّر الفاصلة، بالإشارة: ينزل ⇒ $a < 0$ ."
+          "content": "معامل التوجيه هو تغيّر الترتيب مقسوما على تغيّر الفاصلة، ويكون سالبا إذا نزل المستقيم."
         }
       ],
       "feedback": {
-        "correct": "من $(0 ; 3)$ إلى $(2 ; 4)$ : $a = \\dfrac{4 - (3)}{2 - (0)} = 0{,}5$ .",
-        "incorrect": "اقسم تغيّر الترتيب على تغيّر الفاصلة، لا العكس، وانتبه إلى الإشارة."
-      }
+        "correct": "$a = 0{,}5$ .",
+        "incorrect": "اقسم تغيّر الترتيب على تغيّر الفاصلة (وليس العكس)، وانتبه إلى الإشارة إذا نزل المستقيم."
+      },
+      "solution": {
+        "lines": [
+          "النقطتان $(0 ; 3)$ و $(2 ; 4)$ من المستقيم $(D)$ .",
+          "عندما نتقدّم $2$ وحدات إلى اليمين، يصعد المستقيم بـ $1$ وحدة.",
+          "إذن معامل التوجيه هو: $a = \\dfrac{1}{2} = 0{,}5$ ."
+        ],
+        "result": "a = 0{,}5"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "بقراءة بيانية، عبارة الدالة هي:",
+      "step": "02",
+      "statement": "بقراءة بيانية، عيّن الترتيب عند المبدأ $b$ للدالة التي يمثّلها المستقيم $(D)$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-taalufi_P2",
@@ -63,47 +129,40 @@
         }
       ],
       "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$f(x) = 0{,}5x + 3$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$f(x) = 2x + 3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-MUAMIL-MAQLUB"
-        },
-        {
-          "id": "C",
-          "content": "$f(x) = 3x + 0{,}5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAALUFI-A-B-MAQLUB"
+          "value": "-6",
+          "id": "MISC-BAYANI-B-FASILA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقرأ $b$ أولًا: أين يقطع المستقيم محور التراتيب؟"
+          "content": "الترتيب عند المبدأ هو ترتيب النقطة التي يقطع فيها المستقيم محور التراتيب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ثم اقرأ $a$ : كم يصعد المستقيم (أو ينزل) لكل وحدة إلى اليمين؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق: كل نقطة معطاة ترتيبها صورة فاصلتها."
+          "content": "ابحث على المستقيم عن النقطة التي فاصلتها 0، ثم اقرأ ترتيبها على محور التراتيب."
         }
       ],
       "feedback": {
-        "correct": "$b = 3$ و $a = 0{,}5$ : $f(x) = 0{,}5x + 3$ .",
-        "incorrect": "$b$ يُقرأ على محور التراتيب، و $a$ تغيّر الترتيب لوحدة واحدة إلى اليمين."
-      }
+        "correct": "المستقيم $(D)$ يقطع محور التراتيب في النقطة $(0 ; 3)$ .",
+        "incorrect": "اقرأ ترتيب نقطة تقاطع المستقيم مع محور التراتيب، لا فاصلة تقاطعه مع محور الفواصل."
+      },
+      "solution": {
+        "lines": [
+          "المستقيم $(D)$ يقطع محور التراتيب في النقطة $(0 ; 3)$ .",
+          "إذن الترتيب عند المبدأ هو: $b = 3$ ."
+        ],
+        "result": "b = 3"
+      },
+      "timeSeconds": 75
     }
   ]
 }

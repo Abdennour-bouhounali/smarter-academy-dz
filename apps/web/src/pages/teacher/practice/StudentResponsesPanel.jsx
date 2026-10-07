@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, Lightbulb, Users } from 'lucide-react';
 import { AuthContext } from '../../../context/AuthContext';
@@ -6,7 +6,15 @@ import RichText from '../../../features/practice/RichText';
 import { TONE_STYLE, ToneIcon } from '../../../features/practice/toneStyle';
 import { outcomeTone } from '../../../features/practice/questionHistory';
 import { formatStudentAnswer } from '../../../features/practice/teacherBank';
+import RedactionText from '../../../features/practice/exam/math/RedactionText';
+import StepTimer from '../../../features/practice/exam/StepTimer';
+import Medal from '../../../features/practice/medals/Medal';
+import { medalFor } from '../../../features/practice/exam/medals';
+import { stepSeconds } from '../../../features/practice/exam/examSheet';
 import { fetchExerciseStudents, fetchStudentResponses } from '../../../services/teacherPracticeService';
+import { fetchTeacherAnswerImage } from '../../../services/teacher/answerReviewService';
+import AnswerImageGallery from '../../../features/practice/exam/images/AnswerImageGallery';
+import ReviewStatus from '../../../features/practice/exam/images/ReviewStatus';
 
 const fullName = (s) => [s.firstName, s.lastName].filter(Boolean).join(' ') || `#${s.id}`;
 
@@ -25,6 +33,8 @@ export default function StudentResponsesPanel({ lessonCode, exerciseId, question
   const [error, setError] = useState(false);
   const [openId, setOpenId] = useState(null);
   const [detail, setDetail] = useState({});
+  // Les photos de copie, chargées avec le jeton de l'enseignant.
+  const imageLoader = useCallback((id, annotated) => fetchTeacherAnswerImage(token, id, annotated), [token]);
 
   useEffect(() => {
     let cancelled = false;
@@ -114,8 +124,36 @@ export default function StudentResponsesPanel({ lessonCode, exerciseId, question
                                   <span className={`mt-0.5 inline-flex shrink-0 rounded-full p-0.5 ${TONE_STYLE[tone]?.chip ?? 'bg-slate-100 text-slate-600'}`}>
                                     <ToneIcon tone={tone} className="h-3.5 w-3.5" />
                                   </span>
-                                  <span className="min-w-0 flex-1 break-words text-slate-800" dir="auto">
-                                    <RichText>{formatStudentAnswer(question, a.answer, a.normalized)}</RichText>
+                                  <span className="min-w-0 flex-1 space-y-1 break-words text-slate-800">
+                                    {/* Tout ce que l'élève a ÉCRIT (enregistré en base, 2026-10-06) :
+                                        la réponse (formule), la démonstration « بيّن أن » ligne par
+                                        ligne et sa note, les « مراحل الحساب », le temps mis. */}
+                                    {typeof a.answer?.text === 'string' && a.answer.text.trim()
+                                      ? <RedactionText text={a.answer.text} className="text-sm" />
+                                      : <span className="block" dir="auto"><RichText>{formatStudentAnswer(question, a.answer, a.normalized)}</RichText></span>}
+                                    {a.answer?.selfMark && (
+                                      <span className="block text-[11px] text-slate-600" data-response-selfmark>
+                                        {t(`practice.exam.selfCheck.recap.${a.answer.selfMark}`, { ns: 'student' })}
+                                      </span>
+                                    )}
+                                    {typeof a.answer?.work === 'string' && a.answer.work.trim() && (
+                                      <span className="block rounded bg-white px-2 py-1 ring-1 ring-slate-200" data-response-work>
+                                        <span className="block text-[11px] font-bold text-slate-600">{t('practice.exam.work.label', { ns: 'student' })}</span>
+                                        <RedactionText text={a.answer.work} className="text-sm" />
+                                      </span>
+                                    )}
+                                    {(Number.isFinite(a.answer?.seconds) || medalFor({ outcome: a.outcome, answerType: question?.answerType, hintsUsed: a.hintsUsed, seconds: a.answer?.seconds ?? null, limit: question ? stepSeconds(question) : null, evaluatedBy: a.evaluatedBy })) && (
+                                      <span className="flex flex-wrap items-center gap-1.5" data-response-meta>
+                                        {Number.isFinite(a.answer?.seconds) && question && <StepTimer limit={stepSeconds(question)} stoppedSeconds={a.answer.seconds} />}
+                                        {(() => {
+                                          const m = medalFor({ outcome: a.outcome, answerType: question?.answerType, hintsUsed: a.hintsUsed, seconds: a.answer?.seconds ?? null, limit: question ? stepSeconds(question) : null, evaluatedBy: a.evaluatedBy });
+                                          return m ? <Medal medal={m} size={18} title={t(`practice.medals.name.${m}`, { ns: 'student' })} /> : null;
+                                        })()}
+                                      </span>
+                                    )}
+                                    {/* Photos de la copie et correction (« تصحيح الأستاذ », 2026-10-06). */}
+                                    {a.images?.length > 0 && <AnswerImageGallery images={a.images} loader={imageLoader} size="sm" />}
+                                    <ReviewStatus review={a.review} pending={a.normalized === 'review:pending'} />
                                   </span>
                                   {a.hintsUsed > 0 && (
                                     <span className="inline-flex shrink-0 items-center gap-0.5 text-[11px] text-amber-700" title={t('practice.responses.hints', { count: a.hintsUsed })}>

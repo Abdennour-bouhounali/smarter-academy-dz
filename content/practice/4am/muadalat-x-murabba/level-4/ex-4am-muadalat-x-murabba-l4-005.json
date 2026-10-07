@@ -1,7 +1,10 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l4-005",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 4,
   "metadata": {
-    "title": "تدريب — أبرّر",
-    "estimatedMinutes": 3,
+    "title": "المعادلة x² + 1 = 0",
+    "estimatedMinutes": 8,
     "tags": [
       "تبرير",
       "لا حل"
@@ -10,16 +13,24 @@
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_muadalat-x-murabba_P1",
-      "modelledOn": "know-3"
+      "modelledOn": "know-3",
+      "adaptedFrom": "ex-4am-muadalat-x-murabba-l4-005"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "نريد تبرير أن المعادلة $x^2 + 1 = 0$ لا تقبل أي حل."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "لماذا لا تقبل المعادلة $x^2 + 1 = 0$ أي حل؟",
+      "step": "01",
+      "statement": "بيّن أنه من أجل كل عدد $x$: $x^2 + 1 \\geq 1$",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P1",
@@ -27,55 +38,164 @@
         }
       ],
       "cognitiveDemand": "reason",
-      "answerType": "choice",
-      "choices": [
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
         {
-          "id": "A",
-          "content": "لأن 1 ليس مربع أي عدد",
-          "isCorrect": false
+          "id": "h1",
+          "type": "look",
+          "content": "ما إشارة $x^2$ من أجل كل عدد $x$؟"
         },
         {
-          "id": "B",
-          "content": "لأن $x^2 \\geq 0$ فإن $x^2 + 1 \\geq 1$",
-          "isCorrect": true
-        },
+          "id": "h2",
+          "type": "direction",
+          "content": "أضف 1 إلى طرفي المتباينة."
+        }
+      ],
+      "feedback": {
+        "correct": "تبريرك مطابق للحل النموذجي.",
+        "incorrect": "قارن تبريرك سطرًا بسطر بالحل النموذجي."
+      },
+      "solution": {
+        "lines": [
+          "من أجل كل عدد $x$، مربعه موجب أو معدوم: $x^2 \\geq 0$",
+          "بإضافة 1 إلى الطرفين:"
+        ],
+        "result": "x^2 + 1 \\geq 1"
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج أن المعادلة $x^2 + 1 = 0$ لا تقبل أي حل.",
+      "learningPoints": [
         {
-          "id": "C",
-          "content": "لأن $(-1)^2 = -1$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-SALIB"
-        },
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
         {
-          "id": "D",
-          "content": "لأن $x^2 + 1 = 0$ يعني $x = -\\dfrac{1}{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-QISMA"
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل نتيجة السؤال 01: هل يمكن أن يكون $x^2 + 1$ معدومًا؟"
+        }
+      ],
+      "feedback": {
+        "correct": "تبريرك مطابق للحل النموذجي.",
+        "incorrect": "قارن تبريرك سطرًا بسطر بالحل النموذجي."
+      },
+      "solution": {
+        "lines": [
+          "من أجل كل عدد $x$: $x^2 + 1 \\geq 1$، أي $x^2 + 1 \\neq 0$",
+          "إذن لا يوجد أي عدد $x$ يحقق $x^2 + 1 = 0$:",
+          "المعادلة $x^2 + 1 = 0$ لا تقبل أي حل."
+        ],
+        "result": "x^2 + 1 \\geq 1 > 0"
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "lead": "حل المعادلة $x^2 + 1 = 10$.",
+      "statement": "الحل السالب:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "-3",
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-HALL-WAHID"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما أصغر قيمة ممكنة لـ $x^2$؟"
+          "content": "اعزل $x^2$ في طرف."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "إذا أضفنا 1 إلى عدد موجب، ماذا نحصل؟"
+          "content": "اكتب الطرف الثاني على شكل مربع عدد موجب."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "هل يمكن أن يساوي هذا المجموع 0؟"
+          "content": "للمعادلة حلان متعاكسان."
         }
       ],
       "feedback": {
-        "correct": "$x^2$ موجب دائما، فـ $x^2 + 1$ لا يقل عن 1 ولا يساوي 0.",
-        "incorrect": "$1 = 1^2$، و $(-1)^2 = 1$."
-      }
+        "correct": "نعم، هذا هو الحل السالب: للمعادلة حلان متعاكسان.",
+        "incorrect": "الحلان عددان متعاكسان مربع كل منهما هو الطرف الثاني بعد عزل $x^2$: خذ السالب منهما."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 + 1 = 10$ يعني $x^2 = 9$",
+          "أي $x^2 = 3^2$",
+          "بالتالي $x = 3$ أو $x = -3$"
+        ],
+        "result": "x = -3 \\quad ; \\quad x = 3"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "الحل الموجب:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اعزل $x^2$ في طرف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب الطرف الثاني على شكل مربع عدد موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "للمعادلة حلان متعاكسان."
+        }
+      ],
+      "feedback": {
+        "correct": "نعم، وهو معاكس الحل السالب.",
+        "incorrect": "الحل الموجب هو معاكس الحل السالب: مربعه هو الطرف الثاني بعد عزل $x^2$."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 + 1 = 10$ يعني $x^2 = 9$",
+          "أي $x^2 = 3^2$",
+          "بالتالي $x = 3$ أو $x = -3$"
+        ],
+        "result": "x = -3 \\quad ; \\quad x = 3"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l4-005",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 4
+  ]
 }

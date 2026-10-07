@@ -3,113 +3,317 @@
   "lessonCode": "wadiya-idmajiya-taalufiya",
   "level": 3,
   "metadata": {
-    "title": "كراء دراجة: نقطة التقاطع",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2014 — محل لكيّ الملابس",
+    "estimatedMinutes": 10,
     "tags": [
+      "جدول",
       "مفاضلة",
-      "تفسير بياني"
+      "متراجحة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1",
+      "modelledOn": "BEM 2014 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2014",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "كراء دراجة على الشاطئ: الصيغة أ 80 DA للساعة، والصيغة ب رسم ثابت 200 DA ثم 40 DA للساعة."
+    "content": "يقترح محل لكيّ الملابس بالمدية على زبائنه عرضين:\n- العرض الأول: 60DA للقطعة الواحدة.\n- العرض الثاني: 40DA للقطعة الواحدة مع اشتراك شهري قدره 500DA .\nنسمّي $x$ عدد القطع في الشهر.",
+    "table": {
+      "head": [
+        "عدد القطع",
+        "10",
+        "25",
+        "40"
+      ],
+      "rows": [
+        [
+          "المبلغ بالعرض الأول (DA)",
+          "…",
+          "…",
+          "…"
+        ],
+        [
+          "المبلغ بالعرض الثاني (DA)",
+          "…",
+          "…",
+          "…"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "إحداثيتا نقطة تقاطع المستقيمين (عدد الساعات ؛ الثمن):",
+      "step": "01",
+      "lead": "انقل وأكمل الجدول.",
+      "statement": "العرض الأول، 10 قطع:",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y)",
-      "expectedAnswer": {
-        "x": "5",
-        "y": "400"
-      },
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "600",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$80x = 40x + 200$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$40x = 200$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم الثمن."
+          "content": "العرض الأول: 60DA للقطعة."
         }
       ],
       "feedback": {
-        "correct": "$x = 5$ والثمن 400 DA : $(5 ; 400)$.",
-        "incorrect": "الفاصلة عدد الساعات والترتيب الثمن."
+        "correct": "$f(10)$ .",
+        "incorrect": "اضرب عدد القطع في ثمن القطعة."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "$f(x) = 60x$ و $g(x) = 40x + 500$",
+          "$f(10) = 600$ ، $f(25) = 1500$ ، $f(40) = 2400$",
+          "$g(10) = 900$ ، $g(25) = 1500$ ، $g(40) = 2100$"
+        ]
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "لـ 3 ساعات:",
+      "step": "01",
+      "statement": "العرض الأول، 25 قطعة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "1500",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العرض الأول: 60DA للقطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(25)$ .",
+        "incorrect": "اضرب عدد القطع في ثمن القطعة."
+      },
+      "solution": {
+        "lines": [
+          "$f(x) = 60x$ و $g(x) = 40x + 500$",
+          "$f(10) = 600$ ، $f(25) = 1500$ ، $f(40) = 2400$",
+          "$g(10) = 900$ ، $g(25) = 1500$ ، $g(40) = 2100$"
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "01",
+      "statement": "العرض الأول، 40 قطعة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "2400",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العرض الأول: 60DA للقطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(40)$ .",
+        "incorrect": "اضرب عدد القطع في ثمن القطعة."
+      },
+      "solution": {
+        "lines": [
+          "$f(x) = 60x$ و $g(x) = 40x + 500$",
+          "$f(10) = 600$ ، $f(25) = 1500$ ، $f(40) = 2400$",
+          "$g(10) = 900$ ، $g(25) = 1500$ ، $g(40) = 2100$"
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "01",
+      "statement": "العرض الثاني، 10 قطع:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "900",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "400"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العرض الثاني: 40DA للقطعة، ولا تنس الاشتراك."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(10)$ .",
+        "incorrect": "اضرب عدد القطع في ثمن القطعة ثم أضف الاشتراك."
+      },
+      "solution": {
+        "lines": [
+          "$f(x) = 60x$ و $g(x) = 40x + 500$",
+          "$f(10) = 600$ ، $f(25) = 1500$ ، $f(40) = 2400$",
+          "$g(10) = 900$ ، $g(25) = 1500$ ، $g(40) = 2100$"
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q5",
+      "step": "01",
+      "statement": "العرض الثاني، 25 قطعة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "1500",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "1000"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العرض الثاني: 40DA للقطعة، ولا تنس الاشتراك."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(25)$ .",
+        "incorrect": "اضرب عدد القطع في ثمن القطعة ثم أضف الاشتراك."
+      },
+      "solution": {
+        "lines": [
+          "$f(x) = 60x$ و $g(x) = 40x + 500$",
+          "$f(10) = 600$ ، $f(25) = 1500$ ، $f(40) = 2400$",
+          "$g(10) = 900$ ، $g(25) = 1500$ ، $g(40) = 2100$"
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q6",
+      "step": "01",
+      "statement": "العرض الثاني، 40 قطعة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "2100",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "1600"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العرض الثاني: 40DA للقطعة، ولا تنس الاشتراك."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(40)$ .",
+        "incorrect": "اضرب عدد القطع في ثمن القطعة ثم أضف الاشتراك."
+      },
+      "solution": {
+        "lines": [
+          "$f(x) = 60x$ و $g(x) = 40x + 500$",
+          "$f(10) = 600$ ، $f(25) = 1500$ ، $f(40) = 2400$",
+          "$g(10) = 900$ ، $g(25) = 1500$ ، $g(40) = 2100$"
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q7",
+      "step": "02",
+      "statement": "ابتداء من كم قطعة في الشهر يصبح العرض الثاني أقل تكلفة؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "الصيغة أ أرخص: 240 DA",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "الصيغة ب أرخص: 320 DA",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
-        },
-        {
-          "id": "C",
-          "content": "الثمن نفسه",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAFSIR"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: عدد القطع",
+      "expectedAnswer": "26",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "3 أصغر من 5."
+          "content": "حلّ المتراجحة $40x + 500 < 60x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب الثمنين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قبل التقاطع."
+          "content": "خذ أصغر عدد طبيعي يحقّقها."
         }
       ],
       "feedback": {
-        "correct": "$80 \\times 3 = 240 < 40 \\times 3 + 200 = 320$.",
-        "incorrect": "قبل 5 ساعات الصيغة أ أرخص."
+        "correct": "$500 < 20x$ .",
+        "incorrect": "من أجل الحدّ نفسه يتساوى المبلغان (انظر الجدول): خذ العدد الطبيعي الموالي."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "$g(x) < f(x)$",
+          "$40x + 500 < 60x$",
+          "$500 < 20x$",
+          "$x > 25$",
+          "إذن ابتداء من 26 قطعة في الشهر يصبح العرض الثاني أقل تكلفة."
+        ],
+        "result": "26"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

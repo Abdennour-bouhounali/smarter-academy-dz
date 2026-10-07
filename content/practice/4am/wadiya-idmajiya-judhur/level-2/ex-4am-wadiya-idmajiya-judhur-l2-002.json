@@ -1,123 +1,122 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-002",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — خزان قاعدته مربّعة",
-    "estimatedMinutes": 3,
+    "title": "خزان قاعدته مربعة",
+    "estimatedMinutes": 6,
     "tags": [
-      "وضعية إدماجية",
-      "حجم",
-      "جذر"
+      "المعادلة x² = a",
+      "a√b"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
       "modelledOn": "situation"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "خزان ماء على شكل متوازي مستطيلات قاعدته مربّعة وارتفاعه $2\\,m$."
+    "content": "خزان ماء على شكل متوازي مستطيلات قاعدته مربعة الشكل و ارتفاعه $2m$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "إذا كانت سعته $18\\,m^3$، فما طول ضلع قاعدته (بالمتر)؟",
+      "step": "01",
+      "statement": "إذا كانت سعة الخزان $18m^3$ ، احسب طول ضلع قاعدته.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (بالمتر)",
+      "answerFormat": "عدد طبيعي: الطول بالمتر (m)",
       "expectedAnswer": "3",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "السعة = مساحة القاعدة × الارتفاع."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب مساحة القاعدة أولًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الضلع هو العدد الموجب الذي مربعه مساحة القاعدة."
-        }
-      ],
-      "feedback": {
-        "correct": "مساحة القاعدة $18 \\div 2 = 9\\,m^2$، والضلع $\\sqrt{9} = 3\\,m$.",
-        "incorrect": "اقسم السعة على الارتفاع، ثم خذ الجذر التربيعي."
-      },
       "misconceptionSignatures": [
         {
-          "value": "4.5",
+          "value": "9",
           "id": "MISC-JIDHR-NISF"
         }
       ],
-      "cognitiveDemand": "apply"
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "السعة = مساحة القاعدة × الارتفاع: احسب مساحة القاعدة أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان $c$ طول الضلع فإن $c^2$ هو مساحة القاعدة."
+        }
+      ],
+      "feedback": {
+        "correct": "مساحة القاعدة $18 \\div 2 = 9m^2$ ، و $c^2 = 9$ مع $c > 0$ يعطي $c = 3m$ .",
+        "incorrect": "اقسم السعة على الارتفاع لتجد $c^2$ ، ثم خذ الحل الموجب."
+      },
+      "solution": {
+        "lines": [
+          "مساحة القاعدة: $18 \\div 2 = 9m^2$",
+          "$c^2 = 9$ و $c > 0$"
+        ],
+        "result": "c = 3m"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "إذا كانت سعته $24\\,m^3$، فالقيمة المضبوطة لطول ضلع قاعدته (بالمتر) هي ...",
+      "step": "02",
+      "statement": "إذا كانت سعة الخزان $24m^3$ ، اكتب طول ضلع قاعدته على الشكل $a\\sqrt{3}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$2\\sqrt{6}$",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$6$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-NISF"
-        },
-        {
-          "id": "C",
-          "content": "$2\\sqrt{3}$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$4\\sqrt{3}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+          "value": "4",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب مساحة القاعدة أولًا."
+          "content": "احسب مساحة القاعدة كما في السؤال 01."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الضلع هو الجذر التربيعي لمساحة القاعدة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بسّط الجذر بإخراج أكبر مربع تام."
+          "content": "حل المعادلة $c^2 = 12$ ثم اكتب $\\sqrt{12}$ على الشكل $a\\sqrt{3}$ ."
         }
       ],
       "feedback": {
-        "correct": "مساحة القاعدة $24 \\div 2 = 12$، والضلع $\\sqrt{12} = \\sqrt{4 \\times 3} = 2\\sqrt{3}$.",
-        "incorrect": "لا تنس القسمة على الارتفاع قبل أخذ الجذر."
+        "correct": "$c^2 = 12$ ، إذن $c = \\sqrt{12} = 2\\sqrt{3}\\,m$ .",
+        "incorrect": "اكتب $12 = 4 \\times 3$ و أخرج جذر المربع التام."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "مساحة القاعدة: $24 \\div 2 = 12m^2$",
+          "$c^2 = 12$ و $c > 0$ يعني $c = \\sqrt{12} = \\sqrt{4 \\times 3}$"
+        ],
+        "result": "c = 2\\sqrt{3}\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l2-002",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 2
+  ]
 }

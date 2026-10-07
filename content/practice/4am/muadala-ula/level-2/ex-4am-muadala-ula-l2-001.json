@@ -3,108 +3,134 @@
   "lessonCode": "muadala-ula",
   "level": 2,
   "metadata": {
-    "title": "طرائق — نضيف 5 إلى كل طرف",
+    "title": "نضيف العدد نفسه إلى الطرفين",
     "estimatedMinutes": 4,
     "tags": [
-      "ax + b = c"
+      "ax + b = c",
+      "طرائق"
     ],
     "source": {
       "type": "textbook",
       "elementId": "method-equation",
       "page": 47,
       "section": "طرائق"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 47): حل المعادلة $2x - 5 = 8$ ."
+    "content": "نعتبر المعادلة:",
+    "formulas": [
+      "2x - 5 = 8"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نضيف $5$ إلى الطرفين في المعادلة $2x - 5 = 8$ ، فنحصل على:",
+      "step": "01",
+      "statement": "أضف العدد $5$ إلى طرفي المعادلة، ثم اكتبها على الشكل $2x = b$ .",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "تُكتب المعادلة على الشكل $2x = b$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "13",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$2x = 8$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
-        },
-        {
-          "id": "B",
-          "content": "$2x = 13$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$2x = 3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+          "value": "3",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العملية تُجرى على الطرفين معًا."
+          "content": "إضافة 5 إلى الطرف الأول تحذف $-5$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب كل طرف بعد العملية، ثم بسّطه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المعادلة الناتجة لها الحل نفسه الذي للمعادلة الأولى: يمكنك التحقّق بتعويض قيمة لـ $x$."
+          "content": "أضف 5 إلى الطرف الثاني أيضًا."
         }
       ],
       "feedback": {
-        "correct": "نضيف $5$ إلى الطرفين: $2x = 13$ — معادلة لها الحل نفسه.",
-        "incorrect": "العملية نفسها تُجرى على الطرفين، وبالإشارة نفسها."
-      }
+        "correct": "$2x = 13$ .",
+        "incorrect": "ما يُضاف إلى طرف يُضاف إلى الطرف الآخر: لا تغيّر طرفًا واحدًا فقط."
+      },
+      "solution": {
+        "lines": [
+          "$2x - 5 + 5 = 8 + 5$"
+        ],
+        "result": "2x = 13"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "حلّ المعادلة $2x - 5 = 8$ .",
+      "step": "02",
+      "statement": "استنتج حل المعادلة.",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
       "expectedAnswer": "13/2",
+      "misconceptionSignatures": [
+        {
+          "value": "2/13",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "value": "11",
+          "id": "MISC-MUADALA-TARH-MUAMIL"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+          "content": "المعادلة من الشكل $ax = b$ : عيّن معامل $x$ والعدد الذي في الطرف الآخر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
+          "content": "اقسم الطرفين على معامل $x$ مع إشارته."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس، ثم اختزل."
         }
       ],
       "feedback": {
-        "correct": "$2x - 5 = 8$ : نصل إلى $2x = 13$ ، ومنه $x = \\dfrac{13}{2}$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "$x = 6{,}5$ .",
+        "incorrect": "الحل هو حاصل قسمة العدد الذي في الطرف الآخر على معامل $x$ بإشارته. تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$2x = 13$",
+          "$x = \\dfrac{13}{2}$"
+        ],
+        "result": "x = 6{,}5"
+      },
+      "timeSeconds": 90
     }
   ]
 }

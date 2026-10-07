@@ -1,120 +1,152 @@
 {
+  "id": "ex-4am-nashr-tabsit-l1-008",
+  "lessonCode": "nashr-tabsit",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — حدود متشابهة",
-    "estimatedMinutes": 3,
+    "title": "حدود متشابهة",
+    "estimatedMinutes": 5,
     "tags": [
-      "تبسيط",
-      "حدود متشابهة"
+      "حدود متشابهة",
+      "تبسيط"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_nashr-tabsit_P4",
-      "modelledOn": "know-1"
+      "modelledOn": "know-1",
+      "adaptedFrom": "ex-4am-nashr-tabsit-l1-008"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "الحدود المتشابهة هي التي لها نفس قوة $x$."
+    "content": "لتكن العبارة $E$ حيث:",
+    "formulas": [
+      "E = 5x + 3x - 4x^2 + 4x"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$5x + 3x = \\ldots$",
+      "step": "01",
+      "lead": "بسّط العبارة $E$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P4",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$8x$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$8x^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
-        },
-        {
-          "id": "C",
-          "content": "$15x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $ax^2 + bx$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "-4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الحدّان متشابهان."
+          "content": "حدّد الحدود المتشابهة: الحدود التي لها نفس قوة $x$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "نجمع المعاملين."
+          "content": "انتبه إلى إشارة كل حد عند كتابة الجداءات."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "لا نضرب المعاملين ولا نغيّر قوة $x$."
+          "content": "اجمع الحدود المتشابهة: حدود $x^2$ معًا، ثم حدود $x$، ثم الأعداد."
         }
       ],
       "feedback": {
-        "correct": "$5x + 3x = (5 + 3)x = 8x$.",
-        "incorrect": "نجمع المعاملين ونترك $x$ كما هو."
-      }
+        "correct": "$E = -4x^2 + 12x$ إذن $a = -4$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$E = -4x^2 + (5 + 3 + 4)x$"
+        ],
+        "result": "E = -4x^2 + 12x"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "هل $4x^2$ و $4x$ حدّان متشابهان؟",
+      "step": "01",
+      "statement": "العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P4",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "لا، قوّتا $x$ مختلفتان",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "نعم، لهما نفس المعامل",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $ax^2 + bx$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "12",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قارن قوّة $x$ في الحدّين."
+          "content": "اجمع معاملات حدود $x$ بإشاراتها بعد النشر."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = -4x^2 + 12x$ إذن $b = 12$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $b$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$E = -4x^2 + 12x$"
+        ],
+        "result": "b = 12"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب قيمة العبارة $E$ من أجل $x = 2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد المعطى في الشكل المبسّط الذي وجدته."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المعامل وحده لا يكفي."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حدّان متشابهان لهما نفس قوّة $x$."
+          "content": "احسب القوى أولًا، ثم الجداءات، ثم الجمع والطرح."
         }
       ],
       "feedback": {
-        "correct": "$x^2$ و $x$ قوّتان مختلفتان: الحدّان غير متشابهين، و $4x^2 + 4x$ لا تُبسَّط.",
-        "incorrect": "المهمّ قوة $x$، لا المعامل."
-      }
+        "correct": "$E = 8$.",
+        "incorrect": "عوّض $x$ في كل حد، واحترم أولويات العمليات والإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$E = -4 \\times 2^2 + 12 \\times 2$",
+          "$E = -16 + 24$"
+        ],
+        "result": "E = 8"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-nashr-tabsit-l1-008",
-  "lessonCode": "nashr-tabsit",
-  "level": 1
+  ]
 }

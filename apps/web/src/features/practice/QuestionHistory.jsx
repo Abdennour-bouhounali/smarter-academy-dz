@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 import RichText from './RichText';
 import { ToneIcon, TONE_STYLE } from './toneStyle';
+import RedactionText from './exam/math/RedactionText';
 
 /**
  * CE QUE L'ÉLÈVE A DÉJÀ FAIT dans cet exercice, juste au-dessus de la
@@ -31,6 +32,14 @@ export function StudentAnswer({ answer }) {
   const { t } = useTranslation('student');
   if (!answer) return <span className="text-slate-400">{t('practice.history.noAnswer')}</span>;
   if (answer.kind === 'rich') return <RichText className="font-semibold text-slate-900">{answer.text}</RichText>;
+  if (answer.kind === 'self') {
+    return (
+      <span className="min-w-0">
+        <RedactionText text={answer.text} className="font-semibold text-slate-900" />
+        {answer.mark && <span className="ms-2 text-xs text-slate-600">· {t(`practice.exam.selfCheck.recap.${answer.mark}`)}</span>}
+      </span>
+    );
+  }
 
   return (
     <bdi dir="ltr" className="font-mono font-bold text-slate-900 tabular-nums break-all">{answer.text}</bdi>

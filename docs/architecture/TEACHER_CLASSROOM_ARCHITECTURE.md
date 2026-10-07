@@ -175,6 +175,17 @@ interventions about them and suggest a lesson or practice. **The student's
 email is never shared.** Leaving the class ends the teacher's per-student
 reading.
 
+Since 2026-10-06, the teacher also reads the PHOTOS of handwritten work that
+students attach to exam steps (every lesson whose practice is in BEM format —
+`content/practice/exam-style.json`), and may correct
+and annotate them in « تصحيح الإجابات ». These are photos of minors:
+- private disk, metadata stripped, kept 12 months;
+- served only to the student and to a teacher of their ACTIVE class;
+- leaving the class ends the teacher's access (404).
+
+The contract is in `EXERCISE_CONTRACT.md` § « Image answers and teacher
+validation ».
+
 **Consent is a gesture, dated and versioned.**
 
 - `POST /student/classrooms/join` requires `consent: true`, otherwise 422
@@ -1161,7 +1172,10 @@ GET  /teacher/classrooms/{id}/students/{studentId}/learning-points/{code}/explan
 GET  /teacher/classrooms/{id}/attention                            (signals + recent changes; progress.class)
 GET|POST /teacher/classrooms/{id}/interventions   GET|PATCH /teacher/classrooms/{id}/interventions/{interventionId}
 GET|PATCH /teacher/classrooms/{id}/daily-challenge/settings   GET …/daily-challenge/results?date=   GET …/daily-challenge/display?date=   (DAILY_CHALLENGE.md)
-GET  /teacher/practice/{lessonCode}/exercises/{exerciseId}/students[/{studentId}]   (« إجابات تلاميذي »: who did it, then one student's answers — §8b)
+GET  /teacher/practice/{lessonCode}/exercises/{exerciseId}/students[/{studentId}]   (« إجابات تلاميذي »: who did it, then one student's answers — §8b; with photos and review)
+GET  /teacher/reviews[?classroom=]   GET /teacher/reviews/count   POST /teacher/reviews/{id} {verdict: correct|incorrect, comment?}
+GET  /teacher/answer-images/{uuid}[?annotated=1]   POST /teacher/answer-images/{uuid}/annotation (multipart image)
+     (« تصحيح الإجابات », 2026-10-06 — EXERCISE_CONTRACT.md § Image answers; scope = rosterOf, foreign classroom 403, 409 already_reviewed)
 
 # admin  (can:admin)
 GET  /admin/teachers[?ambassador=1]  GET /admin/teachers/{id}  PATCH /admin/teachers/{id}/status  PATCH /admin/teachers/{id}/ambassador
@@ -1217,7 +1231,7 @@ Backend (`apps/api/tests/Feature`, MySQL, `php artisan test -c phpunit.local.xml
 `IndividualActivationCodeTest`, `PlanEntitlementResolverTest`, `PlanAdminTest`,
 `ClassroomLimitTest`, `ClassroomJoinCodeTest`, `ClassroomMembershipCapacityTest`,
 **`ClassroomJoinLinkTest`** (token randomness and scope, public preview, idempotent re-join, code + link = one row, closed joining keeps members, rotation, owner-only management, pending join through registration and e-mail verification), `ClassroomLessonVisibilityTest`, `StudyContextTest`,
-`ClassroomProgressTest`, **`TeacherPrivacyContractTest`** (no email in any /teacher response, left / removed / archived → 404 per student, cross-teacher IDOR, archived notes private, invitation preview), **`ClassroomConsentTest`**, **`ClassroomLearningLoopTest`** (detect → understand → intervene → measure on real evidence, the student's suggestion, the signal following the facts), **`LearningPointTransitionTest`**, **`Scale/ClassroomInsightScaleTest`** (constant queries for 5 and 40 students), `Unit/Classroom/{LearningTrendTest, AttentionSignalsTest}`, **`ClassroomLearningPointTest`** (class × LP counts and reasons, outsiders excluded, hidden lesson out of scope, drill-down order, explanation for members only), `TeacherCoverageAccessTest`, `AdminTeacherClassroomTest`,
+`ClassroomProgressTest`, **`AnswerImagesAndTeacherReviewTest`** (photos: re-encoding without metadata, limits, scope, teacher verdict → evidence + medal + notification, leaving the class), **`TeacherPrivacyContractTest`** (no email in any /teacher response, including the review queue, left / removed / archived → 404 per student, cross-teacher IDOR, archived notes private, invitation preview), **`ClassroomConsentTest`**, **`ClassroomLearningLoopTest`** (detect → understand → intervene → measure on real evidence, the student's suggestion, the signal following the facts), **`LearningPointTransitionTest`**, **`Scale/ClassroomInsightScaleTest`** (constant queries for 5 and 40 students), `Unit/Classroom/{LearningTrendTest, AttentionSignalsTest}`, **`ClassroomLearningPointTest`** (class × LP counts and reasons, outsiders excluded, hidden lesson out of scope, drill-down order, explanation for members only), `TeacherCoverageAccessTest`, `AdminTeacherClassroomTest`,
 **`TeacherLearningAccessTest`** (published and premium content open by role, hidden-for-class does not block the teacher, unpublished stays closed, progress / evidence / final-test writes refused and no row created, own notebook and Math Lab only),
 **`SeatPricingTest`** (tier boundaries 5/6/20/21/30, N × price, grid
 validation, versioning, the client's price is ignored, admin and teacher

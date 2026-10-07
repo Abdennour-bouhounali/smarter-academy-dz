@@ -3,23 +3,35 @@
   "lessonCode": "mafhum-taalufiya",
   "level": 4,
   "metadata": {
-    "title": "دالة ثابتة والعدد الذي صورته",
-    "estimatedMinutes": 3,
+    "title": "الدالة الثابتة h(x) = 4",
+    "estimatedMinutes": 6,
     "tags": [
-      "ثابتة"
+      "دالة ثابتة",
+      "حالة خاصة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation"
+      "reason": "practice_generation",
+      "adaptedFrom": "ex-4am-mafhum-taalufiya-l4-005"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "$h$ هي الدالة الثابتة $h(x) = 4$ ."
+    "content": "نعتبر الدالة $h$ المعرّفة كما يلي:",
+    "formulas": [
+      "h(x) = 4"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الأعداد التي صورتها 4 بالدالة $h$ :",
+      "step": "01",
+      "statement": "ما نوع الدالة $h$ ؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_mafhum-taalufiya_P4",
@@ -27,28 +39,29 @@
         }
       ],
       "difficulty": 4,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "كل الأعداد",
-          "isCorrect": true
+          "content": "دالة خطية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
         },
         {
           "id": "B",
-          "content": "العدد 0 فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAALUFI-SABIQ-QISMA"
+          "content": "دالة ثابتة",
+          "isCorrect": true
         },
         {
           "id": "C",
-          "content": "العدد 1 فقط",
+          "content": "دالة تآلفية ليست خطية وليست ثابتة",
           "isCorrect": false,
-          "misconceptionId": "MISC-TAALUFI-SABIQ-QISMA"
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
         },
         {
           "id": "D",
-          "content": "لا يوجد أي عدد",
+          "content": "ليست دالة تآلفية",
           "isCorrect": false,
           "misconceptionId": "MISC-TAALUFI-THABITA"
         }
@@ -57,23 +70,113 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "كل دالة من الشكل $ax + b$ تآلفية."
+          "content": "اكتب عبارة الدالة على الشكل $ax + b$ إن أمكن."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انظر إلى $b$ : إذا كان معدوما فالدالة خطية."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "وانظر إلى $a$ : إذا كان معدوما فالدالة ثابتة."
+          "content": "الدالة الخطية: $b = 0$ ؛ الدالة الثابتة: $a = 0$ ."
         }
       ],
       "feedback": {
-        "correct": "صورة كل عدد بالدالة الثابتة $h$ هي 4.",
-        "incorrect": "راجع كل اقتراح: واحد فقط صحيح."
-      }
+        "correct": "$a = 0$ : $h$ دالة ثابتة.",
+        "incorrect": "قارن المعاملين $a$ و $b$ بالعدد 0."
+      },
+      "solution": {
+        "lines": [
+          "$h(x) = 0 \\times x + 4$ من الشكل $ax + b$ حيث $a = 0$ و $b = 4$ .",
+          "إذن $h$ دالة تآلفية ثابتة."
+        ],
+        "result": "دالة ثابتة"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب $h(-3)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "value": "-12",
+          "id": "MISC-TAALUFI-KHATTIYA-KHALT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العبارة $h(x)$ لا تحتوي على $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$h(-3) = 4$ .",
+        "incorrect": "صورة أي عدد بالدالة $h$ هي الحدّ الثابت."
+      },
+      "solution": {
+        "lines": [
+          "$h(x) = 4$ مهما كان $x$ ، إذن $h(-3) = 4$ ."
+        ],
+        "result": "h(-3) = 4"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "هل يوجد عدد صورته 5 بالدالة $h$ ؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P4",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-SABIQ-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما هي الصور الممكنة بالدالة $h$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "كل الأعداد صورتها 4، و $4 \\neq 5$ .",
+        "incorrect": "صورة أي عدد بالدالة $h$ هي 4."
+      },
+      "solution": {
+        "lines": [
+          "من أجل كل عدد $x$ : $h(x) = 4$ .",
+          "المعادلة $h(x) = 5$ تعني $4 = 5$ ، وهذا مستحيل.",
+          "إذن لا يوجد عدد صورته 5 بالدالة $h$ ."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 60
     }
   ]
 }

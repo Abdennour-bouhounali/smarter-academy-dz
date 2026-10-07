@@ -1,10 +1,12 @@
 {
+  "id": "ex-4am-ikhtizal-kasr-l4-005",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 4,
   "metadata": {
-    "title": "سلسلة التفوق، تمرين 13 — 1631 و 932",
-    "estimatedMinutes": 6,
+    "title": "سلسلة التفوق، تمرين 13 — العددان 1631 و 932",
+    "estimatedMinutes": 9,
     "tags": [
-      "اختزال",
-      "حساب على الكسور"
+      "كسر غير قابل للاختزال"
     ],
     "source": {
       "type": "worksheet",
@@ -12,6 +14,12 @@
       "elementId": "ws01-ex-13",
       "section": "التمارين",
       "number": 13
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
@@ -20,13 +28,16 @@
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب القاسم المشترك الأكبر للعددين 1631 و 932.",
+      "step": "01",
+      "statement": "احسب القاسم المشترك الأكبر للعددين 1631 و 932 مع كتابة مراحل الحساب.",
       "learningPoints": [
         {
           "code": "4am_ikhtizal-kasr_P3",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "233",
@@ -34,26 +45,39 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "1631 = 932 × 1 + 699."
+          "content": "ابدأ بقسمة العدد الأكبر 1631 على 932: ما الباقي؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تابع: اقسم 932 على 699."
+          "content": "عوّض الزوج (1631 ; 932) بالزوج (932 ; الباقي)، ثم أعد القسمة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "توقّف عندما يصبح الباقي معدومًا."
+          "content": "توقّف عندما يصير الباقي معدومًا: القاسم المشترك الأكبر هو آخر باقٍ غير معدوم."
         }
       ],
       "feedback": {
-        "correct": "PGCD(1631 ; 932) = 233.",
-        "incorrect": "آخر باقٍ غير معدوم في خوارزمية إقليدس."
-      }
+        "correct": "آخر باقٍ غير معدوم في خوارزمية إقليدس هو 233.",
+        "incorrect": "أجرِ القسمات المتتابعة إلى أن تجد باقيًا معدومًا؛ القاسم المشترك الأكبر هو آخر باقٍ غير معدوم."
+      },
+      "solution": {
+        "lines": [
+          "باستعمال خوارزمية إقليدس:",
+          "$1631 = 932 \\times 1 + 699$",
+          "$932 = 699 \\times 1 + 233$",
+          "$699 = 233 \\times 3 + 0$",
+          "آخر باقٍ غير معدوم هو 233، إذن:"
+        ],
+        "result": "PGCD(1631 ; 932) = 233"
+      },
+      "work": "required",
+      "timeSeconds": 210
     },
     {
       "id": "q2",
+      "step": "02",
       "statement": "اكتب الكسر $\\dfrac{1631}{932}$ على شكل كسر غير قابل للاختزال.",
       "learningPoints": [
         {
@@ -61,6 +85,7 @@
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "كسر على الشكل a/b",
       "expectedAnswer": "7/4",
@@ -71,60 +96,66 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "اقسم على القاسم المشترك الأكبر."
+          "content": "استعمل نتيجة السؤال 01."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اقسم 1631 على 233."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم 932 على 233."
+          "content": "اقسم البسط والمقام على قاسمهما المشترك الأكبر."
         }
       ],
       "feedback": {
-        "correct": "1631/932 = 7/4.",
-        "incorrect": "اقسم البسط والمقام على 233."
-      }
+        "correct": "قسمنا البسط والمقام على 233: الكسر الناتج غير قابل للاختزال.",
+        "incorrect": "اقسم البسط والمقام على القاسم المشترك الأكبر الذي وجدته في السؤال 01.",
+        "notIrreducible": "الكسر صحيح لكنه ما زال قابلًا للاختزال: اقسم على القاسم المشترك الأكبر نفسه."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{1631}{932} = \\dfrac{1631 \\div 233}{932 \\div 233}$"
+        ],
+        "result": "\\dfrac{1631}{932} = \\dfrac{7}{4}"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q3",
-      "statement": "احسب العدد A حيث $A = \\dfrac{1631}{932} - \\dfrac{1}{2} \\times \\dfrac{3}{2}$.",
+      "step": "03",
+      "statement": "بيّن أن العدد $A$ عدد طبيعي حيث: $A = \\dfrac{1631}{932} - \\dfrac{1}{2} \\times \\dfrac{3}{2}$ .",
       "learningPoints": [
         {
           "code": "4am_ikhtizal-kasr_P4",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "عدد طبيعي: قيمة $A$",
       "expectedAnswer": "1",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض الكسر بشكله غير القابل للاختزال."
+          "content": "استعمل نتيجة السؤال 02."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الضرب قبل الطرح: 1/2 × 3/2 = 3/4."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "7/4 − 3/4."
+          "content": "الضرب قبل الطرح."
         }
       ],
       "feedback": {
-        "correct": "A = 7/4 − 3/4 = 1.",
-        "incorrect": "اختزل أولًا، ثم احترم أولوية الضرب."
-      }
+        "correct": "$A = \\dfrac{7}{4} - \\dfrac{3}{4} = \\dfrac{4}{4}$",
+        "incorrect": "عوّض الكسر بكتابته غير القابلة للاختزال، ثم احسب الجداء قبل الطرح."
+      },
+      "solution": {
+        "lines": [
+          "$A = \\dfrac{7}{4} - \\dfrac{3}{4}$",
+          "$A = \\dfrac{4}{4}$",
+          "إذن $A$ عدد طبيعي."
+        ],
+        "result": "A = 1"
+      },
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-ikhtizal-kasr-l4-005",
-  "lessonCode": "ikhtizal-kasr",
-  "level": 4
+  ]
 }

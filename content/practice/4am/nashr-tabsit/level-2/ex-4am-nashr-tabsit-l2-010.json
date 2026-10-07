@@ -1,109 +1,201 @@
 {
+  "id": "ex-4am-nashr-tabsit-l2-010",
+  "lessonCode": "nashr-tabsit",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — مساحة شريط",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2011 — تحقق بالنشر",
+    "estimatedMinutes": 9,
     "tags": [
-      "نشر",
-      "مساحة"
+      "جداء قوسين",
+      "تحقق بالنشر"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_nashr-tabsit_P1",
-      "modelledOn": "act-1"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_nashr-tabsit_P3",
+      "modelledOn": "BEM 2011 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2011",
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "ملعب مستطيل عرضه 6 وطوله $x + 8$."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "اكتب مساحة الملعب على شكل مجموع:",
+      "step": "01",
+      "statement": "تحقق بالنشر من أن: $(3x + 2)(x - 1) = 3x^2 - x - 2$ .",
       "learningPoints": [
         {
-          "code": "4am_nashr-tabsit_P1",
+          "code": "4am_nashr-tabsit_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$6x + 8$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
-        },
-        {
-          "id": "B",
-          "content": "$6x + 48$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$6(x + 8)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "مساحة المستطيل جداء بعديه."
+          "content": "انشر الطرف الأيسر: اضرب كل حد من القوس الأول في كل حد من القوس الثاني."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المطلوب شكل مجموع: انشر."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الملعب منطقتان: $6 \\times x$ و $6 \\times 8$."
+          "content": "اجمع الحدّين $-3x$ و $2x$ ."
         }
       ],
       "feedback": {
-        "correct": "$6(x + 8) = 6x + 48$: مجموع مساحتي المنطقتين.",
-        "incorrect": "المنطقة الثانية بعداها 6 و 8."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى الإشارات عند النشر."
+      },
+      "solution": {
+        "lines": [
+          "$(3x + 2)(x - 1) = 3x \\times x - 3x \\times 1 + 2 \\times x - 2 \\times 1$",
+          "$= 3x^2 - 3x + 2x - 2$",
+          "$= 3x^2 - x - 2$",
+          "ومنه المساواة صحيحة."
+        ],
+        "result": "(3x + 2)(x - 1) = 3x^2 - x - 2"
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "ما مساحة الملعب من أجل $x = 12$ ؟",
+      "step": "02",
+      "lead": "لتكن العبارة $A$ حيث: $A = 3x^2 - x - 2 + (3x + 2)(x + 4)$ . انشر وبسّط العبارة $A$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
-          "code": "4am_nashr-tabsit_P1",
+          "code": "4am_nashr-tabsit_P4",
           "role": "primary"
+        },
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "120",
+      "answerFormat": "يُكتب $A$ على الشكل $ax^2 + bx + c$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "6",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ بـ 12."
+          "content": "اضرب كل حد من القوس الأول في كل حد من القوس الثاني."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في أحد الشكلين."
+          "content": "انتبه إلى إشارة كل حد عند كتابة الجداءات."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$6 \\times (12 + 8)$."
+          "content": "اجمع الحدود المتشابهة: حدود $x^2$ معًا، ثم حدود $x$، ثم الأعداد."
         }
       ],
       "feedback": {
-        "correct": "$6 \\times 20 = 120$ ، و $72 + 48 = 120$.",
-        "incorrect": "عوّض في الشكل الأول أو المنشور."
-      }
+        "correct": "$A = 6x^2 + 13x + 6$ إذن $a = 6$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$A = 3x^2 - x - 2 + (3x + 2)(x + 4)$",
+          "$A = 3x^2 - x - 2 + 3x \\times x + 3x \\times 4 + 2 \\times x + 2 \\times 4$",
+          "$A = 3x^2 - x - 2 + 3x^2 + 12x + 2x + 8$"
+        ],
+        "result": "A = 6x^2 + 13x + 6"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax^2 + bx + c$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "13",
+      "misconceptionSignatures": [
+        {
+          "value": "-1",
+          "id": "MISC-NASHR-AWWAL-AKHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع معاملات حدود $x$ بإشاراتها بعد النشر."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 6x^2 + 13x + 6$ إذن $b = 13$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $b$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$A = 6x^2 + 13x + 6$"
+        ],
+        "result": "b = 13"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "العدد $c$ :",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax^2 + bx + c$ : اكتب العدد $c$ فقط",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت هو مجموع الأعداد التي لا تحتوي على $x$ بعد النشر، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 6x^2 + 13x + 6$ إذن $c = 6$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $c$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$A = 6x^2 + 13x + 6$"
+        ],
+        "result": "c = 6"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-nashr-tabsit-l2-010",
-  "lessonCode": "nashr-tabsit",
-  "level": 2
+  ]
 }

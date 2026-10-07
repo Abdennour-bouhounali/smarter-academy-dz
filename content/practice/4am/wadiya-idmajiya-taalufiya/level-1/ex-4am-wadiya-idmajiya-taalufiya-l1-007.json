@@ -3,8 +3,8 @@
   "lessonCode": "wadiya-idmajiya-taalufiya",
   "level": 1,
   "metadata": {
-    "title": "أيّ صيغة أرخص؟",
-    "estimatedMinutes": 2,
+    "title": "كراء قارب: أيّ الصيغتين؟",
+    "estimatedMinutes": 5,
     "tags": [
       "مفاضلة"
     ],
@@ -12,37 +12,114 @@
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "لكراء قارب: الصيغة أ تكلّف $400 + 50x$ دينارا، والصيغة ب تكلّف $90x$ دينارا، حيث $x$ عدد الساعات."
+    "content": "لكراء قارب في ميناء، تقترح وكالة صيغتين، حيث $x$ عدد الساعات:\n- الصيغة الأولى: $f(x) = 50x + 400$\n- الصيغة الثانية: $g(x) = 90x$\n( $f(x)$ و $g(x)$ المبلغان بـ DA)."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "من أجل 12 ساعة:",
+      "step": "01",
+      "lead": "احسب المبلغ المدفوع لكراء القارب مدة 12 ساعة بكل صيغة.",
+      "statement": "بالصيغة الأولى:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "1000",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "600"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $f(12)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(12) = 50 \\times 12 + 400$ .",
+        "incorrect": "اضرب 12 في 50 ثم أضف 400."
+      },
+      "solution": {
+        "lines": [
+          "$f(12) = 50 \\times 12 + 400 = 600 + 400 = 1000$",
+          "$g(12) = 90 \\times 12 = 1080$"
+        ],
+        "result": "f(12) = 1000"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "بالصيغة الثانية:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "1080",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $g(12)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(12) = 90 \\times 12$ .",
+        "incorrect": "اضرب 12 في 90."
+      },
+      "solution": {
+        "lines": [
+          "$f(12) = 50 \\times 12 + 400 = 600 + 400 = 1000$",
+          "$g(12) = 90 \\times 12 = 1080$"
+        ],
+        "result": "g(12) = 1080"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "ما هي الصيغة الأقل تكلفة لكراء القارب مدة 12 ساعة؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "الصيغة أ أرخص: 1000 DA مقابل 1080 DA",
+          "content": "الصيغة الأولى",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "الصيغة ب أرخص لأنها بلا مبلغ ثابت",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
-        },
-        {
-          "id": "C",
-          "content": "الصيغتان متساويتان",
+          "content": "الصيغة الثانية",
           "isCorrect": false,
           "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
         }
@@ -51,25 +128,20 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب الثمنين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$400 + 50 \\times 12$ و $90 \\times 12$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن."
+          "content": "قارن المبلغين اللذين حسبتهما."
         }
       ],
       "feedback": {
-        "correct": "$400 + 600 = 1000$ و $90 \\times 12 = 1080$.",
-        "incorrect": "لا نحكم دون حساب الثمنين عند القيمة المعطاة."
+        "correct": "$1000 < 1080$ .",
+        "incorrect": "الصيغة الأقل تكلفة هي التي مبلغها أصغر من أجل 12 ساعة."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "$f(12) = 1000DA$ و $g(12) = 1080DA$ ، و $1000 < 1080$ .",
+          "إذن الصيغة الأولى هي الأقل تكلفة مدة 12 ساعة."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

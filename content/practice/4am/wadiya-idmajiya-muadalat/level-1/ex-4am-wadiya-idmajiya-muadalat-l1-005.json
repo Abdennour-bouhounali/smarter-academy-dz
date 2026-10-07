@@ -1,125 +1,131 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-005",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — صيغتان لاستعارة الكتب",
-    "estimatedMinutes": 3,
+    "title": "صيغتان لاستعارة الكتب",
+    "estimatedMinutes": 5,
     "tags": [
-      "ترجمة",
-      "تسعيرة"
+      "ترييض",
+      "عبارة حرفية"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
       "modelledOn": "situation"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "تقترح مكتبة صيغتين لاستعارة الكتب. الصيغة (أ): 20 دينارًا لكل كتاب. الصيغة (ب): اشتراك قدره 300 دينار و 5 دنانير لكل كتاب. نسمّي $x$ عدد الكتب المستعارة."
+    "content": "تقترح مكتبة بلدية صيغتين لاستعارة الكتب:\n– الصيغة الأولى: 20DA لكل كتاب.\n– الصيغة الثانية: اشتراك قدره 300DA و 5DA لكل كتاب.\nنسمّي $x$ عدد الكتب المستعارة، و $y_2$ المبلغ المدفوع حسب الصيغة الثانية."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "تكلفة الصيغة (ب) بدلالة $x$ (بالدينار) هي ...",
+      "step": "01",
+      "lead": "عبّر عن $y_2$ بدلالة $x$ .",
+      "statement": "$y_2$ — العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muadalat_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$300 + 5x$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$(300 + 5)x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "$300x + 5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-TARJAMA"
-        },
-        {
-          "id": "D",
-          "content": "$20x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-TARJAMA"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $y_2 = ax + b$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في الصيغة (ب) مبلغ يُدفع مرّة واحدة ومبلغ يُدفع مع كل كتاب."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "المبلغ الذي يتكرّر مع كل كتاب يُضرب في $x$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الاشتراك لا يتغيّر مع عدد الكتب: يُضاف كما هو."
+          "content": "ما الذي يُدفع عن كل كتاب؟ هذا المبلغ يُضرب في $x$ ."
         }
       ],
       "feedback": {
-        "correct": "الاشتراك 300 دينار مرّة واحدة، و 5 دنانير لكل كتاب: $300 + 5x$.",
-        "incorrect": "ميّز المبلغ الثابت عن المبلغ الذي يتكرّر مع كل كتاب."
+        "correct": "$a = 5$ .",
+        "incorrect": "اقرأ النص من جديد: ما الذي يُدفع مرة واحدة، وما الذي يُدفع عن كل وحدة؟"
       },
-      "cognitiveDemand": "recall",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "المبلغ الذي يُدفع عن كل كتاب يُضرب في $x$ ، إذن $a = 5$ ."
+        ],
+        "result": "a = 5"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "كم دينارًا ندفع بالصيغة (ب) لاستعارة 10 كتب؟",
+      "step": "01",
+      "statement": "$y_2$ — العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muadalat_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "يُكتب $y_2 = ax + b$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "300",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الذي يُدفع مرة واحدة مهما كان $x$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 300$ .",
+        "incorrect": "اقرأ النص من جديد: ما الذي يُدفع مرة واحدة، وما الذي يُدفع عن كل وحدة؟"
+      },
+      "solution": {
+        "lines": [
+          "المبلغ الثابت لا يتعلّق بـ $x$ ، إذن $y_2 = 5x + 300$"
+        ],
+        "result": "y_2 = 5x + 300"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب المبلغ المدفوع حسب الصيغة الثانية لاستعارة 10 كتب.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بـ DA",
       "expectedAnswer": "350",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ بعدد الكتب في عبارة الصيغة (ب)."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب أولًا ثمن الكتب ثم أضف الاشتراك."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الاشتراك يُحسب مرّة واحدة فقط."
+          "content": "عوّض $x$ بالعدد 10 في عبارة $y_2$ ."
         }
       ],
       "feedback": {
-        "correct": "$300 + 5 \\times 10 = 300 + 50 = 350$ دينارًا.",
-        "incorrect": "الاشتراك يُضاف مرّة واحدة، و 5 دنانير تُضرب في عدد الكتب."
+        "correct": "$350$DA .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولوية العمليات."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 1,
-      "misconceptionSignatures": [
-        {
-          "value": "3050",
-          "id": "MISC-WADIYA-TARJAMA"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$y_2 = 5 \\times 10 + 300$",
+          "$y_2 = 50 + 300$"
+        ],
+        "result": "350DA"
+      },
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-005",
-  "lessonCode": "wadiya-idmajiya-muadalat",
-  "level": 1
+  ]
 }

@@ -4,9 +4,9 @@
   "level": 1,
   "metadata": {
     "title": "نشاط 4 (ص 67) — سعر البطاطا",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 4,
     "tags": [
-      "تمثيل بياني",
+      "وضعية تناسبية",
       "معامل التناسبية"
     ],
     "source": {
@@ -14,97 +14,136 @@
       "elementId": "act-4",
       "page": 67,
       "section": "أنشطة",
-      "number": 4
+      "number": 4,
+      "adaptedFrom": "ex-4am-tarrid-khatti-l1-001"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 67): تمثيل بياني لسعر البطاطا (DA) بدلالة كتلتها (kg)، نقطه $(0{,}5 ; 25)$ ، $(1{,}5 ; 75)$ ، $(2{,}5 ; 125)$ ، $(3 ; 150)$ ، $(3{,}5 ; 175)$ ."
+    "content": "يعطي الجدول الآتي سعر البطاطا $y$ (بـ DA) بدلالة كتلتها $x$ (بـ kg):",
+    "table": {
+      "head": [
+        "الكتلة $x$ (kg)",
+        "0,5",
+        "1,5",
+        "2,5",
+        "3",
+        "3,5"
+      ],
+      "rows": [
+        [
+          "السعر $y$ (DA)",
+          "25",
+          "75",
+          "125",
+          "150",
+          "175"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هذه النقط:",
+      "step": "01",
+      "statement": "هل السعر $y$ متناسب مع الكتلة $x$ ؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_tarrid-khatti_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 1,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "على مستقيم يشمل المبدأ: الوضعية تناسبية",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "على مستقيم لا يشمل المبدأ: الوضعية ليست تناسبية",
+          "content": "لا",
           "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-BIDUN-O"
-        },
-        {
-          "id": "C",
-          "content": "على منحنى: الوضعية ليست تناسبية",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+          "misconceptionId": "MISC-TANASUB-FARQ-THABIT"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب حاصل قسمة الترتيب على الفاصلة لكل نقطة."
+          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هل حاصل القسمة نفسه دائمًا؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حاصل قسمة ثابت ⇔ مستقيم يشمل المبدأ."
+          "content": "هل حواصل القسمة كلها متساوية؟"
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{25}{0{,}5} = \\dfrac{150}{3} = 50$ : حاصل القسمة ثابت، النقط على مستقيم يشمل المبدأ.",
-        "incorrect": "احسب $\\dfrac{y}{x}$ لنقطتين على الأقل."
-      }
+        "correct": "حواصل القسمة $\\dfrac{y}{x}$ كلها متساوية: الجدول جدول تناسبية.",
+        "incorrect": "لا تحكم من تزايد المقدارين معا: قارن حواصل القسمة $\\dfrac{y}{x}$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{25}{0{,}5} = \\dfrac{75}{1{,}5} = \\dfrac{125}{2{,}5} = \\dfrac{150}{3} = \\dfrac{175}{3{,}5} = 50$",
+          "حواصل القسمة متساوية، إذن السعر متناسب مع الكتلة."
+        ],
+        "result": "متناسب"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "عيّن معامل التناسبية $a$ (بالدينار للكيلوغرام).",
+      "step": "02",
+      "statement": "عيّن الدالة الخطية $f$ التي ترفق بالكتلة $x$ السعر $y$ ، ثم فسّر معاملها.",
       "learningPoints": [
         {
           "code": "4am_tarrid-khatti_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
       "expectedAnswer": "50",
+      "misconceptionSignatures": [
+        {
+          "value": "1/50",
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "خذ النقطة $(3 ; 150)$ ."
+          "content": "$f(x) = ax$ حيث $a$ هو معامل التناسبية."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "قسّم السعر على الكتلة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$a = \\dfrac{150}{3}$ ."
+          "content": "معامل التناسبية هو السعر مقسوما على الكتلة."
         }
       ],
       "feedback": {
-        "correct": "$a = \\dfrac{150}{3} = 50$ : سعر 1kg هو 50DA.",
-        "incorrect": "المعامل هو السعر على الكتلة، لا العكس."
-      }
+        "correct": "$f(x) = 50x$ : سعر 1kg من البطاطا هو 50DA.",
+        "incorrect": "المعامل هو السعر على الكتلة (السطر الثاني على الأول)، لا العكس."
+      },
+      "solution": {
+        "lines": [
+          "معامل التناسبية هو $a = \\dfrac{150}{3} = 50$ ، إذن $f(x) = 50x$ .",
+          "العدد 50 هو سعر 1kg من البطاطا بالدينار."
+        ],
+        "result": "f(x) = 50x"
+      },
+      "timeSeconds": 90
     }
   ]
 }

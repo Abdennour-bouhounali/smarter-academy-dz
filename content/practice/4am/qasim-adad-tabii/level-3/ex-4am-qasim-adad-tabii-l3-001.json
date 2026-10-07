@@ -1,10 +1,14 @@
 {
+  "id": "ex-4am-qasim-adad-tabii-l3-001",
+  "lessonCode": "qasim-adad-tabii",
+  "level": 3,
   "metadata": {
-    "title": "معارف — 120 = 6 × 20",
-    "estimatedMinutes": 3,
+    "title": "المساواة 120 = 6 × 20",
+    "estimatedMinutes": 6,
     "tags": [
       "تعريف",
-      "جداء"
+      "جداء",
+      "مضاعف"
     ],
     "source": {
       "type": "textbook",
@@ -12,117 +16,207 @@
       "page": 10,
       "section": "معارف",
       "number": 1
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 10): $120 = 6 \\times 20$."
+    "content": "نعتبر المساواة:",
+    "formulas": [
+      "120 = 6 \\times 20"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "من المساواة $120 = 6 \\times 20$ نستنتج أن:",
+      "step": "01",
+      "sub": "ا",
+      "lead": "انطلاقًا من هذه المساواة، برّر إجابتك في كل حالة:",
+      "statement": "هل 6 قاسم للعدد 120؟",
       "learningPoints": [
         {
           "code": "4am_qasim-adad-tabii_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "6 و 20 قاسمان للعدد 120",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "6 قاسم للعدد 120 فقط",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "120 قاسم للعدد 6",
+          "content": "لا",
           "isCorrect": false
         }
       ],
+      "answerFormat": "اختر نعم أو لا، ثم قارن تبريرك بالحل النموذجي",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "a = b × q يعني أن b قاسم لـ a."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "و 120 = 20 × 6 أيضًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "فكّر في العاملين معًا."
+          "content": "$a = b \\times q$ حيث $q$ عدد طبيعي يعني أن $b$ قاسم للعدد $a$."
         }
       ],
       "feedback": {
-        "correct": "المساواة تُقرأ في الاتجاهين: 120 = 6 × 20 = 20 × 6.",
-        "incorrect": "كل عامل في الجداء قاسم للعدد."
-      }
+        "correct": "$120 = 6 \\times 20$ و 20 عدد طبيعي: 6 قاسم للعدد 120.",
+        "incorrect": "استعمل التعريف: $a = b \\times q$ مع $q$ عدد طبيعي."
+      },
+      "solution": {
+        "lines": [
+          "$120 = 6 \\times 20$ و 20 عدد طبيعي.",
+          "إذن 6 قاسم للعدد 120."
+        ],
+        "result": "نعم"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "أي جملة ليس لها نفس معنى «6 قاسم للعدد 120»؟",
+      "step": "01",
+      "sub": "ب",
+      "statement": "هل 20 قاسم للعدد 120؟",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-adad-tabii_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false
+        }
+      ],
+      "answerFormat": "اختر نعم أو لا، ثم قارن تبريرك بالحل النموذجي",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجداء تبديلي: $6 \\times 20 = 20 \\times 6$."
+        }
+      ],
+      "feedback": {
+        "correct": "$120 = 20 \\times 6$: 20 قاسم للعدد 120 أيضًا.",
+        "incorrect": "اكتب المساواة على الشكل $120 = 20 \\times \\ldots$"
+      },
+      "solution": {
+        "lines": [
+          "$120 = 20 \\times 6$ و 6 عدد طبيعي.",
+          "إذن 20 قاسم للعدد 120."
+        ],
+        "result": "نعم"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "هل 6 مضاعف للعدد 120؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_qasim-adad-tabii_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "6 مضاعف للعدد 120",
-          "isCorrect": true
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-QASIM-MUDAAF-ITTIJAH"
         },
         {
           "id": "B",
-          "content": "6 يقسم 120",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "120 يقبل القسمة على 6",
-          "isCorrect": false
-        },
-        {
-          "id": "D",
-          "content": "120 مضاعف للعدد 6",
-          "isCorrect": false
+          "content": "لا",
+          "isCorrect": true
         }
       ],
+      "answerFormat": "اختر نعم أو لا، ثم قارن تبريرك بالحل النموذجي",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الجمل الأربع في الكتاب لها نفس المعنى، إلا واحدة هنا."
+          "content": "أيّ العددين يُكتب على شكل جداء العدد الآخر في عدد طبيعي؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "من هو المضاعف: 6 أم 120؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "120 = 6 × 20 فـ 120 مضاعف للعدد 6."
+          "content": "«$a$ مضاعف لـ $b$» تعني أن $a = b \\times k$."
         }
       ],
       "feedback": {
-        "correct": "المضاعف هو الأكبر: 120 مضاعف للعدد 6.",
-        "incorrect": "انتبه إلى اتجاه كلمة «مضاعف»."
-      }
+        "correct": "120 هو المضاعف: 120 مضاعف للعدد 6، أما 6 فليس مضاعفًا للعدد 120.",
+        "incorrect": "انتبه إلى اتجاه كلمة «مضاعف»: المضاعف هو العدد الذي يُكتب على الشكل $b \\times k$."
+      },
+      "solution": {
+        "lines": [
+          "$120 = 6 \\times 20$ إذن 120 مضاعف للعدد 6.",
+          "لا يوجد عدد طبيعي $k$ حيث $6 = 120 \\times k$ (لأن $120 \\times 1 = 120 > 6$ و $120 \\times 0 = 0$).",
+          "إذن 6 ليس مضاعفًا للعدد 120."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "lead": "استنتج أن 12 قاسم للعدد 120، وذلك بكتابة 120 على الشكل $12 \\times q$ حيث $q$ عدد طبيعي.",
+      "statement": "العدد $q$:",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-adad-tabii_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $q$ فقط (عدد طبيعي)",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$12 = 6 \\times 2$: اكتب 20 على شكل جداء أحد عامليه 2."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جمّع العاملين 6 و 2 معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$120 = 6 \\times 20 = 6 \\times 2 \\times 10 = 12 \\times 10$.",
+        "incorrect": "انطلق من $120 = 6 \\times 20$ واكتب 20 على شكل جداء أحد عامليه 2."
+      },
+      "solution": {
+        "lines": [
+          "$120 = 6 \\times 20 = 6 \\times (2 \\times 10)$",
+          "$120 = (6 \\times 2) \\times 10 = 12 \\times 10$",
+          "إذن 12 قاسم للعدد 120."
+        ],
+        "result": "120 = 12 \\times 10"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-qasim-adad-tabii-l3-001",
-  "lessonCode": "qasim-adad-tabii",
-  "level": 3
+  ]
 }

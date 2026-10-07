@@ -1,124 +1,125 @@
 {
+  "id": "ex-4am-jidhr-tarbii-l1-004",
+  "lessonCode": "jidhr-tarbii",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — كتابة الرمز وقراءته",
-    "estimatedMinutes": 2,
+    "title": "الرمز √ والجمع",
+    "estimatedMinutes": 4,
     "tags": [
       "الرمز √",
-      "قراءة"
+      "خطأ شائع"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_jidhr-tarbii_P2",
-      "modelledOn": "know-1"
+      "modelledOn": "know-1",
+      "adaptedFrom": "ex-4am-jidhr-tarbii-l1-004"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نرمز للجذر التربيعي للعدد الموجب $a$ بالرمز $\\sqrt{a}$ ونقرأ «الجذر التربيعي للعدد $a$»."
+    "content": "ليكن العددان A و B حيث:",
+    "formulas": [
+      "A = \\sqrt{16} + \\sqrt{9} \\qquad ; \\qquad B = \\sqrt{16 + 9}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "العبارة «الجذر التربيعي للعدد 11» تُكتب:",
+      "step": "01",
+      "statement": "اكتب العدد $A$ دون استعمال الرمز $\\sqrt{\\;}$.",
       "learningPoints": [
         {
           "code": "4am_jidhr-tarbii_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$11^2$",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$\\sqrt{11}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{11}{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-NISF"
+          "value": "5",
+          "id": "MISC-JIDHR-JAMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "للجذر التربيعي رمز خاص."
+          "content": "احسب كل جذر على حدة: $\\sqrt{16}$ ثم $\\sqrt{9}$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الأس 2 يدلّ على المربع، لا على الجذر."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "استعمل الرمز الذي تعلّمته في معارف الدرس."
+          "content": "ثم اجمع الناتجين."
         }
       ],
       "feedback": {
-        "correct": "نكتب الجذر التربيعي للعدد 11 بالرمز $\\sqrt{11}$.",
-        "incorrect": "الكتابة $11^2$ تعني مربع العدد 11، والكسر يعني نصفه."
-      }
+        "correct": "$\\sqrt{16} = 4$ و $\\sqrt{9} = 3$، إذن $A = 4 + 3 = 7$.",
+        "incorrect": "احسب كل جذر تربيعي وحده قبل الجمع."
+      },
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{16} + \\sqrt{9}$",
+          "$A = 4 + 3$"
+        ],
+        "result": "A = 7"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "كيف نقرأ العدد $\\sqrt{0{,}6}$ ؟",
+      "step": "02",
+      "statement": "اكتب العدد $B$ دون استعمال الرمز $\\sqrt{\\;}$، ثم قارن $A$ و $B$.",
       "learningPoints": [
         {
           "code": "4am_jidhr-tarbii_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة B (عدد طبيعي)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "مربع العدد 0,6",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "نصف العدد 0,6",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-NISF"
-        },
-        {
-          "id": "C",
-          "content": "الجذر التربيعي للعدد 0,6",
-          "isCorrect": true
+          "value": "7",
+          "id": "MISC-JIDHR-JAMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الرمز $\\sqrt{\\;}$ له اسم."
+          "content": "ابدأ بحساب العدد المكتوب تحت الرمز: $16 + 9$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مربع العدد 0,6 يُكتب $0{,}6^2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تذكّر كيف قرأنا $\\sqrt{5}$ في النشاط."
+          "content": "ثم ابحث عن العدد الموجب الذي مربعه هذا المجموع."
         }
       ],
       "feedback": {
-        "correct": "نقرأ $\\sqrt{0{,}6}$: «الجذر التربيعي للعدد 0,6».",
-        "incorrect": "الرمز $\\sqrt{\\;}$ ليس رمز المربع ولا رمز القسمة على 2."
-      }
+        "correct": "$B = \\sqrt{25} = 5$ و $A = 7$: إذن $\\sqrt{16 + 9} \\neq \\sqrt{16} + \\sqrt{9}$.",
+        "incorrect": "لا يساوي الجذر التربيعي لمجموع مجموعَ الجذرين: احسب ما تحت الرمز أولا."
+      },
+      "solution": {
+        "lines": [
+          "$B = \\sqrt{16 + 9} = \\sqrt{25} = 5$",
+          "$A = 7$ و $B = 5$ إذن $A \\neq B$، أي:",
+          "$\\sqrt{16 + 9} \\neq \\sqrt{16} + \\sqrt{9}$"
+        ],
+        "result": "B = 5"
+      },
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-jidhr-tarbii-l1-004",
-  "lessonCode": "jidhr-tarbii",
-  "level": 1
+  ]
 }

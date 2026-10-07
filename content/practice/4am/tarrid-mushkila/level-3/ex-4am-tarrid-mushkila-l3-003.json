@@ -3,11 +3,12 @@
   "lessonCode": "tarrid-mushkila",
   "level": 3,
   "metadata": {
-    "title": "تمرين 13 — السدّ",
-    "estimatedMinutes": 4,
+    "title": "مدة بناء سدّ",
+    "estimatedMinutes": 8,
     "tags": [
       "ترييض",
-      "نسب مئوية"
+      "معادلة",
+      "نسبة مئوية"
     ],
     "source": {
       "type": "textbook",
@@ -15,94 +16,100 @@
       "page": 50,
       "section": "أوظّف تعلّماتي",
       "number": 13
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 50): بلغت النسبة المئوية لإنجاز بناء سَدّ 75% من المدة المقرّرة، ثم تواصل البناء لمدة 4 سنوات. إذا علمت أنّ المُدّة المتبقية لإنجاز المشروع هي 11 سنة، فما هي المُدّة المُقرّرة لبنائه؟ نقرأ: انقضى 75% من المدة المقرّرة $D$ ، ثم 4 سنوات، وبقيت 11 سنة."
+    "content": "بلغت النسبة المئوية لإنجاز بناء سَدّ 75% من المدة المقرّرة، ثم تواصل البناء لمدة 4 سنوات. نعلم أنّ المُدّة المتبقية لإنجاز المشروع هي 11 سنة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ معادلة تترجم النص؟",
+      "step": "01",
+      "statement": "سمِّ $D$ المدة المقرّرة لبناء السدّ (بالسنوات)، اكتب معادلة تترجم النص ثم احسب $D$ .",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$0{,}75D + 4 = 11$",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$0{,}75D + 4 + 11 = D$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$75D + 15 = D$",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المدة بالسنوات",
+      "expectedAnswer": "60",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما مجموع المدد الثلاث؟"
+          "content": "المدة المقرّرة كلها = المدة المنقضية + 4 سنوات + المدة المتبقية."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما انقضى + 4 سنوات + ما بقي = المدة كلها."
+          "content": "75% من $D$ تُكتب $0{,}75D$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "75% من $D$ هي $0{,}75D$ ."
+          "content": "اجمع حدود $D$ في طرف واحد ثم حلّ."
         }
       ],
       "feedback": {
-        "correct": "$0{,}75D + 4 + 11 = D$ .",
-        "incorrect": "المدة كلها $D$ تظهر في الطرف الثاني."
-      }
+        "correct": "$0{,}75D + 4 + 11 = D$ تعطي $D = 60$ سنة.",
+        "incorrect": "الأجزاء الثلاثة (المنقضي، 4 سنوات، المتبقي) مجموعها المدة المقرّرة كلها."
+      },
+      "solution": {
+        "lines": [
+          "المعادلة: $0{,}75D + 4 + 11 = D$",
+          "$15 = D - 0{,}75D$",
+          "$15 = 0{,}25D$",
+          "$D = \\dfrac{15}{0{,}25}$",
+          "$D = 60$",
+          "إذن المدة المقرّرة لبناء السدّ 60 سنة."
+        ],
+        "result": "D = 60"
+      },
+      "work": "required",
+      "timeSeconds": 300
     },
     {
       "id": "q2",
-      "statement": "ما المدة المقرّرة (بالسنوات)؟",
+      "step": "02",
+      "statement": "كم سنة مضت عند بلوغ نسبة الإنجاز 75% من المدة المقرّرة؟",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "60",
+      "answerFormat": "عدد طبيعي: المدة بالسنوات",
+      "expectedAnswer": "45",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اطرح $0{,}75D$ من الطرفين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "تحصل على $0{,}25D = 15$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم على $0{,}25$ (أي اضرب في 4)."
+          "content": "احسب 75% من المدة التي وجدتها."
         }
       ],
       "feedback": {
-        "correct": "$0{,}25D = 15$ أي $D = 60$ ، وتحقّق: $45 + 4 + 11 = 60$ .",
-        "incorrect": "ربع المدة يساوي 15 سنة."
-      }
+        "correct": "$0{,}75 \\times 60 = 45$ سنة.",
+        "incorrect": "اضرب المدة المقرّرة في $0{,}75$ ."
+      },
+      "solution": {
+        "lines": [
+          "$0{,}75 \\times 60 = 45$",
+          "التحقق: $45 + 4 + 11 = 60$ ."
+        ],
+        "result": "45"
+      },
+      "timeSeconds": 90
     }
   ]
 }

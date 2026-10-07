@@ -3,112 +3,145 @@
   "lessonCode": "hall-jabri",
   "level": 3,
   "metadata": {
-    "title": "تدريب — مجهول معطى بدلالة الآخر",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2022 — ثنائيتان وجملتان",
+    "estimatedMinutes": 8,
     "tags": [
-      "اختيار الطريقة",
+      "ثنائية",
       "التعويض"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_hall-jabri_P3",
-      "modelledOn": "ex-10"
+      "modelledOn": "BEM 2022 I-3"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2022",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "الجملة $\\begin{cases} x = 3y - 2 \\\\ 5x - 4y = 23 \\end{cases}$ ."
+    "content": "لتكن الثنائيتان $(8 ; 14)$ و $(14 ; 8)$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أنسب طريقة، مع سببها الصحيح:",
+      "step": "01",
+      "statement": "أيهما حل لهذه الجملة: $\\begin{cases} x + y = 22 \\\\ x + \\dfrac{3}{2}y = 26 \\end{cases}$ ؟",
       "learningPoints": [
         {
           "code": "4am_hall-jabri_P3",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "point",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
+      "expectedAnswer": {
+        "x": "14",
+        "y": "8"
+      },
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "التعويض، لأنّ $x$ معبّر عنه بدلالة $y$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "الجمع مباشرة، لأنّ معاملي $y$ متعاكسان",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JAM-LA-TAAKUS"
-        },
-        {
-          "id": "C",
-          "content": "الجمع مباشرة، لأنّ معاملي $x$ متعاكسان",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+          "value": {
+            "x": "8",
+            "y": "14"
+          },
+          "id": "MISC-JUMLA-TARTIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقرأ المعاملات قبل أن تبدأ."
+          "content": "عوّض كل ثنائية في المعادلتين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+          "content": "الحل يحقق المعادلتين في آن واحد، والترتيب $(x ; y)$ مهم."
         }
       ],
       "feedback": {
-        "correct": "العبارة $3y - 2$ جاهزة. معاملا $y$ هما $-3$ و $-4$ ، ومعاملا $x$ هما $1$ و $5$ : لا تعاكس.",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "الثنائية $(14 ; 8)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $(8 ; 14)$ : $8 + 14 = 22$ ؛ $8 + \\dfrac{3}{2} \\times 14 = 8 + 21 = 29 \\neq 26$ : ليست حلا.",
+          "نعوّض $(14 ; 8)$ : $14 + 8 = 22$ ؛ $14 + \\dfrac{3}{2} \\times 8 = 14 + 12 = 26$ : تحقق المعادلتين.",
+          "ومنه حل الجملة هو الثنائية:"
+        ],
+        "result": "(14 ; 8)"
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "حل الجملة:",
+      "step": "02",
+      "statement": "حل الجملة التالية: $\\begin{cases} x + y = 22 \\\\ 2x + 3y = 59 \\end{cases}$",
       "learningPoints": [
         {
           "code": "4am_hall-jabri_P3",
           "role": "primary"
+        },
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": {
         "x": "7",
-        "y": "3"
+        "y": "15"
       },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "15",
+            "y": "7"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقرأ المعاملات قبل أن تبدأ."
+          "content": "انظر إلى معاملات المجهولين: هل يوجد معامل يساوي $1$ أو $-1$ ؟ هل يوجد معاملان متعاكسان أو متساويان؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+          "content": "مجهول معامله $1$ أو مجهول معبّر عنه بدلالة الآخر: التعويض. معاملان متعاكسان أو يصيران كذلك بضرب بسيط: الجمع."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+          "content": "بعد إيجاد المجهول الأول عوّض قيمته لتجد الثاني، ثم تحقق في المعادلتين."
         }
       ],
       "feedback": {
-        "correct": "$5(3y - 2) - 4y = 23$ أي $11y = 33$ ، ومنه $y = 3$ و $x = 7$ .",
-        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
-      }
+        "correct": "الثنائية $(7 ; 15)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "من المعادلة (1) نجد: $x = 22 - y$",
+          "نعوّض في المعادلة (2): $2(22 - y) + 3y = 59$",
+          "ومنه $y = 15$",
+          "نعوّض قيمة $y$ في عبارة $x$: $x = 22 - 15 = 7$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(7 ; 15)"
+      },
+      "work": "optional",
+      "timeSeconds": 300
     }
   ]
 }

@@ -3,76 +3,80 @@
   "lessonCode": "mafhum-jumla",
   "level": 2,
   "metadata": {
-    "title": "تحدّ — تزيين القسم",
-    "estimatedMinutes": 3,
+    "title": "تزيين القسم",
+    "estimatedMinutes": 5,
     "tags": [
-      "قطع نقدية",
-      "ثنائية"
+      "جملة",
+      "ترجمة"
     ],
     "source": {
       "type": "textbook",
       "elementId": "challenge",
       "page": 55,
       "section": "تحدّ"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 55): لتزيين قسمهم، جمع التلاميذ مبلغ 610DA مُشكّلا من 37 قطعة نقدية من فئتي 20DA و 10DA. نسمّي $x$ عدد قطع 20DA و $y$ عدد قطع 10DA: $\\begin{cases} x + y = 37 \\\\ 20x + 10y = 610 \\end{cases}$"
+    "content": "لتزيين قسمهم، جمع التلاميذ مبلغ 610DA مُشكّلا من 37 قطعة نقدية من فئتي 20DA و 10DA. نسمّي $x$ عدد قطع 20DA و $y$ عدد قطع 10DA ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل الثنائية $(24 ; 13)$ حل للجملة؟",
+      "step": "01",
+      "statement": "بيّن أن $x$ و $y$ يحققان الجملة: $\\begin{cases} x + y = 37 \\\\ 20x + 10y = 610 \\end{cases}$",
       "learningPoints": [
         {
-          "code": "4am_mafhum-jumla_P3",
+          "code": "4am_mafhum-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "نعم",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "لا",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x = 24$ و $y = 13$ ."
+          "content": "معلومة أولى عن عدد القطع، ومعلومة ثانية عن المبلغ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$24 + 13$ ثم $20 \\times 24 + 10 \\times 13$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل تجد 37 ثم 610؟"
+          "content": "قيمة $x$ قطعة من فئة 20DA هي $20x$ ."
         }
       ],
       "feedback": {
-        "correct": "$24 + 13 = 37$ و $480 + 130 = 610$ : حل للجملة.",
-        "incorrect": "احسب عدد القطع ثم المبلغ."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "عدد القطع 37: $x + y = 37$",
+          "قيمة $x$ قطعة من فئة 20DA هي $20x$ ، وقيمة $y$ قطعة من فئة 10DA هي $10y$ .",
+          "المبلغ 610DA: $20x + 10y = 610$",
+          "ومنه $x$ و $y$ يحققان الجملة $\\begin{cases} x + y = 37 \\\\ 20x + 10y = 610 \\end{cases}$ ."
+        ]
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "هل الثنائية $(13 ; 24)$ حل للجملة؟",
+      "step": "02",
+      "sub": "ا",
+      "statement": "هل الثنائية $(13 ; 24)$ حل لهذه الجملة؟",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
@@ -91,23 +95,78 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "$x = 13$ قطعة من 20DA هذه المرة."
+          "content": "عوّض $x$ بـ $13$ و $y$ بـ $24$ في كل معادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$20 \\times 13 + 10 \\times 24$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن بالمبلغ 610."
+          "content": "الثنائية حل للجملة إذا حققت المعادلتين في آن واحد."
         }
       ],
       "feedback": {
-        "correct": "$13 + 24 = 37$ لكن $260 + 240 = 500 \\neq 610$ : ليست حلا.",
-        "incorrect": "الترتيب مهم: $x$ عدد قطع 20DA."
-      }
+        "correct": "$13 + 24 = 37$ ؛ $20 \\times 13 + 10 \\times 24 = 500 \\neq 610$ : الثنائية ليست حلا للجملة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض في المعادلتين معا وقارن كل نتيجة بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $13$ و $y$ بـ $24$ :",
+          "$13 + 24 = 37$",
+          "$20 \\times 13 + 10 \\times 24 = 500 \\neq 610$",
+          "ومنه الثنائية $(13 ; 24)$ ليست حلا للجملة (لا تحقق المعادلتين معا)."
+        ]
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "هل الثنائية $(24 ; 13)$ حل لهذه الجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $24$ و $y$ بـ $13$ في كل معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الثنائية حل للجملة إذا حققت المعادلتين في آن واحد."
+        }
+      ],
+      "feedback": {
+        "correct": "$24 + 13 = 37$ ؛ $20 \\times 24 + 10 \\times 13 = 610$ : الثنائية حل للجملة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض في المعادلتين معا وقارن كل نتيجة بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $24$ و $y$ بـ $13$ :",
+          "$24 + 13 = 37$",
+          "$20 \\times 24 + 10 \\times 13 = 610$",
+          "ومنه الثنائية $(24 ; 13)$ حل للجملة."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

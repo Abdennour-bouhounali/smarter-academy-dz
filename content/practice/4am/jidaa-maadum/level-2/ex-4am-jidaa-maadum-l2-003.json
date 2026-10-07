@@ -3,8 +3,8 @@
   "lessonCode": "jidaa-maadum",
   "level": 2,
   "metadata": {
-    "title": "نشاط 2 — بالطريقتين",
-    "estimatedMinutes": 4,
+    "title": "طريقتا إلياس وأمين",
+    "estimatedMinutes": 6,
     "tags": [
       "خاصية الجداء المعدوم",
       "أعداد عشرية"
@@ -15,96 +15,151 @@
       "page": 44,
       "section": "أنشطة",
       "number": 2
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 44): نحل المعادلة $-1{,}2(3x + 2{,}7) = 0$ بطريقة إلياس ثم بطريقة أمين."
+    "content": "نعتبر المعادلة:",
+    "formulas": [
+      "-1{,}2(3x + 2{,}7) = 0"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "بطريقة إلياس، نشر الطرف الأول يعطي المعادلة:",
+      "step": "01",
+      "lead": "انشر الطرف الأول للمعادلة (طريقة إلياس).",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_jidaa-maadum_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$-3{,}6x - 3{,}24 = 0$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$-3{,}6x + 2{,}7 = 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
-        },
-        {
-          "id": "C",
-          "content": "$3{,}6x - 3{,}24 = 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
-        }
-      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب الطرف الأول على الشكل $ax + b$ : اكتب العدد $a$ فقط (يُقبل العدد العشري)",
+      "expectedAnswer": "-3,6",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ننشر: نضرب $-1{,}2$ في كل حدّ من القوس."
+          "content": "اضرب العدد الذي أمام القوس في كل حد من حدّي القوس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انتبه إلى الإشارة: سالب في موجب."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $1{,}2 \\times 3$ و $1{,}2 \\times 2{,}7$."
+          "content": "انتبه إلى إشارة العدد الذي أمام القوس."
         }
       ],
       "feedback": {
-        "correct": "$-1{,}2 \\times 3x = -3{,}6x$ و $-1{,}2 \\times 2{,}7 = -3{,}24$ .",
-        "incorrect": "العامل الثابت لا يعطي حلًّا: عوّض اقتراحك وتحقّق أنّ الجداء يساوي $0$."
-      }
+        "correct": "$-1{,}2(3x + 2{,}7) = -3{,}6x - 3{,}24$ إذن $a = -3{,}6$ .",
+        "incorrect": "أعد الضرب حدًّا حدًّا مع الإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$-1{,}2(3x + 2{,}7) = -1{,}2 \\times 3x - 1{,}2 \\times 2{,}7$",
+          "$= -3{,}6x - 3{,}24$"
+        ],
+        "result": "a = -3{,}6"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "ما حل المعادلة؟",
+      "step": "01",
+      "statement": "العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_jidaa-maadum_P2",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري",
-      "expectedAnswer": "-0,9",
+      "answerFormat": "يُكتب الطرف الأول على الشكل $ax + b$ : اكتب العدد $b$ فقط (يُقبل العدد العشري)",
+      "expectedAnswer": "-3,24",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "أحد العاملين عدد ثابت."
+          "content": "احسب جداء العدد الذي أمام القوس في الحد الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = -3{,}24$ .",
+        "incorrect": "أعد الضرب حدًّا حدًّا مع الإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$-1{,}2 \\times 2{,}7 = -3{,}24$"
+        ],
+        "result": "b = -3{,}24"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "حلّ المعادلة باستعمال خاصية الجداء المعدوم (طريقة أمين).",
+      "statement": "الحلّ:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "-0,9",
+      "misconceptionSignatures": [
+        {
+          "value": "0,9",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "يكون جداء عاملين معدومًا إذا كان أحد عامليه على الأقل معدومًا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عامل ثابت غير معدوم لا ينعدم أبدًا."
+          "content": "اكتب معادلتين من الدرجة الأولى: كل عامل يساوي $0$ ، ثم حلّ كل واحدة منهما."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "يكفي أن تحلّ المعادلة: العامل الآخر يساوي $0$."
+          "content": "انتبه إلى الإشارة عند نقل العدد إلى الطرف الثاني."
         }
       ],
       "feedback": {
-        "correct": "بما أنّ $-1{,}2 \\neq 0$ فإنّ $3x + 2{,}7 = 0$ ، أي $x = -0{,}9$ .",
-        "incorrect": "العامل الثابت لا يعطي حلًّا: عوّض اقتراحك وتحقّق أنّ الجداء يساوي $0$."
-      }
+        "correct": "$x = -0{,}9$ .",
+        "incorrect": "اكتب أن العامل غير الثابت معدوم، ثم حلّ المعادلة من الدرجة الأولى بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $-1{,}2(3x + 2{,}7) = 0$",
+          "بما أن $-1{,}2 \\neq 0$ فإن: $3x + 2{,}7 = 0$",
+          "أي: $3x = -2{,}7$",
+          "ومنه: $x = -0{,}9$",
+          "إذن للمعادلة حلّ وحيد هو $-0{,}9$"
+        ],
+        "result": "x = -0{,}9"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

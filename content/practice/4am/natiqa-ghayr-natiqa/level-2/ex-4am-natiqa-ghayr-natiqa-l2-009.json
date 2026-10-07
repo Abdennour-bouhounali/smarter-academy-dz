@@ -1,81 +1,136 @@
 {
+  "id": "ex-4am-natiqa-ghayr-natiqa-l2-009",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — القيمة المضبوطة لضلع مربع",
-    "estimatedMinutes": 2,
+    "title": "على منوال BEM 2009 — ثلاثة جذور عشرية",
+    "estimatedMinutes": 5,
     "tags": [
-      "قيمة مضبوطة",
-      "حاسبة"
+      "عدد ناطق",
+      "عدد غير ناطق"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
-      "modelledOn": "ict-sqrt2"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
+      "modelledOn": "BEM 2009 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2009",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "مربع مساحته 7 $cm^2$ ."
+    "content": "لتكن الأعداد $C$ ، $B$ ، $A$ حيث:",
+    "formulas": [
+      "A = \\sqrt{0{,}09} \\quad ; \\quad B = \\sqrt{\\dfrac{100}{49}} \\quad ; \\quad C = \\sqrt{0{,}9}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هي القيمة المضبوطة لطول ضلعه (بـ $cm$)؟",
+      "step": "01",
+      "statement": "بيّن أن $A \\times B$ عدد ناطق.",
       "learningPoints": [
         {
-          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "code": "4am_natiqa-ghayr-natiqa_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة الجداء $A \\times B$ على شكل كسر",
+      "expectedAnswer": "3/7",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\sqrt{7}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "2,645751311",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HASIBA-MUDBUTA"
-        },
-        {
-          "id": "C",
-          "content": "3,5",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-NISF"
-        },
-        {
-          "id": "D",
-          "content": "2,65",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+          "value": "3/70",
+          "id": "MISC-JIDHR-FASILA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "طول الضلع هو العدد الموجب الذي مربعه 7."
+          "content": "احسب $A$ : ما العدد العشري الذي مربعه 0,09؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هل 7 مربع لعدد ناطق؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "العدد العشري الذي تعرضه الحاسبة ناطق: هل يمكن أن يكون مربعه 7 بالضبط؟"
+          "content": "احسب $B$ : ابحث عن كسر مربعه $\\dfrac{100}{49}$ ."
         }
       ],
       "feedback": {
-        "correct": "7 ليس مربعًا لعدد ناطق، فطول الضلع ليس ناطقًا: قيمته المضبوطة $\\sqrt{7}$، والأعداد العشرية قيم مقرّبة.",
-        "incorrect": "ما تعرضه الحاسبة لجذر غير ناطق قيمة مقرّبة فقط."
-      }
+        "correct": "$A = 0{,}3$ و $B = \\dfrac{10}{7}$ ، إذن $A \\times B = \\dfrac{3}{10} \\times \\dfrac{10}{7} = \\dfrac{3}{7}$ .",
+        "incorrect": "احسب كل جذر على حدة (انتبه إلى موضع الفاصلة)، ثم اضرب."
+      },
+      "solution": {
+        "lines": [
+          "$0{,}3^2 = 0{,}09$ إذن $A = 0{,}3 = \\dfrac{3}{10}$",
+          "$\\left(\\dfrac{10}{7}\\right)^2 = \\dfrac{100}{49}$ إذن $B = \\dfrac{10}{7}$",
+          "$A \\times B = \\dfrac{3}{10} \\times \\dfrac{10}{7} = \\dfrac{3}{7}$",
+          "إذن $A \\times B$ عدد ناطق."
+        ],
+        "result": "A \\times B = \\dfrac{3}{7}"
+      },
+      "work": "required",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "هل $C$ عدد ناطق؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-FASILA"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "answerFormat": "اختر جوابك، ثم قارن تبريرك بالحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $0{,}3^2$ : هل يساوي 0,9؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب 0,9 على شكل كسر غير قابل للاختزال، وانظر إلى مقامه."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}9 = \\dfrac{9}{10}$ وليس مربعًا لعدد ناطق ($0{,}3^2 = 0{,}09$)، إذن $C$ ليس عددًا ناطقًا.",
+        "incorrect": "لا تخلط بين $\\sqrt{0{,}09}$ و $\\sqrt{0{,}9}$ : تحقّق بالتربيع."
+      },
+      "solution": {
+        "lines": [
+          "$0{,}3^2 = 0{,}09 \\neq 0{,}9$ و $0{,}9 = \\dfrac{9}{10}$",
+          "10 ليس مربعًا لعدد طبيعي، فالعدد $\\dfrac{9}{10}$ ليس مربعًا لعدد ناطق.",
+          "إذن $C = \\sqrt{0{,}9}$ ليس عددًا ناطقًا."
+        ]
+      },
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-natiqa-ghayr-natiqa-l2-009",
-  "lessonCode": "natiqa-ghayr-natiqa",
-  "level": 2
+  ]
 }

@@ -3,10 +3,10 @@
   "lessonCode": "muadala-ula",
   "level": 1,
   "metadata": {
-    "title": "تمرين 3 — المجهول وعدد",
+    "title": "المجهول مضافًا إليه عدد",
     "estimatedMinutes": 4,
     "tags": [
-      "نقل حد"
+      "x + b = c"
     ],
     "source": {
       "type": "textbook",
@@ -14,98 +14,118 @@
       "page": 50,
       "section": "أوظّف تعلّماتي",
       "number": 3
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 50): حل كل معادلة من المعادلات المقترحة."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حل المعادلة $x + 11 = 2$ هو:",
+      "step": "01",
+      "sub": "ا",
+      "lead": "حل كلا من المعادلتين الآتيتين:",
+      "statement": "$x + 11 = 2$",
       "learningPoints": [
         {
-          "code": "4am_muadala-ula_P2",
+          "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
+      "expectedAnswer": "-9",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$13$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+          "value": "-1/9",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
         },
         {
-          "id": "B",
-          "content": "$9$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
-        },
-        {
-          "id": "C",
-          "content": "$-9$",
-          "isCorrect": true
+          "value": "13",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المجهول $x$ مضاف إليه عدد (أو مطروح منه) في طرف واحد."
+          "content": "عدد يُضاف إلى $x$ (أو يُطرح منه): يجب إبعاده عن $x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "أجرِ على الطرفين العملية المعاكسة لما أُجري على $x$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ما يُطرح من طرف يُطرح من الطرف الآخر أيضًا، فيبقى $x$ وحده."
+          "content": "اطرح هذا العدد من الطرفين (أو أضف معاكسه إليهما)."
         }
       ],
       "feedback": {
-        "correct": "$x + 11 = 2$ : نصل إلى $x = -9$.",
-        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
-      }
+        "correct": "$x = -9$ .",
+        "incorrect": "اطرح العدد نفسه من الطرفين معًا، ثم تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$x = 2 - 11$"
+        ],
+        "result": "x = -9"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "حلّ المعادلة $3{,}2 + x = 5$ .",
+      "step": "01",
+      "sub": "ب",
+      "statement": "$3{,}2 + x = 5$",
       "learningPoints": [
         {
-          "code": "4am_muadala-ula_P2",
+          "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
-      "expectedAnswer": "9/5",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
+      "expectedAnswer": "1,8",
+      "misconceptionSignatures": [
+        {
+          "value": "5/9",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "value": "41/5",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المجهول $x$ مضاف إليه عدد (أو مطروح منه) في طرف واحد."
+          "content": "عدد يُضاف إلى $x$ (أو يُطرح منه): يجب إبعاده عن $x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "أجرِ على الطرفين العملية المعاكسة لما أُجري على $x$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ما يُطرح من طرف يُطرح من الطرف الآخر أيضًا، فيبقى $x$ وحده."
+          "content": "اطرح هذا العدد من الطرفين (أو أضف معاكسه إليهما)."
         }
       ],
       "feedback": {
-        "correct": "$3{,}2 + x = 5$ : نصل إلى $x = \\dfrac{9}{5}$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "$x = 1{,}8$ .",
+        "incorrect": "اطرح العدد نفسه من الطرفين معًا، ثم تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$x = 5 - 3{,}2$"
+        ],
+        "result": "x = 1{,}8"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
   ]
 }

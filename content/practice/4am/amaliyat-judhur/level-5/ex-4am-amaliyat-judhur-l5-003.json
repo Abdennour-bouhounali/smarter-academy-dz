@@ -1,118 +1,170 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l5-003",
+  "lessonCode": "amaliyat-judhur",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — مستطيل بأبعاد جذرية",
-    "estimatedMinutes": 7,
+    "title": "على منوال BEM 2025 — عمق بئر",
+    "estimatedMinutes": 13,
     "tags": [
-      "جداء جذرين",
-      "مجموع جذرين"
+      "حاصل قسمة جذرين",
+      "وضعية إدماجية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_amaliyat-judhur_P1",
-      "modelledOn": null
+      "reason": "bem_modelled",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": "BEM 2025 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2025",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "ABCD مستطيل طوله $AB = \\sqrt{45}\\,m$ وعرضه $BC = \\sqrt{5}\\,m$ ."
+    "content": "في قرية بولاية الجلفة، أراد أحمد تقدير عمق بئر قديمة. تعلّم في درس العلوم الفيزيائية أن المدة $t$ (بالثانية) التي يستغرقها حجر يسقط سقوطًا حرًّا من ارتفاع $h$ (بالمتر) تُعطى تقريبًا بالعلاقة: $t = \\sqrt{\\dfrac{h}{5}}$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب مساحة المستطيل ABCD بـ $m^2$ .",
+      "step": "01",
+      "statement": "احسب المدة التي يستغرقها حجر يسقط من ارتفاع $45\\,m$ .",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P1",
+          "code": "4am_amaliyat-judhur_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "15",
+      "answerFormat": "عدد طبيعي: المدة بالثانية",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "9",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "مساحة المستطيل = الطول × العرض."
+          "content": "عوّض $h$ بالعدد 45 في العلاقة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\sqrt{45} \\times \\sqrt{5} = \\sqrt{45 \\times 5}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل $45 \\times 5$ مربّع تام؟"
+          "content": "احسب حاصل القسمة تحت الجذر أولًا."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{45} \\times \\sqrt{5} = \\sqrt{225} = 15\\,m^2$",
-        "incorrect": "اضرب البعدين تحت جذر واحد."
-      }
+        "correct": "$t = \\sqrt{\\dfrac{45}{5}} = \\sqrt{9} = 3$ s.",
+        "incorrect": "عوّض $h = 45$ ثم احسب $\\dfrac{45}{5}$ قبل حساب الجذر."
+      },
+      "solution": {
+        "lines": [
+          "$t = \\sqrt{\\dfrac{45}{5}}$",
+          "$t = \\sqrt{9}$"
+        ],
+        "result": "t = 3\\,s"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "القيمة المضبوطة لطول القطر AC بـ $m$ هي:",
+      "step": "02",
+      "statement": "ليكن $t_1$ مدة السقوط من ارتفاع $180\\,m$ و $t_2$ مدة السقوط من ارتفاع $45\\,m$ . احسب $\\dfrac{t_1}{t_2}$ ، ثم فسّر النتيجة.",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P3",
+          "code": "4am_amaliyat-judhur_P2",
           "role": "primary"
-        },
-        {
-          "code": "4am_amaliyat-judhur_P1",
-          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\sqrt{45} + \\sqrt{5}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-JAMA"
-        },
-        {
-          "id": "B",
-          "content": "$25\\sqrt{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
-        },
-        {
-          "id": "C",
-          "content": "$5\\sqrt{2}$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$50$",
-          "isCorrect": false
+          "value": "4",
+          "id": "MISC-QISMA-JIDHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المثلث ABC قائم في B."
+          "content": "$\\dfrac{t_1}{t_2}$ حاصل قسمة جذرين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "خاصية فيثاغورس: $AC^2 = AB^2 + BC^2$ ، و $(\\sqrt{45})^2 = 45$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$AC = \\sqrt{45 + 5}$ ، ثم أخرج مربّعًا من تحت الجذر."
+          "content": "اكتبه تحت جذر واحد: الكسران تحت الجذر لهما نفس المقام 5."
         }
       ],
       "feedback": {
-        "correct": "$AC = \\sqrt{45 + 5} = \\sqrt{50} = \\sqrt{5^2 \\times 2}$ ؛ و $\\sqrt{45} + \\sqrt{5} \\neq \\sqrt{50}$ .",
-        "incorrect": "الجذر لا يتوزّع على الجمع، ولا تنسَ أخذ الجذر في النهاية."
-      }
+        "correct": "$\\dfrac{t_1}{t_2} = \\sqrt{\\dfrac{180}{45}} = \\sqrt{4} = 2$ : مدة السقوط من $180\\,m$ ضعف مدة السقوط من $45\\,m$ ، رغم أن الارتفاع أربعة أمثال.",
+        "incorrect": "استعمل $\\dfrac{\\sqrt{a}}{\\sqrt{b}} = \\sqrt{\\dfrac{a}{b}}$ ، ولا تخلط بين نسبة الارتفاعين ونسبة المدتين."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{t_1}{t_2} = \\dfrac{\\sqrt{\\dfrac{180}{5}}}{\\sqrt{\\dfrac{45}{5}}} = \\sqrt{\\dfrac{180}{5} \\times \\dfrac{5}{45}}$",
+          "$= \\sqrt{\\dfrac{180}{45}} = \\sqrt{4}$",
+          "إذن مدة السقوط من $180\\,m$ ضعف مدة السقوط من $45\\,m$ ، رغم أن الارتفاع أربعة أمثال."
+        ],
+        "result": "\\dfrac{t_1}{t_2} = 2"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "☜ ترك أحمد حجرًا يسقط في البئر، فسمع صوت ارتطامه بالماء بعد $2{,}4$ ثانية (نهمل مدة انتقال الصوت). ما عمق سطح الماء في البئر؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري: العمق بالمتر (بالفاصلة)",
+      "expectedAnswer": "28.8",
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-MURABBA-DIF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من العلاقة $t = \\sqrt{\\dfrac{h}{5}}$ ، ربّع الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استنتج $h$ بدلالة $t$ ثم عوّض."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{h}{5} = 2{,}4^2 = 5{,}76$ ، إذن $h = 5 \\times 5{,}76 = 28{,}8$ m.",
+        "incorrect": "ربّع طرفي العلاقة لتتخلص من الجذر، ثم اضرب في 5."
+      },
+      "solution": {
+        "lines": [
+          "$t = \\sqrt{\\dfrac{h}{5}}$ يعني $t^2 = \\dfrac{h}{5}$ ( $h \\geq 0$ ) ، أي $h = 5t^2$ .",
+          "$h = 5 \\times 2{,}4^2 = 5 \\times 5{,}76$"
+        ],
+        "result": "h = 28{,}8\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 300
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l5-003",
-  "lessonCode": "amaliyat-judhur",
-  "level": 5
+  ]
 }

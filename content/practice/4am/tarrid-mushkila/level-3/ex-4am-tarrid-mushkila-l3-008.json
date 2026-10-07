@@ -3,124 +3,182 @@
   "lessonCode": "tarrid-mushkila",
   "level": 3,
   "metadata": {
-    "title": "تدريب — معدّل علامتين",
-    "estimatedMinutes": 4,
+    "title": "معدّل فرضين",
+    "estimatedMinutes": 8,
     "tags": [
+      "ترييض",
       "متراجحة",
-      "تحقّق"
+      "معدّل"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tarrid-mushkila_P2",
       "modelledOn": "ex-30"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "تحصّل أنس على 12 من 20 في الفرض الأول. نسمّي $x$ علامته (من 20) في الفرض الثاني. يريد أن يكون معدّل العلامتين 14 على الأقل."
+    "content": "تحصّل أنس على 12 من 20 في الفرض الأول. نسمّي $x$ علامته (من 20) في الفرض الثاني. يريد أنس أن يكون معدّل العلامتين 14 على الأقل."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ متراجحة تترجم النص؟",
+      "step": "01",
+      "lead": "ترجم رغبة أنس بمتراجحة ثم حلّها.",
+      "statement": "حدّ الحلول $k$ :",
       "learningPoints": [
         {
-          "code": "4am_tarrid-mushkila_P1",
+          "code": "4am_tarrid-mushkila_P2",
           "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$12 + x \\geq 14$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
         },
         {
-          "id": "B",
-          "content": "$\\dfrac{12 + x}{2} \\geq 14$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{12 + x}{2} \\leq 14$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "حلول المتراجحة من الشكل $x < k$ أو $x \\leqslant k$ أو $x > k$ أو $x \\geqslant k$ : اكتب العدد $k$ فقط (عدد صحيح أو كسر a/b، قد يكون سالبًا)",
+      "expectedAnswer": "16",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما معدّل علامتين؟"
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر، كما في حل معادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المعدّل مجموع العلامتين مقسومًا على 2."
+          "content": "إضافة عدد إلى الطرفين أو طرحه منهما لا تغيّر اتجاه المتباينة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "«على الأقل» تعني أكبر من أو يساوي."
+          "content": "الحدّ هو العدد الذي يحقّق المعادلة المرفقة (نضع «=» مكان رمز المتباينة): اقسم في الأخير على معامل $x$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{12 + x}{2} \\geq 14$ .",
-        "incorrect": "المعدّل نصف المجموع."
-      }
+        "correct": "حدّ الحلول هو $k = 16$ .",
+        "incorrect": "أعد الحل سطرًا سطرًا: العملية نفسها على الطرفين، ثم القسمة على معامل $x$ في الأخير."
+      },
+      "solution": {
+        "lines": [
+          "حدّ الحلول هو حلّ المعادلة المرفقة: $\\dfrac{12 + x}{2} = 14$",
+          "$12 + x = 28$",
+          "$x = 28 - 12$",
+          "إذن حدّ الحلول هو $16$ ."
+        ],
+        "result": "k = 16"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "ما العلامات الممكنة للفرض الثاني؟",
+      "step": "01",
+      "statement": "حلول المتراجحة هي الأعداد $x$ حيث:",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$x \\geq 16$",
+          "content": "$x < 16$",
           "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
         },
         {
           "id": "B",
-          "content": "$16 \\leq x \\leq 20$",
-          "isCorrect": true
+          "content": "$x \\leqslant 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
         },
         {
           "id": "C",
-          "content": "$x \\geq 14$",
+          "content": "$x > 16$",
           "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "D",
+          "content": "$x \\geqslant 16$",
+          "isCorrect": true
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حلّ المتراجحة."
+          "content": "انظر إلى إشارة معامل $x$ في آخر سطر قبل القسمة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تجد $x \\geq 16$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "العلامة من 20: لا تتجاوز 20."
+          "content": "القسمة على عدد موجب تحافظ على الاتجاه، والقسمة على عدد سالب تغيّره."
         }
       ],
       "feedback": {
-        "correct": "$x \\geq 16$ والعلامة لا تتجاوز 20: $16 \\leq x \\leq 20$ .",
-        "incorrect": "علامة على 20 لا تكون 21."
-      }
+        "correct": "$x \\geqslant 16$ .",
+        "incorrect": "تتبّع سطور الحل: الاتجاه يتغيّر فقط عند الضرب أو القسمة على عدد سالب، ونوع المتباينة (تامة أو غير تامة) لا يتغيّر أبدًا."
+      },
+      "solution": {
+        "lines": [
+          "«على الأقل» تعني: أكبر من أو يساوي.",
+          "$\\dfrac{12 + x}{2} \\geqslant 14$",
+          "$12 + x \\geqslant 28$",
+          "$x \\geqslant 28 - 12$",
+          "إذن حلول المتراجحة هي كل قيم $x$ الأكبر من أو تساوي $16$ .",
+          "قسمنا الطرفين في آخر خطوة على عدد موجب، فبقي اتجاه المتباينة ونوعها."
+        ],
+        "result": "x \\geqslant 16"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "العلامة عدد طبيعي لا يتجاوز 20 : ما عدد العلامات الممكنة في الفرض الثاني؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد العلامات",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب العلامات الطبيعية التي تحقّق المتراجحة ولا تتجاوز 20 ."
+        }
+      ],
+      "feedback": {
+        "correct": "العلامات الممكنة: 16 ، 17 ، 18 ، 19 ، 20 ، أي 5 علامات.",
+        "incorrect": "الحلول تبدأ من الحدّ (لأنه حلّ) وتنتهي عند 20 ."
+      },
+      "solution": {
+        "lines": [
+          "حلول المتراجحة: $x \\geqslant 16$ ، والعلامة لا تتجاوز 20 : $16 \\leqslant x \\leqslant 20$ .",
+          "العلامات الطبيعية الممكنة: 16 ، 17 ، 18 ، 19 ، 20 .",
+          "إذن عددها 5 ."
+        ],
+        "result": "5"
+      },
+      "timeSeconds": 120
     }
   ]
 }

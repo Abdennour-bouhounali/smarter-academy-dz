@@ -14,6 +14,8 @@ describe('la colonne latérale du lecteur se replie', () => {
   it('repliée : l’exercice seul, sur toute la largeur', () => {
     expect(practiceGridClass(true)).not.toContain('xl:grid-cols-[28rem');
     expect(practiceGridClass(false)).toContain('xl:grid-cols-[28rem_minmax(0,1fr)]');
+    // Feuille d'examen (BEM) : colonne étroite, le sujet prend la place.
+    expect(practiceGridClass(false, { narrow: true })).toContain('xl:grid-cols-[19rem_minmax(0,1fr)]');
     // Le mode classe reste un bloc dans les deux cas.
     for (const hidden of [true, false]) expect(practiceGridClass(hidden)).toContain('[[data-sa-classroom]_&]:block');
   });
@@ -40,7 +42,7 @@ describe('la colonne latérale du lecteur se replie', () => {
     const source = read(file);
     expect(source).toContain('useSideColumn()');
     expect(source).toContain('<SideColumnToggle');
-    expect(source).toContain('practiceGridClass(sideHidden)');
+    expect(source).toMatch(/practiceGridClass\(sideHidden(, \{ narrow: isExam \})?\)/);
     // Sous `xl` la colonne reste visible (le bouton n'y est pas) : jamais retirée du DOM.
     expect(source).toContain("${sideHidden ? 'xl:hidden' : ''}");
   });

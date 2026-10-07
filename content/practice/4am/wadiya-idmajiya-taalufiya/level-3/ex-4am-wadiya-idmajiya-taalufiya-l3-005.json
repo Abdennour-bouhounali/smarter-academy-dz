@@ -4,7 +4,7 @@
   "level": 3,
   "metadata": {
     "title": "بطارية الهاتف",
-    "estimatedMinutes": 4,
+    "estimatedMinutes": 10,
     "tags": [
       "دالة متناقصة",
       "تناسب التغيّرات"
@@ -13,123 +13,152 @@
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "بعد ساعة من اللعب على الهاتف بقي في البطارية 85% ، وبعد 4 ساعات بقي 40%. نسبة الشحن $f(x)$ بعد $x$ ساعة دالة تآلفية."
+    "content": "بعد ساعة من اللعب على الهاتف بقي في البطارية 85% من الشحن، وبعد 4 ساعات بقي 40% .\nنسبة الشحن $f(x)$ (بـ %) بعد $x$ ساعة من اللعب دالة تآلفية."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "دستور الدالة $f$ :",
+      "step": "01",
+      "lead": "أوجد العبارة الجبرية للدالة $f$ .",
+      "statement": "أعط العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-15",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$f(x) = -15x + 100$",
-          "isCorrect": true
+          "id": "MISC-BAYANI-ISHARA-A",
+          "value": "15"
         },
         {
-          "id": "B",
-          "content": "$f(x) = 15x + 70$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAGHAYYUR-TARTIB"
-        },
-        {
-          "id": "C",
-          "content": "$f(x) = -45x + 130$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
-        },
-        {
-          "id": "D",
-          "content": "$f(x) = 85x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+          "id": "MISC-TAGHAYYUR-BIDUN-QISMA",
+          "value": "-45"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$a = \\dfrac{40 - 85}{4 - 1}$."
+          "content": "خاصية تناسب التغيّرات."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$a = -15$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$b = 85 - a$."
+          "content": "النسبة تنقص: انتبه إلى إشارة المعامل."
         }
       ],
       "feedback": {
-        "correct": "$a = \\dfrac{-45}{3} = -15$ و $b = 85 + 15 = 100$.",
-        "incorrect": "نطرح بالترتيب نفسه في البسط والمقام."
+        "correct": "$a = \\dfrac{-45}{3}$ .",
+        "incorrect": "اطرح بالترتيب نفسه في البسط والمقام: $\\dfrac{40 - 85}{4 - 1}$ ."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "$a = \\dfrac{f(4) - f(1)}{4 - 1} = \\dfrac{40 - 85}{3} = \\dfrac{-45}{3} = -15$",
+          "$f(1) = 85$ أي: $-15 \\times 1 + b = 85$ ، ومنه $b = 100$ .",
+          "$f(x) = -15x + 100$"
+        ],
+        "result": "f(x) = -15x + 100"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "تفرغ البطارية تماما بعد:",
+      "step": "01",
+      "statement": "أعط العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل $f(1) = 85$ بعد حساب $a$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$-15 + b = 85$ .",
+        "incorrect": "$b = f(1) - a \\times 1$ ."
+      },
+      "solution": {
+        "lines": [
+          "$a = \\dfrac{f(4) - f(1)}{4 - 1} = \\dfrac{40 - 85}{3} = \\dfrac{-45}{3} = -15$",
+          "$f(1) = 85$ أي: $-15 \\times 1 + b = 85$ ، ومنه $b = 100$ .",
+          "$f(x) = -15x + 100$"
+        ],
+        "result": "f(x) = -15x + 100"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "بعد كم دقيقة من بداية اللعب تفرغ البطارية تماما؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المدة بالدقائق",
+      "expectedAnswer": "400",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "6 ساعات و 40 دقيقة",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "6 ساعات و 67 دقيقة",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAFSIR"
-        },
-        {
-          "id": "C",
-          "content": "7 ساعات",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAFSIR"
+          "id": "MISC-TARRID-TAHAQQUQ",
+          "value": "20/3"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$-15x + 100 = 0$."
+          "content": "حلّ المعادلة $f(x) = 0$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$x = \\dfrac{20}{3}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الساعة 60 دقيقة."
+          "content": "الحل بالساعات: حوّله إلى دقائق."
         }
       ],
       "feedback": {
-        "correct": "$x = \\dfrac{100}{15} = 6 + \\dfrac{2}{3}$ ساعة، و $\\dfrac{2}{3}$ ساعة $= 40$ دقيقة.",
-        "incorrect": "نحوّل الجزء العشري من الساعة إلى دقائق."
+        "correct": "$-15x + 100 = 0$ .",
+        "incorrect": "حلّ $f(x) = 0$ ثم اضرب عدد الساعات في 60."
       },
-      "cognitiveDemand": "transfer",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "$-15x + 100 = 0$",
+          "$15x = 100$",
+          "$x = \\dfrac{20}{3}$ ساعة",
+          "$\\dfrac{20}{3} \\times 60 = 400$ دقيقة (أي 6 ساعات و 40 دقيقة)."
+        ],
+        "result": "400"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

@@ -3,105 +3,115 @@
   "lessonCode": "wadiya-idmajiya-taalufiya",
   "level": 2,
   "metadata": {
-    "title": "توصيل الأكل: صورة وعدد صورته",
-    "estimatedMinutes": 3,
+    "title": "توصيل الطلبات إلى المنازل",
+    "estimatedMinutes": 6,
     "tags": [
-      "صورة",
-      "العدد الذي صورته"
+      "صورة عدد",
+      "العدد الذي صورته معلومة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "مطعم «فاست فود» يوصل الطلبات: 150 DA مصاريف ثابتة ثم 20 DA عن كل كيلومتر ( $x$ عدد الكيلومترات)."
+    "content": "يوصل مطعم الطلبات إلى المنازل مقابل 150DA مصاريف ثابتة، يضاف إليها 20DA عن كل كيلومتر.\nنسمّي $x$ المسافة بالكيلومتر و $f(x)$ ثمن التوصيل بـ DA."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ثمن التوصيل لمسافة 7 km:",
+      "step": "01",
+      "statement": "احسب ثمن التوصيل لمسافة 7km .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد بالدينار",
+      "answerFormat": "عدد: الثمن بـ DA",
       "expectedAnswer": "290",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "140"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$20x + 150$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$20 \\times 7 + 150$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "صورة 7."
+          "content": "$f(x) = 20x + 150$ : احسب $f(7)$ ."
         }
       ],
       "feedback": {
-        "correct": "$140 + 150 = 290\\,\\mathrm{DA}$.",
-        "incorrect": "نضرب ثم نضيف المصاريف الثابتة."
+        "correct": "$f(7) = 20 \\times 7 + 150$ .",
+        "incorrect": "اضرب المسافة في 20 ثم أضف المصاريف الثابتة."
       },
-      "cognitiveDemand": "recall",
-      "difficulty": 2,
-      "misconceptionSignatures": [
-        {
-          "value": "140",
-          "id": "MISC-TAALUFI-NISYAN-B"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$f(x) = 20x + 150$",
+          "$f(7) = 20 \\times 7 + 150 = 140 + 150 = 290$"
+        ],
+        "result": "290DA"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "دفع زبون 450 DA للتوصيل. ما المسافة بالكيلومتر؟",
+      "step": "02",
+      "statement": "دفع زبون 450DA ثمنا للتوصيل. احسب المسافة المقطوعة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد الكيلومترات",
+      "answerFormat": "عدد: المسافة بـ km",
       "expectedAnswer": "15",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-SABIQ-QISMA",
+          "value": "45/2"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$20x + 150 = 450$."
+          "content": "حلّ المعادلة $f(x) = 450$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$20x = 300$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اطرح ثم اقسم."
+          "content": "اطرح المصاريف الثابتة قبل القسمة."
         }
       ],
       "feedback": {
-        "correct": "$x = \\dfrac{300}{20} = 15$ km.",
-        "incorrect": "نطرح 150 أولا ثم نقسم على 20."
+        "correct": "$20x + 150 = 450$ .",
+        "incorrect": "اطرح 150 من 450 ثم اقسم على 20."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2,
-      "misconceptionSignatures": [
-        {
-          "value": "45/2",
-          "id": "MISC-TAALUFI-SABIQ-QISMA"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$20x + 150 = 450$",
+          "$20x = 300$",
+          "$x = 15$",
+          "المسافة المقطوعة هي 15km ."
+        ],
+        "result": "15km"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

@@ -1,174 +1,222 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l5-005",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — حديقة على شكل مثلث قائم",
-    "estimatedMinutes": 7,
+    "title": "على منوال BEM 2021 — طلاء جدران غرفة",
+    "estimatedMinutes": 14,
     "tags": [
-      "وضعية إدماجية",
-      "فيثاغورس",
-      "معادلة"
+      "a√5",
+      "تدوير",
+      "وضعية إدماجية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
-      "modelledOn": null
+      "modelledOn": "BEM 2021 II ☜"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2021",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "حديقة على شكل مثلث قائم، أحد ضلعيه القائمين ضعف الآخر، وطول وترها $10\\,m$. نسمّي $x$ طول الضلع القائم الأصغر (بالمتر)."
+    "content": "يريد حرفي طلاء الجدران الأربعة لغرفة أرضيتها مربعة الشكل مساحتها $20m^2$ ، و ارتفاعها $3m$ (نهمل الباب و النافذة).\n• لتر واحد من الدهن يكفي لطلاء $4m^2$ ، و يُباع الدهن في دلاء سعة كل منها $5L$ .\n• أجرة الحرفي 9000DA.\n• خصّص صاحب الغرفة 16500DA للدهن و الأجرة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المعادلة التي يحققها $x$ هي ...",
+      "step": "01",
+      "statement": "اكتب طول ضلع أرضية الغرفة على الشكل $a\\sqrt{5}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$3x^2 = 100$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUAMIL-DUN-TARBI"
+          "value": "4",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         },
         {
-          "id": "B",
-          "content": "$3x = 10$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-JAMA"
-        },
-        {
-          "id": "C",
-          "content": "$2x^2 = 100$",
-          "isCorrect": false
-        },
-        {
-          "id": "D",
-          "content": "$5x^2 = 100$",
-          "isCorrect": true
+          "value": "10",
+          "id": "MISC-JIDHR-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الضلع القائم الآخر $2x$."
+          "content": "طول الضلع هو $\\sqrt{20}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مربع الوتر يساوي مجموع مربعي الضلعين القائمين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$(2x)^2 = 4x^2$."
+          "content": "اكتب $20 = 4 \\times 5$ ."
         }
       ],
       "feedback": {
-        "correct": "$x^2 + (2x)^2 = 10^2$، أي $5x^2 = 100$.",
-        "incorrect": "ربّع $2x$ كاملًا: $(2x)^2 = 4x^2$."
+        "correct": "$\\sqrt{20} = 2\\sqrt{5}\\,m$",
+        "incorrect": "أخرج جذر المربع التام من تحت الجذر."
       },
-      "cognitiveDemand": "transfer"
+      "solution": {
+        "lines": [
+          "طول الضلع $c$ : $c^2 = 20$ و $c > 0$",
+          "$c = \\sqrt{20} = \\sqrt{4 \\times 5}$"
+        ],
+        "result": "c = 2\\sqrt{5}\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "القيمة المضبوطة لـ $x$ (بالمتر) هي ...",
+      "step": "02",
+      "sub": "ا",
+      "statement": "اكتب المساحة الكلية للجدران الأربعة على الشكل $a\\sqrt{5}$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "24",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$2\\sqrt{5}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$20$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$4\\sqrt{5}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
-        },
-        {
-          "id": "D",
-          "content": "$2\\sqrt{5}$ أو $-2\\sqrt{5}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-SALIB"
+          "value": "6",
+          "id": "MISC-MUAMIL-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اعزل $x^2$."
+          "content": "كل جدار مستطيل بُعداه ضلع الأرضية و الارتفاع."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$x$ طول فهو موجب."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بسّط $\\sqrt{20}$."
+          "content": "المساحة الكلية أربعة أضعاف مساحة جدار واحد."
         }
       ],
       "feedback": {
-        "correct": "$x^2 = 20$ و $x > 0$: $x = \\sqrt{20} = 2\\sqrt{5}$.",
-        "incorrect": "الطول موجب: نأخذ حلًّا واحدًا ونبسّطه."
+        "correct": "$4 \\times 2\\sqrt{5} \\times 3 = 24\\sqrt{5}\\,m^2$",
+        "incorrect": "اضرب مساحة جدار واحد ($2\\sqrt{5} \\times 3$) في عدد الجدران."
       },
-      "cognitiveDemand": "transfer"
+      "solution": {
+        "lines": [
+          "مساحة جدار واحد: $2\\sqrt{5} \\times 3 = 6\\sqrt{5}\\,m^2$",
+          "المساحة الكلية: $4 \\times 6\\sqrt{5}$"
+        ],
+        "result": "24\\sqrt{5}\\,m^2"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q3",
-      "statement": "ما هي مساحة الحديقة (بالمتر المربع)؟",
+      "step": "02",
+      "sub": "ب",
+      "statement": "أعط المدوّر إلى $0{,}01$ لهذه المساحة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (بالمتر المربع)",
-      "expectedAnswer": "20",
+      "answerFormat": "عدد عشري (بالفاصلة) برقمين بعد الفاصلة: المساحة بـ $m^2$",
+      "expectedAnswer": "53.67",
+      "misconceptionSignatures": [
+        {
+          "value": "53.76",
+          "id": "MISC-WADIYA-TADWIR-MUBAKKIR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "مساحة المثلث القائم نصف جداء ضلعيه القائمين."
+          "content": "احسب $24\\sqrt{5}$ بالحاسبة دون تدوير مسبق."
+        }
+      ],
+      "feedback": {
+        "correct": "$24\\sqrt{5} \\approx 53{,}665$ ، و مدوّره $53{,}67m^2$ .",
+        "incorrect": "لا تدوّر $\\sqrt{5}$ قبل الضرب في 24: احسب الجداء ثم دوّر."
+      },
+      "solution": {
+        "lines": [
+          "$24\\sqrt{5} \\approx 53{,}6656$"
+        ],
+        "result": "24\\sqrt{5} \\approx 53{,}67m^2"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "☜ أعط أكبر ثمن ممكن للدلو الواحد من الدهن حتى لا تتجاوز التكلفة المبلغ المخصّص.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: الثمن بـ DA",
+      "expectedAnswer": "2500",
+      "misconceptionSignatures": [
+        {
+          "value": "7500",
+          "id": "MISC-WADIYA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب عدد اللترات اللازمة، ثم عدد الدلاء (لا يُباع جزء من الدلو)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\dfrac{x \\times 2x}{2} = x^2$."
+          "content": "اطرح الأجرة من المبلغ المخصّص."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "استعمل قيمة $x^2$."
+          "content": "اقسم الباقي على عدد الدلاء."
         }
       ],
       "feedback": {
-        "correct": "المساحة $\\dfrac{x \\times 2x}{2} = x^2 = 20\\,m^2$.",
-        "incorrect": "المساحة نصف جداء الضلعين القائمين."
+        "correct": "$53{,}67 \\div 4 \\approx 13{,}4L$ : 3 دلاء، و $3p + 9000 \\leq 16500$ يعني $p \\leq 2500DA$ .",
+        "incorrect": "احسب عدد الدلاء اللازمة (بالزيادة)، ثم اقسم ما يبقى بعد الأجرة على هذا العدد."
       },
-      "cognitiveDemand": "transfer"
+      "solution": {
+        "lines": [
+          "كمية الدهن: $24\\sqrt{5} \\div 4 = 6\\sqrt{5} \\approx 13{,}42L$",
+          "دلوان يكفيان $10L$ فقط، إذن يلزم 3 دلاء ($15L$).",
+          "$3p + 9000 \\leq 16500$ يعني $3p \\leq 7500$"
+        ],
+        "result": "p \\leq 2500DA"
+      },
+      "work": "optional",
+      "timeSeconds": 360
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l5-005",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 5
+  ]
 }

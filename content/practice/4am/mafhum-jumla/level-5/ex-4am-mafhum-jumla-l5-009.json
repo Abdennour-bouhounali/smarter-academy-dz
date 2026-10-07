@@ -3,47 +3,143 @@
   "lessonCode": "mafhum-jumla",
   "level": 5,
   "metadata": {
-    "title": "تدريب — مجموعة دردشة القسم",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2023 — مواد البناء بباتنة",
+    "estimatedMinutes": 20,
     "tags": [
-      "قبل وبعد",
-      "ترجمة"
+      "جملة",
+      "ترجمة",
+      "حالات خاصة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_mafhum-jumla_P2",
-      "modelledOn": "act-1"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_mafhum-jumla_P3",
+      "modelledOn": "BEM 2023 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2023",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "في مجموعة دردشة القسم 28 تلميذا: $x$ ولدًا و $y$ بنتًا. غادر 4 أولاد المجموعة، فأصبح عدد البنات ضعف عدد الأولاد الباقين."
+    "content": "اشترى مقاول من محل لبيع مواد البناء بباتنة 6 أكياس من الإسمنت و 4 أكياس من الجبس بمبلغ 8100DA، ثم اشترى من المحل نفسه 3 أكياس من الإسمنت و 5 أكياس من الجبس بمبلغ 5850DA.\nنسمّي $x$ ثمن كيس الإسمنت و $y$ ثمن كيس الجبس (بالدينار)."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ جملة تترجم هذه الوضعية؟",
+      "step": "01",
+      "statement": "ترجم المعطيات بجملة معادلتين مجهولاها $x$ و $y$ .",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معادلة لكل عملية شراء."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثمن 6 أكياس من الإسمنت هو $6x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "الشراء الأول: $6x + 4y = 8100$",
+          "الشراء الثاني: $3x + 5y = 5850$",
+          "ومنه الجملة: $\\begin{cases} 6x + 4y = 8100 \\\\ 3x + 5y = 5850 \\end{cases}$"
+        ],
+        "result": "\\begin{cases} 6x + 4y = 8100 \\\\ 3x + 5y = 5850 \\end{cases}"
+      },
+      "timeSeconds": 240
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "sub": "ا",
+      "statement": "قال البائع: «ثمن كيس الإسمنت 900DA وثمن كيس الجبس 675DA». هل الثنائية $(900 ; 675)$ حل لهذه الجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$\\begin{cases} x + y = 28 \\\\ y = 2(x - 4) \\end{cases}$",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $900$ و $y$ بـ $675$ في كل معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الثنائية حل للجملة إذا حققت المعادلتين في آن واحد."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 \\times 900 + 4 \\times 675 = 8100$ ؛ $3 \\times 900 + 5 \\times 675 = 6075 \\neq 5850$ : الثنائية ليست حلا للجملة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض في المعادلتين معا وقارن كل نتيجة بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $900$ و $y$ بـ $675$ :",
+          "$6 \\times 900 + 4 \\times 675 = 8100$",
+          "$3 \\times 900 + 5 \\times 675 = 6075 \\neq 5850$",
+          "ومنه الثنائية $(900 ; 675)$ ليست حلا للجملة (لا تحقق المعادلتين معا)."
+        ]
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "هل الثنائية $(950 ; 600)$ حل لهذه الجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "$\\begin{cases} x + y = 28 \\\\ 2y = x - 4 \\end{cases}$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$\\begin{cases} x + y = 28 \\\\ y = 2x - 4 \\end{cases}$",
+          "content": "لا",
           "isCorrect": false
         }
       ],
@@ -51,60 +147,124 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "بعد المغادرة يبقى $x - 4$ ولدًا."
+          "content": "عوّض $x$ بـ $950$ و $y$ بـ $600$ في كل معادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "البنات ضعف الأولاد الباقين: $y = 2 \\times (x - 4)$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المعادلة الأولى عدد التلاميذ."
+          "content": "الثنائية حل للجملة إذا حققت المعادلتين في آن واحد."
         }
       ],
       "feedback": {
-        "correct": "$x + y = 28$ و $y = 2(x - 4)$ .",
-        "incorrect": "الضعف يشمل $x - 4$ كلها: $2(x - 4)$ ."
-      }
+        "correct": "$6 \\times 950 + 4 \\times 600 = 8100$ ؛ $3 \\times 950 + 5 \\times 600 = 5850$ : الثنائية حل للجملة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض في المعادلتين معا وقارن كل نتيجة بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $950$ و $y$ بـ $600$ :",
+          "$6 \\times 950 + 4 \\times 600 = 8100$",
+          "$3 \\times 950 + 5 \\times 600 = 5850$",
+          "ومنه الثنائية $(950 ; 600)$ حل للجملة."
+        ]
+      },
+      "timeSeconds": 120
     },
     {
-      "id": "q2",
-      "statement": "ما هي الثنائية $(x ; y)$ : عدد الأولاد ثم عدد البنات قبل المغادرة؟",
+      "id": "q4",
+      "step": "03",
+      "sub": "ا",
+      "statement": "في الأسبوع الموالي، ودون تغيير في الأسعار، كُتب في فاتورة المقاول: 12 كيسا من الإسمنت و 8 أكياس من الجبس بمبلغ 16000DA. هل للجملة $\\begin{cases} 6x + 4y = 8100 \\\\ 12x + 8y = 16000 \\end{cases}$ حل وحيد، أم ليس لها حل، أم لها عدد غير منته من الحلول؟ برّر.",
       "learningPoints": [
         {
-          "code": "4am_mafhum-jumla_P2",
+          "code": "4am_mafhum-jumla_P4",
           "role": "primary"
         }
       ],
-      "answerType": "point",
-      "answerFormat": "الثنائية $(x ; y)$ : العدد الأول ثم الثاني (عدد صحيح أو كسر مثل 2/5)",
-      "expectedAnswer": {
-        "x": "12",
-        "y": "16"
-      },
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لها حل وحيد",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        },
+        {
+          "id": "B",
+          "content": "ليس لها حل",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لها عدد غير منته من الحلول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $y = 2(x - 4)$ في $x + y = 28$ ."
+          "content": "قارن الشراء الجديد بالشراء الأول."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$x + 2x - 8 = 28$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $x$ ثم $y$ ، وتحقّق في النص."
+          "content": "اقسم طرفي المعادلة الثانية على 2."
         }
       ],
       "feedback": {
-        "correct": "$3x = 36$ أي $x = 12$ و $y = 16$ : بعد المغادرة 8 أولاد و $16 = 2 \\times 8$ .",
-        "incorrect": "تحقّق من الشرطين في النص."
-      }
+        "correct": "ومنه الجملة ليس لها حل: الفاتورة خاطئة.",
+        "incorrect": "قارن المعادلتين بعد ضرب إحداهما أو قسمتها على عدد مناسب: هل تؤولان إلى معادلة واحدة، أم إلى معادلتين طرفاهما الأولان متساويان وطرفاهما الثانيان مختلفان؟"
+      },
+      "solution": {
+        "lines": [
+          "بقسمة طرفي المعادلة الثانية على 2 نجد: $6x + 4y = 8000$ .",
+          "لا يمكن أن يساوي العدد $6x + 4y$ في آن واحد 8100 و 8000.",
+          "ومنه الجملة ليس لها حل: الفاتورة خاطئة."
+        ]
+      },
+      "timeSeconds": 180
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "sub": "ب",
+      "statement": "☜ ما هو المبلغ الصحيح لهذه الفاتورة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "16200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "12 كيسا من الإسمنت و 8 أكياس من الجبس هي ضعف الشراء الأول."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times 8100 = 16200$ ، أي 16200DA .",
+        "incorrect": "قارن الكميات الجديدة بكميات الشراء الأول."
+      },
+      "solution": {
+        "lines": [
+          "$12x + 8y = 2(6x + 4y) = 2 \\times 8100 = 16200$",
+          "وللتحقق: $12 \\times 950 + 8 \\times 600 = 11400 + 4800 = 16200$",
+          "ومنه المبلغ الصحيح 16200DA ."
+        ],
+        "result": "16200\\,DA"
+      },
+      "timeSeconds": 150
     }
   ]
 }

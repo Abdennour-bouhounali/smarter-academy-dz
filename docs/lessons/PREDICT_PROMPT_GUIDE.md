@@ -15,7 +15,7 @@
   **all 14 units done (2026-10-07)**: every regular lesson prompted; the synthesis lessons decided item by item — 70 bricks turned `rappel`, 6 genuinely new synthesis methods prompted; unit 1: one brick turned `rappel`, one item `predict: false`, one
   textbook method box moved and wrapped). Browser check for any lesson:
   `PREDICT_LESSON=<code> node apps/web/e2e/lesson-kit/predict-lesson.mjs` (an autopilot answers the steps
-  until each panel appears and checks the lesson's own prompt is shown).
+  until each panel appears and checks the lesson's own prompt is shown — see §4).
 - **To do**: the other units' gated rules still show the generic question
   (`lesson.json › predict.prompt`). Track it with:
 
@@ -99,6 +99,19 @@ Could a student who did the activity answer it? A browser pass is optional per l
 template: `apps/web/e2e/lesson-kit/predict-rule.mjs` (real student account
 `qa-eleve@smarter.dz`, reset its `student_lesson_progress` row for the lesson first;
 a lesson in `draft` must be published locally for the run, then restored).
+
+The generic script `apps/web/e2e/lesson-kit/predict-lesson.mjs` (`PREDICT_LESSON=<code>`) does this for
+any lesson:
+
+- **Expected prompt**: the brick's `predictPrompt` in `knowledge.jsx` — single quotes, double quotes or a
+  template literal, read only inside that brick's entry (a brick without a prompt never borrows its
+  neighbour's) — else the `prompt` of its `<PredictRule id="…">` in `modules/*.jsx`.
+- **Autopilot**: one pick per question row (`role="group"`, so every row of a `BatchChoiceQuestion` gets
+  answered), first option first; a number step gets `1`. When a step stays stuck on a rejected pick (the
+  pressed option shown ✗), that row moves to its next option and the module is reloaded and replayed — at
+  most 6 reloads per module, none for a lesson passed first time. No answer is read from the source.
+- A rule the autopilot still cannot reach (a numeric answer, a lab to solve) is **reported, not failed**;
+  the lesson needs **at least one** rule met.
 
 ## 5. Working in parallel
 

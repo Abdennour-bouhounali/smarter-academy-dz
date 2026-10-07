@@ -3,27 +3,35 @@
   "lessonCode": "tamthil-bayani-taalufi",
   "level": 1,
   "metadata": {
-    "title": "نشاط 3 (ص 78) — الفاصلة 2",
-    "estimatedMinutes": 3,
+    "title": "نشاط 3 — من $(d)$ إلى $(d')$",
+    "estimatedMinutes": 4,
     "tags": [
       "نشاط 3",
-      "ترتيب"
+      "ترتيب نقطة"
     ],
     "source": {
       "type": "textbook",
       "elementId": "act-3",
       "page": 78,
       "section": "أنشطة",
-      "number": 3
+      "number": 3,
+      "adaptedFrom": "ex-4am-tamthil-bayani-taalufi-l1-001"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 78): $g(x) = \\dfrac{3}{2}x$ و $f(x) = \\dfrac{3}{2}x + 1$ ، و $(d)$ و $(d')$ تمثيلاهما البيانيان."
+    "content": "نعتبر الدالتين $g$ و $f$ حيث: $g(x) = \\dfrac{3}{2}x$ و $f(x) = \\dfrac{3}{2}x + 1$ ، و $(d)$ و $(d')$ تمثيلاهما البيانيان في معلم متعامد ومتجانس."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ترتيب النقطة من $(d)$ التي فاصلتها $2$ :",
+      "step": "01",
+      "statement": "احسب ترتيب النقطة من $(d)$ التي فاصلتها $2$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-taalufi_P1",
@@ -31,34 +39,39 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
       "expectedAnswer": "3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ترتيب نقطة من $(d)$ هو $ax$ ، وترتيب النقطة من $(d')$ التي لها نفس الفاصلة هو $ax + b$ ."
+          "content": "ترتيب نقطة من $(d)$ هو صورة فاصلتها بالدالة $g$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المستقيم $(d')$ هو $(d)$ مرفوعًا بـ $b$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "أضف $b$ إلى ترتيب نقطة $(d)$ (أو اطرحه إذا كان سالبًا)."
+          "content": "اضرب الفاصلة في المعامل $a$ ، ثم أضف $b$ ."
         }
       ],
       "feedback": {
-        "correct": "$1{,}5 \\times 2 = 3$ .",
-        "incorrect": "اضرب الفاصلة في $a$ ثم أضف $b$ ."
-      }
+        "correct": "$g(2) = \\dfrac{3}{2} \\times 2 = 3$ .",
+        "incorrect": "الترتيب هو صورة الفاصلة: اضرب الفاصلة في $a$ ثم أضف $b$ بإشارته."
+      },
+      "solution": {
+        "lines": [
+          "$g(2) = \\dfrac{3}{2} \\times 2 = 3$",
+          "إذن النقطة $(2 ; 3)$ تنتمي إلى $(d)$."
+        ],
+        "result": "g(2) = 3"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "استنتج دون حساب ترتيب النقطة من $(d')$ التي فاصلتها $2$ :",
+      "step": "02",
+      "statement": "استنتج دون حساب ترتيب النقطة من $(d')$ التي فاصلتها $2$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-taalufi_P1",
@@ -66,30 +79,41 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
       "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-TAALUFI-NISYAN-B"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ترتيب نقطة من $(d)$ هو $ax$ ، وترتيب النقطة من $(d')$ التي لها نفس الفاصلة هو $ax + b$ ."
+          "content": "$f(x) = g(x) + 1$ : المستقيم $(d')$ هو $(d)$ مرفوعًا بوحدة واحدة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المستقيم $(d')$ هو $(d)$ مرفوعًا بـ $b$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "أضف $b$ إلى ترتيب نقطة $(d)$ (أو اطرحه إذا كان سالبًا)."
+          "content": "نقطة $(d')$ ونقطة $(d)$ اللتان لهما نفس الفاصلة: ترتيب الأولى يزيد عن ترتيب الثانية بـ $b$ ."
         }
       ],
       "feedback": {
-        "correct": "$1{,}5 \\times 2 + 1 = 4$ .",
-        "incorrect": "اضرب الفاصلة في $a$ ثم أضف $b$ ."
-      }
+        "correct": "$f(2) = g(2) + 1 = 4$ .",
+        "incorrect": "أضف الترتيب عند المبدأ $b = 1$ إلى ترتيب نقطة $(d)$ التي لها نفس الفاصلة."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $f(x) = g(x) + 1$ ، أي أنّ $(d')$ هو $(d)$ مرفوعًا بـ $1$ .",
+          "ترتيب النقطة من $(d)$ التي فاصلتها $2$ هو $g(2) = 3$ .",
+          "إذن ترتيب النقطة من $(d')$ التي فاصلتها $2$ هو: $3 + 1 = 4$ ."
+        ],
+        "result": "f(2) = 4"
+      },
+      "timeSeconds": 60
     }
   ]
 }

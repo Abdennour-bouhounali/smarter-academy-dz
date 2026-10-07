@@ -1,115 +1,374 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-002",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 4,
   "metadata": {
-    "title": "تمرين 41 — من امتحان شهادة التعليم المتوسط",
-    "estimatedMinutes": 3,
+    "title": "نشر، تحليل، معادلة ومتراجحة",
+    "estimatedMinutes": 17,
     "tags": [
+      "نشر",
       "تحليل",
-      "متراجحة",
-      "شهادة التعليم المتوسط"
+      "معادلة جداء معدوم",
+      "متراجحة"
     ],
     "source": {
       "type": "textbook",
       "elementId": "ex-41",
       "page": 53,
       "section": "أتعمّق",
-      "number": 41
+      "number": 41,
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-muadalat-l4-002"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03,5"
     }
   },
   "statement": {
-    "content": "من امتحان شهادة التعليم المتوسط: لتكن العبارة $E = (4x - 1)^2 - (3x + 2)(4x - 1)$ ، ونشرها المبسّط $4x^2 - 13x + 3$."
+    "content": "لتكن العبارة $E$ حيث:",
+    "formulas": [
+      "E = (2x - 3)^2 - (x + 2)(2x - 3)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "تحليل العبارة E إلى جداء عاملين هو ...",
+      "step": "01",
+      "lead": "انشر وبسّط العبارة $E$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muadalat_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $ax^2 + bx + c$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "2",
+      "hints": [
         {
-          "id": "A",
-          "content": "$(4x - 1)(x - 3)$",
-          "isCorrect": true
+          "id": "h1",
+          "type": "look",
+          "content": "طبّق المتطابقات الشهيرة، ثم انشر الجداءات."
         },
         {
-          "id": "B",
-          "content": "$(4x - 1)(7x + 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+          "id": "h2",
+          "type": "direction",
+          "content": "انتبه إلى الإشارة «−» أمام قوس: تتغيّر إشارة كل حد من نشره."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 2$ .",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$E = (2x - 3)^2 - (x + 2)(2x - 3)$",
+          "ننشر كل جداء (أو مربع)، ثم نجمع الحدود المتشابهة: حدود $x^2$ تعطي $2x^2$"
+        ],
+        "result": "a = 2"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $ax^2 + bx + c$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "-13",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ العدد المطلوب في الشكل المبسّط، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = -13$ .",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "نجمع حدود $x$ من النشر السابق: $-13x$"
+        ],
+        "result": "b = -13"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "01",
+      "statement": "العدد $c$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $ax^2 + bx + c$ : اكتب العدد $c$ فقط",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ العدد المطلوب في الشكل المبسّط، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$c = 15$ .",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$E = (2x - 3)^2 - (x + 2)(2x - 3)$",
+          "$E = 4x^2 - 12x + 9 - (2x^2 - 3x + 4x - 6)$",
+          "$E = 4x^2 - 12x + 9 - 2x^2 - x + 6$",
+          "إذن $E = 2x^2 - 13x + 15$"
+        ],
+        "result": "E = 2x^2 - 13x + 15"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "lead": "حلّل العبارة $E$ إلى جداء عاملين من الدرجة الأولى.",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب على الشكل $(2x - 3)(x + n)$ : اكتب العدد $n$ فقط (قد يكون سالبًا)",
+      "expectedAnswer": "-5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن العامل المشترك $(2x - 3)$ ."
         },
         {
-          "id": "C",
-          "content": "$(4x - 1)(x + 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
-        },
+          "id": "h2",
+          "type": "direction",
+          "content": "أخرج العامل المشترك، ثم بسّط ما بين القوسين الكبيرين بإشاراته."
+        }
+      ],
+      "feedback": {
+        "correct": "$n = -5$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته."
+      },
+      "solution": {
+        "lines": [
+          "$E = (2x - 3)\\left[(2x - 3) - (x + 2)\\right]$",
+          "$E = (2x - 3)(2x - 3 - x - 2)$",
+          "إذن $E = (2x - 3)(x - 5)$"
+        ],
+        "result": "E = (2x - 3)(x - 5)"
+      },
+      "work": "optional",
+      "timeSeconds": 210
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "lead": "حلّ المعادلة: $(2x - 3)(x - 5) = 0$ .",
+      "statement": "الحلّ الأصغر:",
+      "learningPoints": [
         {
-          "id": "D",
-          "content": "$(4x + 1)(x - 3)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "3/2",
+      "misconceptionSignatures": [
+        {
+          "value": "-3/2",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العامل المشترك ظاهر في الحدّين."
+          "content": "يكون جداء معدومًا إذا كان أحد عامليه على الأقل معدومًا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "أخرج $4x - 1$."
+          "content": "اكتب معادلتين من الدرجة الأولى، ثم حلّ كل واحدة منهما."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$(4x - 1) - (3x + 2) = 4x - 1 - 3x - 2$."
+          "content": "قارن الحلّين، ثم اكتب الأصغر منهما."
         }
       ],
       "feedback": {
-        "correct": "$E = (4x - 1)[(4x - 1) - (3x + 2)] = (4x - 1)(x - 3)$.",
-        "incorrect": "الإشارة «−» أمام $(3x + 2)$ تغيّر إشارة 2 أيضًا."
+        "correct": "$x = \\dfrac{3}{2}$ .",
+        "incorrect": "كل عامل معدوم يعطي معادلة من الدرجة الأولى: انقل العدد ثم اقسم على معامل $x$ بإشارته."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "لدينا: $(2x - 3)(x - 5) = 0$",
+          "يكون جداء معدومًا إذا كان أحد عامليه على الأقل معدومًا.",
+          "من العامل الذي يعطي الحل الأصغر:",
+          "$2x - 3 = 0$",
+          "$2x = 3$",
+          "$x = \\dfrac{3}{2}$"
+        ],
+        "result": "x = \\dfrac{3}{2}"
+      },
+      "timeSeconds": 150
     },
     {
-      "id": "q2",
-      "statement": "حلول المتراجحة $4x^2 - 13x + 3 \\leq 4x^2 + 29$ هي الأعداد $x$ حيث ...",
+      "id": "q6",
+      "step": "03",
+      "statement": "الحلّ الأكبر:",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muadalat_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "value": "-5",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المعادلة الثانية من الدرجة الأولى، ثم قارن الحلّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 5$ .",
+        "incorrect": "كل عامل معدوم يعطي معادلة من الدرجة الأولى: انقل العدد ثم اقسم على معامل $x$ بإشارته."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $(2x - 3)(x - 5) = 0$",
+          "يعني أنّ: $2x - 3 = 0$ أو $x - 5 = 0$",
+          "أي: $x = \\dfrac{3}{2}$ أو $x = 5$",
+          "إذن للمعادلة حلّان هما $\\dfrac{3}{2}$ و $5$ ."
+        ],
+        "result": "x = 5"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q7",
+      "step": "04",
+      "lead": "حلّ المتراجحة: $2x^2 - 13x + 15 \\leqslant 2x^2 + 41$ .",
+      "statement": "حدّ الحلول $k$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "حلول المتراجحة من الشكل $x < k$ أو $x \\leqslant k$ أو $x > k$ أو $x \\geqslant k$ : اكتب العدد $k$ فقط (عدد صحيح أو كسر a/b، قد يكون سالبًا)",
+      "expectedAnswer": "-2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر، كما في حل معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إضافة عدد إلى الطرفين أو طرحه منهما لا تغيّر اتجاه المتباينة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّ هو العدد الذي يحقّق المعادلة المرفقة (نضع «=» مكان رمز المتباينة): اقسم في الأخير على معامل $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "حدّ الحلول هو $k = -2$ .",
+        "incorrect": "أعد الحل سطرًا سطرًا: العملية نفسها على الطرفين، ثم القسمة على معامل $x$ في الأخير."
+      },
+      "solution": {
+        "lines": [
+          "حدّ الحلول هو حلّ المعادلة المرفقة: $2x^2 - 13x + 15 = 2x^2 + 41$",
+          "$-13x = 41 - 15$",
+          "$-13x = 26$",
+          "$x = \\dfrac{26}{-13}$",
+          "إذن حدّ الحلول هو $-2$ ."
+        ],
+        "result": "k = -2"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q8",
+      "step": "04",
+      "statement": "حلول المتراجحة هي الأعداد $x$ حيث:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$x \\leq -2$",
+          "content": "$x < -2$",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
         },
         {
           "id": "B",
-          "content": "$x \\geq 2$",
+          "content": "$x \\leqslant -2$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
         },
         {
           "id": "C",
-          "content": "$x \\geq -\\dfrac{1}{2}$",
+          "content": "$x > -2$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
         },
         {
           "id": "D",
-          "content": "$x \\geq -2$",
+          "content": "$x \\geqslant -2$",
           "isCorrect": true
         }
       ],
@@ -117,28 +376,30 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "الحدّان $4x^2$ يختفيان."
+          "content": "انظر إلى إشارة معامل $x$ في آخر سطر قبل القسمة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$-13x + 3 \\leq 29$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تبقى $-13x \\leq 26$ : القسمة على $-13$ تغيّر الاتجاه."
+          "content": "القسمة على عدد موجب تحافظ على الاتجاه، والقسمة على عدد سالب تغيّره."
         }
       ],
       "feedback": {
-        "correct": "$-13x \\leq 26$ ، والقسمة على $-13$ تغيّر الاتجاه: $x \\geq -2$.",
-        "incorrect": "القسمة على عدد سالب تغيّر الاتجاه."
+        "correct": "$x \\geqslant -2$ .",
+        "incorrect": "تتبّع سطور الحل: الاتجاه يتغيّر فقط عند الضرب أو القسمة على عدد سالب، ونوع المتباينة (تامة أو غير تامة) لا يتغيّر أبدًا."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "لدينا: $2x^2 - 13x + 15 \\leqslant 2x^2 + 41$",
+          "$-13x \\leqslant 41 - 15$",
+          "$-13x \\leqslant 26$",
+          "نقسم الطرفين على العدد السالب $-13$ فنغيّر اتجاه المتباينة:",
+          "$\\dfrac{-13x}{-13} \\geqslant \\dfrac{26}{-13}$",
+          "إذن حلول المتراجحة هي كل قيم $x$ الأكبر من أو تساوي $-2$ ."
+        ],
+        "result": "x \\geqslant -2"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-002",
-  "lessonCode": "wadiya-idmajiya-muadalat",
-  "level": 4
+  ]
 }

@@ -1,178 +1,374 @@
 {
+  "id": "ex-4am-nashr-tabsit-l5-001",
+  "lessonCode": "nashr-tabsit",
+  "level": 5,
   "metadata": {
-    "title": "تمرين 7 — أقواس مسبوقة بإشارة ناقص",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2017 — قطعة أرض ومستودع",
+    "estimatedMinutes": 19,
     "tags": [
-      "تبسيط",
-      "أقواس"
+      "مساحة",
+      "جداء قوسين",
+      "وضعية إدماجية"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "ex-7",
-      "page": 37,
-      "section": "أوظّف تعلّماتي",
-      "number": 7
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_nashr-tabsit_P1",
+      "modelledOn": "BEM 2017 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2017",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 37): انشر كل عبارة مما يلي وبسّطها."
+    "content": "يملك فلاح بولاية سطيف قطعة أرض مستطيلة الشكل طولها $(2x + 10)$ m وعرضها $(x + 6)$ m ، حيث $x$ عدد موجب. بنى في ركن منها مستودعًا مربع الشكل طول ضلعه $x$ m ، ويريد أن يزرع الجزء الباقي قمحًا."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$R = a - 3 - 2(a + 3)$ ، النشر المبسّط هو:",
+      "step": "01",
+      "lead": "عبّر بدلالة $x$ عن المساحة $S$ لقطعة الأرض، ثم انشرها وبسّطها.",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
-          "code": "4am_nashr-tabsit_P4",
+          "code": "4am_nashr-tabsit_P1",
           "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$-a$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
         },
         {
-          "id": "B",
-          "content": "$-a - 9$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$-a + 3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+          "code": "4am_nashr-tabsit_P3",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $ax^2 + bx + c$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "2",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر $-2(a + 3)$."
+          "content": "اضرب كل حد من القوس الأول في كل حد من القوس الثاني."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "العامل $-2$ يُضرب في $a$ وفي 3."
+          "content": "انتبه إلى إشارة كل حد عند كتابة الجداءات."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم اجمع المتشابهة."
+          "content": "اجمع الحدود المتشابهة: حدود $x^2$ معًا، ثم حدود $x$، ثم الأعداد."
         }
       ],
       "feedback": {
-        "correct": "$a - 3 - 2a - 6 = -a - 9$.",
-        "incorrect": "العامل $-2$ يُضرب في الحدّين مع إشارته."
-      }
+        "correct": "$S = 2x^2 + 22x + 60$ إذن $a = 2$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$S = (2x + 10) \\times (x + 6)$",
+          "$S = 2x \\times x + 2x \\times 6 + 10 \\times x + 10 \\times 6$",
+          "$S = 2x^2 + 12x + 10x + 60$"
+        ],
+        "result": "S = 2x^2 + 22x + 60"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "$S = -(a + 2) - (3a - 5)(2a - 4)$ ، النشر المبسّط هو:",
+      "step": "01",
+      "statement": "العدد $b$ :",
       "learningPoints": [
         {
-          "code": "4am_nashr-tabsit_P4",
+          "code": "4am_nashr-tabsit_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $ax^2 + bx + c$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "22",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$-6a^2 - 23a + 18$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
-        },
-        {
-          "id": "B",
-          "content": "$6a^2 - 23a + 18$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
-        },
-        {
-          "id": "C",
-          "content": "$-6a^2 + 21a - 22$",
-          "isCorrect": true
+          "value": "0",
+          "id": "MISC-NASHR-AWWAL-AKHIR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر $(3a - 5)(2a - 4)$ وضعه بين قوسين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$(3a - 5)(2a - 4) = 6a^2 - 22a + 20$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احذف القوسين المسبوقين بـ $-$ بتغيير الإشارات."
+          "content": "اجمع معاملات حدود $x$ بإشاراتها بعد النشر."
         }
       ],
       "feedback": {
-        "correct": "$-a - 2 - 6a^2 + 22a - 20 = -6a^2 + 21a - 22$.",
-        "incorrect": "كل حد من نشر الجداء تتغيّر إشارته."
-      }
+        "correct": "$S = 2x^2 + 22x + 60$ إذن $b = 22$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $b$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$S = 2x^2 + 22x + 60$"
+        ],
+        "result": "b = 22"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q3",
-      "statement": "$T = (a + 3)\\left(a + \\dfrac{1}{3}\\right) - (a + 2)\\left(a - \\dfrac{1}{2}\\right)$ ، النشر المبسّط هو:",
+      "step": "01",
+      "statement": "العدد $c$ :",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $ax^2 + bx + c$ : اكتب العدد $c$ فقط",
+      "expectedAnswer": "60",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت هو مجموع الأعداد التي لا تحتوي على $x$ بعد النشر، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = 2x^2 + 22x + 60$ إذن $c = 60$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $c$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$S = 2x^2 + 22x + 60$"
+        ],
+        "result": "c = 60"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "lead": "بيّن أن مساحة الجزء المخصّص للقمح هي $A = (2x + 10)(x + 6) - x^2$ ، ثم اكتبها على شكل مجموع مبسّط.",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P4",
           "role": "primary"
+        },
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax^2 + bx + c$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "1",
+      "hints": [
         {
-          "id": "A",
-          "content": "$\\dfrac{29}{6}a$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب كل حد من القوس الأول في كل حد من القوس الثاني."
         },
         {
-          "id": "B",
-          "content": "$\\dfrac{11}{6}a + 2$",
-          "isCorrect": true
+          "id": "h2",
+          "type": "direction",
+          "content": "انتبه إلى إشارة كل حد عند كتابة الجداءات."
         },
         {
-          "id": "C",
-          "content": "$2a^2 + \\dfrac{11}{6}a + 2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود المتشابهة: حدود $x^2$ معًا، ثم حدود $x$، ثم الأعداد."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = x^2 + 22x + 60$ إذن $a = 1$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "مساحة الجزء المزروع = مساحة القطعة − مساحة المستودع",
+          "$A = (2x + 10)(x + 6) - x^2$",
+          "$A = 2x \\times x + 2x \\times 6 + 10 \\times x + 10 \\times 6 - x^2$",
+          "$A = 2x^2 + 12x + 10x + 60 - x^2$"
+        ],
+        "result": "A = x^2 + 22x + 60"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q5",
+      "step": "02",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax^2 + bx + c$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "22",
+      "misconceptionSignatures": [
+        {
+          "value": "0",
+          "id": "MISC-NASHR-AWWAL-AKHIR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر كل جداء."
+          "content": "اجمع معاملات حدود $x$ بإشاراتها بعد النشر."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = x^2 + 22x + 60$ إذن $b = 22$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $b$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$A = x^2 + 22x + 60$"
+        ],
+        "result": "b = 22"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q6",
+      "step": "02",
+      "statement": "العدد $c$ :",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax^2 + bx + c$ : اكتب العدد $c$ فقط",
+      "expectedAnswer": "60",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت هو مجموع الأعداد التي لا تحتوي على $x$ بعد النشر، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = x^2 + 22x + 60$ إذن $c = 60$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $c$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$A = x^2 + 22x + 60$"
+        ],
+        "result": "c = 60"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q7",
+      "step": "03",
+      "statement": "احسب مساحة الجزء المزروع قمحًا من أجل $x = 20$ .",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بالمتر المربع)",
+      "expectedAnswer": "900",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد المعطى في الشكل المبسّط الذي وجدته."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$a^2 + \\dfrac{10}{3}a + 1$ و $a^2 + \\dfrac{3}{2}a - 1$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اطرح الثاني من الأول بتغيير إشارات حدوده."
+          "content": "احسب القوى أولًا، ثم الجداءات، ثم الجمع والطرح."
         }
       ],
       "feedback": {
-        "correct": "$\\left(a^2 + \\dfrac{10}{3}a + 1\\right) - \\left(a^2 + \\dfrac{3}{2}a - 1\\right) = \\dfrac{11}{6}a + 2$.",
-        "incorrect": "الحدّان $a^2$ يتعادمان، وتتغيّر إشارة كل حد من الجداء الثاني."
-      }
+        "correct": "$A = 900$.",
+        "incorrect": "عوّض $x$ في كل حد، واحترم أولويات العمليات والإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$A = 20^2 + 22 \\times 20 + 60 = 400 + 440 + 60$",
+          "تحقّق: $S = 50 \\times 26 = 1300$ و $1300 - 400 = 900$"
+        ],
+        "result": "A = 900\\ m^2"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q8",
+      "step": "04",
+      "statement": "☜ يكفي كيس واحد من البذور لزراعة $300\\ m^2$ ، وثمن الكيس 4500DA . ما المبلغ الذي يلزم الفلاح لشراء بذور الجزء المزروع (من أجل $x = 20$)؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد (بالدينار DA)",
+      "expectedAnswer": "13500",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب عدد الأكياس: قسّم المساحة المزروعة على 300."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب عدد الأكياس في ثمن الكيس."
+        }
+      ],
+      "feedback": {
+        "correct": "$900 \\div 300 = 3$ أكياس، و $3 \\times 4500 = 13500$ DA .",
+        "incorrect": "استعمل المساحة المزروعة (لا مساحة القطعة كلها)، ثم احسب عدد الأكياس وثمنها."
+      },
+      "solution": {
+        "lines": [
+          "عدد الأكياس: $900 \\div 300 = 3$",
+          "المبلغ: $3 \\times 4500 = 13500$ DA"
+        ],
+        "result": "13500\\ DA"
+      },
+      "work": "optional",
+      "timeSeconds": 300
     }
-  ],
-  "id": "ex-4am-nashr-tabsit-l5-001",
-  "lessonCode": "nashr-tabsit",
-  "level": 5
+  ]
 }

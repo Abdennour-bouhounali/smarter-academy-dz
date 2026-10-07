@@ -7,6 +7,7 @@ import { teacherNavLinks } from '../../data/teacherNavigation';
 import { getDisplayName, getInitials } from '../../utils/userDisplay';
 import { useWorkspaceLayout } from '../../context/WorkspaceLayoutContext';
 import SidebarToggle from '../common/SidebarToggle';
+import { useReviewCount } from '../../features/teacher/reviews/useReviewCount';
 
 /**
  * La navigation de l'espace enseignant — le patron de StudentNavbar (barre
@@ -24,6 +25,17 @@ export default function TeacherNavbar() {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const { sidebarCollapsed } = useWorkspaceLayout();
+  const reviewCount = useReviewCount();
+  // La pastille d'un lien qui en porte une (« تصحيح الإجابات » : copies en attente).
+  const badge = (link, className) => (link.badge === 'reviews' && reviewCount > 0 ? (
+    <span
+      className={`inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-rose-600 px-1 text-[10px] font-bold leading-5 text-white ${className}`}
+      aria-label={t('notifications.pendingReviews', { count: reviewCount })}
+      data-nav-badge={link.badge}
+    >
+      <bdi dir="ltr">{reviewCount > 99 ? '99+' : reviewCount}</bdi>
+    </span>
+  ) : null);
 
   const handleLogout = async () => {
     await logout();
@@ -68,8 +80,12 @@ export default function TeacherNavbar() {
               }
               style={({ isActive }) => (isActive ? { background: gradient } : {})}
             >
-              <link.icon size={18} className="flex-shrink-0" />
+              <span className="relative flex-shrink-0">
+                <link.icon size={18} />
+                {sidebarCollapsed && badge(link, 'absolute -end-2 -top-2')}
+              </span>
               {!sidebarCollapsed && t(link.labelKey)}
+              {!sidebarCollapsed && badge(link, 'ms-auto')}
             </NavLink>
           ))}
         </nav>
@@ -127,7 +143,10 @@ export default function TeacherNavbar() {
               `flex-1 flex flex-col items-center justify-center gap-0.5 font-inter text-[10px] font-semibold transition-colors ${isActive ? 'text-teal-700' : 'text-slate-400'}`
             }
           >
-            <link.icon size={19} />
+            <span className="relative">
+              <link.icon size={19} />
+              {badge(link, 'absolute -end-2.5 -top-1.5')}
+            </span>
             {t(link.labelKey)}
           </NavLink>
         ))}

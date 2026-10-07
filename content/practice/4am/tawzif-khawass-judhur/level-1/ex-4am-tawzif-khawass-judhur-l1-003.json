@@ -3,7 +3,7 @@
   "lessonCode": "tawzif-khawass-judhur",
   "level": 1,
   "metadata": {
-    "title": "تدريب — أبسط كتابة لجذر",
+    "title": "√45 على الشكل a√b",
     "estimatedMinutes": 3,
     "tags": [
       "a√b",
@@ -14,88 +14,37 @@
       "reason": "practice_generation",
       "learningPoint": "4am_tawzif-khawass-judhur_P1",
       "modelledOn": "ex-18"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "اكتب كل عدد على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان و $b$ أصغر ما يمكن."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "اكتب $\\sqrt{12}$ على الشكل $a\\sqrt{b}$ حيث $b$ أصغر ما يمكن.",
+      "step": "01",
+      "lead": "اكتب العدد $\\sqrt{45}$ على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان و $b$ أصغر ما يمكن.",
+      "statement": "العدد $a$:",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$4\\sqrt{3}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
-        },
-        {
-          "id": "B",
-          "content": "$2\\sqrt{3}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$3\\sqrt{2}$",
-          "isCorrect": false
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "ابحث عن مربع تامّ يقسم 12."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "المربعات التامة الأولى: 4، 9، 16… أيّها يقسم 12؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$\\sqrt{12} = \\sqrt{4} \\times \\sqrt{3}$ : عوّض $\\sqrt{4}$ بقيمته."
-        }
-      ],
-      "feedback": {
-        "correct": "$12 = 2^2 \\times 3$ إذن $\\sqrt{12} = \\sqrt{2^2} \\times \\sqrt{3}$.",
-        "incorrect": "المعامل أمام الجذر هو جذر المربع الذي أخرجناه، لا المربع نفسه."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "اكتب $\\sqrt{45}$ على الشكل $a\\sqrt{b}$ حيث $b$ أصغر ما يمكن.",
-      "learningPoints": [
-        {
-          "code": "4am_tawzif-khawass-judhur_P1",
-          "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$5\\sqrt{3}$",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$9\\sqrt{5}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
-        },
-        {
-          "id": "C",
-          "content": "$3\\sqrt{5}$",
-          "isCorrect": true
+          "value": "9",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         }
       ],
       "hints": [
@@ -107,18 +56,73 @@
         {
           "id": "h2",
           "type": "direction",
-          "content": "$45 = 9 \\times 5$ و 9 مربع تامّ."
+          "content": "اكتب 45 على شكل جداء مربع تامّ في عدد لا يقبل القسمة على أيّ مربع تامّ غير 1."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ما هو العدد الموجب الذي مربعه 9؟"
+          "content": "$a$ هو الجذر التربيعي لهذا المربع التامّ."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{45} = \\sqrt{3^2 \\times 5} = \\sqrt{3^2} \\times \\sqrt{5}$.",
-        "incorrect": "تحقّق أن مربع المعامل مضروبًا في العدد تحت الجذر يعطي 45."
-      }
+        "correct": "$\\sqrt{45} = \\sqrt{9 \\times 5} = 3\\sqrt{5}$ إذن $a = 3$.",
+        "incorrect": "اكتب 45 على شكل (مربع تامّ) × (عدد)، ثم أخرج جذر المربع التامّ."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{45} = \\sqrt{9 \\times 5}$",
+          "$\\sqrt{45} = \\sqrt{9} \\times \\sqrt{5}$",
+          "$\\sqrt{45} = 3\\sqrt{5}$",
+          "العدد 5 لا يقبل القسمة على أيّ مربع تامّ غير 1، فهو أصغر ما يمكن."
+        ],
+        "result": "a = 3"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "العدد $b$:",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد طبيعي)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "value": "45",
+          "id": "MISC-B-LAYSA-ASGHAR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$b$ هو العدد الذي يبقى تحت الجذر بعد إخراج أكبر مربع تامّ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحقّق أن $b$ لا يقبل القسمة على 4 ولا على 9 ولا على أيّ مربع تامّ آخر غير 1."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{45} = 3\\sqrt{5}$ إذن $b = 5$.",
+        "incorrect": "أخرج أكبر مربع تامّ يقسم 45، فيبقى تحت الجذر عدد لا يمكن تبسيطه."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{45} = 3\\sqrt{5}$"
+        ],
+        "result": "b = 5"
+      },
+      "timeSeconds": 60
     }
   ]
 }

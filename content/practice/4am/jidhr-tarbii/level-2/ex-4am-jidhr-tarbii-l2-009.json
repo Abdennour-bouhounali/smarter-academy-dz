@@ -1,81 +1,118 @@
 {
+  "id": "ex-4am-jidhr-tarbii-l2-009",
+  "lessonCode": "jidhr-tarbii",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — تحقّق من جذر",
-    "estimatedMinutes": 2,
+    "title": "على منوال BEM 2017 — قطعة أرض مربعة",
+    "estimatedMinutes": 5,
     "tags": [
-      "تعريف",
-      "تحقق"
+      "تعريف الجذر التربيعي",
+      "مساحة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_jidhr-tarbii_P1",
-      "modelledOn": "know-1"
+      "modelledOn": "BEM 2017 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2017",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "كتب يوسف: $\\sqrt{0{,}9} = 0{,}3$."
+    "content": "قطعة أرض مربعة الشكل مساحتها $576m^2$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل ما كتبه يوسف صحيح؟",
+      "step": "01",
+      "statement": "احسب $a$، طول ضلع هذه القطعة.",
       "learningPoints": [
         {
           "code": "4am_jidhr-tarbii_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر (m)",
+      "expectedAnswer": "24",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "نعم، لأن $0{,}3^2 = 0{,}9$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-FASILA"
+          "value": "288",
+          "id": "MISC-JIDHR-NISF"
         },
         {
-          "id": "B",
-          "content": "نعم، لأن $0{,}3 \\times 3 = 0{,}9$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-DIF"
-        },
-        {
-          "id": "C",
-          "content": "لا، لأن $0{,}3^2 = 0{,}09$ وهو لا يساوي 0,9",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "لا، لأن $\\sqrt{0{,}9} = 0{,}45$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-NISF"
+          "value": "144",
+          "id": "MISC-JIDHR-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "للتحقق من جذر تربيعي نربّع النتيجة."
+          "content": "مساحة المربع هي مربع طول ضلعه: $a^2 = 576$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $0{,}3 \\times 0{,}3$ بدقة."
+          "content": "$a$ عدد موجب: هو الجذر التربيعي للعدد 576."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "قارن الناتج بالعدد 0,9."
+          "content": "جرّب مربعات الأعداد بين 20 و 25."
         }
       ],
       "feedback": {
-        "correct": "$0{,}3^2 = 0{,}09 \\neq 0{,}9$، إذن 0,3 ليس الجذر التربيعي للعدد 0,9 بل للعدد 0,09.",
-        "incorrect": "مربع 0,3 هو $0{,}3 \\times 0{,}3$: انتبه إلى عدد الأرقام بعد الفاصلة."
-      }
+        "correct": "$a = \\sqrt{576} = 24$ m لأن $24^2 = 576$.",
+        "incorrect": "طول الضلع هو العدد الموجب الذي مربعه 576."
+      },
+      "solution": {
+        "lines": [
+          "$a^2 = 576$ و $a$ موجب",
+          "إذن $a = \\sqrt{576}$"
+        ],
+        "result": "a = 24m"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب محيط هذه القطعة.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر (m)",
+      "expectedAnswer": "96",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط المربع أربع مرات طول ضلعه."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 \\times 24 = 96$ m.",
+        "incorrect": "اضرب طول الضلع الذي وجدته في 4."
+      },
+      "solution": {
+        "lines": [
+          "$4 \\times 24 = 96$"
+        ],
+        "result": "96m"
+      },
+      "timeSeconds": 45
     }
-  ],
-  "id": "ex-4am-jidhr-tarbii-l2-009",
-  "lessonCode": "jidhr-tarbii",
-  "level": 2
+  ]
 }

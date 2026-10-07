@@ -3,109 +3,184 @@
   "lessonCode": "muadala-ula",
   "level": 3,
   "metadata": {
-    "title": "تدريب — معامل سالب في طرف",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2010 — معدل الرياضيات",
+    "estimatedMinutes": 8,
     "tags": [
-      "المجهول في الطرفين",
-      "إشارة"
+      "قانون",
+      "معادلة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_muadala-ula_P2",
-      "modelledOn": "ex-4"
+      "modelledOn": "BEM 2010 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2010",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "انتبه إلى إشارة كل حدّ تنقله."
+    "content": "لحساب المعدل الفصلي $m$ لمادة الرياضيات نطبّق القانون التالي: $m = \\dfrac{a + 3b}{4}$ حيث $a$ هي علامة التقويم المستمر و $b$ هي علامة الاختبار."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حل المعادلة $3x + 4 = -x + 12$ هو:",
+      "step": "01",
+      "statement": "احسب $m$ إذا كان $a = 14$ و $b = 10$ .",
       "learningPoints": [
         {
-          "code": "4am_muadala-ula_P2",
+          "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\dfrac{1}{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
-        },
-        {
-          "id": "B",
-          "content": "$2$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$4$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
-        }
-      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المعدل الفصلي",
+      "expectedAnswer": "11",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المجهول موجود في الطرفين."
+          "content": "عوّض $a$ و $b$ في القانون."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اطرح من الطرفين أحد الحدّين اللذين فيهما $x$ لتجمع المجاهيل في طرف واحد."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم اجمع الأعداد في الطرف الآخر وقسّم على معامل $x$."
+          "content": "احسب البسط ثم اقسم على 4."
         }
       ],
       "feedback": {
-        "correct": "$3x + 4 = -x + 12$ : نصل إلى $4x = 8$ ، ومنه $x = 2$.",
-        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
-      }
+        "correct": "$m = 11$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولويات العمليات والإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$m = \\dfrac{14 + 3 \\times 10}{4} = \\dfrac{44}{4}$"
+        ],
+        "result": "m = 11"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "حلّ المعادلة $-2x + 7 = 4x - 5$ .",
+      "step": "02",
+      "statement": "جد علامة الاختبار $b$ إذا علمت أن $a = 16$ و $m = 13$ .",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
-      "expectedAnswer": "2",
+      "answerFormat": "عدد: علامة الاختبار",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "value": "1/12",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "value": "68/3",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المجهول موجود في الطرفين."
+          "content": "عوّض $a$ و $m$ في القانون: تحصل على معادلة مجهولها $b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اطرح من الطرفين أحد الحدّين اللذين فيهما $x$ لتجمع المجاهيل في طرف واحد."
+          "content": "اضرب الطرفين في 4."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم اجمع الأعداد في الطرف الآخر وقسّم على معامل $x$."
+          "content": "اعزل $3b$ ثم اقسم على 3."
         }
       ],
       "feedback": {
-        "correct": "$-2x + 7 = 4x - 5$ : نصل إلى $-6x = -12$ ، ومنه $x = 2$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "$b = 12$ .",
+        "incorrect": "اضرب كل حد من الطرفين في المقام المشترك، مع وضع البسوط بين قوسين، ثم انشر وحلّ. تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$13 = \\dfrac{16 + 3b}{4}$",
+          "$13 \\times 4 = 16 + 3b$",
+          "$3b = 52 - 16$",
+          "$3b = 36$"
+        ],
+        "result": "b = 12"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "تحصّل تلميذ في التقويم المستمر على $12$ . ما هي العلامة التي يجب أن يتحصّل عليها في الاختبار ليكون معدله الفصلي $15$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: علامة الاختبار",
+      "expectedAnswer": "16",
+      "misconceptionSignatures": [
+        {
+          "value": "1/16",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "value": "24",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ $b$ علامة الاختبار المطلوبة واكتب المعادلة من القانون."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب الطرفين في 4 ثم اعزل $3b$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 16$ .",
+        "incorrect": "اضرب كل حد من الطرفين في المقام المشترك، مع وضع البسوط بين قوسين، ثم انشر وحلّ. تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$15 = \\dfrac{12 + 3b}{4}$",
+          "$60 = 12 + 3b$",
+          "$3b = 48$"
+        ],
+        "result": "b = 16"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
   ]
 }

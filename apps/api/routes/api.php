@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AccessController;
+use App\Http\Controllers\AnswerImageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ActivationCodeController;
 use App\Http\Controllers\Admin\AdminAccessPolicyController;
 use App\Http\Controllers\Admin\AdminAccountController;
@@ -46,7 +48,9 @@ use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\StudentClassroomController;
 use App\Http\Controllers\ClassJoinLinkController;
 use App\Http\Controllers\StudentReportController;
+use App\Http\Controllers\StudentSettingsController;
 use App\Http\Controllers\Teacher\TeacherClassroomController;
+use App\Http\Controllers\Teacher\TeacherAnswerReviewController;
 use App\Http\Controllers\Teacher\TeacherPracticeResponseController;
 use App\Http\Controllers\Teacher\TeacherClassroomInsightController;
 use App\Http\Controllers\Teacher\TeacherClassroomInterventionController;
@@ -54,6 +58,7 @@ use App\Http\Controllers\Teacher\TeacherClassroomLearningPointController;
 use App\Http\Controllers\Teacher\TeacherClassroomLessonController;
 use App\Http\Controllers\Teacher\TeacherClassroomNotebookController;
 use App\Http\Controllers\Teacher\TeacherClassroomStudentController;
+use App\Http\Controllers\Teacher\TeacherStudentSettingsController;
 use App\Http\Controllers\Teacher\TeacherDashboardController;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
@@ -210,9 +215,12 @@ Route::prefix('v1')->group(function () {
             // une leçon sans contenu, sur les deux seuls points d'entrée qui
             // créent quelque chose — le reste exige une séance, donc en hérite.
             Route::get('/lessons/{lessonCode}/practice/overview', [PracticeSessionController::class, 'overview']);
+            // La « خزانة الميداليات » (prototype BEM, 2026-10-06) : déduite des réponses enregistrées.
+            Route::get('/lessons/{lessonCode}/practice/medals', [PracticeSessionController::class, 'medals']);
             Route::get('/practice/sessions/{sessionId}', [PracticeSessionController::class, 'show']);
             // Le prochain exercice conseillé — le sélecteur lit la maîtrise, ne l'écrit jamais.
             Route::get('/practice/sessions/{sessionId}/next', [PracticeSessionController::class, 'next']);
+            Route::get('/practice/sessions/{sessionId}/answers', [PracticeSessionController::class, 'answers']);
             // Les ÉCRITURES de la pratique (séances, tentatives, indices,
             // maîtrise) : élève seulement (2026-10-05). L'enseignant parcourt
             // le بنك التمارين sans suivi — tout est évalué dans son navigateur,
@@ -224,7 +232,19 @@ Route::prefix('v1')->group(function () {
                 Route::post('/practice/sessions/{sessionId}/exercise-completions', [PracticeAnswerController::class, 'completeExercise']);
                 Route::post('/practice/sessions/{sessionId}/complete', [PracticeSessionController::class, 'complete']);
                 Route::post('/practice/question-attempts/{attemptUuid}/hints', [PracticeAnswerController::class, 'storeHint']);
+                // Photos de copie (prototype BEM, 2026-10-06) : 3 par étape, avant
+                // la réponse ; ensuite verrouillées avec elle (AnswerImageStore).
+                Route::post('/practice/question-attempts/{attemptUuid}/images', [AnswerImageController::class, 'store'])
+                    ->middleware('throttle:30,1');
+                Route::delete('/practice/answer-images/{uuid}', [AnswerImageController::class, 'destroy'])->whereUuid('uuid');
             });
+            // Relire SES photos, et une correction de son enseignant (ouverte depuis la cloche).
+            Route::get('/practice/answer-images/{uuid}', [AnswerImageController::class, 'content'])->whereUuid('uuid');
+            Route::get('/practice/reviews/{id}', [AnswerImageController::class, 'review'])->whereNumber('id');
+            // La cloche : notifications dans l'application seulement (aucun courriel).
+            Route::get('/me/notifications', [NotificationController::class, 'index']);
+            Route::post('/me/notifications/read-all', [NotificationController::class, 'readAll']);
+            Route::post('/me/notifications/{id}/read', [NotificationController::class, 'read'])->whereUuid('id');
             Route::get('/practice/notes', [PracticeNotebookController::class, 'index']);
             Route::post('/practice/notes', [PracticeNotebookController::class, 'store']);
             // « Mon cahier » : actions groupées AVANT `{id}` pour que « bulk »
@@ -247,6 +267,10 @@ Route::prefix('v1')->group(function () {
             // cahier, travaux) et ce qu'il lui reste. Lecture seule ; chaque
             // geste protégé est revérifié par FeatureAccessService.
             Route::get('/me/feature-access', [FeatureAccessController::class, 'show']);
+            // « الإعدادات » de l'élève : ses réglages (niveaux ouverts…) ; il ne
+            // les change que s'il n'est dans aucune classe (sinon : l'enseignant).
+            Route::get('/me/settings', [StudentSettingsController::class, 'show']);
+            Route::patch('/me/settings', [StudentSettingsController::class, 'update']);
             Route::get('/math-lab/documents', [MathLabDocumentController::class, 'index']);
             Route::post('/math-lab/documents', [MathLabDocumentController::class, 'store'])
                 ->middleware('throttle:30,1');
@@ -409,10 +433,22 @@ Route::prefix('v1')->group(function () {
             // ce qu'il a répondu. Lecture seule (TeacherPracticeResponses).
             Route::get('/practice/{lessonCode}/exercises/{exerciseId}/students', [TeacherPracticeResponseController::class, 'index']);
             Route::get('/practice/{lessonCode}/exercises/{exerciseId}/students/{studentId}', [TeacherPracticeResponseController::class, 'show'])->whereNumber('studentId');
+            // « تصحيح الإجابات » : les copies de MES élèves en « تصحيح الأستاذ »
+            // (AnswerReviewService) — file, compteur du menu, décision, photos.
+            Route::get('/reviews', [TeacherAnswerReviewController::class, 'index']);
+            Route::get('/reviews/count', [TeacherAnswerReviewController::class, 'count']);
+            Route::post('/reviews/{id}', [TeacherAnswerReviewController::class, 'decide'])->whereNumber('id')->middleware('throttle:120,1');
+            Route::get('/answer-images/{uuid}', [TeacherAnswerReviewController::class, 'image'])->whereUuid('uuid');
+            Route::post('/answer-images/{uuid}/annotation', [TeacherAnswerReviewController::class, 'annotate'])->whereUuid('uuid')->middleware('throttle:60,1');
             Route::get('/classrooms/{id}/students', [TeacherClassroomStudentController::class, 'index'])->whereNumber('id');
             Route::get('/classrooms/{id}/students/{studentId}/progress', [TeacherClassroomStudentController::class, 'progress'])
                 ->whereNumber('id')->whereNumber('studentId');
             Route::delete('/classrooms/{id}/students/{studentId}', [TeacherClassroomStudentController::class, 'destroy'])
+                ->whereNumber('id')->whereNumber('studentId');
+            // Les réglages d'UN élève (niveaux de l'espace d'exercices ouverts…), décidés par l'enseignant.
+            Route::get('/classrooms/{id}/students/{studentId}/settings', [TeacherStudentSettingsController::class, 'show'])
+                ->whereNumber('id')->whereNumber('studentId');
+            Route::patch('/classrooms/{id}/students/{studentId}/settings', [TeacherStudentSettingsController::class, 'update'])
                 ->whereNumber('id')->whereNumber('studentId');
 
             // Le cahier d'un élève, EN LECTURE SEULE, borné aux leçons de la

@@ -3,8 +3,8 @@
   "lessonCode": "mushkilat-jumla",
   "level": 2,
   "metadata": {
-    "title": "تمرين 16 (ص 61) — قسمة إقليدية",
-    "estimatedMinutes": 4,
+    "title": "مجموع وقسمة إقليدية",
+    "estimatedMinutes": 9,
     "tags": [
       "ترييض",
       "قسمة إقليدية"
@@ -15,99 +15,154 @@
       "page": 61,
       "section": "أوظّف تعلّماتي",
       "number": 16
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 61): عددان مجموعهما يساوي 206. عند قسمة أكبرهما على أصغرهما، يكون حاصل القسمة 4 وباقي القسمة 1. ما هما العددان؟ نسمّي $x$ الأكبر و $y$ الأصغر."
+    "content": "عددان طبيعيان مجموعهما يساوي 206. عند قسمة أكبرهما على أصغرهما، يكون حاصل القسمة 4 وباقي القسمة 1."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الجملة التي تترجم المشكلة هي:",
+      "step": "01",
+      "lead": "نسمّي $x$ أكبر العددين و $y$ أصغرهما.",
+      "statement": "بيّن أن $x$ و $y$ يحققان الجملة: $\\begin{cases} x + y = 206 \\\\ x - 4y = 1 \\end{cases}$",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\begin{cases} x + y = 206 \\\\ x = 4y \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "B",
-          "content": "$\\begin{cases} x + y = 206 \\\\ y = 4x + 1 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "$\\begin{cases} x + y = 206 \\\\ x = 4y + 1 \\end{cases}$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تذكّر: المقسوم = القاسم × حاصل القسمة + الباقي."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "المقسوم هو الأكبر $x$ والقاسم هو الأصغر $y$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "لا تنسَ الباقي."
+          "content": "المقسوم = المقسوم عليه × حاصل القسمة + الباقي."
         }
       ],
       "feedback": {
-        "correct": "القسمة الإقليدية للأكبر على الأصغر، مع الباقي 1.",
-        "incorrect": "الأكبر يُقسم على الأصغر، والباقي جزء من المساواة."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "المجموع: $x + y = 206$",
+          "القسمة الإقليدية لـ $x$ على $y$ : $x = 4y + 1$ (مع $1 < y$ )",
+          "أي: $x - 4y = 1$",
+          "ومنه $x$ و $y$ يحققان الجملة: $\\begin{cases} x + y = 206 \\\\ x - 4y = 1 \\end{cases}$"
+        ]
+      },
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "العددان $(x ; y)$ هما:",
+      "step": "02",
+      "lead": "ما هما العددان؟",
+      "statement": "العدد الأكبر:",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
-      "expectedAnswer": {
-        "x": "165",
-        "y": "41"
-      },
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "165",
+      "misconceptionSignatures": [
+        {
+          "value": "41",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ في المعادلة الأولى."
+          "content": "معامل $x$ هو نفسه في المعادلتين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تحصل على $5y + 1 = 206$ ."
+          "content": "اطرح المعادلة الثانية من الأولى طرفا لطرف لتجد $y$ أولا."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم احسب $x$ ."
+          "content": "ثم عوّض لتجد $x$ ."
         }
       ],
       "feedback": {
-        "correct": "$y = 41$ و $x = 4 \\times 41 + 1 = 165$ ، والباقي $1 < 41$ .",
-        "incorrect": "عوّض العبارة في المعادلة الأخرى."
-      }
+        "correct": "العدد الأكبر هو 165.",
+        "incorrect": "اطرح $x - 4y = 1$ من $x + y = 206$ طرفا لطرف."
+      },
+      "solution": {
+        "lines": [
+          "بطرح المعادلة الثانية من الأولى طرفا لطرف نجد: $5y = 205$ ومنه $y = 41$",
+          "بالتعويض في المعادلة الأولى: $x + 41 = 206$ ومنه $x = 165$",
+          "التحقق في النص: $165 + 41 = 206$ و $165 = 4 \\times 41 + 1$ مع $1 < 41$ .",
+          "إذن العددان هما 165 و 41."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "العدد الأصغر:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "41",
+      "misconceptionSignatures": [
+        {
+          "value": "165",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من المعادلة الأولى: الأصغر = 206 − الأكبر ."
+        }
+      ],
+      "feedback": {
+        "correct": "العدد الأصغر هو 41، ونتحقق: $165 = 4 \\times 41 + 1$ و $1 < 41$ .",
+        "incorrect": "استعمل المجموع 206."
+      },
+      "solution": {
+        "lines": [
+          "بطرح المعادلة الثانية من الأولى طرفا لطرف نجد: $5y = 205$ ومنه $y = 41$",
+          "بالتعويض في المعادلة الأولى: $x + 41 = 206$ ومنه $x = 165$",
+          "التحقق في النص: $165 + 41 = 206$ و $165 = 4 \\times 41 + 1$ مع $1 < 41$ .",
+          "إذن العددان هما 165 و 41."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

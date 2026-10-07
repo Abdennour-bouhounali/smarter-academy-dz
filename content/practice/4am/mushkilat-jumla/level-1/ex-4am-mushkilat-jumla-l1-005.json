@@ -3,125 +3,178 @@
   "lessonCode": "mushkilat-jumla",
   "level": 1,
   "metadata": {
-    "title": "تدريب — باقات الإنترنت",
-    "estimatedMinutes": 3,
+    "title": "باقات الهاتف النقال",
+    "estimatedMinutes": 7,
     "tags": [
       "ترييض",
-      "هاتف",
-      "اختيار المجاهيل"
+      "هاتف"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_mushkilat-jumla_P2",
       "modelledOn": "act-3"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "تبيع شركة هاتف نقال باقة «4G» بـ 200 DA وباقة «سوشيال» بـ 100 DA. خلال شهر، اشترت أميرة 7 باقات ودفعت 1100 DA. كم باقة اشترت من كل نوع؟"
+    "content": "تبيع شركة للهاتف النقال باقة «4G» بـ 200DA وباقة «سوشيال» بـ 100DA. خلال شهر، اشترت أميرة 7 باقات ودفعت 1100DA."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما المجهولان المناسبان؟",
-      "learningPoints": [
-        {
-          "code": "4am_mushkilat-jumla_P2",
-          "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "ثمن الباقة «4G» وثمن الباقة «سوشيال»",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MAJAHIL"
-        },
-        {
-          "id": "B",
-          "content": "عدد باقات «4G» وعدد باقات «سوشيال»",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "عدد الباقات كلها والمبلغ المدفوع",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MAJAHIL"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "ما الذي يعطيه النص بالأرقام؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "الأثمان (200 و 100) والمجموعان (7 و 1100) معلومة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المجهول ما يسأل عنه السؤال: «كم باقة … من كل نوع»."
-        }
-      ],
-      "feedback": {
-        "correct": "نسمّي $x$ عدد باقات «4G» و $y$ عدد باقات «سوشيال» .",
-        "incorrect": "الأثمان والمجموعان معطاة في النص."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "نسمّي $x$ عدد باقات «4G» و $y$ عدد باقات «سوشيال» . الجملة هي:",
+      "step": "01",
+      "lead": "نسمّي $x$ عدد باقات «4G» و $y$ عدد باقات «سوشيال» التي اشترتها أميرة.",
+      "statement": "ترجم المعطيات بجملة معادلتين مجهولاها $x$ و $y$ ، ثم اكتب معادلة المبلغ، بعد قسمة طرفيها على 100، على الشكل $2x + y = c$ . أعط العدد $c$ .",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $c$ فقط",
+      "expectedAnswer": "11",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\begin{cases} x + y = 1100 \\\\ 200x + 100y = 7 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "B",
-          "content": "$\\begin{cases} x + y = 7 \\\\ 100x + 200y = 1100 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "$\\begin{cases} x + y = 7 \\\\ 200x + 100y = 1100 \\end{cases}$",
-          "isCorrect": true
+          "value": "7",
+          "id": "MISC-JUMLA-TARJAMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معلومة تعدّ الباقات ومعلومة تجمع الدنانير."
+          "content": "ما الكميتان اللتان لا يعطيهما النص؟ هما المجهولان."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كل باقة «4G» تكلّف 200."
+          "content": "ثمن $x$ باقة «4G» هو $200x$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "المبلغ: ثمن باقات «4G» زائد ثمن باقات «سوشيال»."
+          "content": "اكتب معادلة المبلغ ثم اقسم حدودها على 100."
         }
       ],
       "feedback": {
-        "correct": "7 باقات و 1100 DA: الحل $(4 ; 3)$ .",
-        "incorrect": "لا نخلط بين عدد الباقات والمبلغ، ولا بين الثمنين."
-      }
+        "correct": "معادلة المبلغ $200x + 100y = 1100$ تؤول إلى $2x + y = 11$ ، والجملة: $\\begin{cases} x + y = 7 \\\\ 2x + y = 11 \\end{cases}$ .",
+        "incorrect": "المبلغ يُترجم بـ $200x + 100y$ ؛ اقسم الحدود الثلاثة على 100."
+      },
+      "solution": {
+        "lines": [
+          "عدد الباقات: $x + y = 7$",
+          "المبلغ: $200x + 100y = 1100$",
+          "بقسمة طرفي المعادلة الثانية على 100 نجد: $2x + y = 11$",
+          "ومنه الجملة: $\\begin{cases} x + y = 7 \\\\ 2x + y = 11 \\end{cases}$"
+        ],
+        "result": "c = 11"
+      },
+      "timeSeconds": 180
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "lead": "جد عدد الباقات التي اشترتها أميرة من كل نوع.",
+      "statement": "عدد باقات «4G» :",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب عدد الباقات (عدد فقط)",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح المعادلة الأولى من الثانية طرفا لطرف."
+        }
+      ],
+      "feedback": {
+        "correct": "اشترت أميرة 4 باقات «4G».",
+        "incorrect": "اطرح $x + y = 7$ من $2x + y = 11$ طرفا لطرف."
+      },
+      "solution": {
+        "lines": [
+          "بطرح المعادلة الأولى من الثانية طرفا لطرف نجد: $x = 11 - 7 = 4$",
+          "بالتعويض في المعادلة الأولى: $4 + y = 7$ ومنه $y = 3$",
+          "التحقق في النص: $4 + 3 = 7$ باقات و $200 \\times 4 + 100 \\times 3 = 1100$ .",
+          "إذن اشترت أميرة 4 باقات «4G» و 3 باقات «سوشيال»."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "عدد باقات «سوشيال» :",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب عدد الباقات (عدد فقط)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض في المعادلة $x + y = 7$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "اشترت أميرة 3 باقات «سوشيال»، ونتحقق: $800 + 300 = 1100$ .",
+        "incorrect": "من $x + y = 7$ : $y = 7 - x$ ."
+      },
+      "solution": {
+        "lines": [
+          "بطرح المعادلة الأولى من الثانية طرفا لطرف نجد: $x = 11 - 7 = 4$",
+          "بالتعويض في المعادلة الأولى: $4 + y = 7$ ومنه $y = 3$",
+          "التحقق في النص: $4 + 3 = 7$ باقات و $200 \\times 4 + 100 \\times 3 = 1100$ .",
+          "إذن اشترت أميرة 4 باقات «4G» و 3 باقات «سوشيال»."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

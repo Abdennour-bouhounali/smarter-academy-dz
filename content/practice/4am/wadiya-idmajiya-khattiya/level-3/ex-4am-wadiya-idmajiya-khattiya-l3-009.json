@@ -3,121 +3,192 @@
   "lessonCode": "wadiya-idmajiya-khattiya",
   "level": 3,
   "metadata": {
-    "title": "مدرجات الملعب في الداربي",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2009 — آلة تعبئة بمعصرة زيت الزيتون",
+    "estimatedMinutes": 9,
     "tags": [
-      "نسبة مئوية",
-      "كسر"
+      "تدفق",
+      "دالة خطية",
+      "مقادير مركبة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
-      "modelledOn": "ex-38"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P2",
+      "modelledOn": "BEM 2009 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2009",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "في مباراة الداربي، بقي ثُمن مقاعد الملعب فارغا."
+    "content": "في معصرة لزيت الزيتون، تملأ آلة خزانا كان فارغا بتدفق ثابت قدره 240L في الساعة. نسمّي $g(x)$ كمية الزيت في الخزان (باللتر) بعد $x$ ساعة من بداية الملء."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما النسبة المئوية للمقاعد المشغولة؟",
+      "step": "01",
+      "statement": "احسب كمية الزيت في الخزان بعد ساعتين ونصف.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "نسبة مئوية دون الرمز %",
-      "expectedAnswer": "87.5",
+      "answerFormat": "عدد: الكمية باللتر",
+      "expectedAnswer": "600",
+      "misconceptionSignatures": [
+        {
+          "value": "480",
+          "id": "MISC-MAQADIR-WIHDA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما الكسر المشغول من المقاعد؟"
+          "content": "ساعتان ونصف = $2{,}5h$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$1 - \\dfrac{1}{8}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اضرب الكسر في 100."
+          "content": "الكمية = التدفق × المدة."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{7}{8} \\times 100 = 87{,}5$.",
-        "incorrect": "الثمن فارغ: احسب نسبة الباقي."
+        "correct": "$240 \\times 2{,}5 = 600$ L.",
+        "incorrect": "اضرب التدفق في المدة بالساعات (2,5 لا 2)."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 1,
-      "misconceptionSignatures": [
-        {
-          "value": "12.5",
-          "id": "MISC-TARRID-TAFSIR"
-        },
-        {
-          "value": "92",
-          "id": "MISC-TARRID-TAFSIR"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$240 \\times 2{,}5 = 600$",
+          "بعد ساعتين ونصف يحتوي الخزان على 600L."
+        ],
+        "result": "600L"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "هل يمكن القول إنّ 85% من المقاعد على الأقل مشغولة؟",
+      "step": "02",
+      "statement": "عبّر عن $g(x)$ بدلالة $x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب المعامل $a$ فقط في $g(x) = ax$",
+      "expectedAnswer": "240",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التدفق ثابت والخزان فارغ في البداية: الكمية متناسبة مع المدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(x) = 240x$ .",
+        "incorrect": "المعامل هو كمية الزيت في ساعة واحدة."
+      },
+      "solution": {
+        "lines": [
+          "$g(x) = 240x$"
+        ],
+        "result": "g(x) = 240x"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "سعة الخزان 1500L. احسب المدة اللازمة لملئه، بالساعات.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة: المدة بالساعات",
+      "expectedAnswer": "6,25",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "نعم، لأنّ النسبة المشغولة أكبر من 85%",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "لا، لأنّ 12,5% فقط مشغولة",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAFSIR"
-        },
-        {
-          "id": "C",
-          "content": "لا، لأنّ النسبة ليست 85% بالضبط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAFSIR"
+          "value": "360000",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قارن النسبة المشغولة بـ 85%."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "«على الأقل» تعني أكبر من أو تساوي."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "استعمل النسبة من السؤال السابق."
+          "content": "جد العدد $x$ الذي صورته 1500 بالدالة $g$ ."
         }
       ],
       "feedback": {
-        "correct": "$87{,}5 \\geq 85$ : القول صحيح.",
-        "incorrect": "«على الأقل 85%» صحيحة إذا كانت النسبة 85% أو أكثر."
+        "correct": "$240x = 1500$ ومنه $x = 6{,}25$ h، أي 6 ساعات و 15 دقيقة.",
+        "incorrect": "اقسم السعة على التدفق."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$g(x) = 1500$ معناه $240x = 1500$",
+          "$x = \\dfrac{1500}{240} = 6{,}25$",
+          "يمتلئ الخزان بعد 6 ساعات و 15 دقيقة."
+        ],
+        "result": "x = 6{,}25h"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "04",
+      "statement": "يُعبّأ زيت الخزان المملوء في قارورات سعة كل منها 0,75L. كم قارورة نحصل عليها؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد القارورات",
+      "expectedAnswer": "2000",
+      "misconceptionSignatures": [
+        {
+          "value": "1125",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم الكمية الكلية على سعة قارورة واحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$1500 \\div 0{,}75 = 2000$ قارورة.",
+        "incorrect": "عدد القارورات = الكمية ÷ سعة القارورة."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{1500}{0{,}75} = 2000$",
+          "نحصل على 2000 قارورة."
+        ],
+        "result": "2000"
+      },
+      "timeSeconds": 75
     }
   ]
 }

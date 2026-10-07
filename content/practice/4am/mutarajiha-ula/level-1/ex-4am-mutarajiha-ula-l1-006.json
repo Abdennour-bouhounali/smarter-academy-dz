@@ -3,162 +3,188 @@
   "lessonCode": "mutarajiha-ula",
   "level": 1,
   "metadata": {
-    "title": "تدريب — المجهول في الطرفين",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2019 — حل متراجحة وتمثيل حلولها",
+    "estimatedMinutes": 7,
     "tags": [
-      "حلّ متراجحة"
+      "متراجحة",
+      "حل متراجحة",
+      "تمثيل بياني"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_mutarajiha-ula_P1",
-      "modelledOn": "know-3"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_mutarajiha-ula_P2",
+      "modelledOn": "BEM 2019 I-2"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2019",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "لتكن المتراجحة $2x + 1 > x + 3$ ."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل العدد $2$ حلّ للمتراجحة $2x + 1 > x + 3$ ؟",
+      "step": "01",
+      "lead": "حلّ المتراجحة: $5x - 3 \\geqslant 2x + 9$ .",
+      "statement": "حدّ الحلول $k$ :",
       "learningPoints": [
         {
-          "code": "4am_mutarajiha-ula_P1",
+          "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "نعم، هو حلّ",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
-        },
-        {
-          "id": "B",
-          "content": "لا، ليس حلًّا",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "حلول المتراجحة من الشكل $x < k$ أو $x \\leqslant k$ أو $x > k$ أو $x \\geqslant k$ : اكتب العدد $k$ فقط (عدد صحيح أو كسر a/b، قد يكون سالبًا)",
+      "expectedAnswer": "4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ بالعدد في الطرفين."
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر، كما في حل معادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب كل طرف وحده."
+          "content": "إضافة عدد إلى الطرفين أو طرحه منهما لا تغيّر اتجاه المتباينة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+          "content": "الحدّ هو العدد الذي يحقّق المعادلة المرفقة (نضع «=» مكان رمز المتباينة): اقسم في الأخير على معامل $x$ ."
         }
       ],
       "feedback": {
-        "correct": "من أجل $x = 2$ : الطرف الأول يساوي $5$ والطرف الثاني $5$ ، و $5 > 5$ متباينة خاطئة.",
-        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
-      }
+        "correct": "حدّ الحلول هو $k = 4$ .",
+        "incorrect": "أعد الحل سطرًا سطرًا: العملية نفسها على الطرفين، ثم القسمة على معامل $x$ في الأخير."
+      },
+      "solution": {
+        "lines": [
+          "حدّ الحلول هو حلّ المعادلة المرفقة: $5x - 3 = 2x + 9$",
+          "$5x - 2x = 9 + 3$",
+          "$3x = 12$",
+          "$\\dfrac{3x}{3} = \\dfrac{12}{3}$",
+          "إذن حدّ الحلول هو $4$ ."
+        ],
+        "result": "k = 4"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "هل العدد $5$ حلّ للمتراجحة $2x + 1 > x + 3$ ؟",
+      "step": "01",
+      "statement": "حلول المتراجحة هي الأعداد $x$ حيث:",
       "learningPoints": [
         {
-          "code": "4am_mutarajiha-ula_P1",
+          "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "نعم، هو حلّ",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "لا، ليس حلًّا",
+          "content": "$x < 4$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "عوّض $x$ بالعدد في الطرفين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب كل طرف وحده."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
-        }
-      ],
-      "feedback": {
-        "correct": "من أجل $x = 5$ : الطرف الأول يساوي $11$ والطرف الثاني $8$ ، و $11 > 8$ متباينة صحيحة.",
-        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
-      }
-    },
-    {
-      "id": "q3",
-      "statement": "أيّ عدد حلّ للمتراجحة $2x + 1 > x + 3$ ؟",
-      "learningPoints": [
-        {
-          "code": "4am_mutarajiha-ula_P1",
-          "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$3$",
-          "isCorrect": true
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
         },
         {
           "id": "B",
-          "content": "$2$",
+          "content": "$x \\leqslant 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "C",
+          "content": "$x > 4$",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTARAJIHA-QAWS"
         },
         {
-          "id": "C",
-          "content": "$0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+          "id": "D",
+          "content": "$x \\geqslant 4$",
+          "isCorrect": true
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اختبر كل عدد بتعويضه في الطرفين."
+          "content": "انظر إلى إشارة معامل $x$ في آخر سطر قبل القسمة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب الطرفين ثم احكم على المتباينة العددية."
+          "content": "القسمة على عدد موجب تحافظ على الاتجاه، والقسمة على عدد سالب تغيّره."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\geqslant 4$ .",
+        "incorrect": "تتبّع سطور الحل: الاتجاه يتغيّر فقط عند الضرب أو القسمة على عدد سالب، ونوع المتباينة (تامة أو غير تامة) لا يتغيّر أبدًا."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $5x - 3 \\geqslant 2x + 9$",
+          "$5x - 2x \\geqslant 9 + 3$",
+          "$3x \\geqslant 12$",
+          "$\\dfrac{3x}{3} \\geqslant \\dfrac{12}{3}$",
+          "إذن حلول المتراجحة هي كل قيم $x$ الأكبر من أو تساوي $4$ .",
+          "قسمنا الطرفين (أو ضربناهما) في آخر خطوة على عدد موجب، فبقي اتجاه المتباينة ونوعها."
+        ],
+        "result": "x \\geqslant 4"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "مثّل حلولها بيانيًا على مستقيم مدرّج.",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "selfCheck",
+      "answerFormat": "صف تمثيلك: جهة الجزء الملوّن بالأحمر والرمز عند الحدّ (أو صوّر ورقتك)، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بحل المتراجحة لتعرف الحدّ وجهة الحلول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأعداد الأكبر من الحدّ على يمينه، والأصغر منه على يساره."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "العدد المطلوب وحده يعطي متباينة صحيحة."
+          "content": "اختبر الحدّ نفسه: إن كان حلًّا فالرمز موجّه نحو الجزء الملوّن، وإلا فهو موجّه عكسه."
         }
       ],
       "feedback": {
-        "correct": "من أجل $x = 3$ : $7 > 6$ صحيحة، أمّا القيم الأخرى فلا تحقّقها.",
-        "incorrect": "عوّض كل عدد في الطرفين واحسب، ثم قارن بالرمز نفسه."
-      }
+        "correct": "تمثيلك مطابق للحل النموذجي.",
+        "incorrect": "راجع جهة الجزء الملوّن، ثم اتجاه الرمز عند الحدّ."
+      },
+      "solution": {
+        "lines": [
+          "حلول المتراجحة هي الأعداد $x$ حيث $x \\geqslant 4$ .",
+          "نلوّن بالأحمر جزء المستقيم المدرّج الواقع على يمين العدد $4$ .",
+          "العدد $4$ حلّ للمتراجحة، فنضع عنده الرمز $[$ موجّهًا نحو الجزء الملوّن."
+        ],
+        "result": "الجزء الملوّن على يمين 4 والرمز [ عنده"
+      },
+      "timeSeconds": 150
     }
   ]
 }

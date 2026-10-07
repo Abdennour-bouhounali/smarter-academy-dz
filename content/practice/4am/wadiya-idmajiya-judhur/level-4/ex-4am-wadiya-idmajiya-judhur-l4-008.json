@@ -1,10 +1,12 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l4-008",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 4,
   "metadata": {
-    "title": "تدريب — مربّع ومستطيل: أيّهما أطول محيطًا؟",
-    "estimatedMinutes": 5,
+    "title": "مستطيل ومربع: أيهما أطول محيطا؟",
+    "estimatedMinutes": 8,
     "tags": [
-      "وضعية إدماجية",
-      "مساحة",
+      "جداء جذرين",
       "مقارنة"
     ],
     "source": {
@@ -12,164 +14,165 @@
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
       "modelledOn": null
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "مستطيل بعداه $3\\sqrt{2}\\,m$ و $2\\sqrt{2}\\,m$، ومربّع له نفس مساحته."
+    "content": "مستطيل بُعداه $3\\sqrt{2}m$ و $2\\sqrt{2}m$ ، و مربع له نفس مساحة هذا المستطيل."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هي مساحة المستطيل (بالمتر المربع)؟",
+      "step": "01",
+      "statement": "احسب مساحة المستطيل.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (بالمتر المربع)",
+      "answerFormat": "عدد طبيعي: المساحة بـ $m^2$",
       "expectedAnswer": "12",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "اضرب البعدين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$\\sqrt{2} \\times \\sqrt{2} = 2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$3 \\times 2 \\times 2$."
-        }
-      ],
-      "feedback": {
-        "correct": "$3\\sqrt{2} \\times 2\\sqrt{2} = 6 \\times 2 = 12\\,m^2$.",
-        "incorrect": "اضرب العاملين ثم الجذرين."
-      },
       "misconceptionSignatures": [
         {
           "value": "24",
           "id": "MISC-JIDHR-FI-JIDHR"
         }
       ],
-      "cognitiveDemand": "reason"
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب المعاملين معًا و الجذرين معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{2} \\times \\sqrt{2} = 2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$3\\sqrt{2} \\times 2\\sqrt{2} = 6 \\times 2 = 12m^2$",
+        "incorrect": "$\\sqrt{2} \\times \\sqrt{2}$ يساوي 2 لا 4."
+      },
+      "solution": {
+        "lines": [
+          "$3\\sqrt{2} \\times 2\\sqrt{2} = 3 \\times 2 \\times (\\sqrt{2})^2 = 6 \\times 2$"
+        ],
+        "result": "12m^2"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "ضلع المربّع (بالمتر) هو ...",
+      "step": "02",
+      "statement": "اكتب طول ضلع المربع على الشكل $a\\sqrt{3}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل المعادلة $c^2 = 12$ مع $c > 0$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $12 = 4 \\times 3$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$c = \\sqrt{12} = 2\\sqrt{3}m$",
+        "incorrect": "طول الضلع هو الجذر التربيعي للمساحة: أخرج جذر المربع التام."
+      },
+      "solution": {
+        "lines": [
+          "$c^2 = 12$ و $c > 0$ يعني $c = \\sqrt{12} = \\sqrt{4 \\times 3}$"
+        ],
+        "result": "c = 2\\sqrt{3}\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "أي الشكلين محيطه أكبر ؟ برّر إجابتك.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$6$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-NISF"
+          "content": "المستطيل",
+          "isCorrect": true
         },
         {
           "id": "B",
-          "content": "$5\\sqrt{2}$",
+          "content": "المربع",
           "isCorrect": false,
           "misconceptionId": "MISC-JIDHR-JAMA"
         },
         {
           "id": "C",
-          "content": "$2\\sqrt{3}$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$4\\sqrt{3}$",
+          "content": "لهما نفس المحيط",
           "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+          "misconceptionId": "MISC-WADIYA-MUSHAWWISH"
         }
       ],
+      "answerFormat": "اختر الإجابة، ثم قارن تبريرك بالحل النموذجي",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الضلع هو الجذر التربيعي للمساحة."
+          "content": "احسب المحيطين على الشكل $k\\sqrt{2}$ و $k\\sqrt{3}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "بسّط الجذر."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$12 = 4 \\times 3$."
+          "content": "لمقارنة $k\\sqrt{b}$ و $h\\sqrt{c}$ أدخل كل معامل تحت الجذر."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{12} = 2\\sqrt{3}$.",
-        "incorrect": "الضلع جذر المساحة، لا نصفها."
+        "correct": "$10\\sqrt{2} = \\sqrt{200}$ و $8\\sqrt{3} = \\sqrt{192}$ ، و $200 > 192$ .",
+        "incorrect": "تساوي المساحتين لا يعني تساوي المحيطين: اكتب كل محيط على الشكل $\\sqrt{n}$ و قارن."
       },
-      "cognitiveDemand": "reason"
-    },
-    {
-      "id": "q3",
-      "statement": "أيّ الشكلين محيطه أكبر؟",
-      "learningPoints": [
-        {
-          "code": "4am_wadiya-idmajiya-judhur_P1",
-          "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "المستطيل: $10\\sqrt{2} = \\sqrt{200}$ و $8\\sqrt{3} = \\sqrt{192}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "المربّع: $8\\sqrt{3} = \\sqrt{192}$ و $10\\sqrt{2} = \\sqrt{100}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUAMIL-DUN-TARBI"
-        },
-        {
-          "id": "C",
-          "content": "لهما المحيط نفسه لأنّ لهما المساحة نفسها",
-          "isCorrect": false
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "محيط المستطيل $2(3\\sqrt{2} + 2\\sqrt{2})$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "محيط المربّع أربعة أضعاف ضلعه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن بإدخال العامل تحت الجذر."
-        }
-      ],
-      "feedback": {
-        "correct": "المستطيل $10\\sqrt{2} = \\sqrt{200}$ والمربّع $8\\sqrt{3} = \\sqrt{192}$: محيط المستطيل أكبر.",
-        "incorrect": "مساحتان متساويتان لا تعنيان محيطين متساويين."
+      "solution": {
+        "lines": [
+          "محيط المستطيل: $2(3\\sqrt{2} + 2\\sqrt{2}) = 10\\sqrt{2} = \\sqrt{200}$",
+          "محيط المربع: $4 \\times 2\\sqrt{3} = 8\\sqrt{3} = \\sqrt{192}$",
+          "بما أن $200 > 192$ فإن $\\sqrt{200} > \\sqrt{192}$ ."
+        ],
+        "result": "محيط المستطيل أكبر"
       },
-      "cognitiveDemand": "reason"
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l4-008",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 4
+  ]
 }

@@ -3,104 +3,229 @@
   "lessonCode": "wadiya-idmajiya-khattiya",
   "level": 4,
   "metadata": {
-    "title": "رحلة مدرسية",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2023 — تهيئة ملعب جواري بعشب اصطناعي",
+    "estimatedMinutes": 12,
     "tags": [
-      "دالة خطية",
-      "ميزانية"
+      "نسبة مئوية",
+      "ربح وخسارة",
+      "تناسبية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
-      "modelledOn": "situation"
+      "modelledOn": "BEM 2023 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2023",
+      "heading": "التمرين",
+      "points": "04"
     }
   },
   "statement": {
-    "content": "رحلة مدرسية إلى المصعد الهوائي: 30 تلميذا يستفيد كلّ منهم من تخفيض 40% من سعر تذكرة البالغ $x$ ، و 3 أساتذة يدفعون السعر كاملا. ميزانية الرحلة $8400$ DA."
+    "content": "كلّفت بلدية مقاولا بتهيئة ملعب جواري، وخصّصت لذلك مبلغ 2400000DA. يغطّي المقاول أرضية الملعب ومساحتها $800m^2$ بعشب اصطناعي، سعر المتر المربع الواحد منه 1800DA. وتمثّل مصاريف الإنجاز (النقل وأجرة العمال) 25% من المبلغ المخصّص لهذا المشروع."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "التكلفة $C(x) = ax$ : ما قيمة $a$ ؟",
+      "step": "01",
+      "statement": "احسب ثمن العشب الاصطناعي اللازم لتغطية أرضية الملعب.",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "21",
+      "answerFormat": "عدد: الثمن بـ DA",
+      "expectedAnswer": "1440000",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "كل تلميذ يدفع $0{,}6x$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "التلاميذ: $30 \\times 0{,}6x$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "أضف ما يدفعه الأساتذة."
+          "content": "الثمن متناسب مع المساحة."
         }
       ],
       "feedback": {
-        "correct": "$C(x) = 3x + 30 \\times 0{,}6x = 3x + 18x = 21x$.",
-        "incorrect": "التلميذ يدفع ما يبقى بعد التخفيض."
+        "correct": "$800 \\times 1800 = 1440000$ DA.",
+        "incorrect": "اضرب المساحة في سعر المتر المربع."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3,
-      "misconceptionSignatures": [
-        {
-          "value": "15",
-          "id": "MISC-TAKHFID-NISBA"
-        },
-        {
-          "value": "33",
-          "id": "MISC-TARRID-NAMUDHAJ"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$800 \\times 1800 = 1440000$",
+          "ثمن العشب الاصطناعي 1440000DA."
+        ],
+        "result": "1440000DA"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "ما أكبر سعر لتذكرة البالغ (بالدينار) في حدود الميزانية؟",
+      "step": "02",
+      "statement": "احسب مبلغ مصاريف الإنجاز.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "600000",
+      "misconceptionSignatures": [
+        {
+          "value": "360000",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المصاريف تمثّل 25% من المبلغ المخصّص للمشروع."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}25 \\times 2400000 = 600000$ DA.",
+        "incorrect": "النسبة تُحسب من المبلغ المخصّص."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{25}{100} \\times 2400000 = 600000$",
+          "مصاريف الإنجاز 600000DA."
+        ],
+        "result": "600000DA"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "sub": "ا",
+      "statement": "هل يحقّق المقاول ربحا أم خسارة؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P3",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي بالدينار",
-      "expectedAnswer": "400",
+      "difficulty": 4,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ربحا",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "خسارة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "التكلفة لا تتجاوز الميزانية."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "استعمل المعامل من السؤال السابق."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم الميزانية على المعامل."
+          "content": "احسب التكلفة الكلية للمقاول وقارنها بالمبلغ المخصّص."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{8400}{21} = 400$ DA.",
-        "incorrect": "أكبر سعر حيث تساوي التكلفة الميزانية."
+        "correct": "التكلفة الكلية أقل من المبلغ المخصّص: المقاول يربح.",
+        "incorrect": "قارن مجموع ثمن العشب والمصاريف بالمبلغ المخصّص."
       },
+      "solution": {
+        "lines": [
+          "التكلفة الكلية: $1440000 + 600000 = 2040000$ DA.",
+          "$2040000 < 2400000$ ، إذن يحقّق المقاول ربحا."
+        ],
+        "result": "ربح"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "sub": "ب",
+      "statement": "احسب مقدار هذا الربح.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
       "cognitiveDemand": "apply",
-      "difficulty": 3
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "360000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الربح = المبلغ المخصّص − التكلفة الكلية."
+        }
+      ],
+      "feedback": {
+        "correct": "$2400000 - 2040000 = 360000$ DA.",
+        "incorrect": "اطرح التكلفة الكلية من المبلغ المخصّص."
+      },
+      "solution": {
+        "lines": [
+          "$2400000 - 2040000 = 360000$",
+          "ربح المقاول 360000DA."
+        ],
+        "result": "360000DA"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q5",
+      "step": "04",
+      "statement": "احسب النسبة المئوية لهذا الربح من المبلغ المخصّص.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: النسبة دون الرمز %",
+      "expectedAnswer": "15",
+      "misconceptionSignatures": [
+        {
+          "value": "0.15",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النسبة = (الربح ÷ المبلغ المخصّص) × 100."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{360000}{2400000} \\times 100 = 15\\%$ .",
+        "incorrect": "اقسم الربح على المبلغ المخصّص ثم اضرب في 100."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{360000}{2400000} \\times 100 = 15$",
+          "يمثّل الربح 15% من المبلغ المخصّص."
+        ],
+        "result": "15\\%"
+      },
+      "timeSeconds": 90
     }
   ]
 }

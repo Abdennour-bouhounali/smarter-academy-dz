@@ -3,106 +3,160 @@
   "lessonCode": "tarrid-mushkila",
   "level": 3,
   "metadata": {
-    "title": "تدريب — دجاج وأرانب",
-    "estimatedMinutes": 5,
+    "title": "دجاج وأرانب",
+    "estimatedMinutes": 8,
     "tags": [
       "ترييض",
-      "مجهول"
+      "معادلة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tarrid-mushkila_P1",
       "modelledOn": "method-modelling"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "في حظيرة دجاج وأرانب: 20 رأسًا و 56 رِجلًا. نسمّي $x$ عدد الأرانب."
+    "content": "في حظيرة دجاج و أرانب: عدد الرؤوس 20 و عدد الأرجل 56 ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ معادلة تترجم النص؟",
+      "step": "01",
+      "statement": "نسمّي $x$ عدد الأرانب. اكتب معادلة تترجم المعطيات ثم جد $x$ .",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$4x + 2x = 56$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
-        },
-        {
-          "id": "B",
-          "content": "$4x + 2(20 - x) = 56$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$4x + 20 = 56$",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد الأرانب",
+      "expectedAnswer": "8",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "كم عدد الدجاج بدلالة $x$ ؟"
+          "content": "لكل حيوان رأس واحد: عبّر بدلالة $x$ عن عدد الدجاج."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عدد الدجاج $20 - x$ ، وللدجاجة رِجلان وللأرنب أربع."
+          "content": "للأرنب 4 أرجل وللدجاجة رجلان."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع أرجل الأرانب وأرجل الدجاج."
+          "content": "مجموع أرجل الأرانب وأرجل الدجاج هو عدد الأرجل المعطى."
         }
       ],
       "feedback": {
-        "correct": "$4x + 2(20 - x) = 56$ .",
-        "incorrect": "عدد الدجاج هو ما يبقى من الرؤوس: $20 - x$ ."
-      }
+        "correct": "$4x + 2(20 - x) = 56$ تعطي $x = 8$ .",
+        "incorrect": "عدد الدجاج هو $20 - x$ ، ولكل دجاجة رجلان."
+      },
+      "solution": {
+        "lines": [
+          "عدد الدجاج: $20 - x$",
+          "المعادلة: $4x + 2(20 - x) = 56$",
+          "$4x + 40 - 2x = 56$",
+          "$2x = 16$",
+          "$x = 8$"
+        ],
+        "result": "x = 8"
+      },
+      "work": "required",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "كم عدد الأرانب؟",
+      "step": "02",
+      "statement": "استنتج عدد الدجاج.",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "8",
+      "answerFormat": "عدد طبيعي: عدد الدجاج",
+      "expectedAnswer": "12",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "بسّط: $2x + 40 = 56$ ."
+          "content": "عدد الرؤوس معلوم."
+        }
+      ],
+      "feedback": {
+        "correct": "12 دجاجة، والتحقق: $4 \\times 8 + 2 \\times 12 = 56$ .",
+        "incorrect": "اطرح عدد الأرانب من عدد الرؤوس."
+      },
+      "solution": {
+        "lines": [
+          "$20 - 8 = 12$",
+          "التحقق: $32 + 24 = 56$ ."
+        ],
+        "result": "12"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "اشترى صاحب الحظيرة أرانب أخرى، فقال: «صار عدد الأرجل 75». هل يمكن ذلك؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لكل حيوان في الحظيرة عدد زوجي من الأرجل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اطرح 40 ثم اقسم على 2."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق: عدد الرؤوس وعدد الأرجل."
+          "content": "ما طبيعة مجموع أعداد زوجية؟"
         }
       ],
       "feedback": {
-        "correct": "$2x = 16$ أي $x = 8$ : 8 أرانب و 12 دجاجة، $32 + 24 = 56$ .",
-        "incorrect": "انشر $2(20 - x)$ أولًا."
-      }
+        "correct": "لا: عدد الأرجل مجموع أعداد زوجية فهو زوجي، و 75 عدد فردي.",
+        "incorrect": "تأمّل عدد أرجل كل حيوان، ثم طبيعة مجموعها."
+      },
+      "solution": {
+        "lines": [
+          "لكل أرنب 4 أرجل ولكل دجاجة رجلان: عدد الأرجل مجموع أعداد زوجية، فهو عدد زوجي.",
+          "75 عدد فردي، إذن لا يمكن أن يكون عدد الأرجل 75 ."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 90
     }
   ]
 }

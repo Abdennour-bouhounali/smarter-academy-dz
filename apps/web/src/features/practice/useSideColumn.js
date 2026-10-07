@@ -32,6 +32,10 @@ export function useSideColumn() {
 }
 
 /** La grille du lecteur : deux colonnes, ou l'exercice seul sur toute la largeur. */
-export const practiceGridClass = (hidden) => (hidden
+// `narrow` : la feuille d'examen (pratique BEM) — la colonne ne porte plus que
+// la الكفاءة (« سياق السؤال » est sur la feuille elle-même) : le sujet prend la place.
+export const practiceGridClass = (hidden, { narrow = false } = {}) => (hidden
   ? 'grid grid-cols-1 gap-3 [[data-sa-classroom]_&]:block'
-  : 'grid grid-cols-1 gap-3 xl:grid-cols-[28rem_minmax(0,1fr)] xl:items-start xl:gap-5 2xl:grid-cols-[30.6rem_minmax(0,1fr)] [[data-sa-classroom]_&]:block');
+  : narrow
+    ? 'grid grid-cols-1 gap-3 xl:grid-cols-[19rem_minmax(0,1fr)] xl:items-start xl:gap-5 [[data-sa-classroom]_&]:block'
+    : 'grid grid-cols-1 gap-3 xl:grid-cols-[28rem_minmax(0,1fr)] xl:items-start xl:gap-5 2xl:grid-cols-[30.6rem_minmax(0,1fr)] [[data-sa-classroom]_&]:block');

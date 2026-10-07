@@ -4,13 +4,14 @@ import { isolateMathRuns } from '../../../utils/bidi';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowBack, ArrowForward } from '../../../components/common/DirectionalIcons';
-import { BarChart3, Check, CheckCircle2, Clock, Lightbulb, RotateCcw } from 'lucide-react';
+import { BarChart3, Check, CheckCircle2, Clock, GraduationCap, Lightbulb, RotateCcw } from 'lucide-react';
 
 import { practice } from '@smarter-academy/core';
 import { AuthContext } from '../../../context/AuthContext';
 import {
   fetchPracticeSession, fetchPracticeOverview, openQuestion, requestHint, submitAnswer,
-  completeExercise, completeSession, createNote, updateNote, fetchNextExercise,
+  completeExercise, completeSession, createNote, updateNote, fetchNextExercise, fetchSessionAnswers, fetchLessonMedals,
+  uploadAnswerImage, deleteAnswerImage, fetchAnswerImage,
 } from '../../../services/practiceService';
 import { exerciseIdsFor, loadExercise } from '../../../features/practice/practiceContent';
 import { decideNextExercise, selectionHintReason } from '../../../features/practice/nextExercise';
@@ -26,6 +27,25 @@ import QuestionHistory from '../../../features/practice/QuestionHistory';
 import QuestionArrival from '../../../features/practice/QuestionArrival';
 import QuestionContextPanel from '../../../features/practice/QuestionContextPanel';
 import LearningPointProgress from '../../../features/practice/LearningPointProgress';
+import ExamSheet from '../../../features/practice/exam/ExamSheet';
+import ExamNavigator from '../../../features/practice/exam/ExamNavigator';
+import ExamPanelButton from '../../../features/practice/exam/ExamPanelButton';
+import Modal from '../../../components/admin/ui/Modal';
+import SolutionPanel from '../../../features/practice/exam/SolutionPanel';
+import AnswerImagePicker from '../../../features/practice/exam/images/AnswerImagePicker';
+import AnswerImageGallery from '../../../features/practice/exam/images/AnswerImageGallery';
+import ReviewStatus from '../../../features/practice/exam/images/ReviewStatus';
+import { canSendWithImages, pendingKind } from '../../../features/practice/exam/images/answerImages';
+import { SelfMarkChoice } from '../../../features/practice/inputs/SelfCheckInput';
+import { answerChars, answerSize, isExamExercise, solutionReady, stepSeconds } from '../../../features/practice/exam/examSheet';
+import StepTimer from '../../../features/practice/exam/StepTimer';
+import Medal from '../../../features/practice/medals/Medal';
+import MedalTray from '../../../features/practice/medals/MedalTray';
+import MedalCelebration from '../../../features/practice/medals/MedalCelebration';
+import { playMedal } from '../../../features/practice/medals/medalSound';
+import { medalFor, medalReason, tally } from '../../../features/practice/exam/medals';
+import { useEffectsPreference } from '../../../lessons/common/hooks/useEffectsPreference';
+import WorkArea, { MIN_WORK_CHARS, workLength, ZoneNumber } from '../../../features/practice/exam/WorkArea';
 import SideColumnToggle from '../../../features/practice/SideColumnToggle';
 import { useSideColumn, practiceGridClass } from '../../../features/practice/useSideColumn';
 import { currentLearningPoint } from '../../../features/practice/learningPointProgress';
@@ -33,7 +53,7 @@ import { historyEntry, recordQuestion, exerciseScore, outcomeTone } from '../../
 import { ClassroomPresentation, ClassroomEntryButton, ClassroomFrame, ClassroomHidden } from '../../../lessons/common/classroom';
 import MISCONCEPTIONS from '../../../../../../content/practice/misconceptions.json';
 
-const { evaluateAnswer, feedbackFor, isSuccessOutcome } = practice;
+const { evaluateAnswer, feedbackFor, isSuccessOutcome, isInertOutcome } = practice;
 
 // L'action principale de la carte — vérifier, puis passer à la suite. Même
 // forme pour les deux : l'élève a UN bouton plein à chercher à chaque étape.
@@ -48,6 +68,15 @@ const PRIMARY_BUTTON = 'inline-flex min-h-[48px] items-center justify-center gap
 const SECONDARY_BUTTON = 'inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl border-2 border-slate-300 bg-white px-5 py-2.5 text-base font-bold text-slate-700 transition-colors hover:border-slate-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-400 motion-reduce:transition-none';
 
 // Tertiaire : du texte avec une icône, sans fond — « إرشاد », « السؤال السابق ».
+// Feuille d'examen : un petit bouton « تحقّق », discret, à côté du champ —
+// pas le gros bouton plein d'une plateforme (propriétaire, 2026-10-06).
+const EXAM_CHECK_BUTTON = 'inline-flex min-h-[40px] items-center justify-center gap-1.5 rounded-md border-[1.5px] border-[#1f5c4c] bg-white px-3.5 py-1.5 text-sm font-bold text-[#1f5c4c] transition-colors hover:bg-emerald-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 disabled:cursor-not-allowed disabled:border-slate-300 disabled:text-slate-400 motion-reduce:transition-none';
+
+// Feuille d'examen : la navigation EN HAUT, petite et discrète (propriétaire,
+// 2026-10-06) — à la place de la barre collée en bas.
+const EXAM_NAV_BUTTON = 'inline-flex h-9 items-center gap-1 rounded-lg bg-white px-2.5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200 transition-colors hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 disabled:cursor-not-allowed disabled:opacity-40';
+const EXAM_NAV_NEXT = 'inline-flex h-9 items-center gap-1 rounded-lg bg-[#1f5c4c] px-3 text-sm font-bold text-white transition-colors hover:bg-[#174a3d] focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-1';
+
 const TERTIARY_BUTTON = 'inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-lg px-3 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 disabled:opacity-60 motion-reduce:transition-none';
 
 const reducedMotion = () => typeof window !== 'undefined'
@@ -91,6 +120,36 @@ export default function PracticeSession() {
   const [selection, setSelection] = useState(null);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answer, setAnswer] = useState(null);
+  // « مراحل الحساب » de l'étape courante (feuille d'examen) : envoyé AVEC la
+  // réponse (`answer.work`), donc enregistré en base et verrouillé avec elle.
+  const [work, setWork] = useState('');
+  // PHOTOS DE COPIE de l'étape courante (prototype BEM, 2026-10-06) : envoyées
+  // une à une avant la réponse, puis verrouillées avec elle. `review` : la
+  // correction de l'enseignant (« تصحيح الأستاذ ») ; `evaluatedBy` : qui a jugé.
+  const [images, setImages] = useState([]);
+  const [review, setReview] = useState(null);
+  const [evaluatedBy, setEvaluatedBy] = useState(null);
+  // Feuille d'examen : une saisie ILLISIBLE n'est pas envoyée (elle verrouillerait
+  // l'étape) — un mot sous le champ, et l'élève corrige.
+  const [unreadable, setUnreadable] = useState(false);
+  // Feuille d'examen : « الكفاءة » et la navigation dans une FENÊTRE CENTRALE.
+  const [panelOpen, setPanelOpen] = useState(false);
+  // Le chrono de l'étape : l'instant (ms) où elle s'est ouverte — gardé en
+  // localStorage par tentative, pour qu'un rechargement ne le remette pas à zéro.
+  const [stepStartedAt, setStepStartedAt] = useState(null);
+  // La question ouverte côté serveur (« exercice:question ») : « ابدأ » attend
+  // qu'elle le soit — sinon la réponse tardive du serveur effaçait le départ.
+  const [openedFor, setOpenedFor] = useState(null);
+  // LES MÉDAILLES (prototype BEM, 2026-10-06) : la célébration en cours, et la
+  // خزانة de la leçon (lue en base, puis augmentée à chaque médaille gagnée).
+  const [award, setAward] = useState(null);
+  const [lessonMedals, setLessonMedals] = useState(null);
+  const { enabled: soundOn } = useEffectsPreference();
+  const clearAward = useCallback(() => setAward(null), []);
+  useEffect(() => {
+    if (!token) return;
+    fetchLessonMedals(token, lessonCode).then(setLessonMedals).catch(() => {});
+  }, [token, lessonCode]);
   const [attemptUuid, setAttemptUuid] = useState(null);
   const [evaluation, setEvaluation] = useState(null);
   // Vrai quand le verdict du serveur a contredit la prédiction locale : la
@@ -105,6 +164,13 @@ export default function PracticeSession() {
   // état d'exercice : le serveur reste la vérité des tentatives. Remis à
   // zéro à chaque nouvel exercice.
   const [history, setHistory] = useState([]);
+  // « التمرين السابق » (propriétaire, 2026-10-06) : les exercices terminés de
+  // la séance, RELUS EN BASE (GET /practice/sessions/{id}/answers) — ce que
+  // l'élève a réellement enregistré, encore après un rechargement. Les revoir
+  // est une LECTURE : rejouer un exercice compterait deux fois pour la maîtrise.
+  // `reviewIndex` = celui qu'on relit, null = l'exercice courant.
+  const [reviews, setReviews] = useState([]);
+  const [reviewIndex, setReviewIndex] = useState(null);
   // Validations faites sur la question courante (1 = du premier coup) :
   // l'historique dit « صُحّحت بعد إعادة المحاولة ».
   const [tries, setTries] = useState(0);
@@ -117,13 +183,18 @@ export default function PracticeSession() {
   // (`practice`). Relu après chaque réponse enregistrée et chaque exercice
   // terminé — les étoiles et les barres avancent sous les yeux de l'élève.
   const [learningPoints, setLearningPoints] = useState([]);
+  // Le titre de la leçon (barre « الدرس: … » de la feuille d'examen).
+  const [lessonTitle, setLessonTitle] = useState('');
   const refreshLearningPoints = useCallback(() => {
     if (!token) return;
     fetchPracticeOverview(token, lessonCode)
-      .then((data) => setLearningPoints(data?.learningPoints ?? []))
+      .then((data) => { setLearningPoints(data?.learningPoints ?? []); setLessonTitle(data?.lesson?.title ?? ''); })
       .catch(() => {}); // Un module d'information : son échec ne bloque jamais la séance.
   }, [token, lessonCode]);
   useEffect(() => { refreshLearningPoints(); }, [refreshLearningPoints]);
+
+  // Les photos sont privées : chargées avec le jeton (AnswerImageGallery).
+  const imageLoader = useCallback((id, annotated) => fetchAnswerImage(token, id, annotated), [token]);
 
   const workspaceRef = useRef(null);
   const cardRef = useRef(null);
@@ -197,6 +268,11 @@ export default function PracticeSession() {
       setExercise(data);
       setQuestionIndex(0);
       setAnswer(null);
+      setWork('');
+      setImages([]);
+      setReview(null);
+      setEvaluatedBy(null);
+      setUnreadable(false);
       setEvaluation(null);
       setHints([]);
       setHistory([]);
@@ -238,16 +314,36 @@ export default function PracticeSession() {
     openQuestion(token, sessionId, exercise.id, question.id, uuid)
       .then((data) => {
         if (cancelled) return;
-        setAttemptUuid(uuid);
+        // Feuille d'examen : une étape déjà répondue revient avec SA tentative
+        // (un autre identifiant que celui proposé) et sa réponse enregistrée.
+        const used = data.attempt?.attemptUuid ?? uuid;
+        setAttemptUuid(used);
+        // Le chrono ne part qu'à « ابدأ » (propriétaire, 2026-10-06) ; un départ
+        // déjà donné (rechargement) est relu, pour ne pas offrir un temps neuf.
+        let started = null;
+        try {
+          const stored = Number(window.localStorage.getItem(`sa-step-start:${used}`));
+          if (stored > 0) started = stored;
+        } catch { /* confort local */ }
+        setStepStartedAt(started);
+        setOpenedFor(`${exercise.id}:${question.id}`);
         setHints([]);
         setHintsRemaining(question.hints?.length ?? 0);
         setServerOverrode(false);
         setTries(0);
+        // Les photos déjà jointes (même avant la réponse : un rechargement les retrouve).
+        setImages(data.attempt?.images ?? []);
+        setReview(data.attempt?.review ?? null);
+        setEvaluatedBy(data.attempt?.evaluatedBy ?? null);
         // Une question déjà répondue (tentative rouverte) se relit avec le
         // verdict du SERVEUR quand il le renvoie.
         if (data.attempt?.answered) {
           const outcome = data.attempt.outcome ?? 'correct';
-          setEvaluation({ outcome, isCorrect: isSuccessOutcome(outcome), misconceptionId: null, feedbackKey: null });
+          if (data.attempt.answer != null) {
+            setAnswer(data.attempt.answer);
+            setWork(typeof data.attempt.answer.work === 'string' ? data.attempt.answer.work : '');
+          }
+          setEvaluation({ outcome, isCorrect: isSuccessOutcome(outcome), misconceptionId: null, feedbackKey: null, normalized: data.attempt.normalized ?? '' });
         } else {
           setEvaluation(null);
         }
@@ -273,12 +369,30 @@ export default function PracticeSession() {
 
   const validate = useCallback(async () => {
     if (!question || !attemptUuid || busy) return;
+    // Une photo suffit (le propriétaire : « saisie, image, ou les deux ») : un
+    // champ vide n'est « illisible » que s'il n'y a pas de photo.
+    if (isExamExercise(exercise) && images.length === 0 && evaluateAnswer(answer, question).outcome === 'syntax_error') {
+      setUnreadable(true);
+      return;
+    }
+    setUnreadable(false);
     setBusy(true);
     setError(null);
     try {
-      // 1. Prédiction locale — affichée tout de suite, jamais comptée.
-      const predicted = evaluateAnswer(answer, question);
-      setEvaluation(predicted);
+      // La réponse ENVOYÉE : la valeur, plus « مراحل الحساب » quand l'étape en a.
+      const base = answer ?? (images.length > 0 ? {} : null);
+      let sent = question.work && base && work.trim() ? { ...base, work } : base;
+      // Le temps mis sur l'étape part avec la réponse (enregistré en base).
+      if (isExamExercise(exercise) && sent && stepStartedAt) sent = { ...sent, seconds: Math.round((Date.now() - stepStartedAt) / 1000) };
+      if (sent !== answer) setAnswer(sent);
+      // 1. Prédiction locale — affichée tout de suite, jamais comptée. SAUF
+      //    sur une étape d'examen avec photo ou démonstration : le client ne
+      //    sait pas si elle part chez l'enseignant (« تصحيح الأستاذ ») ou en
+      //    auto-évaluation — afficher sa prédiction montrerait le corrigé type
+      //    avant que le serveur n'ait dit qui juge.
+      const predicted = evaluateAnswer(sent, question);
+      const waitForServer = isExamExercise(exercise) && (question.answerType === 'selfCheck' || images.length > 0);
+      if (!waitForServer) setEvaluation(predicted);
       setServerOverrode(false);
       setTries((n) => n + 1);
       // Le bouton qui avait le focus disparaît : le focus va au retour
@@ -295,7 +409,7 @@ export default function PracticeSession() {
       //    `evaluation`, le verdict qui s'affiche et qui compte.
       const data = await submitAnswer(token, sessionId, {
         attemptUuid,
-        answer: answer ?? null,
+        answer: sent ?? null,
         outcome: predicted.outcome,
       });
       const verdict = data?.evaluation ?? null;
@@ -309,7 +423,25 @@ export default function PracticeSession() {
         }
         : predicted;
       setEvaluation(shown);
-      if (verdict && verdict.outcome !== predicted.outcome) setServerOverrode(true);
+      setEvaluatedBy(data?.attempt?.evaluatedBy ?? null);
+      setReview(data?.review ?? null);
+      // Une réponse juste sur une feuille d'examen gagne une médaille : or,
+      // argent ou bronze selon les إرشادات et le temps (medals.js).
+      if (isExamExercise(exercise)) {
+        const facts = { outcome: shown.outcome, answerType: question.answerType, hintsUsed: hints.length, seconds: sent?.seconds ?? null, limit: stepSeconds(question, exercise), evaluatedBy: data?.attempt?.evaluatedBy ?? null };
+        const medal = data?.recorded === false ? null : medalFor(facts);
+        if (medal) {
+          setAward({ id: Date.now(), medal, reason: medalReason(facts) });
+          playMedal(medal, soundOn);
+          setLessonMedals((prev) => {
+            const total = { ...(prev?.total ?? { gold: 0, silver: 0, bronze: 0, points: 0 }) };
+            total[medal] += 1;
+            total.points += { gold: 3, silver: 2, bronze: 1 }[medal];
+            return { ...(prev ?? { levels: {} }), total };
+          });
+        }
+      }
+      if (verdict && !waitForServer && verdict.outcome !== predicted.outcome) setServerOverrode(true);
       // « أعِد المحاولة » : le serveur juge la nouvelle réponse sans
       // l'enregistrer (`recorded: false`) — rien n'a bougé côté compteurs.
       if (data?.recorded !== false) refreshLearningPoints();
@@ -318,7 +450,76 @@ export default function PracticeSession() {
     } finally {
       setBusy(false);
     }
-  }, [question, attemptUuid, answer, token, sessionId, busy, refreshLearningPoints]);
+  }, [question, exercise, attemptUuid, answer, work, images, stepStartedAt, hints, soundOn, token, sessionId, busy, refreshLearningPoints]);
+
+  // « بيّن أن » (selfCheck), second temps : la démonstration est déjà
+  // enregistrée et verrouillée ; le corrigé type sous les yeux, l'élève se
+  // note. Même tentative, MÊME texte — le serveur refuse tout autre texte.
+  // « ابدأ » : l'élève lance le chrono de l'étape, ce qui révèle l'énoncé.
+  const startStep = useCallback(() => {
+    const now = Date.now();
+    try { if (attemptUuid) window.localStorage.setItem(`sa-step-start:${attemptUuid}`, String(now)); } catch { /* confort local */ }
+    setStepStartedAt(now);
+  }, [attemptUuid]);
+
+  const selfMark = useCallback(async (mark) => {
+    // Une « بيّن أن » (texte), ou une étape répondue en PHOTO seulement.
+    if (!question || !attemptUuid || busy || (!answer?.text && images.length === 0)) return;
+    const marked = { ...(answer ?? {}), selfMark: mark };
+    setBusy(true);
+    setError(null);
+    try {
+      const predicted = evaluateAnswer(marked, { ...question, answerType: 'selfCheck' });
+      const data = await submitAnswer(token, sessionId, { attemptUuid, answer: marked, outcome: predicted.outcome });
+      const verdict = data?.evaluation ?? null;
+      setAnswer(marked);
+      setEvaluatedBy(data?.attempt?.evaluatedBy ?? 'self');
+      setEvaluation(verdict
+        ? {
+          outcome: verdict.outcome,
+          isCorrect: typeof verdict.isCorrect === 'boolean' ? verdict.isCorrect : isSuccessOutcome(verdict.outcome),
+          misconceptionId: null,
+          normalized: verdict.normalized ?? '',
+          feedbackKey: verdict.feedbackKey ?? predicted.feedbackKey,
+        }
+        : predicted);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setBusy(false);
+    }
+  }, [question, attemptUuid, busy, answer, images, token, sessionId]);
+
+  const loadReviews = useCallback(async () => {
+    if (!token || !session) return;
+    try {
+      const data = await fetchSessionAnswers(token, sessionId);
+      const done = (data?.exercises ?? []).filter((e) => e.status === 'completed');
+      const built = await Promise.all(done.map(async (e) => {
+        const ex = await loadExercise(lessonCode, session.level, e.exerciseId).catch(() => null);
+        if (!ex) return null;
+        const entries = (e.questions ?? []).map((a) => {
+          const index = ex.questions.findIndex((q) => q.id === a.questionId);
+          if (index < 0) return null;
+          return historyEntry({
+            question: ex.questions[index],
+            index,
+            answer: a.answer,
+            evaluation: { outcome: a.outcome, normalized: a.normalized ?? '', isCorrect: isSuccessOutcome(a.outcome), misconceptionId: null },
+            hintsUsed: a.hintsUsed ?? 0,
+            images: a.images ?? [],
+            review: a.review ?? null,
+            evaluatedBy: a.evaluatedBy ?? null,
+          });
+        }).filter(Boolean).sort((x, y) => x.number - y.number);
+        return { exercise: ex, history: entries };
+      }));
+      setReviews(built.filter(Boolean));
+    } catch {
+      // Lecture facultative : sans elle, « التمرين السابق » n'apparaît pas.
+    }
+  }, [token, session, sessionId, lessonCode]);
+  useEffect(() => { loadReviews(); }, [loadReviews]);
 
   const next = useCallback(async () => {
     const lastQuestion = questionIndex >= (exercise?.questions?.length ?? 1) - 1;
@@ -332,13 +533,21 @@ export default function PracticeSession() {
         index: questionIndex,
         answer,
         evaluation,
-        feedbackMessage: evaluation ? feedbackFor(question, evaluation, MISCONCEPTIONS) : '',
+        feedbackMessage: evaluation ? feedbackFor(question, evaluation, MISCONCEPTIONS, { syntaxError: t('practice.syntaxErrorFeedback') }) : '',
         hintsUsed: hints.length,
         tries,
+        images,
+        review,
+        evaluatedBy,
       })));
       setArrival({ type: 'question', from });
       setQuestionIndex((i) => i + 1);
       setAnswer(null);
+      setWork('');
+      setImages([]);
+      setReview(null);
+      setEvaluatedBy(null);
+      setUnreadable(false);
       setEvaluation(null);
       setServerOverrode(false);
       setHints([]);
@@ -346,10 +555,12 @@ export default function PracticeSession() {
       return;
     }
 
+
     setBusy(true);
     try {
       await completeExercise(token, sessionId, exercise.id);
       refreshLearningPoints();
+      loadReviews();
       const completed = completedIds.includes(exercise.id) ? completedIds : [...completedIds, exercise.id];
       setCompletedIds(completed);
       // Le sélecteur choisit la suite ; son échec n'est jamais une erreur
@@ -369,7 +580,7 @@ export default function PracticeSession() {
     } finally {
       setBusy(false);
     }
-  }, [questionIndex, exercise, question, answer, evaluation, hints, tries, token, sessionId, completedIds, exerciseIds, navigate, lessonCode, refreshLearningPoints]);
+  }, [questionIndex, exercise, question, answer, evaluation, hints, tries, images, review, evaluatedBy, token, sessionId, completedIds, exerciseIds, navigate, lessonCode, refreshLearningPoints, loadReviews]);
 
   // « أعِد المحاولة » GARDE la réponse : l'élève corrige ce qu'il a écrit
   // (une faute de frappe, un signe) au lieu de tout retaper. Le focus revient
@@ -386,6 +597,12 @@ export default function PracticeSession() {
 
   // « السؤال السابق » : ramène la carte de la question précédente sous les
   // yeux (et le focus dessus). Relire, pas rejouer.
+
+  const openReview = useCallback((i) => {
+    setReviewIndex(i);
+    requestAnimationFrame(() => workspaceRef.current?.scrollIntoView({ block: 'start', behavior: reducedMotion() ? 'auto' : 'smooth' }));
+  }, []);
+
   const showPrevious = useCallback(() => {
     const card = workspaceRef.current?.querySelector('[data-previous-question]');
     if (!card) return;
@@ -409,7 +626,7 @@ export default function PracticeSession() {
   // la question, et — seulement si l'élève a validé — sa réponse et le
   // verdict. Le cahier n'invente pas d'erreur : sans validation, pas de bloc
   // « خطئي ».
-  const feedbackMessage = evaluation && question ? feedbackFor(question, evaluation, MISCONCEPTIONS) : '';
+  const feedbackMessage = evaluation && question ? feedbackFor(question, evaluation, MISCONCEPTIONS, { syntaxError: t('practice.syntaxErrorFeedback') }) : '';
   const notebookContext = {
     lessonCode, exercise, question, answer, evaluation, feedbackMessage,
   };
@@ -439,6 +656,19 @@ export default function PracticeSession() {
   const currentTone = answered ? outcomeTone(evaluation.outcome) : null;
   const levelName = t(`practice.levelNames.${session.level}`, { defaultValue: '' });
   const score = answered && isLastQuestion ? exerciseScore(history, evaluation) : null;
+  // Les médailles de CET exercice (étapes faites + étape courante), pour le bilan.
+  const exerciseMedals = (() => {
+    if (!exercise?.metadata?.exam) return { gold: 0, silver: 0, bronze: 0, points: 0, count: 0, allGold: false };
+    const facts = exercise.questions.map((q, i) => {
+      const e = i === questionIndex
+        ? (answered ? { outcome: evaluation.outcome, hintsUsed: hints.length, seconds: answer?.seconds ?? null, evaluatedBy } : null)
+        : history.find((h) => h.questionId === q.id);
+      return e ? { q, m: medalFor({ outcome: e.outcome, answerType: q.answerType, hintsUsed: e.hintsUsed ?? 0, seconds: e.seconds ?? null, limit: stepSeconds(q, exercise), evaluatedBy: e.evaluatedBy ?? null }) } : { q, m: null };
+    });
+    const t2 = tally(facts.map((f) => f.m));
+    const eligible = facts.filter((f) => f.q.answerType !== 'selfCheck');
+    return { ...t2, count: t2.gold + t2.silver + t2.bronze, allGold: eligible.length > 0 && eligible.every((f) => f.m === 'gold') };
+  })();
   // Une réponse fausse garde l'aide ouverte : l'indice suivant sert à la
   // nouvelle tentative. Une réponse juste la referme.
   const hintsClosed = answered && evaluation.isCorrect;
@@ -461,14 +691,272 @@ export default function PracticeSession() {
   // Avant la réponse, « السؤال التالي » est secondaire (contour, inactif) ;
   // après, il devient L'action — un seul bouton plein à la fois.
   const nextClass = answered ? `${PRIMARY_BUTTON} min-w-[10rem]` : SECONDARY_BUTTON;
+  // FEUILLE D'EXAMEN (pratique au format BEM, 2026-10-06) : un exercice qui
+  // porte `metadata.exam` se présente comme le sujet — en-tête « التمرين (03 ن) »,
+  // ruban « BEM 2008 », toutes les étapes visibles. Seule la PRÉSENTATION
+  // change : l'état ci-dessus (une question à la fois, jugée par le serveur)
+  // est le même.
+  const isExam = isExamExercise(exercise);
+  const isSelfCheck = question.answerType === 'selfCheck';
+  const size = answerSize(question);
+  // Feuille d'examen : l'action principale prend le vert sombre de la maquette.
+  const examTone = (cls) => (isExam ? cls.replace('bg-indigo-600', 'bg-[#1f5c4c]').replace('hover:bg-indigo-700', 'hover:bg-[#174a3d]').replace('focus-visible:ring-indigo-500', 'focus-visible:ring-emerald-600') : cls);
+  // Ce que l'étape attend : la note de l'élève (`self` — démonstration, ou
+  // copie en photo seulement) ou l'ENSEIGNANT (`review`, « تصحيح الأستاذ » :
+  // l'élève continue sans attendre ; ni verdict, ni corrigé, ni médaille).
+  const pending = answered ? pendingKind(evaluation.normalized) : null;
+  const selfPending = pending === 'self';
+  const reviewPending = pending === 'review';
+  // Une démonstration trop courte reste un brouillon (`{ draft }`) : rien à
+  // envoyer — sauf une photo, qui suffit (feuille d'examen).
+  const hasTyped = answer != null && !(isSelfCheck && !answer.text);
+  const workOk = !(isExam && question.work === 'required' && workLength(work) < MIN_WORK_CHARS);
+  const canSubmit = isExam
+    ? canSendWithImages({ hasTypedAnswer: hasTyped, imageCount: images.length }) && (workOk || images.length > 0)
+    : hasTyped && workOk;
+  const addImage = async (blob) => {
+    const data = await uploadAnswerImage(token, attemptUuid, blob);
+    setImages((list) => [...list, data.image]);
+  };
+  const removeImage = async (id) => {
+    await deleteAnswerImage(token, id);
+    setImages((list) => list.filter((image) => image.id !== id));
+  };
+
+  // La zone de réponse de la question courante — la même dans la carte
+  // classique et dans l'étape courante d'une feuille d'examen.
+  const answerZone = (
+    <>
+    {/* La réponse. Un <form> : Entrée dans un champ valide, comme
+        partout sur le web ; les choix et les crochets sont des
+        `type="button"` et ne soumettent rien. */}
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!answered && canSubmit && !busy) validate();
+      }}
+      // Feuille d'examen : le champ à la mesure de la réponse (`answerSize`)
+      // et « تحقّق » sur la même ligne — on écrit sur la copie.
+      className={isExam ? (size === 'proof' ? 'flex flex-col items-start gap-2' : 'flex flex-wrap items-end gap-x-4 gap-y-2') : 'space-y-3'}
+      data-answer-form
+      data-answer-size={isExam ? size : undefined}
+      style={isExam ? { '--answer-ch': answerChars(question) } : undefined}
+    >
+      {/* « مراحل الحساب » au-dessus de la ligne de réponse, sur toute la largeur. */}
+      {isExam && question.work && (
+        <div className="w-full basis-full">
+          <WorkArea key={question.id} question={question} value={work} onChange={setWork} disabled={answered} />
+        </div>
+      )}
+      {/* La zone « 2 » : le résultat final, séparé du calcul (« 1 ») ci-dessus. */}
+      {isExam && question.work && (
+        <div className="w-full basis-full space-y-1 border-t-2 border-dashed border-slate-300 pt-3" data-result-zone-header>
+          <p className="flex flex-wrap items-center gap-2 text-sm font-bold text-slate-800">
+            <ZoneNumber n={2} tone="green" /> {t('practice.exam.result.title')}
+          </p>
+          {!answered && <p className="text-xs text-slate-600">{t('practice.exam.result.hint')}</p>}
+        </div>
+      )}
+      <div className={isExam ? `min-w-0 ${size === 'long' || size === 'proof' ? 'w-full' : ''} ${question.work ? 'rounded-lg border-2 border-[#1f5c4c]/60 bg-emerald-50/40 p-2' : ''}` : `flex flex-col gap-1.5 ${isChoice ? '' : 'sm:flex-row sm:items-center sm:gap-3'}`} data-result-zone={question.work ? '' : undefined}>
+        {!isExam && <span className="shrink-0 text-sm font-bold text-slate-700" aria-hidden="true">{t('practice.yourAnswerLabel')}</span>}
+        <div className="min-w-0 flex-1">
+          <QuestionRenderer
+          question={question}
+          value={answer}
+          onChange={(v) => { setAnswer(v); setUnreadable(false); }}
+          disabled={answered}
+          exam={isExam}
+          {...(isSelfCheck ? {
+            // En attente de l'enseignant : ni corrigé, ni auto-évaluation ; jugée
+            // par l'enseignant : le corrigé, sans les boutons.
+            onSelfMark: reviewPending || evaluatedBy === 'teacher' ? null : selfMark,
+            mark: answer?.selfMark ?? null,
+            busy,
+            showSolution: !reviewPending,
+          } : {})}
+        />
+        </div>
+      </div>
+
+      {/* Les PHOTOS de la copie : à joindre avant de répondre, verrouillées ensuite. */}
+      {isExam && !answered && attemptUuid && (
+        <AnswerImagePicker images={images} loader={imageLoader} onAdd={addImage} onRemove={removeImage} disabled={busy} />
+      )}
+      {isExam && answered && images.length > 0 && (
+        <div className="w-full basis-full space-y-1" data-answer-images-locked>
+          <p className="text-xs font-bold text-slate-600">{t('practice.exam.images.saved')}</p>
+          <AnswerImageGallery images={images} loader={imageLoader} size="sm" />
+        </div>
+      )}
+
+      {unreadable && !answered && (
+        <p className="w-full basis-full text-sm font-semibold text-orange-700" role="alert" data-unreadable>{t('practice.exam.unreadable')}</p>
+      )}
+      {!answered && (
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="submit"
+            disabled={!canSubmit || busy}
+            className={isExam ? EXAM_CHECK_BUTTON : `${PRIMARY_BUTTON} w-full sm:w-auto sm:min-w-[14rem]`}
+            data-validate
+          >
+            <Check className="h-5 w-5" aria-hidden="true" />
+            {isSelfCheck ? t('practice.exam.selfCheck.record') : t('practice.checkMyAnswer')}
+          </button>
+          {/* Raccourci TERTIAIRE vers l'indice suivant (il ouvre le
+              panneau). Masqué sur téléphone : le panneau juste dessous
+              porte le même geste. */}
+          {hintsRemaining > 0 && (
+            <button
+              type="button"
+              onClick={askHint}
+              disabled={busy}
+              className={`${TERTIARY_BUTTON} ${isExam ? 'inline-flex min-h-[40px] px-2 text-amber-800' : 'hidden sm:inline-flex'}`}
+              data-hint-shortcut
+            >
+              <Lightbulb className="h-4 w-4 text-amber-600" aria-hidden="true" />
+              {t('practice.hint.short')}
+            </button>
+          )}
+        </div>
+      )}
+    </form>
+
+    {/* Le verdict, et ce qu'il enseigne. */}
+    {/* « تصحيح الأستاذ » : envoyée, en attente — l'élève continue. */}
+    {reviewPending && <ReviewStatus pending review={review} />}
+
+    {/* Copie en PHOTO seulement (élève autonome) : corrigé type, puis l'élève
+        se note — comme une « بيّن أن ». */}
+    {selfPending && !isSelfCheck && (
+      <div className="space-y-3" data-image-self-check>
+        <SolutionPanel solution={question.solution} open />
+        <SelfMarkChoice onSelfMark={selfMark} mark={answer?.selfMark ?? null} busy={busy} />
+      </div>
+    )}
+
+    {answered && !selfPending && !reviewPending && (
+      <FeedbackPanel ref={feedbackRef} evaluation={evaluation} message={feedbackMessage}>
+        {/* Le serveur a tranché autrement que la prédiction locale :
+            on le dit, sans bloquer — le verdict affiché est déjà le sien. */}
+        {serverOverrode && (
+          <p className="flex items-center gap-1.5 pt-1 text-xs text-slate-600" data-server-verdict>
+            <span aria-hidden="true">☁</span> {t('practice.serverVerdict')}
+          </p>
+        )}
+      </FeedbackPanel>
+    )}
+
+    {/* Le corrigé type de l'étape (feuille d'examen) — replié, après le
+        verdict seulement. Une auto-évaluation l'a déjà montré. */}
+    {/* Le corrigé type se MÉRITE (propriétaire, 2026-10-06) : seulement après
+        une vraie tentative. Une saisie illisible (`syntax_error`) ou vide
+        n'ouvre rien. */}
+    {answered && !isSelfCheck && !isInertOutcome(evaluation.outcome) && question.solution && (!isExam || solutionReady(exercise.questions, questionIndex, questionIndex)) && <SolutionPanel solution={question.solution} />}
+
+    {/* La correction de l'enseignant : son avis attendu sur une réponse déjà
+        jugée, ou son verdict et son commentaire arrivés. */}
+    {answered && !reviewPending && review && <ReviewStatus review={review} />}
+
+    {/* Réessayer est PROPOSÉ, jamais imposé. Désactivé le temps que le
+        serveur réponde : son verdict ne doit pas réapparaître
+        par-dessus une question déjà rouverte. */}
+    {/* Feuille d'examen : UNE tentative par étape, comme à l'examen — la
+        réponse est enregistrée et verrouillée, le corrigé type est visible :
+        pas de « أعد المحاولة ». */}
+    {answered && !evaluation.isCorrect && !isSelfCheck && !isExam && (
+      <button type="button" disabled={busy} onClick={retry} className={SECONDARY_BUTTON} data-retry>
+        <RotateCcw className="h-4 w-4" aria-hidden="true" />
+        {t('practice.retry')}
+      </button>
+    )}
+
+    {/* L'aide : une ligne tant qu'on n'en veut pas. Une réponse fausse
+        la garde ouverte ; une réponse juste la referme. `key` par
+        question : repliée à chaque nouvelle question. */}
+    {/* Feuille d'examen : pas de grand bandeau d'aide permanent — le lien
+        « إرشاد » à côté du champ suffit ; le panneau n'apparaît qu'une fois
+        un indice demandé, ou après une réponse fausse. */}
+    {(!isExam || hints.length > 0 || (answered && !evaluation.isCorrect && !isSelfCheck && !pending)) && (
+    <HintPanel
+      key={`hints-${exercise.id}:${question.id}`}
+      hints={hints}
+      remaining={hintsRemaining}
+      hintTypes={question.hints?.map((h) => h.type) ?? []}
+      onRequest={askHint}
+      busy={busy}
+      disabled={hintsClosed}
+    />
+    )}
+
+    {/* Fin d'exercice : le seul moment qui mérite plus qu'une coche. */}
+    {score && (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ type: 'spring', stiffness: 320, damping: 24 }}
+        className="flex items-center gap-3 rounded-xl bg-indigo-50 px-3.5 py-2.5 ring-1 ring-indigo-100"
+        data-exercise-done
+      >
+        <CheckCircle2 className="h-6 w-6 shrink-0 text-indigo-600" aria-hidden="true" />
+        <p className="text-sm text-indigo-950">
+          <span className="font-bold">{t('practice.exerciseDone')}</span>
+          {totalQuestions > 1 && (
+            <>
+              {' · '}{t('practice.exerciseScore')}{' '}
+              <bdi dir="ltr" className="font-bold tabular-nums">{score.correct} / {score.total}</bdi>
+            </>
+          )}
+        </p>
+        {isExam && exerciseMedals.count > 0 && (
+          <span className="ms-auto flex flex-wrap items-center gap-2" data-exercise-medals>
+            <span className="text-sm font-semibold text-indigo-950">{t('practice.medals.exercise.haul')}</span>
+            <MedalTray counts={exerciseMedals} size={20} />
+          </span>
+        )}
+      </motion.div>
+    )}
+    {score && isExam && exerciseMedals.allGold && (
+      <motion.p
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="flex items-center gap-2 rounded-xl bg-amber-50 px-3.5 py-2 text-sm font-bold text-amber-900 ring-1 ring-amber-200"
+        data-exercise-gold
+      >
+        <Medal medal="gold" size={22} shine /> {t('practice.medals.exercise.gold')}
+      </motion.p>
+    )}
+
+    {/* Le geste TERTIAIRE « à propos de cette question » : signaler.
+        `key` par question pour que le panneau se referme en
+        changeant de question. Le cahier, lui, n'est plus ici : c'est
+        la pastille flottante « 📓 كرّاسي », la même qu'en leçon. */}
+    <ClassroomHidden><div className="flex flex-wrap items-center justify-end gap-2 border-t border-slate-100 pt-2.5" data-question-tools>
+      <ReportButton
+        key={`report-${question.id}`}
+        source="question"
+        variant="icon"
+        context={{
+          lessonCode,
+          sessionId,
+          exerciseCode: exercise?.id,
+          questionId: question?.id,
+          attemptUuid,
+        }}
+      />
+    </div></ClassroomHidden>
+    </>
+  );
 
   return (
     // Toute la largeur de l'écran, 20 px de marge de chaque côté, à tous les
     // formats (demande du propriétaire, 2026-09-24) : le cadre partagé
     // `.sa-page` avec sa variante `--flush` (index.css), sans largeur
     // maximale — l'exercice prend tout ce que la colonne latérale laisse.
-    <div className="sa-surface-plain sa-page sa-page--flush py-6 sm:py-8">
+    <div className={`sa-surface-plain sa-page sa-page--flush ${isExam ? 'py-3 sm:py-4' : 'py-6 sm:py-8'}`}>
       <MotionConfig reducedMotion="user">
+      {isExam && <MedalCelebration award={award} onDone={clearAward} />}
       {/* MODE CLASSE (وضع القسم) : la coquille enveloppe TOUTE la page pour que
           le bouton d'entrée (dans la rangée de navigation) et le contenu
           présenté partagent la même session ; en présentation, le chrome de
@@ -496,14 +984,27 @@ export default function PracticeSession() {
           to={`/espace/pratique/${lessonCode}`}
           className="inline-flex min-h-[44px] items-center gap-2 rounded-lg px-1 text-sm font-bold text-slate-700 hover:text-indigo-700 whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
         >
-          <ArrowBack className="w-4 h-4" aria-hidden="true" /> {t('practice.backToLevels')}
+          <ArrowBack className="w-4 h-4" aria-hidden="true" />
+          {isExam && lessonTitle
+            ? <span className="max-w-[16rem] truncate sm:max-w-md"><span className="font-semibold text-slate-500">{t('practice.exam.nav.lesson')}:</span> {lessonTitle}</span>
+            : t('practice.backToLevels')}
         </Link>
+        {/* « محاكاة شهادة التعليم المتوسط » — la pastille de la maquette. */}
+        {isExam && (
+          <p className="hidden items-center gap-2 rounded-xl bg-slate-100 px-3.5 py-1.5 text-sm font-semibold text-slate-700 md:inline-flex" data-exam-simulation>
+            <GraduationCap className="h-4 w-4 text-[#1f5c4c]" aria-hidden="true" />
+            {t('practice.exam.nav.simulation')}
+            <span className="text-slate-500">· {t('practice.exam.nav.subject')}</span>
+          </p>
+        )}
         {/* ⛶ عرض التمرين — le mode classe de CET exercice (présentateur
             seulement). Le bouton est hors de la coquille, le contenu dedans :
             entrer ne remonte rien, la réponse en cours et la correction
             restent. */}
         <span className="flex flex-wrap items-center gap-1">
-          <SideColumnToggle hidden={sideHidden} onToggle={toggleSide} label={t('practice.sideLearningPoint')} />
+          {isExam
+            ? <ExamPanelButton label={t('practice.sideLearningPoint')} onOpen={() => setPanelOpen(true)} />
+            : <SideColumnToggle hidden={sideHidden} onToggle={toggleSide} label={t('practice.sideLearningPoint')} />}
           <ClassroomEntryButton scope="exercise" title={exerciseHeading} tone="quiet" />
         </span>
       </nav></ClassroomHidden>
@@ -515,37 +1016,50 @@ export default function PracticeSession() {
           l'exercice qui prend tout le reste — la tâche mathématique est ce
           qui compte. En وضع القسم (`data-sa-classroom` sur <html>), la grille
           redevient un bloc et la colonne est retirée. */}
-      <div className={practiceGridClass(sideHidden)}>
+      {/* Feuille d'examen : pas de colonne latérale — une fenêtre au centre,
+          ouverte par « إظهار الكفاءة », fermée par ✕, Échap ou un clic à côté. */}
+      {isExam && (
+        <Modal open={panelOpen} onClose={() => setPanelOpen(false)} title={t('practice.sideLearningPoint')} closeLabel={t('practice.exam.panelClose')} size="xl">
+          {/* Large, les blocs l'un sous l'autre sur toute la largeur : aucun
+              libellé ne passe à la ligne (la الكفاءة a des titres longs). */}
+          <div className="space-y-3" data-exam-panel>
+            <LearningPointProgress point={point} />
+            <ExamNavigator exercise={exercise} questionIndex={questionIndex} history={history} onJump={() => setPanelOpen(false)} />
+          </div>
+        </Modal>
+      )}
 
-      <ClassroomHidden><aside className={`space-y-3 xl:sticky xl:top-4 ${sideHidden ? 'xl:hidden' : ''}`} data-practice-side>
+      <div className={isExam ? 'w-full space-y-3' : practiceGridClass(sideHidden)}>
+
+      {!isExam && <ClassroomHidden><aside className={`space-y-3 xl:sticky xl:top-4 ${sideHidden ? 'xl:hidden' : ''}`} data-practice-side>
         {/* ── 1 — CE QUE J'ENTRAÎNE, et où j'en suis : toujours en tête. ── */}
         <LearningPointProgress point={point} />
         {/* ── « سياق السؤال » — grand écran seulement ─────────────────── */}
-        <div className="hidden xl:block" data-question-context-column>
+        <div className={isExam ? 'hidden' : 'hidden xl:block'} data-question-context-column>
           <QuestionContextPanel questions={exercise.questions} questionIndex={questionIndex} history={history} />
         </div>
-      </aside></ClassroomHidden>
+      </aside></ClassroomHidden>}
 
       <div className="min-w-0 space-y-3">
       {/* ── 2 — QUEL exercice : niveau (surtitre), titre (h1), méta. ────── */}
-      <ClassroomHidden><header className="space-y-1" data-exercise-header>
+      <ClassroomHidden><header className={isExam ? 'flex flex-wrap items-baseline gap-x-3 gap-y-0.5' : 'space-y-1'} data-exercise-header>
         <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm font-semibold text-slate-600" data-exercise-level>
           <span className="inline-flex items-center gap-1.5 font-bold text-indigo-700">
             <BarChart3 className="h-4 w-4" aria-hidden="true" />
             {t('practice.levelLabel', { level: session.level })}{levelName ? ` · ${levelName}` : ''}
           </span>
-          {minutes ? (
+          {minutes && !isExam ? (
             <span className="inline-flex items-center gap-1">
               <Clock className="h-3.5 w-3.5" aria-hidden="true" />
               {t('practice.meta.minutes', { count: minutes })}
             </span>
           ) : null}
-          {tags.length > 0 && <span>{tags.join(' ، ')}</span>}
+          {tags.length > 0 && !isExam && <span>{tags.join(' ، ')}</span>}
         </p>
         <h1
           id="practice-exercise-title"
           tabIndex={-1}
-          className="text-lg font-bold leading-snug text-slate-900 focus:outline-none sm:text-xl"
+          className={isExam ? 'sr-only' : 'text-lg font-bold leading-snug text-slate-900 focus:outline-none sm:text-xl'}
         >
           {exerciseTitle}
         </h1>
@@ -559,236 +1073,222 @@ export default function PracticeSession() {
 
       <ClassroomFrame maxWidth={1080}>
       <div ref={workspaceRef} className="space-y-3" data-exercise-workspace>
-        {/* ── les DONNÉES du problème : le contexte, pas la question. ───── */}
-        {(exercise.statement?.content || exercise.statement?.visual || exercise.statement?.figure || exercise.statement?.support) && (
-          <section aria-labelledby="practice-statement-label" className="rounded-xl bg-white/70 px-3.5 py-3 ring-1 ring-slate-200 sm:px-4">
-            <p id="practice-statement-label" className="mb-1 text-xs font-bold text-slate-600">{t('practice.statementLabel')}</p>
-            <ExerciseStatement
-              content={exercise.statement?.content}
-              visual={exercise.statement?.visual}
-              figure={exercise.statement?.figure}
-              support={exercise.statement?.support}
-            />
-          </section>
-        )}
-
-        {/* ── ce que l'élève a DÉJÀ fait : « السؤال السابق » + les anciennes ── */}
-        <QuestionHistory entries={history} total={totalQuestions} />
-
-        {/* ── LA QUESTION COURANTE : la seule surface en relief, filet
-            indigo sur le bord de début. ─────────────────────────────────── */}
-        <motion.section
-          key={`${exercise.id}:${question.id}`}
-          ref={cardRef}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
-          aria-labelledby="practice-question-heading"
-          aria-current="step"
-          data-current-question={questionIndex + 1}
-          className="relative scroll-mt-20 overflow-hidden rounded-2xl border-s-4 border-indigo-600 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.06),0_10px_28px_-16px_rgba(15,23,42,0.22)] ring-1 ring-slate-200 lg:scroll-mt-6"
-        >
-          {/* « السؤال n من N » (N = les questions de CET exercice) et
-              « التمرين n من N » : la position, une seule fois, ici. */}
-          <header className="border-b border-indigo-100 bg-indigo-50/50 px-4 py-2.5 sm:px-5">
-            <SessionProgress
-              index={position}
-              total={exerciseIds.length}
-              questionIndex={questionIndex}
-              questionTotal={totalQuestions}
-              questionTones={questionTones}
-              currentTone={currentTone}
-              headingId="practice-question-heading"
-              headingRef={questionHeadingRef}
-            />
-          </header>
-
-          <div className="space-y-4 p-4 sm:p-5">
-            <div className="space-y-3">
-              <p className="text-lg font-semibold leading-relaxed text-slate-900 sm:text-xl" data-question-statement>
-                <RichText>{question.statement}</RichText>
-              </p>
-              {question.visual && <ExerciseStatement visual={question.visual} support={question.support} />}
-            </div>
-
-            {/* La réponse. Un <form> : Entrée dans un champ valide, comme
-                partout sur le web ; les choix et les crochets sont des
-                `type="button"` et ne soumettent rien. */}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (!answered && answer != null && !busy) validate();
-              }}
-              className="space-y-3"
-              data-answer-form
-            >
-              <div className={`flex flex-col gap-1.5 ${isChoice ? '' : 'sm:flex-row sm:items-center sm:gap-3'}`}>
-                <span className="shrink-0 text-sm font-bold text-slate-700" aria-hidden="true">{t('practice.yourAnswerLabel')}</span>
-                <div className="min-w-0 flex-1">
-                  <QuestionRenderer question={question} value={answer} onChange={setAnswer} disabled={answered} />
-                </div>
-              </div>
-
-              {!answered && (
-                <div className="flex flex-wrap items-center gap-2">
-                  <button
-                    type="submit"
-                    disabled={answer == null || busy}
-                    className={`${PRIMARY_BUTTON} w-full sm:w-auto sm:min-w-[14rem]`}
-                    data-validate
-                  >
-                    <Check className="h-5 w-5" aria-hidden="true" />
-                    {t('practice.checkMyAnswer')}
-                  </button>
-                  {/* Raccourci TERTIAIRE vers l'indice suivant (il ouvre le
-                      panneau). Masqué sur téléphone : le panneau juste dessous
-                      porte le même geste. */}
-                  {hintsRemaining > 0 && (
-                    <button
-                      type="button"
-                      onClick={askHint}
-                      disabled={busy}
-                      className={`${TERTIARY_BUTTON} hidden sm:inline-flex`}
-                      data-hint-shortcut
-                    >
-                      <Lightbulb className="h-4 w-4 text-amber-600" aria-hidden="true" />
-                      {t('practice.hint.short')}
-                    </button>
-                  )}
-                </div>
-              )}
-            </form>
-
-            {/* Le verdict, et ce qu'il enseigne. */}
-            {answered && (
-              <FeedbackPanel ref={feedbackRef} evaluation={evaluation} message={feedbackMessage}>
-                {/* Le serveur a tranché autrement que la prédiction locale :
-                    on le dit, sans bloquer — le verdict affiché est déjà le sien. */}
-                {serverOverrode && (
-                  <p className="flex items-center gap-1.5 pt-1 text-xs text-slate-600" data-server-verdict>
-                    <span aria-hidden="true">☁</span> {t('practice.serverVerdict')}
-                  </p>
-                )}
-              </FeedbackPanel>
-            )}
-
-            {/* Réessayer est PROPOSÉ, jamais imposé. Désactivé le temps que le
-                serveur réponde : son verdict ne doit pas réapparaître
-                par-dessus une question déjà rouverte. */}
-            {answered && !evaluation.isCorrect && (
-              <button type="button" disabled={busy} onClick={retry} className={SECONDARY_BUTTON} data-retry>
-                <RotateCcw className="h-4 w-4" aria-hidden="true" />
-                {t('practice.retry')}
-              </button>
-            )}
-
-            {/* L'aide : une ligne tant qu'on n'en veut pas. Une réponse fausse
-                la garde ouverte ; une réponse juste la referme. `key` par
-                question : repliée à chaque nouvelle question. */}
-            <HintPanel
-              key={`hints-${exercise.id}:${question.id}`}
-              hints={hints}
-              remaining={hintsRemaining}
-              hintTypes={question.hints?.map((h) => h.type) ?? []}
-              onRequest={askHint}
-              busy={busy}
-              disabled={hintsClosed}
-            />
-
-            {/* Fin d'exercice : le seul moment qui mérite plus qu'une coche. */}
-            {score && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ type: 'spring', stiffness: 320, damping: 24 }}
-                className="flex items-center gap-3 rounded-xl bg-indigo-50 px-3.5 py-2.5 ring-1 ring-indigo-100"
-                data-exercise-done
-              >
-                <CheckCircle2 className="h-6 w-6 shrink-0 text-indigo-600" aria-hidden="true" />
-                <p className="text-sm text-indigo-950">
-                  <span className="font-bold">{t('practice.exerciseDone')}</span>
-                  {totalQuestions > 1 && (
-                    <>
-                      {' · '}{t('practice.exerciseScore')}{' '}
-                      <bdi dir="ltr" className="font-bold tabular-nums">{score.correct} / {score.total}</bdi>
-                    </>
-                  )}
-                </p>
-              </motion.div>
-            )}
-
-            {/* Le geste TERTIAIRE « à propos de cette question » : signaler.
-                `key` par question pour que le panneau se referme en
-                changeant de question. Le cahier, lui, n'est plus ici : c'est
-                la pastille flottante « 📓 كرّاسي », la même qu'en leçon. */}
-            <ClassroomHidden><div className="flex flex-wrap items-center justify-end gap-2 border-t border-slate-100 pt-2.5" data-question-tools>
-              <ReportButton
-                key={`report-${question.id}`}
-                source="question"
-                variant="icon"
-                context={{
-                  lessonCode,
-                  sessionId,
-                  exerciseCode: exercise?.id,
-                  questionId: question?.id,
-                  attemptUuid,
-                }}
+        {reviewIndex !== null && reviews[reviewIndex] ? (
+          <section className="space-y-3" data-exercise-review={reviews[reviewIndex].exercise.id} aria-label={t('practice.review.label')}>
+            <p className="rounded-xl bg-amber-50 px-3.5 py-2 text-sm font-semibold text-amber-900 ring-1 ring-amber-200">{t('practice.review.banner')}</p>
+            {isExamExercise(reviews[reviewIndex].exercise) ? (
+              <ExamSheet
+                exercise={reviews[reviewIndex].exercise}
+                questionIndex={reviews[reviewIndex].exercise.questions.length}
+                history={reviews[reviewIndex].history}
+                imageLoader={imageLoader}
               />
-            </div></ClassroomHidden>
-          </div>
-        </motion.section>
-
-        {/* Le cahier : LA pastille flottante « 📓 كرّاسي » de la leçon, au
-            même étage (au-dessus de la barre « السؤال التالي »). Atteignable
-            à tout moment — pendant la recherche comme après le verdict.
-            `key` par question ET par verdict : une réponse validée ouvre une
-            nouvelle note, pré-remplie de la réponse et du verdict (c'est le
-            moment d'y garder une erreur). */}
-        <ClassroomHidden>
-          <NotebookButton
-            key={`note-${answered ? 'answered-' : ''}${question.id}`}
-            context={notebookContext}
-            onSave={saveNote}
-            onUpdate={patchNote}
-          />
-        </ClassroomHidden>
-
-        {/* ── LA SUITE — pied de colonne. « السؤال التالي » est TOUJOURS là,
-            actif dès qu'une réponse est vérifiée, juste ou fausse (invariant
-            non bloquant) — secondaire avant, principal après. « السؤال
-            السابق » ramène à la question précédente — on la relit ; on ne
-            rouvre pas une tentative déjà jugée par le serveur. Sur téléphone
-            la barre colle au bas de l'écran, au-dessus de la barre d'onglets,
-            sous le pouce — sauf sur un écran très bas (téléphone en paysage) :
-            collée, elle ne laisserait plus voir le champ de réponse. Sur
-            ordinateur, `lg:pe-36` laisse à sa fin (la gauche, en RTL) la
-            place de la pastille « 📓 كرّاسي », posée au même étage. */}
-        <div
-          className="sticky bottom-[calc(4rem+env(safe-area-inset-bottom))] z-10 -mx-5 flex items-center gap-2 border-t border-slate-200 bg-slate-50/95 px-5 py-2 backdrop-blur sm:mx-0 sm:rounded-xl sm:border sm:bg-white/95 sm:px-3 lg:bottom-4 lg:pe-36 [@media(max-height:520px)]:static"
-          data-question-footer
-        >
-          {history.length > 0 ? (
-            <button type="button" onClick={showPrevious} className={TERTIARY_BUTTON} data-show-previous>
-              <ArrowBack className="h-4 w-4" aria-hidden="true" />
-              <span className="hidden sm:inline">{t('practice.previousQuestion')}</span>
-              <span className="sr-only sm:hidden">{t('practice.previousQuestion')}</span>
-            </button>
-          ) : <span />}
-
-          <p className="flex flex-1 items-center justify-center gap-1.5 text-xs font-semibold text-slate-600" aria-live="polite" data-save-state>
-            {answered && !busy && (
+            ) : (
               <>
-                <Check className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
-                {t('practice.answerSaved')}
+                <section className="rounded-xl bg-white/70 px-3.5 py-3 ring-1 ring-slate-200 sm:px-4">
+                  <ExerciseStatement
+                    content={reviews[reviewIndex].exercise.statement?.content}
+                    visual={reviews[reviewIndex].exercise.statement?.visual}
+                    figure={reviews[reviewIndex].exercise.statement?.figure}
+                  />
+                </section>
+                <QuestionHistory entries={reviews[reviewIndex].history} total={reviews[reviewIndex].history.length} />
               </>
             )}
-          </p>
+            <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white/95 px-3 py-2" data-review-footer>
+              {reviewIndex > 0 ? (
+                <button type="button" onClick={() => openReview(reviewIndex - 1)} className={TERTIARY_BUTTON} data-review-previous>
+                  <ArrowBack className="h-4 w-4" aria-hidden="true" /> {t('practice.previousExercise')}
+                </button>
+              ) : <span />}
+              <button type="button" onClick={() => setReviewIndex(null)} className={`${PRIMARY_BUTTON} min-w-[10rem]`} data-review-back>
+                {t('practice.review.backToCurrent')}
+                <ArrowForward className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          </section>
+        ) : (
+          <>
+          {/* ── FEUILLE D'EXAMEN : la position en bandeau, puis le sujet. ───── */}
+          {isExam ? (
+            <>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl bg-white/80 px-4 py-1.5 ring-1 ring-slate-200 sm:px-5" aria-labelledby="practice-question-heading">
+                <div className="min-w-0 flex-1">
+                <SessionProgress
+                  index={position}
+                  total={exerciseIds.length}
+                  questionIndex={questionIndex}
+                  questionTotal={totalQuestions}
+                  questionTones={questionTones}
+                  currentTone={currentTone}
+                  headingId="practice-question-heading"
+                  headingRef={questionHeadingRef}
+                />
+                </div>
+                {/* Revenir / continuer — en haut, à côté de la position (propriétaire, 2026-10-06). */}
+                {/* La خزانة de la leçon, en direct. */}
+              {lessonMedals && <MedalTray counts={lessonMedals.total} label={t('practice.medals.trayTitle')} />}
+              <nav className="flex flex-wrap items-center gap-1.5" aria-label={t('practice.exam.nav.title')} data-exam-nav>
+                  {history.length > 0 && (
+                    <button type="button" onClick={showPrevious} className={EXAM_NAV_BUTTON} data-show-previous>
+                      <ArrowBack className="h-3.5 w-3.5" aria-hidden="true" /> {t('practice.previousQuestion')}
+                    </button>
+                  )}
+                  {reviews.length > 0 && (
+                    <button type="button" onClick={() => openReview(reviews.length - 1)} className={EXAM_NAV_BUTTON} data-previous-exercise>
+                      <ArrowBack className="h-3.5 w-3.5" aria-hidden="true" /> {t('practice.previousExercise')}
+                    </button>
+                  )}
+                  <button type="button" onClick={next} disabled={!answered || busy} className={answered ? EXAM_NAV_NEXT : EXAM_NAV_BUTTON} data-next>
+                    {nextLabel} <ArrowForward className="h-3.5 w-3.5" aria-hidden="true" />
+                  </button>
+                </nav>
+              </div>
+              <ExamSheet
+              ref={cardRef}
+              exercise={exercise}
+              questionIndex={questionIndex}
+              answeredThrough={answered ? questionIndex : questionIndex - 1}
+              history={history}
+              imageLoader={imageLoader}
+              started={answered || stepStartedAt !== null}
+              onStart={startStep}
+              startReady={openedFor === `${exercise.id}:${question.id}`}
+              timer={answered && !Number.isFinite(answer?.seconds) ? null : (
+                <StepTimer limit={stepSeconds(question, exercise)} startedAt={stepStartedAt} stoppedSeconds={answered ? answer.seconds : null} />
+              )}
+            >
+                <div className="space-y-4" data-exam-answer-zone>
+                  {question.visual && <ExerciseStatement visual={question.visual} support={question.support} />}
+                  {answerZone}
+                </div>
+              </ExamSheet>
+            </>
+          ) : (
+            <>
+            {/* ── les DONNÉES du problème : le contexte, pas la question. ───── */}
+            {(exercise.statement?.content || exercise.statement?.visual || exercise.statement?.figure || exercise.statement?.support) && (
+              <section aria-labelledby="practice-statement-label" className="rounded-xl bg-white/70 px-3.5 py-3 ring-1 ring-slate-200 sm:px-4">
+                <p id="practice-statement-label" className="mb-1 text-xs font-bold text-slate-600">{t('practice.statementLabel')}</p>
+                <ExerciseStatement
+                  content={exercise.statement?.content}
+                  visual={exercise.statement?.visual}
+                  figure={exercise.statement?.figure}
+                  support={exercise.statement?.support}
+                />
+              </section>
+            )}
 
-          <button type="button" onClick={next} disabled={!answered || busy} className={nextClass} data-next>
-            {nextLabel}
-            <ArrowForward className="h-4 w-4" aria-hidden="true" />
-          </button>
-        </div>
+            {/* ── ce que l'élève a DÉJÀ fait : « السؤال السابق » + les anciennes ── */}
+            <QuestionHistory entries={history} total={totalQuestions} />
+
+            {/* ── LA QUESTION COURANTE : la seule surface en relief, filet
+                indigo sur le bord de début. ─────────────────────────────────── */}
+            <motion.section
+              key={`${exercise.id}:${question.id}`}
+              ref={cardRef}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              aria-labelledby="practice-question-heading"
+              aria-current="step"
+              data-current-question={questionIndex + 1}
+              className="relative scroll-mt-20 overflow-hidden rounded-2xl border-s-4 border-indigo-600 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.06),0_10px_28px_-16px_rgba(15,23,42,0.22)] ring-1 ring-slate-200 lg:scroll-mt-6"
+            >
+              {/* « السؤال n من N » (N = les questions de CET exercice) et
+                  « التمرين n من N » : la position, une seule fois, ici. */}
+              <header className="border-b border-indigo-100 bg-indigo-50/50 px-4 py-2.5 sm:px-5">
+                <SessionProgress
+                  index={position}
+                  total={exerciseIds.length}
+                  questionIndex={questionIndex}
+                  questionTotal={totalQuestions}
+                  questionTones={questionTones}
+                  currentTone={currentTone}
+                  headingId="practice-question-heading"
+                  headingRef={questionHeadingRef}
+                />
+              </header>
+
+              <div className="space-y-4 p-4 sm:p-5">
+                <div className="space-y-3">
+                  <p className="text-lg font-semibold leading-relaxed text-slate-900 sm:text-xl" data-question-statement>
+                    <RichText>{question.statement}</RichText>
+                  </p>
+                  {question.visual && <ExerciseStatement visual={question.visual} support={question.support} />}
+                </div>
+
+                {answerZone}
+              </div>
+            </motion.section>
+            </>
+          )}
+
+          {/* Le cahier : LA pastille flottante « 📓 كرّاسي » de la leçon, au
+              même étage (au-dessus de la barre « السؤال التالي »). Atteignable
+              à tout moment — pendant la recherche comme après le verdict.
+              `key` par question ET par verdict : une réponse validée ouvre une
+              nouvelle note, pré-remplie de la réponse et du verdict (c'est le
+              moment d'y garder une erreur). */}
+          <ClassroomHidden>
+            <NotebookButton
+              key={`note-${answered ? 'answered-' : ''}${question.id}`}
+              context={notebookContext}
+              onSave={saveNote}
+              onUpdate={patchNote}
+            />
+          </ClassroomHidden>
+
+          {/* ── LA SUITE — pied de colonne. « السؤال التالي » est TOUJOURS là,
+              actif dès qu'une réponse est vérifiée, juste ou fausse (invariant
+              non bloquant) — secondaire avant, principal après. « السؤال
+              السابق » ramène à la question précédente — on la relit ; on ne
+              rouvre pas une tentative déjà jugée par le serveur. Sur téléphone
+              la barre colle au bas de l'écran, au-dessus de la barre d'onglets,
+              sous le pouce — sauf sur un écran très bas (téléphone en paysage) :
+              collée, elle ne laisserait plus voir le champ de réponse. Sur
+              ordinateur, `lg:pe-36` laisse à sa fin (la gauche, en RTL) la
+              place de la pastille « 📓 كرّاسي », posée au même étage. */}
+          {/* Feuille d'examen : la navigation est EN HAUT (bandeau de position). */}
+          {!isExam && (
+          <div
+            className={`sticky bottom-[calc(4rem+env(safe-area-inset-bottom))] z-10 -mx-5 flex items-center gap-2 border-t border-slate-200 bg-slate-50/95 px-5 py-2 backdrop-blur sm:mx-0 sm:rounded-xl sm:border sm:bg-white/95 sm:px-3 lg:bottom-4 lg:pe-36 [@media(max-height:520px)]:static`}
+            data-question-footer
+          >
+            <span className="flex items-center gap-1">
+              {history.length > 0 && (
+                <button type="button" onClick={showPrevious} className={TERTIARY_BUTTON} data-show-previous>
+                  <ArrowBack className="h-4 w-4" aria-hidden="true" />
+                  <span className="hidden sm:inline">{t('practice.previousQuestion')}</span>
+                  <span className="sr-only sm:hidden">{t('practice.previousQuestion')}</span>
+                </button>
+              )}
+              {reviews.length > 0 && (
+                <button type="button" onClick={() => openReview(reviews.length - 1)} className={TERTIARY_BUTTON} data-previous-exercise>
+                  <ArrowBack className="h-4 w-4" aria-hidden="true" />
+                  <span className="hidden sm:inline">{t('practice.previousExercise')}</span>
+                  <span className="sr-only sm:hidden">{t('practice.previousExercise')}</span>
+                </button>
+              )}
+            </span>
+
+            <p className="flex flex-1 items-center justify-center gap-1.5 text-xs font-semibold text-slate-600" aria-live="polite" data-save-state>
+              {answered && !busy && (
+                <>
+                  <Check className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
+                  {t('practice.answerSaved')}
+                </>
+              )}
+            </p>
+
+            <button type="button" onClick={next} disabled={!answered || busy} className={examTone(nextClass)} data-next>
+              {nextLabel}
+              <ArrowForward className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
+          )}
+          </>
+        )}
       </div>
       </ClassroomFrame>
       </div>

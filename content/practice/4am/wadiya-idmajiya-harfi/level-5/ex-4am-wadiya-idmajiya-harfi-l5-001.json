@@ -1,186 +1,344 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l5-001",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 5,
   "metadata": {
-    "title": "وضعية — الحوض والشريط",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2015 — بستان البرتقال",
+    "estimatedMinutes": 18,
     "tags": [
-      "وضعية إدماجية",
       "نمذجة",
-      "معادلة"
+      "متطابقات شهيرة",
+      "تحليل",
+      "وضعية إدماجية"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "situation",
-      "page": 40,
-      "section": "أدمج تعلّماتي"
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
+      "modelledOn": "BEM 2015 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2015",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "الشكل الملوّن بالأزرق هو حوض شكله مربع، طول ضلعه 10m. نريد تهيئة شريط منتظم حول هذا الحوض يخصص للراجلين عرضه $x$. ماهي قيمة $x$ حتى تكون مساحة الشريط تساوي $44m^2$؟ مساعدة : $x^2 + 10x - 11 = (x - 1)(x + 11)$"
+    "content": "يملك فلاح بولاية البليدة قطعة أرض مستطيلة الشكل $ABCD$ حيث $AB = (x + 12)$ m و $AD = x$ m ، مع $x$ عدد موجب. $M$ نقطة من الضلع $[DC]$ حيث $MC = 8$ m . يبني الفلاح على الجزء المثلث $BCM$ مخزنًا للعتاد، ويغرس الجزء $ABMD$ أشجار البرتقال."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "مساحة الشريط بدلالة $x$ (نشر مبسّط) هي ...",
+      "step": "01",
+      "sub": "ا",
+      "lead": "عبّر بدلالة $x$ عن:",
+      "statement": "مساحة المثلث $BCM$ — العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "تُكتب مساحة المثلث $BCM$ على الشكل $mx$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$4x^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
-        },
-        {
-          "id": "B",
-          "content": "$4x^2 + 20x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
-        },
-        {
-          "id": "C",
-          "content": "$4x^2 + 40x$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$4x^2 + 40x + 100$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+          "value": "8",
+          "id": "MISC-NAMDHAJA-MISAHA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ضلع المربع الخارجي: شريط، حوض، شريط."
+          "content": "المثلث $BCM$ قائم في $C$ ، ضلعاه القائمان $[BC]$ و $[MC]$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مساحة الشريط = المربع الخارجي ناقص الحوض."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "انشر $(10 + 2x)^2$ ثم اطرح 100."
+          "content": "مساحة المثلث القائم نصف جداء ضلعيه القائمين."
         }
       ],
       "feedback": {
-        "correct": "$(10 + 2x)^2 - 10^2 = 100 + 40x + 4x^2 - 100 = 4x^2 + 40x$.",
-        "incorrect": "اطرح مساحة الحوض، ولا تنس الحد المضاعف."
+        "correct": "$4x$ إذن $m = 4$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
       },
-      "cognitiveDemand": "transfer"
+      "solution": {
+        "lines": [
+          "$BC = AD = x$ و $MC = 8$",
+          "مساحة $BCM = \\dfrac{8 \\times x}{2}$"
+        ],
+        "result": "4x"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "المساواة «مساحة الشريط 44» تكافئ ...",
+      "step": "01",
+      "sub": "ب",
+      "statement": "مساحة الجزء $ABMD$ (نسمّيها $S$) على شكل مجموع مبسّط — العدد $m$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $x^2 + mx$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "8",
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة $ABMD$ = مساحة المستطيل $ABCD$ − مساحة المثلث $BCM$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $x(x + 12)$ ثم اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = x^2 + 8x$ إذن $m = 8$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$S = x(x + 12) - 4x$",
+          "$S = x^2 + 12x - 4x$"
+        ],
+        "result": "S = x^2 + 8x"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ا",
+      "statement": "تحقّق أنّ: $S - 105 = (x + 4)^2 - 121$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
         {
-          "id": "A",
-          "content": "$x^2 + 10x - 44 = 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(x + 4)^2$ بمتطابقة شهيرة."
         },
         {
-          "id": "B",
-          "content": "$x^2 + 10x + 11 = 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
-        },
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح 121 وقارن بـ $S - 105$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى الإشارات عند النشر."
+      },
+      "solution": {
+        "lines": [
+          "$(x + 4)^2 - 121 = x^2 + 8x + 16 - 121$",
+          "$= x^2 + 8x - 105 = S - 105$"
+        ],
+        "result": "S - 105 = (x + 4)^2 - 121"
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "sub": "ب",
+      "statement": "حلّل العبارة $S - 105$ إلى جداء عاملين من الدرجة الأولى — العدد $m$ :",
+      "learningPoints": [
         {
-          "id": "C",
-          "content": "$4x^2 + 40x + 44 = 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
-        },
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S - 105$ على الشكل $(x + m)(x + n)$ حيث $m < n$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "-7",
+      "misconceptionSignatures": [
         {
-          "id": "D",
-          "content": "$x^2 + 10x - 11 = 0$",
-          "isCorrect": true
+          "value": "-117",
+          "id": "MISC-TAHLIL-FARQ-MURABBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انقل 44 إلى الطرف الأول."
+          "content": "اكتب 121 على شكل مربع عدد."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ثم اقسم كل الحدود على 4."
+          "content": "استعمل $a^2 - b^2 = (a - b)(a + b)$ مع $a = x + 4$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "كل الحدود، لا بعضها."
+          "content": "بسّط ما بداخل كل قوس."
         }
       ],
       "feedback": {
-        "correct": "$4x^2 + 40x - 44 = 0$ ، وبالقسمة على 4: $x^2 + 10x - 11 = 0$.",
-        "incorrect": "القسمة على 4 تشمل كل الحدود، ونقل 44 يغيّر إشارتها."
+        "correct": "$S - 105 = (x - 7)(x + 15)$ إذن $m = -7$ .",
+        "incorrect": "تحقّق من تحليلك بنشر الجداء: يجب أن تجد العبارة الأصلية."
       },
-      "cognitiveDemand": "transfer"
+      "solution": {
+        "lines": [
+          "$S - 105 = (x + 4)^2 - 11^2$",
+          "$= (x + 4 - 11)(x + 4 + 11)$"
+        ],
+        "result": "S - 105 = (x - 7)(x + 15)"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
-      "id": "q3",
-      "statement": "ما عرض الشريط $x$ (بالمتر)؟",
+      "id": "q5",
+      "step": "02",
+      "sub": "ب",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S - 105$ على الشكل $(x + m)(x + n)$ حيث $m < n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $n$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$S - 105 = (x - 7)(x + 15)$ إذن $n = 15$ .",
+        "incorrect": "تحقّق من تحليلك بنشر الجداء: يجب أن تجد العبارة الأصلية."
+      },
+      "solution": {
+        "lines": [
+          "$S - 105 = (x - 7)(x + 15)$"
+        ],
+        "result": "n = 15"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q6",
+      "step": "03",
+      "statement": "جد قيمة $x$ التي تكون من أجلها مساحة الجزء المغروس $105\\,m^2$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P3",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح",
-      "expectedAnswer": "1",
+      "answerFormat": "عدد طبيعي: الطول بـ m",
+      "expectedAnswer": "7",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "استعمل المساعدة."
+          "content": "$S = 105$ يعني $S - 105 = 0$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "جداء أحد عامليه معدوم."
+          "content": "استعمل التحليل السابق، وتذكّر أن $x$ موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 7\\,m$ .",
+        "incorrect": "اكتب المعادلة على شكل جداء معدوم، واحتفظ بالحلّ الموجب فقط."
+      },
+      "solution": {
+        "lines": [
+          "$S = 105$ يعني $(x - 7)(x + 15) = 0$",
+          "$x - 7 = 0$ أو $x + 15 = 0$ ، أي $x = 7$ أو $x = -15$",
+          "$x$ طول، فهو موجب"
+        ],
+        "result": "x = 7\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q7",
+      "step": "04",
+      "statement": "☜ يريد الفلاح إحاطة قطعة الأرض $ABCD$ كلها بسياج، ثمن المتر الواحد منه 1200DA . ما تكلفة السياج؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بـ DA",
+      "expectedAnswer": "62400",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب بعدي القطعة من أجل القيمة التي وجدتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "محيط المستطيل $= 2 \\times$ (الطول + العرض)."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "العرض طول موجب."
+          "content": "اضرب المحيط في ثمن المتر."
         }
       ],
       "feedback": {
-        "correct": "$(x - 1)(x + 11) = 0$ من أجل $x = 1$ أو $x = -11$ ؛ العرض موجب: $x = 1$. نتحقق: $4 + 40 = 44$.",
-        "incorrect": "نرفض القيمة السالبة لأنّ العرض طول."
+        "correct": "$62400DA$ .",
+        "incorrect": "أعد قراءة المعطيات، واحسب كل كمية على حدة ثم اجمع."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "-11",
-          "id": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "value": "11",
-          "id": "MISC-NASHR-ISHARA-SALIBA"
-        }
-      ],
-      "cognitiveDemand": "transfer"
+      "solution": {
+        "lines": [
+          "$AB = 7 + 12 = 19$ m و $AD = 7$ m",
+          "المحيط $= 2 \\times (19 + 7) = 52$ m",
+          "التكلفة $= 52 \\times 1200$"
+        ],
+        "result": "62400DA"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l5-001",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 5
+  ]
 }

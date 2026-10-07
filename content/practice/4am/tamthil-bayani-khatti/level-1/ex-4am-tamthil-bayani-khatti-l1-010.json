@@ -3,25 +3,34 @@
   "lessonCode": "tamthil-bayani-khatti",
   "level": 1,
   "metadata": {
-    "title": "تدريب — إشارة المعامل",
+    "title": "إشارة المعامل ومنحى المستقيم",
     "estimatedMinutes": 4,
     "tags": [
-      "منحى"
+      "منحى المستقيم",
+      "إشارة المعامل"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tamthil-bayani-khatti_P3",
-      "modelledOn": "know-3"
+      "modelledOn": "know-3",
+      "adaptedFrom": "ex-4am-tamthil-bayani-khatti-l1-010"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "المستقيم $(\\Delta)$ هو التمثيل البياني لدالة خطية معاملها $a$ ."
+    "content": "$(\\Delta_1)$ و $(\\Delta_2)$ التمثيلان البيانيان للدالتين الخطيتين $f$ و $g$ حيث: $f(x) = 0{,}2x$ و $g(x) = -7x$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "إذا كان $a = 0{,}2$ فإنّ $(\\Delta)$ :",
+      "step": "01",
+      "statement": "هل المستقيم $(\\Delta_1)$ يصعد أم ينزل من اليسار إلى اليمين؟ علّل.",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P3",
@@ -29,6 +38,7 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
@@ -47,69 +57,72 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى إشارة المعامل $a$."
+          "content": "انظر إلى إشارة معامل الدالة الخطية."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+          "content": "إذا كان المعامل موجبا فالمستقيم يصعد، وإذا كان سالبا فهو ينزل."
         }
       ],
       "feedback": {
-        "correct": "$0{,}2 > 0$ : المستقيم يصعد.",
-        "incorrect": "قارن $a$ بالصفر."
-      }
+        "correct": "المعامل $0{,}2$ موجب: المستقيم يصعد.",
+        "incorrect": "منحى المستقيم تعيّنه إشارة المعامل: موجب ← يصعد، سالب ← ينزل."
+      },
+      "solution": {
+        "lines": [
+          "معامل الدالة $f$ هو $0{,}2$ ، وهو عدد موجب.",
+          "إذن المستقيم $(\\Delta_1)$ يصعد من اليسار إلى اليمين."
+        ],
+        "result": "يصعد"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "إذا كان $a = -7$ فإنّ $(\\Delta)$ :",
+      "step": "02",
+      "statement": "احسب ترتيب النقطة من $(\\Delta_2)$ التي فاصلتها $-1$ .",
       "learningPoints": [
         {
-          "code": "4am_tamthil-bayani-khatti_P3",
+          "code": "4am_tamthil-bayani-khatti_P1",
           "role": "primary"
         }
       ],
       "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "يصعد من اليسار إلى اليمين",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-MUNHA"
-        },
-        {
-          "id": "B",
-          "content": "ينزل من اليسار إلى اليمين",
-          "isCorrect": true
+          "value": "-7",
+          "id": "MISC-KHATTIYA-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى إشارة المعامل $a$."
+          "content": "الترتيب هو صورة الفاصلة بالدالة $g$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+          "content": "احسب $-7 \\times \\left(-1\\right)$ ."
         }
       ],
       "feedback": {
-        "correct": "$-7 < 0$ : المستقيم ينزل.",
-        "incorrect": "قارن $a$ بالصفر."
-      }
+        "correct": "$g(-1) = -7 \\times \\left(-1\\right) = 7$ .",
+        "incorrect": "جداء عددين سالبين عدد موجب."
+      },
+      "solution": {
+        "lines": [
+          "$g(-1) = -7 \\times \\left(-1\\right) = 7$",
+          "إذن النقطة $(-1 ; 7)$ تنتمي إلى $(\\Delta_2)$ ."
+        ],
+        "result": "g(-1) = 7"
+      },
+      "timeSeconds": 60
     }
   ]
 }

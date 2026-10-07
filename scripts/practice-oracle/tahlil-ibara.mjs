@@ -1,156 +1,451 @@
-// Oracle du banc « tahlil-ibara » (unité 3 « الحساب الحرفي ») — chaque réponse RECALCULÉE ici.
-// Fusionné dans scripts/practice-answer-oracle.test.mjs.
+// Oracle du banc « tahlil-ibara » (unité 3 « الحساب الحرفي ») — feuilles d'examen BEM (2026-10-07).
+// Chaque réponse est RECALCULÉE ici à partir des nombres de l'énoncé (fusionné dans
+// scripts/practice-answer-oracle.test.mjs). Une clé par question non selfCheck.
 //
-// Une forme factorisée est un CHOIX : `pick(expr, options)` développe l'expression ET
-// chaque option avec `poly` (rationnels exacts) et renvoie l'unique option ÉGALE dont
-// la forme est acceptable (`true`). Une option marquée `false` est une écriture égale
-// mais refusée par l'énoncé (facteur commun incomplet quand on demande le PLUS GRAND,
-// somme quand on demande un produit). Zéro ou deux options justes → l'oracle lève une
-// erreur et le test échoue. Les questions de FORME (« de quel type ? », « laquelle ne
-// se factorise pas ? ») sont vérifiées par une égalité polynomiale écrite à la main.
-// Généré avec le banc par le script de l'auteur ; ne pas éditer une entrée sans
-// recalculer l'autre côté.
-import { R, C, poly, q } from './helpers.mjs';
+// E('…', d) lit une expression à UNE lettre (x) avec + − × /, ^, parenthèses, produit implicite
+// (« 3x », « 2(x + 1) », « (2x + 5)^2 ») et le symbole √ (= √d, d = 2 par défaut), et la CALCULE
+// en polynôme exact à coefficients dans Q(√d), avec les rationnels de helpers.mjs — sans rien lire
+// du contenu ni du code testé. Une division ne se fait que par un nombre rationnel.
+// Le TRAVAIL de la leçon (l'analyse en facteurs) est refait par DIVISION EXACTE :
+//   qc(E, F, k)   coefficient de x^k du quotient E ÷ F (erreur si le reste n'est pas nul) — le
+//                 cofacteur d'un facteur commun donné par la forme demandée « (2x − 1)(mx + n) » ;
+//   r2(E, i)      i-ème racine (ordre croissant) d'un polynôme du second degré à racines
+//                 rationnelles (discriminant carré parfait, racine carrée ENTIÈRE en BigInt) — les
+//                 facteurs d'une forme « (x + m)(x + n) » ou « (m − 2x)(4x + n) » ;
+//   sq(E)         [a, b] tels que E = (ax + b)², a > 0, vérifié par développement ;
+//   isq(v)        racine carrée rationnelle exacte (erreur sinon) ;
+//   sqrtForm(r, i, d) [m, n] entiers tels que (m + n√d)² = r + i√d et m + n√d > 0 ;
+//   sdRoots(F1, F2, d) racines (m + n√d) de deux facteurs unitaires, rangées par ordre croissant ;
+//   approxDown(a, b, d, k) valeur approchée PAR DÉFAUT à 10^-k de a + b√d (a, b entiers, b > 0),
+//                 par racine carrée entière exacte (BigInt), jamais Math.sqrt.
+// root('…') : racine d'une expression du premier degré (étapes « حل المعادلة / المتراجحة », hors
+// leçon, counted:false) — −(terme constant)/(coefficient de x).
+import { R, q } from './helpers.mjs';
 
-const X = poly.x;
-const k = (v) => poly.of(poly.Q(v));
-const gcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b, a % b]; return a; };
-function pick(expr, options) {
-  const ok = options.map(([p, form], i) => (form && expr.equals(p) ? 'ABCD'[i] : null)).filter(Boolean);
-  if (ok.length !== 1) throw new Error(`tahlil-ibara oracle: ${ok.length} acceptable options`);
-  return C(ok[0]);
+class Sd {
+  constructor(r, i, d) { this.r = q(r); this.i = q(i); this.d = d; }
+  add(o) { return new Sd(this.r.add(o.r), this.i.add(o.i), this.d); }
+  neg() { return new Sd(this.r.neg(), this.i.neg(), this.d); }
+  mul(o) { return new Sd(this.r.mul(o.r).add(this.i.mul(o.i).mul(this.d)), this.r.mul(o.i).add(this.i.mul(o.r)), this.d); }
+  isZero() { return this.r.isZero() && this.i.isZero(); }
+}
+class SP {
+  constructor(c, d) { this.d = d; this.c = c.slice(); while (this.c.length && this.c.at(-1).isZero()) this.c.pop(); }
+  zero() { return new Sd(0, 0, this.d); }
+  add(o) { return new SP(Array.from({ length: Math.max(this.c.length, o.c.length) }, (_, k) => (this.c[k] ?? this.zero()).add(o.c[k] ?? this.zero())), this.d); }
+  neg() { return new SP(this.c.map((v) => v.neg()), this.d); }
+  sub(o) { return this.add(o.neg()); }
+  mul(o) {
+    const out = Array.from({ length: this.c.length + o.c.length }, () => this.zero());
+    this.c.forEach((a, i) => o.c.forEach((b, j) => { out[i + j] = out[i + j].add(a.mul(b)); }));
+    return new SP(out, this.d);
+  }
+  pow(n) { let r = new SP([new Sd(1, 0, this.d)], this.d); for (let k = 0; k < n; k++) r = r.mul(this); return r; }
+  degree() { return this.c.length - 1; }
+  rcoef(k) { return (this.c[k] ?? this.zero()).r.toString(); }
+  icoef(k) { return (this.c[k] ?? this.zero()).i.toString(); }
+  coef(k) {
+    if (!(this.c[k] ?? this.zero()).i.isZero()) throw new Error(`oracle tahlil-ibara: coefficient de x^${k} irrationnel`);
+    return this.rcoef(k);
+  }
+  isZero() { return this.c.length === 0; }
+}
+
+function E(src, d = 2) {
+  const s = String(src).replace(/\s+/g, '').replace(/−/g, '-').replace(/×/g, '*').replace(/,/g, '.');
+  let i = 0;
+  const peek = () => s[i];
+  const fail = (m) => { throw new Error(`oracle tahlil-ibara: ${m} dans « ${src} » (position ${i})`); };
+  const K = (r, ir = 0) => new SP([new Sd(r, ir, d)], d);
+  const X = new SP([new Sd(0, 0, d), new Sd(1, 0, d)], d);
+  const startsFactor = (c) => c !== undefined && (/[0-9.(√]/.test(c) || /[a-z]/.test(c));
+  function primary() {
+    const c = peek();
+    if (c === '(') { i += 1; const v = sum(); if (peek() !== ')') fail('« ) » attendue'); i += 1; return v; }
+    if (c === '√') { i += 1; return K(0, 1); }
+    if (/[a-z]/.test(c)) { i += 1; return X; }
+    const m = s.slice(i).match(/^\d+(\.\d+)?/);
+    if (!m) fail('terme illisible');
+    i += m[0].length;
+    return K(m[0]);
+  }
+  function power() {
+    let v = primary();
+    if (peek() === '^') { i += 1; const m = s.slice(i).match(/^\d+/); if (!m) fail('exposant'); i += m[0].length; v = v.pow(Number(m[0])); }
+    return v;
+  }
+  function factor() {
+    if (peek() === '-') { i += 1; return factor().neg(); }
+    if (peek() === '+') { i += 1; return factor(); }
+    return power();
+  }
+  function product() {
+    let v = factor();
+    for (;;) {
+      const c = peek();
+      if (c === '*') { i += 1; v = v.mul(factor()); }
+      else if (c === '/') {
+        i += 1; const den = factor();
+        if (den.degree() > 0 || !den.c[0].i.isZero()) fail('division par une expression non rationnelle');
+        v = v.mul(K(q(1).div(den.c[0].r)));
+      } else if (startsFactor(c)) v = v.mul(power());
+      else return v;
+    }
+  }
+  function sum() {
+    let v = product();
+    for (;;) {
+      const c = peek();
+      if (c === '+') { i += 1; v = v.add(product()); }
+      else if (c === '-') { i += 1; v = v.sub(product()); }
+      else return v;
+    }
+  }
+  const v = sum();
+  if (i !== s.length) fail('caractère inattendu');
+  return v;
+}
+
+/** Quotient EXACT de E par F (coefficient dominant de F rationnel) ; erreur si le reste n'est pas nul. */
+function quo(srcE, srcF, d = 2) {
+  let rem = E(srcE, d);
+  const F = E(srcF, d);
+  const lead = F.c.at(-1);
+  if (!lead || !lead.i.isZero()) throw new Error(`oracle tahlil-ibara: diviseur « ${srcF} » inadapté`);
+  const out = [];
+  while (!rem.isZero() && rem.degree() >= F.degree()) {
+    const k = rem.degree() - F.degree();
+    const top = rem.c.at(-1);
+    const t = new Sd(top.r.div(lead.r), top.i.div(lead.r), d);
+    out[k] = t;
+    const mono = new SP([...Array.from({ length: k }, () => new Sd(0, 0, d)), t], d);
+    rem = rem.sub(mono.mul(F));
+  }
+  if (!rem.isZero()) throw new Error(`oracle tahlil-ibara: « ${srcF} » ne divise pas « ${srcE} »`);
+  return new SP(Array.from({ length: out.length }, (_, k) => out[k] ?? new Sd(0, 0, d)), d);
+}
+const qc = (srcE, srcF, k, d = 2) => quo(srcE, String(srcF), d).coef(k);
+const co = (src, k, d = 2) => E(src, d).coef(k);
+const rc = (src, d = 2, k = 0) => E(src, d).rcoef(k);
+const ic = (src, d = 2, k = 0) => E(src, d).icoef(k);
+/** Valeur (rationnelle) de l'expression pour x = v. */
+const valueAt = (p, v) => p.c.reduceRight((acc, a) => acc.mul(q(v)).add(a.r), q(0));
+const at = (src, v) => valueAt(E(src), v).toString();
+const qat = (srcE, srcF, v) => valueAt(quo(srcE, srcF), v).toString();
+const neg = (v) => q(v).neg().toString();
+const mul = (a, b) => q(a).mul(q(b)).toString();
+const div = (a, b) => q(a).div(q(b)).toString();
+const G = (a, b) => { a = Math.abs(Number(a)); b = Math.abs(Number(b)); while (b) [a, b] = [b, a % b]; return a; };
+
+function bsqrt(n) { // racine carrée entière exacte d'un BigInt ≥ 0 (plancher)
+  if (n < 0n) throw new Error('oracle tahlil-ibara: racine d\'un négatif');
+  if (n < 2n) return n;
+  let x = BigInt(Math.floor(Math.sqrt(Number(n))));
+  while (x * x > n) x -= 1n;
+  while ((x + 1n) * (x + 1n) <= n) x += 1n;
+  return x;
+}
+/** Racine carrée rationnelle EXACTE (erreur si v n'est pas le carré d'un rationnel). */
+function isq(v) {
+  const Q = q(v);
+  const a = bsqrt(Q.n); const b = bsqrt(Q.d);
+  if (a * a !== Q.n || b * b !== Q.d) throw new Error(`oracle tahlil-ibara: ${v} n'est pas un carré`);
+  return q(`${a}/${b}`).toString();
+}
+/** Racines rationnelles (ordre croissant) d'un polynôme du second degré. */
+function r2(src, idx) {
+  const p = E(src);
+  if (p.degree() !== 2) throw new Error(`oracle tahlil-ibara: « ${src} » n'est pas du second degré`);
+  const [c, b, a] = [0, 1, 2].map((k) => q(p.coef(k)));
+  const disc = b.mul(b).sub(q(4).mul(a).mul(c));
+  const s = q(isq(disc));
+  const xs = [b.neg().sub(s).div(a.mul(2)), b.neg().add(s).div(a.mul(2))]
+    .sort((u, v) => (u.sub(v).n < 0n ? -1 : 1));
+  return xs[idx].toString();
+}
+/** [a, b] avec E = (ax + b)², a > 0 — vérifié par développement. */
+function sq(src) {
+  const p = E(src);
+  const a = q(isq(p.coef(2)));
+  const b0 = q(isq(p.coef(0)));
+  const b = q(p.coef(1)).n < 0n ? b0.neg() : b0;
+  if (!E(`(${a}x+(${b}))^2`).sub(p).isZero()) throw new Error(`oracle tahlil-ibara: « ${src} » n'est pas un carré parfait`);
+  return [a.toString(), b.toString()];
+}
+/** Signe exact de m + n√d (m, n rationnels). */
+function sdSign(m, n, d) {
+  const M = q(m); const N = q(n);
+  const sm = M.n > 0n ? 1 : M.n < 0n ? -1 : 0; const sn = N.n > 0n ? 1 : N.n < 0n ? -1 : 0;
+  if (sm >= 0 && sn >= 0) return sm + sn > 0 ? 1 : 0;
+  if (sm <= 0 && sn <= 0) return -1;
+  const big = M.mul(M).sub(N.mul(N).mul(d)).n; // m² − n²d
+  return big > 0n ? sm : sn;
+}
+/** [m, n] entiers (|m|, |n| ≤ 50) tels que (m + n√d)² = r + i√d et m + n√d > 0. */
+function sqrtForm(r, i, d) {
+  const found = [];
+  for (let m = -50; m <= 50; m++) for (let n = -50; n <= 50; n++) {
+    if (q(m * m + n * n * d).sub(q(r)).isZero() && q(2 * m * n).sub(q(i)).isZero() && sdSign(m, n, d) > 0) found.push([String(m), String(n)]);
+  }
+  if (found.length !== 1) throw new Error(`oracle tahlil-ibara: ${found.length} racines pour ${r} + ${i}√${d}`);
+  return found[0];
+}
+/** Racines m + n√d de deux facteurs unitaires du premier degré, rangées par ordre croissant. */
+function sdRoots(f1, f2, d) {
+  const rts = [f1, f2].map((f) => { const p = E(f, d); if (p.degree() !== 1 || p.rcoef(1) !== '1' || p.icoef(1) !== '0') throw new Error('facteur non unitaire'); return [neg(p.rcoef(0)), neg(p.icoef(0))]; });
+  const diff = [q(rts[0][0]).sub(q(rts[1][0])), q(rts[0][1]).sub(q(rts[1][1]))];
+  return sdSign(diff[0], diff[1], d) < 0 ? rts : [rts[1], rts[0]];
+}
+/** Valeur approchée PAR DÉFAUT à 10^-k de a + b√d (a, b entiers, b > 0), exacte (BigInt). */
+function approxDown(a, b, d, k) {
+  const p = 10n ** BigInt(k);
+  const t = bsqrt(BigInt(b) * BigInt(b) * BigInt(d) * p * p); // ⌊b√d · 10^k⌋
+  return q(`${t + BigInt(a) * p}/${p}`).toString();
+}
+/** Racine (exacte) d'une expression du premier degré. */
+function root(src) {
+  const p = E(src);
+  if (p.degree() !== 1) throw new Error(`oracle tahlil-ibara: « ${src} » n'est pas du premier degré`);
+  return q(p.coef(0)).neg().div(q(p.coef(1))).toString();
 }
 
 export const ORACLE = {
-  'ex-4am-tahlil-ibara-l1-001:q1': pick(k(2).mul(X).add(k(6)), [[k(2).mul(X.add(k(3))), true], [k(2).mul(X.add(k(6))), true], [k(2).mul(X).mul(k(1).add(k(3))), true]]),
-  'ex-4am-tahlil-ibara-l1-001:q2': pick(k(7).mul(X).sub(k(21)), [[k(7).mul(X.add(k(3))), true], [k(7).mul(X.sub(k(3))), true], [k(7).mul(X.sub(k(21))), true]]),
-  'ex-4am-tahlil-ibara-l1-001:q3': pick(X.pow(2).sub(k(3).mul(X)), [[X.mul(X.pow(2).sub(k(3))), true], [k(3).mul(X).mul(X.sub(k(1))), true], [X.mul(X.sub(k(3))), true]]),
+  'ex-4am-tahlil-ibara-l1-001:q1': R(G(2, 6)),
+  'ex-4am-tahlil-ibara-l1-001:q2': R(qc('2x+6', '2', 0)),
+  'ex-4am-tahlil-ibara-l1-001:q3': R(G(7, 21)),
+  'ex-4am-tahlil-ibara-l1-001:q4': R(neg(qc('7x-21', '7', 0))),
+  'ex-4am-tahlil-ibara-l1-001:q5': R(qc('x^2-3x', 'x', 0)),
   'ex-4am-tahlil-ibara-l1-002:q1': R(q('2.9').mul(13 + 87)),
   'ex-4am-tahlil-ibara-l1-002:q2': R(q('2.35').mul(176 - 76)),
-  'ex-4am-tahlil-ibara-l1-002:q3': pick(k(9).mul(X).add(k(3)), [[k(3).mul(k(3).mul(X).add(k(3))), true], [k(3).mul(k(3).mul(X).add(k(1))), true], [k(9).mul(X).mul(k(1).add(k(3))), true]]),
-  // B est la seule écriture dont la dernière opération est un produit (A : … + 2, C : somme de monômes, D : somme de deux parenthèses).
-  'ex-4am-tahlil-ibara-l1-003:q1': C('B'),
-  'ex-4am-tahlil-ibara-l1-003:q2': pick(X.pow(2).add(k(5).mul(X)), [[X.mul(X).add(k(5).mul(X)), false], [X.mul(X.add(k(5).mul(X))), true], [k(5).mul(X).mul(X.add(k(1))), true], [X.mul(X.add(k(5))), true]]),
-  'ex-4am-tahlil-ibara-l1-004:q1': pick(k(5).mul(X).add(k(15)), [[k(5).mul(X.add(k(15))), true], [k(5).mul(X).mul(k(1).add(k(3))), true], [k(5).mul(X.add(k(3))), true]]),
-  'ex-4am-tahlil-ibara-l1-004:q2': pick(k(12).mul(X).sub(k(8)), [[k(4).mul(k(3).mul(X).sub(k(2))), true], [k(2).mul(k(6).mul(X).sub(k(4))), false], [k(4).mul(k(3).mul(X).sub(k(8))), true]]), // 2(6x − 4) est égal mais son facteur n’est pas le PLUS GRAND (énoncé : أكبر عامل مشترك).
-  // x² + 8x + 16 = (x + 4)² : forme a² + 2ab + b² (a = x, b = 4).
-  'ex-4am-tahlil-ibara-l1-005:q1': (poly.x.add(4).pow(2).equals(poly.x.pow(2).add(poly.x.mul(8)).add(16)) ? C('A') : null),
-  // x² − 49 = (x − 7)(x + 7) : forme a² − b².
-  'ex-4am-tahlil-ibara-l1-005:q2': (poly.x.sub(7).mul(poly.x.add(7)).equals(poly.x.pow(2).sub(49)) ? C('C') : null),
-  // x² − 12x + 36 = (x − 6)² : forme a² − 2ab + b².
-  'ex-4am-tahlil-ibara-l1-005:q3': (poly.x.sub(6).pow(2).equals(poly.x.pow(2).sub(poly.x.mul(12)).add(36)) ? C('B') : null),
-  'ex-4am-tahlil-ibara-l1-006:q1': pick(X.pow(2).sub(k(36)), [[X.sub(k(6)).pow(2), true], [X.sub(k(6)).mul(X.add(k(6))), true], [X.sub(k(18)).mul(X.add(k(18))), true]]),
-  'ex-4am-tahlil-ibara-l1-006:q2': pick(X.pow(2).add(k(2).mul(X)).add(k(1)), [[X.add(k(1)).pow(2), true], [X.add(k(2)).pow(2), true], [X.sub(k(1)).mul(X.add(k(1))), true]]),
-  'ex-4am-tahlil-ibara-l1-007:q1': pick(X.pow(2).add(k(7).mul(X)), [[X.mul(X.pow(2).add(k(7))), true], [X.mul(X.add(k(7))), true], [k(7).mul(X).mul(X.add(k(1))), true]]),
-  'ex-4am-tahlil-ibara-l1-007:q2': pick(k(3).mul(X.pow(2)).sub(k(6).mul(X)), [[k(3).mul(X.pow(2).sub(k(2).mul(X))), false], [k(3).mul(X).mul(X.sub(k(6))), true], [k(3).mul(X).mul(X.sub(k(2))), true]]), // 3(x² − 2x) est égal mais le facteur n’est pas complet (أكبر عامل مشترك).
-  'ex-4am-tahlil-ibara-l1-008:q1': R(X.sub(4).mul(X.mul(2).add(1)).at(4)),
-  'ex-4am-tahlil-ibara-l1-008:q2': R(X.sub(4).mul(X.mul(2).add(1)).at(0)),
-  'ex-4am-tahlil-ibara-l1-009:q1': R(gcd(8, 12)),
-  'ex-4am-tahlil-ibara-l1-009:q2': pick(k(8).mul(X).add(k(12)), [[k(2).mul(k(4).mul(X).add(k(6))), false], [k(4).mul(k(2).mul(X).add(k(3))), true], [k(4).mul(k(2).mul(X).add(k(12))), true]]), // 2(4x + 6) est égal mais r = 2 n’est pas le plus grand nombre de rangées.
-  'ex-4am-tahlil-ibara-l1-010:q1': R(X.add(5).pow(2).coef(0)),
-  'ex-4am-tahlil-ibara-l1-010:q2': R(X.sub(3).pow(2).coef(1).replace('-', '')),
-  'ex-4am-tahlil-ibara-l2-001:q1': pick(X.pow(2).sub(k(5).mul(X)), [[X.mul(X.sub(k(5))), true], [X.mul(X.pow(2).sub(k(5))), true], [k(5).mul(X).mul(X.sub(k(1))), true]]),
-  'ex-4am-tahlil-ibara-l2-001:q2': pick(X.add(k(3)).mul(k(1).sub(k(2).mul(X))).add(k(5).mul(k(1).sub(k(2).mul(X)))), [[k(1).sub(k(2).mul(X)).mul(k(5).mul(X).add(k(15))), true], [k(1).sub(k(2).mul(X)).mul(X.sub(k(2))), true], [k(1).sub(k(2).mul(X)).mul(X.add(k(8))), true]]),
-  'ex-4am-tahlil-ibara-l2-001:q3': pick(k(1).add(X).mul(X.sub(k(5))).sub(k(1).add(k(2).mul(X)).mul(k(1).add(X))), [[k(1).add(X).mul(k(3).mul(X).sub(k(4))), true], [k(1).add(X).mul(X.mul(-1).sub(k(6))), true], [k(1).add(X).mul(k(3).mul(X).sub(k(6))), true]]),
-  'ex-4am-tahlil-ibara-l2-002:q1': pick(k(5).mul(X).mul(k(2).mul(X).add(k(1))).add(k(2).mul(X).add(k(1))), [[k(5).mul(X).mul(k(2).mul(X).add(k(1))), true], [k(2).mul(X).add(k(1)).mul(k(5).mul(X).add(k(1))), true], [k(6).mul(X).mul(k(2).mul(X).add(k(1))), true]]),
-  'ex-4am-tahlil-ibara-l2-002:q2': pick(X.add(k(7)).mul(X.sub(k(3))).sub(X.sub(k(3))), [[X.sub(k(3)).mul(X.add(k(6))), true], [X.sub(k(3)).mul(X.add(k(7))), true], [X.sub(k(3)).mul(X.add(k(8))), true]]),
-  'ex-4am-tahlil-ibara-l2-002:q3': pick(X.add(k(1)).mul(X.sub(k(4))).sub(X).add(k(4)), [[X.sub(k(4)).mul(X.add(k(2))), true], [X.add(k(1)).mul(X.sub(k(5))), true], [X.mul(X.sub(k(4))), true]]),
-  'ex-4am-tahlil-ibara-l2-003:q1': pick(X.sub(k(1)).mul(k(5).mul(X).add(k(4))).add(k(3).add(X).mul(X.sub(k(1)))), [[X.sub(k(1)).mul(k(4).mul(X).add(k(1))), true], [X.sub(k(1)).mul(k(5).mul(X).add(k(7))), true], [X.sub(k(1)).mul(k(6).mul(X).add(k(7))), true]]),
-  'ex-4am-tahlil-ibara-l2-003:q2': pick(k(2).mul(X).sub(k(5)).mul(X.add(k(2))).sub(X.sub(k(2)).mul(X.add(k(2)))), [[X.add(k(2)).mul(X.sub(k(3))), true], [X.add(k(2)).mul(X.sub(k(7))), true], [X.add(k(2)).mul(k(3).mul(X).sub(k(7))), true]]),
-  'ex-4am-tahlil-ibara-l2-004:q1': pick(X.pow(2).add(k(6).mul(X)).add(k(9)), [[X.add(k(9)).pow(2), true], [X.add(k(3)).pow(2), true], [X.sub(k(3)).mul(X.add(k(3))), true]]),
-  'ex-4am-tahlil-ibara-l2-004:q2': pick(k(4).mul(X.pow(2)).add(k(20).mul(X)).add(k(25)), [[k(4).mul(X).add(k(5)).pow(2), true], [k(2).mul(X).add(k(10)).pow(2), true], [k(2).mul(X).add(k(5)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l2-004:q3': pick(k(9).mul(X.pow(2)).add(k(42).mul(X)).add(k(49)), [[k(3).mul(X).add(k(7)).pow(2), true], [k(9).mul(X).add(k(7)).pow(2), true], [k(3).mul(X).add(k(14)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l2-004:q4': pick(k(1).add(k(8).mul(X)).add(k(16).mul(X.pow(2))), [[k(1).add(k(8).mul(X)).pow(2), true], [k(1).add(k(4).mul(X)).pow(2), true], [k(4).add(X).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l2-005:q1': pick(X.pow(2).sub(k(10).mul(X)).add(k(25)), [[X.sub(k(5)).mul(X.add(k(5))), true], [X.sub(k(5)).pow(2), true], [X.add(k(5)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l2-005:q2': pick(k(9).mul(X.pow(2)).sub(k(12).mul(X)).add(k(4)), [[k(3).mul(X).sub(k(2)).pow(2), true], [k(9).mul(X).sub(k(2)).pow(2), true], [k(3).mul(X).add(k(2)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l2-005:q3': pick(k(81).mul(X.pow(2)).sub(k(18).mul(X)).add(k(1)), [[k(81).mul(X).sub(k(1)).pow(2), true], [k(9).mul(X).sub(k(9)).pow(2), true], [k(9).mul(X).sub(k(1)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l2-005:q4': pick(k(9).sub(k(6).mul(X)).add(X.pow(2)), [[k(3).add(X).pow(2), true], [k(3).sub(X).pow(2), true], [k(9).sub(X).pow(2), true]]),
-  // only B : x² + 6x + 9 = (x + 3)² ; (x + 6)² = x² + 12x + 36 ; (x + 3)² ≠ x² + 6x + 3.
-  'ex-4am-tahlil-ibara-l2-006:q1': C([[36, X.add(6)], [9, X.add(3)], [3, X.add(3)]].map(([c, f], i) => [i, X.pow(2).add(X.mul(6)).add(c).equals(f.pow(2))]).filter(([, ok]) => ok).map(([i]) => 'ABC'[i]).join('')),
-  // only A : (6x − 1)² = 36x² − 12x + 1.
-  'ex-4am-tahlil-ibara-l2-006:q2': C([[36, -12, 1, X.mul(6).sub(1)], [36, -6, 1, X.mul(6).sub(1)], [36, -12, 1, X.mul(36).sub(1)]].map(([a, b, c, f], i) => [i, X.pow(2).mul(a).add(X.mul(b)).add(c).equals(f.pow(2))]).filter(([, ok]) => ok).map(([i]) => 'ABC'[i]).join('')),
-  // only C : (x − 5)² = x² − 10x + 25.
-  'ex-4am-tahlil-ibara-l2-006:q3': C([-5, -25, -10].map((b, i) => [i, X.pow(2).add(X.mul(b)).add(25).equals(X.sub(5).pow(2))]).filter(([, ok]) => ok).map(([i]) => 'ABC'[i]).join('')),
-  // only A : (x + 9)(x − 9) = x² − 81.
-  'ex-4am-tahlil-ibara-l2-006:q4': C([9, 81, 3].map((b, i) => [i, X.pow(2).sub(81).equals(X.add(b).mul(X.sub(b)))]).filter(([, ok]) => ok).map(([i]) => 'ABC'[i]).join('')),
-  'ex-4am-tahlil-ibara-l2-007:q1': pick(k(3).mul(X.add(k(2))).add(X.mul(X.add(k(2)))), [[X.add(k(2)).mul(k(3).add(X)), true], [k(3).mul(X).mul(X.add(k(2))), true], [X.add(k(2)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l2-007:q2': pick(X.sub(k(1)).mul(X.add(k(5))).sub(k(2).mul(X.sub(k(1)))), [[X.sub(k(1)).mul(X.add(k(7))), true], [X.sub(k(1)).mul(X.add(k(3))), true], [X.add(k(5)).mul(X.sub(k(3))), true]]),
-  'ex-4am-tahlil-ibara-l2-008:q1': pick(k(2).mul(X).add(k(3)).mul(X.sub(k(4))).add(k(2).mul(X).add(k(3))), [[k(2).mul(X).add(k(3)).mul(X.sub(k(4))), true], [k(2).mul(X).add(k(3)).mul(X.sub(k(3))), true], [k(2).mul(X).add(k(3)).mul(X.sub(k(5))), true]]),
-  'ex-4am-tahlil-ibara-l2-008:q2': pick(X.add(k(6)).pow(2).sub(X.add(k(6))), [[X.add(k(6)).pow(2), true], [X.add(k(6)).mul(X.add(k(7))), true], [X.add(k(6)).mul(X.add(k(5))), true]]),
-  'ex-4am-tahlil-ibara-l2-009:q1': pick(k(4).mul(X.pow(2)).sub(k(9)), [[k(4).mul(X).sub(k(3)).mul(k(4).mul(X).add(k(3))), true], [k(2).mul(X).sub(k(3)).mul(k(2).mul(X).add(k(3))), true], [k(2).mul(X).sub(k(3)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l2-009:q2': pick(k(25).sub(X.pow(2)), [[X.sub(k(5)).mul(X.add(k(5))), true], [k(5).sub(X).pow(2), true], [k(5).sub(X).mul(k(5).add(X)), true]]),
-  'ex-4am-tahlil-ibara-l2-010:q1': R(gcd(14, 21)),
-  'ex-4am-tahlil-ibara-l2-010:q2': R(14 / gcd(14, 21)),
-  'ex-4am-tahlil-ibara-l3-001:q1': R(X.sub(1).mul(X.add(2)).add(X.mul(X.add(2))).sub(X.add(2)).at(0)),
-  'ex-4am-tahlil-ibara-l3-001:q2': R(X.add(2).mul(X.mul(2).sub(1)).at(0)),
-  'ex-4am-tahlil-ibara-l3-001:q3': pick(X.sub(k(1)).mul(X.add(k(2))).add(X.mul(X.add(k(2)))).sub(X.add(k(2))), [[X.add(k(2)).mul(k(2).mul(X).sub(k(1))), true], [X.add(k(2)).mul(k(2).mul(X).sub(k(2))), true], [X.add(k(2)).mul(k(2).mul(X).add(k(1))), true]]),
-  // facteur commun (x − √2) identique dans les trois options : il suffit de comparer les cofacteurs, (4x + 3) − (x + 2) = 3x + 1 (calcul exact sur Q[x]).
-  'ex-4am-tahlil-ibara-l3-002:q1': C([X.mul(3).add(1), X.mul(5).add(5), X.mul(3).add(5)].map((f, i) => [i, X.mul(4).add(3).sub(X.add(2)).equals(f)]).filter(([, ok]) => ok).map(([i]) => 'ABC'[i]).join('')),
-  'ex-4am-tahlil-ibara-l3-002:q2': pick(k(2).sub(k(5).mul(X)).mul(X.sub(k('2/3'))).add(k(2).sub(k(5).mul(X)).mul(X.sub(k('4/3')))), [[k(2).sub(k(5).mul(X)).mul(k(2).mul(X).add(k('2/3'))), true], [k(2).sub(k(5).mul(X)).mul(k(2).mul(X).sub(k(2))), true], [k(2).sub(k(5).mul(X)).mul(X.pow(2).sub(k('8/9'))), true]]),
-  'ex-4am-tahlil-ibara-l3-003:q1': pick(k(9).mul(X.pow(2)).add(k(24).mul(X)).add(k(16)), [[k(9).mul(X).add(k(4)).pow(2), true], [k(3).mul(X).add(k(4)).pow(2), true], [k(3).mul(X).add(k(8)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l3-003:q2': pick(k(121).sub(k(22).mul(X)).add(X.pow(2)), [[k(11).sub(X).pow(2), true], [k(11).add(X).pow(2), true], [k(121).sub(X).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l3-004:q1': pick(k(3).sub(k(2).mul(X)).pow(2).sub(k(9)), [[k(2).mul(-1).mul(X).mul(k(6).sub(k(2).mul(X))), true], [k(6).mul(-1).sub(k(2).mul(X)).mul(k(12).sub(k(2).mul(X))), true], [k(2).mul(-1).mul(X).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l3-004:q2': pick(k('1/4').sub(X.add(k('3/2')).pow(2)), [[k(2).sub(X).mul(X.add(k(2))), true], [X.mul(-1).sub(k(1)).mul(X.add(k(2))), true], [k('1/4').sub(X).sub(k('3/2')).mul(k('1/4').add(X).add(k('3/2'))), true]]),
-  'ex-4am-tahlil-ibara-l3-004:q3': pick(X.add(k(2)).pow(2).sub(k(3).mul(X).sub(k(1)).pow(2)), [[k(2).mul(-1).mul(X).add(k(1)).mul(k(4).mul(X).add(k(1))), true], [k(2).mul(-1).mul(X).add(k(3)).mul(k(4).mul(X).add(k(1))), true], [X.add(k(2)).sub(k(3).mul(X)).sub(k(1)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l3-005:q1': pick(k(144).mul(X.pow(2)).sub(k(24).mul(X)).add(k(1)), [[k(12).mul(X).add(k(1)).pow(2), true], [k(72).mul(X).sub(k(1)).pow(2), true], [k(12).mul(X).sub(k(1)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l3-005:q2': pick(k(4).mul(X.pow(2)).sub(k(1)).add(k(12).mul(X.pow(2)).sub(k(6).mul(X))), [[k(2).mul(X).sub(k(1)).mul(k(8).mul(X).add(k(1))), true], [k(2).mul(X).sub(k(1)).mul(k(6).mul(X).add(k(1))), true], [k(2).mul(X).sub(k(1)).mul(k(8).mul(X).sub(k(1))), true]]),
-  'ex-4am-tahlil-ibara-l3-006:q1': R((98 - 2) * (98 + 2)),
-  'ex-4am-tahlil-ibara-l3-006:q2': R((408 - 407) * (408 + 407)),
-  'ex-4am-tahlil-ibara-l3-006:q3': R((777 - 223) * (777 + 223)),
-  'ex-4am-tahlil-ibara-l3-007:q1': pick(X.pow(2).add(k(6).mul(X)).add(k(9)), [[X.add(k(3)).pow(2), true], [X.add(k(9)).pow(2), true], [X.sub(k(3)).mul(X.add(k(3))), true]]),
-  'ex-4am-tahlil-ibara-l3-007:q2': pick(X.pow(2).sub(k(4).mul(X)).add(k(4)), [[X.add(k(2)).pow(2), true], [X.sub(k(2)).pow(2), true], [X.sub(k(2)).mul(X.add(k(2))), true]]),
-  'ex-4am-tahlil-ibara-l3-007:q3': pick(X.pow(2).sub(k(16)), [[X.sub(k(4)).pow(2), true], [X.sub(k(8)).mul(X.add(k(8))), true], [X.sub(k(4)).mul(X.add(k(4))), true]]),
-  'ex-4am-tahlil-ibara-l3-008:q1': pick(X.add(k(2)).pow(2).sub(k(3).mul(X.add(k(2)))), [[X.pow(2).add(X).sub(k(2)), true], [X.pow(2).add(k(7).mul(X)).add(k(10)), true], [X.pow(2).sub(k(3).mul(X)).sub(k(2)), true]]),
-  'ex-4am-tahlil-ibara-l3-008:q2': pick(X.add(k(2)).pow(2).sub(k(3).mul(X.add(k(2)))), [[X.add(k(2)).mul(X.add(k(5))), true], [X.add(k(2)).mul(X.sub(k(3))), true], [X.add(k(2)).mul(X.sub(k(1))), true]]),
-  'ex-4am-tahlil-ibara-l3-008:q3': R(X.add(2).pow(2).sub(X.add(2).mul(3)).at(1)),
-  'ex-4am-tahlil-ibara-l3-009:q1': pick(k(6).mul(X.pow(2)).sub(k(9).mul(X)), [[k(3).mul(k(2).mul(X.pow(2)).sub(k(3).mul(X))), false], [k(3).mul(X).mul(k(2).mul(X).sub(k(3))), true], [X.mul(k(6).mul(X).sub(k(9))), false], [k(3).mul(X).mul(k(2).mul(X).sub(k(9))), true]]), // 3(2x² − 3x) et x(6x − 9) sont égaux mais le facteur n’est pas complet.
-  'ex-4am-tahlil-ibara-l3-009:q2': pick(k(10).mul(X.pow(2)).add(k(15).mul(X)), [[k(5).mul(X).mul(k(2).mul(X).add(k(3))), true], [k(5).mul(k(2).mul(X.pow(2)).add(k(3).mul(X))), false], [k(5).mul(X).mul(k(2).mul(X).add(k(15))), true]]), // 5(2x² + 3x) est égal mais incomplet.
-  'ex-4am-tahlil-ibara-l3-010:q1': R(gcd(18, 12)),
-  'ex-4am-tahlil-ibara-l3-010:q2': R(18 / gcd(18, 12) + 12 / gcd(18, 12)),
-  'ex-4am-tahlil-ibara-l4-001:q1': pick(k(2).mul(X).mul(k('2/7').sub(X)).add(k('2/7').sub(X).mul(k(5).mul(X).sub(k(4)).mul(k('1/3')))), [[k('2/7').sub(X).mul(k(7).mul(X).sub(k(4))).mul(k('1/3')), true], [k('2/7').sub(X).mul(k(11).mul(X).sub(k(4))).mul(k('1/3')), true], [k('2/7').sub(X).mul(k(7).mul(X).sub(k(4))), true]]),
-  'ex-4am-tahlil-ibara-l4-001:q2': pick(k('6/5').mul(X).sub(k('7/2')).mul(k('37/10').add(X)).sub(k('1/5').mul(X).sub(k('13/2')).mul(k('37/10').add(X))).add(k('37/10').add(X)), [[k('37/10').add(X).mul(X.add(k(3))), true], [k('37/10').add(X).mul(X.add(k(4))), true], [k('37/10').add(X).mul(k('7/5').mul(X).sub(k(9))), true]]),
-  'ex-4am-tahlil-ibara-l4-002:q1': pick(k('1/9').mul(X.pow(2)).add(k('1/3').mul(X)).add(k('1/4')), [[X.mul(k('1/3')).add(k('1/4')).pow(2), true], [X.mul(k('1/3')).add(k('1/2')).pow(2), true], [X.mul(k('1/9')).add(k('1/2')).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l4-002:q2': pick(k('25/9').mul(X.pow(2)).sub(k('5/2').mul(X)).add(k('9/16')), [[k('5/3').mul(X).add(k('3/4')).pow(2), true], [k('5/3').mul(X).sub(k('9/16')).pow(2), true], [k('5/3').mul(X).sub(k('3/4')).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l4-003:q1': pick(k(2).sub(X).pow(2).sub(k(4).mul(X.pow(2))), [[k(2).sub(k(3).mul(X)).mul(k(2).add(X)), true], [k(2).sub(k(5).mul(X)).mul(k(2).add(k(3).mul(X))), true], [k(2).sub(k(3).mul(X)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l4-003:q2': pick(k(2).mul(X).add(k(3)).pow(2).sub(X.add(k(1)).pow(2)), [[X.add(k(4)).mul(k(3).mul(X).add(k(4))), true], [X.add(k(2)).pow(2), true], [X.add(k(2)).mul(k(3).mul(X).add(k(4))), true]]),
-  'ex-4am-tahlil-ibara-l4-003:q3': R((X.mul(-1).add(2)).pow(2).sub(X.pow(2).mul(4)).sub(X.mul(2).add(3).pow(2).sub(X.add(1).pow(2))).coef(1)),
-  'ex-4am-tahlil-ibara-l4-004:q1': pick(X.sub(k(3)).mul(k(2).mul(X).add(k(1))).add(k(3).sub(X).mul(X.add(k(4)))), [[X.sub(k(3)).pow(2), true], [X.sub(k(3)).mul(k(3).mul(X).add(k(5))), true], [X.sub(k(3)).mul(X.add(k(5))), true]]),
-  'ex-4am-tahlil-ibara-l4-004:q2': pick(X.pow(2).sub(k(9)).add(X.add(k(3)).mul(k(2).mul(X).sub(k(1)))), [[X.add(k(3)).mul(X.sub(k(3))).mul(k(2).mul(X).sub(k(1))), true], [X.add(k(3)).mul(k(3).mul(X).sub(k(4))), true], [X.add(k(3)).mul(k(3).mul(X).sub(k(2))), true]]),
-  'ex-4am-tahlil-ibara-l4-005:q1': pick(k(2).mul(X).add(k(1)).pow(2).sub(X.sub(k(3)).pow(2)), [[X.sub(k(2)).mul(k(3).mul(X).sub(k(2))), true], [X.add(k(4)).mul(k(3).mul(X).sub(k(2))), true], [X.add(k(4)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l4-005:q2': pick(k(9).mul(X.pow(2)).sub(X.add(k(2)).pow(2)), [[k(2).mul(X).sub(k(2)).mul(k(4).mul(X).add(k(2))), true], [k(2).mul(X).add(k(2)).mul(k(4).mul(X).sub(k(2))), true], [k(8).mul(X).sub(k(2)).mul(k(10).mul(X).add(k(2))), true]]),
-  'ex-4am-tahlil-ibara-l4-006:q1': pick(X.pow(2).add(X).add(k('1/4')), [[X.add(k('1/2')).pow(2), true], [X.add(k('1/4')).pow(2), true], [X.add(k(1)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l4-006:q2': pick(k('1/4').mul(X.pow(2)).sub(k(1)), [[X.mul(k('1/4')).sub(k(1)).mul(X.mul(k('1/4')).add(k(1))), true], [X.mul(k('1/2')).sub(k(1)).mul(X.mul(k('1/2')).add(k(1))), true], [X.mul(k('1/2')).sub(k(1)).pow(2), true]]),
-  'ex-4am-tahlil-ibara-l4-007:q1': pick(k(4).mul(X.pow(2)).sub(k(12).mul(X)).add(k(9)).sub(k(2).mul(X).sub(k(3)).mul(X.add(k(1)))), [[k(2).mul(X).sub(k(3)).mul(X.sub(k(2))), true], [k(2).mul(X).sub(k(3)).mul(k(3).mul(X).sub(k(2))), true], [k(2).mul(X).sub(k(3)).mul(X.sub(k(4))), true]]),
-  'ex-4am-tahlil-ibara-l4-007:q2': R(X.mul(2).sub(3).mul(X.sub(4)).at(4)),
-  'ex-4am-tahlil-ibara-l4-008:q1': R(gcd(12, 18)),
-  'ex-4am-tahlil-ibara-l4-008:q2': pick(k(12).mul(X.pow(2)).add(k(18).mul(X)), [[k(6).mul(k(2).mul(X.pow(2)).add(k(3).mul(X))), false], [k(3).mul(X).mul(k(4).mul(X).add(k(6))), false], [k(6).mul(X).mul(k(2).mul(X).add(k(3))), true], [k(6).mul(X).mul(k(2).mul(X).add(k(18))), true]]), // 6(2x² + 3x) et 3x(4x + 6) sont égaux mais incomplets.
-  'ex-4am-tahlil-ibara-l4-009:q1': pick(k('1/2').mul(X).mul(X.sub(k(2))).add(k('3/2').mul(X.sub(k(2)))), [[X.sub(k(2)).mul(k('1/2').mul(X).add(k('3/2'))), true], [X.sub(k(2)).mul(k(2)).mul(X), true], [X.sub(k(2)).mul(k('1/2').mul(X).sub(k('3/2'))), true]]),
-  'ex-4am-tahlil-ibara-l4-009:q2': pick(X.mul(k('1/3')).sub(k('2/3')), [[X.sub(k('2/3')).mul(k('1/3')), true], [X.sub(k(2)).mul(k('1/3')), true], [k(3).mul(X.sub(k(2))), true]]),
-  'ex-4am-tahlil-ibara-l4-010:q1': R(X.mul(3).sub(1).mul(X.add(2)).sub(X.add(2)).at(0)),
-  'ex-4am-tahlil-ibara-l4-010:q2': R(X.add(2).mul(X.mul(3).sub(1)).at(0)),
-  'ex-4am-tahlil-ibara-l4-010:q3': pick(k(3).mul(X).sub(k(1)).mul(X.add(k(2))).sub(X.add(k(2))), [[X.add(k(2)).mul(k(3).mul(X).sub(k(1))), true], [X.add(k(2)).mul(k(3)).mul(X), true], [X.add(k(2)).mul(k(3).mul(X).sub(k(2))), true]]),
-  'ex-4am-tahlil-ibara-l5-001:q1': R((105 - 95) * (105 + 95)),
-  'ex-4am-tahlil-ibara-l5-001:q2': R((51 - 49) * (51 + 49)),
-  'ex-4am-tahlil-ibara-l5-001:q3': R((1001 - 999) * (1001 + 999)),
-  'ex-4am-tahlil-ibara-l5-002:q1': pick(X.pow(2).add(k(7).mul(X)).add(k(10)), [[X.add(k(2)).mul(X.add(k(7))), true], [X.add(k(2)).mul(X.add(k(5))), true], [X.add(k(2)).mul(X.add(k(10))), true]]), // chaque option L est jugée sur (x + 2) × L.
-  'ex-4am-tahlil-ibara-l5-002:q2': R(X.add(2).mul(X.add(5)).at(20)),
-  'ex-4am-tahlil-ibara-l5-003:q1': pick(k(4).mul(X.pow(2)).add(k(12).mul(X)).add(k(9)), [[k(4).mul(X).add(k(3)).pow(2), true], [k(2).mul(X).add(k(9)).pow(2), true], [k(2).mul(X).add(k(3)).pow(2), true]]), // chaque option c est jugée sur c².
-  'ex-4am-tahlil-ibara-l5-003:q2': R(X.mul(2).add(3).at(10)),
-  'ex-4am-tahlil-ibara-l5-004:q1': R(X.sub(3).mul(X.mul(2).add(5)).at(3)),
-  'ex-4am-tahlil-ibara-l5-004:q2': R(X.sub(3).mul(X.mul(2).add(5)).at(0)),
-  'ex-4am-tahlil-ibara-l5-004:q3': pick(X.sub(k(3)).mul(k(2).mul(X).add(k(5))), [[k(2).mul(X.pow(2)).sub(X).sub(k(15)), true], [k(2).mul(X.pow(2)).add(k(11).mul(X)).sub(k(15)), true], [k(2).mul(X.pow(2)).sub(k(15)), true]]),
-  'ex-4am-tahlil-ibara-l5-005:q1': pick(X.add(k(5)).pow(2).sub(k(9)), [[X.add(k(2)).pow(2), true], [X.add(k(2)).mul(X.add(k(8))), true], [X.sub(k(4)).mul(X.add(k(14))), true]]),
-  'ex-4am-tahlil-ibara-l5-005:q2': R(X.add(2).mul(X.add(8)).at(2)),
-  'ex-4am-tahlil-ibara-l5-006:q1': R(gcd(gcd(6, 9), 3)),
-  'ex-4am-tahlil-ibara-l5-006:q2': pick(k(6).mul(X.pow(2)).add(k(9).mul(X)).add(k(3)), [[k(3).mul(k(2).mul(X.pow(2)).add(k(3).mul(X))), true], [k(3).mul(k(2).mul(X.pow(2)).add(k(3).mul(X)).add(k(1))), true], [k(3).mul(k(2).mul(X.pow(2)).add(k(9).mul(X)).add(k(3))), true]]),
-  'ex-4am-tahlil-ibara-l5-007:q1': R(X.add(5).pow(2).sub(X.add(5)).at(0)),
-  'ex-4am-tahlil-ibara-l5-007:q2': pick(X.add(k(5)).pow(2).sub(X.add(k(5))), [[X.add(k(5)).mul(X.add(k(6))), true], [X.add(k(5)).pow(2), true], [X.add(k(5)).mul(X.add(k(4))), true]]),
-  // A = (x − 4)(x + 4), B = (x + 4)², D = (x − 4)² ; x² + 16 has no middle term and is a sum: C.
-  'ex-4am-tahlil-ibara-l5-008:q1': (X.sub(4).mul(X.add(4)).equals(X.pow(2).sub(16)) && X.add(4).pow(2).equals(X.pow(2).add(X.mul(8)).add(16)) && X.sub(4).pow(2).equals(X.pow(2).sub(X.mul(8)).add(16)) ? C('C') : null),
-  // (x + 2)² ≠ x² + 4 and (x + 2)(x − 2) ≠ x² + 4 : C.
-  'ex-4am-tahlil-ibara-l5-008:q2': (!X.add(2).pow(2).equals(X.pow(2).add(4)) && !X.add(2).mul(X.sub(2)).equals(X.pow(2).add(4)) ? C('C') : null),
-  'ex-4am-tahlil-ibara-l5-009:q1': pick(k(3).mul(X).sub(k(2)).pow(2).sub(k(3).mul(X).sub(k(2)).mul(X.add(k(1)))), [[k(3).mul(X).sub(k(2)).mul(k(4).mul(X).sub(k(1))), true], [k(3).mul(X).sub(k(2)).mul(k(2).mul(X).sub(k(3))), true], [k(3).mul(X).sub(k(2)).mul(k(2).mul(X).sub(k(1))), true]]),
-  'ex-4am-tahlil-ibara-l5-009:q2': R(X.mul(3).sub(2).pow(2).sub(X.mul(3).sub(2).mul(X.add(1))).at(1)),
-  'ex-4am-tahlil-ibara-l5-010:q1': R(17 * (23 + 77)),
-  'ex-4am-tahlil-ibara-l5-010:q2': R(q('4.6').mul(58 - 48)),
+  'ex-4am-tahlil-ibara-l1-002:q3': R(G(9, 3)),
+  'ex-4am-tahlil-ibara-l1-002:q4': R(qc('9x+3', '3', 1)),
+  'ex-4am-tahlil-ibara-l1-003:q1': R(qc('x^2+5x', 'x', 0)),
+  'ex-4am-tahlil-ibara-l1-003:q2': R(at('x^2+5x', '3')),
+  'ex-4am-tahlil-ibara-l1-004:q1': R(G(5, 15)),
+  'ex-4am-tahlil-ibara-l1-004:q2': R(qc('5x+15', '5', 0)),
+  'ex-4am-tahlil-ibara-l1-004:q3': R(G(12, 8)),
+  'ex-4am-tahlil-ibara-l1-004:q4': R(qc('12x-8', G(12, 8), 1)),
+  'ex-4am-tahlil-ibara-l1-004:q5': R(neg(qc('12x-8', G(12, 8), 0))),
+  'ex-4am-tahlil-ibara-l1-005:q1': R(sq('x^2+8x+16')[1]),
+  'ex-4am-tahlil-ibara-l1-005:q2': R(isq(neg(co('x^2-49', 0)))),
+  'ex-4am-tahlil-ibara-l1-005:q3': R(neg(sq('x^2-12x+36')[1])),
+  'ex-4am-tahlil-ibara-l1-006:q1': R(qc('(x-5)(2x+3)+(x-5)(x-1)', 'x-5', 1)),
+  'ex-4am-tahlil-ibara-l1-006:q2': R(qc('(x-5)(2x+3)+(x-5)(x-1)', 'x-5', 0)),
+  'ex-4am-tahlil-ibara-l1-006:q3': R(root('3x+2')),
+  'ex-4am-tahlil-ibara-l1-006:q4': R(root('x-5')),
+  'ex-4am-tahlil-ibara-l1-007:q1': R(qc('x^2+7x', 'x', 0)),
+  'ex-4am-tahlil-ibara-l1-007:q2': R(G(3, 6)),
+  'ex-4am-tahlil-ibara-l1-007:q3': R(neg(qc('3x^2-6x', `${G(3, 6)}x`, 0))),
+  'ex-4am-tahlil-ibara-l1-008:q1': R(qc('(x+4)(2x-1)+(x+4)(x+5)', 'x+4', 1)),
+  'ex-4am-tahlil-ibara-l1-008:q2': R(qc('(x+4)(2x-1)+(x+4)(x+5)', 'x+4', 0)),
+  'ex-4am-tahlil-ibara-l1-008:q3': R(at('(x+4)(2x-1)+(x+4)(x+5)', '0')),
+  'ex-4am-tahlil-ibara-l1-009:q1': R(G(8, 12)),
+  'ex-4am-tahlil-ibara-l1-009:q2': R(qc('8x+12', G(8, 12), 1)),
+  'ex-4am-tahlil-ibara-l1-009:q3': R(qc('8x+12', G(8, 12), 0)),
+  'ex-4am-tahlil-ibara-l1-010:q1': R(r2('81-(x+1)^2', 1)),
+  'ex-4am-tahlil-ibara-l1-010:q2': R(neg(r2('81-(x+1)^2', 0))),
+  'ex-4am-tahlil-ibara-l1-010:q3': R(at('81-(x+1)^2', '30')),
+  'ex-4am-tahlil-ibara-l2-001:q1': R(qc('x^2-5x', 'x', 0)),
+  'ex-4am-tahlil-ibara-l2-001:q2': R(qc('(x+3)(1-2x)+5(1-2x)', '1-2x', 0)),
+  'ex-4am-tahlil-ibara-l2-001:q3': R(qc('(1+x)(x-5)-(1+2x)(1+x)', '1+x', 1)),
+  'ex-4am-tahlil-ibara-l2-001:q4': R(qc('(1+x)(x-5)-(1+2x)(1+x)', '1+x', 0)),
+  'ex-4am-tahlil-ibara-l2-002:q1': R(qc('5x(2x+1)+(2x+1)', '2x+1', 1)),
+  'ex-4am-tahlil-ibara-l2-002:q2': R(qc('5x(2x+1)+(2x+1)', '2x+1', 0)),
+  'ex-4am-tahlil-ibara-l2-002:q3': R(qc('(x+7)(x-3)-(x-3)', 'x-3', 0)),
+  'ex-4am-tahlil-ibara-l2-002:q4': R(qc('(x+1)(x-4)-x+4', 'x', 0)),
+  'ex-4am-tahlil-ibara-l2-003:q1': R(qc('(x-1)(5x+4)+(3+x)(x-1)', 'x-1', 1)),
+  'ex-4am-tahlil-ibara-l2-003:q2': R(qc('(x-1)(5x+4)+(3+x)(x-1)', 'x-1', 0)),
+  'ex-4am-tahlil-ibara-l2-003:q3': R(qc('(2x-5)(x+2)-(x-2)(x+2)', 'x+2', 0)),
+  'ex-4am-tahlil-ibara-l2-004:q1': R(sq('x^2+6x+9')[1]),
+  'ex-4am-tahlil-ibara-l2-004:q2': R(sq('4x^2+20x+25')[0]),
+  'ex-4am-tahlil-ibara-l2-004:q3': R(sq('4x^2+20x+25')[1]),
+  'ex-4am-tahlil-ibara-l2-004:q4': R(sq('9x^2+42x+49')[0]),
+  'ex-4am-tahlil-ibara-l2-004:q5': R(sq('9x^2+42x+49')[1]),
+  'ex-4am-tahlil-ibara-l2-004:q6': R(sq('1+8x+16x^2')[0]),
+  'ex-4am-tahlil-ibara-l2-004:q7': R(sq('1+8x+16x^2')[1]),
+  'ex-4am-tahlil-ibara-l2-005:q1': R(neg(sq('x^2-10x+25')[1])),
+  'ex-4am-tahlil-ibara-l2-005:q2': R(sq('9x^2-12x+4')[0]),
+  'ex-4am-tahlil-ibara-l2-005:q3': R(neg(sq('9x^2-12x+4')[1])),
+  'ex-4am-tahlil-ibara-l2-005:q4': R(sq('81x^2-18x+1')[0]),
+  'ex-4am-tahlil-ibara-l2-005:q5': R(neg(sq('81x^2-18x+1')[1])),
+  'ex-4am-tahlil-ibara-l2-005:q6': R(neg(sq('9-6x+x^2')[1])),
+  'ex-4am-tahlil-ibara-l2-006:q1': R(co('(6/2)^2', 0)),
+  'ex-4am-tahlil-ibara-l2-006:q2': R(q(6).div(2)),
+  'ex-4am-tahlil-ibara-l2-006:q3': R(neg(co('(6x-1)^2', 1))),
+  'ex-4am-tahlil-ibara-l2-006:q4': R(isq(25)),
+  'ex-4am-tahlil-ibara-l2-006:q5': R(neg(co(`(x-${isq(25)})^2`, 1))),
+  'ex-4am-tahlil-ibara-l2-006:q6': R(isq(81)),
+  'ex-4am-tahlil-ibara-l2-007:q2': R(qc('2x^2-7x+3+(2x-1)(3x+2)', '2x-1', 1)),
+  'ex-4am-tahlil-ibara-l2-007:q3': R(qc('2x^2-7x+3+(2x-1)(3x+2)', '2x-1', 0)),
+  'ex-4am-tahlil-ibara-l2-007:q4': R(root('4x-1')),
+  'ex-4am-tahlil-ibara-l2-007:q5': R(root('2x-1')),
+  'ex-4am-tahlil-ibara-l2-008:q1': R(E('(2x-3)(x-2)').coef(2)),
+  'ex-4am-tahlil-ibara-l2-008:q2': R(E('(2x-3)(x-2)').coef(1)),
+  'ex-4am-tahlil-ibara-l2-008:q3': R(E('(2x-3)(x-2)').coef(0)),
+  'ex-4am-tahlil-ibara-l2-008:q4': R(qc('2x^2-7x+6-(2x-3)(2x-1)', '2x-3', 1)),
+  'ex-4am-tahlil-ibara-l2-008:q5': R(qc('2x^2-7x+6-(2x-3)(2x-1)', '2x-3', 0)),
+  'ex-4am-tahlil-ibara-l2-008:q6': R(root('-x-1')),
+  'ex-4am-tahlil-ibara-l2-008:q7': R(root('2x-3')),
+  'ex-4am-tahlil-ibara-l2-009:q1': R(E('2x-10-(x-5)^2').coef(2)),
+  'ex-4am-tahlil-ibara-l2-009:q2': R(E('2x-10-(x-5)^2').coef(1)),
+  'ex-4am-tahlil-ibara-l2-009:q3': R(E('2x-10-(x-5)^2').coef(0)),
+  'ex-4am-tahlil-ibara-l2-009:q4': R(qc('2x-10-(x-5)^2', 'x-5', 1)),
+  'ex-4am-tahlil-ibara-l2-009:q5': R(qc('2x-10-(x-5)^2', 'x-5', 0)),
+  'ex-4am-tahlil-ibara-l2-009:q6': R(root('x-5')),
+  'ex-4am-tahlil-ibara-l2-009:q7': R(root('7-x')),
+  'ex-4am-tahlil-ibara-l2-010:q1': R(E('(x-2)(x-9)+4(x-2)').coef(2)),
+  'ex-4am-tahlil-ibara-l2-010:q2': R(E('(x-2)(x-9)+4(x-2)').coef(1)),
+  'ex-4am-tahlil-ibara-l2-010:q3': R(E('(x-2)(x-9)+4(x-2)').coef(0)),
+  'ex-4am-tahlil-ibara-l2-010:q4': R(qc('(x-2)(x-9)+4(x-2)', 'x-2', 0)),
+  'ex-4am-tahlil-ibara-l2-010:q5': R(at('(x-2)(x-9)+4(x-2)', '102')),
+  'ex-4am-tahlil-ibara-l3-001:q1': R(at('(x-1)(x+2)+x(x+2)-(x+2)', '0')),
+  'ex-4am-tahlil-ibara-l3-001:q2': R(at('(x+2)(2x-1)', '0')),
+  'ex-4am-tahlil-ibara-l3-001:q3': R(qc('(x-1)(x+2)+x(x+2)-(x+2)', 'x+2', 1)),
+  'ex-4am-tahlil-ibara-l3-001:q4': R(qc('(x-1)(x+2)+x(x+2)-(x+2)', 'x+2', 0)),
+  'ex-4am-tahlil-ibara-l3-002:q1': R(qc('(x-√)(4x+3)-(x+2)(x-√)', 'x-√', 1, 2)),
+  'ex-4am-tahlil-ibara-l3-002:q2': R(qc('(x-√)(4x+3)-(x+2)(x-√)', 'x-√', 0, 2)),
+  'ex-4am-tahlil-ibara-l3-002:q3': R(qc('(2-5x)(x-2/3)+(2-5x)(x-4/3)', '2-5x', 1)),
+  'ex-4am-tahlil-ibara-l3-002:q4': R(qc('(2-5x)(x-2/3)+(2-5x)(x-4/3)', '2-5x', 0)),
+  'ex-4am-tahlil-ibara-l3-003:q1': R(sq('9x^2+24x+16')[0]),
+  'ex-4am-tahlil-ibara-l3-003:q2': R(sq('9x^2+24x+16')[1]),
+  'ex-4am-tahlil-ibara-l3-003:q3': R(neg(sq('121-22x+x^2')[1])),
+  'ex-4am-tahlil-ibara-l3-003:q4': R(neg(mul(2, r2('9x^2+24x+16-(121-22x+x^2)', 0)))),
+  'ex-4am-tahlil-ibara-l3-003:q5': R(neg(mul(4, r2('9x^2+24x+16-(121-22x+x^2)', 1)))),
+  'ex-4am-tahlil-ibara-l3-004:q1': R(co('(3-2x)^2-9', 2)),
+  'ex-4am-tahlil-ibara-l3-004:q2': R(qc('(3-2x)^2-9', `${co('(3-2x)^2-9', 2)}x`, 0)),
+  'ex-4am-tahlil-ibara-l3-004:q3': R(neg(r2('1/4-(x+3/2)^2', 1))),
+  'ex-4am-tahlil-ibara-l3-004:q4': R(neg(r2('1/4-(x+3/2)^2', 0))),
+  'ex-4am-tahlil-ibara-l3-004:q5': R(mul(2, r2('(x+2)^2-(3x-1)^2', 1))),
+  'ex-4am-tahlil-ibara-l3-004:q6': R(neg(mul(4, r2('(x+2)^2-(3x-1)^2', 0)))),
+  'ex-4am-tahlil-ibara-l3-005:q1': R(sq('144x^2-24x+1')[0]),
+  'ex-4am-tahlil-ibara-l3-005:q2': R(neg(sq('144x^2-24x+1')[1])),
+  'ex-4am-tahlil-ibara-l3-005:q3': R(qc('(4x^2-1)+(12x^2-6x)', '2x-1', 1)),
+  'ex-4am-tahlil-ibara-l3-005:q4': R(qc('(4x^2-1)+(12x^2-6x)', '2x-1', 0)),
+  'ex-4am-tahlil-ibara-l3-006:q1': R(co('98^2-2^2', 0)),
+  'ex-4am-tahlil-ibara-l3-006:q2': R(co('408^2-407^2', 0)),
+  'ex-4am-tahlil-ibara-l3-006:q3': R(co('777^2-223^2', 0)),
+  'ex-4am-tahlil-ibara-l3-007:q1': R(sq('x^2+6x+9')[1]),
+  'ex-4am-tahlil-ibara-l3-007:q2': R(neg(sq('x^2-4x+4')[1])),
+  'ex-4am-tahlil-ibara-l3-007:q3': R(isq(neg(co('x^2-16', 0)))),
+  'ex-4am-tahlil-ibara-l3-007:q4': R(qc('(x^2-16)+(x+4)(2x-3)', 'x+4', 1)),
+  'ex-4am-tahlil-ibara-l3-007:q5': R(qc('(x^2-16)+(x+4)(2x-3)', 'x+4', 0)),
+  'ex-4am-tahlil-ibara-l3-008:q1': R(E('10^2-(x-2)^2-(x+8)').coef(2)),
+  'ex-4am-tahlil-ibara-l3-008:q2': R(E('10^2-(x-2)^2-(x+8)').coef(1)),
+  'ex-4am-tahlil-ibara-l3-008:q3': R(E('10^2-(x-2)^2-(x+8)').coef(0)),
+  'ex-4am-tahlil-ibara-l3-008:q4': R(neg(r2('10^2-(x-2)^2', 0))),
+  'ex-4am-tahlil-ibara-l3-008:q5': R(r2('10^2-(x-2)^2', 1)),
+  'ex-4am-tahlil-ibara-l3-008:q6': R(qc('10^2-(x-2)^2-(x+8)', '8+x', 0)),
+  'ex-4am-tahlil-ibara-l3-008:q7': R(root('8+x')),
+  'ex-4am-tahlil-ibara-l3-008:q8': R(root('11-x')),
+  'ex-4am-tahlil-ibara-l3-009:q1': R(E('(x+1)^2-(x+1)(2x-3)').coef(2)),
+  'ex-4am-tahlil-ibara-l3-009:q2': R(E('(x+1)^2-(x+1)(2x-3)').coef(1)),
+  'ex-4am-tahlil-ibara-l3-009:q3': R(E('(x+1)^2-(x+1)(2x-3)').coef(0)),
+  'ex-4am-tahlil-ibara-l3-009:q4': R(qc('(x+1)^2-(x+1)(2x-3)', 'x+1', 1)),
+  'ex-4am-tahlil-ibara-l3-009:q5': R(qc('(x+1)^2-(x+1)(2x-3)', 'x+1', 0)),
+  'ex-4am-tahlil-ibara-l3-009:q6': R(root('(3x+4)-(6x-2)')),
+  'ex-4am-tahlil-ibara-l3-010:q1': R(E('(x-3)(x-10)+3(x-3)').coef(2)),
+  'ex-4am-tahlil-ibara-l3-010:q2': R(E('(x-3)(x-10)+3(x-3)').coef(1)),
+  'ex-4am-tahlil-ibara-l3-010:q3': R(E('(x-3)(x-10)+3(x-3)').coef(0)),
+  'ex-4am-tahlil-ibara-l3-010:q4': R(qc('(x-3)(x-10)+3(x-3)', 'x-3', 0)),
+  'ex-4am-tahlil-ibara-l3-010:q5': R(root('x-3')),
+  'ex-4am-tahlil-ibara-l3-010:q6': R(root('x-7')),
+  'ex-4am-tahlil-ibara-l3-010:q7': R(at('(x-3)(x-10)+3(x-3)', '50')),
+  'ex-4am-tahlil-ibara-l4-001:q1': R(qc('2x(2/7-x)+(2/7-x)(5x-4)/3', '(2/7-x)/3', 1)),
+  'ex-4am-tahlil-ibara-l4-001:q2': R(qc('2x(2/7-x)+(2/7-x)(5x-4)/3', '(2/7-x)/3', 0)),
+  'ex-4am-tahlil-ibara-l4-001:q3': R(qc('(1.2x-3.5)(3.7+x)-(0.2x-6.5)(3.7+x)+(3.7+x)', '3.7+x', 0)),
+  'ex-4am-tahlil-ibara-l4-001:q4': R(at('(1.2x-3.5)(3.7+x)-(0.2x-6.5)(3.7+x)+(3.7+x)', '6.3')),
+  'ex-4am-tahlil-ibara-l4-002:q1': R(sq('x^2/9+x/3+1/4')[0]),
+  'ex-4am-tahlil-ibara-l4-002:q2': R(sq('x^2/9+x/3+1/4')[1]),
+  'ex-4am-tahlil-ibara-l4-002:q3': R(sq('25x^2/9-5x/2+9/16')[0]),
+  'ex-4am-tahlil-ibara-l4-002:q4': R(neg(sq('25x^2/9-5x/2+9/16')[1])),
+  'ex-4am-tahlil-ibara-l4-002:q5': R(div(co('x^2/9+x/3+1/4-(25x^2/9-5x/2+9/16)', 2), 2)),
+  'ex-4am-tahlil-ibara-l4-002:q6': R(div(co('x^2/9+x/3+1/4-(25x^2/9-5x/2+9/16)', 0), '5/4')),
+  'ex-4am-tahlil-ibara-l4-003:q1': R(div(-2, r2('(2-x)^2-4x^2', 1))),
+  'ex-4am-tahlil-ibara-l4-003:q2': R(neg(r2('(2-x)^2-4x^2', 0))),
+  'ex-4am-tahlil-ibara-l4-003:q3': R(neg(r2('(2x+3)^2-(x+1)^2', 0))),
+  'ex-4am-tahlil-ibara-l4-003:q4': R(neg(mul(3, r2('(2x+3)^2-(x+1)^2', 1)))),
+  'ex-4am-tahlil-ibara-l4-003:q5': R(co('(2-x)^2-4x^2+(2x+3)^2-(x+1)^2', 1)),
+  'ex-4am-tahlil-ibara-l4-003:q6': R(div(co('(2-x)^2-4x^2+(2x+3)^2-(x+1)^2', 0), co('(2-x)^2-4x^2+(2x+3)^2-(x+1)^2', 1))),
+  'ex-4am-tahlil-ibara-l4-004:q1': R(rc('(2-√)^2', 3)),
+  'ex-4am-tahlil-ibara-l4-004:q2': R(ic('(2-√)^2', 3)),
+  'ex-4am-tahlil-ibara-l4-004:q3': R(ic(`${co('√^2', 7)}-(7-4√)`, 3)),
+  'ex-4am-tahlil-ibara-l4-004:q4': R(sqrtForm(neg(rc('x^2-(7-4√)', 3)), neg(ic('x^2-(7-4√)', 3)), 3)[0]),
+  'ex-4am-tahlil-ibara-l4-004:q5': R(sqrtForm(neg(rc('x^2-(7-4√)', 3)), neg(ic('x^2-(7-4√)', 3)), 3)[1]),
+  'ex-4am-tahlil-ibara-l4-004:q6': R(sdRoots('x-2+√', 'x+2-√', 3)[0][0]),
+  'ex-4am-tahlil-ibara-l4-004:q7': R(sdRoots('x-2+√', 'x+2-√', 3)[0][1]),
+  'ex-4am-tahlil-ibara-l4-004:q8': R(sdRoots('x-2+√', 'x+2-√', 3)[1][0]),
+  'ex-4am-tahlil-ibara-l4-004:q9': R(sdRoots('x-2+√', 'x+2-√', 3)[1][1]),
+  'ex-4am-tahlil-ibara-l4-005:q1': R(E('(4x-1)^2-(3x+2)(4x-1)').coef(2)),
+  'ex-4am-tahlil-ibara-l4-005:q2': R(E('(4x-1)^2-(3x+2)(4x-1)').coef(1)),
+  'ex-4am-tahlil-ibara-l4-005:q3': R(E('(4x-1)^2-(3x+2)(4x-1)').coef(0)),
+  'ex-4am-tahlil-ibara-l4-005:q4': R(qc('(4x-1)^2-(3x+2)(4x-1)', '4x-1', 1)),
+  'ex-4am-tahlil-ibara-l4-005:q5': R(qc('(4x-1)^2-(3x+2)(4x-1)', '4x-1', 0)),
+  'ex-4am-tahlil-ibara-l4-005:q6': R(root('4x-1')),
+  'ex-4am-tahlil-ibara-l4-005:q7': R(root('x-3')),
+  'ex-4am-tahlil-ibara-l4-005:q8': R(root('(4x^2-13x+3)-(4x^2+29)')),
+  'ex-4am-tahlil-ibara-l4-006:q1': R(approxDown(-5, 3, 2, 2)),
+  'ex-4am-tahlil-ibara-l4-006:q2': R(root('3x-5')),
+  'ex-4am-tahlil-ibara-l4-006:q3': R(E('(3x-5)^2+9x^2-25').coef(2)),
+  'ex-4am-tahlil-ibara-l4-006:q4': R(E('(3x-5)^2+9x^2-25').coef(1)),
+  'ex-4am-tahlil-ibara-l4-006:q5': R(qc('(3x-5)^2+9x^2-25', 'x(3x-5)', 0)),
+  'ex-4am-tahlil-ibara-l4-006:q6': R(root('6x')),
+  'ex-4am-tahlil-ibara-l4-006:q7': R(root('3x-5')),
+  'ex-4am-tahlil-ibara-l4-007:q2': R(qc('(2x+1)(3x-7)-(20x^2-5)', '2x+1', 1)),
+  'ex-4am-tahlil-ibara-l4-007:q3': R(qc('(2x+1)(3x-7)-(20x^2-5)', '2x+1', 0)),
+  'ex-4am-tahlil-ibara-l4-007:q4': R(root('(-14x^2-11x-2)-2(10-7x^2)')),
+  'ex-4am-tahlil-ibara-l4-008:q2': R(qc('3x^2-11x-4+(3x+1)^2', '3x+1', 1)),
+  'ex-4am-tahlil-ibara-l4-008:q3': R(qc('3x^2-11x-4+(3x+1)^2', '3x+1', 0)),
+  'ex-4am-tahlil-ibara-l4-008:q4': R(root('(3x+1)(x-4)-(3x^2+7)')),
+  'ex-4am-tahlil-ibara-l4-009:q1': R(approxDown(-3, 2, 3, 2)),
+  'ex-4am-tahlil-ibara-l4-009:q2': R(root('2x-3')),
+  'ex-4am-tahlil-ibara-l4-009:q3': R(E('(2x-3)^2+4x^2-9').coef(2)),
+  'ex-4am-tahlil-ibara-l4-009:q4': R(E('(2x-3)^2+4x^2-9').coef(1)),
+  'ex-4am-tahlil-ibara-l4-009:q5': R(qc('(2x-3)^2+4x^2-9', 'x(2x-3)', 0)),
+  'ex-4am-tahlil-ibara-l4-009:q6': R(root('4x')),
+  'ex-4am-tahlil-ibara-l4-009:q7': R(root('2x-3')),
+  'ex-4am-tahlil-ibara-l4-010:q2': R(qc('(x-2)(5x+1)-(3x^2-12)', 'x-2', 1)),
+  'ex-4am-tahlil-ibara-l4-010:q3': R(qc('(x-2)(5x+1)-(3x^2-12)', 'x-2', 0)),
+  'ex-4am-tahlil-ibara-l4-010:q4': R(root('(5x^2-9x+2)-5(x^2-1)')),
+  'ex-4am-tahlil-ibara-l5-001:q1': R(E('(x+7)^2-9').coef(2)),
+  'ex-4am-tahlil-ibara-l5-001:q2': R(E('(x+7)^2-9').coef(1)),
+  'ex-4am-tahlil-ibara-l5-001:q3': R(E('(x+7)^2-9').coef(0)),
+  'ex-4am-tahlil-ibara-l5-001:q4': R(neg(r2('(x+7)^2-9', 1))),
+  'ex-4am-tahlil-ibara-l5-001:q5': R(neg(r2('(x+7)^2-9', 0))),
+  'ex-4am-tahlil-ibara-l5-001:q6': R(at('(x+7)^2-9', '23')),
+  'ex-4am-tahlil-ibara-l5-001:q7': R(q(at('(x+7)^2-9', '23')).div('13.5').mul(100)),
+  'ex-4am-tahlil-ibara-l5-002:q1': R(qc('(2x+1)^2+5(2x+1)', '2x+1', 1)),
+  'ex-4am-tahlil-ibara-l5-002:q2': R(qc('(2x+1)^2+5(2x+1)', '2x+1', 0)),
+  'ex-4am-tahlil-ibara-l5-002:q3': R(qc('(2x+1)^2+5(2x+1)', '2x+1', 1)),
+  'ex-4am-tahlil-ibara-l5-002:q4': R(qc('(2x+1)^2+5(2x+1)', `${qc('(2x+1)^2+5(2x+1)', '2x+1', 1)}(2x+1)`, 0)),
+  'ex-4am-tahlil-ibara-l5-002:q5': R(at('(2x+1)^2+5(2x+1)', '4')),
+  'ex-4am-tahlil-ibara-l5-002:q6': R(q(at('(2x+1)^2+5(2x+1)', '4')).mul(1250 + 450)),
+  'ex-4am-tahlil-ibara-l5-003:q1': R(qc('(x+3)(x+4)+(x+3)(x+1)', 'x+3', 1)),
+  'ex-4am-tahlil-ibara-l5-003:q2': R(qc('(x+3)(x+4)+(x+3)(x+1)', 'x+3', 0)),
+  'ex-4am-tahlil-ibara-l5-003:q3': R(at('(x+3)(x+4)+(x+3)(x+1)', '12')),
+  'ex-4am-tahlil-ibara-l5-003:q4': R(q(at('(x+3)(x+4)+(x+3)(x+1)', '12')).mul(q(60).mul(450).sub(6000))),
+  'ex-4am-tahlil-ibara-l5-004:q1': R(neg(r2('(x+5)^2-1', 1))),
+  'ex-4am-tahlil-ibara-l5-004:q2': R(neg(r2('(x+5)^2-1', 0))),
+  'ex-4am-tahlil-ibara-l5-004:q3': R(qc('2((x+5)^2-1)', '(x+4)(x+6)', 0)),
+  'ex-4am-tahlil-ibara-l5-004:q4': R(at('2((x+5)^2-1)', '3')),
+  'ex-4am-tahlil-ibara-l5-004:q5': R(q(at('2((x+5)^2-1)', '3')).div(9)),
+  'ex-4am-tahlil-ibara-l5-005:q1': R(co('(x+40)^2-x^2', 1)),
+  'ex-4am-tahlil-ibara-l5-005:q2': R(div(co('(x+40)^2-x^2', 0), co('(x+40)^2-x^2', 1))),
+  'ex-4am-tahlil-ibara-l5-005:q3': R(at('(x+40)^2-x^2', '160')),
+  'ex-4am-tahlil-ibara-l5-005:q4': R(q(at('(x+40)^2-x^2', '160')).div(10000).mul(9000)),
+  'ex-4am-tahlil-ibara-l5-006:q1': R(sq('(x+6)(x+2)-4(x+2)')[1]),
+  'ex-4am-tahlil-ibara-l5-006:q2': R(q(at('(x+6)(x+2)-4(x+2)', '8')).div(4).mul(2).div(5).mul(2400)),
+  'ex-4am-tahlil-ibara-l5-007:q1': R(qc('4x^2-49', '2x+7', 1)),
+  'ex-4am-tahlil-ibara-l5-007:q2': R(qc('4x^2-49', '2x+7', 0)),
+  'ex-4am-tahlil-ibara-l5-007:q3': R(q(2).mul(q(at('2x+7', '12')).add(qat('4x^2-49', '2x+7', '12')))),
+  'ex-4am-tahlil-ibara-l5-007:q4': R(q(2).mul(q(at('2x+7', '12')).add(qat('4x^2-49', '2x+7', '12'))).sub(3).mul(1800)),
+  'ex-4am-tahlil-ibara-l5-008:q1': R(qc('6x+9', '2x+3', 0)),
+  'ex-4am-tahlil-ibara-l5-008:q2': R(qc('4x+6', '2x+3', 0)),
+  'ex-4am-tahlil-ibara-l5-008:q3': R(G(Number(at('6x+9', '60')), Number(at('4x+6', '60')))),
+  'ex-4am-tahlil-ibara-l5-008:q4': R(q(at('6x+9', '60')).mul(1100).add(q(at('4x+6', '60')).mul(650))),
+  'ex-4am-tahlil-ibara-l5-009:q1': R(sq('x^2+16x+64')[1]),
+  'ex-4am-tahlil-ibara-l5-009:q2': R(q(sq('x^2+16x+64')[0]).mul(22).add(sq('x^2+16x+64')[1])),
+  'ex-4am-tahlil-ibara-l5-009:q3': R(q(at('x^2+16x+64', '22')).div(4).mul(15)),
+  'ex-4am-tahlil-ibara-l5-010:q1': R(isq(neg(co('x^2-16', 0)))),
+  'ex-4am-tahlil-ibara-l5-010:q2': R(at('x^2-16', '100')),
+  'ex-4am-tahlil-ibara-l5-010:q3': R(q(at('x^2-16', '100')).mul(1500).sub(q(at('x-4', '100')).mul(250))),
 };

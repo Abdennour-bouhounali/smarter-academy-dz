@@ -3,106 +3,166 @@
   "lessonCode": "tarrid-mushkila",
   "level": 3,
   "metadata": {
-    "title": "تدريب — مثلث ومربع لهما المحيط نفسه",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2021 — باركيه غرفة",
+    "estimatedMinutes": 10,
     "tags": [
       "ترييض",
-      "محيط"
+      "متراجحة",
+      "مساحة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_tarrid-mushkila_P1",
-      "modelledOn": "now-49-2"
+      "modelledOn": "BEM 2021 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2021",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "مثلث متقايس الأضلاع طول ضلعه $x + 2$ ، ومربع طول ضلعه $x$ (بالسنتيمتر)، ولهما المحيط نفسه."
+    "content": "يريد سمير تغطية أرضية غرفة مستطيلة الشكل بُعداها 4,5m و 3,2m بالباركيه.\n• تُباع ألواح الباركيه في علب، كل علبة تكفي لتغطية $1{,}5m^2$ .\n• أجرة العامل 450DA للمتر المربع الواحد.\n• خصّص سمير مبلغ 30000DA لهذه الأشغال."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ معادلة تترجم النص؟",
+      "step": "01",
+      "statement": "احسب مساحة أرضية الغرفة.",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x + 2 = x$",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$3x + 2 = 4x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
-        },
-        {
-          "id": "C",
-          "content": "$3(x + 2) = 4x$",
-          "isCorrect": true
-        }
-      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المساحة بـ m² (عدد عشري)",
+      "expectedAnswer": "72/5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "محيط المثلث بدلالة $x$ ؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "محيط المثلث $3(x + 2)$ ومحيط المربع $4x$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المحيطان متساويان."
+          "content": "مساحة المستطيل = الطول × العرض."
         }
       ],
       "feedback": {
-        "correct": "$3(x + 2) = 4x$ .",
-        "incorrect": "نضرب الضلع كله $(x + 2)$ في 3."
-      }
+        "correct": "المساحة $14{,}4m^2$ .",
+        "incorrect": "اضرب البعدين."
+      },
+      "solution": {
+        "lines": [
+          "$4{,}5 \\times 3{,}2 = 14{,}4$",
+          "مساحة الأرضية $14{,}4m^2$ ."
+        ],
+        "result": "14{,}4\\,m^2"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "ما طول ضلع المربع (بالسنتيمتر)؟",
+      "step": "02",
+      "statement": "ما هو عدد علب الباركيه التي يجب على سمير شراؤها؟",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "6",
+      "answerFormat": "عدد طبيعي: عدد العلب",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "value": "48/5",
+          "id": "MISC-TARRID-TAHAQQUQ"
+        },
+        {
+          "value": "9",
+          "id": "MISC-TARRID-TAHAQQUQ"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر: $3x + 6 = 4x$ ."
+          "content": "اقسم المساحة على ما تغطيه العلبة الواحدة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اطرح $3x$ من الطرفين."
+          "content": "هل يكفي عدد العلب الذي يسبق ناتج القسمة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$14{,}4 \\div 1{,}5 = 9{,}6$ : 9 علب لا تكفي، فيجب شراء 10 علب.",
+        "incorrect": "عدد العلب عدد طبيعي، ويجب أن يغطي الأرضية كلها."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{14{,}4}{1{,}5} = 9{,}6$",
+          "9 علب لا تكفي لتغطية الأرضية كلها، إذن يجب شراء 10 علب."
+        ],
+        "result": "10"
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "☜ أعطِ أكبر ثمن ممكن لعلبة الباركيه حتى لا تتجاوز تكلفة الأشغال المبلغ المخصّص لها.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد: الثمن بـ DA",
+      "expectedAnswer": "2352",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ $x$ ثمن العلبة الواحدة، واحسب أجرة العامل للأرضية كلها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تكلفة الأشغال = ثمن العلب + أجرة العامل: اكتب أنها لا تتجاوز المبلغ المخصّص."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "تحقّق: المحيطان 24."
+          "content": "حلّ المتراجحة المحصل عليها."
         }
       ],
       "feedback": {
-        "correct": "$x = 6$ : المحيطان $3 \\times 8 = 24$ و $4 \\times 6 = 24$ .",
-        "incorrect": "انشر $3(x + 2)$ أولًا."
-      }
+        "correct": "$10x + 6480 \\leqslant 30000$ تعطي $x \\leqslant 2352$ : أكبر ثمن 2352DA .",
+        "incorrect": "التكلفة تضمّ ثمن العلب كلها وأجرة العامل عن كل متر مربع."
+      },
+      "solution": {
+        "lines": [
+          "أجرة العامل: $14{,}4 \\times 450 = 6480$ DA .",
+          "نسمّي $x$ ثمن العلبة الواحدة: تكلفة الأشغال $10x + 6480$ .",
+          "$10x + 6480 \\leqslant 30000$",
+          "$10x \\leqslant 23520$",
+          "$x \\leqslant 2352$",
+          "إذن أكبر ثمن ممكن لعلبة الباركيه هو 2352DA ."
+        ],
+        "result": "x \\leqslant 2352\\,DA"
+      },
+      "work": "optional",
+      "timeSeconds": 420
     }
   ]
 }

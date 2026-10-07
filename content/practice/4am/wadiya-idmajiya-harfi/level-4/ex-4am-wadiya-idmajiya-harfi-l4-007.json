@@ -1,123 +1,209 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l4-007",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 4,
   "metadata": {
-    "title": "تدريب — فرق مساحتي مربعين",
-    "estimatedMinutes": 3,
+    "title": "فرق مساحتي مربعين",
+    "estimatedMinutes": 8,
     "tags": [
-      "متطابقات",
-      "معادلة"
+      "مربع مجموع",
+      "نمذجة",
+      "حساب ذهني"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-harfi_P1",
-      "modelledOn": "ex-37"
+      "modelledOn": "ex-37",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-harfi-l4-007"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "مربّعان: طول ضلع الأول $x + 3$ وطول ضلع الثاني $x$ (بالسنتيمتر)، حيث $x$ عدد موجب."
+    "content": "مربّعان: طول ضلع الأول $(x + 3)$ cm وطول ضلع الثاني $x$ cm ، حيث $x$ عدد موجب."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "فرق مساحتي المربعين بدلالة $x$ هو ...",
+      "step": "01",
+      "lead": "عبّر بدلالة $x$ عن الفرق $D$ بين مساحتي المربعين، ثم بسّطه.",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $D$ على الشكل $mx + n$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$9$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+          "value": "0",
+          "id": "MISC-MURABBA-MAJMU-BILA-2AB"
         },
         {
-          "id": "B",
-          "content": "$6x + 9$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$3x + 9$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
-        },
-        {
-          "id": "D",
-          "content": "$2x^2 + 6x + 9$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+          "value": "3",
+          "id": "MISC-MUTATABIQA-2AB-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الفرق $(x + 3)^2 - x^2$."
+          "content": "$D = (x + 3)^2 - x^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انشر بمربع مجموع."
+          "content": "انشر $(x + 3)^2$ بمتطابقة شهيرة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "يُحذف $x^2$."
+          "content": "اطرح $x^2$ ثم بسّط."
         }
       ],
       "feedback": {
-        "correct": "$x^2 + 6x + 9 - x^2 = 6x + 9$.",
-        "incorrect": "لا تنس الحد المضاعف $6x$."
+        "correct": "$D = 6x + 9$ إذن $m = 6$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
       },
-      "cognitiveDemand": "reason"
+      "solution": {
+        "lines": [
+          "$D = (x + 3)^2 - x^2 = x^2 + 6x + 9 - x^2$"
+        ],
+        "result": "D = 6x + 9"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "من أجل أيّ قيمة لـ $x$ يكون الفرق $27\\,cm^2$ ؟",
+      "step": "01",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $D$ على الشكل $mx + n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $n$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$D = 6x + 9$ إذن $n = 9$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$D = 6x + 9$"
+        ],
+        "result": "n = 9"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "جد قيمة $x$ التي يكون من أجلها هذا الفرق $27\\,cm^2$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P3",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح",
+      "answerFormat": "عدد طبيعي: الطول بـ cm",
       "expectedAnswer": "3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب المساواة بالعبارة المبسّطة."
+          "content": "اكتب المعادلة $6x + 9 = 27$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "معادلة من الدرجة الأولى."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اطرح 9 ثم اقسم على 6."
+          "content": "اطرح 9 من الطرفين ثم اقسم."
         }
       ],
       "feedback": {
-        "correct": "$6x + 9 = 27$ يعني $6x = 18$ ، أي $x = 3$ ؛ ونتحقق: $36 - 9 = 27$.",
-        "incorrect": "العبارة المبسّطة تعطي معادلة من الدرجة الأولى."
+        "correct": "$x = 3\\,cm$ .",
+        "incorrect": "انقل الحدود التي تحتوي على المجهول إلى طرف والأعداد إلى الطرف الآخر، ثم اقسم على المعامل."
       },
-      "misconceptionSignatures": [
+      "solution": {
+        "lines": [
+          "$6x + 9 = 27$",
+          "$6x = 18$"
+        ],
+        "result": "x = 3\\,cm"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "استنتج دون استعمال الآلة الحاسبة قيمة العدد $103^2 - 100^2$ .",
+      "learningPoints": [
         {
-          "value": "6",
-          "id": "MISC-MURABBA-MAJMU-BILA-2AB"
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
         }
       ],
-      "cognitiveDemand": "reason"
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "609",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد المطلوب هو قيمة $D$ من أجل قيمة مناسبة لـ $x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل الشكل المبسّط لـ $D$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$103^2 - 100^2 = 609$ .",
+        "incorrect": "عوّض بالقيمة المعطاة في الشكل المناسب، واحسب بعناية مع احترام أولويات العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$103^2 - 100^2$ هو قيمة $D$ من أجل $x = 100$",
+          "$D = 6 \\times 100 + 9$"
+        ],
+        "result": "103^2 - 100^2 = 609"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l4-007",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 4
+  ]
 }

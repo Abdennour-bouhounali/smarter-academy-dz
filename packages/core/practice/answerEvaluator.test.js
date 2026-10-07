@@ -170,6 +170,15 @@ describe('contrat général', () => {
     expect(feedbackFor(q, evaluateAnswer({ value: '-8' }, q), registry)).toBe('Il reste à diviser.');
     expect(feedbackFor(q, evaluateAnswer({ value: '-5' }, q), registry)).toBe('Non.');
   });
+
+  it('une réponse illisible prend le message de l\'appelant, sinon le format attendu — jamais une phrase en dur', () => {
+    const q = { id: 'q', answerType: 'rational', expectedAnswer: '-2', feedback, answerFormat: 'اكتب عددًا.' };
+    const r = evaluateAnswer({ value: 'abc' }, q);
+    expect(r.outcome).toBe(OUTCOMES.SYNTAX_ERROR);
+    expect(feedbackFor(q, r, {}, { syntaxError: 'لم أتمكّن من قراءة إجابتك.' })).toBe('لم أتمكّن من قراءة إجابتك.');
+    expect(feedbackFor(q, r)).toBe('اكتب عددًا.');
+    expect(feedbackFor({ ...q, answerFormat: undefined }, r)).toBe('');
+  });
 });
 
 describe('integerSet — ensembles de diviseurs (4AM)', () => {

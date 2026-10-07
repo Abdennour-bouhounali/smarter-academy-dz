@@ -1,80 +1,161 @@
 {
+  "id": "ex-4am-jidhr-tarbii-l4-003",
+  "lessonCode": "jidhr-tarbii",
+  "level": 4,
   "metadata": {
-    "title": "تدريب — أين الخطأ؟ جذر مربع عدد سالب",
-    "estimatedMinutes": 3,
+    "title": "أين الخطأ؟",
+    "estimatedMinutes": 6,
     "tags": [
-      "تحليل خطأ",
-      "إشارة"
+      "√(a²) = a",
+      "خطأ شائع"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_jidhr-tarbii_P3",
-      "modelledOn": "ex-8"
+      "modelledOn": "ex-8",
+      "adaptedFrom": "ex-4am-jidhr-tarbii-l4-003"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "كتب أمين: $\\sqrt{(-7)^2} = -7$، لأن «الجذر يلغي المربع»."
+    "content": "كتب أمين: $\\sqrt{(-7)^2} = -7$ لأن «الجذر يلغي المربع»."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أين الخطأ؟",
+      "step": "01",
+      "statement": "احسب $(-7)^2$ .",
       "learningPoints": [
         {
           "code": "4am_jidhr-tarbii_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "49",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "لا خطأ: الجذر يلغي المربع دائمًا",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-ISHARA"
-        },
-        {
-          "id": "B",
-          "content": "الخطأ في المربع: $(-7)^2 = -49$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "الخاصية $\\sqrt{a^2} = a$ تشترط $a$ موجبًا؛ والصحيح $\\sqrt{(-7)^2} = \\sqrt{49} = 7$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "الصحيح $\\sqrt{(-7)^2} = 49$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARBI-JIDHR"
+          "value": "-49",
+          "id": "MISC-JIDHR-MURABBA-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما إشارة الجذر التربيعي دائمًا؟"
+          "content": "جداء عددين سالبين عدد موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-7)^2 = (-7) \\times (-7) = 49$.",
+        "incorrect": "مربع عدد سالب عدد موجب."
+      },
+      "solution": {
+        "lines": [
+          "$(-7)^2 = (-7) \\times (-7)$"
+        ],
+        "result": "(-7)^2 = 49"
+      },
+      "timeSeconds": 45
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "هل ما كتبه أمين صحيح؟ برّر إجابتك.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "answerFormat": "اختر نعم أو لا، ثم قارن تبريرك بالحل النموذجي",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل نتيجة السؤال 01: $\\sqrt{(-7)^2} = \\sqrt{\\ldots}$"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $(-7)^2$ أولًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "راجع شرط الخاصية $\\sqrt{a^2} = a$."
+          "content": "الجذر التربيعي لعدد موجب عدد موجب."
         }
       ],
       "feedback": {
-        "correct": "$(-7)^2 = 49$ والجذر التربيعي للعدد 49 هو 7 الموجب.",
-        "incorrect": "الجذر التربيعي لا يكون سالبًا أبدًا: راجع شرط الخاصية."
-      }
+        "correct": "$\\sqrt{(-7)^2} = \\sqrt{49} = 7$ وليس $-7$: الخاصية $\\sqrt{a^2} = a$ تُطبَّق إذا كان $a$ موجبا.",
+        "incorrect": "الجذر التربيعي عدد موجب: احسب $\\sqrt{49}$."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{(-7)^2} = \\sqrt{49} = 7$",
+          "الخاصية $\\sqrt{a^2} = a$ صحيحة إذا كان $a$ موجبا فقط، و $-7$ سالب."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "اكتب العدد $\\sqrt{(-7)^2} + \\sqrt{7^2}$ دون استعمال الرمز $\\sqrt{\\;}$.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "14",
+      "misconceptionSignatures": [
+        {
+          "value": "0",
+          "id": "MISC-JIDHR-MURABBA-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل من الجذرين عدد موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{(-7)^2} + \\sqrt{7^2} = 7 + 7 = 14$.",
+        "incorrect": "لا تكتب $\\sqrt{(-7)^2} = -7$: الجذر التربيعي موجب."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{(-7)^2} + \\sqrt{7^2} = 7 + 7$"
+        ],
+        "result": "14"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-jidhr-tarbii-l4-003",
-  "lessonCode": "jidhr-tarbii",
-  "level": 4
+  ]
 }

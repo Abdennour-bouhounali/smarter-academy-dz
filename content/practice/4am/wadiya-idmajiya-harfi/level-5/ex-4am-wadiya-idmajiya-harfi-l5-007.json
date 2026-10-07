@@ -1,227 +1,351 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l5-007",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — عبارة M بثلاثة أشكال",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2008 — المخيّم الصيفي",
+    "estimatedMinutes": 16,
     "tags": [
-      "نشر",
+      "نمذجة",
+      "متطابقات شهيرة",
       "تحليل",
-      "اختيار الشكل"
+      "وضعية إدماجية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-harfi_P3",
-      "modelledOn": "ex-40"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
+      "modelledOn": "BEM 2008 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2008",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "نعتبر العبارة $M = (2x + 1)^2 - (x + 2)^2$ ."
+    "content": "تُهيّئ مديرية الشباب بولاية تيبازة مخيّمًا صيفيًا على قطعة أرض مستطيلة الشكل $ABCD$ حيث $AB = (x + 30)$ m و $AD = x$ m ، مع $x$ عدد موجب. $M$ نقطة من $[AB]$ و $N$ نقطة من $[DC]$ حيث $AM = DN = x$ m : الجزء المربع $AMND$ مخصّص للخيام، والجزء المستطيل $MBCN$ للأنشطة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "النشر المبسّط للعبارة $M$ هو ...",
+      "step": "01",
+      "sub": "ا",
+      "lead": "عبّر بدلالة $x$ عن مساحة كل جزء.",
+      "statement": "مساحة الجزء $MBCN$ — العدد $m$ :",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "code": "4am_wadiya-idmajiya-harfi_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "تُكتب مساحة $MBCN$ على الشكل $mx$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$5x^2 + 8x + 5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
-        },
-        {
-          "id": "B",
-          "content": "$3x^2 - 3$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$3x^2 + 8x + 5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
-        },
-        {
-          "id": "D",
-          "content": "$x^2 - 3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+          "value": "60",
+          "id": "MISC-NAMDHAJA-MISAHA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر كل مربع مجموع."
+          "content": "$MB = AB - AM$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$(2x + 1)^2 = 4x^2 + 4x + 1$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اطرح القوس الثاني كله."
+          "content": "مساحة المستطيل = الطول × العرض."
         }
       ],
       "feedback": {
-        "correct": "$4x^2 + 4x + 1 - x^2 - 4x - 4 = 3x^2 - 3$.",
-        "incorrect": "اطرح كل حدود $(x + 2)^2$، و $(2x)^2 = 4x^2$."
+        "correct": "$30x$ إذن $m = 30$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
       },
-      "cognitiveDemand": "transfer"
+      "solution": {
+        "lines": [
+          "$MB = (x + 30) - x = 30$ و $BC = x$",
+          "مساحة $MBCN = 30 \\times x$"
+        ],
+        "result": "30x"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "تحليل العبارة $M$ هو ...",
+      "step": "01",
+      "sub": "ب",
+      "statement": "بيّن أنّ مساحة القطعة كلها هي: $S = x^2 + 30x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع مساحتي الجزأين، أو انشر $x(x + 30)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى الإشارات عند النشر."
+      },
+      "solution": {
+        "lines": [
+          "مساحة $AMND = x^2$",
+          "$S = x^2 + 30x$ (وهي أيضا $x(x + 30)$)"
+        ],
+        "result": "S = x^2 + 30x"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ا",
+      "statement": "تحقّق أنّ: $S - 1000 = (x + 15)^2 - 1225$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$(x + 3)(3x + 3)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
-        },
-        {
-          "id": "B",
-          "content": "$(x - 1)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
-        },
-        {
-          "id": "C",
-          "content": "$(x - 1)(3x + 3)$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$(3x - 1)(x + 3)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "فرق مربعين: $a = 2x + 1$ و $b = x + 2$."
+          "content": "انشر $(x + 15)^2$ بمتطابقة شهيرة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$a - b = 2x + 1 - x - 2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$a + b = 2x + 1 + x + 2$."
+          "content": "اطرح 1225 وقارن."
         }
       ],
       "feedback": {
-        "correct": "$\\big((2x + 1) - (x + 2)\\big)\\big((2x + 1) + (x + 2)\\big) = (x - 1)(3x + 3)$.",
-        "incorrect": "القوس المطروح تتغيّر إشارة كل حدوده."
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى الإشارات عند النشر."
       },
-      "cognitiveDemand": "transfer"
-    },
-    {
-      "id": "q3",
-      "statement": "احسب $M$ من أجل $x = 1$.",
-      "learningPoints": [
-        {
-          "code": "4am_wadiya-idmajiya-harfi_P3",
-          "role": "primary"
-        }
-      ],
-      "answerType": "rational",
-      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
-      "expectedAnswer": "0",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "أيّ شكل يجعل الحساب فوريًا؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "ما قيمة $x - 1$ ؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "جداء أحد عامليه معدوم."
-        }
-      ],
-      "feedback": {
-        "correct": "بالشكل المحلّل: $0 \\times 6 = 0$.",
-        "incorrect": "الشكل المحلّل أنسب: أحد عامليه معدوم."
+      "solution": {
+        "lines": [
+          "$(x + 15)^2 - 1225 = x^2 + 30x + 225 - 1225$",
+          "$= x^2 + 30x - 1000 = S - 1000$"
+        ],
+        "result": "S - 1000 = (x + 15)^2 - 1225"
       },
-      "misconceptionSignatures": [
-        {
-          "value": "6",
-          "id": "MISC-SHAKL-GHAYR-MUNASIB"
-        }
-      ],
-      "cognitiveDemand": "transfer"
+      "timeSeconds": 150
     },
     {
       "id": "q4",
-      "statement": "احسب $M$ من أجل $x = 0$.",
+      "step": "02",
+      "sub": "ب",
+      "statement": "حلّل العبارة $S - 1000$ إلى جداء عاملين من الدرجة الأولى — العدد $m$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S - 1000$ على الشكل $(x + m)(x + n)$ حيث $m < n$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "-20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب 1225 على شكل مربع عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل $a^2 - b^2 = (a - b)(a + b)$ مع $a = x + 15$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط ما بداخل كل قوس."
+        }
+      ],
+      "feedback": {
+        "correct": "$S - 1000 = (x - 20)(x + 50)$ إذن $m = -20$ .",
+        "incorrect": "تحقّق من تحليلك بنشر الجداء: يجب أن تجد العبارة الأصلية."
+      },
+      "solution": {
+        "lines": [
+          "$S - 1000 = (x + 15)^2 - 35^2$",
+          "$= (x + 15 - 35)(x + 15 + 35)$"
+        ],
+        "result": "S - 1000 = (x - 20)(x + 50)"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q5",
+      "step": "02",
+      "sub": "ب",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S - 1000$ على الشكل $(x + m)(x + n)$ حيث $m < n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "50",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $n$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$S - 1000 = (x - 20)(x + 50)$ إذن $n = 50$ .",
+        "incorrect": "تحقّق من تحليلك بنشر الجداء: يجب أن تجد العبارة الأصلية."
+      },
+      "solution": {
+        "lines": [
+          "$S - 1000 = (x - 20)(x + 50)$"
+        ],
+        "result": "n = 50"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q6",
+      "step": "03",
+      "statement": "مساحة القطعة كلها $1000\\,m^2$ . جد قيمة $x$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P3",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
-      "expectedAnswer": "-3",
+      "answerFormat": "عدد طبيعي: الطول بـ m",
+      "expectedAnswer": "20",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "أيّ شكل أنسب من أجل $x = 0$ ؟"
+          "content": "$S = 1000$ يعني $S - 1000 = 0$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في الشكل المنشور يبقى الحد الثابت."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "انتبه إلى الإشارة."
+          "content": "استعمل التحليل السابق، و $x$ موجب."
         }
       ],
       "feedback": {
-        "correct": "بالشكل المنشور يبقى الحد الثابت: $M = -3$ (و $1 - 4 = -3$).",
-        "incorrect": "من أجل $x = 0$ يكفي الحد الثابت من النشر."
+        "correct": "$x = 20\\,m$ .",
+        "incorrect": "اكتب المعادلة على شكل جداء معدوم، واحتفظ بالحلّ الموجب فقط."
       },
-      "misconceptionSignatures": [
+      "solution": {
+        "lines": [
+          "$S = 1000$ يعني $(x - 20)(x + 50) = 0$",
+          "$x = 20$ أو $x = -50$ ، و $x$ موجب"
+        ],
+        "result": "x = 20\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q7",
+      "step": "04",
+      "sub": "ا",
+      "lead": "تحتاج الخيمة الواحدة إلى $16\\,m^2$ .",
+      "statement": "ما أكبر عدد من الخيام يمكن نصبه في الجزء $AMND$ ؟",
+      "learningPoints": [
         {
-          "value": "3",
-          "id": "MISC-NASHR-ISHARA-SALIBA"
-        },
-        {
-          "value": "5",
-          "id": "MISC-NASHR-QAWS-SALIB"
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
         }
       ],
-      "cognitiveDemand": "transfer"
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب مساحة الجزء $AMND$ من أجل القيمة التي وجدتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم على مساحة الخيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$25$ .",
+        "incorrect": "أعد قراءة المعطيات، واحسب كل كمية على حدة ثم اجمع."
+      },
+      "solution": {
+        "lines": [
+          "مساحة $AMND = 20^2 = 400\\,m^2$",
+          "$400 \\div 16$"
+        ],
+        "result": "25"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q8",
+      "step": "04",
+      "sub": "ب",
+      "statement": "☜ ثمن المبيت في الخيمة الواحدة 1200DA لليلة. ما المدخول اليومي للمخيّم لمّا تكون كل الخيام مشغولة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بـ DA",
+      "expectedAnswer": "30000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب عدد الخيام في ثمن المبيت."
+        }
+      ],
+      "feedback": {
+        "correct": "$30000DA$ .",
+        "incorrect": "أعد قراءة المعطيات، واحسب كل كمية على حدة ثم اجمع."
+      },
+      "solution": {
+        "lines": [
+          "المدخول $= 25 \\times 1200$"
+        ],
+        "result": "30000DA"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l5-007",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 5
+  ]
 }

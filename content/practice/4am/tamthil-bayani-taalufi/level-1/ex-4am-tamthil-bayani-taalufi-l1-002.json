@@ -3,8 +3,8 @@
   "lessonCode": "tamthil-bayani-taalufi",
   "level": 1,
   "metadata": {
-    "title": "نشاط 3 (ص 78) — النقطة (0 ; 1)",
-    "estimatedMinutes": 3,
+    "title": "نشاط 3 — النقطة $(0 ; 1)$",
+    "estimatedMinutes": 4,
     "tags": [
       "نشاط 3",
       "الترتيب عند المبدأ"
@@ -14,16 +14,24 @@
       "elementId": "act-3",
       "page": 78,
       "section": "أنشطة",
-      "number": 3
+      "number": 3,
+      "adaptedFrom": "ex-4am-tamthil-bayani-taalufi-l1-002"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 78): $f(x) = \\dfrac{3}{2}x + 1$ و $(d')$ تمثيلها البياني."
+    "content": "نعتبر الدالة التآلفية $f$ حيث: $f(x) = \\dfrac{3}{2}x + 1$ ، و $(d')$ تمثيلها البياني في معلم متعامد ومتجانس."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "النقطة التي تنتمي إلى $(d')$ :",
+      "step": "01",
+      "statement": "عيّن إحداثيي نقطة تقاطع $(d')$ مع محور التراتيب.",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-taalufi_P1",
@@ -31,82 +39,98 @@
         }
       ],
       "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "point",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : الفاصلة ثم الترتيب (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": {
+        "x": "0",
+        "y": "1"
+      },
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$(0 ; 1)$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$(1 ; 0)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
-        },
-        {
-          "id": "C",
-          "content": "O",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-TAALUFI-MABDA"
+          "value": {
+            "x": "1",
+            "y": "0"
+          },
+          "id": "MISC-BAYANI-FASILA-TARTIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العدد $0$ يعطي مباشرة نقطة المستقيم على محور التراتيب."
+          "content": "كل نقطة من محور التراتيب فاصلتها 0."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $f(0)$ ثم صورة عدد آخر تختاره."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "نقطتان تكفيان لرسم المستقيم؛ تحقّق أنّ كل نقطة ترتيبها صورة فاصلتها."
+          "content": "احسب صورة العدد 0 بالدالة $f$ ."
         }
       ],
       "feedback": {
-        "correct": "$f(0) = \\dfrac{3}{2} \\times 0 + 1 = 1$ : النقطة $(0 ; 1)$ تنتمي إلى $(d')$ .",
-        "incorrect": "احسب $f(0)$ : الفاصلة أولًا ثم الترتيب."
-      }
+        "correct": "$f(0) = 1$ : النقطة $(0 ; 1)$ .",
+        "incorrect": "نقطة محور التراتيب فاصلتها 0، وترتيبها صورة 0: اكتب الفاصلة أولا ثم الترتيب."
+      },
+      "solution": {
+        "lines": [
+          "نقطة تقاطع $(d')$ مع محور التراتيب فاصلتها 0.",
+          "$f(0) = \\dfrac{3}{2} \\times 0 + 1 = 1$",
+          "إذن النقطة هي $(0 ; 1)$ ، و $1$ هو الترتيب عند المبدأ."
+        ],
+        "result": "(0 ; 1)"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "الترتيب عند المبدأ للدالة $f$ :",
+      "step": "02",
+      "statement": "هل النقطة $E(4 ; 7)$ تنتمي إلى $(d')$؟ برّر.",
       "learningPoints": [
         {
-          "code": "4am_tamthil-bayani-taalufi_P2",
+          "code": "4am_tamthil-bayani-taalufi_P1",
           "role": "primary"
         }
       ],
       "difficulty": 1,
-      "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
-      "expectedAnswer": "1",
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-NISYAN-B"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الترتيب عند المبدأ $b$ هو ترتيب النقطة التي يقطع فيها المستقيم محور التراتيب."
+          "content": "تنتمي النقطة إلى $(d')$ إذا كان ترتيبها يساوي صورة فاصلتها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هذه النقطة فاصلتها $0$ ، لأنّ $f(0) = b$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "إذا لم تكن مرسومة، انطلق من نقطة معلومة وارجع إلى الفاصلة $0$ بالدرجة $a$ ."
+          "content": "احسب صورة فاصلة النقطة بالدالة $f$ ، ثم قارنها بترتيبها."
         }
       ],
       "feedback": {
-        "correct": "المستقيم يقطع محور التراتيب في $(0 ; 1)$ : $b = 1$ .",
-        "incorrect": "اقرأ ترتيب نقطة التقاطع مع محور التراتيب، لا مع محور الفواصل."
-      }
+        "correct": "$f(4) = \\dfrac{3}{2} \\times 4 + 1 = 7$ ، وهو ترتيب النقطة.",
+        "incorrect": "احسب صورة الفاصلة بالدالة ثم قارنها بالترتيب."
+      },
+      "solution": {
+        "lines": [
+          "$f(4) = \\dfrac{3}{2} \\times 4 + 1 = 7$",
+          "$f(4) = 7$ ، إذن النقطة $E$ تنتمي إلى $(d')$ ."
+        ],
+        "result": "نعم"
+      },
+      "timeSeconds": 90
     }
   ]
 }

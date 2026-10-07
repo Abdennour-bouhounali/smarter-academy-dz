@@ -3,10 +3,11 @@
   "lessonCode": "mafhum-jumla",
   "level": 3,
   "metadata": {
-    "title": "تمرين 3 — 1) حلّان لمعادلة",
-    "estimatedMinutes": 3,
+    "title": "حلّان للمعادلة 4x + 2y = 5",
+    "estimatedMinutes": 6,
     "tags": [
-      "حلول معادلة"
+      "معادلة بمجهولين",
+      "ثنائية"
     ],
     "source": {
       "type": "textbook",
@@ -14,60 +15,156 @@
       "page": 60,
       "section": "أوظّف تعلّماتي",
       "number": 3
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 60): اذكر حلين مختلفين للمعادلة $4x + 2y = 5$ ."
+    "content": "نعتبر المعادلة ذات المجهولين $x$ و $y$ التالية:",
+    "formulas": [
+      "4x + 2y = 5"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ ثنائيتين حلّان مختلفان للمعادلة $4x + 2y = 5$ ؟",
+      "step": "01",
+      "statement": "جد العدد $y$ بحيث تكون الثنائية $(0 ; y)$ حلا لهذه المعادلة.",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $y$ : عدد صحيح أو كسر غير قابل للاختزال (يُقبل العدد العشري)",
+      "expectedAnswer": "5/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $0$ في المعادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تبقى المعادلة $2y = 5$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 \\times 0 + 2y = 5$ أي $y = \\dfrac{5}{2}$ .",
+        "incorrect": "عوّض $x$ بـ $0$ ثم اقسم الطرفين على معامل $y$ ."
+      },
+      "solution": {
+        "lines": [
+          "$4 \\times 0 + 2y = 5$",
+          "$2y = 5$"
+        ],
+        "result": "y = \\dfrac{5}{2}"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "جد العدد $x$ بحيث تكون الثنائية $\\left(x ; \\dfrac{1}{2}\\right)$ حلا لهذه المعادلة.",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $x$ فقط",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $y$ بـ $\\dfrac{1}{2}$ في المعادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تبقى معادلة مجهولها $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x + 2 \\times \\dfrac{1}{2} = 5$ أي $4x = 4$ .",
+        "incorrect": "عوّض $y$ بـ $\\dfrac{1}{2}$ ثم حلّ المعادلة التي مجهولها $x$ ."
+      },
+      "solution": {
+        "lines": [
+          "$4x + 2 \\times \\dfrac{1}{2} = 5$",
+          "$4x + 1 = 5$",
+          "$4x = 4$"
+        ],
+        "result": "x = 1"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "هل الثنائية $(1 ; 1)$ حل لهذه المعادلة؟",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$(0 ; 2{,}5)$ و $(1 ; 1)$",
+          "content": "نعم",
           "isCorrect": false
         },
         {
           "id": "B",
-          "content": "$(0 ; 2{,}5)$ و $(1 ; 0{,}5)$",
+          "content": "لا",
           "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$(1 ; 0{,}5)$ و $(2 ; 0)$",
-          "isCorrect": false
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض كل ثنائية في $4x + 2y$ ."
+          "content": "عوّض $x$ بـ $1$ و $y$ بـ $1$ في المعادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "من أجل $x = 0$ : $2y = 5$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "السطر الصحيح: الثنائيتان تعطيان 5 كلتاهما."
+          "content": "قارن قيمة الطرف الأول بالطرف الثاني."
         }
       ],
       "feedback": {
-        "correct": "$2 \\times 2{,}5 = 5$ و $4 + 2 \\times 0{,}5 = 5$ .",
-        "incorrect": "$(1 ; 1)$ تعطي 6 و $(2 ; 0)$ تعطي 8."
-      }
+        "correct": "$4 \\times 1 + 2 \\times 1 = 6 \\neq 5$ : الثنائية ليست حلا للمعادلة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض ثم قارن بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $1$ و $y$ بـ $1$ :",
+          "$4 \\times 1 + 2 \\times 1 = 6 \\neq 5$",
+          "ومنه الثنائية $(1 ; 1)$ ليست حلا للمعادلة."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

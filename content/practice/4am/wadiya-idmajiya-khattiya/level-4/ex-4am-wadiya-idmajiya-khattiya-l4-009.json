@@ -3,110 +3,196 @@
   "lessonCode": "wadiya-idmajiya-khattiya",
   "level": 4,
   "metadata": {
-    "title": "سرعة بالكيلومتر في الساعة",
-    "estimatedMinutes": 4,
+    "title": "رحلة مدرسية إلى المصعد الهوائي بقسنطينة",
+    "estimatedMinutes": 11,
     "tags": [
-      "سرعة",
-      "تحويل الوحدات"
+      "دالة خطية",
+      "نسبة مئوية",
+      "ميزانية"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-khattiya_P1",
-      "modelledOn": "know-4"
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "situation",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-khattiya-l4-010"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "تسير قمرة مصعد هوائي بسرعة $18\\,\\mathrm{km/h}$ على حبل طوله $1500\\,\\mathrm{m}$."
+    "content": "تنظّم متوسطة رحلة إلى المصعد الهوائي بقسنطينة لـ 30 تلميذا يرافقهم 3 أساتذة. يستفيد كل تلميذ من تخفيض 40% من سعر تذكرة البالغ $x$ (بـ DA)، ويدفع الأساتذة السعر كاملا. خصّصت المتوسطة 8400DA للتذاكر."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما سرعتها بـ $\\mathrm{m/s}$ ؟",
+      "step": "01",
+      "statement": "عبّر عن تكلفة التذاكر $C(x)$ بدلالة $x$ .",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
           "role": "primary"
         }
       ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "5",
+      "answerFormat": "اكتب المعامل $a$ فقط في $C(x) = ax$",
+      "expectedAnswer": "21",
+      "misconceptionSignatures": [
+        {
+          "value": "15",
+          "id": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "value": "33",
+          "id": "MISC-TARRID-NAMUDHAJ"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$1\\,\\mathrm{km} = 1000\\,\\mathrm{m}$ و $1\\,\\mathrm{h} = 3600\\,\\mathrm{s}$."
+          "content": "كل تلميذ يدفع $0{,}6x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\dfrac{18000}{3600}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حوّل البسط والمقام كلا على حدة."
+          "content": "اجمع ما يدفعه التلاميذ والأساتذة."
         }
       ],
       "feedback": {
-        "correct": "$18\\,\\mathrm{km/h} = \\dfrac{18000\\,\\mathrm{m}}{3600\\,\\mathrm{s}} = 5\\,\\mathrm{m/s}$.",
-        "incorrect": "الساعة 3600 ثانية لا 60."
+        "correct": "$C(x) = 30 \\times 0{,}6x + 3x = 21x$ .",
+        "incorrect": "التلميذ يدفع 60% من السعر، لا 40%."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2,
-      "misconceptionSignatures": [
-        {
-          "value": "300",
-          "id": "MISC-MAQADIR-WIHDA"
-        },
-        {
-          "value": "64.8",
-          "id": "MISC-MAQADIR-WIHDA"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "يدفع كل تلميذ $x - 0{,}4x = 0{,}6x$ .",
+          "$C(x) = 30 \\times 0{,}6x + 3x = 18x + 3x = 21x$"
+        ],
+        "result": "C(x) = 21x"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "ما مدة الصعود بالدقائق؟",
+      "step": "02",
+      "statement": "عيّن أكبر سعر لتذكرة البالغ يسمح بالرحلة في حدود المبلغ المخصص.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: السعر بـ DA",
+      "expectedAnswer": "400",
+      "misconceptionSignatures": [
+        {
+          "value": "176400",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "يجب ألّا تتجاوز التكلفة $C(x)$ المبلغ المخصص."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جد العدد الذي صورته المبلغ المخصص بالدالة $C$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\leq 8400 \\div 21 = 400$ : أكبر سعر 400DA.",
+        "incorrect": "أكبر سعر هو العدد الذي صورته المبلغ المخصص."
+      },
+      "solution": {
+        "lines": [
+          "$21x \\leq 8400$ معناه $x \\leq 400$",
+          "أكبر سعر لتذكرة البالغ 400DA."
+        ],
+        "result": "x = 400"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "إذا كان سعر تذكرة البالغ 350DA، احسب المبلغ المتبقي من المبلغ المخصص.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد بالدقائق",
-      "expectedAnswer": "5",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "1050",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المدة بالثواني = المسافة ÷ السرعة."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "استعمل السرعة بـ m/s."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حوّل الثواني إلى دقائق."
+          "content": "احسب $C(350)$ ثم اطرحه من 8400."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{1500}{5} = 300\\,\\mathrm{s} = 5$ دقائق.",
-        "incorrect": "احسب بالثواني ثم اقسم على 60."
+        "correct": "$8400 - 21 \\times 350 = 8400 - 7350 = 1050$ DA.",
+        "incorrect": "المتبقي = المبلغ المخصص − تكلفة التذاكر."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2,
-      "misconceptionSignatures": [
+      "solution": {
+        "lines": [
+          "$C(350) = 21 \\times 350 = 7350$",
+          "$8400 - 7350 = 1050$ ، يبقى 1050DA."
+        ],
+        "result": "1050DA"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "04",
+      "statement": "يُخصَّص المبلغ المتبقي لشراء قارورات ماء ثمن الواحدة 35DA. كم قارورة يمكن شراؤها؟",
+      "learningPoints": [
         {
-          "value": "300",
-          "id": "MISC-MAQADIR-WIHDA"
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
         }
-      ]
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد القارورات",
+      "expectedAnswer": "30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم المبلغ المتبقي على ثمن القارورة."
+        }
+      ],
+      "feedback": {
+        "correct": "$1050 \\div 35 = 30$ قارورة.",
+        "incorrect": "عدد القارورات = المبلغ المتبقي ÷ ثمن القارورة."
+      },
+      "solution": {
+        "lines": [
+          "$1050 \\div 35 = 30$",
+          "يمكن شراء 30 قارورة."
+        ],
+        "result": "30"
+      },
+      "timeSeconds": 60
     }
   ]
 }

@@ -3,109 +3,149 @@
   "lessonCode": "wadiya-idmajiya-taalufiya",
   "level": 2,
   "metadata": {
-    "title": "عدّاد سيارة الأجرة",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2023 — الدالة $f(x) = 5x - 4$",
+    "estimatedMinutes": 7,
     "tags": [
-      "تناسب التغيّرات",
-      "دالة تآلفية"
+      "صورة عدد",
+      "العدد الذي صورته معلومة",
+      "تمثيل بياني"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1",
+      "modelledOn": "BEM 2023 I-4"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2023",
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "عدّاد سيارة أجرة يعرض 340 DA بعد 4 km و 700 DA بعد 10 km، والثمن دالة تآلفية للمسافة $x$."
+    "content": "المستوي منسوب إلى معلم متعامد ومتجانس $(O , \\vec{i} , \\vec{j})$ .\nالمستقيم $(d)$ هو التمثيل البياني للدالة $f$ المعرفة بالعبارة: $f(x) = 5x - 4$"
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ثمن الكيلومتر الواحد $a$ :",
+      "step": "01",
+      "lead": "$A(x_A ; 6)$ ، $B(-2 ; y_B)$ نقطتان من $(d)$ ، احسب كلا من $x_A$ و $y_B$ .",
+      "statement": "$x_A$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد بالدينار",
-      "expectedAnswer": "60",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-SABIQ-QISMA",
+          "value": "6/5"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$\\dfrac{700 - 340}{10 - 4}$."
+          "content": "$x_A$ هو العدد الذي صورته 6 : حلّ $f(x) = 6$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\dfrac{360}{6}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تناسب التغيّرات."
+          "content": "أضف 4 ثم اقسم على 5."
         }
       ],
       "feedback": {
-        "correct": "$a = 60\\,\\mathrm{DA}$ للكيلومتر.",
-        "incorrect": "نقسم فرق الثمنين على فرق المسافتين."
+        "correct": "$5x - 4 = 6$ .",
+        "incorrect": "حلّ $5x - 4 = 6$ : انقل $-4$ قبل القسمة."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2,
-      "misconceptionSignatures": [
-        {
-          "value": "360",
-          "id": "MISC-TAGHAYYUR-BIDUN-QISMA"
-        },
-        {
-          "value": "85",
-          "id": "MISC-TAGHAYYUR-B-NISBA"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$A \\in (d)$ معناه $f(x_A) = 6$ : $5x_A - 4 = 6$ ، $5x_A = 10$ ، $x_A = 2$ .",
+          "$B \\in (d)$ معناه $y_B = f(-2) = 5 \\times (-2) - 4 = -14$ ."
+        ],
+        "result": "x_A = 2"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "المبلغ عند الركوب $b$ :",
+      "step": "01",
+      "statement": "$y_B$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد بالدينار",
-      "expectedAnswer": "100",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-14",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "-10"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$b = 340 - 4a$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$340 - 240$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$b = f(0)$."
+          "content": "$y_B$ هو صورة العدد $-2$ بالدالة $f$ ."
         }
       ],
       "feedback": {
-        "correct": "$b = 340 - 60 \\times 4 = 100\\,\\mathrm{DA}$.",
-        "incorrect": "نعوّض نقطة معلومة: $b = f(4) - 4a$."
+        "correct": "$y_B = 5 \\times (-2) - 4$ .",
+        "incorrect": "احسب $f(-2)$ وانتبه إلى الإشارات."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2,
-      "misconceptionSignatures": [
+      "solution": {
+        "lines": [
+          "$A \\in (d)$ معناه $f(x_A) = 6$ : $5x_A - 4 = 6$ ، $5x_A = 10$ ، $x_A = 2$ .",
+          "$B \\in (d)$ معناه $y_B = f(-2) = 5 \\times (-2) - 4 = -14$ ."
+        ],
+        "result": "y_B = -14"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "أنشئ التمثيل البياني للدالة $f$ .",
+      "learningPoints": [
         {
-          "value": "85",
-          "id": "MISC-TAGHAYYUR-B-NISBA"
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
         }
-      ]
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "يكفي تعليم نقطتين من $(d)$ ، مثلا $A$ و $B$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$(d)$ هو المستقيم $(AB)$ .",
+        "incorrect": "علّم النقطتين $A$ و $B$ اللتين حسبت إحداثيتيهما، ثم ارسم المستقيم المار بهما."
+      },
+      "solution": {
+        "lines": [
+          "$f$ دالة تآلفية: تمثيلها البياني مستقيم.",
+          "نعلّم النقطتين $A(2 ; 6)$ و $B(-2 ; -14)$ ، أو $(0 ; -4)$ و $(1 ; 1)$ ،",
+          "ثم نرسم المستقيم $(d)$ المار بهما (يقطع محور التراتيب في النقطة $(0 ; -4)$)."
+        ]
+      },
+      "timeSeconds": 240
     }
   ]
 }

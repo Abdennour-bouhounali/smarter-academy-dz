@@ -3,107 +3,294 @@
   "lessonCode": "tarrid-khatti",
   "level": 4,
   "metadata": {
-    "title": "تدريب — محيط ومساحة مربع",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2017 — حديقة مستطيلة: عشب وبلاط",
+    "estimatedMinutes": 12,
     "tags": [
-      "هندسة",
-      "دالة خطية"
+      "مسألة هندسية",
+      "نمذجة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_tarrid-khatti_P1",
-      "modelledOn": "act-4"
+      "modelledOn": "BEM 2017 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2017",
+      "heading": "التمرين",
+      "points": "04"
     }
   },
   "statement": {
-    "content": "مربع طول ضلعه $c$ (cm)."
+    "content": "حديقة مستطيلة الشكل $ABCD$ حيث $AB = 24m$ و $AD = 15m$ . $E$ نقطة من الضلع $[AB]$ حيث $AE = x$ (بالمتر) مع $0 \\leqslant x \\leqslant 24$ . يُزرع الجزء المثلث $ADE$ عشبا، ويُبلَّط الجزء الباقي $EBCD$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          15
+        ],
+        "B": [
+          24,
+          15
+        ],
+        "C": [
+          24,
+          0
+        ],
+        "D": [
+          0,
+          0
+        ],
+        "E": [
+          10,
+          15
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "E",
+          "label": "x"
+        },
+        [
+          "E",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        {
+          "from": "C",
+          "to": "D",
+          "label": "24m"
+        },
+        {
+          "from": "D",
+          "to": "A",
+          "label": "15m"
+        },
+        [
+          "D",
+          "E"
+        ]
+      ],
+      "polygons": [
+        {
+          "points": [
+            "A",
+            "D",
+            "E"
+          ],
+          "tone": "emerald"
+        }
+      ],
+      "rightAngles": [
+        [
+          "D",
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "B",
+          "C"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "D",
+          "A"
+        ]
+      ],
+      "labels": {
+        "A": "nw",
+        "B": "ne",
+        "C": "se",
+        "D": "sw",
+        "E": "n"
+      },
+      "ariaLabel": "مستطيل ABCD و E نقطة من الضلع [AB] حيث AE = x ، والمثلث ADE مظلّل"
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ مقدار دالة خطية لـ $c$ ؟",
+      "step": "01",
+      "statement": "احسب مساحة الحديقة.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المساحة بـ $m^2$",
+      "expectedAnswer": "360",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة المستطيل = الطول × العرض."
+        }
+      ],
+      "feedback": {
+        "correct": "$24 \\times 15 = 360$ $m^2$ .",
+        "incorrect": "اضرب الطول في العرض."
+      },
+      "solution": {
+        "lines": [
+          "$24 \\times 15 = 360$ ، مساحة الحديقة $360m^2$ ."
+        ],
+        "result": "360m^2"
+      },
+      "timeSeconds": 45
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "نسمّي $f(x)$ مساحة الجزء المعشوشب $ADE$ . عبّر عن $f(x)$ بدلالة $x$ .",
       "learningPoints": [
         {
           "code": "4am_tarrid-khatti_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "7,5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "المساحة $c^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
-        },
-        {
-          "id": "B",
-          "content": "المحيط $4c$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "المساحة والمحيط معًا",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+          "value": "15",
+          "id": "MISC-TARRID-NAMUDHAJ"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "هل هو من الشكل $ac$ ؟"
+          "content": "المثلث $ADE$ قائم في $A$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$c^2$ ليست كذلك."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المحيط $4c$ ."
+          "content": "مساحته = نصف جداء الضلعين القائمين."
         }
       ],
       "feedback": {
-        "correct": "المحيط $4c$ خطي؛ المساحة $c^2$ منحنى.",
-        "incorrect": "المساحة لا تتضاعف حين يتضاعف الضلع."
-      }
+        "correct": "$f(x) = \\dfrac{15x}{2} = 7{,}5x$ : دالة خطية.",
+        "incorrect": "استعمل الضلعين القائمين $AD$ و $AE$ ، ولا تنس القسمة على 2."
+      },
+      "solution": {
+        "lines": [
+          "المثلث $ADE$ قائم في $A$ : $f(x) = \\dfrac{AD \\times AE}{2} = \\dfrac{15x}{2} = 7{,}5x$"
+        ],
+        "result": "f(x) = 7{,}5x"
+      },
+      "timeSeconds": 90
     },
     {
-      "id": "q2",
-      "statement": "طول الضلع (cm) إذا كان المحيط 26cm:",
+      "id": "q3",
+      "step": "03",
+      "statement": "جد $x$ بحيث تكون مساحة الجزء المعشوشب ربع مساحة الحديقة.",
       "learningPoints": [
         {
-          "code": "4am_tarrid-khatti_P2",
+          "code": "4am_tarrid-khatti_P3",
           "role": "primary"
         }
       ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري (الفاصلة مقبولة)",
-      "expectedAnswer": "6.5",
+      "answerFormat": "عدد: الطول $x$ بالمتر",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "value": "675",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$4c = 26$ ."
+          "content": "ربع مساحة الحديقة: $\\dfrac{360}{4}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\dfrac{26}{4}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق."
+          "content": "حلّ المعادلة $f(x) = 90$ ."
         }
       ],
       "feedback": {
-        "correct": "$c = 6{,}5$ cm.",
-        "incorrect": "قسّم على 4."
-      }
+        "correct": "$7{,}5x = 90$ ، إذن $x = 12$ m.",
+        "incorrect": "احسب ربع المساحة ثم حلّ المعادلة."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{360}{4} = 90$",
+          "$7{,}5x = 90$ ، إذن $x = 12$ .",
+          "$E$ هي منتصف $[AB]$ ."
+        ],
+        "result": "x = 12"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "04",
+      "statement": "ثمن تبليط $1m^2$ هو 1200DA. احسب تكلفة تبليط الجزء $EBCD$ من أجل هذه القيمة لـ $x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: التكلفة بـ DA",
+      "expectedAnswer": "324000",
+      "misconceptionSignatures": [
+        {
+          "value": "108000",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة الجزء المبلّط = مساحة الحديقة − مساحة الجزء المعشوشب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكلفة متناسبة مع المساحة."
+        }
+      ],
+      "feedback": {
+        "correct": "$(360 - 90) \\times 1200 = 324\\,000$ DA.",
+        "incorrect": "احسب أولا مساحة الجزء المبلّط، ثم اضرب في ثمن المتر المربع."
+      },
+      "solution": {
+        "lines": [
+          "مساحة $EBCD$ : $360 - 90 = 270$ $m^2$",
+          "التكلفة: $270 \\times 1200 = 324\\,000$ DA."
+        ],
+        "result": "324\\,000DA"
+      },
+      "timeSeconds": 90
     }
   ]
 }

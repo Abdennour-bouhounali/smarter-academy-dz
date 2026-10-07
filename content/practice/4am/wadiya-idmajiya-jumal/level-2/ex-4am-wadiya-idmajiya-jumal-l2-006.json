@@ -4,119 +4,87 @@
   "level": 2,
   "metadata": {
     "title": "الحصّالة",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 7,
     "tags": [
-      "ترجمة",
-      "حل جملة"
+      "ترييض",
+      "قطع نقدية"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
       "modelledOn": "challenge"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "في حصّالة سليم 25 قطعة نقدية، بعضها من فئة 10 DA والباقي من فئة 20 DA، ومجموعها 380 DA. نسمّي $x$ عدد قطع 10 DA و $y$ عدد قطع 20 DA."
+    "content": "في حصّالة سليم 25 قطعة نقدية، بعضها من فئة 10DA والباقي من فئة 20DA، ومجموعها 380DA.\nنسمّي $x$ عدد قطع 10DA و $y$ عدد قطع 20DA."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الجملة التي تترجم النص هي:",
+      "step": "01",
+      "statement": "بيّن أن $x$ و $y$ يحققان الجملة: $\\begin{cases} x + y = 25 \\\\ x + 2y = 38 \\end{cases}$",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\begin{cases} x + y = 25 \\\\ 10x + 20y = 380 \\end{cases}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$\\begin{cases} x + y = 380 \\\\ 10x + 20y = 25 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "$\\begin{cases} x + y = 25 \\\\ 20x + 10y = 380 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "D",
-          "content": "$\\begin{cases} 10x + 20y = 25 \\\\ x + y = 380 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معلومة تعدّ القطع ومعلومة تجمع القيم."
+          "content": "سمِّ الكميتين المجهولتين، ثم ترجم كل معلومة من النص بمعادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "قطعة 10 DA قيمتها 10."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "كل عدد قطع يُضرب في قيمة القطعة."
+          "content": "بسّط كل معادلة بقسمة طرفيها على عدد مناسب."
         }
       ],
       "feedback": {
-        "correct": "العدد $x + y = 25$ والمبلغ $10x + 20y = 380$.",
-        "incorrect": "لا تخلط بين عدد القطع ومجموعها."
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "عدد القطع: $x + y = 25$",
+          "المبلغ: $10x + 20y = 380$ ، وبقسمة الطرفين على 10: $x + 2y = 38$",
+          "ومنه: $\\begin{cases} x + y = 25 \\\\ x + 2y = 38 \\end{cases}$"
+        ]
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "كم قطعة $(x ; y)$ من كل فئة؟",
+      "step": "02",
+      "statement": "استنتج عدد القطع من كل فئة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : عدد قطع 10DA ثم عدد قطع 20DA",
       "expectedAnswer": {
         "x": "12",
         "y": "13"
       },
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "اقسم معادلة المبلغ على 10."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$x + 2y = 38$ ثم اطرح $x + y = 25$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقق في النص."
-        }
-      ],
-      "feedback": {
-        "correct": "$y = 13$ ثم $x = 12$ ؛ $120 + 260 = 380$.",
-        "incorrect": "بسّط ثم اطرح المعادلتين."
-      },
-      "cognitiveDemand": "apply",
-      "difficulty": 2,
       "misconceptionSignatures": [
         {
           "value": {
@@ -125,7 +93,44 @@
           },
           "id": "MISC-JUMLA-TARTIB"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل $x$ هو نفسه في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح المعادلة الأولى من الثانية لتجد $y$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض قيمة $y$ في المعادلة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "12 قطعة من فئة 10DA و 13 قطعة من فئة 20DA.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} x + y = 25 & ...(1) \\\\ x + 2y = 38 & ...(2) \\end{cases}$",
+          "من المعادلة (1) نجد: $y = 25 - x$",
+          "بالتعويض في المعادلة (2) نجد: $x + 2(25 - x) = 38$",
+          "$-x + 50 = 38$",
+          "$-x = -12$",
+          "$x = 12$",
+          "ومنه: $y = 25 - 12 = 13$",
+          "التحقق في النص: $12 + 13 = 25$ و $10 \\times 12 + 20 \\times 13 = 380$ .",
+          "إذن:"
+        ],
+        "result": "(12 ; 13)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
   ]
 }

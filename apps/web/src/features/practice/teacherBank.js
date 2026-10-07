@@ -105,8 +105,15 @@ export function formatStudentAnswer(question, answer, normalized = null) {
     if (answer.choiceId != null) return label(answer.choiceId);
     if (Array.isArray(answer.choiceIds)) return answer.choiceIds.map(label).join(' ؛ ');
     if (answer.x != null || answer.y != null) return `(${answer.x ?? ''} ; ${answer.y ?? ''})`;
+    // Saisie MathLive (feuille d'examen) : la formule telle que l'élève l'a écrite.
+    if (typeof answer.latex === 'string' && answer.latex.trim()) return `$${answer.latex}$`;
     if (answer.value != null && typeof answer.value !== 'object') return String(answer.value);
+    // « بيّن أن » : la démonstration écrite (le panneau la rend ligne par ligne).
+    if (typeof answer.text === 'string' && answer.text.trim()) return answer.text;
   }
   if (typeof answer === 'string' && answer.trim()) return answer;
+  // Une copie en PHOTO seulement (2026-10-06) n'a rien d'écrit : le
+  // `normalized` est alors un code interne (« review:pending », « self:correct »).
+  if (answer?.imageOnly || /^(self|review|teacher):/.test(normalized ?? '')) return '—';
   return normalized ?? '—';
 }

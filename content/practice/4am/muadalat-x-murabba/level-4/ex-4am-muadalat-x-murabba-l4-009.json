@@ -1,7 +1,10 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l4-009",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 4,
   "metadata": {
-    "title": "تدريب — أين الخطأ في الحل؟",
-    "estimatedMinutes": 4,
+    "title": "أين أخطأ ياسين؟",
+    "estimatedMinutes": 6,
     "tags": [
       "تحليل خطأ",
       "معادلة"
@@ -11,6 +14,12 @@
       "reason": "practice_generation",
       "learningPoint": "4am_muadalat-x-murabba_P2",
       "modelledOn": "method-equation"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
@@ -19,7 +28,8 @@
   "questions": [
     {
       "id": "q1",
-      "statement": "حل ياسين المعادلة $3x^2 + 5 = 32$ فكتب: $3x^2 = 37$ ، ثم $x^2 = \\dfrac{37}{3}$ ، ثم $x = \\sqrt{\\dfrac{37}{3}}$ أو $x = -\\sqrt{\\dfrac{37}{3}}$. أين الخطأ؟",
+      "step": "01",
+      "statement": "في أي خطوة أخطأ ياسين ؟ صحّح هذه الخطوة.",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P2",
@@ -27,55 +37,33 @@
         }
       ],
       "cognitiveDemand": "reason",
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "في الخطوة الأولى: $3x^2 = 32 - 5$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "في الخطوة الأخيرة: يوجد حل واحد فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-WAHID"
-        },
-        {
-          "id": "C",
-          "content": "في الخطوة الثانية: $x^2 = 37 \\times 3$",
-          "isCorrect": false
-        },
-        {
-          "id": "D",
-          "content": "لا يوجد أي خطأ",
-          "isCorrect": false
-        }
-      ],
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تحقق من كل خطوة على حدة."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "عند نقل $+5$ إلى الطرف الثاني، ما العملية المناسبة؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل نضيف 5 أم نطرحها؟"
+          "content": "تحقّق من الخطوة الأولى: كيف ننقل العدد 5 إلى الطرف الثاني؟"
         }
       ],
       "feedback": {
-        "correct": "نطرح 5 من الطرفين: $3x^2 = 27$، والخطوتان الأخيرتان صحيحتا الطريقة.",
-        "incorrect": "الحلان المتعاكسان صحيحان في الطريقة؛ ابحث في نقل العدد 5."
-      }
+        "correct": "تبريرك مطابق للحل النموذجي.",
+        "incorrect": "قارن تبريرك سطرًا بسطر بالحل النموذجي."
+      },
+      "solution": {
+        "lines": [
+          "الخطأ في الخطوة الأولى: نقل ياسين العدد 5 دون تغيير إشارته.",
+          "الصواب: $3x^2 + 5 = 32$ يعني $3x^2 = 32 - 5$"
+        ],
+        "result": "3x^2 = 27"
+      },
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "ما هو الحل الموجب للمعادلة $3x^2 + 5 = 32$؟",
+      "step": "02",
+      "lead": "حل المعادلة $3x^2 + 5 = 32$.",
+      "statement": "الحل الموجب:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P2",
@@ -96,26 +84,78 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "اطرح 5 من الطرفين."
+          "content": "اعزل $x^2$ في طرف."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اقسم على 3."
+          "content": "اكتب الطرف الثاني على شكل مربع عدد موجب."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ابحث عن العدد الموجب الذي مربعه ما حصلت عليه."
+          "content": "للمعادلة حلان متعاكسان."
         }
       ],
       "feedback": {
-        "correct": "$3x^2 = 27$ ، $x^2 = 9$ ، إذن $x = 3$ أو $x = -3$.",
-        "incorrect": "اعزل $x^2$ بعناية ثم ابحث عن $x$."
-      }
+        "correct": "نعم، وهو معاكس الحل السالب.",
+        "incorrect": "الحل الموجب هو معاكس الحل السالب: مربعه هو الطرف الثاني بعد عزل $x^2$."
+      },
+      "solution": {
+        "lines": [
+          "$3x^2 + 5 = 32$ يعني $3x^2 = 27$",
+          "أي $x^2 = \\dfrac{27}{3} = 9 = 3^2$",
+          "بالتالي $x = 3$ أو $x = -3$"
+        ],
+        "result": "x = -3 \\quad ; \\quad x = 3"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "الحل السالب:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "-3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اعزل $x^2$ في طرف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب الطرف الثاني على شكل مربع عدد موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "للمعادلة حلان متعاكسان."
+        }
+      ],
+      "feedback": {
+        "correct": "نعم، هذا هو الحل السالب: للمعادلة حلان متعاكسان.",
+        "incorrect": "الحلان عددان متعاكسان مربع كل منهما هو الطرف الثاني بعد عزل $x^2$: خذ السالب منهما."
+      },
+      "solution": {
+        "lines": [
+          "$3x^2 + 5 = 32$ يعني $3x^2 = 27$",
+          "أي $x^2 = \\dfrac{27}{3} = 9 = 3^2$",
+          "بالتالي $x = 3$ أو $x = -3$"
+        ],
+        "result": "x = -3 \\quad ; \\quad x = 3"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l4-009",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 4
+  ]
 }

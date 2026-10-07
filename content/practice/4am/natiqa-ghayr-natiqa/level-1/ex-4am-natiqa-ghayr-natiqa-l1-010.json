@@ -1,30 +1,42 @@
 {
+  "id": "ex-4am-natiqa-ghayr-natiqa-l1-010",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — قوى العدد 2",
-    "estimatedMinutes": 3,
+    "title": "قوى العدد 2",
+    "estimatedMinutes": 4,
     "tags": [
-      "مربع تام"
+      "مربع تام",
+      "عدد ناطق"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
       "modelledOn": "know-2"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "الأعداد 4 ، 8 ، 16 ، 32 ، 64 ، 128 نحصل عليها بضرب العدد السابق في 2."
+    "content": "لتكن الأعداد: 4 ، 8 ، 16 ، 32 ، 64 ، 128."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "اكتب الأعداد، من بين هذه الأعداد، التي جذرها التربيعي عدد ناطق.",
+      "step": "01",
+      "statement": "عيّن، من بين هذه الأعداد، الأعداد التي جذرها التربيعي عدد ناطق.",
       "learningPoints": [
         {
           "code": "4am_natiqa-ghayr-natiqa_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "integerSet",
       "answerFormat": "الأعداد مفصولة بفاصلة",
       "expectedAnswer": [
@@ -49,26 +61,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "أي هذه الأعداد مربع لعدد طبيعي؟"
+          "content": "جذر العدد الطبيعي يكون ناطقًا إذا كان العدد مربعًا لعدد طبيعي."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب مربعات الأعداد من 2 إلى 12."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "لا تكتب إلا الأعداد التي تجدها في قائمة المربعات."
+          "content": "هل يوجد عدد طبيعي مربعه 8؟ مربعه 32؟"
         }
       ],
       "feedback": {
-        "correct": "$4 = 2^2$ و $16 = 4^2$ و $64 = 8^2$؛ أما 8 و 32 و 128 فليست مربعات لأعداد ناطقة.",
-        "incorrect": "تحقّق من كل عدد: هل يوجد عدد طبيعي مربعه يساويه؟"
-      }
+        "correct": "$4 = 2^2$ ، $16 = 4^2$ ، $64 = 8^2$ ؛ أما 8 و 32 و 128 فليست مربعات.",
+        "incorrect": "اختبر كل عدد: هل هو مربع لعدد طبيعي؟"
+      },
+      "solution": {
+        "lines": [
+          "$4 = 2^2$ ، $16 = 4^2$ ، $64 = 8^2$ : جذورها 2 و 4 و 8 أعداد ناطقة.",
+          "$2^2 < 8 < 3^2$ ، $5^2 < 32 < 6^2$ ، $11^2 < 128 < 12^2$ : هذه الأعداد ليست مربعات لأعداد ناطقة."
+        ],
+        "result": "4 \\; ; \\; 16 \\; ; \\; 64"
+      },
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-natiqa-ghayr-natiqa-l1-010",
-  "lessonCode": "natiqa-ghayr-natiqa",
-  "level": 1
+  ]
 }

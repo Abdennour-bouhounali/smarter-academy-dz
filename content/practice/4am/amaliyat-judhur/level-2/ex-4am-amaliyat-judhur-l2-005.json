@@ -1,123 +1,128 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l2-005",
+  "lessonCode": "amaliyat-judhur",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — الكتابة a√b",
+    "title": "تمرين — إخراج مربع من تحت الجذر",
     "estimatedMinutes": 4,
     "tags": [
-      "إخراج عامل من تحت الجذر"
+      "a√b"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_amaliyat-judhur_P1",
-      "modelledOn": "know-4"
+      "modelledOn": "know-4",
+      "adaptedFrom": "ex-4am-amaliyat-judhur-l2-005"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "اكتب كل عدد على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان."
+    "content": "ليكن العددان $A$ و $B$ حيث:",
+    "formulas": [
+      "A = \\sqrt{72}",
+      "B = \\sqrt{75}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$\\sqrt{50}$",
+      "step": "01",
+      "statement": "تحقّق أن $72 = 36 \\times 2$ ، ثم اكتب العدد $A$ على الشكل $a\\sqrt{2}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$5\\sqrt{2}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$25\\sqrt{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
-        },
-        {
-          "id": "C",
-          "content": "$2\\sqrt{5}$",
-          "isCorrect": false
+          "value": "36",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن مربّع تام يقسم 50."
+          "content": "$36$ مربع تام."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$50 = 25 \\times 2$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$\\sqrt{a^2 b} = a\\sqrt{b}$ ."
+          "content": "استعمل $\\sqrt{36 \\times 2} = \\sqrt{36} \\times \\sqrt{2}$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{50} = \\sqrt{5^2 \\times 2} = 5\\sqrt{2}$",
-        "incorrect": "يخرج جذرُ المربّع من تحت الجذر."
-      }
+        "correct": "$A = \\sqrt{36 \\times 2} = \\sqrt{36} \\times \\sqrt{2} = 6\\sqrt{2}$",
+        "incorrect": "العامل المربع يخرج من تحت الجذر بجذره، لا بقيمته."
+      },
+      "solution": {
+        "lines": [
+          "$72 = 36 \\times 2$",
+          "$A = \\sqrt{36 \\times 2}$",
+          "$A = \\sqrt{36} \\times \\sqrt{2}$"
+        ],
+        "result": "A = 6\\sqrt{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "$\\sqrt{75}$",
+      "step": "02",
+      "statement": "اكتب العدد $B$ على الشكل $a\\sqrt{3}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$25\\sqrt{3}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
-        },
-        {
-          "id": "B",
-          "content": "$3\\sqrt{5}$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$5\\sqrt{3}$",
-          "isCorrect": true
+          "value": "25",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن مربّع تام يقسم 75."
+          "content": "اكتب $75$ جداء عدد مربع تام في $3$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$75 = 25 \\times 3$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ما جذر 25؟"
+          "content": "استعمل $\\sqrt{a^2 \\times b} = a\\sqrt{b}$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{75} = \\sqrt{5^2 \\times 3} = 5\\sqrt{3}$",
-        "incorrect": "لا تخلط بين العامل المربّع والعدد الباقي تحت الجذر."
-      }
+        "correct": "$B = \\sqrt{25 \\times 3} = \\sqrt{25} \\times \\sqrt{3} = 5\\sqrt{3}$",
+        "incorrect": "ابحث عن مربع تام يقسم $75$ ويكون حاصل القسمة $3$ ."
+      },
+      "solution": {
+        "lines": [
+          "$75 = 25 \\times 3$",
+          "$B = \\sqrt{25 \\times 3}$",
+          "$B = \\sqrt{25} \\times \\sqrt{3}$"
+        ],
+        "result": "B = 5\\sqrt{3}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l2-005",
-  "lessonCode": "amaliyat-judhur",
-  "level": 2
+  ]
 }

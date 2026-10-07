@@ -3,75 +3,126 @@
   "lessonCode": "wadiya-idmajiya-khattiya",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 2 — صورة عدد",
-    "estimatedMinutes": 2,
+    "title": "أؤكّد تعلّماتي 2 — صورة عدد سالب",
+    "estimatedMinutes": 4,
     "tags": [
-      "صورة"
+      "معامل",
+      "صورة عدد"
     ],
     "source": {
       "type": "textbook",
       "elementId": "qcm",
       "page": 74,
       "section": "أؤكّد تعلّماتي",
-      "number": 2
+      "number": 2,
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-khattiya-l1-002"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في كل حالة مما يلي اختر الإجابة الصحيحة، وبرّر اختيارك."
+    "content": "$f$ دالة خطية، صورة العدد $-6$ بالدالة $f$ هي $-9$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$-9$ هي صورة $-6$ بالدّالة الخطية:",
+      "step": "01",
+      "statement": "عيّن معامل الدالة $f$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "1,5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$f : x \\longmapsto -\\dfrac{6}{4}x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+          "value": "2/3",
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB"
         },
         {
-          "id": "B",
-          "content": "$g : x \\longmapsto 1{,}5x$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$h : x \\longmapsto -\\dfrac{4}{6}x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+          "value": "-1.5",
+          "id": "MISC-KHATTIYA-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب صورة $-6$ بكل دالة."
+          "content": "اكتب $f(-6) = a \\times (-6)$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انتبه إلى الإشارة: سالب في سالب موجب."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المعامل الصحيح هو $\\dfrac{-9}{-6}$."
+          "content": "حلّ المعادلة $-6a = -9$ : انتبه إلى الإشارة."
         }
       ],
       "feedback": {
-        "correct": "$1{,}5 \\times (-6) = -9$.",
-        "incorrect": "عوّض $x$ بـ $-6$ في كل دالة وقارن بـ $-9$."
+        "correct": "$a = \\dfrac{-9}{-6} = 1{,}5$ .",
+        "incorrect": "المعامل هو الصورة مقسومة على العدد: $\\dfrac{-9}{-6}$ ."
       },
+      "solution": {
+        "lines": [
+          "$f(x) = ax$ و $f(-6) = -9$",
+          "$a \\times (-6) = -9$ ومنه $a = \\dfrac{-9}{-6} = \\dfrac{3}{2} = 1{,}5$ ."
+        ],
+        "result": "f(x) = 1{,}5x"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "جد العدد الذي صورته $12$ بالدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
       "cognitiveDemand": "apply",
-      "difficulty": 1
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "8",
+      "misconceptionSignatures": [
+        {
+          "value": "18",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نبحث عن العدد $x$ حيث $f(x) = 12$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم الصورة على المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5x = 12$ ومنه $x = 8$ .",
+        "incorrect": "المطلوب هو العدد الذي صورته 12، وليس صورة 12."
+      },
+      "solution": {
+        "lines": [
+          "$f(x) = 12$ معناه $1{,}5x = 12$",
+          "$x = \\dfrac{12}{1{,}5} = 8$"
+        ],
+        "result": "x = 8"
+      },
+      "timeSeconds": 75
     }
   ]
 }

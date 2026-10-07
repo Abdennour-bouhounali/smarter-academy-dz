@@ -3,8 +3,8 @@
   "lessonCode": "mushkilat-jumla",
   "level": 2,
   "metadata": {
-    "title": "تمرين 24 (ص 63) — مجموع وفرق",
-    "estimatedMinutes": 4,
+    "title": "مجموع 2019 وفرق 25",
+    "estimatedMinutes": 7,
     "tags": [
       "ترييض",
       "أعداد"
@@ -15,99 +15,149 @@
       "page": 63,
       "section": "أتعمّق",
       "number": 24
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 63): عددان طبيعيان مجموعهما 2019 والفرق بينهما 25. عيّن هذين العددين. نسمّي $x$ الأكبر و $y$ الأصغر."
+    "content": "عددان طبيعيان مجموعهما 2019 والفرق بينهما 25."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الجملة التي تترجم المشكلة هي:",
+      "step": "01",
+      "lead": "نسمّي $x$ أكبر العددين و $y$ أصغرهما.",
+      "statement": "ترجم المعطيات بجملة معادلتين مجهولاها $x$ و $y$ .",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\begin{cases} x + y = 25 \\\\ x - y = 2019 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "B",
-          "content": "$\\begin{cases} x + y = 2019 \\\\ x - y = 25 \\end{cases}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\begin{cases} x + y = 2019 \\\\ y - x = 25 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المجموع كم؟ والفرق كم؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "الفرق: الأكبر ناقص الأصغر."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$x$ هو الأكبر."
+          "content": "الفرق بين عددين: الأكبر ناقص الأصغر."
         }
       ],
       "feedback": {
-        "correct": "المجموع 2019 والفرق 25، والأكبر أولا.",
-        "incorrect": "الفرق بين عددين طبيعيين يُكتب الأكبر ناقص الأصغر."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "المجموع: $x + y = 2019$",
+          "الفرق (الأكبر ناقص الأصغر): $x - y = 25$",
+          "ومنه الجملة: $\\begin{cases} x + y = 2019 \\\\ x - y = 25 \\end{cases}$"
+        ],
+        "result": "\\begin{cases} x + y = 2019 \\\\ x - y = 25 \\end{cases}"
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "العددان $(x ; y)$ هما:",
+      "step": "02",
+      "lead": "عيّن هذين العددين.",
+      "statement": "العدد الأكبر:",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
-      "expectedAnswer": {
-        "x": "1022",
-        "y": "997"
-      },
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "1022",
+      "misconceptionSignatures": [
+        {
+          "value": "997",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اجمع المعادلتين طرفا لطرف."
+          "content": "معاملا $y$ متعاكسان."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "يختفي $y$ ويبقى $2x$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم $y = 2019 - x$ ."
+          "content": "اجمع المعادلتين طرفا لطرف، ثم اقسم على 2."
         }
       ],
       "feedback": {
-        "correct": "بالجمع $2x = 2044$ أي $x = 1022$ ، و $y = 997$ .",
-        "incorrect": "تحقّق: المجموع والفرق معا."
-      }
+        "correct": "العدد الأكبر هو 1022.",
+        "incorrect": "بجمع المعادلتين طرفا لطرف: $2x = 2019 + 25$ ."
+      },
+      "solution": {
+        "lines": [
+          "بجمع المعادلتين طرفا لطرف نجد: $2x = 2044$ ومنه $x = 1022$",
+          "بالتعويض في المعادلة الأولى: $1022 + y = 2019$ ومنه $y = 997$",
+          "التحقق: $1022 + 997 = 2019$ و $1022 - 997 = 25$ .",
+          "إذن العددان هما 1022 و 997."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "العدد الأصغر:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "997",
+      "misconceptionSignatures": [
+        {
+          "value": "1022",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الأصغر = الأكبر − 25 ."
+        }
+      ],
+      "feedback": {
+        "correct": "العدد الأصغر هو 997، ونتحقق: $1022 + 997 = 2019$ .",
+        "incorrect": "اطرح 25 من العدد الأكبر."
+      },
+      "solution": {
+        "lines": [
+          "بجمع المعادلتين طرفا لطرف نجد: $2x = 2044$ ومنه $x = 1022$",
+          "بالتعويض في المعادلة الأولى: $1022 + y = 2019$ ومنه $y = 997$",
+          "التحقق: $1022 + 997 = 2019$ و $1022 - 997 = 25$ .",
+          "إذن العددان هما 1022 و 997."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

@@ -3,57 +3,76 @@
   "lessonCode": "tamthil-bayani-khatti",
   "level": 2,
   "metadata": {
-    "title": "تدريب — قراءة صورة وعدد",
-    "estimatedMinutes": 4,
+    "title": "قراءة صورة وعدد ثم المعامل",
+    "estimatedMinutes": 6,
     "tags": [
-      "قراءة بيانية"
+      "قراءة بيانية",
+      "معامل"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tamthil-bayani-khatti_P2",
-      "modelledOn": "method-read"
+      "modelledOn": "method-read",
+      "adaptedFrom": "ex-4am-tamthil-bayani-khatti-l2-003"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "المستقيم (D) أدناه يمثّل دالة خطية $f$ ، ويشمل النقطة $K(4 ; 3)$ .",
-    "visual": {
-      "range": {
-        "xMin": 0,
-        "xMax": 8,
-        "yMin": 0,
-        "yMax": 6
+    "content": "في المعلم المتعامد والمتجانس التالي، المستقيم $(D)$ هو التمثيل البياني لدالة خطية $f$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "K": [
+          -4,
+          -5
+        ],
+        "H": [
+          4,
+          5
+        ]
       },
-      "unit": 37.5,
-      "unitY": 33.3333,
-      "functions": [
+      "lines": [
         {
-          "id": "d",
-          "a": 0.75,
-          "b": 0,
-          "label": "(D)",
-          "tone": "indigo"
+          "through": [
+            "K",
+            "H"
+          ],
+          "name": "(D)",
+          "tone": "indigo",
+          "extend": [
+            0.08,
+            0.08
+          ]
         }
       ],
-      "points": [
-        {
-          "id": "p0",
-          "x": 4.0,
-          "y": 3.0,
-          "name": "K"
-        }
+      "grid": true,
+      "axes": true,
+      "labels": {
+        "O": "sw"
+      },
+      "hidden": [
+        "K",
+        "H"
       ],
-      "xStep": 1,
-      "yStep": 1,
-      "frozen": true,
-      "ariaLabel": "معلم فيه المستقيم (D) يشمل O و K(4 ; 3)",
-      "caption": false
+      "ariaLabel": "معلم متعامد ومتجانس على ورقة مرصوفة: المستقيم (D) يشمل المبدأ O ويمرّ بعقدتين من الشبكة"
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "بقراءة بيانية، صورة 8:",
+      "step": "01",
+      "sub": "ا",
+      "lead": "بقراءة بيانية:",
+      "statement": "عيّن صورة العدد 4 بالدالة $f$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P2",
@@ -61,19 +80,26 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
-      "expectedAnswer": "6",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "value": "3,2",
+          "id": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابدأ من العدد على محور الفواصل."
+          "content": "ابدأ من العدد المعطى على محور الفواصل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اصعد (أو انزل) عموديًا حتى المستقيم، ثم اذهب أفقيًا إلى محور التراتيب."
+          "content": "اتجه عموديا حتى المستقيم $(D)$ ، ثم أفقيا حتى محور التراتيب."
         },
         {
           "id": "h3",
@@ -82,13 +108,23 @@
         }
       ],
       "feedback": {
-        "correct": "من 8 نصعد إلى (D) فنقرأ 6: $f(8) = 6$ .",
-        "incorrect": "الصورة ترتيب."
-      }
+        "correct": "النقطة من $(D)$ التي فاصلتها $4$ ترتيبها $5$ .",
+        "incorrect": "الصورة تُقرأ على محور التراتيب: ترتيب نقطة المستقيم، لا فاصلتها."
+      },
+      "solution": {
+        "lines": [
+          "النقطة من المستقيم $(D)$ التي فاصلتها $4$ ترتيبها $5$ .",
+          "إذن صورة العدد $4$ بالدالة $f$ هي $5$ ."
+        ],
+        "result": "f(4) = 5"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "بقراءة بيانية، العدد الذي صورته $1{,}5$ :",
+      "step": "01",
+      "sub": "ب",
+      "statement": "عيّن العدد الذي صورته $-5$ بالدالة $f$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P2",
@@ -96,30 +132,93 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
-      "expectedAnswer": "2",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-4",
+      "misconceptionSignatures": [
+        {
+          "value": "-6,25",
+          "id": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابدأ من الصورة على محور التراتيب."
+          "content": "ابدأ من العدد المعطى على محور التراتيب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اذهب أفقيًا حتى المستقيم، ثم عموديًا إلى محور الفواصل."
+          "content": "اتجه أفقيا حتى المستقيم $(D)$ ، ثم عموديا حتى محور الفواصل."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "العدد المطلوب هو فاصلة نقطة المستقيم التي ترتيبها هذه الصورة."
+          "content": "العدد المطلوب هو فاصلة نقطة المستقيم التي ترتيبها الصورة المعطاة."
         }
       ],
       "feedback": {
-        "correct": "من $1{,}5$ على محور التراتيب نصل إلى الفاصلة 2.",
-        "incorrect": "العدد المطلوب فاصلة."
-      }
+        "correct": "النقطة من $(D)$ التي ترتيبها $-5$ فاصلتها $-4$ .",
+        "incorrect": "العدد الذي علمت صورته يُقرأ على محور الفواصل: فاصلة نقطة المستقيم التي ترتيبها الصورة المعطاة."
+      },
+      "solution": {
+        "lines": [
+          "النقطة من المستقيم $(D)$ التي ترتيبها $-5$ فاصلتها $-4$ .",
+          "إذن العدد الذي صورته $-5$ بالدالة $f$ هو $-4$ ."
+        ],
+        "result": "f(-4) = -5"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "استنتج العبارة الجبرية للدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "1,25",
+      "misconceptionSignatures": [
+        {
+          "value": "0,8",
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f$ دالة خطية: $f(x) = ax$ ، وتمثيلها يشمل النقطة ذات الإحداثيين $(4 ; 5)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعادلة $a \\times 4 = 5$ ثم حلّها: الترتيب على الفاصلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{5}{4} = 1{,}25$ ، إذن $f(x) = 1{,}25x$ .",
+        "incorrect": "المعامل هو الترتيب مقسوما على الفاصلة (وليس العكس)، مع الانتباه إلى الإشارة."
+      },
+      "solution": {
+        "lines": [
+          "$f$ دالة خطية، إذن $f(x) = ax$ .",
+          "$f(4) = 5$ معناه $a \\times 4 = 5$",
+          "$a = \\dfrac{5}{4} = 1{,}25$"
+        ],
+        "result": "f(x) = 1{,}25x"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

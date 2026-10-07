@@ -3,9 +3,10 @@
   "lessonCode": "tahlil-ibara",
   "level": 3,
   "metadata": {
-    "title": "تمرين 28 (ب) — احسب ذهنيا",
-    "estimatedMinutes": 4,
+    "title": "احسب ذهنيا بفرق مربعين",
+    "estimatedMinutes": 8,
     "tags": [
+      "فرق مربعين",
       "حساب ذهني"
     ],
     "source": {
@@ -14,21 +15,30 @@
       "page": 39,
       "section": "أوظّف تعلّماتي",
       "number": 28
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 39): احسب ذهنيا (دون وضع العملية)، باستعمال $a^2 - b^2 = (a - b)(a + b)$."
+    "content": "احسب ذهنيا (دون وضع العملية)، باستعمال المتطابقة $a^2 - b^2 = (a - b)(a + b)$ :"
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$98^2 - 2^2 = $",
+      "step": "01",
+      "sub": "ا",
+      "statement": "$98^2 - 2^2$",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "9600",
@@ -36,33 +46,40 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "العبارة فرق مربّعين."
+          "content": "عيّن $a$ و $b$ ثم احسب $a - b$ و $a + b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$(98 - 2)(98 + 2)$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "أحد العاملين 100."
+          "content": "أحد العاملين عدد مدوّر: الجداء سهل."
         }
       ],
       "feedback": {
-        "correct": "$98^2 - 2^2 = 96 \\times 100$.",
-        "incorrect": "استعمل $a^2 - b^2 = (a - b)(a + b)$."
-      }
+        "correct": "$98^2 - 2^2 = 9600$ .",
+        "incorrect": "اكتب الفرق على شكل جداء $(a - b)(a + b)$ ثم احسب."
+      },
+      "solution": {
+        "lines": [
+          "$98^2 - 2^2 = (98 - 2)(98 + 2)$",
+          "$= 96 \\times 100$"
+        ],
+        "result": "98^2 - 2^2 = 9600"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "$408^2 - 407^2 = $",
+      "step": "01",
+      "sub": "ب",
+      "statement": "$408^2 - 407^2$",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "815",
@@ -70,33 +87,40 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "العبارة فرق مربّعين."
+          "content": "عيّن $a$ و $b$ ثم احسب $a - b$ و $a + b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$408 - 407 = 1$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "يبقى $408 + 407$."
+          "content": "العامل الأول يساوي $1$ ."
         }
       ],
       "feedback": {
-        "correct": "$408^2 - 407^2 = 1 \\times (408 + 407)$.",
-        "incorrect": "حلّل الفرق بدل حساب المربّعين."
-      }
+        "correct": "$408^2 - 407^2 = 815$ .",
+        "incorrect": "اكتب الفرق على شكل جداء $(a - b)(a + b)$ ثم احسب."
+      },
+      "solution": {
+        "lines": [
+          "$408^2 - 407^2 = (408 - 407)(408 + 407)$",
+          "$= 1 \\times 815$"
+        ],
+        "result": "408^2 - 407^2 = 815"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "$777^2 - 223^2 = $",
+      "step": "01",
+      "sub": "ج",
+      "statement": "$777^2 - 223^2$",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "554000",
@@ -104,23 +128,27 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "العبارة فرق مربّعين."
+          "content": "عيّن $a$ و $b$ ثم احسب $a - b$ و $a + b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$777 + 223 = 1000$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $777 - 223$ ثم اضرب في 1000."
+          "content": "لاحظ أن $777 + 223$ عدد مدوّر."
         }
       ],
       "feedback": {
-        "correct": "$777^2 - 223^2 = 554 \\times 1000$.",
-        "incorrect": "حلّل: أحد العاملين 1000."
-      }
+        "correct": "$777^2 - 223^2 = 554000$ .",
+        "incorrect": "اكتب الفرق على شكل جداء $(a - b)(a + b)$ ثم احسب."
+      },
+      "solution": {
+        "lines": [
+          "$777^2 - 223^2 = (777 - 223)(777 + 223)$",
+          "$= 554 \\times 1000$"
+        ],
+        "result": "777^2 - 223^2 = 554000"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
   ]
 }

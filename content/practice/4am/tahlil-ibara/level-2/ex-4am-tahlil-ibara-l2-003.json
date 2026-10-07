@@ -3,10 +3,11 @@
   "lessonCode": "tahlil-ibara",
   "level": 2,
   "metadata": {
-    "title": "دوري الآن (ص 35) — عامل مشترك بين قوسين",
-    "estimatedMinutes": 4,
+    "title": "عامل مشترك بين قوسين",
+    "estimatedMinutes": 9,
     "tags": [
-      "عامل مشترك"
+      "عامل مشترك",
+      "تحليل"
     ],
     "source": {
       "type": "textbook",
@@ -14,113 +15,154 @@
       "page": 35,
       "section": "دوري الآن",
       "number": 2
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 35): $A = (x - 1)(5x + 4) + (3 + x)(x - 1)$ و $B = (2x - 5)(x + 2) - (x - 2)(x + 2)$ ."
+    "content": "لتكن العبارتان $A$ و $B$ حيث:",
+    "formulas": [
+      "A = (x - 1)(5x + 4) + (3 + x)(x - 1)",
+      "B = (2x - 5)(x + 2) - (x - 2)(x + 2)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّل A.",
+      "step": "01",
+      "lead": "حلّل العبارة $A$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
-          "code": "4am_tahlil-ibara_P1",
+          "code": "4am_tahlil-ibara_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$(x - 1)(4x + 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
-        },
-        {
-          "id": "B",
-          "content": "$(x - 1)(5x + 7)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-NISYAN-1"
-        },
-        {
-          "id": "C",
-          "content": "$(x - 1)(6x + 7)$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $(x - 1)(mx + n)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "6",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن العامل الذي يتكرّر في كل الحدود."
+          "content": "ابحث عن عامل مشترك بين حدود العبارة (قد يكون عبارة كاملة بين قوسين)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "العامل المشترك هنا هو $(x - 1)$."
+          "content": "استعمل $ka + kb = k(a + b)$ : أخرج العامل المشترك، واكتب ما يبقى من كل حد بين قوسين كبيرين."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اكتبه مرّة واحدة خارج القوس، وضع داخل القوس ما يبقى من كل حدّ مع إشارته."
+          "content": "بسّط ما بين القوسين الكبيرين بإشاراته، ثم قارن بالشكل المطلوب."
         }
       ],
       "feedback": {
-        "correct": "$A = (x - 1)[(5x + 4) + (3 + x)] = (x - 1)(6x + 7)$.",
-        "incorrect": "اجمع كل ما بقي من الحدّين: $5x + 4$ و $3 + x$."
-      }
+        "correct": "$A = (x - 1)(6x + 7)$ إذن $m = 6$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$A = (x - 1)(5x + 4) + (3 + x)(x - 1)$",
+          "$A = (x - 1)[(5x + 4) + (3 + x)]$",
+          "$A = (x - 1)(5x + 4 + 3 + x)$"
+        ],
+        "result": "A = (x - 1)(6x + 7)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "حلّل B.",
+      "step": "01",
+      "statement": "العدد $n$ :",
       "learningPoints": [
         {
-          "code": "4am_tahlil-ibara_P1",
+          "code": "4am_tahlil-ibara_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $(x - 1)(mx + n)$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "7",
+      "hints": [
         {
-          "id": "A",
-          "content": "$(x + 2)(x - 3)$",
-          "isCorrect": true
-        },
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = (x - 1)(6x + 7)$ إذن $n = 7$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$A = (x - 1)(6x + 7)$"
+        ],
+        "result": "n = 7"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "حلّل العبارة $B$ .",
+      "statement": "العدد $m$ :",
+      "learningPoints": [
         {
-          "id": "B",
-          "content": "$(x + 2)(x - 7)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
-        },
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $(x + 2)(x + m)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "-3",
+      "misconceptionSignatures": [
         {
-          "id": "C",
-          "content": "$(x + 2)(3x - 7)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+          "value": "-7",
+          "id": "MISC-TAHLIL-ISHARA-QAWS"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العامل المشترك هو $(x + 2)$."
+          "content": "ابحث عن عامل مشترك بين حدود العبارة (قد يكون عبارة كاملة بين قوسين)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "يبقى $(2x - 5) - (x - 2)$."
+          "content": "استعمل $ka + kb = k(a + b)$ : أخرج العامل المشترك، واكتب ما يبقى من كل حد بين قوسين كبيرين."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احذف القوس المسبوق بـ «−» بتغيير الإشارات."
+          "content": "بسّط ما بين القوسين الكبيرين بإشاراته، ثم قارن بالشكل المطلوب."
         }
       ],
       "feedback": {
-        "correct": "$B = (x + 2)(2x - 5 - x + 2) = (x + 2)(x - 3)$.",
-        "incorrect": "$-(x - 2) = -x + 2$ : تتغيّر الإشارتان."
-      }
+        "correct": "$B = (x + 2)(x - 3)$ إذن $m = -3$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$B = (2x - 5)(x + 2) - (x - 2)(x + 2)$",
+          "$B = (x + 2)[(2x - 5) - (x - 2)]$",
+          "$B = (x + 2)(2x - 5 - x + 2)$"
+        ],
+        "result": "B = (x + 2)(x - 3)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
   ]
 }

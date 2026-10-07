@@ -4,104 +4,108 @@
   "level": 2,
   "metadata": {
     "title": "رصيد الهاتف يتناقص",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 6,
     "tags": [
       "دالة متناقصة",
-      "تفسير"
+      "في حدود مبلغ"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في رصيد هاتف إيناس 2000 DA، وتستهلك 150 DA كل يوم. الرصيد بعد $x$ يوما: $f(x) = -150x + 2000$."
+    "content": "في رصيد هاتف إيناس 2000DA ، وتستهلك منه 150DA كل يوم.\nنسمّي $f(x)$ الرصيد بـ DA بعد $x$ يوما، حيث: $f(x) = -150x + 2000$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الرصيد بعد 6 أيام:",
+      "step": "01",
+      "statement": "احسب الرصيد بعد 6 أيام.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد بالدينار",
+      "answerFormat": "عدد: الرصيد بـ DA",
       "expectedAnswer": "1100",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "-900"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "صورة 6."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$-150 \\times 6 + 2000$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المعامل سالب."
+          "content": "احسب $f(6)$ ."
         }
       ],
       "feedback": {
-        "correct": "$-900 + 2000 = 1100\\,\\mathrm{DA}$.",
-        "incorrect": "الرصيد ينقص 150 DA كل يوم."
+        "correct": "$f(6) = -150 \\times 6 + 2000$ .",
+        "incorrect": "اضرب 6 في $-150$ ثم أضف 2000."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2,
-      "misconceptionSignatures": [
-        {
-          "value": "2900",
-          "id": "MISC-BAYANI-ISHARA-A"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$f(6) = -150 \\times 6 + 2000 = -900 + 2000 = 1100$"
+        ],
+        "result": "1100DA"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "كم يوما كاملا يكفي الرصيد (دون أن يصبح سالبا)؟",
+      "step": "02",
+      "statement": "ما هو أكبر عدد من الأيام الكاملة يكفي فيها الرصيد دون أن يصبح سالبا؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي من الأيام",
+      "answerFormat": "عدد: عدد الأيام",
       "expectedAnswer": "13",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$-150x + 2000 \\geq 0$."
+          "content": "يجب أن يكون $f(x) \\geqslant 0$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$x \\leq \\dfrac{2000}{150}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ندوّر نحو الأسفل."
+          "content": "حلّ $-150x + 2000 \\geqslant 0$ وانتبه إلى القسمة على عدد سالب."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{2000}{150} \\approx 13{,}3$ : 13 يوما كاملا ($f(13) = 50$).",
-        "incorrect": "عدد الأيام عدد طبيعي، ولا يصبح الرصيد سالبا."
+        "correct": "$x \\leqslant \\dfrac{2000}{150}$ .",
+        "incorrect": "الرصيد يكفي ما دام $f(x) \\geqslant 0$ ؛ خذ أكبر عدد طبيعي."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 2,
-      "misconceptionSignatures": [
-        {
-          "value": "14",
-          "id": "MISC-TARRID-TAFSIR"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$-150x + 2000 \\geqslant 0$",
+          "$-150x \\geqslant -2000$",
+          "$x \\leqslant \\dfrac{2000}{150}$ ، أي $x \\leqslant \\dfrac{40}{3} \\approx 13{,}3$",
+          "تحقق: $f(13) = 50 \\geqslant 0$ و $f(14) = -100 < 0$ .",
+          "إذن يكفي الرصيد 13 يوما كاملة."
+        ],
+        "result": "13"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

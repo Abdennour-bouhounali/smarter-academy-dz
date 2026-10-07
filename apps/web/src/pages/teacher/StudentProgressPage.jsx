@@ -16,6 +16,7 @@ import InterventionForm from '../../features/teacher/interventions/InterventionF
 import { InterventionCard } from '../../features/teacher/interventions/InterventionsTab';
 import { interventionDefaults, studentName } from '../../features/teacher/insights/insights';
 import { fetchClassStudentProgress } from '../../services/teacher/classGroupService';
+import StudentSettingsCard from '../../features/teacher/settings/StudentSettingsCard';
 import { TeacherPage, Loading, ErrorBox, btnPrimary, btnSecondary, formatDate } from './teacherUi';
 
 /**
@@ -108,6 +109,9 @@ export default function StudentProgressPage() {
             <StatTile icon={Percent} value={data.learning.successRate === null ? '—' : <span dir="ltr">{data.learning.successRate}%</span>} label={t('students.successRate')} accent="bg-amber-50 text-amber-600" hint={t('students.exercisesOnly')} />
           </div>
           <div className="glass-card p-4"><PathProgress percent={data.learning.progressPercent ?? 0} /></div>
+
+          {/* Les réglages que l'enseignant décide pour CET élève (2026-10-06). */}
+          <StudentSettingsCard classroomId={id} studentId={studentId} />
 
           <section className="grid grid-cols-1 gap-5 lg:grid-cols-2 [&>*]:min-w-0">
             <div className="glass-card p-5">

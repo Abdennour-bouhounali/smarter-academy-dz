@@ -1,90 +1,130 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l3-006",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — ورشة الطباعة",
-    "estimatedMinutes": 3,
+    "title": "ورشة الطباعة",
+    "estimatedMinutes": 6,
     "tags": [
+      "ترييض",
       "معادلة",
-      "تفسير"
+      "مقارنة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
       "modelledOn": "situation"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "ورشة طباعة: الصيغة (أ) 15 دينارًا للصفحة؛ الصيغة (ب) 400 دينار للتجهيز و 5 دنانير للصفحة. نسمّي $x$ عدد الصفحات."
+    "content": "تقترح ورشة طباعة صيغتين:\n– الصيغة الأولى: 15DA للصفحة.\n– الصيغة الثانية: 400DA مصاريف التجهيز و 5DA للصفحة.\nنسمّي $x$ عدد الصفحات المطبوعة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "من أجل كم صفحة تتساوى التكلفتان؟",
+      "step": "01",
+      "statement": "جد $x$ حتى تتساوى تكلفتا الصيغتين.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muadalat_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "عدد طبيعي: عدد الصفحات",
       "expectedAnswer": "40",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب المعادلة: تكلفة (أ) = تكلفة (ب)."
+          "content": "عبّر عن تكلفة كل صيغة بدلالة $x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$15x = 400 + 5x$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع حدود $x$ في طرف."
+          "content": "اكتب أن التكلفتين متساويتان، ثم حلّ المعادلة."
         }
       ],
       "feedback": {
-        "correct": "$10x = 400$ أي $x = 40$ صفحة.",
-        "incorrect": "تكلفة (ب) $400 + 5x$ ، ثم نحل المعادلة."
+        "correct": "$x = 40$ .",
+        "incorrect": "انقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر مع تغيير الإشارة، ثم اقسم على معامل $x$ . تحقّق بالتعويض."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$15x - 5x = 400$",
+          "$10x = 400$",
+          "$x = \\dfrac{400}{10}$"
+        ],
+        "result": "x = 40"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "لطباعة 40 صفحة بالضبط ...",
+      "step": "02",
+      "statement": "احسب التكلفة المشتركة من أجل هذا العدد من الصفحات.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muadalat_P2",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بـ DA",
+      "expectedAnswer": "600",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالحل في إحدى العبارتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$600$DA .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولوية العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$15 \\times 40 = 600$",
+          "ونتحقق: $400 + 5 \\times 40 = 600$"
+        ],
+        "result": "600DA"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "لطباعة 100 صفحة، ما هي الصيغة الأقل تكلفة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "الصيغة (ب) أفضل لأنّ 40 حل المعادلة",
+          "content": "الصيغة الأولى",
           "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-QIMAT-TASAWI"
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
         },
         {
           "id": "B",
-          "content": "الصيغة (أ) أفضل بـ 400 دينار",
-          "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "الصيغة (ب) أفضل بـ 200 دينار",
-          "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-TARJAMA"
-        },
-        {
-          "id": "D",
-          "content": "الصيغتان متساويتان: 600 دينار",
+          "content": "الصيغة الثانية",
           "isCorrect": true
         }
       ],
@@ -92,28 +132,22 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ بالعدد 40."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب التكلفتين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن."
+          "content": "احسب تكلفة 100 صفحة بكل صيغة، أو قارن 100 بعدد الصفحات الذي تتساوى عنده التكلفتان."
         }
       ],
       "feedback": {
-        "correct": "$15 \\times 40 = 600$ و $400 + 5 \\times 40 = 600$ : التكلفتان متساويتان.",
-        "incorrect": "عند قيمة التساوي لا تكون أيّ صيغة أفضل."
+        "correct": "الصيغة الثانية.",
+        "incorrect": "احسب المبلغين من أجل 100 صفحة ثم قارن."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "الصيغة الأولى: $15 \\times 100 = 1500$ DA",
+          "الصيغة الثانية: $400 + 5 \\times 100 = 900$ DA",
+          "$900 < 1500$ ، إذن الصيغة الثانية هي الأقل تكلفة."
+        ],
+        "result": "الصيغة الثانية"
+      },
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-muadalat-l3-006",
-  "lessonCode": "wadiya-idmajiya-muadalat",
-  "level": 3
+  ]
 }

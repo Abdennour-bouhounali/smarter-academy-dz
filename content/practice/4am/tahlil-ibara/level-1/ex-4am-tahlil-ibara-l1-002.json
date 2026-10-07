@@ -3,11 +3,11 @@
   "lessonCode": "tahlil-ibara",
   "level": 1,
   "metadata": {
-    "title": "نشاط 3 — طريقة إيمان",
-    "estimatedMinutes": 4,
+    "title": "طريقة إيمان: الخاصية التوزيعية في الاتجاه المعاكس",
+    "estimatedMinutes": 8,
     "tags": [
       "عامل مشترك",
-      "حساب"
+      "حساب ذكي"
     ],
     "source": {
       "type": "textbook",
@@ -15,21 +15,34 @@
       "page": 33,
       "section": "أنشطة",
       "number": 3
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 33): لاحظ كيف تحسب إيمان: $3{,}5 \\times 1{,}7 + 3{,}5 \\times 0{,}3 = 3{,}5 \\times (1{,}7 + 0{,}3) = 3{,}5 \\times 2 = 7$ ."
+    "content": "لاحظ كيف تحسب إيمان:",
+    "formulas": [
+      "3{,}5 \\times 1{,}7 + 3{,}5 \\times 0{,}3 = 3{,}5 \\times (1{,}7 + 0{,}3) = 3{,}5 \\times 2 = 7"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب بالطريقة نفسها: $2{,}9 \\times 13 + 2{,}9 \\times 87$.",
+      "step": "01",
+      "sub": "ا",
+      "lead": "احسب بالطريقة نفسها:",
+      "statement": "$2{,}9 \\times 13 + 2{,}9 \\times 87$",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد",
       "expectedAnswer": "290",
@@ -42,28 +55,35 @@
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب $2{,}9 \\times (13 + 87)$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب ما بين القوسين أولًا: يعطي عددًا «مستديرًا»."
+          "content": "استعمل $ka + kb = k(a + b)$ ثم احسب ما بين القوسين أولًا."
         }
       ],
       "feedback": {
-        "correct": "$2{,}9 \\times (13 + 87) = 2{,}9 \\times 100$.",
-        "incorrect": "استخرج العامل المشترك $2{,}9$ ثم اجمع $13 + 87$."
-      }
+        "correct": "$2{,}9 \\times 13 + 2{,}9 \\times 87 = 290$ .",
+        "incorrect": "أخرج العدد المشترك، ثم احسب المجموع بين القوسين قبل الضرب."
+      },
+      "solution": {
+        "lines": [
+          "$2{,}9 \\times 13 + 2{,}9 \\times 87 = 2{,}9 \\times (13 + 87)$",
+          "$= 2{,}9 \\times 100$"
+        ],
+        "result": "2{,}9 \\times 13 + 2{,}9 \\times 87 = 290"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "احسب بالطريقة نفسها: $2{,}35 \\times 176 - 2{,}35 \\times 76$.",
+      "step": "01",
+      "sub": "ب",
+      "statement": "$2{,}35 \\times 176 - 2{,}35 \\times 76$",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد",
       "expectedAnswer": "235",
@@ -76,69 +96,102 @@
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب $2{,}35 \\times (176 - 76)$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب الفرق بين القوسين أولًا."
+          "content": "استعمل $ka - kb = k(a - b)$ ."
         }
       ],
       "feedback": {
-        "correct": "$2{,}35 \\times (176 - 76) = 2{,}35 \\times 100$.",
-        "incorrect": "استخرج $2{,}35$ ثم احسب $176 - 76$."
-      }
+        "correct": "$2{,}35 \\times 176 - 2{,}35 \\times 76 = 235$ .",
+        "incorrect": "أخرج العدد المشترك، ثم احسب الفرق بين القوسين قبل الضرب."
+      },
+      "solution": {
+        "lines": [
+          "$2{,}35 \\times 176 - 2{,}35 \\times 76 = 2{,}35 \\times (176 - 76)$",
+          "$= 2{,}35 \\times 100$"
+        ],
+        "result": "2{,}35 \\times 176 - 2{,}35 \\times 76 = 235"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "اكتب $9x + 3$ على شكل جداء.",
+      "step": "02",
+      "lead": "اكتب العبارة $9x + 3$ على شكل جداء عاملين.",
+      "statement": "العدد $k$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $9x + 3$ على الشكل $k(mx + 1)$ حيث $k$ عدد طبيعي : اكتب العدد $k$ فقط",
+      "expectedAnswer": "3",
+      "hints": [
         {
-          "id": "A",
-          "content": "$3(3x + 3)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $9x$ و $3$ على شكل جداءين يظهر فيهما نفس العدد."
         },
         {
-          "id": "B",
-          "content": "$3(3x + 1)$",
-          "isCorrect": true
-        },
+          "id": "h2",
+          "type": "direction",
+          "content": "لا تنسَ أن $3 = 3 \\times 1$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$9x + 3 = 3(3x + 1)$ إذن $k = 3$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$9x + 3 = 3 \\times 3x + 3 \\times 1$",
+          "$9x + 3 = 3(3x + 1)$"
+        ],
+        "result": "9x + 3 = 3(3x + 1)"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "العدد $m$ :",
+      "learningPoints": [
         {
-          "id": "C",
-          "content": "$9x(1 + 3)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $9x + 3$ على الشكل $k(mx + 1)$ حيث $k$ عدد طبيعي : اكتب العدد $m$ فقط",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "9",
+          "id": "MISC-TAHLIL-AMIL-NAQIS"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما القاسم المشترك للعددين 9 و 3؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$9x = 3 \\times 3x$ و $3 = 3 \\times 1$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "استخرج 3 ولا تنسَ ما يبقى من الحدّ 3."
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
         }
       ],
       "feedback": {
-        "correct": "$9x + 3 = 3 \\times 3x + 3 \\times 1 = 3(3x + 1)$.",
-        "incorrect": "الحدّ 3 يساوي $3 \\times 1$: ماذا يبقى منه داخل القوس؟"
-      }
+        "correct": "$9x + 3 = 3(3x + 1)$ إذن $m = 3$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$9x + 3 = 3(3x + 1)$"
+        ],
+        "result": "m = 3"
+      },
+      "timeSeconds": 60
     }
   ]
 }

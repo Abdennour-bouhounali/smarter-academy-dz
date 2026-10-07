@@ -1,140 +1,173 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l1-009",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — صورة في إطار",
-    "estimatedMinutes": 2,
+    "title": "صورة في إطار",
+    "estimatedMinutes": 5,
     "tags": [
       "نمذجة",
-      "إطار"
+      "مربع مجموع"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
       "modelledOn": "situation"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "صورة مربّعة طول ضلعها $x$ (بالسنتيمتر)، نضعها في إطار عرضه 3cm من كل الجهات."
+    "content": "صورة مربعة الشكل طول ضلعها $x$ cm ، نضعها في إطار عرضه $3$ cm من كل الجهات، فيصبح الكل مربعًا."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "طول ضلع المربع الذي تشكّله الصورة مع الإطار هو ...",
+      "step": "01",
+      "lead": "عبّر بدلالة $x$ عن طول ضلع المربع الذي تشكّله الصورة مع الإطار.",
+      "statement": "العدد $n$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب الطول على الشكل $x + n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x + 3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "B",
-          "content": "$x + 6$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$3x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "D",
-          "content": "$x + 9$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+          "value": "3",
+          "id": "MISC-NAMDHAJA-MISAHA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ارسم ضلعًا واحدًا."
+          "content": "الإطار موجود على جهتي كل ضلع من أضلاع الصورة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "على الضلع: إطار، ثم الصورة، ثم إطار."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع الأطوال الثلاثة."
+          "content": "أضف عرض الإطار مرتين."
         }
       ],
       "feedback": {
-        "correct": "$3 + x + 3 = x + 6$.",
-        "incorrect": "الإطار موجود على جهتي كل ضلع."
+        "correct": "$x + 6$ إذن $n = 6$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
       },
-      "cognitiveDemand": "recall"
+      "solution": {
+        "lines": [
+          "طول الضلع $= 3 + x + 3$"
+        ],
+        "result": "x + 6"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "مساحة الإطار وحده (بـ $cm^2$) هي ...",
+      "step": "02",
+      "lead": "عبّر بدلالة $x$ عن مساحة الإطار وحده $M$ ، ثم بسّطها.",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "code": "4am_wadiya-idmajiya-harfi_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $M$ على الشكل $mx + n$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$36$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+          "value": "0",
+          "id": "MISC-MURABBA-MAJMU-BILA-2AB"
         },
         {
-          "id": "B",
-          "content": "$6x + 36$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
-        },
-        {
-          "id": "C",
-          "content": "$12x + 36$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$x^2 + 12x + 36$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+          "value": "6",
+          "id": "MISC-MUTATABIQA-2AB-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "مساحة الإطار = المربع الكبير ناقص الصورة."
+          "content": "مساحة الإطار = مساحة المربع الكبير − مساحة الصورة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المربع الكبير ضلعه $x + 6$."
+          "content": "انشر $(x + 6)^2$ بمتطابقة شهيرة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "انشر $(x + 6)^2$ ثم اطرح $x^2$."
+          "content": "اطرح $x^2$ ثم بسّط."
         }
       ],
       "feedback": {
-        "correct": "$(x + 6)^2 - x^2 = x^2 + 12x + 36 - x^2 = 12x + 36$.",
-        "incorrect": "اطرح مساحة الصورة، ولا تنس الحد المضاعف في مربع المجموع."
+        "correct": "$M = 12x + 36$ إذن $m = 12$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
       },
-      "cognitiveDemand": "recall"
+      "solution": {
+        "lines": [
+          "$M = (x + 6)^2 - x^2$",
+          "$M = x^2 + 12x + 36 - x^2$"
+        ],
+        "result": "M = 12x + 36"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $M$ على الشكل $mx + n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "36",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $n$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$M = 12x + 36$ إذن $n = 36$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$M = 12x + 36$"
+        ],
+        "result": "n = 36"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l1-009",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 1
+  ]
 }

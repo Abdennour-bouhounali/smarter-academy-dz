@@ -3,8 +3,8 @@
   "lessonCode": "tarrid-mushkila",
   "level": 1,
   "metadata": {
-    "title": "تدريب — محيط مستطيل",
-    "estimatedMinutes": 3,
+    "title": "طول مستطيل محيطه 30cm",
+    "estimatedMinutes": 4,
     "tags": [
       "ترييض",
       "محيط"
@@ -14,95 +14,101 @@
       "reason": "practice_generation",
       "learningPoint": "4am_tarrid-mushkila_P1",
       "modelledOn": "ex-33"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "مستطيل طوله $x$ سنتيمترًا، وعرضه 4cm ، ومحيطه 30cm."
+    "content": "مستطيل طوله $x$ (بالسنتيمتر) و عرضه $4cm$ ، و محيطه $30cm$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ معادلة تترجم النص؟",
+      "step": "01",
+      "statement": "اكتب معادلة تترجم المعطيات ثم احسب $x$ .",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ cm",
+      "expectedAnswer": "11",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x + 4 = 30$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
-        },
-        {
-          "id": "B",
-          "content": "$2(x + 4) = 30$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$4x = 30$",
-          "isCorrect": false
+          "value": "26",
+          "id": "MISC-TARRID-DIF-MAJMU"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "كم ضلعًا للمستطيل؟"
+          "content": "المحيط = 2 × (الطول + العرض)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المحيط مجموع الأضلاع الأربعة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "محيط المستطيل ضعف مجموع الطول والعرض."
+          "content": "اكتب $2(x + 4) = 30$ ثم اقسم الطرفين على 2 ."
         }
       ],
       "feedback": {
-        "correct": "$2(x + 4) = 30$ .",
-        "incorrect": "$x + 4$ نصف المحيط فقط."
-      }
+        "correct": "$2(x + 4) = 30$ تعطي $x = 11$ .",
+        "incorrect": "المحيط هو ضعف مجموع البعدين، لا مجموعهما فقط."
+      },
+      "solution": {
+        "lines": [
+          "المعادلة: $2(x + 4) = 30$",
+          "$x + 4 = 15$",
+          "$x = 15 - 4$",
+          "$x = 11$",
+          "إذن طول المستطيل $11cm$ ."
+        ],
+        "result": "x = 11\\,cm"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "ما طول المستطيل (بالسنتيمتر)؟",
+      "step": "02",
+      "statement": "احسب مساحة هذا المستطيل.",
       "learningPoints": [
         {
-          "code": "4am_tarrid-mushkila_P2",
+          "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "11",
+      "answerFormat": "عدد: المساحة بـ cm²",
+      "expectedAnswer": "44",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انطلق من $2(x + 4) = 30$ ."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "اقسم الطرفين على 2."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم اطرح 4 وتحقّق من المحيط."
+          "content": "مساحة المستطيل = الطول × العرض."
         }
       ],
       "feedback": {
-        "correct": "$x + 4 = 15$ أي $x = 11$ ، والمحيط $2 \\times 15 = 30$ .",
-        "incorrect": "اقسم على 2 أولًا: $x + 4 = 15$ ."
-      }
+        "correct": "المساحة $44cm^2$ .",
+        "incorrect": "اضرب الطول في العرض."
+      },
+      "solution": {
+        "lines": [
+          "$11 \\times 4 = 44$",
+          "إذن مساحة المستطيل $44cm^2$ ."
+        ],
+        "result": "44\\,cm^2"
+      },
+      "timeSeconds": 60
     }
   ]
 }

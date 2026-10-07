@@ -3,135 +3,116 @@
   "lessonCode": "tahlil-ibara",
   "level": 1,
   "metadata": {
-    "title": "تدريب — جداء أم مجموع؟",
-    "estimatedMinutes": 4,
+    "title": "من المجموع إلى الجداء",
+    "estimatedMinutes": 6,
     "tags": [
-      "تعريف التحليل"
+      "تحليل",
+      "عامل مشترك"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tahlil-ibara_P1",
       "modelledOn": "know-3"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "التحليل هو كتابة عبارة مجموع على شكل جداء."
+    "content": "لتكن العبارة $A$ حيث:",
+    "formulas": [
+      "A = x^2 + 5x"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ عبارة مكتوبة على شكل جداء؟",
+      "step": "01",
+      "lead": "حلّل العبارة $A$ إلى جداء عاملين.",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x(x + 1) + 2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
-        },
-        {
-          "id": "B",
-          "content": "$(x + 2)(x - 1)$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x^2 + x - 2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
-        },
-        {
-          "id": "D",
-          "content": "$(x + 2) + (x - 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $x(x + m)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى آخر عملية تُجرى في كل عبارة."
+          "content": "التحليل هو كتابة المجموع على شكل جداء."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في الجداء تكون آخر عملية ضربًا بين عاملين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "استبعد كل عبارة تنتهي بجمع أو طرح."
+          "content": "لاحظ أن $x^2 = x \\times x$ وأن $5x = 5 \\times x$ ."
         }
       ],
       "feedback": {
-        "correct": "في $(x + 2)(x - 1)$ آخر عملية هي ضرب العاملين $(x + 2)$ و $(x - 1)$.",
-        "incorrect": "إذا كانت آخر عملية جمعًا أو طرحًا فالعبارة مجموع، لا جداء."
-      }
+        "correct": "$A = x(x + 5)$ إذن $m = 5$ .",
+        "incorrect": "التحليل جداء: أخرج $x$ من الحدّين واكتب ما يبقى بين قوسين."
+      },
+      "solution": {
+        "lines": [
+          "$A = x \\times x + 5 \\times x$",
+          "$A = x(x + 5)$"
+        ],
+        "result": "A = x(x + 5)"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "أيّ كتابة هي تحليل للعبارة $x^2 + 5x$؟",
+      "step": "02",
+      "statement": "احسب $A$ من أجل $x = 3$ باستعمال الشكل المحلّل.",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x \\times x + 5x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
-        },
-        {
-          "id": "B",
-          "content": "$x(x + 5x)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
-        },
-        {
-          "id": "C",
-          "content": "$5x(x + 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
-        },
-        {
-          "id": "D",
-          "content": "$x(x + 5)$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "24",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "التحليل جداء يساوي العبارة."
+          "content": "عوّض $x$ بالعدد المعطى في الشكل المحلّل: الحساب أسهل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "العامل المشترك بين $x^2$ و $5x$ هو $x$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "انشر كل اختيار وقارنه بـ $x^2 + 5x$ ، وتأكّد أنه جداء."
+          "content": "احسب قيمة كل عامل، ثم اضرب."
         }
       ],
       "feedback": {
-        "correct": "$x^2 + 5x = x \\times x + x \\times 5 = x(x + 5)$.",
-        "incorrect": "$x \\times x + 5x$ تساوي العبارة لكنها مجموع: التحليل يجب أن يكون جداءً."
-      }
+        "correct": "$A = 24$ .",
+        "incorrect": "عوّض $x$ في كل عامل، واحترم الإشارات وأولويات العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$A = x(x + 5)$",
+          "$A = 3 \\times (3 + 5) = 3 \\times 8$"
+        ],
+        "result": "A = 24"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

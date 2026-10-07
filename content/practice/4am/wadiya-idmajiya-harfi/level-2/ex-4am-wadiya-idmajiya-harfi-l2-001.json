@@ -1,10 +1,13 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l2-001",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 2,
   "metadata": {
-    "title": "تمرين 37 — حصر x والطول EF",
-    "estimatedMinutes": 3,
+    "title": "طول بدلالة x وحصر",
+    "estimatedMinutes": 5,
     "tags": [
       "نمذجة",
-      "أطوال"
+      "حصر"
     ],
     "source": {
       "type": "textbook",
@@ -12,130 +15,137 @@
       "page": 41,
       "section": "أتعمّق",
       "number": 37
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "ABCD مربع طول ضلعه 10cm، و $x$ عدد موجب. لوّنّا فيه مربعًا ضلعه $x$ في الركن A (حيث $AE = AG = x$)، والمستطيل (1) بعداه 4cm و 10cm على طول الضلع [BC] (حيث $FB = 4$)، والمستطيل (2) بعداه $x$ و 4cm في الركن D (حيث $DH = 4$). النقطتان E و F من [AB]، والنقطتان G و H من [AD]."
+    "content": "ABCD مربع طول ضلعه $10$ cm ، و $x$ عدد موجب. لوّنّا فيه مربعًا طول ضلعه $x$ في الركن $A$ (حيث $AE = AG = x$)، والمستطيل (1) بعداه $4$ cm و $10$ cm على طول الضلع $[BC]$ (حيث $FB = 4$)، والمستطيل (2) بعداه $x$ و $4$ cm في الركن $D$ (حيث $DH = 4$). النقطتان $E$ و $F$ من $[AB]$ ، والنقطتان $G$ و $H$ من $[AD]$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حصر للعدد $x$ هو ...",
+      "step": "01",
+      "lead": "عبّر بدلالة $x$ عن الطول $EF$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$0 < x < 10$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "B",
-          "content": "$0 < x < 4$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "C",
-          "content": "$6 < x < 10$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "D",
-          "content": "$0 < x < 6$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $EF$ على الشكل $mx + n$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "-1",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى الضلع [AB]."
+          "content": "النقاط $A$ ، $E$ ، $F$ ، $B$ على استقامة واحدة بهذا الترتيب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$AE + EF + FB = 10$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الطول EF موجب تمامًا."
+          "content": "$AB = AE + EF + FB$ ."
         }
       ],
       "feedback": {
-        "correct": "$x + EF + 4 = 10$ و $EF > 0$ ، إذن $x < 6$ ، و $x > 0$.",
-        "incorrect": "المستطيل (1) يأخذ 4cm من الضلع: ما يبقى للمربع أقل من ذلك."
+        "correct": "$EF = 6 - x$ إذن $m = -1$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$AB = AE + EF + FB$ إذن $10 = x + EF + 4$",
+          "$EF = 10 - x - 4$"
+        ],
+        "result": "EF = 6 - x"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "الطول $EF$ بدلالة $x$ هو ...",
+      "step": "01",
+      "statement": "العدد $n$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $EF$ على الشكل $mx + n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$6 - x$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$10 - x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "C",
-          "content": "$x - 6$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
-        },
-        {
-          "id": "D",
-          "content": "$6 + x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+          "value": "10",
+          "id": "MISC-NAMDHAJA-MISAHA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$EF = AB - AE - FB$."
+          "content": "بعد الحساب، اقرأ العدد $n$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$EF = 6 - x$ إذن $n = 6$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$EF = 6 - x$"
+        ],
+        "result": "n = 6"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "استنتج حصرًا للعدد $x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب الحصر على الشكل $0 < x < k$ : اكتب العدد $k$ فقط",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول $EF$ موجب تماما."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض الأطوال المعلومة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بسّط $10 - x - 4$."
+          "content": "حلّ المتباينة التي تعبّر عن ذلك."
         }
       ],
       "feedback": {
-        "correct": "$EF = 10 - x - 4 = 6 - x$ (وبالمثل $GH = 6 - x$).",
-        "incorrect": "اطرح الطولين معًا من 10، وانتبه إلى الإشارات."
+        "correct": "$0 < x < 6$ .",
+        "incorrect": "الطول $x$ موجب، والطول $EF$ موجب تماما أيضا: اكتب ذلك ثم استنتج."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$x > 0$ ، والطول $EF$ موجب تماما: $6 - x > 0$",
+          "أي $x < 6$"
+        ],
+        "result": "0 < x < 6"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l2-001",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 2
+  ]
 }

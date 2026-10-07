@@ -3,125 +3,184 @@
   "lessonCode": "mushkilat-jumla",
   "level": 1,
   "metadata": {
-    "title": "تحدّ الوحدة (ص 55) — قطع القسم النقدية",
-    "estimatedMinutes": 3,
+    "title": "تزيين القسم",
+    "estimatedMinutes": 8,
     "tags": [
       "ترييض",
-      "اختيار المجاهيل",
-      "ترجمة"
+      "قطع نقدية"
     ],
     "source": {
       "type": "textbook",
       "elementId": "challenge",
       "page": 55,
       "section": "تحدّ"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 55): لتزيين قسمهم، جمع التلاميذ مبلغ 610DA مُشكّلا من 37 قطعة نقدية من فئتي 20DA و 10DA. ما هو عدد القطع النقدية التي جمعها التلاميذ من كل فئة؟"
+    "content": "لتزيين قسمهم، جمع التلاميذ مبلغ 610DA مُشكّلا من 37 قطعة نقدية من فئتي 20DA و 10DA."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هما المجهولان المناسبان لهذه المشكلة؟",
-      "learningPoints": [
-        {
-          "code": "4am_mushkilat-jumla_P2",
-          "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "عدد قطع 20DA وعدد قطع 10DA",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "المبلغ المجموع وعدد القطع كلها",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MAJAHIL"
-        },
-        {
-          "id": "C",
-          "content": "قيمة القطعة الواحدة وعدد التلاميذ",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MAJAHIL"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "اقرأ السؤال الأخير: ماذا يطلب؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "المبلغ (610DA) وعدد القطع (37) معطيان في النص."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المجهولان هما ما لا نعرف عدده ويسأل عنه السؤال."
-        }
-      ],
-      "feedback": {
-        "correct": "السؤال يطلب عدد القطع من كل فئة: نسمّي $x$ عدد قطع 20DA و $y$ عدد قطع 10DA .",
-        "incorrect": "المعطى في النص معلوم: المجهول ما يسأل عنه السؤال."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "نسمّي $x$ عدد قطع 20DA و $y$ عدد قطع 10DA . المعلومة «37 قطعة نقدية» تُترجم بـ:",
+      "step": "01",
+      "lead": "نسمّي $x$ عدد القطع من فئة 20DA و $y$ عدد القطع من فئة 10DA.",
+      "statement": "ترجم المعطيات بجملة معادلتين مجهولاها $x$ و $y$ ، ثم اكتب معادلة المبلغ، بعد قسمة طرفيها على 10، على الشكل $2x + y = c$ . أعط العدد $c$ .",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $c$ فقط",
+      "expectedAnswer": "61",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$20x + 10y = 37$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
+          "value": "37",
+          "id": "MISC-JUMLA-TARJAMA"
         },
         {
-          "id": "B",
-          "content": "$x + y = 37$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x + y = 610$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
+          "value": "610",
+          "id": "MISC-JUMLA-TARJAMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "هذه المعلومة تعدّ القطع، لا الدنانير."
+          "content": "أي المعلومتين تخص عدد القطع، وأيهما تخص المبلغ؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كل قطعة تُعدّ مرة واحدة مهما كانت فئتها."
+          "content": "قيمة $x$ قطعة من فئة 20DA هي $20x$ دينارا."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع عدد قطع الفئتين."
+          "content": "اكتب معادلة المبلغ، ثم اقسم كل حدودها على 10."
         }
       ],
       "feedback": {
-        "correct": "كل قطعة تُعدّ مرة واحدة: $x + y = 37$ .",
-        "incorrect": "37 عدد قطع، لا مبلغ بالدينار."
-      }
+        "correct": "معادلة المبلغ $20x + 10y = 610$ تؤول إلى $2x + y = 61$ ، والجملة: $\\begin{cases} x + y = 37 \\\\ 2x + y = 61 \\end{cases}$ .",
+        "incorrect": "المبلغ يُترجم بـ $20x + 10y$ (قيمة القطع)، لا بعدد القطع $x + y$ ؛ ثم اقسم الطرفين على 10."
+      },
+      "solution": {
+        "lines": [
+          "عدد القطع: $x + y = 37$",
+          "المبلغ: $20x + 10y = 610$",
+          "بقسمة طرفي المعادلة الثانية على 10 نجد: $2x + y = 61$",
+          "ومنه الجملة: $\\begin{cases} x + y = 37 \\\\ 2x + y = 61 \\end{cases}$"
+        ],
+        "result": "c = 61"
+      },
+      "timeSeconds": 180
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "lead": "جد عدد القطع النقدية التي جمعها التلاميذ من كل فئة.",
+      "statement": "عدد القطع من فئة 20DA :",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب عدد القطع (عدد فقط)",
+      "expectedAnswer": "24",
+      "misconceptionSignatures": [
+        {
+          "value": "13",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن المعادلتين: معامل $y$ هو نفسه فيهما."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح المعادلة الأولى من الثانية طرفا لطرف."
+        }
+      ],
+      "feedback": {
+        "correct": "جمع التلاميذ 24 قطعة من فئة 20DA.",
+        "incorrect": "اطرح $x + y = 37$ من $2x + y = 61$ طرفا لطرف لتجد $x$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} x + y = 37 & ...(1) \\\\ 2x + y = 61 & ...(2) \\end{cases}$",
+          "بطرح المعادلة (1) من المعادلة (2) طرفا لطرف نجد: $x = 61 - 37 = 24$",
+          "بتعويض قيمة $x$ في المعادلة (1) نجد: $24 + y = 37$ ومنه $y = 13$",
+          "التحقق في النص: $24 + 13 = 37$ قطعة، و $20 \\times 24 + 10 \\times 13 = 480 + 130 = 610$ أي $610DA$ .",
+          "إذن جمع التلاميذ 24 قطعة من فئة 20DA و 13 قطعة من فئة 10DA."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "عدد القطع من فئة 10DA :",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب عدد القطع (عدد فقط)",
+      "expectedAnswer": "13",
+      "misconceptionSignatures": [
+        {
+          "value": "24",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض قيمة $x$ في المعادلة $x + y = 37$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "جمع التلاميذ 13 قطعة من فئة 10DA، ونتحقق: $24 + 13 = 37$ و $480 + 130 = 610$ .",
+        "incorrect": "المجموع $x + y = 37$ : احسب $y = 37 - x$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} x + y = 37 & ...(1) \\\\ 2x + y = 61 & ...(2) \\end{cases}$",
+          "بطرح المعادلة (1) من المعادلة (2) طرفا لطرف نجد: $x = 61 - 37 = 24$",
+          "بتعويض قيمة $x$ في المعادلة (1) نجد: $24 + y = 37$ ومنه $y = 13$",
+          "التحقق في النص: $24 + 13 = 37$ قطعة، و $20 \\times 24 + 10 \\times 13 = 480 + 130 = 610$ أي $610DA$ .",
+          "إذن جمع التلاميذ 24 قطعة من فئة 20DA و 13 قطعة من فئة 10DA."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

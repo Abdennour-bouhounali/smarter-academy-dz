@@ -1,202 +1,81 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-007",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — سلسلة: نشر، تحليل، معادلة ومتراجحة",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2021 — أقمصة جمعية رياضية ببومرداس",
+    "estimatedMinutes": 15,
     "tags": [
-      "نشر",
-      "تحليل",
-      "متراجحة"
+      "ترييض",
+      "متراجحة",
+      "وضعية إدماجية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
-      "modelledOn": "ex-41"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "BEM 2021 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2021",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "لتكن العبارة $G = (3x - 2)^2 - (3x - 2)(x + 4)$ ، ونشرها المبسّط $6x^2 - 22x + 12$."
+    "content": "تريد جمعية رياضية ببومرداس تجهيز فريقيها لكرة اليد بأقمصة جديدة:\n• يضمّ كل فريق 16 لاعبًا ومدرّبين اثنين، ويحتاج كل واحد منهم إلى قميصين.\n• تتراوح أثمان القمصان المعروضة بين 400DA و 1200DA للقميص الواحد.\n• تكلفة طبع الاسم والرقم على القميص الواحد 150DA .\n• مصاريف الشحن 2400DA مهما كان عدد القمصان.\n• خصّصت الجمعية مبلغ 60000DA لهذه العملية."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "تحليل العبارة G هو ...",
+      "step": "01",
+      "statement": "☜ أعطِ أكبر ثمن ممكن للقميص الواحد حتى لا تفوق التكلفة الإجمالية المبلغ المخصّص.",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$(3x - 2)(4x + 2)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
-        },
-        {
-          "id": "B",
-          "content": "$(3x - 2)(2x + 2)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
-        },
-        {
-          "id": "C",
-          "content": "$(3x - 2)(2x - 2)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
-        },
-        {
-          "id": "D",
-          "content": "$(3x - 2)(2x - 6)$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: الثمن بـ DA",
+      "expectedAnswer": "650",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العامل المشترك $3x - 2$."
+          "content": "ابدأ بحساب عدد القمصان اللازمة للفريقين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$(3x - 2)[(3x - 2) - (x + 4)]$."
+          "content": "سمِّ $x$ ثمن القميص الواحد، وعبّر عن التكلفة الإجمالية بدلالة $x$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "غيّر إشارتي $x$ و 4."
+          "content": "اكتب أن التكلفة لا تفوق 60000DA ، ثم حلّ المتراجحة."
         }
       ],
       "feedback": {
-        "correct": "$(3x - 2)(3x - 2 - x - 4) = (3x - 2)(2x - 6)$.",
-        "incorrect": "الإشارة «−» تشمل $x$ و 4."
+        "correct": "أكبر ثمن ممكن هو $650$DA للقميص.",
+        "incorrect": "عدد القمصان × (ثمن القميص + تكلفة الطبع) + مصاريف الشحن ≤ المبلغ المخصّص."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 4
-    },
-    {
-      "id": "q2",
-      "statement": "حلول المعادلة $G = 0$ هي ...",
-      "learningPoints": [
-        {
-          "code": "4am_wadiya-idmajiya-muadalat_P1",
-          "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\dfrac{2}{3}$ و $3$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$\\dfrac{3}{2}$ و $3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
-        },
-        {
-          "id": "C",
-          "content": "$-\\dfrac{2}{3}$ و $-3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
-        },
-        {
-          "id": "D",
-          "content": "$\\dfrac{2}{3}$ و $6$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARH-MUAMIL"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "استعمل الشكل المحلّل."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "حل $3x - 2 = 0$ و $2x - 6 = 0$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم العدد على معامل $x$."
-        }
-      ],
-      "feedback": {
-        "correct": "$x = \\dfrac{2}{3}$ أو $x = 3$.",
-        "incorrect": "لكل عامل حلّه."
+      "solution": {
+        "lines": [
+          "عدد القمصان: $2 \\times (16 + 2) \\times 2 = 72$ قميصًا.",
+          "ليكن $x$ ثمن القميص الواحد بـ DA . التكلفة الإجمالية: $72(x + 150) + 2400$",
+          "$72(x + 150) + 2400 \\leqslant 60000$",
+          "$72x + 10800 + 2400 \\leqslant 60000$",
+          "$72x \\leqslant 46800$",
+          "$x \\leqslant 650$",
+          "و 650DA تنتمي إلى المجال المعروض (بين 400DA و 1200DA)."
+        ],
+        "result": "650DA"
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 4
-    },
-    {
-      "id": "q3",
-      "statement": "حلول المتراجحة $6x^2 - 22x + 12 \\geq 6x^2 - 10$ هي الأعداد $x$ حيث ...",
-      "learningPoints": [
-        {
-          "code": "4am_wadiya-idmajiya-muadalat_P1",
-          "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x \\geq 1$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
-        },
-        {
-          "id": "B",
-          "content": "$x \\leq -1$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
-        },
-        {
-          "id": "C",
-          "content": "$x \\leq 1$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$x \\leq \\dfrac{1}{11}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "الحدّان $6x^2$ يختفيان."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$-22x + 12 \\geq -10$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تبقى $-22x \\geq -22$ : القسمة على عدد سالب."
-        }
-      ],
-      "feedback": {
-        "correct": "$-22x \\geq -22$ ، والقسمة على $-22$ تغيّر الاتجاه: $x \\leq 1$.",
-        "incorrect": "القسمة على عدد سالب تغيّر الاتجاه."
-      },
-      "cognitiveDemand": "apply",
-      "difficulty": 4
+      "work": "required",
+      "timeSeconds": 900
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-007",
-  "lessonCode": "wadiya-idmajiya-muadalat",
-  "level": 5
+  ]
 }

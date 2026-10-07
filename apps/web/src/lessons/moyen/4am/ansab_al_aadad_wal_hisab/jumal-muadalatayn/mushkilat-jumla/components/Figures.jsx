@@ -62,13 +62,14 @@ export function IsoscelesBisectorFigure() {
 }
 
 /**
- * تمرين 21 : le triangle EBC, A sur [EB], D sur [EC], (AD) ∥ (BC) ; EA = 10 cm, AB = 4 cm,
+ * تمرين 21 : le triangle EBC, A sur [EB], D sur [EC], (AD) ∥ (BC) ; EA = 6 cm (manuel : 10 cm, triangle impossible —
+ * coquille corrigée 2026-10-07), AB = 4 cm,
  * DC = 5 cm, AD = y, BC = x ; ABCD trapèze (coloré). « الأطوال على الشكل ليست حقيقية » : on garde
  * seulement le parallélisme et l'ordre des points.
  */
 export function ThalesTrapezoidFigure() {
   const E = [150, 14]; const B = [40, 250]; const C = [210, 280];
-  const k = 10 / 14;
+  const k = 6 / 10;
   const A = [E[0] + k * (B[0] - E[0]), E[1] + k * (B[1] - E[1])];
   const D = [E[0] + k * (C[0] - E[0]), E[1] + k * (C[1] - E[1])];
   const mid = (P, Q, dx = 0, dy = 0) => [(P[0] + Q[0]) / 2 + dx, (P[1] + Q[1]) / 2 + dy];
@@ -88,7 +89,7 @@ export function ThalesTrapezoidFigure() {
       <text x={B[0] - 14} y={B[1] + 6} fontWeight="bold" fill="#0F172A">B</text>
       <text x={C[0] + 4} y={C[1] + 10} fontWeight="bold" fill="#0F172A">C</text>
       <text x={D[0] + 6} y={D[1]} fontWeight="bold" fill="#0F172A">D</text>
-      <text x={eaX} y={eaY} fill="#475569">10cm</text>
+      <text x={eaX} y={eaY} fill="#475569">6cm</text>
       <text x={abX} y={abY} fill="#475569">4cm</text>
       <text x={dcX} y={dcY} fill="#475569">5cm</text>
       <text x={adX} y={adY} textAnchor="middle" fill="#BE185D" fontWeight="bold" fontStyle="italic">y</text>

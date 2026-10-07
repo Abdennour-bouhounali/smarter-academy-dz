@@ -3,26 +3,34 @@
   "lessonCode": "tatbiqat-tanasub",
   "level": 1,
   "metadata": {
-    "title": "تدريب — القطار",
+    "title": "القطار",
     "estimatedMinutes": 3,
     "tags": [
-      "مقدار بدلالة آخر",
-      "السرعة المتوسطة"
+      "السرعة",
+      "مقدار بدلالة آخر"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tatbiqat-tanasub_P3",
-      "modelledOn": "know-4"
+      "modelledOn": "know-4",
+      "adaptedFrom": "ex-4am-tatbiqat-tanasub-l1-010"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "يسير قطار بسرعة متوسطة ثابتة $90km/h$ ."
+    "content": "يسير قطار بسرعة متوسطة ثابتة قدرها $90km/h$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المسافة $d$ (بالكيلومتر) التي يقطعها في $t$ ساعة:",
+      "step": "01",
+      "statement": "عبّر عن المسافة $d$ (بـ km) التي يقطعها القطار بدلالة المدة $t$ (بالساعة).",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P3",
@@ -30,51 +38,39 @@
         }
       ],
       "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$d = \\dfrac{t}{90}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MAQADIR-QISMA-MAQLUBA"
-        },
-        {
-          "id": "B",
-          "content": "$d = 90t$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$d = 90 + t$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-AFFINE"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب $d$ على الشكل $d = kt$ ثم أعط العدد $k$ فقط",
+      "expectedAnswer": "90",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المقدار المركّب الثابت (سرعة، كتلة حجمية، استطاعة، مضاعف) هو معامل دالة خطية."
+          "content": "من $v = \\dfrac{d}{t}$ نستنتج $d = v \\times t$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب المقدار المطلوب بدلالة الآخر: $d = v \\times t$ ، $m = \\rho \\times V$ ، $E = P \\times t$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "عوّض بالقيمة المعطاة، أو حلّ المعادلة إذا كان المجهول هو المقدار الآخر، ثم تحقّق من الوحدة."
+          "content": "السرعة ثابتة: المسافة متناسبة مع المدة."
         }
       ],
       "feedback": {
-        "correct": "من $v = \\dfrac{d}{t}$ : $d = v \\times t = 90t$ .",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "$d = 90t$ .",
+        "incorrect": "المسافة جداء السرعة في المدة."
+      },
+      "solution": {
+        "lines": [
+          "$v = \\dfrac{d}{t}$ ومنه $d = v \\times t$",
+          "$d = 90t$"
+        ],
+        "result": "d = 90t"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "المسافة المقطوعة في $3h$ (بالكيلومتر):",
+      "step": "02",
+      "statement": "احسب المسافة التي يقطعها القطار في ساعتين ونصف.",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P3",
@@ -82,30 +78,45 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "270",
+      "answerFormat": "اكتب المسافة بـ km (عدد فقط)",
+      "expectedAnswer": "225",
+      "misconceptionSignatures": [
+        {
+          "value": "36",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
+        },
+        {
+          "value": "207",
+          "id": "MISC-MAQADIR-WIHDA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المقدار المركّب الثابت (سرعة، كتلة حجمية، استطاعة، مضاعف) هو معامل دالة خطية."
+          "content": "ساعتان ونصف تساوي $2{,}5h$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب المقدار المطلوب بدلالة الآخر: $d = v \\times t$ ، $m = \\rho \\times V$ ، $E = P \\times t$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "عوّض بالقيمة المعطاة، أو حلّ المعادلة إذا كان المجهول هو المقدار الآخر، ثم تحقّق من الوحدة."
+          "content": "عوّض $t$ في العلاقة السابقة."
         }
       ],
       "feedback": {
-        "correct": "$d = 90 \\times 3 = 270km$ .",
-        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
-      }
+        "correct": "$d = 90 \\times 2{,}5 = 225km$ .",
+        "incorrect": "حوّل المدة إلى ساعات بعدد عشري ثم اضرب في 90 ."
+      },
+      "solution": {
+        "lines": [
+          "ساعتان ونصف $= 2{,}5h$",
+          "$d = 90 \\times 2{,}5 = 225$",
+          "يقطع القطار 225km ."
+        ],
+        "result": "d = 225km"
+      },
+      "timeSeconds": 60
     }
   ]
 }

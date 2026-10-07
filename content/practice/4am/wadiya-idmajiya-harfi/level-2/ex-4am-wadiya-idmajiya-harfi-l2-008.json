@@ -1,124 +1,173 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l2-008",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — مثلث قائم ضلعاه x و x + 2",
-    "estimatedMinutes": 2,
+    "title": "مساحة مثلث قائم",
+    "estimatedMinutes": 6,
     "tags": [
       "نمذجة",
-      "مساحة",
-      "مثلث قائم"
+      "نشر"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
       "modelledOn": "ex-34"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "مثلث قائم طولا ضلعيه القائمين $x$ و $x + 2$ (بالسنتيمتر)، حيث $x$ عدد موجب."
+    "content": "مثلث قائم طولا ضلعيه القائمين $x$ cm و $(x + 2)$ cm ، حيث $x$ عدد موجب."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "مساحة المثلث بدلالة $x$ هي ...",
+      "step": "01",
+      "lead": "عبّر بدلالة $x$ عن مساحة المثلث $S$ على شكل مجموع مبسّط.",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $ax^2 + bx$ (عدد صحيح أو كسر a/b) : اكتب العدد $a$ فقط",
+      "expectedAnswer": "1/2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x^2 + 2x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "B",
-          "content": "$\\dfrac{x^2 + 2}{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{x^2 + 2x}{2}$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$x + 1$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+          "value": "1",
+          "id": "MISC-NAMDHAJA-MISAHA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المساحة نصف جداء الضلعين القائمين."
+          "content": "مساحة المثلث القائم نصف جداء ضلعيه القائمين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب $\\dfrac{x(x + 2)}{2}$."
+          "content": "اكتب $S = \\dfrac{x(x + 2)}{2}$ ، ثم انشر البسط."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "انشر البسط."
+          "content": "اقسم كل حد على 2."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{x(x + 2)}{2} = \\dfrac{x^2 + 2x}{2}$.",
-        "incorrect": "لا تنس القسمة على 2، واضرب $x$ في الحدّين."
+        "correct": "$S = \\dfrac{1}{2}x^2 + x$ إذن $a = \\dfrac{1}{2}$ .",
+        "incorrect": "لا تنسَ القسمة على 2، واقسم كل حد من حدود النشر."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$S = \\dfrac{x(x + 2)}{2} = \\dfrac{x^2 + 2x}{2}$"
+        ],
+        "result": "S = \\dfrac{1}{2}x^2 + x"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "احسب مساحة المثلث (بـ $cm^2$) من أجل $x = 4$.",
+      "step": "01",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $ax^2 + bx$ (عدد صحيح أو كسر a/b) : اكتب العدد $b$ فقط",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
+        {
+          "value": "2",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $b$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = \\dfrac{1}{2}x^2 + x$ إذن $b = 1$ .",
+        "incorrect": "لا تنسَ القسمة على 2، واقسم كل حد من حدود النشر."
+      },
+      "solution": {
+        "lines": [
+          "$S = \\dfrac{1}{2}x^2 + x$"
+        ],
+        "result": "b = 1"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب مساحة المثلث من أجل $x = 4$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح",
+      "answerFormat": "عدد طبيعي: المساحة بـ $cm^2$",
       "expectedAnswer": "12",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "الضلعان عندئذ 4 و 6."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب جداءهما."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم على 2."
-        }
-      ],
-      "feedback": {
-        "correct": "$\\dfrac{4 \\times 6}{2} = 12$.",
-        "incorrect": "المساحة نصف جداء الضلعين القائمين."
-      },
       "misconceptionSignatures": [
         {
           "value": "24",
           "id": "MISC-NAMDHAJA-MISAHA"
         }
       ],
-      "cognitiveDemand": "apply"
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد المعطى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يمكنك الحساب بالأطوال: الضلعان القائمان من أجل هذه القيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = 12\\,cm^2$ .",
+        "incorrect": "عوّض بالقيمة المعطاة في الشكل المناسب، واحسب بعناية مع احترام أولويات العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$S = \\dfrac{4 \\times (4 + 2)}{2} = \\dfrac{24}{2}$"
+        ],
+        "result": "S = 12\\,cm^2"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l2-008",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 2
+  ]
 }

@@ -3,105 +3,335 @@
   "lessonCode": "wadiya-idmajiya-jumal",
   "level": 3,
   "metadata": {
-    "title": "عرض الهاتف — المكالمات والإنترنت",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2024 — جملة وخاصية طالس",
+    "estimatedMinutes": 12,
     "tags": [
-      "حل جملة",
-      "أعداد عشرية"
+      "جملة",
+      "خاصية طالس"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-jumal_P1"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P1",
+      "modelledOn": "BEM 2024 I-4"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2024",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "دفع ياسين 1 300 DA مقابل 200 دقيقة مكالمات و 3Go إنترنت، ودفعت ليلى 1 100 DA مقابل 100 دقيقة و 4Go من العرض نفسه. نسمّي $x$ ثمن دقيقة المكالمة و $y$ ثمن 1Go (بالدينار)."
+    "content": "",
+    "figure": {
+      "points": {
+        "P": [
+          0,
+          0
+        ],
+        "R": [
+          -5.262,
+          1.915
+        ],
+        "S": [
+          3.759,
+          -1.368
+        ],
+        "T": [
+          -3.172,
+          -1.479
+        ],
+        "U": [
+          2.266,
+          1.057
+        ]
+      },
+      "lines": [
+        {
+          "through": [
+            "R",
+            "S"
+          ],
+          "extend": [
+            0.1,
+            0.18
+          ]
+        },
+        {
+          "through": [
+            "T",
+            "U"
+          ],
+          "extend": [
+            0.1,
+            0.25
+          ]
+        },
+        {
+          "through": [
+            "R",
+            "T"
+          ],
+          "extend": [
+            0.3,
+            0.3
+          ]
+        },
+        {
+          "through": [
+            "S",
+            "U"
+          ],
+          "extend": [
+            0.45,
+            0.45
+          ]
+        }
+      ],
+      "labels": {
+        "R": "nw",
+        "T": "sw",
+        "U": "ne",
+        "S": "se",
+        "P": "n"
+      },
+      "ariaLabel": "المستقيمان (RS) و (TU) متقاطعان في P، والمستقيمان (RT) و (SU) متوازيان؛ الشكل مرسوم بأطوال غير حقيقية",
+      "maxWidth": 300
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما الثمنان $(x ; y)$ ؟",
+      "step": "01",
+      "statement": "حل الجملة التالية: $\\begin{cases} x + y = 96 \\\\ x - 1{,}4y = 0 \\end{cases}$",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P1",
           "role": "primary"
-        }
-      ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
-      "expectedAnswer": {
-        "x": "19/5",
-        "y": "180"
-      },
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "$200x + 3y = 1300$ و $100x + 4y = 1100$."
         },
         {
-          "id": "h2",
-          "type": "direction",
-          "content": "اضرب المعادلة الثانية في 2 ثم اطرح."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قد يكون ثمن الدقيقة عددا عشريا."
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "secondary"
         }
       ],
-      "feedback": {
-        "correct": "$5y = 900$ ، $y = 180$ ، ثم $200x = 760$ ، $x = 3{,}8$.",
-        "incorrect": "اجعل معاملي $x$ متساويين ثم اطرح."
-      },
       "cognitiveDemand": "apply",
-      "difficulty": 3,
+      "answerType": "point",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
+      "expectedAnswer": {
+        "x": "56",
+        "y": "40"
+      },
       "misconceptionSignatures": [
         {
           "value": {
-            "x": "180",
-            "y": "19/5"
+            "x": "40",
+            "y": "56"
           },
           "id": "MISC-JUMLA-TARTIB"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من المعادلة الثانية يمكن التعبير عن $x$ بدلالة $y$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بـ $1{,}4y$ في المعادلة الأولى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $y$ ثم استنتج $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "الثنائية $(56 ; 40)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} x + y = 96 & ...(1) \\\\ x - 1{,}4y = 0 & ...(2) \\end{cases}$",
+          "من المعادلة (1) نجد: $y = 96 - x$",
+          "بالتعويض في المعادلة (2) نجد: $x - 1{,}4(96 - x) = 0$",
+          "$2{,}4x - 134{,}4 = 0$",
+          "$2{,}4x = 134{,}4$",
+          "$x = 56$",
+          "ومنه: $y = 96 - 56 = 40$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(56 ; 40)"
+      },
+      "work": "optional",
+      "timeSeconds": 300
     },
     {
       "id": "q2",
-      "statement": "كم يدفع من يستهلك 50 دقيقة و 2Go؟",
+      "step": "02",
+      "lead": "الشكل المقابل مرسوم بأطوال غير حقيقية (لا يطلب إعادة رسمه). المستقيمان $(RS)$ و $(TU)$ متقاطعان في النقطة $P$ ، والمستقيمان $(RT)$ و $(SU)$ متوازيان. تعطى الأطوال: $RS = 96\\,mm$ ، $PT = 35\\,mm$ و $PU = 25\\,mm$ .\nأوجد $PR + PS$ و $\\dfrac{PR}{PS}$ ثم استنتج الطولين $PR$ و $PS$ (يمكنك الاستعانة بالسؤال 01).",
+      "statement": "$PR + PS$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "counted": false,
       "answerType": "rational",
-      "answerFormat": "مبلغ بالدينار",
-      "expectedAnswer": "550",
+      "answerFormat": "اكتب الطول بـ mm (عدد فقط)",
+      "expectedAnswer": "96",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب أولا الثمنين."
+          "content": "$P$ تقع بين $R$ و $S$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "50 دقيقة: $50x$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "أضف ثمن 2Go."
+          "content": "اجمع الطولين $PR$ و $PS$ على المستقيم $(RS)$ ."
         }
       ],
       "feedback": {
-        "correct": "$50 \\times 3{,}8 + 2 \\times 180 = 190 + 360 = 550$ DA.",
-        "incorrect": "عوّض بالثمنين اللذين وجدتهما."
+        "correct": "$PR + PS = RS = 96\\,mm$ .",
+        "incorrect": "النقطة $P$ تقع على القطعة $[RS]$ ."
       },
+      "solution": {
+        "lines": [
+          "النقط $P$ ، $R$ ، $S$ في استقامية و $P$ ، $T$ ، $U$ في استقامية، و $(RT) \\parallel (SU)$ .",
+          "حسب خاصية طالس: $\\dfrac{PR}{PS} = \\dfrac{PT}{PU} = \\dfrac{35}{25} = 1{,}4$",
+          "$P$ نقطة من $[RS]$ ، إذن: $PR + PS = RS = 96$",
+          "نضع $x = PR$ و $y = PS$ : $x + y = 96$ و $x = 1{,}4y$ أي $x - 1{,}4y = 0$ : هي جملة السؤال 01.",
+          "ومنه: $PR = 56\\,mm$ و $PS = 40\\,mm$ ."
+        ]
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "النسبة $\\dfrac{PR}{PS}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
       "cognitiveDemand": "apply",
-      "difficulty": 3
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب النسبة على شكل عدد عشري أو كسر",
+      "expectedAnswer": "7/5",
+      "misconceptionSignatures": [
+        {
+          "value": "5/7",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل خاصية طالس في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة تساوي $\\dfrac{PT}{PU}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{PR}{PS} = \\dfrac{PT}{PU} = 1{,}4$ .",
+        "incorrect": "المستقيمان $(RT)$ و $(SU)$ متوازيان: طبّق خاصية طالس."
+      },
+      "solution": {
+        "lines": [
+          "النقط $P$ ، $R$ ، $S$ في استقامية و $P$ ، $T$ ، $U$ في استقامية، و $(RT) \\parallel (SU)$ .",
+          "حسب خاصية طالس: $\\dfrac{PR}{PS} = \\dfrac{PT}{PU} = \\dfrac{35}{25} = 1{,}4$",
+          "$P$ نقطة من $[RS]$ ، إذن: $PR + PS = RS = 96$",
+          "نضع $x = PR$ و $y = PS$ : $x + y = 96$ و $x = 1{,}4y$ أي $x - 1{,}4y = 0$ : هي جملة السؤال 01.",
+          "ومنه: $PR = 56\\,mm$ و $PS = 40\\,mm$ ."
+        ]
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "الطول $PR$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب الطول $PR$ بـ mm (عدد فقط)",
+      "expectedAnswer": "56",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ضع $x = PR$ و $y = PS$ : تحصل على جملة السؤال 01."
+        }
+      ],
+      "feedback": {
+        "correct": "$PR = 56\\,mm$ .",
+        "incorrect": "قارن العلاقتين اللتين وجدتهما بجملة السؤال 01."
+      },
+      "solution": {
+        "lines": [
+          "النقط $P$ ، $R$ ، $S$ في استقامية و $P$ ، $T$ ، $U$ في استقامية، و $(RT) \\parallel (SU)$ .",
+          "حسب خاصية طالس: $\\dfrac{PR}{PS} = \\dfrac{PT}{PU} = \\dfrac{35}{25} = 1{,}4$",
+          "$P$ نقطة من $[RS]$ ، إذن: $PR + PS = RS = 96$",
+          "نضع $x = PR$ و $y = PS$ : $x + y = 96$ و $x = 1{,}4y$ أي $x - 1{,}4y = 0$ : هي جملة السؤال 01.",
+          "ومنه: $PR = 56\\,mm$ و $PS = 40\\,mm$ ."
+        ]
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q5",
+      "step": "02",
+      "statement": "الطول $PS$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب الطول $PS$ بـ mm (عدد فقط)",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$PS$ هو $y$ في حل جملة السؤال 01."
+        }
+      ],
+      "feedback": {
+        "correct": "$PS = 40\\,mm$ ، و $56 + 40 = 96$ .",
+        "incorrect": "استعمل حل جملة السؤال 01."
+      },
+      "solution": {
+        "lines": [
+          "النقط $P$ ، $R$ ، $S$ في استقامية و $P$ ، $T$ ، $U$ في استقامية، و $(RT) \\parallel (SU)$ .",
+          "حسب خاصية طالس: $\\dfrac{PR}{PS} = \\dfrac{PT}{PU} = \\dfrac{35}{25} = 1{,}4$",
+          "$P$ نقطة من $[RS]$ ، إذن: $PR + PS = RS = 96$",
+          "نضع $x = PR$ و $y = PS$ : $x + y = 96$ و $x = 1{,}4y$ أي $x - 1{,}4y = 0$ : هي جملة السؤال 01.",
+          "ومنه: $PR = 56\\,mm$ و $PS = 40\\,mm$ ."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

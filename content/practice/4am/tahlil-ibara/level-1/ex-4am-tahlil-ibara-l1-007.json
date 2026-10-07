@@ -3,8 +3,8 @@
   "lessonCode": "tahlil-ibara",
   "level": 1,
   "metadata": {
-    "title": "تدريب — عامل مشترك حرفي",
-    "estimatedMinutes": 4,
+    "title": "عامل مشترك حرفي",
+    "estimatedMinutes": 7,
     "tags": [
       "عامل مشترك"
     ],
@@ -13,113 +13,148 @@
       "reason": "practice_generation",
       "learningPoint": "4am_tahlil-ibara_P2",
       "modelledOn": "ex-20"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "حلّل كل عبارة باستخراج أكبر عامل مشترك."
+    "content": "حلّل كل عبارة باستخراج أكبر عامل مشترك:",
+    "formulas": [
+      "A = x^2 + 7x",
+      "B = 3x^2 - 6x"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$x^2 + 7x = $",
+      "step": "01",
+      "lead": "حلّل العبارة $A$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x(x^2 + 7)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
-        },
-        {
-          "id": "B",
-          "content": "$x(x + 7)$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$7x(x + 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $x(x + m)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "7",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$x^2 = x \\times x$."
+          "content": "ابحث عن عامل مشترك بين حدود العبارة (قد يكون عبارة كاملة بين قوسين)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "العامل المشترك هو $x$."
+          "content": "استعمل $ka + kb = k(a + b)$ : أخرج العامل المشترك، واكتب ما يبقى من كل حد بين قوسين كبيرين."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اكتب $x \\times x + 7 \\times x$ ثم استخرج $x$."
+          "content": "بسّط ما بين القوسين الكبيرين بإشاراته، ثم قارن بالشكل المطلوب."
         }
       ],
       "feedback": {
-        "correct": "$x^2 + 7x = x \\times x + 7 \\times x = x(x + 7)$.",
-        "incorrect": "بعد استخراج $x$ من $x^2$ يبقى $x$."
-      }
+        "correct": "$A = x(x + 7)$ إذن $m = 7$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$A = x \\times x + 7 \\times x$",
+          "$A = x(x + 7)$"
+        ],
+        "result": "A = x(x + 7)"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "$3x^2 - 6x = $",
+      "step": "02",
+      "lead": "حلّل العبارة $B$ باستخراج أكبر عامل مشترك (عدد وحرف).",
+      "statement": "العدد $k$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $kx(x - m)$ حيث $k$ عدد طبيعي : اكتب العدد $k$ فقط",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$3(x^2 - 2x)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
-        },
-        {
-          "id": "B",
-          "content": "$3x(x - 6)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
-        },
-        {
-          "id": "C",
-          "content": "$3x(x - 2)$",
-          "isCorrect": true
+          "value": "1",
+          "id": "MISC-TAHLIL-AMIL-NAQIS"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العاملان المشتركان: عدد وحرف."
+          "content": "العامل المشترك الأكبر يجمع أكبر عدد يقسم المعاملين والحرف $x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "PGCD$(3 ; 6) = 3$ ، و $x$ يقسم الحدّين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "استخرج $3x$ كاملًا."
+          "content": "اكتب كل حد على شكل جداء يظهر فيه هذا العامل."
         }
       ],
       "feedback": {
-        "correct": "$3x^2 - 6x = 3x \\times x - 3x \\times 2 = 3x(x - 2)$.",
-        "incorrect": "$3(x^2 - 2x)$ تساوي العبارة لكنّ $x$ ما زال مشتركًا داخل القوس."
-      }
+        "correct": "$B = 3x(x - 2)$ إذن $k = 3$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "العامل المشترك الأكبر هو $3x$",
+          "$B = 3x \\times x - 3x \\times 2$",
+          "$B = 3x(x - 2)$"
+        ],
+        "result": "B = 3x(x - 2)"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "العدد $m$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $kx(x - m)$ حيث $k$ عدد طبيعي : اكتب العدد $m$ فقط",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = 3x(x - 2)$ إذن $m = 2$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$B = 3x(x - 2)$"
+        ],
+        "result": "m = 2"
+      },
+      "timeSeconds": 60
     }
   ]
 }

@@ -1,123 +1,127 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l2-009",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — فرق مربعين بعد المتطابقة",
-    "estimatedMinutes": 2,
+    "title": "فرق مربعين وحساب دون آلة",
+    "estimatedMinutes": 5,
     "tags": [
+      "فرق مربعين",
       "تحليل",
-      "اختيار الشكل"
+      "حساب ذهني"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-harfi_P1",
-      "modelledOn": "ex-40"
+      "modelledOn": "ex-40",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-harfi-l2-009"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "نعتبر العبارة $F = (x + 1)^2 - 1$ ."
+    "content": "لتكن العبارة $F$ حيث :",
+    "formulas": [
+      "F = (x + 1)^2 - 1"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "تحليل العبارة $F$ هو ...",
+      "step": "01",
+      "lead": "حلّل العبارة $F$ إلى جداء عاملين.",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $F$ على الشكل $x(x + m)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x(x + 2)$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$x^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
-        },
-        {
-          "id": "C",
-          "content": "$(x + 2)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
-        },
-        {
-          "id": "D",
-          "content": "$(x - 1)(x + 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+          "value": "0",
+          "id": "MISC-TAHLIL-FARQ-MURABBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$1 = 1^2$."
+          "content": "اكتب $1 = 1^2$ : العبارة فرق مربعين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "العبارة فرق مربعين: $a = x + 1$ و $b = 1$."
+          "content": "استعمل $a^2 - b^2 = (a - b)(a + b)$ مع $a = x + 1$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$(a - b)(a + b)$."
+          "content": "بسّط ما بداخل كل قوس."
         }
       ],
       "feedback": {
-        "correct": "$(x + 1 - 1)(x + 1 + 1) = x(x + 2)$.",
-        "incorrect": "فرق مربعين يُحلّل إلى جداء $(a - b)(a + b)$."
+        "correct": "$F = x(x + 2)$ إذن $m = 2$ .",
+        "incorrect": "تحقّق من تحليلك بنشر الجداء: يجب أن تجد العبارة الأصلية."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$F = (x + 1)^2 - 1^2$",
+          "$F = (x + 1 - 1)(x + 1 + 1)$"
+        ],
+        "result": "F = x(x + 2)"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "احسب $F$ من أجل $x = -2$.",
+      "step": "02",
+      "statement": "احسب $F$ من أجل $x = 99$ دون استعمال الآلة الحاسبة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
-      "expectedAnswer": "0",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9999",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "استعمل الشكل المحلّل."
+          "content": "اختر الشكل الذي يُسهّل الحساب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما قيمة العامل $x + 2$ ؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "جداء أحد عامليه معدوم."
+          "content": "في الشكل المعطى: $(99 + 1)^2$ مربع عدد مدوّر."
         }
       ],
       "feedback": {
-        "correct": "$F = (-2) \\times 0 = 0$ ؛ ونتحقق: $(-1)^2 - 1 = 0$.",
-        "incorrect": "عوّض في الشكل المحلّل: أحد العاملين معدوم."
+        "correct": "$F = 9999$ .",
+        "incorrect": "عوّض بالقيمة المعطاة في الشكل المناسب، واحسب بعناية مع احترام أولويات العمليات."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "-2",
-          "id": "MISC-SHAKL-GHAYR-MUNASIB"
-        }
-      ],
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "بالشكل المعطى: $F = (99 + 1)^2 - 1 = 100^2 - 1 = 10000 - 1$",
+          "أو بالشكل المحلّل: $F = 99 \\times 101$"
+        ],
+        "result": "F = 9999"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l2-009",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 2
+  ]
 }

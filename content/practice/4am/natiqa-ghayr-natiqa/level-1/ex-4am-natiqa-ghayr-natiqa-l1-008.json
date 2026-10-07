@@ -1,15 +1,25 @@
 {
+  "id": "ex-4am-natiqa-ghayr-natiqa-l1-008",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — جذران متجاوران",
-    "estimatedMinutes": 2,
+    "title": "جذران متجاوران",
+    "estimatedMinutes": 3,
     "tags": [
-      "تصنيف"
+      "عدد ناطق",
+      "عدد غير ناطق"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
       "modelledOn": "act-2"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
@@ -18,57 +28,93 @@
   "questions": [
     {
       "id": "q1",
-      "statement": "ماذا تقول عن هذين العددين؟",
+      "step": "01",
+      "statement": "احسب $\\sqrt{25}$ .",
       "learningPoints": [
         {
-          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "code": "4am_natiqa-ghayr-natiqa_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\sqrt{25}$ عدد ناطق، و $\\sqrt{26}$ ليس عددًا ناطقًا",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "كلاهما عدد ناطق لأن 25 و 26 عددان طبيعيان",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NATIQ-KULL-JIDHR"
-        },
-        {
-          "id": "C",
-          "content": "كلاهما عدد ناطق: $\\sqrt{25} = 12{,}5$ و $\\sqrt{26} = 13$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-NISF"
+          "value": "12.5",
+          "id": "MISC-JIDHR-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "هل 25 مربع لعدد ناطق؟ وهل 26 كذلك؟"
+          "content": "ما العدد الموجب الذي مربعه 25؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$5^2 = 25$ ، إذن $\\sqrt{25} = 5$ .",
+        "incorrect": "الجذر التربيعي ليس نصف العدد: ابحث عن العدد الموجب الذي مربعه 25."
+      },
+      "solution": {
+        "lines": [
+          "$5^2 = 25$ و $5 > 0$"
+        ],
+        "result": "\\sqrt{25} = 5"
+      },
+      "timeSeconds": 45
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "هل $\\sqrt{26}$ عدد ناطق؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-KULL-JIDHR"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "answerFormat": "اختر جوابك، ثم قارن تبريرك بالحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن 26 بالمربعين $5^2$ و $6^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الجذر التربيعي ليس نصف العدد: تحقّق بالتربيع."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "طبّق المعيار على كل عدد وحده."
+          "content": "هل يوجد عدد طبيعي مربعه 26؟"
         }
       ],
       "feedback": {
-        "correct": "$5^2 = 25$ إذن $\\sqrt{25} = 5$ ناطق؛ و 26 ليس مربعًا لعدد ناطق فـ $\\sqrt{26}$ ليس ناطقًا.",
-        "incorrect": "كون العدد طبيعيًا لا يكفي: يجب أن يكون مربعًا لعدد ناطق."
-      }
+        "correct": "26 محصور بين المربعين المتتاليين 25 و 36، فهو ليس مربعًا لعدد ناطق: $\\sqrt{26}$ ليس ناطقًا.",
+        "incorrect": "ليس جذر كل عدد طبيعي عددًا ناطقًا: هل 26 مربع لعدد ناطق؟"
+      },
+      "solution": {
+        "lines": [
+          "$5^2 = 25 < 26 < 36 = 6^2$",
+          "لا يوجد عدد طبيعي مربعه 26، فالعدد 26 ليس مربعًا لعدد ناطق.",
+          "إذن $\\sqrt{26}$ ليس عددًا ناطقًا (بينما $\\sqrt{25} = 5$ عدد ناطق)."
+        ]
+      },
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-natiqa-ghayr-natiqa-l1-008",
-  "lessonCode": "natiqa-ghayr-natiqa",
-  "level": 1
+  ]
 }

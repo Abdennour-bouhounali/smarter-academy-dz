@@ -3,7 +3,7 @@
   "lessonCode": "muadala-ula",
   "level": 1,
   "metadata": {
-    "title": "تمرين 1 — الشكل ax = b",
+    "title": "حل معادلتين من الشكل ax = b",
     "estimatedMinutes": 4,
     "tags": [
       "ax = b"
@@ -14,98 +14,132 @@
       "page": 50,
       "section": "أوظّف تعلّماتي",
       "number": 1
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 50): حل كل معادلة من المعادلات المقترحة."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّ المعادلة $2x = 11$ .",
+      "step": "01",
+      "sub": "ا",
+      "lead": "حل كلا من المعادلتين الآتيتين:",
+      "statement": "$2x = 11$",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
       "expectedAnswer": "11/2",
+      "misconceptionSignatures": [
+        {
+          "value": "2/11",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "value": "9",
+          "id": "MISC-MUADALA-TARH-MUAMIL"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المعادلة من الشكل $ax = b$ : حدّد العدد المضروب في $x$ والعدد الذي في الطرف الآخر."
+          "content": "المعادلة من الشكل $ax = b$ : عيّن معامل $x$ والعدد الذي في الطرف الآخر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "نقسم الطرفين على معامل $x$ ، مع إشارته."
+          "content": "اقسم الطرفين على معامل $x$ مع إشارته."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس."
+          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس، ثم اختزل."
         }
       ],
       "feedback": {
-        "correct": "$2x = 11$ : نصل إلى $2x = 11$ ، ومنه $x = \\dfrac{11}{2}$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "$x = \\dfrac{11}{2}$ .",
+        "incorrect": "الحل هو حاصل قسمة العدد الذي في الطرف الآخر على معامل $x$ بإشارته. تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "نقسم الطرفين على $2$ :"
+        ],
+        "result": "x = \\dfrac{11}{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "حل المعادلة $-3x = 5$ هو:",
+      "step": "01",
+      "sub": "ب",
+      "statement": "$-3x = 5$",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
+      "expectedAnswer": "-5/3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$8$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARH-MUAMIL"
+          "value": "-3/5",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
         },
         {
-          "id": "B",
-          "content": "$-\\dfrac{5}{3}$",
-          "isCorrect": true
+          "value": "5/3",
+          "id": "MISC-MUADALA-ISHARA-SALIBA"
         },
         {
-          "id": "C",
-          "content": "$-\\dfrac{3}{5}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+          "value": "8",
+          "id": "MISC-MUADALA-TARH-MUAMIL"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المعادلة من الشكل $ax = b$ : حدّد العدد المضروب في $x$ والعدد الذي في الطرف الآخر."
+          "content": "المعادلة من الشكل $ax = b$ : عيّن معامل $x$ والعدد الذي في الطرف الآخر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "نقسم الطرفين على معامل $x$ ، مع إشارته."
+          "content": "اقسم الطرفين على معامل $x$ مع إشارته."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس."
+          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس، ثم اختزل."
         }
       ],
       "feedback": {
-        "correct": "$-3x = 5$ : نصل إلى $-3x = 5$ ، ومنه $x = -\\dfrac{5}{3}$.",
-        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
-      }
+        "correct": "$x = -\\dfrac{5}{3}$ .",
+        "incorrect": "الحل هو حاصل قسمة العدد الذي في الطرف الآخر على معامل $x$ بإشارته. تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$x = \\dfrac{5}{-3}$"
+        ],
+        "result": "x = -\\dfrac{5}{3}"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
   ]
 }

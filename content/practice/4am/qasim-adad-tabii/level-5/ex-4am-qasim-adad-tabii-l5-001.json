@@ -1,172 +1,228 @@
 {
+  "id": "ex-4am-qasim-adad-tabii-l5-001",
+  "lessonCode": "qasim-adad-tabii",
+  "level": 5,
   "metadata": {
-    "title": "أؤكّد تعلّماتي — القسمة الإقليدية",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2022 — قفف رمضان",
+    "estimatedMinutes": 11,
     "tags": [
-      "أؤكّد"
+      "قاسم",
+      "وضعية"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "qcm",
-      "page": 16,
-      "section": "أؤكّد تعلّماتي"
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_qasim-adad-tabii_P1",
+      "modelledOn": "BEM 2022 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2022",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "في كل حالة اختر الإجابة الصحيحة (الكتاب ص 16)."
+    "content": "تحضّر جمعية خيرية بباتنة قففًا لشهر رمضان لفائدة العائلات المعوزة. استلمت الجمعية 1440kg من السميد، وتريد توزيعها كلها في أكياس متماثلة دون أن يبقى سميد، على أن تحتوي كل قفة على كيس واحد."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "في القسمة الإقليدية للعدد 72 على 5 ...",
+      "step": "01",
+      "sub": "ا",
+      "lead": "هل يمكن أن تكون كتلة كل كيس 25kg؟ 16kg؟ برّر إجابتك.",
+      "statement": "كتلة كل كيس 25kg.",
       "learningPoints": [
         {
           "code": "4am_qasim-adad-tabii_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "حاصل القسمة يساوي 14 والباقي 2",
-          "isCorrect": true
+          "content": "نعم",
+          "isCorrect": false
         },
         {
           "id": "B",
-          "content": "حاصل القسمة هو 2 والباقي 14",
-          "isCorrect": false,
-          "misconceptionId": "MISC-QISMA-HASIL-BAQI"
-        },
-        {
-          "id": "C",
-          "content": "حاصل القسمة هو 72 والباقي 5",
-          "isCorrect": false
+          "content": "لا",
+          "isCorrect": true
         }
       ],
+      "answerFormat": "اختر نعم أو لا، ثم قارن تبريرك بالحل النموذجي",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "5 × 14 = 70."
+          "content": "أجرِ القسمة الإقليدية للعدد 1440 على 25."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "72 − 70 = ?"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الباقي يجب أن يكون أصغر من 5."
+          "content": "25 قاسم للعدد 1440 إذا وفقط إذا كان باقي هذه القسمة معدومًا."
         }
       ],
       "feedback": {
-        "correct": "72 = 5 × 14 + 2.",
-        "incorrect": "الباقي أصغر من المقسوم عليه دائمًا."
-      }
+        "correct": "$1440 = 25 \\times 57 + 15$: الباقي غير معدوم.",
+        "incorrect": "أجرِ القسمة الإقليدية للعدد 1440 على 25، وانظر هل الباقي معدوم."
+      },
+      "solution": {
+        "lines": [
+          "$1440 = 25 \\times 57 + 15$ مع $15 < 25$",
+          "الباقي 15 غير معدوم، إذن 25 ليس قاسمًا للعدد 1440: يبقى 15kg من السميد، فلا يمكن ذلك."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "في القسمة الإقليدية للعدد 84 على 12 ...",
+      "step": "01",
+      "sub": "ب",
+      "statement": "كتلة كل كيس 16kg.",
       "learningPoints": [
         {
           "code": "4am_qasim-adad-tabii_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "حاصل القسمة هو 7 والباقي 12",
-          "isCorrect": false,
-          "misconceptionId": "MISC-QISMA-BAQI-KABIR"
-        },
-        {
-          "id": "B",
-          "content": "حاصل القسمة هو 7 والباقي 0",
+          "content": "نعم",
           "isCorrect": true
         },
         {
-          "id": "C",
-          "content": "حاصل القسمة هو 7 والباقي 10",
+          "id": "B",
+          "content": "لا",
           "isCorrect": false
         }
       ],
+      "answerFormat": "اختر نعم أو لا، ثم قارن تبريرك بالحل النموذجي",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "12 × 7 = 84."
+          "content": "أجرِ القسمة الإقليدية للعدد 1440 على 16."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ماذا يبقى؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "باقٍ يساوي المقسوم عليه غير ممكن."
+          "content": "16 قاسم للعدد 1440 إذا وفقط إذا كان باقي هذه القسمة معدومًا."
         }
       ],
       "feedback": {
-        "correct": "84 = 12 × 7 + 0: الباقي معدوم، إذن 12 قاسم للعدد 84.",
-        "incorrect": "12 × 7 = ?"
-      }
+        "correct": "$1440 = 16 \\times 90$: الباقي معدوم.",
+        "incorrect": "أجرِ القسمة الإقليدية للعدد 1440 على 16، وانظر هل الباقي معدوم."
+      },
+      "solution": {
+        "lines": [
+          "$1440 = 16 \\times 90$ (الباقي معدوم).",
+          "إذن 16 قاسم للعدد 1440: يمكن ذلك."
+        ],
+        "result": "نعم"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q3",
-      "statement": "ما هي قواسم العدد 17؟",
+      "step": "02",
+      "statement": "اختارت الجمعية أكياسًا من 16kg. أوجد عدد القفف التي يمكن تحضيرها.",
       "learningPoints": [
         {
-          "code": "4am_qasim-adad-tabii_P4",
+          "code": "4am_qasim-adad-tabii_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "1 و 17",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "17 فقط",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "1 فقط",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "90",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "a = 1 × a."
+          "content": "نبحث عن عدد طبيعي $q$ حيث $1440 = 16 \\times q$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "a = a × 1."
+          "content": "أجرِ القسمة الإقليدية للعدد 1440 على 16."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "هل يقسم 17 عدد آخر بين 2 و 16؟"
+          "content": "إذا كان الباقي معدومًا فإن حاصل القسمة هو العدد المطلوب."
         }
       ],
       "feedback": {
-        "correct": "1 قاسم لكل عدد طبيعي، وكل عدد غير معدوم قاسم لنفسه.",
-        "incorrect": "لا تنسَ 1 ولا العدد نفسه."
-      }
+        "correct": "$1440 = 16 \\times 90$.",
+        "incorrect": "اقسم 1440 على 16: حاصل القسمة هو العدد $q$ إذا كان الباقي معدومًا."
+      },
+      "solution": {
+        "lines": [
+          "$16 \\times 90 = 1440$",
+          "إذن $1440 = 16 \\times 90$",
+          "كل قفة تحتوي على كيس واحد: تحضّر الجمعية 90 قفة."
+        ],
+        "result": "1440 = 16 \\times 90"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "lead": "تضيف الجمعية إلى كل قفة 3 لترات من الزيت، ثمن اللتر الواحد 270DA، و 2kg من السكر، ثمن الكيلوغرام الواحد 110DA. خصّصت الجمعية لذلك مبلغ 95000DA.",
+      "statement": "☜ أوجد المبلغ الذي يبقى للجمعية بعد شراء الزيت والسكر لكل القفف.",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-adad-tabii_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار (DA)",
+      "expectedAnswer": "2300",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب تكلفة الزيت والسكر لقفة واحدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب هذه التكلفة في عدد القفف الذي وجدته في السؤال 02."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح المجموع من المبلغ المخصص."
+        }
+      ],
+      "feedback": {
+        "correct": "تكلفة القفة $3 \\times 270 + 2 \\times 110 = 1030$DA، ولـ 90 قفة $92700$DA، فيبقى $2300$DA.",
+        "incorrect": "احسب تكلفة قفة واحدة (الزيت والسكر)، ثم تكلفة كل القفف، ثم اطرحها من 95000DA."
+      },
+      "solution": {
+        "lines": [
+          "تكلفة الزيت والسكر لقفة واحدة: $3 \\times 270 + 2 \\times 110 = 810 + 220 = 1030$ أي 1030DA.",
+          "تكلفة 90 قفة: $90 \\times 1030 = 92700$ أي 92700DA.",
+          "$92700 < 95000$: المبلغ يكفي.",
+          "المبلغ المتبقي: $95000 - 92700$"
+        ],
+        "result": "2300 \\text{ DA}"
+      },
+      "work": "optional",
+      "timeSeconds": 300
     }
-  ],
-  "id": "ex-4am-qasim-adad-tabii-l5-001",
-  "lessonCode": "qasim-adad-tabii",
-  "level": 5
+  ]
 }

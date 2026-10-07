@@ -3,104 +3,234 @@
   "lessonCode": "wadiya-idmajiya-jumal",
   "level": 4,
   "metadata": {
-    "title": "بطاقة الإخلاص — كم وفّر؟",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2024 — قطعة أرض مستطيلة",
+    "estimatedMinutes": 12,
     "tags": [
-      "تخفيض",
-      "تفسير"
+      "جملة",
+      "محيط",
+      "مساحة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-jumal_P1",
-      "modelledOn": "ex-31"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "BEM 2024 I-4"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2024",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "في المتجر نفسه: سعر علبة الحليب 90 DA وسعر قارورة العصير 180 DA. يستفيد صاحب بطاقة الإخلاص من تخفيض 20% على كل مشترياته."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "كم يدفع صاحب البطاقة مقابل 4 علب حليب و 3 قارورات عصير؟",
+      "step": "01",
+      "statement": "حل الجملة التالية: $\\begin{cases} x + y = 48 \\\\ x - 0{,}6y = 0 \\end{cases}$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "point",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
+      "expectedAnswer": {
+        "x": "18",
+        "y": "30"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "30",
+            "y": "18"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من المعادلة الثانية يمكن التعبير عن $x$ بدلالة $y$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أو عبّر عن $y$ بدلالة $x$ من المعادلة الأولى وعوّض في الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب أحد المجهولين ثم استنتج الآخر."
+        }
+      ],
+      "feedback": {
+        "correct": "الثنائية $(18 ; 30)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} x + y = 48 & ...(1) \\\\ x - 0{,}6y = 0 & ...(2) \\end{cases}$",
+          "من المعادلة (1) نجد: $y = 48 - x$",
+          "بالتعويض في المعادلة (2) نجد: $x - 0{,}6(48 - x) = 0$",
+          "$1{,}6x - 28{,}8 = 0$",
+          "$1{,}6x = 28{,}8$",
+          "$x = 18$",
+          "ومنه: $y = 48 - 18 = 30$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(18 ; 30)"
+      },
+      "work": "optional",
+      "timeSeconds": 300
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "lead": "قطعة أرض مستطيلة الشكل محيطها $96m$ ، وعرضها يساوي $0{,}6$ من طولها. نسمّي $x$ عرضها و $y$ طولها (بالمتر). أوجد بُعدي القطعة (يمكنك الاستعانة بالسؤال 01).",
+      "statement": "عرض القطعة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العرض بـ m (عدد فقط)",
+      "expectedAnswer": "18",
+      "misconceptionSignatures": [
+        {
+          "value": "30",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب معادلة للمحيط ثم بسّطها بالقسمة على 2."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ترجم «العرض يساوي 0,6 من الطول» بمعادلة وقارن بجملة السؤال 01."
+        }
+      ],
+      "feedback": {
+        "correct": "عرض القطعة $18m$ .",
+        "incorrect": "محيط المستطيل = 2 × (الطول + العرض)؛ قارن المعادلتين بجملة السؤال 01."
+      },
+      "solution": {
+        "lines": [
+          "المحيط: $2(x + y) = 96$ ومنه $x + y = 48$",
+          "العرض يساوي $0{,}6$ من الطول: $x = 0{,}6y$ أي $x - 0{,}6y = 0$",
+          "نحصل على جملة السؤال 01، ومنه: $x = 18$ و $y = 30$",
+          "إذن عرض القطعة $18m$ وطولها $30m$ ."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "طول القطعة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب الطول بـ m (عدد فقط)",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
+        {
+          "value": "18",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y$ هو العدد الثاني في حل جملة السؤال 01."
+        }
+      ],
+      "feedback": {
+        "correct": "طول القطعة $30m$ ، ونتحقق: $2 \\times (18 + 30) = 96$ .",
+        "incorrect": "استعمل حل جملة السؤال 01: $y$ هو الطول."
+      },
+      "solution": {
+        "lines": [
+          "المحيط: $2(x + y) = 96$ ومنه $x + y = 48$",
+          "العرض يساوي $0{,}6$ من الطول: $x = 0{,}6y$ أي $x - 0{,}6y = 0$",
+          "نحصل على جملة السؤال 01، ومنه: $x = 18$ و $y = 30$",
+          "إذن عرض القطعة $18m$ وطولها $30m$ ."
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "احسب مساحة هذه القطعة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P1",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "مبلغ بالدينار",
-      "expectedAnswer": "720",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "احسب الثمن قبل التخفيض."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$4 \\times 90 + 3 \\times 180$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اضرب في 0,8."
-        }
-      ],
-      "feedback": {
-        "correct": "$(360 + 540) \\times 0{,}8 = 900 \\times 0{,}8 = 720$ DA.",
-        "incorrect": "الثمن قبل التخفيض ثم نضرب في النسبة المدفوعة."
-      },
       "cognitiveDemand": "apply",
-      "difficulty": 3,
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب المساحة بـ $m^2$ (عدد فقط)",
+      "expectedAnswer": "540",
       "misconceptionSignatures": [
         {
-          "value": "180",
-          "id": "MISC-TAKHFID-NISBA"
-        },
-        {
-          "value": "900",
-          "id": "MISC-TAKHFID-NISBA"
-        }
-      ]
-    },
-    {
-      "id": "q2",
-      "statement": "كم يوفّر بفضل البطاقة في هذه المشتريات؟",
-      "learningPoints": [
-        {
-          "code": "4am_wadiya-idmajiya-jumal_P2",
-          "role": "primary"
+          "value": "96",
+          "id": "MISC-JUMLA-WIHDA"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "مبلغ بالدينار",
-      "expectedAnswer": "180",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الفرق بين الثمنين قبل التخفيض وبعده."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "أو 20% من الثمن قبل التخفيض."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$0{,}2 \\times$ الثمن قبل التخفيض."
+          "content": "مساحة المستطيل = الطول × العرض."
         }
       ],
       "feedback": {
-        "correct": "$900 - 720 = 180$ DA ، أي $0{,}2 \\times 900$.",
-        "incorrect": "التوفير هو مقدار التخفيض."
+        "correct": "$18 \\times 30 = 540\\,m^2$ .",
+        "incorrect": "اضرب الطول في العرض."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "$18 \\times 30 = 540$",
+          "مساحة القطعة $540m^2$ ."
+        ],
+        "result": "540\\,m^2"
+      },
+      "timeSeconds": 90
     }
   ]
 }

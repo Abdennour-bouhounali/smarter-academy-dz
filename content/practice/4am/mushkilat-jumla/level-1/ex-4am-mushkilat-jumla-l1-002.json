@@ -3,8 +3,8 @@
   "lessonCode": "mushkilat-jumla",
   "level": 1,
   "metadata": {
-    "title": "نشاط 3 (ص 57) — ترجمة معلومتي المتحف",
-    "estimatedMinutes": 3,
+    "title": "زوار المتحف",
+    "estimatedMinutes": 6,
     "tags": [
       "ترييض",
       "ترجمة",
@@ -16,113 +16,102 @@
       "page": 57,
       "section": "أنشطة",
       "number": 3
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 57): يقترح متحف تذكرتين: 300 DA للبالغين و 150 DA للصّغار. في هذا اليوم، استقبل المتحف 140 زائرا وبلغت مداخيله 30300 DA. نسمّي $x$ عدد البالغين و $y$ عدد الصغار."
+    "content": "يقترح متحف تذكرتين: 300DA للبالغين و 150DA للصغار. في أحد الأيام، استقبل المتحف 140 زائرا وبلغت مداخيله 30300DA."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المعلومة «استقبل المتحف 140 زائرا» تُترجم بـ:",
+      "step": "01",
+      "lead": "نسمّي $x$ عدد البالغين و $y$ عدد الصغار الذين زاروا المتحف في هذا اليوم.",
+      "statement": "ترجم المعطيات بجملة معادلتين مجهولاها $x$ و $y$ .",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$300x + 150y = 140$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "B",
-          "content": "$x + y = 30300$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "$x + y = 140$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "هل تعدّ هذه المعلومة أشخاصا أم دنانير؟"
+          "content": "في النص معلومتان: عدد الأشخاص، ومبلغ المال."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كل زائر، بالغا كان أو صغيرا، يُعدّ مرة واحدة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع عدد البالغين وعدد الصغار."
+          "content": "مداخيل تذاكر البالغين هي $300x$ ."
         }
       ],
       "feedback": {
-        "correct": "140 عدد زوار: كل زائر يُعدّ مرة واحدة، $x + y = 140$ .",
-        "incorrect": "الأثمان (300 و 150) لا تدخل في عدّ الأشخاص."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "عدد الزوار: $x + y = 140$",
+          "المداخيل: $300x + 150y = 30300$",
+          "ومنه الجملة: $\\begin{cases} x + y = 140 \\\\ 300x + 150y = 30300 \\end{cases}$"
+        ],
+        "result": "\\begin{cases} x + y = 140 \\\\ 300x + 150y = 30300 \\end{cases}"
+      },
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "المعلومة «بلغت مداخيله 30300 DA» تُترجم بـ:",
+      "step": "02",
+      "statement": "اكتب معادلة المداخيل، بعد قسمة طرفيها على 150، على الشكل $2x + y = c$ . أعط العدد $c$ .",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $c$ فقط",
+      "expectedAnswer": "202",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$300x + 150y = 30300$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$150x + 300y = 30300$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "$x + y = 30300$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
+          "value": "140",
+          "id": "MISC-JUMLA-TARJAMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "هذه المعلومة مبلغ بالدينار."
+          "content": "انطلق من معادلة المداخيل $300x + 150y = 30300$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كل بالغ يدفع 300 وكل صغير يدفع 150."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "مداخيل البالغين زائد مداخيل الصغار."
+          "content": "اقسم كل حد من حدودها على 150."
         }
       ],
       "feedback": {
-        "correct": "مداخيل البالغين $300x$ ومداخيل الصغار $150y$ : المجموع 30300 .",
-        "incorrect": "انتبه: $x$ عدد البالغين، فثمنه 300 لا 150."
-      }
+        "correct": "بقسمة الطرفين على 150: $2x + y = 202$ .",
+        "incorrect": "اقسم الحدود الثلاثة على 150، بما فيها الطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "$300x + 150y = 30300$",
+          "بقسمة طرفي المعادلة على 150 نجد: $2x + y = 202$"
+        ],
+        "result": "c = 202"
+      },
+      "timeSeconds": 150
     }
   ]
 }

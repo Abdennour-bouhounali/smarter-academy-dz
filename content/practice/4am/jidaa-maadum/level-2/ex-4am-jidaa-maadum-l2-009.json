@@ -3,117 +3,173 @@
   "lessonCode": "jidaa-maadum",
   "level": 2,
   "metadata": {
-    "title": "تدريب — هل نحلّل أولًا؟",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2014 — فرق مربعين ومعادلة جداء معدوم",
+    "estimatedMinutes": 7,
     "tags": [
-      "تعريف"
+      "متطابقات شهيرة",
+      "تحليل",
+      "جداء معدوم"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_jidaa-maadum_P1",
-      "modelledOn": "know-2"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_jidaa-maadum_P2",
+      "modelledOn": "BEM 2014 I"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2014",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "قبل تطبيق خاصية الجداء المعدوم يجب أن يكون الطرف الأول جداءً والطرف الثاني $0$ ."
+    "content": "لتكن العبارة $E$ حيث:",
+    "formulas": [
+      "E = (2x + 3)^2 - 49"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "في أيّ معادلة يجب أن نحلّل الطرف الأول قبل استعمال الخاصية؟",
+      "step": "01",
+      "lead": "حلّل العبارة $E$ إلى جداء عاملين من الدرجة الأولى.",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
-          "code": "4am_jidaa-maadum_P1",
+          "code": "4am_jidaa-maadum_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x^2 - 4x = 0$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$x(x - 4) = 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
-        },
-        {
-          "id": "C",
-          "content": "$(x - 4)(x + 1) = 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
-        }
-      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $(2x - 4)(2x + m)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "10",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معادلة جداء معدوم: جداء عاملين من الدرجة الأولى يساوي $0$."
+          "content": "اكتب $49$ على شكل مربع عدد."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انظر إلى الطرف الأول: هل هو جداء أم مجموع؟"
+          "content": "استعمل المتطابقة $a^2 - b^2 = (a - b)(a + b)$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم انظر إلى الطرف الثاني: هل هو $0$ ؟"
+          "content": "بسّط ما داخل كل قوس، ثم قارن بالشكل المطلوب."
         }
       ],
       "feedback": {
-        "correct": "$x^2 - 4x$ مجموع: نحلّله إلى $x(x - 4)$ أوّلًا. المعادلتان الأخريان جداءان معدومان.",
-        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
-      }
+        "correct": "$E = (2x - 4)(2x + 10)$ إذن $m = 10$ .",
+        "incorrect": "تعرّف على الشكل $a^2 - b^2$ وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$E = (2x + 3)^2 - 7^2$",
+          "$= [(2x + 3) - 7][(2x + 3) + 7]$"
+        ],
+        "result": "E = (2x - 4)(2x + 10)"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "هل $(x + 1)(x - 3) + 2 = 0$ معادلة جداء معدوم كما هي مكتوبة؟",
+      "step": "02",
+      "lead": "حل المعادلة: $(2x - 4)(2x + 10) = 0$ .",
+      "statement": "الحلّ الأصغر:",
       "learningPoints": [
         {
-          "code": "4am_jidaa-maadum_P1",
+          "code": "4am_jidaa-maadum_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "-5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "نعم: فيها الجداء $(x + 1)(x - 3)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
-        },
-        {
-          "id": "B",
-          "content": "لا: الطرف الأول مجموع جداء والعدد 2",
-          "isCorrect": true
+          "value": "-2",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معادلة جداء معدوم: جداء عاملين من الدرجة الأولى يساوي $0$."
+          "content": "يكون جداء عاملين معدومًا إذا كان أحد عامليه على الأقل معدومًا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انظر إلى الطرف الأول: هل هو جداء أم مجموع؟"
+          "content": "اكتب معادلتين من الدرجة الأولى: كل عامل يساوي $0$ ، ثم حلّ كل واحدة منهما."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم انظر إلى الطرف الثاني: هل هو $0$ ؟"
+          "content": "انتبه إلى الإشارة عند نقل العدد إلى الطرف الثاني، ثم رتّب الحلّين من الأصغر إلى الأكبر."
         }
       ],
       "feedback": {
-        "correct": "الطرف الأول $(x + 1)(x - 3) + 2$ مجموع، فلا تُطبَّق الخاصية مباشرة.",
-        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
-      }
+        "correct": "$x = -5$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى بإشاراتها، ثم رتّب الحلّين."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $(2x - 4)(2x + 10) = 0$",
+          "يعني أنّ: $2x - 4 = 0$ أو $2x + 10 = 0$",
+          "أي: $2x = 4$ أو $2x = -10$",
+          "ومنه: $x = 2$ أو $x = -5$",
+          "إذن للمعادلة حلّان هما $-5$ و $2$"
+        ],
+        "result": "x = -5"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "الحلّ الأكبر:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "value": "5",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المعادلة الثانية من الدرجة الأولى، ثم قارن الحلّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 2$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى بإشاراتها، ثم رتّب الحلّين."
+      },
+      "solution": {
+        "lines": [
+          "إذن للمعادلة حلّان هما $-5$ و $2$"
+        ],
+        "result": "x = 2"
+      },
+      "timeSeconds": 60
     }
   ]
 }

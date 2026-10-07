@@ -3,8 +3,8 @@
   "lessonCode": "hall-jabri",
   "level": 4,
   "metadata": {
-    "title": "تمرين 6 — كسور وحروف أخرى",
-    "estimatedMinutes": 4,
+    "title": "التعويض مع معاملات كسرية",
+    "estimatedMinutes": 11,
     "tags": [
       "التعويض",
       "كسور"
@@ -15,139 +15,137 @@
       "page": 60,
       "section": "أوظّف تعلّماتي",
       "number": 6
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 60): حل الجملتين باستعمال طريقة التعويض. أ) $\\begin{cases} 2x - 3y = 1 \\\\ 3x + 5y = 21 \\end{cases}$ ب) $\\begin{cases} d = 90t \\\\ d + 50t = 280 \\end{cases}$"
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "في أ)، من الأولى $x = \\dfrac{1 + 3y}{2}$ . بتعويضه في الثانية ثم ضرب الطرفين في 2 نجد:",
+      "step": "01",
+      "sub": "ا",
+      "lead": "حل كلا من الجملتين التاليتين باستعمال طريقة التعويض:",
+      "statement": "$\\begin{cases} 2x - 3y = 1 \\\\ 3x + 5y = 21 \\end{cases}$",
       "learningPoints": [
         {
           "code": "4am_hall-jabri_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 3,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$3(1 + 3y) + 10y = 42$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$3(1 + 3y) + 5y = 21$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JAM-TARAF-WAHID"
-        },
-        {
-          "id": "C",
-          "content": "$3(1 - 3y) + 10y = 42$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAWID-ISHARA"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
-        }
-      ],
-      "feedback": {
-        "correct": "$\\dfrac{3(1 + 3y)}{2} + 5y = 21$ ، والضرب في 2 يشمل كل الحدود: $3(1 + 3y) + 10y = 42$ .",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "حل الجملة أ):",
-      "learningPoints": [
-        {
-          "code": "4am_hall-jabri_P1",
-          "role": "primary"
-        }
-      ],
-      "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": {
         "x": "68/19",
         "y": "39/19"
       },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "39/19",
+            "y": "68/19"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+          "content": "في المعادلة (1) يمكن التعبير بسهولة عن $x$ بدلالة المجهول الآخر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+          "content": "عبّر عن $x$ بدلالة المجهول الآخر، ثم عوّض العبارة في المعادلة الأخرى (لا في المعادلة نفسها)."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+          "content": "حل المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
         }
       ],
       "feedback": {
-        "correct": "$19y = 39$ ، ومنه $y = \\dfrac{39}{19}$ ثم $x = \\dfrac{68}{19}$ — كسران، كما في الكتاب.",
-        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
-      }
+        "correct": "الثنائية $\\left(\\dfrac{68}{19} ; \\dfrac{39}{19}\\right)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "من المعادلة (1) نجد: $x = \\dfrac{3}{2}y + \\dfrac{1}{2}$",
+          "نعوّض في المعادلة (2): $3\\left(\\dfrac{3}{2}y + \\dfrac{1}{2}\\right) + 5y = 21$",
+          "$\\dfrac{19}{2}y = \\dfrac{39}{2}$",
+          "ومنه $y = \\dfrac{39}{19}$",
+          "نعوّض قيمة $y$ في عبارة $x$: $x = \\dfrac{3}{2} \\times \\dfrac{39}{19} + \\dfrac{1}{2} = \\dfrac{68}{19}$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "\\left(\\dfrac{68}{19} ; \\dfrac{39}{19}\\right)"
+      },
+      "work": "required",
+      "timeSeconds": 420
     },
     {
-      "id": "q3",
-      "statement": "حل الجملة ب):",
+      "id": "q2",
+      "step": "01",
+      "sub": "ب",
+      "statement": "$\\begin{cases} d = 90t \\\\ d + 50t = 280 \\end{cases}$",
       "learningPoints": [
         {
           "code": "4am_hall-jabri_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (d ; t)",
+      "answerFormat": "اكتب الثنائية $(d ; t)$ : قيمة $d$ ثم قيمة $t$ (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": {
         "x": "180",
         "y": "2"
       },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "2",
+            "y": "180"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+          "content": "المجهول $d$ معبّر عنه بدلالة $t$ في المعادلة الأولى."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+          "content": "عوّض $d$ بـ $90t$ في المعادلة الثانية."
         }
       ],
       "feedback": {
-        "correct": "$90t + 50t = 280$ أي $t = 2$ ، ثم $d = 180$ : $(d ; t) = (180 ; 2)$ .",
-        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
-      }
+        "correct": "الثنائية $(180 ; 2)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(d ; t)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "لدينا من المعادلة (1): $d = 90t$",
+          "نعوّض في المعادلة (2): $90t + 50t = 280$",
+          "$140t = 280$",
+          "ومنه $t = 2$",
+          "نعوّض قيمة $t$ في عبارة $d$: $d = 90 \\times 2 = 180$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(180 ; 2)"
+      },
+      "work": "required",
+      "timeSeconds": 240
     }
   ]
 }

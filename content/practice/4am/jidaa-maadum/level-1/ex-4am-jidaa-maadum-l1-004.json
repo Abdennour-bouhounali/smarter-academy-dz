@@ -3,111 +3,121 @@
   "lessonCode": "jidaa-maadum",
   "level": 1,
   "metadata": {
-    "title": "تدريب — جداء أم لا؟",
+    "title": "على منوال BEM 2012 — حل معادلة جداء معدوم",
     "estimatedMinutes": 4,
     "tags": [
-      "تعريف"
+      "جداء معدوم"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_jidaa-maadum_P1",
-      "modelledOn": "know-2"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_jidaa-maadum_P2",
+      "modelledOn": "BEM 2012 I"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2012",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نريد أن نعرف هل المعادلة معادلة جداء معدوم، أي من الشكل $(ax + b)(cx + d) = 0$ ."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل $x(x + 9) = 0$ معادلة جداء معدوم؟",
+      "step": "01",
+      "lead": "حل المعادلة: $(5x - 1)(x - 2) = 0$ .",
+      "statement": "الحلّ الأصغر:",
       "learningPoints": [
         {
-          "code": "4am_jidaa-maadum_P1",
+          "code": "4am_jidaa-maadum_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "1/5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "نعم: جداء العاملين $x$ و $x + 9$ يساوي $0$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "لا: لأنّ العامل $x$ ليس بين قوسين",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+          "value": "-2",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معادلة جداء معدوم: جداء عاملين من الدرجة الأولى يساوي $0$."
+          "content": "يكون جداء عاملين معدومًا إذا كان أحد عامليه على الأقل معدومًا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انظر إلى الطرف الأول: هل هو جداء أم مجموع؟"
+          "content": "اكتب معادلتين من الدرجة الأولى: كل عامل يساوي $0$ ، ثم حلّ كل واحدة منهما."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم انظر إلى الطرف الثاني: هل هو $0$ ؟"
+          "content": "انتبه إلى الإشارة عند نقل العدد إلى الطرف الثاني، ثم رتّب الحلّين من الأصغر إلى الأكبر."
         }
       ],
       "feedback": {
-        "correct": "$x = 1 \\times x + 0$ عامل من الدرجة الأولى، فهي من الشكل $(ax + b)(cx + d) = 0$ .",
-        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
-      }
+        "correct": "$x = \\dfrac{1}{5}$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى بإشاراتها، ثم رتّب الحلّين."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $(5x - 1)(x - 2) = 0$",
+          "يعني أنّ: $5x - 1 = 0$ أو $x - 2 = 0$",
+          "أي: $5x = 1$ أو $x = 2$",
+          "ومنه: $x = \\dfrac{1}{5}$ أو $x = 2$",
+          "إذن للمعادلة حلّان هما $\\dfrac{1}{5}$ و $2$"
+        ],
+        "result": "x = \\dfrac{1}{5}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "هل $x^2 + 9x + 1 = 0$ معادلة جداء معدوم كما هي مكتوبة؟",
+      "step": "01",
+      "statement": "الحلّ الأكبر:",
       "learningPoints": [
         {
-          "code": "4am_jidaa-maadum_P1",
+          "code": "4am_jidaa-maadum_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "نعم: لأنّ الطرف الثاني $0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
-        },
-        {
-          "id": "B",
-          "content": "لا: الطرف الأول مجموع وليس جداءً",
-          "isCorrect": true
+          "value": "-1/5",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معادلة جداء معدوم: جداء عاملين من الدرجة الأولى يساوي $0$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "انظر إلى الطرف الأول: هل هو جداء أم مجموع؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم انظر إلى الطرف الثاني: هل هو $0$ ؟"
+          "content": "حلّ المعادلة الثانية من الدرجة الأولى، ثم قارن الحلّين."
         }
       ],
       "feedback": {
-        "correct": "الطرف الأول $x^2 + 9x + 1$ مجموع ثلاثة حدود، وليس جداء عاملين.",
-        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
-      }
+        "correct": "$x = 2$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى بإشاراتها، ثم رتّب الحلّين."
+      },
+      "solution": {
+        "lines": [
+          "إذن للمعادلة حلّان هما $\\dfrac{1}{5}$ و $2$"
+        ],
+        "result": "x = 2"
+      },
+      "timeSeconds": 60
     }
   ]
 }

@@ -3,7 +3,7 @@
   "lessonCode": "tawzif-khawass-judhur",
   "level": 1,
   "metadata": {
-    "title": "تدريب — أكبر مربع يقسم عددًا",
+    "title": "أكبر مربع يقسم 72",
     "estimatedMinutes": 3,
     "tags": [
       "a√b",
@@ -14,107 +14,117 @@
       "reason": "practice_generation",
       "learningPoint": "4am_tawzif-khawass-judhur_P1",
       "modelledOn": "method-simplify"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نريد كتابة $\\sqrt{72}$ على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان و $b$ أصغر ما يمكن."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هو أكبر مربع تامّ يقسم 72؟",
+      "step": "01",
+      "statement": "جد أكبر مربع تامّ يقسم العدد 72.",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (مربع تامّ)",
+      "expectedAnswer": "36",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "9",
-          "isCorrect": false,
-          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+          "value": "4",
+          "id": "MISC-B-LAYSA-ASGHAR"
         },
         {
-          "id": "B",
-          "content": "36",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "4",
-          "isCorrect": false,
-          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
-        },
-        {
-          "id": "D",
-          "content": "8",
-          "isCorrect": false
+          "value": "9",
+          "id": "MISC-B-LAYSA-ASGHAR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المربعات التامة التي تقسم 72 عديدة، والمطلوب أكبرها."
+          "content": "اكتب قائمة المربعات التامّة: 4، 9، 16، 25، 36، 49، 64."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "جرّب المربعات 4، 9، 16، 25، 36، 49 واحدًا واحدًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تأكّد أن حاصل القسمة لا يقبل بدوره القسمة على مربع أكبر من 1."
+          "content": "ابدأ بأكبرها وتحقّق: هل يقسم 72؟"
         }
       ],
       "feedback": {
-        "correct": "$72 = 36 \\times 2$ و $36 = 6^2$، و 2 لا يقبل القسمة على أي مربع غير 1.",
-        "incorrect": "العدد 8 ليس مربعًا تامًّا، و 4 و 9 مربعان يقسمان 72 لكن يوجد أكبر منهما."
-      }
+        "correct": "$72 = 36 \\times 2$ و 36 هو أكبر مربع تامّ يقسم 72.",
+        "incorrect": "جرّب المربعات التامّة من الأكبر إلى الأصغر، وتوقّف عند أول مربع يقسم 72."
+      },
+      "solution": {
+        "lines": [
+          "المربعات التامّة التي تقسم 72 هي: 4، 9، 36.",
+          "$72 = 36 \\times 2$"
+        ],
+        "result": "36"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "نكتب $\\sqrt{72} = a\\sqrt{2}$. ما قيمة العدد الطبيعي $a$؟",
+      "step": "02",
+      "statement": "استنتج كتابة العدد $\\sqrt{72}$ على الشكل $a\\sqrt{2}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
       "expectedAnswer": "6",
       "misconceptionSignatures": [
         {
-          "id": "MISC-JIDHR-MURABBA-MANSI",
-          "value": "36"
+          "value": "36",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب 72 على شكل جداء مربع تامّ في 2."
+          "content": "استعمل نتيجة السؤال 01."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$72 \\div 2$ يعطي مربعًا تامًّا."
+          "content": "$\\sqrt{x \\times y} = \\sqrt{x} \\times \\sqrt{y}$"
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$\\sqrt{k^2 \\times 2} = k\\sqrt{2}$."
+          "content": "المعامل هو جذر المربع التامّ."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{72} = \\sqrt{6^2 \\times 2} = 6\\sqrt{2}$.",
-        "incorrect": "المعامل هو جذر المربع، وليس المربع نفسه."
-      }
+        "correct": "$\\sqrt{72} = \\sqrt{36} \\times \\sqrt{2} = 6\\sqrt{2}$.",
+        "incorrect": "المعامل هو الجذر التربيعي للمربع التامّ الذي وجدته، لا المربع نفسه."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{72} = \\sqrt{36 \\times 2}$",
+          "$\\sqrt{72} = \\sqrt{36} \\times \\sqrt{2}$"
+        ],
+        "result": "\\sqrt{72} = 6\\sqrt{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
   ]
 }

@@ -374,7 +374,8 @@ assert _p21 == {'x': '\\frac{14}{5}', 'y': '2'}
 E.append(exercise(21, 61, G3, 'وحدة الطول هي السنتيمتر، والأطوال على الشكل ليست حقيقية. علما أنّ ABCD شبه منحرف محيطه يساوي 13,8cm احسب كلا من $x$ و $y$ .',
                   figure='مثلث EBC ؛ A على [EB] و D على [EC] ؛ EA = 10cm ، AB = 4cm ، DC = 5cm ، AD = $y$ ، BC = $x$ ؛ (AD) يوازي (BC).',
                   answer={'reasoning': 'المحيط: $4 + 5 + x + y = 13{,}8$ ؛ طالس في المثلث EBC: $\\dfrac{AD}{BC} = \\dfrac{EA}{EB} = \\dfrac{10}{14}$',
-                          'system': '\\begin{cases} x + y = 4{,}8 \\\\ 14y = 10x \\end{cases}', 'solution': _p21, 'decimal': '(2{,}8 ; 2)'}))
+                          'system': '\\begin{cases} x + y = 4{,}8 \\\\ 14y = 10x \\end{cases}', 'solution': _p21, 'decimal': '(2{,}8 ; 2)'},
+                  correction={'decidedBy': 'owner', 'decidedOn': '2026-10-07', 'printed': 'EA = 10cm ، AB = 4cm ، DC = 5cm ، محيط ABCD = 13,8cm', 'corrected': 'EA = 6cm ، AB = 4cm ، DC = 5cm ، محيط ABCD = 25cm', 'note': 'بالمعطيات المطبوعة المثلث EBC غير موجود: EB = 14 ، BC = 2,8 ، EC = 17,5 و 14 + 2,8 < 17,5 . بالمعطيات المصحّحة: $x = 10$ و $y = 6$ ، والمثلثان (10 ; 10 ; 12,5) و (6 ; 6 ; 7,5) موجودان (نفس معطيات تمرين الممارسة l4-003).'}))
 
 # ── أؤكّد تعلّماتي ─────────────────────────────────────────────────────────
 assert holds('x - 3*y = 0', 0, 0) and holds('3*x + y = 0', 0, 0) and not holds('x/3 - y = 3', 0, 0)

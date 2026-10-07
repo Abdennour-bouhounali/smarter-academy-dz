@@ -1,117 +1,122 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-001",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — حقل مربّع",
-    "estimatedMinutes": 3,
+    "title": "حقل مربع",
+    "estimatedMinutes": 4,
     "tags": [
-      "وضعية إدماجية",
-      "أبسط كتابة",
-      "مدوّر"
+      "a√b",
+      "تدوير"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
       "modelledOn": "situation"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "حقل مربّع الشكل مساحته $45\\,m^2$."
+    "content": "حقل مربع الشكل مساحته $45m^2$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "القيمة المضبوطة لطول ضلع الحقل (بالمتر) هي ...",
+      "step": "01",
+      "statement": "اكتب طول ضلع الحقل على الشكل $a\\sqrt{5}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$3\\sqrt{5}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$9\\sqrt{5}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
-        },
-        {
-          "id": "C",
-          "content": "$5\\sqrt{3}$",
-          "isCorrect": false
-        },
-        {
-          "id": "D",
-          "content": "$22{,}5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-NISF"
+          "value": "9",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الضلع هو الجذر التربيعي للمساحة."
+          "content": "طول الضلع هو $\\sqrt{45}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما هو أكبر مربع تام يقسم 45؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$45 = 9 \\times 5$."
+          "content": "اكتب $45$ على شكل جداء مربع تام في $5$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{45} = \\sqrt{9 \\times 5} = 3\\sqrt{5}$.",
-        "incorrect": "تحقّق بتربيع الجواب: يجب أن تحصل على 45."
+        "correct": "$\\sqrt{45} = \\sqrt{9 \\times 5} = 3\\sqrt{5}$",
+        "incorrect": "أخرج جذر المربع التام من تحت الجذر."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "طول الضلع: $\\sqrt{45} = \\sqrt{9 \\times 5}$",
+          "$= \\sqrt{9} \\times \\sqrt{5}$"
+        ],
+        "result": "\\sqrt{45} = 3\\sqrt{5}\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "أعط المدوّر إلى $0{,}01$ لطول الضلع (بالمتر).",
+      "step": "02",
+      "statement": "أعط المدوّر إلى $0{,}01$ لطول ضلع الحقل.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري برقمين بعد الفاصلة",
+      "answerFormat": "عدد عشري (بالفاصلة) برقمين بعد الفاصلة: الطول بالمتر (m)",
       "expectedAnswer": "6.71",
+      "misconceptionSignatures": [
+        {
+          "value": "6.72",
+          "id": "MISC-WADIYA-TADWIR-MUBAKKIR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "استعمل الحاسبة لحساب القيمة المضبوطة."
+          "content": "استعمل الحاسبة لحساب القيمة المضبوطة كاملة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انظر إلى رقم الأجزاء من ألف."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "دوّر في النهاية فقط."
+          "content": "لا تدوّر $\\sqrt{5}$ قبل الضرب: دوّر في آخر الحساب."
         }
       ],
       "feedback": {
-        "correct": "$3\\sqrt{5} \\approx 6{,}708$، والمدوّر إلى 0,01 هو 6,71.",
-        "incorrect": "احسب القيمة المضبوطة بالحاسبة ثم دوّر إلى الجزء من مئة."
+        "correct": "$3\\sqrt{5} \\approx 6{,}7082$ ، و مدوّره إلى $0{,}01$ هو $6{,}71m$ .",
+        "incorrect": "إذا دوّرت $\\sqrt{5}$ إلى $2{,}24$ قبل الضرب في 3 تضاعف خطأ التدوير: احسب ثم دوّر."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$3\\sqrt{5} \\approx 6{,}7082$",
+          "الرقم الموالي لرقم الأجزاء من مئة هو 8، ندوّر بالزيادة."
+        ],
+        "result": "3\\sqrt{5} \\approx 6{,}71m"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l2-001",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 2
+  ]
 }

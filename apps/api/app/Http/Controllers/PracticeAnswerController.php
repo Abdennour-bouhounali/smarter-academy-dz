@@ -51,6 +51,16 @@ class PracticeAnswerController extends Controller
                 'attemptNumber' => $attempt->attempt_number,
                 'hintsUsed' => $attempt->hints_used,
                 'answered' => $attempt->isAnswered(),
+                // La réponse ENREGISTRÉE (feuille d'examen : une étape déjà
+                // répondue se rouvre verrouillée, avec ce que l'élève avait écrit).
+                'answer' => $attempt->isAnswered() ? $attempt->submitted_answer : null,
+                'outcome' => $attempt->isAnswered() ? $attempt->outcome : null,
+                'normalized' => $attempt->isAnswered() ? $attempt->normalized_answer : null,
+                'evaluatedBy' => $attempt->isAnswered() ? $attempt->evaluated_by : null,
+                // Les photos jointes — MÊME avant la réponse : un rechargement
+                // retrouve celles déjà envoyées (3 au plus par étape).
+                'images' => $attempt->images->reject->isExpired()->map->toClient()->values()->all(),
+                'review' => $attempt->review?->toClient(),
             ],
         ]);
     }
@@ -131,6 +141,9 @@ class PracticeAnswerController extends Controller
                 'evaluatedBy' => $result['attempt']->evaluated_by,
                 'hintsUsed' => $result['attempt']->hints_used,
             ],
+            // « تصحيح الأستاذ » : la demande de correction ouverte par cette
+            // réponse (en attente), ou null.
+            'review' => $result['attempt']->review?->toClient(),
             // Le verdict du serveur — ce que l'écran montre.
             'evaluation' => [
                 'outcome' => $result['evaluation']['outcome'],

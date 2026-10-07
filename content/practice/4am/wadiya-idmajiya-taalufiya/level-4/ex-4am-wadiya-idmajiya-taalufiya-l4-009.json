@@ -3,8 +3,8 @@
   "lessonCode": "wadiya-idmajiya-taalufiya",
   "level": 4,
   "metadata": {
-    "title": "ثلاثة تطبيقات توصيل",
-    "estimatedMinutes": 5,
+    "title": "ثلاثة تطبيقات لتوصيل الأكل",
+    "estimatedMinutes": 12,
     "tags": [
       "ثلاث صيغ",
       "مفاضلة"
@@ -13,90 +13,82 @@
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03,5"
     }
   },
   "statement": {
-    "content": "ثلاثة تطبيقات لتوصيل الأكل: أ مصاريف 150 DA ثم 30 DA للكيلومتر؛ ب 60 DA للكيلومتر؛ جـ 400 DA جزافيا داخل المدينة ( $x$ عدد الكيلومترات)."
+    "content": "ثلاثة تطبيقات لتوصيل الأكل، حيث $x$ عدد الكيلومترات:\n- التطبيق الأول: مصاريف 150DA ثم 30DA للكيلومتر.\n- التطبيق الثاني: 60DA للكيلومتر.\n- التطبيق الثالث: 400DA جزافيا داخل المدينة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "لـ 4 km، الأرخص:",
+      "step": "01",
+      "statement": "من أجل كم كيلومترا يتساوى مبلغا التطبيقين الأول والثاني؟",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "أ",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
-        },
-        {
-          "id": "B",
-          "content": "ب",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "جـ",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: عدد الكيلومترات",
+      "expectedAnswer": "5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "270 ، 240 ، 400."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "الأصغر."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المستقيم الأدنى."
+          "content": "حلّ $30x + 150 = 60x$ ."
         }
       ],
       "feedback": {
-        "correct": "أ: 270 ، ب: 240 ، جـ: 400.",
-        "incorrect": "نحسب الأثمان الثلاثة."
+        "correct": "$150 = 30x$ .",
+        "incorrect": "ساوِ المبلغين ثم اجمع حدود $x$ ."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 4
+      "solution": {
+        "lines": [
+          "$f(x) = 30x + 150$ ، $g(x) = 60x$ ، $h(x) = 400$",
+          "$30x + 150 = 60x$",
+          "$150 = 30x$",
+          "$x = 5$"
+        ],
+        "result": "x = 5"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "لـ 7 km، الأرخص:",
+      "step": "02",
+      "statement": "ما هو التطبيق الأقل تكلفة لمسافة 4km ؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "أ",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "ب",
+          "content": "التطبيق الأول",
           "isCorrect": false,
           "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
         },
         {
+          "id": "B",
+          "content": "التطبيق الثاني",
+          "isCorrect": true
+        },
+        {
           "id": "C",
-          "content": "جـ",
+          "content": "التطبيق الثالث",
           "isCorrect": false,
           "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
         }
@@ -105,52 +97,103 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "360 ، 420 ، 400."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "الأصغر."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بعد 5 km."
+          "content": "احسب المبالغ الثلاثة من أجل 4km ."
         }
       ],
       "feedback": {
-        "correct": "أ: 360 ، ب: 420 ، جـ: 400.",
-        "incorrect": "الصيغة الأرخص تتغيّر."
+        "correct": "270DA و 240DA و 400DA .",
+        "incorrect": "احسب المبالغ الثلاثة ثم قارن."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 4
+      "solution": {
+        "lines": [
+          "$f(x) = 30x + 150$ ، $g(x) = 60x$ ، $h(x) = 400$",
+          "$f(4) = 270DA$ ، $g(4) = 240DA$ ، $h(4) = 400DA$",
+          "التطبيق الثاني هو الأقل تكلفة لمسافة 4km ."
+        ]
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "لـ 10 km، الأرخص:",
+      "step": "03",
+      "sub": "ا",
+      "statement": "ما هو التطبيق الأقل تكلفة لمسافة 7km ؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "أ",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+          "content": "التطبيق الأول",
+          "isCorrect": true
         },
         {
           "id": "B",
-          "content": "ب",
+          "content": "التطبيق الثاني",
           "isCorrect": false,
           "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
         },
         {
           "id": "C",
-          "content": "جـ",
+          "content": "التطبيق الثالث",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب المبالغ الثلاثة من أجل 7km ."
+        }
+      ],
+      "feedback": {
+        "correct": "360DA و 420DA و 400DA .",
+        "incorrect": "احسب المبالغ الثلاثة ثم قارن."
+      },
+      "solution": {
+        "lines": [
+          "$f(x) = 30x + 150$ ، $g(x) = 60x$ ، $h(x) = 400$",
+          "$f(7) = 360DA$ ، $g(7) = 420DA$ ، $h(7) = 400DA$",
+          "التطبيق الأول هو الأقل تكلفة لمسافة 7km ."
+        ]
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "sub": "ب",
+      "statement": "ما هو التطبيق الأقل تكلفة لمسافة 10km ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "التطبيق الأول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "B",
+          "content": "التطبيق الثاني",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "التطبيق الثالث",
           "isCorrect": true
         }
       ],
@@ -158,25 +201,21 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "450 ، 600 ، 400."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "الأصغر."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الجزافية للمسافات الطويلة."
+          "content": "احسب المبالغ الثلاثة من أجل 10km ."
         }
       ],
       "feedback": {
-        "correct": "أ: 450 ، ب: 600 ، جـ: 400.",
-        "incorrect": "نحسب ولا نعمّم."
+        "correct": "450DA و 600DA و 400DA .",
+        "incorrect": "احسب المبالغ الثلاثة ثم قارن."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 4
+      "solution": {
+        "lines": [
+          "$f(x) = 30x + 150$ ، $g(x) = 60x$ ، $h(x) = 400$",
+          "$f(10) = 450DA$ ، $g(10) = 600DA$ ، $h(10) = 400DA$",
+          "التطبيق الثالث هو الأقل تكلفة لمسافة 10km ."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

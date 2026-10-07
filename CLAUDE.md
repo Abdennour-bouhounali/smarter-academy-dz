@@ -29,8 +29,11 @@ untouched and each unit declares its programme domain in `placement`). The other
 `…/hisab-judhur/`) and, since 2026-10-01, « الحساب الحرفي » (3 lessons + its synthesis,
 `…/hisab-harfi/`, placed under this ميدان by the owner) and, the same day, « معادلات ومتراجحات
 من الدرجة الأولى بمجهول واحد » (4 lessons + its synthesis, `…/muadalat-mutarajihat/`, placed likewise) and
-« جمل معادلتين من الدرجة الأولى بمجهولين » (3 lessons + its synthesis, `…/jumal-muadalatayn/`, placed likewise);
-the French-era
+« جمل معادلتين من الدرجة الأولى بمجهولين » (3 lessons + its synthesis, `…/jumal-muadalatayn/`, placed likewise).
+Since 2026-10-06 the practice space of every
+lesson is being converted, unit by unit, to the BEM « exam sheet » (prototype `bahth-pgcd`; corpus index
+`docs/sources/4am/bem-practice/annals-index.md`; a lesson switches when listed in `content/practice/exam-style.json`;
+contract `docs/architecture/EXERCISE_CONTRACT.md` § « Présentation examen (BEM) »). The French-era
 lessons (`lessons/college/`, `lessons/lycee/`) and the French reference
 catalogue were **deleted on 2026-09-25** — older docs that cite them describe
 code that no longer exists.

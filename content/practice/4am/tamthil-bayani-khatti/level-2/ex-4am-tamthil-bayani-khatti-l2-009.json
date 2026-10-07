@@ -3,59 +3,64 @@
   "lessonCode": "tamthil-bayani-khatti",
   "level": 2,
   "metadata": {
-    "title": "تمرين 12 (ص 72) — على طريقته",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2009 — تساقط الثلوج على الشريعة",
+    "estimatedMinutes": 7,
     "tags": [
-      "قراءة",
-      "سعر"
+      "وضعية",
+      "قراءة بيانية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_tamthil-bayani-khatti_P2",
-      "modelledOn": "ex-12"
+      "modelledOn": "BEM 2009 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2009",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "يبيّن الشكل أدناه سعر نوع من الحلويات (بالدينار) حسب كتلتها (بالكيلوغرام): مستقيم يشمل المبدأ والنقطة $(1 ; 60)$ .",
-    "visual": {
-      "range": {
-        "xMin": 0,
-        "xMax": 4,
-        "yMin": 0,
-        "yMax": 250
+    "content": "تساقطت الثلوج على مرتفعات الشريعة بانتظام. يمثّل نصف المستقيم $(D)$ في المعلم التالي سُمك طبقة الثلج $y$ (بالسنتيمتر) بدلالة مدة التساقط $x$ (بالساعات).",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "H": [
+          8,
+          6
+        ]
       },
-      "unit": 75.0,
-      "unitY": 0.8,
-      "functions": [
+      "rays": [
         {
-          "id": "d",
-          "a": 60.0,
-          "b": 0,
-          "label": "(D)",
-          "tone": "indigo"
+          "from": "O",
+          "through": "H",
+          "name": "(D)",
+          "tone": "sky",
+          "extend": 0.06
         }
       ],
-      "points": [
-        {
-          "id": "p0",
-          "x": 1.0,
-          "y": 60.0,
-          "name": ""
-        }
+      "grid": true,
+      "axes": true,
+      "labels": {
+        "O": "sw"
+      },
+      "hidden": [
+        "H"
       ],
-      "xStep": 1,
-      "yStep": 25,
-      "frozen": true,
-      "ariaLabel": "مستقيم السعر حسب الكتلة يشمل O والنقطة (1 ; 60)",
-      "caption": false,
-      "labelEvery": 2
+      "ariaLabel": "معلم على ورقة مرصوفة: نصف مستقيم من المبدأ O يمثّل سمك طبقة الثلج بدلالة المدة",
+      "caption": "محور الفواصل: المدة بالساعات — محور التراتيب: سمك الثلج بـ cm"
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "سعر 3kg (بالدينار):",
+      "step": "01",
+      "statement": "بقراءة بيانية، عيّن سُمك طبقة الثلج بعد 4 ساعات.",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P2",
@@ -63,19 +68,20 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "180",
+      "answerFormat": "عدد: السُّمك بـ cm",
+      "expectedAnswer": "3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابدأ من العدد على محور الفواصل."
+          "content": "ابدأ من العدد المعطى على محور الفواصل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اصعد (أو انزل) عموديًا حتى المستقيم، ثم اذهب أفقيًا إلى محور التراتيب."
+          "content": "اتجه عموديا حتى المستقيم $(D)$ ، ثم أفقيا حتى محور التراتيب."
         },
         {
           "id": "h3",
@@ -84,13 +90,22 @@
         }
       ],
       "feedback": {
-        "correct": "من 3 على محور الكتل نقرأ 180 DA ($60 \\times 3$).",
-        "incorrect": "اقرأ ترتيب النقطة التي فاصلتها 3."
-      }
+        "correct": "النقطة من $(D)$ التي فاصلتها $4$ ترتيبها $3$ .",
+        "incorrect": "الصورة تُقرأ على محور التراتيب: ترتيب نقطة المستقيم، لا فاصلتها."
+      },
+      "solution": {
+        "lines": [
+          "النقطة من المستقيم $(D)$ التي فاصلتها $4$ ترتيبها $3$ .",
+          "إذن سُمك طبقة الثلج بعد 4 ساعات هو $3cm$ ."
+        ],
+        "result": "f(4) = 3"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "الكتلة (kg) التي ثمنها 150 DA:",
+      "step": "02",
+      "statement": "بقراءة بيانية، عيّن المدة اللازمة ليبلغ سُمك الطبقة $6cm$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P2",
@@ -98,30 +113,93 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
-      "expectedAnswer": "2,5",
+      "answerFormat": "عدد: المدة بالساعات",
+      "expectedAnswer": "8",
+      "misconceptionSignatures": [
+        {
+          "value": "4,5",
+          "id": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابدأ من الصورة على محور التراتيب."
+          "content": "ابدأ من العدد المعطى على محور التراتيب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اذهب أفقيًا حتى المستقيم، ثم عموديًا إلى محور الفواصل."
+          "content": "اتجه أفقيا حتى المستقيم $(D)$ ، ثم عموديا حتى محور الفواصل."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "العدد المطلوب هو فاصلة نقطة المستقيم التي ترتيبها هذه الصورة."
+          "content": "العدد المطلوب هو فاصلة نقطة المستقيم التي ترتيبها الصورة المعطاة."
         }
       ],
       "feedback": {
-        "correct": "من 150 على محور الأسعار نصل إلى $2{,}5$ ($150 \\div 60$).",
-        "incorrect": "العدد المطلوب فاصلة."
-      }
+        "correct": "النقطة من $(D)$ التي ترتيبها $6$ فاصلتها $8$ .",
+        "incorrect": "العدد الذي علمت صورته يُقرأ على محور الفواصل: فاصلة نقطة المستقيم التي ترتيبها الصورة المعطاة."
+      },
+      "solution": {
+        "lines": [
+          "النقطة من المستقيم $(D)$ التي ترتيبها $6$ فاصلتها $8$ .",
+          "إذن يبلغ سُمك الطبقة $6cm$ بعد 8 ساعات."
+        ],
+        "result": "f(8) = 6"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "السُّمك $y$ دالة خطية $h$ للمدة $x$ . استنتج عبارة $h(x)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "0,75",
+      "misconceptionSignatures": [
+        {
+          "value": "4/3",
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$h$ دالة خطية: $h(x) = ax$ ، وتمثيلها يشمل النقطة ذات الإحداثيين $(4 ; 3)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعادلة $a \\times 4 = 3$ ثم حلّها: الترتيب على الفاصلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{3}{4} = 0{,}75$ ، إذن $h(x) = 0{,}75x$ .",
+        "incorrect": "المعامل هو الترتيب مقسوما على الفاصلة (وليس العكس)، مع الانتباه إلى الإشارة."
+      },
+      "solution": {
+        "lines": [
+          "$h$ دالة خطية، إذن $h(x) = ax$ .",
+          "$h(4) = 3$ معناه $a \\times 4 = 3$",
+          "$a = \\dfrac{3}{4} = 0{,}75$"
+        ],
+        "result": "h(x) = 0{,}75x"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

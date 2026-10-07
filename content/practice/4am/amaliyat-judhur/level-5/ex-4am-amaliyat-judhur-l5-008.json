@@ -1,141 +1,245 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l5-008",
+  "lessonCode": "amaliyat-judhur",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — مكعّب ووجهه",
-    "estimatedMinutes": 8,
+    "title": "على منوال BEM 2022 — قطعتان مربعتان وبيت بلاستيكي",
+    "estimatedMinutes": 13,
     "tags": [
       "جداء جذرين",
-      "مجموع جذرين",
-      "إخراج عامل من تحت الجذر"
+      "حاصل قسمة جذرين",
+      "وضعية إدماجية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_amaliyat-judhur_P1",
-      "modelledOn": null
+      "reason": "bem_modelled",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": "BEM 2022 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2022",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "مكعّب مساحة كل وجه من وجوهه $12\\,cm^2$ ."
+    "content": "يملك فلاح قطعتي أرض مربعتي الشكل: مساحة الأولى $98\\,m^2$ ومساحة الثانية $50\\,m^2$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "القيمة المضبوطة لطول حرف المكعّب بـ $cm$ هي:",
+      "step": "01",
+      "sub": "ا",
+      "lead": "اكتب طول ضلع كل قطعة على الشكل $a\\sqrt{2}$ حيث $a$ عدد طبيعي.",
+      "statement": "طول ضلع القطعة الأولى",
       "learningPoints": [
         {
           "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (الطول بالمتر هو $a\\sqrt{2}$ )",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$4\\sqrt{3}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
-        },
-        {
-          "id": "B",
-          "content": "$6$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-NISF"
-        },
-        {
-          "id": "C",
-          "content": "$2\\sqrt{3}$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$3\\sqrt{2}$",
-          "isCorrect": false
+          "value": "49",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "كل وجه مربّع: الحرف هو الجذر التربيعي لمساحته."
+          "content": "طول الضلع هو $\\sqrt{98}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$12 = 4 \\times 3$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$\\sqrt{a^2 b} = a\\sqrt{b}$ ."
+          "content": "اكتب $98$ جداء مربع تام في $2$ ."
         }
       ],
       "feedback": {
-        "correct": "الحرف $= \\sqrt{12} = \\sqrt{2^2 \\times 3} = 2\\sqrt{3}\\,cm$",
-        "incorrect": "الجذر ليس نصف العدد، ويخرج جذرُ المربّع من تحت الجذر."
-      }
+        "correct": "$\\sqrt{98} = \\sqrt{49 \\times 2} = 7\\sqrt{2}$ m.",
+        "incorrect": "أخرج المربع التام من تحت الجذر بجذره."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{98} = \\sqrt{49 \\times 2} = \\sqrt{49} \\times \\sqrt{2}$"
+        ],
+        "result": "\\sqrt{98} = 7\\sqrt{2}\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "القيمة المضبوطة لطول قطر وجه من وجوه المكعّب بـ $cm$ هي:",
+      "step": "01",
+      "sub": "ب",
+      "statement": "طول ضلع القطعة الثانية",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P3",
-          "role": "primary"
-        },
-        {
           "code": "4am_amaliyat-judhur_P1",
-          "role": "secondary"
+          "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (الطول بالمتر هو $a\\sqrt{2}$ )",
+      "expectedAnswer": "5",
+      "hints": [
         {
-          "id": "A",
-          "content": "$4\\sqrt{6}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
-        },
+          "id": "h1",
+          "type": "look",
+          "content": "طول الضلع هو $\\sqrt{50}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{50} = \\sqrt{25 \\times 2} = 5\\sqrt{2}$ m.",
+        "incorrect": "أخرج المربع التام من تحت الجذر بجذره."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{50} = \\sqrt{25 \\times 2} = \\sqrt{25} \\times \\sqrt{2}$"
+        ],
+        "result": "\\sqrt{50} = 5\\sqrt{2}\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب نسبة طول ضلع القطعة الأولى إلى طول ضلع القطعة الثانية، واكتبها على شكل كسر غير قابل للاختزال.",
+      "learningPoints": [
         {
-          "id": "B",
-          "content": "$6\\sqrt{2}$",
-          "isCorrect": false
-        },
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "7/5",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
         {
-          "id": "C",
-          "content": "$2\\sqrt{6}$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$\\sqrt{12} + \\sqrt{12}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-JAMA"
+          "value": "49/25",
+          "id": "MISC-QISMA-JIDHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قطر الوجه وتر مثلث قائم ضلعاه حرفان."
+          "content": "النسبة حاصل قسمة جذرين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مربّع القطر $= 12 + 12$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$24 = 4 \\times 6$ ."
+          "content": "اكتبها تحت جذر واحد ثم اختزل الكسر تحت الجذر."
         }
       ],
       "feedback": {
-        "correct": "القطر $= \\sqrt{12 + 12} = \\sqrt{24} = \\sqrt{2^2 \\times 6}$ ، و $\\sqrt{12} + \\sqrt{12} \\neq \\sqrt{24}$ .",
-        "incorrect": "الجذر لا يتوزّع على الجمع: اجمع تحت الجذر أولًا."
-      }
+        "correct": "$\\dfrac{\\sqrt{98}}{\\sqrt{50}} = \\sqrt{\\dfrac{49}{25}} = \\dfrac{7}{5}$",
+        "incorrect": "استعمل $\\dfrac{\\sqrt{a}}{\\sqrt{b}} = \\sqrt{\\dfrac{a}{b}}$ ، أو نتيجتي السؤال 01.",
+        "notIrreducible": "القيمة صحيحة لكن الكسر ما زال قابلًا للاختزال: اقسم البسط والمقام على قاسمهما المشترك الأكبر."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{\\sqrt{98}}{\\sqrt{50}} = \\sqrt{\\dfrac{98}{50}} = \\sqrt{\\dfrac{49}{25}}$",
+          "أو: $\\dfrac{7\\sqrt{2}}{5\\sqrt{2}}$"
+        ],
+        "result": "\\dfrac{\\sqrt{98}}{\\sqrt{50}} = \\dfrac{7}{5}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "يريد الفلاح إنشاء بيت بلاستيكي مستطيل الشكل، طوله طول ضلع القطعة الأولى وعرضه طول ضلع القطعة الثانية. احسب مساحة أرضية هذا البيت.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المساحة بـ $m^2$",
+      "expectedAnswer": "70",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المساحة = الطول × العرض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل نتيجتي السؤال 01 و $\\sqrt{2} \\times \\sqrt{2} = 2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$7\\sqrt{2} \\times 5\\sqrt{2} = 35 \\times 2 = 70\\,m^2$",
+        "incorrect": "اضرب المعاملين معًا ثم $\\sqrt{2} \\times \\sqrt{2}$ ."
+      },
+      "solution": {
+        "lines": [
+          "$S = 7\\sqrt{2} \\times 5\\sqrt{2}$",
+          "$S = 35 \\times 2$",
+          "أو: $S = \\sqrt{98 \\times 50} = \\sqrt{4900}$"
+        ],
+        "result": "S = 70\\,m^2"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q5",
+      "step": "04",
+      "statement": "☜ ثمن $1\\,m^2$ من البلاستيك المستعمل للتغطية $350$DA، ويلزم لتغطية البيت مساحة من البلاستيك تساوي ضعف مساحة أرضيته. ما ثمن البلاستيك اللازم؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: الثمن بالدينار (DA)",
+      "expectedAnswer": "49000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب مساحة البلاستيك اللازمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم اضرب في ثمن المتر المربع."
+        }
+      ],
+      "feedback": {
+        "correct": "مساحة البلاستيك $2 \\times 70 = 140\\,m^2$ وثمنه $140 \\times 350 = 49000$DA.",
+        "incorrect": "مساحة البلاستيك ضعف مساحة الأرضية التي وجدتها في السؤال 03."
+      },
+      "solution": {
+        "lines": [
+          "مساحة البلاستيك: $2 \\times 70 = 140\\,m^2$",
+          "الثمن: $140 \\times 350$"
+        ],
+        "result": "49000\\,DA"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l5-008",
-  "lessonCode": "amaliyat-judhur",
-  "level": 5
+  ]
 }

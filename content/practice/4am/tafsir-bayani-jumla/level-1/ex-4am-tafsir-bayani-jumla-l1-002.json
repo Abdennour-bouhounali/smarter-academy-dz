@@ -3,9 +3,10 @@
   "lessonCode": "tafsir-bayani-jumla",
   "level": 1,
   "metadata": {
-    "title": "من المعادلة إلى المستقيم",
-    "estimatedMinutes": 3,
+    "title": "مستقيم المعادلة x + y = 5",
+    "estimatedMinutes": 4,
     "tags": [
+      "انتماء نقطة",
       "y = ax + b"
     ],
     "source": {
@@ -13,63 +14,112 @@
       "reason": "practice_generation",
       "learningPoint": "4am_tafsir-bayani-jumla_P1",
       "modelledOn": "act-5"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نعتبر المعادلة $x + y = 5$ ."
+    "content": "المستقيم $(d)$ هو التمثيل البياني للمعادلة $x + y = 5$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المعادلة $x + y = 5$ تُكتب على الشكل $y = ax + b$ :",
+      "step": "01",
+      "statement": "هل النقطة $A(2 ; 3)$ تنتمي إلى المستقيم $(d)$ ؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_tafsir-bayani-jumla_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$y = -x + 5$",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "$y = x + 5$",
+          "content": "لا",
           "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-ISHARA-Y"
-        },
-        {
-          "id": "C",
-          "content": "$y = -x - 5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-ISHARA-Y"
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المعادلة من الشكل $ax + by = c$ : نريد أن يبقى $y$ وحده في طرف."
+          "content": "نقطة تنتمي إلى مستقيم إذا حققت إحداثياها معادلته."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انقل حدّ $x$ إلى الطرف الثاني مع تغيير إشارته."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم كل الحدود على معامل $y$ ، ثم قارن بالاقتراحات."
+          "content": "عوّض $x$ بالفاصلة و $y$ بالترتيب ثم قارن بالطرف الثاني."
         }
       ],
       "feedback": {
-        "correct": "$x + y = 5$ تعطي $y = -x + 5$ : ننقل حدّ $x$ مع تغيير إشارته ثم نقسم على معامل $y$.",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "بالتعويض في المعادلة.",
+        "incorrect": "عوّض $x$ بالعدد الأول من الثنائية و $y$ بالعدد الثاني، ثم قارن بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "$2 + 3 = 5$",
+          "النقطة تحقق المعادلة $(x + y = 5)$ ، إذن فهي تنتمي إلى مستقيمها."
+        ]
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "عيّن ترتيب النقطة $B$ من المستقيم $(d)$ التي فاصلتها $-1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: ترتيب النقطة $B$",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-JUMLA-ISHARA-Y"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المعادلة على الشكل $y = ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بفاصلة النقطة $B$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = -(-1) + 5$ .",
+        "incorrect": "المعادلة تُكتب $y = -x + 5$ ؛ عوّض $x$ بالعدد $-1$ وانتبه إلى إشارة $-x$ ."
+      },
+      "solution": {
+        "lines": [
+          "$x + y = 5$ تُكتب $y = -x + 5$ .",
+          "من أجل $x = -1$ : $y = -(-1) + 5 = 1 + 5 = 6$",
+          "إذن $B(-1 ; 6)$ ."
+        ],
+        "result": "y = 6"
+      },
+      "timeSeconds": 120
     }
   ]
 }

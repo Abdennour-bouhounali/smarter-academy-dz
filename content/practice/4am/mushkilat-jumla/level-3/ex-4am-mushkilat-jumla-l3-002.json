@@ -3,8 +3,8 @@
   "lessonCode": "mushkilat-jumla",
   "level": 3,
   "metadata": {
-    "title": "تمرين 14 (ص 61) — نسبة بعد الإضافة",
-    "estimatedMinutes": 5,
+    "title": "مجموع 133 ونسبة 4/7",
+    "estimatedMinutes": 11,
     "tags": [
       "ترييض",
       "نسبة"
@@ -15,99 +15,163 @@
       "page": 61,
       "section": "أوظّف تعلّماتي",
       "number": 14
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 61): مجموع عددين $a$ و $b$ هو 133. إذا أضفنا إلى كل منهما 5، أصبحت نسبتهما $\\dfrac{4}{7}$ . ما هما العددان؟"
+    "content": "مجموع عددين $a$ و $b$ هو 133. إذا أضفنا 5 إلى كل منهما، أصبحت نسبتهما $\\dfrac{4}{7}$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الجملة التي تترجم المشكلة هي:",
+      "step": "01",
+      "statement": "بيّن أن الشرط الثاني يُترجم بالمعادلة: $7a - 4b = -15$",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\begin{cases} a + b = 133 \\\\ 4(a + 5) = 7(b + 5) \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "B",
-          "content": "$\\begin{cases} a + b = 133 \\\\ 7(a + 5) = 4(b + 5) \\end{cases}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\begin{cases} a + b = 133 \\\\ 7a + 5 = 4b + 5 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "النسبة: $\\dfrac{a + 5}{b + 5}$ ."
+          "content": "اكتب النسبة الجديدة: البسط $a + 5$ والمقام $b + 5$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "استعمل تساوي الجداءين المتصالبين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "القوسان يبقيان."
+          "content": "تساوي نسبتين: الجداءان المتصالبان متساويان."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{a + 5}{b + 5} = \\dfrac{4}{7}$ تعني الجداءين المتصالبين، والحل $(47 ; 86)$ .",
-        "incorrect": "الجداءان المتصالبان: بسط مع مقام الآخر."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "بعد إضافة 5 إلى كل عدد: $\\dfrac{a + 5}{b + 5} = \\dfrac{4}{7}$",
+          "بالضرب التبادلي: $7(a + 5) = 4(b + 5)$",
+          "$7a + 35 = 4b + 20$",
+          "ومنه: $7a - 4b = -15$"
+        ]
+      },
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "العددان: اكتب الثنائية $(a ; b)$ .",
+      "step": "02",
+      "lead": "اكتب جملة معادلتين مجهولاها $a$ و $b$ ، ثم جد العددين.",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (a ; b) — عددان",
-      "expectedAnswer": {
-        "x": "47",
-        "y": "86"
-      },
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "47",
+      "misconceptionSignatures": [
+        {
+          "value": "86",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر: $7a + 35 = 4b + 20$ ."
+          "content": "الجملة: معادلة المجموع ومعادلة السؤال 01."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض $b = 133 - a$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحصل على $11a = 517$ ."
+          "content": "اضرب معادلة المجموع في 4 ثم اجمعها مع المعادلة الأخرى."
         }
       ],
       "feedback": {
-        "correct": "$a = 47$ و $b = 86$ ، و $\\dfrac{52}{91} = \\dfrac{4}{7}$ .",
-        "incorrect": "تحقّق بالنسبة بعد الإضافة."
-      }
+        "correct": "العدد $a$ هو 47.",
+        "incorrect": "اجعل معاملي $b$ متعاكسين ثم اجمع طرفا لطرف."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} a + b = 133 & ...(1) \\\\ 7a - 4b = -15 & ...(2) \\end{cases}$",
+          "بضرب طرفي المعادلة (1) في العدد $4$ نجد:",
+          "$\\begin{cases} 4a + 4b = 532 \\\\ 7a - 4b = -15 \\end{cases}$",
+          "بجمع المعادلتين طرفا لطرف نجد: $11a = 517$",
+          "ومنه: $a = \\dfrac{517}{11} = 47$",
+          "بتعويض قيمة $a$ في المعادلة (1) نجد: $47 + b = 133$",
+          "$b = 86$",
+          "التحقق في النص: $47 + 86 = 133$ و $\\dfrac{47 + 5}{86 + 5} = \\dfrac{52}{91} = \\dfrac{4}{7}$ .",
+          "إذن العددان هما $a = 47$ و $b = 86$ ."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 360
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "86",
+      "misconceptionSignatures": [
+        {
+          "value": "47",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع 133 ."
+        }
+      ],
+      "feedback": {
+        "correct": "العدد $b$ هو 86، ونتحقق: $\\dfrac{52}{91} = \\dfrac{4}{7}$ .",
+        "incorrect": "من $a + b = 133$ : $b = 133 - a$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} a + b = 133 & ...(1) \\\\ 7a - 4b = -15 & ...(2) \\end{cases}$",
+          "بضرب طرفي المعادلة (1) في العدد $4$ نجد:",
+          "$\\begin{cases} 4a + 4b = 532 \\\\ 7a - 4b = -15 \\end{cases}$",
+          "بجمع المعادلتين طرفا لطرف نجد: $11a = 517$",
+          "ومنه: $a = \\dfrac{517}{11} = 47$",
+          "بتعويض قيمة $a$ في المعادلة (1) نجد: $47 + b = 133$",
+          "$b = 86$",
+          "التحقق في النص: $47 + 86 = 133$ و $\\dfrac{47 + 5}{86 + 5} = \\dfrac{52}{91} = \\dfrac{4}{7}$ .",
+          "إذن العددان هما $a = 47$ و $b = 86$ ."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

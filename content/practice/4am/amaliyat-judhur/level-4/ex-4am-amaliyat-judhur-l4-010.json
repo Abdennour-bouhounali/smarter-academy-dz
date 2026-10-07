@@ -1,106 +1,168 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l4-010",
+  "lessonCode": "amaliyat-judhur",
+  "level": 4,
   "metadata": {
-    "title": "تدريب — مقارنة كتابات حاصل القسمة",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2021 — الكتابة a + b√5",
+    "estimatedMinutes": 9,
     "tags": [
-      "حاصل قسمة جذرين"
+      "جداء جذرين",
+      "الكتابة a√b"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_amaliyat-judhur_P2",
-      "modelledOn": "know-4"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "BEM 2021 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2021",
+      "heading": "التمرين الأول",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "نقارن الأعداد $\\sqrt{\\dfrac{50}{2}}$ و $\\dfrac{\\sqrt{50}}{2}$ و $\\dfrac{\\sqrt{50}}{\\sqrt{2}}$ ."
+    "content": "ليكن العدد $A$ حيث:",
+    "formulas": [
+      "A = \\sqrt{3} \\times \\sqrt{27} + \\sqrt{180} - \\sqrt{245}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "اختر المقارنة الصحيحة.",
+      "step": "01",
+      "lead": "اكتب العدد $A$ على الشكل $a + b\\sqrt{5}$ حيث $a$ و $b$ عددان نسبيان.",
+      "statement": "العدد $a$",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P2",
+          "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\sqrt{\\dfrac{50}{2}} = \\dfrac{\\sqrt{50}}{2}$",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$\\sqrt{\\dfrac{50}{2}} > \\dfrac{\\sqrt{50}}{2}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\sqrt{\\dfrac{50}{2}} < \\dfrac{\\sqrt{50}}{2}$",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "9",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب $\\sqrt{\\dfrac{50}{2}}$ ."
+          "content": "الحد الناطق في $A$ يأتي من الجداء $\\sqrt{3} \\times \\sqrt{27}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في $\\dfrac{\\sqrt{50}}{2}$ المقام 2 ليس تحت الجذر."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن مربّعي العددين: $\\dfrac{50}{2}$ و $\\dfrac{50}{4}$ ."
+          "content": "اكتب هذا الجداء تحت جذر واحد."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{\\dfrac{50}{2}} = 5$ و $\\left(\\dfrac{\\sqrt{50}}{2}\\right)^2 = \\dfrac{50}{4} < 25$ .",
-        "incorrect": "المقام 2 خارج الجذر يختلف عن المقام $\\sqrt{2}$ ."
-      }
+        "correct": "$\\sqrt{3} \\times \\sqrt{27} = \\sqrt{81} = 9$ ، إذن $A = 9 - \\sqrt{5}$ .",
+        "incorrect": "اكتب $\\sqrt{3} \\times \\sqrt{27} = \\sqrt{3 \\times 27}$ ثم احسب."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{3} \\times \\sqrt{27} = \\sqrt{3 \\times 27} = \\sqrt{81} = 9$"
+        ],
+        "result": "A = 9 - \\sqrt{5}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "احسب $\\sqrt{\\dfrac{50}{2}} - \\dfrac{\\sqrt{50}}{\\sqrt{2}}$ .",
+      "step": "01",
+      "statement": "العدد $b$",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P2",
+          "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "0",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد نسبي)",
+      "expectedAnswer": "-1",
+      "misconceptionSignatures": [
+        {
+          "value": "1",
+          "id": "MISC-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب كل حد وحده."
+          "content": "اكتب $180 = 36 \\times 5$ و $245 = 49 \\times 5$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\dfrac{\\sqrt{50}}{\\sqrt{2}} = \\sqrt{\\dfrac{50}{2}}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ماذا تلاحظ عن الحدّين؟"
+          "content": "اكتب $\\sqrt{180} - \\sqrt{245}$ على الشكل $k\\sqrt{5}$ ."
         }
       ],
       "feedback": {
-        "correct": "الحدّان متساويان ($\\dfrac{\\sqrt{a}}{\\sqrt{b}} = \\sqrt{\\dfrac{a}{b}}$) إذن الفرق معدوم.",
-        "incorrect": "طبّق خاصية حاصل قسمة جذرين على الحد الثاني."
-      }
+        "correct": "$\\sqrt{180} - \\sqrt{245} = 6\\sqrt{5} - 7\\sqrt{5} = -\\sqrt{5}$",
+        "incorrect": "أخرج المربعين التامين من تحت الجذرين ثم اطرح المعاملين مع الإشارة."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{180} = \\sqrt{36 \\times 5} = 6\\sqrt{5}$",
+          "$\\sqrt{245} = \\sqrt{49 \\times 5} = 7\\sqrt{5}$",
+          "$A = 9 + 6\\sqrt{5} - 7\\sqrt{5}$"
+        ],
+        "result": "A = 9 - \\sqrt{5}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "ليكن العدد $B$ حيث: $B = 9 + \\sqrt{5}$ . بيّن أن $A \\times B$ عدد طبيعي.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة الجداء $A \\times B$ (عدد طبيعي)",
+      "expectedAnswer": "76",
+      "misconceptionSignatures": [
+        {
+          "value": "56",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل نتيجة السؤال 01."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجداء من الشكل $(a - b)(a + b)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$A \\times B = 9^2 - (\\sqrt{5})^2 = 81 - 5 = 76$",
+        "incorrect": "اكتب $(9 - \\sqrt{5})(9 + \\sqrt{5})$ واستعمل $(\\sqrt{5})^2 = 5$ ."
+      },
+      "solution": {
+        "lines": [
+          "$A \\times B = (9 - \\sqrt{5})(9 + \\sqrt{5})$",
+          "$= 9^2 - (\\sqrt{5})^2$",
+          "$= 81 - 5$"
+        ],
+        "result": "A \\times B = 76"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l4-010",
-  "lessonCode": "amaliyat-judhur",
-  "level": 4
+  ]
 }

@@ -1,139 +1,123 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-004",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — جمع جذور متشابهة",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2011 — التمرين الثاني",
+    "estimatedMinutes": 7,
     "tags": [
-      "وضعية إدماجية",
-      "خاصية توزيعية",
-      "جذر مجموع"
+      "a√b",
+      "جداء"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
-      "modelledOn": null
+      "modelledOn": "BEM 2011 I-2"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2011",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "اختر الكتابة الصحيحة في كل حالة."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$3\\sqrt{2} + 5\\sqrt{2} - \\sqrt{2} = \\ldots$",
+      "step": "01",
+      "statement": "اكتب المجموع $A$ على الشكل $a\\sqrt{2}$ (مع $a$ عدد طبيعي) حيث: $A = \\sqrt{98} + \\sqrt{50} - \\sqrt{32}$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "8",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$8\\sqrt{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUAMIL-MANSI"
-        },
-        {
-          "id": "B",
-          "content": "$7\\sqrt{6}$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$9\\sqrt{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-ISHARA"
-        },
-        {
-          "id": "D",
-          "content": "$7\\sqrt{2}$",
-          "isCorrect": true
+          "value": "4",
+          "id": "MISC-JIDHR-JAMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الحدود الثلاثة فيها العامل نفسه."
+          "content": "$98 = 49 \\times 2$ ، $50 = 25 \\times 2$ ، $32 = 16 \\times 2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "استعمل الخاصية التوزيعية."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$-\\sqrt{2} = -1 \\times \\sqrt{2}$."
+          "content": "اكتب كل جذر على الشكل $k\\sqrt{2}$ ثم اجمع المعاملات."
         }
       ],
       "feedback": {
-        "correct": "$(3 + 5 - 1)\\sqrt{2} = 7\\sqrt{2}$.",
-        "incorrect": "انتبه إلى الحد الثالث: معامله $-1$."
+        "correct": "$A = 7\\sqrt{2} + 5\\sqrt{2} - 4\\sqrt{2} = 8\\sqrt{2}$",
+        "incorrect": "لا تجمع الأعداد تحت الجذور: اكتب كل جذر على الشكل $k\\sqrt{2}$ أولًا."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{49 \\times 2} + \\sqrt{25 \\times 2} - \\sqrt{16 \\times 2}$",
+          "$= 7\\sqrt{2} + 5\\sqrt{2} - 4\\sqrt{2}$",
+          "$= (7 + 5 - 4)\\sqrt{2}$"
+        ],
+        "result": "A = 8\\sqrt{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "$\\sqrt{18} + \\sqrt{8} = \\ldots$",
+      "step": "02",
+      "statement": "احسب الجداء $A \\times \\dfrac{\\sqrt{2}}{4}$ مبينا مراحل الحساب.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$5\\sqrt{2}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$\\sqrt{26}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-JAMA"
-        },
-        {
-          "id": "C",
-          "content": "$13\\sqrt{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
-        },
-        {
-          "id": "D",
-          "content": "$6\\sqrt{2}$",
-          "isCorrect": false
+          "value": "2",
+          "id": "MISC-JIDHR-FI-JIDHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "هل يمكن جمع جذرين بجمع ما تحت الجذر؟"
+          "content": "عوّض $A$ بنتيجة السؤال 01."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "بسّط كل جذر على الشكل $a\\sqrt{2}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$18 = 9 \\times 2$ و $8 = 4 \\times 2$."
+          "content": "$\\sqrt{2} \\times \\sqrt{2} = 2$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{18} + \\sqrt{8} = 3\\sqrt{2} + 2\\sqrt{2} = 5\\sqrt{2}$.",
-        "incorrect": "الجذر لا يتوزّع على الجمع: بسّط كل جذر أولًا."
+        "correct": "$8\\sqrt{2} \\times \\dfrac{\\sqrt{2}}{4} = \\dfrac{8 \\times 2}{4} = 4$",
+        "incorrect": "اضرب المعاملين، ثم استعمل $\\sqrt{2} \\times \\sqrt{2} = 2$ ، ثم اقسم على 4."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$A \\times \\dfrac{\\sqrt{2}}{4} = 8\\sqrt{2} \\times \\dfrac{\\sqrt{2}}{4}$",
+          "$= \\dfrac{8 \\times (\\sqrt{2})^2}{4} = \\dfrac{8 \\times 2}{4}$"
+        ],
+        "result": "A \\times \\dfrac{\\sqrt{2}}{4} = 4"
+      },
+      "work": "required",
+      "timeSeconds": 240
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l2-004",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 2
+  ]
 }

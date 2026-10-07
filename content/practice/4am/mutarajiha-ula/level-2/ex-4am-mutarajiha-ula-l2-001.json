@@ -3,10 +3,11 @@
   "lessonCode": "mutarajiha-ula",
   "level": 2,
   "metadata": {
-    "title": "تمرين 22 — إذا علمت أن x > 3/2",
-    "estimatedMinutes": 4,
+    "title": "إذا علمت أن x > 3/2",
+    "estimatedMinutes": 5,
     "tags": [
-      "قواعد الاتجاه"
+      "متراجحة",
+      "خواص المتباينات"
     ],
     "source": {
       "type": "textbook",
@@ -14,123 +15,135 @@
       "page": 51,
       "section": "أوظّف تعلّماتي",
       "number": 22
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 51): نعلم أن $x > \\dfrac{3}{2}$ ."
+    "content": "نعلم أن العدد $x$ يحقّق:",
+    "formulas": [
+      "x > \\dfrac{3}{2}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "إذا كان $x > \\dfrac{3}{2}$ فإنّ ...",
+      "step": "01",
+      "sub": "ا",
+      "lead": "دون حساب $x$ :",
+      "statement": "أكمل بالرمز المناسب: $2x \\;\\ldots\\; 3$",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$2x > 4$",
+          "content": "$2x < 3$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
         },
         {
           "id": "B",
           "content": "$2x > 3$",
           "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$2x < 3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "طبّق على طرفي $x > \\dfrac{3}{2}$ العمليات التي تعطي $2x$."
+          "content": "انطلق من المتباينة المعطاة وأجرِ العمليات نفسها على الطرفين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الضرب في عدد موجب أو إضافة عدد لا يغيّران الاتجاه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الضرب في عدد سالب يغيّر الاتجاه."
+          "content": "الضرب في عدد سالب يغيّر اتجاه المتباينة، والإضافة لا تغيّره."
         }
       ],
       "feedback": {
-        "correct": "من $x > \\dfrac{3}{2}$ نحصل على $2x > 3$.",
-        "incorrect": "انطلق من المعطى وطبّق العمليات نفسها على الطرفين، خطوة خطوة."
-      }
+        "correct": "$2x > 3$ .",
+        "incorrect": "تتبّع العمليات واحدة واحدة: متى ضربت في عدد سالب؟"
+      },
+      "solution": {
+        "lines": [
+          "نضرب طرفي المتباينة $x > \\dfrac{3}{2}$ في العدد الموجب $2$ فلا يتغيّر الاتجاه:",
+          "$2x > 3$"
+        ],
+        "result": "2x > 3"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "إذا كان $x > \\dfrac{3}{2}$ فإنّ ...",
+      "step": "01",
+      "sub": "ب",
+      "statement": "أكمل بالرمز المناسب: $-4x \\;\\ldots\\; -6$",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$-4x > -6$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
-        },
-        {
-          "id": "B",
           "content": "$-4x < -6$",
           "isCorrect": true
         },
         {
-          "id": "C",
-          "content": "$-4x < -8$",
+          "id": "B",
+          "content": "$-4x > -6$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "طبّق على طرفي $x > \\dfrac{3}{2}$ العمليات التي تعطي $-4x$."
+          "content": "انطلق من المتباينة المعطاة وأجرِ العمليات نفسها على الطرفين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الضرب في عدد موجب أو إضافة عدد لا يغيّران الاتجاه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الضرب في عدد سالب يغيّر الاتجاه."
+          "content": "الضرب في عدد سالب يغيّر اتجاه المتباينة، والإضافة لا تغيّره."
         }
       ],
       "feedback": {
-        "correct": "من $x > \\dfrac{3}{2}$ نحصل على $-4x < -6$ (الضرب في عدد سالب يغيّر الاتجاه).",
-        "incorrect": "انطلق من المعطى وطبّق العمليات نفسها على الطرفين، خطوة خطوة."
-      }
+        "correct": "$-4x < -6$ .",
+        "incorrect": "تتبّع العمليات واحدة واحدة: متى ضربت في عدد سالب؟"
+      },
+      "solution": {
+        "lines": [
+          "نضرب طرفي المتباينة $x > \\dfrac{3}{2}$ في العدد السالب $-4$ فيتغيّر الاتجاه:",
+          "$-4x < -6$"
+        ],
+        "result": "-4x < -6"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "إذا كان $x > \\dfrac{3}{2}$ فإنّ ...",
+      "step": "02",
+      "statement": "أكمل بالرمز المناسب: $2x + 5 \\;\\ldots\\; 8$",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
@@ -141,12 +154,6 @@
         },
         {
           "id": "B",
-          "content": "$2x + 5 > 10$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
-        },
-        {
-          "id": "C",
           "content": "$2x + 5 > 8$",
           "isCorrect": true
         }
@@ -155,23 +162,28 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "طبّق على طرفي $x > \\dfrac{3}{2}$ العمليات التي تعطي $2x + 5$."
+          "content": "انطلق من المتباينة المعطاة وأجرِ العمليات نفسها على الطرفين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الضرب في عدد موجب أو إضافة عدد لا يغيّران الاتجاه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الضرب في عدد سالب يغيّر الاتجاه."
+          "content": "الضرب في عدد سالب يغيّر اتجاه المتباينة، والإضافة لا تغيّره."
         }
       ],
       "feedback": {
-        "correct": "من $x > \\dfrac{3}{2}$ نحصل على $2x + 5 > 8$.",
-        "incorrect": "انطلق من المعطى وطبّق العمليات نفسها على الطرفين، خطوة خطوة."
-      }
+        "correct": "$2x + 5 > 8$ .",
+        "incorrect": "تتبّع العمليات واحدة واحدة: متى ضربت في عدد سالب؟"
+      },
+      "solution": {
+        "lines": [
+          "نضرب طرفي المتباينة $x > \\dfrac{3}{2}$ في العدد الموجب $2$ فلا يتغيّر الاتجاه:",
+          "$2x > 3$",
+          "نضيف العدد $5$ إلى الطرفين فلا يتغيّر الاتجاه:",
+          "$2x + 5 > 8$"
+        ],
+        "result": "2x + 5 > 8"
+      },
+      "timeSeconds": 90
     }
   ]
 }

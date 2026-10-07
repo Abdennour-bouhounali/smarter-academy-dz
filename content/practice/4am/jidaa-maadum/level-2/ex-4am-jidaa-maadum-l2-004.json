@@ -3,10 +3,11 @@
   "lessonCode": "jidaa-maadum",
   "level": 2,
   "metadata": {
-    "title": "نشاط 2 — عاملان يتغيّران",
-    "estimatedMinutes": 4,
+    "title": "تحقّق بالنشر ثم حلّ",
+    "estimatedMinutes": 6,
     "tags": [
-      "خاصية الجداء المعدوم"
+      "جداء معدوم",
+      "نشر"
     ],
     "source": {
       "type": "textbook",
@@ -14,119 +15,143 @@
       "page": 44,
       "section": "أنشطة",
       "number": 2
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 44): حل المعادلة $(x - 2)(x + 5) = 0$ ."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلول المعادلة:",
+      "step": "01",
+      "statement": "تحقّق بالنشر أن: $(x - 2)(x + 5) = x^2 + 3x - 10$ .",
       "learningPoints": [
         {
-          "code": "4am_jidaa-maadum_P2",
+          "code": "4am_jidaa-maadum_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$-10$ فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
-        },
-        {
-          "id": "B",
-          "content": "$2$ و $-5$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$-2$ و $5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
-        },
-        {
-          "id": "D",
-          "content": "$2$ فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الطرف الأول جداء عاملين والطرف الثاني $0$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "خاصية الجداء المعدوم: أحد العاملين على الأقل معدوم."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب كل عامل يساوي $0$ ، ثم حلّ كل معادلة من الدرجة الأولى."
+          "content": "اضرب كل حد من القوس الأول في كل حد من القوس الثاني."
         }
       ],
       "feedback": {
-        "correct": "$x - 2 = 0$ أو $x + 5 = 0$ ، أي $x = 2$ أو $x = -5$ .",
-        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
-      }
+        "correct": "أحسنت: برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "$(x - 2)(x + 5) = x^2 + 5x - 2x - 10$",
+          "$= x^2 + 3x - 10$"
+        ]
+      },
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "لماذا لا نحلّها بنشر الطرف الأول كما فعل إلياس؟",
+      "step": "02",
+      "lead": "استنتج حلول المعادلة: $x^2 + 3x - 10 = 0$ .",
+      "statement": "الحلّ الأصغر:",
       "learningPoints": [
         {
-          "code": "4am_jidaa-maadum_P2",
+          "code": "4am_jidaa-maadum_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "-5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "لأنّ النشر يعطي $x^2 - 10 = 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
-        },
-        {
-          "id": "B",
-          "content": "لأنّ النشر ممنوع في المعادلات",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
-        },
-        {
-          "id": "C",
-          "content": "لأنّ النشر يعطي $x^2 + 3x - 10 = 0$ وهي ليست من الدرجة الأولى",
-          "isCorrect": true
+          "value": "-2",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر $(x - 2)(x + 5)$."
+          "content": "لا تنشر الطرف الأول: استعمل تحليله إلى جداء عاملين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انظر إلى أعلى قوة لـ $x$ بعد النشر."
+          "content": "بعد التحليل تصير المعادلة معادلة جداء معدوم: أحد العاملين على الأقل معدوم."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "معادلة من الدرجة الأولى لا تحتوي على $x^2$."
+          "content": "حلّ كل معادلة من الدرجة الأولى، ثم رتّب الحلّين من الأصغر إلى الأكبر."
         }
       ],
       "feedback": {
-        "correct": "$(x - 2)(x + 5) = x^2 + 5x - 2x - 10 = x^2 + 3x - 10$ : فيها $x^2$ ، فلا نعرف حلّها بطريقة الدرس 1.",
-        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
-      }
+        "correct": "$x = -5$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى بإشاراتها، ثم رتّب الحلّين."
+      },
+      "solution": {
+        "lines": [
+          "حسب السؤال 01: $x^2 + 3x - 10 = (x - 2)(x + 5)$",
+          "المعادلة تُكتب: $(x - 2)(x + 5) = 0$",
+          "يعني أنّ: $x - 2 = 0$ أو $x + 5 = 0$",
+          "ومنه: $x = 2$ أو $x = -5$",
+          "إذن للمعادلة حلّان هما $-5$ و $2$"
+        ],
+        "result": "x = -5"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "الحلّ الأكبر:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "value": "5",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المعادلة الثانية من الدرجة الأولى، ثم قارن الحلّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 2$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى بإشاراتها، ثم رتّب الحلّين."
+      },
+      "solution": {
+        "lines": [
+          "إذن للمعادلة حلّان هما $-5$ و $2$"
+        ],
+        "result": "x = 2"
+      },
+      "timeSeconds": 60
     }
   ]
 }

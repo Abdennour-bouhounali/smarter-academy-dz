@@ -1,7 +1,10 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l2-008",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — نقل حد ثابت",
-    "estimatedMinutes": 3,
+    "title": "المعادلتان x² − 121 = 0 و x² + 5 = 30",
+    "estimatedMinutes": 5,
     "tags": [
       "معادلة",
       "عزل المربع"
@@ -11,15 +14,23 @@
       "reason": "practice_generation",
       "learningPoint": "4am_muadalat-x-murabba_P2",
       "modelledOn": "ex-13"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نعزل $x^2$ ثم نحل."
+    "content": "حل كل معادلة من المعادلتين الآتيتين."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هو الحل الموجب للمعادلة $x^2 - 121 = 0$؟",
+      "step": "01",
+      "lead": "حل المعادلة $x^2 - 121 = 0$.",
+      "statement": "الحل الموجب:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P2",
@@ -40,27 +51,74 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "انقل $-121$ إلى الطرف الثاني."
+          "content": "اعزل $x^2$ في طرف."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تحصل على $x^2 = a$ مع $a > 0$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ما العدد الموجب الذي مربعه $a$؟"
+          "content": "اكتب الطرف الثاني على شكل مربع عدد موجب."
         }
       ],
       "feedback": {
-        "correct": "$x^2 = 121$ ، إذن $x = 11$ أو $x = -11$.",
-        "incorrect": "اعزل $x^2$ أولا ثم ابحث عن العدد الذي مربعه 121."
-      }
+        "correct": "نعم، وهو معاكس الحل السالب.",
+        "incorrect": "الحل الموجب هو معاكس الحل السالب: مربعه هو الطرف الثاني بعد عزل $x^2$."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 - 121 = 0$ يعني $x^2 = 121$",
+          "أي $x^2 = 11^2$",
+          "بالتالي $x = 11$ أو $x = -11$"
+        ],
+        "result": "x = -11 \\quad ; \\quad x = 11"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "ما هو الحل السالب للمعادلة $x^2 + 5 = 30$؟",
+      "step": "01",
+      "statement": "الحل السالب:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "-11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اعزل $x^2$ في طرف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب الطرف الثاني على شكل مربع عدد موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "نعم، هذا هو الحل السالب: للمعادلة حلان متعاكسان.",
+        "incorrect": "الحلان عددان متعاكسان مربع كل منهما هو الطرف الثاني بعد عزل $x^2$: خذ السالب منهما."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 - 121 = 0$ يعني $x^2 = 121$",
+          "أي $x^2 = 11^2$",
+          "بالتالي $x = 11$ أو $x = -11$"
+        ],
+        "result": "x = -11 \\quad ; \\quad x = 11"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "حل المعادلة $x^2 + 5 = 30$.",
+      "statement": "الحل السالب:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P2",
@@ -85,26 +143,68 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "اطرح 5 من الطرفين."
+          "content": "اطرح 5 من طرفي المعادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تصبح المعادلة $x^2 = a$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الحلّان متعاكسان: خذ السالب."
+          "content": "اكتب الطرف الثاني على شكل مربع عدد موجب."
         }
       ],
       "feedback": {
-        "correct": "$x^2 = 25$ ، والحلان 5 و $-5$.",
-        "incorrect": "المطلوب الحل السالب بعد عزل $x^2$."
-      }
+        "correct": "نعم، هذا هو الحل السالب: للمعادلة حلان متعاكسان.",
+        "incorrect": "الحلان عددان متعاكسان مربع كل منهما هو الطرف الثاني بعد عزل $x^2$: خذ السالب منهما."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 + 5 = 30$ يعني $x^2 = 30 - 5$",
+          "أي $x^2 = 25 = 5^2$",
+          "بالتالي $x = 5$ أو $x = -5$"
+        ],
+        "result": "x = -5 \\quad ; \\quad x = 5"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "الحل الموجب:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح 5 من طرفي المعادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب الطرف الثاني على شكل مربع عدد موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "نعم، وهو معاكس الحل السالب.",
+        "incorrect": "الحل الموجب هو معاكس الحل السالب: مربعه هو الطرف الثاني بعد عزل $x^2$."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 + 5 = 30$ يعني $x^2 = 30 - 5$",
+          "أي $x^2 = 25 = 5^2$",
+          "بالتالي $x = 5$ أو $x = -5$"
+        ],
+        "result": "x = -5 \\quad ; \\quad x = 5"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l2-008",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 2
+  ]
 }

@@ -3,101 +3,178 @@
   "lessonCode": "tawzif-khawass-judhur",
   "level": 2,
   "metadata": {
-    "title": "تدريب — المعامل أمام الجذر",
-    "estimatedMinutes": 3,
+    "title": "√98 ثم √98 − √8",
+    "estimatedMinutes": 5,
     "tags": [
-      "a√b"
+      "a√b",
+      "أكبر مربع"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tawzif-khawass-judhur_P1",
-      "modelledOn": "ex-18"
+      "modelledOn": "ex-18",
+      "adaptedFrom": "ex-4am-tawzif-khawass-judhur-l2-003"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "كل عدد يُكتب على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان و $b$ أصغر ما يمكن."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نكتب $\\sqrt{500} = a\\sqrt{5}$. ما قيمة $a$؟",
+      "step": "01",
+      "lead": "اكتب العدد $\\sqrt{98}$ على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان و $b$ أصغر ما يمكن.",
+      "statement": "العدد $a$:",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "10",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "7",
       "misconceptionSignatures": [
         {
-          "id": "MISC-JIDHR-MURABBA-MANSI",
-          "value": "100"
+          "value": "49",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب 500 على شكل جداء مربع تامّ في 5."
+          "content": "ابحث عن أكبر مربع تامّ يقسم 98."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$500 \\div 5$ مربع تامّ."
+          "content": "جرّب: هل 98 يقبل القسمة على 49؟"
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "خذ الجذر التربيعي لهذا المربع."
+          "content": "$a$ هو جذر هذا المربع التامّ."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{500} = \\sqrt{100 \\times 5} = \\sqrt{100} \\times \\sqrt{5}$.",
-        "incorrect": "المعامل هو جذر المربع، وليس المربع نفسه."
-      }
+        "correct": "$\\sqrt{98} = \\sqrt{49} \\times \\sqrt{2} = 7\\sqrt{2}$ إذن $a = 7$.",
+        "incorrect": "اكتب 98 على شكل (مربع تامّ) × (عدد)، ثم أخرج جذر المربع التامّ."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{98} = \\sqrt{49 \\times 2}$",
+          "$\\sqrt{98} = \\sqrt{49} \\times \\sqrt{2}$",
+          "$\\sqrt{98} = 7\\sqrt{2}$"
+        ],
+        "result": "a = 7"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "نكتب $\\sqrt{363} = a\\sqrt{3}$. ما قيمة $a$؟",
+      "step": "01",
+      "statement": "العدد $b$:",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "11",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد طبيعي)",
+      "expectedAnswer": "2",
       "misconceptionSignatures": [
         {
-          "id": "MISC-JIDHR-MURABBA-MANSI",
-          "value": "121"
+          "value": "98",
+          "id": "MISC-B-LAYSA-ASGHAR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب 363 على شكل جداء مربع تامّ في 3."
+          "content": "$b$ هو ما يبقى تحت الجذر بعد إخراج أكبر مربع تامّ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{98} = 7\\sqrt{2}$ إذن $b = 2$.",
+        "incorrect": "العدد الذي يبقى تحت الجذر لا يقبل القسمة على أيّ مربع تامّ غير 1."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{98} = 7\\sqrt{2}$ والعدد 2 لا يقبل القسمة على أيّ مربع تامّ غير 1."
+        ],
+        "result": "b = 2"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "ليكن العدد $C = \\sqrt{98} - \\sqrt{8}$ . اكتب C على الشكل $a\\sqrt{2}$ حيث $a$ عدد طبيعي.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-JIDHR-TARH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل نتيجة السؤال 01 للجذر الأول."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $363 \\div 3$."
+          "content": "اكتب $\\sqrt{8}$ على الشكل $x\\sqrt{2}$."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "حاصل القسمة مربع تامّ: ما جذره؟"
+          "content": "استعمل الخاصية التوزيعية."
         }
       ],
       "feedback": {
-        "correct": "$363 = 121 \\times 3 = 11^2 \\times 3$.",
-        "incorrect": "المعامل هو جذر المربع، وليس المربع نفسه."
-      }
+        "correct": "$C = 7\\sqrt{2} - 2\\sqrt{2} = 5\\sqrt{2}$.",
+        "incorrect": "الجذر لا يتوزّع على الطرح: اكتب كل جذر على الشكل $x\\sqrt{2}$ ثم اطرح المعاملين."
+      },
+      "solution": {
+        "lines": [
+          "$C = \\sqrt{98} - \\sqrt{8}$",
+          "$C = \\sqrt{49} \\times \\sqrt{2} - \\sqrt{4} \\times \\sqrt{2}$",
+          "$C = 7\\sqrt{2} - 2\\sqrt{2}$",
+          "$C = (7 - 2)\\sqrt{2}$"
+        ],
+        "result": "C = 5\\sqrt{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

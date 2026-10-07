@@ -3,26 +3,34 @@
   "lessonCode": "tamthil-bayani-khatti",
   "level": 1,
   "metadata": {
-    "title": "تدريب — معادلة المستقيم",
+    "title": "معادلة المستقيم $y = ax$",
     "estimatedMinutes": 4,
     "tags": [
-      "معادلة",
-      "معامل التوجيه"
+      "معادلة مستقيم",
+      "نقطة من التمثيل"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tamthil-bayani-khatti_P1",
-      "modelledOn": "know-3"
+      "modelledOn": "know-3",
+      "adaptedFrom": "ex-4am-tamthil-bayani-khatti-l1-009"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "التمثيل البياني للدالة الخطية $h : x \\longmapsto -3x$ مستقيم يشمل المبدأ."
+    "content": "$(\\Delta)$ هو التمثيل البياني للدالة الخطية $h$ حيث $h(x) = -3x$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "معادلة هذا المستقيم:",
+      "step": "01",
+      "statement": "اكتب معادلة المستقيم $(\\Delta)$ على الشكل $y = ax$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P1",
@@ -30,47 +38,80 @@
         }
       ],
       "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "recall",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-3",
+      "hints": [
         {
-          "id": "A",
-          "content": "$y = -3x$",
-          "isCorrect": true
+          "id": "h1",
+          "type": "look",
+          "content": "كل نقطة $M(x ; y)$ من $(\\Delta)$ تحقق $y = h(x)$ ."
         },
         {
-          "id": "B",
-          "content": "$y = x - 3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-AFFINE"
-        },
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل $x$ في المعادلة هو معامل الدالة."
+        }
+      ],
+      "feedback": {
+        "correct": "معادلة $(\\Delta)$ هي $y = -3x$ .",
+        "incorrect": "معادلة تمثيل الدالة الخطية $x \\longmapsto ax$ هي $y = ax$ : انقل المعامل بإشارته."
+      },
+      "solution": {
+        "lines": [
+          "$M(x ; y)$ تنتمي إلى $(\\Delta)$ معناه $y = h(x)$ .",
+          "إذن معادلة $(\\Delta)$ هي $y = -3x$ ."
+        ],
+        "result": "y = -3x"
+      },
+      "timeSeconds": 45
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب ترتيب النقطة $E$ من $(\\Delta)$ التي فاصلتها $-2$ .",
+      "learningPoints": [
         {
-          "id": "C",
-          "content": "$y = -3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-BIDUN-O"
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "value": "-6",
+          "id": "MISC-KHATTIYA-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "التمثيل البياني لدالة خطية معاملها $a$ معادلته من الشكل $y = ax$."
+          "content": "عوّض $x$ بالعدد $-2$ في معادلة المستقيم."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما معامل $h$ ؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "كل نقطة $(x ; y)$ منه ترتيبها صورة فاصلتها."
+          "content": "جداء عددين سالبين عدد موجب."
         }
       ],
       "feedback": {
-        "correct": "معادلته $y = -3x$ و $-3$ معامل توجيهه.",
-        "incorrect": "المستقيم يشمل O، وترتيب كل نقطة صورة فاصلتها."
-      }
+        "correct": "$y = -3 \\times \\left(-2\\right) = 6$ ، إذن $E(-2 ; 6)$ .",
+        "incorrect": "انتبه إلى قاعدة الإشارات: سالب في سالب."
+      },
+      "solution": {
+        "lines": [
+          "$y = -3 \\times \\left(-2\\right) = 6$",
+          "إذن $E(-2 ; 6)$ ."
+        ],
+        "result": "E(-2 ; 6)"
+      },
+      "timeSeconds": 60
     }
   ]
 }

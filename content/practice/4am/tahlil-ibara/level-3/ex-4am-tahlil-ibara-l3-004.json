@@ -3,10 +3,11 @@
   "lessonCode": "tahlil-ibara",
   "level": 3,
   "metadata": {
-    "title": "تمرين 32 — فرق مربّعين",
-    "estimatedMinutes": 6,
+    "title": "التحليل بفرق مربعين",
+    "estimatedMinutes": 11,
     "tags": [
-      "فرق مربعين"
+      "فرق مربعين",
+      "تحليل"
     ],
     "source": {
       "type": "textbook",
@@ -14,164 +15,268 @@
       "page": 39,
       "section": "أوظّف تعلّماتي",
       "number": 32
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 39): حلّل باستعمال $a^2 - b^2 = (a + b)(a - b)$ : $A = (3 - 2x)^2 - 9$ ، $B = \\dfrac{1}{4} - \\left(x + \\dfrac{3}{2}\\right)^2$ ، $C = (x + 2)^2 - (3x - 1)^2$ ."
+    "content": "حلّل باستعمال المتطابقة $a^2 - b^2 = (a + b)(a - b)$ العبارات الآتية:",
+    "formulas": [
+      "A = (3 - 2x)^2 - 9",
+      "B = \\dfrac{1}{4} - \\left(x + \\dfrac{3}{2}\\right)^2",
+      "C = (x + 2)^2 - (3x - 1)^2"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّل A.",
+      "step": "01",
+      "lead": "حلّل العبارة $A$ .",
+      "statement": "العدد $k$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$-2x(6 - 2x)$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$(-6 - 2x)(12 - 2x)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
-        },
-        {
-          "id": "C",
-          "content": "$(-2x)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $kx(x + m)$ : اكتب العدد $k$ فقط",
+      "expectedAnswer": "4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$9 = 3^2$."
+          "content": "تعرّف على الشكل $a^2 - b^2$ : عيّن $a$ و $b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$a = 3 - 2x$ و $b = 3$."
+          "content": "استعمل المتطابقة $a^2 - b^2 = (a + b)(a - b)$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اكتب $(a - b)(a + b)$ ثم بسّط كل قوس."
+          "content": "بسّط كل قوس، وانتبه إلى الإشارات عند فتح الأقواس."
         }
       ],
       "feedback": {
-        "correct": "$A = (3 - 2x - 3)(3 - 2x + 3) = -2x(6 - 2x)$.",
-        "incorrect": "$b$ هو جذر 9، أي 3."
-      }
+        "correct": "$A = 4x(x - 3)$ إذن $k = 4$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$A = (3 - 2x)^2 - 3^2$",
+          "$A = (3 - 2x - 3)(3 - 2x + 3)$",
+          "$A = -2x(6 - 2x)$",
+          "$A = -12x + 4x^2$"
+        ],
+        "result": "A = 4x(x - 3)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "حلّل B.",
+      "step": "01",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$(2 - x)(x + 2)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
-        },
-        {
-          "id": "B",
-          "content": "$(-x - 1)(x + 2)$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\left(\\dfrac{1}{4} - x - \\dfrac{3}{2}\\right)\\left(\\dfrac{1}{4} + x + \\dfrac{3}{2}\\right)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $kx(x + m)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "-3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$\\dfrac{1}{4} = \\left(\\dfrac{1}{2}\\right)^2$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$a = \\dfrac{1}{2}$ و $b = x + \\dfrac{3}{2}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ضع $b$ بين قوسين قبل الطرح."
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
         }
       ],
       "feedback": {
-        "correct": "$B = \\left(\\dfrac{1}{2} - x - \\dfrac{3}{2}\\right)\\left(\\dfrac{1}{2} + x + \\dfrac{3}{2}\\right) = (-x - 1)(x + 2)$.",
-        "incorrect": "$a$ هو جذر $\\dfrac{1}{4}$ ، و $-b = -x - \\dfrac{3}{2}$."
-      }
+        "correct": "$A = 4x(x - 3)$ إذن $m = -3$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$A = 4x(x - 3)$"
+        ],
+        "result": "m = -3"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q3",
-      "statement": "حلّل C.",
+      "step": "02",
+      "lead": "حلّل العبارة $B$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $-(x + m)(x + n)$ حيث $m < n$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "1",
+      "hints": [
         {
-          "id": "A",
-          "content": "$(-2x + 1)(4x + 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $\\dfrac{1}{4}$ على شكل مربع عدد."
         },
         {
-          "id": "B",
-          "content": "$(-2x + 3)(4x + 1)$",
-          "isCorrect": true
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل المتطابقة $a^2 - b^2 = (a + b)(a - b)$ ."
         },
         {
-          "id": "C",
-          "content": "$(x + 2 - 3x - 1)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط كل قوس، وانتبه إلى الإشارات عند فتح الأقواس."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = -(x + 1)(x + 2)$ إذن $m = 1$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$B = \\left(\\dfrac{1}{2}\\right)^2 - \\left(x + \\dfrac{3}{2}\\right)^2$",
+          "$B = \\left(\\dfrac{1}{2} - x - \\dfrac{3}{2}\\right)\\left(\\dfrac{1}{2} + x + \\dfrac{3}{2}\\right)$",
+          "$B = (-x - 1)(x + 2)$"
+        ],
+        "result": "B = -(x + 1)(x + 2)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $-(x + m)(x + n)$ حيث $m < n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = -(x + 1)(x + 2)$ إذن $n = 2$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$B = -(x + 1)(x + 2)$"
+        ],
+        "result": "n = 2"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "lead": "حلّل العبارة $C$ .",
+      "statement": "العدد $m$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $C$ على الشكل $(m - 2x)(4x + n)$ حيث $m$ و $n$ عددان طبيعيان : اكتب العدد $m$ فقط",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "1",
+          "id": "MISC-TAHLIL-ISHARA-QAWS"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$a = x + 2$ و $b = 3x - 1$."
+          "content": "تعرّف على الشكل $a^2 - b^2$ : عيّن $a$ و $b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$a - b = (x + 2) - (3x - 1)$."
+          "content": "استعمل المتطابقة $a^2 - b^2 = (a + b)(a - b)$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احذف القوس المسبوق بـ «−» بتغيير الإشارات."
+          "content": "بسّط كل قوس، وانتبه إلى الإشارات عند فتح الأقواس."
         }
       ],
       "feedback": {
-        "correct": "$C = (x + 2 - 3x + 1)(x + 2 + 3x - 1) = (-2x + 3)(4x + 1)$.",
-        "incorrect": "$-(3x - 1) = -3x + 1$."
-      }
+        "correct": "$C = (3 - 2x)(4x + 1)$ إذن $m = 3$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$C = [(x + 2) - (3x - 1)][(x + 2) + (3x - 1)]$",
+          "$C = (x + 2 - 3x + 1)(x + 2 + 3x - 1)$"
+        ],
+        "result": "C = (3 - 2x)(4x + 1)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q6",
+      "step": "03",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $C$ على الشكل $(m - 2x)(4x + n)$ حيث $m$ و $n$ عددان طبيعيان : اكتب العدد $n$ فقط",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$C = (3 - 2x)(4x + 1)$ إذن $n = 1$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$C = (3 - 2x)(4x + 1)$"
+        ],
+        "result": "n = 1"
+      },
+      "timeSeconds": 60
     }
   ]
 }

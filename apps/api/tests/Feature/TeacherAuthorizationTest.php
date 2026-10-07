@@ -27,8 +27,10 @@ class TeacherAuthorizationTest extends TestCase
                 continue;
             }
             $uri = str_replace(
-                ['{id}', '{studentId}', '{lessonId}', '{requestId}', '{planId}', '{noteId}', '{interventionId}'],
-                ['1', '1', '1', '1', '1', '1', '1', '1'],
+                // `{uuid}` : une photo de copie (contrainte whereUuid) — un vrai UUID,
+                // sinon la route répondrait 404 AVANT le contrôle du rôle.
+                ['{id}', '{studentId}', '{lessonId}', '{requestId}', '{planId}', '{noteId}', '{interventionId}', '{uuid}'],
+                ['1', '1', '1', '1', '1', '1', '1', '00000000-0000-4000-8000-000000000000'],
                 $route->uri()
             );
             foreach (array_diff($route->methods(), ['HEAD']) as $method) {

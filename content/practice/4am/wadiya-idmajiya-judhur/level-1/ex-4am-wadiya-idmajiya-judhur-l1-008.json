@@ -1,82 +1,82 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l1-008",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — مقام غير ناطق",
-    "estimatedMinutes": 2,
+    "title": "مقام غير ناطق",
+    "estimatedMinutes": 3,
     "tags": [
-      "وضعية إدماجية",
-      "نسبة",
-      "جذر"
+      "نسبة مقامها ناطق"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
       "modelledOn": null
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نريد كتابة العدد $\\dfrac{6}{\\sqrt{3}}$ على شكل لا يظهر فيه جذر في المقام."
+    "content": "ليكن العدد $A$ حيث:",
+    "formulas": [
+      "A = \\dfrac{6}{\\sqrt{3}}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "العدد $\\dfrac{6}{\\sqrt{3}}$ يساوي ...",
+      "step": "01",
+      "statement": "اكتب العدد $A$ على شكل نسبة مقامها عدد ناطق، ثم بسّطها على الشكل $a\\sqrt{3}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$6\\sqrt{3}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAST-DUN-DARB"
-        },
-        {
-          "id": "B",
-          "content": "$\\dfrac{6}{3}$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$2\\sqrt{3}$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$\\dfrac{\\sqrt{3}}{6}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MAQLUB"
+          "value": "6",
+          "id": "MISC-MAQAM-DUN-BAST"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اضرب البسط والمقام في العدد نفسه."
+          "content": "اضرب البسط والمقام معًا في $\\sqrt{3}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما هو $\\sqrt{3} \\times \\sqrt{3}$؟"
+          "content": "ما قيمة $\\sqrt{3} \\times \\sqrt{3}$ ؟"
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "بعد الضرب بسّط النسبة."
+          "content": "بسّط الكسر الناتج."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{6}{\\sqrt{3}} = \\dfrac{6\\sqrt{3}}{3} = 2\\sqrt{3}$.",
-        "incorrect": "اضرب البسط والمقام معًا في $\\sqrt{3}$، ثم بسّط."
+        "correct": "$A = \\dfrac{6\\sqrt{3}}{3} = 2\\sqrt{3}$",
+        "incorrect": "اضرب البسط والمقام في $\\sqrt{3}$ ، ثم بسّط على المقام الناتج."
       },
-      "cognitiveDemand": "recall"
+      "solution": {
+        "lines": [
+          "$A = \\dfrac{6 \\times \\sqrt{3}}{\\sqrt{3} \\times \\sqrt{3}} = \\dfrac{6\\sqrt{3}}{3}$"
+        ],
+        "result": "A = 2\\sqrt{3}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l1-008",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 1
+  ]
 }

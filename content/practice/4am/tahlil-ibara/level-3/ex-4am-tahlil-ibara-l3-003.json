@@ -3,10 +3,12 @@
   "lessonCode": "tahlil-ibara",
   "level": 3,
   "metadata": {
-    "title": "تمرين 30 — حلّل إلى جداء عوامل",
-    "estimatedMinutes": 4,
+    "title": "حلّل إلى جداء عوامل ثم استنتج",
+    "estimatedMinutes": 11,
     "tags": [
-      "متطابقات شهيرة"
+      "مربع مجموع",
+      "مربع فرق",
+      "فرق مربعين"
     ],
     "source": {
       "type": "textbook",
@@ -14,113 +16,233 @@
       "page": 39,
       "section": "أوظّف تعلّماتي",
       "number": 30
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 39): $A = 9x^2 + 24x + 16$ و $B = 121 - 22x + x^2$ ."
+    "content": "لتكن العبارتان $A$ و $B$ حيث:",
+    "formulas": [
+      "A = 9x^2 + 24x + 16",
+      "B = 121 - 22x + x^2"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّل A.",
+      "step": "01",
+      "lead": "حلّل العبارة $A$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$(9x + 4)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
-        },
-        {
-          "id": "B",
-          "content": "$(3x + 4)^2$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$(3x + 8)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $(mx + n)^2$ حيث $m$ و $n$ عددان طبيعيان : اكتب العدد $m$ فقط",
+      "expectedAnswer": "3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$9x^2 = (3x)^2$ و $16 = 4^2$."
+          "content": "تعرّف على الشكل $a^2 + 2ab + b^2$ أو $a^2 - 2ab + b^2$ : عيّن $a$ و $b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تحقّق: $2 \\times 3x \\times 4 = 24x$."
+          "content": "تحقّق من الحد المضاعف $2ab$ قبل أن تكتب المربع."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "العبارة من الشكل $a^2 + 2ab + b^2$."
+          "content": "استعمل $a^2 \\pm 2ab + b^2 = (a \\pm b)^2$ ."
         }
       ],
       "feedback": {
-        "correct": "$A = (3x)^2 + 2 \\times 3x \\times 4 + 4^2 = (3x + 4)^2$.",
-        "incorrect": "جذر $9x^2$ هو $3x$."
-      }
+        "correct": "$A = (3x + 4)^2$ إذن $m = 3$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$A = (3x)^2 + 2 \\times 3x \\times 4 + 4^2$"
+        ],
+        "result": "A = (3x + 4)^2"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "حلّل B.",
+      "step": "01",
+      "statement": "العدد $n$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$(11 - x)^2$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$(11 + x)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
-        },
-        {
-          "id": "C",
-          "content": "$(121 - x)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $(mx + n)^2$ حيث $m$ و $n$ عددان طبيعيان : اكتب العدد $n$ فقط",
+      "expectedAnswer": "4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$121 = 11^2$."
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = (3x + 4)^2$ إذن $n = 4$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$A = (3x + 4)^2$"
+        ],
+        "result": "n = 4"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "حلّل العبارة $B$ .",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $(x - n)^2$ حيث $n$ عدد موجب : اكتب العدد $n$ فقط",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب حدود $B$ حسب قوى $x$ المتناقصة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$22x = 2 \\times 11 \\times x$ والحدّ الأوسط سالب."
+          "content": "تحقّق من الحد المضاعف $2ab$ قبل أن تكتب المربع."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "العبارة من الشكل $a^2 - 2ab + b^2$."
+          "content": "استعمل $a^2 \\pm 2ab + b^2 = (a \\pm b)^2$ ."
         }
       ],
       "feedback": {
-        "correct": "$B = 11^2 - 2 \\times 11 \\times x + x^2 = (11 - x)^2$.",
-        "incorrect": "الحدّ $-22x$ سالب: مربع فرق، و $a$ جذر 121."
-      }
+        "correct": "$B = (x - 11)^2$ إذن $n = 11$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$B = x^2 - 22x + 121$",
+          "$B = x^2 - 2 \\times x \\times 11 + 11^2$"
+        ],
+        "result": "B = (x - 11)^2"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "lead": "استنتج تحليلا للعبارة $A - B$ .",
+      "statement": "العدد $m$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A - B$ على الشكل $(2x + m)(4x + n)$ حيث $m$ و $n$ عددان صحيحان : اكتب العدد $m$ فقط",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل نتيجتي السؤالين 01 و 02: $A - B$ فرق مربعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل المتطابقة $a^2 - b^2 = (a + b)(a - b)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى «−» أمام القوس $(x - 11)$ في العامل الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$A - B = (2x + 15)(4x - 7)$ إذن $m = 15$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$A - B = (3x + 4)^2 - (x - 11)^2$",
+          "$= [(3x + 4) + (x - 11)][(3x + 4) - (x - 11)]$",
+          "$= (4x - 7)(3x + 4 - x + 11)$"
+        ],
+        "result": "A - B = (2x + 15)(4x - 7)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A - B$ على الشكل $(2x + m)(4x + n)$ حيث $m$ و $n$ عددان صحيحان : اكتب العدد $n$ فقط",
+      "expectedAnswer": "-7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$A - B = (2x + 15)(4x - 7)$ إذن $n = -7$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$A - B = (2x + 15)(4x - 7)$"
+        ],
+        "result": "n = -7"
+      },
+      "timeSeconds": 60
     }
   ]
 }

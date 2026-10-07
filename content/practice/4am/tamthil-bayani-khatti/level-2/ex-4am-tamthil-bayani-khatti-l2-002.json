@@ -3,62 +3,35 @@
   "lessonCode": "tamthil-bayani-khatti",
   "level": 2,
   "metadata": {
-    "title": "نشاط 3 (ص 66) — النقطتان C و M",
-    "estimatedMinutes": 4,
+    "title": "نشاط 3 — النقطة C ومعادلة المستقيم",
+    "estimatedMinutes": 5,
     "tags": [
-      "قراءة",
-      "معادلة"
+      "نقطة من التمثيل",
+      "معادلة مستقيم"
     ],
     "source": {
       "type": "textbook",
       "elementId": "act-3",
       "page": 66,
       "section": "أنشطة",
-      "number": 3
+      "number": 3,
+      "adaptedFrom": "ex-4am-tamthil-bayani-khatti-l2-002"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 66): المستقيم (OA) هو التمثيل البياني للدالة $f : x \\longmapsto 0{,}5x$ ، حيث $A(1 ; 0{,}5)$ ."
+    "content": "في معلم متعامد ومتجانس، المستقيم $(OA)$ هو التمثيل البياني للدالة الخطية $f$ حيث $f(x) = 0{,}5x$ ، و $A(1 ; 0{,}5)$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ترتيب النقطة C من (OA) ذات الفاصلة $-2$ :",
-      "learningPoints": [
-        {
-          "code": "4am_tamthil-bayani-khatti_P2",
-          "role": "primary"
-        }
-      ],
-      "difficulty": 2,
-      "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
-      "expectedAnswer": "-1",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "ابدأ من العدد على محور الفواصل."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "اصعد (أو انزل) عموديًا حتى المستقيم، ثم اذهب أفقيًا إلى محور التراتيب."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الصورة هي ترتيب نقطة المستقيم التي فاصلتها هذا العدد."
-        }
-      ],
-      "feedback": {
-        "correct": "$f(-2) = 0{,}5 \\times (-2) = -1$ : ترتيب C هو $-1$ .",
-        "incorrect": "ترتيب C صورة فاصلتها."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "إذا كانت $M(x ; y)$ نقطة من (OA) فإنّ:",
+      "step": "01",
+      "statement": "النقطة $C$ من $(OA)$ فاصلتها $-2$ . احسب ترتيبها.",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P1",
@@ -66,47 +39,84 @@
         }
       ],
       "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-1",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$y = 0{,}5x$",
-          "isCorrect": true
+          "value": "-4",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
         },
         {
-          "id": "B",
-          "content": "$y = x + 0{,}5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-AFFINE"
-        },
-        {
-          "id": "C",
-          "content": "$x = 0{,}5y$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+          "value": "1",
+          "id": "MISC-KHATTIYA-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ترتيب كل نقطة من (OA) صورة فاصلتها."
+          "content": "ترتيب $C$ هو صورة فاصلتها بالدالة $f$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب $y = f(x)$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "عوّض $f(x)$ بعبارتها."
+          "content": "احسب $0{,}5 \\times \\left(-2\\right)$ ."
         }
       ],
       "feedback": {
-        "correct": "$y = f(x) = 0{,}5x$ .",
-        "incorrect": "المستقيم (OA) يشمل O ، وترتيب M صورة فاصلتها."
-      }
+        "correct": "$f(-2) = 0{,}5 \\times \\left(-2\\right) = -1$ ، إذن $C(-2 ; -1)$ .",
+        "incorrect": "الترتيب هو المعامل مضروبا في الفاصلة، بإشارته."
+      },
+      "solution": {
+        "lines": [
+          "$f(-2) = 0{,}5 \\times \\left(-2\\right) = -1$",
+          "إذن $C(-2 ; -1)$ ، والنقط $O$ و $A$ و $C$ على استقامة واحدة."
+        ],
+        "result": "C(-2 ; -1)"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "$M(x ; y)$ نقطة كيفية من $(OA)$ . عبّر عن $y$ بدلالة $x$ (معادلة المستقيم $(OA)$ ).",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "recall",
+      "answerType": "rational",
+      "answerFormat": "اكتب معامل $x$ فقط (عدد عشري بالفاصلة أو كسر a/b)",
+      "expectedAnswer": "0,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$M$ نقطة من تمثيل $f$ : ترتيبها صورة فاصلتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $y = f(x)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "معادلة المستقيم $(OA)$ هي $y = 0{,}5x$ .",
+        "incorrect": "إذا كانت $M(x ; y)$ من تمثيل الدالة الخطية $f$ فإن $y = f(x)$ ."
+      },
+      "solution": {
+        "lines": [
+          "$M(x ; y)$ تنتمي إلى $(OA)$ معناه $y = f(x)$ .",
+          "إذن معادلة المستقيم $(OA)$ هي $y = 0{,}5x$ ."
+        ],
+        "result": "y = 0{,}5x"
+      },
+      "timeSeconds": 60
     }
   ]
 }

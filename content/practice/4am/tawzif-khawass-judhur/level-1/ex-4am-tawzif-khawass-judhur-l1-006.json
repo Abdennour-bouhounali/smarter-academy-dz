@@ -3,128 +3,120 @@
   "lessonCode": "tawzif-khawass-judhur",
   "level": 1,
   "metadata": {
-    "title": "تدريب — جمع جذور متشابهة",
-    "estimatedMinutes": 2,
+    "title": "جمع جذور متشابهة",
+    "estimatedMinutes": 3,
     "tags": [
-      "تبسيط",
-      "خاصية توزيعية"
+      "الخاصية التوزيعية"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tawzif-khawass-judhur_P2",
       "modelledOn": "method-simplify"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "بسّط كل عبارة باستعمال الخاصية التوزيعية."
+    "content": "ليكن العددان A و B حيث:",
+    "formulas": [
+      "A = 5\\sqrt{3} + 2\\sqrt{3}",
+      "B = 4\\sqrt{5} - 9\\sqrt{5}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "بسّط $5\\sqrt{3} + 2\\sqrt{3}$.",
+      "step": "01",
+      "statement": "اكتب العدد A على الشكل $a\\sqrt{3}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$7\\sqrt{3}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$7\\sqrt{6}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-JAMA"
-        },
-        {
-          "id": "C",
-          "content": "$10\\sqrt{3}$",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "7",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الحدّان يحتويان على نفس الجذر."
+          "content": "الحدّان من الشكل $k\\sqrt{3}$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$x\\sqrt{b} + y\\sqrt{b} = (x + y)\\sqrt{b}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع المعاملين فقط، ويبقى الجذر كما هو."
+          "content": "استعمل الخاصية التوزيعية: $x\\sqrt{3} + y\\sqrt{3} = (x + y)\\sqrt{3}$."
         }
       ],
       "feedback": {
-        "correct": "$5\\sqrt{3} + 2\\sqrt{3} = (5 + 2)\\sqrt{3}$.",
-        "incorrect": "الجذر لا يتغيّر عند الجمع: نجمع المعاملات فقط، ولا نضربها."
-      }
+        "correct": "$A = (5 + 2)\\sqrt{3} = 7\\sqrt{3}$.",
+        "incorrect": "اجمع المعاملين فقط، ويبقى $\\sqrt{3}$ كما هو."
+      },
+      "solution": {
+        "lines": [
+          "$A = 5\\sqrt{3} + 2\\sqrt{3}$",
+          "$A = (5 + 2)\\sqrt{3}$"
+        ],
+        "result": "A = 7\\sqrt{3}"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "بسّط $4\\sqrt{5} - 9\\sqrt{5}$.",
+      "step": "02",
+      "statement": "اكتب العدد B على الشكل $a\\sqrt{5}$ حيث $a$ عدد صحيح.",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، قد يكون سالبًا)",
+      "expectedAnswer": "-5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$5\\sqrt{5}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-ISHARA"
-        },
-        {
-          "id": "B",
-          "content": "$-5\\sqrt{5}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$13\\sqrt{5}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-ISHARA"
-        },
-        {
-          "id": "D",
-          "content": "$-5$",
-          "isCorrect": false
+          "value": "5",
+          "id": "MISC-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الحدّان يحتويان على نفس الجذر."
+          "content": "الحدّان من الشكل $k\\sqrt{5}$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "حلّل: $(4 - 9)\\sqrt{5}$."
+          "content": "استعمل الخاصية التوزيعية ثم احسب $4 - 9$."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احسب $4 - 9$ مع الانتباه إلى الإشارة."
+          "content": "انتبه إلى الإشارة."
         }
       ],
       "feedback": {
-        "correct": "$4\\sqrt{5} - 9\\sqrt{5} = (4 - 9)\\sqrt{5}$.",
-        "incorrect": "انتبه إلى الإشارة: $4 - 9$ عدد سالب."
-      }
+        "correct": "$B = (4 - 9)\\sqrt{5} = -5\\sqrt{5}$.",
+        "incorrect": "اطرح المعاملين بإشارتيهما: $4 - 9$ عدد سالب."
+      },
+      "solution": {
+        "lines": [
+          "$B = 4\\sqrt{5} - 9\\sqrt{5}$",
+          "$B = (4 - 9)\\sqrt{5}$"
+        ],
+        "result": "B = -5\\sqrt{5}"
+      },
+      "timeSeconds": 60
     }
   ]
 }

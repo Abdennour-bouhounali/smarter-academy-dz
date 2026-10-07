@@ -3,158 +3,201 @@
   "lessonCode": "tawzif-khawass-judhur",
   "level": 5,
   "metadata": {
-    "title": "تدريب — من امتحان شهادة التعليم المتوسط — عددان",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2021 — طلاء جدران غرفة",
+    "estimatedMinutes": 13,
     "tags": [
-      "تبسيط",
-      "مقام ناطق"
+      "a√b",
+      "وضعية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_tawzif-khawass-judhur_P2",
-      "modelledOn": "ex-37"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tawzif-khawass-judhur_P1",
+      "modelledOn": "BEM 2021 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2021",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "نعتبر العددين $A = \\sqrt{48} - 2\\sqrt{27} + \\sqrt{75}$ و $B = \\dfrac{6}{\\sqrt{3}}$."
+    "content": "يريد عمي رشيد طلاء الجدران الأربعة لغرفة أرضيتها مربعة الشكل مساحتها $48\\,m^2$ وارتفاعها 3m (لا نطرح مساحة الباب والنافذة).\n• كل لتر من الدهن يكفي لطلاء $6\\,m^2$.\n• يُباع الدهن في علب سعة كل منها 2L، ثمن العلبة الواحدة 1350DA.\n• نأخذ $\\sqrt{3} \\approx 1{,}73$"
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نعتبر $A = \\sqrt{48} - 2\\sqrt{27} + \\sqrt{75}$. نكتب $A = k\\sqrt{3}$. ما قيمة العدد الصحيح $k$؟",
+      "step": "01",
+      "statement": "احسب طول ضلع أرضية الغرفة واكتبه على الشكل $a\\sqrt{3}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
-          "code": "4am_tawzif-khawass-judhur_P2",
-          "role": "primary"
-        },
-        {
           "code": "4am_tawzif-khawass-judhur_P1",
-          "role": "secondary"
+          "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
-      "expectedAnswer": "3",
+      "answerFormat": "اكتب العدد $a$ فقط (بالمتر)",
+      "expectedAnswer": "4",
       "misconceptionSignatures": [
         {
-          "id": "MISC-MUAMIL-MANSI",
-          "value": "6"
-        },
-        {
-          "id": "MISC-ISHARA",
-          "value": "15"
+          "value": "16",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الجذور الثلاثة تُكتب بدلالة $\\sqrt{3}$."
+          "content": "طول الضلع هو العدد الموجب الذي مربعه 48."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$48 = 16 \\times 3$ ، $27 = 9 \\times 3$ ، $75 = 25 \\times 3$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اضرب كل جذر مبسّط في معامله، ثم اجمع المعاملات بإشاراتها."
+          "content": "ابحث عن أكبر مربع تامّ يقسم 48."
         }
       ],
       "feedback": {
-        "correct": "$A = 4\\sqrt{3} - 2 \\times 3\\sqrt{3} + 5\\sqrt{3} = (4 - 6 + 5)\\sqrt{3}$.",
-        "incorrect": "راجع المعامل 2 أمام $\\sqrt{27}$ وإشارة كل حدّ."
-      }
+        "correct": "$\\sqrt{48} = \\sqrt{16} \\times \\sqrt{3} = 4\\sqrt{3}\\,m$.",
+        "incorrect": "اكتب 48 على شكل (أكبر مربع تامّ) × 3."
+      },
+      "solution": {
+        "lines": [
+          "$c = \\sqrt{48} = \\sqrt{16} \\times \\sqrt{3}$"
+        ],
+        "result": "c = 4\\sqrt{3}\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "نعتبر $B = \\dfrac{6}{\\sqrt{3}}$. نكتب $B = m\\sqrt{3}$. ما قيمة $m$؟",
-      "learningPoints": [
-        {
-          "code": "4am_tawzif-khawass-judhur_P3",
-          "role": "primary"
-        }
-      ],
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "2",
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-BAST-DUN-DARB",
-          "value": "6"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "المقام عدد غير ناطق."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "اضرب البسط والمقام في $\\sqrt{3}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بعد الضرب، اختزل على 3."
-        }
-      ],
-      "feedback": {
-        "correct": "$B = \\dfrac{6\\sqrt{3}}{3}$.",
-        "incorrect": "اضرب البسط والمقام معًا في $\\sqrt{3}$."
-      }
-    },
-    {
-      "id": "q3",
-      "statement": "نعتبر $A = \\sqrt{48} - 2\\sqrt{27} + \\sqrt{75}$ و $B = \\dfrac{6}{\\sqrt{3}}$. احسب $A \\times B$.",
+      "step": "02",
+      "statement": "احسب مساحة الجدران الأربعة واكتبها على الشكل $a\\sqrt{3}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P2",
           "role": "primary"
-        },
-        {
-          "code": "4am_tawzif-khawass-judhur_P3",
-          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
-      "expectedAnswer": "18",
+      "answerFormat": "اكتب العدد $a$ فقط (بالمتر المربع)",
+      "expectedAnswer": "48",
       "misconceptionSignatures": [
         {
-          "id": "MISC-JIDHR-FI-JIDHR",
-          "value": "54"
-        },
-        {
-          "id": "MISC-MUAMIL-MANSI",
-          "value": "6"
+          "value": "12",
+          "id": "MISC-MUAMIL-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب $A$ و $B$ على الشكل $k\\sqrt{3}$ أولًا."
+          "content": "كل جدار مستطيل بُعداه ضلع الأرضية والارتفاع."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الجداء يصبح من الشكل $k\\sqrt{3} \\times m\\sqrt{3}$."
+          "content": "المساحة = 4 × (ضلع الأرضية × الارتفاع)."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 \\times 4\\sqrt{3} \\times 3 = 48\\sqrt{3}\\,m^2$.",
+        "incorrect": "مساحة جدار واحد = ضلع الأرضية × الارتفاع، ثم اضرب في 4."
+      },
+      "solution": {
+        "lines": [
+          "مساحة جدار واحد: $4\\sqrt{3} \\times 3 = 12\\sqrt{3}\\,m^2$",
+          "مساحة الجدران الأربعة: $4 \\times 12\\sqrt{3}$"
+        ],
+        "result": "S = 48\\sqrt{3}\\,m^2"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "lead": "☜ ما هو أقل عدد من العلب يجب على عمي رشيد شراؤه؟ وكم يدفع ثمنًا لها؟",
+      "statement": "عدد العلب:",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب قيمة مقرّبة لمساحة الجدران باستعمال $\\sqrt{3} \\approx 1{,}73$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم المساحة على 6 لتجد عدد اللترات، ثم على 2 لتجد عدد العلب."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$\\sqrt{3} \\times \\sqrt{3} = 3$."
+          "content": "لا يمكن شراء جزء من علبة."
         }
       ],
       "feedback": {
-        "correct": "$A \\times B = 3\\sqrt{3} \\times 2\\sqrt{3} = 6 \\times 3$.",
-        "incorrect": "بسّط $A$ و $B$ أولًا، ثم تذكّر أن جداء جذر في نفسه يعطي العدد الذي تحته."
-      }
+        "correct": "$S \\approx 83{,}04\\,m^2$ أي حوالي $13{,}84\\,L$، فيلزم 7 علب.",
+        "incorrect": "احسب عدد اللترات اللازمة ثم عدد العلب، وتذكّر أن عدد العلب عدد طبيعي يكفي لكل الجدران."
+      },
+      "solution": {
+        "lines": [
+          "$S = 48\\sqrt{3} \\approx 48 \\times 1{,}73 = 83{,}04\\,m^2$",
+          "عدد اللترات: $83{,}04 \\div 6 = 13{,}84\\,L$",
+          "عدد العلب: $13{,}84 \\div 2 = 6{,}92$، إذن 7 علب."
+        ],
+        "result": "7"
+      },
+      "work": "optional",
+      "timeSeconds": 360
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "ثمن العلب (DA):",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار (DA)",
+      "expectedAnswer": "9450",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب عدد العلب في ثمن العلبة الواحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$7 \\times 1350 = 9450$ DA.",
+        "incorrect": "اضرب عدد العلب الذي وجدته في ثمن العلبة."
+      },
+      "solution": {
+        "lines": [
+          "$7 \\times 1350$"
+        ],
+        "result": "9450\\,DA"
+      },
+      "timeSeconds": 90
     }
   ]
 }

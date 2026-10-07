@@ -1,172 +1,180 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l3-002",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3,
   "metadata": {
-    "title": "تمرين 20 — جذر حاصل قسمة",
-    "estimatedMinutes": 6,
+    "title": "BEM 2018 — التمرين الأول",
+    "estimatedMinutes": 10,
     "tags": [
-      "حاصل قسمة جذرين"
+      "جداء جذرين",
+      "الكتابة a√b"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "ex-20",
-      "page": 27,
-      "section": "أوظّف تعلّماتي",
-      "number": 20
+      "type": "bem",
+      "year": 2018,
+      "part": 1,
+      "exercise": 1
+    },
+    "exam": {
+      "kind": "official",
+      "badge": "BEM 2018",
+      "heading": "التمرين الأول",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "اكتب كل عدد مما يلي على شكل كسر."
+    "content": "$A$ و $B$ عددان حيث:",
+    "formulas": [
+      "A = 3\\sqrt{8} \\times \\sqrt{2}",
+      "B = 2\\sqrt{27} - 2\\sqrt{3} + \\sqrt{12}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$\\sqrt{\\dfrac{49}{16}}$",
+      "step": "01",
+      "statement": "بيّن أن $A$ عدد طبيعي.",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P2",
+          "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "كسر على الشكل a/b",
-      "expectedAnswer": "7/4",
+      "answerFormat": "اكتب قيمة $A$ (عدد طبيعي)",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-MUAMIL-MANSI"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$\\sqrt{\\dfrac{a}{b}} = \\dfrac{\\sqrt{a}}{\\sqrt{b}}$."
+          "content": "اكتب $\\sqrt{8} \\times \\sqrt{2}$ تحت جذر واحد."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب جذر البسط وجذر المقام."
+          "content": "هل $8 \\times 2$ مربع تام؟"
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اكتب الكسر غير القابل للاختزال."
+          "content": "لا تنسَ المعامل 3."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{\\sqrt{49}}{\\sqrt{16}} = \\dfrac{7}{4}$",
-        "incorrect": "خذ جذر البسط والمقام معًا."
+        "correct": "$A = 3\\sqrt{16} = 3 \\times 4 = 12$ : عدد طبيعي.",
+        "incorrect": "اكتب $A = 3\\sqrt{8 \\times 2}$ ثم احسب الجذر واضرب في 3."
       },
-      "evaluationPolicy": {
-        "requiredForm": "irreducible"
-      }
+      "solution": {
+        "lines": [
+          "$A = 3\\sqrt{8} \\times \\sqrt{2}$",
+          "$= 3\\sqrt{8 \\times 2}$",
+          "$= 3\\sqrt{16}$",
+          "$= 3 \\times 4$"
+        ],
+        "result": "A = 12"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "$\\sqrt{\\dfrac{36}{81}}$",
+      "step": "02",
+      "statement": "اكتب العدد $B$ على الشكل $a\\sqrt{3}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P2",
+          "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "كسر على الشكل a/b",
-      "expectedAnswer": "2/3",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "value": "2",
+          "id": "MISC-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب جذر البسط وجذر المقام."
+          "content": "اكتب $27 = 9 \\times 3$ و $12 = 4 \\times 3$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "قد يكون الكسر الناتج قابلًا للاختزال."
+          "content": "أخرج المربعات التامة من تحت الجذر."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اختزل حتى يصبح غير قابل للاختزال."
+          "content": "اجمع الحدود التي فيها $\\sqrt{3}$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{\\sqrt{36}}{\\sqrt{81}} = \\dfrac{6}{9} = \\dfrac{2}{3}$",
-        "incorrect": "بعد الجذرين، اختزل الكسر."
+        "correct": "$B = 6\\sqrt{3} - 2\\sqrt{3} + 2\\sqrt{3} = 6\\sqrt{3}$",
+        "incorrect": "اكتب كل جذر على الشكل $k\\sqrt{3}$ ثم اجمع المعاملات مع إشاراتها."
       },
-      "evaluationPolicy": {
-        "requiredForm": "irreducible"
-      }
+      "solution": {
+        "lines": [
+          "$B = 2\\sqrt{27} - 2\\sqrt{3} + \\sqrt{12}$",
+          "$= 2\\sqrt{9} \\times \\sqrt{3} - 2\\sqrt{3} + \\sqrt{4} \\times \\sqrt{3}$",
+          "$= 2 \\times 3\\sqrt{3} - 2\\sqrt{3} + 2\\sqrt{3}$"
+        ],
+        "result": "B = 6\\sqrt{3}"
+      },
+      "work": "optional",
+      "timeSeconds": 210
     },
     {
       "id": "q3",
-      "statement": "$\\sqrt{\\dfrac{12100}{900}}$",
+      "step": "03",
+      "statement": "بيّن أن: $\\dfrac{A}{B} = \\dfrac{2\\sqrt{3}}{3}$ .",
       "learningPoints": [
         {
           "code": "4am_amaliyat-judhur_P2",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "كسر على الشكل a/b",
-      "expectedAnswer": "11/3",
+      "counted": false,
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "يمكنك أن تختزل أولًا ما تحت الجذر، أو تحسب الجذرين."
+          "content": "عوّض $A$ و $B$ بالقيمتين اللتين وجدتهما."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$12100 = 110^2$ و $900 = 30^2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اختزل الكسر الناتج."
+          "content": "اضرب البسط والمقام في $\\sqrt{3}$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{\\sqrt{12100}}{\\sqrt{900}} = \\dfrac{110}{30} = \\dfrac{11}{3}$",
-        "incorrect": "تحقّق من جذر 12100 بالتربيع."
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى الخاصية المستعملة في كل مرحلة."
       },
-      "evaluationPolicy": {
-        "requiredForm": "irreducible"
-      }
-    },
-    {
-      "id": "q4",
-      "statement": "$\\sqrt{\\dfrac{4900}{32400}}$",
-      "learningPoints": [
-        {
-          "code": "4am_amaliyat-judhur_P2",
-          "role": "primary"
-        }
-      ],
-      "answerType": "rational",
-      "answerFormat": "كسر على الشكل a/b",
-      "expectedAnswer": "7/18",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "احسب جذر البسط وجذر المقام."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$32400 = 180^2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اختزل الكسر الناتج."
-        }
-      ],
-      "feedback": {
-        "correct": "$\\dfrac{\\sqrt{4900}}{\\sqrt{32400}} = \\dfrac{70}{180} = \\dfrac{7}{18}$",
-        "incorrect": "لا تنسَ جذر المقام."
+      "solution": {
+        "lines": [
+          "$\\dfrac{A}{B} = \\dfrac{12}{6\\sqrt{3}}$",
+          "$= \\dfrac{12\\sqrt{3}}{6\\sqrt{3} \\times \\sqrt{3}}$",
+          "$= \\dfrac{6 \\times 2\\sqrt{3}}{6 \\times 3}$"
+        ],
+        "result": "\\dfrac{A}{B} = \\dfrac{2\\sqrt{3}}{3}"
       },
-      "evaluationPolicy": {
-        "requiredForm": "irreducible"
-      }
+      "timeSeconds": 210
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l3-002",
-  "lessonCode": "amaliyat-judhur",
-  "level": 3
+  ]
 }

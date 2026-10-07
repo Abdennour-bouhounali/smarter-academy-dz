@@ -3,27 +3,38 @@
   "lessonCode": "mafhum-taalufiya",
   "level": 1,
   "metadata": {
-    "title": "نشاط 2 — الخطية تآلفية؟",
+    "title": "هل الدالة الخطية دالة تآلفية؟",
     "estimatedMinutes": 3,
     "tags": [
-      "خطية",
-      "الكتاب"
+      "دالة خطية",
+      "حالة خاصة"
     ],
     "source": {
       "type": "textbook",
       "elementId": "act-2",
       "page": 78,
       "section": "أنشطة",
-      "number": 2
+      "number": 2,
+      "adaptedFrom": "ex-4am-mafhum-taalufiya-l1-005"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 78): ما رأيك في التصريح «الدالة الخطيّة هي أيضا دالة تآلفية»؟"
+    "content": "نعتبر الدالة الخطية $g$ المعرّفة كما يلي:",
+    "formulas": [
+      "g : x \\longmapsto 5x"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "التصريح:",
+      "step": "01",
+      "statement": "هل الدالة $g$ دالة تآلفية؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_mafhum-taalufiya_P4",
@@ -31,22 +42,17 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "صحيح: الدالة الخطية هي الدالة التآلفية في الحالة $b = 0$",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "خاطئ: الدالة الخطية ليس فيها $b$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAALUFI-THABITA"
-        },
-        {
-          "id": "C",
-          "content": "خاطئ: الدالة التآلفية لا تكون خطية أبدا",
+          "content": "لا",
           "isCorrect": false,
           "misconceptionId": "MISC-TAALUFI-THABITA"
         }
@@ -55,23 +61,27 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "كل دالة من الشكل $ax + b$ تآلفية."
+          "content": "الدالة التآلفية من الشكل $x \\longmapsto ax + b$ ، حيث $a$ و $b$ عددان معلومان."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انظر إلى $b$ : إذا كان معدوما فالدالة خطية."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "وانظر إلى $a$ : إذا كان معدوما فالدالة ثابتة."
+          "content": "هل يمكن كتابة $5x$ على الشكل $ax + b$ ؟ ما قيمة $b$ عندئذ؟"
         }
       ],
       "feedback": {
-        "correct": "$x \\longmapsto ax = x \\longmapsto ax + 0$ : تآلفية مع $b = 0$ .",
-        "incorrect": "راجع كل اقتراح: واحد فقط صحيح."
-      }
+        "correct": "$5x = 5x + 0$ : الدالة الخطية حالة خاصة من الدالة التآلفية.",
+        "incorrect": "اكتب $5x$ على الشكل $ax + b$ واختر $b$ مناسبا."
+      },
+      "solution": {
+        "lines": [
+          "$g(x) = 5x = 5x + 0$",
+          "إذن $g(x)$ من الشكل $ax + b$ حيث $a = 5$ و $b = 0$ .",
+          "الدالة $g$ دالة تآلفية (الدالة الخطية حالة خاصة من الدالة التآلفية: $b = 0$ )."
+        ],
+        "result": "نعم"
+      },
+      "timeSeconds": 60
     }
   ]
 }

@@ -3,118 +3,252 @@
   "lessonCode": "wadiya-idmajiya-jumal",
   "level": 5,
   "metadata": {
-    "title": "الموزّع الآلي — يومان",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2018 — بائعا سيارات بمعرض في العلمة",
+    "estimatedMinutes": 16,
     "tags": [
-      "حل جملة",
-      "تحويل"
+      "جملة",
+      "وضعية",
+      "مقارنة صيغتين"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-jumal_P1",
-      "modelledOn": "ex-30"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "BEM 2018 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2018",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "موزّع آلي للأوراق النقدية فيه أوراق من فئتي 1000 DA و 2000 DA فقط. في اليوم الأول سُحبت 356 ورقة بمبلغ 454 000 DA، وفي اليوم الثاني 400 ورقة بمبلغ 520 000 DA. نسمّي في كل يوم $x$ عدد أوراق 1000 DA و $y$ عدد أوراق 2000 DA."
+    "content": "يعمل بائعان في معرض للسيارات بالعلمة، ويتقاضى كل منهما راتبا شهريا على النحو التالي:\n- البائع الأول: 40000DA إضافة إلى 3000DA عن كل سيارة يبيعها.\n- البائع الثاني: 25000DA إضافة إلى 4500DA عن كل سيارة يبيعها."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "اليوم الأول: كم ورقة $(x ; y)$ من كل فئة؟",
+      "step": "01",
+      "lead": "ما هو الراتب الشهري الذي يتقاضاه كل منهما إذا باع 8 سيارات في الشهر؟",
+      "statement": "راتب البائع الأول:",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "code": "4am_wadiya-idmajiya-jumal_P2",
           "role": "primary"
         }
       ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
-      "expectedAnswer": {
-        "x": "258",
-        "y": "98"
-      },
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "64000",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$x + y = 356$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$x + 2y = 454$ بعد القسمة على 1000."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اطرح المعادلتين."
+          "content": "اضرب العدد المعطى في المبلغ الذي يقابل الوحدة الواحدة، وأضف المبلغ الثابت إن وُجد."
         }
       ],
       "feedback": {
-        "correct": "$y = 98$ و $x = 258$.",
-        "incorrect": "بسّط ثم اطرح."
+        "correct": "$8 \\times 3000 + 40000 = 64000$ .",
+        "incorrect": "اقرأ الصيغة جيدا: ما الذي يُدفع عن كل وحدة وما الذي يُدفع مرة واحدة؟"
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3,
-      "misconceptionSignatures": [
-        {
-          "value": {
-            "x": "98",
-            "y": "258"
-          },
-          "id": "MISC-JUMLA-TARTIB"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "البائع الأول: $8 \\times 3000 + 40000 = 64000$ أي $64000DA$",
+          "البائع الثاني: $8 \\times 4500 + 25000 = 61000$ أي $61000DA$"
+        ]
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "اليوم الثاني: كم ورقة $(x ; y)$ من كل فئة؟",
+      "step": "01",
+      "statement": "راتب البائع الثاني:",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "code": "4am_wadiya-idmajiya-jumal_P2",
           "role": "primary"
         }
       ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
-      "expectedAnswer": {
-        "x": "280",
-        "y": "120"
-      },
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "61000",
+      "misconceptionSignatures": [
+        {
+          "value": "36000",
+          "id": "MISC-WADIYA-TARJAMA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$x + y = 400$."
+          "content": "لا تنس المبلغ الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$8 \\times 4500 + 25000 = 61000$ .",
+        "incorrect": "المبلغ = العدد × المبلغ عن الوحدة + المبلغ الثابت."
+      },
+      "solution": {
+        "lines": [
+          "البائع الأول: $8 \\times 3000 + 40000 = 64000$ أي $64000DA$",
+          "البائع الثاني: $8 \\times 4500 + 25000 = 61000$ أي $61000DA$"
+        ]
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "ليكن $x$ عدد السيارات التي يبيعها كل منهما في الشهر، و $y$ الراتب الشهري (بالدينار).",
+      "statement": "بيّن أنه إذا تساوى راتبا البائعين، فإن الثنائية $(x ; y)$ حل للجملة: $\\begin{cases} y = 3000x + 40000 \\\\ y = 4500x + 25000 \\end{cases}$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عبّر عن المبلغ حسب كل صيغة بدلالة $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "راتب البائع الأول: $3000x + 40000$",
+          "راتب البائع الثاني: $4500x + 25000$",
+          "الراتبان متساويان ويساويان $y$ ، ومنه الثنائية $(x ; y)$ حل للجملة: $\\begin{cases} y = 3000x + 40000 \\\\ y = 4500x + 25000 \\end{cases}$"
+        ]
+      },
+      "timeSeconds": 240
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "حل هذه الجملة، ثم فسّر النتيجة.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "point",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : عدد السيارات ثم الراتب بـ DA",
+      "expectedAnswer": {
+        "x": "10",
+        "y": "70000"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "70000",
+            "y": "10"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y$ معزول في المعادلتين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$x + 2y = 520$."
+          "content": "ساوِ بين الطرفين الثانيين للمعادلتين ثم احسب $x$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اطرح المعادلتين."
+          "content": "عوّض قيمة $x$ في إحدى المعادلتين لتجد $y$ ."
         }
       ],
       "feedback": {
-        "correct": "$y = 120$ و $x = 280$ ؛ $280000 + 240000 = 520000$.",
-        "incorrect": "ترجم اليوم الثاني بجملة جديدة."
+        "correct": "الثنائية $(10 ; 70000)$ : إذا باع كل منهما 10 سيارات في الشهر تقاضيا الراتب نفسه $70000DA$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
       },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} y = 3000x + 40000 & ...(1) \\\\ y = 4500x + 25000 & ...(2) \\end{cases}$",
+          "بما أن $y$ معزول في المعادلتين، نساوي بين الطرفين الثانيين: $3000x + 40000 = 4500x + 25000$",
+          "$15000 = 1500x$",
+          "$x = 10$",
+          "بالتعويض في المعادلة (1): $y = 3000 \\times 10 + 40000 = 70000$",
+          "إذا باع كل منهما 10 سيارات في الشهر تقاضيا الراتب نفسه $70000DA$ .",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(10 ; 70000)"
+      },
+      "work": "optional",
+      "timeSeconds": 300
+    },
+    {
+      "id": "q5",
+      "step": "04",
+      "statement": "☜ ابتداءً من كم سيارة مبيعة في الشهر يصبح راتب البائع الثاني أكبر من راتب البائع الأول؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
       "cognitiveDemand": "apply",
-      "difficulty": 3,
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب عدد السيارات فقط",
+      "expectedAnswer": "11",
       "misconceptionSignatures": [
         {
-          "value": {
-            "x": "120",
-            "y": "280"
-          },
-          "id": "MISC-JUMLA-TARTIB"
+          "value": "10",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب متراجحة تقارن بين الراتبين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل المتراجحة ثم خذ أول عدد طبيعي يحققها."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل 11 سيارة: $4500 \\times 11 + 25000 = 74500 > 73000 = 3000 \\times 11 + 40000$ .",
+        "incorrect": "عند قيمة التساوي يكون الراتبان متساويين: «أكبر» يتطلب عددا يليها."
+      },
+      "solution": {
+        "lines": [
+          "نبحث عن العدد الطبيعي $x$ بحيث: $4500x + 25000 > 3000x + 40000$",
+          "$1500x > 15000$",
+          "$x > 10$",
+          "إذن ابتداءً من 11 سيارة يصبح راتب البائع الثاني أكبر."
+        ],
+        "result": "11"
+      },
+      "timeSeconds": 240
     }
   ]
 }

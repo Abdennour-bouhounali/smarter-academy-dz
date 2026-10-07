@@ -3,24 +3,34 @@
   "lessonCode": "dala-khattiya",
   "level": 2,
   "metadata": {
-    "title": "المعامل من عدد سالب",
+    "title": "المعامل من عدد سالب وصورته",
     "estimatedMinutes": 4,
     "tags": [
-      "معامل",
-      "إشارة"
+      "تعيين دالة خطية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation"
+      "reason": "practice_generation",
+      "adaptedFrom": "ex-4am-dala-khattiya-l2-005"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "$g$ دالة خطية حيث $g(-4) = 10$ ."
+    "content": "$g$ دالة خطية حيث:",
+    "formulas": [
+      "g(-4) = 10"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "عيّن معامل الدالة الخطية $g$ علمًا أنّ $g(-4) = 10$ .",
+      "step": "01",
+      "statement": "عيّن الدالة الخطية $g$ ، أي معاملها $a$ حيث $g(x) = ax$ .",
       "learningPoints": [
         {
           "code": "4am_dala-khattiya_P3",
@@ -28,43 +38,50 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
-      "expectedAnswer": "-2.5",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-2,5",
+      "misconceptionSignatures": [
+        {
+          "value": "-0,4",
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        },
+        {
+          "value": "2,5",
+          "id": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+          "content": "$g$ دالة خطية: $g(x) = ax$ ، و $g(-4) = 10$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم الصورة على العدد غير المعدوم."
+          "content": "اكتب المعادلة $a \\times \\left(-4\\right) = 10$ ثم حلّها."
         }
       ],
       "feedback": {
-        "correct": "$-4a = 10$ ، إذن $a = 10 \\div (-4) = -2{,}5$ .",
-        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+        "correct": "$a = \\dfrac{10}{-4} = -2{,}5$ ، إذن $g(x) = -2{,}5x$ .",
+        "incorrect": "المعامل هو الصورة مقسومة على العدد (وليس العكس)، مع الانتباه إلى الإشارة."
       },
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB",
-          "value": "-0.4"
-        },
-        {
-          "id": "MISC-KHATTIYA-ISHARA",
-          "value": "2.5"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$g$ دالة خطية، إذن $g(x) = ax$ .",
+          "$g(-4) = 10$ معناه $a \\times \\left(-4\\right) = 10$",
+          "$a = \\dfrac{10}{-4} = -2{,}5$"
+        ],
+        "result": "g(x) = -2{,}5x"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
+      "step": "02",
       "statement": "احسب $g(2)$ .",
       "learningPoints": [
         {
@@ -73,36 +90,44 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
       "expectedAnswer": "-5",
+      "misconceptionSignatures": [
+        {
+          "value": "-0,8",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        },
+        {
+          "value": "5",
+          "id": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "صورة عدد بدالة خطية تُقرأ على دستورها."
+          "content": "صورة العدد $x$ بالدالة الخطية $g$ هي $g(x) = -2{,}5 \\times x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض $x$ بالعدد المعطى في الدستور."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب الجداء، وانتبه إلى الإشارة."
+          "content": "عوّض $x$ بالعدد $2$ ثم احسب الجداء، وانتبه إلى الإشارة."
         }
       ],
       "feedback": {
-        "correct": "$g(2) = (-2{,}5) \\times 2 = -5$ .",
-        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+        "correct": "$g(2) = \\left(-2{,}5\\right) \\times 2 = -5$ .",
+        "incorrect": "الصورة جداء المعامل في العدد: $g(x) = -2{,}5 \\times x$ ."
       },
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-KHATTIYA-SURA-SABIQ",
-          "value": "-0.8"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$g(2) = \\left(-2{,}5\\right) \\times 2$",
+          "$g(2) = -5$"
+        ],
+        "result": "g(2) = -5"
+      },
+      "timeSeconds": 60
     }
   ]
 }

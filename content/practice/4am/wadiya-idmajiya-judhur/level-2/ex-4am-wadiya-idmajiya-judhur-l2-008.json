@@ -1,118 +1,120 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-008",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — مثلث قائم متساوي الساقين",
-    "estimatedMinutes": 3,
+    "title": "مثلث قائم متساوي الساقين",
+    "estimatedMinutes": 4,
     "tags": [
-      "وضعية إدماجية",
-      "فيثاغورس",
-      "مدوّر"
+      "a√2",
+      "تدوير"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
       "modelledOn": null
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "مثلث قائم ومتساوي الساقين، طول كل ساق $5\\,cm$."
+    "content": "مثلث قائم و متساوي الساقين، طول كل من ضلعيه القائمين $5cm$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "طول الوتر (بالسنتيمتر) هو ...",
+      "step": "01",
+      "statement": "اكتب طول الوتر على الشكل $a\\sqrt{2}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$10$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-JAMA"
+          "value": "25",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         },
         {
-          "id": "B",
-          "content": "$25\\sqrt{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
-        },
-        {
-          "id": "C",
-          "content": "$50$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARBI-JIDHR"
-        },
-        {
-          "id": "D",
-          "content": "$5\\sqrt{2}$",
-          "isCorrect": true
+          "value": "10",
+          "id": "MISC-JIDHR-JAMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "استعمل خاصية فيثاغورس."
+          "content": "مربع الوتر يساوي مجموع مربعي الضلعين القائمين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مربع الوتر يساوي مجموع مربعي الساقين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب $50 = 25 \\times 2$."
+          "content": "اكتب $50 = 25 \\times 2$ ."
         }
       ],
       "feedback": {
-        "correct": "مربع الوتر $25 + 25 = 50$، والوتر $\\sqrt{50} = 5\\sqrt{2}$.",
-        "incorrect": "احسب مربع الوتر، ثم جذره التربيعي، ثم بسّط."
+        "correct": "الوتر $\\sqrt{50} = 5\\sqrt{2}\\,cm$ .",
+        "incorrect": "احسب مربع الوتر أولًا، ثم اكتب جذره على الشكل $a\\sqrt{2}$ ."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "مربع الوتر: $5^2 + 5^2 = 50$",
+          "الوتر: $\\sqrt{50} = \\sqrt{25 \\times 2}$"
+        ],
+        "result": "5\\sqrt{2}\\,cm"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "أعط المدوّر إلى الجزء من عشرة لطول الوتر (بالسنتيمتر).",
+      "step": "02",
+      "statement": "أعط المدوّر إلى $0{,}1$ لطول الوتر.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة",
+      "answerFormat": "عدد عشري (بالفاصلة): الطول بـ cm",
       "expectedAnswer": "7.1",
+      "misconceptionSignatures": [
+        {
+          "value": "7",
+          "id": "MISC-WADIYA-TADWIR-MUBAKKIR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "استعمل الحاسبة."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "انظر إلى رقم الأجزاء من مئة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "دوّر في النهاية فقط."
+          "content": "احسب $5\\sqrt{2}$ بالحاسبة دون تدوير مسبق."
         }
       ],
       "feedback": {
-        "correct": "$5\\sqrt{2} \\approx 7{,}07$، والمدوّر إلى الجزء من عشرة 7,1.",
-        "incorrect": "احسب القيمة المضبوطة بالحاسبة ثم دوّر."
+        "correct": "$5\\sqrt{2} \\approx 7{,}071$ ، و مدوّره إلى $0{,}1$ هو $7{,}1cm$ .",
+        "incorrect": "احسب الجداء كاملًا بالحاسبة ثم دوّر في الأخير."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$5\\sqrt{2} \\approx 7{,}071$"
+        ],
+        "result": "5\\sqrt{2} \\approx 7{,}1cm"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l2-008",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 2
+  ]
 }

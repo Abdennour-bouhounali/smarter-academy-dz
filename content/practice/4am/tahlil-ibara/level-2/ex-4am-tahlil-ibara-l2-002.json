@@ -3,10 +3,11 @@
   "lessonCode": "tahlil-ibara",
   "level": 2,
   "metadata": {
-    "title": "تمرين 22 — حدّ وحده بين قوسين",
-    "estimatedMinutes": 5,
+    "title": "حدّ وحده بين قوسين",
+    "estimatedMinutes": 10,
     "tags": [
-      "عامل مشترك"
+      "عامل مشترك",
+      "تحليل"
     ],
     "source": {
       "type": "textbook",
@@ -14,164 +15,192 @@
       "page": 38,
       "section": "أوظّف تعلّماتي",
       "number": 22
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 38): $C = 5x(2x + 1) + (2x + 1)$ ، $D = (x + 7)(x - 3) - (x - 3)$ ، $E = (x + 1)(x - 4) - x + 4$ ."
+    "content": "حلّل العبارات الآتية:",
+    "formulas": [
+      "C = 5x(2x + 1) + (2x + 1)",
+      "D = (x + 7)(x - 3) - (x - 3)",
+      "E = (x + 1)(x - 4) - x + 4"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّل C.",
+      "step": "01",
+      "lead": "حلّل العبارة $C$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$5x(2x + 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-NISYAN-1"
-        },
-        {
-          "id": "B",
-          "content": "$(2x + 1)(5x + 1)$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$6x(2x + 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $C$ على الشكل $(2x + 1)(mx + n)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العامل المشترك هو $(2x + 1)$."
+          "content": "العامل $(2x + 1)$ مشترك بين الحدّين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$(2x + 1) = (2x + 1) \\times 1$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "لا تنسَ العدد 1 داخل القوس."
+          "content": "الحد $(2x + 1)$ وحده يساوي $1 \\times (2x + 1)$ ."
         }
       ],
       "feedback": {
-        "correct": "$C = (2x + 1)(5x + 1)$.",
-        "incorrect": "الحدّ $(2x + 1)$ وحده يترك 1 داخل القوس."
-      }
+        "correct": "$C = (2x + 1)(5x + 1)$ إذن $m = 5$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$C = 5x(2x + 1) + 1 \\times (2x + 1)$",
+          "$C = (2x + 1)(5x + 1)$"
+        ],
+        "result": "C = (2x + 1)(5x + 1)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "حلّل D.",
+      "step": "01",
+      "statement": "العدد $n$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $C$ على الشكل $(2x + 1)(mx + n)$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$(x - 3)(x + 6)$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$(x - 3)(x + 7)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-NISYAN-1"
-        },
-        {
-          "id": "C",
-          "content": "$(x - 3)(x + 8)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+          "value": "0",
+          "id": "MISC-TAHLIL-NISYAN-1"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العامل المشترك هو $(x - 3)$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$-(x - 3) = (x - 3) \\times (-1)$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اطرح 1 مما بقي."
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
         }
       ],
       "feedback": {
-        "correct": "$D = (x - 3)(x + 7 - 1) = (x - 3)(x + 6)$.",
-        "incorrect": "الحدّ $-(x - 3)$ يترك $-1$ داخل القوس."
-      }
+        "correct": "$C = (2x + 1)(5x + 1)$ إذن $n = 1$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$C = (2x + 1)(5x + 1)$"
+        ],
+        "result": "n = 1"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q3",
-      "statement": "حلّل E.",
+      "step": "02",
+      "lead": "حلّل العبارة $D$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
-          "code": "4am_tahlil-ibara_P1",
+          "code": "4am_tahlil-ibara_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $D$ على الشكل $(x - 3)(x + m)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$(x - 4)(x + 2)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
-        },
-        {
-          "id": "B",
-          "content": "$(x + 1)(x - 5)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
-        },
-        {
-          "id": "C",
-          "content": "$x(x - 4)$",
-          "isCorrect": true
+          "value": "7",
+          "id": "MISC-TAHLIL-NISYAN-1"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$-x + 4$ مرتبط بالقوس $(x - 4)$."
+          "content": "العامل $(x - 3)$ مشترك بين الحدّين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$-x + 4 = -(x - 4)$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "استخرج $(x - 4)$ ثم بسّط ما بقي."
+          "content": "الحد $-(x - 3)$ يساوي $-1 \\times (x - 3)$ ."
         }
       ],
       "feedback": {
-        "correct": "$E = (x - 4)(x + 1) - (x - 4) = (x - 4)(x + 1 - 1) = x(x - 4)$.",
-        "incorrect": "انتبه: $-x + 4$ هو $-(x - 4)$ لا $+(x - 4)$."
-      }
+        "correct": "$D = (x - 3)(x + 6)$ إذن $m = 6$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$D = (x + 7)(x - 3) - 1 \\times (x - 3)$",
+          "$D = (x - 3)(x + 7 - 1)$"
+        ],
+        "result": "D = (x - 3)(x + 6)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "lead": "حلّل العبارة $E$ .",
+      "statement": "العدد $m$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $x(x + m)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "-4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $-x + 4$ على شكل جداء يظهر فيه $(x - 4)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لاحظ أن $-x + 4 = -(x - 4)$ ، ثم أخرج العامل المشترك."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = x(x - 4)$ إذن $m = -4$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$-x + 4 = -(x - 4)$",
+          "$E = (x + 1)(x - 4) - 1 \\times (x - 4)$",
+          "$E = (x - 4)(x + 1 - 1)$",
+          "$E = (x - 4) \\times x$"
+        ],
+        "result": "E = x(x - 4)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
   ]
 }

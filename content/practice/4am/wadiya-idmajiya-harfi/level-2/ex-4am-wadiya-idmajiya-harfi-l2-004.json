@@ -1,77 +1,122 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l2-004",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 2,
   "metadata": {
-    "title": "تمرين 10 — مربع تام (أؤكّد تعلّماتي)",
-    "estimatedMinutes": 1,
+    "title": "مربع تام وحساب دون آلة",
+    "estimatedMinutes": 4,
     "tags": [
+      "مربع مجموع",
       "تحليل",
-      "أؤكّد تعلّماتي"
+      "حساب ذهني"
     ],
     "source": {
       "type": "textbook",
       "elementId": "qcm",
       "page": 40,
       "section": "أؤكّد تعلّماتي",
-      "number": 10
+      "number": 10,
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-harfi-l2-004"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "اختر الإجابة الصحيحة."
+    "content": "لتكن العبارة $E$ حيث :",
+    "formulas": [
+      "E = x^2 + 10x + 25"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "العبارة $x^2 + 10x + 25$ تحلل على الشكل ...",
+      "step": "01",
+      "lead": "حلّل العبارة $E$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $(x + m)^2$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x^2 + 5^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
-        },
-        {
-          "id": "B",
-          "content": "لا تقبل تحليلا",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-MAJMU-MURABBAYN"
-        },
-        {
-          "id": "C",
-          "content": "$(x + 5)^2$",
-          "isCorrect": true
+          "value": "10",
+          "id": "MISC-MUTATABIQA-2AB-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$25 = 5^2$."
+          "content": "تعرّف على الشكل $a^2 + 2ab + b^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هل $10x = 2 \\times x \\times 5$ ؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تعرّف على شكل مربع مجموع."
+          "content": "$x^2$ مربع $x$ ، و $25$ مربع عدد موجب: تحقّق من الحد المضاعف."
         }
       ],
       "feedback": {
-        "correct": "$x^2 + 2 \\times x \\times 5 + 5^2 = (x + 5)^2$.",
-        "incorrect": "الحد $10x$ هو الحد المضاعف: العبارة مربع تام."
+        "correct": "$E = (x + 5)^2$ إذن $m = 5$ .",
+        "incorrect": "تحقّق من تحليلك بنشر الجداء: يجب أن تجد العبارة الأصلية."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$E = x^2 + 2 \\times x \\times 5 + 5^2$"
+        ],
+        "result": "E = (x + 5)^2"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج دون استعمال الآلة الحاسبة قيمة العدد $95^2 + 10 \\times 95 + 25$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد المطلوب هو قيمة $E$ من أجل قيمة مناسبة لـ $x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل الشكل المحلّل."
+        }
+      ],
+      "feedback": {
+        "correct": "$95^2 + 10 \\times 95 + 25 = 10000$ .",
+        "incorrect": "عوّض بالقيمة المعطاة في الشكل المناسب، واحسب بعناية مع احترام أولويات العمليات."
+      },
+      "solution": {
+        "lines": [
+          "العدد المطلوب هو قيمة $E$ من أجل $x = 95$ :",
+          "$95^2 + 10 \\times 95 + 25 = (95 + 5)^2 = 100^2$"
+        ],
+        "result": "95^2 + 10 \\times 95 + 25 = 10000"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l2-004",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 2
+  ]
 }

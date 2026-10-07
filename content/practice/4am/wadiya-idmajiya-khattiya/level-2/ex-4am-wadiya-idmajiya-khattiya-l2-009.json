@@ -3,75 +3,121 @@
   "lessonCode": "wadiya-idmajiya-khattiya",
   "level": 2,
   "metadata": {
-    "title": "تسعيرة بمبلغ ثابت",
-    "estimatedMinutes": 3,
+    "title": "دخول حديقة الألعاب",
+    "estimatedMinutes": 4,
     "tags": [
       "دالة خطية",
-      "نمذجة"
+      "تمييز"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-khattiya_P2",
-      "modelledOn": "challenge"
+      "modelledOn": "challenge",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-khattiya-l2-009"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في حديقة ألعاب: الدخول $200$ DA ثم $100$ DA لكل لعبة. نسمّي $x$ عدد الألعاب و $P(x)$ المبلغ المدفوع."
+    "content": "في حديقة ألعاب، يدفع الزائر 200DA عند الدخول ثم 100DA لكل لعبة. نسمّي $x$ عدد الألعاب و $P(x)$ المبلغ المدفوع (بـ DA)."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل $P$ دالة خطية للعدد $x$ ؟",
+      "step": "01",
+      "statement": "احسب المبلغ الذي يدفعه زائر لعب 3 ألعاب.",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "500",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "لا، لأنّ $P(x) = 100x + 200$ و $P(0) = 200 \\neq 0$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "نعم، معاملها 100",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TANASUB-MABLAGH-THABIT"
-        },
-        {
-          "id": "C",
-          "content": "نعم، معاملها 300",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+          "value": "300",
+          "id": "MISC-TANASUB-MABLAGH-THABIT"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب $P(x)$."
+          "content": "لا تنسَ مبلغ الدخول."
+        }
+      ],
+      "feedback": {
+        "correct": "$200 + 3 \\times 100 = 500$ DA.",
+        "incorrect": "المبلغ = مبلغ الدخول + ثمن الألعاب."
+      },
+      "solution": {
+        "lines": [
+          "$P(3) = 200 + 3 \\times 100 = 500$"
+        ],
+        "result": "P(3) = 500"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "هل $P$ دالة خطية؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MABLAGH-THABIT"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $P(0)$ : ماذا يدفع زائر لم يلعب أي لعبة؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ماذا يدفع من لا يلعب أي لعبة؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الدالة الخطية صورة 0 بها 0."
+          "content": "صورة 0 بدالة خطية هي 0."
         }
       ],
       "feedback": {
-        "correct": "$P(x) = 100x + 200$ ليست من الشكل $ax$.",
-        "incorrect": "مبلغ الدخول الثابت يجعل الوضعية غير تناسبية."
+        "correct": "$P(x) = 100x + 200$ و $P(0) = 200 \\neq 0$ : $P$ ليست خطية.",
+        "incorrect": "المبلغ الثابت 200DA يمنع التناسب."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$P(x) = 100x + 200$",
+          "$P(0) = 200 \\neq 0$ ، والمبلغ ليس متناسبا مع عدد الألعاب.",
+          "$P$ ليست دالة خطية."
+        ],
+        "result": "الدالة P ليست خطية"
+      },
+      "timeSeconds": 90
     }
   ]
 }

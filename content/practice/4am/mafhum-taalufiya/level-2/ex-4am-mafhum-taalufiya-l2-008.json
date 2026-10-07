@@ -3,23 +3,33 @@
   "lessonCode": "mafhum-taalufiya",
   "level": 2,
   "metadata": {
-    "title": "صيغة الهاتف النقال",
-    "estimatedMinutes": 3,
+    "title": "صيغة هاتف نقال",
+    "estimatedMinutes": 5,
     "tags": [
-      "وضعية"
+      "وضعية",
+      "صورة عدد",
+      "العدد الذي صورته معلومة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation"
+      "reason": "practice_generation",
+      "adaptedFrom": "ex-4am-mafhum-taalufiya-l2-008"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "صيغة هاتف نقال: 500DA في الشهر، يضاف إليها 50DA عن كل جيغا إضافية. نسمّي $x$ عدد الجيغات الإضافية و $f(x)$ المبلغ الشهري."
+    "content": "يقترح متعامل للهاتف النقال صيغة: 500DA في الشهر، يضاف إليها 50DA عن كل جيغا (Go) إضافية. نسمّي $x$ عدد الجيغات الإضافية و $f(x)$ المبلغ الشهري بـ DA ، حيث $f(x) = 50x + 500$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب المبلغ الشهري لـ 8 جيغات إضافية.",
+      "step": "01",
+      "statement": "احسب المبلغ الشهري لتلميذ استهلك 8 جيغات إضافية.",
       "learningPoints": [
         {
           "code": "4am_mafhum-taalufiya_P2",
@@ -27,40 +37,41 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "answerFormat": "عدد: المبلغ بـ DA",
       "expectedAnswer": "900",
+      "misconceptionSignatures": [
+        {
+          "value": "400",
+          "id": "MISC-TAALUFI-NISYAN-B"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "صورة عدد بدالة تآلفية: نعوّض $x$ بهذا العدد في العبارة $ax + b$ ."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "اضرب العدد في المعامل $a$ أولا، وانتبه إلى الإشارات."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "لا تنسَ أن تضيف الحدّ الثابت $b$ في النهاية."
+          "content": "احسب $f(8)$ ."
         }
       ],
       "feedback": {
         "correct": "$f(8) = 50 \\times 8 + 500 = 900$ .",
-        "incorrect": "أعد الحساب: اضرب في $a$ ثم أضف $b$ ، وتحقّق من الإشارات."
+        "incorrect": "اضرب عدد الجيغات في 50 ثم أضف 500."
       },
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-TAALUFI-NISYAN-B",
-          "value": "400"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$f(8) = 50 \\times 8 + 500$",
+          "$f(8) = 400 + 500$",
+          "$f(8) = 900$ أي $900DA$ ."
+        ],
+        "result": "f(8) = 900\\,DA"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "دفع تلميذ 1000DA. كم جيغا إضافية استهلك؟",
+      "step": "02",
+      "statement": "دفع تلميذ آخر 1000DA في الشهر. كم جيغا إضافية استهلك؟",
       "learningPoints": [
         {
           "code": "4am_mafhum-taalufiya_P3",
@@ -68,44 +79,52 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "answerFormat": "عدد: عدد الجيغات",
       "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "value": "20",
+          "id": "MISC-TAALUFI-SABIQ-QISMA"
+        },
+        {
+          "value": "-480",
+          "id": "MISC-TAALUFI-SABIQ-TARTIB"
+        },
+        {
+          "value": "50500",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المطلوب عدد علمت صورته، لا صورة عدد: اكتب المعادلة $ax + b = m$ ."
+          "content": "ابحث عن $x$ الذي يحقق $f(x) = 1000$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انقل الحدّ الثابت $b$ إلى الطرف الآخر أولا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم اقسم الطرفين على المعامل $a$ ، وتحقّق بحساب صورة ما وجدته."
+          "content": "اطرح أولا المبلغ الثابت، ثم اقسم على ثمن الجيغا."
         }
       ],
       "feedback": {
-        "correct": "$50x + 500 = 1000$ ، إذن $50x = 500$ ، ومنه $x = 10$ .",
-        "incorrect": "اطرح $b$ أولا ثم اقسم على $a$ ، وتحقّق بالتعويض."
+        "correct": "$50x + 500 = 1000$ تعطي $x = 10$ .",
+        "incorrect": "اطرح المبلغ الثابت 500DA أولا، ثم اقسم على 50."
       },
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-TAALUFI-SABIQ-QISMA",
-          "value": "20"
-        },
-        {
-          "id": "MISC-TAALUFI-SABIQ-TARTIB",
-          "value": "-480"
-        },
-        {
-          "id": "MISC-KHATTIYA-SURA-SABIQ",
-          "value": "50500"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$f(x) = 1000$ معناه $50x + 500 = 1000$",
+          "$50x = 1000 - 500$",
+          "$50x = 500$",
+          "$x = \\dfrac{500}{50}$",
+          "$x = 10$"
+        ],
+        "result": "x = 10"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

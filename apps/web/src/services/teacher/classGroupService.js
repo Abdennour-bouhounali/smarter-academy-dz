@@ -65,6 +65,16 @@ export function fetchClassStudentNotebook(token, id, studentId, params = null) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/students/${encodeURIComponent(studentId)}/notebook${suffix}`, get(token), 'notebookLoad');
 }
 
+/** Les réglages d'UN élève, décidés par l'enseignant (niveaux ouverts…), 2026-10-06. */
+export function fetchClassStudentSettings(token, id, studentId) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/students/${encodeURIComponent(studentId)}/settings`, get(token), 'classroomSave').then((d) => d.settings);
+}
+
+/** @param {{practiceLevelsOpen?: boolean}} patch */
+export function updateClassStudentSettings(token, id, studentId, patch) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/students/${encodeURIComponent(studentId)}/settings`, send('PATCH', token, patch), 'classroomSave').then((d) => d.settings);
+}
+
 export function removeClassStudent(token, id, studentId) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/students/${encodeURIComponent(studentId)}`, send('DELETE', token), 'classroomSave');
 }

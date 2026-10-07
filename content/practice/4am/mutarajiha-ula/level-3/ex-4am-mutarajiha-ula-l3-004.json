@@ -3,9 +3,10 @@
   "lessonCode": "mutarajiha-ula",
   "level": 3,
   "metadata": {
-    "title": "تمرين 28 — حل ثم مثّل",
-    "estimatedMinutes": 4,
+    "title": "حلّ، مثّل، ثم عُدّ الحلول الطبيعية",
+    "estimatedMinutes": 8,
     "tags": [
+      "متراجحة",
       "حل متراجحة",
       "تمثيل بياني"
     ],
@@ -15,113 +16,219 @@
       "page": 51,
       "section": "أوظّف تعلّماتي",
       "number": 28
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 51): المتراجحة $2x - 1 \\leq 6$ ."
+    "content": "لتكن المتراجحة:",
+    "formulas": [
+      "2x - 1 \\leqslant 6"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّ المتراجحة $2x - 1 \\leq 6$ .",
+      "step": "01",
+      "lead": "حلّ المتراجحة: $2x - 1 \\leqslant 6$ .",
+      "statement": "حدّ الحلول $k$ :",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "حلول المتراجحة من الشكل $x < k$ أو $x \\leqslant k$ أو $x > k$ أو $x \\geqslant k$ : اكتب العدد $k$ فقط (عدد صحيح أو كسر a/b، قد يكون سالبًا)",
+      "expectedAnswer": "7/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر، كما في حل معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إضافة عدد إلى الطرفين أو طرحه منهما لا تغيّر اتجاه المتباينة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّ هو العدد الذي يحقّق المعادلة المرفقة (نضع «=» مكان رمز المتباينة): اقسم في الأخير على معامل $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "حدّ الحلول هو $k = \\dfrac{7}{2}$ .",
+        "incorrect": "أعد الحل سطرًا سطرًا: العملية نفسها على الطرفين، ثم القسمة على معامل $x$ في الأخير."
+      },
+      "solution": {
+        "lines": [
+          "حدّ الحلول هو حلّ المعادلة المرفقة: $2x - 1 = 6$",
+          "$2x = 6 + 1$",
+          "$2x = 7$",
+          "$\\dfrac{2x}{2} = \\dfrac{7}{2}$",
+          "إذن حدّ الحلول هو $\\dfrac{7}{2}$ ."
+        ],
+        "result": "k = \\dfrac{7}{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "حلول المتراجحة هي الأعداد $x$ حيث:",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$x \\geq \\dfrac{7}{2}$",
+          "content": "$x < \\dfrac{7}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$x \\leqslant \\dfrac{7}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x > \\dfrac{7}{2}$",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
         },
         {
-          "id": "B",
-          "content": "$x \\leq \\dfrac{5}{2}$",
+          "id": "D",
+          "content": "$x \\geqslant \\dfrac{7}{2}$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
-        },
-        {
-          "id": "C",
-          "content": "$x \\leq \\dfrac{7}{2}$",
-          "isCorrect": true
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+          "content": "انظر إلى إشارة معامل $x$ في آخر سطر قبل القسمة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+          "content": "القسمة على عدد موجب تحافظ على الاتجاه، والقسمة على عدد سالب تغيّره."
         }
       ],
       "feedback": {
-        "correct": "$2x - 1 \\leq 6$ تؤول إلى $2x \\leq 7$، ثم نقسم على $2$ (عدد موجب، فالاتجاه لا يتغيّر): $x \\leq \\dfrac{7}{2}$.",
-        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
-      }
+        "correct": "$x \\leqslant \\dfrac{7}{2}$ .",
+        "incorrect": "تتبّع سطور الحل: الاتجاه يتغيّر فقط عند الضرب أو القسمة على عدد سالب، ونوع المتباينة (تامة أو غير تامة) لا يتغيّر أبدًا."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $2x - 1 \\leqslant 6$",
+          "$2x \\leqslant 6 + 1$",
+          "$2x \\leqslant 7$",
+          "$\\dfrac{2x}{2} \\leqslant \\dfrac{7}{2}$",
+          "إذن حلول المتراجحة هي كل قيم $x$ الأصغر من أو تساوي $\\dfrac{7}{2}$ .",
+          "قسمنا الطرفين (أو ضربناهما) في آخر خطوة على عدد موجب، فبقي اتجاه المتباينة ونوعها."
+        ],
+        "result": "x \\leqslant \\dfrac{7}{2}"
+      },
+      "timeSeconds": 60
     },
     {
-      "id": "q2",
-      "statement": "أيّ تمثيل بياني يوافق حلول المتراجحة $2x - 1 \\leq 6$ على مستقيم مدرّج؟",
+      "id": "q3",
+      "step": "02",
+      "statement": "مثّل حلولها بيانيًا على مستقيم مدرّج.",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "الجزء الملوّن على يسار $\\dfrac{7}{2}$ والرمز $[$ عند $\\dfrac{7}{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
-        },
-        {
-          "id": "B",
-          "content": "الجزء الملوّن على يسار $\\dfrac{7}{2}$ والرمز $]$ عند $\\dfrac{7}{2}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "الجزء الملوّن على يمين $\\dfrac{7}{2}$ والرمز $[$ عند $\\dfrac{7}{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "selfCheck",
+      "answerFormat": "صف تمثيلك: جهة الجزء الملوّن بالأحمر والرمز عند الحدّ (أو صوّر ورقتك)، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حلّ المتراجحة أولًا لتجد الحدّ."
+          "content": "ابدأ بحل المتراجحة لتعرف الحدّ وجهة الحلول."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الحلول الأكبر من الحدّ على يمينه، والأصغر منه على يساره."
+          "content": "الأعداد الأكبر من الحدّ على يمينه، والأصغر منه على يساره."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اختبر الحدّ نفسه: إن كان حلًّا فالرمز موجّه نحو الجزء الملوّن."
+          "content": "اختبر الحدّ نفسه: إن كان حلًّا فالرمز موجّه نحو الجزء الملوّن، وإلا فهو موجّه عكسه."
         }
       ],
       "feedback": {
-        "correct": "الحلول: $x \\leq \\dfrac{7}{2}$ ، فالجزء الملوّن على يسار $\\dfrac{7}{2}$ ، و $\\dfrac{7}{2}$ حلّ فالرمز موجّه نحو الجزء الملوّن.",
-        "incorrect": "حدّد جهة الحلول، ثم اختبر الحدّ نفسه لتختار اتجاه الرمز."
-      }
+        "correct": "تمثيلك مطابق للحل النموذجي.",
+        "incorrect": "راجع جهة الجزء الملوّن، ثم اتجاه الرمز عند الحدّ."
+      },
+      "solution": {
+        "lines": [
+          "حلول المتراجحة هي الأعداد $x$ حيث $x \\leqslant \\dfrac{7}{2}$ .",
+          "نلوّن بالأحمر جزء المستقيم المدرّج الواقع على يسار العدد $\\dfrac{7}{2}$ .",
+          "العدد $\\dfrac{7}{2}$ حلّ للمتراجحة، فنضع عنده الرمز $]$ موجّهًا نحو الجزء الملوّن."
+        ],
+        "result": "الجزء الملوّن على يسار \\dfrac{7}{2} والرمز ] عنده"
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "كم عددًا طبيعيًا يحقّق هذه المتراجحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل حلول المتراجحة التي وجدتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انتبه إلى الحدّ: هل هو نفسه حلّ أم لا؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$4$.",
+        "incorrect": "ارجع إلى حلول المتراجحة، ثم اختبر الأعداد الصحيحة القريبة من الحدّ."
+      },
+      "solution": {
+        "lines": [
+          "حلول المتراجحة هي الأعداد $x$ حيث $x \\leqslant \\dfrac{7}{2}$ ، أي $x \\leqslant 3{,}5$ .",
+          "الأعداد الطبيعية الحلول هي: $0$ ، $1$ ، $2$ ، $3$ .",
+          "إذن عددها $4$ ."
+        ],
+        "result": "4"
+      },
+      "timeSeconds": 120
     }
   ]
 }

@@ -3,107 +3,144 @@
   "lessonCode": "tarrid-khatti",
   "level": 2,
   "metadata": {
-    "title": "تدريب — من الجدول إلى الدستور",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2009 — مضخة بئر تملأ خزانا",
+    "estimatedMinutes": 7,
     "tags": [
-      "جدول",
-      "دستور"
+      "تدفق ثابت",
+      "نمذجة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_tarrid-khatti_P2",
-      "modelledOn": "method-spring"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tarrid-khatti_P1",
+      "modelledOn": "BEM 2009 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2009",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "جدول تناسبية: $x$ : 3 ، 6 ؛ $y$ : 4,5 ، 9 ."
+    "content": "تضخّ مضخة الماء من بئر إلى خزان كان فارغا، بتدفق ثابت قدره $0{,}8m^3$ في الساعة ( $0{,}8m^3/h$ ). نسمّي $g(x)$ حجم الماء في الخزان (بـ $m^3$ ) بعد $x$ ساعة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الدستور الذي يعبّر عن $y$ بدلالة $x$ :",
+      "step": "01",
+      "statement": "احسب حجم الماء في الخزان بعد مرور ثلاث ساعات.",
       "learningPoints": [
         {
-          "code": "4am_tarrid-khatti_P2",
+          "code": "4am_tarrid-khatti_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$y = x + 1{,}5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-AFFINE"
-        },
-        {
-          "id": "B",
-          "content": "$y = 1{,}5x$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$y = \\dfrac{2}{3}x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
-        }
-      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الحجم بـ $m^3$ (عشري بالفاصلة)",
+      "expectedAnswer": "2,4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$\\dfrac{4{,}5}{3}$ ."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "المعامل نفسه للعمودين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "نضرب $x$ في المعامل."
+          "content": "في كل ساعة يدخل الخزان $0{,}8m^3$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{4{,}5}{3} = \\dfrac{9}{6} = 1{,}5$ : $y = 1{,}5x$ .",
-        "incorrect": "المعامل $\\dfrac{y}{x}$ ."
-      }
+        "correct": "$0{,}8 \\times 3 = 2{,}4$ : $2{,}4m^3$ .",
+        "incorrect": "اضرب التدفق في عدد الساعات."
+      },
+      "solution": {
+        "lines": [
+          "$0{,}8 \\times 3 = 2{,}4$",
+          "بعد ثلاث ساعات يحتوي الخزان على $2{,}4m^3$ ."
+        ],
+        "result": "2{,}4m^3"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "ما العدد $x$ الذي يوافقه $y = 12$ ؟",
+      "step": "02",
+      "statement": "جد العبارة $g(x)$ بدلالة $x$ .",
       "learningPoints": [
         {
-          "code": "4am_tarrid-khatti_P2",
+          "code": "4am_tarrid-khatti_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "8",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "0,8",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حلّ $1{,}5x = 12$ ."
+          "content": "الحجم متناسب مع المدة لأن التدفق ثابت والخزان كان فارغا."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(x) = 0{,}8x$ .",
+        "incorrect": "المعامل هو حجم الماء الذي يدخل الخزان في ساعة واحدة."
+      },
+      "solution": {
+        "lines": [
+          "الخزان كان فارغا والتدفق ثابت: $g(x) = 0{,}8x$ ."
+        ],
+        "result": "g(x) = 0{,}8x"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "سعة الخزان $6m^3$ . جد الوقت المستغرق لملء الخزان.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المدة بالساعة (عشري بالفاصلة)",
+      "expectedAnswer": "7,5",
+      "misconceptionSignatures": [
+        {
+          "value": "4,8",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدة هي العدد $x$ الذي يحقق $g(x) = 6$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$x = \\dfrac{12}{1{,}5}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق: $1{,}5 \\times 8$ ."
+          "content": "اقسم السعة على التدفق."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{12}{1{,}5} = 8$ .",
-        "incorrect": "نقسم على المعامل."
-      }
+        "correct": "$0{,}8x = 6$ ، إذن $x = 7{,}5$ : يمتلئ الخزان بعد 7 ساعات ونصف.",
+        "incorrect": "المدة هي العدد الذي صورته 6: اقسم على المعامل."
+      },
+      "solution": {
+        "lines": [
+          "$g(x) = 6$ معناه $0{,}8x = 6$",
+          "$x = \\dfrac{6}{0{,}8} = 7{,}5$",
+          "يمتلئ الخزان بعد 7,5 ساعات، أي 7 ساعات و 30 دقيقة."
+        ],
+        "result": "x = 7{,}5h"
+      },
+      "timeSeconds": 90
     }
   ]
 }

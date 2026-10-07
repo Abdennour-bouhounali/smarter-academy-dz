@@ -3,8 +3,8 @@
   "lessonCode": "mushkilat-jumla",
   "level": 2,
   "metadata": {
-    "title": "تدريب — الأب وابنه",
-    "estimatedMinutes": 3,
+    "title": "عمرا الأب والابن",
+    "estimatedMinutes": 7,
     "tags": [
       "ترييض",
       "أعمار"
@@ -14,99 +14,151 @@
       "reason": "practice_generation",
       "learningPoint": "4am_mushkilat-jumla_P1",
       "modelledOn": "act-3"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "عمر أب ثلاثة أضعاف عمر ابنه، ومجموع عمريهما 48 سنة. نسمّي $x$ عمر الأب و $y$ عمر الابن."
+    "content": "عمر أب يساوي ثلاثة أضعاف عمر ابنه، ومجموع عمريهما 48 سنة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الجملة التي تترجم المشكلة هي:",
+      "step": "01",
+      "lead": "نسمّي $x$ عمر الأب و $y$ عمر الابن (بالسنوات).",
+      "statement": "ترجم المعطيات بجملة معادلتين مجهولاها $x$ و $y$ .",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\begin{cases} x + y = 48 \\\\ y = 3x \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "B",
-          "content": "$\\begin{cases} x + y = 48 \\\\ x = 3y \\end{cases}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\begin{cases} x + y = 48 \\\\ x = y + 3 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "من الأكبر؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "«ثلاثة أضعاف» ضرب في 3، لا إضافة 3."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "عمر الأب = 3 × عمر الابن."
+          "content": "«ثلاثة أضعاف عمر الابن» تكتب $3y$ ."
         }
       ],
       "feedback": {
-        "correct": "الأب ثلاثة أضعاف ابنه، والمجموع 48: الحل $(36 ; 12)$ .",
-        "incorrect": "الأب هو الأكبر، و«ثلاثة أضعاف» ضرب."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "المجموع: $x + y = 48$",
+          "عمر الأب ثلاثة أضعاف عمر الابن: $x = 3y$ أي $x - 3y = 0$",
+          "ومنه الجملة: $\\begin{cases} x + y = 48 \\\\ x - 3y = 0 \\end{cases}$"
+        ],
+        "result": "\\begin{cases} x + y = 48 \\\\ x - 3y = 0 \\end{cases}"
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "ما عمر الأب وعمر الابن؟ اكتب الثنائية $(x ; y)$ .",
+      "step": "02",
+      "lead": "جد عمر الأب وعمر الابن.",
+      "statement": "عمر الأب:",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
-      "expectedAnswer": {
-        "x": "36",
-        "y": "12"
-      },
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العمر بالسنوات (عدد فقط)",
+      "expectedAnswer": "36",
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ في المعادلة الأولى."
+          "content": "عوّض $x$ بـ $3y$ في معادلة المجموع."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تحصل على $4y = 48$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم احسب $x$ ."
+          "content": "احسب $y$ ثم $x = 3y$ ."
         }
       ],
       "feedback": {
-        "correct": "$y = 12$ و $x = 36$ .",
-        "incorrect": "تحقّق بالمجموع وبالأضعاف."
-      }
+        "correct": "عمر الأب 36 سنة.",
+        "incorrect": "بالتعويض: $3y + y = 48$ ."
+      },
+      "solution": {
+        "lines": [
+          "من المعادلة الثانية: $x = 3y$",
+          "بالتعويض في المعادلة الأولى: $3y + y = 48$ أي $4y = 48$ ومنه $y = 12$",
+          "ومنه: $x = 3 \\times 12 = 36$",
+          "التحقق في النص: $36 + 12 = 48$ و $36 = 3 \\times 12$ .",
+          "إذن عمر الأب 36 سنة وعمر الابن 12 سنة."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "عمر الابن:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العمر بالسنوات (عدد فقط)",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "value": "36",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عمر الأب ثلاثة أضعاف عمر الابن."
+        }
+      ],
+      "feedback": {
+        "correct": "عمر الابن 12 سنة، ونتحقق: $36 + 12 = 48$ و $36 = 3 \\times 12$ .",
+        "incorrect": "عمر الابن = عمر الأب ÷ 3 ."
+      },
+      "solution": {
+        "lines": [
+          "من المعادلة الثانية: $x = 3y$",
+          "بالتعويض في المعادلة الأولى: $3y + y = 48$ أي $4y = 48$ ومنه $y = 12$",
+          "ومنه: $x = 3 \\times 12 = 36$",
+          "التحقق في النص: $36 + 12 = 48$ و $36 = 3 \\times 12$ .",
+          "إذن عمر الأب 36 سنة وعمر الابن 12 سنة."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

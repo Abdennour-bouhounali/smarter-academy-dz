@@ -1,109 +1,158 @@
 {
+  "id": "ex-4am-nashr-tabsit-l2-003",
+  "lessonCode": "nashr-tabsit",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — x أمام القوسين",
-    "estimatedMinutes": 3,
+    "title": "x أمام القوسين",
+    "estimatedMinutes": 6,
     "tags": [
-      "نشر",
-      "الخاصية التوزيعية"
+      "k(a + b)",
+      "قيمة عبارة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_nashr-tabsit_P2",
       "modelledOn": "act-1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "العامل الذي أمام القوسين قد يكون حرفًا: $x(x + 6)$."
+    "content": "لتكن العبارة $E$ حيث:",
+    "formulas": [
+      "E = x(x + 6)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نشر $x(x + 6)$ هو:",
+      "step": "01",
+      "lead": "انشر العبارة $E$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x^2 + 6$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
-        },
-        {
-          "id": "B",
-          "content": "$2x + 6x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
-        },
-        {
-          "id": "C",
-          "content": "$x^2 + 6x$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $ax^2 + bx$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "1",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$x$ يُضرب في كل حد."
+          "content": "اضرب العامل الذي أمام القوس في كل حد من حدود القوس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$x \\times x$ ثم $x \\times 6$."
+          "content": "انتبه إلى إشارة كل حد عند كتابة الجداءات."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$x \\times x$ مربّع لا ضعف."
+          "content": "اجمع الحدود المتشابهة: حدود $x^2$ معًا، ثم حدود $x$، ثم الأعداد."
         }
       ],
       "feedback": {
-        "correct": "$x \\times x + x \\times 6 = x^2 + 6x$.",
-        "incorrect": "العامل $x$ يُضرب في الحدّين، و $x \\times x$ مربّع."
-      }
+        "correct": "$E = x^2 + 6x$ إذن $a = 1$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$E = x(x + 6)$",
+          "$E = x \\times x + x \\times 6$"
+        ],
+        "result": "E = x^2 + 6x"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "ما معامل $x$ في نشر $x(x + 6)$ ؟",
+      "step": "01",
+      "statement": "العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "يُكتب $E$ على الشكل $ax^2 + bx$ : اكتب العدد $b$ فقط",
       "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "value": "0",
+          "id": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر أولًا."
+          "content": "اجمع معاملات حدود $x$ بإشاراتها بعد النشر."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = x^2 + 6x$ إذن $b = 6$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $b$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$E = x^2 + 6x$"
+        ],
+        "result": "b = 6"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب $E$ من أجل $x = 4$ .",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد المعطى في الشكل المبسّط الذي وجدته."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الحد الذي فيه $x$ (لا $x^2$) هو جداء $x$ في 6."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المعامل هو العدد الذي يضرب $x$."
+          "content": "احسب القوى أولًا، ثم الجداءات، ثم الجمع والطرح."
         }
       ],
       "feedback": {
-        "correct": "$x(x + 6) = x^2 + 6x$: معامل $x$ هو 6.",
-        "incorrect": "ابحث عن الحد من الدرجة الأولى بعد النشر."
-      }
+        "correct": "$E = 40$.",
+        "incorrect": "عوّض $x$ في كل حد، واحترم أولويات العمليات والإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$E = 4^2 + 6 \\times 4$",
+          "$E = 16 + 24$"
+        ],
+        "result": "E = 40"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-nashr-tabsit-l2-003",
-  "lessonCode": "nashr-tabsit",
-  "level": 2
+  ]
 }

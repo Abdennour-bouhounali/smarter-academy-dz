@@ -4,159 +4,199 @@
   "level": 4,
   "metadata": {
     "title": "مصعد هوائي فوق المدينة",
-    "estimatedMinutes": 5,
+    "estimatedMinutes": 10,
     "tags": [
-      "فيثاغورس",
-      "سرعة",
-      "وحدات"
+      "خاصية فيثاغورس",
+      "تحويل الوحدات",
+      "سرعة ثابتة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-khattiya_P1",
-      "modelledOn": "situation"
+      "modelledOn": "situation",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-khattiya-l4-001"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "ينطلق مصعد هوائي من ارتفاع $800\\,\\mathrm{m}$ ليصل ارتفاع $1100\\,\\mathrm{m}$ ، والمسافة الأفقية بين نقطتي الانطلاق والوصول $400\\,\\mathrm{m}$ ، وسرعته $2{,}5\\,\\mathrm{m/s}$."
+    "content": "ينطلق مصعد هوائي من ارتفاع 800m ليصل إلى ارتفاع 1100m، والمسافة الأفقية بين نقطتي الانطلاق والوصول 400m. نعتبر الحبل مستقيما، وتسير القمرة بسرعة ثابتة قدرها 9km/h."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما طول الحبل بالمتر؟",
+      "step": "01",
+      "statement": "احسب طول الحبل.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 4,
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد بالمتر",
+      "answerFormat": "عدد: الطول بالمتر",
       "expectedAnswer": "500",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الضلع العمودي: فرق الارتفاعين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$1100 - 800 = 300$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "فيثاغورس بالضلعين 300 و 400."
+          "content": "الفرق بين الارتفاعين والمسافة الأفقية ضلعا مثلث قائم وتره الحبل."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{300^2 + 400^2} = \\sqrt{250000}$ ، أي 500 m.",
-        "incorrect": "الوتر يُحسب بفيثاغورس على فرق الارتفاعين والمسافة الأفقية."
+        "correct": "$\\ell^2 = 400^2 + 300^2 = 250000$ ومنه $\\ell = 500$ m.",
+        "incorrect": "احسب الفرق بين الارتفاعين ثم طبّق خاصية فيثاغورس."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2,
-      "misconceptionSignatures": [
-        {
-          "value": "700",
-          "id": "MISC-JIDHR-JAMA"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "الفرق بين الارتفاعين: $1100 - 800 = 300$ m.",
+          "$\\ell^2 = 400^2 + 300^2 = 160000 + 90000 = 250000$",
+          "$\\ell = 500$ ، طول الحبل 500m."
+        ],
+        "result": "\\ell = 500m"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "ما مدة صعود واحد بالثواني؟",
+      "step": "02",
+      "statement": "حوّل سرعة القمرة إلى m/s.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد بالثواني",
-      "expectedAnswer": "200",
+      "answerFormat": "عدد عشري بالفاصلة: السرعة بـ m/s",
+      "expectedAnswer": "2,5",
+      "misconceptionSignatures": [
+        {
+          "value": "150",
+          "id": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "value": "32.4",
+          "id": "MISC-MAQADIR-WIHDA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المدة = المسافة ÷ السرعة."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "اقسم طول الحبل على $2{,}5$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "طول الحبل من السؤال السابق."
+          "content": "$9km = 9000m$ و $1h = 3600s$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{500}{2{,}5} = 200\\,\\mathrm{s}$.",
-        "incorrect": "المدة هي المسافة على السرعة."
+        "correct": "$9000 \\div 3600 = 2{,}5$ m/s.",
+        "incorrect": "حوّل المسافة إلى أمتار والمدة إلى ثوان ثم اقسم."
       },
+      "solution": {
+        "lines": [
+          "$9km/h = \\dfrac{9000m}{3600s} = 2{,}5m/s$"
+        ],
+        "result": "v = 2{,}5m/s"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "احسب مدة صعود واحد بالثواني.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
       "cognitiveDemand": "apply",
-      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد: المدة بالثواني",
+      "expectedAnswer": "200",
       "misconceptionSignatures": [
         {
           "value": "1250",
           "id": "MISC-MAQADIR-QISMA-MAQLUBA"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدة = طول الحبل ÷ السرعة (بـ m/s)."
+        }
+      ],
+      "feedback": {
+        "correct": "$500 \\div 2{,}5 = 200$ ثانية، أي 3 دقائق و 20 ثانية.",
+        "incorrect": "اقسم طول الحبل على السرعة بـ m/s."
+      },
+      "solution": {
+        "lines": [
+          "$t = \\dfrac{500}{2{,}5} = 200$",
+          "مدة صعود واحد 200 ثانية، أي 3 دقائق و 20 ثانية."
+        ],
+        "result": "t = 200s"
+      },
+      "timeSeconds": 90
     },
     {
-      "id": "q3",
-      "statement": "هذه المدة هي:",
+      "id": "q4",
+      "step": "04",
+      "statement": "تقوم القمرة برحلات ذهاب وإياب متتالية دون توقف. كم رحلة ذهاب وإياب كاملة تقوم بها في ساعة واحدة؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد الرحلات",
+      "expectedAnswer": "9",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "3 دقائق و 20 ثانية",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "2 دقيقة",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MAQADIR-WIHDA"
-        },
-        {
-          "id": "C",
-          "content": "3 دقائق و 33 ثانية",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MAQADIR-WIHDA"
+          "value": "18",
+          "id": "MISC-TARRID-TAFSIR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الدقيقة 60 ثانية."
+          "content": "رحلة ذهاب وإياب تدوم ضعف مدة الصعود."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كم دقيقة كاملة في المدة؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الباقي بالثواني."
+          "content": "ساعة واحدة = 3600 ثانية."
         }
       ],
       "feedback": {
-        "correct": "$200 = 3 \\times 60 + 20$.",
-        "incorrect": "الدقيقة 60 ثانية، لا 100."
+        "correct": "رحلة ذهاب وإياب تدوم 400 ثانية، و $3600 \\div 400 = 9$ .",
+        "incorrect": "لا تنسَ أن الذهاب والإياب رحلتان على الحبل."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "مدة رحلة ذهاب وإياب: $2 \\times 200 = 400$ ثانية.",
+          "$3600 \\div 400 = 9$",
+          "تقوم القمرة بـ 9 رحلات ذهاب وإياب في الساعة."
+        ],
+        "result": "9"
+      },
+      "timeSeconds": 120
     }
   ]
 }

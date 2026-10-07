@@ -1,7 +1,10 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l1-003",
+  "lessonCode": "amaliyat-judhur",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — جداء جذرين",
-    "estimatedMinutes": 3,
+    "title": "تمرين — جداء جذرين",
+    "estimatedMinutes": 4,
     "tags": [
       "جداء جذرين"
     ],
@@ -10,74 +13,87 @@
       "reason": "practice_generation",
       "learningPoint": "4am_amaliyat-judhur_P1",
       "modelledOn": "act-4a"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "$a$ و $b$ عددان موجبان: $\\sqrt{a} \\times \\sqrt{b} = \\sqrt{a \\times b}$ ."
+    "content": "ليكن العددان $A$ و $B$ حيث:",
+    "formulas": [
+      "A = \\sqrt{5} \\times \\sqrt{3}",
+      "B = \\sqrt{2} \\times \\sqrt{18}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "العدد $\\sqrt{5} \\times \\sqrt{3}$ يساوي:",
+      "step": "01",
+      "statement": "اكتب العدد $A$ على الشكل $\\sqrt{n}$ حيث $n$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $n$ فقط (عدد طبيعي)",
+      "expectedAnswer": "15",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\sqrt{8}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-JAMA"
-        },
-        {
-          "id": "B",
-          "content": "$15$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$\\sqrt{15}$",
-          "isCorrect": true
+          "value": "8",
+          "id": "MISC-JIDAA-JAMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "جداء جذرين تربيعيين لعددين موجبين يُكتب جذرًا واحدًا."
+          "content": "جداء جذرين تربيعيين لعددين موجبين يُكتب تحت جذر واحد."
         },
         {
           "id": "h2",
           "type": "direction",
           "content": "ماذا نضع تحت الجذر الواحد: جداء العددين أم مجموعهما؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق بالتربيع: مربّع $\\sqrt{5} \\times \\sqrt{3}$ هو $5 \\times 3$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{5} \\times \\sqrt{3} = \\sqrt{5 \\times 3} = \\sqrt{15}$",
-        "incorrect": "جداء جذرين هو جذر الجداء، لا جذر المجموع، ولا يختفي الجذر."
-      }
+        "correct": "$A = \\sqrt{5} \\times \\sqrt{3} = \\sqrt{5 \\times 3} = \\sqrt{15}$",
+        "incorrect": "جداء جذرين هو جذر الجداء، لا جذر المجموع."
+      },
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{5} \\times \\sqrt{3}$",
+          "$A = \\sqrt{5 \\times 3}$"
+        ],
+        "result": "A = \\sqrt{15}"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "احسب $\\sqrt{2} \\times \\sqrt{18}$ .",
+      "step": "02",
+      "statement": "بيّن أن $B$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "اكتب قيمة $B$ (عدد طبيعي)",
       "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "value": "20",
+          "id": "MISC-JIDAA-JAMA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
@@ -87,21 +103,28 @@
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب الجداء تحت جذر واحد: $\\sqrt{2 \\times 18}$ ."
+          "content": "اكتب الجداء تحت جذر واحد."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "هل $2 \\times 18$ مربّع تام؟"
+          "content": "هل جداء العددين تحت الجذر مربع تام؟"
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{2} \\times \\sqrt{18} = \\sqrt{36} = 6$",
+        "correct": "$B = \\sqrt{2 \\times 18} = \\sqrt{36} = 6$",
         "incorrect": "اضرب العددين تحت جذر واحد ثم احسب الجذر."
-      }
+      },
+      "solution": {
+        "lines": [
+          "$B = \\sqrt{2} \\times \\sqrt{18}$",
+          "$B = \\sqrt{2 \\times 18}$",
+          "$B = \\sqrt{36}$"
+        ],
+        "result": "B = 6"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l1-003",
-  "lessonCode": "amaliyat-judhur",
-  "level": 1
+  ]
 }

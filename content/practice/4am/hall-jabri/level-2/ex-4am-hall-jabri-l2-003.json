@@ -3,11 +3,10 @@
   "lessonCode": "hall-jabri",
   "level": 2,
   "metadata": {
-    "title": "تمرين 7 — أ)",
-    "estimatedMinutes": 4,
+    "title": "بطريقة الجمع والتعويض",
+    "estimatedMinutes": 5,
     "tags": [
-      "الجمع",
-      "معامل مناسب"
+      "الجمع"
     ],
     "source": {
       "type": "textbook",
@@ -15,76 +14,75 @@
       "page": 60,
       "section": "أوظّف تعلّماتي",
       "number": 7
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 60): حل الجملة باستعمال طريقة الجمع والتعويض. $\\begin{cases} -x + 3y = 2 \\\\ 2x + y = 3 \\end{cases}$"
+    "content": "نعتبر جملة المعادلتين التالية:",
+    "formulas": [
+      "\\begin{cases} -x + 3y = 2 & ...(1) \\\\ 2x + y = 3 & ...(2) \\end{cases}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "لنتخلّص من $x$ ، نضرب طرفي المعادلة الأولى في:",
+      "step": "01",
+      "statement": "اضرب طرفي المعادلة (1) في $2$ ثم اجمعها طرفا لطرف مع المعادلة (2)، واحسب قيمة $y$ .",
       "learningPoints": [
         {
           "code": "4am_hall-jabri_P2",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$2$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$-2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JAM-LA-TAAKUS"
-        },
-        {
-          "id": "C",
-          "content": "$3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JAM-LA-TAAKUS"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة $y$ فقط (عدد صحيح أو كسر مثل 7/3)",
+      "expectedAnswer": "1",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+          "content": "بعد الضرب في $2$ يصير معامل $x$ في المعادلة (1) هو $-2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+          "content": "اضرب الطرفين معا، ثم اجمع."
         }
       ],
       "feedback": {
-        "correct": "$2(-x + 3y) = 2 \\times 2$ أي $-2x + 6y = 4$ : $-2x$ و $2x$ متعاكسان.",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "$-2x + 6y = 4$ ، وبالجمع مع (2): $7y = 7$ ومنه $y = 1$ .",
+        "incorrect": "اضرب الطرفين معا في $2$ (والطرف الثاني أيضا)، ثم اجمع مع المعادلة (2)."
+      },
+      "solution": {
+        "lines": [
+          "نضرب طرفي المعادلة (1) في $2$ :",
+          "$\\begin{cases} -2x + 6y = 4 \\\\ 2x + y = 3 \\end{cases}$",
+          "بجمع المعادلتين طرفا لطرف نجد: $7y = 7$",
+          "ومنه $y = 1$"
+        ],
+        "result": "y = 1"
+      },
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "حل الجملة:",
+      "step": "02",
+      "statement": "استنتج حل الجملة.",
       "learningPoints": [
         {
           "code": "4am_hall-jabri_P2",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": {
         "x": "1",
         "y": "1"
@@ -93,23 +91,28 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+          "content": "عوّض قيمة $y$ في إحدى المعادلتين لتجد $x$ ."
         }
       ],
       "feedback": {
-        "correct": "بالجمع $7y = 7$ ، ومنه $y = 1$ ثم $x = 1$ .",
-        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
-      }
+        "correct": "الثنائية $(1 ; 1)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "نضرب طرفي المعادلة (1) في $2$ :",
+          "$\\begin{cases} -2x + 6y = 4 \\\\ 2x + y = 3 \\end{cases}$",
+          "بجمع المعادلتين طرفا لطرف نجد: $7y = 7$",
+          "ومنه $y = 1$",
+          "نعوّض $y$ بـ $1$ في المعادلة (1): $-x + 3 \\times 1 = 2$",
+          "$-x = -1$",
+          "ومنه $x = 1$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(1 ; 1)"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

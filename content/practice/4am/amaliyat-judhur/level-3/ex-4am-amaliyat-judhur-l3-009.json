@@ -1,97 +1,178 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l3-009",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — ضلع مربّع مساحته مجموع مساحتين",
-    "estimatedMinutes": 5,
+    "title": "تمرين — جداء جذرين",
+    "estimatedMinutes": 6,
     "tags": [
-      "مجموع جذرين"
+      "جداء جذرين"
     ],
     "source": {
-      "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_amaliyat-judhur_P3",
-      "modelledOn": "act-4c"
+      "type": "textbook",
+      "elementId": "ex-17",
+      "page": 27,
+      "section": "أوظّف تعلّماتي",
+      "number": 17
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "مربّعان مساحتاهما $81\\,cm^2$ و $144\\,cm^2$ . نرسم مربّعًا ثالثًا مساحته مجموع المساحتين."
+    "content": "لتكن الأعداد $A$ ، $B$ ، $C$ ، $D$ حيث:",
+    "formulas": [
+      "A = \\sqrt{2} \\times \\sqrt{50}",
+      "B = \\sqrt{32} \\times \\sqrt{2}",
+      "C = \\sqrt{3} \\times \\sqrt{48}",
+      "D = \\sqrt{125} \\times \\sqrt{5}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما طول ضلع المربّع الثالث بـ $cm$ ؟",
+      "step": "01",
+      "lead": "بيّن أن كلًّا من العددين $A$ و $B$ عدد طبيعي.",
+      "statement": "العدد $A$",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P3",
+          "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "15",
+      "answerFormat": "اكتب قيمة $A$ (عدد طبيعي)",
+      "expectedAnswer": "10",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب أولًا مساحة المربّع الثالث."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "طول الضلع هو الجذر التربيعي للمساحة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الضلع هو $\\sqrt{81 + 144}$ ، وليس مجموع الضلعين."
+          "content": "اكتب الجداء تحت جذر واحد."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{81 + 144} = \\sqrt{225} = 15\\,cm$",
-        "incorrect": "اجمع المساحتين ثم خذ الجذر."
+        "correct": "$A = \\sqrt{100} = 10$",
+        "incorrect": "اكتب $\\sqrt{2} \\times \\sqrt{50} = \\sqrt{2 \\times 50}$ ثم احسب."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "21",
-          "id": "MISC-JIDHR-JAMA"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{2 \\times 50}$",
+          "$A = \\sqrt{100}$"
+        ],
+        "result": "A = 10"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "بكم $cm$ يزيد مجموع ضلعي المربّعين الأوّلين على ضلع المربّع الثالث؟",
+      "step": "01",
+      "statement": "العدد $B$",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P3",
+          "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "6",
+      "answerFormat": "اكتب قيمة $B$ (عدد طبيعي)",
+      "expectedAnswer": "8",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب ضلع كل مربّع من المربّعين الأوّلين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "اجمع الضلعين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اطرح منه ضلع المربّع الثالث."
+          "content": "اكتب الجداء تحت جذر واحد."
         }
       ],
       "feedback": {
-        "correct": "$(9 + 12) - 15 = 6$ : مجموع الجذرين أكبر من جذر المجموع.",
-        "incorrect": "ضلعا المربّعين الأوّلين $\\sqrt{81}$ و $\\sqrt{144}$ ."
-      }
+        "correct": "$B = \\sqrt{64} = 8$",
+        "incorrect": "اكتب $\\sqrt{32} \\times \\sqrt{2} = \\sqrt{32 \\times 2}$ ثم احسب."
+      },
+      "solution": {
+        "lines": [
+          "$B = \\sqrt{32 \\times 2}$",
+          "$B = \\sqrt{64}$"
+        ],
+        "result": "B = 8"
+      },
+      "work": "optional",
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "بيّن أن كلًّا من العددين $C$ و $D$ عدد طبيعي.",
+      "statement": "العدد $C$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة $C$ (عدد طبيعي)",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجداء تحت جذر واحد."
+        }
+      ],
+      "feedback": {
+        "correct": "$C = \\sqrt{144} = 12$",
+        "incorrect": "اكتب $\\sqrt{3} \\times \\sqrt{48} = \\sqrt{3 \\times 48}$ ثم احسب."
+      },
+      "solution": {
+        "lines": [
+          "$C = \\sqrt{3 \\times 48}$",
+          "$C = \\sqrt{144}$"
+        ],
+        "result": "C = 12"
+      },
+      "work": "optional",
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "العدد $D$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة $D$ (عدد طبيعي)",
+      "expectedAnswer": "25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجداء تحت جذر واحد."
+        }
+      ],
+      "feedback": {
+        "correct": "$D = \\sqrt{625} = 25$",
+        "incorrect": "اكتب $\\sqrt{125} \\times \\sqrt{5} = \\sqrt{125 \\times 5}$ ثم احسب."
+      },
+      "solution": {
+        "lines": [
+          "$D = \\sqrt{125 \\times 5}$",
+          "$D = \\sqrt{625}$"
+        ],
+        "result": "D = 25"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l3-009",
-  "lessonCode": "amaliyat-judhur",
-  "level": 3
+  ]
 }

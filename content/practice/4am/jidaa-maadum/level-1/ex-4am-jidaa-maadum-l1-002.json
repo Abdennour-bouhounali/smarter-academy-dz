@@ -3,7 +3,7 @@
   "lessonCode": "jidaa-maadum",
   "level": 1,
   "metadata": {
-    "title": "نشاط 2 — الجداء المعدوم",
+    "title": "جداء عددين معدوم",
     "estimatedMinutes": 4,
     "tags": [
       "خاصية الجداء المعدوم"
@@ -14,96 +14,111 @@
       "page": 44,
       "section": "أنشطة",
       "number": 2
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 44): $a$ و $b$ عددان."
+    "content": "$a$ و $b$ عددان حقيقيان حيث:",
+    "formulas": [
+      "a \\times b = 0"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "إذا كان $a \\times b = 0$ فإنّ:",
+      "step": "01",
+      "statement": "إذا كان $a = -\\dfrac{3}{7}$ ، فجد العدد $b$ .",
       "learningPoints": [
         {
           "code": "4am_jidaa-maadum_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$a = 1$ أو $b = 1$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
-        },
-        {
-          "id": "B",
-          "content": "$a = 0$ أو $b = 0$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$a = 0$ و $b = 0$ معًا",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "جرّب: $0 \\times 5$ ، $5 \\times 0$ ، $0 \\times 0$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "هل يجب أن يكون العددان معدومين معًا؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "خاصية الجداء المعدوم تتكلّم عن «أحد العاملين على الأقل»."
-        }
-      ],
-      "feedback": {
-        "correct": "يكفي أن يكون أحد العددين معدومًا: $0 \\times 5 = 0$ ، فـ $a = 0$ أو $b = 0$ .",
-        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "$-\\dfrac{3}{7} \\times y = 0$ . ما قيمة $y$ ؟",
-      "learningPoints": [
-        {
-          "code": "4am_jidaa-maadum_P2",
-          "role": "primary"
-        }
-      ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "اكتب العدد $b$",
       "expectedAnswer": "0",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "أحد العاملين عدد ثابت."
+          "content": "العدد $a$ المعطى غير معدوم."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عامل ثابت غير معدوم لا ينعدم أبدًا."
+          "content": "إذا كان جداء عددين معدومًا فإن أحدهما على الأقل معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 0$ لأن $a \\neq 0$ .",
+        "incorrect": "الجداء معدوم وأحد العاملين غير معدوم: ماذا تستنتج عن العامل الآخر؟"
+      },
+      "solution": {
+        "lines": [
+          "$a \\times b = 0$ و $a = -\\dfrac{3}{7} \\neq 0$",
+          "إذن العامل الآخر معدوم"
+        ],
+        "result": "b = 0"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "إذا كان $a = 4$ و $b = 2x - 9$ ، فجد العدد $x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $x$: عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "9/2",
+      "misconceptionSignatures": [
+        {
+          "value": "-9/2",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $a$ و $b$ في المساواة $a \\times b = 0$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل $4$ لا ينعدم، إذن العامل الآخر معدوم."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "يكفي أن تحلّ المعادلة: العامل الآخر يساوي $0$."
+          "content": "حلّ المعادلة من الدرجة الأولى التي تحصّلت عليها."
         }
       ],
       "feedback": {
-        "correct": "$-\\dfrac{3}{7} \\neq 0$ ، فالعامل الآخر معدوم: $y = 0$ .",
-        "incorrect": "العامل الثابت لا يعطي حلًّا: عوّض اقتراحك وتحقّق أنّ الجداء يساوي $0$."
-      }
+        "correct": "$x = \\dfrac{9}{2}$ .",
+        "incorrect": "اكتب أن العامل غير الثابت معدوم، ثم حلّ المعادلة من الدرجة الأولى بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$4(2x - 9) = 0$ و $4 \\neq 0$",
+          "إذن: $2x - 9 = 0$",
+          "أي: $2x = 9$"
+        ],
+        "result": "x = \\dfrac{9}{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

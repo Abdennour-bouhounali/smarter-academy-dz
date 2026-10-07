@@ -1,10 +1,13 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l3-001",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 3,
   "metadata": {
-    "title": "تمرين 11 — حل معادلات",
-    "estimatedMinutes": 5,
+    "title": "التمرين 11 — حل معادلات",
+    "estimatedMinutes": 6,
     "tags": [
-      "تمرين",
-      "معادلة"
+      "معادلة",
+      "عدد الحلول"
     ],
     "source": {
       "type": "textbook",
@@ -12,131 +15,248 @@
       "page": 26,
       "section": "أوظّف تعلّماتي",
       "number": 11
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من التمرين 11 (الكتاب ص 26): حل كل معادلة مما يلي."
+    "content": "حل كل معادلة من المعادلات الآتية."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هو الحل الموجب للمعادلة $x^2 = 2{,}89$؟",
+      "step": "01",
+      "lead": "حل المعادلة $x^2 = 2{,}89$.",
+      "statement": "الحل الموجب:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري",
+      "answerFormat": "عدد عشري (بالفاصلة)",
       "expectedAnswer": "1.7",
+      "misconceptionSignatures": [
+        {
+          "value": "0.17",
+          "id": "MISC-JIDHR-FASILA"
+        },
+        {
+          "value": "17",
+          "id": "MISC-JIDHR-FASILA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن عدد موجب مربعه $2{,}89$."
+          "content": "ابحث عن عدد عشري مربعه $2{,}89$: فكّر في $17^2$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$2{,}89 = \\dfrac{289}{100}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ما العدد الذي مربعه 289؟"
+          "content": "للمعادلة حلان متعاكسان."
         }
       ],
       "feedback": {
-        "correct": "$1{,}7^2 = 2{,}89$: الحلّان هما $1{,}7$ و $-1{,}7$.",
-        "incorrect": "جرّب أعدادا عشرية بين 1 و 2."
-      }
+        "correct": "نعم، وهو معاكس الحل السالب.",
+        "incorrect": "الحل الموجب هو معاكس الحل السالب: مربعه هو الطرف الثاني بعد عزل $x^2$."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 = 2{,}89$ يعني $x^2 = 1{,}7^2$",
+          "بالتالي $x = 1{,}7$ أو $x = -1{,}7$"
+        ],
+        "result": "x = -1{,}7 \\quad ; \\quad x = 1{,}7"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "ما هو الحل السالب للمعادلة $x^2 = 361$؟",
+      "step": "01",
+      "statement": "الحل السالب:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح نسبي",
-      "expectedAnswer": "-19",
+      "answerFormat": "عدد عشري (بالفاصلة)",
+      "expectedAnswer": "-1.7",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث أولًا عن العدد الموجب الذي مربعه 361."
+          "content": "ابحث عن عدد عشري مربعه $2{,}89$: فكّر في $17^2$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "361 عدد بين 324 و 400."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الحل السالب هو معاكس الحل الموجب."
+          "content": "للمعادلة حلان متعاكسان."
         }
       ],
       "feedback": {
-        "correct": "$19^2 = 361$، إذن الحلان هما 19 و $-19$.",
-        "incorrect": "الحلان عددان متعاكسان."
-      }
+        "correct": "نعم، هذا هو الحل السالب: للمعادلة حلان متعاكسان.",
+        "incorrect": "الحلان عددان متعاكسان مربع كل منهما هو الطرف الثاني بعد عزل $x^2$: خذ السالب منهما."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 = 2{,}89$ يعني $x^2 = 1{,}7^2$",
+          "بالتالي $x = 1{,}7$ أو $x = -1{,}7$"
+        ],
+        "result": "x = -1{,}7 \\quad ; \\quad x = 1{,}7"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q3",
-      "statement": "المعادلة $x^2 = -16$ ...",
+      "step": "02",
+      "lead": "حل المعادلة $x^2 = 361$.",
+      "statement": "الحل السالب:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "-19",
+      "misconceptionSignatures": [
+        {
+          "value": "19",
+          "id": "MISC-HALL-WAHID"
+        },
+        {
+          "value": "-180.5",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد 361 مربع عدد طبيعي محصور بين 15 و 20."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "للمعادلة حلان متعاكسان."
+        }
+      ],
+      "feedback": {
+        "correct": "نعم، هذا هو الحل السالب: للمعادلة حلان متعاكسان.",
+        "incorrect": "الحلان عددان متعاكسان مربع كل منهما هو الطرف الثاني بعد عزل $x^2$: خذ السالب منهما."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 = 361$ يعني $x^2 = 19^2$",
+          "بالتالي $x = 19$ أو $x = -19$"
+        ],
+        "result": "x = -19 \\quad ; \\quad x = 19"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "الحل الموجب:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "19",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد 361 مربع عدد طبيعي محصور بين 15 و 20."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "للمعادلة حلان متعاكسان."
+        }
+      ],
+      "feedback": {
+        "correct": "نعم، وهو معاكس الحل السالب.",
+        "incorrect": "الحل الموجب هو معاكس الحل السالب: مربعه هو الطرف الثاني بعد عزل $x^2$."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 = 361$ يعني $x^2 = 19^2$",
+          "بالتالي $x = 19$ أو $x = -19$"
+        ],
+        "result": "x = -19 \\quad ; \\quad x = 19"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "statement": "هل تقبل المعادلة $x^2 = -16$ حلولا ؟ برّر إجابتك.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$x = 4$ أو $x = -4$",
-          "isCorrect": false
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
         },
         {
           "id": "B",
-          "content": "$x = -4$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "لا تقبل أي حل",
+          "content": "لا",
           "isCorrect": true
         }
       ],
+      "answerFormat": "اختر نعم أو لا، ثم قارن تبريرك بالحل النموذجي",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما إشارة العدد $-16$؟"
+          "content": "اعزل $x^2$ في طرف إن لزم."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مربع أي عدد هو دائما عدد موجب."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل $(-4)^2$ يساوي $-16$؟"
+          "content": "ما إشارة الطرف الثاني؟ وما إشارة مربع أي عدد؟"
         }
       ],
       "feedback": {
-        "correct": "$-16 < 0$: لا تقبل أي حل.",
-        "incorrect": "احسب $(-4)^2$."
-      }
+        "correct": "صحيح: بعد عزل $x^2$ يكون الطرف الثاني سالبًا، ومربع أي عدد لا يكون سالبًا.",
+        "incorrect": "بعد عزل $x^2$ قارن إشارة الطرف الثاني بإشارة مربع أي عدد."
+      },
+      "solution": {
+        "lines": [
+          "من أجل كل عدد $x$ لدينا $x^2 \\geq 0$، و $-16 < 0$.",
+          "إذن المعادلة $x^2 = -16$ لا تقبل أي حل."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l3-001",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 3
+  ]
 }

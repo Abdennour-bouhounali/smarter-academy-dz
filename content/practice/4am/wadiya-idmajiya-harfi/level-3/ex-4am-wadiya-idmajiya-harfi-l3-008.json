@@ -1,123 +1,234 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l3-008",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — فرق مربعين وقيمة معدومة",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2014 — تحقق بالنشر، تحليل، معادلة",
+    "estimatedMinutes": 11,
     "tags": [
-      "تحليل",
-      "اختيار الشكل"
+      "مربع فرق",
+      "فرق مربعين",
+      "معادلة جداء معدوم"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-harfi_P1",
-      "modelledOn": "ex-40"
+      "modelledOn": "BEM 2014 I-2"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2014",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "نعتبر العبارة $F = (x + 2)^2 - 16$ ."
+    "content": "لتكن العبارة $E$ حيث :",
+    "formulas": [
+      "E = (3x - 1)^2 - 49"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "تحليل العبارة $F$ هو ...",
+      "step": "01",
+      "statement": "تحقّق بالنشر أنّ: $E = 9x^2 - 6x - 48$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
         {
-          "id": "A",
-          "content": "$(x - 14)(x + 18)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(3x - 1)^2$ بمتطابقة مربع فرق."
         },
         {
-          "id": "B",
-          "content": "$(x - 2)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
-        },
+          "id": "h2",
+          "type": "direction",
+          "content": "لا تنسَ تربيع المعامل 3، ثم اطرح 49."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى الإشارات عند النشر."
+      },
+      "solution": {
+        "lines": [
+          "$E = (3x)^2 - 2 \\times 3x \\times 1 + 1^2 - 49$",
+          "$E = 9x^2 - 6x + 1 - 49$",
+          "$E = 9x^2 - 6x - 48$"
+        ],
+        "result": "E = 9x^2 - 6x - 48"
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "lead": "حلّل العبارة $E$ إلى جداء عاملين من الدرجة الأولى.",
+      "statement": "العدد $m$ :",
+      "learningPoints": [
         {
-          "id": "C",
-          "content": "$(x - 2)(x + 6)$",
-          "isCorrect": true
-        },
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $(3x + m)(3x + n)$ حيث $m < n$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "-8",
+      "misconceptionSignatures": [
         {
-          "id": "D",
-          "content": "$(x + 2)(x - 6)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+          "value": "-50",
+          "id": "MISC-TAHLIL-FARQ-MURABBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$16 = 4^2$."
+          "content": "اكتب $49$ على شكل مربع عدد."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "فرق مربعين: $a = x + 2$ و $b = 4$."
+          "content": "استعمل $a^2 - b^2 = (a - b)(a + b)$ مع $a = 3x - 1$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$(a - b)(a + b)$ ثم بسّط كل قوس."
+          "content": "بسّط ما بداخل كل قوس."
         }
       ],
       "feedback": {
-        "correct": "$(x + 2 - 4)(x + 2 + 4) = (x - 2)(x + 6)$.",
-        "incorrect": "استعمل $b = 4$ لا 16، وبسّط داخل كل قوس."
+        "correct": "$E = (3x - 8)(3x + 6)$ إذن $m = -8$ .",
+        "incorrect": "تحقّق من تحليلك بنشر الجداء: يجب أن تجد العبارة الأصلية."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$E = (3x - 1)^2 - 7^2$",
+          "$E = (3x - 1 - 7)(3x - 1 + 7)$"
+        ],
+        "result": "E = (3x - 8)(3x + 6)"
+      },
+      "work": "optional",
+      "timeSeconds": 210
     },
     {
-      "id": "q2",
-      "statement": "احسب $F$ من أجل $x = -6$.",
+      "id": "q3",
+      "step": "02",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $(3x + m)(3x + n)$ حيث $m < n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $n$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = (3x - 8)(3x + 6)$ إذن $n = 6$ .",
+        "incorrect": "تحقّق من تحليلك بنشر الجداء: يجب أن تجد العبارة الأصلية."
+      },
+      "solution": {
+        "lines": [
+          "$E = (3x - 8)(3x + 6)$"
+        ],
+        "result": "n = 6"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "lead": "حل المعادلة: $(3x - 8)(3x + 6) = 0$ .",
+      "statement": "الحلّ الأصغر:",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P3",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
-      "expectedAnswer": "0",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "-2",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "استعمل الشكل المحلّل."
+          "content": "يكون جداء معدومًا إذا كان أحد عامليه على الأقل معدومًا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما قيمة $x + 6$ ؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "جداء أحد عامليه معدوم."
+          "content": "اكتب معادلتين من الدرجة الأولى، ثم حلّ كل واحدة منهما."
         }
       ],
       "feedback": {
-        "correct": "$F = (-8) \\times 0 = 0$ ؛ ونتحقق: $(-4)^2 - 16 = 0$.",
-        "incorrect": "في الشكل المحلّل أحد العاملين معدوم."
+        "correct": "$x = -2$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى، ثم رتّب الحلّين."
       },
-      "misconceptionSignatures": [
+      "solution": {
+        "lines": [
+          "$(3x - 8)(3x + 6) = 0$ يعني أنّ: $3x - 8 = 0$ أو $3x + 6 = 0$",
+          "أي: $x = \\dfrac{8}{3}$ أو $x = -2$",
+          "إذن للمعادلة حلّان هما $-2$ و $\\dfrac{8}{3}$"
+        ],
+        "result": "x = -2"
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "statement": "الحلّ الأكبر:",
+      "learningPoints": [
         {
-          "value": "-48",
-          "id": "MISC-SHAKL-GHAYR-MUNASIB"
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
         }
       ],
-      "cognitiveDemand": "apply"
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "8/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المعادلة الثانية من الدرجة الأولى، ثم قارن الحلّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{8}{3}$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى، ثم رتّب الحلّين."
+      },
+      "solution": {
+        "lines": [
+          "إذن للمعادلة حلّان هما $-2$ و $\\dfrac{8}{3}$"
+        ],
+        "result": "x = \\dfrac{8}{3}"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l3-008",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 3
+  ]
 }

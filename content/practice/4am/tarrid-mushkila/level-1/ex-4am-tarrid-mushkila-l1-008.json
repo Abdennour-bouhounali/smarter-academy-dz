@@ -3,100 +3,94 @@
   "lessonCode": "tarrid-mushkila",
   "level": 1,
   "metadata": {
-    "title": "تدريب — حلّ يلائم الواقع",
-    "estimatedMinutes": 2,
+    "title": "عدد الذكور في قسم",
+    "estimatedMinutes": 4,
     "tags": [
-      "تحقّق",
-      "واقع"
+      "ترييض",
+      "ملاءمة الحل"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tarrid-mushkila_P2",
       "modelledOn": "ex-40"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نمذج تلميذ مشكلة عن عدد تلاميذ قسم بمعادلة مجهولها $x$ (عدد التلاميذ)، فوجد $x = 32{,}5$ ."
+    "content": "في قسم 36 تلميذًا، قال أحدهم: «عدد البنات يزيد على عدد الذكور بـ 5». نسمّي $x$ عدد الذكور."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ماذا نستنتج؟",
+      "step": "01",
+      "statement": "اكتب معادلة تترجم قوله ثم حلّها.",
       "learningPoints": [
         {
-          "code": "4am_tarrid-mushkila_P2",
+          "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "في القسم $32{,}5$ تلميذًا.",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
-        },
-        {
-          "id": "B",
-          "content": "الحل لا يلائم الواقع: عدد التلاميذ عدد طبيعي، فلنراجع النموذج أو الحساب.",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "نكتب 32 تلميذًا دون أن نتحقّق.",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: قيمة $x$ (قد يكون عشريًا أو كسرًا a/b)",
+      "expectedAnswer": "31/2",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "هل يمكن أن يكون عدد التلاميذ عددًا عشريًا؟"
+          "content": "عبّر بدلالة $x$ عن عدد البنات."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عدد أشخاص يكون دائمًا عددًا طبيعيًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ لا يلائم الواقع يدلّ على خطأ في الترجمة أو في الحساب."
+          "content": "مجموع عدد الذكور وعدد البنات هو عدد تلاميذ القسم."
         }
       ],
       "feedback": {
-        "correct": "عدد التلاميذ عدد طبيعي: $32{,}5$ لا يلائم الوضعية.",
-        "incorrect": "التقريب ليس تحقّقًا: عوّض في النص."
-      }
+        "correct": "$x + (x + 5) = 36$ تعطي $x = 15{,}5$ .",
+        "incorrect": "عدد البنات $x + 5$ ، ومجموع العددين هو عدد تلاميذ القسم."
+      },
+      "solution": {
+        "lines": [
+          "عدد البنات: $x + 5$",
+          "المعادلة: $x + (x + 5) = 36$",
+          "$2x + 5 = 36$",
+          "$2x = 31$",
+          "$x = \\dfrac{31}{2} = 15{,}5$"
+        ],
+        "result": "x = 15{,}5"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "أيّ هذه القيم يمكن أن تكون عدد تلاميذ قسم؟",
+      "step": "02",
+      "statement": "هل يمكن أن يكون قوله صحيحًا؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$-31$",
+          "content": "نعم",
           "isCorrect": false,
           "misconceptionId": "MISC-TARRID-TAHAQQUQ"
         },
         {
           "id": "B",
-          "content": "$31{,}5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
-        },
-        {
-          "id": "C",
-          "content": "$31$",
+          "content": "لا",
           "isCorrect": true
         }
       ],
@@ -104,23 +98,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "عدد التلاميذ لا يكون سالبًا."
+          "content": "عدد الذكور عدد طبيعي."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ولا يكون عددًا بفاصلة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ابحث عن العدد الطبيعي."
+          "content": "هل القيمة التي وجدتها عدد طبيعي؟"
         }
       ],
       "feedback": {
-        "correct": "31 عدد طبيعي، فهو ممكن.",
-        "incorrect": "عدد أشخاص: عدد طبيعي."
-      }
+        "correct": "لا: عدد الذكور عدد طبيعي، والمعادلة لا تقبل حلًّا طبيعيًا.",
+        "incorrect": "تحقّق من ملاءمة الحل للواقع: نصف تلميذ لا معنى له."
+      },
+      "solution": {
+        "lines": [
+          "حل المعادلة $x = 15{,}5$ ليس عددًا طبيعيًا.",
+          "عدد الذكور عدد طبيعي، إذن قوله غير صحيح: لا يمكن أن يزيد عدد البنات على عدد الذكور بـ 5 في قسم من 36 تلميذًا."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 90
     }
   ]
 }

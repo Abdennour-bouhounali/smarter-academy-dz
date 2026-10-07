@@ -3,161 +3,228 @@
   "lessonCode": "mushkilat-jumla",
   "level": 5,
   "metadata": {
-    "title": "تدريب — حديقة التسلية",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2007 — علف مربي دواجن بالمدية",
+    "estimatedMinutes": 21,
     "tags": [
+      "جملة",
       "ترييض",
-      "المراحل الخمس"
+      "نسبة مئوية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_mushkilat-jumla_P2",
-      "modelledOn": "act-3"
+      "modelledOn": "BEM 2007 I-3"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2007",
+      "heading": "التمرين",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "حديقة تسلية بتذكرتين: 500 DA للكبار و 300 DA للصغار. يوم السبت دخلها 260 زائرا بمداخيل 106000 DA. كم كبيرا وكم صغيرا دخلوا الحديقة؟"
+    "content": "يشتري مربي دواجن بولاية المدية العلف من صنفين: علف التسمين وعلف البيض، في أكياس من نفس الوزن.\n• في الأسبوع الأول اشترى 8 أكياس من علف التسمين و 5 أكياس من علف البيض بمبلغ 26300DA.\n• في الأسبوع الثاني اشترى، بنفس الأسعار، 6 أكياس من علف التسمين و 10 أكياس من علف البيض بمبلغ 34600DA."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما المجهولان المناسبان؟",
+      "step": "01",
+      "lead": "نسمّي $x$ ثمن كيس علف التسمين و $y$ ثمن كيس علف البيض (بالدينار).",
+      "statement": "ترجم المعطيات بجملة معادلتين مجهولاها $x$ و $y$ .",
       "learningPoints": [
         {
-          "code": "4am_mushkilat-jumla_P2",
+          "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "عدد الكبار وعدد الصغار",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "عدد الزوار والمداخيل",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MAJAHIL"
-        },
-        {
-          "id": "C",
-          "content": "ثمن تذكرة الكبير وثمن تذكرة الصغير",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MAJAHIL"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ماذا يسأل السؤال؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "ما الذي يعطيه النص بالأرقام؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المجهول ما لا نعرف عدده."
+          "content": "لكل أسبوع معادلة."
         }
       ],
       "feedback": {
-        "correct": "نسمّي $x$ عدد الكبار و $y$ عدد الصغار .",
-        "incorrect": "المعطى في النص معلوم."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "الأسبوع الأول: $8x + 5y = 26300$",
+          "الأسبوع الثاني: $6x + 10y = 34600$",
+          "ومنه الجملة: $\\begin{cases} 8x + 5y = 26300 \\\\ 6x + 10y = 34600 \\end{cases}$"
+        ],
+        "result": "\\begin{cases} 8x + 5y = 26300 \\\\ 6x + 10y = 34600 \\end{cases}"
+      },
+      "timeSeconds": 300
     },
     {
       "id": "q2",
-      "statement": "نسمّي $x$ عدد الكبار و $y$ عدد الصغار. حل الجملة واكتب الثنائية $(x ; y)$ .",
+      "step": "02",
+      "lead": "حل هذه الجملة، ثم استنتج ثمن كيس علف التسمين وثمن كيس علف البيض.",
+      "statement": "ثمن كيس علف التسمين:",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
-      "expectedAnswer": {
-        "x": "140",
-        "y": "120"
-      },
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب الثمن بـ DA (عدد فقط)",
+      "expectedAnswer": "1800",
+      "misconceptionSignatures": [
+        {
+          "value": "2380",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب معلومة العدد ومعلومة المال."
+          "content": "معامل $y$ في المعادلة الثانية ضعف معامله في الأولى."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض $y = 260 - x$ ."
+          "content": "اضرب المعادلة الأولى في $2$ والثانية في $-1$ ثم اجمع."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "تحصل على $200x = 28000$ ."
+          "content": "بعد إيجاد $x$ عوّض في المعادلة الأولى."
         }
       ],
       "feedback": {
-        "correct": "$x = 140$ و $y = 120$ : $70000 + 36000 = 106000$ .",
-        "incorrect": "أكمل حتى الثنائية."
-      }
+        "correct": "ثمن كيس علف التسمين $1800DA$ .",
+        "incorrect": "اجعل معاملي $y$ متعاكسين ثم اجمع المعادلتين طرفا لطرف."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} 8x + 5y = 26300 & ...(1) \\\\ 6x + 10y = 34600 & ...(2) \\end{cases}$",
+          "بضرب طرفي المعادلة (1) في العدد $2$ وطرفي المعادلة (2) في العدد $-1$ نجد:",
+          "$\\begin{cases} 16x + 10y = 52600 \\\\ -6x - 10y = -34600 \\end{cases}$",
+          "بجمع المعادلتين طرفا لطرف نجد: $10x = 18000$",
+          "ومنه: $x = \\dfrac{18000}{10} = 1800$",
+          "بتعويض قيمة $x$ في المعادلة (1) نجد: $8 \\times 1800 + 5y = 26300$",
+          "$5y = 11900$",
+          "$y = 2380$",
+          "التحقق في النص: $8 \\times 1800 + 5 \\times 2380 = 26300$ و $6 \\times 1800 + 10 \\times 2380 = 34600$ .",
+          "إذن ثمن كيس علف التسمين $1800DA$ وثمن كيس علف البيض $2380DA$ ."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 480
     },
     {
       "id": "q3",
-      "statement": "الجملة التي تجيب عن السؤال هي:",
+      "step": "02",
+      "statement": "ثمن كيس علف البيض:",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب الثمن بـ DA (عدد فقط)",
+      "expectedAnswer": "2380",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "دخل 120 كبيرا و 140 صغيرا.",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARTIB"
-        },
-        {
-          "id": "B",
-          "content": "دخل 140 كبيرا.",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-NISF-HALL"
-        },
-        {
-          "id": "C",
-          "content": "دخل 140 كبيرا و 120 صغيرا.",
-          "isCorrect": true
+          "value": "1800",
+          "id": "MISC-JUMLA-TARTIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$x$ عدد الكبار."
+          "content": "عوّض ثمن كيس علف التسمين في المعادلة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "ثمن كيس علف البيض $2380DA$ ، ونتحقق: $14400 + 11900 = 26300$ .",
+        "incorrect": "من المعادلة الأولى: $5y = 26300 - 8x$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} 8x + 5y = 26300 & ...(1) \\\\ 6x + 10y = 34600 & ...(2) \\end{cases}$",
+          "بضرب طرفي المعادلة (1) في العدد $2$ وطرفي المعادلة (2) في العدد $-1$ نجد:",
+          "$\\begin{cases} 16x + 10y = 52600 \\\\ -6x - 10y = -34600 \\end{cases}$",
+          "بجمع المعادلتين طرفا لطرف نجد: $10x = 18000$",
+          "ومنه: $x = \\dfrac{18000}{10} = 1800$",
+          "بتعويض قيمة $x$ في المعادلة (1) نجد: $8 \\times 1800 + 5y = 26300$",
+          "$5y = 11900$",
+          "$y = 2380$",
+          "التحقق في النص: $8 \\times 1800 + 5 \\times 2380 = 26300$ و $6 \\times 1800 + 10 \\times 2380 = 34600$ .",
+          "إذن ثمن كيس علف التسمين $1800DA$ وثمن كيس علف البيض $2380DA$ ."
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "☜ في الأسبوع الثالث ارتفع ثمن كيس علف التسمين بـ 5% وانخفض ثمن كيس علف البيض بـ 10%. كم يدفع المربي ثمنا لمشتريات الأسبوع الأول نفسها؟",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "25830",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الثمن الجديد لكل كيس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الترتيب في الثنائية مهم."
+          "content": "الزيادة $5\\%$ والتخفيض $10\\%$ يُحسبان من الثمن القديم لكل كيس."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "الجواب يذكر العددين."
+          "content": "ثم احسب ثمن 8 أكياس تسمين و 5 أكياس بيض."
         }
       ],
       "feedback": {
-        "correct": "$140 + 120 = 260$ و $500 \\times 140 + 300 \\times 120 = 106000$ .",
-        "incorrect": "اقرأ الثنائية بترتيبها، وأجب عن العددين."
-      }
+        "correct": "الثمنان الجديدان $1890DA$ و $2142DA$ ، والمبلغ $15120 + 10710 = 25830DA$ .",
+        "incorrect": "احسب الثمن الجديد لكل كيس ثم ثمن 8 أكياس و 5 أكياس."
+      },
+      "solution": {
+        "lines": [
+          "الثمن الجديد لكيس علف التسمين: $1800 + 1800 \\times \\dfrac{5}{100} = 1800 + 90 = 1890$",
+          "الثمن الجديد لكيس علف البيض: $2380 - 2380 \\times \\dfrac{10}{100} = 2380 - 238 = 2142$",
+          "المبلغ: $8 \\times 1890 + 5 \\times 2142 = 15120 + 10710 = 25830$ أي $25830DA$ ."
+        ],
+        "result": "25830\\,DA"
+      },
+      "timeSeconds": 420
     }
   ]
 }

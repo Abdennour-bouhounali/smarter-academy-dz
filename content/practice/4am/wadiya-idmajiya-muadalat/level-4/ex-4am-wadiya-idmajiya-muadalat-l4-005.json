@@ -1,138 +1,356 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-005",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 4,
   "metadata": {
-    "title": "تدريب — مسبح الحيّ: كم نوفّر؟",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2018 — تحقّق، تحليل، متراجحة ومعادلة",
+    "estimatedMinutes": 14,
     "tags": [
+      "تحليل",
       "متراجحة",
-      "تفسير"
+      "معادلة جداء معدوم"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
-      "modelledOn": "situation"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
+      "modelledOn": "BEM 2018 I-2"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2018",
+      "heading": "التمرين",
+      "points": "03,5"
     }
   },
   "statement": {
-    "content": "في مسبح الحيّ صيغتان: الصيغة (أ) 60 دينارًا لكل حصة؛ الصيغة (ب) اشتراك سنوي قدره 400 دينار و 20 دينارًا لكل حصة. نسمّي $x$ عدد الحصص."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "من أجل كم حصة تتساوى التكلفتان؟",
+      "step": "01",
+      "statement": "تحقّق من صحة المساواة الآتية: $(2x - 3)(x + 5) = 2x^2 + 7x - 15$ .",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "10",
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب المعادلة $60x = 400 + 20x$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "اجمع حدود $x$ في طرف."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم على معامل $x$."
+          "content": "انشر الجداء: كل حد من القوس الأول في كل حد من القوس الثاني."
         }
       ],
       "feedback": {
-        "correct": "$40x = 400$ أي $x = 10$ حصص (600 دينار في الحالتين).",
-        "incorrect": "تكلفة (ب) $400 + 20x$."
+        "correct": "أحسنت: برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$(2x - 3)(x + 5) = 2x^2 + 10x - 3x - 15$",
+          "$= 2x^2 + 7x - 15$"
+        ]
+      },
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "ابتداءً من كم حصة تكون الصيغة (ب) أفضل؟",
+      "step": "02",
+      "lead": "حلّل إلى جداء عاملين من الدرجة الأولى العبارة: $E = 2x^2 + 7x - 15 + (2x - 3)^2$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "11",
+      "answerFormat": "يُكتب على الشكل $(2x - 3)(mx + n)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حل $400 + 20x < 60x$."
+          "content": "ابحث عن العامل المشترك $(2x - 3)$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "استعمل قيمة التساوي."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "التساوي لا يكفي."
+          "content": "أخرج العامل المشترك، ثم بسّط ما بين القوسين الكبيرين بإشاراته."
         }
       ],
       "feedback": {
-        "correct": "$x > 10$ ، فابتداءً من 11 حصة.",
-        "incorrect": "عند قيمة التساوي لا تكون (ب) أفضل."
+        "correct": "$m = 3$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3,
-      "misconceptionSignatures": [
-        {
-          "value": "10",
-          "id": "MISC-WADIYA-QIMAT-TASAWI"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$E = (2x - 3)(x + 5) + (2x - 3)^2$",
+          "$E = (2x - 3)\\left[(x + 5) + (2x - 3)\\right]$",
+          "معامل $x$ في القوس الثاني: $3$"
+        ],
+        "result": "m = 3"
+      },
+      "work": "optional",
+      "timeSeconds": 210
     },
     {
       "id": "q3",
-      "statement": "كم دينارًا نوفّر باختيار الصيغة (ب) من أجل 15 حصة؟",
+      "step": "02",
+      "statement": "العدد $n$ :",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "200",
+      "answerFormat": "يُكتب على الشكل $(2x - 3)(mx + n)$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "2",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب تكلفة كل صيغة من أجل 15 حصة."
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$n = 2$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته."
+      },
+      "solution": {
+        "lines": [
+          "$E = (2x - 3)(x + 5) + (2x - 3)^2$",
+          "$E = (2x - 3)\\left[(x + 5) + (2x - 3)\\right]$",
+          "إذن $E = (2x - 3)(3x + 2)$"
+        ],
+        "result": "E = (2x - 3)(3x + 2)"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "lead": "حلّ المتراجحة: $(2x - 3)(x + 5) \\geqslant 2x^2 + 5$ .",
+      "statement": "حدّ الحلول $k$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "حلول المتراجحة من الشكل $x < k$ أو $x \\leqslant k$ أو $x > k$ أو $x \\geqslant k$ : اكتب العدد $k$ فقط (عدد صحيح أو كسر a/b، قد يكون سالبًا)",
+      "expectedAnswer": "20/7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر، كما في حل معادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "(أ): $60 \\times 15$ ؛ (ب): $400 + 20 \\times 15$."
+          "content": "إضافة عدد إلى الطرفين أو طرحه منهما لا تغيّر اتجاه المتباينة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "التوفير هو الفرق."
+          "content": "الحدّ هو العدد الذي يحقّق المعادلة المرفقة (نضع «=» مكان رمز المتباينة): اقسم في الأخير على معامل $x$ ."
         }
       ],
       "feedback": {
-        "correct": "(أ): 900 دينار؛ (ب): 700 دينار؛ التوفير: $900 - 700 = 200$ دينار.",
-        "incorrect": "احسب التكلفتين ثم اطرح."
+        "correct": "حدّ الحلول هو $k = \\dfrac{20}{7}$ .",
+        "incorrect": "أعد الحل سطرًا سطرًا: العملية نفسها على الطرفين، ثم القسمة على معامل $x$ في الأخير."
       },
+      "solution": {
+        "lines": [
+          "حدّ الحلول هو حلّ المعادلة المرفقة: $(2x - 3)(x + 5) = 2x^2 + 5$",
+          "$2x^2 + 7x - 15 = 2x^2 + 5$",
+          "$7x = 5 + 15$",
+          "$7x = 20$",
+          "$x = \\dfrac{20}{7}$",
+          "إذن حدّ الحلول هو $\\dfrac{20}{7}$ ."
+        ],
+        "result": "k = \\dfrac{20}{7}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "statement": "حلول المتراجحة هي الأعداد $x$ حيث:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
       "cognitiveDemand": "apply",
-      "difficulty": 3
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x < \\dfrac{20}{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "B",
+          "content": "$x \\leqslant \\dfrac{20}{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "C",
+          "content": "$x > \\dfrac{20}{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "D",
+          "content": "$x \\geqslant \\dfrac{20}{7}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى إشارة معامل $x$ في آخر سطر قبل القسمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القسمة على عدد موجب تحافظ على الاتجاه، والقسمة على عدد سالب تغيّره."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\geqslant \\dfrac{20}{7}$ .",
+        "incorrect": "تتبّع سطور الحل: الاتجاه يتغيّر فقط عند الضرب أو القسمة على عدد سالب، ونوع المتباينة (تامة أو غير تامة) لا يتغيّر أبدًا."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $(2x - 3)(x + 5) \\geqslant 2x^2 + 5$",
+          "$2x^2 + 7x - 15 \\geqslant 2x^2 + 5$",
+          "$7x \\geqslant 5 + 15$",
+          "$7x \\geqslant 20$",
+          "$\\dfrac{7x}{7} \\geqslant \\dfrac{20}{7}$",
+          "إذن حلول المتراجحة هي كل قيم $x$ الأكبر من أو تساوي $\\dfrac{20}{7}$ ."
+        ],
+        "result": "x \\geqslant \\dfrac{20}{7}"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q6",
+      "step": "04",
+      "lead": "حلّ المعادلة: $E = 0$ .",
+      "statement": "الحلّ الأصغر:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "-2/3",
+      "misconceptionSignatures": [
+        {
+          "value": "-3/2",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "يكون جداء معدومًا إذا كان أحد عامليه على الأقل معدومًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب معادلتين من الدرجة الأولى، ثم حلّ كل واحدة منهما."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن الحلّين، ثم اكتب الأصغر منهما."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = -\\dfrac{2}{3}$ .",
+        "incorrect": "كل عامل معدوم يعطي معادلة من الدرجة الأولى: انقل العدد ثم اقسم على معامل $x$ بإشارته."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $(2x - 3)(3x + 2) = 0$",
+          "يكون جداء معدومًا إذا كان أحد عامليه على الأقل معدومًا.",
+          "من العامل الذي يعطي الحل الأصغر:",
+          "$3x + 2 = 0$",
+          "$3x = -2$",
+          "$x = \\dfrac{-2}{3}$"
+        ],
+        "result": "x = -\\dfrac{2}{3}"
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q7",
+      "step": "04",
+      "statement": "الحلّ الأكبر:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "3/2",
+      "misconceptionSignatures": [
+        {
+          "value": "2/3",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المعادلة الثانية من الدرجة الأولى، ثم قارن الحلّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{3}{2}$ .",
+        "incorrect": "كل عامل معدوم يعطي معادلة من الدرجة الأولى: انقل العدد ثم اقسم على معامل $x$ بإشارته."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $(2x - 3)(3x + 2) = 0$",
+          "يعني أنّ: $2x - 3 = 0$ أو $3x + 2 = 0$",
+          "أي: $x = \\dfrac{3}{2}$ أو $x = -\\dfrac{2}{3}$",
+          "إذن للمعادلة حلّان هما $-\\dfrac{2}{3}$ و $\\dfrac{3}{2}$ ."
+        ],
+        "result": "x = \\dfrac{3}{2}"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-005",
-  "lessonCode": "wadiya-idmajiya-muadalat",
-  "level": 4
+  ]
 }

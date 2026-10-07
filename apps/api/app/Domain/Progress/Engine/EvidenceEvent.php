@@ -39,6 +39,13 @@ final readonly class EvidenceEvent
 
     public const EVALUATED_BY_CLIENT_VERIFIED = 'client_verified';
 
+    /**
+     * Jugée par l'ENSEIGNANT de l'élève (« تصحيح الأستاذ », 2026-10-06) : une
+     * démonstration ou une copie en photo. Un juge humain de confiance — pleine
+     * valeur, comme le serveur (seul `client` est minoré, EngineV2).
+     */
+    public const EVALUATED_BY_TEACHER = 'teacher';
+
     /** Preuve antérieure au registre : un client de confiance, sans vérification possible. */
     public const EVALUATED_BY_CLIENT_LEGACY = 'client_legacy';
 

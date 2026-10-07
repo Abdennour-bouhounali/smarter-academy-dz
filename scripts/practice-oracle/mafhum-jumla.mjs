@@ -1,149 +1,185 @@
-// Oracle du banc « mafhum-jumla » (unité 5 « جمل معادلتين من الدرجة الأولى بمجهولين ») — chaque réponse
-// RECALCULÉE ici, sans lire le contenu ni le code testé. Fusionné dans scripts/practice-answer-oracle.test.mjs.
-// Une ثنائية se recalcule par Cramer en rationnels exacts (`solve2` de helpers.mjs) ; un choix « quelle
-// ثنائية / quel statut / quel cas » est rejoué ici sur les coefficients et les ثنائيات proposées, en
-// rationnels exacts (`q`). Généré avec le banc par le script de l'auteur (le calcul Python des clés et
-// ce calcul JS sont indépendants) ; ne pas éditer une entrée sans recalculer l'autre côté.
+// Oracle du banc « mafhum-jumla » au format BEM (unité 5 « جمل معادلتين من الدرجة الأولى بمجهولين »,
+// banque réécrite le 2026-10-07) — chaque réponse RECALCULÉE ici, sans lire le contenu ni le code testé.
+// Fusionné dans scripts/practice-answer-oracle.test.mjs.
+//
+// Une équation est un triplet [a, b, c] (a·x + b·y = c), recopié de l'énoncé ; tout se rejoue en
+// rationnels exacts (`q` de helpers.mjs) :
+//   - « هل الثنائية … حل ؟ » (نعم = A / لا = B) : la ثنائية est substituée dans CHAQUE équation ;
+//   - « أيهما حل للجملة ؟ » (type point) : la seule ثنائية proposée qui vérifie toutes les équations ;
+//   - « حل الجملة » / « عيّن ذهنيا » (type point) : Cramer exact (`solve2`) ;
+//   - « حل وحيد / ليس لها حل / عدد غير منته » (A / B / C) : déterminant puis proportionnalité des seconds membres ;
+//   - une valeur (`rational`) : recalculée à partir des nombres de l'énoncé.
+// Le banc est généré par le script de l'auteur (calcul Python en fractions exactes) ; ce calcul JS en est
+// indépendant : ne pas éditer une entrée sans recalculer l'autre côté.
 import { R, C, P, q, solve2 } from './helpers.mjs';
 
-const LETTERS = ['A', 'B', 'C', 'D'];
 /** L'équation [a, b, c] (a·x + b·y = c) est-elle vraie en (x ; y) ? */
 const holds = ([a, b, c], x, y) => q(a).mul(x).add(q(b).mul(y)).sub(c).isZero();
 const both = (s, x, y) => s.every((e) => holds(e, x, y));
-const status = (s, x, y) => s.map((e) => holds(e, x, y));
-/** « نعم / لا » (ou « صحيحة / خاطئة ») : A si vrai quand `yesFirst`. */
-const yesNo = (truth, yesFirst = true) => C(truth === yesFirst ? 'A' : 'B');
-/** LA ثنائية qui vérifie les deux équations (exactement une parmi les options). */
-function pickPair(s, pairs) {
-  const ok = pairs.map(([x, y], i) => (both(s, x, y) ? LETTERS[i] : null)).filter(Boolean);
+/** « نعم / لا » : A si vrai. */
+const yesNo = (truth) => C(truth ? 'A' : 'B');
+/** LA ثنائية (exactement une) parmi `pairs` qui vérifie toutes les équations de `s`. */
+function pickPoint(s, pairs) {
+  const ok = pairs.filter(([x, y]) => both(s, x, y));
   if (ok.length !== 1) throw new Error(`mafhum-jumla oracle: ${ok.length} ثنائيات solutions`);
-  return C(ok[0]);
+  return P(q(ok[0][0]).toString(), q(ok[0][1]).toString());
 }
-/** Options : les deux / (1) seulement / (2) seulement / aucune. */
-function pickStatus(s, [x, y]) {
-  const [a, b] = status(s, x, y);
-  return C(a && b ? 'A' : a ? 'B' : b ? 'C' : 'D');
-}
-/** Le cas d'une jumla : options « حل وحيد » / « ليس لها حلول » / « عدد غير منته ». */
+/** Le cas d'une jumla : A « حل وحيد » / B « ليس لها حل » / C « عدد غير منته من الحلول ». */
 function pickKind([[a1, b1, c1], [a2, b2, c2]]) {
   const d = q(a1).mul(b2).sub(q(a2).mul(b1));
   if (!d.isZero()) return C('A');
   const same = q(a1).mul(c2).sub(q(a2).mul(c1)).isZero() && q(b1).mul(c2).sub(q(b2).mul(c1)).isZero();
   return C(same ? 'C' : 'B');
 }
-/** Laquelle des équations accepte la ثنائية (exactement une). */
-function pickEquation(eqs, [x, y]) {
-  const ok = eqs.map((e, i) => (holds(e, x, y) ? LETTERS[i] : null)).filter(Boolean);
-  if (ok.length !== 1) throw new Error('mafhum-jumla oracle: pickEquation');
-  return C(ok[0]);
-}
-/**
- * Un choix entre SOUS-ENSEMBLES : soit les équations `eqs` vérifiées par la ثنائية `pt`
- * (`subsets` = indices d'équations), soit les ثنائيات `pts` qui vérifient l'unique équation
- * `eqs[0]` (`sets` = indices de ثنائيات). La bonne option est celle qui est EXACTEMENT l'ensemble.
- */
-function pickSubset(eqs, pt, subsets, pts = null, sets = null) {
-  const truth = pts ? pts.map(([x, y], i) => (holds(eqs[0], x, y) ? i : null)).filter((i) => i !== null)
-    : eqs.map((e, i) => (holds(e, pt[0], pt[1]) ? i : null)).filter((i) => i !== null);
-  const opts = pts ? sets : subsets;
-  const ok = opts.map((o, i) => (o.length === truth.length && o.every((v) => truth.includes(v)) ? LETTERS[i] : null)).filter(Boolean);
-  if (ok.length !== 1) throw new Error('mafhum-jumla oracle: pickSubset');
-  return C(ok[0]);
-}
-/** Le couple de ثنائيات dont les DEUX vérifient l'équation (exactement un). */
-function pickTwo(e, couples) {
-  const ok = couples.map((cp, i) => (cp.every(([x, y]) => holds(e, x, y)) ? LETTERS[i] : null)).filter(Boolean);
-  if (ok.length !== 1) throw new Error('mafhum-jumla oracle: pickTwo');
-  return C(ok[0]);
-}
-/** L'équation qu'AUCUNE des ثنائيات ne vérifie (exactement une). */
-function noneAccepts(eqs, pts) {
-  const ok = eqs.map((e, i) => (pts.some(([x, y]) => holds(e, x, y)) ? null : LETTERS[i])).filter(Boolean);
-  if (ok.length !== 1) throw new Error('mafhum-jumla oracle: noneAccepts');
-  return C(ok[0]);
-}
-/** « Raison » : la ثنائية vérifie (2) seulement → l'option B (« لا: … (1) غير محقّقة »). */
-function onlySecondReason(s, x, y) {
-  const [a, b] = status(s, x, y);
-  if (a || !b) throw new Error('mafhum-jumla oracle: onlySecondReason');
-  return C('B');
-}
-/** « Raison » : la ثنائية vérifie (1) seulement → l'option B (« لا / خطأ : … (2) غير محقّقة »). */
-function onlyFirstReason(s, x, y) {
-  const [a, b] = status(s, x, y);
-  if (!a || b) throw new Error('mafhum-jumla oracle: onlyFirstReason');
-  return C('B');
-}
 
 export const ORACLE = {
-  'ex-4am-mafhum-jumla-l1-001:q1': yesNo(holds(["1", "-2", "7"], "7", "0"), true),
-  'ex-4am-mafhum-jumla-l1-001:q2': yesNo(holds(["1", "-2", "7"], "0", "1"), true),
-  'ex-4am-mafhum-jumla-l1-001:q3': yesNo(holds(["1", "-2", "7"], "1", "-3"), true),
-  'ex-4am-mafhum-jumla-l1-002:q1': C('B') /* deux lettres inconnues x et y, chacune au degré 1 */,
-  'ex-4am-mafhum-jumla-l1-003:q1': C('C') /* a et b au degré 1 dans les deux équations */,
-  'ex-4am-mafhum-jumla-l1-004:q1': pickEquation([["1", "1", "0"], ["2", "-1/2", "0"], ["1/2", "1", "1/4"]], ["1/2", "-1/2"]),
-  'ex-4am-mafhum-jumla-l1-005:q1': R(-1) /* x - y = 1·x + (-1)·y */,
-  'ex-4am-mafhum-jumla-l1-005:q2': R(-5) /* 2x - 5y = 2·x + (-5)·y */,
-  'ex-4am-mafhum-jumla-l1-006:q1': pickStatus([["1", "1", "10"], ["3", "1", "22"]], ["7", "1"]),
-  'ex-4am-mafhum-jumla-l1-006:q2': pickStatus([["1", "1", "10"], ["3", "1", "22"]], ["6", "4"]),
-  'ex-4am-mafhum-jumla-l1-007:q1': C('A') /* seule A n'a ni produit xy ni carré */,
-  'ex-4am-mafhum-jumla-l1-008:q1': R(9) /* (x ; y) = (4 ; 9) */,
-  'ex-4am-mafhum-jumla-l1-008:q2': C('A') /* 4 ≠ 9 en première position */,
-  'ex-4am-mafhum-jumla-l1-009:q1': yesNo(holds(["2", "5", "40"], "10", "4"), true),
-  'ex-4am-mafhum-jumla-l1-009:q2': yesNo(holds(["2", "5", "40"], "4", "10"), true),
-  'ex-4am-mafhum-jumla-l1-010:q1': yesNo(holds(["2", "-1", "0"], '1', '0'), true),
-  'ex-4am-mafhum-jumla-l2-001:q1': yesNo(both([["2", "1", "4"], ["1", "1", "3"]], "3", "-2"), true),
-  'ex-4am-mafhum-jumla-l2-001:q2': yesNo(both([["2", "1", "4"], ["1", "1", "3"]], "1", "2"), true),
-  'ex-4am-mafhum-jumla-l2-002:q1': pickSubset([["3", "1", "0"], ["1", "-3", "0"], ["1/3", "-1", "3"]], ['0', '0'], [[0], [0, 1], [1, 2], [0, 1, 2]]),
-  'ex-4am-mafhum-jumla-l2-003:q1': yesNo(both([["1", "-1", "2"], ["2", "-5", "4"]], "2", "0"), true),
-  'ex-4am-mafhum-jumla-l2-003:q2': yesNo(both([["1", "-1", "2"], ["2", "-5", "4"]], "3", "1"), true),
-  'ex-4am-mafhum-jumla-l2-003:q3': yesNo(both([["1", "-1", "2"], ["2", "-5", "4"]], "0", "2"), true),
-  'ex-4am-mafhum-jumla-l2-004:q1': pickPair([["1", "1", "32"], ["2", "-1", "7"]], [["24", "8"], ["13", "19"], ["19", "13"], ["12", "17"]]),
-  'ex-4am-mafhum-jumla-l2-005:q1': pickSubset([["1", "-1", "2"]], null, null, [["1/2", "-3/2"], ["0", "-2"], ["0", "1/3"], ["1", "-2"], ["1/5", "0"]], [[1], [0, 1], [3, 1]]),
-  'ex-4am-mafhum-jumla-l2-006:q1': onlySecondReason([["1", "1", "10"], ["3", "1", "22"]], '4', '10'),
-  'ex-4am-mafhum-jumla-l2-007:q1': yesNo(both([["1", "1", "37"], ["20", "10", "610"]], "24", "13"), true),
-  'ex-4am-mafhum-jumla-l2-007:q2': yesNo(both([["1", "1", "37"], ["20", "10", "610"]], "13", "24"), true),
-  'ex-4am-mafhum-jumla-l2-008:q1': R(-1) /* -x = (-1)·x */,
-  'ex-4am-mafhum-jumla-l2-008:q2': R(9),
-  'ex-4am-mafhum-jumla-l2-009:q1': pickKind([["1", "1", "6"], ["2", "2", "12"]]),
-  'ex-4am-mafhum-jumla-l2-010:q1': pickKind([["1", "-1", "1"], ["1", "-1", "3"]]),
-  'ex-4am-mafhum-jumla-l3-001:q1': P(...solve2("1", "0", "1/3", "3", "-1", "4")),
-  'ex-4am-mafhum-jumla-l3-002:q1': P(...solve2("-1", "1", "-1", "-2", "1", "0")),
-  'ex-4am-mafhum-jumla-l3-003:q1': pickTwo(["4", "2", "5"], [[["0", "5/2"], ["1", "1"]], [["0", "5/2"], ["1", "1/2"]], [["1", "1/2"], ["2", "0"]]]),
-  'ex-4am-mafhum-jumla-l3-004:q1': pickSubset([["5", "3", "1"]], null, null, [["1/2", "-3/2"], ["0", "-2"], ["0", "1/3"], ["1", "-2"], ["1/5", "0"]], [[4], [2, 4], [1, 2]]),
-  'ex-4am-mafhum-jumla-l3-005:q1': P(...solve2("1", "1", "9", "-2", "1", "0")),
+  'ex-4am-mafhum-jumla-l1-001:q1': yesNo(both([["1", "-2", "7"]], "7", "0")),
+  'ex-4am-mafhum-jumla-l1-001:q2': yesNo(both([["1", "-2", "7"]], "0", "1")),
+  'ex-4am-mafhum-jumla-l1-001:q3': yesNo(both([["1", "-2", "7"]], "1", "-3")),
+  'ex-4am-mafhum-jumla-l1-002:q1': R(q(1).neg()) /* y passe à gauche : coefficient −1 */,
+  'ex-4am-mafhum-jumla-l1-002:q2': R(q(-1).neg()) /* −1 passe à droite */,
+  'ex-4am-mafhum-jumla-l1-002:q3': yesNo(both([["8", "-1", "1"]], "1", "7")),
+  'ex-4am-mafhum-jumla-l1-003:q1': yesNo(both([["2", "-1", "3"], ["1", "-2", "-3"]], "3", "3")),
+  'ex-4am-mafhum-jumla-l1-003:q2': yesNo(both([["2", "-1", "3"], ["1", "-2", "-3"]], "2", "1")),
+  'ex-4am-mafhum-jumla-l1-004:q1': R(q(2).mul('1/2').sub(q('1/2').mul('-1/2'))),
+  'ex-4am-mafhum-jumla-l1-004:q2': yesNo(both([["2", "-1/2", "0"]], "1/2", "-1/2")),
+  'ex-4am-mafhum-jumla-l1-004:q3': yesNo(both([["1", "1", "0"]], "1/2", "-1/2")),
+  'ex-4am-mafhum-jumla-l1-005:q1': R(-1) /* x − y = 1·x + (−1)·y */,
+  'ex-4am-mafhum-jumla-l1-005:q2': R(-5) /* 2x − 5y = 2·x + (−5)·y */,
+  'ex-4am-mafhum-jumla-l1-005:q3': yesNo(both([["1", "-1", "2"], ["2", "-5", "4"]], "4", "2")),
+  'ex-4am-mafhum-jumla-l1-006:q1': yesNo(both([["1", "1", "10"], ["3", "1", "22"]], "7", "1")),
+  'ex-4am-mafhum-jumla-l1-006:q2': yesNo(both([["1", "1", "10"], ["3", "1", "22"]], "6", "4")),
+  'ex-4am-mafhum-jumla-l1-007:q1': C('A') /* seule (1) n'a ni produit xy ni carré */,
+  'ex-4am-mafhum-jumla-l1-007:q2': yesNo(both([["1", "1", "12"], ["2", "3", "30"]], "6", "6")),
+  'ex-4am-mafhum-jumla-l1-008:q1': yesNo(both([["2", "1", "17"]], "4", "9")),
+  'ex-4am-mafhum-jumla-l1-008:q2': yesNo(both([["2", "1", "17"]], "9", "4")),
+  'ex-4am-mafhum-jumla-l1-009:q1': R(q(400).div(10)),
+  'ex-4am-mafhum-jumla-l1-009:q2': yesNo(both([["2", "5", "40"]], "10", "4")),
+  'ex-4am-mafhum-jumla-l1-009:q3': yesNo(both([["2", "5", "40"]], "4", "10")),
+  'ex-4am-mafhum-jumla-l1-010:q1': yesNo(both([["2", "-1", "0"]], "1", "0")),
+  'ex-4am-mafhum-jumla-l1-010:q2': R(q(2).mul(1)),
+  'ex-4am-mafhum-jumla-l2-001:q1': yesNo(both([["2", "1", "4"], ["1", "1", "3"]], "3", "-2")),
+  'ex-4am-mafhum-jumla-l2-001:q2': yesNo(both([["2", "1", "4"], ["1", "1", "3"]], "1", "2")),
+  'ex-4am-mafhum-jumla-l2-002:q1': yesNo(both([["3", "1", "0"], ["1", "-3", "0"]], "0", "0")),
+  'ex-4am-mafhum-jumla-l2-002:q2': yesNo(both([["1", "-3", "0"], ["1/3", "-1", "3"]], "0", "0")),
+  'ex-4am-mafhum-jumla-l2-002:q3': R(q(3).div(-1)),
+  'ex-4am-mafhum-jumla-l2-003:q1': yesNo(both([["1", "-1", "2"], ["2", "-5", "4"]], "2", "0")),
+  'ex-4am-mafhum-jumla-l2-003:q2': yesNo(both([["1", "-1", "2"], ["2", "-5", "4"]], "3", "1")),
+  'ex-4am-mafhum-jumla-l2-003:q3': yesNo(both([["1", "-1", "2"], ["2", "-5", "4"]], "0", "2")),
+  'ex-4am-mafhum-jumla-l2-004:q1': yesNo(both([["1", "1", "32"], ["2", "-1", "7"]], "24", "8")),
+  'ex-4am-mafhum-jumla-l2-004:q2': pickPoint([["1", "1", "32"], ["2", "-1", "7"]], [["13", "19"], ["19", "13"]]),
+  'ex-4am-mafhum-jumla-l2-005:q1': yesNo(both([["1", "-1", "2"]], "1/2", "-3/2")),
+  'ex-4am-mafhum-jumla-l2-005:q2': yesNo(both([["1", "-1", "2"]], "1", "-2")),
+  'ex-4am-mafhum-jumla-l2-005:q3': R(q(2).div(-1)),
+  'ex-4am-mafhum-jumla-l2-006:q1': yesNo(both([["1", "1", "14"], ["3", "1", "34"]], "8", "10")),
+  'ex-4am-mafhum-jumla-l2-006:q2': yesNo(both([["1", "1", "14"], ["3", "1", "34"]], "10", "4")),
+  'ex-4am-mafhum-jumla-l2-007:q2': yesNo(both([["1", "1", "37"], ["20", "10", "610"]], "13", "24")),
+  'ex-4am-mafhum-jumla-l2-007:q3': yesNo(both([["1", "1", "37"], ["20", "10", "610"]], "24", "13")),
+  'ex-4am-mafhum-jumla-l2-008:q1': pickPoint([["1", "1", "18"], ["1", "3/2", "21"]], [["6", "12"], ["12", "6"]]),
+  'ex-4am-mafhum-jumla-l2-008:q2': P(...solve2("1", "1", "18", "2", "3", "42")),
+  'ex-4am-mafhum-jumla-l2-009:q1': yesNo(both([["1", "1", "6"], ["2", "2", "12"]], "2", "4")),
+  'ex-4am-mafhum-jumla-l2-009:q2': yesNo(both([["1", "1", "6"], ["2", "2", "12"]], "-1", "7")),
+  'ex-4am-mafhum-jumla-l2-009:q3': pickKind([["1", "1", "6"], ["2", "2", "12"]]),
+  'ex-4am-mafhum-jumla-l2-010:q1': yesNo(both([["1", "-1", "1"], ["1", "-1", "3"]], "2", "1")),
+  'ex-4am-mafhum-jumla-l2-010:q2': pickKind([["1", "-1", "1"], ["1", "-1", "3"]]),
+  'ex-4am-mafhum-jumla-l3-001:q1': pickPoint([["1", "1", "30"], ["1", "5/2", "45"]], [["10", "20"], ["20", "10"]]),
+  'ex-4am-mafhum-jumla-l3-002:q1': P(...solve2("1", "0", "1/3", "3", "-1", "4")),
+  'ex-4am-mafhum-jumla-l3-002:q2': P(...solve2("-1", "1", "-1", "-2", "1", "0")),
+  'ex-4am-mafhum-jumla-l3-003:q1': R(q(5).div(2)),
+  'ex-4am-mafhum-jumla-l3-003:q2': R(q(5).sub(q(2).mul('1/2')).div(4)),
+  'ex-4am-mafhum-jumla-l3-003:q3': yesNo(both([["4", "2", "5"]], "1", "1")),
+  'ex-4am-mafhum-jumla-l3-004:q1': yesNo(both([["5", "3", "1"]], "0", "1/3")),
+  'ex-4am-mafhum-jumla-l3-004:q2': yesNo(both([["5", "3", "1"]], "1", "-2")),
+  'ex-4am-mafhum-jumla-l3-004:q3': pickPoint([["1", "-1", "2"], ["1", "-2", "4"]], [["1/2", "-3/2"], ["0", "-2"], ["0", "1/3"], ["1", "-2"], ["1/5", "0"]]),
+  'ex-4am-mafhum-jumla-l3-004:q4': yesNo([['1/2', '-3/2'], ['0', '-2'], ['0', '1/3'], ['1', '-2'], ['1/5', '0']].some(([x, y]) => holds(['3', '5', '1'], x, y))),
+  'ex-4am-mafhum-jumla-l3-005:q1': pickPoint([["1", "1", "16"], ["1/2", "3", "23"]], [["6", "10"], ["10", "6"]]),
+  'ex-4am-mafhum-jumla-l3-005:q2': P(...solve2("1", "1", "16", "1", "6", "46")),
+  'ex-4am-mafhum-jumla-l3-005:q3': pickKind([["1", "1", "16"], ["2", "2", "30"]]),
   'ex-4am-mafhum-jumla-l3-006:q1': P(...solve2("1", "0", "4", "1", "3", "19")),
-  'ex-4am-mafhum-jumla-l3-007:q1': R(q(-3).add(10)) /* 2x - 10 = y - 3 ⇒ 2x - y = -3 + 10 */,
-  'ex-4am-mafhum-jumla-l3-008:q1': pickKind([["4", "6", "2"], ["-2", "-3", "-1"]]),
-  'ex-4am-mafhum-jumla-l3-008:q2': yesNo(both([["4", "6", "2"], ["-2", "-3", "-1"]], "-1", "1"), true),
-  'ex-4am-mafhum-jumla-l3-009:q1': pickKind([["2", "-1", "0"], ["-1", "1/2", "-2"]]),
-  'ex-4am-mafhum-jumla-l3-010:q1': onlyFirstReason([["1", "1", "7"], ["1", "-1", "3"]], '2', '5'),
-  'ex-4am-mafhum-jumla-l4-001:q1': pickPair([["1", "1", "25"], ["300", "150", "6000"]], [["10", "15"], ["15", "10"], ["17", "6"], ["12", "13"]]),
-  'ex-4am-mafhum-jumla-l4-002:q1': pickStatus([["1", "1", "7"], ["100", "500", "1900"]], ["4", "3"]),
-  'ex-4am-mafhum-jumla-l4-002:q2': pickStatus([["1", "1", "7"], ["100", "500", "1900"]], ["3", "4"]),
-  'ex-4am-mafhum-jumla-l4-003:q1': P(...solve2("1", "1", "12", "1", "-3", "0")),
-  'ex-4am-mafhum-jumla-l4-004:q1': pickStatus([["2", "1", "130"], ["1", "2", "110"]], ["50", "30"]),
-  'ex-4am-mafhum-jumla-l4-004:q2': pickStatus([["2", "1", "130"], ["1", "2", "110"]], ["30", "50"]),
-  'ex-4am-mafhum-jumla-l4-005:q1': pickKind([["1", "1", "40"], ["2", "2", "80"]]),
-  'ex-4am-mafhum-jumla-l4-006:q1': pickKind([["1", "1", "40"], ["3", "3", "100"]]),
-  'ex-4am-mafhum-jumla-l4-007:q1': P(...solve2("1", "1", "30", "1", "-1", "2")),
-  'ex-4am-mafhum-jumla-l4-008:q1': pickStatus([["2", "-1", "3"], ["1", "-2", "-5"]], ["3", "3"]),
-  'ex-4am-mafhum-jumla-l4-008:q2': pickStatus([["2", "-1", "3"], ["1", "-2", "-5"]], ["1", "3"]),
-  'ex-4am-mafhum-jumla-l4-009:q1': yesNo(both([["1", "-2", "7"], ["1/3", "1/3", "0"]], '-3', '-2'), true),
-  'ex-4am-mafhum-jumla-l4-010:q1': C('A') /* a = 2, b = -3, c = 1 ; a' = b' = 1, c' = 4 */,
-  'ex-4am-mafhum-jumla-l5-001:q1': P(...solve2("1", "1", "37", "20", "10", "610")),
-  'ex-4am-mafhum-jumla-l5-002:q1': P(...solve2("1", "1", "32", "2", "-1", "7")),
-  'ex-4am-mafhum-jumla-l5-003:q1': P(...solve2("1", "1", "12", "3", "1", "28")),
-  'ex-4am-mafhum-jumla-l5-004:q1': R(q(5).mul(2)) /* 2x + 4y = 2(x + 2y) */,
-  'ex-4am-mafhum-jumla-l5-004:q2': pickKind([["1", "2", "5"], ["2", "4", "12"]]),
-  'ex-4am-mafhum-jumla-l5-005:q1': pickKind([["3", "-1", "2"], ["6", "-2", "5"]]),
-  'ex-4am-mafhum-jumla-l5-005:q2': onlyFirstReason([["3", "-1", "2"], ["6", "-2", "5"]], '1', '1'),
-  'ex-4am-mafhum-jumla-l5-006:q1': pickPair([["1", "1", "50"], ["2", "5", "160"]], [["20", "30"], ["25", "22"], ["30", "20"], ["35", "15"]]),
-  'ex-4am-mafhum-jumla-l5-007:q1': C('A') /* définition du manuel (معارف 2) */,
-  'ex-4am-mafhum-jumla-l5-007:q2': P(...solve2("1", "1", "10", "1", "-1", "4")),
-  'ex-4am-mafhum-jumla-l5-008:q1': R(3) /* même membre gauche x + y : il faut k = 3 */,
-  'ex-4am-mafhum-jumla-l5-008:q2': pickKind([["1", "1", "3"], ["1", "1", "5"]]),
-  'ex-4am-mafhum-jumla-l5-009:q1': C('A') /* y = 2 × (x − 4), les parenthèses portent le 2 */,
-  'ex-4am-mafhum-jumla-l5-009:q2': P(...solve2("1", "1", "28", "-2", "1", "-8")),
-  'ex-4am-mafhum-jumla-l5-010:q1': noneAccepts([["3", "2", "-1"], ["3", "5", "1"], ["1", "-2", "4"], ["5", "3", "1"]], [["1/2", "-3/2"], ["0", "-2"], ["0", "1/3"], ["1", "-2"], ["1/5", "0"]]),
+  'ex-4am-mafhum-jumla-l3-006:q2': R(q(4).add(q(3).mul(2))),
+  'ex-4am-mafhum-jumla-l3-007:q2': R(q(-3).add(10)),
+  'ex-4am-mafhum-jumla-l3-007:q3': yesNo(both([["1", "1", "32"], ["2", "-1", "7"]], "12", "17")),
+  'ex-4am-mafhum-jumla-l3-008:q1': yesNo(both([["4", "6", "2"], ["-2", "-3", "-1"]], "-1", "1")),
+  'ex-4am-mafhum-jumla-l3-008:q2': yesNo(both([["4", "6", "2"], ["-2", "-3", "-1"]], "2", "-1")),
+  'ex-4am-mafhum-jumla-l3-008:q3': pickKind([["4", "6", "2"], ["-2", "-3", "-1"]]),
+  'ex-4am-mafhum-jumla-l3-009:q1': yesNo(both([["2", "-1", "0"], ["-1", "1/2", "-2"]], "1", "2")),
+  'ex-4am-mafhum-jumla-l3-009:q2': R(q(-2).mul(-2)),
+  'ex-4am-mafhum-jumla-l3-009:q3': pickKind([["2", "-1", "0"], ["-1", "1/2", "-2"]]),
+  'ex-4am-mafhum-jumla-l3-010:q1': yesNo(both([["3", "5", "2400"], ["4", "2", "2080"]], "400", "240")),
+  'ex-4am-mafhum-jumla-l3-010:q3': R(q(10).mul(400).add(q(10).mul(240))),
+  'ex-4am-mafhum-jumla-l4-001:q2': R(q(300).div(150)),
+  'ex-4am-mafhum-jumla-l4-001:q3': R(q(6000).div(150)),
+  'ex-4am-mafhum-jumla-l4-001:q4': pickPoint([["1", "1", "25"], ["300", "150", "6000"]], [["10", "15"], ["15", "10"]]),
+  'ex-4am-mafhum-jumla-l4-001:q5': R(q(300).mul(15)),
+  'ex-4am-mafhum-jumla-l4-002:q1': R(q(500).div(100)),
+  'ex-4am-mafhum-jumla-l4-002:q2': R(q(1900).div(100)),
+  'ex-4am-mafhum-jumla-l4-002:q3': yesNo(both([["1", "1", "7"], ["100", "500", "1900"]], "3", "4")),
+  'ex-4am-mafhum-jumla-l4-002:q4': yesNo(both([["1", "1", "7"], ["100", "500", "1900"]], "4", "3")),
+  'ex-4am-mafhum-jumla-l4-002:q5': R(q(500).mul(3)),
+  'ex-4am-mafhum-jumla-l4-003:q1': P(...solve2("1", "1", "18", "1", "3", "34")),
+  'ex-4am-mafhum-jumla-l4-003:q3': R(solve2('1', '1', '18', '250', '750', '8500')[1]),
+  'ex-4am-mafhum-jumla-l4-004:q2': yesNo(both([["2", "1", "130"], ["1", "2", "110"]], "30", "50")),
+  'ex-4am-mafhum-jumla-l4-004:q3': yesNo(both([["2", "1", "130"], ["1", "2", "110"]], "50", "30")),
+  'ex-4am-mafhum-jumla-l4-004:q4': R(q(130).add(110)),
+  'ex-4am-mafhum-jumla-l4-005:q1': yesNo(both([["1", "1", "40"], ["2", "2", "80"]], "35", "5")),
+  'ex-4am-mafhum-jumla-l4-005:q2': yesNo(both([["1", "1", "40"], ["2", "2", "80"]], "30", "10")),
+  'ex-4am-mafhum-jumla-l4-005:q3': pickKind([["1", "1", "40"], ["2", "2", "80"]]),
+  'ex-4am-mafhum-jumla-l4-006:q1': R(q(100).div(3)),
+  'ex-4am-mafhum-jumla-l4-006:q2': pickKind([["1", "1", "40"], ["3", "3", "100"]]),
+  'ex-4am-mafhum-jumla-l4-006:q3': R(q(3).mul(40)),
+  'ex-4am-mafhum-jumla-l4-007:q1': R(q(-2).add(4)),
+  'ex-4am-mafhum-jumla-l4-007:q2': pickPoint([["1", "1", "30"], ["1", "-1", "2"]], [["14", "16"], ["16", "14"]]),
+  'ex-4am-mafhum-jumla-l4-007:q3': R(q(solve2('1', '1', '30', '1', '-1', '2')[0]).sub(4)),
+  'ex-4am-mafhum-jumla-l4-008:q1': P(...solve2("1", "1", "72", "1", "-5/4", "0")),
+  'ex-4am-mafhum-jumla-l4-008:q3': yesNo(both([["1", "1", "72"], ["1", "-5/4", "0"]], "48", "24")),
+  'ex-4am-mafhum-jumla-l4-008:q4': R(solve2('1', '1', '72', '1', '-5/4', '0')[1]),
+  'ex-4am-mafhum-jumla-l4-009:q1': R(q(-3).sub(q(2).mul(-2))),
+  'ex-4am-mafhum-jumla-l4-009:q2': yesNo(both([["1", "-2", "7"], ["1/3", "1/3", "0"]], "-3", "-2")),
+  'ex-4am-mafhum-jumla-l4-009:q3': yesNo(both([["1", "-2", "7"], ["1/3", "1/3", "0"]], "7/3", "-7/3")),
+  'ex-4am-mafhum-jumla-l4-010:q2': yesNo(both([["-50", "1", "1200"], ["-30", "1", "2000"]], "20", "2200")),
+  'ex-4am-mafhum-jumla-l4-010:q3': yesNo(both([["-50", "1", "1200"], ["-30", "1", "2000"]], "40", "3200")),
+  'ex-4am-mafhum-jumla-l5-001:q2': yesNo(both([["3", "2", "7400"], ["1", "4", "6800"]], "1300", "1600")),
+  'ex-4am-mafhum-jumla-l5-001:q3': yesNo(both([["3", "2", "7400"], ["1", "4", "6800"]], "1600", "1300")),
+  'ex-4am-mafhum-jumla-l5-001:q4': R(q(40).mul(20).mul(1600)),
+  'ex-4am-mafhum-jumla-l5-001:q5': R(q(2).mul(q(40).add(20)).mul(1300)),
+  'ex-4am-mafhum-jumla-l5-001:q6': R(q(1500000).sub(q(800).mul(1600)).sub(q(120).mul(1300))),
+  'ex-4am-mafhum-jumla-l5-002:q1': R(q(1500).add(q(200).mul(10))),
+  'ex-4am-mafhum-jumla-l5-002:q2': R(q(3000).add(q(100).mul(10))),
+  'ex-4am-mafhum-jumla-l5-002:q4': yesNo(both([["-200", "1", "1500"], ["-100", "1", "3000"]], "10", "3500")),
+  'ex-4am-mafhum-jumla-l5-002:q5': yesNo(both([["-200", "1", "1500"], ["-100", "1", "3000"]], "15", "4500")),
+  'ex-4am-mafhum-jumla-l5-002:q6': C(q(3000).add(q(100).mul(20)).sub(q(1500).add(q(200).mul(20))).toString().startsWith('-') ? 'B' : 'A'),
+  'ex-4am-mafhum-jumla-l5-003:q1': R(q(60).div(100).neg()),
+  'ex-4am-mafhum-jumla-l5-003:q2': R(q(113400).div(6)),
+  'ex-4am-mafhum-jumla-l5-003:q3': yesNo(both([["12", "18", "113400"], ["1", "-3/5", "0"]], "3240", "4140")),
+  'ex-4am-mafhum-jumla-l5-003:q4': yesNo(both([["12", "18", "113400"], ["1", "-3/5", "0"]], "2700", "4500")),
+  'ex-4am-mafhum-jumla-l5-003:q5': R(q(2).mul(q(6).mul(2700).add(q(18).mul(4500)))),
+  'ex-4am-mafhum-jumla-l5-004:q1': P(...solve2("1", "1", "45", "2", "5", "150")),
+  'ex-4am-mafhum-jumla-l5-004:q3': yesNo(both([["1", "1", "45"], ["2", "5", "150"]], "30", "15")),
+  'ex-4am-mafhum-jumla-l5-004:q4': R(solve2('1', '1', '45', '2', '5', '150')[0]),
+  'ex-4am-mafhum-jumla-l5-004:q5': R(solve2('1', '1', '45', '2', '5', '150')[1]),
+  'ex-4am-mafhum-jumla-l5-004:q6': R(q(25).mul(1700).add(q(20).mul(4200))),
+  'ex-4am-mafhum-jumla-l5-005:q2': pickPoint([["1", "1", "52"], ["150", "80", "5560"]], [["32", "20"], ["20", "32"]]),
+  'ex-4am-mafhum-jumla-l5-005:q3': R(q(80).mul(32)),
+  'ex-4am-mafhum-jumla-l5-006:q1': R(q('5/2').neg()),
+  'ex-4am-mafhum-jumla-l5-006:q2': yesNo(both([["1", "1", "840"], ["1", "-5/2", "0"]], "560", "280")),
+  'ex-4am-mafhum-jumla-l5-006:q3': yesNo(both([["1", "1", "840"], ["1", "-5/2", "0"]], "600", "240")),
+  'ex-4am-mafhum-jumla-l5-006:q4': R(q(600).mul(60).add(q(240).mul(45))),
+  'ex-4am-mafhum-jumla-l5-007:q1': R(q(600).mul(10)),
+  'ex-4am-mafhum-jumla-l5-007:q2': R(q(3000).add(q(450).mul(10))),
+  'ex-4am-mafhum-jumla-l5-007:q3': R(q(3000).neg()),
+  'ex-4am-mafhum-jumla-l5-007:q4': yesNo(both([["600", "-1", "0"], ["450", "-1", "-3000"]], "15", "9000")),
+  'ex-4am-mafhum-jumla-l5-007:q5': yesNo(both([["600", "-1", "0"], ["450", "-1", "-3000"]], "20", "12000")),
+  'ex-4am-mafhum-jumla-l5-007:q6': C(q(3000).add(q(450).mul(24)).sub(q(600).mul(24)).toString().startsWith('-') ? 'B' : 'A'),
+  'ex-4am-mafhum-jumla-l5-008:q1': R(q(2000).add(q(800).mul(12))),
+  'ex-4am-mafhum-jumla-l5-008:q2': pickKind([["-800", "1", "2000"], ["-800", "1", "3500"]]),
+  'ex-4am-mafhum-jumla-l5-008:q3': R(q(1600).neg()),
+  'ex-4am-mafhum-jumla-l5-008:q4': pickKind([["-800", "1", "2000"], ["-1600", "2", "4000"]]),
+  'ex-4am-mafhum-jumla-l5-009:q2': yesNo(both([["6", "4", "8100"], ["3", "5", "5850"]], "900", "675")),
+  'ex-4am-mafhum-jumla-l5-009:q3': yesNo(both([["6", "4", "8100"], ["3", "5", "5850"]], "950", "600")),
+  'ex-4am-mafhum-jumla-l5-009:q4': pickKind([["6", "4", "8100"], ["12", "8", "16000"]]),
+  'ex-4am-mafhum-jumla-l5-009:q5': R(q(2).mul(8100)),
+  'ex-4am-mafhum-jumla-l5-010:q1': P(...solve2("1", "1", "18", "2", "3", "44")),
+  'ex-4am-mafhum-jumla-l5-010:q3': yesNo(both([["1", "1", "18"], ["2", "3", "44"]], "12", "6")),
+  'ex-4am-mafhum-jumla-l5-010:q4': R(solve2('1', '1', '18', '10', '15', '220')[1]),
+  'ex-4am-mafhum-jumla-l5-010:q5': R(q(10).mul(6000).add(q(8).mul(8000))),
 };

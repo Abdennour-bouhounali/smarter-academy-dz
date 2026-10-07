@@ -1,4 +1,4 @@
-import { House, BookOpen, PencilRuler, NotebookPen, Users, BadgeCheck, UserRound } from 'lucide-react';
+import { House, BookOpen, PencilRuler, NotebookPen, Users, ClipboardCheck, BadgeCheck, UserRound } from 'lucide-react';
 
 /**
  * L'espace ENSEIGNANT (« فضاء الأستاذ ») — sa propre navigation, comme
@@ -17,6 +17,9 @@ export const teacherNavLinks = [
   { labelKey: 'mathLab', path: '/enseignant/atelier', icon: PencilRuler },
   { labelKey: 'notebook', path: '/enseignant/cahier', icon: NotebookPen },
   { labelKey: 'myClasses', path: '/enseignant/classes', icon: Users },
+  // « تصحيح الإجابات » (2026-10-06) : les copies de SES élèves en « تصحيح الأستاذ ».
+  // `badge` : le nombre en attente (useReviewCount).
+  { labelKey: 'answerReviews', path: '/enseignant/tashih', icon: ClipboardCheck, badge: 'reviews' },
   { labelKey: 'myPlan', path: '/enseignant/offre', icon: BadgeCheck, mobile: false },
   { labelKey: 'profile', path: '/enseignant/profil', icon: UserRound, mobile: false },
 ];

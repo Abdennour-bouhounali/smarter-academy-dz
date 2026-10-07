@@ -3,109 +3,207 @@
   "lessonCode": "muadala-ula",
   "level": 5,
   "metadata": {
-    "title": "دوري الآن — مقامات",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2015 — حظيرة دجاج وحقل خضر",
+    "estimatedMinutes": 16,
     "tags": [
-      "كسور"
+      "مساحة",
+      "معادلة",
+      "وضعية إدماجية"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "now-47-1",
-      "page": 47,
-      "section": "دوري الآن",
-      "number": 1
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_muadala-ula_P2",
+      "modelledOn": "BEM 2015 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2015",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 47): حل كل معادلة مما يلي."
+    "content": "لفلاح بعين تموشنت قطعة أرض مستطيلة الشكل $ABCD$ حيث $AB = 80\\,m$ و $AD = 30\\,m$ . $M$ نقطة من الضلع $[AB]$ حيث $AM = x$ (مع $0 \\leqslant x \\leqslant 80$). يبني الفلاح على الجزء المثلث $AMD$ حظيرة للدجاج، ويزرع الجزء $MBCD$ خضرًا."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حل المعادلة $\\dfrac{-x + 3}{2} = \\dfrac{2x + 1}{3}$ هو:",
+      "step": "01",
+      "sub": "ا",
+      "lead": "عبّر بدلالة $x$ عن:",
+      "statement": "مساحة المثلث $AMD$ ، ولتكن $f(x)$ .",
       "learningPoints": [
         {
-          "code": "4am_muadala-ula_P2",
+          "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 4,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$-\\dfrac{11}{7}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
-        },
-        {
-          "id": "B",
-          "content": "$-7$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
-        },
-        {
-          "id": "C",
-          "content": "$1$",
-          "isCorrect": true
-        }
-      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "تُكتب $f(x)$ على الشكل $mx$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "15",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في المعادلة مقامات."
+          "content": "المثلث $AMD$ قائم في $A$ ، ضلعاه القائمان $AM$ و $AD$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب الطرفين في عدد تقبل كل المقامات القسمة عليه، مع كل الحدود."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم انشر وانقل المجاهيل إلى طرف والمعاليم إلى الآخر."
+          "content": "مساحة المثلث القائم نصف جداء ضلعيه القائمين."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{-x + 3}{2} = \\dfrac{2x + 1}{3}$ : ننقل المجاهيل إلى طرف والمعاليم إلى الآخر ونقسم على معامل $x$ : $x = 1$.",
-        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
-      }
+        "correct": "$f(x) = 15x$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولويات العمليات والإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$f(x) = \\dfrac{x \\times 30}{2}$"
+        ],
+        "result": "f(x) = 15x"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "حلّ المعادلة $2x - \\dfrac{1}{3} = \\dfrac{x}{5} + 2$ .",
+      "step": "01",
+      "sub": "ب",
+      "statement": "مساحة الرباعي $MBCD$ ، ولتكن $g(x)$ .",
       "learningPoints": [
         {
-          "code": "4am_muadala-ula_P2",
+          "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 5,
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
-      "expectedAnswer": "35/27",
+      "answerFormat": "تُكتب $g(x)$ على الشكل $mx + p$ : اكتب العدد $p$ فقط",
+      "expectedAnswer": "2400",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في المعادلة مقامات."
+          "content": "مساحة $MBCD$ = مساحة المستطيل $ABCD$ − مساحة المثلث $AMD$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(x) = -15x + 2400$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولويات العمليات والإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$g(x) = 80 \\times 30 - 15x$"
+        ],
+        "result": "g(x) = -15x + 2400"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "جد $x$ حتى تكون مساحة الجزء المزروع خضرًا ثلاثة أضعاف مساحة حظيرة الدجاج.",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول $AM$ بـ m",
+      "expectedAnswer": "40",
+      "misconceptionSignatures": [
+        {
+          "value": "1/40",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "value": "-40",
+          "id": "MISC-MUADALA-ISHARA-SALIBA"
+        },
+        {
+          "value": "-80",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ثلاثة أضعاف مساحة الحظيرة: $3f(x)$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب الطرفين في عدد تقبل كل المقامات القسمة عليه، مع كل الحدود."
+          "content": "اكتب المعادلة $g(x) = 3f(x)$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم انشر وانقل المجاهيل إلى طرف والمعاليم إلى الآخر."
+          "content": "انقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر، ثم اقسم على معامل $x$ ."
         }
       ],
       "feedback": {
-        "correct": "$2x - \\dfrac{1}{3} = \\dfrac{x}{5} + 2$ : ننقل المجاهيل إلى طرف والمعاليم إلى الآخر ونقسم على معامل $x$ : $x = \\dfrac{35}{27}$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "$x = 40\\,m$ .",
+        "incorrect": "انقل كل حدّ بإشارة معاكسة، وجمّع الحدود المتشابهة، ثم اقسم على معامل $x$ بإشارته. تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$g(x) = 3f(x)$ تعني $2400 - 15x = 45x$",
+          "$-15x - 45x = -2400$",
+          "$-60x = -2400$",
+          "$x = \\dfrac{-2400}{-60}$"
+        ],
+        "result": "x = 40"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "احسب حينئذ مساحة الجزء المزروع خضرًا.",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المساحة بـ m²",
+      "expectedAnswer": "1800",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالقيمة التي وجدتها في $g(x)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$1800\\,m^2$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولويات العمليات والإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$g(40) = 2400 - 15 \\times 40 = 2400 - 600$"
+        ],
+        "result": "1800\\,m^2"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
   ]
 }

@@ -3,108 +3,128 @@
   "lessonCode": "muadala-ula",
   "level": 1,
   "metadata": {
-    "title": "تدريب — عدد مطروح من x",
+    "title": "عدد مطروح من المجهول أو مضاف إليه",
     "estimatedMinutes": 4,
     "tags": [
-      "نقل حد"
+      "x + b = c"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_muadala-ula_P2",
       "modelledOn": "ex-3"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "حلّ كل معادلة بإجراء العملية نفسها على الطرفين."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّ المعادلة $x - 9 = -4$ .",
+      "step": "01",
+      "sub": "ا",
+      "lead": "حل كلا من المعادلتين الآتيتين:",
+      "statement": "$x - 9 = -4$",
       "learningPoints": [
         {
-          "code": "4am_muadala-ula_P2",
+          "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
       "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "value": "1/5",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "value": "-13",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المجهول $x$ مضاف إليه عدد (أو مطروح منه) في طرف واحد."
+          "content": "عدد يُضاف إلى $x$ (أو يُطرح منه): يجب إبعاده عن $x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "أجرِ على الطرفين العملية المعاكسة لما أُجري على $x$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ما يُطرح من طرف يُطرح من الطرف الآخر أيضًا، فيبقى $x$ وحده."
+          "content": "اطرح هذا العدد من الطرفين (أو أضف معاكسه إليهما)."
         }
       ],
       "feedback": {
-        "correct": "$x - 9 = -4$ : نصل إلى $x = 5$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "$x = 5$ .",
+        "incorrect": "اطرح العدد نفسه من الطرفين معًا، ثم تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$x = -4 + 9$"
+        ],
+        "result": "x = 5"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "حل المعادلة $x + 7 = -3$ هو:",
+      "step": "01",
+      "sub": "ب",
+      "statement": "$x + 7 = -3$",
       "learningPoints": [
         {
-          "code": "4am_muadala-ula_P2",
+          "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
+      "expectedAnswer": "-10",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$10$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+          "value": "-1/10",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
         },
         {
-          "id": "B",
-          "content": "$-10$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$4$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+          "value": "4",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المجهول $x$ مضاف إليه عدد (أو مطروح منه) في طرف واحد."
+          "content": "عدد يُضاف إلى $x$ (أو يُطرح منه): يجب إبعاده عن $x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "أجرِ على الطرفين العملية المعاكسة لما أُجري على $x$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ما يُطرح من طرف يُطرح من الطرف الآخر أيضًا، فيبقى $x$ وحده."
+          "content": "اطرح هذا العدد من الطرفين (أو أضف معاكسه إليهما)."
         }
       ],
       "feedback": {
-        "correct": "$x + 7 = -3$ : نصل إلى $x = -10$.",
-        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
-      }
+        "correct": "$x = -10$ .",
+        "incorrect": "اطرح العدد نفسه من الطرفين معًا، ثم تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$x = -3 - 7$"
+        ],
+        "result": "x = -10"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
   ]
 }

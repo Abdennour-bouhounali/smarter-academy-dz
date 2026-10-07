@@ -68,6 +68,7 @@ const TeacherStudentNotebook = lazy(() => import('./pages/teacher/StudentNoteboo
 const TeacherSubscription = lazy(() => import('./pages/teacher/SubscriptionPage'));
 const TeacherProfile = lazy(() => import('./pages/teacher/TeacherProfile'));
 const TeacherLessonMemo = lazy(() => import('./pages/teacher/LessonMemoPage'));
+const TeacherReviews = lazy(() => import('./pages/teacher/TeacherReviewsPage'));
 // L'élève et sa classe (« قسمي »), et le lien public d'une classe.
 const Qism = lazy(() => import('./pages/student/Qism'));
 const JoinClassLink = lazy(() => import('./pages/JoinClassLink'));
@@ -98,6 +99,7 @@ const DiagnosticResult = lazy(() => import('./pages/student/diagnostic/Diagnosti
 const PracticeHub = lazy(() => import('./pages/student/practice/PracticeHub'));
 const PracticeSession = lazy(() => import('./pages/student/practice/PracticeSession'));
 const PracticeSummary = lazy(() => import('./pages/student/practice/PracticeSummary'));
+const AnswerReviewPage = lazy(() => import('./pages/student/practice/AnswerReviewPage'));
 // « التحدّي اليومي » : l'écran du jour, l'historique, la revue d'un jour.
 const DailyChallengePage = lazy(() => import('./pages/student/challenge/DailyChallengePage'));
 const ChallengeHistoryPage = lazy(() => import('./pages/student/challenge/ChallengeHistoryPage'));
@@ -360,6 +362,8 @@ export default function App() {
               <Route path="pratique/:lessonCode" element={<PracticeHub />} />
               <Route path="pratique/:lessonCode/session/:sessionId" element={<PracticeSession />} />
               <Route path="pratique/:lessonCode/bilan/:sessionId" element={<PracticeSummary />} />
+              {/* La correction de l'enseignant, ouverte depuis la cloche — en lecture seule. */}
+              <Route path="tashih/:reviewId" element={<AnswerReviewPage />} />
               {/* « التحدّي اليومي » : le serveur tient la tentative ; ces
                   routes ne font que l'afficher (DAILY_CHALLENGE.md). */}
               <Route path="defi" element={<DailyChallengePage />} />
@@ -398,6 +402,9 @@ export default function App() {
                   le serveur : ClassroomPolicy + appartenance au قسم
                   (TeacherClassroomNotebookTest). */}
               <Route path="classes/:id/eleves/:studentId/cahier" element={<TeacherStudentNotebook />} />
+              {/* « تصحيح الإجابات » : photos de copie et démonstrations des élèves en
+                  « تصحيح الأستاذ » (AnswerReviewService, 2026-10-06). */}
+              <Route path="tashih" element={<TeacherReviews />} />
               <Route path="offre" element={<TeacherSubscription />} />
               <Route path="profil" element={<TeacherProfile />} />
               {/* L'ENSEIGNANT APPREND COMME UN ÉLÈVE — mêmes pages, même

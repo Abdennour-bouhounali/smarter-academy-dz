@@ -4,24 +4,33 @@
   "level": 2,
   "metadata": {
     "title": "معارف — مقادير حاصل القسمة",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 4,
     "tags": [
-      "مقدار حاصل القسمة"
+      "السرعة المتوسطة",
+      "الكتلة الحجمية"
     ],
     "source": {
       "type": "textbook",
       "elementId": "know-4",
       "page": 70,
-      "section": "معارف"
+      "section": "معارف",
+      "adaptedFrom": "ex-4am-tatbiqat-tanasub-l2-008"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 70): دراجة تقطع مسافة $42km$ في $1{,}5h$ ؛ وجسم كتلته $2{,}4kg$ وحجمه $0{,}01m^3$ ."
+    "content": "دراجة تقطع مسافة $42km$ في $1{,}5h$ ، وجسم كتلته $2{,}4kg$ وحجمه $0{,}01m^3$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "السرعة المتوسطة للدراجة (بالكيلومتر في الساعة):",
+      "step": "01",
+      "statement": "احسب السرعة المتوسطة للدراجة بـ km/h .",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P2",
@@ -29,34 +38,45 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "اكتب السرعة بـ km/h (عدد فقط)",
       "expectedAnswer": "28",
+      "misconceptionSignatures": [
+        {
+          "value": "1/28",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "مقدار حاصل القسمة: السرعة مسافة على مدة، والكتلة الحجمية كتلة على حجم، والتدفق حجم على مدة."
+          "content": "$v = \\dfrac{d}{t}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب المقدارين بالوحدتين المطلوبتين قبل القسمة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم، ثم اكتب النتيجة مع وحدتها المركّبة."
+          "content": "اقسم 42 على $1{,}5$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{42}{1{,}5} = 28km/h$ .",
-        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
-      }
+        "correct": "$v = \\dfrac{42}{1{,}5} = 28km/h$ .",
+        "incorrect": "السرعة المتوسطة هي المسافة مقسومة على المدة."
+      },
+      "solution": {
+        "lines": [
+          "$v = \\dfrac{d}{t} = \\dfrac{42}{1{,}5}$",
+          "$v = 28km/h$"
+        ],
+        "result": "v = 28km/h"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "الكتلة الحجمية للجسم (بالكيلوغرام لكل متر مكعب):",
+      "step": "02",
+      "statement": "احسب الكتلة الحجمية للجسم بـ $kg/m^3$ .",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P2",
@@ -64,30 +84,40 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "اكتب العدد فقط (بـ $kg/m^3$ )",
       "expectedAnswer": "240",
+      "misconceptionSignatures": [
+        {
+          "value": "0,024",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "مقدار حاصل القسمة: السرعة مسافة على مدة، والكتلة الحجمية كتلة على حجم، والتدفق حجم على مدة."
+          "content": "$\\rho = \\dfrac{m}{V}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب المقدارين بالوحدتين المطلوبتين قبل القسمة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم، ثم اكتب النتيجة مع وحدتها المركّبة."
+          "content": "اقسم $2{,}4$ على $0{,}01$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{2{,}4}{0{,}01} = 240kg/m^3$ .",
-        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
-      }
+        "correct": "$\\rho = \\dfrac{2{,}4}{0{,}01} = 240kg/m^3$ .",
+        "incorrect": "الكتلة الحجمية هي الكتلة مقسومة على الحجم."
+      },
+      "solution": {
+        "lines": [
+          "$\\rho = \\dfrac{m}{V} = \\dfrac{2{,}4}{0{,}01}$",
+          "$\\rho = 240kg/m^3$"
+        ],
+        "result": "\\rho = 240kg/m^3"
+      },
+      "timeSeconds": 60
     }
   ]
 }

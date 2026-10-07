@@ -1,7 +1,10 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-008",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 4,
   "metadata": {
-    "title": "تدريب — نشر ثم متراجحة",
-    "estimatedMinutes": 3,
+    "title": "نشر ثم متراجحة وحلولها الطبيعية",
+    "estimatedMinutes": 10,
     "tags": [
       "نشر",
       "متراجحة"
@@ -11,80 +14,161 @@
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
       "modelledOn": "ex-36"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "لتكن المتراجحة $(x + 2)^2 - x(x + 1) < 19$ ذات المجهول $x$."
+    "content": "لتكن العبارة $A$ حيث:",
+    "formulas": [
+      "A = (x + 2)^2 - x(x + 1)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "النشر المبسّط للطرف الأيسر هو ...",
+      "step": "01",
+      "lead": "انشر وبسّط العبارة $A$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muadalat_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$5x + 4$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
-        },
-        {
-          "id": "B",
-          "content": "$x + 4$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
-        },
-        {
-          "id": "C",
-          "content": "$3x + 4$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$2x^2 + 5x + 4$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
-        }
-      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax + b$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$(x + 2)^2 = x^2 + 4x + 4$."
+          "content": "طبّق المتطابقات الشهيرة، ثم انشر الجداءات."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انشر $x(x + 1)$ ثم اطرح."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الحدّان $x^2$ يختفيان."
+          "content": "انتبه إلى الإشارة «−» أمام قوس: تتغيّر إشارة كل حد من نشره."
         }
       ],
       "feedback": {
-        "correct": "$x^2 + 4x + 4 - x^2 - x = 3x + 4$.",
-        "incorrect": "الإشارة «−» تغيّر إشارة $x^2$ و $x$."
+        "correct": "$a = 3$ .",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "$A = (x + 2)^2 - x(x + 1)$",
+          "ننشر كل جداء (أو مربع)، ثم نجمع الحدود المتشابهة: حدود $x$ تعطي $3x$"
+        ],
+        "result": "a = 3"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "حلول المتراجحة هي الأعداد $x$ حيث ...",
+      "step": "01",
+      "statement": "العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muadalat_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax + b$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ العدد المطلوب في الشكل المبسّط، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 4$ .",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$A = (x + 2)^2 - x(x + 1)$",
+          "$A = x^2 + 4x + 4 - (x^2 + x)$",
+          "$A = x^2 + 4x + 4 - x^2 - x$",
+          "إذن $A = 3x + 4$"
+        ],
+        "result": "A = 3x + 4"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "حلّ المتراجحة: $A < 19$ .",
+      "statement": "حدّ الحلول $k$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "حلول المتراجحة من الشكل $x < k$ أو $x \\leqslant k$ أو $x > k$ أو $x \\geqslant k$ : اكتب العدد $k$ فقط (عدد صحيح أو كسر a/b، قد يكون سالبًا)",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر، كما في حل معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إضافة عدد إلى الطرفين أو طرحه منهما لا تغيّر اتجاه المتباينة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّ هو العدد الذي يحقّق المعادلة المرفقة (نضع «=» مكان رمز المتباينة): اقسم في الأخير على معامل $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "حدّ الحلول هو $k = 5$ .",
+        "incorrect": "أعد الحل سطرًا سطرًا: العملية نفسها على الطرفين، ثم القسمة على معامل $x$ في الأخير."
+      },
+      "solution": {
+        "lines": [
+          "حدّ الحلول هو حلّ المعادلة المرفقة: $(x + 2)^2 - x(x + 1) = 19$",
+          "$3x + 4 = 19$",
+          "$3x = 19 - 4$",
+          "$3x = 15$",
+          "$x = \\dfrac{15}{3}$",
+          "إذن حدّ الحلول هو $5$ ."
+        ],
+        "result": "k = 5"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "حلول المتراجحة هي الأعداد $x$ حيث:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
@@ -94,49 +178,96 @@
         },
         {
           "id": "B",
+          "content": "$x \\leqslant 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "C",
           "content": "$x > 5$",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
         },
         {
-          "id": "C",
-          "content": "$x < \\dfrac{23}{3}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
-        },
-        {
           "id": "D",
-          "content": "$x = 5$",
+          "content": "$x \\geqslant 5$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب $3x + 4 < 19$."
+          "content": "انظر إلى إشارة معامل $x$ في آخر سطر قبل القسمة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اطرح 4 ثم اقسم على 3."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "القسمة على عدد موجب."
+          "content": "القسمة على عدد موجب تحافظ على الاتجاه، والقسمة على عدد سالب تغيّره."
         }
       ],
       "feedback": {
-        "correct": "$3x < 15$ أي $x < 5$.",
-        "incorrect": "لا يتغيّر الاتجاه عند القسمة على 3."
+        "correct": "$x < 5$ .",
+        "incorrect": "تتبّع سطور الحل: الاتجاه يتغيّر فقط عند الضرب أو القسمة على عدد سالب، ونوع المتباينة (تامة أو غير تامة) لا يتغيّر أبدًا."
       },
+      "solution": {
+        "lines": [
+          "لدينا: $(x + 2)^2 - x(x + 1) < 19$",
+          "$3x + 4 < 19$",
+          "$3x < 19 - 4$",
+          "$3x < 15$",
+          "$\\dfrac{3x}{3} < \\dfrac{15}{3}$",
+          "إذن حلول المتراجحة هي كل قيم $x$ الأصغر تماما من $5$ ."
+        ],
+        "result": "x < 5"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "statement": "ما هي الأعداد الطبيعية التي تحقّق المتراجحة $A < 19$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
       "cognitiveDemand": "apply",
-      "difficulty": 3
+      "answerType": "integerSet",
+      "answerFormat": "اكتب الأعداد الطبيعية مفصولة بفواصل (مثال: 2, 7, 9)",
+      "expectedAnswer": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل حلول المتراجحة، ولا تنسَ العدد $0$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل الحدّ نفسه حلّ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$0$ ، $1$ ، $2$ ، $3$ ، $4$ .",
+        "incorrect": "الأعداد الطبيعية تبدأ من $0$ ؛ والحدّ ليس حلًّا لأن المتباينة تامة."
+      },
+      "solution": {
+        "lines": [
+          "حلول المتراجحة هي الأعداد $x < 5$ ، و $5$ ليس حلًّا.",
+          "الأعداد الطبيعية الأصغر تماما من 5 هي: 0 ، 1 ، 2 ، 3 ، 4 ."
+        ],
+        "result": "0 ; 1 ; 2 ; 3 ; 4"
+      },
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-008",
-  "lessonCode": "wadiya-idmajiya-muadalat",
-  "level": 4
+  ]
 }

@@ -4,26 +4,37 @@
   "level": 4,
   "metadata": {
     "title": "تمرين 6 — عدد كسري وصورته",
-    "estimatedMinutes": 4,
+    "estimatedMinutes": 7,
     "tags": [
-      "تعيين",
-      "كسر"
+      "تعيين دالة خطية",
+      "كسور"
     ],
     "source": {
       "type": "textbook",
       "elementId": "ex-6",
       "page": 72,
       "section": "أوظّف تعلّماتي",
-      "number": 6
+      "number": 6,
+      "adaptedFrom": "ex-4am-dala-khattiya-l4-002"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 72): عيّن الدّالة الخطية $g$ إذا علمت أن $g\\left(\\dfrac{-2}{3}\\right) = \\dfrac{-3}{5}$ ."
+    "content": "$g$ دالة خطية حيث:",
+    "formulas": [
+      "g\\left(\\dfrac{-2}{3}\\right) = \\dfrac{-3}{5}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "عيّن معامل الدالة الخطية $g$ علمًا أنّ $g(-\\dfrac{2}{3}) = -0{,}6$ .",
+      "step": "01",
+      "statement": "عيّن الدالة الخطية $g$ .",
       "learningPoints": [
         {
           "code": "4am_dala-khattiya_P3",
@@ -31,40 +42,146 @@
         }
       ],
       "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
-      "expectedAnswer": "0.9",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "0,9",
+      "misconceptionSignatures": [
+        {
+          "value": "10/9",
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        },
+        {
+          "value": "-0,9",
+          "id": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+          "content": "$g$ دالة خطية: $g(x) = ax$ ، و $g(-\\dfrac{2}{3}) = -0{,}6$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم الصورة على العدد غير المعدوم."
+          "content": "اكتب المعادلة $a \\times \\left(-\\dfrac{2}{3}\\right) = -0{,}6$ ثم حلّها."
         }
       ],
       "feedback": {
-        "correct": "$-\\dfrac{2}{3}a = -0{,}6$ ، إذن $a = -0{,}6 \\div (-\\dfrac{2}{3}) = 0{,}9$ .",
-        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+        "correct": "$a = \\dfrac{-0{,}6}{-\\dfrac{2}{3}} = 0{,}9$ ، إذن $g(x) = 0{,}9x$ .",
+        "incorrect": "المعامل هو الصورة مقسومة على العدد (وليس العكس)، مع الانتباه إلى الإشارة."
       },
+      "solution": {
+        "lines": [
+          "$g$ دالة خطية، إذن $g(x) = ax$ .",
+          "$g(-\\dfrac{2}{3}) = -0{,}6$ معناه $a \\times \\left(-\\dfrac{2}{3}\\right) = -0{,}6$",
+          "$a = \\dfrac{-0{,}6}{-\\dfrac{2}{3}} = 0{,}9$"
+        ],
+        "result": "g(x) = 0{,}9x"
+      },
+      "work": "required",
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب $g(5)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "4,5",
       "misconceptionSignatures": [
         {
-          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB",
-          "value": "10/9"
+          "value": "50/9",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
         },
         {
-          "id": "MISC-KHATTIYA-ISHARA",
-          "value": "-0.9"
+          "value": "-4,5",
+          "id": "MISC-KHATTIYA-ISHARA"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة العدد $x$ بالدالة الخطية $g$ هي $g(x) = 0{,}9 \\times x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد $5$ ثم احسب الجداء، وانتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(5) = 0{,}9 \\times 5 = 4{,}5$ .",
+        "incorrect": "الصورة جداء المعامل في العدد: $g(x) = 0{,}9 \\times x$ ."
+      },
+      "solution": {
+        "lines": [
+          "$g(5) = 0{,}9 \\times 5$",
+          "$g(5) = 4{,}5$"
+        ],
+        "result": "g(5) = 4{,}5"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "جد العدد الذي صورته $-1{,}8$ بالدالة $g$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-2",
+      "misconceptionSignatures": [
+        {
+          "value": "-1,62",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        },
+        {
+          "value": "2",
+          "id": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد المطلوب $x$ يحقق $g(x) = -1{,}8$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حلّ المعادلة $0{,}9x = -1{,}8$ : اقسم الطرفين على معامل $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{-1{,}8}{0{,}9} = -2$ .",
+        "incorrect": "لا تحسب صورة العدد المعطى: ابحث عن العدد $x$ الذي صورته هذا العدد."
+      },
+      "solution": {
+        "lines": [
+          "$g(x) = -1{,}8$ معناه $0{,}9x = -1{,}8$",
+          "$x = \\dfrac{-1{,}8}{0{,}9} = -2$"
+        ],
+        "result": "x = -2"
+      },
+      "timeSeconds": 90
     }
   ]
 }

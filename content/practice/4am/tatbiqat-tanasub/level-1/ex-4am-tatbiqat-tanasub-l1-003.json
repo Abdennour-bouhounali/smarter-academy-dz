@@ -4,25 +4,35 @@
   "level": 1,
   "metadata": {
     "title": "تمرين 19 — الفواكه في الكيس",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 4,
     "tags": [
-      "أخذ نسبة"
+      "أخذ نسبة مئوية"
     ],
     "source": {
       "type": "textbook",
       "elementId": "ex-19",
       "page": 73,
       "section": "أوظّف تعلّماتي",
-      "number": 19
+      "number": 19,
+      "adaptedFrom": "ex-4am-tatbiqat-tanasub-l1-003"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 73): يوجد في كيس 30 برتقالة و 10 تفاحات. أخذ أحمد 20% من البرتقالات وأخذت لينة 30% من التفّاحات. ما هو عدد الفواكه التي بقيت في الكيس؟"
+    "content": "يوجد في كيس 30 برتقالة و 10 تفاحات. أخذ أحمد 20% من البرتقالات، وأخذت لينة 30% من التفاحات."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "عدد البرتقالات التي أخذها أحمد:",
+      "step": "01",
+      "sub": "ا",
+      "lead": "احسب:",
+      "statement": "عدد البرتقالات التي أخذها أحمد.",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P1",
@@ -30,34 +40,39 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "عدد طبيعي",
       "expectedAnswer": "6",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+          "content": "أخذ $t\\%$ من مقدار يعني ضربه في $\\dfrac{t}{100}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+          "content": "احسب $30 \\times \\dfrac{20}{100}$ ."
         }
       ],
       "feedback": {
         "correct": "$30 \\times \\dfrac{20}{100} = 6$ برتقالات.",
-        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
-      }
+        "incorrect": "أخذ $t\\%$ من 30 هو $30 \\times \\dfrac{t}{100}$ ."
+      },
+      "solution": {
+        "lines": [
+          "$30 \\times \\dfrac{20}{100} = 6$",
+          "أخذ أحمد 6 برتقالات."
+        ]
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "عدد التفاحات التي أخذتها لينة:",
+      "step": "01",
+      "sub": "ب",
+      "statement": "عدد التفاحات التي أخذتها لينة.",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P1",
@@ -65,65 +80,74 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "عدد طبيعي",
       "expectedAnswer": "3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+          "content": "أخذ $t\\%$ من مقدار يعني ضربه في $\\dfrac{t}{100}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+          "content": "احسب $10 \\times \\dfrac{30}{100}$ ."
         }
       ],
       "feedback": {
         "correct": "$10 \\times \\dfrac{30}{100} = 3$ تفاحات.",
-        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
-      }
+        "incorrect": "أخذ $t\\%$ من 10 هو $10 \\times \\dfrac{t}{100}$ ."
+      },
+      "solution": {
+        "lines": [
+          "$10 \\times \\dfrac{30}{100} = 3$",
+          "أخذت لينة 3 تفاحات."
+        ]
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q3",
-      "statement": "عدد الفواكه التي بقيت في الكيس:",
+      "step": "02",
+      "statement": "استنتج عدد الفواكه التي بقيت في الكيس.",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "عدد طبيعي",
       "expectedAnswer": "31",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+          "content": "كان في الكيس 40 حبة فاكهة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+          "content": "اطرح من العدد الكلي ما أخذه أحمد وما أخذته لينة."
         }
       ],
       "feedback": {
-        "correct": "$40 - 6 - 3 = 31$ . لا نأخذ $50\\%$ من 40: النسبتان من مقدارين مختلفين.",
-        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
-      }
+        "correct": "$40 - (6 + 3) = 31$ .",
+        "incorrect": "العدد الكلي للفواكه 40 ؛ اطرح منه عدد ما أُخذ."
+      },
+      "solution": {
+        "lines": [
+          "عدد الفواكه في البداية: $30 + 10 = 40$",
+          "عدد الفواكه المأخوذة: $6 + 3 = 9$",
+          "$40 - 9 = 31$",
+          "بقيت في الكيس 31 حبة فاكهة."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

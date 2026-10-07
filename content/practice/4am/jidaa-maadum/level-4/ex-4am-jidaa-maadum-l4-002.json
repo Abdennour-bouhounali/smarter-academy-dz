@@ -3,8 +3,8 @@
   "lessonCode": "jidaa-maadum",
   "level": 4,
   "metadata": {
-    "title": "تمرين 18 — العبارة p",
-    "estimatedMinutes": 6,
+    "title": "العبارة p: متطابقة وعامل مشترك",
+    "estimatedMinutes": 12,
     "tags": [
       "متطابقات شهيرة",
       "تحليل",
@@ -16,170 +16,202 @@
       "page": 50,
       "section": "أوظّف تعلّماتي",
       "number": 18
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 50): $p = (9x^2 - 1) + 6x^2 + 7x - 3$ ، و $(3x - 1)(2x + 3) = 6x^2 + 7x - 3$ ."
+    "content": "نعلم أن: $(3x - 1)(2x + 3) = 6x^2 + 7x - 3$ . لتكن العبارة $p$ حيث:",
+    "formulas": [
+      "p = (9x^2 - 1) + 6x^2 + 7x - 3"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "تحليل $9x^2 - 1$ :",
+      "step": "01",
+      "lead": "حلّل العبارة $9x^2 - 1$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_jidaa-maadum_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$(9x - 1)(9x + 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
-        },
-        {
-          "id": "B",
-          "content": "$(3x - 1)(3x + 1)$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$(3x - 1)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
-        }
-      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $9x^2 - 1$ على الشكل $(3x - 1)(3x + m)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "1",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$9x^2 = (3x)^2$."
+          "content": "ابحث عن عامل مشترك، أو عن متطابقة شهيرة من الشكل $a^2 - b^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "العبارة من الشكل $a^2 - b^2$."
+          "content": "أخرج العامل المشترك (أو طبّق $a^2 - b^2 = (a - b)(a + b)$ )، واكتب ما بقي بين قوسين."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "عيّن $a$ و $b$ ثم استعمل $(a - b)(a + b)$."
+          "content": "بسّط ما بين القوسين بإشاراته، ثم قارن بالشكل المطلوب."
         }
       ],
       "feedback": {
-        "correct": "$9x^2 - 1 = (3x)^2 - 1^2 = (3x - 1)(3x + 1)$ .",
-        "incorrect": "تعرّف على المتطابقة ثم طبّق الخاصية، وعوّض كل حلّ لتتحقّق."
-      }
+        "correct": "$9x^2 - 1 = (3x - 1)(3x + 1)$ إذن $m = 1$ .",
+        "incorrect": "أخرج العامل المشترك أو طبّق المتطابقة الشهيرة، ثم بسّط ما بقي بين القوسين بإشاراته."
+      },
+      "solution": {
+        "lines": [
+          "$9x^2 - 1 = (3x)^2 - 1^2$"
+        ],
+        "result": "9x^2 - 1 = (3x - 1)(3x + 1)"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "تحليل p إلى جداء عاملين من الدرجة الأولى:",
+      "step": "02",
+      "lead": "استنتج تحليلا للعبارة $p$ إلى جداء عاملين من الدرجة الأولى.",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_jidaa-maadum_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$(3x - 1)(5x + 4)$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$(3x - 1)(x - 2)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
-        },
-        {
-          "id": "C",
-          "content": "$(3x + 1)(5x + 4)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
-        }
-      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $p$ على الشكل $(3x - 1)(5x + m)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض كل جزء من p بتحليله."
+          "content": "عوّض $9x^2 - 1$ و $6x^2 + 7x - 3$ بشكليهما المحلّلين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "يظهر العامل المشترك $(3x - 1)$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع ما بقي: $(3x + 1) + (2x + 3)$."
+          "content": "العامل $(3x - 1)$ مشترك بين الحدّين."
         }
       ],
       "feedback": {
-        "correct": "$p = (3x - 1)(3x + 1) + (3x - 1)(2x + 3) = (3x - 1)(5x + 4)$ .",
-        "incorrect": "حلّل أولًا ثم طبّق الخاصية، وعوّض كل حلّ في المعادلة لتتحقّق."
-      }
+        "correct": "$p = (3x - 1)(5x + 4)$ إذن $m = 4$ .",
+        "incorrect": "أخرج العامل المشترك أو طبّق المتطابقة الشهيرة، ثم بسّط ما بقي بين القوسين بإشاراته."
+      },
+      "solution": {
+        "lines": [
+          "$p = (3x - 1)(3x + 1) + (3x - 1)(2x + 3)$",
+          "$= (3x - 1)[(3x + 1) + (2x + 3)]$"
+        ],
+        "result": "p = (3x - 1)(5x + 4)"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q3",
-      "statement": "حلول المعادلة $p = 0$ :",
+      "step": "03",
+      "lead": "حل المعادلة: $p = 0$ .",
+      "statement": "الحلّ الأصغر:",
       "learningPoints": [
         {
           "code": "4am_jidaa-maadum_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "-4/5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\dfrac{4}{5}$ و $-\\dfrac{1}{3}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
-        },
-        {
-          "id": "B",
-          "content": "$\\dfrac{1}{3}$ فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
-        },
-        {
-          "id": "C",
-          "content": "$-\\dfrac{5}{4}$ و $3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
-        },
-        {
-          "id": "D",
-          "content": "$-\\dfrac{4}{5}$ و $\\dfrac{1}{3}$",
-          "isCorrect": true
+          "value": "-1/3",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الطرف الثاني $0$ ، لكن الطرف الأول ليس جداءً بعد."
+          "content": "لا تنشر الطرف الأول: استعمل تحليله إلى جداء عاملين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ابحث عن عامل مشترك بين الحدود."
+          "content": "بعد التحليل تصير المعادلة معادلة جداء معدوم: أحد العاملين على الأقل معدوم."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "حلّل الطرف الأول، ثم طبّق خاصية الجداء المعدوم."
+          "content": "حلّ كل معادلة من الدرجة الأولى، ثم رتّب الحلّين من الأصغر إلى الأكبر."
         }
       ],
       "feedback": {
-        "correct": "$3x - 1 = 0$ أو $5x + 4 = 0$ ، أي $x = \\dfrac{1}{3}$ أو $x = -\\dfrac{4}{5}$ .",
-        "incorrect": "حلّل أولًا ثم طبّق الخاصية، وعوّض كل حلّ في المعادلة لتتحقّق."
-      }
+        "correct": "$x = -\\dfrac{4}{5}$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى بإشاراتها، ثم رتّب الحلّين."
+      },
+      "solution": {
+        "lines": [
+          "المعادلة تُكتب: $(3x - 1)(5x + 4) = 0$",
+          "يعني أنّ: $3x - 1 = 0$ أو $5x + 4 = 0$",
+          "أي: $3x = 1$ أو $5x = -4$",
+          "ومنه: $x = \\dfrac{1}{3}$ أو $x = -\\dfrac{4}{5}$",
+          "إذن للمعادلة حلّان هما $-\\dfrac{4}{5}$ و $\\dfrac{1}{3}$"
+        ],
+        "result": "x = -\\dfrac{4}{5}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "الحلّ الأكبر:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "1/3",
+      "misconceptionSignatures": [
+        {
+          "value": "4/5",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المعادلة الثانية من الدرجة الأولى، ثم قارن الحلّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{1}{3}$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى بإشاراتها، ثم رتّب الحلّين."
+      },
+      "solution": {
+        "lines": [
+          "إذن للمعادلة حلّان هما $-\\dfrac{4}{5}$ و $\\dfrac{1}{3}$"
+        ],
+        "result": "x = \\dfrac{1}{3}"
+      },
+      "timeSeconds": 60
     }
   ]
 }

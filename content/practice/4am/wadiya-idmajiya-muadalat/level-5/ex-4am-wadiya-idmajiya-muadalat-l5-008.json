@@ -1,125 +1,416 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-008",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — متراجحتان معًا: الحصر والأعداد الصحيحة",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2024 — كراء ملعب جواري بعين الدفلى",
+    "estimatedMinutes": 16,
     "tags": [
-      "متراجحتان معًا",
-      "تمثيل بياني"
+      "ترييض",
+      "جدول",
+      "متراجحة",
+      "ثلاثة عروض",
+      "وضعية إدماجية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
-      "modelledOn": "ex-42"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "BEM 2024 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2024",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "نبحث عن الأعداد $x$ التي تحقّق المتراجحتين معًا: $-2x + 5 < 11$ و $3x - 1 \\leq 8$."
+    "content": "تقترح مؤسسة شبانية بعين الدفلى على فرق الأحياء ثلاثة عروض لكراء ملعب جواري لكرة القدم خلال شهر واحد:\n– العرض 1: دفع 1100DA لساعة الكراء.\n– العرض 2: دفع 700DA لساعة الكراء مع شراء بطاقة انخراط بـ 4000DA .\n– العرض 3: دفع مبلغ جزافي 15000DA مهما كان عدد الساعات.",
+    "table": {
+      "head": [
+        "عدد ساعات الكراء في الشهر",
+        "6",
+        "…"
+      ],
+      "rows": [
+        [
+          "المبلغ المدفوع حسب العرض 1 بـ DA",
+          "…",
+          "11000"
+        ],
+        [
+          "المبلغ المدفوع حسب العرض 2 بـ DA",
+          "…",
+          "…"
+        ],
+        [
+          "المبلغ المدفوع حسب العرض 3 بـ DA",
+          "15000",
+          "15000"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "قيم $x$ التي تحقّق المتراجحتين معًا هي ...",
+      "step": "01",
+      "sub": "ا",
+      "lead": "انقل وأتمم الجدول.",
+      "statement": "المبلغ حسب العرض 1 من أجل 6 ساعات:",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بـ DA",
+      "expectedAnswer": "6600",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب عدد الساعات في ثمن الساعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$6600$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولوية العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$1100 \\times 6 = 6600$"
+        ],
+        "result": "6600DA"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "sub": "ب",
+      "statement": "المبلغ حسب العرض 2 من أجل 6 ساعات:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بـ DA",
+      "expectedAnswer": "8200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب عدد الساعات في ثمن الساعة، ثم أضف ثمن البطاقة."
+        }
+      ],
+      "feedback": {
+        "correct": "$8200$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولوية العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$700 \\times 6 + 4000 = 4200 + 4000$"
+        ],
+        "result": "8200DA"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "01",
+      "sub": "ج",
+      "statement": "عدد الساعات الذي يكون من أجله المبلغ حسب العرض 1 هو 11000DA :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد الساعات",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المعادلة $1100x = 11000$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$10$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولوية العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$1100x = 11000$",
+          "$x = \\dfrac{11000}{1100}$"
+        ],
+        "result": "x = 10"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "01",
+      "sub": "د",
+      "statement": "المبلغ حسب العرض 2 من أجل هذا العدد من الساعات:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بـ DA",
+      "expectedAnswer": "11000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض عدد الساعات الذي وجدته في حساب العرض 2."
+        }
+      ],
+      "feedback": {
+        "correct": "$11000$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولوية العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$700 \\times 10 + 4000 = 7000 + 4000$",
+          "نلاحظ أن العرضين 1 و 2 متساويان من أجل 10 ساعات."
+        ],
+        "result": "11000DA"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q5",
+      "step": "02",
+      "lead": "ليكن $x$ عدد ساعات الكراء في الشهر، و $f(x)$ ، $g(x)$ ، $h(x)$ المبالغ المدفوعة حسب العروض 1 و 2 و 3 على الترتيب، حيث $f(x) = 1100x$ و $h(x) = 15000$ . عبّر عن $g(x)$ بدلالة $x$ .",
+      "statement": "$g(x)$ — العدد $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $g(x) = ax + b$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "700",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الذي يُدفع عن كل ساعة؟ هذا المبلغ يُضرب في $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 700$ .",
+        "incorrect": "اقرأ النص من جديد: ما الذي يُدفع مرة واحدة، وما الذي يُدفع عن كل وحدة؟"
+      },
+      "solution": {
+        "lines": [
+          "المبلغ الذي يُدفع عن كل ساعة يُضرب في $x$ ، إذن $a = 700$ ."
+        ],
+        "result": "a = 700"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q6",
+      "step": "02",
+      "statement": "$g(x)$ — العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $g(x) = ax + b$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "4000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الذي يُدفع مرة واحدة مهما كان $x$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 4000$ .",
+        "incorrect": "اقرأ النص من جديد: ما الذي يُدفع مرة واحدة، وما الذي يُدفع عن كل وحدة؟"
+      },
+      "solution": {
+        "lines": [
+          "المبلغ الثابت لا يتعلّق بـ $x$ ، إذن $g(x) = 700x + 4000$"
+        ],
+        "result": "g(x) = 700x + 4000"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q7",
+      "step": "03",
+      "sub": "ا",
+      "lead": "نريد معرفة متى يكون العرض 2 هو الأفضل.",
+      "statement": "ابتداءً من كم ساعة يكون العرض 2 أقل تكلفة من العرض 1؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد الساعات",
+      "expectedAnswer": "11",
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-MUTARAJIHA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة $g(x) < f(x)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل الحدّ نفسه حلّ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "ابتداءً من 11 ساعة.",
+        "incorrect": "حلّ المتراجحة $700x + 4000 < 1100x$ ، ثم خذ أصغر عدد طبيعي يحقّقها."
+      },
+      "solution": {
+        "lines": [
+          "$700x + 4000 < 1100x$",
+          "$4000 < 400x$",
+          "$x > 10$",
+          "إذن ابتداءً من 11 ساعة."
+        ],
+        "result": "11"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q8",
+      "step": "03",
+      "sub": "ب",
+      "statement": "ما هو أكبر عدد من الساعات يكون من أجله العرض 2 أقل تكلفة من العرض 3؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد الساعات",
+      "expectedAnswer": "15",
+      "misconceptionSignatures": [
+        {
+          "value": "16",
+          "id": "MISC-TARRID-TAHAQQUQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة $g(x) < h(x)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحدّ ليس عددًا طبيعيًا: خذ أكبر عدد طبيعي أصغر منه."
+        }
+      ],
+      "feedback": {
+        "correct": "15 ساعة.",
+        "incorrect": "حلّ المتراجحة $700x + 4000 < 15000$ ، ثم خذ أكبر عدد طبيعي يحقّقها."
+      },
+      "solution": {
+        "lines": [
+          "$700x + 4000 < 15000$",
+          "$700x < 11000$",
+          "$x < \\dfrac{110}{7}$ ، أي $x < 15{,}7\\ldots$",
+          "إذن أكبر عدد هو 15 ساعة."
+        ],
+        "result": "15"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q9",
+      "step": "04",
+      "statement": "فريق حيّ يكري الملعب 20 ساعة في الشهر. ما هو العرض الأفضل له؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$-3 < x \\leq 3$",
-          "isCorrect": true
+          "content": "العرض 1",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
         },
         {
           "id": "B",
-          "content": "$x < -3$",
+          "content": "العرض 2",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
         },
         {
           "id": "C",
-          "content": "$-3 \\leq x < 3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
-        },
-        {
-          "id": "D",
-          "content": "$x \\leq 3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+          "content": "العرض 3",
+          "isCorrect": true
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حل كل متراجحة."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "الأولى: $-2x < 6$ والقسمة على $-2$ تغيّر الاتجاه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الثانية: $3x \\leq 9$."
+          "content": "استعمل نتائج السؤال السابق، أو احسب المبالغ الثلاثة من أجل 20 ساعة."
         }
       ],
       "feedback": {
-        "correct": "$x > -3$ و $x \\leq 3$ : $-3 < x \\leq 3$.",
-        "incorrect": "الحد $-3$ ليس حلًا والحد 3 حلّ."
+        "correct": "العرض 3.",
+        "incorrect": "احسب المبالغ الثلاثة من أجل 20 ساعة ثم قارن."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 4
-    },
-    {
-      "id": "q2",
-      "statement": "كم عددًا صحيحًا يحقّق المتراجحتين معًا؟",
-      "learningPoints": [
-        {
-          "code": "4am_wadiya-idmajiya-muadalat_P1",
-          "role": "primary"
-        }
-      ],
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "6",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "استعمل الحصر السابق."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "اكتب الأعداد الصحيحة من الحدّ الأصغر إلى الأكبر."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "انتبه: أحد الحدّين غير مقبول."
-        }
-      ],
-      "feedback": {
-        "correct": "الأعداد $-2$ و $-1$ و 0 و 1 و 2 و 3: ستة أعداد.",
-        "incorrect": "العدد $-3$ غير مقبول والعدد 3 مقبول."
+      "solution": {
+        "lines": [
+          "$f(20) = 22000$ DA ، $g(20) = 18000$ DA ، $h(20) = 15000$ DA",
+          "إذن العرض 3 هو الأفضل."
+        ],
+        "result": "العرض 3"
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 4,
-      "misconceptionSignatures": [
-        {
-          "value": "7",
-          "id": "MISC-MUTARAJIHA-QAWS"
-        }
-      ]
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-008",
-  "lessonCode": "wadiya-idmajiya-muadalat",
-  "level": 5
+  ]
 }

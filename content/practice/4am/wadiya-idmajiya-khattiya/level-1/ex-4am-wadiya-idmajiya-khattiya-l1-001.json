@@ -4,7 +4,7 @@
   "level": 1,
   "metadata": {
     "title": "أؤكّد تعلّماتي 1 — المعامل من نقطة",
-    "estimatedMinutes": 2,
+    "estimatedMinutes": 4,
     "tags": [
       "معامل",
       "تمثيل بياني"
@@ -14,65 +14,110 @@
       "elementId": "qcm",
       "page": 74,
       "section": "أؤكّد تعلّماتي",
-      "number": 1
+      "number": 1,
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-khattiya-l1-001"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في كل حالة مما يلي اختر الإجابة الصحيحة، وبرّر اختيارك."
+    "content": "$f$ دالة خطية، تمثيلها البياني يشمل النقطة $A(2 ; 7)$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "معامل الدّالة الخطية التي تمثيلها البياني يشمل النقطة $A(2 ; 7)$ هو:",
+      "step": "01",
+      "statement": "عيّن معامل الدالة $f$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "3,5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
-        },
-        {
-          "id": "B",
-          "content": "$3{,}5$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$7$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+          "value": "2/7",
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "النقطة $A$ على المستقيم: ماذا يعني ذلك لصورة 2؟"
+          "content": "النقطة $A$ تنتمي إلى التمثيل البياني للدالة $f$ : ماذا يعني ذلك لصورة العدد 2؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب $f(2) = 7$ أي $a \\times 2 = 7$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المعامل هو الصورة مقسومة على العدد."
+          "content": "اكتب $f(2) = a \\times 2$ ثم ساوِها بترتيب النقطة $A$ ."
         }
       ],
       "feedback": {
-        "correct": "$a \\times 2 = 7$ ومنه $a = \\dfrac{7}{2} = 3{,}5$.",
-        "incorrect": "الفاصلة 2 والترتيب 7 ليسا المعامل: نقسم الترتيب على الفاصلة."
+        "correct": "$a \\times 2 = 7$ ومنه $a = 3{,}5$ .",
+        "incorrect": "المعامل هو ترتيب النقطة مقسوما على فاصلتها (وليس العكس)."
       },
-      "cognitiveDemand": "recall",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "$f(x) = ax$ ، والنقطة $A(2 ; 7)$ تنتمي إلى تمثيلها البياني، إذن $f(2) = 7$ .",
+          "$a \\times 2 = 7$ ومنه $a = \\dfrac{7}{2} = 3{,}5$ ."
+        ],
+        "result": "f(x) = 3{,}5x"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب صورة العدد $-4$ بالدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-14",
+      "misconceptionSignatures": [
+        {
+          "value": "14",
+          "id": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الصورة هي $f(-4) = a \\times (-4)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انتبه إلى قاعدة إشارات الجداء."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(-4) = 3{,}5 \\times (-4) = -14$ .",
+        "incorrect": "اضرب المعامل في العدد $-4$ مع مراعاة الإشارة."
+      },
+      "solution": {
+        "lines": [
+          "$f(-4) = 3{,}5 \\times (-4) = -14$"
+        ],
+        "result": "f(-4) = -14"
+      },
+      "timeSeconds": 60
     }
   ]
 }

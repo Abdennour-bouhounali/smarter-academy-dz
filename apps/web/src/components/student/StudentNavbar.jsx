@@ -1,6 +1,8 @@
 import { useContext } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { LogOut, Crown, ShieldCheck } from 'lucide-react';
+import SettingsButton from '../../features/settings/SettingsButton';
+import NotificationBell from '../../features/notifications/NotificationBell';
 import { useTranslation } from 'react-i18next';
 import SidebarToggle from '../common/SidebarToggle';
 import { AuthContext } from '../../context/AuthContext';
@@ -210,18 +212,34 @@ export default function StudentNavbar() {
             {!sidebarCollapsed && (
               <div className="min-w-0 flex-1 text-start">
                 <p className="font-space font-semibold text-slate-800 text-xs truncate">{getDisplayName(user)}</p>
-                <p className="font-inter text-slate-400 text-[11px]">{grade ? grade.name : 'Classe non définie'}</p>
+                <p className="font-inter text-slate-400 text-[11px] whitespace-nowrap">{grade ? grade.name : 'Classe non définie'}</p>
               </div>
             )}
           </NavLink>
-          <button
-            onClick={handleLogout}
-            aria-label={t('logout')}
-            title={t('logout')}
-            className="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors flex-shrink-0"
-          >
-            <LogOut size={15} />
-          </button>
+          {/* « الإعدادات » (2026-10-06) : à côté de la déconnexion, hors de la
+              liste — une page de réglages, pas une destination de travail. */}
+          {/* Réglages et déconnexion EMPILÉS : côte à côte, ils mangeaient la
+              place de la classe (« السنة الرابعة متوسط » était tronquée). */}
+          <div className={`flex flex-shrink-0 ${sidebarCollapsed ? 'flex-col items-center gap-2' : 'flex-col gap-0.5'}`}>
+            {/* La cloche : « صحّح أستاذك إجابتك » (2026-10-06), dans l'application seulement. */}
+            <NotificationBell
+              direction="up"
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+            />
+            <SettingsButton
+              iconOnly
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              testId="sidebar"
+            />
+            <button
+              onClick={handleLogout}
+              aria-label={t('logout')}
+              title={t('logout')}
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+            >
+              <LogOut size={15} />
+            </button>
+          </div>
         </div>
       </aside>
 
@@ -252,6 +270,12 @@ export default function StudentNavbar() {
               <span className="text-blue-700 font-space font-bold text-[11px]">{grade.name}</span>
             )}
           </Link>
+          {/* Pas de roue « الإعدادات » ici : sur téléphone elle serrait la barre (la
+              classe passait sur deux lignes). On y arrive par le profil (l'avatar). */}
+          <NotificationBell
+            align="end"
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 transition-colors"
+          />
           <button
             onClick={handleLogout}
             aria-label={t('logout')}

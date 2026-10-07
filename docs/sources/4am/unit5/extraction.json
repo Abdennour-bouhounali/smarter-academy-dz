@@ -963,7 +963,14 @@
     },
     "decimal": "(2{,}8 ; 2)"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "correction": {
+    "decidedBy": "owner",
+    "decidedOn": "2026-10-07",
+    "printed": "EA = 10cm ، AB = 4cm ، DC = 5cm ، محيط ABCD = 13,8cm",
+    "corrected": "EA = 6cm ، AB = 4cm ، DC = 5cm ، محيط ABCD = 25cm",
+    "note": "بالمعطيات المطبوعة المثلث EBC غير موجود: EB = 14 ، BC = 2,8 ، EC = 17,5 و 14 + 2,8 < 17,5 . بالمعطيات المصحّحة: $x = 10$ و $y = 6$ ، والمثلثان (10 ; 10 ; 12,5) و (6 ; 6 ; 7,5) موجودان (نفس معطيات تمرين الممارسة l4-003)."
+   }
   },
   {
    "id": "qcm",

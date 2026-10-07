@@ -3,117 +3,125 @@
   "lessonCode": "wadiya-idmajiya-khattiya",
   "level": 2,
   "metadata": {
-    "title": "مدة صعود مصعد هوائي",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2025 — قارب سياحي في خليج سيدي فرج",
+    "estimatedMinutes": 5,
     "tags": [
       "سرعة متوسطة",
-      "وحدات"
+      "مقادير مركبة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-khattiya_P1",
-      "modelledOn": "situation"
+      "modelledOn": "BEM 2025 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2025",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "حبل مصعد هوائي طوله $1300\\,\\mathrm{m}$ ، وسرعة المصعد $5\\,\\mathrm{m/s}$."
+    "content": "يقطع قارب سياحي في خليج سيدي فرج مسافة 18km في ساعة ونصف، بسرعة ثابتة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما مدة صعود واحد بالثواني؟",
+      "step": "01",
+      "statement": "احسب سرعة القارب بـ km/h.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد بالثواني",
-      "expectedAnswer": "260",
+      "answerFormat": "عدد: السرعة بـ km/h",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "value": "27",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
+        },
+        {
+          "value": "1/12",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المدة = المسافة ÷ السرعة."
+          "content": "ساعة ونصف = $1{,}5h$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المسافة بالمتر والسرعة بالمتر في الثانية."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم 1300 على 5."
+          "content": "السرعة = المسافة ÷ المدة."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{1300}{5} = 260\\,\\mathrm{s}$.",
-        "incorrect": "المدة هي المسافة مقسومة على السرعة، لا جداؤهما."
+        "correct": "$v = 18 \\div 1{,}5 = 12km/h$ .",
+        "incorrect": "اقسم المسافة على المدة بالساعات."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 1,
-      "misconceptionSignatures": [
-        {
-          "value": "6500",
-          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$v = \\dfrac{d}{t} = \\dfrac{18}{1{,}5} = 12$",
+          "سرعة القارب $12km/h$ ."
+        ],
+        "result": "v = 12km/h"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "هذه المدة بالدقائق والثواني هي:",
+      "step": "02",
+      "statement": "ما هي المدة (بالدقائق) التي يستغرقها القارب لقطع مسافة 5km بنفس السرعة؟",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المدة بالدقائق",
+      "expectedAnswer": "25",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "4 دقائق و 20 ثانية",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "2 دقيقة و 60 ثانية",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MAQADIR-WIHDA"
-        },
-        {
-          "id": "C",
-          "content": "26 دقيقة",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MAQADIR-WIHDA"
+          "value": "60",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الدقيقة 60 ثانية."
+          "content": "المدة = المسافة ÷ السرعة، بالساعات."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كم مرة 60 في 260؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب 260 على الشكل $60 \\times q + r$."
+          "content": "حوّل الساعات إلى دقائق: $1h = 60min$ ."
         }
       ],
       "feedback": {
-        "correct": "$260 = 4 \\times 60 + 20$.",
-        "incorrect": "الدقيقة 60 ثانية لا 100."
+        "correct": "$5 \\div 12 = \\dfrac{5}{12}h = 25min$ .",
+        "incorrect": "احسب المدة بالساعات ثم اضربها في 60."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "$t = \\dfrac{5}{12}h$",
+          "$\\dfrac{5}{12} \\times 60 = 25$",
+          "يستغرق القارب 25 دقيقة."
+        ],
+        "result": "t = 25min"
+      },
+      "timeSeconds": 90
     }
   ]
 }

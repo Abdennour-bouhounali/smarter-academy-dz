@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { UserCircle, Mail, GraduationCap, Sparkles, LogOut, Crown, ChevronDown } from 'lucide-react';
+import SettingsButton from '../../features/settings/SettingsButton';
 import { getAllGrades } from '@smarter-academy/core';
 import { AuthContext } from '../../context/AuthContext';
 import { useContentAvailability } from '../../context/ContentAvailabilityContext';
@@ -184,6 +185,12 @@ export default function Profil() {
           تفعيل الوصول
         </Link>
       </motion.div>
+
+      {/* « الإعدادات » — les réglages de l'élève (niveaux de l'espace d'exercices…). */}
+      <SettingsButton
+        className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-3.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+        testId="profile"
+      />
 
       {/* Logout */}
       <motion.button

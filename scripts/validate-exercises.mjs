@@ -33,6 +33,8 @@ import { validateSpaceFigure } from '../apps/web/src/lessons/common/components/s
 
 const argv = process.argv.slice(2);
 const STRICT = argv.includes('--strict');
+/** Feuilles par niveau d'une leçon au format examen (norme du déploiement BEM, 2026-10-06). */
+const EXAM_PER_LEVEL = 10;
 const AS_JSON = argv.includes('--json');
 
 // SMARTER_PRACTICE_ROOT : une autre racine de contenu — pour les essais de
@@ -89,6 +91,78 @@ const HINT_ORDER = ['look', 'direction', 'strategy'];
 const COGNITIVE_DEMANDS = new Set(['recall', 'apply', 'transfer', 'reason']);
 const TEMPLATE_ID_PATTERN = /^tpl-[a-z0-9]+(-[a-z0-9]+)*$/;
 
+/* ── Présentation « ورقة امتحان » (BEM, 2026-10-06) ─────────────────────
+   Un exercice qui porte `metadata.exam` est rendu comme une feuille de
+   شهادة التعليم المتوسط (ExamSheet.jsx). Contrat : EXERCISE_CONTRACT.md § BEM. */
+const EXAM_KINDS = new Set(['official', 'excerpt', 'modelled', 'adapted']);
+const EXAM_POINTS = /^\d{2}(,\d{1,2})?$/; // « 03 »، « 02,5 »، « 08 » — l'écriture du sujet
+const EXAM_STEP = /^0[1-6]$/;
+const EXAM_SUBS = new Set(['ا', 'ب', 'ج', 'د']);
+const BEM_YEARS = [2007, 2025];
+
+function validateExamPresentation(data, where) {
+  const exam = data.metadata?.exam;
+  const source = data.metadata?.source;
+  if (source?.type === 'bem') {
+    if (!Number.isInteger(source.year) || source.year < BEM_YEARS[0] || source.year > BEM_YEARS[1]) {
+      err(where, `metadata.source.year doit être une session du BEM ${BEM_YEARS.join('–')} (reçu ${JSON.stringify(source.year)})`);
+    }
+    if (![1, 2].includes(source.part)) err(where, 'metadata.source.part vaut 1 (الجزء الأول) ou 2 (الجزء الثاني)');
+  }
+  if (exam === undefined) return;
+  if (!exam || typeof exam !== 'object') { err(where, 'metadata.exam doit être un objet'); return; }
+  // La feuille d'examen (ExamSheet) ne dessine PAS `statement.visual` (CoordPlane des cartes classiques) :
+  // un repère ou une figure d'énoncé passe par `statement.figure` (GeoFigure), sinon il disparaît.
+  if (data.statement?.visual) err(where, 'statement.visual n\'est pas affiché sur une feuille d\'examen — utiliser statement.figure (GeoFigure)');
+  if (!EXAM_KINDS.has(exam.kind)) err(where, `metadata.exam.kind « ${exam.kind} » inconnu (attendus : ${[...EXAM_KINDS].join(', ')})`);
+  if (typeof exam.heading !== 'string' || !exam.heading.trim()) err(where, 'metadata.exam.heading est obligatoire (« التمرين الأول »، « الوضعية الإدماجية »…)');
+  if (typeof exam.points !== 'string' || !EXAM_POINTS.test(exam.points)) err(where, `metadata.exam.points s'écrit comme sur le sujet : « 03 »، « 02,5 » (reçu ${JSON.stringify(exam.points)})`);
+  if (exam.kind === 'official' || exam.kind === 'excerpt') {
+    if (source?.type !== 'bem') err(where, `un exercice « ${exam.kind} » cite sa session : metadata.source.type = "bem"`);
+    else if (exam.badge !== `BEM ${source.year}`) err(where, `metadata.exam.badge doit valoir « BEM ${source.year} » (reçu ${JSON.stringify(exam.badge)})`);
+  }
+  if (exam.kind === 'modelled') {
+    if (typeof exam.badge !== 'string' || !/^على منوال BEM (20[0-2]\d)$/.test(exam.badge)) {
+      err(where, `un exercice « modelled » porte le badge « على منوال BEM <année> » (reçu ${JSON.stringify(exam.badge)})`);
+    }
+  }
+  if (exam.kind === 'adapted' && exam.badge != null) err(where, 'un exercice « adapted » ne porte pas de badge BEM : il ne vient pas d\'un sujet');
+
+  const formulas = data.statement?.formulas;
+  if (formulas !== undefined && (!Array.isArray(formulas) || formulas.some((f) => typeof f !== 'string' || !f.trim()))) {
+    err(where, 'statement.formulas est une liste de formules LaTeX non vides');
+  }
+  const table = data.statement?.table;
+  if (table !== undefined) {
+    if (!Array.isArray(table?.head) || !Array.isArray(table?.rows)) err(where, 'statement.table = { head: [...], rows: [[...]] }');
+    else for (const [i, r] of table.rows.entries()) {
+      if (!Array.isArray(r) || r.length !== table.head.length) err(where, `statement.table.rows[${i}] doit avoir ${table.head.length} cellules`);
+    }
+  }
+
+  let lastStep = '00';
+  for (const q of data.questions ?? []) {
+    const qw = `${where} · ${q.id}`;
+    if (!EXAM_STEP.test(q.step ?? '')) err(qw, `step « ${q.step} » : une étape de sujet s'écrit 01 … 06`);
+    else if (q.step < lastStep) err(qw, `step « ${q.step} » recule après « ${lastStep} »`);
+    else lastStep = q.step;
+    if (q.sub !== undefined && !EXAM_SUBS.has(q.sub)) err(qw, `sub « ${q.sub} » : (ا) (ب) (ج) (د) seulement`);
+    if (q.lead !== undefined && (typeof q.lead !== 'string' || !q.lead.trim())) err(qw, 'lead est un texte non vide');
+    // Le chrono de l'étape (propriétaire, 2026-10-06) : un temps en secondes, de 30 s à 1 h.
+    if (q.timeSeconds !== undefined && !(Number.isInteger(q.timeSeconds) && q.timeSeconds >= 30 && q.timeSeconds <= 3600)) {
+      err(qw, `timeSeconds doit être un entier de 30 à 3600 (reçu ${JSON.stringify(q.timeSeconds)})`);
+    }
+    // « مراحل الحساب » : une zone de brouillon réglée au-dessus du champ (requise ou facultative).
+    if (q.work !== undefined && !['required', 'optional'].includes(q.work)) err(qw, `work « ${q.work} » : "required" ou "optional"`);
+    if (q.work !== undefined && ['selfCheck', 'choice', 'multiChoice'].includes(q.answerType)) err(qw, 'work n\'a de sens que pour une réponse construite');
+    const sol = q.solution;
+    if (!sol || !Array.isArray(sol.lines) || sol.lines.length === 0 || sol.lines.some((l) => typeof l !== 'string' || !l.trim())) {
+      err(qw, 'solution.lines est obligatoire sur une feuille d\'examen : le corrigé type, ligne par ligne');
+    }
+    if (sol?.result !== undefined && (typeof sol.result !== 'string' || !sol.result.trim())) err(qw, 'solution.result est une formule LaTeX non vide (encadrée)');
+  }
+}
+
 const errors = [];
 const warnings = [];
 const err = (where, msg) => errors.push(`${where}: ${msg}`);
@@ -104,6 +178,7 @@ function answerFromKey(q) {
     case 'multiChoice': return { choiceIds: (q.choices ?? []).filter((c) => c.isCorrect).map((c) => c.id) };
     case 'rational':
     case 'integerSet': return { value: Array.isArray(q.expectedAnswer) ? q.expectedAnswer.join(', ') : q.expectedAnswer };
+    case 'selfCheck': return { selfMark: 'correct' };
     default: return q.expectedAnswer; // affine {a,b}, interval {lo,…}, point {x,y}
   }
 }
@@ -223,6 +298,8 @@ function expectedAnswerParses(question) {
       return !!(ea && Rational.parse(ea.x) && Rational.parse(ea.y));
     case 'integerSet':
       return parseIntegerSet(ea) !== null;
+    case 'selfCheck':
+      return true; // pas de clé : l'élève se note après le corrigé type
     default:
       return false;
   }
@@ -365,6 +442,8 @@ function validateExercise(file, data, ctx) {
       }
     }
 
+    if (q.counted !== undefined && typeof q.counted !== 'boolean') err(qw, 'counted est un booléen (false = jugée mais hors maîtrise)');
+
     /* Mastery V2 — métadonnées du registre d'items (facultatives, typées) */
     if (q.difficulty !== undefined && !(Number.isInteger(q.difficulty) && q.difficulty >= 1 && q.difficulty <= 5)) {
       err(qw, `difficulty doit être un entier de 1 à 5 (reçu ${JSON.stringify(q.difficulty)})`);
@@ -403,6 +482,11 @@ function validateExercise(file, data, ctx) {
       if (wrongWithout.length) {
         warn(qw, `distracteurs sans misconception : ${wrongWithout.map((c) => c.id).join(', ')} — la cible §25 les veut porteurs de sens`);
       }
+    } else if (q.answerType === 'selfCheck') {
+      /* Auto-évaluation : pas de clé, un corrigé type obligatoire */
+      if (q.expectedAnswer !== undefined) err(qw, 'une question selfCheck n\'a pas d\'expectedAnswer : l\'élève se note sur le corrigé type');
+      if (!Array.isArray(q.solution?.lines) || q.solution.lines.length === 0) err(qw, 'une question selfCheck exige solution.lines (le corrigé type)');
+      if (q.counted === true) err(qw, 'une question selfCheck ne compte jamais pour la maîtrise : retirer counted: true');
     } else {
       /* Réponse construite */
       if (q.expectedAnswer === undefined || q.expectedAnswer === null) {
@@ -474,6 +558,7 @@ function validateExercise(file, data, ctx) {
     const validateFigure = data.statement.figure?.kind === 'space' ? validateSpaceFigure : validateGeoFigure;
     for (const e of validateFigure(data.statement.figure)) err(where, `statement.figure : ${e}`);
   }
+  validateExamPresentation(data, where);
   if (data.statement?.support && !SUPPORT_LABS.has(data.statement.support.lab)) {
     err(where, `statement.support.lab « ${data.statement.support.lab} » hors du registre fermé`);
   }
@@ -519,6 +604,7 @@ function main() {
   const ctx = { seenIds: new Map(), lessonIndex, misconceptions, primaryCoverage, templates: new Map() };
   const files = walkExerciseFiles(CONTENT_ROOT);
   const byLessonLevel = new Map();
+  const examCount = new Map();
 
   for (const file of files) {
     const read = readJson(file);
@@ -529,6 +615,7 @@ function main() {
     const levels = byLessonLevel.get(key);
     if (!levels.has(read.data.level)) levels.set(read.data.level, []);
     levels.get(read.data.level).push(read.data.id);
+    if (read.data.metadata?.exam) examCount.set(key, (examCount.get(key) ?? 0) + 1);
   }
 
   /* Minimum de contenu et couverture — mode strict seulement, pour que le tout
@@ -557,6 +644,35 @@ function main() {
         const msg = `leçon « ${lessonCode} » : learning points sans exercice « primary » — ${missing.join(', ')}`;
         STRICT ? err('couverture', msg) : warn('couverture', msg);
       }
+    }
+  }
+
+  /* Feuille d'examen BEM (content/practice/exam-style.json) : la bascule d'une
+     leçon vers la page des niveaux « examen ». Une leçon listée est activée et
+     TOUS ses exercices portent `metadata.exam` (sinon la page des niveaux
+     examen ouvrirait un exercice classique) ; en strict, 10 par niveau, la
+     norme du déploiement. Une leçon non listée dont la banque est déjà
+     convertie (en partie ou en totalité) n'est qu'avertie : elle garde la page
+     classique jusqu'à sa bascule. */
+  const examRead = existsSync(join(CONTENT_ROOT, 'exam-style.json')) ? readJson(join(CONTENT_ROOT, 'exam-style.json')) : { ok: true, data: [] };
+  const examStyle = examRead.ok && Array.isArray(examRead.data) ? examRead.data : null;
+  if (examStyle === null) err('exam-style.json', 'doit être un tableau de codes de leçon');
+  for (const lessonCode of examStyle ?? []) {
+    if (typeof lessonCode !== 'string') { err('exam-style.json', `entrée invalide ${JSON.stringify(lessonCode)}`); continue; }
+    if (!active.includes(lessonCode)) err('exam-style.json', `« ${lessonCode} » est au format examen mais sa pratique n'est pas activée (active.json)`);
+    const levels = byLessonLevel.get(lessonCode) ?? new Map();
+    const total = [...levels.values()].reduce((n, ids) => n + ids.length, 0);
+    const exam = examCount.get(lessonCode) ?? 0;
+    if (exam !== total) err('exam-style.json', `« ${lessonCode} » : ${total - exam} exercice(s) sur ${total} sans metadata.exam — convertir toute la banque avant la bascule`);
+    for (const level of LEVELS) {
+      const n = (levels.get(level) ?? []).length;
+      if (STRICT && n < EXAM_PER_LEVEL) err('exam-style.json', `« ${lessonCode} » : niveau ${level} n'a que ${n} feuille(s), il en faut ${EXAM_PER_LEVEL}`);
+    }
+  }
+  for (const [lessonCode, n] of examCount) {
+    if (!(examStyle ?? []).includes(lessonCode)) {
+      const total = [...(byLessonLevel.get(lessonCode) ?? new Map()).values()].reduce((m, ids) => m + ids.length, 0);
+      warn('exam-style.json', `« ${lessonCode} » : ${n}/${total} exercice(s) au format examen, leçon pas encore basculée (page classique)`);
     }
   }
 

@@ -1,109 +1,113 @@
 {
+  "id": "ex-4am-jidhr-tarbii-l2-008",
+  "lessonCode": "jidhr-tarbii",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — أتمم الجملة",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2018 — مثلث أحد أضلاعه جذر",
+    "estimatedMinutes": 5,
     "tags": [
-      "تعريف",
-      "مربع",
-      "جذر تربيعي"
+      "(√a)² = a",
+      "خاصية فيثاغورس"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_jidhr-tarbii_P1",
-      "modelledOn": "ex-1"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_jidhr-tarbii_P3",
+      "modelledOn": "BEM 2018 I-4"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2018",
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "انقل وأتمم كل جملة بعدد."
+    "content": "$TIC$ مثلث فيه: $TI = \\sqrt{11}cm$ ، $TC = 5cm$ و $CI = 6cm$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "1,3 هو الجذر التربيعي للعدد ...",
+      "step": "01",
+      "statement": "احسب $TI^2$ .",
       "learningPoints": [
         {
-          "code": "4am_jidhr-tarbii_P1",
+          "code": "4am_jidhr-tarbii_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري",
-      "expectedAnswer": "1.69",
+      "answerFormat": "عدد",
+      "expectedAnswer": "11",
+      "misconceptionSignatures": [
+        {
+          "value": "121",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "إذا كان $b$ هو الجذر التربيعي للعدد $a$ فإن $b^2 = a$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "العدد المطلوب هو مربع 1,3."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $1{,}3 \\times 1{,}3$."
+          "content": "من أجل كل عدد موجب $a$: $(\\sqrt{a})^2 = a$."
         }
       ],
       "feedback": {
-        "correct": "1,3 موجب و $1{,}3^2 = 1{,}69$، إذن 1,3 هو الجذر التربيعي للعدد 1,69.",
-        "incorrect": "مربع العدد هو جداؤه في نفسه، لا ضعفه."
+        "correct": "$TI^2 = (\\sqrt{11})^2 = 11$.",
+        "incorrect": "مربع $\\sqrt{11}$ هو 11."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "2.6",
-          "id": "MISC-MURABBA-DIF"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$TI^2 = (\\sqrt{11})^2$"
+        ],
+        "result": "TI^2 = 11"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "... هو الجذر التربيعي للعدد 0,16",
+      "step": "02",
+      "statement": "بيّن أن المثلث $TIC$ قائم.",
       "learningPoints": [
         {
-          "code": "4am_jidhr-tarbii_P1",
+          "code": "4am_jidhr-tarbii_P3",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "عدد عشري",
-      "expectedAnswer": "0.4",
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المطلوب عدد موجب مربعه 0,16."
+          "content": "احسب $TC^2$ و $CI^2$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما الجذر التربيعي للعدد 16؟"
+          "content": "قارن $CI^2$ بالمجموع $TI^2 + TC^2$."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ضع الفاصلة ثم تحقّق بالتربيع."
+          "content": "استعمل الخاصية العكسية لخاصية فيثاغورس."
         }
       ],
       "feedback": {
-        "correct": "0,4 موجب و $0{,}4^2 = 0{,}16$.",
-        "incorrect": "ربّع جوابك: هل تحصل على 0,16 بالضبط؟"
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى الخاصية المستعملة."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "0.04",
-          "id": "MISC-JIDHR-FASILA"
-        },
-        {
-          "value": "0.08",
-          "id": "MISC-JIDHR-NISF"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$CI^2 = 6^2 = 36$",
+          "$TI^2 + TC^2 = 11 + 5^2 = 11 + 25 = 36$",
+          "بما أن $CI^2 = TI^2 + TC^2$ فحسب الخاصية العكسية لخاصية فيثاغورس:"
+        ],
+        "result": "المثلث TIC قائم في T"
+      },
+      "timeSeconds": 150
     }
-  ],
-  "id": "ex-4am-jidhr-tarbii-l2-008",
-  "lessonCode": "jidhr-tarbii",
-  "level": 2
+  ]
 }

@@ -3,8 +3,8 @@
   "lessonCode": "mushkilat-jumla",
   "level": 1,
   "metadata": {
-    "title": "تدريب — نقاط الدوري",
-    "estimatedMinutes": 3,
+    "title": "انتصارات وتعادلات",
+    "estimatedMinutes": 7,
     "tags": [
       "ترييض",
       "كرة القدم",
@@ -15,99 +15,154 @@
       "reason": "practice_generation",
       "learningPoint": "4am_mushkilat-jumla_P1",
       "modelledOn": "challenge"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في البطولة المحترفة، يأخذ الفريق 3 نقاط عن كل فوز ونقطة عن كل تعادل. لعب فريق 10 مباريات دون أي خسارة وجمع 24 نقطة. نسمّي $x$ عدد الانتصارات و $y$ عدد التعادلات."
+    "content": "في البطولة المحترفة، يأخذ الفريق 3 نقاط عن كل انتصار ونقطة واحدة عن كل تعادل. لعب فريق 10 مباريات دون أي هزيمة وجمع 24 نقطة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المعلومة «جمع 24 نقطة» تُترجم بـ:",
+      "step": "01",
+      "lead": "نسمّي $x$ عدد الانتصارات و $y$ عدد التعادلات.",
+      "statement": "ترجم المعطيات بجملة معادلتين مجهولاها $x$ و $y$ .",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x + 3y = 24$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "B",
-          "content": "$3x + y = 24$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x + y = 24$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "كم نقطة يعطي الفوز؟ وكم يعطي التعادل؟"
+          "content": "معادلة تعدّ المباريات، ومعادلة تعدّ النقاط."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كل فوز يُضرب في 3 نقاط."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "النقاط = نقاط الانتصارات + نقاط التعادلات."
+          "content": "الانتصارات تعطي $3x$ نقطة."
         }
       ],
       "feedback": {
-        "correct": "نقاط الانتصارات $3x$ ونقاط التعادلات $y$ : المجموع 24.",
-        "incorrect": "24 عدد نقاط لا عدد مباريات."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "عدد المباريات (دون هزيمة): $x + y = 10$",
+          "عدد النقاط: $3x + y = 24$",
+          "ومنه الجملة: $\\begin{cases} x + y = 10 \\\\ 3x + y = 24 \\end{cases}$"
+        ],
+        "result": "\\begin{cases} x + y = 10 \\\\ 3x + y = 24 \\end{cases}"
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "كم مباراة فاز وكم مباراة تعادل؟ اكتب الثنائية $(x ; y)$ .",
+      "step": "02",
+      "lead": "جد عدد الانتصارات وعدد التعادلات.",
+      "statement": "عدد الانتصارات:",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
-      "expectedAnswer": {
-        "x": "7",
-        "y": "3"
-      },
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب معلومة عدد المباريات."
+          "content": "معامل $y$ هو نفسه في المعادلتين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اطرح المعادلتين: يختفي $y$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق بالنقاط."
+          "content": "اطرح المعادلة الأولى من الثانية طرفا لطرف."
         }
       ],
       "feedback": {
-        "correct": "$x + y = 10$ و $3x + y = 24$ : $2x = 14$ أي $x = 7$ و $y = 3$ .",
-        "incorrect": "تحقّق: عدد المباريات 10 وعدد النقاط 24."
-      }
+        "correct": "فاز الفريق في 7 مباريات.",
+        "incorrect": "بطرح $x + y = 10$ من $3x + y = 24$ نجد $2x = 14$ ."
+      },
+      "solution": {
+        "lines": [
+          "بطرح المعادلة الأولى من الثانية طرفا لطرف: $2x = 14$ ومنه $x = 7$",
+          "بالتعويض في المعادلة الأولى: $7 + y = 10$ ومنه $y = 3$",
+          "التحقق في النص: $7 + 3 = 10$ مباريات و $3 \\times 7 + 3 = 24$ نقطة.",
+          "إذن فاز الفريق في 7 مباريات وتعادل في 3 مباريات."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "عدد التعادلات:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "7",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المباريات العشر انتصارات أو تعادلات."
+        }
+      ],
+      "feedback": {
+        "correct": "تعادل الفريق في 3 مباريات، ونتحقق: $3 \\times 7 + 3 = 24$ نقطة.",
+        "incorrect": "عدد التعادلات $= 10 -$ عدد الانتصارات."
+      },
+      "solution": {
+        "lines": [
+          "بطرح المعادلة الأولى من الثانية طرفا لطرف: $2x = 14$ ومنه $x = 7$",
+          "بالتعويض في المعادلة الأولى: $7 + y = 10$ ومنه $y = 3$",
+          "التحقق في النص: $7 + 3 = 10$ مباريات و $3 \\times 7 + 3 = 24$ نقطة.",
+          "إذن فاز الفريق في 7 مباريات وتعادل في 3 مباريات."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

@@ -1,109 +1,156 @@
 {
+  "id": "ex-4am-jidhr-tarbii-l5-009",
+  "lessonCode": "jidhr-tarbii",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — عبارة من شهادة التعليم المتوسط",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2017 — ممر في حديقة",
+    "estimatedMinutes": 14,
     "tags": [
-      "إشارة",
-      "جذر المربع",
-      "تحضير الشهادة"
+      "تعريف الجذر التربيعي",
+      "وضعية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_jidhr-tarbii_P3",
-      "modelledOn": "now-23-1"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "BEM 2017 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2017",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "نعتبر العبارة $E = \\sqrt{(\\sqrt{3} - 2)^2} + \\sqrt{(\\sqrt{3} + 1)^2}$."
+    "content": "حديقة عمومية مربعة الشكل $ABCD$ مساحتها $900m^2$ . $M$ نقطة من الضلع $[BC]$ حيث $BM = 16m$ .\nيريد البستاني إنجاز ممر مستقيم $[AM]$ تكلفة تبليط المتر الطولي منه 1500DA ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما إشارة العدد $\\sqrt{3} - 2$؟",
+      "step": "01",
+      "statement": "احسب $a$ ، طول ضلع الحديقة.",
       "learningPoints": [
         {
-          "code": "4am_jidhr-tarbii_P3",
+          "code": "4am_jidhr-tarbii_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر (m)",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "موجب، لأن $\\sqrt{3}$ موجب",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-ISHARA"
-        },
-        {
-          "id": "B",
-          "content": "سالب، لأن $(\\sqrt{3})^2 = 3 < 4 = 2^2$ فالعدد $\\sqrt{3}$ أصغر من 2",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "معدوم، لأن $\\sqrt{3} = 2$",
-          "isCorrect": false
+          "value": "450",
+          "id": "MISC-JIDHR-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قارن $\\sqrt{3}$ بالعدد 2."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "قارن مربعيهما: $(\\sqrt{3})^2$ و $2^2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "عددان موجبان: الأكبر مربعه أكبر."
+          "content": "$a^2 = 900$ و $a$ موجب."
         }
       ],
       "feedback": {
-        "correct": "$3 < 4$ إذن $\\sqrt{3} < 2$ و $\\sqrt{3} - 2$ سالب.",
-        "incorrect": "كون $\\sqrt{3}$ موجبًا لا يكفي: قارنه بالعدد 2."
-      }
+        "correct": "$a = \\sqrt{900} = 30$ m.",
+        "incorrect": "طول الضلع هو العدد الموجب الذي مربعه 900."
+      },
+      "solution": {
+        "lines": [
+          "$a^2 = 900$ و $a$ موجب",
+          "$a = \\sqrt{900}$"
+        ],
+        "result": "a = 30m"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "احسب $E$.",
+      "step": "02",
+      "statement": "احسب طول الممر $AM$ .",
       "learningPoints": [
         {
-          "code": "4am_jidhr-tarbii_P3",
+          "code": "4am_jidhr-tarbii_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "3",
+      "answerFormat": "عدد بالمتر (m)",
+      "expectedAnswer": "34",
+      "misconceptionSignatures": [
+        {
+          "value": "46",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب كل جذر دون الرمز مستعملًا الإشارة."
+          "content": "المثلث $ABM$ قائم في $B$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\sqrt{(\\sqrt{3} - 2)^2} = 2 - \\sqrt{3}$ لأن $\\sqrt{3} - 2$ سالب."
+          "content": "احسب $AM^2$ بخاصية فيثاغورس."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$\\sqrt{3} + 1$ موجب؛ اجمع الحدين: $\\sqrt{3}$ يختفي."
+          "content": "$AM$ هو العدد الموجب الذي مربعه $AM^2$."
         }
       ],
       "feedback": {
-        "correct": "$E = (2 - \\sqrt{3}) + (\\sqrt{3} + 1) = 3$.",
-        "incorrect": "حدّد إشارة كل عدد داخل المربع قبل حذف الجذر."
-      }
+        "correct": "$AM^2 = 900 + 256 = 1156$ و $AM = 34$ m.",
+        "incorrect": "$AM \\neq AB + BM$: احسب $AM^2$ أولا."
+      },
+      "solution": {
+        "lines": [
+          "حسب خاصية فيثاغورس في المثلث $ABM$ القائم في $B$:",
+          "$AM^2 = AB^2 + BM^2 = 900 + 256 = 1156$",
+          "$AM = \\sqrt{1156}$ و $34^2 = 1156$"
+        ],
+        "result": "AM = 34m"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "احسب تكلفة تبليط الممر.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار (DA)",
+      "expectedAnswer": "51000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب طول الممر في تكلفة المتر الطولي."
+        }
+      ],
+      "feedback": {
+        "correct": "$34 \\times 1500 = 51000$ DA.",
+        "incorrect": "استعمل طول الممر الذي وجدته في السؤال 02."
+      },
+      "solution": {
+        "lines": [
+          "$34 \\times 1500 = 51000$"
+        ],
+        "result": "51000DA"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-jidhr-tarbii-l5-009",
-  "lessonCode": "jidhr-tarbii",
-  "level": 5
+  ]
 }

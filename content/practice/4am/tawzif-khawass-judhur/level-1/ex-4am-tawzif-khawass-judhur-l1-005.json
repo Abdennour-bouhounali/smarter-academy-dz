@@ -3,79 +3,85 @@
   "lessonCode": "tawzif-khawass-judhur",
   "level": 1,
   "metadata": {
-    "title": "تدريب — هل b أصغر ما يمكن؟",
-    "estimatedMinutes": 2,
+    "title": "على منوال BEM 2011 — مجموع على الشكل a√2",
+    "estimatedMinutes": 3,
     "tags": [
       "a√b",
-      "تعرّف"
+      "الخاصية التوزيعية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_tawzif-khawass-judhur_P1",
-      "modelledOn": "ex-18"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tawzif-khawass-judhur_P2",
+      "modelledOn": "BEM 2011 I-2"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2011",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من بين الكتابات التالية، واحدة فقط على الشكل $a\\sqrt{b}$ حيث $b$ عدد طبيعي أصغر ما يمكن."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هي الكتابة التي يكون فيها $b$ أصغر ما يمكن؟",
+      "step": "01",
+      "statement": "اكتب المجموع A على الشكل $a\\sqrt{2}$ (مع $a$ عدد طبيعي) حيث: $A = \\sqrt{50} + \\sqrt{18} - \\sqrt{8}$",
       "learningPoints": [
         {
-          "code": "4am_tawzif-khawass-judhur_P1",
+          "code": "4am_tawzif-khawass-judhur_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$2\\sqrt{12}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
-        },
-        {
-          "id": "B",
-          "content": "$5\\sqrt{18}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
-        },
-        {
-          "id": "C",
-          "content": "$3\\sqrt{7}$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$4\\sqrt{8}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+          "value": "10",
+          "id": "MISC-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "لكل كتابة، انظر إلى العدد تحت الجذر."
+          "content": "اكتب كل جذر على الشكل $k\\sqrt{2}$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هل يقبل العدد تحت الجذر القسمة على مربع تامّ أكبر من 1؟"
+          "content": "ابحث في كل مرة عن أكبر مربع تامّ يقسم العدد الذي تحت الجذر."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "جرّب القسمة على 4 ثم على 9."
+          "content": "اجمع المعاملات بالخاصية التوزيعية: $x\\sqrt{2} + y\\sqrt{2} - z\\sqrt{2} = (x + y - z)\\sqrt{2}$."
         }
       ],
       "feedback": {
-        "correct": "7 لا يقبل القسمة على أي مربع تامّ غير 1، أما $12 = 4 \\times 3$ و $18 = 9 \\times 2$ و $8 = 4 \\times 2$.",
-        "incorrect": "عدد تحت الجذر يقبل القسمة على 4 أو 9 ليس أصغر ما يمكن."
-      }
+        "correct": "$A = 5\\sqrt{2} + 3\\sqrt{2} - 2\\sqrt{2} = 6\\sqrt{2}$.",
+        "incorrect": "بسّط كل جذر أولًا إلى الشكل $k\\sqrt{2}$، ثم اجمع المعاملات بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{50} + \\sqrt{18} - \\sqrt{8}$",
+          "$A = \\sqrt{25 \\times 2} + \\sqrt{9 \\times 2} - \\sqrt{4 \\times 2}$",
+          "$A = 5\\sqrt{2} + 3\\sqrt{2} - 2\\sqrt{2}$",
+          "$A = (5 + 3 - 2)\\sqrt{2}$"
+        ],
+        "result": "A = 6\\sqrt{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

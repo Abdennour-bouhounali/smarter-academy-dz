@@ -1,125 +1,206 @@
 {
+  "id": "ex-4am-natiqa-ghayr-natiqa-l5-005",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — أوتار مثلثات قائمة",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2020 — أرض فلاح من سطيف",
+    "estimatedMinutes": 20,
     "tags": [
-      "فيثاغورس",
-      "تصنيف"
+      "وضعية",
+      "عدد ناطق",
+      "قيمة مقربة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
-      "modelledOn": null
+      "reason": "bem_modelled",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
+      "modelledOn": "BEM 2020 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2020",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "مثلث $ABC$ قائم في $A$ حيث $AB = 5$ $cm$ و $AC = 12$ $cm$ ، ومثلث $EFG$ قائم في $E$ حيث $EF = 4$ $cm$ و $EG = 6$ $cm$ ."
+    "content": "يملك فلاح من ولاية سطيف قطعة أرض مربعة الشكل مساحتها $1764m^2$ ، يريد إحاطتها بثلاثة صفوف من الأسلاك الشائكة.\n• تُباع الأسلاك في لفّات، طول اللفّة الواحدة $100m$ وثمنها 2800DA، ولا تُباع اللفّة مجزّأة.\n• يملك جاره قطعة أرض مربعة الشكل مساحتها $1800m^2$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "طول الوتر $BC$ :",
+      "step": "01",
+      "statement": "احسب طول ضلع قطعة أرض الفلاح.",
       "learningPoints": [
         {
-          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "code": "4am_natiqa-ghayr-natiqa_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بـ m)",
+      "expectedAnswer": "42",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "عدد ناطق، ويساوي 13 $cm$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "عدد ناطق، ويساوي 17 $cm$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-JAMA"
-        },
-        {
-          "id": "C",
-          "content": "ليس عددًا ناطقًا لأنه جذر تربيعي لعدد",
-          "isCorrect": false
+          "value": "882",
+          "id": "MISC-JIDHR-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "طبّق خاصية فيثاغورس في المثلث $ABC$ ."
+          "content": "طول الضلع هو العدد الموجب الذي مربعه 1764."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $BC^2$ ثم اسأل: هل هو مربع لعدد ناطق؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الجذر لا يتوزّع على الجمع."
+          "content": "$40^2 = 1600$ و $45^2 = 2025$ : رقم آحاد العدد 2 أو 8."
         }
       ],
       "feedback": {
-        "correct": "$BC^2 = 5^2 + 12^2 = 169 = 13^2$ إذن $BC = 13$ $cm$ : عدد ناطق.",
-        "incorrect": "احسب $BC^2$ بخاصية فيثاغورس، ثم ابحث عن عدد مربعه يساويه."
-      }
+        "correct": "$42^2 = 1764$ : طول الضلع 42m.",
+        "incorrect": "ابحث عن عدد طبيعي مربعه 1764 (بين 40 و 45)."
+      },
+      "solution": {
+        "lines": [
+          "$42^2 = 1764$ و $42 > 0$ ، إذن طول الضلع $\\sqrt{1764} = 42$"
+        ],
+        "result": "42 \\text{ m}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "طول الوتر $FG$ :",
+      "step": "02",
+      "statement": "احسب الطول الكلي للأسلاك اللازمة.",
       "learningPoints": [
         {
-          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "code": "4am_natiqa-ghayr-natiqa_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (بـ m)",
+      "expectedAnswer": "504",
+      "hints": [
         {
-          "id": "A",
-          "content": "ليس عددًا ناطقًا، ويساوي $\\sqrt{52}$ $cm$",
-          "isCorrect": true
+          "id": "h1",
+          "type": "look",
+          "content": "احسب محيط القطعة."
         },
         {
-          "id": "B",
-          "content": "عدد ناطق، ويساوي 10 $cm$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-JAMA"
+          "id": "h2",
+          "type": "direction",
+          "content": "السياج من ثلاثة صفوف."
+        }
+      ],
+      "feedback": {
+        "correct": "$3 \\times (4 \\times 42) = 504$ m.",
+        "incorrect": "الطول الكلي = 3 × المحيط."
+      },
+      "solution": {
+        "lines": [
+          "المحيط: $4 \\times 42 = 168$ أي $168m$",
+          "الطول الكلي: $3 \\times 168 = 504$"
+        ],
+        "result": "504 \\text{ m}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "☜ ما المبلغ الذي يدفعه الفلاح لشراء الأسلاك؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار (DA)",
+      "expectedAnswer": "16800",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب عدد اللفّات اللازمة: اللفّة لا تُباع مجزّأة."
         },
         {
-          "id": "C",
-          "content": "عدد ناطق، ويساوي 26 $cm$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-NISF"
+          "id": "h2",
+          "type": "direction",
+          "content": "خمس لفّات تعطي 500m فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "504 m تتطلب 6 لفّات: $6 \\times 2800 = 16800$ DA.",
+        "incorrect": "عدد اللفّات عدد طبيعي يكفي لكل الطول، ثم اضرب في ثمن اللفّة."
+      },
+      "solution": {
+        "lines": [
+          "$504 \\div 100 = 5{,}04$ : 5 لفّات لا تكفي ($500m$)، فيلزم 6 لفّات.",
+          "المبلغ: $6 \\times 2800 = 16800$"
+        ],
+        "result": "16800 \\text{ DA}"
+      },
+      "timeSeconds": 180
+    },
+    {
+      "id": "q4",
+      "step": "04",
+      "statement": "أعط القيمة المقربة إلى $10^{-1}$ بالزيادة لطول ضلع قطعة أرض الجار.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة (بـ m)",
+      "expectedAnswer": "42.5",
+      "misconceptionSignatures": [
+        {
+          "value": "42.4",
+          "id": "MISC-TAQRIB-NAQS-ZIYADA"
+        },
+        {
+          "value": "900",
+          "id": "MISC-JIDHR-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "طبّق خاصية فيثاغورس في المثلث $EFG$ ."
+          "content": "1800 ليس مربعًا لعدد ناطق: احصر $\\sqrt{1800}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $FG^2$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل العدد الذي وجدته مربع لعدد ناطق؟ قارنه بـ $7^2$ و $8^2$ ."
+          "content": "القيمة بالزيادة هي الأكبر من عددي الحصر."
         }
       ],
       "feedback": {
-        "correct": "$FG^2 = 4^2 + 6^2 = 52$ ، و $49 < 52 < 64$ : 52 ليس مربعًا لعدد ناطق، فـ $FG = \\sqrt{52}$ ليس ناطقًا.",
-        "incorrect": "احسب مربع الوتر أولًا، ثم طبّق المعيار."
-      }
+        "correct": "$42{,}4^2 = 1797{,}76 < 1800 < 1806{,}25 = 42{,}5^2$ .",
+        "incorrect": "القيمة بالزيادة هي العدد الأكبر من $\\sqrt{1800}$ في الحصر إلى $10^{-1}$ ."
+      },
+      "solution": {
+        "lines": [
+          "$42{,}4^2 = 1797{,}76$ و $42{,}5^2 = 1806{,}25$",
+          "$1797{,}76 < 1800 < 1806{,}25$ إذن $42{,}4 < \\sqrt{1800} < 42{,}5$"
+        ],
+        "result": "\\sqrt{1800} < 42{,}5"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
-  ],
-  "id": "ex-4am-natiqa-ghayr-natiqa-l5-005",
-  "lessonCode": "natiqa-ghayr-natiqa",
-  "level": 5
+  ]
 }

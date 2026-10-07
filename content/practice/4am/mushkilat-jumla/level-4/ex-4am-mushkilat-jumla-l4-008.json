@@ -3,145 +3,242 @@
   "lessonCode": "mushkilat-jumla",
   "level": 4,
   "metadata": {
-    "title": "تدريب — باقات الجيغا والميغا",
-    "estimatedMinutes": 6,
+    "title": "BEM 2009 — التمرين الرابع",
+    "estimatedMinutes": 13,
     "tags": [
+      "جملة",
       "ترييض",
-      "وحدات",
-      "هاتف"
+      "PGCD"
     ],
     "source": {
-      "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_mushkilat-jumla_P1",
-      "modelledOn": "act-3"
+      "type": "bem",
+      "year": 2009,
+      "part": 1,
+      "exercise": 4
+    },
+    "exam": {
+      "kind": "official",
+      "badge": "BEM 2009",
+      "heading": "التمرين الرابع",
+      "points": "03,5"
     }
   },
   "statement": {
-    "content": "تبيع شركة باقة «1 Go» بـ 100 DA وباقة «500 Mo» بـ 70 DA. اشترى أنيس 9 باقات مجموع سعتها 6 Go. نسمّي $x$ عدد باقات «1 Go» و $y$ عدد باقات «500 Mo» (1 Go = 1000 Mo)."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المعلومة «مجموع سعتها 6 Go» تُترجم بـ:",
+      "step": "01",
+      "statement": "حل الجملة : $\\begin{cases} x + y = 14 \\\\ x + 4y = 32 \\end{cases}$ .",
       "learningPoints": [
         {
-          "code": "4am_mushkilat-jumla_P1",
+          "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "point",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
+      "expectedAnswer": {
+        "x": "8",
+        "y": "6"
+      },
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x + 500y = 6$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-WIHDA"
-        },
-        {
-          "id": "B",
-          "content": "$1000x + 500y = 6000$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$1000x + 500y = 6$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-WIHDA"
+          "value": {
+            "x": "6",
+            "y": "8"
+          },
+          "id": "MISC-JUMLA-TARTIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في المعادلة الواحدة وحدة واحدة."
+          "content": "معامل $x$ هو نفسه في المعادلتين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "حوّل كل شيء إلى Mo ."
+          "content": "اضرب طرفي المعادلة الأولى في $-1$ ثم اجمع طرفا لطرف."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "6 Go = 6000 Mo ."
+          "content": "بعد إيجاد $y$ عوّض في المعادلة الأولى."
         }
       ],
       "feedback": {
-        "correct": "بالميغا: $1000x + 500y = 6000$ .",
-        "incorrect": "لا نجمع Go مع Mo : نحوّل أولا."
-      }
+        "correct": "الثنائية $(8 ; 6)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} x + y = 14 & ...(1) \\\\ x + 4y = 32 & ...(2) \\end{cases}$",
+          "بضرب طرفي المعادلة (1) في العدد $(-1)$ نجد:",
+          "$\\begin{cases} -x - y = -14 & ...(3) \\\\ x + 4y = 32 & ...(4) \\end{cases}$",
+          "بجمع (3) و (4) طرفا إلى طرف نجد: $3y = 18$",
+          "$\\dfrac{3y}{3} = \\dfrac{18}{3}$",
+          "$y = 6$",
+          "بتعويض قيمة $y$ في المعادلة (1) نجد: $x + 6 = 14$",
+          "$x = 14 - 6$",
+          "$x = 8$",
+          "إذن حل الجملة السابقة هو:"
+        ],
+        "result": "(8 ; 6)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "كم باقة من كل نوع؟ اكتب الثنائية $(x ; y)$ .",
+      "step": "02",
+      "statement": "جد القاسم المشترك الأكبر للعددين 500 و 125.",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
-      "expectedAnswer": {
-        "x": "3",
-        "y": "6"
-      },
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "125",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقسم معادلة السعة على 500."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "تحصل على $2x + y = 12$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اطرح منها $x + y = 9$ ."
+          "content": "هل يقسم العدد الأصغر العدد الأكبر؟"
         }
       ],
       "feedback": {
-        "correct": "$x = 3$ و $y = 6$ : $3000 + 3000 = 6000$ Mo.",
-        "incorrect": "أكمل حتى الثنائية."
-      }
+        "correct": "$500 = 125 \\times 4 + 0$ : العدد الأصغر قاسم للأكبر، فهو قاسمهما المشترك الأكبر.",
+        "incorrect": "إذا كان أحد العددين قاسما للآخر فهو قاسمهما المشترك الأكبر."
+      },
+      "solution": {
+        "lines": [
+          "بما أن العدد 125 قاسم للعدد 500 لأن $500 = 125 \\times 4 + 0$",
+          "فإن:"
+        ],
+        "result": "PGCD(125 ; 500) = 125"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q3",
-      "statement": "كم دفع أنيس (بالدينار)؟",
+      "step": "03",
+      "lead": "ملأ تاجر $4000g$ من الشاي في علب من صنف $125g$ و صنف $500g$ ، إذا علمت أنّ العدد الكلي للعلب هو 14 ، جِد عدد العلب لكل صنف (لاحظ أنّ $4000 = 125 \\times 32$ ).",
+      "statement": "عدد العلب من صنف $125g$ :",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "720",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "8",
+      "misconceptionSignatures": [
+        {
+          "value": "6",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ثمن باقات «1 Go» : عددها × 100."
+          "content": "سمِّ $x$ عدد العلب ذات $125g$ و $y$ عدد العلب ذات $500g$ ، واكتب معادلة للعدد ومعادلة للكتلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ثمن باقات «500 Mo» : عددها × 70."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع المبلغين."
+          "content": "اقسم طرفي معادلة الكتلة على 125 وقارن بجملة السؤال 01."
         }
       ],
       "feedback": {
-        "correct": "$3 \\times 100 + 6 \\times 70 = 300 + 420 = 720$ DA.",
-        "incorrect": "استعمل عدد كل باقة الذي وجدته."
-      }
+        "correct": "عدد العلب ذات $125g$ هو 8 علب.",
+        "incorrect": "معادلة الكتلة $125x + 500y = 4000$ تؤول، بالقسمة على 125، إلى المعادلة الثانية لجملة السؤال 01."
+      },
+      "solution": {
+        "lines": [
+          "نرمز بـ $x$ لعدد العلب ذات $125g$ ، ونرمز بـ $y$ لعدد العلب ذات $500g$ .",
+          "عدد كل العلب هو 14 أي: $x + y = 14$",
+          "وزن العلب ذات $125g$ هو: $125x$ ، ووزن العلب ذات $500g$ هو: $500y$",
+          "لإيجاد عدد العلب نحل الجملة التالية: $\\begin{cases} x + y = 14 & ...(1) \\\\ 125x + 500y = 4000 & ...(2) \\end{cases}$",
+          "بضرب طرفي المعادلة (2) في $\\dfrac{1}{125}$ (القسمة على 125) نجد: $\\begin{cases} x + y = 14 \\\\ x + 4y = 32 \\end{cases}$",
+          "ومنه حل الجملة هو نفسه حل جملة السؤال 01: $x = 8$ و $y = 6$ .",
+          "إذن عدد العلب ذات $125g$ هو 8 علب، و عدد العلب ذات $500g$ هو 6 علب."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 360
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "عدد العلب من صنف $500g$ :",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "value": "8",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الكلي للعلب 14."
+        }
+      ],
+      "feedback": {
+        "correct": "عدد العلب ذات $500g$ هو 6 علب، ونتحقق: $1000 + 3000 = 4000$ .",
+        "incorrect": "استعمل حل جملة السؤال 01: $y$ هو عدد العلب ذات $500g$ ."
+      },
+      "solution": {
+        "lines": [
+          "نرمز بـ $x$ لعدد العلب ذات $125g$ ، ونرمز بـ $y$ لعدد العلب ذات $500g$ .",
+          "عدد كل العلب هو 14 أي: $x + y = 14$",
+          "وزن العلب ذات $125g$ هو: $125x$ ، ووزن العلب ذات $500g$ هو: $500y$",
+          "لإيجاد عدد العلب نحل الجملة التالية: $\\begin{cases} x + y = 14 & ...(1) \\\\ 125x + 500y = 4000 & ...(2) \\end{cases}$",
+          "بضرب طرفي المعادلة (2) في $\\dfrac{1}{125}$ (القسمة على 125) نجد: $\\begin{cases} x + y = 14 \\\\ x + 4y = 32 \\end{cases}$",
+          "ومنه حل الجملة هو نفسه حل جملة السؤال 01: $x = 8$ و $y = 6$ .",
+          "إذن عدد العلب ذات $125g$ هو 8 علب، و عدد العلب ذات $500g$ هو 6 علب."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

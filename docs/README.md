@@ -124,6 +124,12 @@ may describe it, but they defer to this one.
   « سلسلة التفوق رقم 01 » sheet (25 items in the practice bank, 1 not
   integrated with its reason). Recipe: `EXERCISE_CONTRACT.md` § « Non-textbook
   sources — worksheets ».
+- `official-BREVET-exams/` — the BEM annals 2007–2025 and their solutions booklet (PDF, never
+  versioned). `sources/4am/bem-practice/annals-index.md` (+ `.json`) — the index of the whole corpus
+  (19 sessions, 95 exercises, the lesson that owns each). `sources/4am/bem-practice/brief-authors.md`
+  — the brief of the « exam sheet » practice, prototype `bahth-pgcd` then rolled out unit by unit
+  (2026-10-06; per-unit brief/lock/audit in `sources/4am/bem-practice/rollout/unit<N>/`). Contract:
+  `EXERCISE_CONTRACT.md` § « Présentation examen (BEM) » (switch: `content/practice/exam-style.json`).
 - [`reports/LESSON_ARCHITECTURE_AUDIT_2026-09-29.md`](./reports/LESSON_ARCHITECTURE_AUDIT_2026-09-29.md)
   — the end-to-end audit of the nine lessons, the shared lesson engine and the
   lesson docs that froze the reference architecture (31 defects fixed, the

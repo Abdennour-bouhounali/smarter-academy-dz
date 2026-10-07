@@ -1,10 +1,13 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l2-001",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 2,
   "metadata": {
-    "title": "تمرين 4 — المعادلة x² − 1 = 0 (أؤكّد تعلّماتي)",
-    "estimatedMinutes": 3,
+    "title": "تحليل ثم معادلة",
+    "estimatedMinutes": 6,
     "tags": [
-      "جداء معدوم",
-      "فرق مربعين"
+      "تحليل",
+      "معادلة جداء معدوم"
     ],
     "source": {
       "type": "textbook",
@@ -12,67 +15,146 @@
       "page": 52,
       "section": "أؤكّد تعلّماتي",
       "number": 4
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "في كل حالة اختر الإجابة الصحيحة، وبرّر اختيارك."
+    "content": "لتكن المعادلة ذات المجهول $x$ :",
+    "formulas": [
+      "x^2 - 1 = 0"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المعادلة $x^2 - 1 = 0$ تقبل ...",
+      "step": "01",
+      "lead": "حلّل العبارة $x^2 - 1$ إلى جداء عاملين.",
+      "statement": "العدد $n$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muadalat_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "حلين هما 1 و $-1$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "حلا واحدا هو 1",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
-        },
-        {
-          "id": "C",
-          "content": "حلا واحدا هو $-1$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
-        }
-      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب على الشكل $(x - 1)(x + n)$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "1",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$x^2 - 1$ فرق مربعين."
+          "content": "العبارة فرق مربعين: $x^2 - 1^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "حلّل: $x^2 - 1^2 = (x - 1)(x + 1)$."
+          "content": "استعمل المتطابقة $a^2 - b^2 = (a - b)(a + b)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$n = 1$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة لفرق مربعين."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 - 1 = x^2 - 1^2$",
+          "$= (x - 1)(x + 1)$"
+        ],
+        "result": "x^2 - 1 = (x - 1)(x + 1)"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "lead": "استنتج حلول المعادلة $x^2 - 1 = 0$ .",
+      "statement": "الحلّ الأصغر:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "-1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "يكون جداء معدومًا إذا كان أحد عامليه على الأقل معدومًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب معادلتين من الدرجة الأولى، ثم حلّ كل واحدة منهما."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "طبّق خاصية الجداء المعدوم على كل عامل."
+          "content": "قارن الحلّين، ثم اكتب الأصغر منهما."
         }
       ],
       "feedback": {
-        "correct": "$(x - 1)(x + 1) = 0$ يعني $x = 1$ أو $x = -1$.",
-        "incorrect": "العددان 1 و $-1$ مربعهما 1: لا تنس السالب."
+        "correct": "$x = -1$ .",
+        "incorrect": "كل عامل معدوم يعطي معادلة من الدرجة الأولى: انقل العدد ثم اقسم على معامل $x$ بإشارته."
       },
+      "solution": {
+        "lines": [
+          "لدينا: $(x - 1)(x + 1) = 0$",
+          "يكون جداء معدومًا إذا كان أحد عامليه على الأقل معدومًا.",
+          "من العامل الذي يعطي الحل الأصغر:",
+          "$x + 1 = 0$",
+          "$x = -1$"
+        ],
+        "result": "x = -1"
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "الحلّ الأكبر:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
       "cognitiveDemand": "apply",
-      "difficulty": 2
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المعادلة الثانية من الدرجة الأولى، ثم قارن الحلّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 1$ .",
+        "incorrect": "كل عامل معدوم يعطي معادلة من الدرجة الأولى: انقل العدد ثم اقسم على معامل $x$ بإشارته."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $(x - 1)(x + 1) = 0$",
+          "يعني أنّ: $x - 1 = 0$ أو $x + 1 = 0$",
+          "أي: $x = 1$ أو $x = -1$",
+          "إذن للمعادلة حلّان هما $-1$ و $1$ ."
+        ],
+        "result": "x = 1"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-muadalat-l2-001",
-  "lessonCode": "wadiya-idmajiya-muadalat",
-  "level": 2
+  ]
 }

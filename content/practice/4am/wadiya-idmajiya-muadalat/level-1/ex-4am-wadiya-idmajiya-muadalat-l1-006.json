@@ -1,9 +1,12 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-006",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — أجرة سيارة الأجرة",
-    "estimatedMinutes": 3,
+    "title": "أجرة سيارة الأجرة",
+    "estimatedMinutes": 5,
     "tags": [
-      "ترجمة",
+      "ترييض",
       "عبارة حرفية"
     ],
     "source": {
@@ -11,115 +14,118 @@
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
       "modelledOn": "situation"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "تحسب سيارة أجرة 50 دينارًا عند الركوب، ثم 30 دينارًا لكل كيلومتر. نسمّي $x$ عدد الكيلومترات المقطوعة."
+    "content": "تحسب سيارة أجرة 50DA عند الركوب، ثم 30DA لكل كيلومتر. نسمّي $x$ عدد الكيلومترات المقطوعة، و $y$ أجرة الرحلة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أجرة الرحلة بدلالة $x$ (بالدينار) هي ...",
+      "step": "01",
+      "lead": "عبّر عن $y$ بدلالة $x$ .",
+      "statement": "$y$ — العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muadalat_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$50 + 30x$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$80x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "$50x + 30$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-TARJAMA"
-        },
-        {
-          "id": "D",
-          "content": "$30 + x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $y = ax + b$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "30",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "مبلغ يُدفع مرّة واحدة ومبلغ يتكرّر."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "المبلغ الذي يتكرّر مع كل كيلومتر يُضرب في $x$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب المبلغ الثابت ثم أضف إليه ثمن الكيلومترات."
+          "content": "ما الذي يُدفع عن كل كيلومتر؟ هذا المبلغ يُضرب في $x$ ."
         }
       ],
       "feedback": {
-        "correct": "50 دينارًا عند الركوب مرّة واحدة، و 30 دينارًا لكل كيلومتر: $50 + 30x$.",
-        "incorrect": "المبلغ الثابت لا يُضرب في $x$."
+        "correct": "$a = 30$ .",
+        "incorrect": "اقرأ النص من جديد: ما الذي يُدفع مرة واحدة، وما الذي يُدفع عن كل وحدة؟"
       },
-      "cognitiveDemand": "recall",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "المبلغ الذي يُدفع عن كل كيلومتر يُضرب في $x$ ، إذن $a = 30$ ."
+        ],
+        "result": "a = 30"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "كم دينارًا ندفع لرحلة طولها 7km؟",
+      "step": "01",
+      "statement": "$y$ — العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muadalat_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "يُكتب $y = ax + b$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "50",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الذي يُدفع مرة واحدة مهما كان $x$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 50$ .",
+        "incorrect": "اقرأ النص من جديد: ما الذي يُدفع مرة واحدة، وما الذي يُدفع عن كل وحدة؟"
+      },
+      "solution": {
+        "lines": [
+          "المبلغ الثابت لا يتعلّق بـ $x$ ، إذن $y = 30x + 50$"
+        ],
+        "result": "y = 30x + 50"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب أجرة رحلة طولها 7km .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بـ DA",
       "expectedAnswer": "260",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ بعدد الكيلومترات."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب ثمن الكيلومترات أولًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "لا تنس مبلغ الركوب."
+          "content": "عوّض $x$ بالعدد 7 في عبارة $y$ ."
         }
       ],
       "feedback": {
-        "correct": "$50 + 30 \\times 7 = 50 + 210 = 260$ دينارًا.",
-        "incorrect": "نضرب 30 في عدد الكيلومترات ثم نضيف 50."
+        "correct": "$260$DA .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولوية العمليات."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 1,
-      "misconceptionSignatures": [
-        {
-          "value": "560",
-          "id": "MISC-WADIYA-TARJAMA"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$y = 30 \\times 7 + 50$",
+          "$y = 210 + 50$"
+        ],
+        "result": "260DA"
+      },
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-006",
-  "lessonCode": "wadiya-idmajiya-muadalat",
-  "level": 1
+  ]
 }

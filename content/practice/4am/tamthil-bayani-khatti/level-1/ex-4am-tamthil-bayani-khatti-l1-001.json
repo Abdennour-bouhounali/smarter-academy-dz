@@ -3,27 +3,35 @@
   "lessonCode": "tamthil-bayani-khatti",
   "level": 1,
   "metadata": {
-    "title": "نشاط 3 (ص 66) — النقطة A",
-    "estimatedMinutes": 4,
+    "title": "نشاط 3 — نقطة ثانية لتمثيل دالة خطية",
+    "estimatedMinutes": 5,
     "tags": [
       "تمثيل بياني",
-      "صورة"
+      "نقطة من التمثيل"
     ],
     "source": {
       "type": "textbook",
       "elementId": "act-3",
       "page": 66,
       "section": "أنشطة",
-      "number": 3
+      "number": 3,
+      "adaptedFrom": "ex-4am-tamthil-bayani-khatti-l1-001"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 66): نعتبر الدالة الخطية $f : x \\longmapsto 0{,}5x$ . المستوي مزوّد بمعلم متعامد ومتجانس مبدؤه O."
+    "content": "نعتبر الدالة الخطية $f$ حيث: $f(x) = 0{,}5x$ ، والمستوي منسوب إلى معلم متعامد ومتجانس $(O, \\vec{i}, \\vec{j})$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب $f(1)$ .",
+      "step": "01",
+      "statement": "احسب ترتيب النقطة $A$ من التمثيل البياني للدالة $f$ التي فاصلتها 2.",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P1",
@@ -31,34 +39,45 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
-      "expectedAnswer": "0,5",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "صورة عدد بالدالة الخطية $x \\longmapsto ax$ هي جداء هذا العدد في المعامل."
+          "content": "ترتيب نقطة من التمثيل البياني للدالة $f$ هو صورة فاصلتها بالدالة $f$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب العدد في المعامل مع الانتباه إلى الإشارة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "النقطة التي فاصلتها هذا العدد وترتيبها صورته تنتمي إلى التمثيل."
+          "content": "احسب $f(2)$ : اضرب الفاصلة في معامل الدالة."
         }
       ],
       "feedback": {
-        "correct": "$f(1) = 0{,}5 \\times 1 = 0{,}5$ .",
-        "incorrect": "اضرب 1 في المعامل."
-      }
+        "correct": "$f(2) = 0{,}5 \\times 2 = 1$ ، إذن $A(2 ; 1)$ .",
+        "incorrect": "ترتيب النقطة هو صورة فاصلتها: اضرب الفاصلة في المعامل، ولا تقسم."
+      },
+      "solution": {
+        "lines": [
+          "$f(2) = 0{,}5 \\times 2 = 1$",
+          "إذن ترتيب النقطة $A$ هو 1، أي $A(2 ; 1)$ ."
+        ],
+        "result": "A(2 ; 1)"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "النقطة $A(1 ; f(1))$ من تمثيل $f$ هي:",
+      "step": "02",
+      "statement": "مثّل بيانيا الدالة $f$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P1",
@@ -66,47 +85,33 @@
         }
       ],
       "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$(1 ; 0{,}5)$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$(0{,}5 ; 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
-        },
-        {
-          "id": "C",
-          "content": "$(1 ; 1{,}5)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-AFFINE"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "صورة عدد بالدالة الخطية $x \\longmapsto ax$ هي جداء هذا العدد في المعامل."
+          "content": "التمثيل البياني لدالة خطية مستقيم يشمل المبدأ $O$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب العدد في المعامل مع الانتباه إلى الإشارة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "النقطة التي فاصلتها هذا العدد وترتيبها صورته تنتمي إلى التمثيل."
+          "content": "يكفي تعيين نقطة ثانية من التمثيل بحساب صورة عدد غير معدوم."
         }
       ],
       "feedback": {
-        "correct": "الفاصلة 1 والترتيب صورتها $0{,}5$ .",
-        "incorrect": "الفاصلة أولًا ثم الترتيب، والترتيب هو الصورة."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "التمثيل البياني للدالة الخطية $f$ مستقيم يشمل المبدأ $O(0 ; 0)$ .",
+          "يكفي تعيين نقطة ثانية: $A(2 ; 1)$ .",
+          "المستقيم $(OA)$ هو التمثيل البياني للدالة $f$ ، ومعادلته $y = 0{,}5x$ ."
+        ]
+      },
+      "timeSeconds": 240
     }
   ]
 }

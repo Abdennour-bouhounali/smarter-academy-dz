@@ -1,68 +1,182 @@
 {
+  "id": "ex-4am-natiqa-ghayr-natiqa-l3-007",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — عدّ الجذور الناطقة",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2022 — التمرين الأول",
+    "estimatedMinutes": 8,
     "tags": [
-      "تصنيف",
-      "عدد عشري"
+      "عدد غير ناطق",
+      "قيمة مقربة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
-      "modelledOn": "act-2"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "BEM 2022 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2022",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "نعتبر الأعداد: $\\sqrt{0{,}16}$ ، $\\sqrt{1{,}6}$ ، $\\sqrt{16}$ ، $\\sqrt{160}$ ، $\\sqrt{1600}$ ."
+    "content": "$A$ و $B$ عددان حيث:",
+    "formulas": [
+      "A = \\sqrt{3} + 1 \\quad ; \\quad B = \\sqrt{3} - 1"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "كم عددًا ناطقًا من بين هذه الأعداد الخمسة؟",
+      "step": "01",
+      "statement": "بيّن أن $A \\times B$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_natiqa-ghayr-natiqa_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "3",
+      "answerFormat": "اكتب قيمة الجداء $A \\times B$",
+      "expectedAnswer": "2",
       "misconceptionSignatures": [
         {
-          "value": "5",
-          "id": "MISC-NATIQ-KULL-JIDHR"
-        },
-        {
-          "value": "2",
-          "id": "MISC-NATIQ-TABII-FAQAT"
+          "value": "8",
+          "id": "MISC-TARBI-JIDHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "لكل عدد تحت الجذر: هل هو مربع لعدد ناطق؟"
+          "content": "$(a + b)(a - b) = a^2 - b^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $0{,}4^2$ و $4^2$ و $40^2$ ، ثم اكتب 1,6 كسرًا مختزلًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "انتقال الفاصلة بمرتبة واحدة لا يحافظ على كون العدد مربعًا، أما بمرتبتين فيحافظ."
+          "content": "$(\\sqrt{3})^2 = 3$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{0{,}16} = 0{,}4$ و $\\sqrt{16} = 4$ و $\\sqrt{1600} = 40$ ناطقة؛ أما $1{,}6 = \\dfrac{8}{5}$ و 160 فليسا مربعين لعددين ناطقين.",
-        "incorrect": "اختبر كل عدد بالتربيع، ولا تكتفِ بظهور الرقمين 1 و 6."
-      }
+        "correct": "$A \\times B = (\\sqrt{3})^2 - 1^2 = 3 - 1 = 2$ .",
+        "incorrect": "انشر باستعمال المتطابقة الشهيرة، وتذكّر أن مربع $\\sqrt{3}$ هو 3."
+      },
+      "solution": {
+        "lines": [
+          "$A \\times B = (\\sqrt{3} + 1)(\\sqrt{3} - 1)$",
+          "$= (\\sqrt{3})^2 - 1^2$",
+          "$= 3 - 1$"
+        ],
+        "result": "A \\times B = 2"
+      },
+      "work": "required",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "هل $\\sqrt{A \\times B}$ عدد ناطق؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-KULL-JIDHR"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "answerFormat": "اختر جوابك، ثم قارن تبريرك بالحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل نتيجة السؤال 01."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل 2 مربع لعدد ناطق؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{A \\times B} = \\sqrt{2}$ و 2 ليس مربعًا لعدد ناطق: ليس ناطقًا.",
+        "incorrect": "قارن 2 بالمربعين التامين 1 و 4."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{A \\times B} = \\sqrt{2}$",
+          "$1^2 = 1 < 2 < 4 = 2^2$ : 2 ليس مربعًا لعدد ناطق.",
+          "إذن $\\sqrt{A \\times B}$ ليس عددًا ناطقًا."
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "أعط القيمة المقربة إلى $10^{-2}$ بالزيادة للعدد $\\sqrt{A \\times B}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقمين بعد الفاصلة",
+      "expectedAnswer": "1.42",
+      "misconceptionSignatures": [
+        {
+          "value": "1.41",
+          "id": "MISC-TAQRIB-NAQS-ZIYADA"
+        },
+        {
+          "value": "1",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الحاسبة، ثم تحقّق بالتربيع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القيمة بالزيادة أكبر من العدد."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}41^2 = 1{,}9881 < 2 < 2{,}0164 = 1{,}42^2$ .",
+        "incorrect": "القيمة بالزيادة هي العدد الأكبر في الحصر إلى $10^{-2}$ ."
+      },
+      "solution": {
+        "lines": [
+          "$1{,}41^2 = 1{,}9881$ و $1{,}42^2 = 2{,}0164$",
+          "$1{,}9881 < 2 < 2{,}0164$ إذن $1{,}41 < \\sqrt{2} < 1{,}42$"
+        ],
+        "result": "\\sqrt{A \\times B} < 1{,}42"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-natiqa-ghayr-natiqa-l3-007",
-  "lessonCode": "natiqa-ghayr-natiqa",
-  "level": 3
+  ]
 }

@@ -1,35 +1,51 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l1-007",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — مربّع ضلعه جذر",
-    "estimatedMinutes": 2,
+    "title": "مربع ضلعه جذر",
+    "estimatedMinutes": 4,
     "tags": [
-      "وضعية إدماجية",
-      "مربع الجذر",
-      "محيط"
+      "مربع جذر",
+      "a√b"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
       "modelledOn": null
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "مربّع طول ضلعه $\\sqrt{8}\\,cm$."
+    "content": "مربع طول ضلعه $\\sqrt{8}cm$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هي مساحة هذا المربّع (بالسنتيمتر المربع)؟",
+      "step": "01",
+      "statement": "احسب مساحة هذا المربع.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (بالسنتيمتر المربع)",
+      "answerFormat": "عدد طبيعي: المساحة بـ $cm^2$",
       "expectedAnswer": "8",
+      "misconceptionSignatures": [
+        {
+          "value": "64",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
@@ -39,84 +55,66 @@
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما هو $(\\sqrt{8})^2$؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "مربع الجذر التربيعي لعدد موجب يساوي هذا العدد."
+          "content": "ما هو $(\\sqrt{a})^2$ من أجل $a \\geq 0$ ؟"
         }
       ],
       "feedback": {
-        "correct": "$(\\sqrt{8})^2 = 8$: المساحة $8\\,cm^2$.",
-        "incorrect": "مربع الجذر التربيعي للعدد يعيد العدد نفسه."
+        "correct": "$(\\sqrt{8})^2 = 8$ ، إذن المساحة $8cm^2$ .",
+        "incorrect": "مربع الجذر التربيعي لعدد موجب هو هذا العدد نفسه."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "64",
-          "id": "MISC-TARBI-JIDHR"
-        }
-      ],
-      "cognitiveDemand": "recall"
+      "solution": {
+        "lines": [
+          "المساحة: $(\\sqrt{8})^2$"
+        ],
+        "result": "8cm^2"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "محيط هذا المربّع (بالسنتيمتر) هو ...",
+      "step": "02",
+      "statement": "اكتب محيط هذا المربع على الشكل $a\\sqrt{2}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "8",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$32$",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$\\sqrt{32}$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$8\\sqrt{2}$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$2\\sqrt{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUAMIL-MANSI"
+          "value": "2",
+          "id": "MISC-MUAMIL-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المحيط أربعة أضعاف الضلع."
+          "content": "المحيط هو $4\\sqrt{8}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "بسّط $\\sqrt{8}$ أولًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$8 = 4 \\times 2$."
+          "content": "اكتب $\\sqrt{8}$ على الشكل $k\\sqrt{2}$ ثم اضرب في 4."
         }
       ],
       "feedback": {
-        "correct": "$4\\sqrt{8} = 4 \\times 2\\sqrt{2} = 8\\sqrt{2}$.",
-        "incorrect": "بسّط الضلع ثم اضربه في 4 دون أن تنسى المعامل."
+        "correct": "$4\\sqrt{8} = 4 \\times 2\\sqrt{2} = 8\\sqrt{2}$",
+        "incorrect": "المحيط أربعة أضعاف الضلع: لا تنس المعامل 4 بعد تبسيط $\\sqrt{8}$ ."
       },
-      "cognitiveDemand": "recall"
+      "solution": {
+        "lines": [
+          "المحيط: $4\\sqrt{8} = 4\\sqrt{4 \\times 2}$",
+          "$= 4 \\times 2\\sqrt{2}$"
+        ],
+        "result": "8\\sqrt{2}\\,cm"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l1-007",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 1
+  ]
 }

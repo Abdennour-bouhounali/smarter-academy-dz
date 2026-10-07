@@ -3,89 +3,175 @@
   "lessonCode": "tafsir-bayani-jumla",
   "level": 2,
   "metadata": {
-    "title": "قراءة نقطة التقاطع",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2008 — المستقيم (AB) والمستقيم (Δ)",
+    "estimatedMinutes": 7,
     "tags": [
-      "قراءة بيانية"
+      "نقطة التقاطع",
+      "عبارة دالة تآلفية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_tafsir-bayani-jumla_P2",
-      "modelledOn": "act-5"
+      "modelledOn": "BEM 2008 I-4 (02، 03ب)"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2008",
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "المستقيمان (d1) و (d2) يمثّلان معادلتي الجملة $\\begin{cases} y = x - 2 \\\\ y = -2x + 7 \\end{cases}$ .",
-    "visual": {
-      "range": {
-        "xMin": -1,
-        "xMax": 5,
-        "yMin": -3,
-        "yMax": 7
-      },
-      "unit": 26.0,
-      "functions": [
-        {
-          "id": "d1",
-          "a": 1.0,
-          "b": -2.0,
-          "label": "(d1)",
-          "tone": "indigo"
-        },
-        {
-          "id": "d2",
-          "a": -2.0,
-          "b": 7.0,
-          "label": "(d2)",
-          "tone": "amber"
-        }
-      ],
-      "xStep": 1,
-      "yStep": 1,
-      "frozen": true,
-      "ariaLabel": "المستقيمان (d1) و (d2) اللذان يمثّلان معادلتي الجملة",
-      "caption": false
-    }
+    "content": "المستوي منسوب إلى معلم متعامد و متجانس $(O , \\vec{i} , \\vec{j})$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "اقرأ على الشكل حلّ الجملة: $(x ; y)$ =",
+      "step": "01",
+      "lead": "علّم النقطتين $A(0 ; 5)$ و $B(5 ; 0)$ ، ثم حدّد العبارة الجبرية للدالة التآلفية $f$ التي تمثيلها البياني هو المستقيم $(AB)$ .",
+      "statement": "أعط العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_tafsir-bayani-jumla_P2",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
-      "expectedAnswer": {
-        "x": "3",
-        "y": "1"
-      },
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-1",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث على الشكل عن النقطة المشتركة بين المستقيمين."
+          "content": "$f(x) = ax + b$ : النقطة $A$ تقع على محور التراتيب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اقرأ فاصلتها على محور الفواصل ثم ترتيبها على محور التراتيب."
+          "content": "معامل التوجيه هو تغيّر الترتيب مقسوما على تغيّر الفاصلة بين $A$ و $B$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{0 - 5}{5 - 0}$ .",
+        "incorrect": "اقسم تغيّر الترتيب على تغيّر الفاصلة (بالترتيب نفسه)، وانتبه للإشارة."
+      },
+      "solution": {
+        "lines": [
+          "$f(x) = ax + b$",
+          "$a = \\dfrac{0 - 5}{5 - 0} = -1$",
+          "$A(0 ; 5)$ على محور التراتيب، إذن $b = 5$ .",
+          "ومنه: $f(x) = -x + 5$"
+        ],
+        "result": "f(x) = -x + 5"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "أعط العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$b = f(0)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابحث بين النقطتين عن النقطة التي فاصلتها 0."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = -x + 5$ .",
+        "incorrect": "العدد $b$ هو ترتيب نقطة المستقيم التي فاصلتها 0."
+      },
+      "solution": {
+        "lines": [
+          "$f(x) = ax + b$",
+          "$a = \\dfrac{0 - 5}{5 - 0} = -1$",
+          "$A(0 ; 5)$ على محور التراتيب، إذن $b = 5$ .",
+          "ومنه: $f(x) = -x + 5$"
+        ],
+        "result": "f(x) = -x + 5"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "ليكن المستقيم $(\\Delta)$ التمثيل البياني للدالة $g$ حيث: $g(x) = \\dfrac{1}{2}x + 2$ .",
+      "statement": "جد إحداثيي النقطة $M$ نقطة تقاطع المستقيمين $(AB)$ و $(\\Delta)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "point",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : الفاصلة ثم الترتيب (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": {
+        "x": "2",
+        "y": "3"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "3",
+            "y": "2"
+          },
+          "id": "MISC-JUMLA-BAYANI-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فاصلة نقطة التقاطع تجعل العبارتين متساويتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل المعادلة التي تساوي بين العبارتين، ثم عوّض الحل في إحدى العبارتين."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "تحقّق بتعويض الثنائية في المعادلتين: الفاصلة أولًا ثم الترتيب."
+          "content": "اكتب الثنائية $(x ; y)$ : الفاصلة أولا ثم الترتيب."
         }
       ],
       "feedback": {
-        "correct": "الحل $(3 ; 1)$ ، ونتحقّق: $-3 + 1 = -2$ و $2 \\times 3 + 1 = 7$.",
-        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
-      }
+        "correct": "هي إحداثيات نقطة تقاطع المستقيمين، أي حل الجملة.",
+        "incorrect": "ساوِ بين العبارتين لإيجاد الفاصلة، ثم احسب الترتيب بالتعويض؛ واكتب الفاصلة أولا."
+      },
+      "solution": {
+        "lines": [
+          "فاصلة نقطة التقاطع تحقق: $-x + 5 = 0{,}5x + 2$",
+          "$1{,}5x = 3$",
+          "$x = 2$",
+          "نعوّض: $y = -2 + 5 = 3$",
+          "تحقق: $0{,}5 \\times 2 + 2 = 3$",
+          "إذن نقطة التقاطع هي $(2 ; 3)$ ، وهي حل الجملة."
+        ],
+        "result": "(2 ; 3)"
+      },
+      "work": "optional",
+      "timeSeconds": 210
     }
   ]
 }

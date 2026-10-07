@@ -1,7 +1,10 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l1-006",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — مربع عدد سالب",
-    "estimatedMinutes": 2,
+    "title": "العدد السالب الذي مربعه 64",
+    "estimatedMinutes": 3,
     "tags": [
       "مربع عدد",
       "عددان متعاكسان"
@@ -11,6 +14,12 @@
       "reason": "practice_generation",
       "learningPoint": "4am_muadalat-x-murabba_P1",
       "modelledOn": "act-3"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
@@ -19,6 +28,7 @@
   "questions": [
     {
       "id": "q1",
+      "step": "01",
       "statement": "احسب $(-9)^2$.",
       "learningPoints": [
         {
@@ -26,7 +36,7 @@
           "role": "primary"
         }
       ],
-      "cognitiveDemand": "recall",
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد صحيح نسبي",
       "expectedAnswer": "81",
@@ -48,34 +58,37 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "$(-9)^2$ هو جداء $-9$ في نفسه."
+          "content": "$(-9)^2 = (-9) \\times (-9)$."
         },
         {
           "id": "h2",
           "type": "direction",
           "content": "جداء عددين سالبين عدد موجب."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $9 \\times 9$ ثم حدّد الإشارة."
         }
       ],
       "feedback": {
-        "correct": "$(-9)^2 = (-9) \\times (-9) = 9^2$.",
-        "incorrect": "المربع جداء العدد في نفسه، وليس ضعفه، وهو موجب."
-      }
+        "correct": "$(-9)^2 = 81$، وهو أيضًا مربع 9.",
+        "incorrect": "مربع العدد هو جداؤه في نفسه، وجداء عددين سالبين موجب."
+      },
+      "solution": {
+        "lines": [
+          "$(-9)^2 = (-9) \\times (-9)$"
+        ],
+        "result": "(-9)^2 = 81"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "ما هو العدد السالب الذي مربعه 64؟",
+      "step": "02",
+      "statement": "جد العدد السالب الذي مربعه 64.",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P1",
           "role": "primary"
         }
       ],
-      "cognitiveDemand": "recall",
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد صحيح نسبي",
       "expectedAnswer": "-8",
@@ -93,26 +106,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث أولا عن العدد الموجب الذي مربعه 64."
+          "content": "ما هو العدد الموجب الذي مربعه 64؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "العددان المتعاكسان لهما نفس المربع."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "خذ معاكس العدد الموجب الذي وجدته."
+          "content": "للعدد ومعاكسه نفس المربع."
         }
       ],
       "feedback": {
-        "correct": "$8^2 = 64$ و $(-8)^2 = 64$: العدد السالب هو $-8$.",
-        "incorrect": "المطلوب هو العدد السالب، وليس نصف 64."
-      }
+        "correct": "$(-8)^2 = 64$: العدد السالب المطلوب هو $-8$.",
+        "incorrect": "ابحث أولًا عن العدد الموجب الذي مربعه 64، ثم خذ معاكسه."
+      },
+      "solution": {
+        "lines": [
+          "$8^2 = 64$ و $(-8)^2 = 64$",
+          "العدد السالب الذي مربعه 64 هو:"
+        ],
+        "result": "-8"
+      },
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l1-006",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 1
+  ]
 }

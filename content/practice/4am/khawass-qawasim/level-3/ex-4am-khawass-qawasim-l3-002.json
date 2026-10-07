@@ -1,7 +1,10 @@
 {
+  "id": "ex-4am-khawass-qawasim-l3-002",
+  "lessonCode": "khawass-qawasim",
+  "level": 3,
   "metadata": {
     "title": "تمرين 14 — 7 و 217",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 5,
     "tags": [
       "خاصية 1",
       "مضاعفات"
@@ -12,63 +15,103 @@
       "page": 14,
       "section": "أوظّف تعلّماتي",
       "number": 14
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "بيّن أنّ 7 من قواسم 217. استنتج أن 7 من قواسم 21 700 000."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "لماذا 7 من قواسم 21 700 000؟",
+      "step": "01",
+      "statement": "بيّن أن 7 من قواسم العدد 217: اكتب 217 على الشكل $7 \\times k$ حيث $k$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_khawass-qawasim_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "لأن 21 700 000 = 217 × 100 000 و 7 يقسم 217، فهو يقسم كل مضاعف له",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "لأن 21 700 000 ينتهي بأصفار",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "لأن 7 يقسم 21",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة $k$ فقط (عدد طبيعي)",
+      "expectedAnswer": "31",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "217 = 7 × 31."
+          "content": "أجرِ القسمة الإقليدية للعدد 217 على 7: يجب أن يكون الباقي معدومًا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "21 700 000 = 217 × 100 000."
+          "content": "حاصل هذه القسمة هو العدد $k$ المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$217 = 7 \\times 31$ ، إذن 7 يقسم 217.",
+        "incorrect": "ابحث عن العدد الطبيعي $k$ الذي إذا ضُرب في 7 أعطى 217."
+      },
+      "solution": {
+        "lines": [
+          "$217 = 7 \\times 31$"
+        ],
+        "result": "217 = 7 \\times 31"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج أن 7 من قواسم العدد 21 700 000: اكتب هذا العدد على الشكل $7 \\times K$ حيث $K$ عدد طبيعي.",
+      "learningPoints": [
+        {
+          "code": "4am_khawass-qawasim_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة $K$ فقط (عدد طبيعي)",
+      "expectedAnswer": "3100000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب 21 700 000 على شكل جداء يظهر فيه العدد 217."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قاسم عدد يقسم كل مضاعف له (الخاصية 1)."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "قاسم عدد يقسم كل مضاعف له (خاصية 1)."
+          "content": "عوّض 217 بكتابته من السؤال 01."
         }
       ],
       "feedback": {
-        "correct": "إذا كان n يقسم a فإنه يقسم k × a.",
-        "incorrect": "اكتب 21 700 000 على شكل 217 × k."
-      }
+        "correct": "$21\\,700\\,000 = 217 \\times 100\\,000 = 7 \\times 31 \\times 100\\,000 = 7 \\times 3\\,100\\,000$.",
+        "incorrect": "لاحظ أن 21 700 000 مضاعف للعدد 217، واستعمل كتابة 217 من السؤال 01."
+      },
+      "solution": {
+        "lines": [
+          "$21\\,700\\,000 = 217 \\times 100\\,000$",
+          "$21\\,700\\,000 = 7 \\times 31 \\times 100\\,000$",
+          "$21\\,700\\,000 = 7 \\times 3\\,100\\,000$",
+          "7 يقسم 217، فهو يقسم كل مضاعف له."
+        ],
+        "result": "21\\,700\\,000 = 7 \\times 3\\,100\\,000"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-khawass-qawasim-l3-002",
-  "lessonCode": "khawass-qawasim",
-  "level": 3
+  ]
 }

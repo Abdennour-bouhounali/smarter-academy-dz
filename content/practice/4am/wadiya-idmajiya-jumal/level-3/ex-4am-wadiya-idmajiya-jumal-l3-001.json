@@ -3,10 +3,10 @@
   "lessonCode": "wadiya-idmajiya-jumal",
   "level": 3,
   "metadata": {
-    "title": "تمرين 31 — المجهولان والتخفيض",
-    "estimatedMinutes": 4,
+    "title": "بطاقة الإخلاص",
+    "estimatedMinutes": 10,
     "tags": [
-      "ترجمة",
+      "ترييض",
       "تخفيض"
     ],
     "source": {
@@ -15,187 +15,168 @@
       "page": 63,
       "section": "أتعمّق",
       "number": 31
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "اشترى زبون من متجر كبير 6 علب من الحليب وقارورة عصير ودفع 720 DA. زبون آخر يملك بطاقة إخلاص تمكّنه من الاستفادة من تخفيض قدره 20% على ثمن كلّ مشترياته عند الدفع. اشترى هذا الزبون 5 علب من الحليب و5 قارورات عصير من النوع نفسه ودفع 1080 DA بعد استظهار بطاقته. مشتريات الزبون الأوّل تترجم بالمعادلة $6x + y = 720$ ."
+    "content": "اشترى زبون من متجر كبير 6 علب من الحليب وقارورة عصير ودفع 720DA. زبون آخر يملك بطاقة إخلاص تمكّنه من الاستفادة من تخفيض قدره 20% على ثمن كلّ مشترياته عند الدفع، اشترى 5 علب من الحليب و 5 قارورات عصير من النوع نفسه ودفع 1080DA بعد استظهار بطاقته.\nنسمّي $x$ ثمن علبة الحليب و $y$ ثمن قارورة العصير (بالدينار)."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ماذا نعني بكلّ من $x$ و $y$ في المعادلة $6x + y = 720$ ؟",
+      "step": "01",
+      "statement": "بيّن أن $x$ و $y$ يحققان الجملة: $\\begin{cases} 6x + y = 720 \\\\ x + y = 270 \\end{cases}$",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x$ عدد علب الحليب و $y$ عدد قارورات العصير",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MAJAHIL"
-        },
-        {
-          "id": "B",
-          "content": "$x$ سعر علبة الحليب و $y$ سعر قارورة العصير (بالدينار)",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x$ سعر قارورة العصير و $y$ سعر علبة الحليب (بالدينار)",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARTIB"
-        },
-        {
-          "id": "D",
-          "content": "$x$ المبلغ المدفوع و $y$ التخفيض",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MAJAHIL"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العدد 6 يعدّ علب الحليب."
+          "content": "بعد تخفيض $20\\%$ يدفع الزبون $80\\%$ من الثمن."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$6x$ ثمن ست علب."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المجهولان هما ما نجهله: السعران."
+          "content": "اكتب ثمن مشتريات الزبون الثاني ثم اضربه في $0{,}8$ ."
         }
       ],
       "feedback": {
-        "correct": "$6x$ ثمن ست علب حليب، و $y$ ثمن قارورة العصير.",
-        "incorrect": "المجهولان سعران، لا عددان معلومان."
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
       },
-      "cognitiveDemand": "recall",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "الزبون الأول: $6x + y = 720$",
+          "الزبون الثاني يدفع $80\\%$ من الثمن (تخفيض $20\\%$ ): $0{,}8(5x + 5y) = 1080$",
+          "أي $4x + 4y = 1080$ ، وبقسمة الطرفين على 4: $x + y = 270$",
+          "ومنه: $\\begin{cases} 6x + y = 720 \\\\ x + y = 270 \\end{cases}$"
+        ]
+      },
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "لماذا نضرب الثمن في 0,8 عند تطبيق تخفيض بـ 20%؟",
+      "step": "02",
+      "statement": "حل هذه الجملة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "point",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
+      "expectedAnswer": {
+        "x": "90",
+        "y": "180"
+      },
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "لأنّ الزبون يدفع 20% فقط من الثمن",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAKHFID-NISBA"
-        },
-        {
-          "id": "B",
-          "content": "لأنّ 20% من الثمن تساوي 0,8 من الثمن",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAKHFID-NISBA"
-        },
-        {
-          "id": "C",
-          "content": "لأنّ التخفيض يُطرح من الثمن: نطرح 0,8 دينار من كل علبة",
-          "isCorrect": false
-        },
-        {
-          "id": "D",
-          "content": "لأنّ الثمن بعد التخفيض هو 80% من الثمن، و $80\\% = 0{,}8$",
-          "isCorrect": true
+          "value": {
+            "x": "180",
+            "y": "90"
+          },
+          "id": "MISC-JUMLA-TARTIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "كم في المئة من الثمن يبقى بعد التخفيض؟"
+          "content": "معامل $y$ هو نفسه في المعادلتين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$100\\% - 20\\%$."
+          "content": "اطرح إحدى المعادلتين من الأخرى طرفا لطرف لتحذف $y$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "حوّل النسبة إلى عدد عشري."
+          "content": "عوّض قيمة $x$ في إحدى المعادلتين لتجد $y$ ."
         }
       ],
       "feedback": {
-        "correct": "ندفع $100\\% - 20\\% = 80\\%$ من الثمن، أي الثمن $\\times 0{,}8$.",
-        "incorrect": "20% هو ما نوفّره، لا ما ندفعه."
+        "correct": "الثنائية $(90 ; 180)$ تحقق المعادلتين معا: الحليب بـ $90DA$ والعصير بـ $180DA$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$\\begin{cases} 6x + y = 720 & ...(1) \\\\ x + y = 270 & ...(2) \\end{cases}$",
+          "بطرح المعادلة (2) من المعادلة (1) طرفا لطرف نجد:",
+          "$5x = 450$",
+          "$x = 90$",
+          "بتعويض $x$ بـ $90$ في المعادلة (1) نجد: $6 \\times 90 + y = 720$",
+          "$y = 180$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(90 ; 180)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q3",
-      "statement": "المعادلة التي تعبّر عن مشتريات الزبون الثاني هي:",
+      "step": "03",
+      "statement": "كم كان سيدفع الزبون الثاني لو لم يستظهر بطاقته؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "1350",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$5x + 5y = 1080$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAKHFID-NISBA"
-        },
-        {
-          "id": "B",
-          "content": "$0{,}2(5x + 5y) = 1080$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAKHFID-NISBA"
-        },
-        {
-          "id": "C",
-          "content": "$0{,}8(5x + 5y) = 1080$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$0{,}8 \\times 5x + 5y = 1080$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
+          "value": "1296",
+          "id": "MISC-TAKHFID-NISBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما ثمن 5 علب و 5 قارورات قبل التخفيض؟"
+          "content": "استعمل السعرين اللذين وجدتهما في السؤال 02."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "التخفيض يشمل كل المشتريات."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اضرب الثمن كله في النسبة المدفوعة."
+          "content": "ثمن 5 علب و 5 قارورات دون تخفيض."
         }
       ],
       "feedback": {
-        "correct": "قبل التخفيض $5x + 5y$ ، وبعده $0{,}8(5x + 5y) = 1080$.",
-        "incorrect": "لا تنس التخفيض، وطبّقه على كل المشتريات."
+        "correct": "$5 \\times 90 + 5 \\times 180 = 1350$ ، و $0{,}8 \\times 1350 = 1080$ .",
+        "incorrect": "لا نضيف $20\\%$ إلى 1080: احسب ثمن المشتريات من السعرين."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "دون تخفيض: $5 \\times 90 + 5 \\times 180 = 450 + 900 = 1350$",
+          "نتحقق: $0{,}8 \\times 1350 = 1080$ .",
+          "كان سيدفع $1350DA$ ."
+        ],
+        "result": "1350\\,DA"
+      },
+      "timeSeconds": 150
     }
   ]
 }

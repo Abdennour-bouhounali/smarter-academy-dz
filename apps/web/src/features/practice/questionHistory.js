@@ -69,6 +69,9 @@ export function formatAnswer(question, answer) {
       return picked.length ? { kind: 'rich', text: picked.map((c) => c.content).join(' ، ') } : null;
     }
     case 'rational':
+      // Saisie MathLive (feuille d'examen) : on relit la formule telle qu'écrite.
+      if (typeof answer.latex === 'string' && answer.latex.trim()) return { kind: 'rich', text: `$${answer.latex}$` };
+      // falls through
     case 'integerSet': {
       const text = trim(answer.value);
       return text ? { kind: 'math', text } : null;
@@ -84,6 +87,14 @@ export function formatAnswer(question, answer) {
       const y = trim(answer.y);
       if (!x && !y) return null;
       return { kind: 'math', text: `(${x || '?'} ; ${y || '?'})` };
+    }
+    case 'selfCheck': {
+      // « بيّن أن » : la démonstration écrite, et la note que l'élève s'est
+      // donnée après le corrigé type (absente tant qu'il ne s'est pas noté).
+      const text = trim(answer.text);
+      if (!text) return null;
+      const mark = answer.selfMark === 'correct' || answer.selfMark === 'incorrect' ? answer.selfMark : 'pending';
+      return { kind: 'self', text, mark };
     }
     case 'interval': {
       // Mêmes conventions que IntervalInput : borne vide = infini, crochet
@@ -116,6 +127,7 @@ export function formatAnswer(question, answer) {
  */
 export function historyEntry({
   question, index, answer, evaluation, feedbackMessage = '', hintsUsed = 0, tries = 1,
+  images = [], review = null, evaluatedBy = null,
 }) {
   const outcome = evaluation?.outcome ?? 'abandoned';
 
@@ -123,7 +135,13 @@ export function historyEntry({
     questionId: question.id,
     number: index + 1,
     statement: question.statement ?? '',
-    answer: formatAnswer(question, answer),
+    // Une démonstration jugée par l'ENSEIGNANT (ou qui l'attend) n'a pas de
+    // note de l'élève : pas de « لم تُقارن بعد » (ReviewStatus dit le reste).
+    answer: teacherHandled(evaluatedBy, evaluation) ? withoutSelfMark(formatAnswer(question, answer)) : formatAnswer(question, answer),
+    // « مراحل الحساب » écrites avec la réponse (feuille d'examen), relues telles quelles.
+    work: typeof answer?.work === 'string' && answer.work.trim() ? answer.work : null,
+    // Le temps mis (feuille d'examen, chrono de l'étape), en secondes.
+    seconds: Number.isFinite(answer?.seconds) ? answer.seconds : null,
     normalized: evaluation?.normalized ?? '',
     outcome,
     tone: outcomeTone(outcome),
@@ -134,8 +152,16 @@ export function historyEntry({
     // Corrigée après « أعِد المحاولة » : l'historique le dit, parce que le
     // serveur, lui, n'a compté que la PREMIÈRE réponse pour la maîtrise.
     retried: tries > 1,
+    // Feuille d'examen (2026-10-06) : les photos de la copie, la correction de
+    // l'enseignant (« تصحيح الأستاذ »), et qui a jugé (`server`, `self`, `teacher`).
+    images: Array.isArray(images) ? images : [],
+    review: review ?? null,
+    evaluatedBy: evaluatedBy ?? null,
   });
 }
+
+const teacherHandled = (evaluatedBy, evaluation) => evaluatedBy === 'teacher' || evaluation?.normalized === 'review:pending';
+const withoutSelfMark = (formatted) => (formatted?.kind === 'self' ? { ...formatted, mark: null } : formatted);
 
 /**
  * Ajoute une entrée — ou REMPLACE celle de la même question (idempotent :

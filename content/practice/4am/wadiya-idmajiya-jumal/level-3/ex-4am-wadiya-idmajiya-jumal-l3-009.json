@@ -4,9 +4,9 @@
   "level": 3,
   "metadata": {
     "title": "مدرسة كرة القدم",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 9,
     "tags": [
-      "ترجمة",
+      "ترييض",
       "مبلغ ثابت"
     ],
     "source": {
@@ -14,109 +14,72 @@
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
       "modelledOn": "situation"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "في مدرسة كرة القدم يدفع اللاعب رسم تسجيل $y$ DA مرّة واحدة، ثم $x$ DA عن كل شهر. دفع أنس 4 100 DA عن 3 أشهر (مع التسجيل)، ودفع زميله 6 300 DA عن 5 أشهر (مع التسجيل)."
+    "content": "في مدرسة لكرة القدم يدفع اللاعب رسم تسجيل $y$ DA مرّة واحدة، ثم $x$ DA عن كل شهر. دفع أنس 4100DA عن 3 أشهر (مع التسجيل)، ودفع زميله 6300DA عن 5 أشهر (مع التسجيل)."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الجملة التي تترجم النص هي:",
+      "step": "01",
+      "statement": "بيّن أن $x$ و $y$ يحققان الجملة: $\\begin{cases} 3x + y = 4100 \\\\ 5x + y = 6300 \\end{cases}$",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\begin{cases} 3x + 3y = 4100 \\\\ 5x + 5y = 6300 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-TARJAMA"
-        },
-        {
-          "id": "B",
-          "content": "$\\begin{cases} 3x + y = 4100 \\\\ 5x + y = 6300 \\end{cases}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\begin{cases} x + 3y = 4100 \\\\ x + 5y = 6300 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "D",
-          "content": "$\\begin{cases} 3x + y = 6300 \\\\ 5x + y = 4100 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما الذي يُدفع مرّة واحدة؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "الاشتراك الشهري يتكرّر مع كل شهر."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "رسم التسجيل لا يُضرب في عدد الأشهر."
+          "content": "رسم التسجيل يُدفع مرة واحدة فقط، أما الاشتراك فيُدفع عن كل شهر."
         }
       ],
       "feedback": {
-        "correct": "أنس: $3x + y = 4100$ ؛ زميله: $5x + y = 6300$.",
-        "incorrect": "رسم التسجيل يُدفع مرّة واحدة."
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "أنس: 3 أشهر ورسم التسجيل مرة واحدة: $3x + y = 4100$",
+          "زميله: $5x + y = 6300$",
+          "ومنه: $\\begin{cases} 3x + y = 4100 \\\\ 5x + y = 6300 \\end{cases}$"
+        ]
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "ما المبلغان $(x ; y)$ ؟",
+      "step": "02",
+      "statement": "حل هذه الجملة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": {
         "x": "1100",
         "y": "800"
       },
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "اطرح المعادلة الأولى من الثانية."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$2x = 2200$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "عوّض لإيجاد $y$."
-        }
-      ],
-      "feedback": {
-        "correct": "$x = 1100$ و $y = 4100 - 3300 = 800$.",
-        "incorrect": "الطرح يحذف $y$."
-      },
-      "cognitiveDemand": "apply",
-      "difficulty": 3,
       "misconceptionSignatures": [
         {
           "value": {
@@ -125,7 +88,82 @@
           },
           "id": "MISC-JUMLA-TARTIB"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل $y$ هو نفسه في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح إحدى المعادلتين من الأخرى طرفا لطرف لتحذف $y$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض قيمة $x$ في إحدى المعادلتين لتجد $y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "الاشتراك الشهري $1100DA$ ورسم التسجيل $800DA$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} 3x + y = 4100 & ...(1) \\\\ 5x + y = 6300 & ...(2) \\end{cases}$",
+          "بطرح المعادلة (1) من المعادلة (2) طرفا لطرف نجد:",
+          "$2x = 2200$",
+          "$x = 1100$",
+          "بتعويض $x$ بـ $1100$ في المعادلة (1) نجد: $3 \\times 1100 + y = 4100$",
+          "$y = 800$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(1100 ; 800)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "كم يدفع لاعب عن 9 أشهر (مع التسجيل)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "10700",
+      "misconceptionSignatures": [
+        {
+          "value": "9900",
+          "id": "MISC-WADIYA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المبلغ = عدد الأشهر × الاشتراك الشهري + رسم التسجيل."
+        }
+      ],
+      "feedback": {
+        "correct": "$9 \\times 1100 + 800 = 10700$ .",
+        "incorrect": "لا تنس رسم التسجيل."
+      },
+      "solution": {
+        "lines": [
+          "$9 \\times 1100 + 800 = 9900 + 800 = 10700$",
+          "يدفع $10700DA$ ."
+        ],
+        "result": "10700\\,DA"
+      },
+      "timeSeconds": 120
     }
   ]
 }

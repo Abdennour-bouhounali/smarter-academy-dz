@@ -3,26 +3,36 @@
   "lessonCode": "tamthil-bayani-khatti",
   "level": 1,
   "metadata": {
-    "title": "تدريب — يصعد أم ينزل؟",
+    "title": "منحى مستقيمين",
     "estimatedMinutes": 4,
     "tags": [
-      "منحى",
-      "إشارة a"
+      "منحى المستقيم",
+      "إشارة المعامل"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tamthil-bayani-khatti_P3",
-      "modelledOn": "know-3"
+      "modelledOn": "know-3",
+      "adaptedFrom": "ex-4am-tamthil-bayani-khatti-l1-004"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في معلم، نرسم التمثيلين البيانيين للدالتين الخطيتين $g : x \\longmapsto 4x$ و $h : x \\longmapsto -0{,}5x$ ."
+    "content": "نعتبر الدالتين الخطيتين $g$ و $h$ حيث: $g(x) = 4x$ و $h(x) = -0{,}5x$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "تمثيل $g$ :",
+      "step": "01",
+      "sub": "ا",
+      "lead": "عيّن منحى التمثيل البياني لكل من الدالتين (يصعد أم ينزل من اليسار إلى اليمين)، مع التعليل.",
+      "statement": "تمثيل الدالة $g$ :",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P3",
@@ -30,6 +40,7 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
@@ -48,27 +59,32 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى إشارة المعامل $a$."
+          "content": "انظر إلى إشارة معامل الدالة الخطية."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+          "content": "إذا كان المعامل موجبا فالمستقيم يصعد، وإذا كان سالبا فهو ينزل."
         }
       ],
       "feedback": {
-        "correct": "المعامل 4 موجب: المستقيم يصعد.",
-        "incorrect": "إشارة المعامل تعيّن المنحى."
-      }
+        "correct": "المعامل $4$ موجب: المستقيم يصعد.",
+        "incorrect": "منحى المستقيم تعيّنه إشارة المعامل: موجب ← يصعد، سالب ← ينزل."
+      },
+      "solution": {
+        "lines": [
+          "معامل الدالة $g$ هو 4، وهو عدد موجب.",
+          "إذن المستقيم $(D)$ يصعد من اليسار إلى اليمين."
+        ],
+        "result": "يصعد"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "تمثيل $h$ :",
+      "step": "01",
+      "sub": "ب",
+      "statement": "تمثيل الدالة $h$ :",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P3",
@@ -76,6 +92,7 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
@@ -94,23 +111,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى إشارة المعامل $a$."
+          "content": "انظر إلى إشارة معامل الدالة الخطية."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+          "content": "إذا كان المعامل موجبا فالمستقيم يصعد، وإذا كان سالبا فهو ينزل."
         }
       ],
       "feedback": {
         "correct": "المعامل $-0{,}5$ سالب: المستقيم ينزل.",
-        "incorrect": "إشارة المعامل تعيّن المنحى."
-      }
+        "incorrect": "منحى المستقيم تعيّنه إشارة المعامل: موجب ← يصعد، سالب ← ينزل."
+      },
+      "solution": {
+        "lines": [
+          "معامل الدالة $h$ هو $-0{,}5$ ، وهو عدد سالب.",
+          "إذن المستقيم $(D)$ ينزل من اليسار إلى اليمين."
+        ],
+        "result": "ينزل"
+      },
+      "timeSeconds": 60
     }
   ]
 }

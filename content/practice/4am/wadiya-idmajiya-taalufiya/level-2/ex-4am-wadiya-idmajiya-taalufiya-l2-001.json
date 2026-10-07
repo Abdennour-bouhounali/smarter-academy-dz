@@ -4,121 +4,155 @@
   "level": 2,
   "metadata": {
     "title": "دراجة كهربائية: من عرضين إلى الثمن",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 7,
     "tags": [
       "تناسب التغيّرات",
-      "صورة"
+      "صورة عدد"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "تطبيق كراء دراجات كهربائية: رحلة 10 دقائق بـ 180 DA ورحلة 25 دقيقة بـ 330 DA، والثمن دالة تآلفية لعدد الدقائق $x$."
+    "content": "يقترح تطبيق لكراء الدراجات الكهربائية سعرا هو دالة تآلفية $f$ لمدة الرحلة $x$ (بالدقائق): رحلة مدتها 10 دقائق ثمنها 180DA ، ورحلة مدتها 25 دقيقة ثمنها 330DA ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "دستور الثمن $f(x)$ هو:",
+      "step": "01",
+      "lead": "أوجد العبارة الجبرية للدالة $f$ .",
+      "statement": "أعط العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$f(x) = 10x + 80$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$f(x) = 18x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
-        },
-        {
-          "id": "C",
-          "content": "$f(x) = 150x + 180$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
-        },
-        {
-          "id": "D",
-          "content": "$f(x) = 10x + 180$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAGHAYYUR-B-NISBA"
+          "id": "MISC-TAGHAYYUR-BIDUN-QISMA",
+          "value": "150"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$a = \\dfrac{330 - 180}{25 - 10}$."
+          "content": "خاصية تناسب التغيّرات."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ثم $b = 180 - 10a$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق بالعرضين."
+          "content": "اقسم فرق الثمنين على فرق المدتين."
         }
       ],
       "feedback": {
-        "correct": "$a = \\dfrac{150}{15} = 10$ و $b = 180 - 100 = 80$.",
-        "incorrect": "المعامل: فرق الثمنين على فرق المدتين."
+        "correct": "$a = \\dfrac{150}{15}$ .",
+        "incorrect": "اقسم فرق الثمنين على فرق المدتين، بالترتيب نفسه."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$a = \\dfrac{f(25) - f(10)}{25 - 10} = \\dfrac{330 - 180}{15} = \\dfrac{150}{15} = 10$",
+          "$f(10) = 180$ أي: $10 \\times 10 + b = 180$ ، ومنه $b = 80$ .",
+          "$f(x) = 10x + 80$"
+        ],
+        "result": "f(x) = 10x + 80"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "ما ثمن رحلة 40 دقيقة؟",
+      "step": "01",
+      "statement": "أعط العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد بالدينار",
-      "expectedAnswer": "480",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "80",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAGHAYYUR-B-NISBA",
+          "value": "18"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "استعمل الدستور السابق."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$10 \\times 40 + 80$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "صورة 40."
+          "content": "استعمل $f(10) = 180$ بعد حساب $a$ ."
         }
       ],
       "feedback": {
-        "correct": "$f(40) = 400 + 80 = 480\\,\\mathrm{DA}$.",
-        "incorrect": "نعوّض $x$ بالعدد 40 في $10x + 80$."
+        "correct": "$10 \\times 10 + b = 180$ .",
+        "incorrect": "$b = f(10) - 10a$ ، وليس حاصل قسمة الثمن على المدة."
       },
+      "solution": {
+        "lines": [
+          "$a = \\dfrac{f(25) - f(10)}{25 - 10} = \\dfrac{330 - 180}{15} = \\dfrac{150}{15} = 10$",
+          "$f(10) = 180$ أي: $10 \\times 10 + b = 180$ ، ومنه $b = 80$ .",
+          "$f(x) = 10x + 80$"
+        ],
+        "result": "f(x) = 10x + 80"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب ثمن رحلة مدتها 40 دقيقة.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
       "cognitiveDemand": "apply",
-      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد: الثمن بـ DA",
+      "expectedAnswer": "480",
       "misconceptionSignatures": [
         {
-          "value": "400",
-          "id": "MISC-TAALUFI-NISYAN-B"
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "400"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $f(40)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(40) = 10 \\times 40 + 80$ .",
+        "incorrect": "عوّض $x$ بالعدد 40 ولا تنس الحدّ الثابت."
+      },
+      "solution": {
+        "lines": [
+          "$f(40) = 10 \\times 40 + 80 = 400 + 80 = 480$",
+          "ثمن رحلة مدتها 40 دقيقة هو 480DA ."
+        ],
+        "result": "480DA"
+      },
+      "timeSeconds": 75
     }
   ]
 }

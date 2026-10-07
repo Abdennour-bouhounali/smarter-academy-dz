@@ -3,8 +3,8 @@
   "lessonCode": "muadala-ula",
   "level": 2,
   "metadata": {
-    "title": "تدريب — المجهول في الطرف الأيمن",
-    "estimatedMinutes": 4,
+    "title": "المجهول في الطرف الثاني",
+    "estimatedMinutes": 5,
     "tags": [
       "ax + b = c"
     ],
@@ -13,98 +13,148 @@
       "reason": "practice_generation",
       "learningPoint": "4am_muadala-ula_P2",
       "modelledOn": "ex-4"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "المجهول يمكن أن يكون في الطرف الأيمن."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّ المعادلة $17 = 5x + 2$ .",
+      "step": "01",
+      "sub": "ا",
+      "lead": "حل كلا من المعادلتين الآتيتين:",
+      "statement": "$17 = 5x + 2$",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
       "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "1/3",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "value": "-3",
+          "id": "MISC-MUADALA-ISHARA-SALIBA"
+        },
+        {
+          "value": "-19/5",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+          "content": "ابدأ بعزل الحدّ الذي فيه $x$ في طرف واحد."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
+          "content": "أضف إلى الطرفين (أو اطرح منهما) العدد نفسه حتى تصل إلى الشكل $ax = b$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+          "content": "ثم اقسم الطرفين على معامل $x$ مع إشارته."
         }
       ],
       "feedback": {
-        "correct": "$17 = 5x + 2$ : نصل إلى $-5x = -15$ ، ومنه $x = 3$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "$x = 3$ .",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم اقسم على معامل $x$ بإشارته، وتحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$17 - 2 = 5x$",
+          "$15 = 5x$",
+          "$x = \\dfrac{15}{5}$"
+        ],
+        "result": "x = 3"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "نطرح $4$ من الطرفين في المعادلة $-8 = 3x + 4$ ، فنحصل على:",
+      "step": "01",
+      "sub": "ب",
+      "statement": "$-8 = 3x + 4$",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
+      "expectedAnswer": "-4",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$-12 = 3x + 4$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+          "value": "-1/4",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
         },
         {
-          "id": "B",
-          "content": "$-12 = 3x$",
-          "isCorrect": true
+          "value": "4",
+          "id": "MISC-MUADALA-ISHARA-SALIBA"
         },
         {
-          "id": "C",
-          "content": "$-12 = 3x + 8$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+          "value": "4/3",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العملية تُجرى على الطرفين معًا."
+          "content": "ابدأ بعزل الحدّ الذي فيه $x$ في طرف واحد."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب كل طرف بعد العملية، ثم بسّطه."
+          "content": "أضف إلى الطرفين (أو اطرح منهما) العدد نفسه حتى تصل إلى الشكل $ax = b$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "المعادلة الناتجة لها الحل نفسه الذي للمعادلة الأولى: يمكنك التحقّق بتعويض قيمة لـ $x$."
+          "content": "ثم اقسم الطرفين على معامل $x$ مع إشارته."
         }
       ],
       "feedback": {
-        "correct": "نطرح $4$ من الطرفين: $-12 = 3x$ — معادلة لها الحل نفسه.",
-        "incorrect": "العملية نفسها تُجرى على الطرفين، وبالإشارة نفسها."
-      }
+        "correct": "$x = -4$ .",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم اقسم على معامل $x$ بإشارته، وتحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$-8 - 4 = 3x$",
+          "$-12 = 3x$",
+          "$x = \\dfrac{-12}{3}$"
+        ],
+        "result": "x = -4"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

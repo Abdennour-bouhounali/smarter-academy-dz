@@ -3,107 +3,198 @@
   "lessonCode": "jidaa-maadum",
   "level": 2,
   "metadata": {
-    "title": "تدريب — من الجداء إلى معادلتين",
-    "estimatedMinutes": 4,
+    "title": "من الجداء إلى معادلتين",
+    "estimatedMinutes": 5,
     "tags": [
       "تعريف",
-      "خاصية الجداء المعدوم"
+      "جداء معدوم"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_jidaa-maadum_P1",
       "modelledOn": "know-2"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "نعتبر المعادلة $(-3x + 2)(x - 7) = 0$ ، ونكتبها على الشكل $(ax + b)(cx + d) = 0$ ."
+    "content": "نعتبر المعادلة:",
+    "formulas": [
+      "(-3x + 2)(x - 7) = 0"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما قيمة $a$ ؟",
+      "step": "01",
+      "lead": "تُكتب هذه المعادلة على الشكل $(ax + b)(cx + d) = 0$ . عيّن العددين $a$ و $b$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_jidaa-maadum_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد نسبي",
+      "answerFormat": "تُكتب المعادلة على الشكل $(ax + b)(cx + d) = 0$ : اكتب العدد $a$ فقط",
       "expectedAnswer": "-3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العامل الأول هو $ax + b$."
+          "content": "قارن العامل الأول $(-3x + 2)$ بالعامل $(ax + b)$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$a$ هو معامل $x$ ، بإشارته."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقرأ العدد المضروب في $x$ في القوس الأول."
+          "content": "$a$ هو معامل $x$ بإشارته."
         }
       ],
       "feedback": {
-        "correct": "العامل الأول $-3x + 2$ : $a = -3$ و $b = 2$ .",
-        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
-      }
+        "correct": "$a = -3$ و $b = 2$ .",
+        "incorrect": "قارن كل عامل بالشكل المطلوب حدًّا حدًّا، مع الإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$(-3x + 2)(x - 7) = 0$ من الشكل $(ax + b)(cx + d) = 0$ مع:",
+          "$a = -3$ ، $b = 2$ ، $c = 1$ ، $d = -7$"
+        ],
+        "result": "a = -3"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "حلول هذه المعادلة هي حلول المعادلتين:",
+      "step": "01",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "تُكتب المعادلة على الشكل $(ax + b)(cx + d) = 0$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$b$ هو الحد الثابت في العامل الأول."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 2$ .",
+        "incorrect": "قارن كل عامل بالشكل المطلوب حدًّا حدًّا، مع الإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$-3x + 2 = ax + b$ مع $a = -3$ و $b = 2$"
+        ],
+        "result": "b = 2"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "حل المعادلة $(-3x + 2)(x - 7) = 0$ .",
+      "statement": "الحلّ الأصغر:",
       "learningPoints": [
         {
           "code": "4am_jidaa-maadum_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "2/3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$-3x = 0$ و $2 = 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
-        },
-        {
-          "id": "B",
-          "content": "$-3x + 2 = x - 7$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
-        },
-        {
-          "id": "C",
-          "content": "$-3x + 2 = 0$ و $x - 7 = 0$",
-          "isCorrect": true
+          "value": "-7",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الطرف الأول جداء عاملين والطرف الثاني $0$."
+          "content": "يكون جداء عاملين معدومًا إذا كان أحد عامليه على الأقل معدومًا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "خاصية الجداء المعدوم: أحد العاملين على الأقل معدوم."
+          "content": "اكتب معادلتين من الدرجة الأولى: كل عامل يساوي $0$ ، ثم حلّ كل واحدة منهما."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اكتب كل عامل يساوي $0$ ، ثم حلّ كل معادلة من الدرجة الأولى."
+          "content": "انتبه إلى الإشارة عند نقل العدد إلى الطرف الثاني، ثم رتّب الحلّين من الأصغر إلى الأكبر."
         }
       ],
       "feedback": {
-        "correct": "حلول $(ax + b)(cx + d) = 0$ هي حلول $ax + b = 0$ و $cx + d = 0$ .",
-        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
-      }
+        "correct": "$x = \\dfrac{2}{3}$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى بإشاراتها، ثم رتّب الحلّين."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $(-3x + 2)(x - 7) = 0$",
+          "يعني أنّ: $-3x + 2 = 0$ أو $x - 7 = 0$",
+          "أي: $-3x = -2$ أو $x = 7$",
+          "ومنه: $x = \\dfrac{2}{3}$ أو $x = 7$",
+          "إذن للمعادلة حلّان هما $\\dfrac{2}{3}$ و $7$"
+        ],
+        "result": "x = \\dfrac{2}{3}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "الحلّ الأكبر:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "value": "-2/3",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المعادلة الثانية من الدرجة الأولى، ثم قارن الحلّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 7$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى بإشاراتها، ثم رتّب الحلّين."
+      },
+      "solution": {
+        "lines": [
+          "إذن للمعادلة حلّان هما $\\dfrac{2}{3}$ و $7$"
+        ],
+        "result": "x = 7"
+      },
+      "timeSeconds": 60
     }
   ]
 }

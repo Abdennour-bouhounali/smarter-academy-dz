@@ -3,7 +3,7 @@
   "lessonCode": "hall-jabri",
   "level": 1,
   "metadata": {
-    "title": "تدريب — عوّض في المعادلة الأخرى",
+    "title": "نعوّض في المعادلة الأخرى",
     "estimatedMinutes": 4,
     "tags": [
       "التعويض"
@@ -13,101 +13,112 @@
       "reason": "practice_generation",
       "learningPoint": "4am_hall-jabri_P1",
       "modelledOn": "method-example"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نحلّ الجملة $\\begin{cases} x = y + 3 \\\\ 2x + y = 12 \\end{cases}$ بطريقة التعويض."
+    "content": "نعتبر جملة المعادلتين التالية:",
+    "formulas": [
+      "\\begin{cases} x = y + 3 \\\\ 2x + y = 12 \\end{cases}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "بتعويض $x$ بالعبارة $y + 3$ في المعادلة الثانية نجد:",
+      "step": "01",
+      "statement": "عوّض $x$ بالعبارة $y + 3$ في المعادلة الثانية، ثم احسب $y$ .",
       "learningPoints": [
         {
           "code": "4am_hall-jabri_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$2(y + 3) + y = 12$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$2y + 3 + y = 12$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
-        },
-        {
-          "id": "C",
-          "content": "$(y + 3) - y = 3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAWID-NAFS-MUADALA"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة $y$ فقط (عدد صحيح أو كسر مثل 7/3)",
+      "expectedAnswer": "2",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+          "content": "اكتب $2(y + 3) + y = 12$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+          "content": "انشر ثم اجمع الحدود التي فيها $y$ ."
         }
       ],
       "feedback": {
-        "correct": "كل $x$ يصير $(y + 3)$ ، و 2 يُضرب في الحدّين: $2y + 6 + y = 12$ أي $3y = 6$ .",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "$2(y + 3) + y = 12$ أي $3y = 6$ ، ومنه $y = 2$ .",
+        "incorrect": "التعويض يكون في المعادلة الثانية؛ انشر $2(y + 3)$ ثم حل المعادلة."
+      },
+      "solution": {
+        "lines": [
+          "لدينا من المعادلة (1): $x = y + 3$",
+          "نعوّض في المعادلة (2): $2(y + 3) + y = 12$",
+          "$3y = 6$",
+          "ومنه $y = 2$"
+        ],
+        "result": "y = 2"
+      },
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "حل الجملة:",
+      "step": "02",
+      "statement": "استنتج حل الجملة.",
       "learningPoints": [
         {
           "code": "4am_hall-jabri_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": {
         "x": "5",
         "y": "2"
       },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "2",
+            "y": "5"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+          "content": "عوّض قيمة $y$ في العبارة $x = y + 3$ ."
         }
       ],
       "feedback": {
-        "correct": "$3y = 6$ ، ومنه $y = 2$ ثم $x = 2 + 3 = 5$ .",
-        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
-      }
+        "correct": "الثنائية $(5 ; 2)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "لدينا من المعادلة (1): $x = y + 3$",
+          "نعوّض في المعادلة (2): $2(y + 3) + y = 12$",
+          "$3y = 6$",
+          "ومنه $y = 2$",
+          "نعوّض قيمة $y$ في عبارة $x$: $x = 2 + 3 = 5$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(5 ; 2)"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

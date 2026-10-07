@@ -1,10 +1,13 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l2-001",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 2,
   "metadata": {
-    "title": "نشاط 3 — مراد وعمر",
+    "title": "مراد وعمر والمعادلة x² = 9",
     "estimatedMinutes": 4,
     "tags": [
-      "نشاط",
-      "معادلة"
+      "معادلة",
+      "عدد الحلول"
     ],
     "source": {
       "type": "textbook",
@@ -12,153 +15,159 @@
       "page": 20,
       "section": "أنشطة",
       "number": 3
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من النشاط 3 (الكتاب ص 20): قال مراد: «إنّ حل المعادلة $x^2 = 9$ هو 3، لأنّ $3^2 = 9$». وقال عمر: «لقد نسي مراد حلا آخر»."
+    "content": "لحل المعادلة $x^2 = 9$، قال مراد: «حل المعادلة $x^2 = 9$ هو 3، لأن $3^2 = 9$». وقال عمر: «لقد نسي مراد حلا آخر»."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هي حلول المعادلة $x^2 = 9$؟",
+      "step": "01",
+      "statement": "هل عمر على حق ؟ برّر إجابتك.",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "3 و $-3$",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "3 فقط",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "4,5 و $-4{,}5$",
-          "isCorrect": false
-        },
-        {
-          "id": "D",
-          "content": "لا تقبل أي حل",
-          "isCorrect": false
+          "content": "لا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
         }
       ],
+      "answerFormat": "اختر نعم أو لا، ثم قارن تبريرك بالحل النموذجي",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "3 حل لأن $3^2 = 9$. هل يوجد عدد آخر؟"
+          "content": "احسب $(-3)^2$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $(-3)^2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
           "content": "لعددين متعاكسين نفس المربع."
         }
       ],
       "feedback": {
-        "correct": "$3^2 = 9$ و $(-3)^2 = 9$: عمر على حق.",
-        "incorrect": "جرّب العدد السالب المعاكس للعدد 3."
-      }
+        "correct": "عمر على حق: $(-3)^2 = 9$ أيضًا.",
+        "incorrect": "احسب $(-3)^2$ ثم أعد النظر في إجابتك."
+      },
+      "solution": {
+        "lines": [
+          "$(-3)^2 = (-3) \\times (-3) = 9$",
+          "إذن العدد $-3$ حل آخر للمعادلة $x^2 = 9$: عمر على حق."
+        ],
+        "result": "نعم"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "كم حلا تقبل المعادلة $x^2 = 0$؟",
+      "step": "02",
+      "lead": "حل المعادلة $x^2 = 9$.",
+      "statement": "الحل السالب:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "1",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "-3",
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-HALL-WAHID"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن الأعداد التي مربعها 0."
+          "content": "اكتب 9 على شكل مربع عدد موجب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هل لعدد غير معدوم مربع يساوي 0؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "مربع عدد غير معدوم عدد موجب تمامًا."
+          "content": "للمعادلة حلان متعاكسان."
         }
       ],
       "feedback": {
-        "correct": "حل واحد هو العدد 0: $0^2 = 0$، ومربع أي عدد غير معدوم ليس 0.",
-        "incorrect": "فكّر في مربع عدد غير معدوم."
+        "correct": "نعم، هذا هو الحل السالب: للمعادلة حلان متعاكسان.",
+        "incorrect": "الحلان عددان متعاكسان مربع كل منهما هو الطرف الثاني بعد عزل $x^2$: خذ السالب منهما."
       },
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$x^2 = 9$ يعني $x^2 = 3^2$",
+          "بالتالي $x = 3$ أو $x = -3$"
+        ],
+        "result": "x = -3 \\quad ; \\quad x = 3"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "المعادلة $x^2 = -9$ ...",
+      "step": "02",
+      "statement": "الحل الموجب:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x = 3$ أو $x = -3$",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$x = -3$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "لا تقبل أي حل",
-          "isCorrect": true
+          "value": "4.5",
+          "id": "MISC-HALL-QISMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما إشارة مربع أي عدد؟"
+          "content": "اكتب 9 على شكل مربع عدد موجب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $(-3)^2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل يمكن أن يكون مربع عدد سالبًا؟"
+          "content": "للمعادلة حلان متعاكسان."
         }
       ],
       "feedback": {
-        "correct": "مربع أي عدد هو دائما عدد موجب، و $-9 < 0$: لا تقبل أي حل.",
-        "incorrect": "$(-3)^2$ ليس $-9$."
+        "correct": "نعم، وهو معاكس الحل السالب.",
+        "incorrect": "الحل الموجب هو معاكس الحل السالب: مربعه هو الطرف الثاني بعد عزل $x^2$."
       },
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$x^2 = 9$ يعني $x^2 = 3^2$",
+          "بالتالي $x = 3$ أو $x = -3$"
+        ],
+        "result": "x = -3 \\quad ; \\quad x = 3"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l2-001",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 2
+  ]
 }

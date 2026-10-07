@@ -1,38 +1,53 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l5-004",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — قرص",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2020 — تبليط ساحة الحي",
+    "estimatedMinutes": 15,
     "tags": [
-      "مساحة قرص",
-      "نصف قطر"
+      "مساحة",
+      "مربع",
+      "وضعية إدماجية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_muadalat-x-murabba_P2",
-      "modelledOn": null
+      "modelledOn": "BEM 2020 II ☜"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2020",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "مساحة قرص نصف قطره $r$ هي $\\pi r^2$."
+    "content": "تريد جمعية حي بمدينة وهران تبليط ساحة مربعة الشكل مساحتها $90{,}25m^2$ ببلاط مربع الشكل طول ضلعه $50cm$، دون قطع أي بلاطة.\n\n• يباع البلاط في علب، في كل علبة 10 بلاطات، و ثمن العلبة الواحدة $1450DA$ (لا تباع البلاطات فرادى).\n\n• أجرة البنّاء $300DA$ للمتر المربع الواحد."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "قرص مساحته $49\\pi\\ \\mathrm{cm}^2$. ما هو نصف قطره $r$ (بالسنتيمتر)؟",
+      "step": "01",
+      "statement": "☜ أعط المبلغ الذي تحتاجه الجمعية لتبليط هذه الساحة.",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "secondary"
         }
       ],
       "cognitiveDemand": "transfer",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "7",
+      "answerFormat": "عدد طبيعي: المبلغ بالدينار (DA)",
+      "expectedAnswer": "80725",
       "misconceptionSignatures": [
         {
-          "value": "24.5",
+          "value": "79275",
           "id": "MISC-HALL-QISMA"
         }
       ],
@@ -40,82 +55,38 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب المعادلة $\\pi r^2 = 49\\pi$."
+          "content": "ابدأ بحساب طول ضلع الساحة من مساحتها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اقسم الطرفين على $\\pi$."
+          "content": "كم بلاطة على طول ضلع واحد؟ ثم كم بلاطة في الساحة كلها؟"
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "نصف القطر موجب."
+          "content": "العلب تشترى كاملة، ولا تنسَ أجرة البنّاء."
         }
       ],
       "feedback": {
-        "correct": "$r^2 = 49$ و $r > 0$: $r = 7$.",
-        "incorrect": "$\\pi r^2 = 49\\pi$ يعني $r^2 = 49$."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "قرص مساحته $20\\pi\\ \\mathrm{cm}^2$. ما هو نصف قطره $r$ (بالسنتيمتر)؟",
-      "learningPoints": [
-        {
-          "code": "4am_muadalat-x-murabba_P2",
-          "role": "primary"
-        }
-      ],
-      "cognitiveDemand": "transfer",
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$r = 10$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-QISMA"
-        },
-        {
-          "id": "B",
-          "content": "$r = \\sqrt{20}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$r = 20$",
-          "isCorrect": false
-        },
-        {
-          "id": "D",
-          "content": "$r = -\\sqrt{20}$",
-          "isCorrect": false
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "اقسم الطرفين على $\\pi$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "حل المعادلة $r^2 = 20$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "نصف القطر طول، فهو موجب."
-        }
-      ],
-      "feedback": {
-        "correct": "$r^2 = 20$ ، و $r > 0$: $r = \\sqrt{20}$.",
-        "incorrect": "$10^2 = 100$ وليس 20، والطول موجب."
-      }
+        "correct": "الضلع $9{,}5m$، 361 بلاطة، 37 علبة: $53650 + 27075 = 80725DA$.",
+        "incorrect": "تأكد من: طول الضلع (حل $c^2 = 90{,}25$)، عدد البلاطات، عدد العلب الكاملة، ثم أضف أجرة البنّاء."
+      },
+      "solution": {
+        "lines": [
+          "ليكن $c$ طول ضلع الساحة: $c^2 = 90{,}25$",
+          "$c^2 = 9{,}5^2$ و $c > 0$، إذن $c = 9{,}5m = 950cm$",
+          "عدد البلاطات على ضلع واحد: $950 \\div 50 = 19$",
+          "عدد البلاطات اللازمة: $19 \\times 19 = 361$",
+          "عدد العلب: $361 \\div 10 = 36{,}1$، إذن تلزم 37 علبة.",
+          "ثمن البلاط: $37 \\times 1450 = 53650DA$",
+          "أجرة البنّاء: $90{,}25 \\times 300 = 27075DA$",
+          "المبلغ اللازم: $53650 + 27075$"
+        ],
+        "result": "80725DA"
+      },
+      "work": "optional",
+      "timeSeconds": 900
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l5-004",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 5
+  ]
 }

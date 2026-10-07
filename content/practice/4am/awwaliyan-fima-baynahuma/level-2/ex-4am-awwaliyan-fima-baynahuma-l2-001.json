@@ -1,7 +1,10 @@
 {
+  "id": "ex-4am-awwaliyan-fima-baynahuma-l2-001",
+  "lessonCode": "awwaliyan-fima-baynahuma",
+  "level": 2,
   "metadata": {
     "title": "معارف — 22 و 15",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 4,
     "tags": [
       "تعريف"
     ],
@@ -11,21 +14,29 @@
       "page": 12,
       "section": "معارف",
       "number": 5
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 12): قواسم 22 هي 1 ؛ 2 ؛ 11 ؛ 22 وقواسم 15 هي 1 ؛ 3 ؛ 5 ؛ 15."
+    "content": "قواسم العدد 22 هي: 1 ؛ 2 ؛ 11 ؛ 22 ، وقواسم العدد 15 هي: 1 ؛ 3 ؛ 5 ؛ 15 ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "PGCD(15 ; 22) = ?",
+      "step": "01",
+      "statement": "جد القاسم المشترك الأكبر للعددين 15 و 22.",
       "learningPoints": [
         {
           "code": "4am_awwaliyan-fima-baynahuma_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "recall",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "1",
@@ -33,43 +44,48 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "أي أعداد مشتركة؟"
+          "content": "قارن القائمتين المعطاتين: ما الأعداد الموجودة فيهما معًا؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "1 فقط."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "PGCD = 1."
+          "content": "القاسم المشترك الأكبر هو أكبر عدد يظهر في القائمتين معًا."
         }
       ],
       "feedback": {
-        "correct": "العددان 15 و 22 أوليان فيما بينهما.",
-        "incorrect": "قارن القائمتين."
-      }
+        "correct": "القاسم المشترك الوحيد للعددين 15 و 22 هو 1.",
+        "incorrect": "اكتب الأعداد المشتركة بين القائمتين، ثم خذ أكبرها."
+      },
+      "solution": {
+        "lines": [
+          "القواسم المشتركة للعددين 15 و 22: 1 فقط.",
+          "إذن:"
+        ],
+        "result": "PGCD(15 ; 22) = 1"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "هل يلزم أن يكون 15 عددًا أوليًا لكي يكون 15 و 22 أوليين فيما بينهما؟",
+      "step": "02",
+      "statement": "هل العددان 15 و 22 أوليان فيما بينهما؟ برّر إجابتك.",
       "learningPoints": [
         {
           "code": "4am_awwaliyan-fima-baynahuma_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "لا: «أوليان فيما بينهما» صفة للزوج، و 15 = 3 × 5",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "نعم",
+          "content": "لا",
           "isCorrect": false,
           "misconceptionId": "MISC-AWWALIYAN-ADAD-AWWALI"
         }
@@ -78,26 +94,32 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "15 = 3 × 5."
+          "content": "هل يوجد عدد يختلف عن 1 يقسم 15 و 22 معًا؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "22 = 2 × 11."
+          "content": "احسب PGCD(15 ; 22) بالقسمات المتتابعة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ولا قاسم مشترك إلا 1."
+          "content": "عددان أوليان فيما بينهما يعني أن قاسمهما المشترك الأكبر يساوي 1، ولو لم يكن أيّ منهما عددًا أوليًا."
         }
       ],
       "feedback": {
-        "correct": "الشرط الوحيد PGCD(15 ; 22) = 1.",
-        "incorrect": "15 = 3 × 5 ليس أوليًا، ومع ذلك…"
-      }
+        "correct": "PGCD(15 ; 22) = 1: العددان أوليان فيما بينهما.",
+        "incorrect": "احسب القاسم المشترك الأكبر بخوارزمية إقليدس قبل أن تحكم؛ لا يُشترط أن يكون أحد العددين عددًا أوليًا."
+      },
+      "solution": {
+        "lines": [
+          "وجدنا في السؤال 01: PGCD(15 ; 22) = 1 .",
+          "لاحظ أن $15 = 3 \\times 5$ و $22 = 2 \\times 11$ : لا يُشترط أن يكون أحد العددين عددًا أوليًا.",
+          "الجواب: نعم، العددان 15 و 22 أوليان فيما بينهما لأن قاسمهما المشترك الأكبر يساوي 1."
+        ],
+        "result": "PGCD(15 ; 22) = 1"
+      },
+      "timeSeconds": 150
     }
-  ],
-  "id": "ex-4am-awwaliyan-fima-baynahuma-l2-001",
-  "lessonCode": "awwaliyan-fima-baynahuma",
-  "level": 2
+  ]
 }

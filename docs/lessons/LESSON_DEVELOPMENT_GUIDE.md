@@ -883,6 +883,17 @@ different systems, often confused:
 | Purpose | أوظّف تعلّماتي — the textbook's exercises | levelled training, separate from the lesson |
 | Evidence | **never** — they are instructional (D9); their `learningPointId` is documentation | yes, a second evidence source, **judged by the server** |
 
+**The practice bank is written as BEM exam sheets — the standard since 2026-10-06.** A new or
+reworked bank is 50 exercises (10 per level), each carrying `metadata.exam`: official papers from
+the 2007–2025 annals (« BEM <year> », word for word, official solution), adapted ones (other
+numbers) and « على منوال BEM <year> »; level 5 holds « الوضعية الإدماجية (08 ن) » sheets. Each
+question is a STEP (`step`, `sub`, `solution`, optional `work`, `timeSeconds`, `counted: false`
+for a step of another lesson or year). Which annals exercise belongs to which lesson is fixed by
+`docs/sources/4am/bem-practice/annals-index.md` (cite each exercise ONCE). Format and rules:
+`docs/sources/4am/bem-practice/brief-authors.md` and `EXERCISE_CONTRACT.md` § « Présentation
+examen (BEM) ». The lesson switches to the BEM levels page when it is added to
+`content/practice/exam-style.json`, after its audit; until then it keeps the classic page.
+
 **How the practice player presents a multi-question exercise** (question
 history, «السؤال السابق», the hint ladder, tones, focus) is specified in
 `EXERCISE_CONTRACT.md` § « The practice player — screen contract ». Authoring

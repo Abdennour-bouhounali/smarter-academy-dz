@@ -1,121 +1,174 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l3-006",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — متى يتوزّع الجذر؟",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2022 — التمرين الأول",
+    "estimatedMinutes": 10,
     "tags": [
-      "مجموع جذرين",
-      "فرق جذرين"
+      "جداء جذرين",
+      "نسبة مقامها ناطق"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_amaliyat-judhur_P3",
-      "modelledOn": "know-4"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "BEM 2022 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2022",
+      "heading": "التمرين الأول",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "$a$ و $b$ عددان موجبان."
+    "content": "$A$ و $B$ عددان حيث:",
+    "formulas": [
+      "A = \\sqrt{12} + 2\\sqrt{75} - 3\\sqrt{27}",
+      "B = \\dfrac{3 + \\sqrt{3}}{\\sqrt{3}}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "واحدة فقط من المساواات التالية صحيحة. ما هي؟",
+      "step": "01",
+      "statement": "اكتب العدد $A$ على الشكل $a\\sqrt{3}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P3",
+          "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\sqrt{9 + 16} = \\sqrt{9} + \\sqrt{16}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-JAMA"
-        },
-        {
-          "id": "B",
-          "content": "$\\sqrt{49 - 9} = \\sqrt{49} - \\sqrt{9}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-TARH"
-        },
-        {
-          "id": "C",
-          "content": "$\\sqrt{4 + 4} = \\sqrt{4} + \\sqrt{4}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-JAMA"
-        },
-        {
-          "id": "D",
-          "content": "$\\sqrt{9 + 0} = \\sqrt{9} + \\sqrt{0}$",
-          "isCorrect": true
+          "value": "21",
+          "id": "MISC-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب الطرفين في كل مساواة."
+          "content": "اكتب $12 = 4 \\times 3$ ، $75 = 25 \\times 3$ ، $27 = 9 \\times 3$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تذكّر: $\\sqrt{a + b} \\neq \\sqrt{a} + \\sqrt{b}$ عندما يكون $a$ و $b$ موجبين تمامًا."
+          "content": "اكتب كل حد على الشكل $k\\sqrt{3}$ مع معامله."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ابحث عن حالة أحد العددين فيها ليس موجبًا تمامًا."
+          "content": "اجمع المعاملات مع إشاراتها."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{9 + 0} = 3 = \\sqrt{9} + \\sqrt{0}$ لأن $\\sqrt{0} = 0$ ؛ في الحالات الأخرى العددان موجبان تمامًا.",
-        "incorrect": "احسب كل طرف عدديًا: $\\sqrt{8}$ مثلًا ليس 4 لأن $4^2 = 16$ ."
-      }
+        "correct": "$A = 2\\sqrt{3} + 10\\sqrt{3} - 9\\sqrt{3} = 3\\sqrt{3}$",
+        "incorrect": "لا تنسَ ضرب المعاملين 2 و 3 في جذري المربعين التامين."
+      },
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{4 \\times 3} + 2\\sqrt{25 \\times 3} - 3\\sqrt{9 \\times 3}$",
+          "$= 2\\sqrt{3} + 10\\sqrt{3} - 9\\sqrt{3}$"
+        ],
+        "result": "A = 3\\sqrt{3}"
+      },
+      "work": "optional",
+      "timeSeconds": 210
     },
     {
       "id": "q2",
-      "statement": "من أجل $a = 64$ و $b = 36$ ، احسب $\\sqrt{a} + \\sqrt{b} - \\sqrt{a + b}$ .",
+      "step": "02",
+      "statement": "اكتب العدد $B$ على شكل نسبة مقامها عدد ناطق.",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P3",
+          "code": "4am_amaliyat-judhur_P2",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "4",
+      "answerFormat": "يُكتب $B$ على الشكل $\\sqrt{3} + b$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "1",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب كل حد وحده."
+          "content": "اضرب البسط والمقام في $\\sqrt{3}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\sqrt{a + b} = \\sqrt{100}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع الجذرين ثم اطرح جذر المجموع."
+          "content": "ثم بسّط بالقسمة على 3."
         }
       ],
       "feedback": {
-        "correct": "$8 + 6 - 10 = 4$ : الفرق ليس معدومًا، إذن $\\sqrt{a + b} \\neq \\sqrt{a} + \\sqrt{b}$ .",
-        "incorrect": "$\\sqrt{64 + 36}$ هو جذر 100، لا $8 + 6$ ."
+        "correct": "$B = \\dfrac{3\\sqrt{3} + 3}{3} = \\sqrt{3} + 1$",
+        "incorrect": "اضرب كل حد من البسط في $\\sqrt{3}$ ، ثم اقسم على 3."
       },
+      "solution": {
+        "lines": [
+          "$B = \\dfrac{(3 + \\sqrt{3}) \\times \\sqrt{3}}{\\sqrt{3} \\times \\sqrt{3}}$",
+          "$= \\dfrac{3\\sqrt{3} + 3}{3}$"
+        ],
+        "result": "B = \\sqrt{3} + 1"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "بيّن أن $B \\times (\\sqrt{3} - 1)$ عدد طبيعي.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة الجداء $B \\times (\\sqrt{3} - 1)$ (عدد طبيعي)",
+      "expectedAnswer": "2",
       "misconceptionSignatures": [
         {
-          "value": "0",
-          "id": "MISC-JIDHR-JAMA"
+          "value": "8",
+          "id": "MISC-TARBI-JIDHR"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل نتيجة السؤال 02."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجداء من الشكل $(a + b)(a - b)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$B \\times (\\sqrt{3} - 1) = (\\sqrt{3})^2 - 1^2 = 3 - 1 = 2$",
+        "incorrect": "اكتب $(\\sqrt{3} + 1)(\\sqrt{3} - 1)$ واستعمل $\\sqrt{3} \\times \\sqrt{3} = 3$ ."
+      },
+      "solution": {
+        "lines": [
+          "$B \\times (\\sqrt{3} - 1) = (\\sqrt{3} + 1)(\\sqrt{3} - 1)$",
+          "$= (\\sqrt{3})^2 - 1^2$",
+          "$= 3 - 1$"
+        ],
+        "result": "B \\times (\\sqrt{3} - 1) = 2"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l3-006",
-  "lessonCode": "amaliyat-judhur",
-  "level": 3
+  ]
 }

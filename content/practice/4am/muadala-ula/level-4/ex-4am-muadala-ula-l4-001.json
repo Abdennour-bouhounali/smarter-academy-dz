@@ -3,108 +3,206 @@
   "lessonCode": "muadala-ula",
   "level": 4,
   "metadata": {
-    "title": "طرائق — معاملات عشرية",
-    "estimatedMinutes": 4,
+    "title": "معادلة بمعاملات عشرية",
+    "estimatedMinutes": 8,
     "tags": [
-      "أعداد عشرية"
+      "أعداد عشرية",
+      "ax + b = cx + d"
     ],
     "source": {
       "type": "textbook",
       "elementId": "method-equation",
       "page": 47,
       "section": "طرائق"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 47): حل المعادلة $2{,}5x + 4{,}6 = 1{,}3x - 0{,}2$ ."
+    "content": "نعتبر المعادلة:",
+    "formulas": [
+      "2{,}5x + 4{,}6 = 1{,}3x - 0{,}2"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نطرح $1{,}3x$ من الطرفين في المعادلة $2{,}5x + 4{,}6 = 1{,}3x - 0{,}2$ ، فنحصل على:",
+      "step": "01",
+      "lead": "اكتب المعادلة على الشكل $ax = b$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
-        }
-      ],
-      "difficulty": 3,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$1{,}2x + 4{,}6 = 2{,}6x - 0{,}2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
         },
         {
-          "id": "B",
-          "content": "$1{,}2x + 4{,}6 = 1{,}3x - 0{,}2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
-        },
-        {
-          "id": "C",
-          "content": "$1{,}2x + 4{,}6 = -0{,}2$",
-          "isCorrect": true
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "تُكتب المعادلة على الشكل $ax = b$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "1,2",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العملية تُجرى على الطرفين معًا."
+          "content": "انقل $1{,}3x$ إلى الطرف الأول و $4{,}6$ إلى الطرف الثاني مع تغيير الإشارة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب كل طرف بعد العملية، ثم بسّطه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المعادلة الناتجة لها الحل نفسه الذي للمعادلة الأولى: يمكنك التحقّق بتعويض قيمة لـ $x$."
+          "content": "احسب $2{,}5 - 1{,}3$ ."
         }
       ],
       "feedback": {
-        "correct": "نطرح $1{,}3x$ من الطرفين: $1{,}2x + 4{,}6 = -0{,}2$ — معادلة لها الحل نفسه.",
-        "incorrect": "العملية نفسها تُجرى على الطرفين، وبالإشارة نفسها."
-      }
+        "correct": "$1{,}2x = -4{,}8$ .",
+        "incorrect": "انقل كل حدّ بإشارة معاكسة، وانتبه إلى الفواصل."
+      },
+      "solution": {
+        "lines": [
+          "$2{,}5x - 1{,}3x = -0{,}2 - 4{,}6$"
+        ],
+        "result": "1{,}2x = -4{,}8"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "حلّ المعادلة $2{,}5x + 4{,}6 = 1{,}3x - 0{,}2$ .",
+      "step": "01",
+      "statement": "العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
-      "expectedAnswer": "-4",
+      "answerFormat": "تُكتب المعادلة على الشكل $ax = b$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "-4,8",
+      "misconceptionSignatures": [
+        {
+          "value": "4,4",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معاملات المعادلة أعداد عشرية."
+          "content": "الأعداد في الطرف الثاني: $-0{,}2$ و $-4{,}6$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}2x = -4{,}8$ .",
+        "incorrect": "انقل كل حدّ بإشارة معاكسة، وانتبه إلى الفواصل."
+      },
+      "solution": {
+        "lines": [
+          "$1{,}2x = -0{,}2 - 4{,}6$"
+        ],
+        "result": "1{,}2x = -4{,}8"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "استنتج حل المعادلة.",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
+      "expectedAnswer": "-4",
+      "misconceptionSignatures": [
+        {
+          "value": "-1/4",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة من الشكل $ax = b$ : عيّن معامل $x$ والعدد الذي في الطرف الآخر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اعمل كما مع الأعداد الصحيحة: المجاهيل في طرف والمعاليم في الطرف الآخر."
+          "content": "اقسم الطرفين على معامل $x$ مع إشارته."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "في النهاية قسّم على معامل $x$ (يمكنك ضرب البسط والمقام في 10)."
+          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس، ثم اختزل."
         }
       ],
       "feedback": {
-        "correct": "$2{,}5x + 4{,}6 = 1{,}3x - 0{,}2$ : ننقل المجاهيل إلى طرف والمعاليم إلى الآخر ونقسم على معامل $x$ : $x = -4$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "$x = -4$ .",
+        "incorrect": "الحل هو حاصل قسمة العدد الذي في الطرف الآخر على معامل $x$ بإشارته. تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$1{,}2x = -4{,}8$",
+          "$x = \\dfrac{-4{,}8}{1{,}2}$"
+        ],
+        "result": "x = -4"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "تحقّق من أن العدد الذي وجدته حل للمعادلة.",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد الذي وجدته في كل طرف على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف مع احترام أولويات العمليات، ثم قارن النتيجتين."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي: عوّض في كل طرف على حدة، واحترم أولويات العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$2{,}5 \\times (-4) + 4{,}6 = -10 + 4{,}6 = -5{,}4$",
+          "$1{,}3 \\times (-4) - 0{,}2 = -5{,}2 - 0{,}2 = -5{,}4$",
+          "الطرفان متساويان، إذن $-4$ حل للمعادلة."
+        ]
+      },
+      "timeSeconds": 150
     }
   ]
 }

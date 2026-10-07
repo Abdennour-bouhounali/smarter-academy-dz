@@ -3,116 +3,181 @@
   "lessonCode": "tawzif-khawass-judhur",
   "level": 3,
   "metadata": {
-    "title": "تدريب — مقارنة أعداد من الشكل a√b",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2018 — جداء ومجموع ونسبة",
+    "estimatedMinutes": 8,
     "tags": [
       "a√b",
-      "مقارنة"
+      "نسبة مقامها عدد ناطق"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_tawzif-khawass-judhur_P1",
-      "modelledOn": "ex-19"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tawzif-khawass-judhur_P2",
+      "modelledOn": "BEM 2018 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2018",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "نعتبر الأعداد $3\\sqrt{5}$ ، $2\\sqrt{11}$ ، $4\\sqrt{3}$ و $5\\sqrt{2}$."
+    "content": "A و B عددان حيث:",
+    "formulas": [
+      "A = 2\\sqrt{18} \\times \\sqrt{2}",
+      "B = 3\\sqrt{20} - \\sqrt{45} + \\sqrt{5}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نكتب $4\\sqrt{3} = \\sqrt{n}$. ما قيمة العدد الطبيعي $n$؟",
+      "step": "01",
+      "statement": "بيّن أن A عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "48",
+      "answerFormat": "اكتب قيمة العدد A (عدد طبيعي)",
+      "expectedAnswer": "12",
       "misconceptionSignatures": [
         {
-          "id": "MISC-MUAMIL-DUN-TARBI",
-          "value": "12"
+          "value": "6",
+          "id": "MISC-MUAMIL-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "أدخل المعامل 4 تحت الجذر."
+          "content": "$\\sqrt{x} \\times \\sqrt{y} = \\sqrt{x \\times y}$"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$4 = \\sqrt{16}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$\\sqrt{16} \\times \\sqrt{3} = \\sqrt{16 \\times 3}$."
+          "content": "احسب $18 \\times 2$: هل هو مربع تامّ؟"
         }
       ],
       "feedback": {
-        "correct": "$4\\sqrt{3} = \\sqrt{4^2 \\times 3}$.",
-        "incorrect": "المعامل يدخل تحت الجذر مربّعًا."
-      }
+        "correct": "$A = 2\\sqrt{36} = 2 \\times 6 = 12$: عدد طبيعي.",
+        "incorrect": "اجمع الجذرين في جذر واحد ثم احسب جذر المربع التامّ، ولا تنسَ المعامل 2."
+      },
+      "solution": {
+        "lines": [
+          "$A = 2\\sqrt{18} \\times \\sqrt{2}$",
+          "$A = 2\\sqrt{18 \\times 2}$",
+          "$A = 2\\sqrt{36}$",
+          "$A = 2 \\times 6$"
+        ],
+        "result": "A = 12"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "ما هو أكبر الأعداد $3\\sqrt{5}$ ، $2\\sqrt{11}$ ، $4\\sqrt{3}$ و $5\\sqrt{2}$؟",
+      "step": "02",
+      "statement": "اكتب العدد B على الشكل $a\\sqrt{5}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
-          "code": "4am_tawzif-khawass-judhur_P1",
+          "code": "4am_tawzif-khawass-judhur_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$4\\sqrt{3}$",
-          "isCorrect": false
+          "value": "2",
+          "id": "MISC-ISHARA"
         },
         {
-          "id": "B",
-          "content": "$3\\sqrt{5}$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$5\\sqrt{2}$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$2\\sqrt{11}$",
-          "isCorrect": false
+          "value": "0",
+          "id": "MISC-MUAMIL-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المعاملات والجذور مختلفة: المقارنة المباشرة صعبة."
+          "content": "اكتب كل جذر على الشكل $x\\sqrt{5}$: ابحث عن أكبر مربع تامّ يقسم العدد الذي تحت الجذر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب كل عدد على الشكل $\\sqrt{n}$."
+          "content": "استعمل $\\sqrt{m \\times 5} = \\sqrt{m} \\times \\sqrt{5}$ ثم احسب جذر المربع التامّ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "الجذران لعددين موجبين مرتّبان مثل العددين."
+          "content": "اجمع المعاملات بإشاراتها بالخاصية التوزيعية: $x\\sqrt{5} + y\\sqrt{5} = (x + y)\\sqrt{5}$."
         }
       ],
       "feedback": {
-        "correct": "$3\\sqrt{5} = \\sqrt{45}$ ، $2\\sqrt{11} = \\sqrt{44}$ ، $4\\sqrt{3} = \\sqrt{48}$ و $5\\sqrt{2} = \\sqrt{50}$.",
-        "incorrect": "لا تقارن المعاملات وحدها: أدخل كل معامل تحت الجذر مربّعًا ثم قارن."
-      }
+        "correct": "$B = 6\\sqrt{5} - 3\\sqrt{5} + \\sqrt{5} = 4\\sqrt{5}$.",
+        "incorrect": "اكتب كل جذر على الشكل $x\\sqrt{5}$ (لا تنسَ المعامل 3)، ثم اجمع المعاملات بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$B = 3\\sqrt{20} - \\sqrt{45} + \\sqrt{5}$",
+          "$B = 3\\sqrt{4} \\times \\sqrt{5} - \\sqrt{9} \\times \\sqrt{5} + \\sqrt{5}$",
+          "$B = 3 \\times 2\\sqrt{5} - 3\\sqrt{5} + \\sqrt{5}$",
+          "$B = (6 - 3 + 1)\\sqrt{5}$"
+        ],
+        "result": "B = 4\\sqrt{5}"
+      },
+      "work": "optional",
+      "timeSeconds": 210
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "بيّن أن: $\\dfrac{A}{B} = \\dfrac{3\\sqrt{5}}{5}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض A و B بما وجدته في السؤالين 01 و 02 ثم اختزل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب البسط والمقام في $\\sqrt{5}$."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى كل مرحلة من مراحل الحساب."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{A}{B} = \\dfrac{12}{4\\sqrt{5}}$",
+          "$= \\dfrac{3}{\\sqrt{5}}$",
+          "$= \\dfrac{3 \\times \\sqrt{5}}{\\sqrt{5} \\times \\sqrt{5}}$"
+        ],
+        "result": "\\dfrac{A}{B} = \\dfrac{3\\sqrt{5}}{5}"
+      },
+      "timeSeconds": 150
     }
   ]
 }

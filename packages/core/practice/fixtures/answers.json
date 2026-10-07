@@ -1061,7 +1061,7 @@
     }
   },
   {
-    "name": "rational-decimal-dot-equivalent",
+    "name": "rational-decimal-dot-same-writing",
     "question": {
       "id": "q-rat-dec",
       "answerType": "rational",
@@ -1076,7 +1076,7 @@
       "value": "2.5"
     },
     "expected": {
-      "outcome": "equivalent_correct",
+      "outcome": "correct",
       "misconceptionId": null,
       "normalized": "5/2",
       "isCorrect": true,
@@ -1145,7 +1145,7 @@
       "value": 2.5
     },
     "expected": {
-      "outcome": "equivalent_correct",
+      "outcome": "correct",
       "misconceptionId": null,
       "normalized": "5/2",
       "isCorrect": true,
@@ -1398,7 +1398,7 @@
       "value": "0.1234567"
     },
     "expected": {
-      "outcome": "equivalent_correct",
+      "outcome": "correct",
       "misconceptionId": null,
       "normalized": "1234567/10000000",
       "isCorrect": true,
@@ -5953,6 +5953,187 @@
       "normalized": "9007199254740991",
       "isCorrect": true,
       "feedbackKey": "correct"
+    }
+  },
+  {
+    "name": "selfCheck-correct",
+    "question": {
+      "id": "q-self",
+      "answerType": "selfCheck",
+      "feedback": {
+        "correct": "Bien.",
+        "incorrect": "Relis le corrigé."
+      },
+      "solution": {
+        "lines": [
+          "…"
+        ]
+      }
+    },
+    "answer": {
+      "selfMark": "correct"
+    },
+    "expected": {
+      "outcome": "correct",
+      "misconceptionId": null,
+      "normalized": "self:correct",
+      "isCorrect": true,
+      "feedbackKey": "correct"
+    }
+  },
+  {
+    "name": "selfCheck-incorrect",
+    "question": {
+      "id": "q-self",
+      "answerType": "selfCheck",
+      "feedback": {
+        "correct": "Bien.",
+        "incorrect": "Relis le corrigé."
+      },
+      "solution": {
+        "lines": [
+          "…"
+        ]
+      }
+    },
+    "answer": {
+      "selfMark": "incorrect"
+    },
+    "expected": {
+      "outcome": "incorrect",
+      "misconceptionId": null,
+      "normalized": "self:incorrect",
+      "isCorrect": false,
+      "feedbackKey": "incorrect"
+    }
+  },
+  {
+    "name": "selfCheck-unknown-mark",
+    "question": {
+      "id": "q-self",
+      "answerType": "selfCheck",
+      "feedback": {
+        "correct": "Bien.",
+        "incorrect": "Relis le corrigé."
+      },
+      "solution": {
+        "lines": [
+          "…"
+        ]
+      }
+    },
+    "answer": {
+      "selfMark": "maybe"
+    },
+    "expected": {
+      "outcome": "syntax_error",
+      "misconceptionId": null,
+      "normalized": "maybe",
+      "isCorrect": false,
+      "feedbackKey": "incorrect"
+    }
+  },
+  {
+    "name": "selfCheck-empty-object",
+    "question": {
+      "id": "q-self",
+      "answerType": "selfCheck",
+      "feedback": {
+        "correct": "Bien.",
+        "incorrect": "Relis le corrigé."
+      },
+      "solution": {
+        "lines": [
+          "…"
+        ]
+      }
+    },
+    "answer": {},
+    "expected": {
+      "outcome": "syntax_error",
+      "misconceptionId": null,
+      "normalized": "",
+      "isCorrect": false,
+      "feedbackKey": "incorrect"
+    }
+  },
+  {
+    "name": "selfCheck-text-pending",
+    "question": {
+      "id": "q-self",
+      "answerType": "selfCheck",
+      "feedback": {
+        "correct": "Bien.",
+        "incorrect": "Relis le corrigé."
+      },
+      "solution": {
+        "lines": [
+          "…"
+        ]
+      }
+    },
+    "answer": {
+      "text": "PGCD(21 ; 14) = PGCD(14 ; 7) لأن 21 − 14 = 7"
+    },
+    "expected": {
+      "outcome": "abandoned",
+      "misconceptionId": null,
+      "normalized": "self:pending",
+      "isCorrect": false,
+      "feedbackKey": "pending"
+    }
+  },
+  {
+    "name": "selfCheck-blank-text",
+    "question": {
+      "id": "q-self",
+      "answerType": "selfCheck",
+      "feedback": {
+        "correct": "Bien.",
+        "incorrect": "Relis le corrigé."
+      },
+      "solution": {
+        "lines": [
+          "…"
+        ]
+      }
+    },
+    "answer": {
+      "text": "   "
+    },
+    "expected": {
+      "outcome": "syntax_error",
+      "misconceptionId": null,
+      "normalized": "",
+      "isCorrect": false,
+      "feedbackKey": "incorrect"
+    }
+  },
+  {
+    "name": "selfCheck-text-and-mark",
+    "question": {
+      "id": "q-self",
+      "answerType": "selfCheck",
+      "feedback": {
+        "correct": "Bien.",
+        "incorrect": "Relis le corrigé."
+      },
+      "solution": {
+        "lines": [
+          "…"
+        ]
+      }
+    },
+    "answer": {
+      "text": "برهان",
+      "selfMark": "incorrect"
+    },
+    "expected": {
+      "outcome": "incorrect",
+      "misconceptionId": null,
+      "normalized": "self:incorrect",
+      "isCorrect": false,
+      "feedbackKey": "incorrect"
     }
   }
 ]

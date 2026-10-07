@@ -50,8 +50,19 @@ final class AnswerEvaluator
 
     /** Types de réponse gérés. Le validateur de contenu compare cette liste au schéma. */
     public const SUPPORTED_ANSWER_TYPES = [
-        'choice', 'multiChoice', 'rational', 'affine', 'interval', 'point', 'integerSet',
+        'choice', 'multiChoice', 'rational', 'affine', 'interval', 'point', 'integerSet', 'selfCheck',
     ];
+
+    /**
+     * Miroir de `countsForMastery` (JS) : une question auto-évaluée (`selfCheck`)
+     * ou déclarée `counted: false` est jugée, mais n'écrit aucune preuve de maîtrise.
+     *
+     * @param  array<string, mixed>  $question
+     */
+    public static function countsForMastery(array $question): bool
+    {
+        return ($question['answerType'] ?? null) !== 'selfCheck' && ($question['counted'] ?? true) !== false;
+    }
 
     /** Les issues qui comptent comme une réussite pour la maîtrise. */
     public static function isSuccessOutcome(string $outcome): bool
@@ -90,6 +101,7 @@ final class AnswerEvaluator
             'interval' => 'evaluateInterval',
             'point' => 'evaluatePoint',
             'integerSet' => 'evaluateIntegerSet',
+            'selfCheck' => 'evaluateSelfCheck',
             default => null,
         } : null;
         if ($method === null) {
@@ -244,6 +256,32 @@ final class AnswerEvaluator
 
     /* ── Évaluateurs par type ─────────────────────────────────────────────── */
 
+    /**
+     * Auto-évaluation (« بيّن أن »، « برّر ») : `{ text }` = démonstration
+     * enregistrée et verrouillée, en attente (`abandoned`, « self:pending ») ;
+     * `{ text, selfMark }` = la déclaration de l'élève après le corrigé type.
+     * Miroir de `evaluateSelfCheck` (JS).
+     */
+    private static function evaluateSelfCheck(mixed $answer, array $question): array
+    {
+        $mark = self::prop($answer, 'selfMark');
+        if ($mark === 'correct') {
+            return self::result(self::CORRECT, null, 'self:correct');
+        }
+        if ($mark === 'incorrect') {
+            return self::result(self::INCORRECT, null, 'self:incorrect');
+        }
+
+        if ($mark === null) {
+            $text = self::prop($answer, 'text');
+            if (is_string($text) && trim($text) !== '') {
+                return self::result(self::ABANDONED, null, 'self:pending', 'pending');
+            }
+        }
+
+        return self::syntaxError($mark === null ? '' : Rational::jsString($mark));
+    }
+
     private static function evaluateChoice(mixed $answer, array $question): array
     {
         $picked = self::prop($answer, 'choiceId');
@@ -362,7 +400,8 @@ final class AnswerEvaluator
                 }
             }
             // Même valeur, écriture différente ("3/2" pour "1,5") : juste, et on peut le dire.
-            $sameText = self::jsTrim(Rational::jsString($question['expectedAnswer'] ?? null)) === self::jsTrim(Rational::jsString($value));
+            // Virgule et point décimaux = MÊME écriture (propriétaire, 2026-10-07 ; jumeau de sameWriting() en JS).
+            $sameText = self::sameWriting(Rational::jsString($question['expectedAnswer'] ?? null), Rational::jsString($value));
 
             return self::result($sameText ? self::CORRECT : self::EQUIVALENT_CORRECT, null, $given->toString());
         }
@@ -645,5 +684,13 @@ final class AnswerEvaluator
         }
 
         return json_encode($v, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_LINE_TERMINATORS | JSON_INVALID_UTF8_SUBSTITUTE);
+    }
+
+    /** Deux écritures identiques au séparateur décimal près (« , » « . » « ٫ ») — jumeau de sameWriting() (JS). */
+    private static function sameWriting(string $a, string $b): bool
+    {
+        $norm = static fn (string $v): string => str_replace(['.', '٫'], ',', self::jsTrim($v));
+
+        return $norm($a) === $norm($b);
     }
 }

@@ -3,47 +3,61 @@
   "lessonCode": "dala-khattiya",
   "level": 3,
   "metadata": {
-    "title": "تمييز وتعيين",
-    "estimatedMinutes": 4,
+    "title": "تمييز دالة خطية ثم استعمالها",
+    "estimatedMinutes": 5,
     "tags": [
-      "تمييز",
-      "صورة"
+      "تمييز دالة خطية",
+      "صورة عدد"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation"
+      "reason": "practice_generation",
+      "adaptedFrom": "ex-4am-dala-khattiya-l3-010"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "دوال معرّفة بعباراتها."
+    "content": "نعتبر الدوال $f$ ، $g$ ، $h$ المعرّفة كما يلي:",
+    "formulas": [
+      "f : x \\longmapsto x - 0{,}5",
+      "g : x \\longmapsto x^2 + 1",
+      "h : x \\longmapsto -0{,}5x"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ الدوال الآتية دالة خطية؟",
+      "step": "01",
+      "statement": "عيّن من بين هذه الدوال الدالة الخطية. برّر.",
       "learningPoints": [
         {
           "code": "4am_dala-khattiya_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
+      "difficulty": 3,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$x \\longmapsto x - 0{,}5$",
+          "content": "$f$",
           "isCorrect": false,
           "misconceptionId": "MISC-KHATTIYA-AFFINE"
         },
         {
           "id": "B",
-          "content": "$x \\longmapsto x^2 + 1$",
+          "content": "$g$",
           "isCorrect": false
         },
         {
           "id": "C",
-          "content": "$x \\longmapsto -0{,}5x$",
+          "content": "$h$",
           "isCorrect": true
         }
       ],
@@ -51,64 +65,126 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "الدالة الخطية من الشكل $x \\longmapsto ax$ حيث $a$ عدد ثابت."
+          "content": "الدالة الخطية من الشكل $x \\longmapsto ax$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب صورة 0 بكل دالة: بدالة خطية تكون معدومة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق أيضًا أنّ صورة العدد هي جداؤه في العدد الثابت نفسه."
+          "content": "احسب صورة 0 بكل دالة."
         }
       ],
       "feedback": {
-        "correct": "$x \\longmapsto -0{,}5x$ من الشكل $x \\longmapsto ax$ ؛ الدوال الأخرى صورة 0 بها غير معدومة أو ليست جداء $x$ في عدد ثابت.",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "$h(x) = -0{,}5 \\times x$ من الشكل $ax$ .",
+        "incorrect": "دالة صورة 0 بها غير معدومة ليست خطية."
+      },
+      "solution": {
+        "lines": [
+          "$f(0) = -0{,}5 \\neq 0$ و $g(0) = 1 \\neq 0$ : $f$ و $g$ ليستا خطيتين.",
+          "$h(x) = -0{,}5x$ من الشكل $ax$ : $h$ دالة خطية."
+        ],
+        "result": "h"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "احسب $f(-12)$ .",
+      "step": "02",
+      "statement": "احسب صورة العدد $-12$ بالدالة الخطية.",
       "learningPoints": [
         {
           "code": "4am_dala-khattiya_P2",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
       "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "value": "24",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        },
+        {
+          "value": "-6",
+          "id": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "صورة عدد بدالة خطية تُقرأ على دستورها."
+          "content": "صورة العدد $x$ بالدالة الخطية $h$ هي $h(x) = -0{,}5 \\times x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض $x$ بالعدد المعطى في الدستور."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب الجداء، وانتبه إلى الإشارة."
+          "content": "عوّض $x$ بالعدد $-12$ ثم احسب الجداء، وانتبه إلى الإشارة."
         }
       ],
       "feedback": {
-        "correct": "$f(-12) = (-0{,}5) \\times (-12) = 6$ .",
-        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+        "correct": "$h(-12) = \\left(-0{,}5\\right) \\times \\left(-12\\right) = 6$ .",
+        "incorrect": "الصورة جداء المعامل في العدد: $h(x) = -0{,}5 \\times x$ ."
       },
+      "solution": {
+        "lines": [
+          "$h(-12) = \\left(-0{,}5\\right) \\times \\left(-12\\right)$",
+          "$h(-12) = 6$"
+        ],
+        "result": "h(-12) = 6"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "جد العدد الذي صورته $-4$ بالدالة الخطية.",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "8",
       "misconceptionSignatures": [
         {
-          "id": "MISC-KHATTIYA-SURA-SABIQ",
-          "value": "24"
+          "value": "2",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        },
+        {
+          "value": "-8",
+          "id": "MISC-KHATTIYA-ISHARA"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد المطلوب $x$ يحقق $h(x) = -4$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حلّ المعادلة $-0{,}5x = -4$ : اقسم الطرفين على معامل $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{-4}{-0{,}5} = 8$ .",
+        "incorrect": "لا تحسب صورة العدد المعطى: ابحث عن العدد $x$ الذي صورته هذا العدد."
+      },
+      "solution": {
+        "lines": [
+          "$h(x) = -4$ معناه $-0{,}5x = -4$",
+          "$x = \\dfrac{-4}{-0{,}5} = 8$"
+        ],
+        "result": "x = 8"
+      },
+      "timeSeconds": 90
     }
   ]
 }

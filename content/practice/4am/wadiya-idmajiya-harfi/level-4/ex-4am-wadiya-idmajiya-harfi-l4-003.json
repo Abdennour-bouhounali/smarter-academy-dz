@@ -1,165 +1,196 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l4-003",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 4,
   "metadata": {
-    "title": "تمرين 39 — تحليل D والعبارة المناسبة",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2018 — تحقق، تحليل، متراجحة",
+    "estimatedMinutes": 10,
     "tags": [
-      "تحليل",
-      "اختيار الشكل"
+      "تحقق بالنشر",
+      "عامل مشترك",
+      "متراجحة"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "ex-39",
-      "page": 41,
-      "section": "أتعمّق",
-      "number": 39
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P1",
+      "modelledOn": "BEM 2018 I-2"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2018",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "إليك العبارة الجبرية D حيث $D = x^2 - 4 + (x - 2)(3x + 5)$ ."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "تحليل العبارة $D$ هو ...",
+      "step": "01",
+      "statement": "تحقّق من صحة المساواة الآتية: $(2x - 3)(x + 4) = 2x^2 + 5x - 12$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$(x - 2)(3x + 7)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
-        },
-        {
-          "id": "B",
-          "content": "$(x + 2)(4x + 7)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
-        },
-        {
-          "id": "C",
-          "content": "$(x - 2)(4x + 7)$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$(x - 2)(4x + 3)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حلّل $x^2 - 4$ أولًا."
+          "content": "انشر الطرف الأول حدًّا حدًّا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "العامل المشترك $(x - 2)$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع ما يبقى: $(x + 2) + (3x + 5)$."
+          "content": "اجمع الحدود المتشابهة وقارن بالطرف الثاني."
         }
       ],
       "feedback": {
-        "correct": "$D = (x - 2)(x + 2) + (x - 2)(3x + 5) = (x - 2)(4x + 7)$.",
-        "incorrect": "بعد استخراج العامل المشترك اجمع القوسين الباقيين كاملين."
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى الإشارات عند النشر."
       },
-      "cognitiveDemand": "reason"
+      "solution": {
+        "lines": [
+          "$(2x - 3)(x + 4) = 2x^2 + 8x - 3x - 12$",
+          "$= 2x^2 + 5x - 12$"
+        ],
+        "result": "(2x - 3)(x + 4) = 2x^2 + 5x - 12"
+      },
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "احسب $D$ من أجل $x = -1{,}75$.",
+      "step": "02",
+      "lead": "حلّل إلى جداء عاملين من الدرجة الأولى العبارة: $E = 2x^2 + 5x - 12 + (2x - 3)^2$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "code": "4am_wadiya-idmajiya-harfi_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
-      "expectedAnswer": "0",
+      "answerFormat": "يُكتب $E$ على الشكل $(2x - 3)(mx + n)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "أيّ شكل يجعل الحساب أقصر؟"
+          "content": "استعمل نتيجة السؤال 01."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$4 \\times (-1{,}75)$."
+          "content": "العامل $(2x - 3)$ مشترك بين الحدّين."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "هل ينعدم أحد العاملين؟"
+          "content": "أخرجه وبسّط ما بداخل القوس الثاني."
         }
       ],
       "feedback": {
-        "correct": "$4 \\times (-1{,}75) + 7 = 0$ ، إذن $D = 0$ بالشكل المحلّل.",
-        "incorrect": "استعمل الشكل المحلّل: أحد عامليه معدوم."
+        "correct": "$E = (2x - 3)(3x + 1)$ إذن $m = 3$ .",
+        "incorrect": "تحقّق من تحليلك بنشر الجداء: يجب أن تجد العبارة الأصلية."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "-14",
-          "id": "MISC-SHAKL-GHAYR-MUNASIB"
-        }
-      ],
-      "cognitiveDemand": "reason"
+      "solution": {
+        "lines": [
+          "$E = (2x - 3)(x + 4) + (2x - 3)(2x - 3)$",
+          "$E = (2x - 3)[(x + 4) + (2x - 3)]$"
+        ],
+        "result": "E = (2x - 3)(3x + 1)"
+      },
+      "work": "optional",
+      "timeSeconds": 210
     },
     {
       "id": "q3",
-      "statement": "احسب $D$ من أجل $x = 0$.",
+      "step": "02",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $(2x - 3)(mx + n)$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
+        {
+          "value": "7",
+          "id": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $n$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = (2x - 3)(3x + 1)$ إذن $n = 1$ .",
+        "incorrect": "تحقّق من تحليلك بنشر الجداء: يجب أن تجد العبارة الأصلية."
+      },
+      "solution": {
+        "lines": [
+          "$E = (2x - 3)(3x + 1)$"
+        ],
+        "result": "n = 1"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "حل المتراجحة: $(2x - 3)(x + 4) \\leqslant 2x^2 + 9$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P3",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
-      "expectedAnswer": "-14",
+      "answerFormat": "حلول المتراجحة هي الأعداد $x$ حيث $x \\leq k$ أو $x \\geq k$ : اكتب العدد الحدّي $k$ فقط (عدد صحيح أو كسر a/b)",
+      "expectedAnswer": "21/5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "من أجل $x = 0$ أيّ شكل أسهل؟"
+          "content": "استعمل نتيجة السؤال 01 لتعويض الطرف الأول."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في الشكل المنشور يبقى الحد الثابت."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "أو: $(-2) \\times 7$."
+          "content": "احذف $2x^2$ من الطرفين."
         }
       ],
       "feedback": {
-        "correct": "الحد الثابت في النشر هو $-14$ ؛ وبالشكل المحلّل $(-2) \\times 7 = -14$.",
-        "incorrect": "من أجل $x = 0$ يكفي الحد الثابت من النشر."
+        "correct": "$x \\leqslant \\dfrac{21}{5}$ .",
+        "incorrect": "انقل الحدود التي تحتوي على المجهول إلى طرف والأعداد إلى الطرف الآخر، ثم اقسم على المعامل."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "14",
-          "id": "MISC-NASHR-ISHARA-SALIBA"
-        }
-      ],
-      "cognitiveDemand": "reason"
+      "solution": {
+        "lines": [
+          "حسب 01: $2x^2 + 5x - 12 \\leqslant 2x^2 + 9$",
+          "$5x \\leqslant 21$",
+          "$x \\leqslant \\dfrac{21}{5}$"
+        ],
+        "result": "x \\leqslant \\dfrac{21}{5}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l4-003",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 4
+  ]
 }

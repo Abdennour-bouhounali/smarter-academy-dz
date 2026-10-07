@@ -1,10 +1,13 @@
 {
+  "id": "ex-4am-nashr-tabsit-l4-003",
+  "lessonCode": "nashr-tabsit",
+  "level": 4,
   "metadata": {
-    "title": "تمرين 6 — إجابتا تلميذين",
-    "estimatedMinutes": 4,
+    "title": "إجابتا تلميذين",
+    "estimatedMinutes": 8,
     "tags": [
-      "تبسيط",
-      "أقواس"
+      "أقواس مسبوقة بـ −",
+      "تبسيط"
     ],
     "source": {
       "type": "textbook",
@@ -12,110 +15,156 @@
       "page": 37,
       "section": "أوظّف تعلّماتي",
       "number": 6
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 37): إليك إجابة تلميذين حول نشر وتبسيط العبارة $P = 3(x - 1) - (x + 1)(4x - 3)$ . أجاب الأول: $P = 3x - 3 - 4x^2 - 3x + 4x - 3 = -4x^2 + 4x + 6$ . أجاب الثاني: $P = 3x - 3 - (4x^2 - 3x + 4x - 3) = 3x - 3 - 4x^2 + 3x - 4x + 3 = -4x^2 + 2x$ ."
+    "content": "نريد نشر وتبسيط العبارة $P = 3(x - 1) - (x + 1)(4x - 3)$ . أجاب تلميذ: $P = 3x - 3 - 4x^2 - 3x + 4x - 3 = -4x^2 + 4x - 6$ ، وأجاب تلميذ آخر: $P = 3x - 3 - (4x^2 - 3x + 4x - 3) = 3x - 3 - 4x^2 + 3x - 4x + 3 = -4x^2 + 2x$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أي الإجابتين صحيحة؟",
+      "step": "01",
+      "lead": "انشر وبسّط العبارة $P$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P4",
           "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "إجابة التلميذ الأول",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
         },
         {
-          "id": "B",
-          "content": "إجابة التلميذ الثاني",
-          "isCorrect": true
+          "code": "4am_nashr-tabsit_P3",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $P$ على الشكل $ax^2 + bx$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "-4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الجداء $(x + 1)(4x - 3)$ مسبوق بإشارة $-$."
+          "content": "اضرب كل حد من القوس الأول في كل حد من القوس الثاني."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عند حذف قوسين مسبوقين بـ $-$ ماذا يحدث لإشارات الحدود؟"
+          "content": "عند حذف قوسين مسبوقين بإشارة $-$ تتغيّر إشارة كل حد بداخلهما."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "قارن السطر الأول من كل إجابة."
+          "content": "اجمع الحدود المتشابهة: حدود $x^2$ معًا، ثم حدود $x$، ثم الأعداد."
         }
       ],
       "feedback": {
-        "correct": "الثاني وضع النشر بين قوسين ثم غيّر إشارة كل حد عند حذفهما؛ الأول لم يغيّر الإشارات، ثم أخطأ في $-3 - 3$.",
-        "incorrect": "تحقّق من إشارات الحدود بعد حذف القوسين المسبوقين بـ $-$."
-      }
+        "correct": "$P = -4x^2 + 2x$ إذن $a = -4$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$P = 3(x - 1) - (x + 1)(4x - 3)$",
+          "$P = 3 \\times x - 3 \\times 1 - (x \\times 4x - x \\times 3 + 1 \\times 4x - 1 \\times 3)$",
+          "$P = 3x - 3 - (4x^2 - 3x + 4x - 3)$",
+          "$P = 3x - 3 - 4x^2 + 3x - 4x + 3$"
+        ],
+        "result": "P = -4x^2 + 2x"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "النشر المبسّط للعبارة $P$ هو:",
+      "step": "01",
+      "statement": "العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P4",
           "role": "primary"
+        },
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $P$ على الشكل $ax^2 + bx$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$-4x^2 + 4x - 6$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+          "value": "3",
+          "id": "MISC-NASHR-AWWAL-AKHIR"
         },
         {
-          "id": "B",
-          "content": "$-4x^2 + 4x + 6$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
-        },
-        {
-          "id": "C",
-          "content": "$-4x^2 + 2x$",
-          "isCorrect": true
+          "value": "4",
+          "id": "MISC-NASHR-QAWS-SALIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر $(x + 1)(4x - 3)$ وضعه بين قوسين."
+          "content": "اجمع معاملات حدود $x$ بإشاراتها بعد النشر."
+        }
+      ],
+      "feedback": {
+        "correct": "$P = -4x^2 + 2x$ إذن $b = 2$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $b$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$P = -4x^2 + 2x$"
+        ],
+        "result": "b = 2"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "حدّد الخطأ الذي ارتكبه التلميذ الأول، وبيّن أن إجابة التلميذ الثاني صحيحة.",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن إشارات الحدود التي كتبها التلميذ الأول بعد حذف القوسين المسبوقين بـ $-$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احذف القوسين بتغيير الإشارات."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم اجمع الحدود المتشابهة."
+          "content": "أمام الجداء $(x + 1)(4x - 3)$ إشارة $-$ : تتغيّر إشارة كل حد من حدود نشره."
         }
       ],
       "feedback": {
-        "correct": "$3x - 3 - 4x^2 + 3x - 4x + 3 = -4x^2 + 2x$.",
-        "incorrect": "الإشارة $-$ أمام الجداء تغيّر إشارة كل حد من نشره."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى الإشارات عند النشر."
+      },
+      "solution": {
+        "lines": [
+          "التلميذ الأول لم يغيّر إلا إشارة الحد الأول عند حذف القوسين: كتب $-3x + 4x - 3$ بدل $+3x - 4x + 3$ .",
+          "$P = 3x - 3 - (4x^2 - 3x + 4x - 3)$",
+          "$P = 3x - 3 - 4x^2 + 3x - 4x + 3$",
+          "وهي إجابة التلميذ الثاني."
+        ],
+        "result": "P = -4x^2 + 2x"
+      },
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-nashr-tabsit-l4-003",
-  "lessonCode": "nashr-tabsit",
-  "level": 4
+  ]
 }

@@ -1,108 +1,140 @@
 {
+  "id": "ex-4am-mutatabiqat-shahira-l4-010",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 4,
   "metadata": {
-    "title": "تدريب — عبارة لا تتعلّق بـ x",
-    "estimatedMinutes": 5,
+    "title": "فرق مربعين بدلالة x",
+    "estimatedMinutes": 6,
     "tags": [
-      "جداء مجموع حدين وفرقهما"
+      "مربع مجموع",
+      "مربع فرق",
+      "حساب ذهني"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
-      "learningPoint": "4am_mutatabiqat-shahira_P3",
-      "modelledOn": "ex-19"
+      "learningPoint": "4am_mutatabiqat-shahira_P1",
+      "modelledOn": "ex-35",
+      "adaptedFrom": "ex-4am-mutatabiqat-shahira-l4-008"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "نعتبر العبارة $R = (3x - 2)(3x + 2) + 4$ ."
+    "content": "لتكن العبارة $D$ حيث:",
+    "formulas": [
+      "D = (x + 3)^2 - (x - 3)^2"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "النشر المبسّط للعبارة $R$ هو:",
+      "step": "01",
+      "lead": "انشر و بسّط العبارة $D$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
-          "code": "4am_mutatabiqat-shahira_P3",
+          "code": "4am_mutatabiqat-shahira_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $D$ على الشكل $mx$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$9x^2$",
-          "isCorrect": true
+          "value": "0",
+          "id": "MISC-MURABBA-MAJMU-BILA-2AB"
         },
         {
-          "id": "B",
-          "content": "$9x^2 + 8$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
-        },
-        {
-          "id": "C",
-          "content": "$3x^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+          "value": "6",
+          "id": "MISC-MUTATABIQA-2AB-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$(3x - 2)(3x + 2)$ جداء مجموع وفرق."
+          "content": "عيّن نوع كل متطابقة شهيرة في العبارة: مربع مجموع، مربع فرق، أو جداء مجموع وفرق."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$(3x)^2 - 2^2$."
+          "content": "عيّن الحدّين $a$ و $b$ ، ولا تنسَ الحد المضاعف $2ab$ ولا تربيع المعامل."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم أضف $4$."
+          "content": "ضع النشر بين قوسين عندما تسبقه إشارة $-$ ، ثم غيّر إشارة كل حد عند حذفهما، واجمع الحدود المتشابهة."
         }
       ],
       "feedback": {
-        "correct": "$9x^2 - 4 + 4 = 9x^2$",
-        "incorrect": "الحد $2^2$ مطروح في جداء مجموع وفرق."
-      }
+        "correct": "$D = 12x$ إذن $m = 12$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$D = (x + 3)^2 - (x - 3)^2$",
+          "$D = x^2 + 2 \\times x \\times 3 + 3^2 - \\left[x^2 - 2 \\times x \\times 3 + 3^2\\right]$",
+          "$D = x^2 + 6x + 9 - (x^2 - 6x + 9)$",
+          "$D = x^2 + 6x + 9 - x^2 + 6x - 9$"
+        ],
+        "result": "D = 12x"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "احسب قيمة $R$ من أجل $x = \\dfrac{1}{3}$ .",
+      "step": "02",
+      "statement": "استعمل نتيجة السؤال 01 لحساب $53^2 - 47^2$ ذهنيا.",
       "learningPoints": [
         {
-          "code": "4am_mutatabiqat-shahira_P3",
+          "code": "4am_mutatabiqat-shahira_P4",
           "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد أو كسر a/b",
-      "expectedAnswer": "1",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "600",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "استعمل الشكل المبسّط $9x^2$."
+          "content": "ابحث عن قيمة $x$ التي يكون من أجلها $x + 3 = 53$ و $x - 3 = 47$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض $x$ بـ $\\dfrac{1}{3}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $9 \\times \\dfrac{1}{9}$."
+          "content": "احسب القوى أولًا، ثم الجداءات، ثم الجمع والطرح."
         }
       ],
       "feedback": {
-        "correct": "$9 \\times \\left(\\dfrac{1}{3}\\right)^2 = 9 \\times \\dfrac{1}{9} = 1$",
-        "incorrect": "ربّع $\\dfrac{1}{3}$ قبل الضرب في $9$."
-      }
+        "correct": "$53^2 - 47^2 = 12 \\times 50 = 600$ .",
+        "incorrect": "عوّض $x$ في كل حد، واحترم أولويات العمليات والإشارات."
+      },
+      "solution": {
+        "lines": [
+          "من أجل $x = 50$ : $x + 3 = 53$ و $x - 3 = 47$",
+          "إذن $53^2 - 47^2 = D = 12 \\times 50$"
+        ],
+        "result": "53^2 - 47^2 = 600"
+      },
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-mutatabiqat-shahira-l4-010",
-  "lessonCode": "mutatabiqat-shahira",
-  "level": 4
+  ]
 }

@@ -3,26 +3,34 @@
   "lessonCode": "tamthil-bayani-khatti",
   "level": 2,
   "metadata": {
-    "title": "تدريب — مستقيم يمرّ بـ $(2 ; -6)$",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2007 — طبع صور الهوية ببسكرة",
+    "estimatedMinutes": 8,
     "tags": [
-      "معامل",
-      "إشارة"
+      "وضعية",
+      "تمثيل بياني",
+      "انتماء نقطة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_tamthil-bayani-khatti_P1",
-      "modelledOn": "now-69"
+      "modelledOn": "BEM 2007 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2007",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "التمثيل البياني لدالة خطية $g$ يشمل النقطة $(2 ; -6)$ ."
+    "content": "يطبع محل للتصوير ببسكرة صور الهوية بسعر 30DA للصورة الواحدة. نسمّي $x$ عدد الصور المطبوعة و $f(x)$ المبلغ المدفوع بالدينار، حيث $f(x) = 30x$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "معامل $g$ :",
+      "step": "01",
+      "statement": "احسب ترتيب النقطة $A$ من التمثيل البياني للدالة $f$ التي فاصلتها 12.",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P1",
@@ -30,52 +38,103 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
-      "expectedAnswer": "-3",
+      "answerFormat": "اكتب الترتيب: المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "360",
+      "misconceptionSignatures": [
+        {
+          "value": "0,4",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "التمثيل يشمل O والنقطة المعطاة $(m ; n)$ ، أي $f(m) = n$."
+          "content": "ترتيب النقطة هو صورة فاصلتها بالدالة $f$ : المبلغ مقابل 12 صورة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب $a \\times m = n$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم الترتيب على الفاصلة: $a = \\dfrac{n}{m}$ ، مع الانتباه إلى الإشارة."
+          "content": "احسب $30 \\times 12$ ."
         }
       ],
       "feedback": {
-        "correct": "$a = \\dfrac{-6}{2} = -3$ .",
-        "incorrect": "حاصل قسمة عددين مختلفي الإشارة سالب."
-      }
+        "correct": "$f(12) = 30 \\times 12 = 360$ ، إذن $A(12 ; 360)$ .",
+        "incorrect": "الترتيب هو المبلغ: عدد الصور مضروبا في ثمن الصورة."
+      },
+      "solution": {
+        "lines": [
+          "$f(12) = 30 \\times 12 = 360$",
+          "إذن $A(12 ; 360)$ : 12 صورة بـ 360DA ."
+        ],
+        "result": "A(12 ; 360)"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "تمثيل $g$ :",
+      "step": "02",
+      "statement": "مثّل بيانيا الدالة $f$ من أجل $0 \\leqslant x \\leqslant 20$ في معلم متعامد (نأخذ $1cm$ لكل صورتين على محور الفواصل و $1cm$ لكل $60DA$ على محور التراتيب).",
       "learningPoints": [
         {
-          "code": "4am_tamthil-bayani-khatti_P3",
+          "code": "4am_tamthil-bayani-khatti_P1",
           "role": "primary"
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التمثيل البياني لدالة خطية مستقيم يشمل المبدأ $O$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يكفي تعيين نقطة ثانية من التمثيل بحساب صورة عدد غير معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "$f$ دالة خطية: تمثيلها جزء من مستقيم يشمل المبدأ $O$ .",
+          "نستعمل النقطة $A(12 ; 360)$ : فاصلتها $6cm$ وترتيبها $6cm$ على الورقة.",
+          "نرسم القطعة من $O$ إلى النقطة $(20 ; 600)$ (أي $10cm$ و $10cm$ )."
+        ]
+      },
+      "timeSeconds": 240
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "هل النقطة $B(20 ; 650)$ تنتمي إلى التمثيل البياني للدالة $f$ ؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "يصعد من اليسار إلى اليمين",
+          "content": "نعم",
           "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-MUNHA"
+          "misconceptionId": "MISC-KHATTIYA-SURA-SABIQ"
         },
         {
           "id": "B",
-          "content": "ينزل من اليسار إلى اليمين",
+          "content": "لا",
           "isCorrect": true
         }
       ],
@@ -83,23 +142,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى إشارة المعامل $a$."
+          "content": "احسب صورة فاصلة النقطة $B$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+          "content": "قارنها بترتيب $B$ ."
         }
       ],
       "feedback": {
-        "correct": "$-3 < 0$ : ينزل.",
-        "incorrect": "انظر إلى إشارة المعامل."
-      }
+        "correct": "$f(20) = 600 \\neq 650$ : النقطة $B$ لا تنتمي إلى التمثيل.",
+        "incorrect": "تنتمي النقطة إلى التمثيل إذا كانت صورة فاصلتها تساوي ترتيبها."
+      },
+      "solution": {
+        "lines": [
+          "$f(20) = 30 \\times 20 = 600$",
+          "$600 \\neq 650$ ، إذن $B$ لا تنتمي إلى التمثيل البياني للدالة $f$ ."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 60
     }
   ]
 }

@@ -1,9 +1,12 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l2-001",
+  "lessonCode": "amaliyat-judhur",
+  "level": 2,
   "metadata": {
-    "title": "تمرين 15 — جذر جداء",
-    "estimatedMinutes": 5,
+    "title": "تمرين — جذر جداء",
+    "estimatedMinutes": 6,
     "tags": [
-      "جداء جذرين"
+      "جذر جداء"
     ],
     "source": {
       "type": "textbook",
@@ -11,150 +14,175 @@
       "page": 26,
       "section": "أوظّف تعلّماتي",
       "number": 15
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "احسب ما يلي:"
+    "content": "لتكن الأعداد $A$ ، $B$ ، $C$ ، $D$ حيث:",
+    "formulas": [
+      "A = \\sqrt{9 \\times 81}",
+      "B = \\sqrt{121 \\times 100}",
+      "C = \\sqrt{16 \\times 900}",
+      "D = \\sqrt{1{,}44 \\times 0{,}25}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$\\sqrt{9 \\times 81}$",
+      "step": "01",
+      "lead": "احسب كلًّا من العددين $A$ و $B$ .",
+      "statement": "احسب العدد $A$ .",
       "learningPoints": [
         {
           "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "عدد طبيعي",
       "expectedAnswer": "27",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$\\sqrt{9 \\times 81} = \\sqrt{9} \\times \\sqrt{81}$."
+          "content": "$9$ و $81$ مربعان تامان."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب جذر كل عامل."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اضرب الجذرين."
+          "content": "استعمل $\\sqrt{a \\times b} = \\sqrt{a} \\times \\sqrt{b}$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{9} \\times \\sqrt{81} = 3 \\times 9 = 27$",
-        "incorrect": "خذ جذر العاملين معًا، لا جذر أحدهما فقط."
-      }
+        "correct": "$A = \\sqrt{9} \\times \\sqrt{81} = 3 \\times 9 = 27$",
+        "incorrect": "احسب جذر كل عامل ثم اضرب النتيجتين."
+      },
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{9} \\times \\sqrt{81}$",
+          "$A = 3 \\times 9$"
+        ],
+        "result": "A = 27"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "$\\sqrt{121 \\times 100}$",
+      "step": "01",
+      "statement": "احسب العدد $B$ .",
       "learningPoints": [
         {
           "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "عدد طبيعي",
       "expectedAnswer": "110",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب الجذر جداءً لجذرين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "ما العدد الموجب الذي مربعه 121؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اضرب في $\\sqrt{100}$."
+          "content": "$121$ و $100$ مربعان تامان."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{121} \\times \\sqrt{100} = 11 \\times 10 = 110$",
-        "incorrect": "تحقّق: $\\sqrt{121} = 11$ لأن $11^2 = 121$."
-      }
+        "correct": "$B = \\sqrt{121} \\times \\sqrt{100} = 11 \\times 10 = 110$",
+        "incorrect": "احسب جذر كل عامل ثم اضرب النتيجتين."
+      },
+      "solution": {
+        "lines": [
+          "$B = \\sqrt{121} \\times \\sqrt{100}$",
+          "$B = 11 \\times 10$"
+        ],
+        "result": "B = 110"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "$\\sqrt{16 \\times 900}$",
+      "step": "02",
+      "lead": "احسب كلًّا من العددين $C$ و $D$ .",
+      "statement": "احسب العدد $C$ .",
       "learningPoints": [
         {
           "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "عدد طبيعي",
       "expectedAnswer": "120",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب الجذر جداءً لجذرين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$900 = 30^2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اضرب $\\sqrt{16}$ في $\\sqrt{900}$."
+          "content": "$16$ و $900$ مربعان تامان."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{16} \\times \\sqrt{900} = 4 \\times 30 = 120$",
-        "incorrect": "$\\sqrt{900}$ ليس 300: ربّع 300 لترى."
-      }
+        "correct": "$C = \\sqrt{16} \\times \\sqrt{900} = 4 \\times 30 = 120$",
+        "incorrect": "احسب جذر كل عامل ثم اضرب النتيجتين."
+      },
+      "solution": {
+        "lines": [
+          "$C = \\sqrt{16} \\times \\sqrt{900}$",
+          "$C = 4 \\times 30$"
+        ],
+        "result": "C = 120"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q4",
-      "statement": "$\\sqrt{1{,}44 \\times 0{,}25}$",
+      "step": "02",
+      "statement": "احسب العدد $D$ واكتبه على الشكل العشري.",
       "learningPoints": [
         {
           "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "answerFormat": "عدد عشري (بالفاصلة)",
       "expectedAnswer": "0.6",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب الجذر جداءً لجذرين."
+          "content": "$1{,}44$ و $0{,}25$ مربعا عددين عشريين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما العدد الموجب الذي مربعه $1{,}44$؟ وما العدد الموجب الذي مربعه $0{,}25$؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اضرب الجذرين وانتبه إلى الفاصلة."
+          "content": "احسب جذر كل عامل ثم اضرب."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{1{,}44} \\times \\sqrt{0{,}25} = 1{,}2 \\times 0{,}5 = 0{,}6$",
-        "incorrect": "$1{,}44 \\times 0{,}25 = 0{,}36$ ليس هو الجواب: بقي الجذر."
-      }
+        "correct": "$D = \\sqrt{1{,}44} \\times \\sqrt{0{,}25} = 1{,}2 \\times 0{,}5 = 0{,}6$",
+        "incorrect": "تحقّق من جذر كل عدد عشري بتربيعه."
+      },
+      "solution": {
+        "lines": [
+          "$D = \\sqrt{1{,}44} \\times \\sqrt{0{,}25}$",
+          "$D = 1{,}2 \\times 0{,}5$"
+        ],
+        "result": "D = 0{,}6"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l2-001",
-  "lessonCode": "amaliyat-judhur",
-  "level": 2
+  ]
 }

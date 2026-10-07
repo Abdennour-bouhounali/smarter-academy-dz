@@ -1,7 +1,10 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l1-009",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — عزل x²",
-    "estimatedMinutes": 3,
+    "title": "المعادلتان x² − 81 = 0 و x² + 4 = 0",
+    "estimatedMinutes": 4,
     "tags": [
       "معادلة",
       "عزل المربع"
@@ -11,15 +14,23 @@
       "reason": "practice_generation",
       "learningPoint": "4am_muadalat-x-murabba_P2",
       "modelledOn": "now-23-2"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نعزل $x^2$ في طرف ثم نطبّق خاصية حلول المعادلة $x^2 = a$."
+    "content": "نعتبر المعادلتين $x^2 - 81 = 0$ و $x^2 + 4 = 0$."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هو الحل الموجب للمعادلة $x^2 - 81 = 0$؟",
+      "step": "01",
+      "lead": "حل المعادلة $x^2 - 81 = 0$.",
+      "statement": "الحل الموجب:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P2",
@@ -32,10 +43,6 @@
       "expectedAnswer": "9",
       "misconceptionSignatures": [
         {
-          "value": "81",
-          "id": "MISC-HALL-QISMA"
-        },
-        {
           "value": "40.5",
           "id": "MISC-HALL-QISMA"
         }
@@ -44,27 +51,33 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "انقل $-81$ إلى الطرف الآخر."
+          "content": "اعزل $x^2$ في طرف."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تصبح المعادلة من الشكل $x^2 = a$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ابحث عن العدد الموجب الذي مربعه $a$."
+          "content": "اكتب الطرف الثاني على شكل مربع عدد موجب."
         }
       ],
       "feedback": {
-        "correct": "$x^2 = 81$ ، إذن $x = 9$ أو $x = -9$.",
-        "incorrect": "بعد عزل $x^2$ نبحث عن العدد الذي مربعه 81."
-      }
+        "correct": "نعم، وهو معاكس الحل السالب.",
+        "incorrect": "الحل الموجب هو معاكس الحل السالب: مربعه هو الطرف الثاني بعد عزل $x^2$."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 - 81 = 0$ يعني $x^2 = 81$",
+          "أي $x^2 = 9^2$",
+          "بالتالي $x = 9$ أو $x = -9$"
+        ],
+        "result": "x = -9 \\quad ; \\quad x = 9"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "المعادلة $x^2 + 4 = 0$ ...",
+      "step": "01",
+      "statement": "الحل السالب:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P2",
@@ -72,50 +85,92 @@
         }
       ],
       "cognitiveDemand": "apply",
-      "answerType": "choice",
-      "choices": [
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "-9",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x = 2$ أو $x = -2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-SALIB"
-        },
-        {
-          "id": "B",
-          "content": "$x = -2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-SALIB"
-        },
-        {
-          "id": "C",
-          "content": "لا تقبل أي حل",
-          "isCorrect": true
+          "value": "9",
+          "id": "MISC-HALL-WAHID"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اعزل $x^2$."
+          "content": "اعزل $x^2$ في طرف."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما إشارة العدد الذي يساويه $x^2$؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل يمكن أن يكون مربع عدد سالبًا؟"
+          "content": "اكتب الطرف الثاني على شكل مربع عدد موجب."
         }
       ],
       "feedback": {
-        "correct": "$x^2 = -4$ و $-4 < 0$: لا حل.",
-        "incorrect": "احسب $(-2)^2 + 4$: هل يساوي 0؟"
-      }
+        "correct": "نعم، هذا هو الحل السالب: للمعادلة حلان متعاكسان.",
+        "incorrect": "الحلان عددان متعاكسان مربع كل منهما هو الطرف الثاني بعد عزل $x^2$: خذ السالب منهما."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 - 81 = 0$ يعني $x^2 = 81$",
+          "أي $x^2 = 9^2$",
+          "بالتالي $x = 9$ أو $x = -9$"
+        ],
+        "result": "x = -9 \\quad ; \\quad x = 9"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "هل تقبل المعادلة $x^2 + 4 = 0$ حلولا ؟ برّر إجابتك.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "answerFormat": "اختر نعم أو لا، ثم قارن تبريرك بالحل النموذجي",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اعزل $x^2$ في طرف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما إشارة الطرف الثاني بعد العزل؟"
+        }
+      ],
+      "feedback": {
+        "correct": "صحيح: $x^2 = -4$ ومربع أي عدد لا يكون سالبًا.",
+        "incorrect": "بعد عزل $x^2$ انظر إلى إشارة الطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 + 4 = 0$ يعني $x^2 = -4$",
+          "$-4 < 0$ ومربع أي عدد موجب أو معدوم،",
+          "إذن المعادلة $x^2 + 4 = 0$ لا تقبل أي حل."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l1-009",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 1
+  ]
 }

@@ -1,126 +1,167 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-010",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — مقارنة عددين",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2021 — معادلة بالجذور",
+    "estimatedMinutes": 7,
     "tags": [
-      "وضعية إدماجية",
-      "مقارنة",
-      "إدخال عامل تحت الجذر"
+      "المعادلة x² = a",
+      "جداء"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
-      "modelledOn": null
+      "modelledOn": "BEM 2021 I-1 (03)"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2021",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "قارن بين العددين في كل حالة دون استعمال الحاسبة."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "قارن بين $2\\sqrt{7}$ و $5$.",
+      "step": "01",
+      "statement": "احسب الجداء $(7 + \\sqrt{13})(7 - \\sqrt{13})$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "36",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$2\\sqrt{7} < 5$، لأنّ $2\\sqrt{7} = \\sqrt{14}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUAMIL-DUN-TARBI"
-        },
-        {
-          "id": "B",
-          "content": "$2\\sqrt{7} > 5$، لأنّ $2\\sqrt{7} = \\sqrt{28}$ و $5 = \\sqrt{25}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$2\\sqrt{7} = 5$، لأنّ $2 + 7 = 9$",
-          "isCorrect": false
+          "value": "-120",
+          "id": "MISC-TARBI-JIDHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب كل عدد على شكل جذر تربيعي."
+          "content": "$(x + y)(x - y) = x^2 - y^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "لإدخال عامل تحت الجذر نربّعه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "من بين جذرين، الأكبر هو جذر العدد الأكبر."
+          "content": "$(\\sqrt{13})^2 = 13$ ."
         }
       ],
       "feedback": {
-        "correct": "$2\\sqrt{7} = \\sqrt{4 \\times 7} = \\sqrt{28}$ و $\\sqrt{28} > \\sqrt{25} = 5$.",
-        "incorrect": "العامل يدخل تحت الجذر بمربعه."
+        "correct": "$7^2 - (\\sqrt{13})^2 = 49 - 13 = 36$",
+        "incorrect": "استعمل $(x + y)(x - y) = x^2 - y^2$ مع $(\\sqrt{13})^2 = 13$ ."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$(7 + \\sqrt{13})(7 - \\sqrt{13}) = 7^2 - (\\sqrt{13})^2$",
+          "$= 49 - 13$"
+        ],
+        "result": "36"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "قارن بين $3\\sqrt{2}$ و $2\\sqrt{3}$.",
+      "step": "02",
+      "lead": "$x$ عدد حقيقي غير معدوم. جِد قيم $x$ بحيث: $\\dfrac{x}{7 + \\sqrt{13}} = \\dfrac{7 - \\sqrt{13}}{x}$ .",
+      "statement": "الحل السالب:",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "-6",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$3\\sqrt{2} < 2\\sqrt{3}$",
-          "isCorrect": false
+          "value": "6",
+          "id": "MISC-HALL-WAHID"
         },
         {
-          "id": "B",
-          "content": "$3\\sqrt{2} = 2\\sqrt{3}$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$3\\sqrt{2} > 2\\sqrt{3}$",
-          "isCorrect": true
+          "value": "-18",
+          "id": "MISC-HALL-QISMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ربّع كل عدد."
+          "content": "استعمل الجداء المتصالب (تساوي جداءي الطرفين و الوسطين)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$(a\\sqrt{b})^2 = a^2 b$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن المربعين: العددان موجبان."
+          "content": "تحصل على $x^2 = (7 + \\sqrt{13})(7 - \\sqrt{13})$ : استعمل نتيجة السؤال 01."
         }
       ],
       "feedback": {
-        "correct": "$(3\\sqrt{2})^2 = 18$ و $(2\\sqrt{3})^2 = 12$، إذن $3\\sqrt{2} > 2\\sqrt{3}$.",
-        "incorrect": "قارن مربعي العددين الموجبين."
+        "correct": "$x^2 = 36$ ، و الحل السالب $x = -6$ .",
+        "incorrect": "الجداء المتصالب يعطي معادلة من الشكل $x^2 = a$ : للمعادلة حلان متعاكسان."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$\\dfrac{x}{7 + \\sqrt{13}} = \\dfrac{7 - \\sqrt{13}}{x}$ يعني $x \\times x = (7 + \\sqrt{13})(7 - \\sqrt{13})$",
+          "أي $x^2 = 36$",
+          "يعني $x = 6$ أو $x = -6$"
+        ],
+        "result": "x = -6 \\quad ; \\quad x = 6"
+      },
+      "work": "optional",
+      "timeSeconds": 210
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "الحل الموجب:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "value": "18",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحل الموجب معاكس الحل السالب."
+        }
+      ],
+      "feedback": {
+        "correct": "$6^2 = 36$ : هذا هو الحل الموجب.",
+        "incorrect": "الحل الموجب هو العدد الموجب الذي مربعه ناتج السؤال 01."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 = 36$ يعني $x = \\sqrt{36}$ أو $x = -\\sqrt{36}$"
+        ],
+        "result": "x = 6"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l2-010",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 2
+  ]
 }

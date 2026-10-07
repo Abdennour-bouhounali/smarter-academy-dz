@@ -1,7 +1,10 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l3-010",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — مربع جداء وحاصل قسمة",
-    "estimatedMinutes": 4,
+    "title": "مربع جداء ومربع حاصل قسمة",
+    "estimatedMinutes": 6,
     "tags": [
       "معادلة",
       "مربع جداء"
@@ -10,16 +13,25 @@
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_muadalat-x-murabba_P2",
-      "modelledOn": "method-equation"
+      "modelledOn": "method-equation",
+      "adaptedFrom": "ex-4am-muadalat-x-murabba-l3-010"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "نكتب المعادلة على الشكل $x^2 = a$ ثم نحل."
+    "content": "حل كل معادلة من المعادلتين الآتيتين."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هو الحل الموجب للمعادلة $(2x)^2 = 36$؟",
+      "step": "01",
+      "lead": "حل المعادلة $(2x)^2 = 36$.",
+      "statement": "الحل الموجب:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P2",
@@ -30,31 +42,47 @@
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "6",
+          "id": "MISC-HALL-QISMA"
+        },
+        {
+          "value": "9",
+          "id": "MISC-MURABBA-DIF"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$(2x)^2 = 2^2 \\times x^2$."
+          "content": "$(2x)^2 = 4x^2$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تصبح المعادلة $4x^2 = 36$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم على 4 ثم ابحث عن الجذر."
+          "content": "اعزل $x^2$ ثم اكتب الطرف الثاني على شكل مربع عدد موجب."
         }
       ],
       "feedback": {
-        "correct": "$4x^2 = 36$ ، $x^2 = 9$ ، إذن $x = 3$ أو $x = -3$.",
-        "incorrect": "$(2x)^2 = 4x^2$ وليس $2x^2$."
-      }
+        "correct": "نعم، وهو معاكس الحل السالب.",
+        "incorrect": "الحل الموجب هو معاكس الحل السالب: مربعه هو الطرف الثاني بعد عزل $x^2$."
+      },
+      "solution": {
+        "lines": [
+          "$(2x)^2 = 36$ يعني $4x^2 = 36$",
+          "أي $x^2 = \\dfrac{36}{4} = 9 = 3^2$",
+          "بالتالي $x = 3$ أو $x = -3$"
+        ],
+        "result": "x = -3 \\quad ; \\quad x = 3"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "ما هو الحل السالب للمعادلة $\\left(\\dfrac{x}{3}\\right)^2 = 1$؟",
+      "step": "01",
+      "statement": "الحل السالب:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P2",
@@ -65,10 +93,55 @@
       "answerType": "rational",
       "answerFormat": "عدد صحيح نسبي",
       "expectedAnswer": "-3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(2x)^2 = 4x^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اعزل $x^2$ ثم اكتب الطرف الثاني على شكل مربع عدد موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "نعم، هذا هو الحل السالب: للمعادلة حلان متعاكسان.",
+        "incorrect": "الحلان عددان متعاكسان مربع كل منهما هو الطرف الثاني بعد عزل $x^2$: خذ السالب منهما."
+      },
+      "solution": {
+        "lines": [
+          "$(2x)^2 = 36$ يعني $4x^2 = 36$",
+          "أي $x^2 = \\dfrac{36}{4} = 9 = 3^2$",
+          "بالتالي $x = 3$ أو $x = -3$"
+        ],
+        "result": "x = -3 \\quad ; \\quad x = 3"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "حل المعادلة $\\left(\\dfrac{x}{3}\\right)^2 = 4$.",
+      "statement": "الحل السالب:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "-6",
       "misconceptionSignatures": [
         {
-          "value": "3",
+          "value": "6",
           "id": "MISC-HALL-WAHID"
+        },
+        {
+          "value": "-2",
+          "id": "MISC-HALL-QISMA"
         }
       ],
       "hints": [
@@ -80,21 +153,63 @@
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب الطرفين في 9."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "خذ الحل السالب."
+          "content": "اضرب الطرفين في 9 ثم اكتب الطرف الثاني على شكل مربع."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{x^2}{9} = 1$ ، $x^2 = 9$ ، والحلان 3 و $-3$.",
-        "incorrect": "مربع حاصل قسمة هو مربع البسط على مربع المقام."
-      }
+        "correct": "نعم، هذا هو الحل السالب: للمعادلة حلان متعاكسان.",
+        "incorrect": "الحلان عددان متعاكسان مربع كل منهما هو الطرف الثاني بعد عزل $x^2$: خذ السالب منهما."
+      },
+      "solution": {
+        "lines": [
+          "$\\left(\\dfrac{x}{3}\\right)^2 = 4$ يعني $\\dfrac{x^2}{9} = 4$",
+          "أي $x^2 = 36 = 6^2$",
+          "بالتالي $x = 6$ أو $x = -6$"
+        ],
+        "result": "x = -6 \\quad ; \\quad x = 6"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "الحل الموجب:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\left(\\dfrac{x}{3}\\right)^2 = \\dfrac{x^2}{9}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب الطرفين في 9 ثم اكتب الطرف الثاني على شكل مربع."
+        }
+      ],
+      "feedback": {
+        "correct": "نعم، وهو معاكس الحل السالب.",
+        "incorrect": "الحل الموجب هو معاكس الحل السالب: مربعه هو الطرف الثاني بعد عزل $x^2$."
+      },
+      "solution": {
+        "lines": [
+          "$\\left(\\dfrac{x}{3}\\right)^2 = 4$ يعني $\\dfrac{x^2}{9} = 4$",
+          "أي $x^2 = 36 = 6^2$",
+          "بالتالي $x = 6$ أو $x = -6$"
+        ],
+        "result": "x = -6 \\quad ; \\quad x = 6"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l3-010",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 3
+  ]
 }

@@ -1,7 +1,10 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l1-010",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — معادلة مكافئة",
-    "estimatedMinutes": 3,
+    "title": "المعادلة x² − 6 = 0",
+    "estimatedMinutes": 4,
     "tags": [
       "معادلة",
       "عزل المربع"
@@ -11,6 +14,12 @@
       "reason": "practice_generation",
       "learningPoint": "4am_muadalat-x-murabba_P2",
       "modelledOn": "method-equation"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
@@ -19,7 +28,8 @@
   "questions": [
     {
       "id": "q1",
-      "statement": "المعادلة $x^2 - 6 = 0$ تكافئ المعادلة:",
+      "step": "01",
+      "statement": "اكتب المعادلة $x^2 - 6 = 0$ على الشكل $x^2 = a$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P2",
@@ -27,106 +37,77 @@
         }
       ],
       "cognitiveDemand": "apply",
-      "answerType": "choice",
-      "choices": [
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x^2 = -6$",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$x^2 = 6$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x = 3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-QISMA"
-        },
-        {
-          "id": "D",
-          "content": "$x^2 = 36$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARBI-JIDHR"
+          "value": "-6",
+          "id": "MISC-HALL-SALIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "نضيف العدد نفسه إلى طرفي المعادلة."
+          "content": "اعزل $x^2$ في الطرف الأول."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما العدد الذي نضيفه لكي يبقى $x^2$ وحده؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "أضف 6 إلى الطرفين."
+          "content": "أضف العدد نفسه إلى طرفي المعادلة."
         }
       ],
       "feedback": {
-        "correct": "بإضافة 6 إلى الطرفين: $x^2 = 6$.",
-        "incorrect": "انتبه إلى الإشارة عند نقل $-6$."
-      }
+        "correct": "بإضافة 6 إلى الطرفين نجد $x^2 = 6$.",
+        "incorrect": "عند نقل حد إلى الطرف الآخر تتغير إشارته."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 - 6 = 0$ يعني $x^2 - 6 + 6 = 0 + 6$"
+        ],
+        "result": "x^2 = 6"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "ما هو الحل السالب للمعادلة $x^2 - 6 = 0$؟",
+      "step": "02",
+      "statement": "استنتج حلي المعادلة $x^2 - 6 = 0$.",
       "learningPoints": [
         {
-          "code": "4am_muadalat-x-murabba_P2",
+          "code": "4am_muadalat-x-murabba_P1",
           "role": "primary"
         }
       ],
-      "cognitiveDemand": "apply",
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$-3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-QISMA"
-        },
-        {
-          "id": "B",
-          "content": "$-36$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$-\\sqrt{6}$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اعزل $x^2$ أولا."
+          "content": "ما إشارة العدد $a$؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الحلّان عددان متعاكسان."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب العدد الموجب على الشكل $(\\sqrt{a})^2$."
+          "content": "اكتب $a$ على الشكل $(\\sqrt{a})^2$."
         }
       ],
       "feedback": {
-        "correct": "$x^2 = 6 = (\\sqrt{6})^2$: الحلان $\\sqrt{6}$ و $-\\sqrt{6}$.",
-        "incorrect": "حل $x^2 = a$ ليس $a \\div 2$ ولا $a^2$."
-      }
+        "correct": "تبريرك مطابق للحل النموذجي.",
+        "incorrect": "قارن تبريرك سطرًا بسطر بالحل النموذجي."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 - 6 = 0$ يعني $x^2 = 6$",
+          "$6 > 0$، إذن $x^2 = (\\sqrt{6})^2$",
+          "بالتالي $x = \\sqrt{6}$ أو $x = -\\sqrt{6}$"
+        ],
+        "result": "x = -\\sqrt{6} \\quad ; \\quad x = \\sqrt{6}"
+      },
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l1-010",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 1
+  ]
 }

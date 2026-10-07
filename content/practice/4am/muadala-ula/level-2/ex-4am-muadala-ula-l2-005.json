@@ -3,108 +3,129 @@
   "lessonCode": "muadala-ula",
   "level": 2,
   "metadata": {
-    "title": "تدريب — معادلة بخطوتين",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2010 — المعدل الفصلي",
+    "estimatedMinutes": 6,
     "tags": [
-      "ax + b = c"
+      "قانون",
+      "معادلة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_muadala-ula_P2",
-      "modelledOn": "method-equation"
+      "modelledOn": "BEM 2010 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2010",
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "حلّ كل معادلة: أولًا العدد، ثم المعامل."
+    "content": "لحساب المعدل الفصلي $m$ لمادة العلوم الفيزيائية والتكنولوجيا نطبّق القانون التالي: $m = \\dfrac{a + 2b}{3}$ حيث $a$ هي علامة التقويم المستمر و $b$ هي علامة الاختبار."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّ المعادلة $4x + 3 = 23$ .",
+      "step": "01",
+      "statement": "احسب المعدل الفصلي $m$ لتلميذ علامة تقويمه المستمر $15$ وعلامة اختباره $12$ .",
       "learningPoints": [
         {
-          "code": "4am_muadala-ula_P2",
+          "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
-      "expectedAnswer": "5",
+      "answerFormat": "عدد: المعدل الفصلي",
+      "expectedAnswer": "13",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+          "content": "عوّض $a$ و $b$ في القانون."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+          "content": "احسب البسط أولًا ثم اقسم على 3."
         }
       ],
       "feedback": {
-        "correct": "$4x + 3 = 23$ : نصل إلى $4x = 20$ ، ومنه $x = 5$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "$m = 13$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولويات العمليات والإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$m = \\dfrac{15 + 2 \\times 12}{3} = \\dfrac{39}{3}$"
+        ],
+        "result": "m = 13"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "حل المعادلة $3x - 8 = 1$ هو:",
+      "step": "02",
+      "statement": "جد علامة الاختبار $b$ لتلميذ علامة تقويمه المستمر $a = 11$ ومعدله الفصلي $m = 14$ .",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري أو كسر: علامة الاختبار",
+      "expectedAnswer": "15,5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$-\\dfrac{7}{3}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+          "value": "2/31",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
         },
         {
-          "id": "B",
-          "content": "$\\dfrac{1}{3}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
-        },
-        {
-          "id": "C",
-          "content": "$3$",
-          "isCorrect": true
+          "value": "53/2",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+          "content": "عوّض $a$ و $m$ في القانون: تحصل على معادلة مجهولها $b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
+          "content": "اضرب الطرفين في 3 لتتخلّص من المقام."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+          "content": "اعزل $2b$ ثم اقسم على 2."
         }
       ],
       "feedback": {
-        "correct": "$3x - 8 = 1$ : نصل إلى $3x = 9$ ، ومنه $x = 3$.",
-        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
-      }
+        "correct": "$b = \\dfrac{31}{2} = 15{,}5$ .",
+        "incorrect": "اضرب كل حد من الطرفين في المقام المشترك، مع وضع البسوط بين قوسين، ثم انشر وحلّ. تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$14 = \\dfrac{11 + 2b}{3}$",
+          "$14 \\times 3 = 11 + 2b$",
+          "$2b = 42 - 11$",
+          "$2b = 31$"
+        ],
+        "result": "b = \\dfrac{31}{2} = 15{,}5"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
   ]
 }

@@ -3,26 +3,34 @@
   "lessonCode": "tatbiqat-tanasub",
   "level": 1,
   "metadata": {
-    "title": "تدريب — تذكرة الملعب",
+    "title": "تذكرة الملعب",
     "estimatedMinutes": 3,
     "tags": [
-      "مقدار بدلالة آخر",
-      "زيادة"
+      "زيادة",
+      "مقدار بدلالة آخر"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tatbiqat-tanasub_P3",
-      "modelledOn": "act-5"
+      "modelledOn": "act-5",
+      "adaptedFrom": "ex-4am-tatbiqat-tanasub-l1-009"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "ارتفع سعر تذكرة مباراة الداربي بـ 20%. نرمز بـ $x$ إلى السعر قبل الزيادة وبـ $y$ إلى السعر بعدها."
+    "content": "ارتفع سعر تذكرة مباراة كرة القدم بنسبة 20%. نرمز بـ $x$ إلى السعر قبل الزيادة وبـ $y$ إلى السعر بعدها (بـ DA)."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "السعر $y$ بدلالة $x$ :",
+      "step": "01",
+      "statement": "عبّر عن $y$ بدلالة $x$ .",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P3",
@@ -30,57 +38,46 @@
         }
       ],
       "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب $y$ على الشكل $y = ax$ ثم أعط العدد $a$ فقط (عشري بالفاصلة)",
+      "expectedAnswer": "1,2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$y = 1{,}2x$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$y = x + 20$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NISBA-JAM"
-        },
-        {
-          "id": "C",
-          "content": "$y = 0{,}2x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
-        },
-        {
-          "id": "D",
-          "content": "$y = 0{,}8x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+          "value": "0,2",
+          "id": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المقدار المركّب الثابت (سرعة، كتلة حجمية، استطاعة، مضاعف) هو معامل دالة خطية."
+          "content": "الزيادة بـ $t\\%$ تُترجم بالضرب في $1 + \\dfrac{t}{100}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب المقدار المطلوب بدلالة الآخر: $d = v \\times t$ ، $m = \\rho \\times V$ ، $E = P \\times t$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "عوّض بالقيمة المعطاة، أو حلّ المعادلة إذا كان المجهول هو المقدار الآخر، ثم تحقّق من الوحدة."
+          "content": "عوّض $t$ بالعدد 20 ."
         }
       ],
       "feedback": {
-        "correct": "$1 + \\dfrac{20}{100} = 1{,}2$ : $y = 1{,}2x$ .",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "$y = \\left(1 + \\dfrac{20}{100}\\right)x$ ، أي $a = 1{,}2$ .",
+        "incorrect": "الزيادة ليست أخذ 20% من السعر: السعر الجديد أكبر من القديم."
+      },
+      "solution": {
+        "lines": [
+          "$y = x + \\dfrac{20}{100}x$",
+          "$y = \\left(1 + \\dfrac{20}{100}\\right)x$",
+          "$y = 1{,}2x$"
+        ],
+        "result": "y = 1{,}2x"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "إذا كان $x = 500$ فإنّ $y$ يساوي:",
+      "step": "02",
+      "statement": "احسب $y$ إذا كان $x = 500$ .",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P3",
@@ -88,30 +85,44 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
       "expectedAnswer": "600",
+      "misconceptionSignatures": [
+        {
+          "value": "520",
+          "id": "MISC-NISBA-JAM"
+        },
+        {
+          "value": "100",
+          "id": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المقدار المركّب الثابت (سرعة، كتلة حجمية، استطاعة، مضاعف) هو معامل دالة خطية."
+          "content": "استعمل العلاقة بين $y$ و $x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب المقدار المطلوب بدلالة الآخر: $d = v \\times t$ ، $m = \\rho \\times V$ ، $E = P \\times t$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "عوّض بالقيمة المعطاة، أو حلّ المعادلة إذا كان المجهول هو المقدار الآخر، ثم تحقّق من الوحدة."
+          "content": "عوّض $x$ بالعدد 500 ."
         }
       ],
       "feedback": {
-        "correct": "$y = 1{,}2 \\times 500 = 600$ ، أي 600DA.",
-        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
-      }
+        "correct": "$y = 1{,}2 \\times 500 = 600$ ، أي 600DA .",
+        "incorrect": "عوّض $x$ في العلاقة $y = ax$ واضرب."
+      },
+      "solution": {
+        "lines": [
+          "$y = 1{,}2 \\times 500$",
+          "$y = 600$"
+        ],
+        "result": "y = 600DA"
+      },
+      "timeSeconds": 60
     }
   ]
 }

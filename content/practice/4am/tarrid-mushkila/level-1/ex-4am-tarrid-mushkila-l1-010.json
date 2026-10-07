@@ -3,107 +3,112 @@
   "lessonCode": "tarrid-mushkila",
   "level": 1,
   "metadata": {
-    "title": "تدريب — كراريس وقلم",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2009 — علب البنّ",
+    "estimatedMinutes": 4,
     "tags": [
-      "تكاليف",
-      "ترييض"
+      "ترييض",
+      "معادلة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_tarrid-mushkila_P1",
-      "modelledOn": "ex-10"
+      "modelledOn": "BEM 2009 I-4"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2009",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "اشترى يونس 3 كراريس بنفس الثمن وقلمًا ثمنه 20 دينارًا، فدفع 110 دنانير. نسمّي $x$ ثمن الكراس الواحد."
+    "content": "ملأ تاجر 12 علبة بـ 3600g من البنّ: علب من صنف 200g و علب من صنف 500g ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ معادلة تترجم النص؟",
+      "step": "01",
+      "statement": "سمِّ $x$ عدد علب الصنف 200g ، اكتب معادلة تترجم المعطيات ثم جد $x$ .",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$3x + 20 = 110$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$3(x + 20) = 110$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "$x + 3 + 20 = 110$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-TARJAMA"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد العلب",
+      "expectedAnswer": "8",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ثمن 3 كراريس هو؟"
+          "content": "إذا كان عدد علب الصنف 200g هو $x$ ، فما عدد علب الصنف 500g ؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ثمن القلم يُدفع مرة واحدة."
+          "content": "كتلة البنّ في كل صنف = عدد علبه × كتلة العلبة الواحدة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "المجموع: ثمن الكراريس + ثمن القلم = 110."
+          "content": "مجموع الكتلتين يساوي الكتلة الكلية؛ انشر ثم حلّ."
         }
       ],
       "feedback": {
-        "correct": "$3x + 20 = 110$ .",
-        "incorrect": "القلم واحد: لا يُضرب ثمنه في 3."
-      }
+        "correct": "$200x + 500(12 - x) = 3600$ تعطي $x = 8$ .",
+        "incorrect": "عدد علب الصنف 500g هو $12 - x$ ، وكل علبة منه تزن 500g ."
+      },
+      "solution": {
+        "lines": [
+          "نسمّي $x$ عدد علب الصنف 200g ، فيكون عدد علب الصنف 500g هو $12 - x$ .",
+          "المعادلة: $200x + 500(12 - x) = 3600$",
+          "$200x + 6000 - 500x = 3600$",
+          "$-300x = 3600 - 6000$",
+          "$-300x = -2400$",
+          "$x = \\dfrac{-2400}{-300}$",
+          "$x = 8$"
+        ],
+        "result": "x = 8"
+      },
+      "work": "required",
+      "timeSeconds": 300
     },
     {
       "id": "q2",
-      "statement": "ما ثمن الكراس الواحد (بالدينار)؟",
+      "step": "02",
+      "statement": "استنتج عدد علب الصنف 500g .",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "30",
+      "answerFormat": "عدد طبيعي: عدد العلب",
+      "expectedAnswer": "4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انطلق من $3x + 20 = 110$ ."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "اطرح 20 من الطرفين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم اقسم على 3."
+          "content": "العدد الكلي للعلب معلوم."
         }
       ],
       "feedback": {
-        "correct": "$3x = 90$ أي $x = 30$ ، وتحقّق: $3 \\times 30 + 20 = 110$ .",
-        "incorrect": "اطرح ثمن القلم أولًا."
-      }
+        "correct": "عدد علب الصنف 500g : $12 - 8 = 4$ ، والتحقق: $200 \\times 8 + 500 \\times 4 = 3600$ .",
+        "incorrect": "اطرح عدد علب الصنف الأول من العدد الكلي للعلب."
+      },
+      "solution": {
+        "lines": [
+          "$12 - 8 = 4$",
+          "التحقق: $1600 + 2000 = 3600$ ."
+        ],
+        "result": "4"
+      },
+      "timeSeconds": 90
     }
   ]
 }

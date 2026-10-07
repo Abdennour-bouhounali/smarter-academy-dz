@@ -3,41 +3,56 @@
   "lessonCode": "mutarajiha-ula",
   "level": 1,
   "metadata": {
-    "title": "تدريب — اختبر قيمًا",
-    "estimatedMinutes": 4,
+    "title": "اختبار قيم ثم حلّ",
+    "estimatedMinutes": 7,
     "tags": [
-      "حلّ متراجحة"
+      "متراجحة",
+      "اختبار قيمة",
+      "حل متراجحة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_mutarajiha-ula_P1",
       "modelledOn": "act-3a"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "لتكن المتراجحة $-x + 5 \\geq 2$ ."
+    "content": "لتكن المتراجحة:",
+    "formulas": [
+      "-x + 5 \\geqslant 2"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل العدد $3$ حلّ للمتراجحة $-x + 5 \\geq 2$ ؟",
+      "step": "01",
+      "sub": "ا",
+      "lead": "بالتعويض، أجب عمّا يلي:",
+      "statement": "هل العدد $3$ حلّ للمتراجحة؟",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "نعم، هو حلّ",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "لا، ليس حلًّا",
+          "content": "لا",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTARAJIHA-QAWS"
         }
@@ -46,44 +61,50 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ بالعدد في الطرفين."
+          "content": "عوّض $x$ بالعدد المعطى في كل طرف من طرفي المتراجحة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب كل طرف وحده."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+          "content": "احسب كل طرف، ثم قارن العددين: هل المتباينة المحصل عليها صحيحة؟"
         }
       ],
       "feedback": {
-        "correct": "من أجل $x = 3$ : الطرف الأول يساوي $2$ والطرف الثاني $2$ ، و $2 \\geq 2$ متباينة صحيحة.",
-        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
-      }
+        "correct": "$2 \\geqslant 2$ متباينة صحيحة.",
+        "incorrect": "احسب الطرفين بعد التعويض ثم قارن، وانتبه إلى نوع المتباينة (تامة أو غير تامة)."
+      },
+      "solution": {
+        "lines": [
+          "من أجل $x = 3$ : الطرف الأول يساوي $2$ والطرف الثاني يساوي $2$ .",
+          "$2 \\geqslant 2$ متباينة صحيحة، إذن $3$ حلّ للمتراجحة."
+        ],
+        "result": "نعم"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "هل العدد $4$ حلّ للمتراجحة $-x + 5 \\geq 2$ ؟",
+      "step": "01",
+      "sub": "ب",
+      "statement": "هل العدد $4$ حلّ للمتراجحة؟",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "نعم، هو حلّ",
+          "content": "نعم",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
         },
         {
           "id": "B",
-          "content": "لا، ليس حلًّا",
+          "content": "لا",
           "isCorrect": true
         }
       ],
@@ -91,74 +112,142 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ بالعدد في الطرفين."
+          "content": "عوّض $x$ بالعدد المعطى في كل طرف من طرفي المتراجحة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب كل طرف وحده."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+          "content": "احسب كل طرف، ثم قارن العددين: هل المتباينة المحصل عليها صحيحة؟"
         }
       ],
       "feedback": {
-        "correct": "من أجل $x = 4$ : الطرف الأول يساوي $1$ والطرف الثاني $2$ ، و $1 \\geq 2$ متباينة خاطئة.",
-        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
-      }
+        "correct": "$1 \\geqslant 2$ متباينة خاطئة.",
+        "incorrect": "احسب الطرفين بعد التعويض ثم قارن، وانتبه إلى نوع المتباينة (تامة أو غير تامة)."
+      },
+      "solution": {
+        "lines": [
+          "من أجل $x = 4$ : الطرف الأول يساوي $1$ والطرف الثاني يساوي $2$ .",
+          "$1 \\geqslant 2$ متباينة خاطئة، إذن $4$ ليس حلًّا للمتراجحة."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "أيّ عدد حلّ للمتراجحة $-x + 5 \\geq 2$ ؟",
+      "step": "02",
+      "lead": "حلّ المتراجحة: $-x + 5 \\geqslant 2$ .",
+      "statement": "حدّ الحلول $k$ :",
       "learningPoints": [
         {
-          "code": "4am_mutarajiha-ula_P1",
+          "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "حلول المتراجحة من الشكل $x < k$ أو $x \\leqslant k$ أو $x > k$ أو $x \\geqslant k$ : اكتب العدد $k$ فقط (عدد صحيح أو كسر a/b، قد يكون سالبًا)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر، كما في حل معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إضافة عدد إلى الطرفين أو طرحه منهما لا تغيّر اتجاه المتباينة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّ هو العدد الذي يحقّق المعادلة المرفقة (نضع «=» مكان رمز المتباينة): اقسم في الأخير على معامل $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "حدّ الحلول هو $k = 3$ .",
+        "incorrect": "أعد الحل سطرًا سطرًا: العملية نفسها على الطرفين، ثم القسمة على معامل $x$ في الأخير."
+      },
+      "solution": {
+        "lines": [
+          "حدّ الحلول هو حلّ المعادلة المرفقة: $-x + 5 = 2$",
+          "$-x = 2 - 5$",
+          "$-x = -3$",
+          "$\\dfrac{-x}{-1} = \\dfrac{-3}{-1}$",
+          "إذن حدّ الحلول هو $3$ ."
+        ],
+        "result": "k = 3"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "حلول المتراجحة هي الأعداد $x$ حيث:",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$-1$",
-          "isCorrect": true
+          "content": "$x < 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
         },
         {
           "id": "B",
-          "content": "$7$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+          "content": "$x \\leqslant 3$",
+          "isCorrect": true
         },
         {
           "id": "C",
-          "content": "$4$",
+          "content": "$x > 3$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "D",
+          "content": "$x \\geqslant 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اختبر كل عدد بتعويضه في الطرفين."
+          "content": "انظر إلى إشارة معامل $x$ في آخر سطر قبل القسمة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب الطرفين ثم احكم على المتباينة العددية."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "العدد المطلوب وحده يعطي متباينة صحيحة."
+          "content": "القسمة على عدد موجب تحافظ على الاتجاه، والقسمة على عدد سالب تغيّره."
         }
       ],
       "feedback": {
-        "correct": "من أجل $x = -1$ : $6 \\geq 2$ صحيحة، أمّا القيم الأخرى فلا تحقّقها.",
-        "incorrect": "عوّض كل عدد في الطرفين واحسب، ثم قارن بالرمز نفسه."
-      }
+        "correct": "$x \\leqslant 3$ .",
+        "incorrect": "تتبّع سطور الحل: الاتجاه يتغيّر فقط عند الضرب أو القسمة على عدد سالب، ونوع المتباينة (تامة أو غير تامة) لا يتغيّر أبدًا."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $-x + 5 \\geqslant 2$",
+          "$-x \\geqslant 2 - 5$",
+          "$-x \\geqslant -3$",
+          "نقسم الطرفين على العدد السالب $-1$ فنغيّر اتجاه المتباينة:",
+          "$\\dfrac{-x}{-1} \\leqslant \\dfrac{-3}{-1}$",
+          "إذن حلول المتراجحة هي كل قيم $x$ الأصغر من أو تساوي $3$ .",
+          "قسمنا الطرفين (أو ضربناهما) في آخر خطوة على عدد سالب، فتغيّر اتجاه المتباينة وبقي نوعها."
+        ],
+        "result": "x \\leqslant 3"
+      },
+      "timeSeconds": 60
     }
   ]
 }

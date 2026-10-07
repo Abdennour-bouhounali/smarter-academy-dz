@@ -1,141 +1,326 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l3-005",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — حوض ضلعه 6m وشريط",
-    "estimatedMinutes": 3,
+    "title": "حوض وممرّ حوله",
+    "estimatedMinutes": 12,
     "tags": [
       "نمذجة",
-      "وضعية",
-      "شريط"
+      "مربع مجموع",
+      "تحليل"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
-      "modelledOn": "situation"
+      "modelledOn": "situation",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-harfi-l3-005"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "حوض مربّع طول ضلعه 6m، يحيط به من كل الجهات شريط منتظم عرضه $x$ (بالمتر)."
+    "content": "حوض مربّع الشكل طول ضلعه $6$ m ، يحيط به من كل الجهات ممرّ منتظم عرضه $x$ m ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "طول ضلع المربع الخارجي (الحوض مع الشريط) هو ...",
+      "step": "01",
+      "lead": "عبّر بدلالة $x$ عن طول ضلع المربع الخارجي (الحوض مع الممرّ).",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب الطول على الشكل $mx + n$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$6 + x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "B",
-          "content": "$6 + 2x$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$12x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "D",
-          "content": "$2(6 + x)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+          "value": "1",
+          "id": "MISC-NAMDHAJA-MISAHA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الشريط يحيط بالحوض من كل الجهات."
+          "content": "الممرّ موجود على جهتي كل ضلع من أضلاع الحوض."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "على الضلع الواحد: شريط، الحوض، شريط."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع."
+          "content": "أضف عرض الممرّ مرتين."
         }
       ],
       "feedback": {
-        "correct": "$x + 6 + x = 6 + 2x$.",
-        "incorrect": "الشريط على جهتي كل ضلع."
+        "correct": "$2x + 6$ إذن $m = 2$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "طول ضلع المربع الخارجي $= x + 6 + x$"
+        ],
+        "result": "2x + 6"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "مساحة الشريط بدلالة $x$ هي ...",
+      "step": "01",
+      "statement": "العدد $n$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب الطول على الشكل $mx + n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "6",
+      "hints": [
         {
-          "id": "A",
-          "content": "$4x^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $n$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x + 6$ إذن $n = 6$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$2x + 6$"
+        ],
+        "result": "n = 6"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "عبّر بدلالة $x$ عن مساحة الممرّ $S$ ، ثم انشرها وبسّطها.",
+      "statement": "العدد $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
         },
         {
-          "id": "B",
-          "content": "$4x^2 + 12x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
-        },
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $ax^2 + bx$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
         {
-          "id": "C",
-          "content": "$24x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "D",
-          "content": "$4x^2 + 24x$",
-          "isCorrect": true
+          "value": "2",
+          "id": "MISC-MUTATABIQA-MURABBA-MUAMIL"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المربع الخارجي ناقص الحوض."
+          "content": "مساحة الممرّ = مساحة المربع الخارجي − مساحة الحوض."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انشر $(6 + 2x)^2$."
+          "content": "انشر $(2x + 6)^2$ بمتطابقة شهيرة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "أو: أربعة مستطيلات $6 \\times x$ وأربعة أركان $x^2$."
+          "content": "اطرح مساحة الحوض ثم بسّط."
         }
       ],
       "feedback": {
-        "correct": "$(6 + 2x)^2 - 36 = 36 + 24x + 4x^2 - 36 = 4x^2 + 24x$.",
-        "incorrect": "لا تنس الحد المضاعف ولا الأركان الأربعة."
+        "correct": "$S = 4x^2 + 24x$ إذن $a = 4$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$S = (2x + 6)^2 - 6^2$",
+          "$S = 4x^2 + 24x + 36 - 36$"
+        ],
+        "result": "S = 4x^2 + 24x"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $ax^2 + bx$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "24",
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "value": "0",
+          "id": "MISC-MURABBA-MAJMU-BILA-2AB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $b$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = 4x^2 + 24x$ إذن $b = 24$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$S = 4x^2 + 24x$"
+        ],
+        "result": "b = 24"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "lead": "حلّل العبارة $S$ إلى جداء عاملين.",
+      "statement": "العدد $m$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $mx(x + n)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن العامل المشترك بين الحدّين $4x^2$ و $24x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل المشترك يتضمّن عددًا و $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = 4x(x + 6)$ إذن $m = 4$ .",
+        "incorrect": "تحقّق من تحليلك بنشر الجداء: يجب أن تجد العبارة الأصلية."
+      },
+      "solution": {
+        "lines": [
+          "$S = 4x \\times x + 4x \\times 6$"
+        ],
+        "result": "S = 4x(x + 6)"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q6",
+      "step": "03",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $mx(x + n)$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $n$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = 4x(x + 6)$ إذن $n = 6$ .",
+        "incorrect": "تحقّق من تحليلك بنشر الجداء: يجب أن تجد العبارة الأصلية."
+      },
+      "solution": {
+        "lines": [
+          "$S = 4x(x + 6)$"
+        ],
+        "result": "n = 6"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q7",
+      "step": "04",
+      "statement": "احسب مساحة الممرّ من أجل $x = 1{,}5$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري أو طبيعي: المساحة بـ $m^2$",
+      "expectedAnswer": "45",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالقيمة المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الشكل المحلّل يُسهّل الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = 45\\,m^2$ .",
+        "incorrect": "عوّض بالقيمة المعطاة في الشكل المناسب، واحسب بعناية مع احترام أولويات العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$S = 4 \\times 1{,}5 \\times (1{,}5 + 6) = 6 \\times 7{,}5$"
+        ],
+        "result": "S = 45\\,m^2"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l3-005",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 3
+  ]
 }

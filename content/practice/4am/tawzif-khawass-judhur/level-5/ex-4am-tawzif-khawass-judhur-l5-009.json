@@ -3,140 +3,201 @@
   "lessonCode": "tawzif-khawass-judhur",
   "level": 5,
   "metadata": {
-    "title": "تدريب — من امتحان شهادة التعليم المتوسط — عددان متعاكسان في الإشارة",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2009 — حوض لسقي البساتين",
+    "estimatedMinutes": 12,
     "tags": [
-      "متطابقات",
-      "تبسيط"
+      "نسبة مقامها عدد ناطق",
+      "وضعية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_tawzif-khawass-judhur_P2",
-      "modelledOn": "ex-30"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tawzif-khawass-judhur_P3",
+      "modelledOn": "BEM 2009 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2009",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "نعتبر العددين $x = \\sqrt{2} + 1$ و $y = \\sqrt{2} - 1$."
+    "content": "حوض مستطيل الشكل لسقي البساتين ببوسعادة، مساحة قاعدته $45\\,m^2$ وطوله $\\sqrt{60}\\,m$، وعمقه $1{,}2\\,m$.\nتملأ مضخّة الحوض بتدفّق $12\\,m^3$ في الساعة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نعتبر $x = \\sqrt{2} + 1$ و $y = \\sqrt{2} - 1$. نكتب $x + y = k\\sqrt{2}$. ما قيمة $k$؟",
+      "step": "01",
+      "statement": "اكتب الطول $\\sqrt{60}$ على الشكل $a\\sqrt{15}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
-          "code": "4am_tawzif-khawass-judhur_P2",
+          "code": "4am_tawzif-khawass-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "اكتب العدد $a$ فقط (بالمتر)",
       "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اجمع الحدود التي فيها $\\sqrt{2}$ من جهة، والأعداد من جهة أخرى."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "الحدّان $1$ و $-1$ متعاكسان."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$\\sqrt{2} + \\sqrt{2} = (1 + 1)\\sqrt{2}$."
+          "content": "ابحث عن أكبر مربع تامّ يقسم 60."
         }
       ],
       "feedback": {
-        "correct": "$x + y = \\sqrt{2} + \\sqrt{2} + 1 - 1$.",
-        "incorrect": "اجمع الحدود المتشابهة بالخاصية التوزيعية."
-      }
+        "correct": "$\\sqrt{60} = \\sqrt{4} \\times \\sqrt{15} = 2\\sqrt{15}$.",
+        "incorrect": "اكتب 60 على شكل (مربع تامّ) × 15."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{60} = \\sqrt{4} \\times \\sqrt{15}$"
+        ],
+        "result": "\\sqrt{60} = 2\\sqrt{15}\\,m"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "نعتبر $x = \\sqrt{2} + 1$ و $y = \\sqrt{2} - 1$. احسب $x \\times y$.",
+      "step": "02",
+      "statement": "احسب عرض الحوض واكتبه على شكل نسبة مقامها عدد ناطق.",
       "learningPoints": [
         {
-          "code": "4am_tawzif-khawass-judhur_P2",
-          "role": "primary"
-        },
-        {
           "code": "4am_tawzif-khawass-judhur_P3",
-          "role": "secondary"
+          "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
-      "expectedAnswer": "1",
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-JIDHR-FI-JIDHR",
-          "value": "3"
-        }
-      ],
+      "answerFormat": "بسّط النتيجة واكتبها على الشكل $\\dfrac{a\\sqrt{15}}{2}$، ثم أعط العدد $a$ فقط",
+      "expectedAnswer": "3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الجداء من الشكل $(a + b)(a - b)$."
+          "content": "العرض = المساحة ÷ الطول."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$(a + b)(a - b) = a^2 - b^2$."
+          "content": "عوّض الطول بالكتابة التي وجدتها في السؤال 01، ثم اضرب البسط والمقام في $\\sqrt{15}$."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احسب $(\\sqrt{2})^2 - 1^2$."
+          "content": "اختزل الكسر الناتج."
         }
       ],
       "feedback": {
-        "correct": "$x \\times y = (\\sqrt{2})^2 - 1^2 = 2 - 1$.",
-        "incorrect": "استعمل $(a + b)(a - b) = a^2 - b^2$ مع $(\\sqrt{2})^2 = 2$."
-      }
+        "correct": "العرض $\\dfrac{45\\sqrt{15}}{30} = \\dfrac{3\\sqrt{15}}{2}\\,m$.",
+        "incorrect": "اقسم المساحة على الطول، ثم اضرب البسط والمقام في $\\sqrt{15}$ واختزل."
+      },
+      "solution": {
+        "lines": [
+          "$\\ell = \\dfrac{45}{2\\sqrt{15}}$",
+          "$\\ell = \\dfrac{45 \\times \\sqrt{15}}{2\\sqrt{15} \\times \\sqrt{15}}$",
+          "$\\ell = \\dfrac{45\\sqrt{15}}{30}$"
+        ],
+        "result": "\\ell = \\dfrac{3\\sqrt{15}}{2}\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 270
     },
     {
       "id": "q3",
-      "statement": "نعتبر $x = \\sqrt{2} + 1$. ننشر $x^2 = a + b\\sqrt{2}$ حيث $a$ و $b$ عددان طبيعيان. ما قيمة $b$؟",
+      "step": "03",
+      "statement": "احسب محيط قاعدة الحوض واكتبه على الشكل $a\\sqrt{15}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "2",
+      "answerFormat": "اكتب العدد $a$ فقط (بالمتر)",
+      "expectedAnswer": "7",
       "misconceptionSignatures": [
         {
-          "id": "MISC-HADD-2AB",
-          "value": "0"
+          "value": "5",
+          "id": "MISC-MUAMIL-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "استعمل المتطابقة $(u + v)^2 = u^2 + 2uv + v^2$."
+          "content": "محيط المستطيل = 2 × (الطول + العرض)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الحدّ الذي يحتوي على الجذر هو $2uv$ مع $u = \\sqrt{2}$ و $v = 1$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $2 \\times \\sqrt{2} \\times 1$."
+          "content": "وزّع 2 على الحدّين ثم اجمع معاملي $\\sqrt{15}$."
         }
       ],
       "feedback": {
-        "correct": "$x^2 = 2 + 2\\sqrt{2} + 1 = 3 + 2\\sqrt{2}$.",
-        "incorrect": "لا تنسَ الحدّ $2uv$ في نشر مربع مجموع."
-      }
+        "correct": "$2 \\times 2\\sqrt{15} + 2 \\times \\dfrac{3\\sqrt{15}}{2} = 7\\sqrt{15}\\,m$.",
+        "incorrect": "اضرب كلا من الطول والعرض في 2 ثم اجمع معاملي $\\sqrt{15}$."
+      },
+      "solution": {
+        "lines": [
+          "$P = 2 \\times \\left(2\\sqrt{15} + \\dfrac{3\\sqrt{15}}{2}\\right)$",
+          "$P = 4\\sqrt{15} + 3\\sqrt{15}$",
+          "$P = (4 + 3)\\sqrt{15}$"
+        ],
+        "result": "P = 7\\sqrt{15}\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q4",
+      "step": "04",
+      "statement": "☜ الحوض فارغ. ما هي المدة اللازمة لملئه بالماء؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالساعة (استعمل الفاصلة)",
+      "expectedAnswer": "4,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حجم الحوض = مساحة القاعدة × العمق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المدة = الحجم ÷ التدفّق."
+        }
+      ],
+      "feedback": {
+        "correct": "الحجم $54\\,m^3$ والمدة $54 \\div 12$ ساعة، أي 4 ساعات و 30 دقيقة.",
+        "incorrect": "احسب حجم الحوض أولًا، ثم اقسمه على التدفّق."
+      },
+      "solution": {
+        "lines": [
+          "الحجم: $V = 45 \\times 1{,}2 = 54\\,m^3$",
+          "المدة: $54 \\div 12$"
+        ],
+        "result": "t = 4{,}5\\,h"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

@@ -1,10 +1,13 @@
 {
+  "id": "ex-4am-qasim-adad-tabii-l1-002",
+  "lessonCode": "qasim-adad-tabii",
+  "level": 1,
   "metadata": {
     "title": "420 كتابًا في رفوف",
     "estimatedMinutes": 4,
     "tags": [
-      "نشاط",
-      "قاسم"
+      "قاسم",
+      "الباقي المعدوم"
     ],
     "source": {
       "type": "textbook",
@@ -12,6 +15,12 @@
       "page": 8,
       "section": "أنشطة",
       "number": 1
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
@@ -20,105 +29,134 @@
   "questions": [
     {
       "id": "q1",
-      "statement": "أي الكيفيتين أنسب: 26 كتابًا في كل رفّ أم 28؟",
+      "step": "01",
+      "sub": "ا",
+      "lead": "احسب باقي القسمة الإقليدية للعدد 420 على كلٍّ من 26 و 28.",
+      "statement": "على 26:",
       "learningPoints": [
         {
           "code": "4am_qasim-adad-tabii_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "28 كتابًا: 420 = 28 × 15 ولا يبقى شيء",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "26 كتابًا: 420 = 26 × 16 + 4",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "الكيفيتان متكافئتان",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقسم 420 على 26 ثم على 28."
+          "content": "ابحث عن أكبر مضاعف للعدد 26 لا يتجاوز 420."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "أي قسمة باقيها معدوم؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الرفّ «الأنسب» هو الذي لا يترك كتبًا خارج الرفوف."
+          "content": "الباقي أصغر تمامًا من 26."
         }
       ],
       "feedback": {
-        "correct": "420 = 28 × 15 + 0: الباقي معدوم.",
-        "incorrect": "أجرِ القسمتين الإقليديتين وقارن الباقيين."
-      }
+        "correct": "$420 = 26 \\times 16 + 4$ مع $4 < 26$.",
+        "incorrect": "اطرح من 420 أكبر مضاعف للعدد 26 لا يتجاوزه."
+      },
+      "solution": {
+        "lines": [
+          "$420 = 26 \\times 16 + 4$ مع $4 < 26$"
+        ],
+        "result": "r = 4"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "ماذا يمثّل العدد 28 بالنّسبة إلى العدد 420؟",
+      "step": "01",
+      "sub": "ب",
+      "statement": "على 28:",
       "learningPoints": [
         {
           "code": "4am_qasim-adad-tabii_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "28 قاسم للعدد 420",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "28 مضاعف للعدد 420",
-          "isCorrect": false,
-          "misconceptionId": "MISC-QASIM-MUDAAF-ITTIJAH"
-        },
-        {
-          "id": "C",
-          "content": "28 باقي قسمة 420 على 15",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "0",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "420 = 28 × 15 + 0."
+          "content": "احسب $28 \\times 15$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الباقي معدوم يعني أن 28 … للعدد 420."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "راجع التعريف: b قاسم لـ a معناه باقي قسمة a على b هو 0."
+          "content": "الباقي أصغر تمامًا من 28."
         }
       ],
       "feedback": {
-        "correct": "باقي القسمة الإقليدية لـ 420 على 28 معدوم، إذن 28 قاسم للعدد 420.",
-        "incorrect": "الباقي معدوم: ماذا نسمّي 28 عندئذ؟"
-      }
+        "correct": "$420 = 28 \\times 15 + 0$: الباقي معدوم.",
+        "incorrect": "اطرح من 420 أكبر مضاعف للعدد 28 لا يتجاوزه."
+      },
+      "solution": {
+        "lines": [
+          "$420 = 28 \\times 15 + 0$"
+        ],
+        "result": "r = 0"
+      },
+      "work": "optional",
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "استنتج: أيّ العددين 26 و 28 قاسم للعدد 420؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-adad-tabii_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "26",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "28",
+          "isCorrect": true
+        }
+      ],
+      "answerFormat": "اختر الإجابة، ثم قارن تبريرك بالحل النموذجي",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل نتيجتي السؤال 01."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العدد $b$ قاسم للعدد $a$ إذا كان باقي قسمة $a$ على $b$ معدومًا."
+        }
+      ],
+      "feedback": {
+        "correct": "باقي قسمة 420 على 28 معدوم: 28 قاسم للعدد 420، ويحتوي كل رفّ على 28 كتابًا في 15 رفًّا.",
+        "incorrect": "ابحث عن القسمة التي باقيها معدوم."
+      },
+      "solution": {
+        "lines": [
+          "باقي قسمة 420 على 26 هو 4: 26 ليس قاسمًا للعدد 420.",
+          "باقي قسمة 420 على 28 معدوم: 28 قاسم للعدد 420."
+        ],
+        "result": "28"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-qasim-adad-tabii-l1-002",
-  "lessonCode": "qasim-adad-tabii",
-  "level": 1
+  ]
 }

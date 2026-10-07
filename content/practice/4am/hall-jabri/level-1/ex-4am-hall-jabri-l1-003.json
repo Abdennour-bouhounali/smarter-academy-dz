@@ -3,11 +3,11 @@
   "lessonCode": "hall-jabri",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي — من معادلة واحدة",
-    "estimatedMinutes": 4,
+    "title": "التعبير عن مجهول بدلالة الآخر",
+    "estimatedMinutes": 5,
     "tags": [
-      "التعبير عن مجهول",
-      "أؤكّد تعلّماتي"
+      "التعويض",
+      "بدلالة"
     ],
     "source": {
       "type": "textbook",
@@ -15,103 +15,154 @@
       "page": 62,
       "section": "أؤكّد تعلّماتي",
       "number": 6
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 62): من المعادلة $3x - y = 1$ ينتج أن… الكتابات: (1) $y = 3x - 1$ ، (2) $x = \\dfrac{y + 1}{3}$ ، (3) $3x = y + 1$ ."
+    "content": "نعتبر المعادلة ذات المجهولين $x$ و $y$ التالية:",
+    "formulas": [
+      "3x - y = 1"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ الكتابات صحيحة؟",
+      "step": "01",
+      "lead": "اكتب $y$ بدلالة $x$ على الشكل $y = ax + b$ ، ثم أعط العددين $a$ و $b$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_hall-jabri_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "(1) فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAWID-ISHARA"
-        },
-        {
-          "id": "B",
-          "content": "(1) و (3) فقط",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "(1) و (2) و (3)",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "(2) و (3) فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAWID-ISHARA"
+          "value": "-3",
+          "id": "MISC-TAWID-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+          "content": "اعزل الحد الذي فيه $y$ في طرف، وانقل الحد الآخر إلى الطرف الثاني."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+          "content": "عند نقل حد نغيّر إشارته، ثم نغيّر إشارات الطرفين ليصير معامل $y$ موجبا."
         }
       ],
       "feedback": {
-        "correct": "الثلاث صحيحة: $3x = y + 1$ ، ثم $y = 3x - 1$ ، ثم $x = \\dfrac{y + 1}{3}$ بقسمة الطرفين على 3.",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "معامل $x$ في العبارة $y = ax + b$ هو $a = 3$ .",
+        "incorrect": "انتبه لإشارة كل حد عند النقل، ثم عند تغيير إشارات الطرفين."
+      },
+      "solution": {
+        "lines": [
+          "$3x - y = 1$",
+          "ننقل $3x$ إلى الطرف الثاني بتغيير إشارته: $-y = -3x + 1$",
+          "نضرب الطرفين في $-1$ : $y = 3x - 1$",
+          "ومنه $a = 3$ و $b = -1$ ."
+        ],
+        "result": "y = 3x - 1"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "إذا كان $3x - y = 1$ و $x = 2$ ، فما قيمة $y$ ؟",
+      "step": "01",
+      "statement": "العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_hall-jabri_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد صحيح)",
+      "expectedAnswer": "-1",
+      "misconceptionSignatures": [
+        {
+          "value": "1",
+          "id": "MISC-TAWID-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت في العبارة هو العدد $b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لا تنس ضرب الحد الثابت أيضا في $-1$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 3x - 1$ : الحد الثابت هو $b = -1$ .",
+        "incorrect": "انتبه لإشارة الحد الثابت بعد الضرب في $-1$ ."
+      },
+      "solution": {
+        "lines": [
+          "$3x - y = 1$",
+          "ننقل $3x$ إلى الطرف الثاني بتغيير إشارته: $-y = -3x + 1$",
+          "نضرب الطرفين في $-1$ : $y = 3x - 1$",
+          "ومنه $a = 3$ و $b = -1$ ."
+        ],
+        "result": "y = 3x - 1"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب قيمة $y$ من أجل $x = 2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة $y$ فقط (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": "5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+          "content": "استعمل العبارة التي وجدتها في السؤال 01."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+          "content": "عوّض $x$ بـ $2$ ."
         }
       ],
       "feedback": {
-        "correct": "$y = 3x - 1 = 3 \\times 2 - 1 = 5$ .",
-        "incorrect": "أعد الحساب خطوة خطوة، وأجرِ كل عملية على طرفي المعادلة معًا."
-      }
+        "correct": "$y = 3 \\times 2 - 1 = 5$ ، ونتحقق: $3 \\times 2 - 5 = 1$ .",
+        "incorrect": "عوّض $x$ بـ $2$ في العبارة $y = 3x - 1$ أو مباشرة في المعادلة $3x - y = 1$ ."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $2$ في العبارة $y = 3x - 1$ :",
+          "$y = 3 \\times 2 - 1 = 5$"
+        ],
+        "result": "y = 5"
+      },
+      "timeSeconds": 90
     }
   ]
 }

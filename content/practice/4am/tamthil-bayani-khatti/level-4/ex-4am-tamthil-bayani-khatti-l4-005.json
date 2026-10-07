@@ -3,27 +3,39 @@
   "lessonCode": "tamthil-bayani-khatti",
   "level": 4,
   "metadata": {
-    "title": "تمرين 30 (ص 75)",
-    "estimatedMinutes": 4,
+    "title": "تمرين 30 — دالة خطية بعلاقة",
+    "estimatedMinutes": 10,
     "tags": [
       "معامل",
-      "جذور"
+      "جذور",
+      "منحى المستقيم"
     ],
     "source": {
       "type": "textbook",
       "elementId": "ex-30",
       "page": 75,
       "section": "أتعمّق",
-      "number": 30
+      "number": 30,
+      "adaptedFrom": "ex-4am-tamthil-bayani-khatti-l4-005"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 75): $f$ دالة خطية تحقّق $f(x + \\sqrt{2}) - f(x - \\sqrt{2}) = 4$ ."
+    "content": "$f$ دالة خطية تحقّق، من أجل كل عدد $x$ :",
+    "formulas": [
+      "f\\left(x + \\sqrt{2}\\right) - f\\left(x - \\sqrt{2}\\right) = 4"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "معامل $f$ :",
+      "step": "01",
+      "statement": "بيّن أن معامل الدالة $f$ هو $\\sqrt{2}$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P1",
@@ -31,88 +43,129 @@
         }
       ],
       "difficulty": 4,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\sqrt{2}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
-        },
-        {
-          "id": "C",
-          "content": "$2\\sqrt{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
-        },
-        {
-          "id": "D",
-          "content": "$\\dfrac{\\sqrt{2}}{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $f(t) = at$."
+          "content": "اكتب $f(x) = ax$ ثم انشر الطرف الأيسر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$a(x + \\sqrt{2}) - a(x - \\sqrt{2}) = 2\\sqrt{2}a$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ $2\\sqrt{2}a = 4$."
+          "content": "تحصل على $2\\sqrt{2}\\,a = 4$ ."
         }
       ],
       "feedback": {
-        "correct": "$2\\sqrt{2}a = 4$ ومنه $a = \\sqrt{2}$ .",
-        "incorrect": "الفرق لا يتعلّق بـ $x$ : يساوي $2\\sqrt{2}a$."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "$f(x) = ax$ ، إذن $a\\left(x + \\sqrt{2}\\right) - a\\left(x - \\sqrt{2}\\right) = 4$",
+          "$ax + a\\sqrt{2} - ax + a\\sqrt{2} = 4$ ، أي $2\\sqrt{2}\\,a = 4$",
+          "$a = \\dfrac{4}{2\\sqrt{2}} = \\dfrac{2}{\\sqrt{2}} = \\sqrt{2}$"
+        ]
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "صورة $\\sqrt{2}$ بالدالة $f$ :",
+      "step": "02",
+      "statement": "احسب ترتيب النقطة من التمثيل البياني للدالة $f$ التي فاصلتها $\\sqrt{2}$ .",
       "learningPoints": [
         {
-          "code": "4am_tamthil-bayani-khatti_P2",
+          "code": "4am_tamthil-bayani-khatti_P1",
           "role": "primary"
         }
       ],
       "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
       "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "value": "1",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "صورة عدد بالدالة الخطية $x \\longmapsto ax$ هي جداء هذا العدد في المعامل."
+          "content": "الترتيب هو $f\\left(\\sqrt{2}\\right) = \\sqrt{2} \\times \\sqrt{2}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب العدد في المعامل مع الانتباه إلى الإشارة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "النقطة التي فاصلتها هذا العدد وترتيبها صورته تنتمي إلى التمثيل."
+          "content": "$\\sqrt{a} \\times \\sqrt{a} = a$ ."
         }
       ],
       "feedback": {
-        "correct": "$f(\\sqrt{2}) = \\sqrt{2} \\times \\sqrt{2} = 2$ .",
-        "incorrect": "اضرب في المعامل الذي وجدته."
-      }
+        "correct": "$f\\left(\\sqrt{2}\\right) = \\sqrt{2} \\times \\sqrt{2} = 2$ .",
+        "incorrect": "جداء جذر عدد في نفسه يساوي العدد نفسه."
+      },
+      "solution": {
+        "lines": [
+          "$f\\left(\\sqrt{2}\\right) = \\sqrt{2} \\times \\sqrt{2} = 2$"
+        ],
+        "result": "f\\left(\\sqrt{2}\\right) = 2"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "هل التمثيل البياني للدالة $f$ يصعد أم ينزل من اليسار إلى اليمين؟ علّل.",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يصعد من اليسار إلى اليمين",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "ينزل من اليسار إلى اليمين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUNHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى إشارة معامل الدالة الخطية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان المعامل موجبا فالمستقيم يصعد، وإذا كان سالبا فهو ينزل."
+        }
+      ],
+      "feedback": {
+        "correct": "المعامل $\\sqrt{2}$ موجب: المستقيم يصعد.",
+        "incorrect": "منحى المستقيم تعيّنه إشارة المعامل: موجب ← يصعد، سالب ← ينزل."
+      },
+      "solution": {
+        "lines": [
+          "معامل الدالة الخطية هو $\\sqrt{2}$ ، وهو عدد موجب.",
+          "إذن المستقيم $(D)$ يصعد من اليسار إلى اليمين."
+        ],
+        "result": "يصعد"
+      },
+      "timeSeconds": 60
     }
   ]
 }

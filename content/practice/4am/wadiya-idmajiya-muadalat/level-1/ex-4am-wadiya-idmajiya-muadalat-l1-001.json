@@ -1,10 +1,13 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-001",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 1,
   "metadata": {
-    "title": "تمرين 1 — حل معادلة (أؤكّد تعلّماتي)",
+    "title": "حل معادلة والتحقق من عدد",
     "estimatedMinutes": 3,
     "tags": [
       "معادلة",
-      "أؤكّد تعلّماتي"
+      "تحقّق"
     ],
     "source": {
       "type": "textbook",
@@ -12,67 +15,112 @@
       "page": 52,
       "section": "أؤكّد تعلّماتي",
       "number": 1
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في كل حالة اختر الإجابة الصحيحة، وبرّر اختيارك."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حل المعادلة $-2 + x = 5$ هو ...",
+      "step": "01",
+      "statement": "حلّ المعادلة: $-2 + x = 5$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muadalat_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عند نقل حدّ من طرف إلى آخر تتغيّر إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الطرفين في الأخير على معامل $x$ بإشارته، ثم تحقّق بالتعويض."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 7$ .",
+        "incorrect": "انقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر مع تغيير الإشارة، ثم اقسم على معامل $x$ . تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$x = 5 + 2$",
+          "$x = 7$"
+        ],
+        "result": "x = 7"
+      },
+      "work": "optional",
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "هل العدد $3$ حلّ للمعادلة $-2 + x = 5$ ؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "2",
+          "content": "نعم",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
         },
         {
           "id": "B",
-          "content": "7",
+          "content": "لا",
           "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "3",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المجهول $x$ مضاف إليه $-2$."
+          "content": "عوّض $x$ بالعدد $3$ في الطرف الأول."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "لعزل $x$ نضيف 2 إلى الطرفين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق من جوابك بالتعويض في $-2 + x$."
+          "content": "قارن العدد المحصل عليه بالطرف الثاني."
         }
       ],
       "feedback": {
-        "correct": "$x = 5 + 2 = 7$ ، ونتحقق: $-2 + 7 = 5$.",
-        "incorrect": "ننقل $-2$ إلى الطرف الآخر بتغيير إشارته، ثم نتحقق بالتعويض."
+        "correct": "$-2 + 3 = 1$ و $1 \\neq 5$ .",
+        "incorrect": "عوّض ثم احسب الطرف الأول وقارنه بالطرف الثاني."
       },
-      "cognitiveDemand": "recall",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "من أجل $x = 3$ : $-2 + 3 = 1$",
+          "$1 \\neq 5$ ، إذن العدد $3$ ليس حلًّا للمعادلة."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-001",
-  "lessonCode": "wadiya-idmajiya-muadalat",
-  "level": 1
+  ]
 }

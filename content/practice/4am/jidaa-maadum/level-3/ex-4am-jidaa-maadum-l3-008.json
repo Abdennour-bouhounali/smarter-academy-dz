@@ -3,8 +3,8 @@
   "lessonCode": "jidaa-maadum",
   "level": 3,
   "metadata": {
-    "title": "طرائق (ص 47) — العبارة F",
-    "estimatedMinutes": 4,
+    "title": "طرائق: العبارة F",
+    "estimatedMinutes": 8,
     "tags": [
       "تحليل",
       "جداء معدوم"
@@ -14,119 +14,160 @@
       "elementId": "method-zero-product",
       "page": 47,
       "section": "طرائق"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 47): $F = (1 - 2x)(4x - 3) - 3(4x - 3)$ ."
+    "content": "لتكن العبارة $F$ حيث:",
+    "formulas": [
+      "F = (1 - 2x)(4x - 3) - 3(4x - 3)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "تحليل F إلى جداء عاملين من الدرجة الأولى:",
+      "step": "01",
+      "lead": "حلّل العبارة $F$ إلى جداء عاملين من الدرجة الأولى.",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_jidaa-maadum_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$(4x - 3)(4 - 2x)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
-        },
-        {
-          "id": "B",
-          "content": "$(4x - 3)(-6x)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
-        },
-        {
-          "id": "C",
-          "content": "$(4x - 3)(-2x - 2)$",
-          "isCorrect": true
-        }
-      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $F$ على الشكل $(4x - 3)(m - 2x)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "-2",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العامل المشترك للجداءين قوس."
+          "content": "ابحث عن عامل مشترك، أو عن متطابقة شهيرة من الشكل $a^2 - b^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هو $(4x - 3)$."
+          "content": "أخرج العامل المشترك (أو طبّق $a^2 - b^2 = (a - b)(a + b)$ )، واكتب ما بقي بين قوسين."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "داخل القوس الكبير: $(1 - 2x) - 3$."
+          "content": "بسّط ما بين القوسين بإشاراته، ثم قارن بالشكل المطلوب."
         }
       ],
       "feedback": {
-        "correct": "$F = (4x - 3)[(1 - 2x) - 3] = (4x - 3)(-2x - 2)$ .",
-        "incorrect": "حلّل أولًا ثم طبّق الخاصية، وعوّض كل حلّ في المعادلة لتتحقّق."
-      }
+        "correct": "$F = (4x - 3)(-2 - 2x)$ إذن $m = -2$ .",
+        "incorrect": "أخرج العامل المشترك أو طبّق المتطابقة الشهيرة، ثم بسّط ما بقي بين القوسين بإشاراته."
+      },
+      "solution": {
+        "lines": [
+          "$F = (4x - 3)[(1 - 2x) - 3]$"
+        ],
+        "result": "F = (4x - 3)(-2 - 2x)"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "حلول المعادلة $F = 0$ :",
+      "step": "02",
+      "lead": "حل المعادلة: $F = 0$ .",
+      "statement": "الحلّ الأصغر:",
       "learningPoints": [
         {
           "code": "4am_jidaa-maadum_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "-1",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$-1$ و $\\dfrac{4}{3}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
-        },
-        {
-          "id": "B",
-          "content": "$-1$ و $\\dfrac{3}{4}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$1$ و $-\\dfrac{3}{4}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
-        },
-        {
-          "id": "D",
-          "content": "$\\dfrac{3}{4}$ فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+          "value": "-3/4",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الطرف الثاني $0$ ، لكن الطرف الأول ليس جداءً بعد."
+          "content": "لا تنشر الطرف الأول: استعمل تحليله إلى جداء عاملين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ابحث عن عامل مشترك بين الحدود."
+          "content": "بعد التحليل تصير المعادلة معادلة جداء معدوم: أحد العاملين على الأقل معدوم."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "حلّل الطرف الأول، ثم طبّق خاصية الجداء المعدوم."
+          "content": "حلّ كل معادلة من الدرجة الأولى، ثم رتّب الحلّين من الأصغر إلى الأكبر."
         }
       ],
       "feedback": {
-        "correct": "$4x - 3 = 0$ أو $-2x - 2 = 0$ ، أي $x = \\dfrac{3}{4}$ أو $x = -1$ .",
-        "incorrect": "حلّل أولًا ثم طبّق الخاصية، وعوّض كل حلّ في المعادلة لتتحقّق."
-      }
+        "correct": "$x = -1$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى بإشاراتها، ثم رتّب الحلّين."
+      },
+      "solution": {
+        "lines": [
+          "المعادلة تُكتب: $(4x - 3)(-2 - 2x) = 0$",
+          "يعني أنّ: $4x - 3 = 0$ أو $-2 - 2x = 0$",
+          "أي: $4x = 3$ أو $-2x = 2$",
+          "ومنه: $x = \\dfrac{3}{4}$ أو $x = -1$",
+          "إذن للمعادلة حلّان هما $-1$ و $\\dfrac{3}{4}$"
+        ],
+        "result": "x = -1"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "الحلّ الأكبر:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
+      "expectedAnswer": "3/4",
+      "misconceptionSignatures": [
+        {
+          "value": "1",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المعادلة الثانية من الدرجة الأولى، ثم قارن الحلّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{3}{4}$ .",
+        "incorrect": "اكتب أن أحد العاملين معدوم، وحلّ كل معادلة من الدرجة الأولى بإشاراتها، ثم رتّب الحلّين."
+      },
+      "solution": {
+        "lines": [
+          "إذن للمعادلة حلّان هما $-1$ و $\\dfrac{3}{4}$"
+        ],
+        "result": "x = \\dfrac{3}{4}"
+      },
+      "timeSeconds": 60
     }
   ]
 }

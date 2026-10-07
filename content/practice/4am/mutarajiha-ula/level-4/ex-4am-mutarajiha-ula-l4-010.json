@@ -3,99 +3,203 @@
   "lessonCode": "mutarajiha-ula",
   "level": 4,
   "metadata": {
-    "title": "تدريب — قوسان",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2007 — تسعيرتا نسخ الوثائق",
+    "estimatedMinutes": 9,
     "tags": [
+      "متراجحة",
       "حل متراجحة",
-      "تمثيل بياني"
+      "جدول"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_mutarajiha-ula_P3",
-      "modelledOn": "ex-31"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_mutarajiha-ula_P2",
+      "modelledOn": "BEM 2007 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2007",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "لتكن المتراجحة $2(3 - x) \\geq 5 - (x + 1)$ ."
+    "content": "تقترح مكتبة لنسخ الوثائق على زبائنها تسعيرتين: التسعيرة الأولى: 5DA للصفحة الواحدة. التسعيرة الثانية: 3DA للصفحة الواحدة مع بطاقة سنوية ثمنها 400DA .",
+    "table": {
+      "head": [
+        "عدد الصفحات",
+        "100",
+        "300"
+      ],
+      "rows": [
+        [
+          "المبلغ حسب التسعيرة الأولى (DA)",
+          "500",
+          "…"
+        ],
+        [
+          "المبلغ حسب التسعيرة الثانية (DA)",
+          "700",
+          "…"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّ المتراجحة $2(3 - x) \\geq 5 - (x + 1)$ .",
+      "step": "01",
+      "sub": "ا",
+      "lead": "انقل الجدول وأكمله.",
+      "statement": "المبلغ حسب التسعيرة الأولى من أجل $300$ صفحة:",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بـ DA",
+      "expectedAnswer": "1500",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض بالقيمة المعطاة ثم احسب خطوة خطوة."
+        }
+      ],
+      "feedback": {
+        "correct": "$1500$DA .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولوية العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$5 \\times 300 = 1500$"
+        ],
+        "result": "1500DA"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "sub": "ب",
+      "statement": "المبلغ حسب التسعيرة الثانية من أجل $300$ صفحة:",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بـ DA",
+      "expectedAnswer": "1300",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب عدد الصفحات في سعر الصفحة، ثم أضف ثمن البطاقة."
+        }
+      ],
+      "feedback": {
+        "correct": "$1300$DA .",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولوية العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$3 \\times 300 + 400 = 900 + 400$",
+          "$= 1300$"
+        ],
+        "result": "1300DA"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "ليكن $x$ عدد الصفحات المنسوخة خلال سنة. حلّ المتراجحة: $5x > 3x + 400$ .",
+      "statement": "حدّ الحلول $k$ :",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x \\leq 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
-        },
-        {
-          "id": "B",
-          "content": "$x \\leq 2$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x \\geq 2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "حلول المتراجحة من الشكل $x < k$ أو $x \\leqslant k$ أو $x > k$ أو $x \\geqslant k$ : اكتب العدد $k$ فقط (عدد صحيح أو كسر a/b، قد يكون سالبًا)",
+      "expectedAnswer": "200",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر، كما في حل معادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+          "content": "إضافة عدد إلى الطرفين أو طرحه منهما لا تغيّر اتجاه المتباينة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+          "content": "الحدّ هو العدد الذي يحقّق المعادلة المرفقة (نضع «=» مكان رمز المتباينة): اقسم في الأخير على معامل $x$ ."
         }
       ],
       "feedback": {
-        "correct": "$2(3 - x) \\geq 5 - (x + 1)$ تؤول إلى $-x \\geq -2$، ثم نقسم على $-1$ (عدد سالب، فنغيّر الاتجاه): $x \\leq 2$.",
-        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
-      }
+        "correct": "حدّ الحلول هو $k = 200$ .",
+        "incorrect": "أعد الحل سطرًا سطرًا: العملية نفسها على الطرفين، ثم القسمة على معامل $x$ في الأخير."
+      },
+      "solution": {
+        "lines": [
+          "حدّ الحلول هو حلّ المعادلة المرفقة: $5x = 3x + 400$",
+          "$5x - 3x = 400$",
+          "$2x = 400$",
+          "$\\dfrac{2x}{2} = \\dfrac{400}{2}$",
+          "إذن حدّ الحلول هو $200$ ."
+        ],
+        "result": "k = 200"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
-      "id": "q2",
-      "statement": "أيّ تمثيل بياني يوافق حلول المتراجحة $2(3 - x) \\geq 5 - (x + 1)$ على مستقيم مدرّج؟",
+      "id": "q4",
+      "step": "02",
+      "statement": "حلول المتراجحة هي الأعداد $x$ حيث:",
       "learningPoints": [
         {
-          "code": "4am_mutarajiha-ula_P3",
+          "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "الجزء الملوّن على يمين $2$ والرمز $[$ عند $2$",
+          "content": "$x < 200$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
         },
         {
           "id": "B",
-          "content": "الجزء الملوّن على يسار $2$ والرمز $]$ عند $2$",
-          "isCorrect": true
+          "content": "$x \\leqslant 200$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
         },
         {
           "id": "C",
-          "content": "الجزء الملوّن على يسار $2$ والرمز $[$ عند $2$",
+          "content": "$x > 200$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$x \\geqslant 200$",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTARAJIHA-QAWS"
         }
@@ -104,23 +208,69 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "حلّ المتراجحة أولًا لتجد الحدّ."
+          "content": "انظر إلى إشارة معامل $x$ في آخر سطر قبل القسمة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الحلول الأكبر من الحدّ على يمينه، والأصغر منه على يساره."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اختبر الحدّ نفسه: إن كان حلًّا فالرمز موجّه نحو الجزء الملوّن."
+          "content": "القسمة على عدد موجب تحافظ على الاتجاه، والقسمة على عدد سالب تغيّره."
         }
       ],
       "feedback": {
-        "correct": "الحلول: $x \\leq 2$ ، فالجزء الملوّن على يسار $2$ ، و $2$ حلّ فالرمز موجّه نحو الجزء الملوّن.",
-        "incorrect": "حدّد جهة الحلول، ثم اختبر الحدّ نفسه لتختار اتجاه الرمز."
-      }
+        "correct": "$x > 200$ .",
+        "incorrect": "تتبّع سطور الحل: الاتجاه يتغيّر فقط عند الضرب أو القسمة على عدد سالب، ونوع المتباينة (تامة أو غير تامة) لا يتغيّر أبدًا."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $5x > 3x + 400$",
+          "$5x - 3x > 400$",
+          "$2x > 400$",
+          "$\\dfrac{2x}{2} > \\dfrac{400}{2}$",
+          "إذن حلول المتراجحة هي كل قيم $x$ الأكبر تماما من $200$ .",
+          "قسمنا الطرفين (أو ضربناهما) في آخر خطوة على عدد موجب، فبقي اتجاه المتباينة ونوعها."
+        ],
+        "result": "x > 200"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "statement": "استنتج: ابتداءً من أيّ عدد من الصفحات تكون التسعيرة الثانية أقلّ كلفة من الأولى؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد الصفحات",
+      "expectedAnswer": "201",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل حلول المتراجحة التي وجدتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انتبه إلى الحدّ: هل هو نفسه حلّ أم لا؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$201$ صفحة.",
+        "incorrect": "ارجع إلى حلول المتراجحة، ثم اختبر الأعداد الصحيحة القريبة من الحدّ."
+      },
+      "solution": {
+        "lines": [
+          "التسعيرة الثانية أقلّ كلفة عندما $5x > 3x + 400$ ، أي $x > 200$ .",
+          "و $x$ عدد طبيعي، إذن ابتداءً من $201$ صفحة."
+        ],
+        "result": "201 صفحة"
+      },
+      "timeSeconds": 120
     }
   ]
 }

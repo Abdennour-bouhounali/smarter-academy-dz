@@ -1,75 +1,124 @@
 {
+  "id": "ex-4am-natiqa-ghayr-natiqa-l2-010",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — معيار التصنيف",
-    "estimatedMinutes": 2,
+    "title": "على منوال BEM 2013 — عدد طبيعي ثم جداء",
+    "estimatedMinutes": 5,
     "tags": [
-      "تصنيف",
-      "تبرير"
+      "عدد ناطق"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
-      "modelledOn": "act-2"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
+      "modelledOn": "BEM 2013 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2013",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في نشاط الكتاب وُضع العدد $\\sqrt{\\dfrac{25}{13}}$ في صنف الأعداد غير الناطقة."
+    "content": "ليكن العدد الحقيقي $A$ حيث:",
+    "formulas": [
+      "A = \\sqrt{6{,}25} - \\sqrt{0{,}25}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما التبرير الصحيح؟",
+      "step": "01",
+      "statement": "بيّن أن $A$ عدد طبيعي.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة العدد $A$",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب كل جذر على حدة: $\\sqrt{6{,}25}$ ثم $\\sqrt{0{,}25}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لا تكتب $\\sqrt{6{,}25 - 0{,}25}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{6{,}25} = 2{,}5$ و $\\sqrt{0{,}25} = 0{,}5$ ، إذن $A = 2$ .",
+        "incorrect": "احسب جذر كل حد منفردًا ثم اطرح؛ جذر الفرق لا يساوي فرق الجذرين."
+      },
+      "solution": {
+        "lines": [
+          "$2{,}5^2 = 6{,}25$ إذن $\\sqrt{6{,}25} = 2{,}5$",
+          "$0{,}5^2 = 0{,}25$ إذن $\\sqrt{0{,}25} = 0{,}5$",
+          "$A = 2{,}5 - 0{,}5$"
+        ],
+        "result": "A = 2"
+      },
+      "work": "optional",
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "ليكن العدد الحقيقي $B$ حيث: $B = \\sqrt{\\dfrac{36}{49}}$ . بيّن أن $A \\times B$ عدد ناطق.",
       "learningPoints": [
         {
           "code": "4am_natiqa-ghayr-natiqa_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة الجداء $A \\times B$ على شكل كسر",
+      "expectedAnswer": "12/7",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "لأنه لا يوجد عدد ناطق مربعه $\\dfrac{25}{13}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "لأن $\\dfrac{25}{13}$ ليس عددًا طبيعيًا",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
-        },
-        {
-          "id": "C",
-          "content": "لأن $\\sqrt{\\dfrac{25}{13}} = \\dfrac{25}{26}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-NISF"
+          "value": "36/49",
+          "id": "MISC-JIDHR-MURABBA-KHALT"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تذكّر نص «معارف»: متى يكون $\\sqrt{a}$ ناطقًا؟"
+          "content": "ابحث عن كسر موجب مربعه $\\dfrac{36}{49}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في الصنف الأول $\\sqrt{\\dfrac{16}{9}}$ وهو ليس عددًا طبيعيًا تحت الجذر."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ابحث عن التبرير الذي يطبّق المعيار نفسه على كل الأعداد."
+          "content": "استعمل نتيجة السؤال 01."
         }
       ],
       "feedback": {
-        "correct": "المعيار: $\\sqrt{a}$ ناطق إذا كان $a$ مربعًا لعدد ناطق فقط، و $\\dfrac{25}{13}$ ليس كذلك.",
-        "incorrect": "الكسر $\\dfrac{16}{9}$ ليس طبيعيًا وجذره ناطق: المعيار ليس «طبيعي أو غير طبيعي»."
-      }
+        "correct": "$B = \\dfrac{6}{7}$ ، إذن $A \\times B = 2 \\times \\dfrac{6}{7} = \\dfrac{12}{7}$ .",
+        "incorrect": "احسب $B$ (جذر البسط وجذر المقام)، ثم اضربه في $A$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\left(\\dfrac{6}{7}\\right)^2 = \\dfrac{36}{49}$ إذن $B = \\dfrac{6}{7}$",
+          "$A \\times B = 2 \\times \\dfrac{6}{7} = \\dfrac{12}{7}$",
+          "إذن $A \\times B$ عدد ناطق."
+        ],
+        "result": "A \\times B = \\dfrac{12}{7}"
+      },
+      "work": "required",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-natiqa-ghayr-natiqa-l2-010",
-  "lessonCode": "natiqa-ghayr-natiqa",
-  "level": 2
+  ]
 }

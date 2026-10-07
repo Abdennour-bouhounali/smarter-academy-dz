@@ -1,126 +1,140 @@
 {
+  "id": "ex-4am-tawzif-khawass-judhur-l2-002",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 2,
   "metadata": {
-    "title": "تمرين 22 — مقام ناطق",
-    "estimatedMinutes": 3,
+    "title": "BEM 2011 — التمرين الثاني",
+    "estimatedMinutes": 7,
     "tags": [
-      "نسبة مقامها عدد ناطق"
+      "a√b",
+      "الخاصية التوزيعية"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "ex-22",
-      "page": 27,
-      "section": "أوظّف تعلّماتي",
-      "number": 22
+      "type": "bem",
+      "year": 2011,
+      "part": 1,
+      "exercise": 2
+    },
+    "exam": {
+      "kind": "official",
+      "badge": "BEM 2011",
+      "heading": "التمرين الثاني",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 27): اكتب العدد على شكل نسبة مقامها عدد ناطق."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "اكتب $\\dfrac{2}{\\sqrt{3}}$ على شكل نسبة مقامها عدد ناطق.",
+      "step": "01",
+      "statement": "اكتب المجموع A على الشكل $a\\sqrt{5}$ (مع $a$ عدد طبيعي) حيث: $A = \\sqrt{125} + \\sqrt{45} - \\sqrt{20}$",
       "learningPoints": [
         {
-          "code": "4am_tawzif-khawass-judhur_P3",
+          "code": "4am_tawzif-khawass-judhur_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\dfrac{2}{3}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MAQAM-DUN-BAST"
-        },
-        {
-          "id": "B",
-          "content": "$\\dfrac{2\\sqrt{3}}{3}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{2\\sqrt{3}}{9}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-FI-JIDHR"
+          "value": "10",
+          "id": "MISC-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المقام $\\sqrt{3}$ عدد غير ناطق."
+          "content": "اكتب كل جذر على الشكل $x\\sqrt{5}$: ابحث عن أكبر مربع تامّ يقسم العدد الذي تحت الجذر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب البسط والمقام في نفس العدد $\\sqrt{3}$."
+          "content": "استعمل $\\sqrt{m \\times 5} = \\sqrt{m} \\times \\sqrt{5}$ ثم احسب جذر المربع التامّ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$\\sqrt{3} \\times \\sqrt{3} = 3$."
+          "content": "اجمع المعاملات بإشاراتها بالخاصية التوزيعية: $x\\sqrt{5} + y\\sqrt{5} = (x + y)\\sqrt{5}$."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{2 \\times \\sqrt{3}}{\\sqrt{3} \\times \\sqrt{3}} = \\dfrac{2\\sqrt{3}}{3}$.",
-        "incorrect": "اضرب البسط أيضًا، و $\\sqrt{3} \\times \\sqrt{3} = 3$ لا 9."
-      }
+        "correct": "$A = 5\\sqrt{5} + 3\\sqrt{5} - 2\\sqrt{5} = 6\\sqrt{5}$.",
+        "incorrect": "اكتب كل جذر على الشكل $x\\sqrt{5}$، ثم اجمع المعاملات بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{125} + \\sqrt{45} - \\sqrt{20}$",
+          "$A = \\sqrt{25} \\times \\sqrt{5} + \\sqrt{9} \\times \\sqrt{5} - \\sqrt{4} \\times \\sqrt{5}$",
+          "$A = 5\\sqrt{5} + 3\\sqrt{5} - 2\\sqrt{5}$",
+          "$A = (5 + 3 - 2)\\sqrt{5}$"
+        ],
+        "result": "A = 6\\sqrt{5}"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "اكتب $\\dfrac{1}{\\sqrt{5}}$ على شكل نسبة مقامها عدد ناطق.",
+      "step": "02",
+      "statement": "احسب الجداء $A \\times \\dfrac{\\sqrt{5}}{30}$ مبينا مراحل الحساب.",
       "learningPoints": [
         {
-          "code": "4am_tawzif-khawass-judhur_P3",
+          "code": "4am_tawzif-khawass-judhur_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة الجداء (عدد طبيعي)",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\dfrac{\\sqrt{5}}{5}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$\\dfrac{1}{5}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MAQAM-DUN-BAST"
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{\\sqrt{5}}{25}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-FI-JIDHR"
+          "value": "5",
+          "id": "MISC-JIDHR-FI-JIDHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المقام $\\sqrt{5}$ عدد غير ناطق."
+          "content": "عوّض A بالكتابة التي وجدتها في السؤال 01."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب البسط والمقام في $\\sqrt{5}$."
+          "content": "$\\sqrt{5} \\times \\sqrt{5} = 5$"
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$\\sqrt{5} \\times \\sqrt{5} = 5$."
+          "content": "اختزل الكسر الناتج."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{1 \\times \\sqrt{5}}{\\sqrt{5} \\times \\sqrt{5}} = \\dfrac{\\sqrt{5}}{5}$.",
-        "incorrect": "البسط يصبح $\\sqrt{5}$ والمقام 5."
-      }
+        "correct": "$A \\times \\dfrac{\\sqrt{5}}{30} = \\dfrac{6 \\times 5}{30} = 1$.",
+        "incorrect": "عوّض A بالكتابة $a\\sqrt{5}$، واحسب $\\sqrt{5} \\times \\sqrt{5}$ ثم اختزل."
+      },
+      "solution": {
+        "lines": [
+          "$A \\times \\dfrac{\\sqrt{5}}{30} = 6\\sqrt{5} \\times \\dfrac{\\sqrt{5}}{30}$",
+          "$= \\dfrac{6 \\times \\sqrt{5} \\times \\sqrt{5}}{30}$",
+          "$= \\dfrac{6 \\times 5}{30} = \\dfrac{30}{30}$",
+          "$= 1$"
+        ],
+        "result": "A \\times \\dfrac{\\sqrt{5}}{30} = 1"
+      },
+      "work": "required",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-tawzif-khawass-judhur-l2-002",
-  "lessonCode": "tawzif-khawass-judhur",
-  "level": 2
+  ]
 }

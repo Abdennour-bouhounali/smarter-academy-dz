@@ -1,207 +1,257 @@
-// Oracle du banc « wadiya-idmajiya-jumal » (unité 5 « جمل معادلتين من الدرجة الأولى بمجهولين ») — chaque réponse
-// RECALCULÉE ici, sans lire le contenu ni le code testé. Fusionné dans scripts/practice-answer-oracle.test.mjs.
-// Une ثنائية se recalcule par Cramer en rationnels exacts (`solve2` de helpers.mjs) ou en rejouant
-// l'histoire par force brute ; la réponse attendue d'un `point` s'écrit P(x, y).
+// Oracle du banc « wadiya-idmajiya-jumal » au format BEM (unité 5 « جمل معادلتين من الدرجة الأولى بمجهولين »,
+// synthèse « أدمج تعلّماتي », banque réécrite le 2026-10-07) — chaque réponse RECALCULÉE ici, sans lire le contenu
+// ni le code testé. Fusionné dans scripts/practice-answer-oracle.test.mjs.
 //
-// Méthode : chaque histoire est RE-TRADUITE ici en sa jumla (a1, b1, c1 | a2, b2, c2) — les nombres de
-// l'énoncé, jamais la clé du JSON ; les montants dérivés (« كم يدفع… ») sont recalculés sur la ثنائية
-// obtenue. Pour les QCM de MISE EN ÉQUATION, chaque option est MODÉLISÉE (ses coefficients) et
-// `only(options, pred)` vérifie que l'option retenue est la SEULE qui traduit l'histoire (équations
-// proportionnelles) — un QCM dont deux options seraient justes, ou aucune, fait planter l'oracle.
-// « ابتداءً من » = le PREMIER entier naturel qui vérifie l'inégalité, cherché pas à pas.
+// Méthode : chaque histoire est RE-TRADUITE ici à partir des nombres de l'énoncé (quantités, prix, kg → g,
+// pourcentages payés…), puis
+//   solve2(…)   résout la jumla par Cramer en rationnels exacts (helpers.mjs) ;
+//   story(…)    vérifie en plus que la solution rejoue l'histoire écrite en clair (contrôle croisé) ;
+//   yes(b)      « هل … ؟ برّر » : A = نعم, B = لا ;
+//   firstNat / lastNat   « ابتداءً من » / « أكبر عدد » : recherche pas à pas sur les entiers naturels ;
+//   gcd         PGCD par Euclide (étapes hors leçon `counted:false`).
+// Les montants dérivés (coûts, bénéfices, budgets) sont recalculés sur la ثنائية obtenue.
+// Généré avec le banc par le script de l'auteur (Python, fractions exactes) ; ce calcul JS en est indépendant.
 import { R, C, P, q, solve2 } from './helpers.mjs';
 
-/* ── Arithmétique exacte ─────────────────────────────────────────────── */
-const sign = (v) => { const n = q(v).n; return n > 0n ? 1 : n < 0n ? -1 : 0; };
-const isZ = (v) => sign(v) === 0;
-const val = (v) => q(v).toString();
-const pair = (...sys) => { const [x, y] = solve2(...sys); return { x, y }; };
-const PP = ({ x, y }) => P(x, y);
-/** a·x + b·y = c proportionnelle à a'·x + b'·y = c' (même droite). */
-const prop = ([a, b, c], [a2, b2, c2]) => isZ(q(a).mul(b2).sub(q(a2).mul(b)))
-  && isZ(q(a).mul(c2).sub(q(a2).mul(c))) && isZ(q(b).mul(c2).sub(q(b2).mul(c)));
-/** Une jumla d'option traduit la jumla cible : chaque équation en est une, et les deux sont couvertes. */
-const sameSys = ([t1, t2]) => ([o1, o2]) => (prop(o1, t1) && prop(o2, t2)) || (prop(o1, t2) && prop(o2, t1));
-const holds = ([a, b, c], x, y) => isZ(q(a).mul(x).add(q(b).mul(y)).sub(c));
-/** Le premier entier naturel n tel que pred(n). */
-const firstNat = (pred) => { for (let n = 0; n <= 100000; n += 1) if (pred(n)) return n; throw new Error('oracle: aucun naturel'); };
-const lt = (u, v) => sign(q(u).sub(v)) < 0;
-
-/** L'unique option (lettre) dont le prédicat est vrai ; sinon erreur. */
-function only(options, isRight) {
-  const ok = Object.entries(options).filter(([, v]) => isRight(v)).map(([k]) => k);
-  if (ok.length !== 1) throw new Error(`oracle: ${ok.length} options justes (${ok.join(',')})`);
-  return C(ok[0]);
-}
-
-/* ── Les histoires, retraduites ──────────────────────────────────────── */
-// Rihla (رحلة القسم) : 10 علب + 10 قطع = 800 DA ; بقيت 2 علب + 3 قطع = 210 DA
-const RIHLA = [[10, 10, 800], [2, 3, 210]];
-// Le حفل du manuel : 150 + 150 = 11 250 DA ; بقيت 24 علبة + 30 قطعة = 2 100 DA
-const HAFL = [[150, 150, 11250], [24, 30, 2100]];
-// ex-29 : 18 علبة ; 7kg = 7000 g en bocaux de 500 g et 250 g
-const ASAL = [[1, 1, 18], [500, 250, 7 * 1000]];
-// ex-30 : 356 ورقة ; 454 000 DA en 1000 et 2000
-const ATM1 = [[1, 1, 356], [1000, 2000, 454000]];
-const ATM2 = [[1, 1, 400], [1000, 2000, 520000]];
-// ex-31 : 6 علب حليب + قارورة = 720 ; réduction 20 % sur 5 علب + 5 قارورات = 1080 (corrigé)
-const HALIB = [[6, 1, 720], [q('0.8').mul(5), q('0.8').mul(5), 1080]];
-const flat = (s) => s.flat();
-
 const K = (s) => `ex-4am-wadiya-idmajiya-jumal-${s}`;
+const v = (x) => q(x).toString();
+const sign = (x) => { const n = q(x).n; return n > 0n ? 1 : n < 0n ? -1 : 0; };
+const yes = (b) => C(b ? 'A' : 'B');
+/** a·x + b·y = c est-elle vérifiée par (x ; y) ? */
+const holds = ([a, b, c], x, y) => q(a).mul(x).add(q(b).mul(y)).sub(c).isZero();
+/** Résout la jumla et vérifie qu'elle rejoue l'histoire (prédicat en clair sur les rationnels). */
+function story(sys, check) {
+  const [x, y] = solve2(...sys.flat());
+  if (check && !check(q(x), q(y))) throw new Error(`oracle: l'histoire n'est pas rejouée par (${x} ; ${y})`);
+  return { x, y, P: P(x, y) };
+}
+const firstNat = (pred) => { for (let n = 0; n <= 100000; n += 1) if (pred(n)) return n; throw new Error('oracle: aucun naturel'); };
+const lastNat = (pred) => firstNat((n) => !pred(n + 1) && pred(n));
+const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
+const eq = (a, b) => q(a).sub(b).isZero();
 
-const sR = pair(...flat(RIHLA));
-const sH = pair(...flat(HAFL));
-const sHalib = pair(...flat(HALIB));
-const sPacks = pair(2, 1, 700, 1, 2, 1100);
-const sVisit = pair(1, 1, 90, 400, 250, 27600);
-const sCalls = pair(200, 3, 1300, 100, 4, 1100);
-const sShirts = pair(2, 3, 5100, 1, 5, 3250);
-const sOp = pair(4, 1, 1400, 7, 1, 1850);           // 4 Go → 1400 ; 7 Go → 1850 (x par Go, y fixe)
-const sBus = pair(30, 1, 13500, 45, 1, 18000);
-const sShop = pair(2, 1, 1300, 1, 2, 1700);
-const sClub = pair(1, 10, 12500, 1, q('0.8').mul(10), 10500); // x inscription, y mensuel
-const sNet = pair(3, 1, 950, 8, 1, 1700);
-const sPitch = pair(1, 1, 84 / 2, 1, -2, -6);        // x + y = 42 ; x − 2y = −6
-const sVtc = pair(5, 1, 350, 12, 1, 700);
+/* ── Niveau 1 ── */
+const n1_7 = story([[1, 1, 180], [1, -1, 15]], (x, y) => eq(x.add(y), 180) && eq(x.sub(y), 15));
+// رحلة القسم : 10x + 10y = 800 ; 2x + 3y = 210
+const rihla = story([[10, 10, 800], [2, 3, 210]]);
+const baqat = story([[3, 1, 700], [1, 2, 900]]);
+const n1_4 = story([[2, -1, 3], [1, -2, -5]]);
+const n1_5 = story([[3, -1, -1], [3, 1, 5]]);
 
-/* ── Les prix du ex-31 servent l4-002 (énoncé : 90 DA et 180 DA) — vérifiés ici ── */
-if (sHalib.x !== '90' || sHalib.y !== '180') throw new Error('oracle: ex-31');
+/* ── Niveau 2 ── */
+const asal = story([[1, 1, 18], [500, 250, 7 * 1000]]);              // 7kg = 7000 g
+const atm = story([[1, 1, 356], [1000, 2000, 454000]]);
+const m22 = story([[1, 1, 20], [4, 5, 88]]);
+const derby = story([[1, 1, 12], [300, 500, 4400]]);
+const water = story([[2, 5, 330], [6, 4, 440]]);
+const waterStory = story([[2, 5, 330], [3, 2, 220]]);             // l'histoire de l'étape 02
+const coins = story([[1, 1, 25], [10, 20, 380]]);
+const karate = story([[5, 3, 7600], [2, 4, 6400]]);
+const kiosk = story([[2, 1, 170], [3, 1, 225]]);
+const ages = story([[1, 1, 30], [1, -1, 4]]);
+const pitch = story([[2, 2, 46], [1, -1, 7]]);
+
+/* ── Niveau 3 ── */
+// 0,8(5x + 5y) = 1080 : on paie 80 %
+const milk = story([[6, 1, 720], [q(1).sub('0.2').mul(5), q(1).sub('0.2').mul(5), 1080]]);
+const figs = story([[1, 1, 15], [1, 4, 30]]);
+const figsStory = story([[1, 1, 15], [200, 800, 6000]]);
+const hafl = story([[150, 150, 11250], [24, 30, 2100]]);
+const fruit = story([[3, 2, 1000 + 100], [1, 4, 1000 + 200]]);
+const acc = story([[1, 1, 2500], [q(1).sub('0.2'), q(1).sub('0.1'), 2100]]);
+const ice = story([[3, 2, 340], [2, 5, 520]]);
+const park = story([[1, 1, 90], [400, 250, 27600]]);
+const thales = story([[1, 1, 96], [1, '-1.4', 0]]);
+const tPR = q(96).mul(35).div(35 + 25);                               // PR/PS = PT/PU, PR + PS = RS
+const school = story([[3, 1, 4100], [5, 1, 6300]]);
+const sweets = story([[5, 3, 380], [8, 6, 650]]);
+const sweetsStory = story([[5, 3, 380], [4, 3, 325]]);
+
+/* ── Niveau 4 ── */
+const n41 = story([[1, 1, 50], [1, '4/3', 55]]);
+const n41b = story([[1, 1, 50], [3, 4, 165]]);
+const plot = story([[2, 2, 96], [1, '-0.6', 0]]);
+const shirts = story([[2, 3, 5100], [1, 5, 3250]]);
+const shirtsOne = q(shirts.x).add(q(2).mul(shirts.y));
+const stadium = story([[1, 1, 1000], [600, 200, 383000]]);
+const isNat = (s) => /^\d+$/.test(s);
+const phone = story([[4, 1, 1400], [7, 1, 1850]]);
+const bus = story([[30, 1, 13500], [45, 1, 18000]]);
+const share = (n) => q(bus.x).mul(n).add(bus.y).div(n);
+const juice = story([[1, 1, 20], [120, 200, 2960]]);
+const age2 = story([[1, 1, 52], [1, -3, 3 * 6 - 6]], (x, y) => eq(x.add(6), y.add(6).mul(3)));
+const tri = story([[2, 1, 32], [1, -1, 4]], (x, y) => q(x).add(x).sub(y).n > 0n);   // inégalité triangulaire
+const gars = story([[1, 1, 24], [150, 600, 6750]]);
+
+/* ── Niveau 5 ── */
+const eqPay = ([p1, q1], [p2, q2]) => story([[p1, -1, -q1], [p2, -1, -q2]]);   // y = p·x + q ⇔ p·x − y = −q
+const pay = ([p, c], n) => q(p).mul(n).add(c);
+const cars = [[3000, 40000], [4500, 25000]];
+const tank = [[1500, 0], [1200, 4500]];
+const theatre = [[600, 0], [350, 3000]];
+const transl = [[800, 0], [500, 2400]];
+const boat = [[2500, 0], [1500, 6000]];
+const mosque = story([[2, 3, 5400], [3, 1, 5300]]);
+const mosqueCost = q(30 * 20).mul(mosque.x).add(q(9 * 12).div(2).mul(mosque.y)).add(q(1500000).mul('0.25'));
+const gear = story([[4, 3, 19200], [2, 5, 26400]]);
+const gearFull = q(25).mul(q(gear.x).add(gear.y));
+const gearPaid = gearFull.mul(q(1).sub('0.12'));
+const island = story([[2, 5, 12000], [3, 2, 14700]]);
+const hyp = firstNat((h) => h * h === 24 * 24 + 32 * 32);
+const shrubs = (24 + 32 + hyp) / 8;
+const islandTotal = q(shrubs).mul(island.x).add(q(240).mul(island.y)).mul('1.15');
+const clinic = story([[3, 2, 4200], [1, 4, 3400]]);
+const facade = q(20 * 7).sub(q(3).mul('1.5').mul('1.2')).sub(q(2).mul('2.5'));
+const clinicCost = q(20 * 12).mul(clinic.x).add(facade.mul(clinic.y)).add(q(400000).mul('0.2'));
+const canteen = story([[2, 8, 30400], [3, 10, 42000]]);
+const canteenEquip = q(30).mul(canteen.x).add(q(180).mul(canteen.y));
+const canteenTotal = canteenEquip.mul('1.05');
 
 export const ORACLE = {
   /* ── Niveau 1 ── */
-  [K('l1-002:q1')]: only({ A: [3, 1, 0], B: [1, -3, 0], C: ['1/3', -1, 3] }, (e) => !holds(e, 0, 0)),
-  [K('l1-003:q1')]: only({ A: [1, 1, 0], B: [2, '-1/2', 0], C: ['1/2', 1, '1/4'] }, (e) => holds(e, '1/2', '-1/2')),
-  [K('l1-005:q1')]: only({ A: [1, 4], B: [4, 1], C: ['2/3', 3] }, ([x, y]) => holds([3, -1, -1], x, y) && holds([3, 1, 5], x, y)),
-  // « لا تنتج » : la seule écriture qui n'est PAS la même droite que 3x − y = 1
-  [K('l1-006:q1')]: only({ A: [-3, 1, -1], B: [1, '-1/3', '1/3'], C: [3, -1, 1], D: [-3, 1, 1] }, (e) => !prop(e, [3, -1, 1])),
-  // متكاملتان : x + y = 180 ; « يزيد x عن y بـ 15 » : x − y = 15
-  [K('l1-007:q1')]: only({ A: [[1, 1, 180], [1, -1, 15]], B: [[1, 1, 90], [1, -1, 15]], C: [[1, 1, 180], [1, 1, 15]] }, sameSys([[1, 1, 180], [1, -1, 15]])),
-  [K('l1-007:q2')]: PP(pair(1, 1, 180, 1, -1, 15)),                                  // (195/2 ; 165/2)
-  [K('l1-008:q1')]: only({ A: [3, 2, 210], B: [2, 3, 210], C: [1, 1, 210], D: [2, 3, 800] }, (e) => prop(e, RIHLA[1])),
-  [K('l1-008:q2')]: only({ A: [50, 30], B: [40, 40], C: [45, 40], D: [30, 50] }, ([x, y]) => RIHLA.every((e) => holds(e, x, y))),
-  // أمين : 3 صغيرة + 1 كبيرة = 700 ; لينة : 1 صغيرة + 2 كبيرة = 900
-  [K('l1-009:q2')]: only({ A: [[1, 3, 700], [2, 1, 900]], B: [[3, 1, 700], [1, 2, 900]], C: [[3, 1, 900], [1, 2, 700]], D: [[3, 1, 700], [1, 1, 900]] },
-    sameSys([[3, 1, 700], [1, 2, 900]])),
-  [K('l1-010:q1')]: only({ A: [1, 1, 80], B: [1, 1, 1600], C: [20, 1, 80], D: [1, 1, 1580] }, (e) => prop(e, [20, 20, 1600])),
+  [K('l1-001:q1')]: R(8 * 2 - 1),
+  [K('l1-001:q2')]: yes(8 * 0 - 1 === -1),
+  [K('l1-002:q2')]: yes(holds(['1/3', -1, 3], 0, 0)),
+  [K('l1-003:q1')]: R(v(q(2).mul('1/2').sub(q('1/2').mul('-1/2')))),
+  [K('l1-003:q2')]: yes(holds([1, 1, 0], '1/2', '-1/2') && holds([2, '-1/2', 0], '1/2', '-1/2')),
+  [K('l1-004:q1')]: n1_4.P,
+  [K('l1-005:q1')]: R(v(q(-1 + 5).div(3 + 3))),
+  [K('l1-005:q2')]: n1_5.P,
+  // 3x − y = 1 ⇔ y = 3x − 1
+  [K('l1-006:q1')]: R(3),
+  [K('l1-006:q2')]: R(-1),
+  [K('l1-006:q3')]: yes([0, 1, 2].every((x) => 3 * x - (3 * x + 1) === 1)),
+  [K('l1-007:q2')]: n1_7.P,
+  [K('l1-008:q2')]: rihla.P,
+  [K('l1-009:q2')]: baqat.P,
+  [K('l1-010:q1')]: R(1600 / 20),
+  [K('l1-010:q2')]: yes(isNat('12.5') && isNat('17.5')),
 
   /* ── Niveau 2 ── */
-  [K('l2-001:q1')]: only({ A: [[1, 1, 18], [500, 250, 7]], B: [[1, 1, 7000], [500, 250, 18]], C: [[1, 1, 18], [500, 250, 7000]], D: [[1, 1, 18], [250, 500, 7000]] }, sameSys(ASAL)),
-  [K('l2-001:q2')]: PP(pair(...flat(ASAL))),                                          // (10 ; 8)
-  [K('l2-002:q1')]: only({ A: [[1, 1, 356], [1000, 2000, 454000]], B: [[1, 1, 454000], [1000, 2000, 356]], C: [[1, 1, 356], [2000, 1000, 454000]], D: [[1, 1, 356], [1000, 2000, 356000]] }, sameSys(ATM1)),
-  [K('l2-002:q2')]: PP(pair(...flat(ATM1))),                                          // (258 ; 98)
-  [K('l2-003:q2')]: PP(sR),                                                           // (30 ; 50)
-  // 12 تذكرة ; 300 DA المدرجات (x) و 500 DA المنصة (y) ; 4 400 DA
-  [K('l2-004:q1')]: only({ A: [[1, 1, 4400], [300, 500, 12]], B: [[1, 1, 12], [500, 300, 4400]], C: [[1, 1, 12], [300, 500, 4400]], D: [[300, 500, 12], [1, 1, 4400]] },
-    sameSys([[1, 1, 12], [300, 500, 4400]])),
-  [K('l2-004:q2')]: PP(pair(1, 1, 12, 300, 500, 4400)),                              // (8 ; 4)
-  [K('l2-005:q1')]: PP(sPacks),                                                       // (100 ; 500)
-  [K('l2-005:q2')]: R(val(q(3).mul(sPacks.x).add(sPacks.y))),                         // 800
-  [K('l2-006:q1')]: only({ A: [[1, 1, 25], [10, 20, 380]], B: [[1, 1, 380], [10, 20, 25]], C: [[1, 1, 25], [20, 10, 380]], D: [[10, 20, 25], [1, 1, 380]] },
-    sameSys([[1, 1, 25], [10, 20, 380]])),
-  [K('l2-006:q2')]: PP(pair(1, 1, 25, 10, 20, 380)),                                 // (12 ; 13)
-  [K('l2-007:q2')]: PP(pair(5, 3, 7600, 2, 4, 6400)),                                // (800 ; 1200)
-  [K('l2-008:q2')]: PP(pair(2, 1, 160, 3, 1, 210)),                                  // (50 ; 60)
-  [K('l2-009:q1')]: PP(pair(1, 1, 30, 1, -1, 4)),                                    // (17 ; 13)
-  // محيط 46 : 2(x + y) = 46 ; x − y = 7
-  [K('l2-010:q1')]: only({ A: [[1, 1, 46], [1, -1, 7]], B: [[1, 1, 23], [1, -1, 7]], C: [[1, 1, 23], [-1, 1, 7]], D: [[1, 1, 23], [1, 1, 7]] },
-    sameSys([[2, 2, 46], [1, -1, 7]])),
-  [K('l2-010:q2')]: PP(pair(2, 2, 46, 1, -1, 7)),                                    // (15 ; 8)
+  [K('l2-001:q2')]: asal.P,
+  [K('l2-002:q2')]: atm.P,
+  // l'unique des deux paires qui vérifie x + y = 20 et x + 5/4·y = 22
+  [K('l2-003:q1')]: (() => { const ok = [[12, 8], [8, 12]].filter(([x, y]) => holds([1, 1, 20], x, y) && holds([1, '5/4', 22], x, y)); if (ok.length !== 1) throw new Error('l2-003'); return P(...ok[0]); })(),
+  [K('l2-003:q2')]: m22.P,
+  [K('l2-004:q1')]: derby.P,
+  [K('l2-004:q2')]: R(v(q(derby.y).mul(500))),
+  [K('l2-005:q1')]: water.P,
+  [K('l2-005:q2')]: R(waterStory.x),
+  [K('l2-005:q3')]: R(waterStory.y),
+  [K('l2-006:q2')]: coins.P,
+  [K('l2-007:q1')]: karate.P,
+  [K('l2-007:q2')]: R(v(q(4).mul(karate.x).add(q(4).mul(karate.y)))),
+  [K('l2-008:q1')]: kiosk.P,
+  [K('l2-008:q2')]: R(v(q(kiosk.x).add(kiosk.y))),
+  [K('l2-009:q2')]: ages.P,
+  [K('l2-010:q2')]: pitch.P,
 
   /* ── Niveau 3 ── */
-  // 0,8(5x + 5y) = 1080 : chaque option comme a·x + b·y = c
-  [K('l3-001:q3')]: only({ A: [5, 5, 1080], B: [1, 1, 1080], C: [4, 4, 1080], D: [4, 5, 1080] }, (e) => prop(e, HALIB[1])),
-  [K('l3-002:q1')]: PP(sHalib),                                                       // (90 ; 180)
-  [K('l3-002:q2')]: R(val(q(5).mul(sHalib.x).add(q(5).mul(sHalib.y)))),             // 1350 (sans la carte)
-  [K('l3-003:q1')]: only({ A: [[150, 150, 11250], [30, 24, 2100]], B: [[1, 1, 11250], [24, 30, 2100]], C: [[150, 150, 2100], [24, 30, 11250]], D: [[150, 150, 11250], [24, 30, 2100]] }, sameSys(HAFL)),
-  [K('l3-003:q2')]: PP(sH),                                                           // (25 ; 50)
-  // 1kg 100g = 1100 g : 3 تفاحات + 2 برتقالتان
-  [K('l3-004:q1')]: only({ A: [3, 2, '1.1'], B: [2, 3, 1100], C: [3, 2, 1000 + 100], D: [1, 1, 1100] }, (e) => prop(e, [3, 2, 1100])),
-  [K('l3-004:q2')]: PP(pair(3, 2, 1100, 1, 4, 1200)),                                // (200 ; 250)
-  // غلاف −20 % (on paie 0,8), شاحن −10 % (on paie 0,9) ; « x + y − 30 » = x + y = 2130
-  [K('l3-005:q1')]: only({ A: ['0.2', '0.1', 2100], B: ['0.8', '0.8', 2100], C: [1, 1, 2130], D: ['0.8', '0.9', 2100] },
-    (e) => prop(e, [q(1).sub('0.2'), q(1).sub('0.1'), 2100])),
-  [K('l3-005:q2')]: PP(pair(1, 1, 2500, '0.8', '0.9', 2100)),                        // (1500 ; 1000)
-  [K('l3-006:q2')]: PP(pair(3, 2, 340, 2, 5, 520)),                                  // (60 ; 80)
-  [K('l3-007:q1')]: PP(sVisit),                                                       // (34 ; 56)
-  [K('l3-007:q2')]: R(val(q(250).mul(sVisit.y))),                                     // 14000
-  [K('l3-008:q1')]: PP(sCalls),                                                       // (19/5 ; 180)
-  [K('l3-008:q2')]: R(val(q(50).mul(sCalls.x).add(q(2).mul(sCalls.y)))),             // 550
-  // x mensuel, y inscription (une fois) : 3x + y = 4100 ; 5x + y = 6300
-  [K('l3-009:q1')]: only({ A: [[3, 3, 4100], [5, 5, 6300]], B: [[3, 1, 4100], [5, 1, 6300]], C: [[1, 3, 4100], [1, 5, 6300]], D: [[3, 1, 6300], [5, 1, 4100]] },
-    sameSys([[3, 1, 4100], [5, 1, 6300]])),
-  [K('l3-009:q2')]: PP(pair(3, 1, 4100, 5, 1, 6300)),                                // (1100 ; 800)
-  [K('l3-010:q2')]: PP(pair(1, 1, 64, 300, 500, 25000)),                             // (35 ; 29)
+  [K('l3-001:q2')]: milk.P,
+  [K('l3-001:q3')]: R(v(q(5).mul(milk.x).add(q(5).mul(milk.y)))),
+  [K('l3-002:q1')]: figs.P,
+  [K('l3-002:q2')]: R(gcd(800, 200)),
+  [K('l3-002:q3')]: R(figsStory.x),
+  [K('l3-002:q4')]: R(figsStory.y),
+  [K('l3-003:q2')]: hafl.P,
+  [K('l3-003:q3')]: R(v(q(150 - 24).mul(hafl.x).add(q(150 - 30).mul(hafl.y)))),
+  [K('l3-004:q2')]: fruit.P,
+  [K('l3-004:q3')]: R(v(q(5).mul(fruit.x).add(q(6).mul(fruit.y)).div(1000))),
+  [K('l3-005:q2')]: acc.P,
+  [K('l3-005:q3')]: R(v(q(acc.x).mul('0.8'))),
+  [K('l3-006:q1')]: ice.P,
+  [K('l3-006:q2')]: R(v(q(2).mul(ice.x).add(q(3).mul(ice.y)))),
+  [K('l3-007:q2')]: park.P,
+  [K('l3-007:q3')]: R(v(q(park.y).mul(250))),
+  [K('l3-008:q1')]: thales.P,
+  [K('l3-008:q2')]: R(96),
+  [K('l3-008:q3')]: R(v(q(35).div(25))),
+  [K('l3-008:q4')]: R(v(tPR)),
+  [K('l3-008:q5')]: R(v(q(96).sub(tPR))),
+  [K('l3-009:q2')]: school.P,
+  [K('l3-009:q3')]: R(v(q(9).mul(school.x).add(school.y))),
+  [K('l3-010:q1')]: sweets.P,
+  [K('l3-010:q2')]: R(sweetsStory.x),
+  [K('l3-010:q3')]: R(sweetsStory.y),
 
   /* ── Niveau 4 ── */
-  [K('l4-001:q1')]: only({ A: [[1, 1, 75], [4, 5, 2100]], B: [[1, 1, 11250], [4, 5, 350]], C: [[1, 1, 75], [4, 5, 350]], D: [[1, 1, 75], [4, 5, 300]] }, sameSys(HAFL)),
-  [K('l4-001:q2')]: R(sH.y),                                                          // 50
-  [K('l4-001:q3')]: R(val(q(150 - 24).mul(sH.x))),                                    // 3150
-  [K('l4-002:q1')]: R(val(q('0.8').mul(q(4).mul(90).add(q(3).mul(180))))),          // 720
-  [K('l4-002:q2')]: R(val(q(4).mul(90).add(q(3).mul(180)).sub(q('0.8').mul(q(4).mul(90).add(q(3).mul(180)))))), // 180
-  [K('l4-003:q1')]: PP(sShirts),                                                      // (2250 ; 200)
-  // قميص + زوجا جوارب ici, contre la حزمة à 2 500 : l'option juste dit l'écart et le sens
-  [K('l4-003:q2')]: only({ A: ['here', 150], B: ['same', 0], C: ['other', 50], D: ['other', 150] }, ([who, d]) => {
-    const here = q(sShirts.x).add(q(2).mul(sShirts.y)); const diff = here.sub(2500);
-    const truth = sign(diff) > 0 ? 'other' : sign(diff) < 0 ? 'here' : 'same';
-    return who === truth && isZ(q(d).sub(sign(diff) < 0 ? diff.neg() : diff));
-  }),
-  [K('l4-004:q1')]: PP(pair(1, 1, 1000, 600, 200, 383000)),                          // (915/2 ; 1085/2)
-  [K('l4-005:q1')]: PP(sOp),                                                          // (150 ; 800)
-  [K('l4-005:q2')]: R(val(q(sOp.y).add(q(10).mul(sOp.x)))),                          // 2300
-  [K('l4-006:q1')]: PP(sBus),                                                         // (300 ; 4500)
-  [K('l4-006:q2')]: R(val(q(sBus.y).add(q(50).mul(sBus.x)).div(50))),                // 390
-  [K('l4-007:q1')]: only({ A: [[1, 1, 2960], [120, 200, 20]], B: [[1, 1, 20], [200, 120, 2960]], C: [[1, 1, 20], [120, 200, 2960]], D: [[1, 1, 20], [120, 200, 320]] },
-    sameSys([[1, 1, 20], [120, 200, 2960]])),
-  [K('l4-007:q2')]: PP(pair(1, 1, 20, 120, 200, 2960)),                              // (13 ; 7)
-  // dans 6 ans : x + 6 = 3(y + 6) ⇔ x − 3y = 12 ; options réécrites a·x + b·y = c
-  [K('l4-008:q1')]: only({ A: [1, -3, -6], B: [1, -3, 18], C: [1, -3, 0], D: [1, -3, 12] }, (e) => prop(e, [1, -3, 3 * 6 - 6])),
-  [K('l4-008:q2')]: PP(pair(1, 1, 52, 1, -3, 12)),                                   // (42 ; 10)
-  [K('l4-009:q1')]: only({ A: [[1, 1, 32], [1, -1, 4]], B: [[2, 1, 32], [-1, 1, 4]], C: [[2, 1, 32], [1, -1, 4]], D: [[1, 2, 32], [1, -1, 4]] },
-    sameSys([[2, 1, 32], [1, -1, 4]])),
-  [K('l4-009:q2')]: PP(pair(2, 1, 32, 1, -1, 4)),                                    // (12 ; 8)
-  [K('l4-010:q2')]: PP(pair(5, -3, 19, 2, 3, 23)),                                   // (6 ; 11/3)
+  [K('l4-001:q1')]: (() => { const ok = [[35, 15], [15, 35]].filter(([x, y]) => holds([1, 1, 50], x, y) && holds([1, '4/3', 55], x, y)); if (ok.length !== 1) throw new Error('l4-001'); return P(...ok[0]); })(),
+  [K('l4-001:q2')]: n41b.P,
+  // x + y = 50 et 3x + 3y = 165 : déterminant nul et 3·50 ≠ 165 → aucune solution
+  [K('l4-001:q3')]: yes(3 * 3 - 3 * 3 !== 0 || 3 * 50 === 165),
+  [K('l4-002:q1')]: story([[1, 1, 48], [1, '-0.6', 0]]).P,
+  [K('l4-002:q2')]: R(plot.x),
+  [K('l4-002:q3')]: R(plot.y),
+  [K('l4-002:q4')]: R(v(q(plot.x).mul(plot.y))),
+  [K('l4-003:q2')]: shirts.P,
+  [K('l4-003:q3')]: yes(sign(q(2500).sub(shirtsOne)) < 0),
+  [K('l4-003:q4')]: R(v(shirtsOne.sub(2500))),
+  [K('l4-004:q2')]: stadium.P,
+  [K('l4-004:q3')]: yes(isNat(stadium.x) && isNat(stadium.y)),
+  [K('l4-005:q2')]: phone.P,
+  [K('l4-005:q3')]: R(v(q(10).mul(phone.x).add(phone.y))),
+  [K('l4-005:q4')]: R(lastNat((n) => sign(q(n).mul(phone.x).add(phone.y).sub(3000)) <= 0)),
+  [K('l4-006:q1')]: bus.P,
+  [K('l4-006:q2')]: R(v(share(50))),
+  [K('l4-006:q3')]: R(firstNat((n) => n > 0 && sign(share(n).sub(400)) < 0)),
+  [K('l4-007:q2')]: juice.P,
+  [K('l4-007:q3')]: R(v(q(juice.y).mul(200))),
+  [K('l4-007:q4')]: R(v(q(20).div('0.25').mul(80).sub(2960))),
+  [K('l4-008:q2')]: age2.P,
+  [K('l4-008:q3')]: R(firstNat((n) => eq(q(age2.x).add(n), q(age2.y).add(n).mul(2)))),
+  [K('l4-009:q2')]: tri.P,
+  // AH² = AB² − (BC/2)² = a²·2 → a
+  [K('l4-009:q3')]: R(firstNat((a) => eq(q(a * a * 2), q(tri.x).mul(tri.x).sub(q(tri.y).div(2).mul(q(tri.y).div(2)))))),
+  [K('l4-010:q1')]: story([[1, 1, 24], [1, 4, 45]]).P,
+  [K('l4-010:q2')]: R(gcd(600, 150)),
+  [K('l4-010:q3')]: R(gars.x),
+  [K('l4-010:q4')]: R(gars.y),
 
   /* ── Niveau 5 ── */
-  [K('l5-001:q1')]: PP(sH),
-  [K('l5-001:q2')]: R(11250 - 2100),                                                  // 9150
-  [K('l5-001:q3')]: R(val(q(200).mul(sH.x).add(q(120).mul(sH.y)))),                  // 11000
-  [K('l5-002:q1')]: PP(pair(...flat(ATM1))),
-  [K('l5-002:q2')]: PP(pair(...flat(ATM2))),                                          // (280 ; 120)
-  [K('l5-003:q1')]: PP(sShop),                                                        // (300 ; 700)
-  [K('l5-003:q2')]: only({ A: 'A', B: 'B', C: 'same', D: 'unknown' }, (w) => w === (lt(900, q(sShop.x).add(sShop.y)) ? 'B' : 'A')),
-  [K('l5-003:q3')]: R(val(q(sShop.x).add(sShop.y).sub(900))),                        // 100
-  [K('l5-004:q1')]: only({ A: ['0.8', 8, 10500], B: [1, 2, 10500], C: [1, 8, 10500], D: [1, 10, 10500] }, (e) => prop(e, [1, q('0.8').mul(10), 10500])),
-  [K('l5-004:q2')]: PP(sClub),                                                        // (2500 ; 1000)
-  [K('l5-004:q3')]: R(val(q('0.8').mul(sClub.y))),                                    // 800
-  [K('l5-005:q1')]: only({ A: [[1, 1, 23000], [800, 300, 50]], B: [[1, 1, 50], [300, 800, 23000]], C: [[1, 1, 50], [800, 300, 23000]], D: [[800, 300, 50], [1, 1, 23000]] },
-    sameSys([[1, 1, 50], [800, 300, 23000]])),
-  [K('l5-005:q2')]: PP(pair(1, 1, 50, 800, 300, 23000)),                             // (16 ; 34)
-  [K('l5-006:q1')]: PP(sNet),                                                         // (150 ; 500)
-  [K('l5-006:q2')]: R(firstNat((n) => lt(1500, q(sNet.y).add(q(n).mul(sNet.x))))),   // 7
-  [K('l5-007:q1')]: only({ A: [[1, 1, 84], [1, -2, -6]], B: [[1, 1, 42], [-2, 1, -6]], C: [[1, 1, 42], [1, -2, -12]], D: [[1, 1, 42], [1, -2, -6]] },
-    sameSys([[2, 2, 84], [1, -2, -6]])),
-  [K('l5-007:q2')]: PP(sPitch),                                                       // (26 ; 16)
-  [K('l5-007:q3')]: R(val(q(sPitch.x).mul(sPitch.y))),                                // 416
-  // +10 % sur دقلة نور seulement : 3 × 1,1x + y = 3040
-  [K('l5-008:q1')]: only({ A: [q(3).mul('0.1'), 1, 3040], B: [3, 1, 3040], C: [q('1.1').mul(3), '1.1', 3040], D: [q(3).mul('1.1'), 1, 3040] },
-    (e) => prop(e, [q(3).mul(q(1).add('0.1')), 1, 3040])),
-  [K('l5-008:q2')]: PP(pair(2, 3, 2800, q(3).mul('1.1'), 1, 3040)),                 // (800 ; 400)
-  [K('l5-009:q1')]: PP(sVtc),                                                         // (50 ; 100)
-  [K('l5-009:q3')]: R(firstNat((n) => n > 0 && lt(q(sVtc.y).add(q(n).mul(sVtc.x)), q(60).mul(n)))), // 11
-  // 2x + 4y = 300 et x + 2y = 160 : parallèles distinctes → aucune ثنائية
-  [K('l5-010:q1')]: only({ A: ['pair', 60, 45], B: ['infinite'], C: ['pair', 20, 70], D: ['none'] }, ([kind, x, y]) => {
-    const S = [[2, 4, 300], [1, 2, 160]];
-    const parallel = isZ(q(2).mul(2).sub(q(1).mul(4)));
-    const truth = parallel ? (prop(S[0], S[1]) ? 'infinite' : 'none') : 'unique';
-    if (kind === 'pair') return truth === 'unique' && S.every((e) => holds(e, x, y));
-    return kind === truth;
-  }),
-  // avec 150 : 2x + 4y = 300 est le double de x + 2y = 150 → une infinité ; « حل وحيد » est faux
-  [K('l5-010:q2')]: only({ A: ['unique'], B: ['infinite'], C: ['none'], D: ['unique'] }, ([kind]) => {
-    const S = [[2, 4, 300], [1, 2, 150]];
-    const parallel = isZ(q(2).mul(2).sub(q(1).mul(4)));
-    const truth = parallel ? (prop(S[0], S[1]) ? 'infinite' : 'none') : 'unique';
-    return kind === truth;
-  }),
+  [K('l5-001:q1')]: mosque.P,
+  [K('l5-001:q2')]: R(v(q(30 * 20).mul(mosque.x))),
+  [K('l5-001:q3')]: R(v(q(9 * 12).div(2))),
+  [K('l5-001:q4')]: C(sign(q(1500000).sub(mosqueCost)) > 0 ? 'A' : 'B'),
+  [K('l5-001:q5')]: R(v(q(1500000).sub(mosqueCost))),
+  [K('l5-002:q1')]: R(v(pay(cars[0], 8))),
+  [K('l5-002:q2')]: R(v(pay(cars[1], 8))),
+  [K('l5-002:q4')]: eqPay(...cars).P,
+  [K('l5-002:q5')]: R(firstNat((n) => sign(pay(cars[1], n).sub(pay(cars[0], n))) > 0)),
+  [K('l5-003:q1')]: R(v(pay(tank[0], 10))),
+  [K('l5-003:q2')]: R(v(pay(tank[1], 10))),
+  [K('l5-003:q4')]: eqPay(...tank).P,
+  [K('l5-003:q5')]: C(sign(pay(tank[1], 20).sub(pay(tank[0], 20))) < 0 ? 'B' : 'A'),
+  [K('l5-004:q2')]: gear.P,
+  [K('l5-004:q3')]: R(v(gearFull)),
+  [K('l5-004:q4')]: R(v(gearPaid)),
+  [K('l5-004:q5')]: R(lastNat((n) => sign(q(950).mul(n).sub(q(140000).sub(gearPaid))) <= 0)),
+  [K('l5-005:q1')]: R(v(pay(theatre[0], 10))),
+  [K('l5-005:q2')]: R(v(pay(theatre[1], 10))),
+  [K('l5-005:q4')]: eqPay(...theatre).P,
+  [K('l5-005:q5')]: R(firstNat((n) => eq(pay(theatre[1], n), 8600))),
+  [K('l5-005:q6')]: R(v(pay(theatre[0], firstNat((n) => eq(pay(theatre[1], n), 8600))))),
+  [K('l5-006:q1')]: island.P,
+  [K('l5-006:q2')]: R(v(q(240).mul(island.y))),
+  [K('l5-006:q3')]: R(hyp),
+  [K('l5-006:q4')]: R(shrubs),
+  [K('l5-006:q5')]: yes(sign(q(250000).sub(islandTotal)) >= 0),
+  [K('l5-006:q6')]: R(v(q(250000).sub(islandTotal))),
+  [K('l5-007:q1')]: R(v(pay(transl[0], 5))),
+  [K('l5-007:q2')]: R(v(pay(transl[1], 5))),
+  [K('l5-007:q4')]: eqPay(...transl).P,
+  [K('l5-007:q5')]: C(sign(pay(transl[1], 12).sub(pay(transl[0], 12))) < 0 ? 'B' : 'A'),
+  [K('l5-008:q2')]: clinic.P,
+  [K('l5-008:q3')]: R(v(q(20 * 12).mul(clinic.x))),
+  [K('l5-008:q4')]: R(v(facade)),
+  [K('l5-008:q5')]: C(sign(q(400000).sub(clinicCost)) > 0 ? 'A' : 'B'),
+  [K('l5-008:q6')]: R(v(q(400000).sub(clinicCost))),
+  [K('l5-009:q1')]: R(v(pay(boat[0], 4))),
+  [K('l5-009:q2')]: R(v(pay(boat[1], 4))),
+  [K('l5-009:q4')]: eqPay(...boat).P,
+  [K('l5-009:q5')]: R(lastNat((n) => sign(pay(boat[0], n).sub(21000)) <= 0)),
+  [K('l5-009:q6')]: R(lastNat((n) => sign(pay(boat[1], n).sub(21000)) <= 0)),
+  [K('l5-010:q2')]: canteen.P,
+  [K('l5-010:q3')]: R(v(canteenEquip)),
+  [K('l5-010:q4')]: yes(sign(q(600000).sub(canteenTotal)) >= 0),
+  [K('l5-010:q5')]: R(v(q(600000).sub(canteenTotal))),
 };

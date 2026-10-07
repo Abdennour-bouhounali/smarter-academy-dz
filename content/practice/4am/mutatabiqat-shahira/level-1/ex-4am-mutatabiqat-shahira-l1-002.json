@@ -1,9 +1,13 @@
 {
+  "id": "ex-4am-mutatabiqat-shahira-l1-002",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 1,
   "metadata": {
-    "title": "نشاط 2 — مربع فرق بطريقتين",
+    "title": "مربع فرق بطريقتين",
     "estimatedMinutes": 4,
     "tags": [
-      "مربع فرق"
+      "مربع فرق",
+      "حساب"
     ],
     "source": {
       "type": "textbook",
@@ -11,82 +15,140 @@
       "page": 32,
       "section": "أنشطة",
       "number": 2
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من النشاط 2 (الكتاب ص 32): نحسب مربع فرق بطريقتين مختلفتين."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب $9^2 - 2 \\times 9 \\times 3 + 3^2$ .",
+      "step": "01",
+      "sub": "ا",
+      "lead": "احسب كلا من العددين الآتيين، ثم قارن النتيجتين:",
+      "statement": "$(9 - 3)^2$",
       "learningPoints": [
         {
           "code": "4am_mutatabiqat-shahira_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "عدد طبيعي",
       "expectedAnswer": "36",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "هذه هي الطريقة الثانية لحساب $(9 - 3)^2$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب $9^2$ و $2 \\times 9 \\times 3$ و $3^2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "انتبه إلى الإشارات: نطرح الحد الأوسط ونضيف الأخير."
+          "content": "احسب ما بين القوسين أولًا، ثم ربّع النتيجة."
         }
       ],
       "feedback": {
-        "correct": "$81 - 54 + 9 = 36 = 6^2 = (9 - 3)^2$",
-        "incorrect": "الحد الأخير $3^2$ يُضاف ولا يُطرح."
-      }
+        "correct": "$(9 - 3)^2 = 6^2 = 36$ .",
+        "incorrect": "احسب الفرق داخل القوسين أولًا، ثم احسب مربعه."
+      },
+      "solution": {
+        "lines": [
+          "$(9 - 3)^2 = 6^2$"
+        ],
+        "result": "(9 - 3)^2 = 36"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "احسب $(2{,}4 - 3)^2$ .",
+      "step": "01",
+      "sub": "ب",
+      "statement": "$9^2 - 2 \\times 9 \\times 3 + 3^2$",
       "learningPoints": [
         {
           "code": "4am_mutatabiqat-shahira_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (بالفاصلة إن لزم)",
-      "expectedAnswer": "0.36",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "36",
+      "misconceptionSignatures": [
+        {
+          "value": "18",
+          "id": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب الفرق أولًا: إنه عدد سالب."
+          "content": "احسب القوى أولًا، ثم الجداء، ثم أنجز الطرح والجمع من اليسار إلى اليمين."
+        }
+      ],
+      "feedback": {
+        "correct": "$81 - 54 + 9 = 36$ : النتيجتان متساويتان، لأن $(a - b)^2 = a^2 - 2ab + b^2$ .",
+        "incorrect": "احسب كل حد على حدة، ثم أنجز العمليات بالترتيب: الحد الأخير يُضاف."
+      },
+      "solution": {
+        "lines": [
+          "$9^2 - 2 \\times 9 \\times 3 + 3^2 = 81 - 54 + 9$",
+          "النتيجتان متساويتان: $(9 - 3)^2 = 9^2 - 2 \\times 9 \\times 3 + 3^2$"
+        ],
+        "result": "9^2 - 2 \\times 9 \\times 3 + 3^2 = 36"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب $(2{,}4 - 3)^2$ مستعملا المتطابقة $(a - b)^2 = a^2 - 2ab + b^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (بالفاصلة)",
+      "expectedAnswer": "0.36",
+      "misconceptionSignatures": [
+        {
+          "value": "14.76",
+          "id": "MISC-HISAB-DHIHNI-MURABBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب العدد على شكل فرق عدد مدوّر وعدد صغير."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مربع عدد سالب موجب."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ربّع العدد $0{,}6$."
+          "content": "طبّق $(a - b)^2 = a^2 - 2ab + b^2$ ، ولا تنسَ الحد المضاعف $2ab$ ."
         }
       ],
       "feedback": {
-        "correct": "$(2{,}4 - 3)^2 = (-0{,}6)^2 = 0{,}36$ ، وأيضًا $5{,}76 - 14{,}4 + 9 = 0{,}36$.",
-        "incorrect": "مربع عدد سالب ليس سالبًا."
-      }
+        "correct": "$(2{,}4 - 3)^2 = 0{,}36$ .",
+        "incorrect": "اكتب العدد بدلالة عدد مدوّر، ثم طبّق المتطابقة الشهيرة المناسبة حدًّا حدًّا."
+      },
+      "solution": {
+        "lines": [
+          "$(2{,}4 - 3)^2$",
+          "$= (2{,}4)^2 - 2 \\times 2{,}4 \\times 3 + 3^2$",
+          "$= 5{,}76 - 14{,}4 + 9$"
+        ],
+        "result": "(2{,}4 - 3)^2 = 0{,}36"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-mutatabiqat-shahira-l1-002",
-  "lessonCode": "mutatabiqat-shahira",
-  "level": 1
+  ]
 }

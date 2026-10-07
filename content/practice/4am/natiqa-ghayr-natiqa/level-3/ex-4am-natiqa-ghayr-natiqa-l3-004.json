@@ -1,81 +1,171 @@
 {
+  "id": "ex-4am-natiqa-ghayr-natiqa-l3-004",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — فخ الفاصلة",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2013 — التمرين الأول",
+    "estimatedMinutes": 8,
     "tags": [
-      "عدد غير ناطق",
-      "عدد عشري"
+      "عدد ناطق",
+      "عدد غير ناطق"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
-      "modelledOn": "act-2"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
+      "modelledOn": "BEM 2013 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2013",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "الأعداد المقترحة جذور تربيعية لأعداد عشرية أو كسرية."
+    "content": "ليكن العدد الحقيقي $A$ حيث:",
+    "formulas": [
+      "A = (\\sqrt{5} - 1)(\\sqrt{5} + 1)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ عدد من الأعداد الآتية ليس عددًا ناطقًا؟",
+      "step": "01",
+      "statement": "بيّن أن $A$ عدد طبيعي.",
       "learningPoints": [
         {
-          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "code": "4am_natiqa-ghayr-natiqa_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة العدد $A$",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\sqrt{0{,}04}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
-        },
-        {
-          "id": "B",
-          "content": "$\\sqrt{0{,}4}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\sqrt{\\dfrac{4}{9}}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
-        },
-        {
-          "id": "D",
-          "content": "$\\sqrt{0{,}0004}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+          "value": "24",
+          "id": "MISC-TARBI-JIDHR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب كل عدد عشري على شكل كسر عشري."
+          "content": "انشر باستعمال المتطابقة $(a - b)(a + b) = a^2 - b^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $0{,}2^2$ و $0{,}02^2$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل يوجد عدد عشري برقم واحد أو برقمين بعد الفاصلة مربعه 0,4؟ اكتب 0,4 كسرًا مختزلًا."
+          "content": "$(\\sqrt{5})^2 = 5$ ."
         }
       ],
       "feedback": {
-        "correct": "$0{,}04 = 0{,}2^2$ و $0{,}0004 = 0{,}02^2$ و $\\dfrac{4}{9} = \\left(\\dfrac{2}{3}\\right)^2$؛ أما $0{,}4 = \\dfrac{2}{5}$ فليس مربعًا لعدد ناطق.",
-        "incorrect": "لا تحكم من الأرقام وحدها: $0{,}2^2 = 0{,}04$ وليس 0,4."
-      }
+        "correct": "$A = (\\sqrt{5})^2 - 1^2 = 5 - 1 = 4$ .",
+        "incorrect": "انشر الجداء، وتذكّر أن مربع $\\sqrt{5}$ هو 5."
+      },
+      "solution": {
+        "lines": [
+          "$A = (\\sqrt{5} - 1)(\\sqrt{5} + 1)$",
+          "$= (\\sqrt{5})^2 - 1^2$",
+          "$= 5 - 1$"
+        ],
+        "result": "A = 4"
+      },
+      "work": "required",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج أن $\\sqrt{A}$ عدد ناطق.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة العدد $\\sqrt{A}$",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل نتيجة السؤال 01."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما العدد الموجب الذي مربعه هذا العدد؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{A} = \\sqrt{4} = 2$ : عدد ناطق.",
+        "incorrect": "عوّض $A$ بقيمته ثم احسب جذره."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{A} = \\sqrt{4}$ و $2^2 = 4$",
+          "إذن $\\sqrt{A}$ عدد ناطق."
+        ],
+        "result": "\\sqrt{A} = 2"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "هل $\\sqrt{A + 1}$ عدد ناطق؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-KULL-JIDHR"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "answerFormat": "اختر جوابك، ثم قارن تبريرك بالحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $A + 1$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل هذا العدد مربع لعدد ناطق؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$A + 1 = 5$ و 5 ليس مربعًا لعدد ناطق: $\\sqrt{5}$ ليس ناطقًا.",
+        "incorrect": "احسب $A + 1$ ، ثم قارنه بالمربعات التامة."
+      },
+      "solution": {
+        "lines": [
+          "$A + 1 = 4 + 1 = 5$",
+          "$2^2 = 4 < 5 < 9 = 3^2$ : 5 ليس مربعًا لعدد ناطق.",
+          "إذن $\\sqrt{A + 1} = \\sqrt{5}$ ليس عددًا ناطقًا."
+        ]
+      },
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-natiqa-ghayr-natiqa-l3-004",
-  "lessonCode": "natiqa-ghayr-natiqa",
-  "level": 3
+  ]
 }

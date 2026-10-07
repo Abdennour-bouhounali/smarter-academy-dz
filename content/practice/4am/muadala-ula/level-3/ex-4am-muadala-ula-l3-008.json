@@ -3,125 +3,90 @@
   "lessonCode": "muadala-ula",
   "level": 3,
   "metadata": {
-    "title": "تدريب — أيّ خطوة صحيحة؟",
-    "estimatedMinutes": 4,
+    "title": "BEM 2010 — التمرين الأول",
+    "estimatedMinutes": 8,
     "tags": [
-      "معادلات متكافئة"
+      "قانون",
+      "معادلة"
     ],
     "source": {
-      "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_muadala-ula_P2",
-      "modelledOn": "method-equation"
+      "type": "bem",
+      "year": 2010,
+      "part": 1,
+      "exercise": 1
+    },
+    "exam": {
+      "kind": "official",
+      "badge": "BEM 2010",
+      "heading": "التمرين الأول",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "خطوة صحيحة تعطي معادلة لها الحل نفسه."
+    "content": "لحساب المعدل الفصلي $m$ لمادة التربية المدنية نطبق القانون التالي: $m = \\dfrac{2a + 3b}{5}$ حيث $a$ هي علامة التقويم المستمر و $b$ هي علامة الاختبار."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نطرح $4x$ من الطرفين في المعادلة $6x + 1 = 4x - 7$ ، فنحصل على:",
+      "step": "01",
+      "statement": "جد علامة التقويم المستمر $a$ إذا علمت أن علامة الاختبار $b = 12$ و المعدل الفصلي $m = 14$ .",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: علامة التقويم المستمر",
+      "expectedAnswer": "17",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$2x + 1 = 8x - 7$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+          "value": "1/17",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
         },
         {
-          "id": "B",
-          "content": "$2x + 1 = 4x - 7$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
-        },
-        {
-          "id": "C",
-          "content": "$2x + 1 = -7$",
-          "isCorrect": true
+          "value": "53",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العملية تُجرى على الطرفين معًا."
+          "content": "عوّض $b$ و $m$ بقيمتيهما في القانون: تحصل على معادلة مجهولها $a$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب كل طرف بعد العملية، ثم بسّطه."
+          "content": "اضرب الطرفين في 5 لتتخلّص من المقام."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "المعادلة الناتجة لها الحل نفسه الذي للمعادلة الأولى: يمكنك التحقّق بتعويض قيمة لـ $x$."
+          "content": "اعزل $2a$ ثم اقسم على 2."
         }
       ],
       "feedback": {
-        "correct": "نطرح $4x$ من الطرفين: $2x + 1 = -7$ — معادلة لها الحل نفسه.",
-        "incorrect": "العملية نفسها تُجرى على الطرفين، وبالإشارة نفسها."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "نطرح $10$ من الطرفين في المعادلة $3x + 10 = x - 2$ ، فنحصل على:",
-      "learningPoints": [
-        {
-          "code": "4am_muadala-ula_P2",
-          "role": "primary"
-        }
-      ],
-      "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$3x = x - 2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
-        },
-        {
-          "id": "B",
-          "content": "$3x = x - 12$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$3x = x + 8$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "العملية تُجرى على الطرفين معًا."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "اكتب كل طرف بعد العملية، ثم بسّطه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المعادلة الناتجة لها الحل نفسه الذي للمعادلة الأولى: يمكنك التحقّق بتعويض قيمة لـ $x$."
-        }
-      ],
-      "feedback": {
-        "correct": "نطرح $10$ من الطرفين: $3x = x - 12$ — معادلة لها الحل نفسه.",
-        "incorrect": "العملية نفسها تُجرى على الطرفين، وبالإشارة نفسها."
-      }
+        "correct": "$a = \\dfrac{34}{2} = 17$ .",
+        "incorrect": "اضرب كل حد من الطرفين في المقام المشترك، مع وضع البسوط بين قوسين، ثم انشر وحلّ. تحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $m = \\dfrac{2a + 3b}{5}$",
+          "بالتعويض نجد: $14 = \\dfrac{2a + 3 \\times 12}{5}$",
+          "و منه: $14 \\times 5 = 2a + 36$",
+          "أي: $2a = 70 - 36$",
+          "إذا:"
+        ],
+        "result": "a = \\dfrac{34}{2} = 17"
+      },
+      "work": "optional",
+      "timeSeconds": 360
     }
   ]
 }

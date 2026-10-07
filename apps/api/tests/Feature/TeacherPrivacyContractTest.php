@@ -81,6 +81,10 @@ class TeacherPrivacyContractTest extends TestCase
             'dailyChallengeResults' => "/api/v1/teacher/classrooms/{$c}/daily-challenge/results",
             'dailyChallengeDisplay' => "/api/v1/teacher/classrooms/{$c}/daily-challenge/display",
             'dailyChallengeSettings' => "/api/v1/teacher/classrooms/{$c}/daily-challenge/settings",
+            // « تصحيح الإجابات » (photos de copie, 2026-10-06) : la file et son compteur.
+            'reviews' => '/api/v1/teacher/reviews',
+            'reviewsOfClass' => "/api/v1/teacher/reviews?classroom={$c}",
+            'reviewsCount' => '/api/v1/teacher/reviews/count',
         ];
     }
 
@@ -159,11 +163,15 @@ class TeacherPrivacyContractTest extends TestCase
         $token = $this->tokenOf($intruder);
 
         foreach ($this->teacherReads($s) as $label => $url) {
-            if ($label === 'dashboard') {
+            // Lectures globales de l'enseignant (pas d'identifiant de classe) :
+            // l'intrus n'y trouve que ses propres élèves — ici, personne.
+            if (in_array($label, ['dashboard', 'reviews', 'reviewsCount'], true)) {
                 continue;
             }
             $this->withToken($token)->getJson($url)->assertForbidden();
         }
+        $this->withToken($token)->getJson('/api/v1/teacher/reviews')->assertOk()->assertJsonPath('total', 0);
+        $this->withToken($token)->getJson('/api/v1/teacher/reviews/count')->assertOk()->assertJsonPath('pending', 0);
 
         // Par SA propre classe, un élève qui n'y est pas reste introuvable.
         $this->withToken($token)->getJson("/api/v1/teacher/classrooms/{$own->id}/students/{$s['student']->id}/progress")->assertNotFound();

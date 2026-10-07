@@ -109,7 +109,7 @@ async function solveProblemModule(page, mod, problem, prefix) {
   await page.goto(`${LESSON}/${mod.slug}`, { waitUntil: 'networkidle' });
   check(`M${n}: brief carries the whole statement`, (await page.locator('[data-problem-statement]').innerText()).replace(/\s+/g, ' ').length > 40);
   if (problem.figure || problem.visual || problem.table) {
-    check(`M${n}: the brief draws the statement support`, (await page.locator('[data-problem-statement]').locator('[data-geo-figure], [data-problem-visual] svg, [data-problem-table]').count()) >= 1);
+    check(`M${n}: the brief draws the statement support`, (await page.locator('[data-problem-statement]').locator('[data-geo-figure], [data-space-figure], [data-problem-visual] svg, [data-problem-table]').count()) >= 1);
   }
   for (let p = 0; p < problem.parts.length; p++) {
     const part = page.locator(`[data-problem-part="${p + 1}"]`);
@@ -146,8 +146,8 @@ async function solveProblemModule(page, mod, problem, prefix) {
   check('index: the card links to مسألة 1', (await card.locator('a').getAttribute('href'))?.endsWith(`/${problemModules[0].slug}`));
   const lp = LESSON_CONFIG.lessonProblem;
   if (lp.figure || lp.visual || lp.table) {
-    await card.locator('[data-geo-figure], [data-problem-visual], [data-problem-table]').first().waitFor({ timeout: 10000 });
-    check('index: the card draws the statement support (figure / graph / table)', (await card.locator('[data-geo-figure], [data-problem-visual] svg, [data-problem-table]').count()) >= 1);
+    await card.locator('[data-geo-figure], [data-space-figure], [data-problem-visual], [data-problem-table]').first().waitFor({ timeout: 10000 });
+    check('index: the card draws the statement support (figure / graph / table)', (await card.locator('[data-geo-figure], [data-space-figure], [data-problem-visual] svg, [data-problem-table]').count()) >= 1);
   }
   await card.screenshot({ path: `${SHOT_DIR}${SHOT}-index-card.png` });
 

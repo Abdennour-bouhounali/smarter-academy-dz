@@ -3,72 +3,209 @@
   "lessonCode": "tarrid-khatti",
   "level": 4,
   "metadata": {
-    "title": "تدريب — كراء دراجة",
-    "estimatedMinutes": 3,
+    "title": "كراء دراجة هوائية",
+    "estimatedMinutes": 9,
     "tags": [
-      "وضعية غير تناسبية"
+      "وضعية غير تناسبية",
+      "مقارنة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tarrid-khatti_P1",
-      "modelledOn": "act-4"
+      "modelledOn": "act-4",
+      "adaptedFrom": "ex-4am-tarrid-khatti-l4-007"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "كراء دراجة: ساعة بـ 150DA، ساعتان بـ 250DA، ثلاث ساعات بـ 350DA."
+    "content": "يؤجّر محل دراجات هوائية حسب الجدول الآتي:",
+    "table": {
+      "head": [
+        "المدة (h)",
+        "1",
+        "2",
+        "3"
+      ],
+      "rows": [
+        [
+          "الثمن (DA)",
+          "160",
+          "270",
+          "380"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل الثمن متناسب مع المدة؟",
+      "step": "01",
+      "statement": "هل الثمن متناسب مع المدة؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_tarrid-khatti_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 4,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "نعم، لأن الثمن يزيد بـ 100DA كل ساعة",
+          "content": "نعم",
           "isCorrect": false,
           "misconceptionId": "MISC-TANASUB-FARQ-THABIT"
         },
         {
           "id": "B",
-          "content": "لا: $\\dfrac{150}{1} \\neq \\dfrac{250}{2}$",
+          "content": "لا",
           "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "نعم، والمعامل 150",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب حاصل قسمة الثمن على المدة."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "150 ، 125 ، … "
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حاصل القسمة ثابت؟"
+          "content": "احسب حاصل قسمة الثمن على المدة في كل عمود."
         }
       ],
       "feedback": {
-        "correct": "$150 \\neq 125$ : ليست تناسبية (الثمن $100x + 50$ ).",
-        "incorrect": "فرق ثابت لا يعني تناسبًا."
-      }
+        "correct": "$\\dfrac{160}{1} \\neq \\dfrac{270}{2}$ : الثمن غير متناسب مع المدة.",
+        "incorrect": "زيادة الثمن بالمقدار نفسه كل ساعة لا تكفي: قارن حواصل القسمة."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{160}{1} = 160$ و $\\dfrac{270}{2} = 135$",
+          "$160 \\neq 135$ : الثمن غير متناسب مع المدة."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "يقترح محل آخر كراء الدراجة بثمن متناسب مع المدة: 130DA للساعة. نسمّي $g(x)$ الثمن (بـ DA) لـ $x$ ساعة في هذا المحل. عبّر عن $g(x)$ بدلالة $x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "130",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الثمن متناسب مع المدة: $g(x) = ax$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(x) = 130x$ .",
+        "incorrect": "المعامل هو ثمن ساعة واحدة."
+      },
+      "solution": {
+        "lines": [
+          "$g(x) = 130x$"
+        ],
+        "result": "g(x) = 130x"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "sub": "ا",
+      "statement": "لكراء دراجة مدة 3 ساعات، أيّ المحلين أرخص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "المحل الأول",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "المحل الثاني",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $g(3)$ وقارنه بثمن 3 ساعات في الجدول."
+        }
+      ],
+      "feedback": {
+        "correct": "$380 < g(3) = 390$ .",
+        "incorrect": "احسب ثمن 3 ساعات في المحلين قبل المقارنة."
+      },
+      "solution": {
+        "lines": [
+          "$g(3) = 130 \\times 3 = 390$",
+          "في المحل الأول: 380DA.",
+          "$380 < 390$ : المحل الأول أرخص لمدة 3 ساعات."
+        ],
+        "result": "المحل الأول"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "sub": "ب",
+      "statement": "ما الفرق بين الثمنين من أجل 3 ساعات؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الفرق بـ DA",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الفرق بين ثمني 3 ساعات في المحلين."
+        }
+      ],
+      "feedback": {
+        "correct": "$390 - 380 = 10$ DA.",
+        "incorrect": "اطرح الثمن الأصغر من الأكبر."
+      },
+      "solution": {
+        "lines": [
+          "$390 - 380 = 10$",
+          "الفرق 10DA."
+        ],
+        "result": "10DA"
+      },
+      "timeSeconds": 60
     }
   ]
 }

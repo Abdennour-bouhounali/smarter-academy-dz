@@ -3,8 +3,8 @@
   "lessonCode": "tarrid-mushkila",
   "level": 1,
   "metadata": {
-    "title": "تدريب — عمر بعد x سنة",
-    "estimatedMinutes": 2,
+    "title": "عمر أحمد وعمر أبيه",
+    "estimatedMinutes": 4,
     "tags": [
       "ترييض",
       "أعمار"
@@ -14,111 +14,107 @@
       "reason": "practice_generation",
       "learningPoint": "4am_tarrid-mushkila_P1",
       "modelledOn": "method-modelling"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "عمر أحمد اليوم 12 سنة، وعمر أبيه 40 سنة. نسمّي $x$ عدد السنوات التي تمرّ ابتداءً من اليوم."
+    "content": "عمر أحمد اليوم 12 سنة، و عمر أبيه 40 سنة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "كم يصبح عمر أحمد بعد $x$ سنة؟",
+      "step": "01",
+      "statement": "بعد كم سنة يصبح عمر الأب ضعف عمر أحمد؟",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد السنوات",
+      "expectedAnswer": "16",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$12x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-TARJAMA"
-        },
-        {
-          "id": "B",
-          "content": "$12 + x$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x - 12$",
-          "isCorrect": false
+          "value": "8",
+          "id": "MISC-TARRID-MAJHUL-WAHID"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "بعد سنة واحدة كم يصبح عمره؟"
+          "content": "سمِّ $x$ عدد السنوات: كل واحد منهما يكبر بـ $x$ سنة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كل سنة تضيف سنة إلى العمر."
+          "content": "بعد $x$ سنة: عمر الأب $40 + x$ وعمر أحمد $12 + x$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "بعد $x$ سنة نضيف $x$ إلى العمر الحالي."
+          "content": "اكتب «عمر الأب = ضعف عمر أحمد» ثم حلّ المعادلة."
         }
       ],
       "feedback": {
-        "correct": "بعد $x$ سنة يكبر أحمد بـ $x$ سنة: $12 + x$ .",
-        "incorrect": "جرّب $x = 1$ : هل يصبح عمر أحمد $12 \\times 1$ ؟"
-      }
+        "correct": "$40 + x = 2(12 + x)$ تعطي $x = 16$ : بعد 16 سنة.",
+        "incorrect": "لا تنسَ أن الأب يكبر هو أيضًا بـ $x$ سنة، وأن «الضعف» يشمل عمر أحمد كله بعد $x$ سنة."
+      },
+      "solution": {
+        "lines": [
+          "نسمّي $x$ عدد السنوات.",
+          "بعد $x$ سنة يصبح عمر الأب $40 + x$ وعمر أحمد $12 + x$ .",
+          "المعادلة: $40 + x = 2(12 + x)$",
+          "$40 + x = 24 + 2x$",
+          "$40 - 24 = 2x - x$",
+          "$x = 16$",
+          "إذن بعد 16 سنة يصبح عمر الأب ضعف عمر أحمد."
+        ],
+        "result": "x = 16"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "كم يصبح الفرق بين عمر الأب وعمر أحمد بعد $x$ سنة؟",
+      "step": "02",
+      "statement": "كم يكون عمر أحمد حينئذ؟",
       "learningPoints": [
         {
-          "code": "4am_tarrid-mushkila_P1",
+          "code": "4am_tarrid-mushkila_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$28 + x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
-        },
-        {
-          "id": "B",
-          "content": "$28$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$28 - x$",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: العمر بالسنوات",
+      "expectedAnswer": "28",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب الفرق اليوم."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "بعد $x$ سنة يكبر الاثنان بـ $x$ سنة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اطرح $(12 + x)$ من $(40 + x)$ ."
+          "content": "عوّض $x$ بالقيمة التي وجدتها في عمر أحمد بعد $x$ سنة."
         }
       ],
       "feedback": {
-        "correct": "$(40 + x) - (12 + x) = 28$ : الفرق لا يتغيّر.",
-        "incorrect": "الأب والابن يكبران معًا: ماذا يحدث للفرق؟"
-      }
+        "correct": "عمر أحمد حينئذ 28 سنة، وعمر أبيه 56 سنة، وهو فعلًا ضعفه.",
+        "incorrect": "أضف عدد السنوات إلى عمر أحمد اليوم."
+      },
+      "solution": {
+        "lines": [
+          "$12 + 16 = 28$",
+          "وعمر الأب حينئذ $40 + 16 = 56$ و $56 = 2 \\times 28$ ."
+        ],
+        "result": "28"
+      },
+      "timeSeconds": 90
     }
   ]
 }

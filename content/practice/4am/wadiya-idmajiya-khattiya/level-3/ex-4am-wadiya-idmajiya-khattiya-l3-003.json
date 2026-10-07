@@ -3,117 +3,146 @@
   "lessonCode": "wadiya-idmajiya-khattiya",
   "level": 3,
   "metadata": {
-    "title": "الدراجة الكهربائية على الكورنيش",
-    "estimatedMinutes": 3,
+    "title": "كراء سكوتر كهربائي على الكورنيش",
+    "estimatedMinutes": 7,
     "tags": [
       "دالة خطية",
-      "تدوير"
+      "تفسير النتيجة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
-      "modelledOn": "situation"
+      "modelledOn": "situation",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-khattiya-l3-003"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "كراء دراجة كهربائية (سكوتر) على الكورنيش يكلّف $15$ DA للدقيقة الواحدة، دون أي مبلغ ثابت. نسمّي $x$ عدد الدقائق."
+    "content": "كراء سكوتر كهربائي على كورنيش وهران يكلّف 15DA للدقيقة الواحدة، دون أي مبلغ ثابت. نسمّي $x$ عدد الدقائق و $P(x)$ المبلغ المدفوع (بـ DA)."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المبلغ المدفوع $P(x)$ هو:",
+      "step": "01",
+      "statement": "عبّر عن $P(x)$ بدلالة $x$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$P(x) = 15x$ ، دالة خطية",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$P(x) = x + 15$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-AFFINE"
-        },
-        {
-          "id": "C",
-          "content": "$P(x) = \\dfrac{x}{15}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
-        }
-      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب المعامل $a$ فقط في $P(x) = ax$",
+      "expectedAnswer": "15",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "كم يدفع في دقيقتين؟ في 3 دقائق؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "المبلغ متناسب مع عدد الدقائق."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المعامل هو سعر الدقيقة."
+          "content": "لا يوجد مبلغ ثابت: المبلغ متناسب مع عدد الدقائق."
         }
       ],
       "feedback": {
-        "correct": "كل دقيقة بـ 15 DA: $P(x) = 15x$.",
-        "incorrect": "المبلغ يتضاعف حين يتضاعف عدد الدقائق: نضرب."
+        "correct": "$P(x) = 15x$ .",
+        "incorrect": "المعامل هو ثمن الدقيقة الواحدة."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "$P(x) = 15x$ (دالة خطية)."
+        ],
+        "result": "P(x) = 15x"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "معك $500$ DA. ما أكبر عدد من الدقائق الكاملة يمكنك كراؤها؟",
+      "step": "02",
+      "statement": "مع سمير 500DA. ما أكبر عدد من الدقائق الكاملة يمكنه كراؤها؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P3",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "33",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "حل $15x \\leq 500$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب $500 \\div 15$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "عدد الدقائق الكاملة عدد طبيعي لا يتجاوز الحد."
-        }
-      ],
-      "feedback": {
-        "correct": "$\\dfrac{500}{15} \\approx 33{,}3$ ، و $15 \\times 33 = 495 \\leq 500$ بينما $15 \\times 34 = 510$.",
-        "incorrect": "دوّر نحو الأسفل حتى لا يتجاوز المبلغ ما معك."
-      },
+      "difficulty": 3,
       "cognitiveDemand": "apply",
-      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد الدقائق",
+      "expectedAnswer": "33",
       "misconceptionSignatures": [
         {
           "value": "34",
           "id": "MISC-TARRID-TAFSIR"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ $15x \\leq 500$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد الدقائق عدد طبيعي: خذ أكبر عدد طبيعي لا يتجاوز الحاصل."
+        }
+      ],
+      "feedback": {
+        "correct": "$500 \\div 15 \\approx 33{,}3$ : أكبر عدد من الدقائق الكاملة 33.",
+        "incorrect": "لا يمكن تدوير الحاصل إلى الأعلى: 34 دقيقة تتجاوز 500DA."
+      },
+      "solution": {
+        "lines": [
+          "$15x \\leq 500$ معناه $x \\leq \\dfrac{500}{15} \\approx 33{,}3$",
+          "أكبر عدد طبيعي يحقق ذلك هو 33.",
+          "التحقق: $15 \\times 33 = 495 \\leq 500$ و $15 \\times 34 = 510 > 500$ ."
+        ],
+        "result": "33 دقيقة"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "كم يبقى مع سمير بعد ذلك؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $P(33)$ ثم اطرحه من 500."
+        }
+      ],
+      "feedback": {
+        "correct": "$500 - 495 = 5$ DA.",
+        "incorrect": "المتبقي = 500 − ثمن الدقائق المكتراة."
+      },
+      "solution": {
+        "lines": [
+          "$P(33) = 15 \\times 33 = 495$",
+          "$500 - 495 = 5$ ، يبقى مع سمير 5DA."
+        ],
+        "result": "5DA"
+      },
+      "timeSeconds": 60
     }
   ]
 }

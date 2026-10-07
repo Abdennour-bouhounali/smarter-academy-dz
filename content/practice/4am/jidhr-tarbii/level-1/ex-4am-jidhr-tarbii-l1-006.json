@@ -1,104 +1,115 @@
 {
+  "id": "ex-4am-jidhr-tarbii-l1-006",
+  "lessonCode": "jidhr-tarbii",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — جذر مربع تام",
-    "estimatedMinutes": 2,
+    "title": "جذر مربع تام",
+    "estimatedMinutes": 3,
     "tags": [
-      "حساب",
       "الرمز √"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_jidhr-tarbii_P2",
-      "modelledOn": "ex-3"
+      "modelledOn": "ex-3",
+      "adaptedFrom": "ex-4am-jidhr-tarbii-l1-006"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "احسب ذهنيا."
+    "content": "اكتب كل عدد مما يلي دون استعمال الرمز $\\sqrt{\\;}$:"
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$\\sqrt{64} = \\ldots$",
+      "step": "01",
+      "sub": "ا",
+      "statement": "$\\sqrt{64}$",
       "learningPoints": [
         {
           "code": "4am_jidhr-tarbii_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "8",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "$\\sqrt{64}$ هو العدد الموجب الذي مربعه 64."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "فكّر في جدول الضرب."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "أي عدد مضروب في نفسه يعطي 64؟"
-        }
-      ],
-      "feedback": {
-        "correct": "8 عدد موجب و $8^2 = 64$، إذن $\\sqrt{64} = 8$.",
-        "incorrect": "ابحث عن العدد الموجب الذي مربعه 64، لا عن نصف 64."
-      },
       "misconceptionSignatures": [
         {
           "value": "32",
           "id": "MISC-JIDHR-NISF"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما العدد الموجب الذي مربعه 64؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$8^2 = 64$: $\\sqrt{64} = 8$.",
+        "incorrect": "ابحث عن العدد الموجب الذي مربعه 64، لا نصف 64."
+      },
+      "solution": {
+        "lines": [
+          "8 موجب و $8^2 = 64$"
+        ],
+        "result": "\\sqrt{64} = 8"
+      },
+      "timeSeconds": 45
     },
     {
       "id": "q2",
-      "statement": "$\\sqrt{121} = \\ldots$",
+      "step": "01",
+      "sub": "ب",
+      "statement": "$\\sqrt{121}$",
       "learningPoints": [
         {
           "code": "4am_jidhr-tarbii_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "11",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "العدد بين 10 و 20 لأن $10^2 = 100$ و $20^2 = 400$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "رقم آحاد 121 هو 1."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "جرّب مربع أصغر عدد بعد 10."
-        }
-      ],
-      "feedback": {
-        "correct": "11 عدد موجب و $11^2 = 121$، إذن $\\sqrt{121} = 11$.",
-        "incorrect": "ربّع جوابك وقارنه بالعدد 121."
-      },
       "misconceptionSignatures": [
         {
           "value": "60.5",
           "id": "MISC-JIDHR-NISF"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما العدد الموجب الذي مربعه 121؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جرّب $10^2$ ثم العدد الموالي."
+        }
+      ],
+      "feedback": {
+        "correct": "$11^2 = 121$: $\\sqrt{121} = 11$.",
+        "incorrect": "ابحث عن العدد الموجب الذي مربعه 121."
+      },
+      "solution": {
+        "lines": [
+          "11 موجب و $11^2 = 121$"
+        ],
+        "result": "\\sqrt{121} = 11"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-jidhr-tarbii-l1-006",
-  "lessonCode": "jidhr-tarbii",
-  "level": 1
+  ]
 }

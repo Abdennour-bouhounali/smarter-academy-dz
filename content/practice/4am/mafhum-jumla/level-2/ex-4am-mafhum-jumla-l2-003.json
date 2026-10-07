@@ -3,11 +3,11 @@
   "lessonCode": "mafhum-jumla",
   "level": 2,
   "metadata": {
-    "title": "معارف 2 — ثلاث ثنائيات",
-    "estimatedMinutes": 3,
+    "title": "ثلاث ثنائيات وجملة",
+    "estimatedMinutes": 5,
     "tags": [
-      "ثنائية",
-      "ترتيب"
+      "جملة",
+      "ثنائية"
     ],
     "source": {
       "type": "textbook",
@@ -15,21 +15,34 @@
       "page": 58,
       "section": "معارف",
       "number": 2
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 58): نعتبر الجملة $\\begin{cases} x - y = 2 \\\\ 2x - 5y = 4 \\end{cases}$ ."
+    "content": "نعتبر الجملة:",
+    "formulas": [
+      "\\begin{cases} x - y = 2 \\\\ 2x - 5y = 4 \\end{cases}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل الثنائية $(2 ; 0)$ حل للجملة؟",
+      "step": "01",
+      "sub": "ا",
+      "lead": "بيّن إن كانت كل ثنائية حلا لهذه الجملة:",
+      "statement": "هل الثنائية $(2 ; 0)$ حل لهذه الجملة؟",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
@@ -47,33 +60,40 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x = 2$ و $y = 0$ ."
+          "content": "عوّض $x$ بـ $2$ و $y$ بـ $0$ في كل معادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$2 - 0$ ثم $2 \\times 2 - 5 \\times 0$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل تجد 2 ثم 4؟"
+          "content": "الثنائية حل للجملة إذا حققت المعادلتين في آن واحد."
         }
       ],
       "feedback": {
-        "correct": "$2 - 0 = 2$ و $4 - 0 = 4$ : حل للجملة.",
-        "incorrect": "عوّض في المعادلتين."
-      }
+        "correct": "$2 - 0 = 2$ ؛ $2 \\times 2 - 5 \\times 0 = 4$ : الثنائية حل للجملة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض في المعادلتين معا وقارن كل نتيجة بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $2$ و $y$ بـ $0$ :",
+          "$2 - 0 = 2$",
+          "$2 \\times 2 - 5 \\times 0 = 4$",
+          "ومنه الثنائية $(2 ; 0)$ حل للجملة."
+        ]
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "هل الثنائية $(3 ; 1)$ حل للجملة؟",
+      "step": "01",
+      "sub": "ب",
+      "statement": "هل الثنائية $(3 ; 1)$ حل لهذه الجملة؟",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
@@ -92,33 +112,43 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x = 3$ و $y = 1$ ."
+          "content": "عوّض $x$ بـ $3$ و $y$ بـ $1$ في كل معادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$3 - 1$ ثم $6 - 5$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الحل يحقّق المعادلتين معًا."
+          "content": "الثنائية حل للجملة إذا حققت المعادلتين في آن واحد."
         }
       ],
       "feedback": {
-        "correct": "$3 - 1 = 2$ لكن $6 - 5 = 1 \\neq 4$ : ليست حلا.",
-        "incorrect": "المعادلة الأولى وحدها لا تكفي."
-      }
+        "correct": "$3 - 1 = 2$ ؛ $2 \\times 3 - 5 \\times 1 = 1 \\neq 4$ : الثنائية ليست حلا للجملة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض في المعادلتين معا وقارن كل نتيجة بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $3$ و $y$ بـ $1$ :",
+          "$3 - 1 = 2$",
+          "$2 \\times 3 - 5 \\times 1 = 1 \\neq 4$",
+          "ومنه الثنائية $(3 ; 1)$ ليست حلا للجملة (لا تحقق المعادلتين معا)."
+        ]
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "هل الثنائية $(0 ; 2)$ حل للجملة؟",
+      "step": "02",
+      "statement": "هل الثنائية $(0 ; 2)$ حل لهذه الجملة؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
@@ -137,23 +167,27 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "في $(0 ; 2)$ : $x = 0$ و $y = 2$ ."
+          "content": "عوّض $x$ بـ $0$ و $y$ بـ $2$ في كل معادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$0 - 2 = -2$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الترتيب في الثنائية مهم."
+          "content": "الثنائية حل للجملة إذا حققت المعادلتين في آن واحد."
         }
       ],
       "feedback": {
-        "correct": "$0 - 2 = -2 \\neq 2$ : ليست حلا، رغم أنّ $(2 ; 0)$ حل.",
-        "incorrect": "قلب الثنائية يعطي ثنائية أخرى."
-      }
+        "correct": "$0 - 2 = -2 \\neq 2$ ؛ $2 \\times 0 - 5 \\times 2 = -10 \\neq 4$ : الثنائية ليست حلا للجملة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض في المعادلتين معا وقارن كل نتيجة بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $0$ و $y$ بـ $2$ :",
+          "$0 - 2 = -2 \\neq 2$",
+          "$2 \\times 0 - 5 \\times 2 = -10 \\neq 4$",
+          "ومنه الثنائية $(0 ; 2)$ ليست حلا للجملة."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

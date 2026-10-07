@@ -3,90 +3,140 @@
   "lessonCode": "tawzif-khawass-judhur",
   "level": 2,
   "metadata": {
-    "title": "تدريب — مجموع جذرين بعد التبسيط",
-    "estimatedMinutes": 4,
+    "title": "مجموع جذرين بعد التبسيط",
+    "estimatedMinutes": 5,
     "tags": [
-      "تبسيط",
-      "خاصية توزيعية"
+      "a√b",
+      "الخاصية التوزيعية"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tawzif-khawass-judhur_P2",
       "modelledOn": "method-simplify"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "كل عبارة تُكتب على الشكل $k\\sqrt{b}$ حيث $k$ عدد صحيح."
+    "content": "ليكن العددان A و B حيث:",
+    "formulas": [
+      "A = \\sqrt{12} + \\sqrt{27}",
+      "B = \\sqrt{50} - \\sqrt{8}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نكتب $\\sqrt{12} + \\sqrt{27} = k\\sqrt{3}$. ما قيمة $k$؟",
+      "step": "01",
+      "statement": "اكتب العدد A على الشكل $a\\sqrt{3}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
       "expectedAnswer": "5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الجذران ليسا متشابهين في الظاهر."
+          "content": "اكتب كل جذر على الشكل $x\\sqrt{3}$: ابحث عن أكبر مربع تامّ يقسم العدد الذي تحت الجذر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب $\\sqrt{12}$ و $\\sqrt{27}$ على الشكل $a\\sqrt{3}$."
+          "content": "استعمل $\\sqrt{m \\times 3} = \\sqrt{m} \\times \\sqrt{3}$ ثم احسب جذر المربع التامّ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم طبّق الخاصية التوزيعية."
+          "content": "اجمع المعاملات بإشاراتها بالخاصية التوزيعية: $x\\sqrt{3} + y\\sqrt{3} = (x + y)\\sqrt{3}$."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{12} + \\sqrt{27} = 2\\sqrt{3} + 3\\sqrt{3}$.",
-        "incorrect": "لا نجمع ما تحت الجذرين: نبسّط كل جذر أولًا."
-      }
+        "correct": "$A = 2\\sqrt{3} + 3\\sqrt{3} = 5\\sqrt{3}$.",
+        "incorrect": "الجذر لا يتوزّع على الجمع: بسّط كل جذر على حدة ثم اجمع المعاملين."
+      },
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{12} + \\sqrt{27}$",
+          "$A = \\sqrt{4} \\times \\sqrt{3} + \\sqrt{9} \\times \\sqrt{3}$",
+          "$A = 2\\sqrt{3} + 3\\sqrt{3}$",
+          "$A = (2 + 3)\\sqrt{3}$"
+        ],
+        "result": "A = 5\\sqrt{3}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "نكتب $\\sqrt{50} - \\sqrt{8} = k\\sqrt{2}$. ما قيمة $k$؟",
+      "step": "02",
+      "statement": "اكتب العدد B على الشكل $a\\sqrt{2}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
       "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "7",
+          "id": "MISC-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الجذران ليسا متشابهين في الظاهر."
+          "content": "اكتب كل جذر على الشكل $x\\sqrt{2}$: ابحث عن أكبر مربع تامّ يقسم العدد الذي تحت الجذر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب $\\sqrt{50}$ و $\\sqrt{8}$ على الشكل $a\\sqrt{2}$."
+          "content": "استعمل $\\sqrt{m \\times 2} = \\sqrt{m} \\times \\sqrt{2}$ ثم احسب جذر المربع التامّ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثم احسب فرق المعاملين."
+          "content": "اجمع المعاملات بإشاراتها بالخاصية التوزيعية: $x\\sqrt{2} + y\\sqrt{2} = (x + y)\\sqrt{2}$."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{50} - \\sqrt{8} = 5\\sqrt{2} - 2\\sqrt{2}$.",
-        "incorrect": "لا نطرح ما تحت الجذرين: نبسّط كل جذر أولًا."
-      }
+        "correct": "$B = 5\\sqrt{2} - 2\\sqrt{2} = 3\\sqrt{2}$.",
+        "incorrect": "الجذر لا يتوزّع على الطرح: بسّط كل جذر على حدة ثم اطرح المعاملين."
+      },
+      "solution": {
+        "lines": [
+          "$B = \\sqrt{50} - \\sqrt{8}$",
+          "$B = \\sqrt{25} \\times \\sqrt{2} - \\sqrt{4} \\times \\sqrt{2}$",
+          "$B = 5\\sqrt{2} - 2\\sqrt{2}$",
+          "$B = (5 - 2)\\sqrt{2}$"
+        ],
+        "result": "B = 3\\sqrt{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

@@ -3,11 +3,11 @@
   "lessonCode": "hall-jabri",
   "level": 1,
   "metadata": {
-    "title": "تمرين 23 — معاملان متعاكسان",
-    "estimatedMinutes": 4,
+    "title": "معاملان متعاكسان",
+    "estimatedMinutes": 5,
     "tags": [
       "الجمع",
-      "أتعمّق"
+      "اختيار الطريقة"
     ],
     "source": {
       "type": "textbook",
@@ -15,101 +15,82 @@
       "page": 63,
       "section": "أتعمّق",
       "number": 23
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 63): حل الجملة باستعمال طريقة من اختيارك. $\\begin{cases} 2x + y = 1 \\\\ -2x + 4y = -6 \\end{cases}$"
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "بجمع المعادلتين طرفًا لطرف نجد:",
+      "step": "01",
+      "statement": "حل الجملة التالية باستعمال طريقة من اختيارك: $\\begin{cases} 2x + y = 1 \\\\ -2x + 4y = -6 \\end{cases}$",
       "learningPoints": [
         {
-          "code": "4am_hall-jabri_P2",
+          "code": "4am_hall-jabri_P3",
           "role": "primary"
-        }
-      ],
-      "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$5y = -5$",
-          "isCorrect": true
         },
-        {
-          "id": "B",
-          "content": "$3y = -5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
-        },
-        {
-          "id": "C",
-          "content": "$5y = -7$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
-        }
-      ],
-      "feedback": {
-        "correct": "$2x$ و $-2x$ يُلغيان: $y + 4y = 1 - 6$ أي $5y = -5$ .",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "حل الجملة:",
-      "learningPoints": [
         {
           "code": "4am_hall-jabri_P2",
-          "role": "primary"
+          "role": "secondary"
         }
       ],
-      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": {
         "x": "1",
         "y": "-1"
       },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "-1",
+            "y": "1"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+          "content": "انظر إلى معاملات المجهولين: هل يوجد معامل يساوي $1$ أو $-1$ ؟ هل يوجد معاملان متعاكسان أو متساويان؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+          "content": "مجهول معامله $1$ أو مجهول معبّر عنه بدلالة الآخر: التعويض. معاملان متعاكسان أو يصيران كذلك بضرب بسيط: الجمع."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+          "content": "بعد إيجاد المجهول الأول عوّض قيمته لتجد الثاني، ثم تحقق في المعادلتين."
         }
       ],
       "feedback": {
-        "correct": "$y = -1$ ثم $2x - 1 = 1$ أي $x = 1$ : $(1 ; -1)$ .",
-        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
-      }
+        "correct": "الثنائية $(1 ; -1)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "بجمع المعادلتين طرفا لطرف نجد: $5y = -5$",
+          "ومنه $y = -1$",
+          "نعوّض $y$ بـ $-1$ في المعادلة (1): $2x + \\left(-1\\right) = 1$",
+          "$2x = 2$",
+          "ومنه $x = 1$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(1 ; -1)"
+      },
+      "work": "optional",
+      "timeSeconds": 300
     }
   ]
 }

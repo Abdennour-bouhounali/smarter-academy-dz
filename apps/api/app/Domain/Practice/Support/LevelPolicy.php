@@ -31,7 +31,11 @@ class LevelPolicy
      * @param  array<int, int>  $completedPerLevel  niveau → exercices terminés par l'élève
      * @return array<int, array{level: int, exerciseCount: int, completedCount: int, unlocked: bool, reason: ?string}>
      */
-    public static function levels(array $exerciseCounts, array $completedPerLevel): array
+    /**
+     * @param  bool  $allOpen  réglage de l'élève « les cinq niveaux ouverts » (StudentSettingsService,
+     *                         2026-10-06) : chaque niveau qui a des exercices s'ouvre d'emblée.
+     */
+    public static function levels(array $exerciseCounts, array $completedPerLevel, bool $allOpen = false): array
     {
         $levels = array_keys($exerciseCounts);
         sort($levels);
@@ -46,7 +50,7 @@ class LevelPolicy
 
                 continue;
             }
-            if ($index === 0) {
+            if ($index === 0 || $allOpen) {
                 $out[] = self::row($level, $available, $done, true, null);
 
                 continue;

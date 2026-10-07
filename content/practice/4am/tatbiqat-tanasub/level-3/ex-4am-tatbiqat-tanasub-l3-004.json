@@ -4,25 +4,84 @@
   "level": 3,
   "metadata": {
     "title": "تمرين 3 — السعر قبل التخفيض",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 5,
     "tags": [
-      "السعر قبل التغيّر"
+      "تخفيض",
+      "السعر الأول"
     ],
     "source": {
       "type": "textbook",
       "elementId": "ex-3",
       "page": 72,
       "section": "أوظّف تعلّماتي",
-      "number": 3
+      "number": 3,
+      "adaptedFrom": "ex-4am-tatbiqat-tanasub-l3-004"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 72): خفّض تاجر سعر منتوج بـ 5%. إذا كان سعر المنتوج هو 1900DA بعد التخفيض فما هو سعره قبل التخفيض؟"
+    "content": "خفّض تاجر أسعار منتوجاته بنسبة 5%."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "السعر قبل التخفيض (بالدينار):",
+      "step": "01",
+      "statement": "احسب سعر منتوج بعد التخفيض إذا كان سعره قبل التخفيض 2600DA .",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "2470",
+      "misconceptionSignatures": [
+        {
+          "value": "130",
+          "id": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        },
+        {
+          "value": "2595",
+          "id": "MISC-NISBA-JAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التخفيض بـ 5% ضرب في $1 - \\dfrac{5}{100}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $2600 \\times 0{,}95$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$2600 \\times 0{,}95 = 2470$ ، أي 2470DA .",
+        "incorrect": "اضرب السعر الأول في المضاعف، ولا تطرح العدد 5 ."
+      },
+      "solution": {
+        "lines": [
+          "$2600 \\times \\left(1 - \\dfrac{5}{100}\\right) = 2600 \\times 0{,}95$",
+          "$= 2470$"
+        ],
+        "result": "2470DA"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "سعر منتوج آخر بعد التخفيض 1900DA . ما هو سعره قبل التخفيض؟",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P3",
@@ -30,30 +89,46 @@
         }
       ],
       "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
       "expectedAnswer": "2000",
+      "misconceptionSignatures": [
+        {
+          "value": "1995",
+          "id": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        },
+        {
+          "value": "1805",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المقدار المعطى هو المقدار بعد التغيّر، والمطلوب المقدار قبله."
+          "content": "نسمّي $x$ السعر قبل التخفيض: $0{,}95x = 1900$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب العلاقة $y = kx$ بالمضاعف $k$ ، ثم عوّض $y$ بقيمته."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ المعادلة $kx = y$ : $x = \\dfrac{y}{k}$ ، ثم تحقّق بالضرب."
+          "content": "حلّ المعادلة بقسمة الطرفين على $0{,}95$ ."
         }
       ],
       "feedback": {
-        "correct": "$0{,}95x = 1900$ ، ومنه $x = 2000$ . للتحقق: $2000 \\times 0{,}95 = 1900$ .",
-        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
-      }
+        "correct": "$x = \\dfrac{1900}{0{,}95} = 2000$ ، أي 2000DA .",
+        "incorrect": "ابحث عن العدد الذي صورته 1900 : اقسم، ولا تضرب."
+      },
+      "solution": {
+        "lines": [
+          "$0{,}95x = 1900$",
+          "$x = \\dfrac{1900}{0{,}95} = 2000$",
+          "سعره قبل التخفيض 2000DA ."
+        ],
+        "result": "x = 2000DA"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

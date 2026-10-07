@@ -3,26 +3,34 @@
   "lessonCode": "tamthil-bayani-khatti",
   "level": 2,
   "metadata": {
-    "title": "طرائق (ص 69) — نقطة ثانية لدالة سالبة المعامل",
-    "estimatedMinutes": 4,
+    "title": "طرائق — دالة معاملها سالب",
+    "estimatedMinutes": 6,
     "tags": [
-      "نقطة ثانية",
-      "منحى"
+      "تمثيل بياني",
+      "منحى المستقيم"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tamthil-bayani-khatti_P1",
-      "modelledOn": "method-draw"
+      "modelledOn": "method-draw",
+      "adaptedFrom": "ex-4am-tamthil-bayani-khatti-l2-010"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "نريد رسم التمثيل البياني للدالة الخطية $g : x \\longmapsto -0{,}8x$ ."
+    "content": "نريد تمثيل الدالة الخطية $g$ حيث $g(x) = -0{,}8x$ في معلم متعامد ومتجانس."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نرسم المستقيم الذي يشمل O والنقطة:",
+      "step": "01",
+      "statement": "احسب ترتيب النقطة $B$ من التمثيل البياني للدالة $g$ التي فاصلتها 5.",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P1",
@@ -30,51 +38,87 @@
         }
       ],
       "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-4",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$(1 ; -0{,}8)$",
-          "isCorrect": true
+          "value": "4",
+          "id": "MISC-KHATTIYA-ISHARA"
         },
         {
-          "id": "B",
-          "content": "$(1 ; 0{,}8)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-ISHARA"
-        },
-        {
-          "id": "C",
-          "content": "$(-0{,}8 ; 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+          "value": "-6,25",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "صورة عدد بالدالة الخطية $x \\longmapsto ax$ هي جداء هذا العدد في المعامل."
+          "content": "ترتيب $B$ هو صورة فاصلتها بالدالة $g$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب العدد في المعامل مع الانتباه إلى الإشارة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "النقطة التي فاصلتها هذا العدد وترتيبها صورته تنتمي إلى التمثيل."
+          "content": "احسب $-0{,}8 \\times 5$ ."
         }
       ],
       "feedback": {
-        "correct": "$g(1) = -0{,}8$ .",
-        "incorrect": "الترتيب صورة الفاصلة، بإشارتها."
-      }
+        "correct": "$g(5) = -0{,}8 \\times 5 = -4$ ، إذن $B(5 ; -4)$ .",
+        "incorrect": "اضرب الفاصلة في المعامل، بإشارته."
+      },
+      "solution": {
+        "lines": [
+          "$g(5) = -0{,}8 \\times 5 = -4$",
+          "إذن $B(5 ; -4)$ (اخترنا الفاصلة 5 ليكون الترتيب عددا صحيحا)."
+        ],
+        "result": "B(5 ; -4)"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "المستقيم المرسوم:",
+      "step": "02",
+      "statement": "مثّل بيانيا الدالة $g$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التمثيل البياني لدالة خطية مستقيم يشمل المبدأ $O$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يكفي تعيين نقطة ثانية من التمثيل بحساب صورة عدد غير معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "تمثيل الدالة الخطية $g$ مستقيم يشمل المبدأ $O$ .",
+          "نعلّم النقطة $B(5 ; -4)$ ، ثم نرسم المستقيم $(OB)$ ."
+        ]
+      },
+      "timeSeconds": 240
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "هل التمثيل البياني للدالة $g$ يصعد أم ينزل من اليسار إلى اليمين؟ علّل.",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P3",
@@ -82,6 +126,7 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
@@ -100,23 +145,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى إشارة المعامل $a$."
+          "content": "انظر إلى إشارة معامل الدالة الخطية."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+          "content": "إذا كان المعامل موجبا فالمستقيم يصعد، وإذا كان سالبا فهو ينزل."
         }
       ],
       "feedback": {
-        "correct": "$-0{,}8 < 0$ : ينزل.",
-        "incorrect": "انظر إلى إشارة المعامل."
-      }
+        "correct": "المعامل $-0{,}8$ سالب: المستقيم ينزل.",
+        "incorrect": "منحى المستقيم تعيّنه إشارة المعامل: موجب ← يصعد، سالب ← ينزل."
+      },
+      "solution": {
+        "lines": [
+          "معامل الدالة الخطية هو $-0{,}8$ ، وهو عدد سالب.",
+          "إذن المستقيم $(OB)$ ينزل من اليسار إلى اليمين."
+        ],
+        "result": "ينزل"
+      },
+      "timeSeconds": 60
     }
   ]
 }

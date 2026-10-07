@@ -1,31 +1,35 @@
-// Oracle du banc « tanasub-muamil » (unité 6 « الدالة الخطية والتناسبية », leçon 1) — chaque réponse
-// RECALCULÉE ici, sans lire le contenu ni le code testé (packages/core/arithmetic/proportional.js).
-// Fusionné dans scripts/practice-answer-oracle.test.mjs. Les données de chaque énoncé (tableaux, tarifs)
-// sont RECOPIÉES dans l'expression ; l'arithmétique est celle de helpers.mjs (rationnels exacts) :
-//   coef(xs, ys)               le quotient commun y ÷ x (lève une erreur si le tableau n'est pas proportionnel)
-//   fourth(x1, y1, x2)         le quatrième proportionnel y1 × x2 ÷ x1
-//   pickVerdict(xs, ys, opts)  l'unique option juste parmi ['yes', a] (proportionnel, coefficient a) / ['no']
-//   pickRule(xs, ys, fns)      l'unique règle x ↦ y qui redonne TOUT le tableau
-//   pickValue(target, opts)    l'unique option égale à la cible
-//   pickSet(pred, sets, dom)   l'unique ensemble égal aux solutions de pred, cherchées par balayage de dom
-//   pickClaims(fns, claims, cs) l'unique liste de verdicts « proportionnel ? » juste pour chaque règle
-//   pickCheaper(x, A, B, tags) le tarif le moins cher pour la durée x (A, B = [prix unitaire, montant fixe])
-// Généré avec le banc par le script de l'auteur ; ne pas éditer une entrée sans recalculer l'autre côté.
+// Oracle du banc « tanasub-muamil » au format BEM (unité 6 « الدالة الخطية والتناسبية », leçon 1
+// « التناسبية ومعامل التناسبية », banque réécrite le 2026-10-07) — chaque réponse RECALCULÉE ici à partir des
+// nombres de l'énoncé, sans lire le contenu ni le code testé (packages/core/arithmetic/proportional.js).
+// Fusionné dans scripts/practice-answer-oracle.test.mjs.
+//
+// Outils (rationnels exacts de helpers.mjs, jamais de flottants) :
+//   coef(xs, ys)           le quotient commun y ÷ x (lève une erreur si le tableau n'est pas proportionnel)
+//   fourth(x1, y1, x2)     le quatrième proportionnel y1 × x2 ÷ x1
+//   isProp(xs, ys)         le tableau est-il proportionnel ? (x = 0 doit donner y = 0)
+//   aff(a, b, x)           a·x + b : un tarif « prix unitaire + montant fixe » (non proportionnel)
+//   solveAff(a, b, y)      x tel que a·x + b = y (étapes « équation », hors leçon, counted:false)
+//   mul / div / add / sub  opérations exactes, rendues en chaîne
+//   roots(pred, lo, hi)    les entiers de [lo ; hi] qui vérifient pred (balayage), triés
+//   yes(b)                 « هل … ؟ برّر » : A = نعم, B = لا
+//   pickFirst(flags)       la seule option vraie parmi A, B, C… (erreur si zéro ou plusieurs)
+//   cheapest(montants) / dearest(montants)   l'option la moins / la plus chère (A, B, C…), unique
+//   gtLetter(a, c)         sens de a·x > c parmi A: x < c/a, B: ≤, C: x > c/a, D: ≥
+// Généré avec le banc par le script de l'auteur (Python, fractions exactes) ; ce calcul JS en est indépendant.
 import { R, C, q } from './helpers.mjs';
 
 const LETTERS = 'ABCDEF';
-const unique = (flags, what) => {
-  const hits = flags.map((f, i) => (f ? i : -1)).filter((i) => i >= 0);
-  if (hits.length !== 1) throw new Error(`oracle tanasub-muamil : ${what} — ${hits.length} options justes`);
-  return LETTERS[hits[0]];
-};
+const mul = (a, b) => q(a).mul(q(b)).toString();
+const div = (a, b) => q(a).div(q(b)).toString();
+const add = (a, b) => q(a).add(q(b)).toString();
+const sub = (a, b) => q(a).sub(q(b)).toString();
+const aff = (a, b, x) => q(a).mul(q(x)).add(q(b)).toString();
+const solveAff = (a, b, y) => q(y).sub(q(b)).div(q(a)).toString();
 const eqQ = (a, b) => q(a).sub(q(b)).isZero();
-const range = (lo, hi) => Array.from({ length: hi - lo + 1 }, (_, i) => String(lo + i));
-
 function isProp(xs, ys) {
   if (xs.some((x, i) => q(x).isZero() && !q(ys[i]).isZero())) return false;
   const r = xs.map((x, i) => (q(x).isZero() ? null : q(ys[i]).div(q(x)))).filter(Boolean);
-  return r.length > 0 && r.every((v) => eqQ(v, r[0]));
+  return r.length > 0 && r.every((t) => eqQ(t, r[0]));
 }
 function coef(xs, ys) {
   if (!isProp(xs, ys)) throw new Error('oracle tanasub-muamil : tableau non proportionnel');
@@ -33,102 +37,300 @@ function coef(xs, ys) {
   return q(ys[i]).div(q(xs[i])).toString();
 }
 const fourth = (x1, y1, x2) => q(y1).mul(q(x2)).div(q(x1)).toString();
-function pickVerdict(xs, ys, opts) {
-  const prop = isProp(xs, ys);
-  const a = prop ? coef(xs, ys) : null;
-  return C(unique(opts.map(([says, v]) => (says === 'yes' ? prop && eqQ(v, a) : !prop)), 'pickVerdict'));
+function roots(pred, lo, hi) {
+  const out = [];
+  for (let n = lo; n <= hi; n += 1) if (pred(String(n))) out.push(String(n));
+  return out;
 }
-const pickRule = (xs, ys, fns) => C(unique(fns.map((f) => xs.every((x, i) => eqQ(f(q(x)), ys[i]))), 'pickRule'));
-const pickValue = (target, opts) => C(unique(opts.map((o) => o != null && eqQ(o, target)), 'pickValue'));
-function pickSet(pred, sets, dom) {
-  const sol = dom.filter((v) => pred(q(v))).map((v) => q(v).toString()).sort();
-  return C(unique(sets.map((s) => s.map((v) => q(v).toString()).sort().join('|') === sol.join('|')), 'pickSet'));
+const yes = (b) => C(b ? 'A' : 'B');
+function pickFirst(flags) {
+  const hits = flags.map((f, i) => (f ? i : -1)).filter((i) => i >= 0);
+  if (hits.length !== 1) throw new Error(`oracle tanasub-muamil : ${hits.length} options vraies`);
+  return LETTERS[hits[0]];
 }
-const pickClaims = (fns, claims, cs) => {
-  const truth = fns.map((f) => isProp(cs, cs.map((c) => f(q(c)))));
-  return C(unique(claims.map((cl) => cl.every((v, i) => v === truth[i])), 'pickClaims'));
-};
-function pickCheaper(x, [a1, b1], [a2, b2], tags) {
-  const A = q(a1).mul(x).add(b1); const B = q(a2).mul(x).add(b2);
-  const d = A.sub(B);
-  const tag = d.isZero() ? 'same' : d.n < 0n ? 'A' : 'B';
-  return C(unique(tags.map((t) => t === tag), 'pickCheaper'));
+function extreme(amounts, sign) {
+  const xs = amounts.map((a) => q(a));
+  const best = xs.reduce((m, x) => (x.sub(m).n * BigInt(sign) < 0n ? x : m), xs[0]);
+  return pickFirst(xs.map((x) => eqQ(x, best)));
 }
+const cheapest = (amounts) => extreme(amounts, 1);
+const dearest = (amounts) => extreme(amounts, -1);
+const gtLetter = (a) => (q(a).n > 0n ? 'C' : 'A');
+
+const K = (s) => `ex-4am-tanasub-muamil-${s}`;
 
 export const ORACLE = {
-  'ex-4am-tanasub-muamil-l1-001:q1': R(fourth('-2', '6', '3')),
-  'ex-4am-tanasub-muamil-l1-002:q1': R(coef(['2','4','6'], ['10','20','30'])),
-  'ex-4am-tanasub-muamil-l1-003:q1': pickVerdict(['1','2','5'], ['3','6','15'], [['yes','3'], ['yes','1/3'], ['no']]),
-  'ex-4am-tanasub-muamil-l1-004:q1': R(q(15).mul(8)),
-  'ex-4am-tanasub-muamil-l1-004:q2': pickRule(['1','2','8'], ['15','30','120'], [(x) => x.add(15), (x) => q(15).mul(x), (x) => x.div(15)]),
-  'ex-4am-tanasub-muamil-l1-005:q1': pickVerdict(['3','4','5'], ['5','6','7'], [['yes','2'], ['no'], ['yes','2']]),
-  'ex-4am-tanasub-muamil-l1-006:q1': R(coef(['1','2','4'], ['250','500','1000'])),
-  'ex-4am-tanasub-muamil-l1-007:q1': R(fourth('1', '100', '3')),
-  'ex-4am-tanasub-muamil-l1-007:q2': pickVerdict(['1','2','3'], ['100','200','300'], [['yes','100'], ['no'], ['no']]),
-  'ex-4am-tanasub-muamil-l1-008:q1': pickVerdict(['1','2','3'], [q(30).add(100), q(60).add(100), q(90).add(100)], [['yes','30'], ['no'], ['yes','30']]),
-  'ex-4am-tanasub-muamil-l1-009:q1': R(fourth('2', '8', '5')),
-  'ex-4am-tanasub-muamil-l1-010:q1': R(q(4).mul(7)),
-  'ex-4am-tanasub-muamil-l2-001:q1': R(q(150).sub(q(150).mul(20).div(100))),
-  'ex-4am-tanasub-muamil-l2-001:q2': R(coef(['50','100'], ['40','80'])),
-  'ex-4am-tanasub-muamil-l2-002:q1': R(q(6).add(9)),
-  'ex-4am-tanasub-muamil-l2-003:q1': R(q(7).mul(4)),
-  'ex-4am-tanasub-muamil-l2-004:q1': R(coef(['4','10','20'], ['3','7,5','15'])),
-  'ex-4am-tanasub-muamil-l2-005:q1': R(coef(['500','1000','2500'], ['600','1200','3000'])),
-  'ex-4am-tanasub-muamil-l2-005:q2': pickRule(['500','1000','2500'], ['600','1200','3000'], [(x) => x.div(q('1,2')), (x) => x.add(100), (x) => q('1,2').mul(x)]),
-  'ex-4am-tanasub-muamil-l2-006:q1': R(q(200).mul(4).add(500).div(4)),
-  'ex-4am-tanasub-muamil-l2-006:q2': pickVerdict(['1','4'], [q(700), q(1300)], [['yes','200'], ['no'], ['yes','200']]),
-  'ex-4am-tanasub-muamil-l2-008:q1': R(fourth('5', '12', '8')),
-  'ex-4am-tanasub-muamil-l2-009:q1': R(coef(['2','3','7'], ['9','13,5','31,5'])),
-  'ex-4am-tanasub-muamil-l2-010:q1': R(q(300).mul(25)),
-  'ex-4am-tanasub-muamil-l2-010:q2': R(q(4800).div(300)),
-  'ex-4am-tanasub-muamil-l3-001:q1': pickSet((b) => b.sub(1).mul(q(1).sub(b)).sub(q(4).mul(-16)).isZero(), [['9'], ['-7','9'], ['7','-9'], ['-7']], range(-20, 20)),
-  'ex-4am-tanasub-muamil-l3-002:q1': pickValue(q(2).mul(8), ['64', '16', '10']),
-  'ex-4am-tanasub-muamil-l3-002:q2': pickVerdict(['2,5','3','8','9,5'], ['5','6','16','19'], [['yes','2'], ['yes','1'], ['no']]),
-  'ex-4am-tanasub-muamil-l3-002:q3': pickVerdict(['2,5','3','8'], ['6,25','9','64'], [['yes','1'], ['no'], ['yes','2,5']]),
-  'ex-4am-tanasub-muamil-l3-003:q2': R(coef(['1','0,5'], ['1,5','0,75'])),
-  'ex-4am-tanasub-muamil-l3-004:q1': R(fourth('65', '260', '100')),
-  'ex-4am-tanasub-muamil-l3-005:q1': R(coef(['-2','4','6'], ['5','-10','-15'])),
-  'ex-4am-tanasub-muamil-l3-006:q1': R(q(10).mul(6).add(50)),
-  'ex-4am-tanasub-muamil-l3-006:q2': R(q(10).mul(5).add(50).div(5)),
-  'ex-4am-tanasub-muamil-l3-006:q3': pickVerdict(['1','5'], [q(60), q(100)], [['yes','10'], ['no'], ['yes','10']]),
-  'ex-4am-tanasub-muamil-l3-007:q1': R(coef(['3','6','9'], ['2','4','6'])),
-  'ex-4am-tanasub-muamil-l3-008:q1': R(q(12).mul(25)),
-  'ex-4am-tanasub-muamil-l3-008:q2': R(q(180).div(12)),
-  'ex-4am-tanasub-muamil-l3-010:q1': R(q('4').add(q('4,8'))),
-  'ex-4am-tanasub-muamil-l4-001:q1': R(fourth('6', '3', '14')),
-  'ex-4am-tanasub-muamil-l4-002:q1': pickSet((m) => m.mul(m).sub(36).isZero(), [['6'], ['6','-6'], ['36'], ['-6']], range(-40, 40)),
-  'ex-4am-tanasub-muamil-l4-003:q1': R(coef(['6','9','15'], ['4','6','10'])),
-  'ex-4am-tanasub-muamil-l4-003:q2': pickRule(['6','9','15'], ['4','6','10'], [(x) => x.sub(2), (x) => q('2/3').mul(x), (x) => q('3/2').mul(x)]),
-  'ex-4am-tanasub-muamil-l4-004:q1': R(q(20).mul(10)),
-  'ex-4am-tanasub-muamil-l4-004:q2': R(q(12).mul(10).add(60)),
-  'ex-4am-tanasub-muamil-l4-005:q1': pickVerdict(['1,5','2,5','4'], ['6','10','15'], [['yes','4'], ['no'], ['yes','1/4']]),
-  'ex-4am-tanasub-muamil-l4-006:q1': R(q('2,5').mul(q('7,4'))),
-  'ex-4am-tanasub-muamil-l4-007:q1': R(fourth('0,8', '3,2', '2')),
-  'ex-4am-tanasub-muamil-l4-008:q1': R(q(20).div(q('1,25'))),
-  'ex-4am-tanasub-muamil-l4-009:q1': pickClaims([(c) => q(4).mul(c), (c) => c.mul(c)], [[true, false], [true, true], [false, true]], ['1','2','3']),
-  'ex-4am-tanasub-muamil-l4-010:q1': R(coef(['-3','1','4'], ['6','-2','-8'])),
-  'ex-4am-tanasub-muamil-l4-010:q2': pickRule(['-3','1','4'], ['6','-2','-8'], [(x) => q(-2).mul(x), (x) => q(2).mul(x), (x) => x.sub(3)]),
-  'ex-4am-tanasub-muamil-l5-001:q1': pickCheaper(8, [15, 0], [10, 50], ['A', 'B', 'same']),
-  'ex-4am-tanasub-muamil-l5-001:q2': R(q(50).div(q(15).sub(10))),
-  'ex-4am-tanasub-muamil-l5-001:q3': R(q(15).mul(15).sub(q(10).mul(15).add(50))),
-  'ex-4am-tanasub-muamil-l5-002:q1': R(fourth('1,5', '200', '4,5')),
-  'ex-4am-tanasub-muamil-l5-002:q2': R(coef(['1,5','3','6'], ['200','400','800'])),
-  'ex-4am-tanasub-muamil-l5-003:q1': R(fourth('6', '300', '15')),
-  'ex-4am-tanasub-muamil-l5-003:q2': pickRule(['6','15'], ['300','750'], [(x) => q(300).mul(x), (x) => q(50).mul(x), (x) => x.add(294)]),
-  'ex-4am-tanasub-muamil-l5-003:q3': R(q(1000).div(50)),
-  'ex-4am-tanasub-muamil-l5-004:q1': R(fourth('100', '2,5', '340')),
-  'ex-4am-tanasub-muamil-l5-004:q2': R(coef(['100'], ['2,5'])),
-  'ex-4am-tanasub-muamil-l5-005:q1': R(q(4000).sub(q(4000).mul(30).div(100))),
-  'ex-4am-tanasub-muamil-l5-005:q2': R(q(1).sub(q(30).div(100))),
-  'ex-4am-tanasub-muamil-l5-005:q3': R(q(5600).div(q('0,7'))),
-  'ex-4am-tanasub-muamil-l5-006:q2': R(q(120).mul(35)),
-  'ex-4am-tanasub-muamil-l5-007:q1': R(fourth('4', '6', '10')),
-  'ex-4am-tanasub-muamil-l5-007:q2': R(q(21).div(q(6).div(4))),
-  'ex-4am-tanasub-muamil-l5-008:q1': pickVerdict(['6,25','9','64'], ['6,25','9','64'], [['yes','1'], ['no'], ['yes','2']]),
-  'ex-4am-tanasub-muamil-l5-008:q2': R(q(10).mul(10)),
-  'ex-4am-tanasub-muamil-l5-009:q1': R(fourth('60', '4,5', '40')),
-  'ex-4am-tanasub-muamil-l5-009:q2': R(fourth('4,5', '60', '6')),
-  'ex-4am-tanasub-muamil-l5-010:q1': R(q('4,5').mul(200).add(400)),
-  'ex-4am-tanasub-muamil-l5-010:q2': R(q('4,5').mul(100).add(400).div(100)),
-  'ex-4am-tanasub-muamil-l5-010:q3': pickVerdict(['100','200'], [q(850), q(1300)], [['yes','4,5'], ['no'], ['yes','8,5']]),
+  // l1-001 — أستعدّ 4 — العدد الناقص في جدول تناسبية
+  [K('l1-001:q1')]: R(coef(['-2'], ['6'])),
+  [K('l1-001:q2')]: R(fourth('-2', '6', '3')),
+  // l1-002 — معامل جدول تناسبية
+  [K('l1-002:q1')]: R(coef(['2', '4', '6'], ['10', '20', '30'])),
+  [K('l1-002:q2')]: R(mul(coef(['2', '4', '6'], ['10', '20', '30']), '9')),
+  // l1-003 — أهو جدول تناسبية؟
+  [K('l1-003:q1')]: yes(isProp(['1', '2', '5'], ['3', '6', '15'])),
+  [K('l1-003:q2')]: R(coef(['1', '2', '5'], ['3', '6', '15'])),
+  // l1-004 — التروتينة — 15DA للدقيقة
+  [K('l1-004:q1')]: R(mul('8', '15')),
+  [K('l1-004:q2')]: R(coef(['8'], [mul('8', '15')])),
+  // l1-005 — فرق ثابت أم نسبة ثابتة؟
+  [K('l1-005:q1')]: R(div('5', '3')),
+  [K('l1-005:q2')]: R(div('6', '4')),
+  [K('l1-005:q3')]: yes(isProp(['3', '4', '5'], ['5', '6', '7'])),
+  // l1-006 — ثمن الشاورما
+  [K('l1-006:q1')]: R(fourth('1', '250', '3')),
+  [K('l1-006:q2')]: R(fourth('1', '250', '5')),
+  [K('l1-006:q3')]: R(coef(['1', '3', '5'], ['250', mul('3', '250'), mul('5', '250')])),
+  // l1-007 — باقة إنترنت دون مبلغ ثابت
+  [K('l1-007:q1')]: R(mul('3', '100')),
+  [K('l1-007:q2')]: yes(isProp(['1', '3', '5'], [mul('1', '100'), mul('3', '100'), mul('5', '100')])),
+  // l1-008 — سيارة الأجرة — مبلغ عند الركوب
+  [K('l1-008:q1')]: R(aff('30', '100', '1')),
+  [K('l1-008:q2')]: R(aff('30', '100', '2')),
+  [K('l1-008:q3')]: yes(isProp(['1', '2'], [aff('30', '100', '1'), aff('30', '100', '2')])),
+  // l1-009 — العمود الناقص
+  [K('l1-009:q1')]: R(fourth('2', '8', '5')),
+  // l1-010 — نكمل بالعلاقة y = 4 × x
+  [K('l1-010:q1')]: R(mul('4', '7')),
+  [K('l1-010:q2')]: R(div('36', '4')),
+  // l2-001 — نشاط 1 — تخفيض العيد
+  [K('l2-001:q1')]: R(coef(['50', '100'], ['40', '80'])),
+  [K('l2-001:q2')]: R(fourth('50', '40', '150')),
+  [K('l2-001:q3')]: R(fourth('50', '40', '200')),
+  // l2-002 — خاصية الجمع في جدول تناسبية
+  [K('l2-002:q1')]: R(coef(['4', '6'], ['6', '9'])),
+  [K('l2-002:q2')]: R(fourth('4', '6', '10')),
+  // l2-003 — على منوال BEM 2014 — عرض الرسائل القصيرة
+  [K('l2-003:q1')]: R(mul('15', '4')),
+  [K('l2-003:q2')]: R(div('100', '4')),
+  [K('l2-003:q3')]: R(coef(['15', div('100', '4')], [mul('15', '4'), '100'])),
+  [K('l2-003:q4')]: yes(isProp(['15', '25'], ['60', '100'])),
+  // l2-004 — معامل عشري
+  [K('l2-004:q1')]: R(coef(['4', '10', '20'], ['3', '7,5', '15'])),
+  [K('l2-004:q2')]: R(fourth('4', '3', '32')),
+  // l2-005 — جواهر لعبة على الهاتف
+  [K('l2-005:q1')]: R(coef(['500', '1000', '2500'], ['600', '1200', '3000'])),
+  [K('l2-005:q2')]: R(mul(coef(['500', '1000', '2500'], ['600', '1200', '3000']), '4000')),
+  // l2-006 — اشتراك قاعة الرياضة
+  [K('l2-006:q1')]: R(aff('200', '500', '1')),
+  [K('l2-006:q2')]: R(aff('200', '500', '4')),
+  [K('l2-006:q3')]: yes(isProp(['1', '4'], [aff('200', '500', '1'), aff('200', '500', '4')])),
+  // l2-007 — العمود (0 ; 20)
+  [K('l2-007:q1')]: R(div('30', '2')),
+  [K('l2-007:q2')]: R(div('45', '5')),
+  [K('l2-007:q3')]: yes(isProp(['0', '2', '5'], ['20', '30', '45'])),
+  // l2-008 — على منوال BEM 2009 — مضخة تملأ خزانا
+  [K('l2-008:q1')]: R(mul('4', '18')),
+  [K('l2-008:q2')]: R(coef(['4'], [mul('4', '18')])),
+  [K('l2-008:q3')]: R(div('117', '18')),
+  // l2-009 — نكتب العلاقة y = a × x
+  [K('l2-009:q1')]: R(coef(['2', '3', '7'], ['9', '13,5', '31,5'])),
+  [K('l2-009:q2')]: R(fourth('2', '9', '12')),
+  // l2-010 — تذاكر الدربي
+  [K('l2-010:q1')]: R(mul('300', '25')),
+  [K('l2-010:q2')]: R(div('4800', '300')),
+  [K('l2-010:q3')]: yes(isProp(['1', '25', '16'], [mul('300', '1'), mul('300', '25'), mul('300', '16')])),
+  // l3-001 — تمرين 16 — العدد b
+  [K('l3-001:q2')]: R(roots((b) => q(b).sub(1).mul(q(1).sub(b)).sub(q(4).mul(-16)).isZero(), -100, 100)[0]),
+  [K('l3-001:q3')]: R(roots((b) => q(b).sub(1).mul(q(1).sub(b)).sub(q(4).mul(-16)).isZero(), -100, 100)[1]),
+  [K('l3-001:q4')]: R(coef([q(9).sub(1), '4'], ['-16', q(1).sub(9)])),
+  // l3-002 — تمرين 17 — محيط القرص ومساحته
+  [K('l3-002:q1')]: R(mul('2', '3')),
+  [K('l3-002:q2')]: R(mul('2', '8')),
+  [K('l3-002:q3')]: yes(isProp(['2,5', '3', '8', '9,5'], ['5', mul('2', '3'), mul('2', '8'), mul('2', '9,5')])),
+  [K('l3-002:q4')]: R(mul('3', '3')),
+  [K('l3-002:q5')]: yes(isProp(['2,5', '3', '8'], [mul('2,5', '2,5'), mul('3', '3'), mul('8', '8')])),
+  // l3-003 — تمرين 18 — مستقيمان في معلم
+  [K('l3-003:q1')]: C(pickFirst([[0, 0], [0, 1]].map(([x, y]) => q(y).isZero() && q(x).isZero()))),
+  [K('l3-003:q2')]: R(coef(['2'], ['3'])),
+  [K('l3-003:q3')]: R(fourth('2', '3', '6')),
+  // l3-004 — أستعدّ 5 — تلاميذ نصف داخليين
+  [K('l3-004:q1')]: R(coef(['65'], ['260'])),
+  [K('l3-004:q2')]: R(fourth('65', '260', '100')),
+  [K('l3-004:q3')]: R(fourth('65', '260', '20')),
+  [K('l3-004:q4')]: R(sub(fourth('65', '260', '100'), '260')),
+  // l3-005 — معامل سالب
+  [K('l3-005:q1')]: R(coef(['-2', '4', '6'], ['5', '-10', '-15'])),
+  [K('l3-005:q2')]: R(fourth('-2', '5', '3')),
+  [K('l3-005:q3')]: R(fourth('5', '-2', '20')),
+  [K('l3-005:q4')]: R(mul(coef(['-2', '4', '6'], ['5', '-10', '-15']), '-10')),
+  // l3-006 — على منوال BEM 2007 — كراء الدراجات الهوائية بقسنطينة
+  [K('l3-006:q1')]: R(mul('40', '10')),
+  [K('l3-006:q2')]: R(aff('25', '300', '10')),
+  [K('l3-006:q3')]: R(div('1400', '40')),
+  [K('l3-006:q4')]: R(aff('25', '300', div('1400', '40'))),
+  [K('l3-006:q5')]: R(coef(['10', '35'], ['400', '1400'])),
+  [K('l3-006:q6')]: yes(isProp(['10', '35'], [aff('25', '300', '10'), aff('25', '300', '35')])),
+  // l3-007 — معامل كسري
+  [K('l3-007:q1')]: R(coef(['3', '6', '9'], ['2', '4', '6'])),
+  [K('l3-007:q2')]: R(fourth('3', '2', '15')),
+  [K('l3-007:q3')]: R(fourth('2', '3', '12')),
+  // l3-008 — ملء خزان بماء الحنفية
+  [K('l3-008:q1')]: R(mul('12', '25')),
+  [K('l3-008:q2')]: R(div('180', '12')),
+  [K('l3-008:q3')]: R(div('1500', '12')),
+  // l3-009 — على منوال BEM 2024 — ثلاثة عروض لنادٍ للسباحة بوهران
+  [K('l3-009:q1')]: R(mul('150', '10')),
+  [K('l3-009:q2')]: R(aff('80', '1500', '10')),
+  [K('l3-009:q3')]: R(div('3000', '150')),
+  [K('l3-009:q4')]: R(aff('80', '1500', div('3000', '150'))),
+  [K('l3-009:q5')]: C(pickFirst([[mul('150', '10'), mul('150', '20')], [aff('80', '1500', '10'), aff('80', '1500', '20')], ['4000', '4000']].map((ys) => isProp(['10', '20'], ys)))),
+  [K('l3-009:q6')]: R(coef(['10', '20'], ['1500', '3000'])),
+  // l3-010 — على منوال BEM 2014 — غسل الزرابي بالمدية
+  [K('l3-010:q1')]: R(mul('120', '12')),
+  [K('l3-010:q2')]: R(aff('90', '500', '12')),
+  [K('l3-010:q3')]: R(div('2400', '120')),
+  [K('l3-010:q4')]: R(aff('90', '500', div('2400', '120'))),
+  [K('l3-010:q5')]: R(coef(['12', '20'], ['1440', '2400'])),
+  [K('l3-010:q6')]: yes(isProp(['12', '20'], [aff('90', '500', '12'), aff('90', '500', '20')])),
+  [K('l3-010:q7')]: C(cheapest([mul('120', '8'), aff('90', '500', '8')])),
+  // l4-001 — أعداد ناقصة في جدول تناسبية
+  [K('l4-001:q1')]: R(coef(['3'], ['6'])),
+  [K('l4-001:q2')]: R(fourth('6', '3', '14')),
+  [K('l4-001:q3')]: R(fourth('3', '6', '12')),
+  [K('l4-001:q4')]: R(fourth('6', '3', '50')),
+  // l4-002 — العدد m مرتين في الجدول
+  [K('l4-002:q2')]: R(roots((m) => q(m).mul(m).sub(q(9).mul(4)).isZero(), -100, 100)[0]),
+  [K('l4-002:q3')]: R(roots((m) => q(m).mul(m).sub(q(9).mul(4)).isZero(), -100, 100)[1]),
+  [K('l4-002:q4')]: R(coef(['6', '9'], ['4', '6'])),
+  [K('l4-002:q5')]: R(coef(['-6', '9'], ['4', '-6'])),
+  // l4-003 — معامل كسري وخاصية الجمع
+  [K('l4-003:q1')]: R(coef(['6', '9', '15'], ['4', '6', '10'])),
+  [K('l4-003:q2')]: R(fourth('6', '4', '21')),
+  [K('l4-003:q3')]: R(fourth('4', '6', '30')),
+  // l4-004 — على منوال BEM 2007 — نقل البضائع بالبليدة
+  [K('l4-004:q1')]: R(mul('45', '100')),
+  [K('l4-004:q2')]: R(aff('35', '2000', '100')),
+  [K('l4-004:q3')]: R(solveAff('35', '2000', '7600')),
+  [K('l4-004:q4')]: R(mul('45', solveAff('35', '2000', '7600'))),
+  [K('l4-004:q5')]: R(coef(['100', '160'], ['4500', '7200'])),
+  [K('l4-004:q7')]: R(solveAff(sub('45', '35'), '0', '2000')),
+  [K('l4-004:q8')]: C(gtLetter('10', '2000')),
+  [K('l4-004:q9')]: C(cheapest([mul('45', '250'), aff('35', '2000', '250')])),
+  // l4-005 — عمودان متناسبان فقط
+  [K('l4-005:q1')]: R(div('6', '1,5')),
+  [K('l4-005:q2')]: R(div('15', '4')),
+  [K('l4-005:q3')]: yes(isProp(['1,5', '2,5', '4'], ['6', '10', '15'])),
+  [K('l4-005:q4')]: R(fourth('1,5', '6', '4')),
+  // l4-006 — سلّم خريطة الجزائر العاصمة
+  [K('l4-006:q1')]: R(fourth('1', '2,5', '7,4')),
+  [K('l4-006:q2')]: R(fourth('2,5', '1', '30')),
+  [K('l4-006:q3')]: R(coef(['2,5', '30'], ['1', fourth('2,5', '1', '30')])),
+  [K('l4-006:q4')]: R(mul('2,5', '100000')),
+  // l4-007 — على منوال BEM 2012 — حافلات النقل الحضري بسطيف
+  [K('l4-007:q1')]: R(mul('30', '20')),
+  [K('l4-007:q2')]: R(aff('20', '600', '20')),
+  [K('l4-007:q3')]: R(div('1200', '30')),
+  [K('l4-007:q4')]: R(aff('20', '600', div('1200', '30'))),
+  [K('l4-007:q5')]: R(solveAff('20', '600', '1600')),
+  [K('l4-007:q6')]: R(mul('30', solveAff('20', '600', '1600'))),
+  [K('l4-007:q7')]: R(coef(['20', '40', '50'], ['600', '1200', '1500'])),
+  [K('l4-007:q8')]: yes(isProp(['20', '40', '50'], [aff('20', '600', '20'), aff('20', '600', '40'), '1600'])),
+  [K('l4-007:q9')]: C(cheapest([mul('30', '46'), aff('20', '600', '46')])),
+  // l4-008 — نبحث عن x بالعلاقة y = 1,25 × x
+  [K('l4-008:q1')]: R(mul('1,25', '8')),
+  [K('l4-008:q2')]: R(div('20', '1,25')),
+  [K('l4-008:q3')]: R(mul('1,25', '40')),
+  [K('l4-008:q4')]: R(coef(['10', '20'], ['8', div('20', '1,25')])),
+  // l4-009 — محيط المربع ومساحته
+  [K('l4-009:q1')]: R(mul('4', '5')),
+  [K('l4-009:q2')]: R(mul('5', '5')),
+  [K('l4-009:q3')]: yes(isProp(['1', '2', '5'], ['4', '8', mul('4', '5')])),
+  [K('l4-009:q4')]: R(coef(['1', '2', '5'], ['4', '8', mul('4', '5')])),
+  [K('l4-009:q5')]: yes(isProp(['1', '2', '5'], ['1', '4', mul('5', '5')])),
+  // l4-010 — على منوال BEM 2014 — مقهى إنترنت بباتنة
+  [K('l4-010:q1')]: R(mul('60', '5')),
+  [K('l4-010:q2')]: R(aff('40', '200', '5')),
+  [K('l4-010:q3')]: R(div('480', '60')),
+  [K('l4-010:q4')]: R(aff('40', '200', div('480', '60'))),
+  [K('l4-010:q5')]: R(solveAff('40', '200', '680')),
+  [K('l4-010:q6')]: R(mul('60', solveAff('40', '200', '680'))),
+  [K('l4-010:q7')]: R(coef(['5', '8', '12'], ['300', '480', '720'])),
+  [K('l4-010:q9')]: C(cheapest([mul('60', '6'), aff('40', '200', '6')])),
+  [K('l4-010:q10')]: C(cheapest([mul('60', '15'), aff('40', '200', '15')])),
+  // l5-001 — على منوال BEM 2012 — بائعا البطاطا بسوق عين مليلة
+  [K('l5-001:q1')]: R(mul('70', '10')),
+  [K('l5-001:q2')]: R(aff('60', '300', '10')),
+  [K('l5-001:q3')]: R(div('1750', '70')),
+  [K('l5-001:q4')]: R(aff('60', '300', div('1750', '70'))),
+  [K('l5-001:q5')]: R(solveAff('60', '300', '2700')),
+  [K('l5-001:q6')]: R(mul('70', solveAff('60', '300', '2700'))),
+  [K('l5-001:q7')]: R(coef(['10', '25', '40'], ['700', '1750', '2800'])),
+  [K('l5-001:q8')]: yes(isProp(['10', '25', '40'], [aff('60', '300', '10'), aff('60', '300', '25'), '2700'])),
+  [K('l5-001:q9')]: C(cheapest([mul('70', '45'), aff('60', '300', '45')])),
+  [K('l5-001:q10')]: R(sub('3200', aff('60', '300', '45'))),
+  // l5-002 — على منوال BEM 2009 — حنفية تقطر في ساحة المتوسطة
+  [K('l5-002:q1')]: yes(isProp(['10', '30'], ['0,2', '0,6'])),
+  [K('l5-002:q2')]: R(coef(['10', '30'], ['0,2', '0,6'])),
+  [K('l5-002:q3')]: R(fourth('10', '0,2', '45')),
+  [K('l5-002:q4')]: R(fourth('0,2', '10', '4,8')),
+  [K('l5-002:q5')]: R(mul(coef(['10', '30'], ['0,2', '0,6']), mul('24', '60'))),
+  [K('l5-002:q6')]: R(mul(div(mul(mul(coef(['10', '30'], ['0,2', '0,6']), '1440'), '365'), '1000'), '50')),
+  // l5-003 — على منوال BEM 2007 — جرعة دواء شراب لطفل
+  [K('l5-003:q1')]: R(mul('12', '20')),
+  [K('l5-003:q2')]: R(mul('15', '20')),
+  [K('l5-003:q3')]: R(div('500', '20')),
+  [K('l5-003:q4')]: R(coef(['12', '15', div('500', '20')], [mul('12', '20'), mul('15', '20'), '500'])),
+  [K('l5-003:q5')]: R(fourth('100', '5', mul('20', '18'))),
+  [K('l5-003:q6')]: yes(q(mul('7', fourth('100', '5', mul('20', '18')))).sub('150').n <= 0n),
+  // l5-004 — على منوال BEM 2014 — مخطط شقة بالشلف
+  [K('l5-004:q1')]: R(coef(['4'], ['2'])),
+  [K('l5-004:q2')]: R(fourth('4', '2', '6,5')),
+  [K('l5-004:q3')]: R(fourth('2', '4', '4,5')),
+  [K('l5-004:q4')]: R(mul('0,5', '8')),
+  [K('l5-004:q5')]: R(mul('0,5', '6')),
+  [K('l5-004:q6')]: R(mul(mul('0,5', '8'), mul('0,5', '6'))),
+  [K('l5-004:q7')]: R(div(mul(mul('0,5', '8'), mul('0,5', '6')), mul('8', '6'))),
+  // l5-005 — على منوال BEM 2024 — توصيل طلبيات محل حلويات بالبليدة
+  [K('l5-005:q1')]: R(mul('150', '20')),
+  [K('l5-005:q2')]: R(aff('90', '2400', '20')),
+  [K('l5-005:q3')]: R(div('7500', '150')),
+  [K('l5-005:q4')]: R(aff('90', '2400', div('7500', '150'))),
+  [K('l5-005:q5')]: R(solveAff('90', '2400', '8700')),
+  [K('l5-005:q6')]: R(mul('150', solveAff('90', '2400', '8700'))),
+  [K('l5-005:q7')]: C(pickFirst([[mul('150', '20'), mul('150', '50')], [aff('90', '2400', '20'), aff('90', '2400', '50')], ['9000', '9000']].map((ys) => isProp(['20', '50'], ys)))),
+  [K('l5-005:q8')]: R(coef(['20', '50'], ['3000', '7500'])),
+  [K('l5-005:q9')]: C(cheapest([mul('150', '65'), aff('90', '2400', '65'), '9000'])),
+  [K('l5-005:q10')]: R(aff('90', '2400', '65')),
+  // l5-006 — على منوال BEM 2007 — قماش الجبّة التقليدية بالعلمة
+  [K('l5-006:q1')]: R(mul('650', '2')),
+  [K('l5-006:q2')]: R(mul('650', '3,5')),
+  [K('l5-006:q3')]: R(div('2925', '650')),
+  [K('l5-006:q4')]: R(aff('650', '3000', '2')),
+  [K('l5-006:q5')]: R(aff('650', '3000', '4,5')),
+  [K('l5-006:q6')]: yes(isProp(['2', '4,5'], [aff('650', '3000', '2'), aff('650', '3000', '4,5')])),
+  [K('l5-006:q7')]: R(sub('9000', add(mul('650', add('2', '2,5')), mul('2', '3000')))),
+  // l5-007 — على منوال BEM 2007 — مربى المشمش
+  [K('l5-007:q1')]: R(mul('2', div('750', '1000'))),
+  [K('l5-007:q2')]: R(mul('3,6', div('750', '1000'))),
+  [K('l5-007:q3')]: R(div('4,5', div('750', '1000'))),
+  [K('l5-007:q4')]: R(coef(['2', '3,6'], [mul('2', '0,75'), mul('3,6', '0,75')])),
+  [K('l5-007:q6')]: yes(isProp(['2', '3,6', '6'], [mul('2', '1,75'), mul('3,6', '1,75'), mul('6', '1,75')])),
+  [K('l5-007:q7')]: R(div(mul(mul('1,75', '8'), '1000'), '350')),
+  // l5-008 — على منوال BEM 2012 — فاتورتا الماء لعائلتين بالبويرة
+  [K('l5-008:q1')]: R(aff('32', '480', '20')),
+  [K('l5-008:q2')]: R(mul('38', '20')),
+  [K('l5-008:q3')]: R(solveAff('32', '480', '2400')),
+  [K('l5-008:q4')]: R(mul('38', solveAff('32', '480', '2400'))),
+  [K('l5-008:q5')]: R(div('3420', '38')),
+  [K('l5-008:q6')]: R(aff('32', '480', div('3420', '38'))),
+  [K('l5-008:q7')]: C(pickFirst([[aff('32', '480', '20'), aff('32', '480', '60')], [mul('38', '20'), mul('38', '60')]].map((ys) => isProp(['20', '60'], ys)))),
+  [K('l5-008:q8')]: R(coef(['20', '60', '90'], ['760', '2280', '3420'])),
+  [K('l5-008:q9')]: C(dearest([aff('32', '480', '75'), mul('38', '75')])),
+  [K('l5-008:q10')]: R(sub(aff('32', '480', '75'), mul('38', '75'))),
+  // l5-009 — على منوال BEM 2009 — بذر القمح في سهول سطيف
+  [K('l5-009:q1')]: R(mul('150', '4')),
+  [K('l5-009:q2')]: R(mul('150', '6,5')),
+  [K('l5-009:q3')]: R(div('1800', '150')),
+  [K('l5-009:q4')]: R(coef(['4', '6,5', '12'], [mul('150', '4'), mul('150', '6,5'), '1800'])),
+  [K('l5-009:q5')]: R(coef(['1'], ['28'])),
+  [K('l5-009:q6')]: R(div(mul('150', '12'), '50')),
+  [K('l5-009:q7')]: R(mul(div(mul('150', '12'), '50'), '2500')),
+  [K('l5-009:q8')]: R(mul(mul('28', '12'), '6000')),
+  // l5-010 — على منوال BEM 2014 — حملة جمع البلاستيك بتيزي وزو
+  [K('l5-010:q1')]: R(mul('25', '8')),
+  [K('l5-010:q2')]: R(div('1500', '25')),
+  [K('l5-010:q3')]: R(coef(['8', '60'], [mul('25', '8'), '1500'])),
+  [K('l5-010:q4')]: R(div('12000', '25')),
+  [K('l5-010:q5')]: R(div(mul(div('12000', '25'), '1000'), '50')),
+  [K('l5-010:q6')]: yes(q(mul('240', '45')).sub(div(mul(div('12000', '25'), '1000'), '50')).n >= 0n),
 };

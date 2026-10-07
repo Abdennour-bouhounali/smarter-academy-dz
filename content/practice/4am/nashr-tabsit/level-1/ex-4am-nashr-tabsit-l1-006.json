@@ -1,109 +1,205 @@
 {
+  "id": "ex-4am-nashr-tabsit-l1-006",
+  "lessonCode": "nashr-tabsit",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — عدد في فرق",
-    "estimatedMinutes": 3,
+    "title": "عدد في فرق",
+    "estimatedMinutes": 7,
     "tags": [
-      "نشر",
-      "الخاصية التوزيعية"
+      "k(a − b)"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_nashr-tabsit_P2",
       "modelledOn": "know-1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "ننشر جداء عدد في فرق: $k(a - b) = ka - kb$."
+    "content": "لتكن العبارتان $G$ و $H$ حيث:",
+    "formulas": [
+      "G = 7(2 - y)",
+      "H = 6(3 - 2x)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نشر $7(2 - y)$ هو:",
+      "step": "01",
+      "lead": "انشر العبارة $G$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $G$ على الشكل $ay + b$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "-7",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$14 - 7y$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$14 - y$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
-        },
-        {
-          "id": "C",
-          "content": "$14 + 7y$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+          "value": "-1",
+          "id": "MISC-NASHR-HAD-WAHID"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العدد 7 أمام القوسين."
+          "content": "اضرب العامل الذي أمام القوس في كل حد من حدود القوس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "يُضرب 7 في 2 وفي $-y$."
+          "content": "انتبه إلى إشارة كل حد عند كتابة الجداءات."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احتفظ بالإشارة $-$."
+          "content": "اجمع الحدود المتشابهة: حدود $y$ معًا، ثم الأعداد."
         }
       ],
       "feedback": {
-        "correct": "$7 \\times 2 - 7 \\times y = 14 - 7y$.",
-        "incorrect": "العدد 7 يُضرب في الحدّين، والفرق يبقى فرقًا."
-      }
+        "correct": "$G = -7y + 14$ إذن $a = -7$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$G = 7(2 - y)$",
+          "$G = 7 \\times 2 - 7 \\times y$",
+          "$G = 14 - 7y$"
+        ],
+        "result": "G = -7y + 14"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "ما معامل $x$ في نشر $6(3 - 2x)$ ؟",
+      "step": "01",
+      "statement": "العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
-      "expectedAnswer": "-12",
+      "answerFormat": "يُكتب $G$ على الشكل $ay + b$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "14",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المعامل هو العدد الذي يضرب $x$."
+          "content": "الحد الثابت هو مجموع الأعداد التي لا تحتوي على $y$ بعد النشر، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$G = -7y + 14$ إذن $b = 14$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $b$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$G = -7y + 14$"
+        ],
+        "result": "b = 14"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "انشر العبارة $H$ .",
+      "statement": "العدد $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $H$ على الشكل $ax + b$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "-12",
+      "misconceptionSignatures": [
+        {
+          "value": "-2",
+          "id": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب العامل الذي أمام القوس في كل حد من حدود القوس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الحد الذي فيه $x$ هو جداء 6 في $-2x$."
+          "content": "انتبه إلى إشارة كل حد عند كتابة الجداءات."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "انتبه إلى الإشارة."
+          "content": "اجمع الحدود المتشابهة: حدود $x$ معًا، ثم الأعداد."
         }
       ],
       "feedback": {
-        "correct": "$6(3 - 2x) = 18 - 12x$: معامل $x$ هو $-12$.",
-        "incorrect": "اضرب 6 في الحد الذي فيه $x$ مع إشارته."
-      }
+        "correct": "$H = -12x + 18$ إذن $a = -12$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$H = 6(3 - 2x)$",
+          "$H = 6 \\times 3 - 6 \\times 2x$",
+          "$H = 18 - 12x$"
+        ],
+        "result": "H = -12x + 18"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $H$ على الشكل $ax + b$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت هو مجموع الأعداد التي لا تحتوي على $x$ بعد النشر، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$H = -12x + 18$ إذن $b = 18$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $b$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$H = -12x + 18$"
+        ],
+        "result": "b = 18"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-nashr-tabsit-l1-006",
-  "lessonCode": "nashr-tabsit",
-  "level": 1
+  ]
 }

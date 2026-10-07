@@ -1,7 +1,10 @@
 {
+  "id": "ex-4am-mutatabiqat-shahira-l3-003",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 3,
   "metadata": {
-    "title": "تمرين 16 — مربعان وعامل",
-    "estimatedMinutes": 6,
+    "title": "مربعان وعامل",
+    "estimatedMinutes": 11,
     "tags": [
       "مربع مجموع",
       "مربع فرق"
@@ -12,15 +15,27 @@
       "page": 38,
       "section": "أوظّف تعلّماتي",
       "number": 16
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "انشر كل عبارة مما يلي وبسّطها: $D = (5x + 1)^2 + 5(x - 1)^2$ و $E = (3x - 4)^2 - 4(1 - x)^2$ ."
+    "content": "لتكن العبارتان $D$ و $E$ حيث:",
+    "formulas": [
+      "D = (5x + 1)^2 + 5(x - 1)^2",
+      "E = (3x - 4)^2 - 4(1 - x)^2"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "النشر المبسّط للعبارة $D$ هو:",
+      "step": "01",
+      "lead": "انشر ثم بسّط العبارة $D$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_mutatabiqat-shahira_P1",
@@ -31,51 +46,97 @@
           "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $D$ على الشكل $mx^2 + n$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$30x^2 + 20x + 6$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
-        },
-        {
-          "id": "B",
-          "content": "$30x^2 + 6$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$30x^2 + 10x - 4$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+          "value": "10",
+          "id": "MISC-MUTATABIQA-MURABBA-MUAMIL"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر $(5x + 1)^2$."
+          "content": "عيّن نوع كل متطابقة شهيرة في العبارة: مربع مجموع، مربع فرق، أو جداء مجموع وفرق."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انشر $(x - 1)^2$ ثم اضرب في $5$."
+          "content": "عيّن الحدّين $a$ و $b$ ، ولا تنسَ الحد المضاعف $2ab$ ولا تربيع المعامل."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع الحدود المتشابهة: ماذا يحدث للحدّين في $x$؟"
+          "content": "اجمع الحدود المتشابهة: حدود $x^2$ معًا، ثم حدود $x$، ثم الأعداد."
         }
       ],
       "feedback": {
-        "correct": "$25x^2 + 10x + 1 + 5x^2 - 10x + 5 = 30x^2 + 6$",
-        "incorrect": "في $(x - 1)^2$ الحد المضاعف سالب والحد الأخير موجب."
-      }
+        "correct": "$D = 30x^2 + 6$ إذن $m = 30$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$D = (5x + 1)^2 + 5(x - 1)^2$",
+          "$D = (5x)^2 + 2 \\times 5x \\times 1 + 1^2 + 5\\left[x^2 - 2 \\times x \\times 1 + 1^2\\right]$",
+          "$D = 25x^2 + 10x + 1 + 5(x^2 - 2x + 1)$",
+          "$D = 25x^2 + 10x + 1 + 5x^2 - 10x + 5$"
+        ],
+        "result": "D = 30x^2 + 6"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "ما الحد الثابت في النشر المبسّط للعبارة $E$ ؟",
+      "step": "01",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $D$ على الشكل $mx^2 + n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "value": "-4",
+          "id": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت هو مجموع الأعداد التي لا تحتوي على $x$ بعد النشر، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$D = 30x^2 + 6$ إذن $n = 6$ .",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $n$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$D = 30x^2 + 6$"
+        ],
+        "result": "n = 6"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "انشر ثم بسّط العبارة $E$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_mutatabiqat-shahira_P2",
@@ -86,33 +147,142 @@
           "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "12",
+      "answerFormat": "يُكتب $E$ على الشكل $mx^2 + nx + p$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "value": "-1",
+          "id": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "value": "13",
+          "id": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الحد الثابت في $(3x - 4)^2$ هو $16$."
+          "content": "تعرّف على مربع فرق: $(a - b)^2 = a^2 - 2ab + b^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الحد الثابت في $4(1 - x)^2$ هو $4$."
+          "content": "عيّن الحدّين $a$ و $b$ ، ولا تنسَ الحد المضاعف $2ab$ ولا تربيع المعامل."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "انتبه إلى الإشارة $-$ بين الحدّين."
+          "content": "ضع النشر بين قوسين عندما تسبقه إشارة $-$ ، ثم غيّر إشارة كل حد عند حذفهما، واجمع الحدود المتشابهة."
         }
       ],
       "feedback": {
-        "correct": "$(3x - 4)^2 - 4(1 - x)^2 = 5x^2 - 16x + 12$",
-        "incorrect": "الإشارة $-$ تُطرح كل حدود النشر."
-      }
+        "correct": "$E = 5x^2 - 16x + 12$ إذن $m = 5$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$E = (3x - 4)^2 - 4(1 - x)^2$",
+          "$E = (3x)^2 - 2 \\times 3x \\times 4 + 4^2 - 4\\left[1^2 - 2 \\times 1 \\times x + x^2\\right]$",
+          "$E = 9x^2 - 24x + 16 - 4(1 - 2x + x^2)$",
+          "$E = 9x^2 - 24x + 16 - 4 + 8x - 4x^2$"
+        ],
+        "result": "E = 5x^2 - 16x + 12"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $mx^2 + nx + p$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "-16",
+      "misconceptionSignatures": [
+        {
+          "value": "0",
+          "id": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "value": "-8",
+          "id": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل $x$ يأتي من الحد المضاعف $2ab$ ومن الحدود الأخرى في $x$ ، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = 5x^2 - 16x + 12$ إذن $n = -16$ .",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $n$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$E = 5x^2 - 16x + 12$"
+        ],
+        "result": "n = -16"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q5",
+      "step": "02",
+      "statement": "العدد $p$ :",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $mx^2 + nx + p$ : اكتب العدد $p$ فقط",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "value": "-20",
+          "id": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت هو مجموع الأعداد التي لا تحتوي على $x$ بعد النشر، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = 5x^2 - 16x + 12$ إذن $p = 12$ .",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $p$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$E = 5x^2 - 16x + 12$"
+        ],
+        "result": "p = 12"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-mutatabiqat-shahira-l3-003",
-  "lessonCode": "mutatabiqat-shahira",
-  "level": 3
+  ]
 }

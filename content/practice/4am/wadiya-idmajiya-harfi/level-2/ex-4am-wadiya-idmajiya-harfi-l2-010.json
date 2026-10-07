@@ -1,123 +1,124 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l2-010",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — مربع فرق وقيمة معدومة",
-    "estimatedMinutes": 2,
+    "title": "مربع فرق وحساب دون آلة",
+    "estimatedMinutes": 4,
     "tags": [
+      "مربع فرق",
       "تحليل",
-      "اختيار الشكل"
+      "حساب ذهني"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-harfi_P1",
-      "modelledOn": "qcm"
+      "modelledOn": "qcm",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-harfi-l2-010"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "نعتبر العبارة $G = x^2 - 6x + 9$ ."
+    "content": "لتكن العبارة $G$ حيث :",
+    "formulas": [
+      "G = x^2 - 6x + 9"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "تحليل العبارة $G$ هو ...",
+      "step": "01",
+      "lead": "حلّل العبارة $G$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $G$ على الشكل $(x - m)^2$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$(x - 3)(x + 3)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+          "value": "6",
+          "id": "MISC-MUTATABIQA-2AB-NISF"
         },
         {
-          "id": "B",
-          "content": "$(x + 3)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
-        },
-        {
-          "id": "C",
-          "content": "$(x - 3)^2$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$x(x - 6) + 9$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+          "value": "9",
+          "id": "MISC-MUTATABIQA-MURABBA-MUAMIL"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$9 = 3^2$."
+          "content": "تعرّف على الشكل $a^2 - 2ab + b^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هل $6x = 2 \\times x \\times 3$ ؟ وما إشارته؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تعرّف على شكل مربع فرق."
+          "content": "$9$ مربع عدد موجب: تحقّق من الحد المضاعف."
         }
       ],
       "feedback": {
-        "correct": "$x^2 - 2 \\times x \\times 3 + 3^2 = (x - 3)^2$.",
-        "incorrect": "الحد المضاعف سالب: إنه مربع فرق."
+        "correct": "$G = (x - 3)^2$ إذن $m = 3$ .",
+        "incorrect": "تحقّق من تحليلك بنشر الجداء: يجب أن تجد العبارة الأصلية."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$G = x^2 - 2 \\times x \\times 3 + 3^2$"
+        ],
+        "result": "G = (x - 3)^2"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "احسب $G$ من أجل $x = 3$.",
+      "step": "02",
+      "statement": "احسب $G$ من أجل $x = 53$ دون استعمال الآلة الحاسبة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
-      "expectedAnswer": "0",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2500",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "استعمل الشكل المحلّل."
+          "content": "اختر الشكل الذي يُسهّل الحساب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما قيمة $x - 3$ ؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "مربع العدد 0."
+          "content": "استعمل الشكل المحلّل."
         }
       ],
       "feedback": {
-        "correct": "$G = (3 - 3)^2 = 0$.",
-        "incorrect": "في الشكل المحلّل يكفي حساب $x - 3$."
+        "correct": "$G = 2500$ .",
+        "incorrect": "عوّض بالقيمة المعطاة في الشكل المناسب، واحسب بعناية مع احترام أولويات العمليات."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "18",
-          "id": "MISC-NASHR-ISHARA-SALIBA"
-        }
-      ],
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "بالشكل المحلّل: $G = (53 - 3)^2 = 50^2$"
+        ],
+        "result": "G = 2500"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l2-010",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 2
+  ]
 }

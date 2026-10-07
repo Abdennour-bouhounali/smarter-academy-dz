@@ -1,105 +1,191 @@
 {
+  "id": "ex-4am-jidhr-tarbii-l5-010",
+  "lessonCode": "jidhr-tarbii",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — زمن سقوط جسم",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2010 — قاعة حفلات",
+    "estimatedMinutes": 16,
     "tags": [
-      "وضعية",
-      "فيزياء",
-      "الرمز √"
+      "تعريف الجذر التربيعي",
+      "وضعية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_jidhr-tarbii_P2",
-      "modelledOn": "know-1"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "BEM 2010 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2010",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "زمن سقوط جسم (بالثانية) من ارتفاع $h$ (بالمتر) يُعطى تقريبًا بالعلاقة $t = \\sqrt{\\dfrac{h}{5}}$."
+    "content": "أرضية قاعة حفلات مكوّنة من جزأين: مربع $ABCD$ مساحته $144m^2$ ، ومستطيل $BEFC$ يشترك معه في الضلع $[BC]$ ، حيث $BE = 16m$ .\nيريد صاحبها تبليطها ببلاط سعر المتر المربع الواحد 800DA ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب $t$ عندما $h = 45$ m.",
+      "step": "01",
+      "statement": "احسب طول ضلع المربع $ABCD$ .",
       "learningPoints": [
         {
-          "code": "4am_jidhr-tarbii_P2",
+          "code": "4am_jidhr-tarbii_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (بالثانية)",
-      "expectedAnswer": "3",
+      "answerFormat": "عدد بالمتر (m)",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "value": "72",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $h$ بقيمتها."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب أولًا $\\dfrac{45}{5}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم خذ الجذر التربيعي للناتج."
+          "content": "$AB^2 = 144$ و $AB$ موجب."
         }
       ],
       "feedback": {
-        "correct": "$t = \\sqrt{\\dfrac{45}{5}} = \\sqrt{9} = 3$ s.",
-        "incorrect": "احسب الكسر تحت الرمز أولًا، ثم جذره."
+        "correct": "$AB = \\sqrt{144} = 12$ m.",
+        "incorrect": "طول الضلع هو العدد الموجب الذي مربعه 144."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "4.5",
-          "id": "MISC-JIDHR-NISF"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$AB^2 = 144$ و $AB$ موجب",
+          "$AB = \\sqrt{144}$"
+        ],
+        "result": "AB = 12m"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "احسب $t$ عندما $h = 1{,}25$ m.",
+      "step": "02",
+      "statement": "احسب طول قطر المستطيل $[BF]$ .",
       "learningPoints": [
         {
-          "code": "4am_jidhr-tarbii_P2",
+          "code": "4am_jidhr-tarbii_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري (بالثانية)",
-      "expectedAnswer": "0.5",
+      "answerFormat": "عدد بالمتر (m)",
+      "expectedAnswer": "20",
+      "misconceptionSignatures": [
+        {
+          "value": "28",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب أولًا $\\dfrac{1{,}25}{5}$."
+          "content": "المثلث $BEF$ قائم في $E$ و $EF = BC$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تحصل على عدد عشري برقمين بعد الفاصلة."
+          "content": "احسب $BF^2$ بخاصية فيثاغورس."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ابحث عن العدد الموجب الذي مربعه هذا العدد، وتحقّق بالتربيع."
+          "content": "$BF$ هو العدد الموجب الذي مربعه $BF^2$."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{1{,}25}{5} = 0{,}25$ و $\\sqrt{0{,}25} = 0{,}5$ s.",
-        "incorrect": "انتبه إلى الفاصلة: ربّع جوابك وقارنه بالعدد تحت الرمز."
+        "correct": "$BF^2 = 16^2 + 12^2 = 400$ و $BF = 20$ m.",
+        "incorrect": "احسب $BF^2$ بخاصية فيثاغورس ثم خذ العدد الموجب الذي مربعه $BF^2$."
       },
-      "misconceptionSignatures": [
+      "solution": {
+        "lines": [
+          "$EF = BC = 12$",
+          "حسب خاصية فيثاغورس: $BF^2 = BE^2 + EF^2 = 256 + 144 = 400$",
+          "$BF = \\sqrt{400}$"
+        ],
+        "result": "BF = 20m"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "احسب مساحة أرضية القاعة.",
+      "learningPoints": [
         {
-          "value": "0.05",
-          "id": "MISC-JIDHR-FASILA"
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
         }
-      ]
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر المربع (m²)",
+      "expectedAnswer": "336",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة القاعة = مساحة المربع + مساحة المستطيل."
+        }
+      ],
+      "feedback": {
+        "correct": "$144 + 16 \\times 12 = 336 m^2$.",
+        "incorrect": "اجمع مساحة المربع ومساحة المستطيل (بعداه 16m وطول ضلع المربع)."
+      },
+      "solution": {
+        "lines": [
+          "مساحة المستطيل: $16 \\times 12 = 192$",
+          "مساحة القاعة: $144 + 192 = 336$"
+        ],
+        "result": "336m^2"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "04",
+      "statement": "احسب السعر الإجمالي للبلاط.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار (DA)",
+      "expectedAnswer": "268800",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب المساحة في سعر المتر المربع."
+        }
+      ],
+      "feedback": {
+        "correct": "$336 \\times 800 = 268800$ DA.",
+        "incorrect": "استعمل مساحة القاعة كلها."
+      },
+      "solution": {
+        "lines": [
+          "$336 \\times 800 = 268800$"
+        ],
+        "result": "268800DA"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-jidhr-tarbii-l5-010",
-  "lessonCode": "jidhr-tarbii",
-  "level": 5
+  ]
 }

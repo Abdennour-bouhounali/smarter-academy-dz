@@ -3,107 +3,149 @@
   "lessonCode": "tarrid-mushkila",
   "level": 2,
   "metadata": {
-    "title": "تدريب — ضعف عمر الابن",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2019 — قاعة رياضة بباتنة",
+    "estimatedMinutes": 8,
     "tags": [
-      "أعمار",
-      "ترييض"
+      "ترييض",
+      "معادلة",
+      "صيغتان"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_tarrid-mushkila_P1",
-      "modelledOn": "method-modelling"
+      "modelledOn": "BEM 2019 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2019",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "عمر أب 30 سنة وعمر ابنه 6 سنوات. نسمّي $x$ عدد السنوات التي يصبح بعدها عمر الأب ضعف عمر ابنه."
+    "content": "تقترح قاعة رياضة بباتنة على المنخرطين صيغتين للتسديد:\n• الصيغة الأولى: 250DA للحصة الواحدة.\n• الصيغة الثانية: 150DA للحصة الواحدة مع اشتراك فصلي قدره 2000DA ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ معادلة تترجم المشكلة؟",
+      "step": "01",
+      "sub": "ا",
+      "lead": "ما هو عدد الحصص التي يمكن حضورها بمبلغ 6500DA :",
+      "statement": "بالصيغة الأولى.",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$30 + x = 2 \\times 6 + x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
-        },
-        {
-          "id": "B",
-          "content": "$30 + x = 2(6 + x)$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$30 = 2(6 + x)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد الحصص",
+      "expectedAnswer": "26",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "كم يصبح عمر الابن بعد $x$ سنة؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "الضعف يخصّ عمر الابن بعد $x$ سنة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ضاعف $(6 + x)$ كله."
+          "content": "المبلغ = ثمن الحصة × عدد الحصص."
         }
       ],
       "feedback": {
-        "correct": "$30 + x = 2(6 + x)$ .",
-        "incorrect": "الأب يكبر أيضًا، والضعف يشمل $x$ ."
-      }
+        "correct": "$250x = 6500$ تعطي 26 حصة.",
+        "incorrect": "اكتب المبلغ بدلالة عدد الحصص ثم حلّ المعادلة."
+      },
+      "solution": {
+        "lines": [
+          "نسمّي $x$ عدد الحصص.",
+          "$250x = 6500$",
+          "$x = \\dfrac{6500}{250} = 26$"
+        ],
+        "result": "26"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "بعد كم سنة؟",
+      "step": "01",
+      "sub": "ب",
+      "statement": "بالصيغة الثانية.",
       "learningPoints": [
         {
-          "code": "4am_tarrid-mushkila_P2",
+          "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "18",
+      "answerFormat": "عدد طبيعي: عدد الحصص",
+      "expectedAnswer": "30",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر: $30 + x = 12 + 2x$ ."
+          "content": "الاشتراك يُدفع مرة واحدة، ثم ثمن الحصص."
+        }
+      ],
+      "feedback": {
+        "correct": "$150x + 2000 = 6500$ تعطي 30 حصة.",
+        "incorrect": "لا تنسَ الاشتراك الفصلي في المبلغ المدفوع."
+      },
+      "solution": {
+        "lines": [
+          "$150x + 2000 = 6500$",
+          "$150x = 4500$",
+          "$x = \\dfrac{4500}{150} = 30$"
+        ],
+        "result": "30"
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "جد عدد الحصص الذي تتساوى من أجله تكلفتا الصيغتين.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد الحصص",
+      "expectedAnswer": "20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عبّر عن تكلفة كل صيغة بدلالة عدد الحصص $x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اجمع حدود $x$ في طرف."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق: عمر الأب ضعف عمر ابنه؟"
+          "content": "اكتب أن التكلفتين متساويتان ثم حلّ."
         }
       ],
       "feedback": {
-        "correct": "$x = 18$ : الأب 48 والابن 24.",
-        "incorrect": "اطرح $x$ و 12 من الطرفين."
-      }
+        "correct": "$250x = 150x + 2000$ تعطي $x = 20$ حصة (التكلفة 5000DA بالصيغتين).",
+        "incorrect": "التكلفة الأولى $250x$ والثانية $150x + 2000$ : اجعلهما متساويتين."
+      },
+      "solution": {
+        "lines": [
+          "$250x = 150x + 2000$",
+          "$250x - 150x = 2000$",
+          "$100x = 2000$",
+          "$x = 20$",
+          "التحقق: $250 \\times 20 = 5000$ و $150 \\times 20 + 2000 = 5000$ ."
+        ],
+        "result": "x = 20"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

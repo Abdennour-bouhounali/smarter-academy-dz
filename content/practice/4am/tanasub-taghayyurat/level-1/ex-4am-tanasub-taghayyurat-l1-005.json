@@ -3,16 +3,23 @@
   "lessonCode": "tanasub-taghayyurat",
   "level": 1,
   "metadata": {
-    "title": "تدريب — حساب b",
-    "estimatedMinutes": 3,
+    "title": "حساب العدد b",
+    "estimatedMinutes": 2,
     "tags": [
-      "تعيين دالة تآلفية"
+      "العدد b"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tanasub-taghayyurat_P2",
-      "modelledOn": "act-4"
+      "modelledOn": "act-4",
+      "adaptedFrom": "ex-4am-tanasub-taghayyurat-l1-005"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
@@ -21,37 +28,57 @@
   "questions": [
     {
       "id": "q1",
-      "statement": "العدد $b$ :",
+      "step": "01",
+      "statement": "احسب العدد $b$ حيث: $f(x) = ax + b$ .",
       "learningPoints": [
         {
           "code": "4am_tanasub-taghayyurat_P2",
           "role": "primary"
         }
       ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
       "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "value": "11/3",
+          "id": "MISC-TAGHAYYUR-B-NISBA"
+        },
+        {
+          "value": "17",
+          "id": "MISC-TAALUFI-SABIQ-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$f(3) = 2 \\times 3 + b$ ."
+          "content": "اكتب $f(3) = a \\times 3 + b$ مع قيمة $a$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$6 + b = 11$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$b = f(x_1) - a x_1$ ."
+          "content": "حلّ المعادلة التي مجهولها $b$ ."
         }
       ],
       "feedback": {
-        "correct": "$b = 11 - 2 \\times 3 = 5$ .",
-        "incorrect": "$b$ ليس $\\dfrac{11}{3}$ : نطرح $a \\times 3$ من الصورة."
-      }
+        "correct": "$6 + b = 11$ ، إذن $b = 11 - 6 = 5$ .",
+        "incorrect": "عوّض في العبارة ثم اطرح من الصورة جداء المعامل في العدد؛ لا تقسم الصورة على العدد."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $f(3) = 11$",
+          "أي: $2 \\times 3 + b = 11$",
+          "$6 + b = 11$",
+          "$b = 11 - 6$",
+          "$b = 5$",
+          "ومنه: $f(x) = 2x + 5$"
+        ],
+        "result": "b = 5"
+      },
+      "timeSeconds": 90
     }
   ]
 }

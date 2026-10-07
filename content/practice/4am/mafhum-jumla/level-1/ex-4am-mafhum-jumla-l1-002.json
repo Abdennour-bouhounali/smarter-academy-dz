@@ -3,10 +3,11 @@
   "lessonCode": "mafhum-jumla",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 1 — معادلة بمجهولين",
-    "estimatedMinutes": 3,
+    "title": "معادلة من الدرجة الأولى بمجهولين",
+    "estimatedMinutes": 4,
     "tags": [
-      "معادلة بمجهولين"
+      "معاملات",
+      "ثنائية"
     ],
     "source": {
       "type": "textbook",
@@ -14,36 +15,122 @@
       "page": 62,
       "section": "أؤكّد تعلّماتي",
       "number": 1
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 62): نعتبر المعادلة $8x - 1 = y$ ."
+    "content": "نعتبر المعادلة ذات المجهولين $x$ و $y$ التالية:",
+    "formulas": [
+      "8x - 1 = y"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المعادلة $8x - 1 = y$ هي معادلة من الدرجة الأولى ...",
+      "step": "01",
+      "lead": "اكتب هذه المعادلة على الشكل $ax + by = c$ حيث $a = 8$ ، ثم أعط العددين $b$ و $c$ .",
+      "statement": "العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد صحيح)",
+      "expectedAnswer": "-1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انقل $y$ إلى الطرف الأول والعدد $-1$ إلى الطرف الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحدّ الذي يُنقل إلى الطرف الآخر تتغيّر إشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = -1$ .",
+        "incorrect": "عند نقل $y$ من الطرف الثاني إلى الطرف الأول تتغيّر إشارته."
+      },
+      "solution": {
+        "lines": [
+          "$8x - 1 = y$",
+          "$8x - y = 1$",
+          "ومنه: $a = 8$ ، $b = -1$ ، $c = 1$"
+        ],
+        "result": "8x - y = 1"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "العدد $c$ :",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $c$ فقط (عدد صحيح)",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد $c$ هو الطرف الثاني بعد نقل الحدود."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقل $-1$ إلى الطرف الثاني يغيّر إشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$8x - y = 1$ ، أي $c = 1$ .",
+        "incorrect": "الحدّ الذي يُنقل إلى الطرف الآخر تتغيّر إشارته."
+      },
+      "solution": {
+        "lines": [
+          "$8x - 1 = y$",
+          "$8x - y = 1$"
+        ],
+        "result": "c = 1"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "هل الثنائية $(1 ; 7)$ حل لهذه المعادلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "ذات المجهول $x$ .",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "ذات المجهولين $x$ و $y$ .",
+          "content": "نعم",
           "isCorrect": true
         },
         {
-          "id": "C",
-          "content": "ذات المجهول $y$ .",
+          "id": "B",
+          "content": "لا",
           "isCorrect": false
         }
       ],
@@ -51,23 +138,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "كم حرفًا مجهولًا في المعادلة؟"
+          "content": "عوّض $x$ بـ $1$ و $y$ بـ $7$ في المعادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الحرفان $x$ و $y$ كلاهما مجهول."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "انقل $y$ إلى الطرف الأول: $8x - y = 1$ ."
+          "content": "قارن قيمة الطرف الأول بالطرف الثاني."
         }
       ],
       "feedback": {
-        "correct": "فيها مجهولان من الدرجة الأولى: $8x - y = 1$ ، من الشكل $ax + by = c$ .",
-        "incorrect": "الحرف $y$ مجهول أيضًا، وليس عددًا معلومًا."
-      }
+        "correct": "$8 \\times 1 - 7 = 1$ : الثنائية حل للمعادلة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض ثم قارن بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $1$ و $y$ بـ $7$ :",
+          "$8 \\times 1 - 7 = 1$",
+          "ومنه الثنائية $(1 ; 7)$ حل للمعادلة."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

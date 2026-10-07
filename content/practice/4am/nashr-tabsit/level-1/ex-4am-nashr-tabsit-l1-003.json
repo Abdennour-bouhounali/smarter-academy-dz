@@ -1,41 +1,55 @@
 {
+  "id": "ex-4am-nashr-tabsit-l1-003",
+  "lessonCode": "nashr-tabsit",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — جداء أم مجموع؟",
-    "estimatedMinutes": 3,
+    "title": "جداء أم مجموع، ثم النشر",
+    "estimatedMinutes": 4,
     "tags": [
-      "جداء",
-      "مجموع"
+      "جداء أم مجموع",
+      "k(a + b)"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_nashr-tabsit_P1",
       "modelledOn": "act-1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نريد أن نميّز العبارات التي تدلّ على جداء من التي تدلّ على مجموع."
+    "content": "لتكن العبارة $A$ حيث:",
+    "formulas": [
+      "A = 2(x + 7)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل العبارة $2(x + 7)$ مجموع أم جداء؟",
+      "step": "01",
+      "statement": "ما نوع العبارة $A$ : جداء أم مجموع؟",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "recall",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "العبارة جداء",
+          "content": "جداء",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "العبارة مجموع",
+          "content": "مجموع",
           "isCorrect": false,
           "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
         }
@@ -44,116 +58,113 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى العملية الأخيرة التي تُنجز في العبارة."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "العمليات داخل الأقواس تُنجز أولًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "إن كانت آخر عملية ضربًا فالعبارة تدلّ على جداء، وإن كانت جمعًا أو طرحًا فهي تدلّ على مجموع."
+          "content": "ابحث عن آخر عملية تُنجز عند حساب العبارة من أجل قيمة لـ $x$."
         }
       ],
       "feedback": {
-        "correct": "آخر عملية هي ضرب 2 في القوس: العبارة جداء.",
-        "incorrect": "حدّد العملية التي تُنجز في آخر الحساب، لا العمليات التي داخل الأقواس."
-      }
+        "correct": "آخر عملية هي ضرب 2 في القوس: العبارة $A$ جداء.",
+        "incorrect": "آخر عملية تُنجز هي التي تحدّد نوع العبارة: ضرب ← جداء، جمع أو طرح ← مجموع."
+      },
+      "solution": {
+        "lines": [
+          "آخر عملية هي ضرب 2 في القوس: العبارة $A$ جداء."
+        ],
+        "result": "العبارة جداء"
+      },
+      "timeSeconds": 45
     },
     {
       "id": "q2",
-      "statement": "هل العبارة $2x + 7$ مجموع أم جداء؟",
+      "step": "02",
+      "lead": "اكتب العبارة $A$ على شكل مجموع (انشرها).",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P1",
           "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "العبارة جداء",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
         },
         {
-          "id": "B",
-          "content": "العبارة مجموع",
-          "isCorrect": true
+          "code": "4am_nashr-tabsit_P2",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax + b$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "2",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى العملية الأخيرة التي تُنجز في العبارة."
+          "content": "اضرب العامل الذي أمام القوس في كل حد من حدود القوس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "العمليات داخل الأقواس تُنجز أولًا."
+          "content": "انتبه إلى إشارة كل حد عند كتابة الجداءات."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "إن كانت آخر عملية ضربًا فالعبارة تدلّ على جداء، وإن كانت جمعًا أو طرحًا فهي تدلّ على مجموع."
+          "content": "اجمع الحدود المتشابهة: حدود $x$ معًا، ثم الأعداد."
         }
       ],
       "feedback": {
-        "correct": "آخر عملية هي جمع $2x$ و 7: العبارة مجموع.",
-        "incorrect": "حدّد العملية التي تُنجز في آخر الحساب، لا العمليات التي داخل الأقواس."
-      }
+        "correct": "$A = 2x + 14$ إذن $a = 2$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$A = 2(x + 7)$",
+          "$A = 2 \\times x + 2 \\times 7$"
+        ],
+        "result": "A = 2x + 14"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q3",
-      "statement": "هل العبارة $(x - 1)(x + 4)$ مجموع أم جداء؟",
+      "step": "02",
+      "statement": "العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P1",
           "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "العبارة جداء",
-          "isCorrect": true
         },
         {
-          "id": "B",
-          "content": "العبارة مجموع",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+          "code": "4am_nashr-tabsit_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax + b$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "14",
+      "misconceptionSignatures": [
+        {
+          "value": "7",
+          "id": "MISC-NASHR-HAD-WAHID"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى العملية الأخيرة التي تُنجز في العبارة."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "العمليات داخل الأقواس تُنجز أولًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "إن كانت آخر عملية ضربًا فالعبارة تدلّ على جداء، وإن كانت جمعًا أو طرحًا فهي تدلّ على مجموع."
+          "content": "الحد الثابت هو مجموع الأعداد التي لا تحتوي على $x$ بعد النشر، بإشاراتها."
         }
       ],
       "feedback": {
-        "correct": "آخر عملية هي ضرب القوسين: العبارة جداء.",
-        "incorrect": "حدّد العملية التي تُنجز في آخر الحساب، لا العمليات التي داخل الأقواس."
-      }
+        "correct": "$A = 2x + 14$ إذن $b = 14$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $b$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$A = 2x + 14$"
+        ],
+        "result": "b = 14"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-nashr-tabsit-l1-003",
-  "lessonCode": "nashr-tabsit",
-  "level": 1
+  ]
 }

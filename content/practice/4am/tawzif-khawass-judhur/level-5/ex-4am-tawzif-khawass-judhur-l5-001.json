@@ -1,123 +1,198 @@
 {
+  "id": "ex-4am-tawzif-khawass-judhur-l5-001",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 5,
   "metadata": {
-    "title": "تمرينا 23 و 24 — نسب وجذور",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2017 — سياج قطعة أرض مربعة",
+    "estimatedMinutes": 12,
     "tags": [
-      "مقام ناطق"
+      "a√b",
+      "وضعية"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "ex-24",
-      "page": 27,
-      "section": "أوظّف تعلّماتي",
-      "number": 24
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tawzif-khawass-judhur_P1",
+      "modelledOn": "BEM 2017 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2017",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 27): نسب مقامها جذر."
+    "content": "قطعة أرض مربعة الشكل مساحتها $288\\,m^2$ يملكها فلاح ببسكرة، يريد أن يحيطها بسياج.\n• يُباع السياج في لفّات، طول كل لفّة 10m وثمن اللفّة الواحدة 3500DA.\n• نأخذ $\\sqrt{2} \\approx 1{,}41$"
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "عيّن العدد $a$ حيث $\\dfrac{\\sqrt{8}}{a} = \\dfrac{-3\\sqrt{15}}{\\sqrt{3}}$.",
+      "step": "01",
+      "statement": "احسب طول ضلع القطعة واكتبه على الشكل $a\\sqrt{2}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
-          "code": "4am_tawzif-khawass-judhur_P3",
+          "code": "4am_tawzif-khawass-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (بالمتر)",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$a = \\dfrac{2\\sqrt{10}}{15}$",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$a = -\\dfrac{2\\sqrt{10}}{15}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$a = -\\dfrac{3\\sqrt{10}}{4}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MAQLUB"
+          "value": "144",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$\\dfrac{\\sqrt{15}}{\\sqrt{3}} = \\sqrt{5}$."
+          "content": "طول الضلع هو العدد الموجب الذي مربعه 288."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "إذن $\\dfrac{\\sqrt{8}}{a} = -3\\sqrt{5}$ ، ومنه $a = \\dfrac{\\sqrt{8}}{-3\\sqrt{5}}$."
+          "content": "ابحث عن أكبر مربع تامّ يقسم 288."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اضرب البسط والمقام في $\\sqrt{5}$، واكتب $\\sqrt{8} = 2\\sqrt{2}$."
+          "content": "جرّب: هل 288 يقبل القسمة على 144؟"
         }
       ],
       "feedback": {
-        "correct": "$a = \\dfrac{2\\sqrt{2}}{-3\\sqrt{5}} = -\\dfrac{2\\sqrt{10}}{15}$.",
-        "incorrect": "احتفظ بإشارة الناقص، ولا تقلب النسبة."
-      }
+        "correct": "$\\sqrt{288} = \\sqrt{144} \\times \\sqrt{2} = 12\\sqrt{2}$ إذن طول الضلع $12\\sqrt{2}\\,m$.",
+        "incorrect": "طول الضلع هو $\\sqrt{288}$: اكتب 288 على شكل (أكبر مربع تامّ) × 2."
+      },
+      "solution": {
+        "lines": [
+          "ليكن $c$ طول ضلع القطعة: $c^2 = 288$ إذن $c = \\sqrt{288}$",
+          "$c = \\sqrt{144} \\times \\sqrt{2}$",
+          "$c = 12\\sqrt{2}$"
+        ],
+        "result": "c = 12\\sqrt{2}\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "اكتب $\\dfrac{2\\sqrt{3} - 6}{\\sqrt{6}}$ على شكل نسبة مقامها عدد ناطق، ثم بسّط.",
+      "step": "02",
+      "statement": "احسب محيط القطعة واكتبه على الشكل $b\\sqrt{2}$ حيث $b$ عدد طبيعي.",
       "learningPoints": [
         {
-          "code": "4am_tawzif-khawass-judhur_P3",
+          "code": "4am_tawzif-khawass-judhur_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\sqrt{2} - \\sqrt{6}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$2\\sqrt{2} - \\sqrt{6}$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$\\sqrt{2} - 6$",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $b$ فقط (بالمتر)",
+      "expectedAnswer": "48",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اضرب البسط كله والمقام في $\\sqrt{6}$."
+          "content": "محيط المربع = 4 × طول الضلع."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$2\\sqrt{3} \\times \\sqrt{6} = 2\\sqrt{18} = 6\\sqrt{2}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم كل حدّ من البسط على 6."
+          "content": "استعمل نتيجة السؤال 01."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{6\\sqrt{2} - 6\\sqrt{6}}{6} = \\sqrt{2} - \\sqrt{6}$.",
-        "incorrect": "كل حدّ من البسط يُضرب في $\\sqrt{6}$."
-      }
+        "correct": "المحيط $4 \\times 12\\sqrt{2} = 48\\sqrt{2}\\,m$.",
+        "incorrect": "اضرب طول الضلع الذي وجدته في 4."
+      },
+      "solution": {
+        "lines": [
+          "$P = 4 \\times c = 4 \\times 12\\sqrt{2}$"
+        ],
+        "result": "P = 48\\sqrt{2}\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "lead": "☜ ما هو أقل عدد من اللفّات يجب على الفلاح شراؤه؟ وما هي تكلفة السياج؟",
+      "statement": "عدد اللفّات:",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب قيمة مقرّبة للمحيط باستعمال $\\sqrt{2} \\approx 1{,}41$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل لفّة طولها 10m: لا يمكن شراء جزء من لفّة."
+        }
+      ],
+      "feedback": {
+        "correct": "المحيط $\\approx 67{,}68\\,m$ فيلزم 7 لفّات (6 لفّات لا تكفي).",
+        "incorrect": "احسب قيمة مقرّبة للمحيط ثم اقسمها على 10، وتذكّر أن عدد اللفّات عدد طبيعي يكفي لكل المحيط."
+      },
+      "solution": {
+        "lines": [
+          "$P = 48\\sqrt{2} \\approx 48 \\times 1{,}41 = 67{,}68\\,m$",
+          "$67{,}68 \\div 10 = 6{,}768$",
+          "6 لفّات تعطي 60m فقط، إذن يلزم 7 لفّات."
+        ],
+        "result": "7"
+      },
+      "work": "optional",
+      "timeSeconds": 300
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "تكلفة السياج (DA):",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار (DA)",
+      "expectedAnswer": "24500",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب عدد اللفّات في ثمن اللفّة الواحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$7 \\times 3500 = 24500$ DA.",
+        "incorrect": "اضرب عدد اللفّات الذي وجدته في ثمن اللفّة الواحدة."
+      },
+      "solution": {
+        "lines": [
+          "$7 \\times 3500$"
+        ],
+        "result": "24500\\,DA"
+      },
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-tawzif-khawass-judhur-l5-001",
-  "lessonCode": "tawzif-khawass-judhur",
-  "level": 5
+  ]
 }

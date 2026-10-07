@@ -3,8 +3,8 @@
   "lessonCode": "mafhum-jumla",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 3 — ثنائية بكسرين",
-    "estimatedMinutes": 3,
+    "title": "ثنائية بكسرين",
+    "estimatedMinutes": 5,
     "tags": [
       "ثنائية",
       "كسور"
@@ -15,39 +15,32 @@
       "page": 62,
       "section": "أؤكّد تعلّماتي",
       "number": 3
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 62): نعتبر الثنائية $\\left(\\dfrac{1}{2} ; -\\dfrac{1}{2}\\right)$ ."
+    "content": "لتكن الثنائية $\\left(\\dfrac{1}{2} ; -\\dfrac{1}{2}\\right)$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الثنائية $\\left(\\dfrac{1}{2} ; -\\dfrac{1}{2}\\right)$ هي حل للمعادلة...",
+      "step": "01",
+      "statement": "احسب قيمة العبارة $2x - \\dfrac{1}{2}y$ من أجل هذه الثنائية.",
       "learningPoints": [
         {
           "code": "4am_mafhum-jumla_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x + y = 0$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$2x - \\dfrac{1}{2}y = 0$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{1}{2}x + y - \\dfrac{1}{4} = 0$",
-          "isCorrect": false
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب النتيجة: عدد صحيح أو كسر غير قابل للاختزال مثل 3/7",
+      "expectedAnswer": "5/4",
       "hints": [
         {
           "id": "h1",
@@ -57,18 +50,122 @@
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض في كل معادلة واحسب طرفها الأول."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الحل يعطي 0 بالضبط."
+          "content": "جداء عددين سالبين عدد موجب: $-\\dfrac{1}{2} \\times \\left(-\\dfrac{1}{2}\\right)$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{1}{2} + \\left(-\\dfrac{1}{2}\\right) = 0$ .",
-        "incorrect": "في الثانية $1 + \\dfrac{1}{4} \\neq 0$ ، وفي الثالثة $-\\dfrac{1}{2} \\neq 0$ ."
-      }
+        "correct": "$2 \\times \\dfrac{1}{2} - \\dfrac{1}{2} \\times \\left(-\\dfrac{1}{2}\\right) = 1 + \\dfrac{1}{4} = \\dfrac{5}{4}$ .",
+        "incorrect": "العدد الأول قيمة $x$ والثاني قيمة $y$ ؛ وانتبه إلى إشارة الجداء."
+      },
+      "solution": {
+        "lines": [
+          "$2 \\times \\dfrac{1}{2} - \\dfrac{1}{2} \\times \\left(-\\dfrac{1}{2}\\right) = 1 + \\dfrac{1}{4}$"
+        ],
+        "result": "\\dfrac{5}{4}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "sub": "ا",
+      "lead": "استنتج:",
+      "statement": "هل هذه الثنائية حل للمعادلة $2x - \\dfrac{1}{2}y = 0$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $\\dfrac{1}{2}$ و $y$ بـ $-\\dfrac{1}{2}$ في المعادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن قيمة الطرف الأول بالطرف الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times \\dfrac{1}{2} - \\dfrac{1}{2} \\times (-\\dfrac{1}{2}) = \\dfrac{5}{4} \\neq 0$ : الثنائية ليست حلا للمعادلة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض ثم قارن بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $\\dfrac{1}{2}$ و $y$ بـ $-\\dfrac{1}{2}$ :",
+          "$2 \\times \\dfrac{1}{2} - \\dfrac{1}{2} \\times (-\\dfrac{1}{2}) = \\dfrac{5}{4} \\neq 0$",
+          "ومنه الثنائية $\\left(\\dfrac{1}{2} ; -\\dfrac{1}{2}\\right)$ ليست حلا للمعادلة."
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "هل هذه الثنائية حل للمعادلة $x + y = 0$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $\\dfrac{1}{2}$ و $y$ بـ $-\\dfrac{1}{2}$ في المعادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن قيمة الطرف الأول بالطرف الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1}{2} + (-\\dfrac{1}{2}) = 0$ : الثنائية حل للمعادلة.",
+        "incorrect": "العدد الأول في الثنائية قيمة $x$ والثاني قيمة $y$ ؛ عوّض ثم قارن بالطرف الثاني."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $\\dfrac{1}{2}$ و $y$ بـ $-\\dfrac{1}{2}$ :",
+          "$\\dfrac{1}{2} + (-\\dfrac{1}{2}) = 0$",
+          "ومنه الثنائية $\\left(\\dfrac{1}{2} ; -\\dfrac{1}{2}\\right)$ حل للمعادلة."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

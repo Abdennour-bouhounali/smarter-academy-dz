@@ -3,8 +3,8 @@
   "lessonCode": "jidaa-maadum",
   "level": 1,
   "metadata": {
-    "title": "نشاط 2 — إلياس وأمين",
-    "estimatedMinutes": 4,
+    "title": "طريقة أمين: عامل ثابت",
+    "estimatedMinutes": 5,
     "tags": [
       "خاصية الجداء المعدوم"
     ],
@@ -14,96 +14,109 @@
       "page": 44,
       "section": "أنشطة",
       "number": 2
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 44): لحل المعادلة $3(x - 5) = 0$ كتب إلياس: $3x - 15 = 0$ ؛ $3x = 15$ ؛ $x = 5$ . وكتب أمين: $x - 5 = 0$ بما أنّ $3 \\neq 0$ ؛ $x = 5$ ."
+    "content": "لحلّ المعادلة $3(x - 5) = 0$ كتب أمين: «بما أن $3 \\neq 0$ فإن $x - 5 = 0$ »."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "من استعمل خاصية الجداء المعدوم؟",
+      "step": "01",
+      "statement": "برّر ما كتبه أمين.",
       "learningPoints": [
         {
           "code": "4am_jidaa-maadum_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "لا أحد منهما",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-AMIL-THABIT"
-        },
-        {
-          "id": "B",
-          "content": "أمين",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "إلياس",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قارن السطر الثاني في الكرّاسين."
+          "content": "الطرف الأول جداء عاملين: $3$ و $x - 5$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "أحدهما نشر الجداء، والآخر لاحظ أنّ أحد العاملين لا ينعدم."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "خاصية الجداء المعدوم: إذا كان الجداء معدومًا فأحد العاملين معدوم."
+          "content": "استعمل خاصية الجداء المعدوم، ثم لاحظ أن أحد العاملين عدد ثابت غير معدوم."
         }
       ],
       "feedback": {
-        "correct": "أمين قال: بما أنّ $3 \\neq 0$ فالعامل الآخر $x - 5$ معدوم. إلياس نشر ثم حلّ معادلة من الدرجة الأولى.",
-        "incorrect": "العامل الثابت لا يعطي حلًّا: عوّض اقتراحك وتحقّق أنّ الجداء يساوي $0$."
-      }
+        "correct": "أحسنت: برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "الجداء $3(x - 5)$ معدوم، فأحد عامليه على الأقل معدوم.",
+          "العامل $3$ لا ينعدم أبدًا لأن $3 \\neq 0$ .",
+          "إذن العامل الآخر هو المعدوم: $x - 5 = 0$ ."
+        ]
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "ما حل المعادلة $3(x - 5) = 0$ ؟",
+      "step": "02",
+      "lead": "أكمل حلّ المعادلة $3(x - 5) = 0$ .",
+      "statement": "الحلّ:",
       "learningPoints": [
         {
           "code": "4am_jidaa-maadum_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (قد يكون سالبًا)",
       "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "value": "-5",
+          "id": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "أحد العاملين عدد ثابت."
+          "content": "يكون جداء عاملين معدومًا إذا كان أحد عامليه على الأقل معدومًا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عامل ثابت غير معدوم لا ينعدم أبدًا."
+          "content": "اكتب معادلتين من الدرجة الأولى: كل عامل يساوي $0$ ، ثم حلّ كل واحدة منهما."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "يكفي أن تحلّ المعادلة: العامل الآخر يساوي $0$."
+          "content": "انتبه إلى الإشارة عند نقل العدد إلى الطرف الثاني."
         }
       ],
       "feedback": {
-        "correct": "الطريقتان تعطيان $x = 5$ : $3 \\times (5 - 5) = 0$ .",
-        "incorrect": "العامل الثابت لا يعطي حلًّا: عوّض اقتراحك وتحقّق أنّ الجداء يساوي $0$."
-      }
+        "correct": "$x = 5$ .",
+        "incorrect": "اكتب أن العامل غير الثابت معدوم، ثم حلّ المعادلة من الدرجة الأولى بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $3(x - 5) = 0$",
+          "بما أن $3 \\neq 0$ فإن: $x - 5 = 0$",
+          "ومنه: $x = 5$",
+          "إذن للمعادلة حلّ وحيد هو $5$"
+        ],
+        "result": "x = 5"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
   ]
 }

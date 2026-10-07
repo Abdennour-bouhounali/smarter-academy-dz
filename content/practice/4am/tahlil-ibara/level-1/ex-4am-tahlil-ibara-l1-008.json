@@ -3,90 +3,150 @@
   "lessonCode": "tahlil-ibara",
   "level": 1,
   "metadata": {
-    "title": "تدريب — قيمة عبارة محلّلة",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2011 — عامل مشترك بين قوسين",
+    "estimatedMinutes": 7,
     "tags": [
-      "شكل محلّل",
-      "قيمة عبارة"
+      "عامل مشترك",
+      "تحليل"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_tahlil-ibara_P1",
-      "modelledOn": "method-expand-factor"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tahlil-ibara_P2",
+      "modelledOn": "BEM 2011 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2011",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "العبارة $A = (x - 4)(2x + 1)$ هي تحليل للعبارة $2x^2 - 7x - 4$."
+    "content": "لتكن العبارة $A$ حيث:",
+    "formulas": [
+      "A = (x + 4)(2x - 1) + (x + 4)(x + 5)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب A من أجل $x = 4$.",
+      "step": "01",
+      "lead": "حلّل العبارة $A$ إلى جداء عاملين من الدرجة الأولى.",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
-          "code": "4am_tahlil-ibara_P1",
+          "code": "4am_tahlil-ibara_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح",
-      "expectedAnswer": "0",
+      "answerFormat": "يُكتب $A$ على الشكل $(x + 4)(mx + n)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "استعمل الشكل المحلّل."
+          "content": "ابحث عن عامل مشترك بين حدود العبارة (قد يكون عبارة كاملة بين قوسين)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "من أجل $x = 4$ ، ماذا يساوي العامل $x - 4$؟"
+          "content": "استعمل $ka + kb = k(a + b)$ : أخرج العامل المشترك، واكتب ما يبقى من كل حد بين قوسين كبيرين."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "جداء فيه عامل معدوم..."
+          "content": "بسّط ما بين القوسين الكبيرين بإشاراته، ثم قارن بالشكل المطلوب."
         }
       ],
       "feedback": {
-        "correct": "من أجل $x = 4$ ، $x - 4 = 0$ ، فالجداء معدوم.",
-        "incorrect": "عوّض $x$ بـ 4 في العامل الأول."
-      }
+        "correct": "$A = (x + 4)(3x + 4)$ إذن $m = 3$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$A = (x + 4)(2x - 1) + (x + 4)(x + 5)$",
+          "$A = (x + 4)(2x - 1 + x + 5)$"
+        ],
+        "result": "A = (x + 4)(3x + 4)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "احسب A من أجل $x = 0$.",
+      "step": "01",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $(x + 4)(mx + n)$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = (x + 4)(3x + 4)$ إذن $n = 4$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$A = (x + 4)(3x + 4)$"
+        ],
+        "result": "n = 4"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب $A$ من أجل $x = 0$ .",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
-      "expectedAnswer": "-4",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "16",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الشكلان يعطيان القيمة نفسها."
+          "content": "عوّض $x$ بالعدد المعطى في الشكل المحلّل: الحساب أسهل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "بالشكل المحلّل: $(0 - 4)(2 \\times 0 + 1)$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "انتبه إلى الإشارة."
+          "content": "احسب قيمة كل عامل، ثم اضرب."
         }
       ],
       "feedback": {
-        "correct": "$(0 - 4)(0 + 1) = -4$ ، وبالشكل المنشور $0 - 0 - 4 = -4$.",
-        "incorrect": "عوّض $x$ بـ 0 في الشكل المحلّل، وانتبه إلى إشارة العامل الأول."
-      }
+        "correct": "$A = 16$ .",
+        "incorrect": "عوّض $x$ في كل عامل، واحترم الإشارات وأولويات العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$A = (x + 4)(3x + 4)$",
+          "$A = (0 + 4)(3 \\times 0 + 4) = 4 \\times 4$"
+        ],
+        "result": "A = 16"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

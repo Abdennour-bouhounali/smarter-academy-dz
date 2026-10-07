@@ -1,10 +1,13 @@
 {
+  "id": "ex-4am-tayin-pgcd-l1-001",
+  "lessonCode": "tayin-pgcd",
+  "level": 1,
   "metadata": {
     "title": "نشاط 5 — 42 و 60",
-    "estimatedMinutes": 4,
+    "estimatedMinutes": 5,
     "tags": [
-      "نشاط",
-      "حصر"
+      "PGCD",
+      "حصر القواسم"
     ],
     "source": {
       "type": "textbook",
@@ -12,93 +15,129 @@
       "page": 8,
       "section": "أنشطة",
       "number": 5
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "أوجد قواسم كلٍّ من العددين 42 و 60، ثم القواسم المشتركة لهذين العددين، ثم أكبرها."
+    "content": "نعتبر العددين الطبيعيين 42 و 60."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "القواسم المشتركة للعددين 42 و 60:",
+      "step": "01",
+      "statement": "اكتب قواسم كل من العددين 42 و 60، ثم استنتج القواسم المشتركة لهذين العددين.",
       "learningPoints": [
         {
           "code": "4am_tayin-pgcd_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "integerSet",
-      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "answerFormat": "القواسم المشتركة، مفصولة بفاصلة",
       "expectedAnswer": [
         1,
         2,
         3,
         6
       ],
+      "misconceptionSignatures": [
+        {
+          "value": [
+            2,
+            3,
+            6
+          ],
+          "id": "MISC-QAWASIM-NASY-1-WA-N"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قواسم 42 أولًا."
+          "content": "اكتب قواسم 42 مثنى مثنى: 1 مع 42، 2 مع 21، …"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ثم قواسم 60."
+          "content": "افعل الشيء نفسه مع 60، ثم احتفظ بالأعداد الموجودة في القائمتين معًا."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "الأعداد المشتركة."
+          "content": "لا تنسَ القاسم 1، فهو يقسم كل عدد طبيعي."
         }
       ],
       "feedback": {
-        "correct": "قواسم 42: 1 ، 2 ، 3 ، 6 ، 7 ، 14 ، 21 ، 42؛ قواسم 60: 1 ، 2 ، 3 ، 4 ، 5 ، 6 ، 10 ، 12 ، 15 ، 20 ، 30 ، 60.",
-        "incorrect": "اكتب القائمتين ثم قارن."
-      }
+        "correct": "القواسم المشتركة للعددين 42 و 60 هي: 1 ، 2 ، 3 ، 6.",
+        "incorrect": "اكتب القائمتين كاملتين، ثم احتفظ فقط بالأعداد التي تظهر فيهما معًا."
+      },
+      "solution": {
+        "lines": [
+          "قواسم العدد 42 هي: 1 ، 2 ، 3 ، 6 ، 7 ، 14 ، 21 ، 42",
+          "قواسم العدد 60 هي: 1 ، 2 ، 3 ، 4 ، 5 ، 6 ، 10 ، 12 ، 15 ، 20 ، 30 ، 60",
+          "القواسم المشتركة للعددين 42 و 60 هي: 1 ، 2 ، 3 ، 6"
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "PGCD(42 ; 60) = ?",
+      "step": "02",
+      "statement": "استنتج القاسم المشترك الأكبر للعددين 42 و 60، ثم اكتبه بالرمز PGCD.",
       "learningPoints": [
         {
           "code": "4am_tayin-pgcd_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "6",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "القواسم المشتركة: 1 ، 2 ، 3 ، 6."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "أكبرها؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "نكتب 6 = PGCD(42 ; 60)."
-        }
-      ],
-      "feedback": {
-        "correct": "أكبر القواسم المشتركة 1 ، 2 ، 3 ، 6.",
-        "incorrect": "خذ أكبر القواسم المشتركة."
-      },
       "misconceptionSignatures": [
         {
           "value": "3",
           "id": "MISC-PGCD-LAYSA-AKBAR"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل القواسم المشتركة التي وجدتها في السؤال 01."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استخرج القواسم المشتركة: الأعداد الموجودة في القائمتين معًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القاسم المشترك الأكبر هو أكبر القواسم المشتركة، لا أيّ واحد منها."
+        }
+      ],
+      "feedback": {
+        "correct": "القواسم المشتركة للعددين 42 و 60 هي 1 ، 2 ، 3 ، 6، وأكبرها 6.",
+        "incorrect": "اكتب قائمتي القواسم كاملتين، ثم خذ أكبر عدد يظهر في القائمتين معًا."
+      },
+      "solution": {
+        "lines": [
+          "قواسم العدد 42 هي: 1 ، 2 ، 3 ، 6 ، 7 ، 14 ، 21 ، 42",
+          "قواسم العدد 60 هي: 1 ، 2 ، 3 ، 4 ، 5 ، 6 ، 10 ، 12 ، 15 ، 20 ، 30 ، 60",
+          "القواسم المشتركة للعددين 42 و 60 هي: 1 ، 2 ، 3 ، 6",
+          "أكبرها هو 6، إذن:"
+        ],
+        "result": "PGCD(42 ; 60) = 6"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-tayin-pgcd-l1-001",
-  "lessonCode": "tayin-pgcd",
-  "level": 1
+  ]
 }

@@ -3,25 +3,76 @@
   "lessonCode": "tamthil-bayani-taalufi",
   "level": 4,
   "metadata": {
-    "title": "نقطتان بعيدتان",
-    "estimatedMinutes": 3,
+    "title": "نقطتان بعيدتان: $b$ ، $a$ ، صورتان",
+    "estimatedMinutes": 10,
     "tags": [
+      "قراءة بيانية",
       "معامل التوجيه",
-      "الترتيب عند المبدأ"
+      "صورة عدد"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
-      "learningPoint": "4am_tamthil-bayani-taalufi_P2"
+      "learningPoint": "4am_tamthil-bayani-taalufi_P2",
+      "adaptedFrom": "ex-4am-tamthil-bayani-taalufi-l4-001"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03,5"
     }
   },
   "statement": {
-    "content": "المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ ، ويشمل النقطتين $(-2 ; 5)$ و $(2 ; -1)$ ."
+    "content": "في المعلم المتعامد والمتجانس التالي، المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "K1": [
+          -2,
+          5
+        ],
+        "H1": [
+          4,
+          -4
+        ]
+      },
+      "lines": [
+        {
+          "through": [
+            "K1",
+            "H1"
+          ],
+          "name": "(D)",
+          "tone": "indigo",
+          "extend": [
+            0.04,
+            0.04
+          ]
+        }
+      ],
+      "grid": true,
+      "axes": true,
+      "labels": {
+        "O": "sw"
+      },
+      "hidden": [
+        "H1",
+        "K1"
+      ],
+      "ariaLabel": "معلم متعامد ومتجانس على ورقة مرصوفة: المستقيم (D) ينزل ويقطع محور التراتيب فوق المبدأ O"
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "معامل التوجيه $a$ للمستقيم:",
+      "step": "01",
+      "sub": "ا",
+      "lead": "بقراءة بيانية، عيّن العددين $a$ و $b$ حيث: $f(x) = ax + b$ .",
+      "statement": "أعط العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-taalufi_P2",
@@ -29,34 +80,46 @@
         }
       ],
       "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
-      "expectedAnswer": "-3/2",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "value": "4/3",
+          "id": "MISC-BAYANI-B-FASILA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معامل التوجيه $a$ هو ما يصعده المستقيم (أو ينزله) عندما نتقدّم وحدة واحدة إلى اليمين."
+          "content": "الترتيب عند المبدأ هو ترتيب النقطة التي يقطع فيها المستقيم محور التراتيب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "خذ نقطتين من المستقيم: كم تغيّر الترتيب؟ وكم تغيّرت الفاصلة؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم تغيّر الترتيب على تغيّر الفاصلة، بالإشارة: ينزل ⇒ $a < 0$ ."
+          "content": "ابحث على المستقيم عن النقطة التي فاصلتها 0، ثم اقرأ ترتيبها على محور التراتيب."
         }
       ],
       "feedback": {
-        "correct": "من $(-2 ; 5)$ إلى $(2 ; -1)$ : $a = \\dfrac{-1 - (5)}{2 - (-2)} = -1{,}5$ .",
-        "incorrect": "اقسم تغيّر الترتيب على تغيّر الفاصلة، لا العكس، وانتبه إلى الإشارة."
-      }
+        "correct": "المستقيم $(D)$ يقطع محور التراتيب في النقطة $(0 ; 2)$ .",
+        "incorrect": "اقرأ ترتيب نقطة تقاطع المستقيم مع محور التراتيب، لا فاصلة تقاطعه مع محور الفواصل."
+      },
+      "solution": {
+        "lines": [
+          "المستقيم $(D)$ يقطع محور التراتيب في النقطة $(0 ; 2)$ .",
+          "إذن الترتيب عند المبدأ هو: $b = 2$ ."
+        ],
+        "result": "b = 2"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "الترتيب عند المبدأ $b$ للدالة التي يمثّلها المستقيم:",
+      "step": "01",
+      "sub": "ب",
+      "statement": "أعط العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-taalufi_P2",
@@ -64,30 +127,148 @@
         }
       ],
       "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
-      "expectedAnswer": "2",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-3/2",
+      "misconceptionSignatures": [
+        {
+          "value": "-2/3",
+          "id": "MISC-BAYANI-MUAMIL-MAQLUB"
+        },
+        {
+          "value": "3/2",
+          "id": "MISC-BAYANI-ISHARA-A"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الترتيب عند المبدأ $b$ هو ترتيب النقطة التي يقطع فيها المستقيم محور التراتيب."
+          "content": "اختر نقطتين من المستقيم تقعان على عقدتين من الشبكة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هذه النقطة فاصلتها $0$ ، لأنّ $f(0) = b$ ."
+          "content": "من النقطة الأولى إلى الثانية: كم تزيد الفاصلة؟ وكم يصعد المستقيم أو ينزل؟"
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "إذا لم تكن مرسومة، انطلق من نقطة معلومة وارجع إلى الفاصلة $0$ بالدرجة $a$ ."
+          "content": "معامل التوجيه هو تغيّر الترتيب مقسوما على تغيّر الفاصلة، ويكون سالبا إذا نزل المستقيم."
         }
       ],
       "feedback": {
-        "correct": "المستقيم يقطع محور التراتيب في $(0 ; 2)$ : $b = 2$ .",
-        "incorrect": "اقرأ ترتيب نقطة التقاطع مع محور التراتيب، لا مع محور الفواصل."
-      }
+        "correct": "$a = -1{,}5$ .",
+        "incorrect": "اقسم تغيّر الترتيب على تغيّر الفاصلة (وليس العكس)، وانتبه إلى الإشارة إذا نزل المستقيم."
+      },
+      "solution": {
+        "lines": [
+          "النقطتان $(-2 ; 5)$ و $(2 ; -1)$ من المستقيم $(D)$ .",
+          "عندما نتقدّم $4$ وحدات إلى اليمين، ينزل المستقيم بـ $6$ وحدات.",
+          "إذن معامل التوجيه هو: $a = \\dfrac{-6}{4} = -1{,}5$ ."
+        ],
+        "result": "a = -1{,}5"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "بقراءة بيانية، عيّن صورة العدد $4$ بالدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-4",
+      "misconceptionSignatures": [
+        {
+          "value": "-4/3",
+          "id": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ من العدد المعطى على محور الفواصل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اتجه عموديا حتى المستقيم $(D)$ ، ثم أفقيا حتى محور التراتيب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الصورة هي ترتيب نقطة المستقيم التي فاصلتها العدد المعطى."
+        }
+      ],
+      "feedback": {
+        "correct": "النقطة من $(D)$ التي فاصلتها $4$ ترتيبها $-4$ .",
+        "incorrect": "الصورة تُقرأ على محور التراتيب: ترتيب نقطة المستقيم، لا فاصلتها."
+      },
+      "solution": {
+        "lines": [
+          "النقطة من المستقيم $(D)$ التي فاصلتها $4$ ترتيبها $-4$ .",
+          "إذن: $f(4) = -4$ ."
+        ],
+        "result": "f(4) = -4"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "استنتج عبارة $f(x)$ ، ثم احسب صورة العدد $10$ بالدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-13",
+      "misconceptionSignatures": [
+        {
+          "value": "-15",
+          "id": "MISC-TAALUFI-NISYAN-B"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $10$ في عبارة $f(x)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب في المعامل $a$ ثم أضف $b$ بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(10) = -\\dfrac{3}{2} \\times 10 + 2 = -13$ .",
+        "incorrect": "عوّض $x$ بالعدد المعطى في العبارة، ثم احسب: الضرب قبل الجمع."
+      },
+      "solution": {
+        "lines": [
+          "$f(10) = -\\dfrac{3}{2} \\times 10 + 2 = -13$"
+        ],
+        "result": "f(10) = -13"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
   ]
 }

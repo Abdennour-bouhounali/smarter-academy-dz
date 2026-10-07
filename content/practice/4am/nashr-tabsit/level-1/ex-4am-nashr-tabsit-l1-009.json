@@ -1,7 +1,10 @@
 {
+  "id": "ex-4am-nashr-tabsit-l1-009",
+  "lessonCode": "nashr-tabsit",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — كم جداءً؟",
-    "estimatedMinutes": 3,
+    "title": "جداء قوسين",
+    "estimatedMinutes": 8,
     "tags": [
       "جداء قوسين"
     ],
@@ -10,99 +13,179 @@
       "reason": "practice_generation",
       "learningPoint": "4am_nashr-tabsit_P3",
       "modelledOn": "know-1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "ننشر جداء قوسين: $(a + b)(c + d) = ac + ad + bc + bd$."
+    "content": "لتكن العبارة $F$ حيث:",
+    "formulas": [
+      "F = (x + 2)(x + 5)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "كم جداءً نحسب، قبل التبسيط، عند نشر $(x + 2)(x + 5)$ ؟",
+      "step": "01",
+      "lead": "انشر وبسّط العبارة $F$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "4",
+      "answerFormat": "يُكتب $F$ على الشكل $ax^2 + bx + c$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "1",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في كل قوس حدّان."
+          "content": "اضرب كل حد من القوس الأول في كل حد من القوس الثاني."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كل حد من القوس الأول يُضرب في كل حد من القوس الثاني."
+          "content": "انتبه إلى إشارة كل حد عند كتابة الجداءات."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احسب $2 \\times 2$."
+          "content": "اجمع الحدود المتشابهة: حدود $x^2$ معًا، ثم حدود $x$، ثم الأعداد."
         }
       ],
       "feedback": {
-        "correct": "حدّان في حدّين: أربعة جداءات $x^2 + 5x + 2x + 10$.",
-        "incorrect": "كل حد من القوس الأول يُضرب في كل حدّي القوس الثاني."
-      }
+        "correct": "$F = x^2 + 7x + 10$ إذن $a = 1$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$F = (x + 2)(x + 5)$",
+          "$F = x \\times x + x \\times 5 + 2 \\times x + 2 \\times 5$",
+          "$F = x^2 + 5x + 2x + 10$"
+        ],
+        "result": "F = x^2 + 7x + 10"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "نشر $(x + 2)(x + 5)$ وتبسيطه هو:",
+      "step": "01",
+      "statement": "العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $F$ على الشكل $ax^2 + bx + c$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x^2 + 10$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
-        },
-        {
-          "id": "B",
-          "content": "$x^2 + 7x + 10$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x^2 + 7x + 7$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+          "value": "0",
+          "id": "MISC-NASHR-AWWAL-AKHIR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "أربعة جداءات."
+          "content": "اجمع معاملات حدود $x$ بإشاراتها بعد النشر."
+        }
+      ],
+      "feedback": {
+        "correct": "$F = x^2 + 7x + 10$ إذن $b = 7$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $b$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$F = x^2 + 7x + 10$"
+        ],
+        "result": "b = 7"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "01",
+      "statement": "العدد $c$ :",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $F$ على الشكل $ax^2 + bx + c$ : اكتب العدد $c$ فقط",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت هو مجموع الأعداد التي لا تحتوي على $x$ بعد النشر، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$F = x^2 + 7x + 10$ إذن $c = 10$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $c$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$F = x^2 + 7x + 10$"
+        ],
+        "result": "c = 10"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "احسب $F$ من أجل $x = 10$ .",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "180",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد المعطى في الشكل المبسّط الذي وجدته."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$x \\times x$ ، $x \\times 5$ ، $2 \\times x$ ، $2 \\times 5$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم اجمع الحدّين المتشابهين."
+          "content": "احسب القوى أولًا، ثم الجداءات، ثم الجمع والطرح."
         }
       ],
       "feedback": {
-        "correct": "$x^2 + 5x + 2x + 10 = x^2 + 7x + 10$.",
-        "incorrect": "لا تكتفِ بجداء الأوّلين والأخيرين."
-      }
+        "correct": "$F = 180$.",
+        "incorrect": "عوّض $x$ في كل حد، واحترم أولويات العمليات والإشارات."
+      },
+      "solution": {
+        "lines": [
+          "باستعمال الشكل المعطى: $F = (10 + 2)(10 + 5) = 12 \\times 15$",
+          "وباستعمال الشكل المنشور: $F = 100 + 70 + 10$"
+        ],
+        "result": "F = 180"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-nashr-tabsit-l1-009",
-  "lessonCode": "nashr-tabsit",
-  "level": 1
+  ]
 }

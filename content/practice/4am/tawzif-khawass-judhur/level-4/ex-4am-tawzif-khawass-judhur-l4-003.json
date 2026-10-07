@@ -3,79 +3,193 @@
   "lessonCode": "tawzif-khawass-judhur",
   "level": 4,
   "metadata": {
-    "title": "تدريب — أين الخطأ؟ — أبسط كتابة",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2023 — كسر، a√3 ثم جداء",
+    "estimatedMinutes": 10,
     "tags": [
-      "تحليل خطأ",
-      "a√b"
+      "a√b",
+      "الخاصية التوزيعية",
+      "نسبة مقامها عدد ناطق"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_tawzif-khawass-judhur_P1",
-      "modelledOn": "method-simplify"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tawzif-khawass-judhur_P2",
+      "modelledOn": "BEM 2023 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2023",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "كتب أمين: $\\sqrt{72} = \\sqrt{4 \\times 18} = 2\\sqrt{18}$ ، وقال إنها الكتابة على الشكل $a\\sqrt{b}$ حيث $b$ أصغر ما يمكن."
+    "content": "لتكن الأعداد C ، B ، A حيث:",
+    "formulas": [
+      "A = \\dfrac{840}{360}",
+      "B = \\sqrt{108} + 2\\sqrt{27} - \\sqrt{75}",
+      "C = \\dfrac{4\\sqrt{3}}{\\sqrt{2}}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "كتب أمين $\\sqrt{72} = 2\\sqrt{18}$ وقال إن $b = 18$ أصغر ما يمكن. ما رأيك؟",
+      "step": "01",
+      "statement": "اكتب العدد A على شكل كسر غير قابل للاختزال.",
       "learningPoints": [
         {
-          "code": "4am_tawzif-khawass-judhur_P1",
+          "code": "4am_tawzif-khawass-judhur_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "7/3",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
         {
-          "id": "A",
-          "content": "كتابته هي المطلوبة لأنّ $2^2 \\times 18 = 72$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+          "id": "h1",
+          "type": "look",
+          "content": "احسب القاسم المشترك الأكبر للعددين 840 و 360."
         },
         {
-          "id": "B",
-          "content": "المساواة صحيحة لكنها ليست أبسط كتابة: أكبر مربع يقسم 72 هو 36، إذن $\\sqrt{72} = 6\\sqrt{2}$",
-          "isCorrect": true
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم البسط والمقام على هذا القاسم."
+        }
+      ],
+      "feedback": {
+        "correct": "$PGCD(840 ; 360) = 120$ ونقسم البسط والمقام عليه.",
+        "incorrect": "اقسم البسط والمقام على قاسمهما المشترك الأكبر.",
+        "notIrreducible": "القيمة صحيحة لكن الكسر ما زال قابلًا للاختزال."
+      },
+      "solution": {
+        "lines": [
+          "نحسب أولًا $PGCD(840 ; 360)$:",
+          "$840 = 360 \\times 2 + 120$",
+          "$360 = 120 \\times 3 + 0$",
+          "إذن $PGCD(840 ; 360) = 120$",
+          "$A = \\dfrac{840 \\div 120}{360 \\div 120}$"
+        ],
+        "result": "A = \\dfrac{7}{3}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "بين أن العدد B يكتب على الشكل $a\\sqrt{3}$ حيث: $a$ عدد طبيعي.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
         },
         {
-          "id": "C",
-          "content": "المساواة خاطئة لأنّ $\\sqrt{72} = 36\\sqrt{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-MUAMIL-MANSI"
         },
         {
-          "id": "D",
-          "content": "الكتابة المطلوبة هي $3\\sqrt{8}$ لأنّ $3^2 \\times 8 = 72$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+          "value": "17",
+          "id": "MISC-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تحقّق أولًا من المساواة $\\sqrt{72} = 2\\sqrt{18}$."
+          "content": "اكتب كل جذر على الشكل $x\\sqrt{3}$: ابحث عن أكبر مربع تامّ يقسم العدد الذي تحت الجذر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هل العدد 18 يقبل القسمة على مربع تامّ أكبر من 1؟"
+          "content": "استعمل $\\sqrt{m \\times 3} = \\sqrt{m} \\times \\sqrt{3}$ ثم احسب جذر المربع التامّ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "الطريقة: نبحث عن أكبر مربع يقسم 72."
+          "content": "اجمع المعاملات بإشاراتها بالخاصية التوزيعية: $x\\sqrt{3} + y\\sqrt{3} = (x + y)\\sqrt{3}$."
         }
       ],
       "feedback": {
-        "correct": "$72 = 36 \\times 2$ و 2 لا يقبل التبسيط؛ أما $18 = 9 \\times 2$ فيقبله.",
-        "incorrect": "المساواة قد تكون صحيحة دون أن يكون $b$ أصغر ما يمكن."
-      }
+        "correct": "$B = 6\\sqrt{3} + 6\\sqrt{3} - 5\\sqrt{3} = 7\\sqrt{3}$.",
+        "incorrect": "اكتب كل جذر على الشكل $x\\sqrt{3}$ (لا تنسَ المعامل 2)، ثم اجمع المعاملات بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$B = \\sqrt{108} + 2\\sqrt{27} - \\sqrt{75}$",
+          "$B = \\sqrt{36} \\times \\sqrt{3} + 2\\sqrt{9} \\times \\sqrt{3} - \\sqrt{25} \\times \\sqrt{3}$",
+          "$B = 6\\sqrt{3} + 2 \\times 3\\sqrt{3} - 5\\sqrt{3}$",
+          "$B = (6 + 6 - 5)\\sqrt{3}$"
+        ],
+        "result": "B = 7\\sqrt{3}"
+      },
+      "work": "optional",
+      "timeSeconds": 210
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "تحقق أن: $B \\times C = 42\\sqrt{2}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض B بالكتابة التي وجدتها في السؤال 02."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{3} \\times \\sqrt{3} = 3$"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجعل المقام $\\sqrt{2}$ عددًا ناطقًا."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى كل مرحلة من مراحل الحساب."
+      },
+      "solution": {
+        "lines": [
+          "$B \\times C = 7\\sqrt{3} \\times \\dfrac{4\\sqrt{3}}{\\sqrt{2}}$",
+          "$= \\dfrac{28(\\sqrt{3})^2}{\\sqrt{2}}$",
+          "$= \\dfrac{28 \\times 3}{\\sqrt{2}} = \\dfrac{84}{\\sqrt{2}}$",
+          "$= \\dfrac{84 \\times \\sqrt{2}}{\\sqrt{2} \\times \\sqrt{2}}$",
+          "$= \\dfrac{84\\sqrt{2}}{2}$"
+        ],
+        "result": "B \\times C = 42\\sqrt{2}"
+      },
+      "timeSeconds": 210
     }
   ]
 }

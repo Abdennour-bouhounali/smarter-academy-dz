@@ -1,104 +1,175 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l3-004",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — جداء عبارتين من الشكل a√b",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2017 — التمرين الأول",
+    "estimatedMinutes": 10,
     "tags": [
       "جداء جذرين",
-      "إخراج عامل من تحت الجذر"
+      "نسبة مقامها ناطق"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_amaliyat-judhur_P1",
-      "modelledOn": "ex-17"
+      "modelledOn": "BEM 2017 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2017",
+      "heading": "التمرين الأول",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "احسب كل جداء (النتيجة عدد طبيعي)."
+    "content": "$A$ و $B$ عددان حقيقيان حيث:",
+    "formulas": [
+      "A = \\sqrt{98} - \\sqrt{32}",
+      "B = \\dfrac{1}{2\\sqrt{2}}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$2\\sqrt{3} \\times 5\\sqrt{3}$",
+      "step": "01",
+      "statement": "اكتب العدد $A$ على الشكل $a\\sqrt{2}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "30",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "8",
+          "id": "MISC-JIDHR-TARH"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "رتّب الجداء: الأعداد معًا والجذور معًا."
+          "content": "اكتب $98 = 49 \\times 2$ و $32 = 16 \\times 2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$2\\sqrt{3} \\times 5\\sqrt{3} = (2 \\times 5) \\times (\\sqrt{3} \\times \\sqrt{3})$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "كم يساوي $(\\sqrt{3})^2$ ؟"
+          "content": "أخرج المربعين التامين من تحت الجذر ثم اطرح."
         }
       ],
       "feedback": {
-        "correct": "$2\\sqrt{3} \\times 5\\sqrt{3} = 10 \\times (\\sqrt{3})^2 = 10 \\times 3 = 30$",
-        "incorrect": "$(\\sqrt{a})^2 = a$ وليس $a^2$ ."
+        "correct": "$A = 7\\sqrt{2} - 4\\sqrt{2} = 3\\sqrt{2}$",
+        "incorrect": "اكتب كل جذر على الشكل $k\\sqrt{2}$ ثم اطرح المعاملين."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "90",
-          "id": "MISC-TARBI-JIDHR"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{49 \\times 2} - \\sqrt{16 \\times 2}$",
+          "$= 7\\sqrt{2} - 4\\sqrt{2}$"
+        ],
+        "result": "A = 3\\sqrt{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "$3\\sqrt{2} \\times 4\\sqrt{8}$",
+      "step": "02",
+      "statement": "اكتب العدد $B$ على شكل نسبة مقامها عدد ناطق.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $\\dfrac{\\sqrt{2}}{c}$ : اكتب العدد $c$ فقط",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب البسط والمقام في $\\sqrt{2}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما قيمة $\\sqrt{2} \\times \\sqrt{2}$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$B = \\dfrac{\\sqrt{2}}{2 \\times 2} = \\dfrac{\\sqrt{2}}{4}$",
+        "incorrect": "اضرب البسط والمقام معًا في $\\sqrt{2}$ ، ثم احسب المقام."
+      },
+      "solution": {
+        "lines": [
+          "$B = \\dfrac{1}{2\\sqrt{2}} = \\dfrac{1 \\times \\sqrt{2}}{2\\sqrt{2} \\times \\sqrt{2}}$",
+          "$= \\dfrac{\\sqrt{2}}{2 \\times 2}$"
+        ],
+        "result": "B = \\dfrac{\\sqrt{2}}{4}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "بين أن $C$ هو عدد طبيعي حيث: $C = (A + 2)(12B - 2)$ .",
       "learningPoints": [
         {
           "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "48",
+      "answerFormat": "اكتب قيمة $C$ (عدد طبيعي)",
+      "expectedAnswer": "14",
+      "misconceptionSignatures": [
+        {
+          "value": "32",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "رتّب الجداء: الأعداد معًا والجذور معًا."
+          "content": "احسب $12B$ باستعمال نتيجة السؤال 02."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\sqrt{2} \\times \\sqrt{8} = \\sqrt{16}$ ."
+          "content": "لاحظ أن $C$ من الشكل $(a + b)(a - b)$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اضرب $3 \\times 4$ في الجذر الذي وجدته."
+          "content": "استعمل $(3\\sqrt{2})^2 = 9 \\times 2$ ."
         }
       ],
       "feedback": {
-        "correct": "$3\\sqrt{2} \\times 4\\sqrt{8} = 12 \\times \\sqrt{16} = 12 \\times 4 = 48$",
-        "incorrect": "لا تنسَ ضرب المعاملين 3 و 4."
+        "correct": "$12B = 3\\sqrt{2}$ ، إذن $C = (3\\sqrt{2})^2 - 2^2 = 18 - 4 = 14$ .",
+        "incorrect": "اكتب $12B$ على الشكل $k\\sqrt{2}$ ثم انشر الجداء."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "4",
-          "id": "MISC-MUAMIL-MANSI"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$12B = 12 \\times \\dfrac{\\sqrt{2}}{4} = 3\\sqrt{2}$",
+          "$C = (3\\sqrt{2} + 2)(3\\sqrt{2} - 2)$",
+          "$= (3\\sqrt{2})^2 - 2^2$",
+          "$= 18 - 4$"
+        ],
+        "result": "C = 14"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l3-004",
-  "lessonCode": "amaliyat-judhur",
-  "level": 3
+  ]
 }

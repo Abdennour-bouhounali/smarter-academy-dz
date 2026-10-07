@@ -3,25 +3,54 @@
   "lessonCode": "tanasub-muamil",
   "level": 4,
   "metadata": {
-    "title": "تدريب — معامل كسري ثانٍ",
-    "estimatedMinutes": 3,
+    "title": "معامل كسري وخاصية الجمع",
+    "estimatedMinutes": 6,
     "tags": [
-      "كسور"
+      "معامل التناسبية",
+      "خواص الجدول"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tanasub-muamil_P3",
-      "modelledOn": "act-1"
+      "modelledOn": "act-1",
+      "adaptedFrom": "ex-4am-tanasub-muamil-l4-003"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "الجدول الآتي جدول تناسبية: $\\begin{array}{|c|c|c|c|} \\hline x & 6 & 9 & 15 \\\\ \\hline y & 4 & 6 & 10 \\\\ \\hline \\end{array}$"
+    "content": "الجدول الآتي جدول تناسبية:",
+    "table": {
+      "head": [
+        "$x$",
+        "6",
+        "9",
+        "15",
+        "21",
+        "…"
+      ],
+      "rows": [
+        [
+          "$y$",
+          "4",
+          "6",
+          "10",
+          "…",
+          "30"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هو معامل التناسبية؟ (اكتبه كسرا)",
+      "step": "01",
+      "statement": "احسب معامل التناسبية (على شكل كسر غير قابل للاختزال).",
       "learningPoints": [
         {
           "code": "4am_tanasub-muamil_P1",
@@ -31,8 +60,14 @@
       "difficulty": 4,
       "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "answerFormat": "كسر a/b",
       "expectedAnswer": "2/3",
+      "misconceptionSignatures": [
+        {
+          "value": "3/2",
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
@@ -47,71 +82,143 @@
         {
           "id": "h3",
           "type": "strategy",
-          "content": "تحقّق أنّ حاصل القسمة هو نفسه في عمود آخر."
+          "content": "تحقّق أن حاصل القسمة هو نفسه في عمود آخر."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{4}{6} = \\dfrac{6}{9} = \\dfrac{10}{15} = \\dfrac{2}{3}$ .",
-        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+        "correct": "$a = \\dfrac{2}{3}$ .",
+        "incorrect": "معامل التناسبية هو $\\dfrac{y}{x}$ : السطر الثاني على السطر الأول، وليس العكس."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "3/2",
-          "id": "MISC-TANASUB-MUAMIL-MAQLUB"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$\\dfrac{4}{6} = \\dfrac{6}{9} = \\dfrac{10}{15} = \\dfrac{2}{3}$"
+        ],
+        "result": "a = \\dfrac{2}{3}"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "العلاقة بين السطرين:",
+      "step": "02",
+      "sub": "ا",
+      "lead": "انقل الجدول وأكمله.",
+      "statement": "العدد المقابل لـ $x = 21$ :",
       "learningPoints": [
         {
-          "code": "4am_tanasub-muamil_P3",
+          "code": "4am_tanasub-muamil_P1",
           "role": "primary"
         }
       ],
       "difficulty": 4,
       "cognitiveDemand": "apply",
-      "answerType": "choice",
-      "choices": [
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر من الشكل a/b)",
+      "expectedAnswer": "14",
+      "hints": [
         {
-          "id": "A",
-          "content": "$y = x - 2$",
-          "isCorrect": false
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تناسبية نضرب في المعامل، ولا نضيف الفرق."
         },
         {
-          "id": "B",
-          "content": "$y = \\dfrac{2}{3} \\times x$",
-          "isCorrect": true
-        },
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب معامل التناسبية من عمود كامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$21 \\times \\dfrac{2}{3} = 14$ .",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      },
+      "solution": {
+        "lines": [
+          "$21 \\times \\dfrac{2}{3} = 14$",
+          "أو: $21 = 6 + 15$ ، إذن $y = 4 + 10 = 14$ ."
+        ],
+        "result": "14"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "العدد $x$ الذي يقابل $y = 30$ :",
+      "learningPoints": [
         {
-          "id": "C",
-          "content": "$y = \\dfrac{3}{2} \\times x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر من الشكل a/b)",
+      "expectedAnswer": "45",
+      "misconceptionSignatures": [
+        {
+          "value": "20",
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في جدول تناسبية نحصل على y بضرب x في المعامل."
+          "content": "العدد المعلوم هنا في السطر الثاني: نبحث عن العدد المقابل له في السطر الأول."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب المعامل $a = \\dfrac{y}{x}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب $y = a \\times x$ ثم تحقّق على عمود من الجدول."
+          "content": "السطر الأول = السطر الثاني ÷ معامل التناسبية."
         }
       ],
       "feedback": {
-        "correct": "$y = \\dfrac{2}{3} \\times x$ ؛ أمّا $y = x - 2$ فتعطي 7 من أجل 9 ، وليس 6.",
-        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
-      }
+        "correct": "$30 \\times \\dfrac{3}{2} = 45$ .",
+        "incorrect": "اقسم 30 على المعامل $\\dfrac{2}{3}$ أي اضربه في $\\dfrac{3}{2}$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{2}{3} \\times x = 30$",
+          "$x = 30 \\times \\dfrac{3}{2} = 45$"
+        ],
+        "result": "45"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "بيّن، دون حساب المعامل، أن العمود $(15 ; 10)$ مجموع العمودين $(6 ; 4)$ و $(9 ; 6)$ ، واشرح لماذا يكفي ذلك لإيجاد العدد 10 من العددين 4 و 6 .",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تناسبية: إذا جمعنا عمودين نحصل على عمود من الجدول."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "$6 + 9 = 15$ و $4 + 6 = 10$ .",
+          "في جدول تناسبية معامله $a$ : $a \\times 6 + a \\times 9 = a \\times (6 + 9)$ ،",
+          "إذن العدد المقابل لـ 15 هو مجموع العددين المقابلين لـ 6 و 9 ، أي $4 + 6 = 10$ ."
+        ]
+      },
+      "timeSeconds": 120
     }
   ]
 }

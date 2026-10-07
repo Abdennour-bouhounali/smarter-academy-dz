@@ -3,120 +3,89 @@
   "lessonCode": "wadiya-idmajiya-jumal",
   "level": 3,
   "metadata": {
-    "title": "أدمج تعلّماتي — حفل البلدية",
-    "estimatedMinutes": 4,
+    "title": "حفل البلدية",
+    "estimatedMinutes": 12,
     "tags": [
-      "ترجمة",
-      "حل جملة"
+      "ترييض",
+      "تبسيط",
+      "تفسير"
     ],
     "source": {
       "type": "textbook",
       "elementId": "situation",
       "page": 62,
       "section": "أدمج تعلّماتي"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "بمناسبة الاحتفال بالمولد النبوي الشريف، اقتنت بلدية 150 علبة عصير برتقال و 150 قطعة حلوى متماثلة ودفعت 11 250 DA لكل المصاريف. في نهاية الحفل، بقيت 24 علبة عصير و 30 قطعة حلوى ثمنها معا 2 100 DA. نسمّي $x$ سعر علبة عصير و $y$ سعر قطعة حلوى (بالدينار)."
+    "content": "بمناسبة الاحتفال بالمولد النبوي الشريف، اقتنت بلدية 150 علبة عصير برتقال و 150 قطعة حلوى متماثلة ودفعت 11250DA. في نهاية الحفل، بقيت 24 علبة عصير و 30 قطعة حلوى ثمنها معا 2100DA.\nنسمّي $x$ سعر علبة العصير و $y$ سعر قطعة الحلوى (بالدينار)."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الجملة التي تترجم المعطيات هي:",
+      "step": "01",
+      "statement": "بيّن أن $x$ و $y$ يحققان الجملة: $\\begin{cases} x + y = 75 \\\\ 4x + 5y = 350 \\end{cases}$",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\begin{cases} 150x + 150y = 11250 \\\\ 30x + 24y = 2100 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "B",
-          "content": "$\\begin{cases} x + y = 11250 \\\\ 24x + 30y = 2100 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "$\\begin{cases} 150x + 150y = 2100 \\\\ 24x + 30y = 11250 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "D",
-          "content": "$\\begin{cases} 150x + 150y = 11250 \\\\ 24x + 30y = 2100 \\end{cases}$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معلومتان عن مبلغين."
+          "content": "سمِّ الكميتين المجهولتين، ثم ترجم كل معلومة من النص بمعادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كل عدد يُضرب في سعر الشيء الذي يعدّه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المبلغ في المعادلة هو مبلغ المعلومة نفسها."
+          "content": "بسّط كل معادلة بقسمة طرفيها على عدد مناسب."
         }
       ],
       "feedback": {
-        "correct": "$150x + 150y = 11250$ و $24x + 30y = 2100$.",
-        "incorrect": "العدد 24 يعدّ العلب، و 30 يعدّ القطع."
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "المشتريات: $150x + 150y = 11250$ ، وبقسمة الطرفين على 150: $x + y = 75$",
+          "الباقي: $24x + 30y = 2100$ ، وبقسمة الطرفين على 6: $4x + 5y = 350$",
+          "ومنه: $\\begin{cases} x + y = 75 \\\\ 4x + 5y = 350 \\end{cases}$"
+        ]
+      },
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "ما سعرا العلبة والقطعة $(x ; y)$ ؟",
+      "step": "02",
+      "statement": "حل هذه الجملة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": {
         "x": "25",
         "y": "50"
       },
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "اقسم المعادلة الأولى على 150."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$y = 75 - x$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "عوّض في $24x + 30y = 2100$."
-        }
-      ],
-      "feedback": {
-        "correct": "$2250 - 6x = 2100$ ، $x = 25$ ، $y = 50$.",
-        "incorrect": "بسّط ثم عوّض، وتحقق في النص."
-      },
-      "cognitiveDemand": "apply",
-      "difficulty": 3,
       "misconceptionSignatures": [
         {
           "value": {
@@ -125,7 +94,85 @@
           },
           "id": "MISC-JUMLA-TARTIB"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملات $x$ ومعاملات $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختر طريقة التعويض أو طريقة الجمع (بعد ضرب المعادلتين في عددين مناسبين) لحذف أحد المجهولين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد أحد المجهولين، عوّضه في إحدى المعادلتين لتجد الآخر."
+        }
+      ],
+      "feedback": {
+        "correct": "علبة العصير بـ $25DA$ وقطعة الحلوى بـ $50DA$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} x + y = 75 & ...(1) \\\\ 4x + 5y = 350 & ...(2) \\end{cases}$",
+          "من المعادلة (1) نجد: $y = 75 - x$",
+          "بالتعويض في المعادلة (2) نجد: $4x + 5(75 - x) = 350$",
+          "$-x + 375 = 350$",
+          "$-x = -25$",
+          "$x = 25$",
+          "ومنه: $y = 75 - 25 = 50$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(25 ; 50)"
+      },
+      "work": "optional",
+      "timeSeconds": 300
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "احسب ثمن ما استُهلك أثناء الحفل.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "9150",
+      "misconceptionSignatures": [
+        {
+          "value": "13350",
+          "id": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما اشترته البلدية = ما استُهلك + ما بقي."
+        }
+      ],
+      "feedback": {
+        "correct": "ثمن ما استُهلك $9150DA$ .",
+        "incorrect": "اطرح ثمن ما بقي من ثمن ما اشترته البلدية."
+      },
+      "solution": {
+        "lines": [
+          "استُهلكت $150 - 24 = 126$ علبة و $150 - 30 = 120$ قطعة.",
+          "$126 \\times 25 + 120 \\times 50 = 3150 + 6000 = 9150$",
+          "أو مباشرة: $11250 - 2100 = 9150$",
+          "ثمن ما استُهلك $9150DA$ ."
+        ],
+        "result": "9150\\,DA"
+      },
+      "timeSeconds": 150
     }
   ]
 }

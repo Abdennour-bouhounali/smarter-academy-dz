@@ -1,34 +1,44 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l3-003",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — من الحلول إلى المعادلة",
-    "estimatedMinutes": 3,
+    "title": "من الحلول إلى المعادلة",
+    "estimatedMinutes": 6,
     "tags": [
-      "مسألة عكسية",
-      "مربع عدد"
+      "مربع عدد",
+      "كتابة معادلة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_muadalat-x-murabba_P1",
       "modelledOn": "act-3"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "نعرف حلول معادلة من الشكل $x^2 = a$ ونبحث عن $a$."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلا المعادلة $x^2 = a$ هما $\\dfrac{5}{3}$ و $-\\dfrac{5}{3}$. ما قيمة $a$؟",
+      "step": "01",
+      "statement": "اكتب معادلة من الشكل $x^2 = a$ حلاها $\\dfrac{5}{3}$ و $-\\dfrac{5}{3}$.",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P1",
           "role": "primary"
         }
       ],
-      "cognitiveDemand": "reason",
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "كسر على الشكل a/b",
+      "answerFormat": "اكتب العدد $a$ فقط، على شكل كسر a/b",
       "expectedAnswer": "25/9",
       "misconceptionSignatures": [
         {
@@ -44,34 +54,40 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "كل حل يحقّق المعادلة."
+          "content": "كل حل للمعادلة $x^2 = a$ مربعه يساوي $a$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض $x$ بأحد الحلين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "مربع كسر هو مربع بسطه على مربع مقامه."
+          "content": "احسب مربع الحل الموجب."
         }
       ],
       "feedback": {
-        "correct": "$a = \\left(\\dfrac{5}{3}\\right)^2 = \\dfrac{25}{9}$.",
-        "incorrect": "المربع ليس الضعف، وهو موجب."
-      }
+        "correct": "$a = \\left(\\dfrac{5}{3}\\right)^2 = \\dfrac{25}{9}$: المعادلة هي $x^2 = \\dfrac{25}{9}$.",
+        "incorrect": "$a$ هو مربع أحد الحلين، وليس ضعفه."
+      },
+      "solution": {
+        "lines": [
+          "$\\left(\\dfrac{5}{3}\\right)^2 = \\dfrac{25}{9}$ و $\\left(-\\dfrac{5}{3}\\right)^2 = \\dfrac{25}{9}$",
+          "إذن العددان $\\dfrac{5}{3}$ و $-\\dfrac{5}{3}$ حلا المعادلة:"
+        ],
+        "result": "x^2 = \\dfrac{25}{9}"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "العدد $-0{,}4$ حل للمعادلة $x^2 = a$. ما قيمة $a$؟",
+      "step": "02",
+      "sub": "ا",
+      "lead": "العدد $-0{,}4$ حل للمعادلة $x^2 = b$.",
+      "statement": "جد العدد $b$.",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P1",
           "role": "primary"
         }
       ],
-      "cognitiveDemand": "reason",
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد عشري (بالفاصلة)",
       "expectedAnswer": "0.16",
@@ -85,10 +101,6 @@
           "id": "MISC-MURABBA-DIF"
         },
         {
-          "value": "0.8",
-          "id": "MISC-MURABBA-DIF"
-        },
-        {
           "value": "1.6",
           "id": "MISC-JIDHR-FASILA"
         }
@@ -97,26 +109,67 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ بالحل المعطى."
+          "content": "عوّض $x$ بالعدد $-0{,}4$ في المعادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب مربع $-0{,}4$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "جداء عددين سالبين موجب."
+          "content": "مربع عدد سالب عدد موجب."
         }
       ],
       "feedback": {
-        "correct": "$a = (-0{,}4)^2 = 0{,}16$.",
-        "incorrect": "المربع ليس الضعف، وانتبه إلى الإشارة وموضع الفاصلة."
-      }
+        "correct": "$b = (-0{,}4)^2 = 0{,}16$.",
+        "incorrect": "احسب مربع العدد المعطى، وانتبه إلى الإشارة وإلى موضع الفاصلة."
+      },
+      "solution": {
+        "lines": [
+          "العدد $-0{,}4$ حل للمعادلة $x^2 = b$ معناه $(-0{,}4)^2 = b$",
+          "$(-0{,}4)^2 = (-0{,}4) \\times (-0{,}4)$"
+        ],
+        "result": "b = 0{,}16"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "أعط الحل الآخر لهذه المعادلة.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (بالفاصلة)",
+      "expectedAnswer": "0.4",
+      "misconceptionSignatures": [
+        {
+          "value": "-0.4",
+          "id": "MISC-HALL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لعددين متعاكسين نفس المربع."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل الآخر هو معاكس $-0{,}4$.",
+        "incorrect": "الحلان عددان متعاكسان."
+      },
+      "solution": {
+        "lines": [
+          "$b = 0{,}16 > 0$: المعادلة $x^2 = 0{,}16$ تقبل حلين متعاكسين،",
+          "أحدهما $-0{,}4$ والآخر معاكسه:"
+        ],
+        "result": "x = 0{,}4"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l3-003",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 3
+  ]
 }

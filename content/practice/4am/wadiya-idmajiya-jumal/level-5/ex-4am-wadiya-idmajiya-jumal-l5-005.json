@@ -3,189 +3,290 @@
   "lessonCode": "wadiya-idmajiya-jumal",
   "level": 5,
   "metadata": {
-    "title": "مناصرو الشباب في الداربي",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2018 — المسرح الجهوي بوهران",
+    "estimatedMinutes": 18,
     "tags": [
-      "ترجمة",
-      "حل جملة",
-      "التحقق"
+      "جملة",
+      "وضعية",
+      "مقارنة صيغتين"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
-      "modelledOn": "act-3"
+      "modelledOn": "BEM 2018 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2018",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "اشترت جمعية مناصري شباب قسنطينة 50 تذكرة للداربي: تذكرة المنصة بـ 800 DA وتذكرة المدرجات بـ 300 DA، ودفعت 23 000 DA. نسمّي $x$ عدد تذاكر المنصة و $y$ عدد تذاكر المدرجات."
+    "content": "يقترح المسرح الجهوي بوهران على متفرجيه صيغتين لحضور العروض خلال الموسم:\n- الصيغة الأولى: 600DA للعرض الواحد.\n- الصيغة الثانية: بطاقة سنوية بـ 3000DA إضافة إلى 350DA للعرض الواحد."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الجملة التي تترجم النص هي:",
+      "step": "01",
+      "lead": "احسب المبلغ الذي يدفعه متفرج يحضر 10 عروض حسب كل صيغة.",
+      "statement": "حسب الصيغة الأولى:",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "6000",
+      "hints": [
         {
-          "id": "A",
-          "content": "$\\begin{cases} x + y = 23000 \\\\ 800x + 300y = 50 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب العدد المعطى في المبلغ الذي يقابل الوحدة الواحدة، وأضف المبلغ الثابت إن وُجد."
+        }
+      ],
+      "feedback": {
+        "correct": "$10 \\times 600 = 6000$ .",
+        "incorrect": "اقرأ الصيغة جيدا: ما الذي يُدفع عن كل وحدة وما الذي يُدفع مرة واحدة؟"
+      },
+      "solution": {
+        "lines": [
+          "الصيغة الأولى: $10 \\times 600 = 6000$ أي $6000DA$",
+          "الصيغة الثانية: $10 \\times 350 + 3000 = 6500$ أي $6500DA$"
+        ]
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "حسب الصيغة الثانية:",
+      "learningPoints": [
         {
-          "id": "B",
-          "content": "$\\begin{cases} x + y = 50 \\\\ 300x + 800y = 23000 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "6500",
+      "misconceptionSignatures": [
         {
-          "id": "C",
-          "content": "$\\begin{cases} x + y = 50 \\\\ 800x + 300y = 23000 \\end{cases}$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$\\begin{cases} 800x + 300y = 50 \\\\ x + y = 23000 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
+          "value": "3500",
+          "id": "MISC-WADIYA-TARJAMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معلومة تعدّ التذاكر ومعلومة عن المبلغ."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "تذكرة المنصة بـ 800 DA."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "كل عدد يُضرب في ثمن تذكرته."
+          "content": "لا تنس المبلغ الثابت."
         }
       ],
       "feedback": {
-        "correct": "$x + y = 50$ و $800x + 300y = 23000$.",
-        "incorrect": "العدد 50 عدد تذاكر، و 23 000 مبلغ."
+        "correct": "$10 \\times 350 + 3000 = 6500$ .",
+        "incorrect": "المبلغ = العدد × المبلغ عن الوحدة + المبلغ الثابت."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "الصيغة الأولى: $10 \\times 600 = 6000$ أي $6000DA$",
+          "الصيغة الثانية: $10 \\times 350 + 3000 = 6500$ أي $6500DA$"
+        ]
+      },
+      "timeSeconds": 90
     },
     {
-      "id": "q2",
-      "statement": "كم تذكرة $(x ; y)$ من كل نوع؟",
+      "id": "q3",
+      "step": "02",
+      "lead": "ليكن $x$ عدد العروض التي يحضرها متفرج خلال الموسم و $y$ المبلغ المدفوع (بالدينار).",
+      "statement": "بيّن أنه إذا تساوى المبلغان حسب الصيغتين، فإن الثنائية $(x ; y)$ حل للجملة: $\\begin{cases} y = 600x \\\\ y = 350x + 3000 \\end{cases}$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عبّر عن المبلغ حسب كل صيغة بدلالة $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "المبلغ حسب الصيغة الأولى: $600x$",
+          "المبلغ حسب الصيغة الثانية: $350x + 3000$",
+          "المبلغان متساويان ويساويان $y$ ، ومنه الثنائية $(x ; y)$ حل للجملة: $\\begin{cases} y = 600x \\\\ y = 350x + 3000 \\end{cases}$"
+        ]
+      },
+      "timeSeconds": 240
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "حل هذه الجملة، ثم فسّر النتيجة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : عدد العروض ثم المبلغ بـ DA",
       "expectedAnswer": {
-        "x": "16",
-        "y": "34"
+        "x": "12",
+        "y": "7200"
       },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "7200",
+            "y": "12"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقسم معادلة المبلغ على 100."
+          "content": "$y$ معزول في المعادلتين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$y = 50 - x$."
+          "content": "ساوِ بين الطرفين الثانيين للمعادلتين ثم احسب $x$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$8x + 150 - 3x = 230$."
+          "content": "عوّض قيمة $x$ في إحدى المعادلتين لتجد $y$ ."
         }
       ],
       "feedback": {
-        "correct": "$5x = 80$ ، $x = 16$ ، $y = 34$.",
-        "incorrect": "بسّط ثم عوّض."
+        "correct": "الثنائية $(12 ; 7200)$ : من أجل 12 عرضا يتساوى المبلغان ويساويان $7200DA$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 4,
-      "misconceptionSignatures": [
-        {
-          "value": {
-            "x": "34",
-            "y": "16"
-          },
-          "id": "MISC-JUMLA-TARTIB"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$\\begin{cases} y = 600x & ...(1) \\\\ y = 350x + 3000 & ...(2) \\end{cases}$",
+          "بما أن $y$ معزول في المعادلتين، نساوي بين الطرفين الثانيين: $600x = 350x + 3000$",
+          "$250x = 3000$",
+          "$x = 12$",
+          "بالتعويض في المعادلة (1): $y = 600 \\times 12 = 7200$",
+          "من أجل 12 عرضا يتساوى المبلغان ويساويان $7200DA$ .",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(12 ; 7200)"
+      },
+      "work": "optional",
+      "timeSeconds": 300
     },
     {
-      "id": "q3",
-      "statement": "التحقق في النص:",
+      "id": "q5",
+      "step": "04",
+      "sub": "ا",
+      "lead": "☜ دفع مراد خلال الموسم 8600DA حسب الصيغة الثانية.",
+      "statement": "كم عرضا حضر؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب عدد العروض فقط",
+      "expectedAnswer": "16",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$16 + 34 = 50$ تذكرة و $800 \\times 16 + 300 \\times 34 = 23000$ DA",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "يكفي أن نتحقق من $16 + 34 = 50$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
-        },
-        {
-          "id": "C",
-          "content": "$800 \\times 34 + 300 \\times 16 = 23000$ DA",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARTIB"
-        },
-        {
-          "id": "D",
-          "content": "لا حاجة إلى التحقق بعد الحل",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TAHAQQUQ-NAS"
+          "value": "172/7",
+          "id": "MISC-WADIYA-TARJAMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض في المعلومتين كلتيهما."
+          "content": "اطرح ثمن البطاقة من المبلغ المدفوع."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المنصة: 16 تذكرة بـ 800 DA."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب المبلغ الكلي."
+          "content": "اقسم الباقي على ثمن العرض الواحد."
         }
       ],
       "feedback": {
-        "correct": "$12800 + 10200 = 23000$ DA و 50 تذكرة.",
-        "incorrect": "التحقق يشمل المعلومتين، بالترتيب الصحيح."
+        "correct": "$350 \\times 16 + 3000 = 8600$ .",
+        "incorrect": "ثمن البطاقة يُدفع مرة واحدة: اطرحه أولا ثم اقسم على ثمن العرض."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "نبحث عن $n$ بحيث: $350n + 3000 = 8600$",
+          "$350n = 5600$",
+          "$n = 16$",
+          "حضر مراد 16 عرضا."
+        ],
+        "result": "16"
+      },
+      "timeSeconds": 180
+    },
+    {
+      "id": "q6",
+      "step": "04",
+      "sub": "ب",
+      "statement": "كم كان سيدفع لو اختار الصيغة الأولى؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "counted": false,
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "9600",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل عدد العروض الذي وجدته في (ا)."
+        }
+      ],
+      "feedback": {
+        "correct": "$16 \\times 600 = 9600DA$ ، فوفّر $1000DA$ .",
+        "incorrect": "اضرب عدد العروض في ثمن العرض حسب الصيغة الأولى."
+      },
+      "solution": {
+        "lines": [
+          "حسب الصيغة الأولى: $16 \\times 600 = 9600$ أي $9600DA$",
+          "وفّر مراد: $9600 - 8600 = 1000$ أي $1000DA$ ."
+        ],
+        "result": "9600\\,DA"
+      },
+      "timeSeconds": 120
     }
   ]
 }

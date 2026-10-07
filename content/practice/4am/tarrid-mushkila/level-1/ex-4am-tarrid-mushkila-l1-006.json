@@ -3,155 +3,107 @@
   "lessonCode": "tarrid-mushkila",
   "level": 1,
   "metadata": {
-    "title": "تدريب — اختيار المجهول",
+    "title": "أقلام سارة",
     "estimatedMinutes": 3,
     "tags": [
       "ترييض",
-      "مجهول"
+      "معادلة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tarrid-mushkila_P1",
       "modelledOn": "method-modelling"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "ثمن قلم واحد 25 دينارًا. اشترت سارة عددًا من الأقلام المتماثلة ودفعت 175 دينارًا. نسمّي $x$ مجهول المشكلة."
+    "content": "اشترت سارة عددًا من الأقلام المتماثلة، ثمن القلم الواحد 25DA ، و دفعت 175DA ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ماذا يمثّل $x$ المناسب هنا؟",
+      "step": "01",
+      "statement": "سمِّ $x$ عدد الأقلام، اكتب معادلة تترجم المعطيات ثم جد $x$ .",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "ثمن قلم واحد",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "عدد الأقلام التي اشترتها سارة",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "المبلغ الذي دفعته سارة",
-          "isCorrect": false
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "ما المعلوم في النص وما المجهول؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "ثمن القلم والمبلغ المدفوع معلومان."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المجهول هو ما يسأل عنه النص ضمنيًا."
-        }
-      ],
-      "feedback": {
-        "correct": "ثمن القلم (25) والمبلغ (175) معلومان: المجهول عدد الأقلام.",
-        "incorrect": "لا نسمّي $x$ عددًا يعطيه النص."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "أيّ معادلة تترجم النص؟",
-      "learningPoints": [
-        {
-          "code": "4am_tarrid-mushkila_P1",
-          "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$25x = 175$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$x + 25 = 175$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "$175x = 25$",
-          "isCorrect": false
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "ثمن $x$ قلم سعر الواحد 25 دينارًا هو؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "نضرب سعر القلم في عدد الأقلام."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هذا الثمن يساوي المبلغ المدفوع."
-        }
-      ],
-      "feedback": {
-        "correct": "ثمن $x$ قلم هو $25x$ ، و $25x = 175$ .",
-        "incorrect": "كل قلم يُدفع ثمنه: 25 مرة بعدد الأقلام."
-      }
-    },
-    {
-      "id": "q3",
-      "statement": "كم قلمًا اشترت سارة؟",
-      "learningPoints": [
-        {
-          "code": "4am_tarrid-mushkila_P2",
-          "role": "primary"
-        }
-      ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "عدد طبيعي: عدد الأقلام",
       "expectedAnswer": "7",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انطلق من $25x = 175$ ."
+          "content": "ما الكمية المجهولة؟ ثمن القلم والمبلغ المدفوع معطيان."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اقسم الطرفين على 25."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق: ثمن الأقلام يساوي 175."
+          "content": "ثمن $x$ قلمًا هو $25 \\times x$ ."
         }
       ],
       "feedback": {
-        "correct": "$x = 175 \\div 25 = 7$ ، و $7 \\times 25 = 175$ .",
-        "incorrect": "اقسم 175 على 25."
-      }
+        "correct": "$25x = 175$ تعطي $x = 7$ : اشترت سارة 7 أقلام.",
+        "incorrect": "المبلغ المدفوع = ثمن القلم الواحد × عدد الأقلام."
+      },
+      "solution": {
+        "lines": [
+          "نسمّي $x$ عدد الأقلام.",
+          "المعادلة: $25x = 175$",
+          "$x = \\dfrac{175}{25}$",
+          "$x = 7$",
+          "إذن اشترت سارة 7 أقلام."
+        ],
+        "result": "x = 7"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "بالمبلغ نفسه، كم كراسًا ثمن الواحد منه 35DA كان يمكنها أن تشتري؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد الكراريس",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ $y$ عدد الكراريس واكتب معادلة بالطريقة نفسها."
+        }
+      ],
+      "feedback": {
+        "correct": "$35y = 175$ تعطي $y = 5$ كراريس.",
+        "incorrect": "اكتب المبلغ المدفوع بدلالة عدد الكراريس، ثم حلّ."
+      },
+      "solution": {
+        "lines": [
+          "نسمّي $y$ عدد الكراريس.",
+          "$35y = 175$",
+          "$y = \\dfrac{175}{35}$",
+          "$y = 5$"
+        ],
+        "result": "y = 5"
+      },
+      "timeSeconds": 120
     }
   ]
 }

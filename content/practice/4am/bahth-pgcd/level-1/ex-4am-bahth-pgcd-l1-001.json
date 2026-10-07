@@ -1,9 +1,12 @@
 {
+  "id": "ex-4am-bahth-pgcd-l1-001",
+  "lessonCode": "bahth-pgcd",
+  "level": 1,
   "metadata": {
-    "title": "معارف — PGCD(21 ; 14)",
+    "title": "21 و 14",
     "estimatedMinutes": 3,
     "tags": [
-      "خاصية"
+      "خاصية الفرق"
     ],
     "source": {
       "type": "textbook",
@@ -11,63 +14,109 @@
       "page": 12,
       "section": "معارف",
       "number": 4
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 12): PGCD(21 ; 14) = PGCD(14 ; 7) = PGCD(7 ; 7) = 7."
+    "content": "نعتبر العددين الطبيعيين 21 و 14."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "لماذا PGCD(21 ; 14) = PGCD(14 ; 7)؟",
+      "step": "01",
+      "statement": "بيّن أن $\\text{PGCD}(21 ; 14) = \\text{PGCD}(14 ; 7)$.",
       "learningPoints": [
         {
           "code": "4am_bahth-pgcd_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
         {
-          "id": "A",
-          "content": "لأن 21 − 14 = 7 و PGCD(a ; b) = PGCD(b ; a − b)",
-          "isCorrect": true
+          "id": "h1",
+          "type": "look",
+          "content": "قارن العدد 7 بالفرق بين العددين 21 و 14."
         },
         {
-          "id": "B",
-          "content": "لأن 7 قاسم للعدد 14",
-          "isCorrect": false
+          "id": "h2",
+          "type": "direction",
+          "content": "كل قاسم مشترك للعددين 21 و 14 يقسم فرقهما أيضًا."
         },
         {
-          "id": "C",
-          "content": "لأن 21 و 14 عددان فرديان",
-          "isCorrect": false
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل الخاصية $\\text{PGCD}(a ; b) = \\text{PGCD}(b ; a - b)$ مع $a > b$."
+        }
+      ],
+      "feedback": {
+        "correct": "تبريرك مطابق للحل النموذجي.",
+        "incorrect": "قارن تبريرك سطرًا بسطر بالحل النموذجي، وانتبه إلى الخاصية المستعملة."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $21 - 14 = 7$",
+          "وبما أن $\\text{PGCD}(a ; b) = \\text{PGCD}(b ; a - b)$ من أجل $a > b$، فإن:"
+        ],
+        "result": "\\text{PGCD}(21 ; 14) = \\text{PGCD}(14 ; 7)"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج $\\text{PGCD}(21 ; 14)$.",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "value": "0",
+          "id": "MISC-FURUQ-AKHIR-SIFR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "21 − 14 = ?"
+          "content": "طبّق الخاصية نفسها على الزوج (14 ; 7)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "PGCD(a ; b) = PGCD(b ; a − b) مع a ≥ b."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "كل قاسم مشترك لـ 21 و 14 يقسم فرقهما."
+          "content": "واصل الطرح حتى تحصل على فرق معدوم."
         }
       ],
       "feedback": {
-        "correct": "الخاصية الأولى: الطرح لا يغيّر القاسم المشترك الأكبر.",
-        "incorrect": "احسب 21 − 14."
-      }
+        "correct": "آخر فرق غير معدوم هو 7.",
+        "incorrect": "القاسم المشترك الأكبر هو آخر فرق غير معدوم، لا الفرق المعدوم."
+      },
+      "solution": {
+        "lines": [
+          "باستعمال خوارزمية الفروق المتتابعة:",
+          "$21 - 14 = 7$",
+          "$14 - 7 = 7$",
+          "$7 - 7 = 0$",
+          "آخر فرق غير معدوم هو 7، إذن:"
+        ],
+        "result": "\\text{PGCD}(21 ; 14) = 7"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-bahth-pgcd-l1-001",
-  "lessonCode": "bahth-pgcd",
-  "level": 1
+  ]
 }

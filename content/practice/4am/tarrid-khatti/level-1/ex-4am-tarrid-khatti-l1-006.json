@@ -3,79 +3,121 @@
   "lessonCode": "tarrid-khatti",
   "level": 1,
   "metadata": {
-    "title": "تدريب — من الدستور إلى التمثيل",
-    "estimatedMinutes": 2,
+    "title": "على منوال BEM 2025 — نزهة فوج كشفي",
+    "estimatedMinutes": 4,
     "tags": [
-      "تمثيل بياني",
-      "دستور"
+      "سرعة ثابتة",
+      "نمذجة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_tarrid-khatti_P2",
-      "modelledOn": "method-spring"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tarrid-khatti_P3",
+      "modelledOn": "BEM 2025 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2025",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نمذجنا وضعية بالدالة $f(x) = 3x$ ."
+    "content": "يقطع فوج كشفي مسافة 10km في ساعتين ونصف، بسرعة ثابتة. نسمّي $d(t)$ المسافة (بـ km) التي يقطعها الفوج بعد $t$ ساعة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ نقطة تقع على تمثيلها البياني؟",
+      "step": "01",
+      "statement": "عبّر عن $d(t)$ بدلالة $t$ .",
       "learningPoints": [
         {
-          "code": "4am_tarrid-khatti_P2",
+          "code": "4am_tarrid-khatti_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$(12 ; 4)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
-        },
-        {
-          "id": "B",
-          "content": "$(0 ; 3)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-BIDUN-O"
-        },
-        {
-          "id": "C",
-          "content": "$(4 ; 12)$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$(3 ; 1)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
+          "value": "1/4",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الفاصلة أولًا ثم الترتيب."
+          "content": "السرعة ثابتة: المسافة متناسبة مع المدة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هل الترتيب يساوي $3 \\times$ الفاصلة؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "جرّب كل نقطة."
+          "content": "ساعتان ونصف هي $2{,}5h$ : $a = \\dfrac{10}{2{,}5}$ ."
         }
       ],
       "feedback": {
-        "correct": "$3 \\times 4 = 12$ : النقطة $(4 ; 12)$ .",
-        "incorrect": "الترتيب هو صورة الفاصلة."
-      }
+        "correct": "$d(t) = 4t$ : يقطع الفوج 4km في الساعة.",
+        "incorrect": "المعامل هو المسافة مقسومة على المدة بالساعات."
+      },
+      "solution": {
+        "lines": [
+          "$a = \\dfrac{10}{2{,}5} = 4$",
+          "إذن $d(t) = 4t$ ."
+        ],
+        "result": "d(t) = 4t"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "ما هي المدة (بالساعة) التي يستغرقها الفوج لقطع مسافة 6km بنفس السرعة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المدة بالساعة (عشري بالفاصلة أو كسر)",
+      "expectedAnswer": "1,5",
+      "misconceptionSignatures": [
+        {
+          "value": "24",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدة هي العدد $t$ الذي يحقق $d(t) = 6$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم المسافة على معامل الدالة."
+        }
+      ],
+      "feedback": {
+        "correct": "$4t = 6$ ، إذن $t = 1{,}5$ : ساعة ونصف.",
+        "incorrect": "المدة هي العدد الذي صورته 6: اقسم على المعامل، لا تضرب."
+      },
+      "solution": {
+        "lines": [
+          "$d(t) = 6$ معناه $4t = 6$",
+          "$t = \\dfrac{6}{4} = 1{,}5$",
+          "يستغرق الفوج ساعة ونصفا."
+        ],
+        "result": "t = 1{,}5h"
+      },
+      "timeSeconds": 90
     }
   ]
 }

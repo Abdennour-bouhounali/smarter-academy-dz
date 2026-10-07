@@ -1,106 +1,78 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l5-010",
+  "lessonCode": "amaliyat-judhur",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — نسبة ومستطيل",
-    "estimatedMinutes": 7,
+    "title": "على منوال BEM 2021 — زرابي قاعة الصلاة",
+    "estimatedMinutes": 15,
     "tags": [
-      "حاصل قسمة جذرين"
+      "جداء جذرين",
+      "وضعية إدماجية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_amaliyat-judhur_P2",
-      "modelledOn": null
+      "reason": "bem_modelled",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "BEM 2021 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2021",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "نستعمل خاصية حاصل قسمة جذرين في وضعيتين هندسيتين."
+    "content": "قرّر سكان حيّ تجديد زرابي قاعة الصلاة في مسجد الحيّ. القاعة مستطيلة الشكل بُعداها $\\sqrt{1200}\\,m$ و $\\sqrt{300}\\,m$ .\n• ثمن $1\\,m^2$ من الزرابي $2200$DA.\n• تتكفّل البلدية بـ $30\\%$ من ثمن الزرابي.\n• جمع المحسنون $1000000$DA لتغطية الباقي."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "مربّعان مساحتاهما $45\\,cm^2$ و $20\\,cm^2$ . احسب نسبة ضلع الأول إلى ضلع الثاني (كسرًا غير قابل للاختزال).",
+      "step": "01",
+      "statement": "☜ هل يكفي ما جمعه المحسنون لتغطية أرضية القاعة كلها؟ أعط المبلغ الذي يبقى بعد شراء الزرابي.",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P2",
+          "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "transfer",
       "answerType": "rational",
-      "answerFormat": "كسر على الشكل a/b",
-      "expectedAnswer": "3/2",
+      "answerFormat": "عدد طبيعي: المبلغ الباقي بالدينار (DA)",
+      "expectedAnswer": "76000",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "النسبة هي $\\dfrac{\\sqrt{45}}{\\sqrt{20}}$ ."
+          "content": "مساحة القاعة جداء بُعديها: اكتبه تحت جذر واحد."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتبها جذرًا واحدًا واختزل $\\dfrac{45}{20}$ ."
+          "content": "احسب ثمن الزرابي ثم حصة البلدية."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "البسط والمقام بعد الاختزال مربّعان تامّان."
+          "content": "المحسنون يدفعون $70\\%$ من الثمن: قارن بما جمعوه."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{\\sqrt{45}}{\\sqrt{20}} = \\sqrt{\\dfrac{9}{4}} = \\dfrac{3}{2}$",
-        "incorrect": "نسبة الضلعين هي جذر نسبة المساحتين، لا نسبة المساحتين."
+        "correct": "المساحة $600\\,m^2$ ، الثمن $1320000$DA، حصة المحسنين $924000$DA، فالمبلغ يكفي ويبقى $76000$DA.",
+        "incorrect": "احسب بالترتيب: مساحة القاعة، ثمن الزرابي، ما تدفعه البلدية، ما يبقى على المحسنين، ثم الفرق مع ما جمعوه."
       },
-      "evaluationPolicy": {
-        "requiredForm": "irreducible"
+      "solution": {
+        "lines": [
+          "مساحة القاعة: $\\sqrt{1200} \\times \\sqrt{300} = \\sqrt{360000} = 600\\,m^2$",
+          "ثمن الزرابي: $600 \\times 2200 = 1320000$DA",
+          "حصة البلدية: $1320000 \\times 0{,}3 = 396000$DA",
+          "ما يبقى على المحسنين: $1320000 - 396000 = 924000$DA",
+          "$924000 < 1000000$ : المبلغ يكفي، ويبقى $1000000 - 924000 = 76000$DA."
+        ],
+        "result": "76000\\,DA"
       },
-      "misconceptionSignatures": [
-        {
-          "value": "9/4",
-          "id": "MISC-QISMA-JIDHR"
-        }
-      ]
-    },
-    {
-      "id": "q2",
-      "statement": "مستطيل مساحته $\\sqrt{90}\\,cm^2$ وعرضه $\\sqrt{10}\\,cm$ . احسب طوله بـ $cm$ .",
-      "learningPoints": [
-        {
-          "code": "4am_amaliyat-judhur_P2",
-          "role": "primary"
-        }
-      ],
-      "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "3",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "الطول = المساحة ÷ العرض."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$\\dfrac{\\sqrt{90}}{\\sqrt{10}} = \\sqrt{\\dfrac{90}{10}}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "خذ جذر الناتج."
-        }
-      ],
-      "feedback": {
-        "correct": "$\\dfrac{\\sqrt{90}}{\\sqrt{10}} = \\sqrt{9} = 3\\,cm$",
-        "incorrect": "اقسم تحت جذر واحد ثم احسب الجذر."
-      },
-      "misconceptionSignatures": [
-        {
-          "value": "9",
-          "id": "MISC-QISMA-JIDHR"
-        }
-      ]
+      "work": "optional",
+      "timeSeconds": 900
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l5-010",
-  "lessonCode": "amaliyat-judhur",
-  "level": 5
+  ]
 }

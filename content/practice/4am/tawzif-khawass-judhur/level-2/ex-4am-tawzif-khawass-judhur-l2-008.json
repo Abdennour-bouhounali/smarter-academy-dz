@@ -3,101 +3,116 @@
   "lessonCode": "tawzif-khawass-judhur",
   "level": 2,
   "metadata": {
-    "title": "تدريب — نسبة إلى k√b",
-    "estimatedMinutes": 3,
+    "title": "نسبتان على الشكل a√b",
+    "estimatedMinutes": 4,
     "tags": [
-      "مقام ناطق"
+      "نسبة مقامها عدد ناطق"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tawzif-khawass-judhur_P3",
       "modelledOn": "method-rationalize"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "كل نسبة تُكتب على الشكل $k\\sqrt{b}$ حيث $k$ عدد طبيعي."
+    "content": "ليكن العددان A و B حيث:",
+    "formulas": [
+      "A = \\dfrac{12}{\\sqrt{3}}",
+      "B = \\dfrac{10}{\\sqrt{5}}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نكتب $\\dfrac{12}{\\sqrt{3}} = k\\sqrt{3}$. ما قيمة $k$؟",
+      "step": "01",
+      "statement": "اكتب العدد A على الشكل $a\\sqrt{3}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
       "expectedAnswer": "4",
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-BAST-DUN-DARB",
-          "value": "12"
-        }
-      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المقام عدد غير ناطق."
+          "content": "اجعل المقام عددًا ناطقًا: اضرب البسط والمقام في $\\sqrt{3}$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب البسط والمقام في $\\sqrt{3}$."
+          "content": "$\\sqrt{3} \\times \\sqrt{3} = 3$"
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "بعد الضرب، بسّط على 3."
+          "content": "اختزل الكسر الناتج."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{12}{\\sqrt{3}} = \\dfrac{12\\sqrt{3}}{3}$.",
-        "incorrect": "اضرب البسط والمقام معًا، ثم اختزل."
-      }
+        "correct": "$A = \\dfrac{12\\sqrt{3}}{3} = 4\\sqrt{3}$.",
+        "incorrect": "اضرب البسط والمقام في $\\sqrt{3}$ ثم اختزل على 3."
+      },
+      "solution": {
+        "lines": [
+          "$A = \\dfrac{12 \\times \\sqrt{3}}{\\sqrt{3} \\times \\sqrt{3}}$",
+          "$A = \\dfrac{12\\sqrt{3}}{3}$"
+        ],
+        "result": "A = 4\\sqrt{3}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "نكتب $\\dfrac{10}{\\sqrt{5}} = k\\sqrt{5}$. ما قيمة $k$؟",
+      "step": "02",
+      "statement": "اكتب العدد B على الشكل $a\\sqrt{5}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_tawzif-khawass-judhur_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
       "expectedAnswer": "2",
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-BAST-DUN-DARB",
-          "value": "10"
-        }
-      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المقام عدد غير ناطق."
+          "content": "اضرب البسط والمقام في $\\sqrt{5}$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب البسط والمقام في $\\sqrt{5}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بعد الضرب، بسّط على 5."
+          "content": "اختزل الكسر الناتج."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{10}{\\sqrt{5}} = \\dfrac{10\\sqrt{5}}{5}$.",
-        "incorrect": "اضرب البسط والمقام معًا، ثم اختزل."
-      }
+        "correct": "$B = \\dfrac{10\\sqrt{5}}{5} = 2\\sqrt{5}$.",
+        "incorrect": "اضرب البسط والمقام في $\\sqrt{5}$ ثم اختزل على 5."
+      },
+      "solution": {
+        "lines": [
+          "$B = \\dfrac{10 \\times \\sqrt{5}}{\\sqrt{5} \\times \\sqrt{5}}$",
+          "$B = \\dfrac{10\\sqrt{5}}{5}$"
+        ],
+        "result": "B = 2\\sqrt{5}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

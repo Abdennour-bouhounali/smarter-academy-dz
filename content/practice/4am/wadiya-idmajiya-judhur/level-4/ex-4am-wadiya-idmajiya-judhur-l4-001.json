@@ -1,175 +1,172 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l4-001",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 4,
   "metadata": {
-    "title": "تدريب — زربية وتدوير مبكر",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2007 — التمرين الأول",
+    "estimatedMinutes": 10,
     "tags": [
-      "وضعية إدماجية",
-      "وضعية",
-      "تدوير",
-      "تحليل خطأ"
+      "a√2",
+      "حساب كسري",
+      "بيّن أن"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
-      "modelledOn": "situation"
+      "modelledOn": "BEM 2007 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2007",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "زربية مستطيلة الشكل مساحتها $30\\,m^2$ وطولها ضعف عرضها. كتب رياض: «العرض $\\ell \\approx 387\\,cm$، إذن الطول $L \\approx 2 \\times 387 = 774\\,cm$»."
+    "content": "ليكن العددان $A$ و $B$ حيث:",
+    "formulas": [
+      "A = \\sqrt{50} + 2\\sqrt{18} - \\sqrt{72}",
+      "B = \\dfrac{5}{3} - \\dfrac{2}{3} \\times \\dfrac{5}{4}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "القيمة المضبوطة للعرض $\\ell$ (بالمتر) هي ...",
+      "step": "01",
+      "statement": "اكتب العدد $A$ على الشكل $a\\sqrt{2}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$15$",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$7{,}5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-QISMA"
-        },
-        {
-          "id": "C",
-          "content": "$\\sqrt{15}$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$3\\sqrt{5}$",
-          "isCorrect": false
+          "value": "3",
+          "id": "MISC-MUAMIL-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عبّر عن المساحة بدلالة $\\ell$."
+          "content": "$50 = 25 \\times 2$ ، $18 = 9 \\times 2$ ، $72 = 36 \\times 2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$2\\ell^2 = 30$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "العرض موجب: خذ الجذر التربيعي."
+          "content": "لا تنس المعامل 2 أمام $\\sqrt{18}$ ."
         }
       ],
       "feedback": {
-        "correct": "$2\\ell^2 = 30$ يعني $\\ell^2 = 15$، و $\\ell = \\sqrt{15}$.",
-        "incorrect": "لا تنس أخذ الجذر التربيعي بعد القسمة على 2."
+        "correct": "$A = 5\\sqrt{2} + 6\\sqrt{2} - 6\\sqrt{2} = 5\\sqrt{2}$",
+        "incorrect": "اكتب كل حد على الشكل $k\\sqrt{2}$ ثم اجمع المعاملات."
       },
-      "cognitiveDemand": "reason"
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{25 \\times 2} + 2\\sqrt{9 \\times 2} - \\sqrt{36 \\times 2}$",
+          "$= 5\\sqrt{2} + 6\\sqrt{2} - 6\\sqrt{2}$"
+        ],
+        "result": "A = 5\\sqrt{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "أعط الطول $L$ مدوّرًا إلى 1cm (بالسنتيمتر).",
+      "step": "02",
+      "lead": "بسّط العدد $B$ ثم بيّن أن: $\\dfrac{A^2}{25} - 3B = -\\dfrac{1}{2}$ .",
+      "statement": "بسّط العدد $B$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي (بالسنتيمتر)",
-      "expectedAnswer": "775",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "القيمة المضبوطة للطول هي $2\\sqrt{15}$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسبها بالحاسبة دون أن تدوّر شيئًا قبل النهاية."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حوّل إلى السنتيمتر ثم دوّر."
-        }
-      ],
-      "feedback": {
-        "correct": "$L = 2\\sqrt{15} \\approx 7{,}746\\,m$، أي $775\\,cm$ مدوّرًا إلى 1cm.",
-        "incorrect": "دوّر الطول نفسه في النهاية، لا العرض المدوّر مضروبًا في 2."
+      "answerFormat": "كسر غير قابل للاختزال على الشكل a/b",
+      "expectedAnswer": "5/6",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
       },
       "misconceptionSignatures": [
         {
-          "value": "774",
-          "id": "MISC-WADIYA-TADWIR-MUBAKKIR"
-        }
-      ],
-      "cognitiveDemand": "reason"
-    },
-    {
-      "id": "q3",
-      "statement": "ما الخطأ في عمل رياض؟",
-      "learningPoints": [
-        {
-          "code": "4am_wadiya-idmajiya-judhur_P1",
-          "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "لا خطأ: ضعف المدوّر هو مدوّر الضعف دائمًا",
-          "isCorrect": false,
-          "misconceptionId": "MISC-WADIYA-TADWIR-MUBAKKIR"
-        },
-        {
-          "id": "B",
-          "content": "كان عليه أن يأخذ الحل السالب للمعادلة",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-SALIB"
-        },
-        {
-          "id": "C",
-          "content": "دوّر العرض أولًا ثم ضاعفه، فتضاعف خطأ التدوير",
-          "isCorrect": true
+          "value": "5/12",
+          "id": "MISC-IKHTIZAL-NAQIS"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قارن $2 \\times 387$ بمدوّر $2\\sqrt{15}$ إلى 1cm."
+          "content": "الضرب أولوي على الطرح."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "العرض المضبوط أكبر من 387,29."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ماذا يحدث لخطأ التدوير عند الضرب في 2؟"
+          "content": "وحّد المقامات ثم اطرح."
         }
       ],
       "feedback": {
-        "correct": "العرض $\\approx 387{,}30\\,cm$، وضعفه $\\approx 774{,}60\\,cm$ يدوَّر إلى 775: التدوير المبكر ضاعف الخطأ.",
-        "incorrect": "ندوّر النتيجة النهائية فقط."
+        "correct": "$B = \\dfrac{5}{3} - \\dfrac{5}{6} = \\dfrac{10}{6} - \\dfrac{5}{6} = \\dfrac{5}{6}$",
+        "incorrect": "احسب $\\dfrac{2}{3} \\times \\dfrac{5}{4}$ أولًا، ثم وحّد المقامات و اطرح.",
+        "notIrreducible": "الكسر صحيح لكنه ما زال قابلًا للاختزال: بسّطه."
       },
-      "cognitiveDemand": "reason"
+      "solution": {
+        "lines": [
+          "$B = \\dfrac{5}{3} - \\dfrac{10}{12} = \\dfrac{5}{3} - \\dfrac{5}{6}$",
+          "$B = \\dfrac{10}{6} - \\dfrac{5}{6}$"
+        ],
+        "result": "B = \\dfrac{5}{6}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "بيّن أن: $\\dfrac{A^2}{25} - 3B = -\\dfrac{1}{2}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $A^2 = (5\\sqrt{2})^2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $B$ بقيمته ثم احسب."
+        }
+      ],
+      "feedback": {
+        "correct": "تبريرك مطابق للحل النموذجي.",
+        "incorrect": "قارن تبريرك سطرًا بسطر بالحل النموذجي."
+      },
+      "solution": {
+        "lines": [
+          "$A^2 = (5\\sqrt{2})^2 = 25 \\times 2 = 50$",
+          "$\\dfrac{A^2}{25} - 3B = \\dfrac{50}{25} - 3 \\times \\dfrac{5}{6} = 2 - \\dfrac{5}{2}$",
+          "$= \\dfrac{4}{2} - \\dfrac{5}{2}$"
+        ],
+        "result": "\\dfrac{A^2}{25} - 3B = -\\dfrac{1}{2}"
+      },
+      "timeSeconds": 240
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l4-001",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 4
+  ]
 }

@@ -3,10 +3,11 @@
   "lessonCode": "wadiya-idmajiya-jumal",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 2 — الثنائية (0 ; 0)",
-    "estimatedMinutes": 3,
+    "title": "الثنائية (0 ; 0)",
+    "estimatedMinutes": 4,
     "tags": [
-      "حل معادلة بمجهولين"
+      "حل معادلة",
+      "التحقق"
     ],
     "source": {
       "type": "textbook",
@@ -14,38 +15,79 @@
       "page": 62,
       "section": "أؤكّد تعلّماتي",
       "number": 2
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "الثنائية $(0 ; 0)$ هي حل لبعض المعادلات الآتية."
+    "content": "نعتبر المعادلات الثلاث التالية:",
+    "formulas": [
+      "3x + y = 0 \\ldots\\ldots (1)",
+      "x - 3y = 0 \\ldots\\ldots (2)",
+      "\\dfrac{1}{3}x - y = 3 \\ldots\\ldots (3)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الثنائية $(0 ; 0)$ ليست حلا للمعادلة ...",
+      "step": "01",
+      "statement": "بيّن أن الثنائية $(0 ; 0)$ حل لكل من المعادلتين (1) و (2).",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ و $y$ بالعدد $0$ في كل معادلة."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "نعوّض $x$ بـ $0$ و $y$ بـ $0$ :",
+          "في (1): $3 \\times 0 + 0 = 0$ : المساواة محققة.",
+          "في (2): $0 - 3 \\times 0 = 0$ : المساواة محققة.",
+          "إذن الثنائية $(0 ; 0)$ حل لكل من المعادلتين (1) و (2)."
+        ]
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "هل الثنائية $(0 ; 0)$ حل للمعادلة (3)؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$3x + y = 0$",
+          "content": "نعم",
           "isCorrect": false,
           "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
         },
         {
           "id": "B",
-          "content": "$x - 3y = 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{1}{3}x - y = 3$",
+          "content": "لا",
           "isCorrect": true
         }
       ],
@@ -53,25 +95,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ و $y$ بالعدد 0 في كل معادلة."
+          "content": "عوّض في الطرف الأول للمعادلة (3)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كل حد فيه $x$ أو $y$ يصبح 0."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن الطرف الأيسر بالطرف الأيمن في كل حالة."
+          "content": "قارن النتيجة بالطرف الثاني $3$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{1}{3} \\times 0 - 0 = 0$ وليس 3 ؛ أمّا المعادلتان الأخريان فطرفاهما 0 = 0.",
-        "incorrect": "عوّض بـ 0 ثم قارن بالطرف الأيمن."
+        "correct": "لا: $\\dfrac{1}{3} \\times 0 - 0 = 0 \\neq 3$ .",
+        "incorrect": "احسب الطرف الأول للمعادلة (3) من أجل الثنائية المعطاة وقارنه بالطرف الثاني."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "نعوّض في (3): $\\dfrac{1}{3} \\times 0 - 0 = 0$",
+          "$0 \\neq 3$",
+          "إذن الثنائية $(0 ; 0)$ ليست حلا للمعادلة (3)."
+        ]
+      },
+      "timeSeconds": 120
     }
   ]
 }

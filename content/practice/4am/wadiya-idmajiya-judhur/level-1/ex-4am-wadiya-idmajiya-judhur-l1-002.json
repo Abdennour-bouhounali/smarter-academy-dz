@@ -1,10 +1,12 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l1-002",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — بلاطة مربّعة",
-    "estimatedMinutes": 2,
+    "title": "بلاطة مربعة",
+    "estimatedMinutes": 4,
     "tags": [
-      "وضعية إدماجية",
-      "جذر عدد عشري",
+      "الجذر التربيعي",
       "عدد ناطق"
     ],
     "source": {
@@ -12,45 +14,32 @@
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
       "modelledOn": null
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "بلاطة مربّعة الشكل مساحتها $0{,}36\\,m^2$."
+    "content": "بلاطة مربعة الشكل مساحتها $0{,}36m^2$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هو طول ضلع البلاطة (بالمتر)؟",
+      "step": "01",
+      "statement": "احسب طول ضلع هذه البلاطة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري (بالمتر)",
+      "answerFormat": "عدد عشري (بالفاصلة): الطول بالمتر (m)",
       "expectedAnswer": "0.6",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "الطول هو العدد الموجب الذي مربعه 0,36."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "فكّر في $6^2 = 36$، ثم انتبه إلى موضع الفاصلة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق بتربيع العدد الذي وجدته."
-        }
-      ],
-      "feedback": {
-        "correct": "$0{,}6^2 = 0{,}36$ و $0{,}6 > 0$، إذن $\\sqrt{0{,}36} = 0{,}6$.",
-        "incorrect": "ربّع العدد الذي اقترحته: يجب أن تحصل على 0,36 تمامًا."
-      },
       "misconceptionSignatures": [
         {
           "value": "0.06",
@@ -61,62 +50,82 @@
           "id": "MISC-JIDHR-NISF"
         }
       ],
-      "cognitiveDemand": "recall"
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول ضلع المربع هو الجذر التربيعي لمساحته."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فكّر في $6^2 = 36$ ، ثم انتبه إلى موضع الفاصلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{0{,}36} = 0{,}6$ لأن $0{,}6^2 = 0{,}36$ .",
+        "incorrect": "ابحث عن عدد عشري موجب مربعه $0{,}36$ ، وتحقق من عدد الأرقام بعد الفاصلة."
+      },
+      "solution": {
+        "lines": [
+          "طول الضلع هو $\\sqrt{0{,}36}$",
+          "$0{,}6^2 = 0{,}36$"
+        ],
+        "result": "\\sqrt{0{,}36} = 0{,}6m"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "هل طول ضلع البلاطة عدد ناطق؟",
+      "step": "02",
+      "statement": "هل طول ضلع البلاطة عدد ناطق ؟ برّر إجابتك.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "لا، لأنّ جذر عدد عشري ليس ناطقًا أبدًا",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+          "content": "نعم",
+          "isCorrect": true
         },
         {
           "id": "B",
-          "content": "لا، لأنّ 0,36 ليس عددًا طبيعيًا",
+          "content": "لا",
           "isCorrect": false,
           "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
-        },
-        {
-          "id": "C",
-          "content": "نعم، لأنّ 0,36 هو مربع العدد الناطق 0,6",
-          "isCorrect": true
         }
       ],
+      "answerFormat": "اختر نعم أو لا، ثم قارن تبريرك بالحل النموذجي",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما هو المعيار الذي يجعل جذر عدد ناطقًا؟"
+          "content": "العدد الناطق هو حاصل قسمة عدد صحيح على عدد صحيح غير معدوم."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هل 0,36 مربع لعدد ناطق؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "العدد العشري عدد ناطق."
+          "content": "اكتب نتيجة السؤال 01 على شكل كسر."
         }
       ],
       "feedback": {
-        "correct": "جذر عدد هو عدد ناطق إذا كان هذا العدد مربعًا لعدد ناطق: $0{,}36 = 0{,}6^2$.",
-        "incorrect": "المعيار ليس أن يكون العدد طبيعيًا، بل أن يكون مربعًا لعدد ناطق."
+        "correct": "$0{,}6 = \\dfrac{6}{10}$ : طول الضلع عدد ناطق.",
+        "incorrect": "جذر عدد عشري قد يكون ناطقًا: اكتب طول الضلع على شكل كسر."
       },
-      "cognitiveDemand": "recall"
+      "solution": {
+        "lines": [
+          "$\\sqrt{0{,}36} = 0{,}6 = \\dfrac{6}{10}$",
+          "إذن طول الضلع عدد ناطق."
+        ],
+        "result": "نعم"
+      },
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l1-002",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 1
+  ]
 }

@@ -3,11 +3,10 @@
   "lessonCode": "hall-jabri",
   "level": 3,
   "metadata": {
-    "title": "تمرين 11 — ب)",
-    "estimatedMinutes": 4,
+    "title": "نعزل y من المعادلة الثانية",
+    "estimatedMinutes": 6,
     "tags": [
-      "التعويض",
-      "إشارة"
+      "التعويض"
     ],
     "source": {
       "type": "textbook",
@@ -15,101 +14,112 @@
       "page": 60,
       "section": "أوظّف تعلّماتي",
       "number": 11
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 60): حل الجملة باختيار طريقة مناسبة. $\\begin{cases} 4x - 3y = 1 \\\\ 12x - y = -5 \\end{cases}$"
+    "content": "نعتبر جملة المعادلتين التالية:",
+    "formulas": [
+      "\\begin{cases} 4x - 3y = 1 & ...(1) \\\\ 12x - y = -5 & ...(2) \\end{cases}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "من المعادلة الثانية ينتج أنّ:",
+      "step": "01",
+      "statement": "من المعادلة (2) عبّر عن $y$ بدلالة $x$ ، ثم عوّض في المعادلة (1) واحسب قيمة $x$ .",
       "learningPoints": [
         {
           "code": "4am_hall-jabri_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$y = 12x + 5$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$y = 12x - 5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAWID-ISHARA"
-        },
-        {
-          "id": "C",
-          "content": "$y = -12x - 5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAWID-ISHARA"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة $x$ فقط (عدد صحيح أو كسر مثل 7/3)",
+      "expectedAnswer": "-1/2",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+          "content": "في المعادلة (2) معامل $y$ هو $-1$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+          "content": "انتبه للإشارات: انقل $12x$ ثم اضرب في $-1$ ."
         }
       ],
       "feedback": {
-        "correct": "$12x - y = -5$ : نضيف $y$ و 5 إلى الطرفين، $12x + 5 = y$ .",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "$y = 12x + 5$ ، ثم $4x - 3(12x + 5) = 1$ أي $-32x = 16$ ، ومنه $x = -\\dfrac{1}{2}$ .",
+        "incorrect": "عبّر عن $y$ بدلالة $x$ مع الانتباه للإشارات، ثم انشر $-3(\\ldots)$ بعناية."
+      },
+      "solution": {
+        "lines": [
+          "من المعادلة (2) نجد: $y = 12x + 5$",
+          "نعوّض في المعادلة (1): $4x - 3(12x + 5) = 1$",
+          "$-32x = 16$",
+          "ومنه $x = -\\dfrac{1}{2}$"
+        ],
+        "result": "x = -\\dfrac{1}{2}"
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "حل الجملة:",
+      "step": "02",
+      "statement": "استنتج حل الجملة.",
       "learningPoints": [
         {
-          "code": "4am_hall-jabri_P3",
+          "code": "4am_hall-jabri_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": {
         "x": "-1/2",
         "y": "-1"
       },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "-1",
+            "y": "-1/2"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقرأ المعاملات قبل أن تبدأ."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+          "content": "عوّض قيمة $x$ في عبارة $y$ ."
         }
       ],
       "feedback": {
-        "correct": "$4x - 3(12x + 5) = 1$ أي $-32x = 16$ ، ومنه $x = -\\dfrac{1}{2}$ و $y = -1$ .",
-        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
-      }
+        "correct": "الثنائية $\\left(-\\dfrac{1}{2} ; -1\\right)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "من المعادلة (2) نجد: $y = 12x + 5$",
+          "نعوّض في المعادلة (1): $4x - 3(12x + 5) = 1$",
+          "$-32x = 16$",
+          "ومنه $x = -\\dfrac{1}{2}$",
+          "نعوّض قيمة $x$ في عبارة $y$: $y = 12 \\times \\left(-\\dfrac{1}{2}\\right) + 5 = -1$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "\\left(-\\dfrac{1}{2} ; -1\\right)"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

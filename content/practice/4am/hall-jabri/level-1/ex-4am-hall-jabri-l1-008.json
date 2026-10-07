@@ -3,11 +3,10 @@
   "lessonCode": "hall-jabri",
   "level": 1,
   "metadata": {
-    "title": "تمرين 9 — أ)",
+    "title": "بالجمع طرفا لطرف",
     "estimatedMinutes": 4,
     "tags": [
-      "الجمع",
-      "طريقة من اختيارك"
+      "الجمع"
     ],
     "source": {
       "type": "textbook",
@@ -15,84 +14,107 @@
       "page": 60,
       "section": "أوظّف تعلّماتي",
       "number": 9
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 60): حل الجملة باستعمال طريقة من اختيارك. $\\begin{cases} -2x + y = 0 \\\\ 3x - y = 4 \\end{cases}$"
+    "content": "نعتبر جملة المعادلتين التالية:",
+    "formulas": [
+      "\\begin{cases} -2x + y = 0 \\\\ 3x - y = 4 \\end{cases}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "بجمع المعادلتين طرفًا لطرف نجد قيمة $x$ . ما هي؟",
+      "step": "01",
+      "statement": "اجمع المعادلتين طرفا لطرف، ثم استنتج قيمة $x$ .",
       "learningPoints": [
         {
           "code": "4am_hall-jabri_P2",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "answerFormat": "اكتب قيمة $x$ فقط (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": "4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+          "content": "معاملا $y$ في المعادلتين متعاكسان."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+          "content": "اجمع $-2x$ و $3x$ ، ثم $0$ و $4$ ."
         }
       ],
       "feedback": {
-        "correct": "$y$ و $-y$ يُلغيان: $-2x + 3x = 0 + 4$ أي $x = 4$ .",
-        "incorrect": "أعد الحساب خطوة خطوة، وأجرِ كل عملية على طرفي المعادلة معًا."
-      }
+        "correct": "بالجمع: $x = 4$ .",
+        "incorrect": "بالجمع طرفا لطرف يختفي $y$ ؛ احسب $-2x + 3x$ ."
+      },
+      "solution": {
+        "lines": [
+          "بجمع المعادلتين طرفا لطرف نجد: $x = 4$"
+        ],
+        "result": "x = 4"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "حل الجملة:",
+      "step": "02",
+      "statement": "حل الجملة.",
       "learningPoints": [
         {
-          "code": "4am_hall-jabri_P3",
+          "code": "4am_hall-jabri_P2",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": {
         "x": "4",
         "y": "8"
       },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "8",
+            "y": "4"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقرأ المعاملات قبل أن تبدأ."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+          "content": "عوّض قيمة $x$ في المعادلة الأولى لتجد $y$ ."
         }
       ],
       "feedback": {
-        "correct": "معاملا $y$ متعاكسان فالجمع أسرع: $x = 4$ ثم $y = 2x = 8$ .",
-        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
-      }
+        "correct": "الثنائية $(4 ; 8)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "بجمع المعادلتين طرفا لطرف نجد: $x = 4$",
+          "نعوّض $x$ بـ $4$ في المعادلة (1): $-2 \\times 4 + y = 0$",
+          "ومنه $y = 8$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(4 ; 8)"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

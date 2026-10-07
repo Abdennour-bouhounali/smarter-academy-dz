@@ -3,11 +3,11 @@
   "lessonCode": "muadala-ula",
   "level": 2,
   "metadata": {
-    "title": "دوري الآن — 7 − 2x = 0",
+    "title": "حل معادلة ثم التحقق",
     "estimatedMinutes": 4,
     "tags": [
       "ax + b = c",
-      "إشارة"
+      "تحقق"
     ],
     "source": {
       "type": "textbook",
@@ -15,98 +15,116 @@
       "page": 47,
       "section": "دوري الآن",
       "number": 1
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 47): حل المعادلة $7 - 2x = 0$ ."
+    "content": "نعتبر المعادلة:",
+    "formulas": [
+      "7 - 2x = 0"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نطرح $7$ من الطرفين في المعادلة $7 - 2x = 0$ ، فنحصل على:",
+      "step": "01",
+      "statement": "حل المعادلة.",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب حل المعادلة: عدد صحيح أو كسر على الشكل a/b (يُقبل العدد العشري)",
+      "expectedAnswer": "7/2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$-2x = 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+          "value": "2/7",
+          "id": "MISC-MUADALA-QISMA-MAQLUBA"
         },
         {
-          "id": "B",
-          "content": "$-2x = -7$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$-2x = 7$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+          "value": "-7/2",
+          "id": "MISC-MUADALA-ISHARA-SALIBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العملية تُجرى على الطرفين معًا."
+          "content": "ابدأ بعزل الحدّ الذي فيه $x$ في طرف واحد."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب كل طرف بعد العملية، ثم بسّطه."
+          "content": "أضف إلى الطرفين (أو اطرح منهما) العدد نفسه حتى تصل إلى الشكل $ax = b$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "المعادلة الناتجة لها الحل نفسه الذي للمعادلة الأولى: يمكنك التحقّق بتعويض قيمة لـ $x$."
+          "content": "ثم اقسم الطرفين على معامل $x$ مع إشارته."
         }
       ],
       "feedback": {
-        "correct": "نطرح $7$ من الطرفين: $-2x = -7$ — معادلة لها الحل نفسه.",
-        "incorrect": "العملية نفسها تُجرى على الطرفين، وبالإشارة نفسها."
-      }
+        "correct": "$x = \\dfrac{7}{2}$ .",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم اقسم على معامل $x$ بإشارته، وتحقّق بالتعويض."
+      },
+      "solution": {
+        "lines": [
+          "$-2x = -7$",
+          "$x = \\dfrac{-7}{-2}$"
+        ],
+        "result": "x = \\dfrac{7}{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "حلّ المعادلة $7 - 2x = 0$ .",
+      "step": "02",
+      "statement": "تحقّق بالتعويض من أن العدد الذي وجدته حل للمعادلة.",
       "learningPoints": [
         {
           "code": "4am_muadala-ula_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
-      "answerType": "rational",
-      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
-      "expectedAnswer": "7/2",
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+          "content": "عوّض $x$ بالعدد الذي وجدته في كل طرف على حدة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+          "content": "احسب كل طرف مع احترام أولويات العمليات، ثم قارن النتيجتين."
         }
       ],
       "feedback": {
-        "correct": "$7 - 2x = 0$ : نصل إلى $-2x = -7$ ، ومنه $x = \\dfrac{7}{2}$.",
-        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي: عوّض في كل طرف على حدة، واحترم أولويات العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$7 - 2 \\times \\dfrac{7}{2} = 7 - 7 = 0$",
+          "إذن $\\dfrac{7}{2}$ حل للمعادلة $7 - 2x = 0$ ."
+        ]
+      },
+      "timeSeconds": 150
     }
   ]
 }

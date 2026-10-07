@@ -1,102 +1,84 @@
 {
+  "id": "ex-4am-jidhr-tarbii-l5-006",
+  "lessonCode": "jidhr-tarbii",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — مثلث قائم ضلعاه جذران",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2015 — أسلاك لقطعتين مربعتين",
+    "estimatedMinutes": 15,
     "tags": [
-      "فيثاغورس",
-      "مربع الجذر"
+      "تعريف الجذر التربيعي",
+      "وضعية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_jidhr-tarbii_P3",
-      "modelledOn": "ict-construct"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "BEM 2015 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2015",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "ABC مثلث قائم في A حيث $AB = \\sqrt{5}$ cm و $AC = \\sqrt{11}$ cm."
+    "content": "لعمي سليمان قطعتا أرض مربعتا الشكل: مساحة الأولى $196m^2$ ومساحة الثانية $441m^2$ .\nيريد إحاطة كل قطعة بسياج من ثلاثة أسلاك (أي يلفّ السلك ثلاث مرات حول كل قطعة)، ثمن المتر الواحد من السلك 60DA ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب $BC^2$.",
+      "step": "01",
+      "statement": "☜ احسب تكلفة الأسلاك اللازمة لإحاطة القطعتين.",
       "learningPoints": [
-        {
-          "code": "4am_jidhr-tarbii_P3",
-          "role": "primary"
-        }
-      ],
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "16",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "طبّق خاصية فيثاغورس."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$BC^2 = AB^2 + AC^2 = (\\sqrt{5})^2 + (\\sqrt{11})^2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "استعمل $(\\sqrt{a})^2 = a$ لكل حد."
-        }
-      ],
-      "feedback": {
-        "correct": "$BC^2 = 5 + 11 = 16$.",
-        "incorrect": "مربع $\\sqrt{a}$ هو $a$ وليس $a^2$."
-      },
-      "misconceptionSignatures": [
-        {
-          "value": "146",
-          "id": "MISC-TARBI-JIDHR"
-        }
-      ]
-    },
-    {
-      "id": "q2",
-      "statement": "استنتج الطول $BC$ (بالسنتيمتر).",
-      "learningPoints": [
-        {
-          "code": "4am_jidhr-tarbii_P3",
-          "role": "primary"
-        },
         {
           "code": "4am_jidhr-tarbii_P1",
-          "role": "secondary"
+          "role": "primary"
         }
       ],
+      "cognitiveDemand": "transfer",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي (بالسنتيمتر)",
-      "expectedAnswer": "4",
+      "answerFormat": "عدد بالدينار (DA)",
+      "expectedAnswer": "25200",
+      "misconceptionSignatures": [
+        {
+          "value": "8400",
+          "id": "MISC-MURABBA-DIF"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$BC$ طول، فهو عدد موجب."
+          "content": "طول ضلع كل قطعة هو العدد الموجب الذي مربعه مساحتها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "استعمل نتيجة السؤال الأول."
+          "content": "احسب محيط كل قطعة، ثم الطول الكلي للسلك (ثلاث لفّات)."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$BC$ هو العدد الموجب الذي مربعه $BC^2$."
+          "content": "اضرب الطول الكلي في ثمن المتر."
         }
       ],
       "feedback": {
-        "correct": "$BC^2 = 16$ و $BC$ موجب، إذن $BC = \\sqrt{16} = 4$ cm.",
-        "incorrect": "الطول هو الجذر التربيعي لـ $BC^2$، لا $BC^2$ نفسه."
-      }
+        "correct": "الضلعان 14 m و 21 m، المحيطان 56 m و 84 m، السلك $3 \\times 140 = 420$ m، والتكلفة $420 \\times 60 = 25200$ DA.",
+        "incorrect": "ابدأ بأطوال الأضلاع (الجذر التربيعي لكل مساحة)، ولا تنس أن السلك يلفّ ثلاث مرات."
+      },
+      "solution": {
+        "lines": [
+          "ضلع القطعة الأولى: $\\sqrt{196} = 14$ لأن $14^2 = 196$",
+          "ضلع القطعة الثانية: $\\sqrt{441} = 21$ لأن $21^2 = 441$",
+          "المحيطان: $4 \\times 14 = 56$ و $4 \\times 21 = 84$ ، المجموع $140$",
+          "طول السلك: $3 \\times 140 = 420$",
+          "التكلفة: $420 \\times 60 = 25200$"
+        ],
+        "result": "25200DA"
+      },
+      "work": "optional",
+      "timeSeconds": 900
     }
-  ],
-  "id": "ex-4am-jidhr-tarbii-l5-006",
-  "lessonCode": "jidhr-tarbii",
-  "level": 5
+  ]
 }

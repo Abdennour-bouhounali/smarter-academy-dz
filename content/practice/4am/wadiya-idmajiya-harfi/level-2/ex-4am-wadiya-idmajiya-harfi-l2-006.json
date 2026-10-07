@@ -1,124 +1,168 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l2-006",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — ملعب مصغّر",
-    "estimatedMinutes": 3,
+    "title": "ملعب مصغّر",
+    "estimatedMinutes": 6,
     "tags": [
       "نمذجة",
-      "نشر",
-      "ملعب"
+      "نشر"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
       "modelledOn": "situation"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "ملعب كرة قدم مصغّر طوله $x + 20$ وعرضه $x + 10$ (بالمتر)، حيث $x$ عدد موجب."
+    "content": "ملعب كرة قدم مصغّر مستطيل الشكل طوله $(x + 20)$ m وعرضه $(x + 10)$ m ، حيث $x$ عدد موجب."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "مساحة الملعب بدلالة $x$ (نشر مبسّط) هي ...",
+      "step": "01",
+      "lead": "عبّر بدلالة $x$ عن مساحة الملعب $S$ ، ثم انشرها وبسّطها.",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $x^2 + mx + n$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x^2 + 200$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
-        },
-        {
-          "id": "B",
-          "content": "$x^2 + 30x + 30$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
-        },
-        {
-          "id": "C",
-          "content": "$2x + 30$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "D",
-          "content": "$x^2 + 30x + 200$",
-          "isCorrect": true
+          "value": "0",
+          "id": "MISC-NASHR-AWWAL-AKHIR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المساحة $(x + 20)(x + 10)$."
+          "content": "مساحة المستطيل = الطول × العرض."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في النشر أربعة جداءات."
+          "content": "اضرب كل حد من القوس الأول في كل حد من القوس الثاني."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع $10x$ و $20x$."
+          "content": "اجمع الحدود المتشابهة."
         }
       ],
       "feedback": {
-        "correct": "$x^2 + 10x + 20x + 200 = x^2 + 30x + 200$.",
-        "incorrect": "انشر بالقاعدة العامة: كل حد في كل حد."
+        "correct": "$S = x^2 + 30x + 200$ إذن $m = 30$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$S = (x + 20)(x + 10)$",
+          "$S = x^2 + 10x + 20x + 200$"
+        ],
+        "result": "S = x^2 + 30x + 200"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "احسب مساحة الملعب (بـ $m^2$) من أجل $x = 40$.",
+      "step": "01",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $x^2 + mx + n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "200",
+      "misconceptionSignatures": [
+        {
+          "value": "30",
+          "id": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $n$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = x^2 + 30x + 200$ إذن $n = 200$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$S = x^2 + 30x + 200$"
+        ],
+        "result": "n = 200"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب مساحة الملعب من أجل $x = 40$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح",
+      "answerFormat": "عدد طبيعي: المساحة بـ $m^2$",
       "expectedAnswer": "3000",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ بالعدد 40."
+          "content": "عوّض $x$ بالعدد المعطى."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الشكل المحلّل هنا أسهل: الطول والعرض."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الطول 60 والعرض 50."
+          "content": "الشكل الجداء أسهل هنا: احسب الطول ثم العرض."
         }
       ],
       "feedback": {
-        "correct": "$(40 + 20)(40 + 10) = 60 \\times 50 = 3000$.",
-        "incorrect": "الشكل المحلّل يعطي البعدين مباشرة."
+        "correct": "$S = 3000\\,m^2$ .",
+        "incorrect": "عوّض بالقيمة المعطاة في الشكل المناسب، واحسب بعناية مع احترام أولويات العمليات."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "2000",
-          "id": "MISC-NASHR-AWWAL-AKHIR"
-        }
-      ],
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "باستعمال الشكل الجداء: $S = (40 + 20)(40 + 10) = 60 \\times 50$"
+        ],
+        "result": "S = 3000\\,m^2"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l2-006",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 2
+  ]
 }

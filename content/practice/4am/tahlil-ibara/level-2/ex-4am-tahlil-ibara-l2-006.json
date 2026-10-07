@@ -3,10 +3,11 @@
   "lessonCode": "tahlil-ibara",
   "level": 2,
   "metadata": {
-    "title": "تمرين 29 — أتمم المساويات",
-    "estimatedMinutes": 5,
+    "title": "أتمم المساويات",
+    "estimatedMinutes": 9,
     "tags": [
-      "متطابقات شهيرة"
+      "متطابقات شهيرة",
+      "تحليل"
     ],
     "source": {
       "type": "textbook",
@@ -14,215 +15,250 @@
       "page": 39,
       "section": "أوظّف تعلّماتي",
       "number": 29
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 39): انقل المساويات الآتية وأتممها باستعمال المتطابقات الشهيرة."
+    "content": "انقل المساويات الآتية وأتممها باستعمال المتطابقات الشهيرة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$x^2 + 6x + \\ldots = (\\ldots + \\ldots)^2$ : أيّ إتمام صحيح؟",
+      "step": "01",
+      "lead": "أتمم: $x^2 + 6x + \\ldots = (x + \\ldots)^2$ .",
+      "statement": "العدد الناقص في الطرف الأيسر:",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x^2 + 6x + 36 = (x + 6)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
-        },
-        {
-          "id": "B",
-          "content": "$x^2 + 6x + 9 = (x + 3)^2$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x^2 + 6x + 3 = (x + 3)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$6x = 2 \\times x \\times b$."
+          "content": "الحد $6x$ هو الحد المضاعف $2ab$ مع $a = x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "إذن $b$ هو نصف 6."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الحدّ الأخير هو $b^2$."
+          "content": "استنتج $b$ ثم احسب $b^2$ ."
         }
       ],
       "feedback": {
-        "correct": "$2 \\times x \\times 3 = 6x$ و $3^2 = 9$.",
-        "incorrect": "تحقّق من كل مساواة بنشر طرفها الأيمن."
-      }
+        "correct": "$x^2 + 6x + 9 = (x + 3)^2$ .",
+        "incorrect": "الحد المضاعف $2ab$ يعطي $b$ ؛ العدد الناقص في الطرف الأيسر هو $b^2$ ."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 + 6x = x^2 + 2 \\times x \\times 3$ إذن $b = 3$",
+          "$x^2 + 6x + 9 = (x + 3)^2$"
+        ],
+        "result": "x^2 + 6x + 9 = (x + 3)^2"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "$36x^2 - \\ldots + 1 = (\\ldots - \\ldots)^2$ : أيّ إتمام صحيح؟",
+      "step": "01",
+      "statement": "العدد الناقص داخل القوس:",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$36x^2 - 12x + 1 = (6x - 1)^2$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$36x^2 - 6x + 1 = (6x - 1)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
-        },
-        {
-          "id": "C",
-          "content": "$36x^2 - 12x + 1 = (36x - 1)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$36x^2 = (6x)^2$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "الحدّ الأوسط $2 \\times 6x \\times 1$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق بنشر الطرف الأيمن."
+          "content": "$2 \\times x \\times b = 6x$ ."
         }
       ],
       "feedback": {
-        "correct": "$(6x - 1)^2 = 36x^2 - 2 \\times 6x \\times 1 + 1$.",
-        "incorrect": "لا تنسَ المعامل 2 في الحدّ الأوسط، و $a$ جذر $36x^2$."
-      }
+        "correct": "$x^2 + 6x + 9 = (x + 3)^2$ .",
+        "incorrect": "من الحد المضاعف: $2 \\times x \\times b = 6x$ ."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 + 6x + 9 = (x + 3)^2$"
+        ],
+        "result": "x^2 + 6x + 9 = (x + 3)^2"
+      },
+      "work": "optional",
+      "timeSeconds": 60
     },
     {
       "id": "q3",
-      "statement": "$\\ldots - \\ldots + 25 = (x - \\ldots)^2$ : أيّ إتمام صحيح؟",
+      "step": "02",
+      "lead": "أتمم: $36x^2 - \\ldots x + 1 = (6x - \\ldots)^2$ .",
+      "statement": "معامل $x$ الناقص:",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x^2 - 5x + 25 = (x - 5)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
-        },
-        {
-          "id": "B",
-          "content": "$x^2 - 25x + 25 = (x - 5)^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
-        },
-        {
-          "id": "C",
-          "content": "$x^2 - 10x + 25 = (x - 5)^2$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "12",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$25 = 5^2$."
+          "content": "$36x^2 = (6x)^2$ و $1 = 1^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الحدّ الأوسط $2 \\times x \\times 5$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق بنشر $(x - 5)^2$."
+          "content": "الحد الناقص هو الحد المضاعف $2ab$ ."
         }
       ],
       "feedback": {
-        "correct": "$(x - 5)^2 = x^2 - 10x + 25$.",
-        "incorrect": "الحدّ الأوسط هو ضعف جداء $x$ و 5."
-      }
+        "correct": "$36x^2 - 12x + 1 = (6x - 1)^2$ .",
+        "incorrect": "عيّن $a$ و $b$ من المربعين، ثم احسب الحد المضاعف $2ab$ ."
+      },
+      "solution": {
+        "lines": [
+          "$36x^2 = (6x)^2$ و $1 = 1^2$",
+          "الحد المضاعف: $2 \\times 6x \\times 1 = 12x$",
+          "$36x^2 - 12x + 1 = (6x - 1)^2$"
+        ],
+        "result": "36x^2 - 12x + 1 = (6x - 1)^2"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q4",
-      "statement": "$\\ldots - 81 = (x + \\ldots)(x - \\ldots)$ : أيّ إتمام صحيح؟",
+      "step": "03",
+      "lead": "أتمم: $x^2 - \\ldots x + 25 = (x - \\ldots)^2$ .",
+      "statement": "العدد الناقص داخل القوس:",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x^2 - 81 = (x + 9)(x - 9)$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$x^2 - 81 = (x + 81)(x - 81)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
-        },
-        {
-          "id": "C",
-          "content": "$x^2 - 81 = (x + 3)(x - 3)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HISAB-DHIHNI-MURABBA"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$81$ مربّع عدد."
+          "content": "$25$ هو مربع العدد $b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$81 = 9^2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "استعمل $a^2 - b^2 = (a + b)(a - b)$."
+          "content": "العدد داخل القوس موجب."
         }
       ],
       "feedback": {
-        "correct": "$x^2 - 81 = x^2 - 9^2 = (x + 9)(x - 9)$.",
-        "incorrect": "ابحث عن العدد الذي مربّعه 81."
-      }
+        "correct": "$x^2 - 10x + 25 = (x - 5)^2$ .",
+        "incorrect": "ابحث عن العدد الموجب الذي مربعه $25$ ."
+      },
+      "solution": {
+        "lines": [
+          "$25 = 5^2$",
+          "$x^2 - 10x + 25 = (x - 5)^2$"
+        ],
+        "result": "x^2 - 10x + 25 = (x - 5)^2"
+      },
+      "work": "optional",
+      "timeSeconds": 90
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "statement": "معامل $x$ الناقص:",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الناقص هو $2ab$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 10x + 25 = (x - 5)^2$ .",
+        "incorrect": "احسب الحد المضاعف $2ab$ بعد تعيين $a$ و $b$ ."
+      },
+      "solution": {
+        "lines": [
+          "الحد المضاعف: $2 \\times x \\times 5 = 10x$"
+        ],
+        "result": "x^2 - 10x + 25 = (x - 5)^2"
+      },
+      "work": "optional",
+      "timeSeconds": 60
+    },
+    {
+      "id": "q6",
+      "step": "04",
+      "lead": "أتمم: $x^2 - 81 = (x + \\ldots)(x - \\ldots)$ .",
+      "statement": "العدد الناقص:",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل $a^2 - b^2 = (a + b)(a - b)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$81$ هو مربع العدد $b$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 81 = (x + 9)(x - 9)$ .",
+        "incorrect": "اكتب $81$ على شكل مربع عدد موجب."
+      },
+      "solution": {
+        "lines": [
+          "$81 = 9^2$",
+          "$x^2 - 81 = (x + 9)(x - 9)$"
+        ],
+        "result": "x^2 - 81 = (x + 9)(x - 9)"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
   ]
 }

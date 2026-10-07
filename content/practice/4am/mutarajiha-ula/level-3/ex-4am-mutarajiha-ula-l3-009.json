@@ -3,48 +3,114 @@
   "lessonCode": "mutarajiha-ula",
   "level": 3,
   "metadata": {
-    "title": "تدريب — الاشتراك في النادي",
-    "estimatedMinutes": 4,
+    "title": "الاشتراك في النادي",
+    "estimatedMinutes": 6,
     "tags": [
-      "حل متراجحة",
-      "حلّ"
+      "متراجحة",
+      "حل متراجحة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_mutarajiha-ula_P2",
       "modelledOn": "act-3a"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "يدفع منخرط في نادٍ رياضي اشتراكًا قدره 800DA ثم 150DA عن كل حصة. ميزانيته 2000DA. نرمز إلى عدد الحصص بـ $x$ ، فالمتراجحة هي $800 + 150x \\leq 2000$ ."
+    "content": "يدفع منخرط في نادٍ رياضي اشتراكًا قدره 800DA ثم 150DA عن كل حصة، وميزانيته 2000DA . نرمز بـ $x$ إلى عدد الحصص، فيُترجم الشرط بالمتراجحة:",
+    "formulas": [
+      "800 + 150x \\leqslant 2000"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّ المتراجحة $800 + 150x \\leq 2000$ .",
+      "step": "01",
+      "lead": "حلّ المتراجحة: $800 + 150x \\leqslant 2000$ .",
+      "statement": "حدّ الحلول $k$ :",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "حلول المتراجحة من الشكل $x < k$ أو $x \\leqslant k$ أو $x > k$ أو $x \\geqslant k$ : اكتب العدد $k$ فقط (عدد صحيح أو كسر a/b، قد يكون سالبًا)",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر، كما في حل معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إضافة عدد إلى الطرفين أو طرحه منهما لا تغيّر اتجاه المتباينة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّ هو العدد الذي يحقّق المعادلة المرفقة (نضع «=» مكان رمز المتباينة): اقسم في الأخير على معامل $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "حدّ الحلول هو $k = 8$ .",
+        "incorrect": "أعد الحل سطرًا سطرًا: العملية نفسها على الطرفين، ثم القسمة على معامل $x$ في الأخير."
+      },
+      "solution": {
+        "lines": [
+          "حدّ الحلول هو حلّ المعادلة المرفقة: $800 + 150x = 2000$",
+          "$150x = 2000 - 800$",
+          "$150x = 1200$",
+          "$\\dfrac{150x}{150} = \\dfrac{1200}{150}$",
+          "إذن حدّ الحلول هو $8$ ."
+        ],
+        "result": "k = 8"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "حلول المتراجحة هي الأعداد $x$ حيث:",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$x \\leq \\dfrac{56}{3}$",
+          "content": "$x < 8$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
         },
         {
           "id": "B",
-          "content": "$x \\leq 8$",
+          "content": "$x \\leqslant 8$",
           "isCorrect": true
         },
         {
           "id": "C",
-          "content": "$x \\geq 8$",
+          "content": "$x > 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "D",
+          "content": "$x \\geqslant 8$",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
         }
@@ -53,57 +119,69 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+          "content": "انظر إلى إشارة معامل $x$ في آخر سطر قبل القسمة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+          "content": "القسمة على عدد موجب تحافظ على الاتجاه، والقسمة على عدد سالب تغيّره."
         }
       ],
       "feedback": {
-        "correct": "$800 + 150x \\leq 2000$ تؤول إلى $150x \\leq 1200$، ثم نقسم على $150$ (عدد موجب، فالاتجاه لا يتغيّر): $x \\leq 8$.",
-        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
-      }
+        "correct": "$x \\leqslant 8$ .",
+        "incorrect": "تتبّع سطور الحل: الاتجاه يتغيّر فقط عند الضرب أو القسمة على عدد سالب، ونوع المتباينة (تامة أو غير تامة) لا يتغيّر أبدًا."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $800 + 150x \\leqslant 2000$",
+          "$150x \\leqslant 2000 - 800$",
+          "$150x \\leqslant 1200$",
+          "$\\dfrac{150x}{150} \\leqslant \\dfrac{1200}{150}$",
+          "إذن حلول المتراجحة هي كل قيم $x$ الأصغر من أو تساوي $8$ .",
+          "قسمنا الطرفين (أو ضربناهما) في آخر خطوة على عدد موجب، فبقي اتجاه المتباينة ونوعها."
+        ],
+        "result": "x \\leqslant 8"
+      },
+      "timeSeconds": 60
     },
     {
-      "id": "q2",
-      "statement": "ما أكبر عدد من الحصص يمكنه دفعه؟",
+      "id": "q3",
+      "step": "02",
+      "statement": "ما هو أكبر عدد من الحصص يمكن لهذا المنخرط دفع ثمنها؟",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "عدد طبيعي: عدد الحصص",
       "expectedAnswer": "8",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حلّ المتراجحة أولًا."
+          "content": "استعمل حلول المتراجحة التي وجدتها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مثّل الحلول على مستقيم مدرّج وانظر إلى الحدّ: هل هو نفسه حلّ؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ابحث عن أكبر عدد طبيعي في الجزء الملوّن."
+          "content": "انتبه إلى الحدّ: هل هو نفسه حلّ أم لا؟"
         }
       ],
       "feedback": {
-        "correct": "الحلول: $x \\leq 8$ ، و $800 + 150 \\times 8 = 2000$ : أكبر عدد هو 8.",
-        "incorrect": "حلّ المتراجحة، ثم انتبه إلى الحدّ: هل هو حلّ أم لا؟"
-      }
+        "correct": "$8$ حصص.",
+        "incorrect": "ارجع إلى حلول المتراجحة، ثم اختبر الأعداد الصحيحة القريبة من الحدّ."
+      },
+      "solution": {
+        "lines": [
+          "حلول المتراجحة هي الأعداد $x$ حيث $x \\leqslant 8$ ، والعدد $8$ حلّ.",
+          "إذن أكبر عدد من الحصص هو $8$ ."
+        ],
+        "result": "8 حصص"
+      },
+      "timeSeconds": 120
     }
   ]
 }

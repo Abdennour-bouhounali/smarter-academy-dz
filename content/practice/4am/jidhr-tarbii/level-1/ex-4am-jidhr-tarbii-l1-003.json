@@ -1,80 +1,79 @@
 {
+  "id": "ex-4am-jidhr-tarbii-l1-003",
+  "lessonCode": "jidhr-tarbii",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — التعرّف على الجذر التربيعي",
-    "estimatedMinutes": 2,
+    "title": "الجذر التربيعي للعدد 49",
+    "estimatedMinutes": 3,
     "tags": [
-      "تعريف",
-      "جذر تربيعي"
+      "تعريف الجذر التربيعي"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_jidhr-tarbii_P1",
-      "modelledOn": "know-1"
+      "modelledOn": "know-1",
+      "adaptedFrom": "ex-4am-jidhr-tarbii-l1-003"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "الجذر التربيعي لعدد موجب $a$ هو العدد الموجب الذي مربعه $a$."
+    "content": "نعتبر العدد 49."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الجذر التربيعي للعدد 49 هو:",
+      "step": "01",
+      "statement": "ما هو الجذر التربيعي للعدد 49 ؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_jidhr-tarbii_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "24,5",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-NISF"
+          "value": "-7",
+          "id": "MISC-JIDHR-SALIB"
         },
         {
-          "id": "B",
-          "content": "$-7$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-SALIB"
-        },
-        {
-          "id": "C",
-          "content": "7",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "2401",
-          "isCorrect": false
+          "value": "24.5",
+          "id": "MISC-JIDHR-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن عدد موجب، لا عن عدد سالب."
+          "content": "الجذر التربيعي لعدد موجب $a$ هو العدد الموجب الذي مربعه $a$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب كل اقتراح موجب في نفسه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "أي اقتراح موجب مربعه 49؟"
+          "content": "من بين العددين اللذين مربعهما 49، أيّهما موجب؟"
         }
       ],
       "feedback": {
-        "correct": "7 عدد موجب و $7^2 = 49$، إذن الجذر التربيعي للعدد 49 هو 7.",
-        "incorrect": "الجذر التربيعي ليس نصف العدد ولا مربعه، ولا يكون سالبًا: تحقّق بتربيع اختيارك."
-      }
+        "correct": "7 موجب و $7^2 = 49$، إذن $\\sqrt{49} = 7$.",
+        "incorrect": "الجذر التربيعي عدد موجب مربعه 49؛ لا هو سالب ولا هو نصف العدد."
+      },
+      "solution": {
+        "lines": [
+          "لدينا $7^2 = 49$ و $(-7)^2 = 49$",
+          "لكن الجذر التربيعي عدد موجب، و 7 موجب، إذن:"
+        ],
+        "result": "\\sqrt{49} = 7"
+      },
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-jidhr-tarbii-l1-003",
-  "lessonCode": "jidhr-tarbii",
-  "level": 1
+  ]
 }

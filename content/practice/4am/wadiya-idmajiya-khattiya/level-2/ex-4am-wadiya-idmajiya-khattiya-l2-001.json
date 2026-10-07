@@ -3,138 +3,129 @@
   "lessonCode": "wadiya-idmajiya-khattiya",
   "level": 2,
   "metadata": {
-    "title": "تمرين 32 — هل g خطية؟",
-    "estimatedMinutes": 5,
+    "title": "تمرين 32 — هل الدالة g خطية؟",
+    "estimatedMinutes": 7,
     "tags": [
       "دالة خطية",
-      "نشر"
+      "نشر وتبسيط"
     ],
     "source": {
       "type": "textbook",
       "elementId": "ex-32",
       "page": 75,
       "section": "أتعمّق",
-      "number": 32
+      "number": 32,
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-khattiya-l2-001"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "هل الدّالة $g$ المعرّفة بالدستور: $g(x) = x\\sqrt{8}\\left(\\dfrac{1}{2} - x\\sqrt{2}\\right) + 8 - 16\\left(\\dfrac{x}{2} - \\sqrt{2}\\right)^2$ دالة خطية؟ في حالة الإيجاب عيّن معاملها."
+    "content": "نعتبر الدالة $g$ المعرّفة بـ:",
+    "formulas": [
+      "g(x) = x\\sqrt{8}\\left(\\dfrac{1}{2} - x\\sqrt{2}\\right) + 8 - 16\\left(\\dfrac{x}{2} - \\sqrt{2}\\right)^2"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "بعد النشر والتبسيط، $g(x)$ يساوي:",
+      "step": "01",
+      "statement": "انشر ثم بسّط عبارة $g(x)$ ، وأعط معامل $x^2$ فيها.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$-8x^2 + 17\\sqrt{2}\\,x - 24$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$17\\sqrt{2}\\,x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-AFFINE"
-        },
-        {
-          "id": "C",
-          "content": "$-8x^2 + 17\\sqrt{2}\\,x + 8$",
-          "isCorrect": false
-        },
-        {
-          "id": "D",
-          "content": "$-4x^2 + \\sqrt{2}\\,x - 24$",
-          "isCorrect": false
-        }
-      ],
+      "difficulty": 2,
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب معامل $x^2$ فقط (عدد صحيح)",
+      "expectedAnswer": "-8",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$\\sqrt{8} = 2\\sqrt{2}$."
+          "content": "$x\\sqrt{8} \\times x\\sqrt{2} = x^2\\sqrt{16}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\left(\\dfrac{x}{2} - \\sqrt{2}\\right)^2 = \\dfrac{x^2}{4} - \\sqrt{2}\\,x + 2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "انشر كل جزء ثم اجمع الحدود المتشابهة."
+          "content": "انشر $\\left(\\dfrac{x}{2} - \\sqrt{2}\\right)^2$ بالمتطابقة $(a - b)^2 = a^2 - 2ab + b^2$ ثم اضرب في $-16$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{2}\\,x - 4x^2 + 8 - 4x^2 + 16\\sqrt{2}\\,x - 32 = -8x^2 + 17\\sqrt{2}\\,x - 24$.",
-        "incorrect": "انشر الجزأين بعناية: الطرح يشمل كل حدود المربع."
+        "correct": "$g(x) = -8x^2 + 17\\sqrt{2}x - 24$ .",
+        "incorrect": "أعد النشر حدًّا حدًّا: $\\sqrt{8} = 2\\sqrt{2}$ و $\\sqrt{8} \\times \\sqrt{2} = 4$ ."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "$x\\sqrt{8}\\left(\\dfrac{1}{2} - x\\sqrt{2}\\right) = \\dfrac{2\\sqrt{2}}{2}x - 4x^2 = \\sqrt{2}x - 4x^2$",
+          "$\\left(\\dfrac{x}{2} - \\sqrt{2}\\right)^2 = \\dfrac{x^2}{4} - \\sqrt{2}x + 2$",
+          "$-16\\left(\\dfrac{x^2}{4} - \\sqrt{2}x + 2\\right) = -4x^2 + 16\\sqrt{2}x - 32$",
+          "$g(x) = \\sqrt{2}x - 4x^2 + 8 - 4x^2 + 16\\sqrt{2}x - 32$"
+        ],
+        "result": "g(x) = -8x^2 + 17\\sqrt{2}x - 24"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "هل $g$ دالة خطية؟",
+      "step": "02",
+      "statement": "هل $g$ دالة خطية؟ برّر. (في حالة الإيجاب عيّن معاملها.)",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "لا: يبقى حد في $x^2$ وحد ثابت",
-          "isCorrect": true
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
         },
         {
           "id": "B",
-          "content": "نعم، معاملها $17\\sqrt{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-AFFINE"
-        },
-        {
-          "id": "C",
-          "content": "نعم، معاملها $-8$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-AFFINE"
-        },
-        {
-          "id": "D",
-          "content": "لا، لأنّ في عبارتها جذرا تربيعيا",
-          "isCorrect": false
+          "content": "لا",
+          "isCorrect": true
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما شكل عبارة الدالة الخطية؟"
+          "content": "الدالة الخطية تكتب على الشكل $x \\longmapsto ax$ فقط."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $g(0)$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الدالة الخطية من الشكل $ax$ فقط."
+          "content": "انظر إلى الحدود الأخرى في العبارة المبسّطة."
         }
       ],
       "feedback": {
-        "correct": "$g(0) = -24 \\neq 0$ وفيها حد في $x^2$ : ليست خطية.",
-        "incorrect": "الدالة الخطية صورة 0 بها 0 ولا تحوي $x^2$ ؛ الجذر لا يمنع الخطية."
+        "correct": "العبارة تحتوي على حد بـ $x^2$ وحد ثابت: $g$ ليست خطية.",
+        "incorrect": "دالة خطية لا تحتوي إلا على حد من الشكل $ax$ ."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$g(x) = -8x^2 + 17\\sqrt{2}x - 24$ لا تكتب على الشكل $ax$ (فيها حد بـ $x^2$ وحد ثابت $-24$).",
+          "وأيضا $g(0) = -24 \\neq 0$ ، بينما صورة 0 بدالة خطية هي 0.",
+          "إذن $g$ ليست دالة خطية."
+        ],
+        "result": "الدالة g ليست خطية"
+      },
+      "timeSeconds": 90
     }
   ]
 }

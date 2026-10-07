@@ -3,107 +3,235 @@
   "lessonCode": "mutarajiha-ula",
   "level": 5,
   "metadata": {
-    "title": "تدريب — سيارة الأجرة",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2025 — وقود سيارة على طريق الجنوب",
+    "estimatedMinutes": 8,
     "tags": [
-      "حل متراجحة",
-      "ترجمة"
+      "متراجحة",
+      "وضعية إدماجية",
+      "أعداد عشرية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_mutarajiha-ula_P2",
-      "modelledOn": "act-3a"
+      "modelledOn": "BEM 2025 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2025",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "تكلفة رحلة بسيارة أجرة: 150DA عند الانطلاق و 40DA عن كل كيلومتر. لا يملك سمير أكثر من 1000DA. نرمز إلى المسافة بالكيلومتر بـ $x$ : $150 + 40x \\leq 1000$ ."
+    "content": "ملأ سائق خزان سيارته بـ 50 لترًا من الوقود قبل انطلاقه من غرداية نحو الجنوب. تستهلك سيارته $7{,}5$ لترات في كل 100km ، أي $0{,}075$ لتر في الكيلومتر الواحد. ينصح السائقون بألّا تقلّ كمية الوقود في الخزان عن 8 لترات."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّ المتراجحة $150 + 40x \\leq 1000$ .",
+      "step": "01",
+      "statement": "احسب كمية الوقود الباقية في الخزان بعد قطع 200km .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: الكمية باللتر",
+      "expectedAnswer": "35",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الكمية المستهلكة ثم اطرحها من الكمية الابتدائية."
+        }
+      ],
+      "feedback": {
+        "correct": "$35$ لترًا.",
+        "incorrect": "أعد الحساب خطوة خطوة، مع احترام أولوية العمليات."
+      },
+      "solution": {
+        "lines": [
+          "$50 - 0{,}075 \\times 200 = 50 - 15$",
+          "$= 35$"
+        ],
+        "result": "35L"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "lead": "ليكن $x$ عدد الكيلومترات المقطوعة. حلّ المتراجحة: $50 - 0{,}075x \\geqslant 8$ .",
+      "statement": "حدّ الحلول $k$ :",
       "learningPoints": [
         {
           "code": "4am_mutarajiha-ula_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "حلول المتراجحة من الشكل $x < k$ أو $x \\leqslant k$ أو $x > k$ أو $x \\geqslant k$ : اكتب العدد $k$ فقط (عدد صحيح أو كسر a/b، قد يكون سالبًا)",
+      "expectedAnswer": "560",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر، كما في حل معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إضافة عدد إلى الطرفين أو طرحه منهما لا تغيّر اتجاه المتباينة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّ هو العدد الذي يحقّق المعادلة المرفقة (نضع «=» مكان رمز المتباينة): اقسم في الأخير على معامل $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "حدّ الحلول هو $k = 560$ .",
+        "incorrect": "أعد الحل سطرًا سطرًا: العملية نفسها على الطرفين، ثم القسمة على معامل $x$ في الأخير."
+      },
+      "solution": {
+        "lines": [
+          "حدّ الحلول هو حلّ المعادلة المرفقة: $50 - 0{,}075x = 8$",
+          "نضرب الطرفين في العدد الموجب $1000$ :",
+          "$50000 - 75x = 8000$",
+          "$-75x = 8000 - 50000$",
+          "$-75x = -42000$",
+          "$\\dfrac{-75x}{-75} = \\dfrac{-42000}{-75}$",
+          "إذن حدّ الحلول هو $560$ ."
+        ],
+        "result": "k = 560"
+      },
+      "work": "optional",
+      "timeSeconds": 210
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "حلول المتراجحة هي الأعداد $x$ حيث:",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "$x \\geq \\dfrac{85}{4}$",
+          "content": "$x < 560$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
         },
         {
           "id": "B",
-          "content": "$x \\leq \\dfrac{85}{4}$",
+          "content": "$x \\leqslant 560$",
           "isCorrect": true
         },
         {
           "id": "C",
-          "content": "$x \\leq \\dfrac{115}{4}$",
+          "content": "$x > 560$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "D",
+          "content": "$x \\geqslant 560$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+          "content": "انظر إلى إشارة معامل $x$ في آخر سطر قبل القسمة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+          "content": "القسمة على عدد موجب تحافظ على الاتجاه، والقسمة على عدد سالب تغيّره."
         }
       ],
       "feedback": {
-        "correct": "$150 + 40x \\leq 1000$ تؤول إلى $40x \\leq 850$، ثم نقسم على $40$ (عدد موجب، فالاتجاه لا يتغيّر): $x \\leq \\dfrac{85}{4}$.",
-        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
-      }
+        "correct": "$x \\leqslant 560$ .",
+        "incorrect": "تتبّع سطور الحل: الاتجاه يتغيّر فقط عند الضرب أو القسمة على عدد سالب، ونوع المتباينة (تامة أو غير تامة) لا يتغيّر أبدًا."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: $50 - 0{,}075x \\geqslant 8$",
+          "نضرب الطرفين في العدد الموجب $1000$ :",
+          "$50000 - 75x \\geqslant 8000$",
+          "$-75x \\geqslant 8000 - 50000$",
+          "$-75x \\geqslant -42000$",
+          "نقسم الطرفين على العدد السالب $-75$ فنغيّر اتجاه المتباينة:",
+          "$\\dfrac{-75x}{-75} \\leqslant \\dfrac{-42000}{-75}$",
+          "إذن حلول المتراجحة هي كل قيم $x$ الأصغر من أو تساوي $560$ .",
+          "قسمنا الطرفين (أو ضربناهما) في آخر خطوة على عدد سالب، فتغيّر اتجاه المتباينة وبقي نوعها."
+        ],
+        "result": "x \\leqslant 560"
+      },
+      "timeSeconds": 60
     },
     {
-      "id": "q2",
-      "statement": "ما أكبر عدد صحيح من الكيلومترات يمكن لسمير قطعه؟",
+      "id": "q4",
+      "step": "03",
+      "statement": "المسافة بين محطتي وقود متتاليتين على هذا الطريق هي $610$ km . هل يمكن للسائق أن يقطعها دون التزوّد بالوقود مع احترام النصيحة؟",
       "learningPoints": [
         {
-          "code": "4am_mutarajiha-ula_P2",
+          "code": "4am_mutarajiha-ula_P1",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "21",
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حلّ المتراجحة أولًا."
+          "content": "هل العدد المعطى حلّ للمتراجحة التي حللتها؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مثّل الحلول على مستقيم مدرّج وانظر إلى الحدّ: هل هو نفسه حلّ؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ابحث عن أكبر عدد طبيعي في الجزء الملوّن."
+          "content": "قارنه بحدّ الحلول، أو احسب كمية الوقود الباقية."
         }
       ],
       "feedback": {
-        "correct": "الحلول: $x \\leq \\dfrac{85}{4}$ ، و $\\dfrac{85}{4} = 21{,}25$ : أكبر عدد صحيح هو 21.",
-        "incorrect": "حلّ المتراجحة، ثم انتبه إلى الحدّ: هل هو حلّ أم لا؟"
-      }
+        "correct": "لا: $610 > 560$ .",
+        "incorrect": "قارن المسافة المعطاة بأكبر مسافة تسمح بها المتراجحة."
+      },
+      "solution": {
+        "lines": [
+          "حلول المتراجحة هي الأعداد $x$ حيث $x \\leqslant 560$ .",
+          "$610 > 560$ ، فالعدد $610$ ليس حلًّا: سيبقى في الخزان $50 - 0{,}075 \\times 610 = 4{,}25$ لتر فقط، أي أقلّ من 8 لترات.",
+          "إذن لا يمكنه ذلك."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 120
     }
   ]
 }

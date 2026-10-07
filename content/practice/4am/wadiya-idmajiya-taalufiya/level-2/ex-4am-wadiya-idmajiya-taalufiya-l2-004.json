@@ -4,7 +4,7 @@
   "level": 2,
   "metadata": {
     "title": "قاعة ألعاب: صيغتان",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 6,
     "tags": [
       "مفاضلة",
       "نقطة التقاطع"
@@ -13,100 +13,104 @@
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "قاعة ألعاب: الصيغة أ بطاقة شهرية 500 DA ثم 100 DA للساعة، والصيغة ب 200 DA للساعة ( $x$ عدد الساعات في الشهر)."
+    "content": "تقترح قاعة ألعاب صيغتين، حيث $x$ عدد الساعات في الشهر:\n- الصيغة الأولى: بطاقة شهرية 500DA ثم 100DA للساعة.\n- الصيغة الثانية: 200DA للساعة دون بطاقة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "من أجل كم ساعة يتساوى الثمنان؟",
+      "step": "01",
+      "statement": "من أجل كم ساعة يتساوى المبلغان؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد الساعات",
+      "answerFormat": "عدد: عدد الساعات",
       "expectedAnswer": "5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$100x + 500 = 200x$."
+          "content": "عبّر عن المبلغين بدلالة $x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$100x = 500$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "فاصلة نقطة التقاطع."
+          "content": "حلّ المعادلة $100x + 500 = 200x$ ."
         }
       ],
       "feedback": {
-        "correct": "$x = 5$ ساعات (والثمن 1000 DA).",
-        "incorrect": "نساوي الثمنين."
+        "correct": "$100x + 500 = 200x$ .",
+        "incorrect": "ساوِ المبلغين ثم اجمع حدود $x$ في طرف واحد."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "المبلغ بالصيغة الأولى: $f(x) = 100x + 500$ ، وبالثانية: $g(x) = 200x$ .",
+          "$100x + 500 = 200x$",
+          "$500 = 100x$",
+          "$x = 5$"
+        ],
+        "result": "x = 5"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "يلعب سليم 8 ساعات في الشهر. الأرخص له:",
+      "step": "02",
+      "statement": "يلعب سليم 8 ساعات في الشهر. ما هي الصيغة الأقل تكلفة له؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "الصيغة أ: 1300 DA",
+          "content": "الصيغة الأولى",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "الصيغة ب: 1600 DA",
+          "content": "الصيغة الثانية",
           "isCorrect": false,
           "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
-        },
-        {
-          "id": "C",
-          "content": "الصيغتان متساويتان",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAFSIR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "8 أكبر من 5."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب الثمنين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بعد نقطة التقاطع تتغيّر الصيغة الأرخص."
+          "content": "احسب المبلغين من أجل 8 ساعات."
         }
       ],
       "feedback": {
-        "correct": "$500 + 800 = 1300 < 1600$.",
-        "incorrect": "بعد 5 ساعات تصبح البطاقة أرخص."
+        "correct": "$f(8) = 1300$ و $g(8) = 1600$ .",
+        "incorrect": "احسب $f(8)$ و $g(8)$ ثم قارن."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$f(8) = 100 \\times 8 + 500 = 1300DA$",
+          "$g(8) = 200 \\times 8 = 1600DA$",
+          "إذن الصيغة الأولى هي الأقل تكلفة لسليم."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

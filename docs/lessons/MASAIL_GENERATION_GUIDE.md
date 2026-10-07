@@ -322,8 +322,10 @@ Run `apps/web/e2e/lesson-kit/masail-lesson.mjs` with `MASAIL_LESSON=<code>` (the
 `qa-eleve@smarter.dz`, API on :8000): it answers **every sub-step wrong**, checks each
 still advances, checks demands listed + one answer slot each visible at opening, all
 demands ticked at the end, modules completed, **no POST to evidence / final-test**,
-the test open, module-1 reminder, no horizontal overflow at phone width, no console
-error. Reset the QA student's `student_lesson_progress` row first, otherwise the
+the test open, module-1 reminder, the statement support drawn on the « مسألة الدرس »
+card and in the brief (`[data-geo-figure]`, `[data-space-figure]` for a 3D `SpaceFigure`,
+`[data-problem-visual] svg`, `[data-problem-table]`), no horizontal overflow at phone
+width, no console error. Reset the QA student's `student_lesson_progress` row first, otherwise the
 modules open in revisit mode (everything unlocked) and hide the guided flow. If the
 lesson is draft for review, publish it locally only for the run and restore it.
 Then **look at the screenshots** (desktop and phone) — RTL of every equality and amount.

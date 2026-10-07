@@ -4,116 +4,201 @@
   "level": 4,
   "metadata": {
     "title": "خطية أم لا؟",
-    "estimatedMinutes": 5,
+    "estimatedMinutes": 10,
     "tags": [
       "دالة خطية",
-      "نشر"
+      "نشر وتبسيط"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-khattiya_P1",
-      "modelledOn": "ex-32"
+      "modelledOn": "ex-32",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-khattiya-l4-005"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "نعتبر الدالتين $h(x) = (x + 2)^2 - x^2 - 4$ و $k(x) = x(x + 1) - x^2 + 3$."
+    "content": "نعتبر الدالتين $h$ و $k$ المعرّفتين بـ:",
+    "formulas": [
+      "h(x) = (x + 2)^2 - x^2 - 4",
+      "k(x) = x(x + 1) - x^2 + 3"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$h$ دالة خطية. ما معاملها؟",
+      "step": "01",
+      "statement": "بيّن أن $h$ دالة خطية، ثم عيّن معاملها.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
       "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "value": "2",
+          "id": "MISC-KHATTIYA-AFFINE"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر $(x + 2)^2$."
+          "content": "انشر $(x + 2)^2$ بالمتطابقة $(a + b)^2 = a^2 + 2ab + b^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$(x + 2)^2 = x^2 + 4x + 4$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بسّط ثم اقرأ معامل $x$."
+          "content": "بسّط: تبقى عبارة من الشكل $ax$ ."
         }
       ],
       "feedback": {
-        "correct": "$h(x) = x^2 + 4x + 4 - x^2 - 4 = 4x$.",
-        "incorrect": "انشر المربع ثم بسّط: يبقى حد واحد في $x$."
+        "correct": "$h(x) = x^2 + 4x + 4 - x^2 - 4 = 4x$ .",
+        "incorrect": "أعد النشر: $(x + 2)^2 = x^2 + 4x + 4$ ."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3,
-      "misconceptionSignatures": [
-        {
-          "value": "2",
-          "id": "MISC-JIDHR-JAMA"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$h(x) = x^2 + 4x + 4 - x^2 - 4$",
+          "$h(x) = 4x$ : $h$ دالة خطية معاملها 4."
+        ],
+        "result": "h(x) = 4x"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "هل $k$ دالة خطية؟",
+      "step": "02",
+      "sub": "ا",
+      "statement": "احسب $k(0)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 0 في عبارة $k(x)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$k(0) = 0 \\times 1 - 0 + 3 = 3$ .",
+        "incorrect": "عوّض $x$ بـ 0 في كل حد."
+      },
+      "solution": {
+        "lines": [
+          "$k(0) = 0 \\times (0 + 1) - 0^2 + 3 = 3$"
+        ],
+        "result": "k(0) = 3"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "هل $k$ دالة خطية؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P2",
           "role": "primary"
         }
       ],
+      "difficulty": 4,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "لا، لأنّ $k(x) = x + 3$ وفيها حد ثابت",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "نعم، معاملها 1",
+          "content": "نعم",
           "isCorrect": false,
           "misconceptionId": "MISC-KHATTIYA-AFFINE"
         },
         {
-          "id": "C",
-          "content": "لا، لأنّ عبارتها تحوي $x^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر $x(x + 1)$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$x^2 + x - x^2 + 3$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بعد التبسيط، هل يبقى حد ثابت؟"
+          "content": "صورة 0 بدالة خطية هي دائما 0."
         }
       ],
       "feedback": {
-        "correct": "$k(x) = x + 3$ و $k(0) = 3 \\neq 0$ : ليست خطية.",
-        "incorrect": "احكم بعد التبسيط: الحدّان في $x^2$ يختزلان."
+        "correct": "$k(0) \\neq 0$ ، و $k(x) = x + 3$ : $k$ ليست خطية.",
+        "incorrect": "قارن $k(0)$ بالعدد 0، أو بسّط عبارة $k(x)$ ."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "$k(x) = x^2 + x - x^2 + 3 = x + 3$",
+          "$k(0) = 3 \\neq 0$ ، إذن $k$ ليست دالة خطية."
+        ],
+        "result": "الدالة k ليست خطية"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "احسب صورة العدد $-\\dfrac{5}{2}$ بالدالة $h$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-10",
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل العبارة المبسّطة لـ $h(x)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$h\\left(-\\dfrac{5}{2}\\right) = 4 \\times \\left(-\\dfrac{5}{2}\\right) = -10$ .",
+        "incorrect": "اضرب المعامل في $-\\dfrac{5}{2}$ ."
+      },
+      "solution": {
+        "lines": [
+          "$h\\left(-\\dfrac{5}{2}\\right) = 4 \\times \\left(-\\dfrac{5}{2}\\right) = -10$"
+        ],
+        "result": "h\\left(-\\dfrac{5}{2}\\right) = -10"
+      },
+      "timeSeconds": 60
     }
   ]
 }

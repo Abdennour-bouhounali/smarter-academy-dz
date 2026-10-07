@@ -3,128 +3,303 @@
   "lessonCode": "wadiya-idmajiya-khattiya",
   "level": 5,
   "metadata": {
-    "title": "السكوتر بتخفيض الطلبة",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2025 — القطار بين الجزائر العاصمة ووهران",
+    "estimatedMinutes": 25,
     "tags": [
+      "وضعية إدماجية",
+      "سرعة متوسطة",
       "دالة خطية",
-      "تخفيض",
-      "تدوير"
+      "تخفيض"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
-      "modelledOn": "situation"
+      "modelledOn": "BEM 2025 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2025",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "كراء سكوتر كهربائي يكلّف $12$ DA للدقيقة. للطلبة تخفيض 25% على سعر الدقيقة. معك $600$ DA. نسمّي $x$ عدد الدقائق."
+    "content": "يقطع قطار المسافة بين محطة آغا بالجزائر العاصمة ومحطة وهران، وطولها 420km عبر السكة، في 4 ساعات و 12 دقيقة، بسرعة نعتبرها ثابتة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المبلغ الذي يدفعه طالب بدلالة $x$ :",
+      "step": "01",
+      "statement": "احسب سرعة القطار بـ km/h.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: السرعة بـ km/h",
+      "expectedAnswer": "100",
+      "misconceptionSignatures": [
+        {
+          "value": "105",
+          "id": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "value": "101.94",
+          "id": "MISC-MAQADIR-WIHDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "4 ساعات و 12 دقيقة = $4{,}2h$ (لأن $12min = 0{,}2h$)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "السرعة = المسافة ÷ المدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$420 \\div 4{,}2 = 100km/h$ .",
+        "incorrect": "12 دقيقة ليست 0,12 ساعة: $12 \\div 60 = 0{,}2$ ."
+      },
+      "solution": {
+        "lines": [
+          "$12min = \\dfrac{12}{60}h = 0{,}2h$ ، والمدة $4{,}2h$ .",
+          "$v = \\dfrac{420}{4{,}2} = 100$ ، سرعة القطار $100km/h$ ."
+        ],
+        "result": "v = 100km/h"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "sub": "ا",
+      "lead": "نسمّي $d(t)$ المسافة (بالكيلومتر) التي يقطعها القطار بعد $t$ دقيقة من انطلاقه.",
+      "statement": "عبّر عن $d(t)$ بدلالة $t$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "5/3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$9x$",
-          "isCorrect": true
+          "value": "100",
+          "id": "MISC-MAQADIR-WIHDA"
         },
         {
-          "id": "B",
-          "content": "$3x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAKHFID-NISBA"
-        },
-        {
-          "id": "C",
-          "content": "$12x - 25$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NISBA-JAM"
-        },
-        {
-          "id": "D",
-          "content": "$15x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+          "value": "3/5",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "سعر الدقيقة بعد التخفيض."
+          "content": "حوّل السرعة إلى km في الدقيقة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$12 \\times 0{,}75$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الدالة خطية معاملها سعر الدقيقة."
+          "content": "$1h = 60min$ ."
         }
       ],
       "feedback": {
-        "correct": "الدقيقة بـ $12 \\times 0{,}75 = 9$ DA: المبلغ $9x$.",
-        "incorrect": "بعد تخفيض 25% ندفع 75% من السعر."
+        "correct": "$d(t) = \\dfrac{100}{60}t = \\dfrac{5}{3}t$ .",
+        "incorrect": "$t$ بالدقائق: المعامل هو المسافة المقطوعة في دقيقة واحدة."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "في دقيقة واحدة يقطع القطار $\\dfrac{100}{60} = \\dfrac{5}{3}km$ .",
+          "$d(t) = \\dfrac{5}{3}t$"
+        ],
+        "result": "d(t) = \\dfrac{5}{3}t"
+      },
+      "timeSeconds": 150
     },
     {
-      "id": "q2",
-      "statement": "ما أكبر عدد من الدقائق الكاملة يمكن كراؤها؟",
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "يمرّ القطار بمدينة الشلف بعد 126 دقيقة من انطلاقه. احسب المسافة بين الجزائر العاصمة والشلف عبر السكة.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المسافة بـ km",
+      "expectedAnswer": "210",
+      "misconceptionSignatures": [
+        {
+          "value": "12600",
+          "id": "MISC-MAQADIR-WIHDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $d(126)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$d(126) = \\dfrac{5}{3} \\times 126 = 210km$ .",
+        "incorrect": "عوّض $t$ بـ 126 في عبارة $d(t)$ ."
+      },
+      "solution": {
+        "lines": [
+          "$d(126) = \\dfrac{5}{3} \\times 126 = 210$",
+          "المسافة بين الجزائر العاصمة والشلف 210km."
+        ],
+        "result": "210km"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "sub": "ا",
+      "lead": "سعر التذكرة العادية للرحلة 1500DA، ويستفيد الطلبة من تخفيض قدره 25%. نسمّي $x$ سعر التذكرة العادية (بـ DA) و $s(x)$ سعر تذكرة الطالب.",
+      "statement": "عبّر عن $s(x)$ بدلالة $x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب المعامل $a$ فقط في $s(x) = ax$ (عشري بالفاصلة)",
+      "expectedAnswer": "0,75",
+      "misconceptionSignatures": [
+        {
+          "value": "0.25",
+          "id": "MISC-TAKHFID-NISBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تخفيض بـ 25% هو الضرب في $1 - 0{,}25$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$s(x) = 0{,}75x$ .",
+        "incorrect": "المعامل هو النسبة التي يدفعها الطالب."
+      },
+      "solution": {
+        "lines": [
+          "$s(x) = x - 0{,}25x = 0{,}75x$"
+        ],
+        "result": "s(x) = 0{,}75x"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "sub": "ب",
+      "statement": "احسب سعر تذكرة الطالب.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: السعر بـ DA",
+      "expectedAnswer": "1125",
+      "misconceptionSignatures": [
+        {
+          "value": "375",
+          "id": "MISC-TAKHFID-NISBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $s(1500)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$s(1500) = 0{,}75 \\times 1500 = 1125$ DA.",
+        "incorrect": "السعر هو صورة 1500، لا قيمة التخفيض."
+      },
+      "solution": {
+        "lines": [
+          "$s(1500) = 0{,}75 \\times 1500 = 1125$"
+        ],
+        "result": "1125DA"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q6",
+      "step": "04",
+      "statement": "☜ يسافر فوج من 12 طالبا يرافقهم أستاذان (بالسعر العادي) ذهابا وإيابا. احسب تكلفة التذاكر.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P3",
           "role": "primary"
         }
       ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "66",
+      "answerFormat": "عدد: التكلفة بـ DA",
+      "expectedAnswer": "33000",
+      "misconceptionSignatures": [
+        {
+          "value": "16500",
+          "id": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "value": "42000",
+          "id": "MISC-TAKHFID-NISBA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حل $9x \\leq 600$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$\\dfrac{600}{9} \\approx 66{,}7$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "دوّر نحو الأسفل."
+          "content": "احسب تكلفة الذهاب للفوج كله، ثم ضاعفها."
         }
       ],
       "feedback": {
-        "correct": "$9 \\times 66 = 594 \\leq 600$ و $9 \\times 67 = 603 > 600$.",
-        "incorrect": "لا يمكن تجاوز المبلغ: دوّر نحو الأسفل."
+        "correct": "$2 \\times (12 \\times 1125 + 2 \\times 1500) = 2 \\times 16500 = 33000$ DA.",
+        "incorrect": "لا تنسَ الإياب، ولا سعر الأستاذين العادي."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 4,
-      "misconceptionSignatures": [
-        {
-          "value": "67",
-          "id": "MISC-TARRID-TAFSIR"
-        },
-        {
-          "value": "50",
-          "id": "MISC-TARRID-NAMUDHAJ"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "الذهاب: $12 \\times 1125 + 2 \\times 1500 = 13500 + 3000 = 16500$ DA.",
+          "الذهاب والإياب: $2 \\times 16500 = 33000$ DA."
+        ],
+        "result": "33000DA"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

@@ -3,10 +3,10 @@
   "lessonCode": "wadiya-idmajiya-jumal",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 3 — ثنائية بكسرين",
-    "estimatedMinutes": 3,
+    "title": "ثنائية بكسرين",
+    "estimatedMinutes": 4,
     "tags": [
-      "حل معادلة بمجهولين",
+      "حل جملة",
       "كسور"
     ],
     "source": {
@@ -15,64 +15,116 @@
       "page": 62,
       "section": "أؤكّد تعلّماتي",
       "number": 3
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نعتبر الثنائية $\\left(\\dfrac{1}{2} ; -\\dfrac{1}{2}\\right)$."
+    "content": "نعتبر الجملة التالية والثنائية $\\left(\\dfrac{1}{2} ; -\\dfrac{1}{2}\\right)$ :",
+    "formulas": [
+      "\\begin{cases} x + y = 0 \\\\ 2x - \\dfrac{1}{2}y = 0 \\end{cases}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الثنائية $\\left(\\dfrac{1}{2} ; -\\dfrac{1}{2}\\right)$ هي حل للمعادلة ...",
+      "step": "01",
+      "statement": "احسب $2x - \\dfrac{1}{2}y$ من أجل $x = \\dfrac{1}{2}$ و $y = -\\dfrac{1}{2}$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب النتيجة على شكل كسر أو عدد عشري",
+      "expectedAnswer": "5/4",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x + y = 0$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$2x - \\dfrac{1}{2}y = 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{1}{2}x + y - \\dfrac{1}{4} = 0$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+          "value": "3/4",
+          "id": "MISC-TAWID-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في الثنائية $x = \\dfrac{1}{2}$ و $y = -\\dfrac{1}{2}$."
+          "content": "عوّض $x$ و $y$ بقيمتيهما في العبارة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض في كل معادلة واحسب الطرف الأيسر."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "انتبه إلى إشارة $y$ السالبة."
+          "content": "انتبه إلى إشارة $y$ : طرح عدد سالب يعني إضافة مقابله."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{1}{2} + \\left(-\\dfrac{1}{2}\\right) = 0$.",
-        "incorrect": "عوّض بدقة: $y$ سالب."
+        "correct": "النتيجة $\\dfrac{5}{4}$ .",
+        "incorrect": "احسب $2 \\times \\dfrac{1}{2}$ ثم $\\dfrac{1}{2} \\times \\left(-\\dfrac{1}{2}\\right)$ وانتبه إلى الإشارات."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$2 \\times \\dfrac{1}{2} - \\dfrac{1}{2} \\times \\left(-\\dfrac{1}{2}\\right) = 1 + \\dfrac{1}{4}$",
+          "$= \\dfrac{5}{4}$"
+        ],
+        "result": "\\dfrac{5}{4}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "هل الثنائية $\\left(\\dfrac{1}{2} ; -\\dfrac{1}{2}\\right)$ حل لهذه الجملة؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقق من المعادلتين معا، لا من واحدة فقط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل نتيجة السؤال 01 للمعادلة الثانية."
+        }
+      ],
+      "feedback": {
+        "correct": "لا: الثنائية تحقق المعادلة الأولى فقط.",
+        "incorrect": "الثنائية حل للجملة إذا حققت المعادلتين معا: قارن نتيجة السؤال 01 بالطرف الثاني للمعادلة الثانية."
+      },
+      "solution": {
+        "lines": [
+          "المعادلة الأولى: $\\dfrac{1}{2} + \\left(-\\dfrac{1}{2}\\right) = 0$ : محققة.",
+          "المعادلة الثانية: $2x - \\dfrac{1}{2}y = \\dfrac{5}{4} \\neq 0$ : غير محققة.",
+          "إذن الثنائية ليست حلا للجملة (لا تحقق المعادلتين معا)."
+        ]
+      },
+      "timeSeconds": 120
     }
   ]
 }

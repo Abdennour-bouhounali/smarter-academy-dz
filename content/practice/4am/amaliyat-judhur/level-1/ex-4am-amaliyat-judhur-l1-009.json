@@ -1,114 +1,85 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l1-009",
+  "lessonCode": "amaliyat-judhur",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — إخراج مربّع من تحت الجذر",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2018 — جداء جذرين",
+    "estimatedMinutes": 2,
     "tags": [
-      "جداء جذرين",
-      "إخراج عامل من تحت الجذر"
+      "جداء جذرين"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_amaliyat-judhur_P1",
-      "modelledOn": "know-4"
+      "modelledOn": "BEM 2018 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2018",
+      "heading": "التمرين الأول",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من أجل كل عددين موجبين $a$ و $b$ : $\\sqrt{a^2 b} = a\\sqrt{b}$ ."
+    "content": "$A$ عدد حيث:",
+    "formulas": [
+      "A = 5\\sqrt{12} \\times \\sqrt{3}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "العدد $\\sqrt{9 \\times 5}$ يساوي:",
+      "step": "01",
+      "statement": "بيّن أن $A$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$9\\sqrt{5}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
-        },
-        {
-          "id": "B",
-          "content": "$5\\sqrt{3}$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$3\\sqrt{5}$",
-          "isCorrect": true
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "$9$ مربّع تام."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$\\sqrt{9 \\times 5} = \\sqrt{9} \\times \\sqrt{5}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ما العدد الموجب الذي مربعه 9؟"
-        }
-      ],
-      "feedback": {
-        "correct": "$\\sqrt{9 \\times 5} = \\sqrt{3^2 \\times 5} = 3\\sqrt{5}$",
-        "incorrect": "يخرج من تحت الجذر جذرُ المربّع، لا المربّع نفسه."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "احسب $\\sqrt{(-4) \\times (-25)}$ .",
-      "learningPoints": [
-        {
-          "code": "4am_amaliyat-judhur_P1",
-          "role": "primary"
-        }
-      ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "10",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "ما إشارة جداء عددين سالبين؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$\\sqrt{-4}$ لا معنى له، لكن ما تحت الجذر هنا جداء."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب الجداء أولًا ثم جذره."
-        }
-      ],
-      "feedback": {
-        "correct": "$(-4) \\times (-25) = 100$ و $\\sqrt{100} = 10$ .",
-        "incorrect": "الجداء موجب، والجذر التربيعي عدد موجب."
-      },
+      "answerFormat": "اكتب قيمة $A$ (عدد طبيعي)",
+      "expectedAnswer": "30",
       "misconceptionSignatures": [
         {
-          "value": "-10",
-          "id": "MISC-JIDHR-SALIB"
+          "value": "6",
+          "id": "MISC-MUAMIL-MANSI"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $\\sqrt{12} \\times \\sqrt{3}$ تحت جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء العددين تحت الجذر مربع تام."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ المعامل 5 أمام الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 5\\sqrt{12 \\times 3} = 5\\sqrt{36} = 5 \\times 6 = 30$",
+        "incorrect": "اكتب $\\sqrt{12} \\times \\sqrt{3} = \\sqrt{12 \\times 3}$ ثم احسب الجذر واضرب في المعامل."
+      },
+      "solution": {
+        "lines": [
+          "$A = 5\\sqrt{12} \\times \\sqrt{3}$",
+          "$A = 5\\sqrt{12 \\times 3}$",
+          "$A = 5\\sqrt{36}$",
+          "$A = 5 \\times 6$"
+        ],
+        "result": "A = 30"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l1-009",
-  "lessonCode": "amaliyat-judhur",
-  "level": 1
+  ]
 }

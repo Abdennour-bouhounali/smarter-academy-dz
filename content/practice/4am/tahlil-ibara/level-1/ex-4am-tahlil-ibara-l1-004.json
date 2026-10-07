@@ -3,8 +3,8 @@
   "lessonCode": "tahlil-ibara",
   "level": 1,
   "metadata": {
-    "title": "تدريب — عامل مشترك عددي",
-    "estimatedMinutes": 4,
+    "title": "استخراج أكبر عامل مشترك عددي",
+    "estimatedMinutes": 7,
     "tags": [
       "عامل مشترك"
     ],
@@ -13,113 +13,219 @@
       "reason": "practice_generation",
       "learningPoint": "4am_tahlil-ibara_P2",
       "modelledOn": "ex-23"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "حلّل كل عبارة باستخراج أكبر عامل مشترك."
+    "content": "حلّل كل عبارة باستخراج أكبر عامل مشترك:",
+    "formulas": [
+      "A = 5x + 15",
+      "B = 12x - 8"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$5x + 15 = $",
+      "step": "01",
+      "lead": "حلّل العبارة $A$ .",
+      "statement": "العدد $k$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$5(x + 15)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
-        },
-        {
-          "id": "B",
-          "content": "$5x(1 + 3)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
-        },
-        {
-          "id": "C",
-          "content": "$5(x + 3)$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $k(x + m)$ حيث $k$ عدد طبيعي : اكتب العدد $k$ فقط",
+      "expectedAnswer": "5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "15 مضاعف للعدد 5."
+          "content": "ابحث عن عامل مشترك بين حدود العبارة (قد يكون عبارة كاملة بين قوسين)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$15 = 5 \\times 3$."
+          "content": "استعمل $ka + kb = k(a + b)$ : أخرج العامل المشترك، واكتب ما يبقى من كل حد بين قوسين كبيرين."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اكتب $5 \\times x + 5 \\times 3$ ثم استخرج 5."
+          "content": "بسّط ما بين القوسين الكبيرين بإشاراته، ثم قارن بالشكل المطلوب."
         }
       ],
       "feedback": {
-        "correct": "$5x + 15 = 5 \\times x + 5 \\times 3 = 5(x + 3)$.",
-        "incorrect": "العامل 5 يُستخرج من الحدّين: ماذا يبقى من 15؟"
-      }
+        "correct": "$A = 5(x + 3)$ إذن $k = 5$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$A = 5 \\times x + 5 \\times 3$",
+          "$A = 5(x + 3)$"
+        ],
+        "result": "A = 5(x + 3)"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "$12x - 8 = $",
+      "step": "01",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $k(x + m)$ حيث $k$ عدد طبيعي : اكتب العدد $m$ فقط",
+      "expectedAnswer": "3",
+      "hints": [
         {
-          "id": "A",
-          "content": "$4(3x - 2)$",
-          "isCorrect": true
-        },
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 5(x + 3)$ إذن $m = 3$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$A = 5(x + 3)$"
+        ],
+        "result": "m = 3"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "حلّل العبارة $B$ باستخراج أكبر عامل مشترك.",
+      "statement": "العدد $k$ :",
+      "learningPoints": [
         {
-          "id": "B",
-          "content": "$2(6x - 4)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
-        },
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $k(mx - n)$ حيث $k$ أكبر عدد طبيعي ممكن و $m$ و $n$ عددان طبيعيان : اكتب العدد $k$ فقط",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
         {
-          "id": "C",
-          "content": "$4(3x - 8)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+          "value": "2",
+          "id": "MISC-TAHLIL-AMIL-NAQIS"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ابحث عن أكبر قاسم مشترك للعددين 12 و 8."
+          "content": "ابحث عن عامل مشترك بين حدود العبارة (قد يكون عبارة كاملة بين قوسين)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "PGCD$(12 ; 8)$ أكبر من 2."
+          "content": "استعمل $ka + kb = k(a + b)$ : أخرج العامل المشترك، واكتب ما يبقى من كل حد بين قوسين كبيرين."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اقسم الحدّين على PGCD واكتب الناتج داخل القوس."
+          "content": "بسّط ما بين القوسين الكبيرين بإشاراته، ثم قارن بالشكل المطلوب."
         }
       ],
       "feedback": {
-        "correct": "PGCD$(12 ; 8) = 4$ : $12x - 8 = 4 \\times 3x - 4 \\times 2 = 4(3x - 2)$.",
-        "incorrect": "$2(6x - 4)$ تساوي العبارة لكنّ العامل 2 ليس الأكبر: $6x - 4$ ما زال فيه عامل مشترك."
-      }
+        "correct": "$B = 4(3x - 2)$ إذن $k = 4$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "أكبر عدد يقسم $12$ و $8$ هو $4$",
+          "$B = 4 \\times 3x - 4 \\times 2$",
+          "$B = 4(3x - 2)$"
+        ],
+        "result": "B = 4(3x - 2)"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "العدد $m$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $k(mx - n)$ حيث $k$ أكبر عدد طبيعي ممكن و $m$ و $n$ عددان طبيعيان : اكتب العدد $m$ فقط",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = 4(3x - 2)$ إذن $m = 3$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$B = 4(3x - 2)$"
+        ],
+        "result": "m = 3"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q5",
+      "step": "02",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $k(mx - n)$ حيث $k$ أكبر عدد طبيعي ممكن و $m$ و $n$ عددان طبيعيان : اكتب العدد $n$ فقط",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = 4(3x - 2)$ إذن $n = 2$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$B = 4(3x - 2)$"
+        ],
+        "result": "n = 2"
+      },
+      "timeSeconds": 60
     }
   ]
 }

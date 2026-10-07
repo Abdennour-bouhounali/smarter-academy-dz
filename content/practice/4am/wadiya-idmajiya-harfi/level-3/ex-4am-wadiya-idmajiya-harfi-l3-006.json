@@ -1,123 +1,212 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l3-006",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — ممرّ حول حديقة",
-    "estimatedMinutes": 3,
+    "title": "ممرّ حول حديقة",
+    "estimatedMinutes": 7,
     "tags": [
       "نمذجة",
-      "ممر"
+      "مربع مجموع"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
       "modelledOn": "situation"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "حديقة مربّعة طول ضلعها $x$ (بالمتر)، يحيط بها ممرّ عرضه 1m من كل الجهات."
+    "content": "حديقة مربّعة الشكل طول ضلعها $x$ m ، يحيط بها من كل الجهات ممرّ عرضه $1$ m ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "مساحة الممرّ بدلالة $x$ هي ...",
+      "step": "01",
+      "lead": "عبّر بدلالة $x$ عن طول ضلع المربع الذي تشكّله الحديقة مع الممرّ.",
+      "statement": "العدد $n$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب الطول على الشكل $x + n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$4$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
-        },
-        {
-          "id": "B",
-          "content": "$2x + 4$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
-        },
-        {
-          "id": "C",
-          "content": "$4x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "D",
-          "content": "$4x + 4$",
-          "isCorrect": true
+          "value": "1",
+          "id": "MISC-NAMDHAJA-MISAHA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ضلع المربع الخارجي $x + 2$."
+          "content": "الممرّ موجود على جهتي كل ضلع."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مساحة الممر = المربع الخارجي ناقص الحديقة."
+          "content": "أضف عرض الممرّ مرتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 2$ إذن $n = 2$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
+      },
+      "solution": {
+        "lines": [
+          "طول الضلع $= 1 + x + 1$"
+        ],
+        "result": "x + 2"
+      },
+      "work": "optional",
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "lead": "عبّر بدلالة $x$ عن مساحة الممرّ $S$ ، ثم بسّطها.",
+      "statement": "العدد $m$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $mx + n$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "value": "2",
+          "id": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "value": "0",
+          "id": "MISC-MURABBA-MAJMU-BILA-2AB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة الممرّ = مساحة المربع الكبير − مساحة الحديقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $(x + 2)^2$ بمتطابقة شهيرة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "انشر $(x + 2)^2$ ثم اطرح $x^2$."
+          "content": "اطرح $x^2$ ثم بسّط."
         }
       ],
       "feedback": {
-        "correct": "$(x + 2)^2 - x^2 = x^2 + 4x + 4 - x^2 = 4x + 4$.",
-        "incorrect": "لا تنس الأركان الأربعة: كل منها $1m^2$."
+        "correct": "$S = 4x + 4$ إذن $m = 4$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$S = (x + 2)^2 - x^2$",
+          "$S = x^2 + 4x + 4 - x^2$"
+        ],
+        "result": "S = 4x + 4"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
-      "id": "q2",
-      "statement": "احسب مساحة الممرّ (بـ $m^2$) من أجل $x = 9$.",
+      "id": "q3",
+      "step": "02",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $S$ على الشكل $mx + n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $n$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = 4x + 4$ إذن $n = 4$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$S = 4x + 4$"
+        ],
+        "result": "n = 4"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "احسب مساحة الممرّ من أجل $x = 9$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح",
+      "answerFormat": "عدد طبيعي: المساحة بـ $m^2$",
       "expectedAnswer": "40",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض في العبارة المبسّطة."
+          "content": "عوّض $x$ بالقيمة المعطاة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$4 \\times 9$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "أضف الأركان."
+          "content": "اختر الشكل الذي يُسهّل الحساب: الشكل المحلّل إذا انعدم أحد عامليه، والشكل المنشور إذا كان $x = 0$ ."
         }
       ],
       "feedback": {
-        "correct": "$4 \\times 9 + 4 = 40$ ؛ ونتحقق: $11^2 - 9^2 = 121 - 81 = 40$.",
-        "incorrect": "استعمل العبارة المبسّطة، أو المربع الخارجي ناقص الحديقة."
+        "correct": "$S = 40\\,m^2$ .",
+        "incorrect": "عوّض بالقيمة المعطاة في الشكل المناسب، واحسب بعناية مع احترام أولويات العمليات."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "36",
-          "id": "MISC-NAMDHAJA-MISAHA"
-        }
-      ],
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$S = 4 \\times 9 + 4 = 36 + 4$"
+        ],
+        "result": "S = 40\\,m^2"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l3-006",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 3
+  ]
 }

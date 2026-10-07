@@ -3,24 +3,74 @@
   "lessonCode": "tamthil-bayani-taalufi",
   "level": 3,
   "metadata": {
-    "title": "أربع وحدات إلى اليمين",
-    "estimatedMinutes": 3,
+    "title": "مستقيم ينزل: $a$ ثم $b$ ثم صورة",
+    "estimatedMinutes": 7,
     "tags": [
-      "معامل التوجيه"
+      "قراءة بيانية",
+      "معامل التوجيه",
+      "صورة عدد"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
-      "learningPoint": "4am_tamthil-bayani-taalufi_P2"
+      "learningPoint": "4am_tamthil-bayani-taalufi_P2",
+      "adaptedFrom": "ex-4am-tamthil-bayani-taalufi-l3-001"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ ، ويشمل النقطتين $(0 ; -2)$ و $(4 ; 1)$ ."
+    "content": "في المعلم المتعامد والمتجانس التالي، المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "K1": [
+          -2,
+          2
+        ],
+        "H1": [
+          6,
+          -2
+        ]
+      },
+      "lines": [
+        {
+          "through": [
+            "K1",
+            "H1"
+          ],
+          "name": "(D)",
+          "tone": "indigo",
+          "extend": [
+            0.04,
+            0.04
+          ]
+        }
+      ],
+      "grid": true,
+      "axes": true,
+      "labels": {
+        "O": "sw"
+      },
+      "hidden": [
+        "H1",
+        "K1"
+      ],
+      "ariaLabel": "معلم متعامد ومتجانس على ورقة مرصوفة: المستقيم (D) ينزل ببطء ويقطع محور التراتيب فوق المبدأ O"
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "معامل التوجيه $a$ للمستقيم:",
+      "step": "01",
+      "statement": "بقراءة بيانية، عيّن معامل التوجيه $a$ للمستقيم $(D)$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-taalufi_P2",
@@ -28,34 +78,55 @@
         }
       ],
       "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
-      "expectedAnswer": "3/4",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-1/2",
+      "misconceptionSignatures": [
+        {
+          "value": "-2",
+          "id": "MISC-BAYANI-MUAMIL-MAQLUB"
+        },
+        {
+          "value": "1/2",
+          "id": "MISC-BAYANI-ISHARA-A"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معامل التوجيه $a$ هو ما يصعده المستقيم (أو ينزله) عندما نتقدّم وحدة واحدة إلى اليمين."
+          "content": "اختر نقطتين من المستقيم تقعان على عقدتين من الشبكة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "خذ نقطتين من المستقيم: كم تغيّر الترتيب؟ وكم تغيّرت الفاصلة؟"
+          "content": "من النقطة الأولى إلى الثانية: كم تزيد الفاصلة؟ وكم يصعد المستقيم أو ينزل؟"
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اقسم تغيّر الترتيب على تغيّر الفاصلة، بالإشارة: ينزل ⇒ $a < 0$ ."
+          "content": "معامل التوجيه هو تغيّر الترتيب مقسوما على تغيّر الفاصلة، ويكون سالبا إذا نزل المستقيم."
         }
       ],
       "feedback": {
-        "correct": "من $(0 ; -2)$ إلى $(4 ; 1)$ : $a = \\dfrac{1 - (-2)}{4 - (0)} = 0{,}75$ .",
-        "incorrect": "اقسم تغيّر الترتيب على تغيّر الفاصلة، لا العكس، وانتبه إلى الإشارة."
-      }
+        "correct": "$a = -0{,}5$ .",
+        "incorrect": "اقسم تغيّر الترتيب على تغيّر الفاصلة (وليس العكس)، وانتبه إلى الإشارة إذا نزل المستقيم."
+      },
+      "solution": {
+        "lines": [
+          "النقطتان $(0 ; 1)$ و $(2 ; 0)$ من المستقيم $(D)$ .",
+          "عندما نتقدّم $2$ وحدات إلى اليمين، ينزل المستقيم بـ $1$ وحدة.",
+          "إذن معامل التوجيه هو: $a = \\dfrac{-1}{2} = -0{,}5$ ."
+        ],
+        "result": "a = -0{,}5"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "بقراءة بيانية، عبارة الدالة هي:",
+      "step": "02",
+      "statement": "بقراءة بيانية، عيّن الترتيب عند المبدأ $b$ للدالة التي يمثّلها المستقيم $(D)$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-taalufi_P2",
@@ -63,47 +134,91 @@
         }
       ],
       "difficulty": 3,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $b$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$f(x) = 0{,}75x - 2$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$f(x) = \\dfrac{4}{3}x - 2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-MUAMIL-MAQLUB"
-        },
-        {
-          "id": "C",
-          "content": "$f(x) = 0{,}75x + 2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-B-FASILA"
+          "value": "2",
+          "id": "MISC-BAYANI-B-FASILA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقرأ $b$ أولًا: أين يقطع المستقيم محور التراتيب؟"
+          "content": "الترتيب عند المبدأ هو ترتيب النقطة التي يقطع فيها المستقيم محور التراتيب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ثم اقرأ $a$ : كم يصعد المستقيم (أو ينزل) لكل وحدة إلى اليمين؟"
+          "content": "ابحث على المستقيم عن النقطة التي فاصلتها 0، ثم اقرأ ترتيبها على محور التراتيب."
+        }
+      ],
+      "feedback": {
+        "correct": "المستقيم $(D)$ يقطع محور التراتيب في النقطة $(0 ; 1)$ .",
+        "incorrect": "اقرأ ترتيب نقطة تقاطع المستقيم مع محور التراتيب، لا فاصلة تقاطعه مع محور الفواصل."
+      },
+      "solution": {
+        "lines": [
+          "المستقيم $(D)$ يقطع محور التراتيب في النقطة $(0 ; 1)$ .",
+          "إذن الترتيب عند المبدأ هو: $b = 1$ ."
+        ],
+        "result": "b = 1"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "بقراءة بيانية، عيّن صورة العدد $4$ بالدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-1",
+      "misconceptionSignatures": [
+        {
+          "value": "-6",
+          "id": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ من العدد المعطى على محور الفواصل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اتجه عموديا حتى المستقيم $(D)$ ، ثم أفقيا حتى محور التراتيب."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "تحقّق: كل نقطة معطاة ترتيبها صورة فاصلتها."
+          "content": "الصورة هي ترتيب نقطة المستقيم التي فاصلتها العدد المعطى."
         }
       ],
       "feedback": {
-        "correct": "$b = -2$ و $a = 0{,}75$ : $f(x) = 0{,}75x - 2$ .",
-        "incorrect": "$b$ يُقرأ على محور التراتيب، و $a$ تغيّر الترتيب لوحدة واحدة إلى اليمين."
-      }
+        "correct": "النقطة من $(D)$ التي فاصلتها $4$ ترتيبها $-1$ .",
+        "incorrect": "الصورة تُقرأ على محور التراتيب: ترتيب نقطة المستقيم، لا فاصلتها."
+      },
+      "solution": {
+        "lines": [
+          "النقطة من المستقيم $(D)$ التي فاصلتها $4$ ترتيبها $-1$ .",
+          "إذن: $f(4) = -1$ ."
+        ],
+        "result": "f(4) = -1"
+      },
+      "timeSeconds": 75
     }
   ]
 }

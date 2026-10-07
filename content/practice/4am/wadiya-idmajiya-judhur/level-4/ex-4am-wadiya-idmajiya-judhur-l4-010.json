@@ -1,95 +1,211 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l4-010",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 4,
   "metadata": {
-    "title": "تدريب — أين الخطأ؟ جذر كسر",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2016 — التمرين الأول",
+    "estimatedMinutes": 10,
     "tags": [
-      "وضعية إدماجية",
-      "تحليل خطأ",
-      "حاصل قسمة"
+      "PGCD",
+      "a√13",
+      "جذر كسر"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
-      "modelledOn": "qcm"
+      "modelledOn": "BEM 2016 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2016",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "كتبت ريم: $\\sqrt{\\dfrac{16}{9}} = \\dfrac{16}{3}$ و $\\dfrac{\\sqrt{98}}{\\sqrt{2}} = \\sqrt{96}$."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما هي القيمة الصحيحة للعدد $\\sqrt{\\dfrac{16}{9}}$؟ (اكتبه على شكل كسر)",
+      "step": "01",
+      "statement": "احسب القاسم المشترك الأكبر للعددين 468 و 325.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "كسر $\\dfrac{a}{b}$",
-      "expectedAnswer": "4/3",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "13",
+      "misconceptionSignatures": [
+        {
+          "value": "143",
+          "id": "MISC-PGCD-LAYSA-AKBAR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "جذر حاصل قسمة هو حاصل قسمة الجذرين."
+          "content": "استعمل خوارزمية إقليدس: ابدأ بقسمة 468 على 325."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما هو $\\sqrt{16}$؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "خذ جذر البسط وجذر المقام معًا."
+          "content": "القاسم المشترك الأكبر هو آخر باقٍ غير معدوم."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{\\dfrac{16}{9}} = \\dfrac{\\sqrt{16}}{\\sqrt{9}} = \\dfrac{4}{3}$: نسيت ريم جذر البسط.",
-        "incorrect": "خذ جذر البسط وجذر المقام معًا."
+        "correct": "آخر باقٍ غير معدوم في خوارزمية إقليدس هو 13.",
+        "incorrect": "أجرِ القسمات المتتابعة إلى أن تجد باقيًا معدومًا؛ القاسم المشترك الأكبر هو آخر باقٍ غير معدوم."
       },
-      "cognitiveDemand": "reason"
+      "solution": {
+        "lines": [
+          "$468 = 325 \\times 1 + 143$",
+          "$325 = 143 \\times 2 + 39$",
+          "$143 = 39 \\times 3 + 26$",
+          "$39 = 26 \\times 1 + 13$",
+          "$26 = 13 \\times 2 + 0$"
+        ],
+        "result": "PGCD(468 ; 325) = 13"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "ما هي القيمة الصحيحة للعدد $\\dfrac{\\sqrt{98}}{\\sqrt{2}}$؟",
+      "step": "02",
+      "statement": "اكتب الكسر $\\dfrac{468}{325}$ على شكل كسر غير قابل للاختزال.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "7",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "36/25",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حاصل قسمة جذرين هو جذر حاصل القسمة."
+          "content": "استعمل نتيجة السؤال 01."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{468 \\div 13}{325 \\div 13} = \\dfrac{36}{25}$",
+        "incorrect": "اقسم البسط والمقام على القاسم المشترك الأكبر الذي وجدته في السؤال 01.",
+        "notIrreducible": "الكسر صحيح لكنه ما زال قابلًا للاختزال: اقسم على القاسم المشترك الأكبر."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{468}{325} = \\dfrac{468 \\div 13}{325 \\div 13}$"
+        ],
+        "result": "\\dfrac{468}{325} = \\dfrac{36}{25}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "اكتب العدد $A = \\sqrt{468} + 2\\sqrt{325} - 3\\sqrt{117}$ على الشكل $a\\sqrt{13}$ حيث $a$ عدد طبيعي.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-MUAMIL-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل $468 = 36 \\times 13$ و $325 = 25 \\times 13$ (السؤال 02)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $98 \\div 2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل الناتج مربع تام؟"
+          "content": "$117 = 9 \\times 13$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{\\sqrt{98}}{\\sqrt{2}} = \\sqrt{49} = 7$: طرحت ريم بدل أن تقسم.",
-        "incorrect": "حاصل قسمة جذرين هو جذر حاصل القسمة، لا جذر الفرق."
+        "correct": "$A = 6\\sqrt{13} + 10\\sqrt{13} - 9\\sqrt{13} = 7\\sqrt{13}$",
+        "incorrect": "اكتب كل حد على الشكل $k\\sqrt{13}$ و اضرب في المعامل الذي أمامه."
       },
-      "cognitiveDemand": "reason"
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{36 \\times 13} + 2\\sqrt{25 \\times 13} - 3\\sqrt{9 \\times 13}$",
+          "$= 6\\sqrt{13} + 10\\sqrt{13} - 9\\sqrt{13}$"
+        ],
+        "result": "A = 7\\sqrt{13}"
+      },
+      "work": "optional",
+      "timeSeconds": 210
+    },
+    {
+      "id": "q4",
+      "step": "04",
+      "statement": "استنتج القيمة المضبوطة للعدد $\\sqrt{\\dfrac{468}{325}}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "6/5",
+      "misconceptionSignatures": [
+        {
+          "value": "36/25",
+          "id": "MISC-JIDHR-MURABBA-KHALT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل نتيجة السؤال 02."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{\\dfrac{x}{y}} = \\dfrac{\\sqrt{x}}{\\sqrt{y}}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{36}{25}} = \\dfrac{6}{5}$",
+        "incorrect": "الجذر التربيعي لكسر هو جذر البسط على جذر المقام: لا تكتفِ بالكسر نفسه."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{\\dfrac{468}{325}} = \\sqrt{\\dfrac{36}{25}} = \\dfrac{\\sqrt{36}}{\\sqrt{25}}$"
+        ],
+        "result": "\\sqrt{\\dfrac{468}{325}} = \\dfrac{6}{5}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l4-010",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 4
+  ]
 }

@@ -1,118 +1,127 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l1-006",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — ما تعرضه الحاسبة",
-    "estimatedMinutes": 3,
+    "title": "ما تعرضه الحاسبة",
+    "estimatedMinutes": 4,
     "tags": [
-      "وضعية إدماجية",
-      "قيمة مقرّبة",
-      "مدوّر"
+      "قيمة مقربة",
+      "تدوير"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
       "modelledOn": null
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "تعرض الحاسبة للعدد $\\sqrt{2}$ القيمة $1{,}414213562$."
+    "content": "تعرض الحاسبة للعدد $\\sqrt{2}$ القيمة $1{,}414213562$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "العدد $1{,}414213562$ هو ...",
+      "step": "01",
+      "statement": "هل العدد $1{,}414213562$ هو القيمة المضبوطة للعدد $\\sqrt{2}$ ؟ برّر إجابتك.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "القيمة المضبوطة للعدد $\\sqrt{2}$، لأنّ الحاسبة لا تخطئ",
+          "content": "نعم",
           "isCorrect": false,
-          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+          "misconceptionId": "MISC-NATIQ-KULL-JIDHR"
         },
         {
           "id": "B",
-          "content": "القيمة المضبوطة للعدد $\\sqrt{2}$، لأنّ $\\sqrt{2}$ عدد عشري",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HASIBA-MUDBUTA"
-        },
-        {
-          "id": "C",
-          "content": "قيمة مقرّبة للعدد $\\sqrt{2}$، لأنّ مربعه لا يساوي 2 تمامًا",
+          "content": "لا",
           "isCorrect": true
         }
       ],
+      "answerFormat": "اختر نعم أو لا، ثم قارن تبريرك بالحل النموذجي",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "آخر رقم لهذا العدد العشري هو 2: ما هو آخر رقم لمربعه؟"
+          "content": "احسب مربع العدد $1{,}414213562$ : ما رقم آحاد مربع رقمه الأخير؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هل يمكن أن يساوي مربع هذا العدد 2 تمامًا؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "العدد $\\sqrt{2}$ غير ناطق."
+          "content": "هل يمكن أن يساوي هذا المربع $2$ تمامًا؟"
         }
       ],
       "feedback": {
-        "correct": "مربع عدد عشري آخر رقمه 2 ينتهي بالرقم 4، فلا يساوي 2: القيمة مقرّبة، و $\\sqrt{2}$ عدد غير ناطق.",
-        "incorrect": "الحاسبة تعرض عددًا محدودًا من الأرقام فقط."
+        "correct": "$\\sqrt{2}$ عدد غير ناطق: الحاسبة تعطي قيمة مقربة له فقط.",
+        "incorrect": "مربع العدد المعروض ينتهي بالرقم 4 بعد الفاصلة، فلا يساوي 2 تمامًا."
       },
-      "cognitiveDemand": "recall"
+      "solution": {
+        "lines": [
+          "آخر رقم للعدد المعروض هو 2، فمربعه ينتهي بالرقم 4 (لأن $2^2 = 4$)، إذن مربعه لا يساوي 2.",
+          "العدد $1{,}414213562$ قيمة مقربة للعدد $\\sqrt{2}$ وليس قيمته المضبوطة."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "باستعمال $\\sqrt{50} = 5\\sqrt{2}$، أعط المدوّر إلى الجزء من عشرة للعدد $\\sqrt{50}$.",
+      "step": "02",
+      "statement": "علما أن $\\sqrt{50} = 5\\sqrt{2}$ ، أعط المدوّر إلى $0{,}1$ للعدد $\\sqrt{50}$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة",
+      "answerFormat": "عدد عشري (بالفاصلة) برقم واحد بعد الفاصلة",
       "expectedAnswer": "7.1",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "اضرب القيمة المقرّبة للعدد $\\sqrt{2}$ في 5."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "انظر إلى رقم الأجزاء من مئة لتدوّر."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "إذا كان رقم الأجزاء من مئة أصغر من 5 نحتفظ برقم الأجزاء من عشرة."
-        }
-      ],
-      "feedback": {
-        "correct": "$5 \\times 1{,}414213562 \\approx 7{,}071$، والمدوّر إلى الجزء من عشرة هو 7,1.",
-        "incorrect": "احسب $5 \\times 1{,}414\\ldots$ أولًا، ثم دوّر النتيجة النهائية."
-      },
       "misconceptionSignatures": [
         {
           "value": "7",
           "id": "MISC-WADIYA-TADWIR-MUBAKKIR"
         }
       ],
-      "cognitiveDemand": "recall"
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب القيمة التي تعرضها الحاسبة في 5 دون تدوير مسبق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "دوّر في آخر الحساب فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "$5 \\times 1{,}414213562 = 7{,}07106781$ ، و مدوّره إلى $0{,}1$ هو $7{,}1$ .",
+        "incorrect": "لا تدوّر $\\sqrt{2}$ قبل الضرب في 5: احسب الجداء أولًا ثم دوّر."
+      },
+      "solution": {
+        "lines": [
+          "$\\sqrt{50} = 5\\sqrt{2} \\approx 5 \\times 1{,}414213562 = 7{,}07106781$",
+          "الرقم الموالي لرقم الأجزاء من عشرة هو 7، ندوّر بالزيادة."
+        ],
+        "result": "\\sqrt{50} \\approx 7{,}1"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l1-006",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 1
+  ]
 }

@@ -1,77 +1,158 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l1-002",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 1,
   "metadata": {
-    "title": "تمرين 1 — نشر جداء (أؤكّد تعلّماتي)",
-    "estimatedMinutes": 1,
+    "title": "نشر جداء وقيمة عبارة",
+    "estimatedMinutes": 5,
     "tags": [
       "نشر",
-      "أؤكّد تعلّماتي"
+      "قيمة عبارة"
     ],
     "source": {
       "type": "textbook",
       "elementId": "qcm",
       "page": 40,
       "section": "أؤكّد تعلّماتي",
-      "number": 1
+      "number": 1,
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-harfi-l1-002"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "اختر الإجابة الصحيحة."
+    "content": "لتكن العبارة $A$ حيث :",
+    "formulas": [
+      "A = 2x(x + 2)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نشر الجداء $2x(x + 2)$ هو ...",
+      "step": "01",
+      "lead": "انشر و بسّط العبارة $A$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax^2 + bx$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "2",
+      "hints": [
         {
-          "id": "A",
-          "content": "$2x^2 + 2x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب $2x$ في كل حد من حدّي القوس."
         },
         {
-          "id": "B",
-          "content": "$2x^2 + 4x$",
-          "isCorrect": true
+          "id": "h2",
+          "type": "direction",
+          "content": "$2x \\times x = 2x^2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 2x^2 + 4x$ إذن $a = 2$ .",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$A = 2x \\times x + 2x \\times 2$"
+        ],
+        "result": "A = 2x^2 + 4x"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax^2 + bx$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "value": "0",
+          "id": "MISC-NASHR-HAD-WAHID"
         },
         {
-          "id": "C",
-          "content": "$2x + 4x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
+          "value": "2",
+          "id": "MISC-NASHR-HAD-WAHID"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اضرب $2x$ في كل حد داخل القوسين."
+          "content": "بعد الحساب، اقرأ العدد $b$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 2x^2 + 4x$ إذن $b = 4$ .",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$A = 2x^2 + 4x$"
+        ],
+        "result": "b = 4"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب $A$ من أجل $x = -2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اختر الشكل الذي يُسهّل الحساب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$2x \\times x$ فيه $x$ مرتين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الحد الثاني: $2x \\times 2$."
+          "content": "في الشكل المعطى (جداء)، انظر إلى قيمة القوس من أجل هذه القيمة."
         }
       ],
       "feedback": {
-        "correct": "$2x \\times x + 2x \\times 2 = 2x^2 + 4x$.",
-        "incorrect": "العدد $2x$ يُضرب في الحدّين معًا، و $x \\times x = x^2$."
+        "correct": "$A = 0$ .",
+        "incorrect": "عوّض بالقيمة المعطاة في الشكل المناسب، واحسب بعناية مع احترام أولويات العمليات."
       },
-      "cognitiveDemand": "recall"
+      "solution": {
+        "lines": [
+          "نستعمل الشكل المعطى (الجداء):",
+          "$A = 2 \\times (-2) \\times (-2 + 2) = -4 \\times 0$"
+        ],
+        "result": "A = 0"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l1-002",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 1
+  ]
 }

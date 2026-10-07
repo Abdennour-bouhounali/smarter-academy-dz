@@ -1,113 +1,116 @@
 {
+  "id": "ex-4am-amaliyat-judhur-l2-009",
+  "lessonCode": "amaliyat-judhur",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — جذر فرق — أين الخطأ؟",
+    "title": "على منوال BEM 2012 — مجموع عددين وجداؤهما",
     "estimatedMinutes": 4,
     "tags": [
-      "فرق جذرين"
+      "جداء جذرين"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_amaliyat-judhur_P3",
-      "modelledOn": "know-4"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "BEM 2012 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2012",
+      "heading": "التمرين الأول",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "كتب أمين: $\\sqrt{169 - 25} = \\sqrt{169} - \\sqrt{25} = 13 - 5 = 8$ ."
+    "content": "ليكن العددان الحقيقيان $m$ و $n$ حيث:",
+    "formulas": [
+      "m = \\sqrt{11} - 4",
+      "n = \\sqrt{11} + 4"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب القيمة الصحيحة للعدد $\\sqrt{169 - 25}$ .",
+      "step": "01",
+      "statement": "اكتب $m + n$ على الشكل $a\\sqrt{11}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P3",
+          "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "12",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "2",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الجذر يشمل الفرق كله."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "احسب $169 - 25$ أولًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ما العدد الموجب الذي مربعه هذا الفرق؟"
+          "content": "اجمع الحدود التي فيها $\\sqrt{11}$ معًا، والأعداد الناطقة معًا."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{169 - 25} = \\sqrt{144} = 12$",
-        "incorrect": "اطرح ما تحت الجذر أولًا، ثم خذ الجذر."
+        "correct": "$m + n = \\sqrt{11} - 4 + \\sqrt{11} + 4 = 2\\sqrt{11}$",
+        "incorrect": "اجمع $\\sqrt{11} + \\sqrt{11}$ ثم $-4 + 4$ ."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "8",
-          "id": "MISC-JIDHR-TARH"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$m + n = \\sqrt{11} - 4 + \\sqrt{11} + 4$",
+          "$m + n = \\sqrt{11} + \\sqrt{11}$"
+        ],
+        "result": "m + n = 2\\sqrt{11}"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "أين أخطأ أمين؟",
+      "step": "02",
+      "statement": "بيّن أن الجداء $m \\times n$ عدد ناطق.",
       "learningPoints": [
         {
-          "code": "4am_amaliyat-judhur_P3",
+          "code": "4am_amaliyat-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب قيمة الجداء $m \\times n$ (عدد صحيح)",
+      "expectedAnswer": "-5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "في المساواة الأولى: الجذر لا يتوزّع على الطرح",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "في الحساب: $13 - 5$ لا يساوي 8",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "لم يخطئ، حسابه صحيح",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-TARH"
+          "value": "5",
+          "id": "MISC-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تحقّق من كل مساواة في سطر أمين."
+          "content": "الجداء من الشكل $(a - b)(a + b)$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "قارن نتيجته بالقيمة التي حسبتها."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل $\\sqrt{a - b} = \\sqrt{a} - \\sqrt{b}$ خاصية صحيحة؟"
+          "content": "استعمل $(a - b)(a + b) = a^2 - b^2$ و $(\\sqrt{11})^2 = 11$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{169 - 25} = 12$ لكن $\\sqrt{169} - \\sqrt{25} = 8$ : المساواة الأولى خاطئة.",
-        "incorrect": "الطرح $13 - 5$ صحيح؛ ابحث في المساواة الأولى."
-      }
+        "correct": "$m \\times n = 11 - 16 = -5$ : عدد ناطق.",
+        "incorrect": "انشر $(\\sqrt{11} - 4)(\\sqrt{11} + 4)$ ، وانتبه إلى أن الجداء قد يكون سالبًا."
+      },
+      "solution": {
+        "lines": [
+          "$m \\times n = (\\sqrt{11} - 4)(\\sqrt{11} + 4)$",
+          "$m \\times n = (\\sqrt{11})^2 - 4^2$",
+          "$m \\times n = 11 - 16$"
+        ],
+        "result": "m \\times n = -5"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-amaliyat-judhur-l2-009",
-  "lessonCode": "amaliyat-judhur",
-  "level": 2
+  ]
 }

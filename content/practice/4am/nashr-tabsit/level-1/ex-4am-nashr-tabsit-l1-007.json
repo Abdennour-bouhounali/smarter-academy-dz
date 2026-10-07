@@ -1,177 +1,189 @@
 {
+  "id": "ex-4am-nashr-tabsit-l1-007",
+  "lessonCode": "nashr-tabsit",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — x × x و x + x",
-    "estimatedMinutes": 3,
+    "title": "x × x و x + x",
+    "estimatedMinutes": 5,
     "tags": [
-      "تبسيط",
-      "حدود متشابهة"
+      "حدود متشابهة",
+      "x²"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_nashr-tabsit_P4",
-      "modelledOn": "act-1"
+      "modelledOn": "act-1",
+      "adaptedFrom": "ex-4am-nashr-tabsit-l1-007"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "لا نخلط بين الجداء $x \\times x$ والمجموع $x + x$."
+    "content": "بسّط كل عبارة من العبارات التالية:",
+    "formulas": [
+      "A = 3x \\times 2x",
+      "B = 3x + 2x",
+      "C = x \\times x + x + x"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$x \\times x = \\ldots$",
+      "step": "01",
+      "lead": "بسّط العبارة $A$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P4",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$2x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
-        },
-        {
-          "id": "B",
-          "content": "$x^2$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax^2$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "6",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "هذا جداء لا مجموع."
+          "content": "اضرب المعاملين $3$ و $2$ معًا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "جداء عدد في نفسه هو مربّعه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "فكّر في مساحة مربّع ضلعه $x$."
+          "content": "ثم $x \\times x = x^2$ (جداء، لا مجموع)."
         }
       ],
       "feedback": {
-        "correct": "$x \\times x = x^2$ (مساحة مربّع ضلعه $x$).",
-        "incorrect": "الجداء غير المجموع: $x + x$ شيء آخر."
-      }
+        "correct": "$A = 6x^2$ إذن $a = 6$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$A = 3 \\times 2 \\times x \\times x$"
+        ],
+        "result": "A = 6x^2"
+      },
+      "work": "optional",
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "$x + x = \\ldots$",
+      "step": "02",
+      "lead": "بسّط العبارة $B$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P4",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$2x$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$x^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
-        },
-        {
-          "id": "C",
-          "content": "$2x^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $ax$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "هذا مجموع حدّين متشابهين."
+          "content": "$3x$ و $2x$ حدّان متشابهان: نجمع معامليهما."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "نجمع المعاملين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$1 \\times x + 1 \\times x$."
+          "content": "المجموع $3x + 2x$ لا يحتوي على $x^2$ ."
         }
       ],
       "feedback": {
-        "correct": "$x + x = 2x$.",
-        "incorrect": "المجموع غير الجداء: نجمع المعاملين ونترك $x$."
-      }
+        "correct": "$B = 5x$ إذن $a = 5$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$B = (3 + 2)x$"
+        ],
+        "result": "B = 5x"
+      },
+      "work": "optional",
+      "timeSeconds": 60
     },
     {
       "id": "q3",
-      "statement": "$3x \\times 2x = \\ldots$",
+      "step": "03",
+      "lead": "بسّط العبارة $C$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P4",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$6x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
-        },
-        {
-          "id": "B",
-          "content": "$5x^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
-        },
-        {
-          "id": "C",
-          "content": "$6x^2$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $C$ على الشكل $ax^2 + bx$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "1",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "نضرب المعاملين، ونضرب $x$ في $x$."
+          "content": "$x \\times x$ جداء، أما $x + x$ فمجموع."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$3 \\times 2$ ثم $x \\times x$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "جداء $x$ في $x$ مربّع."
+          "content": "$x \\times x = x^2$ و $x + x = 2x$ : لا تجمع $x^2$ مع $2x$ ."
         }
       ],
       "feedback": {
-        "correct": "$3x \\times 2x = 6x^2$.",
-        "incorrect": "اضرب المعاملين، ثم $x \\times x$."
-      }
+        "correct": "$C = x^2 + 2x$ إذن $a = 1$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$x \\times x = x^2$ و $x + x = 2x$"
+        ],
+        "result": "C = x^2 + 2x"
+      },
+      "work": "optional",
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $C$ على الشكل $ax^2 + bx$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع معاملات حدود $x$ بإشاراتها بعد النشر."
+        }
+      ],
+      "feedback": {
+        "correct": "$C = x^2 + 2x$ إذن $b = 2$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $b$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$C = x^2 + 2x$"
+        ],
+        "result": "b = 2"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-nashr-tabsit-l1-007",
-  "lessonCode": "nashr-tabsit",
-  "level": 1
+  ]
 }

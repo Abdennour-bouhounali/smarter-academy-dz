@@ -1,4 +1,5 @@
 {
+  "settings": "الإعدادات",
   "home": "الرئيسية",
   "method": "منهجيتنا",
   "courses": "الدروس",
@@ -32,5 +33,28 @@
   "teacherHome": "الرئيسية",
   "myClasses": "أقسامي",
   "myPlan": "عرضي",
-  "myClass": "قسمي"
+  "myClass": "قسمي",
+  "answerReviews": "تصحيح الإجابات",
+  "notifications": {
+    "title": "الإشعارات",
+    "open": "الإشعارات",
+    "unread_zero": "لا إشعارات جديدة",
+    "unread_one": "إشعار جديد",
+    "unread_two": "إشعاران جديدان",
+    "unread_few": "{{count}} إشعارات جديدة",
+    "unread_many": "{{count}} إشعارًا جديدًا",
+    "unread_other": "{{count}} إشعار جديد",
+    "empty": "لا إشعارات بعد.",
+    "markAll": "تعليم الكل كمقروء",
+    "answerReviewed": {
+      "correct": "صحّح أستاذك إجابتك: صحيحة",
+      "incorrect": "صحّح أستاذك إجابتك: غير صحيحة"
+    },
+    "pendingReviews_zero": "لا إجابات في انتظار التصحيح",
+    "pendingReviews_one": "إجابة واحدة في انتظار التصحيح",
+    "pendingReviews_two": "إجابتان في انتظار التصحيح",
+    "pendingReviews_few": "{{count}} إجابات في انتظار التصحيح",
+    "pendingReviews_many": "{{count}} إجابةً في انتظار التصحيح",
+    "pendingReviews_other": "{{count}} إجابة في انتظار التصحيح"
+  }
 }

@@ -1,6 +1,9 @@
 {
+  "id": "ex-4am-mutatabiqat-shahira-l1-010",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — حساب ذهني بمتطابقة",
+    "title": "حساب ذهني بمتطابقة شهيرة",
     "estimatedMinutes": 3,
     "tags": [
       "حساب ذهني"
@@ -10,82 +13,111 @@
       "reason": "practice_generation",
       "learningPoint": "4am_mutatabiqat-shahira_P4",
       "modelledOn": "act-2a"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "احسب ذهنيا (دون وضع العملية) مستعملًا متطابقة شهيرة."
+    "content": "احسب ذهنيا (دون وضع العملية) مستعملا متطابقة شهيرة كل عدد مما يلي:"
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب $41^2$ .",
+      "step": "01",
+      "statement": "$41^2$",
       "learningPoints": [
         {
           "code": "4am_mutatabiqat-shahira_P4",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "عدد طبيعي",
       "expectedAnswer": "1681",
+      "misconceptionSignatures": [
+        {
+          "value": "1601",
+          "id": "MISC-HISAB-DHIHNI-MURABBA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب $41$ مجموع عدد مدوّر وعدد صغير."
+          "content": "اكتب العدد على شكل مجموع عدد مدوّر وعدد صغير."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$41 = 40 + 1$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "استعمل مربع مجموع."
+          "content": "طبّق $(a + b)^2 = a^2 + 2ab + b^2$ ، ولا تنسَ الحد المضاعف $2ab$ ."
         }
       ],
       "feedback": {
-        "correct": "$(40 + 1)^2 = 1600 + 80 + 1 = 1681$",
-        "incorrect": "ينقص الحد المضاعف $2 \\times 40 \\times 1$."
-      }
+        "correct": "$41^2 = 1681$ .",
+        "incorrect": "اكتب العدد بدلالة عدد مدوّر، ثم طبّق المتطابقة الشهيرة المناسبة حدًّا حدًّا."
+      },
+      "solution": {
+        "lines": [
+          "$41^2 = (40 + 1)^2$",
+          "$= 40^2 + 2 \\times 40 \\times 1 + 1^2$",
+          "$= 1600 + 80 + 1$"
+        ],
+        "result": "41^2 = 1681"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "احسب $49 \\times 51$ .",
+      "step": "02",
+      "statement": "$49 \\times 51$",
       "learningPoints": [
         {
           "code": "4am_mutatabiqat-shahira_P4",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "عدد طبيعي",
       "expectedAnswer": "2499",
+      "misconceptionSignatures": [
+        {
+          "value": "2501",
+          "id": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العددان يحيطان بالعدد $50$."
+          "content": "العددان متناظران حول عدد مدوّر: اكتبهما على الشكل $a + b$ و $a - b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$49 = 50 - 1$ و $51 = 50 + 1$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "استعمل $(a + b)(a - b) = a^2 - b^2$."
+          "content": "طبّق $(a + b)(a - b) = a^2 - b^2$ : مربعان سهلا الحساب."
         }
       ],
       "feedback": {
-        "correct": "$(50 - 1)(50 + 1) = 2500 - 1 = 2499$",
-        "incorrect": "اطرح مربع $1$ من مربع $50$."
-      }
+        "correct": "$49 \\times 51 = 2499$ .",
+        "incorrect": "اكتب العدد بدلالة عدد مدوّر، ثم طبّق المتطابقة الشهيرة المناسبة حدًّا حدًّا."
+      },
+      "solution": {
+        "lines": [
+          "$49 \\times 51 = (50 + 1)(50 - 1)$",
+          "$= 50^2 - 1^2$",
+          "$= 2500 - 1$"
+        ],
+        "result": "49 \\times 51 = 2499"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
-  ],
-  "id": "ex-4am-mutatabiqat-shahira-l1-010",
-  "lessonCode": "mutatabiqat-shahira",
-  "level": 1
+  ]
 }

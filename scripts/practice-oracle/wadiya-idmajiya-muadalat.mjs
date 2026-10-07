@@ -1,238 +1,434 @@
-// Oracle du banc « wadiya-idmajiya-muadalat » (unité 4 « معادلات ومتراجحات ») — chaque réponse RECALCULÉE ici,
-// sans lire le contenu ni le code testé. Fusionné dans scripts/practice-answer-oracle.test.mjs.
+// Oracle du banc « wadiya-idmajiya-muadalat » (أدمج تعلّماتي — المعادلات والمتراجحات), feuilles BEM
+// (2026-10-07) — chaque réponse RECALCULÉE ici, sans lire le contenu ni le code testé. Fusionné dans
+// scripts/practice-answer-oracle.test.mjs.
 //
-// Méthode : chaque OPTION d'un QCM est MODÉLISÉE (une inéquation, un ensemble de solutions, un polynôme,
-// un encadrement, une affirmation sur des coûts), puis `only(options, isRight)` vérifie que l'option
-// retenue est la SEULE vraie — un QCM dont deux options seraient justes, ou aucune, fait planter le
-// chargement de l'oracle. Les réponses tapées sont recalculées en rationnels exacts (helpers.mjs `q`,
-// `poly`) ; « ابتداءً من » = le PREMIER entier naturel qui vérifie l'inéquation, cherché pas à pas.
-import { R, C, q, poly } from './helpers.mjs';
+// Une petite arithmétique d'expressions est écrite ICI (analyseur récursif + rationnels exacts de
+// helpers.mjs), indépendante de packages/core/arithmetic/linear.js. Les entrées portent les expressions
+// TELLES QU'IMPRIMÉES sur la feuille (multiplication implicite « 3(x - 2) », puissances « ^2 »,
+// fractions « \dfrac{1}{2} », virgule décimale « 2{,}5 ») ; elles ont été écrites avec la banque par le
+// script de l'auteur : ne pas éditer une entrée sans recalculer l'autre côté.
+//
+// Conventions de saisie (feuilles BEM de l'unité 4) :
+//   • « حلّ المتراجحة » = DEUX questions : bound (le حدّ k, solution de l'équation associée) puis sym
+//     (A « x < k », B « x ≤ k », C « x > k », D « x ≥ k », ordre fixe) ;
+//   • « حلّ المعادلة (…)(…) = 0 » = « الحلّ الأصغر » puis « الحلّ الأكبر » ;
+//   • نشر / تحليل (unité 3) = les coefficients, un rationnel chacun (counted:false sur la feuille) ;
+//   • les choix fermés (« ما هي الصيغة الأقل تكلفة؟ »، « هل … ؟ ») sont recalculés en évaluant les coûts.
+import { R, C, q } from './helpers.mjs';
 
-/* ── Arithmétique exacte ─────────────────────────────────────────────── */
-const sign = (v) => { const n = q(v).n; return n > 0n ? 1 : n < 0n ? -1 : 0; };
-const cmp = (a, b) => sign(q(a).sub(b));
-const holds = (l, rel, r) => { const c = cmp(l, r); return { '<': c < 0, '<=': c <= 0, '>': c > 0, '>=': c >= 0, '=': c === 0 }[rel]; };
-const FLIP = { '<': '>', '<=': '>=', '>': '<', '>=': '<=', '=': '=' };
-/** a·x + b  rel  c·x + d  →  [rel', borne] (x rel' borne) ; division par un négatif ⇒ sens inversé. */
-function ineq(a, b, rel, c, d) {
-  const k = q(a).sub(c);
-  if (sign(k) === 0) throw new Error('oracle: inéquation sans x');
-  const bound = q(d).sub(b).div(k);
-  return [sign(k) < 0 ? FLIP[rel] : rel, bound.toString()];
+/* ── analyseur : nombres, x, + − × ÷, ^ entier, parenthèses, multiplication implicite ── */
+function prep(src) {
+  let s = String(src);
+  for (let k = 0; k < 4; k += 1) s = s.replace(/\\dfrac\{([^{}]+)\}\{([^{}]+)\}/g, '(($1)/($2))');
+  return s.replace(/\{,\}/g, '.').replace(/\\times/g, '*').replace(/\\left|\\right/g, '').replace(/\s+/g, '');
 }
-const sameRay = ([r1, b1], [r2, b2]) => r1 === r2 && cmp(b1, b2) === 0;
-/** a·x + b = c·x + d → x */
-const solve = (a, b, c, d) => q(d).sub(b).div(q(a).sub(c)).toString();
-/** Les racines de (a1 x + b1)(a2 x + b2)… = 0, triées. */
-const roots = (...f) => f.filter(([a]) => sign(a) !== 0).map(([a, b]) => q(b).neg().div(a).toString()).sort((u, v) => cmp(u, v));
-const sameSet = (u, v) => u.length === v.length && [...u].sort((s, t) => cmp(s, t)).every((s, i) => cmp(s, [...v].sort((a, b) => cmp(a, b))[i]) === 0);
-/** Le premier entier naturel n tel que pred(n). */
-const firstNat = (pred) => { for (let n = 0; n <= 100000; n += 1) if (pred(n)) return n; throw new Error('oracle: aucun naturel'); };
-/** Le plus grand entier naturel n tel que pred(n), pred décroissant. */
-const lastNat = (pred) => { let last = null; for (let n = 0; n <= 100000; n += 1) { if (pred(n)) last = n; else if (last !== null) break; } return last; };
-
-/** L'unique option (lettre) dont le prédicat est vrai ; sinon erreur. */
-function only(options, isRight) {
-  const ok = Object.entries(options).filter(([, v]) => isRight(v)).map(([k]) => k);
-  if (ok.length !== 1) throw new Error(`oracle: ${ok.length} options justes (${ok.join(',')})`);
-  return C(ok[0]);
+function evaluate(src, xv) {
+  const s = prep(src);
+  let i = 0;
+  const X = xv === undefined ? null : q(xv);
+  const startsAtom = () => i < s.length && (s[i] === '(' || s[i] === 'x' || /\d/.test(s[i]));
+  function atom() {
+    if (s[i] === '(') { i += 1; const v = sum(); if (s[i] !== ')') throw new Error(`) attendue dans ${src}`); i += 1; return v; }
+    if (s[i] === 'x') { if (!X) throw new Error(`x sans valeur dans ${src}`); i += 1; return X; }
+    const m = s.slice(i).match(/^\d+(\.\d+)?/);
+    if (!m) throw new Error(`terme illisible dans ${src} @${i}`);
+    i += m[0].length;
+    return q(m[0]);
+  }
+  function power() {
+    let b = atom();
+    if (s[i] === '^') { i += 1; const e = Number(s.slice(i).match(/^\d+/)[0]); i += String(e).length; let r = q(1); for (let k = 0; k < e; k += 1) r = r.mul(b); b = r; }
+    return b;
+  }
+  function implicit() { let v = power(); while (startsAtom()) v = v.mul(power()); return v; }
+  function unary() { if (s[i] === '-') { i += 1; return unary().neg(); } if (s[i] === '+') { i += 1; return unary(); } return implicit(); }
+  function product() {
+    let v = unary();
+    while (s[i] === '*' || s[i] === '/') { const op = s[i]; i += 1; const w = unary(); v = op === '*' ? v.mul(w) : v.div(w); }
+    return v;
+  }
+  function sum() {
+    let v = product();
+    while (s[i] === '+' || s[i] === '-') { const op = s[i]; i += 1; const w = product(); v = op === '+' ? v.add(w) : v.sub(w); }
+    return v;
+  }
+  const v = sum();
+  if (i !== s.length) throw new Error(`reste illisible dans ${src}`);
+  return v;
 }
-const isRay = (target) => (v) => Array.isArray(v) && sameRay(v, target);
-const isSet = (target) => (v) => Array.isArray(v) && sameSet(v, target);
-const isPoly = (target) => (v) => v.equals(target);
-const P = (...c) => c.reduce((acc, a, k) => acc.add(poly.x.pow(k).mul(a)), poly.of(0));
-const lin = (a, b) => poly.x.mul(a).add(b);
 
-/** Une inéquation entre deux polynômes, réduite : L − R rel 0, les x² doivent s'annuler. */
-function reduce([L, rel, Rr]) {
-  const D = L.sub(Rr);
-  if (D.degree() > 1) return null;              // pas du premier degré : jamais l'équivalent cherché
-  if (D.degree() < 1) return ['const', rel, D.coef(0)];
-  return ineq(D.coef(1), D.coef(0), rel, 0, 0);
+const sign = (v) => (v.n > 0n ? 1 : v.n < 0n ? -1 : 0);
+const cmpQ = (a, b) => sign(q(a).sub(q(b)));
+const truth = (a, rel, b) => { const c = cmpQ(a, b); return { '<': c < 0, '<=': c <= 0, '>': c > 0, '>=': c >= 0, '=': c === 0 }[rel]; };
+const FLIP = { '<': '>', '<=': '>=', '>': '<', '>=': '<=' };
+const SYM = { '<': 'A', '<=': 'B', '>': 'C', '>=': 'D' };
+
+/** Coefficients exacts (a, b, c) d'une expression de degré ≤ 2, vérifiés sur deux autres points. */
+function quad(expr) {
+  const c = evaluate(expr, 0); const p = evaluate(expr, 1); const m = evaluate(expr, -1);
+  const a = p.add(m).div(2).sub(c); const b = p.sub(m).div(2);
+  for (const t of [2, 7]) {
+    const T = q(t);
+    if (!a.mul(T).mul(T).add(b.mul(T)).add(c).sub(evaluate(expr, t)).isZero()) throw new Error(`degré > 2 : ${expr}`);
+  }
+  return { a, b, c };
 }
-const sameIneq = (target) => (opt) => { const a = reduce(opt); const b = reduce(target); return a !== null && a[0] !== 'const' && sameRay(a, b); };
-/** Un encadrement lo (≤|<) x (≤|<) hi, comparé à l'intersection de deux demi-droites. */
-function meet(r1, r2) {
-  const lower = [r1, r2].find(([r]) => r === '>' || r === '>=');
-  const upper = [r1, r2].find(([r]) => r === '<' || r === '<=');
-  if (!lower || !upper) throw new Error('oracle: pas un encadrement');
-  return { lo: lower[1], loIn: lower[0] === '>=', hi: upper[1], hiIn: upper[0] === '<=' };
+
+/** L REL R → { rel, bound } (x rel bound) ; L − R doit être de degré 1 exactement. */
+function rayOf(L, rel, Rr) {
+  const l = quad(L); const r = quad(Rr);
+  if (!l.a.sub(r.a).isZero()) throw new Error(`non linéaire : ${L} ${rel} ${Rr}`);
+  const A = l.b.sub(r.b);
+  if (A.isZero()) throw new Error(`sans x : ${L} ${rel} ${Rr}`);
+  return { rel: rel === '=' ? '=' : sign(A) > 0 ? rel : FLIP[rel], bound: r.c.sub(l.c).div(A) };
 }
-const sameIv = (t) => (v) => v && v.lo !== undefined && cmp(v.lo, t.lo) === 0 && cmp(v.hi, t.hi) === 0 && v.loIn === t.loIn && v.hiIn === t.hiIn;
-const Iv = (lo, loIn, hi, hiIn) => ({ lo, loIn, hi, hiIn });
-const intsIn = ({ lo, loIn, hi, hiIn }) => { let n = 0; for (let k = -1000; k <= 1000; k += 1) if ((loIn ? cmp(k, lo) >= 0 : cmp(k, lo) > 0) && (hiIn ? cmp(k, hi) <= 0 : cmp(k, hi) < 0)) n += 1; return n; };
-/** Une demi-droite décrite en mots (QCM 6 et 9) : côté du rouge et borne incluse ou non. */
-const ray = (side, bound, included) => [side === 'right' ? (included ? '>=' : '>') : (included ? '<=' : '<'), String(bound)];
+const satisfies = (L, rel, Rr, v) => truth(evaluate(L, v), rel, evaluate(Rr, v));
+/** Contrôle croisé : la borne trouvée sépare bien les solutions (au voisinage). */
+function checkedRay(L, rel, Rr) {
+  const r = rayOf(L, rel, Rr);
+  const eps = q('1/1000');
+  const got = [satisfies(L, rel, Rr, r.bound.sub(eps)), satisfies(L, rel, Rr, r.bound), satisfies(L, rel, Rr, r.bound.add(eps))];
+  const want = { '<': [true, false, false], '<=': [true, true, false], '>': [false, false, true], '>=': [false, true, true], '=': [false, true, false] }[r.rel];
+  if (got.some((g, k) => g !== want[k])) throw new Error(`oracle wadiya-idmajiya-muadalat : borne incohérente pour ${L} ${rel} ${Rr}`);
+  return r;
+}
 
-/* ── Les coûts des situations ─────────────────────────────────────────── */
-const cost = (fixed, per) => (n) => q(fixed).add(q(per).mul(n));
-const better = (cheap, dear) => (n) => cmp(cheap(n), dear(n)) < 0;
+/* ── les clés ─────────────────────────────────────────────────────────── */
+const solveEq = (L, Rr) => R(checkedRay(L, '=', Rr).bound.toString());
+const bound = (L, rel, Rr) => R(checkedRay(L, rel, Rr).bound.toString());
+const sym = (L, rel, Rr) => C(SYM[checkedRay(L, rel, Rr).rel]);
+/** Racines de (f1)(f2) = 0 : chaque facteur de degré 1, racine vérifiée en annulant le produit. */
+const root = (f1, f2, which) => {
+  const rs = [f1, f2].map((f) => checkedRay(f, '=', '0').bound);
+  for (const r0 of rs) if (!evaluate(`(${f1})(${f2})`, r0).isZero()) throw new Error('oracle root');
+  rs.sort((u, v) => cmpQ(u, v));
+  if (cmpQ(rs[0], rs[1]) === 0) throw new Error('oracle root : racine double');
+  return R((which === 'min' ? rs[0] : rs[1]).toString());
+};
+const coef = (expr, k) => R(quad(expr)[{ 2: 'a', 1: 'b', 0: 'c' }[k]].toString());
+/** expr = (common)(m x + n) : m ou n, l'identité vérifiée sur plusieurs points. */
+const factor = (expr, common, which) => {
+  const pts = [3, 5, 11, 13].map((t) => q(t)).filter((t) => !evaluate(common, t).isZero());
+  const o = (t) => evaluate(expr, t).div(evaluate(common, t));
+  const [t0, t1] = pts;
+  const m = o(t1).sub(o(t0)).div(t1.sub(t0)); const n = o(t0).sub(m.mul(t0));
+  for (const t of pts) if (!o(t).sub(m.mul(t).add(n)).isZero()) throw new Error(`oracle factor : ${expr} ÷ ${common}`);
+  return R((which === 'm' ? m : n).toString());
+};
+const val = (expr, v) => R(evaluate(expr, v).toString());
+const calc = (expr) => R(evaluate(expr).toString());
+/** Choix fermé « نعم / لا » : A si v vérifie L rel R. */
+const test = (L, rel, Rr, v) => C(satisfies(L, rel, Rr, v) ? 'A' : 'B');
+/** La moins chère des formules (dans l'ordre des options) pour x = v ; égalité ⇒ erreur. */
+const cheapest = (costs, v) => {
+  const vals = costs.map((c) => evaluate(c, v));
+  const min = vals.reduce((a, b) => (cmpQ(a, b) <= 0 ? a : b));
+  const at = vals.map((w, k) => (cmpQ(w, min) === 0 ? k : -1)).filter((k) => k >= 0);
+  if (at.length !== 1) throw new Error('oracle cheapest : égalité');
+  return C('ABCD'[at[0]]);
+};
+/** Plus petit / plus grand entier naturel vérifiant TOUTES les conditions [L, rel, R]. */
+const nats = (conds) => { const out = []; for (let n = 0; n <= 20000; n += 1) if (conds.every(([L, rel, Rr]) => satisfies(L, rel, Rr, n))) out.push(n); return out; };
+const firstNat = (...conds) => R(Math.min(...nats(conds)));
+const lastNat = (...conds) => { const s = nats(conds); if (s.includes(20000)) throw new Error('oracle lastNat : non borné'); return R(Math.max(...s)); };
+const countNat = (...conds) => R(nats(conds).length);
+/** Nombre d'entiers relatifs (balayage −2000 … 2000) vérifiant toutes les conditions. */
+const countInt = (...conds) => { let k = 0; for (let n = -2000; n <= 2000; n += 1) if (conds.every(([L, rel, Rr]) => satisfies(L, rel, Rr, n))) k += 1; return R(k); };
+const maxInt = (...conds) => { let best = null; for (let n = -2000; n <= 2000; n += 1) if (conds.every(([L, rel, Rr]) => satisfies(L, rel, Rr, n))) best = n; return R(best); };
+const minInt = (...conds) => { for (let n = -2000; n <= 2000; n += 1) if (conds.every(([L, rel, Rr]) => satisfies(L, rel, Rr, n))) return R(n); throw new Error('oracle minInt'); };
 
-// La situation du manuel (p. 52) : formule 1 = 75 par séance ; formule 2 = 560 + 5 par séance.
-const F1 = cost(0, 75); const F2 = cost(560, 5);
-const sitRay = ineq(5, 560, '<', 75, 0);           // 560 + 5x < 75x
-
-/* ── Données recalculées ─────────────────────────────────────────────── */
-// ex-34 : E = (5x − 1)² − (2x + 3)(5x − 1)
-const E34 = lin(5, -1).pow(2).sub(lin(2, 3).mul(lin(5, -1)));
-// ex-36 : A = (x + 4)² − x(x − 2) ; B = (3x − 1)(3x + 1) − (3x − 2)²
-const A36 = lin(1, 4).pow(2).sub(poly.x.mul(lin(1, -2)));
-const B36 = lin(3, -1).mul(lin(3, 1)).sub(lin(3, -2).pow(2));
-// ex-35 : A = (3x + 4)(x − 7) − (54x² − 96)
-const A35 = lin(3, 4).mul(lin(1, -7)).sub(P(-96, 0, 54));
-// ex-41 : E = (4x − 1)² − (3x + 2)(4x − 1)
-const E41 = lin(4, -1).pow(2).sub(lin(3, 2).mul(lin(4, -1)));
-const F47 = lin(2, 1).pow(2).sub(lin(2, 1).mul(lin(1, 5)));   // l4-007
-const G57 = lin(3, -2).pow(2).sub(lin(3, -2).mul(lin(1, 4))); // l5-007
-
-if (!lin(3, 4).mul(lin(3, -4)).mul(6).equals(P(-96, 0, 54))) throw new Error('oracle: ex-35 q1');
-if (!B36.equals(lin(12, -5))) throw new Error('oracle: ex-36 B');
-if (!E41.equals(P(3, -13, 4))) throw new Error('oracle: ex-41 E');
-if (!G57.equals(P(12, -22, 6))) throw new Error('oracle: l5-007 G');
+/** Côté de la représentation : A « على يمين » (x > k, x ≥ k), B « على يسار ». */
+const side = (L, rel, Rr) => C(['>', '>='].includes(checkedRay(L, rel, Rr).rel) ? 'A' : 'B');
+/** Ensemble des entiers NATURELS solutions (ensemble fini exigé), « 0, 1, 2 ». */
+const natSet = (...conds) => { const s = nats(conds); if (s.includes(20000)) throw new Error('oracle natSet : non borné'); return R(s.join(', ')); };
+/** Encadrement des solutions communes, comparé aux options [lo, loIn, hi, hiIn] (null = infini). */
+const enc = (conds, opts) => {
+  const rays = conds.map(([L, rel, Rr]) => checkedRay(L, rel, Rr));
+  const lower = rays.filter((r) => r.rel === '>' || r.rel === '>=');
+  const upper = rays.filter((r) => r.rel === '<' || r.rel === '<=');
+  if (lower.length !== 1 || upper.length !== 1) throw new Error('oracle enc : pas un encadrement');
+  const want = [lower[0].bound, lower[0].rel === '>=', upper[0].bound, upper[0].rel === '<='];
+  const same = (o) => o[0] !== null && o[2] !== null && cmpQ(o[0], want[0]) === 0 && o[1] === want[1] && cmpQ(o[2], want[2]) === 0 && o[3] === want[3];
+  const hits = opts.map((o, k) => (same(o) ? k : -1)).filter((k) => k >= 0);
+  if (hits.length !== 1) throw new Error('oracle enc : option introuvable');
+  return C('ABCD'[hits[0]]);
+};
+/** Avec un budget, la formule qui donne le PLUS d'unités (plus grand n tel que coût(n) ≤ budget) ; égalité ⇒ erreur. */
+const mostUnits = (costs, budget) => {
+  const best = costs.map((c) => { let n = -1; for (let k = 0; k <= 20000; k += 1) if (truth(evaluate(c, k), '<=', budget)) n = k; return n; });
+  const max = Math.max(...best);
+  const at = best.map((b, k) => (b === max ? k : -1)).filter((k) => k >= 0);
+  if (at.length !== 1) throw new Error('oracle mostUnits : égalité');
+  return C('ABCD'[at[0]]);
+};
+/** Valeur approchée PAR DÉFAUT à 10^-d de a√n + b (a > 0, n, b entiers) : ⌊10^d·a√n⌋ (racine entière exacte) + 10^d·b. */
+const isqrt = (N) => { if (N < 2n) return N; let x = N; let y = (x + 1n) / 2n; while (y < x) { x = y; y = (x + N / x) / 2n; } return x; };
+const approxDown = (a, n, b, d) => {
+  const p = 10n ** BigInt(d);
+  const A = BigInt(a); const Nn = BigInt(n);
+  const floorPart = isqrt(A * A * Nn * p * p);   // ⌊a√n · 10^d⌋
+  return R(q(`${floorPart + BigInt(b) * p}/${p}`).toString());
+};
 
 const K = (s) => `ex-4am-wadiya-idmajiya-muadalat-${s}`;
 
 export const ORACLE = {
   /* ── Niveau 1 ── */
-  [K('l1-001:q1')]: only({ A: '2', B: '7', C: '3' }, (v) => cmp(v, solve(1, -2, 0, 5)) === 0),
-  [K('l1-002:q1')]: only({ A: '5/4', B: '0', C: '4/5' }, (v) => cmp(v, solve(4, 0, 5, 0)) === 0),
-  [K('l1-003:q1')]: only({ A: ['3'], B: ['-1'], C: ['3', '-1'] }, isSet(roots([1, -3], [2, 2]))),
-  [K('l1-004:q1')]: only({ A: ['>', '3'], B: ['<', '-3'], C: ['>', '-3'] }, isRay(ineq('-1/3', 0, '>', 0, 1))),
-  [K('l1-005:q1')]: only({ A: P(300, 5), B: P(0, 305), C: P(5, 300), D: P(0, 20) }, isPoly(P(300, 5))),
-  [K('l1-005:q2')]: R(cost(300, 5)(10)),                                   // 350
-  [K('l1-006:q1')]: only({ A: P(50, 30), B: P(0, 80), C: P(30, 50), D: P(30, 1) }, isPoly(P(50, 30))),
-  [K('l1-006:q2')]: R(cost(50, 30)(7)),                                    // 260
-  [K('l1-007:q1')]: R(solve(3, -4, 2, 5)),                                 // 9
-  [K('l1-008:q1')]: only({ A: ['6'], B: ['-6', '3'], C: ['6', '-9'], D: ['6', '-3'] }, isSet(roots([1, -6], [3, 9]))),
-  // 4 séances : (أ) 40·4 = 160 ; (ب) 150 + 10·4 = 190
-  [K('l1-009:q1')]: only({ A: 'a', B: 'b', C: '=' }, (v) => v === (cmp(cost(0, 40)(4), cost(150, 10)(4)) < 0 ? 'a' : cmp(cost(0, 40)(4), cost(150, 10)(4)) > 0 ? 'b' : '=')),
-  [K('l1-009:q2')]: R(cost(150, 10)(4).sub(cost(0, 40)(4))),              // 30
-  [K('l1-010:q1')]: only({ A: ['>', '4'], B: ['<', '7'], C: ['<', '4'], D: ['=', '4'] }, isRay(ineq(2, 3, '<', 0, 11))),
-
+  [K('l1-001:q1')]: solveEq("-2 + x", "5"),
+  [K('l1-001:q2')]: test("-2 + x", "=", "5", 3),
+  [K('l1-002:q1')]: solveEq("4x", "5x"),
+  [K('l1-002:q2')]: solveEq("4x + 3", "5x"),
+  [K('l1-003:q1')]: root("x - 3", "2x + 2", "min"),
+  [K('l1-003:q2')]: root("x - 3", "2x + 2", "max"),
+  [K('l1-004:q1')]: bound("-\\dfrac{1}{3}x", ">", "1"),
+  [K('l1-004:q2')]: sym("-\\dfrac{1}{3}x", ">", "1"),
+  [K('l1-005:q1')]: coef("300 + 5x", 1),
+  [K('l1-005:q2')]: coef("300 + 5x", 0),
+  [K('l1-005:q3')]: val("300 + 5x", 10),
+  [K('l1-006:q1')]: coef("50 + 30x", 1),
+  [K('l1-006:q2')]: coef("50 + 30x", 0),
+  [K('l1-006:q3')]: val("50 + 30x", 7),
+  [K('l1-007:q1')]: solveEq("3x - 4", "2x + 5"),
+  [K('l1-008:q1')]: root("3x + 6", "2x - 7", "min"),
+  [K('l1-008:q2')]: root("3x + 6", "2x - 7", "max"),
+  [K('l1-009:q1')]: val("40x", 4),
+  [K('l1-009:q2')]: val("150 + 10x", 4),
+  [K('l1-009:q3')]: cheapest(["40x", "150 + 10x"], 4),
+  [K('l1-010:q1')]: bound("2x + 9", ">=", "7x - 6"),
+  [K('l1-010:q2')]: sym("2x + 9", ">=", "7x - 6"),
   /* ── Niveau 2 ── */
-  [K('l2-001:q1')]: only({ A: ['1', '-1'], B: ['1'], C: ['-1'] }, isSet(roots([1, -1], [1, 1]))),
-  // QCM 5 : x ≥ −1 ⇒ ? Une affirmation affine est vraie sur tout le rayon ssi elle l'est à la borne et loin.
-  [K('l2-002:q1')]: (() => {
-    const implied = (a, b, rel) => [-1, 1000].every((x) => holds(q(a).mul(x).add(b), rel, 0));
-    const s = { 1: implied(2, 2, '>='), 2: implied(2, -2, '<'), 3: implied(2, 2, '>=') };   // (3) 2x ≥ −2 ⇔ 2x + 2 ≥ 0
-    const set = Object.keys(s).filter((k) => s[k]).join('+');
-    return only({ A: '1+3', B: '1', C: '2', D: '2+3' }, (v) => v === set);
-  })(),
-  // QCM 7 : −1 vérifie-t-il chaque inéquation ?
-  [K('l2-003:q1')]: (() => {
-    const s = { 1: holds(q(2).mul(-1), '<', -3), 2: holds(q(2).mul(-1).add(1), '<', 0), 3: holds(q(-1).mul(-1).add(1), '>', 0) };
-    const set = Object.keys(s).filter((k) => s[k]).join('+');
-    return only({ A: '1', B: '2+3', C: '2', D: '1+2+3' }, (v) => v === set);
-  })(),
-  [K('l2-004:q1')]: only({ A: ray('right', -3, false), B: ray('left', -3, true), C: ray('right', -3, true), D: ray('left', 0, false) }, isRay(['>', '-3'])),
-  [K('l2-005:q1')]: only({ A: [P(600, 40), '>', P(0, 100)], B: [P(600, 40), '<', P(0, 100)], C: [P(600, 40), '=', P(0, 100)], D: [P(0, 640), '<', P(0, 100)] },
-    (o) => o[1] !== '=' && sameIneq([P(600, 40), '<', P(0, 100)])(o)),
-  [K('l2-005:q2')]: R(firstNat(better(cost(600, 40), cost(0, 100)))),     // 11
-  [K('l2-006:q1')]: R(solve(3, 0, 1, 200)),                                 // 100
-  [K('l2-006:q2')]: R(firstNat(better(cost(200, 1), cost(0, 3)))),        // 101
-  [K('l2-007:q1')]: R(solve(5, -10, 3, 4)),                                 // 5(x − 2) = 3x + 4 → 7
-  [K('l2-008:q1')]: only({ A: ['>=', '-3'], B: ['<=', '3'], C: ['<=', '-3'], D: ['<=', '-13/2'] }, isRay(ineq(-4, 7, '>=', 0, 19))),
-  [K('l2-009:q1')]: only({ A: ['5/2', '-4'], B: ['2/5', '-4'], C: ['5', '-4'], D: ['-5/2', '4'] }, isSet(roots([2, -5], [1, 4]))),
-  [K('l2-010:q1')]: R(solve(120, 0, 80, 200)),                              // 5
-  [K('l2-010:q2')]: only({ A: 'b', B: 'a', C: '=' }, (v) => v === (cmp(cost(0, 120)(3), cost(200, 80)(3)) < 0 ? 'a' : 'b')),
-
+  [K('l2-001:q1')]: factor("x^2 - 1", "x - 1", "n"),
+  [K('l2-001:q2')]: root("x - 1", "x + 1", "min"),
+  [K('l2-001:q3')]: root("x - 1", "x + 1", "max"),
+  [K('l2-002:q2')]: val("2x + 5", -1),
+  [K('l2-003:q1')]: test("2x", "<", "-3", -1),
+  [K('l2-003:q2')]: test("2x + 1", "<", "0", -1),
+  [K('l2-003:q3')]: test("-x + 1", ">", "0", -1),
+  [K('l2-003:q4')]: bound("2x + 1", "<", "0"),
+  [K('l2-003:q5')]: sym("2x + 1", "<", "0"),
+  [K('l2-004:q1')]: test("x", ">", "-3", -3),
+  [K('l2-004:q2')]: side("x", ">", "-3"),
+  [K('l2-004:q3')]: bound("2x + 7", ">", "1"),
+  [K('l2-004:q4')]: sym("2x + 7", ">", "1"),
+  [K('l2-005:q1')]: coef("150x", 1),
+  [K('l2-005:q2')]: coef("1500 + 90x", 1),
+  [K('l2-005:q3')]: coef("1500 + 90x", 0),
+  [K('l2-005:q4')]: bound("150x", ">", "90x + 1500"),
+  [K('l2-005:q5')]: sym("150x", ">", "90x + 1500"),
+  [K('l2-006:q1')]: solveEq("3x", "x + 200"),
+  [K('l2-006:q2')]: firstNat(["x + 200", "<", "3x"]),
+  [K('l2-007:q1')]: solveEq("5(x - 2)", "3x + 4"),
+  [K('l2-007:q2')]: val("5(x - 2)", solveEq("5(x - 2)", "3x + 4").value),
+  [K('l2-008:q1')]: bound("-4x + 7", ">=", "19"),
+  [K('l2-008:q2')]: sym("-4x + 7", ">=", "19"),
+  [K('l2-008:q3')]: maxInt(["-4x + 7", ">=", "19"]),
+  [K('l2-009:q2')]: factor("(3x - 1)^2 - 16", "3x - 5", "m"),
+  [K('l2-009:q3')]: factor("(3x - 1)^2 - 16", "3x - 5", "n"),
+  [K('l2-009:q4')]: root("3x - 5", "3x + 3", "min"),
+  [K('l2-009:q5')]: root("3x - 5", "3x + 3", "max"),
+  [K('l2-010:q1')]: solveEq("120x", "80x + 200"),
+  [K('l2-010:q2')]: cheapest(["120x", "80x + 200"], 3),
   /* ── Niveau 3 ── */
-  [K('l3-001:q1')]: only({ A: P(4, -23, 15), B: P(-2, 3, 15), C: P(4, -13, 15), D: P(-2, -23, 15) }, isPoly(E34)),
-  [K('l3-001:q2')]: R(E34.at(-1)),                                          // 42
-  [K('l3-002:q1')]: only({ A: P(16, 6), B: P(16, 10), C: P(16, 2), D: P(16, 6, 2) }, isPoly(A36)),
-  [K('l3-002:q2')]: only({ A: ['>=', '21/2'], B: ['<=', '2/21'], C: ['<=', '11/2'], D: ['<=', '21/2'] }, isRay(reduce([A36, '>=', B36]))),
-  [K('l3-003:q1')]: only({ A: ray('left', -2, false), B: ray('left', 0, false), C: ray('right', -2, false), D: ray('right', -2, true) }, isRay(ineq(1, 1, '>', 0, -1))),
-  [K('l3-004:q1')]: only({ A: P(0, 565), B: P(5, 560), C: P(560, 5), D: P(560, 75) }, isPoly(P(560, 5))),
-  [K('l3-004:q2')]: R(F1(8)),                                               // 600
-  [K('l3-004:q3')]: R(F2(8)),                                               // 600
-  [K('l3-005:q1')]: only({ A: [P(1500, 100), '<', P(0, 250)], B: [P(1500, 100), '>', P(0, 250)], C: [P(0, 1600), '<', P(0, 250)], D: [P(1500, 100), '=', P(0, 250)] },
-    (o) => o[1] !== '=' && sameIneq([P(1500, 100), '<', P(0, 250)])(o)),
-  [K('l3-005:q2')]: R(firstNat(better(cost(1500, 100), cost(0, 250)))),   // 11
-  [K('l3-006:q1')]: R(solve(15, 0, 5, 400)),                                // 40
-  [K('l3-006:q2')]: (() => {
-    const a = cost(0, 15)(40); const b = cost(400, 5)(40);
-    const truth = { A: cmp(b, a) < 0, B: cmp(a, b) < 0 && cmp(b.sub(a), 400) === 0, C: cmp(b, a) < 0 && cmp(a.sub(b), 200) === 0, D: cmp(a, b) === 0 && cmp(a, 600) === 0 };
-    return only(truth, (v) => v === true);
-  })(),
-  [K('l3-007:q1')]: only({ A: P(9), B: P(9, 6), C: P(9, 3), D: P(9, 6, 2) }, isPoly(lin(1, 3).pow(2).sub(poly.x.pow(2)))),
-  [K('l3-007:q2')]: R(solve(6, 9, 0, 33)),                                  // 4
-  [K('l3-008:q1')]: only({ A: ['>', '6'], B: ['>', '2'], C: ['<', '6'], D: ['>', '4'] }, isRay(reduce([lin(1, -2).mul(3).sub(lin(1, 4)), '>', P(2)]))),
-  // x² = 9x : x(x − 9) = 0
-  [K('l3-009:q1')]: only({ A: ['9'], B: ['0', '9'], C: ['3', '-3'], D: ['0'] }, isSet(roots([1, 0], [1, -9]))),
-  [K('l3-009:q2')]: R(roots([1, 0], [1, -9]).find((r) => sign(r) !== 0)),   // 9
-  // périmètres : triangle 3x ; rectangle 2(x + 3 + 5)
-  [K('l3-010:q1')]: only({ A: [P(0, 3), '>', P(16, 2)], B: [P(0, 3), '>', P(8, 1)], C: [P(0, 3), '<', P(16, 2)], D: [P(0, 1), '>', P(16, 2)] },
-    sameIneq([P(0, 3), '>', lin(1, 8).mul(2)])),
-  [K('l3-010:q2')]: R(firstNat((n) => cmp(q(3).mul(n), q(2).mul(n + 8)) > 0)), // 17
-
+  [K('l3-001:q1')]: coef("(5x - 1)^2 - (2x + 3)(5x - 1)", 2),
+  [K('l3-001:q2')]: coef("(5x - 1)^2 - (2x + 3)(5x - 1)", 1),
+  [K('l3-001:q3')]: coef("(5x - 1)^2 - (2x + 3)(5x - 1)", 0),
+  [K('l3-001:q4')]: factor("(5x - 1)^2 - (2x + 3)(5x - 1)", "5x - 1", "m"),
+  [K('l3-001:q5')]: factor("(5x - 1)^2 - (2x + 3)(5x - 1)", "5x - 1", "n"),
+  [K('l3-001:q6')]: root("5x - 1", "3x - 4", "min"),
+  [K('l3-001:q7')]: root("5x - 1", "3x - 4", "max"),
+  [K('l3-001:q8')]: val("(5x - 1)^2 - (2x + 3)(5x - 1)", -1),
+  [K('l3-002:q1')]: coef("(x + 4)^2 - x(x - 2)", 1),
+  [K('l3-002:q2')]: coef("(x + 4)^2 - x(x - 2)", 0),
+  [K('l3-002:q4')]: bound("(x + 4)^2 - x(x - 2)", ">=", "(3x - 1)(3x + 1) - (3x - 2)^2"),
+  [K('l3-002:q5')]: sym("(x + 4)^2 - x(x - 2)", ">=", "(3x - 1)(3x + 1) - (3x - 2)^2"),
+  [K('l3-002:q6')]: lastNat(["(x + 4)^2 - x(x - 2)", ">=", "(3x - 1)(3x + 1) - (3x - 2)^2"]),
+  [K('l3-003:q1')]: bound("x + 1", ">", "-1"),
+  [K('l3-003:q2')]: sym("x + 1", ">", "-1"),
+  [K('l3-003:q3')]: test("x + 1", ">", "-1", -2),
+  [K('l3-003:q4')]: side("x + 1", ">", "-1"),
+  [K('l3-004:q1')]: coef("75x", 1),
+  [K('l3-004:q2')]: coef("560 + 5x", 1),
+  [K('l3-004:q3')]: coef("560 + 5x", 0),
+  [K('l3-004:q4')]: val("75x", 8),
+  [K('l3-004:q5')]: val("560 + 5x", 8),
+  [K('l3-004:q6')]: solveEq("75x", "5x + 560"),
+  [K('l3-005:q1')]: bound("1500 + 100x", "<", "250x"),
+  [K('l3-005:q2')]: sym("1500 + 100x", "<", "250x"),
+  [K('l3-005:q3')]: firstNat(["1500 + 100x", "<", "250x"]),
+  [K('l3-005:q4')]: val("250x - (1500 + 100x)", 16),
+  [K('l3-006:q1')]: solveEq("15x", "400 + 5x"),
+  [K('l3-006:q2')]: val("15x", solveEq("15x", "400 + 5x").value),
+  [K('l3-006:q3')]: cheapest(["15x", "400 + 5x"], 100),
+  [K('l3-007:q1')]: coef("(x - 2)^2 - (x - 2)(3x + 1)", 2),
+  [K('l3-007:q2')]: coef("(x - 2)^2 - (x - 2)(3x + 1)", 1),
+  [K('l3-007:q3')]: coef("(x - 2)^2 - (x - 2)(3x + 1)", 0),
+  [K('l3-007:q4')]: factor("(x - 2)^2 - (x - 2)(3x + 1)", "x - 2", "m"),
+  [K('l3-007:q5')]: factor("(x - 2)^2 - (x - 2)(3x + 1)", "x - 2", "n"),
+  [K('l3-007:q6')]: bound("5x - 3", "<=", "8x + 9"),
+  [K('l3-007:q7')]: sym("5x - 3", "<=", "8x + 9"),
+  [K('l3-008:q1')]: coef("3(x - 2) - (x + 4)", 1),
+  [K('l3-008:q2')]: coef("3(x - 2) - (x + 4)", 0),
+  [K('l3-008:q3')]: bound("3(x - 2) - (x + 4)", ">", "2"),
+  [K('l3-008:q4')]: sym("3(x - 2) - (x + 4)", ">", "2"),
+  [K('l3-008:q5')]: minInt(["3(x - 2) - (x + 4)", ">", "2"]),
+  [K('l3-009:q1')]: coef("(x + 2)(x - 9) + 4(x + 2)", 2),
+  [K('l3-009:q2')]: coef("(x + 2)(x - 9) + 4(x + 2)", 1),
+  [K('l3-009:q3')]: coef("(x + 2)(x - 9) + 4(x + 2)", 0),
+  [K('l3-009:q4')]: factor("(x + 2)(x - 9) + 4(x + 2)", "x + 2", "n"),
+  [K('l3-009:q5')]: root("x + 2", "x - 5", "min"),
+  [K('l3-009:q6')]: root("x + 2", "x - 5", "max"),
+  [K('l3-009:q7')]: val("(x + 2)(x - 9) + 4(x + 2)", 40),
+  [K('l3-010:q1')]: coef("x + x + x", 1),
+  [K('l3-010:q2')]: coef("2(x + 3 + 5)", 1),
+  [K('l3-010:q3')]: coef("2(x + 3 + 5)", 0),
+  [K('l3-010:q4')]: bound("x + x + x", ">", "2(x + 3 + 5)"),
+  [K('l3-010:q5')]: sym("x + x + x", ">", "2(x + 3 + 5)"),
+  [K('l3-010:q6')]: firstNat(["x + x + x", ">", "2(x + 3 + 5)"]),
   /* ── Niveau 4 ── */
-  [K('l4-001:q1')]: only({ A: lin(3, 4).mul(lin(-17, -31)), B: lin(3, 4).mul(lin(-17, 17)), C: lin(3, 4).mul(lin(-2, -3)), D: lin(3, 4).mul(lin(19, -31)) }, isPoly(A35)),
-  [K('l4-001:q2')]: only({ A: ['-4/3', '1'], B: ['4/3', '-1'], C: ['-4/3'], D: ['-4/3', '17'] }, isSet(roots([3, 4], [-17, 17]))),
-  // 54x² − 96 ≤ 18x(3x + 1) − 90
-  [K('l4-001:q3')]: only({ A: ['<=', '-1/3'], B: ['>=', '-3'], C: ['>=', '-1/3'], D: ['>=', '1/3'] }, isRay(reduce([P(-96, 0, 54), '<=', poly.x.mul(18).mul(lin(3, 1)).sub(90)]))),
-  [K('l4-002:q1')]: only({ A: lin(4, -1).mul(lin(1, -3)), B: lin(4, -1).mul(lin(7, 1)), C: lin(4, -1).mul(lin(1, 1)), D: lin(4, 1).mul(lin(1, -3)) }, isPoly(E41)),
-  [K('l4-002:q2')]: only({ A: ['<=', '-2'], B: ['>=', '2'], C: ['>=', '-1/2'], D: ['>=', '-2'] }, isRay(reduce([E41, '<=', P(29, 0, 4)]))),
-  [K('l4-003:q1')]: only({ A: ['>', '-1'], B: ['<', '-1'], C: ['<', '1'], D: ['<', '-5/2'] }, isRay(ineq(-3, 1, '>', 7, 11))),
-  [K('l4-003:q2')]: only({ A: Iv('-4', true, '-1', false), B: Iv('-4', false, '-1', true), C: ['<', '-4'], D: ['>=', '-4'] },
-    sameIv(meet(ineq(-3, 1, '>', 7, 11), ineq('1/2', -3, '<=', 1, -1)))),
-  [K('l4-004:q1')]: only({ A: [P(560, 5), '>', P(0, 75)], B: [P(0, 565), '<', P(0, 75)], C: [P(560, 5), '<', P(0, 75)], D: [P(560, 5), '=', P(0, 75)] },
-    (o) => o[1] !== '=' && sameIneq([P(560, 5), '<', P(0, 75)])(o)),
-  [K('l4-004:q2')]: R(firstNat(better(F2, F1))),                           // 9
-  [K('l4-005:q1')]: R(solve(60, 0, 20, 400)),                               // 10
-  [K('l4-005:q2')]: R(firstNat(better(cost(400, 20), cost(0, 60)))),       // 11
-  [K('l4-005:q3')]: R(cost(0, 60)(15).sub(cost(400, 20)(15))),             // 200
-  // après x semaines : Sara 500 + 300x, Ahmed 2000 + 150x
-  [K('l4-006:q1')]: only({ A: [P(0, 800), '>', P(0, 2150)], B: [P(500, 300), '<', P(2000, 150)], C: [P(300, 500), '>', P(150, 2000)], D: [P(500, 300), '>', P(2000, 150)] },
-    sameIneq([P(500, 300), '>', P(2000, 150)])),
-  [K('l4-006:q2')]: R(firstNat((n) => cmp(cost(500, 300)(n), cost(2000, 150)(n)) > 0)), // 11
-  [K('l4-007:q1')]: only({ A: lin(2, 1).mul(lin(1, -4)), B: lin(2, 1).mul(lin(3, 6)), C: lin(2, 1).mul(lin(1, 6)), D: lin(2, 1).pow(2).mul(lin(1, 5)) }, isPoly(F47)),
-  [K('l4-007:q2')]: only({ A: ['1/2', '-4'], B: ['-1/2', '4'], C: ['-2', '4'], D: ['4'] }, isSet(roots([2, 1], [1, -4]))),
-  [K('l4-008:q1')]: only({ A: P(4, 5), B: P(4, 1), C: P(4, 3), D: P(4, 5, 2) }, isPoly(lin(1, 2).pow(2).sub(poly.x.mul(lin(1, 1))))),
-  [K('l4-008:q2')]: only({ A: ['<', '5'], B: ['>', '5'], C: ['<', '23/3'], D: ['=', '5'] }, isRay(reduce([lin(1, 2).pow(2).sub(poly.x.mul(lin(1, 1))), '<', P(19)]))),
-  // aires : rectangle x(x + 6) ; carré (x + 2)²
-  [K('l4-009:q1')]: only({ A: [P(0, 6, 1), '>', P(4, 4, 1)], B: [P(0, 6, 1), '>', P(4, 0, 1)], C: [P(6, 2), '>', P(2, 2)], D: [P(0, 6, 1), '<', P(4, 4, 1)] },
-    (o) => sameIneq([poly.x.mul(lin(1, 6)), '>', lin(1, 2).pow(2)])(o) && o[0].equals(poly.x.mul(lin(1, 6))) && o[2].equals(lin(1, 2).pow(2))),
-  [K('l4-009:q2')]: only({ A: ['<', '2'], B: ['>', '2'], C: ['>', '4'], D: ['=', '2'] }, isRay(reduce([poly.x.mul(lin(1, 6)), '>', lin(1, 2).pow(2)]))),
-  [K('l4-010:q1')]: only({ A: Iv('2', false, '7', true), B: Iv('2', true, '7', false), C: ['>', '2'], D: Iv('1', false, '17', true) },
-    sameIv(meet(ineq(2, -1, '>', 0, 3), ineq(1, 5, '<=', 0, 12)))),
-  [K('l4-010:q2')]: R(intsIn(meet(ineq(2, -1, '>', 0, 3), ineq(1, 5, '<=', 0, 12)))), // 5
-
+  [K('l4-001:q2')]: factor("(3x + 4)(x - 7) - (54x^2 - 96)", "3x + 4", "m"),
+  [K('l4-001:q3')]: factor("(3x + 4)(x - 7) - (54x^2 - 96)", "3x + 4", "n"),
+  [K('l4-001:q4')]: root("3x + 4", "-17x + 17", "min"),
+  [K('l4-001:q5')]: root("3x + 4", "-17x + 17", "max"),
+  [K('l4-001:q6')]: bound("54x^2 - 96", "<=", "18x(3x + 1) - 90"),
+  [K('l4-001:q7')]: sym("54x^2 - 96", "<=", "18x(3x + 1) - 90"),
+  [K('l4-002:q1')]: coef("(2x - 3)^2 - (x + 2)(2x - 3)", 2),
+  [K('l4-002:q2')]: coef("(2x - 3)^2 - (x + 2)(2x - 3)", 1),
+  [K('l4-002:q3')]: coef("(2x - 3)^2 - (x + 2)(2x - 3)", 0),
+  [K('l4-002:q4')]: factor("(2x - 3)^2 - (x + 2)(2x - 3)", "2x - 3", "n"),
+  [K('l4-002:q5')]: root("2x - 3", "x - 5", "min"),
+  [K('l4-002:q6')]: root("2x - 3", "x - 5", "max"),
+  [K('l4-002:q7')]: bound("2x^2 - 13x + 15", "<=", "2x^2 + 41"),
+  [K('l4-002:q8')]: sym("2x^2 - 13x + 15", "<=", "2x^2 + 41"),
+  [K('l4-003:q1')]: bound("-3x + 1", ">", "7x + 11"),
+  [K('l4-003:q2')]: sym("-3x + 1", ">", "7x + 11"),
+  [K('l4-003:q3')]: bound("\\dfrac{1}{2}x - 3", "<=", "x - 1"),
+  [K('l4-003:q4')]: sym("\\dfrac{1}{2}x - 3", "<=", "x - 1"),
+  [K('l4-003:q5')]: enc([["-3x + 1", ">", "7x + 11"], ["\\dfrac{1}{2}x - 3", "<=", "x - 1"]], [["-4", true, "-1", false], ["-4", false, "-1", true], [null, false, "-4", false], ["-1", true, null, false]]),
+  [K('l4-003:q6')]: countInt(["-3x + 1", ">", "7x + 11"], ["\\dfrac{1}{2}x - 3", "<=", "x - 1"]),
+  [K('l4-004:q1')]: bound("560 + 5x", "<", "75x"),
+  [K('l4-004:q2')]: sym("560 + 5x", "<", "75x"),
+  [K('l4-004:q3')]: firstNat(["560 + 5x", "<", "75x"]),
+  [K('l4-004:q4')]: val("75x - (560 + 5x)", 12),
+  [K('l4-005:q2')]: factor("2x^2 + 7x - 15 + (2x - 3)^2", "2x - 3", "m"),
+  [K('l4-005:q3')]: factor("2x^2 + 7x - 15 + (2x - 3)^2", "2x - 3", "n"),
+  [K('l4-005:q4')]: bound("(2x - 3)(x + 5)", ">=", "2x^2 + 5"),
+  [K('l4-005:q5')]: sym("(2x - 3)(x + 5)", ">=", "2x^2 + 5"),
+  [K('l4-005:q6')]: root("2x - 3", "3x + 2", "min"),
+  [K('l4-005:q7')]: root("2x - 3", "3x + 2", "max"),
+  [K('l4-006:q1')]: coef("2000 + 150x", 1),
+  [K('l4-006:q2')]: coef("2000 + 150x", 0),
+  [K('l4-006:q3')]: coef("500 + 300x", 1),
+  [K('l4-006:q4')]: coef("500 + 300x", 0),
+  [K('l4-006:q5')]: bound("500 + 300x", ">", "2000 + 150x"),
+  [K('l4-006:q6')]: sym("500 + 300x", ">", "2000 + 150x"),
+  [K('l4-006:q7')]: firstNat(["500 + 300x", ">", "2000 + 150x"]),
+  [K('l4-007:q1')]: coef("(2x + 1)^2 - (2x + 1)(x + 5)", 2),
+  [K('l4-007:q2')]: coef("(2x + 1)^2 - (2x + 1)(x + 5)", 1),
+  [K('l4-007:q3')]: coef("(2x + 1)^2 - (2x + 1)(x + 5)", 0),
+  [K('l4-007:q4')]: factor("(2x + 1)^2 - (2x + 1)(x + 5)", "2x + 1", "n"),
+  [K('l4-007:q5')]: root("2x + 1", "x - 4", "min"),
+  [K('l4-007:q6')]: root("2x + 1", "x - 4", "max"),
+  [K('l4-007:q7')]: bound("(2x + 1)^2 - (2x + 1)(x + 5)", ">", "2x(x - 3)"),
+  [K('l4-007:q8')]: sym("(2x + 1)^2 - (2x + 1)(x + 5)", ">", "2x(x - 3)"),
+  [K('l4-008:q1')]: coef("(x + 2)^2 - x(x + 1)", 1),
+  [K('l4-008:q2')]: coef("(x + 2)^2 - x(x + 1)", 0),
+  [K('l4-008:q3')]: bound("(x + 2)^2 - x(x + 1)", "<", "19"),
+  [K('l4-008:q4')]: sym("(x + 2)^2 - x(x + 1)", "<", "19"),
+  [K('l4-008:q5')]: natSet(["(x + 2)^2 - x(x + 1)", "<", "19"]),
+  [K('l4-009:q1')]: coef("x(x + 6)", 1),
+  [K('l4-009:q2')]: coef("(x + 2)^2", 1),
+  [K('l4-009:q3')]: coef("(x + 2)^2", 0),
+  [K('l4-009:q4')]: bound("x(x + 6)", ">", "(x + 2)^2"),
+  [K('l4-009:q5')]: sym("x(x + 6)", ">", "(x + 2)^2"),
+  [K('l4-009:q6')]: solveEq("x(x + 6) - (x + 2)^2", "20"),
+  [K('l4-010:q1')]: approxDown(2, 3, -7, 2),
+  [K('l4-010:q2')]: bound("2x - 7", ">=", "0"),
+  [K('l4-010:q3')]: sym("2x - 7", ">=", "0"),
+  [K('l4-010:q4')]: coef("(2x - 7)^2 + 4x^2 - 49", 2),
+  [K('l4-010:q5')]: coef("(2x - 7)^2 + 4x^2 - 49", 1),
+  [K('l4-010:q6')]: coef("(2x - 7)^2 + 4x^2 - 49", 0),
+  [K('l4-010:q8')]: root("4x", "2x - 7", "min"),
+  [K('l4-010:q9')]: root("4x", "2x - 7", "max"),
   /* ── Niveau 5 ── */
-  [K('l5-001:q1')]: only({ A: ['<', '8'], B: ['>', '7'], C: ['>', '1/8'], D: ['>', '8'] }, isRay(sitRay)),
-  [K('l5-001:q2')]: R(firstNat(better(F2, F1))),                           // 9
-  [K('l5-001:q3')]: R(F1(12).sub(F2(12))),                                 // 280
-  [K('l5-002:q1')]: only({ A: lin(5, -1).mul(lin(7, 2)), B: lin(5, -1).mul(lin(3, 2)), C: lin(5, -1).mul(lin(3, -4)), D: lin(5, -1).pow(2).mul(lin(2, 3)) }, isPoly(E34)),
-  [K('l5-002:q2')]: only({ A: ['1/5', '4/3'], B: ['1/5'], C: ['-1/5', '-4/3'], D: ['5', '3/4'] }, isSet(roots([5, -1], [3, -4]))),
-  [K('l5-003:q1')]: only({ A: P(-1, -3, 4), B: P(3, -13, 4), C: P(-1, -3, 28), D: P(-1, -13, 4) }, isPoly(E41)),
-  [K('l5-003:q2')]: only({ A: ['1/4', '3'], B: ['4', '3'], C: ['-1/4', '-3'], D: ['3'] }, isSet(roots([4, -1], [1, -3]))),
-  // trois formules : (أ) 70x ; (ب) 300 + 40x ; (ج) 900
-  [K('l5-004:q1')]: R(firstNat(better(cost(300, 40), cost(0, 70)))),       // 11
-  [K('l5-004:q2')]: R(firstNat(better(cost(900, 0), cost(300, 40)))),      // 16
-  [K('l5-004:q3')]: (() => {
-    const c = { a: cost(0, 70)(13), b: cost(300, 40)(13), c: cost(900, 0)(13) };
-    const min = Object.entries(c).sort(([, u], [, v]) => cmp(u, v));
-    if (cmp(min[0][1], min[1][1]) === 0) throw new Error('oracle: égalité');
-    return only({ A: 'a', B: 'b', C: 'c', D: 'a=c' }, (v) => v === min[0][0]);
-  })(),
-  [K('l5-005:q1')]: R(firstNat(better(cost(250, '1.5'), cost(0, 4)))),     // 101
-  // a + 30·12 = 80·12
-  [K('l5-006:q1')]: R(q(80).mul(12).sub(q(30).mul(12))),                  // 600
-  [K('l5-006:q2')]: R(firstNat(better(cost(q(80).mul(12).sub(q(30).mul(12)), 30), cost(0, 80)))), // 13
-  [K('l5-007:q1')]: only({ A: lin(3, -2).mul(lin(4, 2)), B: lin(3, -2).mul(lin(2, 2)), C: lin(3, -2).mul(lin(2, -2)), D: lin(3, -2).mul(lin(2, -6)) }, isPoly(G57)),
-  [K('l5-007:q2')]: only({ A: ['2/3', '3'], B: ['3/2', '3'], C: ['-2/3', '-3'], D: ['2/3', '6'] }, isSet(roots([3, -2], [2, -6]))),
-  [K('l5-007:q3')]: only({ A: ['>=', '1'], B: ['<=', '-1'], C: ['<=', '1'], D: ['<=', '1/11'] }, isRay(reduce([G57, '>=', P(-10, 0, 6)]))),
-  [K('l5-008:q1')]: only({ A: Iv('-3', false, '3', true), B: ['<', '-3'], C: Iv('-3', true, '3', false), D: ['<=', '3'] },
-    sameIv(meet(ineq(-2, 5, '<', 0, 11), ineq(3, -1, '<=', 0, 8)))),
-  [K('l5-008:q2')]: R(intsIn(meet(ineq(-2, 5, '<', 0, 11), ineq(3, -1, '<=', 0, 8)))), // 6
-  // périmètre 2(20 + x) < 64
-  [K('l5-009:q1')]: only({ A: [lin(1, 20).mul(2), '<', P(64)], B: [lin(1, 20), '<', P(64)], C: [P(0, 20), '<', P(64)], D: [lin(1, 20).mul(2), '>', P(64)] },
-    sameIneq([lin(1, 20).mul(2), '<', P(64)])),
-  [K('l5-009:q2')]: R(lastNat((n) => holds(q(2).mul(q(20).add(n)), '<', 64))), // 11
-  // (x + 5)(x − 3) = 0 — une équation est la bonne si son polynôme est proportionnel au produit.
-  [K('l5-010:q1')]: (() => {
-    const target = lin(1, 5).mul(lin(1, -3));
-    const prop = (p) => p.degree() === 2 && p.mul(target.coef(2)).equals(target.mul(p.coef(2)));
-    return only({ A: lin(1, 0).add(poly.x.mul(5)).sub(3), B: target, C: lin(1, 5).add(lin(1, -3)), D: poly.x.mul(5).mul(lin(1, -3)) }, prop);
-  })(),
-  [K('l5-010:q2')]: only({ A: ['-5', '3'], B: ['5', '-3'], C: ['3'], D: ['-1'] }, isSet(roots([1, 5], [1, -3]))),
+  [K('l5-001:q1')]: val("900x", 15),
+  [K('l5-001:q2')]: val("600x + 7500", 15),
+  [K('l5-001:q3')]: solveEq("900x", "27000"),
+  [K('l5-001:q4')]: val("600x + 7500", solveEq("900x", "27000").value),
+  [K('l5-001:q5')]: coef("900x", 1),
+  [K('l5-001:q6')]: coef("7500 + 600x", 1),
+  [K('l5-001:q7')]: coef("7500 + 600x", 0),
+  [K('l5-001:q8')]: bound("900x", ">", "600x + 7500"),
+  [K('l5-001:q9')]: sym("900x", ">", "600x + 7500"),
+  [K('l5-001:q10')]: cheapest(["900x", "600x + 7500"], 32),
+  [K('l5-001:q11')]: val("900x - (600x + 7500)", 32),
+  [K('l5-002:q1')]: val("60x", 25),
+  [K('l5-002:q2')]: val("400 + 40x", 25),
+  [K('l5-002:q3')]: val("1300 + 10x", 25),
+  [K('l5-002:q4')]: coef("400 + 40x", 1),
+  [K('l5-002:q5')]: coef("400 + 40x", 0),
+  [K('l5-002:q6')]: coef("1300 + 10x", 1),
+  [K('l5-002:q7')]: coef("1300 + 10x", 0),
+  [K('l5-002:q8')]: bound("400 + 40x", "<", "60x"),
+  [K('l5-002:q9')]: sym("400 + 40x", "<", "60x"),
+  [K('l5-002:q10')]: bound("400 + 40x", "<", "1300 + 10x"),
+  [K('l5-002:q11')]: sym("400 + 40x", "<", "1300 + 10x"),
+  [K('l5-002:q12')]: enc([["400 + 40x", "<", "60x"], ["400 + 40x", "<", "1300 + 10x"]], [["20", false, "30", false], ["30", false, null, false], [null, false, "20", false], ["20", true, "30", true]]),
+  [K('l5-003:q1')]: val("40x", 30),
+  [K('l5-003:q2')]: val("25x + 600", 30),
+  [K('l5-003:q3')]: solveEq("40x", "2000"),
+  [K('l5-003:q4')]: val("25x + 600", solveEq("40x", "2000").value),
+  [K('l5-003:q5')]: coef("40x", 1),
+  [K('l5-003:q6')]: coef("600 + 25x", 1),
+  [K('l5-003:q7')]: coef("600 + 25x", 0),
+  [K('l5-003:q8')]: solveEq("40x", "25x + 600"),
+  [K('l5-003:q10')]: cheapest(["40x", "25x + 600"], 35),
+  [K('l5-003:q11')]: cheapest(["40x", "25x + 600"], 52),
+  [K('l5-004:q1')]: cheapest(["6000x", "4000x + 10000", "34000"], 7),
+  [K('l5-004:q2')]: coef("6000x", 1),
+  [K('l5-004:q3')]: coef("10000 + 4000x", 1),
+  [K('l5-004:q4')]: coef("10000 + 4000x", 0),
+  [K('l5-004:q5')]: solveEq("6000x", "4000x + 10000"),
+  [K('l5-004:q6')]: solveEq("4000x + 10000", "34000"),
+  [K('l5-004:q7')]: firstNat(["4000x + 10000", "<", "6000x"]),
+  [K('l5-005:q1')]: val("300x", 5),
+  [K('l5-005:q2')]: val("180x + 1200", 5),
+  [K('l5-005:q3')]: solveEq("300x", "3600"),
+  [K('l5-005:q4')]: val("180x + 1200", solveEq("300x", "3600").value),
+  [K('l5-005:q5')]: coef("1200 + 180x", 1),
+  [K('l5-005:q6')]: coef("1200 + 180x", 0),
+  [K('l5-005:q7')]: lastNat(["300x", "<=", "4200"]),
+  [K('l5-005:q8')]: lastNat(["180x + 1200", "<=", "4200"]),
+  [K('l5-005:q9')]: mostUnits(["300x", "180x + 1200"], 2000),
+  [K('l5-006:q1')]: solveEq("250x", "4000"),
+  [K('l5-006:q2')]: solveEq("150x + 1300", "4000"),
+  [K('l5-006:q3')]: bound("150x + 1300", "<", "250x"),
+  [K('l5-006:q4')]: sym("150x + 1300", "<", "250x"),
+  [K('l5-006:q5')]: cheapest(["250x", "150x + 1300"], 9),
+  [K('l5-006:q6')]: cheapest(["250x", "150x + 1300"], 16),
+  [K('l5-007:q1')]: lastNat(["2 \\times (16 + 2) \\times 2(x + 150) + 2400", "<=", "60000"]),
+  [K('l5-008:q1')]: val("1100x", 6),
+  [K('l5-008:q2')]: val("700x + 4000", 6),
+  [K('l5-008:q3')]: solveEq("1100x", "11000"),
+  [K('l5-008:q4')]: val("700x + 4000", solveEq("1100x", "11000").value),
+  [K('l5-008:q5')]: coef("4000 + 700x", 1),
+  [K('l5-008:q6')]: coef("4000 + 700x", 0),
+  [K('l5-008:q7')]: firstNat(["700x + 4000", "<", "1100x"]),
+  [K('l5-008:q8')]: lastNat(["700x + 4000", "<", "15000"]),
+  [K('l5-008:q9')]: cheapest(["1100x", "700x + 4000", "15000"], 20),
+  [K('l5-009:q1')]: coef("25x", 1),
+  [K('l5-009:q2')]: coef("25(60 - x)", 1),
+  [K('l5-009:q3')]: coef("25(60 - x)", 0),
+  [K('l5-009:q4')]: solveEq("25x", "420 \\times 2{,}5"),
+  [K('l5-009:q6')]: bound("120 \\times 25x + 80 \\times 25(60 - x)", ">=", "150000"),
+  [K('l5-009:q7')]: sym("120 \\times 25x + 80 \\times 25(60 - x)", ">=", "150000"),
+  [K('l5-009:q8')]: lastNat(["120 \\times 25x + 80 \\times 25(60 - x)", ">=", "150000"], ["25(60 - x)", ">=", "600"]),
+  [K('l5-010:q1')]: calc("\\dfrac{(40 + 70) \\times 30}{2}"),
+  [K('l5-010:q2')]: coef("\\dfrac{(70 - x) \\times 30}{2}", 1),
+  [K('l5-010:q3')]: coef("\\dfrac{(70 - x) \\times 30}{2}", 0),
+  [K('l5-010:q4')]: coef("\\dfrac{(40 + 70) \\times 30}{2} - \\dfrac{(70 - x) \\times 30}{2}", 0),
+  [K('l5-010:q5')]: solveEq("\\dfrac{(70 - x) \\times 30}{2}", "\\dfrac{(40 + 70) \\times 30}{2} - \\dfrac{(70 - x) \\times 30}{2}"),
+  [K('l5-010:q6')]: bound("\\dfrac{(40 + 70) \\times 30}{2} - \\dfrac{(70 - x) \\times 30}{2}", ">=", "2 \\times \\dfrac{(70 - x) \\times 30}{2}"),
+  [K('l5-010:q7')]: sym("\\dfrac{(40 + 70) \\times 30}{2} - \\dfrac{(70 - x) \\times 30}{2}", ">=", "2 \\times \\dfrac{(70 - x) \\times 30}{2}"),
+  [K('l5-010:q8')]: firstNat(["\\dfrac{(40 + 70) \\times 30}{2} - \\dfrac{(70 - x) \\times 30}{2}", ">=", "2 \\times \\dfrac{(70 - x) \\times 30}{2}"]),
+  [K('l5-010:q9')]: val("450 \\times \\dfrac{(70 - x) \\times 30}{2}", 34),
 };

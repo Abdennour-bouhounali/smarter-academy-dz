@@ -1,102 +1,117 @@
 {
+  "id": "ex-4am-jidhr-tarbii-l3-007",
+  "lessonCode": "jidhr-tarbii",
+  "level": 3,
   "metadata": {
-    "title": "تدريب — مساحة مربع ضلعه جذر",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2008 — القيمة المضبوطة لعبارة",
+    "estimatedMinutes": 6,
     "tags": [
-      "مساحة",
-      "مربع الجذر"
+      "(√a)² = a",
+      "قيمة مضبوطة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_jidhr-tarbii_P3",
-      "modelledOn": "act-1"
+      "modelledOn": "BEM 2008 I-2"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2008",
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "مربع طول ضلعه $\\sqrt{30}$ cm."
+    "content": "لتكن العبارة الجبرية E حيث:",
+    "formulas": [
+      "E = x^2 - (11 - 3\\sqrt{2})"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما مساحة هذا المربع (بالسنتيمتر المربع)؟",
+      "step": "01",
+      "statement": "احسب القيمة المضبوطة للعبارة $E$ من أجل $x = \\sqrt{11}$ ، ثم اكتبها على الشكل $a\\sqrt{2}$ .",
       "learningPoints": [
         {
           "code": "4am_jidhr-tarbii_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "30",
+      "answerFormat": "اكتب العدد a فقط",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "-3",
+          "id": "MISC-JIDHR-MURABBA-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "مساحة مربع طول ضلعه $c$ هي $c^2$."
+          "content": "عوّض $x$ بـ $\\sqrt{11}$: $E = (\\sqrt{11})^2 - (11 - 3\\sqrt{2})$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المساحة هي $(\\sqrt{30})^2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "استعمل الخاصية $(\\sqrt{a})^2 = a$."
+          "content": "$(\\sqrt{11})^2 = 11$، ثم انتبه لإشارة الحدّين بعد حذف القوسين."
         }
       ],
       "feedback": {
-        "correct": "المساحة $(\\sqrt{30})^2 = 30\\ \\mathrm{cm^2}$.",
-        "incorrect": "المساحة مربع الضلع، لا ضعفه، ومربع $\\sqrt{a}$ هو $a$."
+        "correct": "$E = 11 - 11 + 3\\sqrt{2} = 3\\sqrt{2}$، إذن $a = 3$.",
+        "incorrect": "بعد التعويض، احذف القوسين مع تغيير إشارة كل حدّ بداخلهما."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "900",
-          "id": "MISC-TARBI-JIDHR"
-        },
-        {
-          "value": "60",
-          "id": "MISC-MURABBA-DIF"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$E = (\\sqrt{11})^2 - (11 - 3\\sqrt{2})$",
+          "$E = 11 - 11 + 3\\sqrt{2}$"
+        ],
+        "result": "E = 3\\sqrt{2}"
+      },
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "ما مساحة مربع طول ضلعه $2\\sqrt{30}$ cm؟ (بالسنتيمتر المربع)",
+      "step": "02",
+      "statement": "بيّن أن العبارة $E$ تأخذ القيمة نفسها من أجل $x = -\\sqrt{11}$ .",
       "learningPoints": [
         {
           "code": "4am_jidhr-tarbii_P3",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "120",
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المساحة هي $(2\\sqrt{30})^2 = 2\\sqrt{30} \\times 2\\sqrt{30}$."
+          "content": "احسب $(-\\sqrt{11})^2$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "رتّب الجداء: $2 \\times 2 \\times \\sqrt{30} \\times \\sqrt{30}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$\\sqrt{30} \\times \\sqrt{30} = (\\sqrt{30})^2$."
+          "content": "قارن بالنتيجة السابقة."
         }
       ],
       "feedback": {
-        "correct": "$(2\\sqrt{30})^2 = 4 \\times 30 = 120\\ \\mathrm{cm^2}$.",
-        "incorrect": "عند تربيع $2\\sqrt{30}$ يُربَّع العامل 2 أيضًا."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى الخاصية المستعملة."
+      },
+      "solution": {
+        "lines": [
+          "$(-\\sqrt{11})^2 = (\\sqrt{11})^2 = 11$",
+          "$E = 11 - (11 - 3\\sqrt{2}) = 3\\sqrt{2}$",
+          "وهي القيمة نفسها المحصل عليها من أجل $x = \\sqrt{11}$."
+        ],
+        "result": "E = 3\\sqrt{2}"
+      },
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-jidhr-tarbii-l3-007",
-  "lessonCode": "jidhr-tarbii",
-  "level": 3
+  ]
 }

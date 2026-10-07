@@ -3,26 +3,34 @@
   "lessonCode": "tamthil-bayani-khatti",
   "level": 1,
   "metadata": {
-    "title": "معارف (ص 68) — الدالة $x \\longmapsto -2x$",
+    "title": "معارف — الدالة $x \\longmapsto -2x$",
     "estimatedMinutes": 4,
     "tags": [
-      "نقطة ثانية",
-      "منحى"
+      "نقطة من التمثيل",
+      "منحى المستقيم"
     ],
     "source": {
       "type": "textbook",
       "elementId": "know-3",
       "page": 68,
-      "section": "معارف"
+      "section": "معارف",
+      "adaptedFrom": "ex-4am-tamthil-bayani-khatti-l1-003"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 68): التمثيل البياني للدالة الخطية $f : x \\longmapsto -2x$ مستقيم (D) يشمل المبدأ O."
+    "content": "التمثيل البياني للدالة الخطية $f$ حيث $f(x) = -2x$ هو المستقيم $(D)$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "النقطة من (D) التي فاصلتها 1 ترتيبها:",
+      "step": "01",
+      "statement": "احسب ترتيب النقطة $M$ من $(D)$ التي فاصلتها 1.",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P1",
@@ -30,34 +38,45 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
       "expectedAnswer": "-2",
+      "misconceptionSignatures": [
+        {
+          "value": "2",
+          "id": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "صورة عدد بالدالة الخطية $x \\longmapsto ax$ هي جداء هذا العدد في المعامل."
+          "content": "ترتيب النقطة $M$ هو صورة فاصلتها بالدالة $f$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب العدد في المعامل مع الانتباه إلى الإشارة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "النقطة التي فاصلتها هذا العدد وترتيبها صورته تنتمي إلى التمثيل."
+          "content": "احسب $f(1)$ ."
         }
       ],
       "feedback": {
-        "correct": "$f(1) = -2 \\times 1 = -2$ : النقطة $A(1 ; -2)$ .",
-        "incorrect": "احسب صورة 1 مع الانتباه إلى الإشارة."
-      }
+        "correct": "$f(1) = -2 \\times 1 = -2$ ، إذن $M(1 ; -2)$ .",
+        "incorrect": "عوّض $x$ بالعدد 1 في عبارة الدالة، مع الإشارة."
+      },
+      "solution": {
+        "lines": [
+          "$f(1) = -2 \\times 1 = -2$",
+          "إذن $M(1 ; -2)$ ."
+        ],
+        "result": "M(1 ; -2)"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "المستقيم (D):",
+      "step": "02",
+      "statement": "هل المستقيم $(D)$ يصعد أم ينزل من اليسار إلى اليمين؟ علّل.",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P3",
@@ -65,6 +84,7 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
@@ -83,23 +103,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى إشارة المعامل $a$."
+          "content": "انظر إلى إشارة معامل الدالة الخطية."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+          "content": "إذا كان المعامل موجبا فالمستقيم يصعد، وإذا كان سالبا فهو ينزل."
         }
       ],
       "feedback": {
-        "correct": "المعامل $-2$ سالب: (D) ينزل من اليسار إلى اليمين.",
-        "incorrect": "إشارة المعامل تعيّن المنحى."
-      }
+        "correct": "المعامل $-2$ سالب: المستقيم ينزل.",
+        "incorrect": "منحى المستقيم تعيّنه إشارة المعامل: موجب ← يصعد، سالب ← ينزل."
+      },
+      "solution": {
+        "lines": [
+          "معامل الدالة الخطية هو $-2$ ، وهو عدد سالب.",
+          "إذن المستقيم $(D)$ ينزل من اليسار إلى اليمين."
+        ],
+        "result": "ينزل"
+      },
+      "timeSeconds": 60
     }
   ]
 }

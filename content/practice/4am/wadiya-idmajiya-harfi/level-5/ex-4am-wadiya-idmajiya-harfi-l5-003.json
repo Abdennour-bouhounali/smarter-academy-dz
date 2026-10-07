@@ -1,124 +1,336 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-harfi-l5-003",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — منطقة أمان حول الملعب",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2017 — ممرّان في حديقة المتوسطة",
+    "estimatedMinutes": 17,
     "tags": [
-      "وضعية إدماجية",
-      "ملعب",
-      "مساعدة"
+      "نمذجة",
+      "مربع فرق",
+      "وضعية إدماجية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
-      "modelledOn": "situation"
+      "modelledOn": "BEM 2017 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2017",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "ملعب كرة قدم طوله 100m وعرضه 60m، تحيط به من كل الجهات منطقة أمان عرضها $x$ (بالمتر). مساعدة: $x^2 + 80x - 336 = (x - 4)(x + 84)$."
+    "content": "بمتوسطة في ولاية سطيف حديقة مربعة الشكل طول ضلعها $24$ m . يشقّها ممرّان متعامدان، عرض كل منهما $x$ m ، موازيان لأضلاعها، والأجزاء الأربعة الباقية أحواض تُزرع أزهارًا ($0 < x < 24$)."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "مساحة منطقة الأمان بدلالة $x$ هي ...",
+      "step": "01",
+      "lead": "عبّر بدلالة $x$ عن المساحة $P$ للممرّين معًا، واكتبها على شكل مجموع مبسّط.",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $P$ على الشكل $ax^2 + bx$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "-1",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$x^2 + 160x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "B",
-          "content": "$4x^2 + 320x$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$320x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
-        },
-        {
-          "id": "D",
-          "content": "$4x^2 + 6000$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+          "value": "0",
+          "id": "MISC-NAMDHAJA-MISAHA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "البعدان مع المنطقة: $100 + 2x$ و $60 + 2x$."
+          "content": "كل ممرّ مستطيل بعداه $24$ و $x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اطرح مساحة الملعب 6000."
+          "content": "الممرّان يشتركان في مربع ضلعه $x$ : لا تحسبه مرتين."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "انشر بأربعة جداءات."
+          "content": "اجمع مساحتي الممرّين ثم اطرح مساحة الجزء المشترك."
         }
       ],
       "feedback": {
-        "correct": "$(100 + 2x)(60 + 2x) - 6000 = 200x + 120x + 4x^2 = 4x^2 + 320x$.",
-        "incorrect": "المنطقة على جهتي كل بعد: $2x$ لا $x$."
+        "correct": "$P = -x^2 + 48x$ إذن $a = -1$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
       },
-      "cognitiveDemand": "transfer"
+      "solution": {
+        "lines": [
+          "مساحة كل ممرّ: $24x$ ، والجزء المشترك مربع مساحته $x^2$",
+          "$P = 24x + 24x - x^2$"
+        ],
+        "result": "P = -x^2 + 48x"
+      },
+      "work": "optional",
+      "timeSeconds": 210
     },
     {
       "id": "q2",
-      "statement": "ما عرض منطقة الأمان (بالمتر) إذا كانت مساحتها $1344m^2$ ؟",
+      "step": "01",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $P$ على الشكل $ax^2 + bx$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "48",
+      "misconceptionSignatures": [
+        {
+          "value": "24",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $b$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$P = -x^2 + 48x$ إذن $b = 48$ .",
+        "incorrect": "عبّر عن الأطوال بدلالة $x$ أولا، ثم طبّق قاعدة المساحة أو المحيط، وانشر وبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$P = -x^2 + 48x$"
+        ],
+        "result": "b = 48"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ا",
+      "statement": "انشر و بسّط العبارة $(24 - x)^2$ — العدد $m$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $(24 - x)^2$ على الشكل $x^2 + mx + n$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "-48",
+      "misconceptionSignatures": [
+        {
+          "value": "-24",
+          "id": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "value": "0",
+          "id": "MISC-MURABBA-FARQ-BILA-2AB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تعرّف على المتطابقة الشهيرة المناسبة: $(a + b)^2$ أو $(a - b)^2$ أو $(a + b)(a - b)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عيّن الحدّين $a$ و $b$ ، ولا تنسَ الحد المضاعف $2ab$ ولا تربيع المعامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود المتشابهة: حدود $x^2$ معًا، ثم حدود $x$، ثم الأعداد."
+        }
+      ],
+      "feedback": {
+        "correct": "$(24 - x)^2 = x^2 - 48x + 576$ إذن $m = -48$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$(24 - x)^2 = 24^2 - 2 \\times 24 \\times x + x^2$"
+        ],
+        "result": "(24 - x)^2 = x^2 - 48x + 576"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "sub": "ا",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $(24 - x)^2$ على الشكل $x^2 + mx + n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "576",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الحساب، اقرأ العدد $n$ في الشكل المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$(24 - x)^2 = x^2 - 48x + 576$ إذن $n = 576$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$(24 - x)^2 = x^2 - 48x + 576$"
+        ],
+        "result": "n = 576"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q5",
+      "step": "02",
+      "sub": "ب",
+      "statement": "استنتج أنّ مساحة الأحواض الأربعة هي: $S = (24 - x)^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة الأحواض = مساحة الحديقة − مساحة الممرّين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن بالنشر الذي وجدته في (ا)."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى الإشارات عند النشر."
+      },
+      "solution": {
+        "lines": [
+          "$S = 24^2 - P = 576 - (-x^2 + 48x)$",
+          "$S = x^2 - 48x + 576$",
+          "وحسب (ا): $x^2 - 48x + 576 = (24 - x)^2$"
+        ],
+        "result": "S = (24 - x)^2"
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q6",
+      "step": "03",
+      "statement": "جد قيمة $x$ التي تكون من أجلها مساحة الأحواض $400\\,m^2$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-harfi_P3",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح",
+      "answerFormat": "عدد طبيعي: الطول بـ m",
       "expectedAnswer": "4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب المساواة ثم اقسم على 4."
+          "content": "$(24 - x)^2 = 400$ و $24 - x$ موجب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تصل إلى عبارة المساعدة."
+          "content": "400 مربع عدد طبيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 4\\,m$ .",
+        "incorrect": "العدد $24 - x$ موجب ومربعه معلوم: جد العدد ثم استنتج $x$ ."
+      },
+      "solution": {
+        "lines": [
+          "$(24 - x)^2 = 400$ و $24 - x > 0$ ، إذن $24 - x = \\sqrt{400} = 20$"
+        ],
+        "result": "x = 4\\,m"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q7",
+      "step": "04",
+      "statement": "☜ تُبلَّط الممرّات ببلاط ثمن المتر المربع منه 1800DA . ما تكلفة التبليط في هذه الحالة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المبلغ بـ DA",
+      "expectedAnswer": "316800",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $P$ من أجل القيمة التي وجدتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحقّق: $P$ = مساحة الحديقة − مساحة الأحواض."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "العرض موجب."
+          "content": "اضرب في ثمن المتر المربع."
         }
       ],
       "feedback": {
-        "correct": "$4x^2 + 320x = 1344$ يعني $x^2 + 80x - 336 = 0$ ، أي $(x - 4)(x + 84) = 0$ : $x = 4$. نتحقق: $64 + 1280 = 1344$.",
-        "incorrect": "نحتفظ بالقيمة الموجبة ونتحقق بالتعويض."
+        "correct": "$316800DA$ .",
+        "incorrect": "أعد قراءة المعطيات، واحسب كل كمية على حدة ثم اجمع."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "-84",
-          "id": "MISC-NAMDHAJA-MISAHA"
-        }
-      ],
-      "cognitiveDemand": "transfer"
+      "solution": {
+        "lines": [
+          "$P = -4^2 + 48 \\times 4 = -16 + 192 = 176\\,m^2$ (أو $576 - 400 = 176$)",
+          "التكلفة $= 176 \\times 1800$"
+        ],
+        "result": "316800DA"
+      },
+      "work": "optional",
+      "timeSeconds": 210
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-harfi-l5-003",
-  "lessonCode": "wadiya-idmajiya-harfi",
-  "level": 5
+  ]
 }

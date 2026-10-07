@@ -58,6 +58,7 @@ Nothing below a line is fetched until the level above needs it.
 | French reference catalogue | removed 2026-09-25 (was tree-shaken via `@__PURE__` before removal) | — | — |
 | KaTeX for catalogue text (2026-10-02) | `lessons/common/components/MathLabel.jsx` → `React.lazy(() => import('./MathText'))` | KaTeX from the pages that show catalogue text (cards, progression, dashboards, unit page): fetched only when a string carries a `$…$` formula; until then `utils/mathPlain.js` (no dependency) shows it as Unicode. Verified: the entry chunk holds only the chunk names in its dep map | — |
 | Report screenshot capture (2026-10-05) | `features/reports/screenshot.js` → `await import('html-to-image')` inside `captureRegion()` (snipping tool) | `html-to-image` (≈ 13 KB minified chunk) — only reviewers (admin, ambassador) see the report button | requested when a region (or « الشاشة كاملة ») is captured, never before; pre-bundled in dev by `optimizeDeps.include`. Verified in the build: `skipFonts` (an html-to-image string) is absent from the entry chunk |
+| Photo answers + teacher review (2026-10-06, every BEM exam-sheet lesson) | lazy routes `TeacherReviewsPage` (`/enseignant/tashih`, with `AnnotationEditor`) and `AnswerReviewPage` (`/espace/tashih/:id`); the picker and gallery live in the `PracticeSession` chunk | the review queue, the canvas annotation editor and the read-only correction page | — . In the ENTRY, because `StudentLayout` is eager: `NotificationBell.jsx` + `notificationService.js` (React, lucide and `apiRequest` only, no new dependency; ≈1 KB gzip) and the `nav.notifications.*` keys. Keep the bell dependency-free |
 | KaTeX dedupe | `vite.config.js` `resolve.dedupe: ['katex']` | a **second** KaTeX copy (react-katex/mafs nested 0.16) | — |
 
 ## 4. Rules (for every future change)
@@ -81,7 +82,10 @@ Nothing below a line is fetched until the level above needs it.
    (`mathLabEntry.*`).
 6. **Heavy engines stay behind their feature**: three.js, Excalidraw, mafs +
    MathLive, Nerdamer (via its facade) are only imported from their Math Lab
-   tool or lesson module.
+   tool or lesson module. One more MathLive importer since 2026-10-06: the
+   practice EXAM SHEET (`features/practice/exam/math/`). It is reached only
+   through `exam/math/lazy.jsx` (`React.lazy`), so MathLive loads with the
+   first exam sheet and never enters the practice or entry chunks.
    Since unit 14 « الهندسة في الفضاء » (2026-10-05) the lesson labs of space
    import three.js through ONE kit, `lessons/common/manipulations/space/stage3d/`
    (`SpaceStage`, `solids3d`, `Stage3D`), reached only from the lab components

@@ -3,113 +3,232 @@
   "lessonCode": "wadiya-idmajiya-jumal",
   "level": 3,
   "metadata": {
-    "title": "تمرين 31 — الحل",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2009 — أكياس التين المجفف ببجاية",
+    "estimatedMinutes": 10,
     "tags": [
-      "حل جملة",
-      "تخفيض"
+      "جملة",
+      "PGCD",
+      "ترييض"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "ex-31",
-      "page": 63,
-      "section": "أتعمّق",
-      "number": 31
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "BEM 2009 I-4"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2009",
+      "heading": "التمرين",
+      "points": "03,5"
     }
   },
   "statement": {
-    "content": "اشترى زبون من متجر كبير 6 علب من الحليب وقارورة عصير ودفع 720 DA. زبون آخر يملك بطاقة إخلاص تمكّنه من الاستفادة من تخفيض قدره 20% على ثمن كلّ مشترياته عند الدفع. اشترى هذا الزبون 5 علب من الحليب و5 قارورات عصير من النوع نفسه ودفع 1080 DA بعد استظهار بطاقته. مشتريات الزبون الأوّل تترجم بالمعادلة $6x + y = 720$ . ومشتريات الزبون الثاني تؤول إلى $x + y = 270$ ."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حل الجملة $6x + y = 720$ و $x + y = 270$ : ما السعران $(x ; y)$ ؟",
+      "step": "01",
+      "statement": "حل الجملة: $\\begin{cases} x + y = 15 \\\\ x + 4y = 30 \\end{cases}$",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P1",
           "role": "primary"
-        }
-      ],
-      "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
-      "expectedAnswer": {
-        "x": "90",
-        "y": "180"
-      },
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "معاملا $y$ متساويان."
         },
         {
-          "id": "h2",
-          "type": "direction",
-          "content": "اطرح المعادلة الثانية من الأولى."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم عوّض لإيجاد $y$."
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "secondary"
         }
       ],
-      "feedback": {
-        "correct": "$5x = 450$ ، $x = 90$ ، $y = 270 - 90 = 180$.",
-        "incorrect": "الطرح يحذف $y$."
-      },
       "cognitiveDemand": "apply",
-      "difficulty": 2,
+      "answerType": "point",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
+      "expectedAnswer": {
+        "x": "10",
+        "y": "5"
+      },
       "misconceptionSignatures": [
         {
           "value": {
-            "x": "180",
-            "y": "90"
+            "x": "5",
+            "y": "10"
           },
           "id": "MISC-JUMLA-TARTIB"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل $x$ هو نفسه في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح المعادلة الأولى من الثانية طرفا لطرف لتجد $y$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض قيمة $y$ في المعادلة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "الثنائية $(10 ; 5)$ تحقق المعادلتين معا: هي حل الجملة.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "$\\begin{cases} x + y = 15 & ...(1) \\\\ x + 4y = 30 & ...(2) \\end{cases}$",
+          "من المعادلة (1) نجد: $y = 15 - x$",
+          "بالتعويض في المعادلة (2) نجد: $x + 4(15 - x) = 30$",
+          "$-3x + 60 = 30$",
+          "$-3x = -30$",
+          "$x = 10$",
+          "ومنه: $y = 15 - 10 = 5$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(10 ; 5)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "كم كان سيدفع الزبون الثاني دون بطاقة الإخلاص؟",
+      "step": "02",
+      "statement": "جد القاسم المشترك الأكبر للعددين 800 و 200.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
+      "counted": false,
       "answerType": "rational",
-      "answerFormat": "مبلغ بالدينار (عدد طبيعي)",
-      "expectedAnswer": "1350",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "200",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب أولا السعرين."
+          "content": "هل يقسم أحد العددين الآخر؟"
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(800 ; 200) = 200 لأن 200 يقسم 800.",
+        "incorrect": "أجرِ القسمة الإقليدية للعدد الأكبر على الأصغر وانظر إلى الباقي."
+      },
+      "solution": {
+        "lines": [
+          "$800 = 200 \\times 4 + 0$",
+          "آخر باقٍ غير معدوم هو القاسم $200$ ، إذن:"
+        ],
+        "result": "PGCD(800 ; 200) = 200"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "lead": "عبّأ صاحب ورشة لتجفيف التين ببجاية $6000g$ من التين المجفف في أكياس من صنف $200g$ وصنف $800g$ . إذا علمت أن العدد الكلي للأكياس هو 15، جِد عدد الأكياس لكل صنف (لاحظ أن $6000 = 200 \\times 30$ ).",
+      "statement": "عدد الأكياس من صنف $200g$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "value": "5",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ $x$ عدد أكياس $200g$ و $y$ عدد أكياس $800g$ ، واكتب معادلة للعدد وأخرى للكتلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ثمن 5 علب و 5 قارورات قبل التخفيض."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "لا تطبّق التخفيض هنا."
+          "content": "اقسم طرفي معادلة الكتلة على 200 وقارن بجملة السؤال 01."
         }
       ],
       "feedback": {
-        "correct": "$5 \\times 90 + 5 \\times 180 = 1350$ DA ، و $0{,}8 \\times 1350 = 1080$.",
-        "incorrect": "المطلوب الثمن قبل التخفيض."
+        "correct": "عدد الأكياس من صنف $200g$ هو 10.",
+        "incorrect": "معادلة الكتلة $200x + 800y = 6000$ تؤول بالقسمة على 200 إلى المعادلة الثانية لجملة السؤال 01."
       },
+      "solution": {
+        "lines": [
+          "نسمّي $x$ عدد الأكياس من صنف $200g$ و $y$ عدد الأكياس من صنف $800g$ .",
+          "العدد الكلي للأكياس: $x + y = 15$",
+          "الكتلة: $200x + 800y = 6000$ ، وبقسمة الطرفين على 200 (لأن $6000 = 200 \\times 30$ و $800 = 200 \\times 4$ ): $x + 4y = 30$",
+          "نحصل على جملة السؤال 01، وحلها: $x = 10$ و $y = 5$",
+          "التحقق: $200 \\times 10 + 800 \\times 5 = 2000 + 4000 = 6000$",
+          "إذن 10 أكياس من صنف $200g$ و 5 أكياس من صنف $800g$ ."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "عدد الأكياس من صنف $800g$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "secondary"
+        }
+      ],
       "cognitiveDemand": "apply",
-      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد فقط",
+      "expectedAnswer": "5",
       "misconceptionSignatures": [
         {
-          "value": "1080",
-          "id": "MISC-TAKHFID-NISBA"
+          "value": "10",
+          "id": "MISC-JUMLA-TARTIB"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y$ هو العدد الثاني في حل جملة السؤال 01."
+        }
+      ],
+      "feedback": {
+        "correct": "عدد الأكياس من صنف $800g$ هو 5، ونتحقق: $200 \\times 10 + 800 \\times 5 = 6000$ .",
+        "incorrect": "استعمل حل جملة السؤال 01: $y$ هو عدد أكياس $800g$ ."
+      },
+      "solution": {
+        "lines": [
+          "نسمّي $x$ عدد الأكياس من صنف $200g$ و $y$ عدد الأكياس من صنف $800g$ .",
+          "العدد الكلي للأكياس: $x + y = 15$",
+          "الكتلة: $200x + 800y = 6000$ ، وبقسمة الطرفين على 200 (لأن $6000 = 200 \\times 30$ و $800 = 200 \\times 4$ ): $x + 4y = 30$",
+          "نحصل على جملة السؤال 01، وحلها: $x = 10$ و $y = 5$",
+          "التحقق: $200 \\times 10 + 800 \\times 5 = 2000 + 4000 = 6000$",
+          "إذن 10 أكياس من صنف $200g$ و 5 أكياس من صنف $800g$ ."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

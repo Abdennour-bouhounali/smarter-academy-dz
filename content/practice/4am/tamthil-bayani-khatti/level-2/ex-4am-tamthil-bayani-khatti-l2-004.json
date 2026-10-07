@@ -3,58 +3,73 @@
   "lessonCode": "tamthil-bayani-khatti",
   "level": 2,
   "metadata": {
-    "title": "تدريب — أي دالة يمثّل المستقيم؟",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2014 — مستقيم ينزل في معلم",
+    "estimatedMinutes": 6,
     "tags": [
-      "قراءة",
-      "تعيين الدالة"
+      "قراءة بيانية",
+      "معامل سالب"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_tamthil-bayani-khatti_P2",
-      "modelledOn": "qcm"
+      "modelledOn": "BEM 2014 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2014",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "المستقيم (D) أدناه يشمل المبدأ والنقطة $(2 ; 5)$ .",
-    "visual": {
-      "range": {
-        "xMin": 0,
-        "xMax": 4,
-        "yMin": 0,
-        "yMax": 10
+    "content": "في المعلم المتعامد والمتجانس التالي، المستقيم $(D)$ هو التمثيل البياني لدالة خطية $f$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "K": [
+          -2,
+          3
+        ],
+        "H": [
+          4,
+          -6
+        ]
       },
-      "unit": 75.0,
-      "unitY": 20.0,
-      "functions": [
+      "lines": [
         {
-          "id": "d",
-          "a": 2.5,
-          "b": 0,
-          "label": "(D)",
-          "tone": "indigo"
+          "through": [
+            "K",
+            "H"
+          ],
+          "name": "(D)",
+          "tone": "rose",
+          "extend": [
+            0.12,
+            0.08
+          ]
         }
       ],
-      "points": [
-        {
-          "id": "p0",
-          "x": 2.0,
-          "y": 5.0,
-          "name": ""
-        }
+      "grid": true,
+      "axes": true,
+      "labels": {
+        "O": "sw"
+      },
+      "hidden": [
+        "K",
+        "H"
       ],
-      "xStep": 1,
-      "yStep": 2,
-      "frozen": true,
-      "ariaLabel": "معلم فيه المستقيم (D) يشمل O والنقطة (2 ; 5)",
-      "caption": false
+      "ariaLabel": "معلم متعامد ومتجانس على ورقة مرصوفة: المستقيم (D) يشمل المبدأ O وينزل من اليسار إلى اليمين"
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "(D) هو التمثيل البياني للدالة:",
+      "step": "01",
+      "statement": "بقراءة بيانية، عيّن صورة العدد $-2$ بالدالة $f$ .",
       "learningPoints": [
         {
           "code": "4am_tamthil-bayani-khatti_P2",
@@ -62,53 +77,142 @@
         }
       ],
       "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "3",
+      "hints": [
         {
-          "id": "A",
-          "content": "$x \\longmapsto 2{,}5x$",
-          "isCorrect": true
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ من العدد المعطى على محور الفواصل."
         },
         {
-          "id": "B",
-          "content": "$x \\longmapsto 0{,}4x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+          "id": "h2",
+          "type": "direction",
+          "content": "اتجه عموديا حتى المستقيم $(D)$ ، ثم أفقيا حتى محور التراتيب."
         },
         {
-          "id": "C",
-          "content": "$x \\longmapsto x + 3$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+          "id": "h3",
+          "type": "strategy",
+          "content": "الصورة هي ترتيب نقطة المستقيم التي فاصلتها هذا العدد."
+        }
+      ],
+      "feedback": {
+        "correct": "النقطة من $(D)$ التي فاصلتها $-2$ ترتيبها $3$ .",
+        "incorrect": "الصورة تُقرأ على محور التراتيب: ترتيب نقطة المستقيم، لا فاصلتها."
+      },
+      "solution": {
+        "lines": [
+          "النقطة من المستقيم $(D)$ التي فاصلتها $-2$ ترتيبها $3$ .",
+          "إذن صورة العدد $-2$ بالدالة $f$ هي $3$ ."
+        ],
+        "result": "f(-2) = 3"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج العبارة الجبرية للدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-1,5",
+      "misconceptionSignatures": [
+        {
+          "value": "-2/3",
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB"
         },
         {
-          "id": "D",
-          "content": "$x \\longmapsto 5x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+          "value": "1,5",
+          "id": "MISC-KHATTIYA-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "التمثيل يشمل O والنقطة المعطاة $(m ; n)$ ، أي $f(m) = n$."
+          "content": "$f$ دالة خطية: $f(x) = ax$ ، وتمثيلها يشمل النقطة ذات الإحداثيين $(-2 ; 3)$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب $a \\times m = n$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم الترتيب على الفاصلة: $a = \\dfrac{n}{m}$ ، مع الانتباه إلى الإشارة."
+          "content": "اكتب المعادلة $a \\times \\left(-2\\right) = 3$ ثم حلّها: الترتيب على الفاصلة."
         }
       ],
       "feedback": {
-        "correct": "صورة 2 هي 5، فالمعامل $\\dfrac{5}{2} = 2{,}5$ .",
-        "incorrect": "اقرأ نقطة من (D) واقسم ترتيبها على فاصلتها."
-      }
+        "correct": "$a = \\dfrac{3}{-2} = -1{,}5$ ، إذن $f(x) = -1{,}5x$ .",
+        "incorrect": "المعامل هو الترتيب مقسوما على الفاصلة (وليس العكس)، مع الانتباه إلى الإشارة."
+      },
+      "solution": {
+        "lines": [
+          "$f$ دالة خطية، إذن $f(x) = ax$ .",
+          "$f(-2) = 3$ معناه $a \\times \\left(-2\\right) = 3$",
+          "$a = \\dfrac{3}{-2} = -1{,}5$"
+        ],
+        "result": "f(x) = -1{,}5x"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "هل النقطة $E(-10 ; 15)$ تنتمي إلى المستقيم $(D)$ ؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النقطة خارج الشكل: لا تكفي القراءة، استعمل عبارة الدالة $f$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة فاصلة النقطة $E$ وقارنها بترتيبها."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(-10) = -1{,}5 \\times \\left(-10\\right) = 15$ : النقطة $E$ تنتمي إلى $(D)$ .",
+        "incorrect": "احسب $f(-10)$ بعبارة الدالة التي وجدتها، مع قاعدة الإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$f(-10) = -1{,}5 \\times \\left(-10\\right) = 15$",
+          "صورة فاصلة $E$ تساوي ترتيبها، إذن $E$ تنتمي إلى $(D)$ ."
+        ],
+        "result": "نعم"
+      },
+      "timeSeconds": 90
     }
   ]
 }

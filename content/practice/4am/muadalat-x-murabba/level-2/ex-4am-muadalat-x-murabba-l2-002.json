@@ -1,25 +1,36 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l2-002",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 2,
   "metadata": {
-    "title": "معارف 3 — خاصيتان",
-    "estimatedMinutes": 4,
+    "title": "مربع −2/3 والمعادلة x² = 4/9",
+    "estimatedMinutes": 5,
     "tags": [
-      "معارف",
-      "خاصية"
+      "خاصية",
+      "كسر"
     ],
     "source": {
       "type": "textbook",
       "elementId": "know-3",
       "page": 22,
       "section": "معارف",
-      "number": 3
+      "number": 3,
+      "adaptedFrom": "ex-4am-muadalat-x-murabba-l2-002"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من معارف 3 (الكتاب ص 22): المعادلات من الشكل $x^2 = a$."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
+      "step": "01",
       "statement": "احسب $\\left(-\\dfrac{2}{3}\\right)^2$.",
       "learningPoints": [
         {
@@ -27,87 +38,138 @@
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "كسر على الشكل a/b",
       "expectedAnswer": "4/9",
+      "misconceptionSignatures": [
+        {
+          "value": "-4/9",
+          "id": "MISC-JIDHR-SALIB"
+        },
+        {
+          "value": "-4/3",
+          "id": "MISC-MURABBA-DIF"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "مربع عدد هو جداء هذا العدد في نفسه."
+          "content": "مربع عدد هو جداؤه في نفسه."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\left(-\\dfrac{2}{3}\\right) \\times \\left(-\\dfrac{2}{3}\\right)$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اضرب البسطين ثم المقامين، والإشارة موجبة."
+          "content": "جداء عددين سالبين موجب: اضرب البسطين ثم المقامين."
         }
       ],
       "feedback": {
-        "correct": "$\\left(-\\dfrac{2}{3}\\right)^2 = \\left(-\\dfrac{2}{3}\\right) \\times \\left(-\\dfrac{2}{3}\\right) = \\dfrac{4}{9}$.",
-        "incorrect": "جداء عددين سالبين عدد موجب."
-      }
+        "correct": "$\\left(-\\dfrac{2}{3}\\right)^2 = \\dfrac{4}{9}$.",
+        "incorrect": "انتبه إلى الإشارة: جداء عددين سالبين موجب."
+      },
+      "solution": {
+        "lines": [
+          "$\\left(-\\dfrac{2}{3}\\right)^2 = \\left(-\\dfrac{2}{3}\\right) \\times \\left(-\\dfrac{2}{3}\\right) = \\dfrac{2 \\times 2}{3 \\times 3}$"
+        ],
+        "result": "\\left(-\\dfrac{2}{3}\\right)^2 = \\dfrac{4}{9}"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "المعادلة $x^2 = 5$ ...",
+      "step": "02",
+      "lead": "استنتج حلي المعادلة $x^2 = \\dfrac{4}{9}$.",
+      "statement": "الحل السالب:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "-2/3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "تقبل حلين هما $\\sqrt{5}$ و $-\\sqrt{5}$",
-          "isCorrect": true
+          "value": "2/3",
+          "id": "MISC-HALL-WAHID"
         },
         {
-          "id": "B",
-          "content": "تقبل حلا واحدا هو $\\sqrt{5}$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "تقبل حلين هما $2{,}5$ و $-2{,}5$",
-          "isCorrect": false
-        },
-        {
-          "id": "D",
-          "content": "لا تقبل أي حل",
-          "isCorrect": false
+          "value": "-2/9",
+          "id": "MISC-HALL-QISMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما إشارة العدد 5؟"
+          "content": "استعمل نتيجة السؤال 01."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "إذا كان $a > 0$ فالمعادلة $x^2 = a$ تقبل حلين متعاكسين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$(\\sqrt{5})^2 = 5$، وما مربع معاكسه؟"
+          "content": "لعددين متعاكسين نفس المربع."
         }
       ],
       "feedback": {
-        "correct": "$5 > 0$: حلّان متعاكسان $\\sqrt{5}$ و $-\\sqrt{5}$.",
-        "incorrect": "لا تنس الحل السالب، ولا تقسم على 2."
-      }
+        "correct": "نعم، هذا هو الحل السالب: للمعادلة حلان متعاكسان.",
+        "incorrect": "الحلان عددان متعاكسان مربع كل منهما هو الطرف الثاني بعد عزل $x^2$: خذ السالب منهما."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 = \\dfrac{4}{9}$ يعني $x^2 = \\left(\\dfrac{2}{3}\\right)^2$",
+          "بالتالي $x = \\dfrac{2}{3}$ أو $x = -\\dfrac{2}{3}$"
+        ],
+        "result": "x = -\\dfrac{2}{3} \\quad ; \\quad x = \\dfrac{2}{3}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "الحل الموجب:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "2/3",
+      "misconceptionSignatures": [
+        {
+          "value": "2/9",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل نتيجة السؤال 01."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لعددين متعاكسين نفس المربع."
+        }
+      ],
+      "feedback": {
+        "correct": "نعم، وهو معاكس الحل السالب.",
+        "incorrect": "الحل الموجب هو معاكس الحل السالب: مربعه هو الطرف الثاني بعد عزل $x^2$."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 = \\dfrac{4}{9}$ يعني $x^2 = \\left(\\dfrac{2}{3}\\right)^2$",
+          "بالتالي $x = \\dfrac{2}{3}$ أو $x = -\\dfrac{2}{3}$"
+        ],
+        "result": "x = -\\dfrac{2}{3} \\quad ; \\quad x = \\dfrac{2}{3}"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l2-002",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 2
+  ]
 }

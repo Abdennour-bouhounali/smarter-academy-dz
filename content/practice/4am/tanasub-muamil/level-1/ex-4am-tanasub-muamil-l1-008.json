@@ -3,25 +3,34 @@
   "lessonCode": "tanasub-muamil",
   "level": 1,
   "metadata": {
-    "title": "تدريب — سيارة الأجرة",
-    "estimatedMinutes": 3,
+    "title": "سيارة الأجرة — مبلغ عند الركوب",
+    "estimatedMinutes": 2,
     "tags": [
-      "مبلغ ثابت"
+      "مبلغ ثابت",
+      "وضعية غير تناسبية"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tanasub-muamil_P2",
       "modelledOn": "ex-18"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "سعر سيارة أجرة: 100DA عند الركوب ثم 30DA لكل كيلومتر."
+    "content": "سعر سيارة أجرة في مدينة: 100DA عند الركوب، ثم 30DA لكل كيلومتر."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل السعر متناسب مع المسافة؟",
+      "step": "01",
+      "sub": "ا",
+      "statement": "احسب السعر من أجل مسافة $1km$ .",
       "learningPoints": [
         {
           "code": "4am_tanasub-muamil_P2",
@@ -30,47 +39,124 @@
       ],
       "difficulty": 1,
       "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "130",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ الصيغة جيدا: ما الذي يُدفع عن كل وحدة، وما الذي يُدفع مرة واحدة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المبلغ = العدد × ثمن الوحدة + المبلغ الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$30 \\times 1 + 100 = 130$ .",
+        "incorrect": "لا تنس المبلغ الثابت: المبلغ = العدد × ثمن الوحدة + المبلغ الثابت."
+      },
+      "solution": {
+        "lines": [
+          "$30 \\times 1 + 100 = 130$"
+        ],
+        "result": "130DA"
+      },
+      "timeSeconds": 45
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "sub": "ب",
+      "statement": "احسب السعر من أجل مسافة $2km$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "160",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ الصيغة جيدا: ما الذي يُدفع عن كل وحدة، وما الذي يُدفع مرة واحدة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المبلغ = العدد × ثمن الوحدة + المبلغ الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$30 \\times 2 + 100 = 160$ .",
+        "incorrect": "لا تنس المبلغ الثابت: المبلغ = العدد × ثمن الوحدة + المبلغ الثابت."
+      },
+      "solution": {
+        "lines": [
+          "$30 \\times 2 + 100 = 160$"
+        ],
+        "result": "160DA"
+      },
+      "timeSeconds": 45
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "هل السعر متناسب مع المسافة؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "نعم، لأنّ السعر يزداد مع المسافة",
+          "content": "نعم",
           "isCorrect": false,
           "misconceptionId": "MISC-TANASUB-MABLAGH-THABIT"
         },
         {
           "id": "B",
-          "content": "لا: من أجل 1km السعر 130DA ($\\dfrac{130}{1} = 130$) ومن أجل 2km السعر 160DA ($\\dfrac{160}{2} = 80$)",
+          "content": "لا",
           "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "نعم، ومعامل التناسبية 30",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TANASUB-MABLAGH-THABIT"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "لا يكفي أن يزداد y كلما ازداد x."
+          "content": "احسب حاصل قسمة السعر على المسافة في الحالتين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود وقارن."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "يكفي عمودان حاصلا قسمتهما مختلفان لنقول إنّ الوضعية ليست تناسبية؛ وانتبه إلى المبلغ الثابت."
+          "content": "تذكّر المبلغ الذي يُدفع عند الركوب."
         }
       ],
       "feedback": {
-        "correct": "المبلغ الثابت 100DA يكسر التناسبية: حاصلا القسمة 130 و 80 مختلفان.",
-        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
-      }
+        "correct": "$\\dfrac{130}{1} \\neq \\dfrac{160}{2}$ .",
+        "incorrect": "السعر يزداد مع المسافة، لكن هذا لا يكفي: قارن حواصل القسمة."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{130}{1} = 130$ و $\\dfrac{160}{2} = 80$",
+          "$130 \\neq 80$ ، إذن السعر غير متناسب مع المسافة.",
+          "السبب: المبلغ الثابت 100DA الذي يُدفع عند الركوب."
+        ],
+        "result": "غير متناسب"
+      },
+      "timeSeconds": 60
     }
   ]
 }

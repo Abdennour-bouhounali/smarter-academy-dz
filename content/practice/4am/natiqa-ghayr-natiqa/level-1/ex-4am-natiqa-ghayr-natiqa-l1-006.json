@@ -1,32 +1,44 @@
 {
+  "id": "ex-4am-natiqa-ghayr-natiqa-l1-006",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 1,
   "metadata": {
-    "title": "تدريب — حساب جذور ناطقة",
-    "estimatedMinutes": 3,
+    "title": "حساب جذور ناطقة",
+    "estimatedMinutes": 4,
     "tags": [
-      "مربع تام",
-      "كسر",
-      "عدد عشري"
+      "عدد ناطق",
+      "جذر كسر"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
       "modelledOn": "know-2"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "احسب الجذور التربيعية الآتية، وهي أعداد ناطقة."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب $\\sqrt{\\dfrac{49}{64}}$ واكتبه على شكل كسر.",
+      "step": "01",
+      "sub": "ا",
+      "lead": "احسب كلًّا من العددين الآتيين:",
+      "statement": "$\\sqrt{\\dfrac{49}{64}}$ (على شكل كسر)",
       "learningPoints": [
         {
           "code": "4am_natiqa-ghayr-natiqa_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "كسر على الشكل a/b",
       "expectedAnswer": "7/8",
@@ -41,32 +53,32 @@
           "id": "h1",
           "type": "look",
           "content": "ابحث عن عدد مربعه 49 وعن عدد مربعه 64."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "الكسر الذي تبحث عنه مقامه وبسطه عددان طبيعيان صغيران."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق: ربّع الكسر الذي وجدته، فيجب أن تجد $\\dfrac{49}{64}$."
         }
       ],
       "feedback": {
-        "correct": "$\\left(\\dfrac{7}{8}\\right)^2 = \\dfrac{49}{64}$ إذن $\\sqrt{\\dfrac{49}{64}} = \\dfrac{7}{8}$.",
-        "incorrect": "ربّع الكسر الذي كتبته وقارن النتيجة بالعدد تحت الجذر."
-      }
+        "correct": "$\\left(\\dfrac{7}{8}\\right)^2 = \\dfrac{49}{64}$ .",
+        "incorrect": "خذ جذر البسط وجذر المقام: لا تقسم على 2."
+      },
+      "solution": {
+        "lines": [
+          "$7^2 = 49$ و $8^2 = 64$ ، إذن $\\left(\\dfrac{7}{8}\\right)^2 = \\dfrac{49}{64}$"
+        ],
+        "result": "\\sqrt{\\dfrac{49}{64}} = \\dfrac{7}{8}"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "احسب $\\sqrt{0{,}81}$ .",
+      "step": "01",
+      "sub": "ب",
+      "statement": "$\\sqrt{0{,}81}$",
       "learningPoints": [
         {
           "code": "4am_natiqa-ghayr-natiqa_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد عشري",
       "expectedAnswer": "0.9",
@@ -89,21 +101,20 @@
         {
           "id": "h2",
           "type": "direction",
-          "content": "فكّر في العدد الطبيعي الذي مربعه 81."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ضع الفاصلة ثم تحقّق بتربيع العدد الذي وجدته."
+          "content": "انتبه إلى موضع الفاصلة عند التربيع."
         }
       ],
       "feedback": {
-        "correct": "$0{,}9^2 = 0{,}81$ إذن $\\sqrt{0{,}81} = 0{,}9$ .",
-        "incorrect": "تحقّق من موضع الفاصلة: ربّع العدد الذي كتبته."
-      }
+        "correct": "$0{,}9^2 = 0{,}81$ .",
+        "incorrect": "عدد له رقم واحد بعد الفاصلة مربعه له رقمان بعد الفاصلة: راجع موضع الفاصلة."
+      },
+      "solution": {
+        "lines": [
+          "$0{,}9^2 = 0{,}81$ و $0{,}9 > 0$"
+        ],
+        "result": "\\sqrt{0{,}81} = 0{,}9"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-natiqa-ghayr-natiqa-l1-006",
-  "lessonCode": "natiqa-ghayr-natiqa",
-  "level": 1
+  ]
 }

@@ -1,111 +1,121 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-009",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — حساب بالخاصيتين",
-    "estimatedMinutes": 2,
+    "title": "على منوال BEM 2013 — التمرين الأول",
+    "estimatedMinutes": 7,
     "tags": [
-      "وضعية إدماجية",
-      "مربع الجذر",
-      "جذر المربع"
+      "نشر",
+      "جداء عدد طبيعي"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
-      "modelledOn": "qcm"
+      "modelledOn": "BEM 2013 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2013",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "احسب دون استعمال الحاسبة."
+    "content": "ليكن العدد الحقيقي $A$ حيث:",
+    "formulas": [
+      "A = \\sqrt{2}(\\sqrt{2} + 3) - \\sqrt{8} + 1"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$(\\sqrt{7})^2 + \\sqrt{49} = \\ldots$",
+      "step": "01",
+      "statement": "بيّن أن: $A = 3 + \\sqrt{2}$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "14",
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب كل حد على حدة."
+          "content": "انشر $\\sqrt{2}(\\sqrt{2} + 3)$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مربع الجذر التربيعي لعدد موجب يساوي هذا العدد."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ما هو العدد الموجب الذي مربعه 49؟"
+          "content": "اكتب $\\sqrt{8}$ على الشكل $k\\sqrt{2}$ ."
         }
       ],
       "feedback": {
-        "correct": "$(\\sqrt{7})^2 = 7$ و $\\sqrt{49} = 7$، والمجموع 14.",
-        "incorrect": "احسب $(\\sqrt{7})^2$ و $\\sqrt{49}$ كلًّا على حدة."
+        "correct": "تبريرك مطابق للحل النموذجي.",
+        "incorrect": "قارن تبريرك سطرًا بسطر بالحل النموذجي."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "56",
-          "id": "MISC-TARBI-JIDHR"
-        }
-      ],
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$A = \\sqrt{2} \\times \\sqrt{2} + 3\\sqrt{2} - \\sqrt{4 \\times 2} + 1$",
+          "$A = 2 + 3\\sqrt{2} - 2\\sqrt{2} + 1$"
+        ],
+        "result": "A = 3 + \\sqrt{2}"
+      },
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "$\\sqrt{(-5)^2} \\times \\sqrt{0{,}04} = \\ldots$",
+      "step": "02",
+      "statement": "ليكن العدد الحقيقي $B$ حيث: $B = 3 - \\sqrt{2}$ . بيّن أن $A \\times B$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "1",
+      "answerFormat": "اكتب قيمة الجداء $A \\times B$ (عدد طبيعي)",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "value": "11",
+          "id": "MISC-JIDHR-FI-JIDHR"
+        },
+        {
+          "value": "1",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب $\\sqrt{(-5)^2}$ أولًا: الجذر التربيعي موجب."
+          "content": "$A \\times B = (3 + \\sqrt{2})(3 - \\sqrt{2})$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما هو العدد الموجب الذي مربعه 0,04؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اضرب النتيجتين."
+          "content": "$(x + y)(x - y) = x^2 - y^2$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{(-5)^2} = 5$ و $\\sqrt{0{,}04} = 0{,}2$، والجداء $5 \\times 0{,}2 = 1$.",
-        "incorrect": "انتبه إلى إشارة الجذر وإلى موضع الفاصلة."
+        "correct": "$A \\times B = 3^2 - (\\sqrt{2})^2 = 9 - 2 = 7$ : عدد طبيعي.",
+        "incorrect": "استعمل $(x + y)(x - y) = x^2 - y^2$ و $(\\sqrt{2})^2 = 2$ ."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "-1",
-          "id": "MISC-JIDHR-MURABBA-ISHARA"
-        },
-        {
-          "value": "0.1",
-          "id": "MISC-JIDHR-FASILA"
-        }
-      ],
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$A \\times B = (3 + \\sqrt{2})(3 - \\sqrt{2})$",
+          "$= 3^2 - (\\sqrt{2})^2 = 9 - 2$"
+        ],
+        "result": "A \\times B = 7"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l2-009",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 2
+  ]
 }

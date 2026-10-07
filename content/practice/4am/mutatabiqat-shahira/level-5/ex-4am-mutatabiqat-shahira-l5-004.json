@@ -1,137 +1,164 @@
 {
+  "id": "ex-4am-mutatabiqat-shahira-l5-004",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 5,
   "metadata": {
-    "title": "تدريب — حساب ذهني بأعداد عشرية",
+    "title": "على منوال BEM 2012 — طلبية مكتبة",
     "estimatedMinutes": 6,
     "tags": [
-      "حساب ذهني"
+      "حساب ذهني",
+      "وضعية إدماجية"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_mutatabiqat-shahira_P4",
-      "modelledOn": "act-2b"
+      "modelledOn": "BEM 2012 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2012",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "احسب ذهنيا (دون وضع العملية) مستعملًا متطابقة شهيرة."
+    "content": "طلب صاحب مكتبة بالبليدة من مورّد $99$ علبة من الأقلام، في كل علبة $99$ قلمًا، ثمن القلم الواحد 25DA . اقترح عليه المورّد طلبية ثانية: $101$ علبة في كل منها $99$ قلمًا، بنفس ثمن القلم."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب $45^2$ .",
+      "step": "01",
+      "statement": "احسب ذهنيا (دون وضع العملية) عدد أقلام الطلبية الأولى $99^2$ .",
       "learningPoints": [
         {
           "code": "4am_mutatabiqat-shahira_P4",
           "role": "primary"
-        },
-        {
-          "code": "4am_mutatabiqat-shahira_P1",
-          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "2025",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9801",
+      "misconceptionSignatures": [
+        {
+          "value": "10001",
+          "id": "MISC-HISAB-DHIHNI-MURABBA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$45 = 40 + 5$."
+          "content": "اكتب العدد على شكل فرق عدد مدوّر وعدد صغير."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "استعمل مربع مجموع."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $40^2$ و $2 \\times 40 \\times 5$ و $5^2$."
+          "content": "طبّق $(a - b)^2 = a^2 - 2ab + b^2$ ، ولا تنسَ الحد المضاعف $2ab$ ."
         }
       ],
       "feedback": {
-        "correct": "$(40 + 5)^2 = 1600 + 400 + 25 = 2025$",
-        "incorrect": "الحد المضاعف $2 \\times 40 \\times 5$ لا يُنسى."
-      }
+        "correct": "$99^2 = 9801$ .",
+        "incorrect": "اكتب العدد بدلالة عدد مدوّر، ثم طبّق المتطابقة الشهيرة المناسبة حدًّا حدًّا."
+      },
+      "solution": {
+        "lines": [
+          "$99^2 = (100 - 1)^2$",
+          "$= 100^2 - 2 \\times 100 \\times 1 + 1^2$",
+          "$= 10000 - 200 + 1$"
+        ],
+        "result": "99^2 = 9801"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "احسب $0{,}99 \\times 1{,}01$ .",
+      "step": "02",
+      "statement": "احسب ذهنيا (دون وضع العملية) عدد أقلام الطلبية الثانية $101 \\times 99$ .",
       "learningPoints": [
         {
           "code": "4am_mutatabiqat-shahira_P4",
           "role": "primary"
-        },
-        {
-          "code": "4am_mutatabiqat-shahira_P3",
-          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (بالفاصلة إن لزم)",
-      "expectedAnswer": "0.9999",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9999",
+      "misconceptionSignatures": [
+        {
+          "value": "10001",
+          "id": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العددان يحيطان بالعدد $1$."
+          "content": "العددان متناظران حول عدد مدوّر: اكتبهما على الشكل $a + b$ و $a - b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$0{,}99 = 1 - 0{,}01$ و $1{,}01 = 1 + 0{,}01$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $1^2 - 0{,}01^2$."
+          "content": "طبّق $(a + b)(a - b) = a^2 - b^2$ : مربعان سهلا الحساب."
         }
       ],
       "feedback": {
-        "correct": "$(1 - 0{,}01)(1 + 0{,}01) = 1 - 0{,}0001 = 0{,}9999$",
-        "incorrect": "اطرح مربع $0{,}01$ من $1$."
-      }
+        "correct": "$101 \\times 99 = 9999$ .",
+        "incorrect": "اكتب العدد بدلالة عدد مدوّر، ثم طبّق المتطابقة الشهيرة المناسبة حدًّا حدًّا."
+      },
+      "solution": {
+        "lines": [
+          "$101 \\times 99 = (100 + 1)(100 - 1)$",
+          "$= 100^2 - 1^2$",
+          "$= 10000 - 1$"
+        ],
+        "result": "101 \\times 99 = 9999"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "احسب $7{,}5^2$ .",
+      "step": "03",
+      "statement": "☜ بكم دينارًا يزيد ثمن الطلبية الثانية عن ثمن الطلبية الأولى؟",
       "learningPoints": [
         {
           "code": "4am_mutatabiqat-shahira_P4",
           "role": "primary"
-        },
-        {
-          "code": "4am_mutatabiqat-shahira_P1",
-          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "transfer",
       "answerType": "rational",
-      "answerFormat": "عدد (بالفاصلة إن لزم)",
-      "expectedAnswer": "56.25",
+      "answerFormat": "عدد (بالدينار DA)",
+      "expectedAnswer": "4950",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$7{,}5 = 7 + 0{,}5$."
+          "content": "احسب الفرق بين عددي الأقلام في الطلبيتين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "استعمل مربع مجموع."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $7^2$ و $2 \\times 7 \\times 0{,}5$ و $0{,}5^2$."
+          "content": "اضرب هذا الفرق في ثمن القلم الواحد."
         }
       ],
       "feedback": {
-        "correct": "$(7 + 0{,}5)^2 = 49 + 7 + 0{,}25 = 56{,}25$",
-        "incorrect": "الحد المضاعف $2 \\times 7 \\times 0{,}5$."
-      }
+        "correct": "$(9999 - 9801) \\times 25 = 198 \\times 25 = 4950$ DA .",
+        "incorrect": "احسب فرق عدد الأقلام أولًا، ثم اضربه في ثمن القلم."
+      },
+      "solution": {
+        "lines": [
+          "فرق عدد الأقلام: $9999 - 9801 = 198$",
+          "فرق الثمن: $198 \\times 25 = 4950$ DA"
+        ],
+        "result": "4950\\ DA"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-mutatabiqat-shahira-l5-004",
-  "lessonCode": "mutatabiqat-shahira",
-  "level": 5
+  ]
 }

@@ -3,16 +3,23 @@
   "lessonCode": "tatbiqat-tanasub",
   "level": 1,
   "metadata": {
-    "title": "تدريب — نقاط اللعبة",
+    "title": "نقاط اللعبة",
     "estimatedMinutes": 3,
     "tags": [
-      "أخذ نسبة"
+      "أخذ نسبة مئوية"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tatbiqat-tanasub_P1",
-      "modelledOn": "know-4"
+      "modelledOn": "know-4",
+      "adaptedFrom": "ex-4am-tatbiqat-tanasub-l1-004"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
@@ -21,7 +28,8 @@
   "questions": [
     {
       "id": "q1",
-      "statement": "أخذ 25% من مقدار $x$ يعني ضربه في:",
+      "step": "01",
+      "statement": "احسب عدد النقاط التي استعملها.",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P1",
@@ -29,57 +37,48 @@
         }
       ],
       "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "160",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$0{,}25$",
-          "isCorrect": true
+          "value": "800",
+          "id": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
         },
         {
-          "id": "B",
-          "content": "$1{,}25$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
-        },
-        {
-          "id": "C",
-          "content": "$0{,}75$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
-        },
-        {
-          "id": "D",
-          "content": "$25$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NISBA-JAM"
+          "value": "480",
+          "id": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+          "content": "أخذ $t\\%$ من مقدار يعني ضربه في $\\dfrac{t}{100}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+          "content": "احسب $640 \\times \\dfrac{25}{100}$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{25}{100} = 0{,}25$ .",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "$640 \\times \\dfrac{25}{100} = 160$ نقطة.",
+        "incorrect": "أخذ 25% من 640 ليس زيادة 640 بـ 25%."
+      },
+      "solution": {
+        "lines": [
+          "$640 \\times \\dfrac{25}{100} = 160$",
+          "استعمل اللاعب 160 نقطة."
+        ]
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "عدد النقاط التي استعملها:",
+      "step": "02",
+      "statement": "استنتج عدد النقاط التي بقيت له.",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P1",
@@ -87,30 +86,34 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "160",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "480",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+          "content": "اطرح عدد النقاط المستعملة من العدد الكلي."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+          "content": "أو: بقي له $100\\% - 25\\%$ من النقاط."
         }
       ],
       "feedback": {
-        "correct": "$640 \\times 0{,}25 = 160$ نقطة.",
-        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
-      }
+        "correct": "$640 - 160 = 480$ نقطة.",
+        "incorrect": "اطرح ما استعمله من العدد الكلي للنقاط."
+      },
+      "solution": {
+        "lines": [
+          "$640 - 160 = 480$",
+          "(أو: $640 \\times 0{,}75 = 480$ )",
+          "بقيت للاعب 480 نقطة."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

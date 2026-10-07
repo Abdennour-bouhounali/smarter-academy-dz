@@ -1,65 +1,168 @@
 {
+  "id": "ex-4am-qawasim-adad-tabii-l5-001",
+  "lessonCode": "qawasim-adad-tabii",
+  "level": 5,
   "metadata": {
-    "title": "تمرين 11 — أعداد من ثلاثة أرقام",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2022 — تمر دقلة نور من بسكرة",
+    "estimatedMinutes": 13,
     "tags": [
-      "قواعد قابلية القسمة"
+      "قواسم",
+      "قواعد قابلية القسمة",
+      "وضعية"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "ex-11",
-      "page": 14,
-      "section": "أوظّف تعلّماتي",
-      "number": 11
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_qawasim-adad-tabii_P4",
+      "modelledOn": "BEM 2022 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2022",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "عيّن كل الأعداد الطبيعية التي تتكون من ثلاثة أرقام وتقبل القسمة على 3 وعلى 5 في آن واحد علما أن رقم العشرات فيها يساوي 7."
+    "content": "جنى فلاح من واحته ببسكرة 336kg من تمر دقلة نور، ويريد تعبئته كله في علب متماثلة من حيث الكتلة، دون أن يبقى أي تمر.\n• تبيع ورشة مجاورة علبا تتسع لـ 4kg أو 5kg أو 6kg أو 7kg أو 8kg أو 9kg.\n• ثمن العلبة الفارغة 150DA.\n• يبيع الفلاح العلبة الممتلئة بـ 6800DA."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هذه الأعداد هي:",
+      "step": "01",
+      "statement": "عيّن من بين الكتل 4 ، 5 ، 6 ، 7 ، 8 ، 9 (بالكيلوغرام) تلك التي تسمح بتعبئة التمر كله دون أن يبقى شيء.",
       "learningPoints": [
         {
           "code": "4am_qawasim-adad-tabii_P4",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "integerSet",
       "answerFormat": "الأعداد مفصولة بفاصلة",
       "expectedAnswer": [
-        270,
-        375,
-        570,
-        675,
-        870,
-        975
+        4,
+        6,
+        7,
+        8
+      ],
+      "misconceptionSignatures": [
+        {
+          "value": [
+            4,
+            6
+          ],
+          "id": "MISC-QAWAID-HALA-WAHIDA"
+        }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "القسمة على 5: رقم الوحدات 0 أو 5."
+          "content": "كتلة العلبة يجب أن تكون قاسما للعدد 336."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "القسمة على 3: مجموع الأرقام مضاعف لـ 3."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "مع 0: c + 7 مضاعف لـ 3؛ مع 5: c + 12 مضاعف لـ 3."
+          "content": "استعمل قواعد قابلية القسمة على 4 و 5 و 6 و 9، وأجرِ القسمة على 7 و 8."
         }
       ],
       "feedback": {
-        "correct": "الوحدات 0 أو 5، ومجموع الأرقام مضاعف لـ 3.",
-        "incorrect": "ابدأ بشرط القسمة على 5."
-      }
+        "correct": "336 يقبل القسمة على 4 و 6 و 7 و 8، ولا يقبل القسمة على 5 ولا على 9.",
+        "incorrect": "اختبر قابلية قسمة 336 على كل كتلة: رقم الآحاد للعدد 5، ومجموع الأرقام للعدد 9."
+      },
+      "solution": {
+        "lines": [
+          "رقم آحاد 336 هو 6: لا يقبل القسمة على 5.",
+          "مجموع أرقامه $3 + 3 + 6 = 12$: يقبل القسمة على 3 ولا يقبل القسمة على 9.",
+          "$36 = 4 \\times 9$: يقبل القسمة على 4؛ وهو زوجي ويقبل القسمة على 3، إذن يقبل القسمة على 6.",
+          "$336 = 7 \\times 48$ و $336 = 8 \\times 42$",
+          "الكتل المناسبة: 4 ، 6 ، 7 ، 8."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 360
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "يختار الفلاح أكبر علب ممكنة. ما هو عدد العلب اللازمة؟",
+      "learningPoints": [
+        {
+          "code": "4am_qawasim-adad-tabii_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "42",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أكبر كتلة مناسبة وجدتها في السؤال 01."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد العلب × كتلة العلبة = 336."
+        }
+      ],
+      "feedback": {
+        "correct": "$336 = 8 \\times 42$.",
+        "incorrect": "اقسم 336 على أكبر كتلة مناسبة."
+      },
+      "solution": {
+        "lines": [
+          "أكبر كتلة مناسبة هي 8kg.",
+          "$336 = 8 \\times 42$",
+          "إذن يلزم 42 علبة."
+        ],
+        "result": "42"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "☜ أعط المبلغ الذي يبقى للفلاح بعد بيع كل العلب وطرح ثمن العلب الفارغة.",
+      "learningPoints": [
+        {
+          "code": "4am_qawasim-adad-tabii_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار (DA)",
+      "expectedAnswer": "279300",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب ما يبقى للفلاح من كل علبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب في عدد العلب."
+        }
+      ],
+      "feedback": {
+        "correct": "$42 \\times (6800 - 150) = 279300$.",
+        "incorrect": "من ثمن بيع العلبة اطرح ثمن العلبة الفارغة، ثم اضرب في عدد العلب."
+      },
+      "solution": {
+        "lines": [
+          "ما يبقى من كل علبة: $6800 - 150 = 6650$ DA",
+          "$ 42 \\times 6650 = 279300$"
+        ],
+        "result": "279300\\text{ DA}"
+      },
+      "work": "optional",
+      "timeSeconds": 300
     }
-  ],
-  "id": "ex-4am-qawasim-adad-tabii-l5-001",
-  "lessonCode": "qawasim-adad-tabii",
-  "level": 5
+  ]
 }

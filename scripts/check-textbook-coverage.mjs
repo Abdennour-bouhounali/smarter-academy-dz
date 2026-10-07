@@ -11,7 +11,10 @@
  *      `sourceElementIds`) — un élément du manuel sans destination est une
  *      partie du livre qu'on a cessé d'enseigner sans le décider ;
  *   2. un élément n'est cité par AUCUNE autre leçon que sa destination, sauf
- *      (a) une seconde utilisation déclarée `duplicatedIn`, (b) une reprise
+ *      (a) une seconde utilisation déclarée `duplicatedIn`, (a') une COPIE ADAPTÉE
+ *      d'un exercice de pratique d'une autre leçon, déclarée dans l'exercice même
+ *      (`adaptedFrom` = l'id de l'original : la citation compte pour la leçon
+ *      d'origine — feuilles BEM, 2026-10-06), (b) une reprise
  *      dans le module d'ÉVALUATION ou le contenu de PRATIQUE de la MÊME leçon
  *      (les épreuves reprennent les exercices du درس), (c) un élément déclaré
  *      pour l'unité (page d'unité) — tout le reste est une duplication non
@@ -28,6 +31,18 @@ import { pathToFileURL } from 'node:url';
 import { repoRoot } from './lib/lessonAst.mjs';
 
 const SOURCES = join(repoRoot, 'docs/sources');
+
+/**
+ * Une COPIE ADAPTÉE déclarée (feuilles BEM, 2026-10-06) : un exercice de pratique d'une
+ * leçon qui reprend l'exercice d'une AUTRE leçon et le dit (`adaptedFrom` : l'id de
+ * l'original). Sa citation compte pour la leçon d'origine — la duplication est déclarée
+ * dans l'exercice même, pas une dérive. Rend le code de cette leçon, ou null.
+ */
+function adaptedOriginLesson(data) {
+  const from = data.metadata?.source?.adaptedFrom ?? data.metadata?.adaptedFrom;
+  const m = typeof from === 'string' ? /^ex-[a-z0-9]+-(.+)-l\d-\d{3}$/.exec(from) : null;
+  return m && m[1] !== data.lessonCode ? m[1] : null;
+}
 const problems = [];
 const report = [];
 
@@ -119,7 +134,8 @@ for (const gradeDir of existsSync(SOURCES) ? readdirSync(SOURCES) : []) {
       // Une fiche d'exercices (worksheet) n'est PAS le manuel : ses éléments
       // sont vérifiés à part, contre docs/sources/…/worksheet-<id>.json.
       if (data.metadata?.source?.type === 'worksheet') continue;
-      for (const id of citedIds(readFileSync(f, 'utf8'))) cite(data.lessonCode ?? 'unknown', id, 'practice');
+      const owner = adaptedOriginLesson(data) ?? data.lessonCode ?? 'unknown';
+      for (const id of citedIds(readFileSync(f, 'utf8'))) cite(owner, id, 'practice');
     }
     if (existsSync(unitsJson)) {
       const units = JSON.parse(readFileSync(unitsJson, 'utf8')).units.filter((u) => u.code === unitCode);
@@ -163,6 +179,7 @@ for (const gradeDir of existsSync(SOURCES) ? readdirSync(SOURCES) : []) {
  *    élément ; tout exercice qui cite une fiche cite un élément qui y existe.
  */
 const worksheetCitations = new Map(); // `${worksheetId}:${elementId}` → [exerciseId]
+const adaptedWorksheetCopies = new Map(); // idem, copies adaptées déclarées (`adaptedFrom`)
 for (const f of walk(join(repoRoot, 'content/practice'))) {
   if (!f.endsWith('.json') || !/\/level-\d\//.test(f)) continue;
   const data = JSON.parse(readFileSync(f, 'utf8'));
@@ -170,6 +187,9 @@ for (const f of walk(join(repoRoot, 'content/practice'))) {
   if (src?.type !== 'worksheet') continue;
   if (!src.worksheetId || !src.elementId) { problems.push(`${relative(repoRoot, f)} : source « worksheet » sans worksheetId ou elementId`); continue; }
   const key = `${src.worksheetId}:${src.elementId}`;
+  // Copie adaptée déclarée d'un exercice d'une autre leçon : elle cite un élément qui doit
+  // exister, mais ne compte pas comme une seconde destination.
+  if (adaptedOriginLesson(data)) { adaptedWorksheetCopies.set(key, [...(adaptedWorksheetCopies.get(key) ?? []), data.id]); continue; }
   worksheetCitations.set(key, [...(worksheetCitations.get(key) ?? []), data.id]);
 }
 const knownWorksheetKeys = new Set();
@@ -192,7 +212,7 @@ for (const file of walk(SOURCES).filter((p) => /\/worksheet-[a-z0-9-]+\.json$/.t
   }
   report.push({ worksheet: ws.worksheetId, elements: (ws.elements ?? []).length, integrated });
 }
-for (const [key, exercises] of worksheetCitations) {
+for (const [key, exercises] of [...worksheetCitations, ...adaptedWorksheetCopies]) {
   if (!knownWorksheetKeys.has(key)) problems.push(`${exercises.join(', ')} : cite l'élément de fiche inconnu « ${key} »`);
 }
 

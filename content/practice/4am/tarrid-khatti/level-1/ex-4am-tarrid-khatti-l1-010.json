@@ -3,50 +3,85 @@
   "lessonCode": "tarrid-khatti",
   "level": 1,
   "metadata": {
-    "title": "تدريب — حلّ يلائم الواقع",
-    "estimatedMinutes": 2,
+    "title": "تذاكر الحافلة — حلّ يلائم الواقع",
+    "estimatedMinutes": 4,
     "tags": [
-      "تفسير",
-      "تحقّق"
+      "تفسير النتيجة",
+      "عدد طبيعي"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tarrid-khatti_P3",
-      "modelledOn": "method-spring"
+      "modelledOn": "method-spring",
+      "adaptedFrom": "ex-4am-tarrid-khatti-l1-010"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نمذجنا ثمن تذاكر الحافلة بالدالة $f(x) = 30x$ ، ووجدنا أن ميزانية 225DA تعطي $x = 7{,}5$ ."
+    "content": "ثمن تذكرة الحافلة 25DA. ثمن $x$ تذكرة بالدينار هو $f(x) = 25x$ . مع أمين 270DA."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما الجواب في سياق الوضعية؟",
+      "step": "01",
+      "statement": "حلّ المعادلة $25x = 270$ .",
       "learningPoints": [
         {
           "code": "4am_tarrid-khatti_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة أو كسر a/b)",
+      "expectedAnswer": "54/5",
+      "hints": [
         {
-          "id": "A",
-          "content": "7,5 تذاكر",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAFSIR"
-        },
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم الطرفين على 25."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{270}{25} = 10{,}8$ .",
+        "incorrect": "العدد المطلوب هو العدد الذي صورته 270: اقسم على 25."
+      },
+      "solution": {
+        "lines": [
+          "$25x = 270$",
+          "$x = \\dfrac{270}{25} = 10{,}8$"
+        ],
+        "result": "x = 10{,}8"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "sub": "ا",
+      "statement": "ما أكبر عدد من التذاكر يمكن لأمين شراؤه؟",
+      "learningPoints": [
         {
-          "id": "B",
-          "content": "7 تذاكر، ويبقى 15DA",
-          "isCorrect": true
-        },
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد التذاكر",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
         {
-          "id": "C",
-          "content": "8 تذاكر",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+          "value": "11",
+          "id": "MISC-TARRID-TAFSIR"
         }
       ],
       "hints": [
@@ -58,18 +93,58 @@
         {
           "id": "h2",
           "type": "direction",
-          "content": "كم تكلّف 8 تذاكر؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "نأخذ أكبر عدد طبيعي لا يتجاوز الميزانية."
+          "content": "خذ أكبر عدد طبيعي لا يتجاوز حل المعادلة."
         }
       ],
       "feedback": {
-        "correct": "$30 \\times 7 = 210$ و $225 - 210 = 15$ ؛ 8 تذاكر تكلّف 240DA .",
-        "incorrect": "عدد التذاكر طبيعي ولا يتجاوز الميزانية."
-      }
+        "correct": "10 تذاكر: $25 \\times 10 = 250$ و $25 \\times 11 = 275 > 270$ .",
+        "incorrect": "عدد التذاكر عدد طبيعي، ولا يمكن أن يتجاوز ثمنها المبلغ الذي مع أمين."
+      },
+      "solution": {
+        "lines": [
+          "عدد التذاكر عدد طبيعي لا يتجاوز $10{,}8$ .",
+          "$f(10) = 250 \\leqslant 270$ و $f(11) = 275 > 270$ .",
+          "إذن يشتري أمين 10 تذاكر على الأكثر."
+        ],
+        "result": "10"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "كم يبقى لأمين بعد شراء هذه التذاكر؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ الباقي بـ DA",
+      "expectedAnswer": "20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب ثمن التذاكر المشتراة ثم اطرحه من المبلغ الذي معه."
+        }
+      ],
+      "feedback": {
+        "correct": "$270 - 250 = 20$ : يبقى لأمين 20DA.",
+        "incorrect": "اطرح ثمن التذاكر المشتراة من 270DA."
+      },
+      "solution": {
+        "lines": [
+          "ثمن التذاكر: $25 \\times 10 = 250$",
+          "$270 - 250 = 20$ ، يبقى لأمين 20DA."
+        ],
+        "result": "20DA"
+      },
+      "timeSeconds": 60
     }
   ]
 }

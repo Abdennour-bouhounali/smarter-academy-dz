@@ -3,113 +3,198 @@
   "lessonCode": "tahlil-ibara",
   "level": 4,
   "metadata": {
-    "title": "تدريب — ملعب من مربّعات وشرائط",
-    "estimatedMinutes": 5,
+    "title": "BEM 2018 — التمرين الثاني",
+    "estimatedMinutes": 12,
     "tags": [
-      "ملعب",
-      "عامل مشترك"
+      "نشر",
+      "تحليل",
+      "متراجحة"
     ],
     "source": {
-      "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_tahlil-ibara_P2",
-      "modelledOn": "know-3"
+      "type": "bem",
+      "year": 2018,
+      "part": 1,
+      "exercise": 2
+    },
+    "exam": {
+      "kind": "official",
+      "badge": "BEM 2018",
+      "heading": "التمرين الثاني",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "ملعب عشب: 12 مربّعًا كبيرًا مساحة كل منها $x^2$ و 18 شريطًا مساحة كل منها $x$ ، أي $12x^2 + 18x$. نفرشها في صفوف متماثلة ارتفاع كل منها $x$."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "كم صفًّا متماثلًا على الأكثر؟",
+      "step": "01",
+      "statement": "تحقّق من المساواة الآتية: $(3x + 1)(x - 4) = 3x^2 - 11x - 4$ .",
       "learningPoints": [
         {
-          "code": "4am_tahlil-ibara_P2",
+          "code": "4am_tahlil-ibara_P1",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "6",
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "كل صفّ يأخذ العدد نفسه من كل نوع."
+          "content": "اضرب كل حد من القوس الأول في كل حد من القوس الثاني."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عدد الصفوف يقسم 12 و 18."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ابحث عن أكبر قاسم مشترك."
+          "content": "اجمع الحدّين $-12x$ و $x$ ."
         }
       ],
       "feedback": {
-        "correct": "PGCD$(12 ; 18) = 6$ : في كل صفّ مربّعان كبيران و 3 شرائط.",
-        "incorrect": "عدد الصفوف قاسم مشترك للعددين 12 و 18: خذ أكبرها."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك سطرًا بسطر بالحل النموذجي، وانتبه إلى الإشارات."
+      },
+      "solution": {
+        "lines": [
+          "$(3x + 1)(x - 4) = 3x \\times x - 3x \\times 4 + 1 \\times x - 1 \\times 4$",
+          "$= 3x^2 - 12x + x - 4$"
+        ],
+        "result": "(3x + 1)(x - 4) = 3x^2 - 11x - 4"
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "اكتب $12x^2 + 18x$ بأكبر عامل مشترك.",
+      "step": "02",
+      "lead": "حلّل إلى جداء عاملين من الدرجة الأولى العبارة: $E = 3x^2 - 11x - 4 + (3x + 1)^2$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$6(2x^2 + 3x)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
-        },
-        {
-          "id": "B",
-          "content": "$3x(4x + 6)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
-        },
-        {
-          "id": "C",
-          "content": "$6x(2x + 3)$",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "$6x(2x + 18)$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $(3x + 1)(mx + n)$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ارتفاع الملعب: عدد الصفوف × ارتفاع الصفّ."
+          "content": "استعمل نتيجة السؤال 01: اكتب $3x^2 - 11x - 4$ على شكل جداء."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "العامل المشترك فيه عدد وحرف."
+          "content": "العامل $(3x + 1)$ يصبح مشتركًا بين الحدّين."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اكتب الارتفاع ثم محتوى صفّ واحد بين قوسين."
+          "content": "بسّط ما بين القوسين الكبيرين بإشاراته، ثم قارن بالشكل المطلوب."
         }
       ],
       "feedback": {
-        "correct": "$12x^2 + 18x = 6x \\times 2x + 6x \\times 3 = 6x(2x + 3)$.",
-        "incorrect": "العامل المشترك الكامل يجمع أكبر عدد والحرف $x$."
-      }
+        "correct": "$E = (3x + 1)(4x - 3)$ إذن $m = 4$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$E = 3x^2 - 11x - 4 + (3x + 1)^2$",
+          "$= (3x + 1)(x - 4) + (3x + 1)^2$",
+          "$= (3x + 1)(x - 4 + 3x + 1)$"
+        ],
+        "result": "E = (3x + 1)(4x - 3)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "العدد $n$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $E$ على الشكل $(3x + 1)(mx + n)$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "-3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = (3x + 1)(4x - 3)$ إذن $n = -3$ .",
+        "incorrect": "أخرج العامل المشترك من كل حد، ثم بسّط ما بين القوسين الكبيرين بإشاراته (حدّ وحده يعني $1$)."
+      },
+      "solution": {
+        "lines": [
+          "$E = (3x + 1)(4x - 3)$"
+        ],
+        "result": "n = -3"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "حل المتراجحة: $(3x + 1)(x - 4) \\leqslant 3x^2 + 7$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "حلول المتراجحة هي الأعداد $x$ حيث $x \\leq k$ أو $x \\geq k$ (أو بمتباينة تامة) : اكتب العدد الحدّي $k$ فقط",
+      "expectedAnswer": "-1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر ثم اجمع حدود $x$ في طرف والأعداد في الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل نتيجة السؤال 01 للطرف الأيسر؛ والقسمة على عدد سالب تعكس اتجاه المتباينة."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\geqslant -1$ .",
+        "incorrect": "انقل الحدود بإشاراتها، وعند القسمة على عدد سالب اعكس اتجاه المتباينة."
+      },
+      "solution": {
+        "lines": [
+          "$3x^2 - 11x - 4 \\leqslant 3x^2 + 7$",
+          "$-11x \\leqslant 7 + 4$",
+          "$\\dfrac{-11x}{-11} \\geqslant \\dfrac{11}{-11}$",
+          "إذا حلول المتراجحة هي كل قيم $x$ الأكبر أو تساوي $-1$ ."
+        ],
+        "result": "x \\geqslant -1"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

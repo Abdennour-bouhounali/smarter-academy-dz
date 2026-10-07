@@ -4,118 +4,48 @@
   "level": 2,
   "metadata": {
     "title": "نادي الكاراتيه",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 8,
     "tags": [
-      "حل جملة",
-      "اختيار الطريقة"
+      "ترييض",
+      "اشتراكات"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-jumal_P1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "في نادي الكاراتيه، الاشتراك الشهري للمتمدرسين $x$ DA ولغير المتمدرسين $y$ DA. دفع فوج من 5 متمدرسين و 3 غير متمدرسين 7 600 DA، ودفع فوج من 2 متمدرسين و 4 غير متمدرسين 6 400 DA."
+    "content": "في نادٍ للكاراتيه، الاشتراك الشهري للمتمدرسين $x$ DA ولغير المتمدرسين $y$ DA. دفع فوج من 5 متمدرسين و 3 غير متمدرسين 7600DA، ودفع فوج من متمدرسَين اثنين و 4 غير متمدرسين 6400DA."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ اقتراح يوصل إلى الحل بأقل حساب؟",
-      "learningPoints": [
-        {
-          "code": "4am_wadiya-idmajiya-jumal_P2",
-          "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "نقسم المعادلة الثانية على 2: $x + 2y = 3200$ ، ثم نعوّض $x = 3200 - 2y$ في الأولى",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "نجمع المعادلتين مباشرة فيختفي $x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JAM-LA-TAAKUS"
-        },
-        {
-          "id": "C",
-          "content": "نقسم المعادلة الثانية على 2: $x + 2y = 6400$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JAM-TARAF-WAHID"
-        },
-        {
-          "id": "D",
-          "content": "نعوّض $x = 3200 - 2y$ في المعادلة الثانية نفسها",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAWID-NAFS-MUADALA"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "ابحث عن معادلة تُبسَّط."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "كل معاملات الثانية زوجية."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بعد التبسيط معامل $x$ هو 1."
-        }
-      ],
-      "feedback": {
-        "correct": "$2x + 4y = 6400$ تكافئ $x + 2y = 3200$ ، فالتعويض سهل.",
-        "incorrect": "القسمة تشمل الطرفين، والتعويض في المعادلة الأخرى."
-      },
-      "cognitiveDemand": "apply",
-      "difficulty": 2
-    },
-    {
-      "id": "q2",
-      "statement": "ما الاشتراكان $(x ; y)$ ؟",
+      "step": "01",
+      "statement": "اكتب جملة معادلتين تترجم هذه المعطيات، ثم حلها مبيّنا طريقة الحل.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-jumal_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : قيمة $x$ ثم قيمة $y$ (عدد صحيح أو كسر مثل 7/3)",
       "expectedAnswer": {
         "x": "800",
         "y": "1200"
       },
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "$x = 3200 - 2y$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "عوّض في $5x + 3y = 7600$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقق في المعلومتين."
-        }
-      ],
-      "feedback": {
-        "correct": "$16000 - 7y = 7600$ ، $y = 1200$ ، $x = 800$.",
-        "incorrect": "عوّض ثم احسب المجهول الثاني."
-      },
-      "cognitiveDemand": "apply",
-      "difficulty": 3,
       "misconceptionSignatures": [
         {
           "value": {
@@ -124,7 +54,81 @@
           },
           "id": "MISC-JUMLA-TARTIB"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب معادلة لكل فوج."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب المعادلتين في عددين مناسبين حتى يصبح معاملا $x$ متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع طرفا لطرف ثم عوّض لتجد المجهول الآخر."
+        }
+      ],
+      "feedback": {
+        "correct": "اشتراك المتمدرس $800DA$ واشتراك غير المتمدرس $1200DA$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحققهما معا، والترتيب $(x ; y)$ مهم."
+      },
+      "solution": {
+        "lines": [
+          "الفوج الأول: $5x + 3y = 7600$",
+          "الفوج الثاني: $2x + 4y = 6400$",
+          "$\\begin{cases} 5x + 3y = 7600 & ...(1) \\\\ 2x + 4y = 6400 & ...(2) \\end{cases}$",
+          "بضرب طرفي المعادلة (1) في العدد $4$ ، وبضرب طرفي المعادلة (2) في العدد $(-3)$ نجد:",
+          "$\\begin{cases} 20x + 12y = 30400 & ...(3) \\\\ -6x - 12y = -19200 & ...(4) \\end{cases}$",
+          "بجمع (3) و (4) طرفا لطرف نجد:",
+          "$14x = 11200$",
+          "$x = 800$",
+          "بتعويض $x$ بـ $800$ في المعادلة (1) نجد: $5 \\times 800 + 3y = 7600$",
+          "$3y = 3600$",
+          "$y = 1200$",
+          "إذن حل الجملة هو الثنائية:"
+        ],
+        "result": "(800 ; 1200)"
+      },
+      "work": "required",
+      "timeSeconds": 360
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "كم يدفع فوج من 4 متمدرسين و 4 غير متمدرسين؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "8000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الاشتراكين اللذين وجدتهما في السؤال 01."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 \\times 800 + 4 \\times 1200 = 8000$ .",
+        "incorrect": "اضرب كل اشتراك في عدد أصحابه ثم اجمع."
+      },
+      "solution": {
+        "lines": [
+          "$4 \\times 800 + 4 \\times 1200 = 3200 + 4800 = 8000$",
+          "يدفع الفوج $8000DA$ ."
+        ],
+        "result": "8000\\,DA"
+      },
+      "timeSeconds": 90
     }
   ]
 }

@@ -4,75 +4,135 @@
   "level": 1,
   "metadata": {
     "title": "أؤكّد تعلّماتي 6 — المعامل من جدول",
-    "estimatedMinutes": 2,
+    "estimatedMinutes": 4,
     "tags": [
-      "معامل",
-      "جدول تناسبية"
+      "جدول قيم",
+      "معامل"
     ],
     "source": {
       "type": "textbook",
       "elementId": "qcm",
       "page": 74,
       "section": "أؤكّد تعلّماتي",
-      "number": 6
+      "number": 6,
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-khattiya-l1-006"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في كل حالة مما يلي اختر الإجابة الصحيحة، وبرّر اختيارك. جدول الدالة الخطية $f$ : من أجل $x = -5$ و $25$ و $10$ ، الصور هي $2$ و $-10$ و $-4$ على الترتيب."
+    "content": "الجدول التالي هو جدول قيم دالة خطية $f$ :",
+    "table": {
+      "head": [
+        "$x$",
+        "$-5$",
+        "$25$",
+        "$10$"
+      ],
+      "rows": [
+        [
+          "$f(x)$",
+          "$2$",
+          "$-10$",
+          "$-4$"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "معامل الدّالة الخطية $f$ هو:",
+      "step": "01",
+      "statement": "عيّن معامل الدالة $f$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-khattiya_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-0,4",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\dfrac{52}{130}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+          "value": "-5/2",
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB"
         },
         {
-          "id": "B",
-          "content": "$-0{,}4$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$-\\dfrac{5}{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+          "value": "0.4",
+          "id": "MISC-KHATTIYA-ISHARA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب حاصل قسمة كل صورة على عددها."
+          "content": "اختر عمودا من الجدول: المعامل = الصورة ÷ العدد."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\dfrac{2}{-5}$ : ما إشارته؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "كل حواصل القسمة متساوية في جدول تناسبية."
+          "content": "تحقّق أن النسبة نفسها في كل الأعمدة."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{2}{-5} = \\dfrac{-10}{25} = \\dfrac{-4}{10} = -0{,}4$.",
-        "incorrect": "المعامل هو الصورة على العدد، وإشارته سالبة هنا."
+        "correct": "$a = \\dfrac{2}{-5} = -0{,}4$ ، وكذلك $\\dfrac{-10}{25}$ و $\\dfrac{-4}{10}$ .",
+        "incorrect": "اقسم السطر الثاني على السطر الأول (الصورة على العدد)."
       },
+      "solution": {
+        "lines": [
+          "$\\dfrac{2}{-5} = \\dfrac{-10}{25} = \\dfrac{-4}{10} = -0{,}4$",
+          "إذن $f(x) = -0{,}4x$ ."
+        ],
+        "result": "f(x) = -0{,}4x"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب صورة العدد $15$ بالدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
       "cognitiveDemand": "apply",
-      "difficulty": 2
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-6",
+      "misconceptionSignatures": [
+        {
+          "value": "6",
+          "id": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(15) = a \\times 15$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(15) = -0{,}4 \\times 15 = -6$ .",
+        "incorrect": "اضرب المعامل في 15 مع الإشارة."
+      },
+      "solution": {
+        "lines": [
+          "$f(15) = -0{,}4 \\times 15 = -6$"
+        ],
+        "result": "f(15) = -6"
+      },
+      "timeSeconds": 60
     }
   ]
 }

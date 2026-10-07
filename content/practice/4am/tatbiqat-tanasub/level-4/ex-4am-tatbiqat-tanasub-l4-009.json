@@ -4,61 +4,75 @@
   "level": 4,
   "metadata": {
     "title": "تمرين 25 — الماء في جسم الإنسان",
-    "estimatedMinutes": 5,
+    "estimatedMinutes": 7,
     "tags": [
-      "الكتلة الحجمية",
-      "مقدار بدلالة آخر"
+      "أخذ نسبة مئوية",
+      "الكتلة الحجمية"
     ],
     "source": {
       "type": "textbook",
       "elementId": "ex-25",
       "page": 73,
       "section": "أوظّف تعلّماتي",
-      "number": 25
+      "number": 25,
+      "adaptedFrom": "ex-4am-tatbiqat-tanasub-l4-009"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 73): يمثل الماء 75% من كتلة جسم الإنسان، والكتلة الحجمية للماء $1g/cm^3$ . 1) ما هي كتلة الماء وحجمه لشخص يزن $63kg$ ؟ 2) عيّن كتلة شخص إذا علمت أنّ حجم الماء المتواجد في جسمه هو $47L$ ."
+    "content": "يمثّل الماء 75% من كتلة جسم الإنسان، والكتلة الحجمية للماء $1g/cm^3$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "1) كتلة الماء في جسم شخص يزن 63kg (بالكيلوغرام):",
+      "step": "01",
+      "sub": "ا",
+      "statement": "احسب كتلة الماء في جسم شخص يزن $63kg$ .",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 3,
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "اكتب الكتلة بـ kg (عدد عشري بالفاصلة)",
       "expectedAnswer": "47,25",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+          "content": "أخذ 75% من مقدار هو ضربه في $\\dfrac{75}{100}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+          "content": "احسب $63 \\times 0{,}75$ ."
         }
       ],
       "feedback": {
         "correct": "$63 \\times 0{,}75 = 47{,}25kg$ .",
-        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
-      }
+        "incorrect": "خذ 75% من كتلة الشخص."
+      },
+      "solution": {
+        "lines": [
+          "$63 \\times \\dfrac{75}{100} = 47{,}25$",
+          "كتلة الماء $47{,}25kg$ ."
+        ]
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "1) حجم هذا الماء (باللتر):",
+      "step": "01",
+      "sub": "ب",
+      "statement": "استنتج حجم هذا الماء بـ $cm^3$ .",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P2",
@@ -66,34 +80,44 @@
         }
       ],
       "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "47,25",
+      "answerFormat": "اكتب الحجم بـ $cm^3$ (عدد فقط)",
+      "expectedAnswer": "47250",
+      "misconceptionSignatures": [
+        {
+          "value": "47,25",
+          "id": "MISC-MAQADIR-WIHDA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد وحدة البسط ووحدة المقام، قبل التحويل وبعده."
+          "content": "$1kg = 1000g$ ، والكتلة الحجمية $1g/cm^3$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "حوّل البسط والمقام كلًّا على حدة: $1h = 3600s$ ، $1km = 1000m$ ، $1m^3 = 1000L$ ، $1L = 1000cm^3$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب المقدار كحاصل قسمة بالوحدات الجديدة، ثم احسب."
+          "content": "$V = \\dfrac{m}{\\rho}$ مع الكتلة بـ g ."
         }
       ],
       "feedback": {
-        "correct": "$1g/cm^3 = 1kg/L$ : $47{,}25kg$ من الماء حجمها $47{,}25L$ .",
-        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
-      }
+        "correct": "$47\\,250g$ من الماء حجمها $47\\,250cm^3$ .",
+        "incorrect": "حوّل الكتلة إلى g ثم اقسم على الكتلة الحجمية."
+      },
+      "solution": {
+        "lines": [
+          "$47{,}25kg = 47\\,250g$",
+          "$V = \\dfrac{47\\,250}{1} = 47\\,250cm^3$"
+        ]
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "2) كتلة شخص في جسمه 47L من الماء:",
+      "step": "02",
+      "statement": "عيّن كتلة شخص إذا علمت أن حجم الماء الموجود في جسمه $47L$ .",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P3",
@@ -101,53 +125,42 @@
         }
       ],
       "difficulty": 4,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب الكتلة بـ kg مدوّرة إلى $0{,}1$",
+      "expectedAnswer": "62,7",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$35{,}25kg$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
-        },
-        {
-          "id": "B",
-          "content": "حوالي $62{,}67kg$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$47kg$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAFSIR"
-        },
-        {
-          "id": "D",
-          "content": "$82{,}25kg$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NISBA-JAM"
+          "value": "35,25",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المقدار المعطى هو المقدار بعد التغيّر، والمطلوب المقدار قبله."
+          "content": "$47L$ من الماء كتلتها $47kg$ ( $1L = 1000cm^3$ )."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب العلاقة $y = kx$ بالمضاعف $k$ ، ثم عوّض $y$ بقيمته."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ المعادلة $kx = y$ : $x = \\dfrac{y}{k}$ ، ثم تحقّق بالضرب."
+          "content": "نسمّي $m$ كتلة الشخص: $0{,}75m = 47$ ."
         }
       ],
       "feedback": {
-        "correct": "$0{,}75M = 47$ ، ومنه $M = \\dfrac{47}{0{,}75} \\simeq 62{,}67kg$ .",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "$m = \\dfrac{47}{0{,}75} \\approx 62{,}7kg$ .",
+        "incorrect": "كتلة الماء هي 75% من كتلة الشخص: اقسم، ولا تضرب."
+      },
+      "solution": {
+        "lines": [
+          "$47L = 47\\,000cm^3$ ، كتلتها $47\\,000g = 47kg$",
+          "$0{,}75m = 47$",
+          "$m = \\dfrac{47}{0{,}75} = 62{,}66\\ldots$",
+          "كتلة الشخص $62{,}7kg$ تقريبا."
+        ]
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

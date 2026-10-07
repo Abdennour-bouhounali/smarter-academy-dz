@@ -3,25 +3,49 @@
   "lessonCode": "tanasub-muamil",
   "level": 2,
   "metadata": {
-    "title": "تدريب — قاعة الرياضة",
-    "estimatedMinutes": 3,
+    "title": "اشتراك قاعة الرياضة",
+    "estimatedMinutes": 2,
     "tags": [
-      "مبلغ ثابت"
+      "مبلغ ثابت",
+      "وضعية غير تناسبية"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tanasub-muamil_P2",
       "modelledOn": "ex-18"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "اشتراك قاعة رياضة: 500DA للتسجيل ثم 200DA لكل حصة. نسمّي $x$ عدد الحصص و $y$ الثمن الكلي."
+    "content": "اشتراك في قاعة رياضة: 500DA للتسجيل ثم 200DA لكل حصة. نسمّي $x$ عدد الحصص و $y$ المبلغ الكلي بـ DA .",
+    "table": {
+      "head": [
+        "عدد الحصص $x$",
+        "1",
+        "4"
+      ],
+      "rows": [
+        [
+          "المبلغ $y$ بـ DA",
+          "…",
+          "…"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب $\\dfrac{y}{x}$ من أجل $x = 4$ .",
+      "step": "01",
+      "sub": "ا",
+      "lead": "انقل الجدول وأكمله.",
+      "statement": "المبلغ من أجل حصة واحدة:",
       "learningPoints": [
         {
           "code": "4am_tanasub-muamil_P2",
@@ -31,33 +55,37 @@
       "difficulty": 2,
       "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
-      "expectedAnswer": "325",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "700",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في هذا السعر مبلغ ثابت ومبلغ لكل وحدة."
+          "content": "اقرأ الصيغة جيدا: ما الذي يُدفع عن كل وحدة، وما الذي يُدفع مرة واحدة؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب عدد الوحدات في سعر الوحدة، ثم أضف المبلغ الثابت."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب ما يُطلب بالترتيب، وتحقّق من الوحدة."
+          "content": "المبلغ = العدد × ثمن الوحدة + المبلغ الثابت."
         }
       ],
       "feedback": {
-        "correct": "$y = 500 + 200 \\times 4 = 1300$ ، و $\\dfrac{1300}{4} = 325$ .",
-        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
-      }
+        "correct": "$200 \\times 1 + 500 = 700$ .",
+        "incorrect": "لا تنس المبلغ الثابت: المبلغ = العدد × ثمن الوحدة + المبلغ الثابت."
+      },
+      "solution": {
+        "lines": [
+          "$200 \\times 1 + 500 = 700$"
+        ],
+        "result": "700DA"
+      },
+      "timeSeconds": 45
     },
     {
       "id": "q2",
-      "statement": "هل $y$ متناسب مع $x$ ؟",
+      "step": "01",
+      "sub": "ب",
+      "statement": "المبلغ من أجل 4 حصص:",
       "learningPoints": [
         {
           "code": "4am_tanasub-muamil_P2",
@@ -66,46 +94,89 @@
       ],
       "difficulty": 2,
       "cognitiveDemand": "apply",
-      "answerType": "choice",
-      "choices": [
+      "answerType": "rational",
+      "answerFormat": "اكتب المبلغ بـ DA (عدد فقط)",
+      "expectedAnswer": "1300",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "نعم، ومعامل التناسبية 200",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "لا: من أجل حصة واحدة $\\dfrac{700}{1} = 700$ ، أمّا من أجل 4 حصص فـ $325$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "نعم، لأنّ الثمن يزداد مع عدد الحصص",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TANASUB-MABLAGH-THABIT"
+          "value": "800",
+          "id": "MISC-TANASUB-MABLAGH-THABIT"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "لا يكفي أن يزداد y كلما ازداد x."
+          "content": "اقرأ الصيغة جيدا: ما الذي يُدفع عن كل وحدة، وما الذي يُدفع مرة واحدة؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود وقارن."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "يكفي عمودان حاصلا قسمتهما مختلفان لنقول إنّ الوضعية ليست تناسبية؛ وانتبه إلى المبلغ الثابت."
+          "content": "المبلغ = العدد × ثمن الوحدة + المبلغ الثابت."
         }
       ],
       "feedback": {
-        "correct": "مبلغ التسجيل الثابت (500DA) يكسر التناسبية.",
-        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
-      }
+        "correct": "$200 \\times 4 + 500 = 1300$ .",
+        "incorrect": "لا تنس المبلغ الثابت: المبلغ = العدد × ثمن الوحدة + المبلغ الثابت."
+      },
+      "solution": {
+        "lines": [
+          "$200 \\times 4 + 500 = 1300$"
+        ],
+        "result": "1300DA"
+      },
+      "timeSeconds": 45
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "هل $y$ متناسب مع $x$ ؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MABLAGH-THABIT"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تذكّر مبلغ التسجيل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{700}{1} \\neq \\dfrac{1300}{4}$ .",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: تزايد المقدارين معا لا يكفي."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{700}{1} = 700$ و $\\dfrac{1300}{4} = 325$",
+          "$700 \\neq 325$ ، إذن $y$ غير متناسب مع $x$ (بسبب مبلغ التسجيل الثابت)."
+        ],
+        "result": "غير متناسب"
+      },
+      "timeSeconds": 60
     }
   ]
 }

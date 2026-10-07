@@ -3,107 +3,160 @@
   "lessonCode": "tarrid-mushkila",
   "level": 2,
   "metadata": {
-    "title": "تدريب — حلّ سالب في الأعمار",
-    "estimatedMinutes": 4,
+    "title": "أربعة أضعاف عمر الابن",
+    "estimatedMinutes": 7,
     "tags": [
-      "أعمار",
-      "تحقّق"
+      "ترييض",
+      "ملاءمة الحل",
+      "أعمار"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tarrid-mushkila_P2",
       "modelledOn": "method-modelling"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "عمر أب 45 سنة وعمر ابنه 15 سنة. نسمّي $x$ عدد السنوات التي يصبح بعدها عمر الأب أربعة أضعاف عمر ابنه، فنكتب $45 + x = 4(15 + x)$ ."
+    "content": "عمر أب 45 سنة و عمر ابنه 15 سنة."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حلّ المعادلة: $x = $",
+      "step": "01",
+      "statement": "نسمّي $x$ عدد السنوات التي يصبح بعدها عمر الأب أربعة أضعاف عمر ابنه. اكتب معادلة تترجم ذلك ثم حلّها.",
       "learningPoints": [
         {
-          "code": "4am_tarrid-mushkila_P2",
+          "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "answerFormat": "عدد صحيح: قيمة $x$ (قد يكون سالبًا)",
       "expectedAnswer": "-5",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انشر: $45 + x = 60 + 4x$ ."
+          "content": "بعد $x$ سنة: عمر الأب $45 + x$ وعمر الابن $15 + x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اجمع حدود $x$ في طرف واحد."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "انتبه إلى الإشارة."
+          "content": "اكتب «عمر الأب = 4 × عمر الابن» ثم حلّ."
         }
       ],
       "feedback": {
-        "correct": "$-3x = 15$ أي $x = -5$ .",
-        "incorrect": "من $45 + x = 60 + 4x$ نجد $-15 = 3x$ ."
-      }
+        "correct": "$45 + x = 4(15 + x)$ تعطي $x = -5$ .",
+        "incorrect": "ضع عمر الابن بعد $x$ سنة بين قوسين ثم اضربه في 4 ."
+      },
+      "solution": {
+        "lines": [
+          "المعادلة: $45 + x = 4(15 + x)$",
+          "$45 + x = 60 + 4x$",
+          "$45 - 60 = 4x - x$",
+          "$-15 = 3x$",
+          "$x = -5$"
+        ],
+        "result": "x = -5"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "ماذا نستنتج عن المشكلة؟",
+      "step": "02",
+      "statement": "هل يحدث ذلك في المستقبل؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P2",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "يحدث ذلك بعد 5 سنوات.",
+          "content": "نعم",
           "isCorrect": false,
           "misconceptionId": "MISC-TARRID-TAHAQQUQ"
         },
         {
           "id": "B",
-          "content": "لن يحدث ذلك بعد اليوم: كان عمر الأب أربعة أضعاف عمر ابنه منذ 5 سنوات.",
+          "content": "لا",
           "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "يحدث ذلك بعد $-5$ سنوات.",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "هل يمكن أن يكون عدد السنوات «بعد» سالبًا؟"
+          "content": "ماذا تعني قيمة سالبة لعدد السنوات «بعد اليوم»؟"
+        }
+      ],
+      "feedback": {
+        "correct": "لا: الحل سالب، فذلك لن يحدث بعد اليوم؛ لقد حدث في الماضي.",
+        "incorrect": "فسّر إشارة الحل: عدد السنوات «بعد اليوم» لا يكون سالبًا."
+      },
+      "solution": {
+        "lines": [
+          "الحل $x = -5$ عدد سالب، و $x$ يمثّل عددًا من السنوات بعد اليوم.",
+          "إذن لن يصبح عمر الأب أربعة أضعاف عمر ابنه في المستقبل."
+        ],
+        "result": "لا"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "منذ كم سنة كان عمر الأب أربعة أضعاف عمر ابنه؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: عدد السنوات",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ $y$ عدد السنوات الماضية: عمر الأب حينئذ $45 - y$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الحل السالب يدلّ على الماضي."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق: احسب العمرين منذ 5 سنوات."
+          "content": "أو فسّر الحل السالب الذي وجدته."
         }
       ],
       "feedback": {
-        "correct": "منذ 5 سنوات: $40 = 4 \\times 10$ . أما بعد اليوم فلا حلّ.",
-        "incorrect": "عدد سنوات «بعد اليوم» لا يكون سالبًا."
-      }
+        "correct": "منذ 5 سنوات: كان عمر الأب 40 سنة وعمر ابنه 10 سنوات.",
+        "incorrect": "قبل $y$ سنة كان عمر الأب $45 - y$ وعمر الابن $15 - y$ ."
+      },
+      "solution": {
+        "lines": [
+          "نسمّي $y$ عدد السنوات الماضية: $45 - y = 4(15 - y)$",
+          "$45 - y = 60 - 4y$",
+          "$3y = 15$",
+          "$y = 5$",
+          "التحقق: $45 - 5 = 40$ و $4 \\times (15 - 5) = 40$ ."
+        ],
+        "result": "y = 5"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

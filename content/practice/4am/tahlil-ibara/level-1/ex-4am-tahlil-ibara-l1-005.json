@@ -3,174 +3,171 @@
   "lessonCode": "tahlil-ibara",
   "level": 1,
   "metadata": {
-    "title": "تدريب — نوع المتطابقة",
-    "estimatedMinutes": 4,
+    "title": "التحليل بمتطابقة شهيرة",
+    "estimatedMinutes": 8,
     "tags": [
-      "متطابقات شهيرة"
+      "متطابقات شهيرة",
+      "تحليل"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tahlil-ibara_P3",
       "modelledOn": "know-3"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "لكل عبارة، تعرّف على شكل المتطابقة الشهيرة التي تحلّلها."
+    "content": "حلّل كل عبارة باستعمال متطابقة شهيرة:",
+    "formulas": [
+      "A = x^2 + 8x + 16",
+      "B = x^2 - 49",
+      "C = x^2 - 12x + 36"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "العبارة $x^2 + 8x + 16$ من الشكل:",
+      "step": "01",
+      "lead": "حلّل العبارة $A$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$a^2 + 2ab + b^2$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$a^2 - 2ab + b^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
-        },
-        {
-          "id": "C",
-          "content": "$a^2 - b^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $(x + m)^2$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "4",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى إشارة الحدّ الأوسط."
+          "content": "تعرّف على الشكل $a^2 + 2ab + b^2$ أو $a^2 - 2ab + b^2$ : عيّن $a$ و $b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$16 = 4^2$ و $8x = 2 \\times x \\times 4$."
+          "content": "تحقّق من الحد المضاعف $2ab$ قبل أن تكتب المربع."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "حدّ أوسط موجب يدلّ على مربع مجموع."
+          "content": "استعمل $a^2 \\pm 2ab + b^2 = (a \\pm b)^2$ ."
         }
       ],
       "feedback": {
-        "correct": "$x^2 + 8x + 16 = x^2 + 2 \\times x \\times 4 + 4^2 = (x + 4)^2$.",
-        "incorrect": "العبارة فيها حدّ أوسط موجب: أيّ متطابقة فيها $+2ab$؟"
-      }
+        "correct": "$A = (x + 4)^2$ إذن $m = 4$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$A = x^2 + 2 \\times x \\times 4 + 4^2$",
+          "$A = (x + 4)^2$"
+        ],
+        "result": "A = (x + 4)^2"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "العبارة $x^2 - 49$ من الشكل:",
+      "step": "02",
+      "lead": "حلّل العبارة $B$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$a^2 + 2ab + b^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-MAJMU-MURABBAYN"
-        },
-        {
-          "id": "B",
-          "content": "$a^2 - 2ab + b^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
-        },
-        {
-          "id": "C",
-          "content": "$a^2 - b^2$",
-          "isCorrect": true
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $(x - m)(x + m)$ حيث $m$ عدد موجب : اكتب العدد $m$ فقط",
+      "expectedAnswer": "7",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "هل في العبارة حدّ أوسط فيه $x$؟"
+          "content": "تعرّف على الشكل $a^2 - b^2$ : عيّن $a$ و $b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$49 = 7^2$."
+          "content": "استعمل المتطابقة $a^2 - b^2 = (a + b)(a - b)$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "مربّعان بينهما طرح ولا حدّ أوسط."
+          "content": "بسّط كل قوس، وانتبه إلى الإشارات عند فتح الأقواس."
         }
       ],
       "feedback": {
-        "correct": "$x^2 - 49 = x^2 - 7^2 = (x - 7)(x + 7)$.",
-        "incorrect": "لا يوجد حدّ أوسط: المتطابقة التي ليس فيها $2ab$ هي المطلوبة."
-      }
+        "correct": "$B = (x - 7)(x + 7)$ إذن $m = 7$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$B = x^2 - 7^2$",
+          "$B = (x - 7)(x + 7)$"
+        ],
+        "result": "B = (x - 7)(x + 7)"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q3",
-      "statement": "العبارة $x^2 - 12x + 36$ من الشكل:",
+      "step": "03",
+      "lead": "حلّل العبارة $C$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$a^2 + 2ab + b^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
-        },
-        {
-          "id": "B",
-          "content": "$a^2 - 2ab + b^2$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$a^2 - b^2$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $C$ على الشكل $(x - m)^2$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "6",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انظر إلى إشارة الحدّ الأوسط."
+          "content": "تعرّف على الشكل $a^2 + 2ab + b^2$ أو $a^2 - 2ab + b^2$ : عيّن $a$ و $b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$36 = 6^2$ و $12x = 2 \\times x \\times 6$."
+          "content": "تحقّق من الحد المضاعف $2ab$ قبل أن تكتب المربع."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "حدّ أوسط سالب يدلّ على مربع فرق."
+          "content": "استعمل $a^2 \\pm 2ab + b^2 = (a \\pm b)^2$ ."
         }
       ],
       "feedback": {
-        "correct": "$x^2 - 12x + 36 = x^2 - 2 \\times x \\times 6 + 6^2 = (x - 6)^2$.",
-        "incorrect": "الحدّ الأوسط سالب: أيّ متطابقة فيها $-2ab$؟"
-      }
+        "correct": "$C = (x - 6)^2$ إذن $m = 6$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$C = x^2 - 2 \\times x \\times 6 + 6^2$",
+          "$C = (x - 6)^2$"
+        ],
+        "result": "C = (x - 6)^2"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

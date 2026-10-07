@@ -1,25 +1,36 @@
 {
+  "id": "ex-4am-muadalat-x-murabba-l2-010",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — إشارة ناقص أمام x²",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2008 — قطعة أرض مستطيلة",
+    "estimatedMinutes": 6,
     "tags": [
-      "معادلة",
-      "إشارة"
+      "مساحة",
+      "مستطيل"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_muadalat-x-murabba_P2",
-      "modelledOn": "now-23-2"
+      "modelledOn": "BEM 2008 II-01"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2008",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في كل معادلة يظهر $-x^2$."
+    "content": "قطعة أرض مستطيلة الشكل مساحتها $1350m^2$ و عرضها يساوي ثلثي طولها."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المعادلة $-x^2 = -16$ ...",
+      "step": "01",
+      "lead": "احسب عرض و طول هذه القطعة.",
+      "statement": "الطول:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P2",
@@ -27,56 +38,56 @@
         }
       ],
       "cognitiveDemand": "apply",
-      "answerType": "choice",
-      "choices": [
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: الطول بالمتر (m)",
+      "expectedAnswer": "45",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "لا تقبل أي حل",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$x = 4$ أو $x = -4$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x = 4$ فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-WAHID"
-        },
-        {
-          "id": "D",
-          "content": "$x = 8$ أو $x = -8$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-QISMA"
+          "value": "675",
+          "id": "MISC-HALL-QISMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اضرب الطرفين في $-1$."
+          "content": "سمِّ $x$ طول القطعة: عرضها إذن $\\dfrac{2}{3}x$."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما إشارة الطرف الثاني بعد ذلك؟"
+          "content": "مساحة المستطيل = الطول × العرض: اكتب معادلة مجهولها $x$."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "طبّق خاصية حلول $x^2 = a$."
+          "content": "اعزل $x^2$ ثم احتفظ بالحل الموجب (الطول موجب)."
         }
       ],
       "feedback": {
-        "correct": "$-x^2 = -16$ يعني $x^2 = 16$: الحلان 4 و $-4$.",
-        "incorrect": "بعد الضرب في $-1$ يصبح الطرف الثاني موجبا."
-      }
+        "correct": "من $\\dfrac{2}{3}x^2 = 1350$ نجد $x^2 = 2025$ ومنه $x = 45m$.",
+        "incorrect": "مساحة المستطيل هي جداء الطول في العرض، والعرض هو $\\dfrac{2}{3}$ الطول: ستحصل على معادلة فيها $x^2$."
+      },
+      "solution": {
+        "lines": [
+          "ليكن $x$ طول هذه القطعة و $y$ عرضها.",
+          "عرض القطعة يساوي ثلثي طولها معناه: $y = \\dfrac{2}{3}x$",
+          "و لدينا: $x \\times y = 1350$",
+          "بتعويض $y$ بما يساويه نجد: $x \\times \\dfrac{2}{3}x = 1350$",
+          "$\\dfrac{2}{3}x^2 = 1350$",
+          "$x^2 = \\dfrac{1350 \\times 3}{2}$",
+          "$x^2 = 2025$",
+          "$x = \\sqrt{2025} = 45$ (الطول عدد موجب)"
+        ],
+        "result": "x = 45m"
+      },
+      "work": "optional",
+      "timeSeconds": 270
     },
     {
       "id": "q2",
-      "statement": "المعادلة $-x^2 = 16$ ...",
+      "step": "01",
+      "statement": "العرض:",
       "learningPoints": [
         {
           "code": "4am_muadalat-x-murabba_P2",
@@ -84,50 +95,61 @@
         }
       ],
       "cognitiveDemand": "apply",
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$x = 4$ أو $x = -4$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-SALIB"
-        },
-        {
-          "id": "B",
-          "content": "لا تقبل أي حل",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$x = -4$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-SALIB"
-        }
-      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: العرض بالمتر (m)",
+      "expectedAnswer": "30",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اضرب الطرفين في $-1$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "ما إشارة الطرف الثاني الآن؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل يمكن أن يكون مربع عدد سالبا؟"
+          "content": "العرض يساوي ثلثي الطول."
         }
       ],
       "feedback": {
-        "correct": "$-x^2 = 16$ يعني $x^2 = -16$: لا حل.",
-        "incorrect": "احسب $-(-4)^2$: هل يساوي 16؟"
-      }
+        "correct": "العرض $\\dfrac{2}{3} \\times 45 = 30m$.",
+        "incorrect": "العرض هو $\\dfrac{2}{3}$ الطول الذي وجدته."
+      },
+      "solution": {
+        "lines": [
+          "$y = \\dfrac{2}{3} \\times 45$"
+        ],
+        "result": "y = 30m"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب محيط هذه القطعة.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المحيط بالمتر (m)",
+      "expectedAnswer": "150",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط المستطيل = 2 × (الطول + العرض)."
+        }
+      ],
+      "feedback": {
+        "correct": "المحيط $2 \\times (45 + 30) = 150m$.",
+        "incorrect": "استعمل البعدين اللذين وجدتهما في السؤال 01."
+      },
+      "solution": {
+        "lines": [
+          "محيط المستطيل $= 2 \\times (45 + 30) = 2 \\times 75$"
+        ],
+        "result": "P = 150m"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-muadalat-x-murabba-l2-010",
-  "lessonCode": "muadalat-x-murabba",
-  "level": 2
+  ]
 }

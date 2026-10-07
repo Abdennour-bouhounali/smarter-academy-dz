@@ -3,111 +3,131 @@
   "lessonCode": "mushkilat-jumla",
   "level": 1,
   "metadata": {
-    "title": "تدريب — تذاكر الديربي",
-    "estimatedMinutes": 4,
+    "title": "تذاكر الديربي",
+    "estimatedMinutes": 8,
     "tags": [
       "ترييض",
-      "ملعب",
-      "جملة"
+      "ملعب"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_mushkilat-jumla_P1",
       "modelledOn": "act-3"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "ديربي العاصمة يوم الجمعة! اشترت رابطة مناصري الحي 20 تذكرة للمدرجات: تذكرة الكبار بـ 300 DA وتذكرة الصغار بـ 150 DA، ودفعت 4800 DA. نسمّي $x$ عدد تذاكر الكبار و $y$ عدد تذاكر الصغار."
+    "content": "اشترت رابطة مناصري فريق الحي 20 تذكرة لمباراة الديربي: ثمن تذكرة الكبير 300DA وثمن تذكرة الصغير 150DA، فدفعت 4800DA."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الجملة التي تترجم المشكلة هي:",
+      "step": "01",
+      "lead": "نسمّي $x$ عدد تذاكر الكبار و $y$ عدد تذاكر الصغار.",
+      "statement": "بيّن أن $x$ و $y$ يحققان الجملة: $\\begin{cases} x + y = 20 \\\\ 2x + y = 32 \\end{cases}$",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$\\begin{cases} x + y = 20 \\\\ 300x + 150y = 4800 \\end{cases}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$\\begin{cases} x + y = 4800 \\\\ 300x + 150y = 20 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        },
-        {
-          "id": "C",
-          "content": "$\\begin{cases} x + y = 20 \\\\ 150x + 300y = 4800 \\end{cases}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-TARJAMA"
-        }
-      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معلومة تعدّ التذاكر، ومعلومة تجمع الدنانير."
+          "content": "ترجم كل معلومة من النص بمعادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في معلومة العدد، كل تذكرة تُعدّ مرة واحدة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "في معلومة المال، كل تذكرة تُضرب في ثمنها."
+          "content": "اقسم طرفي معادلة المبلغ على 150."
         }
       ],
       "feedback": {
-        "correct": "20 تذكرة: $x + y = 20$ ؛ و 4800 DA: $300x + 150y = 4800$ .",
-        "incorrect": "لا نساوي مبلغا بعدد تذاكر، ولا نعطي تذكرة الكبار ثمن تذكرة الصغار."
-      }
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "عدد التذاكر: $x + y = 20$",
+          "المبلغ المدفوع: $300x + 150y = 4800$",
+          "بقسمة طرفي هذه المعادلة على 150 نجد: $2x + y = 32$",
+          "ومنه $x$ و $y$ يحققان الجملة: $\\begin{cases} x + y = 20 \\\\ 2x + y = 32 \\end{cases}$"
+        ]
+      },
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "حل الجملة: كم تذكرة للكبار وكم تذكرة للصغار؟ اكتب الثنائية $(x ; y)$ .",
+      "step": "02",
+      "statement": "استنتج عدد تذاكر الكبار وعدد تذاكر الصغار.",
       "learningPoints": [
         {
           "code": "4am_mushkilat-jumla_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : عدد تذاكر الكبار ثم عدد تذاكر الصغار",
       "expectedAnswer": {
         "x": "12",
         "y": "8"
       },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "8",
+            "y": "12"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "من المعادلة الأولى عبّر عن $y$ بدلالة $x$ ."
+          "content": "معامل $y$ هو نفسه في المعادلتين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض في معادلة المال: تحصل على معادلة بمجهول واحد."
+          "content": "اطرح المعادلة الأولى من الثانية طرفا لطرف لتجد $x$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "بعد إيجاد $x$ عُد لإيجاد $y$ ."
+          "content": "عوّض قيمة $x$ في المعادلة الأولى لتجد $y$ ."
         }
       ],
       "feedback": {
-        "correct": "الحل $(12 ; 8)$ : $3600 + 1200 = 4800$ DA و $12 + 8 = 20$ تذكرة.",
-        "incorrect": "تحقّق بالمعلومتين معا: عدد التذاكر والمبلغ."
-      }
+        "correct": "اشترت الرابطة 12 تذكرة للكبار و 8 تذاكر للصغار: $300 \\times 12 + 150 \\times 8 = 4800$ .",
+        "incorrect": "الحل ثنائية تحقق المعادلتين معا، و $x$ هو عدد تذاكر الكبار."
+      },
+      "solution": {
+        "lines": [
+          "بطرح المعادلة الأولى من الثانية طرفا لطرف: $x = 32 - 20 = 12$",
+          "بالتعويض في المعادلة الأولى: $12 + y = 20$ ومنه $y = 8$",
+          "التحقق في النص: $12 + 8 = 20$ تذكرة و $300 \\times 12 + 150 \\times 8 = 3600 + 1200 = 4800$ .",
+          "إذن اشترت الرابطة 12 تذكرة للكبار و 8 تذاكر للصغار."
+        ],
+        "result": "(12 ; 8)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
   ]
 }

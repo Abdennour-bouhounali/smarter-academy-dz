@@ -1,17 +1,24 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-005",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — معادلات تؤول إلى الشكل x² = a",
-    "estimatedMinutes": 3,
+    "title": "معادلات تؤول إلى الشكل x² = a",
+    "estimatedMinutes": 6,
     "tags": [
-      "وضعية إدماجية",
-      "معادلة",
-      "أبسط كتابة"
+      "المعادلة x² = a"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
       "modelledOn": "qcm"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
@@ -20,120 +27,140 @@
   "questions": [
     {
       "id": "q1",
-      "statement": "حلول المعادلة $3x^2 = 27$ هي ...",
+      "step": "01",
+      "lead": "حل المعادلة $3x^2 = 27$ .",
+      "statement": "الحل السالب:",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "-3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$3$ و $-3$",
-          "isCorrect": true
+          "value": "3",
+          "id": "MISC-HALL-WAHID"
         },
         {
-          "id": "B",
-          "content": "$3$ فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-WAHID"
-        },
-        {
-          "id": "C",
-          "content": "$9$ و $-9$",
-          "isCorrect": false
-        },
-        {
-          "id": "D",
-          "content": "$4{,}5$ و $-4{,}5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-QISMA"
+          "value": "-9",
+          "id": "MISC-JIDHR-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقسم الطرفين على 3."
+          "content": "اقسم الطرفين على 3 لتعزل $x^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "تحصل على معادلة من الشكل $x^2 = a$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ما إشارة $a$؟"
+          "content": "للمعادلة $x^2 = a$ مع $a > 0$ حلان متعاكسان."
         }
       ],
       "feedback": {
-        "correct": "$3x^2 = 27$ يعني $x^2 = 9$، والحلان $3$ و $-3$.",
-        "incorrect": "بعد القسمة على 3 لا تنس أن تأخذ الجذر التربيعي، وأن للمعادلة حلين."
+        "correct": "$3x^2 = 27$ يعني $x^2 = 9$ ، و الحل السالب $-3$ .",
+        "incorrect": "اعزل $x^2$ أولًا، ثم خذ العدد السالب الذي مربعه الطرف الثاني."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$3x^2 = 27$ يعني $x^2 = 9$",
+          "يعني $x = 3$ أو $x = -3$"
+        ],
+        "result": "x = -3 \\quad ; \\quad x = 3"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "حلول المعادلة $2x^2 - 30 = 0$ هي ...",
+      "step": "01",
+      "statement": "الحل الموجب:",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$15$ و $-15$",
-          "isCorrect": false
-        },
-        {
-          "id": "B",
-          "content": "$\\sqrt{15}$ و $-\\sqrt{15}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\sqrt{15}$ فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-WAHID"
-        },
-        {
-          "id": "D",
-          "content": "لا تقبل أي حل",
-          "isCorrect": false,
-          "misconceptionId": "MISC-HALL-SALIB"
+          "value": "9",
+          "id": "MISC-JIDHR-NISF"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اعزل $x^2$ في طرف."
+          "content": "الحل الموجب معاكس الحل السالب."
+        }
+      ],
+      "feedback": {
+        "correct": "$3^2 = 9$ : هذا هو الحل الموجب.",
+        "incorrect": "الحل الموجب هو العدد الموجب الذي مربعه الطرف الثاني بعد عزل $x^2$ ."
+      },
+      "solution": {
+        "lines": [
+          "$x^2 = 9$ يعني $x = \\sqrt{9}$ أو $x = -\\sqrt{9}$"
+        ],
+        "result": "x = 3"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "حل المعادلة $2x^2 - 30 = 0$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "حلا المعادلة على الشكل $\\sqrt{c}$ و $-\\sqrt{c}$ : اكتب العدد $c$ فقط",
+      "expectedAnswer": "15",
+      "misconceptionSignatures": [
+        {
+          "value": "30",
+          "id": "MISC-MUADALA-TARH-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انقل $-30$ إلى الطرف الثاني."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انقل 30 ثم اقسم على 2."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ما إشارة العدد الذي يساويه $x^2$؟"
+          "content": "اقسم على 2 لتحصل على معادلة من الشكل $x^2 = a$ ."
         }
       ],
       "feedback": {
-        "correct": "$2x^2 = 30$ يعني $x^2 = 15$، و $15 > 0$: حلّان متعاكسان.",
-        "incorrect": "اعزل $x^2$ ثم انظر إلى إشارة العدد."
+        "correct": "$2x^2 = 30$ يعني $x^2 = 15$ : الحلان $\\sqrt{15}$ و $-\\sqrt{15}$ .",
+        "incorrect": "اعزل $x^2$ : انقل العدد الثابت ثم اقسم على معامل $x^2$ ."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$2x^2 - 30 = 0$ يعني $2x^2 = 30$",
+          "يعني $x^2 = 15$",
+          "بما أن $15 > 0$ : $x = \\sqrt{15}$ أو $x = -\\sqrt{15}$"
+        ],
+        "result": "x = -\\sqrt{15} \\quad ; \\quad x = \\sqrt{15}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l2-005",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 2
+  ]
 }

@@ -1,114 +1,165 @@
 {
+  "id": "ex-4am-mutatabiqat-shahira-l2-009",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — مربع مجموع وقيمة عبارة",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2016 — جداء مجموع وفرق بعامل",
+    "estimatedMinutes": 6,
     "tags": [
-      "مربع مجموع"
+      "جداء مجموع وفرق",
+      "قيمة عبارة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_mutatabiqat-shahira_P1",
-      "modelledOn": "act-2a"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_mutatabiqat-shahira_P3",
+      "modelledOn": "BEM 2016 I-2"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2016",
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "نعتبر العبارة $G = (3x + 4)^2$ ."
+    "content": "لتكن العبارة $A$ حيث:",
+    "formulas": [
+      "A = 3(4x - 1)(4x + 1)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "النشر المبسّط للعبارة $G$ هو:",
+      "step": "01",
+      "lead": "انشر و بسّط العبارة $A$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
-          "code": "4am_mutatabiqat-shahira_P1",
+          "code": "4am_mutatabiqat-shahira_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $mx^2 + n$ : اكتب العدد $m$ فقط",
+      "expectedAnswer": "48",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$9x^2 + 24x + 16$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "$9x^2 + 12x + 16$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
-        },
-        {
-          "id": "C",
-          "content": "$3x^2 + 24x + 16$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
-        },
-        {
-          "id": "D",
-          "content": "$9x^2 + 16$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+          "value": "12",
+          "id": "MISC-MUTATABIQA-MURABBA-MUAMIL"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$a = 3x$ و $b = 4$."
+          "content": "تعرّف على جداء مجموع حدّين وفرقهما: $(a + b)(a - b) = a^2 - b^2$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$(3x)^2 = 9x^2$."
+          "content": "عيّن الحدّين $a$ و $b$ ، ثم احسب مربع كل منهما: إذا كان $a = 3x$ فإن $a^2 = 9x^2$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "الحد المضاعف $2 \\times 3x \\times 4$."
+          "content": "اجمع الحدود المتشابهة: حدود $x^2$ معًا، ثم حدود $x$، ثم الأعداد."
         }
       ],
       "feedback": {
-        "correct": "$(3x)^2 + 2 \\times 3x \\times 4 + 4^2 = 9x^2 + 24x + 16$",
-        "incorrect": "راجع الحد المضاعف وتربيع المعامل."
-      }
+        "correct": "$A = 48x^2 - 3$ إذن $m = 48$ .",
+        "incorrect": "طبّق المتطابقة الشهيرة حدًّا حدًّا (مربع كل حد والحد المضاعف)، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$A = 3(4x - 1)(4x + 1)$",
+          "$A = 3\\left[(4x)^2 - 1^2\\right]$",
+          "$A = 3(16x^2 - 1)$"
+        ],
+        "result": "A = 48x^2 - 3"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "احسب قيمة $G$ من أجل $x = -1$ .",
+      "step": "01",
+      "statement": "العدد $n$ :",
       "learningPoints": [
         {
-          "code": "4am_mutatabiqat-shahira_P1",
+          "code": "4am_mutatabiqat-shahira_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "1",
+      "answerFormat": "يُكتب $A$ على الشكل $mx^2 + n$ : اكتب العدد $n$ فقط",
+      "expectedAnswer": "-3",
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ بـ $-1$ في $(3x + 4)^2$."
+          "content": "الحد الثابت هو مجموع الأعداد التي لا تحتوي على $x$ بعد النشر، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 48x^2 - 3$ إذن $n = -3$ .",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $n$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$A = 48x^2 - 3$"
+        ],
+        "result": "n = -3"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "احسب قيمة العبارة $A$ من أجل $x = \\dfrac{1}{4}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "يمكنك التعويض في الشكل المعطى: ماذا يساوي أحد العاملين من أجل هذه القيمة؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $3 \\times (-1) + 4$ أولًا."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم ربّع النتيجة."
+          "content": "احسب القوى أولًا، ثم الجداءات، ثم الجمع والطرح."
         }
       ],
       "feedback": {
-        "correct": "$(3 \\times (-1) + 4)^2 = 1^2 = 1$ ، ومن النشر $9 - 24 + 16 = 1$.",
-        "incorrect": "احسب ما بين القوسين قبل التربيع."
-      }
+        "correct": "$A = 0$.",
+        "incorrect": "عوّض $x$ في كل حد، واحترم أولويات العمليات والإشارات."
+      },
+      "solution": {
+        "lines": [
+          "باستعمال الشكل المعطى: $A = 3\\left(4 \\times \\dfrac{1}{4} - 1\\right)\\left(4 \\times \\dfrac{1}{4} + 1\\right) = 3 \\times 0 \\times 2$",
+          "أو باستعمال الشكل المنشور: $A = 48 \\times \\dfrac{1}{16} - 3 = 3 - 3$"
+        ],
+        "result": "A = 0"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
-  ],
-  "id": "ex-4am-mutatabiqat-shahira-l2-009",
-  "lessonCode": "mutatabiqat-shahira",
-  "level": 2
+  ]
 }

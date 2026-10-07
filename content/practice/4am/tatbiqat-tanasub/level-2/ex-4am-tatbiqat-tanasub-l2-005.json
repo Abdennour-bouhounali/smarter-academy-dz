@@ -4,26 +4,34 @@
   "level": 2,
   "metadata": {
     "title": "نشاط 6 — لافتة 80",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 4,
     "tags": [
-      "تحويل الوحدات",
-      "السرعة"
+      "السرعة",
+      "تحويل الوحدات"
     ],
     "source": {
       "type": "textbook",
       "elementId": "act-6",
       "page": 67,
       "section": "أنشطة",
-      "number": 6
+      "number": 6,
+      "adaptedFrom": "ex-4am-tatbiqat-tanasub-l2-005"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 67): تسير سيّارة بسرعة متوسطة قدرها $25m/s$ على طريق حُدّدت السرعة القصوى فيه بـ $80km/h$ . هل ارتكب سائق هذه السيّارة مخالفة ؟"
+    "content": "تسير سيارة بسرعة متوسطة قدرها $25m/s$ على طريق حُدّدت فيه السرعة القصوى بـ $80km/h$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "سرعة السيارة بالكيلومتر في الساعة:",
+      "step": "01",
+      "statement": "عبّر عن سرعة هذه السيارة بـ km/h .",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P2",
@@ -31,51 +39,68 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "اكتب السرعة بـ km/h (عدد فقط)",
       "expectedAnswer": "90",
+      "misconceptionSignatures": [
+        {
+          "value": "125/18",
+          "id": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "value": "1500",
+          "id": "MISC-MAQADIR-WIHDA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد وحدة البسط ووحدة المقام، قبل التحويل وبعده."
+          "content": "في ساعة واحدة $3600s$ ، و $1km = 1000m$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "حوّل البسط والمقام كلًّا على حدة: $1h = 3600s$ ، $1km = 1000m$ ، $1m^3 = 1000L$ ، $1L = 1000cm^3$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب المقدار كحاصل قسمة بالوحدات الجديدة، ثم احسب."
+          "content": "احسب المسافة المقطوعة في $3600s$ ثم حوّلها إلى km ."
         }
       ],
       "feedback": {
-        "correct": "$25 \\times 3600 = 90\\,000m$ في الساعة، أي $90km/h$ .",
-        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
-      }
+        "correct": "$25 \\times 3600 = 90\\,000m = 90km$ في الساعة، أي $90km/h$ .",
+        "incorrect": "حوّل البسط (m → km) والمقام (s → h) كلا على حدة: $1m/s = 3{,}6km/h$ ."
+      },
+      "solution": {
+        "lines": [
+          "في $1h = 3600s$ تقطع السيارة $25 \\times 3600 = 90\\,000m$",
+          "$90\\,000m = 90km$",
+          "سرعة السيارة $90km/h$ ."
+        ],
+        "result": "v = 90km/h"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "هل ارتكب السائق مخالفة؟",
+      "step": "02",
+      "statement": "هل ارتكب سائق هذه السيارة مخالفة؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_tatbiqat-tanasub_P2",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "نعم، لأنّ $90km/h > 80km/h$",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "لا، لأنّ $25 < 80$",
+          "content": "لا",
           "isCorrect": false,
           "misconceptionId": "MISC-MAQADIR-WIHDA"
         }
@@ -84,23 +109,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد وحدة البسط ووحدة المقام، قبل التحويل وبعده."
+          "content": "قارن السرعتين بالوحدة نفسها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "حوّل البسط والمقام كلًّا على حدة: $1h = 3600s$ ، $1km = 1000m$ ، $1m^3 = 1000L$ ، $1L = 1000cm^3$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب المقدار كحاصل قسمة بالوحدات الجديدة، ثم احسب."
+          "content": "استعمل النتيجة السابقة."
         }
       ],
       "feedback": {
-        "correct": "نقارن بالوحدة نفسها: 90 أكبر من 80.",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "$90km/h > 80km/h$ : ارتكب السائق مخالفة.",
+        "incorrect": "قارن سرعة السيارة بـ km/h بالسرعة القصوى."
+      },
+      "solution": {
+        "lines": [
+          "$90km/h > 80km/h$",
+          "سرعة السيارة أكبر من السرعة القصوى: ارتكب السائق مخالفة."
+        ],
+        "result": "ارتكب مخالفة"
+      },
+      "timeSeconds": 60
     }
   ]
 }

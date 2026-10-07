@@ -4,59 +4,81 @@
   "level": 1,
   "metadata": {
     "title": "مستقيمان ونقطة تقاطعهما",
-    "estimatedMinutes": 2,
+    "estimatedMinutes": 5,
     "tags": [
-      "جملة معادلتين",
-      "تفسير بياني"
+      "نقطة التقاطع"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في معلم، المستقيم $(d_1)$ يمثّل $y = x + 2$ والمستقيم $(d_2)$ يمثّل $y = -x + 8$."
+    "content": "في معلم متعامد ومتجانس، $(d_1)$ هو التمثيل البياني للدالة $f$ حيث $f(x) = x + 2$ ، و $(d_2)$ هو التمثيل البياني للدالة $g$ حيث $g(x) = -x + 8$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما إحداثيتا نقطة تقاطع المستقيمين (حلّ الجملة)؟",
+      "step": "01",
+      "statement": "عيّن حسابيا إحداثيي نقطة تقاطع المستقيمين $(d_1)$ و $(d_2)$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-taalufiya_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "point",
-      "answerFormat": "الثنائية (x ; y)",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : الفاصلة ثم الترتيب (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
       "expectedAnswer": {
         "x": "3",
         "y": "5"
       },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-JUMLA-BAYANI-MAQLUB",
+          "value": {
+            "x": "5",
+            "y": "3"
+          }
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "النقطة على المستقيمين معا."
+          "content": "فاصلة نقطة التقاطع هي حل المعادلة $f(x) = g(x)$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$x + 2 = -x + 8$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $x$ ثم $y$."
+          "content": "حلّ $x + 2 = -x + 8$ ، ثم احسب الترتيب بإحدى الدالتين."
         }
       ],
       "feedback": {
-        "correct": "$2x = 6$ ، $x = 3$ و $y = 5$ : $(3 ; 5)$.",
-        "incorrect": "نقطة التقاطع تحقق المعادلتين؛ الفاصلة أولا."
+        "correct": "$x + 2 = -x + 8$ يعطي الفاصلة، ثم $f(x)$ يعطي الترتيب.",
+        "incorrect": "حلّ المعادلة $f(x) = g(x)$ ، ثم اكتب الفاصلة أولا والترتيب ثانيا."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "نقطة التقاطع فاصلتها حل المعادلة $f(x) = g(x)$ :",
+          "$x + 2 = -x + 8$",
+          "$2x = 6$",
+          "$x = 3$",
+          "$f(3) = 3 + 2 = 5$",
+          "إذن نقطة تقاطع $(d_1)$ و $(d_2)$ هي $(3 ; 5)$ ."
+        ],
+        "result": "(3 ; 5)"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

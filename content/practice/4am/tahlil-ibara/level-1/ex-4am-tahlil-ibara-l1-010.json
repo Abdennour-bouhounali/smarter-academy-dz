@@ -3,101 +3,147 @@
   "lessonCode": "tahlil-ibara",
   "level": 1,
   "metadata": {
-    "title": "تدريب — أكمل المتطابقة",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2007 — فرق مربعين",
+    "estimatedMinutes": 7,
     "tags": [
-      "متطابقات شهيرة"
+      "فرق مربعين",
+      "تحليل"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_tahlil-ibara_P3",
-      "modelledOn": "ex-29"
+      "modelledOn": "BEM 2007 I-2"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2007",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "أتمم كل مساواة لتكون صحيحة من أجل كل عدد $x$."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$x^2 + 10x + \\ldots = (x + 5)^2$ : ما العدد الناقص؟",
+      "step": "01",
+      "lead": "حلّل العبارة $9^2 - (x + 1)^2$ .",
+      "statement": "العدد $m$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "25",
+      "answerFormat": "يُكتب $9^2 - (x + 1)^2$ على الشكل $(m - x)(x + n)$ حيث $m$ و $n$ عددان طبيعيان : اكتب العدد $m$ فقط",
+      "expectedAnswer": "8",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الحدّ الأخير في $(a + b)^2$ هو $b^2$."
+          "content": "تعرّف على الشكل $a^2 - b^2$ : عيّن $a$ و $b$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هنا $b = 5$."
+          "content": "استعمل المتطابقة $a^2 - b^2 = (a + b)(a - b)$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احسب $b^2$."
+          "content": "بسّط كل قوس، وانتبه إلى الإشارات عند فتح الأقواس."
         }
       ],
       "feedback": {
-        "correct": "$(x + 5)^2 = x^2 + 10x + 5^2$.",
-        "incorrect": "الحدّ الأخير هو مربّع $b$ ، لا ضعفه."
+        "correct": "$9^2 - (x + 1)^2 = (8 - x)(x + 10)$ إذن $m = 8$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "10",
-          "id": "MISC-MUTATABIQA-2AB-NISF"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$9^2 - (x + 1)^2 = [9 - (x + 1)][9 + (x + 1)]$",
+          "$= (9 - x - 1)(9 + x + 1)$"
+        ],
+        "result": "9^2 - (x + 1)^2 = (8 - x)(x + 10)"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     },
     {
       "id": "q2",
-      "statement": "$x^2 - \\ldots x + 9 = (x - 3)^2$ : ما العدد الناقص أمام $x$؟",
+      "step": "01",
+      "statement": "العدد $n$ :",
       "learningPoints": [
         {
           "code": "4am_tahlil-ibara_P3",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "6",
+      "answerFormat": "يُكتب $9^2 - (x + 1)^2$ على الشكل $(m - x)(x + n)$ حيث $m$ و $n$ عددان طبيعيان : اكتب العدد $n$ فقط",
+      "expectedAnswer": "10",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الحدّ الأوسط في $(a - b)^2$ هو $-2ab$."
+          "content": "اقرأ العدد المطلوب في الشكل المحلّل، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$9^2 - (x + 1)^2 = (8 - x)(x + 10)$ إذن $n = 10$ .",
+        "incorrect": "تعرّف على المتطابقة الشهيرة المناسبة، وعيّن $a$ و $b$ بدقّة قبل التحليل."
+      },
+      "solution": {
+        "lines": [
+          "$9^2 - (x + 1)^2 = (8 - x)(x + 10)$"
+        ],
+        "result": "n = 10"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "استنتج قيمة العدد $9^2 - 31^2$ باستعمال التحليل السابق (من أجل $x = 30$).",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-880",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لاحظ أن $31 = 30 + 1$ : عوّض $x$ بـ $30$ في الشكل المحلّل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هنا $a = x$ و $b = 3$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $2 \\times 3$."
+          "content": "احسب كل عامل ثم اضرب، وانتبه إلى الإشارة."
         }
       ],
       "feedback": {
-        "correct": "$(x - 3)^2 = x^2 - 2 \\times x \\times 3 + 9 = x^2 - 6x + 9$.",
-        "incorrect": "الحدّ الأوسط هو $2ab$ : لا تنسَ المعامل 2."
+        "correct": "$9^2 - 31^2 = -880$ .",
+        "incorrect": "عوّض $x$ في كل عامل، واحترم الإشارات وأولويات العمليات."
       },
-      "misconceptionSignatures": [
-        {
-          "value": "3",
-          "id": "MISC-MUTATABIQA-2AB-NISF"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "من أجل $x = 30$ : $9^2 - (30 + 1)^2 = (8 - 30)(30 + 10)$",
+          "$= (-22) \\times 40$"
+        ],
+        "result": "9^2 - 31^2 = -880"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

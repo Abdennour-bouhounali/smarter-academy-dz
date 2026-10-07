@@ -153,7 +153,7 @@ describe('aucun suivi — garanties de structure', () => {
       expect(session, marker).toContain(marker);
       expect(player, marker).toContain(marker);
     }
-    expect(player).toContain('checkLocally(answer, question)');
+    expect(player).toMatch(/checkLocally\((answer|sent), question\)/);
     expect(player).toContain('<StudentResponsesPanel');
   });
 
@@ -164,5 +164,14 @@ describe('aucun suivi — garanties de structure', () => {
     expect(app).not.toContain('TeacherPracticeBank');
     expect(app).not.toContain('TeacherPracticeLesson');
     expect(read('src/data/teacherNavigation.js')).not.toContain('/enseignant/pratique');
+  });
+});
+
+describe('réponses de feuille d’examen relues par l’enseignant (2026-10-06)', () => {
+  it('montre la formule MathLive, puis la démonstration écrite', async () => {
+    const { formatStudentAnswer } = await import('./teacherBank');
+    expect(formatStudentAnswer({ answerType: 'rational' }, { value: '7/9', latex: '\\frac{7}{9}', work: '$1215=945\\times1+270$', seconds: 40 })).toBe('$\\frac{7}{9}$');
+    expect(formatStudentAnswer({ answerType: 'rational' }, { value: '135' })).toBe('135');
+    expect(formatStudentAnswer({ answerType: 'selfCheck' }, { text: 'لأن 21 − 14 = 7', selfMark: 'correct' }, 'self:correct')).toBe('لأن 21 − 14 = 7');
   });
 });

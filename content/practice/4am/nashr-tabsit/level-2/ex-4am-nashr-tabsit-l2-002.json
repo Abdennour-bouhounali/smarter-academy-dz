@@ -1,9 +1,12 @@
 {
+  "id": "ex-4am-nashr-tabsit-l2-002",
+  "lessonCode": "nashr-tabsit",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — عامل سالب",
-    "estimatedMinutes": 3,
+    "title": "عامل سالب",
+    "estimatedMinutes": 7,
     "tags": [
-      "نشر",
+      "k(a + b)",
       "إشارات"
     ],
     "source": {
@@ -11,116 +14,200 @@
       "reason": "practice_generation",
       "learningPoint": "4am_nashr-tabsit_P2",
       "modelledOn": "ex-1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "ننشر جداء عدد سالب في مجموع أو فرق."
+    "content": "لتكن العبارتان $A$ و $B$ حيث:",
+    "formulas": [
+      "A = -3(x + 4)",
+      "B = -2(5 - 3x)"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نشر $-3(x + 4)$ هو:",
+      "step": "01",
+      "lead": "انشر العبارة $A$ .",
+      "statement": "العدد $a$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$-3x + 12$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
-        },
-        {
-          "id": "B",
-          "content": "$-3x - 12$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$-3x + 4$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax + b$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "-3",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العامل سالب."
+          "content": "اضرب العامل الذي أمام القوس في كل حد من حدود القوس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب $-3$ في $x$ ثم في 4."
+          "content": "انتبه إلى الإشارات: جداء عددين مختلفين في الإشارة سالب."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "$(-3) \\times 4$ سالب."
+          "content": "اجمع الحدود المتشابهة: حدود $x$ معًا، ثم الأعداد."
         }
       ],
       "feedback": {
-        "correct": "$-3 \\times x + (-3) \\times 4 = -3x - 12$.",
-        "incorrect": "الإشارة $-$ تُضرب في الحدّين."
-      }
+        "correct": "$A = -3x - 12$ إذن $a = -3$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$A = -3(x + 4)$",
+          "$A = -3 \\times x - 3 \\times 4$"
+        ],
+        "result": "A = -3x - 12"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "نشر $-2(5 - 3x)$ هو:",
+      "step": "01",
+      "statement": "العدد $b$ :",
       "learningPoints": [
         {
           "code": "4am_nashr-tabsit_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $A$ على الشكل $ax + b$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "-12",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$-10 + 6x$",
-          "isCorrect": true
+          "value": "4",
+          "id": "MISC-NASHR-HAD-WAHID"
         },
         {
-          "id": "B",
-          "content": "$-10 - 6x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
-        },
-        {
-          "id": "C",
-          "content": "$-10 - 3x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+          "value": "12",
+          "id": "MISC-NASHR-ISHARA-SALIBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العامل سالب، والقوس فرق."
+          "content": "الحد الثابت هو مجموع الأعداد التي لا تحتوي على $x$ بعد النشر، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = -3x - 12$ إذن $b = -12$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $b$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$A = -3x - 12$"
+        ],
+        "result": "b = -12"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "انشر العبارة $B$ .",
+      "statement": "العدد $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $ax + b$ : اكتب العدد $a$ فقط",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "value": "-3",
+          "id": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "value": "-6",
+          "id": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب العامل الذي أمام القوس في كل حد من حدود القوس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب $-2$ في 5 ثم في $-3x$."
+          "content": "انتبه إلى الإشارات: جداء عددين مختلفين في الإشارة سالب."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "جداء عددين سالبين موجب."
+          "content": "اجمع الحدود المتشابهة: حدود $x$ معًا، ثم الأعداد."
         }
       ],
       "feedback": {
-        "correct": "$-2 \\times 5 - (-2) \\times 3x = -10 + 6x$.",
-        "incorrect": "انتبه إلى $(-2) \\times (-3x)$."
-      }
+        "correct": "$B = 6x - 10$ إذن $a = 6$.",
+        "incorrect": "أعد النشر حدًّا حدًّا، ثم اجمع الحدود المتشابهة بإشاراتها."
+      },
+      "solution": {
+        "lines": [
+          "$B = -2(5 - 3x)$",
+          "$B = -2 \\times 5 + 2 \\times 3x$",
+          "$B = -10 + 6x$"
+        ],
+        "result": "B = 6x - 10"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "يُكتب $B$ على الشكل $ax + b$ : اكتب العدد $b$ فقط",
+      "expectedAnswer": "-10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت هو مجموع الأعداد التي لا تحتوي على $x$ بعد النشر، بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = 6x - 10$ إذن $b = -10$.",
+        "incorrect": "بعد النشر، اجمع الحدود المتشابهة بإشاراتها ثم اقرأ العدد $b$ في الشكل المبسّط."
+      },
+      "solution": {
+        "lines": [
+          "$B = 6x - 10$"
+        ],
+        "result": "b = -10"
+      },
+      "timeSeconds": 60
     }
-  ],
-  "id": "ex-4am-nashr-tabsit-l2-002",
-  "lessonCode": "nashr-tabsit",
-  "level": 2
+  ]
 }

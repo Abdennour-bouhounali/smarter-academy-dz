@@ -3,7 +3,7 @@
   "lessonCode": "tarrid-mushkila",
   "level": 1,
   "metadata": {
-    "title": "تمرين 11 — ضعف العدد",
+    "title": "العدد المجهول — ضعف العدد المختار",
     "estimatedMinutes": 3,
     "tags": [
       "ترييض",
@@ -15,95 +15,77 @@
       "page": 50,
       "section": "أوظّف تعلّماتي",
       "number": 11
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 50): ما هو العدد الذي إذا ضربته في 3 و طرحت منه 21، تحصل على ضعف العدد الذي اخترته في البداية؟ نسمّي $x$ العدد المختار."
+    "content": "نبحث عن العدد الذي إذا ضربته في 3 و طرحت منه 21 ، تحصل على ضعف العدد الذي اخترته في البداية."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ معادلة تترجم النص؟",
+      "step": "01",
+      "statement": "سمِّ $x$ العدد المختار، اكتب معادلة تترجم النص ثم حلّها.",
       "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P1",
           "role": "primary"
-        }
-      ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$3(x - 21) = 2x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
         },
-        {
-          "id": "B",
-          "content": "$3x - 21 = x + 2$",
-          "isCorrect": false
-        },
-        {
-          "id": "C",
-          "content": "$3x - 21 = 2x$",
-          "isCorrect": true
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "ما معنى «ضعف العدد»؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "«ضعف العدد» هو العدد مضروبًا في 2."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب الطرف الأول «ضربته في 3 وطرحت 21» ثم الطرف الثاني."
-        }
-      ],
-      "feedback": {
-        "correct": "الطرف الأول $3x - 21$ ، والطرف الثاني ضعف العدد $2x$ .",
-        "incorrect": "ضعف العدد يُكتب $2x$ ، لا $x + 2$ ."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "ما هو العدد المختار؟",
-      "learningPoints": [
         {
           "code": "4am_tarrid-mushkila_P2",
-          "role": "primary"
+          "role": "secondary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "عدد: قيمة $x$ (اكتب معادلتك في «مراحل الحساب»)",
       "expectedAnswer": "21",
+      "misconceptionSignatures": [
+        {
+          "value": "63",
+          "id": "MISC-TARRID-DIF-MAJMU"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "انطلق من $3x - 21 = 2x$ ."
+          "content": "ما الذي يحدث للعدد المختار؟ وما الذي نحصل عليه في الأخير؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اجمع الحدود التي فيها $x$ في طرف واحد."
+          "content": "الطرف الأول: نضرب في 3 ثم نطرح 21 . الطرف الثاني: ضعف العدد المختار $2x$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "تحقّق: احسب النتيجة وقارنها بضعف العدد."
+          "content": "اجمع حدود $x$ في طرف واحد والأعداد في الطرف الآخر."
         }
       ],
       "feedback": {
-        "correct": "$3x - 2x = 21$ أي $x = 21$ ، وتحقّق: $63 - 21 = 42 = 2 \\times 21$ .",
-        "incorrect": "انقل $2x$ إلى الطرف الأول بطرحه من الطرفين."
-      }
+        "correct": "المعادلة $3x - 21 = 2x$ ، وحلها $x = 21$ .",
+        "incorrect": "الطرح يأتي بعد الضرب: لا تضع قوسين حول $x - 21$ ."
+      },
+      "solution": {
+        "lines": [
+          "نسمّي $x$ العدد المختار.",
+          "ضربه في 3 ثم طرح 21 يعطي $3x - 21$ ، وضعف العدد المختار هو $2x$ .",
+          "المعادلة: $3x - 21 = 2x$",
+          "$3x - 2x = 21$",
+          "$x = 21$",
+          "التحقق: $3 \\times 21 - 21 = 42$ و $2 \\times 21 = 42$ .",
+          "إذن العدد المختار هو 21 ."
+        ],
+        "result": "x = 21"
+      },
+      "work": "required",
+      "timeSeconds": 240
     }
   ]
 }

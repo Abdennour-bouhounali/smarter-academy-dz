@@ -1,134 +1,164 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l4-005",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 4,
   "metadata": {
-    "title": "تدريب — كتابتان للعدد نفسه",
-    "estimatedMinutes": 4,
+    "title": "كتابتان للعدد نفسه",
+    "estimatedMinutes": 9,
     "tags": [
-      "وضعية إدماجية",
-      "نسبة مقامها ناطق",
-      "تبرير"
+      "نسبة مقامها ناطق"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
       "modelledOn": null
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "قالت سارة: «$\\dfrac{2}{\\sqrt{5}}$ و $\\dfrac{2\\sqrt{5}}{5}$ هما العدد نفسه»."
+    "content": "قالت سارة: «العددان $\\dfrac{2}{\\sqrt{5}}$ و $\\dfrac{2\\sqrt{5}}{5}$ متساويان»."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل سارة على حق؟",
+      "step": "01",
+      "statement": "هل سارة على حق ؟ برّر إجابتك.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "لا، لأنّ $\\sqrt{5} \\times \\sqrt{5} = 25$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-FI-JIDHR"
-        },
-        {
-          "id": "B",
-          "content": "نعم، لأنّنا نضرب البسط والمقام في $\\sqrt{5}$ و $\\sqrt{5} \\times \\sqrt{5} = 5$",
+          "content": "نعم",
           "isCorrect": true
         },
         {
-          "id": "C",
-          "content": "لا، لأنّ ضرب البسط وحده في $\\sqrt{5}$ يغيّر العدد",
+          "id": "B",
+          "content": "لا",
           "isCorrect": false,
-          "misconceptionId": "MISC-BAST-DUN-DARB"
+          "misconceptionId": "MISC-MAQAM-DUN-BAST"
         }
       ],
+      "answerFormat": "اختر نعم أو لا، ثم قارن تبريرك بالحل النموذجي",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ما الذي نفعله لنجعل المقام عددًا ناطقًا؟"
+          "content": "اضرب بسط الكسر الأول و مقامه في $\\sqrt{5}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ضرب البسط والمقام في العدد نفسه لا يغيّر النسبة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب $\\sqrt{5} \\times \\sqrt{5}$."
+          "content": "ما قيمة $\\sqrt{5} \\times \\sqrt{5}$ ؟"
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{2}{\\sqrt{5}} = \\dfrac{2 \\times \\sqrt{5}}{\\sqrt{5} \\times \\sqrt{5}} = \\dfrac{2\\sqrt{5}}{5}$.",
-        "incorrect": "اضرب البسط والمقام معًا في $\\sqrt{5}$."
+        "correct": "$\\dfrac{2}{\\sqrt{5}} = \\dfrac{2\\sqrt{5}}{\\sqrt{5} \\times \\sqrt{5}} = \\dfrac{2\\sqrt{5}}{5}$",
+        "incorrect": "ضرب البسط والمقام معًا في العدد نفسه لا يغيّر الكسر: جرّب ذلك بـ $\\sqrt{5}$ ."
       },
-      "cognitiveDemand": "reason"
+      "solution": {
+        "lines": [
+          "$\\dfrac{2}{\\sqrt{5}} = \\dfrac{2 \\times \\sqrt{5}}{\\sqrt{5} \\times \\sqrt{5}} = \\dfrac{2\\sqrt{5}}{5}$",
+          "العددان متساويان."
+        ],
+        "result": "نعم"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "العدد $\\dfrac{3}{\\sqrt{12}}$ يساوي ...",
+      "step": "02",
+      "statement": "اكتب العدد $\\dfrac{3}{\\sqrt{12}}$ على شكل نسبة مقامها عدد ناطق، ثم بسّطها.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "النتيجة على الشكل $\\dfrac{\\sqrt{3}}{c}$ : اكتب العدد $c$ فقط",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\dfrac{3\\sqrt{12}}{144}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JIDHR-FI-JIDHR"
-        },
-        {
-          "id": "B",
-          "content": "$\\dfrac{2}{\\sqrt{3}}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MAQLUB"
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{1}{4}$",
-          "isCorrect": false
-        },
-        {
-          "id": "D",
-          "content": "$\\dfrac{\\sqrt{3}}{2}$",
-          "isCorrect": true
+          "value": "4",
+          "id": "MISC-JIDHR-MURABBA-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "بسّط $\\sqrt{12}$ أولًا."
+          "content": "ابدأ بكتابة $\\sqrt{12}$ على الشكل $k\\sqrt{3}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\dfrac{3}{2\\sqrt{3}}$: اضرب البسط والمقام في $\\sqrt{3}$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "بسّط الناتج."
+          "content": "اضرب البسط والمقام في $\\sqrt{3}$ ثم بسّط."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{3}{\\sqrt{12}} = \\dfrac{3}{2\\sqrt{3}} = \\dfrac{3\\sqrt{3}}{6} = \\dfrac{\\sqrt{3}}{2}$.",
-        "incorrect": "بسّط الجذر، ثم اجعل المقام ناطقًا، ثم اختزل."
+        "correct": "$\\dfrac{3}{2\\sqrt{3}} = \\dfrac{3\\sqrt{3}}{6} = \\dfrac{\\sqrt{3}}{2}$",
+        "incorrect": "اكتب $\\sqrt{12} = 2\\sqrt{3}$ ، اجعل المقام ناطقًا، ثم اختزل."
       },
-      "cognitiveDemand": "reason"
+      "solution": {
+        "lines": [
+          "$\\dfrac{3}{\\sqrt{12}} = \\dfrac{3}{2\\sqrt{3}} = \\dfrac{3\\sqrt{3}}{2\\sqrt{3} \\times \\sqrt{3}}$",
+          "$= \\dfrac{3\\sqrt{3}}{6}$"
+        ],
+        "result": "\\dfrac{3}{\\sqrt{12}} = \\dfrac{\\sqrt{3}}{2}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "بيّن أن: $\\dfrac{3}{\\sqrt{12}} + \\dfrac{1}{\\sqrt{3}} = \\dfrac{5\\sqrt{3}}{6}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $\\dfrac{1}{\\sqrt{3}}$ على شكل نسبة مقامها ناطق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "وحّد المقامين 2 و 3."
+        }
+      ],
+      "feedback": {
+        "correct": "تبريرك مطابق للحل النموذجي.",
+        "incorrect": "قارن تبريرك سطرًا بسطر بالحل النموذجي."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{1}{\\sqrt{3}} = \\dfrac{\\sqrt{3}}{3}$",
+          "$\\dfrac{3}{\\sqrt{12}} + \\dfrac{1}{\\sqrt{3}} = \\dfrac{\\sqrt{3}}{2} + \\dfrac{\\sqrt{3}}{3} = \\dfrac{3\\sqrt{3}}{6} + \\dfrac{2\\sqrt{3}}{6}$"
+        ],
+        "result": "\\dfrac{3}{\\sqrt{12}} + \\dfrac{1}{\\sqrt{3}} = \\dfrac{5\\sqrt{3}}{6}"
+      },
+      "timeSeconds": 240
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l4-005",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 4
+  ]
 }

@@ -3,54 +3,53 @@
   "lessonCode": "tafsir-bayani-jumla",
   "level": 2,
   "metadata": {
-    "title": "نتحقّق بالتعويض",
-    "estimatedMinutes": 4,
+    "title": "الحل ونقطة التقاطع",
+    "estimatedMinutes": 5,
     "tags": [
-      "تعويض"
+      "تحقق",
+      "نقطة التقاطع"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tafsir-bayani-jumla_P2",
       "modelledOn": "act-5"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نعتبر الجملة $\\begin{cases} x - y = 3 \\\\ 2x + y = 3 \\end{cases}$ ."
+    "content": "نعتبر الجملة:",
+    "formulas": [
+      "\\begin{cases} x - y = 3 \\\\ 2x + y = 3 \\end{cases}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "النقطة $(2 ; -1)$ :",
+      "step": "01",
+      "statement": "هل الثنائية $(2 ; -1)$ حل لهذه الجملة؟ برّر.",
       "learningPoints": [
         {
           "code": "4am_tafsir-bayani-jumla_P2",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "تحقّق المعادلتين معًا: هي نقطة تقاطع المستقيمين",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "تحقّق المعادلة الأولى وحدها: على المستقيم الأول فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
-        },
-        {
-          "id": "C",
-          "content": "تحقّق المعادلة الثانية وحدها: على المستقيم الثاني فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
-        },
-        {
-          "id": "D",
-          "content": "لا تحقّق أيّ معادلة",
+          "content": "لا",
           "isCorrect": false,
           "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
         }
@@ -59,23 +58,77 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $x$ و $y$ في كل معادلة على حدة."
+          "content": "عوّض $x$ بـ $2$ و $y$ بـ $-1$ في كل معادلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كل معادلة محقّقة تعني أنّ النقطة على مستقيمها."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "نقطة التقاطع تحقّق المعادلتين معًا."
+          "content": "الثنائية حل للجملة إذا حققت المعادلتين في آن واحد."
         }
       ],
       "feedback": {
-        "correct": "بالتعويض: $x - y = 3$ محقّقة ؛ $2x + y = 3$ محقّقة.",
-        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
-      }
+        "correct": "تحقق المعادلتين معا.",
+        "incorrect": "عوّض في المعادلتين معا، وانتبه إلى $-(-1)$ ."
+      },
+      "solution": {
+        "lines": [
+          "$2 - (-1) = 3$",
+          "$2 \\times 2 + (-1) = 3$",
+          "الثنائية $(2 ; -1)$ تحقق المعادلتين معا: هي حل للجملة."
+        ]
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج إحداثيي نقطة تقاطع المستقيمين الممثلين لمعادلتي الجملة.",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "point",
+      "answerFormat": "اكتب الثنائية $(x ; y)$ : الفاصلة ثم الترتيب (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": {
+        "x": "2",
+        "y": "-1"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "-1",
+            "y": "2"
+          },
+          "id": "MISC-JUMLA-BAYANI-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل الجملة يحقق معادلتي المستقيمين معا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقطة تنتمي إلى المستقيمين معا هي نقطة تقاطعهما."
+        }
+      ],
+      "feedback": {
+        "correct": "حل الجملة هو إحداثيا نقطة تقاطع المستقيمين.",
+        "incorrect": "النقطة المشتركة بين المستقيمين إحداثياها هما حل الجملة، بالترتيب $(x ; y)$ ."
+      },
+      "solution": {
+        "lines": [
+          "الثنائية $(2 ; -1)$ تحقق المعادلتين، فالنقطة $(2 ; -1)$ تنتمي إلى المستقيمين معا.",
+          "إذن المستقيمان يتقاطعان في النقطة $(2 ; -1)$ ."
+        ],
+        "result": "(2 ; -1)"
+      },
+      "timeSeconds": 90
     }
   ]
 }

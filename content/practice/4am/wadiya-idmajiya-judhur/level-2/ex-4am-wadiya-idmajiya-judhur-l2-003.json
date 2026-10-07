@@ -1,95 +1,127 @@
 {
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-003",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2,
   "metadata": {
-    "title": "تدريب — جداء وحاصل قسمة",
-    "estimatedMinutes": 2,
+    "title": "على منوال BEM 2018 — التمرين الأول",
+    "estimatedMinutes": 6,
     "tags": [
-      "وضعية إدماجية",
       "جداء جذرين",
-      "حاصل قسمة"
+      "a√b"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
-      "modelledOn": "qcm"
+      "modelledOn": "BEM 2018 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2018",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "احسب دون استعمال الحاسبة."
+    "content": "$A$ و $B$ عددان حيث:",
+    "formulas": [
+      "A = 5\\sqrt{2} \\times \\sqrt{18}",
+      "B = \\sqrt{75} - \\sqrt{27} + \\sqrt{12}"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$\\sqrt{12} \\times \\sqrt{3} = \\ldots$",
+      "step": "01",
+      "statement": "بيّن أن $A$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "6",
+      "answerFormat": "اكتب قيمة العدد $A$ (عدد طبيعي)",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
+        {
+          "value": "15",
+          "id": "MISC-JIDHR-FI-JIDHR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "جداء جذرين هو جذر الجداء."
+          "content": "$\\sqrt{x} \\times \\sqrt{y} = \\sqrt{x \\times y}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $12 \\times 3$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل الجداء مربع تام؟"
+          "content": "ما هو $\\sqrt{36}$ ؟"
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{12} \\times \\sqrt{3} = \\sqrt{36} = 6$.",
-        "incorrect": "جداء جذرين هو جذر الجداء، لا جذر المجموع."
+        "correct": "$A = 5\\sqrt{2 \\times 18} = 5\\sqrt{36} = 5 \\times 6$ : عدد طبيعي.",
+        "incorrect": "اجمع الجذرين في جذر واحد للجداء، ثم احسب جذر المربع التام."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$A = 5\\sqrt{2 \\times 18}$",
+          "$= 5\\sqrt{36} = 5 \\times 6$"
+        ],
+        "result": "A = 30"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "$\\dfrac{\\sqrt{50}}{\\sqrt{2}} = \\ldots$",
+      "step": "02",
+      "statement": "اكتب العدد $B$ على الشكل $a\\sqrt{3}$ حيث $a$ عدد طبيعي.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-judhur_P1",
           "role": "primary"
         }
       ],
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "5",
+      "answerFormat": "اكتب العدد $a$ فقط (عدد طبيعي)",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "value": "6",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حاصل قسمة جذرين هو جذر حاصل القسمة."
+          "content": "اكتب كل عدد تحت الجذر على شكل جداء مربع تام في 3."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $50 \\div 2$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "هل الناتج مربع تام؟"
+          "content": "اجمع المعاملات أمام $\\sqrt{3}$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{\\sqrt{50}}{\\sqrt{2}} = \\sqrt{\\dfrac{50}{2}} = \\sqrt{25} = 5$.",
-        "incorrect": "حاصل قسمة جذرين هو جذر حاصل القسمة."
+        "correct": "$B = 5\\sqrt{3} - 3\\sqrt{3} + 2\\sqrt{3} = 4\\sqrt{3}$",
+        "incorrect": "اكتب كل جذر على الشكل $k\\sqrt{3}$ ، ثم اجمع واطرح المعاملات فقط."
       },
-      "cognitiveDemand": "apply"
+      "solution": {
+        "lines": [
+          "$B = \\sqrt{25 \\times 3} - \\sqrt{9 \\times 3} + \\sqrt{4 \\times 3}$",
+          "$= 5\\sqrt{3} - 3\\sqrt{3} + 2\\sqrt{3}$",
+          "$= (5 - 3 + 2)\\sqrt{3}$"
+        ],
+        "result": "B = 4\\sqrt{3}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
-  ],
-  "id": "ex-4am-wadiya-idmajiya-judhur-l2-003",
-  "lessonCode": "wadiya-idmajiya-judhur",
-  "level": 2
+  ]
 }

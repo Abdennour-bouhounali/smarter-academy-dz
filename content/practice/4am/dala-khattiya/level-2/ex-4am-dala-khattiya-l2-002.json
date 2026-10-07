@@ -3,27 +3,35 @@
   "lessonCode": "dala-khattiya",
   "level": 2,
   "metadata": {
-    "title": "تمرين 9 — صورة −3",
+    "title": "تمرين 9 — دالة خطية معاملها 2,1",
     "estimatedMinutes": 4,
     "tags": [
-      "جدول",
-      "عشري"
+      "صورة عدد",
+      "العدد الذي صورته معلومة"
     ],
     "source": {
       "type": "textbook",
       "elementId": "ex-9",
       "page": 72,
       "section": "أوظّف تعلّماتي",
-      "number": 9
+      "number": 9,
+      "adaptedFrom": "ex-4am-dala-khattiya-l2-002"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 72): $f$ هي الدّالة الخطية التي معاملها 2,1."
+    "content": "$f$ هي الدالة الخطية التي معاملها $2{,}1$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب $f(-3)$ .",
+      "step": "01",
+      "statement": "احسب $f(4)$ .",
       "learningPoints": [
         {
           "code": "4am_dala-khattiya_P2",
@@ -31,40 +39,49 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
-      "expectedAnswer": "-6.3",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "8,4",
+      "misconceptionSignatures": [
+        {
+          "value": "40/21",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        },
+        {
+          "value": "-8,4",
+          "id": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "صورة عدد بدالة خطية تُقرأ على دستورها."
+          "content": "صورة العدد $x$ بالدالة الخطية $f$ هي $f(x) = 2{,}1 \\times x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض $x$ بالعدد المعطى في الدستور."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب الجداء، وانتبه إلى الإشارة."
+          "content": "عوّض $x$ بالعدد $4$ ثم احسب الجداء، وانتبه إلى الإشارة."
         }
       ],
       "feedback": {
-        "correct": "$f(-3) = 2{,}1 \\times (-3) = -6{,}3$ .",
-        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+        "correct": "$f(4) = 2{,}1 \\times 4 = 8{,}4$ .",
+        "incorrect": "الصورة جداء المعامل في العدد: $f(x) = 2{,}1 \\times x$ ."
       },
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-KHATTIYA-SURA-SABIQ",
-          "value": "-10/7"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$f(4) = 2{,}1 \\times 4$",
+          "$f(4) = 8{,}4$"
+        ],
+        "result": "f(4) = 8{,}4"
+      },
+      "timeSeconds": 60
     },
     {
       "id": "q2",
-      "statement": "عيّن العدد الذي صورته $14{,}7$ بالدالة $f$ .",
+      "step": "02",
+      "statement": "جد العدد الذي صورته $-10{,}5$ بالدالة $f$ .",
       "learningPoints": [
         {
           "code": "4am_dala-khattiya_P3",
@@ -72,36 +89,44 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
-      "expectedAnswer": "7",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "-5",
+      "misconceptionSignatures": [
+        {
+          "value": "-22,05",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        },
+        {
+          "value": "5",
+          "id": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المطلوب هنا عدد علمت صورته، لا صورة عدد."
+          "content": "العدد المطلوب $x$ يحقق $f(x) = -10{,}5$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب المعادلة $ax = $ الصورة المعطاة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم طرفي المعادلة على المعامل."
+          "content": "حلّ المعادلة $2{,}1x = -10{,}5$ : اقسم الطرفين على معامل $x$ ."
         }
       ],
       "feedback": {
-        "correct": "$2{,}1 \\times x = 14{,}7$ ، إذن $x = 14{,}7 \\div 2{,}1 = 7$ .",
-        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+        "correct": "$x = \\dfrac{-10{,}5}{2{,}1} = -5$ .",
+        "incorrect": "لا تحسب صورة العدد المعطى: ابحث عن العدد $x$ الذي صورته هذا العدد."
       },
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-KHATTIYA-SURA-SABIQ",
-          "value": "30.87"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$f(x) = -10{,}5$ معناه $2{,}1x = -10{,}5$",
+          "$x = \\dfrac{-10{,}5}{2{,}1} = -5$"
+        ],
+        "result": "x = -5"
+      },
+      "timeSeconds": 90
     }
   ]
 }
