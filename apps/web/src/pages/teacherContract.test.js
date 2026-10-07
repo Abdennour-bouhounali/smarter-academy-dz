@@ -124,9 +124,14 @@ describe('l’espace enseignant est arabe, sans défaut français', () => {
 
 describe('la carte de leçon lit le troisième axe', () => {
   it('une leçon masquée par l’enseignant a son propre état, distinct du verrou et de la fermeture', () => {
-    const card = readFileSync(resolve(src, 'components/student/LessonCard.jsx'), 'utf8');
-    expect(card).toContain('isLessonHiddenByClass');
-    expect(card).toContain('hiddenByTeacherBadge');
+    // L'état est lu une fois (useLessonTileState) pour la carte ET la ligne.
+    const state = readFileSync(resolve(src, 'components/student/useLessonTileState.js'), 'utf8');
+    expect(state).toContain('isLessonHiddenByClass');
+    for (const tile of ['LessonCard.jsx', 'LessonRow.jsx']) {
+      const source = readFileSync(resolve(src, 'components/student', tile), 'utf8');
+      expect(source).toContain('useLessonTileState(lesson)');
+      expect(source).toContain('hiddenByTeacherBadge');
+    }
     const ctx = readFileSync(resolve(src, 'context/ContentAvailabilityContext.jsx'), 'utf8');
     expect(ctx).toMatch(/hiddenByClass: result\.hiddenByClass \?\? \[\]/);
   });

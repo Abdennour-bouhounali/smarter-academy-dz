@@ -21,6 +21,7 @@
       "order": 0,
       "number": 1,
       "titleAr": "الأعداد الطبيعيّة والأعداد النّاطقة",
+      "icon": "🔢",
       "subtitleAr": "قواسم عدد طبيعي، القاسم المشترك الأكبر، العددان الأوليان فيما بينهما، اختزال كسر",
       "sourceTopicIds": [
         "pgcd",
@@ -66,6 +67,7 @@
       "order": 1,
       "number": 2,
       "titleAr": "الحساب على الجذور",
+      "icon": "🌱",
       "subtitleAr": "الجذر التربيعي لعدد موجب، الأعداد الناطقة وغير الناطقة، المعادلات x² = a، العمليات على الجذور وتوظيف خواصها",
       "sourceTopicIds": [
         "hisab_judhur",
@@ -109,6 +111,7 @@
       "order": 2,
       "number": 3,
       "titleAr": "الحساب الحرفي",
+      "icon": "🔤",
       "subtitleAr": "نشر وتبسيط عبارة جبرية، المتطابقات الشهيرة والحساب المتمعن فيه، تحليل عبارة جبرية إلى جداء عوامل",
       "sourceTopicIds": [
         "nashr_tabsit",
@@ -158,6 +161,7 @@
       "order": 3,
       "number": 4,
       "titleAr": "معادلات ومتراجحات من الدرجة الأولى بمجهول واحد",
+      "icon": "⚖️",
       "subtitleAr": "حل معادلة من الدرجة الأولى بمجهول واحد، معادلات جداء معدوم، المتراجحات وتمثيل حلولها على مستقيم مدرّج، ترييض مشكلة",
       "sourceTopicIds": [
         "muadalat_daraja_ula",
@@ -209,6 +213,7 @@
       "order": 4,
       "number": 5,
       "titleAr": "جمل معادلتين من الدرجة الأولى بمجهولين",
+      "icon": "🔗",
       "subtitleAr": "مفهوم جملة معادلتين وحلها، حلها جبريا بطريقتي التعويض والجمع، حل مشكلات بتوظيف جمل معادلتين",
       "sourceTopicIds": [
         "jumal_muadalatayn"
@@ -257,6 +262,7 @@
       "order": 0,
       "number": 6,
       "titleAr": "الدالة الخطية والتناسبية",
+      "icon": "↗️",
       "subtitleAr": "التناسبية ومعاملها، الدالة الخطية وتعيينها، تمثيلها البياني وقراءته، النسب المئوية والمقادير المركبة، وحل مشكلات",
       "sourceTopicIds": [
         "duwal_khattiya"
@@ -310,6 +316,7 @@
       "order": 1,
       "number": 7,
       "titleAr": "الدالة التآلفية",
+      "icon": "📉",
       "subtitleAr": "مفهوم الدالة التآلفية وتعيينها، تمثيلها البياني وقراءته، تناسب التغيّرات، التفسير البياني لجملة معادلتين، وحل مشكلات",
       "sourceTopicIds": [
         "duwal_taalufiya",
@@ -366,6 +373,7 @@
       "order": 2,
       "number": 8,
       "titleAr": "الإحصاء",
+      "icon": "📊",
       "subtitleAr": "التكرار والتواتر المجمعان، المدى والوسيط والمتوسط، المجدولات، قراءة وضعيات إحصائية وتفسير مؤشراتها",
       "sourceTopicIds": [
         "takrar_mujamma_saaid",
@@ -418,6 +426,7 @@
       "order": 1,
       "number": 9,
       "titleAr": "خاصية طالس",
+      "icon": "🔺",
       "subtitleAr": "وضعية طالس وتناسب الأطوال، الخاصية العكسية وإثبات التوازي، تقسيم قطعة مستقيم وإنشاءات، ترييض وضعيات هندسية",
       "sourceTopicIds": [
         "thales"
@@ -459,6 +468,7 @@
       "order": 2,
       "number": 10,
       "titleAr": "حساب المثلثات في المثلث القائم",
+      "icon": "📏",
       "subtitleAr": "جيب التمام والجيب والظل لزاوية حادة، الحاسبة وتعيين قيس زاوية، العلاقات بين النسب والإنشاءات، ترييض وضعيات",
       "sourceTopicIds": [
         "nisab_muthallathiya",
@@ -505,6 +515,7 @@
       "order": 3,
       "number": 11,
       "titleAr": "الأشعة والانسحاب",
+      "icon": "➡️",
       "subtitleAr": "الانسحاب والشعاع، تساوي شعاعين ومتوازي الأضلاع، المنتصف، مجموع شعاعين (علاقة شال وقاعدة متوازي الأضلاع)، البراهين",
       "sourceTopicIds": [
         "insihab_shuaa"
@@ -547,6 +558,7 @@
       "order": 4,
       "number": 12,
       "titleAr": "الأشعة في معلم",
+      "icon": "🧭",
       "subtitleAr": "مركّبتا شعاع وتمثيله، حساب المركّبتين وتساوي شعاعين، إحداثيتا المنتصف، المسافة بين نقطتين، إثبات خواص هندسية بالحساب",
       "sourceTopicIds": [
         "maalam"
@@ -592,6 +604,7 @@
       "order": 5,
       "number": 13,
       "titleAr": "الدوران - الزوايا - المضلّعات المنتظمة",
+      "icon": "🔄",
       "subtitleAr": "مفهوم الدوران وصور الأشكال، خواص الدوران، الزاوية المحيطية والزاوية المركزية، المضلّعات المنتظمة وإنشاؤها",
       "sourceTopicIds": [
         "dawaran_zawaya"
@@ -636,6 +649,7 @@
       "order": 6,
       "number": 14,
       "titleAr": "الهندسة في الفضاء",
+      "icon": "🧊",
       "subtitleAr": "الكرة والجلة وتمثيلهما، مساحة الكرة وحجم الجلة، المقاطع المستوية لمجسمات مألوفة، التكبير والتصغير",
       "sourceTopicIds": [
         "handasa_fada"
@@ -684,5 +698,19 @@
       "decidedOn": "2026-10-02",
       "note": "ميدان d'AFFICHAGE demandé par le propriétaire (2026-10-02) pour l'unité 6 « الدالة الخطية والتناسبية », rejointe le même jour par l'unité 7 « الدالة التآلفية ». Il n'est PAS un domaine du programme (programme_4am_2026_2027.json reste une transcription intouchée) : il ne porte aucun sujet officiel, et chaque unité qui s'y range déclare son domaine de programme dans `placement`. L'unité 8 « الإحصاء » s'y range aussi (même jour, demande du propriétaire), son domaine de programme étant « ميدان تنظيم المعطيات »."
     }
-  ]
+  ],
+  "chapterIcons": {
+    "_comment": "Icônes d’AFFICHAGE des ميادين (demande du propriétaire, 2026-10-07) — le programme reste une transcription intouchée.",
+    "ansab_al_aadad_wal_hisab": "🧮",
+    "tanasubiya_duwal": "📈",
+    "handasa": "📐"
+  },
+  "chapterOrder": {
+    "_comment": "Ordre d’AFFICHAGE des ميادين (demande du propriétaire, 2026-10-07) : la géométrie en dernier. Un ميدان absent garde sa place relative, après ceux-ci.",
+    "order": [
+      "ansab_al_aadad_wal_hisab",
+      "tanasubiya_duwal",
+      "handasa"
+    ]
+  }
 }

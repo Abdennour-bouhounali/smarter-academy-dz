@@ -105,11 +105,18 @@ describe('catalogue algérien (dzCourseLevels)', () => {
   const domainsWithLessons = allDomains.filter((d) =>
     decomposition4am.lessons.some((l) => l.chapterId === d.id));
 
-  it('ne montre que les domaines (programme, puis ميادين du propriétaire) qui portent des leçons, dans leur ordre', () => {
+  // L'ordre d'AFFICHAGE du propriétaire (units_4am › chapterOrder, 2026-10-07).
+  const displayOrder = units4am.chapterOrder?.order ?? [];
+  const rank = (id) => (displayOrder.includes(id) ? displayOrder.indexOf(id) : displayOrder.length);
+  const displayed = domainsWithLessons.slice().sort((a, b) => rank(a.id) - rank(b.id));
+
+  it('ne montre que les domaines (programme, puis ميادين du propriétaire) qui portent des leçons, dans l’ordre d’affichage', () => {
     expect(programme4am.domains).toHaveLength(4);
     expect(grade4am.chapters.length).toBeGreaterThan(0);
-    expect(grade4am.chapters.map((c) => c.id)).toEqual(domainsWithLessons.map((d) => d.id));
-    expect(grade4am.chapters.map((c) => c.title)).toEqual(domainsWithLessons.map((d) => d.titleAr));
+    expect(grade4am.chapters.map((c) => c.id)).toEqual(displayed.map((d) => d.id));
+    expect(grade4am.chapters.map((c) => c.title)).toEqual(displayed.map((d) => d.titleAr));
+    // La géométrie ferme la liste (décision du propriétaire, 2026-10-07).
+    expect(grade4am.chapters.at(-1).id).toBe('handasa');
     for (const chapter of grade4am.chapters) expect(chapter.lessons.length, chapter.id).toBeGreaterThan(0);
     // `order` reste la position dans le PROGRAMME ; un ميدان du propriétaire vient après lui.
     for (const chapter of grade4am.chapters) {

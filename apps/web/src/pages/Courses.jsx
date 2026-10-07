@@ -6,15 +6,13 @@ import { Sparkles, Lock, Crown, Play, Search } from 'lucide-react';
 import { ArrowForward } from '../components/common/DirectionalIcons';
 import { courseLevels } from '@smarter-academy/core';
 import { getResumeLesson } from '../lessons/common/utils/progress/getResumeLesson';
-import { getLessonProgress } from '../lessons/common/utils/progress/getLessonProgress';
-import { getTotalModules } from '../lessons/registry';
 import GradeLessonSearch, { filterLessonsByQuery } from '../components/student/GradeLessonSearch';
-import UnitGroup from '../components/student/UnitGroup';
-import { groupLessonsByUnit } from '../components/student/unitGrouping';
+import CatalogueBrowser from '../components/student/CatalogueBrowser';
+import CatalogueViewToolbar from '../components/student/CatalogueViewToolbar';
+import { useCatalogueView } from '../components/student/catalogueView';
 import { storage, scopedStorage } from '../utils/storage';
 import { AuthContext } from '../context/AuthContext';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
-import LessonCard from '../components/student/LessonCard';
 
 export default function CoursesPage() {
   const { t } = useTranslation('common');
@@ -164,25 +162,17 @@ export default function CoursesPage() {
     return getResumeLesson(courseLevels);
   }, [lastFocus]);
 
+  // La vue du catalogue (وحدات / ميادين / كل الدروس, شبكة / قائمة) —
+  // préférence partagée avec « دروسي » et « استكشاف » (catalogueView.js).
+  // Le rendu ne reçoit que les ميادين visibles ; la recherche, elle,
+  // traverse tout le niveau et s'affiche à plat.
+  const [view, setView] = useCatalogueView();
+  const visibleChapters = gradeData
+    ? (effectiveChapterId === 'all' ? gradeData.chapters : gradeData.chapters.filter((c) => c.id === effectiveChapterId))
+    : [];
+  const searchResults = searchQuery ? filteredCourses : null;
+
   // Chapter Stats
-  // Les unités du manuel présentes dans la sélection courante (hors recherche).
-  const unitGroups = (() => {
-    if (searchQuery) return null;
-    const chapters = effectiveChapterId === 'all' ? gradeData.chapters : gradeData.chapters.filter((c) => c.id === effectiveChapterId);
-    return groupLessonsByUnit(chapters, filteredCourses);
-  })();
-
-  const getChapterProgress = (chapter) => {
-    if (!chapter.lessons || chapter.lessons.length === 0) return 0;
-    const availableLessons = chapter.lessons.filter(l => l.status === 'available');
-    if (availableLessons.length === 0) return 0;
-
-    const totalPercent = availableLessons.reduce(
-      (sum, lesson) => sum + getLessonProgress(lesson.id, getTotalModules(lesson.id)).progressPercent,
-      0
-    );
-    return Math.round(totalPercent / availableLessons.length);
-  };
 
   if (!hasActiveCurriculum) {
     return (
@@ -344,26 +334,17 @@ export default function CoursesPage() {
               </button>
               {gradeData.chapters.map((chapter) => {
                 const isSelected = chapter.id === effectiveChapterId;
-                const progress = getChapterProgress(chapter);
                 return (
                   <button
                     key={chapter.id}
                     onClick={() => handleChapterChange(chapter.id)}
-                    className={`flex-shrink-0 flex flex-col items-start px-4 py-2 rounded-lg font-inter text-sm font-medium transition-all ${
+                    className={`flex-shrink-0 inline-flex items-center px-4 py-2 rounded-lg font-inter text-sm font-medium transition-all ${
                       isSelected
                         ? 'bg-blue-600 text-white shadow-md'
                         : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
                     }`}
                   >
-                    <span>{chapter.title}</span>
-                    {/* Un chapitre sans leçon annonce ses SUJETS : « 0 leçon
-                        • 0% » serait exact et pourtant trompeur — il donnerait
-                        un chapitre vide là où il y a un programme. */}
-                    <span className={`text-[10px] mt-0.5 font-bold ${isSelected ? 'text-blue-200' : 'text-slate-400'}`}>
-                      {chapter.lessons.length === 0 && (chapter.topics?.length ?? 0) > 0
-                        ? t('topicsCount', { count: chapter.topics.length })
-                        : `${t('lessonsCount', { count: chapter.lessons.length })} • ${progress}%`}
-                    </span>
+                    <span>{chapter.icon && <span className="me-1.5" aria-hidden="true">{chapter.icon}</span>}{chapter.title}</span>
                   </button>
                 );
               })}
@@ -469,41 +450,24 @@ export default function CoursesPage() {
             aucun chapitre du tout — invariant I2), ce qui n'est pas la même
             chose qu'une recherche sans résultat. */}
         {(filteredCourses.length > 0 || searchQuery || gradeData.chapters.some((c) => c.lessons.length > 0)) && (
-          <section>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              <AnimatePresence mode="popLayout">
-                {filteredCourses.length === 0 ? (
-                  <motion.div
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    className="col-span-full py-12 text-center text-slate-500"
-                  >
-                    <Search size={32} className="mx-auto mb-3 opacity-20" />
-                    <p>{t('noCourseMatches', { query: searchQuery ? `"${searchQuery}"` : t('thisSelection') })}</p>
-                  </motion.div>
-                ) : unitGroups ? (
-                  // Le niveau الوحدة (phase 8) : dans un ميدان, l'élève choisit
-                  // d'abord une UNITÉ du manuel ; ses leçons vivent sur la page
-                  // d'unité (/courses/…/units/<unité>). Les leçons hors unité
-                  // restent des cartes ici. `col-span-full` pour les titres.
-                  <>
-                    <h3 className="col-span-full text-sm font-bold text-slate-700">{ts('unit.unitCard.unitsTitle')}</h3>
-                    {unitGroups.units.map((unit) => <UnitGroup key={unit.id} unit={unit} />)}
-                    {unitGroups.rest.length > 0 && (
-                      <>
-                        <h3 className="col-span-full mt-2 text-sm font-bold text-slate-600">{ts('unit.unitCard.otherTopics')}</h3>
-                        {unitGroups.rest.map((lesson) => (
-                          <LessonCard key={lesson.id} lesson={lesson} onClick={() => handleCourseClick(lesson.id)} />
-                        ))}
-                      </>
-                    )}
-                  </>
-                ) : (
-                  filteredCourses.map((lesson) => (
-                    <LessonCard key={lesson.id} lesson={lesson} onClick={() => handleCourseClick(lesson.id)} />
-                  ))
-                )}
-              </AnimatePresence>
-            </div>
+          <section className="space-y-5">
+            <CatalogueViewToolbar view={view} onChange={setView} count={filteredCourses.length} searching={!!searchResults} />
+            <CatalogueBrowser
+              chapters={visibleChapters}
+              gradeChapters={gradeData.chapters}
+              lessons={searchResults ? [] : filteredCourses}
+              searchResults={searchResults}
+              searchQuery={searchQuery}
+              view={view}
+              onLessonClick={(lesson) => handleCourseClick(lesson.id)}
+              gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+              emptyMessage={(
+                <div className="py-12 text-center text-slate-500">
+                  <Search size={32} className="mx-auto mb-3 opacity-20" />
+                  <p>{t('noCourseMatches', { query: t('thisSelection') })}</p>
+                </div>
+              )}
+            />
           </section>
         )}
       </div>

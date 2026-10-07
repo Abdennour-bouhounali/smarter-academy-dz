@@ -26,6 +26,7 @@ import MathLabEntryButton from '../../../features/mathlab/overlay/MathLabEntryBu
 import MathLabel from './MathLabel';
 import LessonProblemCard from '../problems/LessonProblemCard';
 import { mathToPlain } from '../../../utils/mathPlain';
+import { useCatalogueHref } from '../../../components/student/catalogueLink';
 
 /**
  * Static color map — replaces dynamic `bg-${color}-100` patterns.
@@ -140,6 +141,7 @@ export default function LessonIndex({ config, basePath }) {
   // conseil sous la carte, jamais un verrou.
   const masteryStatusById = useMemo(() => masteryStatusByIdFromProfile(profile), [profile]);
   const { t } = useTranslation('lesson');
+  const catalogueHref = useCatalogueHref();
   const { completedModules, isModuleCompleted, currentModule } = useProgress(config.id);
   const { isModuleClosed, isLessonClosed, isLessonLocked, isLessonHiddenByClass, lessonStatus, moduleStatus } = useContentAvailability();
   // QUI lit : l'enseignant voit chaque module ouvert (le verrou séquentiel
@@ -271,14 +273,14 @@ export default function LessonIndex({ config, basePath }) {
       <div className={`min-h-screen flex flex-col justify-between ${chrome.contentOffsetClass} bg-slate-50`}>
         <main className="sa-page py-8 flex-1">
           <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 mb-8">
-            <Link to="/courses" className="hover:text-blue-600">{t('index.home')}</Link>
+            <Link to={catalogueHref()} className="hover:text-blue-600">{t('index.home')}</Link>
             <span>/</span>
             <span className="text-slate-900 font-semibold"><MathLabel>{config.title}</MathLabel></span>
           </nav>
           <div className="mx-auto max-w-lg rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-xs" data-lesson-unpublished>
             <h1 className="font-space text-xl font-bold text-slate-800 mb-2">{t('index.unavailableTitle')}</h1>
             <p className="font-inter text-sm leading-relaxed text-slate-600 mb-6">{t('index.unavailableHint')}</p>
-            <Link to="/courses" className="inline-flex items-center gap-1 rounded-xl bg-blue-600 px-5 py-2.5 font-inter text-sm font-bold text-white transition-colors hover:bg-blue-700">
+            <Link to={catalogueHref()} className="inline-flex items-center gap-1 rounded-xl bg-blue-600 px-5 py-2.5 font-inter text-sm font-bold text-white transition-colors hover:bg-blue-700">
               {t('index.home')}
             </Link>
           </div>
@@ -295,7 +297,7 @@ export default function LessonIndex({ config, basePath }) {
       <div className={`min-h-screen flex flex-col justify-between ${chrome.contentOffsetClass} bg-slate-50`}>
         <main className="sa-page py-8 flex-1">
           <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 mb-8">
-            <Link to="/courses" className="hover:text-blue-600">{t('index.home')}</Link>
+            <Link to={catalogueHref()} className="hover:text-blue-600">{t('index.home')}</Link>
             <span>/</span>
             <span className="text-slate-900 font-semibold"><MathLabel>{config.title}</MathLabel></span>
           </nav>
@@ -320,7 +322,7 @@ export default function LessonIndex({ config, basePath }) {
           title={config.title}
           crumbs={(
             <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 mb-8">
-              <Link to="/courses" className="hover:text-blue-600">{t('index.home')}</Link>
+              <Link to={catalogueHref()} className="hover:text-blue-600">{t('index.home')}</Link>
               <span>/</span>
               <span className="text-slate-900 font-semibold"><MathLabel>{config.title}</MathLabel></span>
             </nav>
@@ -348,11 +350,11 @@ export default function LessonIndex({ config, basePath }) {
               la ligne — sans lui, un fil long le renvoyait à gauche sur sa
               propre ligne. */}
           <nav className="flex flex-1 flex-wrap items-center gap-2 text-xs font-mono text-slate-500">
-            <Link to="/courses" className="hover:text-blue-600">{t('index.home')}</Link>
+            <Link to={catalogueHref()} className="hover:text-blue-600">{t('index.home')}</Link>
             <span>/</span>
-            <Link to={`/courses?level=${config.level}&grade=${config.grade}`} className="hover:text-blue-600">{t(`index.level_${config.level}`)} ({config.grade})</Link>
+            <Link to={catalogueHref({ level: config.level, grade: config.grade })} className="hover:text-blue-600">{t(`index.level_${config.level}`)} ({config.grade})</Link>
             <span>/</span>
-            <Link to={`/courses?level=${config.level}&grade=${config.grade}&chapter=${config.chapter}`} className="hover:text-blue-600">{config.chapterTitle || config.chapter}</Link>
+            <Link to={catalogueHref({ level: config.level, grade: config.grade, chapter: config.chapter })} className="hover:text-blue-600">{config.chapterTitle || config.chapter}</Link>
             <span>/</span>
             {unit && (<><Link to={unit.path} className="hover:text-blue-600">{unit.title}</Link><span>/</span></>)}
             <span className="text-slate-900 font-semibold"><MathLabel>{config.title}</MathLabel></span>

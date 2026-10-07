@@ -15,6 +15,7 @@ import { useClassroomMode, useClassroomStage, ClassroomEntryButton, ClassroomFra
 import MathLabEntryButton from '../../../features/mathlab/overlay/MathLabEntryButton';
 import { useContentAvailability } from '../../../context/ContentAvailabilityContext';
 import PremiumLessonLocked from './PremiumLessonLocked';
+import { useCatalogueHref } from '../../../components/student/catalogueLink';
 import MathLabel from './MathLabel';
 
 /**
@@ -119,6 +120,7 @@ export default function ModuleLayout({
   // déjà son en-tête mobile via `pt-14 lg:pt-0` (le module ne réserve rien).
   const chrome = useLessonChromeLayout();
   const { t } = useTranslation('lesson');
+  const catalogueHref = useCatalogueHref();
 
   const isLastModule = moduleNumber === (lastModuleNumber ?? totalModules);
 
@@ -236,14 +238,8 @@ export default function ModuleLayout({
   // RÉELLEMENT fournis : interpoler un `null` donnait `?level=null&grade=null`,
   // une URL que le catalogue ne sait pas lire. Sans aucun identifiant, on
   // pointe vers le catalogue nu.
-  const catalogueLink = (extra) => {
-    const params = new URLSearchParams();
-    if (levelParam) params.set('level', levelParam);
-    if (gradeId) params.set('grade', gradeId);
-    if (extra) params.set('chapter', extra);
-    const qs = params.toString();
-    return qs ? `/courses?${qs}` : '/courses';
-  };
+  // L'élève va à « دروسي », les autres au catalogue public (catalogueLink.js).
+  const catalogueLink = (extra) => catalogueHref({ level: levelParam, grade: gradeId, chapter: extra });
 
   // Protection de route : un module verrouillé ne s'affiche jamais, même en
   // tapant son URL directement. Aucune navigation, aucune écriture de

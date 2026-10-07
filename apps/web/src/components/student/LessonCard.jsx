@@ -4,9 +4,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Clock, Lock, Crown, EyeOff } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
-import { useContentAvailability } from '../../context/ContentAvailabilityContext';
-import { getLessonProgress } from '../../lessons/common/utils/progress/getLessonProgress';
-import { getTotalModules } from '../../lessons/registry';
+import { useLessonTileState } from './useLessonTileState';
 import MathLabel from '../../lessons/common/components/MathLabel';
 import PublicationBadge from '../content/PublicationBadge';
 
@@ -25,23 +23,19 @@ import PublicationBadge from '../content/PublicationBadge';
  * <AnimatePresence>, which attaches a ref to measure exit animations —
  * a plain function component can't accept that ref.
  */
-const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
+const LessonCard = forwardRef(function LessonCard({ lesson, onClick, eyebrow = null }, ref) {
   const { t } = useTranslation('common');
   // Le catalogue vient du bundle ; la PUBLICATION vient du serveur. Une leçon
   // retirée par l'administration retombe donc dans l'état « bientôt
   // disponible » déjà géré plus bas — l'élève voit un message qu'il connaît,
   // pas une carte cliquable qui le mènera à un refus.
-  const { isLessonClosed, isLessonLocked, isLessonPremium, isLessonHiddenByClass, lessonStatus } = useContentAvailability();
-  const isAvailable = lesson.status === 'available' && !isLessonClosed(lesson.id);
-  // Le TROISIÈME axe : masquée par l'enseignant pour la classe de l'élève.
-  // Publiée, dans son droit, mais « pas maintenant » — la carte le dit avec
-  // ses mots, sans cadenas commercial ni « bientôt ».
-  const hiddenByTeacher = isAvailable && isLessonHiddenByClass(lesson.id);
-  // Le palier ET le droit d'accès viennent du SERVEUR, jamais du bundle :
-  // le catalogue embarqué ne porte aucun palier (lessons.tier est la seule
-  // source de vérité, décidée par l'administrateur). La carte ne fait
-  // qu'afficher une décision déjà prise (GET /content/availability, servi
-  // aussi aux visiteurs par /content/availability/public).
+  // Publication, palier, droit d'accès, masquage par l'enseignant et
+  // progression : lus par `useLessonTileState`, partagé avec `LessonRow`.
+  //
+  // Une leçon retirée par l'administration retombe dans l'état « bientôt
+  // disponible » ; masquée par l'enseignant, elle le dit avec ses mots, sans
+  // cadenas commercial ni « bientôt ». Le palier ET le droit d'accès viennent
+  // du SERVEUR, jamais du bundle (lessons.tier est la seule source de vérité) :
   //
   //   premium → la leçon est payante (badge), que l'élève y ait accès ou non ;
   //   locked  → payante ET hors du droit de CET élève (cadenas).
@@ -49,13 +43,14 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
   // Tant que la réponse n'est pas arrivée, les deux listes sont vides :
   // politique d'ouverture identique au reste du contexte — et le serveur
   // refuse de toute façon chaque écriture sur une leçon verrouillée.
-  const isPremiumLesson = isLessonPremium(lesson.id);
-  const isUnlocked = !isLessonLocked(lesson.id);
-  const { progressPercent } = isAvailable
-    ? getLessonProgress(lesson.id, getTotalModules(lesson.id))
-    : { progressPercent: 0 };
+  const { state, isPremiumLesson, progressPercent, publication } = useLessonTileState(lesson);
+  // Le contexte facultatif au-dessus du titre (« الوحدة 3 » dans la vue
+  // « كل الدروس »), là où la carte n'est plus rangée sous son unité.
+  const eyebrowLine = eyebrow
+    ? <div className="mb-1 text-[11px] font-semibold text-indigo-600">{eyebrow}</div>
+    : null;
 
-  if (hiddenByTeacher) {
+  if (state === 'hidden') {
     return (
       <motion.div ref={ref} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.2 }} className="bg-teal-50/40 rounded-2xl border border-teal-200/60 p-5 flex flex-col justify-between h-full" data-hidden-by-teacher={lesson.id}>
         <div>
@@ -66,17 +61,18 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
               {t('hiddenByTeacherBadge', { ns: 'access' })}
             </span>
           </div>
+          {eyebrowLine}
           <h4 className="font-space font-bold text-slate-700 text-lg mb-2"><MathLabel>{lesson.title}</MathLabel></h4>
           <p className="font-inter text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4">{t('hiddenByTeacherHint', { ns: 'access' })}</p>
         </div>
         <div className="pt-4 border-t border-teal-100 flex items-center justify-between text-xs font-mono-jetbrains text-slate-400 mt-auto">
-          <span className="flex items-center gap-1"><Clock size={14} /> {lesson.duration}</span>
+          <span className="flex items-center gap-1"><Clock size={14} /> <span dir="ltr">{lesson.duration}</span></span>
         </div>
       </motion.div>
     );
   }
 
-  if (isAvailable && !isUnlocked) {
+  if (state === 'locked') {
     return (
       <motion.div ref={ref} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.2 }} className="h-full">
         <Link
@@ -91,11 +87,12 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
                 {t('premiumBadge')}
               </span>
             </div>
-            <h4 className="font-space font-bold text-slate-800 text-lg mb-2"><MathLabel>{lesson.title}</MathLabel></h4>
+            {eyebrowLine}
+          <h4 className="font-space font-bold text-slate-800 text-lg mb-2"><MathLabel>{lesson.title}</MathLabel></h4>
             <p className="font-inter text-slate-500 text-sm leading-relaxed line-clamp-3 mb-4"><MathLabel>{lesson.description}</MathLabel></p>
           </div>
           <div className="pt-4 border-t border-violet-100 flex items-center justify-between mt-auto">
-            <span className="flex items-center gap-1 text-xs font-mono-jetbrains text-slate-500"><Clock size={14} /> {lesson.duration}</span>
+            <span className="flex items-center gap-1 text-xs font-mono-jetbrains text-slate-500"><Clock size={14} /> <span dir="ltr">{lesson.duration}</span></span>
             <span className="font-bold text-sm group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex items-center gap-1 text-violet-700">{t('lockedCta', { ns: 'access' })} <ArrowForward size={14} /></span>
           </div>
         </Link>
@@ -103,7 +100,7 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
     );
   }
 
-  if (isAvailable) {
+  if (state === 'open') {
     return (
       <motion.div ref={ref} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.2 }} className="h-full">
         <Link
@@ -147,7 +144,8 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
                 présenter comme officielle. */}
             {/* Le relecteur (admin, سفير) voit le non-publié : la pastille
                 dit son état. Rien pour un contenu publié. */}
-            <PublicationBadge status={lessonStatus(lesson.id)} className="mb-2" />
+            <PublicationBadge status={publication} className="mb-2" />
+            {eyebrowLine}
             <div className="flex items-start justify-between gap-3">
               {lesson.origin === 'extension' && (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 mb-3 rounded-full bg-violet-50 border border-violet-200 text-violet-700 font-mono-jetbrains text-[10px] font-bold" title={t('bonusChapter')}>
@@ -173,7 +171,7 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
             <p className="font-inter text-slate-500 text-sm leading-relaxed line-clamp-3 mb-4"><MathLabel>{lesson.description}</MathLabel></p>
           </div>
           <div className="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto">
-            <span className="flex items-center gap-1 text-xs font-mono-jetbrains text-slate-500"><Clock size={14} /> {lesson.duration}</span>
+            <span className="flex items-center gap-1 text-xs font-mono-jetbrains text-slate-500"><Clock size={14} /> <span dir="ltr">{lesson.duration}</span></span>
             {/* La PROGRESSION prime sur le palier : « terminé » et « en cours »
                 sont ce que l'élève vient chercher, le palier n'est qu'une
                 étiquette. L'accent premium ne colore donc que le départ. */}
@@ -203,11 +201,12 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
             {t('lessonComingSoonBadge')}
           </span>
         </div>
-        <h4 className="font-space font-bold text-slate-700 text-lg mb-2"><MathLabel>{lesson.title}</MathLabel></h4>
+        {eyebrowLine}
+          <h4 className="font-space font-bold text-slate-700 text-lg mb-2"><MathLabel>{lesson.title}</MathLabel></h4>
         <p className="font-inter text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4"><MathLabel>{lesson.description}</MathLabel></p>
       </div>
       <div className="pt-4 border-t border-slate-200/50 flex items-center justify-between text-xs font-mono-jetbrains text-slate-400 mt-auto">
-        <span className="flex items-center gap-1"><Clock size={14} /> {lesson.duration}</span>
+        <span className="flex items-center gap-1"><Clock size={14} /> <span dir="ltr">{lesson.duration}</span></span>
         <span className="font-medium">{t('lessonComingSoonFooter')}</span>
       </div>
     </motion.div>

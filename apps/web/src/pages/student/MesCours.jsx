@@ -1,17 +1,14 @@
 import { useContext, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { AnimatePresence } from 'framer-motion';
 import { Compass, BookOpen } from 'lucide-react';
 import { courseLevels, getAllGrades } from '@smarter-academy/core';
 import { AuthContext } from '../../context/AuthContext';
-import { getLessonProgress } from '../../lessons/common/utils/progress/getLessonProgress';
-import { getTotalModules } from '../../lessons/registry';
-import LessonCard from '../../components/student/LessonCard';
-import UnitGroup from '../../components/student/UnitGroup';
-import { groupLessonsByUnit } from '../../components/student/unitGrouping';
+import CatalogueBrowser from '../../components/student/CatalogueBrowser';
+import CatalogueViewToolbar from '../../components/student/CatalogueViewToolbar';
+import { useCatalogueView } from '../../components/student/catalogueView';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
-import GradeLessonSearch, { filterLessonsByQuery, NoLessonMatches } from '../../components/student/GradeLessonSearch';
+import GradeLessonSearch, { filterLessonsByQuery } from '../../components/student/GradeLessonSearch';
 import { usePrefetchLessonRuntime } from '../../lessons/common/lessonRuntimeLoader';
 
 export default function MesCours() {
@@ -22,18 +19,18 @@ export default function MesCours() {
   const { t: tc } = useTranslation('common');
   useDocumentMeta(t('courses.metaTitle'), t('courses.metaDescription'));
   const { user } = useContext(AuthContext);
-  const [activeChapter, setActiveChapter] = useState('all');
+  // Le ميدان vient de l'URL (`?chapter=`) : le fil d'Ariane d'une unité,
+  // d'une leçon ou d'un module y mène l'élève (catalogueLink.js). Un
+  // identifiant inconnu de son niveau retombe sur « كل الميادين ».
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedChapter = searchParams.get('chapter') || 'all';
 
   const grade = useMemo(() => getAllGrades().find((g) => g.id === user?.grade), [user?.grade]);
   const level = grade ? courseLevels.find((l) => l.id === grade.levelId) : null;
   const gradeData = level ? level.grades.find((g) => g.id === grade.id) : null;
+  const activeChapter = gradeData?.chapters.some((c) => c.id === requestedChapter) ? requestedChapter : 'all';
+  const setActiveChapter = (id) => setSearchParams(id === 'all' ? {} : { chapter: id }, { replace: true });
 
-  const getChapterProgress = (chapter) => {
-    const available = chapter.lessons.filter((l) => l.status === 'available');
-    if (!available.length) return 0;
-    const total = available.reduce((sum, l) => sum + getLessonProgress(l.id, getTotalModules(l.id)).progressPercent, 0);
-    return Math.round(total / available.length);
-  };
 
   const lessons = useMemo(() => {
     if (!gradeData) return [];
@@ -41,14 +38,13 @@ export default function MesCours() {
     return gradeData.chapters.find((c) => c.id === activeChapter)?.lessons || [];
   }, [gradeData, activeChapter]);
 
-  // Le niveau الوحدة — même règle que /courses : sous un ميدان du manuel,
-  // d'abord les cartes d'unité (vers la page d'unité), puis les leçons hors
-  // unité. `null` quand le ميدان n'a pas d'unité : cartes de leçon seules.
-  const unitGroups = useMemo(() => {
-    if (!gradeData) return null;
-    const chapters = activeChapter === 'all' ? gradeData.chapters : gradeData.chapters.filter((c) => c.id === activeChapter);
-    return groupLessonsByUnit(chapters, lessons);
-  }, [gradeData, activeChapter, lessons]);
+  // Les ميادين visibles — la vue choisie (وحدات / ميادين / كل الدروس,
+  // شبكة / قائمة) les dessine (CatalogueBrowser, catalogueView.js).
+  const visibleChapters = useMemo(() => {
+    if (!gradeData) return [];
+    return activeChapter === 'all' ? gradeData.chapters : gradeData.chapters.filter((c) => c.id === activeChapter);
+  }, [gradeData, activeChapter]);
+  const [view, setView] = useCatalogueView();
 
   // La recherche de /courses (GradeLessonSearch) : tous les ميادين du
   // niveau, titre + description. Vide → la structure en وحدات ci-dessous ;
@@ -103,46 +99,32 @@ export default function MesCours() {
         </button>
         {gradeData.chapters.map((chapter) => {
           const isSelected = chapter.id === activeChapter;
-          const progress = getChapterProgress(chapter);
           return (
             <button
               key={chapter.id}
               onClick={() => setActiveChapter(chapter.id)}
-              className={`flex-shrink-0 flex flex-col items-start px-4 py-2 rounded-lg font-inter text-sm font-medium transition-all ${
+              className={`flex-shrink-0 inline-flex items-center px-4 py-2 rounded-lg font-inter text-sm font-medium transition-all ${
                 isSelected ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
               }`}
             >
-              <span>{chapter.title}</span>
-              <span className={`text-[10px] mt-0.5 font-bold ${isSelected ? 'text-blue-200' : 'text-slate-400'}`}>
-                {t('courses.chapterMeta', { lessons: tc('lessonsCount', { count: chapter.lessons.length }), progress })}
-              </span>
+              <span>{chapter.icon && <span className="me-1.5" aria-hidden="true">{chapter.icon}</span>}{chapter.title}</span>
             </button>
           );
         })}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <AnimatePresence mode="popLayout">
-          {searchResults ? (
-            searchResults.length === 0
-              ? <NoLessonMatches key="no-match" query={searchQuery} />
-              : searchResults.map((lesson) => <LessonCard key={lesson.id} lesson={lesson} />)
-          ) : unitGroups ? (
-            <>
-              <h3 className="col-span-full text-sm font-bold text-slate-700">{t('unit.unitCard.unitsTitle')}</h3>
-              {unitGroups.units.map((unit) => <UnitGroup key={unit.id} unit={unit} />)}
-              {unitGroups.rest.length > 0 && (
-                <>
-                  <h3 className="col-span-full mt-2 text-sm font-bold text-slate-600">{t('unit.unitCard.otherTopics')}</h3>
-                  {unitGroups.rest.map((lesson) => <LessonCard key={lesson.id} lesson={lesson} />)}
-                </>
-              )}
-            </>
-          ) : (
-            lessons.map((lesson) => <LessonCard key={lesson.id} lesson={lesson} />)
-          )}
-        </AnimatePresence>
+      <div className="mb-5">
+        <CatalogueViewToolbar view={view} onChange={setView} count={(searchResults ?? lessons).length} searching={!!searchResults} />
       </div>
+
+      <CatalogueBrowser
+        chapters={visibleChapters}
+        gradeChapters={gradeData.chapters}
+        lessons={lessons}
+        searchResults={searchResults}
+        searchQuery={searchQuery}
+        view={view}
+      />
     </div>
   );
 }

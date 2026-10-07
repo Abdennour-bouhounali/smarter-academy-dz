@@ -80,11 +80,13 @@ describe('le contexte de disponibilité', () => {
 
 describe('les surfaces qui affichent l’état', () => {
   it.each([
-    ['src/components/student/LessonCard.jsx', 'lessonStatus(lesson.id)'],
+    ['src/components/student/LessonCard.jsx', 'status={publication}'],
+    ['src/components/student/LessonRow.jsx', 'status={publication}'],
     ['src/pages/UnitPage.jsx', 'lessonStatus(lesson.id)'],
     ['src/lessons/common/components/LessonIndex.jsx', 'moduleStatus(config.id, module.number)'],
     ['src/lessons/common/components/ModuleLayout.jsx', 'moduleStatus(lessonId, moduleNumber)'],
   ])('%s pose la pastille', (file, call) => {
+    // `publication` = `lessonStatus(lesson.id)`, lu par useLessonTileState.
     const source = read(file);
     expect(source).toContain('<PublicationBadge');
     expect(source).toContain(call);

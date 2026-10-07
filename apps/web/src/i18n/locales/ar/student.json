@@ -85,7 +85,19 @@
     "goToProfile": "الذهاب إلى ملفي الشخصي",
     "exploreOtherGrades": "استكشف سنوات أخرى",
     "allChapters": "كل الميادين",
-    "chapterMeta": "{{lessons}} · {{progress}}٪"
+    "view": {
+      "group": "تنظيم الدروس",
+      "layout": "شكل العرض",
+      "groups": {
+        "units": "الوحدات",
+        "chapters": "حسب الميادين",
+        "all": "كل الدروس"
+      },
+      "layouts": {
+        "grid": "شبكة",
+        "rows": "قائمة"
+      }
+    }
   },
   "explorer": {
     "metaTitle": "استكشاف",

@@ -108,6 +108,7 @@ function buildDzUnit(unit, lessonsOfUnit, { levelId, gradeId }) {
     id: unit.code,
     number: unit.number,
     title: unit.titleAr,
+    icon: unit.icon ?? null,
     subtitle: unit.subtitleAr ?? null,
     objectives: unit.objectivesAr ?? [],
     sourceTopicIds: unit.sourceTopicIds ?? [],
@@ -145,10 +146,14 @@ function buildDzCourseLevels() {
   const ownerDomains = (units4am.ownerChapters ?? []).map((c) => ({
     id: c.id, titleAr: c.titleAr, subtitleAr: c.subtitleAr, topics: [],
   }));
+  const displayOrder = units4am.chapterOrder?.order ?? [];
+  const displayRank = (id) => (displayOrder.includes(id) ? displayOrder.indexOf(id) : displayOrder.length);
   const chapters = [...programme4am.domains, ...ownerDomains].map((domain, index) => ({
     id: domain.id,
     title: domain.titleAr,
     subtitle: domain.subtitleAr,
+    // Icône d'affichage du ميدان (units_4am › chapterIcons) — jamais dans le programme.
+    icon: units4am.chapterIcons?.[domain.id] ?? null,
     order: index,
     // Les sujets OFFICIELS, au mot près. `namedMethodsAr`/`namedPartsAr` ne
     // sont recopiés QUE là où le programme les porte (6 sujets sur 28) :
@@ -175,7 +180,11 @@ function buildDzCourseLevels() {
         // propriétaire sous un autre ميدان (`placement`, unité 3) garde son sujet officiel.
         topicTitle: topicTitleOf.get(lesson.sourceTopicId),
       })),
-  })).filter((chapter) => chapter.lessons.length > 0);
+  })).filter((chapter) => chapter.lessons.length > 0)
+    // L'ordre d'AFFICHAGE décidé par le propriétaire (units_4am › chapterOrder,
+    // 2026-10-07 : la géométrie en dernier). `order` reste la position dans le
+    // programme ; un ميدان non listé garde sa place relative, après les listés.
+    .sort((a, b) => displayRank(a.id) - displayRank(b.id));
 
   // Les UNITÉS du manuel, greffées sur leur chapitre. Une unité ne possède
   // pas ses leçons : elle les référence (mêmes objets que `chapter.lessons`).

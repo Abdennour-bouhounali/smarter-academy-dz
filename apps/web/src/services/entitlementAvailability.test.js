@@ -47,7 +47,8 @@ describe('la porte de palier côté élève', () => {
   });
 
   it('la carte lit le palier et le verrou du SERVEUR', () => {
-    const source = read('src/components/student/LessonCard.jsx');
+    // L'état de la carte (et de la ligne) est lu par useLessonTileState.
+    const source = read('src/components/student/useLessonTileState.js');
     expect(source).not.toMatch(/isPremiumUser:\s*false/);
     expect(source).toContain('const isPremiumLesson = isLessonPremium(lesson.id);');
     expect(source).toContain('const isUnlocked = !isLessonLocked(lesson.id);');
@@ -132,10 +133,13 @@ describe('la porte de palier côté élève', () => {
     expect(source).toContain('isLessonPremium');
     expect(source).toContain('isLessonLocked');
 
+    const state = read('src/components/student/useLessonTileState.js');
     const card = read('src/components/student/LessonCard.jsx');
     // Le verrou décide de la BRANCHE (carte cliquable ou CTA tarifs) ; le
     // palier décide seulement du badge.
-    expect(card).toContain('!isLessonLocked(lesson.id)');
+    expect(state).toContain('!isLessonLocked(lesson.id)');
+    expect(state).toContain("state = 'locked'");
+    expect(card).toContain("state === 'locked'");
     expect(card).toContain('isPremiumLesson');
   });
 

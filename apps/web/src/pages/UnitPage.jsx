@@ -16,6 +16,7 @@ import { LessonModuleChips, TeacherLessonActions } from '../components/teacher/T
 import MathLabel from '../lessons/common/components/MathLabel';
 import PublicationBadge from '../components/content/PublicationBadge';
 import UnitOpenerFigure from './unit/UnitOpenerFigure';
+import { useCatalogueHref } from '../components/student/catalogueLink';
 
 /**
  * La page d'une UNITÉ du manuel (الوحدة) — le niveau entre le ميدان et le درس.
@@ -175,6 +176,7 @@ export default function UnitPage() {
   // l'inactivité, le clic ne l'attend pas (lessonRuntimeLoader.js).
   usePrefetchLessonRuntime();
   const { t } = useTranslation('student');
+  const catalogueHref = useCatalogueHref();
   const { levelId, gradeId, chapterId, unitId } = useParams();
   const unit = getUnitById(unitId);
   // Le profil de CETTE unité seulement (`?unit=`, Mastery V2).
@@ -192,9 +194,9 @@ export default function UnitPage() {
     <div className={`min-h-screen bg-slate-50 ${chrome.contentOffsetClass}`}>
       <main className="sa-page space-y-8 py-8">
         <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500" aria-label={t('unit.breadcrumb')}>
-          <Link to="/courses" className="hover:text-blue-600">{t('unit.home')}</Link><span>/</span>
-          <Link to={`/courses?level=${levelId}&grade=${gradeId}`} className="hover:text-blue-600">{unit.gradeName}</Link><span>/</span>
-          <Link to={`/courses?level=${levelId}&grade=${gradeId}&chapter=${chapterId}`} className="hover:text-blue-600">{unit.chapterTitle}</Link><span>/</span>
+          <Link to={catalogueHref()} className="hover:text-blue-600">{t('unit.home')}</Link><span>/</span>
+          <Link to={catalogueHref({ level: levelId, grade: gradeId })} className="hover:text-blue-600">{unit.gradeName}</Link><span>/</span>
+          <Link to={catalogueHref({ level: levelId, grade: gradeId, chapter: chapterId })} className="hover:text-blue-600">{unit.chapterTitle}</Link><span>/</span>
           <span className="font-semibold text-slate-900"><MathLabel>{unit.title}</MathLabel></span>
         </nav>
 

@@ -17,7 +17,10 @@ const read = (p) => readFileSync(resolve(webRoot, p), 'utf8');
  */
 describe('l’autorité de publication côté élève', () => {
   it('la carte de cours consulte le serveur, pas seulement le bundle', () => {
-    const source = read('src/components/student/LessonCard.jsx');
+    // La carte et la ligne lisent leur état par useLessonTileState.
+    expect(read('src/components/student/LessonCard.jsx')).toContain('useLessonTileState(lesson)');
+    expect(read('src/components/student/LessonRow.jsx')).toContain('useLessonTileState(lesson)');
+    const source = read('src/components/student/useLessonTileState.js');
     expect(source).toContain('useContentAvailability');
     // Le statut du catalogue ne suffit plus à lui seul.
     expect(source).toMatch(/isAvailable\s*=\s*lesson\.status === 'available' && !isLessonClosed/);
