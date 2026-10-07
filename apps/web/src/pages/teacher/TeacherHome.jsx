@@ -11,12 +11,15 @@ import UsageMeter from '../../features/teacher/usage/UsageMeter';
 import { isDefaultPlan } from '../../features/teacher/entitlementSummary';
 import { TeacherPage, Loading, ErrorBox, btnPrimary, formatDate } from './teacherUi';
 import ClassGroupCard from '../../features/teacher/members/ClassGroupCard';
+import { useIslamicGreeting } from '../../features/islamic/IslamicGreeting';
+import IslamicMoment from '../../features/islamic/IslamicMoment';
 
 /** L'accueil de l'espace enseignant : ses classes, son usage, son offre. */
 export default function TeacherHome() {
   const { t } = useTranslation('teacher');
   useDocumentMeta(t('home.metaTitle'), t('home.metaDescription'));
   const { user } = useContext(AuthContext);
+  const greeting = useIslamicGreeting(getDisplayName(user));
   const loader = useCallback((token) => fetchTeacherDashboard(token), []);
   const { data, loading, error, reload } = useAdminResource(loader, [loader]);
 
@@ -24,7 +27,9 @@ export default function TeacherHome() {
   const plan = ent?.plan;
 
   return (
-    <TeacherPage eyebrow={t('space')} title={t('home.greeting', { name: getDisplayName(user) })} subtitle={t('home.tagline')}>
+    <TeacherPage eyebrow={t('space')} title={greeting} subtitle={t('home.tagline')}>
+      {/* Un rappel sur l'enseignement (الأمانة، الرفق، الإحسان…), pas le fil de l'élève. */}
+      <IslamicMoment context="teacher_home" className="mb-6 max-w-3xl" />
       {loading && <Loading />}
       {error && <ErrorBox message={error} onRetry={reload} />}
       {data && (

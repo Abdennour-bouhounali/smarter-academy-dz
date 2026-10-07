@@ -29,6 +29,8 @@ import LearningSpaceNav from '../../features/home/components/LearningSpaceNav';
 import PremiumCard from '../../features/home/components/PremiumCard';
 import ClassContextBanner from '../../features/home/components/ClassContextBanner';
 import DailyChallengeCard from '../../features/home/components/DailyChallengeCard';
+import MushafVerse from '../../features/islamic/MushafVerse';
+import { HOME_VERSE } from '../../features/islamic/content/mushaf';
 import { usePrefetchLessonRuntime } from '../../lessons/common/lessonRuntimeLoader';
 
 /**
@@ -36,6 +38,7 @@ import { usePrefetchLessonRuntime } from '../../lessons/common/lessonRuntimeLoad
  * question : « que dois-je faire maintenant ? ». Dans l'ordre de lecture :
  *
  *   qui je suis, où je suis     → salutation + classe
+ *                                 + « ٱقْرَأْ » (العلق 1), en mise en page مصحف
  *   ce qu'on me propose         → bilan diagnostique (quand il y en a un)
  *   ████ ce que je fais LÀ ████ → le héros « خطوتك التالية »
  *   comment j'avance            → quatre repères
@@ -144,6 +147,12 @@ export default function StudentHome() {
         <div>
           <motion.div {...enter(0)} className="mb-7 sm:mb-8">
             <HomeGreeting name={getDisplayName(user)} gradeName={grade?.name || null} />
+            {/* La salutation, puis « ٱقْرَأْ » — le premier verset révélé, composé
+                comme dans le مصحف (basmala, rasm ʿuthmānī, médaillon) : en
+                code, jamais en image (features/islamic/MushafVerse.jsx). */}
+            <div className="sa-islamic-surface mt-5 max-w-2xl rounded-2xl border border-emerald-100 px-4 py-4 sm:px-8" data-home-verse>
+              <MushafVerse item={HOME_VERSE} />
+            </div>
           </motion.div>
 
           {/* Le contexte d'étude : « tu es dans le قسم X avec l'enseignant Y ».

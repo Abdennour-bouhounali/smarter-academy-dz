@@ -24,7 +24,7 @@
   "coursesComingSoon": "الدروس قادمة قريبًا",
   "coursesComingSoonBody": "نحضّر حاليًا محتوى السنة الرابعة متوسط والسنة الثالثة ثانوي وفق البرنامج الرسمي الجزائري.",
   "chooseGradeWelcome": "مرحبًا",
-  "chooseGradeSubtitle": "خطوة أخيرة: اختر سنتك الدراسية لاكتشاف مسارك. يمكنك تغييرها لاحقًا من ملفك الشخصي.",
+  "chooseGradeSubtitle": "اختر سنتك الدراسية، ونُعدّ لك مسارك على مقاسها.",
   "chooseGradeComingSoonTitle": "اختيار السنة الدراسية قادم قريبًا",
   "chooseGradeComingSoonBody": "نحضّر حاليًا برنامج السنة الرابعة متوسط والسنة الثالثة ثانوي. يمكنك الدخول إلى فضائك الآن، وستتمكن من اختيار سنتك الدراسية بمجرد توفرها.",
   "chooseGradeContinue": "الدخول إلى فضائي",
@@ -191,5 +191,22 @@
     "plansLoad": "تعذّر تحميل العروض.",
     "planRequest": "تعذّر تسجيل الطلب.",
     "studyContext": "تعذّر تحميل سياق الدراسة."
+  },
+  "islamic": {
+    "greeting": "السلام عليكم {{name}} 🌿",
+    "greetingAnonymous": "السلام عليكم 🌿",
+    "cardTitle": "تذكرة",
+    "cardAria": "تذكرة إيمانية",
+    "breakTitle": "وقفة إيمانية",
+    "continueStudy": "أكمل الدراسة",
+    "reflectionLabel": "تأمّل",
+    "quranSurah": "سورة {{name}}",
+    "quranAyah": "الآية",
+    "quranAyahs": "الآيات",
+    "quranExcerpt": "من الآية",
+    "hadithNarrator": "عن {{narrator}}",
+    "hadithExcerpt": "من حديث",
+    "hadithGrade": "درجة الحديث: {{grade}}",
+    "proverb": "مثل عربي"
   }
 }

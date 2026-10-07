@@ -650,3 +650,5 @@ factory and the entry button is in `LessonIndex`. A lesson family with its own r
   mitigated only by `overscroll-behavior: contain`.
 * No design tokens and no dark mode: `classroom.css` hard-codes its indigo palette.
 * Not implemented, by design: annotation, drawing, live student sync, recording, remote control.
+* No Islamic reminder is shown while presenting (`LessonIndex` renders its presentation page; the
+  module « وقفة إيمانية » is gated by `!presenting`) — `ISLAMIC_VALUES.md` §7.

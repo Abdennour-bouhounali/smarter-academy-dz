@@ -824,3 +824,50 @@ html[data-sa-resizing] .sa-workspace-main {
 [data-predict-revealed] ~ [data-knowledge-brick] [data-predict-own] {
   display: none;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   « القيم الإسلامية » (features/islamic/, docs/architecture/ISLAMIC_VALUES.md)
+   `.sa-islamic-surface` — la carte de rappel : un fond chaud à peine vert et
+   un motif géométrique (étoile à huit branches) à 5 % d'opacité. Ni or, ni
+   ornement, ni animation : la carte appartient au système Smarter Academy.
+   `.sa-quran` — le texte coranique en naskh : Amiri, chargée à la demande par
+   le chargeur de la feuille d'examen (features/practice/exam/examFont.js),
+   puis les naskh système, Cairo en dernier recours.
+   ───────────────────────────────────────────────────────────────────────── */
+.sa-islamic-surface {
+  background-color: #f7fbf8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23047857' stroke-opacity='0.05'%3E%3Crect x='14' y='14' width='20' height='20'/%3E%3Crect x='14' y='14' width='20' height='20' transform='rotate(45 24 24)'/%3E%3C/g%3E%3C/svg%3E");
+}
+.sa-quran {
+  font-family: 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', 'Cairo', serif;
+  line-height: 2.1;
+}
+/* `.sa-mushaf` — le verset composé comme dans le مصحف (MushafVerse.jsx) :
+   rasm ʿuthmānī en Amiri Quran (chargée à la demande, features/islamic/quranFont.js),
+   basmala verte au-dessus, médaillon de fin de verset en SVG (`currentColor`
+   = le corail des médaillons du مصحف), à la hauteur de la ligne. */
+.sa-mushaf {
+  font-family: 'Amiri Quran', 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', serif;
+  line-height: 2.2;
+}
+.sa-mushaf-basmala {
+  color: #166534; /* green-800 */
+  /* ﷽ est UN glyphe d'environ 10 em de large, insécable : sa taille suit la
+     largeur de l'écran pour ne jamais déborder (390 px → ≈ 240 px de large). */
+  font-size: min(1.5rem, 6.4vw);
+  line-height: 1.6;
+}
+.sa-mushaf-verse {
+  font-size: 1.9rem;
+}
+@media (min-width: 640px) {
+  .sa-mushaf-basmala { font-size: 1.75rem; }
+  .sa-mushaf-verse { font-size: 2.4rem; }
+}
+.sa-ayah-marker {
+  display: inline-block;
+  width: 1.05em;
+  height: 1.05em;
+  vertical-align: -0.12em;
+  color: #e0604f;
+}

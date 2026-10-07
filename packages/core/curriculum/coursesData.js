@@ -274,6 +274,10 @@ export function getAllGrades() {
       name: grade.name,
       levelId: level.id,
       levelTitle: level.title,
+      // L'écran de choix de classe dit ce qui attend l'élève : le nombre
+      // de leçons publiées, et si le programme n'est pas encore fourni.
+      curriculumStatus: grade.curriculumStatus ?? null,
+      lessonCount: (grade.chapters || []).reduce((n, c) => n + (c.lessons || []).length, 0),
     }))
   );
 }

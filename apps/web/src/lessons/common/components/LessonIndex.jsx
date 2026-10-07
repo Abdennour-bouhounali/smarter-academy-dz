@@ -27,6 +27,7 @@ import MathLabel from './MathLabel';
 import LessonProblemCard from '../problems/LessonProblemCard';
 import { mathToPlain } from '../../../utils/mathPlain';
 import { useCatalogueHref } from '../../../components/student/catalogueLink';
+import IslamicMoment from '../../../features/islamic/IslamicMoment';
 
 /**
  * Static color map — replaces dynamic `bg-${color}-100` patterns.
@@ -438,6 +439,18 @@ export default function LessonIndex({ config, basePath }) {
             </div>
           </div>
         </section>
+
+        {/* « تذكرة » (features/islamic) — AUTOUR de la leçon, jamais dedans :
+            sous la carte de tête, avant la liste des modules. Début, milieu
+            ou fin du parcours pour l'élève ; l'enseignant qui prépare sa
+            séance reçoit un rappel sur l'enseignement. Rien en mode classe
+            (cette page rend autre chose quand elle est présentée). */}
+        <IslamicMoment
+          context={{
+            student: isPathComplete ? 'lesson_completion' : completedCount > 0 ? 'study_progress' : 'lesson_start',
+            teacher: 'teacher_start',
+          }}
+        />
 
         {/* ── Ce que le درس enseigne (phase 8) : points d'apprentissage et leur
             maîtrise (profil serveur), prérequis PÉDAGOGIQUES (jamais bloquants),

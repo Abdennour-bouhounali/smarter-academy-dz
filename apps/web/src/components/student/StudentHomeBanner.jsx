@@ -8,6 +8,7 @@ import { courseLevels, getAllGrades } from '@smarter-academy/core';
 import { AuthContext } from '../../context/AuthContext';
 import { getResumeLesson } from '../../lessons/common/utils/progress/getResumeLesson';
 import { getDisplayName } from '../../utils/userDisplay';
+import { useIslamicGreeting } from '../../features/islamic/IslamicGreeting';
 
 /**
  * The homepage's grade-aware entry point for a logged-in student — their
@@ -19,6 +20,7 @@ import { getDisplayName } from '../../utils/userDisplay';
 export default function StudentHomeBanner() {
   const { t } = useTranslation('marketing');
   const { user } = useContext(AuthContext);
+  const greeting = useIslamicGreeting(getDisplayName(user));
 
   const continueCourse = useMemo(() => {
     if (user?.role !== 'student') return null;
@@ -43,7 +45,7 @@ export default function StudentHomeBanner() {
         >
           <div>
             <p className="font-inter text-sm text-slate-500">
-              {t('studentBanner.greeting', { name: getDisplayName(user) })} — {grade ? `${level?.title} ${grade.name}` : t('studentBanner.chooseGrade')}
+              {greeting} — {grade ? `${level?.title} ${grade.name}` : t('studentBanner.chooseGrade')}
             </p>
             <h2 className="font-space font-bold text-lg sm:text-xl text-slate-900 mt-0.5">
               {continueCourse

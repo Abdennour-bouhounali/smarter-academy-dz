@@ -248,6 +248,16 @@ Arabic readable. A `fontSize={13}` inside an `<svg>` is in **viewBox units**,
 not CSS pixels: this scale does not reach it, and it must not be "corrected"
 by hand.
 
+### No letter-spacing, monospace or uppercase on Arabic (2026-10-07)
+
+The Latin « eyebrow » label — `font-mono-jetbrains … tracking-widest
+uppercase` — breaks Arabic: `letter-spacing` pulls the joined letters of a
+word apart, so « التعليم المتوسط » reads as scattered glyphs. An Arabic label
+uses `font-arabic` with weight and colour for emphasis, never `tracking-*`.
+Found on `/espace/bienvenue` (ChooseGrade.jsx), which also wrapped each grade
+name over three lines in a 4-column grid: a choice whose label is a full
+phrase gets a full-width row with `whitespace-nowrap`, checked at 360 px.
+
 ---
 
 ## 4. Direction — RTL layout, LTR mathematics
@@ -525,6 +535,21 @@ Number formatting inside a chart (and anywhere else) uses `ar-DZ`, never
 ### RTL and font selection are separate concerns
 
 Solving one does not solve the other. Verify both independently, then together.
+
+---
+
+### Quran, hadith and the greeting (2026-10-07)
+
+Owned by `ISLAMIC_VALUES.md`; the RTL rules in short: a verse is the **exact**
+Tanzil text between ﴿ ﴾ in naskh (`.sa-quran`), never retyped — Arabic
+combining marks typed by hand often come out in a different order and are a
+different string; a hadith is « قال رسول الله ﷺ: » then the matn between « »;
+platform-written lines never wear either habit. Ayah and hadith numbers, and
+ranges such as « 5–6 », are isolated with `<bdi dir="ltr">` (an en dash between
+digits reorders to « 6–5 » otherwise). The greeting is one key,
+`common:islamic.greeting` (« السلام عليكم {{name}} 🌿 »); « أهلًا » is no longer
+used. One exception to Western digits: the ayah medallion of `MushafVerse` (student home) writes
+the verse number in Arabic-Indic digits (١), as in the مصحف; its readable reference does not.
 
 ---
 

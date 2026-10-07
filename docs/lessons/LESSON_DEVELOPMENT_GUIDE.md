@@ -1446,6 +1446,12 @@ Each of these has actually happened in this repository, or is a standing rule.
   reads the dollars. Use `<MathLabel>{x}</MathLabel>`, or `mathToPlain(x)` where only a string fits
   (ARABIC_RTL_CONTRACT « Content text outside a module »). Owner report, 2026-10-02: 122 raw formulas, 7 units.
 
+**Islamic reminders**
+- Do not put a verse, hadith, du'a or « تذكرة » inside a lesson, a module or a manipulation, and do not
+  import `features/islamic` from lesson content. The lesson shell owns those moments (`LessonIndex`
+  under the hero, `ModuleLayout` below the navigation once a module is done) — never between an action
+  and its mathematical feedback (`docs/architecture/ISLAMIC_VALUES.md` §6–§7).
+
 **Progression**
 - Do not gate a step on a *correct* answer (§4). Release blocker.
 - Do not test a module number for truthiness. Module `0` exists; use
