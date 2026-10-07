@@ -242,6 +242,13 @@ Le workflow reste volontairement prudent :
    adresse. Sans mail fonctionnel, un enseignant peut toujours partager son
    lien de classe ou donner son رمز الانضمام à l'oral,
    et l'administrateur voit le code individuel une fois à l'écran.
+   Une panne SMTP ne casse plus l'inscription (depuis le 2026-10-07) : le
+   compte est créé, la réponse porte `verificationEmailSent: false` et
+   l'écran propose « إعادة إرسال البريد ». La panne n'est donc visible que
+   dans `storage/logs/laravel.log` (exception de transport `report()`ée) —
+   c'est là qu'il faut regarder si des élèves disent ne rien recevoir. Et
+   `MAIL_MAILER=log` n'échoue jamais : il écrit le courriel dans ce même
+   journal sans rien envoyer (voir `HOSTINGER_AUTH_ENV_CHECKLIST.md` § 3.3).
 4. **Rien à faire pour les élèves existants** : sans classe, ils sont
    « indépendants » et `/content/availability` ne change pas ; leurs codes et
    droits actuels restent valides (colonnes ajoutées nullable).

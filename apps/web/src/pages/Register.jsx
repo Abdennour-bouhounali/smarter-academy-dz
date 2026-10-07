@@ -103,7 +103,13 @@ export default function Register() {
       // élève reste fermé côté serveur. On envoie donc l'élève vers l'écran
       // de vérification, et non vers l'accueil de son espace — où il se
       // heurterait à un refus qu'il ne saurait pas interpréter.
-      navigate('/verification-email');
+      //
+      // `verificationEmailSent: false` : le compte est créé mais le serveur
+      // de courriel a refusé le premier envoi. L'écran le dit, au lieu
+      // d'affirmer « أرسلنا رابطًا » pour un courriel qui n'existe pas.
+      navigate(data.verificationEmailSent === false
+        ? '/verification-email?statut=envoi-echoue'
+        : '/verification-email');
     } catch (err) {
       setErrorMsg(err.message);
     } finally {

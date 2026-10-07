@@ -126,11 +126,13 @@ Route::prefix('v1')->group(function () {
     // PAS de jeton ici, volontairement : on clique ce lien depuis sa boîte
     // mail, souvent dans un autre navigateur que celui de l'inscription.
     // Ce qui protège la route n'est donc pas une session mais la SIGNATURE
-    // de l'URL (`signed`), qui prouve que le lien vient de nous et n'a pas
-    // été modifié — l'identifiant compris. Elle expire (voir
-    // EmailVerificationLink). La limite de débit couvre le tâtonnement.
+    // de l'URL, qui prouve que le lien vient de nous et n'a pas été modifié
+    // — l'identifiant compris. Elle expire (voir EmailVerificationLink).
+    // Elle est contrôlée dans le contrôleur et non par `signed`, pour qu'un
+    // lien refusé renvoie vers le frontend au lieu d'afficher un 403 JSON.
+    // La limite de débit couvre le tâtonnement.
     Route::get('/auth/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
-        ->middleware(['signed', 'throttle:12,1'])
+        ->middleware('throttle:12,1')
         ->whereNumber('id')
         ->name('verification.verify');
 

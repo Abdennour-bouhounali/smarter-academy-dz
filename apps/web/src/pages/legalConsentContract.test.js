@@ -113,7 +113,15 @@ describe('La page d’inscription', () => {
   });
 
   it('conduit vers la vérification, et non vers l’espace élève', () => {
-    expect(source).toContain("navigate('/verification-email')");
+    expect(source).toContain("'/verification-email'");
+    expect(source).not.toMatch(/navigate\('\/espace'\)/);
+  });
+
+  it('dit quand le premier envoi du courriel a échoué', () => {
+    // Le compte est créé même si le SMTP refuse (verificationEmailSent:
+    // false) : l'écran ne doit pas affirmer « أرسلنا ».
+    expect(source).toContain('verificationEmailSent === false');
+    expect(source).toContain('/verification-email?statut=envoi-echoue');
   });
 });
 
@@ -303,8 +311,8 @@ describe('L’écran de vérification', () => {
     expect(code).not.toMatch(/Modifier mon adresse/);
   });
 
-  it('distingue les trois retours possibles du lien', () => {
-    for (const statut of ['succes', 'deja-verifie', 'invalide']) {
+  it('distingue les retours possibles du lien et l’échec du premier envoi', () => {
+    for (const statut of ['succes', 'deja-verifie', 'invalide', 'envoi-echoue']) {
       expect(source).toContain(statut);
     }
   });

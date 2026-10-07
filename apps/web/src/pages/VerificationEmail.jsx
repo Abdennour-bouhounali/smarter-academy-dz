@@ -16,7 +16,11 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta';
  *
  *   - celui qui vient de s'inscrire et n'a encore rien cliqué ;
  *   - celui qui REVIENT du lien reçu par courriel, l'API l'ayant redirigé
- *     ici avec `?statut=…`.
+ *     ici avec `?statut=succes|deja-verifie|invalide` (`invalide` couvre
+ *     aussi le lien expiré ou altéré) ;
+ *   - celui dont le PREMIER envoi a échoué à l'inscription
+ *     (`?statut=envoi-echoue`, posé par Register.jsx) : on ne lui dit pas
+ *     « أرسلنا », on lui propose le renvoi.
  *
  * ── Ce que cette page n'est PAS ──────────────────────────────────────────
  * Elle ne garde aucune porte. La fermeture de l'espace élève est le fait du
@@ -121,6 +125,13 @@ export default function VerificationEmail() {
             </div>
           )}
 
+          {statut === 'envoi-echoue' && (
+            <div role="alert" className="mt-5 flex gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+              <AlertTriangle className="h-5 w-5 shrink-0" aria-hidden="true" />
+              <p>{t('verifySendFailed')}</p>
+            </div>
+          )}
+
           {statut === 'deja-verifie' && (
             <div className="mt-5 flex gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
               <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />
@@ -135,9 +146,11 @@ export default function VerificationEmail() {
             </div>
           )}
 
-          <p className="mt-5 text-center text-sm leading-relaxed text-slate-600">
-            {t('verifySent', { email: user?.email || '—' })}
-          </p>
+          {statut !== 'envoi-echoue' && (
+            <p className="mt-5 text-center text-sm leading-relaxed text-slate-600">
+              {t('verifySent', { email: user?.email || '—' })}
+            </p>
+          )}
 
           <p className="mt-2 text-center text-xs text-slate-500">
             {t('verifyValidity')}

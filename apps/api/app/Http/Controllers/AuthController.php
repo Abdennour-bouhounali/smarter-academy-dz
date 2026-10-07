@@ -83,7 +83,14 @@ class AuthController extends Controller
 
         // L'adresse n'est PAS vérifiée (email_verified_at reste nul) : le
         // courriel qui suit est la seule façon de la prouver.
-        $user->notify(new VerifyEmailAddress);
+        //
+        // Un échec d'envoi (SMTP en panne, identifiants faux) ne fait PAS
+        // échouer l'inscription : le compte existe déjà. Répondre 500 ici
+        // laissait l'élève sans jeton, et sa nouvelle tentative butait sur
+        // « adresse déjà utilisée » — enfermé dehors. On répond 201, et
+        // `verificationEmailSent: false` dit au frontend de proposer le
+        // renvoi tout de suite.
+        $sent = VerifyEmailAddress::sendTo($user);
 
         // Un jeton est tout de même délivré — mais il n'ouvre pas l'espace
         // élève. Le middleware `email.verified` refuse chaque route
@@ -97,6 +104,7 @@ class AuthController extends Controller
             'success' => true,
             'token' => $token,
             'user' => UserPresenter::format($user),
+            'verificationEmailSent' => $sent,
         ], 201);
     }
 

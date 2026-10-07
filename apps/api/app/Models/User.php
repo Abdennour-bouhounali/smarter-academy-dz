@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,7 +19,7 @@ use Laravel\Sanctum\HasApiTokens;
  * this is a note on the existing column, not a speculative table.
  */
 #[Hidden(['password', 'remember_token', 'pending_class_join_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements HasLocalePreference
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
@@ -177,6 +178,19 @@ class User extends Authenticatable
     public function hasVerifiedEmail(): bool
     {
         return $this->email_verified_at !== null;
+    }
+
+    /**
+     * La langue des courriels et notifications envoyés à ce compte.
+     *
+     * Toujours l'arabe : c'est la langue de la plateforme. Laravel l'applique
+     * à chaque notification, si bien que le gabarit de courriel traduit ses
+     * propres phrases depuis `lang/ar.json` et passe en RTL — sans toucher à
+     * APP_LOCALE, dont dépendent les messages de validation.
+     */
+    public function preferredLocale(): string
+    {
+        return 'ar';
     }
 
     public function getEmailForVerification(): string

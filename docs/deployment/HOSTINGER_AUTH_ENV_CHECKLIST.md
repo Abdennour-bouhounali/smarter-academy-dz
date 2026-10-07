@@ -3,6 +3,13 @@
 Ce document liste ce que le fichier `.env` de production doit contenir pour que
 le chantier légal/authentification fonctionne.
 
+> **Écrit pour le produit français** (`smarter-academy.fr`, Stripe). Pour la
+> plateforme algérienne, le domaine est **`smarter-academy.com`** partout où
+> ce document écrit `.fr` (`APP_URL`, `FRONTEND_URL`, `GOOGLE_REDIRECT_URI`,
+> lien de vérification) ; le modèle `.env` DZ et ses valeurs sont dans
+> `DZ_FIRST_DEPLOYMENT.md`. Les pièges décrits ici (`APP_URL`,
+> `MAIL_MAILER=log`) valent à l'identique.
+
 > **Aucune valeur secrète ne figure ici, et aucune ne doit y figurer.**
 > Ce fichier est versionné ; `.env` ne l'est pas (`.gitignore`). Les secrets
 > se saisissent directement dans le `.env` du serveur, via le File Manager.
@@ -49,7 +56,9 @@ inexistante renvoie `{"message": ...}` sans trace d'exécution). Le laisser ains
 d'adresse sont construits par `URL::temporarySignedRoute()`, qui part de
 `APP_URL`. Une valeur erronée (`http://`, un `www.` en trop, une barre oblique
 finale) produit des liens dont la signature ne correspondra pas, et **toute
-vérification d'adresse échouera** avec « lien invalide ». La valeur attendue,
+vérification d'adresse échouera** : l'élève est renvoyé vers
+`/verification-email?statut=invalide` (« لم يعد هذا الرابط صالحًا »), comme
+pour un lien expiré. La valeur attendue,
 vérifiée contre la structure réelle du serveur, produit :
 
 ```
@@ -119,6 +128,12 @@ Si la variable est absente du `.env` de production, **aucun courriel ne part** :
 les messages sont écrits dans `storage/logs/laravel.log` et l'élève n'en reçoit
 jamais aucun, sans la moindre erreur visible. C'est le piège principal de ce
 déploiement.
+
+À l'inverse, des identifiants SMTP **faux** produisent une vraie erreur — elle
+est journalisée dans le même fichier, mais n'interrompt plus l'inscription
+(réponse `verificationEmailSent: false`, renvoi en `503`, depuis le
+2026-10-07). Dans les deux cas, l'élève ne reçoit rien : seul le journal le
+dit.
 
 ---
 
