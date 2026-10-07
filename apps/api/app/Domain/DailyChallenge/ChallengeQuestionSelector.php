@@ -7,6 +7,7 @@ use App\Domain\Access\EntitlementService;
 use App\Domain\Classroom\ClassroomProgressService;
 use App\Domain\Classroom\StudyContextService;
 use App\Domain\Practice\ExerciseRepository;
+use App\Domain\Practice\Support\AnswerEvaluator;
 use App\Domain\Progress\Engine\MasteryState;
 use App\Models\AssessmentItem;
 use App\Models\Classroom;
@@ -301,6 +302,21 @@ class ChallengeQuestionSelector
             $key = $row->lesson_id.'|'.$row->exercise_code;
             $exercise = $exercises->get($key);
             if ($exercise !== null && ! $exercise->isVisibleToStudents()) {
+                continue;
+            }
+            // Le défi ne sert que des questions qui COMPTENT pour la maîtrise
+            // (AnswerEvaluator::countsForMastery) : une étape « بيّن أن »
+            // auto-évaluée (`selfCheck`) ou une étape `counted: false` des
+            // fiches BEM serait notée sur la parole de l'élève, ou ne
+            // prouverait rien. Le type suffit pour `selfCheck` ; `counted`
+            // n'existe que dans le contenu (lu en cache par le dépôt).
+            if ($row->answer_type === 'selfCheck') {
+                continue;
+            }
+            $question = $row->lesson?->code !== null
+                ? $this->exercises->findQuestion($row->lesson->code, $row->exercise_code, $row->question_id)
+                : null;
+            if ($question !== null && ! AnswerEvaluator::countsForMastery($question)) {
                 continue;
             }
             $tier = AccessTier::effective($exercise?->tier, $row->lesson?->tier);

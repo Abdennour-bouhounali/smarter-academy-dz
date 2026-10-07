@@ -78,7 +78,11 @@ the previous question, stable hash). Difficulty band: teacher's `easy` 1–2,
 published exercises; a **class** challenge only uses **free** content (every
 member must be able to open it); a personal one uses premium content only if
 the student is entitled. Every candidate is checked against the shipped
-content file. Deterministic: ties broken by `crc32(scope|date|key)`.
+content file, and only questions that **count for mastery**
+(`AnswerEvaluator::countsForMastery`) are served: never a self-assessed
+« بيّن أن » step (`selfCheck`) nor a `counted: false` step of a BEM sheet —
+they would be scored on the student's word (since 2026-10-07; before that the
+BEM content of `bahth-pgcd` could reach a challenge). Deterministic: ties broken by `crc32(scope|date|key)`.
 
 ## 4. Serving and timing — the server owns the clock
 

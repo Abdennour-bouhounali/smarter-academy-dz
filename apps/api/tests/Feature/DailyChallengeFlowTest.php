@@ -79,6 +79,23 @@ class DailyChallengeFlowTest extends TestCase
         ]);
     }
 
+    /**
+     * Les fiches BEM ont ajouté des étapes « بيّن أن » auto-évaluées
+     * (`selfCheck`) et des étapes `counted: false` : le défi n'en sert
+     * aucune — elles seraient notées sur la parole de l'élève.
+     */
+    public function test_the_challenge_serves_only_questions_that_count_for_mastery(): void
+    {
+        $this->api('GET', '/daily-challenge')->assertOk();
+
+        $served = DailyChallengeQuestion::with('lesson')->get();
+        $this->assertNotEmpty($served);
+        foreach ($served as $q) {
+            $content = app(\App\Domain\Practice\ExerciseRepository::class)->findQuestion($q->lesson->code, $q->exercise_code, $q->question_id);
+            $this->assertTrue(\App\Domain\Practice\Support\AnswerEvaluator::countsForMastery($content), "{$q->item_key} ne compte pas pour la maîtrise");
+        }
+    }
+
     public function test_the_challenge_is_generated_once_and_is_stable(): void
     {
         $first = $this->api('GET', '/daily-challenge')->assertOk();
