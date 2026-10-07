@@ -404,7 +404,8 @@ class EmailVerificationTest extends TestCase
             $this->assertStringContainsString('انسخ هذا الرابط', $html);
             $this->assertStringContainsString(rtrim(config('app.frontend_url'), '/').'/email/logo.png', $html);
             $this->assertStringContainsString('family=Amiri', $html);
-            $this->assertStringContainsString('أمين', $html, 'le prénom salue l’élève');
+            $this->assertStringContainsString('السلام عليكم أمين', $html, 'la salutation islamique et le prénom');
+            $this->assertStringNotContainsString('مرحبًا', $html);
             $this->assertStringContainsString('جميع الحقوق محفوظة', $html);
             $this->assertStringNotContainsString("If you're having trouble", $html);
             $this->assertStringNotContainsString('All rights reserved', $html);

@@ -225,9 +225,18 @@ other than al-Fātiḥa and at-Tawba.
 `common:islamic.greeting` = « السلام عليكم {{name}} 🌿 », rendered by
 `IslamicGreeting` / `useIslamicGreeting` in three places: the student home
 (`HomeGreeting`), the teacher home title (`TeacherHome`), the logged-in banner
-on the landing page (`StudentHomeBanner`). The name is `getDisplayName(user)`;
+on the landing page (`StudentHomeBanner`), and the grade step of onboarding
+(`ChooseGrade`, `/espace/bienvenue`). The name is `getDisplayName(user)`;
 without one, « السلام عليكم 🌿 ». The former « أهلًا {{name}} » keys were
-removed from `student`, `teacher` and `marketing`.
+removed from `student`, `teacher` and `marketing`, and `common:chooseGradeWelcome`
+(« مرحبًا ») on 2026-10-07.
+
+The platform's e-mails open the same way (owner request 2026-10-07): « السلام
+عليكم {first name}، » in the verification e-mail
+(`apps/api/resources/views/emails/verify-email{,-text}.blade.php`), « السلام
+عليكم، » in the activation-code e-mail and in `apps/api/lang/ar.json`
+(`Hello!`, the default greeting of Laravel's Markdown template). « مرحبًا بك »
+/ « مرحبًا بعودتك » remain where they mean *welcome*, not *hello*.
 
 ## 11. Bundle
 

@@ -32,7 +32,7 @@
         {{-- Message --}}
         <tr>
             <td class="pad" align="right" dir="rtl" style="padding:28px 40px 0; font-family:{!! $font !!}; font-size:17px; line-height:30px; color:#1E293B; text-align:right;">
-                <strong style="color:#022660;">مرحبًا{{ $firstName !== '' ? ' '.$firstName : '' }}،</strong>
+                <strong style="color:#022660;">السلام عليكم{{ $firstName !== '' ? ' '.$firstName : '' }}،</strong>
                 <br>
                 أهلًا بك في Smarter Academy! بقيت خطوة واحدة لتفعيل حسابك: تأكيد أنّ هذا البريد الإلكتروني بريدك فعلًا.
             </td>

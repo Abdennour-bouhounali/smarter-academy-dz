@@ -33,7 +33,7 @@ class ActivationCodeIssuedNotification extends Notification
     {
         $message = (new MailMessage)
             ->subject('رمز التفعيل الخاص بك — Smarter Academy')
-            ->greeting('مرحبًا!')
+            ->greeting('السلام عليكم،')
             ->line("إليك رمز تفعيل العرض « {$this->planName} » :")
             ->line('**'.$this->code.'**')
             ->line('أدخله في صفحة « تفعيل الوصول » من حسابك.');
