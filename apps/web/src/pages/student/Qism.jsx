@@ -236,7 +236,7 @@ export default function Qism() {
           </section>
         )}
 
-        <section className="glass-card p-5 sm:p-6">
+        <section className="glass-card p-5 sm:p-6" data-tour="qism.join">
           <h2 className="font-semibold text-slate-900">{t('qism.joinTitle')}</h2>
           <p className="text-sm text-slate-600 mt-1 mb-4">{t('qism.joinBody')}</p>
           <form onSubmit={handleJoin} noValidate className="space-y-4">

@@ -224,7 +224,7 @@ function WorkSection({ labRoot, tools, documents, scope = null }) {
   const { t } = useTranslation('mathlab');
 
   return (
-    <section aria-labelledby="ml-work-heading">
+    <section aria-labelledby="ml-work-heading" data-tour="mathlab.works">
       <div className="flex flex-wrap items-end justify-between gap-3 mb-3">
         <div>
           <h2 id="ml-work-heading" className="font-space font-bold text-slate-400 text-xs uppercase tracking-widest mb-1">{t('myWork')}</h2>

@@ -41,6 +41,7 @@ use App\Http\Controllers\LessonProgressController;
 use App\Http\Controllers\MathLabDocumentController;
 use App\Http\Controllers\MathLabFileController;
 use App\Http\Controllers\MeSubscriptionController;
+use App\Http\Controllers\PageTourController;
 use App\Http\Controllers\PracticeAnswerController;
 use App\Http\Controllers\PracticeNotebookController;
 use App\Http\Controllers\PracticeSessionController;
@@ -274,6 +275,10 @@ Route::prefix('v1')->group(function () {
             // les change que s'il n'est dans aucune classe (sinon : l'enseignant).
             Route::get('/me/settings', [StudentSettingsController::class, 'show']);
             Route::patch('/me/settings', [StudentSettingsController::class, 'update']);
+            // « جولة تعريفية » : les visites guidées closes par CE compte (élève
+            // ou enseignant), et la clôture d'une visite — terminée ou passée.
+            Route::get('/me/tours', [PageTourController::class, 'index']);
+            Route::post('/me/tours/{tour}', [PageTourController::class, 'store'])->middleware('throttle:60,1');
             Route::get('/math-lab/documents', [MathLabDocumentController::class, 'index']);
             Route::post('/math-lab/documents', [MathLabDocumentController::class, 'store'])
                 ->middleware('throttle:30,1');

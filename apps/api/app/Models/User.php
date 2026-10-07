@@ -318,6 +318,12 @@ class User extends Authenticatable implements HasLocalePreference
         return $this->hasMany(DiagnosticSession::class);
     }
 
+    /** Les visites guidées (« جولة تعريفية ») que ce compte a closes. */
+    public function pageTours(): HasMany
+    {
+        return $this->hasMany(PageTour::class);
+    }
+
     /** Le travail libre de l'élève dans le مختبر الرياضيات (Math Lab). */
     public function mathLabDocuments(): HasMany
     {

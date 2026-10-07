@@ -6,6 +6,7 @@ import ScrollToTop from '../common/ScrollToTop';
 import { AuthContext } from '../../context/AuthContext';
 import { useWorkspaceLayout } from '../../context/WorkspaceLayoutContext';
 import { needsName } from '../../utils/personName';
+import PageTourProvider from '../../features/tours/PageTourProvider';
 
 /**
  * La coquille de l'espace ENSEIGNANT (« فضاء الأستاذ ») — le même espace de
@@ -36,7 +37,10 @@ export default function TeacherLayout() {
     return <Navigate to="/enseignant/bienvenue" replace state={{ from: location.pathname + location.search }} />;
   }
 
+  // « جولة تعريفية » : la visite guidée de la première visite de chaque page
+  // (features/tours, docs/architecture/PAGE_TOURS.md).
   return (
+    <PageTourProvider>
     <div className="relative min-h-screen bg-[#FAFAFA]">
       <ScrollToTop />
       <BackgroundLayer />
@@ -52,5 +56,6 @@ export default function TeacherLayout() {
         <Outlet />
       </main>
     </div>
+    </PageTourProvider>
   );
 }

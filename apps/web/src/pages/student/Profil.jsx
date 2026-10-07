@@ -113,7 +113,7 @@ export default function Profil() {
       </div>
 
       {/* Identity card */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-7 mb-5">
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-7 mb-5" data-tour="profile.identity">
         <div className="flex items-center gap-4 mb-6">
           <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-space font-bold text-xl flex-shrink-0" style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}>
             {initials}
@@ -159,7 +159,7 @@ export default function Profil() {
       </motion.div>
 
       {/* Plan card */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="glass-card p-6 sm:p-7 mb-5 flex items-center justify-between gap-4 flex-wrap">
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="glass-card p-6 sm:p-7 mb-5 flex items-center justify-between gap-4 flex-wrap" data-tour="profile.plan">
         <div className="flex items-center gap-3">
           <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${plan.iconClass}`}>
             {plan.premium ? <Crown size={17} /> : <Sparkles size={17} />}

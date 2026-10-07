@@ -7,6 +7,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useWorkspaceLayout } from '../../context/WorkspaceLayoutContext';
 import { getAllGrades } from '@smarter-academy/core';
 import { needsName } from '../../utils/personName';
+import PageTourProvider from '../../features/tours/PageTourProvider';
 
 /**
  * The authenticated student area's shell — a workspace (sidebar + content),
@@ -51,7 +52,10 @@ export default function StudentLayout() {
     return <Navigate to="/espace/bienvenue" replace />;
   }
 
+  // « جولة تعريفية » : la visite guidée de la première visite de chaque page
+  // (features/tours, docs/architecture/PAGE_TOURS.md).
   return (
+    <PageTourProvider>
     <div className="relative min-h-screen bg-[#FAFAFA]">
       <ScrollToTop />
       <BackgroundLayer />
@@ -76,5 +80,6 @@ export default function StudentLayout() {
         </Suspense>
       </main>
     </div>
+    </PageTourProvider>
   );
 }

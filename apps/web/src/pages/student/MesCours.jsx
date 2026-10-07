@@ -83,12 +83,12 @@ export default function MesCours() {
         </Link>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-6" data-tour="catalogue.search">
         <GradeLessonSearch value={searchQuery} onChange={setSearchQuery} gradeName={grade.name} className="w-full md:w-96" />
       </div>
 
       {/* Chapter filter */}
-      <div className="flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 mb-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      <div data-tour="catalogue.chapters" className="flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 mb-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <button
           onClick={() => setActiveChapter('all')}
           className={`flex-shrink-0 px-4 py-2 rounded-lg font-inter text-sm font-medium transition-all ${
@@ -113,18 +113,20 @@ export default function MesCours() {
         })}
       </div>
 
-      <div className="mb-5">
+      <div className="mb-5" data-tour="catalogue.view">
         <CatalogueViewToolbar view={view} onChange={setView} count={(searchResults ?? lessons).length} searching={!!searchResults} />
       </div>
 
-      <CatalogueBrowser
-        chapters={visibleChapters}
-        gradeChapters={gradeData.chapters}
-        lessons={lessons}
-        searchResults={searchResults}
-        searchQuery={searchQuery}
-        view={view}
-      />
+      <div data-tour="catalogue.list">
+        <CatalogueBrowser
+          chapters={visibleChapters}
+          gradeChapters={gradeData.chapters}
+          lessons={lessons}
+          searchResults={searchResults}
+          searchQuery={searchQuery}
+          view={view}
+        />
+      </div>
     </div>
   );
 }

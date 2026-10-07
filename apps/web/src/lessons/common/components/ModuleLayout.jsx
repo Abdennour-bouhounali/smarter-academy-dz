@@ -18,6 +18,7 @@ import PremiumLessonLocked from './PremiumLessonLocked';
 import { useCatalogueHref } from '../../../components/student/catalogueLink';
 import MathLabel from './MathLabel';
 import IslamicMoment from '../../../features/islamic/IslamicMoment';
+import { useDeclarePageTour } from '../../../features/tours/PageTourProvider';
 
 /**
  * ModuleLayout — shared layout wrapper for every lesson module.
@@ -141,6 +142,10 @@ export default function ModuleLayout({
   // « 4 / 5 » (80 %) sur son dernier module.
   const modulePosition = Number(moduleNumber) - firstModule + 1;
   const progressPct = Math.round((modulePosition / totalModules) * 100);
+  // « جولة تعريفية » du PREMIER module d'une leçon (une fois par compte, toutes
+  // leçons confondues) : le module, الخريطة, كرّاسي, المختبر, la navigation.
+  // Jamais en وضع القسم. Voir docs/architecture/PAGE_TOURS.md.
+  useDeclarePageTour('lesson-first-module', modulePosition === 1 && !presenting);
   // CE QUI EST FAIT RESTE OUVERT (même règle que getModuleStatus) : un module
   // déjà terminé ne se referme jamais, même si son prédécesseur ne l'est pas.
   // Sans cela, revenir sur un module fini affichait « أتمِم المحور 00 » et
@@ -327,6 +332,7 @@ export default function ModuleLayout({
           <nav
             className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500"
             aria-label={t('nav.breadcrumb')}
+            data-tour="lesson.path"
           >
             {/* TROIS niveaux : الوحدة / الدرس / المحور.
                 L'accueil et le niveau scolaire en ont été retirés — l'élève
@@ -385,7 +391,7 @@ export default function ModuleLayout({
               className="!px-3 !py-1.5 !text-xs !rounded-full"
             />
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2" data-tour="lesson.progress">
               <span className="text-xs font-mono text-blue-600 font-bold">
                 {t('nav.module')}{' '}
                 <span dir="ltr">{modulePosition} / {totalModules}</span>
@@ -428,7 +434,7 @@ export default function ModuleLayout({
         </div>}
 
         {/* Module Header */}
-        {!presenting && <header className="space-y-2 text-center">
+        {!presenting && <header className="space-y-2 text-center" data-tour="lesson.module">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-mono text-xs font-semibold">
             <span aria-hidden="true">⏱️</span>
             {estimatedTime || `5 ${t('nav.minutesShort')}`} · {t('nav.module')} {moduleNumber}
@@ -456,7 +462,7 @@ export default function ModuleLayout({
             Le contexte est pris de ce que ModuleLayout a déjà en portée :
             l'élève n'a rien à désigner. */}
         {/* Bottom Navigation */}
-        {!presenting && <div className="flex justify-between items-center pt-8 pb-4">
+        {!presenting && <div className="flex justify-between items-center pt-8 pb-4" data-tour="lesson.moduleNav">
           {prevLink ? (
             <Link
               to={prevLink}

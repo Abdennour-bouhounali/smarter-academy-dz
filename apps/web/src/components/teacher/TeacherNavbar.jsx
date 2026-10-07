@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../../context/AuthContext';
+import TourReplayButton from '../../features/tours/TourReplayButton';
 import { teacherNavLinks } from '../../data/teacherNavigation';
 import { getDisplayName, getInitials } from '../../utils/userDisplay';
 import { useWorkspaceLayout } from '../../context/WorkspaceLayoutContext';
@@ -62,7 +63,7 @@ export default function TeacherNavbar() {
           )}
         </div>
 
-        <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto" data-tour="workspace.nav">
           {teacherNavLinks.map((link) => (
             <NavLink
               key={link.path}
@@ -108,6 +109,8 @@ export default function TeacherNavbar() {
               </div>
             )}
           </Link>
+          {/* « جولة في الصفحة » : rejoue la visite guidée de la page ouverte. */}
+          <TourReplayButton className="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors flex-shrink-0 disabled:opacity-40" />
           <button
             onClick={handleLogout}
             aria-label={t('logout')}
@@ -124,15 +127,18 @@ export default function TeacherNavbar() {
           <img src="/smarter-academy-logo.webp" alt="Smarter Academy" className="h-8 w-auto rounded-md object-contain flex-shrink-0" />
           <span className="font-mono-jetbrains text-[10px] text-teal-700 font-semibold tracking-wider uppercase whitespace-nowrap">{t('teacherSpace')}</span>
         </div>
-        <button onClick={handleLogout} aria-label={t('logout')} className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 transition-colors">
-          <LogOut size={15} />
-        </button>
+        <div className="flex items-center gap-1">
+          <TourReplayButton className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 transition-colors disabled:opacity-40" />
+          <button onClick={handleLogout} aria-label={t('logout')} className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 transition-colors">
+            <LogOut size={15} />
+          </button>
+        </div>
       </header>
 
       {/* La barre basse mobile ne tient pas huit onglets lisibles : elle
           garde les destinations marquées `mobile` (data/teacherNavigation) ;
           l'offre et le profil restent dans la barre latérale et l'en-tête. */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 z-40 flex items-stretch" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <nav data-tour="workspace.nav" className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 z-40 flex items-stretch" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         {teacherNavLinks.filter((link) => link.mobile !== false).map((link) => (
           <NavLink
             key={link.path}

@@ -57,5 +57,6 @@
     "pendingReviews_few": "{{count}} إجابات في انتظار التصحيح",
     "pendingReviews_many": "{{count}} إجابةً في انتظار التصحيح",
     "pendingReviews_other": "{{count}} إجابة في انتظار التصحيح"
-  }
+  },
+  "tourReplay": "جولة في الصفحة"
 }

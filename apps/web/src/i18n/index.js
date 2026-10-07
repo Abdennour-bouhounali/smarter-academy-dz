@@ -63,6 +63,10 @@ const ON_DEMAND_NAMESPACES = {
   // (pages/teacher/LessonMemoPage.jsx, lot paresseux, sa propre <Suspense>).
   // Les deux libellés des boutons qui y mènent vivent dans `teacher`.
   memo: () => import('./locales/ar/memo.json'),
+  // « جولة تعريفية » : les textes des visites guidées, lus seulement par
+  // features/tours/TourOverlay (lot paresseux, sous sa propre <Suspense>).
+  // Le libellé du bouton « جولة في الصفحة » vit dans `nav`.
+  tour: () => import('./locales/ar/tour.json'),
 };
 
 const onDemandBackend = {

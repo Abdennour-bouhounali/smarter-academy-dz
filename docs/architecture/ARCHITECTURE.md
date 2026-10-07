@@ -85,6 +85,7 @@ src/
 ├── components/student/StudentHomeBanner.jsx  homepage grade context for logged-in students (see §10)
 ├── context/AuthContext.jsx auth state — student, teacher or admin (+ `isAmbassador` / `canReviewContent`), same session mechanism; user.grade is the current-grade source of truth
 ├── features/islamic/       Islamic values layer: shared greeting « السلام عليكم … 🌿 », contextual reminders, « وقفة إيمانية » (see ISLAMIC_VALUES.md)
+├── features/tours/         « جولة تعريفية »: first-visit guided tour per page and role, mounted by StudentLayout / TeacherLayout, closure stored by /me/tours (see PAGE_TOURS.md)
 ├── data/                   portfolio/marketing content only (education.js, experience.js, projects.js, skills.js)
 ├── services/                apiClient, authService, contactService (see §5)
 └── lessons/

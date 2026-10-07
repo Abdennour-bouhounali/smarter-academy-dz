@@ -34,7 +34,7 @@ export default function TeacherHome() {
       {error && <ErrorBox message={error} onRetry={reload} />}
       {data && (
         <div className="space-y-8">
-          <section>
+          <section data-tour="teacher-home.usage">
             <div className="flex items-center justify-between mb-3">
               <h2 className="font-space font-bold text-slate-900">{t('home.usageTitle')}</h2>
               <Link to="/enseignant/offre" className="inline-flex items-center gap-1 text-sm font-semibold text-teal-800 hover:underline">
@@ -60,7 +60,7 @@ export default function TeacherHome() {
             )}
           </section>
 
-          <section>
+          <section data-tour="teacher-home.classes">
             <div className="flex items-center justify-between mb-3">
               <h2 className="font-space font-bold text-slate-900">{t('home.classesTitle')}</h2>
               <Link to="/enseignant/classes/nouveau" className={btnPrimary} aria-disabled={!ent.classes.canCreate} data-new-class>

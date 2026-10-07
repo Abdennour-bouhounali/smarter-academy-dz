@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { LogOut, Crown, ShieldCheck } from 'lucide-react';
 import SettingsButton from '../../features/settings/SettingsButton';
 import NotificationBell from '../../features/notifications/NotificationBell';
+import TourReplayButton from '../../features/tours/TourReplayButton';
 import { useTranslation } from 'react-i18next';
 import SidebarToggle from '../common/SidebarToggle';
 import { AuthContext } from '../../context/AuthContext';
@@ -55,6 +56,9 @@ export default function StudentNavbar() {
   };
 
   const initials = getInitials(user);
+  // Un bouton de la barre des outils du compte : carré de 32px réduite, case
+  // pleine largeur de la grille ouverte (la zone de clic suit la case).
+  const toolButton = `${sidebarCollapsed ? 'w-8' : 'w-full'} h-8 flex items-center justify-center rounded-lg text-slate-500 hover:text-slate-800 hover:bg-white hover:shadow-sm transition-colors`;
 
   return (
     <>
@@ -86,7 +90,7 @@ export default function StudentNavbar() {
           )}
         </div>
 
-        <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto" data-tour="workspace.nav">
           {studentNavLinks.map((link) => (
             <NavLink
               key={link.path}
@@ -189,52 +193,53 @@ export default function StudentNavbar() {
             forment un seul lien vers /espace/profil ; l'entrée « Profil » de
             la liste de navigation a disparu, elle disait deux fois la même
             chose. La déconnexion reste un bouton séparé, hors du lien. */}
-        <div className={`py-3 border-t border-slate-100 flex flex-shrink-0 ${
-          sidebarCollapsed ? 'px-0 flex-col items-center gap-2' : 'px-3 items-center gap-1'
-        }`}>
+        <div className={`border-t border-slate-100 flex-shrink-0 ${sidebarCollapsed ? 'py-3 px-0 flex flex-col items-center gap-2' : 'p-3 space-y-2'}`}>
           <NavLink
             to="/espace/profil"
             title={sidebarCollapsed ? `${getDisplayName(user)} — ${grade ? grade.name : 'Classe non définie'}` : t('profile')}
             aria-label={t('profile')}
             className={({ isActive }) =>
               `flex items-center rounded-xl transition-colors min-h-[44px] ${
-                sidebarCollapsed ? 'justify-center w-11' : 'flex-1 min-w-0 gap-3 px-2 py-1.5'
+                sidebarCollapsed ? 'justify-center w-11' : 'w-full min-w-0 gap-3 px-2 py-2'
               } ${isActive ? 'bg-slate-100' : 'hover:bg-slate-50'}`
             }
           >
             <div
-              className="w-9 h-9 rounded-full flex items-center justify-center text-white font-space font-bold text-xs flex-shrink-0"
+              className="w-10 h-10 rounded-full flex items-center justify-center text-white font-space font-bold text-sm flex-shrink-0 ring-2 ring-white shadow-sm"
               style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
             >
               {initials}
             </div>
             {!sidebarCollapsed && (
               <div className="min-w-0 flex-1 text-start">
-                <p className="font-space font-semibold text-slate-800 text-xs truncate">{getDisplayName(user)}</p>
-                <p className="font-inter text-slate-400 text-[11px] whitespace-nowrap">{grade ? grade.name : 'Classe non définie'}</p>
+                <p className="font-space font-bold text-slate-800 text-sm truncate">{getDisplayName(user)}</p>
+                <span className="mt-0.5 inline-block rounded-full bg-blue-50 px-2 py-0.5 font-inter text-[11px] font-semibold text-blue-700 whitespace-nowrap">
+                  {grade ? grade.name : 'Classe non définie'}
+                </span>
               </div>
             )}
           </NavLink>
-          {/* « الإعدادات » (2026-10-06) : à côté de la déconnexion, hors de la
-              liste — une page de réglages, pas une destination de travail. */}
-          {/* Réglages et déconnexion EMPILÉS : côte à côte, ils mangeaient la
-              place de la classe (« السنة الرابعة متوسط » était tronquée). */}
-          <div className={`flex flex-shrink-0 ${sidebarCollapsed ? 'flex-col items-center gap-2' : 'flex-col gap-0.5'}`}>
+          {/* LES OUTILS DU COMPTE (cloche, « الإعدادات », « جولة في الصفحة »,
+              déconnexion) : ouverte, une BARRE segmentée SOUS l'identité — la
+              ligne d'identité garde toute sa largeur (la classe n'est plus
+              tronquée) et les quatre icônes ne forment plus une colonne plus
+              haute que le bloc qu'elles accompagnent. Réduite : empilées. */}
+          <div
+            className={sidebarCollapsed
+              ? 'flex flex-col items-center gap-2'
+              : 'grid grid-cols-4 gap-1 rounded-xl bg-slate-50 p-1 ring-1 ring-slate-100'}
+            data-account-tools
+          >
             {/* La cloche : « صحّح أستاذك إجابتك » (2026-10-06), dans l'application seulement. */}
-            <NotificationBell
-              direction="up"
-              className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
-            />
-            <SettingsButton
-              iconOnly
-              className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
-              testId="sidebar"
-            />
+            <NotificationBell direction="up" className={toolButton} />
+            <SettingsButton iconOnly className={toolButton} testId="sidebar" />
+            {/* « جولة في الصفحة » : rejoue la visite guidée de la page ouverte. */}
+            <TourReplayButton className={`${toolButton} disabled:opacity-40`} />
             <button
               onClick={handleLogout}
               aria-label={t('logout')}
               title={t('logout')}
-              className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              className={`${toolButton} hover:!text-rose-600 hover:!bg-rose-50`}
             >
               <LogOut size={15} />
             </button>
@@ -275,6 +280,7 @@ export default function StudentNavbar() {
             align="end"
             className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 transition-colors"
           />
+          <TourReplayButton className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 transition-colors disabled:opacity-40" />
           <button
             onClick={handleLogout}
             aria-label={t('logout')}
@@ -286,7 +292,7 @@ export default function StudentNavbar() {
       </header>
 
       {/* Mobile bottom tab bar */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 z-40 flex items-stretch" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <nav data-tour="workspace.nav" className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 z-40 flex items-stretch" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         {studentNavLinks.map((link) => (
           <NavLink
             key={link.path}

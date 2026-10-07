@@ -178,7 +178,7 @@ export default function NotebookSpace() {
       )}
 
       {/* ── Recherche ───────────────────────────────────────────────── */}
-      <div className="sa-ns-search mb-4">
+      <div className="sa-ns-search mb-4" data-tour="notebook.search">
         <Search size={20} aria-hidden="true" />
         <input
           type="search"
@@ -196,7 +196,7 @@ export default function NotebookSpace() {
       </div>
 
       {/* ── Vues ───────────────────────────────────────────────────── */}
-      <div className="sa-ns-tabs mb-4" role="tablist" aria-label={s('viewsAria')}>
+      <div className="sa-ns-tabs mb-4" data-tour="notebook.tabs" role="tablist" aria-label={s('viewsAria')}>
         {VIEWS.map((v) => {
           const Icon = VIEW_ICON[v];
           return (
@@ -230,7 +230,7 @@ export default function NotebookSpace() {
             {SORTS.map((o) => <option key={o} value={o}>{s(`sort.${o}`)}</option>)}
           </select>
         </label>
-        <button type="button" className="sa-ns-btn sa-ns-btn--ghost lg:hidden" onClick={() => setSheetOpen(true)} aria-expanded={sheetOpen} data-nb-filters-open>
+        <button type="button" className="sa-ns-btn sa-ns-btn--ghost lg:hidden" onClick={() => setSheetOpen(true)} aria-expanded={sheetOpen} data-nb-filters-open data-tour="notebook.filters">
           <SlidersHorizontal size={16} aria-hidden="true" /> {s('filters')}
           {activeFilters > 0 && <span className="sa-ns-tab-count">{activeFilters}</span>}
         </button>
@@ -241,7 +241,7 @@ export default function NotebookSpace() {
       {/* ── Corps : filtres en colonne + cartes ─────────────────────── */}
       <div className="lg:grid lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-8">
         <aside className="hidden lg:block">
-          <div className="sticky top-6 rounded-2xl border border-slate-200 bg-white p-4">
+          <div className="sticky top-6 rounded-2xl border border-slate-200 bg-white p-4" data-tour="notebook.filters">
             <h2 className="font-bold text-slate-800 mb-3 inline-flex items-center gap-2"><SlidersHorizontal size={16} aria-hidden="true" /> {s('filtersTitle')}</h2>
             <FilterPanel filters={filters} facets={facets} onChange={setFilters} onReset={() => setFilters(DEFAULT_FILTERS)} />
           </div>

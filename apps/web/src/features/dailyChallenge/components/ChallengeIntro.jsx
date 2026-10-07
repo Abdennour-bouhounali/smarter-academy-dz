@@ -25,7 +25,7 @@ export default function ChallengeIntro({ today, onStart, onSeeResult, busy }) {
 
   return (
     <div className="space-y-4" data-challenge-intro>
-      <ArenaPanel className="p-5 sm:p-8">
+      <ArenaPanel className="p-5 sm:p-8" data-tour="challenge.mission">
         <motion.div {...enter(0)} className="flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 font-inter text-xs font-bold text-amber-700 ring-1 ring-amber-200">
             <Flame size={14} aria-hidden="true" /> {t('brand')}
@@ -96,7 +96,7 @@ export default function ChallengeIntro({ today, onStart, onSeeResult, busy }) {
       </ArenaPanel>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <ArenaPanel className="p-5">
+        <ArenaPanel className="p-5" data-tour="challenge.score">
           <StreakDisplay streak={today.streak} />
           <dl className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
             <div className="rounded-2xl bg-slate-50 p-3">
@@ -131,7 +131,7 @@ export default function ChallengeIntro({ today, onStart, onSeeResult, busy }) {
       </div>
 
       <div className="text-center">
-        <Link to="/espace/defi/historique" className="inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 font-inter text-sm font-semibold text-slate-600 hover:bg-white hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+        <Link data-tour="challenge.history" to="/espace/defi/historique" className="inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 font-inter text-sm font-semibold text-slate-600 hover:bg-white hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
           <History size={16} aria-hidden="true" /> {t('intro.history')}
         </Link>
       </div>

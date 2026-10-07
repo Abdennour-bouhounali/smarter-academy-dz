@@ -91,7 +91,7 @@ export default function ClassGroupDetail() {
         <div className="space-y-5">
           <JoinAccessCard classGroup={classGroup} onRotateLink={() => setConfirm('rotateLink')} onRotateCode={() => setConfirm('rotate')} />
 
-          <div role="tablist" className="flex overflow-x-auto gap-2 [&::-webkit-scrollbar]:hidden">
+          <div role="tablist" data-tour="class.tabs" className="flex overflow-x-auto gap-2 [&::-webkit-scrollbar]:hidden">
             {TABS.map((key) => (
               <button key={key} role="tab" aria-selected={tab === key} type="button" onClick={() => setTab(key)} data-tab={key}
                 className={`shrink-0 px-4 py-2 rounded-lg font-inter text-sm font-medium transition-colors ${tab === key ? 'bg-teal-700 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'}`}>

@@ -159,7 +159,7 @@ export default function SubscriptionPage() {
           {/* ── Les offres ─────────────────────────────────────────── */}
           <section>
             <h2 className="font-space font-bold text-slate-900 mb-3">{t('subscription.plansTitle')}</h2>
-            <div className="rounded-2xl border border-slate-200 bg-white p-4 mb-4 flex items-start gap-3">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 mb-4 flex items-start gap-3" data-tour="plan.howto">
               <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
               <div>
                 <p className="font-semibold text-slate-800">{t('subscription.howToTitle')}</p>

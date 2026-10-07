@@ -166,7 +166,7 @@ export default function Progression() {
         {/* ── Vue d'ensemble ─────────────────────────────────────────── */}
         {hasStarted ? (
           <>
-            <div className="mb-10">
+            <div className="mb-10" data-tour="progression.stats">
               <ProgressionStats activity={activity} agg={tree.agg} profileStatus={status} gradeLabel={gradeLabel} />
             </div>
             <WorkNowSection
