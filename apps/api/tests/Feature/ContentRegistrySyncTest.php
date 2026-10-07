@@ -117,6 +117,21 @@ class ContentRegistrySyncTest extends TestCase
         $this->assertSame(LessonModule::PUB_HIDDEN, $module->publication_status, "l'état doit rester celui de l'admin");
     }
 
+    /**
+     * Décision propriétaire (2026-10-07) : un module NOUVEAU arrive en
+     * brouillon même sous une leçon publiée. La cascade leçon → modules agit
+     * au geste de l'admin, jamais à l'import — sinon un déploiement publierait
+     * du contenu que personne n'a relu.
+     */
+    public function test_un_nouveau_module_arrive_en_brouillon_meme_sous_une_lecon_publiee(): void
+    {
+        $this->lesson->update(['publication_status' => Lesson::PUB_PUBLISHED]);
+
+        $this->importer()->import($this->export([$this->module('01')]));
+
+        $this->assertSame(LessonModule::PUB_DRAFT, LessonModule::where('code', '01')->first()->publication_status);
+    }
+
     public function test_un_module_disparu_est_retire_jamais_supprime(): void
     {
         $this->importer()->import($this->export([$this->module('01'), $this->module('02')]));

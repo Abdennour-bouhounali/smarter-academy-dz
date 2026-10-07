@@ -48,11 +48,11 @@ tier is **not** stored: it is `EntitlementService::decide($user, 'premium')`:
 | premium | **every admin account** (since 2026-10-05: the admin is a content reviewer) | `admin_role` |
 | free | everyone else | `premium_required` |
 
-**Reviewers** (admin, and teachers flagged ambassador « سفير ») also pass the
-**publication** axis — and only it: `ContentAccess::bypassesPublication`.
-Grade activation is still checked, class visibility never applies to them,
-and no learning write opens (`learner`). See `ADMIN_PANEL_ARCHITECTURE.md`
-Annexe A8.
+**Publication by viewer** (2026-10-07, `ContentAccess::visibleStatuses`):
+`published` → everyone; `hidden` → admin and teachers flagged ambassador
+« سفير »; `draft` and `archived` → admin only. Grade activation is still
+checked, class visibility never applies to admin/ambassador, and no learning
+write opens (`learner`). See `ADMIN_PANEL_ARCHITECTURE.md` §8 and Annexe A8.
 
 **Teachers** are therefore premium **explicitly**, through the existing
 `VIA_TEACHER_ROLE` rule, not by an accidental bypass. They receive exactly

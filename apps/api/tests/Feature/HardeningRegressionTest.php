@@ -111,11 +111,16 @@ class HardeningRegressionTest extends TestCase
         app(ContentService::class)->changeStatus($this->admin, 'module', $module->id, LessonModule::PUB_PUBLISHED);
     }
 
-    public function test_on_ne_publie_pas_une_lecon_dont_aucun_module_n_est_publie(): void
+    /**
+     * Depuis la cascade (2026-10-07), publier la leçon publie ses modules :
+     * ce qui la bloque, c'est qu'AUCUN module ne soit publiable.
+     */
+    public function test_on_ne_publie_pas_une_lecon_dont_aucun_module_n_est_publiable(): void
     {
         LessonModule::create([
             'lesson_id' => $this->lesson->id, 'code' => '01', 'number' => 1, 'title' => 'M',
             'publication_status' => LessonModule::PUB_DRAFT,
+            'teaches_learning_point_codes' => ['6e_fractions_INEXISTANT'],
         ]);
         $this->lesson->update(['publication_status' => Lesson::PUB_HIDDEN]);
 

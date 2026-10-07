@@ -19,7 +19,12 @@ const STATUSES = [
  * Toute sortie de « publié » passe par une confirmation : c'est un geste qui
  * retire du contenu à des élèves en train de travailler, et la spec (§33)
  * demande une confirmation pour les opérations conséquentes. Republier, à
- * l'inverse, ne demande rien — ça ne casse rien.
+ * l'inverse, ne demande rien — ça ne casse rien. Sauf pour une LEÇON : son
+ * état est recopié sur tous ses محاور (cascade serveur, 2026-10-07), donc
+ * même la publication se confirme, et le dialogue le dit.
+ *
+ * `onChanged(status, result)` : `result.modules` (leçon seulement) dit quels
+ * محاور ont suivi et lesquels sont restés, faute d'être publiables.
  *
  * L'état affiché vient du SERVEUR après l'appel, jamais d'une supposition
  * optimiste : si le serveur refuse, l'interface ne doit pas raconter le
@@ -31,13 +36,17 @@ export default function PublicationControl({ type, id, status, onChanged, compac
   const [pending, setPending] = useState(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
+  const [skipped, setSkipped] = useState(0);
+  const cascades = type === 'lesson';
 
   const apply = async (next) => {
     setBusy(true);
     setError(null);
+    setSkipped(0);
     try {
       const result = await changeContentStatus(token, type, id, next);
-      onChanged?.(result.publicationStatus);
+      setSkipped(result.modules?.skipped?.length ?? 0);
+      onChanged?.(result.publicationStatus, result);
     } catch (caught) {
       setError(caught.message);
     } finally {
@@ -48,8 +57,9 @@ export default function PublicationControl({ type, id, status, onChanged, compac
 
   const request = (next) => {
     if (!next || next === status) return;
-    // Retirer du contenu aux élèves se confirme ; le remettre, non.
-    if (next === 'published') apply(next);
+    // Retirer du contenu aux élèves se confirme ; le remettre, non — sauf
+    // pour une leçon, dont tous les محاور prennent le nouvel état.
+    if (next === 'published' && !cascades) apply(next);
     else setPending(next);
   };
 
@@ -71,24 +81,40 @@ export default function PublicationControl({ type, id, status, onChanged, compac
       </select>
 
       {error && <span className="font-inter text-xs text-rose-600">{error}</span>}
+      {skipped > 0 && (
+        <span className="font-inter text-xs text-amber-700">{t('bulk.cascadeSkipped', { count: skipped })}</span>
+      )}
 
       <ConfirmDialog
         open={Boolean(pending)}
         onClose={() => setPending(null)}
         onConfirm={() => apply(pending)}
         busy={busy}
-        tone="danger"
+        tone={pending === 'published' ? 'default' : 'danger'}
         cancelLabel={t('common.cancel')}
         busyLabel={t('common.busy')}
         closeLabel={t('common.close')}
-        title={pending === 'archived' ? t('bulk.confirmArchiveOneTitle') : t('bulk.confirmWithdrawOneTitle')}
-        confirmLabel={pending === 'archived' ? t('bulk.archive') : t('bulk.withdraw')}
+        title={{
+          published: t('bulk.confirmPublishOneTitle'),
+          archived: t('bulk.confirmArchiveOneTitle'),
+        }[pending] ?? t('bulk.confirmWithdrawOneTitle')}
+        confirmLabel={{
+          published: t('bulk.publish'),
+          archived: t('bulk.archive'),
+        }[pending] ?? t('bulk.withdraw')}
         message={
           <>
-            <p>
-              {t('bulk.withdrawOneMessage')} <strong>{t('bulk.noLearningDataLost')}</strong>
-              {t('bulk.noLearningDataLostHide')}
-            </p>
+            {pending === 'published' ? (
+              <p>{t('bulk.publishOneMessage')}</p>
+            ) : (
+              <p>
+                {t('bulk.withdrawOneMessage')} <strong>{t('bulk.noLearningDataLost')}</strong>
+                {t('bulk.noLearningDataLostHide')}
+              </p>
+            )}
+            {cascades && pending && (
+              <p className="mt-2">{t('bulk.cascadeModules', { status: t(`status.${pending}`) })}</p>
+            )}
           </>
         }
       />

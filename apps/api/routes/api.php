@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\AdminPlanController;
 use App\Http\Controllers\Admin\AdminProviderEventController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminStudentController;
+use App\Http\Controllers\Admin\AdminUserDeletionController;
 use App\Http\Controllers\Admin\AdminSubscriptionController;
 use App\Http\Controllers\Admin\AdminTeacherController;
 use App\Http\Controllers\AuthController;
@@ -539,6 +540,10 @@ Route::prefix('v1')->group(function () {
                 ->whereIn('type', ['lesson', 'module', 'exercise']);
             Route::post('/content/{type}/bulk-tier', [AdminContentController::class, 'bulkChangeTier'])
                 ->whereIn('type', ['lesson', 'exercise']);
+            // La banque d'exercices d'UNE leçon, d'un seul geste ; chaque
+            // exercice reste ensuite modifiable seul.
+            Route::patch('/content/lesson/{id}/exercises-status', [AdminContentController::class, 'changeLessonExercisesStatus'])
+                ->whereNumber('id');
 
             Route::get('/reports', [AdminReportController::class, 'index']);
             Route::get('/reports/clusters', [AdminReportController::class, 'clusters']);
@@ -550,6 +555,11 @@ Route::prefix('v1')->group(function () {
             Route::get('/students', [AdminStudentController::class, 'index']);
             Route::get('/students/{id}', [AdminStudentController::class, 'show'])->whereNumber('id');
             Route::patch('/students/{id}/status', [AdminStudentController::class, 'changeStatus'])->whereNumber('id');
+
+            // Suppression DÉFINITIVE d'un compte élève ou enseignant : un
+            // aperçu de ce qui sera perdu, puis le geste (e-mail retapé).
+            Route::get('/users/{id}/deletion-preview', [AdminUserDeletionController::class, 'preview'])->whereNumber('id');
+            Route::delete('/users/{id}', [AdminUserDeletionController::class, 'destroy'])->whereNumber('id');
 
             // Droits d'accès : consulter, accorder une dérogation, la retirer.
             // Strictement admin_override — un abonnement ne se crée pas à la

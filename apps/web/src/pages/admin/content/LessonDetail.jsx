@@ -8,6 +8,7 @@ import { AdminPage, AdminSection, useAdminLabels, Num, btnSecondary } from '../a
 import DataTable from '../../../components/admin/ui/DataTable';
 import { LoadingState, ErrorState, EmptyState } from '../../../components/admin/ui/states';
 import PublicationControl from '../../../components/admin/PublicationControl';
+import ExerciseBankControl from '../../../components/admin/ExerciseBankControl';
 import TierControl from '../../../components/admin/TierControl';
 import { useAdminResource } from '../../../hooks/useAdminResource';
 import { fetchLesson } from '../../../services/admin/contentService';
@@ -98,7 +99,9 @@ export default function AdminLessonDetail() {
                     type="lesson"
                     id={lesson.id}
                     status={lesson.publicationStatus}
-                    onChanged={(next) => setData((current) => ({ ...current, publicationStatus: next }))}
+                    // La cascade a pu changer chaque محور : on relit la leçon
+                    // plutôt que de deviner l'état de chacun.
+                    onChanged={() => reload()}
                   />
                 </div>
               </div>
@@ -164,6 +167,7 @@ export default function AdminLessonDetail() {
                 <Dumbbell size={17} /> {t('exercises.title')}
               </span>
             )}
+            actions={<ExerciseBankControl lesson={lesson} onChanged={() => reload()} />}
           >
             <DataTable
               rows={lesson.exercises ?? []}

@@ -126,6 +126,7 @@ class AdminContentController extends Controller
     /**
      * Publier / masquer / archiver. Un seul point d'entrée pour les trois
      * niveaux de contenu, donc une seule validation et un seul journal.
+     * Sur une leçon, l'état est recopié sur tous ses modules (cascade).
      */
     public function changeStatus(Request $request, string $type, int $id)
     {
@@ -146,7 +147,32 @@ class AdminContentController extends Controller
             'changed' => $result['changed'],
             'id' => $result['model']->id,
             'publicationStatus' => $result['model']->publication_status,
+            // Leçon seulement : les modules qui ont suivi (cascade) et ceux
+            // laissés dans leur état parce qu'ils ne sont pas publiables.
+            ...(isset($result['modules']) ? ['modules' => $result['modules']] : []),
         ]);
+    }
+
+    /**
+     * L'état de TOUTE la banque d'exercices d'une leçon, d'un seul geste.
+     * Même forme de réponse que bulkChangeStatus (applied / unchanged /
+     * failed) : chaque exercice est traité comme à l'unité.
+     */
+    public function changeLessonExercisesStatus(Request $request, int $id)
+    {
+        $validated = $request->validate([
+            'status' => ['required', Rule::in(Lesson::PUBLICATION_STATUSES)],
+        ], [
+            'status.in' => 'État de publication inconnu.',
+        ]);
+
+        try {
+            $result = $this->content->changeLessonExercisesStatus($request->user(), $id, $validated['status']);
+        } catch (DomainException $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
+        }
+
+        return response()->json(['success' => true] + $result);
     }
 
     /**

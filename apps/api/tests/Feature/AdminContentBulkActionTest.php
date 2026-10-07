@@ -34,7 +34,7 @@ class AdminContentBulkActionTest extends TestCase
 
     private Lesson $lessonB;
 
-    /** Une leçon qui a des modules EN REGISTRE mais aucun publié : impubliable. */
+    /** Une leçon qui a des modules EN REGISTRE mais aucun PUBLIABLE : impubliable. */
     private Lesson $lessonBloquee;
 
     private LessonModule $moduleA;
@@ -63,9 +63,11 @@ class AdminContentBulkActionTest extends TestCase
         $this->lessonBloquee = $make('puissances-4e', 'Puissances', 2);
 
         // Les deux premières leçons ont un module PUBLIÉ : elles franchissent
-        // assertPublishable(). La troisième a un module en brouillon, donc
+        // assertPublishable(). La troisième n'a qu'un module IMPUBLIABLE (il
+        // enseigne un point inconnu) : la cascade ne le publierait pas, donc
         // « l'élève ouvrirait une leçon vide » — le refus qu'on veut voir
-        // survivre au lot.
+        // survivre au lot. (Un simple brouillon ne bloque plus : depuis la
+        // cascade du 2026-10-07, publier la leçon le publie.)
         $this->moduleA = LessonModule::create([
             'lesson_id' => $this->lessonA->id, 'code' => '01', 'number' => 1, 'title' => 'Distribuer',
             'publication_status' => Lesson::PUB_PUBLISHED,
@@ -77,6 +79,7 @@ class AdminContentBulkActionTest extends TestCase
         LessonModule::create([
             'lesson_id' => $this->lessonBloquee->id, 'code' => '01', 'number' => 1, 'title' => 'Exposants',
             'publication_status' => Lesson::PUB_DRAFT,
+            'teaches_learning_point_codes' => ['4e_puissances-4e_INEXISTANT'],
         ]);
 
         $this->exerciseA = PracticeExercise::create([

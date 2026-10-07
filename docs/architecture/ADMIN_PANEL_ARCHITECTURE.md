@@ -327,6 +327,20 @@ Retired content preserved for historical/reference purposes.
 
 Visibility changes must be backend-enforced.
 
+> **Who sees which state — implemented 2026-10-07 (owner decision).** One
+> table, in `ContentAccess::visibleStatuses()`, for lessons, modules and
+> exercises alike:
+>
+> | State | Admin | Ambassador teacher (« سفير ») | Other teacher | Student / visitor |
+> |---|---|---|---|---|
+> | `published` | ✓ | ✓ | ✓ | ✓ |
+> | `hidden` | ✓ | ✓ | — | — |
+> | `draft` | ✓ | — | — | — |
+> | `archived` | ✓ | — | — | — |
+>
+> Tier, active grade and per-class visibility still apply on top. Changing a
+> **lesson**'s state gives that state to all its modules (cascade, Annexe A1).
+
 ---
 
 # 9. Lesson management
@@ -348,8 +362,9 @@ Visibility changes must be backend-enforced.
 
 > **« Open lesson » — implemented 2026-10-05.** The lesson detail page
 > (`/admin/contenu/lecons/{code}`) has a « فتح الدرس » link to the lesson
-> itself. The administrator is a reviewer: a draft / hidden / archived lesson
-> opens for them, with its state badge (Annexe A8).
+> itself. The administrator sees every state: a draft / hidden / archived lesson
+> opens for them, with its state badge (Annexe A8). An ambassador sees only
+> published and hidden content (§8).
 
 Lesson list must support:
 
@@ -1289,13 +1304,42 @@ alimente l'affichage du catalogue côté frontend et n'ouvre ni ne ferme aucun
 accès. Les deux colonnes ne se contredisent pas — elles ne parlent pas de la
 même chose.
 
-**Liste blanche** : seul `published` ouvre. Un état inconnu ajouté plus tard
-sera fermé par défaut, jamais ouvert par oubli.
+**Liste blanche** : pour un élève, un visiteur ou un enseignant, seul
+`published` ouvre ; l'ambassadeur ajoute `hidden`, l'admin voit tout (§8).
+Un état inconnu ajouté plus tard sera fermé par défaut (sauf pour l'admin),
+jamais ouvert par oubli.
 
-**Pas de cascade** : publier une leçon ne publie aucun module. Une leçon
-publiée dont un module est en brouillon garde ce module fermé. C'est ce qui
-permet de retirer *un* module cassé sans fermer la leçon, et ce qui évite
-qu'une publication ouvre par surprise du contenu jamais relu.
+**Cascade leçon → modules (2026-10-07, décision propriétaire, remplace
+« pas de cascade »)** : changer l'état d'une LEÇON (geste unitaire ou lot)
+donne ce même état à tous ses modules en registre (`retired_at` nul), dans la
+même transaction, avec une ligne `module.status_changed` par module changé
+(`after.cascadeFromLesson` = id de la leçon). La réponse de
+`PATCH …/lesson/{id}/status` porte `modules: {applied: [ids], skipped:
+[{id, message}]}`. Trois limites :
+
+- un module peut ensuite être changé **seul** — c'est toujours ce qui permet
+  de retirer *un* module cassé sans fermer la leçon ;
+- à la **publication**, un module qui échoue aux contrôles structurels (point
+  d'apprentissage inconnu ou retiré) garde son état et part dans `skipped` ;
+  la leçon n'est refusée (422) que si AUCUN module ne serait publié après la
+  cascade ;
+- les **exercices** ne suivent pas : ils gardent leur propre état.
+
+**Banque d'exercices d'une leçon (2026-10-07)** : les exercices ne suivent
+PAS l'état de la leçon, mais ils ont leur propre geste groupé —
+`PATCH /api/v1/admin/content/lesson/{id}/exercises-status` `{status}` donne
+cet état à tous les exercices en registre (non retirés) de la leçon. C'est
+`bulkChangeStatus('exercise', …)` sur la liste de la leçon : même validation,
+une ligne `exercise.status_changed` par exercice, réponse `applied /
+unchanged / failed`. Chaque exercice reste ensuite modifiable seul (publier
+la banque, puis masquer UN exercice). Panneau : `ExerciseBankControl` dans
+l'en-tête de la section تمارين de la fiche leçon (résumé par état + choix +
+confirmation). Ni la leçon ni ses modules ne bougent.
+
+Un module créé plus tard par l'import arrive toujours en `draft`, quel que
+soit l'état de sa leçon (décision propriétaire du 2026-10-07, verrouillée par
+`ContentRegistrySyncTest`) : la cascade agit au moment du geste admin, jamais
+à l'import — un déploiement ne publie aucun contenu que personne n'a relu.
 
 **L'inconnu reste ouvert** : une leçon, un module ou un exercice absent du
 registre est accessible. La base MIROITE le contenu, elle n'en est pas
@@ -1614,8 +1658,9 @@ Le bundle ne connaît AUCUN palier : `ContentAvailabilityContext` porte la
 décision du serveur (`/content/availability`, et `/content/availability/public`
 pour un visiteur) et chaque surface la lit par `isLessonPremium(code)` (badge)
 et `isLessonLocked(code)` (verrou). `isLessonUnlocked(lesson, …)`, qui lisait un
-`lesson.tier` embarqué, a été supprimé. Surfaces concernées : `LessonCard`
-(catalogue, « دروسي », exploration), `StudentHome` (compte des leçons premium),
+`lesson.tier` embarqué, a été supprimé. Surfaces concernées : `LessonCard` et
+sa ligne `LessonRow` (catalogue, « دروسي », exploration — état lu une fois par
+`useLessonTileState`), `StudentHome` (compte des leçons premium),
 `LessonIndex` (sommaire), `ModuleLayout` (un module verrouillé n'écrit ni visite
 ni complétion) et **`LessonAccessGate`**, que la fabrique de routes de l'unité
 (`_unit/lessonRoutes.jsx`) pose autour de CHAQUE page d'une leçon — sommaire et
@@ -1848,11 +1893,16 @@ journalisé dans la même transaction (`plan.*`, `plan_version.*`,
   `overLimit` bloque la création (classe, adhésion par lien ou par code). Classes,
   membres, visibilités et progression restent lisibles.
 
-## A8. Les relecteurs : ambassadeurs, état de publication, signalement (2026-10-05)
+## A8. Les relecteurs : ambassadeurs, état de publication, signalement (2026-10-05, révisé 2026-10-07)
 
 Un **relecteur** est l'administrateur ou un enseignant **ambassadeur**
-(« سفير ») — `User::canReviewAllContent()`. Un ambassadeur reste un
-enseignant : ses classes, son offre et son statut de compte ne changent pas.
+(« سفير ») — `User::canReviewAllContent()`, qui ne décide plus que du
+SIGNALEMENT. Ce que chacun VOIT est décidé par
+`ContentAccess::visibleStatuses()` (§8) : l'administrateur voit tous les
+états ; l'ambassadeur voit `published` et `hidden`, **pas** `draft` ni
+`archived` (révision du 2026-10-07 — avant, il voyait tout). Un ambassadeur
+reste un enseignant : ses classes, son offre et son statut de compte ne
+changent pas.
 
 ### Désigner un ambassadeur
 
@@ -1870,23 +1920,27 @@ enseignant : ses classes, son offre et son statut de compte ne changent pas.
   (vrai aussi pour l'admin). L'interface lit `canReviewContent` ; le serveur
   décide.
 
-### Voir tout le contenu, avec son état
+### Voir le contenu non publié, avec son état
 
-- `ContentAccess::bypassesPublication($user)` : pour un relecteur, l'axe
-  PUBLICATION est levé — et lui seul. Classe active et palier restent évalués
-  (l'admin passe le palier comme l'enseignant : `AccessDecision::VIA_ADMIN_ROLE`).
-  La visibilité par classe ne concerne que les élèves.
-- `GET /content/availability` rend au relecteur `closed.lessons = []`,
-  `closed.modules = []` et `closed.statuses = {lessons: {code: état},
-  modules: {code: {numéro: état}}}` — seulement le NON publié ; un code dont
-  une version est publiée n'y figure pas. Aucun autre compte ne reçoit
-  `statuses`.
-- `GET /lessons/{code}/exercises` liste au relecteur les exercices non publiés
-  avec `publicationStatus`.
+- `ContentAccess::visibleStatuses($user)` / `canSee($user, $state)` : la seule
+  table « qui voit quel état » ; `seesUnpublished($user)` vaut vrai pour
+  l'admin et l'ambassadeur. Seul l'axe PUBLICATION varie : classe active et
+  palier restent évalués (l'admin passe le palier comme l'enseignant :
+  `AccessDecision::VIA_ADMIN_ROLE`). La visibilité par classe ne concerne que
+  les élèves. (`bypassesPublication`, qui levait tout l'axe, est supprimé.)
+- `GET /content/availability` ferme pour chacun ce qu'IL ne voit pas
+  (`closed.lessons`, `closed.modules`) et rend à l'admin et à l'ambassadeur
+  `closed.statuses = {lessons: {code: état}, modules: {code: {numéro: état}}}`
+  — seulement le non publié QU'IL VOIT ; un code dont une version est publiée
+  n'y figure pas. Admin : rien n'est fermé. Ambassadeur : le brouillon et
+  l'archivé sont fermés, le masqué porte son état. Aucun autre compte ne
+  reçoit `statuses`.
+- `GET /lessons/{code}/exercises` liste les exercices dont l'état est visible
+  pour le compte, avec `publicationStatus` pour l'admin et l'ambassadeur.
 - Frontend : `ContentAvailabilityContext` expose `lessonStatus(code)` et
   `moduleStatus(code, n)` (« published » par défaut) ; la pastille
   `components/content/PublicationBadge.jsx` (couleurs de `StatusBadge`) est
-  posée sur `LessonCard`, la page d'unité, le sommaire (en-tête + cartes de
+  posée sur `LessonCard` / `LessonRow`, la page d'unité, le sommaire (en-tête + cartes de
   module) et l'en-tête de module. Elle ne rend rien pour un contenu publié.
 - Pour tous les autres, le sommaire d'une leçon non publiée ouverte par URL
   directe affiche désormais « هذا الدرس غير متاح حالياً » (le trou connu de
@@ -1934,3 +1988,37 @@ enseignant : ses classes, son offre et son statut de compte ne changent pas.
   l'auteur (`student.role`, `student.isAmbassador`).
 - Les signalements antérieurs étaient des tests : la migration
   `2026_10_05_000002` les a effacés, notes comprises.
+
+## A9. Suppression définitive d'un compte (2026-10-07)
+
+À ne pas confondre avec la **désactivation** (`AccountStatusService`), qui
+ferme le compte en gardant tout. La suppression ne laisse **rien**.
+
+- **Qui** : un administrateur, sur un compte **élève ou enseignant**. Jamais
+  un administrateur (ni soi-même) — 422.
+- **API** (`can:admin`) : `GET /api/v1/admin/users/{id}/deletion-preview` →
+  `summary` (progression, séances, tentatives, copies, carnet, Math Lab,
+  abonnements, paiements, signalements, appartenances ; pour un enseignant
+  `classrooms` et `studentsInClassrooms`), puis
+  `DELETE /api/v1/admin/users/{id}` `{confirmEmail}` → `{id, role,
+  filesDeleted}`. L'e-mail retapé est **revérifié par le serveur** (casse et
+  espaces ignorés) ; faux ou absent → 422, rien n'est touché.
+- **Ce qui part** (`UserDeletionService`) : la ligne `users`, et avec elle
+  toutes les tables en CASCADE sur `users.id` (30 tables : progression,
+  preuves, tentatives, séances, classes de l'enseignant et leurs
+  appartenances, abonnements, paiements, signalements, carnet, Math Lab…) ;
+  les colonnes qui ne font que citer l'utilisateur comme auteur d'un geste
+  (`granted_by`, `reviewer_id`, `created_by`…) passent à NULL. Le service
+  ajoute ce que la base ne sait pas faire : jetons Sanctum, `sessions`,
+  `password_reset_tokens`, et les **fichiers** du disque privé (copies et leur
+  version annotée, fichiers Math Lab, captures de signalement), effacés APRÈS
+  la transaction.
+- **Un enseignant supprimé** emporte ses classes : ses élèves en sortent,
+  leurs comptes et leur progression restent.
+- **Journal** : `user.deleted`, entité `user` + id, `before = {role}` —
+  aucune donnée personnelle ne survit dans l'audit.
+- **Panneau** : « منطقة الخطر » en bas des fiches élève et enseignant
+  (`components/admin/DeleteUserSection.jsx`) : avertissement « لا رجعة فيه »,
+  ce qui sera perdu (l'aperçu), e-mail à retaper — le bouton reste inactif
+  tant qu'il ne correspond pas —, puis retour à la liste.
+- Tests : `AdminUserDeletionTest` (API), `DeleteUserSection.render.test.jsx`.

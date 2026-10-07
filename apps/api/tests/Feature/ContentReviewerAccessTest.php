@@ -16,10 +16,15 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
- * Les RELECTEURS — administrateur et enseignant ambassadeur (« سفير ») —
- * voient TOUT le contenu, quel qu'en soit l'état de publication, et le
- * serveur leur dit cet état. Tous les autres comptes gardent exactement le
- * comportement d'avant (voir PublicationAccessMatrixTest, inchangé).
+ * Qui voit quel état de publication (2026-10-07) :
+ *
+ *     published   tout le monde
+ *     hidden      administrateur + enseignant ambassadeur (« سفير »)
+ *     draft       administrateur seulement
+ *     archived    administrateur seulement
+ *
+ * Le serveur dit l'état de ce qui n'est pas publié à qui le voit. Les autres
+ * comptes gardent le comportement d'avant (voir PublicationAccessMatrixTest).
  */
 class ContentReviewerAccessTest extends TestCase
 {
@@ -55,22 +60,6 @@ class ContentReviewerAccessTest extends TestCase
         return $user;
     }
 
-    /** @return array<string, array{string}> */
-    public static function unpublishedStates(): array
-    {
-        return [
-            'brouillon' => [Lesson::PUB_DRAFT],
-            'masqué' => [Lesson::PUB_HIDDEN],
-            'archivé' => [Lesson::PUB_ARCHIVED],
-        ];
-    }
-
-    /** @return array<string, array{string}> */
-    public static function reviewers(): array
-    {
-        return ['ambassadeur' => ['ambassador'], 'administrateur' => ['admin']];
-    }
-
     private function reviewer(string $kind): User
     {
         return $kind === 'admin' ? User::factory()->create(['role' => User::ROLE_ADMIN]) : $this->ambassador();
@@ -78,41 +67,69 @@ class ContentReviewerAccessTest extends TestCase
 
     // ------------------------------------------------- LA PORTE (domaine)
 
-    #[DataProvider('unpublishedStates')]
-    public function test_le_relecteur_passe_la_publication_et_les_autres_non(string $state): void
+    /** @return array<string, array{string, string, bool}> */
+    public static function visibilityMatrix(): array
+    {
+        $rows = [];
+        $expected = [
+            Lesson::PUB_HIDDEN => ['admin' => true, 'ambassador' => true, 'teacher' => false, 'student' => false, 'guest' => false],
+            Lesson::PUB_DRAFT => ['admin' => true, 'ambassador' => false, 'teacher' => false, 'student' => false, 'guest' => false],
+            Lesson::PUB_ARCHIVED => ['admin' => true, 'ambassador' => false, 'teacher' => false, 'student' => false, 'guest' => false],
+            Lesson::PUB_PUBLISHED => ['admin' => true, 'ambassador' => true, 'teacher' => true, 'student' => true, 'guest' => true],
+        ];
+        foreach ($expected as $state => $viewers) {
+            foreach ($viewers as $viewer => $sees) {
+                $rows["{$state} / {$viewer}"] = [$state, $viewer, $sees];
+            }
+        }
+
+        return $rows;
+    }
+
+    private function viewer(string $kind): ?User
+    {
+        return match ($kind) {
+            'admin' => User::factory()->create(['role' => User::ROLE_ADMIN]),
+            'ambassador' => $this->ambassador(),
+            'teacher' => User::factory()->create(['role' => User::ROLE_TEACHER]),
+            'student' => User::factory()->create(['role' => User::ROLE_STUDENT, 'grade' => '4am']),
+            'guest' => null,
+        };
+    }
+
+    #[DataProvider('visibilityMatrix')]
+    public function test_la_matrice_de_visibilite_lecon_module_exercice(string $state, string $kind, bool $sees): void
     {
         $this->lesson->update(['publication_status' => $state]);
         $this->module->update(['publication_status' => $state]);
-
-        foreach ([$this->ambassador(), User::factory()->create(['role' => User::ROLE_ADMIN])] as $reviewer) {
-            ContentAccess::assertLessonAvailable('qasim-mushtarak-akbar', $reviewer);
-            ContentAccess::assertModuleAvailable('qasim-mushtarak-akbar', 1, $reviewer);
-            $this->assertTrue(ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, $reviewer));
-        }
-
-        foreach ([
-            User::factory()->create(['role' => User::ROLE_TEACHER]),
-            User::factory()->create(['role' => User::ROLE_STUDENT, 'grade' => '4am']),
-            null,
-        ] as $other) {
-            try {
-                ContentAccess::assertLessonAvailable('qasim-mushtarak-akbar', $other);
-                $this->fail('la leçon non publiée doit rester fermée à '.($other?->role ?? 'un visiteur'));
-            } catch (DomainException) {
-                $this->assertFalse(ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, $other));
-            }
-        }
-    }
-
-    public function test_un_exercice_non_publie_est_ouvert_au_relecteur_seulement(): void
-    {
         PracticeExercise::create([
             'lesson_id' => $this->lesson->id, 'exercise_code' => 'ex-a', 'level' => 1,
-            'publication_status' => PracticeExercise::PUB_DRAFT,
+            'publication_status' => $state,
         ]);
+        $user = $this->viewer($kind);
 
-        $this->assertTrue(ContentAccess::isExerciseAvailable('qasim-mushtarak-akbar', 'ex-a', $this->ambassador()));
-        $this->assertFalse(ContentAccess::isExerciseAvailable('qasim-mushtarak-akbar', 'ex-a', User::factory()->create(['role' => User::ROLE_TEACHER])));
+        try {
+            ContentAccess::assertLessonAvailable('qasim-mushtarak-akbar', $user);
+            $lessonOpen = true;
+        } catch (DomainException) {
+            $lessonOpen = false;
+        }
+
+        $this->assertSame($sees, $lessonOpen, "leçon {$state} pour {$kind}");
+        $this->assertSame($sees, ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, $user), "module {$state} pour {$kind}");
+        $this->assertSame($sees, ContentAccess::isExerciseAvailable('qasim-mushtarak-akbar', 'ex-a', $user), "exercice {$state} pour {$kind}");
+    }
+
+    public function test_un_module_masque_sous_une_lecon_publiee_suit_la_meme_regle(): void
+    {
+        $this->module->update(['publication_status' => LessonModule::PUB_HIDDEN]);
+
+        $this->assertTrue(ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, $this->ambassador()));
+        $this->assertFalse(ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, User::factory()->create(['role' => User::ROLE_TEACHER])));
+
+        $this->module->update(['publication_status' => LessonModule::PUB_DRAFT]);
+        $this->assertFalse(ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, $this->ambassador()));
+        $this->assertTrue(ContentAccess::isModuleAvailable('qasim-mushtarak-akbar', 1, User::factory()->create(['role' => User::ROLE_ADMIN])));
     }
 
     public function test_un_ambassadeur_retire_redevient_un_enseignant_ordinaire(): void
@@ -127,18 +144,36 @@ class ContentReviewerAccessTest extends TestCase
 
     // ------------------------------------------------- L'INVENTAIRE (HTTP)
 
-    #[DataProvider('reviewers')]
-    public function test_l_inventaire_du_relecteur_ne_ferme_rien_et_donne_l_etat(string $kind): void
+    public function test_l_inventaire_de_l_admin_ne_ferme_rien_et_donne_l_etat(): void
     {
         $this->lesson->update(['publication_status' => Lesson::PUB_HIDDEN]);
         $this->module->update(['publication_status' => LessonModule::PUB_DRAFT]);
 
-        $this->actingAs($this->reviewer($kind), 'sanctum')->getJson('/api/v1/content/availability')
+        $this->actingAs($this->reviewer('admin'), 'sanctum')->getJson('/api/v1/content/availability')
             ->assertOk()
             ->assertJsonPath('closed.lessons', [])
             ->assertJsonPath('closed.modules', [])
             ->assertJsonPath('closed.statuses.lessons.qasim-mushtarak-akbar', 'hidden')
             ->assertJsonPath('closed.statuses.modules.qasim-mushtarak-akbar.1', 'draft');
+    }
+
+    public function test_l_inventaire_de_l_ambassadeur_ouvre_le_masque_et_ferme_le_brouillon(): void
+    {
+        $this->lesson->update(['publication_status' => Lesson::PUB_HIDDEN]);
+        $this->module->update(['publication_status' => LessonModule::PUB_DRAFT]);
+
+        $this->actingAs($this->ambassador(), 'sanctum')->getJson('/api/v1/content/availability')
+            ->assertOk()
+            ->assertJsonPath('closed.lessons', [])
+            ->assertJsonPath('closed.modules.qasim-mushtarak-akbar', [1])
+            ->assertJsonPath('closed.statuses.lessons.qasim-mushtarak-akbar', 'hidden')
+            ->assertJsonMissingPath('closed.statuses.modules.qasim-mushtarak-akbar');
+
+        $this->lesson->update(['publication_status' => Lesson::PUB_ARCHIVED]);
+        $this->actingAs($this->ambassador(), 'sanctum')->getJson('/api/v1/content/availability')
+            ->assertOk()
+            ->assertJsonPath('closed.lessons', ['qasim-mushtarak-akbar'])
+            ->assertJsonMissingPath('closed.statuses.lessons.qasim-mushtarak-akbar');
     }
 
     public function test_un_contenu_publie_n_apparait_pas_dans_les_etats(): void
@@ -206,12 +241,39 @@ class ContentReviewerAccessTest extends TestCase
 
     public function test_le_relecteur_liste_les_exercices_d_une_lecon_non_publiee(): void
     {
-        $this->lesson->update(['publication_status' => Lesson::PUB_DRAFT]);
+        $this->lesson->update(['publication_status' => Lesson::PUB_HIDDEN]);
 
         $response = $this->actingAs($this->ambassador(), 'sanctum')
             ->getJson('/api/v1/lessons/qasim-mushtarak-akbar/exercises')->assertOk();
         $this->assertNotSame('lesson_unavailable', $response->json('reason'));
         $this->assertNotEmpty($response->json('exercises'));
+
+        // Un brouillon : l'admin le liste, l'ambassadeur non.
+        $this->lesson->update(['publication_status' => Lesson::PUB_DRAFT]);
+        $this->actingAs($this->ambassador(), 'sanctum')
+            ->getJson('/api/v1/lessons/qasim-mushtarak-akbar/exercises')->assertOk()
+            ->assertJsonPath('reason', 'lesson_unavailable');
+        $admin = $this->actingAs($this->reviewer('admin'), 'sanctum')
+            ->getJson('/api/v1/lessons/qasim-mushtarak-akbar/exercises')->assertOk();
+        $this->assertNotSame('lesson_unavailable', $admin->json('reason'));
+    }
+
+    public function test_l_ambassadeur_ne_liste_pas_un_exercice_en_brouillon(): void
+    {
+        PracticeExercise::create([
+            'lesson_id' => $this->lesson->id, 'exercise_code' => 'ex-4am-qasim-mushtarak-akbar-l1-001',
+            'level' => 1, 'publication_status' => PracticeExercise::PUB_DRAFT,
+        ]);
+
+        $codes = collect($this->actingAs($this->ambassador(), 'sanctum')
+            ->getJson('/api/v1/lessons/qasim-mushtarak-akbar/exercises')->assertOk()->json('exercises'))
+            ->pluck('exerciseCode');
+        $this->assertFalse($codes->contains('ex-4am-qasim-mushtarak-akbar-l1-001'));
+
+        $adminRows = collect($this->actingAs($this->reviewer('admin'), 'sanctum')
+            ->getJson('/api/v1/lessons/qasim-mushtarak-akbar/exercises')->assertOk()->json('exercises'))
+            ->keyBy('exerciseCode');
+        $this->assertSame('draft', $adminRows['ex-4am-qasim-mushtarak-akbar-l1-001']['publicationStatus'] ?? null);
     }
 
     // ------------------------------------------------- AUCUNE ÉCRITURE

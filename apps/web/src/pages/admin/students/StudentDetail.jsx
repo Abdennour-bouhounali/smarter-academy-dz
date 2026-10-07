@@ -11,6 +11,7 @@ import { LoadingState, ErrorState, EmptyState, MetricUnavailable } from '../../.
 import { ConfirmDialog } from '../../../components/admin/ui/Modal';
 import CommercialPanel from '../../../components/admin/commercial/CommercialPanel';
 import FeatureUsagePanel from '../../../components/admin/commercial/FeatureUsagePanel';
+import DeleteUserSection from '../../../components/admin/DeleteUserSection';
 import { AuthContext } from '../../../context/AuthContext';
 import { useAdminResource } from '../../../hooks/useAdminResource';
 import { fetchStudent, changeStudentStatus } from '../../../services/admin/studentService';
@@ -212,6 +213,8 @@ export default function AdminStudentDetail() {
               </ol>
             )}
           </section>
+
+          <DeleteUserSection user={student} role="student" backTo="/admin/eleves" />
         </div>
       )}
 

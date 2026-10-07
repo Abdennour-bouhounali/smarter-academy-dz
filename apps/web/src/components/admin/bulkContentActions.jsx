@@ -207,7 +207,19 @@ export function buildContentBulkActions({
     key: `status:${action.status}`,
     label: t(action.labelKey),
     tone: action.tone,
-    confirm: action.confirm,
+    // Une leçon recopie son état sur tous ses محاور (cascade serveur) : le
+    // dialogue le dit, quel que soit l'état choisi.
+    confirm: type === 'lesson'
+      ? {
+        ...action.confirm,
+        message: (count, c) => (
+          <>
+            {action.confirm.message(count, c)}
+            <p className="mt-2">{t('bulk.cascadeModules', { status: t(`status.${action.status}`) })}</p>
+          </>
+        ),
+      }
+      : action.confirm,
     runningLabel: (count) => t('bulk.running', { action: t(action.labelKey), counted: countedObj(count, noun) }),
     successLabel: (n) => t('bulk.successStatus', { count: n, counted: counted(n, noun), status: t(`status.${action.status}`) }),
     // Tout masquer quand tout est déjà masqué ne ferait qu'un rapport

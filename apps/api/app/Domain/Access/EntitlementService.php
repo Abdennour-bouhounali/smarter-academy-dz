@@ -96,7 +96,7 @@ class EntitlementService
         }
 
         // L'ADMINISTRATEUR relit tout le contenu (ContentAccess::
-        // bypassesPublication) : le palier ne doit pas lui cacher ce que
+        // visibleStatuses) : le palier ne doit pas lui cacher ce que
         // la publication lui montre.
         if ($user->isAdmin()) {
             return AccessDecision::allow(AccessDecision::VIA_ADMIN_ROLE);

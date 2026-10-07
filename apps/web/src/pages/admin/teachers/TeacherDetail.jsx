@@ -10,6 +10,7 @@ import { ConfirmDialog } from '../../../components/admin/ui/Modal';
 import AmbassadorSwitch from '../../../components/admin/ui/AmbassadorSwitch';
 import CommercialPanel from '../../../components/admin/commercial/CommercialPanel';
 import FeatureUsagePanel from '../../../components/admin/commercial/FeatureUsagePanel';
+import DeleteUserSection from '../../../components/admin/DeleteUserSection';
 import { AuthContext } from '../../../context/AuthContext';
 import { useAdminResource } from '../../../hooks/useAdminResource';
 import { fetchTeacher, changeTeacherStatus, grantTeacherOverride, revokeTeacherOverride } from '../../../services/admin/teacherService';
@@ -208,6 +209,8 @@ export default function AdminTeacherDetail() {
               </ol>
             )}
           </section>
+
+          <DeleteUserSection user={teacher} role="teacher" backTo="/admin/enseignants" />
         </div>
       )}
 

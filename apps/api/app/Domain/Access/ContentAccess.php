@@ -45,22 +45,61 @@ use Illuminate\Support\Collection;
  * contenu, pas son autorité. Refuser ce qui n'est pas encore importé
  * fermerait la plateforme au premier oubli de synchronisation.
  *
- * ── Les RELECTEURS (2026-10-05) ──────────────────────────────────────────
- * L'administrateur et les AMBASSADEURS (« سفراء », User::canReviewAllContent)
- * relisent le contenu : la publication ne les arrête pas — c'est précisément
- * le brouillon et le masqué qu'ils doivent voir. Seul l'axe PUBLICATION est
- * levé pour eux : la classe active et le palier restent évalués (le palier
- * les laisse passer de lui-même, voir EntitlementService). L'inventaire leur
- * rend, au lieu des fermetures, l'ÉTAT de chaque contenu non publié, pour que
- * l'interface l'affiche. Aucune écriture ne s'ouvre : la progression reste
+ * ── QUI voit QUEL état (2026-10-07, décision propriétaire) ───────────────
+ *
+ *     published   tout le monde (élève, enseignant, visiteur, ambassadeur, admin)
+ *     hidden      l'ADMINISTRATEUR et les enseignants AMBASSADEURS (« سفراء »)
+ *     draft       l'ADMINISTRATEUR seulement
+ *     archived    l'ADMINISTRATEUR seulement
+ *
+ * Avant cette date, l'ambassadeur voyait aussi le brouillon et l'archivé. Le
+ * masqué est le contenu « prêt mais retenu » que l'ambassadeur relit ; le
+ * brouillon et l'archivé restent une affaire d'administration.
+ *
+ * Seul l'axe PUBLICATION varie selon le compte : la classe active et le palier
+ * restent évalués (le palier laisse passer enseignant et admin de lui-même,
+ * voir EntitlementService). L'inventaire rend à celui qui voit plus que le
+ * publié l'ÉTAT de chaque contenu non publié qu'il voit, pour que l'interface
+ * l'affiche en badge. Aucune écriture ne s'ouvre : la progression reste
  * derrière le middleware `learner`.
  */
 class ContentAccess
 {
-    /** Le relecteur passe outre la publication — et elle seule. */
-    public static function bypassesPublication(?User $user): bool
+    /**
+     * Les états de publication que CE compte peut voir — l'unique table de
+     * la règle ci-dessus. Liste blanche : un état inconnu n'est vu que par
+     * l'administrateur (voir canSee).
+     *
+     * @return string[]
+     */
+    public static function visibleStatuses(?User $user): array
     {
-        return $user !== null && $user->canReviewAllContent();
+        if ($user?->isAdmin()) {
+            return Lesson::PUBLICATION_STATUSES;
+        }
+
+        if ($user?->isAmbassador()) {
+            return [Lesson::PUB_PUBLISHED, Lesson::PUB_HIDDEN];
+        }
+
+        return [Lesson::PUB_PUBLISHED];
+    }
+
+    /** Ce compte peut-il voir un contenu dans cet état ? */
+    public static function canSee(?User $user, ?string $status): bool
+    {
+        // L'administrateur voit tout, y compris un état ajouté plus tard.
+        if ($user?->isAdmin()) {
+            return true;
+        }
+
+        return in_array($status, self::visibleStatuses($user), true);
+    }
+
+    /** Ce compte voit-il au-delà du publié ? (badges d'état, inventaire) */
+    public static function seesUnpublished(?User $user): bool
+    {
+        return count(self::visibleStatuses($user)) > 1;
     }
 
     /**
@@ -87,10 +126,9 @@ class ContentAccess
         self::assertEntitled($lessons, $user);
 
         // Un code de leçon se répète d'une classe à l'autre. Si AU MOINS une
-        // des leçons portant ce code est publiée, l'accès reste ouvert :
-        // masquer la version de 6e ne doit pas fermer celle de 3e.
-        if (! self::bypassesPublication($user)
-            && ! $lessons->contains(fn (Lesson $lesson) => $lesson->isVisibleToStudents())) {
+        // des leçons portant ce code est visible pour ce compte, l'accès reste
+        // ouvert : masquer la version de 6e ne doit pas fermer celle de 3e.
+        if (! $lessons->contains(fn (Lesson $lesson) => self::canSee($user, $lesson->publication_status))) {
             throw new DomainException('Cette leçon n\'est pas disponible pour le moment.');
         }
 
@@ -123,11 +161,10 @@ class ContentAccess
     /**
      * Le MODULE est-il ouvert ?
      *
-     * Pas de cascade : un module en brouillon reste inaccessible sous une
-     * leçon publiée, et publier une leçon ne publie aucun module. Chaque
-     * niveau porte son propre état — c'est ce qui permet de retirer UN module
-     * cassé sans fermer la leçon entière (spec §10), et ce qui évite qu'une
-     * publication de leçon ouvre par surprise du contenu jamais relu.
+     * Chaque module porte son propre état. Changer l'état d'une LEÇON le
+     * recopie sur tous ses modules (ContentService::changeStatus, 2026-10-07),
+     * mais un module peut ensuite être changé seul — c'est ce qui permet de
+     * retirer UN module cassé sans fermer la leçon entière (spec §10).
      *
      * @throws DomainException si le module est masqué, archivé ou en brouillon.
      */
@@ -158,8 +195,7 @@ class ContentAccess
             return;
         }
 
-        if (self::bypassesPublication($user)
-            || $modules->contains(fn (LessonModule $module) => $module->isVisibleToStudents())) {
+        if ($modules->contains(fn (LessonModule $module) => self::canSee($user, $module->publication_status))) {
             return;
         }
 
@@ -208,7 +244,7 @@ class ContentAccess
             return true;
         }
 
-        if (! self::bypassesPublication($user) && ! $exercise->isVisibleToStudents()) {
+        if (! self::canSee($user, $exercise->publication_status)) {
             return false;
         }
 
@@ -310,47 +346,51 @@ class ContentAccess
      *
      * Conséquence voulue : une leçon absente du registre reste ouverte.
      *
-     * Pour un RELECTEUR (bypassesPublication), rien n'est fermé par la
-     * publication : `lessons` et `modules` sont vides, et `statuses` dit
-     * l'état de ce qui n'est pas publié — l'interface l'affiche en badge.
+     * Pour un compte qui voit au-delà du publié (seesUnpublished : admin,
+     * ambassadeur), seul ce qu'IL ne voit pas est fermé, et `statuses` dit
+     * l'état de ce qui n'est pas publié mais qu'il voit — l'interface
+     * l'affiche en badge. Pour tout autre compte, `statuses` est absent.
      *
      * @return array{lessons: string[], modules: array<string, int[]>, locked: string[], statuses?: array}
      */
     public static function closedInventory(?User $user = null): array
     {
-        if (self::bypassesPublication($user)) {
-            $premium = self::premiumLessonCodes();
+        // Le rang sert à choisir l'état AFFICHÉ d'un code porté par plusieurs
+        // leçons dont aucune n'est publiée : le plus « proche » du publié.
+        $rank = [Lesson::PUB_HIDDEN => 0, Lesson::PUB_DRAFT => 1, Lesson::PUB_ARCHIVED => 2];
+        $withStatuses = self::seesUnpublished($user);
 
-            return [
-                'lessons' => [],
-                'modules' => [],
-                'premium' => $premium,
-                'locked' => self::lockedLessonCodes($user, $premium),
-                'hiddenByClass' => [],
-                'statuses' => self::publicationStatuses(),
-            ];
+        $closedLessons = [];
+        $lessonStatuses = [];
+        foreach (Lesson::query()->get(['code', 'publication_status'])->groupBy('code') as $code => $rows) {
+            $states = $rows->pluck('publication_status');
+            // Un code peut porter deux leçons (6e et 3e) : il n'est fermé que
+            // si AUCUNE des deux n'est visible. Même règle qu'assertLessonAvailable.
+            if ($states->contains(Lesson::PUB_PUBLISHED)) {
+                continue;
+            }
+            $visible = $states->filter(fn ($s) => self::canSee($user, $s));
+            if ($visible->isEmpty()) {
+                $closedLessons[] = (string) $code;
+            } elseif ($withStatuses) {
+                $lessonStatuses[(string) $code] = $visible->sortBy(fn ($s) => $rank[$s] ?? 9)->first();
+            }
         }
 
-        $closedLessons = Lesson::where('publication_status', '!=', Lesson::PUB_PUBLISHED)
-            ->pluck('code')
-            // Un code peut porter deux leçons (6e et 3e) : il n'est fermé que
-            // si AUCUNE des deux n'est publiée. Même règle qu'assertLessonAvailable.
-            ->unique()
-            ->filter(fn (string $code) => ! Lesson::where('code', $code)
-                ->where('publication_status', Lesson::PUB_PUBLISHED)
-                ->exists())
-            ->values()
-            ->all();
-
         $closedModules = [];
+        $moduleStatuses = [];
         $rows = LessonModule::query()
             ->join('lessons', 'lessons.id', '=', 'lesson_modules.lesson_id')
             ->where('lesson_modules.publication_status', '!=', LessonModule::PUB_PUBLISHED)
             ->whereNull('lesson_modules.retired_at')
-            ->get(['lessons.code as lesson_code', 'lesson_modules.number']);
+            ->get(['lessons.code as lesson_code', 'lesson_modules.number', 'lesson_modules.publication_status']);
 
         foreach ($rows as $row) {
-            $closedModules[$row->lesson_code][] = (int) $row->number;
+            if (! self::canSee($user, $row->publication_status)) {
+                $closedModules[$row->lesson_code][] = (int) $row->number;
+            } elseif ($withStatuses) {
+                $moduleStatuses[$row->lesson_code][(int) $row->number] = $row->publication_status;
+            }
         }
 
         $premium = self::premiumLessonCodes();
@@ -371,43 +411,9 @@ class ContentAccess
             'hiddenByClass' => $user !== null && $user->isStudent()
                 ? app(StudyContextService::class)->hiddenLessonCodesFor($user)
                 : [],
-        ];
-    }
-
-    /**
-     * L'état de publication de ce qui N'EST PAS publié, pour le relecteur.
-     *
-     * Même règle de composition que les fermetures : un code porté par AU
-     * MOINS une leçon publiée est publié, il n'apparaît pas ici. Pour un code
-     * dont aucune version n'est publiée, on rend l'état le plus « proche » de
-     * la publication (masqué avant brouillon avant archivé).
-     *
-     * @return array{lessons: array<string, string>, modules: array<string, array<int, string>>}
-     */
-    private static function publicationStatuses(): array
-    {
-        $rank = [Lesson::PUB_HIDDEN => 0, Lesson::PUB_DRAFT => 1, Lesson::PUB_ARCHIVED => 2];
-
-        $lessons = [];
-        foreach (Lesson::query()->get(['code', 'publication_status'])->groupBy('code') as $code => $rows) {
-            $states = $rows->pluck('publication_status');
-            if ($states->contains(Lesson::PUB_PUBLISHED)) {
-                continue;
-            }
-            $lessons[$code] = $states->sortBy(fn ($s) => $rank[$s] ?? 9)->first();
-        }
-
-        $modules = [];
-        $rows = LessonModule::query()
-            ->join('lessons', 'lessons.id', '=', 'lesson_modules.lesson_id')
-            ->where('lesson_modules.publication_status', '!=', LessonModule::PUB_PUBLISHED)
-            ->whereNull('lesson_modules.retired_at')
-            ->get(['lessons.code as lesson_code', 'lesson_modules.number', 'lesson_modules.publication_status']);
-        foreach ($rows as $row) {
-            $modules[$row->lesson_code][(int) $row->number] = $row->publication_status;
-        }
-
-        return ['lessons' => (object) $lessons, 'modules' => (object) $modules];
+        ] + ($withStatuses
+            ? ['statuses' => ['lessons' => (object) $lessonStatuses, 'modules' => (object) $moduleStatuses]]
+            : []);
     }
 
     /**

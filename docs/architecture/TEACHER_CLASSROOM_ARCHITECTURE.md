@@ -45,9 +45,11 @@ student     /register, Google                   /espace          (default)
 - **Ambassador (« سفير », 2026-10-05)** is not a role: it is a flag
   (`users.is_ambassador`) the administrator toggles on a **teacher**
   (`PATCH /admin/teachers/{id}/ambassador`). An ambassador is a *reviewer*
-  like the admin (`User::canReviewAllContent()`): they see every lesson,
-  module and exercise whatever its publication state, with a state badge,
-  and only reviewers can report problems. Classes, plan and account status
+  like the admin (`User::canReviewAllContent()`): they see every
+  **published** and **hidden** lesson, module and exercise, with a state
+  badge on the hidden ones — but **not** `draft` or `archived`, which only the
+  admin sees (2026-10-07, `ContentAccess::visibleStatuses`). Only reviewers
+  can report problems. Classes, plan and account status
   are untouched. Contract: `ADMIN_PANEL_ARCHITECTURE.md` Annexe A8.
 
 - `users.role` stays a free string. `User::SELF_REGISTERABLE_ROLES` is
@@ -264,7 +266,8 @@ student.
 composes three independent axes:
 
 ```text
-publication   lessons.publication_status      published opens, anything else closes   (admin)
+publication   lessons.publication_status      published opens for all; hidden also for (admin)
+                                              ambassadors; draft/archived admin only
 tier          lessons.tier + entitlements      free / premium                          (admin + commercial)
 class         classroom_lessons                visible / hidden for THIS student       (teacher)
 ```
@@ -982,6 +985,10 @@ usesWorkspaceShell   StudentLayout  MainLayout     TeacherLayout  MainLayout
   the grade, live while typing. Empty → the catalogue keeps its **unit
   cards** (الوحدة level, unchanged); typing → the matching lessons, flat, in
   catalogue order; no match → « لا يوجد درس يطابق … » (`common.noCourseMatches`).
+  Since 2026-10-07 the same four pages let the reader choose the **view**
+  (« الوحدات » / « حسب الميادين » / « كل الدروس », شبكة / قائمة) — one
+  renderer and one stored preference, see `ARCHITECTURE.md` « Catalogue
+  views »; the unit cards stay the default.
 - **The teacher's lesson block (unit page).** The catalogue stays at the
   الوحدة level; lesson-level gestures live one level down, on the unit page
   (`pages/UnitPage.jsx`), for the teacher reader only

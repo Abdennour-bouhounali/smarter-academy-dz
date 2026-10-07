@@ -139,8 +139,9 @@ class User extends Authenticatable implements HasLocalePreference
 
     /**
      * Ceux qui RELISENT le contenu : l'administrateur et les ambassadeurs.
-     * Ils voient tout, quel qu'en soit l'état de publication (ContentAccess),
-     * et eux seuls peuvent signaler un problème (EnsureContentReviewer).
+     * Eux seuls peuvent signaler un problème (EnsureContentReviewer). Ce
+     * qu'ils VOIENT n'est pas décidé ici : l'admin voit tout état, l'ambassadeur
+     * le publié et le masqué seulement (ContentAccess::visibleStatuses).
      */
     public function canReviewAllContent(): bool
     {

@@ -72,6 +72,18 @@ export function changeContentTier(token, type, id, tier) {
  * @param {number[]} ids
  * @returns {Promise<{applied: number[], unchanged: number[], failed: {id: number, message: string}[]}>}
  */
+/**
+ * L'état de TOUTE la banque d'exercices d'une leçon. Réponse : `applied`,
+ * `unchanged`, `failed` — comme un lot.
+ */
+export function changeLessonExercisesStatus(token, lessonId, status) {
+  return call(
+    `/admin/content/lesson/${encodeURIComponent(lessonId)}/exercises-status`,
+    send('PATCH', token, { status }),
+    'تعذّر تغيير حالة بنك التمارين.',
+  );
+}
+
 export function bulkChangeContentStatus(token, type, ids, status) {
   return call(
     `/admin/content/${encodeURIComponent(type)}/bulk-status`,

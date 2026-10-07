@@ -10,6 +10,7 @@ use App\Domain\Practice\ExerciseRepository;
 use App\Domain\Practice\PracticeCapability;
 use App\Models\Lesson;
 use App\Models\PracticeExercise;
+use App\Models\User;
 use DomainException;
 use Illuminate\Http\Request;
 
@@ -90,11 +91,13 @@ class ContentAvailabilityController extends Controller
             abort(404);
         }
 
-        // Le RELECTEUR (admin, سفير) voit aussi le non-publié, avec son état.
-        $reviewer = ContentAccess::bypassesPublication($request->user());
+        // L'admin voit tout état, l'ambassadeur (سفير) aussi le masqué — avec
+        // l'état affiché. Voir ContentAccess::visibleStatuses.
+        $user = $request->user();
+        $withStatus = ContentAccess::seesUnpublished($user);
 
         // Une leçon fermée ne liste rien du tout.
-        if (! $reviewer && ! $this->lessonIsOpen($lessonCode)) {
+        if (! $this->lessonIsOpen($lessonCode, $user)) {
             return response()->json([
                 'success' => true,
                 'available' => false,
@@ -148,7 +151,7 @@ class ContentAvailabilityController extends Controller
                 // Inconnu du registre : servi (la base miroite le contenu,
                 // elle n'en est pas l'autorité). Connu mais non publié :
                 // retiré de la liste, sans dire pourquoi.
-                if ($row && ! $row->isVisibleToStudents() && ! $reviewer) {
+                if ($row && ! ContentAccess::canSee($user, $row->publication_status)) {
                     continue;
                 }
 
@@ -170,9 +173,9 @@ class ContentAvailabilityController extends Controller
                     'questionCount' => $locked ? null : $row?->question_count,
                     'tier' => $tier,
                     'locked' => $locked,
-                    // L'état de publication — rendu au seul relecteur, pour
-                    // qu'il voie ce qui est en ligne et ce qui ne l'est pas.
-                    ...($reviewer ? ['publicationStatus' => $row?->publication_status ?? 'published'] : []),
+                    // L'état de publication — rendu à qui voit au-delà du
+                    // publié, pour qu'il voie ce qui est en ligne et ce qui ne l'est pas.
+                    ...($withStatus ? ['publicationStatus' => $row?->publication_status ?? 'published'] : []),
                 ];
 
                 if (! $locked) {
@@ -191,11 +194,11 @@ class ContentAvailabilityController extends Controller
         ]);
     }
 
-    private function lessonIsOpen(string $lessonCode): bool
+    private function lessonIsOpen(string $lessonCode, ?User $user): bool
     {
-        return Lesson::where('code', $lessonCode)
-            ->where('publication_status', Lesson::PUB_PUBLISHED)
-            ->exists()
-            || ! Lesson::where('code', $lessonCode)->exists();
+        $states = Lesson::where('code', $lessonCode)->pluck('publication_status');
+
+        return $states->isEmpty()
+            || $states->contains(fn ($status) => ContentAccess::canSee($user, $status));
     }
 }

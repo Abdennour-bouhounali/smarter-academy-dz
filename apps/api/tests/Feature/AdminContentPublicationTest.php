@@ -6,6 +6,7 @@ use App\Models\AdminActivityLog;
 use App\Models\Chapter;
 use App\Models\ExerciseAttempt;
 use App\Models\Grade;
+use App\Models\LearningPoint;
 use App\Models\Lesson;
 use App\Models\LessonModule;
 use App\Models\PracticeExercise;
@@ -155,7 +156,8 @@ class AdminContentPublicationTest extends TestCase
             'entity_id' => (string) $this->lesson->id,
         ]);
 
-        $log = AdminActivityLog::latest()->first();
+        // La cascade journalise aussi les modules : on lit la ligne de la LEÇON.
+        $log = AdminActivityLog::where('action', 'lesson.status_changed')->latest('id')->first();
         $this->assertSame(Lesson::PUB_PUBLISHED, $log->before['publication_status']);
         $this->assertSame(Lesson::PUB_HIDDEN, $log->after['publication_status']);
     }
@@ -175,5 +177,175 @@ class AdminContentPublicationTest extends TestCase
             ->assertStatus(200)
             ->assertJsonPath('lesson.modules.0.code', '02')
             ->assertJsonPath('lesson.exercises.0.exerciseCode', 'ex-frac-001');
+    }
+
+    // ------------------------------------------------- CASCADE leçon → modules
+
+    /**
+     * Changer l'état d'une leçon le donne à tous ses modules en registre
+     * (2026-10-07). Les modules retirés et les exercices ne bougent pas.
+     */
+    public function test_l_etat_d_une_lecon_cascade_sur_ses_modules(): void
+    {
+        $second = LessonModule::create([
+            'lesson_id' => $this->lesson->id, 'code' => '03', 'number' => 3, 'title' => 'Comparer',
+            'publication_status' => LessonModule::PUB_DRAFT,
+        ]);
+        $retired = LessonModule::create([
+            'lesson_id' => $this->lesson->id, 'code' => '04', 'number' => 4, 'title' => 'Ancien',
+            'publication_status' => LessonModule::PUB_PUBLISHED, 'retired_at' => now(),
+        ]);
+
+        foreach ([Lesson::PUB_HIDDEN, Lesson::PUB_DRAFT, Lesson::PUB_ARCHIVED, Lesson::PUB_PUBLISHED] as $state) {
+            $this->asAdmin()
+                ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/status", ['status' => $state])
+                ->assertStatus(200)
+                ->assertJsonPath('publicationStatus', $state);
+
+            $this->assertSame($state, $this->lesson->fresh()->publication_status, "leçon {$state}");
+            $this->assertSame($state, $this->module->fresh()->publication_status, "module 2 → {$state}");
+            $this->assertSame($state, $second->fresh()->publication_status, "module 3 → {$state}");
+        }
+
+        $this->assertSame(LessonModule::PUB_PUBLISHED, $retired->fresh()->publication_status, 'un module retiré ne suit pas');
+        $this->assertSame(PracticeExercise::PUB_PUBLISHED, $this->exercise->fresh()->publication_status, 'les exercices ne suivent pas');
+    }
+
+    public function test_la_cascade_rend_les_modules_changes_et_les_journalise(): void
+    {
+        $response = $this->asAdmin()
+            ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/status", ['status' => Lesson::PUB_HIDDEN])
+            ->assertStatus(200)
+            ->assertJsonPath('modules.applied', [$this->module->id])
+            ->assertJsonPath('modules.skipped', []);
+
+        $this->assertDatabaseHas('admin_activity_logs', [
+            'action' => 'module.status_changed',
+            'entity_type' => 'module',
+            'entity_id' => (string) $this->module->id,
+        ]);
+        $log = AdminActivityLog::where('action', 'module.status_changed')->latest('id')->first();
+        $this->assertSame($this->lesson->id, $log->after['cascadeFromLesson']);
+    }
+
+    public function test_un_module_reste_modifiable_seul_apres_la_cascade(): void
+    {
+        $this->asAdmin()
+            ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/status", ['status' => Lesson::PUB_HIDDEN])
+            ->assertStatus(200);
+        $this->asAdmin()
+            ->patchJson("/api/v1/admin/content/module/{$this->module->id}/status", ['status' => LessonModule::PUB_DRAFT])
+            ->assertStatus(200);
+
+        $this->assertSame(Lesson::PUB_HIDDEN, $this->lesson->fresh()->publication_status);
+        $this->assertSame(LessonModule::PUB_DRAFT, $this->module->fresh()->publication_status);
+    }
+
+    public function test_publier_une_lecon_ne_publie_pas_un_module_casse(): void
+    {
+        $this->lesson->update(['publication_status' => Lesson::PUB_HIDDEN]);
+        $this->module->update(['publication_status' => LessonModule::PUB_HIDDEN]);
+        LearningPoint::create([
+            'lesson_id' => $this->lesson->id, 'code' => '6e_fractions_P1', 'title' => 'P1', 'order' => 1, 'retired_at' => now(),
+        ]);
+        $broken = LessonModule::create([
+            'lesson_id' => $this->lesson->id, 'code' => '03', 'number' => 3, 'title' => 'Cassé',
+            'publication_status' => LessonModule::PUB_HIDDEN, 'teaches_learning_point_codes' => ['6e_fractions_P1'],
+        ]);
+
+        $response = $this->asAdmin()
+            ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/status", ['status' => Lesson::PUB_PUBLISHED])
+            ->assertStatus(200)
+            ->assertJsonPath('modules.applied', [$this->module->id])
+            ->assertJsonPath('modules.skipped.0.id', $broken->id);
+
+        $this->assertSame(LessonModule::PUB_PUBLISHED, $this->module->fresh()->publication_status);
+        $this->assertSame(LessonModule::PUB_HIDDEN, $broken->fresh()->publication_status);
+    }
+
+    public function test_une_lecon_dont_aucun_module_n_est_publiable_reste_refusee(): void
+    {
+        $this->lesson->update(['publication_status' => Lesson::PUB_HIDDEN]);
+        LearningPoint::create([
+            'lesson_id' => $this->lesson->id, 'code' => '6e_fractions_P1', 'title' => 'P1', 'order' => 1, 'retired_at' => now(),
+        ]);
+        $this->module->update([
+            'publication_status' => LessonModule::PUB_HIDDEN, 'teaches_learning_point_codes' => ['6e_fractions_P1'],
+        ]);
+
+        $this->asAdmin()
+            ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/status", ['status' => Lesson::PUB_PUBLISHED])
+            ->assertStatus(422);
+
+        // Rien n'a bougé : ni la leçon, ni le module.
+        $this->assertSame(Lesson::PUB_HIDDEN, $this->lesson->fresh()->publication_status);
+        $this->assertSame(LessonModule::PUB_HIDDEN, $this->module->fresh()->publication_status);
+    }
+
+    // ------------------------------------------------- BANQUE D'EXERCICES d'une leçon
+
+    /**
+     * Un geste pour toute la banque d'exercices d'une leçon (2026-10-07) ;
+     * chaque exercice reste ensuite modifiable seul.
+     */
+    public function test_l_etat_de_la_banque_d_exercices_s_applique_a_tous_ses_exercices(): void
+    {
+        $second = PracticeExercise::create([
+            'lesson_id' => $this->lesson->id, 'exercise_code' => 'ex-frac-002', 'level' => 2,
+            'publication_status' => PracticeExercise::PUB_DRAFT,
+        ]);
+        $retired = PracticeExercise::create([
+            'lesson_id' => $this->lesson->id, 'exercise_code' => 'ex-frac-old', 'level' => 1,
+            'publication_status' => PracticeExercise::PUB_DRAFT, 'retired_at' => now(),
+        ]);
+        $this->exercise->update(['publication_status' => PracticeExercise::PUB_DRAFT]);
+
+        $this->asAdmin()
+            ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/exercises-status", ['status' => PracticeExercise::PUB_PUBLISHED])
+            ->assertStatus(200)
+            ->assertJsonCount(2, 'applied')
+            ->assertJsonCount(0, 'failed');
+
+        $this->assertSame(PracticeExercise::PUB_PUBLISHED, $this->exercise->fresh()->publication_status);
+        $this->assertSame(PracticeExercise::PUB_PUBLISHED, $second->fresh()->publication_status);
+        $this->assertSame(PracticeExercise::PUB_DRAFT, $retired->fresh()->publication_status, 'un exercice retiré ne suit pas');
+        $this->assertSame(2, AdminActivityLog::where('action', 'exercise.status_changed')->count());
+
+        // Puis UN exercice masqué seul : la banque ne bouge pas.
+        $this->asAdmin()
+            ->patchJson("/api/v1/admin/content/exercise/{$second->id}/status", ['status' => PracticeExercise::PUB_HIDDEN])
+            ->assertStatus(200);
+        $this->assertSame(PracticeExercise::PUB_HIDDEN, $second->fresh()->publication_status);
+        $this->assertSame(PracticeExercise::PUB_PUBLISHED, $this->exercise->fresh()->publication_status);
+    }
+
+    public function test_la_banque_d_exercices_ne_touche_ni_la_lecon_ni_ses_modules(): void
+    {
+        $this->asAdmin()
+            ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/exercises-status", ['status' => PracticeExercise::PUB_HIDDEN])
+            ->assertStatus(200)
+            ->assertJsonPath('applied', [$this->exercise->id]);
+
+        $this->assertSame(Lesson::PUB_PUBLISHED, $this->lesson->fresh()->publication_status);
+        $this->assertSame(LessonModule::PUB_PUBLISHED, $this->module->fresh()->publication_status);
+
+        // Et l'état de la leçon ne touche pas les exercices.
+        $this->asAdmin()
+            ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/status", ['status' => Lesson::PUB_DRAFT])
+            ->assertStatus(200);
+        $this->assertSame(PracticeExercise::PUB_HIDDEN, $this->exercise->fresh()->publication_status);
+    }
+
+    public function test_la_banque_d_exercices_refuse_un_etat_inconnu_et_les_non_admins(): void
+    {
+        $this->asAdmin()
+            ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/exercises-status", ['status' => 'secret'])
+            ->assertStatus(422);
+
+        $this->actingAs($this->student, 'sanctum')
+            ->patchJson("/api/v1/admin/content/lesson/{$this->lesson->id}/exercises-status", ['status' => PracticeExercise::PUB_HIDDEN])
+            ->assertStatus(403);
+
+        $this->assertSame(PracticeExercise::PUB_PUBLISHED, $this->exercise->fresh()->publication_status);
     }
 }
