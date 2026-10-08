@@ -4,7 +4,7 @@ import {
 } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import {
-  Compass, MapPin, Hand, Eye, HelpCircle, Lightbulb, FunctionSquare, Repeat2, Shuffle, Trophy, ChevronDown,
+  Compass, MapPin, Hand, Eye, HelpCircle, Lightbulb, FunctionSquare, Repeat2, Shuffle, Trophy, ChevronDown, ClipboardCheck,
 } from 'lucide-react';
 import CtaBanner from '../components/common/CtaBanner';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
@@ -27,10 +27,14 @@ const IMG = (id) => `/images/methode/lesson/${id}.webp`; // captures réelles
 const ACTS = [
   { id: 'touch', steps: [{ id: 'situation', icon: MapPin }, { id: 'manipulate', icon: Hand }, { id: 'observe', icon: Eye }] },
   { id: 'grasp', steps: [{ id: 'question', icon: HelpCircle }, { id: 'discover', icon: Lightbulb }, { id: 'understand', icon: FunctionSquare }] },
-  { id: 'own', steps: [{ id: 'practice', icon: Repeat2 }, { id: 'apply', icon: Shuffle }] },
+  { id: 'own', steps: [{ id: 'practice', icon: Repeat2 }, { id: 'apply', icon: Shuffle }, { id: 'test', icon: ClipboardCheck }] },
 ];
 const STATIONS = ACTS.flatMap((a) => a.steps);
-const SUMMIT = { id: 'master', icon: Trophy, n: STATIONS.length + 1 };
+// La dernière station, la seule en fond sombre : الإتقان, l'espace d'exercices
+// réel (même leçon). Son image est la feuille d'examen : `shot` la désigne.
+const GOLD = { id: 'master', icon: Trophy, n: STATIONS.length + 1, shot: 'exercises' };
+const ALL_STOPS = [...STATIONS, GOLD];
+const EXERCISE_LEVELS = [1, 2, 3, 4, 5];
 
 const pad = (n) => String(n).padStart(2, '0');
 const EASE = [0.22, 1, 0.36, 1];
@@ -100,7 +104,7 @@ function Hero({ reduce }) {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const textY = useTransform(scrollYProgress, [0, 1], reduce ? ['0%', '0%'] : ['0%', '-30%']);
   const textOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  const all = [...STATIONS, SUMMIT];
+  const all = ALL_STOPS;
 
   return (
     <section ref={ref} className="relative min-h-[calc(100svh-4rem)] flex flex-col items-center justify-center overflow-hidden px-4 py-20">
@@ -137,7 +141,7 @@ function Hero({ reduce }) {
         <ol className="flex flex-wrap justify-center gap-2" aria-label={t('method.eyebrow')}>
           {all.map((s, i) => {
             const Icon = s.icon;
-            const last = i === all.length - 1;
+            const last = s.id === GOLD.id;
             return (
               <li
                 key={s.id}
@@ -217,6 +221,7 @@ const FRAME_MAX = 520;
 const SHOT_SIZE = {
   situation: [1400, 623], manipulate: [1400, 1267], observe: [1400, 1376], question: [1400, 447],
   discover: [1400, 1320], understand: [1400, 1101], practice: [1400, 1261], apply: [1400, 1554],
+  exercises: [1400, 619], test: [1400, 1685],
 };
 
 function ScreenFrame({ step, n, progress, reduce }) {
@@ -243,12 +248,12 @@ function ScreenFrame({ step, n, progress, reduce }) {
       </div>
       <div className="relative overflow-hidden" style={{ maxHeight: FRAME_MAX }}>
         <motion.img
-          src={IMG(step.id)}
+          src={IMG(step.shot ?? step.id)}
           alt={t(`method.steps.${step.id}.alt`)}
           loading="lazy"
           decoding="async"
-          width={SHOT_SIZE[step.id][0]}
-          height={SHOT_SIZE[step.id][1]}
+          width={SHOT_SIZE[step.shot ?? step.id][0]}
+          height={SHOT_SIZE[step.shot ?? step.id][1]}
           onLoad={onLoad}
           style={{ y: innerY }}
           className="block w-full h-auto"
@@ -269,7 +274,7 @@ function ScreenFrame({ step, n, progress, reduce }) {
   );
 }
 
-function Station({ step, n, flip, reduce, onEnter }) {
+function Station({ step, n, flip, reduce, onEnter, children }) {
   const { t } = useTranslation('marketing');
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
@@ -371,8 +376,33 @@ function Station({ step, n, flip, reduce, onEnter }) {
           />
           {t(`method.steps.${step.id}.desc`)}
         </motion.p>
+        {children}
       </div>
     </motion.div>
+  );
+}
+
+// Les cinq niveaux de l'espace d'exercices, du plus simple au plus exigeant :
+// les mêmes noms que l'interface élève (student › practice.levelNames).
+function ExerciseLevels({ dark = false }) {
+  const { t } = useTranslation('marketing');
+  return (
+    <motion.ol
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.6, delay: 0.8 }}
+      className="mt-8 grid gap-2"
+      aria-label={t('method.exercises.title')}
+    >
+      {EXERCISE_LEVELS.map((level) => (
+        <li key={level} className={`flex items-center gap-3 rounded-xl border px-4 py-2.5 ${dark ? 'border-white/10 bg-white/5' : 'border-slate-200 bg-white'}`}>
+          <span className={`font-mono-jetbrains text-xs font-black w-6 ${dark ? 'text-amber-300' : 'text-violet-500'}`}>{level}</span>
+          <span className={`font-inter font-semibold flex-1 ${dark ? 'text-white' : 'text-slate-800'}`}>{t(`method.exercises.levels.${level}`)}</span>
+          <span className={`font-inter text-sm ${dark ? 'text-slate-400' : 'text-slate-500'}`}>{t('method.exercises.perLevel')}</span>
+        </li>
+      ))}
+    </motion.ol>
   );
 }
 
@@ -380,7 +410,7 @@ function Station({ step, n, flip, reduce, onEnter }) {
 // station courante, visible seulement pendant le trajet.
 function JourneyCompass({ active, visible }) {
   const { t } = useTranslation('marketing');
-  const all = [...STATIONS, SUMMIT];
+  const all = ALL_STOPS;
   return (
     <AnimatePresence>
       {visible && active > 0 && (
@@ -398,7 +428,7 @@ function JourneyCompass({ active, visible }) {
                   key={s.id}
                   animate={{
                     width: i + 1 === active ? 22 : 7,
-                    backgroundColor: i + 1 <= active ? (i === all.length - 1 ? '#F59E0B' : '#A78BFA') : '#475569',
+                    backgroundColor: i + 1 <= active ? (all[i].id === GOLD.id ? '#F59E0B' : '#A78BFA') : '#475569',
                   }}
                   transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                   className="h-[7px] rounded-full"
@@ -427,13 +457,16 @@ function JourneyCompass({ active, visible }) {
 
 function Summit({ reduce, onEnter }) {
   const { t } = useTranslation('marketing');
-  const Icon = SUMMIT.icon;
+  const Icon = GOLD.icon;
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
 
-  // Le sommet : sans image. Un fond sombre, un seul accent ambre — la fin du
-  // chemin se lit dans la couleur de la ligne, qui finissait déjà en ambre.
+  // La station 10 : الإتقان. Fond sombre, un seul accent ambre — la fin du
+  // chemin. Elle montre l'espace d'exercices réel et ses cinq niveaux.
   return (
     <motion.section
-      onViewportEnter={() => onEnter(SUMMIT.n)}
+      ref={ref}
+      onViewportEnter={() => onEnter(GOLD.n)}
       viewport={{ margin: '-45% 0px -45% 0px' }}
       className="relative overflow-hidden bg-slate-950 px-4 py-24 sm:py-32"
     >
@@ -450,11 +483,11 @@ function Summit({ reduce, onEnter }) {
           <Icon size={30} />
         </motion.span>
         <p className="font-mono-jetbrains text-xs font-semibold tracking-wider text-amber-300 mb-2">
-          {t('method.station', { n: pad(SUMMIT.n) })}
+          {t('method.station', { n: pad(GOLD.n) })}
         </p>
         <WordReveal
           as="h2"
-          text={t(`method.steps.${SUMMIT.id}.title`)}
+          text={t(`method.steps.${GOLD.id}.title`)}
           delay={0.15}
           reduce={reduce}
           className="block font-space font-bold text-4xl sm:text-6xl text-white mb-5"
@@ -466,23 +499,29 @@ function Summit({ reduce, onEnter }) {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="font-inter text-slate-300 text-lg sm:text-xl leading-loose mb-2"
         >
-          {t(`method.steps.${SUMMIT.id}.story`)}
+          {t(`method.steps.${GOLD.id}.story`)}
         </motion.p>
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="font-inter text-amber-200 font-semibold mb-14"
+          className="font-inter text-amber-200 font-semibold mb-10"
         >
-          {t(`method.steps.${SUMMIT.id}.desc`)}
+          {t(`method.steps.${GOLD.id}.desc`)}
         </motion.p>
+        <div className="mx-auto max-w-2xl mb-10">
+          <ScreenFrame step={GOLD} n={GOLD.n} progress={scrollYProgress} reduce={reduce} />
+        </div>
+        <div className="mx-auto max-w-md text-start">
+          <ExerciseLevels dark />
+        </div>
         <motion.div
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, ease: EASE, delay: 0.3 }}
-          className="mx-auto mb-12 h-px w-40 bg-gradient-to-r from-transparent via-amber-400/70 to-transparent"
+          className="mx-auto mt-14 mb-12 h-px w-40 bg-gradient-to-r from-transparent via-amber-400/70 to-transparent"
         />
         <WordReveal
           as="p"

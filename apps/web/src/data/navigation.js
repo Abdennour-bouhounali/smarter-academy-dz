@@ -9,4 +9,5 @@ export const navLinks = [
   { labelKey: 'method', path: '/methode' },
   { labelKey: 'about', path: '/about' },
   { labelKey: 'faq', path: '/faq' },
+  { labelKey: 'contact', path: '/contact' },
 ];

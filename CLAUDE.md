@@ -173,6 +173,20 @@ scripts and re-read the story strings (`marketing.json › method.steps.*.story`
 The page uses NO generated image at all (owner decision, 2026-10-07): hero and
 summit are typographic — simple and professional.
 
+Station 09 « إختبار أولي » (2026-10-08) is a regular station in the third act:
+`public/images/methode/lesson/test.webp` is the real module `itqan` of
+`qasim-adad-tabii` (the lesson's five-question test). Station 10 « الإتقان » is
+the only dark block (trophy, amber): `exercises.webp` is a real exam sheet
+(level 1 of the same lesson, `/espace/pratique/<lesson>`), followed by the five
+levels. Both captures were taken with a temporary student token from the local
+API (`createToken`, deleted afterwards — no script committed) and cropped like
+the others. The five level names come from `student.json › practice.levelNames`
+and are copied into `marketing.json › method.exercises`. Station 10's copy claims
+« 50 تمرينًا في كل درس » (verified: all 74 lessons hold 10 exercises per level)
+and « امتحانات BEM من دورة 2007 إلى دورة 2025، أو على منوالها » — the corpus
+range, not each lesson's own source (items are labelled « على منوال BEM <année> »
+or official).
+
 ### OG share cards
 
 `scripts/og-card.py` renders branded share cards with correctly shaped Arabic

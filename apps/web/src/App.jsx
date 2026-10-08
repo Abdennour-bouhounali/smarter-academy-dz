@@ -451,6 +451,7 @@ export default function App() {
             <Route path="/methode"  element={<Methode />} />
             <Route path="/about"    element={<About />} />
             <Route path="/faq"      element={<FAQ />} />
+            <Route path="/contact"  element={<Contact />} />
 
             {/* L'écran d'attente entre l'inscription et l'espace élève.
                 Publique : l'élève y arrive aussi en revenant du lien reçu
