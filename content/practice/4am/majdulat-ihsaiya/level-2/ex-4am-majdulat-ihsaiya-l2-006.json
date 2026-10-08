@@ -3,8 +3,8 @@
   "lessonCode": "majdulat-ihsaiya",
   "level": 2,
   "metadata": {
-    "title": "تمرين 15 (ص 99) — زاوية البلاستيك",
-    "estimatedMinutes": 3,
+    "title": "تمرين 15 (ص 99) — زاوية قطاع البلاستيك",
+    "estimatedMinutes": 4,
     "tags": [
       "مخطط دائري",
       "زاوية"
@@ -15,55 +15,151 @@
       "page": 99,
       "section": "أوظّف تعلّماتي",
       "number": 15
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 99): نفايات جُمعت على شاطئ: البلاستيك $60\\,\\mathrm{kg}$ ، الزجاج $40\\,\\mathrm{kg}$ ، الورق $50\\,\\mathrm{kg}$ . نمثّلها بمخطط دائري في المجدول."
+    "content": "الجدول التالي يمثل توزيع النفايات التي تم جمعها على شاطئ. حجزنا هذا الجدول في ورقة إكسال، وحدّدنا الخلايا A1 ، B1 ، C1 ، A2 ، B2 ، C2 ثم اخترنا المخطط الدائري، فظهر المخطط الآتي:",
+    "table": {
+      "head": [
+        "أنواع النفايات",
+        "البلاستيك",
+        "الزجاج",
+        "الورق"
+      ],
+      "rows": [
+        [
+          "الكتلة (kg)",
+          "60",
+          "40",
+          "50"
+        ]
+      ]
+    },
+    "figure": {
+      "kind": "chart",
+      "type": "pie",
+      "show": "none",
+      "ariaLabel": "مخطط دائري لنفايات الشاطئ: البلاستيك والزجاج والورق",
+      "parts": [
+        {
+          "label": "البلاستيك",
+          "value": 60
+        },
+        {
+          "label": "الزجاج",
+          "value": 40
+        },
+        {
+          "label": "الورق",
+          "value": 50
+        }
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "زاوية قطاع البلاستيك (بالدرجات):",
+      "step": "01",
+      "statement": "احسب الكتلة الكلية للنفايات.",
       "learningPoints": [
         {
           "code": "4am_majdulat-ihsaiya_P3",
           "role": "primary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "عدد: الكتلة بـ kg",
+      "expectedAnswer": "150",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الكتلة الكلية هي التكرار الكلي لهذه السلسلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع كتل الأنواع الثلاثة."
+        }
+      ],
+      "feedback": {
+        "correct": "$60 + 40 + 50 = 150$ ، أي $150\\,\\mathrm{kg}$ .",
+        "incorrect": "اجمع كتل الأنواع الثلاثة كلها."
+      },
+      "solution": {
+        "lines": [
+          "$60 + 40 + 50 = 150$",
+          "الكتلة الكلية $150\\,\\mathrm{kg}$ ."
+        ],
+        "result": "150"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب زاوية قطاع البلاستيك.",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: قيس الزاوية بالدرجات دون الرمز °",
       "expectedAnswer": "144",
       "misconceptionSignatures": [
         {
-          "id": "MISC-IHSA-NISBA-MIN-ADAD",
-          "value": "216"
+          "value": "60",
+          "id": "MISC-IHSA-ZAWIYA-QITA"
         },
         {
-          "id": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB",
-          "value": "60"
+          "value": "216",
+          "id": "MISC-IHSA-ZAWIYA-QITA"
+        },
+        {
+          "value": "40",
+          "id": "MISC-IHSA-ZAWIYA-QITA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الكتلة الكلية 150."
+          "content": "في المخطط الدائري تتناسب زاوية كل قطاع مع تكرار جزئه، والدائرة كلها 360 درجة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "حصة البلاستيك $\\dfrac{60}{150}$ ."
+          "content": "حصة البلاستيك هي كتلته مقسومة على الكتلة الكلية."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اضرب في 360."
+          "content": "الزاوية = (تكرار الجزء ÷ التكرار الكلي) × 360 ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{60}{150} \\times 360 = 144$ .",
-        "incorrect": "الحصة من الكلّ ثم × 360."
-      }
+        "correct": "$\\dfrac{60}{150} \\times 360 = 144$ ، أي $144^\\circ$ .",
+        "incorrect": "زاوية القطاع ليست تكرار الجزء ولا نسبته المئوية: اضرب حصة الجزء من الكلّ في 360 ."
+      },
+      "solution": {
+        "lines": [
+          "زاوية قطاع البلاستيك: $\\dfrac{60}{150} \\times 360 = 144$"
+        ],
+        "result": "144^\\circ"
+      },
+      "timeSeconds": 90
     }
   ]
 }

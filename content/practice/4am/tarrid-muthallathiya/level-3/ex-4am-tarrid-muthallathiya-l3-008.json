@@ -3,10 +3,12 @@
   "lessonCode": "tarrid-muthallathiya",
   "level": 3,
   "metadata": {
-    "title": "تمرين 28 — الارتفاع والزاوية",
-    "estimatedMinutes": 3,
+    "title": "تمرين 28 (ص 125) — الارتفاع ثم زاويتا متوازي الأضلاع",
+    "estimatedMinutes": 9,
     "tags": [
-      "متوازي أضلاع"
+      "متوازي أضلاع",
+      "الجيب",
+      "زاوية"
     ],
     "source": {
       "type": "textbook",
@@ -14,31 +16,37 @@
       "page": 125,
       "section": "أتعمّق",
       "number": 28
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 125، تمرين 28): ABCD متوازي أضلاع حيث $CD = 4{,}5\\,\\mathrm{cm}$ و $BC = 2{,}7\\,\\mathrm{cm}$ ، و [AH] الارتفاع المتعلّق بالضلع [CD] ، ومساحته $10{,}35\\,\\mathrm{cm}^2$ (الشكل).",
+    "content": "$ABCD$ متوازي أضلاع حيث $CD = 4{,}5\\,\\mathrm{cm}$ و $BC = 2{,}7\\,\\mathrm{cm}$ ، و $[AH]$ الارتفاع المتعلّق بالضلع $[CD]$ ، ومساحته $10{,}35\\,\\mathrm{cm}^2$ (الشكل المقابل).",
     "figure": {
       "points": {
         "D": [
-          0,
-          0
+          0.0,
+          0.0
         ],
         "C": [
           4.5,
-          0
+          0.0
         ],
         "A": [
-          1.414,
+          1.4142,
           2.3
         ],
         "B": [
-          5.914,
+          5.9142,
           2.3
         ],
         "H": [
-          1.414,
-          0
+          1.4142,
+          0.0
         ]
       },
       "segments": [
@@ -49,12 +57,12 @@
         {
           "from": "B",
           "to": "C",
-          "label": "2,7cm"
+          "label": "2,7 cm"
         },
         {
           "from": "D",
           "to": "C",
-          "label": "4,5cm",
+          "label": "4,5 cm",
           "labelSide": -1
         },
         [
@@ -82,96 +90,145 @@
         "D": "sw",
         "H": "s"
       },
-      "ariaLabel": "متوازي أضلاع ABCD فيه CD = 4,5cm و BC = 2,7cm، و [AH] الارتفاع المتعلق بالضلع [CD]",
+      "ariaLabel": "متوازي أضلاع ABCD فيه CD = 4,5 cm و BC = 2,7 cm، و [AH] الارتفاع المتعلق بالضلع [CD]",
       "maxWidth": 320
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب الارتفاع AH بالسنتيمتر.",
+      "step": "01",
+      "statement": "احسب الارتفاع $AH$ .",
       "learningPoints": [
         {
           "code": "4am_tarrid-muthallathiya_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 3,
+      "counted": false,
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
+      "answerFormat": "عدد عشري: الطول بـ cm",
       "expectedAnswer": "2.3",
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
-          "value": "3.8"
-        }
-      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قارن النتيجة بأطوال المثلث المعطاة."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "الوتر أطول أضلاع المثلث القائم، والجيب وجيب التمام أصغر من 1."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "نتيجة لا تحترم هذه الشروط تعني خطأ في اختيار النسبة أو في العملية."
+          "content": "مساحة متوازي الأضلاع = القاعدة × الارتفاع الموافق لها."
         }
       ],
       "feedback": {
-        "correct": "المساحة = القاعدة × الارتفاع: $AH = \\dfrac{10{,}35}{4{,}5} = 2{,}3\\,\\mathrm{cm}$ .",
-        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
-      }
+        "correct": "$AH = \\dfrac{10{,}35}{4{,}5} = 2{,}3\\,\\mathrm{cm}$ .",
+        "incorrect": "القاعدة هي $[CD]$ والارتفاع الموافق لها $[AH]$ ."
+      },
+      "solution": {
+        "lines": [
+          "$S = CD \\times AH$ ومنه $AH = \\dfrac{10{,}35}{4{,}5}$"
+        ],
+        "result": "AH = 2{,}3\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "استنتج قيس الزاوية $\\widehat{ADC}$ بالدرجة، إلى الوحدة.",
+      "step": "02",
+      "sub": "ا",
+      "statement": "استنتج قيس الزاوية $\\widehat{ADC}$ بالتدوير إلى الوحدة من الدرجة.",
       "learningPoints": [
         {
           "code": "4am_tarrid-muthallathiya_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 3,
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
+      "answerFormat": "عدد طبيعي: قيس الزاوية بالدرجة مدوّرا إلى الوحدة",
       "expectedAnswer": "58",
       "misconceptionSignatures": [
         {
-          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
-          "value": "40"
+          "value": "32",
+          "id": "MISC-MUTH-NISBA-UKHRA"
         },
         {
-          "id": "MISC-MUTH-ZAWIYA-KHATI",
-          "value": "32"
+          "value": "40",
+          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد الضلعين المعلومين بالنسبة إلى الزاوية المطلوبة."
+          "content": "في المثلث $AHD$ القائم في $H$ : الوتر $[AD]$ ، وطوله يساوي $BC$ (ضلعان متقابلان)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اختر النسبة التي تجمعهما واحسب قيمتها."
+          "content": "$[AH]$ مقابل للزاوية $\\widehat{ADC}$ : احسب جيبها."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "عيّن الزاوية باللمسة العكسية (2nd ثم sin⁻¹ أو cos⁻¹ أو tan⁻¹) ودوّر إلى الدرجة."
+          "content": "ثم اللمسة العكسية ⁦sin⁻¹⁩ ."
         }
       ],
       "feedback": {
-        "correct": "$AD = BC = 2{,}7$ ؛ في ADH القائم في H : $\\sin\\widehat{ADC} = \\dfrac{2{,}3}{2{,}7}$ ومنه $\\widehat{ADC} \\approx 58^{\\circ}$ .",
-        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
-      }
+        "correct": "$\\sin\\widehat{ADC} = \\dfrac{2{,}3}{2{,}7}$ ، ومنه $\\widehat{ADC} \\approx 58^{\\circ}$ .",
+        "incorrect": "الوتر هو $[AD]$ ($AD = BC$)، والمقابل للزاوية $D$ هو $[AH]$ ."
+      },
+      "solution": {
+        "lines": [
+          "$AD = BC = 2{,}7\\,\\mathrm{cm}$ (ضلعان متقابلان في متوازي الأضلاع).",
+          "في المثلث $AHD$ القائم في $H$ : $\\sin\\widehat{ADC} = \\dfrac{AH}{AD} = \\dfrac{2{,}3}{2{,}7}$",
+          "باستعمال الآلة الحاسبة (⁦sin⁻¹⁩): $\\widehat{ADC} \\approx 58{,}4137^{\\circ}$"
+        ],
+        "result": "\\widehat{ADC} \\approx 58^{\\circ}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "استنتج قيس الزاوية $\\widehat{BCD}$ بالتدوير إلى الوحدة من الدرجة.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: قيس الزاوية بالدرجة مدوّرا إلى الوحدة",
+      "expectedAnswer": "122",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في متوازي الأضلاع، زاويتان متتاليتان متكاملتان."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\widehat{BCD} = 180^{\\circ} - \\widehat{ADC} \\approx 122^{\\circ}$ .",
+        "incorrect": "الزاويتان $\\widehat{ADC}$ و $\\widehat{BCD}$ متتاليتان: مجموعهما $180^{\\circ}$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\widehat{BCD} = 180^{\\circ} - \\widehat{ADC}$",
+          "$\\widehat{BCD} \\approx 180^{\\circ} - 58{,}4137^{\\circ} \\approx 121{,}5863^{\\circ}$"
+        ],
+        "result": "\\widehat{BCD} \\approx 122^{\\circ}"
+      },
+      "timeSeconds": 90
     }
   ]
 }

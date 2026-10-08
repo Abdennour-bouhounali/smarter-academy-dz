@@ -3,74 +3,214 @@
   "lessonCode": "wadiya-idmajiya-ihsa",
   "level": 2,
   "metadata": {
-    "title": "أيّ مؤشر؟ حرارة المدينة",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2020 — الحرارة القصوى في مدينتين خلال أسبوع",
+    "estimatedMinutes": 6,
     "tags": [
-      "مدى",
-      "اختيار مؤشر"
+      "المدى",
+      "التشتت",
+      "المقارنة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-ihsa_P2"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P2",
+      "modelledOn": "BEM 2020 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2020",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "سجّلت محطة أرصاد درجات الحرارة القصوى خلال أسبوع في مدينتين لهما المتوسط نفسه."
+    "content": "سجّلت محطة أرصاد درجات الحرارة القصوى (°C) خلال أسبوع في مدينتين «أ» و «ب»، ولهما المتوسط نفسه 20°C :",
+    "table": {
+      "head": [
+        "اليوم",
+        "المدينة «أ»",
+        "المدينة «ب»"
+      ],
+      "rows": [
+        [
+          "السبت",
+          "18",
+          "14"
+        ],
+        [
+          "الأحد",
+          "20",
+          "25"
+        ],
+        [
+          "الإثنين",
+          "22",
+          "17"
+        ],
+        [
+          "الثلاثاء",
+          "21",
+          "28"
+        ],
+        [
+          "الأربعاء",
+          "19",
+          "20"
+        ],
+        [
+          "الخميس",
+          "20",
+          "16"
+        ],
+        [
+          "الجمعة",
+          "20",
+          "20"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "لمعرفة أيّ المدينتين تتغيّر حرارتها أكثر خلال الأسبوع نقارن:",
+      "step": "01",
+      "sub": "ا",
+      "lead": "احسب مدى درجات الحرارة في كل مدينة.",
+      "statement": "المدينة «أ».",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-ihsa_P2",
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المدى بـ °C",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "مدى كل سلسلة",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "متوسط كل سلسلة",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
-        },
-        {
-          "id": "C",
-          "content": "أكبر درجة حرارة فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-MADA-AKBAR-QIMA"
+          "value": "22",
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "التغيّر يعني التشتت."
+          "content": "المدى = أكبر قيمة − أصغر قيمة في عمود المدينة."
+        }
+      ],
+      "feedback": {
+        "correct": "$22 - 18 = 4$ °C .",
+        "incorrect": "حدّد أكبر درجة وأصغر درجة في عمود المدينة «أ» ثم اطرح."
+      },
+      "solution": {
+        "lines": [
+          "أكبر درجة 22 وأصغر درجة 18 .",
+          "$22 - 18 = 4$"
+        ],
+        "result": "4\\,\\mathrm{°C}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "sub": "ب",
+      "statement": "المدينة «ب».",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المدى بـ °C",
+      "expectedAnswer": "14",
+      "misconceptionSignatures": [
+        {
+          "value": "28",
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أكبر درجة وأصغر درجة في عمود المدينة «ب»."
+        }
+      ],
+      "feedback": {
+        "correct": "$28 - 14 = 14$ °C .",
+        "incorrect": "حدّد أكبر درجة وأصغر درجة في عمود المدينة «ب» ثم اطرح."
+      },
+      "solution": {
+        "lines": [
+          "أكبر درجة 28 وأصغر درجة 14 .",
+          "$28 - 14 = 14$"
+        ],
+        "result": "14\\,\\mathrm{°C}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "أيّ المدينتين تتغيّر درجات حرارتها أكثر خلال الأسبوع؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تتغيّر بالقدر نفسه في المدينتين، لأن لهما المتوسط نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        },
+        {
+          "id": "B",
+          "content": "المدينة «أ»، لأن مداها أصغر",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-TASHATTUT-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "المدينة «ب»، لأن مداها أكبر",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المتوسط وحده لا يقيس التغيّر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المتوسطان متساويان."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المؤشر الذي يقيس التشتت."
+          "content": "قارن المديين اللذين وجدتهما في 01 ."
         }
       ],
       "feedback": {
-        "correct": "المدى يقيس التشتت؛ المتوسطان متساويان فلا يفرّقان.",
-        "incorrect": "المتوسط وحده لا يقيس التشتت."
+        "correct": "$14 > 4$ : درجات حرارة المدينة «ب» متباعدة أكثر.",
+        "incorrect": "المدى مؤشر تشتت: كلما كبر تباعدت القيم أكثر."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "للمدينتين المتوسط نفسه، لكن مدى «ب» 14°C ومدى «أ» 4°C .",
+          "المدى الأكبر يعني قيما أكثر تباعدا: درجات حرارة المدينة «ب» تتغيّر أكثر."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

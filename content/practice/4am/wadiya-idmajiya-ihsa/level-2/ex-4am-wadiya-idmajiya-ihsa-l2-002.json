@@ -4,10 +4,11 @@
   "level": 2,
   "metadata": {
     "title": "أؤكّد تعلّماتي 6 — المتوسط والوسيط",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 6,
     "tags": [
-      "متوسط",
-      "وسيط"
+      "المتوسط الحسابي",
+      "الوسيط",
+      "المقارنة"
     ],
     "source": {
       "type": "textbook",
@@ -15,64 +16,162 @@
       "page": 100,
       "section": "أؤكّد تعلّماتي",
       "number": 6
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "السلسلة: 13 ، 1 ، 4 ، 10 ، 12."
+    "content": "نعتبر السلسلة الإحصائية الآتية:",
+    "formulas": [
+      "13 \\quad ; \\quad 1 \\quad ; \\quad 4 \\quad ; \\quad 10 \\quad ; \\quad 12"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "متوسط هذه السلسلة:",
+      "step": "01",
+      "statement": "احسب المتوسط الحسابي لهذه السلسلة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-ihsa_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "أصغر من وسيطها",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "أكبر من وسيطها",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
-        },
-        {
-          "id": "C",
-          "content": "يساوي وسيطها",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-WASIT-BILA-TARTIB"
+          "value": "10",
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب المتوسط والوسيط."
+          "content": "اجمع القيم الخمس ثم اقسم على 5 ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{13 + 1 + 4 + 10 + 12}{5} = 8$ .",
+        "incorrect": "المتوسط = مجموع القيم ÷ عددها."
+      },
+      "solution": {
+        "lines": [
+          "$13 + 1 + 4 + 10 + 12 = 40$",
+          "$\\dfrac{40}{5} = 8$"
+        ],
+        "result": "8"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "عيّن وسيط هذه السلسلة.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-IHSA-WASIT-BILA-TARTIB"
+        },
+        {
+          "value": "8",
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب القيم تصاعديا أولا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "رتّب القيم قبل الوسيط."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن العددين."
+          "content": "عدد القيم 5 : الوسيط القيمة ذات الرتبة 3 ."
         }
       ],
       "feedback": {
-        "correct": "المتوسط 8 والوسيط 10: $8 < 10$.",
-        "incorrect": "رتّب القيم: الوسيط القيمة الثالثة بعد الترتيب."
+        "correct": "الترتيب: 1 ، 4 ، 10 ، 12 ، 13 ؛ الوسيط 10 .",
+        "incorrect": "لا تأخذ القيمة الوسطى في الترتيب المعطى: رتّب السلسلة أولا."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "الترتيب التصاعدي: 1 ، 4 ، 10 ، 12 ، 13",
+          "القيمة ذات الرتبة 3 هي 10 ."
+        ],
+        "result": "10"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "قارن المتوسط الحسابي ووسيط هذه السلسلة.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "المتوسط أصغر من الوسيط",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "المتوسط أكبر من الوسيط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-BILA-TARTIB"
+        },
+        {
+          "id": "C",
+          "content": "المتوسط يساوي الوسيط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل نتيجتي 01 و 02 ."
+        }
+      ],
+      "feedback": {
+        "correct": "$8 < 10$ : القيمة الصغيرة 1 تسحب المتوسط نحو الأسفل.",
+        "incorrect": "قارن العددين اللذين وجدتهما في 01 و 02 ، بعد ترتيب السلسلة."
+      },
+      "solution": {
+        "lines": [
+          "المتوسط 8 والوسيط 10 .",
+          "$8 < 10$ ، إذن المتوسط أصغر من الوسيط."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

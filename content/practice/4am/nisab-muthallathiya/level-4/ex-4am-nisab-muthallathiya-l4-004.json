@@ -3,68 +3,183 @@
   "lessonCode": "nisab-muthallathiya",
   "level": 4,
   "metadata": {
-    "title": "تدريب — تيليفيريك قسنطينة",
-    "estimatedMinutes": 4,
+    "title": "BEM 2018 — التمرين الرابع",
+    "estimatedMinutes": 10,
     "tags": [
-      "حساب طول",
-      "جيب التمام",
-      "وضعية"
+      "مثلث قائم",
+      "الجيب",
+      "الارتفاع المتعلق بالوتر"
     ],
     "source": {
-      "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_nisab-muthallathiya_P3",
-      "modelledOn": "method-cos"
+      "type": "bem",
+      "year": 2018,
+      "part": 1,
+      "exercise": 4
+    },
+    "exam": {
+      "kind": "official",
+      "badge": "BEM 2018",
+      "heading": "التمرين الرابع",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "في تيليفيريك قسنطينة، يمتدّ جزء مستقيم من الكابل بين محطة وعمود. المسافة الأفقية بينهما $120\\,\\mathrm{m}$ ، والكابل يصنع مع الأفق زاوية قيسها $18^{\\circ}$ . نعتبر المثلث القائم الذي وتره الكابل."
+    "content": "$TIC$ مثلث فيه: $CI = 13$ ، $TI = 5$ ، $TC = 12$ . (وحدة الطول هي cm)"
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب طول هذا الجزء من الكابل، مدوّرا إلى المتر.",
+      "step": "01",
+      "statement": "بين أن المثلث $TIC$ قائم",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أطول الأضلاع هو $[CI]$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن $CI^2$ بمجموع $TC^2 + TI^2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$CI^2 = TC^2 + TI^2$ ، فالمثلث $TIC$ قائم في $T$ حسب الخاصية العكسية لخاصية فيثاغورس.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرا سطرا، ثم قيّم إجابتك."
+      },
+      "solution": {
+        "lines": [
+          "لدينا:",
+          "$CI^2 = 13^2 = 169$",
+          "$TC^2 = 12^2 = 144$",
+          "$TI^2 = 5^2 = 25$",
+          "نلاحظ أنّ $CI^2 = TC^2 + TI^2$ .",
+          "إذا المثلث $TIC$ قائم في $T$ حسب خاصية فيثاغورس العكسية."
+        ]
+      },
+      "timeSeconds": 240
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "ثم احسب مساحته.",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المساحة بـ cm²",
+      "expectedAnswer": "30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الضلعان القائمان $[TC]$ و $[TI]$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مساحة المثلث القائم = نصف جداء طولي ضلعي الزاوية القائمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$S_{TIC} = \\dfrac{12 \\times 5}{2} = 30\\,\\mathrm{cm^2}$ .",
+        "incorrect": "لا تنسَ القسمة على 2، ولا تستعمل الوتر."
+      },
+      "solution": {
+        "lines": [
+          "◄ حساب مساحة المثلث $TIC$ :",
+          "$S_{TIC} = \\dfrac{TC \\times TI}{2}$",
+          "$S_{TIC} = \\dfrac{12 \\times 5}{2} = \\dfrac{60}{2}$"
+        ],
+        "result": "S_{TIC} = 30\\,\\mathrm{cm^2}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "lead": "لتكن $H$ المسقط العمودي للنقطة $T$ على الضلع $[CI]$ .",
+      "statement": "احسب الطول $TH$ بالتدوير إلى $0{,}1$ .",
       "learningPoints": [
         {
           "code": "4am_nisab-muthallathiya_P3",
           "role": "primary"
-        }
-      ],
-      "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "126",
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-MUTH-DARB-BADAL-QISMA",
-          "value": "114"
         },
         {
-          "id": "MISC-MUTH-NISBA-UKHRA",
-          "value": "388"
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري: الطول بـ cm مدوّرا إلى 0,1",
+      "expectedAnswer": "4.6",
+      "misconceptionSignatures": [
+        {
+          "value": "4.7",
+          "id": "MISC-MUTH-TADWIR-MUBAKKIR"
+        },
+        {
+          "value": "31.2",
+          "id": "MISC-MUTH-QISMA-BADAL-DARB"
+        },
+        {
+          "value": "11.1",
+          "id": "MISC-MUTH-NISBA-UKHRA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "سمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية المعلومة."
+          "content": "في المثلث $TIC$ القائم في $T$ : $\\sin\\widehat{TCI} = \\dfrac{TI}{CI}$ ، قيمة مضبوطة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اختر النسبة التي تجمع هذين الضلعين واكتب المساواة."
+          "content": "في المثلث $TCH$ القائم في $H$ : $\\sin\\widehat{TCH} = \\dfrac{TH}{TC}$ ، والزاويتان $\\widehat{TCH}$ و $\\widehat{TCI}$ هما الزاوية نفسها."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "إذا كان المطلوب في البسط فاضرب، وإذا كان في المقام فاقسم؛ ثم دوّر في آخر الحساب."
+          "content": "احسب بالقيمة المضبوطة للجيب، ولا تدوّر إلا النتيجة النهائية."
         }
       ],
       "feedback": {
-        "correct": "المسافة الأفقية مجاورة والكابل وتر: $\\cos 18^{\\circ} = \\dfrac{120}{L}$ ومنه $L = \\dfrac{120}{\\cos 18^{\\circ}} \\approx 126\\,\\mathrm{m}$ .",
-        "incorrect": "الكابل هو الوتر، وهو أطول من المسافة الأفقية 120 م."
+        "correct": "$TH = TC \\times \\sin\\widehat{TCI} = 12 \\times \\dfrac{5}{13} = \\dfrac{60}{13} \\approx 4{,}6\\,\\mathrm{cm}$ .",
+        "incorrect": "اكتب الجيب نفسه في المثلثين $TIC$ و $TCH$ ، واحسب بالقيمة المضبوطة: تدوير الزاوية قبل الحساب يغيّر الرقم الأخير."
       },
-      "difficulty": 4
+      "solution": {
+        "lines": [
+          "◄ إيجاد $\\sin\\widehat{TCI}$ : لدينا في المثلث $TCI$ القائم في $T$ : $\\cos\\widehat{TCI} = \\dfrac{TC}{CI} = \\dfrac{12}{13}$ و $\\sin\\widehat{TCI} = \\dfrac{TI}{CI} = \\dfrac{5}{13}$ .",
+          "لدينا في المثلث $TCH$ القائم في $H$ : $\\sin\\widehat{TCH} = \\dfrac{TH}{TC}$ ، و $\\widehat{TCH} = \\widehat{TCI}$ ( $H \\in [CI]$ ).",
+          "$TH = \\sin\\widehat{TCI} \\times TC = \\dfrac{5}{13} \\times 12 = \\dfrac{60}{13}$",
+          "باستعمال الآلة الحاسبة: $TH \\approx 4{,}615$",
+          "ملاحظة: كتيّب الحلول يدوّر الزاوية إلى $23^{\\circ}$ قبل الحساب فيجد $TH = 12 \\times \\sin 23^{\\circ} \\approx 4{,}7$ ؛ التدوير المسبق يغيّر الرقم الأخير، والقيمة الصحيحة بالتدوير إلى $0{,}1$ هي $4{,}6$ ."
+        ],
+        "result": "TH \\approx 4{,}6\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 360
     }
   ]
 }

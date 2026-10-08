@@ -142,10 +142,12 @@ export default function ModuleLayout({
   // « 4 / 5 » (80 %) sur son dernier module.
   const modulePosition = Number(moduleNumber) - firstModule + 1;
   const progressPct = Math.round((modulePosition / totalModules) * 100);
-  // « جولة تعريفية » du PREMIER module d'une leçon (une fois par compte, toutes
-  // leçons confondues) : le module, الخريطة, كرّاسي, المختبر, la navigation.
-  // Jamais en وضع القسم. Voir docs/architecture/PAGE_TOURS.md.
-  useDeclarePageTour('lesson-first-module', modulePosition === 1 && !presenting);
+  // « جولة تعريفية » des modules de leçon : le module, الخريطة, كرّاسي,
+  // المختبر, la navigation. Elle s'ouvre d'elle-même sur le PREMIER module
+  // seulement (une fois par compte, toutes leçons confondues) ; sur les
+  // autres, elle reste rejouable par « جولة في الصفحة ». Jamais en وضع القسم.
+  // Voir docs/architecture/PAGE_TOURS.md.
+  useDeclarePageTour('lesson-module', !presenting, { autoStart: modulePosition === 1 });
   // CE QUI EST FAIT RESTE OUVERT (même règle que getModuleStatus) : un module
   // déjà terminé ne se referme jamais, même si son prédécesseur ne l'est pas.
   // Sans cela, revenir sur un module fini affichait « أتمِم المحور 00 » et

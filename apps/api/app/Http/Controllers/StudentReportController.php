@@ -31,7 +31,9 @@ class StudentReportController extends Controller
             'source' => ['required', Rule::in(StudentReport::SOURCES)],
             // Seules les catégories PROPOSÉES : les anciennes ne se créent plus.
             'category' => ['required', Rule::in(StudentReport::OFFERED_CATEGORIES)],
-            'note' => 'nullable|string|max:2000',
+            // Le message est OBLIGATOIRE (2026-10-08) : la catégorie seule ne dit
+            // pas assez au correcteur ; le formulaire envoie « other » sans choix.
+            'note' => 'required|string|min:3|max:2000',
             'screenshot' => 'nullable|file|max:'.ReportScreenshotStore::MAX_KILOBYTES,
 
             'lessonCode' => 'nullable|string|max:120',
@@ -54,6 +56,8 @@ class StudentReportController extends Controller
             'source.in' => 'Contexte de signalement inconnu.',
             'category.required' => 'Merci de choisir un type de problème.',
             'category.in' => 'Type de problème inconnu.',
+            'note.required' => 'Merci de décrire le problème.',
+            'note.min' => 'Merci de décrire le problème en quelques mots.',
             'note.max' => 'Le message est trop long (2000 caractères maximum).',
             'screenshot.max' => 'La capture est trop lourde (2 Mo maximum).',
             'screenshot.file' => ReportScreenshotStore::UNSUPPORTED,

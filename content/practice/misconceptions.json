@@ -2455,5 +2455,33 @@
     "relatedLearningPoints": [
       "4am_takbir-tasghir_P1"
     ]
+  },
+  "MISC-IHSA-ZAWIYA-QITA": {
+    "label": "زاوية قطاع خاطئة في مخطط دائري",
+    "explanation": "زاوية قطاع جزء تكراره $n$ من كلّ تكراره الكلي $N$ هي $\\dfrac{n}{N} \\times 360$ درجة: لا نكتب التكرار نفسه، ولا النسبة المئوية ($\\times 100$)، ولا ما يكمّل الزاوية إلى 360.",
+    "relatedLearningPoints": [
+      "4am_majdulat-ihsaiya_P3"
+    ]
+  },
+  "MISC-IHSA-DUSTUR-BILA-ISHARA": {
+    "label": "دستور دون الإشارة « = » في بدايته",
+    "explanation": "الدستور يبدأ دائما بالإشارة « ⁦=⁩ »: بدونها يعتبر المجدول ما كُتب نصّا ويُظهره كما هو، ولا يحسب شيئا.",
+    "relatedLearningPoints": [
+      "4am_majdulat-ihsaiya_P2"
+    ]
+  },
+  "MISC-IHSA-TALABIYA-HISTOGRAMME": {
+    "label": "قائمتا الطلبية Histogramme في غير موضعهما",
+    "explanation": "في الطلبية ⁦Histogramme({…},{…})⁩ القائمة الأولى حدود الفئات (عددها يزيد بواحد على عدد الفئات) والثانية تكرارات الفئات بالترتيب نفسه؛ قائمة ناقصة أو مقلوبة ترسم مدرّجا آخر.",
+    "relatedLearningPoints": [
+      "4am_majdulat-ihsaiya_P3"
+    ]
+  },
+  "MISC-IHSA-TASHATTUT-MAQLUB": {
+    "label": "الخلط بين التشتت والانتظام: المدى الأكبر يعني نتائج أكثر انتظاما",
+    "explanation": "المدى مؤشر تشتت: كلما كبر المدى تباعدت القيم، فكانت النتائج أقل انتظاما. للسلسلتين 49 ، 51 ، 50 ، 52 ، 48 (المدى 4) و 44 ، 56 ، 50 ، 58 ، 42 (المدى 16) المتوسط نفسه 50، والأولى هي الأكثر انتظاما لأن مداها أصغر.",
+    "relatedLearningPoints": [
+      "4am_qiraat-wadiyat-ihsaiya_P2"
+    ]
   }
 }

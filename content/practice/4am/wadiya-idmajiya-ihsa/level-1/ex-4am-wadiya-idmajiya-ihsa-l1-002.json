@@ -3,10 +3,11 @@
   "lessonCode": "wadiya-idmajiya-ihsa",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 2 — التكرار المجمع النازل",
-    "estimatedMinutes": 2,
+    "title": "أؤكّد تعلّماتي 2 — التكرار المجمع النازل والوسيط",
+    "estimatedMinutes": 4,
     "tags": [
-      "تكرار مجمع"
+      "التكرار المجمع النازل",
+      "الوسيط"
     ],
     "source": {
       "type": "textbook",
@@ -14,64 +15,137 @@
       "page": 100,
       "section": "أؤكّد تعلّماتي",
       "number": 2
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في الجدول الإحصائي: القيمة: 10 ، 20 ، 30 ، 40 — التكرار: 50 ، 60 ، 70 ، 80."
+    "content": "إليك جدول قيم سلسلة إحصائية وتكراراتها:",
+    "table": {
+      "head": [
+        "القيمة",
+        "10",
+        "20",
+        "30",
+        "40"
+      ],
+      "rows": [
+        [
+          "التكرار",
+          "50",
+          "60",
+          "70",
+          "80"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "التكرار المجمع النازل للقيمة 40 هو:",
+      "step": "01",
+      "statement": "احسب التكرار المجمع النازل للقيمة 40.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-ihsa_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "80",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "40",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
+          "value": "260",
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB"
         },
         {
-          "id": "B",
-          "content": "80",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "260",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-SAID-NAZIL-MAQLUB"
+          "value": "40",
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "النازل يجمع القيم الأكبر من 40 أو تساويها."
+          "content": "التكرار المجمع النازل لقيمة هو مجموع تكرارها وتكرارات القيم الأكبر منها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "هل توجد قيمة أكبر من 40؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "التكرار المجمع النازل لأكبر قيمة هو تكرارها."
+          "content": "هل توجد في الجدول قيمة أكبر من 40 ؟"
         }
       ],
       "feedback": {
-        "correct": "40 أكبر قيمة: تكرارها المجمع النازل هو تكرارها 80.",
-        "incorrect": "النازل يبدأ من القيمة نحو الأكبر، لا من أصغر قيمة."
+        "correct": "40 أكبر قيمة: تكرارها المجمع النازل هو تكرارها نفسه 80 .",
+        "incorrect": "النازل يجمع تكرار القيمة وتكرارات القيم الأكبر منها فقط، أي نحو نهاية الجدول."
       },
-      "cognitiveDemand": "recall",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "التكرار المجمع النازل للقيمة 40 هو مجموع تكرارها وتكرارات القيم الأكبر منها.",
+          "40 أكبر قيمة في الجدول، إذن تكرارها المجمع النازل هو 80 ."
+        ],
+        "result": "80"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "عيّن وسيط هذه السلسلة.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
+        {
+          "value": "25",
+          "id": "MISC-IHSA-WASIT-QIMA-WUSTA-JADWAL"
+        },
+        {
+          "value": "130,5",
+          "id": "MISC-IHSA-WASIT-RUTBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التكرار الكلي عدد زوجي: الوسيط نصف مجموع قيمتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب التكرارات المجمعة الصاعدة لتعرف أين تقع الرتبتان الوسطيان."
+        }
+      ],
+      "feedback": {
+        "correct": "الرتبتان 130 و 131 تقعان في القيمة 30 ، فالوسيط 30 .",
+        "incorrect": "حدّد الرتبتين الوسطيين أولا، ثم ابحث بالتكرارات المجمعة الصاعدة عن القيمة التي تقعان فيها."
+      },
+      "solution": {
+        "lines": [
+          "التكرار الكلي: $50 + 60 + 70 + 80 = 260$ ، والرتبتان الوسطيان 130 و 131 .",
+          "التكرارات المجمعة الصاعدة: 50 ، 110 ، 180 ، 260 .",
+          "الرتب من 111 إلى 180 للقيمة 30 ، إذن القيمتان ذواتا الرتبتين 130 و 131 هما 30 و 30 .",
+          "الوسيط: $\\dfrac{30 + 30}{2} = 30$"
+        ],
+        "result": "30"
+      },
+      "timeSeconds": 90
     }
   ]
 }

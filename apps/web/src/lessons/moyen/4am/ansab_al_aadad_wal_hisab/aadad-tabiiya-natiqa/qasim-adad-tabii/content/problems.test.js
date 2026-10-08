@@ -19,6 +19,8 @@ describe('les مسائل du درس 1', () => {
     expect(LESSON_CONFIG.modules.at(-1)).toMatchObject({ number: 7, stage: 'evaluation' });
     expect(LESSON_CONFIG.lessonProblem.module).toBe(4);
     expect(PROBLEM['masala-1'].statement).toBe(LESSON_CONFIG.lessonProblem.statement);
+    expect(LESSON_CONFIG.lessonProblem.questions.map((q) => [q.label, q.text]))
+      .toEqual(PROBLEM['masala-1'].parts.map((p) => [p.label, p.question]));
   });
 
   it('every demand has its own answer (owner rule 2026-10-06)', () => {

@@ -69,6 +69,9 @@ class StudentReportFlowTest extends TestCase
     /** UN envoi : le contexte et les détails ensemble. */
     private function report(array $payload, ?User $as = null): TestResponse
     {
+        // Message obligatoire : un texte par défaut, sauf si le test en fournit un.
+        $payload += ['note' => 'Le problème est décrit ici.'];
+
         return $this->actingAs($as ?? $this->ambassador, 'sanctum')->postJson('/api/v1/reports', $payload);
     }
 
@@ -128,12 +131,12 @@ class StudentReportFlowTest extends TestCase
             ->assertStatus(403);
     }
 
-    /** La note est facultative. */
-    public function test_un_signalement_sans_note_est_accepte(): void
+    /** Le message est obligatoire (2026-10-08) : sans lui, rien n'est créé. */
+    public function test_un_signalement_sans_note_est_refuse(): void
     {
-        $this->report(['source' => 'module', 'lessonCode' => 'fractions', 'moduleNumber' => 3, 'category' => 'display_problem'])
-            ->assertStatus(201);
-        $this->assertNull(StudentReport::first()->note);
+        $this->report(['source' => 'module', 'lessonCode' => 'fractions', 'moduleNumber' => 3, 'category' => 'display_problem', 'note' => ''])
+            ->assertStatus(422)->assertJsonValidationErrors('note');
+        $this->assertSame(0, StudentReport::count());
     }
 
     public function test_la_categorie_est_obligatoire_et_fermee(): void

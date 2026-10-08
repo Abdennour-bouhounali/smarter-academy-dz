@@ -3,189 +3,238 @@
   "lessonCode": "inshaat-talis",
   "level": 4,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 4 (ص 112) — الطول NM",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2025 — موقع نقطتين على مستقيم مزوّد بمعلم",
+    "estimatedMinutes": 14,
     "tags": [
-      "أؤكّد تعلّماتي",
-      "تقسيم قطعة"
+      "داخل القطعة وخارجها",
+      "فاصلة نقطة"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "qcm",
-      "page": 112,
-      "section": "أؤكّد تعلّماتي",
-      "number": 4
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "BEM 2025 I-3"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2025",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب: نختار تدريجا منتظما على [AB] ونرسم مستقيمات موازية لـ (BC)، كما هو مبيّن في الشكل: [AB] مقسمة إلى 5 قطع متقايسة و M النقطة الثالثة من A، و N على [AC]. نعلم أنّ $CB = 10\\,\\mathrm{cm}$ .",
-    "figure": {
-      "points": {
-        "A": [
-          0,
-          0
-        ],
-        "B": [
-          10,
-          0
-        ],
-        "C": [
-          7,
-          5
-        ],
-        "M": [
-          6,
-          0
-        ],
-        "N": [
-          4.199999999999999,
-          3
-        ],
-        "g1": [
-          2,
-          0
-        ],
-        "g2": [
-          4,
-          0
-        ],
-        "g4": [
-          8,
-          0
-        ],
-        "h1": [
-          1.4,
-          1
-        ],
-        "h2": [
-          2.8,
-          2
-        ],
-        "h4": [
-          5.6,
-          4
-        ]
-      },
-      "segments": [
-        [
-          "A",
-          "B"
-        ],
-        [
-          "A",
-          "C"
-        ],
-        {
-          "from": "B",
-          "to": "C",
-          "arrows": 1,
-          "tone": "indigo"
-        },
-        {
-          "from": "g1",
-          "to": "h1",
-          "arrows": 1,
-          "tone": "indigo"
-        },
-        {
-          "from": "g2",
-          "to": "h2",
-          "arrows": 1,
-          "tone": "indigo"
-        },
-        {
-          "from": "M",
-          "to": "N",
-          "arrows": 1,
-          "tone": "indigo"
-        },
-        {
-          "from": "g4",
-          "to": "h4",
-          "arrows": 1,
-          "tone": "indigo"
-        },
-        {
-          "from": "A",
-          "to": "g1",
-          "ticks": 1
-        },
-        {
-          "from": "g1",
-          "to": "g2",
-          "ticks": 1
-        },
-        {
-          "from": "g2",
-          "to": "M",
-          "ticks": 1
-        },
-        {
-          "from": "M",
-          "to": "g4",
-          "ticks": 1
-        },
-        {
-          "from": "g4",
-          "to": "B",
-          "ticks": 1
-        }
-      ],
-      "hidden": [
-        "g1",
-        "g2",
-        "g4",
-        "h1",
-        "h2",
-        "h4"
-      ],
-      "labels": {
-        "A": "sw",
-        "B": "se",
-        "C": "n",
-        "M": "s",
-        "N": "nw"
-      },
-      "ariaLabel": "مثلث ABC، الضلع [AB] مقسم بتدريج منتظم إلى 5 قطع متقايسة و M النقطة الثالثة من A، وموازيات للمستقيم (BC) تقطع [AC]، و N على [AC]",
-      "maxWidth": 300
-    }
+    "content": "$(\\Delta)$ مستقيم مزوّد بمعلم $(O ; I)$ حيث $OI = 1\\,\\mathrm{cm}$ . $A$ و $B$ نقطتان منه فاصلتاهما $1$ و $8$ على الترتيب. $M$ نقطة من $[AB]$ و $N$ نقطة من $(\\Delta)$ لا تنتمي إلى $[AB]$ ، حيث $\\dfrac{MA}{MB} = \\dfrac{NA}{NB} = \\dfrac{3}{4}$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "NM بالسنتيمتر:",
+      "step": "01",
+      "statement": "أنشئ النقطتين $M$ و $N$ بالمسطرة غير المدرّجة والمدور (دون استعمال تدريج $(\\Delta)$ ).",
       "learningPoints": [
         {
           "code": "4am_inshaat-talis_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 4,
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب خطوات الإنشاء مرقّمة (أو صوّر ورقتك)، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "موازيان مدرّجان بنفس الوحدة يشملان $A$ و $B$ : 3 وحدات و 4 وحدات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جهتان مختلفتان تعطيان $M$ ، ونفس الجهة تعطي $N$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$AF = 3$ و $BE = 4$ في جهتين مختلفتين تعطيان $M$ ، و $AK = 3$ في جهة $E$ تعطي $N$ .",
+        "incorrect": "قارن إنشاءك بالحل النموذجي خطوة خطوة، ثم صحّح الخطوة التي تختلف."
+      },
+      "solution": {
+        "lines": [
+          "1) نرسم مستقيمين متوازيين $(d_1)$ و $(d_2)$ يشملان $A$ و $B$ على الترتيب.",
+          "2) بنفس فتحة المدور نعيّن على $(d_1)$ النقطة $F$ حيث $AF = 3$ وحدات، وعلى $(d_2)$ النقطة $E$ حيث $BE = 4$ وحدات، في جهتين مختلفتين للمستقيم $(AB)$ .",
+          "3) المستقيم $(EF)$ يقطع $[AB]$ في $M$ .",
+          "التبرير: $(AF) \\parallel (BE)$ ، فحسب خاصية طالس في المثلثين $MAF$ و $MBE$ : $\\dfrac{MA}{MB} = \\dfrac{AF}{BE} = \\dfrac{3}{4}$ .",
+          "نعيّن على $(d_1)$ النقطة $K$ حيث $AK = 3$ في نفس جهة $E$ : المستقيم $(EK)$ يقطع $(\\Delta)$ في $N$ ، و $\\dfrac{NA}{NB} = \\dfrac{AK}{BE} = \\dfrac{3}{4}$ ."
+        ]
+      },
+      "timeSeconds": 480
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "sub": "ا",
+      "statement": "احسب $AM$ .",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "6",
+      "answerFormat": "عدد: الطول بـ cm",
+      "expectedAnswer": "3",
       "misconceptionSignatures": [
         {
-          "id": "MISC-TALIS-NISBA-JUZ-KULL",
-          "value": "4"
+          "value": "5,25",
+          "id": "MISC-TALIS-NISBA-JUZ-KULL"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$(MN) // (BC)$ : $\\dfrac{NM}{CB} = \\dfrac{AM}{AB}$ ."
+          "content": "$AB = 8 - 1$ ، و $\\dfrac{AM}{AB} = \\dfrac{3}{3 + 4}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$AB = 7$ و $AM = \\dfrac{3}{7} \\times 7 = 3\\,\\mathrm{cm}$ .",
+        "incorrect": "احسب $AB$ من الفاصلتين، ثم نسبة الجزء إلى الكل."
+      },
+      "solution": {
+        "lines": [
+          "$AB = 8 - 1 = 7$",
+          "$\\dfrac{AM}{AB} = \\dfrac{3}{7}$ ومنه $AM = 3$"
+        ],
+        "result": "AM = 3\\,\\mathrm{cm}"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "استنتج فاصلة النقطة $M$ .",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (الفاصلة)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$M$ بعد $A$ في اتجاه $B$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "فاصلة $M$ : $1 + 3 = 4$ .",
+        "incorrect": "انطلق من فاصلة $A$ وأضف $AM$ في اتجاه $B$ ."
+      },
+      "solution": {
+        "lines": [
+          "$M$ بين $A$ و $B$ و $AM = 3$ : فاصلتها $1 + 3$"
+        ],
+        "result": "x_M = 4"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "sub": "ا",
+      "statement": "هل تقع $N$ بعد $B$ (من جهة $B$ ) ؟",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JIHA"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن $NA$ و $NB$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "لا: $NA < NB$ ، فـ $N$ قبل $A$ .",
+        "incorrect": "$\\dfrac{NA}{NB} < 1$ : $N$ أقرب إلى $A$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{NA}{NB} = \\dfrac{3}{4} < 1$ ومنه $NA < NB$ : $N$ قبل $A$ ."
+        ]
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "sub": "ب",
+      "statement": "احسب $AN$ ثم أعط فاصلة النقطة $N$ .",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (الفاصلة، قد تكون سالبة)",
+      "expectedAnswer": "-20",
+      "misconceptionSignatures": [
+        {
+          "value": "22",
+          "id": "MISC-TALIS-JIHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$A$ بين $N$ و $B$ : $AB = NB - NA$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "التدريج منتظم و M الثالثة من خمس."
+          "content": "إذا كان $NA = 3u$ و $NB = 4u$ فإن $AB = u$ ."
         }
       ],
       "feedback": {
-        "correct": "$5 \\times NM = 3 \\times CB = 30$ ، فـ $NM = 6$ .",
-        "incorrect": "$\\dfrac{AM}{AB} = \\dfrac{3}{5}$ لا $\\dfrac{2}{5}$ ."
-      }
+        "correct": "$AN = 3 \\times AB = 21$ ، و $N$ قبل $A$ : فاصلتها $1 - 21 = -20$ .",
+        "incorrect": "$N$ في الجهة المعاكسة لـ $B$ بالنسبة إلى $A$ : اطرح $AN$ من فاصلة $A$ ."
+      },
+      "solution": {
+        "lines": [
+          "$NA = 3u$ و $NB = 4u$ و $A \\in [NB]$ ومنه $AB = u = 7$",
+          "$AN = 3 \\times 7 = 21$ ، و $N$ قبل $A$ : فاصلتها $1 - 21$"
+        ],
+        "result": "x_N = -20"
+      },
+      "timeSeconds": 180
     }
   ]
 }

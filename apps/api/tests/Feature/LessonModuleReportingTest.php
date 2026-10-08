@@ -51,6 +51,9 @@ class LessonModuleReportingTest extends TestCase
 
     private function send(array $payload, ?User $as = null)
     {
+        // Message obligatoire : un texte par défaut, sauf si le test en fournit un.
+        $payload += ['note' => 'Le problème est décrit ici.'];
+
         return $this->actingAs($as ?? $this->ambassador, 'sanctum')->postJson('/api/v1/reports', $payload);
     }
 
@@ -147,9 +150,14 @@ class LessonModuleReportingTest extends TestCase
         $this->assertSame(0, StudentReport::count());
     }
 
-    public function test_autre_sans_texte_est_accepte(): void
+    public function test_le_message_est_obligatoire(): void
     {
-        $this->send(['source' => 'lesson', 'lessonCode' => 'fractions', 'category' => 'other'])->assertStatus(201);
+        $this->send(['source' => 'lesson', 'lessonCode' => 'fractions', 'category' => 'other', 'note' => ''])
+            ->assertStatus(422)->assertJsonValidationErrors('note');
+        $this->send(['source' => 'lesson', 'lessonCode' => 'fractions', 'category' => 'other', 'note' => 'ab'])
+            ->assertStatus(422)->assertJsonValidationErrors('note');
+        $this->send(['source' => 'lesson', 'lessonCode' => 'fractions', 'category' => 'other', 'note' => 'Faux.'])
+            ->assertStatus(201);
     }
 
     public function test_un_texte_trop_long_est_refuse(): void

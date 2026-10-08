@@ -3,8 +3,8 @@
   "lessonCode": "inshaat-talis",
   "level": 1,
   "metadata": {
-    "title": "تدريب — هل تتقايس القطع؟",
-    "estimatedMinutes": 3,
+    "title": "هل تهمّ فتحة المدور؟",
+    "estimatedMinutes": 5,
     "tags": [
       "تقسيم قطعة",
       "فتحة المدور"
@@ -13,39 +13,42 @@
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_inshaat-talis_P1",
-      "modelledOn": "method-divide"
+      "modelledOn": "method-divide",
+      "adaptedFrom": "ex-4am-inshaat-talis-l1-006"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "عيّن سليم على نصف مستقيم [Ax) ثلاث قطع متقايسة بفتحة مدور اختارها كما يشاء، ووصل العلامة الثالثة بـ B ، ثم رسم بالمسطرة والكوس الموازيين المارّين بالعلامتين الأخريين."
+    "content": "$[AB]$ قطعة مستقيم. لتقسيمها إلى ثلاث قطع متقايسة، عيّن ياسين على نصف مستقيم $[Ax)$ ثلاث قطع متقايسة بفتحة مدور $2\\,\\mathrm{cm}$ ، وعيّن أخوه على نصف مستقيم آخر $[Ay)$ ثلاث قطع متقايسة بفتحة $3\\,\\mathrm{cm}$ . وصل كل منهما العلامة الثالثة بـ $B$ ورسم الموازيين المارّين بالعلامتين الأخريين."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "القطع الثلاث التي حصل عليها على [AB]:",
+      "step": "01",
+      "statement": "هل يحصل الأخوان على نقطتي التقسيم نفسيهما على $[AB]$ ؟",
       "learningPoints": [
         {
           "code": "4am_inshaat-talis_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 1,
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "متقايسة، مهما كانت فتحة المدور وميل [Ax)",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "متقايسة فقط إذا كانت فتحة المدور تساوي ثلث AB",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-SHART-ZAID"
-        },
-        {
-          "id": "C",
-          "content": "متقايسة فقط إذا كان [Ax) عموديا على [AB]",
+          "content": "لا",
           "isCorrect": false,
           "misconceptionId": "MISC-TALIS-SHART-ZAID"
         }
@@ -54,13 +57,64 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "في المثلث الذي رؤوسه A والعلامة الثالثة و B طبّق خاصية طالس."
+          "content": "في كل إنشاء، ما النسبة $\\dfrac{AM_1}{AB}$ حيث $M_1$ نقطة التقسيم الأقرب إلى $A$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل تتعلّق هذه النسبة بفتحة المدور؟"
         }
       ],
       "feedback": {
-        "correct": "خاصية طالس: $\\dfrac{AM_1}{AB} = \\dfrac{1}{3}$ و $\\dfrac{AM_2}{AB} = \\dfrac{2}{3}$ مهما كانت الفتحة والميل.",
-        "incorrect": "لا شرط على الفتحة ولا على الميل: تكفي العلامات المتقايسة والموازيات."
-      }
+        "correct": "نعم: في الحالتين $\\dfrac{AM_1}{AB} = \\dfrac{1}{3}$ ، ففتحة المدور لا تهمّ ما دامت القطع متقايسة.",
+        "incorrect": "خاصية طالس تعطي النسبة نفسها في الإنشاءين، مهما كانت فتحة المدور."
+      },
+      "solution": {
+        "lines": [
+          "في إنشاء ياسين: $\\dfrac{AM_1}{AB} = \\dfrac{2}{6} = \\dfrac{1}{3}$ ، وفي إنشاء أخيه: $\\dfrac{AM_1}{AB} = \\dfrac{3}{9} = \\dfrac{1}{3}$ (خاصية طالس).",
+          "النقطة $M_1$ نفسها، وكذلك $M_2$ : يحصلان على نقطتي التقسيم نفسيهما."
+        ]
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب النسبة $\\dfrac{AM_2}{AB}$ حيث $M_2$ نقطة التقسيم الأقرب إلى $B$ .",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
+      "expectedAnswer": "2/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الموازي الذي يعيّن $M_2$ يمر بالعلامة الثانية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "طبّق خاصية طالس في المثلث الذي رؤوسه $A$ والعلامة الثالثة و $B$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AM_2}{AB} = \\dfrac{2}{3}$ في الإنشاءين.",
+        "incorrect": "النسبة تساوي نسبة البعد عن $A$ للعلامة الثانية إلى بعد العلامة الثالثة عن $A$ ."
+      },
+      "solution": {
+        "lines": [
+          "في إنشاء ياسين: $\\dfrac{AM_2}{AB} = \\dfrac{4}{6}$ ، وفي إنشاء أخيه: $\\dfrac{AM_2}{AB} = \\dfrac{6}{9}$ ."
+        ],
+        "result": "\\dfrac{AM_2}{AB} = \\dfrac{2}{3}"
+      },
+      "timeSeconds": 120
     }
   ]
 }

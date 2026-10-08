@@ -54,6 +54,9 @@ describe('feuille d\'examen — logique pure', () => {
   it('règle la largeur par défaut (et minimale) sur la longueur de la bonne réponse', () => {
     expect(answerChars({ expectedAnswer: '135' })).toBe(5);
     expect(answerChars({ expectedAnswer: '7' })).toBe(4);
+    // Le texte indicatif du champ vide tient en entier.
+    expect(answerChars({ expectedAnswer: '7', answerFormat: 'عدد طبيعي' })).toBe(9);
+    expect(answerChars({ expectedAnswer: '28800', answerFormat: 'عدد' })).toBe(7);
     expect(answerChars({ expectedAnswer: '22816/19251' })).toBe(13);
     expect(answerChars({ expectedAnswer: [1, 2, 3] })).toBe(11); // « 1 ؛ 2 ؛ 3 » + 2
   });

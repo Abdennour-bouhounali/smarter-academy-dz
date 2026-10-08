@@ -59,15 +59,21 @@ async function stub(ctx, role, tours) {
   });
 }
 
+// La page d'une وحدة (par chemin) et le sommaire d'une leçon (déclaré par LessonIndex).
+const UNIT_URL = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/units/aadad-tabiiya-natiqa';
+const LESSON_URL = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/qasim-adad-tabii';
+
 const PAGES = {
   student: [
     ['/espace', 'student.home'], ['/espace/cours', 'student.courses'], ['/espace/explorer', 'student.explorer'],
     ['/espace/atelier', 'student.mathlab'], ['/espace/progression', 'student.progression'],
     ['/espace/cahier', 'student.notebook'], ['/espace/qism', 'student.class'], ['/espace/profil', 'student.profile'],
+    [UNIT_URL, 'student.unit'], [LESSON_URL, 'student.lesson-index'],
   ],
   teacher: [
     ['/enseignant', 'teacher.home'], ['/enseignant/cours', 'teacher.courses'], ['/enseignant/atelier', 'teacher.mathlab'],
     ['/enseignant/cahier', 'teacher.notebook'], ['/enseignant/classes', 'teacher.classes'], ['/enseignant/profil', 'teacher.profile'],
+    [UNIT_URL, 'teacher.unit'], [LESSON_URL, 'teacher.lesson-index'],
   ],
 };
 
@@ -198,6 +204,15 @@ for (const [vpName, viewport] of [['desktop', { width: 1440, height: 900 }], ['p
     await page.goto(`${BASE}/courses/moyen/4am/ansab_al_aadad_wal_hisab/tayin-pgcd`, { waitUntil: 'networkidle' });
     await page.goto(`${BASE}${LESSON}/astaidd`, { waitUntil: 'networkidle' });
     check(!(await waitTour(page, key, 3500)), `${tag}: close, elle ne revient pas`);
+    // Close, elle reste rejouable par « جولة في الصفحة » depuis n'importe quel module.
+    await page.goto(`${BASE}${LESSON}/maarif`, { waitUntil: 'networkidle' });
+    const replay = page.locator('[data-tour-replay]:visible').first();
+    check((await replay.count()) === 1, `${tag}: bouton « جولة في الصفحة » visible sur un autre module`);
+    if (await replay.count()) {
+      await replay.click();
+      check(await waitTour(page, key), `${tag}: le bouton rejoue ${key} sur un autre module`);
+      await page.click('[data-tour-skip]');
+    }
     check(errors.length === 0, `${tag}: aucune erreur page${errors.length ? ` — ${errors[0]}` : ''}`);
     await ctx.close();
   }

@@ -3,58 +3,119 @@
   "lessonCode": "wadiya-idmajiya-ihsa",
   "level": 2,
   "metadata": {
-    "title": "علامة مخفية",
-    "estimatedMinutes": 3,
+    "title": "علامة مخفية بالمتوسط",
+    "estimatedMinutes": 5,
     "tags": [
-      "متوسط",
+      "المتوسط الحسابي",
       "قيمة مخفية",
-      "معادلة"
+      "الوسيط"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-ihsa_P3"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "علامات سارة في أربعة فروض: 12 ، 15 ، $x$ ، 9 ، ومتوسطها 12."
+    "content": "تحصّلت سارة في أربعة فروض على العلامات الآتية، حيث $x$ علامة ممحوّة، ومتوسط علاماتها الأربع 12 :",
+    "formulas": [
+      "12 \\quad ; \\quad 15 \\quad ; \\quad x \\quad ; \\quad 9"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما العلامة المخفية $x$ ؟",
+      "step": "01",
+      "statement": "جد العلامة $x$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-ihsa_P3",
           "role": "primary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "عدد طبيعي",
       "expectedAnswer": "12",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "مجموع العلامات = المتوسط × عددها."
+          "content": "مجموع العلامات الأربع = المتوسط × عددها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$12 + 15 + x + 9 = 4 \\times 12$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ المعادلة."
+          "content": "اطرح من هذا المجموع العلامات الثلاث المعلومة."
         }
       ],
       "feedback": {
-        "correct": "$36 + x = 48$ ، إذن $x = 12$.",
-        "incorrect": "مجموع العلامات الأربع هو $4 \\times 12$."
+        "correct": "$4 \\times 12 - (12 + 15 + 9) = 12$ .",
+        "incorrect": "اكتب: $\\dfrac{12 + 15 + x + 9}{4} = 12$ ثم حلّ المعادلة."
       },
+      "solution": {
+        "lines": [
+          "$\\dfrac{12 + 15 + x + 9}{4} = 12$",
+          "$36 + x = 48$",
+          "$x = 12$"
+        ],
+        "result": "x = 12"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "عيّن وسيط علامات سارة.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
       "cognitiveDemand": "apply",
-      "difficulty": 2
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "value": "13,5",
+          "id": "MISC-IHSA-WASIT-BILA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بقيمتها ثم رتّب العلامات تصاعديا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عددها زوجي: نصف مجموع العلامتين الوسطيين."
+        }
+      ],
+      "feedback": {
+        "correct": "الترتيب: 9 ، 12 ، 12 ، 15 ؛ الوسيط 12 .",
+        "incorrect": "رتّب العلامات الأربع بعد إيجاد $x$ ، ثم خذ نصف مجموع الثانية والثالثة."
+      },
+      "solution": {
+        "lines": [
+          "الترتيب التصاعدي: 9 ، 12 ، 12 ، 15",
+          "$\\dfrac{12 + 12}{2} = 12$"
+        ],
+        "result": "12"
+      },
+      "timeSeconds": 90
     }
   ]
 }

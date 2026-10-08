@@ -131,13 +131,20 @@ export function layoutGeoFigure(fig, { size = 300, pad = 34 } = {}) {
     return [n, [P[n][0] + dir[0] * 15, P[n][1] + dir[1] * 15 + 5]];
   }));
 
-  // Étiquettes de longueur : au milieu, décalées du côté opposé au centre de gravité.
-  const segmentLabel = (from, to2, side) => {
+  // Étiquettes de longueur : au milieu, décalées du côté opposé au centre de gravité. Le décalage tient compte de la
+  // TAILLE du texte (2026-10-08) : centré à 13 px d'un segment vertical, « 3,06 m » (≈ 40 px de large) retombait à
+  // moitié sur le trait. On écarte le CENTRE du texte de sa demi-largeur (ou demi-hauteur) projetée sur la normale.
+  const segmentLabel = (from, to2, side, text = '') => {
     const a = P[from]; const b = P[to2];
     const m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
     let nrm = unit([-(b[1] - a[1]), b[0] - a[0]]);
     if (side == null) { const toC = sub([cx, cy], m); if (nrm[0] * toC[0] + nrm[1] * toC[1] > 0) nrm = [-nrm[0], -nrm[1]]; } else if (side < 0) nrm = [-nrm[0], -nrm[1]];
-    return [m[0] + nrm[0] * 13, m[1] + nrm[1] * 13 + 4];
+    const halfW = (String(text).length * 7.4) / 2; // police 13, chiffres et lettres latines ≈ 0,57 em
+    const halfH = 7;
+    // Jamais moins que l'ancien 13 px : les étiquettes courtes (« x », « 3 ») ne bougent pas.
+    const off = Math.max(13, 7 + Math.abs(nrm[0]) * halfW + Math.abs(nrm[1]) * halfH);
+    // (x, y) = centre du texte ; +4,5 : la ligne de base sous le centre (text-anchor="middle").
+    return [m[0] + nrm[0] * off, m[1] + nrm[1] * off + 4.5];
   };
   const lineEnds = (l) => {
     const [p, q] = l.through.map((n) => P[n]);
@@ -177,7 +184,19 @@ export function layoutGeoFigure(fig, { size = 300, pad = 34 } = {}) {
     }
     axes = { x: [to([minX, 0]), to([maxX, 0])], y: [to([0, minY]), to([0, maxY])], ticks };
   }
-  return { P, width, height, scale: s, pointLabels, segmentLabel, lineEnds, rayEnd, center: [cx, cy], gridLines, axes };
+  // Le CADRE tient aussi les étiquettes de longueur (2026-10-08) : écartée d'un segment vertical posé au bord,
+  // « 3,06 m » sortait du dessin et perdait son « m ». La viewBox s'élargit jusqu'à couvrir chaque boîte de texte.
+  let [vx0, vy0, vx1, vy1] = [0, 0, width, height];
+  for (const s0 of fig.segments ?? []) {
+    const sg = asSegment(s0);
+    if (sg.label == null || !P[sg.from] || !P[sg.to]) continue;
+    const [lx, ly] = segmentLabel(sg.from, sg.to, sg.labelSide, sg.label);
+    const halfW = (String(sg.label).length * 7.4) / 2;
+    vx0 = Math.min(vx0, lx - halfW - 4); vx1 = Math.max(vx1, lx + halfW + 4);
+    vy0 = Math.min(vy0, ly - 4.5 - 9); vy1 = Math.max(vy1, ly - 4.5 + 9);
+  }
+  const viewBox = [vx0, vy0, vx1 - vx0, vy1 - vy0];
+  return { P, width, height, viewBox, scale: s, pointLabels, segmentLabel, lineEnds, rayEnd, center: [cx, cy], gridLines, axes };
 }
 
 /**

@@ -3,85 +3,134 @@
   "lessonCode": "wadiya-idmajiya-muthallathat",
   "level": 1,
   "metadata": {
-    "title": "تدريب — مثلثان في خط النظر",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2008 — حبل سارية العلم في ساحة المتوسطة",
+    "estimatedMinutes": 5,
     "tags": [
-      "خاصية طالس",
-      "خط النظر"
+      "جيب التمام",
+      "الآلة الحاسبة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-muthallathat_P2",
-      "modelledOn": "situation"
+      "modelledOn": "BEM 2008 I-3"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2008",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
-  "generator": {
-    "tool": "gen_bank.py",
-    "version": "1"
-  },
   "statement": {
-    "content": "في ساحة الأمير عبد القادر بالجزائر العاصمة وقف أمين في نقطة A من الأرض بحيث يرى قمة عمود إنارة شاقولي [PQ] وقمة تمثال شاقولي [MS] على استقامة واحدة (P و M على الأرض، و P بين A و M)."
+    "content": "في ساحة متوسطة، سارية علم شاقولية $[SH]$ ثُبّت رأسها $S$ بحبل مشدود مستقيم $[SA]$ طوله $6{,}5\\,\\mathrm{m}$ ، حيث $A$ وتد على الأرض الأفقية يبعد $2{,}5\\,\\mathrm{m}$ عن قاعدة السارية $H$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المثلثان اللذان في وضعية طالس هما:",
+      "step": "01",
+      "statement": "احسب جيب تمام الزاوية $\\widehat{SAH}$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muthallathat_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال أو عدد عشري",
+      "expectedAnswer": "5/13",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "APQ و PMS",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-TALIS-NAZAR"
+          "value": "13/5",
+          "id": "MISC-MUTH-NISBA-MAQLUBA"
         },
         {
-          "id": "B",
-          "content": "AQS و APM",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
-        },
-        {
-          "id": "C",
-          "content": "PQS و MSQ",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
-        },
-        {
-          "id": "D",
-          "content": "APQ و AMS",
-          "isCorrect": true
+          "value": "12/13",
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العمود والتمثال شاقوليان."
+          "content": "المثلث $SAH$ قائم في $H$ ، ووتره الحبل $[SA]$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "خط النظر والأرض يتقاطعان في A."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ابحث عن مثلثين رأسهما المشترك A."
+          "content": "بالنسبة إلى الزاوية $\\widehat{SAH}$ ، الضلع المجاور هو $[AH]$ ."
         }
       ],
       "feedback": {
-        "correct": "العمود والتمثال متوازيان، و A ، P ، M على استقامة و A ، Q ، S على استقامة: APQ و AMS في وضعية طالس.",
-        "incorrect": "الرأس المشترك هو موضع أمين."
+        "correct": "$\\cos\\widehat{SAH} = \\dfrac{AH}{SA} = \\dfrac{2{,}5}{6{,}5} = \\dfrac{5}{13}$ .",
+        "incorrect": "الحبل وتر (يقابل الزاوية القائمة عند قاعدة السارية) فهو في المقام، والمسافة على الأرض هي الضلع المجاور."
       },
-      "cognitiveDemand": "recall",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "السارية شاقولية والأرض أفقية، فالمثلث $SAH$ قائم في $H$ ووتره $[SA]$ .",
+          "$\\cos\\widehat{SAH} = \\dfrac{AH}{SA} = \\dfrac{2{,}5}{6{,}5} = \\dfrac{25}{65}$"
+        ],
+        "result": "\\cos\\widehat{SAH} = \\dfrac{5}{13}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "أعط المدوّر إلى الوحدة من الدرجة لقيس الزاوية $\\widehat{SAH}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: القيس بالدرجة مدوّرا إلى الوحدة",
+      "expectedAnswer": "67",
+      "misconceptionSignatures": [
+        {
+          "value": "23",
+          "id": "MISC-MUTH-NISBA-UKHRA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نعرف جيب تمام الزاوية ونبحث عن قيسها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة العكسية للنسبة في آلة حاسبة مبرمجة على الدرجة، ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\widehat{SAH} \\approx 67{,}38^{\\circ}$ ، أي $67^{\\circ}$ بالتدوير إلى الوحدة.",
+        "incorrect": "استعمل اللمسة العكسية لجيب التمام (لا للجيب)، والآلة مبرمجة على الدرجة."
+      },
+      "solution": {
+        "lines": [
+          "$\\cos\\widehat{SAH} = \\dfrac{5}{13}$",
+          "باستعمال الآلة الحاسبة (اللمسة العكسية لجيب التمام): $\\widehat{SAH} \\approx 67{,}3801^{\\circ}$"
+        ],
+        "result": "\\widehat{SAH} \\approx 67^{\\circ}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

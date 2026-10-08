@@ -52,10 +52,11 @@ const NOTEBOOK = {
   filters: '[data-tour="notebook.filters"]',
 };
 
-// Le PREMIER module d'une leçon : visite DÉCLARÉE par ModuleLayout
-// (`useDeclarePageTour('lesson-first-module', …)`) — l'URL d'un module change
-// d'une leçon à l'autre, la page se reconnaît elle-même. Une fois par compte,
-// toutes leçons confondues.
+// Un module de leçon : visite DÉCLARÉE par ModuleLayout
+// (`useDeclarePageTour('lesson-module', …)`) — l'URL d'un module change
+// d'une leçon à l'autre, la page se reconnaît elle-même. Elle s'ouvre d'elle-
+// même sur le PREMIER module (une fois par compte, toutes leçons confondues)
+// et se rejoue depuis n'importe quel module.
 const LESSON = {
   module: '[data-tour="lesson.module"]',
   progress: '[data-tour="lesson.progress"]',
@@ -63,6 +64,25 @@ const LESSON = {
   notebook: '[data-nb-trigger="lesson"]',
   lab: '[data-ml-overlay-trigger]',
   moduleNav: '[data-tour="lesson.moduleNav"]',
+};
+
+// Le sommaire d'une leçon (LessonIndex) : déclaré aussi, `lesson-index`.
+const LESSON_INDEX = {
+  hero: '[data-tour="lesson-index.hero"]',
+  tools: '[data-tour="lesson-index.tools"]',
+  progress: '[data-tour="lesson-index.progress"]',
+  structure: '[data-lesson-structure]',
+  modules: '[data-tour="lesson-index.modules"]',
+};
+// La page d'une وحدة : trouvée par son chemin.
+const UNIT_PATH = '/courses/:levelId/:gradeId/:chapterId/units/:unitId';
+const UNIT = {
+  objectives: '[data-tour="unit.objectives"]',
+  challenge: '[data-unit-challenge]',
+  progress: '[data-tour="unit.progress"]',
+  lesson: '[data-unit-lesson]',
+  modules: '[data-lesson-modules]',
+  actions: '[data-teacher-lesson-actions]',
 };
 
 export const PAGE_TOURS = [
@@ -172,7 +192,7 @@ export const PAGE_TOURS = [
   {
     key: 'student.lesson',
     role: 'student',
-    page: 'lesson-first-module',
+    page: 'lesson-module',
     steps: [
       { id: 'welcome' },
       { id: 'module', target: LESSON.module },
@@ -285,7 +305,7 @@ export const PAGE_TOURS = [
   {
     key: 'teacher.lesson',
     role: 'teacher',
-    page: 'lesson-first-module',
+    page: 'lesson-module',
     steps: [
       { id: 'welcome' },
       { id: 'module', target: LESSON.module },
@@ -294,6 +314,52 @@ export const PAGE_TOURS = [
       { id: 'notebook', target: LESSON.notebook },
       { id: 'lab', target: LESSON.lab },
       { id: 'moduleNav', target: LESSON.moduleNav },
+    ],
+  },
+  // ── SOMMAIRE DE LEÇON ET UNITÉ (les deux rôles) ───────────────────────
+  {
+    key: 'student.lesson-index',
+    role: 'student',
+    page: 'lesson-index',
+    steps: [
+      { id: 'hero', target: LESSON_INDEX.hero },
+      { id: 'tools', target: LESSON_INDEX.tools },
+      { id: 'progress', target: LESSON_INDEX.progress },
+      { id: 'structure', target: LESSON_INDEX.structure },
+      { id: 'modules', target: LESSON_INDEX.modules },
+    ],
+  },
+  {
+    key: 'teacher.lesson-index',
+    role: 'teacher',
+    page: 'lesson-index',
+    steps: [
+      { id: 'hero', target: LESSON_INDEX.hero },
+      { id: 'tools', target: LESSON_INDEX.tools },
+      { id: 'structure', target: LESSON_INDEX.structure },
+      { id: 'modules', target: LESSON_INDEX.modules },
+    ],
+  },
+  {
+    key: 'student.unit',
+    role: 'student',
+    path: UNIT_PATH,
+    steps: [
+      { id: 'objectives', target: UNIT.objectives },
+      { id: 'challenge', target: UNIT.challenge },
+      { id: 'progress', target: UNIT.progress },
+      { id: 'lesson', target: UNIT.lesson },
+    ],
+  },
+  {
+    key: 'teacher.unit',
+    role: 'teacher',
+    path: UNIT_PATH,
+    steps: [
+      { id: 'objectives', target: UNIT.objectives },
+      { id: 'lesson', target: UNIT.lesson },
+      { id: 'modules', target: UNIT.modules },
+      { id: 'actions', target: UNIT.actions },
     ],
   },
 ];

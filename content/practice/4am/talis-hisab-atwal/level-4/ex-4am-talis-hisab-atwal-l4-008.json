@@ -3,163 +3,255 @@
   "lessonCode": "talis-hisab-atwal",
   "level": 4,
   "metadata": {
-    "title": "تدريب — الفراشة بأعداد عشرية",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2012 — DF و AD",
+    "estimatedMinutes": 12,
     "tags": [
-      "وضعية الفراشة",
-      "حساب طول"
+      "الدائرة",
+      "فيثاغورس",
+      "خاصية طالس"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_talis-hisab-atwal_P2",
-      "modelledOn": "now-107"
+      "modelledOn": "BEM 2012 I-3"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2012",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "المستقيمان $(AC)$ و $(BD)$ متقاطعان في O، و $(AB) \\parallel (CD)$ ؛ $OA = 2{,}4$ ، $OC = 3{,}6$ ، $OB = 2$ و $AB = 3$ .",
+    "content": "في الشكل المقابل، $(\\mathscr{C})$ دائرة مركزها $O$ وقطرها $[AB]$ حيث $AB = 13\\,\\mathrm{cm}$ ، و $C$ نقطة من $(\\mathscr{C})$ حيث $BC = 5\\,\\mathrm{cm}$ .",
     "figure": {
       "points": {
         "O": [
-          0,
-          0
+          0.0,
+          0.0
         ],
         "A": [
-          -0.592,
-          1.269
+          -6.5,
+          0.0
         ],
         "B": [
-          0.563,
-          1.06
+          6.5,
+          0.0
         ],
         "C": [
-          0.888,
-          -1.903
+          4.576923076923,
+          4.615384615385
+        ],
+        "F": [
+          -2.6,
+          0.0
         ],
         "D": [
-          -0.844,
-          -1.59
+          -3.176923076923,
+          1.384615384615
         ]
       },
       "segments": [
         {
-          "from": "O",
-          "to": "A",
-          "label": "2,4"
-        },
-        {
-          "from": "O",
-          "to": "C",
-          "label": "3,6"
-        },
-        {
-          "from": "O",
-          "to": "B",
-          "label": "2"
-        },
-        {
-          "from": "O",
-          "to": "D"
+          "from": "A",
+          "to": "B"
         },
         {
           "from": "A",
-          "to": "B",
-          "label": "3",
+          "to": "C"
+        },
+        {
+          "from": "B",
+          "to": "C",
           "arrows": 1
         },
         {
-          "from": "C",
+          "from": "F",
           "to": "D",
-          "arrows": 1,
-          "tone": "indigo"
+          "arrows": 1
         }
       ],
-      "ariaLabel": "(AC) و (BD) متقاطعان في O، و (AB) يوازي (CD)؛ OA = 2,4 و OC = 3,6 و OB = 2 و AB = 3",
-      "maxWidth": 220
+      "labels": {
+        "O": "s",
+        "F": "s"
+      },
+      "circles": [
+        {
+          "center": "O",
+          "radius": 6.5
+        }
+      ],
+      "ariaLabel": "الدائرة (C) مركزها O وقطرها [AB]، C نقطة منها؛ F من [AB] و D من [AC] و (FD) يوازي (BC)",
+      "maxWidth": 320
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب OD.",
+      "step": "01",
+      "statement": "بيّن أن المثلث $ABC$ قائم في $C$ ثم احسب الطول $AC$ .",
       "learningPoints": [
         {
           "code": "4am_talis-hisab-atwal_P2",
           "role": "primary"
         }
       ],
+      "counted": false,
       "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
-      "expectedAnswer": "3",
+      "answerFormat": "أعط الطول $AC$ (عدد)",
+      "expectedAnswer": "12",
       "misconceptionSignatures": [
         {
-          "id": "MISC-TALIS-NISBA-MAQLUBA",
-          "value": "4/3"
+          "value": "8",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+          "content": "$C$ نقطة من دائرة قطرها $[AB]$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+          "content": "المثلث قائم في $C$ : طبّق خاصية فيثاغورس."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{OA}{OC} = \\dfrac{OB}{OD}$ أي $\\dfrac{2{,}4}{3{,}6} = \\dfrac{2}{OD}$ ومنه $OD = 3$ .",
-        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
-      }
+        "correct": "$ABC$ قائم في $C$ ، و $AC^2 = 169 - 25 = 144$ ومنه $AC = 12\\,\\mathrm{cm}$ .",
+        "incorrect": "الوتر هو القطر $[AB]$ : $AC^2 = AB^2 - BC^2$ ."
+      },
+      "solution": {
+        "lines": [
+          "$C$ نقطة من الدائرة التي قطرها $[AB]$ ، إذن المثلث $ABC$ قائم في $C$ .",
+          "حسب خاصية فيثاغورس: $AC^2 = AB^2 - BC^2 = 13^2 - 5^2 = 169 - 25 = 144$",
+          "$AC = \\sqrt{144}$"
+        ],
+        "result": "AC = 12\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 210
     },
     {
       "id": "q2",
-      "statement": "احسب CD.",
+      "step": "02",
+      "sub": "ا",
+      "lead": "$F$ نقطة من $[AB]$ حيث $AF = 3{,}9\\,\\mathrm{cm}$ ، والمستقيم الذي يشمل $F$ ويوازي $(BC)$ يقطع $[AC]$ في $D$ .",
+      "statement": "احسب $DF$ .",
       "learningPoints": [
         {
           "code": "4am_talis-hisab-atwal_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 4,
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
-      "expectedAnswer": "4,5",
+      "answerFormat": "عدد (عشري بالفاصلة مثل 2,75 أو كسر مثل 7/9)",
+      "expectedAnswer": "1,5",
       "misconceptionSignatures": [
         {
-          "id": "MISC-TALIS-NISBA-MAQLUBA",
-          "value": "2"
+          "value": "50/3",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+          "content": "النقط $A$ ، $F$ ، $B$ على استقامة والنقط $A$ ، $D$ ، $C$ على استقامة، و $(FD) \\parallel (BC)$ : المثلثان $AFD$ و $ABC$ في وضعية طالس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+          "content": "اكتب النسب الثلاث المتساوية $\\dfrac{AF}{AB} = \\dfrac{AD}{AC} = \\dfrac{FD}{BC}$ ، واحتفظ بالمساواة التي فيها $DF$ وثلاثة أطوال معلومة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+          "content": "احسب الطول المجهول بالجداء المتصالب (الرابع المتناسب)."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{OA}{OC} = \\dfrac{AB}{CD}$ ومنه $CD = \\dfrac{3 \\times 3{,}6}{2{,}4} = 4{,}5$ .",
-        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
-      }
+        "correct": "$DF = \\dfrac{5 \\times 3{,}9}{13} = 1{,}5\\,\\mathrm{cm}$ .",
+        "incorrect": "راجع المساواة المختارة: في كل نسبة طول من المثلث الصغير على الطول الموافق له في المثلث الكبير، والأطوال كلها تُقاس من الرأس المشترك."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: النقط $A$ ، $F$ ، $B$ على استقامة واحدة، والنقط $A$ ، $D$ ، $C$ على استقامة واحدة، و $(FD) \\parallel (BC)$ .",
+          "حسب خاصية طالس: $\\dfrac{AF}{AB} = \\dfrac{AD}{AC} = \\dfrac{FD}{BC}$",
+          "$\\dfrac{AF}{AB} = \\dfrac{FD}{BC}$ أي $\\dfrac{3{,}9}{13} = \\dfrac{FD}{5}$",
+          "$FD = \\dfrac{5 \\times 3{,}9}{13}$"
+        ],
+        "result": "DF = 1{,}5\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 210
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "احسب $AD$ .",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة مثل 2,75 أو كسر مثل 7/9)",
+      "expectedAnswer": "3,6",
+      "misconceptionSignatures": [
+        {
+          "value": "40",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النقط $A$ ، $F$ ، $B$ على استقامة والنقط $A$ ، $D$ ، $C$ على استقامة، و $(FD) \\parallel (BC)$ : المثلثان $AFD$ و $ABC$ في وضعية طالس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث المتساوية $\\dfrac{AF}{AB} = \\dfrac{AD}{AC} = \\dfrac{FD}{BC}$ ، واحتفظ بالمساواة التي فيها $AD$ وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الطول المجهول بالجداء المتصالب (الرابع المتناسب)."
+        }
+      ],
+      "feedback": {
+        "correct": "$AD = \\dfrac{12 \\times 3{,}9}{13} = 3{,}6\\,\\mathrm{cm}$ .",
+        "incorrect": "راجع المساواة المختارة: في كل نسبة طول من المثلث الصغير على الطول الموافق له في المثلث الكبير، والأطوال كلها تُقاس من الرأس المشترك."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{AF}{AB} = \\dfrac{AD}{AC}$ أي $\\dfrac{3{,}9}{13} = \\dfrac{AD}{12}$",
+          "$AD = \\dfrac{12 \\times 3{,}9}{13}$"
+        ],
+        "result": "AD = 3{,}6\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

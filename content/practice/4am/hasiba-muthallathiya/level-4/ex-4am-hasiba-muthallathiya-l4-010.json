@@ -3,67 +3,198 @@
   "lessonCode": "hasiba-muthallathiya",
   "level": 4,
   "metadata": {
-    "title": "وضعية — كاشف ملعب",
-    "estimatedMinutes": 3,
+    "title": "كاشف ملعب 19 ماي: ظل 25° وارتفاع العمود",
+    "estimatedMinutes": 9,
     "tags": [
-      "وضعية",
-      "الحاسبة"
+      "الظل",
+      "تدوير مبكّر"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_hasiba-muthallathiya_P1",
-      "modelledOn": "act-4"
+      "modelledOn": "act-4",
+      "adaptedFrom": "ex-4am-hasiba-muthallathiya-l4-010"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "مهندس في ملعب 19 ماي بعنابة يحسب ارتفاع كاشف ضوئي يراه بزاوية $25^{\\circ}$ ، فيحتاج إلى $\\tan 25^{\\circ}$ ."
+    "content": "في ملعب 19 ماي 1956 بعنابة، يقف مهندس على أرض أفقية على بعد $60\\,\\mathrm{m}$ من عمود كاشف ضوئي شاقولي، فيرى قمّته بزاوية $25^{\\circ}$ مع الأفق. عين المهندس على ارتفاع $1{,}7\\,\\mathrm{m}$ من الأرض."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "$\\tan 25^{\\circ}$ مدوّرا إلى الجزء من 100:",
+      "step": "01",
+      "statement": "احسب $\\tan 25^{\\circ}$ بالتدوير إلى $0{,}01$ .",
       "learningPoints": [
         {
           "code": "4am_hasiba-muthallathiya_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "secondary"
         }
       ],
-      "difficulty": 3,
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "answerFormat": "عدد عشري مدوّر إلى 0,01",
       "expectedAnswer": "0.47",
       "misconceptionSignatures": [
         {
-          "id": "MISC-MUTH-TADWIR-BATR",
-          "value": "0,46"
+          "value": "0.46",
+          "id": "MISC-MUTH-TADWIR-BATR"
         },
         {
-          "id": "MISC-MUTH-NISBA-MAQLUBA",
-          "value": "2,14"
+          "value": "-0.13",
+          "id": "MISC-MUTH-HASIBA-RAD"
+        },
+        {
+          "value": "2.14",
+          "id": "MISC-MUTH-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تأكّد أن الحاسبة مبرمجة بالدرجة: الحرف D في أعلى الشاشة."
+          "content": "تحقّق أن الحاسبة مبرمجة بالدرجة: الحرف ⁦D⁩ في أعلى الشاشة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضغط الدالة ثم قيس الزاوية ثم ⁦=⁩."
+          "content": "اللمسة المباشرة: ⁦tan⁩ ثم قيس الزاوية ثم ⁦=⁩ (دون ⁦2nd⁩)."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "دوّر ما يظهر على الشاشة: انظر إلى الرقم الموالي للرقم الذي تحتفظ به."
+          "content": "للتدوير إلى الجزء من 100: انظر إلى الرقم الموالي؛ إذا كان 5 أو أكبر نضيف 1."
         }
       ],
       "feedback": {
-        "correct": "⁦ON tan 25 =⁩ يعطي $0{,}4663076582$ : الرقم الموالي 6، إذن $\\tan 25^{\\circ} \\approx 0{,}47$ .",
-        "incorrect": "راجع: هل الحاسبة بالدرجة، وهل ضغطت الدالة المناسبة ثم دوّرت الشاشة؟"
-      }
+        "correct": "$\\tan 25^{\\circ} = 0{,}4663076582 \\approx 0{,}47$ .",
+        "incorrect": "احسب باللمسة المباشرة والحاسبة مبرمجة بالدرجة، ثم دوّر (لا تبتر) إلى الجزء من 100."
+      },
+      "solution": {
+        "lines": [
+          "الحاسبة مبرمجة بالدرجة: ⁦ON tan 25 =⁩ يظهر على الشاشة $0{,}4663076582$ .",
+          "الرقم الذي يلي رقم الأجزاء من 100 هو 6، وهو أكبر من 5: نضيف 1 إلى رقم الأجزاء من 100."
+        ],
+        "result": "\\tan 25^{\\circ} \\approx 0{,}47"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب ارتفاع قمة العمود فوق مستوى عين المهندس بالتدوير إلى $0{,}1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري: الطول بـ m مدوّرا إلى 0,1",
+      "expectedAnswer": "28.0",
+      "misconceptionSignatures": [
+        {
+          "value": "27.9",
+          "id": "MISC-MUTH-TADWIR-BATR"
+        },
+        {
+          "value": "28.2",
+          "id": "MISC-MUTH-TADWIR-MUBAKKIR"
+        },
+        {
+          "value": "128.7",
+          "id": "MISC-MUTH-QISMA-BADAL-DARB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الارتفاع فوق العين يقابل الزاوية $25^{\\circ}$ ، والمسافة الأفقية تجاورها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل $\\tan 25^{\\circ}$ بكل أرقام الشاشة، لا مدوّره."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تدوّر إلا النتيجة النهائية."
+        }
+      ],
+      "feedback": {
+        "correct": "$h = 60 \\times \\tan 25^{\\circ} \\approx 27{,}97845949 \\approx 28{,}0\\,\\mathrm{m}$ .",
+        "incorrect": "الارتفاع في بسط الظل: نضرب المسافة الأفقية في $\\tan 25^{\\circ}$ بكل أرقام الشاشة."
+      },
+      "solution": {
+        "lines": [
+          "$\\tan 25^{\\circ} = \\dfrac{h}{60}$ ومنه $h = 60 \\times \\tan 25^{\\circ}$",
+          "بكل أرقام الشاشة: $h \\approx 27{,}97845949$",
+          "(بالمدوّر $0{,}47$ نجد $28{,}2$ : تدوير مبكّر.)"
+        ],
+        "result": "h \\approx 28{,}0\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 210
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "استنتج ارتفاع العمود بالتدوير إلى $0{,}1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري: الارتفاع بـ m مدوّرا إلى 0,1",
+      "expectedAnswer": "29.7",
+      "misconceptionSignatures": [
+        {
+          "value": "28.0",
+          "id": "MISC-MUTH-IRTIFA3-AYN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عين المهندس ليست على الأرض."
+        }
+      ],
+      "feedback": {
+        "correct": "$H = 1{,}7 + 27{,}97845949 \\approx 29{,}7\\,\\mathrm{m}$ .",
+        "incorrect": "أضف ارتفاع العين عن الأرض."
+      },
+      "solution": {
+        "lines": [
+          "$H = 1{,}7 + h \\approx 1{,}7 + 27{,}97845949$"
+        ],
+        "result": "H \\approx 29{,}7\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 90
     }
   ]
 }

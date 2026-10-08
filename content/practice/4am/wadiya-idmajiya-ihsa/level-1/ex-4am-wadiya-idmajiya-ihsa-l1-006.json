@@ -3,62 +3,117 @@
   "lessonCode": "wadiya-idmajiya-ihsa",
   "level": 1,
   "metadata": {
-    "title": "حملة تنظيف الشاطئ: المدى",
-    "estimatedMinutes": 3,
+    "title": "حملة تنظيف الشاطئ: المدى والوسيط",
+    "estimatedMinutes": 4,
     "tags": [
-      "مدى"
+      "المدى",
+      "الوسيط"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-ihsa_P1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "جمع خمسة متطوعين في حملة تنظيف الشاطئ النفايات التالية (بالكيلوغرام): 3 ، 5 ، 2 ، 8 ، 7."
+    "content": "جمع خمسة متطوعين في حملة تنظيف الشاطئ الكتل الآتية من النفايات (بالكيلوغرام):",
+    "formulas": [
+      "3 \\quad ; \\quad 5 \\quad ; \\quad 2 \\quad ; \\quad 8 \\quad ; \\quad 7"
+    ]
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما مدى هذه السلسلة (بالكيلوغرام)؟",
+      "step": "01",
+      "statement": "احسب مدى هذه السلسلة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-ihsa_P1",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "6",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "المدى يقيس التشتت."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "أكبر قيمة وأصغر قيمة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اطرح."
-        }
-      ],
-      "feedback": {
-        "correct": "$8 - 2 = 6$.",
-        "incorrect": "المدى فرق، لا أكبر قيمة."
-      },
-      "cognitiveDemand": "recall",
       "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المدى بـ kg",
+      "expectedAnswer": "6",
       "misconceptionSignatures": [
         {
           "value": "8",
           "id": "MISC-IHSA-MADA-AKBAR-QIMA"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدى = أكبر قيمة − أصغر قيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$8 - 2 = 6$ kg .",
+        "incorrect": "حدّد أكبر قيمة وأصغر قيمة في السلسلة كلها ثم اطرح."
+      },
+      "solution": {
+        "lines": [
+          "أكبر قيمة 8 وأصغر قيمة 2 .",
+          "$8 - 2 = 6$"
+        ],
+        "result": "6\\,\\mathrm{kg}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "عيّن وسيط هذه السلسلة.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الوسيط بـ kg",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "value": "2",
+          "id": "MISC-IHSA-WASIT-BILA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب القيم تصاعديا أولا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد القيم 5 : الوسيط هو القيمة ذات الرتبة 3 ."
+        }
+      ],
+      "feedback": {
+        "correct": "الترتيب: 2 ، 3 ، 5 ، 7 ، 8 ؛ الوسيط 5 kg .",
+        "incorrect": "لا تأخذ القيمة الوسطى قبل ترتيب السلسلة."
+      },
+      "solution": {
+        "lines": [
+          "الترتيب التصاعدي: 2 ، 3 ، 5 ، 7 ، 8",
+          "عدد القيم 5 ، والقيمة ذات الرتبة 3 هي 5 ."
+        ],
+        "result": "5\\,\\mathrm{kg}"
+      },
+      "timeSeconds": 90
     }
   ]
 }

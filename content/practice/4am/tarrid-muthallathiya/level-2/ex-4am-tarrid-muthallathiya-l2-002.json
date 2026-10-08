@@ -3,126 +3,180 @@
   "lessonCode": "tarrid-muthallathiya",
   "level": 2,
   "metadata": {
-    "title": "تمرين 29 — ارتفاع النخلة",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2013 — جسر الصعود إلى السفينة",
+    "estimatedMinutes": 5,
     "tags": [
-      "ارتفاع",
-      "الظل"
+      "ترييض وضعية",
+      "الظل",
+      "زاوية"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "ex-29",
-      "page": 125,
-      "section": "أتعمّق",
-      "number": 29
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tarrid-muthallathiya_P2",
+      "modelledOn": "BEM 2013 I-3 (02)"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2013",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 125، تمرين 29): نخلة شاقولية ارتفاعها h. من نقطة على الأرض على بعد $10\\,\\mathrm{m}$ من قاعدتها يُرى رأسها بزاوية قيسها $36^{\\circ}$ مع الأرض (الشكل).",
+    "content": "في ميناء الجزائر، يصل جسر الصعود $[PQ]$ رصيف الميناء $P$ بباب سفينة $Q$ . الباب على ارتفاع $QH = 2{,}4\\,\\mathrm{m}$ فوق مستوى الرصيف الأفقي، حيث $H$ نقطة من الرصيف تقع شاقوليا تحت $Q$ ، و $PH = 5{,}6\\,\\mathrm{m}$ (الشكل المقابل).",
     "figure": {
       "points": {
         "P": [
-          0,
-          0
+          0.0,
+          0.0
         ],
-        "T": [
-          0,
-          7.265
+        "H": [
+          5.6,
+          0.0
         ],
-        "O": [
-          10,
-          0
+        "Q": [
+          5.6,
+          2.4
         ]
       },
       "segments": [
         {
           "from": "P",
-          "to": "O",
-          "label": "10m"
+          "to": "H",
+          "label": "5,6 m"
         },
         {
-          "from": "P",
-          "to": "T",
-          "label": "h"
+          "from": "H",
+          "to": "Q",
+          "label": "2,4 m"
         },
-        {
-          "from": "O",
-          "to": "T"
-        }
+        [
+          "P",
+          "Q"
+        ]
       ],
       "rightAngles": [
         [
-          "O",
           "P",
-          "T"
+          "H",
+          "Q"
         ]
-      ],
-      "angles": [
-        {
-          "at": "O",
-          "from": "T",
-          "to": "P",
-          "label": "36°"
-        }
       ],
       "labels": {
         "P": "sw",
-        "T": "nw",
-        "O": "se"
+        "H": "se",
+        "Q": "ne"
       },
-      "ariaLabel": "نخلة شاقولية PT ارتفاعها h، ومن النقطة O على الأرض على بعد 10m من قاعدتها يُرى رأسها بزاوية 36 درجة",
+      "ariaLabel": "جسر الصعود [PQ] من الرصيف P إلى باب السفينة Q، و H على الرصيف تحت Q شاقوليا؛ PH = 5,6 m و QH = 2,4 m",
       "maxWidth": 300
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب ارتفاع النخلة h بالمتر، إلى الجزء من 10.",
+      "step": "01",
+      "statement": "احسب $\\tan\\widehat{QPH}$ .",
       "learningPoints": [
         {
-          "code": "4am_tarrid-muthallathiya_P1",
+          "code": "4am_tarrid-muthallathiya_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 2,
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
-      "expectedAnswer": "7.3",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "3/7",
       "misconceptionSignatures": [
         {
-          "id": "MISC-MUTH-DARB-BADAL-QISMA",
-          "value": "13.8"
-        },
-        {
-          "id": "MISC-MUTH-NISBA-GHAYR-MUNASIBA",
-          "value": "5.9"
-        },
-        {
-          "id": "MISC-MUTH-TADWIR-BATR",
-          "value": "7.2"
+          "value": "7/3",
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+          "content": "في المثلث $PHQ$ القائم في $H$ : حدّد المقابل والمجاور للزاوية $\\widehat{QPH}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+          "content": "الظل = المقابل على المجاور، ثم اختزل الكسر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan\\widehat{QPH} = \\dfrac{QH}{PH} = \\dfrac{2{,}4}{5{,}6} = \\dfrac{3}{7}$ .",
+        "incorrect": "المقابل للزاوية $P$ هو $[QH]$ (لا يمرّ بـ $P$)، والمجاور هو $[PH]$ ."
+      },
+      "solution": {
+        "lines": [
+          "المثلث $PHQ$ قائم في $H$ ، لدينا: $\\tan\\widehat{QPH} = \\dfrac{QH}{PH}$",
+          "$\\tan\\widehat{QPH} = \\dfrac{2{,}4}{5{,}6} = \\dfrac{24}{56}$"
+        ],
+        "result": "\\tan\\widehat{QPH} = \\dfrac{3}{7}"
+      },
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج قيس الزاوية $\\widehat{QPH}$ بالتدوير إلى الوحدة من الدرجة.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: قيس الزاوية بالدرجة مدوّرا إلى الوحدة",
+      "expectedAnswer": "23",
+      "misconceptionSignatures": [
+        {
+          "value": "67",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        },
+        {
+          "value": "0.43",
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النسبة معلومة والقيس مطلوب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اللمسة العكسية: ⁦2nd⁩ ثم ⁦tan⁻¹⁩ ثم $(3 \\div 7)$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+          "content": "دوّر النتيجة النهائية إلى الوحدة."
         }
       ],
       "feedback": {
-        "correct": "$h = 10 \\times \\tan 36^{\\circ} \\approx 7{,}27$ أي $7{,}3\\,\\mathrm{m}$ .",
-        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
-      }
+        "correct": "$\\widehat{QPH} \\approx 23^{\\circ}$ (الشاشة: $23{,}198...$).",
+        "incorrect": "النسبة ليست القيس: استعمل ⁦tan⁻¹⁩ والحاسبة مبرمجة على الدرجة."
+      },
+      "solution": {
+        "lines": [
+          "باستعمال الآلة الحاسبة: ⁦2nd tan⁻¹ ( 3 ÷ 7 ) =⁩ يظهر $\\widehat{QPH} \\approx 23{,}199^{\\circ}$"
+        ],
+        "result": "\\widehat{QPH} \\approx 23^{\\circ}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

@@ -15,85 +15,165 @@
       "page": 99,
       "section": "أوظّف تعلّماتي",
       "number": 15
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 99): نفايات جُمعت على شاطئ: البلاستيك $60\\,\\mathrm{kg}$ ، الزجاج $40\\,\\mathrm{kg}$ ، الورق $50\\,\\mathrm{kg}$ ."
+    "content": "الجدول التالي يمثل توزيع النفايات التي تم جمعها على شاطئ، والمخطط الدائري الآتي أنشأه المجدول إكسال من هذا الجدول؛ كُتبت فيه زاوية قطاع البلاستيك فقط:",
+    "table": {
+      "head": [
+        "أنواع النفايات",
+        "البلاستيك",
+        "الزجاج",
+        "الورق"
+      ],
+      "rows": [
+        [
+          "الكتلة (kg)",
+          "60",
+          "40",
+          "50"
+        ]
+      ]
+    },
+    "figure": {
+      "kind": "chart",
+      "type": "pie",
+      "show": "angle",
+      "ariaLabel": "مخطط دائري لنفايات الشاطئ: زاوية البلاستيك مكتوبة، وقطاعا الزجاج والورق مجهولان",
+      "parts": [
+        {
+          "label": "البلاستيك",
+          "value": 60
+        },
+        {
+          "label": "الزجاج",
+          "value": 40,
+          "missing": true
+        },
+        {
+          "label": "الورق",
+          "value": 50,
+          "missing": true
+        }
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "زاوية قطاع الورق (بالدرجات):",
+      "step": "01",
+      "statement": "احسب زاوية قطاع الورق.",
       "learningPoints": [
         {
           "code": "4am_majdulat-ihsaiya_P3",
           "role": "primary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "عدد: قيس الزاوية بالدرجات دون الرمز °",
       "expectedAnswer": "120",
       "misconceptionSignatures": [
         {
-          "id": "MISC-IHSA-NISBA-MIN-ADAD",
-          "value": "180"
+          "value": "50",
+          "id": "MISC-IHSA-ZAWIYA-QITA"
+        },
+        {
+          "value": "240",
+          "id": "MISC-IHSA-ZAWIYA-QITA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الكتلة الكلية 150."
+          "content": "في المخطط الدائري تتناسب زاوية كل قطاع مع تكرار جزئه، والدائرة كلها 360 درجة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\dfrac{50}{150} = \\dfrac{1}{3}$ ."
+          "content": "احسب التكرار الكلي، ثم حصة الورق منه."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ثلث الدائرة."
+          "content": "الزاوية = (تكرار الجزء ÷ التكرار الكلي) × 360 ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{50}{150} \\times 360 = 120$ .",
-        "incorrect": "الحصة من 150 ثم × 360."
-      }
+        "correct": "$\\dfrac{50}{150} \\times 360 = 120$ ، أي $120^\\circ$ .",
+        "incorrect": "زاوية القطاع ليست تكرار الجزء ولا نسبته المئوية: اضرب حصة الجزء من الكلّ في 360 ."
+      },
+      "solution": {
+        "lines": [
+          "زاوية قطاع الورق: $\\dfrac{50}{150} \\times 360 = 120$"
+        ],
+        "result": "120^\\circ"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "زاوية قطاع الزجاج (بالدرجات):",
+      "step": "02",
+      "statement": "استنتج زاوية قطاع الزجاج.",
       "learningPoints": [
         {
           "code": "4am_majdulat-ihsaiya_P3",
           "role": "primary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
+      "answerFormat": "عدد: قيس الزاوية بالدرجات دون الرمز °",
       "expectedAnswer": "96",
+      "misconceptionSignatures": [
+        {
+          "value": "40",
+          "id": "MISC-IHSA-ZAWIYA-QITA"
+        },
+        {
+          "value": "216",
+          "id": "MISC-IHSA-ZAWIYA-QITA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$\\dfrac{40}{150}$ ."
+          "content": "زوايا القطاعات الثلاثة مجموعها 360 درجة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب في 360."
+          "content": "لديك زاوية البلاستيك من المخطط وزاوية الورق من السؤال السابق."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "تحقّق: المجموع 360."
+          "content": "تحقّق بحساب حصة الزجاج من الكتلة الكلية."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{40}{150} \\times 360 = 96$ ، و $144 + 120 + 96 = 360$ .",
-        "incorrect": "الحصة من 150 ثم × 360."
-      }
+        "correct": "$360 - 144 - 120 = 96$ ، وأيضا $\\dfrac{40}{150} \\times 360 = 96$ .",
+        "incorrect": "اطرح زاويتي البلاستيك والورق من 360 ، أو احسب حصة الزجاج من الكتلة الكلية ثم اضرب في 360 ."
+      },
+      "solution": {
+        "lines": [
+          "مجموع زوايا القطاعات 360 درجة:",
+          "$360 - 144 - 120 = 96$",
+          "تحقّق: $\\dfrac{40}{150} \\times 360 = 96$"
+        ],
+        "result": "96^\\circ"
+      },
+      "timeSeconds": 90
     }
   ]
 }

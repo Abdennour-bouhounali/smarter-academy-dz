@@ -3,114 +3,266 @@
   "lessonCode": "wadiya-idmajiya-muthallathat",
   "level": 3,
   "metadata": {
-    "title": "تدريب — مئذنة ارتفاعها 60 مترا",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2018 — قطعة أرض مثلثة في سهل متيجة",
+    "estimatedMinutes": 14,
     "tags": [
-      "الظل",
-      "خاصية فيثاغورس"
+      "عكس خاصية فيثاغورس",
+      "الجيب",
+      "الارتفاع"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P3",
-      "modelledOn": "situation"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
+      "modelledOn": "BEM 2018 I-4"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2018",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
-  "generator": {
-    "tool": "gen_bank.py",
-    "version": "1"
-  },
   "statement": {
-    "content": "مئذنة شاقولية ارتفاعها $60\\,\\mathrm{m}$ . يقف كريم على الأرض على بعد $75\\,\\mathrm{m}$ من قاعدتها وينظر إلى قمتها (نهمل طوله)."
+    "content": "قطعة أرض فلاحية في سهل متيجة على شكل مثلث $TIC$ حيث: $TC = 24\\,\\mathrm{m}$ ، $TI = 10\\,\\mathrm{m}$ و $IC = 26\\,\\mathrm{m}$ . $H$ المسقط العمودي للنقطة $T$ على $[IC]$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما المدوّر إلى الدرجة لقيس زاوية النظر؟",
+      "step": "01",
+      "statement": "بيّن أن المثلث $TIC$ قائم في $T$ .",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
-      "expectedAnswer": "39",
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "المثلث قائم عند قاعدة المئذنة."
+          "content": "أطول ضلع هو $[IC]$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الارتفاع يقابل الزاوية."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الظل ثم اللمسة العكسية."
+          "content": "قارن $IC^2$ بـ $TI^2 + TC^2$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\tan x = \\dfrac{60}{75} = 0{,}8$ ومنه $x \\approx 38{,}66^{\\circ}$ ، أي $39^{\\circ}$ .",
-        "incorrect": "المقابل على المجاور، ثم القيس."
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي: كل مساواة تُكتب في مثلث قائم مسمّى، مع ذكر الضلعين المستعملين."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2,
-      "misconceptionSignatures": [
-        {
-          "value": "51",
-          "id": "MISC-MUTH-ZAWIYA-KHATI"
-        },
-        {
-          "value": "0.8",
-          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$IC^2 = 26^2 = 676$ و $TI^2 + TC^2 = 100 + 576 = 676$",
+          "لدينا $IC^2 = TI^2 + TC^2$ ، وحسب الخاصية العكسية لفيثاغورس فإن المثلث $TIC$ قائم في $T$ ."
+        ]
+      },
+      "timeSeconds": 300
     },
     {
       "id": "q2",
-      "statement": "ما طول خط النظر من كريم إلى قمة المئذنة مدوّرا إلى الوحدة (بالمتر)؟",
+      "step": "02",
+      "statement": "احسب مساحة القطعة $TIC$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muthallathat_P1",
           "role": "primary"
         }
       ],
+      "counted": false,
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح (مدوّر إلى الوحدة)",
-      "expectedAnswer": "96",
+      "answerFormat": "عدد: المساحة بـ m²",
+      "expectedAnswer": "120",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "خط النظر وتر المثلث."
+          "content": "في المثلث القائم في $T$ ، الضلعان $[TI]$ و $[TC]$ متعامدان."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الضلعان 60 و 75."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "خاصية فيثاغورس."
+          "content": "المساحة = نصف جداء ضلعي الزاوية القائمة."
         }
       ],
       "feedback": {
-        "correct": "$\\sqrt{75^2 + 60^2} = \\sqrt{9225} \\approx 96{,}05$ ، أي $96\\,\\mathrm{m}$ .",
-        "incorrect": "الوتر ليس مجموع الضلعين."
+        "correct": "$\\dfrac{10 \\times 24}{2} = 120\\,m^2$ .",
+        "incorrect": "ضلعا الزاوية القائمة هما $[TI]$ و $[TC]$ ، لا الوتر."
       },
-      "cognitiveDemand": "apply",
+      "solution": {
+        "lines": [
+          "المثلث $TIC$ قائم في $T$ : $S = \\dfrac{TI \\times TC}{2} = \\dfrac{10 \\times 24}{2}$"
+        ],
+        "result": "S = 120\\,m^2"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "sub": "ا",
+      "statement": "احسب $\\sin\\widehat{TCI}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "secondary"
+        }
+      ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال أو عدد عشري",
+      "expectedAnswer": "5/13",
       "misconceptionSignatures": [
         {
-          "value": "135",
-          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+          "value": "13/5",
+          "id": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "value": "12/13",
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المثلث $TIC$ القائم في $T$ : الوتر $[IC]$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضلع المقابل للزاوية $\\widehat{TCI}$ هو $[TI]$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin\\widehat{TCI} = \\dfrac{TI}{IC} = \\dfrac{10}{26} = \\dfrac{5}{13}$ .",
+        "incorrect": "الجيب = المقابل على الوتر، والمقابل لا يمرّ برأس الزاوية $C$ ."
+      },
+      "solution": {
+        "lines": [
+          "في المثلث $TIC$ القائم في $T$ : $\\sin\\widehat{TCI} = \\dfrac{TI}{IC} = \\dfrac{10}{26}$"
+        ],
+        "result": "\\sin\\widehat{TCI} = \\dfrac{5}{13}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "sub": "ب",
+      "statement": "استنتج الطول $TH$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال: القيمة المضبوطة للطول بـ m",
+      "expectedAnswer": "120/13",
+      "misconceptionSignatures": [
+        {
+          "value": "312/5",
+          "id": "MISC-MUTH-QISMA-BADAL-DARB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث $THC$ قائم في $H$ وله الزاوية $\\widehat{TCI}$ نفسها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في المثلث $THC$ : $\\sin\\widehat{TCH} = \\dfrac{TH}{TC}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$TH = 24 \\times \\dfrac{5}{13} = \\dfrac{120}{13}\\,\\mathrm{m}$ .",
+        "incorrect": "في المثلث $THC$ الوتر هو $[TC]$ والطول المطلوب في البسط: نضرب."
+      },
+      "solution": {
+        "lines": [
+          "في المثلث $THC$ القائم في $H$ : $\\sin\\widehat{TCH} = \\dfrac{TH}{TC}$",
+          "ومنه: $TH = TC \\times \\sin\\widehat{TCI} = 24 \\times \\dfrac{5}{13}$"
+        ],
+        "result": "TH = \\dfrac{120}{13}\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q5",
+      "step": "04",
+      "statement": "أعط المدوّر إلى الوحدة من الدرجة لقيس الزاوية $\\widehat{TCI}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: القيس بالدرجة مدوّرا إلى الوحدة",
+      "expectedAnswer": "23",
+      "misconceptionSignatures": [
+        {
+          "value": "67",
+          "id": "MISC-MUTH-NISBA-UKHRA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لدينا $\\sin\\widehat{TCI}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة العكسية للنسبة في آلة حاسبة مبرمجة على الدرجة، ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\widehat{TCI} \\approx 22{,}62^{\\circ}$ ، أي $23^{\\circ}$ .",
+        "incorrect": "استعمل اللمسة العكسية للجيب بالقيمة المضبوطة $\\dfrac{5}{13}$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\sin\\widehat{TCI} = \\dfrac{5}{13}$",
+          "باستعمال الآلة الحاسبة: $\\widehat{TCI} \\approx 22{,}6199^{\\circ}$"
+        ],
+        "result": "\\widehat{TCI} \\approx 23^{\\circ}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

@@ -86,11 +86,14 @@ i18n/locales/ar/tour.json   all tour text — ON-DEMAND namespace `tour`        
   - **By path:** the tour has a `path`, a react-router pattern matched
     exactly against the URL. This is how every workspace page is found.
   - **By declaration:** the tour has a `page` name instead of a path. The
-    component calls `useDeclarePageTour(page, enabled)`, the declaration takes
-    priority over the path tour, and it is withdrawn when the component
-    unmounts. This is for pages whose URL does not identify them, such as the
-    first module of any lesson. Outside a provider (visitor, admin) the hook
-    does nothing.
+    component calls `useDeclarePageTour(page, enabled, { autoStart })`, the
+    declaration takes priority over the path tour, and it is withdrawn when
+    the component unmounts. This is for pages whose URL does not identify
+    them: any lesson module (`lesson-module`) and any lesson overview
+    (`lesson-index`). With `autoStart: false` the tour never opens by itself
+    but the replay button still plays it: lesson modules other than the first
+    declare it that way. Outside a provider (visitor, admin) the hook does
+    nothing.
 - **Waiting for the server:** until `GET /me/tours` answers, no tour opens,
   so a tour already seen is never flashed. If the request fails, nothing
   opens.
@@ -146,7 +149,9 @@ i18n/locales/ar/tour.json   all tour text — ON-DEMAND namespace `tour`        
 | `student.notebook` | `/espace/cahier` | new note · search · views · filters (sidebar on desktop, button on phone) |
 | `student.class` | `/espace/qism` | current classes · teacher recommendations · join by code |
 | `student.profile` | `/espace/profil` | identity · access · settings |
-| `student.lesson` | **declared** by `ModuleLayout` on the FIRST module of any lesson (position 1, so « أستعدّ » when the lesson starts at module 00), never in وضع القسم | welcome · module header · position in the lesson · « 🧠 بطاقتي » knowledge map (`[data-km-trigger]`) · « 📓 كرّاسي » notebook (`[data-nb-trigger="lesson"]`) · المختبر (`[data-ml-overlay-trigger]`) · previous/next navigation |
+| `student.unit` | `/courses/:levelId/:gradeId/:chapterId/units/:unitId` | objectives · challenge · progress · first lesson card |
+| `student.lesson-index` | **declared** (`lesson-index`) by `LessonIndex`, never in وضع القسم | hero · tools (المختبر) · progress · الكفاءات (`[data-lesson-structure]`) · modules |
+| `student.lesson` | **declared** (`lesson-module`) by `ModuleLayout` on EVERY module, never in وضع القسم; opens by itself only on the first module (position 1, so « أستعدّ » when the lesson starts at module 00), replayable from any module | welcome · module header · position in the lesson · « 🧠 بطاقتي » knowledge map (`[data-km-trigger]`) · « 📓 كرّاسي » notebook (`[data-nb-trigger="lesson"]`) · المختبر (`[data-ml-overlay-trigger]`) · previous/next navigation |
 | `teacher.home` | `/enseignant` | welcome · usage · new class · classes · nav · replay button |
 | `teacher.courses` | `/enseignant/cours` | search · grades · ميادين · list |
 | `teacher.mathlab` | `/enseignant/atelier` | same targets as the student, teacher text |
@@ -156,11 +161,16 @@ i18n/locales/ar/tour.json   all tour text — ON-DEMAND namespace `tour`        
 | `teacher.reviews` | `/enseignant/tashih` | queue · class filter · an answer · send |
 | `teacher.plan` | `/enseignant/offre` | current plan · how-to · seats · activation code |
 | `teacher.profile` | `/enseignant/profil` | name |
+| `teacher.unit` | same path as `student.unit` | objectives · lesson card · محاور chips (`[data-lesson-modules]`) · مذكرة الدرس / وضع القسم (`[data-teacher-lesson-actions]`) |
+| `teacher.lesson-index` | same declaration as `student.lesson-index` | hero · tools (وضع القسم, المختبر) · الكفاءات · modules |
 | `teacher.lesson` | same declaration as `student.lesson` | same targets, teacher text (all modules open, no progress recorded) |
 
 The lesson tour plays **once per account across all lessons**, not once per
 lesson. Opening any lesson's first module after closing it does not reopen
-it.
+it. The same holds for `*.lesson-index` and `*.unit`: one tour for every
+lesson overview, one for every unit page. Until 2026-10-08 only the first
+module declared the lesson tour, so the replay button was missing on every
+other module, on the lesson overview and on the unit page.
 
 Shared components (catalogue, Math Lab, notebook) carry role-neutral hooks.
 Each role has its own key and its own text.

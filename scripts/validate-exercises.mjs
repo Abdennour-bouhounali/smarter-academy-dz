@@ -28,8 +28,8 @@ import { Rational } from '../packages/core/practice/rational.js';
 import { parseAffineAnswer } from '../packages/core/practice/affineCanonical.js';
 import { parseInterval } from '../packages/core/practice/intervalCompare.js';
 import { SUPPORTED_ANSWER_TYPES, parseIntegerSet, evaluateAnswer, isSuccessOutcome } from '../packages/core/practice/answerEvaluator.js';
-import { validateGeoFigure } from '../apps/web/src/lessons/common/components/geoFigure.js';
-import { validateSpaceFigure } from '../apps/web/src/lessons/common/components/spaceFigure.js';
+import { validateStatementFigure } from '../apps/web/src/lessons/common/components/statementFigure.js';
+import { figureQuality } from '../apps/web/src/lessons/common/components/geoFigure.js';
 
 const argv = process.argv.slice(2);
 const STRICT = argv.includes('--strict');
@@ -137,6 +137,15 @@ function validateExamPresentation(data, where) {
     if (!Array.isArray(table?.head) || !Array.isArray(table?.rows)) err(where, 'statement.table = { head: [...], rows: [[...]] }');
     else for (const [i, r] of table.rows.entries()) {
       if (!Array.isArray(r) || r.length !== table.head.length) err(where, `statement.table.rows[${i}] doit avoir ${table.head.length} cellules`);
+    }
+    // Une grille de tableur (`sheet: true`) : ['', 'A', 'B', …] puis des numéros de ligne consécutifs — « الخلية C3 » doit se lire.
+    if (table.sheet && Array.isArray(table.head) && Array.isArray(table.rows)) {
+      const letters = table.head.slice(1).every((h, i) => h === String.fromCharCode(65 + i));
+      if (table.head[0] !== '' || !letters) err(where, 'statement.table.sheet : head = [\'\', \'A\', \'B\', …]');
+      const nums = table.rows.map((r) => Number(r?.[0]));
+      if (!nums.every((n, i) => Number.isInteger(n) && n >= 1 && (i === 0 || n === nums[i - 1] + 1))) err(where, 'statement.table.sheet : première colonne = numéros de ligne consécutifs');
+    } else if (Array.isArray(table?.head) && table.head[0] === '' && table.head[1] === 'A' && table.head[2] === 'B') {
+      err(where, 'statement.table ressemble à une grille de tableur : poser sheet: true (lecture de gauche à droite)');
     }
   }
 
@@ -555,8 +564,13 @@ function validateExercise(file, data, ctx) {
   }
   checkVisualSize(data.statement?.visual, where);
   if (data.statement?.figure !== undefined) {
-    const validateFigure = data.statement.figure?.kind === 'space' ? validateSpaceFigure : validateGeoFigure;
-    for (const e of validateFigure(data.statement.figure)) err(where, `statement.figure : ${e}`);
+    for (const e of validateStatementFigure(data.statement.figure)) err(where, `statement.figure : ${e}`);
+    // Une feuille d'EXAMEN (2026-10-08, avant la géométrie : unités 9–13) : la figure plane doit être LISIBLE —
+    // pas de bande étroite, pas d'étiquette sur une autre (« figures du manuel : analyser puis redessiner »).
+    const fig = data.statement.figure;
+    if (data.metadata?.exam && fig && !fig.kind && validateStatementFigure(fig).length === 0) {
+      for (const e of figureQuality(fig)) err(where, `statement.figure illisible : ${e} — redessiner (même concept, réponses recalculées)`);
+    }
   }
   validateExamPresentation(data, where);
   if (data.statement?.support && !SUPPORT_LABS.has(data.statement.support.lab)) {

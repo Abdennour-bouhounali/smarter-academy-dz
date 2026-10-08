@@ -3,119 +3,191 @@
   "lessonCode": "talis-hisab-atwal",
   "level": 2,
   "metadata": {
-    "title": "تدريب — معامل التكبير",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2024 — OD و AC",
+    "estimatedMinutes": 7,
     "tags": [
-      "معامل التناسبية",
-      "تكبير"
+      "وضعية الفراشة",
+      "حساب طول"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_talis-hisab-atwal_P3",
-      "modelledOn": "know-2"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_talis-hisab-atwal_P2",
+      "modelledOn": "BEM 2024 I-4"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2024",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "المثلث AB′C′ في وضعية طالس مع المثلث ABC، حيث $AB = 8$ و $AB' = 12$ ، و B′ على امتداد $[AB]$ بعد B."
+    "content": "في الشكل المقابل، المستقيمان $(AB)$ و $(CD)$ متقاطعان في النقطة $O$ ، والمستقيمان $(AC)$ و $(BD)$ متوازيان. تعطى الأطوال: $OA = 45\\,mm$ ، $OB = 30\\,mm$ ، $OC = 60\\,mm$ و $BD = 28\\,mm$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0.0,
+          0.0
+        ],
+        "A": [
+          -4.228616793537,
+          1.539090644966
+        ],
+        "B": [
+          2.819077862358,
+          -1.026060429977
+        ],
+        "C": [
+          -5.43784672222,
+          -2.535709570444
+        ],
+        "D": [
+          3.625231148147,
+          1.690473046963
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B"
+        },
+        {
+          "from": "C",
+          "to": "D"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "arrows": 1
+        },
+        {
+          "from": "B",
+          "to": "D",
+          "arrows": 1
+        }
+      ],
+      "labels": {
+        "O": "n"
+      },
+      "ariaLabel": "المستقيمان (AB) و (CD) متقاطعان في O، والمستقيمان (AC) و (BD) متوازيان",
+      "maxWidth": 320
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب معامل التناسبية k الذي يحوّل ABC إلى AB′C′.",
+      "step": "01",
+      "statement": "احسب الطول $OD$ .",
       "learningPoints": [
         {
-          "code": "4am_talis-hisab-atwal_P3",
+          "code": "4am_talis-hisab-atwal_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "secondary"
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (كسر مثل 3/4 أو عشري بالفاصلة)",
-      "expectedAnswer": "1,5",
+      "answerFormat": "عدد: الطول بـ mm",
+      "expectedAnswer": "40",
       "misconceptionSignatures": [
         {
-          "id": "MISC-TALIS-MUAMIL-MAQLUB",
-          "value": "2/3"
-        },
-        {
-          "id": "MISC-TALIS-JAMA-BADAL-DARB",
-          "value": "4"
+          "value": "90",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+          "content": "النقط $O$ ، $B$ ، $A$ على استقامة والنقط $O$ ، $D$ ، $C$ على استقامة، و $(BD) \\parallel (AC)$ : المثلثان $OBD$ و $OAC$ في وضعية طالس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+          "content": "اكتب النسب الثلاث المتساوية $\\dfrac{OB}{OA} = \\dfrac{OD}{OC} = \\dfrac{BD}{AC}$ ، واحتفظ بالمساواة التي فيها $OD$ وثلاثة أطوال معلومة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+          "content": "احسب الطول المجهول بالجداء المتصالب (الرابع المتناسب)."
         }
       ],
       "feedback": {
-        "correct": "$k = \\dfrac{AB'}{AB} = \\dfrac{12}{8} = \\dfrac{3}{2}$ .",
-        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
-      }
+        "correct": "$\\dfrac{OB}{OA} = \\dfrac{OD}{OC}$ : $OD = \\dfrac{60 \\times 30}{45} = 40\\,mm$ .",
+        "incorrect": "راجع المساواة المختارة: في كل نسبة طول من المثلث الصغير على الطول الموافق له في المثلث الكبير، والأطوال كلها تُقاس من الرأس المشترك."
+      },
+      "solution": {
+        "lines": [
+          "النقط $A$ ، $O$ ، $B$ والنقط $C$ ، $O$ ، $D$ في استقامية، و $(AC) \\parallel (BD)$ (من المعطيات)،",
+          "وحسب خاصية طالس نجد: $\\dfrac{OB}{OA} = \\dfrac{OD}{OC} = \\dfrac{BD}{AC}$",
+          "$\\dfrac{30}{45} = \\dfrac{OD}{60}$",
+          "$OD = \\dfrac{60 \\times 30}{45}$"
+        ],
+        "result": "OD = 40\\,mm"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "المثلث AB′C′ هو:",
+      "step": "02",
+      "statement": "احسب الطول $AC$ .",
       "learningPoints": [
         {
-          "code": "4am_talis-hisab-atwal_P3",
+          "code": "4am_talis-hisab-atwal_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "secondary"
         }
       ],
       "difficulty": 2,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ mm",
+      "expectedAnswer": "42",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "تكبير للمثلث ABC",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "تصغير للمثلث ABC",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-MUAMIL-MAQLUB"
-        },
-        {
-          "id": "C",
-          "content": "ليس تكبيرا ولا تصغيرا",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-JAMA-BADAL-DARB"
+          "value": "56/3",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+          "content": "النقط $O$ ، $B$ ، $A$ على استقامة والنقط $O$ ، $D$ ، $C$ على استقامة، و $(BD) \\parallel (AC)$ : المثلثان $OBD$ و $OAC$ في وضعية طالس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+          "content": "اكتب النسب الثلاث المتساوية $\\dfrac{OB}{OA} = \\dfrac{OD}{OC} = \\dfrac{BD}{AC}$ ، واحتفظ بالمساواة التي فيها $AC$ وثلاثة أطوال معلومة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+          "content": "احسب الطول المجهول بالجداء المتصالب (الرابع المتناسب)."
         }
       ],
       "feedback": {
-        "correct": "$k = \\dfrac{3}{2} > 1$ : تكبير.",
-        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
-      }
+        "correct": "$\\dfrac{OB}{OA} = \\dfrac{BD}{AC}$ : $AC = \\dfrac{45 \\times 28}{30} = 42\\,mm$ .",
+        "incorrect": "راجع المساواة المختارة: في كل نسبة طول من المثلث الصغير على الطول الموافق له في المثلث الكبير، والأطوال كلها تُقاس من الرأس المشترك."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{OB}{OA} = \\dfrac{BD}{AC}$ أي $\\dfrac{30}{45} = \\dfrac{28}{AC}$",
+          "$AC = \\dfrac{45 \\times 28}{30}$"
+        ],
+        "result": "AC = 42\\,mm"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

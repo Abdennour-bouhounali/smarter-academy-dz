@@ -3,11 +3,11 @@
   "lessonCode": "hasiba-muthallathiya",
   "level": 1,
   "metadata": {
-    "title": "معارف 3 مثال 2 — الزاوية A",
+    "title": "شاشة الزاوية A حيث sin A = 0,4",
     "estimatedMinutes": 3,
     "tags": [
-      "التدوير",
-      "قيس زاوية"
+      "تدوير",
+      "اللمسات العكسية"
     ],
     "source": {
       "type": "textbook",
@@ -15,15 +15,22 @@
       "page": 120,
       "section": "معارف",
       "number": 3
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 120): $\\sin\\widehat{A} = 0{,}4$ . بالمراحل ⁦ON 2nd sin⁻¹ 0,4 =⁩ يظهر على الشاشة $23{,}57817848$ ."
+    "content": "$A$ زاوية حادة حيث $\\sin\\widehat{A} = 0{,}4$ . بالمراحل ⁦ON 2nd sin⁻¹ 0,4 =⁩ يظهر على الشاشة $23{,}57817848$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "قيس $\\widehat{A}$ بالتدوير إلى الوحدة (بالدرجة):",
+      "step": "01",
+      "statement": "أعط قيس $\\widehat{A}$ بالتدوير إلى الوحدة.",
       "learningPoints": [
         {
           "code": "4am_hasiba-muthallathiya_P3",
@@ -31,36 +38,96 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "answerFormat": "عدد طبيعي: قيس الزاوية بالدرجة، مدوّرا إلى الوحدة",
       "expectedAnswer": "24",
       "misconceptionSignatures": [
         {
-          "id": "MISC-MUTH-TADWIR-BATR",
-          "value": "23"
+          "value": "23",
+          "id": "MISC-MUTH-TADWIR-BATR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+          "content": "حدّد رقم الوحدات في العدد المعروض."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+          "content": "انظر إلى الرقم الموالي له مباشرة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+          "content": "إذا كان الرقم الموالي 5 أو أكبر نضيف 1 إلى آخر رقم نحتفظ به، وإلا نحتفظ به كما هو."
         }
       ],
       "feedback": {
-        "correct": "رقم الأجزاء من 10 هو 5: نضيف 1، $\\widehat{A} \\approx 24^{\\circ}$ .",
-        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
-      }
+        "correct": "$\\widehat{A} \\approx 24^{\\circ}$ .",
+        "incorrect": "المدوّر يتطلّب النظر إلى الرقم الموالي: الاكتفاء بحذف الأرقام (البتر) يعطي القيمة المقربة بالنقصان فقط."
+      },
+      "solution": {
+        "lines": [
+          "العدد المعروض: $23{,}57817848$ .",
+          "الرقم الذي يلي رقم الوحدات هو 5، وهو يساوي 5: نضيف 1 إلى رقم الوحدات."
+        ],
+        "result": "\\widehat{A} \\approx 24^{\\circ}"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "أعط قيس $\\widehat{A}$ بالتدوير إلى الجزء من 10.",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري: قيس الزاوية بالدرجة، مدوّرا إلى 0,1",
+      "expectedAnswer": "23.6",
+      "misconceptionSignatures": [
+        {
+          "value": "23.5",
+          "id": "MISC-MUTH-TADWIR-BATR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد رقم الأجزاء من 10 في العدد المعروض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له مباشرة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان الرقم الموالي 5 أو أكبر نضيف 1 إلى آخر رقم نحتفظ به، وإلا نحتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\widehat{A} \\approx 23{,}6^{\\circ}$ .",
+        "incorrect": "المدوّر يتطلّب النظر إلى الرقم الموالي: الاكتفاء بحذف الأرقام (البتر) يعطي القيمة المقربة بالنقصان فقط."
+      },
+      "solution": {
+        "lines": [
+          "العدد المعروض: $23{,}57817848$ .",
+          "الرقم الذي يلي رقم الأجزاء من 10 هو 7، وهو أكبر من 5: نضيف 1 إلى رقم الأجزاء من 10."
+        ],
+        "result": "\\widehat{A} \\approx 23{,}6^{\\circ}"
+      },
+      "timeSeconds": 60
     }
   ]
 }

@@ -3,72 +3,134 @@
   "lessonCode": "wadiya-idmajiya-muthallathat",
   "level": 1,
   "metadata": {
-    "title": "تدريب — المسافة الكلية",
-    "estimatedMinutes": 3,
+    "title": "المسافة الكلية ثم زاوية النظر إلى قمة عمارة",
+    "estimatedMinutes": 5,
     "tags": [
-      "خط النظر",
-      "المسافة"
+      "ترييض",
+      "الظل"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-muthallathat_P2",
-      "modelledOn": "situation"
+      "modelledOn": "situation",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-muthallathat-l1-010"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
-  "generator": {
-    "tool": "gen_bank.py",
-    "version": "1"
-  },
   "statement": {
-    "content": "وقف رضا على بعد $3{,}2\\,\\mathrm{m}$ من عمود، والعمود على بعد $46{,}8\\,\\mathrm{m}$ من قاعدة عمارة، والنقط الثلاث على استقامة (العمود بين رضا والعمارة)."
+    "content": "وقف رضا في النقطة $A$ على بعد $3{,}2\\,\\mathrm{m}$ من عمود شاقولي، والعمود على بعد $46{,}8\\,\\mathrm{m}$ من قاعدة $M$ عمارة شاقولية ارتفاعها $30\\,\\mathrm{m}$ ، والنقط الثلاث على استقامة واحدة من الأرض الأفقية (العمود بين رضا والعمارة، ونهمل طول رضا)."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما المسافة بين رضا وقاعدة العمارة (بالمتر)؟",
+      "step": "01",
+      "statement": "احسب المسافة $AM$ بين رضا وقاعدة العمارة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muthallathat_P2",
           "role": "primary"
         }
       ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "عدد: المسافة بـ m",
       "expectedAnswer": "50",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العمود بين رضا والعمارة."
+          "content": "العمود بين رضا والعمارة على الاستقامة نفسها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المسافتان متتاليتان على الخط نفسه."
+          "content": "المسافة الكلية مجموع المسافتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$AM = 3{,}2 + 46{,}8 = 50\\,\\mathrm{m}$ .",
+        "incorrect": "العمود بين النقطتين: اجمع المسافتين."
+      },
+      "solution": {
+        "lines": [
+          "العمود بين $A$ و $M$ على الاستقامة نفسها، إذن:",
+          "$AM = 3{,}2 + 46{,}8$"
+        ],
+        "result": "AM = 50\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "أعط المدوّر إلى الوحدة من الدرجة لقيس الزاوية بين الأرض وخط نظر رضا إلى قمة العمارة.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: القيس بالدرجة مدوّرا إلى الوحدة",
+      "expectedAnswer": "31",
+      "misconceptionSignatures": [
+        {
+          "value": "59",
+          "id": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "value": "0.6",
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
+        },
+        {
+          "value": "33",
+          "id": "MISC-MUTH-TALIS-NAZAR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المثلث القائم: رضا، قاعدة العمارة، قمتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الارتفاع مقابل للزاوية والمسافة $AM$ مجاورة لها: استعمل الظل."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع المسافتين."
+          "content": "استعمل اللمسة العكسية للنسبة في آلة حاسبة مبرمجة على الدرجة، ثم دوّر في آخر الحساب."
         }
       ],
       "feedback": {
-        "correct": "$3{,}2 + 46{,}8 = 50\\,\\mathrm{m}$ : هذه هي المسافة التي تظهر في خاصية طالس.",
-        "incorrect": "المسافة من الملاحظ إلى العمارة تمرّ بالعمود."
+        "correct": "$\\tan x = \\dfrac{30}{50} = 0{,}6$ ، ومنه $x \\approx 30{,}96^{\\circ}$ أي $31^{\\circ}$ .",
+        "incorrect": "المسافة المجاورة هي المسافة من رضا إلى قاعدة العمارة كلها، لا من العمود."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 1,
-      "misconceptionSignatures": [
-        {
-          "value": "46.8",
-          "id": "MISC-MUTH-TALIS-NAZAR"
-        },
-        {
-          "value": "43.6",
-          "id": "MISC-MUTH-TALIS-NAZAR"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "في المثلث القائم في $M$ : $\\tan x = \\dfrac{30}{AM} = \\dfrac{30}{50} = 0{,}6$",
+          "باستعمال الآلة الحاسبة: $x \\approx 30{,}9638^{\\circ}$"
+        ],
+        "result": "x \\approx 31^{\\circ}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

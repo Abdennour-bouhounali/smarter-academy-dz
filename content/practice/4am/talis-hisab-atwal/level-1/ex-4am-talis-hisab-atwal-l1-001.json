@@ -3,10 +3,11 @@
   "lessonCode": "talis-hisab-atwal",
   "level": 1,
   "metadata": {
-    "title": "أستعدّ 1 — الرابع المتناسب",
+    "title": "الرابع المتناسب",
     "estimatedMinutes": 3,
     "tags": [
-      "الرابع المتناسب"
+      "الرابع المتناسب",
+      "الجداء المتصالب"
     ],
     "source": {
       "type": "textbook",
@@ -14,15 +15,22 @@
       "page": 103,
       "section": "أستعدّ",
       "number": 1
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 103): المساواة $\\dfrac{3}{4} = \\dfrac{1{,}5}{x}$ ."
+    "content": ""
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "قيمة x هي:",
+      "step": "01",
+      "statement": "عيّن العدد $x$ حيث: $\\dfrac{3}{4} = \\dfrac{1{,}5}{x}$ .",
       "learningPoints": [
         {
           "code": "4am_talis-hisab-atwal_P2",
@@ -30,36 +38,47 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
+      "answerFormat": "عدد (عشري بالفاصلة مثل 2,75 أو كسر مثل 7/9)",
       "expectedAnswer": "2",
       "misconceptionSignatures": [
         {
-          "id": "MISC-TALIS-NISBA-MAQLUBA",
-          "value": "1,125"
+          "value": "1,125",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+          "content": "المساواة $\\dfrac{a}{b} = \\dfrac{c}{x}$ تساوي بين نسبتين: $x$ هو الرابع المتناسب."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+          "content": "اكتب الجداء المتصالب: $3 \\times x = 4 \\times 1{,}5$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+          "content": "اقسم طرفي المساواة على 3."
         }
       ],
       "feedback": {
-        "correct": "$3 \\times x = 4 \\times 1{,}5 = 6$ إذن $x = 2$ .",
-        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
-      }
+        "correct": "$3x = 4 \\times 1{,}5 = 6$ ومنه $x = 2$ .",
+        "incorrect": "اكتب الجداء المتصالب (البسط الأول في المقام الثاني) ثم اقسم على معامل $x$ ."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{3}{4} = \\dfrac{1{,}5}{x}$ معناه: $3 \\times x = 4 \\times 1{,}5$ (الجداء المتصالب)",
+          "$3x = 6$",
+          "$x = \\dfrac{6}{3}$"
+        ],
+        "result": "x = 2"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

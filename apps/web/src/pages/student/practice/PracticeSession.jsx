@@ -153,6 +153,8 @@ export default function PracticeSession() {
   }, [token, lessonCode]);
   const [attemptUuid, setAttemptUuid] = useState(null);
   const [evaluation, setEvaluation] = useState(null);
+  // La question dont le corrigé type a été OUVERT : plus de « أعِد المحاولة » pour elle (propriétaire, 2026-10-08).
+  const [solutionSeenFor, setSolutionSeenFor] = useState(null);
   // Vrai quand le verdict du serveur a contredit la prédiction locale : la
   // note « تم التحقق من إجابتك على الخادم » s'affiche sous le retour.
   const [serverOverrode, setServerOverrode] = useState(false);
@@ -284,6 +286,8 @@ export default function PracticeSession() {
   }, [session, currentId, lessonCode]);
 
   const question = exercise?.questions?.[questionIndex] ?? null;
+  // Une clé par question d'UN exercice (l'id de question « q1 » se répète d'un exercice à l'autre).
+  const questionKey = `${exercise?.id ?? ''}:${question?.id ?? questionIndex}`;
 
   // Le titre de l'exercice, AUGMENTÉ du numéro de question :
   //   « تمرين 2 — القسمة على 6 »  →  « تمرين 2 — السؤال 1 : القسمة على 6 »
@@ -853,7 +857,7 @@ export default function PracticeSession() {
     {/* Le corrigé type se MÉRITE (propriétaire, 2026-10-06) : seulement après
         une vraie tentative. Une saisie illisible (`syntax_error`) ou vide
         n'ouvre rien. */}
-    {answered && !isSelfCheck && !isInertOutcome(evaluation.outcome) && question.solution && (!isExam || solutionReady(exercise.questions, questionIndex, questionIndex)) && <SolutionPanel solution={question.solution} />}
+    {answered && !isSelfCheck && !isInertOutcome(evaluation.outcome) && question.solution && (!isExam || solutionReady(exercise.questions, questionIndex, questionIndex)) && <SolutionPanel solution={question.solution} onReveal={() => setSolutionSeenFor(questionKey)} />}
 
     {/* La correction de l'enseignant : son avis attendu sur une réponse déjà
         jugée, ou son verdict et son commentaire arrivés. */}
@@ -865,7 +869,8 @@ export default function PracticeSession() {
     {/* Feuille d'examen : UNE tentative par étape, comme à l'examen — la
         réponse est enregistrée et verrouillée, le corrigé type est visible :
         pas de « أعد المحاولة ». */}
-    {answered && !evaluation.isCorrect && !isSelfCheck && !isExam && (
+    {/* Corrigé type ouvert : la réponse est sous les yeux — la retaper ne prouverait rien. */}
+    {answered && !evaluation.isCorrect && !isSelfCheck && !isExam && solutionSeenFor !== questionKey && (
       <button type="button" disabled={busy} onClick={retry} className={SECONDARY_BUTTON} data-retry>
         <RotateCcw className="h-4 w-4" aria-hidden="true" />
         {t('practice.retry')}

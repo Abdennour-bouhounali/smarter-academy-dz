@@ -67,6 +67,7 @@ export const LESSON_CONFIG = {
     // Le support de la مسألة 1, montré aussi par la carte « مسألة الدرس » (une seule source).
     table: {
       caption: 'السطر الأول من المجدول: عدد الكلمات في دقيقة',
+      sheet: true, // grille de tableur : de gauche à droite (ProblemTable)
       head: ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'],
       rows: [['1', '28', '35', '22', '33', '40', '31', '35', '26', '38']],
     },

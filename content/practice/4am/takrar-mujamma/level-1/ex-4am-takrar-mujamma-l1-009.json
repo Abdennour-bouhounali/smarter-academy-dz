@@ -3,10 +3,11 @@
   "lessonCode": "takrar-mujamma",
   "level": 1,
   "metadata": {
-    "title": "أستعدّ 4 — مخطط دائري",
-    "estimatedMinutes": 3,
+    "title": "تكرارات مخطط دائري",
+    "estimatedMinutes": 4,
     "tags": [
-      "التواتر"
+      "التواتر",
+      "التواتر المجمع الصاعد"
     ],
     "source": {
       "type": "textbook",
@@ -14,15 +15,42 @@
       "page": 91,
       "section": "أستعدّ",
       "number": 4
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 91): مخطط دائري بثلاثة قطاعات مكتوب عليها 40 و 10 و 30 يمثل جدولا تكراراته النسبية 0,5 و 0,125 و 0,375 (بالترتيب نفسه)."
+    "content": "يمثّل المخطط الدائري الآتي توزيع قيم سلسلة إحصائية على ثلاث فئات، والأعداد المكتوبة على قطاعاته هي تكرارات هذه الفئات:",
+    "figure": {
+      "kind": "chart",
+      "type": "pie",
+      "show": "value",
+      "ariaLabel": "مخطط دائري بثلاثة قطاعات تكراراتها 40 و 10 و 30",
+      "parts": [
+        {
+          "label": "$10 \\le a < 20$",
+          "value": 40
+        },
+        {
+          "label": "$20 \\le a < 30$",
+          "value": 10
+        },
+        {
+          "label": "$30 \\le a \\le 40$",
+          "value": 30
+        }
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل المخطط الدائري يمثّل الجدول؟",
+      "step": "01",
+      "statement": "احسب التكرار الكلي، ثم التواتر (التكرار النسبي) للفئة $20 \\le a < 30$ .",
       "learningPoints": [
         {
           "code": "4am_takrar-mujamma_P2",
@@ -30,47 +58,97 @@
         }
       ],
       "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة أو كسر على الشكل a/b",
+      "expectedAnswer": "0,125",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "صحيح: $\\dfrac{40}{80} = 0{,}5$ ، $\\dfrac{10}{80} = 0{,}125$ ، $\\dfrac{30}{80} = 0{,}375$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "خطأ: التكرارات النسبية يجب أن تكون 40 و 10 و 30",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-TAWATUR-BILA-QISMA"
-        },
-        {
-          "id": "C",
-          "content": "خطأ: مجموع التكرارات النسبية لا يساوي 1",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-QIRAA-MUKHATTAT"
+          "value": "10",
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+          "content": "التواتر = تكرار الفئة ÷ التكرار الكلي."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+          "content": "اجمع التكرارات الثلاثة أولا لتجد التكرار الكلي."
+        }
+      ],
+      "feedback": {
+        "correct": "$40 + 10 + 30 = 80$ ثم $\\dfrac{10}{80} = 0{,}125$ .",
+        "incorrect": "اقسم تكرار الفئة على مجموع كل التكرارات."
+      },
+      "solution": {
+        "lines": [
+          "التكرار الكلي: $40 + 10 + 30 = 80$",
+          "تواتر الفئة: $\\dfrac{10}{80} = 0{,}125$"
+        ],
+        "result": "0{,}125"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب التواتر المجمع الصاعد للفئة $20 \\le a < 30$ .",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة أو كسر على الشكل a/b",
+      "expectedAnswer": "0,625",
+      "misconceptionSignatures": [
+        {
+          "value": "50",
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA"
+        },
+        {
+          "value": "0,5",
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التواتر المجمع الصاعد هو التكرار المجمع الصاعد مقسوما على التكرار الكلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب أولا التكرار المجمع الصاعد ثم اقسمه على التكرار الكلي للسلسلة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+          "content": "تحقّق: التواتر عدد بين 0 و 1، والتواتر المجمع الصاعد لآخر عمود يساوي 1."
         }
       ],
       "feedback": {
-        "correct": "التكرار الكلي $80$ ، وكل تكرار مقسوما على 80 يعطي التكرار النسبي المكتوب.",
-        "incorrect": "راجع التعريف: أي القيم تدخل في المجموع؟"
-      }
+        "correct": "$\\dfrac{50}{80} = 0{,}625$ .",
+        "incorrect": "لا تكتف بالتكرار المجمع: اقسمه على التكرار الكلي للسلسلة."
+      },
+      "solution": {
+        "lines": [
+          "التكرار المجمع الصاعد للفئة $20 \\le a < 30$ : $40 + 10 = 50$",
+          "التواتر المجمع الصاعد = التكرار المجمع الصاعد ÷ التكرار الكلي:",
+          "$\\dfrac{50}{80} = 0{,}625$"
+        ],
+        "result": "0{,}625"
+      },
+      "timeSeconds": 120
     }
   ]
 }

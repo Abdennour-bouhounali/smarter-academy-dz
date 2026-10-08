@@ -32,8 +32,7 @@
  * Voir docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
  */
 
-import { validateGeoFigure } from '../components/geoFigure.js';
-import { validateSpaceFigure } from '../components/spaceFigure.js';
+import { validateStatementFigure } from '../components/statementFigure.js';
 
 /** Les props de CoordPlane qu'un `problem.visual` peut porter — la même liste fermée que la pratique
  *  (scripts/validate-exercises.mjs › COORDPLANE_PROPS) : une faute de frappe rendrait un plan vide. */
@@ -91,7 +90,7 @@ export function validateProblem(problem) {
 
   // Le support de l'énoncé (facultatif) : figure GeoFigure / SpaceFigure, repère CoordPlane, tableau.
   if (problem.figure != null) {
-    const figErrors = problem.figure.kind === 'space' ? validateSpaceFigure(problem.figure) : validateGeoFigure(problem.figure);
+    const figErrors = validateStatementFigure(problem.figure);
     for (const e of figErrors) at(`figure: ${e}`);
   }
   // Un énoncé qui RENVOIE à un support le montre (règle du propriétaire : jamais « الشكل المقابل » sans figure).

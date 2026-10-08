@@ -3,85 +3,133 @@
   "lessonCode": "mada-wasit-mutawassit",
   "level": 2,
   "metadata": {
-    "title": "نشاط 4 (ص 93) — حرارة الوادي",
-    "estimatedMinutes": 3,
+    "title": "سلسلة تكرارها الكلي 7 ووسيطها 7",
+    "estimatedMinutes": 4,
     "tags": [
-      "مدى",
-      "متوسط"
+      "الوسيط",
+      "قيمة مجهولة"
     ],
     "source": {
       "type": "textbook",
-      "elementId": "act-4",
-      "page": 93,
-      "section": "أنشطة",
-      "number": 4
+      "elementId": "ex-9",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 9,
+      "adaptedFrom": "ex-4am-mada-wasit-mutawassit-l3-008"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 93): درجات الحرارة القصوى بمدينة الوادي في الأيام العشرة الأولى من جوان: $40$ ، $35$ ، $34$ ، $41$ ، $48$ ، $37$ ، $35$ ، $46$ ، $37$ ، $40$ ."
+    "content": "نريد سلسلة إحصائية تكرارها الكلي 7 ووسيطها 7."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "مدى هذه السلسلة هو:",
+      "step": "01",
+      "statement": "بعد ترتيب قيم هذه السلسلة تصاعديا، ما هي رتبة القيمة التي تساوي الوسيط؟",
       "learningPoints": [
         {
-          "code": "4am_mada-wasit-mutawassit_P1",
+          "code": "4am_mada-wasit-mutawassit_P3",
           "role": "primary"
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "14",
+      "answerFormat": "عدد طبيعي: الرتبة",
+      "expectedAnswer": "4",
       "misconceptionSignatures": [
         {
-          "id": "MISC-IHSA-MADA-AKBAR-QIMA",
-          "value": "48"
+          "value": "3,5",
+          "id": "MISC-IHSA-WASIT-RUTBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "أكبر قيمة $48$."
+          "content": "عدد القيم يحدّد رتبة الوسيط في السلسلة المرتّبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل التكرار الكلي فردي أم زوجي؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "N فردي: الرتبة $\\dfrac{N + 1}{2}$ ؛ N زوجي: الرتبتان $\\dfrac{N}{2}$ و $\\dfrac{N}{2} + 1$ ."
         }
       ],
       "feedback": {
-        "correct": "$48 - 34 = 14$ .",
-        "incorrect": "أصغر قيمة $34$."
-      }
+        "correct": "$\\dfrac{7 + 1}{2} = 4$ .",
+        "incorrect": "عدد القيم فردي: الوسيط هو القيمة التي تترك قبلها وبعدها العدد نفسه من القيم."
+      },
+      "solution": {
+        "lines": [
+          "عدد القيم 7 عدد فردي، فالوسيط هو القيمة ذات الرتبة $\\dfrac{7 + 1}{2} = 4$ ."
+        ],
+        "result": "4"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "متوسط هذه السلسلة هو:",
+      "step": "02",
+      "statement": "ستّ قيم من هذه السلسلة هي: 13 ، 1 ، 9 ، 3 ، 11 ، 5 . ما هي القيمة السابعة؟",
       "learningPoints": [
         {
-          "code": "4am_mada-wasit-mutawassit_P2",
+          "code": "4am_mada-wasit-mutawassit_P3",
           "role": "primary"
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "reason",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "39,3",
+      "answerFormat": "عدد (بالفاصلة العشرية إن لزم)",
+      "expectedAnswer": "7",
       "misconceptionSignatures": [
         {
-          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
-          "value": "41"
+          "value": "6",
+          "id": "MISC-IHSA-WASIT-BILA-TARTIB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "مجموع القيم $393$."
+          "content": "رتّب القيم الست المعطاة تصاعديا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القيمة الرابعة في السلسلة المرتّبة يجب أن تساوي الوسيط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جرّب: أين تقع القيمة السابعة إذا كانت أصغر من 5؟ أكبر من 9؟ بينهما؟"
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{393}{10} = 39{,}3$ .",
-        "incorrect": "اجمع القيم العشر واقسم على 10."
-      }
+        "correct": "القيمة السابعة هي 7 .",
+        "incorrect": "رتّب القيم الست، ثم ابحث عن القيمة التي تجعل الرتبة الرابعة تساوي الوسيط."
+      },
+      "solution": {
+        "lines": [
+          "ترتيب القيم الست: 1 ، 3 ، 5 ، 9 ، 11 ، 13",
+          "إذا كانت القيمة السابعة $x \\le 5$ فإن الرتبة 4 تحمل 5، وإذا كانت $x \\ge 9$ فإن الرتبة 4 تحمل 9.",
+          "إذن $5 < x < 9$ ، والرتبة 4 تحمل $x$ نفسها: $x = 7$ .",
+          "السلسلة: 1 ، 3 ، 5 ، 7 ، 9 ، 11 ، 13"
+        ],
+        "result": "7"
+      },
+      "timeSeconds": 180
     }
   ]
 }

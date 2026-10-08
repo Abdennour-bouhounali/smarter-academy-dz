@@ -3,51 +3,61 @@
   "lessonCode": "talis-hisab-atwal",
   "level": 1,
   "metadata": {
-    "title": "تدريب — وضعية الفراشة",
-    "estimatedMinutes": 3,
+    "title": "وضعية الفراشة — PQ والنسبة OL/OQ",
+    "estimatedMinutes": 5,
     "tags": [
-      "وضعية الفراشة"
+      "وضعية الفراشة",
+      "حساب طول"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_talis-hisab-atwal_P1",
-      "modelledOn": "know-1"
+      "modelledOn": "know-1",
+      "adaptedFrom": "ex-4am-talis-hisab-atwal-l1-008"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في الشكل، المستقيمان $(KP)$ و $(LQ)$ متقاطعان في O، و $(KL) \\parallel (PQ)$ ، و K و L من جهة و P و Q من الجهة الأخرى للنقطة O.",
+    "content": "في الشكل المقابل، المستقيمان $(KP)$ و $(LQ)$ متقاطعان في $O$ ، و $(KL) \\parallel (PQ)$ ؛ $OK = 2$ ، $OP = 3$ و $KL = 2{,}4$ .",
     "figure": {
       "points": {
         "O": [
-          0,
-          0
+          0.0,
+          0.0
         ],
         "K": [
-          -1.099,
-          2.356
+          -0.845236523481,
+          1.812615574073
         ],
         "L": [
-          1.127,
-          2.119
+          0.820848343982,
+          2.255262289886
         ],
         "P": [
-          1.539,
-          -3.298
+          1.267854785222,
+          -2.71892336111
         ],
         "Q": [
-          -1.578,
-          -2.967
+          -1.231272515972,
+          -3.382893434829
         ]
       },
       "segments": [
         {
           "from": "O",
-          "to": "K"
+          "to": "K",
+          "label": "2"
         },
         {
           "from": "O",
-          "to": "P"
+          "to": "P",
+          "label": "3"
         },
         {
           "from": "O",
@@ -60,23 +70,24 @@
         {
           "from": "K",
           "to": "L",
+          "label": "2,4",
           "arrows": 1
         },
         {
           "from": "P",
           "to": "Q",
-          "arrows": 1,
-          "tone": "indigo"
+          "arrows": 1
         }
       ],
-      "ariaLabel": "(KP) و (LQ) متقاطعان في O، و (KL) يوازي (PQ)",
-      "maxWidth": 220
+      "ariaLabel": "المستقيمان (KP) و (LQ) متقاطعان في O، K و L من جهة و P و Q من الجهة الأخرى، و (KL) يوازي (PQ)؛ OK = 2 و OP = 3 و KL = 2,4",
+      "maxWidth": 280
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ينتج:",
+      "step": "01",
+      "statement": "احسب النسبة $\\dfrac{OL}{OQ}$ .",
       "learningPoints": [
         {
           "code": "4am_talis-hisab-atwal_P1",
@@ -84,47 +95,98 @@
         }
       ],
       "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر مثل 3/4 أو عدد عشري",
+      "expectedAnswer": "2/3",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\dfrac{OP}{OK} = \\dfrac{OQ}{OL} = \\dfrac{PQ}{KL}$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "لا تطبق خاصية طالس لأن النقط من جهتين مختلفتين للنقطة O",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{OP}{OL} = \\dfrac{OQ}{OK} = \\dfrac{PQ}{KL}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+          "value": "1,5",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+          "content": "المثلثان $OKL$ و $OPQ$ في وضعية طالس (وضعية الفراشة)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+          "content": "النسبة $\\dfrac{OL}{OQ}$ تساوي نسبة أخرى معلومة الحدّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{OL}{OQ} = \\dfrac{OK}{OP} = \\dfrac{2}{3}$ .",
+        "incorrect": "في كل نسبة ضلع من المثلث $OKL$ على الضلع الموافق له في $OPQ$ ."
+      },
+      "solution": {
+        "lines": [
+          "$(KL) \\parallel (PQ)$ و $(KP)$ ، $(LQ)$ متقاطعان في $O$ ، حسب خاصية طالس:",
+          "$\\dfrac{OK}{OP} = \\dfrac{OL}{OQ} = \\dfrac{KL}{PQ}$",
+          "ومنه $\\dfrac{OL}{OQ} = \\dfrac{OK}{OP}$"
+        ],
+        "result": "\\dfrac{OL}{OQ} = \\dfrac{2}{3}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب $PQ$ .",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة مثل 2,75 أو كسر مثل 7/9)",
+      "expectedAnswer": "3,6",
+      "misconceptionSignatures": [
+        {
+          "value": "1,6",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النقط $O$ ، $K$ ، $P$ على استقامة والنقط $O$ ، $L$ ، $Q$ على استقامة، و $(KL) \\parallel (PQ)$ : المثلثان $OKL$ و $OPQ$ في وضعية طالس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث المتساوية $\\dfrac{OK}{OP} = \\dfrac{OL}{OQ} = \\dfrac{KL}{PQ}$ ، واحتفظ بالمساواة التي فيها $PQ$ وثلاثة أطوال معلومة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+          "content": "احسب الطول المجهول بالجداء المتصالب (الرابع المتناسب)."
         }
       ],
       "feedback": {
-        "correct": "خاصية طالس صحيحة في وضعية الفراشة أيضا: P يقابل K و Q يقابل L.",
-        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
-      }
+        "correct": "$PQ = \\dfrac{2{,}4 \\times 3}{2} = 3{,}6$ .",
+        "incorrect": "راجع المساواة المختارة: في كل نسبة طول من المثلث الصغير على الطول الموافق له في المثلث الكبير، والأطوال كلها تُقاس من الرأس المشترك."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{OK}{OP} = \\dfrac{KL}{PQ}$ أي $\\dfrac{2}{3} = \\dfrac{2{,}4}{PQ}$",
+          "$PQ = \\dfrac{2{,}4 \\times 3}{2}$"
+        ],
+        "result": "PQ = 3{,}6"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

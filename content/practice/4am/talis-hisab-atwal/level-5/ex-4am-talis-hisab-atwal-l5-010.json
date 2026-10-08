@@ -3,177 +3,271 @@
   "lessonCode": "talis-hisab-atwal",
   "level": 5,
   "metadata": {
-    "title": "تمرين 26 — منصف الزاوية",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2024 — شعار النادي ولافتة الملعب",
+    "estimatedMinutes": 20,
     "tags": [
-      "برهان",
-      "النسب المتساوية"
+      "وضعية إدماجية",
+      "خاصية طالس",
+      "تكبير"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "ex-26",
-      "page": 113,
-      "section": "أتعمّق",
-      "number": 26
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_talis-hisab-atwal_P3",
+      "modelledOn": "BEM 2024 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2024",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 113): RST مثلث. منصف زاوية الرأس R يقطع $[ST]$ في P. المستقيم الذي يشمل T ويوازي $(RP)$ يقطع $(SR)$ في E.",
+    "content": "شعار نادٍ رياضي مثلث $ABC$ يقطعه شريط $[MN]$ موازٍ لـ $(BC)$ ، حيث $M$ من $[AB]$ و $N$ من $[AC]$ . على بطاقة النادي: $AB = 6\\,\\mathrm{cm}$ ، $AM = 2\\,\\mathrm{cm}$ و $BC = 4{,}5\\,\\mathrm{cm}$ . لافتة الملعب تكبير لهذا الشعار بمعامل $k = 25$ .",
     "figure": {
       "points": {
-        "S": [
-          0,
-          0
+        "A": [
+          0.0,
+          5.562148865322
         ],
-        "T": [
-          6,
-          0
+        "B": [
+          -2.25,
+          0.0
         ],
-        "R": [
-          1.5,
-          3
+        "C": [
+          2.25,
+          0.0
         ],
-        "P": [
-          2.297,
-          0
+        "M": [
+          -0.75,
+          3.708099243548
         ],
-        "E": [
-          3.919,
-          7.837
+        "N": [
+          0.75,
+          3.708099243548
         ]
       },
       "segments": [
         {
-          "from": "S",
-          "to": "T"
+          "from": "A",
+          "to": "M",
+          "label": "2"
         },
         {
-          "from": "S",
-          "to": "E"
+          "from": "M",
+          "to": "B"
         },
         {
-          "from": "R",
-          "to": "T"
+          "from": "A",
+          "to": "C"
         },
         {
-          "from": "R",
-          "to": "P",
+          "from": "B",
+          "to": "C",
+          "label": "4,5",
           "arrows": 1
         },
         {
-          "from": "T",
-          "to": "E",
-          "arrows": 1
+          "from": "M",
+          "to": "N",
+          "arrows": 1,
+          "tone": "amber"
         }
       ],
-      "ariaLabel": "المثلث RST، P على [ST] و E على امتداد [SR]، و (RP) يوازي (TE)",
-      "maxWidth": 240
+      "labels": {
+        "A": "n"
+      },
+      "ariaLabel": "الشعار: المثلث ABC والشريط [MN] يوازي (BC)، M من [AB] و N من [AC]؛ AB = 6 و AM = 2 و BC = 4,5",
+      "maxWidth": 260
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "لإثبات $\\dfrac{ST}{SP} = \\dfrac{SE}{SR}$ نستعمل:",
+      "step": "01",
+      "statement": "احسب الطول $MN$ على البطاقة.",
       "learningPoints": [
         {
-          "code": "4am_talis-hisab-atwal_P1",
+          "code": "4am_talis-hisab-atwal_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 5,
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ cm",
+      "expectedAnswer": "1,5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "المثلثين SRP و SET في وضعية طالس لأن $(RP) \\parallel (TE)$",
-          "isCorrect": true
+          "value": "13,5",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         },
         {
-          "id": "B",
-          "content": "المثلثين RPT و RTE لأن لهما الضلع $[RT]$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
-        },
-        {
-          "id": "C",
-          "content": "أن P منتصف $[ST]$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+          "value": "2,25",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+          "content": "النقط $A$ ، $M$ ، $B$ على استقامة والنقط $A$ ، $N$ ، $C$ على استقامة، و $(MN) \\parallel (BC)$ : المثلثان $AMN$ و $ABC$ في وضعية طالس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+          "content": "اكتب النسب الثلاث المتساوية $\\dfrac{AM}{AB} = \\dfrac{AN}{AC} = \\dfrac{MN}{BC}$ ، واحتفظ بالمساواة التي فيها $MN$ وثلاثة أطوال معلومة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+          "content": "احسب الطول المجهول بالجداء المتصالب (الرابع المتناسب)."
         }
       ],
       "feedback": {
-        "correct": "المستقيمان $(ST)$ و $(SE)$ متقاطعان في S و $(RP) \\parallel (TE)$ : $\\dfrac{SP}{ST} = \\dfrac{SR}{SE}$ ، ومنه $\\dfrac{ST}{SP} = \\dfrac{SE}{SR}$ .",
-        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
-      }
+        "correct": "$MN = \\dfrac{4{,}5 \\times 2}{6} = 1{,}5\\,\\mathrm{cm}$ .",
+        "incorrect": "راجع المساواة المختارة: في كل نسبة طول من المثلث الصغير على الطول الموافق له في المثلث الكبير، والأطوال كلها تُقاس من الرأس المشترك."
+      },
+      "solution": {
+        "lines": [
+          "لدينا: النقط $A$ ، $M$ ، $B$ على استقامة واحدة، والنقط $A$ ، $N$ ، $C$ على استقامة واحدة، و $(MN) \\parallel (BC)$ (من المعطيات) .",
+          "حسب خاصية طالس: $\\dfrac{AM}{AB} = \\dfrac{AN}{AC} = \\dfrac{MN}{BC}$",
+          "$\\dfrac{2}{6} = \\dfrac{MN}{4{,}5}$",
+          "$MN = \\dfrac{4{,}5 \\times 2}{6}$"
+        ],
+        "result": "MN = 1{,}5\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "ثم نستنتج $\\dfrac{PT}{SP} = \\dfrac{RE}{SR}$ :",
+      "step": "02",
+      "statement": "احسب طول الضلع الموافق لـ $[BC]$ على اللافتة، بالسنتيمتر.",
       "learningPoints": [
         {
-          "code": "4am_talis-hisab-atwal_P1",
+          "code": "4am_talis-hisab-atwal_P3",
           "role": "primary"
         }
       ],
-      "difficulty": 5,
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ cm",
+      "expectedAnswer": "112,5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "بطرح 1 من الطرفين لأن $ST - SP = PT$ و $SE - SR = RE$",
-          "isCorrect": true
+          "value": "29,5",
+          "id": "MISC-TALIS-JAMA-BADAL-DARB"
         },
         {
-          "id": "B",
-          "content": "بقلب النسبتين",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
-        },
-        {
-          "id": "C",
-          "content": "بجمع 1 إلى الطرفين",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-JAMA-BADAL-DARB"
+          "value": "0,18",
+          "id": "MISC-TALIS-MUAMIL-MAQLUB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+          "content": "في التكبير يُضرب كل طول في $k$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{ST}{SP} - 1 = \\dfrac{ST - SP}{SP} = \\dfrac{PT}{SP}$ و $\\dfrac{SE}{SR} - 1 = \\dfrac{RE}{SR}$ .",
-        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
-      }
+        "correct": "$25 \\times 4{,}5 = 112{,}5\\,\\mathrm{cm}$ .",
+        "incorrect": "اضرب الطول في معامل التكبير 25 (لا تضف 25)."
+      },
+      "solution": {
+        "lines": [
+          "$k \\times BC = 25 \\times 4{,}5$"
+        ],
+        "result": "112{,}5\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "احسب طول الشريط على اللافتة، بالمتر.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ m",
+      "expectedAnswer": "0,375",
+      "misconceptionSignatures": [
+        {
+          "value": "37,5",
+          "id": "MISC-TALIS-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب $MN$ في $k$ ، ثم حوّل السنتيمترات إلى أمتار."
+        }
+      ],
+      "feedback": {
+        "correct": "$25 \\times 1{,}5 = 37{,}5\\,\\mathrm{cm} = 0{,}375\\,\\mathrm{m}$ .",
+        "incorrect": "احسب الطول بالسنتيمتر أولا (ضرب في 25) ثم اقسم على 100."
+      },
+      "solution": {
+        "lines": [
+          "$k \\times MN = 25 \\times 1{,}5 = 37{,}5\\,\\mathrm{cm}$",
+          "$37{,}5\\,\\mathrm{cm} = 0{,}375\\,\\mathrm{m}$"
+        ],
+        "result": "0{,}375\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q4",
+      "step": "04",
+      "statement": "☜ يُخاط الشريط على 12 لافتة من قماش ثمن المتر الواحد منه $400DA$ . ما هو ثمن القماش اللازم؟",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الثمن بـ DA",
+      "expectedAnswer": "1800",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول الشريط لـ 12 لافتة بالمتر، ثم الثمن."
+        }
+      ],
+      "feedback": {
+        "correct": "$12 \\times 0{,}375 = 4{,}5\\,\\mathrm{m}$ و $4{,}5 \\times 400 = 1800DA$ .",
+        "incorrect": "اضرب طول الشريط الواحد (بالمتر) في 12 ثم في 400."
+      },
+      "solution": {
+        "lines": [
+          "الطول الكلي: $12 \\times 0{,}375 = 4{,}5\\,\\mathrm{m}$",
+          "الثمن: $4{,}5 \\times 400$"
+        ],
+        "result": "1800\\,DA"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

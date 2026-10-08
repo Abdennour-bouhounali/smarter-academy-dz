@@ -210,7 +210,7 @@ export default function UnitPage() {
               {unit.subtitle && <p className="max-w-2xl text-slate-600">{unit.subtitle}</p>}
               {unit.textbook && <p className="flex items-center gap-1.5 text-xs text-slate-500"><BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> {t('unit.textbookRef', { title: unit.textbook.title, unit: unit.textbook.unit, pages: formatTextbookPages(unit.textbook.pages) })}</p>}
             </div>
-            <div className="w-full shrink-0 space-y-2 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center md:w-52">
+            <div className="w-full shrink-0 space-y-2 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center md:w-52" data-tour="unit.progress">
               <div className="text-xs font-mono font-bold uppercase text-slate-500">{t('unit.progress')}</div>
               <div dir="ltr" className="text-3xl font-extrabold text-blue-600">{done} / {lessons.length}</div>
               <div className="text-xs text-slate-500">{t('unit.lessonsDone')}</div>
@@ -218,7 +218,7 @@ export default function UnitPage() {
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-2xl border-2 border-orange-200 bg-orange-50/60 p-4">
+            <div className="rounded-2xl border-2 border-orange-200 bg-orange-50/60 p-4" data-tour="unit.objectives">
               <h2 className="mb-2 text-sm font-bold text-orange-900">📌 {t('unit.objectives')}</h2>
               <ul className="space-y-1 text-sm text-slate-800">{unit.objectives.map((o) => <li key={o}>• <MathLabel>{o}</MathLabel></li>)}</ul>
             </div>

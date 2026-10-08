@@ -3,103 +3,143 @@
   "lessonCode": "wadiya-idmajiya-ihsa",
   "level": 2,
   "metadata": {
-    "title": "زمن الشاشة: على الأقل",
-    "estimatedMinutes": 3,
+    "title": "زمن الشاشة: على الأقل والتواتر",
+    "estimatedMinutes": 5,
     "tags": [
-      "تكرار مجمع",
-      "نسبة مئوية"
+      "التكرار المجمع النازل",
+      "التواتر"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-ihsa_P1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "عدد ساعات مشاهدة الفيديوهات القصيرة يوميا لتلاميذ قسم: عدد الساعات: 1 ، 2 ، 3 ، 4 ، 5 — عدد التلاميذ: 3 ، 6 ، 7 ، 4 ، 5."
+    "content": "يعطي الجدول الآتي عدد ساعات مشاهدة الفيديوهات القصيرة يوميا لتلاميذ قسم:",
+    "table": {
+      "head": [
+        "عدد الساعات",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "rows": [
+        [
+          "عدد التلاميذ",
+          "3",
+          "6",
+          "7",
+          "4",
+          "5"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "كم تلميذا يشاهد 3 ساعات على الأقل؟",
+      "step": "01",
+      "statement": "احسب عدد التلاميذ الذين يشاهدونها 3 ساعات على الأقل يوميا.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-ihsa_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "16",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "«على الأقل» تشمل 3."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "القيم 3 و 4 و 5."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تكرار مجمع نازل."
-        }
-      ],
-      "feedback": {
-        "correct": "$7 + 4 + 5 = 16$ تلميذا.",
-        "incorrect": "نجمع تكرار 3 وتكرارات القيم الأكبر منها."
-      },
-      "cognitiveDemand": "apply",
-      "difficulty": 2,
       "misconceptionSignatures": [
         {
           "value": "9",
-          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA"
+          "id": "MISC-IHSA-SARAMA"
         },
         {
           "value": "7",
           "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
         }
-      ]
-    },
-    {
-      "id": "q2",
-      "statement": "ما النسبة المئوية لهؤلاء التلاميذ؟ (اكتب العدد دون الرمز %)",
-      "learningPoints": [
-        {
-          "code": "4am_wadiya-idmajiya-ihsa_P3",
-          "role": "primary"
-        }
       ],
-      "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "64",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الجزء على الكل."
+          "content": "«3 ساعات على الأقل» تعني 3 أو 4 أو 5 ساعات."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "التكرار الكلي هو الكل."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ثم اضرب في 100."
+          "content": "هذا العدد هو التكرار المجمع النازل للقيمة 3 ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{16}{25} = 0{,}64$ ، أي 64%.",
-        "incorrect": "نقسم عددهم على التكرار الكلي 25 ثم نضرب في 100."
+        "correct": "$7 + 4 + 5 = 16$ تلميذا.",
+        "incorrect": "اجمع تكرار القيمة 3 وتكرارات القيم الأكبر منها."
       },
+      "solution": {
+        "lines": [
+          "القيم المعنية: 3 ، 4 ، 5 .",
+          "$7 + 4 + 5 = 16$"
+        ],
+        "result": "16"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب النسبة المئوية لهؤلاء التلاميذ.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
       "cognitiveDemand": "apply",
-      "difficulty": 2
+      "answerType": "rational",
+      "answerFormat": "عدد: النسبة المئوية دون الرمز %",
+      "expectedAnswer": "64",
+      "misconceptionSignatures": [
+        {
+          "value": "16",
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب التكرار الكلي أولا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التواتر = عددهم ÷ التكرار الكلي، ثم اضرب في 100 ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{16}{25} \\times 100 = 64$ ، أي $64\\%$ .",
+        "incorrect": "اقسم العدد الذي وجدته في 01 على التكرار الكلي ثم اضرب في 100 ."
+      },
+      "solution": {
+        "lines": [
+          "التكرار الكلي: $3 + 6 + 7 + 4 + 5 = 25$",
+          "$\\dfrac{16}{25} \\times 100 = 64$"
+        ],
+        "result": "64\\%"
+      },
+      "timeSeconds": 90
     }
   ]
 }

@@ -36,13 +36,15 @@ export function usePageTour() {
 
 /**
  * Une page dont l'URL ne dit pas ce qu'elle est (un module de leçon) DÉCLARE
- * sa visite : `useDeclarePageTour('lesson-first-module', isFirstModule)`. La
- * déclaration l'emporte sur la visite du chemin et se retire au démontage.
- * Hors d'un PageTourProvider (visiteur, administrateur), elle ne fait rien.
+ * sa visite : `useDeclarePageTour('lesson-module', !presenting, { autoStart: isFirstModule })`.
+ * La déclaration l'emporte sur la visite du chemin et se retire au démontage.
+ * `autoStart: false` garde le bouton « جولة في الصفحة » sans ouvrir la visite
+ * d'elle-même. Hors d'un PageTourProvider (visiteur, administrateur), elle ne
+ * fait rien.
  */
-export function useDeclarePageTour(page, enabled = true) {
+export function useDeclarePageTour(page, enabled = true, { autoStart = true } = {}) {
   const { declare } = useContext(PageTourContext);
-  useEffect(() => (enabled && page ? declare(page) : undefined), [page, enabled, declare]);
+  useEffect(() => (enabled && page ? declare(page, autoStart) : undefined), [page, enabled, autoStart, declare]);
 }
 
 function readPending() {
@@ -71,15 +73,18 @@ export default function PageTourProvider({ children }) {
 
   // La page déclarée (useDeclarePageTour), sinon la visite du chemin.
   const [declared, setDeclared] = useState(null);
-  const declare = useCallback((page) => {
-    setDeclared(page);
-    return () => setDeclared((current) => (current === page ? null : current));
+  const declare = useCallback((page, autoStart = true) => {
+    const entry = { page, autoStart };
+    setDeclared(entry);
+    return () => setDeclared((current) => (current === entry ? null : current));
   }, []);
 
+  const declaredTour = findDeclaredTour(PAGE_TOURS, role, declared?.page);
   const tour = useMemo(
-    () => findDeclaredTour(PAGE_TOURS, role, declared) ?? findPageTour(PAGE_TOURS, role, pathname),
-    [role, pathname, declared],
+    () => declaredTour ?? findPageTour(PAGE_TOURS, role, pathname),
+    [declaredTour, role, pathname],
   );
+  const autoStart = declaredTour ? declared.autoStart : true;
 
   useEffect(() => {
     if (!token || (role !== 'student' && role !== 'teacher')) return undefined;
@@ -111,9 +116,9 @@ export default function PageTourProvider({ children }) {
   // Ouverture automatique, page par page. Changer de page ferme la visite
   // en cours sans la clore.
   useEffect(() => {
-    if (shouldAutoStart({ tour, closed, eligible })) setActive({ key: tour.key, mode: 'auto' });
+    if (shouldAutoStart({ tour, closed, eligible, autoStart })) setActive({ key: tour.key, mode: 'auto' });
     else setActive((current) => (current && current.key === tour?.key ? current : null));
-  }, [tour, closed, eligible]);
+  }, [tour, closed, eligible, autoStart]);
 
   const start = useCallback(() => {
     if (tour) setActive({ key: tour.key, mode: 'replay' });

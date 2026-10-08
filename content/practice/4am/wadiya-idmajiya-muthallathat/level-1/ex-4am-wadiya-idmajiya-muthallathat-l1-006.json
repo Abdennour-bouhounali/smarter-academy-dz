@@ -3,79 +3,121 @@
   "lessonCode": "wadiya-idmajiya-muthallathat",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 6 — العلاقة الأساسية",
-    "estimatedMinutes": 3,
+    "title": "أؤكّد تعلّماتي 6 — من الجيب إلى جيب التمام والظل",
+    "estimatedMinutes": 5,
     "tags": [
-      "العلاقات بين النسب"
+      "العلاقات المثلثية"
     ],
     "source": {
       "type": "textbook",
       "elementId": "qcm",
       "page": 124,
       "section": "أؤكّد تعلّماتي",
-      "number": 6
+      "number": 6,
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-muthallathat-l1-006"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
-  "generator": {
-    "tool": "gen_bank.py",
-    "version": "1"
-  },
   "statement": {
-    "content": "x قيس زاوية حادة في مثلث قائم."
+    "content": "$x$ قيس زاوية حادة في مثلث قائم حيث $\\sin x = 0{,}6$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "لدينا:",
+      "step": "01",
+      "statement": "احسب $\\cos x$ باستعمال العلاقة $\\cos^2 x + \\sin^2 x = 1$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muthallathat_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال أو عدد عشري",
+      "expectedAnswer": "4/5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\cos^2 x = \\sin^2 x - 1$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-HALL-MUADALA"
+          "value": "0.4",
+          "id": "MISC-MUTH-JAMA-NISAB"
         },
         {
-          "id": "B",
-          "content": "$\\cos^2 x = 1 - \\sin^2 x$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\cos x = 1 - \\sin x$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-JAMA-NISAB"
+          "value": "0.64",
+          "id": "MISC-MUTH-JADHR-NASI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "العلاقة تخصّ المربعين."
+          "content": "اعزل $\\cos^2 x$ في العلاقة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ابدأ من مجموع المربعين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "انقل حدًّا إلى الطرف الآخر مع تغيير إشارته."
+          "content": "$\\cos^2 x = 1 - \\sin^2 x$ ، و $\\cos x$ عدد موجب."
         }
       ],
       "feedback": {
-        "correct": "$\\cos^2 x + \\sin^2 x = 1$ ومنه $\\cos^2 x = 1 - \\sin^2 x$ .",
-        "incorrect": "العلاقة بين مربعي النسبتين لا بين النسبتين."
+        "correct": "$\\cos^2 x = 1 - 0{,}36 = 0{,}64$ ومنه $\\cos x = 0{,}8$ .",
+        "incorrect": "العلاقة تخص المربعين: احسب $1 - \\sin^2 x$ ثم خذ الجذر الموجب."
       },
-      "cognitiveDemand": "recall",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "$\\cos^2 x = 1 - \\sin^2 x = 1 - 0{,}6^2 = 1 - 0{,}36 = 0{,}64$",
+          "$\\cos x$ عدد موجب، إذن: $\\cos x = \\sqrt{0{,}64}$"
+        ],
+        "result": "\\cos x = 0{,}8"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج $\\tan x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال أو عدد عشري",
+      "expectedAnswer": "3/4",
+      "misconceptionSignatures": [
+        {
+          "value": "4/3",
+          "id": "MISC-MUTH-TAN-QISMA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل العلاقة $\\tan x = \\dfrac{\\sin x}{\\cos x}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{0{,}6}{0{,}8} = \\dfrac{3}{4}$ .",
+        "incorrect": "الظل هو الجيب مقسوما على جيب التمام، وليس العكس."
+      },
+      "solution": {
+        "lines": [
+          "$\\tan x = \\dfrac{\\sin x}{\\cos x} = \\dfrac{0{,}6}{0{,}8}$"
+        ],
+        "result": "\\tan x = \\dfrac{3}{4} = 0{,}75"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

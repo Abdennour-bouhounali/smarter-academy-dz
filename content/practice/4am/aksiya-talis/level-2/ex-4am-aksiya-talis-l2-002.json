@@ -4,9 +4,10 @@
   "level": 2,
   "metadata": {
     "title": "تمرين 15 — المستطيل",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 6,
     "tags": [
-      "خاصية عكسية"
+      "تمرين 15",
+      "المستطيل"
     ],
     "source": {
       "type": "textbook",
@@ -14,10 +15,16 @@
       "page": 111,
       "section": "أوظّف تعلّماتي",
       "number": 15
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 111): ABCD مستطيل حيث DC = 10 و BC = 15 ، M من [AB] و N من [AD] حيث AM = 2 و AN = 3.",
+    "content": "$ABCD$ مستطيل حيث: $DC = 10$ و $BC = 15$ . $M$ نقطة من $[AB]$ و $N$ نقطة من $[AD]$ حيث: $AM = 2$ و $AN = 3$ (الشكل المقابل).",
     "figure": {
       "points": {
         "A": [
@@ -90,48 +97,110 @@
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب $\\dfrac{AM}{AB}$ :",
+      "step": "01",
+      "sub": "ا",
+      "statement": "احسب النسبة $\\dfrac{AM}{AB}$ .",
       "learningPoints": [
         {
           "code": "4am_aksiya-talis_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
       "expectedAnswer": "1/5",
       "misconceptionSignatures": [
         {
-          "id": "MISC-TALIS-QITAA-BADAL-DILA",
-          "value": "2/15"
+          "value": "5",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "value": "1/4",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+          "content": "$ABCD$ مستطيل: الضلعان المتقابلان $[AB]$ و $[DC]$ متقايسان."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+          "content": "اقسم $AM$ على $AB$ ثم اختزل الكسر (قيمة مضبوطة، دون تدوير)."
         }
       ],
       "feedback": {
-        "correct": "$AB = DC = 10$ إذن $\\dfrac{AM}{AB} = \\dfrac{2}{10} = \\dfrac{1}{5}$",
-        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
-      }
+        "correct": "$\\dfrac{AM}{AB} = \\dfrac{2}{10} = \\dfrac{1}{5}$ .",
+        "incorrect": "النسبة $\\dfrac{AM}{AB}$ : الطول $AM$ على الطول $AB$ ، وكلاهما من النقطة $A$ ؛ اكتبها كسرا مضبوطا."
+      },
+      "solution": {
+        "lines": [
+          "$AB = DC = 10$ (ضلعان متقابلان في المستطيل)",
+          "$\\dfrac{AM}{AB} = \\dfrac{2}{10} = \\dfrac{1}{5}$"
+        ],
+        "result": "\\dfrac{AM}{AB} = \\dfrac{1}{5}"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "احسب $\\dfrac{AN}{AD}$ :",
+      "step": "01",
+      "sub": "ب",
+      "statement": "احسب النسبة $\\dfrac{AN}{AD}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
+      "expectedAnswer": "1/5",
+      "misconceptionSignatures": [
+        {
+          "value": "5",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "value": "1/4",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$ABCD$ مستطيل: الضلعان المتقابلان $[AD]$ و $[BC]$ متقايسان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم $AN$ على $AD$ ثم اختزل الكسر (قيمة مضبوطة، دون تدوير)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AN}{AD} = \\dfrac{3}{15} = \\dfrac{1}{5}$ .",
+        "incorrect": "النسبة $\\dfrac{AN}{AD}$ : الطول $AN$ على الطول $AD$ ، وكلاهما من النقطة $A$ ؛ اكتبها كسرا مضبوطا."
+      },
+      "solution": {
+        "lines": [
+          "$AD = BC = 15$",
+          "$\\dfrac{AN}{AD} = \\dfrac{3}{15} = \\dfrac{1}{5}$"
+        ],
+        "result": "\\dfrac{AN}{AD} = \\dfrac{1}{5}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "هل المستقيمان $(MN)$ و $(BD)$ متوازيان؟ علّل.",
       "learningPoints": [
         {
           "code": "4am_aksiya-talis_P1",
@@ -139,36 +208,45 @@
         }
       ],
       "difficulty": 2,
-      "answerType": "rational",
-      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
-      "expectedAnswer": "1/5",
-      "misconceptionSignatures": [
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
         {
-          "id": "MISC-TALIS-QITAA-BADAL-DILA",
-          "value": "3/10"
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+          "content": "قارن النسبتين بقيمهما المضبوطة (الجداء المتصالب)، لا بقيم مقرّبة ولا بمظهر الشكل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+          "content": "تحقّق أيضا من ترتيب النقط على المستقيمين المتقاطعين."
         }
       ],
       "feedback": {
-        "correct": "$AD = BC = 15$ إذن $\\dfrac{AN}{AD} = \\dfrac{3}{15} = \\dfrac{1}{5}$ : (MN)//(BD).",
-        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
-      }
+        "correct": "$\\dfrac{AM}{AB} = \\dfrac{AN}{AD} = \\dfrac{1}{5}$ والترتيب نفسه: $(MN) \\parallel (BD)$ .",
+        "incorrect": "الخاصية العكسية تتطلب شرطين معا: تساوي النسبتين بقيم مضبوطة، وترتيب النقط نفسه على المستقيمين."
+      },
+      "solution": {
+        "lines": [
+          "بما أن النقط $A$ ، $M$ ، $B$ و $A$ ، $N$ ، $D$ في استقامية وبنفس الترتيب،",
+          "و بما أن: $\\dfrac{AM}{AB} = \\dfrac{AN}{AD} = \\dfrac{1}{5}$",
+          "فإن المستقيمين $(MN)$ و $(BD)$ متوازيان حسب خاصية طالس العكسية."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

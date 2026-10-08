@@ -3,75 +3,281 @@
   "lessonCode": "qiraat-wadiyat-ihsaiya",
   "level": 3,
   "metadata": {
-    "title": "التمرين 19 — التواتر المجمع",
-    "estimatedMinutes": 3,
+    "title": "حارسا المرمى",
+    "estimatedMinutes": 8,
     "tags": [
-      "تمرين 19",
-      "تواتر مجمع"
+      "المتوسط",
+      "المدى",
+      "اتخاذ قرار"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "ex-19",
-      "page": 101,
-      "section": "أتعمّق",
-      "number": 19
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P2",
+      "modelledOn": "method",
+      "adaptedFrom": "ex-4am-qiraat-wadiyat-ihsaiya-l3-007"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "في التمرين 19: A = 400 ، B = 550 ، C = 350 ، D = 700 ، E = 450 ، والتكرار الكلي 2450."
+    "content": "سجّل مدرّب فريق المتوسطة عدد ضربات الجزاء التي تصدّى لها كل حارس من حارسَي المرمى في 5 حصص تدريبية:",
+    "table": {
+      "head": [
+        "الحصة",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "rows": [
+        [
+          "ياسين",
+          "5",
+          "6",
+          "5",
+          "6",
+          "5"
+        ],
+        [
+          "وليد",
+          "2",
+          "9",
+          "3",
+          "8",
+          "5"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "التواتر المجمع الصاعد للقناة C هو:",
+      "step": "01",
+      "sub": "ا",
+      "lead": "احسب متوسط عدد التصدّيات لكل حارس.",
+      "statement": "ياسين.",
       "learningPoints": [
         {
-          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة",
+      "expectedAnswer": "5,4",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\dfrac{1}{7}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
-        },
-        {
-          "id": "B",
-          "content": "$\\dfrac{26}{49}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{30}{49}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-SAID-NAZIL-MAQLUB"
+          "value": "5",
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الصاعد يجمع من البداية حتى C."
+          "content": "المتوسط = مجموع القيم ÷ عددها."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{27}{5} = 5{,}4$ .",
+        "incorrect": "اجمع القيم الخمس ثم اقسم على 5 ."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{5 + 6 + 5 + 6 + 5}{5} = \\dfrac{27}{5} = 5{,}4$"
+        ],
+        "result": "5{,}4"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "sub": "ب",
+      "statement": "وليد.",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة",
+      "expectedAnswer": "5,4",
+      "misconceptionSignatures": [
+        {
+          "value": "5",
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المتوسط = مجموع القيم ÷ عددها."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{27}{5} = 5{,}4$ .",
+        "incorrect": "اجمع القيم الخمس ثم اقسم على 5 ."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{2 + 9 + 3 + 8 + 5}{5} = \\dfrac{27}{5} = 5{,}4$"
+        ],
+        "result": "5{,}4"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ا",
+      "lead": "احسب مدى سلسلة كل حارس.",
+      "statement": "ياسين.",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
+        {
+          "value": "6",
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدى = أكبر قيمة − أصغر قيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 - 5 = 1$ .",
+        "incorrect": "المدى فرق بين أكبر قيمة وأصغر قيمة."
+      },
+      "solution": {
+        "lines": [
+          "$6 - 5 = 1$"
+        ],
+        "result": "1"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "sub": "ب",
+      "statement": "وليد.",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "value": "9",
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدى = أكبر قيمة − أصغر قيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$9 - 2 = 7$ .",
+        "incorrect": "المدى فرق بين أكبر قيمة وأصغر قيمة."
+      },
+      "solution": {
+        "lines": [
+          "$9 - 2 = 7$"
+        ],
+        "result": "7"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q5",
+      "step": "03",
+      "statement": "يريد المدرّب حارسا منتظما في مستواه. من يختار؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "وليد، لأنه سجّل أكبر عدد من التصدّيات في حصة واحدة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-TASHATTUT-MAQLUB"
+        },
+        {
+          "id": "B",
+          "content": "لا يمكنه الاختيار، لأن للحارسين المتوسط نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "ياسين، لأن المتوسطين متساويان ومدى سلسلته أصغر",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المتوسطان متساويان: المتوسط وحده لا يفرّق بينهما."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$400 + 550 + 350 = 1300$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم على 2450."
+          "content": "الانتظام يُقاس بمؤشر تشتت."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{1300}{2450} = \\dfrac{26}{49}$ .",
-        "incorrect": "اجمع تكرارات A و B و C ثم اقسم."
+        "correct": "المتوسط نفسه 5,4 ، و $1 < 7$ .",
+        "incorrect": "قارن المديين اللذين حسبتهما في 02: المدى الأصغر يعني نتائج أكثر انتظاما."
       },
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "للحارسين المتوسط نفسه 5,4 .",
+          "مدى ياسين 1 ومدى وليد 7 : نتائج ياسين متقاربة ونتائج وليد متباعدة.",
+          "يختار المدرّب ياسين."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

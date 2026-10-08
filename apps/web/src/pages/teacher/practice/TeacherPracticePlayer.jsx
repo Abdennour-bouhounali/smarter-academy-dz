@@ -72,6 +72,8 @@ export default function TeacherPracticePlayer() {
   const { enabled: soundOn } = useEffectsPreference();
   const [stepStartedAt, setStepStartedAt] = useState(null);
   const [evaluation, setEvaluation] = useState(null);
+  // Corrigé type ouvert pour cette question : plus de « أعِد المحاولة » (propriétaire, 2026-10-08).
+  const [solutionSeenFor, setSolutionSeenFor] = useState(null);
   const [hintCount, setHintCount] = useState(0);
   const [showExpected, setShowExpected] = useState(false);
   // L'issue de chaque question déjà vérifiée — pour les pastilles de SessionProgress.
@@ -112,6 +114,7 @@ export default function TeacherPracticePlayer() {
   const prevId = position > 0 ? ids[position - 1] : null;
   const questions = exercise?.questions ?? [];
   const question = questions[index] ?? null;
+  const questionKey = `${exercise?.id ?? ''}:${question?.id ?? index}`;
   const hints = useMemo(
     () => Array.from({ length: hintCount }, (_, i) => localHint(question, i)).filter(Boolean),
     [question, hintCount],
@@ -271,8 +274,8 @@ export default function TeacherPracticePlayer() {
 
       {answered && !selfPending && <FeedbackPanel evaluation={evaluation} message={feedbackFor(question, evaluation, MISCONCEPTIONS, { syntaxError: ts('practice.syntaxErrorFeedback') })} />}
       {/* Corrigé type : seulement après une vraie tentative (comme l'élève). */}
-      {answered && !isSelfCheck && !isInertOutcome(evaluation.outcome) && question.solution && (!isExam || solutionReady(exercise.questions, index, index)) && <SolutionPanel solution={question.solution} />}
-      {answered && !evaluation.isCorrect && !isSelfCheck && (
+      {answered && !isSelfCheck && !isInertOutcome(evaluation.outcome) && question.solution && (!isExam || solutionReady(exercise.questions, index, index)) && <SolutionPanel solution={question.solution} onReveal={() => setSolutionSeenFor(questionKey)} />}
+      {answered && !evaluation.isCorrect && !isSelfCheck && solutionSeenFor !== questionKey && (
         <button type="button" onClick={() => { setEvaluation(null); setAnswer(null); }} className={SECONDARY_BUTTON} data-retry>
           <RotateCcw className="h-4 w-4" aria-hidden="true" /> {ts('practice.retry')}
         </button>
@@ -288,19 +291,15 @@ export default function TeacherPracticePlayer() {
         disabled={false}
       />
 
-      {/* L'enseignant peut TOUJOURS lire la réponse attendue — et, sur une
-          feuille d'examen, le corrigé type entier. */}
-      {(expected || (isExam && question.solution)) && (
+      {/* La réponse attendue, pour une question SANS corrigé type seulement : quand
+          « الحل النموذجي » existe, il porte déjà la réponse encadrée — le bouton
+          « إظهار الإجابة المنتظرة » le répétait mot pour mot (propriétaire, 2026-10-08). */}
+      {expected && !question.solution?.lines?.length && (
         <ClassroomHidden><div className="rounded-xl bg-slate-50 px-3.5 py-2.5 ring-1 ring-slate-200">
           {showExpected ? (
-            <div className="space-y-2">
-              {expected && (
-                <p className="text-sm text-slate-800" data-expected-answer>
-                  <span className="font-bold">{t('practice.expectedAnswer')}</span>{' '}<RichText>{expected}</RichText>
-                </p>
-              )}
-              {isExam && question.solution && <SolutionPanel solution={question.solution} open />}
-            </div>
+            <p className="text-sm text-slate-800" data-expected-answer>
+              <span className="font-bold">{t('practice.expectedAnswer')}</span>{' '}<RichText>{expected}</RichText>
+            </p>
           ) : (
             // La réponse attendue se MÉRITE ici aussi (propriétaire, 2026-10-06) :
             // inactive tant qu'aucune réponse n'a été saisie et vérifiée

@@ -36,7 +36,7 @@ export default function GeoFigure(fig) {
   return (
     <Fig className="mx-auto my-2 block w-full" style={{ maxWidth }} data-geo-figure>
       <svg
-        viewBox={`0 0 ${L.width.toFixed(1)} ${L.height.toFixed(1)}`}
+        viewBox={L.viewBox.map((v) => v.toFixed(1)).join(' ')}
         className="h-auto w-full"
         role="img"
         aria-label={ariaLabel}
@@ -111,7 +111,7 @@ export default function GeoFigure(fig) {
           const s = asSegment(s0);
           const a = L.P[s.from]; const b = L.P[s.to];
           const c = STROKE[s.tone ?? 'slate'];
-          const lab = s.label != null ? L.segmentLabel(s.from, s.to, s.labelSide) : null;
+          const lab = s.label != null ? L.segmentLabel(s.from, s.to, s.labelSide, s.label) : null;
           return (
             <g key={`sg${i}`}>
               <line x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke={c} strokeWidth={s.bold ? 2.6 : 1.8} strokeDasharray={s.dashed ? '5 4' : undefined} />
@@ -131,7 +131,7 @@ export default function GeoFigure(fig) {
           const a = L.P[v.from]; const b = L.P[v.to];
           const c = STROKE[v.tone ?? 'indigo'];
           const ar = vectorArrow(a, b);
-          const lab = v.label != null ? L.segmentLabel(v.from, v.to, v.labelSide) : null;
+          const lab = v.label != null ? L.segmentLabel(v.from, v.to, v.labelSide, v.label) : null;
           return (
             <g key={`vc${i}`} data-geo-vector>
               <line x1={ar.shaft[0][0]} y1={ar.shaft[0][1]} x2={ar.shaft[1][0]} y2={ar.shaft[1][1]} stroke={c} strokeWidth={2.4} strokeDasharray={v.dashed ? '6 4' : undefined} />

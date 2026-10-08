@@ -14,8 +14,9 @@ import RichText from '../RichText';
  *
  * Replié par défaut (<details>) : il ne s'ouvre qu'après la réponse, ou sur
  * demande dans une auto-évaluation (SelfCheckInput le montre ouvert, `open`).
+ * L'ouvrir appelle `onReveal` : les lecteurs y retirent « أعِد المحاولة » pour cette question.
  */
-export default function SolutionPanel({ solution, open = false, className = '' }) {
+export default function SolutionPanel({ solution, open = false, className = '', onReveal }) {
   const { t } = useTranslation('student');
   if (!solution?.lines?.length) return null;
 
@@ -47,7 +48,13 @@ export default function SolutionPanel({ solution, open = false, className = '' }
   }
 
   return (
-    <details className={`group rounded-lg border border-emerald-200 bg-emerald-50/40 px-3.5 py-2 ${className}`} data-solution-panel>
+    // `onReveal` : le lecteur apprend que le corrigé a été OUVERT — il retire alors « أعِد المحاولة » (propriétaire,
+    // 2026-10-08 : après avoir vu la solution, on ne recopie pas le résultat).
+    <details
+      className={`group rounded-lg border border-emerald-200 bg-emerald-50/40 px-3.5 py-2 ${className}`}
+      data-solution-panel
+      onToggle={(e) => { if (e.currentTarget.open) onReveal?.(); }}
+    >
       <summary className="flex min-h-[40px] cursor-pointer list-none items-center gap-1.5 text-sm font-bold text-emerald-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded">
         <BookOpenCheck className="h-4 w-4" aria-hidden="true" /> {t('practice.exam.solution')}
         <span className="text-xs font-semibold text-emerald-700 group-open:hidden">· {t('practice.exam.showSolution')}</span>

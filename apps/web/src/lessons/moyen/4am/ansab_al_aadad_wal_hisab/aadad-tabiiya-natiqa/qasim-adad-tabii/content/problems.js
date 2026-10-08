@@ -38,7 +38,7 @@ export const PROBLEMS = [
     parts: [
       {
         label: '1)', title: 'الرفوف من 32 كتابًا',
-        question: 'أجرِ القسمة الإقليدية للعدد 756 على 32. هل تناسب الرفوف من 32 كتابًا القيّم؟ علّل.',
+        question: LESSON_CONFIG.lessonProblem.questions[0].text,
         asks: ['هل تناسب الرفوف من 32 كتابًا القيّم؟'],
         steps: [
           { kind: 'sort' },
@@ -67,7 +67,7 @@ export const PROBLEMS = [
       },
       {
         label: '2)', title: 'الرفوف من 36 كتابًا',
-        question: 'بيّن أنّ 36 قاسم للعدد 756، ثم استنتج عدد الرفوف اللازمة.',
+        question: LESSON_CONFIG.lessonProblem.questions[1].text,
         asks: ['بيّن أنّ 36 قاسم للعدد 756', 'عدد الرفوف اللازمة'],
         steps: [
           { kind: 'choice', role: 'translate', requires: ['qasim-jidaa'],
@@ -93,7 +93,7 @@ export const PROBLEMS = [
       },
       {
         label: '3)', title: 'ثمن الرفوف',
-        question: 'ما المبلغ الذي سيدفعه القيّم لشراء الرفوف المناسبة؟',
+        question: LESSON_CONFIG.lessonProblem.questions[2].text,
         asks: ['المبلغ الذي سيدفعه القيّم'],
         steps: [
           { kind: 'choice', role: 'translate',

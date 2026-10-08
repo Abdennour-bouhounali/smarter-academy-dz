@@ -2,109 +2,190 @@
   "id": "ex-4am-tarrid-muthallathiya-l4-007",
   "lessonCode": "tarrid-muthallathiya",
   "level": 4,
-  "generator": {
-    "tool": "unit10-tarrid-gen.py",
-    "version": "1"
-  },
   "metadata": {
-    "title": "تدريب — مثلث متقايس الساقين",
-    "estimatedMinutes": 3,
+    "title": "قطعة أرض فلاحية على شكل متوازي أضلاع",
+    "estimatedMinutes": 9,
     "tags": [
-      "ارتفاع",
-      "حل المثلث"
+      "ترييض وضعية",
+      "الجيب",
+      "مساحة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
-      "learningPoint": "4am_tarrid-muthallathiya_P3",
-      "modelledOn": "ex-28"
+      "learningPoint": "4am_tarrid-muthallathiya_P2",
+      "modelledOn": "ex-28",
+      "adaptedFrom": "ex-4am-tarrid-muthallathiya-l4-009"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "ABC مثلث متقايس الساقين رأسه A حيث $AB = AC = 10\\,\\mathrm{cm}$ و $BC = 12\\,\\mathrm{cm}$ . H منتصف [BC] ."
+    "content": "قطعة أرض فلاحية في سهل متيجة على شكل متوازي أضلاع $ABCD$ حيث $AB = 80\\,\\mathrm{m}$ و $AD = 50\\,\\mathrm{m}$ و $\\widehat{DAB} = 50^{\\circ}$ . نسمّي $H$ المسقط العمودي للنقطة $D$ على $(AB)$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الارتفاع AH بالسنتيمتر:",
+      "step": "01",
+      "statement": "احسب $DH$ بالتدوير إلى $0{,}01$ .",
       "learningPoints": [
         {
-          "code": "4am_tarrid-muthallathiya_P3",
+          "code": "4am_tarrid-muthallathiya_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 4,
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
-      "expectedAnswer": "8",
+      "answerFormat": "عدد عشري: الطول بـ m مدوّرا إلى 0,01",
+      "expectedAnswer": "38.30",
       "misconceptionSignatures": [
         {
-          "id": "MISC-MUTH-WATAR-MUQABIL",
-          "value": "12"
+          "value": "32.14",
+          "id": "MISC-MUTH-NISBA-UKHRA"
+        },
+        {
+          "value": "65.27",
+          "id": "MISC-MUTH-QISMA-BADAL-DARB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد الوتر: الضلع المقابل للزاوية القائمة."
+          "content": "في المثلث $AHD$ القائم في $H$ ، حدّد موقع الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية $\\widehat{DAB}$ (مجاور، مقابل أو وتر)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "خاصية فيثاغورس: مربع الوتر يساوي مجموع مربعي الضلعين الآخرين."
+          "content": "النسبة التي تجمع هذين الضلعين هي جيب الزاوية $\\widehat{DAB}$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "لحساب ضلع للزاوية القائمة نطرح مربع الضلع المعلوم من مربع الوتر، ثم نأخذ الجذر."
+          "content": "اكتب المساواة، اعزل الطول المجهول، ثم احسب بالآلة الحاسبة مبرمجة على الدرجة، ولا تدوّر إلا في النهاية."
         }
       ],
       "feedback": {
-        "correct": "المتوسط [AH] ارتفاع: ABH قائم في H ، $AH = \\sqrt{100 - 36} = 8\\,\\mathrm{cm}$ .",
-        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
-      }
+        "correct": "$DH = 50 \\times \\sin 50^{\\circ} \\approx 38{,}30\\,\\mathrm{m}$ .",
+        "incorrect": "الطول المطلوب في بسط النسبة: نضرب الطول المعلوم في النسبة المثلثية ولا نقسم عليها؛ والآلة الحاسبة مبرمجة على الدرجة."
+      },
+      "solution": {
+        "lines": [
+          "في المثلث $AHD$ القائم في $H$ : $\\sin\\widehat{DAH} = \\dfrac{DH}{AD}$",
+          "ومنه: $DH = 50 \\times \\sin 50^{\\circ}$",
+          "باستعمال الآلة الحاسبة: $DH \\approx 38{,}3022$"
+        ],
+        "result": "DH \\approx 38{,}30\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "قيس الزاوية $\\widehat{ABC}$ بالدرجة، إلى الوحدة:",
+      "step": "02",
+      "statement": "احسب $AH$ بالتدوير إلى $0{,}01$ .",
       "learningPoints": [
         {
           "code": "4am_tarrid-muthallathiya_P2",
           "role": "primary"
         }
       ],
-      "difficulty": 4,
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح (المدوّر إلى الوحدة)",
-      "expectedAnswer": "53",
+      "answerFormat": "عدد عشري: الطول بـ m مدوّرا إلى 0,01",
+      "expectedAnswer": "32.14",
       "misconceptionSignatures": [
         {
-          "id": "MISC-MUTH-ZAWIYA-KHATI",
-          "value": "37"
+          "value": "38.30",
+          "id": "MISC-MUTH-NISBA-UKHRA"
+        },
+        {
+          "value": "77.79",
+          "id": "MISC-MUTH-QISMA-BADAL-DARB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد الضلعين المعلومين بالنسبة إلى الزاوية المطلوبة."
+          "content": "في المثلث $AHD$ القائم في $H$ ، حدّد موقع الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية $\\widehat{DAB}$ (مجاور، مقابل أو وتر)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اختر النسبة التي تجمعهما واحسب قيمتها."
+          "content": "النسبة التي تجمع هذين الضلعين هي جيب تمام الزاوية $\\widehat{DAB}$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "عيّن الزاوية باللمسة العكسية (2nd ثم sin⁻¹ أو cos⁻¹ أو tan⁻¹) ودوّر إلى الدرجة."
+          "content": "اكتب المساواة، اعزل الطول المجهول، ثم احسب بالآلة الحاسبة مبرمجة على الدرجة، ولا تدوّر إلا في النهاية."
         }
       ],
       "feedback": {
-        "correct": "في ABH : BH مجاور و AB وتر، $\\cos\\widehat{B} = \\dfrac{6}{10}$ ومنه $\\widehat{B} \\approx 53^{\\circ}$ .",
-        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
-      }
+        "correct": "$AH = 50 \\times \\cos 50^{\\circ} \\approx 32{,}14\\,\\mathrm{m}$ .",
+        "incorrect": "الطول المطلوب في بسط النسبة: نضرب الطول المعلوم في النسبة المثلثية ولا نقسم عليها؛ والآلة الحاسبة مبرمجة على الدرجة."
+      },
+      "solution": {
+        "lines": [
+          "$\\cos\\widehat{DAH} = \\dfrac{AH}{AD}$ ومنه $AH = 50 \\times \\cos 50^{\\circ}$",
+          "باستعمال الآلة الحاسبة: $AH \\approx 32{,}1394$"
+        ],
+        "result": "AH \\approx 32{,}14\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "احسب مساحة القطعة بالتدوير إلى الوحدة.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: المساحة بـ m² مدوّرة إلى الوحدة",
+      "expectedAnswer": "3064",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة متوازي الأضلاع = القاعدة × الارتفاع الموافق لها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القاعدة $[AB]$ والارتفاع $DH$ (بقيمته غير المدوّرة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$S = 80 \\times DH \\approx 3064\\,\\mathrm{m}^2$ .",
+        "incorrect": "القاعدة $AB$ والارتفاع الموافق لها $DH$ ، لا $AD$ ."
+      },
+      "solution": {
+        "lines": [
+          "$S = AB \\times DH = 80 \\times 50 \\times \\sin 50^{\\circ}$",
+          "باستعمال الآلة الحاسبة: $S \\approx 3064{,}18$"
+        ],
+        "result": "S \\approx 3064\\,\\mathrm{m}^2"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

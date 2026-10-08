@@ -3,36 +3,47 @@
   "lessonCode": "majdulat-ihsaiya",
   "level": 1,
   "metadata": {
-    "title": "تدريب — أيّ تمثيل؟ (أجزاء من كلّ)",
+    "title": "ميزانية رحلة القسم",
     "estimatedMinutes": 3,
     "tags": [
-      "تمثيل بياني"
+      "تمثيل بياني",
+      "مخطط دائري"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_majdulat-ihsaiya_P3",
-      "modelledOn": "ex-15"
+      "modelledOn": "ex-15",
+      "adaptedFrom": "ex-4am-majdulat-ihsaiya-l1-009"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "ميزانية رحلة القسم موزّعة على النقل والأكل والدخول إلى الحديقة، ونريد أن نُظهر حصة كل جزء من الميزانية كلها."
+    "content": "ميزانية رحلة قسم 6000DA ، موزّعة كما يلي: النقل 3000DA ، الأكل 2000DA ، الدخول إلى الحديقة 1000DA . نريد تمثيلا بيانيا يُظهر حصة كل جزء من الميزانية كلها."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "التمثيل البياني المناسب:",
+      "step": "01",
+      "statement": "ما نوع التمثيل البياني المناسب؟",
       "learningPoints": [
         {
           "code": "4am_majdulat-ihsaiya_P3",
           "role": "primary"
         }
       ],
+      "difficulty": 1,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "مخطط بالأعمدة لقيم منفصلة",
+          "content": "مضلّع التكرارات",
           "isCorrect": false,
           "misconceptionId": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB"
         },
@@ -52,23 +63,78 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "ماذا نريد أن نُظهر؟"
+          "content": "اسأل نفسك: هل المعطيات قيم منفصلة، أم فئات متلاصقة، أم أجزاء من كلّ؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "حصة كل جزء من الكلّ."
+          "content": "المخطط بالأعمدة لقيم منفصلة، والمدرّج التكراري لفئات متلاصقة، والمخطط الدائري لتوزيع كلّ على أجزائه."
+        }
+      ],
+      "feedback": {
+        "correct": "نريد حصة كل جزء من كلّ (الميزانية): المخطط الدائري يوزّع الدائرة على الأجزاء بالتناسب مع مبالغها.",
+        "incorrect": "اختر التمثيل حسب طبيعة المعطيات: قيم منفصلة، فئات متلاصقة، أو أجزاء من كلّ."
+      },
+      "solution": {
+        "lines": [
+          "نريد حصة كل جزء من كلّ (الميزانية): المخطط الدائري يوزّع الدائرة على الأجزاء بالتناسب مع مبالغها."
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب زاوية قطاع الأكل في هذا المخطط.",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: قيس الزاوية بالدرجات دون الرمز °",
+      "expectedAnswer": "120",
+      "misconceptionSignatures": [
+        {
+          "value": "2000",
+          "id": "MISC-IHSA-ZAWIYA-QITA"
+        },
+        {
+          "value": "240",
+          "id": "MISC-IHSA-ZAWIYA-QITA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المخطط الدائري تتناسب زاوية كل قطاع مع تكرار جزئه، والدائرة كلها 360 درجة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب التكرار الكلي، ثم حصة الأكل منه."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "الدائرة كلها هي الميزانية."
+          "content": "الزاوية = (تكرار الجزء ÷ التكرار الكلي) × 360 ."
         }
       ],
       "feedback": {
-        "correct": "أجزاء من كلّ: مخطط دائري، زاوية كل قطاع تتناسب مع حصته.",
-        "incorrect": "الحصص من كلّ تُرى في قطاعات دائرة."
-      }
+        "correct": "$\\dfrac{2000}{6000} \\times 360 = 120$ ، أي $120^\\circ$ .",
+        "incorrect": "زاوية القطاع ليست تكرار الجزء ولا نسبته المئوية: اضرب حصة الجزء من الكلّ في 360 ."
+      },
+      "solution": {
+        "lines": [
+          "زاوية قطاع الأكل: $\\dfrac{2000}{6000} \\times 360 = 120$"
+        ],
+        "result": "120^\\circ"
+      },
+      "timeSeconds": 90
     }
   ]
 }

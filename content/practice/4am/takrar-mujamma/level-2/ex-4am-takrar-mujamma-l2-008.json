@@ -3,65 +3,53 @@
   "lessonCode": "takrar-mujamma",
   "level": 2,
   "metadata": {
-    "title": "تدريب — ساعات الهاتف",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2017 — وجبات المطعم المدرسي",
+    "estimatedMinutes": 4,
     "tags": [
-      "أقل من"
+      "التكرار المجمع النازل",
+      "التواتر المجمع النازل"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_takrar-mujamma_P3"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_takrar-mujamma_P1",
+      "modelledOn": "BEM 2017 I-4"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2017",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "عدد الساعات التي يقضيها تلاميذ قسم يوميا أمام الهاتف (السطر الأول الساعات، والسطر الثاني عدد التلاميذ): $\\begin{array}{|c|c|c|c|c|} \\hline 2 & 3 & 4 & 5 & 6 \\\\ \\hline 4 & 6 & 9 & 5 & 2 \\\\ \\hline \\end{array}$"
+    "content": "يبيّن الجدول الآتي عدد الوجبات التي تناولها 40 تلميذا نصف داخلي في مطعم المتوسطة خلال أسبوع:",
+    "table": {
+      "head": [
+        "عدد الوجبات",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "rows": [
+        [
+          "عدد التلاميذ",
+          "4",
+          "6",
+          "10",
+          "12",
+          "8"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "عدد التلاميذ الذين يقضون أقل من 4 ساعات:",
-      "learningPoints": [
-        {
-          "code": "4am_takrar-mujamma_P3",
-          "role": "primary"
-        }
-      ],
-      "difficulty": 2,
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "10",
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-IHSA-SARAMA",
-          "value": "19"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "اقرأ الشرط بعناية: هل القيمة الحدّية نفسها محسوبة؟"
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "«على الأقل» و«على الأكثر» تشملان الحدّ، و«تفوق» و«أقل من» لا تشملانه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب القيم التي تحقّق الشرط، ثم اجمع تكراراتها."
-        }
-      ],
-      "feedback": {
-        "correct": "«أقل من 4» تستثني 4: $4 + 6 = 10$ .",
-        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "التكرار المجمع النازل للقيمة 5:",
+      "step": "01",
+      "statement": "احسب التكرار المجمع النازل للقيمة 4.",
       "learningPoints": [
         {
           "code": "4am_takrar-mujamma_P1",
@@ -69,44 +57,112 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "7",
+      "expectedAnswer": "20",
       "misconceptionSignatures": [
         {
-          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA",
-          "value": "2"
+          "value": "8",
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA"
         },
         {
-          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
-          "value": "5"
+          "value": "12",
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
         },
         {
-          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
-          "value": "24"
+          "value": "32",
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد القيم التي تحقّق الشرط: القيمة نفسها مع القيم الأصغر منها (أو الأكبر منها)."
+          "content": "التكرار المجمع النازل هو مجموع تكرار هذه القيمة وتكرارات القيم الأكبر منها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "التكرار المجمع يجمع التكرارات، لا القيم."
+          "content": "اجمع تكرار 4 وتكرارات ما بعدها حتى آخر عمود في الجدول."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع تكرار القيمة وتكرارات القيم المعنية واحدة واحدة، ثم تحقّق: الصاعد الأخير يساوي التكرار الكلي."
+          "content": "تحقّق: التكرار المجمع النازل لأول عمود يساوي التكرار الكلي."
         }
       ],
       "feedback": {
-        "correct": "$5 + 2 = 7$ : تكرار 5 وتكرارات القيم الأكبر منها.",
-        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
-      }
+        "correct": "$12 + 8 = 20$ .",
+        "incorrect": "اجمع تكرار القيمة نفسها وتكرارات القيم الأكبر منها فقط: النازل يتّجه نحو نهاية الجدول."
+      },
+      "solution": {
+        "lines": [
+          "التكرار المجمع النازل للقيمة 4 هو مجموع تكرار القيمة 4 وتكرارات القيم الأكبر منها:",
+          "$12 + 8 = 20$"
+        ],
+        "result": "20"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج التواتر المجمع النازل للقيمة 4.",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة أو كسر على الشكل a/b",
+      "expectedAnswer": "0,5",
+      "misconceptionSignatures": [
+        {
+          "value": "20",
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA"
+        },
+        {
+          "value": "0,8",
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB"
+        },
+        {
+          "value": "0,2",
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التواتر المجمع النازل هو التكرار المجمع النازل مقسوما على التكرار الكلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب أولا التكرار المجمع النازل ثم اقسمه على التكرار الكلي للسلسلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: التواتر عدد بين 0 و 1، والتواتر المجمع الصاعد لآخر عمود يساوي 1."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{20}{40} = 0{,}5$ .",
+        "incorrect": "لا تكتف بالتكرار المجمع: اقسمه على التكرار الكلي للسلسلة."
+      },
+      "solution": {
+        "lines": [
+          "التواتر المجمع النازل = التكرار المجمع النازل ÷ التكرار الكلي:",
+          "$\\dfrac{20}{40} = 0{,}5$"
+        ],
+        "result": "0{,}5"
+      },
+      "timeSeconds": 120
     }
   ]
 }

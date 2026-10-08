@@ -3,65 +3,155 @@
   "lessonCode": "takrar-mujamma",
   "level": 1,
   "metadata": {
-    "title": "تدريب — أهداف المباريات",
+    "title": "أهداف فريق في 20 مباراة",
     "estimatedMinutes": 3,
     "tags": [
-      "على الأكثر"
+      "على الأكثر",
+      "على الأقل"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_takrar-mujamma_P1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "عدد الأهداف التي سجّلها فريق في 20 مباراة (السطر الأول عدد الأهداف، والسطر الثاني عدد المباريات): $\\begin{array}{|c|c|c|c|} \\hline 0 & 1 & 2 & 3 \\\\ \\hline 4 & 9 & 6 & 1 \\\\ \\hline \\end{array}$"
+    "content": "يبيّن الجدول الآتي عدد الأهداف التي سجّلها فريق في 20 مباراة:",
+    "table": {
+      "head": [
+        "عدد الأهداف",
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "rows": [
+        [
+          "عدد المباريات",
+          "4",
+          "9",
+          "6",
+          "1"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "عدد المباريات التي سجّل فيها الفريق هدفا واحدا على الأكثر:",
+      "step": "01",
+      "statement": "ما هو عدد المباريات التي سجّل فيها الفريق هدفا واحدا على الأكثر؟",
       "learningPoints": [
         {
-          "code": "4am_takrar-mujamma_P1",
+          "code": "4am_takrar-mujamma_P3",
           "role": "primary"
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "13",
       "misconceptionSignatures": [
         {
-          "id": "MISC-IHSA-SARAMA",
-          "value": "4"
+          "value": "4",
+          "id": "MISC-IHSA-SARAMA"
         },
         {
-          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
-          "value": "9"
+          "value": "16",
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقرأ الشرط بعناية: هل القيمة الحدّية نفسها محسوبة؟"
+          "content": "«هدف واحد على الأكثر» تعني: هدف واحد أو أقل؛ الحدّ نفسه داخل في العدّ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "«على الأقل» و«على الأكثر» تشملان الحدّ، و«تفوق» و«أقل من» لا تشملانه."
+          "content": "هذا العدد هو التكرار المجمع الصاعد: اجمع التكرارات من البداية حتى الحدّ مع تكراره."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اكتب القيم التي تحقّق الشرط، ثم اجمع تكراراتها."
+          "content": "حدّد في الجدول الأعمدة التي تحقّق الشرط، ثم اجمع تكراراتها."
         }
       ],
       "feedback": {
-        "correct": "$4 + 9 = 13$ (0 و 1).",
-        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
-      }
+        "correct": "$4 + 9 = 13$ .",
+        "incorrect": "اقرأ الحدّ بعناية: هل هو داخل في العدّ أم لا؟ ثم اجمع تكرارات الأعمدة التي تحقّق الشرط فقط."
+      },
+      "solution": {
+        "lines": [
+          "القيم المعنية: 0، 1 .",
+          "$4 + 9 = 13$"
+        ],
+        "result": "13"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "ما هو عدد المباريات التي سجّل فيها الفريق هدفين على الأقل؟",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "value": "1",
+          "id": "MISC-IHSA-SARAMA"
+        },
+        {
+          "value": "19",
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "«هدفين على الأقل» تعني: هدفين أو أكثر؛ الحدّ نفسه داخل في العدّ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هذا العدد هو التكرار المجمع النازل: اجمع تكرار الحدّ وتكرارات ما بعده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حدّد في الجدول الأعمدة التي تحقّق الشرط، ثم اجمع تكراراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 + 1 = 7$ .",
+        "incorrect": "اقرأ الحدّ بعناية: هل هو داخل في العدّ أم لا؟ ثم اجمع تكرارات الأعمدة التي تحقّق الشرط فقط."
+      },
+      "solution": {
+        "lines": [
+          "القيم المعنية: 2، 3 .",
+          "$6 + 1 = 7$"
+        ],
+        "result": "7"
+      },
+      "timeSeconds": 90
     }
   ]
 }

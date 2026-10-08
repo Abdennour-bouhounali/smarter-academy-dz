@@ -3,33 +3,106 @@
   "lessonCode": "wadiya-idmajiya-ihsa",
   "level": 2,
   "metadata": {
-    "title": "أدمج تعلّماتي — ترتيب المعطيات",
-    "estimatedMinutes": 4,
+    "title": "أدمج تعلّماتي — الميداليات الذهبية: ترتيب المعطيات",
+    "estimatedMinutes": 6,
     "tags": [
       "وضعية",
-      "تكرار كلي",
-      "وسيط"
+      "التكرار الكلي",
+      "رتبة الوسيط"
     ],
     "source": {
       "type": "textbook",
       "elementId": "situation",
       "page": 100,
       "section": "أدمج تعلّماتي"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "حصيلة الميداليات الذهبية للدول الفائزة بها خلال إحدى دورات الألعاب الأولمبية: عدد الميداليات الذهبية: 1 ، 2 ، ⬡ ، 4 ، 5 ، 6 ، 7 ، 11 ، 13 ، 14 ، 16 ، 26 ، ⬡ ، 32 — التكرار: 11 ، 3 ، 2 ، 1 ، 2 ، 2 ، 1 ، 1 ، 1 ، 2 ، 1 ، 1 ، 1 ، 1. وسيط السلسلة: 3 ميداليات. متوسط السلسلة: 7 ميداليات. (⬡ قيمة مخفية: الأولى بين 2 و 4 ، والثانية بين 26 و 32.)"
+    "content": "إليك حصيلة الميداليات الذهبية للدول الفائزة بها خلال إحدى دورات الألعاب الأولمبية، حيث $x$ و $y$ قيمتان لا تظهران في الجدول ($2 < x < 4$ و $26 < y < 32$). وسيط السلسلة 3 ميداليات ومتوسطها 7 ميداليات.",
+    "table": {
+      "head": [
+        "عدد الميداليات الذهبية",
+        "التكرار (عدد الدول)"
+      ],
+      "rows": [
+        [
+          "1",
+          "11"
+        ],
+        [
+          "2",
+          "3"
+        ],
+        [
+          "$x$",
+          "2"
+        ],
+        [
+          "4",
+          "1"
+        ],
+        [
+          "5",
+          "2"
+        ],
+        [
+          "6",
+          "2"
+        ],
+        [
+          "7",
+          "1"
+        ],
+        [
+          "11",
+          "1"
+        ],
+        [
+          "13",
+          "1"
+        ],
+        [
+          "14",
+          "2"
+        ],
+        [
+          "16",
+          "1"
+        ],
+        [
+          "26",
+          "1"
+        ],
+        [
+          "$y$",
+          "1"
+        ],
+        [
+          "32",
+          "1"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "كم دولة فازت بميدالية ذهبية واحدة على الأقل؟",
+      "step": "01",
+      "statement": "ما هو عدد الدول التي فازت بميدالية ذهبية واحدة على الأقل؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-ihsa_P2",
           "role": "primary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "30",
@@ -37,84 +110,115 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "كل دولة تُعدّ مرة واحدة."
+          "content": "كل دولة في الجدول فازت بميدالية ذهبية واحدة على الأقل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "نجمع التكرارات، بما فيها تكرارا العمودين المخفيين."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "التكرار الكلي."
+          "content": "اجمع أعداد عمود التكرار."
         }
       ],
       "feedback": {
-        "correct": "التكرار الكلي $N = 30$.",
-        "incorrect": "نجمع كل التكرارات، ولا نعدّ الأعمدة."
+        "correct": "مجموع التكرارات 30 : إنها 30 دولة.",
+        "incorrect": "عدد الدول هو التكرار الكلي: مجموع عمود التكرار كله، لا عدد أسطر الجدول."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 2,
-      "misconceptionSignatures": [
-        {
-          "value": "14",
-          "id": "MISC-IHSA-MUTAWASSIT-QISMA-QIYAM"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "عدد الدول هو التكرار الكلي:",
+          "$11 + 3 + 2 + 1 + 2 + 2 + 1 + 1 + 1 + 2 + 1 + 1 + 1 + 1 = 30$"
+        ],
+        "result": "30"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "الوسيط هو نصف مجموع القيمتين اللتين رتبتاهما:",
+      "step": "02",
+      "sub": "ا",
+      "lead": "الوسيط نصف مجموع قيمتين من السلسلة المرتبة.",
+      "statement": "عيّن رتبة أولى هاتين القيمتين.",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-ihsa_P2",
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: الرتبة",
+      "expectedAnswer": "15",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "15 و 16",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "7 و 8",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-WASIT-QIMA-WUSTA-JADWAL"
-        },
-        {
-          "id": "C",
-          "content": "$15{,}5$ فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-WASIT-RUTBA"
+          "value": "15,5",
+          "id": "MISC-IHSA-WASIT-RUTBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "التكرار الكلي زوجي."
+          "content": "التكرار الكلي عدد زوجي."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الرتبتان $\\dfrac{N}{2}$ و $\\dfrac{N}{2} + 1$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الرتب رتب الدول لا الأعمدة."
+          "content": "الرتبة الأولى نصف التكرار الكلي."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{30}{2} = 15$ والرتبة الموالية 16.",
-        "incorrect": "الرتب تخص الدول المرتبة، لا أعمدة الجدول."
+        "correct": "$\\dfrac{30}{2} = 15$ .",
+        "incorrect": "لتكرار كلي زوجي $N$ ، الرتبتان الوسطيان هما $\\dfrac{N}{2}$ و $\\dfrac{N}{2} + 1$ ."
       },
+      "solution": {
+        "lines": [
+          "التكرار الكلي 30 عدد زوجي.",
+          "الرتبة الأولى: $\\dfrac{30}{2} = 15$"
+        ],
+        "result": "15"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "عيّن رتبة الثانية.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
       "cognitiveDemand": "apply",
-      "difficulty": 2
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: الرتبة",
+      "expectedAnswer": "16",
+      "misconceptionSignatures": [
+        {
+          "value": "17",
+          "id": "MISC-IHSA-WASIT-RUTBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الرتبتان الوسطيان متتاليتان."
+        }
+      ],
+      "feedback": {
+        "correct": "الوسيط نصف مجموع القيمتين ذواتي الرتبتين 15 و 16 .",
+        "incorrect": "الرتبة الثانية تلي الأولى مباشرة."
+      },
+      "solution": {
+        "lines": [
+          "الرتبة الثانية: $15 + 1 = 16$"
+        ],
+        "result": "16"
+      },
+      "timeSeconds": 90
     }
   ]
 }

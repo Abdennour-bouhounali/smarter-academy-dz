@@ -116,13 +116,16 @@ export function answerSize(question) {
 /**
  * La largeur PAR DÉFAUT du champ, en caractères : celle de la réponse juste
  * (propriétaire, 2026-10-06 : « le minimum est l'espace de la bonne réponse »),
- * plus deux caractères d'aisance. C'est aussi le MINIMUM : l'élève peut
- * agrandir le champ (poignée), jamais le rendre plus petit que cela.
+ * plus deux caractères d'aisance — ou celle du texte indicatif (`answerFormat`) s'il est plus long. C'est aussi
+ * le MINIMUM : l'élève peut agrandir le champ (poignée), jamais le rendre plus petit que cela. Les deux boutons de
+ * MathLive (clavier, menu) s'y AJOUTENT en CSS (`--answer-chrome`, index.css).
  */
 export function answerChars(question) {
   const ea = question?.expectedAnswer;
   const text = Array.isArray(ea) ? ea.join(' ؛ ') : String(ea ?? '');
-  return Math.max(4, text.length + 2);
+  // Le champ vide affiche `answerFormat` (« عدد طبيعي ») : il doit tenir en entier (propriétaire, 2026-10-08).
+  const format = String(question?.answerFormat ?? '');
+  return Math.max(4, text.length + 2, format.length);
 }
 
 /**

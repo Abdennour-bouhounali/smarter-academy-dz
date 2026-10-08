@@ -3,12 +3,12 @@
   "lessonCode": "wadiya-idmajiya-muthallathat",
   "level": 3,
   "metadata": {
-    "title": "أتعمّق 32 — هرم خوفو",
-    "estimatedMinutes": 5,
+    "title": "أتعمّق 32 — ارتفاع هرم خوفو وميل حرفه",
+    "estimatedMinutes": 12,
     "tags": [
       "خاصية فيثاغورس",
-      "هرم",
-      "التدوير"
+      "مجسّم",
+      "جيب التمام"
     ],
     "source": {
       "type": "textbook",
@@ -16,96 +16,109 @@
       "page": 125,
       "section": "أتعمّق",
       "number": 32
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
-  "generator": {
-    "tool": "gen_bank.py",
-    "version": "1"
-  },
   "statement": {
-    "content": "هرم «خوفو» هرم منتظم قاعدته مربع ABCD طول ضلعه $231\\,\\mathrm{m}$ ، رأسه S على المستقيم العمودي على القاعدة في مركزها O، ويبعد بنفس المسافة $220\\,\\mathrm{m}$ عن رؤوس القاعدة (الشكل).",
+    "content": "هرم «خوفو» هو هرم منتظم قاعدته مربع $ABCD$ طول ضلعه $231\\,\\mathrm{m}$ ومركزه $O$ . رأسه $S$ متواجد على المستقيم العمودي على قاعدة الهرم في مركزها، ويبعد بنفس المسافة $220\\,\\mathrm{m}$ عن رؤوس القاعدة (الشكل المقابل).",
     "figure": {
+      "kind": "space",
+      "view": {
+        "azimuth": -62,
+        "elevation": 18
+      },
       "points": {
         "A": [
+          0,
           0,
           0
         ],
         "B": [
-          5,
+          231,
+          0,
           0
         ],
         "C": [
-          6.6,
-          1.4
+          231,
+          231,
+          0
         ],
         "D": [
-          1.6,
-          1.4
+          0,
+          231,
+          0
         ],
         "O": [
-          3.3,
-          0.7
+          115.5,
+          115.5,
+          0
         ],
         "S": [
-          3.3,
-          5.6
+          115.5,
+          115.5,
+          147.3754
         ]
       },
+      "solids": [
+        {
+          "type": "polyhedron",
+          "faces": [
+            [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            [
+              "A",
+              "B",
+              "S"
+            ],
+            [
+              "B",
+              "C",
+              "S"
+            ],
+            [
+              "C",
+              "D",
+              "S"
+            ],
+            [
+              "D",
+              "A",
+              "S"
+            ]
+          ]
+        }
+      ],
       "segments": [
         {
           "from": "A",
           "to": "B",
           "label": "231 m"
         },
-        [
-          "B",
-          "C"
-        ],
-        {
-          "from": "C",
-          "to": "D",
-          "dashed": true
-        },
-        {
-          "from": "D",
-          "to": "A",
-          "dashed": true
-        },
         {
           "from": "S",
           "to": "A",
-          "label": "220 m",
-          "tone": "rose",
-          "bold": true
-        },
-        [
-          "S",
-          "B"
-        ],
-        [
-          "S",
-          "C"
-        ],
-        {
-          "from": "S",
-          "to": "D",
-          "dashed": true
+          "label": "220 m"
         },
         {
           "from": "S",
           "to": "O",
-          "dashed": true
+          "dashed": true,
+          "tone": "rose"
         },
         {
           "from": "O",
           "to": "A",
           "dashed": true,
-          "tone": "sky"
-        },
-        {
-          "from": "A",
-          "to": "C",
-          "dashed": true
+          "tone": "rose"
         }
       ],
       "rightAngles": [
@@ -119,25 +132,31 @@
         "A": "sw",
         "B": "se",
         "C": "e",
-        "D": "w",
-        "O": "se",
+        "D": "nw",
+        "O": "s",
         "S": "n"
       },
-      "hidden": [],
-      "ariaLabel": "هرم منتظم رأسه S وقاعدته المربع ABCD الذي طول ضلعه 231 m ومركزه O؛ الحرف الجانبي SA طوله 220 m؛ الارتفاع [SO] عمودي على القاعدة والمثلث SOA قائم في O",
-      "maxWidth": 320
+      "ariaLabel": "هرم منتظم رأسه S وقاعدته المربع ABCD ومركزها O؛ AB = 231 m و SA = 220 m؛ الارتفاع [SO] و [OA] مرسومان بخط متقطع",
+      "maxWidth": 340
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "في المثلث SOA القائم في O، الطول OA هو:",
+      "step": "01",
+      "statement": "في المثلث $SOA$ القائم في $O$ ، احسب القيمة المضبوطة للطول $OA$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muthallathat_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "secondary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
@@ -162,67 +181,133 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "O مركز المربع."
+          "content": "$O$ مركز المربع: هو منتصف القطر $[AC]$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "O منتصف القطر [AC]."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قطر مربع ضلعه a هو a√2."
+          "content": "قطر مربع ضلعه $a$ هو $a\\sqrt{2}$ (خاصية فيثاغورس في $ABC$ )."
         }
       ],
       "feedback": {
-        "correct": "قطر المربع $231\\sqrt{2}$ و O منتصفه: $OA = \\dfrac{231\\sqrt{2}}{2}$ .",
-        "incorrect": "المسافة من المركز إلى رأس المربع نصف القطر لا نصف الضلع."
+        "correct": "$AC = 231\\sqrt{2}$ و $OA = \\dfrac{AC}{2} = \\dfrac{231\\sqrt{2}}{2}\\,\\mathrm{m}$ .",
+        "incorrect": "$[OA]$ نصف قطر المربع، لا نصف ضلعه ولا القطر كله."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "المثلث $ABC$ قائم في $B$ : $AC^2 = 231^2 + 231^2 = 2 \\times 231^2$ ومنه $AC = 231\\sqrt{2}$",
+          "$O$ منتصف $[AC]$ : $OA = \\dfrac{AC}{2}$"
+        ],
+        "result": "OA = \\dfrac{231\\sqrt{2}}{2}\\,\\mathrm{m}"
+      },
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "ما ارتفاع الهرم SO مدوّرا إلى الوحدة (بالمتر)؟",
+      "step": "02",
+      "statement": "احسب طول ارتفاع هذا الهرم $SO$ . تدوّر النتيجة إلى الوحدة.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muthallathat_P1",
           "role": "primary"
-        }
-      ],
-      "answerType": "rational",
-      "answerFormat": "عدد صحيح (مدوّر إلى الوحدة)",
-      "expectedAnswer": "147",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "$SA = 220$ وتر المثلث SOA."
         },
         {
-          "id": "h2",
-          "type": "direction",
-          "content": "استعمل OA من السؤال السابق."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "مربع SO = مربع SA − مربع OA."
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "secondary"
         }
       ],
-      "feedback": {
-        "correct": "$SO^2 = 220^2 - \\dfrac{231^2 \\times 2}{4} = 21719{,}5$ ومنه $SO \\approx 147\\,\\mathrm{m}$ .",
-        "incorrect": "الحرف الجانبي SA هو الوتر."
-      },
+      "difficulty": 2,
       "cognitiveDemand": "apply",
-      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: الارتفاع بـ m مدوّرا إلى الوحدة",
+      "expectedAnswer": "147",
       "misconceptionSignatures": [
         {
           "value": "187",
           "id": "MISC-MUTH-NISF-DIL-QUTR"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث $SOA$ قائم في $O$ ووتره $[SA]$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$SO^2 = SA^2 - OA^2$ و $OA^2 = \\dfrac{231^2}{2}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$SO = \\sqrt{48400 - 26680{,}5} = \\sqrt{21719{,}5} \\approx 147{,}38$ أي $147\\,\\mathrm{m}$ .",
+        "incorrect": "استعمل نصف القطر $OA$ (لا نصف الضلع) واطرح المربعين من مربع الوتر."
+      },
+      "solution": {
+        "lines": [
+          "حسب خاصية فيثاغورس في المثلث $SOA$ : $SO^2 = SA^2 - OA^2 = 220^2 - \\dfrac{231^2}{2} = 48400 - 26680{,}5 = 21719{,}5$",
+          "$SO = \\sqrt{21719{,}5} \\approx 147{,}3754$"
+        ],
+        "result": "SO \\approx 147\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "أعط المدوّر إلى الوحدة من الدرجة لقيس الزاوية $\\widehat{SAO}$ بين الحرف $[SA]$ والقاعدة.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: القيس بالدرجة مدوّرا إلى الوحدة",
+      "expectedAnswer": "42",
+      "misconceptionSignatures": [
+        {
+          "value": "48",
+          "id": "MISC-MUTH-NISBA-UKHRA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المثلث $SOA$ : $[OA]$ مجاور للزاوية $\\widehat{SAO}$ و $[SA]$ وتر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل جيب التمام بالقيمة المضبوطة لـ $OA$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل اللمسة العكسية للنسبة في آلة حاسبة مبرمجة على الدرجة، ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos\\widehat{SAO} = \\dfrac{231\\sqrt{2}}{440}$ ومنه $\\widehat{SAO} \\approx 42{,}06^{\\circ}$ ، أي $42^{\\circ}$ .",
+        "incorrect": "المجاور على الوتر هو جيب التمام؛ اللمسة العكسية لجيب التمام تعطي القيس."
+      },
+      "solution": {
+        "lines": [
+          "في المثلث $SOA$ القائم في $O$ : $\\cos\\widehat{SAO} = \\dfrac{OA}{SA} = \\dfrac{231\\sqrt{2}}{2 \\times 220}$",
+          "باستعمال الآلة الحاسبة: $\\widehat{SAO} \\approx 42{,}0584^{\\circ}$"
+        ],
+        "result": "\\widehat{SAO} \\approx 42^{\\circ}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

@@ -3,74 +3,240 @@
   "lessonCode": "qiraat-wadiyat-ihsaiya",
   "level": 5,
   "metadata": {
-    "title": "تدريب — مخطط مضلّل",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2020 — أقمصة نادي كرة اليد بتبسة",
+    "estimatedMinutes": 14,
     "tags": [
-      "قراءة مخطط",
-      "تدريج"
+      "وضعية إدماجية",
+      "قراءة مخطط بالأعمدة",
+      "التواتر",
+      "مهمة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P1",
-      "modelledOn": null
+      "modelledOn": "BEM 2020 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2020",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "في مخطط لمشاهدات فيديو، المحور العمودي يبدأ من 900 لا من 0. عمود الفيديو A يصل إلى 1000 وعمود الفيديو B إلى 1100، فيبدو B ثلاث مرّات أطول من A."
+    "content": "يحضّر نادي كرة اليد بتبسة الموسم الرياضي الجديد. يمثّل المخطط بالأعمدة الآتي توزيع لاعبي النادي حسب مقاس القميص. يعرض ممون الأقمصة ثمنين: 1800DA للقميص من المقاسين S و M ، و 2200DA للقميص من المقاسات L و XL و XXL .",
+    "figure": {
+      "kind": "chart",
+      "type": "bar",
+      "ariaLabel": "مخطط بالأعمدة لعدد لاعبي النادي حسب مقاس القميص: S و M و L و XL و XXL",
+      "xTitle": "المقاس",
+      "yTitle": "عدد اللاعبين",
+      "y": {
+        "max": 14,
+        "step": 2,
+        "minor": 2
+      },
+      "bars": [
+        {
+          "label": "S",
+          "value": 4
+        },
+        {
+          "label": "M",
+          "value": 9
+        },
+        {
+          "label": "L",
+          "value": 12
+        },
+        {
+          "label": "XL",
+          "value": 7
+        },
+        {
+          "label": "XXL",
+          "value": 3
+        }
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما الصحيح؟",
+      "step": "01",
+      "statement": "احسب عدد لاعبي النادي.",
       "learningPoints": [
         {
           "code": "4am_qiraat-wadiyat-ihsaiya_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "35",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "B أكثر مشاهدة من A بنحو 10% فقط",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "B ثلاث مرّات أكثر مشاهدة من A",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-QIRAA-MUKHATTAT"
-        },
-        {
-          "id": "C",
-          "content": "A و B متساويان",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-QIRAA-MUKHATTAT"
+          "value": "5",
+          "id": "MISC-IHSA-QIRAA-MUKHATTAT"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اقرأ القيم على التدريج."
+          "content": "كل عمود يعطي عدد اللاعبين الذين لهم المقاس نفسه."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المحور لا يبدأ من 0."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن 1100 و 1000."
+          "content": "اجمع ارتفاعات الأعمدة الخمسة."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{1100}{1000} = 1{,}1$ : زيادة 10% فقط؛ الطول المرئي مضلّل لأن المحور يبدأ من 900.",
-        "incorrect": "نقرأ التدريج قبل مقارنة الأطوال."
+        "correct": "$4 + 9 + 12 + 7 + 3 = 35$ .",
+        "incorrect": "عدد اللاعبين هو مجموع ارتفاعات الأعمدة، لا عدد الأعمدة."
       },
-      "difficulty": 5
+      "solution": {
+        "lines": [
+          "$4 + 9 + 12 + 7 + 3 = 35$"
+        ],
+        "result": "35"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب تواتر اللاعبين الذين مقاس قميصهم M .",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b أو عدد عشري",
+      "expectedAnswer": "9/35",
+      "misconceptionSignatures": [
+        {
+          "value": "9",
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التواتر = التكرار ÷ التكرار الكلي."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{9}{35}$ .",
+        "incorrect": "اقسم عدد لاعبي المقاس M على عدد اللاعبين الكلي."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{9}{35}$"
+        ],
+        "result": "\\dfrac{9}{35}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "sub": "ا",
+      "lead": "☜ يشتري النادي قميصا واحدا لكل لاعب. أعط المبلغ الذي يدفعه النادي للممون.",
+      "statement": "كم قميصا من المقاسات L و XL و XXL يشتري النادي؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "22",
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ ارتفاع الأعمدة الثلاثة الأخيرة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمعها."
+        }
+      ],
+      "feedback": {
+        "correct": "$12 + 7 + 3 = 22$ .",
+        "incorrect": "اجمع عدد لاعبي المقاسات الثلاثة الكبيرة كلها."
+      },
+      "solution": {
+        "lines": [
+          "$12 + 7 + 3 = 22$"
+        ],
+        "result": "22"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "sub": "ب",
+      "statement": "ما هو المبلغ الذي يدفعه النادي؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "71800",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عدد أقمصة المقاسين S و M = عدد اللاعبين − عدد الأقمصة الكبيرة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب كل عدد في ثمنه ثم اجمع."
+        }
+      ],
+      "feedback": {
+        "correct": "$13 \\times 1800 + 22 \\times 2200 = 71800$ .",
+        "incorrect": "احسب ثمن الأقمصة الصغيرة وثمن الأقمصة الكبيرة كلٌّ بثمنه، ثم اجمع."
+      },
+      "solution": {
+        "lines": [
+          "أقمصة S و M: $35 - 22 = 13$",
+          "$13 \\times 1800 = 23400$ و $22 \\times 2200 = 48400$",
+          "$23400 + 48400 = 71800$"
+        ],
+        "result": "71800\\,\\mathrm{DA}"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
   ]
 }

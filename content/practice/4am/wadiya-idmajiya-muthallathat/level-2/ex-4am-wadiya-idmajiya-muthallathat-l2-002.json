@@ -3,110 +3,134 @@
   "lessonCode": "wadiya-idmajiya-muthallathat",
   "level": 2,
   "metadata": {
-    "title": "تدريب — عمود إنارة أمام المقام",
-    "estimatedMinutes": 4,
+    "title": "عمود إنارة أمام «مقام الشهيد»: الزاوية ثم الارتفاع",
+    "estimatedMinutes": 6,
     "tags": [
-      "خاصية طالس",
-      "الظل"
+      "الظل",
+      "ترييض"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
       "modelledOn": "situation"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
-  "generator": {
-    "tool": "gen_bank.py",
-    "version": "1"
-  },
   "statement": {
-    "content": "أمام «مقام الشهيد» عمود إنارة شاقولي طوله $3\\,\\mathrm{m}$ على بعد $89\\,\\mathrm{m}$ من قاعدة المقام. وقفت سلمى على الأرض على بعد $3\\,\\mathrm{m}$ من العمود (العمود بينها وبين المقام)، فرأت قمة العمود وقمة المقام على استقامة واحدة (نهمل طولها)."
+    "content": "أمام «مقام الشهيد» عمود إنارة شاقولي $[PQ]$ طوله $3\\,\\mathrm{m}$ على بعد $89\\,\\mathrm{m}$ من قاعدة المقام $M$ . وقفت سلمى في النقطة $A$ من الأرض الأفقية على بعد $3\\,\\mathrm{m}$ من العمود (العمود بينها وبين المقام)، فرأت قمة العمود $Q$ وقمة المقام $S$ على استقامة واحدة (نهمل طولها)."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما ارتفاع المقام (بالمتر)؟",
-      "learningPoints": [
-        {
-          "code": "4am_wadiya-idmajiya-muthallathat_P1",
-          "role": "primary"
-        }
-      ],
-      "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "92",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "المسافة من سلمى إلى المقام تمرّ بالعمود."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "المثلثان رأسهما موضع سلمى."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "نسبة h إلى 3 تساوي نسبة المسافة الكلية إلى 3."
-        }
-      ],
-      "feedback": {
-        "correct": "$\\dfrac{h}{3} = \\dfrac{3 + 89}{3}$ ومنه $h = 92\\,\\mathrm{m}$ .",
-        "incorrect": "استعمل المسافة الكلية من سلمى إلى المقام."
-      },
-      "cognitiveDemand": "apply",
-      "difficulty": 2,
-      "misconceptionSignatures": [
-        {
-          "value": "89",
-          "id": "MISC-MUTH-TALIS-NAZAR"
-        }
-      ]
-    },
-    {
-      "id": "q2",
-      "statement": "ما قيس الزاوية x بين الأرض وخط نظر سلمى (بالدرجة)؟",
+      "step": "01",
+      "statement": "احسب قيس الزاوية $\\widehat{PAQ}$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muthallathat_P3",
           "role": "primary"
-        }
-      ],
-      "answerType": "rational",
-      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
-      "expectedAnswer": "45",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "العمود $3\\,\\mathrm{m}$ والمسافة إليه $3\\,\\mathrm{m}$."
         },
         {
-          "id": "h2",
-          "type": "direction",
-          "content": "الظل = المقابل ÷ المجاور."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "ظلّ يساوي 1: أيّ زاوية خاصة؟"
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "secondary"
         }
       ],
-      "feedback": {
-        "correct": "$\\tan x = \\dfrac{3}{3} = 1$ ومنه $x = 45^{\\circ}$ .",
-        "incorrect": "الظل يساوي 1، والقيس يعطيه اللمسة العكسية."
-      },
-      "cognitiveDemand": "apply",
       "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: القيس بالدرجة",
+      "expectedAnswer": "45",
       "misconceptionSignatures": [
         {
           "value": "1",
           "id": "MISC-MUTH-NISBA-BADAL-QAYS"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث $APQ$ قائم في $P$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $\\tan\\widehat{PAQ}$ ، ثم استعمل اللمسة العكسية للظل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan\\widehat{PAQ} = \\dfrac{3}{3} = 1$ ومنه $\\widehat{PAQ} = 45^{\\circ}$ .",
+        "incorrect": "العدد $1$ هو ظل الزاوية؛ القيس تعطيه اللمسة العكسية للظل بالدرجة."
+      },
+      "solution": {
+        "lines": [
+          "في المثلث $APQ$ القائم في $P$ : $\\tan\\widehat{PAQ} = \\dfrac{PQ}{AP} = \\dfrac{3}{3} = 1$"
+        ],
+        "result": "\\widehat{PAQ} = 45^{\\circ}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "في المثلث $AMS$ القائم في $M$ ، استعمل ظل الزاوية نفسها لحساب ارتفاع المقام $MS$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الارتفاع بـ m",
+      "expectedAnswer": "92",
+      "misconceptionSignatures": [
+        {
+          "value": "89",
+          "id": "MISC-MUTH-TALIS-NAZAR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الزاوية $\\widehat{MAS}$ هي الزاوية $\\widehat{PAQ}$ نفسها لأن $A$ ، $Q$ ، $S$ على استقامة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة المجاورة في المثلث الكبير هي $AM$ كلها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $\\tan\\widehat{MAS} = \\dfrac{MS}{AM}$ ثم اعزل $MS$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$AM = 3 + 89 = 92\\,\\mathrm{m}$ و $MS = 92 \\times \\tan 45^{\\circ} = 92\\,\\mathrm{m}$ .",
+        "incorrect": "المسافة من سلمى إلى قاعدة المقام هي مجموع المسافتين، لا المسافة من العمود."
+      },
+      "solution": {
+        "lines": [
+          "$A$ ، $Q$ ، $S$ على استقامة، فالزاوية $\\widehat{MAS}$ هي $\\widehat{PAQ}$ ، و $AM = 3 + 89 = 92$ .",
+          "في المثلث $AMS$ القائم في $M$ : $\\tan\\widehat{MAS} = \\dfrac{MS}{AM}$ ومنه $MS = 92 \\times \\tan 45^{\\circ} = 92 \\times 1$"
+        ],
+        "result": "MS = 92\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

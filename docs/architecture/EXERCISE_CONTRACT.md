@@ -426,11 +426,28 @@ textbook QCM with two or three correct options becomes ONE choice among combinat
 evaluator; `names: ['a', 'b']` for the textbook's (a ; b) and (d ; t)). New misconceptions: `MISC-JUMLA-*`,
 `MISC-TAWID-*`, `MISC-JAM-*`, `MISC-TAKHFID-NISBA` (`content/practice/misconceptions.json`).
 
+**Statistical charts — unit 8 « الإحصاء » (2026-10-08).** A statement that SHOWS a chart draws it: `statement.figure` with
+`{ kind: 'chart', type: 'bar' | 'histogram' | 'line' | 'pie', … }` is drawn by `StatChart` (`lessons/common/components/StatChart.jsx` +
+`statChart.js`, schema in the module header) — مخطط بالأعمدة (`bars: [{ label, value }]`), مدرّج تكراري (contiguous rectangles,
+`edges` + `values`, optional `polygon: true` = مضلّع التكرارات through the tops' midpoints), مضلّع / المضلّع المجمّع (`x: { min, max, step }`,
+`points: [[x, y]]`), مخطط دائري / نصف دائري (`parts: [{ label, value }]`, `half`, `show: 'value' | 'angle' | 'percent' | 'none'` = the number
+written in each sector, computed from the values so it can never contradict the drawing; the category names are written inside the sectors only when EVERY sector can hold its name (all or none),
+and every category is in a legend — MathText, so a class « $10 \le a < 20$ » is a formula). Reading rules enforced by `validateStatChart`:
+a bar / rectangle / vertex value is NOT printed (unless `values: true`), so it must fall on a gridline — a multiple of `y.step / y.minor` —
+or the chart is refused as unreadable; bar names shrink to fit their slot and stagger on two rows below 11 px (360 px phones); `missing: true` (bar, sector) or `missing: [i]` (class) = the part the student completes, drawn
+dashed with « ؟ » (a `polygon` with a missing class is refused: it would give the answer away); ≤ 12 bars or classes; Arabic `ariaLabel`.
+The chart body reads left to right (`dir="ltr"`, ARABIC_RTL_CONTRACT « Charts read left to right »); axis titles (`xTitle`, `yTitle`) are
+Arabic DOM text. One switch for every statement figure: `StatementFigure.jsx` (render — `ExerciseStatement`, `ExamSheet`,
+`ProblemSupport`) and `validateStatementFigure` (`statementFigure.js` — `validate-exercises.mjs`, `guidedProblem.js`) dispatch on `kind`
+(plane by default, `space`, `chart`). A chart's data is never transcribed into a table with « نُقلت … إلى الجدول » any more. A SPREADSHEET grid (« المجدول », unit 8 lesson 3) is a
+`statement.table` with `sheet: true`: read left to right like Excel, head `['', 'A', 'B', …]`, consecutive row numbers in the first
+column — checked by the validator (ARABIC_RTL_CONTRACT « Spreadsheet formulas are LTR code »).
+
 **Unit 14 « الهندسة في الفضاء » (2026-10-05) — figures in SPACE, values with π.** A `statement.figure` may be a figure of space:
 `{ kind: 'space', … }` is drawn by `SpaceFigure` (`lessons/common/components/SpaceFigure.jsx` + `spaceFigure.js`: 3D points with z up,
 an orthographic view, spheres with their equator, polyhedra from faces, vertical cylinders / cones / frustums, circles, planes, sections,
 segments — the textbook's convention: SEEN lines solid, HIDDEN lines dashed, computed from the view) and validated by `validateSpaceFigure`
-(`ExerciseStatement` and `validate-exercises.mjs` dispatch on `kind`); every bank figure passes `spaceFigureQuality(fig)`. A value « بدلالة π »
+(`StatementFigure` / `validateStatementFigure` dispatch on `kind`); every bank figure passes `spaceFigureQuality(fig)`. A value « بدلالة π »
 is either a `choice` (36π vs 12π, 4π/3 …, distractors = the formula errors `MISC-MISAHA-*`, `MISC-HAJM-*`) or a `rational` asking the
 COEFFICIENT k of kπ, the statement saying so; a rounded area / volume is `rational` with the rounded key (unit 10's rule); an exact surd radius
 (√119/4, 2√3) is a `choice`. The oracle recomputes with `Math.PI` and its own formulas, never `packages/core/arithmetic/space.js`.
@@ -578,9 +595,9 @@ lesson).
 | 5 « جمل معادلتين » | 4 | 5 | **basculée** (2026-10-07) — 4 leçons, 200 feuilles |
 | 6 « الدالة الخطية والتناسبية » | 6 | 0 | **basculée** (2026-10-07) — 6 leçons, 300 feuilles |
 | 7 « الدالة التآلفية » | 6 | 15 | **basculée** (2026-10-07) — 6 leçons, 300 feuilles, 15 sujets officiels |
-| 8 « الإحصاء » | 5 | 0 | **en cours** (leçon par leçon) — aucune annale |
-| 9 « خاصية طالس » | 4 | 10 | en attente (leçon par leçon, après l'unité 1) |
-| 10 « حساب المثلثات » | 5 | 7 | en attente (leçon par leçon, après l'unité 1) |
+| 8 « الإحصاء » | 5 | 0 | **basculée 2026-10-08** (5 leçons, 250 feuilles) — aucune annale, « على منوال » + adapted ; diagrammes dessinés (StatChart), grilles de tableur `sheet: true` |
+| 9 « خاصية طالس » | 4 | 10 | **basculée 2026-10-08** (4 leçons, 200 feuilles) — 10 officiels (2007–2023), figures GeoFigure exactes vérifiées par l'oracle, `figureQuality` exigé ; réciproque = deux rapports saisis puis décision |
+| 10 « حساب المثلثات » | 5 | 7 | **basculée 2026-10-08** (5 leçons, 250 feuilles) — 7 officiels ; Pythagore compte dans tarrid-muthallathiya (P3), Thalès dans la synthèse (P1) ; figures `space` (SpaceFigure) sur feuille d'examen |
 | 11 « الأشعة والانسحاب » | 5 | 1 | en attente (leçon par leçon, après l'unité 1) |
 | 12 « الأشعة في معلم » | 5 | 12 | en attente (leçon par leçon, après l'unité 1) |
 | 13 « الدوران والزوايا والمضلّعات المنتظمة » | 5 | 3 | en attente (leçon par leçon, après l'unité 1) |
@@ -806,6 +823,35 @@ student refused while his teacher succeeds, another teacher refused).
 
 Second setting (2026-10-06): `practice_validation`, which decides who corrects photos and
 proofs. See « Image answers and teacher validation » below.
+
+### A plane figure on an exam sheet must be readable (2026-10-08, before the geometry units 9–13)
+
+`validate-exercises.mjs` refuses a `statement.figure` (plane, GeoFigure) on any sheet carrying `metadata.exam` when
+`figureQuality(fig)` is not empty — a band wider than 2 : 1, a label on another label or on a point. The fix is a
+redesign with the same concept and data (memory rule « figures du manuel : analyser puis redessiner »,
+LESSON_DEVELOPMENT_GUIDE §5). At the time of the rule, every figure of the 45 switched lessons passed; 14 figures of
+not-yet-converted banks fail and are redesigned when their lesson is converted.
+GeoFigure itself (2026-10-08): a length label is pushed off its segment by half its own width (or height) along the
+normal — never less than the former 13 px — and the viewBox grows to contain every length label, so « 3,06 m » beside a
+vertical edge is neither on the line nor clipped. Applies to every plane figure (lessons and practice).
+
+### Model solution opened = no retry; answer field fits its chrome (2026-10-08, every lesson)
+
+Owner's rules, implemented in the shared players, so they hold for every practice exercise of every lesson:
+
+- **Opening « الحل النموذجي » removes « أعِد المحاولة »** for that question: `SolutionPanel` calls `onReveal` when its
+  `<details>` opens, and `PracticeSession` / `TeacherPracticePlayer` hide the retry button for that question
+  (`solutionSeenFor`, keyed `exercise:question`). Seeing the answer and then retyping it proves nothing. The exam sheet
+  already had one attempt per step; this closes the classic practice page and the teacher preview.
+- **Teacher preview: « إظهار الإجابة المنتظرة » only for a question WITHOUT a model solution** (the classic banks of
+  units 9–14). When `solution` exists, its boxed result already gives the answer; the panel repeated it word for word.
+- **Exam answer field width** = the expected answer + 2 characters, or the `answerFormat` placeholder if longer
+  (`answerChars`), PLUS the MathLive keyboard button inside the field (`--answer-chrome`, index.css). Before, the
+  keyboard and menu buttons (68 px) left ~5 px for the answer and cut « عدد طبيعي ».
+- **MathLive, every field (practice and Math Lab)**: the menu ☰ is hidden (`math-field::part(menu-toggle)`; its items
+  were already emptied and it did nothing), and the virtual keyboard has a « ✕ إغلاق » tab on its top edge
+  (`features/mathlab/tools/functionGrapher/keyboardClose.js`, installed by `ensureMathLive()`), which closes like the
+  built-in `[hide-keyboard]` key: command on the focused field, blur, hide — otherwise « auto » mode reopens it.
 
 ### One step split into several questions — the model answer waits (2026-10-07)
 

@@ -3,25 +3,121 @@
   "lessonCode": "mada-wasit-mutawassit",
   "level": 3,
   "metadata": {
-    "title": "تدريب — الفئة الوسيطية لمدة المشاهدة",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2021 — غيابات تلاميذ قسم",
+    "estimatedMinutes": 6,
     "tags": [
-      "فئة وسيطية"
+      "المتوسط المتوازن",
+      "الوسيط",
+      "جدول تكرارات"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_mada-wasit-mutawassit_P3",
-      "modelledOn": "know-4"
+      "modelledOn": "BEM 2021 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2021",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "مدّة مشاهدة الفيديوهات القصيرة (بالدقائق) يوم الأحد لـ 25 تلميذًا: $0 \\le t < 10$ (6)، $10 \\le t < 20$ (9)، $20 \\le t < 30$ (7)، $30 \\le t \\le 40$ (3)."
+    "content": "يبيّن الجدول الآتي عدد الحصص التي غاب فيها كل تلميذ من تلاميذ قسم (25 تلميذا) خلال شهر:",
+    "table": {
+      "head": [
+        "عدد الحصص",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "rows": [
+        [
+          "عدد التلاميذ",
+          "8",
+          "7",
+          "5",
+          "3",
+          "1",
+          "1"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الفئة الوسيطية هي:",
+      "step": "01",
+      "statement": "احسب متوسط عدد الغيابات لكل تلميذ.",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة العشرية إن لزم)",
+      "expectedAnswer": "1,4",
+      "misconceptionSignatures": [
+        {
+          "value": "2,5",
+          "id": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH"
+        },
+        {
+          "value": "35/6",
+          "id": "MISC-IHSA-MUTAWASSIT-QISMA-QIYAM"
+        },
+        {
+          "value": "1",
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تكرارات تُضرب كل قيمة في تكرارها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع الجداءات (القيمة × التكرار)، ثم اجمع التكرارات لتحصل على التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم مجموع الجداءات على التكرار الكلي، لا على عدد القيم المختلفة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{35}{25} = 1{,}4$ .",
+        "incorrect": "المتوسط المتوازن: مجموع الجداءات (القيمة × التكرار) مقسوما على التكرار الكلي."
+      },
+      "solution": {
+        "lines": [
+          "مجموع الجداءات (القيمة × التكرار):",
+          "$0 \\times 8 + 1 \\times 7 + 2 \\times 5 + 3 \\times 3 + 4 \\times 1$",
+          "$+ 5 \\times 1 = 35$",
+          "التكرار الكلي:",
+          "$8 + 7 + 5 + 3 + 1$",
+          "$+ 1 = 25$",
+          "$m = \\dfrac{35}{25} = 1{,}4$"
+        ],
+        "result": "m = 1{,}4"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "ما هي رتبة القيمة التي تمثّل وسيط هذه السلسلة؟",
       "learningPoints": [
         {
           "code": "4am_mada-wasit-mutawassit_P3",
@@ -29,41 +125,106 @@
         }
       ],
       "difficulty": 3,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: الرتبة",
+      "expectedAnswer": "13",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$0 \\le t < 10$",
-          "isCorrect": false
+          "value": "12,5",
+          "id": "MISC-IHSA-WASIT-RUTBA"
         },
         {
-          "id": "B",
-          "content": "$10 \\le t < 20$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$20 \\le t < 30$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-WASIT-QIMA-WUSTA-JADWAL"
+          "value": "3,5",
+          "id": "MISC-IHSA-WASIT-QIMA-WUSTA-JADWAL"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$N = 25$ : الرتبة $13$."
+          "content": "عدد التلاميذ يحدّد رتبة الوسيط."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المجمّع الصاعد $6$ ، $15$ …"
+          "content": "هل التكرار الكلي فردي أم زوجي؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "N فردي: الرتبة $\\dfrac{N + 1}{2}$ ."
         }
       ],
       "feedback": {
-        "correct": "الرتبة $13$ بين $7$ و $15$ : الفئة الثانية.",
-        "incorrect": "استعمل التكرارات المجمعة الصاعدة."
-      }
+        "correct": "$\\dfrac{25 + 1}{2} = 13$ .",
+        "incorrect": "التكرار الكلي فردي: الوسيط هو القيمة المركزية."
+      },
+      "solution": {
+        "lines": [
+          "التكرار الكلي: $8 + 7 + 5 + 3 + 1 + 1 = 25$ ، عدد فردي.",
+          "رتبة الوسيط: $\\dfrac{25 + 1}{2} = 13$"
+        ],
+        "result": "13"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "استنتج وسيط هذه السلسلة.",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
+        {
+          "value": "2,5",
+          "id": "MISC-IHSA-WASIT-QIMA-WUSTA-JADWAL"
+        },
+        {
+          "value": "1,4",
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التكرار الكلي N يحدّد رتبة الوسيط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب N ثم الرتبة (أو الرتبتين) التي يقع فيها الوسيط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل التكرارات المجمعة الصاعدة لتعرف القيمة التي تشغل هذه الرتبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$Med = 1$ .",
+        "incorrect": "لا تقرأ الوسيط في وسط سطر الجدول: عيّن رتبته من التكرار الكلي، ثم ابحث عنها بالتكرارات المجمعة الصاعدة."
+      },
+      "solution": {
+        "lines": [
+          "التكرار الكلي: $N = 25$",
+          "التكرارات المجمعة الصاعدة: 8 ، 15 ، 20 ، 23 ، 24 ، 25",
+          "$N$ فردي، فالوسيط هو القيمة ذات الرتبة $\\dfrac{25 + 1}{2} = 13$ ، وهي 1.",
+          "$Med = 1$"
+        ],
+        "result": "Med = 1"
+      },
+      "timeSeconds": 120
     }
   ]
 }

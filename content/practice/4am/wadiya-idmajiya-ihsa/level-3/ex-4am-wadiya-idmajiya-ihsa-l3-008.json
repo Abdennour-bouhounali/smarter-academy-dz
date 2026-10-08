@@ -4,30 +4,58 @@
   "level": 3,
   "metadata": {
     "title": "تكرار مجهول: الإخوة والأخوات",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 8,
     "tags": [
-      "تكرار مجهول",
-      "متوسط"
+      "التكرار الكلي",
+      "المتوسط المتوازن",
+      "الوسيط"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-ihsa_P1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "عدد الإخوة والأخوات لـ 20 تلميذا: العدد: 1 ، 2 ، 3 ، 4 — عدد التلاميذ: 4 ، $a$ ، 6 ، 5."
+    "content": "يعطي الجدول الآتي عدد الإخوة والأخوات لـ 20 تلميذا من قسم، حيث $a$ عدد مجهول:",
+    "table": {
+      "head": [
+        "عدد الإخوة والأخوات",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "rows": [
+        [
+          "عدد التلاميذ",
+          "4",
+          "$a$",
+          "6",
+          "5"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما قيمة $a$ ؟",
+      "step": "01",
+      "statement": "احسب $a$ .",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
           "role": "primary"
         }
       ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
       "expectedAnswer": "5",
@@ -35,67 +63,119 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "التكرار الكلي 20."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "$4 + a + 6 + 5 = 20$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ المعادلة."
+          "content": "مجموع التكرارات يساوي التكرار الكلي."
         }
       ],
       "feedback": {
-        "correct": "$15 + a = 20$ ، إذن $a = 5$.",
-        "incorrect": "مجموع التكرارات يساوي 20."
+        "correct": "$20 - (4 + 6 + 5) = 5$ .",
+        "incorrect": "اكتب: $4 + a + 6 + 5 = 20$ ثم حلّ المعادلة."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "$4 + a + 6 + 5 = 20$",
+          "$a = 20 - 15 = 5$"
+        ],
+        "result": "a = 5"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "ما متوسط هذه السلسلة؟",
+      "step": "02",
+      "statement": "احسب متوسط عدد الإخوة والأخوات.",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "2.6",
+      "answerFormat": "عدد عشري بالفاصلة",
+      "expectedAnswer": "2,6",
+      "misconceptionSignatures": [
+        {
+          "value": "2,5",
+          "id": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عوّض $a$ بقيمتها."
+          "content": "عوّض $a$ بقيمته."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مجموع (القيمة × التكرار)."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم على 20."
+          "content": "مجموع (القيمة × التكرار) ÷ 20 ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{4 + 10 + 18 + 20}{20} = \\dfrac{52}{20} = 2{,}6$.",
-        "incorrect": "نضرب كل قيمة في تكرارها ثم نقسم على 20."
+        "correct": "$\\dfrac{1 \\times 4 + 2 \\times 5 + 3 \\times 6 + 4 \\times 5}{20} = 2{,}6$ .",
+        "incorrect": "المتوسط المتوازن: كل قيمة × تكرارها، ثم القسمة على التكرار الكلي."
       },
-      "cognitiveDemand": "apply",
+      "solution": {
+        "lines": [
+          "$1 \\times 4 + 2 \\times 5 + 3 \\times 6 + 4 \\times 5 = 52$",
+          "$\\dfrac{52}{20} = 2{,}6$"
+        ],
+        "result": "2{,}6"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "عيّن وسيط هذه السلسلة.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
       "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "3",
       "misconceptionSignatures": [
         {
-          "value": "2.5",
-          "id": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH"
+          "value": "2,6",
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT"
+        },
+        {
+          "value": "2,5",
+          "id": "MISC-IHSA-WASIT-QIMA-WUSTA-JADWAL"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الرتبتان الوسطيان 10 و 11 ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرارات المجمعة الصاعدة: 4 ، 9 ، …"
+        }
+      ],
+      "feedback": {
+        "correct": "الرتبتان 10 و 11 تقعان في القيمة 3 ، فالوسيط 3 .",
+        "incorrect": "حدّد بالتكرارات المجمعة الصاعدة القيمة التي تقع فيها الرتبتان 10 و 11 ."
+      },
+      "solution": {
+        "lines": [
+          "التكرارات المجمعة الصاعدة: 4 ، 9 ، 15 ، 20 .",
+          "الرتب من 10 إلى 15 للقيمة 3 .",
+          "$\\dfrac{3 + 3}{2} = 3$"
+        ],
+        "result": "3"
+      },
+      "timeSeconds": 120
     }
   ]
 }

@@ -3,12 +3,12 @@
   "lessonCode": "wadiya-idmajiya-muthallathat",
   "level": 3,
   "metadata": {
-    "title": "أتعمّق 31 — جيب الزاوية DAC",
-    "estimatedMinutes": 4,
+    "title": "أتعمّق 31 — جيب الزاوية DAC ثم قيسها",
+    "estimatedMinutes": 8,
     "tags": [
       "الجيب",
-      "القيمة المضبوطة",
-      "التدوير"
+      "قيمة مضبوطة",
+      "الآلة الحاسبة"
     ],
     "source": {
       "type": "textbook",
@@ -16,49 +16,103 @@
       "page": 125,
       "section": "أتعمّق",
       "number": 31
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
-  "generator": {
-    "tool": "gen_bank.py",
-    "version": "1"
-  },
   "statement": {
-    "content": "ABCDEFGH متوازي مستطيلات (الشكل): $AB = 3{,}15\\,\\mathrm{cm}$ ، $FG = 2{,}35\\,\\mathrm{cm}$ ، $AF = 1{,}55\\,\\mathrm{cm}$ ، و $AD = \\sqrt{17{,}8475}\\,\\mathrm{cm}$ . المثلث ACD قائم في C.",
+    "content": "$ABCDEFGH$ متوازي مستطيلات (الشكل المقابل) حيث: $AB = 3{,}15\\,\\mathrm{cm}$ ، $FG = 2{,}35\\,\\mathrm{cm}$ و $AF = 1{,}55\\,\\mathrm{cm}$ . نعلم أن $AC = \\sqrt{15{,}445}\\,\\mathrm{cm}$ و $AD = \\sqrt{17{,}8475}\\,\\mathrm{cm}$ ، وأن المثلث $ACD$ قائم في $C$ .",
     "figure": {
+      "kind": "space",
       "points": {
         "A": [
+          0,
           0,
           0
         ],
         "B": [
-          6,
+          3.15,
+          0,
           0
         ],
-        "E": [
-          6,
-          2.952
+        "C": [
+          3.15,
+          2.35,
+          0
+        ],
+        "H": [
+          0,
+          2.35,
+          0
         ],
         "F": [
           0,
-          2.952
+          0,
+          1.55
         ],
-        "H": [
-          3.357,
-          2.014
-        ],
-        "C": [
-          9.357,
-          2.014
+        "E": [
+          3.15,
+          0,
+          1.55
         ],
         "D": [
-          9.357,
-          4.967
+          3.15,
+          2.35,
+          1.55
         ],
         "G": [
-          3.357,
-          4.967
+          0,
+          2.35,
+          1.55
         ]
       },
+      "solids": [
+        {
+          "type": "polyhedron",
+          "faces": [
+            [
+              "A",
+              "B",
+              "C",
+              "H"
+            ],
+            [
+              "F",
+              "E",
+              "D",
+              "G"
+            ],
+            [
+              "A",
+              "B",
+              "E",
+              "F"
+            ],
+            [
+              "B",
+              "C",
+              "D",
+              "E"
+            ],
+            [
+              "C",
+              "H",
+              "G",
+              "D"
+            ],
+            [
+              "H",
+              "A",
+              "F",
+              "G"
+            ]
+          ]
+        }
+      ],
       "segments": [
         {
           "from": "A",
@@ -66,65 +120,24 @@
           "label": "3,15 cm"
         },
         {
-          "from": "B",
-          "to": "E"
-        },
-        {
-          "from": "E",
-          "to": "F"
-        },
-        {
-          "from": "F",
-          "to": "A",
-          "label": "1,55 cm"
-        },
-        {
-          "from": "B",
-          "to": "C"
-        },
-        {
-          "from": "C",
-          "to": "D"
-        },
-        {
-          "from": "E",
-          "to": "D"
-        },
-        {
           "from": "F",
           "to": "G",
           "label": "2,35 cm"
         },
         {
-          "from": "G",
-          "to": "D"
-        },
-        {
           "from": "A",
-          "to": "H",
-          "dashed": true
-        },
-        {
-          "from": "H",
-          "to": "C",
-          "dashed": true
-        },
-        {
-          "from": "H",
-          "to": "G",
-          "dashed": true
+          "to": "F",
+          "label": "1,55 cm"
         },
         {
           "from": "A",
           "to": "C",
-          "dashed": true,
-          "tone": "sky"
+          "tone": "rose"
         },
         {
           "from": "A",
           "to": "D",
-          "tone": "rose",
-          "bold": true
+          "tone": "rose"
         }
       ],
       "rightAngles": [
@@ -137,34 +150,41 @@
       "labels": {
         "A": "sw",
         "B": "s",
-        "E": "n",
-        "F": "w",
-        "H": "n",
         "C": "e",
+        "H": "n",
         "D": "ne",
-        "G": "nw"
+        "G": "nw",
+        "F": "w",
+        "E": "se"
       },
-      "ariaLabel": "متوازي مستطيلات ABCDEFGH: الوجه الأمامي ABEF و AB = 3,15 cm و AF = 1,55 cm و FG = 2,35 cm؛ القطعتان [AC] قطر القاعدة و [AD] قطر المجسّم مرسومتان، والمثلث ACD قائم في C",
+      "ariaLabel": "متوازي مستطيلات ABCDEFGH: الوجه الأمامي ABEF و C خلف B و D فوق C و H خلف A؛ AB = 3,15 cm و AF = 1,55 cm و FG = 2,35 cm؛ قطر القاعدة [AC] وقطر المجسّم [AD] مرسومان",
       "maxWidth": 340
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "القيمة المضبوطة للعدد $\\sin\\widehat{DAC}$ هي:",
+      "step": "01",
+      "statement": "عيّن القيمة المضبوطة للعدد $\\sin\\widehat{DAC}$ .",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "secondary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
           "content": "$\\dfrac{1{,}55}{\\sqrt{15{,}445}}$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
+          "misconceptionId": "MISC-MUTH-NISBA-UKHRA"
         },
         {
           "id": "B",
@@ -188,67 +208,80 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "الزاوية في A والقائمة في C."
+          "content": "في المثلث $ACD$ القائم في $C$ : الوتر $[AD]$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "CD يقابل الزاوية A والوتر AD."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الجيب = المقابل ÷ الوتر."
+          "content": "الضلع المقابل للزاوية $\\widehat{DAC}$ هو $[CD]$ و $CD = AF$ ."
         }
       ],
       "feedback": {
         "correct": "$\\sin\\widehat{DAC} = \\dfrac{CD}{AD} = \\dfrac{1{,}55}{\\sqrt{17{,}8475}}$ .",
-        "incorrect": "الوتر هو AD لا AC."
+        "incorrect": "الجيب = المقابل على الوتر؛ المقابل لـ $\\widehat{DAC}$ هو الحرف الشاقولي $[CD]$ ."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "في المثلث $ACD$ القائم في $C$ : $\\sin\\widehat{DAC} = \\dfrac{CD}{AD}$ و $CD = AF = 1{,}55$"
+        ],
+        "result": "\\sin\\widehat{DAC} = \\dfrac{1{,}55}{\\sqrt{17{,}8475}}"
+      },
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "ما المدوّر إلى الدرجة لقيس الزاوية $\\widehat{DAC}$ ؟",
+      "step": "02",
+      "statement": "احسب المدوّر إلى الدرجة لقيس الزاوية $\\widehat{DAC}$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muthallathat_P3",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "secondary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "answerFormat": "عدد طبيعي: القيس بالدرجة مدوّرا إلى الوحدة",
       "expectedAnswer": "22",
+      "misconceptionSignatures": [
+        {
+          "value": "68",
+          "id": "MISC-MUTH-NISBA-UKHRA"
+        },
+        {
+          "value": "21",
+          "id": "MISC-MUTH-TADWIR-BATR"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "استعمل القيمة المضبوطة للجيب."
+          "content": "لدينا القيمة المضبوطة لـ $\\sin\\widehat{DAC}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اللمسة العكسية للجيب."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "دوّر القيس فقط، في الأخير."
+          "content": "استعمل اللمسة العكسية للنسبة في آلة حاسبة مبرمجة على الدرجة، ثم دوّر في آخر الحساب."
         }
       ],
       "feedback": {
-        "correct": "$\\widehat{DAC} \\approx 21{,}52^{\\circ}$ ، أي $22^{\\circ}$ . تدوير AD إلى 4 أولا يعطي $23^{\\circ}$ .",
-        "incorrect": "لا تدوّر AD قبل حساب الجيب."
+        "correct": "$\\widehat{DAC} \\approx 21{,}52^{\\circ}$ ، أي $22^{\\circ}$ .",
+        "incorrect": "أدخل القيمة المضبوطة (لا قيمة مدوّرة) في اللمسة العكسية للجيب، ثم دوّر."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3,
-      "misconceptionSignatures": [
-        {
-          "value": "23",
-          "id": "MISC-MUTH-TADWIR-MUBAKKIR"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "$\\sin\\widehat{DAC} = \\dfrac{1{,}55}{\\sqrt{17{,}8475}}$",
+          "باستعمال الآلة الحاسبة (اللمسة العكسية للجيب): $\\widehat{DAC} \\approx 21{,}5243^{\\circ}$"
+        ],
+        "result": "\\widehat{DAC} \\approx 22^{\\circ}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

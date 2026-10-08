@@ -3,79 +3,115 @@
   "lessonCode": "qiraat-wadiyat-ihsaiya",
   "level": 1,
   "metadata": {
-    "title": "تدريب — مسابقة القسم",
+    "title": "مسابقة القسم: فريقان",
     "estimatedMinutes": 3,
     "tags": [
-      "متوسط مجموعات"
+      "المتوسط المتوازن",
+      "مجموعات"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P3",
       "modelledOn": "challenge"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في مسابقة القسم: فريق من 4 أصدقاء متوسط نقاطهم 12، وفريق من 6 أصدقاء متوسط نقاطهم 7."
+    "content": "في مسابقة القسم فريقان: فريق من 4 أصدقاء متوسط نقاطهم 12 ، وفريق من 6 أصدقاء متوسط نقاطهم 7 ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما متوسط نقاط الأصدقاء العشرة؟",
+      "step": "01",
+      "statement": "احسب مجموع نقاط الأصدقاء الـ 10 .",
       "learningPoints": [
         {
           "code": "4am_qiraat-wadiyat-ihsaiya_P3",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "90",
+      "hints": [
         {
-          "id": "A",
-          "content": "$9$",
-          "isCorrect": true
+          "id": "h1",
+          "type": "look",
+          "content": "مجموع نقاط مجموعة = عدد أفرادها × متوسطها."
         },
         {
-          "id": "B",
-          "content": "$9{,}5$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN"
-        },
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب مجموع كل مجموعة ثم اجمع."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 \\times 12 + 6 \\times 7 = 90$ .",
+        "incorrect": "اضرب متوسط كل مجموعة في عدد أفرادها، ثم اجمع النتيجتين."
+      },
+      "solution": {
+        "lines": [
+          "$4 \\times 12 = 48$ و $6 \\times 7 = 42$",
+          "$48 + 42 = 90$"
+        ],
+        "result": "90"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب متوسط نقاط الأصدقاء الـ 10 .",
+      "learningPoints": [
         {
-          "id": "C",
-          "content": "$19$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-MUTAWASSIT-QISMA-QIYAM"
-        },
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري عند الحاجة)",
+      "expectedAnswer": "9",
+      "misconceptionSignatures": [
         {
-          "id": "D",
-          "content": "$7$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN"
+          "value": "9,5",
+          "id": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الفريق الثاني أكبر عددا."
+          "content": "المتوسط = مجموع النقاط ÷ عدد الأفراد كلهم."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مجموع النقاط $4 \\times 12 + 6 \\times 7$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم على 10."
+          "content": "عدد أفراد الفريقين غير متساوٍ: متوسط المتوسطين لا يصلح هنا."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{48 + 42}{10} = 9$ ، وليس متوسط المتوسطين $9{,}5$ .",
-        "incorrect": "اضرب كل متوسط في عدد فريقه."
+        "correct": "$\\dfrac{90}{10} = 9$ .",
+        "incorrect": "اقسم مجموع النقاط الذي وجدته في 01 على العدد الكلي للأفراد."
       },
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "عدد الأفراد: $4 + 6 = 10$",
+          "$\\dfrac{90}{10} = 9$",
+          "وليس $\\dfrac{12 + 7}{2} = 9{,}5$ ، لأن عدد أفراد الفريقين مختلف."
+        ],
+        "result": "9"
+      },
+      "timeSeconds": 90
     }
   ]
 }

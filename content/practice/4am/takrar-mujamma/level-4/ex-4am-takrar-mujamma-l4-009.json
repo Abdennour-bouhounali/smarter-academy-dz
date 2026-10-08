@@ -3,111 +3,105 @@
   "lessonCode": "takrar-mujamma",
   "level": 4,
   "metadata": {
-    "title": "تدريب — جمع القمامة على الشاطئ",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2010 — جدول تكرارات مجمعة نازلة",
+    "estimatedMinutes": 4,
     "tags": [
-      "فئات"
+      "التكرار المجمع النازل",
+      "قراءة جدول"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_takrar-mujamma_P2",
-      "modelledOn": "method-cumul"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_takrar-mujamma_P3",
+      "modelledOn": "BEM 2010 I-1"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2010",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "كمية النفايات (kg) التي جمعها 20 متطوّعا على الشاطئ : $0 \\le x < 5$ : 4 ، $5 \\le x < 10$ : 7 ، $10 \\le x < 15$ : 6 ، $15 \\le x \\le 20$ : 3 (المجموع 20)."
+    "content": "يبيّن الجدول الآتي التكرارات المجمعة النازلة لعدد الأهداف المسجّلة في مباريات دورة ما بين الأقسام بإحدى المتوسطات:",
+    "table": {
+      "head": [
+        "عدد الأهداف",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "rows": [
+        [
+          "التكرار المجمع النازل",
+          "24",
+          "18",
+          "9",
+          "4",
+          "1"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "التكرار المجمع الصاعد للفئة $10 \\le x < 15$ :",
+      "step": "01",
+      "statement": "أوجد عدد المباريات التي سُجّل فيها هدف واحد أو هدفان.",
       "learningPoints": [
         {
-          "code": "4am_takrar-mujamma_P1",
-          "role": "primary"
-        }
-      ],
-      "difficulty": 3,
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "17",
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
-          "value": "6"
-        },
-        {
-          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
-          "value": "9"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "حدّد القيم التي تحقّق الشرط: القيمة نفسها مع القيم الأصغر منها (أو الأكبر منها)."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "التكرار المجمع يجمع التكرارات، لا القيم."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اجمع تكرار القيمة وتكرارات القيم المعنية واحدة واحدة، ثم تحقّق: الصاعد الأخير يساوي التكرار الكلي."
-        }
-      ],
-      "feedback": {
-        "correct": "$4 + 7 + 6 = 17$",
-        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "التواتر المجمع النازل للفئة $5 \\le x < 10$ :",
-      "learningPoints": [
-        {
-          "code": "4am_takrar-mujamma_P2",
+          "code": "4am_takrar-mujamma_P3",
           "role": "primary"
         }
       ],
       "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري بالفاصلة أو كسر",
-      "expectedAnswer": "0,8",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "14",
       "misconceptionSignatures": [
         {
-          "id": "MISC-IHSA-TAWATUR-BILA-QISMA",
-          "value": "16"
+          "value": "27",
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
         },
         {
-          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
-          "value": "0,55"
+          "value": "9",
+          "id": "MISC-IHSA-SARAMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+          "content": "التكرار المجمع النازل للقيمة 1 يعدّ المباريات التي سُجّل فيها هدف واحد على الأقل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+          "content": "من بين هذه المباريات، أبعد المباريات التي سُجّل فيها 3 أهداف على الأقل."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+          "content": "العدد المطلوب = التكرار المجمع النازل للقيمة 1 − التكرار المجمع النازل للقيمة 3."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{7 + 6 + 3}{20} = 0{,}8$",
-        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
-      }
+        "correct": "$18 - 4 = 14$ .",
+        "incorrect": "المباريات المطلوبة هي التي سُجّل فيها هدف واحد على الأقل، دون التي سُجّل فيها 3 أهداف على الأقل."
+      },
+      "solution": {
+        "lines": [
+          "عدد المباريات التي سُجّل فيها هدف واحد على الأقل: 18 (التكرار المجمع النازل للقيمة 1).",
+          "عدد المباريات التي سُجّل فيها 3 أهداف على الأقل: 4 (التكرار المجمع النازل للقيمة 3).",
+          "$18 - 4 = 14$"
+        ],
+        "result": "14"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
   ]
 }

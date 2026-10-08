@@ -3,24 +3,53 @@
   "lessonCode": "takrar-mujamma",
   "level": 1,
   "metadata": {
-    "title": "تعريف — الصاعد",
+    "title": "أخطاء الإملاء",
     "estimatedMinutes": 3,
     "tags": [
-      "تعريف"
+      "التكرار",
+      "التكرار المجمع الصاعد"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
-      "learningPoint": "4am_takrar-mujamma_P1"
+      "learningPoint": "4am_takrar-mujamma_P1",
+      "adaptedFrom": "ex-4am-takrar-mujamma-l1-010"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في سلسلة إحصائية مرتّبة، نتكلّم عن التكرار المجمع الصاعد لقيمة $t$ ."
+    "content": "إليك عدد الأخطاء التي ارتكبها 12 تلميذا في الإملاء: 2 ، 0 ، 1 ، 3 ، 1 ، 0 ، 2 ، 1 ، 4 ، 1 ، 0 ، 2 .",
+    "table": {
+      "head": [
+        "عدد الأخطاء",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "rows": [
+        [
+          "عدد التلاميذ",
+          "…",
+          "…",
+          "…",
+          "…",
+          "…"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "التكرار المجمع الصاعد للقيمة $t$ هو:",
+      "step": "01",
+      "statement": "انقل الجدول ثم أكمل سطر التكرار. ما هو تكرار القيمة 1 ؟",
       "learningPoints": [
         {
           "code": "4am_takrar-mujamma_P1",
@@ -28,53 +57,94 @@
         }
       ],
       "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "counted": false,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "hints": [
         {
-          "id": "A",
-          "content": "مجموع تكرار $t$ وتكرارات القيم الأصغر منها",
-          "isCorrect": true
+          "id": "h1",
+          "type": "look",
+          "content": "التكرار هو عدد المرات التي تظهر فيها القيمة في السلسلة."
         },
         {
-          "id": "B",
-          "content": "مجموع تكرارات القيم الأصغر تماما من $t$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-MUJAMMA-DUN-QIMA"
+          "id": "h2",
+          "type": "direction",
+          "content": "اشطب القيم واحدة واحدة وأنت تعدّها حتى لا تنسى أيّا منها."
+        }
+      ],
+      "feedback": {
+        "correct": "تظهر القيمة 1 أربع مرات في السلسلة.",
+        "incorrect": "عُدّ مرات ظهور القيمة 1 في السلسلة بعناية."
+      },
+      "solution": {
+        "lines": [
+          "نعدّ مرات ظهور القيمة 1 في السلسلة: تظهر 4 مرات.",
+          "وبالطريقة نفسها: القيمة 0 تظهر 3 مرات، و 2 تظهر 3 مرات، و 3 مرة واحدة، و 4 مرة واحدة."
+        ],
+        "result": "4"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب التكرار المجمع الصاعد للقيمة 1.",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA"
         },
         {
-          "id": "C",
-          "content": "مجموع تكرار $t$ وتكرارات القيم الأكبر منها",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-SAID-NAZIL-MAQLUB"
+          "value": "4",
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
         },
         {
-          "id": "D",
-          "content": "تكرار $t$ وحده",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
+          "value": "9",
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد القيم التي تحقّق الشرط: القيمة نفسها مع القيم الأصغر منها (أو الأكبر منها)."
+          "content": "التكرار المجمع الصاعد لقيمة هو مجموع تكرارها وتكرارات القيم الأصغر منها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "التكرار المجمع يجمع التكرارات، لا القيم."
+          "content": "ابدأ من أول عمود في الجدول واجمع التكرارات حتى 1 مع تكرارها."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع تكرار القيمة وتكرارات القيم المعنية واحدة واحدة، ثم تحقّق: الصاعد الأخير يساوي التكرار الكلي."
+          "content": "تحقّق: التكرار المجمع الصاعد لآخر عمود يساوي التكرار الكلي."
         }
       ],
       "feedback": {
-        "correct": "هذا تعريف الكتاب (معارف 1).",
-        "incorrect": "راجع التعريف: أي القيم تدخل في المجموع؟"
-      }
+        "correct": "$3 + 4 = 7$ .",
+        "incorrect": "اجمع تكرار القيمة نفسها وتكرارات القيم الأصغر منها فقط، ولا تنس تكرار القيمة نفسها."
+      },
+      "solution": {
+        "lines": [
+          "التكرار المجمع الصاعد للقيمة 1 هو مجموع تكرار القيمة 1 وتكرارات القيم الأصغر منها:",
+          "$3 + 4 = 7$"
+        ],
+        "result": "7"
+      },
+      "timeSeconds": 75
     }
   ]
 }

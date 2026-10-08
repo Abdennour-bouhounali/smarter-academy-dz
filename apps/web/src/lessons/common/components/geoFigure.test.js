@@ -114,4 +114,20 @@ describe('geoFigure — la figure déclarative', () => {
     expect(L.width).toBeCloseTo(L.height); // le cercle entier entre dans le cadre
     expect(figureQuality(fig)).toEqual([]);
   });
+  it('une étiquette de longueur large s’écarte d’un segment vertical de sa demi-largeur (jamais sur le trait)', () => {
+    const fig = { points: { H: [0, 0], A: [0, 3], B: [-5, 0] }, segments: [{ from: 'H', to: 'A', label: '3,06 m' }, { from: 'B', to: 'H', label: '5' }], ariaLabel: 'مثلث قائم' };
+    const L = layoutGeoFigure(fig);
+    const [x] = L.segmentLabel('H', 'A', null, '3,06 m');
+    const halfW = (6 * 7.4) / 2;
+    expect(Math.abs(x - L.P.H[0]) - halfW).toBeGreaterThanOrEqual(6.9); // le bord du texte reste à ≥ 7 px du trait
+    expect(Math.abs(L.segmentLabel('H', 'A', null, 'x')[0] - L.P.H[0])).toBeCloseTo(13, 6); // une étiquette courte ne bouge pas
+  });
+  it('le cadre (viewBox) couvre chaque étiquette de longueur, même écartée au-delà du bord', () => {
+    const fig = { points: { H: [0, 0], A: [0, 3], B: [-5, 0] }, segments: [{ from: 'H', to: 'A', label: '3,06 m' }], ariaLabel: 'مثلث قائم' };
+    const L = layoutGeoFigure(fig);
+    const [x] = L.segmentLabel('H', 'A', null, '3,06 m');
+    const [vx, , vw] = L.viewBox;
+    expect(vx + vw).toBeGreaterThanOrEqual(x + (6 * 7.4) / 2);
+    expect(vx).toBeLessThanOrEqual(0);
+  });
 });

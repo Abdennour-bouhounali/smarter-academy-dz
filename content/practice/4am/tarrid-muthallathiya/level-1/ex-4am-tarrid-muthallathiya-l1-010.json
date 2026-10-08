@@ -2,30 +2,35 @@
   "id": "ex-4am-tarrid-muthallathiya-l1-010",
   "lessonCode": "tarrid-muthallathiya",
   "level": 1,
-  "generator": {
-    "tool": "unit10-tarrid-gen.py",
-    "version": "1"
-  },
   "metadata": {
-    "title": "تدريب — نتيجة ممكنة؟",
-    "estimatedMinutes": 3,
+    "title": "وتر أقصر من ضلع؟ تصويب نتيجة تلميذ",
+    "estimatedMinutes": 4,
     "tags": [
-      "تحقق"
+      "حل المثلث القائم",
+      "جيب التمام"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tarrid-muthallathiya_P3",
-      "modelledOn": "ex-27"
+      "modelledOn": "ex-27",
+      "adaptedFrom": "ex-4am-tarrid-muthallathiya-l1-010"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في مثلث قائم، أحد ضلعي الزاوية القائمة طوله $5\\,\\mathrm{cm}$ . حسب تلميذ طول الوتر فوجد $4{,}2\\,\\mathrm{cm}$ ."
+    "content": "في مثلث قائم، أحد ضلعي الزاوية القائمة طوله $5\\,\\mathrm{cm}$ ، والزاوية الحادة التي يمرّ هذا الضلع برأسها قيسها $35^{\\circ}$ . حسب تلميذ طول الوتر فوجد $4{,}1\\,\\mathrm{cm}$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ماذا نقول عن نتيجته؟",
+      "step": "01",
+      "statement": "هل يمكن أن تكون نتيجة التلميذ صحيحة؟",
       "learningPoints": [
         {
           "code": "4am_tarrid-muthallathiya_P3",
@@ -38,43 +43,100 @@
       "choices": [
         {
           "id": "A",
-          "content": "مقبولة إذا كانت الزاوية صغيرة",
+          "content": "نعم",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTH-AKBAR-MIN-WAHID"
         },
         {
           "id": "B",
-          "content": "خاطئة: الوتر أطول أضلاع المثلث القائم",
+          "content": "لا",
           "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "مقبولة لأن الوتر قريب من 5",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-DARB-BADAL-QISMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قارن النتيجة بأطوال المثلث المعطاة."
+          "content": "قارن الوتر بضلعي الزاوية القائمة في كل مثلث قائم."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الوتر أطول أضلاع المثلث القائم، والجيب وجيب التمام أصغر من 1."
+          "content": "لو كان الوتر $4{,}1$ لكان جيب تمام الزاوية أكبر من 1."
+        }
+      ],
+      "feedback": {
+        "correct": "الوتر أطول أضلاع المثلث القائم، فلا يمكن أن يكون أقصر من $5\\,\\mathrm{cm}$ .",
+        "incorrect": "الوتر يقابل الزاوية القائمة وهو أطول الأضلاع؛ قارن $4{,}1$ بـ $5$ ."
+      },
+      "solution": {
+        "lines": [
+          "الوتر هو أطول أضلاع المثلث القائم، و $4{,}1 < 5$ : النتيجة مستحيلة.",
+          "وبعبارة أخرى: $\\cos 35^{\\circ} = \\dfrac{5}{4{,}1}$ أكبر من 1، وهذا مستحيل."
+        ]
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب طول الوتر بالتدوير إلى $0{,}1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري: الطول بـ cm مدوّرا إلى 0,1",
+      "expectedAnswer": "6.1",
+      "misconceptionSignatures": [
+        {
+          "value": "4.1",
+          "id": "MISC-MUTH-DARB-BADAL-QISMA"
+        },
+        {
+          "value": "8.7",
+          "id": "MISC-MUTH-NISBA-UKHRA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الضلع المعلوم مجاور للزاوية $35^{\\circ}$ ، والمطلوب هو الوتر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: جيب التمام، والمجهول في المقام."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "نتيجة لا تحترم هذه الشروط تعني خطأ في اختيار النسبة أو في العملية."
+          "content": "اكتب المساواة، اعزل الطول المجهول، ثم احسب بالآلة الحاسبة مبرمجة على الدرجة، ولا تدوّر إلا في النهاية."
         }
       ],
       "feedback": {
-        "correct": "الوتر يقابل الزاوية القائمة، وهو أطول الأضلاع دائما: $4{,}2 < 5$ مستحيل (غالبا ضرب بدل قسمة).",
-        "incorrect": "سمِّ الأضلاع بالنسبة إلى الزاوية المعلومة، ثم اختر النسبة التي تجمع المعلوم والمطلوب."
-      }
+        "correct": "الوتر $= \\dfrac{5}{\\cos 35^{\\circ}} \\approx 6{,}1\\,\\mathrm{cm}$ — والتلميذ ضرب بدل أن يقسم.",
+        "incorrect": "الطول المطلوب في مقام النسبة: نقسم الطول المعلوم على النسبة المثلثية ولا نضرب فيها؛ والآلة الحاسبة مبرمجة على الدرجة."
+      },
+      "solution": {
+        "lines": [
+          "نسمّي $x$ طول الوتر: $\\cos 35^{\\circ} = \\dfrac{5}{x}$ ومنه: $x = \\dfrac{5}{\\cos 35^{\\circ}}$",
+          "باستعمال الآلة الحاسبة: $x \\approx 6{,}1039$",
+          "خطأ التلميذ: حسب $5 \\times \\cos 35^{\\circ} \\approx 4{,}1$ (ضرب بدل القسمة)."
+        ],
+        "result": "x \\approx 6{,}1\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

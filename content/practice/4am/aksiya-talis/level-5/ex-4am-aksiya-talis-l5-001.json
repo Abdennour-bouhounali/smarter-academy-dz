@@ -3,226 +3,341 @@
   "lessonCode": "aksiya-talis",
   "level": 5,
   "metadata": {
-    "title": "تمرين 23 — طالس ثم عكسها",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2009 — العارضة بين كابلي الجسر",
+    "estimatedMinutes": 22,
     "tags": [
-      "مسألة"
+      "وضعية إدماجية",
+      "الخاصية العكسية",
+      "جسر"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "ex-23",
-      "page": 113,
-      "section": "أتعمّق",
-      "number": 23
+      "type": "platform_addition",
+      "reason": "bem_modelled",
+      "learningPoint": "4am_aksiya-talis_P1",
+      "modelledOn": "BEM 2009 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2009",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 113): A ، K ، B على استقامة؛ L تقاطع (AC) و (DK)؛ AK = 30 ، KB = 20 ، LD = 13,5 ، و AL = KB = 20 و CB = AK = 30 (الترميز)، و (CB)//(LK).",
+    "content": "لإنجاز جسر للراجلين فوق الطريق السريع، ثُبّت عمود شاقولي $[SH]$ ، وشُدّ من قمّته $S$ كابلان مستقيمان $[SA]$ و $[SB]$ إلى سطح الجسر، حيث النقط $H$ ، $B$ ، $A$ على استقامة واحدة ( $B$ بين $H$ و $A$ )، و $SA = 40\\,\\mathrm{m}$ ، $SB = 25\\,\\mathrm{m}$ و $AB = 25\\,\\mathrm{m}$ . يريد المهندس تثبيت عارضة حديدية $[MN]$ بين الكابلين، حيث $M$ من $[SA]$ و $N$ من $[SB]$ ، و $SM = 16\\,\\mathrm{m}$ و $SN = 10\\,\\mathrm{m}$ ، ويشترط أن تكون العارضة موازية لسطح الجسر (الشكل المقابل).",
     "figure": {
       "points": {
-        "A": [
-          0,
-          0
+        "H": [
+          0.0,
+          0.0
         ],
-        "K": [
-          30,
-          0
+        "S": [
+          0.0,
+          24.0
+        ],
+        "A": [
+          32.0,
+          0.0
         ],
         "B": [
-          50,
-          0
+          7.0,
+          0.0
         ],
-        "C": [
-          27.11,
-          19.39
+        "M": [
+          12.8,
+          14.4
         ],
-        "L": [
-          16.27,
-          11.63
-        ],
-        "D": [
-          5.97,
-          20.36
+        "N": [
+          2.8,
+          14.4
         ]
       },
       "segments": [
         {
-          "from": "A",
-          "to": "K",
-          "label": "30",
-          "ticks": 3
-        },
-        {
-          "from": "K",
-          "to": "B",
-          "label": "20",
-          "ticks": 2
-        },
-        {
-          "from": "A",
-          "to": "L",
-          "ticks": 2
+          "from": "H",
+          "to": "S",
+          "bold": true
         },
         [
-          "L",
-          "C"
+          "H",
+          "B"
         ],
         {
-          "from": "C",
-          "to": "B",
-          "ticks": 3
-        },
-        {
-          "from": "L",
-          "to": "D",
-          "label": "13,5"
-        },
-        [
-          "L",
-          "K"
-        ],
-        [
-          "C",
-          "K"
-        ],
-        {
-          "from": "D",
+          "from": "B",
           "to": "A",
-          "dashed": true
+          "label": "25"
+        },
+        {
+          "from": "S",
+          "to": "M",
+          "label": "16"
+        },
+        [
+          "M",
+          "A"
+        ],
+        {
+          "from": "S",
+          "to": "N",
+          "label": "10"
+        },
+        [
+          "N",
+          "B"
+        ],
+        {
+          "from": "M",
+          "to": "N",
+          "tone": "amber"
         }
       ],
-      "ariaLabel": "A و K و B على استقامة، L تقاطع (AC) و (DK)؛ AK = 30 و KB = 20 و LD = 13,5؛ AL = KB و AK = CB حسب الترميز",
-      "maxWidth": 300
+      "rightAngles": [
+        [
+          "S",
+          "H",
+          "A"
+        ]
+      ],
+      "ariaLabel": "العمود [SH] شاقولي، الكابلان [SA] و [SB] مشدودان إلى سطح الجسر (AB)، والعارضة [MN] بين الكابلين؛ SM = 16 و SN = 10 و AB = 25",
+      "maxWidth": 320
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب LK:",
+      "step": "01",
+      "sub": "ا",
+      "statement": "احسب النسبة $\\dfrac{SM}{SA}$ .",
       "learningPoints": [
         {
           "code": "4am_aksiya-talis_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 5,
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد",
-      "expectedAnswer": "18",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
+      "expectedAnswer": "2/5",
       "misconceptionSignatures": [
         {
-          "id": "MISC-TALIS-QITAA-BADAL-DILA",
-          "value": "45"
+          "value": "5/2",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "value": "2/3",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب تساوي النسبتين الذي يجعل المستقيمين متوازيين."
+          "content": "$SM$ و $SA$ طولان يُقاسان من النقطة $S$ على المستقيم نفسه."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المجهول يظهر في إحدى النسبتين: استعمل الجداء المتصالب."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم الجداء على العدد الثالث، ثم تحقّق من النسبتين."
+          "content": "اقسم $SM$ على $SA$ ثم اختزل الكسر (قيمة مضبوطة، دون تدوير)."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{LK}{CB} = \\dfrac{AK}{AB} = \\dfrac{3}{5}$ إذن $LK = 18$",
-        "incorrect": "اكتب تساوي النسبتين من جديد ثم أعد الجداء المتصالب."
-      }
+        "correct": "$\\dfrac{SM}{SA} = \\dfrac{16}{40} = \\dfrac{2}{5}$ .",
+        "incorrect": "النسبة $\\dfrac{SM}{SA}$ : الطول $SM$ على الطول $SA$ ، وكلاهما من النقطة $S$ ؛ اكتبها كسرا مضبوطا."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{SM}{SA} = \\dfrac{16}{40} = \\dfrac{2}{5}$"
+        ],
+        "result": "\\dfrac{SM}{SA} = \\dfrac{2}{5}"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "احسب LC:",
+      "step": "01",
+      "sub": "ب",
+      "statement": "احسب النسبة $\\dfrac{SN}{SB}$ .",
       "learningPoints": [
         {
           "code": "4am_aksiya-talis_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 5,
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد: كسر غير قابل للاختزال",
-      "expectedAnswer": "40/3",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
+      "expectedAnswer": "2/5",
       "misconceptionSignatures": [
         {
-          "id": "MISC-TALIS-NISBA-MAQLUBA",
-          "value": "12"
+          "value": "5/2",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "value": "2/3",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اكتب تساوي النسبتين الذي يجعل المستقيمين متوازيين."
+          "content": "$SN$ و $SB$ طولان يُقاسان من النقطة $S$ على المستقيم نفسه."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المجهول يظهر في إحدى النسبتين: استعمل الجداء المتصالب."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم الجداء على العدد الثالث، ثم تحقّق من النسبتين."
+          "content": "اقسم $SN$ على $SB$ ثم اختزل الكسر (قيمة مضبوطة، دون تدوير)."
         }
       ],
       "feedback": {
-        "correct": "$AC = \\dfrac{20}{3/5} = \\dfrac{100}{3}$ إذن $LC = \\dfrac{100}{3} - 20 = \\dfrac{40}{3}$",
-        "incorrect": "اكتب تساوي النسبتين من جديد ثم أعد الجداء المتصالب."
-      }
+        "correct": "$\\dfrac{SN}{SB} = \\dfrac{10}{25} = \\dfrac{2}{5}$ .",
+        "incorrect": "النسبة $\\dfrac{SN}{SB}$ : الطول $SN$ على الطول $SB$ ، وكلاهما من النقطة $S$ ؛ اكتبها كسرا مضبوطا."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{SN}{SB} = \\dfrac{10}{25} = \\dfrac{2}{5}$"
+        ],
+        "result": "\\dfrac{SN}{SB} = \\dfrac{2}{5}"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "هل (CK) يوازي (DA)؟",
+      "step": "02",
+      "statement": "هل العارضة $[MN]$ موازية لسطح الجسر $(AB)$ ؟ علّل.",
       "learningPoints": [
         {
           "code": "4am_aksiya-talis_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 5,
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "لا: $\\dfrac{LA}{LC} = \\dfrac{3}{2}$ و $\\dfrac{LD}{LK} = \\dfrac{3}{4}$",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "نعم: لأن (CB) يوازي (LK)",
+          "content": "لا",
           "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+          "content": "قارن النسبتين بقيمهما المضبوطة (الجداء المتصالب)، لا بقيم مقرّبة ولا بمظهر الشكل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+          "content": "تحقّق أيضا من ترتيب النقط على المستقيمين المتقاطعين."
         }
       ],
       "feedback": {
-        "correct": "النسبتان مختلفتان: لو كان $(CK) \\parallel (DA)$ لتساوتا حسب خاصية طالس.",
-        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
-      }
+        "correct": "$\\dfrac{SM}{SA} = \\dfrac{SN}{SB} = 0{,}4$ والترتيب نفسه: العارضة موازية لسطح الجسر.",
+        "incorrect": "الخاصية العكسية تتطلب شرطين معا: تساوي النسبتين بقيم مضبوطة، وترتيب النقط نفسه على المستقيمين."
+      },
+      "solution": {
+        "lines": [
+          "بما أن النقط $S$ ، $M$ ، $A$ و $S$ ، $N$ ، $B$ في استقامية وبنفس الترتيب،",
+          "و بما أن: $\\dfrac{SM}{SA} = \\dfrac{SN}{SB} = \\dfrac{2}{5}$",
+          "فإن المستقيمين $(MN)$ و $(AB)$ متوازيان حسب خاصية طالس العكسية."
+        ]
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "احسب طول العارضة $MN$ .",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ m",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "value": "62.5",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(MN) \\parallel (AB)$ : المثلثان $SMN$ و $SAB$ في وضعية طالس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $\\dfrac{SM}{SA} = \\dfrac{MN}{AB}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$MN = \\dfrac{16 \\times 25}{40} = 10\\,\\mathrm{m}$ .",
+        "incorrect": "في كل نسبة: طول من المثلث الصغير على الطول الموافق له في المثلث الكبير."
+      },
+      "solution": {
+        "lines": [
+          "بما أن $(MN) \\parallel (AB)$ ، حسب خاصية طالس: $\\dfrac{SM}{SA} = \\dfrac{SN}{SB} = \\dfrac{MN}{AB}$",
+          "$\\dfrac{16}{40} = \\dfrac{MN}{25}$",
+          "$MN = \\dfrac{16 \\times 25}{40}$"
+        ],
+        "result": "MN = 10\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q5",
+      "step": "04",
+      "statement": "☜ ثمن المتر الواحد من العارضة الحديدية $4500DA$ ، ومصاريف تركيبها $12000DA$ . ما تكلفة العارضة؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "57000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول العارضة من السؤال 03."
+        }
+      ],
+      "feedback": {
+        "correct": "$10 \\times 4500 + 12000 = 57000DA$ .",
+        "incorrect": "رتّب الحساب: الكمية اللازمة أولا، ثم اضربها في سعر الوحدة، ثم أضف المصاريف الثابتة إن وُجدت."
+      },
+      "solution": {
+        "lines": [
+          "ثمن العارضة: $10 \\times 4500 = 45000DA$",
+          "التكلفة: $45000 + 12000$"
+        ],
+        "result": "57000\\,DA"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

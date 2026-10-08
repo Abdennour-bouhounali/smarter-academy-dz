@@ -1,4 +1,5 @@
 import { MathfieldElement } from 'mathlive';
+import { installKeyboardCloseButton } from './keyboardClose.js';
 import 'mathlive/fonts.css';
 
 /**
@@ -78,6 +79,8 @@ export function ensureMathLive() {
   MathfieldElement.soundsDirectory = null;
   MathfieldElement.plonkSound = null;
   MathfieldElement.keypressSound = null;
+  // Le clavier virtuel se ferme d'un bouton « إغلاق » (2026-10-08), pour tous les champs MathLive.
+  installKeyboardCloseButton();
 }
 
 /**

@@ -2,72 +2,238 @@
   "id": "ex-4am-tarrid-muthallathiya-l2-003",
   "lessonCode": "tarrid-muthallathiya",
   "level": 2,
-  "generator": {
-    "tool": "unit10-tarrid-gen.py",
-    "version": "1"
-  },
   "metadata": {
-    "title": "تدريب — ارتفاع الطائرة الورقية",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2008 — كابل تثبيت عمود كهربائي",
+    "estimatedMinutes": 6,
     "tags": [
-      "ارتفاع",
-      "الجيب"
+      "ترييض وضعية",
+      "جيب التمام",
+      "التدوير المبكّر"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_tarrid-muthallathiya_P1",
-      "modelledOn": "challenge"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_tarrid-muthallathiya_P2",
+      "modelledOn": "BEM 2008 I-3 (02ب)"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2008",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "على شاطئ تيقزيرت، خيط طائرة ورقية مشدود طوله $30\\,\\mathrm{m}$ ويصنع مع الأفق زاوية قيسها $50^{\\circ}$ ."
+    "content": "لتثبيت عمود كهربائي شاقولي $[PS]$ على أرض أفقية، شُدّ كابل مستقيم $[SA]$ طوله $9\\,\\mathrm{m}$ من نقطة $S$ من العمود إلى وتد $A$ مثبّت في الأرض على بعد $PA = 3{,}6\\,\\mathrm{m}$ من قاعدة العمود $P$ (الشكل المقابل).",
+    "figure": {
+      "points": {
+        "P": [
+          0.0,
+          0.0
+        ],
+        "S": [
+          0.0,
+          8.2486
+        ],
+        "A": [
+          3.6,
+          0.0
+        ]
+      },
+      "segments": [
+        [
+          "P",
+          "S"
+        ],
+        {
+          "from": "P",
+          "to": "A",
+          "label": "3,6 m"
+        },
+        {
+          "from": "A",
+          "to": "S",
+          "label": "9 m"
+        }
+      ],
+      "rightAngles": [
+        [
+          "A",
+          "P",
+          "S"
+        ]
+      ],
+      "labels": {
+        "P": "sw",
+        "S": "nw",
+        "A": "se"
+      },
+      "ariaLabel": "عمود شاقولي [PS] وكابل [SA] طوله 9 m مشدود إلى الوتد A على الأرض حيث PA = 3,6 m",
+      "maxWidth": 240
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ارتفاع الطائرة فوق يد ممسكها بالمتر، إلى الجزء من 10:",
+      "step": "01",
+      "statement": "احسب $\\cos\\widehat{SAP}$ .",
       "learningPoints": [
         {
-          "code": "4am_tarrid-muthallathiya_P1",
+          "code": "4am_tarrid-muthallathiya_P2",
           "role": "primary"
-        }
-      ],
-      "difficulty": 2,
-      "answerType": "rational",
-      "answerFormat": "عدد عشري مثل 2,5 (المدوّر إلى الجزء من 10)",
-      "expectedAnswer": "23.0",
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-MUTH-MUQABIL-MUJAWIR",
-          "value": "19.3"
         },
         {
-          "id": "MISC-MUTH-DARB-BADAL-QISMA",
-          "value": "39.2"
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري أو كسر",
+      "expectedAnswer": "0.4",
+      "misconceptionSignatures": [
+        {
+          "value": "2.5",
+          "id": "MISC-MUTH-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ارسم المثلث القائم وسمِّ الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+          "content": "في المثلث $APS$ القائم في $P$ : الكابل هو الوتر."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب المساواة بالنسبة المناسبة: إذا كان المجهول في البسط نضرب، وإذا كان في المقام نقسم."
+          "content": "جيب التمام = المجاور على الوتر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos\\widehat{SAP} = \\dfrac{PA}{SA} = \\dfrac{3{,}6}{9} = 0{,}4$ .",
+        "incorrect": "الوتر في المقام دائما، والمجاور للزاوية $A$ هو $[PA]$ ."
+      },
+      "solution": {
+        "lines": [
+          "المثلث $APS$ قائم في $P$ : $\\cos\\widehat{SAP} = \\dfrac{PA}{SA}$",
+          "$\\cos\\widehat{SAP} = \\dfrac{3{,}6}{9}$"
+        ],
+        "result": "\\cos\\widehat{SAP} = 0{,}4"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج قيس الزاوية $\\widehat{SAP}$ بالتدوير إلى الوحدة من الدرجة.",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: قيس الزاوية بالدرجة مدوّرا إلى الوحدة",
+      "expectedAnswer": "66",
+      "misconceptionSignatures": [
+        {
+          "value": "24",
+          "id": "MISC-MUTH-ZAWIYA-KHATI"
+        },
+        {
+          "value": "0.4",
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النسبة معلومة والقيس مطلوب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اللمسة العكسية ⁦cos⁻¹⁩ والحاسبة مبرمجة على الدرجة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\widehat{SAP} \\approx 66{,}42^{\\circ} \\approx 66^{\\circ}$ .",
+        "incorrect": "النسبة ليست القيس: استعمل ⁦cos⁻¹⁩ ثم دوّر إلى الوحدة."
+      },
+      "solution": {
+        "lines": [
+          "باستعمال الآلة الحاسبة: ⁦2nd cos⁻¹ 0,4 =⁩ يظهر $\\widehat{SAP} \\approx 66{,}4218^{\\circ}$"
+        ],
+        "result": "\\widehat{SAP} \\approx 66^{\\circ}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "احسب ارتفاع النقطة $S$ عن الأرض بالتدوير إلى $0{,}01$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري: الارتفاع بـ m مدوّرا إلى 0,01",
+      "expectedAnswer": "8.25",
+      "misconceptionSignatures": [
+        {
+          "value": "8.22",
+          "id": "MISC-MUTH-TADWIR-MUBAKKIR"
+        },
+        {
+          "value": "3.60",
+          "id": "MISC-MUTH-NISBA-UKHRA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$PS$ مقابل للزاوية $\\widehat{SAP}$ والكابل هو الوتر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "طريقتان: خاصية فيثاغورس بالأطوال المضبوطة، أو $\\sin\\widehat{SAP}$ بالقيس غير المدوّر."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احسب بالحاسبة المبرمجة بالدرجة، ثم دوّر النتيجة الأخيرة فقط بالدقة المطلوبة."
+          "content": "لا تستعمل القيس المدوّر $66^{\\circ}$ في الحساب."
         }
       ],
       "feedback": {
-        "correct": "الخيط وتر والارتفاع مقابل: $h = 30 \\times \\sin 50^{\\circ} \\approx 22{,}98$ أي $23{,}0\\,\\mathrm{m}$ .",
-        "incorrect": "ارسم المثلث القائم، سمِّ الضلع المعلوم والمطلوب بالنسبة إلى الزاوية، ثم راجع النسبة والعملية والتدوير."
-      }
+        "correct": "$PS = \\sqrt{9^2 - 3{,}6^2} = \\sqrt{68{,}04} \\approx 8{,}25\\,\\mathrm{m}$ .",
+        "incorrect": "استعمل الأطوال المضبوطة (أو القيس كما تعطيه الحاسبة دون تدوير)؛ التدوير المبكّر يغيّر الجزء من 100."
+      },
+      "solution": {
+        "lines": [
+          "الطريقة الأولى (خاصية فيثاغورس في المثلث $APS$ القائم في $P$): $PS^2 = SA^2 - PA^2 = 81 - 12{,}96 = 68{,}04$",
+          "$PS = \\sqrt{68{,}04} \\approx 8{,}2486$",
+          "الطريقة الثانية: $PS = 9 \\times \\sin\\widehat{SAP}$ بالقيس الذي تعطيه الحاسبة ( $66{,}4218^{\\circ}$ ) فنجد القيمة نفسها.",
+          "تنبيه: بالقيس المدوّر نجد $9 \\times \\sin 66^{\\circ} \\approx 8{,}22$ : هذا تدوير مبكّر."
+        ],
+        "result": "PS \\approx 8{,}25\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
   ]
 }

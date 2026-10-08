@@ -3,74 +3,143 @@
   "lessonCode": "nisab-muthallathiya",
   "level": 2,
   "metadata": {
-    "title": "نشاط 2 — مثلث أكبر بالزاوية نفسها",
-    "estimatedMinutes": 3,
+    "title": "مثلثان بالزاوية نفسها: الجيب نفسه",
+    "estimatedMinutes": 6,
     "tags": [
-      "النسب لا تتعلق بالطول"
+      "الجيب",
+      "النسبة لا تتعلق بالطول"
     ],
     "source": {
       "type": "textbook",
       "elementId": "act-2",
       "page": 116,
       "section": "أنشطة",
-      "number": 2
+      "number": 2,
+      "adaptedFrom": "ex-4am-nisab-muthallathiya-l2-007"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02,5"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 116): في مثلث ABC قائم في A حيث $\\widehat{ABC} = 40^{\\circ}$ وجد سليم $\\dfrac{AC}{BC} \\approx 0{,}64$ . رسمت أمينة مثلثا قائما آخر بالزاوية $40^{\\circ}$ نفسها وأضلاعه ضعف أضلاع مثلث سليم."
+    "content": "رسم سليم مثلثا $ABC$ قائما في $A$ حيث $AC = 3\\,\\mathrm{cm}$ و $BC = 5\\,\\mathrm{cm}$ ، ورسمت أمينة مثلثا $A'B'C'$ قائما في $A'$ حيث $\\widehat{A'B'C'} = \\widehat{ABC}$ و $B'C' = 7{,}5\\,\\mathrm{cm}$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "النسبة $\\dfrac{AC}{BC}$ في مثلث أمينة تساوي تقريبا:",
+      "step": "01",
+      "statement": "احسب $\\sin\\widehat{ABC}$ في مثلث سليم.",
       "learningPoints": [
         {
           "code": "4am_nisab-muthallathiya_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال أو عدد عشري",
+      "expectedAnswer": "3/5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$1{,}28$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-AKBAR-MIN-WAHID"
-        },
-        {
-          "id": "B",
-          "content": "$0{,}32$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-NISBA-UKHRA"
-        },
-        {
-          "id": "C",
-          "content": "$0{,}64$",
-          "isCorrect": true
+          "value": "5/3",
+          "id": "MISC-MUTH-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ماذا يتغيّر حين نضاعف كل الأضلاع؟"
+          "content": "في المثلث $ABC$ القائم في $A$ ، عيّن بالنسبة إلى الزاوية $\\widehat{ABC}$ الوتر والضلعين المجاور والمقابل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في النسبة يتضاعف البسط والمقام معا."
+          "content": "جيب زاوية حادة = طول الضلع المقابل لها على طول الوتر."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "تذكّر المنحدرات بالزاوية 40°: هل تغيّرت النسبتان؟"
+          "content": "عوّض بالأطوال ثم اختزل الكسر."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{2 \\times AC}{2 \\times BC} = \\dfrac{AC}{BC}$ : النسبة لا تتعلق إلا بالزاوية، فهي $\\sin 40^{\\circ} \\approx 0{,}64$ .",
-        "incorrect": "النسبة لا تتعلق بطول الأضلاع بل بقيس الزاوية."
+        "correct": "$\\sin\\widehat{ABC} = \\dfrac{AC}{BC} = \\dfrac{3}{5}$ .",
+        "incorrect": "راجع الضلعين: جيب الزاوية = طول الضلع المقابل لها على طول الوتر، ثم اختزل."
       },
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "في المثلث $ABC$ القائم في $A$ لدينا: $\\sin\\widehat{ABC} = \\dfrac{AC}{BC}$",
+          "$\\sin\\widehat{ABC} = \\dfrac{3}{5}$"
+        ],
+        "result": "\\sin\\widehat{ABC} = \\dfrac{3}{5}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج الطول $A'C'$ .",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري: الطول بـ cm",
+      "expectedAnswer": "4.5",
+      "misconceptionSignatures": [
+        {
+          "value": "12.5",
+          "id": "MISC-MUTH-QISMA-BADAL-DARB"
+        },
+        {
+          "value": "6",
+          "id": "MISC-MUTH-NISBA-UKHRA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "للمثلثين نفس الزاوية الحادة، فلهما نفس الجيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في المثلث $A'B'C'$ : $\\sin\\widehat{A'B'C'}$ = المقابل على الوتر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض بقيمة الجيب المحسوبة في السؤال الأول واعزل الطول المجهول."
+        }
+      ],
+      "feedback": {
+        "correct": "$A'C' = B'C' \\times \\sin\\widehat{A'B'C'} = 7{,}5 \\times \\dfrac{3}{5} = 4{,}5\\,\\mathrm{cm}$ .",
+        "incorrect": "الجيب لا يتعلق إلا بقيس الزاوية؛ والطول المطلوب في بسطه: اضرب في الوتر."
+      },
+      "solution": {
+        "lines": [
+          "بما أن $\\widehat{A'B'C'} = \\widehat{ABC}$ فإن $\\sin\\widehat{A'B'C'} = \\sin\\widehat{ABC} = \\dfrac{3}{5}$ (النسبة لا تتعلق إلا بقيس الزاوية).",
+          "في المثلث $A'B'C'$ القائم في $A'$ : $\\sin\\widehat{A'B'C'} = \\dfrac{A'C'}{B'C'}$",
+          "$A'C' = B'C' \\times \\sin\\widehat{A'B'C'} = 7{,}5 \\times \\dfrac{3}{5}$"
+        ],
+        "result": "A'C' = 4{,}5\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 240
     }
   ]
 }

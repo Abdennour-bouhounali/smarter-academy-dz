@@ -3,104 +3,64 @@
   "lessonCode": "wadiya-idmajiya-muthallathat",
   "level": 2,
   "metadata": {
-    "title": "تدريب — قراءة النموذج",
-    "estimatedMinutes": 3,
+    "title": "جيب التمام من الشكل ثم الجيب والظل بالعلاقات",
+    "estimatedMinutes": 7,
     "tags": [
-      "خط النظر",
-      "المقابل والمجاور"
+      "العلاقات المثلثية",
+      "جيب التمام"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-muthallathat_P2",
-      "modelledOn": "situation"
+      "modelledOn": "situation",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-muthallathat-l2-009"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
-  "generator": {
-    "tool": "gen_bank.py",
-    "version": "1"
-  },
   "statement": {
-    "content": "في الشكل: العمود [PQ] والمعلم [MS] عموديان على الأرض، والملاحظ في A يرى القمتين Q و S على استقامة واحدة.",
+    "content": "في الشكل المقابل: المثلث $APQ$ قائم في $P$ حيث $AP = 15\\,\\mathrm{m}$ و $AQ = 17\\,\\mathrm{m}$ ، و $x$ قيس الزاوية $\\widehat{PAQ}$ .",
     "figure": {
       "points": {
-        "M": [
+        "A": [
           0,
           0
         ],
-        "S": [
-          0,
-          5.2
-        ],
         "P": [
-          7.2,
+          15,
           0
         ],
         "Q": [
-          7.2,
-          1.5
-        ],
-        "A": [
-          10,
-          0
+          15,
+          8
         ]
       },
       "segments": [
         {
-          "from": "M",
-          "to": "P"
+          "from": "A",
+          "to": "P",
+          "label": "15 m"
         },
-        {
-          "from": "P",
-          "to": "A"
-        },
-        {
-          "from": "P",
-          "to": "Q",
-          "bold": true,
-          "arrows": 1
-        },
-        {
-          "from": "M",
-          "to": "S",
-          "bold": true,
-          "arrows": 1
-        },
+        [
+          "P",
+          "Q"
+        ],
         {
           "from": "A",
-          "to": "S",
-          "dashed": true,
-          "tone": "amber"
-        }
-      ],
-      "polygons": [
-        {
-          "points": [
-            "A",
-            "P",
-            "Q"
-          ],
-          "tone": "sky"
-        },
-        {
-          "points": [
-            "A",
-            "M",
-            "S"
-          ],
-          "tone": "amber"
+          "to": "Q",
+          "label": "17 m"
         }
       ],
       "rightAngles": [
         [
-          "S",
-          "M",
-          "P"
-        ],
-        [
-          "Q",
+          "A",
           "P",
-          "A"
+          "Q"
         ]
       ],
       "angles": [
@@ -112,75 +72,161 @@
         }
       ],
       "labels": {
-        "M": "s",
-        "S": "n",
-        "P": "s",
-        "Q": "n",
-        "A": "s"
+        "A": "sw",
+        "P": "se",
+        "Q": "ne"
       },
-      "ariaLabel": "عمود [PQ] ومعلم [MS] عموديان على الأرض؛ خط النظر من A يمرّ بالقمة Q ويصل القمة S؛ x الزاوية بين الأرض وخط النظر في A",
-      "maxWidth": 360
+      "ariaLabel": "مثلث APQ قائم في P؛ AP = 15 m و AQ = 17 m؛ x قيس الزاوية PAQ",
+      "maxWidth": 320
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الضلع المقابل للزاوية x في المثلث APQ هو:",
+      "step": "01",
+      "statement": "احسب $\\cos x$ .",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال أو عدد عشري",
+      "expectedAnswer": "15/17",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "[AP]",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
-        },
-        {
-          "id": "B",
-          "content": "[AQ]",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
-        },
-        {
-          "id": "C",
-          "content": "[PQ]",
-          "isCorrect": true
-        },
-        {
-          "id": "D",
-          "content": "[MS]",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-TALIS-NAZAR"
+          "value": "17/15",
+          "id": "MISC-MUTH-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "رأس الزاوية x هو A."
+          "content": "$[AQ]$ هو الوتر، و $[AP]$ مجاور للزاوية $x$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المقابل لا يمرّ برأس الزاوية."
+          "content": "جيب التمام = المجاور على الوتر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\cos x = \\dfrac{AP}{AQ} = \\dfrac{15}{17}$ .",
+        "incorrect": "الوتر في المقام، والمجاور هو الضلع الذي يمرّ برأس الزاوية $A$ ."
+      },
+      "solution": {
+        "lines": [
+          "المثلث $APQ$ قائم في $P$ : $\\cos x = \\dfrac{AP}{AQ}$"
+        ],
+        "result": "\\cos x = \\dfrac{15}{17}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج $\\sin x$ باستعمال العلاقة $\\cos^2 x + \\sin^2 x = 1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال أو عدد عشري",
+      "expectedAnswer": "8/17",
+      "misconceptionSignatures": [
+        {
+          "value": "2/17",
+          "id": "MISC-MUTH-JAMA-NISAB"
+        },
+        {
+          "value": "64/289",
+          "id": "MISC-MUTH-JADHR-NASI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اعزل $\\sin^2 x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sin^2 x = 1 - \\cos^2 x$ ، ومربع كسر هو مربع البسط على مربع المقام."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "ابحث داخل المثلث APQ وحده."
+          "content": "خذ الجذر الموجب."
         }
       ],
       "feedback": {
-        "correct": "العمود [PQ] لا يمرّ بالرأس A: هو المقابل للزاوية x، و [AP] المجاور، و [AQ] الوتر.",
-        "incorrect": "المقابل ضلع للزاوية القائمة لا يمرّ برأس x."
+        "correct": "$\\sin^2 x = 1 - \\dfrac{225}{289} = \\dfrac{64}{289}$ ومنه $\\sin x = \\dfrac{8}{17}$ .",
+        "incorrect": "العلاقة تخص المربعين، ولا ننسى الجذر في الأخير."
       },
-      "cognitiveDemand": "recall",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "$\\sin^2 x = 1 - \\cos^2 x = 1 - \\dfrac{225}{289} = \\dfrac{64}{289}$",
+          "$\\sin x$ موجب، إذن: $\\sin x = \\sqrt{\\dfrac{64}{289}}$"
+        ],
+        "result": "\\sin x = \\dfrac{8}{17}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "استنتج $\\tan x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال أو عدد عشري",
+      "expectedAnswer": "8/15",
+      "misconceptionSignatures": [
+        {
+          "value": "15/8",
+          "id": "MISC-MUTH-TAN-QISMA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\tan x = \\dfrac{\\sin x}{\\cos x}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan x = \\dfrac{8}{17} \\div \\dfrac{15}{17} = \\dfrac{8}{15}$ .",
+        "incorrect": "الظل هو الجيب على جيب التمام، لا العكس."
+      },
+      "solution": {
+        "lines": [
+          "$\\tan x = \\dfrac{\\sin x}{\\cos x} = \\dfrac{8}{17} \\times \\dfrac{17}{15}$"
+        ],
+        "result": "\\tan x = \\dfrac{8}{15}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

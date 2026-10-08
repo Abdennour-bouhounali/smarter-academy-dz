@@ -284,7 +284,7 @@ describe('mobile et cibles tactiles', () => {
     const dialog = read('src/features/reports/ReportDialog.jsx');
     expect(dialog).toContain('items-end');
     expect(dialog).toContain('sm:items-center');
-    expect(dialog).toContain('w-full max-w-lg');
+    expect(dialog).toContain('w-full max-w-3xl');
     expect(dialog).toContain('max-h-[92dvh]');
     expect(dialog).toContain('overflow-y-auto');
   });
@@ -309,5 +309,30 @@ describe('confirmation et non-interruption', () => {
 
   it('repart d’une page blanche à chaque ouverture', () => {
     expect(dialog).toContain('setCategory(null)');
+  });
+});
+
+describe('le message d’abord (2026-10-08)', () => {
+  const dialog = read('src/features/reports/ReportDialog.jsx');
+
+  it('rend le message obligatoire et la catégorie facultative', () => {
+    expect(dialog).toContain('required');
+    expect(dialog).toContain('disabled={!noteReady || busy}');
+    expect(dialog).not.toContain('disabled={!category || busy}');
+    // Sans choix, le serveur reçoit « other ».
+    expect(dialog).toContain("category: category ?? 'other'");
+  });
+
+  it('place le message et la capture AVANT les types de problème', () => {
+    const note = dialog.indexOf('id="report-note"');
+    const shot = dialog.indexOf('id="report-screenshot-title"');
+    const categories = dialog.indexOf('role="radiogroup"');
+    expect(note).toBeLessThan(shot);
+    expect(shot).toBeLessThan(categories);
+  });
+
+  it('accepte une image collée ou déposée', () => {
+    expect(dialog).toContain('onPaste={pasteImage}');
+    expect(dialog).toContain('onDrop={dropImage}');
   });
 });

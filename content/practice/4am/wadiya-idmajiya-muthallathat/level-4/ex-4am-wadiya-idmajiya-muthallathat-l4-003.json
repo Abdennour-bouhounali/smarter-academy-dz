@@ -3,8 +3,8 @@
   "lessonCode": "wadiya-idmajiya-muthallathat",
   "level": 4,
   "metadata": {
-    "title": "تدريب — قطر قسم",
-    "estimatedMinutes": 3,
+    "title": "قطر قسم على شكل متوازي مستطيلات",
+    "estimatedMinutes": 12,
     "tags": [
       "خاصية فيثاغورس",
       "الظل",
@@ -15,103 +15,311 @@
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-muthallathat_P1",
       "modelledOn": "ex-31"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
-  "generator": {
-    "tool": "gen_bank.py",
-    "version": "1"
-  },
   "statement": {
-    "content": "قسم على شكل متوازي مستطيلات ABCDEFGH : طوله $AB = 8\\,\\mathrm{m}$ ، عرضه $BC = 6\\,\\mathrm{m}$ ، وارتفاعه $CD = 3\\,\\mathrm{m}$ ( [CD] حرف شاقولي)."
+    "content": "قسم على شكل متوازي مستطيلات $ABCDEFGH$ (الشكل المقابل): أرضيته المستطيل $ABCH$ حيث $AB = 8\\,\\mathrm{m}$ و $BC = 6\\,\\mathrm{m}$ ، وارتفاعه $CD = 3\\,\\mathrm{m}$ ( $[CD]$ حرف شاقولي).",
+    "figure": {
+      "kind": "space",
+      "points": {
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          8,
+          0,
+          0
+        ],
+        "C": [
+          8,
+          6,
+          0
+        ],
+        "H": [
+          0,
+          6,
+          0
+        ],
+        "F": [
+          0,
+          0,
+          3
+        ],
+        "E": [
+          8,
+          0,
+          3
+        ],
+        "D": [
+          8,
+          6,
+          3
+        ],
+        "G": [
+          0,
+          6,
+          3
+        ]
+      },
+      "solids": [
+        {
+          "type": "polyhedron",
+          "faces": [
+            [
+              "A",
+              "B",
+              "C",
+              "H"
+            ],
+            [
+              "F",
+              "E",
+              "D",
+              "G"
+            ],
+            [
+              "A",
+              "B",
+              "E",
+              "F"
+            ],
+            [
+              "B",
+              "C",
+              "D",
+              "E"
+            ],
+            [
+              "C",
+              "H",
+              "G",
+              "D"
+            ],
+            [
+              "H",
+              "A",
+              "F",
+              "G"
+            ]
+          ]
+        }
+      ],
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "8 m"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "label": "6 m"
+        },
+        {
+          "from": "C",
+          "to": "D",
+          "label": "3 m"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "tone": "rose"
+        },
+        {
+          "from": "A",
+          "to": "D",
+          "tone": "rose"
+        }
+      ],
+      "rightAngles": [
+        [
+          "A",
+          "C",
+          "D"
+        ]
+      ],
+      "labels": {
+        "A": "sw",
+        "B": "s",
+        "C": "e",
+        "H": "n",
+        "D": "ne",
+        "G": "nw",
+        "F": "w",
+        "E": "se"
+      },
+      "ariaLabel": "قسم على شكل متوازي مستطيلات أرضيته ABCH؛ AB = 8 m و BC = 6 m و CD = 3 m؛ القطران [AC] و [AD] مرسومان",
+      "maxWidth": 340
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما طول القطر AD مدوّرا إلى الجزء من 10 (بالمتر)؟",
+      "step": "01",
+      "statement": "احسب الطول $AC$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muthallathat_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "secondary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري بالفاصلة (مدوّر إلى الجزء من 10)",
-      "expectedAnswer": "10.4",
+      "answerFormat": "عدد: الطول بـ m",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "value": "14",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب قطر الأرضية أولا."
+          "content": "المثلث $ABC$ قائم في $B$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المثلث ACD قائم في C."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "فيثاغورس مرتين."
+          "content": "خاصية فيثاغورس."
         }
       ],
       "feedback": {
-        "correct": "$AC = \\sqrt{8^2 + 6^2} = 10$ ثم $AD = \\sqrt{10^2 + 3^2} = \\sqrt{109} \\approx 10{,}4\\,\\mathrm{m}$ .",
-        "incorrect": "القطر يمرّ داخل القسم: ليس قطر الأرضية."
+        "correct": "$AC = \\sqrt{64 + 36} = 10\\,\\mathrm{m}$ .",
+        "incorrect": "نجمع مربعي البعدين ثم نأخذ الجذر."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3,
-      "misconceptionSignatures": [
-        {
-          "value": "10",
-          "id": "MISC-MUTH-QUTR-WAJH"
-        },
-        {
-          "value": "17",
-          "id": "MISC-TALIS-FITHAGHURIS-JAM"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "المثلث $ABC$ قائم في $B$ : $AC^2 = 8^2 + 6^2 = 100$"
+        ],
+        "result": "AC = 10\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "ما المدوّر إلى الدرجة لقيس الزاوية بين القطر [AD] والأرضية؟",
+      "step": "02",
+      "statement": "احسب طول القطر $AD$ بالتدوير إلى $0{,}1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري: الطول بـ m مدوّرا إلى 0,1",
+      "expectedAnswer": "10.4",
+      "misconceptionSignatures": [
+        {
+          "value": "13",
+          "id": "MISC-TALIS-FITHAGHURIS-JAM"
+        },
+        {
+          "value": "8.5",
+          "id": "MISC-MUTH-QUTR-WAJH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث $ACD$ قائم في $C$ لأن $[CD]$ عمودي على الأرضية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية فيثاغورس في المثلث $ACD$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$AD = \\sqrt{100 + 9} = \\sqrt{109} \\approx 10{,}4\\,\\mathrm{m}$ .",
+        "incorrect": "قطر القسم وتر المثلث $ACD$ ، لا قطر جدار."
+      },
+      "solution": {
+        "lines": [
+          "المثلث $ACD$ قائم في $C$ : $AD^2 = AC^2 + CD^2 = 100 + 9 = 109$",
+          "$AD = \\sqrt{109} \\approx 10{,}4403$"
+        ],
+        "result": "AD \\approx 10{,}4\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "أعط المدوّر إلى الوحدة من الدرجة لقيس الزاوية $\\widehat{DAC}$ بين القطر $[AD]$ والأرضية.",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muthallathat_P3",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "secondary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد صحيح من الدرجات (مدوّر إلى الدرجة)",
+      "answerFormat": "عدد طبيعي: القيس بالدرجة مدوّرا إلى الوحدة",
       "expectedAnswer": "17",
+      "misconceptionSignatures": [
+        {
+          "value": "16",
+          "id": "MISC-MUTH-TADWIR-BATR"
+        },
+        {
+          "value": "73",
+          "id": "MISC-MUTH-NISBA-MAQLUBA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الزاوية DAC."
+          "content": "في المثلث $ACD$ : $[CD]$ مقابل و $[AC]$ مجاور."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "CD يقابلها و AC يجاورها."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الظل ثم اللمسة العكسية."
+          "content": "استعمل اللمسة العكسية للنسبة في آلة حاسبة مبرمجة على الدرجة، ثم دوّر في آخر الحساب."
         }
       ],
       "feedback": {
         "correct": "$\\tan\\widehat{DAC} = \\dfrac{3}{10}$ ومنه $\\widehat{DAC} \\approx 16{,}7^{\\circ}$ ، أي $17^{\\circ}$ .",
-        "incorrect": "الزاوية مع الأرضية رأسها A في المثلث ACD."
+        "incorrect": "استعمل الأطوال المضبوطة ( $3$ و $10$ ) واللمسة العكسية للظل، ثم دوّر لا تبتر."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3,
-      "misconceptionSignatures": [
-        {
-          "value": "73",
-          "id": "MISC-MUTH-ZAWIYA-KHATI"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "في المثلث $ACD$ القائم في $C$ : $\\tan\\widehat{DAC} = \\dfrac{CD}{AC} = \\dfrac{3}{10}$",
+          "باستعمال الآلة الحاسبة: $\\widehat{DAC} \\approx 16{,}6992^{\\circ}$"
+        ],
+        "result": "\\widehat{DAC} \\approx 17^{\\circ}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

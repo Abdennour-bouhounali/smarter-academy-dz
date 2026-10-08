@@ -1,7 +1,7 @@
 import { forwardRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import RichText from '../RichText';
-import GeoFigure from '../../../lessons/common/components/GeoFigure';
+import StatementFigure from '../../../lessons/common/components/StatementFigure';
 import ProblemTable from '../../../lessons/common/problems/ProblemTable';
 import { StudentAnswer } from '../QuestionHistory';
 import { ToneIcon, TONE_STYLE } from '../toneStyle';
@@ -114,7 +114,7 @@ const ExamSheet = forwardRef(function ExamSheet({ exercise, questionIndex, histo
             {statement.formulas.map((f, i) => <span key={i} className="max-w-full overflow-x-auto" data-exam-formula><RichText>{`$${f}$`}</RichText></span>)}
           </p>
         )}
-        {statement.figure && <GeoFigure {...statement.figure} />}
+        {statement.figure && <StatementFigure {...statement.figure} />}
         {statement.table && <ProblemTable {...statement.table} />}
       </div>
 

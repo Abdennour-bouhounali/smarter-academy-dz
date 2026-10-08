@@ -3,11 +3,11 @@
   "lessonCode": "hasiba-muthallathiya",
   "level": 1,
   "metadata": {
-    "title": "معارف 3 — المدوّر إلى الجزء من 100",
+    "title": "شاشة الحاسبة لـ sin 54° وتدويرها",
     "estimatedMinutes": 3,
     "tags": [
-      "التدوير",
-      "الحاسبة"
+      "تدوير",
+      "الجيب"
     ],
     "source": {
       "type": "textbook",
@@ -15,15 +15,22 @@
       "page": 120,
       "section": "معارف",
       "number": 3
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 120): بالمراحل ⁦ON sin 54 =⁩ يظهر على الشاشة $0{,}8090169944$ ."
+    "content": "نحسب $\\sin 54^{\\circ}$ بحاسبة مبرمجة بالدرجة باتباع المراحل ⁦ON sin 54 =⁩ ، فيظهر على الشاشة $0{,}8090169944$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المدوّر إلى الجزء من 100 لـ $\\sin 54^{\\circ}$ هو:",
+      "step": "01",
+      "statement": "أعط المدوّر إلى الجزء من 100 لـ $\\sin 54^{\\circ}$ .",
       "learningPoints": [
         {
           "code": "4am_hasiba-muthallathiya_P3",
@@ -31,36 +38,90 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري بالفاصلة (مثل 2,5) أو عدد طبيعي",
+      "answerFormat": "عدد عشري مدوّر إلى 0,01",
       "expectedAnswer": "0.81",
       "misconceptionSignatures": [
         {
-          "id": "MISC-MUTH-TADWIR-BATR",
-          "value": "0,80"
+          "value": "0.80",
+          "id": "MISC-MUTH-TADWIR-BATR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد آخر رقم تحتفظ به حسب الدقة المطلوبة."
+          "content": "حدّد رقم الأجزاء من 100 في العدد المعروض."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "انظر إلى الرقم الموالي له: هل هو 5 أو أكبر؟"
+          "content": "انظر إلى الرقم الموالي له مباشرة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "إذا كان 5 أو أكبر أضف 1 إلى آخر رقم تحتفظ به، وإلا احتفظ به كما هو."
+          "content": "إذا كان الرقم الموالي 5 أو أكبر نضيف 1 إلى آخر رقم نحتفظ به، وإلا نحتفظ به كما هو."
         }
       ],
       "feedback": {
-        "correct": "نحتفظ برقمين بعد الفاصلة (0,80) والرقم الموالي 9: نضيف 1، فنجد $0{,}81$ .",
-        "incorrect": "راجع الرقم الموالي لآخر رقم تحتفظ به: 5 أو أكبر يعني أن نضيف 1."
-      }
+        "correct": "$\\sin 54^{\\circ} \\approx 0{,}81$ .",
+        "incorrect": "المدوّر يتطلّب النظر إلى الرقم الموالي: الاكتفاء بحذف الأرقام (البتر) يعطي القيمة المقربة بالنقصان فقط."
+      },
+      "solution": {
+        "lines": [
+          "العدد المعروض: $0{,}8090169944$ .",
+          "الرقم الذي يلي رقم الأجزاء من 100 هو 9، وهو أكبر من 5: نضيف 1 إلى رقم الأجزاء من 100."
+        ],
+        "result": "\\sin 54^{\\circ} \\approx 0{,}81"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "أعط المدوّر إلى الجزء من 1000 لـ $\\sin 54^{\\circ}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_hasiba-muthallathiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مدوّر إلى 0,001",
+      "expectedAnswer": "0.809",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد رقم الأجزاء من 1000 في العدد المعروض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الموالي له مباشرة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان الرقم الموالي 5 أو أكبر نضيف 1 إلى آخر رقم نحتفظ به، وإلا نحتفظ به كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sin 54^{\\circ} \\approx 0{,}809$ .",
+        "incorrect": "المدوّر يتطلّب النظر إلى الرقم الموالي: الاكتفاء بحذف الأرقام (البتر) يعطي القيمة المقربة بالنقصان فقط."
+      },
+      "solution": {
+        "lines": [
+          "العدد المعروض: $0{,}8090169944$ .",
+          "الرقم الذي يلي رقم الأجزاء من 1000 هو 0، وهو أصغر من 5: نُبقي رقم الأجزاء من 1000 كما هو."
+        ],
+        "result": "\\sin 54^{\\circ} \\approx 0{,}809"
+      },
+      "timeSeconds": 60
     }
   ]
 }

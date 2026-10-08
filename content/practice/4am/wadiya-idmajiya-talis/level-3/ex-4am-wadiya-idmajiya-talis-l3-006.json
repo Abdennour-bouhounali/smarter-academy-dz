@@ -3,74 +3,155 @@
   "lessonCode": "wadiya-idmajiya-talis",
   "level": 3,
   "metadata": {
-    "title": "تدريب — ترتيب خطوات الحل",
-    "estimatedMinutes": 5,
+    "title": "أسطوانة ارتفاعها ثلاثة أمثال نصف قطرها",
+    "estimatedMinutes": 12,
     "tags": [
-      "استراتيجية"
+      "أسطوانة",
+      "مخروط",
+      "معادلة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_wadiya-idmajiya-talis_P3",
-      "modelledOn": "situation"
+      "modelledOn": "situation",
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-talis-l3-006"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "نريد حساب حجم أسطوانة محاطة بمخروط في الحالة التي يتساوى فيها ارتفاعها ونصف قطرها."
+    "content": "أسطوانة دوران محاطة بمخروط دوران ارتفاعه $15\\,\\mathrm{cm}$ ونصف قطر قاعدته $5\\,\\mathrm{cm}$ (قاعدتها على قاعدة المخروط ودائرتها العليا على سطحه)، وارتفاعها ثلاثة أمثال نصف قطرها: $h = 3r$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الترتيب المناسب للخطوات:",
+      "step": "01",
+      "statement": "احسب نصف قطر الأسطوانة $r$ .",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-talis_P3",
+          "code": "4am_wadiya-idmajiya-talis_P2",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ cm",
+      "expectedAnswer": "2,5",
+      "hints": [
         {
-          "id": "A",
-          "content": "الحجم ← معادلة في r ← المقطع المحوري",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-MULAAMA-WAQI"
+          "id": "h1",
+          "type": "look",
+          "content": "في نصف المقطع المحوري: $\\dfrac{r}{5} = \\dfrac{15 - h}{15}$ (خاصية طالس)."
         },
         {
-          "id": "B",
-          "content": "المقطع المحوري ← خاصية طالس ← معادلة في r ← الحجم ← التحقّق",
-          "isCorrect": true
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $h$ بـ $3r$ ، ثم اضرب الطرفين في $15$ ."
         },
         {
-          "id": "C",
-          "content": "خاصية فيثاغورس ← الحجم",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود التي فيها $r$ في طرف واحد، ثم اقسم."
+        }
+      ],
+      "feedback": {
+        "correct": "$15r = 75 - 15r$ ، أي $30r = 75$ ومنه $r = 2{,}5\\,\\mathrm{cm}$ .",
+        "incorrect": "عند نقل الحدّ الذي فيه $r$ من طرف إلى آخر تتغيّر إشارته."
+      },
+      "solution": {
+        "lines": [
+          "حسب خاصية طالس في نصف المقطع المحوري: $\\dfrac{r}{5} = \\dfrac{15 - h}{15}$",
+          "بما أن $h = 3r$ : $\\dfrac{r}{5} = \\dfrac{15 - 3r}{15}$",
+          "$15r = 5(15 - 3r)$",
+          "$15r = 75 - 15r$",
+          "$30r = 75$",
+          "$r = \\dfrac{75}{30}$"
+        ],
+        "result": "r = 2{,}5\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 240
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "استنتج ارتفاع الأسطوانة $h$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ cm",
+      "expectedAnswer": "7,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$h = 3r$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$h = 3 \\times 2{,}5 = 7{,}5\\,\\mathrm{cm}$ .",
+        "incorrect": "الارتفاع ثلاثة أمثال نصف القطر."
+      },
+      "solution": {
+        "lines": [
+          "$h = 3r = 3 \\times 2{,}5$"
+        ],
+        "result": "h = 7{,}5\\,\\mathrm{cm}"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "نكتب حجم الأسطوانة على الشكل $V = k\\pi\\,\\mathrm{cm}^3$ . أعط العدد $k$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "اكتب العدد $k$ فقط (عدد صحيح، أو عشري بالفاصلة، أو كسر a/b)",
+      "expectedAnswer": "46,875",
+      "misconceptionSignatures": [
+        {
+          "value": "18,75",
+          "id": "MISC-TALIS-TARBI-MANSI"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الحجم يحتاج r."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "r يأتي من معادلة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "المعادلة تأتي من خاصية في شكل مستوٍ."
+          "content": "$V = \\pi \\times r^2 \\times h$ ."
         }
       ],
       "feedback": {
-        "correct": "نرسم المقطع، نكتب مساواة طالس، نعوّض $h = r$ ونحلّ، ثم الحجم ونتحقّق.",
-        "incorrect": "لا نحسب الحجم قبل معرفة r."
+        "correct": "$V = \\pi \\times 2{,}5^2 \\times 7{,}5 = 46{,}875\\pi\\,\\mathrm{cm}^3$ .",
+        "incorrect": "في $V = \\pi r^2 h$ يُربَّع نصف القطر وحده، ولا نستعمل القطر."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "$V = \\pi \\times r^2 \\times h$",
+          "$V = \\pi \\times 2{,}5^2 \\times 7{,}5$"
+        ],
+        "result": "V = 46{,}875\\pi\\,\\mathrm{cm}^3"
+      },
+      "timeSeconds": 120
     }
   ]
 }

@@ -3,24 +3,54 @@
   "lessonCode": "takrar-mujamma",
   "level": 5,
   "metadata": {
-    "title": "تدريب — أي عبارة صحيحة؟",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2021 — أفواج دروس الدعم",
+    "estimatedMinutes": 10,
     "tags": [
-      "تفسير"
+      "وضعية إدماجية",
+      "أقل من",
+      "مهمة واحدة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_takrar-mujamma_P3"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_takrar-mujamma_P3",
+      "modelledOn": "BEM 2021 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2021",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "جدول لقيم 2 ، 4 ، 6 ، 8 تكراراتها المجمعة الصاعدة 5 ، 12 ، 20 ، 25."
+    "content": "يبيّن الجدول الآتي توزيع علامات 120 تلميذا من تلاميذ السنة الرابعة متوسط بإحدى المتوسطات في الفصل الأول. قرّر المدير تنظيم دروس دعم لكل تلميذ علامته أقل من 10، في أفواج يضم كل منها 15 تلميذا على الأكثر، ويبرمج لكل فوج 8 حصص تكلّف الحصة الواحدة 1200DA.",
+    "table": {
+      "head": [
+        "العلامة n",
+        "$0 \\le n < 5$",
+        "$5 \\le n < 10$",
+        "$10 \\le n < 15$",
+        "$15 \\le n \\le 20$"
+      ],
+      "rows": [
+        [
+          "عدد التلاميذ",
+          "9",
+          "33",
+          "48",
+          "30"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أي عبارة صحيحة؟",
+      "step": "01",
+      "sub": "ا",
+      "lead": "☜ أعط أصغر مبلغ تحتاجه المتوسطة لتنظيم دروس الدعم هذه.",
+      "statement": "كم عدد التلاميذ المعنيين بدروس الدعم؟",
       "learningPoints": [
         {
           "code": "4am_takrar-mujamma_P3",
@@ -28,53 +58,88 @@
         }
       ],
       "difficulty": 4,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: عدد التلاميذ",
+      "expectedAnswer": "42",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "عدد القيم التي تساوي 6 على الأكثر هو 20",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "عدد القيم التي تساوي 6 بالضبط هو 20",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
-        },
-        {
-          "id": "C",
-          "content": "عدد القيم التي تفوق 4 هو 12",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-SAID-NAZIL-MAQLUB"
-        },
-        {
-          "id": "D",
-          "content": "التواتر المجمع الصاعد للقيمة 8 هو 25",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-TAWATUR-BILA-QISMA"
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "78"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "في جدول التكرار المجمع الصاعد، كل خانة تزيد على السابقة بتكرار قيمتها."
+          "content": "التلاميذ المعنيون هم تلاميذ الفئتين الأوليين: عددهم تكرار مجمع صاعد."
+        }
+      ],
+      "feedback": {
+        "correct": "$9 + 33 = 42$ : التكرار المجمع الصاعد للفئة $5 \\le n < 10$ .",
+        "incorrect": "المعنيون هم الذين علاماتهم أقل من 10 فقط: اجمع تكراري الفئتين الأوليين."
+      },
+      "solution": {
+        "lines": [
+          "عدد التلاميذ الذين علاماتهم أقل من 10 (التكرار المجمع الصاعد للفئة $5 \\le n < 10$ ): $9 + 33 = 42$"
+        ],
+        "result": "42"
+      },
+      "timeSeconds": 180
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "ما هو أصغر مبلغ تحتاجه المتوسطة؟",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "28800",
+      "misconceptionSignatures": [
+        {
+          "value": "57600",
+          "id": "MISC-IHSA-SARAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عدد التلاميذ المعنيين هو جواب السؤال (ا): 42 تلميذا."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "التكرار = الصاعد للقيمة ناقص الصاعد للقيمة التي قبلها؛ والتكرار الكلي هو آخر صاعد."
+          "content": "اقسم عدد التلاميذ المعنيين على 15، ثم خذ أصغر عدد طبيعي من الأفواج يكفيهم جميعا."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اطرح الخانتين المتتاليتين، أو استعمل: الصاعد + النازل = التكرار الكلي + تكرار القيمة."
+          "content": "المبلغ = عدد الأفواج × عدد الحصص لكل فوج × تكلفة الحصة."
         }
       ],
       "feedback": {
-        "correct": "الصاعد للقيمة 6 هو عدد القيم الأصغر من أو تساوي 6: 20. (تكرار 6 هو $20 - 12 = 8$ ، والتي تفوق 4 عددها $25 - 12 = 13$ ، والتواتر الأخير 1.)",
-        "incorrect": "راجع التعريف: أي القيم تدخل في المجموع؟"
-      }
+        "correct": "42 تلميذا يحتاجون 3 أفواج، و $3 \\times 8 \\times 1200 = 28800$ ، أي 28800DA .",
+        "incorrect": "$\\dfrac{42}{15} = 2{,}8$ : لا يبقى تلميذ بلا فوج، فخذ 3 أفواج، ثم المبلغ = عدد الأفواج × 8 × 1200 ."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{42}{15} = 2{,}8$ : فوجان لا يكفيان، إذن نحتاج إلى 3 أفواج على الأقل.",
+          "$3 \\times 8 \\times 1200 = 28800$"
+        ],
+        "result": "28800DA"
+      },
+      "work": "optional",
+      "timeSeconds": 420,
+      "sub": "ب",
+      "counted": false
     }
   ]
 }

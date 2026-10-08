@@ -4,7 +4,7 @@
   "level": 1,
   "metadata": {
     "title": "تمرين 7 (ص 99) — دستور المتوسط",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 2,
     "tags": [
       "دستور",
       "متوسط"
@@ -15,21 +15,55 @@
       "page": 99,
       "section": "أوظّف تعلّماتي",
       "number": 7
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "سلسلة التمرين 7 محجوزة في الخلايا من A1 إلى G1 : 4 ، 10 ، 8 ، 4 ، 3 ، 2 ، 4 ."
+    "content": "حجزنا سلسلة التمرين 7 في السطر الأول من مجدول:",
+    "table": {
+      "head": [
+        "",
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G"
+      ],
+      "rows": [
+        [
+          "1",
+          "4",
+          "10",
+          "8",
+          "4",
+          "3",
+          "2",
+          "4"
+        ]
+      ],
+      "sheet": true
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الدستور الذي يحسب متوسط السلسلة، كما يكتبه الكتاب:",
+      "step": "01",
+      "statement": "عيّن الدستور الذي يُحجز في الخلية B4 ليُظهر متوسط هذه السلسلة.",
       "learningPoints": [
         {
           "code": "4am_majdulat-ihsaiya_P2",
           "role": "primary"
         }
       ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
@@ -60,23 +94,30 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "MOYENNE بالفرنسية."
+          "content": "كل دستور يبدأ بالإشارة « ⁦=⁩ »، ثم اسم الدالة، ثم المجال بين قوسين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "MEDIANE للوسيط."
+          "content": "حدّد أولا المجال الذي يضمّ كل القيم المطلوبة، ولا شيئا غيرها."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "MODE للمنوال."
+          "content": "ثم اختر الدالة: MAX و MIN للمدى، MEDIANE للوسيط، MOYENNE للمتوسط، MODE للمنوال."
         }
       ],
       "feedback": {
-        "correct": "⁦=MOYENNE(A1:G1)⁩ يحسب المتوسط، ⁦=MEDIANE(A1:G1)⁩ الوسيط، ⁦=MODE(A1:G1)⁩ المنوال.",
-        "incorrect": "لكل مؤشّر دالته."
-      }
+        "correct": "⁦=MOYENNE(A1:G1)⁩ يُظهر 5 .",
+        "incorrect": "راجع ثلاثة أشياء: الإشارة « ⁦=⁩ » في البداية، الدالة المناسبة للمؤشّر، والمجال الذي يضمّ كل القيم."
+      },
+      "solution": {
+        "lines": [
+          "⁦=MAX(A1:G1)-MIN(A1:G1)⁩ يحسب المدى، ⁦=MEDIANE(A1:G1)⁩ الوسيط، و ⁦=MODE(A1:G1)⁩ المنوال.",
+          "المتوسط يحسبه الدستور ⁦=MOYENNE(A1:G1)⁩ ، فيُظهر $\\dfrac{35}{7} = 5$ ."
+        ]
+      },
+      "timeSeconds": 60
     }
   ]
 }

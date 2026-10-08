@@ -3,9 +3,10 @@
   "lessonCode": "talis-hisab-atwal",
   "level": 2,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 1 — x و y",
-    "estimatedMinutes": 3,
+    "title": "الطولان x و y",
+    "estimatedMinutes": 6,
     "tags": [
+      "خاصية طالس",
       "حساب طول"
     ],
     "source": {
@@ -14,31 +15,37 @@
       "page": 112,
       "section": "أؤكّد تعلّماتي",
       "number": 1
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 112): في الشكل $(BC) \\parallel (IJ)$ حيث I من $[AB]$ و J من $[AC]$ ، و $AI = 3$ ، $IB = 2$ ، $JC = 3$ ، $BC = 10$ ، $IJ = x$ و $AJ = y$ .",
+    "content": "في الشكل المقابل $(BC) \\parallel (IJ)$ حيث $I$ من $[AB]$ و $J$ من $[AC]$ ، و $AI = 3$ ، $IB = 2$ ، $JC = 3$ ، $BC = 10$ ، $IJ = x$ و $AJ = y$ .",
     "figure": {
       "points": {
         "A": [
-          0,
-          0
-        ],
-        "B": [
-          2.65,
-          -4.24
-        ],
-        "C": [
-          -3.974,
-          -6.36
+          0.0,
+          0.0
         ],
         "I": [
-          1.59,
-          -2.544
+          1.5897577927,
+          -2.544144288469
+        ],
+        "B": [
+          2.649596321166,
+          -4.240240480782
         ],
         "J": [
-          -2.384,
-          -3.816
+          -2.384636689049,
+          -3.816216432704
+        ],
+        "C": [
+          -3.974394481749,
+          -6.360360721173
         ]
       },
       "segments": [
@@ -63,112 +70,146 @@
           "label": "3"
         },
         {
+          "from": "I",
+          "to": "J",
+          "label": "x",
+          "arrows": 1
+        },
+        {
           "from": "B",
           "to": "C",
           "label": "10",
           "arrows": 1
-        },
-        {
-          "from": "I",
-          "to": "J",
-          "label": "x",
-          "arrows": 1,
-          "tone": "indigo"
         }
       ],
       "ariaLabel": "I من [AB] و J من [AC] و (IJ) يوازي (BC)؛ AI = 3 و IB = 2 و JC = 3 و BC = 10 و IJ = x و AJ = y",
-      "maxWidth": 260,
-      "labels": {
-        "A": "w"
-      }
+      "maxWidth": 300
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب x.",
+      "step": "01",
+      "statement": "احسب $x$ .",
       "learningPoints": [
         {
           "code": "4am_talis-hisab-atwal_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "secondary"
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "answerFormat": "عدد (عشري بالفاصلة مثل 2,75 أو كسر مثل 7/9)",
       "expectedAnswer": "6",
       "misconceptionSignatures": [
         {
-          "id": "MISC-TALIS-QITAA-BADAL-DILA",
-          "value": "15"
+          "value": "15",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
         },
         {
-          "id": "MISC-TALIS-NISBA-MAQLUBA",
-          "value": "50/3"
+          "value": "50/3",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+          "content": "المثلثان $AIJ$ و $ABC$ في وضعية طالس: $I \\in [AB]$ ، $J \\in [AC]$ و $(IJ) \\parallel (BC)$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+          "content": "احسب أولا $AB = AI + IB$ ، ثم اكتب $\\dfrac{AI}{AB} = \\dfrac{IJ}{BC}$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+          "content": "أكمل بالجداء المتصالب."
         }
       ],
       "feedback": {
-        "correct": "$AB = 5$ و $\\dfrac{AI}{AB} = \\dfrac{IJ}{BC}$ أي $\\dfrac{3}{5} = \\dfrac{x}{10}$ ومنه $x = 6$ .",
-        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
-      }
+        "correct": "$AB = 5$ و $x = \\dfrac{10 \\times 3}{5} = 6$ .",
+        "incorrect": "هل استعملت ضلعًا من المثلث الكبير أم قطعة منه؟ النسب تُكتب بأطوال تُقاس من الرأس المشترك؛ اطرح أو اجمع بعد ذلك إن كان المطلوب طول قطعة."
+      },
+      "solution": {
+        "lines": [
+          "$AB = AI + IB = 3 + 2 = 5$",
+          "لدينا: النقط $A$ ، $I$ ، $B$ على استقامة واحدة، والنقط $A$ ، $J$ ، $C$ على استقامة واحدة، و $(IJ) \\parallel (BC)$ .",
+          "حسب خاصية طالس: $\\dfrac{AI}{AB} = \\dfrac{AJ}{AC} = \\dfrac{IJ}{BC}$",
+          "$\\dfrac{3}{5} = \\dfrac{x}{10}$",
+          "$x = \\dfrac{10 \\times 3}{5}$"
+        ],
+        "result": "x = 6"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     },
     {
       "id": "q2",
-      "statement": "احسب y.",
+      "step": "02",
+      "statement": "احسب $y$ .",
       "learningPoints": [
         {
           "code": "4am_talis-hisab-atwal_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 3,
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "answerFormat": "عدد (عشري بالفاصلة مثل 2,75 أو كسر مثل 7/9)",
       "expectedAnswer": "4,5",
       "misconceptionSignatures": [
         {
-          "id": "MISC-TALIS-QITAA-BADAL-DILA",
-          "value": "1,8"
+          "value": "1,8",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "value": "2",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+          "content": "النقطة $J$ من $[AC]$ : $AC = y + 3$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+          "content": "اكتب $\\dfrac{AI}{AB} = \\dfrac{AJ}{AC}$ ، أو استعمل $\\dfrac{IB}{AB} = \\dfrac{JC}{AC}$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+          "content": "احسب $AC$ أولا ثم اطرح $JC$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{AI}{AB} = \\dfrac{AJ}{AC}$ أي $\\dfrac{3}{5} = \\dfrac{y}{y + 3}$ ومنه $5y = 3y + 9$ ، $y = 4{,}5$ .",
-        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
-      }
+        "correct": "$\\dfrac{2}{5} = \\dfrac{3}{AC}$ يعطي $AC = 7{,}5$ ، ومنه $y = 7{,}5 - 3 = 4{,}5$ .",
+        "incorrect": "هل استعملت ضلعًا من المثلث الكبير أم قطعة منه؟ النسب تُكتب بأطوال تُقاس من الرأس المشترك؛ اطرح أو اجمع بعد ذلك إن كان المطلوب طول قطعة."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{AJ}{AC} = \\dfrac{AI}{AB} = \\dfrac{3}{5}$ ، ومنه $\\dfrac{JC}{AC} = 1 - \\dfrac{3}{5} = \\dfrac{2}{5}$",
+          "$\\dfrac{2}{5} = \\dfrac{3}{AC}$ أي $AC = \\dfrac{5 \\times 3}{2} = 7{,}5$",
+          "$y = AC - JC = 7{,}5 - 3$"
+        ],
+        "result": "y = 4{,}5"
+      },
+      "work": "optional",
+      "timeSeconds": 210
     }
   ]
 }

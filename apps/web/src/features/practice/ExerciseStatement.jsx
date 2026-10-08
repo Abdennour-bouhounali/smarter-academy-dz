@@ -1,6 +1,5 @@
 import CoordPlane from '../../lessons/common/components/CoordPlane';
-import GeoFigure from '../../lessons/common/components/GeoFigure';
-import SpaceFigure from '../../lessons/common/components/SpaceFigure';
+import StatementFigure from '../../lessons/common/components/StatementFigure';
 import RichText from './RichText';
 import PracticeLab from './PracticeLab';
 
@@ -18,6 +17,8 @@ import PracticeLab from './PracticeLab';
  * points nommés, segments, droites, angles — pour qu'un énoncé « في الشكل المقابل » montre le shape ;
  * le validateur la vérifie avec `validateGeoFigure`. Une figure de l'ESPACE (unité 14, 2026-10-05) porte `kind: 'space'` et
  * est dessinée par SpaceFigure (pointillés pour les parties cachées) ; le validateur la vérifie avec `validateSpaceFigure`.
+ * Un DIAGRAMME statistique (unité 8, 2026-10-08) porte `kind: 'chart'` et est dessiné par StatChart ; un seul aiguillage,
+ * StatementFigure (rendu) / `validateStatementFigure` (validation).
  */
 export default function ExerciseStatement({ content, visual, figure, support }) {
   return (
@@ -32,7 +33,7 @@ export default function ExerciseStatement({ content, visual, figure, support }) 
         </div>
       )}
 
-      {figure && (figure.kind === 'space' ? <SpaceFigure {...figure} /> : <GeoFigure {...figure} />)}
+      {figure && <StatementFigure {...figure} />}
 
       {visual && (
         <div className="overflow-x-auto">

@@ -3,89 +3,128 @@
   "lessonCode": "mada-wasit-mutawassit",
   "level": 2,
   "metadata": {
-    "title": "نشاط 3 (ص 93) — مدى مدينتين",
-    "estimatedMinutes": 3,
+    "title": "سلسلة تكرارها الكلي 7 ومتوسطها 7",
+    "estimatedMinutes": 4,
     "tags": [
-      "مدى",
-      "تشتت"
+      "المتوسط",
+      "قيمة مجهولة"
     ],
     "source": {
       "type": "textbook",
-      "elementId": "act-3",
-      "page": 93,
-      "section": "أنشطة",
-      "number": 3
+      "elementId": "ex-8",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 8,
+      "adaptedFrom": "ex-4am-mada-wasit-mutawassit-l3-007"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 93): درجات الحرارة في نوفمبر. المدينة (أ): $18$ (يومان)، $15$ (18 يومًا)، $16$ (6 أيام)، $20$ (4 أيام). المدينة (ب): $10$ (3 أيام)، $18$ (4 أيام)، $15$ (16 يومًا)، $20$ (7 أيام)."
+    "content": "نريد سلسلة إحصائية تكرارها الكلي 7 ومتوسطها 7."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "مدى سلسلة المدينة (أ) هو:",
+      "step": "01",
+      "statement": "احسب مجموع قيم هذه السلسلة.",
       "learningPoints": [
         {
-          "code": "4am_mada-wasit-mutawassit_P1",
+          "code": "4am_mada-wasit-mutawassit_P2",
           "role": "primary"
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "5",
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-IHSA-MADA-TAKRAR",
-          "value": "16"
-        },
-        {
-          "id": "MISC-IHSA-MADA-AKBAR-QIMA",
-          "value": "20"
-        }
-      ],
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "49",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "أكبر درجة $20$ وأصغر درجة $15$."
+          "content": "المتوسط = مجموع القيم ÷ عددها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساواة: المجموع ÷ 7 = 7."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب المتوسط في عدد القيم."
         }
       ],
       "feedback": {
-        "correct": "$20 - 15 = 5$ .",
-        "incorrect": "استعمل درجات الحرارة لا أعداد الأيام."
-      }
+        "correct": "$7 \\times 7 = 49$ .",
+        "incorrect": "المجموع يساوي المتوسط مضروبا في عدد القيم."
+      },
+      "solution": {
+        "lines": [
+          "المتوسط = مجموع القيم ÷ عدد القيم، إذن:",
+          "مجموع القيم = المتوسط × عدد القيم",
+          "$7 \\times 7 = 49$"
+        ],
+        "result": "49"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "مدى سلسلة المدينة (ب) هو:",
+      "step": "02",
+      "statement": "ستّ قيم من هذه السلسلة هي: 3 ، 5 ، 6 ، 8 ، 9 ، 12 . احسب القيمة السابعة.",
       "learningPoints": [
         {
-          "code": "4am_mada-wasit-mutawassit_P1",
+          "code": "4am_mada-wasit-mutawassit_P2",
           "role": "primary"
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "10",
+      "answerFormat": "عدد (بالفاصلة العشرية إن لزم)",
+      "expectedAnswer": "6",
       "misconceptionSignatures": [
         {
-          "id": "MISC-IHSA-MADA-TAKRAR",
-          "value": "13"
+          "value": "7",
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "أصغر درجة في (ب) هي $10$."
+          "content": "استعمل مجموع القيم الذي وجدته في السؤال 01."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع القيم الست المعطاة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القيمة السابعة = مجموع القيم السبع − مجموع القيم الست."
         }
       ],
       "feedback": {
-        "correct": "$20 - 10 = 10$ : درجات (ب) أكثر تشتّتًا.",
-        "incorrect": "أكبر قيمة ناقص أصغر قيمة."
-      }
+        "correct": "$49 - 43 = 6$ .",
+        "incorrect": "اطرح مجموع القيم الست المعروفة من مجموع القيم السبع."
+      },
+      "solution": {
+        "lines": [
+          "مجموع القيم الست: $3 + 5 + 6 + 8 + 9 + 12 = 43$",
+          "القيمة السابعة: $49 - 43 = 6$",
+          "تحقّق: $\\dfrac{43 + 6}{7} = 7$"
+        ],
+        "result": "6"
+      },
+      "timeSeconds": 120
     }
   ]
 }

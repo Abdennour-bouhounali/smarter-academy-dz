@@ -4,54 +4,61 @@
   "level": 1,
   "metadata": {
     "title": "أؤكّد تعلّماتي 4 — تدريج منتظم",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 6,
     "tags": [
-      "خاصية طالس",
-      "تقسيم قطعة"
+      "تدريج منتظم",
+      "خاصية طالس"
     ],
     "source": {
       "type": "textbook",
       "elementId": "qcm",
       "page": 112,
       "section": "أؤكّد تعلّماتي",
-      "number": 4
+      "number": 4,
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-talis-l1-004"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نختار تدريجا منتظما على [AB] (خمس قطع متقايسة، M النقطة الثالثة من A) ونرسم مستقيمات موازية لـ (BC) ، و N نقطة تقاطع الموازي المار بـ M مع [AC]. الإجابات: (1) $\\dfrac{AN}{AC} = \\dfrac{AM}{AB} = \\dfrac{3}{5}$ ؛ (2) $\\dfrac{AM}{AB} = \\dfrac{NM}{CB} = \\dfrac{3}{5}$ ؛ (3) $5 \\times NM = 3 \\times CB$ .",
+    "content": "في الشكل المقابل: القطعة $[AB]$ مقسّمة بتدريج منتظم إلى خمس قطع متقايسة، و $M$ النقطة الثالثة من $A$ . رُسمت من نقط التدريج مستقيمات موازية للمستقيم $(BC)$ ، و $N$ نقطة تقاطع الموازي المار بـ $M$ مع $[AC]$ ، حيث $BC = 7{,}5\\,\\mathrm{cm}$ .",
     "figure": {
       "points": {
         "A": [
-          0,
-          0
+          0.0,
+          0.0
         ],
         "B": [
-          5,
-          0
+          5.0,
+          0.0
         ],
         "C": [
-          7,
+          7.0,
           4.5
         ],
         "M": [
-          3,
-          0
+          3.0,
+          0.0
         ],
         "N": [
           4.2,
           2.7
         ],
         "G1": [
-          1,
-          0
+          1.0,
+          0.0
         ],
         "G2": [
-          2,
-          0
+          2.0,
+          0.0
         ],
         "G4": [
-          4,
-          0
+          4.0,
+          0.0
         ],
         "H1": [
           1.4,
@@ -69,15 +76,12 @@
       "segments": [
         [
           "A",
-          "B"
-        ],
-        [
-          "A",
           "C"
         ],
         {
           "from": "B",
           "to": "C",
+          "label": "7,5",
           "arrows": 1,
           "bold": true
         },
@@ -143,69 +147,112 @@
         "M": "s",
         "N": "nw"
       },
-      "ariaLabel": "القطعة [AB] مقسمة بتدريج منتظم إلى خمس قطع متقايسة، M النقطة الثالثة من A، وموازيات للمستقيم (BC) تمر بنقاط التدريج وتقطع [AC]، و N نقطة تقاطع الموازي المار بـ M مع [AC]",
+      "ariaLabel": "القطعة [AB] مقسمة بتدريج منتظم إلى خمس قطع متقايسة، M النقطة الثالثة من A، وموازيات للمستقيم (BC) تمر بنقاط التدريج وتقطع [AC]، و N نقطة تقاطع الموازي المار بـ M مع [AC]؛ BC = 7,5",
       "maxWidth": 320
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ الإجابات صحيحة؟",
+      "step": "01",
+      "statement": "احسب النسبة $\\dfrac{AN}{AC}$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-talis_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
+      "expectedAnswer": "3/5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "الإجابتان (1) و (2) فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-KITABA-MUTAKAFIA"
+          "value": "3/2",
+          "id": "MISC-TALIS-NISBA-JUZ-KULL"
         },
         {
-          "id": "B",
-          "content": "الإجابات الثلاث",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "الإجابة (1) فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-KITABA-MUTAKAFIA"
-        },
-        {
-          "id": "D",
-          "content": "الإجابة (3) فقط",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-KITABA-MUTAKAFIA"
+          "value": "5/3",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$\\dfrac{AM}{AB}$ تقرأ على التدريج."
+          "content": "الموازيات المتساوية التباعد على $[AB]$ تقسم $[AC]$ أيضا إلى خمس قطع متقايسة، و $N$ على الموازي المار بـ $M$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "(MN)//(BC): المثلثان AMN و ABC في وضعية طالس."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "الجداء التصالبي يحوّل تساوي نسبتين إلى تساوي جداءين."
+          "content": "اقسم $AN$ على $AC$ ثم اختزل الكسر (قيمة مضبوطة، دون تدوير)."
         }
       ],
       "feedback": {
-        "correct": "الثلاث صحيحة: النسب الثلاث تساوي $\\dfrac{3}{5}$ ، و (3) هي الجداء التصالبي لـ (2).",
-        "incorrect": "كتابتان متكافئتان لتناسب واحد كلتاهما صحيحة."
+        "correct": "$\\dfrac{AN}{AC} = \\dfrac{3}{5}$ .",
+        "incorrect": "النسبة $\\dfrac{AN}{AC}$ : الطول $AN$ على الطول $AC$ ، وكلاهما من النقطة $A$ ؛ اكتبها كسرا مضبوطا."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$(MN) \\parallel (BC)$ ، حسب خاصية طالس: $\\dfrac{AN}{AC} = \\dfrac{AM}{AB}$",
+          "$\\dfrac{AN}{AC} = \\dfrac{3}{5}$"
+        ],
+        "result": "\\dfrac{AN}{AC} = \\dfrac{3}{5}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب الطول $MN$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ cm",
+      "expectedAnswer": "4,5",
+      "misconceptionSignatures": [
+        {
+          "value": "12.5",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "value": "11.25",
+          "id": "MISC-TALIS-NISBA-JUZ-KULL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{AM}{AB} = \\dfrac{MN}{BC}$ (خاصية طالس في المثلث $ABC$ )."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل النسبة التي حسبتها و $BC = 7{,}5\\,\\mathrm{cm}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$MN = \\dfrac{3}{5} \\times 7{,}5 = 4{,}5\\,\\mathrm{cm}$ .",
+        "incorrect": "في كل نسبة: طول من المثلث الصغير على الطول الموافق له في المثلث الكبير، والأطوال كلها تُقاس من الرأس المشترك."
+      },
+      "solution": {
+        "lines": [
+          "حسب خاصية طالس: $\\dfrac{AM}{AB} = \\dfrac{MN}{BC}$",
+          "$\\dfrac{3}{5} = \\dfrac{MN}{7{,}5}$",
+          "$MN = \\dfrac{3 \\times 7{,}5}{5}$"
+        ],
+        "result": "MN = 4{,}5\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

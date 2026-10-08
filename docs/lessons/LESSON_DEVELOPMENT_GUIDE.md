@@ -394,6 +394,11 @@ Unit-count assertions that read the real catalogue (`unitGrouping.test.js`, `fin
   « on / in / outside » verdict), sphere area / ball volume and their inverses, Archimedes' ratios, the familiar solids, the sections
   (`sphereSection`, `cuboidSection`, `cylinderSection`, `apexSection`), `scaleEffect` / `scaled` / `ratioFrom` (k, k², k³, exact roots or
   null), `bucketWater` (Thales + V_big(1 − k³)) — tested on every textbook number first.
+- **Statistical charts: `StatChart`** (`lessons/common/components/StatChart.jsx` + `statChart.js`, `kind: 'chart'`, 2026-10-08): bar chart,
+  histogram (+ frequency polygon), line / cumulative polygon, pie and half-pie, declared as data and validated (`validateStatChart`: every
+  unprinted value on a gridline, `missing` parts drawn « ؟ »). Use it in a practice statement or a مسألة (`figure`) instead of a lesson-local
+  chart; `StatementFigure` / `validateStatementFigure` are the single dispatch for plane, space and chart figures (EXERCISE_CONTRACT
+  « Statistical charts »).
 - **Figures in space: `SpaceFigure`** (`lessons/common/components/SpaceFigure.jsx` + `spaceFigure.js`, `kind: 'space'`): an orthographic
   projection that dashes HIDDEN lines by computation (polyhedron edges by back faces, the back half of an equator, a cylinder's bottom rim,
   contour generators of cones and frustums), dispatched by `ExerciseStatement` and `validate-exercises.mjs`; `spaceFigureQuality(fig)` = [] in

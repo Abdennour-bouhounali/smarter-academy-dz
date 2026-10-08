@@ -3,11 +3,11 @@
   "lessonCode": "talis-hisab-atwal",
   "level": 4,
   "metadata": {
-    "title": "تمرين 9 — فيثاغورس ثم طالس",
-    "estimatedMinutes": 4,
+    "title": "فيثاغورس ثم طالس: الطول AF",
+    "estimatedMinutes": 14,
     "tags": [
       "عكس فيثاغورس",
-      "حساب طول"
+      "وضعية الفراشة"
     ],
     "source": {
       "type": "textbook",
@@ -15,31 +15,37 @@
       "page": 110,
       "section": "خاصية طالس",
       "number": 9
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 110): (الأطوال على الشكل ليست حقيقية) $(AF)$ عمودي على $(AB)$ في A ؛ A و E و D على استقامة و B و E و F على استقامة ؛ $AB = 2{,}8$ ، $AE = 3{,}3$ ، $ED = 2$ و $BD = 4{,}5$ . لا ترميز لزاوية قائمة في B.",
+    "content": "(الأطوال على الشكل ليست حقيقية) في الشكل المقابل، $(AF)$ عمودي على $(AB)$ في $A$ ؛ النقط $A$ ، $E$ ، $D$ على استقامة والنقط $B$ ، $E$ ، $F$ على استقامة؛ $AB = 2{,}8$ ، $AE = 3{,}3$ ، $ED = 2$ و $BD = 4{,}5$ .",
     "figure": {
       "points": {
         "A": [
-          0,
-          4.5
+          0.0,
+          0.0
         ],
         "B": [
-          2.8,
-          4.5
+          6.0,
+          0.0
         ],
         "D": [
-          2.8,
-          0
+          6.0,
+          -4.5
         ],
         "E": [
-          1.743,
-          1.698
+          3.735849056604,
+          -2.801886792453
         ],
         "F": [
-          0,
-          -2.925
+          0.0,
+          -7.425
         ]
       },
       "segments": [
@@ -72,110 +78,185 @@
           "to": "F"
         }
       ],
-      "ariaLabel": "(AF) عمودي على (AB) في A؛ A و E و D على استقامة و B و E و F على استقامة",
-      "maxWidth": 220,
       "rightAngles": [
         [
           "F",
           "A",
           "B"
         ]
-      ]
+      ],
+      "ariaLabel": "(AF) عمودي على (AB) في A؛ A و E و D على استقامة و B و E و F على استقامة؛ AB = 2,8 و AE = 3,3 و ED = 2 و BD = 4,5",
+      "caption": "الأطوال على الشكل ليست حقيقية",
+      "maxWidth": 300
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المستقيمان $(BD)$ و $(AF)$ متوازيان لأن:",
-      "learningPoints": [
-        {
-          "code": "4am_talis-hisab-atwal_P1",
-          "role": "primary"
-        }
-      ],
-      "difficulty": 4,
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "$2{,}8^2 + 4{,}5^2 = 5{,}3^2$ فالمثلث ABD قائم في B، و $(BD)$ و $(AF)$ عموديان على $(AB)$",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "الشكل يبدو كذلك",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
-        },
-        {
-          "id": "C",
-          "content": "$AE \\neq ED$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
-        }
-      ],
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
-        }
-      ],
-      "feedback": {
-        "correct": "$7{,}84 + 20{,}25 = 28{,}09 = 5{,}3^2$ : عكس خاصية فيثاغورس.",
-        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
-      }
-    },
-    {
-      "id": "q2",
-      "statement": "احسب AF.",
+      "step": "01",
+      "statement": "احسب $AD$ .",
       "learningPoints": [
         {
           "code": "4am_talis-hisab-atwal_P2",
           "role": "primary"
         }
       ],
-      "difficulty": 4,
+      "counted": false,
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "answerFormat": "عدد (عشري بالفاصلة مثل 2,75 أو كسر مثل 7/9)",
+      "expectedAnswer": "5,3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$E$ بين $A$ و $D$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$AD = 3{,}3 + 2 = 5{,}3$ .",
+        "incorrect": "النقط $A$ ، $E$ ، $D$ على استقامة و $E$ بينهما: اجمع."
+      },
+      "solution": {
+        "lines": [
+          "$AD = AE + ED = 3{,}3 + 2$"
+        ],
+        "result": "AD = 5{,}3"
+      },
+      "work": "optional",
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "statement": "بيّن أن المثلث $ABD$ قائم في $B$ .",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن مربع أطول ضلع بمجموع مربعي الضلعين الآخرين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $AD^2$ و $AB^2 + BD^2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$AD^2 = 28{,}09$ و $AB^2 + BD^2 = 7{,}84 + 20{,}25 = 28{,}09$ : المثلث قائم في $B$ .",
+        "incorrect": "قارن برهانك بالحل النموذجي: الخاصية العكسية لفيثاغورس."
+      },
+      "solution": {
+        "lines": [
+          "$AD^2 = 5{,}3^2 = 28{,}09$",
+          "$AB^2 + BD^2 = 2{,}8^2 + 4{,}5^2 = 7{,}84 + 20{,}25 = 28{,}09$",
+          "$AD^2 = AB^2 + BD^2$ ، حسب الخاصية العكسية لخاصية فيثاغورس المثلث $ABD$ قائم في $B$ ."
+        ]
+      },
+      "timeSeconds": 240,
+      "counted": false
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "استنتج أن المستقيمين $(BD)$ و $(AF)$ متوازيان.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المستقيمان $(BD)$ و $(AF)$ عموديان على مستقيم واحد."
+        }
+      ],
+      "feedback": {
+        "correct": "$(BD) \\perp (AB)$ و $(AF) \\perp (AB)$ ، إذن $(BD) \\parallel (AF)$ .",
+        "incorrect": "قارن برهانك بالحل النموذجي: مستقيمان عموديان على نفس المستقيم."
+      },
+      "solution": {
+        "lines": [
+          "$(BD) \\perp (AB)$ (السؤال 01) و $(AF) \\perp (AB)$ (من المعطيات)،",
+          "والمستقيمان العموديان على نفس المستقيم متوازيان: $(BD) \\parallel (AF)$ ."
+        ]
+      },
+      "timeSeconds": 240
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "احسب $AF$ .",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة مثل 2,75 أو كسر مثل 7/9)",
       "expectedAnswer": "7,425",
       "misconceptionSignatures": [
         {
-          "id": "MISC-TALIS-NISBA-MAQLUBA",
-          "value": "30/11"
+          "value": "30/11",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+          "content": "المستقيمان $(AD)$ و $(BF)$ متقاطعان في $E$ ، و $(BD) \\parallel (AF)$ : وضعية الفراشة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+          "content": "اكتب $\\dfrac{EA}{ED} = \\dfrac{AF}{DB}$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+          "content": "أكمل بالجداء المتصالب."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{AF}{BD} = \\dfrac{EA}{ED}$ ومنه $AF = \\dfrac{4{,}5 \\times 3{,}3}{2} = 7{,}425$ .",
-        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
-      }
+        "correct": "$AF = \\dfrac{4{,}5 \\times 3{,}3}{2} = 7{,}425$ .",
+        "incorrect": "راجع المساواة المختارة: في كل نسبة طول من المثلث الصغير على الطول الموافق له في المثلث الكبير، والأطوال كلها تُقاس من الرأس المشترك."
+      },
+      "solution": {
+        "lines": [
+          "المستقيمان $(AD)$ و $(BF)$ متقاطعان في $E$ ، و $(AF) \\parallel (BD)$ ، حسب خاصية طالس: $\\dfrac{EA}{ED} = \\dfrac{EF}{EB} = \\dfrac{AF}{DB}$",
+          "$\\dfrac{3{,}3}{2} = \\dfrac{AF}{4{,}5}$",
+          "$AF = \\dfrac{4{,}5 \\times 3{,}3}{2}$",
+          "أعادت المنصّة رسم شكل الكتاب بوضوح أكبر، بنفس المعطيات."
+        ],
+        "result": "AF = 7{,}425"
+      },
+      "work": "optional",
+      "timeSeconds": 210
     }
   ]
 }

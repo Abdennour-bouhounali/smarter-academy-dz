@@ -3,25 +3,125 @@
   "lessonCode": "talis-hisab-atwal",
   "level": 2,
   "metadata": {
-    "title": "تدريب — نسبتان مختلفتان",
-    "estimatedMinutes": 3,
+    "title": "نسبتان مختلفتان",
+    "estimatedMinutes": 5,
     "tags": [
-      "عدم التوازي"
+      "ملاحظة 1",
+      "النسب"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_talis-hisab-atwal_P1",
       "modelledOn": "know-1"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "النقطة M من $[AB]$ و N من $[AC]$ حيث $AM = 2$ ، $AB = 5$ ، $AN = 3$ و $AC = 7$ ."
+    "content": "$ABC$ مثلث، $M$ نقطة من $[AB]$ و $N$ نقطة من $[AC]$ حيث: $AM = 2$ ، $AB = 5$ ، $AN = 3$ و $AC = 7$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المستقيمان $(MN)$ و $(BC)$ :",
+      "step": "01",
+      "sub": "ا",
+      "statement": "احسب النسبة $\\dfrac{AM}{AB}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر مثل 3/4 أو عدد عشري",
+      "expectedAnswer": "0,4",
+      "misconceptionSignatures": [
+        {
+          "value": "2/3",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "value": "2,5",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النسبة $\\dfrac{AM}{AB}$ : الطول $AM$ على الطول $AB$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AM}{AB} = \\dfrac{2}{5}$ .",
+        "incorrect": "اقسم $AM$ على $AB$ (لا على $MB$)."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{AM}{AB} = \\dfrac{2}{5} = 0{,}4$"
+        ],
+        "result": "\\dfrac{AM}{AB} = \\dfrac{2}{5}"
+      },
+      "work": "optional",
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "sub": "ب",
+      "statement": "احسب النسبة $\\dfrac{AN}{AC}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر مثل 3/4",
+      "expectedAnswer": "3/7",
+      "misconceptionSignatures": [
+        {
+          "value": "0,75",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "value": "7/3",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النسبة $\\dfrac{AN}{AC}$ : الطول $AN$ على الطول $AC$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AN}{AC} = \\dfrac{3}{7}$ .",
+        "incorrect": "اقسم $AN$ على $AC$ (لا على $NC$)."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{AN}{AC} = \\dfrac{3}{7}$"
+        ],
+        "result": "\\dfrac{AN}{AC} = \\dfrac{3}{7}"
+      },
+      "work": "optional",
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "هل المستقيمان $(MN)$ و $(BC)$ متوازيان؟ علّل.",
       "learningPoints": [
         {
           "code": "4am_talis-hisab-atwal_P1",
@@ -29,47 +129,45 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "غير متوازيين لأن $\\dfrac{2}{5} \\neq \\dfrac{3}{7}$",
-          "isCorrect": true
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
         },
         {
           "id": "B",
-          "content": "متوازيان لأن النسبتين متقاربتان",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-TAQRIB-BURHAN"
-        },
-        {
-          "id": "C",
-          "content": "متوازيان لأن $AM < AN$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+          "content": "لا",
+          "isCorrect": true
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+          "content": "لو كان $(MN) \\parallel (BC)$ لكانت النسبتان متساويتين حسب خاصية طالس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+          "content": "قارن $\\dfrac{2}{5}$ و $\\dfrac{3}{7}$ بالجداء المتصالب."
         }
       ],
       "feedback": {
-        "correct": "$2 \\times 7 = 14$ و $5 \\times 3 = 15$ : النسبتان مختلفتان، فالمستقيمان غير متوازيين (معارف، ملاحظة 1).",
-        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
-      }
+        "correct": "$2 \\times 7 = 14$ و $5 \\times 3 = 15$ : $\\dfrac{AM}{AB} \\neq \\dfrac{AN}{AC}$ ، فالمستقيمان غير متوازيين.",
+        "incorrect": "نسبتان مختلفتان تثبتان أن المستقيمين غير متوازيين، ولو كانت القيمتان المقرّبتان متقاربتين."
+      },
+      "solution": {
+        "lines": [
+          "$2 \\times 7 = 14$ و $5 \\times 3 = 15$ ، إذن $\\dfrac{2}{5} \\neq \\dfrac{3}{7}$ أي $\\dfrac{AM}{AB} \\neq \\dfrac{AN}{AC}$ .",
+          "لو كان $(MN) \\parallel (BC)$ لكانت النسبتان متساويتين حسب خاصية طالس (معارف، ملاحظة 1)،",
+          "إذن المستقيمان $(MN)$ و $(BC)$ غير متوازيين."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

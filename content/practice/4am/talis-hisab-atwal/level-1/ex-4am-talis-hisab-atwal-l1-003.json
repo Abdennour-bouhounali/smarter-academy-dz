@@ -3,131 +3,147 @@
   "lessonCode": "talis-hisab-atwal",
   "level": 1,
   "metadata": {
-    "title": "تدريب — النسب الثلاث",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2010 — احسب MN",
+    "estimatedMinutes": 4,
     "tags": [
-      "النسب المتساوية"
+      "خاصية طالس",
+      "حساب طول"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_talis-hisab-atwal_P1",
-      "modelledOn": "know-1"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_talis-hisab-atwal_P2",
+      "modelledOn": "BEM 2010 I-4"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2010",
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في الشكل، النقطة D من $[AB]$ و E من $[AC]$ و $(DE) \\parallel (BC)$ .",
+    "content": "في الشكل المقابل $(MN)//(BC)$ حيث $M \\in [AB]$ و $N \\in [AC]$ ، و $AM = 3$ ، $MB = 1$ و $BC = 6$ (وحدة الطول هي cm).",
     "figure": {
       "points": {
         "A": [
-          0,
-          0
+          0.0,
+          0.0
         ],
         "B": [
-          4.568,
-          2.034
+          3.464101615138,
+          2.0
         ],
         "C": [
-          5.196,
-          -3.0
+          4.531538935183,
+          -2.113091308703
         ],
-        "D": [
-          1.827,
-          0.814
+        "M": [
+          2.598076211353,
+          1.5
         ],
-        "E": [
-          2.078,
-          -1.2
+        "N": [
+          3.398654201387,
+          -1.584818481528
         ]
       },
       "segments": [
         {
           "from": "A",
-          "to": "D"
+          "to": "M",
+          "label": "3"
         },
         {
-          "from": "D",
-          "to": "B"
+          "from": "M",
+          "to": "B",
+          "label": "1"
         },
         {
           "from": "A",
-          "to": "E"
-        },
-        {
-          "from": "E",
           "to": "C"
         },
         {
           "from": "B",
           "to": "C",
+          "label": "6",
           "arrows": 1
         },
         {
-          "from": "D",
-          "to": "E",
-          "arrows": 1,
-          "tone": "indigo"
+          "from": "M",
+          "to": "N",
+          "arrows": 1
         }
       ],
-      "ariaLabel": "D من [AB] و E من [AC] و (DE) يوازي (BC)",
-      "maxWidth": 260,
       "labels": {
         "A": "w"
-      }
+      },
+      "ariaLabel": "المثلث ABC، M من [AB] و N من [AC]، و (MN) يوازي (BC)؛ AM = 3 و MB = 1 و BC = 6",
+      "maxWidth": 300
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "حسب خاصية طالس:",
+      "step": "01",
+      "statement": "احسب الطول $MN$ .",
       "learningPoints": [
         {
-          "code": "4am_talis-hisab-atwal_P1",
+          "code": "4am_talis-hisab-atwal_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "secondary"
         }
       ],
-      "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة مثل 2,75 أو كسر مثل 7/9)",
+      "expectedAnswer": "4,5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\dfrac{AD}{AB} = \\dfrac{AE}{AC} = \\dfrac{DE}{BC}$",
-          "isCorrect": true
+          "value": "18",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
         },
         {
-          "id": "B",
-          "content": "$\\dfrac{AD}{DB} = \\dfrac{AE}{EC} = \\dfrac{DE}{BC}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{AD}{AB} = \\dfrac{AC}{AE} = \\dfrac{DE}{BC}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+          "value": "8",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+          "content": "$M$ من $[AB]$ و $N$ من $[AC]$ و $(MN) \\parallel (BC)$ : المثلثان $AMN$ و $ABC$ في وضعية طالس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+          "content": "احسب أولا الطول $AB$ ، ثم اكتب $\\dfrac{AM}{AB} = \\dfrac{MN}{BC}$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+          "content": "احسب $MN$ بالجداء المتصالب."
         }
       ],
       "feedback": {
-        "correct": "في كل نسبة طول من المثلث ADE على الطول الموافق له في المثلث ABC.",
-        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
-      }
+        "correct": "$AB = 3 + 1 = 4$ و $MN = \\dfrac{6 \\times 3}{4} = 4{,}5\\,\\mathrm{cm}$ .",
+        "incorrect": "هل استعملت ضلعًا من المثلث الكبير أم قطعة منه؟ النسب تُكتب بأطوال تُقاس من الرأس المشترك؛ اطرح أو اجمع بعد ذلك إن كان المطلوب طول قطعة."
+      },
+      "solution": {
+        "lines": [
+          "$M \\in [AB]$ إذن $AB = AM + MB = 3 + 1 = 4$",
+          "لدينا: النقط $A$ ، $M$ ، $B$ على استقامة واحدة، والنقط $A$ ، $N$ ، $C$ على استقامة واحدة، و $(MN) \\parallel (BC)$ (من المعطيات) .",
+          "حسب خاصية طالس: $\\dfrac{AM}{AB} = \\dfrac{AN}{AC} = \\dfrac{MN}{BC}$",
+          "$\\dfrac{AM}{AB} = \\dfrac{MN}{BC}$ أي $\\dfrac{3}{4} = \\dfrac{MN}{6}$",
+          "$MN = \\dfrac{6 \\times 3}{4}$"
+        ],
+        "result": "MN = 4{,}5\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 210
     }
   ]
 }

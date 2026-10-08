@@ -28,6 +28,7 @@ import LessonProblemCard from '../problems/LessonProblemCard';
 import { mathToPlain } from '../../../utils/mathPlain';
 import { useCatalogueHref } from '../../../components/student/catalogueLink';
 import IslamicMoment from '../../../features/islamic/IslamicMoment';
+import { useDeclarePageTour } from '../../../features/tours/PageTourProvider';
 
 /**
  * Static color map — replaces dynamic `bg-${color}-100` patterns.
@@ -161,6 +162,9 @@ export default function LessonIndex({ config, basePath }) {
     <span className="sa-classroom-position" data-classroom-position>{t('classroom.positionOverview')}</span>
   ), [t]);
   useClassroomStage({ title: config.title, onNext: lessonNav?.next ?? undefined, slot: overviewSlot, priority: 1 }, presenting);
+  // « جولة تعريفية » du sommaire de leçon — l'URL change d'une leçon à
+  // l'autre, la page se déclare. Jamais en وضع القسم (docs/architecture/PAGE_TOURS.md).
+  useDeclarePageTour('lesson-index', !presenting);
 
   const totalModules = config.modules.length;
   const completedCount = completedModules.length;
@@ -372,7 +376,7 @@ export default function LessonIndex({ config, basePath }) {
         <section className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
 
-            <div className="space-y-3">
+            <div className="space-y-3" data-tour="lesson-index.hero">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-mono text-xs font-semibold">
                 {config.emoji} {config.chapterTitle ?? config.chapter} • <span dir="ltr">{totalModules}</span> {t('index.modulesLabel', { count: totalModules })} • ~{t('index.durationMin', { count: config.estimatedDurationMin })}
               </div>
@@ -387,7 +391,7 @@ export default function LessonIndex({ config, basePath }) {
                   🎓 وضع القسم présente la leçon au projecteur (présentateur
                   seulement : canPresentClassroom) ; 🧪 المختبر ouvre un
                   instrument SUR la leçon, pour tout le monde. */}
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2" data-tour="lesson-index.tools">
                 <ClassroomEntryButton scope="lesson" title={config.title} />
                 <MathLabEntryButton scope={config.level} />
               </div>
@@ -410,7 +414,7 @@ export default function LessonIndex({ config, basePath }) {
             </div>
 
             {/* PROGRESS WIDGET */}
-            <div className="w-full md:w-56 bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3 text-center shrink-0">
+            <div className="w-full md:w-56 bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3 text-center shrink-0" data-tour="lesson-index.progress">
               <div className="text-xs font-mono text-slate-500 font-bold uppercase">{t('index.yourProgress')}</div>
 
               <div className={`text-3xl font-space font-extrabold ${isPathComplete ? 'text-emerald-600' : 'text-blue-600'}`}>
@@ -540,7 +544,7 @@ export default function LessonIndex({ config, basePath }) {
         {isPracticeActive(config.id) && <PracticeEntryCard lessonId={config.id} />}
 
         {/* MODULES ROADMAP */}
-        <section className="space-y-4">
+        <section className="space-y-4" data-tour="lesson-index.modules">
           <h2 className="text-xl font-space font-bold text-slate-900">{t('index.modulesPath')}</h2>
 
           <div className="space-y-3">

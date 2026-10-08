@@ -2,44 +2,53 @@
   "id": "ex-4am-tarrid-muthallathiya-l1-004",
   "lessonCode": "tarrid-muthallathiya",
   "level": 1,
-  "generator": {
-    "tool": "unit10-tarrid-gen.py",
-    "version": "1"
-  },
   "metadata": {
-    "title": "تدريب — منحدر الكراسي المتحركة في المدرسة",
-    "estimatedMinutes": 3,
+    "title": "منحدر الكراسي المتحركة في مدخل المدرسة",
+    "estimatedMinutes": 4,
     "tags": [
-      "ضرب أم قسمة"
+      "ترييض وضعية",
+      "الجيب"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_tarrid-muthallathiya_P2",
       "modelledOn": null
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "منحدر لولوج الكراسي المتحركة في مدخل مدرسة طوله $6\\,\\mathrm{m}$ ويصنع مع الأرض الأفقية زاوية قيسها $5^{\\circ}$ . نسمّي h ارتفاع المنحدر."
+    "content": "منحدر لولوج الكراسي المتحركة في مدخل مدرسة، سطحه المائل مستقيم طوله $6\\,\\mathrm{m}$ ويصنع مع الأرض الأفقية زاوية قيسها $5^{\\circ}$ . نسمّي $h$ ارتفاع المنحدر."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "نحسب h بالعبارة:",
+      "step": "01",
+      "statement": "اكتب عبارة $h$ .",
       "learningPoints": [
         {
           "code": "4am_tarrid-muthallathiya_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_tarrid-muthallathiya_P1",
+          "role": "secondary"
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
           "content": "$h = \\dfrac{6}{\\sin 5^{\\circ}}$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-DARB-BADAL-QISMA"
+          "misconceptionId": "MISC-MUTH-QISMA-BADAL-DARB"
         },
         {
           "id": "B",
@@ -50,30 +59,89 @@
           "id": "C",
           "content": "$h = 6 \\times \\cos 5^{\\circ}$",
           "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+          "misconceptionId": "MISC-MUTH-NISBA-UKHRA"
+        },
+        {
+          "id": "D",
+          "content": "$h = 6 \\times \\tan 5^{\\circ}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-GHAYR-MUNASIBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد الضلع المعلوم والضلع المطلوب بالنسبة إلى الزاوية."
+          "content": "السطح المائل هو الوتر، والارتفاع $h$ مقابل للزاوية $5^{\\circ}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المقابل والوتر: الجيب؛ المجاور والوتر: جيب التمام؛ المقابل والمجاور: الظل."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اختر النسبة التي يظهر فيها الضلعان معًا، ولا تحتاج ضلعا ثالثا مجهولا."
+          "content": "اكتب $\\sin 5^{\\circ}$ ثم اعزل $h$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\sin 5^{\\circ} = \\dfrac{h}{6}$ : المجهول في البسط فنضرب، $h = 6 \\sin 5^{\\circ}$ .",
-        "incorrect": "سمِّ الأضلاع بالنسبة إلى الزاوية المعلومة، ثم اختر النسبة التي تجمع المعلوم والمطلوب."
-      }
+        "correct": "$\\sin 5^{\\circ} = \\dfrac{h}{6}$ ومنه $h = 6 \\times \\sin 5^{\\circ}$ .",
+        "incorrect": "الوتر هو السطح المائل؛ ثم اختر النسبة التي تجمع المقابل والوتر، والمجهول في بسطها."
+      },
+      "solution": {
+        "lines": [
+          "في المثلث القائم: الوتر هو السطح المائل ( $6\\,\\mathrm{m}$ ) و $h$ مقابل للزاوية $5^{\\circ}$ .",
+          "$\\sin 5^{\\circ} = \\dfrac{h}{6}$ ومنه: $h = 6 \\times \\sin 5^{\\circ}$"
+        ]
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب $h$ بالتدوير إلى $0{,}01$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-muthallathiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري: الارتفاع بـ m مدوّرا إلى 0,01",
+      "expectedAnswer": "0.52",
+      "misconceptionSignatures": [
+        {
+          "value": "5.98",
+          "id": "MISC-MUTH-NISBA-UKHRA"
+        },
+        {
+          "value": "-5.75",
+          "id": "MISC-MUTH-HASIBA-RAD"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل العبارة التي وجدتها في السؤال 01."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحقّق أن الحاسبة مبرمجة على الدرجة قبل أن تضغط ⁦sin⁩ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$h = 6 \\times \\sin 5^{\\circ} \\approx 0{,}52\\,\\mathrm{m}$ .",
+        "incorrect": "الارتفاع أصغر بكثير من طول المنحدر؛ تحقّق من الوحدة (الدرجة) ومن النسبة."
+      },
+      "solution": {
+        "lines": [
+          "$h = 6 \\times \\sin 5^{\\circ}$",
+          "باستعمال الآلة الحاسبة: $h \\approx 0{,}5229$"
+        ],
+        "result": "h \\approx 0{,}52\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

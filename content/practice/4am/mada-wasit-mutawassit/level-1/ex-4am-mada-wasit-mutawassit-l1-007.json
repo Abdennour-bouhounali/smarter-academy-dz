@@ -3,25 +3,33 @@
   "lessonCode": "mada-wasit-mutawassit",
   "level": 1,
   "metadata": {
-    "title": "تدريب — دورة ألعاب بين أصدقاء",
+    "title": "نقاط خمسة أصدقاء",
     "estimatedMinutes": 3,
     "tags": [
-      "متوسط"
+      "المتوسط",
+      "الوسيط"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_mada-wasit-mutawassit_P2",
       "modelledOn": "act-3"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "نقاط خمسة أصدقاء في دورة ألعاب إلكترونية: $2$ ، $3$ ، $3$ ، $4$ ، $8$ ."
+    "content": "تحصّل خمسة أصدقاء في دورة ألعاب على النقاط الآتية: 2 ، 3 ، 3 ، 4 ، 8 ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "متوسط النقاط هو:",
+      "step": "01",
+      "statement": "احسب متوسط النقاط.",
       "learningPoints": [
         {
           "code": "4am_mada-wasit-mutawassit_P2",
@@ -29,26 +37,99 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "عدد (بالفاصلة العشرية إن لزم)",
       "expectedAnswer": "4",
       "misconceptionSignatures": [
         {
-          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
-          "value": "3"
+          "value": "3",
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "مجموع النقاط $20$."
+          "content": "المتوسط هو مجموع القيم مقسوما على عددها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع كل قيم السلسلة، ثم عُدّ هذه القيم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم المجموع على عدد القيم (التكرار الكلي)."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{2 + 3 + 3 + 4 + 8}{5} = \\dfrac{20}{5} = 4$ .",
-        "incorrect": "اجمع النقاط الخمس واقسم على 5."
-      }
+        "correct": "$\\dfrac{20}{5} = 4$ .",
+        "incorrect": "اجمع كل القيم ثم اقسم المجموع على عدد القيم؛ تأكّد من أنك لم تنس أي قيمة."
+      },
+      "solution": {
+        "lines": [
+          "مجموع القيم:",
+          "$2 + 3 + 3 + 4 + 8 = 20$",
+          "عدد القيم: 5",
+          "$m = \\dfrac{20}{5} = 4$"
+        ],
+        "result": "m = 4"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "عيّن وسيط هذه السلسلة.",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة العشرية إن لزم)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-IHSA-WASIT-RUTBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا يُقرأ الوسيط إلا بعد ترتيب قيم السلسلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "رتّب القيم تصاعديا، ثم عُدّها: هل عددها N فردي أم زوجي؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان N فرديا فالوسيط هو القيمة ذات الرتبة $\\dfrac{N + 1}{2}$ ، وإذا كان زوجيا فهو نصف مجموع القيمتين ذواتي الرتبتين $\\dfrac{N}{2}$ و $\\dfrac{N}{2} + 1$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$Med = 3$ .",
+        "incorrect": "رتّب القيم أولا، ثم عيّن الرتبة الوسطى (أو الرتبتين الوسطيين إذا كان عدد القيم زوجيا)."
+      },
+      "solution": {
+        "lines": [
+          "الترتيب التصاعدي: 2 ، 3 ، 3 ، 4 ، 8",
+          "عدد القيم 5 عدد فردي، فالوسيط هو القيمة ذات الرتبة $\\dfrac{5 + 1}{2} = 3$ :",
+          "$Med = 3$"
+        ],
+        "result": "Med = 3"
+      },
+      "timeSeconds": 90
     }
   ]
 }

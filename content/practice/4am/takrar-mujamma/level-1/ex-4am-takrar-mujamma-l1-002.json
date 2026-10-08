@@ -3,10 +3,11 @@
   "lessonCode": "takrar-mujamma",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 2 — النازل للقيمة 40",
+    "title": "النازل والصاعد",
     "estimatedMinutes": 3,
     "tags": [
-      "التكرار المجمع النازل"
+      "التكرار المجمع النازل",
+      "التكرار المجمع الصاعد"
     ],
     "source": {
       "type": "textbook",
@@ -14,15 +15,40 @@
       "page": 100,
       "section": "أؤكّد تعلّماتي",
       "number": 2
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 100): في الجدول الإحصائي أدناه (السطر الأول القيم، والسطر الثاني التكرارات): $\\begin{array}{|c|c|c|c|} \\hline 10 & 20 & 30 & 40 \\\\ \\hline 50 & 60 & 70 & 80 \\\\ \\hline \\end{array}$"
+    "content": "إليك جدول قيم سلسلة إحصائية وتكراراتها:",
+    "table": {
+      "head": [
+        "القيمة",
+        "10",
+        "20",
+        "30",
+        "40"
+      ],
+      "rows": [
+        [
+          "التكرار",
+          "50",
+          "60",
+          "70",
+          "80"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "التكرار المجمع النازل للقيمة 40 هو:",
+      "step": "01",
+      "statement": "احسب التكرار المجمع النازل للقيمة 40.",
       "learningPoints": [
         {
           "code": "4am_takrar-mujamma_P1",
@@ -30,47 +56,104 @@
         }
       ],
       "difficulty": 1,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "80",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$40$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
-        },
-        {
-          "id": "B",
-          "content": "$80$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$260$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-SAID-NAZIL-MAQLUB"
+          "value": "260",
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد القيم التي تحقّق الشرط: القيمة نفسها مع القيم الأصغر منها (أو الأكبر منها)."
+          "content": "التكرار المجمع النازل هو مجموع تكرار هذه القيمة وتكرارات القيم الأكبر منها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "التكرار المجمع يجمع التكرارات، لا القيم."
+          "content": "اجمع تكرار 40 وتكرارات ما بعدها حتى آخر عمود في الجدول."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع تكرار القيمة وتكرارات القيم المعنية واحدة واحدة، ثم تحقّق: الصاعد الأخير يساوي التكرار الكلي."
+          "content": "تحقّق: التكرار المجمع النازل لأول عمود يساوي التكرار الكلي."
         }
       ],
       "feedback": {
-        "correct": "40 أكبر قيمة: النازل لها هو تكرارها وحده $80$ .",
-        "incorrect": "راجع التعريف: أي القيم تدخل في المجموع؟"
-      }
+        "correct": "التكرار المجمع النازل لآخر القيمة هو تكرارها: $80$ .",
+        "incorrect": "اجمع تكرار القيمة نفسها وتكرارات القيم الأكبر منها فقط: النازل يتّجه نحو نهاية الجدول."
+      },
+      "solution": {
+        "lines": [
+          "40 هي آخر القيمة: تكرارها المجمع النازل هو تكرارها.",
+          "$80$"
+        ],
+        "result": "80"
+      },
+      "timeSeconds": 75
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب التكرار المجمع الصاعد للقيمة 30.",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "180",
+      "misconceptionSignatures": [
+        {
+          "value": "110",
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA"
+        },
+        {
+          "value": "70",
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
+        },
+        {
+          "value": "150",
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التكرار المجمع الصاعد لقيمة هو مجموع تكرارها وتكرارات القيم الأصغر منها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابدأ من أول عمود في الجدول واجمع التكرارات حتى 30 مع تكرارها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: التكرار المجمع الصاعد لآخر عمود يساوي التكرار الكلي."
+        }
+      ],
+      "feedback": {
+        "correct": "$50 + 60 + 70 = 180$ .",
+        "incorrect": "اجمع تكرار القيمة نفسها وتكرارات القيم الأصغر منها فقط، ولا تنس تكرار القيمة نفسها."
+      },
+      "solution": {
+        "lines": [
+          "التكرار المجمع الصاعد للقيمة 30 هو مجموع تكرار القيمة 30 وتكرارات القيم الأصغر منها:",
+          "$50 + 60 + 70 = 180$"
+        ],
+        "result": "180"
+      },
+      "timeSeconds": 75
     }
   ]
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
-import { X, Check, TriangleAlert, Camera, ImagePlus } from 'lucide-react';
+import { X, Check, TriangleAlert, Camera, ImagePlus, Send } from 'lucide-react';
 import { REPORT_CATEGORIES } from '../../services/reportService';
 import ScreenshotAnnotator from './ScreenshotAnnotator';
 import { captureRegion, capturePage, loadImageFile, exportAnnotated, IGNORE_ATTRIBUTE } from './screenshot';
@@ -26,7 +26,14 @@ import ScreenSnipper from './ScreenSnipper';
  * data-report-ignore), « رفع صورة » prend une image du relecteur ; dans les
  * deux cas il encadre la zone fautive (ScreenshotAnnotator) et les cadres
  * sont brûlés dans l'image à l'envoi.
+ *
+ * HIÉRARCHIE (2026-10-08, demande propriétaire) : le MESSAGE (obligatoire) et
+ * la CAPTURE sont le cœur de la fenêtre, élargie à max-w-3xl ; le type de
+ * problème descend en pastilles facultatives — sans choix, « other » part au
+ * serveur. Une image se colle (Ctrl+V) ou se dépose aussi sur la zone.
  */
+export const NOTE_MIN_LENGTH = 3;
+
 export default function ReportDialog({ open, onClose, onSubmit, busy, error, submitted }) {
   const { t } = useTranslation('common');
   const [category, setCategory] = useState(null);
@@ -39,18 +46,20 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
   const [snipping, setSnipping] = useState(false);
   const active = open && !snipping;
   const [shotError, setShotError] = useState(null);
+  const [dragging, setDragging] = useState(false);
   const fileRef = useRef(null);
   const panelRef = useRef(null);
-  const firstRadioRef = useRef(null);
+  const noteRef = useRef(null);
   const previouslyFocused = useRef(null);
 
   useEffect(() => {
     if (!active) return undefined;
 
     previouslyFocused.current = document.activeElement;
-    // Le focus va sur la première option, pas sur le panneau : l'élève arrive
-    // directement sur ce qu'il doit choisir.
-    const timer = setTimeout(() => (firstRadioRef.current ?? panelRef.current)?.focus(), 0);
+    // Le focus va sur le message, seul champ obligatoire : l'élève écrit tout
+    // de suite. Au retour de l'outil de capture, le message déjà écrit garde
+    // sa place — le curseur revient à la fin.
+    const timer = setTimeout(() => (noteRef.current ?? panelRef.current)?.focus(), 0);
 
     const onKeyDown = (event) => {
       if (event.key === 'Escape') {
@@ -132,9 +141,7 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
     }
   };
 
-  const pickFile = async (event) => {
-    const file = event.target.files?.[0];
-    event.target.value = '';
+  const adoptFile = async (file) => {
     if (!file) return;
     try {
       adoptCanvas(await loadImageFile(file));
@@ -143,11 +150,34 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
     }
   };
 
+  const pickFile = (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    adoptFile(file);
+  };
+
+  // Ctrl+V d'une capture faite avec l'outil du système : l'image arrive
+  // directement, sans passer par un fichier.
+  const pasteImage = (event) => {
+    const file = [...(event.clipboardData?.files ?? [])].find((f) => f.type.startsWith('image/'));
+    if (!file) return;
+    event.preventDefault();
+    adoptFile(file);
+  };
+
+  const dropImage = (event) => {
+    event.preventDefault();
+    setDragging(false);
+    adoptFile(event.dataTransfer?.files?.[0]);
+  };
+
+  const noteReady = note.trim().length >= NOTE_MIN_LENGTH;
+
   const submit = async (event) => {
     event.preventDefault();
-    if (!category || busy) return;
+    if (!noteReady || busy) return;
     const screenshot = shot ? await exportAnnotated(shot, marks) : null;
-    onSubmit({ category, note: note.trim(), screenshot });
+    onSubmit({ category: category ?? 'other', note: note.trim(), screenshot });
   };
 
   // Rendu dans <body> (portail) : le bouton vit dans la rangée de repères
@@ -182,7 +212,8 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
         aria-modal="true"
         aria-labelledby="report-dialog-title"
         tabIndex={-1}
-        className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white shadow-xl outline-none sm:rounded-2xl"
+        onPaste={pasteImage}
+        className="max-h-[92dvh] w-full max-w-3xl overflow-y-auto rounded-t-2xl bg-white shadow-xl outline-none sm:rounded-2xl"
       >
         {submitted ? (
           <div className="p-6 text-center">
@@ -205,12 +236,12 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
           </div>
         ) : (
           <form onSubmit={submit}>
-            <div className="flex items-start justify-between gap-3 border-b border-slate-200 px-5 py-4">
+            <div className="flex items-start justify-between gap-3 border-b border-slate-200 px-5 py-4 sm:px-6">
               <div>
-                <h2 id="report-dialog-title" className="font-space text-lg font-bold text-slate-900">
+                <h2 id="report-dialog-title" className="font-space text-xl font-bold text-slate-900">
                   {t('report.title')}
                 </h2>
-                <p className="font-inter text-xs text-slate-500">
+                <p className="mt-0.5 font-inter text-sm text-slate-500">
                   {t('report.subtitle')}
                 </p>
               </div>
@@ -224,68 +255,31 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
               </button>
             </div>
 
-            <div className="space-y-4 px-5 py-4">
-              <fieldset>
-                <legend className="mb-2 font-inter text-sm font-semibold text-slate-700">
-                  {t('report.legend')}
-                </legend>
-
-                <div role="radiogroup" aria-labelledby="report-dialog-title" className="space-y-1.5">
-                  {REPORT_CATEGORIES.map((option, index) => {
-                    const selected = category === option.id;
-
-                    return (
-                      <label
-                        key={option.id}
-                        className={`flex cursor-pointer items-start gap-2.5 rounded-xl border p-2.5 transition-colors ${
-                          selected
-                            ? 'border-blue-300 bg-blue-50'
-                            : 'border-slate-200 bg-white hover:border-slate-300'
-                        }`}
-                      >
-                        <input
-                          ref={index === 0 ? firstRadioRef : undefined}
-                          type="radio"
-                          name="report-category"
-                          value={option.id}
-                          checked={selected}
-                          onChange={() => setCategory(option.id)}
-                          className="mt-0.5 h-4 w-4 shrink-0 accent-blue-600"
-                        />
-                        <span className="min-w-0">
-                          <span className={`block font-inter text-sm ${selected ? 'font-semibold text-blue-900' : 'text-slate-800'}`}>
-                            {t(`report.categories.${option.id}.label`, option.label)}
-                          </span>
-                          <span className="block font-inter text-xs text-slate-500">
-                            {t(`report.categories.${option.id}.hint`, option.hint)}
-                          </span>
-                        </span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </fieldset>
-
+            <div className="space-y-5 px-5 py-5 sm:px-6">
               <div>
-                <label htmlFor="report-note" className="font-inter text-sm font-semibold text-slate-700">
-                  {category === 'other' ? t('report.noteLabelOther') : t('report.noteLabel')}{' '}
-                  <span className="font-normal text-slate-400">{t('report.noteOptional')}</span>
+                <label htmlFor="report-note" className="flex items-baseline gap-1.5 font-inter text-base font-bold text-slate-900">
+                  {t('report.noteLabel')}
+                  <span className="text-rose-600" aria-hidden="true">*</span>
                 </label>
                 <textarea
+                  ref={noteRef}
                   id="report-note"
                   value={note}
                   onChange={(event) => setNote(event.target.value)}
-                  rows={3}
+                  rows={4}
+                  required
+                  aria-required="true"
+                  minLength={NOTE_MIN_LENGTH}
                   maxLength={2000}
                   placeholder={t('report.notePlaceholder')}
-                  className="mt-1 w-full rounded-xl border border-slate-300 p-2.5 font-inter text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="mt-2 w-full resize-y rounded-xl border border-slate-300 bg-slate-50/60 p-3 font-inter text-[15px] leading-relaxed text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                 />
               </div>
 
               <section aria-labelledby="report-screenshot-title" className="space-y-2">
-                <h3 id="report-screenshot-title" className="font-inter text-sm font-semibold text-slate-700">
-                  {t('report.screenshot.title')}{' '}
-                  <span className="font-normal text-slate-400">{t('report.noteOptional')}</span>
+                <h3 id="report-screenshot-title" className="flex items-baseline gap-1.5 font-inter text-base font-bold text-slate-900">
+                  {t('report.screenshot.title')}
+                  <span className="text-sm font-normal text-slate-400">{t('report.optional')}</span>
                 </h3>
                 {shot ? (
                   <ScreenshotAnnotator
@@ -295,28 +289,75 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
                     onRemove={() => { setShot(null); setMarks([]); }}
                   />
                 ) : (
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={capture}
-                      disabled={capturing}
-                      className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 font-inter text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
-                    >
-                      <Camera size={16} aria-hidden="true" />
-                      {capturing ? t('report.screenshot.capturing') : t('report.screenshot.capture')}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => fileRef.current?.click()}
-                      className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 font-inter text-sm font-semibold text-slate-700 hover:bg-slate-50"
-                    >
-                      <ImagePlus size={16} aria-hidden="true" /> {t('report.screenshot.upload')}
-                    </button>
+                  <div
+                    onDragOver={(event) => { event.preventDefault(); setDragging(true); }}
+                    onDragLeave={() => setDragging(false)}
+                    onDrop={dropImage}
+                    className={`flex flex-col items-center gap-3 rounded-2xl border-2 border-dashed px-4 py-6 text-center transition-colors ${
+                      dragging ? 'border-blue-400 bg-blue-50' : 'border-slate-300 bg-slate-50/60'
+                    }`}
+                  >
+                    <div className="flex flex-wrap justify-center gap-2">
+                      <button
+                        type="button"
+                        onClick={capture}
+                        disabled={capturing}
+                        className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-blue-600 px-4 font-inter text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:opacity-50"
+                      >
+                        <Camera size={18} aria-hidden="true" />
+                        {capturing ? t('report.screenshot.capturing') : t('report.screenshot.capture')}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => fileRef.current?.click()}
+                        className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 font-inter text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                      >
+                        <ImagePlus size={18} aria-hidden="true" /> {t('report.screenshot.upload')}
+                      </button>
+                    </div>
+                    <p className="font-inter text-xs text-slate-500">{t('report.screenshot.dropHint')}</p>
                     <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={pickFile} />
                   </div>
                 )}
                 {shotError && <p role="alert" className="font-inter text-xs text-rose-700">{shotError}</p>}
               </section>
+
+              <fieldset>
+                <legend className="mb-2 flex items-baseline gap-1.5 font-inter text-sm font-semibold text-slate-700">
+                  {t('report.legend')}
+                  <span className="font-normal text-slate-400">{t('report.optional')}</span>
+                </legend>
+
+                <div role="radiogroup" aria-label={t('report.legend')} className="flex flex-wrap gap-2">
+                  {REPORT_CATEGORIES.map((option) => {
+                    const selected = category === option.id;
+
+                    return (
+                      <label
+                        key={option.id}
+                        title={t(`report.categories.${option.id}.hint`, option.hint)}
+                        className={`inline-flex min-h-[36px] cursor-pointer items-center rounded-full border px-3 font-inter text-sm transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-blue-500 ${
+                          selected
+                            ? 'border-blue-500 bg-blue-600 font-semibold text-white'
+                            : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="report-category"
+                          value={option.id}
+                          checked={selected}
+                          onChange={() => setCategory(option.id)}
+                          // Un second clic sur la pastille choisie la retire : le choix reste facultatif.
+                          onClick={() => { if (selected) setCategory(null); }}
+                          className="sr-only"
+                        />
+                        {t(`report.categories.${option.id}.label`, option.label)}
+                      </label>
+                    );
+                  })}
+                </div>
+              </fieldset>
 
               {error && (
                 <p role="alert" className="flex items-start gap-2 rounded-xl bg-rose-50 p-2.5 font-inter text-xs text-rose-800">
@@ -326,7 +367,10 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
               )}
             </div>
 
-            <div className="flex flex-wrap items-center justify-end gap-2 border-t border-slate-200 px-5 py-3">
+            <div className="sticky bottom-0 flex flex-wrap items-center justify-end gap-2 border-t border-slate-200 bg-white px-5 py-3 sm:px-6">
+              {!noteReady && (
+                <p className="me-auto font-inter text-xs text-slate-500">{t('report.noteRequiredHint')}</p>
+              )}
               <button
                 type="button"
                 onClick={onClose}
@@ -336,9 +380,10 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
               </button>
               <button
                 type="submit"
-                disabled={!category || busy}
-                className="rounded-lg bg-slate-900 px-5 py-2.5 font-inter text-sm font-semibold text-white disabled:opacity-40"
+                disabled={!noteReady || busy}
+                className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-6 py-2.5 font-inter text-sm font-semibold text-white disabled:opacity-40"
               >
+                <Send size={16} aria-hidden="true" className="rtl:-scale-x-100" />
                 {busy ? t('report.sending') : t('report.send')}
               </button>
             </div>

@@ -3,62 +3,193 @@
   "lessonCode": "qiraat-wadiyat-ihsaiya",
   "level": 2,
   "metadata": {
-    "title": "تدريب — قسم آخر",
-    "estimatedMinutes": 3,
+    "title": "على منوال BEM 2012 — وجهات مسافري محطة الحافلات بباتنة",
+    "estimatedMinutes": 6,
     "tags": [
-      "متوسط مجموعات"
+      "مخطط دائري",
+      "النسبة المئوية",
+      "قراءة مخطط"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P3",
-      "modelledOn": "challenge"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P1",
+      "modelledOn": "BEM 2012 I-3"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2012",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "في قسم: 12 ذكرا معدّلهم 11 و 18 أنثى معدّلهن 14."
+    "content": "يمثّل المخطط الدائري الآتي توزيع 400 مسافر انطلقوا من محطة الحافلات بباتنة يوم خميس حسب وجهتهم، والنسب المئوية مكتوبة على القطاعات، إلا نسبة قطاع سطيف:",
+    "figure": {
+      "kind": "chart",
+      "type": "pie",
+      "show": "percent",
+      "ariaLabel": "مخطط دائري لوجهات المسافرين: الجزائر، قسنطينة، بسكرة، وقطاع سطيف بلا نسبة",
+      "parts": [
+        {
+          "label": "الجزائر",
+          "value": 140
+        },
+        {
+          "label": "قسنطينة",
+          "value": 100
+        },
+        {
+          "label": "بسكرة",
+          "value": 120
+        },
+        {
+          "label": "سطيف",
+          "value": 40,
+          "missing": true
+        }
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما معدّل القسم؟",
+      "step": "01",
+      "statement": "احسب النسبة المئوية للمسافرين نحو سطيف.",
       "learningPoints": [
         {
-          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "12,8",
+      "answerFormat": "عدد: النسبة المئوية دون الرمز %",
+      "expectedAnswer": "10",
       "misconceptionSignatures": [
         {
-          "id": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN",
-          "value": "12,5"
+          "value": "90",
+          "id": "MISC-IHSA-QIRAA-MUKHATTAT"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "عدد الإناث أكبر."
+          "content": "مجموع النسب المئوية لكل القطاعات هو 100 ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "مجموع النقاط $12 \\times 11 + 18 \\times 14 = 384$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اقسم على 30."
+          "content": "اطرح من 100 مجموع النسب المكتوبة."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{132 + 252}{30} = \\dfrac{384}{30} = 12{,}8$ .",
-        "incorrect": "المتوسط المتوازن، وليس 12,5."
+        "correct": "$100 - (35 + 25 + 30) = 10$ .",
+        "incorrect": "القطاعات تغطي الدائرة كلها: مجموع نسبها 100% ."
       },
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$35 + 25 + 30 = 90$",
+          "$100 - 90 = 10$"
+        ],
+        "result": "10\\%"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "sub": "ا",
+      "lead": "احسب عدد المسافرين:",
+      "statement": "نحو بسكرة.",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "120",
+      "misconceptionSignatures": [
+        {
+          "value": "30",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ النسبة المئوية المكتوبة على قطاع بسكرة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد المسافرين = النسبة × 400 ÷ 100 ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{30 \\times 400}{100} = 120$ .",
+        "incorrect": "النسبة المكتوبة على القطاع ليست عدد المسافرين: خذ هذه النسبة من العدد الكلي."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{30}{100} \\times 400 = 120$"
+        ],
+        "result": "120"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ب",
+      "statement": "نحو سطيف.",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "40",
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل النسبة التي وجدتها في 01 ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد المسافرين = النسبة × 400 ÷ 100 ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{10 \\times 400}{100} = 40$ .",
+        "incorrect": "خذ النسبة التي وجدتها في 01 من العدد الكلي للمسافرين."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{10}{100} \\times 400 = 40$"
+        ],
+        "result": "40"
+      },
+      "timeSeconds": 90
     }
   ]
 }

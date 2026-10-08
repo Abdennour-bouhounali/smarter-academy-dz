@@ -386,6 +386,9 @@ Dustur`, the cells and bar of `sheet-lab`); inside a STRING that goes through `M
 i18n) it is wrapped in the invisible isolates LRI … PDI (U+2066 / U+2069 — `xl()` in that lesson's `content/textbook.js`). A lone
 symbol quoted between guillemets is isolated too (`« ⁦=⁩ »`): without it « = » and « : » printed reversed around the quotes. The
 sheet itself is laid out LTR (column A on the left, as in the textbook's screenshot); Arabic labels inside its cells keep `dir="rtl"`.
+A grid shown in a practice statement or a مسألة is a `table` with `sheet: true` (`ProblemTable`, 2026-10-08): LTR frame, head
+`['', 'A', 'B', …]`, first column = row numbers, Arabic cell text isolated with `dir="auto"`; the exercise validator refuses a
+grid-shaped table without `sheet` (it would put column A on the right).
 In a narrow RTL verdict prefer `\tfrac` to a long inline product: a line break at 320 px displayed « 144 = 360 » for `… × 360 = 144`.
 A frequency table inside a final-test prompt is a KaTeX array (`texTable`), never a `<table>` inside the prompt's `<p>`.
 

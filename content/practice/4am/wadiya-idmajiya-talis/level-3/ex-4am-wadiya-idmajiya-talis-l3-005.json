@@ -3,117 +3,186 @@
   "lessonCode": "wadiya-idmajiya-talis",
   "level": 3,
   "metadata": {
-    "title": "تدريب — توازٍ ثم طول",
-    "estimatedMinutes": 5,
+    "title": "على منوال BEM 2010 — وضعية الفراشة: EF و FC",
+    "estimatedMinutes": 10,
     "tags": [
-      "الخاصية العكسية",
-      "خاصية طالس"
+      "خاصية طالس",
+      "وضعية الفراشة"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_wadiya-idmajiya-talis_P1",
-      "modelledOn": null
+      "modelledOn": "BEM 2010 I-4"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2010",
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "النقط A و B و E على استقامة بهذا الترتيب، والنقط A و C و F كذلك. $AB = 4$ ، $AE = 10$ ، $AC = 6$ ، $AF = 15$ ، $BC = 3$ ."
+    "content": "في الشكل المقابل (غير مرسوم بالأبعاد الحقيقية): النقط $B$ ، $A$ ، $E$ في استقامية، والنقط $C$ ، $A$ ، $F$ في استقامية، و $(BC) \\parallel (EF)$ ، حيث: $AB = 4\\,\\mathrm{cm}$ ، $AE = 10\\,\\mathrm{cm}$ ، $AC = 5\\,\\mathrm{cm}$ و $BC = 3{,}2\\,\\mathrm{cm}$ .",
+    "figure": {
+      "points": {
+        "A": [
+          3.995304861647,
+          -0.19375
+        ],
+        "B": [
+          0.0,
+          0.0
+        ],
+        "C": [
+          0.0,
+          -3.2
+        ],
+        "E": [
+          13.983567015764,
+          -0.678125
+        ],
+        "F": [
+          13.983567015764,
+          7.321875
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "4"
+        },
+        {
+          "from": "A",
+          "to": "E",
+          "label": "10"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "label": "5"
+        },
+        [
+          "A",
+          "F"
+        ],
+        {
+          "from": "B",
+          "to": "C",
+          "label": "3,2",
+          "arrows": 1
+        },
+        {
+          "from": "E",
+          "to": "F",
+          "arrows": 1
+        }
+      ],
+      "ariaLabel": "النقط B و A و E على استقامة والنقط C و A و F على استقامة، و A بين النقطتين في كل مرة، و (BC) يوازي (EF)؛ AB = 4 و AE = 10 و AC = 5 و BC = 3,2",
+      "maxWidth": 320
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المستقيمان (BC) و (EF):",
+      "step": "01",
+      "statement": "احسب الطول $EF$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-talis_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ cm",
+      "expectedAnswer": "8",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "متوازيان: $\\dfrac{4}{10} = \\dfrac{6}{15}$ والترتيب نفسه",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "غير متوازيين لأنّ $AE - AB \\neq AF - AC$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-JAMA-BADAL-DARB"
-        },
-        {
-          "id": "C",
-          "content": "متوازيان لأنّ $AB < AC$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
+          "value": "1.28",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "قارن $\\dfrac{AB}{AE}$ و $\\dfrac{AC}{AF}$ ."
+          "content": "$(BC) \\parallel (EF)$ والمستقيمان $(BE)$ و $(CF)$ يتقاطعان في $A$ : وضعية الفراشة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الجداء التصالبي: $4 \\times 15$ و $10 \\times 6$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "لا تنس شرط الترتيب."
+          "content": "اكتب $\\dfrac{AB}{AE} = \\dfrac{BC}{EF}$ ."
         }
       ],
       "feedback": {
-        "correct": "$4 \\times 15 = 60 = 10 \\times 6$ والترتيب نفسه: (BC)//(EF).",
-        "incorrect": "نقارن نسبا، لا فروقا."
+        "correct": "$EF = \\dfrac{10 \\times 3{,}2}{4} = 8\\,\\mathrm{cm}$ .",
+        "incorrect": "في كل نسبة: طول من المثلث الصغير على الطول الموافق له في المثلث الكبير، والأطوال كلها تُقاس من الرأس المشترك."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "بما أن $(BC) \\parallel (EF)$ ، حسب خاصية طالس: $\\dfrac{AB}{AE} = \\dfrac{AC}{AF} = \\dfrac{BC}{EF}$",
+          "$\\dfrac{4}{10} = \\dfrac{3{,}2}{EF}$",
+          "$EF = \\dfrac{10 \\times 3{,}2}{4}$"
+        ],
+        "result": "EF = 8\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     },
     {
       "id": "q2",
-      "statement": "احسب EF.",
+      "step": "02",
+      "statement": "احسب الطول $FC$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-talis_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "7.5",
+      "answerFormat": "عدد: الطول بـ cm",
+      "expectedAnswer": "17,5",
+      "misconceptionSignatures": [
+        {
+          "value": "7.5",
+          "id": "MISC-TALIS-BAYN-FAQAT"
+        },
+        {
+          "value": "12.5",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "(BC)//(EF): وضعية طالس."
+          "content": "$\\dfrac{AB}{AE} = \\dfrac{AC}{AF}$ يعطي $AF$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$\\dfrac{AB}{AE} = \\dfrac{BC}{EF}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "جداء تصالبي."
+          "content": "$A$ بين $C$ و $F$ : $FC = AF + AC$ ."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{4}{10} = \\dfrac{3}{EF}$ إذن $EF = 7{,}5$ .",
-        "incorrect": "EF في المثلث الكبير: أكبر من BC."
+        "correct": "$AF = \\dfrac{10 \\times 5}{4} = 12{,}5$ و $FC = 12{,}5 + 5 = 17{,}5\\,\\mathrm{cm}$ .",
+        "incorrect": "احسب $AF$ أولا بخاصية طالس، ثم انتبه: $A$ بين $C$ و $F$ ."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3,
-      "misconceptionSignatures": [
-        {
-          "value": "1.2",
-          "id": "MISC-TALIS-NISBA-MAQLUBA"
-        }
-      ]
+      "solution": {
+        "lines": [
+          "حسب خاصية طالس: $\\dfrac{AB}{AE} = \\dfrac{AC}{AF}$ ، أي $\\dfrac{4}{10} = \\dfrac{5}{AF}$",
+          "$AF = \\dfrac{10 \\times 5}{4} = 12{,}5\\,\\mathrm{cm}$",
+          "$A$ بين $C$ و $F$ : $FC = AF + AC = 12{,}5 + 5$"
+        ],
+        "result": "FC = 17{,}5\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

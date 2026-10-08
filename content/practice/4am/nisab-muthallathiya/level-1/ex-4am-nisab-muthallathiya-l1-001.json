@@ -3,10 +3,11 @@
   "lessonCode": "nisab-muthallathiya",
   "level": 1,
   "metadata": {
-    "title": "أستعدّ 4 — الوتر",
-    "estimatedMinutes": 2,
+    "title": "الوتر والضلع المقابل لزاوية حادة",
+    "estimatedMinutes": 3,
     "tags": [
-      "الوتر"
+      "الوتر",
+      "الضلع المقابل"
     ],
     "source": {
       "type": "textbook",
@@ -14,44 +15,50 @@
       "page": 115,
       "section": "أستعدّ",
       "number": 4
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 115): في الشكل، المثلث ABC قائم في A.",
+    "content": "في الشكل المقابل، $ABC$ مثلث قائم في $A$ .",
     "figure": {
       "points": {
-        "C": [
-          0.0,
-          0.0
-        ],
         "A": [
-          -6.0,
-          0.0
+          0,
+          0
         ],
         "B": [
-          -6.0,
-          4.0
+          0,
+          3
+        ],
+        "C": [
+          4.5,
+          0
         ]
       },
       "segments": [
-        {
-          "from": "C",
-          "to": "A"
-        },
-        {
-          "from": "A",
-          "to": "B"
-        },
-        {
-          "from": "C",
-          "to": "B"
-        }
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "B",
+          "C"
+        ]
       ],
       "rightAngles": [
         [
-          "C",
+          "B",
           "A",
-          "B"
+          "C"
         ]
       ],
       "angles": [
@@ -61,36 +68,39 @@
           "to": "B"
         }
       ],
-      "ariaLabel": "مثلث ABC قائم في A",
+      "ariaLabel": "مثلث ABC قائم في A، والزاوية ACB معلّمة",
       "maxWidth": 300
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "وتر المثلث ABC هو:",
+      "step": "01",
+      "statement": "عيّن وتر المثلث $ABC$ .",
       "learningPoints": [
         {
           "code": "4am_nisab-muthallathiya_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 1,
+      "cognitiveDemand": "recall",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "[BC]",
-          "isCorrect": true
-        },
-        {
-          "id": "B",
-          "content": "[AB]",
+          "content": "$[AB]$",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
         },
         {
+          "id": "B",
+          "content": "$[BC]$",
+          "isCorrect": true
+        },
+        {
           "id": "C",
-          "content": "[AC]",
+          "content": "$[AC]$",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
         }
@@ -99,24 +109,81 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد الزاوية القائمة: الوتر هو الضلع المقابل لها."
+          "content": "الزاوية القائمة في $A$ : الوتر هو الضلع الذي لا يمرّ برأسها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "بالنسبة إلى الزاوية الحادة: المجاور يمرّ برأسها، والمقابل لا يمرّ به."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اكتب أسماء الأضلاع الثلاثة بجانب الشكل قبل أن تختار."
+          "content": "بالنسبة إلى الزاوية الحادة في $C$ : المجاور يمرّ بالرأس $C$ ويكون ضلعا للزاوية القائمة، والمقابل لا يمرّ به."
         }
       ],
       "feedback": {
-        "correct": "الوتر [BC] هو الضلع المقابل للزاوية القائمة A، وهو أطول الأضلاع.",
-        "incorrect": "الوتر يقابل الزاوية القائمة: ابحث عن الضلع الذي لا يمرّ بالرأس A."
+        "correct": "الوتر هو $[BC]$ .",
+        "incorrect": "ابدأ بالوتر (مقابل الزاوية القائمة)، ثم ميّز بين ضلعي الزاوية القائمة: أيهما يمرّ برأس الزاوية الحادة؟"
       },
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "الزاوية القائمة في $A$ ، إذن الوتر هو $[BC]$ (أطول الأضلاع).",
+          "بالنسبة إلى الزاوية الحادة في $C$ : المجاور $[AC]$ والمقابل $[AB]$ ."
+        ]
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "عيّن الضلع المقابل للزاوية $\\widehat{ACB}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "recall",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$[AC]$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "id": "B",
+          "content": "$[BC]$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        },
+        {
+          "id": "C",
+          "content": "$[AB]$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الزاوية القائمة في $A$ : الوتر هو الضلع الذي لا يمرّ برأسها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالنسبة إلى الزاوية الحادة في $C$ : المجاور يمرّ بالرأس $C$ ويكون ضلعا للزاوية القائمة، والمقابل لا يمرّ به."
+        }
+      ],
+      "feedback": {
+        "correct": "الضلع المقابل هو $[AB]$ .",
+        "incorrect": "ابدأ بالوتر (مقابل الزاوية القائمة)، ثم ميّز بين ضلعي الزاوية القائمة: أيهما يمرّ برأس الزاوية الحادة؟"
+      },
+      "solution": {
+        "lines": [
+          "الزاوية القائمة في $A$ ، إذن الوتر هو $[BC]$ (أطول الأضلاع).",
+          "بالنسبة إلى الزاوية الحادة في $C$ : المجاور $[AC]$ والمقابل $[AB]$ ."
+        ]
+      },
+      "timeSeconds": 120
     }
   ]
 }

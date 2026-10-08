@@ -3,58 +3,139 @@
   "lessonCode": "qiraat-wadiyat-ihsaiya",
   "level": 4,
   "metadata": {
-    "title": "التمرين 14 — الفرق بين المتوسطين",
-    "estimatedMinutes": 4,
+    "title": "كم أنثى في القسم؟",
+    "estimatedMinutes": 10,
     "tags": [
-      "تمرين 14",
-      "متوسط"
+      "المتوسط المتوازن",
+      "نمذجة"
     ],
     "source": {
-      "type": "textbook",
-      "elementId": "ex-14",
-      "page": 99,
-      "section": "أوظّف تعلّماتي",
-      "number": 14
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P3",
+      "modelledOn": "challenge",
+      "adaptedFrom": "ex-4am-qiraat-wadiyat-ihsaiya-l5-003"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "المدينة «أ»: $-3$ ، $-7$ ، $-2$ ، 10 ، 10 ، 20 ، 24 ، 28 ، 21 ، 11 ، 5 ، $-3$. المدينة «ب»: 6 ، 8 ، 10 ، 14 ، 16 ، 19 ، 20 ، 22 ، 17 ، 14 ، 8 ، 5 (°C)."
+    "content": "في قسم: 10 ذكور معدّلهم 9 ، ومعدّل الإناث 14 ، ومعدّل القسم كلّه 12 . نسمّي $x$ عدد الإناث."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "بكم درجة يزيد متوسط «ب» على متوسط «أ»؟",
+      "step": "01",
+      "statement": "احسب مجموع نقاط الذكور.",
       "learningPoints": [
         {
-          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
           "role": "primary"
         }
       ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
-      "expectedAnswer": "3,75",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "90",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب المتوسطين."
+          "content": "مجموع نقاط مجموعة = عدد أفرادها × معدّلها."
+        }
+      ],
+      "feedback": {
+        "correct": "$10 \\times 9 = 90$ .",
+        "incorrect": "اضرب عدد الذكور في معدّلهم."
+      },
+      "solution": {
+        "lines": [
+          "$10 \\times 9 = 90$"
+        ],
+        "result": "90"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "بيّن أن $x$ يحقّق المساواة: $90 + 14x = 12(10 + x)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب مجموع نقاط القسم بطريقتين."
+        }
+      ],
+      "feedback": {
+        "correct": "برهانك مطابق للحل النموذجي.",
+        "incorrect": "قارن برهانك بالحل النموذجي سطرًا سطرًا، ثم أعد كتابته."
+      },
+      "solution": {
+        "lines": [
+          "مجموع نقاط الإناث: $14x$ ، فمجموع نقاط القسم $90 + 14x$ .",
+          "عدد تلاميذ القسم $10 + x$ ومعدّله 12 ، فمجموع نقاطه أيضا $12(10 + x)$ .",
+          "ومنه: $90 + 14x = 12(10 + x)$ ."
+        ]
+      },
+      "timeSeconds": 180
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "استنتج عدد الإناث في هذا القسم.",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر الطرف الأيمن."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "«ب»: $\\dfrac{159}{12}$ ، «أ»: $\\dfrac{114}{12}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اطرح."
+          "content": "اجمع حدود $x$ في طرف واحد."
         }
       ],
       "feedback": {
-        "correct": "$13{,}25 - 9{,}5 = 3{,}75$ °C.",
-        "incorrect": "احسب كل متوسط ثم اطرح."
+        "correct": "$2x = 30$ ومنه $x = 15$ .",
+        "incorrect": "انشر $12(10 + x)$ ثم اجمع حدود $x$ في طرف والأعداد في الطرف الآخر."
       },
-      "difficulty": 4
+      "solution": {
+        "lines": [
+          "$90 + 14x = 120 + 12x$",
+          "$2x = 30$",
+          "$x = 15$"
+        ],
+        "result": "x = 15"
+      },
+      "work": "optional",
+      "timeSeconds": 180
     }
   ]
 }

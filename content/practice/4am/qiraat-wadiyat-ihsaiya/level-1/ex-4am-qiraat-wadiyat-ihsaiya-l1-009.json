@@ -3,57 +3,147 @@
   "lessonCode": "qiraat-wadiyat-ihsaiya",
   "level": 1,
   "metadata": {
-    "title": "تدريب — سيارات أمام المدرسة",
+    "title": "سيارات أمام المدرسة",
     "estimatedMinutes": 3,
     "tags": [
-      "قراءة مخطط",
-      "تلوث"
+      "قراءة مخطط بالأعمدة",
+      "تلوث البيئة"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P1",
       "modelledOn": "intro-pollution"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "عدّ نادي البيئة السيارات أمام المدرسة كل ساعة صباحا. أطوال الأعمدة في المخطط: 450 ، 600 ، 250 ، 200 ، 300."
+    "content": "تأثّر نادي البيئة في متوسطة بنصّ «تلوث البيئة»، فعدّ تلاميذه السيارات التي مرّت أمام المدرسة في كل ساعة خلال صبيحة. يمثّل المخطط بالأعمدة الآتي نتائجهم:",
+    "figure": {
+      "kind": "chart",
+      "type": "bar",
+      "ariaLabel": "مخطط بالأعمدة لعدد السيارات التي مرّت أمام المدرسة في كل ساعة من الصبيحة",
+      "xTitle": "الفترة",
+      "yTitle": "عدد السيارات",
+      "y": {
+        "max": 700,
+        "step": 100,
+        "minor": 2
+      },
+      "bars": [
+        {
+          "label": "7h–8h",
+          "value": 450
+        },
+        {
+          "label": "8h–9h",
+          "value": 600
+        },
+        {
+          "label": "9h–10h",
+          "value": 250
+        },
+        {
+          "label": "10h–11h",
+          "value": 200
+        },
+        {
+          "label": "11h–12h",
+          "value": 300
+        }
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "كم سيارة مرّت خلال الصبيحة كلها؟",
+      "step": "01",
+      "statement": "عيّن عدد السيارات التي مرّت بين 9h و 10h .",
       "learningPoints": [
         {
           "code": "4am_qiraat-wadiyat-ihsaiya_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "250",
+      "misconceptionSignatures": [
+        {
+          "value": "225",
+          "id": "MISC-IHSA-QIRAA-MUKHATTAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الأعداد مكتوبة على المحور العمودي كل 100 ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بين عددين مكتوبين متتاليين خط رفيع واحد: كم يمثّل؟"
+        }
+      ],
+      "feedback": {
+        "correct": "العمود يصل إلى 250 .",
+        "incorrect": "الخط الرفيع في منتصف المسافة بين عددين مكتوبين يمثّل 50 : أعد القراءة."
+      },
+      "solution": {
+        "lines": [
+          "كل تدريجة تمثّل 50 سيارة.",
+          "رأس عمود الفترة من 9h إلى 10h عند التدريجة 250 ."
+        ],
+        "result": "250"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب عدد السيارات التي مرّت خلال الصبيحة كلها.",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
       "expectedAnswer": "1800",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "التكرار الكلي = مجموع التكرارات."
+          "content": "اقرأ ارتفاع الأعمدة الخمسة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اجمع الأعمدة الخمسة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$450 + 600 + \\dots$"
+          "content": "التكرار الكلي هو مجموع التكرارات."
         }
       ],
       "feedback": {
         "correct": "$450 + 600 + 250 + 200 + 300 = 1800$ .",
-        "incorrect": "اجمع ارتفاعات الأعمدة الخمسة."
+        "incorrect": "اقرأ الأعمدة الخمسة واحدا واحدا، ثم اجمع."
       },
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "$450 + 600 + 250 + 200 + 300 = 1800$"
+        ],
+        "result": "1800"
+      },
+      "timeSeconds": 90
     }
   ]
 }

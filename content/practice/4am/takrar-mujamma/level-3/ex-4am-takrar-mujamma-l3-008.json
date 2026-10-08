@@ -3,70 +3,110 @@
   "lessonCode": "takrar-mujamma",
   "level": 3,
   "metadata": {
-    "title": "تدريب — نقاط لعبة",
-    "estimatedMinutes": 3,
+    "title": "نقاط مسابقة",
+    "estimatedMinutes": 6,
     "tags": [
-      "تواتر",
+      "التكرار المجمع الصاعد",
+      "التواتر المجمع الصاعد",
       "نسبة مئوية"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_takrar-mujamma_P2"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "النقاط التي جمعها 50 لاعبا في لعبة (السطر الأول النقاط، والسطر الثاني عدد اللاعبين): $\\begin{array}{|c|c|c|c|} \\hline 20 & 25 & 30 & 35 \\\\ \\hline 10 & 20 & 15 & 5 \\\\ \\hline \\end{array}$"
+    "content": "يبيّن الجدول الآتي النقاط التي جمعها 50 لاعبا في مسابقة ألعاب فكرية:",
+    "table": {
+      "head": [
+        "النقاط",
+        "20",
+        "25",
+        "30",
+        "35"
+      ],
+      "rows": [
+        [
+          "عدد اللاعبين",
+          "10",
+          "20",
+          "15",
+          "5"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "التواتر المجمع الصاعد للقيمة 25:",
+      "step": "01",
+      "statement": "احسب التكرار المجمع الصاعد للقيمة 25.",
       "learningPoints": [
         {
-          "code": "4am_takrar-mujamma_P2",
+          "code": "4am_takrar-mujamma_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 2,
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري بالفاصلة أو كسر",
-      "expectedAnswer": "0,6",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "30",
       "misconceptionSignatures": [
         {
-          "id": "MISC-IHSA-TAWATUR-BILA-QISMA",
-          "value": "30"
+          "value": "10",
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA"
         },
         {
-          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
-          "value": "0,8"
+          "value": "20",
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
+        },
+        {
+          "value": "40",
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+          "content": "التكرار المجمع الصاعد لقيمة هو مجموع تكرارها وتكرارات القيم الأصغر منها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+          "content": "ابدأ من أول عمود في الجدول واجمع التكرارات حتى 25 مع تكرارها."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+          "content": "تحقّق: التكرار المجمع الصاعد لآخر عمود يساوي التكرار الكلي."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{10 + 20}{50} = 0{,}6$",
-        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
-      }
+        "correct": "$10 + 20 = 30$ .",
+        "incorrect": "اجمع تكرار القيمة نفسها وتكرارات القيم الأصغر منها فقط، ولا تنس تكرار القيمة نفسها."
+      },
+      "solution": {
+        "lines": [
+          "التكرار المجمع الصاعد للقيمة 25 هو مجموع تكرار القيمة 25 وتكرارات القيم الأصغر منها:",
+          "$10 + 20 = 30$"
+        ],
+        "result": "30"
+      },
+      "timeSeconds": 75
     },
     {
       "id": "q2",
-      "statement": "نسبة اللاعبين الذين جمعوا 30 نقطة على الأقل (بالمئة):",
+      "step": "02",
+      "statement": "استنتج التواتر المجمع الصاعد للقيمة 25.",
       "learningPoints": [
         {
           "code": "4am_takrar-mujamma_P2",
@@ -74,36 +114,109 @@
         }
       ],
       "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (النسبة المئوية دون الرمز)",
-      "expectedAnswer": "40",
+      "answerFormat": "عدد عشري بالفاصلة أو كسر على الشكل a/b",
+      "expectedAnswer": "0,6",
       "misconceptionSignatures": [
         {
-          "id": "MISC-IHSA-TAWATUR-BILA-QISMA",
-          "value": "20"
+          "value": "30",
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA"
+        },
+        {
+          "value": "0,8",
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB"
+        },
+        {
+          "value": "0,2",
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+          "content": "التواتر المجمع الصاعد هو التكرار المجمع الصاعد مقسوما على التكرار الكلي."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+          "content": "احسب أولا التكرار المجمع الصاعد ثم اقسمه على التكرار الكلي للسلسلة."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+          "content": "تحقّق: التواتر عدد بين 0 و 1، والتواتر المجمع الصاعد لآخر عمود يساوي 1."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{15 + 5}{50} = 0{,}4$ أي $40\\%$",
-        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
-      }
+        "correct": "$\\dfrac{30}{50} = 0{,}6$ .",
+        "incorrect": "لا تكتف بالتكرار المجمع: اقسمه على التكرار الكلي للسلسلة."
+      },
+      "solution": {
+        "lines": [
+          "التواتر المجمع الصاعد = التكرار المجمع الصاعد ÷ التكرار الكلي:",
+          "$\\dfrac{30}{50} = 0{,}6$"
+        ],
+        "result": "0{,}6"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "ما هي النسبة المئوية للاعبين الذين جمعوا 30 نقطة على الأقل؟",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: النسبة المئوية دون الرمز %",
+      "expectedAnswer": "40",
+      "misconceptionSignatures": [
+        {
+          "value": "20",
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA"
+        },
+        {
+          "value": "10",
+          "id": "MISC-IHSA-SARAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "«30 نقطة على الأقل» تعني: 30 نقطة أو أكثر؛ الحدّ نفسه داخل في العدّ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب أولا عدد الأفراد الذين يحقّقون الشرط (تكرار مجمع)، ثم اقسمه على التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب التواتر الناتج في 100 لتحصل على النسبة المئوية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{20}{50} \\times 100 = 40$ ، أي $40\\%$ .",
+        "incorrect": "عدّ أولا الأفراد الذين يحقّقون الشرط بدقة (انتبه إلى الحدّ)، ثم اقسم على التكرار الكلي واضرب في 100."
+      },
+      "solution": {
+        "lines": [
+          "عدد الأفراد المعنيين: $15 + 5 = 20$",
+          "$\\dfrac{20}{50} = 0{,}4$",
+          "$0{,}4 \\times 100 = 40$"
+        ],
+        "result": "40\\%"
+      },
+      "timeSeconds": 150
     }
   ]
 }

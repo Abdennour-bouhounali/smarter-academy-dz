@@ -3,58 +3,50 @@
   "lessonCode": "aksiya-talis",
   "level": 2,
   "metadata": {
-    "title": "نشاط 2 — الشكل 1",
-    "estimatedMinutes": 3,
+    "title": "نشاط 2 — الشكل 1: من الجهة الأخرى للنقطة A",
+    "estimatedMinutes": 6,
     "tags": [
-      "نفس الترتيب"
+      "نشاط 2",
+      "وضعية الفراشة"
     ],
     "source": {
       "type": "textbook",
       "elementId": "act-2",
       "page": 105,
       "section": "أنشطة",
-      "number": 2
+      "number": 2,
+      "adaptedFrom": "ex-4am-aksiya-talis-l2-006"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 105): في الشكل 1 لأحد التلاميذ، $\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC} = \\dfrac{1}{3}$ و B′ ، C′ كلتاهما من الجهة الأخرى للنقطة A.",
+    "content": "$(d)$ و $(d')$ مستقيمان متقاطعان في $A$ ، $B$ من $(d)$ و $C$ من $(d')$ حيث $AB = 27$ و $AC = 36$ . عيّن تلميذ $B'$ من $(d)$ و $C'$ من $(d')$ ، كلتاهما من الجهة الأخرى للنقطة $A$ ، حيث $AB' = 9$ و $AC' = 12$ (الشكل المقابل).",
     "figure": {
       "points": {
         "A": [
-          0,
-          0
+          0.0,
+          0.0
         ],
         "B": [
-          -2.32,
-          -5.53
-        ],
-        "C": [
-          2.16,
-          -7.18
-        ],
-        "g1": [
-          -0.77,
-          -1.84
-        ],
-        "g2": [
-          -1.55,
-          -3.69
-        ],
-        "h1": [
-          0.72,
-          -2.39
-        ],
-        "h2": [
-          1.44,
-          -4.79
+          -9.234543869793,
+          -25.37170076122
         ],
         "B′": [
-          0.77,
-          1.84
+          3.078181289931,
+          8.457233587073
+        ],
+        "C": [
+          18.0,
+          -31.17691453624
         ],
         "C′": [
-          -0.72,
-          2.39
+          -6.0,
+          10.392304845413
         ]
       },
       "lines": [
@@ -65,8 +57,8 @@
           ],
           "name": "(d)",
           "extend": [
-            0.1,
-            0.55
+            0.08,
+            0.5
           ]
         },
         {
@@ -76,7 +68,7 @@
           ],
           "name": "(d′)",
           "extend": [
-            0.1,
+            0.08,
             0.5
           ]
         }
@@ -84,59 +76,135 @@
       "segments": [
         {
           "from": "A",
-          "to": "B′",
-          "ticks": 1
+          "to": "B",
+          "label": "27"
         },
         {
           "from": "A",
-          "to": "g1",
-          "ticks": 1
+          "to": "B′",
+          "label": "9"
         },
         {
-          "from": "g1",
-          "to": "g2",
-          "ticks": 1
-        },
-        {
-          "from": "g2",
-          "to": "B",
-          "ticks": 1
+          "from": "A",
+          "to": "C",
+          "label": "36"
         },
         {
           "from": "A",
           "to": "C′",
-          "ticks": 2
+          "label": "12"
         },
-        {
-          "from": "A",
-          "to": "h1",
-          "ticks": 2
-        },
-        {
-          "from": "h1",
-          "to": "h2",
-          "ticks": 2
-        },
-        {
-          "from": "h2",
-          "to": "C",
-          "ticks": 2
-        }
+        [
+          "B",
+          "C"
+        ],
+        [
+          "B′",
+          "C′"
+        ]
       ],
-      "hidden": [
-        "g1",
-        "g2",
-        "h1",
-        "h2"
-      ],
-      "ariaLabel": "الشكل 1: B′ و C′ من الجهة الأخرى للنقطة A، و AB′ ثلث AB و AC′ ثلث AC",
-      "maxWidth": 197
+      "ariaLabel": "الشكل 1: B′ و C′ من الجهة الأخرى للنقطة A؛ AB = 27 و AB′ = 9 و AC = 36 و AC′ = 12",
+      "maxWidth": 300
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "هل (BC) و (B′C′) متوازيان؟",
+      "step": "01",
+      "sub": "ا",
+      "statement": "احسب النسبة $\\dfrac{AB'}{AB}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
+      "expectedAnswer": "1/3",
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AB'$ و $AB$ طولان يُقاسان من النقطة $A$ على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم $AB'$ على $AB$ ثم اختزل الكسر (قيمة مضبوطة، دون تدوير)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AB'}{AB} = \\dfrac{9}{27} = \\dfrac{1}{3}$ .",
+        "incorrect": "النسبة $\\dfrac{AB'}{AB}$ : الطول $AB'$ على الطول $AB$ ، وكلاهما من النقطة $A$ ؛ اكتبها كسرا مضبوطا."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{AB'}{AB} = \\dfrac{9}{27} = \\dfrac{1}{3}$"
+        ],
+        "result": "\\dfrac{AB'}{AB} = \\dfrac{1}{3}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "sub": "ب",
+      "statement": "احسب النسبة $\\dfrac{AC'}{AC}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
+      "expectedAnswer": "1/3",
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AC'$ و $AC$ طولان يُقاسان من النقطة $A$ على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم $AC'$ على $AC$ ثم اختزل الكسر (قيمة مضبوطة، دون تدوير)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AC'}{AC} = \\dfrac{12}{36} = \\dfrac{1}{3}$ .",
+        "incorrect": "النسبة $\\dfrac{AC'}{AC}$ : الطول $AC'$ على الطول $AC$ ، وكلاهما من النقطة $A$ ؛ اكتبها كسرا مضبوطا."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{AC'}{AC} = \\dfrac{12}{36} = \\dfrac{1}{3}$"
+        ],
+        "result": "\\dfrac{AC'}{AC} = \\dfrac{1}{3}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "sub": "ا",
+      "statement": "هل النقط $A$ ، $B$ ، $B'$ مرتبة بنفس ترتيب النقط $A$ ، $C$ ، $C'$ ؟",
       "learningPoints": [
         {
           "code": "4am_aksiya-talis_P2",
@@ -144,47 +212,94 @@
         }
       ],
       "difficulty": 2,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "نعم: النسبتان متساويتان والنقط مرتبة بنفس الترتيب",
+          "content": "نعم",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "لا: لأن B′ و C′ ليستا على [AB] و [AC]",
+          "content": "لا",
           "isCorrect": false,
           "misconceptionId": "MISC-TALIS-BAYN-FAQAT"
-        },
-        {
-          "id": "C",
-          "content": "لا: لأن النسبة أصغر من 1",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "ارسم المستقيمين المتقاطعين وضع النقط في المواقع المعطاة."
+          "content": "أين تقع $B'$ بالنسبة إلى $A$ و $B$ ؟ وأين تقع $C'$ بالنسبة إلى $A$ و $C$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$A$ بين النقطتين على كل مستقيم: الترتيب نفسه.",
+        "incorrect": "الترتيب نفسه لا يعني أن تكون النقطتان بين الرأس والنقطة الأخرى: يكفي أن يكون موقعهما متماثلا."
+      },
+      "solution": {
+        "lines": [
+          "$A$ بين $B$ و $B'$ ، و $A$ بين $C$ و $C'$ : النقط مرتبة بنفس الترتيب."
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q4",
+      "step": "02",
+      "sub": "ب",
+      "statement": "هل المستقيمان $(BC)$ و $(B'C')$ متوازيان؟ علّل.",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_aksiya-talis_P2",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-BAYN-FAQAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن النسبتين بقيمهما المضبوطة (الجداء المتصالب)، لا بقيم مقرّبة ولا بمظهر الشكل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "نفس الترتيب: موقع النقطة الأولى بالنسبة إلى الرأس والنقطة الأخرى يماثل موقع الثانية."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "انظر هل النقطتان في الجهة نفسها من الرأس أم في جهتين مختلفتين."
+          "content": "تحقّق أيضا من ترتيب النقط على المستقيمين المتقاطعين."
         }
       ],
       "feedback": {
-        "correct": "A بين B و B′ و A بين C و C′: الترتيب نفسه، فالمستقيمان متوازيان (الشكل 1).",
-        "incorrect": "ارسم الشكل: في أي جهة من الرأس تقع كل نقطة؟"
-      }
+        "correct": "النسبتان متساويتان والترتيب نفسه: $(B'C') \\parallel (BC)$ (الشكل 1 من النشاط).",
+        "incorrect": "الخاصية العكسية تتطلب شرطين معا: تساوي النسبتين بقيم مضبوطة، وترتيب النقط نفسه على المستقيمين."
+      },
+      "solution": {
+        "lines": [
+          "بما أن النقط $B$ ، $A$ ، $B'$ و $C$ ، $A$ ، $C'$ في استقامية وبنفس الترتيب،",
+          "و بما أن: $\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC} = \\dfrac{1}{3}$",
+          "فإن المستقيمين $(B'C')$ و $(BC)$ متوازيان حسب خاصية طالس العكسية."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

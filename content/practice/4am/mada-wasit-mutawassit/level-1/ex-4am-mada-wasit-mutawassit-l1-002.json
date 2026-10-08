@@ -3,10 +3,11 @@
   "lessonCode": "mada-wasit-mutawassit",
   "level": 1,
   "metadata": {
-    "title": "أستعدّ 1 (ص 91) — متوسط أربعة أعداد",
-    "estimatedMinutes": 3,
+    "title": "متوسط أربعة أعداد نسبية",
+    "estimatedMinutes": 4,
     "tags": [
-      "متوسط"
+      "المتوسط",
+      "المدى"
     ],
     "source": {
       "type": "textbook",
@@ -14,15 +15,22 @@
       "page": 91,
       "section": "أستعدّ",
       "number": 1
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 91): السلسلة $3$ ، $-3$ ، $4$ ، $-2$ ."
+    "content": "لتكن السلسلة الإحصائية: $3$ ، $-3$ ، $4$ ، $-2$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "متوسط هذه السلسلة هو:",
+      "step": "01",
+      "statement": "احسب متوسط هذه السلسلة.",
       "learningPoints": [
         {
           "code": "4am_mada-wasit-mutawassit_P2",
@@ -30,31 +38,92 @@
         }
       ],
       "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "answerFormat": "عدد (بالفاصلة العشرية إن لزم)",
       "expectedAnswer": "0,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المتوسط هو مجموع القيم مقسوما على عددها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع كل قيم السلسلة، ثم عُدّ هذه القيم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم المجموع على عدد القيم (التكرار الكلي)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2}{4} = 0{,}5$ .",
+        "incorrect": "اجمع كل القيم ثم اقسم المجموع على عدد القيم؛ تأكّد من أنك لم تنس أي قيمة."
+      },
+      "solution": {
+        "lines": [
+          "مجموع القيم:",
+          "$3 + (-3) + 4 + (-2) = 2$",
+          "عدد القيم: 4",
+          "$m = \\dfrac{2}{4} = 0{,}5$"
+        ],
+        "result": "m = 0{,}5"
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب مدى هذه السلسلة.",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة العشرية إن لزم)",
+      "expectedAnswer": "7",
       "misconceptionSignatures": [
         {
-          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
-          "value": "1"
+          "value": "4",
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "اجمع القيم الأربع مع الانتباه إلى الإشارات."
+          "content": "المدى هو الفرق بين أكبر قيمة وأصغر قيمة في السلسلة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ثم اقسم على 4."
+          "content": "عيّن أكبر قيمة وأصغر قيمة من قيم السلسلة (لا من التكرارات)."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح أصغر قيمة من أكبر قيمة."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{3 + (-3) + 4 + (-2)}{4} = \\dfrac{2}{4} = 0{,}5$ .",
-        "incorrect": "المجموع $2$ والعدد $4$."
-      }
+        "correct": "$4 - (-3) = 7$ .",
+        "incorrect": "المدى فرق بين قيمتين من قيم السلسلة: أكبر قيمة ناقص أصغر قيمة، ولا تُستعمل التكرارات."
+      },
+      "solution": {
+        "lines": [
+          "أكبر قيمة: 4 ، وأصغر قيمة: $-3$",
+          "$4 - (-3) = 7$"
+        ],
+        "result": "7"
+      },
+      "timeSeconds": 90
     }
   ]
 }

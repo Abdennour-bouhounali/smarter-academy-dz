@@ -1,4 +1,7 @@
-# What was done (2026-10-06 → 2026-10-07)
+# What was done (2026-10-06 → 2026-10-08)
+
+Sections 1–7: the first run (units 1–7, stopped 2026-10-07). Sections 8–13: the resumption on 2026-10-08
+(units 8, 9 and 10, then the owner's stop). **Total: 54 of 74 lessons converted and switched on.**
 
 ## 1. Step 0 — index of the BEM annals 2007 → 2025
 
@@ -90,3 +93,116 @@ into several questions », photo-on-choice rule), `docs/lessons/LESSON_DEVELOPME
 `docs/README.md`, `docs/architecture/TEACHER_CLASSROOM_ARCHITECTURE.md`, `docs/architecture/BUNDLE_BOUNDARIES.md`,
 `CLAUDE.md` intro, `docs/sources/4am/bem-practice/brief-authors.md`, unit briefs `rollout/unit1…unit7`,
 memory note `dz-bem-rollout`.
+
+---
+
+## 8. Resumed 2026-10-08 — units 8, 9, 10 (14 lessons, 700 sheets)
+
+Each lesson: one author agent (brief per unit: `docs/sources/4am/bem-practice/rollout/unit8/`, `unit9/`, `unit10/`),
+then the lead's audit (oracle hooked, strict validator, textbook coverage, one official compared with the PDF, two
+sheets recomputed by hand, figures looked at in the teacher view at 360 px), the switch and the student e2e.
+
+| Unit | Lesson | Official papers cited | Student e2e |
+|---|---|---|---|
+| 8 الإحصاء | takrar-mujamma | — | 106/106 |
+| 8 | mada-wasit-mutawassit | — | 98/98 |
+| 8 | majdulat-ihsaiya | — | 110/110 |
+| 8 | qiraat-wadiyat-ihsaiya | — | 126/126 |
+| 8 | wadiya-idmajiya-ihsa | — | 114/114 |
+| 9 خاصية طالس | talis-hisab-atwal | 2008 I-3, 2010 I-4, 2013 I-3, 2020 I-3, 2023 I-3 | 94/94 |
+| 9 | aksiya-talis | 2007 I-4, 2015 I-4, 2017 I-4, 2018 I-3 | 130/130 |
+| 9 | inshaat-talis | — | 126/126 |
+| 9 | wadiya-idmajiya-talis | 2016 II | 94/94 |
+| 10 حساب المثلثات | nisab-muthallathiya | 2011 I-3, 2018 I-4, 2019 I-3, 2021 I-3 | 98/98 |
+| 10 | hasiba-muthallathiya | — | 94/94 |
+| 10 | alaqat-muthallathiya | — | 126/126 |
+| 10 | tarrid-muthallathiya | 2010 II, 2014 I-3 | 110/110 |
+| 10 | wadiya-idmajiya-muthallathat | 2025 II | 102/102 |
+
+Unit 8 owns no annals (statistics is absent from BEM 2007–2025): « على منوال » + adapted only. 17 officials in
+units 9–10, every one compared with its page and recomputed.
+
+## 9. Engine changes on 2026-10-08 (they apply to every lesson)
+
+| Change | Where |
+|---|---|
+| **Statistical charts are DRAWN** (owner: « draw the best charts ») — bar chart, histogram (+ frequency polygon), polygon / cumulative polygon, pie and half-pie, declared as data; every unprinted value must sit on a gridline (validator), `missing` parts drawn « ؟ », pie numbers computed (angle / % / value), names in sectors all-or-none + legend (MathText), long bar names shrink then stagger at 360 px | `statement.figure` `kind: 'chart'` → `lessons/common/components/statChart.js` + `StatChart.jsx` |
+| **One dispatch for statement figures** (plane / space / chart). The exam sheet could not draw a `space` figure before — now it does (used in the unit-10 synthesis) | `StatementFigure.jsx` + `statementFigure.js` (`validateStatementFigure`), used by ExerciseStatement, ExamSheet, ProblemSupport, guidedProblem, the validator |
+| **Spreadsheet grids read like Excel** (column A on the left) — `sheet: true`; the validator refuses a grid-shaped table without it; the majdulat-ihsaiya lesson's own مسائل fixed too | `lessons/common/problems/ProblemTable.jsx`, `scripts/validate-exercises.mjs` |
+| **A plane figure on an exam sheet must be readable**: `figureQuality(fig) = []` enforced by the validator | `scripts/validate-exercises.mjs` |
+| **Length labels never on their line, never clipped**: offset by half the label's own width along the normal (≥ the former 13 px), viewBox grown to contain every label | `lessons/common/components/geoFigure.js`, `GeoFigure.jsx` |
+| **Opening « الحل النموذجي » removes « أعِد المحاولة »** for that question (owner) | `SolutionPanel` `onReveal`; `PracticeSession.jsx`, `TeacherPracticePlayer.jsx` |
+| **Teacher preview: « إظهار الإجابة المنتظرة » only for a question without a model solution** (it repeated the solution) | `TeacherPracticePlayer.jsx` |
+| **Answer field wide enough**: expected answer or placeholder (`answerFormat`), whichever is longer, PLUS the keyboard button inside the field (it had ~5 px left) | `answerChars` (`examSheet.js`), `--answer-chrome` (`index.css`) |
+| **MathLive menu ☰ removed** on every field (it did nothing) | `math-field::part(menu-toggle)` in `index.css` |
+| **« ✕ إغلاق » button on the MathLive keyboard**, every field (practice and Math Lab); closes like `[hide-keyboard]` (command on the field, blur, hide — « auto » mode reopens otherwise) | `features/mathlab/tools/functionGrapher/keyboardClose.js` (installed by `ensureMathLive`), i18n `common.mathKeyboard` |
+| `switch.sh` retries the student e2e once (cold Vite start after `cache:clear` failed every level) | `tools/switch.sh` |
+| Local DB: the pending `create_page_tours_table` migration applied (`/api/v1/me/tours` returned 500) | local MySQL only |
+
+Tests added: `statChart.test.js`, `statChart.render.test.jsx`, `problemTable.render.test.jsx`, `keyboardClose.test.js`,
+new cases in `geoFigure.test.js` and `examSheet.test.js`.
+
+## 10. Owner decisions on 2026-10-08
+
+- Draw statistical charts (no more « نُقلت … إلى الجدول »).
+- A single ☜ task mixing the lesson skill and money: two questions of the same step (skill counted, money
+  `counted:false`) — applied in every lesson of units 8–10.
+- Remove the duplicate « إظهار الإجابة المنتظرة »; bigger answer box; no MathLive menu; a close button on the keyboard;
+  no retry after the solution is opened — « globally, in all exercises of all lessons ».
+- « go » for unit 9, then unit 10; stop after unit 10 and update these files.
+
+Lead decisions (reversible): misleading (truncated-axis) charts not drawn — neither the lesson nor the textbook teaches
+them; a spreadsheet-formula choice in wadiya-idmajiya-ihsa `counted:false` (lesson scope); a direct Thales length
+counts inside aksiya-talis (same unit); **Pythagoras counts inside tarrid-muthallathiya** (its P3 « حل المثلث القائم
+كاملا بخاصية فيثاغورس والنسب ») and **Thales counts inside wadiya-idmajiya-muthallathat** (its P1 « تجنيد خاصية طالس
+والنسب ») — the unit-10 brief first said otherwise and was corrected.
+
+## 11. Errors found in the official annals (units 9–10) — reported, never fixed silently
+
+| Session | What | Handling |
+|---|---|---|
+| BEM 2008 I-3 | Corrigé names the angle ABC (53°) where it computes EMB (37°) | official, EMB |
+| BEM 2013 I-3 | Corrigé « tan AMB = AB/AM »; its own numbers use AB/BM | official, AB/BM |
+| BEM 2023 I-3 | Corrigé NK = 2,85 (20/7 truncated, not rounded) | official, exact 20/7 |
+| BEM 2015 I-4 | Corrigé √468 ≈ 21,56; right value 21,63 (= 6√13) | official, 21,63 |
+| BEM 2017 I-4 | Corrigé proves the parallel with rounded ratios « ≈ 0,7 » | official, exact 7/9 + note |
+| BEM 2018 I-4 | Corrigé « cos TCI = TC/TI » (TC/CI); TH ≈ 4,7 from a rounded angle; exact 60/13 ≈ 4,6 | official, 4,6 (4,7 caught as early rounding) |
+| BEM 2016 II | Corrigé: triangle name missing, « بالدوان », total « 0,0675 × 10⁸ » not scientific | official, corrected lines |
+| BEM 2019 I-3 | Corrigé: letter R missing; (MN)//(RS) without its reason | official, reason added |
+| BEM 2014 I-3 | Corrigé « AB = 10 » for 22 × tan 25° ≈ 10,26 (areas built on 10) | official, ≈ shown, areas kept |
+| BEM 2010 II | Corrigé uses π ≈ 3,14 without the paper saying so | official, stated in the answer format |
+| BEM 2025 II | Corrigé « DG = 300/1200 × 1125 » (DC = 1500 → 300/1500; result 225 right); heading « CE » for EF; root −2000 | official, 300/1500 (281,25 caught as a misconception) |
+| Printed figures not drawn to their own data | 2010 I-4, 2020 I-3, 2023 I-3, 2016 II, 2010 II, 2025 II (and 2015 I-4 / 2017 I-4, declared not to scale) | redrawn exactly, same data, « أعادت المنصّة رسم … » in the solution |
+
+Units 8 (textbook): pie chart class « 30 ≤ a < 40 » vs table « ≤ 40 » (أستعدّ 4) — table used.
+
+### Choices the owner may want to reverse (units 8–10)
+
+- BEM 2023 I-3 NK accepted only as the exact 20/7 (« القيمة المضبوطة: كسر »); 2,86 is marked wrong.
+- BEM 2015 I-4 step 02: the student types AB² = 468 (the paper asks no rounding).
+- Irrational lengths typed as the coefficient a of a√r (unit-2 convention); exact ratios with √ also as `choice`.
+- nisab-muthallathiya l5-003: a wheelchair ramp, theme shared with a lesson مسألة (different question).
+- Officials without a figure on the paper (2008 I-3, 2013 I-3, 2007 I-4, the four unit-10 papers of nisab) have none.
+- Situations too elongated to draw at true scale have no figure (and never say « المقابل »).
+- alaqat-muthallathiya l4-010 asks to prove 1 + tan²x = 1/cos²x (derived from the lesson's two relations; selfCheck).
+- New misconceptions: `MISC-IHSA-ZAWIYA-QITA`, `MISC-IHSA-DUSTUR-BILA-ISHARA`, `MISC-IHSA-TALABIYA-HISTOGRAMME`,
+  `MISC-IHSA-TASHATTUT-MAQLUB`.
+
+## 12. Final checks (2026-10-08, at the stop after unit 10)
+
+- `node scripts/validate-exercises.mjs --strict` → Validation passed
+- `node scripts/check-textbook-coverage.mjs` → ✅ 0 ✗
+- answer oracle (`npx vitest run --dir scripts`) → 9898 passed
+- `packages/core` → 784 passed
+- `apps/web` → 8749 passed
+- PHP (`ExamSheetAnyLessonTest`, `EvidenceTrustBoundaryTest`, `AnswerImagesAndTeacherReviewTest`) → 20 passed (on a
+  separate MySQL test DB `smarter_academy_dz_test_bem` — another session uses `smarter_academy_dz_test` concurrently)
+- 54 lessons listed in `content/practice/exam-style.json`; all `e2e-bem-*` QA tokens revoked.
+
+## 13. Documentation updated (2026-10-08)
+
+`docs/architecture/EXERCISE_CONTRACT.md` (« Statistical charts », spreadsheet grids, « A plane figure on an exam sheet
+must be readable » + label placement, « Model solution opened = no retry; answer field fits its chrome », status rows of
+units 8, 9, 10), `docs/architecture/ARABIC_RTL_CONTRACT.md` (spreadsheet grids `sheet: true`),
+`docs/lessons/LESSON_DEVELOPMENT_GUIDE.md` (StatChart, StatementFigure), unit briefs `rollout/unit8`, `unit9`,
+`unit10`, this folder (README, DONE, REMAINING, `tools/switch.sh`), memory note `dz-bem-rollout`.

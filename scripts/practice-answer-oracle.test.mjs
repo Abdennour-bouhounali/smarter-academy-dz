@@ -101,6 +101,20 @@ import { ORACLE as ORACLE_BEM_TAYIN_PGCD } from './practice-oracle/tayin-pgcd.mj
 import { ORACLE as ORACLE_BEM_AWWALIYAN_FIMA_BAYNAHUMA } from './practice-oracle/awwaliyan-fima-baynahuma.mjs';
 import { ORACLE as ORACLE_BEM_IKHTIZAL_KASR } from './practice-oracle/ikhtizal-kasr.mjs';
 import { ORACLE as ORACLE_BEM_WADIYA_IDMAJIYA_AADAD } from './practice-oracle/wadiya-idmajiya-aadad.mjs';
+import { ORACLE as ORACLE_BEM_TAKRAR_MUJAMMA } from './practice-oracle/takrar-mujamma.mjs';
+import { ORACLE as ORACLE_BEM_MADA_WASIT_MUTAWASSIT } from './practice-oracle/mada-wasit-mutawassit.mjs';
+import { ORACLE as ORACLE_BEM_MAJDULAT_IHSAIYA } from './practice-oracle/majdulat-ihsaiya.mjs';
+import { ORACLE as ORACLE_BEM_QIRAAT_WADIYAT_IHSAIYA } from './practice-oracle/qiraat-wadiyat-ihsaiya.mjs';
+import { ORACLE as ORACLE_BEM_WADIYA_IDMAJIYA_IHSA } from './practice-oracle/wadiya-idmajiya-ihsa.mjs';
+import { ORACLE as ORACLE_BEM_TALIS_HISAB_ATWAL } from './practice-oracle/talis-hisab-atwal.mjs';
+import { ORACLE as ORACLE_BEM_AKSIYA_TALIS } from './practice-oracle/aksiya-talis.mjs';
+import { ORACLE as ORACLE_BEM_INSHAAT_TALIS } from './practice-oracle/inshaat-talis.mjs';
+import { ORACLE as ORACLE_BEM_WADIYA_IDMAJIYA_TALIS } from './practice-oracle/wadiya-idmajiya-talis.mjs';
+import { ORACLE as ORACLE_BEM_NISAB_MUTHALLATHIYA } from './practice-oracle/nisab-muthallathiya.mjs';
+import { ORACLE as ORACLE_BEM_HASIBA_MUTHALLATHIYA } from './practice-oracle/hasiba-muthallathiya.mjs';
+import { ORACLE as ORACLE_BEM_ALAQAT_MUTHALLATHIYA } from './practice-oracle/alaqat-muthallathiya.mjs';
+import { ORACLE as ORACLE_BEM_TARRID_MUTHALLATHIYA } from './practice-oracle/tarrid-muthallathiya.mjs';
+import { ORACLE as ORACLE_BEM_WADIYA_IDMAJIYA_MUTHALLATHAT } from './practice-oracle/wadiya-idmajiya-muthallathat.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice/4am');
 
@@ -226,6 +240,20 @@ const ORACLE = {
   ...ORACLE_BEM_AWWALIYAN_FIMA_BAYNAHUMA,
   ...ORACLE_BEM_IKHTIZAL_KASR,
   ...ORACLE_BEM_WADIYA_IDMAJIYA_AADAD,
+  ...ORACLE_BEM_TAKRAR_MUJAMMA,
+  ...ORACLE_BEM_MADA_WASIT_MUTAWASSIT,
+  ...ORACLE_BEM_MAJDULAT_IHSAIYA,
+  ...ORACLE_BEM_QIRAAT_WADIYAT_IHSAIYA,
+  ...ORACLE_BEM_WADIYA_IDMAJIYA_IHSA,
+  ...ORACLE_BEM_TALIS_HISAB_ATWAL,
+  ...ORACLE_BEM_AKSIYA_TALIS,
+  ...ORACLE_BEM_INSHAAT_TALIS,
+  ...ORACLE_BEM_WADIYA_IDMAJIYA_TALIS,
+  ...ORACLE_BEM_NISAB_MUTHALLATHIYA,
+  ...ORACLE_BEM_HASIBA_MUTHALLATHIYA,
+  ...ORACLE_BEM_ALAQAT_MUTHALLATHIYA,
+  ...ORACLE_BEM_TARRID_MUTHALLATHIYA,
+  ...ORACLE_BEM_WADIYA_IDMAJIYA_MUTHALLATHAT,
 };
 
 /**

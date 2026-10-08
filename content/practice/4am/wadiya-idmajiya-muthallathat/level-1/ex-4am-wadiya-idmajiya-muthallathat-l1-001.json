@@ -3,26 +3,29 @@
   "lessonCode": "wadiya-idmajiya-muthallathat",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 1 — جيب تمام زاوية",
-    "estimatedMinutes": 3,
+    "title": "أؤكّد تعلّماتي 1 — جيب تمام الزاوية M ثم قيسها",
+    "estimatedMinutes": 5,
     "tags": [
       "جيب التمام",
-      "الوتر"
+      "الآلة الحاسبة"
     ],
     "source": {
       "type": "textbook",
       "elementId": "qcm",
       "page": 124,
       "section": "أؤكّد تعلّماتي",
-      "number": 1
+      "number": 1,
+      "adaptedFrom": "ex-4am-wadiya-idmajiya-muthallathat-l1-001"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
-  "generator": {
-    "tool": "gen_bank.py",
-    "version": "1"
-  },
   "statement": {
-    "content": "في المثلث MOB القائم في O (الشكل).",
+    "content": "في الشكل المقابل: $MOB$ مثلث قائم في $O$ حيث $OM = 4\\,\\mathrm{cm}$ و $MB = 5\\,\\mathrm{cm}$ .",
     "figure": {
       "points": {
         "M": [
@@ -30,27 +33,29 @@
           0
         ],
         "O": [
-          6,
+          4,
           0
         ],
         "B": [
-          6,
+          4,
           3
         ]
       },
       "segments": [
-        [
-          "M",
-          "O"
-        ],
+        {
+          "from": "M",
+          "to": "O",
+          "label": "4 cm"
+        },
         [
           "O",
           "B"
         ],
-        [
-          "M",
-          "B"
-        ]
+        {
+          "from": "M",
+          "to": "B",
+          "label": "5 cm"
+        }
       ],
       "rightAngles": [
         [
@@ -59,68 +64,136 @@
           "B"
         ]
       ],
+      "angles": [
+        {
+          "at": "M",
+          "from": "O",
+          "to": "B"
+        }
+      ],
       "labels": {
-        "M": "w",
+        "M": "sw",
         "O": "se",
         "B": "ne"
       },
-      "ariaLabel": "مثلث MOB قائم في O: النقطة M على اليسار و O على اليمين و B فوق O",
-      "maxWidth": 300
+      "ariaLabel": "مثلث MOB قائم في O: النقطة M على اليسار و O على اليمين و B فوق O؛ OM = 4 cm و MB = 5 cm",
+      "maxWidth": 320
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "لدينا:",
+      "step": "01",
+      "statement": "احسب $\\cos\\widehat{M}$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-muthallathat_P1",
           "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P2",
+          "role": "secondary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 1,
+      "cognitiveDemand": "recall",
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال أو عدد عشري",
+      "expectedAnswer": "4/5",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\cos\\widehat{M} = \\dfrac{OM}{OB}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+          "value": "5/4",
+          "id": "MISC-MUTH-NISBA-MAQLUBA"
         },
         {
-          "id": "B",
-          "content": "$\\cos\\widehat{M} = \\dfrac{OM}{MB}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "$\\cos\\widehat{M} = \\dfrac{OB}{MB}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+          "value": "3/5",
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الزاوية القائمة في O."
+          "content": "في المثلث $MOB$ القائم في $O$ : الوتر هو الضلع المقابل للزاوية القائمة."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "الوتر يقابل الزاوية القائمة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "جيب التمام = المجاور ÷ الوتر."
+          "content": "جيب تمام زاوية حادة هو طول الضلع المجاور لها مقسوما على طول الوتر."
         }
       ],
       "feedback": {
-        "correct": "الوتر [MB] والمجاور للزاوية M هو [OM]: $\\cos\\widehat{M} = \\dfrac{OM}{MB}$ .",
-        "incorrect": "حدّد الوتر أولا، ثم الضلع المجاور للزاوية M."
+        "correct": "$\\cos\\widehat{M} = \\dfrac{OM}{MB} = \\dfrac{4}{5} = 0{,}8$ .",
+        "incorrect": "الوتر $[MB]$ يكون دائما في المقام، والضلع المجاور للزاوية $\\widehat{M}$ هو الذي يمرّ برأسها."
       },
-      "cognitiveDemand": "recall",
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "المثلث $MOB$ قائم في $O$ : وتره $[MB]$ ، والضلع المجاور للزاوية $\\widehat{M}$ هو $[OM]$ .",
+          "$\\cos\\widehat{M} = \\dfrac{OM}{MB} = \\dfrac{4}{5}$"
+        ],
+        "result": "\\cos\\widehat{M} = \\dfrac{4}{5} = 0{,}8"
+      },
+      "work": "optional",
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "أعط المدوّر إلى الوحدة من الدرجة لقيس الزاوية $\\widehat{M}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_wadiya-idmajiya-muthallathat_P1",
+          "role": "secondary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي: القيس بالدرجة مدوّرا إلى الوحدة",
+      "expectedAnswer": "37",
+      "misconceptionSignatures": [
+        {
+          "value": "36",
+          "id": "MISC-MUTH-TADWIR-BATR"
+        },
+        {
+          "value": "53",
+          "id": "MISC-MUTH-NISBA-UKHRA"
+        },
+        {
+          "value": "0.8",
+          "id": "MISC-MUTH-NISBA-BADAL-QAYS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نعرف جيب تمام الزاوية $\\widehat{M}$ ، ونبحث عن قيسها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل اللمسة العكسية للنسبة في آلة حاسبة مبرمجة على الدرجة، ثم دوّر في آخر الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\widehat{M} \\approx 36{,}87^{\\circ}$ ، والمدوّر إلى الوحدة $37^{\\circ}$ .",
+        "incorrect": "العدد $0{,}8$ نسبة وليس قيسا: اللمسة العكسية لجيب التمام (بالدرجة) تعطي القيس، ثم ندوّر حسب الرقم الموالي."
+      },
+      "solution": {
+        "lines": [
+          "$\\cos\\widehat{M} = 0{,}8$",
+          "باستعمال الآلة الحاسبة (اللمسة العكسية لجيب التمام): $\\widehat{M} \\approx 36{,}8699^{\\circ}$"
+        ],
+        "result": "\\widehat{M} \\approx 37^{\\circ}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

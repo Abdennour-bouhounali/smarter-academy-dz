@@ -11,7 +11,8 @@ const ProblemSupport = lazy(() => import('./ProblemSupport'));
  * sommaire (LessonIndex) et à la fin du laboratoire d'ouverture (module 1).
  * L'élève la lit, y pense, et la résout pas à pas au module `lessonProblem.module`.
  *
- * @param {{ title: string, statement: string, figure?, visual?, table? }} problem  LESSON_CONFIG.lessonProblem
+ * @param {{ title: string, statement: string, questions?: {label: string, text: string}[], figure?, visual?, table? }} problem  LESSON_CONFIG.lessonProblem
+ *        (`questions` : les demandes de la مسألة 1, affichées sous l'énoncé et le support)
  *        (le support, s'il existe, est la même donnée que celle de la مسألة 1 — une seule source)
  * @param {string} [to]           lien vers le module qui la résout
  * @param {string} [moduleTitle]  titre de ce module (pour le libellé du lien)
@@ -31,6 +32,16 @@ export default function LessonProblemCard({ problem, to, moduleTitle, compact = 
         <Suspense fallback={null}>
           <ProblemSupport figure={problem.figure} visual={problem.visual} table={problem.table} />
         </Suspense>
+      )}
+      {problem.questions?.length > 0 && (
+        <ol className="space-y-1 text-sm leading-relaxed list-none">
+          {problem.questions.map((q) => (
+            <li key={q.label} className="flex gap-1.5">
+              <span className="font-bold shrink-0">{q.label}</span>
+              <span><MathText>{q.text}</MathText></span>
+            </li>
+          ))}
+        </ol>
       )}
       <p className="text-xs text-amber-800">{t('problem.lessonProblemLead')}</p>
       {to && moduleTitle && (

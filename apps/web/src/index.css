@@ -682,8 +682,11 @@ html[data-sa-resizing] .sa-workspace-main {
   resize: horizontal;
   overflow: hidden;
   direction: rtl;
-  width: calc(var(--answer-ch, 6) * 0.62em + 1.2rem);
-  min-width: calc(var(--answer-ch, 6) * 0.62em + 1.2rem);
+  /* + la place du bouton clavier ⌨ de MathLive DANS le champ (34 px) : sans elle, la réponse n'avait plus
+     que ~5 px et le texte indicatif était coupé (propriétaire, 2026-10-08). Le menu ☰ est masqué (plus bas). */
+  --answer-chrome: 38px;
+  width: calc(var(--answer-ch, 6) * 0.62em + 1.2rem + var(--answer-chrome));
+  min-width: calc(var(--answer-ch, 6) * 0.62em + 1.2rem + var(--answer-chrome));
   max-width: 100%;
   padding-inline-start: 2px;
   font-size: 1.35rem;
@@ -877,3 +880,34 @@ html[data-sa-resizing] .sa-workspace-main {
   vertical-align: -0.12em;
   color: #e0604f;
 }
+
+/* Le MENU de MathLive (☰, propriétaire 2026-10-08 : « il ne fonctionne pas, pourquoi existe-t-il ? ») : `menuItems = []`
+   (ExamMathField) vide le menu mais cette version de MathLive dessine encore le bouton. Masqué partout — l'élève n'a
+   besoin que du clavier virtuel ⌨. */
+math-field::part(menu-toggle) {
+  display: none;
+}
+
+/* Le bouton « إغلاق » du clavier virtuel MathLive (keyboardClose.js) : un onglet posé sur le bord haut du
+   clavier, au-dessus de ses touches. Le clavier MathLive a un z-index de 105. */
+.sa-math-keyboard-close {
+  position: fixed;
+  z-index: 106;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 40px;
+  padding: 0.35rem 0.9rem;
+  border-radius: 0.6rem 0.6rem 0 0;
+  border: 1px solid #cbd5e1;
+  border-bottom: 0;
+  background: #ffffff;
+  color: #1e293b;
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 0 -2px 6px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+}
+.sa-math-keyboard-close[hidden] { display: none; }
+.sa-math-keyboard-close:focus-visible { outline: 2px solid #059669; outline-offset: 2px; }

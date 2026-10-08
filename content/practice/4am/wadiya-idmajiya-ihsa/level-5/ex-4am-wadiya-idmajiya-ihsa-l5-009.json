@@ -3,129 +3,233 @@
   "lessonCode": "wadiya-idmajiya-ihsa",
   "level": 5,
   "metadata": {
-    "title": "تكراران مجهولان بالمتوسط",
-    "estimatedMinutes": 6,
+    "title": "على منوال BEM 2019 — فريق الكرة الطائرة لمتوسطة بالنعامة",
+    "estimatedMinutes": 18,
     "tags": [
-      "تكرار مجهول",
-      "جملة معادلتين"
+      "وضعية إدماجية",
+      "مدرّج تكراري",
+      "التكرار المجمع النازل",
+      "مراكز الفئات"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_wadiya-idmajiya-ihsa_P1"
+      "reason": "bem_modelled",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P1",
+      "modelledOn": "BEM 2019 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2019",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "عدد الكتب التي قرأها 10 تلاميذ في العطلة: عدد الكتب: 1 ، 2 ، 3 ، 4 — عدد التلاميذ: 3 ، $a$ ، $b$ ، 2. ومتوسط السلسلة $2{,}4$."
+    "content": "لتكوين فريق الكرة الطائرة لمتوسطة بالنعامة، قيست قامات 50 مترشحا (بالسنتيمتر)، فمُثّلت النتائج بالمدرّج التكراري الآتي:",
+    "figure": {
+      "kind": "chart",
+      "type": "histogram",
+      "ariaLabel": "مدرّج تكراري لقامات 50 مترشحا بخمس فئات من 150 إلى 175 سنتيمترا",
+      "xTitle": "القامة (cm)",
+      "yTitle": "عدد المترشحين",
+      "edges": [
+        150,
+        155,
+        160,
+        165,
+        170,
+        175
+      ],
+      "values": [
+        5,
+        12,
+        18,
+        10,
+        5
+      ],
+      "y": {
+        "max": 20,
+        "step": 5,
+        "minor": 5
+      }
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما قيمة $a + b$ ؟",
+      "step": "01",
+      "sub": "ا",
+      "lead": "يحتفظ الأستاذ بالمترشحين الذين قامتهم 165cm على الأقل.",
+      "statement": "كم مترشحا يحتفظ بهم؟",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-ihsa_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
       "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "5",
+      "expectedAnswer": "15",
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
+        },
+        {
+          "value": "45",
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "التكرار الكلي 10."
+          "content": "اقرأ ارتفاع كل مستطيل (الأعداد مكتوبة كل 5 والتدريجة الرفيعة 1)."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "$3 + a + b + 2 = 10$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "حلّ."
+          "content": "«165cm على الأقل» تجمع الفئتين الأخيرتين."
         }
       ],
       "feedback": {
-        "correct": "$a + b = 10 - 5$.",
-        "incorrect": "مجموع التكرارات 10."
+        "correct": "$10 + 5 = 15$ مترشحا.",
+        "incorrect": "اجمع تكراري الفئتين اللتين حدّهما الأدنى 165 أو أكثر."
       },
-      "cognitiveDemand": "apply",
-      "difficulty": 3
+      "solution": {
+        "lines": [
+          "القراءة: 5 ، 12 ، 18 ، 10 ، 5 .",
+          "$10 + 5 = 15$"
+        ],
+        "result": "15"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q2",
-      "statement": "ما قيمة $b$ ؟",
+      "step": "01",
+      "sub": "ب",
+      "statement": "ما هي النسبة المئوية التي يمثّلونها من المترشحين؟",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "3",
+      "answerFormat": "عدد: النسبة المئوية دون الرمز %",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
+        {
+          "value": "15",
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "معادلة المتوسط: $3 + 2a + 3b + 8 = 24$."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "مع $a + b = 5$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "جملة معادلتين."
+          "content": "اقسم عددهم على التكرار الكلي ثم اضرب في 100 ."
         }
       ],
       "feedback": {
-        "correct": "$2a + 3b = 13$ و $2a + 2b = 10$ ، إذن $b = 3$.",
-        "incorrect": "المجموع $2{,}4 \\times 10 = 24$."
+        "correct": "$\\dfrac{15}{50} \\times 100 = 30$ .",
+        "incorrect": "التواتر = عددهم ÷ التكرار الكلي، ثم نضرب في 100 ."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 5
+      "solution": {
+        "lines": [
+          "$\\dfrac{15}{50} \\times 100 = 30$"
+        ],
+        "result": "30\\%"
+      },
+      "timeSeconds": 120
     },
     {
       "id": "q3",
-      "statement": "ما قيمة $a$ ؟",
+      "step": "02",
+      "statement": "باستعمال مراكز الفئات، احسب متوسط قامات المترشحين.",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "2",
+      "answerFormat": "عدد: القامة بـ cm (بالفاصلة إن لزم)",
+      "expectedAnswer": "162,3",
+      "misconceptionSignatures": [
+        {
+          "value": "159,8",
+          "id": "MISC-IHSA-MARKAZ-FIA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$a + b$ معلوم."
+          "content": "مراكز الفئات: $152{,}5$ ، $157{,}5$ ، …"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "عوّض $b$."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "اطرح."
+          "content": "اضرب كل مركز في تكرار فئته ثم اقسم على 50 ."
         }
       ],
       "feedback": {
-        "correct": "$a = 5 - 3$.",
-        "incorrect": "نستعمل $a + b = 5$."
+        "correct": "$\\dfrac{152{,}5 \\times 5 + 157{,}5 \\times 12 + 162{,}5 \\times 18 + 167{,}5 \\times 10 + 172{,}5 \\times 5}{50} = 162{,}3$ .",
+        "incorrect": "استعمل مركز كل فئة (لا حدّها الأدنى) ثم المتوسط المتوازن."
       },
+      "solution": {
+        "lines": [
+          "المراكز: $152{,}5$ ، $157{,}5$ ، $162{,}5$ ، $167{,}5$ ، $172{,}5$ .",
+          "$152{,}5 \\times 5 + 157{,}5 \\times 12 + 162{,}5 \\times 18 + 167{,}5 \\times 10 + 172{,}5 \\times 5 = 8115$",
+          "$\\dfrac{8115}{50} = 162{,}3$"
+        ],
+        "result": "162{,}3\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 300
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "☜ تشتري المتوسطة قميصا لكل مترشح محتفَظ به، ثمن القميص 2400DA . أعط ثمن القمصان.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "difficulty": 5,
       "cognitiveDemand": "apply",
-      "difficulty": 4
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "36000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل عدد المترشحين المحتفَظ بهم (01)."
+        }
+      ],
+      "feedback": {
+        "correct": "$15 \\times 2400 = 36000$ DA .",
+        "incorrect": "الثمن = عدد القمصان × ثمن القميص الواحد."
+      },
+      "solution": {
+        "lines": [
+          "$15 \\times 2400 = 36000$"
+        ],
+        "result": "36000\\,\\mathrm{DA}"
+      },
+      "timeSeconds": 120
     }
   ]
 }

@@ -3,10 +3,11 @@
   "lessonCode": "nisab-muthallathiya",
   "level": 1,
   "metadata": {
-    "title": "نشاط 1 — المجاور للزاوية C",
-    "estimatedMinutes": 2,
+    "title": "المجاور لزاوية 25° ثم جيب تمامها",
+    "estimatedMinutes": 3,
     "tags": [
-      "الضلع المجاور"
+      "الضلع المجاور",
+      "جيب التمام"
     ],
     "source": {
       "type": "textbook",
@@ -14,44 +15,50 @@
       "page": 116,
       "section": "أنشطة",
       "number": 1
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "من الكتاب (ص 116): في الشكل، المثلث ABC قائم في A و $\\widehat{C} = 25^{\\circ}$ .",
+    "content": "في الشكل المقابل، $ABC$ مثلث قائم في $A$ و $\\widehat{ACB} = 25^{\\circ}$ .",
     "figure": {
       "points": {
-        "C": [
-          0.0,
-          0.0
-        ],
         "A": [
-          -6.0,
-          0.0
+          0,
+          0
+        ],
+        "C": [
+          -6,
+          0
         ],
         "B": [
-          -6.0,
-          2.798
+          0,
+          2.7978
         ]
       },
       "segments": [
-        {
-          "from": "C",
-          "to": "A"
-        },
-        {
-          "from": "A",
-          "to": "B"
-        },
-        {
-          "from": "C",
-          "to": "B"
-        }
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "B",
+          "C"
+        ]
       ],
       "rightAngles": [
         [
-          "C",
+          "B",
           "A",
-          "B"
+          "C"
         ]
       ],
       "angles": [
@@ -59,65 +66,139 @@
           "at": "C",
           "from": "A",
           "to": "B",
-          "label": "25°"
+          "label": "25°",
+          "radius": 34
         }
       ],
-      "ariaLabel": "مثلث ABC قائم في A والزاوية C قيسها 25 درجة",
-      "maxWidth": 300
+      "ariaLabel": "مثلث ABC قائم في A، والزاوية ACB قيسها 25 درجة",
+      "maxWidth": 340
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "الضلع المجاور للزاوية $\\widehat{C}$ هو:",
+      "step": "01",
+      "statement": "عيّن الضلع المجاور للزاوية $\\widehat{ACB}$ .",
       "learningPoints": [
         {
           "code": "4am_nisab-muthallathiya_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 1,
+      "cognitiveDemand": "recall",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "[AB]",
+          "content": "$[AB]$",
           "isCorrect": false,
           "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
         },
         {
           "id": "B",
-          "content": "[BC]",
-          "isCorrect": false,
-          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+          "content": "$[AC]$",
+          "isCorrect": true
         },
         {
           "id": "C",
-          "content": "[AC]",
-          "isCorrect": true
+          "content": "$[BC]$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد الزاوية القائمة: الوتر هو الضلع المقابل لها."
+          "content": "الزاوية القائمة في $A$ : الوتر هو الضلع الذي لا يمرّ برأسها."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "بالنسبة إلى الزاوية الحادة: المجاور يمرّ برأسها، والمقابل لا يمرّ به."
+          "content": "بالنسبة إلى الزاوية الحادة في $C$ : المجاور يمرّ بالرأس $C$ ويكون ضلعا للزاوية القائمة، والمقابل لا يمرّ به."
+        }
+      ],
+      "feedback": {
+        "correct": "الضلع المجاور هو $[AC]$ .",
+        "incorrect": "ابدأ بالوتر (مقابل الزاوية القائمة)، ثم ميّز بين ضلعي الزاوية القائمة: أيهما يمرّ برأس الزاوية الحادة؟"
+      },
+      "solution": {
+        "lines": [
+          "الزاوية القائمة في $A$ ، إذن الوتر هو $[BC]$ (أطول الأضلاع).",
+          "بالنسبة إلى الزاوية الحادة في $C$ : المجاور $[AC]$ والمقابل $[AB]$ ."
+        ]
+      },
+      "timeSeconds": 120
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "اكتب $\\cos 25^{\\circ}$ بدلالة أطوال أضلاع المثلث $ABC$ .",
+      "learningPoints": [
+        {
+          "code": "4am_nisab-muthallathiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "recall",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\cos\\widehat{ACB} = \\dfrac{AB}{BC}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-MUQABIL-MUJAWIR"
+        },
+        {
+          "id": "B",
+          "content": "$\\cos\\widehat{ACB} = \\dfrac{BC}{AC}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\cos\\widehat{ACB} = \\dfrac{AC}{BC}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\cos\\widehat{ACB} = \\dfrac{AC}{AB}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTH-WATAR-MUQABIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الوتر هو الضلع المقابل للزاوية القائمة في $A$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالنسبة إلى الزاوية $\\widehat{ACB}$ : الضلع المجاور لها يمرّ برأسها $C$ ، والضلع المقابل لها لا يمرّ به."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اكتب أسماء الأضلاع الثلاثة بجانب الشكل قبل أن تختار."
+          "content": "جيب تمام زاوية حادة = طول الضلع المجاور لها على طول الوتر."
         }
       ],
       "feedback": {
-        "correct": "[AC] ضلع للزاوية القائمة يمرّ بالرأس C: إنه المجاور. [AB] هو المقابل و [BC] الوتر.",
-        "incorrect": "المجاور للزاوية C ضلع للزاوية القائمة يمرّ بالرأس C (ليس الوتر)."
+        "correct": "الوتر $[BC]$ ، المجاور للزاوية $[AC]$ والمقابل لها $[AB]$ ، إذن $\\cos\\widehat{ACB} = \\dfrac{AC}{BC}$ .",
+        "incorrect": "عيّن أولا الوتر (مقابل الزاوية القائمة)، ثم المجاور (يمرّ بالرأس $C$) والمقابل؛ جيب تمام زاوية حادة = طول الضلع المجاور لها على طول الوتر."
       },
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "في المثلث $ABC$ القائم في $A$ : الوتر هو $[BC]$ ،",
+          "الضلع المجاور للزاوية $\\widehat{ACB}$ هو $[AC]$ والضلع المقابل لها هو $[AB]$ .",
+          "جيب تمام الزاوية = طول الضلع المجاور لها على طول الوتر."
+        ],
+        "result": "\\cos\\widehat{ACB} = \\dfrac{AC}{BC}"
+      },
+      "timeSeconds": 120
     }
   ]
 }

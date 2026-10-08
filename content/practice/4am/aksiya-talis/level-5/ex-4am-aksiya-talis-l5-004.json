@@ -3,108 +3,322 @@
   "lessonCode": "aksiya-talis",
   "level": 5,
   "metadata": {
-    "title": "تدريب — خطّان على جدارية",
-    "estimatedMinutes": 4,
+    "title": "على منوال BEM 2012 — قطعة الأرض والممرّان",
+    "estimatedMinutes": 22,
     "tags": [
-      "وضعية"
+      "وضعية إدماجية",
+      "وضعية الفراشة",
+      "شبه منحرف"
     ],
     "source": {
       "type": "platform_addition",
-      "reason": "practice_generation",
+      "reason": "bem_modelled",
       "learningPoint": "4am_aksiya-talis_P1",
-      "modelledOn": null
+      "modelledOn": "BEM 2012 II"
+    },
+    "exam": {
+      "kind": "modelled",
+      "badge": "على منوال BEM 2012",
+      "heading": "الوضعية الإدماجية",
+      "points": "08"
     }
   },
   "statement": {
-    "content": "على جدارية، الخطّان (d) و (d′) يتقاطعان في A. رسم أمين B و B′ على (d) و C و C′ على (d′) بحيث A بين B و B′ و A بين C و C′: AB = 1,5m ، AB′ = 2,5m ، AC = 1,8m ، AC′ = 3m."
+    "content": "يملك فلاح قطعة أرض على شكل رباعي $ABCD$ ، يقطعها ممرّان مستقيمان $[AC]$ و $[BD]$ يلتقيان عند البئر $O$ ، حيث: $OA = 24\\,\\mathrm{m}$ ، $OC = 36\\,\\mathrm{m}$ ، $OB = 20\\,\\mathrm{m}$ و $OD = 32\\,\\mathrm{m}$ (الشكل المقابل). يقول بائع الأرض إن القطعة على شكل شبه منحرف قاعدتاه $[AB]$ و $[CD]$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0.0,
+          0.0
+        ],
+        "A": [
+          -22.552622898862,
+          -8.208483439816
+        ],
+        "C": [
+          33.828934348293,
+          12.312725159724
+        ],
+        "B": [
+          0.0,
+          -20.0
+        ],
+        "D": [
+          0.0,
+          32.0
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        {
+          "from": "O",
+          "to": "A",
+          "label": "24"
+        },
+        {
+          "from": "O",
+          "to": "C",
+          "label": "36"
+        },
+        {
+          "from": "O",
+          "to": "B",
+          "label": "20"
+        },
+        {
+          "from": "O",
+          "to": "D",
+          "label": "32"
+        }
+      ],
+      "ariaLabel": "قطعة أرض رباعية ABCD، الممرّان [AC] و [BD] يلتقيان عند البئر O؛ OA = 24 و OC = 36 و OB = 20 و OD = 32",
+      "maxWidth": 300
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب الجداء $1{,}5 \\times 3$ :",
+      "step": "01",
+      "sub": "ا",
+      "statement": "احسب النسبة $\\dfrac{OA}{OC}$ .",
       "learningPoints": [
         {
           "code": "4am_aksiya-talis_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 5,
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد عشري بالفاصلة",
-      "expectedAnswer": "4,5",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
+      "expectedAnswer": "2/3",
+      "misconceptionSignatures": [
+        {
+          "value": "3/2",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "الجداء المتصالب: البسط الأول في المقام الثاني، والمقام الأول في البسط الثاني."
+          "content": "$OA$ و $OC$ طولان يُقاسان من النقطة $O$ على المستقيم نفسه."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اضرب العددين كأنهما طبيعيان، ثم ضع الفاصلة حسب عدد الأرقام بعدها."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "تحقّق بتقدير سريع: هل الناتج معقول؟"
+          "content": "اقسم $OA$ على $OC$ ثم اختزل الكسر (قيمة مضبوطة، دون تدوير)."
         }
       ],
       "feedback": {
-        "correct": "$1{,}5 \\times 3 = 4{,}5$ ، و $2{,}5 \\times 1{,}8 = 4{,}5$ أيضا",
-        "incorrect": "أعد الضرب وانتبه إلى موضع الفاصلة."
-      }
+        "correct": "$\\dfrac{OA}{OC} = \\dfrac{24}{36} = \\dfrac{2}{3}$ .",
+        "incorrect": "النسبة $\\dfrac{OA}{OC}$ : الطول $OA$ على الطول $OC$ ، وكلاهما من النقطة $O$ ؛ اكتبها كسرا مضبوطا."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{OA}{OC} = \\dfrac{24}{36} = \\dfrac{2}{3}$"
+        ],
+        "result": "\\dfrac{OA}{OC} = \\dfrac{2}{3}"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "هل الخطّان (BC) و (B′C′) متوازيان؟",
+      "step": "01",
+      "sub": "ب",
+      "statement": "احسب النسبة $\\dfrac{OB}{OD}$ .",
       "learningPoints": [
         {
           "code": "4am_aksiya-talis_P1",
           "role": "primary"
         }
       ],
-      "difficulty": 5,
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
+      "expectedAnswer": "5/8",
+      "misconceptionSignatures": [
+        {
+          "value": "8/5",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$OB$ و $OD$ طولان يُقاسان من النقطة $O$ على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم $OB$ على $OD$ ثم اختزل الكسر (قيمة مضبوطة، دون تدوير)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{OB}{OD} = \\dfrac{20}{32} = \\dfrac{5}{8}$ .",
+        "incorrect": "النسبة $\\dfrac{OB}{OD}$ : الطول $OB$ على الطول $OD$ ، وكلاهما من النقطة $O$ ؛ اكتبها كسرا مضبوطا."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{OB}{OD} = \\dfrac{20}{32} = \\dfrac{5}{8}$"
+        ],
+        "result": "\\dfrac{OB}{OD} = \\dfrac{5}{8}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "هل كلام البائع صحيح، أي هل $(AB) \\parallel (CD)$ ؟ علّل.",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "نعم: $\\dfrac{AB}{AB'} = \\dfrac{AC}{AC'}$ ونفس الترتيب",
-          "isCorrect": true
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
         },
         {
           "id": "B",
-          "content": "لا: B و B′ في جهتين من A",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-BAYN-FAQAT"
-        },
-        {
-          "id": "C",
-          "content": "لا يمكن الحكم دون قياس على الجدار",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
+          "content": "لا",
+          "isCorrect": true
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+          "content": "قارن النسبتين بقيمهما المضبوطة (الجداء المتصالب)، لا بقيم مقرّبة ولا بمظهر الشكل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+          "content": "تحقّق أيضا من ترتيب النقط على المستقيمين المتقاطعين."
         }
       ],
       "feedback": {
-        "correct": "الجداءان متساويان و A بين النقطتين على كل خط: حسب الخاصية العكسية لخاصية طالس.",
-        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
-      }
+        "correct": "$24 \\times 32 = 768$ و $36 \\times 20 = 720$ : $(AB)$ و $(CD)$ غير متوازيين، وكلام البائع غير صحيح.",
+        "incorrect": "الخاصية العكسية تتطلب شرطين معا: تساوي النسبتين بقيم مضبوطة، وترتيب النقط نفسه على المستقيمين."
+      },
+      "solution": {
+        "lines": [
+          "$24 \\times 32 = 768$ و $36 \\times 20 = 720$ ، إذن $\\dfrac{OA}{OC} \\neq \\dfrac{OB}{OD}$ .",
+          "لو كان $(AB) \\parallel (CD)$ لكانت النسبتان متساويتين حسب خاصية طالس،",
+          "إذن المستقيمان $(AB)$ و $(CD)$ غير متوازيين.",
+          "كلام البائع غير صحيح: $ABCD$ ليس شبه منحرف قاعدتاه $[AB]$ و $[CD]$ ."
+        ]
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "يريد الفلاح جعل قطعته شبه منحرف قاعدتاه $[AB]$ و $[CD]$ ، بنقل الركن $D$ على الممرّ نفسه $(OD)$ مع إبقاء $A$ و $B$ و $C$ . احسب الطول الجديد $OD$ .",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ m",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
+        {
+          "value": "43,2",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "يجب أن يكون $\\dfrac{OB}{OD} = \\dfrac{OA}{OC}$ ، مع بقاء $O$ بين $B$ و $D$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض بالأطوال المعلومة ثم احسب $OD$ بالجداء المتصالب."
+        }
+      ],
+      "feedback": {
+        "correct": "$OD = \\dfrac{20 \\times 36}{24} = 30\\,\\mathrm{m}$ .",
+        "incorrect": "النسبتان: من البئر $O$ في كل مرة، طول على الطول الموافق له على الممرّ نفسه."
+      },
+      "solution": {
+        "lines": [
+          "لكي يكون $(AB) \\parallel (CD)$ يجب أن يكون: $\\dfrac{OB}{OD} = \\dfrac{OA}{OC}$ ( $O$ بين النقطتين في كل مرة)",
+          "$\\dfrac{20}{OD} = \\dfrac{24}{36}$",
+          "$OD = \\dfrac{20 \\times 36}{24}$"
+        ],
+        "result": "OD = 30\\,\\mathrm{m}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q5",
+      "step": "04",
+      "statement": "☜ يُبلَّط الممرّان $[AC]$ و $[BD]$ بعد التعديل، وتكلفة تبليط المتر الواحد $600DA$ . ما تكلفة التبليط؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: المبلغ بـ DA",
+      "expectedAnswer": "66000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول الجديد $OD$ من السؤال 03، و $O$ بين النقطتين في كل ممرّ."
+        }
+      ],
+      "feedback": {
+        "correct": "$(60 + 50) \\times 600 = 66000DA$ .",
+        "incorrect": "رتّب الحساب: الكمية اللازمة أولا، ثم اضربها في سعر الوحدة، ثم أضف المصاريف الثابتة إن وُجدت."
+      },
+      "solution": {
+        "lines": [
+          "$AC = 24 + 36 = 60\\,\\mathrm{m}$ و $BD = 20 + 30 = 50\\,\\mathrm{m}$",
+          "التكلفة: $(60 + 50) \\times 600$"
+        ],
+        "result": "66000\\,DA"
+      },
+      "work": "optional",
+      "timeSeconds": 150
     }
   ]
 }

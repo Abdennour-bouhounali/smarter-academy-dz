@@ -3,48 +3,180 @@
   "lessonCode": "qiraat-wadiyat-ihsaiya",
   "level": 1,
   "metadata": {
-    "title": "تدريب — أيّهما أكثر انتظاما؟",
-    "estimatedMinutes": 3,
+    "title": "لاعبان والمتوسط نفسه",
+    "estimatedMinutes": 4,
     "tags": [
-      "مقارنة",
-      "مدى"
+      "المدى",
+      "المقارنة",
+      "الانتظام"
     ],
     "source": {
       "type": "platform_addition",
       "reason": "practice_generation",
       "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P2",
-      "modelledOn": null
+      "modelledOn": null,
+      "adaptedFrom": "ex-4am-qiraat-wadiyat-ihsaiya-l1-005"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "لسلسلتي نقاط لاعبَين في لعبة على الهاتف المتوسط نفسه 50؛ مدى نقاط أمين 3 ومدى نقاط سمير 12."
+    "content": "سجّل لاعبان نقاطهما في 5 جولات من لعبة على الهاتف، ولنقاط اللاعبين المتوسط نفسه 50 :",
+    "table": {
+      "head": [
+        "الجولة",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "rows": [
+        [
+          "أمين",
+          "49",
+          "51",
+          "50",
+          "52",
+          "48"
+        ],
+        [
+          "سمير",
+          "44",
+          "56",
+          "50",
+          "58",
+          "42"
+        ]
+      ]
+    }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "أيّ اللاعبين نتائجه أكثر انتظاما؟",
+      "step": "01",
+      "sub": "ا",
+      "lead": "احسب مدى نقاط كل لاعب.",
+      "statement": "مدى نقاط أمين.",
       "learningPoints": [
         {
           "code": "4am_qiraat-wadiyat-ihsaiya_P2",
           "role": "primary"
         }
       ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "value": "52",
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدى = أكبر قيمة − أصغر قيمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عيّن أكبر نقطة وأصغر نقطة في سطر أمين."
+        }
+      ],
+      "feedback": {
+        "correct": "$52 - 48 = 4$ .",
+        "incorrect": "المدى فرق بين أكبر قيمة وأصغر قيمة، وليس أكبر قيمة وحدها."
+      },
+      "solution": {
+        "lines": [
+          "$52 - 48 = 4$"
+        ],
+        "result": "4"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "sub": "ب",
+      "statement": "مدى نقاط سمير.",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "16",
+      "misconceptionSignatures": [
+        {
+          "value": "58",
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدى = أكبر قيمة − أصغر قيمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عيّن أكبر نقطة وأصغر نقطة في سطر سمير."
+        }
+      ],
+      "feedback": {
+        "correct": "$58 - 42 = 16$ .",
+        "incorrect": "المدى فرق بين أكبر قيمة وأصغر قيمة، وليس أكبر قيمة وحدها."
+      },
+      "solution": {
+        "lines": [
+          "$58 - 42 = 16$"
+        ],
+        "result": "16"
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "أيّ اللاعبين نتائجه أكثر انتظاما؟ برّر.",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "أمين",
+          "content": "أمين، لأن مدى نقاطه أصغر",
           "isCorrect": true
         },
         {
           "id": "B",
-          "content": "سمير",
+          "content": "سمير، لأن مدى نقاطه أكبر",
           "isCorrect": false,
-          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+          "misconceptionId": "MISC-IHSA-TASHATTUT-MAQLUB"
         },
         {
           "id": "C",
-          "content": "هما متماثلان لأن لهما المتوسط نفسه",
+          "content": "لا أحد منهما، لأن لهما المتوسط نفسه",
           "isCorrect": false,
           "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
         }
@@ -53,24 +185,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "ما الذي يقيس التشتت؟"
+          "content": "المتوسط متساوٍ: لا يفرّق بين اللاعبين."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "المدى = أكبر قيمة − أصغر قيمة."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن 3 و 12."
+          "content": "المدى مؤشر تشتت: كلما صغر كانت القيم أقرب بعضها من بعض."
         }
       ],
       "feedback": {
-        "correct": "مدى أمين 3 أصغر: نقاطه أقل تشتتا.",
-        "incorrect": "المتوسط نفسه لا يكفي: قارن المديين."
+        "correct": "$4 < 16$ : نقاط أمين متقاربة، فنتائجه أكثر انتظاما.",
+        "incorrect": "قارن المديين اللذين حسبتهما في 01: المدى الأصغر يعني قيما أقل تباعدا."
       },
-      "difficulty": 1
+      "solution": {
+        "lines": [
+          "للاعبين المتوسط نفسه 50 ، فنقارن بمؤشر التشتت.",
+          "مدى أمين 4 ومدى سمير 16 ، و $4 < 16$ .",
+          "نقاط أمين أقل تشتتا: نتائجه أكثر انتظاما."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

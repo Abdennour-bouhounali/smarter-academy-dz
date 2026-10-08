@@ -3,27 +3,110 @@
   "lessonCode": "inshaat-talis",
   "level": 2,
   "metadata": {
-    "title": "تمرين 17 (ص 111) — عدد القطع",
-    "estimatedMinutes": 4,
+    "title": "تمرين 17 — النقطة M حيث AM على AB يساوي 3 على 7",
+    "estimatedMinutes": 9,
     "tags": [
       "تمرين 17",
-      "تقسيم قطعة"
+      "إنشاء"
     ],
     "source": {
       "type": "textbook",
       "elementId": "ex-17",
       "page": 111,
       "section": "وضع نقط على مستقيم",
-      "number": 17
+      "number": 17,
+      "adaptedFrom": "ex-4am-inshaat-talis-l2-001"
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "من الكتاب: ارسم قطعة مستقيم [AB]. أنشئ، دون استعمال مسطرة مدرجة، النقطة M من [AB] حيث $\\dfrac{AM}{AB} = \\dfrac{3}{7}$ ."
+    "content": "ارسم قطعة مستقيم $[AB]$ . نريد إنشاء، دون استعمال مسطرة مدرجة، النقطة $M$ من $[AB]$ حيث $\\dfrac{AM}{AB} = \\dfrac{3}{7}$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "على نصف مستقيم مساعد [Ax) نعيّن بالمدور قطعا متقايسة عددها:",
+      "step": "01",
+      "sub": "ا",
+      "lead": "قبل الإنشاء، بنصف مستقيم مساعد $[Ax)$ مبدؤه $A$ :",
+      "statement": "كم قطعة متقايسة نعيّن بالمدور على نصف المستقيم المساعد؟",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "recall",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-TALIS-NISBA-JUZ-KULL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في النسبة $\\dfrac{AM}{AB}$ ، المقام يقابل القطعة كلها $[AB]$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "سبع قطع: $AB$ يقابل سبعة أجزاء متساوية.",
+        "incorrect": "$\\dfrac{3}{7}$ نسبة الجزء $AM$ إلى الكل $AB$ ، لا نسبة جزأين."
+      },
+      "solution": {
+        "lines": [
+          "$\\dfrac{AM}{AB} = \\dfrac{3}{7}$ : $AB$ سبعة أجزاء متساوية و $AM$ ثلاثة منها، فنعيّن 7 قطع متقايسة ونصل العلامة السابعة بـ $B$ ."
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "sub": "ب",
+      "statement": "ما رتبة العلامة التي يمرّ بها الموازي الذي يعيّن $M$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "recall",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الموازي المارّ بالعلامة رقم $k$ يعطي نقطة $M$ حيث $\\dfrac{AM}{AB} = \\dfrac{k}{7}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "العلامة الثالثة: $\\dfrac{AM}{AB} = \\dfrac{AP_3}{AP_7} = \\dfrac{3}{7}$ .",
+        "incorrect": "قارن $\\dfrac{k}{7}$ بالنسبة المطلوبة."
+      },
+      "solution": {
+        "lines": [
+          "$(P_3M) \\parallel (P_7B)$ : $\\dfrac{AM}{AB} = \\dfrac{AP_3}{AP_7} = \\dfrac{3}{7}$ ، فالموازي يمر بالعلامة الثالثة."
+        ]
+      },
+      "timeSeconds": 60
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "أنشئ النقطة $M$ .",
       "learningPoints": [
         {
           "code": "4am_inshaat-talis_P1",
@@ -31,31 +114,69 @@
         }
       ],
       "difficulty": 2,
-      "answerType": "rational",
-      "answerFormat": "عدد طبيعي",
-      "expectedAnswer": "7",
-      "misconceptionSignatures": [
-        {
-          "id": "MISC-TALIS-ADAD-AL-ALAMAT",
-          "value": "10"
-        }
-      ],
+      "cognitiveDemand": "apply",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب خطوات الإنشاء مرقّمة (أو صوّر ورقتك)، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "$\\dfrac{AM}{AB} = \\dfrac{3}{7}$ : AB أجزاء متساوية، و AM ثلاثة منها."
+          "content": "المسطرة غير مدرّجة: لا نقيس $AB$ ، بل نستعمل نصف مستقيم مساعد مبدؤه $A$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "كم جزءًا في AB كلها؟"
+          "content": "$\\dfrac{AM}{AB} = \\dfrac{3}{7}$ : كم جزءا متساويا في $AB$ ؟ وكم جزءا في $AM$ ؟"
         }
       ],
       "feedback": {
-        "correct": "سبع قطع، ونصل السابعة بـ B : AM ثلاث منها.",
-        "incorrect": "$\\dfrac{AM}{AB}$ نسبة جزء إلى الكل: الكل AB سبعة أجزاء (العدد 10 يخص $\\dfrac{MA}{MB}$ )."
-      }
+        "correct": "سبع قطع متقايسة على $[Ax)$ ، نصل السابعة بـ $B$ ، والموازي المارّ بالثالثة يعيّن $M$ .",
+        "incorrect": "قارن إنشاءك بالحل النموذجي خطوة خطوة، ثم صحّح الخطوة التي تختلف."
+      },
+      "solution": {
+        "lines": [
+          "1) نرسم نصف مستقيم $[Ax)$ لا يحمل القطعة $[AB]$ .",
+          "2) نعيّن عليه بالمدور، ابتداءً من $A$ ، 7 قطع متقايسة متتالية (بفتحة مدور كيفية) تنتهي عند العلامة $P_{7}$ .",
+          "3) نصل العلامة $P_{7}$ بالنقطة $B$ .",
+          "4) نرسم بالمسطرة والكوس الموازي للمستقيم $(P_{7}B)$ المارّ بالعلامة $P_{3}$ : يقطع $[AB]$ في $M$ .",
+          "التبرير: $(P_{3}M) \\parallel (P_{7}B)$ ، فحسب خاصية طالس في المثلثين $AP_{3}M$ و $AP_{7}B$ : $\\dfrac{AM}{AB} = \\dfrac{AP_{3}}{AP_{7}} = \\dfrac{3}{7}$ ."
+        ]
+      },
+      "timeSeconds": 420
+    },
+    {
+      "id": "q4",
+      "step": "03",
+      "statement": "إذا كان $AB = 8{,}4\\,\\mathrm{cm}$ ، احسب الطول $AM$ .",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ cm",
+      "expectedAnswer": "3,6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AM = \\dfrac{3}{7}AB$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$AM = \\dfrac{3}{7} \\times 8{,}4 = 3{,}6\\,\\mathrm{cm}$ .",
+        "incorrect": "اضرب $\\dfrac{3}{7}$ في $AB$ ."
+      },
+      "solution": {
+        "lines": [
+          "$AM = \\dfrac{3}{7}AB = \\dfrac{3 \\times 8{,}4}{7}$"
+        ],
+        "result": "AM = 3{,}6\\,\\mathrm{cm}"
+      },
+      "timeSeconds": 90
     }
   ]
 }

@@ -3,123 +3,187 @@
   "lessonCode": "talis-hisab-atwal",
   "level": 3,
   "metadata": {
-    "title": "تدريب — طول قطعة",
-    "estimatedMinutes": 3,
+    "title": "BEM 2013 — التمرين الثالث",
+    "estimatedMinutes": 8,
     "tags": [
-      "حساب طول"
+      "خاصية طالس",
+      "الظل"
     ],
     "source": {
-      "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_talis-hisab-atwal_P2",
-      "modelledOn": "method-lengths"
+      "type": "bem",
+      "year": 2013,
+      "part": 1,
+      "exercise": 3
+    },
+    "exam": {
+      "kind": "official",
+      "badge": "BEM 2013",
+      "heading": "التمرين الثالث",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في الشكل، M من $[AB]$ و N من $[AC]$ و $(MN) \\parallel (BC)$ ؛ $AM = 4$ ، $MB = 2$ و $AN = 5$ .",
-    "figure": {
-      "points": {
-        "A": [
-          0,
-          0
-        ],
-        "B": [
-          4.568,
-          2.034
-        ],
-        "C": [
-          5.196,
-          -3.0
-        ],
-        "M": [
-          3.045,
-          1.356
-        ],
-        "N": [
-          3.464,
-          -2.0
-        ]
-      },
-      "segments": [
-        {
-          "from": "A",
-          "to": "M",
-          "label": "4"
-        },
-        {
-          "from": "M",
-          "to": "B",
-          "label": "2"
-        },
-        {
-          "from": "A",
-          "to": "N",
-          "label": "5"
-        },
-        {
-          "from": "N",
-          "to": "C"
-        },
-        {
-          "from": "B",
-          "to": "C",
-          "arrows": 1
-        },
-        {
-          "from": "M",
-          "to": "N",
-          "arrows": 1,
-          "tone": "indigo"
-        }
-      ],
-      "ariaLabel": "M من [AB] و N من [AC] و (MN) يوازي (BC)؛ AM = 4 و MB = 2 و AN = 5",
-      "maxWidth": 260,
-      "labels": {
-        "A": "w"
-      }
-    }
+    "content": "$ABC$ مثلث قائم في $B$ حيث: $AB = 4\\,\\mathrm{cm}$ و $CB = 8\\,\\mathrm{cm}$ . لتكن $M$ نقطة من $[BC]$ حيث: $BM = \\dfrac{BC}{4}$ و المستقيم $(\\Delta)$ العمودي على $(BC)$ في النقطة $M$ يقطع $[AC]$ في النقطة $H$ ."
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "احسب NC.",
+      "step": "01",
+      "statement": "احسب الطول $MH$ .",
       "learningPoints": [
         {
           "code": "4am_talis-hisab-atwal_P2",
           "role": "primary"
+        },
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "secondary"
         }
       ],
       "difficulty": 3,
+      "cognitiveDemand": "apply",
       "answerType": "rational",
-      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
-      "expectedAnswer": "2,5",
+      "answerFormat": "عدد: الطول بـ cm",
+      "expectedAnswer": "3",
       "misconceptionSignatures": [
         {
-          "id": "MISC-TALIS-QITAA-BADAL-DILA",
-          "value": "7,5"
+          "value": "1",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "value": "16/3",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+          "content": "$(AB)$ و $(\\Delta)$ كلاهما عمودي على $(BC)$ : ماذا تستنتج؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+          "content": "احسب $BM$ ثم $CM$ ، والمثلثان $CMH$ و $CBA$ في وضعية طالس."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+          "content": "اكتب $\\dfrac{CM}{CB} = \\dfrac{MH}{AB}$ ."
         }
       ],
       "feedback": {
-        "correct": "$AB = 6$ : $\\dfrac{4}{6} = \\dfrac{5}{AC}$ ومنه $AC = 7{,}5$ و $NC = 7{,}5 - 5 = 2{,}5$ .",
-        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
-      }
+        "correct": "$BM = 2$ ، $CM = 6$ و $MH = \\dfrac{4 \\times 6}{8} = 3\\,\\mathrm{cm}$ .",
+        "incorrect": "هل استعملت ضلعًا من المثلث الكبير أم قطعة منه؟ النسب تُكتب بأطوال تُقاس من الرأس المشترك؛ اطرح أو اجمع بعد ذلك إن كان المطلوب طول قطعة."
+      },
+      "solution": {
+        "lines": [
+          "حساب الطول $MH$ :",
+          "بما أنّ $(AB)$ و $(\\Delta)$ متوازيان. ( $(AB) \\perp (BC)$ لأنّ المثلث $ABC$ قائم في $B$ ، و $(\\Delta) \\perp (BC)$ من المعطيات)",
+          "إذا المستقيمان $(AB)$ و $(\\Delta)$ متوازيان.",
+          "و $H \\in (AC)$ و $M \\in (BC)$ فإنّ: $\\dfrac{CM}{CB} = \\dfrac{CH}{CA} = \\dfrac{MH}{AB}$ حسب خاصية طالس.",
+          "( $BM = \\dfrac{8}{4} = 2$ و $CM = CB - BM = 8 - 2 = 6$ )",
+          "لدينا: $\\dfrac{CM}{CB} = \\dfrac{MH}{AB}$",
+          "و منه: $MH = \\dfrac{AB \\times CM}{CB}$",
+          "بالتعويض نجد: $MH = \\dfrac{4 \\times 6}{8}$",
+          "أي: $MH = 3\\,cm$"
+        ],
+        "result": "MH = 3\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 300
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب $\\tan\\widehat{AMB}$ واستنتج قيس الزاوية $\\widehat{AMB}$ بالتدوير إلى الدرجة.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "أعط أولا قيمة $\\tan\\widehat{AMB}$",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "value": "0,5",
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث $ABM$ قائم في $B$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\tan\\widehat{AMB} = \\dfrac{\\text{المقابل}}{\\text{المجاور}}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan\\widehat{AMB} = \\dfrac{AB}{BM} = \\dfrac{4}{2} = 2$ .",
+        "incorrect": "في المثلث $ABM$ القائم في $B$ : الضلع المقابل للزاوية $\\widehat{AMB}$ هو $[AB]$ والمجاور لها $[BM]$ ."
+      },
+      "solution": {
+        "lines": [
+          "حساب $\\tan\\widehat{AMB}$ :",
+          "لدينا: $\\tan\\widehat{AMB} = \\dfrac{AB}{BM}$",
+          "$\\tan\\widehat{AMB} = \\dfrac{4}{2}$"
+        ],
+        "result": "\\tan\\widehat{AMB} = 2"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "قيس الزاوية $\\widehat{AMB}$ بالتدوير إلى الدرجة:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد الدرجات فقط (عدد طبيعي)",
+      "expectedAnswer": "63",
+      "misconceptionSignatures": [
+        {
+          "value": "27",
+          "id": "MISC-MUTH-MUQABIL-MUJAWIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الآلة الحاسبة: $\\tan^{-1}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\widehat{AMB} \\approx 63{,}43^{\\circ}$ أي $63^{\\circ}$ بالتدوير إلى الدرجة.",
+        "incorrect": "استعمل $\\tan^{-1}$ (أو shift tan) في الآلة الحاسبة بالدرجات، ثم دوّر إلى الوحدة."
+      },
+      "solution": {
+        "lines": [
+          "استنتاج قيس الزاوية $\\widehat{AMB}$ :",
+          "باستعمال الآلة الحاسبة نجد: $\\widehat{AMB} \\approx 63{,}43^{\\circ}$"
+        ],
+        "result": "\\widehat{AMB} = 63^{\\circ}"
+      },
+      "work": "optional",
+      "timeSeconds": 120
     }
   ]
 }

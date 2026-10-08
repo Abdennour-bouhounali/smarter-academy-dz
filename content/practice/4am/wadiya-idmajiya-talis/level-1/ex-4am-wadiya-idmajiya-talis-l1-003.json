@@ -4,10 +4,10 @@
   "level": 1,
   "metadata": {
     "title": "أؤكّد تعلّماتي 3 — توازٍ أم لا؟",
-    "estimatedMinutes": 3,
+    "estimatedMinutes": 6,
     "tags": [
       "الخاصية العكسية",
-      "إثبات عدم التوازي"
+      "عدم التوازي"
     ],
     "source": {
       "type": "textbook",
@@ -15,31 +15,37 @@
       "page": 112,
       "section": "أؤكّد تعلّماتي",
       "number": 3
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "02"
     }
   },
   "statement": {
-    "content": "في الشكل: النقط A و B و E على استقامة، والنقط A و C و F على استقامة (بنفس الترتيب). $AB = 11$ ، $BE = 22$ ، $AC = 15$ ، $CF = 45$ .",
+    "content": "في الشكل المقابل: النقط $A$ ، $B$ ، $E$ في استقامية، والنقط $A$ ، $C$ ، $F$ في استقامية، بهذا الترتيب، حيث: $AB = 11\\,\\mathrm{cm}$ ، $BE = 22\\,\\mathrm{cm}$ ، $AC = 15\\,\\mathrm{cm}$ و $CF = 45\\,\\mathrm{cm}$ .",
     "figure": {
       "points": {
         "A": [
-          0,
-          0
+          0.0,
+          0.0
         ],
         "B": [
-          2.667,
-          1.667
+          6.619965254673,
+          8.78499061052
         ],
         "E": [
-          8,
-          5
+          19.859895764018,
+          26.354971831561
         ],
         "C": [
-          3,
-          0
+          14.488887394336,
+          3.882285676538
         ],
         "F": [
-          12,
-          0
+          57.955549577344,
+          15.529142706151
         ]
       },
       "segments": [
@@ -56,14 +62,12 @@
         {
           "from": "A",
           "to": "C",
-          "label": "15",
-          "labelSide": -1
+          "label": "15"
         },
         {
           "from": "C",
           "to": "F",
-          "label": "45",
-          "labelSide": -1
+          "label": "45"
         },
         [
           "B",
@@ -74,44 +78,136 @@
           "F"
         ]
       ],
-      "labels": {
-        "A": "w",
-        "B": "nw",
-        "E": "n",
-        "C": "s",
-        "F": "e"
-      },
-      "ariaLabel": "النقط A و B و E على استقامة والنقط A و C و F على استقامة؛ AB = 11 و BE = 22 و AC = 15 و CF = 45",
+      "ariaLabel": "النقط A و B و E على استقامة والنقط A و C و F على استقامة بهذا الترتيب؛ AB = 11 و BE = 22 و AC = 15 و CF = 45",
       "maxWidth": 340
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ينتج:",
+      "step": "01",
+      "sub": "ا",
+      "statement": "احسب النسبة $\\dfrac{AB}{AE}$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-talis_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
+      "expectedAnswer": "1/3",
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "value": "1/2",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AE = AB + BE$ ، والطولان يُقاسان من النقطة $A$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم $AB$ على $AE$ ثم اختزل الكسر (قيمة مضبوطة، دون تدوير)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AB}{AE} = \\dfrac{11}{33} = \\dfrac{1}{3}$ .",
+        "incorrect": "النسبة $\\dfrac{AB}{AE}$ : الطول $AB$ على الطول $AE$ ، وكلاهما من النقطة $A$ ؛ اكتبها كسرا مضبوطا."
+      },
+      "solution": {
+        "lines": [
+          "$AE = AB + BE = 11 + 22 = 33$",
+          "$\\dfrac{AB}{AE} = \\dfrac{11}{33} = \\dfrac{1}{3}$"
+        ],
+        "result": "\\dfrac{AB}{AE} = \\dfrac{1}{3}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q2",
+      "step": "01",
+      "sub": "ب",
+      "statement": "احسب النسبة $\\dfrac{AC}{AF}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
+      "expectedAnswer": "1/4",
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "value": "1/3",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AF = AC + CF$ ، والطولان يُقاسان من النقطة $A$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم $AC$ على $AF$ ثم اختزل الكسر (قيمة مضبوطة، دون تدوير)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AC}{AF} = \\dfrac{15}{60} = \\dfrac{1}{4}$ .",
+        "incorrect": "النسبة $\\dfrac{AC}{AF}$ : الطول $AC$ على الطول $AF$ ، وكلاهما من النقطة $A$ ؛ اكتبها كسرا مضبوطا."
+      },
+      "solution": {
+        "lines": [
+          "$AF = AC + CF = 15 + 45 = 60$",
+          "$\\dfrac{AC}{AF} = \\dfrac{15}{60} = \\dfrac{1}{4}$"
+        ],
+        "result": "\\dfrac{AC}{AF} = \\dfrac{1}{4}"
+      },
+      "timeSeconds": 90
+    },
+    {
+      "id": "q3",
+      "step": "02",
+      "statement": "هل المستقيمان $(BC)$ و $(EF)$ متوازيان؟ علّل.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
       "answerType": "choice",
       "choices": [
         {
           "id": "A",
-          "content": "(BC)//(EF)",
+          "content": "نعم",
           "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
+          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
         },
         {
           "id": "B",
-          "content": "$BC = \\dfrac{1}{2}EF$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
-        },
-        {
-          "id": "C",
-          "content": "(EF) لا يوازي (BC)",
+          "content": "لا",
           "isCorrect": true
         }
       ],
@@ -119,25 +215,26 @@
         {
           "id": "h1",
           "type": "look",
-          "content": "$AE = AB + BE$ و $AF = AC + CF$ ."
+          "content": "قارن النسبتين بقيمهما المضبوطة (الجداء المتصالب)، لا بقيم مقرّبة ولا بمظهر الشكل."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "احسب $\\dfrac{AB}{AE}$ و $\\dfrac{AC}{AF}$ ."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "نسبتان مختلفتان تكفيان للحكم."
+          "content": "تحقّق أيضا من ترتيب النقط على المستقيمين المتقاطعين."
         }
       ],
       "feedback": {
-        "correct": "$\\dfrac{11}{33} = \\dfrac{1}{3}$ و $\\dfrac{15}{60} = \\dfrac{1}{4}$ : لو كان التوازي لتساوتا.",
-        "incorrect": "قارن النسبتين بقيمتهما المضبوطة."
+        "correct": "$\\dfrac{1}{3} \\neq \\dfrac{1}{4}$ : المستقيمان غير متوازيين.",
+        "incorrect": "الخاصية العكسية تتطلب شرطين معا: تساوي النسبتين بقيم مضبوطة، وترتيب النقط نفسه على المستقيمين."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 2
+      "solution": {
+        "lines": [
+          "$\\dfrac{AB}{AE} = \\dfrac{1}{3}$ و $\\dfrac{AC}{AF} = \\dfrac{1}{4}$ ، إذن $\\dfrac{AB}{AE} \\neq \\dfrac{AC}{AF}$ .",
+          "لو كان $(BC) \\parallel (EF)$ لكانت النسبتان متساويتين حسب خاصية طالس،",
+          "إذن المستقيمان $(BC)$ و $(EF)$ غير متوازيين."
+        ]
+      },
+      "timeSeconds": 90
     }
   ]
 }

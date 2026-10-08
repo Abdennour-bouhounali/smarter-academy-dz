@@ -42,6 +42,13 @@ export const LESSON_CONFIG = {
     module: 4,
     title: 'مكتبة المتوسطة: 756 كتابًا في رفوف',
     statement: 'تلقّت مكتبة المتوسطة هبة من 756 كتابًا. المكتبة مفتوحة 5 أيام في الأسبوع. يريد القيّم ترتيب كل الكتب في رفوف مملوءة تمامًا، دون أن يبقى أيّ كتاب على الأرض. في المخزن نوعان من الرفوف: رفوف تتّسع لـ 32 كتابًا ورفوف تتّسع لـ 36 كتابًا، وثمن الرفّ الواحد 1850 دج مهما كان نوعه.',
+    // Les questions de la مسألة 1 (content/problems.js les reprend telles quelles) :
+    // le sommaire montre l'énoncé ET ce qu'on demande.
+    questions: [
+      { label: '1)', text: 'أجرِ القسمة الإقليدية للعدد 756 على 32. هل تناسب الرفوف من 32 كتابًا القيّم؟ علّل.' },
+      { label: '2)', text: 'بيّن أنّ 36 قاسم للعدد 756، ثم استنتج عدد الرفوف اللازمة.' },
+      { label: '3)', text: 'ما المبلغ الذي سيدفعه القيّم لشراء الرفوف المناسبة؟' },
+    ],
   },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.

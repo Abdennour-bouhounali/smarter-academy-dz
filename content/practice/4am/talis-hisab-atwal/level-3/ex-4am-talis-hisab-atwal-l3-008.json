@@ -3,131 +3,287 @@
   "lessonCode": "talis-hisab-atwal",
   "level": 3,
   "metadata": {
-    "title": "تدريب — أي مساواة صحيحة؟",
-    "estimatedMinutes": 3,
+    "title": "BEM 2023 — التمرين الثالث",
+    "estimatedMinutes": 12,
     "tags": [
-      "النسب المتساوية"
+      "عكس فيثاغورس",
+      "خاصية طالس"
     ],
     "source": {
-      "type": "platform_addition",
-      "reason": "practice_generation",
-      "learningPoint": "4am_talis-hisab-atwal_P1",
-      "modelledOn": "know-1"
+      "type": "bem",
+      "year": 2023,
+      "part": 1,
+      "exercise": 3
+    },
+    "exam": {
+      "kind": "official",
+      "badge": "BEM 2023",
+      "heading": "التمرين الثالث",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "D من $[AB]$ و E من $[AC]$ و $(DE) \\parallel (BC)$ .",
+    "content": "(لا يطلب إعادة رسم الشكل على ورقة الإجابة) إليك الشكل المقابل، حيث وحدة الطول هي $cm$ .",
     "figure": {
       "points": {
-        "A": [
-          0,
-          0
+        "I": [
+          -4.0,
+          0.0
         ],
-        "B": [
-          2.5,
-          4.33
+        "K": [
+          0.0,
+          0.0
         ],
-        "C": [
-          5.909,
-          1.042
+        "M": [
+          3.0,
+          0.0
         ],
-        "D": [
-          1.5,
-          2.598
+        "J": [
+          0.0,
+          4.0
         ],
-        "E": [
-          3.545,
-          0.625
+        "N": [
+          -1.714285714286,
+          2.285714285714
         ]
       },
       "segments": [
         {
-          "from": "A",
-          "to": "D"
+          "from": "K",
+          "to": "J",
+          "label": "4"
         },
         {
-          "from": "D",
-          "to": "B"
+          "from": "J",
+          "to": "M",
+          "label": "5"
         },
         {
-          "from": "A",
-          "to": "E"
-        },
-        {
-          "from": "E",
-          "to": "C"
-        },
-        {
-          "from": "B",
-          "to": "C",
-          "arrows": 1
-        },
-        {
-          "from": "D",
-          "to": "E",
-          "arrows": 1,
-          "tone": "indigo"
+          "from": "K",
+          "to": "M",
+          "label": "3"
         }
       ],
-      "ariaLabel": "D من [AB] و E من [AC] و (DE) يوازي (BC)",
-      "maxWidth": 260,
+      "lines": [
+        {
+          "through": [
+            "I",
+            "J"
+          ],
+          "extend": [
+            0.15,
+            0.15
+          ]
+        },
+        {
+          "through": [
+            "J",
+            "M"
+          ],
+          "extend": [
+            0.15,
+            0.2
+          ]
+        },
+        {
+          "through": [
+            "N",
+            "K"
+          ],
+          "extend": [
+            0.3,
+            0.3
+          ]
+        },
+        {
+          "through": [
+            "I",
+            "M"
+          ],
+          "extend": [
+            0.08,
+            0.1
+          ]
+        },
+        {
+          "through": [
+            "K",
+            "J"
+          ],
+          "extend": [
+            0.15,
+            0.1
+          ]
+        }
+      ],
+      "angles": [
+        {
+          "at": "I",
+          "from": "M",
+          "to": "J",
+          "label": "45°"
+        }
+      ],
       "labels": {
-        "A": "w"
-      }
+        "K": "sw",
+        "N": "w",
+        "J": "ne"
+      },
+      "ariaLabel": "المستقيمات (IJ) و (JM) و (KN) و (IM) و (JK)؛ JK = 4 و JM = 5 و KM = 3، والزاوية في I قيسها 45°",
+      "maxWidth": 320
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "المساواة الصحيحة هي:",
+      "step": "01",
+      "statement": "بين أن المستقيمين $(JK)$ و $(IM)$ متعامدان.",
       "learningPoints": [
         {
           "code": "4am_talis-hisab-atwal_P1",
           "role": "primary"
         }
       ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "يكفي أن تبيّن أن المثلث $JKM$ قائم في $K$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن $JM^2$ و $KM^2 + KJ^2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$JM^2 = 25$ و $KM^2 + KJ^2 = 9 + 16 = 25$ : المثلث $JKM$ قائم في $K$ .",
+        "incorrect": "قارن برهانك بالحل النموذجي: الخاصية العكسية لفيثاغورس."
+      },
+      "solution": {
+        "lines": [
+          "يكفي أن نبين أن المثلث $JKM$ قائم في $K$ :",
+          "نتحقق أن: $JM^2 = KM^2 + KJ^2$",
+          "لدينا: $JM^2 = 5^2 = 25$",
+          "وأيضا: $KM^2 + KJ^2 = 3^2 + 4^2 = 25$",
+          "إذا: $JM^2 = KM^2 + KJ^2$ فحسب الخاصية العكسية لفيثاغورس فإن المثلث $JKM$ قائم في $K$",
+          "وبالتالي: $(JK) \\perp (IM)$",
+          "أعادت المنصّة رسم شكل الموضوع بوضوح أكبر، بنفس المعطيات."
+        ]
+      },
+      "timeSeconds": 240,
+      "counted": false
+    },
+    {
+      "id": "q2",
+      "step": "02",
+      "statement": "احسب الطول $IK$ .",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "counted": false,
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد: الطول بـ cm",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث $JKI$ قائم في $K$ وزاويته في $I$ قيسها $45^{\\circ}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل $\\tan\\widehat{KIJ} = \\dfrac{JK}{IK}$ و $\\tan 45^{\\circ} = 1$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\tan 45^{\\circ} = \\dfrac{4}{IK}$ ومنه $IK = 4\\,\\mathrm{cm}$ .",
+        "incorrect": "في المثلث القائم $JKI$ : الضلع المقابل للزاوية $\\widehat{KIJ}$ هو $[JK]$ والمجاور لها $[IK]$ ."
+      },
+      "solution": {
+        "lines": [
+          "بما أن المثلث $JKI$ قائم في $K$ فإن:",
+          "$\\tan\\widehat{KIJ} = \\dfrac{JK}{IK}$",
+          "$\\tan 45 = \\dfrac{4}{IK}$",
+          "ومنه: $IK = \\dfrac{4}{\\tan 45} = \\dfrac{4}{1}$"
+        ],
+        "result": "IK = 4\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 150
+    },
+    {
+      "id": "q3",
+      "step": "03",
+      "statement": "المستقيم الموازي لـ $(JM)$ والذي يشمل $K$ يقطع $[IJ]$ في $N$ . احسب الطول $NK$ .",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "secondary"
+        }
+      ],
       "difficulty": 3,
-      "answerType": "choice",
-      "choices": [
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "القيمة المضبوطة: كسر مثل 7/9",
+      "expectedAnswer": "20/7",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\dfrac{AE}{AC} = \\dfrac{DE}{BC}$",
-          "isCorrect": true
+          "value": "20/3",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
         },
         {
-          "id": "B",
-          "content": "$\\dfrac{AD}{DB} = \\dfrac{DE}{BC}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
-        },
-        {
-          "id": "C",
-          "content": "$\\dfrac{DE}{BC} = \\dfrac{AC}{AE}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+          "value": "8,75",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+          "content": "$I$ ، $K$ ، $M$ و $I$ ، $N$ ، $J$ على استقامة، و $(NK) \\parallel (JM)$ : المثلثان $IKN$ و $IMJ$ في وضعية طالس."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+          "content": "احسب $IM = IK + KM$ ، ثم اكتب $\\dfrac{IK}{IM} = \\dfrac{NK}{JM}$ ."
         },
         {
           "id": "h3",
           "type": "strategy",
-          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+          "content": "أكمل بالجداء المتصالب واترك النتيجة كسرا."
         }
       ],
       "feedback": {
-        "correct": "المثلثان ADE و ABC: $\\dfrac{AD}{AB} = \\dfrac{AE}{AC} = \\dfrac{DE}{BC}$ .",
-        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
-      }
+        "correct": "$IM = 7$ و $NK = \\dfrac{5 \\times 4}{7} = \\dfrac{20}{7}\\,\\mathrm{cm}$ .",
+        "incorrect": "هل استعملت ضلعًا من المثلث الكبير أم قطعة منه؟ النسب تُكتب بأطوال تُقاس من الرأس المشترك؛ اطرح أو اجمع بعد ذلك إن كان المطلوب طول قطعة."
+      },
+      "solution": {
+        "lines": [
+          "بما ان: $(JM) \\parallel (NK)$ والنقط: $I$ ، $K$ ، $M$ و $I$ ، $N$ ، $J$ على استقامة واحدة وبنفس الترتيب",
+          "فحسب نظرية طالس: $\\dfrac{IK}{IM} = \\dfrac{IN}{IJ} = \\dfrac{NK}{JM}$",
+          "( $IM = IK + KM = 4 + 3 = 7$ )",
+          "$\\dfrac{4}{7} = \\dfrac{IN}{IJ} = \\dfrac{NK}{5}$",
+          "ومنه: $NK = \\dfrac{5 \\times 4}{7} = \\dfrac{20}{7} \\approx 2{,}86\\,cm$"
+        ],
+        "result": "NK = \\dfrac{20}{7}\\,\\mathrm{cm}"
+      },
+      "work": "optional",
+      "timeSeconds": 270
     }
   ]
 }

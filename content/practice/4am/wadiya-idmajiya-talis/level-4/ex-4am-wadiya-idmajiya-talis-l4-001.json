@@ -3,11 +3,12 @@
   "lessonCode": "wadiya-idmajiya-talis",
   "level": 4,
   "metadata": {
-    "title": "أتعمّق 20 — شبه منحرف",
-    "estimatedMinutes": 6,
+    "title": "أتعمّق 20 — شبه منحرف ومتوسطات",
+    "estimatedMinutes": 14,
     "tags": [
       "خاصية طالس",
-      "منتصف"
+      "وضعية الفراشة",
+      "متوسطات المثلث"
     ],
     "source": {
       "type": "textbook",
@@ -15,35 +16,45 @@
       "page": 113,
       "section": "أتعمّق",
       "number": 20
+    },
+    "exam": {
+      "kind": "adapted",
+      "badge": null,
+      "heading": "التمرين",
+      "points": "03"
     }
   },
   "statement": {
-    "content": "EBCF شبه منحرف قاعدته الصغرى [EF] نصف قاعدته الكبرى [BC] ( $EF = \\dfrac{1}{2}BC$ ). قطراه [BF] و [EC] يتقاطعان في G، و (CF) و (BE) يتقاطعان في A.",
+    "content": "في الشكل المقابل: $EBCF$ شبه منحرف قاعدته الصغرى $[EF]$ نصف قاعدته الكبرى $[BC]$ ، أي $EF = \\dfrac{1}{2}BC$ . قطراه $[BF]$ و $[EC]$ يتقاطعان في $G$ ، والمستقيمان $(CF)$ و $(BE)$ يتقاطعان في $A$ .",
     "figure": {
       "points": {
         "B": [
-          0,
-          0
+          0.0,
+          0.0
         ],
         "C": [
-          8,
-          0
+          8.0,
+          0.0
         ],
         "F": [
-          6,
-          3
+          6.0,
+          3.0
         ],
         "E": [
-          2,
-          3
+          2.0,
+          3.0
         ],
         "A": [
-          4,
-          6
+          4.0,
+          6.0
         ],
         "G": [
-          4,
-          2
+          4.0,
+          2.0
+        ],
+        "L": [
+          4.0,
+          0.0
         ]
       },
       "segments": [
@@ -80,7 +91,13 @@
         [
           "E",
           "C"
-        ]
+        ],
+        {
+          "from": "A",
+          "to": "L",
+          "dashed": true,
+          "tone": "indigo"
+        }
       ],
       "labels": {
         "B": "sw",
@@ -88,160 +105,147 @@
         "F": "e",
         "E": "w",
         "A": "n",
-        "G": "e"
+        "G": "e",
+        "L": "s"
       },
-      "ariaLabel": "شبه منحرف EBCF قاعدتاه [EF] و [BC] حيث EF نصف BC، قطراه يتقاطعان في G، و (CF) و (BE) يتقاطعان في A",
+      "ariaLabel": "شبه منحرف EBCF قاعدتاه [EF] و [BC] حيث EF نصف BC، قطراه يتقاطعان في G، و (CF) و (BE) يتقاطعان في A، و (AG) يقطع [BC] في L",
       "maxWidth": 300
     }
   },
   "questions": [
     {
       "id": "q1",
-      "statement": "ما قيمة $\\dfrac{GE}{GC}$ ؟",
+      "step": "01",
+      "statement": "احسب النسبة $\\dfrac{GE}{GC}$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-talis_P1",
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "عدد (كسر أو عشري)",
-      "expectedAnswer": "0.5",
-      "hints": [
-        {
-          "id": "h1",
-          "type": "look",
-          "content": "(EF)//(BC)."
-        },
-        {
-          "id": "h2",
-          "type": "direction",
-          "content": "المثلثان GEF و GCB في وضعية طالس."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "$\\dfrac{GE}{GC} = \\dfrac{EF}{CB}$ ."
-        }
-      ],
-      "feedback": {
-        "correct": "$\\dfrac{GE}{GC} = \\dfrac{EF}{CB} = \\dfrac{1}{2}$ .",
-        "incorrect": "طول من المثلث الصغير على الموافق في الكبير."
-      },
+      "difficulty": 1,
       "cognitiveDemand": "apply",
-      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
+      "expectedAnswer": "1/2",
       "misconceptionSignatures": [
         {
           "value": "2",
           "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
-      ]
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(EF) \\parallel (BC)$ والقطران يتقاطعان في $G$ : المثلثان $GEF$ و $GCB$ في وضعية الفراشة، و $\\dfrac{GE}{GC} = \\dfrac{EF}{CB}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم $GE$ على $GC$ ثم اختزل الكسر (قيمة مضبوطة، دون تدوير)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{GE}{GC} = \\dfrac{1}{2}$ .",
+        "incorrect": "النسبة $\\dfrac{GE}{GC}$ : الطول $GE$ على الطول $GC$ ، وكلاهما من النقطة $G$ ؛ اكتبها كسرا مضبوطا."
+      },
+      "solution": {
+        "lines": [
+          "$(EF) \\parallel (BC)$ ، و $E$ ، $G$ ، $C$ في استقامية و $F$ ، $G$ ، $B$ في استقامية،",
+          "حسب خاصية طالس في المثلثين $GEF$ و $GCB$ : $\\dfrac{GE}{GC} = \\dfrac{GF}{GB} = \\dfrac{EF}{CB}$ ،",
+          "و $EF = \\dfrac{1}{2}BC$ :",
+          "$\\dfrac{GE}{GC} = \\dfrac{1}{2}$"
+        ],
+        "result": "\\dfrac{GE}{GC} = \\dfrac{1}{2}"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q2",
-      "statement": "لماذا F منتصف [CA]؟",
+      "step": "02",
+      "statement": "احسب النسبة $\\dfrac{AF}{AC}$ .",
       "learningPoints": [
         {
           "code": "4am_wadiya-idmajiya-talis_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر أو عدد عشري (قيمة مضبوطة)",
+      "expectedAnswer": "1/2",
+      "misconceptionSignatures": [
         {
-          "id": "A",
-          "content": "$\\dfrac{AF}{FC} = \\dfrac{1}{2}$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
-        },
-        {
-          "id": "B",
-          "content": "المثلثان AEF و ABC في وضعية طالس: $\\dfrac{AF}{AC} = \\dfrac{EF}{BC} = \\dfrac{1}{2}$",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "لأنّ $EF = BC$",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-MULAAMA-WAQI"
+          "value": "2",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
         }
       ],
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "A رأس مشترك."
+          "content": "$(EF) \\parallel (BC)$ : المثلثان $AEF$ و $ABC$ في وضعية طالس، و $\\dfrac{AF}{AC} = \\dfrac{EF}{BC}$ ."
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "(EF)//(BC)."
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "قارن AF بالضلع AC كاملا."
+          "content": "اقسم $AF$ على $AC$ ثم اختزل الكسر (قيمة مضبوطة، دون تدوير)."
         }
       ],
       "feedback": {
-        "correct": "$AF = \\dfrac{1}{2}AC$ : F منتصف [AC].",
-        "incorrect": "النسبة تقارن الضلعين اللذين رأسهما A."
+        "correct": "$\\dfrac{AF}{AC} = \\dfrac{1}{2}$ .",
+        "incorrect": "النسبة $\\dfrac{AF}{AC}$ : الطول $AF$ على الطول $AC$ ، وكلاهما من النقطة $A$ ؛ اكتبها كسرا مضبوطا."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 4
+      "solution": {
+        "lines": [
+          "$(EF) \\parallel (BC)$ ، حسب خاصية طالس في المثلثين $AEF$ و $ABC$ : $\\dfrac{AE}{AB} = \\dfrac{AF}{AC} = \\dfrac{EF}{BC}$ :",
+          "$\\dfrac{AF}{AC} = \\dfrac{1}{2}$"
+        ],
+        "result": "\\dfrac{AF}{AC} = \\dfrac{1}{2}"
+      },
+      "timeSeconds": 90
     },
     {
       "id": "q3",
-      "statement": "المستقيم (AG) يقطع [BC] في L. لماذا L منتصف [BC]؟",
+      "step": "03",
+      "statement": "المستقيم $(AG)$ يقطع $[BC]$ في $L$ . بيّن أن $L$ منتصف $[BC]$ .",
       "learningPoints": [
         {
-          "code": "4am_wadiya-idmajiya-talis_P3",
+          "code": "4am_wadiya-idmajiya-talis_P1",
           "role": "primary"
         }
       ],
-      "answerType": "choice",
-      "choices": [
-        {
-          "id": "A",
-          "content": "(AG) يوازي (EF)",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
-        },
-        {
-          "id": "B",
-          "content": "[BF] و [CE] متوسطان في المثلث ABC، فـ G مركز ثقله و (AG) يحمل المتوسط الثالث",
-          "isCorrect": true
-        },
-        {
-          "id": "C",
-          "content": "لأنّ G منتصف [EC]",
-          "isCorrect": false,
-          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
-        }
-      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "selfCheck",
+      "answerFormat": "اكتب برهانك هنا، ثم اضغط «سجّل إجابتي» لتطّلع على الحل النموذجي.",
       "hints": [
         {
           "id": "h1",
           "type": "look",
-          "content": "F و E منتصفان."
+          "content": "ما نوع النقطتين $E$ و $F$ على ضلعي المثلث $ABC$ ؟"
         },
         {
           "id": "h2",
           "type": "direction",
-          "content": "ما اسم [BF] و [CE] في المثلث ABC؟"
-        },
-        {
-          "id": "h3",
-          "type": "strategy",
-          "content": "خاصية المتوسطات."
+          "content": "ما اسم المستقيمين $(BF)$ و $(CE)$ في المثلث $ABC$ ، وما النقطة $G$ ؟"
         }
       ],
       "feedback": {
-        "correct": "G نقطة تقاطع متوسطين فهي مركز الثقل، والمتوسط الثالث يمرّ بها: L منتصف [BC].",
-        "incorrect": "G ليست منتصف [EC] لأنّ $\\dfrac{GE}{GC} \\neq 1$ ."
+        "correct": "$G$ مركز ثقل المثلث $ABC$ ، فالمستقيم $(AG)$ متوسط ثالث يقطع $[BC]$ في منتصفه.",
+        "incorrect": "قارن ما كتبته بالحل النموذجي خطوة خطوة، ثم صحّح الخطوة التي تختلف."
       },
-      "cognitiveDemand": "reason",
-      "difficulty": 4
+      "solution": {
+        "lines": [
+          "من السؤال 02: $\\dfrac{AF}{AC} = \\dfrac{AE}{AB} = \\dfrac{1}{2}$ ، إذن $F$ منتصف $[AC]$ و $E$ منتصف $[AB]$ .",
+          "في المثلث $ABC$ : $[BF]$ و $[CE]$ متوسطان، يتقاطعان في $G$ ، إذن $G$ مركز ثقل المثلث $ABC$ .",
+          "المستقيم $(AG)$ يحمل المتوسط الثالث (المتوسطات تتقاطع في نقطة واحدة)،",
+          "إذن $(AG)$ يقطع $[BC]$ في منتصفه: $L$ منتصف $[BC]$ ."
+        ]
+      },
+      "timeSeconds": 240
     }
   ]
 }
