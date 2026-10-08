@@ -293,6 +293,7 @@ class HardeningRegressionTest extends TestCase
             'source' => 'lesson',
             'lessonCode' => 'fractions',
             'category' => 'typo',
+            'note' => 'Faute de frappe dans le titre.',
             'lesson_id' => $autre->id,
             'lesson_module_id' => 999,
             'question_attempt_id' => 999,

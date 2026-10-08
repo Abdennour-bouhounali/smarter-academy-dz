@@ -37,6 +37,7 @@ class ReportScreenshotTest extends TestCase
     {
         return $this->actingAs($as ?? $this->ambassador, 'sanctum')->post('/api/v1/reports', [
             'source' => 'lesson', 'lessonCode' => 'x', 'category' => 'display_problem',
+            'note' => 'Le texte ne s’affiche pas bien.',
         ] + $files, ['Accept' => 'application/json']);
     }
 
