@@ -71,6 +71,25 @@ export function setRows(s, r) {
   return { ...s, r, tried: [...s.tried.filter((t) => t.r !== r), { r, valid: l.valid }].sort((a, b) => a.r - b.r) };
 }
 
+/**
+ * Le r affiché à l'ouverture (jamais un essai, jamais une réponse) : le premier nombre de rangées qui ne
+ * partage PAS les plaques (un reste tombe hors du terrain) ; sinon (tout r convient) le minimum de la règle.
+ */
+export function defaultRows(s) {
+  const { min, max } = rowsRange(s);
+  for (let r = min; r <= max; r += 1) if (!rowsLayout(s, r).valid) return r;
+  return min;
+}
+
+/** « جرّب كل الإمكانيات » : les r de la règle pas encore validés. */
+export function untriedRows(s) {
+  if (s.mode !== 'rows') return [];
+  const { min, max } = rowsRange(s);
+  const out = [];
+  for (let r = min; r <= max; r += 1) if (!s.tried.some((t) => t.r === r)) out.push(r);
+  return out;
+}
+
 /** Le plus grand nombre de rangées possible : le PGCD des coefficients. */
 export const rowsGcd = (s) => s.terms.reduce((g, t) => gcd(g, t.c), 0);
 

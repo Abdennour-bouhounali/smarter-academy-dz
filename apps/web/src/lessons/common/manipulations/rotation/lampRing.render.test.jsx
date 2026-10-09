@@ -14,7 +14,8 @@ const RAW = /manipulation\.[a-zA-Z]/;
 
 describe('lamp-ring — rendu', () => {
   it('advanced (وضعية) : le jardin la nuit, six poteaux en tas, phase « à la main », lampes éteintes — la réponse nulle part', () => {
-    const html = renderToString(<LampRing {...LEVELS['lamp-ring'].advanced.numbers} />);
+    // Les indices sont désormais affichés d'emblée (méthode générale, jamais la valeur) : la fuite se mesure hors d'eux.
+    const html = renderToString(<LampRing {...LEVELS['lamp-ring'].advanced.numbers} />).replace(/<ol[^>]*data-manipulation-hints[\s\S]*?<\/ol>/, '');
     expect(html).toContain('data-lamp-ring');
     expect(html).toContain('data-world="flower-bed"');
     expect(html).toContain('data-phase="hand"');

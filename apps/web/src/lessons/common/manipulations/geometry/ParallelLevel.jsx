@@ -261,7 +261,7 @@ export default function ParallelLevel({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
-      hints={(crossing ? ['hintC1', 'hintC2', 'hintC3'] : ['hintL1', 'hintL2', 'hintL3']).map((h) => <MathText key={h}>{k(h)}</MathText>)}
+      hints={(crossing ? ['hintC1', 'hintC2', 'hintC3'] : ['hintL1', 'hintL2', 'hintL3']).map((h) => <MathText key={h}>{k(h, { target: lab.target ? LIN.fracLatex(lab.target) : '' })}</MathText>)}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={(
         <ManipulationDiscovery state={state} prompt={<MathText>{k(crossing ? 'dPromptCross' : 'dPromptLadder')}</MathText>} options={discoveryOptions} formal={formal} />

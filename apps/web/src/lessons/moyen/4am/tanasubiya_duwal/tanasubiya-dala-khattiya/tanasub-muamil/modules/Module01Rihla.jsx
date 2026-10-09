@@ -6,8 +6,6 @@ import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { HOOK, ACTIVITY, ACTIVITY_LINES } from '../content/textbook';
 import ScooterVignette from '../components/ScooterVignette';
@@ -25,7 +23,7 @@ import DataTable from '../components/DataTable';
  * UNDERSTAND l'étape 1 se décide sur les colonnes de l'élève (`onTrial`, `[data-activity-evidence]`) ;
  *           la brique jadwal-tanasub NOMME ce qu'elles montrent.
  * TRANSFER  la remise de l'Aïd (2% CORRIGÉ en 20 %, une ligne) : compléter, montrer, coefficient 0,8.
- * « مسألة الدرس » (LessonProblemCard) clôt la dernière étape : les labs vivent dans l'intro (deux niveaux).
+ * « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) clôt la dernière étape : les labs vivent dans l'intro (deux niveaux).
  * Aucune étape n'attend `onFinished` (le module ne porte pas d'activité du manuel dans son lab).
  * LP : P1 (P2 et P3 sont l'objet du متقدم, enseignés en معارف).
  */
@@ -200,7 +198,6 @@ export default function Module01Rihla() {
                   <MathText>{'في رحلاتك وفي تخفيض العيد: حاصل القسمة ثابت، والسعر الجديد يساوي $0{,}8 \\times$ السعر القديم. المحور التالي يعلّمك حساب المعامل وإكمال جدول، ويريك صيغة كراء يزداد فيها السعر دون أن تكون تناسبية.'}</MathText>
                 </p>
               )}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

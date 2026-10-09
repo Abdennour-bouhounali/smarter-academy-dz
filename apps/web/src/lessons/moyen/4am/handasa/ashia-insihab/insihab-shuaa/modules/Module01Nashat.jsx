@@ -6,8 +6,6 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import { FIG_ACT1, FIG_ACT1_ARROWS, FIG_ACT1_2D } from '../content/figures';
@@ -24,7 +22,7 @@ import DroneShowVignette from '../components/DroneShowVignette';
  * UNDERSTAND  les questions 1 أ – 2 هـ du نشاط 1 sous les placements de l'élève (`onTrial`, `[data-activity-evidence]`),
  *           sur la figure du manuel (GeoFigure) ; la brique « الانسحاب يعرّف شعاعا » = le texte du نشاط 1.
  * AUCUNE étape n'attend `onFinished`. LP : P1 (translation ↔ vecteur), P2 (منحى، اتجاه، طول).
- * Le lab vit dans `intro` (deux niveaux) : la DERNIÈRE étape se termine sur « مسألة الدرس » (LessonProblemCard),
+ * Le lab vit dans `intro` (deux niveaux) : la DERNIÈRE étape se termine sur « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire),
  * résolue au module 5.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -86,7 +84,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="في المستويين: كل مسيّرة على عقدة من شبكة الرصف، وصورتها تُقبل فقط إذا كان لسهمها نفس المنحى ونفس الاتجاه ونفس الطول."
           levels={{
             beginner: () => (
@@ -223,7 +221,6 @@ export default function Module01Nashat() {
                 explain={<MathText>{`${ACTIVITY_LINES.nm} ($\\overrightarrow{AB}$ و $\\overrightarrow{SP}$ اتجاههما معاكس، و $\\overrightarrow{CD}$ أفقي.)`}</MathText>}
                 onAnswered={() => setQ5(true)}
               />
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

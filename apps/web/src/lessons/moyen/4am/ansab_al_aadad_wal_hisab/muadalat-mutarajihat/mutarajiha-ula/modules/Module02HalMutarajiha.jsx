@@ -95,7 +95,7 @@ export default function Module02HalMutarajiha() {
       intro={(
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="نفس الفكرة في المستويين: نقاطك الحمراء هي الحلول، والرمز عند الحدّ يقول هل الحدّ منها."
           levels={{
             beginner: () => (

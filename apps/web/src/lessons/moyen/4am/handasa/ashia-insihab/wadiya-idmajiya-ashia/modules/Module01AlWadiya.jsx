@@ -21,7 +21,7 @@ import { BASE } from '../../_unit/unitMeta';
  *   متقدم  la وضعية du manuel avec l'exemple chiffré de la plateforme (déclaré) : l'élève déplace le passage, lit la
  *          longueur, pose B′ par la translation de vecteur NM, puis aligne A, M, B′ (minimum √85 + 2) ;
  *   مبتدئ  une passerelle sur la gorge du Rhummel (Constantine), l'optimum hors du milieu, un fantôme de NM attaché à B.
- * Ouvert sur متقدم (`defaultLevel="advanced"`) : c'est la وضعية du module. Les essais de l'élève (`onTrial`) sont listés
+ * Ouvert sur متقدم (ouvert sur مبتدئ par défaut depuis 2026-10-09) : c'est la وضعية du module. Les essais de l'élève (`onTrial`) sont listés
  * au-dessus des questions d'exécution (`[data-activity-evidence]`). Aucune étape n'attend le lab (`onFinished`).
  * LP : P2 (lire, fixe / variable, modéliser), P3 (B′, le متوازي أضلاع, M et N), P1 (tout mobiliser, le minimum chiffré).
  */
@@ -86,7 +86,7 @@ export default function Module01AlWadiya() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="المستوى المتقدّم هو وضعية الكتاب: حرّك الممر وقارن أطوال المسلك، ثم انقل المدرسة B بشعاع الممر. في المستوى المبتدئ جسر للراجلين فوق وادي الرمال بقسنطينة."
           levels={{
             beginner: () => (

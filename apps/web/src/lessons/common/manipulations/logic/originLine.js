@@ -460,3 +460,33 @@ export function approxText(p) {
 export const readYTex = (y, x) => `f(${fracDecimal(F(x), 4) != null ? numTex(x) : `${Lin.fracLatex(F(x))}`}) = ${numTex(y)}`;
 
 export { fl as floorFrac, ce as ceilFrac };
+
+/* ── Valeurs PAR DÉFAUT (2026-10-09) : jamais une réponse, jamais un essai ───────────────── */
+
+/**
+ * Le nœud de départ de la poignée (pivot / fit) : a = 1/2 en pivot, a = 0 en fit — mais jamais une
+ * droite qui passe par TOUTES les données (ce serait la réponse du fit) : alors le nœud suivant.
+ */
+export function defaultHandleIndex(s) {
+  const hr = handleRange(s);
+  const clampJ = (j) => Math.max(hr.min, Math.min(hr.max, j));
+  const solves = (j) => s.mode === 'fit' && s.points.length > 0 && hitsOf(s, aAt(s, j)).every(Boolean);
+  let j = clampJ(s.mode === 'pivot' ? handleIndex(s, parseValue('1/2')) : 0);
+  for (let n = 0; solves(j) && n < hr.max - hr.min + 1; n += 1) j = j + 1 <= hr.max ? j + 1 : hr.min;
+  return j;
+}
+
+/**
+ * Le nœud de départ d'une sonde de lecture (read) : vers le milieu de la fenêtre, jamais O, jamais
+ * une valeur-cible, jamais le plafond — la lecture n'est pas écrite, l'élève n'a encore rien lu.
+ */
+export function defaultProbeIndex(s, axis) {
+  const d = axis === 'x' ? s.snap.dx : s.snap.dy;
+  const r = axis === 'x' ? indexRange(s.win.xMin, s.win.xMax, d) : indexRange(s.win.yMin, s.win.yMax, d);
+  const bad = (i) => i === 0
+    || s.reads.some((t) => t.axis === axis && eq(t.v, valueAt(i, d)))
+    || (axis === 'y' && s.cap != null && eq(valueAt(i, d), s.cap));
+  let i = Math.max(r.min, Math.min(r.max, Math.max(1, Math.round(r.max / 2))));
+  for (let n = 0; bad(i) && n < r.max - r.min + 1; n += 1) i = i + 1 <= r.max ? i + 1 : r.min;
+  return i;
+}

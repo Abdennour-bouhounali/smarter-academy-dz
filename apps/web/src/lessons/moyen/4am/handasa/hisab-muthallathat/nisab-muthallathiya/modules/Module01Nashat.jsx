@@ -7,8 +7,6 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, ACTIVITY_2, ACTIVITY_2_LINES, LAB } from '../content/textbook';
 import { FIG_ACT1, FIG_ACT2 } from '../content/figures';
@@ -25,7 +23,7 @@ import SkateparkVignette from '../components/SkateparkVignette';
  * UNDERSTAND  les questions du نشاط 1 puis du نشاط 2 sous les lectures de l'élève (`onTrial`, `[data-activity-evidence]`) ;
  *           la preuve par Thalès sur la figure du manuel (FIG_ACT2).
  * FORMALIZE  les briques cos-nashat (نشاط 1, rappel du cosinus de 3AM) et nisab-zawiya (نشاط 2 : sin et tan nommés) ;
- *           puis la « مسألة الدرس » (LessonProblemCard, module 5 : trois rampes, mêmes gestes, autres nombres).
+ *           puis la « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire, module 5 : trois rampes, mêmes gestes, autres nombres).
  * AUCUNE étape n'attend `onFinished`. LP : P1.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -108,7 +106,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="في المستويين: المنحدر مثلث ABC قائم في A — اللوح [BC]، الارتفاع [AC]، والأرض [AB]."
           levels={{
             beginner: () => (
@@ -277,8 +275,6 @@ export default function Module01Nashat() {
                 onAnswered={() => setQ5(true)}
               />
               {q5 && <KnowledgeBrick id="nisab-zawiya" lead="التخمين أصبح خاصية، وللنسبتين اسمان:" />}
-              {/* Les labs vivent dans `intro` (deux niveaux) : le rappel de la « مسألة الدرس » ferme la dernière étape. */}
-              {q5 && <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />}
             </div>
           ),
         },

@@ -173,6 +173,52 @@ export async function resendVerificationEmail(token) {
 }
 
 /**
+ * « نسيت كلمة المرور » — demande le lien par courriel.
+ *
+ * Le serveur répond pareil que l'adresse existe ou non : ne jamais en
+ * déduire (ni afficher) qu'un compte existe.
+ */
+export async function requestPasswordReset(email) {
+  const { ok, status, data } = await apiRequest('/auth/password/forgot', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+
+  if (!ok) {
+    throw new ApiError(apiMessage('sendEmail', data, status), classifyStatus(status), status);
+  }
+
+  return data;
+}
+
+/**
+ * Choisit un nouveau mot de passe avec le jeton reçu par courriel.
+ * Une réponse `reason: 'invalid_token'` (422) veut dire lien invalide ou
+ * expiré ; les autres 422 sont des règles de mot de passe.
+ */
+export async function resetPassword({ token, email, password, passwordConfirmation }) {
+  const { ok, status, data } = await apiRequest('/auth/password/reset', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token, email, password, password_confirmation: passwordConfirmation }),
+  });
+
+  if (!ok) {
+    const invalidLink = data?.reason === 'invalid_token';
+    const error = new ApiError(
+      apiMessage(invalidLink ? 'resetLinkInvalid' : 'resetPassword', data, status),
+      classifyStatus(status),
+      status,
+    );
+    error.invalidLink = invalidLink;
+    throw error;
+  }
+
+  return data;
+}
+
+/**
  * Les versions des documents légaux qui ont cours, d'après le SERVEUR.
  * Affichage seulement — le client ne décide jamais d'une version.
  */

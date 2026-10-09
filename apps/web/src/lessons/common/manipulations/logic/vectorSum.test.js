@@ -115,3 +115,30 @@ describe('vector-sum — parallelogram (le nageur du تحدّ)', () => {
     }
   });
 });
+
+describe('vector-sum — défaut et « جرّب كل الإمكانيات » (nageur)', () => {
+  it('le départ θ n\'est jamais la solution et n\'est pas un essai', () => {
+    for (const swim of [4, 5, 6, 10]) for (const current of [1, 2, 3]) {
+      const s = L.init({ mode: 'parallelogram', swim, current, width: 60 });
+      expect(s.trials).toHaveLength(0);
+      expect(s.theta).not.toBe(s.crossing.angle);
+    }
+  });
+  it('la balade parcourt la graduation, comprend l\'angle exact, et chaque pas est un départ ordinaire', () => {
+    let s = L.init(SW);
+    const all = L.sweepThetas(s);
+    expect(all).toContain(30);
+    expect(all.every((t) => t >= s.thetaMin && t <= s.thetaMax)).toBe(true);
+    const hand = all.reduce((acc, t) => L.launch(acc, t), L.init(SW));
+    for (let i = 0; i < all.length; i += 1) {
+      expect(L.untriedThetas(s)).toHaveLength(all.length - i);
+      s = L.launch(s, L.untriedThetas(s)[0]);
+    }
+    expect(L.untriedThetas(s)).toHaveLength(0);
+    expect(s.trials).toEqual(hand.trials);
+    expect(L.discoveryReady(s)).toBe(true);
+  });
+  it('chasles : pas de balade', () => {
+    expect(L.sweepThetas(L.init(CH))).toEqual([]);
+  });
+});

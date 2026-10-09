@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { linear as LIN } from '@smarter-academy/core';
 import * as L from './parallelLevel';
 
+import { LEVELS } from '../levels';
 const txt = LIN.fracText;
 /** Valider une position (B′ à bp, C′ à cp) comme le ferait la main : un relâchement par extrémité. */
 const place = (lab, bp, cp) => L.commit(L.commit(lab, 'B', L.slotOf(bp)), 'C', L.slotOf(cp));
@@ -176,5 +177,16 @@ describe('parallel-level — the drawing budget', () => {
     expect(L.naturalHeight(x, 600)).toBeGreaterThan(400);
     const g = L.geometry(x, { width: 600, height: L.naturalHeight(x, 600) });
     expect(Math.abs(Math.min(g.topB[1], g.topC[1]) - 26)).toBeLessThan(1);
+  });
+});
+
+describe('parallel-level — the opening board is never already level, never a trial', () => {
+  it('on every authored level the starting board is tilted and nothing is recorded', () => {
+    for (const lv of Object.values(LEVELS['parallel-level'])) {
+      const s = L.init(lv.numbers);
+      const r = L.reading(s);
+      expect(r.parallel).toBe(false);
+      expect(s.trials).toHaveLength(0);
+    }
   });
 });

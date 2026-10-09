@@ -158,6 +158,20 @@ export default function PitchExpansion({
     };
   };
 
+  // Miroir synchrone de `lab` pour « جرّب كل الإمكانيات » : chaque x de la règle est vérifié comme par « تحقّق ».
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const sweepX = (v) => {
+    const next = L.verify(labRef.current, v);
+    labRef.current = next;
+    setLab((s) => L.verify(s, v));
+    setX(v); setLive(null);
+    const trial = next.trials.find((tr) => tr.x === v);
+    state.report(onTrial, trial);
+    setNotice({ tone: trial.ok ? 'ok' : 'ko', key: trial.ok ? 'verified' : 'incomplete', trial });
+  };
+  const untriedX = L.untriedXs(lab, range);
+
   const check = () => {
     const next = L.verify(lab, x);
     setLab(next);
@@ -192,7 +206,19 @@ export default function PitchExpansion({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={[k('hint1'), k(simplify ? 'hint2' : 'hint2NoMerge'), k('hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        autoComplete: L.sumReady(lab) ? {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: untriedX.length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => { const v = L.untriedXs(labRef.current, range)[0]; if (v !== undefined) sweepX(v); },
+          finish: () => { L.untriedXs(labRef.current, range).forEach(sweepX); },
+        } : undefined,
+      }}
       representation={notice?.trial && (notice.trial.ok
         ? <EquationDisplay tone="ok" tex={`${productTex} = ${sumTex}`} note={<MathText>{k('verifiedNote', { x: notice.trial.x, product: L.valueText(notice.trial.product), sum: L.valueText(notice.trial.sum) })}</MathText>} />
         : <EquationDisplay tone="ko" tex={`${L.valueText(notice.trial.sum)} \\neq ${L.valueText(notice.trial.product)}`} note={<MathText>{k(notice.trial.missing.length ? 'incompleteNote' : 'wrongNote', { x: notice.trial.x, n: notice.trial.missing.length })}</MathText>} />)}

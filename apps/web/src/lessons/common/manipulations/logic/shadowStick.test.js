@@ -107,3 +107,43 @@ describe('shadow-stick — the stick, the sun and the minaret', () => {
     }
   });
 });
+
+describe('shadow-stick — جرّب كل الإمكانيات', () => {
+  const NUMS = [{ stick: 1, stickAt: 4, tip: 5 }, { stick: 1, stickAt: 10, tip: 11.6 }];
+  const run = (s) => { let c = s; for (let g = 0; g < 2000 && L.tryAllPlan(c).length; g += 1) c = L.tryAllApply(c, L.tryAllPlan(c)[0]); return c; };
+
+  it('the default is not an answer and not a trial (every authored number set)', () => {
+    for (const n of NUMS) {
+      const s = L.init(n);
+      expect(L.meets(s)).toBe(false);
+      expect(s.trials).toHaveLength(0);
+      expect(s.poleTrials).toHaveLength(0);
+    }
+  });
+
+  it('step by step reaches every stick place, ends on the good place and every pole notch', () => {
+    for (const n of NUMS) {
+      const s0 = L.init(n);
+      const end = run(s0);
+      expect(L.tryAllPlan(end)).toHaveLength(0);
+      expect(new Set(end.trials.map((t) => t.i)).size).toBe(s0.iMax - s0.iMin + 1);
+      expect(end.i).toBe(s0.iStar);
+      expect(L.meets(end)).toBe(true);
+      expect(end.poleTrials).toHaveLength(s0.jA - s0.jMin + 1);
+      expect(end.poleTrials.some((p) => p.atMinaret)).toBe(true);
+      expect(L.discoveryReady(end)).toBe(true);
+    }
+  });
+
+  it('is the same state as the hand (placeStick / placePole) and does not duplicate a place already tried', () => {
+    const s0 = L.init(NUMS[1]);
+    const hand = L.placeStick(L.placeStick(s0, s0.iStar), 20);
+    expect(L.tryAllPlan(hand)[0]).toEqual({ kind: 'stick', v: 5 });
+    const end = run(hand);
+    expect(end.trials.filter((t) => t.i === s0.iStar)).toHaveLength(1);
+    expect(end.i).toBe(s0.iStar);
+    // un pas = le geste de la main
+    expect(L.tryAllApply(s0, { kind: 'stick', v: 7 })).toEqual(L.placeStick(s0, 7));
+  });
+});
+

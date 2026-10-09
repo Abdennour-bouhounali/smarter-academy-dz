@@ -5,8 +5,6 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, PairQuestion } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_SOLUTION, LAB, MISTAKE_TARJAMA, MISTAKE_HALF } from '../content/textbook';
 import StepsTable from '../components/StepsTable';
@@ -66,7 +64,7 @@ export default function Module01Mathaf() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           lead="نفس المراحل الخمس في المستويين: نختار، نترجم، نحلّ، نتحقق في القصة، نجيب."
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           levels={{
             beginner: () => (
               <Manipulation
@@ -172,9 +170,6 @@ export default function Module01Mathaf() {
                 )}
                 onAnswered={() => setQ4(true)}
               />
-              {/* La « مسألة الدرس » prolonge le musée du niveau متقدم (laboratoire dans l'intro) :
-                  deux tarifs, des visiteurs et des recettes, d'autres nombres — résolue au module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

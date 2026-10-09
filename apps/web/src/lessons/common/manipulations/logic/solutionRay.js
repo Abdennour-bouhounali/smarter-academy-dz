@@ -340,3 +340,20 @@ export const greyTrace = (lab) => { const t = lab.traces.find((u) => !u.ok); ret
 export const tracesText = (lab, ok) => lab.traces.filter((t) => t.ok === ok).map((t) => numText(xOfK(lab, t.k)));
 
 export { cmp, toNumber };
+
+/**
+ * La graduation PAR DÉFAUT du mobile à l'ouverture (jamais une trace) : celle, hors
+ * solution (inégalité FAUSSE), la plus proche du milieu de la droite — et jamais la borne
+ * elle-même, que la découverte demande de tester. Si toute la droite est solution :
+ * le début de la droite.
+ */
+export function defaultK(lab) {
+  const mid = (lab.kmin + lab.kmax) / 2;
+  const b = boundK(lab);
+  let best = null;
+  for (let k = lab.kmin; k <= lab.kmax; k += 1) {
+    if (k === b || evaluate(lab, k).ok) continue;
+    if (best == null || Math.abs(k - mid) < Math.abs(best - mid)) best = k;
+  }
+  return best ?? lab.kmin;
+}

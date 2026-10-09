@@ -184,3 +184,13 @@ export function bookcaseLayout({ total, b, width, unit }) {
 export function unitFor(width, max, { ceiling = 7 } = {}) {
   return Math.max(2, Math.min(ceiling, Math.floor((width / (max + 2 * SHELF_PAD)) * 10) / 10));
 }
+
+/**
+ * La longueur de rayon PAR DÉFAUT : jamais une réponse. Le premier b de la
+ * réglette qui NE vide PAS le sol (24 en 2…12 → 5 ; 420 en 10…60 → 11) ; le
+ * minimum si tout vide le sol.
+ */
+export function defaultShelf(total, range) {
+  for (let b = range.min; b <= range.max; b += 1) if (total % b !== 0) return b;
+  return range.min;
+}

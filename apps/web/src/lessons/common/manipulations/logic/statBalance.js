@@ -487,3 +487,39 @@ export function beamLayout(lab, { width, height, pad = 14, reserved = 96, maxTok
   const token = Math.max(minToken, Math.min(maxToken, byWidth, byHeight));
   return { unit, pad, token, tall, px: (v) => pad + (toNum(v) - toNum(ax.min)) * unit, fromPx: (X) => toNum(ax.min) + (X - pad) / unit };
 }
+
+/* ── « جرّب كل الإمكانيات » (2026-10-09) : le balayage de l'étape, valeur par valeur ─────────────────
+ * mean : toutes les graduations de l'appui ; median : toutes les positions 0…2N du rideau ; contrast : toutes
+ * les positions du jeton tiré. Chaque valeur est l'essai EXACT du geste de la main (setFulcrum / setCurtain /
+ * placeMoved). range (deux mâchoires) et hidden (construction) ne se balaient pas. */
+export const SWEEPABLE = Object.freeze(['mean', 'median', 'contrast']);
+
+/** Les valeurs du paramètre de l'étape courante pas encore essayées (vide si l'étape ne se balaie pas). */
+export function untriedSweep(lab) {
+  const st = stageOf(lab);
+  if (st === 'mean') {
+    const r = fulcrumRange(lab);
+    return Array.from({ length: r.max - r.min + 1 }, (_, i) => r.min + i)
+      .filter((j) => !lab.trials.some((t) => t.stage === 'mean' && eq(t.p, fulcrumAt(lab, j))));
+  }
+  if (st === 'median') {
+    const r = curtainRange(lab);
+    return Array.from({ length: r.max - r.min + 1 }, (_, i) => r.min + i)
+      .filter((c) => !lab.trials.some((t) => t.stage === 'median' && t.c === c));
+  }
+  if (st === 'contrast' && lab.contrastAxis) {
+    const r = moveRange(lab);
+    return Array.from({ length: r.max - r.min + 1 }, (_, i) => r.min + i)
+      .filter((k) => !lab.trials.some((t) => t.stage === 'contrast' && eq(t.v, moveAt(lab, k))));
+  }
+  return [];
+}
+
+/** Applique une valeur du balayage (le même essai que la main). */
+export function applySweep(lab, v) {
+  const st = stageOf(lab);
+  if (st === 'mean') return setFulcrum(lab, v);
+  if (st === 'median') return setCurtain(lab, v);
+  if (st === 'contrast') return placeMoved(lab, v);
+  return lab;
+}

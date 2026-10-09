@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -51,6 +51,11 @@ export default function CoprimeExplorer({
   const [groups, setGroups] = useState(() => L.initGroups({ a: a0, b: b0 }));
   const [reject, setReject] = useState(null);
   const [checkNote, setCheckNote] = useState(null);
+  // Miroirs synchrones : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const groupsRef = useRef(groups);
+  groupsRef.current = groups;
 
   useEffect(() => { setLab(L.init({ a, b })); setGroups(L.initGroups({ a, b })); setReject(null); setCheckNote(null); }, [a, b, state.epoch]);
 
@@ -131,6 +136,44 @@ export default function CoprimeExplorer({
           return true;
         },
         canAutoStep: () => !state.isDiscovered,
+        // Trousses : chaque k de 1 à min(a ; b). Listes : chaque diviseur du plus
+        // petit nombre confronté à l'autre (même `L.share` que le dépôt d'un jeton).
+        // « تحقّق » et la question restent à l'élève.
+        autoComplete: {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: inGroups ? L.untriedGroups(groups).length : L.untested(lab).length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => {
+            if (inGroups) {
+              const next = L.untriedGroups(groupsRef.current)[0];
+              if (next === undefined) return;
+              groupsRef.current = L.chooseGroups(groupsRef.current, next);
+              setGroups(groupsRef.current);
+              return;
+            }
+            const d = L.untested(labRef.current)[0];
+            if (d === undefined) return;
+            setCheckNote(null); setReject(null);
+            labRef.current = L.share(labRef.current, L.chipId(a <= b ? 'a' : 'b', d));
+            setLab(labRef.current);
+          },
+          finish: () => {
+            if (inGroups) {
+              const todo = L.untriedGroups(groupsRef.current);
+              if (todo.length === 0) return;
+              groupsRef.current = todo.reduce((acc, k) => L.chooseGroups(acc, k), groupsRef.current);
+              setGroups(groupsRef.current);
+              return;
+            }
+            const todo = L.untested(labRef.current);
+            if (todo.length === 0) return;
+            setCheckNote(null); setReject(null);
+            labRef.current = todo.reduce((acc, d) => L.share(acc, L.chipId(a <= b ? 'a' : 'b', d)), labRef.current);
+            setLab(labRef.current);
+          },
+        },
         showSolution: () => {
           if (inGroups) setGroups((g) => { let x = g; while (!L.groupsInsightReady(x) && (x.k ?? 0) < top) x = L.addGroupTo(x); return x; });
           else setLab((s) => { let x = s; for (const d of (a <= b ? s.da : s.db)) x = L.share(x, L.chipId(a <= b ? 'a' : 'b', d)); return L.check(x); });

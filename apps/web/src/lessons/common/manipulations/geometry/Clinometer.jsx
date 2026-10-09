@@ -128,6 +128,9 @@ export default function Clinometer(props) {
       : mode === 'ladder' ? { L: res?.L10 } : { H: res?.H100, x: res?.x };
     state.report(onFinished, payload);
   }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
   const nEvents = L.eventCount(lab);
   useEffect(() => { if (nEvents > 0) { const e = L.evidenceOf(lab); if (e) state.report(onTrial, e); } }, [nEvents]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -646,7 +649,39 @@ export default function Clinometer(props) {
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{m(hk)}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        // `height` : la main est une VISÉE (d et α à accorder), pas un balayage → pas de bouton.
+        ...(mode === 'height' ? {} : {
+          autoComplete: {
+            label: t('manipulation.autoComplete.tryAll'),
+            ready: true,
+            remaining: L.tryAllPlan(lab).length,
+            // un essai par pas : on VOIT le sommet de l'échelle monter / l'observateur reculer
+            intervalMs: 480,
+            maxTicks: 80,
+            step: () => {
+              const next = L.tryAllPlan(labRef.current)[0];
+              if (next === undefined) return;
+              labRef.current = L.tryAllApply(labRef.current, next);
+              setLiveI(null);
+              setLab((s) => L.tryAllApply(s, next));
+            },
+            finish: () => {
+              let cur = labRef.current;
+              for (let guard = 0; guard < 2000; guard += 1) {
+                const next = L.tryAllPlan(cur)[0];
+                if (next === undefined) break;
+                cur = L.tryAllApply(cur, next);
+              }
+              labRef.current = cur;
+              setLiveI(null);
+              setLab(cur);
+            },
+          },
+        }),
+      }}
       discovery={<ManipulationDiscovery state={state} prompt={m('dPrompt')} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{m('explanation', mode === 'ladder' ? { hm: L.tex(lab.hm), a: lab.theta, L10: L.texOf(L.r1(lab.Lstar)) } : mode === 'align' ? { P: L.tex(lab.P), d: L.tex(L.valueAt(lab, lab.iStar)), T: sumTex(lab) } : {})}</MathText>}
     >

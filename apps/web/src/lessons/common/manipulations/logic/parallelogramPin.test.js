@@ -153,3 +153,25 @@ describe('parallelogram-pin — parallelogram (متقدم, طرائق p. 131)', 
     expect(() => L.init({ mode: 'parallelogram', A: [0, 0.5], B: [1, 1], C: [2, 0] })).toThrow();
   });
 });
+
+describe('parallelogram-pin — défaut et « جرّب كل الإمكانيات »', () => {
+  it('le départ n\'est jamais une réponse et n\'est pas un essai', () => {
+    for (const lv of [beginner, advanced]) {
+      const s = L.init(lv.numbers);
+      expect(L.defaultIsSolution(s)).toBe(false);
+      expect(s.trials).toHaveLength(0);
+    }
+  });
+  it('la balade des encoches de I = la main, et ouvre le contraste', () => {
+    let s = L.init(beginner.numbers);
+    expect(L.untriedNotches(s)).toHaveLength(s.N - 1);
+    let hand = L.init(beginner.numbers);
+    for (let k = 1; k < s.N; k += 1) hand = L.commitI(hand, k);
+    while (L.untriedNotches(s).length) s = L.commitI(s, L.untriedNotches(s)[0]);
+    expect(s.trials).toEqual(hand.trials);
+    expect(L.midDiscoveryReady(s)).toBe(true);
+  });
+  it('mode parallelogram : aucune balade', () => {
+    expect(L.untriedNotches(L.init(advanced.numbers))).toEqual([]);
+  });
+});

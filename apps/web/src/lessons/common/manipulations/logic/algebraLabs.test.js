@@ -168,3 +168,37 @@ describe('turf-factoring — le terrain en gazon', () => {
     }
   });
 });
+
+describe('défaut et balayage (2026-10-09)', () => {
+  it('turf rows : le r de départ n\'est pas un r qui convient, et n\'entre pas dans tried', async () => {
+    const T = await import('./turfFactoring');
+    for (const expr of ['6x^2+4x', '9x+3', '7x-21', '12x+18']) {
+      const s = T.initRows({ expr });
+      const r = T.defaultRows(s);
+      expect(T.rowsLayout(s, r).valid).toBe(false);
+      expect(s.tried).toHaveLength(0);
+      let n = s;
+      for (const v of T.untriedRows(s)) n = T.setRows(n, v);
+      expect(T.untriedRows(n)).toHaveLength(0);
+      expect(T.rowsDiscoveryReady(n)).toBe(true);
+    }
+    expect(T.untriedRows(T.initSquare({ b: 6, c: 9 }))).toHaveLength(0);
+  });
+  it('pitch : balayage de x seulement quand la somme est construite', async () => {
+    const P = await import('./pitchExpansion');
+    let s = P.init({ expr: '3x-1|3+x', simplify: true });
+    const range = P.xRange(s.factors, 5);
+    expect(P.untriedXs(s, range)).toHaveLength(0);
+    for (const c of s.cells) s = P.collect(s, c.id);
+    while (!P.isSimplified(s)) {
+      const a = s.tray.find((u, i) => s.tray.some((v, j) => j !== i && v.term.p === u.term.p));
+      const b = s.tray.find((v) => v !== a && v.term.p === a.term.p);
+      s = P.merge(s, a.id, b.id);
+    }
+    const todo = P.untriedXs(s, range);
+    expect(todo.length).toBe(range.max - range.min + 1);
+    for (const x of todo) s = P.verify(s, x);
+    expect(P.untriedXs(s, range)).toHaveLength(0);
+    expect(P.discoveryReady(s)).toBe(true);
+  });
+});

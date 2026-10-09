@@ -6,8 +6,6 @@ import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, CINEMA } from '../content/textbook';
 import { FIG_ACT1_CASE1, FIG_ACT1_CASE2 } from '../content/figures';
@@ -25,7 +23,7 @@ import CinemaVignette from '../components/CinemaVignette';
  * FORMALIZE  le texte du نشاط complété (س 3) puis la brique talis-nashat : « يسمى هذا النص خاصية طالس ». La question
  *           « النص المكتمل هو » ÉNONCE la règle dans sa bonne option : elle est enveloppée dans
  *           PredictRule « talis-nashat » (l'élève écrit d'abord le texte, puis la question et la brique suivent).
- * « مسألة الدرس » (LessonProblemCard) à la fin de la dernière étape : le lab vit dans `intro` (deux niveaux).
+ * « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) à la fin de la dernière étape : le lab vit dans `intro` (deux niveaux).
  * AUCUNE étape n'attend `onFinished`. LP : P1 (س 1, 3), P2 (les longueurs).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -90,7 +88,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="في المستويين: جهاز الإسقاط في A، والشاشة الكبيرة (BC)، وشاشة متنقلة (B′C′) تمسكها بمقبضين: B′ يحرّكها على الحزمة، و C′ يميلها."
           levels={{
             beginner: () => (
@@ -241,7 +239,6 @@ export default function Module01Nashat() {
                 />
               </PredictRule>
               {q4 && <KnowledgeBrick id="talis-nashat" lead="ما وجدته بالشاشة وبالحساب، في الحالتين:" />}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

@@ -40,3 +40,35 @@ export function summary(state) {
   const no = Object.entries(state.tried).filter(([, v]) => !v).map(([k]) => Number(k)).sort((x, y) => x - y);
   return { yes, no };
 }
+
+/** Les tailles proposées : celles de la leçon, sinon 1 … min(a, 24). */
+export function railOf({ a, candidates }) {
+  return candidates ?? Array.from({ length: Math.min(a, 24) }, (_, i) => i + 1);
+}
+
+/**
+ * La taille PAR DÉFAUT du rayon (2026-10-09) : la première taille qui NE
+ * divise PAS a (jamais une réponse offerte), sinon le début du rail.
+ */
+export function defaultSize({ a, candidates }) {
+  const rail = railOf({ a, candidates });
+  return rail.find((c) => a % c !== 0 && c <= a) ?? rail[0];
+}
+
+/**
+ * L'état d'ouverture : la bibliothèque montre déjà un rangement (taille par
+ * défaut), mais ce n'est PAS un essai — `tried` reste vide, rien n'est noté.
+ */
+export function initWithDefault({ a, b = null, candidates = [] }) {
+  const state = init({ a, b, candidates });
+  if (state.b !== null) return state;
+  const d = defaultSize({ a, candidates: candidates?.length ? candidates : undefined });
+  if (canPlace(state, d) !== true) return state;
+  const { q, r } = divmod(a, d);
+  return { ...state, b: d, q, r, divides: r === 0, preview: true };
+}
+
+/** Les tailles du rail pas encore essayées (hors défaut, qui n'est pas un essai). */
+export function untried(state, rail) {
+  return rail.filter((c) => state.tried[c] === undefined && canPlace(state, c) === true);
+}

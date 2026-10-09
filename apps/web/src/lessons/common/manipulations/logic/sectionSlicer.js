@@ -106,7 +106,21 @@ export function configOf(numbers = {}) {
     cfg.stages.pyramid = { side, H, step: frac(1, 8), min: 1, max: 7, stops: [i0], start: 4, k0 };
   }
   cfg.order = STAGES.filter((s) => cfg.stages[s]);
+  for (const s of cfg.order) cfg.stages[s].start = safeStart(cfg.stages[s], s === 'sphere' ? [0, Math.round(toNumber(div(cfg.stages.sphere.R, cfg.stages.sphere.step)))] : []);
   return cfg;
+}
+
+/**
+ * Le départ d'un étage n'est JAMAIS une réponse de la tâche (une marque du manuel, le grand cercle, la tangente) : s'il en est une,
+ * on prend la position voisine la plus proche qui n'en est pas. Pas un essai : seule l'impression en écrit un.
+ */
+export function safeStart(st, extra = []) {
+  const targets = new Set([...(st.stops ?? []), ...extra]);
+  if (!targets.has(st.start)) return st.start;
+  for (let d = 1; d <= st.max - st.min; d += 1) {
+    for (const i of [st.start + d, st.start - d]) if (i >= st.min && i <= st.max && !targets.has(i)) return i;
+  }
+  return st.start;
 }
 
 /** L'état initial du lab : l'étage ouvert, la position de chaque étage, rien d'imprimé. */

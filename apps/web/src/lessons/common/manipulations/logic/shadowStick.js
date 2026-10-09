@@ -150,3 +150,32 @@ export function layout(s, { width, height, pad = 18, top = 26, bottom = 30 }) {
   const Y = (m) => yGround - toNumber(F(m)) * k;
   return { k, x0, yGround, X, Y, width: Math.max(width, x0 + (span - 0.6) * k + pad), height: yGround + bottom };
 }
+
+/* ── « جرّب كل الإمكانيات » : la liste des places à essayer, dans l'ordre ───────────────────── */
+
+/**
+ * Les gestes qu'il reste à jouer pour avoir essayé TOUTES les places du bâton puis TOUTES celles de la perche.
+ * Les places du bâton montent de la plus proche à la plus lointaine ; la bonne place (iStar) est jouée EN DERNIER
+ * pour que le bâton s'y retrouve (sinon la perche disparaît) ; ensuite, les crans de la perche. Chaque geste est
+ * exactement celui de la main (`placeStick` / `placePole`). Pure : la liste se recalcule depuis l'état.
+ */
+export function tryAllPlan(s) {
+  const tried = new Set(s.trials.map((t) => t.i));
+  const plan = [];
+  let atStar = s.i === s.iStar && tried.has(s.iStar);
+  for (let i = s.iMin; i <= s.iMax; i += 1) {
+    if (i !== s.iStar && !tried.has(i)) { plan.push({ kind: 'stick', v: i }); atStar = false; }
+  }
+  if (!atStar) plan.push({ kind: 'stick', v: s.iStar });
+  const poled = new Set(s.poleTrials.map((p) => p.j));
+  for (let j = s.jMin; j <= s.jA; j += 1) if (!poled.has(j)) plan.push({ kind: 'pole', v: j });
+  return plan;
+}
+/** Joue UN geste de la liste. Revenir sur la bonne place déjà essayée ne réécrit pas d'essai (pas de doublon). */
+export function tryAllApply(s, action) {
+  if (action.kind === 'pole') return placePole(s, action.v);
+  if (action.v === s.iStar && s.trials.some((t) => t.i === s.iStar)) {
+    return Object.freeze({ ...s, i: s.iStar, last: Object.freeze({ kind: 'stick', trial: s.trials.find((t) => t.i === s.iStar) }) });
+  }
+  return placeStick(s, action.v);
+}

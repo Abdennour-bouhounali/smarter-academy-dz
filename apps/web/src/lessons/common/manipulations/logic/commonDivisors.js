@@ -111,3 +111,11 @@ export function placePgcd(state, d) {
 export function listsDiscoveryReady(state) {
   return state.pgcd !== null;
 }
+
+/** Les nombres de groupes 1 … min(a, b) pas encore essayés, croissants (« جرّب كل الإمكانيات »). */
+export function untriedGroups(state) {
+  const top = Math.min(state.a, state.b);
+  const out = [];
+  for (let k = 1; k <= top; k += 1) if (state.tried[k] === undefined) out.push(k);
+  return out;
+}

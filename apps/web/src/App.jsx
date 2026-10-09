@@ -19,6 +19,8 @@ const FAQ = lazy(() => import('./pages/FAQ'));
 const Contact = lazy(() => import('./pages/Contact'));
 import Login from './pages/Login';
 import Register from './pages/Register';
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const VerificationEmail = lazy(() => import('./pages/VerificationEmail'));
 const AuthGoogle = lazy(() => import('./pages/AuthGoogle'));
 const Confidentialite = lazy(() => import('./pages/legal/Confidentialite'));
@@ -448,6 +450,8 @@ export default function App() {
                 session ouverte, donc aucun risque de les montrer ici. */}
             <Route path="/login"    element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
+            <Route path="/reinitialiser-mot-de-passe" element={<ResetPassword />} />
             <Route path="/methode"  element={<Methode />} />
             <Route path="/about"    element={<About />} />
             <Route path="/faq"      element={<FAQ />} />

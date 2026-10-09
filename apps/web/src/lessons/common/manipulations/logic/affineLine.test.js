@@ -165,3 +165,35 @@ describe('écritures', () => {
     expect(at0).toBeCloseTo(2);
   });
 });
+
+describe('valeurs par défaut et balayage (2026-10-09)', () => {
+  const READ = { a: '3/2', b: '1', mode: 'read', reads: 'x:4|y:7' };
+  it('la sonde de départ n\'est jamais une cible de lecture et n\'écrit rien', () => {
+    for (const props of [READ, { a: '3/2', b: '1', mode: 'shift' }, { a: '2', b: '3', mode: 'read', reads: 'x:1|x:2|y:5' }]) {
+      const s = L.init(props);
+      const ix = L.defaultProbeIndex(s, 'x');
+      const iy = L.defaultProbeIndex(s, 'y');
+      expect(s.reads.some((r) => r.axis === 'x' && L.same(r.v, L.valueAt(ix, s.snap.dx)))).toBe(false);
+      expect(s.reads.some((r) => r.axis === 'y' && L.same(r.v, L.valueAt(iy, s.snap.dyRead)))).toBe(false);
+      expect(s.trials).toHaveLength(0);
+      expect(s.readsDone).toHaveLength(0);
+      expect(s.probes).toHaveLength(0);
+    }
+  });
+  it('shift : le balayage des b′ valide chaque essai comme la main', () => {
+    let s = L.init({ a: '3/2', b: '1', mode: 'shift' });
+    const todo = L.untriedShifts(s);
+    expect(todo.length).toBeGreaterThan(2);
+    for (const j of todo) s = L.setB(s, L.valueAt(j, s.snap.dB));
+    expect(L.untriedShifts(s)).toHaveLength(0);
+    expect(s.shiftDone).toBe(true);
+    expect(s.trials.filter((x) => x.kind === 'shift')).toHaveLength(todo.length);
+  });
+  it('read : le balayage des x et des y atteint les cibles, sans doublon', () => {
+    let s = L.init(READ);
+    for (const i of L.untriedProbes(s, 'x')) s = L.probe(s, L.valueAt(i, s.snap.dx));
+    for (const i of L.untriedProbes(s, 'y')) s = L.readY(s, L.valueAt(i, s.snap.dyRead));
+    expect(L.untriedProbes(s, 'x')).toHaveLength(0);
+    expect(L.targetsDone(s).every(Boolean)).toBe(true);
+  });
+});

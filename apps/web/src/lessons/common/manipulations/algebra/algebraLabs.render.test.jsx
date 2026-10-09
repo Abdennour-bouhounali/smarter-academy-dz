@@ -14,3 +14,10 @@ it('les deux labs de l’unité 3 se rendent pour chaque nature de produit et ch
   expect(renderToString(<TurfFactoring mode="square" b={6} c={9} />)).toContain('data-turf-square');
   expect(renderToString(<TurfFactoring mode="square" b={0} c={25} />)).toContain('data-turf-square');
 });
+
+it('turf rows ouvre sur un r affiché (jamais « ? ») qui n\'est pas un essai', () => {
+  const html = renderToString(<TurfFactoring mode="rows" expr="6x^2+4x" />);
+  expect(html).toContain('data-turf-field');
+  expect(html).not.toContain('data-tried-r');
+  expect(html).toContain('data-manipulation-autocomplete="ready"');
+});

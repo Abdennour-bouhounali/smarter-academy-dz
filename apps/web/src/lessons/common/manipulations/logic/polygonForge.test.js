@@ -209,3 +209,42 @@ describe('polygon-forge — discovery needs the target AND a contrast', () => {
     expect(L.evidenceOf(s)).toEqual({ kind: 'turn', outcome: 'other', alpha: 72, n: 5, k: 5, mode: 'cell' });
   });
 });
+
+describe('polygon-forge — défaut jamais une réponse, et « جرّب كل الإمكانيات »', () => {
+  it('le α de départ ne ferme jamais la figure cherchée (cellule ou étoile, n de 3 à 20)', () => {
+    for (let n = 3; n <= 20; n += 1) {
+      const c = L.init({ n, r: 3 });
+      expect(c.alpha * n, `cell n=${n}`).not.toBe(360);
+      const st = L.init({ n, tip: 10, star: 2 });
+      expect(st.alpha * n, `star n=${n}`).not.toBe(360);
+      expect(c.trials).toHaveLength(0);
+      expect(c.images).toBe(0);
+    }
+  });
+  it('runAlpha = la main (setAlpha puis « دوّر » jusqu’à la fin du tour) : même essai enregistré', () => {
+    for (const a of [20, 50, 60, 72, 144, 180]) {
+      let hand = L.setAlpha(cell(), a);
+      while (L.canTurn(hand) === true) hand = L.turn(hand);
+      const auto = L.runAlpha(cell(), a);
+      expect(auto.trials, `α=${a}`).toEqual(hand.trials);
+      expect(auto.run).toBe(hand.run);
+    }
+  });
+  it('parcourir tout le cadran : un essai par α, plus rien à essayer, la découverte est possible mais pas déclarée', () => {
+    let s = cell();
+    expect(L.untriedAlphas(s)).toHaveLength(161);
+    let guard = 0;
+    while (L.untriedAlphas(s).length && guard++ < 200) s = L.runAlpha(s, L.untriedAlphas(s)[0]);
+    expect(s.trials).toHaveLength(161);
+    expect(L.untriedAlphas(s)).toHaveLength(0);
+    expect(s.trials.find((t) => t.alpha === 60).outcome).toBe('closed');
+    expect(L.discoveryReady(s)).toBe(true);
+  });
+  it('un α déjà essayé à la main n’est pas rejoué ; l’étoile trouve 72 en parcourant', () => {
+    let s = L.runAlpha(flag(), 72);
+    expect(L.untriedAlphas(s)).toHaveLength(160);
+    s = L.runAlpha(flag(), 20);
+    s = L.untriedAlphas(s).reduce((acc, a) => L.runAlpha(acc, a), s);
+    expect(s.found).toBe(72);
+  });
+});

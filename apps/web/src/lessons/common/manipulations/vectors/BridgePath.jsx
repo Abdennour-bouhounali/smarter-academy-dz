@@ -51,7 +51,7 @@ import * as L from '../logic/bridgePath';
  *
  * Mondes (`theme`) : `crosswalk` (متقدم — la rue de l'école du manuel : deux trottoirs, la cité aux paraboles, l'école
  * au drapeau) et `bridge` (مبتدئ — la gorge du Rhummel à Constantine : la vieille ville, la station du tramway, une
- * passerelle). Manuel (§6bis) : chaque place est un essai jugé, aucune auto-complétion.
+ * passerelle). Manuel (§6bis) : chaque place est un essai jugé ; « جرّب كل الإمكانيات » parcourt la réglette (temps 1 et 3), jamais la pose de B′.
  *
  * DÉCOR (exigence du propriétaire, monde Gen-Alpha) : rue — l'élève au cartable et au casque qui fait le trajet quand on
  * le touche, une voiture qui file ; gorge — les cigognes de Constantine qui s'envolent, la cabine du téléphérique qui
@@ -91,6 +91,31 @@ export default function BridgePath({
   const reduce = useReducedMotion();
   const beginner = state.level === 'beginner';
   const world = theme === 'bridge' ? 'bridge' : 'crosswalk';
+
+  // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const autoComplete = {
+    label: t('manipulation.autoComplete.tryAll'),
+    ready: lab.stage !== 'translate',
+    remaining: L.untriedPlaces(lab).length,
+    intervalMs: 480,
+    maxTicks: 80,
+    step: () => {
+      const next = L.untriedPlaces(labRef.current)[0];
+      if (next === undefined) return;
+      labRef.current = L.cross(labRef.current, next);
+      setLiveI(null);
+      setLab((s) => L.cross(s, next));
+    },
+    finish: () => {
+      const todo = L.untriedPlaces(labRef.current);
+      if (todo.length === 0) return;
+      labRef.current = todo.reduce((acc, i) => L.cross(acc, i), labRef.current);
+      setLiveI(null);
+      setLab((s) => todo.reduce((acc, i) => L.cross(acc, i), s));
+    },
+  };
 
   const ready = L.discoveryReady(lab);
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -249,7 +274,7 @@ export default function BridgePath({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{k(hk)}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{ autoStep: () => false, canAutoStep: () => false, autoComplete }}
       discovery={<ManipulationDiscovery state={state} prompt={k('dPrompt')} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}
     >

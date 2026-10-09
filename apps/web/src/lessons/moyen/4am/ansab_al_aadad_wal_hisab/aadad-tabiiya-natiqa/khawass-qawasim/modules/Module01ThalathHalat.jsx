@@ -5,8 +5,6 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { ConstructionScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 
@@ -43,7 +41,7 @@ export default function Module01ThalathHalat() {
       intro={(
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          lead="جداران من طوب طوله n. في المستوى المبتدئ يمكنك عدّ الطوب. في المستوى المتقدّم لا يمكن: عليك أن تتوقّع بالخاصية."
+          lead="جداران من طوب طوله n. في المستوى المبتدئ يمكنك عدّ الطوب. في المستوى المتقدّم لا يمكن: عليك أن تتوقّع بما لاحظته في الحالة 1."
           levels={{
             beginner: () => (
               <Manipulation type="divisor-properties" n={n} a={a} b={b}
@@ -54,7 +52,7 @@ export default function Module01ThalathHalat() {
             advanced: () => (
               <Manipulation type="divisor-properties" n={9} a={900} b={90}
                 title="أعداد لا تُعدّ: n = 9، a = 900، b = 90"
-                lead="الطوب هنا أصغر من أن يُعدّ. توقّع بالخاصية قبل أن تسحب: هل 9 يقسم المجموع؟ الفرق؟ الباقي؟" />
+                lead="الطوب هنا أصغر من أن يُعدّ. توقّع بما لاحظته في الحالة 1 قبل أن تسحب: هل 9 يقسم المجموع؟ الفرق؟ الباقي؟" />
             ),
           }}
         />
@@ -77,11 +75,6 @@ export default function Module01ThalathHalat() {
                 correct={0} cols={1} requires={['qasim-mushtarak-rappel']}
                 explain={<span>في الحالات الثلاث، قَسَم <MathText>{'$n$'}</MathText> المجموع والفرق. التخمين الثاني: <MathText>{ACTIVITY.conjectures[1].blank}</MathText> — يصبح خاصية في المحور الموالي.</span>}
                 onAnswered={() => setConj(true)} />
-              {/* La « مسألة الدرس » prolonge le chantier du niveau متقدم : murs en
-                  briques entières, d'autres nombres — résolue au module 5. Les deux
-                  niveaux partagent l'intro (pas d'étape à eux) : la carte clôt la
-                  dernière étape du module. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
       ]}

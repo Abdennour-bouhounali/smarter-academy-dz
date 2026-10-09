@@ -22,7 +22,7 @@ import { BASE } from '../../_unit/unitMeta';
  *   متقدم  la وضعية : six poteaux à la main (refusés tant que les écarts diffèrent), puis le دوران par le seul deuxième poteau
  *          (60° referme le tour), puis la distance choisie et calculée — 3 m ; en extra, 12 poteaux ;
  *   مبتدئ  un petit massif de 2 m et quatre poteaux (un carré : 90°, 2√2 ≈ 2,83 m).
- * Ouvert sur متقدم (`defaultLevel="advanced"`) : c'est la وضعية du module. Les gestes jugés de l'élève (`onTrial`) sont listés
+ * Ouvert sur متقدم (ouvert sur مبتدئ par défaut depuis 2026-10-09) : c'est la وضعية du module. Les gestes jugés de l'élève (`onTrial`) sont listés
  * au-dessus de la question sur l'angle (`[data-activity-evidence]`). Aucune étape n'attend le lab (`onFinished`).
  * Déclarés : les noms P₁ … P₆ et H (la plateforme), la longueur le long du bord (π ≈ 3,14 m, ajout de l'extraction), le plan.
  * LP : P2 (lire, modéliser : la forme, le nombre, le rayon), P3 (l'angle, la distance par le triangle), P1 (tout mobiliser).
@@ -95,7 +95,7 @@ export default function Module01AlWadiya() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="المستوى المتقدّم هو وضعية الكتاب: ضع الأعمدة الستة باليد واضغط «أشعل»، ثم جرّب الدوران، ثم احسب المسافة. في المستوى المبتدئ حوض صغير وأربعة أعمدة."
           levels={{
             beginner: () => (

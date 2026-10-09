@@ -285,3 +285,31 @@ export function deckGrid(n, width, { minCell = 44, gap = 6 } = {}) {
   const cell = Math.max(minCell, Math.floor((width - (cols - 1) * gap) / cols));
   return { cols, rows, cell: Math.min(cell, 76) };
 }
+
+/* ── Valeurs PAR DÉFAUT (2026-10-09) : jamais une réponse, jamais un essai ───────────────── */
+
+/**
+ * L'indice par défaut du cadran a : la graduation de a = 1 (la plus « naturelle »), sauf si c'est
+ * le coefficient CACHÉ de la machine courante (ce serait donner la réponse) — alors la suivante.
+ */
+export function defaultDialIndex(s) {
+  const m = cur(s);
+  const hidden = Pr.isLinear(m.rule) ? m.rule.a : null;
+  let i = Math.min(s.dial.max, Math.max(s.dial.min, dialIndex(s.dial, 1)));
+  while (hidden != null && same(dialValue(s.dial, i), hidden) && i < s.dial.max) i += 1;
+  if (hidden != null && same(dialValue(s.dial, i), hidden)) i = Math.max(s.dial.min, i - 2);
+  return i;
+}
+
+/**
+ * L'indice par défaut de la carte vierge : x = 2, sauf si sa sortie est une étiquette-cible (la
+ * marche arrière serait résolue d'avance) — alors la graduation suivante.
+ */
+export function defaultBlankIndex(s) {
+  const dial = BLANKS[s.world];
+  const m = cur(s);
+  const bad = (i) => s.targets.some((g) => same(g, m.rule.at(dialValue(dial, i))));
+  let i = Math.min(dial.max, Math.max(dial.min, dialIndex(dial, 2)));
+  while (bad(i) && i < dial.max) i += 1;
+  return i;
+}

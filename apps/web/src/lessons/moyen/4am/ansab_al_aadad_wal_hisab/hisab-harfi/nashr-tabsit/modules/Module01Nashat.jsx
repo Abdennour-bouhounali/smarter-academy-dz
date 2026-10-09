@@ -6,9 +6,7 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
 import { bidi } from '../../../../../../../utils/bidi';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, HOOK, PLATFORM_NOTES } from '../content/textbook';
 
@@ -100,7 +98,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead={<MathText>{'المستوى المتقدّم هو النشاط: ملعب بعداه $3x - 1$ و $3 + x$. في المستوى المبتدئ ملعب المتوسطة $3(x + 5)$.'}</MathText>}
           levels={{
             beginner: () => (
@@ -232,8 +230,6 @@ export default function Module01Nashat() {
                 explain={<MathText>{'$3 \\times 16 + 32 - 3 = 77$ ، وبالشكل الأول: $(3 \\times 4 - 1)(3 + 4) = 11 \\times 7 = 77$. الشكلان متساويان مهما كان $x$.'}</MathText>}
                 onAnswered={() => setQ5(true)}
               />
-              {/* « مسألة الدرس » : le même terrain découpé, d'autres nombres (module 4). */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

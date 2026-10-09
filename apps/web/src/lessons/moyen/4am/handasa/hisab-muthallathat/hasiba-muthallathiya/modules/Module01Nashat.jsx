@@ -5,8 +5,6 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, DRONE, key } from '../content/textbook';
 
@@ -22,7 +20,7 @@ import { ACTIVITY, DRONE, key } from '../content/textbook';
  *           le tableau complet et les trois angles du corrigé ne s'affichent qu'APRÈS la réponse.
  * FORMALIZE  les briques hasiba-nisba (angle → rapport) et hasiba-zawiya (rapport → angle).
  * AUCUNE étape n'attend `onFinished`. LP : P1 (le tableau), P2 (les angles), P3 (les arrondis).
- * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape (les labs vivent dans `intro`) : le même drone, un
+ * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape (les labs vivent dans `intro`) : le même drone, un
  * triangle 36 / 48 / 60, résolue au module 4.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -125,7 +123,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="في المستويين: حاسبة علمية تضغط لمساتها بإصبعك أو بلوحة المفاتيح، ودرون تميل كاميرته بالزاوية التي تحسبها؛ خط القطع ✂ على الشاشة يحدّد الدقة."
           levels={{
             beginner: () => (
@@ -241,7 +239,6 @@ export default function Module01Nashat() {
                   <KnowledgeBrick id="hasiba-zawiya" lead="والعكس: من النسبة إلى الزاوية." />
                 </>
               )}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

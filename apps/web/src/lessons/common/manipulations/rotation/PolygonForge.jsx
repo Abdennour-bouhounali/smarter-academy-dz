@@ -129,6 +129,11 @@ export default function PolygonForge(props) {
     { text: <MathText>{m('dOptSix')}</MathText>, why: <MathText>{m('dWhySix')}</MathText> },
   ]), [lab, m, mode, sn]);
 
+  // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const untried = () => (labRef.current.stage === 'forge' ? L.untriedAlphas(labRef.current) : []);
+
   const target = lab.target;
   const found = lab.trials.find((tr) => tr.outcome === 'closed')?.alpha;
   const formal = mode === 'star' ? (
@@ -156,7 +161,32 @@ export default function PolygonForge(props) {
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{m(hk)}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        autoComplete: {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: untried().length,
+          // un angle par pas : on VOIT chaque tour se jouer, puis son issue (fermé / ouvert / étoile / spirale)
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => {
+            const next = untried()[0];
+            if (next === undefined) return;
+            const after = L.runAlpha(labRef.current, next);
+            labRef.current = after;
+            setLab(after);
+          },
+          finish: () => {
+            const todo = untried();
+            if (todo.length === 0) return;
+            const after = todo.reduce((acc, a) => L.runAlpha(acc, a), labRef.current);
+            labRef.current = after;
+            setLab(after);
+          },
+        },
+      }}
       discovery={<ManipulationDiscovery state={state} prompt={m('dPrompt')} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{m('explanation')}</MathText>}
     >

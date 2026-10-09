@@ -5,8 +5,6 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, ACT_ROW_OPTIONS, ACTIVITY2 } from '../content/textbook';
 import ValueTable from '../components/ValueTable';
@@ -228,9 +226,6 @@ export default function Module01Nashat() {
                   <MathText>{'جرّب الآن المستوى المتقدّم: ثلاث آلات، واحدة منها فقط تطابقها آلة الضرب $x \\longmapsto ax$. المحور التالي يميّز الدوال الخطية من غيرها، ويعطي طريقة تعيينها.'}</MathText>
                 </p>
               )}
-              {/* La « مسألة الدرس » prolonge les trois machines du niveau متقدم (laboratoire dans l'intro) :
-                  d'autres règles cachées, d'autres nombres — résolue au module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

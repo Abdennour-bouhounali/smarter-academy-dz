@@ -6,8 +6,6 @@ import SpaceFigure from '../../../../../../common/components/SpaceFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ARCHIMEDES, ARCH_LINES, LAB } from '../content/textbook';
 import { FIG_ARCHIMEDES } from '../content/figures';
@@ -86,7 +84,7 @@ export default function Module01Arkhimidis() {
       intro={
         <ManipulationWorkspace
           title="المناولة: القشرة والعصير"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="في المستويين: توقّع أولا، ثم قشّر واعصر. القشرة تُقاس بأقراص نصف قطر كل منها R، والعصير يُقاس بالكأس التي تدخل فيها البرتقالة تماما."
           levels={{
             beginner: () => (
@@ -180,8 +178,6 @@ export default function Module01Arkhimidis() {
                 onAnswered={() => setQ3(true)}
               />
               {q3 && <KnowledgeBrick id="arkhimidis-hajm" lead="ما وجدته بالعصير، بكلمات أرخميدس:" />}
-              {/* La « مسألة الدرس » prolonge le lab (dans l'intro, les deux niveaux) : une orange de 7 cm dans son verre — module 5. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

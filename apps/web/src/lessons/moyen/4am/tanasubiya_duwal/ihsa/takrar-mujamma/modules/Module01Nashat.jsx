@@ -5,9 +5,7 @@ import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { LESSON_CONFIG } from '../lesson.config';
 import { ACTIVITY, ACTIVITY_LINES, FUNPARK } from '../content/textbook';
 import FreqTable from '../components/FreqTable';
 import { BarChart } from '../components/Charts';
@@ -84,7 +82,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="في المستويين مقياس قامة وطابور: الشريط هو القيمة t، والمضاؤون هم الذين يحقّقون الشرط. لا تعدّ المضائين فقط — أعلن العدد، والبوابة تقبله أو ترفضه بشاهد."
           levels={{
             beginner: () => (
@@ -220,7 +218,6 @@ export default function Module01Nashat() {
                   onAnswered={() => setQ4(true)}
                 />
               )}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

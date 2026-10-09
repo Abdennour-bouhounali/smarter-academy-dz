@@ -37,7 +37,7 @@ export function useAutoComplete(auto, resetKey) {
   const run = useCallback(() => {
     const a = autoRef.current;
     if (!a || timer.current) return;
-    const plan = autoCompletePlan(a.remaining, { reducedMotion, canStep: typeof a.step === 'function' });
+    const plan = autoCompletePlan(a.remaining, { reducedMotion, canStep: typeof a.step === 'function', maxTicks: a.maxTicks, intervalMs: a.intervalMs });
     if (plan.ticks === 0) { a.finish(); return; }
     const startKey = keyRef.current;
     let ticked = 0;

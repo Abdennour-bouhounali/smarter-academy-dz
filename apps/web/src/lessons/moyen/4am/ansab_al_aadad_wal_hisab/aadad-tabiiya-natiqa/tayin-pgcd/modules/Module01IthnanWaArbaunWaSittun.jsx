@@ -5,8 +5,6 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { SchoolBagScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 
@@ -48,7 +46,7 @@ export default function Module01IthnanWaArbaunWaSittun() {
         // l'élève devant une étape qu'il ne pouvait pas satisfaire.
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="نشاط الكتاب: 42 و 60. وللبدء بشيء ملموس، جرّب المستوى المبتدئ: أقلام وكراريس في حقائب متماثلة."
           levels={{
             beginner: () => (
@@ -79,9 +77,6 @@ export default function Module01IthnanWaArbaunWaSittun() {
                 options={['العدد 6 يسمى القاسم المشترك الأكبر للعددين 42 و 60، ونكتب PGCD(42 ; 60) = 6', 'العدد 3 يسمى القاسم المشترك الأكبر، PGCD(42 ; 60) = 3', 'العدد 12 يسمى القاسم المشترك الأكبر، PGCD(42 ; 60) = 12', 'العدد 1 يسمى القاسم المشترك الأكبر، PGCD(42 ; 60) = 1']} correct={0} cols={1} requires={['tayin-bil-hasr']}
                 explain={<span>القواسم المشتركة لـ 42 و 60 هي 1 ، 2 ، 3 ، 6؛ أكبرها 6: <MathText>{'$\\mathrm{PGCD}(42\\ ;\\ 60) = 6$'}</MathText>.</span>} onAnswered={() => setQ1(true)} />
               {q1 && <TextbookBox kind="method" text="لتعيين القاسم المشترك الأكبر لعددين: نحصر قواسم كل عدد، ثم القواسم المشتركة، ثم نأخذ أكبرها." compact />}
-              {/* La « مسألة الدرس » prolonge le niveau متقدم : mêmes listes, stylos
-                  et cahiers en sacs identiques, 90 et 126 — résolue au module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
       ]}

@@ -4,8 +4,6 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookExercise } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { EX7, EX7_OUTLIER, EX7_RANGE_TRAP, LAB } from '../content/textbook';
 import { byId } from '../content/exercises';
@@ -26,7 +24,7 @@ import { Dustur, SeriesRow } from '../components/Figures';
  * « أتوقّع القاعدة » : l'explication de la question de l'étape 4 ÉNONCE la règle `iadat-hisab` (la moyenne
  * bouge, la médiane reste, le nombre écrit à la main ne bouge pas) ; la question est donc enveloppée dans
  * <PredictRule id="iadat-hisab"> — l'élève écrit la règle d'après SA modification du lab avant de répondre.
- * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape (les labs vivent dans `intro`) : une autre
+ * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape (les labs vivent dans `intro`) : une autre
  * série dans la ligne 1, les quatre دساتير en B2 ← B5, résolue au module 5.
  */
 const D = (f) => <Dustur key={f}>{f}</Dustur>;
@@ -109,7 +107,7 @@ export default function Module01Majdul() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="الفكرة نفسها في المستويين: الدستور يحسب على مجال من الخلايا، ويُعاد حسابه عندما تتغيّر خلية."
           levels={{
             beginner: () => (
@@ -206,7 +204,6 @@ export default function Module01Majdul() {
                 />
               </PredictRule>
               {q4 && <KnowledgeBrick id="iadat-hisab" lead="ما رأيته في المجدول:" />}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

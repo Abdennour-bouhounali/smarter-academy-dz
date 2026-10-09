@@ -17,7 +17,7 @@ import { PartyScene } from '../components/JumalFigures';
  * des unités 2 à 4.
  *
  * LE LABORATOIRE (story-modeller, RÉUTILISÉ de « حل مشكلات بتوظيف جمل معادلتين »,
- * deux niveaux dans un ManipulationWorkspace, `defaultLevel="advanced"` : c'est la
+ * deux niveaux dans un ManipulationWorkspace, ouvert sur مبتدئ par défaut depuis 2026-10-09 : c'est la
  * situation du manuel), sur la table du goûter (`theme="party"`) :
  *   متقدم  le حفل : 150 علبة و 150 قطعة pour 11 250 DA, puis 24 et 30 qui restent
  *          pour 2 100 DA — DEUX informations d'argent, aucune n'est un « nombre de
@@ -95,7 +95,7 @@ export default function Module01AlWadiya() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="المستوى المتقدّم هو وضعية الكتاب: حفل البلدية بأعداده. في المستوى المبتدئ رحلة القسم بأعداد أصغر والمجهولان مسمّيان."
           levels={{
             beginner: () => (

@@ -163,3 +163,17 @@ export function solutionTex(target, sign) {
 export function solutionText(target, sign) {
   return solutionTex(target, sign).replace(/\\sqrt\{([^}]*)\}/g, '√$1').replace(/\{,\}/g, ',').replace(/\\dfrac\{(\d+)\}\{(\d+)\}/g, '$1/$2').replace(/^-/, '−');
 }
+
+/**
+ * Le x PAR DÉFAUT à l'ouverture (jamais une visite, jamais écrit dans `visited`) :
+ * la première graduation (en partant de 0) qui n'est solution d'AUCUNE carte
+ * (« ثبّت » la refuserait pour chacune). Sinon, le minimum de la règle.
+ */
+export function defaultX(s) {
+  const r = range(s);
+  for (let v = 0; v <= r.max; v += 1) {
+    const isAnswer = s.targets.some((_, i) => pin({ ...s, x: v, card: i, pins: {} }).last.kind === 'pinned');
+    if (!isAnswer) return v;
+  }
+  return r.min;
+}

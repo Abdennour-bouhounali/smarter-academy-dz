@@ -23,7 +23,7 @@ import { BASE } from '../../_unit/unitMeta';
  *   متقدم  le تحدّ : l'eau montée à 7 cm du bord (28 cm de profondeur), le sommet S cherché sous le fond jusqu'à SO = 105, la
  *          méthode de calcul choisie (V₁(1 − k³)) — 24388π/3 ≈ 25,54 L ;
  *   مبتدئ  un petit seau de plage plein (r = 3, R = 4, H = 6 : SO = 18, k = 3/4, 74π).
- * Ouvert sur متقدم (`defaultLevel="advanced"`) : c'est la وضعية du module. Les gestes jugés de l'élève (`onTrial`) sont listés
+ * Ouvert sur متقدم (ouvert sur مبتدئ par défaut depuis 2026-10-09) : c'est la وضعية du module. Les gestes jugés de l'élève (`onTrial`) sont listés
  * au-dessus de la question sur SO (`[data-activity-evidence]`). Aucune étape n'attend le lab (`onFinished`).
  * Déclarés : la lecture des cotes empilées (extraction › discrepancies › challenge), les noms S, O, O₁, W, A, B, M (plateforme),
  * l'échelle verticale réduite de la coupe axiale.
@@ -98,7 +98,7 @@ export default function Module01AlWadiya() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="المستوى المتقدّم هو تحدّي الكتاب: ضع الماء في مستوى الشكل، ثم أكمل المخروط بإنزال رأسه S، ثم اختر طريقة حساب الحجم. في المستوى المبتدئ دلو رمل صغير ممتلئ."
           levels={{
             beginner: () => (

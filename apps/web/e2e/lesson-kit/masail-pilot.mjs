@@ -131,7 +131,7 @@ async function solveProblemModule(page, n, problem, shotPrefix) {
   await page.screenshot({ path: `${SHOT_DIR}masail-index-after.png`, fullPage: true });
 
   await page.goto(`${LESSON}/al-maktaba`, { waitUntil: 'networkidle' });
-  check('module 1: le rappel « مسألة الدرس » est présent', (await page.locator('[data-lesson-problem]').count()) === 1);
+  check('module 1: aucune carte « مسألة الدرس » dans un module (sommaire seulement, 2026-10-09)', (await page.locator('[data-lesson-problem]').count()) === 0);
   await ctx.close();
 }
 

@@ -4,8 +4,6 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 
@@ -32,7 +30,7 @@ import { ACTIVITY } from '../content/textbook';
  * elle est donc enveloppée dans <PredictRule id="murabba-natiq"> — l'élève
  * écrit le critère avec ses mots (predictPrompt de knowledge.jsx) AVANT de
  * voir les options, puis la question et la brique s'affichent.
- * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape : même règle
+ * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape : même règle
  * graduée, d'autres aires (les زرابي), résolue au module 4.
  *
  * Le laboratoire RÉDUIT chaque aire (logic/squareRootSide `init`) : la carte
@@ -124,7 +122,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="الجذر التربيعي للعدد a هو طول ضلع المربّع الذي مساحته a. اختر مساحة من التصنيف، ثم تدريجة للمسطرة، واسحب طرف الضلع: هل يقع الضلع على تدريجة بالضبط؟ المساحة 0,25 تظهر على بطاقتها كسرًا يساوي الربع."
           levels={{
             beginner: () => (
@@ -199,9 +197,6 @@ export default function Module01Nashat() {
                 />
               </PredictRule>
               {q2 && <KnowledgeBrick id="murabba-natiq" lead="ما رأيته على المسطرة يقوله الكتاب في «معارف»:" />}
-              {/* La « مسألة الدرس » prolonge la règle graduée : des carrés d'aire
-                  connue, un côté qui tombe ou non sur une graduation — module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

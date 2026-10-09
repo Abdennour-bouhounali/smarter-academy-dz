@@ -126,3 +126,16 @@ describe('ratio-ride — الرابع المتناسب, y = a × x et la découv
     expect(L.readNumber('')).toBeNull();
   });
 });
+
+describe('durée par défaut (jamais une réponse, jamais une colonne)', () => {
+  it('ni 0, ni la durée fantôme, rien d’enregistré', () => {
+    for (const plans of ['15x', '15x|10x+50']) {
+      const s = L.init({ plans });
+      const x = L.defaultX(s);
+      expect(x).toBeGreaterThan(0);
+      expect(x).not.toBe(s.ghost.x);
+      expect(x).toBeLessThanOrEqual(s.range.max);
+      expect(s.columns).toHaveLength(0);
+    }
+  });
+});

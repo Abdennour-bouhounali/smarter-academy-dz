@@ -88,6 +88,9 @@ export default function ShadowStick({
   const ready = L.discoveryReady(lab);
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { h: L.dec(lab.h) }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
   const nEvents = lab.trials.length + lab.poleTrials.length;
   useEffect(() => { if (nEvents > 0) state.report(onTrial, L.evidenceOf(lab)); }, [nEvents]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -209,7 +212,36 @@ export default function ShadowStick({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{k(hk)}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        autoComplete: {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: L.tryAllPlan(lab).length,
+          // une place par pas : on VOIT l'ombre du bâton glisser puis la perche avancer
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => {
+            const next = L.tryAllPlan(labRef.current)[0];
+            if (!next) return;
+            labRef.current = L.tryAllApply(labRef.current, next);
+            setLiveI(null); setLiveJ(null);
+            setLab((s) => L.tryAllApply(s, next));
+          },
+          finish: () => {
+            let cur = labRef.current;
+            for (let guard = 0; guard < 2000; guard += 1) {
+              const next = L.tryAllPlan(cur)[0];
+              if (!next) break;
+              cur = L.tryAllApply(cur, next);
+            }
+            labRef.current = cur;
+            setLiveI(null); setLiveJ(null);
+            setLab(cur);
+          },
+        },
+      }}
       discovery={<ManipulationDiscovery state={state} prompt={k('dPrompt')} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}
     >

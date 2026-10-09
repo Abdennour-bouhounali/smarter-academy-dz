@@ -70,11 +70,14 @@ export function init(raw = {}) {
     const dMin = Math.max(1, Math.round(num(raw.minDistance ?? 10)));
     const dMax = Math.max(dMin + 2, Math.round(num(raw.maxDistance ?? 40)));
     if (cmp(H, eye) <= 0) throw new Error('clinometer: height > eye');
-    return Object.freeze({
+    const out = {
       ...base, H, eye, rise: sub(H, eye),
       iMin: dMin, iMax: dMax, i: Math.min(dMax, dMin + 5),
       aMin: 5, aMax: 85, a: 20,
-    });
+    };
+    // Le départ n'est JAMAIS la bonne visée : si 20° était l'angle lu à cette distance, on décale d'un cran.
+    while (out.a < out.aMax && out.a === readAngle(out)) out.a += 1;
+    return Object.freeze(out);
   }
   if (mode === 'ladder') {
     const hm = F(raw.height ?? 1.6);
@@ -366,4 +369,27 @@ export function zoomLayout(s, { width, height, pad = 14, top = 12, bottom = 26 }
   const x0 = pad + 0.5 * k;
   const yGround = top + spanY * k;
   return { k, x0, yGround, X: (m) => x0 + m * k, Y: (m) => yGround - m * k, width: Math.min(width, Math.ceil(x0 + spanX * k + pad)), height: Math.ceil(yGround + bottom) };
+}
+
+/* ── « جرّب كل الإمكانيات » : ladder (toutes les longueurs) et align (toutes les places) ───────────── */
+
+/**
+ * Les valeurs de la grandeur tenue par la main qu'il reste à essayer. `height` n'en a pas : sa main est une VISÉE
+ * (d et α doivent s'accorder), donc un choix de l'élève, pas un balayage. En `align`, la bonne place (iStar) est
+ * jouée EN DERNIER pour que l'observateur s'y retrouve (le plan s'ouvre seulement sur l'alignement).
+ */
+export function tryAllPlan(s) {
+  if (s.mode === 'height') return [];
+  const tried = new Set(s.trials.map((t) => t.i));
+  const plan = [];
+  for (let i = s.iMin; i <= s.iMax; i += 1) if (!tried.has(i) && !(s.mode === 'align' && i === s.iStar)) plan.push(i);
+  if (s.mode === 'align' && !(s.i === s.iStar && tried.has(s.iStar))) plan.push(s.iStar);
+  return plan;
+}
+/** Joue UN essai : exactement `moveTo` ; revenir sur une place déjà essayée ne réécrit pas d'essai. */
+export function tryAllApply(s, i) {
+  if (s.trials.some((t) => t.i === i)) {
+    return Object.freeze({ ...s, i, last: Object.freeze({ kind: s.mode === 'ladder' ? 'ladder' : 'align', i, ...(s.mode === 'ladder' ? { top: topAt(s, i), what: topKind(s, i) } : { what: alignKind(s, i) }) }) });
+  }
+  return moveTo(s, i);
 }

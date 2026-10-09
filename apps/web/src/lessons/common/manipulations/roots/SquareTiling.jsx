@@ -50,10 +50,13 @@ export default function SquareTiling({
   const { n } = state.numbers;
 
   const [lab, setLab] = useState(() => L.init({ n: n0, mode }));
+  const [live, setLive] = useState(null);
+  // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
   const sceneKey = `${n}:${mode}:${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ n, mode })); }
-  const [live, setLive] = useState(null);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init({ n, mode })); setLive(null); }
   const range = L.range(lab);
 
   const ready = L.discoveryReady(lab);
@@ -78,7 +81,7 @@ export default function SquareTiling({
   const xOf = (v) => EDGE + (v - range.min) * mu;
   const toValue = useCallback((clientX, _y, rect) => range.min + (clientX - rect.left - EDGE) / mu, [range.min, mu]);
   const stretch = useStretchInteraction({
-    value: live ?? lab.k, range, toValue, onChange: setLive,
+    value: live ?? lab.k ?? L.defaultK(lab), range, toValue, onChange: setLive,
     // L'essai validé part vers la leçon HORS du setState (un updater reste pur).
     onCommit: (v) => {
       setLive(v);
@@ -89,14 +92,24 @@ export default function SquareTiling({
     direction: 'ltr',
   });
 
-  const kk = live ?? lab.k;
+  // Un k PAR DÉFAUT (L.defaultK : jamais une réponse) : jamais vide à l'ouverture. Ce n'est pas un essai, seul `lab.tried` en garde la trace.
+  const kk = live ?? lab.k ?? L.defaultK(lab);
   const t0 = kk == null ? null : L.tiling(n, kk);
   const settled = lab.k != null && !stretch.dragging && kk === lab.k;
   const current = settled ? lab.tried.find((x) => x.k === lab.k) : null;
   const box = Math.min(280, Math.max(200, width * 0.6));
   const cell = kk ? box / kk : box;
   const valid = t0?.valid;
-  const eq = current?.valid ? L.equationTex(n, current) : null;
+  // Au repos, sans essai encore, la ligne de résultat montre la conséquence du k par défaut (sans prétendre que l'élève l'a fait).
+  const shown = current ?? (lab.k == null && !stretch.dragging && live == null ? t0 : null);
+  const eq = shown?.valid ? L.equationTex(n, shown) : null;
+  const untried = () => Array.from({ length: L.range(labRef.current).max }, (_, i) => i + 1).filter((v) => !labRef.current.tried.some((x) => x.k === v));
+  const runTrial = (v) => {
+    labRef.current = L.tile(labRef.current, v);
+    setLive(v);
+    setLab((s) => L.tile(s, v));
+    state.report(onTrial, L.tiling(n, v));
+  };
 
   return (
     <ManipulationShell
@@ -108,10 +121,22 @@ export default function SquareTiling({
       numberFields={[{ key: 'n', label: 'n' }]}
       allowModeSwitch={allowModeSwitch}
       hints={(mode === 'simplest' ? [k('sHint1'), k('sHint2'), k('sHint3')] : [k('pHint1'), k('pHint2'), k('pHint3')]).map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
-      representation={current && (current.valid
-        ? <EquationDisplay tex={eq} tone="ok" note={<MathText>{k('valid', { k: current.k, b: current.b })}</MathText>} />
-        : <EquationDisplay tex={L.refusedTex(n, current.k)} tone="ko" note={<MathText>{k('refused', { k: current.k })}</MathText>} />)}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        autoComplete: {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: untried().length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => { const next = untried()[0]; if (next !== undefined) runTrial(next); },
+          finish: () => { untried().forEach(runTrial); },
+        },
+      }}
+      representation={shown && (shown.valid
+        ? <EquationDisplay tex={eq} tone="ok" note={<MathText>{k('valid', { k: shown.k, b: shown.b })}</MathText>} />
+        : <EquationDisplay tex={L.refusedTex(n, shown.k)} tone="ko" note={<MathText>{k('refused', { k: shown.k })}</MathText>} />)}
       discovery={(
         <ManipulationDiscovery
           state={state}

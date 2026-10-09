@@ -24,7 +24,7 @@ import SightLineFigure from '../components/SightLineFigure';
  *   متقدم  la وضعية du manuel : poteau de 2,30 m à 95,65 m ; l'élève glisse أريس au sol jusqu'à ce que le sommet du
  *          poteau cache celui du مقام (2,45 m), puis le lab montre les deux triangles et l'angle x ;
  *   مبتدئ  un réverbère de 3 m à 89 m : le même مقام, l'alignement à 3 m (tan x = 1, x = 45°).
- * Ouvert sur متقدم (`defaultLevel="advanced"`) : c'est la وضعية du module. Les essais de l'élève (`onTrial`) sont
+ * Ouvert sur متقدم (ouvert sur مبتدئ par défaut depuis 2026-10-09) : c'est la وضعية du module. Les essais de l'élève (`onTrial`) sont
  * listés au-dessus des questions d'exécution (`[data-activity-evidence]`). Aucune étape n'attend le lab (`onFinished`).
  * LP : P2 (lire, modéliser), P1 (mobiliser Thalès, la tangente, la calculatrice), P3 (écrire, calculer, arrondir, vérifier).
  */
@@ -94,7 +94,7 @@ export default function Module01AlWadiya() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="المستوى المتقدّم هو وضعية الكتاب: حرّك أريس على الأرض حتى تختفي قمة المقام خلف قمة العمود. في المستوى المبتدئ عمود إنارة آخر طوله 3 أمتار أمام المعلم نفسه."
           levels={{
             beginner: () => (

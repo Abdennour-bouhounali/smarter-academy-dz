@@ -19,3 +19,9 @@ it('solution-ray se rend dans ses trois modes et pour des bornes entières ou fr
   expect(renderToString(<SolutionRay ineq="-3x+5<=20" transform />)).toContain('data-mode="flip"');
   expect(renderToString(<SolutionRay ineq="x<3" level="beginner" />)).toContain('data-mode="bracket"');
 });
+
+it('solution-ray s\'ouvre sur un mobile posé (jamais « x » seul) et aucune trace', () => {
+  const html = renderToString(<SolutionRay ineq="-3x+5<=20" />);
+  expect(html).toContain('data-ray-probe');
+  expect(html).not.toContain('data-trace=');
+});

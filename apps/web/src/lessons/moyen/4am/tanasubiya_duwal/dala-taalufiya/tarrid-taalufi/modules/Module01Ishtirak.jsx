@@ -4,8 +4,6 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACT_4, LAB, MISTAKE_FIXED } from '../content/textbook';
 
@@ -83,7 +81,7 @@ export default function Module01Ishtirak() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           lead="نفس السؤال في المستويين: مبلغ يُدفع مرّة واحدة ومبلغ يُدفع عن كل وحدة، أين تضع كلًّا منهما في الفاتورة؟"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           levels={{
             beginner: () => <Manipulation type="plan-compare" level="beginner" {...LAB.m1.beginner} />,
             advanced: () => (
@@ -154,7 +152,6 @@ export default function Module01Ishtirak() {
                 explain={<MathText>{'$200x + 2000 = 3000$ أي $200x = 1000$ ومنه $x = 5$ مقابلات.'}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

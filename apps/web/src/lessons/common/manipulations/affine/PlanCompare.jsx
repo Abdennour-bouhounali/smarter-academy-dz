@@ -132,12 +132,13 @@ export default function PlanCompare({
   const sceneKey = `${plans}|${mode}|${state.epoch}|${authored}`;
   const [scene, setScene] = useState(sceneKey);
   const [liveX, setLiveX] = useState(null);
-  const [x, setX] = useState(0);
+  // Un x PAR DÉFAUT, ni essai ni réponse (2026-10-09).
+  const [x, setX] = useState(() => L.defaultX(lab));
   const [pin, setPin] = useState(null);
   const [pinDrag, setPinDrag] = useState(false);
   const [shake, setShake] = useState(0);
   if (scene !== sceneKey) {
-    setScene(sceneKey); setLab(make()); setLiveX(null); setX(0); setPin(null); setPinDrag(false);
+    setScene(sceneKey); { const fresh = make(); setLab(fresh); setX(L.defaultX(fresh)); } setLiveX(null); setPin(null); setPinDrag(false);
   }
 
   const { win, grid, env } = lab;
@@ -205,6 +206,19 @@ export default function PlanCompare({
     const tr = next.trials[next.trials.length - 1];
     apply(next, { kind: 'x', x: v, stage: lab.stage, costs: tr.costs.map(L.numText), cheapest: tr.cheapest.map((i) => P[i].id) });
   };
+  // Miroir synchrone de `lab` pour « جرّب كل الإمكانيات » : un x validé par pas, comme la main.
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const sweepX = (v) => {
+    const prev = labRef.current;
+    const next = L.commitX(prev, v);
+    labRef.current = next;
+    setX(v); setLiveX(null);
+    setLab((s) => L.commitX(s, v));
+    const tr = next.trials[next.trials.length - 1];
+    if (tr) state.report(onTrial, { kind: 'x', x: v, stage: prev.stage, costs: tr.costs.map(L.numText), cheapest: tr.cheapest.map((i) => P[i].id) });
+  };
+  const untriedX = L.untriedXs(lab);
   const sx = useStretchInteraction({
     value: lab.accepted ? xx : null, range: xr, direction: 'ltr',
     toValue: useCallback((cx, _cy, rect) => geo.fromPx(cx - rect.left, 0).x, [geo]),
@@ -668,7 +682,19 @@ export default function PlanCompare({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={hints}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        autoComplete: lab.accepted ? {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: untriedX.length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => { const v = L.untriedXs(labRef.current)[0]; if (v !== undefined) sweepX(v); },
+          finish: () => { L.untriedXs(labRef.current).forEach(sweepX); },
+        } : undefined,
+      }}
       representation={representation}
       discovery={(
         <ManipulationDiscovery state={state} prompt={<MathText>{k(kind === 'model' ? 'dPromptModel' : 'dPromptCompare')}</MathText>} options={discoveryOptions} formal={formal} />

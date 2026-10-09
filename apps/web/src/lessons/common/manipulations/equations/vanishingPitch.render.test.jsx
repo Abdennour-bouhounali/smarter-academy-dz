@@ -34,3 +34,10 @@ it('vanishing-pitch se rend dans un workspace à deux niveaux, ouvert sur متق
   expect(html).toContain('data-expr="x-2|x+5"');
   expect(html).toContain('data-expr="3|x-5"');
 });
+
+it('vanishing-pitch s\'ouvre sur un x par défaut (jamais « ? ») et offre جرّب كل الإمكانيات', () => {
+  const html = renderToString(<VanishingPitch expr="x-2|x+5" />);
+  expect(html).not.toContain('x = ?');
+  expect(html).toContain('data-vanishing-x');
+  expect(html).not.toContain('data-vanishing-pin=');
+});

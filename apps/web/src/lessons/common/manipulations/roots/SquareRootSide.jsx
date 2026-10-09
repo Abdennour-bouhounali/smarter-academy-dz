@@ -82,14 +82,25 @@ export default function SquareRootSide({
   // HORS du `setState` (un updater doit rester pur — StrictMode le rejoue).
   const labRef = useRef(lab);
   labRef.current = lab;
+  // Les valeurs déjà ESSAYÉES (relâchement ou balayage) par carte et graduation : jamais la valeur par défaut.
+  const testedRef = useRef({ scene: sceneKey, sets: {} });
+  if (testedRef.current.scene !== sceneKey) testedRef.current = { scene: sceneKey, sets: {} };
+  const setKey = (st) => `${st.card}:${st.scale}`;
   const commit = useCallback((v) => {
     setLive(v);
     const next = L.test(labRef.current, v);
     if (next === labRef.current) return;
+    const sk = setKey(labRef.current);
+    testedRef.current.sets[sk] = new Set([...(testedRef.current.sets[sk] ?? []), v]);
     labRef.current = next;
     setLab(next);
     state.report(onTrial, { area: L.currentArea(next), side: v, scale: next.scale, cmp: next.last.cmp });
   }, [state, onTrial]);
+  const untested = () => {
+    const r = L.range(labRef.current);
+    const done = testedRef.current.sets[setKey(labRef.current)] ?? new Set();
+    return Array.from({ length: r.max - r.min + 1 }, (_, i) => r.min + i).filter((v) => !done.has(v));
+  };
   useEffect(() => { setLive(null); }, [lab.scale, lab.card, state.epoch]);
 
   const ready = L.discoveryReady(lab);
@@ -117,11 +128,15 @@ export default function SquareRootSide({
   const mu = (width - 2 * EDGE) / Math.max(1, span);
   const xOf = (v) => EDGE + (v - range.min) * mu;
   const toValue = useCallback((clientX, _y, rect) => range.min + (clientX - rect.left - EDGE) / mu, [range.min, mu]);
-  const stretch = useStretchInteraction({ value: live, range, toValue, onChange: setLive, onCommit: commit, direction: 'ltr' });
+  const stretch = useStretchInteraction({ value: live ?? lab.side ?? range.min, range, toValue, onChange: setLive, onCommit: commit, direction: 'ltr' });
 
-  const shown = live ?? lab.side;
-  const settled = lab.last != null && !stretch.dragging && shown === lab.last.v;
-  const cmp = settled ? lab.last.cmp : null;
+  // Une valeur PAR DÉFAUT (le début de la règle : un carré trop petit, jamais la réponse) : jamais vide à l'ouverture.
+  // Ce n'est pas un essai : `L.test` n'est appelé ici que pour LIRE la comparaison, son résultat est jeté.
+  const shown = live ?? lab.side ?? range.min;
+  const isDefault = lab.last == null && live == null;
+  const readout = isDefault ? L.test(lab, range.min).last : lab.last;
+  const settled = readout != null && !stretch.dragging && shown === readout.v;
+  const cmp = settled ? readout.cmp : null;
   const frameUnits = Math.max(2, Math.ceil(L.drawRoot(area)) + 1);
   const box = Math.min(260, Math.max(180, width * 0.55));
   const px = box / frameUnits;
@@ -146,10 +161,23 @@ export default function SquareRootSide({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={refineMode}
       hints={(refineMode ? [k('hint1'), k('hint2', { area: L.areaText(area) }), k('hint3')] : [k('gHint1'), k('gHint2'), k('gHint3')]).map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        // Balayer la règle, graduation après graduation : chaque position est un essai (c² vs a lu exactement).
+        autoComplete: {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: untested().length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => { const next = untested()[0]; if (next !== undefined) commit(next); },
+          finish: () => { untested().forEach((v) => commit(v)); },
+        },
+      }}
       representation={settled && (
         <EquationDisplay
-          tex={`c = ${L.sideTex(lab.last.v, lab.scale)} \\quad c^2 = ${L.squareTex(lab.last.v, lab.scale)} ${cmp === 0 ? '=' : cmp < 0 ? '<' : '>'} ${aTex}`}
+          tex={`c = ${L.sideTex(readout.v, lab.scale)} \\quad c^2 = ${L.squareTex(readout.v, lab.scale)} ${cmp === 0 ? '=' : cmp < 0 ? '<' : '>'} ${aTex}`}
           tone={cmp === 0 ? 'ok' : 'neutral'}
           note={<MathText>{cmpWord}</MathText>}
         />

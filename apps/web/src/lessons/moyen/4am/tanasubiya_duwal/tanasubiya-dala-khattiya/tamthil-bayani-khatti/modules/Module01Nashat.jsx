@@ -6,8 +6,6 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { parseDec } from '@smarter-academy/core';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, HOOK, ICT, ICT_PLATFORM } from '../content/textbook';
 import CableCarVignette from '../components/CableCarVignette';
@@ -28,7 +26,7 @@ import CableCarVignette from '../components/CableCarVignette';
  * TOUCH / FORMALIZE  la brique tamthil-nashat (« نقول أنّ … ») nomme ce que le lab a montré.
  * TRANSFER  le زالق : la question de la p. 76 se décide sur les droites que l'élève a fixées.
  * AUCUNE étape n'attend `onFinished`. LP : P1, P2 (lecture de C), P3 (le زالق).
- * La dernière étape se termine sur « مسألة الدرس » (LessonProblemCard), résolue au module 4.
+ * La dernière étape se termine sur « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire), résolue au module 4.
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -258,8 +256,6 @@ export default function Module01Nashat() {
                   <MathText>{'رسمت مستقيمًا يشمل O بنقطة واحدة أخرى، وقرأت عليه ترتيب نقطة، ورأيته يصعد أو ينزل. المحور التالي يعطي هذا كلّه اسمه في الكتاب: التمثيل البياني لدالة خطية ومعامل توجيهه.'}</MathText>
                 </p>
               )}
-              {/* « مسألة الدرس » : le prolongement du زالق (deux câbles épinglés à O), résolue au module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

@@ -40,7 +40,7 @@ export default function Module03Taraiq() {
       intro={
         <ManipulationWorkspace
           title="الطريقة بيدك"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="الشبكة شبكة المدرّج: عدّ المربعات من A إلى B، ثم أعِد الحركة نفسها."
           levels={{
             beginner: () => (

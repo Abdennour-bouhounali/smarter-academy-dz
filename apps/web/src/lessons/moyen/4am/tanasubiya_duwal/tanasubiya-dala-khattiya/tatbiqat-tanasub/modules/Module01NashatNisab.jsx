@@ -8,8 +8,6 @@ import { parseDec } from '@smarter-academy/core';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACT5_ANSWERS, LAB } from '../content/textbook';
 import SoldesVignette from '../components/SoldesVignette';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 
 /**
  * Module 1 — نشاط 5 (p. 67) « استعمال النسبة المئوية », ouvert sur L'ÉTIQUETTE QU'ON ÉTIRE
@@ -245,7 +243,6 @@ export default function Module01NashatNisab() {
                 explain={<MathText>{'$1000 \\times 0{,}8 = 800$ ، ثم $800 \\times 1{,}2 = 960$ : الزيادة 20% تُحسب من 800 لا من 1000، فلا نعود إلى السعر الأول.'}</MathText>}
                 onAnswered={() => setQ5(true)}
               />
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

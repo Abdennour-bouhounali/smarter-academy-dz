@@ -195,6 +195,20 @@ export function verify(s, x) {
 /** Les valeurs de x où l'égalité a été vérifiée juste (somme complète). */
 export const verifiedXs = (s) => s.trials.filter((t) => t.ok).map((t) => t.x);
 
+/** La somme est complète (et réduite si demandé) : « تحقّق » a un sens pour chaque x. */
+export const sumReady = (s) => allCollected(s) && (!s.simplify || isSimplified(s));
+
+/**
+ * « جرّب كل الإمكانيات » : les valeurs de x de la règle dont l'égalité n'a pas encore été vérifiée juste.
+ * Seulement quand la somme est construite par l'élève (porter les zones et réunir restent ses gestes).
+ */
+export function untriedXs(s, range) {
+  if (!sumReady(s)) return [];
+  const out = [];
+  for (let x = range.min; x <= range.max; x += 1) if (!s.trials.some((t) => t.x === x && t.ok)) out.push(x);
+  return out;
+}
+
 /**
  * LA DÉCOUVERTE : toutes les zones portées, la somme réduite (si demandé),
  * et l'égalité vérifiée pour AU MOINS DEUX valeurs de x — une seule valeur

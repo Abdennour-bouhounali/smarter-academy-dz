@@ -42,7 +42,7 @@ export default function Module03KhwarizmiyatIqlidus() {
         // l'élève devant une étape qu'il ne pouvait pas satisfaire.
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="نشاط الكتاب: 765 و 135، مع المقارنة بعدد خطوات الفروق. وللتمرّن أولًا، جرّب المستوى المبتدئ."
           levels={{
             beginner: () => (

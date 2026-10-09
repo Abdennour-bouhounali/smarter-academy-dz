@@ -38,7 +38,7 @@ export function init(numbers = {}) {
     tip,
     starStep: Number(numbers.star ?? 2),
     // départ : ni 60° ni 72° — مبتدئ commence sur 50° (la résistance), متقدم sur 60° (une ruche, pas une étoile)
-    alpha: clampAlpha(numbers.alpha ?? (mode === 'star' ? 60 : 50)),
+    alpha: clampAlpha(numbers.alpha ?? (mode === 'star' && Number(numbers.n ?? 5) * 60 !== 360 ? 60 : 50)),
     images: 0,
     run: null,
     trials: [],
@@ -102,6 +102,24 @@ export function turn(lab) {
   }
   const found = outcome === 'closed' && lab.mode === 'star' ? lab.alpha : lab.found;
   return { ...next, run: outcome, trials, found, last: { ...next.last, kind: outcome, n } };
+}
+
+/** Les α entiers du cadran (20 → 180) qu'aucun tour n'a encore essayé (« جرّب كل الإمكانيات »). */
+export const untriedAlphas = (lab) => {
+  const seen = new Set(lab.trials.map((t) => t.alpha));
+  return Array.from({ length: ALPHA.max - ALPHA.min + 1 }, (_, i) => ALPHA.min + i).filter((a) => !seen.has(a));
+};
+
+/**
+ * Un tour COMPLET pour l'angle `a` : exactement ce que fait la main (cadran sur `a`, puis « دوّر » jusqu'à ce que le tour se
+ * termine — fermé, autre polygone, segment, étoile, spirale). Même `setAlpha`, même `turn` : même essai enregistré.
+ */
+export function runAlpha(lab, a) {
+  if (lab.stage !== 'forge') return lab;
+  let s = lab.images > 0 && !ENDED.has(lab.run) ? release(lab) : lab;
+  s = setAlpha(s, a);
+  for (let i = 0; i < 80 && canTurn(s) === true; i += 1) s = turn(s);
+  return s;
 }
 
 /** Les angles (degrés, depuis l'axe des abscisses) des sommets posés : A puis ses images. */

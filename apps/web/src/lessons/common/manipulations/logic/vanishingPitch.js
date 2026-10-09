@@ -202,3 +202,17 @@ export function geometry(s, v, { width, maxHeight = 320, pad = 26, maxUnit = 40 
     sign: Lin.isZero(area) ? 0 : area.n > 0 ? 1 : -1,
   };
 }
+
+/**
+ * Le x PAR DÉFAUT à l'ouverture (jamais une visite, jamais écrit dans `visited`) :
+ * la graduation la plus proche de 0 où le terrain NE s'écrase PAS (aire ≠ 0) —
+ * jamais un zéro, qui serait la réponse. Sinon le minimum de la règle.
+ */
+export function defaultV(s) {
+  const ok = (v) => v >= s.range.min && v <= s.range.max && !Lin.isZero(sides(s, v).area);
+  for (let d = 0; d <= s.range.max - s.range.min; d += 1) {
+    if (ok(d)) return d;
+    if (ok(-d)) return -d;
+  }
+  return s.range.min;
+}

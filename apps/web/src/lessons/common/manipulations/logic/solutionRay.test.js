@@ -206,3 +206,22 @@ describe('solution-ray — transforming −3x + 5 ≤ 20 over the same traces (a
     }
   });
 });
+
+describe('graduation par défaut (hors solution, jamais une trace)', () => {
+  it('n\'est ni une solution ni la borne, et aucune trace n\'est écrite', () => {
+    for (const [ineq, whole] of [['-3x+5<=20', false], ['x<3', false], ['5x<=3', false], ['4x-1<=x+3', false], ['-7x+1<x-3', false], ['2,5x+100<=150', true]]) {
+      const lab = S.initLab({ ineq, whole });
+      const k = S.defaultK(lab);
+      expect(S.inRange(lab, k)).toBe(true);
+      expect(S.evaluate(lab, k).ok).toBe(false);
+      expect(k).not.toBe(S.boundK(lab));
+      expect(lab.traces).toEqual([]);
+    }
+  });
+  it('balayer toute la droite donne les traces que la main donnerait et ouvre la région', () => {
+    let lab = S.initLab({ ineq: '-3x+5<=20' });
+    for (let k = lab.kmin; k <= lab.kmax; k += 1) lab = S.addTrace(lab, k);
+    expect(lab.traces).toHaveLength(lab.kmax - lab.kmin + 1);
+    expect(S.regionDiscoveryReady(lab)).toBe(true);
+  });
+});

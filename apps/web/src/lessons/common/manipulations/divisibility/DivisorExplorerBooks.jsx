@@ -109,20 +109,25 @@ function BookshelfLab({
   const marks = (preset ? preset.marks : marks0) ?? [];
 
   // ── L'état du laboratoire : la longueur VIVANTE et les essais VALIDÉS ──
-  const [b, setB] = useState(null);
+  // Un rayon PAR DÉFAUT (jamais un diviseur de a : première longueur qui laisse des livres) : jamais vide à l'ouverture, et ce n'est pas un essai (2026-10-09).
+  const [b, setB] = useState(() => S.defaultShelf(total, range));
   const [tried, setTried] = useState({});
   // Nouvelle scène (niveau, « إعادة ») : le rayon est vide. Ajusté PENDANT le
   // rendu, comme TeamBuilder — jamais une frame avec l'ancien rayon.
   const sceneKey = `${total}:${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setB(null); }
+  if (scene !== sceneKey) { setScene(sceneKey); setB(S.defaultShelf(total, range)); }
   // La mémoire des essais part avec « إعادة » et avec un autre stock de livres.
   const memoryKey = `${total}:${state.resetCount}`;
   const [memory, setMemory] = useState(memoryKey);
   if (memory !== memoryKey) { setMemory(memoryKey); setTried({}); }
 
+  // Miroir synchrone des essais : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const triedRef = useRef(tried);
+  triedRef.current = tried;
   const commit = useCallback((v) => {
     setB(v);
+    triedRef.current = S.commit(triedRef.current, total, v);
     setTried((prev) => S.commit(prev, total, v));
     const a = S.arrange(total, v);
     state.report(onVerdict, { b: v, divides: a.exact, quotient: a.shelves, remainder: a.leftOver });
@@ -305,6 +310,22 @@ function BookshelfLab({
   return (
     <ManipulationShell
       type="divisor-explorer-books"
+      controller={{
+        autoComplete: {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: Array.from({ length: range.max - range.min + 1 }, (_, i) => range.min + i).filter((v) => !(v in tried)).length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => {
+            const next = Array.from({ length: range.max - range.min + 1 }, (_, i) => range.min + i).find((v) => !(v in triedRef.current));
+            if (next !== undefined) commit(next);
+          },
+          finish: () => {
+            for (let v = range.min; v <= range.max; v += 1) if (!(v in triedRef.current)) commit(v);
+          },
+        },
+      }}
       title={title ?? k('title', { books: books(total) })}
       // Au projecteur, la consigne est DITE par l'enseignant : la place va au
       // laboratoire (il doit tenir seul dans l'écran, CLASSROOM_MODE §8).

@@ -296,6 +296,29 @@ export function commitX(s, x) {
   return { ...s, trials, last: { kind: 'trial', x: xi } };
 }
 
+/**
+ * Le x affiché à l'ouverture (jamais un essai) : le premier entier qui n'est ni un croisement des formules, ni
+ * une cible `ask` (x ou antécédent du budget) — l'ouverture ne donne aucune réponse. 0 dans le cas courant.
+ */
+export function defaultX(s) {
+  const forbidden = new Set();
+  for (const p of pairs(s.plans)) if (p.kind === 'cross' && isInteger(p.x)) forbidden.add(toNumber(p.x));
+  for (const a of s.asks) {
+    if (a.axis === 'x') forbidden.add(toNumber(a.v));
+    else { const r = AF.antecedentOf(s.plans[0].f, a.v); if (r.kind === 'unique') forbidden.add(toNumber(r.x)); }
+  }
+  for (let x = 0; x <= s.win.xMax; x += 1) if (!forbidden.has(x)) return x;
+  return 0;
+}
+
+/** Les x entiers de la fenêtre pas encore validés à l'étape courante (« جرّب كل الإمكانيات »). */
+export function untriedXs(s) {
+  if (!s.accepted) return [];
+  const out = [];
+  for (let x = 0; x <= s.win.xMax; x += 1) if (!s.trials.some((t) => t.x === x && t.stage === s.stage)) out.push(x);
+  return out;
+}
+
 /** Les cibles `ask` atteintes par les essais de l'élève (sur la formule A). */
 export function asksDone(s) {
   return s.asks.map((q) => s.trials.some((t) => (q.axis === 'x' ? t.x === toNumber(q.v) : eq(t.costs[0], q.v))));

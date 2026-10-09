@@ -106,6 +106,9 @@ export default function RampRatios({
   const ready = L.discoveryReady(lab);
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { mode: lab.mode }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
   const nItems = scale ? lab.ramps.length : lab.trials.length;
   useEffect(() => {
     if (nItems > 0) state.report(onTrial, L.evidenceOf(lab, scale ? lab.ramps.at(-1) : lab.trials.at(-1)));
@@ -386,7 +389,33 @@ export default function RampRatios({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={hints}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        // مبتدئ, une fois les rapports composés : chaque degré est un essai. متقدم : un jugement par rampe, jamais auto.
+        ...(scale ? {} : {
+          autoComplete: {
+            label: t('manipulation.autoComplete.tryAll'),
+            ready: stage === 'explore',
+            remaining: L.tryAllPlan(lab).length,
+            // un degré par pas : on VOIT la rampe se lever et les rapports changer
+            intervalMs: 480,
+            maxTicks: 80,
+            step: () => {
+              const next = L.tryAllPlan(labRef.current)[0];
+              if (next === undefined) return;
+              labRef.current = L.commitB(labRef.current, next);
+              setLab((s) => L.commitB(s, next));
+            },
+            finish: () => {
+              let cur = labRef.current;
+              for (const b of L.tryAllPlan(cur)) cur = L.commitB(cur, b);
+              labRef.current = cur;
+              setLab(cur);
+            },
+          },
+        }),
+      }}
       discovery={<ManipulationDiscovery state={state} prompt={k(scale ? 'dPromptAdv' : 'dPrompt')} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}
     >

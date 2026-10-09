@@ -6,8 +6,6 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import { FIG_ACT4, FIG_ACT4_MEZIAN } from '../content/figures';
@@ -91,7 +89,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="في المستويين: الزاوية المحيطية رأسها على الدائرة؛ خارج الدائرة أو داخلها ترفض اللوحة الموضع وتقول لماذا."
           levels={{
             beginner: () => (
@@ -206,9 +204,6 @@ export default function Module01Nashat() {
                 explain={<MathText>{ACTIVITY_LINES.houaria}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
-              {/* La « مسألة الدرس » prolonge le lab متقدم : un tireur sur le grand arc, puis l'extrémité d'un diamètre —
-                  résolue au module 5. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

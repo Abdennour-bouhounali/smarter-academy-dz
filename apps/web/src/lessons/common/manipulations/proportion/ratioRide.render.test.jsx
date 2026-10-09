@@ -74,3 +74,9 @@ it('chaque clé que le composant lit existe (aucune clé brute à l’écran)', 
     expect(ns[`repNote_${form}`]).toBeTypeOf('string');
   }
 });
+
+it('valeurs par défaut : la trottinette s’ouvre sur une durée (1 minute), aucune colonne enregistrée', () => {
+  const html = renderToString(<RatioRide plans="15x" levels={false} />);
+  expect(html).toContain('data-x="1"');
+  expect(html).toMatch(/data-columns=""/);
+});

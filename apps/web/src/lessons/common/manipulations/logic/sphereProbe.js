@@ -36,12 +36,19 @@ export function defaultStart(R, bound) {
   return [-Math.min(bound, R), -2, 1].map((v) => clampInt(v, bound));
 }
 
+/** Le départ n'est jamais une réponse de la première tâche (M sur la كرة, P dedans, Q dehors) : on prend le premier candidat d'une autre nature. */
+export function defaultStartFor(R, bound, task) {
+  const cands = [defaultStart(R, bound), [1, 1, 0], [bound, bound, bound], [R, 1, 0], [1, 0, 0]];
+  const ok = cands.find((c) => { const p = c.map((v) => clampInt(v, bound)); return !p.every((v) => v === 0) && reading(R, p).where !== task; });
+  return ok ?? cands[0];
+}
+
 export function init(numbers = {}) {
   const R = Number(numbers.R ?? 3);
   const bound = Number(numbers.bound ?? R + 1);
   const tasks = Array.isArray(numbers.tasks) && numbers.tasks.length ? Object.freeze([...numbers.tasks]) : null;
   const probes = Object.freeze((numbers.probes ?? []).map((at, i) => Object.freeze({ name: PROBE_NAMES[i], at: freezeP(at.map((v) => clampInt(v, bound))) })));
-  const start = freezeP((numbers.start ?? defaultStart(R, bound)).map((v) => clampInt(v, bound)));
+  const start = freezeP((numbers.start ?? defaultStartFor(R, bound, tasks?.[0])).map((v) => clampInt(v, bound)));
   return Object.freeze({
     R, bound, mode: tasks ? 'tasks' : 'classify', stage: 'probe',
     M: start, probes, tasks, taskIndex: 0,

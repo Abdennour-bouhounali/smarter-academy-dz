@@ -205,3 +205,17 @@ describe('shape-turn — mise en page', () => {
     expect(L.pointerTheta(O, { x: 1, y: 1 }, 0, -35)).toBeCloseTo(80, 9);
   });
 });
+
+describe('shape-turn — l’ouverture n’est ni un essai ni la réponse', () => {
+  it('θ = 0, feuille non étirée, rien imprimé ni posé', () => {
+    for (const lv of ['beginner', 'advanced']) {
+      const s = L.init(LEVELS['shape-turn'][lv].numbers);
+      expect(s.theta).toBe(0);
+      expect(s.stretch).toBe(L.STRETCH.min);
+      expect(s.trials).toHaveLength(0);
+      expect(s.theta % 360).not.toBe(s.alpha);
+      expect(s.landed ?? false).toBe(false);
+      expect(s.stamps ?? []).toHaveLength(0);
+    }
+  });
+});

@@ -21,7 +21,7 @@ import { BASE } from '../../_unit/unitMeta';
  *   متقدم  la وضعية du manuel : l'élève parie, puis construit les deux parcours (trois centres, trois balises) ; 3π ≈ 9,42
  *          contre √13 + √5 + √17 ≈ 9,96 ;
  *   مبتدئ  un rallye au Sahara : un demi-cercle et une ligne droite contre deux lignes droites — cette fois la ligne brisée gagne.
- * Ouvert sur متقدم (`defaultLevel="advanced"`) : c'est la وضعية du module. Les gestes de l'élève (`onTrial`) sont listés
+ * Ouvert sur متقدم (ouvert sur مبتدئ par défaut depuis 2026-10-09) : c'est la وضعية du module. Les gestes de l'élève (`onTrial`) sont listés
  * au-dessus des questions d'exécution (`[data-activity-evidence]`). Aucune étape n'attend le lab (`onFinished`).
  * Déclarés en une ligne : les noms E, P, Q (la plateforme), « محيط نصف دائرة » = l'arc seul.
  * LP : P2 (lire, ranger, points sur l'axe), P3 (centres, longueurs, comparaison), P1 (tout mobiliser, conclure).
@@ -91,7 +91,7 @@ export default function Module01AlWadiya() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="المستوى المتقدّم هو وضعية الكتاب: توقّع أولا أيّ المسارين أقصر، ثم ابنِ كل مسار جزءا بجزء وراقب ساعتي العدّاءين. في المستوى المبتدئ رالي في الصحراء."
           levels={{
             beginner: () => (

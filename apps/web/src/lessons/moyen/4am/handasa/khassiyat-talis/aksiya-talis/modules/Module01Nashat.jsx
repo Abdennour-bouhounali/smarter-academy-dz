@@ -6,8 +6,6 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, LAB } from '../content/textbook';
 import { FIG_ACT2, FIG_ACT2_STUDENTS } from '../content/figures';
@@ -27,7 +25,7 @@ import MuralVignette from '../components/MuralVignette';
  * « أتوقّع القاعدة » : le texte à compléter de la question 2) EST la règle (« انقل وأتمم ») ; il est donc enveloppé
  * dans <PredictRule id="aksiya-nashat"> — l'élève écrit les conditions avec ses mots (predictPrompt de knowledge.jsx)
  * AVANT de voir le texte, puis la question et la brique s'affichent.
- * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape (les labs sont dans `intro`) : le même tréteau en X,
+ * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape (les labs sont dans `intro`) : le même tréteau en X,
  * d'autres nombres, résolu au module 5.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -95,7 +93,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead={<MathText>{'في المستويين: عارضتان تتقاطعان في A، والأرض هي (BC). اللوح (B′C′) أفقي — أي موازٍ للأرض — عندما تكون الفقاعة في الوسط.'}</MathText>}
           levels={{
             beginner: () => (
@@ -212,9 +210,6 @@ export default function Module01Nashat() {
                 explain={<MathText>{'C′ من الجهة الأخرى للنقطة A: موقع B′ بالنسبة إلى A و B لا يماثل موقع C′ بالنسبة إلى A و C، فالشرط الثاني غير محقّق — ولهذا بقيت الفقاعة مائلة.'}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
-              {/* La « مسألة الدرس » prolonge le tréteau en X du niveau متقدم : d'autres nombres, des points des deux
-                  côtés de A — module 5. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

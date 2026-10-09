@@ -8,8 +8,6 @@ import { parseDec } from '@smarter-academy/core';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, HOOK, RAMP2 } from '../content/textbook';
 import SkateVignette from '../components/SkateVignette';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 
 /**
  * Module 1 — نشاط 3 (p. 78) « تمثيل دالة تآلفية », ouvert sur LA DROITE QUI A QUITTÉ L'ORIGINE (affine-line).
@@ -25,7 +23,7 @@ import { LESSON_CONFIG } from '../lesson.config';
  * TOUCH / FORMALIZE  les briques irtifa-b et tartib-mabda (« نسمّي العدد b … الترتيب عند المبدأ »).
  * TRANSFER  le second laboratoire : où (D) coupe l'axe des ordonnées, et ce que fait sa marche.
  * AUCUNE étape n'attend `onFinished`. LP : P1 (étapes 1–4), P2 (étape 5).
- * Les labs vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس » (LessonProblemCard)
+ * Les labs vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire)
  * clôt donc la DERNIÈRE étape.
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
@@ -89,7 +87,7 @@ export default function Module01Nashat() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           lead="في المستويين مستقيم متقطع يشمل المبدأ، ومستقيمك فوقه. ارفع مستقيمك من نقطته على محور التراتيب، وقارن بالمسبار."
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           levels={{
             beginner: () => (
               <Manipulation
@@ -244,9 +242,6 @@ export default function Module01Nashat() {
                   <MathText>{'رفعت مستقيمًا، ورأيت أنّه يقطع محور التراتيب في $(0 ; b)$ ، وقرأت على منحدر ثانٍ أين يقطع هذا المحور وكم ينزل لكل وحدة. المحور التالي يعطي ذلك كلّه أسماءه: معامل التوجيه والترتيب عند المبدأ.'}</MathText>
                 </p>
               )}
-              {/* La « مسألة الدرس » prolonge le lab متقدم (labs dans l'intro : dernière étape) :
-                  une autre rampe du skatepark, sur une base, à lire sur son graphe — résolue au module 5. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

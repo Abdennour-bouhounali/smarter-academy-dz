@@ -39,7 +39,8 @@ describe('sphere-probe — rendu', () => {
   });
 
   it('متقدم : le stade, la tâche « M sur la كرة », OM jamais écrite pendant le geste', () => {
-    const html = renderToString(<SphereProbe {...LEVELS['sphere-probe'].advanced.numbers} />);
+    // Les indices (formule générale) sont affichés d'emblée : « OM jamais écrite » se mesure hors d'eux.
+    const html = renderToString(<SphereProbe {...LEVELS['sphere-probe'].advanced.numbers} />).replace(/<ol[^>]*data-manipulation-hints[\s\S]*?<\/ol>/, '');
     expect(html).toContain('data-world="shot-put"');
     expect(html).toContain('data-mode="tasks"');
     expect(html).toContain('data-task="surface"');

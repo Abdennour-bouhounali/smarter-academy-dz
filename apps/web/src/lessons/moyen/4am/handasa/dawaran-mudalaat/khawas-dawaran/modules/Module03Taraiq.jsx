@@ -44,7 +44,7 @@ export default function Module03Taraiq() {
       intro={
         <ManipulationWorkspace
           title="الورقة الشفافة"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="المستوى «متقدم» هو طريقة الكتاب: لا زاوية ولا اتجاه معطيان."
           levels={{
             beginner: () => (

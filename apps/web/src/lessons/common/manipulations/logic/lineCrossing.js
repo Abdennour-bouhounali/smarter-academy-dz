@@ -247,6 +247,21 @@ export const pAt = (s, j) => valueAt(j, s.snap.dy);
 export const pIndex = (s, p) => indexOf(toNumber(F(p)), s.snap.dy);
 export const pRange = (s) => indexRange(s.win.yMin, s.win.yMax, s.snap.dy);
 
+/**
+ * « جرّب كل الإمكانيات » (étape des cas) : les pentes m de la graduation que l'élève n'a pas encore
+ * validées pour le p tenu. Rien ailleurs : poser P est un geste 2D, choisir une carte est un choix.
+ */
+export function untriedSlopes(s) {
+  if (s.stage !== 'cases') return [];
+  const r = mRange(s);
+  const out = [];
+  for (let j = r.min; j <= r.max; j += 1) {
+    const m = mAt(s, j);
+    if (!s.trials.some((t) => t.kind === 'config' && eq(t.m, m) && eq(t.p, s.held.b))) out.push(j);
+  }
+  return out;
+}
+
 /* ── dessin (pixels — ne décide RIEN) ──────────────────────────────────── */
 
 export { planeGeometry, ticks, indexRange, indexOf, valueAt, numText, numTex, approxTex, approxText, toNum };

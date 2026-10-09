@@ -15,7 +15,7 @@ import StatTable, { MedalVignette } from '../components/StatTable';
  *
  * LE LABORATOIRE (stat-balance, RÉUTILISÉ de « مدى ووسيط ومتوسط سلسلة إحصائية », mode `hidden`, monde
  * `medals` — props dans content/textbook.js › LAB, deux niveaux dans un ManipulationWorkspace,
- * `defaultLevel="advanced"` : c'est le tableau du manuel) :
+ * ouvert sur مبتدئ par défaut depuis 2026-10-09 : c'est le tableau du manuel) :
  *   متقدم  les 30 pays du manuel : la main pose le premier jeton caché (entre 2 et 4) jusqu'à ce que le
  *          rideau du وسيط se verrouille sur 3, puis le second (entre 26 et 32) jusqu'à l'équilibre sur 7.
  *   مبتدئ  les jeux scolaires (plateforme) : une seule valeur cachée, la plus grande — le rideau reste sur
@@ -94,7 +94,7 @@ export default function Module01AlWadiya() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="المستوى المتقدّم هو جدول الكتاب: اسحب كل قيمة مخفية على الميزان حتى يستقرّ الوسيط على 3 ويتوازن الميزان على 7. في المستوى المبتدئ عشر متوسطات وقيمة مخفية واحدة."
           levels={{
             beginner: () => (

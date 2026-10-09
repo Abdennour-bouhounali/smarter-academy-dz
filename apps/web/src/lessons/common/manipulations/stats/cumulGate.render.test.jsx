@@ -63,3 +63,9 @@ it('chaque clé que le composant lit existe (aucune clé brute à l’écran)', 
     for (const key of worldKeys) expect(ns.worlds[theme][key], `${theme}.${key}`).toBeTypeOf('string');
   }
 });
+
+it('valeurs par défaut : le seuil s’ouvre sous la plus petite taille (117), personne n’est allumé', () => {
+  const html = renderToString(<CumulGate series="120:2|130:3|140:2|150:1" mode="up|down" theme="funpark" />);
+  expect(html).toContain('data-t="117"');
+  expect(html).not.toContain('data-lit="true"');
+});

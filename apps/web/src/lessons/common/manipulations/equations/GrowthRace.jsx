@@ -115,10 +115,12 @@ export default function GrowthRace({
   const [lab, setLab] = useState(() => L.init(left, right, { startWith }));
   const sceneKey = `${left}|${right}|${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
-  const [x, setX] = useState(0);
+  const [x, setX] = useState(null); // null : pas encore d'essai — la course montre alors le x par défaut
+  const labRef = useRef(lab);
+  labRef.current = lab;
   const [live, setLive] = useState(null);
   const [notice, setNotice] = useState(null);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init(left, right, { startWith })); setX(0); setLive(null); setNotice(null); }
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(L.init(left, right, { startWith })); setX(null); setLive(null); setNotice(null); }
 
   const { model } = lab;
   // L'opération vient des expressions ; le thème qui la contredit cède (voir l'en-tête).
@@ -214,16 +216,22 @@ export default function GrowthRace({
   const mu = (width - 2 * EDGE) / steps;
   const xOf = (v) => EDGE + (v - range.min) * mu;
   const toValue = useCallback((clientX, _y, rect) => range.min + (clientX - rect.left - EDGE) / mu, [range.min, mu]);
+  const trialPayload = (v) => { const trial = L.trialAt(model, v); return { ...trial, leftText: L.valueText(trial.left), rightText: L.valueText(trial.right) }; };
   const commit = (v) => {
     setLive(null); setX(v);
-    const trial = L.trialAt(model, v);
+    labRef.current = L.commitTrial(labRef.current, v);
     setLab((s) => L.commitTrial(s, v));
-    const payload = { ...trial, leftText: L.valueText(trial.left), rightText: L.valueText(trial.right) };
+    const payload = trialPayload(v);
     state.report(onTrial, payload);
     setNotice({ trial: payload });
   };
-  const stretch = useStretchInteraction({ value: live ?? x, range, toValue, onChange: setLive, onCommit: commit, direction: 'ltr' });
-  const xx = Math.min(range.max, Math.max(range.min, live ?? x));
+  // Un x PAR DÉFAUT (L.defaultX : ni rencontre ni réponse), jamais un essai : `lab.trials` ne le contient pas.
+  const dx = L.defaultX(model, range, goal);
+  const stretch = useStretchInteraction({ value: live ?? x ?? dx, range, toValue, onChange: setLive, onCommit: commit, direction: 'ltr' });
+  const xx = Math.min(range.max, Math.max(range.min, live ?? x ?? dx));
+  // Au repos, sans essai : la conséquence du x par défaut (la ligne ne prétend pas que l'élève l'a posé).
+  const shownTrial = notice?.trial ?? (x == null && live == null ? trialPayload(dx) : null);
+  const untried = () => Array.from({ length: range.max - range.min + 1 }, (_, i) => range.min + i).filter((v) => !labRef.current.trials.some((tr) => tr.x === v));
   const now = L.trialAt(model, xx);
   const labelStep = mu >= 18 ? 1 : mu >= 9 ? 2 : 5;
 
@@ -431,11 +439,24 @@ export default function GrowthRace({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={hints.map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
-      representation={racing && notice?.trial ? (
-        <EquationDisplay tone={notice.trial.rel === '=' ? 'ok' : 'neutral'}
-          tex={`${L.readoutTex(model, 'left', notice.trial.x).tex} \\;\\; ${REL_TEX[notice.trial.rel]} \\;\\; ${L.readoutTex(model, 'right', notice.trial.x).tex}`}
-          note={<MathText>{k('trialNotice', { x: notice.trial.x, left: notice.trial.leftText, right: notice.trial.rightText, rel: REL_TEX[notice.trial.rel] })}</MathText>} />
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        // Seule la COURSE se balaie (chaque x est un essai) ; construire le modèle reste une suite de décisions.
+        autoComplete: {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: racing,
+          remaining: racing ? untried().length : 0,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => { const next = untried()[0]; if (next !== undefined) commit(next); },
+          finish: () => { untried().forEach((v) => commit(v)); },
+        },
+      }}
+      representation={racing && shownTrial ? (
+        <EquationDisplay tone={shownTrial.rel === '=' ? 'ok' : 'neutral'}
+          tex={`${L.readoutTex(model, 'left', shownTrial.x).tex} \\;\\; ${REL_TEX[shownTrial.rel]} \\;\\; ${L.readoutTex(model, 'right', shownTrial.x).tex}`}
+          note={<MathText>{k('trialNotice', { x: shownTrial.x, left: shownTrial.leftText, right: shownTrial.rightText, rel: REL_TEX[shownTrial.rel] })}</MathText>} />
       ) : null}
       discovery={options && (
         <ManipulationDiscovery state={state} prompt={k('discoveryPrompt')} options={options} formal={formal} />

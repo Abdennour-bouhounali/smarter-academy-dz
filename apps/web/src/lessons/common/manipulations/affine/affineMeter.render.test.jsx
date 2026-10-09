@@ -80,3 +80,10 @@ it('chaque clé que le composant lit existe (aucune clé brute à l’écran)', 
     for (const form of ['zero', 'one', 'two', 'few', 'many', 'other']) expect(ns.worlds[world][`units_${form}`]).toBeTypeOf('string');
   }
 });
+
+it('affine-meter : le compteur n\'est jamais vide à l\'ouverture et « جرّب كل الإمكانيات » est offert (2026-10-09)', () => {
+  const out = renderToString(<AffineMeter rule="40x+100" />);
+  expect(out).not.toContain('data-am-x=""');
+  expect(out).not.toContain('data-fx=""');
+  expect(out).toContain('data-manipulation-autocomplete="ready"');
+});

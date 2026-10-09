@@ -6,8 +6,6 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox, MethodSteps } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { TIFO, LAB, METHOD_RAY, METHOD_DIVIDE, LINES } from '../content/textbook';
 import TifoVignette from '../components/TifoVignette';
@@ -181,9 +179,6 @@ export default function Module01Lafita() {
                 />
               )}
               {q4 && <KnowledgeBrick id="tariqat-kitab-taqsim" lead="طريقتان، والفكرة واحدة: قطع متقايسة وموازيات." />}
-              {/* La « مسألة الدرس » prolonge le laboratoire متقدم : deux parallèles graduées, rapport 4/3 sur 10 cm —
-                  résolue au module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

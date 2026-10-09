@@ -6,8 +6,6 @@ import SpaceFigure from '../../../../../../common/components/SpaceFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACT6, ACT6_LINES, LAB, PLATFORM_SOURCE } from '../content/textbook';
 import { FIG_ACT6, FIG_ACT6_SOL } from '../content/figures';
@@ -27,7 +25,7 @@ import VoxelVignette from '../components/VoxelVignette';
  * « أتوقّع القاعدة » : la question 2 ب du نشاط 6 ÉNONCE la règle (« تحقّق أنّ V′ = (3/5)³V و A′ = (3/5)²A ») ; elle est donc
  * enveloppée, avec sa question, dans <PredictRule id="takbir-tajribi"> — l'élève écrit d'abord, sous ses bâtis, par quoi
  * l'aire et le volume sont multipliés (predictPrompt de knowledge.jsx).
- * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape : le même jeu de construction, un autre pavé (8 × 6 × 4)
+ * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape : le même jeu de construction, un autre pavé (8 × 6 × 4)
  * réduit de 3/4, résolu au module 5.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -88,7 +86,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="المختبر التفاعلي"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="في المستويين: اسحب النسبة k، توقّع حجم المجسّم الناتج، ثم ابنِه: عدّ المكعبات يحكم على توقّعك."
           levels={{
             beginner: () => (
@@ -201,7 +199,6 @@ export default function Module01Nashat() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: نفس القاعدة في التكبير والتصغير.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ4(true)}
               />
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

@@ -110,3 +110,11 @@ export function verdict(state) {
 export function isCoprime(state) {
   return state.g === 1;
 }
+
+/** Les nombres de trousses 1 … min(a, b) pas encore essayés, croissants. */
+export function untriedGroups(groups) {
+  const top = Math.min(groups.a, groups.b);
+  const out = [];
+  for (let k = 1; k <= top; k += 1) if (groups.tried[k] === undefined) out.push(k);
+  return out;
+}

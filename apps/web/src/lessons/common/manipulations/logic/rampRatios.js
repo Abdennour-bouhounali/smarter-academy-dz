@@ -288,3 +288,19 @@ export function iFromPoint(s, [x, y]) {
 export function angleFromPoint(s, [x, y]) {
   return clamp((Math.atan2(Math.max(0, y), Math.max(0.01, x)) * 180) / Math.PI, s.range);
 }
+
+/* ── « جرّب كل الإمكانيات » (مبتدئ, étape « explore ») : tous les degrés de la rampe ───────────── */
+
+/**
+ * Les degrés b qu'il reste à essayer, du plus petit au plus grand. Seul le mode `name` est un balayage, et
+ * seulement quand les trois rapports sont composés (sinon `commitB` n'enregistre pas d'essai) : avant, l'élève
+ * doit encore choisir l'angle, nommer les côtés et composer — des choix, pas une liste. `scale` (متقدم) demande
+ * un JUGEMENT par rampe : jamais automatique.
+ */
+export function tryAllPlan(s) {
+  if (s.mode !== 'name' || !composeDone(s)) return [];
+  const tried = new Set(s.trials.filter((t) => t.at === s.at).map((t) => t.b));
+  const plan = [];
+  for (let b = s.range[0]; b <= s.range[1]; b += 1) if (!tried.has(b)) plan.push(b);
+  return plan;
+}

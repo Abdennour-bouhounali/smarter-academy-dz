@@ -228,3 +228,26 @@ describe('le dessin : la géométrie reste dans le cadre', () => {
     }
   });
 });
+
+describe('plan-compare — défaut et balayage (2026-10-09)', () => {
+  it('le x de départ n\'est ni un croisement ni une cible, et n\'est pas un essai', () => {
+    const s = L.init(ACT4);
+    const x = L.defaultX(s);
+    expect(x).not.toBe(7);
+    expect(x).not.toBe(14);
+    expect(x).not.toBe(10);
+    expect(s.trials).toHaveLength(0);
+    const eqB = L.init({ plans: '100x+500|300x+500', mode: 'compare' });
+    expect(L.defaultX(eqB)).not.toBe(0);
+  });
+  it('le balayage de x attend le modèle accepté puis valide chaque entier', () => {
+    const m = L.init(ACT4);
+    expect(L.untriedXs(m)).toHaveLength(0);
+    let s = L.init({ plans: '200x+2000|400x', mode: 'compare' });
+    const todo = L.untriedXs(s);
+    expect(todo).toHaveLength(s.win.xMax + 1);
+    for (const x of todo) s = L.commitX(s, x);
+    expect(L.untriedXs(s)).toHaveLength(0);
+    expect(L.contrastOk(s)).toBe(true);
+  });
+});

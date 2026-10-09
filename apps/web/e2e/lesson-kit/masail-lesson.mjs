@@ -157,7 +157,7 @@ async function solveProblemModule(page, mod, problem, prefix) {
   await page.goto(`${LESSON}/${evaluation.slug}`, { waitUntil: 'networkidle' });
   check(`the test (module ${evaluation.number}) is open`, !page.url().includes('/login') && (await page.locator('body').innerText()).includes('إختبار'));
   await page.goto(`${LESSON}/${module1.slug}`, { waitUntil: 'networkidle' });
-  check('module 1 (revisit): the « مسألة الدرس » reminder is present', (await page.locator('[data-lesson-problem]').count()) === 1);
+  check('module 1 (revisit): no « مسألة الدرس » card inside a module (sommaire only, 2026-10-09)', (await page.locator('[data-lesson-problem]').count()) === 0);
   await ctx.close();
 }
 

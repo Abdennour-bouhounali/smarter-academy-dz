@@ -132,6 +132,25 @@ export function gauges(s, x, y) {
 }
 export const okPair = (s, x, y) => gauges(s, x, y).map((g) => (g ? g.ok : false));
 
+/**
+ * La ثنائية MONTRÉE à l'ouverture (jamais un essai, jamais écrite dans `trials`) : elle ne doit
+ * JAMAIS être la solution — ni, si possible, vérifier une équation (sinon une jauge s'allume « pour
+ * rien »). On balaie les bornes depuis (min ; min) : la première qui n'allume aucune jauge, sinon la
+ * première qui n'est pas la solution, sinon (min ; min).
+ */
+export function defaultPair(s) {
+  const { x: rx, y: ry } = s.range;
+  let notSolution = null;
+  for (let x = rx.min; x <= rx.max; x += 1) {
+    for (let y = ry.min; y <= ry.max; y += 1) {
+      const ok = okPair(s, x, y);
+      if (!ok[0] && !ok[1]) return { x, y };
+      if (!notSolution && !(ok[0] && ok[1])) notSolution = { x, y };
+    }
+  }
+  return notSolution ?? { x: rx.min, y: ry.min };
+}
+
 /* ── Les gestes ─────────────────────────────────────────────────────────────────────── */
 
 const inRange = (r, v) => Number.isInteger(v) && v >= r.min && v <= r.max;

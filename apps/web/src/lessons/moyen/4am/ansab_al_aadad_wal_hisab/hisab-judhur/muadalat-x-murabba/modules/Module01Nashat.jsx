@@ -5,8 +5,6 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 
@@ -63,7 +61,7 @@ export default function Module01Nashat() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           lead="حرّك العدد x على المستقيم السفلي: السهم يحمله إلى مربّعه على المستقيم العلوي. ثبّت كل قيمة يصل فيها السهم إلى الدائرة a."
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           levels={{
             beginner: () => (
               <Manipulation
@@ -237,10 +235,6 @@ export default function Module01Nashat() {
                   lead="ما رأيته بالسهمين وأثبتّه بالحرف b، يكتبه الكتاب هكذا:"
                 />
               )}
-              {/* La « مسألة الدرس » prolonge la droite qui se plie des deux niveaux
-                  (laboratoire dans l'intro) : mêmes cartes x² = a, d'autres
-                  nombres — résolue au module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

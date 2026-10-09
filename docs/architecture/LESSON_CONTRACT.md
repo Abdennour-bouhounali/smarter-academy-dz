@@ -350,9 +350,13 @@ traduire en mathématiques → calculer → répondre → rédiger. Trois module
   comparaison avec `durationMinutes` du propriétaire, pas du plafond de 90 min.
 
 **« مسألة الدرس ».** `LESSON_CONFIG.lessonProblem = { module, title, statement }`
-(littéraux) : l'énoncé de la مسألة 1, montré au sommaire et à la fin du
-module 1 par `LessonProblemCard`, résolu au module indiqué. Elle prolonge la
+(littéraux) : l'énoncé de la مسألة 1, montré au sommaire par `LessonProblemCard`, résolu au module indiqué. Elle prolonge la
 manipulation du niveau متقدم (même instrument, autres nombres).
+
+**La carte n'est PLUS dans les modules (2026-10-09, décision du propriétaire).** Posée au module 1
+(`<LessonProblemCard … compact />`, dans 60 leçons) elle ne menait nulle part : l'élève y arrive de
+toute façon. `LessonProblemCard` ne vit plus qu'au sommaire (`LessonIndex`, avec le lien vers le
+module de la مسألة). Une leçon nouvelle ne la pose pas dans un module.
 
 **Données, pas de JSX.** `content/problems.js` exporte `PROBLEMS` (un par
 module `problem`, dans l'ordre) ; chaque module fait

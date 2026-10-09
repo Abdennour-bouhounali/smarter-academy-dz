@@ -5,8 +5,6 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { WorkshopScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY_A } from '../content/textbook';
 
@@ -44,18 +42,18 @@ export default function Module01AlFuruq() {
         // l'élève devant une étape qu'il ne pouvait pas satisfaire.
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="شريطان في ورشة الخياطة: 252 سم و 140 سم. نقصّ الأصغر من الأكبر، مرّة بعد مرّة. وللتمرّن أولًا، جرّب المستوى المبتدئ بشريطين أقصر."
           levels={{
             beginner: () => (
               <Manipulation type="pgcd-differences" a={21} b={14}
                 title="تمرّن أولًا: 21 و 14"
-                lead="اسحب الشريط الأصغر على الأكبر لتقصّ منه طوله، وأعد. لاحظ: القاسم المشترك الأكبر لا يتغيّر من قصّة إلى أخرى." />
+                lead="اسحب الشريط الأصغر على الأكبر لتقصّ منه طوله، وأعد. لاحظ ماذا يحدث للقاسم المشترك الأكبر للشريطين من قصّة إلى أخرى." />
             ),
             advanced: () => (
               <Manipulation type="pgcd-differences" a={a} b={b}
                 title="جدول الكتاب: 252 و 140 وفرقهما"
-                lead="قصّ الشريط الأصغر من الأكبر إلى أن لا يبقى شيء. لاحظ المساواة الثانية في كل سطر: القاسم المشترك الأكبر لا يتغيّر."
+                lead="قصّ الشريط الأصغر من الأكبر إلى أن لا يبقى شيء. قارن في كل سطر القاسم المشترك الأكبر للشريطين قبل القصّة وبعدها."
                 onFinished={() => setD1(true)} />
             ),
           }}
@@ -77,10 +75,6 @@ export default function Module01AlFuruq() {
             <div className="space-y-3">
               <KnowledgeBrick id="khwarizmiyat-al-furuq" />
               <Manipulation type="pgcd-differences" a={second.a} b={second.b} title="378 و 315" onFinished={() => setD2(true)} />
-              {/* La « مسألة الدرس » prolonge l'atelier : deux rubans, 210 et 150 cm,
-                  les différences successives — résolue au module 5. Les deux
-                  niveaux partagent l'intro : la carte va à la DERNIÈRE étape. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
       ]}

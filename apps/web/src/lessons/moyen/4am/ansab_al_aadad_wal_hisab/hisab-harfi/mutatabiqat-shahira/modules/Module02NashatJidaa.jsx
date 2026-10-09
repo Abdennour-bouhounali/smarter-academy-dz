@@ -64,7 +64,7 @@ export default function Module02NashatJidaa() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           lead="المستوى المتقدم بأعداد الكتاب: (2x + 5)(2x − 5). في المستوى المبتدئ (x + 3)(x − 3)."
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           levels={{
             beginner: () => (
               <Manipulation

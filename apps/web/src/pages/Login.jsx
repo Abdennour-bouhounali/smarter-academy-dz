@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
 import { Eye, EyeOff } from 'lucide-react';
@@ -42,6 +42,7 @@ export default function Login() {
 
   const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const passwordReset = useLocation().state?.passwordReset === true;
   const [pendingJoin] = useState(() => readPendingClassJoin());
 
   // Redirect if already logged in
@@ -80,6 +81,11 @@ export default function Login() {
         </>
       )}
     >
+      {passwordReset && (
+        <div role="status" className="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
+          {t('resetDone')}
+        </div>
+      )}
       {pendingJoin && <ClassJoinNotice text={t('classJoinPendingLogin', { name: pendingJoin.classroomName || '—' })} />}
       <GoogleButton label={t('continueWithGoogle')} />
       <AuthDivider />
@@ -138,6 +144,12 @@ export default function Login() {
               {showPassword ? <EyeOff className="h-5 w-5" aria-hidden="true" /> : <Eye className="h-5 w-5" aria-hidden="true" />}
             </button>
           </div>
+        </div>
+
+        <div className="text-end">
+          <Link to="/mot-de-passe-oublie" className="text-sm font-medium text-blue-600 hover:text-blue-700">
+            {t('forgotPasswordLink')}
+          </Link>
         </div>
 
         <div className="pt-2">

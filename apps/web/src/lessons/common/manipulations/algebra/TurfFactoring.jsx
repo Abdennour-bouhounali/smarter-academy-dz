@@ -93,8 +93,22 @@ export default function TurfFactoring({
   const mu = (width - 2 * EDGE) / span;
   const xOf = (v) => EDGE + (v - range.min) * mu;
   const toValue = useCallback((clientX, _y, rect) => range.min + (clientX - rect.left - EDGE) / mu, [range.min, mu]);
+  // Un r PAR DÉFAUT, jamais une réponse ni un essai (2026-10-09) : il n'entre pas dans `tried`.
+  const defaultR = mode === 'rows' ? L.defaultRows(lab) : null;
+  // Miroir synchrone de `lab` pour « جرّب كل الإمكانيات ».
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const sweepRows = (v) => {
+    const prev = labRef.current;
+    if (L.canRow(prev, v) !== true) return;
+    labRef.current = L.setRows(prev, v);
+    setLab((s) => L.setRows(s, v));
+    setLive(null);
+    state.report(onTrial, L.rowsLayout(prev, v));
+  };
+  const untriedR = L.untriedRows(lab);
   const stretch = useStretchInteraction({
-    value: live ?? lab.r ?? range.min, range, toValue, onChange: setLive,
+    value: live ?? lab.r ?? defaultR, range, toValue, onChange: setLive,
     onCommit: (v) => {
       setLive(null);
       if (mode !== 'rows' || L.canRow(lab, v) !== true) return;
@@ -154,7 +168,7 @@ export default function TurfFactoring({
     />
   );
 
-  const rr = live ?? lab.r;
+  const rr = live ?? lab.r ?? defaultR;
   const layout = mode === 'rows' && rr != null ? L.rowsLayout(lab, rr) : null;
 
   const renderRows = () => {
@@ -276,7 +290,19 @@ export default function TurfFactoring({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={(mode === 'rows' ? [k('rHint1'), k('rHint2'), k('rHint3')] : [k('sHint1'), k('sHint2'), k('sHint3')]).map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        autoComplete: mode === 'rows' ? {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: untriedR.length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => { const v = L.untriedRows(labRef.current)[0]; if (v !== undefined) sweepRows(v); },
+          finish: () => { L.untriedRows(labRef.current).forEach(sweepRows); },
+        } : undefined,
+      }}
       representation={representation}
       discovery={(
         <ManipulationDiscovery

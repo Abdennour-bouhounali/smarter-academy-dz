@@ -127,6 +127,20 @@ export function launch(s, theta) {
   return Object.freeze({ ...s, theta: t, trials: Object.freeze([...s.trials, trial]), last: { kind: 'swim', trial } });
 }
 
+/**
+ * « جرّب كل الإمكانيات » (mode nageur) : les directions à parcourir — la graduation de 5° de la réglette (pageStep),
+ * plus l'angle exact s'il n'y tombait pas. Chacune est un départ ordinaire (`launch`).
+ */
+export function sweepThetas(s) {
+  if (s.mode !== 'parallelogram') return [];
+  const out = new Set();
+  for (let t = Math.ceil(s.thetaMin / 5) * 5; t <= s.thetaMax; t += 5) out.add(t);
+  if (s.crossing.angle != null && s.crossing.angle >= s.thetaMin && s.crossing.angle <= s.thetaMax) out.add(s.crossing.angle);
+  return [...out].sort((a, b) => a - b);
+}
+/** Les directions de la balade pas encore essayées par l'élève. */
+export const untriedThetas = (s) => sweepThetas(s).filter((t) => !s.trials.some((tr) => tr.theta === t));
+
 /** Ce que le nageur sait quand il touche B : l'angle exact (30°) et la vitesse réelle exacte (2√3 ≈ 3,46 km/h). */
 export function crossingResult(s) {
   const k = s.crossing;

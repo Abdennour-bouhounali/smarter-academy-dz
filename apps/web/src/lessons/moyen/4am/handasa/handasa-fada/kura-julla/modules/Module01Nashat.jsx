@@ -5,8 +5,6 @@ import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import BallsCutaway from '../components/BallsCutaway';
@@ -82,7 +80,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="المسبار في الفضاء"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead={<MathText>{'في المستويين: النقطة على الكرة إذا كان بعدها عن المركز $O$ يساوي نصف القطر تماما، وفي الجلة إذا كان أصغر منه أو يساويه.'}</MathText>}
           levels={{
             beginner: () => (
@@ -201,8 +199,6 @@ export default function Module01Nashat() {
                 explain={<MathText>{'نقط الكرة تحقّق $OM = 4$ فقط (سطح أجوف)، ونقط الجلة تحقّق $OM \\le 4$ . النقطة P داخل الجلة وليست على سطحها: $OP < 4$ . ' + ACTIVITY_LINES.lab}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
-              {/* La « مسألة الدرس » prolonge la sonde متقدم : une جلّة de rayon 6 dans un repère, trois points, un قطر — module 5. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

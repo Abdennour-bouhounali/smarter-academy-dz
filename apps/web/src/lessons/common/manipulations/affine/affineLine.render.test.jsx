@@ -69,3 +69,16 @@ describe('affine-line — chaque laboratoire', () => {
     expect(() => html({ a: '1', mode: 'shift' })).toThrow();
   });
 });
+
+describe('affine-line — défaut à l\'ouverture (2026-10-09)', () => {
+  it('shift et read ouvrent avec une sonde posée, et offrent « جرّب كل الإمكانيات »', () => {
+    const shift = html({ a: '3/2', b: '1', mode: 'shift' });
+    expect(shift).toContain('data-al-probe="x"');
+    expect(shift).toContain('data-manipulation-autocomplete="ready"');
+    const read = html({ a: '3/2', b: '1', mode: 'read', reads: 'x:4|y:7' });
+    expect(read).toContain('data-al-probe="x"');
+    expect(read).toContain('data-al-probe="y"');
+    expect(read).toContain('data-al-target="0"');
+    expect(read).not.toContain('data-done="true"');
+  });
+});

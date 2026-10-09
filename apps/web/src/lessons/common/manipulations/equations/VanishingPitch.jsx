@@ -81,6 +81,9 @@ export default function VanishingPitch({
   const [scene, setScene] = useState(sceneKey);
   const [live, setLive] = useState(null);
   const [kick, setKick] = useState(0);
+  // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
   if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLive(null); }
 
   const ready = L.discoveryReady(lab);
@@ -109,12 +112,15 @@ export default function VanishingPitch({
   const xPx = (v) => EDGE + (v - range.min) * mu;
   const toValue = useCallback((clientX, _y, rect) => range.min + (clientX - rect.left - EDGE) / mu, [range.min, mu]);
   const stretch = useStretchInteraction({
-    value: live ?? lab.x, range, toValue, onChange: setLive,
+    value: live ?? lab.x ?? L.defaultV(lab), range, toValue, onChange: setLive,
     onCommit: (v) => { setLive(v); setLab((s) => L.move(s, v)); },
     direction: 'ltr', pageStep: g,
   });
-  const v = live ?? lab.x ?? 0; // dessiné ; la règle part de x = 0 tant que rien n'est posé
-  const settled = lab.x != null && !stretch.dragging && (live == null || live === lab.x);
+  // Un x PAR DÉFAUT (L.defaultV : un terrain qui ne s'écrase pas, jamais une réponse). Ce n'est pas une visite : `lab.visited` ne le contient pas.
+  const isDefault = lab.x == null && live == null;
+  const v = live ?? lab.x ?? L.defaultV(lab);
+  const settled = !stretch.dragging && (isDefault || (lab.x != null && (live == null || live === lab.x)));
+  const unvisited = () => Array.from({ length: labRef.current.range.max - labRef.current.range.min + 1 }, (_, i) => labRef.current.range.min + i).filter((u) => !labRef.current.visited.includes(u));
   const cur = L.sides(lab, v);
   const geo = L.geometry(lab, v, { width: Math.min(width, 640) });
   const productTex = L.productTex(lab);
@@ -214,7 +220,32 @@ export default function VanishingPitch({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={[k('hint1'), k('hint2'), k('hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        // Balayer la règle, graduation après graduation : chaque position est une visite (le balayage qui justifie « لا حلول أخرى »). Épingler reste la réponse de l'élève.
+        autoComplete: {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: unvisited().length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => {
+            const next = unvisited()[0];
+            if (next === undefined) return;
+            labRef.current = L.move(labRef.current, next);
+            setLive(next);
+            setLab((s) => L.move(s, next));
+          },
+          finish: () => {
+            const todo = unvisited();
+            if (todo.length === 0) return;
+            labRef.current = todo.reduce((acc, u) => L.move(acc, u), labRef.current);
+            setLive(todo[todo.length - 1]);
+            setLab((s) => todo.reduce((acc, u) => L.move(acc, u), s));
+          },
+        },
+      }}
       representation={settled && (
         <EquationDisplay
           tone={Lin0(cur.area) ? 'ok' : 'neutral'}
@@ -276,19 +307,19 @@ export default function VanishingPitch({
               ))}
             </svg>
             <div
-              {...stretch.handleProps({ label: k('handle'), valueText: lab.x == null && live == null ? k('notSet') : k('valueText', { x: xText }) })}
+              {...stretch.handleProps({ label: k('handle'), valueText: k('valueText', { x: xText }) })}
               className={`absolute top-0 flex h-11 w-11 -translate-x-1/2 items-start justify-center rounded-xl border-2 outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${stretch.dragging ? 'border-blue-500 bg-blue-500/10' : 'border-slate-400 bg-white/60'}`}
               style={{ left: xPx(v), cursor: stretch.dragging ? 'grabbing' : 'grab' }}
             >
-              <span className="-mt-2 whitespace-nowrap rounded-full bg-slate-800 px-2 font-mono text-sm font-extrabold text-white" data-vanishing-x>{lab.x == null && live == null ? '?' : xText}</span>
+              <span className="-mt-2 whitespace-nowrap rounded-full bg-slate-800 px-2 font-mono text-sm font-extrabold text-white" data-vanishing-x>{xText}</span>
             </div>
           </div>
           <p className="text-xs text-slate-500">{k('trackNote')}</p>
           <div className="flex flex-wrap items-center justify-center gap-2">
-            <button type="button" onClick={() => stretch.nudge(-1)} aria-label={k('less')} disabled={lab.x != null && v <= range.min} data-vanishing-less
+            <button type="button" onClick={() => stretch.nudge(-1)} aria-label={k('less')} disabled={v <= range.min} data-vanishing-less
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Minus className="h-5 w-5" aria-hidden="true" /></button>
-            <p className="min-w-[6rem] text-center text-sm font-bold text-slate-700" dir="ltr">x = {lab.x == null && live == null ? '?' : xText}</p>
-            <button type="button" onClick={() => stretch.nudge(1)} aria-label={k('more')} disabled={lab.x != null && v >= range.max} data-vanishing-more
+            <p className="min-w-[6rem] text-center text-sm font-bold text-slate-700" dir="ltr">x = {xText}</p>
+            <button type="button" onClick={() => stretch.nudge(1)} aria-label={k('more')} disabled={v >= range.max} data-vanishing-more
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Plus className="h-5 w-5" aria-hidden="true" /></button>
           </div>
 

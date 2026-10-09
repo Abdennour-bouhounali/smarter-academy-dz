@@ -167,3 +167,14 @@ describe('lamp-ring — phase 3 : la distance', () => {
     expect(L.discoveryReady(s)).toBe(false);
   });
 });
+
+describe('lamp-ring — l’état d’ouverture n’est ni un essai ni la réponse', () => {
+  it('poteaux inégaux, second poteau jamais à 360°/n, aucun essai', () => {
+    for (const n of [4, 6, 8, 12]) {
+      const s = L.init({ n, r: 3 });
+      expect(s.trials).toHaveLength(0);
+      expect(L.handGaps(s).equal, `n=${n}`).toBe(false);
+      expect(s.rot.p2 - s.rot.p1, `n=${n}`).not.toBe(360 / n);
+    }
+  });
+});

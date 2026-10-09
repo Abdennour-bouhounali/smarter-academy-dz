@@ -229,4 +229,18 @@ describe('section-slicer — la figure de repli (SpaceFigure) de chaque état', 
       }
     }
   });
+  it('le départ n’est ni une marque, ni le grand cercle, ni la tangente — et ne laisse aucune trace', () => {
+    for (const nums of [B, A, { solids: ['sphere'], R: 3, step: '1/20', stops: [0, 3, 60], start: 0 }, { solids: ['sphere'], R: 5, step: 1, stops: [2], start: 2 }]) {
+      const lab = L.init(nums);
+      for (const s of lab.cfg.order) {
+        const st = lab.cfg.stages[s];
+        expect(st.stops, s).not.toContain(st.start);
+        expect(st.start).toBeGreaterThanOrEqual(st.min);
+        expect(st.start).toBeLessThanOrEqual(st.max);
+        if (s === 'sphere') { expect(st.start).not.toBe(0); expect(st.start).not.toBe(Math.round(L.toNumberAny(st.R) / L.toNumberAny(st.step))); }
+      }
+      expect(lab.trials.length).toBe(0);
+      expect(lab.layers.length).toBe(0);
+    }
+  });
 });

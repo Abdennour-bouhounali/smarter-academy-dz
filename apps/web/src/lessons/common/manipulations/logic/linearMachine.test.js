@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { linear as Lin } from '@smarter-academy/core';
+import { linear as Lin, proportional as Pr } from '@smarter-academy/core';
 import * as L from './linearMachine';
 
 /**
@@ -193,6 +193,23 @@ describe('linear-machine — la طريقة et l’écriture', () => {
         const g = L.deckGrid(n, w);
         expect(g.cell).toBeGreaterThanOrEqual(44);
         expect(Math.abs(g.rows - g.cols)).toBeLessThanOrEqual(n === 12 && w < 200 ? 2 : 1);
+      }
+    }
+  });
+});
+
+describe('valeurs par défaut (jamais une réponse)', () => {
+  it('le cadran par défaut n’est jamais le coefficient caché ; la carte vierge n’atteint jamais une cible', () => {
+    for (const [rules, targets] of [['0,8x', '6|1,4'], ['0,8x', undefined], ['x^2|2x|2x-1', undefined], ['x|2x|-x', undefined]]) {
+      let s = L.init({ rules, targets });
+      for (let c = 0; c < s.machines.length; c += 1) {
+        s = L.select(s, c);
+        const m = s.machines[c];
+        const i = L.defaultDialIndex(s);
+        if (Pr.isLinear(m.rule)) expect(Lin.eq(L.dialValue(s.dial, i), m.rule.a)).toBe(false);
+        const b = L.defaultBlankIndex(s);
+        expect(s.targets.some((g) => Lin.eq(g, m.rule.at(L.dialValue(L.BLANKS[s.world], b))))).toBe(false);
+        expect(m.trials).toHaveLength(0);
       }
     }
   });

@@ -444,3 +444,71 @@ describe('team-builder — changer d’avis', () => {
     expect(TB.verdict(s).leftOver).toBe(1);
   });
 });
+
+describe('défaut jamais une réponse (2026-10-09)', () => {
+  it('factor-pairs : la largeur par défaut ne divise pas n (sauf si tout divise)', () => {
+    for (const n of [24, 48, 60, 105, 253, 452, 997]) {
+      const d = FP.defaultWidth(n);
+      expect(n % d, String(n)).not.toBe(0);
+    }
+    expect(FP.defaultWidth(48)).toBe(5);
+    expect(FP.defaultWidth(60)).toBe(7);
+    expect(FP.defaultWidth(2)).toBe(1);
+  });
+});
+
+/* 2026-10-09 — défauts et « جرّب كل الإمكانيات » des types de divisibilité. */
+describe('divisor-explorer : taille par défaut et balayage', () => {
+  it('le défaut n\'est jamais un diviseur (quand le rail en offre un autre) et n\'est pas un essai', () => {
+    for (const a of [24, 420, 1512, 60, 48, 105, 252]) {
+      const s = DE.initWithDefault({ a, candidates: undefined });
+      expect(s.b).not.toBeNull();
+      expect(a % s.b).not.toBe(0);
+      expect(s.tried).toEqual({});
+      expect(DE.discoveryReady(s)).toBe(false);
+    }
+  });
+  it('rail sans non-diviseur : retombe sur le début du rail', () => {
+    expect(DE.defaultSize({ a: 12, candidates: [1, 2, 3] })).toBe(1);
+  });
+  it('un b fourni reste un essai de la leçon', () => {
+    const s = DE.initWithDefault({ a: 24, b: 6, candidates: [] });
+    expect(s.tried).toEqual({ 6: true });
+  });
+  it('balayer le rail = les mêmes essais que la main', () => {
+    const rail = DE.railOf({ a: 24 });
+    let s = DE.initWithDefault({ a: 24 });
+    for (const c of DE.untried(s, rail)) s = DE.place(s, c);
+    let hand = DE.init({ a: 24 });
+    for (const c of rail) hand = DE.place(hand, c);
+    expect(s.tried).toEqual(hand.tried);
+    expect(DE.untried(s, rail)).toEqual([]);
+    expect(DE.discoveryReady(s)).toBe(true);
+  });
+});
+
+describe('common-divisors / coprime-explorer : balayage des groupes et des listes', () => {
+  it('untriedGroups : 1 … min(a, b), puis plus rien', () => {
+    let s = CD.initBouquets({ a: 12, b: 18 });
+    expect(CD.untriedGroups(s)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+    for (const k of CD.untriedGroups(s)) s = CD.choose(s, k);
+    expect(CD.untriedGroups(s)).toEqual([]);
+    expect(CD.greatestGroupFound(s)).toBe(true);
+  });
+  it('trousses 17/18 : tout balayé = la preuve « seul 1 marche »', () => {
+    let g = CP.initGroups({ a: 17, b: 18 });
+    for (const k of CP.untriedGroups(g)) g = CP.chooseGroups(g, k);
+    expect(CP.workingCounts(g)).toEqual([1]);
+    expect(CP.groupsInsightReady(g)).toBe(true);
+  });
+  it('listes : confronter chaque diviseur du plus petit mène à une preuve concluante', () => {
+    for (const [a, b] of [[17, 18], [27, 36]]) {
+      let s = CP.init({ a, b });
+      const side = a <= b ? 'a' : 'b';
+      for (const d of CP.untested(s)) s = CP.share(s, CP.chipId(side, d));
+      expect(CP.untested(s)).toEqual([]);
+      expect(CP.listsConclusive(s)).toBe(true);
+      expect(s.checked).toBe(false); // « تحقّق » reste à l'élève
+    }
+  });
+});

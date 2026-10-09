@@ -250,3 +250,15 @@ describe('pair-scoreboard — le monde tient d’un seul regard (règle du propr
   });
 });
 
+
+describe('pair-scoreboard — la ثنائية par défaut n’est jamais la solution ni un essai', () => {
+  for (const system of ['x+y=32|2(x-5)=y-3', 'x+y=10|3x+y=22', 'x+y=37|20x+10y=610', 'x-y=2|2x-5y=4']) {
+    it(system, () => {
+      const lab = L.init({ system });
+      const d = L.defaultPair(lab);
+      expect(L.okPair(lab, d.x, d.y).every(Boolean)).toBe(false);
+      expect(lab.trials).toHaveLength(0);
+      expect(lab.x).toBeNull();
+    });
+  }
+});

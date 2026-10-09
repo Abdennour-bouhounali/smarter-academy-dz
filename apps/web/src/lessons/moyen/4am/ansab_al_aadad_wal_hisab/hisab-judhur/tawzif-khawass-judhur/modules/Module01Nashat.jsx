@@ -5,8 +5,6 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, TILING } from '../content/textbook';
 
@@ -71,7 +69,7 @@ export default function Module01Nashat() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           lead="نفس الفكرة في المستويين: كلما زاد عدد البلاطات على الضلع صغرت البلاطة — إلى أين؟"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           levels={{
             beginner: () => (
               <Manipulation
@@ -150,8 +148,6 @@ export default function Module01Nashat() {
                 )}
                 onAnswered={() => setQ2(true)}
               />
-              {/* « مسألة الدرس » : le même carré dallé, une autre aire (module 6). */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

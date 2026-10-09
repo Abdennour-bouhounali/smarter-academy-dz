@@ -27,6 +27,6 @@ export default function Module07Itqan() {
       ]}
       badges={[{ id: 'wahid', emoji: '1️⃣', label: 'القاسم المشترك الوحيد هو 1', test: (m) => (m.taarif ?? 0) === 0 }]}
       synthese={<KnowledgeSnapshot complete variant="complete" />}
-      completion={{ masterTitle: 'أتقنت العددين الأوليين فيما بينهما', title: 'انتهى الدرس 7', message: 'PGCD = 1 هو مفتاح الدرس 8: كسر بسطه ومقامه أوليان فيما بينهما لا يُختزل.', verbs: ['أتعرّف', 'أثبت', 'أنفي', 'أميّز'], masterBadgeLabel: 'أوليان فيما بينهما' }} />
+      completion={{ masterTitle: 'أتقنت العددين الأوليين فيما بينهما', title: 'انتهى الدرس 7', message: 'PGCD = 1 هو مفتاح الدرس 8: ماذا يمكنك أن تقول عن كسر بسطه ومقامه أوليان فيما بينهما؟', verbs: ['أتعرّف', 'أثبت', 'أنفي', 'أميّز'], masterBadgeLabel: 'أوليان فيما بينهما' }} />
   );
 }

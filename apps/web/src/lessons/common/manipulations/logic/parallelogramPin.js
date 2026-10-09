@@ -83,6 +83,24 @@ export function commitI(s, k = s.k) {
   return Object.freeze({ ...moved, trials: Object.freeze([...moved.trials, trial]), last: Object.freeze({ kind: 'commit', trial }) });
 }
 
+/**
+ * « جرّب كل الإمكانيات » (mode midpoint) : les encoches de I pas encore validées avec la seconde flèche affichée
+ * (le retournement reste un choix de l'élève). Chacune est un `commitI` ordinaire.
+ */
+export function untriedNotches(s) {
+  if (s.mode !== 'midpoint') return [];
+  const r = midRange(s);
+  return Array.from({ length: r.max - r.min + 1 }, (_, j) => r.min + j)
+    .filter((k) => !s.trials.some((t) => t.k === k && t.second === s.second));
+}
+
+/** Le départ n'est jamais la réponse : midpoint, jamais le milieu ; parallelogram, ni D juste, ni le piège, ni E juste. */
+export function defaultIsSolution(s) {
+  if (s.mode === 'midpoint') return s.k * 2 === s.N;
+  const at = (p, q) => V.vecEq(p, q);
+  return at(s.D, s.target) || at(s.D, s.crossed) || at(s.E, s.targetE) || at(s.E, s.target);
+}
+
 /** Retourner la seconde flèche (IB ↔ BI) : un essai aussi (l'élève a choisi quoi comparer). */
 export function flip(s) {
   const t = Object.freeze({ ...s, second: s.second === 'IB' ? 'BI' : 'IB' });

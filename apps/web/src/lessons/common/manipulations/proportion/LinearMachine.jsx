@@ -107,9 +107,10 @@ export default function LinearMachine({
   const sceneKey = `${rules}:${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
   const [liveA, setLiveA] = useState(null);
-  const [blankI, setBlankI] = useState(null);
+  // Valeur PAR DÉFAUT de la carte vierge (jamais une cible) : ce n'est pas un essai, seule une carte portée en est un.
+  const [blankI, setBlankI] = useState(() => L.defaultBlankIndex(make()));
   const [spin, setSpin] = useState(0);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveA(null); setBlankI(null); }
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveA(null); setBlankI(L.defaultBlankIndex(make())); }
 
   const W = lab.world;
   const w = (key, o) => k(`worlds.${W}.${key}`, o);
@@ -188,8 +189,10 @@ export default function LinearMachine({
 
   /* ── le cadran a de la machine-témoin, la carte vierge ── */
   const dial = lab.dial;
-  const aIndex = liveA ?? (m.a == null ? null : L.dialIndex(dial, m.a));
-  const aNow = liveA != null ? L.dialValue(dial, liveA) : m.a;
+  // Le cadran s'ouvre sur un a PAR DÉFAUT (jamais le coefficient caché) ; il n'est écrit nulle part tant que l'élève ne l'a pas validé.
+  const defIdx = L.defaultDialIndex(lab);
+  const aIndex = liveA ?? (m.a == null ? defIdx : L.dialIndex(dial, m.a));
+  const aNow = liveA != null ? L.dialValue(dial, liveA) : (m.a ?? L.dialValue(dial, defIdx));
   const trackW = Math.max(80, colW - 104);
   const EDGE = 18;
   const toIndex = (r) => (cx, _y, rect) => r.min + ((cx - rect.left - EDGE) / Math.max(1, trackW - 2 * EDGE)) * (r.max - r.min);
@@ -202,8 +205,36 @@ export default function LinearMachine({
     onCommit: setBlankI, direction: 'ltr',
   });
 
-  const claimSame = () => { sDial.flush(); setLab((s) => L.claimLinear(s)); };
+  const claimSame = () => { sDial.flush(); setLab((s) => L.claimLinear(s.machines[s.current].a == null ? L.setDial(s, L.dialValue(s.dial, L.defaultDialIndex(s))) : s)); };
   const claimNone = () => { sDial.flush(); setLab((s) => L.claimNotLinear(s)); };
+
+  /* « جرّب كل الإمكانيات » : les cartes de la pioche, une à une, dans la trémie de la machine courante. */
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const unfed = () => { const cm = labRef.current.machines[labRef.current.current]; return labRef.current.deck.filter((x) => !cm.trials.some((u) => Lin.eq(u.x, x))); };
+  const reportFed = (s0) => {
+    const lt = s0.last;
+    if (!lt || lt.kind !== 'fed') return;
+    const base = { machine: s0.current, rules };
+    state.report(onTrial, { ...base, x: L.numText(lt.x), fx: L.numText(lt.fx), byMachine: false });
+    if (lt.hit) state.report(onReverse, { ...base, target: L.numText(lt.hit), x: L.numText(lt.x) });
+  };
+  const autoStep = () => {
+    const next = unfed()[0];
+    if (next === undefined) return;
+    labRef.current = L.feed(labRef.current, next);
+    setLab((s) => L.feed(s, next));
+    setSpin((n) => n + 1);
+  };
+  const autoFinish = () => {
+    const todo = unfed();
+    if (todo.length === 0) return;
+    let acc = labRef.current;
+    todo.forEach((x, i) => { acc = L.feed(acc, x); if (i < todo.length - 1) reportFed(acc); });
+    labRef.current = acc;
+    setLab((s) => todo.reduce((a, x) => L.feed(a, x), s));
+    setSpin((n) => n + 1);
+  };
 
   /* ── l'écriture ── */
   const $ = (tex) => `$${tex}$`;
@@ -412,7 +443,11 @@ export default function LinearMachine({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={[k('hint1'), k('hint2'), w('hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        autoComplete: { label: t('manipulation.autoComplete.tryAll'), ready: true, remaining: unfed().length, intervalMs: 480, maxTicks: 80, step: autoStep, finish: autoFinish },
+      }}
       representation={<EquationDisplay tone={m.verdict?.kind === 'linear' ? 'ok' : 'neutral'} tex={repTex} note={<MathText>{many ? k('machineN', { n: lab.current + 1 }) : w('machine')}</MathText>} />}
       discovery={(
         <ManipulationDiscovery state={state} prompt={many ? k('dPromptMany') : w('dPrompt')} options={discoveryOptions} formal={formal} />

@@ -5,8 +5,6 @@ import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, LAB, MISTAKES } from '../content/textbook';
 import LabEvidence from '../components/LabEvidence';
@@ -26,7 +24,7 @@ import ZelligeVignette from '../components/ZelligeVignette';
  *   1. ce qui reste, ce qui change (le tableau de bord)     → brique thabat-dawaran (P1)
  *   2. la feuille étirée n'est pas un دوران                (P1)
  *   3. 90° : la droite et son image sont perpendiculaires   (P1, préparé pour معارف)
- * Les deux niveaux vivent dans l'`intro` : le rappel de la « مسألة الدرس » (LessonProblemCard) clôt la DERNIÈRE étape.
+ * Les deux niveaux vivent dans l'`intro` : le rappel de la « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) clôt la DERNIÈRE étape.
  * « أتوقّع القاعدة » : le feedback du tableau de bord ne dit PAS la règle (la brique thabat-dawaran la fait écrire), et
  * l'explain de l'étape 3 rapporte la lecture (90° ⇒ متعامدان) sans énoncer la règle zawiya-sura (prédite au module 2).
  */
@@ -139,7 +137,6 @@ export default function Module01Waraqa() {
                 explain={<MathText>{'اللوحة تقرأ $90^\\circ$ بين $(AB)$ و $(A\'B\')$ : المستقيمان متعامدان. أدر الورقة الآن إلى $180^\\circ$ واقرأ اللوحة من جديد.'}</MathText>}
                 onAnswered={mark(3)}
               />
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

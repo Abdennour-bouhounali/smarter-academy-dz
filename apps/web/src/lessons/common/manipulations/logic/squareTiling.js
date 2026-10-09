@@ -94,3 +94,14 @@ export function refusedTex(n, k) {
 }
 
 export const simplestText = (n) => simplifiedRootText(n);
+
+/**
+ * Le k PAR DÉFAUT à l'ouverture (jamais un essai, jamais écrit dans `tried`) :
+ * 1, la dalle unité — un pavage trivial qui n'est ni un pavage cherché (k > 1)
+ * ni le plus grand k. Si 1 EST le plus grand k (n sans facteur carré), on
+ * ouvre sur 2 (refusé) pour ne pas donner la réponse.
+ */
+export function defaultK(s) {
+  const r = range(s);
+  return kmax(s) === 1 && r.max > 1 ? 2 : r.min;
+}

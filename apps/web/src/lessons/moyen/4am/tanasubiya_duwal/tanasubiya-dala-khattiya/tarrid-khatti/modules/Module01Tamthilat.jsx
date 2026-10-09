@@ -5,8 +5,6 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACT_4, LAB, MISTAKE_NOT_O } from '../content/textbook';
 import { Act4Graphs } from '../components/Graphs';
@@ -159,7 +157,6 @@ export default function Module01Tamthilat() {
                 )}
                 onAnswered={() => setQ4(true)}
               />
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

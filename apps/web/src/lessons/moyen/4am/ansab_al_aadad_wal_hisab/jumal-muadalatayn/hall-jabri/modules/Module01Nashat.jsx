@@ -5,8 +5,6 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag, PairQuestion } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, HOOK } from '../content/textbook';
 import KioskVignette from '../components/KioskVignette';
@@ -71,7 +69,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="نفس الفكرة في المستويين: لا نجرّب الثنائيات واحدة واحدة، بل نجعل أحد المجهولين يختفي، ثم نعود لنجد الآخر."
           levels={{
             beginner: () => (
@@ -266,10 +264,6 @@ export default function Module01Nashat() {
                 onAnswered={() => setQ6(true)}
               />
               )}
-              {/* La « مسألة الدرس » prolonge les cartes du kiosque des deux niveaux
-                  (laboratoire dans l'intro) : deux nouvelles cartes du vendeur, d'autres
-                  nombres — résolue au module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

@@ -95,6 +95,9 @@ export default function SolutionRay({
   const [card, setCard] = useState(null);           // carte d'opération choisie
   const [stepMsg, setStepMsg] = useState(null);     // refus / acceptation d'une ligne
   const [shake, setShake] = useState(0);            // décor
+  // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
   if (scene !== sceneKey) {
     setScene(sceneKey); setLab(make()); setLive(null); setLast(null);
     setDraft({ k: null, side: null, toward: null }); setBLive(null); setVerdict(null); setCard(null); setStepMsg(null);
@@ -126,19 +129,24 @@ export default function SolutionRay({
   const xt = (kk) => L.numTex(L.xOfK(lab, kk));
 
   /* ── geste 1 : le mobile ── */
+  const defK = L.defaultK(lab);
+  const trace = (v) => {
+    if (!L.inRange(labRef.current, v)) return;
+    const e = L.evaluate(labRef.current, v);
+    labRef.current = L.addTrace(labRef.current, v);
+    setLab((s) => L.addTrace(s, v));
+    setLast(e);
+    state.report(onTrial, { kind: 'trace', k: v, x: xs(v), ok: e.ok });
+  };
+  const untraced = () => Array.from({ length: labRef.current.kmax - labRef.current.kmin + 1 }, (_, i) => labRef.current.kmin + i).filter((v) => !labRef.current.traces.some((tr) => tr.k === v));
   const probe = useStretchInteraction({
-    value: live ?? last?.k ?? null, range, toValue, onChange: setLive, direction: 'ltr',
-    onCommit: (v) => {
-      setLive(null);
-      if (!L.inRange(lab, v)) return;
-      const e = L.evaluate(lab, v);
-      setLab((s) => L.addTrace(s, v));
-      setLast(e);
-      state.report(onTrial, { kind: 'trace', k: v, x: xs(v), ok: e.ok });
-    },
+    value: live ?? last?.k ?? defK, range, toValue, onChange: setLive, direction: 'ltr',
+    onCommit: (v) => { setLive(null); trace(v); },
   });
-  const pk = live ?? last?.k ?? null;
-  const pe = pk == null ? null : L.evaluate(lab, pk);
+  // Une graduation PAR DÉFAUT (L.defaultK : hors solution, jamais la borne) : le mobile n'est pas posé « nulle part ».
+  // Ce n'est pas une trace : `lab.traces` ne la contient pas, `last` reste vide.
+  const pk = live ?? last?.k ?? defK;
+  const pe = L.evaluate(lab, pk);
 
   /* ── geste 2 : le crochet ── */
   const bracketOpen = withBracket && L.hasContrast(lab) && !lab.bracket;
@@ -278,19 +286,20 @@ export default function SolutionRay({
       {/* la piste du mobile : toute la droite */}
       <div {...probe.trackProps} className="absolute inset-x-0 top-[40px] h-[56px]" style={{ ...probe.trackProps.style }} data-ray-track>
         <div
-          {...probe.handleProps({ label: k('probeLabel'), valueText: pk == null ? k('notSet') : k('probeValue', { x: xs(pk) }) })}
+          {...probe.handleProps({ label: k('probeLabel'), valueText: k('probeValue', { x: xs(pk) }) })}
           className={`absolute top-0 flex h-11 w-11 -translate-x-1/2 items-start justify-center rounded-xl border-2 outline-none focus-visible:ring-4 focus-visible:ring-blue-300 ${probe.dragging ? 'border-blue-500 bg-blue-500/10' : 'border-slate-400 bg-white/40'}`}
-          style={{ left: xOf(pk ?? lab.kmin), cursor: probe.dragging ? 'grabbing' : 'grab', opacity: pk == null ? 0.55 : 1 }}
+          style={{ left: xOf(pk), cursor: probe.dragging ? 'grabbing' : 'grab' }}
           data-ray-probe
         >
-          <span className={`-mt-3 rounded-full px-2 font-mono text-xs font-extrabold text-white ${pe ? (pe.ok ? 'bg-red-600' : 'bg-slate-500') : 'bg-slate-700'}`}>{pk == null ? 'x' : xs(pk)}</span>
+          <span className={`-mt-3 rounded-full px-2 font-mono text-xs font-extrabold text-white ${pe ? (pe.ok ? 'bg-red-600' : 'bg-slate-500') : 'bg-slate-700'}`}>{xs(pk)}</span>
         </div>
       </div>
     </div>
   );
 
   /* ── représentation (aria-live) : la dernière trace validée ── */
-  const lastE = last ? L.evaluate(lab, last.k) : null;
+  // Au repos, sans trace encore : la conséquence de la graduation par défaut (la ligne ne prétend pas que l'élève l'a posée).
+  const lastE = last ? L.evaluate(lab, last.k) : L.evaluate(lab, defK);
   const solWord = mode !== 'region';
   const representation = lastE && !live ? (
     <EquationDisplay tone={lastE.ok ? 'ok' : 'ko'} tex={`x = ${L.numTex(lastE.x)} : \\; ${calcTex(lastE) ? `${calcTex(lastE)} \\quad ` : ''}${cmpTex(lastE)}`}
@@ -357,7 +366,20 @@ export default function SolutionRay({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={hintKeys.map((h) => <MathText key={h}>{k(h)}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        // Balayer la droite, graduation après graduation : chaque position est une trace (rouge / grise). Le crochet reste la réponse de l'élève.
+        autoComplete: {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: untraced().length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => { const next = untraced()[0]; if (next !== undefined) { setLive(null); trace(next); } },
+          finish: () => { untraced().forEach((v) => trace(v)); },
+        },
+      }}
       representation={representation}
       discovery={(
         <ManipulationDiscovery state={state} prompt={k(mode === 'region' ? 'rPrompt' : mode === 'bracket' ? 'bPrompt' : 'fPrompt')} options={discoveryOptions} formal={formal} />

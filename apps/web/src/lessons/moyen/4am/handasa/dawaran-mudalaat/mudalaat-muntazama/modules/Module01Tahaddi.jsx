@@ -6,8 +6,6 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, AIDS, CHALLENGE, NATURE, LAB } from '../content/textbook';
 import { FIG_ACT5, FIG_ACT5_SOL, FIG_CHALLENGE_SOL } from '../content/figures';
@@ -95,7 +93,7 @@ export default function Module01Tahaddi() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="في المستويين: كل رأس جديد صورة الذي قبله بالدوران الذي مركزه O، وبنفس الزاوية α في كل مرة."
           levels={{
             beginner: () => (
@@ -209,7 +207,6 @@ export default function Module01Tahaddi() {
                   </ol>
                 </div>
               )}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

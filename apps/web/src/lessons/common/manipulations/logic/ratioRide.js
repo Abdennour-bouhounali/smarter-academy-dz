@@ -199,3 +199,13 @@ export function equalRatiosTex(s, id) {
   const parts = t.xs.map((x, i) => (x === 0 ? null : `\\dfrac{${numTex(t.ys[i])}}{${x}}`)).filter(Boolean);
   return t.a ? `${parts.join(' = ')} = ${numTex(t.a)}` : parts.join(' , ');
 }
+
+/**
+ * La durée PAR DÉFAUT de la trottinette (2026-10-09) : 1 minute — ni 0 (qui montrerait d'avance que
+ * le forfait coûte déjà 50 DA), ni la durée de la colonne fantôme. Ce n'est pas une colonne : rien n'est
+ * enregistré tant que l'élève n'appuie pas sur « سجّل ».
+ */
+export function defaultX(s) {
+  for (let x = s.range.min + 1; x <= s.range.max; x += 1) if (x !== s.ghost.x && x !== 0) return x;
+  return s.range.min;
+}

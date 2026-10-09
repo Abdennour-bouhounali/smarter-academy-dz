@@ -139,3 +139,17 @@ describe('sphere-probe — متقدم (R = 4) : M, P, Q puis le قطر et les د
     expect(L.evidenceOf(s.last)).toMatchObject({ n: 1, ok: true, type: 'place', name: 'M', at: [0, 0, 4], where: 'surface', OM2: 16 });
   });
 });
+
+describe('sphere-probe — le départ n’est jamais la réponse de la première tâche (A-bis)', () => {
+  it('quelle que soit la première tâche, M ne s’ouvre pas sur sa réponse, et rien n’est mémorisé', () => {
+    for (const task of ['surface', 'inside', 'outside']) {
+      for (const R of [2, 3, 4, 5]) {
+        const lab = L.init({ R, bound: R + 1, tasks: [task, 'inside', 'outside'] });
+        expect(L.reading(R, lab.M).where, `${task} R=${R}`).not.toBe(task);
+        expect(lab.trials.length).toBe(0);
+        expect(lab.placed.length).toBe(0);
+      }
+    }
+    expect(L.init(A).M).not.toEqual([0, 0, 0]);
+  });
+});

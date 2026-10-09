@@ -161,3 +161,15 @@ describe('layout', () => {
     expect(back.x).toBeCloseTo(1, 9); expect(back.y).toBeCloseTo(2, 9);
   });
 });
+
+describe('rotation-dial — l’ouverture n’est ni un essai ni la réponse', () => {
+  it('aucun essai, aucune image posée, aucune tâche faite', () => {
+    for (const lv of ['beginner', 'advanced']) {
+      const s = L.init(LEVELS['rotation-dial'][lv].numbers);
+      expect(s.trials).toHaveLength(0);
+      expect(s.last).toBeNull();
+      expect(Object.keys(s.done ?? {})).toHaveLength(0);
+      expect(Object.keys(s.images ?? {}).every((id) => Object.keys(s.images[id]).length === 0)).toBe(true);
+    }
+  });
+});

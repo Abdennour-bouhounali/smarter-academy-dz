@@ -4,8 +4,6 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { LAB, PITCH, REMARKS, METHOD_UNKNOWN } from '../content/textbook';
 import LabEvidence from '../components/LabEvidence';
@@ -26,7 +24,7 @@ import PitchVignette from '../components/PitchVignette';
  *   2. le côté seul : AB² + AC² = BC² (pas AB² + BC² = AC²)               → brique qaim-fithaghuras  (P1)
  *   3. l'isocèle : l'élève calcule CB² lui-même                           → brique mutasawi-saqayn   (P1)
  *   4. des preuves suffisantes : D(2 ; 2), diagonales égales, pas de parallélogramme → brique adilla-kafiya (P2)
- *      puis la « مسألة الدرس » (LessonProblemCard) : le même monde que le niveau متقدم, d'autres nombres (module 5).
+ *      puis la « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) : le même monde que le niveau متقدم, d'autres nombres (module 5).
  * « أتوقّع القاعدة » (2026-10-06) : chaque brique est précédée d'une prédiction ; les `explain` des questions juste
  * avant donnent donc le CAS calculé, jamais la règle (REMARKS.look / watarRight / diagAlone + kafiRight sont dans le
  * corps des briques).
@@ -141,9 +139,6 @@ export default function Module01Malab() {
                   <p className="text-xs text-slate-600" data-misconception-note="kafi"><MathText>{`خطأ شائع: ${REMARKS.kafiWrong} ${REMARKS.kafiWhy}`}</MathText></p>
                 </>
               )}
-              {/* La « مسألة الدرس » prolonge le niveau متقدم : un شاخص sur une droite, le carré, le cercle de diamètre
-                  [AC] — d'autres nombres, résolue au module 5. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
       ]}

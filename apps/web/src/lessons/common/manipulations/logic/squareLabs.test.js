@@ -206,3 +206,25 @@ describe('square-tiling (leçons 4 et 5)', () => {
     }
   });
 });
+
+describe('valeurs par défaut (jamais une réponse)', () => {
+  it('square-tiling : le k par défaut n\'est pas le plus grand k', () => {
+    for (const n of [2, 7, 8, 18, 28, 50, 63, 72, 75, 144, 288, 300, 363]) {
+      const s = ST.init({ n, mode: 'simplest' });
+      const k = ST.defaultK(s);
+      expect(k).toBeGreaterThanOrEqual(1);
+      expect(k).toBeLessThanOrEqual(ST.range(s).max);
+      if (ST.kmax(s) > 1) expect(k).not.toBe(ST.kmax(s));
+      else if (ST.range(s).max > 1) expect(ST.tiling(n, k).valid).toBe(false);
+      expect(s.tried).toEqual([]);
+    }
+  });
+  it('square-fold : le x par défaut n\'est solution d\'aucune carte', () => {
+    for (const [targets, scale] of [[[9, 0, -9], 2], [[25, 3, 0.04, 0, -9], 10], [[9, 0, -9], 1], [[0], 1]]) {
+      const s = SF.init({ targets, scale });
+      const v = SF.defaultX(s);
+      targets.forEach((_, i) => expect(SF.pin({ ...s, x: v, card: i }).last.kind).not.toBe('pinned'));
+      expect(s.visited).toEqual([]);
+    }
+  });
+});

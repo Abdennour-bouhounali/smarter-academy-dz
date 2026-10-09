@@ -16,12 +16,24 @@ const placedIds = (s) => s.teams.flat().sort((x, y) => x - y);
 const noop = () => {};
 
 describe('registre — qui a droit à la complétion automatique', () => {
-  it('seuls les gestes répétitifs la déclarent : les équipes, les coupes, les copies', () => {
-    const granted = Object.entries(MANIPULATION_TYPES)
-      .filter(([, spec]) => spec.controls?.autoComplete)
-      .map(([id]) => id)
-      .sort();
-    expect(granted).toEqual(['euclidean-algorithm', 'pgcd-differences', 'team-builder']);
+  it('les trois gestes répétitifs d’origine la gardent (équipes, coupes, copies)', () => {
+    for (const id of ['euclidean-algorithm', 'pgcd-differences', 'team-builder']) {
+      expect(MANIPULATION_TYPES[id].controls.autoComplete, id).toBeTruthy();
+    }
+  });
+
+  it('« جرّب كل الإمكانيات » (décision du propriétaire, 2026-10-09) : les types dont le geste est un BALAYAGE de valeurs la déclarent, en `config`', () => {
+    const SWEEP = [
+      'factor-pairs', 'divisor-explorer-books', 'divisor-explorer', 'common-divisors', 'coprime-explorer',
+      'square-root-side', 'square-fold', 'square-tiling', 'pitch-expansion', 'turf-factoring',
+      'vanishing-pitch', 'solution-ray', 'growth-race', 'linear-machine', 'origin-line', 'percent-tag',
+      'affine-meter', 'affine-line', 'slope-stairs', 'line-crossing', 'plan-compare', 'stat-balance',
+      'shadow-stick', 'group-tanks', 'ramp-ratios', 'clinometer', 'parallelogram-pin', 'vector-sum',
+      'bridge-path', 'polygon-forge',
+    ];
+    for (const id of SWEEP) expect(MANIPULATION_TYPES[id].controls.autoComplete, id).toEqual({ unlock: 'config' });
+    const granted = Object.entries(MANIPULATION_TYPES).filter(([, s]) => s.controls?.autoComplete).map(([id]) => id).sort();
+    expect(granted).toEqual([...SWEEP, 'euclidean-algorithm', 'pgcd-differences', 'team-builder'].sort());
   });
 
   it('chaque déclaration est une forme connue (aucune valeur libre)', () => {
@@ -211,5 +223,15 @@ describe('euclidean-algorithm — « أكمل القسمات »', () => {
     const done = AL.completeEuclid(s);
     expect(done.confirmed).toBe(s.steps.length);
     expect(done.gcd).toBe(45);
+  });
+});
+
+describe('rythme imposé par le type (factor-pairs, « جرّب كل الإمكانيات »)', () => {
+  it('un essai par pas, à l’intervalle demandé, jusqu’à maxTicks', () => {
+    expect(autoCompletePlan(14, { maxTicks: 80, intervalMs: 160 })).toEqual({ ticks: 14, perTick: 1, intervalMs: 160 });
+    expect(autoCompletePlan(120, { maxTicks: 80, intervalMs: 160 }).ticks).toBe(80);
+  });
+  it('mouvement réduit : aucun pas, l’état final directement', () => {
+    expect(autoCompletePlan(14, { maxTicks: 80, intervalMs: 160, reducedMotion: true }).ticks).toBe(0);
   });
 });

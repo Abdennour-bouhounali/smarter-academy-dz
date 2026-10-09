@@ -14,9 +14,9 @@ import { useWorkspaceLevel } from './workspaceContext';
  *                          'act' (il manipule) → 'discover' (la relation est
  *                          apparue, il la formule) → 'formal' (la règle est lue)
  *   mode                   'student' | 'class' (voir ManipulationTeacherMode)
- *   hints                  indices PROGRESSIFS : `hintLevel` monte d'un cran à
- *                          chaque demande, jamais au-delà du dernier ; aucun
- *                          indice ne contient la réponse (règle §19)
+ *   hints                  l'activité n'est pas un quiz : « تلميح » montre TOUS les
+ *                          indices d'un coup (`hintsOpen`, ouverts par défaut,
+ *                          masquables) ; aucun ne contient la réponse (règle §19)
  *   level                  'beginner' | 'advanced' — les DEUX niveaux, rien
  *                          d'autre (levels.js). Dans un workspace, c'est le
  *                          niveau du panneau et `levels` vaut null (le
@@ -67,7 +67,7 @@ export function useManipulation({
   const [numbers, setNumbersState] = useState(initialNumbers);
   const [mode, setMode] = useState(initialMode);
   const [phase, setPhase] = useState('act');
-  const [hintLevel, setHintLevel] = useState(0);
+  const [hintsOpen, setHintsOpen] = useState(true);
   const [showExplanation, setShowExplanation] = useState(false);
   const [answerHidden, setAnswerHidden] = useState(answerHiddenByDefault);
   const [level, setLevelState] = useState(setup.initial);
@@ -140,7 +140,7 @@ export function useManipulation({
     if (isAuthoredLevel) fn?.(...args);
   }, [isAuthoredLevel]);
 
-  const requestHint = useCallback(() => setHintLevel((h) => Math.min(h + 1, hintCount)), [hintCount]);
+  const toggleHints = useCallback(() => setHintsOpen((o) => !o), []);
 
   /** Le type appelle `discover()` quand la relation est VISIBLE, `formalize()` quand la règle est lue. */
   const discover = useCallback(() => setPhase((p) => (p === 'act' ? 'discover' : p)), []);
@@ -162,13 +162,13 @@ export function useManipulation({
     reset,
     phase, discover, formalize, isDiscovered: phase !== 'act', isFormal: phase === 'formal',
     mode, setMode, isClass: mode === 'class',
-    hintLevel, hintCount, requestHint, hintsExhausted: hintLevel >= hintCount,
+    hintCount, hintsOpen, toggleHints,
     showExplanation, toggleExplanation: () => setShowExplanation((s) => !s),
     answerHidden, toggleAnswer: () => setAnswerHidden((s) => !s),
     levels, level, setLevel, levelPreset: levels?.[level] ?? null, isAuthoredLevel, report, inWorkspace: workspaceLevel != null,
     freeLab, setFreeLab,
     playing, play, stopPlaying,
-  }), [type, numbers, setNumbers, epoch, resetCount, steps, reset, phase, discover, formalize, mode, hintLevel, hintCount, requestHint, showExplanation, answerHidden, levels, level, setLevel, isAuthoredLevel, report, workspaceLevel, freeLab, playing, play, stopPlaying]);
+  }), [type, numbers, setNumbers, epoch, resetCount, steps, reset, phase, discover, formalize, mode, hintsOpen, hintCount, toggleHints, showExplanation, answerHidden, levels, level, setLevel, isAuthoredLevel, report, workspaceLevel, freeLab, playing, play, stopPlaying]);
 }
 
 /**

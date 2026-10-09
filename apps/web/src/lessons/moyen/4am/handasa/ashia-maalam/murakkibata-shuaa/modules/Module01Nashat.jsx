@@ -6,8 +6,6 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, DESCARTES, LAB } from '../content/textbook';
 import { FIG_ACT1, FIG_ACT1_D } from '../content/figures';
@@ -89,7 +87,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="في المستويين: الدراجة تسير في الشوارع، أفقيا أو عموديا، خطوة خطوة؛ والطلب لا يصل إلا إذا قادته الرحلة إلى باب الزبون."
           levels={{
             beginner: () => (
@@ -228,8 +226,6 @@ export default function Module01Nashat() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}><MathText>{allRight ? `أحسنت: ${ACTIVITY_LINES.om}` : 'راجع التصحيح تحت كل سطر: من O تبدأ كل رحلة.'}</MathText></Feedback>}
                 onAnswered={() => setQ5(true)}
               />
-              {/* « مسألة الدرس » : le lab vit dans l'intro (deux niveaux) — le rappel ferme la DERNIÈRE étape du module. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

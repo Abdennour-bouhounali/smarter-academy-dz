@@ -5,8 +5,6 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { SchoolBagScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 
@@ -70,10 +68,6 @@ export default function Module01SabaataAsharWaThamaniyataAshar() {
               <TapQuestion prompt={<span>هل مريم على صواب؟</span>}
                 options={['لا: 9 قاسم مشترك لـ 27 و 36، فـ PGCD(27 ; 36) = 9 ≠ 1', 'نعم: 27 و 36 فرديان', 'نعم: 36 − 27 = 9 عدد فردي', 'لا: لأن 27 يقسم 36']} correct={0} cols={1} requires={['nafy-awwaliyan']}
                 explain={<span>يكفي قاسم مشترك واحد يختلف عن 1 لنفي أن العددين أوليان فيما بينهما.</span>} onAnswered={() => setQ2(true)} />
-              {/* La « مسألة الدرس » prolonge le laboratoire متقدم (22 et 35, partagé
-                  par les deux niveaux dans l'intro) : d'autres couples, les mêmes
-                  listes — résolue au module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
       ]}

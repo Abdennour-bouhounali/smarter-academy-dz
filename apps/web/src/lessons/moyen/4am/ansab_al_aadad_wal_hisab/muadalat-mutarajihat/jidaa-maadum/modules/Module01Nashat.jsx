@@ -6,8 +6,6 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { PitchScene } from '../../../../../../common/manipulations/primitives/PitchBackdrop';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_A, ELIAS_AMINE, HOOK } from '../content/textbook';
 
@@ -32,7 +30,7 @@ import { ACTIVITY, ACTIVITY_A, ELIAS_AMINE, HOOK } from '../content/textbook';
  * la question est donc enveloppée dans <PredictRule id="khassiya-jidaa-maadum"> —
  * l'élève écrit la propriété avec ses mots (predictPrompt de knowledge.jsx) AVANT de
  * voir les options, puis la question et la brique s'affichent.
- * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape : le même ملعب à deux
+ * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape : le même ملعب à deux
  * côtés variables, d'autres nombres, résolu au module 5.
  * LP : P1, P2.
  */
@@ -99,7 +97,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="نفس الفكرة في المستويين: ضلعا الملعب هما عاملا الجداء، ومساحته هي الجداء. متى تنعدم؟"
           levels={{
             beginner: () => (
@@ -265,9 +263,6 @@ export default function Module01Nashat() {
                   onAnswered={() => setQ5(true)}
                 />
               )}
-              {/* La « مسألة الدرس » prolonge le ملعب du niveau متقدم : deux côtés
-                  qui varient avec x, d'autres nombres — module 5. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

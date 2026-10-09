@@ -195,6 +195,38 @@ export default function PercentTag({
     return base;
   };
   const flushAll = () => { st.flush(); sb.flush(); };
+
+  /* « جرّب كل الإمكانيات » (un changement) : toutes les valeurs entières de t, de −50 à +50, sur l'article choisi.
+     Chaque t validé est l'essai exact de la main (L.setS) ; la barre additive et le 2e article restent à l'élève. */
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const untriedS = () => {
+    const cur = labRef.current;
+    if (cur.mode !== 'single') return [];
+    return Array.from({ length: 2 * L.T_MAX + 1 }, (_, n) => n - L.T_MAX).filter((v) => v !== 0 && !cur.trials.some((u) => u.id === cur.selected && u.s === v));
+  };
+  const autoComplete = single ? {
+    label: t('manipulation.autoComplete.tryAll'),
+    ready: true,
+    remaining: untriedS().length,
+    intervalMs: 480,
+    maxTicks: 80,
+    step: () => {
+      const v = untriedS()[0];
+      if (v === undefined) return;
+      labRef.current = L.setS(labRef.current, v);
+      setLiveS(v); setDir(v > 0 ? 'up' : 'down');
+      setLab((x) => L.setS(x, v));
+    },
+    finish: () => {
+      const todo = untriedS();
+      if (todo.length === 0) return;
+      labRef.current = todo.reduce((acc, v) => L.setS(acc, v), labRef.current);
+      const lastV = todo[todo.length - 1];
+      setLiveS(lastV); setDir(lastV > 0 ? 'up' : 'down');
+      setLab((x) => todo.reduce((acc, v) => L.setS(acc, v), x));
+    },
+  } : undefined;
   const tryAdditive = () => { flushAll(); setLab((s) => L.tryAdditive(committed(s))); };
   const select = (id) => { flushAll(); setLab((s) => L.select(committed(s), id)); };
   const commitStep = () => { flushAll(); setLab((s) => L.commitStep(committed(s))); setLiveS(null); };
@@ -457,7 +489,7 @@ export default function PercentTag({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={(single ? ['hint1Single', 'hint2Single', 'hint3Single'] : ['hint1Chain', 'hint2Chain', 'hint3Chain']).map((h) => <MathText key={h}>{k(h)}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{ autoStep: () => false, canAutoStep: () => false, ...(autoComplete ? { autoComplete } : {}) }}
       representation={representation}
       discovery={(
         <ManipulationDiscovery

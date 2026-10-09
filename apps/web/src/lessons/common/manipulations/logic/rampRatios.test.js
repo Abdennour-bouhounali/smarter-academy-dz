@@ -220,3 +220,36 @@ describe('ramp-ratios — contenu', () => {
     expect(() => L.init({ angle: 40, hyps: [11], mode: 'scale' })).toThrow();
   });
 });
+
+describe('ramp-ratios — جرّب كل الإمكانيات (مبتدئ, explore)', () => {
+  const s0 = L.init(LEVELS['ramp-ratios'].beginner.numbers);
+
+  it('opens on a ramp (not empty) without any recorded trial; nothing to sweep before the ratios are composed', () => {
+    expect(s0.b).toBe(30);
+    expect(s0.trials).toHaveLength(0);
+    expect(L.tryAllPlan(s0)).toEqual([]);
+    expect(L.tryAllPlan(L.pick(s0, 'B'))).toEqual([]);
+  });
+
+  it('every degree of the range becomes the same trial as the hand (commitB), with the discovery unlocked', () => {
+    for (const at of ['B', 'C']) {
+      const c = composed(named(L.pick(s0, at)));
+      const plan = L.tryAllPlan(c);
+      expect(plan).toHaveLength(c.range[1] - c.range[0] + 1);
+      let cur = c;
+      for (const b of plan) cur = L.commitB(cur, b);
+      expect(L.tryAllPlan(cur)).toEqual([]);
+      expect(cur.trials).toHaveLength(plan.length);
+      expect(L.discoveryReady(cur)).toBe(true);
+      expect(L.commitB(c, 40)).toEqual(L.commitB(c, 40));
+      // un degré déjà essayé à la main n'est pas rejoué
+      expect(L.tryAllPlan(L.commitB(c, 40))).not.toContain(40);
+    }
+  });
+
+  it('scale (متقدم) is never swept: each ramp is a judgement', () => {
+    const a = L.init(LEVELS['ramp-ratios'].advanced.numbers);
+    expect(L.tryAllPlan(a)).toEqual([]);
+    expect(a.ramps).toHaveLength(0);
+  });
+});

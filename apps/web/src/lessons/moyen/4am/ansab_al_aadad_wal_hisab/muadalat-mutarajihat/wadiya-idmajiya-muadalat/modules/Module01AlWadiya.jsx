@@ -16,7 +16,7 @@ import { PoolScene } from '../components/MuadalatFigures';
  * استراتيجية الحل), comme la synthèse de l'unité 3.
  *
  * LE LABORATOIRE (growth-race, RÉUTILISÉ de « ترييض مشكلة », deux niveaux dans
- * un ManipulationWorkspace, `defaultLevel="advanced"` : c'est la situation du manuel) :
+ * un ManipulationWorkspace, ouvert sur مبتدئ par défaut depuis 2026-10-09 : c'est la situation du manuel) :
  *   متقدم  75x contre 560 + 5x (`goal="greater"` : la formule 1 dépasse la 2) —
  *          l'élève porte « × x » sur ce qui se paie à chaque séance (le ticket),
  *          jamais sur l'abonnement (refusé : MISC-WADIYA-TARJAMA), puis étire
@@ -84,7 +84,7 @@ export default function Module01AlWadiya() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead={<MathText>{'المستوى المتقدّم هو وضعية الكتاب: 75 دينارًا للحصة، أو 560 دينارًا سنويًا و 5 دنانير للحصة. في المستوى المبتدئ مسبح الحيّ بأعداد أصغر.'}</MathText>}
           levels={{
             beginner: () => (

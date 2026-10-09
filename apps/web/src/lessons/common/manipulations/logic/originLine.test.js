@@ -242,3 +242,39 @@ describe('origin-line — géométrie du dessin', () => {
     expect(L.numTex(v('-2/3'))).toBe('-\\dfrac{2}{3}');
   });
 });
+
+describe('valeurs par défaut (jamais une réponse, jamais un essai)', () => {
+  const CASES = [
+    { a: '0,4', mode: 'read', reads: 'x:4|y:3,5', xMax: '10', yMax: '5' },
+    { a: '3,8', mode: 'read', cap: '2000', xMin: '0', xMax: '700', yMin: '0', yMax: '2600' },
+    { a: '0,4', mode: 'read' },
+    { mode: 'pivot' },
+    { mode: 'fit', points: '2:0,6|3:0,9|4:1,2|5:1,5' },
+    { mode: 'fit', points: '1:60|2:70' },
+    { mode: 'fit', points: '1:0|2:0' },
+  ];
+  it('la poignée par défaut ne passe pas par toutes les données ; les sondes évitent cibles, O et plafond', () => {
+    for (const c of CASES) {
+      const s = L.init(c);
+      if (c.mode === 'pivot' || c.mode === 'fit') {
+        const j = L.defaultHandleIndex(s);
+        const hr = L.handleRange(s);
+        expect(j).toBeGreaterThanOrEqual(hr.min);
+        expect(j).toBeLessThanOrEqual(hr.max);
+        if (c.mode === 'fit') expect(L.hitsOf(s, L.aAt(s, j)).every(Boolean), JSON.stringify(c)).toBe(false);
+      }
+      if (c.mode === 'read') {
+        for (const axis of ['x', 'y']) {
+          const i = L.defaultProbeIndex(s, axis);
+          const v = L.valueAt(i, axis === 'x' ? s.snap.dx : s.snap.dy);
+          expect(i).not.toBe(0);
+          expect(s.reads.some((t) => t.axis === axis && L.same(t.v, v))).toBe(false);
+          if (axis === 'y' && s.cap) expect(L.same(v, s.cap)).toBe(false);
+        }
+      }
+      expect(s.trials).toHaveLength(0);
+      expect(s.lines).toHaveLength(0);
+      expect(s.readsDone).toHaveLength(0);
+    }
+  });
+});

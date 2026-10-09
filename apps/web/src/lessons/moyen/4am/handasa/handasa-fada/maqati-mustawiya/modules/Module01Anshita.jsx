@@ -6,8 +6,6 @@ import SpaceFigure from '../../../../../../common/components/SpaceFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import {
   ACTIVITY, ACTIVITY_LINES, ACTIVITY_3, ACTIVITY_3_LINES, ACTIVITY_4, ACTIVITY_4_LINES, ACTIVITY_5, ACTIVITY_5_LINES, LAB,
@@ -27,7 +25,7 @@ import PrinterVignette from '../components/PrinterVignette';
  * UNDERSTAND  les questions de chaque نشاط sous les couches imprimées par l'élève (`onTrial`, `[data-activity-evidence]`), les
  *           figures du manuel analysées (la partie 2 du نشاط 3 redessinée sans le « I » égaré), la complétion F, G, H du نشاط 5.
  * AUCUNE étape n'attend `onFinished`. LP : P1 (sphère), P2 (pavé), P3 (cylindre), P4 (pyramide).
- * Le lab est dans l'`intro` (deux niveaux) : le rappel de la « مسألة الدرس » (LessonProblemCard) clôt la DERNIÈRE étape.
+ * Le lab est dans l'`intro` (deux niveaux) : le rappel de la « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) clôt la DERNIÈRE étape.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const STAGE_NAME = { sphere: 'الكرة', 'cuboid-face': 'البلاطة', 'cuboid-edge': 'البلاطة', 'cylinder-base': 'الأسطوانة', 'cylinder-axis': 'الأسطوانة', pyramid: 'الهرم' };
@@ -92,7 +90,7 @@ export default function Module01Anshita() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="في المستويين: حرّك المستوي، توقّع الطبقة، ثم اطبعها؛ الطابعة تطبع دائما المقطع الحقيقي، وتترك توقّعك الخاطئ متقطعا."
           levels={{
             beginner: () => (
@@ -281,7 +279,6 @@ export default function Module01Anshita() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? <MathText>{`أحسنت: ${ACTIVITY_5_LINES.reduction}`}</MathText> : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ7(true)}
               />
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

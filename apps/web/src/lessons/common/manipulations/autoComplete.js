@@ -58,11 +58,14 @@ export function autoCompleteStatus({ capability, auto, running = false }) {
  * Beaucoup d'objets : on les groupe, la durée reste bornée. Mouvement réduit
  * (ou pas de `step`) : aucun pas, l'état final directement.
  */
-export function autoCompletePlan(remaining, { reducedMotion = false, canStep = true } = {}) {
+export function autoCompletePlan(remaining, { reducedMotion = false, canStep = true, maxTicks = AUTO_COMPLETE_MAX_TICKS, intervalMs: fixedInterval } = {}) {
   const n = Math.max(0, Math.floor(remaining || 0));
   if (n === 0 || reducedMotion || !canStep) return { ticks: 0, perTick: 0, intervalMs: 0 };
-  const ticks = Math.min(n, AUTO_COMPLETE_MAX_TICKS);
+  const ticks = Math.min(n, maxTicks);
   const perTick = Math.ceil(n / ticks);
+  // Un type qui MONTRE chaque essai (factor-pairs : « جرّب كل الإمكانيات »)
+  // fixe son rythme : un essai par pas, court mais lisible.
+  if (fixedInterval) return { ticks, perTick, intervalMs: fixedInterval };
   const intervalMs = Math.round(Math.min(140, Math.max(45, AUTO_COMPLETE_BUDGET_MS / ticks)));
   return { ticks, perTick, intervalMs };
 }

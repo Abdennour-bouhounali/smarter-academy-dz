@@ -54,7 +54,7 @@ import * as L from '../logic/vectorSum';
  *   TRANSFER       معارف 4–6, طرائق p. 133, exercices 10–16, la synthèse (le passage piéton)
  *
  * Mondes (`theme`) : `scooter` (مبتدئ) — une trottinette électrique louée dans Alger, la baie et un ferry du port ; `swim` (متقدم, le تحدّ) — un nageur traverse l'oued, un drone le filme. Manuel (§6bis) : chaque pose / chaque
- * départ est un essai jugé ; aucune auto-complétion.
+ * départ est un essai jugé ; chasles : aucune auto-complétion (porter une carte) ; nageur : « جرّب كل الإمكانيات » (la graduation de 5°, un départ par pas).
  *
  * DÉCOR (exigence du propriétaire) : les mouettes de la baie s'envolent au toucher, la trottinette sonne, un ferry ; le drone
  * fait un tour, le poisson saute, les copains filment sur la rive. `aria-hidden`, hors clavier, `[data-deco]`, jamais
@@ -107,6 +107,29 @@ export default function VectorSum(props) {
   const sceneKey = `${numKey}|${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
   if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
+
+  // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const swimAuto = mode === 'parallelogram' ? {
+    label: t('manipulation.autoComplete.tryAll'),
+    ready: true,
+    remaining: L.untriedThetas(lab).length,
+    intervalMs: 480,
+    maxTicks: 80,
+    step: () => {
+      const next = L.untriedThetas(labRef.current)[0];
+      if (next === undefined) return;
+      labRef.current = L.launch(labRef.current, next);
+      setLab((s) => L.launch(s, next));
+    },
+    finish: () => {
+      const todo = L.untriedThetas(labRef.current);
+      if (todo.length === 0) return;
+      labRef.current = todo.reduce((acc, v) => L.launch(acc, v), labRef.current);
+      setLab((s) => todo.reduce((acc, v) => L.launch(acc, v), s));
+    },
+  } : null;
 
   const ready = L.discoveryReady(lab);
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -161,7 +184,7 @@ export default function VectorSum(props) {
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={['hint1', 'hint2', 'hint3'].map((hk) => <MathText key={hk}>{m(hk)}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{ autoStep: () => false, canAutoStep: () => false, ...(swimAuto ? { autoComplete: swimAuto } : {}) }}
       discovery={<ManipulationDiscovery state={state} prompt={m('dPrompt')} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{m('explanation')}</MathText>}
     >

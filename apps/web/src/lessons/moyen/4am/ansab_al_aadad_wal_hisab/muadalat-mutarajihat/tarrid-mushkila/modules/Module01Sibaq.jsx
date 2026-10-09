@@ -5,8 +5,6 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { METHOD_MODELLING, RACE, MISTAKE_ONE_X } from '../content/textbook';
 
@@ -76,7 +74,7 @@ export default function Module01Sibaq() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           lead="نفس الفكرة في المستويين: كل من يكبر مع الزمن يحمل x، ثم نبحث عن لحظة التساوي."
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           levels={{
             beginner: () => (
               <Manipulation
@@ -165,9 +163,6 @@ export default function Module01Sibaq() {
                 )}
                 onAnswered={() => setQ3(true)}
               />
-              {/* La « مسألة الدرس » prolonge la course du niveau متقدم (laboratoire dans
-                  l'intro) : un père et trois enfants, d'autres âges — résolue au module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

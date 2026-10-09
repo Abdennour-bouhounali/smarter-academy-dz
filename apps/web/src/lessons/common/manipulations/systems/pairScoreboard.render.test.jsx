@@ -40,7 +40,10 @@ it('pair-scoreboard se rend pour chaque monde, sans clé brute', () => {
 
 it('le service du نشاط 1 : 32 bureaux vides au départ, la règle des hommes commence à 5', () => {
   const html = renderToString(<PairScoreboard system="x+y=32|2(x-5)=y-3" theme="staff" levels={false} />);
-  expect((html.match(/data-pair-cell="empty"/g) ?? []).length).toBe(32);
+  // la ثنائية par défaut occupe déjà quelques bureaux (jamais la solution) ; aucun essai n'est écrit
+  expect((html.match(/data-pair-cell="empty"/g) ?? []).length).toBeLessThan(32);
+  expect(html).not.toContain('data-pair-trial');
+  expect(html).not.toContain('data-solved="true"');
   expect(html).toContain('aria-valuemin="5"');
   expect(html).toContain('aria-valuemin="3"');
 });

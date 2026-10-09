@@ -27,7 +27,7 @@ export const AUTO_COMPLETE_UNLOCKS = Object.freeze(['config', 'first-gesture']);
 export const MANIPULATION_TYPES = Object.freeze({
   'divisor-explorer': {
     shows: 'b قاسم لـ a ⇔ باقي القسمة الإقليدية معدوم ⇔ a = b × q',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: { a: [2, 9999], b: [1, 999] } },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: { a: [2, 9999], b: [1, 999] }, autoComplete: { unlock: 'config' } },
   },
   'divisor-explorer-books': {
     // Le RAYON QU'ON ÉTIRE (Module 1 — المكتبة, quotition) : l'élève tire le
@@ -35,7 +35,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // rangent en q rayons pleins et r restent au sol. Chaque position est un
     // essai : MANUEL (§6bis), rien à compléter.
     shows: 'b عدد الكتب في كل رفّ: b قاسم لـ a ⇔ لا يبقى أي كتاب على الأرض ⇔ a = b × q + 0',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'team-builder': {
     // Le partage équitable DEBOUT : n joueurs, k équipes égales, et celui qui
@@ -50,7 +50,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // Elle était `a` : le laboratoire libre ne trouvait pas ses bornes et
     // acceptait 0 ou 100 000 (audit 2026-09-29).
     shows: 'قواسم عدد تأتي أزواجًا d × (a ÷ d) ولا حاجة للاختبار بعد √a',
-    controls: { reset: true, nextStep: true, toggleExplanation: true, changeNumbers: { n: [2, 999] } },
+    controls: { reset: true, nextStep: true, toggleExplanation: true, changeNumbers: { n: [2, 999] }, autoComplete: { unlock: 'config' } },
   },
   'divisor-properties': {
     // Le chantier : deux murs en briques de longueur n (thème `construction`) ;
@@ -63,7 +63,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // thème choisit fleurs, ballons et maillots, ou fournitures), puis les
     // listes de diviseurs et la case PGCD.
     shows: 'قواسم → قواسم مشتركة → القاسم المشترك الأكبر (تقاطع مجموعتين وأكبر عنصر فيه)',
-    controls: { reset: true, nextStep: true, toggleExplanation: true, changeNumbers: { a: [2, 300], b: [2, 300] } },
+    controls: { reset: true, nextStep: true, toggleExplanation: true, changeNumbers: { a: [2, 300], b: [2, 300] }, autoComplete: { unlock: 'config' } },
   },
   'pgcd-differences': {
     // L'atelier de couture (thème `workshop`) : le petit ruban coupé dans le
@@ -81,7 +81,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // Au niveau débutant, des trousses identiques (thème `school`) : rien ne
     // marche sauf 1 ; puis les listes.
     shows: 'عددان أوليان فيما بينهما ⇔ قاسمهما المشترك الوحيد هو 1',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: { a: [2, 300], b: [2, 300] } },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: { a: [2, 300], b: [2, 300] }, autoComplete: { unlock: 'config' } },
   },
   'fraction-reduction': {
     // La recette (thème `kitchen`) : diviser les deux termes par k, c'est
@@ -103,7 +103,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // exactement quand l'aire est le carré d'un rationnel. Chaque position
     // est un essai : MANUEL (§6bis).
     shows: '√a هو العدد الموجب الذي مربّعه a: ضلع المربّع الذي مساحته a — ناطق إذا وقع على تدريجة، وغير ناطق إذا لم يقع على أي تدريجة',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: { num: [1, 400], den: [1, 100] } },
+    controls: { autoComplete: { unlock: 'config' }, reset: true, nextStep: false, toggleExplanation: true, changeNumbers: { num: [1, 400], den: [1, 100] } },
   },
   'square-fold': {
     // L'élève DÉPLACE x sur la droite graduée ; une flèche porte x vers x²
@@ -111,7 +111,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // carré n'y arrive (résistance). x et −x arrivent au même point.
     // Épingler un x comme solution est une RÉPONSE : MANUEL (§6bis).
     shows: 'المعادلة x² = a: حلّان متعاكسان √a و −√a إذا كان a > 0، حل واحد 0 إذا كان a = 0، ولا حل إذا كان a < 0',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { autoComplete: { unlock: 'config' }, reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
   'square-tiling': {
     // L'élève ÉTIRE k, le nombre de dalles par côté d'un carré d'aire n :
@@ -119,7 +119,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // refusée (k² ne divise pas n). Le plus grand k donne b le plus petit.
     // Chaque k est un essai : MANUEL (§6bis).
     shows: '√(k² × b) = √(k²) × √b = k√b: مربّع مساحته n مبلّط بـ k × k بلاطة مساحة كل منها b — وأكبر k يعطي أصغر b',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: { n: [2, 999] } },
+    controls: { autoComplete: { unlock: 'config' }, reset: true, nextStep: false, toggleExplanation: true, changeNumbers: { n: [2, 999] } },
   },
 
   // ── Unité 3 « الحساب الحرفي » (2026-10-01) ──────────────────────────────
@@ -129,7 +129,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // les termes semblables et vérifie l'égalité pour plusieurs x. Chaque
     // zone portée et chaque fusion est une décision : MANUEL (§6bis).
     shows: 'النشر: مساحة الملعب (الجداء) تساوي مجموع مساحات مناطقه — k(a + b) = ka + kb و (a + b)(c + d) = ac + ad + bc + bd والمتطابقات الشهيرة — من أجل كل قيمة لـ x',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'turf-factoring': {
     // Le geste inverse : des plaques de gazon (x², x, 1) à assembler en UN
@@ -138,7 +138,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // il porte les bandes à droite ou en bas du carré x², le coin décide
     // (a² + 2ab + b² = (a + b)²). Chaque essai est une réponse : MANUEL.
     shows: 'التحليل: كتابة مجموع على شكل جداء هي تكوين مستطيل واحد من قطعه — ka + kb = k(a + b) و a² + 2ab + b² = (a + b)²',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
 
   // ── Unité 4 « معادلات ومتراجحات من الدرجة الأولى بمجهول واحد » (2026-10-01) ──
@@ -158,7 +158,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // un côté devient nul. Il épingle chaque x où le terrain disparaît ; un x où l'aire
     // ne l'est pas est refusé avec l'aire lue. Chaque épingle est une réponse : MANUEL.
     shows: 'خاصية الجداء المعدوم: مساحة الملعب A × B تنعدم إذا وفقط إذا انعدم أحد ضلعيه — A = 0 أو B = 0',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { autoComplete: { unlock: 'config' }, reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
   'solution-ray': {
     // Un mobile sur une droite graduée : chaque position validée laisse une trace —
@@ -167,7 +167,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // licite garde exactement ses traces, une division par un négatif sans inverser le
     // sens les contredit. Chaque essai est une réponse : MANUEL.
     shows: 'حلول المتراجحة نصف مستقيم: نحافظ على الاتجاه بإضافة عدد أو الضرب في موجب، ونغيّره بالضرب أو القسمة على سالب',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { autoComplete: { unlock: 'config' }, reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
   'growth-race': {
     // Deux grandeurs du premier degré qui « grandissent » avec x (âges, coûts) : l'élève
@@ -176,7 +176,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // la solution de l'équation et se dépassent au-delà (l'inéquation). Chaque jeton
     // et chaque x validé est une décision : MANUEL.
     shows: 'ترييض مشكلة: نسمّي المجهول، نترجم النص إلى عبارتين، فتكون المعادلة لحظة تساويهما والمتراجحة لحظة تفوّق إحداهما',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { autoComplete: { unlock: 'config' }, reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
 
   // ── Unité 5 « جمل معادلتين من الدرجة الأولى بمجهولين » (2026-10-01) ──
@@ -225,7 +225,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // témoin (f(0) ≠ 0, ou f(2x) ≠ 2f(x)). Un seul couple (m ; f(m)), m ≠ 0, suffit à fixer a ;
     // le nombre 0 ne fixe rien. Chaque carte est un choix : MANUEL.
     shows: 'الدالة الخطية x ⟼ ax : صورة x هي ax ، ويكفي عدد غير معدوم m وصورته n لتعيين a = n ÷ m ؛ x² و 2x − 1 ليستا دالتين خطيتين',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'origin-line': {
     // LA DROITE ÉPINGLÉE À O : l'origine ne bouge pas (on essaie, elle résiste) ; l'élève tire la
@@ -233,7 +233,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // (ou horizontale) lit une image (ou un antécédent). Un point posé hors de la droite est refusé
     // avec son écart. Mondes : téléphérique, ressort (nuage de points du tableau), budget (plafond).
     shows: 'التمثيل البياني للدالة الخطية x ⟼ ax مستقيم يشمل المبدأ O ومعامل توجيهه a : يكفي تعيين نقطة ثانية، ونقرأ عليه صورة عدد والعدد الذي علمت صورته',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'percent-tag': {
     // L'ÉTIQUETTE QU'ON ÉTIRE : le prix est une barre ; l'élève choisit زيادة / تخفيض et tire t % —
@@ -241,7 +241,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // le pari « −30 % puis +15 % = −15 % » est refusé par la barre elle-même (on multiplie les
     // multiplicateurs). Chaque réglage est une réponse : MANUEL.
     shows: 'النسب المئوية تناسبية: زيادة x بـ t% تعني ضربه في 1 + t/100 وتخفيضه يعني ضربه في 1 − t/100 ، والتغيرات المتتابعة تُضرب ولا تُجمع',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   // ── Unité 7 « الدالة التآلفية » (2026-10-02) — calcul exact : packages/core/arithmetic/affine.js.
   'affine-meter': {
@@ -249,35 +249,35 @@ export const MANIPULATION_TYPES = Object.freeze({
     // de a. L'élève règle x (image) ou cherche x pour un total m (antécédent : ax + b = m) ; en متقدم il
     // tient aussi les boutons a et b — b = 0 rend la fonction خطية, a = 0 la rend ثابتة.
     shows: 'الدالة التآلفية جزء ثابت b وجزء متغير ax : صورة x هي ax + b ، والعدد الذي صورته m حلّ المعادلة ax + b = m ؛ b = 0 دالة خطية و a = 0 دالة ثابتة',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'affine-line': {
     // LA DROITE QUI NE PASSE PLUS PAR O : la droite de x ⟼ ax (fantôme) et sa copie montée de b. L'élève
     // tire le point (0 ; b) sur l'axe des ordonnées (translation) et la marche « 1 à droite, a en haut »
     // (pente) ; il lit a et b sur une droite donnée, ou une image / un antécédent avec une sonde.
     shows: 'التمثيل البياني للدالة التآلفية x ⟼ ax + b مستقيم يقطع محور التراتيب في (0 ; b) ويوازي مستقيم الدالة الخطية x ⟼ ax : b الترتيب عند المبدأ و a معامل التوجيه',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'slope-stairs': {
     // L'ESCALIER DES ACCROISSEMENTS : deux marqueurs x1, x2 sur la droite ; la marche Δx, Δf se dessine ;
     // l'élève déplace les marqueurs où il veut — le quotient Δf ÷ Δx ne bouge pas (INVARIANT = a), puis il
     // descend jusqu'à x = 0 pour lire b. Deux nombres et leurs images suffisent à retrouver f.
     shows: 'تناسب التغيّرات: مهما كان العددان x1 و x2 فإنّ (f(x1) − f(x2)) ÷ (x1 − x2) يساوي a ، ومن عددين وصورتيهما نعيّن a ثم b',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'line-crossing': {
     // DEUX DROITES, UN POINT : chaque équation de la جملة est écrite y = ax + b et tracée ; l'élève promène
     // un point — chaque équation s'allume quand il est sur sa droite ; les deux ensemble : la ثنائية
     // solution. En متقدم il règle la seconde droite jusqu'aux cas parallèles / confondues.
     shows: 'حل جملة معادلتين بيانيا: كل معادلة مستقيم y = ax + b ، والثنائية حلّ الجملة إحداثيتا نقطة تقاطعهما ؛ متوازيان: لا حل ، منطبقان: عدد لا نهائي من الحلول',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'plan-compare': {
     // DEUX TARIFS FACE À FACE : chaque formule est une fonction affine (partie fixe + partie variable) ;
     // l'élève fait varier x (séances, heures, jours) — les deux coûts et leurs droites bougent ensemble —
     // trouve x où ils sont égaux et décide quelle formule choisir de chaque côté. Réutilisé par la synthèse.
     shows: 'المفاضلة بين صيغتين: كل تسعيرة دالة تآلفية (جزء ثابت وجزء متغير) ، يتقاطع المستقيمان حيث تتساوى التكلفتان ، وتتغير الصيغة الأفضل قبل نقطة التقاطع وبعدها',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   // ── Unité 8 « الإحصاء » (2026-10-02) — docs/sources/4am/unit8/extraction.json ─────────────────────────
   'cumul-gate': {
@@ -294,7 +294,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // égaux (le الوسيط), la pince entre les extrêmes (المدى) ; il tire une valeur extrême et voit la moyenne
     // partir, la médiane rester. Réutilisé par la synthèse (valeurs cachées retrouvées par la main).
     shows: 'المتوسط نقطة توازن القيم (مجموع القيم مقسوم على عددها) ، الوسيط يقسم السلسلة المرتبة إلى قسمين لهما نفس التكرار ، والمدى الفرق بين أكبر قيمة وأصغر قيمة',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'sheet-lab': {
     // LA MAQUETTE DU MAJDOUL : une feuille dessinée — l'élève saisit les valeurs, sélectionne une plage à la
@@ -333,7 +333,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // que l'extrémité de SON ombre tombe sur celle de la minaret — alors un seul rayon de soleil passe par les deux
     // sommets, les deux verticales sont parallèles et h / 1 = (ombre de la minaret) / (ombre du bâton).
     shows: 'العصا والمئذنة شاقوليتان فهما متوازيتان ؛ إذا انطبقت نهاية ظل العصا على نهاية ظل المئذنة فإن المثلثين في وضعية طالس: h ÷ (طول العصا) = (ظل المئذنة) ÷ (ظل العصا)',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'cone-cylinder': {
     // LA COUPE AXIALE : un cône (hauteur H, rayon R) et le cylindre posé sur sa base ; l'élève tire le coin du
@@ -347,7 +347,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // de sa moyenne ; l'élève PARIE le niveau du groupe réuni puis ouvre la vanne — le niveau commun est la
     // moyenne pondérée (Σ n·m ÷ N), jamais la moyenne des moyennes. En متقدم, deux classes face à face.
     shows: 'متوسط مجموعتين مجتمعتين هو المتوسط المتوازن: مجموع (التكرار × المتوسط) مقسوم على التكرار الكلي ، وليس متوسط المتوسطين',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   // Unité 10 « حساب المثلثات في المثلث القائم » (2026-10-04) — l'angle aigu se TIENT, les rapports se LISENT.
   'ramp-ratios': {
@@ -356,7 +356,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // (désigner l'hypoténuse comme opposé est refusé), puis compose cos / sin / tan ; agrandir la rampe à angle fixe ne
     // change aucun rapport (نشاط 2), tourner l'angle les change ; la hauteur ne dépasse jamais la planche (0 < sin, cos < 1).
     shows: 'في مثلث قائم: جيب التمام = المجاور ÷ الوتر ، الجيب = المقابل ÷ الوتر ، الظل = المقابل ÷ المجاور ؛ هذه النسب لا تتعلق إلا بقيس الزاوية ، والجيب وجيب التمام محصوران بين 0 و 1',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'trig-calculator': {
     // LA CALCULATRICE DU DRONE : la nacelle d'une caméra de drone s'incline d'un angle ; l'élève tape lui-même les
@@ -378,7 +378,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // CHOISIT le rapport qui lie le connu et l'inconnu (un mauvais choix est refusé et dit pourquoi) et calcule ;
     // la hauteur trouvée reste la même à toute distance (l'invariant). Réutilisé par la synthèse (mode « align »).
     shows: 'نترجم الوضعية إلى مثلث قائم ، ونختار النسبة التي تربط الطول المعلوم بالطول المجهول (أو بالزاوية) ثم نحسب ونقرّب النتيجة',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   // Unités 11 « الأشعة والانسحاب » et 12 « الأشعة في معلم » (2026-10-04) — la flèche se TIENT, ses مركبتان se LISENT.
   'translation-glide': {
@@ -391,13 +391,13 @@ export const MANIPULATION_TYPES = Object.freeze({
     // LA BANDEROLE DU TIFO : quatre supporters tiennent une banderole ; l'élève déplace le quatrième coin D (ou le point I sur [AB]) ; la banderole
     // ne se tend en متوازي أضلاع que si AB = DC — les milieux des deux diagonales se confondent alors ; AI = IB n'arrive qu'au milieu.
     shows: 'تساوي شعاعين يترجم متوازي الأضلاع: AB = DC يعني أن ABCD متوازي أضلاع (قطراه متناصفان) ، و I منتصف [AB] يعني AI = IB',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'vector-sum': {
     // DEUX MOUVEMENTS, UN SEUL : l'élève enchaîne deux flèches bout à bout (علاقة شال, la trottinette qui fait deux trajets) ou les pose sur la même
     // origine (قاعدة متوازي الأضلاع, le nageur et le courant de l'oued) ; la somme se lit, un enchaînement mal raccordé est refusé ; AB + BA = 0.
     shows: 'مجموع شعاعين هو شعاع الانسحاب الناتج عن انسحابين متتابعين: AB + BC = AC (علاقة شال) ، و AB + AD = AC إذا كان ABCD متوازي أضلاع ، و AB + BA = 0',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'vector-chain': {
     // LES CORRESPONDANCES DU MÉTRO : l'élève assemble une somme de plusieurs vecteurs nommés (des tronçons du métro d'Alger) et la réduit en
@@ -410,7 +410,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // déplace le long de la route (la position est tenue) ; la longueur A → M → N → B se lit ; B′, image de B par le انسحاب de vecteur NM,
     // est posée par l'élève (jugée par `vectors.relation`) : MB′BN متوازي أضلاع, NB = MB′, et le trajet le plus court a M sur [AB′].
     shows: 'لإيجاد أقصر مسلك يعبر ممرا عرضه ثابت ننقل نقطة الوصول B بالانسحاب الذي شعاعه NM ، فيصبح المسلك من A إلى B′ مرورا بالنقطة M خطا مستقيما',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'component-steps': {
     // L'APPLI DE LIVRAISON : le livreur va de A à B sur le quadrillage d'un quartier en pas horizontaux puis verticaux ; les pas comptés (avec leur
@@ -467,7 +467,7 @@ export const MANIPULATION_TYPES = Object.freeze({
     // LA FORGE DE POLYGONES : l'élève choisit l'angle du دوران (ou n) et fait tourner un sommet autour du centre, image après image ; la figure ne
     // se REFERME en polygone régulier que si l'angle vaut 360°/n ; l'étoile du drapeau en est le cas à 72°.
     shows: 'رؤوس مضلع منتظم ذي n ضلعا على دائرة مركزها مركزه ، وكل رأس صورة الذي قبله بالدوران الذي زاويته 360°/n ، ومنه زاوية المضلع وطول ضلعه',
-    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
   'lamp-ring': {
     // LES LAMPADAIRES DU ROND-POINT (أدمج تعلّماتي) : n lampadaires régulièrement espacés autour d'un massif circulaire ; l'élève règle n et le

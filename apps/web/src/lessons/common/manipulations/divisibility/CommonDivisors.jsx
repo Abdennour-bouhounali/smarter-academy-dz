@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -70,6 +70,9 @@ export default function CommonDivisors({
   const [bouquets, setBouquets] = useState(() => ({ ...L.initBouquets({ a: a0, b: b0 }), epoch: 0 }));
   const [lists, setLists] = useState(() => L.initLists({ a: a0, b: b0 }));
   const [reject, setReject] = useState(null);
+  // Miroir synchrone des groupes : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const bouquetsRef = useRef(bouquets);
+  bouquetsRef.current = bouquets;
 
   useEffect(() => {
     setBouquets({ ...L.initBouquets({ a, b }), epoch: state.epoch }); setLists(L.initLists({ a, b })); setStage(startWith); setReject(null);
@@ -163,6 +166,27 @@ export default function CommonDivisors({
           return false;
         },
         canAutoStep: () => (stage === 'bouquets' ? !(groupsOnly && groupsDone) : lists.pgcd === null),
+        // Les groupes : chaque k de 1 à min(a ; b) est un essai légitime (même
+        // `L.choose` que le geste). Les listes sont un geste de choix : pas de balayage.
+        autoComplete: {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: stage === 'bouquets',
+          remaining: stage === 'bouquets' ? L.untriedGroups(bouquets).length : 0,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => {
+            const next = L.untriedGroups(bouquetsRef.current)[0];
+            if (next === undefined) return;
+            bouquetsRef.current = L.choose(bouquetsRef.current, next);
+            setBouquets(bouquetsRef.current);
+          },
+          finish: () => {
+            const todo = L.untriedGroups(bouquetsRef.current);
+            if (todo.length === 0) return;
+            bouquetsRef.current = todo.reduce((acc, k) => L.choose(acc, k), bouquetsRef.current);
+            setBouquets(bouquetsRef.current);
+          },
+        },
         showSolution: () => {
           if (groupsOnly) {
             setBouquets((s) => L.choose(L.choose(s, lists.g + 1 <= Math.min(a, b) ? lists.g + 1 : lists.g), lists.g));

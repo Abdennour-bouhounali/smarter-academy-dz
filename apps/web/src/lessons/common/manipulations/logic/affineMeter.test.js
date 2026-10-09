@@ -106,3 +106,29 @@ describe('affine-meter — le compteur à partie fixe', () => {
     expect(wide.cols).toBeGreaterThan(wide.rows);
   });
 });
+
+describe('affine-meter — défaut et balayage (2026-10-09)', () => {
+  it('le x de départ n\'est ni une marque, ni la cible, et n\'est pas un essai', () => {
+    const s = M.init({ rule: '185x+35000', marks: '5|8|10|12|15' });
+    expect(s.marks).not.toContain(M.defaultX(s));
+    expect(s.trials).toHaveLength(0);
+    const a = M.setStage(M.init({ rule: '40x+100', mode: 'image|antecedent|classify', target: '500' }), 'antecedent');
+    expect(a.stage === 'antecedent' ? M.defaultX(a) : 0).not.toBe(a.targetX);
+    const b = M.init({ rule: '40x+100', mode: 'antecedent', target: '500' });
+    expect(M.defaultX(b)).not.toBe(b.targetX);
+  });
+  it('le balayage de l\'image valide chaque x et accomplit l\'étape', () => {
+    let s = M.init({ rule: '40x+100' });
+    for (const x of M.untriedXs(s)) s = M.commit(s, x);
+    expect(M.untriedXs(s)).toHaveLength(0);
+    expect(M.imageDone(s)).toBe(true);
+  });
+  it('le balayage de l\'antécédent finit par toucher la cible ; classify : aucun balayage', () => {
+    let s = M.init({ rule: '40x+100', mode: 'antecedent', target: '500' });
+    for (const x of M.untriedXs(s)) s = M.commit(s, x);
+    expect(s.hit).toBe(true);
+    expect(M.untriedXs(M.init({ rule: '40x+100', mode: 'image|antecedent|classify', target: '500' }))).not.toHaveLength(0);
+    const c = { ...M.init({ rule: '40x+100' }), stage: 'classify' };
+    expect(M.untriedXs(c)).toHaveLength(0);
+  });
+});

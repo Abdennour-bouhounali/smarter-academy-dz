@@ -442,3 +442,44 @@ export const toNum = (p) => toNumber(F(p));
 export const same = (p, q) => eq(F(p), F(q));
 export const isMul = (p, d) => isMultiple(F(p), F(d));
 export { F as toFrac, add as addFrac };
+
+/* ── valeurs par défaut des sondes (jamais un essai, jamais une cible) ──────── */
+
+/**
+ * L'indice de départ d'une sonde ('x' ou 'y') : un nœud de la grille qui n'est PAS une cible de `reads`
+ * (la lecture demandée ne doit jamais être donnée d'avance) ; on préfère x = 1 pour la sonde x.
+ * Ce n'est pas un essai : rien n'entre dans `trials` / `readsDone` / `probes`.
+ */
+export function defaultProbeIndex(s, axis) {
+  const d = axis === 'x' ? s.snap.dx : s.snap.dyRead;
+  const r = axis === 'x' ? indexRange(s.win.xMin, s.win.xMax, d) : indexRange(s.win.yMin, s.win.yMax, d);
+  const isTarget = (i) => s.reads.some((t) => t.axis === axis && eq(t.v, valueAt(i, d)));
+  const order = [];
+  if (axis === 'x') { const one = indexOf(1, d); if (one >= r.min && one <= r.max) order.push(one); }
+  for (let i = r.min; i <= r.max; i++) order.push(i);
+  const ok = order.find((i) => !isTarget(i) && (axis !== 'y' || antecedent(s.a, s.b, valueAt(i, d)) != null));
+  return ok ?? r.min;
+}
+
+/** Les indices de sonde pas encore essayés (balayage « جرّب كل الإمكانيات »), dans l'ordre croissant. */
+export function untriedProbes(s, axis, bNow = s.bNow) {
+  const d = axis === 'x' ? s.snap.dx : s.snap.dyRead;
+  const r = axis === 'x' ? indexRange(s.win.xMin, s.win.xMax, d) : indexRange(s.win.yMin, s.win.yMax, d);
+  const out = [];
+  for (let i = r.min; i <= r.max; i++) {
+    const v = valueAt(i, d);
+    const done = mode(s) === 'shift'
+      ? s.probes.some((q) => eq(q.x, v) && eq(q.b, bNow))
+      : s.readsDone.some((q) => q.axis === axis && eq(q.v, v));
+    if (!done) out.push(i);
+  }
+  return out;
+}
+
+/** Les indices b′ pas encore essayés (shift). */
+export function untriedShifts(s) {
+  const r = bRange(s);
+  const out = [];
+  for (let i = r.min; i <= r.max; i++) if (!s.trials.some((t) => t.kind === 'shift' && eq(t.b, valueAt(i, s.snap.dB)))) out.push(i);
+  return out;
+}

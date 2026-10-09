@@ -217,3 +217,34 @@ describe('géométrie — tout tient, en bloc', () => {
     }
   }
 });
+
+describe('balayage « جرّب كل الإمكانيات »', () => {
+  it('mean / median / contrast : chaque valeur est l’essai de la main, le balayage se vide, range et hidden ne se balaient pas', () => {
+    const lab0 = L.init({ series: '40|35|34|36|48|38|39|41|37|45', mode: 'mean|median' });
+    // mean
+    const todo = L.untriedSweep(lab0);
+    expect(todo.length).toBe(L.fulcrumRange(lab0).max + 1);
+    let a = lab0;
+    for (const j of todo) a = L.applySweep(a, j);
+    expect(L.untriedSweep(a)).toEqual([]);
+    expect(a.done.mean).toBe(true);
+    expect(a.trials.filter((t) => t.stage === 'mean')).toHaveLength(todo.length);
+    // même état que la main
+    expect(L.setFulcrum(lab0, todo[3]).trials[0]).toEqual(L.applySweep(lab0, todo[3]).trials[0]);
+    // median (étape suivante)
+    let b = L.goStage(a, 1);
+    expect(L.stageOf(b)).toBe('median');
+    const cs = L.untriedSweep(b);
+    expect(cs).toHaveLength(2 * b.N + 1);
+    for (const c of cs) b = L.applySweep(b, c);
+    expect(b.done.median).toBe(true);
+    expect(L.untriedSweep(b)).toEqual([]);
+    // range : pas de balayage
+    expect(L.untriedSweep(L.init({ series: '40|35|34|36|48', mode: 'range' }))).toEqual([]);
+  });
+  it('le départ par défaut de l’appui n’est pas la moyenne et rien n’est enregistré', () => {
+    const lab = L.init({ series: '40|35|34|36|48|38|39|41|37|45', mode: 'mean' });
+    expect(L.same(L.fulcrumAt(lab, lab.fulcrumJ), L.mean(lab))).toBe(false);
+    expect(lab.trials).toHaveLength(0);
+  });
+});

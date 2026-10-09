@@ -513,17 +513,18 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   await ctx.close();
 }
 
-/* ── 5 — indices progressifs (jamais la réponse) ─────────────────────────── */
+/* ── 5 — indices complets, masquables (jamais la réponse) ─────────────────────────── */
 {
   const { ctx, page } = await open(`${CH}/qawasim-adad-tabii/al-adad-60`);
   const m = await visibleManip(page, 'factor-pairs');
   await m.waitFor();
-  const hintBtn = m.getByRole('button', { name: /تلميح/ });
+  const total = await m.locator('[data-manipulation-hints] li').count();
+  const hintBtn = m.getByRole('button', { name: /التلميح/ });
   await hintBtn.click();
-  const one = await m.locator('[data-manipulation-hints] li').count();
+  const hidden = await m.locator('[data-manipulation-hints]').count();
   await hintBtn.click();
-  const two = await m.locator('[data-manipulation-hints] li').count();
-  check('indices : chaque demande en découvre un de plus', one === 1 && two === 2, `${one} → ${two}`);
+  const back = await m.locator('[data-manipulation-hints] li').count();
+  check('indices : tous affichés d\'emblée, masquables puis rouverts', total >= 2 && hidden === 0 && back === total, `${total} → ${hidden} → ${back}`);
   check('indices : aucun indice ne contient la liste des diviseurs', !(await m.locator('[data-manipulation-hints]').textContent()).includes('12'));
   await ctx.close();
 }
@@ -989,7 +990,13 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   await ctx.close();
 }
 
-/* ── 12 — LE NIVEAU PAR DÉFAUT SERT LA TÂCHE DU MODULE ────────────────────
+/* ── 12 — LE NIVEAU PAR DÉFAUT EST TOUJOURS مبتدئ (2026-10-09) ───────────
+   Décision du propriétaire : tout atelier s'ouvre sur مبتدئ ; l'activité du
+   manuel (متقدم) est à un clic. Le bloc vérifie donc les DEUX : l'ouverture
+   sur مبتدئ, puis, après un clic sur متقدم, les nombres du titre du module.
+   (Ancienne règle, 2026-09-21 : ouvrir sur l'activité — retirée.)
+
+   Ancien commentaire :
    Un module intitulé « نشاط N » porte l'activité du manuel et sa première
    étape attend que CETTE manipulation soit finie. Il doit donc s'ouvrir
    dessus : sinon l'activité est cachée derrière un onglet que l'élève doit
@@ -1013,8 +1020,11 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
     const ws = page.locator('[data-manipulation-workspace]').first();
     await ws.waitFor({ timeout: 8000 }).catch(() => {});
     if (!(await ws.count())) { await ctx.close(); continue; }
+    check(`D : « ${path} » s'ouvre sur مبتدئ`, (await ws.getAttribute('data-level')) === 'beginner');
+    await ws.locator('[role=tab][data-level="advanced"]').first().click();
+    await page.waitForTimeout(150);
     const shown = await page.locator('[data-manipulation-level-panel]:not([hidden]) [data-manipulation]').first().getAttribute('aria-label');
-    check(`D : « ${path} » ouvre sur les nombres de son titre`, expected.test(shown ?? ''), `ouvre sur « ${shown} »`);
+    check(`D : « ${path} » : متقدم porte les nombres de son titre`, expected.test(shown ?? ''), `ouvre sur « ${shown} »`);
     await ctx.close();
   }
 }

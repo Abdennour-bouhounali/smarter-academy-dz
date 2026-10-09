@@ -144,3 +144,16 @@ describe('thales-beam — le faisceau (نشاط 1, p. 104)', () => {
     expect(() => L.init({ AB: 6, AC: 7, BC: 6.1, ABp: 7 })).toThrow();
   });
 });
+
+describe('thales-beam — the opening screen is a real position, never the textbook target, never a stop', () => {
+  it('on every authored level', () => {
+    for (const lv of Object.values(LEVELS['thales-beam'])) {
+      const s = L.init(lv.numbers);
+      expect(s.i).not.toBe(s.iTarget);
+      expect(s.i).not.toBe(0);
+      expect(s.t).toBe(0);
+      expect(s.stops).toHaveLength(0);
+      expect(s.pending).toBeNull();
+    }
+  });
+});

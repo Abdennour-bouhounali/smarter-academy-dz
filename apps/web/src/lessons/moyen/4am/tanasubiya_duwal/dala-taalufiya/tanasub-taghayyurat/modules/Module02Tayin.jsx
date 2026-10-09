@@ -76,7 +76,7 @@ export default function Module02Tayin() {
         <ManipulationWorkspace
           title="سلّم التغيّرات — عددان وصورتاهما"
           lead="الدالة مجهولة: لا يقبل المخبر إلا العددين اللذين نعرف صورتيهما، حتى تبني الدرجة بينهما."
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           levels={{
             beginner: () => (
               <Manipulation type="slope-stairs" level="beginner" {...LAB.m2.beginner}

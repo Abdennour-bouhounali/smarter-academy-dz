@@ -8,8 +8,6 @@ import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { LAB, METRO, EX18, REMARKS } from '../content/textbook';
 import { FIG_EX18 } from '../content/figures';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import LabEvidence from '../components/LabEvidence';
 
 /**
@@ -30,7 +28,7 @@ import LabEvidence from '../components/LabEvidence';
  * « أتوقّع القاعدة » : l'explication (et la bonne option) des questions 1, 2 et 4 ÉNONCE la règle de la brique qui suit ;
  * chaque question est donc enveloppée dans une PredictRule (même id que la brique) — l'élève écrit la règle (predictPrompt de knowledge.jsx)
  * après le laboratoire et AVANT la question. La brique 3 (mutaakisan-sifr) est un rappel : la leçon 3 a posé AB + BA = 0⃗.
- * La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape : le métro, d'autres stations, résolue au module 5.
+ * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape : le métro, d'autres stations, résolue au module 5.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -144,8 +142,6 @@ export default function Module01Metro() {
                   onAnswered={mark(4)} />
               </PredictRule>
               {q[4] && <KnowledgeBrick id="shakl-la-yubarhin" />}
-              {/* La « مسألة الدرس » prolonge ce métro : d'autres stations définies par des tickets égaux — résolue au module 5. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
       ]}

@@ -8,8 +8,6 @@ import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, ROW_OPTIONS } from '../content/textbook';
 import PayrollVignette from '../components/PayrollVignette';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 
 /**
  * Module 1 — نشاط 1 (p. 78) : « تعيين دالة تآلفية », la paie (35000DA + 185DA par heure supplémentaire),
@@ -25,7 +23,7 @@ import { LESSON_CONFIG } from '../lesson.config';
  *             autre paie, 38330DA, avec les cibles que l'élève a atteintes.
  * FORMALIZE   la brique dala-ujra (« كل دالة من الشكل … تسمى دالة تآلفية ») nomme ce que le compteur a montré.
  * AUCUNE étape n'attend `onFinished`. LP : P1 (س 3, س 4, la brique), P2 (س 1, س 2), P3 (س 5).
- * Les labs vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس » (LessonProblemCard) clôt
+ * Les labs vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) clôt
  * donc la DERNIÈRE étape.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -108,7 +106,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="في المستويين عدّاد بجزء ثابت: قطعة واحدة تُدفع مرة واحدة، وقطعة تُضاف عن كل وحدة. أنت تحرّك x والعدّاد يُبنى أمامك."
           levels={{
             beginner: () => (
@@ -278,9 +276,6 @@ export default function Module01Nashat() {
                   <MathText>{'جرّب المرحلة 3 من العدّاد: اضبط $a$ و $b$ . المحور التالي يميّز الدوال التآلفية من غيرها، ويقرأ معاملَيها $a$ و $b$ .'}</MathText>
                 </p>
               )}
-              {/* La « مسألة الدرس » prolonge le lab متقدم (labs dans l'intro : dernière étape) : une autre paie,
-                  38000 دج et 240 دج par heure supplémentaire — résolue au module 5. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

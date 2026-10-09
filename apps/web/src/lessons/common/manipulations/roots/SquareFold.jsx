@@ -61,8 +61,11 @@ export default function SquareFold({
   const [lab, setLab] = useState(make);
   const sceneKey = `${tKey}:${scale}:${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
-  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
   const [live, setLive] = useState(null);
+  if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLive(null); }
+  // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
   const range = L.range(lab);
   const target = L.current(lab);
 
@@ -95,11 +98,14 @@ export default function SquareFold({
   const xPx = (v) => mid + (v / lab.scale) * ux;
   const yPx = (y) => mid + y * uy;
   const toValue = useCallback((clientX, _y, rect) => ((clientX - rect.left - mid) / ux) * lab.scale, [mid, ux, lab.scale]);
-  const stretch = useStretchInteraction({ value: live ?? lab.x ?? 0, range, toValue, onChange: setLive, onCommit: (v) => { setLive(v); setLab((s) => L.move(s, v)); }, direction: 'ltr', pageStep: lab.scale });
+  const stretch = useStretchInteraction({ value: live ?? lab.x ?? L.defaultX(lab), range, toValue, onChange: setLive, onCommit: (v) => { setLive(v); setLab((s) => L.move(s, v)); }, direction: 'ltr', pageStep: lab.scale });
 
-  const x = live ?? lab.x;
+  // Un x PAR DÉFAUT (L.defaultX : solution d'aucune carte) : jamais vide à l'ouverture. Ce n'est pas une visite : `lab.visited` ne le contient pas.
+  const isDefault = lab.x == null && live == null;
+  const x = live ?? lab.x ?? L.defaultX(lab);
   const x2 = x == null ? null : (x / lab.scale) ** 2; // pour DESSINER
-  const settled = lab.x != null && !stretch.dragging && x === lab.x;
+  const settled = !stretch.dragging && (isDefault || (lab.x != null && x === lab.x));
+  const unvisited = () => { const r = L.range(labRef.current); return Array.from({ length: r.max - r.min + 1 }, (_, i) => r.min + i).filter((v) => !labRef.current.visited.includes(v)); };
   const H = 150;
   const TOP = 38;
   const BOT = 118;
@@ -131,9 +137,34 @@ export default function SquareFold({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={([k('hint1'), k('hint2'), k('hint3')]).map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        // Balayer la droite, graduation après graduation : chaque position est une visite (le tableau se remplit) ; épingler reste la réponse de l'élève.
+        autoComplete: {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: unvisited().length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => {
+            const next = unvisited()[0];
+            if (next === undefined) return;
+            labRef.current = L.move(labRef.current, next);
+            setLive(next);
+            setLab((s) => L.move(s, next));
+          },
+          finish: () => {
+            const todo = unvisited();
+            if (todo.length === 0) return;
+            labRef.current = todo.reduce((acc, v) => L.move(acc, v), labRef.current);
+            setLive(todo[todo.length - 1]);
+            setLab((s) => todo.reduce((acc, v) => L.move(acc, v), s));
+          },
+        },
+      }}
       representation={settled && (
-        <EquationDisplay tex={`x = ${L.xText(lab.x, lab.scale).replace('−', '-').replace(',', '{,}')} \\qquad x^2 = ${L.squareText(lab.x, lab.scale).replace(',', '{,}')}`} tone="neutral" />
+        <EquationDisplay tex={`x = ${L.xText(x, lab.scale).replace('−', '-').replace(',', '{,}')} \\qquad x^2 = ${L.squareText(x, lab.scale).replace(',', '{,}')}`} tone="neutral" />
       )}
       discovery={(
         <ManipulationDiscovery

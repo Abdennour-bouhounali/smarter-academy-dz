@@ -158,3 +158,30 @@ describe('bridge-path — la scène', () => {
     expect(L.numTex(LIN.frac(5, 2))).toBe('2{,}5');
   });
 });
+
+describe('bridge-path — défaut et « جرّب كل الإمكانيات »', () => {
+  it('le départ du passage n\'est jamais la place optimale, et n\'est pas un essai', () => {
+    for (const nums of [ADV, BEG]) {
+      const s = L.init(nums);
+      expect(L.defaultIsSolution(s)).toBe(false);
+      expect(s.trials).toHaveLength(0);
+    }
+  });
+  it('la balade parcourt toute la réglette au temps 1 et donne les mêmes essais que la main', () => {
+    let s = L.init(ADV);
+    const n0 = s.iMax - s.iMin + 1;
+    expect(L.untriedPlaces(s)).toHaveLength(n0);
+    let hand = L.init(ADV);
+    for (let i = s.iMin; i <= s.iMax; i += 1) hand = L.cross(hand, i);
+    while (L.untriedPlaces(s).length) s = L.cross(s, L.untriedPlaces(s)[0]);
+    expect(s.trials.map((t) => t.i)).toEqual(hand.trials.map((t) => t.i));
+    expect(L.canTranslate(s)).toBe(true);
+    expect(s.solved).toBe(false);
+  });
+  it('au temps « poser B′ », rien à parcourir', () => {
+    let s = L.init(ADV);
+    s = L.cross(L.cross(s, 1), 2);
+    s = L.openTranslate(s);
+    expect(L.untriedPlaces(s)).toEqual([]);
+  });
+});

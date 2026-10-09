@@ -173,3 +173,15 @@ describe('degText', () => {
     expect(L.degText(75.4321)).toBe('75,4');
   });
 });
+
+describe('inscribed-angle — l’ouverture n’est ni un essai ni la réponse', () => {
+  it('le sommet part sur le grand arc, hors du diamètre de مزيان, sans essai ni pari', () => {
+    for (const lv of ['beginner', 'advanced']) {
+      const s = L.init(LEVELS['inscribed-angle'][lv].numbers);
+      expect(s.trials).toHaveLength(0);
+      expect(s.bet).toBeNull();
+      expect(s.pos.rho).toBe(1);
+      expect(s.pos.t).not.toBe(L.diameterT(s));
+    }
+  });
+});

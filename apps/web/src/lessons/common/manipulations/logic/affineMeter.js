@@ -216,3 +216,24 @@ export const discoveryReady = (s) => imageDone(s) && (!s.modes.includes('anteced
 
 /** Deux nombres naïfs que l'élève pourrait croire : « a + b par unité » (MISC-TARRID-JUZ-THABIT). */
 export const perUnitSum = (s) => Lin.add(s.f.a, s.f.b);
+
+/* ── défaut de la règle et balayage ─────────────────────────────────────── */
+
+/**
+ * Le x affiché à l'ouverture (jamais un essai, jamais une réponse) : au départ de l'antécédent, 0 (le compteur
+ * montre b, loin du total visé) ; sinon le premier x ≥ 1 qui n'est pas une marque du manuel.
+ */
+export function defaultX(s) {
+  if (s.stage === 'antecedent') return s.range.min === s.targetX ? s.range.min + 1 : s.range.min;
+  for (let x = Math.max(1, s.range.min); x <= s.range.max; x += 1) if (!s.marks.includes(x)) return x;
+  return s.range.min;
+}
+
+/** Les x que le balayage « جرّب كل الإمكانيات » n'a pas encore validés (image, antécédent) ; classify : aucun. */
+export function untriedXs(s) {
+  if (s.stage !== 'image' && s.stage !== 'antecedent') return [];
+  const done = s.stage === 'image' ? s.trials : s.antTrials;
+  const out = [];
+  for (let x = s.range.min; x <= s.range.max; x += 1) if (!done.includes(x)) out.push(x);
+  return out;
+}

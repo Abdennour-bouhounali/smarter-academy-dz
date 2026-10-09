@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { linear as LIN } from '@smarter-academy/core';
 import * as L from './coneCylinder';
 
+import { LEVELS } from '../levels';
 const txt = LIN.fracText;
 
 /**
@@ -102,5 +103,23 @@ describe('cone-cylinder — the cone refuses, the generatrix decides', () => {
         }
       }
     }
+  });
+});
+
+describe('cone-cylinder — the opening state is a real cylinder, never an answer, never a trial', () => {
+  it('on every authored cone: inside the cone, leaving a gap, not inscribed, no trial recorded', () => {
+    for (const lv of Object.values(LEVELS['cone-cylinder'])) {
+      const s = L.init(lv.numbers);
+      const v = L.probe(s);
+      expect(v.pierce).toBe(false);
+      expect(v.inscribed).toBe(false);
+      expect(v.square).toBe(false);
+      expect(s.trials).toHaveLength(0);
+      expect(s.refusals).toBe(0);
+    }
+  });
+  it('the cylinder has no try-all: each h needs the student to find its r (the relation is the discovery)', () => {
+    // documentation test : aucune API tryAll exportée
+    expect(L.tryAllPlan).toBeUndefined();
   });
 });

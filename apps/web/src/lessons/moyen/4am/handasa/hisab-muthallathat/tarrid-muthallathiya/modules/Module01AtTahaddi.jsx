@@ -5,8 +5,6 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { CHALLENGE, LAB, STADIUM, REMARKS } from '../content/textbook';
 import LadderFigure from '../components/LadderFigure';
@@ -19,7 +17,7 @@ import LabEvidence from '../components/LabEvidence';
  *   مبتدئ  `height`, le projecteur du stade (plateforme) : viser le sommet depuis le bord du terrain, choisir tan et ×,
  *          mesurer depuis deux distances — la même hauteur ;
  *   متقدم  `ladder`, le تحدّ : l'échelle télescopique posée à 59° allongée jusqu'à la marque de 1,60 m (encadrée à la main
- *          entre 1,8 et 1,9), puis sin et ÷ : L ≈ 1,9 m. OUVERT PAR DÉFAUT (`defaultLevel="advanced"`) : c'est le تحدّ que
+ *          entre 1,8 et 1,9), puis sin et ÷ : L ≈ 1,9 m. OUVERT PAR DÉFAUT (ouvert sur مبتدئ par défaut depuis 2026-10-09) : c'est le تحدّ que
  *          le module porte, et son titre nomme ses nombres.
  * Aucune étape n'attend le laboratoire (`onFinished`) : les questions portent sur la figure du manuel (LadderFigure) et
  * les essais de l'élève (`onTrial`) sont listés au-dessus d'elles ([data-activity-evidence]).
@@ -60,7 +58,7 @@ export default function Module01AtTahaddi() {
       }}
       intro={
         <ManipulationWorkspace
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           title="مقياس الميل في الهاتف"
           lead="المستوى المتقدّم هو تحدّ الوحدة: أطِل السلّم حتى يصل رأسه إلى العلامة، ثم اختر النسبة واحسب طوله. المستوى المبتدئ هو كشّاف الملعب: سدّد بالهاتف من مسافتين واحسب الارتفاع."
           levels={{
@@ -152,8 +150,6 @@ export default function Module01AtTahaddi() {
                   <p className="text-xs text-slate-600" data-misconception-note="nisba"><MathText>{`خطأ شائع: ${REMARKS.nisbaWrong} ${REMARKS.nisbaWhy}`}</MathText></p>
                 </>
               )}
-              {/* La « مسألة الدرس » prolonge l'échelle du تحدّ : 2,40 m, 65°, 2,50 m au plus — résolue au module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
       ]}

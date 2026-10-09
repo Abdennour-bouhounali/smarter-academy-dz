@@ -55,3 +55,9 @@ it('« startWith="race" » épingle la course : la règle, les colonnes, la lect
   expect(html).toContain('data-rel="&gt;"');
   expect(html).toContain('36 سنة');
 });
+
+it('growth-race : la course s\'ouvre sur un x par défaut, sans essai enregistré', () => {
+  const html = renderToString(<GrowthRace left="36+x" right="4+x+6+x+8+x" startWith="race" />);
+  expect(html).toContain('data-gr-x');
+  expect(html).not.toContain('data-trial-x=');
+});

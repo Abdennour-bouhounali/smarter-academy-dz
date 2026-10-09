@@ -162,9 +162,10 @@ export default function RatioRide({
   const mu = (colW - 2 * EDGE) / Math.max(1, range.max - range.min);
   const toValue = useCallback((cx, _y, rect) => range.min + (cx - rect.left - EDGE) / mu, [range.min, mu]);
   const stretch = useStretchInteraction({
-    value: liveX, range, toValue, onChange: setLiveX, onCommit: setLiveX, direction: 'ltr',
+    value: liveX ?? L.defaultX(lab), range, toValue, onChange: setLiveX, onCommit: setLiveX, direction: 'ltr',
   });
-  const X = liveX;
+  // La trottinette s'ouvre sur une durée PAR DÉFAUT : elle n'est pas une colonne (seul « سجّل » en écrit une).
+  const X = liveX ?? L.defaultX(lab);
 
   const doRecord = () => { stretch.flush(); setLab((s) => L.record(s, X)); };
   const doClaim = (id, says) => setLab((s) => L.claim(s, id, says));

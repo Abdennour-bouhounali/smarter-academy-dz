@@ -10,8 +10,6 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import { FIG_ACT2, FIG_ACT2_SOLVED } from '../content/figures';
 import GameMapVignette from '../components/GameMapVignette';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 
 /**
  * Module 1 — نشاط 2 (p. 140), ouvert sur LES PORTAILS DE LA CARTE DE JEU (component-calc).
@@ -26,7 +24,7 @@ import { LESSON_CONFIG } from '../lesson.config';
  * « أتوقّع القاعدة » : la bonne option du نشاط 2 ب 1 (étape 4) EST la règle (a = x_B − x_A, b = y_B − y_A) ; la question
  * est donc enveloppée dans <PredictRule id="farq-ihdathiyat"> — l'élève écrit la règle avec ses mots (predictPrompt de
  * knowledge.jsx) AVANT de voir les options, puis la question et la brique s'affichent.
- * Les deux niveaux du lab vivent dans l'`intro` : la « مسألة الدرس » (LessonProblemCard) clôt donc la DERNIÈRE étape —
+ * Les deux niveaux du lab vivent dans l'`intro` : la « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) clôt donc la DERNIÈRE étape —
  * d'autres portails sur une autre carte, résolue au module 5.
  * AUCUNE étape n'attend `onFinished`. LP : P1, P2.
  */
@@ -91,7 +89,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="الخريطة مزوّدة بمعلم: إحداثيتا كل بوابة مكتوبتان بجانبها، والبطل يقفز بالرمز الذي تكتبه."
           levels={{
             beginner: () => (
@@ -223,9 +221,6 @@ export default function Module01Nashat() {
                   <Feedback tone="ok">كما على الخريطة: بوابتان من موضعين مختلفين، ورمز واحد — شعاعان متساويان، والرباعي DEFC متوازي أضلاع.</Feedback>
                 </>
               )}
-              {/* La « مسألة الدرس » prolonge le lab متقدم (labs dans l'intro : dernière étape) : d'autres portails,
-                  des portails jumeaux ou non, une sortie à calculer — résolue au module 5. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

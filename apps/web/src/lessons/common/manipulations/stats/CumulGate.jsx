@@ -101,12 +101,14 @@ export default function CumulGate({
   const [lab, setLab] = useState(make);
   const sceneKey = `${series}:${mode}:${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
-  const [T, setT] = useState(null);
+  // Le seuil s'ouvre PAR DÉFAUT sous la plus petite taille (personne n'est allumé, aucun compte n'est donné) : ce n'est pas une annonce.
+  const [liveT, setT] = useState(null);
   const [side, setSide] = useState('up');
   const [raw, setRaw] = useState('');
   const [rel, setRel] = useState(false);
   if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setT(null); setSide('up'); setRaw(''); setRel(false); }
 
+  const T = liveT ?? L.rangeOf(lab).min;
   const ready = L.discoveryReady(lab);
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   const dT = L.discoveryT(lab);

@@ -31,6 +31,7 @@ use App\Http\Controllers\FeatureAccessController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\DiagnosticController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\LearningEvidenceController;
 use App\Http\Controllers\LearningPointExplanationController;
@@ -123,6 +124,15 @@ Route::prefix('v1')->group(function () {
         Route::post('/auth/register', [AuthController::class, 'register']);
         Route::post('/auth/login', [AuthController::class, 'login']);
     });
+
+    // ── Mot de passe oublié ──────────────────────────────────────────────
+    // Publiques par nature. `forgot` répond toujours pareil (voir
+    // PasswordResetController) et est limité fortement : il provoque l'envoi
+    // d'un courriel à une adresse nommée dans la requête.
+    Route::post('/auth/password/forgot', [PasswordResetController::class, 'forgot'])
+        ->middleware('throttle:5,10');
+    Route::post('/auth/password/reset', [PasswordResetController::class, 'reset'])
+        ->middleware('throttle:10,10');
 
     // ── Vérification d'adresse ───────────────────────────────────────────
     // PAS de jeton ici, volontairement : on clique ce lien depuis sa boîte

@@ -78,3 +78,12 @@ it('chaque clé que le composant lit existe, pour chaque monde (aucune clé brut
   for (const id of ['souk', 'numbers']) for (const key of world) expect(ns.worlds[id][key], `worlds.${id}.${key}`).toBeTypeOf('string');
   for (const st of ['open', 'linear', 'notLinear']) expect(ns.status[st]).toBeTypeOf('string');
 });
+
+it('valeurs par défaut : le cadran a et la carte vierge s’ouvrent sur une valeur (jamais la réponse), aucun essai', () => {
+  const html = renderToString(<LinearMachine rules="0,8x" targets="6|1,4" levels={false} />);
+  expect(html).toContain('data-lm-a="1"');
+  expect(html).not.toContain('data-lm-a=""');
+  expect(html).not.toContain('data-lm-a="0,8"');
+  expect(html).toMatch(/data-lm-blank="2"/);
+  expect((html.match(/data-lm-col=/g) ?? []).length).toBe(0);
+});

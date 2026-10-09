@@ -35,7 +35,7 @@ it('les deux niveaux se rendent dans le workspace, sans clé brute ni réponse',
   expect(html).toContain('data-n="6"');
   expect(html).not.toMatch(/manipulation\.[a-zA-Z]+\.[a-zA-Z]/);
   expect(html).not.toContain('{{');
-  for (const leak of ['2\\sqrt{2}', '60^\\circ', 'data-lr-card']) expect(html).not.toContain(leak);
+  for (const leak of ['2\\sqrt{2}', '60^\\circ', 'data-lr-card']) expect(html.replace(/<ol[^>]*data-manipulation-hints[\s\S]*?<\/ol>/g, '')).not.toContain(leak);
 });
 
 it('les props du LAB sont les nombres de levels.js (une seule source)', () => {

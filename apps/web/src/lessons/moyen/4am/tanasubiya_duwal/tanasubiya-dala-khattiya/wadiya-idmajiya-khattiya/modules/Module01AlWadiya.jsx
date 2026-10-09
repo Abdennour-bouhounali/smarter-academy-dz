@@ -17,7 +17,7 @@ import { CableCarFigure, CableCarVignette } from '../components/CableCarFigure';
  *
  * LE LABORATOIRE (origin-line, RÉUTILISÉ de « التمثيل البياني لدالة خطية », mode `read`, monde
  * `budget` — props dans content/textbook.js › LAB, deux niveaux dans un ManipulationWorkspace,
- * `defaultLevel="advanced"` : c'est la famille du manuel) :
+ * ouvert sur مبتدئ par défaut depuis 2026-10-09 : c'est la famille du manuel) :
  *   متقدم  la famille du manuel : C(x) = 3,8x contre la ligne du budget 2000 DA — l'intersection
  *          tombe entre deux nœuds (≈ 526,3), l'élève lit puis décide l'arrondi.
  *   مبتدئ  une autre famille (2 adultes, 2 enfants à −50 %) : C(x) = 3x contre 1500 DA, lue sur
@@ -86,7 +86,7 @@ export default function Module01AlWadiya() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="المستوى المتقدّم هو عائلة الكتاب: مستقيم التكلفة وخط الميزانية 2000 DA. في المستوى المبتدئ عائلة أخرى بتكلفة 3x وميزانية 1500 DA."
           levels={{
             beginner: () => (

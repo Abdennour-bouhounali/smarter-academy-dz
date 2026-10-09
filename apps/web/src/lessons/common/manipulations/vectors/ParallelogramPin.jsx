@@ -50,8 +50,8 @@ import * as L from '../logic/parallelogramPin';
  *   TRANSFER       ex-6, 7, 9, 12, 25 (أوظّف), la banque d'exercices
  *
  * Tous les verdicts viennent de `vectors.relation` (logic/parallelogramPin.js) ; le dessin est en flottants mais rien
- * n'est « presque » égal. Manuel (§6bis) : chaque position est un essai, chaque choix une réponse — aucune
- * auto-complétion.
+ * n'est « presque » égal. Manuel (§6bis) : chaque position est un essai, chaque choix une réponse. « جرّب كل الإمكانيات »
+ * parcourt les encoches de I (mode midpoint) ; poser D / E est une construction : aucune auto-complétion.
  *
  * DÉCOR (exigence du propriétaire, monde `tifo`) : les gradins du stade du 5-Juillet, la foule et les lampes de
  * téléphones qui scintillent, les ultras aux coins de la banderole, un derbouka (طبل) qui, touché, fait passer une
@@ -93,6 +93,29 @@ export default function ParallelogramPin({
   if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); }
   const para = lab.mode === 'parallelogram';
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
+
+  // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const notchAuto = !para ? {
+    label: t('manipulation.autoComplete.tryAll'),
+    ready: true,
+    remaining: L.untriedNotches(lab).length,
+    intervalMs: 480,
+    maxTicks: 80,
+    step: () => {
+      const next = L.untriedNotches(labRef.current)[0];
+      if (next === undefined) return;
+      labRef.current = L.commitI(labRef.current, next);
+      setLab((s) => L.commitI(s, next));
+    },
+    finish: () => {
+      const todo = L.untriedNotches(labRef.current);
+      if (todo.length === 0) return;
+      labRef.current = todo.reduce((acc, kk) => L.commitI(acc, kk), labRef.current);
+      setLab((s) => todo.reduce((acc, kk) => L.commitI(acc, kk), s));
+    },
+  } : null;
 
   const ready = L.discoveryReady(lab);
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -328,7 +351,7 @@ export default function ParallelogramPin({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={hintKeys.map((h) => <MathText key={h}>{k(h)}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{ autoStep: () => false, canAutoStep: () => false, ...(notchAuto ? { autoComplete: notchAuto } : {}) }}
       discovery={(
         <ManipulationDiscovery state={state} prompt={<MathText>{k(para ? 'dPromptPara' : 'dPromptMid')}</MathText>} options={discoveryOptions} formal={formal} />
       )}

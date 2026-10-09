@@ -79,6 +79,19 @@ export function cross(s, i0) {
   return Object.freeze({ ...s, i, trials, solved, last: Object.freeze({ kind, trial }) });
 }
 
+/**
+ * « جرّب كل الإمكانيات » : les places du passage pas encore essayées au temps courant (explore ou straight) — toute la
+ * graduation de la réglette, chacune validée par `cross`. Au temps `translate` (poser B′) : aucune, c'est un choix.
+ */
+export function untriedPlaces(s) {
+  if (s.stage === 'translate') return [];
+  const done = new Set(s.trials.filter((t) => t.stage === s.stage).map((t) => t.i));
+  return Array.from({ length: s.iMax - s.iMin + 1 }, (_, j) => s.iMin + j).filter((i) => !done.has(i));
+}
+
+/** Le départ du passage n'est jamais la place optimale (ni à la graduation de la réglette, ni alignée A, M, B′). */
+export const defaultIsSolution = (s) => s.i === s.iStar || aligned(s, s.i);
+
 /** Deux places différentes essayées : l'élève peut ouvrir la translation. */
 export const canTranslate = (s) => s.stage === 'explore' && new Set(s.trials.map((t) => t.i)).size >= 2;
 

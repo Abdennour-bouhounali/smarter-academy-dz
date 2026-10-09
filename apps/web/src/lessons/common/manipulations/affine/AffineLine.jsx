@@ -221,6 +221,35 @@ export default function AffineLine({
   const goNext = () => { setLiveB(null); setLiveA(null); setLiveXi(null); setLab((s) => L.next(s)); };
   const goBack = () => { setLiveB(null); setLiveA(null); setLiveXi(null); setLab((s) => L.back(s)); };
 
+  // Miroir synchrone de `lab` pour « جرّب كل الإمكانيات » (des pas plus rapides qu'un rendu).
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const applyLab = (fn) => { labRef.current = fn(labRef.current); setLab(fn); };
+  // le balayage du laboratoire courant : shift = chaque b′ de la grille ; read = chaque x puis chaque y
+  const sweepOf = (s) => {
+    const m = L.mode(s);
+    if (m === 'shift') return L.untriedShifts(s).map((i) => ({ axis: 'b', i }));
+    if (m === 'read') return [...L.untriedProbes(s, 'x').map((i) => ({ axis: 'x', i })), ...L.untriedProbes(s, 'y').map((i) => ({ axis: 'y', i }))];
+    return [];
+  };
+  const runSweep = (act) => {
+    if (act.axis === 'b') {
+      setLiveB(act.i);
+      applyLab((s) => {
+        const n = L.setB(s, L.valueAt(act.i, s.snap.dB));
+        if (n.last?.kind === 'shiftOff' || n.last?.kind === 'shiftZero') setShake((x) => x + 1);
+        return n;
+      });
+    } else if (act.axis === 'x') {
+      setLiveXi(act.i);
+      applyLab((s) => L.probe(s, L.valueAt(act.i, s.snap.dx)));
+    } else {
+      setLiveYi(act.i);
+      applyLab((s) => L.readY(s, L.valueAt(act.i, s.snap.dyRead)));
+    }
+  };
+  const sweepLeft = sweepOf(lab).length;
+
   const planeRef = useRef(null);
   const local = (e) => {
     const r = planeRef.current.getBoundingClientRect();
@@ -291,8 +320,9 @@ export default function AffineLine({
   });
   const lastX = [...lab.trials].reverse().find((r) => r.kind === 'probe' || r.kind === 'read-x');
   const lastY = [...lab.readsDone].reverse().find((r) => r.axis === 'y');
-  const xi = liveXi ?? (lastX ? L.indexOf(L.toNum(lastX.x ?? lastX.v), snap.dx) : null);
-  const yi = liveYi ?? (lastY ? L.indexOf(L.toNum(lastY.v), snap.dyRead) : null);
+  // Sondes : jamais vides à l'ouverture (2026-10-09). Le départ n'est ni un essai ni une cible de `reads`.
+  const xi = liveXi ?? (lastX ? L.indexOf(L.toNum(lastX.x ?? lastX.v), snap.dx) : L.defaultProbeIndex(lab, 'x'));
+  const yi = liveYi ?? (lastY ? L.indexOf(L.toNum(lastY.v), snap.dyRead) : L.defaultProbeIndex(lab, 'y'));
   const canX = mode === 'shift' || mode === 'read' || (mode === 'draw' && L.drawLine(lab));
   const sX = useStretchInteraction({
     value: xi, range: xr, direction: 'ltr',
@@ -611,7 +641,19 @@ export default function AffineLine({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={hintKeys.map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        autoComplete: sweepLeft > 0 || mode === 'shift' || mode === 'read' ? {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: sweepLeft,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => { const next = sweepOf(labRef.current)[0]; if (next) runSweep(next); },
+          finish: () => { sweepOf(labRef.current).forEach(runSweep); },
+        } : undefined,
+      }}
       representation={representation}
       discovery={<ManipulationDiscovery state={state} prompt={<MathText>{k(`dPrompt.${primary}`)}</MathText>} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}

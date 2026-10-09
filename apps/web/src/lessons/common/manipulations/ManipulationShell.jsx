@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MANIPULATION_TYPES } from '@smarter-academy/core';
 import ManipulationProgress from './ManipulationProgress';
@@ -54,7 +54,7 @@ import { MANIPULATION_LEVEL_IDS } from './levels';
  */
 export default function ManipulationShell({
   type, title, mission, lead, state, controller, hints = [], numberFields = [], validate, controlsOverride,
-  onCheck, checkDisabled, allowModeSwitch = false, representation, explanation, discovery, children, footer, allowFreeLab = true,
+  onCheck, checkDisabled, allowModeSwitch = false, representation, explanation, discovery, children, footer, allowFreeLab = true, freeLabAlwaysOpen = false, freeLabLead,
   headerAction,
 }) {
   const { t } = useTranslation('lesson');
@@ -63,6 +63,21 @@ export default function ManipulationShell({
   const constraints = controls.changeNumbers || null;
   const shownTitle = state.isAuthoredLevel ? title : t('manipulation.level.practiceTitle', { level: t(`manipulation.level.${state.level}`) });
   const shownLead = state.isAuthoredLevel ? lead : null;
+
+  // LE RÉSULTAT VIT EN HAUT, ET NE CLIGNOTE PAS (2026-10-09, toutes les
+  // manipulations). Il est posé entre les contrôles et l'aire de manipulation,
+  // et c'est UN seul emplacement : tant qu'aucun essai n'a eu lieu il montre
+  // une ligne d'attente de même hauteur, ensuite il est MIS À JOUR sur place.
+  // Quand un type retire sa ligne le temps d'un geste (`settled && …`), on
+  // garde la dernière jusqu'à la suivante — sauf si la conclusion est cachée
+  // (mode classe), ou si la scène repart (إعادة, autre niveau, autres nombres).
+  const hasRepresentation = representation !== undefined;
+  const held = useRef({ key: null, node: null });
+  const heldKey = `${state.epoch}:${state.resetCount}:${state.level}`;
+  if (held.current.key !== heldKey) held.current = { key: heldKey, node: null };
+  if (representation) held.current.node = representation;
+  const shownRepresentation = representation || (state.answerHidden ? null : held.current.node);
+  const stale = !representation && !!shownRepresentation;
 
   return (
     <section
@@ -81,6 +96,9 @@ export default function ManipulationShell({
             <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider text-indigo-500">{t('manipulation.badge')}</span>
           </div>
         </div>
+        {freeLabAlwaysOpen && (
+          <ManipulationFreeLab state={state} numberFields={numberFields} constraints={constraints} validate={validate} allowFreeLab={allowFreeLab} alwaysOpen lead={freeLabLead} />
+        )}
         {state.levels && (
           <ManipulationLevelSelector levels={MANIPULATION_LEVEL_IDS} value={state.level} onChange={state.setLevel} />
         )}
@@ -104,21 +122,27 @@ export default function ManipulationShell({
         state={state} controller={controller} controls={controls} numberFields={numberFields} constraints={constraints} validate={validate} allowModeSwitch={allowModeSwitch}
       />
       <ManipulationControls state={state} controls={controls} hints={hints} onCheck={onCheck} checkDisabled={checkDisabled} autoComplete={controller?.autoComplete} />
-      <ManipulationHint hints={hints} level={state.hintLevel} />
+      <ManipulationHint hints={hints} open={state.hintsOpen} />
+
+      {hasRepresentation && (
+        shownRepresentation ? (
+          <div className="space-y-2" data-manipulation-representation data-representation-top data-representation-stale={stale ? 'true' : undefined} aria-live="polite">
+            {shownRepresentation}
+          </div>
+        ) : (
+          <p className="flex min-h-[3.75rem] items-center rounded-2xl border-2 border-dashed border-slate-200 bg-white/60 px-4 py-2 text-sm font-bold text-slate-500" data-representation-slot="idle">
+            {t('manipulation.resultIdle')}
+          </p>
+        )
+      )}
 
       {children}
-
-      {representation && (
-        <div className="space-y-2" data-manipulation-representation aria-live="polite">
-          {representation}
-        </div>
-      )}
 
       {discovery}
 
       <ManipulationExplanation show={state.showExplanation}>{explanation}</ManipulationExplanation>
 
-      <ManipulationFreeLab state={state} numberFields={numberFields} constraints={constraints} validate={validate} allowFreeLab={allowFreeLab} />
+      {!freeLabAlwaysOpen && <ManipulationFreeLab state={state} numberFields={numberFields} constraints={constraints} validate={validate} allowFreeLab={allowFreeLab} lead={freeLabLead} />}
       {footer}
     </section>
   );

@@ -5,8 +5,8 @@ import { Btn } from './ManipulationTeacherMode';
 import ManipulationAutoComplete from './ManipulationAutoComplete';
 
 /**
- * Les contrôles de l'ÉLÈVE : « إعادة », « تلميح » (progressif, compte
- * affiché), « تحقّق » quand le type propose une vérification explicite, et
+ * Les contrôles de l'ÉLÈVE : « إعادة », « تلميح » (tous les indices en entier,
+ * affichés par défaut, masquables), « تحقّق » quand le type propose une vérification explicite, et
  * « الشرح » — qui n'apparaît qu'APRÈS la découverte (ou en mode classe) :
  * il redit la règle, il ne doit jamais la donner avant le geste (audit du
  * 2026-09-29 : il l'imprimait dès l'ouverture). L'élève AVANCE en manipulant, jamais avec un bouton « suivant » :
@@ -25,8 +25,8 @@ export default function ManipulationControls({ state, controls = {}, hints = [],
         <Btn onClick={state.reset} ariaLabel={t('manipulation.reset')}><RotateCcw className="h-4 w-4" aria-hidden="true" /> {t('manipulation.reset')}</Btn>
       )}
       {hints.length > 0 && (
-        <Btn onClick={state.requestHint} disabled={state.hintLevel >= hints.length} ariaLabel={t('manipulation.hint.button')}>
-          <Lightbulb className="h-4 w-4" aria-hidden="true" /> {t('manipulation.hint.button')} <span dir="ltr" className="font-mono text-xs opacity-80">{Math.min(state.hintLevel, hints.length)}/{hints.length}</span>
+        <Btn onClick={state.toggleHints} pressed={state.hintsOpen}>
+          <Lightbulb className="h-4 w-4" aria-hidden="true" /> {state.hintsOpen ? t('manipulation.hint.hide') : t('manipulation.hint.show')}
         </Btn>
       )}
       <ManipulationAutoComplete capability={controls.autoComplete} auto={autoComplete} resetKey={state.epoch} />

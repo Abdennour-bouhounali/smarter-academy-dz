@@ -225,6 +225,22 @@ export function commit(s) {
   };
 }
 
+/**
+ * « جرّب كل الإمكانيات » : x₂ restant où il est, chaque nœud x₁ ≠ x₂ de la graduation dont la marche (x₁ ; x₂)
+ * n'a pas été validée. Seulement quand f est connue (`found`) : avant, un marqueur au hasard est refusé.
+ */
+export function untriedFirstMarkers(s) {
+  if (!s.found) return [];
+  const x2 = valueAt(s.m[1], s.snap);
+  const out = [];
+  for (let i = s.range.min; i <= s.range.max; i += 1) {
+    if (i === s.m[1]) continue;
+    const x1 = valueAt(i, s.snap);
+    if (!s.trials.some((t) => t.kind === 'stair' && eq(t.x1, x1) && eq(t.x2, x2))) out.push(i);
+  }
+  return out;
+}
+
 /** Les marches acceptées, une par paire (x₁ ; x₂). */
 export const stairs = (s) => s.trials.filter((t) => t.kind === 'stair');
 

@@ -141,3 +141,13 @@ describe('bookshelf — la géométrie dessine CHAQUE livre, une fois, sans chev
     expect(first.books[0].x).toBeGreaterThan(first.books[1].x);
   });
 });
+
+describe('bookshelf — le rayon par défaut n’est jamais une réponse (2026-10-09)', () => {
+  it('première longueur qui laisse des livres au sol', () => {
+    expect(B.defaultShelf(24, { min: 2, max: 12 })).toBe(5);
+    expect(B.defaultShelf(420, { min: 10, max: 60 })).toBe(11);
+    for (const [t, r] of [[24, { min: 2, max: 12 }], [420, { min: 10, max: 60 }], [143, { min: 2, max: 20 }]]) {
+      expect(t % B.defaultShelf(t, r), String(t)).not.toBe(0);
+    }
+  });
+});

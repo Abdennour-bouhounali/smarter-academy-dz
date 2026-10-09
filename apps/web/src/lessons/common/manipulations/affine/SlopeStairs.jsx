@@ -181,6 +181,14 @@ export default function SlopeStairs({
 
   /* ── gestes : saisir le plan ou la piste (le marqueur le plus proche suit) ── */
   const [drag, setDrag] = useState(null);
+  // Miroir synchrone de `lab` pour « جرّب كل الإمكانيات » : x₂ reste, x₁ parcourt la graduation.
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const sweepFirst = (i) => {
+    labRef.current = L.commit(L.move(labRef.current, 0, i));
+    setLab((s) => L.commit(L.move(s, 0, i)));
+  };
+  const untriedFirst = L.untriedFirstMarkers(lab);
   const dragRef = useRef(null);
   const idxAt = (e) => {
     const r = e.currentTarget.getBoundingClientRect();
@@ -472,7 +480,19 @@ export default function SlopeStairs({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={hintKeys.map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        autoComplete: lab.found ? {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: untriedFirst.length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => { const i = L.untriedFirstMarkers(labRef.current)[0]; if (i !== undefined) sweepFirst(i); },
+          finish: () => { L.untriedFirstMarkers(labRef.current).forEach(sweepFirst); },
+        } : undefined,
+      }}
       representation={<Representation lab={lab} k={k} />}
       discovery={(
         <ManipulationDiscovery state={state} prompt={<MathText>{k(`dPrompt.${lab.mode}`)}</MathText>} options={discoveryOptions} formal={<Formal lab={lab} k={k} />} />

@@ -241,3 +241,27 @@ describe('growth-race — COURIR (étirer x)', () => {
     }
   });
 });
+
+describe('x par défaut de la course (ni rencontre, ni réponse, jamais un essai)', () => {
+  it('ne tombe pas sur l\'égalité et la question posée n\'y est pas déjà vraie', () => {
+    const cases = [['36+x', '4+x+6+x+8+x', 'equal'], ['75x', '560+5x', 'greater'], ['75x', '560+5x', 'less'], ['2x', '2x+3', 'equal']];
+    for (const [l, r, goal] of cases) {
+      const lab = G.init(l, r, { startWith: 'race' });
+      const range = G.xRange(lab.model);
+      const x = G.defaultX(lab.model, range, goal);
+      expect(x).toBeGreaterThanOrEqual(range.min);
+      expect(x).toBeLessThanOrEqual(range.max);
+      const rel = G.trialAt(lab.model, x).rel;
+      if (l !== '2x') expect(rel).not.toBe('=');
+      if (goal === 'greater' && l === '75x') expect(rel).not.toBe('>');
+      expect(lab.trials).toEqual([]);
+    }
+  });
+  it('balayer la règle = les essais de la main (commitTrial), la découverte s\'ouvre', () => {
+    let lab = G.init('36+x', '4+x+6+x+8+x', { startWith: 'race' });
+    const range = G.xRange(lab.model);
+    for (let x = range.min; x <= range.max; x += 1) lab = G.commitTrial(lab, x);
+    expect(lab.trials).toHaveLength(range.max - range.min + 1);
+    expect(G.discoveryReady(lab, range)).toBe(true);
+  });
+});

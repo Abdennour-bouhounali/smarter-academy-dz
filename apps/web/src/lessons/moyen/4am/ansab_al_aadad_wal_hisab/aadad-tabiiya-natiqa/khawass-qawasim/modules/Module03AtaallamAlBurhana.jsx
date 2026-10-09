@@ -34,7 +34,7 @@ export default function Module03AtaallamAlBurhana() {
             </div>
           ) },
         { num: 2, title: 'البرهان، سطرًا سطرًا', done: read,
-          content: <div className="space-y-3"><KnowledgeBrick id="ithbat-qasim" lead="كل البرهان يدور حول جملة واحدة: إيجاد k حيث a + b = n × k." /><MethodSteps method={PROOF_WITHOUT_RULE} onAllRevealed={() => setRead(true)} /></div> },
+          content: <div className="space-y-3"><KnowledgeBrick id="ithbat-qasim" lead="هنا لا نتحقّق بأعداد: الحروف تمثّل أعدادًا مجهولة. فكّر في معنى «يقسم» قبل أن تقرأ سطور البرهان." /><MethodSteps method={PROOF_WITHOUT_RULE} onAllRevealed={() => setRead(true)} /></div> },
         { num: 3, title: 'الطريقة', done: q2,
           content: (
             <div className="space-y-3">

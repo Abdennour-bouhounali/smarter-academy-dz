@@ -156,3 +156,23 @@ describe('vanishing-pitch — balayage de toute la règle', () => {
     }
   });
 });
+
+describe('valeur par défaut (jamais une réponse, jamais une visite)', () => {
+  it('le x par défaut ne s\'écrase pas, et rien n\'est écrit dans la mémoire', () => {
+    for (const expr of ['x-2|x+5', '3|x-5', '3x-4|-2x+1', '4x|-x+1', '2x+1', 'x|x-1']) {
+      const s = L.init({ expr });
+      const v = L.defaultV(s);
+      expect(Lin.isZero(L.sides(s, v).area)).toBe(false);
+      expect(v).toBeGreaterThanOrEqual(s.range.min);
+      expect(v).toBeLessThanOrEqual(s.range.max);
+      expect(s.visited).toEqual([]);
+      expect(s.pins).toEqual([]);
+    }
+  });
+  it('balayer toute la règle donne le même état que la main (move) et permet de conclure', () => {
+    let s = L.init({ expr: 'x-2|x+5' });
+    for (let v = s.range.min; v <= s.range.max; v += 1) s = L.move(s, v);
+    expect(s.visited).toHaveLength(s.range.max - s.range.min + 1);
+    expect(L.swept(s)).toBe(true);
+  });
+});

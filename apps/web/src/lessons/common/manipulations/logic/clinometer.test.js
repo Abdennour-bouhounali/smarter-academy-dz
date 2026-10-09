@@ -160,3 +160,52 @@ describe('clinometer — align (the synthesis: مقام الشهيد, textbook n
     }
   });
 });
+
+describe('clinometer — default start and جرّب كل الإمكانيات', () => {
+  const SETS = [beginner, advanced, ALIGN, { mode: 'align', pole: 2.3, poleAt: 95.65, height: 92 }, { mode: 'height', height: 12, eye: 1.5, minDistance: 4, maxDistance: 30 }];
+  const run = (s) => { let c = s; for (let g = 0; g < 2000 && L.tryAllPlan(c).length; g += 1) c = L.tryAllApply(c, L.tryAllPlan(c)[0]); return c; };
+
+  it('the opening state is never an answer and never a recorded trial', () => {
+    for (const n of SETS) {
+      const s = L.init(n);
+      expect(s.trials).toHaveLength(0);
+      expect(s.refusals).toHaveLength(0);
+      if (s.mode === 'height') expect(L.aimed(s)).toBe(false);
+      if (s.mode === 'ladder') expect(L.topKind(s)).not.toBe('exact');
+      if (s.mode === 'align') expect(L.alignKind(s)).not.toBe('aligned');
+    }
+  });
+
+  it('height has no sweep (the hand is an aim, not a list)', () => {
+    expect(L.tryAllPlan(L.init(beginner))).toEqual([]);
+  });
+
+  it('ladder: every length is tried, the bracket appears, the plan opens, nothing is chosen for the student', () => {
+    const s0 = L.init(advanced);
+    const end = run(s0);
+    expect(end.trials.map((t) => t.i).sort((a, b) => a - b)).toEqual(Array.from({ length: s0.iMax - s0.iMin + 1 }, (_, k) => s0.iMin + k));
+    expect(L.bracket(end)).toEqual({ lo: 18, hi: 19 });
+    expect(L.planOpen(end)).toBe(true);
+    expect(end.ratio).toBeNull();
+    expect(L.tryAllApply(s0, 12)).toEqual(L.moveTo(s0, 12));
+  });
+
+  it('align: every place is tried, the observer ends on the alignment without a duplicate, the plan opens', () => {
+    for (const n of [ALIGN, SETS[3]]) {
+      const s0 = L.init(n);
+      const end = run(s0);
+      expect(new Set(end.trials.map((t) => t.i)).size).toBe(s0.iMax - s0.iMin + 1);
+      expect(end.trials).toHaveLength(s0.iMax - s0.iMin + 1);
+      expect(end.i).toBe(s0.iStar);
+      expect(L.planOpen(end)).toBe(true);
+      expect(end.ratio).toBeNull();
+    }
+    // la bonne place déjà essayée à la main : on y revient sans nouvel essai
+    const s0 = L.init(ALIGN);
+    const hand = L.moveTo(L.moveTo(s0, s0.iStar), s0.iMin);
+    const end = run(hand);
+    expect(end.trials.filter((t) => t.i === s0.iStar)).toHaveLength(1);
+    expect(end.i).toBe(s0.iStar);
+    expect(L.planOpen(end)).toBe(true);
+  });
+});

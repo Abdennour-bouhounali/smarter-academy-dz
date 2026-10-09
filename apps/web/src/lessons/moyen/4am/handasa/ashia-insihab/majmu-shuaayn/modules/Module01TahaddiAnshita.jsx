@@ -6,8 +6,6 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { CHALLENGE, SCOOTER, ACT3, ACT4, LAB } from '../content/textbook';
 import { FIG_ACT3, FIG_ACT3_SOL, FIG_ACT4, FIG_ACT4_SOL } from '../content/figures';
@@ -21,7 +19,7 @@ import LabEvidence from '../components/LabEvidence';
  *   مبتدئ  `chasles`, la trottinette dans Alger (plateforme) : poser la queue du second trajet au bout du premier, lire la
  *          somme AC, l'enchaînement qui tourne (AC < AB + BC), le retour (AB + BA = 0) — c'est نشاط 3 et 4 « en vrai » ;
  *   متقدم  `parallelogram`, le تحدّ : tourner la vitesse du nageur jusqu'à ce que la diagonale s + c suive (AB). OUVERT PAR
- *          DÉFAUT (`defaultLevel="advanced"`) : c'est le تحدّ que le module porte, et son titre nomme ses nombres.
+ *          DÉFAUT (ouvert sur مبتدئ par défaut depuis 2026-10-09) : c'est le تحدّ que le module porte, et son titre nomme ses nombres.
  * Aucune étape n'attend le laboratoire (`onFinished`) : les essais de l'élève (`onTrial`) sont listés au-dessus des
  * questions ([data-activity-evidence]).
  *   1. le تحدّ : viser B ne suffit pas ; dans quel sens viser                              (LP P1)
@@ -54,7 +52,7 @@ export default function Module01TahaddiAnshita() {
       }}
       intro={
         <ManipulationWorkspace
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           title="حركتان متتابعتان"
           lead="المستوى المتقدّم هو تحدّ الوحدة: أدِر سرعة السبّاح حتى يصل إلى B. المستوى المبتدئ هو الدراجة الكهربائية: ضع المشوار الثاني حيث يجب أن يبدأ، واقرأ المجموع."
           levels={{
@@ -172,8 +170,6 @@ export default function Module01TahaddiAnshita() {
                   <TextbookBox kind="remark" lines={[ACT4.afterZero, ACT4.afterOpposite]} source={ACT4.source} compact />
                 </>
               )}
-              {/* « مسألة الدرس » : le monde du lab متقدم (le nageur), d'autres nombres — résolue au module 5. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
       ]}

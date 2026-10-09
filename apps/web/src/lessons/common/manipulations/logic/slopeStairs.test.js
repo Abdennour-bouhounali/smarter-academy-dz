@@ -185,3 +185,19 @@ describe('slope-stairs — une fonction décroissante, des valeurs négatives', 
     expect(L.quotientTex(L.stairOf(s0, 8, 5))).toBe('\\dfrac{f(8) - f(5)}{8 - 5} = \\dfrac{-12 - (-3)}{8 - 5} = \\dfrac{-9}{3} = -3');
   });
 });
+
+describe('slope-stairs — balayage du premier marqueur (2026-10-09)', () => {
+  it('rule : chaque x₁ donne une marche au même quotient', () => {
+    let s = L.init({ rule: '200x+2000', marks: '0|1|4|6|10|12|15' });
+    const todo = L.untriedFirstMarkers(s);
+    expect(todo.length).toBeGreaterThan(5);
+    for (const i of todo) s = L.commit(L.move(s, 0, i));
+    expect(L.untriedFirstMarkers(s)).toHaveLength(0);
+    expect(new Set(L.stairs(s).map((t) => T(t.q)))).toEqual(new Set(['200']));
+  });
+  it('points : rien avant que la première marche ait trouvé f', () => {
+    const s = L.init({ points: '10:50|30:86' });
+    expect(L.untriedFirstMarkers(s)).toHaveLength(0);
+    expect(s.trials).toHaveLength(0);
+  });
+});

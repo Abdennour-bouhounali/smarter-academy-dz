@@ -5,8 +5,6 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { IntegerSetQuestion, SourceTag } from '../../../../../../common/textbook';
 import { LibraryScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 
@@ -49,21 +47,21 @@ export default function Module01AlAdad60() {
         // l'activité derrière un onglet que l'élève devait deviner — et le
         // laissait devant une question qu'il n'avait pas de quoi traiter.
         //
-        // Le petit nombre n'est pas supprimé pour autant : il devient
-        // l'ENTRAÎNEMENT, à portée d'un geste pour qui veut se faire la main.
-        // Règle générale : le niveau par défaut sert la tâche du module.
+        // Depuis le 2026-10-09 (décision du propriétaire, TOUTES les leçons) le
+        // workspace s'ouvre sur مبتدئ — le petit nombre — puis l'élève passe
+        // à متقدم, le 60 du manuel. Le 60 reste à un clic.
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
-          lead="جدول الكتاب: العدد 60. وإن أردت التمرّن أولًا، جرّب المستوى المبتدئ بعدد أصغر."
+          defaultLevel="beginner"
+          lead="ابدأ بالمستوى المبتدئ بعدد أصغر، ثم انتقل إلى المتقدّم لتملأ جدول الكتاب: العدد 60."
           levels={{
             beginner: () => (
               <Manipulation type="factor-pairs" n={24} title="تمرّن أولًا: 24 = … × …"
-                lead="أطِل الصفّ كتابًا بعد كتاب: متى تُكوّن الكتب مستطيلًا تامًّا؟ كل مستطيل تامّ يعطيك قاسمين." />
+                lead="أطِل الصفّ كتابًا بعد كتاب: متى تُكوّن الكتب مستطيلًا تامًّا؟ لاحظ ما يعطيه لك كل مستطيل تامّ." />
             ),
             advanced: () => (
               <Manipulation type="factor-pairs" n={60} title="جدول الكتاب: 60 = … × …"
-                lead="أطِل الصفّ ابتداءً من كتاب واحد. كل مستطيل تامّ يضيف سطرًا إلى الجدول وقاسمين. متى تستطيع أن تتوقّف؟" onFinished={() => setFinished(true)} />
+                lead="أطِل الصفّ ابتداءً من كتاب واحد. كل مستطيل تامّ يضيف سطرًا إلى الجدول. متى تستطيع أن تتوقّف؟" onFinished={() => setFinished(true)} />
             ),
           }}
         />
@@ -75,19 +73,16 @@ export default function Module01AlAdad60() {
               <KnowledgeBrick id="jidaa-aamilayn" lead="كل سطر في الجدول أعطاك قاسمين: العاملين." />
               <IntegerSetQuestion prompt={<span>اكتب كل قواسم العدد <MathText>{'$60$'}</MathText>.</span>} expected={[1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]}
                 explain="ستّ كتابات على شكل جداء عاملين، اثنا عشر قاسمًا." requires={['jidaa-aamilayn']} onAnswered={() => setQ48('set60')} />
-              {/* La « مسألة الدرس » prolonge le rectangle de 60 livres (niveau
-                  متقدم) : 96 livres en rangées — résolue au module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ) },
         { num: 2, title: 'ب) قواسم العدد 48، كذلك بالنسبة إلى العدد 17', done: q17,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="qasim-rappel" variant="rappel" compact />
-              <Manipulation type="factor-pairs" n={48} title="العدد 48" lead="نفس الطريقة: أطِل الصفّ حتى يصير المستطيل مربّعًا تقريبًا، ثم تحقّق أنّ ما بعده مقلوب." />
+              <Manipulation type="factor-pairs" n={48} title="العدد 48" lead="نفس الطريقة: أطِل الصفّ كتابًا بعد كتاب واكتب كل قواسم العدد 48." />
               <TapQuestion prompt={<span>ما هي قواسم العدد <MathText>{'$17$'}</MathText>؟</span>}
                 options={['1 و 17', '1 ، 7 و 17', '17 فقط', '1 ، 2 و 17']} correct={0} cols={2} requires={['qasim-rappel']}
-                explain={<span>لا يقسم 17 أيّ عدد من 2 إلى 4 (<MathText>{'$4^2 = 16 \\leq 17 < 25$'}</MathText>)، فقاسماه الوحيدان هما 1 و 17.</span>}
+                explain={<span>لا يقسم 17 أيّ عدد من 2 إلى 16، فقاسماه الوحيدان هما 1 و 17.</span>}
                 onAnswered={() => setQ17(true)} />
             </div>
           ) },

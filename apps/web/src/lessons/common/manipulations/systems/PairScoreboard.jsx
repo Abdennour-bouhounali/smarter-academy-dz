@@ -110,6 +110,9 @@ export default function PairScoreboard({
   const [lab, setLab] = useState(make);
   const sceneKey = `${system}:${state.epoch}`;
   const [scene, setScene] = useState(sceneKey);
+  // Une ثنائية PAR DÉFAUT (le minimum de chaque règle) : la manipulation n'est jamais vide à l'ouverture
+  // (2026-10-09). Ce n'est pas un essai : seul un geste validé (relâchement, pause clavier, « اقلب », « حل »)
+  // entre dans `lab.trials` ; `lab.x` / `lab.y` restent `null` tant que la main n'a rien posé.
   const [liveX, setLiveX] = useState(null);
   const [liveY, setLiveY] = useState(null);
   if (scene !== sceneKey) { setScene(sceneKey); setLab(make()); setLiveX(null); setLiveY(null); }
@@ -177,24 +180,26 @@ export default function PairScoreboard({
   const muOf = (r) => (tw - 2 * EDGE) / Math.max(1, r.max - r.min);
   const toValueX = useCallback((cx, _y, rect) => rx.min + (cx - rect.left - EDGE) / muOf(rx), [rx.min, rx.max, tw]); // eslint-disable-line react-hooks/exhaustive-deps
   const toValueY = useCallback((cx, _y, rect) => ry.min + (cx - rect.left - EDGE) / muOf(ry), [ry.min, ry.max, tw]); // eslint-disable-line react-hooks/exhaustive-deps
+  const dflt = useMemo(() => L.defaultPair(lab), [lab.system, lab.range]); // eslint-disable-line react-hooks/exhaustive-deps
   const sx = useStretchInteraction({
-    value: liveX ?? lab.x, range: rx, toValue: toValueX, onChange: setLiveX,
+    value: liveX ?? lab.x ?? dflt.x, range: rx, toValue: toValueX, onChange: setLiveX,
     onCommit: (v) => { setLiveX(v); setLab((s) => L.set(s, 'x', v)); }, direction: 'ltr',
   });
   const sy = useStretchInteraction({
-    value: liveY ?? lab.y, range: ry, toValue: toValueY, onChange: setLiveY,
+    value: liveY ?? lab.y ?? dflt.y, range: ry, toValue: toValueY, onChange: setLiveY,
     onCommit: (v) => { setLiveY(v); setLab((s) => L.set(s, 'y', v)); }, direction: 'ltr',
   });
-  const X = liveX ?? lab.x;
-  const Y = liveY ?? lab.y;
+  // PAR DÉFAUT : une ثنائية qui n'est PAS la solution (L.defaultPair ; jamais « ? ») — un état montré, pas un essai.
+  const X = liveX ?? lab.x ?? dflt.x;
+  const Y = liveY ?? lab.y ?? dflt.y;
   const both = X != null && Y != null;
   const gauges = L.gauges(lab, X, Y);
 
   /** L'état validé, y compris une valeur au clavier encore en attente. */
   const committed = (s) => {
     let base = s;
-    if (liveX != null && liveX !== s.x) base = L.set(base, 'x', liveX);
-    if (liveY != null && liveY !== s.y) base = L.set(base, 'y', liveY);
+    if (X !== s.x) base = L.set(base, 'x', X);
+    if (Y !== s.y) base = L.set(base, 'y', Y);
     return base;
   };
   const claim = () => { sx.flush(); sy.flush(); setLab((s) => L.claim(committed(s))); };

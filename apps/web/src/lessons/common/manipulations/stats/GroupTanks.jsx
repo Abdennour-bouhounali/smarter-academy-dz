@@ -144,7 +144,43 @@ export default function GroupTanks({
   const refill = (ci) => setLab((s) => L.refill(s, ci));
   const size = (gi, n) => setLab((s) => L.setSize(s, gi, n));
   const selG = lab.groups[sel] ?? lab.groups[0];
+
+  /* « جرّب كل الإمكانيات » : tous les effectifs possibles du groupe choisi (1 … max), une fois la vanne ouverte.
+     Le pari et l'ouverture restent le geste de l'élève ; chaque n est l'essai exact de −/+ (L.setSize). */
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const untriedN = () => {
+    const cur = labRef.current;
+    const g = cur.groups[sel] ?? cur.groups[0];
+    return Array.from({ length: L.nMax(g) - L.N_MIN + 1 }, (_, i) => L.N_MIN + i).filter((n) => n !== g.n && !cur.sizeTrials.some((u) => u.gi === g.id && u.n === n));
+  };
   const selOpen = lab.classes[L.classOfGroup(lab, selG.id)].opened;
+  const autoComplete = {
+    label: t('manipulation.autoComplete.tryAll'),
+    ready: selOpen,
+    remaining: untriedN().length,
+    intervalMs: 480,
+    maxTicks: 80,
+    step: () => {
+      const n = untriedN()[0];
+      const gi = (labRef.current.groups[sel] ?? labRef.current.groups[0]).id;
+      if (n === undefined) return;
+      labRef.current = L.setSize(labRef.current, gi, n);
+      setLab((x) => L.setSize(x, gi, n));
+    },
+    finish: () => {
+      const gi = (labRef.current.groups[sel] ?? labRef.current.groups[0]).id;
+      // deux passes : la taille de départ (le n courant, exclu d'abord) est visitée une fois qu'on l'a quittée
+      const first = untriedN();
+      if (first.length === 0) return;
+      const run = (st, list) => list.reduce((acc, n) => L.setSize(acc, gi, n), st);
+      const mid = run(labRef.current, first);
+      labRef.current = mid;
+      const second = untriedN();
+      labRef.current = run(mid, second);
+      setLab((x) => run(run(x, first), second));
+    },
+  };
 
   /* ── le verdict ── */
   const last = lab.last;
@@ -247,7 +283,7 @@ export default function GroupTanks({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={(many ? ['hint1Many', 'hint2Many', 'hint3Many'] : ['hint1One', 'hint2One', 'hint3One']).map((h) => <MathText key={h}>{k(h)}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{ autoStep: () => false, canAutoStep: () => false, autoComplete }}
       discovery={(
         <ManipulationDiscovery
           state={state}

@@ -740,6 +740,26 @@ When it is enabled, class mode keeps every student gesture and adds: next step (
 constraints plus the type's cross-constraint** (`validate`). A teacher can never enter values that
 break the pedagogical sequence.
 
+## 6ter. The result line — on TOP, one slot, updated in place (2026-10-09, every type)
+
+The `representation` a type hands to `ManipulationShell` (« 258 = 25 × 10 + 8 » and its sentence) is **not** drawn under
+the stage any more:
+
+1. **On top.** It sits between the controls/hints and the stage, so the answer to a gesture is read where the eye
+   already is — never below the fold. The type passes `representation` exactly as before; the shell places it.
+2. **One slot, never mounted/unmounted per gesture.** Before any trial the slot shows a dashed placeholder of the
+   same height (`manipulation.resultIdle`, `[data-representation-slot=idle]`); after, the line is **updated in place**.
+   When a type withdraws its line for the length of a gesture (`settled && …`, `notice?.trial`), the shell keeps the
+   last one (`[data-representation-stale=true]`) until the next; it is cleared on « إعادة », a level change or new
+   numbers (`epoch · resetCount · level`), and **never held while the conclusion is hidden** (`answerHidden`, class mode).
+3. **Prefer LIVE.** A type whose line can be computed from the live value should return it during the gesture
+   (`factor-pairs` does: the line follows the dragged d, the pair board highlights it) — holding the last line is the
+   safety net, not the design.
+4. A type that passes no `representation` at all (`undefined`) gets no slot.
+
+DOM contract (e2e): `[data-manipulation-representation]` (the line, now before `[data-manipulation-stage]`),
+`[data-representation-slot=idle]`, `[data-representation-stale]`.
+
 ## 6bis. Auto-completion — manual first, then « let the lab finish it »
 
 > The learner performs the **first example by hand** — that is where « equal parts » or « cut the
@@ -769,13 +789,49 @@ Audit of the ten types (2026-09-24):
 | `team-builder` | **AUTO** — `unlock: 'first-gesture'` — « أنشئ الفرق » | n players carried one by one into k teams; after the first sharing, carrying 20 more is repetition. The refusal rule stays the one the hand meets. `manualDone` = **one sharing carried to the end by hand** (the scene settled without the button). Until 2026-09-30 it was `'config'`, which opened the button before any gesture, so the discovery could be reached with zero players moved (audit M1-F6). The locked line is the type's own (`manipulation.teamBuilder.autoCompleteLocked`, via `auto.lockedLabel`). |
 | `pgcd-differences` | **AUTO** — `unlock: 'first-gesture'` — « أكمل الفروق » | up to 30 identical « carry the small ribbon onto the big » gestures. One cut by hand first; the PGCD box stays manual (recognising the last non-zero difference *is* the discovery). |
 | `euclidean-algorithm` | **AUTO** — `unlock: 'first-gesture'` — « أكمل القسمات » | q copies per division, repeated per line. The first division (copies + carry) by hand; the PGCD box stays manual. |
-| `divisor-explorer`, `divisor-explorer-books`, `factor-pairs` | MANUAL | one validated position/drop per trial; each trial *is* an experiment, and the arrangement is already drawn by the lab. |
+| `divisor-explorer`, `divisor-explorer-books` | MANUAL | one validated position/drop per trial; each trial *is* an experiment, and the arrangement is already drawn by the lab. |
+| `factor-pairs` | **AUTO** — `unlock: 'config'` — « جرّب كل الإمكانيات » (owner decision, 2026-10-09; it was MANUAL) | the student can let the lab walk d = 1, 2, 3 … **one trial per step, 480 ms apart** (`auto.intervalMs`, `auto.maxTicks`), so every rectangle, every pair of the board and the result line are SEEN arriving. It reaches the same state as the hand (`L.test` on each d); the discovery question still has to be answered by the student. `finish()` tests what is left (reduced motion: final state at once). |
 | `common-divisors`, `coprime-explorer` | MANUAL | choosing the number of groups and carrying the *common* divisors is the judgement being learned. |
 | `divisor-properties` | MANUAL | three distinct operations (join / remove / measure), then a proof — nothing repeats. |
 | `fraction-reduction` | MANUAL | each drop is a choice of divisor, and « which path is shorter » is counted in the student's own steps. |
 
 Outside the registry, `InfoSorter` and the diagnostic `ClassificationQuestion` are judgements (each
 card is an answer): manual-only.
+
+### « جرّب كل الإمكانيات » and default parameters — owner decision, 2026-10-09 (supersedes the « manual » rows above)
+
+**1. « جرّب كل الإمكانيات » (try all the possibilities).** Every type whose gesture is a **sweep of one discrete
+value** (a ruler, a stepper, a list of candidates) gets a student button that walks the values one by one,
+**480 ms apart** (`auto.intervalMs`, `auto.maxTicks: 80`), validating each exactly like the hand (same pure logic,
+same recorded trial, same `onTrial` / `onVerdict`) while the result line (§6ter) updates in place. `unlock: 'config'`;
+the label is the shared string `manipulation.autoComplete.tryAll`. The discovery question, claims, bets, pins and
+every construction/answer gesture stay the student's. A type with several modes/stages gets it only in the sweepable
+one (`autoComplete` is `undefined` elsewhere, so no dead button). Granted (30): `factor-pairs`, `divisor-explorer-books`,
+`divisor-explorer`, `common-divisors` (groups), `coprime-explorer`, `square-root-side`, `square-fold`, `square-tiling`,
+`pitch-expansion` (after the sum is reduced), `turf-factoring` (rows), `vanishing-pitch`, `solution-ray`, `growth-race`
+(race), `linear-machine`, `origin-line` (pivot, fit), `percent-tag` (single), `affine-meter` (image, antecedent),
+`affine-line` (shift, read), `slope-stairs`, `line-crossing` (cases), `plan-compare`, `stat-balance` (mean, median,
+contrast), `shadow-stick`, `group-tanks`, `ramp-ratios` (مبتدئ), `clinometer` (ladder, align), `parallelogram-pin`
+(midpoint), `vector-sum` (swimmer), `bridge-path` (explore, straight), `polygon-forge` (forge).
+**Not possible (each trial is an answer, a choice, a carry or a construction):** `divisor-properties`,
+`fraction-reduction`, `equation-balance`, `elimination-cards`, `pair-scoreboard`, `story-modeller`, `rotation-dial`,
+`shape-turn`, `lamp-ring`, `inscribed-angle`, `bucket-fill`, `orange-peel`, `scale-blocks`, `section-slicer`,
+`sphere-probe`, `thales-beam`, `parallel-level`, `cone-cylinder`, `segment-divider`, `angle-compass`,
+`trig-calculator`, `vector-chain`, `translation-glide`, `route-compare`, `shape-prover`, `component-calc`,
+`component-steps`, `midpoint-distance`, `ratio-ride`, `cumul-gate`, `sheet-lab`. The original three
+(`team-builder`, `pgcd-differences`, `euclidean-algorithm`) keep their own `first-gesture` button. Tests: each granted
+type's logic test checks that a sweep reaches the same trials as the hand.
+
+**2. Default parameters — never empty, never an answer.** A lab opens on a meaningful state: a ruler's handle, a
+probe, a dial, a threshold starts at a value instead of `null` / « ? » / « not set » (carry/construction types keep
+the initial configuration they already draw). **The default must never be an answer to the task** — a lab asking for
+the divisors of 48 does not open on 3 (it opens on the first non-divisor, 5); one asking for a solution does not open on
+it. Each type computes its default with a small PURE helper next to its logic (`defaultWidth`, `defaultShelf`,
+`defaultX`, `defaultK`, `defaultProbeIndex`, `defaultPair`…) and a test across the authored numbers. **A default is not
+a trial**: it is never written to the trial memory / pairs board / traces / tried lists, never calls `onTrial` /
+`onVerdict` / `onFinished`, never counts towards a discovery. It comes back after « إعادة », a level change and new
+numbers. Consequence to know: a button that validates « what is on screen » (the pin of `square-fold`,
+`vanishing-pitch`) answers « move x first » until the student has made a real gesture.
 
 ### How it is declared — the registry decides, the type supplies the mechanics
 
@@ -947,6 +1003,13 @@ The free lab (`مختبر حر`, `ManipulationFreeLab.jsx`) is **not a level**: 
 their own numbers after the discovery, bounded by the registry's `changeNumbers` plus the type's
 own `validate()`. DOM: `[data-manipulation-free-lab]`.
 
+`ManipulationShell` option `freeLabAlwaysOpen` (+ `freeLabLead`) moves it **to the top** of the manipulation as
+an always-visible bar (« جرّب عددًا آخر » field, Enter applies, `[data-free-lab-inline]`) from the first screen —
+no discovery gate. `factor-pairs` uses it (any n from 2 to 999, e.g. 253); the title and lead written for the
+lesson's own number give way to a generic title once another number is tested. The other types keep the bottom
+toggle opened by the discovery. For such free numbers `widthRange(n)` stops at 2·√n when n > 120 and the first
+divisor above √n is far (997 columns cannot be drawn), and the type offers a typed input for d plus ±5.
+
 **Not manipulation levels** (do not merge them into this system): exercise difficulty
 (`Facile / Normal / Difficile`, the practice engine), the Math Lab practice tiers
 (`features/mathlab/tools/*/practice.js`) and the Math Lab algebra generator's equation forms
@@ -1029,19 +1092,15 @@ that answers it. Fixed in `qasim-adad-tabii` Module 1 (2026-10-07): the card sai
 « هيا نلعب كرة القدم! » over a pitch drawing, but its text was the 420-books
 statement; the football text now lives in `TEAM_EXPERIENCE.situation`.
 
-### The default level serves the module's task
+### The default level is ALWAYS مبتدئ (owner decision, 2026-10-09 — supersedes 2026-09-21)
 
-`ManipulationWorkspace` defaults to **مبتدئ**, and a module may override it with
-`defaultLevel`. It **must** do so when the module carries a textbook activity: a module titled
-« نشاط N » whose first step waits on `onFinished` has to *open* on that activity. Opening on the
-practice number hides the lesson's own activity behind a tab the student must guess, and strands
-them on a step they have nothing to satisfy — found across five modules on 2026-09-21, each of
-which put `onFinished` on `advanced` while defaulting to `beginner`.
-
-The smaller number is not lost: it becomes the warm-up, one tap away. The rule is simply that the
-level the student lands on is the one the module asks them to do, and the lab's title names its
-own numbers so they can tell which activity is open. `manipulations.mjs` block D asserts that each
-workspace opens on the numbers in its module title.
+Every `ManipulationWorkspace` opens on **مبتدئ**, in every lesson; the student switches to متقدم with the
+selector. No module passes `defaultLevel="advanced"` any more (58 modules were switched), and a module that
+carries a textbook activity on متقدم says so in its `lead` (« ابدأ بالمستوى المبتدئ…، ثم انتقل إلى المتقدّم »).
+The step that waits on `onFinished` stays reachable: the textbook level is one tap away. A lab's title names
+its own numbers, so the student can tell which activity is open. (The old rule — open on the textbook
+activity — is retired; `manipulations.mjs` assertions that a workspace opens on the module-title numbers must
+click متقدم first.)
 
 ### What each level is for
 
@@ -1128,7 +1187,7 @@ A manipulation is a learning instrument, not an assessment. Verified in code:
      the conjecture that follows can be retried without limit, each wrong pick explaining itself
      (`ManipulationDiscovery`); and
   2. the manipulation is the module's **own textbook activity**, opened by default on the level
-     that carries it (`defaultLevel="advanced"`, §7quater).
+     that carries it (reachable with one tap on متقدم — the default is always مبتدئ, §7quater).
   Never make a step wait on a manipulation whose discovery the lesson's numbers cannot reach (the
   free lab now refuses such numbers: Euclid when one number divides the other, differences when
   a = b; the factor-pairs rail always includes the first divisor above √n). This is distinct from

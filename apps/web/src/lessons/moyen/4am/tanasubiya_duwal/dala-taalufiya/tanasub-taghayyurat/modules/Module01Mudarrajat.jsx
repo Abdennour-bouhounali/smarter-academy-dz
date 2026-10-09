@@ -6,8 +6,6 @@ import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { HOOK, ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import StadiumVignette from '../components/StadiumVignette';
@@ -25,7 +23,7 @@ import StadiumVignette from '../components/StadiumVignette';
  *            la PRÉDIT d'abord : l'explication de « ماذا تلاحظ؟ » n'énonce donc pas la règle générale,
  *            ACTIVITY_LINES.observe, mais seulement les quotients) ;
  * TOUCH      question 4 : compléter les « … » de la figure — l'élève les a construites dans le lab.
- * Fin de l'étape 4 : la « مسألة الدرس » (LessonProblemCard), résolue au module 4.
+ * Fin de l'étape 4 : la « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire), résolue au module 4.
  * Aucune étape n'attend `onFinished` (non bloquant). LP : P1.
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
@@ -90,7 +88,7 @@ export default function Module01Mudarrajat() {
         <ManipulationWorkspace
           title="سلّم التغيّرات"
           lead="في المستويين تحرّك عددين x₁ و x₂ بيدك: ترتسم الدرجة بين صورتيهما، ويُكتب حاصل القسمة. المتقدّم هو سلّم الكتاب."
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           levels={{
             beginner: () => (
               <Manipulation type="slope-stairs" level="beginner" {...LAB.m1.beginner}
@@ -247,10 +245,6 @@ export default function Module01Mudarrajat() {
                   <MathText>{'في كل درجة الارتفاع يساوي $200 \\times$ الامتداد. المحور التالي يبيّن لماذا، ويستعمل هذه الخاصية لإيجاد دالة تآلفية لا نعرف منها إلا عددين وصورتيهما: من الدرجة سلسيوس إلى الفهرنهايت.'}</MathText>
                 </p>
               )}
-              {/* La « مسألة الدرس » prolonge l'abonnement des supporters des deux niveaux
-                  (laboratoire dans l'intro) : une nouvelle saison, deux montants connus,
-                  la formule inconnue — résolue au module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

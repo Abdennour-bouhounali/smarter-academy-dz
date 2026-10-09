@@ -245,6 +245,38 @@ export default function StatBalance({
   const sH2 = useStretchInteraction({ value: lab.holes[2] ? holeK(2) : 0, range: hR(2), direction: 'ltr', toValue: none, onChange: (kk) => setLive((l) => ({ ...l, hole: { h: 2, k: kk } })), onCommit: (kk) => commitHole(2, L.holeAt(lab, 2, kk)) });
   const sHoles = [sH0, sH1, sH2].slice(0, lab.holes.length);
 
+  /* « جرّب كل الإمكانيات » : l'appui (mean), le rideau (median), le jeton tiré (contrast) — toutes leurs positions. */
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const sweepable = L.SWEEPABLE.includes(stage);
+  const autoComplete = sweepable ? {
+    label: t('manipulation.autoComplete.tryAll'),
+    ready: true,
+    remaining: L.untriedSweep(lab).length,
+    intervalMs: 480,
+    maxTicks: 80,
+    step: () => {
+      const v = L.untriedSweep(labRef.current)[0];
+      if (v === undefined) return;
+      labRef.current = L.applySweep(labRef.current, v);
+      setLive({});
+      setLab((x) => L.applySweep(x, v));
+    },
+    finish: () => {
+      const todo = L.untriedSweep(labRef.current);
+      if (todo.length === 0) return;
+      let acc = labRef.current;
+      todo.forEach((v, i) => {
+        acc = L.applySweep(acc, v);
+        // les essais intermédiaires sont rapportés ici ; le dernier l'est par l'effet sur `nTrials`
+        if (i < todo.length - 1) state.report(onTrial, trialReport(acc.trials[acc.trials.length - 1]));
+      });
+      labRef.current = acc;
+      setLive({});
+      setLab((x) => todo.reduce((a2, v) => L.applySweep(a2, v), x));
+    },
+  } : undefined;
+
   /* ── le pointeur : la scène entière est la piste de l'étape ── */
   const sceneRef = useRef(null);
   const liveRef = useRef(live);
@@ -593,7 +625,7 @@ export default function StatBalance({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={hintKeys.map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{ autoStep: () => false, canAutoStep: () => false, ...(autoComplete ? { autoComplete } : {}) }}
       representation={representation}
       discovery={<ManipulationDiscovery state={state} prompt={<MathText>{k(`dPrompt.${L.discoveryKind(lab)}`)}</MathText>} options={discoveryOptions} formal={formal} />}
       explanation={<MathText>{k('explanation')}</MathText>}

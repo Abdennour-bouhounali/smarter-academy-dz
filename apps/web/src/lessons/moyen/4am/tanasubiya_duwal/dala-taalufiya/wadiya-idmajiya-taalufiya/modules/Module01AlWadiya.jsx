@@ -23,7 +23,7 @@ import { ParticipantsFigure, BusFigure, BeachVignette } from '../components/Trip
  *
  * LE LABORATOIRE (plan-compare, RÉUTILISÉ de « حل مشكلات وترييض وضعيات بتوظيف الدالة التآلفية », monde
  * `rental` — props dans content/textbook.js › LAB, deux niveaux dans un ManipulationWorkspace,
- * `defaultLevel="advanced"` : ce sont les tarifs de la situation) :
+ * ouvert sur مبتدئ par défaut depuis 2026-10-09 : ce sont les tarifs de la situation) :
  *   متقدم  les trois tarifs de kayak 150x, 50x + 300, 600 (comparer) ;
  *   مبتدئ  deux tarifs de vélo 50x + 200 et 100x (modéliser la carte, puis comparer).
  * Aucune étape n'attend `onFinished` (ce n'est pas une activité du manuel) ; les essais de l'élève
@@ -105,7 +105,7 @@ export default function Module01AlWadiya() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="المستوى المتقدّم هو صيغ الوضعية الثلاث لكراء قارب كاياك. في المستوى المبتدئ صيغتان لكراء دراجة: ننمذج صيغة الرسم الثابت أولا ثم نقارن."
           levels={{
             beginner: () => (

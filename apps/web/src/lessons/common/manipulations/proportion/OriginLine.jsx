@@ -195,7 +195,8 @@ export default function OriginLine({
   const jRef = useRef(null);
 
   const hr = pStripOn ? L.handleRange(lab) : { min: 0, max: 0 };
-  const j0 = pStripOn ? (lab.lineA != null ? L.handleIndex(lab, lab.lineA) : (mode === 'pivot' ? L.handleIndex(lab, L.parseValue('1/2')) : 0)) : 0;
+  // départ PAR DÉFAUT de la poignée (jamais la droite qui passe par toutes les données) : pas un essai, rien n'est enregistré.
+  const j0 = pStripOn ? (lab.lineA != null ? L.handleIndex(lab, lab.lineA) : L.defaultHandleIndex(lab)) : 0;
   const J = pStripOn ? Math.max(hr.min, Math.min(hr.max, liveJ ?? j0)) : 0;
   jRef.current = J;
   const pivotA = pStripOn ? L.aAt(lab, J) : null;
@@ -268,8 +269,9 @@ export default function OriginLine({
   /* ── les sondes et le زالق (useStretchInteraction : glisser, toucher la piste, flèches, −/+) ── */
   const lastX = [...lab.readsDone].reverse().find((r) => r.axis === 'x');
   const lastY = [...lab.readsDone].reverse().find((r) => r.axis === 'y');
-  const xi = liveXi ?? (lastX ? L.indexOf(Lin2n(lastX.v), snap.dx) : null);
-  const yi = liveYi ?? (lastY ? L.indexOf(Lin2n(lastY.v), snap.dy) : null);
+  // en lecture, les sondes s'ouvrent sur une valeur PAR DÉFAUT (ni cible, ni plafond, ni O) : rien n'est lu tant que l'élève ne relâche pas.
+  const xi = liveXi ?? (lastX ? L.indexOf(Lin2n(lastX.v), snap.dx) : (mode === 'read' ? L.defaultProbeIndex(lab, 'x') : null));
+  const yi = liveYi ?? (lastY ? L.indexOf(Lin2n(lastY.v), snap.dy) : (mode === 'read' ? L.defaultProbeIndex(lab, 'y') : null));
   const canX = L.canRead(lab, 'x');
   const canY = L.canRead(lab, 'y');
   const sX = useStretchInteraction({
@@ -290,6 +292,45 @@ export default function OriginLine({
     onChange: setLiveJ,
     onCommit: commitJ,
   });
+
+  /* « جرّب كل الإمكانيات » (pivot / fit) : les graduations de la poignée, une à une ; chaque droite est un essai validé comme à la main. */
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const untriedJ = () => {
+    const cur = labRef.current;
+    if (cur.mode !== 'pivot' && cur.mode !== 'fit') return [];
+    const rg = L.handleRange(cur);
+    const all = Array.from({ length: rg.max - rg.min + 1 }, (_, n) => rg.min + n);
+    return all.filter((j) => !cur.lines.some((l) => L.same(l.a, L.aAt(cur, j))));
+  };
+  const autoComplete = pStripOn ? {
+    label: t('manipulation.autoComplete.tryAll'),
+    ready: true,
+    remaining: untriedJ().length,
+    intervalMs: 480,
+    maxTicks: 80,
+    step: () => {
+      const j = untriedJ()[0];
+      if (j === undefined) return;
+      labRef.current = L.pivot(labRef.current, L.aAt(labRef.current, j));
+      setLiveJ(j);
+      setLab((s) => L.pivot(s, L.aAt(s, j)));
+    },
+    finish: () => {
+      const todo = untriedJ();
+      if (todo.length === 0) return;
+      let acc = labRef.current;
+      todo.forEach((j, i) => {
+        const before = acc.trials.length;
+        acc = L.pivot(acc, L.aAt(acc, j));
+        // les essais intermédiaires sont rapportés ici ; le dernier l'est par l'effet sur `nTrials`
+        if (i < todo.length - 1 && acc.trials.length > before) state.report(onTrial, trialReport(acc.trials[acc.trials.length - 1], acc));
+      });
+      labRef.current = acc;
+      setLiveJ(todo[todo.length - 1]);
+      setLab((s) => todo.reduce((acc, j) => L.pivot(acc, L.aAt(acc, j)), s));
+    },
+  } : undefined;
 
   /* ── lectures vivantes ── */
   const probeX = xi != null && canX ? L.valueAt(xi, snap.dx) : null;
@@ -542,7 +583,7 @@ export default function OriginLine({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={hintKeys.map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{ autoStep: () => false, canAutoStep: () => false, ...(autoComplete ? { autoComplete } : {}) }}
       representation={representation}
       discovery={(
         <ManipulationDiscovery state={state} prompt={<MathText>{k(`dPrompt.${mode}`)}</MathText>} options={discoveryOptions} formal={formal} />

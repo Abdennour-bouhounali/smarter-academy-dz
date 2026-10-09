@@ -164,3 +164,17 @@ describe('line-crossing — fenêtre et géométrie', () => {
     expect(() => L.init({ system: 'x=3|x+y=2' })).toThrow();
   });
 });
+
+describe('line-crossing — balayage des pentes (2026-10-09)', () => {
+  it('seulement à l\'étape des cas ; chaque pente est un essai de configuration', () => {
+    const b = L.init({ system: 'x+y=3|2x-y=0' });
+    expect(L.untriedSlopes(b)).toHaveLength(0);
+    let s = L.init({ system: 'x+y=3|2x-y=0', startWith: 'cases' });
+    const todo = L.untriedSlopes(s);
+    expect(todo.length).toBeGreaterThan(3);
+    for (const j of todo) s = L.hold(s, L.mAt(s, j), s.held.b);
+    expect(L.untriedSlopes(s)).toHaveLength(0);
+    expect(s.seen.parallel).toBe(true);
+    expect(s.seen.same).toBe(false); // « confondues » demande aussi p : le geste de l'élève
+  });
+});

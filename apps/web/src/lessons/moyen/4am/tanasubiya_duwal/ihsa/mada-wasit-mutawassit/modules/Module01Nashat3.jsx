@@ -5,8 +5,6 @@ import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACT3, ACT3_LINES, HOOK1, MEAN_REMINDER, LAB } from '../content/textbook';
 import BarChart from '../components/BarChart';
@@ -217,7 +215,6 @@ export default function Module01Nashat3() {
                   المتوسط وحده لا يصف السلسلة: سلسلتان لهما المتوسط نفسه قد تختلفان في تباعد قيمهما. في المحور التالي مؤشّر ثالث: القيمة التي تقسم السلسلة نصفين.
                 </p>
               )}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

@@ -160,8 +160,15 @@ export default function AffineMeter({
   const mu = (colW - 2 * EDGE) / Math.max(1, range.max - range.min);
   const toValue = useCallback((cx, _y, rect) => range.min + (cx - rect.left - EDGE) / mu, [range.min, mu]);
   const commitX = useCallback((v) => { setLiveX(v); setLab((s) => L.commit(s, v)); }, []);
-  const stretch = useStretchInteraction({ value: liveX, range, toValue, onChange: setLiveX, onCommit: commitX, direction: 'ltr' });
-  const X = liveX;
+  const X = liveX ?? L.defaultX(lab);
+  const stretch = useStretchInteraction({ value: X, range, toValue, onChange: setLiveX, onCommit: commitX, direction: 'ltr' });
+  // Un x PAR DÉFAUT : le compteur n'est jamais vide à l'ouverture (2026-10-09). Ce n'est pas un essai
+  // (rien dans `trials` / `antTrials`) et jamais une marque du manuel ni la cible.
+  // Miroir synchrone de `lab` pour « جرّب كل الإمكانيات ».
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const sweepStep = (x) => { labRef.current = L.commit(labRef.current, x); setLiveX(x); setLab((s) => L.commit(s, x)); };
+  const untried = L.untriedXs(lab);
 
   /* ── a et b : les deux boutons de l'étape classify ── */
   const knobA = useKnob(lab, setLab, 'a');
@@ -330,7 +337,19 @@ export default function AffineMeter({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={[w('hint1'), k(lab.marks.length ? 'hint2Marks' : 'hint2'), k(lab.target ? 'hint3Target' : 'hint3')].map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        autoComplete: stageOf === 'image' || stageOf === 'antecedent' ? {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: untried.length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => { const x = L.untriedXs(labRef.current)[0]; if (x !== undefined) sweepStep(x); },
+          finish: () => { L.untriedXs(labRef.current).forEach(sweepStep); },
+        } : undefined,
+      }}
       discovery={(
         <ManipulationDiscovery
           state={state}

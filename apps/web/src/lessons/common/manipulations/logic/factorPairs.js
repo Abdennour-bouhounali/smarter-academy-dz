@@ -51,7 +51,23 @@ export function widthRange(n) {
   const bound = divisionTestBound(n);
   let firstAbove = bound + 1;
   while (firstAbove <= n && n % firstAbove !== 0) firstAbove += 1;
+  // Un nombre libre (« مختبر حر », jusqu'à 999) peut être premier ou presque :
+  // 997 colonnes ne se dessinent pas. Passé 120, la réglette s'arrête à 2 × √n
+  // quand le premier diviseur au-delà est loin.
+  if (n > 120 && firstAbove > 3 * bound) firstAbove = 2 * bound;
   return { min: 1, max: Math.min(n, Math.max(firstAbove, 2 * bound)) };
+}
+
+/**
+ * La largeur PAR DÉFAUT : jamais une réponse. La manipulation demande les
+ * diviseurs de n ; s'ouvrir sur un diviseur (48 → 3 × 16) en donnerait un
+ * gratuitement. On prend donc le premier d qui NE divise PAS n (48 → 5, 60 → 7),
+ * et le minimum de la réglette si tout divise (n = 2).
+ */
+export function defaultWidth(n) {
+  const { min, max } = widthRange(n);
+  for (let d = min; d <= max; d += 1) if (n % d !== 0) return d;
+  return min;
 }
 
 /**
@@ -61,11 +77,13 @@ export function widthRange(n) {
  * : un rectangle haut et mince devient carré puis large et plat quand d
  * grandit — le carré, c'est √n, et l'élève le VOIT.
  */
-export function rectangleLayout({ n, d, box }) {
+export function rectangleLayout({ n, d, box, boxW = box, boxH = box }) {
   const rows = Math.floor(n / d);
   const rest = n - rows * d;
   const tall = rows + (rest > 0 ? 1 : 0);
-  const cell = Math.max(2, Math.min(box / d, box / tall, 26));
+  // Cadre RECTANGULAIRE possible (boxW × boxH) : on remplit la place offerte ;
+  // le carré reste celui des livres (d = rows), jamais celui du cadre.
+  const cell = Math.max(2, Math.min(boxW / d, boxH / tall, 44));
   return { cell, cols: d, rows, rest, width: d * cell, height: tall * cell, square: d === rows && rest === 0 };
 }
 

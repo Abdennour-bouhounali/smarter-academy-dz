@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -36,13 +36,26 @@ export default function DivisorExplorer({
   // nombres, celles de levels.js sur l'autre niveau (1512 n'a pas les
   // candidats de 24).
   const candidates = state.isAuthoredLevel ? authoredCandidates : state.levelPreset?.candidates;
-  const [lab, setLab] = useState(() => L.init({ a: a0, b: b0, candidates }));
+  const [lab, setLab] = useState(() => L.initWithDefault({ a: a0, b: b0, candidates }));
   const [reject, setReject] = useState(null);
 
   // Une nouvelle série de nombres (niveau, laboratoire libre, « إعادة ») remet le champ à zéro.
-  useEffect(() => { setLab(L.init({ a, b: null, candidates })); setReject(null); }, [a, state.epoch, candidates]);
+  useEffect(() => { setLab(L.initWithDefault({ a, b: null, candidates })); setReject(null); }, [a, state.epoch, candidates]);
 
-  const rail = useMemo(() => candidates ?? Array.from({ length: Math.min(a, 24) }, (_, i) => i + 1), [candidates, a]);
+  const rail = useMemo(() => L.railOf({ a, candidates }), [candidates, a]);
+
+  // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  // Un essai validé (même chemin que le dépôt d'une tuile) ; le rangement par défaut n'en est pas un.
+  const tryAuto = useCallback((b) => {
+    const next = L.place(labRef.current, b);
+    labRef.current = next;
+    setLab(next);
+    setReject(null);
+    state.report(onVerdict, { a: next.a, b: next.b, divides: next.divides });
+    if (L.discoveryReady(next)) state.discover();
+  }, [state, onVerdict]);
 
   const drag = useDragInteraction({
     onDrop: (sourceId) => {
@@ -91,6 +104,15 @@ export default function DivisorExplorer({
           return true;
         },
         canAutoStep: () => rail.some((c) => lab.tried[c] === undefined),
+        autoComplete: {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: L.untried(lab, rail).length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => { const next = L.untried(labRef.current, rail)[0]; if (next !== undefined) tryAuto(next); },
+          finish: () => { L.untried(labRef.current, rail).forEach((c) => tryAuto(c)); },
+        },
         showSolution: () => { setLab((s) => rail.reduce((acc, c) => L.place(acc, c), s)); state.discover(); state.formalize(); },
       }}
       representation={placed && (

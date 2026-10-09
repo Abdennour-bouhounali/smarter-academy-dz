@@ -188,6 +188,16 @@ export default function LineCrossing({
   const jRef = useRef({ jp, jm });
   jRef.current = { jp, jm };
   const commitHold = (m, p) => setLab((s) => L.hold(s, m, p));
+  // Miroir synchrone de `lab` pour « جرّب كل الإمكانيات » : on balaye les pentes m de la graduation, p tenu.
+  const labRef = useRef(lab);
+  labRef.current = lab;
+  const sweepM = (j) => {
+    const p = labRef.current.held.b;
+    labRef.current = L.hold(labRef.current, L.mAt(labRef.current, j), p);
+    setLiveM(j);
+    setLab((s) => L.hold(s, L.mAt(s, j), s.held.b));
+  };
+  const untriedM = L.untriedSlopes(lab);
   const sP = useStretchInteraction({
     value: casesOn ? jp : null, range: pR, direction: 'ltr',
     toValue: useCallback((_cx, cy, rect) => geo.fromPx(0, cy - rect.top).y / L.toNum(snap.dy), [geo, snap.dy]),
@@ -444,7 +454,19 @@ export default function LineCrossing({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={hintKeys.map((h) => <MathText key={h}>{h}</MathText>)}
-      controller={{ autoStep: () => false, canAutoStep: () => false }}
+      controller={{
+        autoStep: () => false,
+        canAutoStep: () => false,
+        autoComplete: casesOn ? {
+          label: t('manipulation.autoComplete.tryAll'),
+          ready: true,
+          remaining: untriedM.length,
+          intervalMs: 480,
+          maxTicks: 80,
+          step: () => { const j = L.untriedSlopes(labRef.current)[0]; if (j !== undefined) sweepM(j); },
+          finish: () => { L.untriedSlopes(labRef.current).forEach(sweepM); },
+        } : undefined,
+      }}
       representation={representation}
       discovery={(
         <ManipulationDiscovery state={state} prompt={<MathText>{k(lab.cases ? 'dPrompt.cases' : 'dPrompt.probe')}</MathText>} options={discoveryOptions} formal={formal} />

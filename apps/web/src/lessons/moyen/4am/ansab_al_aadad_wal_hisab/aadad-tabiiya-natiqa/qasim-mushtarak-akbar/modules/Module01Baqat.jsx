@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { GardenScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, STARTER } from '../content/textbook';
 
@@ -52,7 +50,7 @@ export default function Module01Baqat() {
         // l'élève devant une étape qu'il ne pouvait pas satisfaire.
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          defaultLevel="advanced"
+          defaultLevel="beginner"
           lead="نشاط الكتاب: 90 زهرة حمراء و 54 بيضاء. وإن أردت التمرّن أولًا، جرّب المستوى المبتدئ."
           levels={{
             beginner: () => (
@@ -89,10 +87,11 @@ export default function Module01Baqat() {
               <TapQuestion prompt={<span>ما هو أكبر عدد ممكن من الباقات المتماثلة؟ وكم زهرة من كل لون في الباقة؟</span>}
                 options={['18 باقة: 5 حمراء و 3 بيضاء', '9 باقات: 10 حمراء و 6 بيضاء', '6 باقات: 15 حمراء و 9 بيضاء', '54 باقة']} correct={0} cols={1} requires={['qawasim-mushtaraka']}
                 explain={<span>القواسم المشتركة لـ 90 و 54 هي 1 ، 2 ، 3 ، 6 ، 9 ، 18؛ أكبرها 18.</span>} onAnswered={() => setQ2(true)} />
-              {q2 && <TextbookBox kind="remark" text={ACTIVITY.closing} compact />}
-              {/* La « مسألة الدرس » prolonge ces bouquets : 120 roses rouges et
-                  84 blanches — résolue au module 4. */}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
+              {q2 && (
+                <PredictRule id="pgcd-taarif" prompt="جرّبت قواسم مشتركة كثيرة للعددين 90 و 54 (1 ، 2 ، 3 ، 6 ، 9 ، 18) وانتهيت إلى عدد واحد منها لعدد الباقات. لو أعطينا هذا العدد اسمًا خاصًّا بين القواسم المشتركة، فكيف تعرّف هذا الاسم بكلماتك؟">
+                  <TextbookBox kind="remark" text={ACTIVITY.closing} compact />
+                </PredictRule>
+              )}
             </div>
           ) },
       ]}

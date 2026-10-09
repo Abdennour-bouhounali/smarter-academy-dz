@@ -460,3 +460,21 @@ export function valueText(p) {
 }
 
 export { add, mul, toNumber, fracLatex };
+
+/**
+ * Le x PAR DÉFAUT de la course (jamais un essai, jamais écrit dans `lab.trials`) :
+ * le plus petit x de la règle où les deux grandeurs ne sont PAS égales et où la
+ * question posée n'est pas déjà vraie (equal : pas de rencontre ; less / greater :
+ * l'ordre demandé n'est pas encore atteint). Sinon le plus petit x non égal, sinon le début.
+ */
+export function defaultX(model, range, goal = 'equal') {
+  const wanted = GOAL_REL[goal] ?? '=';
+  let loose = null;
+  for (let x = range.min; x <= range.max; x += 1) {
+    const { rel } = trialAt(model, x);
+    if (rel === '=') continue;
+    if (loose == null) loose = x;
+    if (rel !== wanted) return x;
+  }
+  return loose ?? range.min;
+}

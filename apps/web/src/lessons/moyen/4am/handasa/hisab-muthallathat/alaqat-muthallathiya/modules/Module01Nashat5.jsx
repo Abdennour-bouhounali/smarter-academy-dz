@@ -6,8 +6,6 @@ import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KITE, LAB, ACT5, TABLE_TEX, LINES } from '../content/textbook';
 import KiteVignette from '../components/KiteVignette';
@@ -28,7 +26,7 @@ import TrialsEvidence from '../components/TrialsEvidence';
  * « أتوقّع القاعدة » : la bonne option de l'étape 3 EST la conjecture, et l'étape 4 EST la preuve (ses corrections
  * l'écrivent) : la question de l'étape 3 est enveloppée dans <PredictRule id="takhmin-alaqat">, celle de l'étape 4 dans
  * <PredictRule id="burhan-alaqat"> — l'élève écrit la conjecture, puis la preuve, AVANT de voir les options
- * (predictPrompt de knowledge.jsx). La « مسألة الدرس » (LessonProblemCard) ferme la dernière étape : le laboratoire est
+ * (predictPrompt de knowledge.jsx). La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape : le laboratoire est
  * dans `intro` (les deux niveaux) ; même instrument que le niveau متقدم (sin x = 3/7 au compas), résolue au module 5.
  * LP : P1 (étapes 2–5), P3 (le laboratoire, étape 1).
  */
@@ -183,7 +181,6 @@ export default function Module01Nashat5() {
                 onAnswered={() => setQ5(true)}
               />
               {q5 && <KnowledgeBrick id="burhan-alaqat" lead="ما بنيته يداك، مبرهنًا:" />}
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },
