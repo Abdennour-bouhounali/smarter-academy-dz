@@ -736,6 +736,24 @@ analyse, redesign when needed (a plane seen edge-on: turn the view), big, measur
 `content/figures.test.js`. A flat figure inside a space problem (the right triangle OAM of a section, the axial section of a frustum
 for Thales) stays a GeoFigure.
 
+### Values in story contexts (owner rule, 2026-10-10)
+
+Every word problem — in a module, a « مسألة », a textbook situation or a practice exercise — sets its situation
+in a scene that carries a good value or deed: إتقان العمل، القراءة والعلم، الصدق والأمانة، العطاء والتكافل،
+التعاون، برّ الوالدين، احترام الوقت، النظافة، حبّ الوطن. Rules:
+
+- **Context only.** Numbers, quantities, conditions, answers and ids never change; the question asked stays
+  mathematically equivalent. A pure-math item (« احسب… ») gets no invented story.
+- **Woven, not preached**: one clause or sentence, short enough for a phone; rotate the values inside a lesson
+  rather than repeating one. Religious phrasing (« الإنفاق في سبيل الله »، « صدقة جارية ») is welcome but sparing.
+- A hint, an explanation or a test that recaps the story must be updated with it.
+- Applied to the nine lessons of « الأعداد الطبيعيّة والأعداد النّاطقة » on 2026-10-10 (≈ 180 stories);
+  **the other units are not converted yet** — new lessons follow the rule from the start.
+- Textbook-derived situations were reworded on the platform; `docs/sources/**/extraction.json` keeps the
+  verbatim textbook wording (`check:textbook` still passes). The unit page's « تحدّ » card reads the curriculum
+  `textAr` (`packages/core/curriculum/dz/units_4am_2026_2027.json`), reworded for unit 1 to match
+  `bahth-pgcd/content/textbook.js › CHALLENGE`: change both together.
+
 ---
 
 ## 6. Manipulations
