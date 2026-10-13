@@ -58,7 +58,7 @@ export default function Module01Nashat() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
-      moduleNumber={1}
+      moduleNumber={1} objectives={['متى يكون الشعاعان AI و IB متساويين؟', 'ماذا يعني أن يكون للقطعتين نفس المنتصف؟', 'هل يكفي أن يتساوى الطولان لنقول إنّ شعاعين متساويان؟']}
       moduleTitle="نشاط 2 ب — منتصف مشترك على مستقيم"
       moduleSubtitle="متى يكون شعاعان متساويين؟ القائد على الوشاح، ثم النقط على المستقيم (d)"
       estimatedTime="12 دقيقة"

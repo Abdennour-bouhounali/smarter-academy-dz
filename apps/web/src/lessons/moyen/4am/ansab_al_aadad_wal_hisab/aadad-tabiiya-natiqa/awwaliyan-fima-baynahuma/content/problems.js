@@ -29,6 +29,7 @@ export const PROBLEMS = [
     headline: 'مسألة الدرس',
     emoji: '🃏',
     source: SOURCE,
+    illustration: LESSON_CONFIG.lessonProblem.illustration,
     statement: LESSON_CONFIG.lessonProblem.statement,
     data: [
       { id: 'yacine', text: 'بطاقتا ياسين: 26 و 45', useful: true },
@@ -152,6 +153,7 @@ export const PROBLEMS = [
     context: 'مكتبة البلدية: كم حصة متماثلة؟',
     emoji: '📚',
     source: SOURCE,
+    illustration: { kind: 'stacks', rows: [{ icon: 'book', count: 91, label: 'رواية' }, { icon: 'book', count: 120, label: 'قصة مصوّرة' }], ariaLabel: 'صفّان من الكتب: 91 رواية و 120 قصة مصوّرة' },
     statement: 'حبًّا في القراءة ونشرًا للعلم، تهدي مكتبة البلدية بالجلفة كتبًا لمدارس ابتدائية في المناطق الريفية. لديها 91 رواية و 120 قصة مصوّرة، وتريد توزيعها كلّها في حصص متماثلة: في كل حصة نفس عدد الروايات ونفس عدد القصص المصوّرة، دون أن يبقى أيّ كتاب. يعمل في المكتبة 12 موظّفًا. ثمن الرواية الواحدة 1100 دج، وثمن القصة المصوّرة الواحدة 650 دج.',
     data: [
       { id: 'novels', text: '91 رواية', useful: true },
@@ -278,6 +280,7 @@ export const PROBLEMS = [
     context: 'لوحان من الخشب: هل المتعلّم على صواب؟',
     emoji: '🪚',
     source: SOURCE,
+    illustration: { kind: 'scene', icon: 'crate', bg: 'amber', chips: [{ label: 'اللوح الأول', value: 391, unit: 'سم' }, { label: 'اللوح الثاني', value: 323, unit: 'سم' }, { label: 'ثمن القطعة', value: 120, unit: 'دج', tone: 'green' }], ariaLabel: 'لوحان من الخشب طولاهما 391 سم و 323 سم، وثمن القطعة 120 دج' },
     statement: 'في ورشة نجارة بالبليدة لوحان من خشب الزان، طول الأول 391 سم وطول الثاني 323 سم، وعرض كل منهما 20 سم. يحرص النجّار على إتقان عمله، فيريد تقطيعهما إلى قطع لها نفس الطول، طولها عدد طبيعي من السنتيمترات وأطول ما يمكن، دون أن يضيع أيّ جزء من الخشب، ثم يبيع القطع لمحلّ أثاث بـ 120 دج للقطعة. قال المتعلّم في الورشة: «لا 2 ولا 3 ولا 5 ولا 9 يقسم العددين 391 و 323 معًا، إذن هما أوليان فيما بينهما، ولن نحصل إلا على قطع طولها 1 سم».',
     data: [
       { id: 'lengths', text: 'طولا اللوحين: 391 سم و 323 سم', useful: true },

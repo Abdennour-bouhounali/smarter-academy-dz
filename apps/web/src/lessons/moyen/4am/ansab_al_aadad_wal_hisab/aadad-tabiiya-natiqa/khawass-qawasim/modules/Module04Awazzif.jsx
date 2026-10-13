@@ -12,7 +12,7 @@ export default function Module04Awazzif() {
   const [done, setDone] = useState({});
   const list = [tryNow, ...EXERCISES];
   return (
-    <ContentModule
+    <ContentModule objectives={["أستعمل الخاصيتين في حلّ مسائل", "أحلّ تمارين الكتاب 12 ← 16"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(4)} moduleNumber={4}
       moduleTitle="أوظّف تعلّماتي" moduleSubtitle="دوري الآن، ثم تمارين 12 ← 16" estimatedTime="12 دقيقة"
       brief={{ tag: 'الكتاب ص 11 و 14', title: 'أطبّق الخاصيتين وأبرهن', tone: 'amber', body: <p>برهان قصير أولًا (دوري الآن)، ثم تمارين الكتاب بترتيبها.</p> }}

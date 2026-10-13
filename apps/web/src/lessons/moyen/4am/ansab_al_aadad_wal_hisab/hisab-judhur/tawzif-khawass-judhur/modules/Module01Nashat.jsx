@@ -51,6 +51,7 @@ export default function Module01Nashat() {
       moduleTitle="مربّع مبلّط — أبسط كتابة لجذر"
       moduleSubtitle="أكبر مربّع يقسم العدد"
       estimatedTime="12 دقيقة"
+      objectives={['أيّ تبليط لمربّع مساحته 288 يعطي أبسط كتابة لضلعه؟', 'ماذا يحدث لمساحة البلاطة حين يزداد عدد البلاطات على الضلع؟', 'كيف أكتب جذرًا على أبسط شكل؟']}
       brief={{
         tag: 'طرائق — الكتاب ص 25',
         headline: 'بلّط المربّع!',
@@ -68,7 +69,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          lead="نفس الفكرة في المستويين: كلما زاد عدد البلاطات على الضلع صغرت البلاطة — إلى أين؟"
+          lead="نفس الفكرة في المستويين: غيّر عدد البلاطات على الضلع وراقب ما يحدث لمساحة البلاطة، وما إذا كانت تُبلَّط من جديد."
           defaultLevel="beginner"
           levels={{
             beginner: () => (
@@ -110,12 +111,12 @@ export default function Module01Nashat() {
                 ))}
               </ul>
               <TapQuestion
-                prompt={<span>مع <MathText>{'$k = 6$'}</MathText> مساحة كل بلاطة 8، فنكتب <MathText>{'$\\sqrt{288} = 6\\sqrt{8}$'}</MathText>. لماذا ليست هذه أبسط كتابة؟</span>}
+                prompt={<span>مع <MathText>{'$k = 6$'}</MathText> مساحة كل بلاطة 8، فنكتب <MathText>{'$\\sqrt{288} = 6\\sqrt{8}$'}</MathText>. ماذا تقول عن هذه الكتابة مقارنةً بأصغر بلاطة وجدتها؟</span>}
                 options={[
-                  <MathText key="a">{'لأن $6\\sqrt{8}$ لا يساوي $\\sqrt{288}$'}</MathText>,
-                  <MathText key="b">{'لأن البلاطة 8 نفسها تُبلَّط من جديد: $8 = 2^2 \\times 2$'}</MathText>,
-                  <MathText key="c">{'لأن 6 ليس قاسمًا للعدد 288'}</MathText>,
-                  <MathText key="d">{'لأن مساحة البلاطة 8 ليست عددًا طبيعيًا'}</MathText>,
+                  <MathText key="a">{'لا تساوي $\\sqrt{288}$'}</MathText>,
+                  <MathText key="b">{'صحيحة، لكنّ البلاطة 8 نفسها تُبلَّط من جديد: $8 = 2^2 \\times 2$'}</MathText>,
+                  <MathText key="c">{'خاطئة لأن 6 ليس قاسمًا للعدد 288'}</MathText>,
+                  <MathText key="d">{'خاطئة لأن مساحة البلاطة 8 ليست عددًا طبيعيًا'}</MathText>,
                 ]}
                 correct={1}
                 cols={1}

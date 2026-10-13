@@ -23,6 +23,7 @@ export default function Module03Awazzif() {
 
   return (
     <ContentModule
+      objectives={["كيف أترجم نصّ المشكلة إلى معادلة أو متراجحة بنفسي؟", "كيف أتأكّد أنّ الحلّ يلائم الوضعية؟", "متى أرفض حلًّا للمعادلة؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}

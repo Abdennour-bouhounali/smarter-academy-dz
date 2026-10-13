@@ -33,6 +33,7 @@ export default function Module02Taraiq() {
 
   return (
     <ContentModule
+      objectives={['بماذا نبدأ حين نقرأ وضعية جديدة؟', 'هل تعطي طرق الحساب المختلفة النتيجة نفسها؟', 'كيف نجد كل عناصر المثلث القائم؟', 'كيف نعيّن زاوية من ضلعين؟']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}

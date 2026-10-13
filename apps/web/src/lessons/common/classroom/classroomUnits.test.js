@@ -15,6 +15,12 @@ describe('moduleUnits — les unités d’un module de contenu', () => {
     expect(u[2]).toMatchObject({ key: 'step-1', num: 1, title: 'أ' });
   });
 
+  it('le module s’ouvre sur sa page d’entrée quand on le demande', () => {
+    const u = moduleUnits({ overview: true, brief: true, steps });
+    expect(u.map((x) => x.kind)).toEqual(['overview', 'brief', 'step', 'step']);
+    expect(moduleUnits({ steps }).some((x) => x.kind === 'overview')).toBe(false);
+  });
+
   it('n’invente pas d’unité absente : sans brief ni intro, les étapes seules', () => {
     expect(moduleUnits({ steps }).map((x) => x.kind)).toEqual(['step', 'step']);
     expect(moduleUnits({ brief: true, steps: [] }).map((x) => x.kind)).toEqual(['brief']);

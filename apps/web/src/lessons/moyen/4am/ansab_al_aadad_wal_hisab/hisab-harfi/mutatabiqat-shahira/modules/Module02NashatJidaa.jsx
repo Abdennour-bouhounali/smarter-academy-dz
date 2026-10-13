@@ -38,6 +38,7 @@ export default function Module02NashatJidaa() {
   return (
     <ContentModule
       ctx={MODULE_CTX}
+      objectives={["ماذا يبقى من ملعب طوله مجموع حدّين وعرضه فرقهما؟", "أيّ منطقتين تتعادلان؟", "كيف نحسب $105 \\times 95$ ذهنيًا؟"]}
       navLinks={getNavLinks(2)}
       moduleNumber={2}
       moduleTitle="نشاط 2 — جداء مجموع حدين وفرقهما"
@@ -52,7 +53,7 @@ export default function Module02NashatJidaa() {
         body: (
           <div className="space-y-2">
             <p>
-              مدرّب يحوّل ملعبًا مربّعًا ضلعه <MathText>{`$${side}\\,m$`}</MathText> إلى ملعب مستطيل: يزيد طوله <MathText>{`$${change}\\,m$`}</MathText> ويُنقص عرضه <MathText>{`$${change}\\,m$`}</MathText>.
+              مدرّب يتطوّع لتدريب أطفال الحيّ يحوّل ملعبًا مربّعًا ضلعه <MathText>{`$${side}\\,m$`}</MathText> إلى ملعب مستطيل: يزيد طوله <MathText>{`$${change}\\,m$`}</MathText> ويُنقص عرضه <MathText>{`$${change}\\,m$`}</MathText>.
               {' '}يقول: «أضفت ما أنقصت، فالمساحة لم تتغيّر». هل هو على حق؟ <SourceTag source={HOOK.source} />
             </p>
             <p>في المختبر ملعب طوله مجموع حدّين وعرضه فرقهما: اسحب المناطق إلى «المجموع» وضع كل حدّ على الحدّ المشابه له. ماذا يبقى؟</p>

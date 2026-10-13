@@ -10,7 +10,6 @@ import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { isDiagnosticAvailableForGrade } from '../../services/diagnosticService';
 import { needsName } from '../../utils/personName';
 import { getDisplayName } from '../../utils/userDisplay';
-import IslamicGreeting from '../../features/islamic/IslamicGreeting';
 
 const GRADES_BY_LEVEL = getAllGrades().reduce((groups, grade) => {
   (groups[grade.levelTitle] ??= []).push(grade);
@@ -89,7 +88,7 @@ export default function ChooseGrade() {
           </p>
         )}
         <h1 className="font-arabic font-bold text-2xl sm:text-3xl text-slate-900">
-          <IslamicGreeting name={getDisplayName(user)} />
+          {t('chooseGradeWelcome')} {getDisplayName(user)} 👋
         </h1>
         {hasGrades && (
           <p className="mt-3 font-arabic text-base text-slate-500 text-balance">

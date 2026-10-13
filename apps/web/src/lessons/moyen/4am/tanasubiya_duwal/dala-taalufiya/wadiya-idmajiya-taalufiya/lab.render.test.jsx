@@ -8,7 +8,7 @@ import ManipulationWorkspace from '../../../../../common/manipulations/Manipulat
 import { LAB, NUMBERS, TEST } from './content/textbook';
 
 /**
- * Le laboratoire du module 1 de la synthèse (plan-compare, réutilisé de « حل مشكلات وترييض وضعيات
+ * Le laboratoire du module 7 de la synthèse (plan-compare, réutilisé de « حل مشكلات وترييض وضعيات
  * بتوظيف الدالة التآلفية », monde `rental`) rendu avec EXACTEMENT les props que le module étale
  * (content/textbook.js › LAB), dans le workspace à deux niveaux ouvert sur متقدم — puis TOUTE la
  * mathématique que les modules 1 et 4 supposent, recalculée avec packages/core (affine.js, linearSystem.js).
@@ -69,7 +69,7 @@ it('les props du laboratoire : 2 tarifs de vélo, 3 tarifs de kayak, fenêtres q
   expect(num(A.imageOf(pa, Number(LAB.advanced.xMax)))).toBeLessThanOrEqual(Number(LAB.advanced.yMax));
 });
 
-it('la situation du module 1 : participants, bus, reste', () => {
+it('la situation du module 7 : participants, bus, reste', () => {
   const n = NUMBERS;
   const d1 = A.lineFromEquation(linearSystem.eq2(`x+y=${n.persons}`));
   const d2 = A.lineFromEquation(linearSystem.eq2(`${n.pupilPays}x+${n.adultPays}y=${n.collected}`));

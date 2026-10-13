@@ -8,6 +8,9 @@ import React, { Suspense, lazy } from 'react';
  *
  * Clé : `${unit.id}:${slot}` (= le code de l’unité), slot ∈ challenge | aside. Une unité sans entrée n'affiche rien.
  */
+// RÈGLE (2026-10-13) : le تحدّ de la page d'unité EST la situation de la synthèse « أدمج تعلّماتي » (module 7 « تحليل الوضعية
+// النهائية للاختبار »). Les entrées ci-dessous reprennent donc le dessin que cette synthèse fait de sa situation (ou, pour les
+// unités 3, 9, 14, le dessin du تحدّ que le module 7 reprend). Sans dessin : la situation n'en réclame pas (unités 5, 7, 13).
 const FIGURES = {
   // p. 31 — ABC, AB = x + 1, AC = x + 2, BC = x + 3 ; l'angle en A n'est PAS marqué droit (c'est la question).
   'hisab-harfi:challenge': () => Promise.resolve({ default: TriangleABC }),
@@ -18,43 +21,20 @@ const FIGURES = {
   ]).then(([{ default: DescartesTable }, { DESCARTES }]) => ({
     default: () => <DescartesTable head={DESCARTES.head} cells={DESCARTES.cells} />,
   })),
-  // p. 43 — ABCD découpé en AEGF (x), deux rectangles x × 6, GHCK (6) ; sans les aires (ce serait la piste).
-  'muadalat-mutarajihat:challenge': () => import('../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/components/ChallengeSquare.jsx')
-    .then(({ default: ChallengeSquare }) => ({
-      default: () => <ChallengeSquare showAreas={false} label="مربّع ABCD مقسّم إلى مربّع AEGF ضلعه x، ومستطيلين، ومربّع ضلعه 6" />,
-    })),
-  // p. 65 — les distances des véhicules A (ligne brisée) et B (droite par l'origine), toutes les 30 min.
-  'tanasubiya-dala-khattiya:challenge': () => import('../../lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tarrid-khatti/components/Graphs.jsx')
-    .then((m) => ({ default: m.ChallengeGraph })),
-  // p. 77 — la droite °C → °F, f(x) = 1,8x + 32.
-  // Sans les points (10 ; 50) et (30 ; 86) en orange : ce serait la réponse de la question 1.
-  'dala-taalufiya:challenge': () => import('../../lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tanasub-taghayyurat/components/ChallengeGraph.jsx')
-    .then(({ default: ChallengeGraph }) => ({ default: () => <ChallengeGraph plain /> })),
-  // p. 91 — « يقدّم الجدول نتائج تلاميذ قسمين » : le tableau des deux classes (effectifs et moyennes par sexe), dessiné par la
-  // leçon 4 qui porte le تحدّ — sans la moyenne de chaque classe (384/33, la réponse).
-  'ihsa:challenge': () => Promise.all([
-    import('../../lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/components/DataTable.jsx'),
-    import('../../lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/content/textbook.js'),
-  ]).then(([{ default: DataTable }, { CHALLENGE }]) => ({
-    default: () => <DataTable head={CHALLENGE.head} rows={CHALLENGE.rows} />,
-  })),
   // p. 103 — « رسم الشكل المقابل » : la minaret, le rayon de soleil, le bâton de 1 m, 10 m et 11,6 m au sol — dessinée par
   // la synthèse qui reprend le تحدّ (doublon déclaré) ; la hauteur n'y est ni écrite ni graduée (c'est la question).
   'khassiyat-talis:challenge': () => import('../../lessons/moyen/4am/handasa/khassiyat-talis/wadiya-idmajiya-talis/components/MinaretFigure.jsx'),
-  // p. 115 — « اعتمادا على الشكل » : le mur, l'échelle posée contre lui, 1,60 m et 59° — dessinée par la leçon 4
-  // (tarrid-muthallathiya) qui reprend le تحدّ (doublon déclaré) ; la longueur de l'échelle n'y est pas écrite (c'est la question).
-  'hisab-muthallathat:challenge': () => import('../../lessons/moyen/4am/handasa/hisab-muthallathat/tarrid-muthallathiya/components/LadderFigure.jsx'),
-  // p. 127 — « (الشكل) » : le fleuve, A et B face à face, [AB] perpendiculaire aux rives, le courant 2 km/h — dessiné par la
-  // leçon 3 (majmu-shuaayn) qui reprend le تحدّ (doublon déclaré) ; ni la direction de nage ni 30° (c'est la question).
-  'ashia-insihab:challenge': () => import('../../lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/components/RiverFigure.jsx'),
-  // p. 151 — « نجمة العلم الجزائري » : le manuel montre la PHOTO du drapeau ; dessinée par la leçon 4 (mudalaat-muntazama)
-  // qui porte le تحدّ — le drapeau seul (moitié verte, moitié blanche, croissant et étoile rouges), ni cercle, ni 72°, ni
-  // rayon (c'est la question).
   // p. 163 — « يُمثّل الشكل المقابل دلوًا فيه ماء » : le seau en tronc de cône, son eau et les cotes du manuel (40 / 30 / 7 / 28)
   // — dessiné par la synthèse (wadiya-idmajiya-fada) qui porte le تحدّ ; ni le rayon de la surface, ni le sommet, ni le volume
   // (c'est la question).
   'handasa-fada:challenge': () => import('../../lessons/moyen/4am/handasa/handasa-fada/wadiya-idmajiya-fada/components/BucketFigure.jsx'),
-  'dawaran-mudalaat:challenge': () => import('../../lessons/moyen/4am/handasa/dawaran-mudalaat/mudalaat-muntazama/components/FlagStarFigure.jsx'),
+  'muadalat-mutarajihat:challenge': () => import('../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/wadiya-idmajiya-muadalat/components/OpenerFigure.jsx'),
+  'hisab-judhur:challenge': () => import('../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/wadiya-idmajiya-judhur/components/OpenerFigure.jsx'),
+  'ashia-insihab:challenge': () => import('../../lessons/moyen/4am/handasa/ashia-insihab/wadiya-idmajiya-ashia/components/OpenerFigure.jsx'),
+  'hisab-muthallathat:challenge': () => import('../../lessons/moyen/4am/handasa/hisab-muthallathat/wadiya-idmajiya-muthallathat/components/OpenerFigure.jsx'),
+  'tanasubiya-dala-khattiya:challenge': () => import('../../lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/wadiya-idmajiya-khattiya/components/CableCarFigure.jsx').then(({ CableCarFigure }) => ({ default: () => <CableCarFigure /> })),
+  'ihsa:challenge': () => import('../../lessons/moyen/4am/tanasubiya_duwal/ihsa/wadiya-idmajiya-ihsa/components/OpenerFigure.jsx'),
+  'ashia-maalam:challenge': () => import('../../lessons/moyen/4am/handasa/ashia-maalam/wadiya-idmajiya-maalam/components/OpenerFigure.jsx'),
 };
 
 const lazyCache = {};

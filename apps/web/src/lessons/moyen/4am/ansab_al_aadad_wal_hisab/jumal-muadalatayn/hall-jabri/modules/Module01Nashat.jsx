@@ -50,6 +50,7 @@ export default function Module01Nashat() {
       moduleNumber={1}
       moduleTitle="نشاط 2 — تلميذان وطريقتان"
       moduleSubtitle="نجعل مجهولًا يختفي"
+      objectives={['كيف نجد ثمنين مجهولين من بطاقتين فقط؟', 'ماذا يفعل كل تلميذ ليصل إلى مجهول واحد؟', 'هل تكفي معادلة واحدة لمعرفة الثمنين؟']}
       estimatedTime="16 دقيقة"
       brief={{
         tag: 'أنشطة — الكتاب ص 56',
@@ -70,7 +71,7 @@ export default function Module01Nashat() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="نفس الفكرة في المستويين: لا نجرّب الثنائيات واحدة واحدة، بل نجعل أحد المجهولين يختفي، ثم نعود لنجد الآخر."
+          lead="في المستويين: كيف تصل إلى الثنائية دون أن تختبر الأعداد واحدًا واحدًا؟ ماذا يمكنك أن تفعل بالبطاقتين؟"
           levels={{
             beginner: () => (
               <Manipulation
@@ -96,7 +97,7 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'ثنائية تحقق معادلة واحدة', subtitle: 'السؤال أ', done: q1,
+          num: 1, title: 'هل هذه الثنائية حل؟', subtitle: 'السؤال أ', done: q1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" text={ACTIVITY.text} source={ACTIVITY.source} compact />

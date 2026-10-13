@@ -18,6 +18,7 @@ export default function Module04Awazzif() {
 
   return (
     <ContentModule
+      objectives={["سأحدّد موقع نقط بالنسبة إلى كرة", "سأميّز الدوائر الكبرى من الصغرى وأحسب الأقطار", "سأمثّل نقطة من جلة"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}

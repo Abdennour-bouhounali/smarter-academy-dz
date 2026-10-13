@@ -29,11 +29,11 @@ export default function Module03Inshaat() {
   const keep = (e) => { if (e) setTrials((list) => [...list, { ...e, level: 'construct' }].slice(-30)); };
 
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(3)} moduleNumber={3} moduleTitle="إنشاءات — صور دائرة بانسحاب"
+    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(3)} moduleNumber={3} objectives={['أين نصل إذا رسمنا عدّة أشعة واحدًا بعد الآخر؟', 'ماذا يحدث لنصف قطر الدائرة عند الانسحاب؟', 'هل يهمّ ترتيب الأشعة في المجموع؟']} moduleTitle="إنشاءات — صور دائرة بانسحاب"
       moduleSubtitle="دوري الآن (ص 138) على المرصوفة" estimatedTime="8 دقائق"
       brief={{
         tag: 'دوري الآن — الكتاب ص 138', headline: 'القطار ينطلق من مركز الدائرة', emoji: '⭕',
-        title: 'ننشئ ممثّل مجموع عدة أشعة، فنجد مركز صورة دائرة', tone: 'sky',
+        title: 'أين يقع مركز الدائرة بعد أن ننقلها بمجموع عدّة أشعة؟', tone: 'sky',
         body: (
           <div className="space-y-2" data-situation="now-138">
             <p><MathText>{NOW138.text}</MathText></p>
@@ -72,7 +72,7 @@ export default function Module03Inshaat() {
               )}
             </div>
           ) },
-        { num: 2, title: 'نصف قطر الصورة', subtitle: 'الانسحاب يحافظ على الأطوال', done: !!q[2],
+        { num: 2, title: 'نصف قطر الصورة', subtitle: 'ماذا يحدث لطول نصف القطر؟', done: !!q[2],
           content: (
             <div className="space-y-3">
               <PredictRule id="surat-daira">

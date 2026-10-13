@@ -1,6 +1,7 @@
 // 4AM — les figures d'OUVERTURE d'unité (2026-10-02). Un تحدّ ou un encadré dont le texte dit « الشكل المقابل »,
 // « البيان المقابل », « التمثيل البياني المقابل », « اعتمادا على الشكل » ou « نظم العمل في جدول » doit montrer cette figure sur la page
 // d'unité (pages/unit/UnitOpenerFigure.jsx) ; une unité sans renvoi n'en montre aucune.
+// Depuis le 2026-10-13 le تحدّ de la page EST la situation de la synthèse « أدمج تعلّماتي » (module 7) : unités 5, 7, 13 sans dessin.
 //
 // Run : KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-unit-opener-figures.mjs
 //   SHOTS=dir enregistre une capture du bloc d'ouverture de chaque unité.
@@ -10,17 +11,18 @@ const A = 'ansab_al_aadad_wal_hisab'; const T = 'tanasubiya_duwal'; const H = 'h
 // [chapitre, unité, slots attendus]
 const UNITS = [
   [A, 'aadad-tabiiya-natiqa', []],
-  [A, 'hisab-judhur', []],
+  [A, 'hisab-judhur', ['challenge']],
   [A, 'hisab-harfi', ['challenge', 'aside']],
   [A, 'muadalat-mutarajihat', ['challenge']],
   [A, 'jumal-muadalatayn', []],
   [T, 'tanasubiya-dala-khattiya', ['challenge']],
-  [T, 'dala-taalufiya', ['challenge']],
+  [T, 'dala-taalufiya', []],
   [T, 'ihsa', ['challenge']],
   [H, 'khassiyat-talis', ['challenge']],
   [H, 'hisab-muthallathat', ['challenge']],
   [H, 'ashia-insihab', ['challenge']],
-  [H, 'dawaran-mudalaat', ['challenge']],
+  [H, 'ashia-maalam', ['challenge']],
+  [H, 'dawaran-mudalaat', []],
   [H, 'handasa-fada', ['challenge']],
 ];
 // Unité 10 : « اعتمادا على الشكل » renvoie aussi à une figure ; unité 11 : « (الشكل) » entre parenthèses.

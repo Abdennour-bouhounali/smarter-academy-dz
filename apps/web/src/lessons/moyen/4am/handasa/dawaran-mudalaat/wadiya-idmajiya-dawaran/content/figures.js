@@ -6,9 +6,7 @@ import { rotation as ROT } from '@smarter-academy/core';
  * précédent par le دوران de 360°/n), arrondis au millième pour le dessin. Chaque figure suit l'extraction
  * (docs/sources/4am/unit13/extraction.json) ; une figure ne porte jamais la réponse de la question qui la montre.
  *
- * Analyse des figures du manuel (guide §5) : celles du QCM (p. 160) sont lisibles (un rectangle et ses diagonales, deux cercles,
- * un pentagone codé) — REPRODUITES avec les coordonnées de l'extraction. La وضعية et les exercices 15 et 20 n'ont pas de figure
- * (« يُطلب إنجاز الشكل » pour le 20) : les figures sont celles de la plateforme, déclarées par leur légende.
+ * Analyse des figures du manuel (guide §5) : la وضعية n'a pas de figure : les figures sont celles de la plateforme, déclarées par leur légende.
  */
 const r3 = (v) => Math.round(v * 1000) / 1000;
 // Les `names.length` premiers sommets seulement (le إختبار ne dessine que deux lampadaires sur huit).
@@ -28,80 +26,8 @@ export const PLAN = {
   maxWidth: 420,
 };
 
-/** QCM 1 (p. 160) : rectangle ABCD (B en haut à gauche, A en haut à droite), diagonales en O, \widehat{BOC} = 60°. */
-export const QCM1 = {
-  points: { O: [0, 0], A: [1.732, 1], B: [-1.732, 1], C: [-1.732, -1], D: [1.732, -1] },
-  segments: [['A', 'B'], ['B', 'C'], ['C', 'D'], ['D', 'A'], ['A', 'C'], ['B', 'D']],
-  angles: [{ at: 'O', from: 'B', to: 'C', label: '60°' }],
-  labels: { A: 'ne', B: 'nw', C: 'sw', D: 'se', O: 'n' },
-  ariaLabel: 'مستطيل ABCD: B أعلى اليسار و A أعلى اليمين و C أسفل اليسار و D أسفل اليمين، قطراه [AC] و [BD] يتقاطعان في O، والزاوية BOC قيسها 60 درجة',
-  maxWidth: 360,
-};
-
-/** QCM 2 (p. 160) : cercle de centre O ; A, B, C sur le cercle ; D dehors, E dedans (entre O et D). */
-export const QCM2 = {
-  points: { O: [0, 0], A: [-2, 0], C: [0.684, 1.879], B: [0.684, -1.879], E: [0.8, 0], D: [2.9, 0] },
-  circles: [{ center: 'O', radius: 2 }],
-  segments: [['A', 'C'], ['A', 'B'], ['O', 'C'], ['O', 'B'], ['E', 'C'], ['E', 'B'], ['D', 'C'], ['D', 'B']],
-  labels: { O: 'w', E: 'e', A: 'w', C: 'n', B: 's', D: 'e' },
-  ariaLabel: 'دائرة مركزها O؛ النقط A و C و B على الدائرة، والنقطة D خارجها على اليمين، والنقطة E داخلها بين O و D؛ القطع AC و AB و OC و OB و EC و EB و DC و DB',
-  maxWidth: 380,
-};
-
-/** QCM 3 (p. 160) : cercle de centre O, [BC] diamètre, A sur le cercle à gauche. */
-export const QCM3 = {
-  points: { O: [0, 0], B: [-0.618, 1.902], C: [0.618, -1.902], A: [-1.975, 0.313] },
-  circles: [{ center: 'O', radius: 2 }],
-  segments: [['A', 'B'], ['A', 'C'], ['B', 'C']],
-  labels: { O: 'e', B: 'n', C: 's', A: 'w' },
-  ariaLabel: 'دائرة مركزها O و [BC] قطر لها، والنقطة A على الدائرة على اليسار؛ القطع AB و AC و BC',
-  maxWidth: 340,
-};
-
-/** QCM 4 (p. 160) : le pentagone ABCDE aux cinq côtés codés égaux, angles droits en A et en E. */
-export const QCM4 = {
-  points: { A: [0, 1], B: [1, 1], C: [1.866, 0.5], D: [1, 0], E: [0, 0] },
-  segments: [{ from: 'A', to: 'B', ticks: 1 }, { from: 'B', to: 'C', ticks: 1 }, { from: 'C', to: 'D', ticks: 1 }, { from: 'D', to: 'E', ticks: 1 }, { from: 'E', to: 'A', ticks: 1 }],
-  rightAngles: [['B', 'A', 'E'], ['A', 'E', 'D']],
-  labels: { A: 'nw', B: 'n', C: 'e', D: 's', E: 'sw' },
-  ariaLabel: 'مضلع ABCDE له خمسة أضلاع متقايسة (علامة على كل ضلع)، وزاويتاه عند A و E قائمتان، والرأس C على اليمين',
-  maxWidth: 340,
-};
-
 /**
- * Ex. 15 (p. 161, après correction : le pentagone régulier BCDEF de centre A) — figure de la plateforme : le cercle de centre A
- * et de rayon AB = 4, B puis ses images successives C, D, E, F par le دوران (A, 72°) dans le sens direct.
- */
-const PENTA = vertices({ x: 0, y: 0 }, 4, 5, 0, ['B', 'C', 'D', 'E', 'F']);
-export const EX15 = {
-  points: { A: [0, 0], ...PENTA },
-  circles: [{ center: 'A', radius: 4, tone: 'sky' }],
-  polygons: [{ points: ['B', 'C', 'D', 'E', 'F'], tone: 'indigo' }],
-  segments: [{ from: 'A', to: 'B', label: '4 cm', dashed: true }, { from: 'A', to: 'C', dashed: true }],
-  angles: [{ at: 'A', from: 'B', to: 'C', label: '72°', arrow: true }],
-  labels: { A: 'sw' },
-  caption: 'شكل من المنصّة: B ثم صورها المتتالية C و D و E و F بالدوران الذي مركزه A وزاويته 72 درجة',
-  ariaLabel: 'دائرة مركزها A ونصف قطرها AB = 4 cm؛ النقط B و C و D و E و F على الدائرة، كل نقطة صورة السابقة بالدوران الذي مركزه A وزاويته 72 درجة في الاتجاه المباشر',
-  maxWidth: 420,
-};
-
-/**
- * Ex. 20 (p. 161, BEM) — « يُطلب إنجاز الشكل » : la figure de la plateforme (extraction › ex-20 › platformFigure) : (T) de centre
- * O, [AB] diamètre de 8 cm, C sur (T) avec BC = 3 cm, F image de B par la translation de vecteur OB, D sur (AC) avec (DF) // (BC).
- */
-export const EX20 = {
-  points: { O: [0, 0], A: [-4, 0], B: [4, 0], C: [2.875, 2.781], F: [8, 0], D: [6.313, 4.172] },
-  circles: [{ center: 'O', radius: 4 }],
-  segments: [['A', 'F'], ['A', 'D'], { from: 'B', to: 'C', label: '3', arrows: 1 }, { from: 'F', to: 'D', arrows: 1 }],
-  rightAngles: [['A', 'C', 'B']],
-  labels: { O: 's', A: 'w', B: 's', F: 'se', C: 'nw', D: 'n' },
-  caption: 'شكل من المنصّة (التمرين يطلب إنجازه)',
-  ariaLabel: 'دائرة (T) مركزها O وقطرها [AB]، والنقطة C على الدائرة حيث BC = 3 cm؛ F على امتداد [AB] بعد B حيث BF = OB؛ المستقيم الذي يشمل F ويوازي (BC) يقطع (AC) في D',
-  maxWidth: 480,
-};
-
-/**
- * « إختبار أولي » — la وضعية TRANSPOSÉE : le rond-point d'Oran (rayon 5 m), deux lampadaires voisins P₁ et P₂ (sur huit), le
+ * « وضعية الاختبار النهائي » — la وضعية TRANSPOSÉE : le rond-point d'Oran (rayon 5 m), deux lampadaires voisins P₁ et P₂ (sur huit), le
  * milieu H de [P₁P₂] et la hauteur [OH]. Les six autres lampadaires ne sont pas dessinés et aucun angle n'est écrit.
  */
 const RP = vertices({ x: 0, y: 0 }, 5, 8, 112.5, ['P₁', 'P₂'], 'indirect');
@@ -113,4 +39,78 @@ export const TEST_FIGURE = {
   labels: { O: 's', H: 's', 'P₁': 'nw', 'P₂': 'ne' },
   ariaLabel: 'دائرة الدوّار مركزها O ونصف قطرها 5 m، وعلى حافتها عمودان متتاليان P₁ و P₂، و H منتصف [P₁P₂] حيث [OH] عمودي على [P₁P₂]',
   maxWidth: 380,
+};
+
+/* ── Les figures des six « وضعيات تدريبية » (modules 1 à 6, content/problems.js) ─────────────────────────────────────────
+ * Données de la plateforme, jamais du manuel. Chacune ne montre QUE les données de l'énoncé (rayon, cote donnée, angle donné) ;
+ * aucune réponse n'y est écrite. Points sur un cercle : `onCircle` (degrés, sens direct, y vers le haut), arrondis au millième. */
+const onCircle = (r, deg) => [r3(r * Math.cos((deg * Math.PI) / 180)), r3(r * Math.sin((deg * Math.PI) / 180))];
+
+/** وضعية 1 — la turbine d'Adrar : trois pales de 40 m (1 unité = 10 m), leurs extrémités A, B, C. */
+export const WADIYA_1 = {
+  points: { O: [0, 0], A: onCircle(4, 90), B: onCircle(4, 210), C: onCircle(4, 330) },
+  circles: [{ center: 'O', radius: 4, tone: 'slate' }],
+  polygons: [{ points: ['A', 'B', 'C'], tone: 'indigo' }],
+  segments: [{ from: 'O', to: 'A', dashed: true, label: '40 m' }, { from: 'O', to: 'B', dashed: true }, { from: 'O', to: 'C', dashed: true }],
+  labels: { O: 'e', A: 'n', B: 'sw', C: 'se' },
+  ariaLabel: 'دائرة مركزها O ونصف قطرها 40 m، وعليها أطراف ثلاث شفرات A و B و C متقايسة؛ المثلث ABC ونصفا القطر OA و OB و OC منقّطة',
+  maxWidth: 400,
+};
+
+/** وضعية 2 — le théâtre antique : scène [AB], spectateurs M et N sur le grand arc ; l'angle donné en M (35°). */
+export const WADIYA_2 = {
+  points: { O: [0, 0], A: onCircle(4, 235), B: onCircle(4, 305), M: onCircle(4, 90), N: onCircle(4, 150) },
+  circles: [{ center: 'O', radius: 4, tone: 'slate' }],
+  segments: [['M', 'A'], ['M', 'B'], ['N', 'A'], ['N', 'B'], { from: 'A', to: 'B', bold: true, tone: 'sky' }, { from: 'O', to: 'A', dashed: true, label: '20 m' }, { from: 'O', to: 'B', dashed: true }],
+  angles: [{ at: 'M', from: 'A', to: 'B', label: '35°' }],
+  labels: { O: 'n', A: 'sw', B: 'se', M: 'n', N: 'nw' },
+  ariaLabel: 'دائرة مركزها O ونصف قطرها 20 m؛ على الدائرة النقطتان A و B (طرفا الخشبة) والمتفرجان M و N على القوس الكبير؛ الزاوية AMB قيسها 35 درجة',
+  maxWidth: 420,
+};
+
+/** وضعية 3 — le bassin décagonal ABCDEFGHIJ, rayon 20 m (1 unité = 5 m) : [AB] en bas. */
+const DECA = Object.fromEntries('ABCDEFGHIJ'.split('').map((n, k) => [n, onCircle(4, 252 + 36 * k)]));
+export const WADIYA_3 = {
+  points: { O: [0, 0], ...DECA },
+  circles: [{ center: 'O', radius: 4, tone: 'slate' }],
+  polygons: [{ points: 'ABCDEFGHIJ'.split(''), tone: 'amber' }],
+  segments: [{ from: 'O', to: 'A', dashed: true, label: '20 m' }, { from: 'O', to: 'B', dashed: true }],
+  labels: { O: 'n' },
+  ariaLabel: 'حوض نافورة على شكل عشري منتظم ABCDEFGHIJ مركزه O، رؤوسه على دائرة نصف قطرها 20 m؛ نصفا القطرين OA و OB منقّطان',
+  maxWidth: 480,
+};
+
+/** وضعية 4 — le robot de la bibliothèque : معلم متعامد, station O(0 ; 0), robot en A(3 ; 4). Les coins cachés ouvrent les quatre quadrants. */
+export const WADIYA_4 = {
+  points: { O: [0, 0], A: [3, 4], Z1: [-5, -5], Z2: [5, 5] },
+  hidden: ['Z1', 'Z2'],
+  grid: true,
+  axes: true,
+  segments: [{ from: 'O', to: 'A', dashed: true }],
+  labels: { O: 'sw', A: 'ne' },
+  caption: 'وحدة الطول في المعلم: 1 m',
+  ariaLabel: 'معلم متعامد مبدؤه O محطة الشحن، والروبوت عند النقطة A التي فاصلتها 3 وترتيبها 4؛ القطعة OA منقّطة',
+  maxWidth: 400,
+};
+
+/** وضعية 5 — la cour circulaire : [AB] diamètre de 10 m, C sur le cercle avec BC = 6 m, E sur [AB] (AE = 4 m), F sur [AC] avec (EF) ∥ (BC). */
+export const WADIYA_5 = {
+  points: { O: [0, 0], A: [-5, 0], B: [5, 0], C: [1.4, 4.8], E: [-1, 0], F: [-2.44, 1.92] },
+  circles: [{ center: 'O', radius: 5, tone: 'slate' }],
+  segments: [{ from: 'A', to: 'B', label: '10 m' }, { from: 'B', to: 'C', label: '6 m' }, ['A', 'C'], { from: 'E', to: 'F', tone: 'violet', arrows: 1 }, { from: 'A', to: 'E', tone: 'violet', bold: true, label: '4 m' }],
+  labels: { O: 's', A: 'sw', B: 'se', C: 'ne', E: 's', F: 'nw' },
+  ariaLabel: 'دائرة مركزها O وقطرها [AB] طوله 10 m؛ النقطة C على الدائرة حيث BC = 6 m؛ E على [AB] حيث AE = 4 m، و F على [AC] والمستقيم (EF) يوازي (BC)',
+  maxWidth: 440,
+};
+
+/** وضعية 6 — le cadran : douze repères (1 … 12) sur un cercle de 50 cm (1 unité = 12,5 cm) ; le 12 en haut, rangés dans le sens des aiguilles. */
+const CLOCK = Object.fromEntries(Array.from({ length: 12 }, (_, k) => [String((k === 0 ? 12 : k)), onCircle(4, 90 - 30 * k)]));
+export const WADIYA_6 = {
+  points: { O: [0, 0], ...CLOCK },
+  circles: [{ center: 'O', radius: 4, tone: 'slate' }],
+  polygons: [{ points: Array.from({ length: 12 }, (_, k) => String(k === 0 ? 12 : k)), tone: 'emerald' }],
+  segments: [{ from: 'O', to: '12', dashed: true, label: '50 cm' }, { from: 'O', to: '3', dashed: true }, { from: 'O', to: '5', dashed: true }],
+  labels: { O: 'sw' },
+  ariaLabel: 'ساعة جدارية: اثنا عشر تدريجا من 1 إلى 12 على دائرة مركزها O ونصف قطرها 50 cm، التدريج 12 في الأعلى؛ القطع من O إلى التدريجات 12 و 3 و 5 منقّطة',
+  maxWidth: 440,
 };

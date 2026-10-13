@@ -29,7 +29,7 @@ export const EXERCISES = [
   },
   {
     id: 'aw-2', source: SOURCE, learningPointId: LP.P1, difficulty: 'facile',
-    statement: 'في لعبة البناء، كبّر لاعب مكعّبا بالنسبة $k = 3$ .',
+    statement: 'في لعبة البناء، يتعاون لاعبان على بناء مدينة فيكبّر أحدهما مكعّبا بالنسبة $k = 3$ .',
     interaction: 'batch',
     question: {
       prompt: 'اختر لكل سطر العدد الذي يُضرب فيه:',
@@ -55,7 +55,7 @@ export const EXERCISES = [
   },
   {
     id: 'aw-4', source: SOURCE, learningPointId: LP.P2, difficulty: 'moyen',
-    statement: 'مخطّط شقة مرسوم بمقياس $\\dfrac{1}{100}$ : مساحة غرفة على المخطّط $12\\,\\mathrm{cm}^2$ .',
+    statement: 'مخطّط شقة تبنيها جمعية خيرية لأسرة محتاجة، مرسوم بمقياس $\\dfrac{1}{100}$ : مساحة غرفة على المخطّط $12\\,\\mathrm{cm}^2$ .',
     interaction: 'choice',
     question: {
       prompt: 'المساحة الحقيقية للغرفة:',

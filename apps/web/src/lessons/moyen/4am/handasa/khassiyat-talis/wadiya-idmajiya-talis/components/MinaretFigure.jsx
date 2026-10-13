@@ -4,7 +4,7 @@ import React from 'react';
  * « الشكل المقابل » du تحدّ (p. 103) : la minaret, le rayon de soleil qui passe par son sommet, le bâton de 1 m et
  * les deux longueurs mesurées au sol (10 m et 11,6 m). AUCUNE réponse : la hauteur de la minaret n'est ni écrite
  * ni graduée (c'est la question). Le même dessin sert la page d'unité (pages/unit/UnitOpenerFigure.jsx, clé
- * « khassiyat-talis:challenge »), le module 1 et, avec d'autres nombres, le test final.
+ * « khassiyat-talis:challenge »), le module 7 et, avec d'autres nombres, le test final.
  *
  * Props : `stick`, `stickAt`, `tip` — écrits comme le manuel (« 11,6 ») ; le dessin respecte leurs rapports.
  */

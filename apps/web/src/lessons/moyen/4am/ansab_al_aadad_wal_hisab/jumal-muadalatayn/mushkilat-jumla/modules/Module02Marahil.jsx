@@ -28,6 +28,7 @@ export default function Module02Marahil() {
       moduleNumber={2}
       moduleTitle="المراحل الخمس — التحدّي وأبو كامل"
       moduleSubtitle="نختار، نترجم، نحلّ، نتحقق في النص، نجيب"
+      objectives={['كم قطعة من كل فئة جمعها التلاميذ؟', 'هل يجيب حلّ الجملة دائمًا عن القصة؟', 'كيف حلّ أبو كامل مسألة الأجير؟']}
       estimatedTime="12 دقيقة"
       brief={{
         tag: 'تحدّ وأبو كامل — الكتاب ص 55', headline: 'المراحل نفسها لكل مشكلة', emoji: '🪙',
@@ -47,7 +48,7 @@ export default function Module02Marahil() {
           ),
         },
         {
-          num: 2, title: 'نتحقق في القصة نفسها', subtitle: 'حلّ للجملة لا يجيب دائما عن المشكلة', done: all('not-natural'),
+          num: 2, title: 'نتحقق في القصة نفسها', subtitle: 'هل يجيب حلّ الجملة عن القصة؟', done: all('not-natural'),
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tahaqquq-nas" lead="المرحلتان 4 و 5 لا تعودان إلى الجملة، بل إلى القصة:" />

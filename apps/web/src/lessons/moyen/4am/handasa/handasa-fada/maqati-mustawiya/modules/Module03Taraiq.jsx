@@ -28,11 +28,12 @@ export default function Module03Taraiq() {
 
   return (
     <ContentModule
+      objectives={["كيف نحسب نصف قطر مقطع كرة بمستو؟", "في أيّ مثلث نعمل؟", "كيف نحسب بعدي مقطع أسطوانة؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}
       moduleTitle="طرائق — نصف قطر مقطع كرة بمستو"
-      moduleSubtitle="خاصية فيثاغورس في المثلث الذي رأسه مركز الكرة"
+      moduleSubtitle="كيف نحسب نصف قطر المقطع؟"
       estimatedTime="8 دقائق"
       brief={{
         tag: 'طرائق — الكتاب ص 169', title: 'حساب نصف قطر مقطع كُرة بمستو', tone: 'emerald',

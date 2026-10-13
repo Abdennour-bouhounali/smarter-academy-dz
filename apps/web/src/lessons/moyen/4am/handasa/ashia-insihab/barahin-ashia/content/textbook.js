@@ -188,10 +188,10 @@ export const PREP_ITEMS = [
 export const TEST = {
   source: PLATFORM,
   title: 'ستّ وضعيات جديدة',
-  metro: 'ثلاث محطات R و S و T في خط ترامواي قسنطينة.',
-  park: 'EFGH متوازي أضلاع يمثّل حديقة في وهران.',
+  metro: 'ثلاث محطات R و S و T في خط ترامواي قسنطينة، ويحترم ركّابه مواعيده.',
+  park: 'EFGH متوازي أضلاع يمثّل حديقة في وهران يحافظ أهلها على نظافتها.',
   uvwx: 'UVWX رباعي حيث $\\overrightarrow{UV} = \\overrightarrow{XW}$ والنقط U و V و W ليست على استقامة واحدة.',
   npq: 'N و P و Q ثلاث نقط حيث $\\overrightarrow{NP} + \\overrightarrow{NQ} = \\overrightarrow{0}$ .',
-  drone: 'في عرض طائرات مسيّرة فوق خليج الجزائر، تنطلق طائرة من النقطة P وتتحرّك بالأشعة $\\overrightarrow{AB}$ ثم $\\overrightarrow{CD}$ ثم $\\overrightarrow{EF}$ ، فتصل إلى النقطة M حيث $\\overrightarrow{PM} = \\overrightarrow{AB} + \\overrightarrow{CD} + \\overrightarrow{EF}$ .',
+  drone: 'في عرض طائرات مسيّرة فوق خليج الجزائر أتقن مبرمجوه تنسيقه، تنطلق طائرة من النقطة P وتتحرّك بالأشعة $\\overrightarrow{AB}$ ثم $\\overrightarrow{CD}$ ثم $\\overrightarrow{EF}$ ، فتصل إلى النقطة M حيث $\\overrightarrow{PM} = \\overrightarrow{AB} + \\overrightarrow{CD} + \\overrightarrow{EF}$ .',
   circle: '(C) دائرة مركزها Ω ونصف قطرها 3، و U و V و W ثلاث نقط.',
 };

@@ -50,7 +50,7 @@ export default function Module08Itqan() {
         },
         {
           id: 'E2', skill: 'namdhaja', requires: ['sura-fi-wadiya'],
-          prompt: <Q source={SRC}>في قاعة ألعاب: بطاقة شهرية 800DA ثم 120DA للساعة. دفع أيمن هذا الشهر 2240DA. كم ساعة لعب؟</Q>,
+          prompt: <Q source={SRC}>في قاعة ألعاب تربوية بالحيّ: بطاقة شهرية 800DA ثم 120DA للساعة. دفع أيمن هذا الشهر 2240DA. كم ساعة لعب؟</Q>,
           options: ['12 ساعة', '19 ساعة', '6 ساعات', '14 ساعة'],
           correct: 0, cols: 2,
           explain: <MathText>{'$120x + 800 = 2240$ أي $120x = 1440$ ومنه $x = 12$ : لعب 12 ساعة.'}</MathText>,

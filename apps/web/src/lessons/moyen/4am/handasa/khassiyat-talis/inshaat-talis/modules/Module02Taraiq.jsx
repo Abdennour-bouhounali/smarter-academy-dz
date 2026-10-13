@@ -43,6 +43,7 @@ export default function Module02Taraiq() {
       moduleNumber={2}
       moduleTitle="طرائق — نسبة معلومة وطول معلوم"
       moduleSubtitle="موازيان مدرّجان، وتناسب يصير إنشاءً"
+      objectives={['كيف أنشئ نقطة M من [AB] حيث MA/MB = 3/2 ؟', 'أين تقع النقطة الثانية التي لها النسبة نفسها؟', 'كيف أنشئ قطعة طولها معلوم، ولو كان غير ناطق؟']}
       estimatedTime="12 دقيقة"
       brief={{
         tag: 'طرائق — الكتاب ص 107 و 109', title: 'نقطة تقسم قطعة بنسبة معلومة، وقطعة طولها معلوم', tone: 'emerald',

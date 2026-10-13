@@ -32,6 +32,7 @@ export default function Module02Majmu() {
       moduleTitle="نشاط 4 — مجموع جذرين وفرقهما"
       moduleSubtitle="هل يتوزّع الجذر على الجمع والطرح؟"
       estimatedTime="8 دقائق"
+      objectives={['هل يتوزّع الجذر التربيعي على الجمع؟', 'وهل يتوزّع على الطرح؟', 'ماذا يكفي لنفي مساواة: مثال واحد أم أمثلة كثيرة؟']}
       brief={{
         tag: 'أنشطة — الكتاب ص 21',
         title: ACTIVITY_C.subtitle,

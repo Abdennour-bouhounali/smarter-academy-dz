@@ -81,6 +81,7 @@ export default function Module01NashatNisab() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
+      objectives={["كيف نحسب النسبة المئوية لجزء من كلّ؟", "ماذا يحدث لسعر زاد بنسبة مئوية؟ هل نضيف أم نضرب؟", "ماذا يحدث لو خفّضنا سعرًا ثم زدناه بالنسبة نفسها؟"]}
       moduleNumber={1}
       moduleTitle="نشاط 5 — النسب المئوية"
       moduleSubtitle="نمدّد بطاقة السعر"
@@ -104,7 +105,7 @@ export default function Module01NashatNisab() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="الفكرة نفسها في المستويين: تغيّر مقدار بنسبة مئوية ضرب في عدد، لا إضافة."
+          lead="الفكرة نفسها في المستويين: غيّر مقدارًا بنسبة مئوية ولاحظ ما يحدث للشريط الملوّن."
           levels={{
             beginner: () => (
               <Manipulation

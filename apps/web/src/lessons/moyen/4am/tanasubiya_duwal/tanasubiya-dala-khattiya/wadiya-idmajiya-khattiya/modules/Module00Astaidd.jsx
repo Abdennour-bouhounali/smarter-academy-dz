@@ -7,7 +7,7 @@ import { PREP_ITEMS } from '../content/textbook';
 /**
  * Module 0 — أستعدّ. Le « أستعدّ » du manuel (p. 65) appartient aux leçons 1, 2 et 4 ; la
  * synthèse pose donc neuf affirmations de la plateforme (« عبارة إضافية من المنصّة ») sur ce que
- * la situation, « أؤكّد تعلّماتي » et « أتعمّق » mobilisent : Pythagore, la vitesse moyenne avec
+ * la situation et les six entraînements mobilisent : Pythagore, la vitesse moyenne avec
  * conversion d'unités, la réduction en % comme multiplication, la lecture d'un graphique,
  * l'image, le coefficient, la forme ax et un pourcentage d'un tout. Quatre vraies, cinq fausses ;
  * aucune n'emploie les nombres du téléphérique. Diagnostic JAMAIS bloquant ; `id` et `requires`

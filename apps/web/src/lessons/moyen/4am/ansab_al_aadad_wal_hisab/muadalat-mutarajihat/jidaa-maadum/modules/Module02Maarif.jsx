@@ -32,6 +32,7 @@ export default function Module02Maarif() {
 
   return (
     <ContentModule
+      objectives={["ماذا نسمّي معادلة طرفها الأول جداء عاملين وطرفها الثاني 0؟", "ما علاقة حلول هذه المعادلة بحلول معادلتين من الدرجة الأولى؟", "ماذا نفعل إذا لم يظهر الجداء في الطرف الأول؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}

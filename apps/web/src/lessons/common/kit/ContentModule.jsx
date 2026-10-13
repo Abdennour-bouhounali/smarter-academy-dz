@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { KitContext, useKit } from './kitContext';
 
 // Ré-export : les modules qui importaient useKit depuis ici continuent de marcher.
@@ -11,7 +12,9 @@ import {
 } from '../components/LessonUI';
 import { isStepLocked, canAdvance } from '../utils/stepUnlock';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
-import { useClassroomMode, useClassroomStage, ClassroomFrame } from '../classroom';
+import { useClassroomMode, useClassroomStage, ClassroomFrame, ClassroomPaged } from '../classroom';
+import { clampPage } from '../classroom/classroomPages';
+import ModuleOverview from './ModuleOverview';
 import { moduleUnits, clampUnit, resolveModuleNavigation } from '../classroom/classroomUnits';
 
 /**
@@ -65,6 +68,7 @@ export default function ContentModule({
   // ne les fournit pas obtient la même carte, en plus sobre.
   brief,
   intro,          // contenu entre le brief et les étapes (ex. cartes de mission)
+  objectives,     // [string] « ماذا سنتعلّم » de la page d'entrée présentée ; défaut : les titres des étapes
   steps,          // [{ num, title, subtitle?, done, content }]
   footer,         // contenu de fin, rendu quand allDone
 }) {
@@ -86,6 +90,7 @@ export default function ContentModule({
   const renderSlot = (slot) => (typeof slot === 'function' ? slot(kit) : slot);
 
   // ── Mode classe : les unités et leur navigation ──────────────────────────
+  const { t } = useTranslation('lesson');
   const classroom = useClassroomMode();
   const presenting = classroom.isClassroomMode;
   const stepKey = steps.map((s) => s.num).join('|');
@@ -94,22 +99,43 @@ export default function ContentModule({
   const showFooter = allDone || viewer.freeNavigation;
   const hasFooter = showFooter && Boolean(footer);
   const units = useMemo(
-    () => moduleUnits({ brief: Boolean(brief), intro: Boolean(intro), steps, footer: hasFooter }),
+    () => moduleUnits({ overview: true, brief: Boolean(brief), intro: Boolean(intro), steps, footer: hasFooter }),
     // `steps` est recréé à chaque rendu par le module : on suit ses numéros.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [Boolean(brief), Boolean(intro), stepKey, hasFooter],
   );
   const [unitIndex, setUnitIndex] = useState(0);
   const current = clampUnit(unitIndex, units.length);
-  const goTo = useCallback((i) => setUnitIndex(i), []);
+
+  // Les PAGES d'une unité (ClassroomPaged) : une étape trop haute est découpée
+  // au lieu d'être réduite. `pageCounts` : le nombre de pages de chaque unité
+  // (une seule tant qu'elle n'a pas été mesurée) ; `page` : la page courante.
+  const [page, setPage] = useState(0);
+  const [pageCounts, setPageCounts] = useState({});
+  const pendingLast = useRef(null); // l'unité qu'on rejoint par sa DERNIÈRE page
+  const currentKey = units[current]?.key;
+  const pageCount = pageCounts[currentKey] ?? 1;
+  const goTo = useCallback((i) => { setPage(0); setUnitIndex(i); }, []);
+  const onPages = useCallback((key, count) => {
+    setPageCounts((prev) => (prev[key] === count ? prev : { ...prev, [key]: count }));
+    if (pendingLast.current === key) {
+      pendingLast.current = null;
+      setPage(count - 1);
+    }
+  }, []);
+  const isPaged = (key) => key.startsWith('step-') || key === 'footer';
 
   // Par quel bout entrer quand une session leçon arrive ici (« السابق »
   // depuis le module suivant → la dernière unité).
   useEffect(() => {
     if (!presenting) return;
     const arrival = classroom.takeArrival();
-    if (arrival === 'last') setUnitIndex(units.length - 1);
-    else if (arrival === 'first') setUnitIndex(0);
+    if (arrival === 'last') {
+      const lastKey = units[units.length - 1]?.key;
+      pendingLast.current = lastKey && isPaged(lastKey) ? lastKey : null;
+      setPage(0);
+      setUnitIndex(units.length - 1);
+    } else if (arrival === 'first') { setPage(0); setUnitIndex(0); }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [presenting]);
 
@@ -121,14 +147,34 @@ export default function ContentModule({
   }, [current, presenting]);
 
   const lessonNav = classroom.lessonNavigation;
-  const nav = useMemo(() => resolveModuleNavigation({
-    index: current, count: units.length, goTo, lessonPrevious: lessonNav?.previous, lessonNext: lessonNav?.next,
-  }), [current, units.length, goTo, lessonNav]);
+  const nav = useMemo(() => {
+    const unitNav = resolveModuleNavigation({
+      index: current, count: units.length, goTo, lessonPrevious: lessonNav?.previous, lessonNext: lessonNav?.next,
+    });
+    // À l'intérieur d'une unité en plusieurs pages, السابق / التالي tournent
+    // d'abord les pages ; l'unité voisine (ou le محور voisin) ne vient qu'après.
+    const onNext = page < pageCount - 1 ? () => setPage(page + 1) : unitNav.onNext;
+    let onPrevious = unitNav.onPrevious;
+    if (page > 0) onPrevious = () => setPage(page - 1);
+    else if (current > 0) {
+      const previousKey = units[current - 1]?.key;
+      onPrevious = () => { pendingLast.current = previousKey && isPaged(previousKey) ? previousKey : null; goTo(current - 1); };
+    }
+    return { onPrevious, onNext };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current, units, goTo, lessonNav, page, pageCount]);
   const slot = useMemo(() => (
-    <span className="sa-classroom-position" data-classroom-position data-classroom-unit-index={current} dir="ltr">
-      {current + 1} / {units.length}
-    </span>
-  ), [current, units.length]);
+    <>
+      {pageCount > 1 && (
+        <span className="sa-classroom-position sa-classroom-position--page" data-classroom-page-position data-classroom-page-index={page}>
+          {t('classroom.pageOf', { current: page + 1, total: pageCount })}
+        </span>
+      )}
+      <span className="sa-classroom-position" data-classroom-position data-classroom-unit-index={current} dir="ltr">
+        {current + 1} / {units.length}
+      </span>
+    </>
+  ), [current, units.length, page, pageCount, t]);
   useClassroomStage({ title: moduleTitle, onPrevious: nav.onPrevious, onNext: nav.onNext, slot, priority: 2 }, presenting);
 
   // Une unité : toujours rendue, cachée quand elle n'est pas la courante.
@@ -168,6 +214,20 @@ export default function ContentModule({
             </div>
           )}
 
+          <div {...unitProps('overview')}>
+            {presenting && (
+            <ClassroomFrame>
+              <ModuleOverview
+                number={moduleNumber}
+                title={moduleTitle}
+                subtitle={moduleSubtitle}
+                estimatedTime={estimatedTime}
+                points={objectives?.length ? objectives : steps.map((st) => st.title)}
+              />
+            </ClassroomFrame>
+            )}
+          </div>
+
           <div {...unitProps('brief')}>
             {brief && (
               <ClassroomFrame>
@@ -202,14 +262,30 @@ export default function ContentModule({
                   done={s.done}
                   locked={isStepLocked(alreadyCompleted, i === 0 ? false : !steps[i - 1].done, { freeNavigation: viewer.freeNavigation, presenting })}
                 >
-                  {renderSlot(s.content)}
+                  <ClassroomPaged
+                    active={presenting && current === units.findIndex((u) => u.key === `step-${s.num}`)}
+                    page={currentKey === `step-${s.num}` ? page : 0}
+                    onPages={(n) => onPages(`step-${s.num}`, n)}
+                  >
+                    {renderSlot(s.content)}
+                  </ClassroomPaged>
                 </StepCard>
               </ClassroomFrame>
             </div>
           ))}
 
           <div {...unitProps('footer')}>
-            {showFooter && <ClassroomFrame>{renderSlot(footer)}</ClassroomFrame>}
+            {showFooter && (
+              <ClassroomFrame>
+                <ClassroomPaged
+                  active={presenting && currentKey === 'footer'}
+                  page={currentKey === 'footer' ? page : 0}
+                  onPages={(n) => onPages('footer', n)}
+                >
+                  {renderSlot(footer)}
+                </ClassroomPaged>
+              </ClassroomFrame>
+            )}
           </div>
         </div>
       </ModuleLayout>

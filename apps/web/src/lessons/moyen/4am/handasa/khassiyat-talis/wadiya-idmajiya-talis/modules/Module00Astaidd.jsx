@@ -6,8 +6,8 @@ import { PREP_ITEMS } from '../content/textbook';
 
 /**
  * Module 0 — أستعدّ. Le « أستعدّ » du manuel (p. 103) appartient à la leçon 1 ; la synthèse pose donc sept
- * affirmations de la plateforme (« عبارة إضافية من المنصّة ») sur ce que le تحدّ, la وضعية, « أؤكّد تعلّماتي » et
- * « أتعمّق » mobilisent : Thalès et sa réciproque, le quatrième proportionnel, la coupe axiale d'un cône, le volume
+ * affirmations de la plateforme (« عبارة إضافية من المنصّة ») sur ce que le تحدّ, la وضعية et le test final
+ * mobilisent : Thalès et sa réciproque, le quatrième proportionnel, la coupe axiale d'un cône, le volume
  * d'un cylindre, une équation du premier degré, les médianes d'un triangle. Quatre vraies, trois fausses ;
  * aucune n'emploie les nombres de la minaret ou du cône. Diagnostic JAMAIS bloquant ; `id` et `requires`
  * littéraux (audit), une connaissance par affirmation.

@@ -21,7 +21,7 @@ export const EXERCISES = [
   // 1 — la pastèque du marché : une boule de rayon 15 cm tranchée à 9 cm du centre
   {
     id: 'w1-a', group: 'w1', source: ADD, learningPointId: LP.P1, difficulty: 'facile',
-    statement: 'في سوق الخضر يقطع البائع دلّاعة كروية الشكل نصف قطرها $15\\,\\mathrm{cm}$ بسكين مستقيمة، فيكون مستوي القطع على بعد $9\\,\\mathrm{cm}$ من مركزها O.',
+    statement: 'في سوق الخضر يقطع البائع الأمين، ليُري الزبون جودتها، دلّاعة كروية الشكل نصف قطرها $15\\,\\mathrm{cm}$ بسكين مستقيمة، فيكون مستوي القطع على بعد $9\\,\\mathrm{cm}$ من مركزها O.',
     interaction: 'numeric',
     question: {
       prompt: 'نصف قطر الدائرة التي يرسمها القطع على قشرة الدلّاعة (بـ $\\mathrm{cm}$):',
@@ -47,7 +47,7 @@ export const EXERCISES = [
   // 2 — le silo de céréales : un cylindre de rayon 4 m, de hauteur 12 m, coupé parallèlement à son axe à 2,4 m de l'axe
   {
     id: 'w2', source: ADD, learningPointId: LP.P3, difficulty: 'moyen',
-    statement: 'صومعة حبوب على شكل أسطوانة دوران نصف قطر قاعدتها $4\\,\\mathrm{m}$ وارتفاعها $12\\,\\mathrm{m}$ . في مخطط هندسي نقطعها بمستو موازٍ لمحورها يبعد عنه بـ $2{,}4\\,\\mathrm{m}$ .',
+    statement: 'صومعة حبوب يدّخر فيها الفلاحون قمح الوطن، على شكل أسطوانة دوران نصف قطر قاعدتها $4\\,\\mathrm{m}$ وارتفاعها $12\\,\\mathrm{m}$ . في مخطط هندسي نقطعها بمستو موازٍ لمحورها يبعد عنه بـ $2{,}4\\,\\mathrm{m}$ .',
     interaction: 'numeric',
     question: {
       prompt: 'المقطع مستطيل أحد بعديه $12\\,\\mathrm{m}$ . بعده الآخر (بـ $\\mathrm{m}$):',
@@ -61,7 +61,7 @@ export const EXERCISES = [
   // 3 — le gâteau de l'Aïd : un pavé 30 × 20 × 8 coupé parallèlement à une arête verticale
   {
     id: 'w3', source: ADD, learningPointId: LP.P2, difficulty: 'moyen',
-    statement: 'كعكة العيد على شكل بلاطة قائمة ABCDEFGH طولها $30\\,\\mathrm{cm}$ وعرضها $20\\,\\mathrm{cm}$ وارتفاعها $8\\,\\mathrm{cm}$ . تقطع الأم ركنا منها بسكين شاقولية توازي الحرف الشاقولي للركن، وتمرّ على بعد $12\\,\\mathrm{cm}$ و $9\\,\\mathrm{cm}$ من هذا الركن على الحرفين الأفقيين.',
+    statement: 'كعكة العيد على شكل بلاطة قائمة ABCDEFGH طولها $30\\,\\mathrm{cm}$ وعرضها $20\\,\\mathrm{cm}$ وارتفاعها $8\\,\\mathrm{cm}$ . تقطع الأم ركنا منها لتهديه إلى الجيران، بسكين شاقولية توازي الحرف الشاقولي للركن، وتمرّ على بعد $12\\,\\mathrm{cm}$ و $9\\,\\mathrm{cm}$ من هذا الركن على الحرفين الأفقيين.',
     interaction: 'choice',
     question: {
       prompt: 'مساحة المقطع (وجه القطعة المقطوعة) هي:',
@@ -75,7 +75,7 @@ export const EXERCISES = [
   // 4 — la couche de l'imprimante : une pyramide à base carrée de côté 6, SE/SA = 2/3
   {
     id: 'w4', source: ADD, learningPointId: LP.P4, difficulty: 'difficile',
-    statement: 'تطبع الطابعة ثلاثية الأبعاد هرما منتظما SABCD قاعدته مربع ضلعه $6\\,\\mathrm{cm}$ . الطبقة EFGH موازية للقاعدة، و E من $[SA]$ حيث $SE = \\dfrac{2}{3}SA$ .',
+    statement: 'يتعاون تلاميذ النادي فتطبع الطابعة ثلاثية الأبعاد هرما منتظما SABCD قاعدته مربع ضلعه $6\\,\\mathrm{cm}$ . الطبقة EFGH موازية للقاعدة، و E من $[SA]$ حيث $SE = \\dfrac{2}{3}SA$ .',
     interaction: 'choice',
     question: {
       prompt: 'الطبقة EFGH هي:',

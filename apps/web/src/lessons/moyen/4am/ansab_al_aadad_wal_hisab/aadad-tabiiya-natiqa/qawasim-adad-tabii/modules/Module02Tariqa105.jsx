@@ -17,7 +17,7 @@ export default function Module02Tariqa105() {
   const [read, setRead] = useState(false);
   const [q2, setQ2] = useState(false);
   return (
-    <ContentModule
+    <ContentModule objectives={["إلى أي عدد نختبر القسمة؟", "متى نتوقّف عن البحث؟", "كيف نرتّب القواسم المكتشفة؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2}
       moduleTitle="طريقة — قواسم العدد 105" moduleSubtitle="إلى أي عدد نختبر؟" estimatedTime="14 دقيقة"
       brief={{ tag: 'طرائق — الكتاب ص 11', title: METHOD.title, tone: 'violet', body: <p>مع 60 و 48 لاحظت أن الجداءات تتكرر بعد حدّ ما. الكتاب يحوّل هذه الملاحظة إلى طريقة.</p> }}

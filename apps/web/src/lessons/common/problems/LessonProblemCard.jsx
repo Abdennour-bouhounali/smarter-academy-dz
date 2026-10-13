@@ -11,7 +11,7 @@ const ProblemSupport = lazy(() => import('./ProblemSupport'));
  * sommaire (LessonIndex) et à la fin du laboratoire d'ouverture (module 1).
  * L'élève la lit, y pense, et la résout pas à pas au module `lessonProblem.module`.
  *
- * @param {{ title: string, statement: string, questions?: {label: string, text: string}[], figure?, visual?, table? }} problem  LESSON_CONFIG.lessonProblem
+ * @param {{ title: string, statement: string, questions?: {label: string, text: string}[], figure?, visual?, table?, illustration? }} problem  LESSON_CONFIG.lessonProblem
  *        (`questions` : les demandes de la مسألة 1, affichées sous l'énoncé et le support)
  *        (le support, s'il existe, est la même donnée que celle de la مسألة 1 — une seule source)
  * @param {string} [to]           lien vers le module qui la résout
@@ -28,9 +28,9 @@ export default function LessonProblemCard({ problem, to, moduleTitle, compact = 
       </p>
       <h2 className={`font-space font-bold ${compact ? 'text-sm' : 'text-base'}`}>{problem.title}</h2>
       <p className="text-sm leading-relaxed"><MathText>{problem.statement}</MathText></p>
-      {(problem.figure || problem.visual || problem.table) && (
+      {(problem.figure || problem.visual || problem.table || problem.illustration) && (
         <Suspense fallback={null}>
-          <ProblemSupport figure={problem.figure} visual={problem.visual} table={problem.table} />
+          <ProblemSupport figure={problem.figure} visual={problem.visual} table={problem.table} illustration={problem.illustration} />
         </Suspense>
       )}
       {problem.questions?.length > 0 && (

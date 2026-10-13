@@ -15,7 +15,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module01Nashat.jsx",
-        "line": 167,
+        "line": 177,
         "step": 2,
         "variant": "new"
       }
@@ -26,7 +26,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module02Maarif.jsx",
-        "line": 51,
+        "line": 58,
         "step": 1,
         "variant": "new"
       }
@@ -37,7 +37,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module02Maarif.jsx",
-        "line": 87,
+        "line": 94,
         "step": 2,
         "variant": "new"
       }
@@ -50,7 +50,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module01Nashat.jsx",
-        "line": 207,
+        "line": 217,
         "step": 4,
         "variant": "new"
       }
@@ -63,7 +63,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module02Maarif.jsx",
-        "line": 131,
+        "line": 139,
         "step": 3,
         "variant": "new"
       }
@@ -74,7 +74,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module03Qiraa.jsx",
-        "line": 52,
+        "line": 58,
         "step": 1,
         "variant": "new"
       }
@@ -85,7 +85,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module03Qiraa.jsx",
-        "line": 125,
+        "line": 133,
         "step": 3,
         "variant": "new"
       }
@@ -195,7 +195,7 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module01Nashat.jsx",
-      "line": 126,
+      "line": 133,
       "requires": [
         "tamthil-khatti"
       ],
@@ -211,7 +211,7 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module01Nashat.jsx",
-      "line": 135,
+      "line": 142,
       "requires": [
         "notation-fx"
       ],
@@ -227,7 +227,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module01Nashat.jsx",
-      "line": 153,
+      "line": 162,
       "requires": [
         "notation-fx"
       ],
@@ -243,7 +243,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module01Nashat.jsx",
-      "line": 177,
+      "line": 187,
       "requires": [
         "irtifa-b"
       ],
@@ -259,7 +259,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module01Nashat.jsx",
-      "line": 198,
+      "line": 208,
       "requires": [
         "irtifa-b"
       ],
@@ -275,7 +275,7 @@
       "step": 5,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module01Nashat.jsx",
-      "line": 217,
+      "line": 227,
       "requires": [
         "tartib-mabda"
       ],
@@ -291,7 +291,7 @@
       "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module01Nashat.jsx",
-      "line": 226,
+      "line": 236,
       "requires": [
         "tartib-mabda"
       ],
@@ -307,7 +307,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module02Maarif.jsx",
-      "line": 52,
+      "line": 59,
       "requires": [
         "tamthil-taalufi"
       ],
@@ -323,7 +323,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module02Maarif.jsx",
-      "line": 62,
+      "line": 69,
       "requires": [
         "tamthil-taalufi"
       ],
@@ -339,7 +339,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module02Maarif.jsx",
-      "line": 89,
+      "line": 96,
       "requires": [
         "muamil-tawjih"
       ],
@@ -355,7 +355,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module02Maarif.jsx",
-      "line": 99,
+      "line": 106,
       "requires": [
         "muamil-tawjih",
         "tamthil-taalufi"
@@ -373,7 +373,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module02Maarif.jsx",
-      "line": 132,
+      "line": 140,
       "requires": [
         "rasm-taalufi"
       ],
@@ -389,7 +389,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module03Qiraa.jsx",
-      "line": 57,
+      "line": 63,
       "requires": [
         "qiraa-ab"
       ],
@@ -405,7 +405,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module03Qiraa.jsx",
-      "line": 66,
+      "line": 72,
       "requires": [
         "qiraa-ab"
       ],
@@ -421,7 +421,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module03Qiraa.jsx",
-      "line": 93,
+      "line": 99,
       "requires": [
         "qiraa-ab"
       ],
@@ -437,7 +437,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module03Qiraa.jsx",
-      "line": 126,
+      "line": 134,
       "requires": [
         "qiraa-sura-taalufi"
       ],
@@ -453,7 +453,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module03Qiraa.jsx",
-      "line": 135,
+      "line": 143,
       "requires": [
         "qiraa-sura-taalufi"
       ],
@@ -469,7 +469,7 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module04Awazzif.jsx",
-      "line": 49,
+      "line": 54,
       "requires": [
         "tartib-mabda"
       ],
@@ -485,7 +485,7 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module04Awazzif.jsx",
-      "line": 58,
+      "line": 63,
       "requires": [
         "muamil-tawjih"
       ],
@@ -501,7 +501,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module04Awazzif.jsx",
-      "line": 80,
+      "line": 85,
       "requires": [
         "qiraa-ab"
       ],
@@ -517,7 +517,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module04Awazzif.jsx",
-      "line": 89,
+      "line": 94,
       "requires": [
         "qiraa-sura-taalufi"
       ],
@@ -533,7 +533,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module04Awazzif.jsx",
-      "line": 98,
+      "line": 103,
       "requires": [
         "qiraa-sura-taalufi"
       ],
@@ -549,7 +549,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module04Awazzif.jsx",
-      "line": 116,
+      "line": 121,
       "requires": [
         "rasm-taalufi"
       ],
@@ -561,10 +561,10 @@
     },
     {
       "questionId": "E1",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module08Itqan.jsx",
       "line": 40,
       "requires": [
         "rasm-taalufi",
@@ -579,10 +579,10 @@
     },
     {
       "questionId": "E2",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module08Itqan.jsx",
       "line": 48,
       "requires": [
         "qiraa-ab"
@@ -595,10 +595,10 @@
     },
     {
       "questionId": "E3",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module08Itqan.jsx",
       "line": 64,
       "requires": [
         "qiraa-ab",
@@ -613,10 +613,10 @@
     },
     {
       "questionId": "E4",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module08Itqan.jsx",
       "line": 80,
       "requires": [
         "qiraa-sura-taalufi"
@@ -629,10 +629,10 @@
     },
     {
       "questionId": "E5",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module08Itqan.jsx",
       "line": 96,
       "requires": [
         "qiraa-sura-taalufi"
@@ -644,5 +644,42 @@
       "pedagogicallyValid": true
     }
   ],
-  "findings": []
+  "findings": [
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 5 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module05Masala1.jsx",
+      "line": 0,
+      "module": 5,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 6 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module06Masala2.jsx",
+      "line": 0,
+      "module": 6,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 7 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/modules/Module07Masala3.jsx",
+      "line": 0,
+      "module": 7,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    }
+  ]
 }

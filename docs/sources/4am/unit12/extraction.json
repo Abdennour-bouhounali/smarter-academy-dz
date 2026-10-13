@@ -2130,28 +2130,29 @@
       "module": 3
     },
     "qcm": {
-      "lesson": "wadiya-idmajiya-maalam",
-      "module": 2,
+      "lesson": "murakkibata-shuaa",
+      "module": 5,
+      "note": "item 1 dans le إختبار ; قرار المالك 2026-10-13: «أؤكّد تعلّماتي» لا تدخل في «أدمج تعلّماتي» (plus de module QCM) — ses cinq questions vivent dans les إختبارات des دروس et comme exercices de pratique de la synthèse",
       "duplicatedIn": [
-        {
-          "lesson": "murakkibata-shuaa",
-          "module": 5,
-          "note": "item 1 dans le إختبار"
-        },
         {
           "lesson": "muntasaf-masafa",
           "module": 5,
           "note": "items 2–5"
+        },
+        {
+          "lesson": "wadiya-idmajiya-maalam",
+          "module": "practice",
+          "note": "banc de pratique (niveaux 1–2), sans l'étiquette «أؤكّد تعلّماتي»"
         }
       ]
     },
     "situation": {
       "lesson": "wadiya-idmajiya-maalam",
-      "module": 1,
+      "module": 7,
       "duplicatedIn": [
         {
           "lesson": "wadiya-idmajiya-maalam",
-          "module": 4,
+          "module": 8,
           "note": "transposée : autres demi-cercles / autre ligne brisée"
         }
       ]
@@ -2254,15 +2255,18 @@
     },
     "ex-22": {
       "lesson": "wadiya-idmajiya-maalam",
-      "module": 3
+      "module": "practice",
+      "note": "قرار المالك 2026-10-13: «أتعمّق» لا تدخل في «أدمج تعلّماتي» — الوحدة تحيا في بنك التدريب فقط"
     },
     "ex-23": {
       "lesson": "wadiya-idmajiya-maalam",
-      "module": 3
+      "module": "practice",
+      "note": "قرار المالك 2026-10-13: «أتعمّق» لا تدخل في «أدمج تعلّماتي» — الوحدة تحيا في بنك التدريب فقط"
     },
     "ex-25": {
       "lesson": "wadiya-idmajiya-maalam",
-      "module": 3
+      "module": "practice",
+      "note": "قرار المالك 2026-10-13: «أتعمّق» لا تدخل في «أدمج تعلّماتي» — الوحدة تحيا في بنك التدريب فقط"
     }
   }
 }

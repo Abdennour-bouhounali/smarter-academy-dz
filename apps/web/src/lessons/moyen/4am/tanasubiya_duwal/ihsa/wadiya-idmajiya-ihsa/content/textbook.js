@@ -1,10 +1,10 @@
-import { src, addition, BASE } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
 
 /**
  * « أستعدّ » (module 0) — le « أستعدّ » du manuel (p. 91, items 1–4) est réparti entre les leçons
  * 1, 2 et 3 (extraction › destinations › prep) : la synthèse n'en reçoit aucun. Ses affirmations
  * sont donc des AFFIRMATIONS DE LA PLATEFORME (« عبارة إضافية من المنصّة »), dans la forme du manuel,
- * sur ce que la situation, « أؤكّد تعلّماتي » et « أتعمّق » mobilisent : l'effectif total, les
+ * sur ce que la situation des médailles mobilise : l'effectif total, les
  * effectifs cumulés (درس 1), l'étendue, le rang de la médiane et la moyenne pondérée (درس 2), « أخذ
  * نسبة من عدد » à l'envers (le tout à partir d'une part) et une équation du premier degré (années
  * précédentes). Quatre vraies, quatre fausses ; jamais les nombres des médailles.
@@ -71,7 +71,7 @@ export const analysisText = (a) => a.items.map((s) => `• ${s}`).join(' ');
  */
 export const SCHOOL_GAMES = {
   source: addition('interactive_example'),
-  text: 'في الألعاب المدرسية الولائية، هذه حصيلة الميداليات الذهبية لعشر متوسطات. وسيط السلسلة: ميداليتان. متوسط السلسلة: 3 ميداليات. أكبر قيمة مخفية.',
+  text: 'في الألعاب المدرسية الولائية التي تعلّم التعاون والروح الرياضية، هذه حصيلة الميداليات الذهبية لعشر متوسطات. وسيط السلسلة: ميداليتان. متوسط السلسلة: 3 ميداليات. أكبر قيمة مخفية.',
   numbers: {
     values: [1, 2, 4, 5, null],
     counts: [3, 3, 2, 1, 1],
@@ -81,7 +81,7 @@ export const SCHOOL_GAMES = {
 };
 
 /**
- * Les props du laboratoire `stat-balance` du module 1, à ses DEUX niveaux — contrat des props du brief
+ * Les props du laboratoire `stat-balance` du module 7, à ses DEUX niveaux — contrat des props du brief
  * de l'unité 8 §6 (manipulations/stats/StatBalance.jsx, écrit par la leçon 2), mode `hidden` : les
  * jetons cachés (`hidden` = « indice:min-max » de chaque colonne cachée, bornes = voisins du tableau)
  * sont glissés par l'élève jusqu'à ce que le rideau du وسيط tombe sur `targetMedian` et que la poutre
@@ -102,7 +102,7 @@ export const LAB = {
 };
 
 /**
- * Les corrections et les méthodes du module 1 — importées aussi par la carte (knowledgeGraph.js) :
+ * Les corrections et les méthodes du module 7 — importées aussi par la carte (knowledgeGraph.js) :
  * une aide de la carte cite la leçon mot pour mot. Toute égalité dans `$…$`.
  */
 export const REMARKS = {
@@ -131,40 +131,10 @@ export const REMARKS = {
   nisbaWhy: 'العدد 30 هو 69% من الكل، وليس الكل: الكل هو المجهول.',
   nisbaRight: 'نكتب $0{,}69 \\times T = 30$ ثم نقسم 30 على $0{,}69$.',
   jumla: 'القيمتان المخفيتان 3 و 28 ، وعدد الدول التي تحصّلت فقط على ميداليات فضية أو برونزية 13 دولة تقريبا.',
-  majhul: 'التكرار الكلي يعطي مجموع التكرارين المجهولين، ثم تحدّد رتبتا الوسيط أيّ توزيع هو الصحيح.',
-  tajnid: '«على الأكثر» و«على الأقل» تُقرآن بالتكرار المجمع، التشتت بالمدى، «النصف» بالوسيط، والمجموع بالمتوسط.',
 };
 
 /**
- * « أؤكّد تعلّماتي » (p. 100) : les six QCM, au mot près ; chaque item renvoie au درس qui l'enseigne
- * (extraction › qcm › duplicatedIn) — 1, 2 → درس 1 (التكرار المجمع) ; 3–6 → درس 2 (مدى ووسيط ومتوسط) —
- * et la colonne « عند الحاجة أعود إلى الصفحة » du manuel (pp. 94–97). Les tableaux des items 1 et 2
- * sont redessinés (components/StatTable.jsx). Chaque item a UNE bonne réponse.
- */
-export const QCM = [
-  { n: 1, text: 'في الجدول الإحصائي أدناه التكرار المجمع الصاعد للقيمة 14 هو', table: { values: ['7', '9', '14', '28'], counts: ['6', '10', '3', '1'] },
-    options: ['13', '19', '30'], correct: 1, pages: [94, 95], lesson: 'takrar-mujamma',
-    explain: 'الصاعد يجمع تكرار 14 وتكرارات القيم الأصغر منها: $6 + 10 + 3 = 19$. العدد 13 يهمل تكرار القيمة 14 نفسها، و 30 هو التكرار الكلي.' },
-  { n: 2, text: 'في الجدول الإحصائي أدناه التكرار المجمع النازل للقيمة 40 هو', table: { values: ['10', '20', '30', '40'], counts: ['50', '60', '70', '80'] },
-    options: ['40', '80', '260'], correct: 1, pages: [94, 95], lesson: 'takrar-mujamma',
-    explain: '40 أكبر قيمة: لا قيمة أكبر منها، فتكرارها المجمع النازل هو تكرارها 80. العدد 260 مجموع كل التكرارات (الصاعد لـ 40)، و 40 هي القيمة لا تكرارها.' },
-  { n: 3, text: 'وسيط السلسلة الإحصائية : 8 20 40 60 هو', options: ['30', '20', '40'], correct: 0, pages: [96, 97], lesson: 'mada-wasit-mutawassit',
-    explain: 'السلسلة مرتّبة و $N = 4$ زوجي: الوسيط نصف مجموع القيمتين اللتين رتبتاهما 2 و 3 ، $\\dfrac{20 + 40}{2} = 30$.' },
-  { n: 4, text: 'مدى السلسلة 8,1 5,7 3 2,8 هو', options: ['6', '6,9', '5,3'], correct: 2, pages: [96, 97], lesson: 'mada-wasit-mutawassit',
-    explain: 'أكبر قيمة $8{,}1$ وأصغر قيمة $2{,}8$ : المدى $8{,}1 - 2{,}8 = 5{,}3$.' },
-  { n: 5, text: 'سلسلة إحصائية مرتّبة تكرارها الكلي 97. وسيط هذه السلسلة هو القيمة التي رتبتها...', options: ['49', '50', '51'], correct: 0, pages: [96, 97], lesson: 'mada-wasit-mutawassit',
-    explain: '$N = 97$ فردي: الوسيط القيمة ذات الرتبة $\\dfrac{97 + 1}{2} = 49$ ، قبلها 48 قيمة وبعدها 48 قيمة.' },
-  { n: 6, text: 'متوسط السلسلة 13 1 4 10 12', options: ['أصغر من وسيطها', 'أكبر من وسيطها', 'يساوي وسيطها'], correct: 0, pages: [97], lesson: 'mada-wasit-mutawassit',
-    explain: 'المتوسط $\\dfrac{13 + 1 + 4 + 10 + 12}{5} = \\dfrac{40}{5} = 8$ ؛ وبعد الترتيب 1 ، 4 ، 10 ، 12 ، 13 الوسيط 10. إذن $8 < 10$ : القيمة الصغيرة 1 تسحب المتوسط نحو الأسفل ولا تحرّك الوسيط.' },
-].map((it) => ({ ...it, source: src('qcm', 100, 'أؤكّد تعلّماتي', it.n), lessonPath: `${BASE}/${it.lesson}` }));
-
-export const LESSON_TITLES = {
-  'takrar-mujamma': 'الدرس 1 — التكرار المجمع والتواتر المجمع (الصاعد والنازل)',
-  'mada-wasit-mutawassit': 'الدرس 2 — مدى ووسيط ومتوسط سلسلة إحصائية',
-};
-
-/**
- * « إختبار أولي » (module 4) — la situation TRANSPOSÉE (`synthesis_generation`) : mêmes ressources,
+ * « إختبار أولي » (module 8) — la situation TRANSPOSÉE (`synthesis_generation`) : mêmes ressources,
  * autres nombres, pour que ses réponses n'apparaissent nulle part ailleurs dans la leçon.
  *   valeurs 1, 2, ⬡, 5, 6, 8, 9, 12, ⬡, 21 ; effectifs 6, 2, 3, 2, 1, 1, 1, 1, 1, 2 ; N = 20 ;
  *   médiane 4 → rangs 10 et 11 (cumulés 6, 8, 11) dans la colonne cachée → première valeur 4 ;
@@ -173,7 +143,7 @@ export const LESSON_TITLES = {
 export const TEST = {
   source: addition('synthesis_generation'),
   title: 'البطولة الإفريقية لألعاب القوى: قيمتان مخفيتان وعدد الدول',
-  intro: 'إليك حصيلة الميداليات الذهبية للدول الفائزة بها خلال إحدى دورات البطولة الإفريقية لألعاب القوى.',
+  intro: 'إليك حصيلة الميداليات الذهبية للدول الفائزة بها خلال إحدى دورات البطولة الإفريقية لألعاب القوى، التي تجمع شعوب القارة على روح الأخوّة والعمل الجاد.',
   data: 'وسيط السلسلة : 4 ميداليات. متوسط السلسلة : $6{,}2$ ميدالية.',
   q2: '64% من الدول الفائزة بميداليات تحصّلت على الأقل على ميدالية ذهبية.',
   numbers: {

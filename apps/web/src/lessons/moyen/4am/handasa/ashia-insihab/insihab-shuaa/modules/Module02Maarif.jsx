@@ -27,7 +27,7 @@ export default function Module02Maarif() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
-      moduleNumber={2}
+      moduleNumber={2} objectives={['ما الفرق بين المنحى والاتجاه؟', 'ما عناصر الشعاع وكيف نكتبه؟', 'متى نقول عن شعاعين إنهما متساويان؟']}
       moduleTitle="معارف — الشعاع وتساوي شعاعين"
       moduleSubtitle="ما رأيته في العرض، بكلمات الكتاب"
       estimatedTime="10 دقائق"

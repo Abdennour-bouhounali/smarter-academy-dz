@@ -81,11 +81,11 @@
  "notes": {
   "frames": "Toutes les figures d’espace (`figure.points3d`) sont en repère orthonormé direct, unité = cm, z vers le haut, y « vers l’arrière » (profondeur), x vers la droite. Pavés (act-3, know-3) : H à l’origine, x le long de [HG], y le long de [HE], z le long de [HD] ; act-6 : E à l’origine, x le long de [EF] (AB), y le long de [FG]… (BC), z le long de [EA]. Sphères : centre O à l’origine, axe (NS) = (Oz). Cylindres : centre de la base inférieure (O′) à l’origine, axe (Oz). Pyramide (act-5) : centre de la base à l’origine, sommet S sur (Oz) (hauteur 6 choisie). Seau (challenge) : centre du fond à l’origine. Les dimensions non données par le manuel (R des figures de know-1/know-3, position des coupes, hauteur de la pyramide) sont choisies et déclarées dans `reading` ; elles n’influent sur aucune réponse (assert quand c’est le cas).",
   "destinationRationale": {
-   "challenge": "Le تحدّ (seau = tronc de cône, eau à 28 cm de profondeur) mobilise Thales dans la coupe axiale, le volume du cône et une réduction de rapport 15/19 → wadiya-idmajiya-fada (وضعية, module 1) ; la page d’unité en montre l’énoncé seul.",
+   "challenge": "Le تحدّ (seau = tronc de cône, eau à 28 cm de profondeur) mobilise Thales dans la coupe axiale, le volume du cône et une réduction de rapport 15/19 → wadiya-idmajiya-fada (وضعية, module 7) ; la page d’unité en montre l’énoncé seul.",
    "prep": "Items 1–2 (cercle, disque : l’analogie plan → espace de la sphère et de la boule) → kura-julla ; items 4–6 (volumes cube, pavé, cylindre : prérequis du volume de la boule, 2/3 du cylindre d’Archimède) → misaha-hajm-kura ; items 3, 7, 8 (Thales, cône, pyramide : la section parallèle à la base d’un cône / d’une pyramide est une réduction) → takbir-tasghir. maqati-mustawiya n’a pas d’item du manuel : la leçon ajoute des items de plateforme (Pythagore, rectangle).",
    "act-5": "Section d’une pyramide parallèle à la base : activité d’entrée de maqati-mustawiya (nature du quadrilatère EFGH), dupliquée dans takbir-tasghir (EFGH est la réduction de rapport 3/4 de ABCD).",
    "now-167": "N’utilise que la sphère (OA = OB = R), le triangle équilatéral et Pythagore → kura-julla (module 3), même s’il annonce le calcul de rayon de section de maqati-mustawiya.",
-   "missing": "Le scan n’a ni تمارين, ni أؤكّد (QCM), ni أدمج تعلّماتي, ni أتعمّق : les modules 4 de toutes les leçons et les modules 2–3 de wadiya-idmajiya-fada sont écrits par la plateforme (banque de pratique), sans élément du manuel à citer."
+   "missing": "Le scan n’a ni تمارين, ni أؤكّد (QCM), ni أدمج تعلّماتي, ni أتعمّق : les modules 4 de toutes les leçons et les modules 1–6 (وضعيات تدريبية) et 8 (إختبار أولي) de wadiya-idmajiya-fada sont écrits par la plateforme, sans élément du manuel à citer. Décision du propriétaire 2026-10-13 : « أؤكّد تعلّماتي » (QCM) et « أتعمّق » n’entrent pas dans « أدمج تعلّماتي » ; aucun élément extrait n’y avait de destination (aucun élément qcm / atamaqq dans ce scan)."
   },
   "labAdvancedLevel": {
    "kura-julla": [
@@ -2189,7 +2189,7 @@
    "kind": "missing_page",
    "printed": "(pp. 170 et suivantes non fournies)",
    "corrected": "تمارين أوظّف، أؤكّد (QCM)، أدمج تعلّماتي (وضعية)، أتعمّق — écrits par la plateforme",
-   "reason": "Le scan (7 pages) s’arrête à la fin des طرائق p. 169 : aucun exercice, QCM, situation d’intégration ni أتعمّق. Les modules 4 des leçons et les modules 2–3 de wadiya-idmajiya-fada sont des ajouts déclarés ; la وضعية de synthèse est le تحدّ (seau).",
+   "reason": "Le scan (7 pages) s’arrête à la fin des طرائق p. 169 : aucun exercice, QCM, situation d’intégration ni أتعمّق. Les modules 4 des leçons et les modules 1–6 et 8 de wadiya-idmajiya-fada sont des ajouts déclarés (« أؤكّد تعلّماتي » et « أتعمّق » n’entrent pas dans « أدمج تعلّماتي » : قرار المالك 2026-10-13) ; la وضعية de synthèse est le تحدّ (seau).",
    "resolution": "platform_addition — practice bank"
   },
   {
@@ -2202,7 +2202,7 @@
   }
  ],
  "destinations": {
-  "_comment": "elementId → { lesson, module } ; `duplicatedIn` autorise une seconde utilisation déclarée ; `items` répartit un élément. Modules : 0 أستعدّ, 1 أنشطة/entrée, 2 معارف, 3 طرائق, 4 تمارين/أوظّف (synthèse : 1 وضعية, 2 أؤكّد, 3 أتعمّق).",
+  "_comment": "elementId → { lesson, module } ; `duplicatedIn` autorise une seconde utilisation déclarée ; `items` répartit un élément. Modules : 0 أستعدّ, 1 أنشطة/entrée, 2 معارف, 3 طرائق, 4 تمارين/أوظّف (synthèse : 7 وضعية du seau et son analyse, 8 إختبار أولي).",
   "objectives": {
    "lesson": "unit",
    "module": "page"
@@ -2220,7 +2220,7 @@
   },
   "challenge": {
    "lesson": "wadiya-idmajiya-fada",
-   "module": 1,
+   "module": 7,
    "duplicatedIn": [
     {
      "lesson": "unit",

@@ -15,7 +15,7 @@ export const PLATFORM_SOURCE = PLATFORM;
 export const ACTIVITY = {
   source: src('act-1', 104, 'أنشطة', 1),
   title: 'خاصية طالس',
-  situation: 'عرض سينمائي في الحي: جهاز الإسقاط في A يرسل حزمة ضوئية نحو الشاشة الكبيرة. أين نضع شاشة صغيرة لتأتي الصورة عليها تصغيرا للصورة الكبيرة؟',
+  situation: 'عرض سينمائي مجّاني في الحي يتطوّع به نادي المتوسطة لأهل الحي: جهاز الإسقاط في A يرسل حزمة ضوئية نحو الشاشة الكبيرة. أين نضع شاشة صغيرة لتأتي الصورة عليها تصغيرا للصورة الكبيرة؟',
   case1: '(d) و (d′) مستقيمان متقاطعان في النقطة A. B نقطة من (d) و C نقطة من (d′)، تختلفان عن A. B′ نقطة من [AB] و C′ نقطة من [AC] بحيث (B′C′)//(BC)، كما في الشكل. انقل وأتمم: $\\dfrac{AB\'}{AB} = \\dfrac{\\ldots}{\\ldots} = \\dfrac{\\ldots}{\\ldots}$',
   case1Numeric: [
     'نفرض أن $AB = 6\\,\\mathrm{cm}$ ، $AC = 7\\,\\mathrm{cm}$ و $AB\' = 3{,}2\\,\\mathrm{cm}$ . احسب AC′.',
@@ -143,3 +143,29 @@ export const PREP_REVISITED = [
 
 /** Le monde مبتدئ du lab (plateforme) : la projection du quartier, AB = 4, AC = 5, BC = 3. */
 export const CINEMA = { source: PLATFORM, numbers: { AB: 4, AC: 5, BC: 3, mode: 'projector' } };
+/**
+ * Le monde du مبتدئ (2026-10-13) : « ساحة الحيّ » (shadow-world). Ce lab-ci DÉCOUVRE la règle (ombre ÷ hauteur : le même
+ * nombre pour tous les objets verticaux, car les rayons du soleil sont parallèles) avant que نشاط 1 (متقدم) la lise
+ * sur le faisceau. Une minaret de 5 m (≠ celle de la synthèse, 7,25 m : le تحدّ de l'unité reste entier pour elle).
+ */
+export const SHADOW_WORLD = {
+  source: PLATFORM,
+  beginner: { minaret: '5', theme: 'minaret' },
+  advanced: { minaret: '6,5', theme: 'minaret' },
+};
+
+/**
+ * Ce que la plateforme ÉCRIT autour de « ساحة الحيّ » (module 1) : la situation, le passage de la Place à la figure,
+ * l'égalité de Thalès qu'elle porte, un calcul sur les objets de la place (le lampadaire et la palmeraie à 14:00, k = 1,2).
+ * Le manuel (نشاط 1) suit : ses figures générales A, B, C, B′, C′ disent la MÊME chose avec d'autres lettres.
+ */
+export const SHADOW_STEPS = {
+  source: PLATFORM,
+  situation: 'ساحة الحيّ بعد الظهر: مئذنة، نخلة، عمود إنارة، وأنت. الشمس تصنع ظلًّا لكل شيء. كيف نعرف ارتفاع شيء لا نستطيع الصعود إليه؟',
+  bridge: 'نمثّل ما رأيته في الساحة: $A$ قاعدة المئذنة و $M$ قمّتها، $B$ قاعدة العصا و $E$ قمّتها، و $O$ نهاية الظلّ المشتركة حين ينتهي ظلّا العصا والمئذنة معًا.',
+  parallel: 'المئذنة والعصا شاقوليتان، أي عموديتان على الأرض $(OA)$ ، فهما متوازيتان: $(AM) \\parallel (BE)$ . وشعاع الشمس $(OM)$ يمرّ برأسيهما معًا: إنه القاطع الذي يربط المثلثين $OBE$ و $OAM$ .',
+  equality: 'المثلثان $OBE$ و $OAM$ في وضعية طالس: لهما الرأس $O$ و $(BE) \\parallel (AM)$ ، إذن $\\dfrac{OB}{OA} = \\dfrac{OE}{OM} = \\dfrac{BE}{AM}$ . وهذا ما كتبتَه بقاعدتك في الساحة: النسبة بين الظلّ والطول واحدة لكل الأشياء الشاقولية في اللحظة نفسها.',
+  calc: 'الساعة 14:00 في ساحة الحيّ: عمود الإنارة طوله $3\\,\\mathrm{m}$ وظلّه $3{,}6\\,\\mathrm{m}$ ، وظلّ النخلة $5{,}4\\,\\mathrm{m}$ .',
+  calcLine: 'الشعاع نفسه يمرّ برأسي العمود والنخلة: $\\dfrac{5{,}4}{3{,}6} = \\dfrac{h}{3}$ ومنه $h = \\dfrac{5{,}4 \\times 3}{3{,}6} = 4{,}5\\,\\mathrm{m}$ . (أو: $\\dfrac{3{,}6}{3} = 1{,}2$ فالظلّ يساوي $1{,}2$ مرّة الطول، و $\\dfrac{5{,}4}{1{,}2} = 4{,}5$ .)',
+  answers: { palm: 4.5 },
+};

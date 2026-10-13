@@ -1,12 +1,12 @@
-import { src, addition, BASE } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
 
 /**
  * « أستعدّ » (module 0) — le « أستعدّ » du manuel (p. 139, items 1–6) appartient aux leçons 1 à 3 (extraction ›
  * destinations › prep) : la synthèse n'en reçoit aucun. Ses affirmations sont donc des AFFIRMATIONS DE LA PLATEFORME
- * (« عبارة إضافية من المنصّة »), dans la forme du manuel, sur ce que la وضعية, « أؤكّد تعلّماتي » et « أتعمّق » mobilisent :
+ * (« عبارة إضافية من المنصّة »), dans la forme du manuel, sur ce que la وضعية et l'épreuve finale mobilisent :
  * lire un point (درس 1), les composantes AB (درس 2), le milieu et la distance (درس 3), la nature par le calcul (درس 4), la
  * longueur d'un demi-cercle et la valeur approchée d'une racine (années précédentes, الوحدة 2), l'ordre des sommets d'un
- * متوازي أضلاع (الوحدة 11). Quatre vraies, quatre fausses ; jamais les nombres de la وضعية, du QCM, des exercices 22, 23, 25,
+ * متوازي أضلاع (الوحدة 11). Quatre vraies, quatre fausses ; jamais les nombres de la وضعية,
  * du lab ni du إختبار.
  */
 export const PREP_ITEMS = [
@@ -59,7 +59,7 @@ export const SITUATION = {
 export const analysisText = (a) => a.items.join(' — ');
 
 /**
- * Les props du laboratoire du module 1 — `route-compare` (écrit pour cette leçon : logic/routeCompare.js,
+ * Les props du laboratoire du module 7 — `route-compare` (écrit pour cette leçon : logic/routeCompare.js,
  * vectors/RouteCompare.jsx), écrites ici une fois : le module les étale, le test de rendu (lab.render.test.jsx) monte le
  * workspace avec ces mêmes objets. Ce sont les nombres de levels.js (une seule source).
  *   مبتدئ  un rallye au Sahara (`rally`) : A(−3 ; 0) → demi-cercle autour d'une dune (centre I(−1 ; 0)) → C(1 ; 0) → B(3 ; 0),
@@ -95,7 +95,7 @@ export const LAB_EXPECT = {
 };
 
 /**
- * Les phrases de la correction du module 1, importées aussi par knowledge.jsx et la carte (knowledgeGraph.js) : une aide
+ * Les phrases de la correction du module 7, importées aussi par knowledge.jsx et la carte (knowledgeGraph.js) : une aide
  * de la carte cite la leçon mot pour mot. Toute égalité dans `$…$`.
  */
 export const REMARKS = {
@@ -131,37 +131,7 @@ export const REMARKS = {
   muhitWrong: 'طول نصف دائرة نصف قطرها 1 هو $2\\pi$ .',
   muhitWhy: '$2\\pi r$ هو محيط الدائرة كاملة؛ العدّاء يجري على نصفها فقط.',
   muhitRight: 'طول نصف الدائرة $\\pi r$ ، أي $\\pi$ لنصف قطر 1، و $3\\pi$ للأنصاف الثلاثة.',
-  // أتعمّق
-  burhan: 'لإثبات طبيعة شكل في معلم: نحسب مربعات المسافات (عكس فيثاغورس، أضلاع متقايسة)، أو مركبات الأشعة (أشعة متساوية: متوازي أضلاع)، أو بعد كل نقطة عن مركز (دائرة)، ثم نستنتج.',
-  watarWrong: 'في التمرين 23 نختبر الرأس A: $AB^2 + AC^2 = 52 + 65 = 117$ لا يساوي $BC^2 = 13$ ، إذن المثلث ABC ليس قائما.',
-  watarWhy: 'الزاوية القائمة تقابل الضلع الأطول: نقارن مربع أطول ضلع بمجموع مربعي الضلعين الآخرين، والقائمة في الرأس المقابل له.',
-  watarRight: 'في التمرين 23: $AC^2 = 65$ هو الأكبر و $AB^2 + BC^2 = 52 + 13 = 65$ : المثلث قائم في B.',
 };
-
-/**
- * « أؤكّد تعلّماتي » (p. 148) : les cinq QCM, au mot près, chacun renvoyé au درس qui l'enseigne et à la colonne
- * « عند الحاجة أعود إلى الصفحة » du manuel. Items 4 et 5 : DEUX bonnes réponses (une ligne صحيح / خاطئ par réponse).
- * Items 1 et 4 : figures redessinées (content/figures.js). Options dans l'ordre (1), (2), (3) du manuel (imprimées de droite
- * à gauche) ; les couples de l'item 1, imprimés « (−5;−4) », s'écrivent ici en îlots.
- */
-const QCM_RAW = [
-  { n: 1, text: 'في الشكل المقابل، مركبتا الشعاع $\\overrightarrow{AB}$ هما …', options: ['$(-5\\,;\\,-4)$', '$(-5\\,;\\,3)$', '$(5\\,;\\,-3)$'], correct: 0,
-    pages: [142], lessons: ['murakkibata-shuaa', 'hisab-murakkibatay'],
-    explain: '$A(3\\,;\\,2)$ و $B(-2\\,;\\,-2)$ : $x_B - x_A = -2 - 3 = -5$ و $y_B - y_A = -2 - 2 = -4$ . الشعاع يتجه نحو اليسار ونحو الأسفل: مركبتاه سالبتان.' },
-  { n: 2, text: '$A(-2\\,;\\,-1)$ ، $B(-1\\,;\\,1)$ نقطتان من المستوي المزود بمعلم. إحداثيتا I منتصف [AB] هما…', options: ['$\\left(-\\dfrac{3}{2}\\,;\\,0\\right)$', '$\\left(\\dfrac{3}{2}\\,;\\,0\\right)$', '$\\left(0\\,;\\,-\\dfrac{3}{2}\\right)$'], correct: 0,
-    pages: [144], lessons: ['muntasaf-masafa'],
-    explain: '$x_I = \\dfrac{-2 + (-1)}{2} = -\\dfrac{3}{2}$ و $y_I = \\dfrac{-1 + 1}{2} = 0$ . $\\dfrac{3}{2}$ ينسى الإشارة، و $\\left(0\\,;\\,-\\dfrac{3}{2}\\right)$ يبدّل الإحداثيتين.' },
-  { n: 3, text: '$A(4\\,;\\,3)$ نقطة من المستوي المزوّد بمعلم متعامد ومتجانس مبدؤه O. الطول OA هي…', options: ['5', '3,5', '7'], correct: 0,
-    pages: [144, 145], lessons: ['muntasaf-masafa'],
-    explain: '$OA = \\sqrt{4^2 + 3^2} = \\sqrt{25} = 5$ . 7 هو $4 + 3$ (جمع المركبتين بدل الجذر)، و 3,5 هو متوسطهما.' },
-  { n: 4, text: 'على الشكل المقابل، المسافة AB تساوي…', options: ['9', '$6\\sqrt{2}$', '$\\sqrt{72}$'], correct: [1, 2],
-    pages: [144, 145], lessons: ['muntasaf-masafa'],
-    explain: '$A(3\\,;\\,3)$ و $B(-3\\,;\\,-3)$ : $\\overrightarrow{AB}\\begin{pmatrix} -6 \\\\ -6 \\end{pmatrix}$ ومنه $AB = \\sqrt{36 + 36} = \\sqrt{72} = 6\\sqrt{2}$ : الإجابتان (2) و (3) صحيحتان (نفس العدد). أمّا 9 فخاطئة ( $6\\sqrt{2} \\approx 8{,}49$ ).' },
-  { n: 5, text: '$A(2\\,;\\,3)$ ، $B(4\\,;\\,1)$ نقطتان من المستوي المزوّد بمعلم متعامد ومتجانس مبدؤه O. الطول AB يساوي.', options: ['$\\sqrt{8}$', '$2\\sqrt{2}$', '0'], correct: [0, 1],
-    pages: [144, 145], lessons: ['muntasaf-masafa'],
-    explain: '$AB = \\sqrt{(4 - 2)^2 + (1 - 3)^2} = \\sqrt{4 + 4} = \\sqrt{8} = 2\\sqrt{2}$ : الإجابتان (1) و (2) صحيحتان. 0 يأتي من جمع الفرقين $2 + (-2)$ .' },
-];
-export const QCM = QCM_RAW.map((it) => ({ ...it, source: src('qcm', 148, 'أؤكّد تعلّماتي', it.n), lessonPaths: it.lessons.map((l) => `${BASE}/${l}`) }));
 
 /** Les titres des leçons du propriétaire (catalogue). */
 export const LESSON_TITLES = {
@@ -172,7 +142,7 @@ export const LESSON_TITLES = {
 };
 
 /**
- * « إختبار أولي » (module 4) — la وضعية TRANSPOSÉE (`synthesis_generation`) : mêmes ressources, autres nombres, pour que
+ * « إختبار أولي » (module 8) — la وضعية TRANSPOSÉE (`synthesis_generation`) : mêmes ressources, autres nombres, pour que
  * les réponses n'apparaissent nulle part ailleurs dans la leçon. Deux pistes de VTT dans la forêt de جبل الوحش à Constantine
  * (1 cm ↔ 1 km) : la piste (1) de C(−3 ; 0) à D(5 ; 0) en DEUX demi-cercles de diamètres [CK] et [KD], K(1 ; 0) (centres
  * (−1 ; 0) et (3 ; 0), rayon 2 : 4π ≈ 12,57 km) ; la piste (2) la ligne brisée E(−3 ; 7) → F(0 ; 3) → G(3 ; 6) → H(5 ; 4)
@@ -181,5 +151,5 @@ export const LESSON_TITLES = {
 export const TEST = {
   source: addition('synthesis_generation'),
   title: 'وضعية أخرى: مسلكان للدراجات الجبلية في غابة جبل الوحش بقسنطينة',
-  text: 'يتدرّب درّاجان على مسلكين في غابة جبل الوحش بقسنطينة، مرسومين في معلم متعامد ومتجانس حيث $1\\,\\mathrm{cm}$ يمثّل $1\\,\\mathrm{km}$ . المسلك (1) من $C(-3\\,;\\,0)$ إلى $D(5\\,;\\,0)$ مكوّن من نصفي دائرتين قطراهما $[CK]$ و $[KD]$ حيث $K(1\\,;\\,0)$ . المسلك (2) خط منكسر يمرّ على الترتيب بالنقط $E(-3\\,;\\,7)$ ثم $F(0\\,;\\,3)$ ثم $G(3\\,;\\,6)$ ثم $H(5\\,;\\,4)$ .',
+  text: 'يتدرّب درّاجان على مسلكين في غابة جبل الوحش بقسنطينة، مرسومين في معلم متعامد ومتجانس حيث $1\\,\\mathrm{cm}$ يمثّل $1\\,\\mathrm{km}$ . المسلك (1) من $C(-3\\,;\\,0)$ إلى $D(5\\,;\\,0)$ مكوّن من نصفي دائرتين قطراهما $[CK]$ و $[KD]$ حيث $K(1\\,;\\,0)$ . المسلك (2) خط منكسر يمرّ على الترتيب بالنقط $E(-3\\,;\\,7)$ ثم $F(0\\,;\\,3)$ ثم $G(3\\,;\\,6)$ ثم $H(5\\,;\\,4)$ . يحرص الدرّاجان على نظافة الغابة وعلى ألّا يتركا فيها أثرًا.',
 };

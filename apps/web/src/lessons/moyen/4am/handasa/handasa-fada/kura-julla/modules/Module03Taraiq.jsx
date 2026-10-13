@@ -28,6 +28,7 @@ export default function Module03Taraiq() {
 
   return (
     <ContentModule
+      objectives={["كيف نوحي بكرة على الورقة؟", "كيف نمثّل نقطة على كرة ونقطة داخل جلة؟", "كيف نحسب بعد نقطة عن المركز من إحداثياتها؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}

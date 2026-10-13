@@ -10,7 +10,7 @@ import { src, addition } from '../../_unit/unitMeta.js';
 /** « تحدّ » (p. 19) — l'accroche de la leçon (extraction : duplicatedIn jidhr-tarbii, module 1). */
 export const CHALLENGE = {
   source: src('challenge', 19, 'تحدّ'),
-  text: 'أراد فلاح بناء خزان ماء على شكل متوازي مستطيلات قاعدته مربعة، ارتفاعه 1,80m وسعته $36\\,m^3$. ساعد هذا الفلاح على إيجاد طول ضلع قاعدة الخزان. (تعطى النتيجة مدورة إلى 1cm)',
+  text: 'أراد فلاح بناء خزان ماء يتقاسم نفعه مع جيرانه، على شكل متوازي مستطيلات قاعدته مربعة، ارتفاعه 1,80m وسعته $36\\,m^3$. ساعد هذا الفلاح على إيجاد طول ضلع قاعدة الخزان. (تعطى النتيجة مدورة إلى 1cm)',
   // Les nombres du livre : le volume et la hauteur ; l'aire de la base se CALCULE (36 ÷ 1,8).
   numbers: { volume: 36, heightTenths: 18 },
 };

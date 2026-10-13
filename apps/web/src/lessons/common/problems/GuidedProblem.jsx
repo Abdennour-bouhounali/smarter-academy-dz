@@ -7,6 +7,7 @@ import MathText from '../components/MathText';
 import { SourceTag } from '../textbook';
 import WrittenAnswer from './WrittenAnswer';
 import ProblemSupport from './ProblemSupport';
+import { problemTone } from './problemTone';
 import { initialProgress, completeSubstep, isPartDone, substepRole } from './guidedProblem';
 
 /**
@@ -30,6 +31,7 @@ import { initialProgress, completeSubstep, isPartDone, substepRole } from './gui
  */
 export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, estimatedTime, footer }) {
   const { t } = useTranslation('lesson');
+  const T = problemTone(problem.tone);
   const [progress, setProgress] = useState(() => initialProgress(problem));
   const done = (p, i) => setProgress((prev) => completeSubstep(prev, p, i));
   // Ce que l'élève a répondu à chaque sous-étape (affiché dans la liste des demandes).
@@ -112,17 +114,17 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
       });
       return (
         <div className="space-y-4" data-problem-part={p + 1}>
-          <div className="space-y-2 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2" data-problem-question>
-            <p className="text-sm font-semibold text-amber-950"><MathText>{`${part.label} ${part.question}`}</MathText></p>
+          <div className={`space-y-2 rounded-xl border-2 ${T.box} px-3 py-2`} data-problem-question>
+            <p className={`text-sm font-semibold ${T.title}`}><MathText>{`${part.label} ${part.question}`}</MathText></p>
             {/* LES DEMANDES, visibles d'emblée : deux questions = deux réponses
                 (règle du propriétaire, 2026-10-06). */}
             {asks.length > 0 && (
-              <div className="space-y-1 border-t border-amber-200 pt-2" data-problem-asks={asks.length}>
-                <p className="text-xs font-bold text-amber-800">{t('problem.asksTitle')}</p>
+              <div className={`space-y-1 border-t ${T.rule} pt-2`} data-problem-asks={asks.length}>
+                <p className={`text-xs font-bold ${T.asksTitle}`}>{t('problem.asksTitle')}</p>
                 <ol className="space-y-1">
                   {asks.map((ask, k) => (
-                    <li key={k} className="flex flex-wrap items-center gap-2 text-sm text-amber-950" data-problem-ask-item={k} data-answered={askState[k] != null ? 'true' : 'false'}>
-                      <span className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold ${askState[k] != null ? 'bg-emerald-600 text-white' : 'border-2 border-amber-400 text-amber-800'}`} dir="ltr">
+                    <li key={k} className={`flex flex-wrap items-center gap-2 text-sm ${T.title}`} data-problem-ask-item={k} data-answered={askState[k] != null ? 'true' : 'false'}>
+                      <span className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold ${askState[k] != null ? 'bg-emerald-600 text-white' : `border-2 ${T.todo}`}`} dir="ltr">
                         {askState[k] != null ? '✓' : k + 1}
                       </span>
                       <MathText>{ask}</MathText>
@@ -142,7 +144,7 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
               const locked = i >= open;
               // La rédaction répond à TOUTE la question : pas d'étiquette d'une seule demande.
               const askChip = step.kind !== 'solution' && step.ask != null && asks[step.ask] && (
-                <p className="inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-900" data-problem-ask={step.ask}>
+                <p className={`inline-block rounded-full ${T.chip} px-2.5 py-0.5 text-xs font-bold`} data-problem-ask={step.ask}>
                   <MathText>{t('problem.askChip', { ask: asks[step.ask] })}</MathText>
                 </p>
               );
@@ -182,13 +184,13 @@ export default function GuidedProblem({ ctx, navLinks, moduleNumber, problem, es
         headline: problem.headline,
         emoji: problem.emoji,
         title: problem.context,
-        tone: 'amber',
+        tone: problem.tone ?? 'amber',
         body: (
           <div className="space-y-2" data-problem-statement>
             <p className="leading-relaxed"><MathText>{problem.statement}</MathText></p>
             {/* Le support de l'énoncé (2026-10-06) : une مسألة qui dit « الشكل » / « الجدول » / « التمثيل البياني »
                 le MONTRE — mêmes données déclaratives que la pratique (ExerciseStatement). */}
-            <ProblemSupport figure={problem.figure} visual={problem.visual} table={problem.table} />
+            <ProblemSupport figure={problem.figure} visual={problem.visual} table={problem.table} scene={problem.scene} illustration={problem.illustration} />
             <ol className="list-none space-y-0.5 font-semibold">
               {problem.parts.map((part) => <li key={part.label}><MathText>{`${part.label} ${part.question}`}</MathText></li>)}
             </ol>

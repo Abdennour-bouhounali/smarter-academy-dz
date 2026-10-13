@@ -82,6 +82,7 @@ export default function Module01Nashat() {
 
   return (
     <ContentModule
+      objectives={['كيف نسمّي أضلاع المنحدر القائم؟', 'ماذا يتغيّر في النسب ومتى تبقى ثابتة؟', 'هل يصحّ ما نلاحظه مهما كان المنحدر كبيرًا؟']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
@@ -242,7 +243,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 5, title: 'نشاط 2: من التخمين إلى البرهان', subtitle: 'بخاصية طالس', done: q5,
+          num: 5, title: 'نشاط 2: من التخمين إلى البرهان', subtitle: 'لماذا يصحّ في كل حالة؟', done: q5,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY_2.part2} source={ACTIVITY_2.source} compact />

@@ -40,6 +40,7 @@ export const LESSON_CONFIG = {
     module: 5,
     title: 'ورشة البناء: جداران بطوب طوله 25 سم',
     statement: 'في ورشة بناء مسكن بالبليدة، يحرص البنّاء على إتقان عمله وأداء الأمانة التي أُوكلت إليه، فيبني جدارين بطوب طول الطوبة الواحدة منه 25 سم، ويرصّ كل صفّ على طول الجدار دون أن يقطع أيّ طوبة. طول الجدار الأول 875 سم وطول الجدار الثاني 350 سم، وفي كل جدار 15 صفًّا من الطوب. يشتغل في الورشة 4 عمّال، وثمن الطوبة الواحدة 40 دج.',
+    illustration: { kind: 'scene', icon: 'tile', bg: 'rose', chips: [{ label: 'طول الطوبة', value: 25, unit: 'سم' }, { label: 'الجدار الأول', value: 875, unit: 'سم' }, { label: 'الجدار الثاني', value: 350, unit: 'سم' }, { label: 'ثمن الطوبة', value: 40, unit: 'دج', tone: 'green' }], ariaLabel: 'جداران من الطوب: طول الطوبة 25 سم وطولا الجدارين 875 سم و 350 سم' },
   },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.

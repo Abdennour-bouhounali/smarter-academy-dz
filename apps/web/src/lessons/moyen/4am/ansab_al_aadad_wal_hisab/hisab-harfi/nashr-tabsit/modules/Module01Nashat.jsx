@@ -73,6 +73,7 @@ export default function Module01Nashat() {
   return (
     <ContentModule
       ctx={MODULE_CTX}
+      objectives={["كيف نحسب مساحة ملعب مقسّم إلى مناطق؟", "هل العبارة جداء أم مجموع؟ وكيف نعرف؟", "ماذا نفعل بحدود لا تتشابه؟"]}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
       moduleTitle="نشاط 1 — نشر عبارة جبرية"
@@ -203,7 +204,7 @@ export default function Module01Nashat() {
             <div className="space-y-3">
               <p className="text-sm font-semibold text-slate-700"><MathText>{'تحقّقاتك على الملعب $(3x - 1)(3 + x)$:'}</MathText></p>
               <Evidence trials={big} level="advanced" empty="لم تتحقّق بعد من ملعب المستوى المتقدّم: احسب كل مناطقه ثم اضغط «تحقّق»." />
-              {bigVerified < 2 && <p className="text-xs text-slate-500"><MathText>{'تحقّق من أجل قيمتين لـ $x$ على الأقل: المساواة التي تبقى صحيحة مهما كان $x$ هي نشر.'}</MathText></p>}
+              {bigVerified < 2 && <p className="text-xs text-slate-500"><MathText>{'تحقّق من أجل قيمتين لـ $x$ على الأقل: هل بقيت المساواة صحيحة في كل مرّة؟'}</MathText></p>}
               <KnowledgeBrick id="nashr-qawsayn" lead="ما فعلته في الملعب: كل حد من الضلع الأول في كل حد من الضلع الثاني." />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'انشر $(3x - 1)(3 + x)$ وبسّطها، واذكر الخاصية:'}</MathText></p>}

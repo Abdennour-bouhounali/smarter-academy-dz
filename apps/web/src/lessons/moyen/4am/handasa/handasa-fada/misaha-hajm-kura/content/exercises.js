@@ -31,7 +31,7 @@ export const EXERCISES = [
   // 2. La coupole d'une mosquée (demi-sphère, R = 6 m) : 2πR² = 72π m²
   {
     id: 'ex-p2', source: PLATFORM, learningPointId: LP.P1, difficulty: 'moyen',
-    statement: 'قبّة مسجد الحيّ على شكل نصف كرة نصف قطرها $6\\,\\mathrm{m}$ . يريد البنّاؤون طلاء سطحها الخارجي (دون القاعدة).',
+    statement: 'قبّة مسجد الحيّ على شكل نصف كرة نصف قطرها $6\\,\\mathrm{m}$ . يتطوّع البنّاؤون لطلاء سطحها الخارجي (دون القاعدة).',
     interaction: 'choice',
     question: {
       prompt: 'القيمة المضبوطة لمساحة سطح القبّة:',
@@ -45,7 +45,7 @@ export const EXERCISES = [
   // 3. Le château d'eau sphérique (R = 2,5 m) : 𝒱 = 125π/6 ≈ 65,4 m³
   {
     id: 'ex-p3', source: PLATFORM, learningPointId: LP.P2, difficulty: 'moyen',
-    statement: 'خزان الماء في أعلى برج البلدية كروي، نصف قطره الداخلي $2{,}5\\,\\mathrm{m}$ . احسب حجم الماء الذي يملؤه، مدوّرا إلى الجزء من عشرة (بالـ $\\mathrm{m}^3$).',
+    statement: 'خزان الماء في أعلى برج البلدية، الذي يحرص العمال على نظافته، كروي، نصف قطره الداخلي $2{,}5\\,\\mathrm{m}$ . احسب حجم الماء الذي يملؤه، مدوّرا إلى الجزء من عشرة (بالـ $\\mathrm{m}^3$).',
     interaction: 'numeric',
     question: {
       prompt: 'حجم الخزان بالـ $\\mathrm{m}^3$ (مدوّرا إلى الجزء من عشرة):',

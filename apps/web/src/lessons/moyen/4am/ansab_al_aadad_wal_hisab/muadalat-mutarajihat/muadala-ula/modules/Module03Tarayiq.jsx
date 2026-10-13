@@ -23,6 +23,7 @@ export default function Module03Tarayiq() {
 
   return (
     <ContentModule
+      objectives={["ما العملية التي نجريها على الطرفين في كل سطر؟", "كيف نحلّ معادلة المجهول فيها في الطرفين؟", "كيف نتحقّق من أنّ العدد حلّ للمعادلة؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}

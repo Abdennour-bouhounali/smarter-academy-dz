@@ -35,7 +35,9 @@ export const PROBLEMS = [
     context: LESSON_CONFIG.lessonProblem.title,
     headline: 'مسألة الدرس',
     emoji: '🧶',
+    tone: 'indigo',
     source: SOURCE,
+    illustration: LESSON_CONFIG.lessonProblem.illustration,
     statement: LESSON_CONFIG.lessonProblem.statement,
     data: [
       { id: 'rugA', text: 'الزربية A مربّعة مساحتها 2,89 m²', useful: true },
@@ -180,8 +182,10 @@ export const PROBLEMS = [
     title: 'مسألة 2 — ورشة الحدادة',
     context: 'قضبان التقوية: قطر ناطق وقطر غير ناطق',
     emoji: '🛠️',
+    tone: 'emerald',
     source: SOURCE,
-    statement: 'يصنع حدّاد شبابيك حديدية لمتوسطة جديدة، ويقوّي كل شبّاك بقضيب مستقيم يربط ركنين متقابلين منه. الطلبية: 12 شبّاكًا مستطيلًا بُعداه 120 cm و 50 cm، و 15 شبّاكًا مربّعًا طول ضلعه 85 cm. في كل شبّاك 4 مفصّلات. يقصّ الحدّاد قضبان التقوية من قضبان حديدية طول كل واحد منها 6 m، وثمن القضيب الواحد 1450 دج.',
+    illustration: { kind: 'plan', shape: 'rect', fill: 'glass', w: 120, h: 50, unit: 'cm', diag: '؟', ariaLabel: 'شبّاك مستطيل بُعداه 120 سم و 50 سم يربط بين ركنين متقابلين منه قضيب تقوية طوله مجهول' },
+    statement: 'يصنع حدّاد شبابيك حديدية لمتوسطة جديدة، ويتقن عمله حرصًا على سلامة التلاميذ، فيقوّي كل شبّاك بقضيب مستقيم يربط ركنين متقابلين منه. الطلبية: 12 شبّاكًا مستطيلًا بُعداه 120 cm و 50 cm، و 15 شبّاكًا مربّعًا طول ضلعه 85 cm. في كل شبّاك 4 مفصّلات. يقصّ الحدّاد قضبان التقوية من قضبان حديدية طول كل واحد منها 6 m، وثمن القضيب الواحد 1450 دج.',
     data: [
       { id: 'rect', text: '12 شبّاكًا مستطيلًا بُعداه 120 cm و 50 cm', useful: true },
       { id: 'square', text: '15 شبّاكًا مربّعًا طول ضلعه 85 cm', useful: true },
@@ -306,7 +310,9 @@ export const PROBLEMS = [
     title: 'مسألة 3 — مطبعة الحيّ',
     context: 'ملصقان مربّعان: على ورقة A4 أم A3؟',
     emoji: '🖨️',
+    tone: 'rose',
     source: SOURCE,
+    illustration: { kind: 'plan', shape: 'square', fill: 'paper', side: '؟', unit: 'cm', area: '441', areaUnit: 'cm²', ariaLabel: 'ملصق مربّع مساحته 441 سم² وطول ضلعه مجهول' },
     statement: 'تطبع مطبعة الحيّ ملصقات لحملة نظافة في البلدية. ورقة A4 بُعداها 21 cm و 29,7 cm، وورقة A3 بُعداها 29,7 cm و 42 cm. يريد صاحب المطبعة ملصقين مربّعين: الأوّل مساحته 441 cm²، والثاني مساحته ضعف مساحة الأوّل. طلبت البلدية 40 ملصقًا من النوع الثاني. طبع ورقة A3 واحدة بالألوان يكلّف 60 دج، وفي رزمة الورق 500 ورقة.',
     data: [
       { id: 'sheets', text: 'ورقة A4: 21 cm و 29,7 cm؛ ورقة A3: 29,7 cm و 42 cm', useful: true },

@@ -6,10 +6,10 @@ import { PREP_ITEMS } from '../content/textbook';
 
 /**
  * Module 0 — أستعدّ. Le « أستعدّ » du manuel (p. 151) appartient aux quatre leçons ; la synthèse pose donc neuf affirmations de
- * la plateforme (« عبارة إضافية من المنصّة ») sur ce que la وضعية, « أؤكّد تعلّماتي » et « أتعمّق » mobilisent : l'image d'un point
+ * la plateforme (« عبارة إضافية من المنصّة ») sur ce que la وضعية mobilise : l'image d'un point
  * par un دوران, la conservation des longueurs, l'angle inscrit et l'angle au centre, l'angle au centre d'un polygone régulier et sa
  * définition, les angles et la hauteur d'un triangle isocèle, le sinus, le périmètre du cercle. Cinq vraies, quatre fausses ;
- * aucune n'emploie les nombres de la وضعية, du QCM, des exercices, du lab ni du إختبار. Diagnostic JAMAIS bloquant ; `id` et
+ * aucune n'emploie les nombres de la وضعية, du lab ni du إختبار. Diagnostic JAMAIS bloquant ; `id` et
  * `requires` littéraux (audit), une connaissance par affirmation.
  */
 export default function Module00Astaidd() {
@@ -22,7 +22,7 @@ export default function Module00Astaidd() {
       estimatedTime="6 دقائق"
       brief={{
         tag: 'أستعدّ — عبارات من المنصّة', title: 'تسع عبارات قبل الوضعية الإدماجية', tone: 'teal',
-        body: <p>وضعية «أعمدة الإنارة» وتمارين «أتعمّق» تعبّئ ما تعلّمته في دروس الوحدة وقبلها: صورة نقطة بدوران وخواصه، الزاوية المحيطية والمركزية، المضلع المنتظم، المثلث المتساوي الساقين، الجيب، ومحيط الدائرة. تحقّق منها قبل أن تبدأ؛ النتيجة لا تمنعك من المتابعة.</p>,
+        body: <p>وضعية «أعمدة الإنارة» تعبّئ ما تعلّمته في دروس الوحدة وقبلها: صورة نقطة بدوران وخواصه، الزاوية المحيطية والمركزية، المضلع المنتظم، المثلث المتساوي الساقين، الجيب، ومحيط الدائرة. تحقّق منها قبل أن تبدأ؛ النتيجة لا تمنعك من المتابعة.</p>,
       }}
       skills={{
         sura: { label: 'صورة نقطة بدوران', emoji: '↻' },

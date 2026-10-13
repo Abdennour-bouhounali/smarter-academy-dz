@@ -1945,7 +1945,7 @@
    "duplicatedIn": [
     {
      "lesson": "wadiya-idmajiya-harfi",
-     "module": 1,
+     "module": 7,
      "note": "le triangle x + 1, x + 2, x + 3 : l’accroche de la synthèse, résolue en fin de module"
     }
    ]
@@ -2192,17 +2192,17 @@
   },
   "situation": {
    "lesson": "wadiya-idmajiya-harfi",
-   "module": 1,
+   "module": 7,
    "duplicatedIn": [
     {
      "lesson": "wadiya-idmajiya-harfi",
-     "module": 4
+     "module": 8
     }
    ]
   },
   "qcm": {
    "lesson": "wadiya-idmajiya-harfi",
-   "module": 2,
+   "module": "practice",
    "duplicatedIn": [
     {
      "lesson": "nashr-tabsit",
@@ -2242,27 +2242,33 @@
      ],
      "note": "formative : 5 (deux bonnes options, « يساويه / لا يساويه ») et 9 (« لا تقبل تحليلا ») dans أوظّف تعلّماتي"
     }
-   ]
+   ],
+   "note": "قرار المالك 2026-10-13: «أؤكّد تعلّماتي» و«أتعمّق» لا تدخلان في «أدمج تعلّماتي»؛ يبقى العنصر مصدرًا لتمارين فضاء التدرّب (content/practice)."
   },
   "ex-34": {
    "lesson": "wadiya-idmajiya-harfi",
-   "module": 3
+   "module": "practice",
+   "note": "قرار المالك 2026-10-13: «أؤكّد تعلّماتي» و«أتعمّق» لا تدخلان في «أدمج تعلّماتي»؛ يبقى العنصر مصدرًا لتمارين فضاء التدرّب (content/practice)."
   },
   "ex-37": {
    "lesson": "wadiya-idmajiya-harfi",
-   "module": 3
+   "module": "practice",
+   "note": "قرار المالك 2026-10-13: «أؤكّد تعلّماتي» و«أتعمّق» لا تدخلان في «أدمج تعلّماتي»؛ يبقى العنصر مصدرًا لتمارين فضاء التدرّب (content/practice)."
   },
   "ex-38": {
    "lesson": "wadiya-idmajiya-harfi",
-   "module": 3
+   "module": "practice",
+   "note": "قرار المالك 2026-10-13: «أؤكّد تعلّماتي» و«أتعمّق» لا تدخلان في «أدمج تعلّماتي»؛ يبقى العنصر مصدرًا لتمارين فضاء التدرّب (content/practice)."
   },
   "ex-39": {
    "lesson": "wadiya-idmajiya-harfi",
-   "module": 3
+   "module": "practice",
+   "note": "قرار المالك 2026-10-13: «أؤكّد تعلّماتي» و«أتعمّق» لا تدخلان في «أدمج تعلّماتي»؛ يبقى العنصر مصدرًا لتمارين فضاء التدرّب (content/practice)."
   },
   "ex-40": {
    "lesson": "wadiya-idmajiya-harfi",
-   "module": 3
+   "module": "practice",
+   "note": "قرار المالك 2026-10-13: «أؤكّد تعلّماتي» و«أتعمّق» لا تدخلان في «أدمج تعلّماتي»؛ يبقى العنصر مصدرًا لتمارين فضاء التدرّب (content/practice)."
   }
  }
 }

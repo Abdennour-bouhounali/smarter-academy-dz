@@ -35,13 +35,18 @@ export default function Module03Qiraa() {
       moduleTitle="القراءة البيانية"
       moduleSubtitle="نقرأ a و b ، ثم صورة عدد والعدد الذي علمت صورته"
       estimatedTime="9 دقائق"
+      objectives={[
+        'كيف نقرأ الترتيب عند المبدأ ومعامل التوجيه؟',
+        'كيف نعرف عبارة الدالة من مستقيمها؟',
+        'كيف نقرأ صورة عدد والعدد الذي صورته معلومة؟',
+      ]}
       brief={{
         tag: 'طرائق — صياغة من المنصّة', title: 'ماذا نقرأ على مستقيم؟', tone: 'blue',
         body: <p><MathText>{'على المختبر جعلت مستقيمك ينطبق على $(D)$ . نتعلّم هنا أن نقرأ مباشرة على أي مستقيم: أين يقطع محور التراتيب، كم يصعد لكل وحدة، ثم صورة عدد والعدد الذي علمت صورته.'}</MathText></p>,
       }}
       steps={[
         {
-          num: 1, title: 'نقرأ b ثم a', subtitle: 'طريقة', done: q1a && q1b,
+          num: 1, title: 'ماذا نقرأ أوّلًا على المستقيم؟', subtitle: 'طريقة', done: q1a && q1b,
           content: (
             <div className="space-y-3">
               <AffineFigure testId="method-ab" win={{ xMin: -1, xMax: 3, yMin: -2, yMax: 3 }} height={200} width={200}

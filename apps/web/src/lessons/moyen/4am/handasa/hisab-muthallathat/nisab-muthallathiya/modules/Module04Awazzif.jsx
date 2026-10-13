@@ -38,6 +38,7 @@ export default function Module04Awazzif() {
 
   return (
     <ContentModule
+      objectives={['أحسب نسبًا مثلثية قيمة مضبوطة ثم مدوّرة', 'أحسب طول ضلع في مثلث قائم', 'أحكم على حلول زملائي وأختار أحسن طريقة']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}

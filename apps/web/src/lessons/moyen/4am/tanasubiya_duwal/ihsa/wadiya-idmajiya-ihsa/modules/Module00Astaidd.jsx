@@ -7,7 +7,7 @@ import { PREP_ITEMS } from '../content/textbook';
 /**
  * Module 0 — أستعدّ. Le « أستعدّ » du manuel (p. 91) appartient aux leçons 1, 2 et 3 ; la synthèse
  * pose donc huit affirmations de la plateforme (« عبارة إضافية من المنصّة ») sur ce que la situation des
- * médailles, « أؤكّد تعلّماتي » et « أتعمّق » mobilisent : l'effectif total, les effectifs cumulés
+ * médailles mobilise : l'effectif total, les effectifs cumulés
  * croissant et décroissant, l'étendue, le rang de la médiane, la moyenne pondérée, le tout à partir
  * d'un pourcentage et une équation. Trois vraies, cinq fausses ; aucune n'emploie les nombres des
  * médailles. Diagnostic JAMAIS bloquant ; `id` et `requires` littéraux (audit).

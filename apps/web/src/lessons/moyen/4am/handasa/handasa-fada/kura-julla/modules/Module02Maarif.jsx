@@ -26,6 +26,7 @@ export default function Module02Maarif() {
 
   return (
     <ContentModule
+      objectives={["كيف نعرّف الكرة والجلة بالمسافة إلى المركز؟", "ماذا نسمّي القطع التي تمرّ بالمركز؟", "ما الدائرة الكبرى وما الدائرة الصغرى؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleTitle="معارف — الكرة والجلة"

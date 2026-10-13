@@ -38,6 +38,7 @@ export default function Module02Maarif() {
       moduleNumber={2}
       moduleTitle="معارف — الخاصية العكسية لخاصية طالس"
       moduleSubtitle="نسبتان متساويتان ونفس الترتيب: توازٍ"
+      objectives={['كيف يصوغ الكتاب ما وجدناه على الحامل؟', 'هل يكفي تساوي نسبتين؟', 'متى تكفي نسبتان مختلفتان لنحكم؟']}
       estimatedTime="10 دقائق"
       brief={{
         tag: 'معارف — الكتاب ص 108 (و ص 106)', title: KNOWLEDGE3.title, tone: 'violet',
@@ -70,7 +71,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 2, title: 'شرط الترتيب', subtitle: 'ملاحظة', done: q2,
+          num: 2, title: 'نسبتان متساويتان: هل يكفي؟', subtitle: 'ملاحظة', done: q2,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="shart-tartib" lead="الشرط الثاني ليس زينة:" />

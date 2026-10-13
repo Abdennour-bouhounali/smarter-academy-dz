@@ -9,7 +9,7 @@ import { EXERCISES } from '../content/exercises';
 export default function Module03Awazzif() {
   const [done, setDone] = useState({});
   return (
-    <ContentModule
+    <ContentModule objectives={["أحدّد القاسم المشترك الأكبر بنفسي", "أحلّ تمرين الكتاب 10"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(3)} moduleNumber={3}
       moduleTitle="أوظّف تعلّماتي" moduleSubtitle="دوري الآن وتمرين 10" estimatedTime="10 دقائق"
       brief={{ tag: 'الكتاب ص 11 و 14', title: 'أعيّن القواسم المشتركة', tone: 'amber', body: <p>الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}

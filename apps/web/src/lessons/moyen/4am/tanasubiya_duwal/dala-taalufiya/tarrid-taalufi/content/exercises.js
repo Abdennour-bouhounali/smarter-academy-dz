@@ -18,7 +18,7 @@ export const EXERCISES = [
   {
     // 80x + 1000 = 1640 ⇔ 80x = 640 ⇔ x = 8
     id: 'data', source: SRC, learningPointId: LP.P1, difficulty: 'facile',
-    statement: 'باقة أنترنت شهرية: 1000DA تُدفع مرّة واحدة في الشهر، ثم 80DA لكل 1Go إضافي. دفعت ريم هذا الشهر 1640DA. كم جيغا إضافية استهلكت؟',
+    statement: 'باقة أنترنت شهرية تستعملها ريم في الدراسة والمطالعة: 1000DA تُدفع مرّة واحدة في الشهر، ثم 80DA لكل 1Go إضافي. دفعت ريم هذا الشهر 1640DA. كم جيغا إضافية استهلكت؟',
     interaction: 'numeric',
     question: { expected: 8, display: '8', explain: '$f(x) = 80x + 1000$ . نحلّ $80x + 1000 = 1640$ : $80x = 640$ ومنه $x = 8$ ، أي 8Go إضافية.' },
     commonError: 'قسمة 1640 على 80 (20,5) دون طرح الجزء الثابت 1000DA.',
@@ -26,7 +26,7 @@ export const EXERCISES = [
   {
     // f(x) = 100x + 1500 ; g(x) = 250x ; 1500 = 150x ⇔ x = 10 ; 12 séances : 2700 contre 3000
     id: 'gym', source: SRC, learningPointId: LP.P2, difficulty: 'moyen',
-    statement: 'قاعة رياضة تقترح صيغتين في الشهر. الصيغة الأولى: اشتراك 1500DA ثم 100DA للحصة. الصيغة الثانية: 250DA للحصة دون اشتراك. نسمّي $x$ عدد الحصص في الشهر.',
+    statement: 'قاعة رياضة، تدعو روّادها إلى النظافة والنظام، تقترح صيغتين في الشهر. الصيغة الأولى: اشتراك 1500DA ثم 100DA للحصة. الصيغة الثانية: 250DA للحصة دون اشتراك. نسمّي $x$ عدد الحصص في الشهر.',
     interaction: 'batch',
     question: {
       prompt: 'نمذج ثم قارن.',
@@ -41,7 +41,7 @@ export const EXERCISES = [
   {
     // 150x + 300 = 250x ⇔ 300 = 100x ⇔ x = 3
     id: 'bike', source: SRC, learningPointId: LP.P2, difficulty: 'moyen',
-    statement: 'على الشاطئ يكتري أنيس درّاجة. المحلّ A: رسم ثابت 300DA ثم 150DA للساعة. المحلّ B: 250DA للساعة. بعد كم ساعة كراء تتساوى التكلفتان؟',
+    statement: 'على الشاطئ، وهو يحافظ على نظافته، يكتري أنيس درّاجة. المحلّ A: رسم ثابت 300DA ثم 150DA للساعة. المحلّ B: 250DA للساعة. بعد كم ساعة كراء تتساوى التكلفتان؟',
     interaction: 'numeric',
     question: { expected: 3, display: '3', explain: '$150x + 300 = 250x$ أي $300 = 100x$ ومنه $x = 3$ : بعد 3 ساعات تتساوى التكلفتان (750DA).' },
   },
@@ -60,7 +60,7 @@ export const EXERCISES = [
   {
     // 20x = 5x + 300 ⇔ x = 20 ; 5x + 300 < 20x ⇔ 300 < 15x ⇔ x > 20
     id: 'cyber', source: SRC, learningPointId: LP.P2, difficulty: 'difficile',
-    statement: 'في مقهى أنترنت تُطبع الصفحة بـ 20DA ، أو بـ 5DA للصفحة مع بطاقة ثمنها 300DA. متى تكون البطاقة أرخص؟',
+    statement: 'في مقهى أنترنت يقصده التلاميذ للبحث والمطالعة، تُطبع الصفحة بـ 20DA ، أو بـ 5DA للصفحة مع بطاقة ثمنها 300DA. متى تكون البطاقة أرخص؟',
     interaction: 'choice',
     question: {
       options: ['عندما $x < 20$', 'عندما $x > 20$', 'دائمًا', 'أبدًا'],

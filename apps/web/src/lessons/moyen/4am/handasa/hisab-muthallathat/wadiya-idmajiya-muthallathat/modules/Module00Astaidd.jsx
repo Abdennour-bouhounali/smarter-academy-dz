@@ -6,7 +6,7 @@ import { PREP_ITEMS } from '../content/textbook';
 
 /**
  * Module 0 — أستعدّ. Le « أستعدّ » du manuel (p. 115) appartient aux leçons 1 et 2 ; la synthèse pose donc sept
- * affirmations de la plateforme (« عبارة إضافية من المنصّة ») sur ce que la وضعية, « أؤكّد تعلّماتي » et « أتعمّق »
+ * affirmations de la plateforme (« عبارة إضافية من المنصّة ») sur ce que la وضعية, et le test final
  * mobilisent : Thalès dans une ligne de visée, la définition de la tangente, l'inconnue au dénominateur, la touche
  * inverse, Pythagore dans un pavé, l'arrondi à l'unité, cos² + sin² = 1. Quatre vraies, trois fausses ; aucune
  * n'emploie les nombres du مقام, du pavé ou de la pyramide. Diagnostic JAMAIS bloquant ; `id` et `requires`
@@ -22,7 +22,7 @@ export default function Module00Astaidd() {
       estimatedTime="6 دقائق"
       brief={{
         tag: 'أستعدّ — عبارات من المنصّة', title: 'سبع عبارات قبل الوضعية الإدماجية', tone: 'teal',
-        body: <p>وضعية «مقام الشهيد» وتمارين «أتعمّق» تعبّئ ما تعلّمته في دروس الوحدة وقبلها: خاصية طالس، النسب المثلثية والحاسبة، خاصية فيثاغورس والتدوير. تحقّق منها قبل أن تبدأ؛ النتيجة لا تمنعك من المتابعة.</p>,
+        body: <p>وضعية «مقام الشهيد» ووضعية الاختبار النهائي تعبّئ ما تعلّمته في دروس الوحدة وقبلها: خاصية طالس، النسب المثلثية والحاسبة، خاصية فيثاغورس والتدوير. تحقّق منها قبل أن تبدأ؛ النتيجة لا تمنعك من المتابعة.</p>,
       }}
       skills={{
         nazar: { label: 'خاصية طالس في خط النظر', emoji: '👁️' },

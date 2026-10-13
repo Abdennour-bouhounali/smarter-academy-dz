@@ -77,6 +77,7 @@ export default function Module02HalMutarajiha() {
 
   return (
     <ContentModule
+      objectives={["أين تبدأ حلول المتراجحة وأين تنتهي؟", "متى يتغيّر اتجاه المتراجحة؟ ومتى يبقى؟", "متى يكون الحدّ نفسه حلًّا؟ وكيف نبيّن ذلك على المستقيم؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}
@@ -96,7 +97,7 @@ export default function Module02HalMutarajiha() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="نفس الفكرة في المستويين: نقاطك الحمراء هي الحلول، والرمز عند الحدّ يقول هل الحدّ منها."
+          lead="نفس الفكرة في المستويين: ماذا تقول لك نقاطك الحمراء؟ وماذا يقول الرمز عند الحدّ؟"
           levels={{
             beginner: () => (
               <Manipulation

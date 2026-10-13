@@ -31,7 +31,7 @@ export default function Module03Taraiq() {
       moduleNumber={3}
       moduleTitle="طرائق — تمثيل شعاع علمت مركبتاه"
       moduleSubtitle="الكود معطى: أين تضع الوجهة؟"
-      estimatedTime="9 دقائق"
+      objectives={['أين نضع الوجهة إذا عُرف الكود؟', 'كيف نمثّل الشعاع نفسه انطلاقًا من نقطة أخرى؟']} estimatedTime="9 دقائق"
       brief={{
         tag: 'طرائق — الكتاب ص 143', title: METHOD_DRAW.title, tone: 'emerald',
         body: <p>في تطبيق التوصيل وضعت دبوس الوجهة انطلاقا من كود معطى. الكتاب يكتب الحركة نفسها بلغة الانسحابات.</p>,
@@ -73,7 +73,7 @@ export default function Module03Taraiq() {
               <GeoFigure {...FIG_METHOD} />
               <p className="text-xs text-slate-500"><MathText>{METHOD_DRAW.efLine}</MathText></p>
               <TapQuestion
-                prompt={<MathText>{'لإنشاء F حيث $\\overrightarrow{EF} = \\overrightarrow{AB}$ ننشئ متوازي الأضلاع:'}</MathText>}
+                prompt={<MathText>{'لإنشاء F حيث $\\overrightarrow{EF} = \\overrightarrow{AB}$ ، أيّ رباعي يكون متوازي أضلاع؟'}</MathText>}
                 options={[
                   'EABF',
                   'EAFB', // quadrilatère croisé : l'ordre des sommets

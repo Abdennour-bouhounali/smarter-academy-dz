@@ -36,6 +36,7 @@ export default function Module05Awazzif() {
 
   return (
     <ContentModule
+      objectives={["كيف أحلّ متراجحة وأمثّل حلولها بنفسي؟", "ماذا أفعل بالأقواس قبل الحلّ؟", "كيف أختبر قيمة لأعرف هل هي حلّ؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(5)}
       moduleNumber={5}

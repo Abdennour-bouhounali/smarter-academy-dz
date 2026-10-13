@@ -33,6 +33,7 @@ export default function Module02Tarayiq() {
 
   return (
     <ContentModule
+      objectives={["كيف نكتب ما فعلناه في السباق بأربع خطوات؟", "متى تترجم المشكلةَ متراجحةٌ لا معادلة؟", "هل يصلح كل حلّ جوابًا عن المشكلة؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}
@@ -87,7 +88,7 @@ export default function Module02Tarayiq() {
           ),
         },
         {
-          num: 4, title: 'سباق لا يلتقي فيه الطرفان', subtitle: 'ابنِ النموذج، ثم مدّد x وراقب', done: q3,
+          num: 4, title: 'سباق جديد: هل يلتقي الطرفان؟', subtitle: 'ابنِ النموذج، ثم مدّد x وراقب', done: q3,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tarrid-mutarajiha" lead="ما فعلته في دوري الآن 2:" />
@@ -117,7 +118,7 @@ export default function Module02Tarayiq() {
           ),
         },
         {
-          num: 5, title: 'حلّ يلائم الواقع', done: q4,
+          num: 5, title: 'هل كل حلّ يصلح جوابًا؟', done: q4,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tahaqquq-waqi" lead="قبل أن نكتب الجواب، نسأل: هل يلائم هذا الحل الوضعية؟" />

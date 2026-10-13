@@ -10,8 +10,8 @@
     "`verified: true` = relu sur la page zoomée. `needsReview` = lecture plausible mais non certaine.",
     "Les `destinations` sont le plan de couverture : chaque élément a UNE destination (ou une répartition `items`),",
     "une seconde utilisation est déclarée dans `duplicatedIn`. scripts/check-textbook-coverage.mjs le vérifie.",
-    "La synthèse « أدمج تعلّماتي » (wadiya-idmajiya-judhur) porte la « وضعية » et le QCM « أؤكّد تعلّماتي » ; chaque",
-    "question du QCM est reprise (duplicatedIn) dans le test de la leçon qu'elle renvoie.",
+    "La synthèse « أدمج تعلّماتي » (wadiya-idmajiya-judhur) porte la « وضعية » ; depuis le 2026-10-13 (décision du propriétaire)",
+    "le QCM « أؤكّد تعلّماتي » n'y figure plus : chaque question du QCM vit dans le test de la leçon qu'elle renvoie.",
     "CORRECTIONS (décision du propriétaire, 2026-09-30) : les coquilles du manuel restent transcrites telles quelles",
     "dans `text`, et leur correction vit dans `correction` (texte corrigé + note) ; les leçons affichent la version corrigée."
   ],
@@ -2209,11 +2209,11 @@
     },
     "situation": {
       "lesson": "wadiya-idmajiya-judhur",
-      "module": 1,
+      "module": 7,
       "duplicatedIn": [
         {
           "lesson": "wadiya-idmajiya-judhur",
-          "module": 3
+          "module": 8
         }
       ]
     },
@@ -2342,18 +2342,14 @@
       "module": 5
     },
     "qcm": {
-      "lesson": "wadiya-idmajiya-judhur",
-      "module": 2,
+      "lesson": "jidhr-tarbii",
+      "module": 4,
+      "items": [
+        1,
+        2,
+        3
+      ],
       "duplicatedIn": [
-        {
-          "lesson": "jidhr-tarbii",
-          "module": 4,
-          "items": [
-            1,
-            2,
-            3
-          ]
-        },
         {
           "lesson": "muadalat-x-murabba",
           "module": 4,

@@ -50,11 +50,12 @@ export default function Module01Sibaq() {
 
   return (
     <ContentModule
+      objectives={["من يكبر مع الزمن في هذه العائلة؟ وماذا يحمل كل واحد منهم؟", "متى يتساوى عمر الأب مع مجموع أعمار أبنائه؟", "هل يلائم العدد الذي وجدناه نصّ المشكلة؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
       moduleTitle="سباق الأعمار — من النص إلى المعادلة"
-      moduleSubtitle="كل من يكبر يحمل x"
+      moduleSubtitle="من يحمل x؟"
       estimatedTime="13 دقيقة"
       brief={{
         tag: 'طرائق — الكتاب ص 49',
@@ -73,7 +74,7 @@ export default function Module01Sibaq() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          lead="نفس الفكرة في المستويين: كل من يكبر مع الزمن يحمل x، ثم نبحث عن لحظة التساوي."
+          lead="نفس الفكرة في المستويين: من يتغيّر مع الزمن؟ ومتى يتساوى العمودان؟"
           defaultLevel="beginner"
           levels={{
             beginner: () => (
@@ -105,7 +106,7 @@ export default function Module01Sibaq() {
       }
       steps={[
         {
-          num: 1, title: 'ب) نعبّر عن الوضعية بمعادلة', subtitle: 'ابنِ النموذج في المستوى المتقدّم، ثم أجب', done: q1,
+          num: 1, title: 'ب) أيّ معادلة تترجم المشكلة؟', subtitle: 'ابنِ النموذج في المستوى المتقدّم، ثم أجب', done: q1,
           content: (
             <div className="space-y-3">
               {evidence}
@@ -127,7 +128,7 @@ export default function Module01Sibaq() {
           ),
         },
         {
-          num: 2, title: 'جـ) نحلّ المعادلة', subtitle: 'السباق يعطيك الجواب: تحقّق منه بالحساب', done: q2,
+          num: 2, title: 'جـ) بعد كم سنة؟', subtitle: 'السباق يعطيك الجواب: تحقّق منه بالحساب', done: q2,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tarrid-namdhaja" lead="ما فعلته بالبطاقات هو الخطوة «ب)» من طريقة الكتاب:" />
@@ -143,7 +144,7 @@ export default function Module01Sibaq() {
           ),
         },
         {
-          num: 3, title: 'التحقق', subtitle: 'نعوّض الحل في نص المشكلة', done: q3,
+          num: 3, title: 'التحقق: هل يلائم الحلّ نصّ المشكلة؟', subtitle: 'نعوّض الحل في نص المشكلة', done: q3,
           content: (
             <div className="space-y-3">
               <BatchChoiceQuestion

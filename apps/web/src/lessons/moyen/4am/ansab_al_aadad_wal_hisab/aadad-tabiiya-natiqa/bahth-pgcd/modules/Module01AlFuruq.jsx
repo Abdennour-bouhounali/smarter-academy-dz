@@ -28,7 +28,7 @@ export default function Module01AlFuruq() {
   const [d2, setD2] = useState(false);
   const { a, b, second } = ACTIVITY_A.numbers;
   return (
-    <ContentModule
+    <ContentModule objectives={["ماذا يحدث للقواسم المشتركة عندما نطرح عددين؟", "هل نجد PGCD(252، 140) من الفرق وحده؟", "كيف أتابع الطرح خطوة بعد خطوة؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1}
       moduleTitle="نشاط 6 أ — الفروق المتتابعة" moduleSubtitle={ACTIVITY_A.subtitle} estimatedTime="14 دقيقة"
       brief={{ tag: 'أنشطة — الكتاب ص 9', title: ACTIVITY_A.title, tone: 'indigo',

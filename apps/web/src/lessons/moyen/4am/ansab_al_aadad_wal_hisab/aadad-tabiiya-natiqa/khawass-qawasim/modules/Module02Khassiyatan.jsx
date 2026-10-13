@@ -14,7 +14,7 @@ export default function Module02Khassiyatan() {
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   return (
-    <ContentModule
+    <ContentModule objectives={["ماذا خمّنت من الحالات الثلاث؟", "متى تصير الملاحظة خاصية؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2}
       moduleTitle="معارف — خاصيتان" moduleSubtitle="من التخمين إلى الخاصية" estimatedTime="12 دقيقة"
       brief={{ tag: 'معارف — الكتاب ص 10', title: 'خواص قواسم عدد طبيعي', tone: 'violet', body: <p>ما لاحظته في الحالات الثلاث يصوغه الكتاب في خاصيتين، مع مثال لكل واحدة.</p> }}

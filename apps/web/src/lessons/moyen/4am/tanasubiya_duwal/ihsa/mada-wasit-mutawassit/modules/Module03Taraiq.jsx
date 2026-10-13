@@ -43,6 +43,7 @@ export default function Module03Taraiq() {
 
   return (
     <ContentModule
+      objectives={["ماذا يحدث للمتوسط والوسيط والمدى حين نضيف قيمتين متباعدتين؟", "كيف نعيّن وسيط جدول كبير دون كتابة كل قيمه؟", "هل أجد سلسلة تحقّق شروطًا معطاة؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}
@@ -51,7 +52,7 @@ export default function Module03Taraiq() {
       estimatedTime="8 دقائق"
       brief={{
         tag: 'طرائق — الكتاب ص 97', title: METHOD_1.title, tone: 'emerald',
-        body: <p><MathText>{'على الميزان رأيت أنّ القيمة البعيدة تحرّك المتوسط ولا تحرّك الوسيط. الكتاب يحسب ذلك على سلسلة من 15 قيمة، ثم يعلّمنا تعيين الوسيط بالرتب دون كتابة كل القيم.'}</MathText></p>,
+        body: <p><MathText>{'على الميزان سحبتَ قيمة بعيدة ولاحظتَ أثرها على المؤشّرين. الكتاب يختبر ذلك على سلسلة من 15 قيمة، ثم يعلّمنا تعيين الوسيط بالرتب دون كتابة كل القيم.'}</MathText></p>,
       }}
       steps={[
         {

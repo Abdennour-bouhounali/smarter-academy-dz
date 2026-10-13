@@ -4,7 +4,7 @@
  * Une présentation ne fait pas une « diapositive » de chaque élément du DOM :
  * elle suit les unités PÉDAGOGIQUES que l'architecture de leçon connaît déjà.
  *
- *   module (ContentModule)   المهمة (brief) → المختبر (intro) → الخطوات… → الخلاصة (footer)
+ *   module (ContentModule)   المدخل (overview) → المهمة (brief) → المختبر (intro) → الخطوات… → الخلاصة (footer)
  *   leçon (LESSON_CONFIG)    sommaire → module 0 → module 1 → … → dernier module
  *
  * Ces deux fonctions dérivent l'ordre de la structure existante ; rien n'est
@@ -14,13 +14,15 @@
 /**
  * Les unités d'un module de contenu, dans l'ordre de ContentModule.
  *
- * @param {{brief?:boolean, intro?:boolean, steps:Array<{num:number|string, title:string}>, footer?:boolean}} m
+ * @param {{overview?:boolean, brief?:boolean, intro?:boolean, steps:Array<{num:number|string, title:string}>, footer?:boolean}} m
+ *   `overview` : la page d'entrée du module (titre + ce qu'on y apprend) ;
  *   `brief`/`intro`/`footer` : l'unité existe-t-elle (le slot est-il fourni,
  *   et pour le footer, le module est-il terminé — il n'est rendu qu'alors).
- * @returns {Array<{kind:'brief'|'intro'|'step'|'footer', key:string, num?:number|string, title?:string}>}
+ * @returns {Array<{kind:'overview'|'brief'|'intro'|'step'|'footer', key:string, num?:number|string, title?:string}>}
  */
-export function moduleUnits({ brief = false, intro = false, steps = [], footer = false }) {
+export function moduleUnits({ overview = false, brief = false, intro = false, steps = [], footer = false }) {
   const units = [];
+  if (overview) units.push({ kind: 'overview', key: 'overview' });
   if (brief) units.push({ kind: 'brief', key: 'brief' });
   if (intro) units.push({ kind: 'intro', key: 'intro' });
   for (const s of steps) units.push({ kind: 'step', key: `step-${s.num}`, num: s.num, title: s.title });

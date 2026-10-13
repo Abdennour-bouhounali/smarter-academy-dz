@@ -67,6 +67,7 @@ export default function Module01RasailYunus() {
 
   return (
     <ContentModule
+      objectives={["هل يستطيع يونس أن يرسل 21 رسالة؟ و 20؟ و 16؟", "ماذا نسمّي كتابة فيها مجهول وإشارة ≤ ؟", "متى نقول إنّ عددًا حلّ لها؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}

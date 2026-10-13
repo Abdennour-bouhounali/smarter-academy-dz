@@ -16,7 +16,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module01Nashat.jsx",
-        "line": 179,
+        "line": 189,
         "step": 2,
         "variant": "new"
       }
@@ -27,7 +27,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module02Maarif.jsx",
-        "line": 50,
+        "line": 51,
         "step": 1,
         "variant": "new"
       }
@@ -38,7 +38,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module02Maarif.jsx",
-        "line": 78,
+        "line": 79,
         "step": 2,
         "variant": "new"
       }
@@ -52,7 +52,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module03Tarayiq.jsx",
-        "line": 57,
+        "line": 58,
         "step": 1,
         "variant": "new"
       }
@@ -210,7 +210,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module01Nashat.jsx",
-      "line": 124,
+      "line": 132,
       "requires": [
         "darb-nisbiya"
       ],
@@ -226,7 +226,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module01Nashat.jsx",
-      "line": 147,
+      "line": 155,
       "requires": [
         "darb-nisbiya"
       ],
@@ -242,7 +242,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module01Nashat.jsx",
-      "line": 166,
+      "line": 175,
       "requires": [
         "darb-nisbiya"
       ],
@@ -258,7 +258,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module01Nashat.jsx",
-      "line": 191,
+      "line": 201,
       "requires": [
         "khassiya-jidaa-maadum"
       ],
@@ -274,7 +274,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module01Nashat.jsx",
-      "line": 206,
+      "line": 216,
       "requires": [
         "khassiya-jidaa-maadum",
         "hal-muadala-ula"
@@ -292,7 +292,7 @@
       "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module01Nashat.jsx",
-      "line": 233,
+      "line": 243,
       "requires": [
         "khassiya-jidaa-maadum",
         "nashr-jidaa"
@@ -310,7 +310,7 @@
       "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module01Nashat.jsx",
-      "line": 247,
+      "line": 257,
       "requires": [
         "khassiya-jidaa-maadum"
       ],
@@ -326,7 +326,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module02Maarif.jsx",
-      "line": 52,
+      "line": 53,
       "requires": [
         "taarif-muadala-jidaa"
       ],
@@ -342,7 +342,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module02Maarif.jsx",
-      "line": 79,
+      "line": 80,
       "requires": [
         "hulul-muadala-jidaa"
       ],
@@ -358,7 +358,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module02Maarif.jsx",
-      "line": 115,
+      "line": 116,
       "requires": [
         "tahlil-amil"
       ],
@@ -374,7 +374,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module02Maarif.jsx",
-      "line": 125,
+      "line": 126,
       "requires": [
         "hulul-muadala-jidaa"
       ],
@@ -390,7 +390,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module03Tarayiq.jsx",
-      "line": 80,
+      "line": 81,
       "requires": [
         "hulul-muadala-jidaa"
       ],
@@ -406,7 +406,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module03Tarayiq.jsx",
-      "line": 104,
+      "line": 105,
       "requires": [
         "tariqat-jidaa-maadum",
         "tahlil-huwiya"
@@ -424,7 +424,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module03Tarayiq.jsx",
-      "line": 124,
+      "line": 125,
       "requires": [
         "tariqat-jidaa-maadum"
       ],
@@ -440,7 +440,7 @@
       "step": 5,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module03Tarayiq.jsx",
-      "line": 143,
+      "line": 144,
       "requires": [
         "tariqat-jidaa-maadum"
       ],
@@ -452,10 +452,10 @@
     },
     {
       "questionId": "E1",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module08Itqan.jsx",
       "line": 41,
       "requires": [
         "taarif-muadala-jidaa"
@@ -468,10 +468,10 @@
     },
     {
       "questionId": "E2",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module08Itqan.jsx",
       "line": 49,
       "requires": [
         "hulul-muadala-jidaa"
@@ -484,10 +484,10 @@
     },
     {
       "questionId": "E3",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module08Itqan.jsx",
       "line": 57,
       "requires": [
         "hulul-muadala-jidaa"
@@ -500,10 +500,10 @@
     },
     {
       "questionId": "E4",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module08Itqan.jsx",
       "line": 65,
       "requires": [
         "tariqat-jidaa-maadum"
@@ -516,10 +516,10 @@
     },
     {
       "questionId": "E5",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module08Itqan.jsx",
       "line": 73,
       "requires": [
         "tariqat-jidaa-maadum"
@@ -531,5 +531,42 @@
       "pedagogicallyValid": true
     }
   ],
-  "findings": []
+  "findings": [
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 5 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module05Masala1.jsx",
+      "line": 0,
+      "module": 5,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 6 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module06Masala2.jsx",
+      "line": 0,
+      "module": 6,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 7 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/jidaa-maadum/modules/Module07Masala3.jsx",
+      "line": 0,
+      "module": 7,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    }
+  ]
 }

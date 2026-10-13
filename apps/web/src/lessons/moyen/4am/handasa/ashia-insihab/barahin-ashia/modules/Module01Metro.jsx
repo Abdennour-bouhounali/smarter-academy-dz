@@ -39,11 +39,11 @@ export default function Module01Metro() {
   const keep = (level) => (e) => { if (e) setTrials((list) => [...list, { ...e, level }].slice(-40)); };
 
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="مترو الجزائر — نختصر ونبرهن"
+    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} objectives={['متى نستطيع أن نربط تذكرتين فنختصر الرحلة؟', 'متى نقبل أن ننقل تذكرة إلى محطة أخرى؟', 'ماذا يعطي ذهاب وإياب على نفس الطريق؟', 'هل يكفي أن نرى المساواة على الشكل لنبرهنها؟']} moduleTitle="مترو الجزائر — نختصر ونبرهن"
       moduleSubtitle="تذاكر المترو أشعة: من محطة إلى محطة" estimatedTime="12 دقيقة"
       brief={{
         tag: 'مدخل الدرس — مختبر من المنصّة على التمرين 18 (ص 137)', headline: 'رحلة واحدة، مهما كانت المحطات', emoji: '🚇',
-        title: 'نختصر عبارة شعاعية بعلاقة شال وبتعويض شعاع بشعاع يساويه، ثم نبرهن', tone: 'indigo',
+        title: 'كيف نختصر رحلة من عدّة تذاكر؟ ومتى ننقل تذكرة إلى محطة أخرى؟', tone: 'indigo',
         body: (
           <div className="space-y-2" data-situation="metro">
             <p><MathText>{METRO.text}</MathText> <SourceTag source={METRO.source} /></p>
@@ -82,7 +82,7 @@ export default function Module01Metro() {
               {q[1] && <KnowledgeBrick id="rabt-shal" lead="ما فعله القطار:" />}
             </div>
           ) },
-        { num: 2, title: 'نعوّض بشعاع يساويه', subtitle: 'AB + AD', done: !!q[2],
+        { num: 2, title: 'ننقل تذكرة إلى محطة أخرى', subtitle: 'AB + AD', done: !!q[2],
           content: (
             <div className="space-y-3">
               <LabEvidence id="beginner-swap" trials={trials} level="beginner" title="ما فعلته في المستوى المبتدئ:"
@@ -124,7 +124,7 @@ export default function Module01Metro() {
               {q[3] && <KnowledgeBrick id="mutaakisan-sifr" variant="rappel" />}
             </div>
           ) },
-        { num: 4, title: 'الشكل لا يبرهن', subtitle: 'OL و AC', done: !!q[4],
+        { num: 4, title: 'هل يكفي أن نرى؟', subtitle: 'OL و AC', done: !!q[4],
           content: (
             <div className="space-y-3">
               <LabEvidence id="advanced-see" trials={trials} level="advanced" title="ما فعلته في المستوى المتقدّم:"

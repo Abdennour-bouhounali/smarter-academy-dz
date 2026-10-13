@@ -7,7 +7,7 @@ import { PREP_ITEMS } from '../content/textbook';
 /**
  * Module 0 — أستعدّ. Le « أستعدّ » du manuel (p. 43) appartient aux leçons
  * 1 à 3 ; la synthèse pose donc sept affirmations de la plateforme
- * (« عبارة إضافية من المنصّة ») sur ce que la situation et « أتعمّق »
+ * (« عبارة إضافية من المنصّة ») sur ce que la situation
  * mobilisent : une équation (درس 1), le produit nul (درس 2), une inéquation
  * et sa représentation (درس 3), une traduction (درس 4), une factorisation
  * (الوحدة 3). Aucune n'emploie les nombres du مسبح. Diagnostic JAMAIS

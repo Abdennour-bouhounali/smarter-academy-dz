@@ -15,7 +15,7 @@ export default function Module03Awazzif() {
   const [d2, setD2] = useState(false);
   const [d3, setD3] = useState(false);
   return (
-    <ContentModule
+    <ContentModule objectives={["أطبّق تعريف القاسم", "أحلّ تمارين الكتاب 1 و 2 و 5"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}

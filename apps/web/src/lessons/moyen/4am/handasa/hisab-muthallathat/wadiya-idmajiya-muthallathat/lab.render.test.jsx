@@ -9,9 +9,9 @@ import * as CL from '../../../../../common/manipulations/logic/clinometer';
 import { LAB, LAB_EXPECT, SITUATION, TEST } from './content/textbook';
 
 /**
- * Le workspace du module 1 de la synthèse — `clinometer` (leçon 4) réutilisé en mode `align`, monde `maqam`, deux
+ * Le workspace du module 7 de la synthèse — `clinometer` (leçon 4) réutilisé en mode `align`, monde `maqam`, deux
  * niveaux — rendu avec EXACTEMENT les props que le module étale (content/textbook.js › LAB) ; puis la mathématique
- * que les modules 1, 3 et 4 supposent, recalculée avec packages/core (trigonometry.js) et posée par la main dans la
+ * que les modules 7 et 8 supposent, recalculée avec packages/core (trigonometry.js) et posée par la main dans la
  * logique du lab (logic/clinometer.js).
  */
 const workspace = () => (
@@ -59,7 +59,7 @@ it('la وضعية : une place ratée, puis l’alignement à 2,45 m ; sin refus�
   // la même chose sans le lab, comme le module l'écrit : h = 2,30 × 98,1 ÷ 2,45 ; tan x = 2,30 ÷ 2,45
   expect(TR.roundTo(2.3 * 98.1 / 2.45, 2)).toBe('92,09');
   expect(TR.roundTo(TR.angleDeg('tan', 2.3 / 2.45), 0)).toBe('43');
-  // les distracteurs du module 1 : 95,65 au lieu de 98,1 ; tan arrondi à 0,9 ; l'angle complémentaire
+  // les distracteurs du module 7 : 95,65 au lieu de 98,1 ; tan arrondi à 0,9 ; l'angle complémentaire
   expect(TR.roundTo(2.3 * 95.65 / 2.45, 2)).toBe('89,79');
   expect(TR.roundTo(TR.angleDeg('tan', 0.9), 0)).toBe('42');
   expect(TR.roundTo(90 - TR.angleDeg('tan', 2.3 / 2.45), 0)).toBe('47');
@@ -75,16 +75,13 @@ it('le réverbère (مبتدئ) : 92 m de haut, l’alignement tombe à 3 m, tan
   expect(CL.result(s)).toMatchObject({ H1: '92', x: String(LAB_EXPECT.beginner.x) });
 });
 
-it('« أتعمّق » : ex. 31 (≈ 4, ≈ 4, 22° — 23° si AD est arrondi d’abord) et ex. 32 (147 m, 42°)', () => {
+it('la brique `muthallath-fada` (module 7) : le pavé 3,15 × 2,35 × 1,55 — AC² = 15,445, AD² = 17,8475, 22° (23° si AD est arrondi d’abord)', () => {
   const AC = Math.hypot(3.15, 2.35); const AD = Math.hypot(AC, 1.55);
   expect(TR.roundTo(AC ** 2, 3)).toBe('15,445');
   expect(TR.roundTo(AD ** 2, 4)).toBe('17,8475');
   expect([TR.roundTo(AC, 0), TR.roundTo(AD, 0)]).toEqual(['4', '4']);
   expect(TR.roundTo(TR.angleDeg('sin', 1.55 / AD), 0)).toBe('22');
   expect(TR.roundTo(TR.angleDeg('sin', 1.55 / 4), 0)).toBe('23');
-  const OA = 231 * Math.SQRT2 / 2;
-  expect(TR.roundTo(Math.sqrt(220 ** 2 - OA ** 2), 0)).toBe('147');
-  expect(TR.roundTo(TR.angleDeg('cos', OA / 220), 0)).toBe('42');
 });
 
 it('« إختبار أولي » (autres nombres) : la minaret 265 m, x ≈ 53° ; le conteneur ≈ 12,47 m', () => {

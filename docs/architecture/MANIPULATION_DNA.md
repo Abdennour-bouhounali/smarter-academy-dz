@@ -453,3 +453,171 @@ on a balance (`MANIPULATION_CONTRACT.md` §2septies):
 
 Every one of the three also obeys the new one-screen rule (`MANIPULATION_CONTRACT.md` §8bis, §14 question 5).
 
+**Unit 9 synthesis, a living world (2026-10-13).** `shadow-world` replaces `shadow-stick` in `wadiya-idmajiya-talis` M1 (مبتدئ).
+It is the first lab built on §16 below; `shadow-stick` stays in the registry (its tests still run) but no lesson uses it.
+
+## 16. Living worlds — the student writes the law (owner directive, 2026-10-13)
+
+> The owner asked for « the full power » of a manipulation and set two rules: **the documentation is not a ceiling** (a lab may
+> go beyond every pattern above when learning needs it — then this file is extended, not the lab shrunk), and **the student
+> discovers the concept himself — it is never given**. Reference implementation: `geometry/ShadowWorld.jsx` on
+> `logic/shadowWorld.js` (« ساحة الحيّ », Thales by the shadows).
+
+The labs of §1–§15 give the hand ONE variable and ask for a conjecture among options. A living world goes further on five axes.
+
+### 16.1 The hand holds the CAUSE, the world holds many objects
+
+The student does not move one object's parameter: they move the **cause** (the sun), and **every** object of the world obeys the
+same law at once (minaret, palm, stick, Farid, the installations). The law is then the only thing that explains everything on
+screen. Data from the real world when it exists: the sun is Algiers's real sun on 13 October (12:30 → 16:00, k = 1 ÷ tan(altitude),
+rounded to n ÷ 25 so every shadow is an exact number of centimetres; the textbook's 1,6 at 15:00).
+
+### 16.2 Tools that can refuse
+
+The tape measures horizontal distances from an object's foot; pulled up the minaret it **falls back** — the inaccessible height is
+the problem, felt, not read. The stick's head enters the minaret's shadow and **its shadow disappears**: the textbook's place
+(both shadows end at O) is the exact edge where it reappears — the method is discovered as a physical boundary.
+
+### 16.3 A prediction is a diagnostic instrument
+
+Before the municipality installs an object (3 m lamp post, then 6 m flagpole), the student plants a flag where its shadow will end.
+`classify(H, hour, p)` compares the bet with the **models a student can hold** — `right` (k·H), `additive` (H + the stick's
+difference), `copy` (the stick's shadow), `equal` (H), `inverse` (H ÷ k) — and the companion answers the model, not the score.
+**Evidence that cannot discriminate is flagged:** at 12:30 (k = 1) adding and multiplying give the same shadow, so a right bet there
+is `discriminating: false` and the companion asks for another hour instead of praising.
+
+### 16.4 The student authors the law; the world tests it everywhere; the cause refutes it
+
+« قاعدتي »: `الظلّ = الطول [+ | ×] [n]` — no operation is pre-selected, the number is typed. `ruleCheck` applies it **exactly** to
+every known object present and the world plants violet flags at the predicted tips, with the gap drawn to each real tip. A rule fit
+on the stick alone is refuted by Farid. The flags **stay** when the sun moves: the student watches their own rule come unstuck and
+must repair it. The discovery gate (`discoveryReady`): three hours seen, two shadows measured at one hour, one bet, a × rule that fits
+everything, **and its repair at another hour**. The conjecture prompt and the refutations are written with **the student's two
+rules** (`fittingRules`) and their own numbers; the notebook's ratio column appears only after the formal step.
+
+### 16.5 A companion that asks, never tells
+
+`react(state)` answers the last gesture with a numbered observation then a question; `guide(state)` is the standing question of the
+current goal; `help(state, level)` opens three levels of tighter questions (`h_<goal>[variant]_<1..3>`), with variants that follow the
+student's situation (`rulePlus` after an additive rule, `rule2Same` before the sun has moved). Wrong final answers are **read**:
+`judgeHeight` recognises the shadow taken for the height, the inverted ratio, the subtracted difference, two hours mixed, and the
+distance AB. A render test asserts that **no message reachable before the student wrote their rule contains the law**
+(`1,6`, `\times`, `× n`).
+
+### 16.5bis The tutor chain — a question the student must ANSWER, not just read (owner directive, 2026-10-13)
+
+§16.5's `react`/`guide`/`help` narrate gestures; they never required an answer. The owner asked for more: مقران must
+run a real question → typed/tapped answer → judged feedback → next question loop from zero knowledge to the
+formal rule — a tutor, not commentary beside a simulation.
+
+**The checkpoint layer** (`logic/shadowWorld.js`, `judgeTrend` / `judgeFastest` / `judgeRatioSeed` /
+`judgePredictReflect` / `judgeRuleReflect`, `CHECKPOINT_ORDER`, `currentCheckpoint`, `answerQuiz`): five fixed
+points in the discovery, each with a real two-(or more-)option question JUDGED against the student's own just-
+produced numbers — never rhetorical, never answerable by continuing to drag:
+
+| Checkpoint | Opens when | Question | Correct answer comes from |
+|---|---|---|---|
+| `trend` | a sun move happened | do shadows lengthen or shorten? | the minaret's own shadow before/after (monotone, always decidable) |
+| `fastest` | two distinct hours seen | which shadow changed more, in cm? | the taller object always wins in cm, though both tie in **percent** — the seed of k |
+| `ratioSeed` | two KNOWN objects measured at one hour | is shadow÷height the same or different for both? | always "same"; the two ratios are computed and compared exactly |
+| `predictReflect` | a bet resolved WRONG | which model did you use (additive / copy / equal / inverse)? | `classify`'s own diagnosis of the student's bet; skipped entirely on a right bet |
+| `ruleReflect` | a × rule fits everything, once | does the FORM survive the sun moving, or the NUMBER? | always "form" — the number changes, which `rRuleBroken` then shows |
+
+**It blocks, both ends.** `currentGoal` checks `currentCheckpoint` FIRST: while one is open the goal is
+`quiz_<id>`, the shell shows mقران's prompt plus its two tap buttons instead of the step's normal content, and
+`answerQuiz` itself refuses an id that is not `currentCheckpoint(s)` — a student (or a bug) cannot answer
+"fastest" before "trend" even by calling the function directly. A wrong tap gets a rose highlight, an explanation
+built from the student's OWN numbers (never a canned line), and the same two buttons stay live for a retry — it
+never advances. `goals.observe` / `measure` / `predict` / `rule` are gated on their checkpoint in addition to the
+old gesture count, so discovery cannot be reached by gesture volume alone.
+
+**Why a judge, not a judge-then-forget.** Each `judge*` is a pure function of PERSISTENT state (`hoursSeen`,
+`notebook`, `predictions`, `rule`), never of `s.last` — a real bug found the hard way: `judgeTrend` first read
+`s.last.kind === 'sun'`, so answering it (which sets `last.kind = 'quiz'`) made the question *unjudgeable* on the
+very next check, and the tutor silently skipped to the next checkpoint instead of allowing a retry.
+`setHour` now also writes a dedicated `lastSunMove` field that a quiz answer does not overwrite.
+
+**Option labels are STATIC — never put a student's own number inside one.** A second real bug: an option label
+(`quizOpt_ruleReflect_number`) contained `{{numText}}`, but option buttons are rendered with `k('quizOpt_…')`
+with no interpolation object (matching every `ManipulationDiscovery` option elsewhere in the codebase) — the
+literal `{{numText}}` showed on the button. The number belongs in the PROMPT (which IS interpolated with the
+judge's numbers), never in an option's own label. A render test (`shadowWorld.render.test.jsx`) scans every
+`quizOpt_*` string for `{{` and fails if interpolation syntax survived into a static label.
+
+**A dynamic set of options needs a dynamic distractor, from the logic layer, never guessed in the view.**
+`predictReflect`'s correct answer is whichever model the student's own bet matched; showing all four possible
+models every time would make it guessable by elimination rather than genuine recognition. `judgePredictReflect`
+returns `options: [correct, PREDICT_DISTRACTOR[correct]]` — a fixed, deterministic pairing per model, computed in
+`logic/`, so the view never invents which two options to show.
+
+**Centimetres vs already-formatted text — one more key-name collision to avoid.** `say()`'s `CM` set lists which
+message params are raw centimetres needing `tex()` (metres, LaTeX); a param already formatted by its judge
+(`m()`, e.g. `ra`/`rb`/`numText`) must stay OUT of `CM`, and a param meant to display as a plain integer or
+percent (`dStick`, `pctMinaret`) must stay out too, even though both look like "just a number" — the Arabic
+template, not the key's type, decides the unit. The browser QA (not the unit tests, which only check judge
+correctness) is what caught both directions of this mistake: "870 m" (cm shown unconverted) and "0{,}87 سم"
+(a percent run through the metre converter). **A number formatting bug is invisible to `renderToString` snapshot
+tests and to pure-logic tests alike — only a rendered, read screenshot catches it.**
+
+### 16.5ter The tutor panel — one question at a time, a visible conversation, no dead ends (owner, 2026-10-13)
+
+The first version of the chain put four things in one bubble — a reaction ending in a rhetorical question, the answer
+buttons, a small « ماذا بعد؟ » line holding the REAL question, and a help button — so the student saw two questions and
+could answer only one, and each gesture replaced the message. The owner asked for an interaction that is « clear, easy,
+and makes progress ». `geometry/ShadowTutor.jsx` (pure view; ShadowWorld passes formatted nodes) now has three zones:
+
+1. **Progress** — « أسئلة مقران », one dot per checkpoint from `checkpointStatus(s)`: `done`, `current`, `pending`,
+   `skipped` (a right bet has nothing to reflect on, so `predictReflect` is skipped, not owed).
+2. **The thread** — مقران's messages AND the student's own answers as bubbles (✓ green / ✗ rose): the tapped option, the
+   rule written, the bet, the height answered. Built in ShadowWorld from each judged event (`lab.last`), the student's
+   bubble first, then مقران's reaction; two consecutive sun or stick moves (or two messages carrying the same action)
+   collapse into one so the thread does not drown. Last 3 messages (2 below 420 px), the rest unfolds.
+3. **ONE pinned card** — either « سؤال مقران » (the only question on screen, big options, « سؤال n من N ») or
+   « مهمّتك الآن » (one instruction in the world, never a question). A wrong option, once tried, is disabled and
+   struck (« جرّبتَ هذا ») under the explanation that just landed in the thread: the student progresses by reading,
+   not by guessing. « تلميح » opens the hint levels INSIDE the card (`hq_<quiz>_<1..3>` for a question, `h_<goal>_<1..3>`
+   for a task) and they reset only when the card changes, never at each gesture.
+
+**Rules this enforces (tested in `shadowWorld.render.test.jsx`):** a reaction (`r*`, except the challenge's `rAns_*`)
+and a task (`g_*`) contain no « ؟ » — مقران asks only where a button or a field can answer; every checkpoint has its
+prompt, its right/wrong feedback, its option labels and its three hints; no `quizOpt_*` contains `{{`.
+
+**No dead end with the stick.** The stick used to start 3 m from the minaret, inside its shadow, and its handle was
+hidden in measure mode — so the student's first « قِس ظلّ العصا » failed and مقران's « أبعِد العصا » could not be obeyed.
+Now: the stick starts in the sun (`STICK_MAX`, measurable at every hour for both levels — tested); its handle stays
+draggable in measure mode (above the tape zone, lifted above a 16 px stick on phones, pulsing while its shadow is
+swallowed); and a reaction may carry an `action` — `rStickHidden` / `rMeasureHidden` carry `freeStick`, rendered as a
+button under the last message that moves the stick just beyond O (`stickOutOfShadow`, never the textbook's edge, so
+escaping the shadow does not hand over the method). **General rule: any instruction a companion gives must be
+executable from where the student is, in one gesture or one button.**
+
+### 16.6 Engineering rules for a world
+
+- The companion's brain is **pure logic** (`react` / `guide` / `help` / `classify` / `judgeHeight` in `logic/`), tested like the
+  mathematics; the view only formats messages (`say`: cm → `tex`, ids → names).
+- Exact integers (cm) decide every verdict; floats only draw. Sweep the layout at every width (`layout`, `hourFromPoint` round trip,
+  the sun collinear with (O, M) at every hour).
+- Several gestures, one world: local pointer grabs (`grab(kind)`) with capture, plus a keyboard and a button path for each (sun
+  slider and −/+, stick slider, flag slider, « قِس ظلّ … » buttons for the tape). Not yet extracted into a shared engine.
+- Every gesture reports through `state.report` (`onTrial` evidence: measure / predict / rule / meet / answer).
+- One-screen (§14 q. 5): the scene is budgeted on the lesson viewport minus what surrounds it in `[data-sw-glance]`
+  (240 → 640 px; the true-scale world needs ≈ 590 px at full desktop width); the companion is beside the scene from `lg`,
+  above it below `lg`, and is not subtracted from the budget.
+- **Trap — a measured block inside a grid must be `self-start`.** The glance block spans two grid rows beside the
+  companion; grid items stretch by default, so when مقران's thread grew the block was stretched to the companion's
+  height, the « what surrounds the drawing » measure exploded and the world fell to its minimum height (owner QA,
+  2026-10-13: a 230 px world on a 926 px screen). Any lab that budgets its scene from a measured wrapper next to a
+  growing column must align that wrapper to its own content.
+- **One action panel at a time.** Under the scene: the measure buttons only in measure mode, the bet only at its step
+  (or while a flag is placed — the optional second installation waits in a chip), the rule from the bet on, the
+  challenge after the formal step. Every stacked panel is height taken from the world.
+
+| Item | Status |
+|---|---|
+| `shadow-world` in `wadiya-idmajiya-talis` M1 (مبتدئ); 45 logic tests + 8 render tests; Playwright journey at 1366 and 390 px | **Implemented 2026-10-13** |
+| The tutor chain (§16.5bis): 5 blocking checkpoints, tapped answers, judged feedback, retry-until-correct | **Implemented 2026-10-13** |
+| The tutor panel (§16.5ter): progress, conversation thread, one pinned question/task card, in-card hints, the stick never a dead end | **Implemented 2026-10-13** |
+| The pattern on other units (a world + diagnostic bets + an authored rule + a questioning companion) | **Not yet implemented** |
+| A shared multi-gesture engine (pivot, tape) extracted from `ShadowWorld` | **Not yet implemented** |
+| Phone scale: the 22 m world is drawn at ≈ 16 px/m at 390 px (readable, small) | known limit |
+

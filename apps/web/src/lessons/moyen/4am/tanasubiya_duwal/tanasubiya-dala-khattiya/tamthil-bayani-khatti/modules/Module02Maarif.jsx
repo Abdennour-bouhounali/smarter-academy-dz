@@ -40,6 +40,7 @@ export default function Module02Maarif() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
+      objectives={["ما شكل التمثيل البياني لدالة خطية؟", "متى يصعد المستقيم ومتى ينزل؟", "كيف نرسم المستقيم، وكيف نقرأ عليه صورة عدد؟"]}
       moduleNumber={2}
       moduleTitle="معارف وطرائق — المستقيم وقراءته"
       moduleSubtitle="التمثيل البياني، المنحى، الرسم والقراءة"
@@ -50,7 +51,7 @@ export default function Module02Maarif() {
       }}
       steps={[
         {
-          num: 1, title: 'مستقيم يشمل المبدأ', subtitle: 'معارف — الخاصية', done: q1a && q1b,
+          num: 1, title: 'شكل التمثيل البياني', subtitle: 'معارف — الخاصية', done: q1a && q1b,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tamthil-nashat" variant="rappel" compact />
@@ -107,7 +108,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 3, title: 'نرسم بنقطة ثانية', subtitle: 'طرائق — تمثيل دالة خطية بيانيا', done: q3,
+          num: 3, title: 'كيف نرسم المستقيم؟', subtitle: 'طرائق — تمثيل دالة خطية بيانيا', done: q3,
           content: (
             <div className="space-y-3">
               <PredictRule id="rasm-tamthil"><MethodSteps method={METHOD_DRAW} /></PredictRule>

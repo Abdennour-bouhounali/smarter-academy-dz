@@ -48,6 +48,7 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 3 — مراد وعمر"
       moduleSubtitle="كم حلا للمعادلة؟"
       estimatedTime="14 دقيقة"
+      objectives={['هل للمعادلة $x^2 = 9$ حلّ واحد أم أكثر؟', 'ماذا نلاحظ على مربّعي عددين متعاكسين؟', 'كم حلّا للمعادلة $x^2 = a$ حين تتغيّر إشارة $a$؟']}
       brief={{
         tag: 'أنشطة — الكتاب ص 20',
         headline: 'مراد أم عمر؟',
@@ -181,7 +182,7 @@ export default function Module01Nashat() {
                 requires={['murabba-adad', 'jidhr-taarif']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
-                    {allRight ? 'تمامًا. ' : 'انظر إلى التصحيحات. '}بعض المعادلات لها حلّان، واحدة لها حل واحد، وواحدة ليس لها حل.
+                    {allRight ? 'تمامًا. ' : 'انظر إلى التصحيحات. '}كم حلّا وجدت لكل معادلة؟ هل العدد نفسه في كل مرّة؟
                   </Feedback>
                 )}
                 onAnswered={done('h')}
@@ -203,7 +204,7 @@ export default function Module01Nashat() {
                 requires={['murabba-adad']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
-                    {allRight ? 'تمامًا: ' : 'انظر إلى التصحيحات: '}العدد <MathText>{'$a$'}</MathText> هو مربّع كل واحد من الحلّين.
+                    {allRight ? 'تمامًا: ' : 'انظر إلى التصحيحات: '}قارن كل حلّين بالعدد الذي يظهر في الطرف الثاني من المعادلة.
                   </Feedback>
                 )}
                 onAnswered={done('w')}

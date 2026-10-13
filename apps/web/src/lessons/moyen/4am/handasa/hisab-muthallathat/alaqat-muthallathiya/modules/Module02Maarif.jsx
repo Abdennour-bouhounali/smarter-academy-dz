@@ -27,6 +27,7 @@ export default function Module02Maarif() {
 
   return (
     <ContentModule
+      objectives={['كيف يكتب الكتاب العلاقتين بين النسب؟', 'ماذا تعني كتابة مربع الجيب؟', 'هل تتحقّق العلاقتان على الزاوية 60 درجة؟']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}
@@ -80,7 +81,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 3, title: 'العلاقة تعمل وحدها', subtitle: 'مثال من المنصّة', done: q3,
+          num: 3, title: 'هل نحتاج إلى رسم المثلث؟', subtitle: 'مثال من المنصّة', done: q3,
           content: (
             <div className="space-y-3">
               <TapQuestion

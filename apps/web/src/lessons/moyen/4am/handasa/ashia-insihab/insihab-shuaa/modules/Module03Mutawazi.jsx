@@ -28,7 +28,7 @@ export default function Module03Mutawazi() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
-      moduleNumber={3}
+      moduleNumber={3} objectives={['كيف ننشئ النقطة D لنحصل على متوازي أضلاع؟', 'ماذا نقول عن الشعاعين AB و DC؟', 'هل يهمّ ترتيب الحروف؟', 'ماذا يحدث إذا كانت النقط الأربع في استقامية؟']}
       moduleTitle="نشاط 2 أ — الشعاعان المتساويان ومتوازي الأضلاع"
       moduleSubtitle="متى يرسم شعاعان متساويان متوازي أضلاع؟"
       estimatedTime="9 دقائق"

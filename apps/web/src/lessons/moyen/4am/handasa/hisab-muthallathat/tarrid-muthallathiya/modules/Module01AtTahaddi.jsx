@@ -43,11 +43,11 @@ export default function Module01AtTahaddi() {
   const keep = (e) => setTrials((list) => [...list, e].slice(-30));
 
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="التحدّ — سلّم الجدارية"
+    <ContentModule objectives={['كيف نترجم الوضعية إلى مثلث قائم؟', 'أيّ نسبة تربط المعلوم بالمجهول؟', 'كيف نحسب ارتفاعًا لا نستطيع الوصول إليه؟']} ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="التحدّ — سلّم الجدارية"
       moduleSubtitle="ارتفاع لا نصل إليه، وسلّم لا نعرف طوله" estimatedTime="14 دقيقة"
       brief={{
         tag: 'تحدّ الوحدة — الكتاب ص 115', headline: 'هاتفك يقيس الزوايا: كم طول سلّم الجدارية؟', emoji: '📱',
-        title: 'نترجم الوضعية إلى مثلث قائم ونختار النسبة التي تربط المعلوم بالمجهول', tone: 'indigo',
+        title: 'كيف نترجم الوضعية إلى مثلث قائم؟ وأيّ نسبة تربط المعلوم بالمجهول؟', tone: 'indigo',
         body: (
           <div className="space-y-2" data-situation="challenge">
             <p><MathText>{'رسّامو جدارية الحي يسندون سلّمهم إلى الجدار: رأسه يجب أن يصل إلى العلامة على ارتفاع $1{,}60\\,\\mathrm{m}$ ، وتطبيق «مقياس الميل» في الهاتف يقرأ ميل السلّم: $59^{\\circ}$ .'}</MathText></p>
@@ -87,7 +87,7 @@ export default function Module01AtTahaddi() {
               {q[1] && <KnowledgeBrick id="tarid-muthallath" lead="أول خطوة في كل وضعية:" />}
             </div>
           ) },
-        { num: 2, title: 'أيّ نسبة؟', subtitle: 'المعلوم: المقابل — المطلوب: الوتر', done: !!q[2],
+        { num: 2, title: 'أيّ نسبة؟', subtitle: 'ماذا نعرف؟ وماذا نريد؟', done: !!q[2],
           content: (
             <div className="space-y-3">
               <LabEvidence id="advanced" trials={trials} filter={isLadder} title="محاولاتك بالسلّم (المستوى المتقدّم):"

@@ -39,6 +39,7 @@ export default function Module03Awazzif() {
 
   return (
     <ContentModule
+      objectives={['أحسب نسبًا وأقيسًا بالحاسبة', 'أكتب برنامج الحاسبة بترتيبه الصحيح', 'أحكم على حلّ زميل وأصحّح خطأه']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}

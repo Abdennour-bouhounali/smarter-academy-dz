@@ -70,6 +70,7 @@ export default function Module01Nashat3() {
 
   return (
     <ContentModule
+      objectives={["كم يبعد أكبر راتب عن أصغر راتب؟", "أين تتوازن القيم على العارضة؟", "هل يكفي المتوسط وحده لمقارنة مدينتين؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
@@ -107,7 +108,7 @@ export default function Module01Nashat3() {
       }
       steps={[
         {
-          num: 1, title: 'مدى الرواتب', subtitle: 'السؤال 1', done: q1,
+          num: 1, title: 'أكبر راتب وأصغر راتب', subtitle: 'السؤال 1', done: q1,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACT3.q1}</MathText></p>
@@ -212,7 +213,7 @@ export default function Module01Nashat3() {
               />
               {q5 && (
                 <p className="rounded-xl bg-violet-50 px-3 py-2 text-sm text-violet-900" data-next-module>
-                  المتوسط وحده لا يصف السلسلة: سلسلتان لهما المتوسط نفسه قد تختلفان في تباعد قيمهما. في المحور التالي مؤشّر ثالث: القيمة التي تقسم السلسلة نصفين.
+                  المتوسط وحده لا يصف السلسلة: سلسلتان لهما المتوسط نفسه قد تختلفان في تباعد قيمهما. هل يكفي المتوسط والمدى لوصف سلسلة؟ وهل من قيمة أخرى تلخّص السلسلة؟
                 </p>
               )}
             </div>

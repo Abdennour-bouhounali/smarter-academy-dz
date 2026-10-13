@@ -43,6 +43,7 @@ export default function Module01Nashat5() {
 
   return (
     <ContentModule
+      objectives={['كيف نرسم زاوية دون منقلة إذا عرفنا جيبها فقط؟', 'ماذا يربط جيب الزاوية بجيب تمامها وبظلها؟', 'هل يصحّ ما نخمّنه لكل زاوية حادة؟']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
@@ -67,7 +68,7 @@ export default function Module01Nashat5() {
       intro={
         <ManipulationWorkspace
           title="الأدوات: كوس، مسطرة مدرّجة، مدور — ولا منقلة"
-          lead="الكوس يعطي الزاوية القائمة، والمسطرة تنقل طولًا، والمدور يفتح الخيط: هو الوتر. المنقلة لا تظهر إلا للتحقّق في النهاية."
+          lead="الكوس يعطي الزاوية القائمة، والمسطرة تنقل طولًا، والمدور يرسم مسافة ثابتة من نقطة. ماذا يمثّل الخيط في المثلث الذي ترسمه؟ المنقلة لا تظهر إلا للتحقّق في النهاية."
           levels={{
             beginner: () => (
               <Manipulation type="angle-compass" level="beginner" targets={LAB.m1.beginner.targets} theme={LAB.m1.beginner.theme}
@@ -145,7 +146,7 @@ export default function Module01Nashat5() {
           ),
         },
         {
-          num: 4, title: 'البرهان: خاصية فيثاغورس', subtitle: 'نشاط 5 (2) أ ب جـ', done: q4,
+          num: 4, title: 'كيف نبرهن التخمين؟', subtitle: 'نشاط 5 (2) أ ب جـ', done: q4,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" text={ACT5.part2} source={ACT5.source} compact />

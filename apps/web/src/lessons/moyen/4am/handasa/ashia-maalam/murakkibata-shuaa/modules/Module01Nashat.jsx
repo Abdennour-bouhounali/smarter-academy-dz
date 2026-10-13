@@ -65,7 +65,7 @@ export default function Module01Nashat() {
       moduleNumber={1}
       moduleTitle="نشاط 1 — تطبيق التوصيل في الحيّ"
       moduleSubtitle="كيف نكتب رحلة بعددين؟"
-      estimatedTime="13 دقيقة"
+      objectives={['كيف نكتب رحلة بعددين؟', 'ماذا يمثّل كل عدد من العددين؟', 'ما مركبتا شعاع ينطلق من المبدأ O؟']} estimatedTime="13 دقيقة"
       brief={{
         tag: 'أنشطة — الكتاب ص 140',
         headline: 'طلبك في الطريق!',

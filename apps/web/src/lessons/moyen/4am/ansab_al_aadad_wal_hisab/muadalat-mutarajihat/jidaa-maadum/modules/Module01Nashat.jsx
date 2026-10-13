@@ -73,6 +73,7 @@ export default function Module01Nashat() {
 
   return (
     <ContentModule
+      objectives={["متى تنعدم مساحة ملعب ضلعاه x − 2 و x + 5؟", "هل ينفعنا نشر الجداء عندما يتغيّر الضلعان معًا؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}

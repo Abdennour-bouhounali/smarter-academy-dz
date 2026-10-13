@@ -4,25 +4,25 @@
  * référence : qasim-adad-tabii/knowledgeGraph.js.
  *
  * Une leçon à part, traitée à part :
- *   — elle n'introduit AUCUNE connaissance (knowledge.jsx : deux rappels) ;
- *     la carte ne lui en invente pas : elle montre la DÉMARCHE du manuel
- *     (قراءة → تحليل واستراتيجية → تنفيذ) et ce qu'elle mobilise ;
- *   — la SOLUTION (2440) n'y figure pas. Tout nœud est gardé par un item du
- *     module 1, alors que le module 3 (« أحلّ الوضعية ») est l'évaluation ; et
- *     le module 1 le dit lui-même : « هنا فهمنا واختطّينا الاستراتيجية فقط ».
- *   — « أؤكّد تعلّماتي » (module 2) renvoie aux leçons 1 à 7 : leurs cartes
- *     portent ces connaissances, celle-ci ne les recopie pas.
+ *   — elle n'introduit AUCUNE connaissance (knowledge.jsx : deux rappels, au module 7) ;
+ *     la carte ne lui en invente pas : elle montre la DÉMARCHE (قراءة → تحليل
+ *     واستراتيجية → تنفيذ) de la situation des tabliers et ce qu'elle mobilise ;
+ *   — la SOLUTION (13 écoles) n'y figure pas. Tout nœud est gardé par un item du
+ *     module 7, alors que le module 8 (« وضعية الاختبار النهائي ») est l'évaluation ; et
+ *     le module 7 le dit lui-même : « هنا فهمنا واختطّينا الاستراتيجية فقط ».
+ *   — les six وضعيات d'entraînement (modules 1 à 6) ne sont pas dans la carte : elles
+ *     s'entraînent sur d'autres nombres, la carte reste celle de la situation du test.
  *
- * Sources : content/textbook.js (SITUATION : énoncé, aide, données, analyse),
- * la question 3 du module 1 et sa remarque, le distracteur E1 de l'évaluation.
+ * Sources : content/textbook.js (SITUATION : énoncé, données, analyse — un ajout de
+ * la plateforme), la question 3 du module 7 et sa remarque, le distracteur de E1/E2.
  *
- *                     [كم قطعة خزفية؟]                     مفهوم
+ *                     [كم مدرسة؟]                          مفهوم
  *                         نفهمها │
  *                     [قراءة الوضعية]                      فكرة أساسية
  *              تذكّر ┌──────┴──────┐ نختار استراتيجية
- *   📌 [قابلية القسمة على 10]   [الترميز بالحروف]            طريقة
- *          خطأ شائع │                │ نطبّقه
- *       ⛔ [مضاعف أم قاسم؟]      [أرقام العدد]              مثال
+ *   📌 [القاسم المشترك الأكبر]   [خوارزمية إقليدس]          طريقة
+ *          خطأ شائع │                │ نطبّقها
+ *       ⛔ [مجموع أم قاسم؟]      [الخطوة الأولى]           مثال
  *                    └──────┬─────────┘ نستخلص
  *                    🎯 [ثلاث مراحل]
  */
@@ -30,64 +30,62 @@ import { SITUATION } from './content/textbook';
 
 const useful = SITUATION.data.filter((d) => d.useful);
 const [fahm, istratijiya, tanfidh] = SITUATION.analysis;
-const divisible = SITUATION.data.find((d) => d.id === 'div');
-// Module 1, remarque finale : la carte s'arrête là où le manuel s'arrête.
-const NOT_SOLVED_HERE = 'الحلّ نفسه في «أحلّ الوضعية»: هنا فهمنا واختطّينا الاستراتيجية فقط.';
+// Module 7, remarque finale : la carte s'arrête là où le module 1 s'arrête.
+const NOT_SOLVED_HERE = 'الحلّ نفسه في «وضعية الاختبار النهائي»: هنا فهمنا واختطّينا الاستراتيجية فقط.';
 
 export const KNOWLEDGE_GRAPH = {
   root: 'wadiya',
   nodes: [
     {
-      id: 'wadiya', kind: 'concept', lane: 'center', requires: 'qabiliyat-10',
-      title: 'كم قطعة خزفية؟', subtitle: SITUATION.imageCaption,
+      id: 'wadiya', kind: 'concept', lane: 'center', requires: 'pgcd-taarif',
+      title: 'كم مدرسة؟', subtitle: 'المآزر المدرسية',
       context: { text: SITUATION.text },
       reveals: ['fahm'],
     },
     {
-      id: 'fahm', kind: 'idea', lane: 'center', requires: 'qabiliyat-10',
-      title: 'قراءة الوضعية', subtitle: 'مضاعف لـ 4 و 8 و 10',
+      id: 'fahm', kind: 'idea', lane: 'center', requires: 'pgcd-taarif',
+      title: 'قراءة الوضعية', subtitle: 'توزيع بالتساوي دون باقٍ',
       context: { text: fahm.text, list: useful.map((d) => d.text) },
-      reveals: ['qabiliyat', 'tarmiz'],
+      reveals: ['qasim', 'iqlidus'],
     },
     {
-      // 📌 تذكّر — l'item « تذكير » du module 1 (et l'aide du manuel).
-      id: 'qabiliyat', kind: 'prerequisite', lane: 'start', requires: 'qabiliyat-10', notebook: true,
-      title: 'قابلية القسمة على 10', subtitle: 'رقم الآحاد 0',
+      // 📌 تذكّر — l'item « تذكير » du module 7.
+      id: 'qasim', kind: 'prerequisite', lane: 'start', requires: 'pgcd-taarif', notebook: true,
+      title: 'القاسم المشترك الأكبر', subtitle: 'أكبر عدد يقسم العددين',
       reveals: ['khata'],
     },
     {
-      // ⛔ خطأ شائع — l'évaluation (E1) : le distracteur « قاسم مشترك للأعداد
-      // 4 و 8 و 10 » et son explication (« مضاعف للأعداد الثلاثة، لا قاسم »).
-      id: 'khata', kind: 'common_mistake', lane: 'start', requires: 'qabiliyat-10',
-      title: 'مضاعف أم قاسم؟', subtitle: 'مضاعف لـ 4 و 8 و 10',
+      // ⛔ خطأ شائع — la question 3 du module 7 : le distracteur « مجموع / فرق ».
+      id: 'khata', kind: 'common_mistake', lane: 'start', requires: 'pgcd-taarif',
+      title: 'مجموع أم قاسم؟', subtitle: 'عدد المدارس يقسم العددين',
       context: {
         parts: [
-          { role: 'wrong', text: 'نبحث عن قاسم مشترك للأعداد 4 و 8 و 10.' },
-          { role: 'why', text: `${divisible.text}: العدد مضاعف للأعداد الثلاثة، لا قاسم لها.` },
+          { role: 'wrong', text: 'نجمع عدد المآزر الورديّة والزرقاء، أو نطرح أحدهما من الآخر، ونعتبر الناتج عدد المدارس.' },
+          { role: 'why', text: 'لا يبقى أيّ مئزر: الباقي معدوم في كل قسمة، فعدد المدارس قاسم للعددين، لا مجموعهما ولا فرقهما.' },
           { role: 'right', text: fahm.text },
         ],
       },
       reveals: [],
     },
     {
-      id: 'tarmiz', kind: 'method', lane: 'end', requires: 'tarmiz-bi-huruf', notebook: true,
-      title: 'الترميز بالحروف', subtitle: 'أربعة أرقام: a و b و c و d',
+      id: 'iqlidus', kind: 'method', lane: 'end', requires: 'khwarizmiyat-iqlidus', notebook: true,
+      title: 'خوارزمية إقليدس', subtitle: 'قسمات متتابعة إلى باقٍ معدوم',
       context: { text: istratijiya.text, note: tanfidh.text },
-      reveals: ['arqam'],
+      reveals: ['buwar'],
     },
     {
-      id: 'arqam', kind: 'example', lane: 'end', requires: 'tarmiz-bi-huruf',
-      title: 'أرقام العدد', subtitle: '$d = 0$ و $b = c = 2a$',
-      // La correction de la question 3 du module 1, puis sa remarque.
+      id: 'buwar', kind: 'example', lane: 'end', requires: 'khwarizmiyat-iqlidus',
+      title: 'آخر باقٍ غير معدوم', subtitle: 'هو القاسم المشترك الأكبر',
+      // La remarque du module 7 : on s'arrête avant le calcul.
       context: {
-        text: '«رقما العشرات والمئات متساويان ويساويان ضعف رقم الآلاف»: $b = c = 2a$؛ و«مضاعف لـ 10»: $d = 0$.',
+        text: 'نقسم الأكبر على الأصغر، ثم الأصغر على الباقي، إلى أن يصير الباقي معدومًا: آخر باقٍ غير معدوم هو القاسم المشترك الأكبر.',
         note: NOT_SOLVED_HERE,
       },
       reveals: ['khulasa'],
     },
     {
-      // 🎯 خلاصة — les trois étapes de l'analyse du manuel, nommées par lui.
-      id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'tarmiz-bi-huruf',
+      // 🎯 خلاصة — les trois étapes de l'analyse, nommées par la leçon.
+      id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'khwarizmiyat-iqlidus',
       title: 'ثلاث مراحل', subtitle: 'نقرأ · نحلّل · ننفّذ',
       context: { list: SITUATION.analysis.map((a) => a.label) },
       reveals: [],
@@ -95,11 +93,11 @@ export const KNOWLEDGE_GRAPH = {
   ],
   edges: [
     { from: 'wadiya', to: 'fahm', label: 'نفهمها' },
-    { from: 'fahm', to: 'qabiliyat', label: 'تذكّر' },
-    { from: 'qabiliyat', to: 'khata', label: 'خطأ شائع' },
-    { from: 'fahm', to: 'tarmiz', label: 'نختار استراتيجية' },
-    { from: 'tarmiz', to: 'arqam', label: 'نطبّقه' },
+    { from: 'fahm', to: 'qasim', label: 'تذكّر' },
+    { from: 'qasim', to: 'khata', label: 'خطأ شائع' },
+    { from: 'fahm', to: 'iqlidus', label: 'نختار استراتيجية' },
+    { from: 'iqlidus', to: 'buwar', label: 'نطبّقها' },
     { from: 'khata', to: 'khulasa', label: 'نستخلص' },
-    { from: 'arqam', to: 'khulasa', label: 'نستخلص' },
+    { from: 'buwar', to: 'khulasa', label: 'نستخلص' },
   ],
 };

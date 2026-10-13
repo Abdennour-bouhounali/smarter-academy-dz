@@ -1,10 +1,10 @@
-import { src, addition, BASE } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
 
 /**
  * « أستعدّ » (module 0) — le « أستعدّ » du manuel (p. 115, items 1–6) appartient aux leçons 1 et 2 (extraction ›
  * destinations › prep) : la synthèse n'en reçoit aucun. Ses affirmations sont donc des AFFIRMATIONS DE LA
- * PLATEFORME (« عبارة إضافية من المنصّة »), dans la forme du manuel, sur ce que la وضعية, « أؤكّد تعلّماتي » et
- * « أتعمّق » mobilisent : Thalès dans une ligne de visée (unité 9), la définition des rapports (درس 1), l'inconnue au
+ * PLATEFORME (« عبارة إضافية من المنصّة »), dans la forme du manuel, sur ce que la وضعية et le test final
+ * mobilisent : Thalès dans une ligne de visée (unité 9), la définition des rapports (درس 1), l'inconnue au
  * dénominateur (درس 4), la touche inverse (درس 2), Pythagore dans un solide, l'arrondi, cos² + sin² = 1 (درس 3).
  * Quatre vraies, trois fausses ; jamais les nombres du مقام, du pavé ou de la pyramide.
  */
@@ -57,7 +57,7 @@ export const SITUATION = {
 export const analysisText = (a) => a.items.map((s) => `• ${s}`).join(' ');
 
 /**
- * Les props du laboratoire du module 1 — `clinometer` (écrit par la leçon 4 « tarrid-muthallathiya », réutilisé ici
+ * Les props du laboratoire du module 7 — `clinometer` (écrit par la leçon 4 « tarrid-muthallathiya », réutilisé ici
  * SANS modification, contrat fixé : MANIPULATION_CONTRACT / brief §4.D), mode `align`, monde `maqam`. Écrites ici une
  * fois : le module les étale, le test de rendu (lab.render.test.jsx) monte le workspace avec ces mêmes objets.
  *   مبتدئ  un réverbère de 3 m planté à 89 m du مقام : l'alignement se fait à 3 m du réverbère (h = 3 × 92 ÷ 3 = 92,
@@ -76,7 +76,7 @@ export const LAB = {
 export const LAB_EXPECT = { beginner: { d: 3, x: 45 }, advanced: { d: 2.45, x: 43 } };
 
 /**
- * Les phrases de la correction du module 1, importées aussi par knowledge.jsx et la carte (knowledgeGraph.js) :
+ * Les phrases de la correction du module 7, importées aussi par knowledge.jsx et la carte (knowledgeGraph.js) :
  * une aide de la carte cite la leçon mot pour mot. Toute égalité dans `$…$`.
  */
 export const REMARKS = {
@@ -102,52 +102,15 @@ export const REMARKS = {
   tadwirMubakkir: 'لو دوّرنا $\\tan x$ إلى $0{,}9$ قبل اللمسة العكسية لوجدنا $x \\approx 42^{\\circ}$ : ندوّر النتيجة في آخر الحساب فقط.',
   mutammima: 'الزاوية التي يصنعها خط النظر مع المقام في S تتمّم x : قيسها $90^{\\circ} - 43^{\\circ} = 47^{\\circ}$ تقريبا، وليست x.',
   jumla: 'ارتفاع «مقام الشهيد» $h \\approx 92{,}09\\,\\mathrm{m}$ (أي $92\\,\\mathrm{m}$ تقريبا)، وقيس الزاوية $x \\approx 43^{\\circ}$ .',
-  // أتعمّق — ex. 31 (le pavé) et ex. 32 (la pyramide)
+  // un triangle rectangle DANS un solide (brique `muthallath-fada`, rappelée au module 7 ; le test final : le conteneur)
   fada: 'في المجسّم نبحث عن مثلث قائم يضمّ الطول المطلوب: الحرف [CD] عمودي على الوجه ABCH فهو عمودي على [AC]، والمثلث ACD قائم في C.',
   fadaPyth: '$AC^2 = AB^2 + BC^2 = 3{,}15^2 + 2{,}35^2 = 15{,}445$ ثم $AD^2 = AC^2 + CD^2 = 15{,}445 + 1{,}55^2 = 17{,}8475$ .',
   fadaSin: '$\\sin\\widehat{DAC} = \\dfrac{CD}{AD} = \\dfrac{1{,}55}{\\sqrt{17{,}8475}}$ ومنه $\\widehat{DAC} \\approx 21{,}5^{\\circ}$ ، والمدوّر إلى الدرجة $22^{\\circ}$ .',
   fadaWrong: 'ندوّر AD إلى 4 أولا ثم نحسب $\\sin\\widehat{DAC} = \\dfrac{1{,}55}{4}$ .',
   fadaWhy: 'التدوير قبل نهاية الحساب يغيّر النتيجة: $\\dfrac{1{,}55}{4}$ يعطي حوالي $23^{\\circ}$ ، أمّا القيمة المضبوطة $\\dfrac{1{,}55}{\\sqrt{17{,}8475}}$ فتعطي حوالي $22^{\\circ}$ .',
   fadaRight: '$\\sin\\widehat{DAC} = \\dfrac{1{,}55}{\\sqrt{17{,}8475}}$ ثم ندوّر قيس الزاوية فقط',
-  haram: 'في الهرم المنتظم: الرأس S وقدم الارتفاع O (مركز المربع) ورأس A من القاعدة يشكّلون مثلثا قائما في O، و OA نصف قطر المربع: $OA = \\dfrac{231\\sqrt{2}}{2}$ .',
-  haramH: '$SO^2 = SA^2 - OA^2 = 220^2 - \\left(\\dfrac{231\\sqrt{2}}{2}\\right)^2 = 21719{,}5$ ومنه $SO \\approx 147\\,\\mathrm{m}$ .',
-  haramWrong: 'نأخذ نصف ضلع القاعدة $115{,}5\\,\\mathrm{m}$ بدل OA.',
-  haramWhy: 'الحرف الجانبي [SA] يصل الرأس برأس من القاعدة، والمسافة من مركز المربع إلى رأسه نصف القطر، لا نصف الضلع.',
   tajnid: 'في كل وضعية نبحث عن المثلث القائم (أو المثلثين في وضعية طالس) الذي يضمّ المعلوم والمطلوب، ثم نختار الخاصية: طالس، فيثاغورس، أو النسبة المثلثية التي تربطهما.',
 };
-
-/**
- * « أؤكّد تعلّماتي » (p. 124) : les six QCM, au mot près, chacun renvoyé au درس qui l'enseigne et à la colonne
- * « عند الحاجة أعود إلى الصفحة » du manuel (items 1–5 → pp. 118–119, درس 1 ; item 6 → pp. 120–121, درس 3).
- * Item 3 : DEUX bonnes réponses (une ligne صحيح / خاطئ par réponse) ; item 5 : deux lignes IE et EL jugées
- * séparément (les colonnes (1) et (3) de la ligne EL impriment la même expression : on la montre une fois).
- * Les options sont dans l'ordre (1), (2), (3) du manuel. Figures : content/figures.js.
- */
-const QCM_RAW = [
-  { n: 1, text: 'في المثلث MOB القائم في O، لدينا:', options: ['$\\cos\\widehat{M} = \\dfrac{OM}{OB}$', '$\\cos\\widehat{M} = \\dfrac{OM}{MB}$', '$\\cos\\widehat{M} = \\dfrac{OB}{MB}$'], correct: 1,
-    pages: [118, 119], lessons: ['nisab-muthallathiya'],
-    explain: 'الوتر هو [MB] (يقابل الزاوية القائمة O) والضلع المجاور للزاوية M هو [OM]: $\\cos\\widehat{M} = \\dfrac{OM}{MB}$ . $\\dfrac{OM}{OB}$ هو مقلوب ظل M، و $\\dfrac{OB}{MB}$ هو جيب M.' },
-  { n: 2, text: 'في المثلث LMN القائم في M، لدينا:', options: ['$\\sin\\widehat{L} = \\dfrac{MN}{LN}$', '$\\sin\\widehat{L} = \\dfrac{LM}{LN}$', '$\\sin\\widehat{L} = \\dfrac{MN}{LM}$'], correct: 0,
-    pages: [118, 119], lessons: ['nisab-muthallathiya'],
-    explain: 'الضلع المقابل للزاوية L هو [MN] والوتر [LN]: $\\sin\\widehat{L} = \\dfrac{MN}{LN}$ . $\\dfrac{LM}{LN}$ هو جيب تمام L، و $\\dfrac{MN}{LM}$ هو ظلها.' },
-  { n: 3, text: 'في المثلث ABC القائم في B، لدينا:', options: ['$\\sin 35^{\\circ} = \\dfrac{7}{AC}$', '$\\sin 35^{\\circ} = \\dfrac{AC}{7}$', '$\\sin 35^{\\circ} \\times AC = 7$'], correct: [0, 2],
-    pages: [118, 119], lessons: ['nisab-muthallathiya', 'tarrid-muthallathiya'],
-    explain: 'الزاوية $35^{\\circ}$ في C: الضلع المقابل لها $AB = 7$ والوتر AC، إذن $\\sin 35^{\\circ} = \\dfrac{7}{AC}$ ، أي $\\sin 35^{\\circ} \\times AC = 7$ (الجداء التصالبي): الإجابتان (1) و (3) صحيحتان. $\\dfrac{AC}{7}$ أكبر من 1 فلا يمكن أن يكون جيبا.' },
-  { n: 4, text: 'إذا كان $\\cos 70^{\\circ} = \\dfrac{2}{MN}$ فإن…', options: ['$MN = 2 \\times \\cos 70^{\\circ}$', '$MN = \\dfrac{\\cos 70^{\\circ}}{2}$', '$MN = \\dfrac{2}{\\cos 70^{\\circ}}$'], correct: 2,
-    pages: [118, 119], lessons: ['nisab-muthallathiya', 'tarrid-muthallathiya'],
-    explain: 'المجهول في المقام: $MN \\times \\cos 70^{\\circ} = 2$ ومنه $MN = \\dfrac{2}{\\cos 70^{\\circ}}$ . الضرب في $\\cos 70^{\\circ}$ يعطي طولا أصغر من 2، والوتر أطول من الضلع المجاور.' },
-  { n: 5, text: 'في الشكل المقابل، لدينا:', pages: [118, 119], lessons: ['nisab-muthallathiya', 'tarrid-muthallathiya'],
-    rows: {
-      IE: { label: 'IE', options: ['$IE = \\dfrac{6}{\\tan 50^{\\circ}}$', '$IE = 6 \\times \\tan 50^{\\circ}$', '$IE = 6 \\times \\sin 50^{\\circ}$'], correct: 1 },
-      EL: { label: 'EL', options: ['$EL = 6 \\times \\sin 50^{\\circ}$', '$EL = \\dfrac{6}{\\cos 50^{\\circ}}$'], correct: 1 },
-    },
-    note: 'في سطر EL تطبع الخانتان (1) و (3) العبارة نفسها: نعرضها مرة واحدة.',
-    explain: 'الزاوية $50^{\\circ}$ في L: المجاور $IL = 6$ ، والمقابل IE ، والوتر EL. $\\tan 50^{\\circ} = \\dfrac{IE}{6}$ ومنه $IE = 6 \\times \\tan 50^{\\circ}$ ؛ و $\\cos 50^{\\circ} = \\dfrac{6}{EL}$ ومنه $EL = \\dfrac{6}{\\cos 50^{\\circ}}$ .' },
-  { n: 6, text: 'من أجل كل قيس زاوية حادة في مثلث قائم، لدينا:', options: ['$\\cos^2 x = \\sin^2 x - 1$', '$\\cos^2 x = 1 - \\sin^2 x$', '$\\cos x = 1 - \\sin x$'], correct: 1,
-    pages: [120, 121], lessons: ['alaqat-muthallathiya'],
-    explain: '$\\cos^2 x + \\sin^2 x = 1$ ومنه $\\cos^2 x = 1 - \\sin^2 x$ . $\\sin^2 x - 1$ سالب، والعلاقة تخصّ المربعين لا النسبتين: مع $x = 30^{\\circ}$ ، $\\cos 30^{\\circ} \\approx 0{,}87$ و $1 - \\sin 30^{\\circ} = 0{,}5$ .' },
-];
-export const QCM = QCM_RAW.map((it) => ({ ...it, source: src('qcm', 124, 'أؤكّد تعلّماتي', it.n), lessonPaths: it.lessons.map((l) => `${BASE}/${l}`) }));
 
 /** Les titres des leçons du propriétaire (catalogue) — et la leçon de Thalès de l'unité 9, même ميدان. */
 export const LESSON_TITLES = {
@@ -159,7 +122,7 @@ export const LESSON_TITLES = {
 };
 
 /**
- * « إختبار أولي » (module 4) — la وضعية TRANSPOSÉE (`synthesis_generation`) : mêmes ressources, autres nombres, pour que
+ * « إختبار أولي » (module 8) — la وضعية TRANSPOSÉE (`synthesis_generation`) : mêmes ressources, autres nombres, pour que
  * leurs réponses n'apparaissent nulle part ailleurs dans la leçon.
  *   la minaret de جامع الجزائر (265 m, la plus haute du monde) visée par-dessus un réverbère de 4 m planté à 195,75 m,
  *   ليندة à 3 m du réverbère : AM = 198,75 ; h = 4 × 198,75 ÷ 3 = 265 m ; tan x = 4 ÷ 3 ⇒ x ≈ 53,13° ≈ 53° ;
@@ -169,7 +132,7 @@ export const TEST = {
   source: addition('synthesis_generation'),
   title: 'وضعية أخرى: مئذنة جامع الجزائر، وحاوية في ميناء الجزائر',
   minaret: { pole: '4', poleAt: '195,75', d: '3',
-    text: 'أرادت ليندة تقدير ارتفاع مئذنة «جامع الجزائر». غُرس عمود إنارة شاقولي طوله $4\\,\\mathrm{m}$ على بعد $195{,}75\\,\\mathrm{m}$ من قاعدة المئذنة، ووقفت ليندة على بعد $3\\,\\mathrm{m}$ من العمود، في المكان الذي ترى فيه قمة العمود وقمة المئذنة على استقامة واحدة (نهمل طول ليندة). نسمّي x الزاوية بين الأرض وخط النظر.' },
+    text: 'في نادي العلوم بمتوسطتها، تعاونت ليندة وزميلاتها على تقدير ارتفاع مئذنة «جامع الجزائر»، وتقاسمن العمل بإنصاف. غُرس عمود إنارة شاقولي طوله $4\\,\\mathrm{m}$ على بعد $195{,}75\\,\\mathrm{m}$ من قاعدة المئذنة، ووقفت ليندة على بعد $3\\,\\mathrm{m}$ من العمود، في المكان الذي ترى فيه قمة العمود وقمة المئذنة على استقامة واحدة (نهمل طول ليندة). نسمّي x الزاوية بين الأرض وخط النظر.' },
   container: { AB: '12', BC: '2,4', CD: '2,4',
-    text: 'حاوية على شكل متوازي مستطيلات ABCDEFGH ، طولها $AB = 12\\,\\mathrm{m}$ وعرضها $BC = 2{,}4\\,\\mathrm{m}$ وارتفاعها $CD = 2{,}4\\,\\mathrm{m}$ (الحرف [CD] شاقولي).' },
+    text: 'يحرص عمّال ميناء الجزائر على إتقان عملهم، فيتحقّقون من أبعاد كل حاوية: حاوية على شكل متوازي مستطيلات ABCDEFGH ، طولها $AB = 12\\,\\mathrm{m}$ وعرضها $BC = 2{,}4\\,\\mathrm{m}$ وارتفاعها $CD = 2{,}4\\,\\mathrm{m}$ (الحرف [CD] شاقولي).' },
 };

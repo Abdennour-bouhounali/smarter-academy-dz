@@ -17,7 +17,6 @@ import { useContentAvailability } from '../../../context/ContentAvailabilityCont
 import PremiumLessonLocked from './PremiumLessonLocked';
 import { useCatalogueHref } from '../../../components/student/catalogueLink';
 import MathLabel from './MathLabel';
-import IslamicMoment from '../../../features/islamic/IslamicMoment';
 import { useDeclarePageTour } from '../../../features/tours/PageTourProvider';
 
 /**
@@ -508,21 +507,6 @@ export default function ModuleLayout({
             />
           )}
         </div>}
-
-        {/* « 🌿 وقفة إيمانية » — ENTRE deux modules, jamais pendant : seulement
-            quand celui-ci est achevé, SOUS la navigation (le bouton « المحور
-            التالي » ne bouge pas), pour l'élève, et au plus une fois toutes les
-            25 minutes (islamicFrequency.js). « أكمل الدراسة » mène au module
-            suivant, comme le bouton. */}
-        {!presenting && isCompleted && !isLastModule && nextLink && (
-          <IslamicMoment
-            context="study_break"
-            variant="break"
-            only="student"
-            className="mb-6"
-            onContinue={() => handleNextClick({ preventDefault() {} })}
-          />
-        )}
 
       </main>
 

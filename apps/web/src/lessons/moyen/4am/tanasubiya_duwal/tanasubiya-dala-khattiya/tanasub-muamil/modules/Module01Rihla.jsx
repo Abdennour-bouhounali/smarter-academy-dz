@@ -68,6 +68,7 @@ export default function Module01Rihla() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
+      objectives={["ما الذي يجمع أعمدة جدول رحلات التروتينة؟", "هل تتصرّف الصيغة الثانية للكراء مثل الأولى؟", "هل جدول تخفيض العيد جدول تناسبية؟"]}
       moduleNumber={1}
       moduleTitle="رحلة بالتروتينة — جدول التناسبية"
       moduleSubtitle="المدة والسعر: ما الذي يجمع أعمدة الجدول؟"
@@ -195,7 +196,7 @@ export default function Module01Rihla() {
               )}
               {q3b && (
                 <p className="rounded-xl bg-violet-50 px-3 py-2 text-sm text-violet-900" data-next-module>
-                  <MathText>{'في رحلاتك وفي تخفيض العيد: حاصل القسمة ثابت، والسعر الجديد يساوي $0{,}8 \\times$ السعر القديم. المحور التالي يعلّمك حساب المعامل وإكمال جدول، ويريك صيغة كراء يزداد فيها السعر دون أن تكون تناسبية.'}</MathText>
+                  <MathText>{'في رحلاتك وفي تخفيض العيد: حاصل القسمة ثابت، والسعر الجديد يساوي $0{,}8 \\times$ السعر القديم. المحور التالي يعلّمك حساب المعامل وإكمال جدول، ويسألك: هل كلّ صيغة كراء يزداد فيها السعر تناسبية؟'}</MathText>
                 </p>
               )}
             </div>

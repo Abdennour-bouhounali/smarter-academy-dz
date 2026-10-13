@@ -30,6 +30,7 @@ export default function Module03Taraiq() {
 
   return (
     <ContentModule
+      objectives={["كيف نحسب التكرارات المجمعة لكل قيمة؟", "كيف ننتقل إلى التواترات المجمعة لكل فئة؟", "كيف أتحقّق من حساباتي على علامات قسم؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}
@@ -54,7 +55,7 @@ export default function Module03Taraiq() {
                 { label: 'التكرار المجمع النازل', cells: tv.down },
               ]} />
               <KnowledgeBrick id="hisab-mujamma" lead="الطريقة كما يكتبها الكتاب:" />
-              <p className="text-sm font-semibold text-slate-800">نقاط فريق في 12 مباراة: 0 (مرتان)، 1 (5 مرات)، 3 (4 مرات)، 4 (مرة واحدة). <SourceTag source={PLATFORM} /></p>
+              <p className="text-sm font-semibold text-slate-800">نقاط فريق الحيّ، المعروف باللعب النظيف، في 12 مباراة: 0 (مرتان)، 1 (5 مرات)، 3 (4 مرات)، 4 (مرة واحدة). <SourceTag source={PLATFORM} /></p>
               <BatchChoiceQuestion
                 rows={[
                   { id: 'u1', label: 'الصاعد للقيمة 1', options: ['$7$', '$5$', '$10$'].map(M), correct: 0, correction: <MathText>{'$2 + 5 = 7$'}</MathText> },

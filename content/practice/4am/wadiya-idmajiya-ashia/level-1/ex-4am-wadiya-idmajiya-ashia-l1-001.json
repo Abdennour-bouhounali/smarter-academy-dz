@@ -3,7 +3,7 @@
   "lessonCode": "wadiya-idmajiya-ashia",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي — السؤال 1",
+    "title": "سؤال الكتاب — 1",
     "estimatedMinutes": 3,
     "tags": [
       "تساوي شعاعين"
@@ -12,7 +12,7 @@
       "type": "textbook",
       "elementId": "qcm",
       "page": 136,
-      "section": "أؤكّد تعلّماتي",
+      "section": "الوضعيات",
       "number": 1
     }
   },

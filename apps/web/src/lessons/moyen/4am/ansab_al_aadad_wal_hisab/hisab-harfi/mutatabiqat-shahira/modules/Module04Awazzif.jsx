@@ -30,6 +30,7 @@ export default function Module04Awazzif() {
   return (
     <ContentModule
       ctx={MODULE_CTX}
+      objectives={["بماذا نبدأ حين ننشر عبارة بمتطابقة شهيرة؟", "كيف نطبّق الطريقة على معاملات وجذور وأعداد؟", "كيف نحسب جداءات ومربعات ذهنيًا؟"]}
       navLinks={getNavLinks(4)}
       moduleNumber={4}
       moduleTitle="أوظّف تعلّماتي"

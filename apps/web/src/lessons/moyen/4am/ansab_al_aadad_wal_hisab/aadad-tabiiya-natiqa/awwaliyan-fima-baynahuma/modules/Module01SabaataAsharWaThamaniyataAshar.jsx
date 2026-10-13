@@ -24,7 +24,7 @@ export default function Module01SabaataAsharWaThamaniyataAshar() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="نشاط 7 — العددان الأوّليّان فيما بينهما" moduleSubtitle="ماذا لو كان القاسم المشترك الوحيد هو 1؟" estimatedTime="12 دقيقة"
+    <ContentModule objectives={["هل تنجح حقائب متماثلة بـ 17 قلمًا و 18 كراسًا؟ كم حقيبة ممكنة؟", "كيف أتأكّد أن عددين لا يتقاسمان إلا الواحد؟", "هل مريم على صواب في 27 و 36؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="نشاط 7 — العددان الأوّليّان فيما بينهما" moduleSubtitle="ماذا لو كان القاسم المشترك الوحيد هو 1؟" estimatedTime="12 دقيقة"
       brief={{ tag: 'أنشطة — الكتاب ص 9', title: ACTIVITY.title, tone: 'indigo',
         headline: 'هيا نوزّع الأدوات!', emoji: '✏️', visual: <SchoolBagScene />,
         body: <div className="space-y-1"><p>{ACTIVITY.questions[0]}</p><SourceTag source={ACTIVITY.source} /></div> }}

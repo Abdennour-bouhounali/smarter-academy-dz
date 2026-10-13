@@ -39,10 +39,11 @@ export default function Module02Maarif() {
       moduleNumber={2}
       moduleTitle="معارف — خاصية طالس ومعامل التناسبية"
       moduleSubtitle="ثلاث وضعيات، جدول تناسبية، ومعامل k"
+      objectives={['أين يمكن أن تقع النقطتان M و N؟', 'كيف نكتب أطوال المثلثين في جدول؟', 'ماذا نقول إذا اختلفت نسبتان؟', 'متى يكون المثلث تكبيرًا ومتى يكون تصغيرًا؟']}
       estimatedTime="10 دقائق"
       brief={{
         tag: 'معارف — الكتاب ص 106', title: KNOW1.title, tone: 'violet',
-        body: <p>الشاشة في الحزمة أعطتك النسب الثلاث المتساوية، أمام A وخلفها. الكتاب يكتب ذلك خاصية، ويسمّي النسبة المشتركة معامل التناسبية.</p>,
+        body: <p>الظلال في الساحة، ثم شكل النشاط، أعطياك النسب الثلاث المتساوية، أمام A وخلفها. الكتاب يكتب ذلك خاصية، ويسمّي النسبة المشتركة معامل التناسبية.</p>,
       }}
       steps={[
         {
@@ -59,7 +60,7 @@ export default function Module02Maarif() {
                   </div>
                 ))}
               </div>
-              <KnowledgeBrick id="khassiyat-talis" lead="ما رأيته بالشاشة، بكلمات الكتاب:" />
+              <KnowledgeBrick id="khassiyat-talis" lead="ما رأيته في الساحة وفي الشكل، بكلمات الكتاب:" />
               <p className="text-sm font-semibold text-slate-800"><MathText>{'في الشكل الآتي، المستقيمان $(EG)$ و $(FH)$ متقاطعان في O، و $(EF) \\parallel (GH)$ .'}</MathText> <SourceTag source={PLATFORM_SOURCE} /></p>
               <GeoFigure {...FIG_M2Q1} />
               <TapQuestion
@@ -105,7 +106,7 @@ export default function Module02Maarif() {
               <GeoFigure {...FIG_REMARK1} />
               <PredictRule id="adam-tawazi"><TextbookBox kind="remark" lines={[KNOW1.remark1]} source={KNOW1.source} compact /></PredictRule>
               <p className="rounded-xl bg-violet-50 px-3 py-2 text-sm text-violet-900"><MathText>{KNOW1.remark1Answer}</MathText></p>
-              <KnowledgeBrick id="adam-tawazi" lead="إذا مالت الشاشة اختلفت النسب. والعكس يفيدنا:" />
+              <KnowledgeBrick id="adam-tawazi" lead="إذا لم يتوازَ المستقيمان اختلفت النسب. والعكس يفيدنا:" />
               <p className="text-sm font-semibold text-slate-800"><MathText>{'النقطة M من $[AB]$ و N من $[AC]$ حيث $AM = 3$ ، $AB = 5$ ، $AN = 4$ و $AC = 7$ .'}</MathText> <SourceTag source={PLATFORM_SOURCE} /></p>
               <TapQuestion
                 prompt="المستقيمان (MN) و (BC):"
@@ -127,7 +128,7 @@ export default function Module02Maarif() {
               <TextbookBox kind="example" text={KNOW2.example} source={KNOW2.source} compact />
               <GeoFigure {...FIG_KNOW2} />
               <p className="text-xs text-slate-500" data-correction><MathText>{KNOW2.correction}</MathText></p>
-              <KnowledgeBrick id="muamil-tanasub" lead="النسبة المشتركة التي رأيتها تحت الشاشة لها اسم:" />
+              <KnowledgeBrick id="muamil-tanasub" lead="النسبة المشتركة التي رأيتها في الساحة (الظلّ ÷ الطول) لها اسم:" />
               <p className="text-sm font-semibold text-slate-800"><MathText>{'المثلثان ABC و AB′C′ في وضعية طالس، حيث $AB = 8$ ، $AB\' = 6$ و $AC = 10$ .'}</MathText> <SourceTag source={PLATFORM_SOURCE} /></p>
               <TapQuestion
                 prompt="المثلث AB′C′ بالنسبة إلى المثلث ABC هو:"

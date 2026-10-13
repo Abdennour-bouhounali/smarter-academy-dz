@@ -22,6 +22,7 @@ export default function Module03Awazzif() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
+      objectives={["كيف أتعرّف على وضعية تناسبية؟", "كيف أحسب معامل التناسبية وأكمل جدولًا؟", "أيّ بيان يمثّل وضعية تناسبية؟"]}
       moduleNumber={3}
       moduleTitle="أوظّف تعلّماتي"
       moduleSubtitle="تمارين الكتاب 16، 17، 18 وتمرين من المنصّة"

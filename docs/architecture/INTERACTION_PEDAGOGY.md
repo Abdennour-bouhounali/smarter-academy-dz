@@ -346,8 +346,9 @@ in the 4AM unit, the Module 1 of each of the eight concept lessons ends its mani
 a `KnowledgeBrick` (default `variant="new"`) that names what the student has just caused — e.g.
 `qasim-adad-tabii/modules/Module01AlMaktaba.jsx` lays `qasim-baqi` after the books are shelved
 (KNOWLEDGE_DEPENDENCY.md « teach before the demand »). A `synthesis` lesson (the unit's
-وضعية إدماجية, `wadiya-idmajiya-aadad`) has **no opening manipulation**: its Module 1 is the
-situation and its analysis, with `variant="rappel"` bricks only.
+وضعية إدماجية, `wadiya-idmajiya-aadad`) has **no opening manipulation**: since 2026-10-13 its Modules 1–6 are
+training situations (`GuidedProblem`), Module 7 is the analysis of the final situation (with `variant="rappel"` bricks only)
+and Module 8 the evaluated situation.
 
 ### 6bis.2 Design the manipulation from the mathematics, not from a widget list
 

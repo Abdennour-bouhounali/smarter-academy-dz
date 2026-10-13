@@ -37,6 +37,12 @@ export default function Module03Maarif() {
       moduleTitle="معارف — الدالة التآلفية"
       moduleSubtitle="التعريف، صورة عدد، العدد الذي صورته معلومة، الحالتان الخاصتان"
       estimatedTime="8 دقائق"
+      objectives={[
+        'كيف نعرّف الدالة التآلفية ونرمز لها؟',
+        'كيف نحسب صورة عدد؟',
+        'كيف نجد العدد الذي صورته معلومة؟',
+        'ماذا يتغيّر حين يكون أحد المعاملين معدومًا؟',
+      ]}
       brief={{
         tag: 'معارف — صياغة من المنصّة', title: KNOWLEDGE.definition.title, tone: 'indigo',
         body: <p>الكتاب المتوفّر لهذه الوحدة يقدّم الأنشطة فقط. هذه المعارف كتبتها المنصّة بمصطلحات الكتاب، لتجمع ما اكتشفته في النشاطين.</p>,
@@ -63,7 +69,7 @@ export default function Module03Maarif() {
           ),
         },
         {
-          num: 2, title: 'صورة عدد', subtitle: 'نضرب في a ثم نضيف b', done: q2,
+          num: 2, title: 'صورة عدد', subtitle: 'كيف نحسب الصورة؟', done: q2,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="sura-taalufiya" lead="كما بنى العدّاد كل أجرة: الجزء المتغير ثم الجزء الثابت." />
@@ -88,7 +94,7 @@ export default function Module03Maarif() {
           ),
         },
         {
-          num: 3, title: 'العدد الذي صورته معلومة', subtitle: 'البرنامج العكسي', done: q3,
+          num: 3, title: 'العدد الذي صورته معلومة', subtitle: 'كيف نعود من الصورة إلى العدد؟', done: q3,
           content: (
             <div className="space-y-3">
               {/* La méthode résolue (37775 → 15) dit la règle avant sa brique : l'élève l'écrit d'abord. */}
@@ -121,7 +127,7 @@ export default function Module03Maarif() {
           ),
         },
         {
-          num: 4, title: 'الحالتان الخاصتان', subtitle: 'b = 0 و a = 0', done: q4,
+          num: 4, title: 'الحالتان الخاصتان', subtitle: 'حين يكون أحد المعاملين معدومًا', done: q4,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="remark" title={KNOWLEDGE.special.title} lines={[KNOWLEDGE.special.linear, KNOWLEDGE.special.constant]} source={KNOWLEDGE.special.source} compact />

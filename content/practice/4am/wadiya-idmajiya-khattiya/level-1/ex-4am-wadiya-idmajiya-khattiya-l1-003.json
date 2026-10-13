@@ -3,7 +3,7 @@
   "lessonCode": "wadiya-idmajiya-khattiya",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 3 — العدد الذي علمت صورته",
+    "title": "العدد الذي علمت صورته",
     "estimatedMinutes": 4,
     "tags": [
       "معامل",
@@ -13,7 +13,7 @@
       "type": "textbook",
       "elementId": "qcm",
       "page": 74,
-      "section": "أؤكّد تعلّماتي",
+      "section": "الوضعيات",
       "number": 3,
       "adaptedFrom": "ex-4am-wadiya-idmajiya-khattiya-l1-003"
     },

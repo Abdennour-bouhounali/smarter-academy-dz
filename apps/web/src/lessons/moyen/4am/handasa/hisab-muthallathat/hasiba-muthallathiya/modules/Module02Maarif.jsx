@@ -49,6 +49,7 @@ export default function Module02Maarif() {
 
   return (
     <ContentModule
+      objectives={['ماذا نتحقّق منه قبل أن نضغط أي لمسة؟', 'كيف نجد قيس زاوية من نسبتها؟', 'متى نُبقي الرقم الأخير ومتى نغيّره؟']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}
@@ -57,7 +58,7 @@ export default function Module02Maarif() {
       estimatedTime="10 دقائق"
       brief={{
         tag: 'معارف — الكتاب ص 120', title: KNOW3.title, tone: 'violet',
-        body: <p>حاسبة الدرون أعطتك النسب من الزوايا والزوايا من النسب. الكتاب يكتب ذلك في مثالين، ويبدأ بشرط قبل أيّ حساب.</p>,
+        body: <p>حاسبة الدرون أعطتك النسب من الزوايا والزوايا من النسب. الكتاب يكتب ذلك في مثالين: ماذا يفعل كل مثال، وما الذي نتأكّد منه قبل الضغط على أيّ لمسة؟</p>,
       }}
       steps={[
         {

@@ -178,14 +178,22 @@ async function settled(page) {
   await page.waitForURL(/\/al-maktaba$/, { timeout: 5000 });
   await settle(page, 900);
   f = await fits(page);
-  check('L : التالي → module 1, unité 1 = المهمة', page.url().endsWith('/al-maktaba') && f.active && f.native === 'true'
+  check('L : التالي → module 1, unité 1 = المدخل (titre + ce qu’on y apprend)', page.url().endsWith('/al-maktaba') && f.active && f.native === 'true'
     && f.current === '0' && Number(f.units) >= 4 && f.position.startsWith('1 /'), JSON.stringify(f));
-  check('L : module 1 — la mission (MissionBrief) est visible, les autres unités cachées', await page.evaluate(() => {
+  check('L : module 1 — la page d’entrée (titre du محور + points « ماذا سنتعلّم ») est seule visible', await page.evaluate(() => {
     const units = [...document.querySelectorAll('[data-classroom-unit]')];
     const visible = units.filter((u) => !u.hidden);
-    return visible.length === 1 && visible[0].classList.contains('sa-classroom-module__unit--brief');
+    return visible.length === 1 && visible[0].classList.contains('sa-classroom-module__unit--overview')
+      && !!visible[0].querySelector('[data-classroom-overview] h2') && visible[0].querySelectorAll('[data-classroom-overview-point]').length >= 1;
   }));
   check('L : module 1 — السابق existe (retour au module 0) et التالي', f.prev && f.next);
+
+  await next(page);
+  await settle(page, 600);
+  check('L : unité 2 = المهمة (MissionBrief)', await page.evaluate(() => {
+    const visible = [...document.querySelectorAll('[data-classroom-unit]')].filter((u) => !u.hidden);
+    return visible.length === 1 && visible[0].classList.contains('sa-classroom-module__unit--brief');
+  }));
 
   await next(page);
   await settle(page, 900);
@@ -195,7 +203,7 @@ async function settled(page) {
   const advTab = active(page).locator('[data-manipulation-workspace] [role="tab"][data-level="advanced"]').first();
   if (await advTab.count()) { await advTab.click(); await page.waitForTimeout(350); }
   const m = active(page).locator('[data-manipulation="divisor-explorer-books"]').first();
-  check('L : unité 2 = la manipulation, passe-plat (coquille imbriquée, AUCUN second plein écran, aucun bouton d’entrée)', f.current === '1'
+  check('L : unité 3 = la manipulation, passe-plat (coquille imbriquée, AUCUN second plein écran, aucun bouton d’entrée)', f.current === '2'
     && (await m.locator('[data-bookshelf]').getAttribute('data-presentation')) === 'true' && f.nested >= 1 && f.enters === 0 && f.fullscreenEl === 'lesson', JSON.stringify(f));
   await m.locator('[data-stretch-handle]').focus();
   await page.keyboard.press('Home');
@@ -210,7 +218,7 @@ async function settled(page) {
   await settle(page, 700);
   f = await fits(page);
   const step1 = active(page).locator('[data-classroom-unit]:not([hidden]) #step-1');
-  check('L : unité 3 = l’étape 1 (StepCard cadrée, agrandie)', f.current === '2' && (await step1.count()) === 1 && (await active(page).locator('[data-classroom-unit]:not([hidden]) [data-classroom-frame]').count()) === 1);
+  check('L : unité 4 = l’étape 1 (StepCard cadrée, agrandie)', f.current === '3' && (await step1.count()) === 1 && (await active(page).locator('[data-classroom-unit]:not([hidden]) [data-classroom-frame]').count()) === 1);
   check('L : étape 1 — aucun défilement de page', f.pageX && f.contentX, JSON.stringify(f));
   // Répondre à la question de l'étape 1 (la 2e option est la bonne) — l'état doit survivre à la sortie.
   await step1.locator('button', { hasText: /28 كتابًا في كل رفّ/ }).first().click();
@@ -221,7 +229,7 @@ async function settled(page) {
   await next(page);
   await settle(page, 700);
   f = await fits(page);
-  check('L : unité 4 = l’étape 2, débloquée par la réponse (le verrou pédagogique reste)', f.current === '3' && (await active(page).locator('[data-classroom-unit]:not([hidden]) #step-2').count()) === 1
+  check('L : unité 5 = l’étape 2, débloquée par la réponse (le verrou pédagogique reste)', f.current === '4' && (await active(page).locator('[data-classroom-unit]:not([hidden]) #step-2').count()) === 1
     && (await active(page).locator('[data-classroom-unit]:not([hidden])').getByText('أتمِم الخطوة السابقة').count()) === 0);
 
   // → module 2 : VERROUILLÉ pour ce compte (module 1 non terminé) — présenté quand même.
@@ -378,7 +386,7 @@ async function settled(page) {
       !(await page.locator('.sa-nb-lesson-trigger').first().isVisible().catch(() => false))
       && !(await page.locator('[data-km-trigger]').first().isVisible().catch(() => false)));
   }
-  check('M : unités du محور ouvert = المهمة + 3 exercices + الخلاصة (navigation libre), on entre à la première', f.units === '5' && f.current === '0' && f.next, JSON.stringify(f));
+  check('M : unités du محور ouvert = المدخل + المهمة + 3 exercices + الخلاصة (navigation libre), on entre à la première', f.units === '6' && f.current === '0' && f.next, JSON.stringify(f));
   // LA raison du changement : en portée leçon, la séance connaît ses voisins.
   check('M : le saut « المحور » est offert — ce qu’une séance de portée module ne donnait pas',
     f.nextModule !== null || f.prevModule !== null, `${f.prevModule} | ${f.nextModule}`);

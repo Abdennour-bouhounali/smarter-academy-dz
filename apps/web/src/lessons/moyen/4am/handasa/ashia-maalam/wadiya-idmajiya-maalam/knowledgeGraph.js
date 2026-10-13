@@ -4,10 +4,10 @@
  *
  *   — aucune connaissance nouvelle : les outils des دروس 1 à 4 que la وضعية mobilise (lire les points, le demi-cercle par son
  *     centre-milieu, la ligne brisée par ses distances, la comparaison exacte puis approchée) et la démarche du manuel ;
- *   — la وضعية du manuel est résolue au module 1 (enseignement) ; l'évaluation est un AUTRE couple de pistes (Constantine),
+ *   — la وضعية du manuel est résolue au module 7 (enseignement) ; l'évaluation est un AUTRE couple de pistes (Constantine),
  *     dont aucune réponse n'est ici (A.10 règle 14) ;
- *   — les trois erreurs sont celles que les modules 1 et 3 corrigent avec leur « لماذا؟ » : 2πr au lieu de πr, |Δx| + |Δy| au
- *     lieu de √(Δx² + Δy²), l'angle droit cherché au mauvais sommet.
+ *   — les deux erreurs sont celles que le module 7 corrige avec son « لماذا؟ » : 2πr au lieu de πr, |Δx| + |Δy| au
+ *     lieu de √(Δx² + Δy²).
  *
  *                      [مساران في معلم]                       مفهوم
  *                              │ نبدأ بـ
@@ -19,9 +19,7 @@
  *                              │ نقارن
  *                      [مقارنة طولين]                          طريقة
  *                              │ نجمعها
- *                      [من النص إلى الجواب]                    طريقة
- *                              │ في البراهين
- *     خطأ شائع ┌──────── [طبيعة شكل بالحساب] → 🎯
+ *                      [من النص إلى الجواب] → 🎯             طريقة
  */
 import { REMARKS, SITUATION } from './content/textbook';
 
@@ -37,7 +35,7 @@ export const KNOWLEDGE_GRAPH = {
     { id: 'qiraa', kind: 'definition', lane: 'center', requires: 'qiraat-masarayn', notebook: true, title: 'قراءة المسارين', subtitle: 'أنصاف دوائر وقطع', reveals: ['daira'] },
     { id: 'daira', kind: 'relationship', lane: 'end', requires: 'nisf-daira-markaz', notebook: true, title: 'نصف دائرة في معلم', subtitle: 'المركز منتصف القطر', reveals: ['muhitKhata', 'munkasir'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 4 : 2πr au lieu de πr (MISC-MAALAM-NISF-DAIRA-MUHIT).
+      // ⛔ خطأ شائع — module 7, étape 4 : 2πr au lieu de πr (MISC-MAALAM-NISF-DAIRA-MUHIT).
       id: 'muhitKhata', kind: 'common_mistake', lane: 'start', requires: 'nisf-daira-markaz',
       title: 'محيط الدائرة كاملة؟', subtitle: 'نصفه فقط',
       context: {
@@ -51,7 +49,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'munkasir', kind: 'relationship', lane: 'end', requires: 'tul-khatt-munkasir', notebook: true, title: 'طول خط منكسر', subtitle: 'مجموع المسافات', reveals: ['jamKhata', 'muqarana'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 6 : |Δx| + |Δy| (MISC-MAALAM-MASAFA-JADHR-JAM).
+      // ⛔ خطأ شائع — module 7, étape 6 : |Δx| + |Δy| (MISC-MAALAM-MASAFA-JADHR-JAM).
       id: 'jamKhata', kind: 'common_mistake', lane: 'start', requires: 'tul-khatt-munkasir',
       title: 'نجمع الفرقين؟', subtitle: 'الوتر لا الضلعان',
       context: {
@@ -64,24 +62,10 @@ export const KNOWLEDGE_GRAPH = {
       reveals: [],
     },
     { id: 'muqarana', kind: 'method', lane: 'center', requires: 'muqaranat-masarayn', notebook: true, title: 'مقارنة طولين', subtitle: 'مضبوطة ثم مقرّبة', reveals: ['marahil'] },
-    { id: 'marahil', kind: 'method', lane: 'center', requires: 'tariqat-wadiya', notebook: true, title: 'من النص إلى الجواب', reveals: ['burhan'] },
-    { id: 'burhan', kind: 'method', lane: 'center', requires: 'burhan-tahlili', notebook: true, title: 'طبيعة شكل بالحساب', subtitle: 'التمارين 22 و 23 و 25', reveals: ['watarKhata', 'khulasa'] },
-    {
-      // ⛔ خطأ شائع — module 3, ex. 23 : l'angle droit cherché au mauvais sommet (MISC-MAALAM-FITHAGHURAS-WATAR).
-      id: 'watarKhata', kind: 'common_mistake', lane: 'start', requires: 'burhan-tahlili',
-      title: 'القائمة في أي رأس؟', subtitle: 'تقابل أطول ضلع',
-      context: {
-        parts: [
-          { role: 'wrong', text: REMARKS.watarWrong },
-          { role: 'why', text: REMARKS.watarWhy },
-          { role: 'right', text: REMARKS.watarRight },
-        ],
-      },
-      reveals: [],
-    },
+    { id: 'marahil', kind: 'method', lane: 'center', requires: 'tariqat-wadiya', notebook: true, title: 'من النص إلى الجواب', reveals: ['khulasa'] },
     {
       // 🎯 خلاصة — les trois étapes de l'analyse du manuel, nommées par lui.
-      id: 'khulasa', kind: 'takeaway', lane: 'end', requires: 'burhan-tahlili',
+      id: 'khulasa', kind: 'takeaway', lane: 'end', requires: 'tariqat-wadiya',
       title: 'ثلاث مراحل', subtitle: 'نقرأ · نحلّل · ننفّذ',
       context: { list: SITUATION.analysis.map((a) => a.label) },
       reveals: [],
@@ -95,8 +79,6 @@ export const KNOWLEDGE_GRAPH = {
     { from: 'munkasir', to: 'jamKhata', label: 'خطأ شائع' },
     { from: 'munkasir', to: 'muqarana', label: 'نقارن' },
     { from: 'muqarana', to: 'marahil', label: 'نجمعها' },
-    { from: 'marahil', to: 'burhan', label: 'في البراهين' },
-    { from: 'burhan', to: 'watarKhata', label: 'خطأ شائع' },
-    { from: 'burhan', to: 'khulasa', label: 'نستخلص' },
+    { from: 'marahil', to: 'khulasa', label: 'نستخلص' },
   ],
 };

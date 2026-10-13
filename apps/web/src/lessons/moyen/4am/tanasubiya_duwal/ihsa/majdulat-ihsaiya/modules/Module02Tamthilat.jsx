@@ -23,6 +23,7 @@ export default function Module02Tamthilat() {
 
   return (
     <ContentModule
+      objectives={["أيّ مخطط يُظهر حصة كل نوع من النفايات؟", "كيف نحسب زاوية كل قطاع؟", "ماذا نرسم لسلسلة مجمّعة في فئات؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}

@@ -47,6 +47,7 @@ export default function Module01Nashat() {
 
   return (
     <ContentModule
+      objectives={["ماذا نفعل بكفّتي الميزان لنعرف ما في كيس واحد؟", "ما العدد الذي اختارته فاطمة؟ وما العدد الذي اختاره مصطفى؟", "متى يصعب علينا حلّ المعادلة على الميزان؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
@@ -72,7 +73,7 @@ export default function Module01Nashat() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="نفس الفكرة في المستويين: لا نفتح الكيس، بل نُبقي الميزان متوازنًا حتى يبقى كيس واحد وحده في كفّة."
+          lead="نفس الفكرة في المستويين: لا نفتح الكيس. كيف نصل إلى كيس واحد وحده في كفّة؟"
           levels={{
             beginner: () => (
               <Manipulation

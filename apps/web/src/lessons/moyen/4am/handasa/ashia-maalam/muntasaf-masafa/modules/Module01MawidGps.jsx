@@ -73,7 +73,7 @@ export default function Module01MawidGps() {
       moduleNumber={1}
       moduleTitle="تحدّ ونشاط 3 و 4 — موعد عبر GPS"
       moduleSubtitle="أين نلتقي في منتصف الطريق؟ وكم يبعد أحدنا عن الآخر في خط مستقيم؟"
-      estimatedTime="13 دقيقة"
+      objectives={['أين نضع دبّوس اللقاء بين صديقين؟', 'كم يبعد أحدهما عن الآخر في خط مستقيم؟', 'لماذا لا تكفي المسطرة لمسافة دقيقة؟']} estimatedTime="13 دقيقة"
       brief={{
         tag: 'أنشطة — الكتاب ص 141',
         headline: 'شارك موقعك… ونلتقي في المنتصف!',
@@ -93,7 +93,7 @@ export default function Module01MawidGps() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين: دبّوس اللقاء يُقبل فقط حيث تتساوى الحركتان، والمسافة في خط مستقيم هي وتر درج الشوارع."
+          lead="في المستويين: ضع دبّوس اللقاء ولاحظ متى يقبله التطبيق، ثم قارن مسافة الشوارع بالمسافة في خط مستقيم."
           levels={{
             beginner: () => (
               <Manipulation

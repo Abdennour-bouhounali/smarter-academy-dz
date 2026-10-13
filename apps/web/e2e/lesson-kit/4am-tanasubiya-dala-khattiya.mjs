@@ -41,7 +41,10 @@ async function go(page, url) {
     await page.waitForTimeout(1500);
   }
 }
-const modulePath = (lesson, stage) => CONFIGS[lesson].modules.find((m) => m.stage === stage).path;
+// Depuis le 2026-10-13 la synthèse « wadiya-idmajiya-* » s'ouvre sur six وضعيات d'entraînement (practice_lab) : son
+// module d'entrée n'est plus un `trigger`, c'est « al-wadiya » (module 7).
+const modulePath = (lesson, stage) => (CONFIGS[lesson].modules.find((m) => m.stage === stage)
+  ?? CONFIGS[lesson].modules.find((m) => m.slug === 'al-wadiya')).path;
 async function pickLevel(page, level) {
   const tab = page.locator(`[data-manipulation-workspace] [role="tab"][data-level="${level}"]`).first();
   if (!(await tab.count())) return false;

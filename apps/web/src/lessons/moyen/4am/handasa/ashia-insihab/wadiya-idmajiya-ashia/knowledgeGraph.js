@@ -4,12 +4,11 @@
  * modèle : handasa/hisab-muthallathat/wadiya-idmajiya-muthallathat.
  *
  *   — aucune connaissance nouvelle : la DÉMARCHE du manuel appliquée à la وضعية (ce qui est fixe et ce qui varie, la
- *     translation de B par NM qui fait un متوازي أضلاع, la ligne droite [AB′]) et l'outil de « أتعمّق » (prouver une
- *     nature avec des vecteurs) ;
- *   — la وضعية du manuel est résolue au module 1 (enseignement) ; l'évaluation est une AUTRE passerelle (Oran), dont
+ *     translation de B par NM qui fait un متوازي أضلاع, la ligne droite [AB′]) ;
+ *   — la وضعية du manuel est résolue au module 7 (enseignement) ; l'évaluation est une AUTRE passerelle (Oran), dont
  *     aucune réponse n'est ici (A.10 règle 14) ;
- *   — les trois erreurs sont celles que les modules 1 et 3 corrigent avec leur « لماذا؟ » : translater par MN au lieu
- *     de NM, poser le passage sur [AB], et l'ordre des sommets d'un متوازي أضلاع.
+ *   — les deux erreurs sont celles que le module 7 corrige avec leur « لماذا؟ » : translater par MN au lieu
+ *     de NM, et poser le passage sur [AB].
  *
  *                       [أقصر مسلك يعبر طريقا]                  مفهوم
  *                                 │ نبدأ بـ
@@ -20,8 +19,8 @@
  *     خطأ شائع ┌──────── [M على [AB′]]                          علاقة
  *                                 │ نجمعها
  *                       [من النص إلى الجواب]                     طريقة
- *                                 │ في البراهين
- *     خطأ شائع ┌──────── [إثبات طبيعة شكل بالأشعة] → 🎯
+ *                                 │ نستخلص
+ *                       [ثلاث مراحل] → 🎯
  */
 import { REMARKS, SITUATION } from './content/textbook';
 
@@ -37,7 +36,7 @@ export const KNOWLEDGE_GRAPH = {
     { id: 'thabit', kind: 'definition', lane: 'center', requires: 'thabit-mutaghayyir', notebook: true, title: 'الثابت والمتغيّر', subtitle: 'MN عرض الطريق', reveals: ['insihab'] },
     { id: 'insihab', kind: 'method', lane: 'end', requires: 'insihab-mamar', notebook: true, title: 'نقل B بشعاع الممر', subtitle: 'NB = MB′', reveals: ['ittijahKhata', 'aqsar'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 4 : B translaté par MN (MISC-SHUAA-ITTIJAH-MUAKKAS).
+      // ⛔ خطأ شائع — module 7, étape 4 : B translaté par MN (MISC-SHUAA-ITTIJAH-MUAKKAS).
       id: 'ittijahKhata', kind: 'common_mistake', lane: 'start', requires: 'insihab-mamar',
       title: 'MN بدل NM؟', subtitle: 'الاتجاه',
       context: {
@@ -51,7 +50,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'aqsar', kind: 'relationship', lane: 'end', requires: 'aqsar-masar', notebook: true, title: 'أقصر مسلك', subtitle: "M على [AB′]", reveals: ['mubashirKhata', 'marahil'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 6 : le passage posé sur [AB] (MISC-SHUAA-MAMAR-MUBASHIR).
+      // ⛔ خطأ شائع — module 7, étape 6 : le passage posé sur [AB] (MISC-SHUAA-MAMAR-MUBASHIR).
       id: 'mubashirKhata', kind: 'common_mistake', lane: 'start', requires: 'aqsar-masar',
       title: 'الممر على [AB]؟', subtitle: 'الممر عمودي',
       context: {
@@ -63,24 +62,10 @@ export const KNOWLEDGE_GRAPH = {
       },
       reveals: [],
     },
-    { id: 'marahil', kind: 'method', lane: 'center', requires: 'tariqat-wadiya', notebook: true, title: 'من النص إلى الجواب', reveals: ['burhan'] },
-    { id: 'burhan', kind: 'method', lane: 'center', requires: 'burhan-shuai', notebook: true, title: 'طبيعة شكل بالأشعة', subtitle: 'التمرينان 19 و 22', reveals: ['burhanKhata', 'khulasa'] },
-    {
-      // ⛔ خطأ شائع — module 3, ex. 22 : l'ordre des sommets (MISC-SHUAA-TARTIB-RUUS).
-      id: 'burhanKhata', kind: 'common_mistake', lane: 'start', requires: 'burhan-shuai',
-      title: 'ترتيب الرؤوس', subtitle: 'MNPQ أم MNQP؟',
-      context: {
-        parts: [
-          { role: 'wrong', text: REMARKS.burhanWrong },
-          { role: 'why', text: REMARKS.burhanWhy },
-          { role: 'right', text: REMARKS.burhanRight },
-        ],
-      },
-      reveals: [],
-    },
+    { id: 'marahil', kind: 'method', lane: 'center', requires: 'tariqat-wadiya', notebook: true, title: 'من النص إلى الجواب', reveals: ['khulasa'] },
     {
       // 🎯 خلاصة — les trois étapes de l'analyse du manuel, nommées par lui.
-      id: 'khulasa', kind: 'takeaway', lane: 'end', requires: 'burhan-shuai',
+      id: 'khulasa', kind: 'takeaway', lane: 'end', requires: 'tariqat-wadiya',
       title: 'ثلاث مراحل', subtitle: 'نقرأ · نحلّل · ننفّذ',
       context: { list: SITUATION.analysis.map((a) => a.label) },
       reveals: [],
@@ -93,8 +78,6 @@ export const KNOWLEDGE_GRAPH = {
     { from: 'insihab', to: 'aqsar', label: 'ثم' },
     { from: 'aqsar', to: 'mubashirKhata', label: 'خطأ شائع' },
     { from: 'aqsar', to: 'marahil', label: 'نجمعها' },
-    { from: 'marahil', to: 'burhan', label: 'في البراهين' },
-    { from: 'burhan', to: 'burhanKhata', label: 'خطأ شائع' },
-    { from: 'burhan', to: 'khulasa', label: 'نستخلص' },
+    { from: 'marahil', to: 'khulasa', label: 'نستخلص' },
   ],
 };

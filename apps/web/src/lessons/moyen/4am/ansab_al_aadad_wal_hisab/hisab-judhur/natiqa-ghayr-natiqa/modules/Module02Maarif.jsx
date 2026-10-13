@@ -30,6 +30,7 @@ export default function Module02Maarif() {
       moduleTitle="معارف — ناطق أم غير ناطق؟"
       moduleSubtitle="نتيجتان ومثالان، وما تخفيه الحاسبة"
       estimatedTime="10 دقائق"
+      objectives={['كيف أعرف إن كان جذر عدد ناطقًا؟', 'ماذا تعرض الحاسبة حين لا يكون ناطقًا؟']}
       brief={{
         tag: 'معارف — الكتاب ص 22', title: KNOWLEDGE.title, tone: 'violet',
         body: <p>في النشاط وقعت جذور الصنف الأول على تدريجة، ولم تقع جذور الصنف الثاني على أيّ تدريجة. الكتاب يصوغ ذلك في نتيجتين، لكل منهما مثال.</p>,
@@ -48,7 +49,7 @@ export default function Module02Maarif() {
                 correct={0}
                 cols={2}
                 requires={['murabba-natiq']}
-                explain={<span><MathText>{'$\\dfrac{16}{9} = \\left(\\dfrac{4}{3}\\right)^2$'}</MathText> و <MathText>{'$\\dfrac{4}{3}$'}</MathText> عدد موجب، إذن <MathText>{'$\\sqrt{\\dfrac{16}{9}} = \\dfrac{4}{3}$'}</MathText>: نأخذ جذر البسط وجذر المقام معًا.</span>}
+                explain={<span><MathText>{'$\\dfrac{16}{9} = \\left(\\dfrac{4}{3}\\right)^2$'}</MathText> و <MathText>{'$\\dfrac{4}{3}$'}</MathText> عدد موجب، إذن <MathText>{'$\\sqrt{\\dfrac{16}{9}} = \\dfrac{4}{3}$'}</MathText>: كلٌّ من 16 و 9 مربّع عدد طبيعي.</span>}
                 onAnswered={() => setQ1(true)}
               />
             </div>

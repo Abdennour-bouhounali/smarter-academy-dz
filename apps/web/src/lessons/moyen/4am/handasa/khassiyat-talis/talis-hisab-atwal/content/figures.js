@@ -32,6 +32,19 @@ export const FIG_ACT1_CASE2 = {
   maxWidth: 300,
 };
 
+/* ── نشاط 1 (ساحة الحيّ) : la minaret et le bâton, leurs ombres, le rayon — les deux triangles en situation de Thalès ──
+ * A pied de la minaret, M sa cime ; B pied du bâton, E sa cime ; O la fin commune des deux ombres. Rien n'est chiffré :
+ * les hauteurs de la figure (5 et 1) et les ombres (8 et 1,6) respectent k = 1,6 pour que (AM) // (BE) et le rayon soit droit. */
+export const FIG_SHADOW = {
+  points: { A: [0, 0], M: [0, 5], B: [6.4, 0], E: [6.4, 1], O: [8, 0] },
+  segments: [{ from: 'A', to: 'M', arrows: 1 }, { from: 'B', to: 'E', arrows: 1, tone: 'amber' }, ['A', 'O'], ['M', 'O']],
+  polygons: [{ points: ['O', 'B', 'E'], tone: 'amber' }],
+  rightAngles: [['M', 'A', 'O'], ['E', 'B', 'O']],
+  labels: { A: 'sw', M: 'nw', B: 'sw', E: 'ne', O: 'se' },
+  ariaLabel: 'مئذنة [AM] وعصا [BE] شاقوليتان على الأرض، وشعاع الشمس (MO) يمرّ بقمّتيهما وينتهي ظلّاهما في O: المثلثان OBE و OAM لهما الرأس O و (BE) يوازي (AM)',
+  maxWidth: 340,
+};
+
 /* ── معارف 1 : la propriété dans ses trois positions ── */
 const pos = (k, aria) => {
   const B = at(28, 4); const C = at(-26, 4.6);

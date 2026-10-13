@@ -2434,26 +2434,18 @@
   },
   "situation": {
    "lesson": "wadiya-idmajiya-ihsa",
-   "module": 1,
+   "module": 7,
    "duplicatedIn": [
     {
      "lesson": "wadiya-idmajiya-ihsa",
-     "module": 4
+     "module": 8
     }
    ]
   },
   "qcm": {
-   "lesson": "wadiya-idmajiya-ihsa",
-   "module": 2,
+   "lesson": "takrar-mujamma",
+   "module": 5,
    "duplicatedIn": [
-    {
-     "lesson": "takrar-mujamma",
-     "module": 5,
-     "items": [
-      1,
-      2
-     ]
-    },
     {
      "lesson": "mada-wasit-mutawassit",
      "module": 5,
@@ -2463,12 +2455,16 @@
       5,
       6
      ]
+    },
+    {
+     "lesson": "wadiya-idmajiya-ihsa",
+     "module": 8
     }
    ]
   },
   "ex-20": {
    "lesson": "wadiya-idmajiya-ihsa",
-   "module": 3
+   "module": 8
   }
  }
 }

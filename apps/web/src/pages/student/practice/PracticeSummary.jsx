@@ -8,7 +8,6 @@ import { fetchPracticeSession, fetchPracticeOverview } from '../../../services/p
 import { MASTERY_STATES, resolveMasteryState, reasonLabel, freshnessLabel } from '../../../lessons/common/components/LearningPointMastery';
 import MISCONCEPTIONS from '../../../../../../content/practice/misconceptions.json';
 import MathLabel from '../../../lessons/common/components/MathLabel';
-import IslamicMoment from '../../../features/islamic/IslamicMoment';
 
 const TONE = {
   slate: 'border-slate-200 bg-slate-50',
@@ -148,16 +147,6 @@ export default function PracticeSummary() {
           })}
         </ul>
       </section>
-
-      {/* « تذكرة » APRÈS l'effort, le bilan déjà lu : une séance réussie
-          appelle الشكر والتواضع, une séance difficile الصبر — jamais un
-          reproche. Sans part de réussite jugée, un rappel de persévérance. */}
-      <IslamicMoment
-        context={typeof s.successRate !== 'number' ? 'study_progress'
-          : s.successRate >= 70 ? 'exercise_success'
-            : s.successRate < 50 ? 'difficulty' : 'study_progress'}
-        only="student"
-      />
 
       <div className="flex gap-3 flex-wrap">
         <Link

@@ -20,6 +20,7 @@ export default function Module03Awazzif() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
+      objectives={["كيف أعيّن دالة خطية من عدد وصورته؟", "كيف أحسب صورة عدد، والعدد الذي صورته معلومة؟", "متى تكون دالة ما خطية؟"]}
       moduleNumber={3}
       moduleTitle="أوظّف تعلّماتي"
       moduleSubtitle="تمارين الكتاب 1، 6، 7، 8، 9"

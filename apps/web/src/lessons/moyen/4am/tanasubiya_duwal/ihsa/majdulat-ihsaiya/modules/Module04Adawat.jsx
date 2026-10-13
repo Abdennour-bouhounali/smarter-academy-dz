@@ -22,6 +22,7 @@ export default function Module04Adawat() {
 
   return (
     <ContentModule
+      objectives={["كيف أحسب متوسطًا بذاكرة الحاسبة؟", "كيف أحصل على سلسلة عشوائية من خمسين عددًا؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}

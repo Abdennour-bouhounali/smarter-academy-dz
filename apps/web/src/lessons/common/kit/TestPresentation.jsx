@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { CheckCircle2, XCircle, Eye } from 'lucide-react';
 import { useClassroomMode, useClassroomStage, ClassroomFrame } from '../classroom';
 import { Feedback, ValidateButton } from '../components/LessonUI';
+import ModuleOverview from './ModuleOverview';
 import {
   QUESTION_STATE, testQuestionStates, revealAll, revealOne, allRevealed,
   clampQuestion, resolveTestNavigation, revealedTally,
@@ -180,6 +181,8 @@ function QuestionHeading({ state, index, total, title }) {
  * @param {Function} p.renderReview    ({ question, index, correct }) => ReactNode
  * @param {ReactNode} p.summary        la synthèse du moteur, montrée après la révélation
  * @param {string}   p.title           le titre porté par la barre d'outils
+ * @param {object}   p.overview       { number, title, subtitle, points } — la page d'entrée du test (titre du محور
+ *                                    + ce qu'il vérifie), montrée avant la question 1 ; absente = pas de page d'entrée
  * @param {string}   p.revealAllLabel  le libellé du geste final, propre au moteur
  */
 export default function TestPresentation({
@@ -193,6 +196,7 @@ export default function TestPresentation({
   renderReview,
   summary,
   title,
+  overview,
   revealAllLabel,
 }) {
   const { t } = useTranslation('lesson');
@@ -202,6 +206,11 @@ export default function TestPresentation({
   const [index, setIndex] = useState(0);
   const current = clampQuestion(index, questions.length);
   const goTo = useCallback((i) => setIndex(i), []);
+  // La PAGE D'ENTRÉE (titre + ce que le test vérifie) précède la question 1 :
+  // une unité de plus, sans toucher à l'index des questions.
+  const hasOverview = Boolean(overview);
+  const [onOverview, setOnOverview] = useState(hasOverview);
+  const atOverview = hasOverview && onOverview;
 
   const states = useMemo(
     () => testQuestionStates(questions, { answers, revealed, isCorrect }),
@@ -215,23 +224,28 @@ export default function TestPresentation({
   useEffect(() => {
     if (presenting) classroom.refit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current, presenting]);
+  }, [current, presenting, atOverview]);
 
   // Les gestes de la barre du bas : les questions se parcourent comme les
   // unités d'un module, et aux deux bouts d'une session LEÇON elles mènent au
   // module voisin. Ce qui protège un test en cours n'est pas un bouton
   // manquant mais la place de « كشف النتائج », large et dans le contenu.
   const lessonNav = classroom.lessonNavigation;
-  const nav = useMemo(
-    () => resolveTestNavigation({
+  // La PAGE D'ENTRÉE (titre + ce que le test vérifie) précède la question 1 :
+  // une unité de plus, sans toucher à l'index des questions.
+  const nav = useMemo(() => {
+    const base = resolveTestNavigation({
       index: current,
       count: questions.length,
       goTo,
       lessonPrevious: lessonNav?.previous,
       lessonNext: lessonNav?.next,
-    }),
-    [current, questions.length, goTo, lessonNav],
-  );
+    });
+    if (!hasOverview) return base;
+    if (onOverview) return { onPrevious: lessonNav?.previous || undefined, onNext: () => setOnOverview(false) };
+    if (current === 0) return { ...base, onPrevious: () => setOnOverview(true) };
+    return base;
+  }, [current, questions.length, goTo, lessonNav, hasOverview, onOverview]);
   const slot = useMemo(
     () => (
       <ToolbarSlot
@@ -246,10 +260,25 @@ export default function TestPresentation({
   useClassroomStage({ title, onPrevious: nav.onPrevious, onNext: nav.onNext, slot, priority: 2 }, presenting);
 
   const state = states[current];
-  const atLast = current === questions.length - 1;
+  const atLast = !atOverview && current === questions.length - 1;
 
   return (
     <div className="sa-test-presentation" data-test-presentation data-test-questions={questions.length} data-test-current={current}>
+      {hasOverview && (
+        <div hidden={!atOverview} className="sa-test-presentation__overview" data-test-overview>
+          {presenting && (
+            <ClassroomFrame>
+              <ModuleOverview
+                number={overview.number}
+                title={overview.title}
+                subtitle={overview.subtitle}
+                points={overview.points}
+                heading={t('classroom.overview.review')}
+              />
+            </ClassroomFrame>
+          )}
+        </div>
+      )}
       {questions.map((q, i) => {
         const s = states[i];
         // TOUTES les questions sont rendues, toujours : `hidden` cache les
@@ -257,7 +286,7 @@ export default function TestPresentation({
         return (
           <div
             key={q.id}
-            hidden={i !== current}
+            hidden={atOverview || i !== current}
             className="sa-test-presentation__question"
             data-test-question={i}
             data-test-state={s.state}

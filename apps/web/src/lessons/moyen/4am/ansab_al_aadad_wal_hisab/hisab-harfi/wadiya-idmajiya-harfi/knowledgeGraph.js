@@ -7,10 +7,8 @@
  *     d'écrire l'aire du ruban, l'« مساعدة » du manuel, choisir la forme) ;
  *   — la SOLUTION (x = 1, la racine −11 rejetée) n'y figure pas : c'est la
  *     réponse de l'évaluation (A.10 règle 14) ;
- *   — les deux erreurs sont celles que le module 1 corrige (le ruban compté
+ *   — les deux erreurs sont celles que le module 7 corrige (le ruban compté
  *     d'un seul côté, le carré d'une somme sans 2ab), avec leur « لماذا؟ » ;
- *   — « أؤكّد تعلّماتي » (module 2) renvoie aux leçons 1, 2 et 3, dont les
- *     cartes portent ces connaissances.
  *
  *                     [ما عرض الشريط؟]                         مفهوم
  *                          نفهمها │
@@ -21,8 +19,6 @@
  *              ⛔ [مربع مجموع بلا 2ab]      [مساعدة الكتاب]      علاقة
  *                                              │ نطبّقها
  *                                    [من الشكل إلى المعادلة]    طريقة
- *                                              │ نختار الشكل
- *                                       [أيّ شكل أختار؟]        طريقة (محور 3)
  *                                              │ نستخلص
  *                                       🎯 [ثلاث مراحل]
  */
@@ -39,7 +35,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'namdhaja', kind: 'method', lane: 'center', requires: 'namdhaja', notebook: true, title: 'نمذجة بدلالة x', reveals: ['dil', 'masaha'] },
     {
-      // ⛔ خطأ شائع — module 1, question 2 : le distracteur « 10 + x » et sa correction.
+      // ⛔ خطأ شائع — module 7, question 2 : le distracteur « 10 + x » et sa correction.
       id: 'dil', kind: 'common_mistake', lane: 'start', requires: 'namdhaja',
       title: 'الشريط من جهة واحدة', subtitle: 'ضلع المربع الخارجي',
       context: {
@@ -53,7 +49,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'masaha', kind: 'relationship', lane: 'end', requires: 'masaha-tariqatan', notebook: true, title: 'مساحة الشريط', subtitle: 'طرق متعددة', reveals: ['murabba', 'musaada'] },
     {
-      // ⛔ خطأ شائع — module 1, question 4 : le distracteur « 4x² » ((a + b)² = a² + b²).
+      // ⛔ خطأ شائع — module 7, question 4 : le distracteur « 4x² » ((a + b)² = a² + b²).
       id: 'murabba', kind: 'common_mistake', lane: 'start', requires: 'masaha-tariqatan',
       title: 'مربع مجموع بلا 2ab', subtitle: 'المستطيلات المنسية',
       context: {
@@ -66,11 +62,10 @@ export const KNOWLEDGE_GRAPH = {
       reveals: [],
     },
     { id: 'musaada', kind: 'relationship', lane: 'end', requires: 'musaada-jadaa', notebook: true, title: 'مساعدة الكتاب', subtitle: 'جداء أحد عامليه معدوم', reveals: ['tariqa'] },
-    { id: 'tariqa', kind: 'method', lane: 'end', requires: 'tariqat-wadiya', notebook: true, title: 'من الشكل إلى المعادلة', reveals: ['ikhtiyar'] },
-    { id: 'ikhtiyar', kind: 'method', lane: 'center', requires: 'ikhtiyar-shakl', notebook: true, title: 'أيّ شكل أختار؟', subtitle: 'منشور أم محلّل', reveals: ['khulasa'] },
+    { id: 'tariqa', kind: 'method', lane: 'end', requires: 'tariqat-wadiya', notebook: true, title: 'من الشكل إلى المعادلة', reveals: ['khulasa'] },
     {
       // 🎯 خلاصة — les trois étapes de l'analyse du manuel, nommées par lui.
-      id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'ikhtiyar-shakl',
+      id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'tariqat-wadiya',
       title: 'ثلاث مراحل', subtitle: 'نقرأ · نحلّل · ننفّذ',
       context: { list: SITUATION.analysis.map((a) => a.label) },
       reveals: [],
@@ -83,7 +78,6 @@ export const KNOWLEDGE_GRAPH = {
     { from: 'masaha', to: 'murabba', label: 'خطأ شائع' },
     { from: 'masaha', to: 'musaada', label: 'المساواة' },
     { from: 'musaada', to: 'tariqa', label: 'نطبّقها' },
-    { from: 'tariqa', to: 'ikhtiyar', label: 'نختار الشكل' },
-    { from: 'ikhtiyar', to: 'khulasa', label: 'نستخلص' },
+    { from: 'tariqa', to: 'khulasa', label: 'نستخلص' },
   ],
 };

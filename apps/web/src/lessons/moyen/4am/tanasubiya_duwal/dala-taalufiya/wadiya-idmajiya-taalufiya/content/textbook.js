@@ -4,11 +4,11 @@ import { addition, BASE } from '../../_unit/unitMeta.js';
  * أدمج تعلّماتي — unité 7 « الدالة التآلفية ».
  *
  * Le manuel fourni (pp. 77–79) n'a NI « أدمج تعلّماتي », NI « أؤكّد تعلّماتي », NI « أتعمّق » pour cette
- * unité (extraction › discrepancies › scope) : la situation, le QCM et les problèmes d'approfondissement
- * sont des AJOUTS DÉCLARÉS de la plateforme (`addition('synthesis_generation')`), écrits dans la forme et
- * le vocabulaire du manuel (دالة تآلفية، الترتيب عند المبدأ، معامل التوجيه، تناسب التغيّرات، جملة
- * معادلتين، التفسير البياني) et sur le modèle des synthèses des unités 2 à 6 (une situation, ses trois
- * phases « قراءة · تحليل · تنفيذ », un QCM qui renvoie chaque question à son درس).
+ * unité (extraction › discrepancies › scope) : la situation et le test sont des AJOUTS DÉCLARÉS de la
+ * plateforme (`addition('synthesis_generation')`), écrits dans la forme et le vocabulaire du manuel
+ * (دالة تآلفية، الترتيب عند المبدأ، معامل التوجيه، تناسب التغيّرات، جملة معادلتين، التفسير البياني) et sur
+ * le modèle des synthèses des unités 2 à 6 (une situation, ses trois phases « قراءة · تحليل · تنفيذ »).
+ * Format de l'unité 1 (décision du propriétaire, 2026-10-13) : ni QCM ni problèmes d'approfondissement.
  *
  * Aucune phrase de ce fichier n'est présentée comme celle du manuel : aucun `src()`.
  */
@@ -39,7 +39,7 @@ export const PREP_ITEMS = [
     why: 'من أجل $x = 30$ : الصيغة أ $500 + 20 \\times 30 = 1100$ والصيغة ب $40 \\times 30 = 1200$ ، فالصيغة أ هي الأرخص.', source: addition('prerequisite_diagnostic') },
 ];
 
-/* ── LA SITUATION (module 1) — رحلة إلى شاطئ تيبازة ─────────────────────────────────────────────
+/* ── LA SITUATION (module 7) — رحلة إلى شاطئ تيبازة ─────────────────────────────────────────────
  * Une situation composite qui a besoin des CINQ دروس, chaque partie renvoyant au sien :
  *   1) les participants : x + y = 36 et 300x + 600y = 12000 → y = −x + 36 et y = −x/2 + 20, lues comme
  *      deux droites ; le point commun (32 ; 4)                                                  → درس 4
@@ -64,7 +64,7 @@ export const SITUATION = {
   source: addition('synthesis_generation'),
   title: 'وضعية: رحلة إلى شاطئ تيبازة',
   caption: 'رحلة إلى الشاطئ',
-  intro: 'في نهاية السنة الدراسية، ينظّم تلاميذ قسم السنة الرابعة متوسط رحلة إلى شاطئ تيبازة، يرافقهم بعض الأولياء.',
+  intro: 'في نهاية السنة الدراسية، ينظّم تلاميذ قسم السنة الرابعة متوسط رحلة إلى شاطئ تيبازة، يرافقهم بعض الأولياء، وقد اتفقوا على تنظيف الشاطئ قبل العودة.',
   part1: '1) ركب الحافلة 36 شخصا بين تلاميذ ومرافقين. ساهم كل تلميذ بـ 300 DA وكل مرافق بـ 600 DA ، فجُمع مبلغ 12000 DA. نسمّي $x$ عدد التلاميذ و $y$ عدد المرافقين.',
   part2: '2) الحافلة: ثمن الرحلة دالة لعدد التلاميذ $x$ (المرافقون لا يدفعون للناقل)؛ نرمز بـ $f(x)$ لثمن الناقل «الأمل» وبـ $g(x)$ لثمن الناقل «النورس».',
   part2a: '• الناقل «الأمل»: مبلغ ثابت قدره 6000 DA يضاف إليه 150 DA عن كل تلميذ.',
@@ -95,7 +95,7 @@ export const LESSON_TITLES = {
 };
 export const lessonPath = (code) => `${BASE}/${code}`;
 
-/** Chaque partie de la situation et le درس qu'elle mobilise (module 1, étape 2 ; renvois). */
+/** Chaque partie de la situation et le درس qu'elle mobilise (module 7, étape 2 ; renvois). */
 export const PARTS = [
   { id: 'part-1', label: 'عدد التلاميذ $x$ وعدد المرافقين $y$', lesson: 'tafsir-bayani-jumla' },
   { id: 'part-2a', label: 'ثمن الناقل «الأمل» للقسم', lesson: 'mafhum-taalufiya' },
@@ -104,7 +104,7 @@ export const PARTS = [
 ];
 
 /**
- * Les props du laboratoire `plan-compare` du module 1 (RÉUTILISÉ de la leçon 5 « حل مشكلات وترييض
+ * Les props du laboratoire `plan-compare` du module 7 (RÉUTILISÉ de la leçon 5 « حل مشكلات وترييض
  * وضعيات », manipulations/affine/PlanCompare.jsx) à ses DEUX niveaux — contrat des props du brief de
  * l'unité 7 §6. Écrites ici une fois : le module les étale, lab.render.test.jsx monte le workspace avec
  * exactement ces props. Monde `rental` (location à la plage).
@@ -119,7 +119,7 @@ export const LAB = {
 };
 
 /**
- * Les méthodes et les corrections du module 1 — importées aussi par la carte (knowledgeGraph.js) :
+ * Les méthodes et les corrections du module 7 — importées aussi par la carte (knowledgeGraph.js) :
  * une aide de la carte cite la leçon mot pour mot. Toute égalité dans `$…$`.
  */
 export const REMARKS = {
@@ -144,39 +144,12 @@ export const REMARKS = {
   kayakRanges: 'أ و ب تتساويان عند 3 ساعات ($150 \\times 3 = 50 \\times 3 + 300 = 450$) ، و ب و جـ عند 6 ساعات ($50 \\times 6 + 300 = 600$) : أ هي الأرخص قبل 3 ساعات، ب بين 3 و 6 ساعات، جـ بعد 6 ساعات.',
   rest: 'المبلغ المتبقّي: $12000 - 10800 = 1200\\,\\mathrm{DA}$ ، والقاربان بالصيغة ب لـ 5 ساعات: $2 \\times 550 = 1100\\,\\mathrm{DA}$. إذن $1100 < 1200$ : المبلغ يكفي ويبقى 100 DA.',
   tafsir: 'الجواب عدد طبيعي من التلاميذ أو من الساعات، بالدينار، ولا يتجاوز المبلغ المتاح: إذا لم يكن الحل عددا طبيعيا ندوّر نحو الأسفل.',
-  tawazi: 'صيغتان لهما ثمن الوحدة نفسه $a$ ومبلغان ثابتان مختلفان: مستقيماهما متوازيان، فلا تتساوى التكلفتان أبدا، والصيغة ذات المبلغ الثابت الأصغر أرخص دائما بفرق ثابت.',
-  tanaqus: 'إذا كان $a < 0$ فإنّ الدالة التآلفية تتناقص: المستقيم ينزل. ولمعرفة متى تنعدم نحلّ $ax + b = 0$ ، أي نعيّن العدد الذي صورته 0.',
-  mutarajiha: 'نترجم «أرخص» بمتراجحة: البطاقة أرخص عندما $1500 + 100x < 250x$ ، أي $1500 < 150x$ ومنه $x > 10$ : ابتداء من 11 حصة لأنّ عدد الحصص عدد طبيعي.',
   notTheTest: 'وضعية «إختبار أولي» رحلة أخرى بأعداد أخرى: نفس المراحل الثلاث ونفس الدروس الخمسة.',
 };
 
 /**
- * « أؤكّد تعلّماتي » (module 2) — huit QCM de la PLATEFORME (le manuel n'en fournit pas pour cette unité),
- * chacun renvoyé au درس qui l'enseigne (`lesson`), comme la colonne « عند الحاجة أعود إلى … » du manuel.
- * Q1–Q2 → درس 1 ; Q3–Q4 → درس 2 ; Q5 → درس 3 ; Q6–Q7 → درس 4 ; Q8 → درس 5. Chaque distracteur est FAUX.
- */
-export const QCM = [
-  { n: 1, text: 'إحدى الدوال الآتية تآلفية وليست خطية:', options: ['$x \\longmapsto -4x$', '$x \\longmapsto 5 - 4x$', '$x \\longmapsto 4x^2 - 5$'], correct: 1, lesson: 'mafhum-taalufiya',
-    explain: '$x \\longmapsto 5 - 4x$ من الشكل $ax + b$ حيث $a = -4$ و $b = 5 \\neq 0$ ، فهي تآلفية وليست خطية. أمّا $x \\longmapsto -4x$ فخطية ($b = 0$)، و $x \\longmapsto 4x^2 - 5$ ليست تآلفية لوجود $x^2$.' },
-  { n: 2, text: 'العدد الذي صورته $1$ بالدالة التآلفية $f : x \\longmapsto -2x + 7$ هو:', options: ['$3$', '$5$', '$-4$'], correct: 0, lesson: 'mafhum-taalufiya',
-    explain: 'نحلّ $-2x + 7 = 1$ : $-2x = -6$ ومنه $x = 3$. العدد 5 هو صورة 1 ($f(1) = 5$)، و $-4$ ناتج عن خطأ في الإشارة.' },
-  { n: 3, text: 'الترتيب عند المبدأ للدالة التآلفية $x \\longmapsto 3x - 5$ هو:', options: ['$-5$', '$3$', '$\\dfrac{5}{3}$'], correct: 0, lesson: 'tamthil-bayani-taalufi',
-    explain: 'صورة 0 هي $3 \\times 0 - 5 = -5$ : المستقيم يقطع محور التراتيب في $(0 ; -5)$. العدد 3 معامل التوجيه، و $\\dfrac{5}{3}$ فاصلة نقطة تقاطعه مع محور الفواصل.' },
-  { n: 4, text: 'المستقيم الذي يقطع محور التراتيب في النقطة $(0 ; 4)$ ويشمل النقطة $(2 ; 0)$ يمثّل الدالة:', options: ['$x \\longmapsto -2x + 4$', '$x \\longmapsto 2x + 4$', '$x \\longmapsto 4x + 2$'], correct: 0, lesson: 'tamthil-bayani-taalufi',
-    explain: '$b = 4$ (الترتيب عند المبدأ)، والمستقيم ينزل 4 وحدات عندما نتقدّم وحدتين: $a = \\dfrac{0 - 4}{2 - 0} = -2$. تحقق: $-2 \\times 2 + 4 = 0$.' },
-  { n: 5, text: '$f$ دالة تآلفية حيث $f(2) = 7$ و $f(6) = 19$. معاملها $a$ هو:', options: ['$3$', '$12$', '$\\dfrac{1}{3}$'], correct: 0, lesson: 'tanasub-taghayyurat',
-    explain: '$a = \\dfrac{f(6) - f(2)}{6 - 2} = \\dfrac{19 - 7}{4} = \\dfrac{12}{4} = 3$. العدد 12 فرق الصورتين دون قسمة، و $\\dfrac{1}{3}$ مقلوب المعامل.' },
-  { n: 6, text: 'حلّ الجملة $\\begin{cases} y = x + 1 \\\\ y = -x + 5 \\end{cases}$ هو إحداثيتا نقطة تقاطع المستقيمين:', options: ['$(2 ; 3)$', '$(3 ; 2)$', '$(1 ; 2)$'], correct: 0, lesson: 'tafsir-bayani-jumla',
-    explain: '$2 + 1 = 3$ و $-2 + 5 = 3$ : النقطة $(2 ; 3)$ على المستقيمين معا. النقطة $(1 ; 2)$ على الأول فقط ($-1 + 5 = 4 \\neq 2$)، و $(3 ; 2)$ ثنائية مقلوبة.' },
-  { n: 7, text: 'الجملة $\\begin{cases} y = 2x + 1 \\\\ y = 2x - 3 \\end{cases}$ :', options: ['لا تقبل حلا: المستقيمان متوازيان', 'تقبل حلا وحيدا', 'تقبل عددا لا نهائيا من الحلول'], correct: 0, lesson: 'tafsir-bayani-jumla',
-    explain: 'للمستقيمين نفس معامل التوجيه 2 وترتيبان مختلفان عند المبدأ (1 و $-3$): متوازيان، لا نقطة مشتركة، فلا حلّ. يكونان منطبقين لو تساوى الترتيبان أيضا.' },
-  { n: 8, text: 'صيغة أ تكلّف $1000 + 50x$ وصيغة ب تكلّف $100x$ ، حيث $x$ عدد الساعات. من أجل 30 ساعة:', options: ['الصيغة أ أرخص', 'الصيغة ب أرخص لأنها بلا مبلغ ثابت', 'التكلفتان متساويتان'], correct: 0, lesson: 'tarrid-taalufi',
-    explain: 'أ: $1000 + 50 \\times 30 = 2500$ و ب: $100 \\times 30 = 3000$. التكلفتان تتساويان عند 20 ساعة فقط ($1000 + 50 \\times 20 = 100 \\times 20$)، وبعدها الصيغة أ أرخص.' },
-].map((it) => ({ ...it, source: addition('synthesis_generation'), lessonPath: lessonPath(it.lesson) }));
-
-/**
- * « إختبار أولي » (module 4) — une AUTRE sortie, mêmes cinq ressources, autres nombres : la situation
- * du module 1 a été résolue en classe, l'évaluation est la transposition.
+ * « إختبار أولي » (module 8) — une AUTRE sortie, mêmes cinq ressources, autres nombres : la situation
+ * du module 7 a été résolue en classe, l'évaluation est la transposition.
  *   participants  x + y = 40 et 250x + 500y = 11000 → (36 ; 4)
  *   « الفجر »     h(x) = 120x + 6400 ; h(36) = 10720
  *   « الموج »     deux devis (20 ; 7600) et (30 ; 9400) → k(x) = 180x + 4000 ; k(36) = 10480 ; égalité à 40
@@ -186,7 +159,7 @@ export const QCM = [
 export const TEST = {
   source: addition('synthesis_generation'),
   title: 'رحلة إلى شاطئ الصابلات',
-  intro: 'قسم آخر ينظّم رحلة إلى شاطئ الصابلات بالجزائر العاصمة.',
+  intro: 'قسم آخر ينظّم رحلة إلى شاطئ الصابلات بالجزائر العاصمة ليكتشف تلاميذه جمال وطنهم.',
   part1: '1) ركب الحافلة 40 شخصا بين تلاميذ ومرافقين. ساهم كل تلميذ بـ 250 DA وكل مرافق بـ 500 DA ، فجُمع مبلغ 11000 DA ( $x$ عدد التلاميذ و $y$ عدد المرافقين).',
   part2: '2) الناقل «الفجر» يطلب 6400 DA ثابتة و 120 DA عن كل تلميذ. الناقل «الموج» ثمنه دالة تآلفية لعدد التلاميذ: 7600 DA لـ 20 تلميذا و 9400 DA لـ 30 تلميذا.',
   part3: '3) كراء قارب بدوّاسات: الصيغة أ 200 DA للساعة؛ الصيغة ب رسم ثابت 300 DA ثم 100 DA للساعة؛ الصيغة جـ 800 DA جزافيا لليوم.',

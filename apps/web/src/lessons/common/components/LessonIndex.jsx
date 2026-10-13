@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Lock, Compass } from 'lucide-react';
@@ -27,7 +27,6 @@ import MathLabel from './MathLabel';
 import LessonProblemCard from '../problems/LessonProblemCard';
 import { mathToPlain } from '../../../utils/mathPlain';
 import { useCatalogueHref } from '../../../components/student/catalogueLink';
-import IslamicMoment from '../../../features/islamic/IslamicMoment';
 import { useDeclarePageTour } from '../../../features/tours/PageTourProvider';
 
 /**
@@ -158,10 +157,21 @@ export default function LessonIndex({ config, basePath }) {
   const classroom = useClassroomMode();
   const presenting = classroom.isClassroomMode;
   const lessonNav = classroom.lessonNavigation;
+  // Le sommaire présenté tient en DEUX écrans — l'identité de la leçon (titre,
+  // description, ce qu'on y apprend) puis مسار الدرس — au lieu d'un écran
+  // surchargé : التالي passe de l'un à l'autre avant le premier محور.
+  const [overviewPage, setOverviewPage] = useState(0);
+  const lessonNext = lessonNav?.next ?? undefined;
+  const lessonPrevious = lessonNav?.previous ?? undefined;
+  const overviewNext = useMemo(() => (overviewPage === 0 ? () => setOverviewPage(1) : lessonNext), [overviewPage, lessonNext]);
+  const overviewPrevious = useMemo(() => (overviewPage === 1 ? () => setOverviewPage(0) : lessonPrevious), [overviewPage, lessonPrevious]);
   const overviewSlot = useMemo(() => (
-    <span className="sa-classroom-position" data-classroom-position>{t('classroom.positionOverview')}</span>
-  ), [t]);
-  useClassroomStage({ title: config.title, onNext: lessonNav?.next ?? undefined, slot: overviewSlot, priority: 1 }, presenting);
+    <>
+      <span className="sa-classroom-position" data-classroom-position data-classroom-overview-page={overviewPage}>{t('classroom.positionOverview')}</span>
+      <span className="sa-classroom-position" dir="ltr">{overviewPage + 1} / 2</span>
+    </>
+  ), [t, overviewPage]);
+  useClassroomStage({ title: config.title, onPrevious: overviewPrevious, onNext: overviewNext, slot: overviewSlot, priority: 1 }, presenting);
   // « جولة تعريفية » du sommaire de leçon — l'URL change d'une leçon à
   // l'autre, la page se déclare. Jamais en وضع القسم (docs/architecture/PAGE_TOURS.md).
   useDeclarePageTour('lesson-index', !presenting);
@@ -227,8 +237,8 @@ export default function LessonIndex({ config, basePath }) {
     return (
       <div className="sa-classroom-lesson-page" data-lesson-presented={config.id}>
         <ClassroomFrame maxWidth={1180}>
-          <div className="sa-classroom-lesson-overview">
-            <section className="rounded-3xl border-2 border-indigo-200 bg-white p-8 space-y-5">
+          <div className="sa-classroom-lesson-overview sa-classroom-lesson-overview--split">
+            <section hidden={overviewPage !== 0} data-lesson-overview-page="0" className="rounded-3xl border-2 border-indigo-200 bg-white p-8 space-y-5">
               <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 font-mono text-xs font-semibold text-blue-700">
                 {config.emoji} {config.chapterTitle || config.chapter}
               </div>
@@ -248,7 +258,7 @@ export default function LessonIndex({ config, basePath }) {
                 </div>
               )}
             </section>
-            <section className="rounded-3xl border-2 border-slate-200 bg-white p-6 space-y-3" data-lesson-roadmap>
+            <section hidden={overviewPage !== 1} data-lesson-overview-page="1" className="rounded-3xl border-2 border-slate-200 bg-white p-6 space-y-3" data-lesson-roadmap>
               <h2 className="text-base font-bold text-slate-800">{t('classroom.lessonPath')}</h2>
               <ol className="space-y-2">
                 {config.modules.map((module) => (
@@ -443,18 +453,6 @@ export default function LessonIndex({ config, basePath }) {
             </div>
           </div>
         </section>
-
-        {/* « تذكرة » (features/islamic) — AUTOUR de la leçon, jamais dedans :
-            sous la carte de tête, avant la liste des modules. Début, milieu
-            ou fin du parcours pour l'élève ; l'enseignant qui prépare sa
-            séance reçoit un rappel sur l'enseignement. Rien en mode classe
-            (cette page rend autre chose quand elle est présentée). */}
-        <IslamicMoment
-          context={{
-            student: isPathComplete ? 'lesson_completion' : completedCount > 0 ? 'study_progress' : 'lesson_start',
-            teacher: 'teacher_start',
-          }}
-        />
 
         {/* ── Ce que le درس enseigne (phase 8) : points d'apprentissage et leur
             maîtrise (profil serveur), prérequis PÉDAGOGIQUES (jamais bloquants),

@@ -7,12 +7,11 @@ import BucketFill from '../../../../../common/manipulations/space/BucketFill';
 import ManipulationWorkspace from '../../../../../common/manipulations/ManipulationWorkspace';
 import * as BF from '../../../../../common/manipulations/logic/bucketFill';
 import { LEVELS } from '../../../../../common/manipulations/levels';
-import { LAB, LAB_EXPECT, QCM, SITUATION, TEST } from './content/textbook';
-import { EXERCISES } from './content/exercises';
+import { LAB, LAB_EXPECT, SITUATION, TEST } from './content/textbook';
 
 /**
- * Le workspace du module 1 de la synthèse — `bucket-fill`, deux niveaux (le petit seau plein ; le تحدّ) — rendu avec EXACTEMENT
- * les props que le module étale (content/textbook.js › LAB) ; puis la mathématique que les modules 1 à 4 supposent, recalculée
+ * Le workspace du module 7 de la synthèse — `bucket-fill`, deux niveaux (le petit seau plein ; le تحدّ) — rendu avec EXACTEMENT
+ * les props que le module étale (content/textbook.js › LAB) ; puis la mathématique que les modules 7 et 8 supposent, recalculée
  * avec packages/core (space.js) et posée par la main dans la logique du lab (logic/bucketFill.js).
  */
 const F = (n, d = 1) => LN.frac(n, d);
@@ -60,7 +59,7 @@ it.each([['advanced'], ['beginner']])('%s : la main — un refus, le niveau, le 
   if (exp.litres) expect(SP.roundTo(f.litres, 2)).toBe(exp.litres);
 });
 
-it('le module 1 (le تحدّ) : SO = 105, ρ = 19, k = 15/19, V₁ = 48013π/3, V₂ = 7875π, V = 24388π/3 ≈ 25,54 L ; les distracteurs', () => {
+it('le module 7 (le تحدّ) : SO = 105, ρ = 19, k = 15/19, V₁ = 48013π/3, V₂ = 7875π, V = 24388π/3 ≈ 25,54 L ; les distracteurs', () => {
   const w = SP.bucketWater({ R: 20, r: 15, H: 35, depth: 28 });
   expect(LN.eq(w.apexBelowBottom, F(105))).toBe(true);
   expect(LN.eq(w.surfaceRadius, F(19))).toBe(true);
@@ -79,34 +78,6 @@ it('le module 1 (le تحدّ) : SO = 105, ρ = 19, k = 15/19, V₁ = 48013π/3, 
   expect(LN.eq(SP.cylinder(17, 28).volume.k, F(8092))).toBe(true);
   expect(LN.eq(SP.cylinder(15, 105).volume.k, F(23625))).toBe(true);
   expect(SP.roundTo(w.bigCone.number * (1 - 15 / 19), 0)).toBe('10585');
-});
-
-it('le module 2 (QCM) : chaque clé recalculée', () => {
-  const key = (i) => QCM[i].options[QCM[i].correct];
-  expect(SP.ballPosition([0, 0, 0], 5, ['4,8', 0, 0]).where).toBe('inside');
-  expect(key(0)).toContain('الجلة');
-  expect(LN.eq(SP.ballVolume(6).k, F(288))).toBe(true);
-  expect(key(1)).toContain('288');
-  expect(SP.lengthLatex(SP.sphereSection(10, 6).radius)).toBe('8');
-  expect(key(2)).toContain('8');
-  expect(LN.eq(SP.scaleEffect('1/2').volume, F(1, 8))).toBe(true);
-  expect(key(3)).toContain('\\dfrac{1}{8}');
-  expect(LN.eq(SP.scaleEffect('1/50').volume, F(1, 125000))).toBe(true);
-  expect(key(4)).toContain('125000');
-});
-
-it('le module 3 (le cornet) : 32π/3, 256π/3, rapport 1/8, k = 1/2, 8 cm, 2 cm', () => {
-  const ball = SP.ballVolume(2); const cone = SP.cone(4, 16).volume;
-  expect(LN.eq(ball.k, F(32, 3))).toBe(true);
-  expect(LN.eq(cone.k, F(256, 3))).toBe(true);
-  const ratio = LN.div(ball.k, cone.k);
-  expect(LN.eq(ratio, F(1, 8))).toBe(true);
-  expect(LN.eq(SP.cubeRoot(ratio), F(1, 2))).toBe(true);
-  const ex = Object.fromEntries(EXERCISES.map((e) => [e.id, e]));
-  expect(ex['ice-1'].question.options[ex['ice-1'].question.correct]).toContain('\\dfrac{32}{3}');
-  expect(ex['ice-2'].question.options[ex['ice-2'].question.correct]).toContain('\\dfrac{256}{3}');
-  expect(ex['ice-4'].question.expected).toBe(16 / 2);
-  expect(ex['ice-5'].question.expected).toBe(4 / 2);
 });
 
 it('« إختبار أولي » (le frappé) : SO = 24, ρ = 5,5, k = 8/11, V = 819π/4 ≈ 643,24 ; distracteurs ; rien du lab', () => {

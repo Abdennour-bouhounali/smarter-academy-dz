@@ -29,7 +29,7 @@ export default function Module03Taraiq() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
-      moduleNumber={3}
+      moduleNumber={3} objectives={['كيف نجعل شعاعين متعاقبين لنجمعهما؟', 'كيف ننشئ ممثلًا لمجموع شعاعين لهما نفس المبدأ؟', 'هل يتغيّر الشعاع إذا غيّرنا مبدأ ممثّله؟']}
       moduleTitle="طرائق — إنشاء ممثل لمجموع شعاعين"
       moduleSubtitle="بعلاقة شال أو بقاعدة متوازي الأضلاع"
       estimatedTime="9 دقائق"

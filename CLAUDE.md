@@ -38,6 +38,11 @@ lessons (`lessons/college/`, `lessons/lycee/`) and the French reference
 catalogue were **deleted on 2026-09-25** — older docs that cite them describe
 code that no longer exists.
 
+Unit 1 is the **pilot unit**: rules are tried there, then extended. Three unit-1 rules — values woven into story contexts
+(2026-10-10), the « discover, don't be told » pass on module text (2026-10-09) and the synthesis with six training situations
+(2026-10-13) — were **extended to units 2–14 on 2026-10-13**; every synthesis lesson now has modules 1–6 « وضعيات تدريبية » and
+every `ContentModule` has `objectives` for the Classroom Mode entry slide. Report: `docs/reports/UNIT1_REFERENCE_CHANGES_2026-10-13.md`.
+
 ## Read before any task
 
 - `docs/README.md` — the documentation map: which document is authoritative

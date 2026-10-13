@@ -26,6 +26,7 @@ export const PROBLEMS = [
     headline: 'مسألة الدرس',
     emoji: '📚',
     source: SOURCE,
+    illustration: LESSON_CONFIG.lessonProblem.illustration,
     statement: LESSON_CONFIG.lessonProblem.statement,
     data: [
       { id: 'books', text: 'عدد الكتب: 756 كتابًا', useful: true },
@@ -117,6 +118,7 @@ export const PROBLEMS = [
     context: 'توضيب البيض: أيّ الأوعية؟',
     emoji: '🥚',
     source: SOURCE,
+    illustration: { kind: 'tags', cards: [{ title: 'علبة صغيرة', icon: 'egg', lines: [{ label: 'السعة', value: 6, unit: 'بيضات' }, { label: 'الثمن', value: 150, unit: 'دج' }] }, { title: 'علبة كبيرة', icon: 'egg', lines: [{ label: 'السعة', value: 12, unit: 'بيضة' }, { label: 'الثمن', value: 290, unit: 'دج' }] }, { title: 'صفيحة', icon: 'egg', lines: [{ label: 'السعة', value: 30, unit: 'بيضة' }] }], ariaLabel: 'ثلاثة أوعية للبيض: علبة من 6 بيضات بـ 150 دج وعلبة من 12 بيضة بـ 290 دج وصفيحة من 30 بيضة' },
     statement: 'في تعاونية فلاحية يتعاون أعضاؤها بإتقان على خدمة أرض الجزائر 140 دجاجة. تجمع التعاونية كل يوم 2028 بيضة، وتوضّبها في أوعية من نوع واحد مملوءة كلّها. الأوعية المتوفرة: علب من 6 بيضات، علب من 12 بيضة، وصفائح من 30 بيضة. تبيع التعاونية العلبة من 6 بيضات بـ 150 دج، والعلبة من 12 بيضة بـ 290 دج.',
     data: [
       { id: 'eggs', text: '2028 بيضة كل يوم', useful: true },
@@ -216,6 +218,7 @@ export const PROBLEMS = [
     context: 'كم حافلة؟ وكم يدفع كل تلميذ؟',
     emoji: '🚌',
     source: SOURCE,
+    illustration: { kind: 'scene', icon: 'bus', bg: 'amber', chips: [{ label: 'تلاميذ', value: 252, tone: 'blue' }, { label: 'أساتذة', value: 18, tone: 'green' }, { label: 'مقاعد الحافلة', value: 54, tone: 'amber' }, { label: 'كراء الحافلة', value: 12600, unit: 'دج', tone: 'rose' }], extra: ['person', 'person', 'person'], ariaLabel: 'حافلة لرحلة مدرسية: 252 تلميذًا و 18 أستاذًا، تتّسع الحافلة لـ 54 مقعدًا وكراؤها 12600 دج' },
     statement: 'تنظّم متوسطة رحلة علمية إلى حديقة التجارب بالحامة لفائدة 252 تلميذًا يرافقهم 18 أستاذًا، حبًّا في العلم واكتشافًا لخيرات الوطن. تنطلق الرحلة على الساعة 7 صباحًا بدقّة، احترامًا للوقت. تتّسع الحافلة الواحدة لـ 54 مقعدًا، ويبلغ كراء الحافلة الواحدة 12600 دج.',
     data: [
       { id: 'pupils', text: '252 تلميذًا', useful: true },

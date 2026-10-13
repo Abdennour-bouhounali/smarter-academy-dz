@@ -1,11 +1,11 @@
-import { src, addition, BASE } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
 
 /**
  * « أستعدّ » (module 0) — le « أستعدّ » du manuel (p. 43, items 1–11) est
  * réparti entre les leçons 1 à 3 (extraction › destinations › prep) : la
  * synthèse n'en reçoit aucun. Ses affirmations sont donc des AFFIRMATIONS DE
  * LA PLATEFORME (SourceTag « عبارة إضافية من المنصّة »), dans la forme du
- * manuel, sur ce que la situation et « أتعمّق » mobilisent : résoudre une
+ * manuel, sur ce que la situation mobilise : résoudre une
  * équation (درس 1), le produit nul (درس 2), résoudre une inéquation et la
  * représenter (درس 3), traduire un texte (درس 4), développer / factoriser
  * (الوحدة 3). Jamais les nombres du مسبح (75, 560, 5).
@@ -46,7 +46,7 @@ export const SITUATION = {
 };
 
 /**
- * Le niveau مبتدئ du laboratoire (module 1) : une tarification de la PLATEFORME
+ * Le niveau مبتدئ du laboratoire (module 7) : une tarification de la PLATEFORME
  * (déclarée), même structure — un prix par séance contre un forfait + un petit
  * prix par séance — avec des nombres ronds et un croisement entier (x = 5).
  * Elle sert aussi l'étape « تفسير النتائج », pour que la réponse du manuel
@@ -54,14 +54,14 @@ export const SITUATION = {
  */
 export const WARMUP = {
   source: addition('interaction_generation'),
-  text: 'مسبح الحيّ يقترح صيغتين: الصيغة (أ) الدفع الفوري 50 دينارًا لكل حصة؛ الصيغة (ب) اشتراك سنوي قدره 200 دينار ودفع فوري قدره 10 دنانير لكل حصة.',
+  text: 'مسبح الحيّ، حرصًا على النظافة وعلى احترام مواعيد الحصص، يقترح صيغتين: الصيغة (أ) الدفع الفوري 50 دينارًا لكل حصة؛ الصيغة (ب) اشتراك سنوي قدره 200 دينار ودفع فوري قدره 10 دنانير لكل حصة.',
   left: '50x',
   right: '200+10x',
   numbers: { perSessionA: 50, fixedB: 200, perSessionB: 10 },
 };
 
 /**
- * Les props du laboratoire growth-race du module 1, à ses DEUX niveaux (contrat
+ * Les props du laboratoire growth-race du module 7, à ses DEUX niveaux (contrat
  * des props : manipulations/equations/GrowthRace.jsx). Écrites ici une fois :
  * le module les étale, le test de rendu (wadiyaMuadalat.render.test.jsx) rend
  * le laboratoire avec exactement ces props. `goal: 'greater'` : la question est
@@ -74,7 +74,7 @@ export const LAB = {
 };
 
 /**
- * Les corrections du module 1 — importées aussi par la carte (knowledgeGraph.js) :
+ * Les corrections du module 7 — importées aussi par la carte (knowledgeGraph.js) :
  * une aide de la carte cite la leçon mot pour mot. Toute égalité dans `$…$`.
  */
 export const REMARKS = {
@@ -91,58 +91,3 @@ export const REMARKS = {
 
 /** Les lignes du tableau d'essais (étape « التجريب ») : quelques nombres de séances, choisis par la plateforme. */
 export const TRIAL_ROWS = [2, 6, 10, 12];
-
-/**
- * « أؤكّد تعلّماتي » (p. 52) : les neuf QCM, au mot près ; chaque item renvoie
- * au درس qui l'enseigne (colonne « عند الحاجة أعود إلى الصفحة »). Les items 5
- * et 7 ont DEUX bonnes réponses dans le manuel ; les items 6 et 9 sont des
- * dessins de demi-droites (`line` : ce que chaque dessin représente — rouge =
- * solutions, crochet tourné vers le rouge quand la borne est incluse).
- */
-export const QCM = [
-  { n: 1, text: 'حل المعادلة $-2 + x = 5$ هو...', options: ['2', '7', '3'], correct: 1, pages: [46, 47], lesson: 'muadala-ula',
-    explain: '$x = 5 + 2 = 7$ ، ونتحقق: $-2 + 7 = 5$.' },
-  { n: 2, text: 'حل المعادلة $4x = 5x$ هو ...', options: ['$\\dfrac{5}{4}$', '0', '$\\dfrac{4}{5}$'], correct: 1, pages: [46, 47], lesson: 'muadala-ula',
-    explain: '$4x - 5x = 0$ أي $-x = 0$ ، إذن $x = 0$. ونتحقق: $4 \\times 0 = 5 \\times 0$.' },
-  { n: 3, text: 'المعادلة $(x - 3)(2x + 2) = 0$ تقبل...', options: ['حلا واحدا هو 3', 'حلا واحدا هو $-1$', 'حلين هما 3 و $-1$'], correct: 2, pages: [46, 47], lesson: 'jidaa-maadum',
-    explain: '$x - 3 = 0$ أو $2x + 2 = 0$ ، أي $x = 3$ أو $x = -1$ : لكل عامل حلّه.' },
-  { n: 4, text: 'المعادلة $x^2 - 1 = 0$ تقبل ...', options: ['حلين هما 1 و $-1$', 'حلا واحدا هو 1', 'حلا واحدا هو $-1$'], correct: 0, pages: [46, 47], lesson: 'jidaa-maadum',
-    explain: '$x^2 - 1 = (x - 1)(x + 1) = 0$ ، أي $x = 1$ أو $x = -1$.' },
-  { n: 5, text: 'إذا كان $x \\geq -1$ فإن ...', options: ['$2x + 2 \\geq 0$', '$2x - 2 < 0$', '$2x \\geq -2$'], correctSet: [0, 2], pages: [48, 49], lesson: 'mutarajiha-ula',
-    rowCorrections: [
-      'نضرب في 2 (موجب): $2x \\geq -2$ ، ثم نضيف 2: $2x + 2 \\geq 0$.',
-      'من أجل $x = 5$ مثلًا: $2 \\times 5 - 2 = 8$ ، و $8 < 0$ خاطئة.',
-      'نضرب طرفي $x \\geq -1$ في 2، وهو عدد موجب: نحافظ على الاتجاه.',
-    ] },
-  { n: 6, text: 'التمثيل على مستقيم مدرّج للأعداد $x$ حيث $x > -3$ هو ...', pages: [48, 49], lesson: 'mutarajiha-ula', correct: 1,
-    lines: [
-      { bound: -3, side: 'left', included: true },
-      { bound: -3, side: 'right', included: false },
-      { bound: 0, side: 'left', included: false },
-    ],
-    optionsMean: ['$x \\leq -3$', '$x > -3$', '$x < 0$'],
-    explain: 'الأعداد الأكبر من $-3$ على يمينه، و $-3$ ليس حلًا: المعقوف عند $-3$ يتّجه عكس الجزء الملوّن.' },
-  { n: 7, text: '$-1$ هو حل للمتراجحة ...', options: ['$2x < -3$', '$2x + 1 < 0$', '$-x + 1 > 0$'], correctSet: [1, 2], pages: [48, 49], lesson: 'mutarajiha-ula',
-    rowCorrections: [
-      '$2 \\times (-1) = -2$ ، و $-2 < -3$ خاطئة.',
-      '$2 \\times (-1) + 1 = -1$ ، و $-1 < 0$ صحيحة.',
-      '$-(-1) + 1 = 2$ ، و $2 > 0$ صحيحة.',
-    ] },
-  { n: 8, text: 'حلول المتراجحة $-\\dfrac{1}{3}x > 1$ هي الأعداد $x$ حيث ...', options: ['$x > 3$', '$x < -3$', '$x > -3$'], correct: 1, pages: [48, 49], lesson: 'mutarajiha-ula',
-    explain: 'نضرب الطرفين في $-3$ ، وهو عدد سالب، فيتغيّر الاتجاه: $x < -3$.' },
-  { n: 9, text: 'التمثيل البياني لحلول المتراجحة $x + 1 > -1$ هو ...', pages: [48, 49], lesson: 'mutarajiha-ula', correct: 0,
-    lines: [
-      { bound: -2, side: 'right', included: false },
-      { bound: -2, side: 'left', included: false },
-      { bound: 0, side: 'left', included: false },
-    ],
-    optionsMean: ['$x > -2$', '$x < -2$', '$x < 0$'],
-    explain: '$x + 1 > -1$ يعني $x > -2$ (نطرح 1 من الطرفين): الجزء على يمين $-2$ ، و $-2$ ليس حلًا.' },
-].map((it) => ({ ...it, source: src('qcm', 52, 'أؤكّد تعلّماتي', it.n), lessonPath: `${BASE}/${it.lesson}` }));
-
-export const LESSON_TITLES = {
-  'muadala-ula': 'الدرس 1 — حل معادلة من الدرجة الأولى بمجهول واحد',
-  'jidaa-maadum': 'الدرس 2 — معادلات جداء معدوم',
-  'mutarajiha-ula': 'الدرس 3 — المتراجحات من الدرجة الأولى وتمثيل حلولها',
-  'tarrid-mushkila': 'الدرس 4 — ترييض مشكلة',
-};

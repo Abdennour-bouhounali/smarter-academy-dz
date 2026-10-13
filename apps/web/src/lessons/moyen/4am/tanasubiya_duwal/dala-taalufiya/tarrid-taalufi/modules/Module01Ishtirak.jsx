@@ -60,6 +60,11 @@ export default function Module01Ishtirak() {
       moduleTitle="نشاط 4 — اشتراك المناصر"
       moduleSubtitle="جزء يُدفع مرّة واحدة، وجزء يُدفع عند كل مقابلة"
       estimatedTime="12 دقيقة"
+      objectives={[
+        'كيف نبني فاتورة المناصر من جزء يُدفع مرّة واحدة وجزء يُدفع عند كل مقابلة؟',
+        'كم يدفع من تابع 7 مقابلات؟',
+        'كم مقابلة تابع من دفع 4800DA؟',
+      ]}
       brief={{
         tag: 'نشاط 4 (السؤال 1) — الكتاب ص 79',
         headline: 'كم يدفع المناصر في الموسم؟',
@@ -97,7 +102,7 @@ export default function Module01Ishtirak() {
           content: (
             <div className="space-y-3">
               {evidence}
-              <KnowledgeBrick id="namdhaja-taalufiya" lead="ما فعلته في المختبر: الاشتراك في خانة «مرّة واحدة»، وثمن الدخول يُضرب في عدد المقابلات." />
+              <KnowledgeBrick id="namdhaja-taalufiya" lead="ما فعلته في المختبر بالفاتورة، بكلمات الدرس:" />
               <TapQuestion
                 prompt={<span>نسمّي <MathText>{'$x$'}</MathText> عدد المقابلات. أيّ دالة تعطي المبلغ الإجمالي الذي يدفعه المناصر؟</span>}
                 options={[
@@ -141,10 +146,10 @@ export default function Module01Ishtirak() {
           ),
         },
         {
-          num: 4, title: 'صورة عدد، والعدد الذي صورته معلومة', subtitle: 'في لغة الوضعية', done: q4,
+          num: 4, title: 'ما السؤال الذي نطرحه على الدالة؟', subtitle: 'في لغة الوضعية', done: q4,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="sura-fi-wadiya" lead="السؤالان هما سؤالا الدالة التآلفية نفسيهما:" />
+              <KnowledgeBrick id="sura-fi-wadiya" lead="ماذا يقابل سؤالَي الوضعية عند الدالة؟" />
               <NumericQuestion
                 prompt={<span>بالدالة نفسها <MathText>{'$f(x) = 200x + 2000$'}</MathText> : كم مقابلة تابع مناصر دفع 3000DA ؟</span>}
                 expected={5}

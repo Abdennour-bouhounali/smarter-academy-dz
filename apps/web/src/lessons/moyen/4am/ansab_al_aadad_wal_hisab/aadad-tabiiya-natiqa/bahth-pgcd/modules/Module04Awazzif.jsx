@@ -9,7 +9,7 @@ const title = (ex) => ex.id === 'now-13-1' ? 'دوري الآن — PGCD(285 ; 4
 export default function Module04Awazzif() {
   const [done, setDone] = useState({});
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(4)} moduleNumber={4} moduleTitle="أوظّف تعلّماتي" moduleSubtitle="دوري الآن، تمارين 19 ← 21، والتحدّي" estimatedTime="14 دقيقة"
+    <ContentModule objectives={["أطبّق طريقة إقليدس على أعداد جديدة", "أحلّ تمارين الكتاب 19 ← 21 والتحدّي"]} ctx={MODULE_CTX} navLinks={getNavLinks(4)} moduleNumber={4} moduleTitle="أوظّف تعلّماتي" moduleSubtitle="دوري الآن، تمارين 19 ← 21، والتحدّي" estimatedTime="14 دقيقة"
       brief={{ tag: 'الكتاب ص 7، 13 و 14', title: 'أحسب بالخوارزميتين', tone: 'amber', body: <p>الأعداد كبيرة هنا: اختر الطريقة الأنسب. في الأخير نعود إلى تحدّي بداية الوحدة.</p> }}
       steps={EXERCISES.map((ex, i) => ({ num: i + 1, title: title(ex), done: !!done[ex.id],
         content: <div className="space-y-3">{i === 0 && <KnowledgeBrick id="khwarizmiyat-iqlidus" variant="rappel" compact />}<TextbookExercise exercise={ex} requires={['khwarizmiyat-iqlidus', 'khwarizmiyat-al-furuq']} onAnswered={() => setDone((d) => ({ ...d, [ex.id]: true }))} /></div> }))}

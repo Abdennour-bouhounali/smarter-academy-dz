@@ -101,7 +101,7 @@ export const KNOW = {
 export const METHOD_PERCENT = {
   source: src('method-percent', 71, 'طرائق'),
   title: 'استعمال النسب المئوية',
-  exercise: 'خزان ماء مملوء تبلغ سعته $30m^3$ . أفرغنا 30% منه ثم أضفنا 15% مما فيه. كم أصبح حجم محتواه؟',
+  exercise: 'خزان ماء مملوء تبلغ سعته $30m^3$ ، يحرص صاحبه على عدم تبذير الماء. أفرغنا 30% منه ثم أضفنا 15% مما فيه. كم أصبح حجم محتواه؟',
   // La solution du manuel, découpée en lignes (MethodSteps) — la dernière est sa phrase.
   solution: [
     'تفريغ 30% يعني الضرب في $1 - \\dfrac{30}{100} = 0{,}7$ : $30 \\times 0{,}7 = 21$ .',

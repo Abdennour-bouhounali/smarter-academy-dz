@@ -7,18 +7,17 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
 
 /**
  * Une synthèse n'introduit aucune notion nouvelle (LESSON_CONTRACT) : ce sont la DÉMARCHE du manuel
- * (قراءة → تحليل واختيار استراتيجية → تنفيذ) appliquée au تحدّ et à la وضعية, et l'outil que « أتعمّق » mobilise.
- *   tariqat-zill         module 1 — la hauteur de la minaret par l'ombre d'un bâton (le تحدّ)
- *   maqta-mihwari-talis  module 1 — du solide à la coupe axiale : deux triangles de sommet O en situation de Thalès
- *   muadala-bud          module 1 — la condition h = r transforme l'égalité de Thalès en équation du premier degré
- *   mulaamat-natija      module 1 — le volume (exact puis approché) et la vérification que les dimensions sont possibles
- *   tariqat-wadiya       module 1 — la démarche en trois phases (les mots du manuel)
- *   taqdir-masafa        module 3 — une distance inaccessible : l'inconnue dans un côté, puis une équation (ex. 22)
- * Les réponses de « إختبار أولي » (un autre cornet, une autre minaret) ne sont dans aucun item.
+ * (قراءة → تحليل واختيار استراتيجية → تنفيذ) appliquée au تحدّ et à la وضعية, et la méthode du test final.
+ *   tariqat-zill         module 7 — la hauteur de la minaret par l'ombre d'un bâton (le تحدّ)
+ *   maqta-mihwari-talis  module 7 — du solide à la coupe axiale : deux triangles de sommet O en situation de Thalès
+ *   muadala-bud          module 7 — la condition h = r transforme l'égalité de Thalès en équation du premier degré
+ *   mulaamat-natija      module 7 — le volume (exact puis approché) et la vérification que les dimensions sont possibles
+ *   tariqat-wadiya       module 7 — la démarche en trois phases (les mots du manuel)
+ * Les réponses de « وضعية الاختبار النهائي » (un autre cornet, une autre minaret) ne sont dans aucun item.
  */
 export const LESSON_KNOWLEDGE = {
   modules: {
-    1: [
+    7: [
       { id: 'tariqat-zill', type: 'methodes', title: 'طريقة الظل: ارتفاع لا نصل إليه', summary: 'نغرس عصا شاقولية حيث ينتهي ظلّها مع ظلّ المئذنة؛ المثلثان في وضعية طالس، فارتفاع المئذنة يساوي طول العصا مضروبا في نسبة الظلّين.',
         body: (
           <ul className="list-disc ms-5 space-y-1">
@@ -54,15 +53,6 @@ export const LESSON_KNOWLEDGE = {
           <ol className="list-decimal ms-5 space-y-1">
             {SITUATION.analysis.map((a) => <li key={a.label}><strong>{a.label}</strong>: {analysisText(a)}</li>)}
           </ol>
-        ) },
-    ],
-    3: [
-      { id: 'taqdir-masafa', type: 'methodes', title: 'مسافة لا نقيسها مباشرة', summary: 'نكتب تساوي النسب في وضعية طالس والمجهول جزء من ضلع، فنعبّر عن الضلع الكامل بدلالته ونحلّ معادلة من الدرجة الأولى (عرض نهر).',
-        body: (
-          <ul className="list-disc ms-5 space-y-1">
-            <li><MathText>{REMARKS.masafa}</MathText></li>
-            <li><MathText>{REMARKS.tajnid}</MathText></li>
-          </ul>
         ) },
     ],
   },

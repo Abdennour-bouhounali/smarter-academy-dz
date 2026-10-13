@@ -79,6 +79,7 @@ export default function Module01Nashat() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
+      objectives={["ماذا تفعل آلة التخفيض بكل سعر نُدخله فيها؟", "كيف نجد السعر قبل التخفيض إذا عرفنا سعره بعده؟", "هل تطابق كلَّ آلة آلةُ ضرب؟"]}
       moduleNumber={1}
       moduleTitle="نشاط 1 — تخفيضات العيد"
       moduleSubtitle="آلة تخفيض بقاعدة مخفية"
@@ -103,7 +104,7 @@ export default function Module01Nashat() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين آلة بقاعدة مخفية: تُدخل فيها أعدادًا تختارها، وتقرأ ما يخرج، وتبحث عن العدد a الذي تضرب فيه آلتُك الشاهدة كل عدد لتطابق الآلة — أو تُثبت أنه لا يوجد."
+          lead="في المستويين آلة بقاعدة مخفية: تُدخل فيها أعدادًا تختارها، وتقرأ ما يخرج، وتحاول أن تضبط آلتَك الشاهدة حتى تطابق الآلة — أو تُثبت أنّ ذلك مستحيل."
           levels={{
             beginner: () => (
               <Manipulation
@@ -223,7 +224,7 @@ export default function Module01Nashat() {
               {q3 && <KnowledgeBrick id="dala-nashat" lead="ما فعلته الآلة بكل سعر، بكلمات الكتاب:" />}
               {q3 && (
                 <p className="rounded-xl bg-violet-50 px-3 py-2 text-sm text-violet-900" data-next-module>
-                  <MathText>{'جرّب الآن المستوى المتقدّم: ثلاث آلات، واحدة منها فقط تطابقها آلة الضرب $x \\longmapsto ax$. المحور التالي يميّز الدوال الخطية من غيرها، ويعطي طريقة تعيينها.'}</MathText>
+                  <MathText>{'جرّب الآن المستوى المتقدّم: ثلاث آلات: هل تطابق كلٌّ منها آلةَ ضرب $x \\longmapsto ax$ ؟ المحور التالي يسألك: أيّ الدوال خطية؟ وكيف نعيّن واحدة منها؟'}</MathText>
                 </p>
               )}
             </div>

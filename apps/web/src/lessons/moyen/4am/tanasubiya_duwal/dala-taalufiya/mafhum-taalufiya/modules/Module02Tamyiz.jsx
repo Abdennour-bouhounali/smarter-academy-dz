@@ -37,6 +37,11 @@ export default function Module02Tamyiz() {
       moduleTitle="نشاط 2 — التعرّف على دوال تآلفية"
       moduleSubtitle="أيّها تآلفية؟ ما معاملاها؟ والحالتان الخاصتان"
       estimatedTime="8 دقائق"
+      objectives={[
+        'أيّ العبارات الست تصف دالة تآلفية؟ وما معاملاها؟',
+        'هل الدالة الخطية دالة تآلفية؟',
+        'ماذا يحدث لو كان المبلغ لا يتغيّر مع $x$؟',
+      ]}
       brief={{
         tag: 'أنشطة — الكتاب ص 78', title: ACTIVITY2.title, tone: 'violet',
         body: <p><MathText>{'أجرة العامل $S(x) = 185x + 35000$ من الشكل $ax + b$ . هل كل عبارة فيها $x$ من هذا الشكل؟ ست دوال من الكتاب، ثم حالتان خاصتان.'}</MathText></p>,
@@ -84,10 +89,10 @@ export default function Module02Tamyiz() {
           ),
         },
         {
-          num: 3, title: 'الدالة الثابتة', subtitle: 'حالة خاصة أخرى', done: q3,
+          num: 3, title: 'اشتراك لا يتغيّر', subtitle: 'حالة خاصة أخرى', done: q3,
           content: (
             <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{'في قاعة ألعاب، تذكرة الدخول 300DA مهما كان عدد الألعاب $x$ التي يلعبها التلميذ. نسمّي $g(x)$ المبلغ المدفوع.'}</MathText> <SourceTag source={PLATFORM} /></p>
+              <p className="text-sm text-slate-800"><MathText>{'في مكتبة الحيّ التي تشجّع على القراءة، رسم اشتراك التلميذ 300DA مهما كان عدد الكتب $x$ التي يستعيرها. نسمّي $g(x)$ المبلغ المدفوع.'}</MathText> <SourceTag source={PLATFORM} /></p>
               <PredictRule id="thabita">
                 <TapQuestion
                   prompt={<MathText>{'الدالة $g : x \\longmapsto 300$ هي:'}</MathText>}

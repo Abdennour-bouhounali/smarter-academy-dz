@@ -42,6 +42,7 @@ export default function Module03Taraiq() {
       moduleTitle="طرائق — زاوية المضلع وإنشاؤه وطول ضلعه"
       moduleSubtitle="ثلاث طرائق من الكتاب، كل واحدة تبدأ بسؤال لك"
       estimatedTime="12 دقيقة"
+      objectives={["كيف أحسب زاوية مضلع منتظم؟", "كيف أنشئ مضلعًا منتظمًا عُلم طول ضلعه؟", "كيف أحسب طول ضلعه من نصف قطر دائرته؟"]}
       brief={{
         tag: 'طرائق — الكتاب ص 157', title: 'نحسب ونُنشئ', tone: 'emerald',
         body: <p>في الورشة قرأت زاوية المضلع وطول ضلعه. هنا نحسبهما كما يحسبهما الكتاب، وننشئ خماسيا منتظما علم ضلعه.</p>,
@@ -54,7 +55,7 @@ export default function Module03Taraiq() {
               <TextbookBox kind="exercise" text={METHOD_ANGLE.exercise} source={METHOD_ANGLE.source} compact />
               <GeoFigure {...FIG_METHOD_ANGLE} />
               <NumericQuestion
-                prompt={<MathText>{'احسب قيس الزاوية $\\widehat{BAE}$ (بالدرجات). ابدأ بالزاوية المركزية $\\widehat{AOE}$ والمثلث AOE.'}</MathText>}
+                prompt={<MathText>{'احسب قيس الزاوية $\\widehat{BAE}$ (بالدرجات) في الخماسي المنتظم $ABCDE$ الذي مركزه $O$ .'}</MathText>}
                 expected={108}
                 display="108"
                 requires={['markaziya-360', 'mutasawi-saqayn']}

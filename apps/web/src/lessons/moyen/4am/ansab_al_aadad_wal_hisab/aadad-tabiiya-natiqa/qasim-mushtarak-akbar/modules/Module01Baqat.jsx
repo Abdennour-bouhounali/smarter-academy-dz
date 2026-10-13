@@ -36,7 +36,7 @@ export default function Module01Baqat() {
   const [q2, setQ2] = useState(false);
   const { red, white } = ACTIVITY.numbers;
   return (
-    <ContentModule
+    <ContentModule objectives={["كم باقة متماثلة تستوعب 90 زهرة حمراء و 54 بيضاء؟", "ما أكبر عدد ممكن من الباقات؟", "ما بين قواسم 90 وقواسم 54؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1}
       moduleTitle="نشاط 4 — باقات متماثلة" moduleSubtitle="90 زهرة حمراء و 54 زهرة بيضاء" estimatedTime="12 دقيقة"
       brief={{ tag: 'أنشطة — الكتاب ص 8', title: ACTIVITY.title, tone: 'indigo',

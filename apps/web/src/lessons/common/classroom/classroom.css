@@ -548,3 +548,94 @@ body.sa-classroom-session [data-km-trigger] {
     display: none !important;
   }
 }
+
+/* ── Les pages d'une unité (ClassroomPaged) ───────────────────────────── */
+[data-classroom-page-hidden] {
+  display: none !important;
+}
+.sa-classroom-position--page {
+  border-color: #FDE68A;
+  background: #FFFBEB;
+  color: #92400E;
+}
+
+/* ── La page d'entrée d'un module (ModuleOverview) ───────────────────── */
+.sa-classroom-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 36px 40px;
+  border: 3px solid #C7D2FE;
+  border-radius: 28px;
+  background: linear-gradient(180deg, #EEF2FF 0%, #FFFFFF 70%);
+}
+.sa-classroom-overview__eyebrow {
+  align-self: flex-start;
+  margin: 0;
+  padding: 4px 16px;
+  border-radius: 999px;
+  background: #4338CA;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1rem;
+}
+.sa-classroom-overview__title {
+  margin: 0;
+  font-size: 2.25rem;
+  line-height: 1.35;
+  font-weight: 800;
+  color: #1E1B4B;
+}
+.sa-classroom-overview__subtitle {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: #475569;
+}
+.sa-classroom-overview__learn { margin-top: 10px; }
+.sa-classroom-overview__learn-title {
+  margin: 0 0 12px;
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: #3730A3;
+}
+.sa-classroom-overview__points {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sa-classroom-overview__point {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  font-weight: 600;
+  color: #1E293B;
+}
+.sa-classroom-overview__bullet {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin-top: 0.15rem;
+  border-radius: 10px;
+  background: #E0E7FF;
+  color: #3730A3;
+  font-weight: 800;
+  font-size: 1rem;
+}
+.sa-classroom-overview__time {
+  margin: 8px 0 0;
+  font-size: 1rem;
+  color: #64748B;
+}
+
+/* Le sommaire présenté : deux écrans, un seul visible — une colonne. */
+.sa-classroom-lesson-overview--split { grid-template-columns: minmax(0, 1fr); }
+.sa-classroom-lesson-overview--split > section[hidden] { display: none !important; }

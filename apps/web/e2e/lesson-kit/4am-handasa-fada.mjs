@@ -134,7 +134,7 @@ const LABS = [
   ['misaha-hajm-kura', { beginner: 'orange-peel', advanced: 'orange-peel' }, 1],
   ['maqati-mustawiya', { beginner: 'section-slicer', advanced: 'section-slicer' }, 1],
   ['takbir-tasghir', { beginner: 'scale-blocks', advanced: 'scale-blocks' }, 1],
-  ['wadiya-idmajiya-fada', { beginner: 'bucket-fill', advanced: 'bucket-fill' }, 1],
+  ['wadiya-idmajiya-fada', { beginner: 'bucket-fill', advanced: 'bucket-fill' }, 7],
 ].map(([l, t, n]) => [l, t, LAB_MODULE[l] ?? n]);
 for (const [lesson, types, number] of (process.env.MOUNT_ONLY ? [] : LABS)) {
   for (const vp of VIEWPORTS) {

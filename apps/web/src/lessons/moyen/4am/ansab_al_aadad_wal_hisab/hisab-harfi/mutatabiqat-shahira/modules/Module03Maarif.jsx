@@ -26,6 +26,7 @@ export default function Module03Maarif() {
   return (
     <ContentModule
       ctx={MODULE_CTX}
+      objectives={["متى نسمّي مساواة فيها حروف «متطابقة»؟", "ما المتطابقات الشهيرة الثلاث؟", "كيف نتعرّف على نوع العبارة قبل نشرها؟"]}
       navLinks={getNavLinks(3)}
       moduleNumber={3}
       moduleTitle="معارف — المتطابقات الشهيرة"

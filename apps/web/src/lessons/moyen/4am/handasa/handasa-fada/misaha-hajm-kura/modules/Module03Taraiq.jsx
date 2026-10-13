@@ -21,6 +21,7 @@ export default function Module03Taraiq() {
 
   return (
     <ContentModule
+      objectives={["كيف ننتقل من القطر إلى المساحة والحجم؟", "كيف نجد نصف القطر إذا عرفنا المساحة؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}

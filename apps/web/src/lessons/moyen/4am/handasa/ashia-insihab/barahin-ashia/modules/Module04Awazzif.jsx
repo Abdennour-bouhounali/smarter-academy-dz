@@ -58,7 +58,7 @@ export default function Module04Awazzif() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
-      moduleNumber={4}
+      moduleNumber={4} objectives={['كيف أترجم المطلوب إلى مساواة شعاعية؟', 'كيف أحوّلها دون الاعتماد على الشكل؟', 'ماذا أستنتج في كل تمرين؟']}
       moduleTitle="أوظّف تعلّماتي"
       moduleSubtitle="تمارين الكتاب 20 و 17 و 23 و 21 و 24 و 18"
       estimatedTime="11 دقيقة"

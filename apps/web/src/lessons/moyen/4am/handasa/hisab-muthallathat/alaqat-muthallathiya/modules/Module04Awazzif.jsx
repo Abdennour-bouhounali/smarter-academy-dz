@@ -21,6 +21,7 @@ export default function Module04Awazzif() {
 
   return (
     <ContentModule
+      objectives={['أحسب نسبة مثلثية من نسبة أخرى دون حاسبة', 'أتحقّق من إمكان الحساب قبل أن أبدأ', 'أنشئ زاوية علمت إحدى نسبها']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}

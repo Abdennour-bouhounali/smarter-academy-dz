@@ -30,7 +30,7 @@ export default function Module03KhwarizmiyatIqlidus() {
   const [e2, setE2] = useState(false);
   const { a, b, second } = ACTIVITY_B.numbers;
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(3)} moduleNumber={3} moduleTitle="نشاط 6 ب — خوارزمية إقليدس" moduleSubtitle={ACTIVITY_B.subtitle} estimatedTime="15 دقيقة"
+    <ContentModule objectives={["كم نسخة من الشريط الأصغر تلزم، وماذا يتبقّى؟", "متى نتوقّف عن إعادة القسمة؟", "أين نجد PGCD في آخر الخطوات؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(3)} moduleNumber={3} moduleTitle="نشاط 6 ب — خوارزمية إقليدس" moduleSubtitle={ACTIVITY_B.subtitle} estimatedTime="15 دقيقة"
       brief={{ tag: 'أنشطة ص 9 — طرائق ص 13', title: 'قسمة واحدة تختصر طرحات كثيرة', tone: 'emerald',
         headline: 'هيا نقيس الأشرطة!', emoji: '📏', visual: <WorkshopScene />,
         body: <div className="space-y-1"><p><MathText>{ACTIVITY_B.questions[0]}</MathText></p><p>{ACTIVITY_B.questions[1]}</p><SourceTag source={ACTIVITY_B.source} /></div> }}

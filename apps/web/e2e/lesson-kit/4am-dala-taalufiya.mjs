@@ -113,7 +113,7 @@ const LABS = [
   ['tarrid-taalufi', 'plan-compare', 1],
   ['tarrid-taalufi', 'plan-compare', 2],
   ['tafsir-bayani-jumla', 'line-crossing', 2],
-  ['wadiya-idmajiya-taalufiya', 'plan-compare', 1],
+  ['wadiya-idmajiya-taalufiya', 'plan-compare', 7],
 ];
 for (const [lesson, type, number] of LABS) {
   for (const vp of VIEWPORTS) {

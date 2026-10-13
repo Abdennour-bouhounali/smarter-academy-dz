@@ -22,7 +22,7 @@ export default function Module01Samir() {
   const [q2, setQ2] = useState(false);
   const { n, d, path } = ACTIVITY.numbers;
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="نشاط 8 — كيف اختزل سمير 84/48؟" moduleSubtitle="÷4 ثم ÷3 … ثم لا شيء" estimatedTime="12 دقيقة"
+    <ContentModule objectives={["كيف اختزل سمير 84/48 خطوة بعد خطوة؟", "متى لا يمكن الاختزال أكثر؟", "كيف أتأكّد أن الكسر انتهى اختزاله؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="نشاط 8 — كيف اختزل سمير 84/48؟" moduleSubtitle="÷4 ثم ÷3 … ثم لا شيء" estimatedTime="12 دقيقة"
       brief={{ tag: 'أنشطة — الكتاب ص 9', title: ACTIVITY.title, tone: 'indigo',
         headline: 'هيا نحضّر الوصفة!', emoji: '🥣', visual: <KitchenScene />,
         body: <div className="space-y-1"><p><MathText>{ACTIVITY.questions[0]}</MathText></p><p className="text-center text-lg"><MathText>{ACTIVITY.samirPath}</MathText></p><SourceTag source={ACTIVITY.source} /></div> }}

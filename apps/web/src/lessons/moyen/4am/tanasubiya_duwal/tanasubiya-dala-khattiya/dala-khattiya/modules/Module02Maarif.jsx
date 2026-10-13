@@ -39,6 +39,7 @@ export default function Module02Maarif() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
+      objectives={["كيف نميّز الدالة الخطية من غيرها؟", "ماذا يميّز جدول قيم دالة خطية؟", "كيف نعيّن الدالة الخطية إذا عرفنا عددًا وصورته؟"]}
       moduleNumber={2}
       moduleTitle="معارف — الدالة الخطية"
       moduleSubtitle="تمييزها، صورة عدد، جدول قيمها، وتعيينها من عدد وصورته"

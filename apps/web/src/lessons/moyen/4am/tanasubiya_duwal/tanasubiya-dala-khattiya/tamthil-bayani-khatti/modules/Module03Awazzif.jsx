@@ -25,6 +25,7 @@ export default function Module03Awazzif() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
+      objectives={["كيف أرسم تمثيل دالة خطية وأقرأ عليه؟", "كيف أتحقّق من انتماء نقطة إلى مستقيم؟", "كيف أعيّن الدالة من نقطة معلومة؟"]}
       moduleNumber={3}
       moduleTitle="أوظّف تعلّماتي"
       moduleSubtitle="تمارين الكتاب 2، 10 ← 15، 30 و 33"

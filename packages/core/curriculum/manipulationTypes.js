@@ -335,6 +335,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'العصا والمئذنة شاقوليتان فهما متوازيتان ؛ إذا انطبقت نهاية ظل العصا على نهاية ظل المئذنة فإن المثلثين في وضعية طالس: h ÷ (طول العصا) = (ظل المئذنة) ÷ (ظل العصا)',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false, autoComplete: { unlock: 'config' } },
   },
+  'shadow-world': {
+    // SAHAT AL-HAYY (2026-10-13) : un MONDE — l'élève tient le soleil (le vrai soleil d'Alger le 13 octobre, 12:30 → 16:00),
+    // mesure les ombres au ruban, parie sur l'ombre d'un objet que la commune va installer (le pari révèle son modèle :
+    // additif, copie, inversé…), ÉCRIT sa propre loi (ombre = hauteur + n ou × n) que le monde teste sur tous les objets,
+    // la voit se décoller quand le soleil bouge, la répare ; le compagnon مقران ne fait que questionner. Puis la hauteur
+    // de la minaret, inaccessible (le ruban refuse de grimper), et la méthode du manuel (les ombres qui finissent ensemble).
+    shows: 'في لحظة معيّنة أشعّة الشمس متوازية: الظلّ ÷ الطول هو العدد نفسه لكل الأشياء الشاقولية (وضعية طالس)، ويتغيّر هذا العدد مع الساعة ؛ ومنه طول المئذنة من ظلّها',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   'cone-cylinder': {
     // LA COUPE AXIALE : un cône (hauteur H, rayon R) et le cylindre posé sur sa base ; l'élève tire le coin du
     // rectangle le long de la génératrice — le coin ne quitte pas le cône (sinon le cylindre le perce) — et lit r, h,
@@ -527,5 +536,6 @@ export const LESSON_KINDS = Object.freeze(['lesson', 'synthesis']);
  */
 export const REQUIRED_STAGES_BY_KIND = Object.freeze({
   lesson: ['trigger', 'discovery', 'formalization', 'practice_lab', 'evaluation'],
-  synthesis: ['trigger', 'practice_lab', 'evaluation'],
+  // « أدمج تعلّماتي » de l'unité 1 s'ouvre sur ses entraînements (2026-10-13) : pas de `trigger`.
+  synthesis: ['practice_lab', 'evaluation'],
 });

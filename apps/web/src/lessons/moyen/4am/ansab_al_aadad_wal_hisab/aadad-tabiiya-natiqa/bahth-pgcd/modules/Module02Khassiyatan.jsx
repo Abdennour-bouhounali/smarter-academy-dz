@@ -13,7 +13,7 @@ export default function Module02Khassiyatan() {
   const [read, setRead] = useState(false);
   const [q2, setQ2] = useState(false);
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2} moduleTitle="معارف — خاصيتان، وطريقة الفروق" moduleSubtitle="لماذا تعطي الطريقة النتيجة الصحيحة؟" estimatedTime="14 دقيقة"
+    <ContentModule objectives={["لماذا تعطي طريقة الفروق النتيجة الصحيحة؟", "ما الذي يبقى ثابتًا حين نطرح؟", "كيف تصير عدّة طرحات قسمة واحدة؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2} moduleTitle="معارف — خاصيتان، وطريقة الفروق" moduleSubtitle="لماذا تعطي الطريقة النتيجة الصحيحة؟" estimatedTime="14 دقيقة"
       brief={{ tag: 'معارف ص 12 — طرائق ص 13', title: 'خاصيتان', tone: 'violet', body: <p>ما فعلته في النشاط يستند إلى خاصيتين يصوغهما الكتاب. الأولى تبرّر الفروق المتتابعة، والثانية ستبرّر خوارزمية إقليدس.</p> }}
       steps={[
         { num: 1, title: 'الخاصية الأولى ومثالها', done: q1,

@@ -37,6 +37,7 @@ export default function Module03Tarayiq() {
 
   return (
     <ContentModule
+      objectives={["كيف نحلّ معادلة لا يظهر فيها جداء عاملين؟", "كم حلًّا لمعادلة عاملاها متساويان؟", "كيف نستفيد من المربّع الكبير في تحدّي الوحدة؟", "ما الجذران اللذان استخرجهما الخوارزمي؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}
@@ -101,7 +102,7 @@ export default function Module03Tarayiq() {
               <ChallengeSquare label="مربّع ABCD مقسّم إلى مربّع AEGF ضلعه x، ومستطيلين بعدا كل منهما x و 6، ومربّع GHCK ضلعه 6" />
               <p className="text-xs text-slate-500"><MathText>{CHALLENGE.figure}</MathText></p>
               <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">أكمل المربّع بالركن 6 × 6، ثم اكتب جداءً معدومًا:</p>}
+                intro={<p className="text-sm font-semibold text-slate-700">ماذا ينقص الشكل ليصير مربّعًا كبيرًا؟ وأيّ جداء معدوم نصل إليه؟</p>}
                 rows={[
                   { id: 'c1', label: 'مساحة المربع ABCD بدلالة x', options: [M('$x^2 + 36$'), M('$(x + 6)^2$'), M('$x^2 + 12x$')], correct: 1,
                     correction: M('ABCD مربّع ضلعه $x + 6$ ، ومساحته مجموع القطع الأربع: $(x + 6)^2 = x^2 + 6x + 6x + 36 = x^2 + 12x + 36$ .') },

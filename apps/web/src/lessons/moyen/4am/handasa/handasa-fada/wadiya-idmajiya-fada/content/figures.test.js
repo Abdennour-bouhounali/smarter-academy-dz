@@ -8,8 +8,8 @@ import * as FIG from './figures';
  * §5 « Textbook figures ») : pas de bande étroite, aucune étiquette sur une autre ni sur un point. Les figures de l'espace
  * passent spaceFigureQuality, les coupes axiales (planes) figureQuality.
  */
-const SPACE = { CHALLENGE_FIGURE: FIG.CHALLENGE_FIGURE, TEST_FIGURE: FIG.TEST_FIGURE };
-const PLANE = { AXIAL: FIG.AXIAL, ICE_FIGURE: FIG.ICE_FIGURE };
+const SPACE = { CHALLENGE_FIGURE: FIG.CHALLENGE_FIGURE, TEST_FIGURE: FIG.TEST_FIGURE, TRAIN_1_FIGURE: FIG.TRAIN_1_FIGURE, TRAIN_2_FIGURE: FIG.TRAIN_2_FIGURE, TRAIN_3_FIGURE: FIG.TRAIN_3_FIGURE, TRAIN_4_FIGURE: FIG.TRAIN_4_FIGURE };
+const PLANE = { AXIAL: FIG.AXIAL, TRAIN_5_FIGURE: FIG.TRAIN_5_FIGURE, TRAIN_6_FIGURE: FIG.TRAIN_6_FIGURE };
 
 describe('wadiya-idmajiya-fada — figures', () => {
   it.each(Object.entries(SPACE))('%s : figure de l’espace valide et lisible', (_, fig) => {

@@ -44,6 +44,7 @@ export default function Module04Awazzif() {
 
   return (
     <ContentModule
+      objectives={["متى أقول «على الأقل» ومتى أقول «على الأكثر»؟", "كيف أقرأ مخططًا دائريًا أو مدرّجًا وأحسب منه التواتر المجمع؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}

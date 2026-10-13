@@ -1,13 +1,13 @@
-import { src, addition, BASE } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
 
 /**
  * « أستعدّ » (module 0) — le « أستعدّ » du manuel (p. 163, items 1–8) appartient aux quatre leçons (extraction › destinations ›
  * prep) : la synthèse n'en reçoit aucun. Ses affirmations sont donc des AFFIRMATIONS DE LA PLATEFORME (« عبارة إضافية من
- * المنصّة »), dans la forme du manuel, sur ce que la وضعية du seau, « أؤكّد تعلّماتي » et « أتعمّق » mobilisent : la كرة et la
- * جلّة (درس 1), l'aire de la sphère et le volume de la boule (درس 2), la section d'une sphère et celle d'un cône parallèle à sa
- * base (درس 3), l'effet de k sur les volumes (درس 4), puis le volume du cône, Thalès (unité 9) et le litre. Cinq vraies, quatre
- * fausses ; jamais les nombres de la وضعية (40, 30, 7, 28, 35), du lab (le petit seau 3 / 4 / 6), du QCM, de « أتعمّق » (le cornet
- * 16 / 4 / 2) ni du إختبار (le verre de frappé 8 / 12 / 12 / 9).
+ * المنصّة »), dans la forme du manuel, sur ce que les six وضعيات d'entraînement, la وضعية du seau et le إختبار mobilisent : la كرة et la
+ * جلّة (درس 1), l'aire de la sphère et le volume de la boule (درس 2), la section d'une sphère, celle d'un cône parallèle à sa
+ * base et celle d'une أسطوانة parallèle à son axe (درس 3), l'effet de k sur les volumes (درس 4), puis le volume du cône et de
+ * l'أسطوانة, Thalès (unité 9) et le litre (depuis le 2026-10-13 : onze affirmations, pour les six وضعيات d'entraînement). Six vraies,
+ * cinq fausses ; jamais les nombres de la وضعية (40, 30, 7, 28, 35), du lab (le petit seau 3 / 4 / 6) ni du إختبار (le verre de frappé 8 / 12 / 12 / 9).
  */
 export const PREP_ITEMS = [
   { n: 1, skill: 'kura', text: 'إذا كانت النقطة $M$ تبعد عن النقطة $O$ بـ $7\\,\\mathrm{cm}$ فإنّ $M$ نقطة من الكرة التي مركزها $O$ ونصف قطرها $9\\,\\mathrm{cm}$ .', answer: false,
@@ -28,11 +28,15 @@ export const PREP_ITEMS = [
     why: 'حسب خاصية طالس $\\dfrac{SM}{SA} = \\dfrac{MN}{AB}$ أي $\\dfrac{2}{5} = \\dfrac{MN}{10}$ ، ومنه $MN = 4$ .', source: addition('prerequisite_diagnostic') },
   { n: 9, skill: 'litr', text: '$2500\\,\\mathrm{cm}^3 = 25\\,\\mathrm{L}$', answer: false,
     why: '$1\\,\\mathrm{L} = 1\\,\\mathrm{dm}^3 = 1000\\,\\mathrm{cm}^3$ ، ومنه $2500\\,\\mathrm{cm}^3 = 2{,}5\\,\\mathrm{L}$ .', source: addition('prerequisite_diagnostic') },
+  { n: 10, skill: 'maqtaUstuwana', text: 'يقطع مستوٍ موازٍ لمحور أسطوانة دوران نصف قطر قاعدتها $5\\,\\mathrm{cm}$ ويبعد عنه $3\\,\\mathrm{cm}$ : المقطع مستطيل عرضه $8\\,\\mathrm{cm}$ .', answer: true,
+    why: 'المقطع مستطيل، ونصف عرضه $\\sqrt{5^2 - 3^2} = \\sqrt{16} = 4\\,\\mathrm{cm}$ حسب خاصية فيثاغورس في القاعدة، فعرضه $2 \\times 4 = 8\\,\\mathrm{cm}$ .', source: addition('prerequisite_diagnostic') },
+  { n: 11, skill: 'hajmUstuwana', text: 'حجم أسطوانة دوران نصف قطر قاعدتها $2\\,\\mathrm{cm}$ وارتفاعها $5\\,\\mathrm{cm}$ هو $10\\pi\\,\\mathrm{cm}^3$ .', answer: false,
+    why: '$\\mathcal{V} = \\pi r^2 h = \\pi \\times 4 \\times 5 = 20\\pi\\,\\mathrm{cm}^3$ ؛ $10\\pi$ خطأ بأخذ $r$ بدل $r^2$ .', source: addition('prerequisite_diagnostic') },
 ];
 
 /**
  * LA وضعية — le تحدّ de la page d'ouverture (p. 163), au mot près (extraction › challenge ; destinations : wadiya-idmajiya-fada,
- * module 1, doublon déclaré sur la page d'unité). Le scan n'a PAS de « أدمج تعلّماتي » (scope.missing_pages) : la وضعية de
+ * module 7, doublon déclaré sur la page d'unité). Le scan n'a PAS de « أدمج تعلّماتي » (scope.missing_pages) : la وضعية de
  * synthèse EST le تحدّ (extraction › discrepancies › objectives). Son analyse en trois phases (قراءة · تحليل · تنفيذ, la démarche
  * des synthèses du manuel) est écrite par la plateforme : `analysisSource` = addition('synthesis_generation').
  *
@@ -68,7 +72,7 @@ export const SITUATION = {
 export const analysisText = (a) => a.items.join(' — ');
 
 /**
- * Les props du laboratoire du module 1 — `bucket-fill` (écrit pour cette leçon : logic/bucketFill.js, space/BucketFill.jsx),
+ * Les props du laboratoire du module 7 — `bucket-fill` (écrit pour cette leçon : logic/bucketFill.js, space/BucketFill.jsx),
  * écrites ici une fois : le module les étale, le test de rendu (lab.render.test.jsx) monte le workspace avec ces mêmes objets.
  * Ce sont les nombres de levels.js (une seule source).
  *   مبتدئ  un petit seau de plage plein (plateforme) : r = 3, R = 4, H = 6 ⇒ SO = 18, k = 3/4, V = 74π ≈ 232,48 cm³ ;
@@ -85,7 +89,7 @@ export const LAB_EXPECT = {
 };
 
 /**
- * Les phrases de la correction du module 1 (et 3), importées aussi par knowledge.jsx et la carte (knowledgeGraph.js) : une aide
+ * Les phrases de la correction du module 7 (et 9), importées aussi par knowledge.jsx et la carte (knowledgeGraph.js) : une aide
  * de la carte cite la leçon mot pour mot. Toute égalité dans `$…$`. Les nombres viennent de space.js (lab.render.test.jsx les
  * recalcule).
  */
@@ -111,11 +115,9 @@ export const REMARKS = {
   tahaqquq: 'الماء يملأ $\\dfrac{4}{5}$ ارتفاع الدلو، لكنّ حجمه أقل من $\\dfrac{4}{5}$ حجم الدلو (حوالي $27{,}12\\,\\mathrm{L}$ ): الجزء الذي بقي فارغا في الأعلى هو الأعرض.',
   formulaOut: 'صيغة حجم المخروط المبتور $\\dfrac{\\pi h}{3}\\left(R^2 + Rr + r^2\\right)$ تعطي نفس النتيجة $\\dfrac{24388}{3}\\pi$ ، لكنها خارج البرنامج: نحسب بالفرق بين حجمي مخروطين.',
   tajnid: 'نكمل المخروط بخاصية طالس في المقطع المحوري، ثم نحسب حجم المخروط المبتور كفرق حجمي مخروطين، والصغير تصغير للكبير حجمه $k^3$ مرة حجمه.',
-  // أتعمّق
-  adawat: 'في وضعية مركبة نجمع أدوات الوحدة: حجم الجلة $\\dfrac{4}{3}\\pi R^3$ ، حجم المخروط $\\dfrac{1}{3}\\pi r^2 h$ ، ومخروط له نفس رأس مخروط آخر ونفس محوره تصغير له: نسبة الحجمين $k^3$ ، ومنها نسبة الأطوال k.',
 };
 
-/** Les titres des leçons de l'unité (catalogue), et la leçon de Thalès (unité 9) pour le renvoi du module 1. */
+/** Les titres des leçons de l'unité (catalogue), et la leçon de Thalès (unité 9) pour le renvoi du module 7. */
 export const LESSON_TITLES = {
   'kura-julla': 'الدرس 1 — الكرة والجلة',
   'misaha-hajm-kura': 'الدرس 2 — مساحة الكرة وحجم الجلة',
@@ -125,49 +127,13 @@ export const LESSON_TITLES = {
 };
 
 /**
- * « أؤكّد تعلّماتي » (module 2) — le scan n'a PAS de QCM (scope.missing_pages) : cinq questions de la PLATEFORME
- * (`synthesis_generation`), une étape chacune, chacune renvoyée au درس qui l'enseigne. Les distracteurs sont FAUX et
- * nomment une erreur réelle (MISC-KURA-JULLA, MISC-MISAHA-QUTR, MISC-HAJM-MUAMIL, MISC-MAQTA-TARH, MISC-TAKBIR-*).
- */
-const QCM_RAW = [
-  { n: 1, lessons: ['kura-julla'], text: '$(\\delta)$ كرة مركزها O ونصف قطرها $5\\,\\mathrm{cm}$ ، و M نقطة من الفضاء حيث $OM = 4{,}8\\,\\mathrm{cm}$ . النقطة M:',
-    options: ['تنتمي إلى الكرة $(\\delta)$', 'تنتمي إلى الجلة التي مركزها O ونصف قطرها $5\\,\\mathrm{cm}$ ، ولا تنتمي إلى الكرة $(\\delta)$', 'لا تنتمي إلى الكرة ولا إلى الجلة'], correct: 1,
-    explain: '$OM = 4{,}8 < 5$ : M داخل الجلة. نقط الكرة وحدها تحقّق $OM = R$ ، والنقطة الخارجة عن الجلة تحقّق $OM > R$ .' },
-  { n: 2, lessons: ['misaha-hajm-kura'], text: 'جلّة من الرخام (كرة مصمتة) لنافورة ساحة البلدية، قطرها $12\\,\\mathrm{cm}$ . حجمها:',
-    options: ['$2304\\pi\\,\\mathrm{cm}^3$', '$144\\pi\\,\\mathrm{cm}^3$', '$288\\pi\\,\\mathrm{cm}^3$', '$216\\pi\\,\\mathrm{cm}^3$'], correct: 2,
-    explain: 'نصف القطر $R = 6\\,\\mathrm{cm}$ : $\\mathcal{V} = \\dfrac{4}{3}\\pi \\times 6^3 = 288\\pi\\,\\mathrm{cm}^3$ . $2304\\pi$ بالقطر بدل نصف القطر، $144\\pi$ هي $4\\pi R^2$ (مساحة الكرة)، و $216\\pi$ بنسيان المعامل $\\dfrac{4}{3}$ .' },
-  { n: 3, lessons: ['maqati-mustawiya'], text: 'يقطع مستو كرة مركزها O ونصف قطرها $10\\,\\mathrm{cm}$ ، ويبعد عن O بـ $6\\,\\mathrm{cm}$ . المقطع:',
-    options: ['دائرة نصف قطرها $4\\,\\mathrm{cm}$', 'دائرة نصف قطرها $8\\,\\mathrm{cm}$', 'دائرة نصف قطرها $\\sqrt{136}\\,\\mathrm{cm}$', 'لا شيء: المستوي لا يقطع الكرة'], correct: 1,
-    explain: 'حسب خاصية فيثاغورس $r^2 = 10^2 - 6^2 = 64$ ، فنصف قطر المقطع $8\\,\\mathrm{cm}$ . $10 - 6 = 4$ ليس نصف القطر، و $\\sqrt{136}$ بجمع المربعين، والمستوي يقطع الكرة لأنّ $6 < 10$ .' },
-  { n: 4, lessons: ['maqati-mustawiya', 'takbir-tasghir'], text: 'مخروط دوران يقطعه مستو مواز لقاعدته في منتصف ارتفاعه. المخروط الصغير الذي فوق المقطع:',
-    options: ['تصغير للمخروط نسبته $\\dfrac{1}{2}$ ، وحجمه نصف حجم المخروط', 'تصغير للمخروط نسبته $\\dfrac{1}{2}$ ، وحجمه $\\dfrac{1}{8}$ حجم المخروط', 'تصغير للمخروط نسبته $\\dfrac{1}{2}$ ، وحجمه ربع حجم المخروط'], correct: 1,
-    explain: 'المقطع الموازي للقاعدة دائرة هي تصغير للقاعدة، والمخروط الصغير تصغير للمخروط نسبته $\\dfrac{1}{2}$ : الحجوم تُضرب في $\\left(\\dfrac{1}{2}\\right)^3 = \\dfrac{1}{8}$ ، لا في $\\dfrac{1}{2}$ ولا في $\\left(\\dfrac{1}{2}\\right)^2$ .' },
-  { n: 5, lessons: ['takbir-tasghir'], text: 'تطبع ميساء بالطابعة ثلاثية الأبعاد نموذجا مصغّرا لخزان مائي بنسبة $\\dfrac{1}{50}$ . حجم النموذج يساوي حجم الخزان مضروبا في:',
-    options: ['$\\dfrac{1}{2500}$', '$\\dfrac{3}{50}$', '$\\dfrac{1}{50}$', '$\\dfrac{1}{125000}$'], correct: 3,
-    explain: 'في تصغير نسبته $k = \\dfrac{1}{50}$ تُضرب الحجوم في $k^3 = \\dfrac{1}{125000}$ . $\\dfrac{1}{2500} = k^2$ للمساحات، $\\dfrac{1}{50}$ للأطوال، و $\\dfrac{3}{50}$ ليس $k^3$ .' },
-];
-export const QCM = QCM_RAW.map((it) => ({ ...it, source: addition('synthesis_generation'), lessonPaths: it.lessons.map((l) => `${BASE}/${l}`) }));
-
-/**
- * « أتعمّق » (module 3) — la وضعية TRANSPOSÉE (`synthesis_generation`) : boule + cône + réduction. Un cornet de glace (cône de
- * hauteur 16 cm, ouverture de rayon 4 cm, pointe en bas) et une boule de glace de rayon 2 cm qui fond dedans : 32π/3 contre
- * 256π/3 ⇒ 1/8 du cornet ⇒ le liquide est un petit cône réduit de rapport k = ∛(1/8) = 1/2 : 8 cm de haut, surface de 2 cm de
- * rayon. Aucune de ces réponses n'apparaît ailleurs. Les questions sont dans content/exercises.js (EXERCISES).
- */
-export const ICE = {
-  source: addition('synthesis_generation'),
-  title: 'وضعية أخرى: مثلجات تذوب في مخروط البسكويت',
-  text: 'في محلّ مثلجات قرب شاطئ تيبازة، مخروط بسكويت على شكل مخروط دوران رأسه S إلى الأسفل، ارتفاعه $16\\,\\mathrm{cm}$ ونصف قطر فتحته $4\\,\\mathrm{cm}$ ، وفوقه كرة مثلجات (جلّة) نصف قطرها $2\\,\\mathrm{cm}$ . تذوب المثلجات كلها وتسيل داخل المخروط.',
-};
-
-/**
- * « إختبار أولي » (module 4) — la وضعية TRANSPOSÉE une seconde fois (`synthesis_generation`) : un verre de frappé en tronc de
+ * « إختبار أولي » (module 8) — la وضعية TRANSPOSÉE une seconde fois (`synthesis_generation`) : un verre de frappé en tronc de
  * cône (Ø 8 cm au fond, Ø 12 cm à l'ouverture, 12 cm de haut) rempli sur 9 cm. SO = 24 (Thalès : SO/(SO + 12) = 4/6),
  * ρ = 5,5, k = 24/33 = 8/11, V₁ = 1331π/4, V₂ = 128π, V = 819π/4 ≈ 643,24 cm³ ≈ 0,64 L. Aucune réponse n'apparaît ailleurs.
  */
 export const TEST = {
   source: addition('synthesis_generation'),
   title: 'وضعية أخرى: كأس فرابيه في مقهى بوهران',
-  text: 'في مقهى بوهران يُقدَّم الفرابيه في كأس على شكل مخروط مبتور: قطر قاعه $8\\,\\mathrm{cm}$ ، وقطر فتحته $12\\,\\mathrm{cm}$ ، وارتفاعه $12\\,\\mathrm{cm}$ . صبّ النادل المشروب حتى عمق $9\\,\\mathrm{cm}$ من القاع. نكمل الكأس إلى مخروط رأسه S تحت القاع؛ O مركز القاع و W مركز سطح المشروب.',
+  text: 'في مقهى بوهران يحرص النادل على الأمانة فيقدّم الفرابيه بالمقدار المعلن في كأس على شكل مخروط مبتور: قطر قاعه $8\\,\\mathrm{cm}$ ، وقطر فتحته $12\\,\\mathrm{cm}$ ، وارتفاعه $12\\,\\mathrm{cm}$ . صبّ النادل المشروب حتى عمق $9\\,\\mathrm{cm}$ من القاع. نكمل الكأس إلى مخروط رأسه S تحت القاع؛ O مركز القاع و W مركز سطح المشروب.',
   numbers: { r: 4, R: 6, H: 12, depth: 9 },
 };

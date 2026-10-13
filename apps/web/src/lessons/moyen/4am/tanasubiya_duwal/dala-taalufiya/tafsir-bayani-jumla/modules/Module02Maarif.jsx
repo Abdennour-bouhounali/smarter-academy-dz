@@ -42,13 +42,19 @@ export default function Module02Maarif() {
       moduleTitle="معارف — مستقيمان ونقطة"
       moduleSubtitle="المعادلة والمستقيم، الحل ونقطة التقاطع، الحالات الثلاث"
       estimatedTime="13 دقيقة"
+      objectives={[
+        'ماذا ترسم معادلة من الدرجة الأولى بمجهولين؟',
+        'أين نقرأ حلّ الجملة على الرسم؟',
+        'كيف نتأكّد من قراءتنا؟',
+        'كم حلًّا للجملة حين يتحرّك أحد المستقيمين؟',
+      ]}
       brief={{
         tag: 'معارف — من المنصّة', title: 'التفسير البياني لحل جملة معادلتين', tone: 'violet',
-        body: <p><MathText>{'في صندوق القسم صار كل شرط مستقيمًا، والحل نقطة تقاطعهما. نقول ذلك الآن لكل جملة، ثم نرى ماذا يحدث حين لا يتقاطع المستقيمان.'}</MathText></p>,
+        body: <p><MathText>{'في صندوق القسم صار كل شرط مستقيمًا. ماذا نقول الآن عن أيّ جملة؟ وماذا يحدث لحلّها حين لا يتقاطع المستقيمان؟'}</MathText></p>,
       }}
       steps={[
         {
-          num: 1, title: 'كل معادلة مستقيم', subtitle: 'المعادلة والمستقيم', done: q1a && q1b,
+          num: 1, title: 'ماذا ترسم معادلة؟', subtitle: 'المعادلة والمستقيم', done: q1a && q1b,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tafsir-nashat" variant="rappel" compact />
@@ -78,7 +84,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 2, title: 'الحل نقطة التقاطع', subtitle: 'الحل ونقطة التقاطع', done: q2,
+          num: 2, title: 'أين نقرأ حلّ الجملة؟', subtitle: 'الحل على الرسم', done: q2,
           content: (
             <div className="space-y-3">
               <PredictRule id="hall-taqatu"><TextbookBox kind="property" title={KNOWLEDGE.solutionPoint.title} text={KNOWLEDGE.solutionPoint.text} source={KNOWLEDGE.solutionPoint.source} compact /></PredictRule>
@@ -97,7 +103,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 3, title: 'نرسم، نقرأ، نتحقّق', subtitle: 'طريقة الحل البياني', done: q3a && q3b,
+          num: 3, title: 'كيف نحلّ جملة بيانيًا؟', subtitle: 'ثم كيف نتأكّد من القراءة؟', done: q3a && q3b,
           content: (
             <div className="space-y-3">
               <PredictRule id="hall-bayani"><TextbookBox kind="method" title={KNOWLEDGE.method.title} lines={KNOWLEDGE.method.steps} source={KNOWLEDGE.method.source} compact /></PredictRule>
@@ -134,7 +140,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 4, title: 'متقاطعان، متوازيان، منطبقان', subtitle: 'الحالات الثلاث', done: q4,
+          num: 4, title: 'حين يتحرّك المستقيم (2)', subtitle: 'كم حلًّا للجملة؟', done: q4,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-700"><MathText>{EXAMPLE.lines[0]}</MathText> <SourceTag source={EXAMPLE.source} /></p>

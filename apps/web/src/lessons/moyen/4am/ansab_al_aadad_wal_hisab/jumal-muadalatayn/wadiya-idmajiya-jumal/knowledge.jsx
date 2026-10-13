@@ -7,21 +7,18 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
 
 /**
  * Une synthèse n'introduit aucune notion nouvelle (LESSON_CONTRACT) : ce sont
- * la DÉMARCHE du manuel (قراءة → ترييض → حل → تحقق) et deux outils que les
- * exercices « أتعمّق » ajoutent.
- *   tahdid-majahil     module 1 — choisir les inconnues : les quantités DEMANDÉES (les deux prix)
- *   tarjamat-maalumat  module 1 — une information (une somme d'argent) → une équation
- *   ikhtiyar-tariqa    module 1 — simplifier, puis la méthode la plus efficace (التعويض / الجمع)
- *   tahaqquq-tafsir    module 1 — vérifier dans le TEXTE et rédiger la réponse avec son unité
- *   tariqat-wadiya     module 1 — la démarche complète en trois étapes (les mots du manuel)
- *   wihda-wahida       module 3 — une seule unité par équation (ex. 29 : 7kg = 7000g)
- *   takhfid            module 3 — une réduction de 20 % : multiplier par 0,8 (ex. 31)
+ * la DÉMARCHE du manuel (قراءة → ترييض → حل → تحقق).
+ *   tahdid-majahil     module 7 — choisir les inconnues : les quantités DEMANDÉES (les deux prix)
+ *   tarjamat-maalumat  module 7 — une information (une somme d'argent) → une équation
+ *   ikhtiyar-tariqa    module 7 — simplifier, puis la méthode la plus efficace (التعويض / الجمع)
+ *   tahaqquq-tafsir    module 7 — vérifier dans le TEXTE et rédiger la réponse avec son unité
+ *   tariqat-wadiya     module 7 — la démarche complète en trois étapes (les mots du manuel)
  * Les exemples chiffrés sont ceux de la رحلة القسم (niveau مبتدئ) ; la SOLUTION du حفل
  * (25 DA et 50 DA) n'est dans aucun item : c'est la réponse de l'évaluation.
  */
 export const LESSON_KNOWLEDGE = {
   modules: {
-    1: [
+    7: [
       { id: 'tahdid-majahil', type: 'methodes', title: 'اختيار المجهولين', summary: 'نسمّي x و y الكميتين المطلوبتين في السؤال، هنا السعرين، لا الأعداد المعلومة في النص.',
         body: (
           <div className="space-y-1">
@@ -58,12 +55,6 @@ export const LESSON_KNOWLEDGE = {
             {SITUATION.analysis.map((a) => <li key={a.label}><strong>{a.label}</strong>: {a.text}</li>)}
           </ol>
         ) },
-    ],
-    3: [
-      { id: 'wihda-wahida', type: 'methodes', title: 'وحدة واحدة في المعادلة', summary: 'قبل كتابة المعادلة نحوّل كل المقادير إلى وحدة واحدة، مثلا الكيلوغرام إلى غرام.',
-        body: <p><MathText>{REMARKS.wihda}</MathText></p> },
-      { id: 'takhfid', type: 'regles', title: 'تخفيض بنسبة مئوية', summary: 'بعد تخفيض بعشرين في المئة ندفع ثمانين في المئة من الثمن، أي نضرب الثمن في 0,8.',
-        body: <p><MathText>{REMARKS.takhfid}</MathText></p> },
     ],
   },
 };

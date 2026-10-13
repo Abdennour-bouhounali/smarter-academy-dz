@@ -21,7 +21,7 @@ const WHERE = ['على الكرة $(\\delta)$', 'داخل الجلة $(\\beta)$ 
 export const EXERCISES = [
   {
     id: 'aw-1', source: SRC, learningPointId: LP.P4, difficulty: 'moyen',
-    statement: 'في القبة السماوية (البلانيتاريوم) بمدينة العلوم، نمثّل القبة بكرة $(\\delta)$ مركزها O ونصف قطرها $5\\,\\mathrm{m}$ ، و $(\\beta)$ الجلة المعيّنة بها. في معلم متعامد ومتجانس للفضاء مبدؤه O (الوحدة: المتر)، لكل نقطة $M(x\\,;\\,y\\,;\\,z)$ : $OM^2 = x^2 + y^2 + z^2$ .',
+    statement: 'في القبة السماوية (البلانيتاريوم) بمدينة العلوم التي يزورها التلاميذ طلبا للعلم، نمثّل القبة بكرة $(\\delta)$ مركزها O ونصف قطرها $5\\,\\mathrm{m}$ ، و $(\\beta)$ الجلة المعيّنة بها. في معلم متعامد ومتجانس للفضاء مبدؤه O (الوحدة: المتر)، لكل نقطة $M(x\\,;\\,y\\,;\\,z)$ : $OM^2 = x^2 + y^2 + z^2$ .',
     interaction: 'batch',
     question: {
       prompt: 'أين تقع كل نقطة؟',
@@ -68,7 +68,7 @@ export const EXERCISES = [
   },
   {
     id: 'aw-4', source: SRC, learningPointId: LP.P4, difficulty: 'moyen',
-    statement: 'رسم أمين كرة مركزها O (دائرة كفاف وشكل بيضوي)، ويريد أن يمثّل النقطة B من الجلة حيث $OB < R$ .',
+    statement: 'رسم أمين، بإتقان وصبر، كرة مركزها O (دائرة كفاف وشكل بيضوي)، ويريد أن يمثّل النقطة B من الجلة حيث $OB < R$ .',
     interaction: 'choice',
     question: {
       prompt: 'كيف يمثّل B؟',
@@ -86,7 +86,7 @@ export const EXERCISES = [
   },
   {
     id: 'aw-5', source: SRC, learningPointId: LP.P2, difficulty: 'facile',
-    statement: 'في ورشة الفنون، يدير ريّان قرصا دائريا من الورق المقوّى مركزه O ونصف قطره $6\\,\\mathrm{cm}$ بسرعة حول أحد أقطاره.',
+    statement: 'في ورشة الفنون، يتعاون ريّان مع زملائه في إنجاز مجسّم، فيدير قرصا دائريا من الورق المقوّى مركزه O ونصف قطره $6\\,\\mathrm{cm}$ بسرعة حول أحد أقطاره.',
     interaction: 'choice',
     question: {
       prompt: 'الدائرة التي تحدّ القرص تولّد بهذا الدوران:',

@@ -69,7 +69,7 @@ export default function Module07Itqan() {
         },
         {
           id: 'E5', skill: 'tayin', requires: ['hisab-b', 'hisab-muamil-a'],
-          prompt: <Q><MathText>{'قاعة رياضة: مشترك دفع 4100DA مقابل 3 أشهر، وآخر دفع 8100DA مقابل 8 أشهر. المبلغ دالة تآلفية لعدد الأشهر. حقوق التسجيل (المبلغ الثابت $b$) هي:'}</MathText></Q>,
+          prompt: <Q><MathText>{'قاعة رياضة يقصدها الشباب للمحافظة على صحتهم: مشترك دفع 4100DA مقابل 3 أشهر، وآخر دفع 8100DA مقابل 8 أشهر. المبلغ دالة تآلفية لعدد الأشهر. حقوق التسجيل (المبلغ الثابت $b$) هي:'}</MathText></Q>,
           options: [M('$800$ DA'), M('$2400$ DA'), M('$1700$ DA'), M('$4100$ DA')],
           correct: 2, cols: 2,
           explain: <MathText>{'$a = \\dfrac{8100 - 4100}{8 - 3} = \\dfrac{4000}{5} = 800$ DA للشهر، ثم $b = 4100 - 800 \\times 3 = 1700$ DA ؛ تحقّق: $800 \\times 8 + 1700 = 8100$ .'}</MathText>,

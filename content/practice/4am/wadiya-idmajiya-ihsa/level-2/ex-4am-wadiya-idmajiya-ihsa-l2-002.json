@@ -3,7 +3,7 @@
   "lessonCode": "wadiya-idmajiya-ihsa",
   "level": 2,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 6 — المتوسط والوسيط",
+    "title": "المتوسط والوسيط",
     "estimatedMinutes": 6,
     "tags": [
       "المتوسط الحسابي",
@@ -14,7 +14,7 @@
       "type": "textbook",
       "elementId": "qcm",
       "page": 100,
-      "section": "أؤكّد تعلّماتي",
+      "section": "الوضعيات",
       "number": 6
     },
     "exam": {

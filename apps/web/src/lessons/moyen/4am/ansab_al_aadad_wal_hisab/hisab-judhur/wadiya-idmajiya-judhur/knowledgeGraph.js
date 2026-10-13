@@ -7,10 +7,10 @@
  *     solutions de x² = a) et la DÉMARCHE de la situation ;
  *   — la SOLUTION (ℓ = 2√3 m ≈ 346 cm, L = 4√3 m ≈ 693 cm) n'y figure pas :
  *     c'est la réponse de l'évaluation (A.10 règle 14) ;
- *   — les deux erreurs sont celles que le module 1 corrige (l'équation qui
+ *   — les deux erreurs sont celles que le module 7 corrige (l'équation qui
  *     emploie le prix, l'arrondi trop tôt), avec son « لماذا؟ » ;
- *   — « أؤكّد تعلّماتي » (module 2) renvoie aux leçons 1, 3, 4 et 5, dont les
- *     cartes portent ces connaissances.
+ *   — les six وضعيات d'entraînement (modules 1 à 6) ne sont pas dans la carte : d'autres nombres, la carte reste
+ *     celle de la situation évaluée (module 8).
  *
  *                      [ما بُعدا الزربية؟]                  مفهوم
  *                           نفهمها │
@@ -51,7 +51,7 @@ export const KNOWLEDGE_GRAPH = {
       reveals: ['mushawwish'],
     },
     {
-      // ⛔ خطأ شائع — module 1, question 3 : le distracteur « 2ℓ² = 12000 » et sa correction.
+      // ⛔ خطأ شائع — module 7, question 3 : le distracteur « 2ℓ² = 12000 » et sa correction.
       id: 'mushawwish', kind: 'common_mistake', lane: 'start', requires: 'masahat-mustatil',
       title: 'معطى مشوِّش', subtitle: 'سعر الزربية',
       context: {
@@ -76,7 +76,7 @@ export const KNOWLEDGE_GRAPH = {
       reveals: ['tadwir'],
     },
     {
-      // ⛔ خطأ شائع — module 1, question 5 : « ندوّر العرض أولًا ثم نضاعفه ».
+      // ⛔ خطأ شائع — module 7, question 5 : « ندوّر العرض أولًا ثم نضاعفه ».
       id: 'tadwir', kind: 'common_mistake', lane: 'end', requires: 'tariqat-wadiya',
       title: 'التدوير المبكر', subtitle: 'ندوّر في النهاية',
       context: {

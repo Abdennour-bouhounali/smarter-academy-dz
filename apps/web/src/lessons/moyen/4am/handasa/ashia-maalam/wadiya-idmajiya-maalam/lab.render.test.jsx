@@ -11,8 +11,8 @@ import { LAB, LAB_EXPECT } from './content/textbook';
 import * as FIG from './content/figures';
 
 /**
- * Le workspace du module 1 de la synthèse — `route-compare`, deux niveaux (le rallye ; le cross de la وضعية) — rendu avec
- * EXACTEMENT les props que le module étale (content/textbook.js › LAB) ; puis la mathématique que les modules 1, 3 et 4
+ * Le workspace du module 7 de la synthèse — `route-compare`, deux niveaux (le rallye ; le cross de la وضعية) — rendu avec
+ * EXACTEMENT les props que le module étale (content/textbook.js › LAB) ; puis la mathématique que les modules 7 et 8
  * supposent, recalculée avec packages/core (vectors.js) et posée par la main dans la logique du lab (logic/routeCompare.js).
  */
 const workspace = () => (
@@ -58,7 +58,7 @@ it.each([['advanced'], ['beginner']])('%s : la main — pari, centres et balises
   expect(RC.discoveryReady(s)).toBe(true);
 });
 
-it('le module 1 : les centres (−1 ; 0), (1 ; 0), (3 ; 0) ; √13, √5, √17 ; 9,97 en arrondissant trop tôt ; MN = √61 ≈ 7,81', () => {
+it('le module 7 : les centres (−1 ; 0), (1 ; 0), (3 ; 0) ; √13, √5, √17 ; 9,97 en arrondissant trop tôt ; MN = √61 ≈ 7,81', () => {
   expect([[-2, 0, 0, 0], [0, 0, 2, 0], [2, 0, 4, 0]].map(([a, b, c, e]) => V.pointLatex('I', V.midpoint(P([a, b]), P([c, e]))))).toEqual(['I(-1\\,;\\,0)', 'I(1\\,;\\,0)', 'I(3\\,;\\,0)']);
   expect([d([-2, 3], [1, 1]), d([1, 1], [3, 2]), d([3, 2], [4, -2])]).toEqual(['√13', '√5', '√17']);
   const r = [Math.sqrt(13), Math.sqrt(5), Math.sqrt(17)];
@@ -70,40 +70,6 @@ it('le module 1 : les centres (−1 ; 0), (1 ; 0), (3 ; 0) ; √13, √5, √17 
   expect(d([-2, 3], [4, -2])).toBe('√61');
   expect(TR.roundTo(Math.sqrt(61), 2)).toBe('7,81');
   expect(TR.roundTo(Math.sqrt(13 + 5 + 17), 2)).toBe('5,92');
-});
-
-it('le module 2 (QCM) : (−5 ; −4), (−3/2 ; 0), 5, 6√2, 2√2', () => {
-  expect(V.vecLatex(V.vec(P([3, 2]), P([-2, -2])))).toBe('\\begin{pmatrix} -5 \\\\ -4 \\end{pmatrix}');
-  expect(V.pointLatex('I', V.midpoint(P([-2, -1]), P([-1, 1])))).toBe('I(-1{,}5\\,;\\,0)'); // -3/2
-  expect(d([0, 0], [4, 3])).toBe('5');
-  expect(d([3, 3], [-3, -3])).toBe('6√2');
-  expect(d([2, 3], [4, 1])).toBe('2√2');
-});
-
-it('le module 3 : ex. 22, 23, 25 recalculés', () => {
-  // ex-22
-  expect(V.triangleNature(P([1, 3]), P([2, 4]), P([5, 1])).right).toBe('B');
-  const I = V.midpoint(P([1, 3]), P([5, 1]));
-  expect(V.pointLatex('I', I)).toBe('I(3\\,;\\,2)');
-  for (const X of [[1, 3], [2, 4], [5, 1], [2, 0]]) expect(TR.surdText(V.distance(I, P(X)))).toBe('√5');
-  expect(TR.roundTo(Math.atan(1 / 3) * 180 / Math.PI, 1)).toBe('18,4');
-  expect(TR.roundTo(45 + Math.atan(1 / 3) * 180 / Math.PI, 1)).toBe('63,4');
-  expect(TR.roundTo(180 - 45 - Math.atan(1 / 3) * 180 / Math.PI, 1)).toBe('116,6');
-  // ex-23
-  const [A, B, C] = [P([-3, 1]), P([3, 5]), P([5, 2])];
-  expect(V.triangleNature(A, B, C).right).toBe('B');
-  const D = V.parallelogramSum(B, A, C);
-  expect(V.pointLatex('D', D)).toBe('D(-1\\,;\\,-2)');
-  expect(V.quadNature(A, B, C, D)).toBe('rectangle');
-  expect(TR.surdText(TR.surdMul(V.distance(A, B), V.distance(B, C)))).toBe('26');
-  expect([A, B, C, D].map((X) => V.pointLatex('X', V.translate(X, P([2, 0]))))).toEqual(['X(-1\\,;\\,1)', 'X(5\\,;\\,5)', 'X(7\\,;\\,2)', 'X(1\\,;\\,-2)']);
-  // ex-25
-  const [A2, B2, C2] = [P([-2, -3]), P([4, 1]), P([2, 4])];
-  expect(TR.surdText(V.distance(A2, B2))).toBe('2√13');
-  expect(V.triangleNature(A2, B2, C2).right).toBe('B');
-  const E = V.translate(A2, V.vec(B2, C2));
-  expect(V.pointLatex('E', E)).toBe('E(-4\\,;\\,0)');
-  expect(V.quadNature(A2, B2, C2, E)).toBe('rectangle');
 });
 
 it('« إختبار أولي » (VTT à Constantine) : (−1 ; 0), 4π ≈ 12,57 ; 5 ; 5 + 5√2 ≈ 12,07 ; la piste (2) gagne', () => {

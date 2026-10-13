@@ -1081,7 +1081,7 @@
    "duplicatedIn": [
     {
      "lesson": "wadiya-idmajiya-talis",
-     "module": 1,
+     "module": 7,
      "note": "Thalès et l’ombre des pyramides : la méthode de l’ombre du تحدّ"
     }
    ]
@@ -1092,7 +1092,7 @@
    "duplicatedIn": [
     {
      "lesson": "wadiya-idmajiya-talis",
-     "module": 1,
+     "module": 7,
      "note": "la minaret mesurée par l’ombre d’un bâton : 7,25 m"
     }
    ]
@@ -1264,17 +1264,17 @@
   },
   "situation": {
    "lesson": "wadiya-idmajiya-talis",
-   "module": 1,
+   "module": 7,
    "duplicatedIn": [
     {
      "lesson": "wadiya-idmajiya-talis",
-     "module": 4
+     "module": 8
     }
    ]
   },
   "qcm": {
    "lesson": "wadiya-idmajiya-talis",
-   "module": 2,
+   "module": "practice",
    "duplicatedIn": [
     {
      "lesson": "talis-hisab-atwal",
@@ -1302,11 +1302,11 @@
   },
   "ex-20": {
    "lesson": "wadiya-idmajiya-talis",
-   "module": 3
+   "module": "practice"
   },
   "ex-22": {
    "lesson": "wadiya-idmajiya-talis",
-   "module": 3
+   "module": "practice"
   }
  }
 }

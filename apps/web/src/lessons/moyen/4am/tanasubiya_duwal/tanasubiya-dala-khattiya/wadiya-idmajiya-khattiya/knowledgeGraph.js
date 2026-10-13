@@ -4,12 +4,11 @@
  * modèle : jumal-muadalatayn/wadiya-idmajiya-jumal.
  *
  *   — aucune connaissance nouvelle : la DÉMARCHE du manuel appliquée au téléphérique (le câble
- *     par Pythagore, la durée, le coût linéaire, le plus grand prix permis) et les outils de
- *     « أتعمّق » (tester la linéarité, la concentration, un pourcentage d'un tout) ;
+ *     par Pythagore, la durée, le coût linéaire, le plus grand prix permis) ;
  *   — les réponses du manuel (500√26 m, la durée, 3,8x, 526 DA) n'y figurent pas : ce sont
  *     celles de l'évaluation (A.10 règle 14). Les exemples sont ceux de la plateforme
  *     (l'autre téléphérique 300 m → 800 m ; la famille à −50 % / −25 %) ;
- *   — les trois erreurs sont celles que le module 1 corrige (additionner les côtés au lieu de
+ *   — les trois erreurs sont celles que le module 7 corrige (additionner les côtés au lieu de
  *     Pythagore ; écrire le montant de la RÉDUCTION pour le ticket enfant ; arrondir le prix
  *     maximal vers le haut), avec leur « لماذا؟ ».
  *
@@ -24,8 +23,6 @@
  *        خطأ شائع ┌──── [أكبر سعر]                                 طريقة
  *  ⛔ [التدوير]                 │ نجمعها
  *                         [من النص إلى الجواب]                      طريقة
- *                                │ في التمارين
- *                     [هل الدالة خطية؟] → [التركيز] → [نسبة جزء]    (محور 3)
  *                                │ نستخلص
  *                         🎯 [ثلاث مراحل]
  */
@@ -42,7 +39,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'hatab', kind: 'method', lane: 'center', requires: 'masafa-fithaghuras', notebook: true, title: 'طول الحبل', subtitle: 'مبرهنة فيثاغورس', reveals: ['jamKhata', 'mudda'] },
     {
-      // ⛔ خطأ شائع — module 1, étapes 2 et 3 : « AB = AH + BH » et sa correction.
+      // ⛔ خطأ شائع — module 7, étapes 2 et 3 : « AB = AH + BH » et sa correction.
       id: 'jamKhata', kind: 'common_mistake', lane: 'start', requires: 'masafa-fithaghuras',
       title: 'جمع الضلعين', subtitle: 'الوتر ليس مجموعا',
       context: {
@@ -57,7 +54,7 @@ export const KNOWLEDGE_GRAPH = {
     { id: 'mudda', kind: 'method', lane: 'end', requires: 'mudda-sura', notebook: true, title: 'المدة', subtitle: 'المسافة على السرعة', reveals: ['taklifa'] },
     { id: 'taklifa', kind: 'relationship', lane: 'end', requires: 'taklifa-khattiya', notebook: true, title: 'التكلفة دالة خطية', subtitle: 'عدد ثابت في السعر', reveals: ['tiflKhata', 'mizaniya'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 6 : le ticket enfant écrit avec le MONTANT de la réduction (MISC-TAKHFID-NISBA).
+      // ⛔ خطأ شائع — module 7, étape 6 : le ticket enfant écrit avec le MONTANT de la réduction (MISC-TAKHFID-NISBA).
       id: 'tiflKhata', kind: 'common_mistake', lane: 'start', requires: 'taklifa-khattiya',
       title: 'تذكرة الطفل', subtitle: 'ما يدفعه لا ما يُخصم',
       context: {
@@ -71,7 +68,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'mizaniya', kind: 'method', lane: 'end', requires: 'hadd-mizaniya', notebook: true, title: 'أكبر سعر', subtitle: 'تقاطع مع خط الميزانية', reveals: ['tadwir', 'marahil'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 8 : arrondir le prix maximal vers le HAUT (MISC-TARRID-TAFSIR).
+      // ⛔ خطأ شائع — module 7, étape 8 : arrondir le prix maximal vers le HAUT (MISC-TARRID-TAFSIR).
       id: 'tadwir', kind: 'common_mistake', lane: 'start', requires: 'hadd-mizaniya',
       title: 'التدوير نحو الأعلى', subtitle: 'تجاوز الميزانية',
       context: {
@@ -83,13 +80,10 @@ export const KNOWLEDGE_GRAPH = {
       },
       reveals: [],
     },
-    { id: 'marahil', kind: 'method', lane: 'end', requires: 'tariqat-wadiya', notebook: true, title: 'من النص إلى الجواب', reveals: ['khattiya'] },
-    { id: 'khattiya', kind: 'method', lane: 'center', requires: 'ikhtibar-khattiya', notebook: true, title: 'هل الدالة خطية؟', subtitle: 'ننشر أولا', reveals: ['tarkiz'] },
-    { id: 'tarkiz', kind: 'relationship', lane: 'center', requires: 'tarkiz', notebook: true, title: 'التركيز', subtitle: 'كتلة على حجم', reveals: ['nisba'] },
-    { id: 'nisba', kind: 'relationship', lane: 'center', requires: 'nisba-juz', notebook: true, title: 'نسبة جزء من كل', reveals: ['khulasa'] },
+    { id: 'marahil', kind: 'method', lane: 'end', requires: 'tariqat-wadiya', notebook: true, title: 'من النص إلى الجواب', reveals: ['khulasa'] },
     {
       // 🎯 خلاصة — les trois étapes de l'analyse du manuel, nommées par lui.
-      id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'nisba-juz',
+      id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'tariqat-wadiya',
       title: 'ثلاث مراحل', subtitle: 'نقرأ · نحلّل · ننفّذ',
       context: { list: SITUATION.analysis.map((a) => a.label) },
       reveals: [],
@@ -104,9 +98,6 @@ export const KNOWLEDGE_GRAPH = {
     { from: 'taklifa', to: 'mizaniya', label: 'على بيانها' },
     { from: 'mizaniya', to: 'tadwir', label: 'خطأ شائع' },
     { from: 'mizaniya', to: 'marahil', label: 'نجمعها' },
-    { from: 'marahil', to: 'khattiya', label: 'في التمارين' },
-    { from: 'khattiya', to: 'tarkiz', label: 'ثم' },
-    { from: 'tarkiz', to: 'nisba', label: 'والنسب' },
-    { from: 'nisba', to: 'khulasa', label: 'نستخلص' },
+    { from: 'marahil', to: 'khulasa', label: 'نستخلص' },
   ],
 };

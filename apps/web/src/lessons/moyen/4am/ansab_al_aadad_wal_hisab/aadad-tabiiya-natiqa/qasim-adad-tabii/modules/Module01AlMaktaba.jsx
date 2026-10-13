@@ -55,7 +55,7 @@ export default function Module01AlMaktaba() {
   const contrastSeen = Object.values(teamsSeen).includes(true) && Object.values(teamsSeen).includes(false);
 
   return (
-    <ContentModule
+    <ContentModule objectives={["كيف نضع 420 كتابًا في رفوف بعدد متساوٍ؟", "ماذا يحدث إذا تقاسمنا 16 لاعبًا في فرق متماثلة؟", "متى نقول إن عددًا يقسم عددًا آخر؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}

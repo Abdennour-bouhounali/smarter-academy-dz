@@ -38,6 +38,7 @@ export default function Module02Maarif() {
       moduleTitle="معارف — المعادلات من الشكل x² = a"
       moduleSubtitle="خاصيتان"
       estimatedTime="12 دقيقة"
+      objectives={['كيف نكتب حلول المعادلة $x^2 = a$ حسب إشارة $a$؟', 'ماذا يحدث للمعادلة $x^2 = -1$؟']}
       brief={{
         tag: 'معارف — الكتاب ص 22', title: <MathText>{KNOWLEDGE.title}</MathText>, tone: 'violet',
         body: <p>في النشاط رأيت أن لعددين متعاكسين نفس المربع، وأن لا سهم يصل إلى الأعداد السالبة. الكتاب يكتب ذلك في خاصيتين.</p>,
@@ -101,7 +102,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 3, title: 'لماذا لا حل عندما يكون a سالبا؟', done: q3,
+          num: 3, title: 'ماذا يحدث عندما يكون a سالبا؟', done: q3,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="example" lines={prop2.examples} compact />

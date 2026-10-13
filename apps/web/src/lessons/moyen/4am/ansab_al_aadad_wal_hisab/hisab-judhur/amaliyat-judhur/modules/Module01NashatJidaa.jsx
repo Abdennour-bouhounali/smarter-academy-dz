@@ -50,6 +50,7 @@ export default function Module01NashatJidaa() {
       moduleTitle="نشاط 4 — جداء جذرين وحاصل قسمتهما"
       moduleSubtitle="بلّط، أكمل الجدولين، خمّن، ثم برهن"
       estimatedTime="14 دقيقة"
+      objectives={['كم بلاطة على ضلع مربّع مساحته 144؟ وكيف يُكتب ضلعه؟', 'ماذا نلاحظ في جدولَي الجداء وحاصل القسمة؟', 'هل يكفي التخمين، أم نحتاج إلى برهان؟']}
       brief={{
         tag: 'أنشطة — الكتاب ص 21',
         headline: 'مربّع مساحته 144: كم بلاطة على ضلعه؟',
@@ -199,7 +200,7 @@ export default function Module01NashatJidaa() {
           ),
         },
         {
-          num: 5, title: 'حاصل قسمة جذرين — 1) انقل وأكمل الجدول', subtitle: 'انتبه إلى السطر الأخير: العددان سالبان', done: tableB,
+          num: 5, title: 'حاصل قسمة جذرين — 1) انقل وأكمل الجدول', subtitle: 'انظر جيّدًا إلى كل سطر، وإلى السطر الأخير خاصةً', done: tableB,
           content: (
             <div className="space-y-3">
               <RootTable columns={ACTIVITY_B.columns} rows={ACTIVITY_B.rows} noMeaning={ACTIVITY_B.noMeaning} caption="الجدول قبل الإكمال" />

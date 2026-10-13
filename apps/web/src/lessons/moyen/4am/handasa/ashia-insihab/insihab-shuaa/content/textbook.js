@@ -16,7 +16,7 @@ export const PLATFORM_SOURCE = PLATFORM;
 export const ACTIVITY = {
   source: src('act-1', 128, 'أنشطة', 1),
   title: 'الانسحاب ومفهوم الشعاع',
-  situation: 'عرض مسيّرات مضيئة فوق خليج الجزائر: التشكيلة كلها تنتقل بحركة واحدة. كيف نصف هذه الحركة، ومتى تكون صورة مسيّرة «في مكانها»؟',
+  situation: 'عرض مسيّرات مضيئة فوق خليج الجزائر يتعاون على إتقانه فريق من الشباب: التشكيلة كلها تنتقل بحركة واحدة. كيف نصف هذه الحركة، ومتى تكون صورة مسيّرة «في مكانها»؟',
   intro: 'لاحظ الشكل.',
   // les puces « • » du manuel sont neutres en bidi et brouillaient l'ordre (« R ، • A إلى G … ») : remplacées par « ثم بالذي يحوّل » (des mots arabes séparent les couples de lettres)
   part1a: '1) أ) عيّن في كل حالة مما يلي صورة المثلث ABC بواسطة الانسحاب الذي يحوّل A إلى G، ثم بالذي يحوّل C إلى R، ثم بالذي يحوّل A إلى M.',

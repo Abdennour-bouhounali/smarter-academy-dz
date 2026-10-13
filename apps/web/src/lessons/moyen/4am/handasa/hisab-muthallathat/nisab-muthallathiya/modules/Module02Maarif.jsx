@@ -32,6 +32,7 @@ export default function Module02Maarif() {
 
   return (
     <ContentModule
+      objectives={['كيف نكتب تعريف الجيب بالكلمات؟', 'ومن أين يأتي الظل؟', 'بين أيّ عددين يقع الجيب وجيب التمام؟']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}

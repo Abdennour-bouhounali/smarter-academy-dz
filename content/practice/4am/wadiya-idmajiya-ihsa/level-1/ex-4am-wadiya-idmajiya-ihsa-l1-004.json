@@ -3,7 +3,7 @@
   "lessonCode": "wadiya-idmajiya-ihsa",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 4 — مدى سلسلة عشرية ووسيطها",
+    "title": "مدى سلسلة عشرية ووسيطها",
     "estimatedMinutes": 4,
     "tags": [
       "المدى",
@@ -13,7 +13,7 @@
       "type": "textbook",
       "elementId": "qcm",
       "page": 100,
-      "section": "أؤكّد تعلّماتي",
+      "section": "الوضعيات",
       "number": 4
     },
     "exam": {

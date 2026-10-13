@@ -9,9 +9,9 @@ import * as BP from '../../../../../common/manipulations/logic/bridgePath';
 import { LAB, LAB_EXPECT, SITUATION } from './content/textbook';
 
 /**
- * Le workspace du module 1 de la synthèse — `bridge-path`, deux niveaux (la passerelle du Rhummel ; la rue de l'école
+ * Le workspace du module 7 de la synthèse — `bridge-path`, deux niveaux (la passerelle du Rhummel ; la rue de l'école
  * du manuel) — rendu avec EXACTEMENT les props que le module étale (content/textbook.js › LAB) ; puis la mathématique
- * que les modules 1 et 4 supposent, recalculée avec packages/core (vectors.js) et posée par la main dans la logique
+ * que les modules 7 et 8 supposent, recalculée avec packages/core (vectors.js) et posée par la main dans la logique
  * du lab (logic/bridgePath.js).
  */
 const workspace = () => (
@@ -60,7 +60,7 @@ it.each([['advanced'], ['beginner']])('%s : la main — deux places, B′ refus�
   expect(BP.dec(BP.minimum(s).number)).toBe(exp.total);
 });
 
-it('le module 1 : AB′ = √85 (7 et 6 carreaux), AB = √113, √85 + 2 ≈ 11,22, AM = NB', () => {
+it('le module 7 : AB′ = √85 (7 et 6 carreaux), AB = √113, √85 + 2 ≈ 11,22, AM = NB', () => {
   const A = V.point(-3, 5); const B = V.point(4, -3);
   const k = V.shortestCrossing({ A, B, width: 2 });
   expect(V.vecEq(V.vec(A, k.Bp), V.point(7, -6))).toBe(true);
@@ -71,7 +71,7 @@ it('le module 1 : AB′ = √85 (7 et 6 carreaux), AB = √113, √85 + 2 ≈ 11
   expect(TR.surdText(V.distance(A, k.M))).toBe(TR.surdText(V.distance(k.N, B)));
 });
 
-it('« إختبار أولي » (Oran, un carreau = 10 m) : 30√13 ≈ 108,2 ; 138,2 ; AB = 90√2 ≈ 127,3 ; MN au lieu de NM : 150', () => {
+it('« وضعية الاختبار النهائي » (Oran, un carreau = 10 m) : 30√13 ≈ 108,2 ; 138,2 ; AB = 90√2 ≈ 127,3 ; MN au lieu de NM : 150', () => {
   const A = V.point(0, 5); const B = V.point(9, -4);
   const k = V.shortestCrossing({ A, B, width: 3 });
   expect(TR.surdText(k.ABp)).toBe('3√13'); // × 10 m

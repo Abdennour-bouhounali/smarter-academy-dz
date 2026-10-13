@@ -19,6 +19,7 @@ export default function Module03Awazzif() {
   return (
     <ContentModule
       ctx={MODULE_CTX}
+      objectives={["كيف أنشر عبارة وأبسّطها بخطوات مرتّبة؟", "كيف أتحقّق من النشر بقيمة للحرف؟", "أين أخطأ تلميذان في النشر؟"]}
       navLinks={getNavLinks(3)}
       moduleNumber={3}
       moduleTitle="أوظّف تعلّماتي"

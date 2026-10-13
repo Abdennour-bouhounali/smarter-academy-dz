@@ -8,22 +8,19 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
 /**
  * Une synthèse n'introduit aucune notion nouvelle (LESSON_CONTRACT) : ce sont les RESSOURCES des cinq
  * دروس, telles que la situation les mobilise, et la démarche en trois phases.
- *   jumla-bayaniya     module 1 — deux inconnues, deux informations : les droites et leur point commun (درس 4)
- *   taklifa-taalufiya  module 1 — un prix fixe + un prix par unité est une fonction affine ; image, antécédent (درس 1)
- *   min-thunaiyatayn   module 1 — un tarif connu par deux devis : تناسب التغيّرات puis b (درس 3)
- *   ikhtiyar-sigha     module 1 — comparer deux tarifs : l'intersection, le moins cher avant / après (درس 2 et 5)
- *   thalath-sigh       module 1 — trois tarifs : la droite la plus basse, trois plages (درس 5, laboratoire)
- *   tafsir-natija      module 1 — interpréter : nombre entier, en dinars, sans dépasser la somme
- *   tariqat-wadiya     module 1 — la démarche : قراءة · تحليل · تنفيذ
- *   tawazi             module 3 — même a : droites parallèles, jamais égales
- *   tanaqus            module 3 — a < 0 : la fonction décroît ; quand s'annule-t-elle ?
- *   mutarajiha-ikhtiyar module 3 — « moins cher » est une inégalité, lue en nombre entier
- * Les nombres sont ceux de la situation du module 1 ; ceux de « إختبار أولي » (la sortie aux Sablettes)
+ *   jumla-bayaniya     module 7 — deux inconnues, deux informations : les droites et leur point commun (درس 4)
+ *   taklifa-taalufiya  module 7 — un prix fixe + un prix par unité est une fonction affine ; image, antécédent (درس 1)
+ *   min-thunaiyatayn   module 7 — un tarif connu par deux devis : تناسب التغيّرات puis b (درس 3)
+ *   ikhtiyar-sigha     module 7 — comparer deux tarifs : l'intersection, le moins cher avant / après (درس 2 et 5)
+ *   thalath-sigh       module 7 — trois tarifs : la droite la plus basse, trois plages (درس 5, laboratoire)
+ *   tafsir-natija      module 7 — interpréter : nombre entier, en dinars, sans dépasser la somme
+ *   tariqat-wadiya     module 7 — la démarche : قراءة · تحليل · تنفيذ
+ * Les nombres sont ceux de la situation du module 7 ; ceux de « إختبار أولي » (la sortie aux Sablettes)
  * n'apparaissent dans aucun item.
  */
 export const LESSON_KNOWLEDGE = {
   modules: {
-    1: [
+    7: [
       { id: 'jumla-bayaniya', type: 'methodes', title: 'عددان مجهولان: مستقيمان ونقطة تقاطعهما', summary: 'نكتب كل معادلة من الجملة على شكل دالة تآلفية ونمثّلها بمستقيم، وحلّ الجملة إحداثيتا نقطة تقاطع المستقيمين: الفاصلة أولا ثم الترتيب.',
         body: (
           <ul className="list-disc ms-5 space-y-1">
@@ -62,16 +59,6 @@ export const LESSON_KNOWLEDGE = {
             {SITUATION.analysis.map((a) => <li key={a.label}><strong>{a.label}</strong>: <MathText>{a.text}</MathText></li>)}
           </ol>
         ) },
-    ],
-    3: [
-      { id: 'tawazi', type: 'regles', title: 'نفس ثمن الوحدة: مستقيمان متوازيان', summary: 'صيغتان لهما ثمن الوحدة نفسه ومبلغان ثابتان مختلفان لا تتساويان أبدا: مستقيماهما متوازيان، والأرخص هي ذات المبلغ الثابت الأصغر دائما.',
-        body: <p><MathText>{REMARKS.tawazi}</MathText></p> },
-      { id: 'tanaqus', type: 'methodes', title: 'دالة تآلفية متناقصة',
-        predictPrompt: 'وجدت أنّ نسبة الشحن بعد $x$ ساعة هي $f(x) = -15x + 100$ ، والبطارية تفرغ مع مرور الوقت. ما الذي في هذا الدستور يخبرك بذلك؟ وكيف تجد بعد كم ساعة تفرغ البطارية تماما؟ اكتب الطريقة.',
-        summary: 'إذا كان المعامل سالبا فالدالة تتناقص والمستقيم ينزل، ولمعرفة متى تنعدم نبحث عن العدد الذي صورته صفر.',
-        body: <p><MathText>{REMARKS.tanaqus}</MathText></p> },
-      { id: 'mutarajiha-ikhtiyar', type: 'methodes', title: '«أرخص» متراجحة', summary: 'نترجم «أرخص» بمتراجحة تامة ونحلّها، ثم نختار أصغر عدد طبيعي يحقّقها.',
-        body: <p><MathText>{REMARKS.mutarajiha}</MathText></p> },
     ],
   },
 };

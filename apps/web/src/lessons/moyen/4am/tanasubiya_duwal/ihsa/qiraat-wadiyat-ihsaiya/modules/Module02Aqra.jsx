@@ -26,6 +26,7 @@ export default function Module02Aqra() {
 
   return (
     <ContentModule
+      objectives={["ماذا يعدّ المحور العمودي وما خطوة تدريجه؟", "كيف أترجم مخططًا بالأعمدة إلى جدول؟", "ماذا أفعل حين يجمع عمود واحد قناتين؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}

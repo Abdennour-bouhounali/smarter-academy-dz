@@ -62,6 +62,7 @@ export default function Module01Nashat() {
 
   return (
     <ContentModule
+      objectives={["ماذا يحدث لأحرف المجسّم ومساحته وحجمه حين نكبّره أو نصغّره؟", "بأيّ عدد تُضرب المساحة وبأيّ عدد يُضرب الحجم؟", "هل تكفي إضافة $1\\,\\mathrm{cm}$ لكل حرف؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
@@ -183,7 +184,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'وماذا لو كبّرناه بالنسبة 2؟', subtitle: 'نفس القاعدة', done: q4,
+          num: 4, title: 'وماذا لو كبّرناه بالنسبة 2؟', subtitle: 'هل تتغيّر النتيجة؟', done: q4,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" text="نكبّر الآن متوازي المستطيلات ABCDEFGH (5 و 4 و 3) بالنسبة $k = 2$ ، كما فعلت في المستوى «متقدم»." source={PLATFORM_SOURCE} compact />

@@ -1,11 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import IslamicGreeting from '../../islamic/IslamicGreeting';
 
 /**
- * « السلام عليكم … 🌿 » — l'en-tête PERSONNEL de l'accueil, volontairement
- * plus léger que le héros : la salutation partagée (IslamicGreeting, la même
- * que celle de l'enseignant), la classe (donnée du catalogue, jamais écrite
- * en dur) et une phrase. Il situe l'élève ; il ne lui demande rien.
+ * « أهلًا … 👋 » — l'en-tête PERSONNEL de l'accueil, volontairement plus
+ * léger que le héros : un prénom, la classe (donnée du catalogue, jamais
+ * écrite en dur) et une phrase. Il situe l'élève ; il ne lui demande rien.
  *
  * La classe est annoncée ici parce que « واصل درسك » peut proposer une leçon
  * d'une autre classe (getResumeLesson n'est pas cadré — ARCHITECTURE.md §10) :
@@ -19,7 +17,7 @@ export default function HomeGreeting({ name, gradeName }) {
         {t('home.cycle')}
       </p>
       <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900 text-balance xl:whitespace-nowrap">
-        <IslamicGreeting name={name} />
+        {t('home.greeting', { name })}
       </h1>
       {gradeName ? (
         <>

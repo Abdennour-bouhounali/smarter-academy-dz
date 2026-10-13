@@ -4,7 +4,7 @@
 //   1. la page d'UNITÉ liste les 3 leçons dans l'ordre du manuel, puis la synthèse, sous « ميدان الهندسة » ;
 //   2. CHAQUE module de CHAQUE leçon se monte sans erreur console, en RTL, sans débordement
 //      horizontal (1280 et 320 px), sans clé i18n brute ;
-//   3. chaque laboratoire de l'unité (thales-beam, parallel-level, segment-divider, et dans la synthèse shadow-stick
+//   3. chaque laboratoire de l'unité (thales-beam, parallel-level, segment-divider, et dans la synthèse shadow-world
 //      au niveau مبتدئ, cone-cylinder au niveau متقدم)
 //      tient dans UN écran avec ses commandes, aux deux niveaux, à 1280×800, 1366×768, 390×844, 320×640
 //      (MANIPULATION_CONTRACT §8bis).
@@ -92,7 +92,7 @@ for (const mobile of (process.env.LABS_ONLY ? [] : [false, true])) {
  */
 const GLANCE = {
   'thales-beam': '[data-tb-glance]', 'parallel-level': '[data-pl-glance]', 'segment-divider': '[data-sd-glance]',
-  'shadow-stick': '[data-sh-glance]', 'cone-cylinder': '[data-cc-glance]',
+  'shadow-stick': '[data-sh-glance]', 'shadow-world': '[data-sw-glance]', 'cone-cylinder': '[data-cc-glance]',
 };
 async function fitsOneScreen(page, type) {
   return page.evaluate(async ([t, g]) => {
@@ -110,10 +110,10 @@ async function fitsOneScreen(page, type) {
 const VIEWPORTS = [[1280, 800], [1366, 768], [390, 844], [320, 640]];
 // [leçon, type par niveau, numéro du module qui monte le lab] — la synthèse change de TYPE avec le niveau.
 const LABS = [
-  ['talis-hisab-atwal', { beginner: 'thales-beam', advanced: 'thales-beam' }, 1],
+  ['talis-hisab-atwal', { beginner: 'shadow-world', advanced: 'shadow-world' }, 1],
   ['aksiya-talis', { beginner: 'parallel-level', advanced: 'parallel-level' }, 1],
   ['inshaat-talis', { beginner: 'segment-divider', advanced: 'segment-divider' }, 1],
-  ['wadiya-idmajiya-talis', { beginner: 'shadow-stick', advanced: 'cone-cylinder' }, 1],
+  ['wadiya-idmajiya-talis', { beginner: 'shadow-world', advanced: 'cone-cylinder' }, 7],
 ];
 for (const [lesson, types, number] of (process.env.MOUNT_ONLY ? [] : LABS)) {
   for (const vp of VIEWPORTS) {

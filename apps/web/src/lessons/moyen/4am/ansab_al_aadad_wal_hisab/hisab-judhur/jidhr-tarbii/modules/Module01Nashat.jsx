@@ -77,6 +77,7 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 1 — الوتر BC ومربّعه 5"
       moduleSubtitle="العدد الموجب الذي مربّعه 5"
       estimatedTime="14 دقيقة"
+      objectives={['كيف نكتب طول الوتر $BC$ الذي مربّعه 5 دون خطأ في الأرقام؟', 'هل تعطينا الحاسبة القيمة المضبوطة؟', 'ماذا نحصل عليه إذا ربّعنا جذرًا تربيعيًا، أو أخذنا جذر مربّع؟']}
       brief={{
         tag: 'تحدّ ص 19 — أنشطة ص 20',
         headline: 'خزان ماء قاعدته مربعة',
@@ -213,7 +214,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'القيمة المضبوطة والرمز، ثم الجذر التربيعي لكل عدد موجب', subtitle: 'السؤال 3: أعط الناتج ذهنيا', done: q4,
+          num: 4, title: 'كيف نكتب هذا الطول بدقّة؟ وماذا عن بقية الأعداد الموجبة؟', subtitle: 'السؤال 3: أعط الناتج ذهنيا', done: q4,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="qima-mudbuta" lead="ما وجدته له اسم ورمز في الكتاب:" />
@@ -282,7 +283,7 @@ export default function Module01Nashat() {
               <TextbookBox kind="exercise" title="إنشاء" lines={[ICT_CONSTRUCT.title, ...ICT_CONSTRUCT.steps]} source={ICT_CONSTRUCT.source} compact />
               <RootSpiral names={ICT_CONSTRUCT.points} caption="كل قطعة جديدة طولها 1 وعمودية على القطعة السابقة المرسومة من B." />
               <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">لا نحتاج إلى البرمجية: خاصية فيثاغورس تكفي.</p>}
+                intro={<p className="text-sm font-semibold text-slate-700">نحسب الطولين دون البرمجية: أيّ خاصية تربط أضلاع المثلث القائم؟</p>}
                 rows={[
                   { id: 'bc', label: ICT_CONSTRUCT.questions[0], options: [<MathText key="s">{'$\\sqrt{2}$'}</MathText>, '2', <bdi key="d" dir="ltr">1,414213562</bdi>], correct: 0, correction: <MathText>{'$BC^2 = AB^2 + AC^2 = 1 + 1 = 2$ إذن $BC = \\sqrt{2}$'}</MathText> },
                   { id: 'bh', label: ICT_CONSTRUCT.questions[1], options: ['7', <MathText key="s6">{'$\\sqrt{6}$'}</MathText>, <MathText key="s7">{'$\\sqrt{7}$'}</MathText>], correct: 2, correction: <MathText>{'$BD^2 = 2 + 1 = 3$ ، $BE^2 = 4$ ، … ، $BH^2 = 6 + 1 = 7$ إذن $BH = \\sqrt{7}$'}</MathText> },

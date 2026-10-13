@@ -4,9 +4,9 @@
  * modèle : handasa/khassiyat-talis/wadiya-idmajiya-talis.
  *
  *   — aucune connaissance nouvelle : la DÉMARCHE du manuel appliquée à la وضعية (Thalès dans la ligne de visée, la
- *     tangente dans le petit triangle, la vérification et l'arrondi en fin de calcul), et l'outil de « أتعمّق » (un
+ *     tangente dans le petit triangle, la vérification et l'arrondi en fin de calcul), et le rappel de l'outil du test final (un
  *     triangle rectangle à l'intérieur d'un solide) ;
- *   — la وضعية du manuel est résolue au module 1 (enseignement) ; l'évaluation est une AUTRE minaret et un conteneur,
+ *   — la وضعية du manuel est résolue au module 7 (enseignement) ; l'évaluation est une AUTRE minaret et un conteneur,
  *     dont aucune réponse n'est ici (A.10 règle 14) ;
  *   — les trois erreurs sont celles que les modules 1 et 3 corrigent avec leur « لماذا؟ » : la distance poteau–مقام au
  *     lieu de la distance totale, le rapport pris pour la mesure de l'angle, l'arrondi de AD avant le sinus.
@@ -36,7 +36,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'nazar', kind: 'method', lane: 'center', requires: 'talis-khatt-nazar', notebook: true, title: 'طالس في خط النظر', subtitle: 'ارتفاع المقام', reveals: ['nazarKhata', 'zawiya'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 3 : la distance poteau–مقام au lieu de AM (MISC-MUTH-TALIS-NAZAR).
+      // ⛔ خطأ شائع — module 7, étape 3 : la distance poteau–مقام au lieu de AM (MISC-MUTH-TALIS-NAZAR).
       id: 'nazarKhata', kind: 'common_mistake', lane: 'start', requires: 'talis-khatt-nazar',
       title: 'PM بدل AM؟', subtitle: 'المسافة الكلية',
       context: {
@@ -50,7 +50,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'zawiya', kind: 'method', lane: 'end', requires: 'zawiya-bi-zill', notebook: true, title: 'زاوية النظر بالظل', subtitle: 'اللمسة العكسية', reveals: ['qaysKhata', 'mulaama'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 6 : le rapport 0,94 pris pour la mesure (MISC-MUTH-NISBA-BADAL-QAYS).
+      // ⛔ خطأ شائع — module 7, étape 6 : le rapport 0,94 pris pour la mesure (MISC-MUTH-NISBA-BADAL-QAYS).
       id: 'qaysKhata', kind: 'common_mistake', lane: 'start', requires: 'zawiya-bi-zill',
       title: 'النسبة بدل القيس', subtitle: 'الظل ليس الزاوية',
       context: {
@@ -64,9 +64,9 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'mulaama', kind: 'relationship', lane: 'end', requires: 'mulaamat-natija', notebook: true, title: 'التحقّق والتدوير', reveals: ['marahil'] },
     { id: 'marahil', kind: 'method', lane: 'center', requires: 'tariqat-wadiya', notebook: true, title: 'من النص إلى الجواب', reveals: ['fada'] },
-    { id: 'fada', kind: 'method', lane: 'center', requires: 'muthallath-fada', notebook: true, title: 'مثلث قائم داخل مجسّم', subtitle: 'التمرينان 31 و 32', reveals: ['fadaKhata', 'khulasa'] },
+    { id: 'fada', kind: 'method', lane: 'center', requires: 'muthallath-fada', notebook: true, title: 'مثلث قائم داخل مجسّم', subtitle: 'الحاوية والمجسّمات', reveals: ['fadaKhata', 'khulasa'] },
     {
-      // ⛔ خطأ شائع — module 3, ex. 31 : AD arrondi à 4 avant le sinus (MISC-MUTH-TADWIR-MUBAKKIR).
+      // ⛔ خطأ شائع — module 7 (rappel `muthallath-fada`) : AD arrondi à 4 avant le sinus (MISC-MUTH-TADWIR-MUBAKKIR).
       id: 'fadaKhata', kind: 'common_mistake', lane: 'start', requires: 'muthallath-fada',
       title: 'التدوير قبل الأوان', subtitle: 'AD مدوّرا',
       context: {

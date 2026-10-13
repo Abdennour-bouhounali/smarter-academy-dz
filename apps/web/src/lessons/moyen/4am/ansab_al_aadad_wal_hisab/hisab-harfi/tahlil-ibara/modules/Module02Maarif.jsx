@@ -28,6 +28,7 @@ export default function Module02Maarif() {
   return (
     <ContentModule
       ctx={MODULE_CTX}
+      objectives={["ماذا يعني «تحليل» عبارة جبرية؟", "كيف نتعرّف على العامل المشترك الكامل؟", "أيّ العبارات تُقرأ في الاتجاه المعاكس لمتطابقة شهيرة؟"]}
       navLinks={getNavLinks(2)}
       moduleNumber={2}
       moduleTitle="معارف — التحليل"
@@ -103,7 +104,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 3, title: 'ملعب لا يُغلق', subtitle: 'مربّع كبير ومربّعات صغيرة فقط', done: q4,
+          num: 3, title: 'هل يُغلق هذا الملعب؟', subtitle: 'مربّع كبير ومربّعات صغيرة فقط', done: q4,
           content: (
             <div className="space-y-3">
               <Manipulation

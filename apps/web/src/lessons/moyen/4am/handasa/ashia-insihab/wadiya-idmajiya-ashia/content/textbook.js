@@ -1,13 +1,13 @@
-import { src, addition, BASE } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
 
 /**
  * « أستعدّ » (module 0) — le « أستعدّ » du manuel (p. 128, items 1–7) appartient aux leçons 1 et 2 (extraction ›
  * destinations › prep) : la synthèse n'en reçoit aucun. Ses affirmations sont donc des AFFIRMATIONS DE LA PLATEFORME
- * (« عبارة إضافية من المنصّة »), dans la forme du manuel, sur ce que la وضعية, « أؤكّد تعلّماتي » et « أتعمّق » mobilisent :
+ * (« عبارة إضافية من المنصّة »), dans la forme du manuel, sur ce que la وضعية et l'épreuve finale mobilisent :
  * l'égalité de deux vecteurs (درس 1), l'image par une translation (درس 1), AB = DC ⇔ ABCD متوازي أضلاع et l'ordre des
  * lettres (درس 2), la relation de Chasles (درس 3), et trois outils des années précédentes — la distance entre deux
  * parallèles, l'inégalité triangulaire, Pythagore — plus la droite des milieux (ex. 22). Quatre vraies, quatre
- * fausses ; jamais les nombres de la وضعية (7, 6, 2), du QCM ou des exercices 19 et 22.
+ * fausses ; jamais les nombres de la وضعية (7, 6, 2).
  */
 export const PREP_ITEMS = [
   { n: 1, skill: 'tasawi', text: 'إذا كان $KL = RS$ (طولان متساويان) فإنّ $\\overrightarrow{KL} = \\overrightarrow{RS}$ .', answer: false,
@@ -60,7 +60,7 @@ export const SITUATION = {
 export const analysisText = (a) => a.items.map((s) => `• ${s}`).join(' ');
 
 /**
- * Les props du laboratoire du module 1 — `bridge-path` (écrit pour cette leçon : logic/bridgePath.js,
+ * Les props du laboratoire du module 7 — `bridge-path` (écrit pour cette leçon : logic/bridgePath.js,
  * vectors/BridgePath.jsx), écrites ici une fois : le module les étale, le test de rendu (lab.render.test.jsx) monte le
  * workspace avec ces mêmes objets.
  *   مبتدئ  une passerelle sur la gorge du Rhummel à Constantine (`bridge`) : A 1 carreau au-dessus, B 2 au-dessous,
@@ -79,7 +79,7 @@ export const LAB_EXPECT = {
 };
 
 /**
- * Les phrases de la correction du module 1, importées aussi par knowledge.jsx et la carte (knowledgeGraph.js) :
+ * Les phrases de la correction du module 7, importées aussi par knowledge.jsx et la carte (knowledgeGraph.js) :
  * une aide de la carte cite la leçon mot pour mot. Toute égalité dans `$…$`.
  */
 export const REMARKS = {
@@ -111,43 +111,7 @@ export const REMARKS = {
   ittijahWhy: "$\\overrightarrow{MN}$ و $\\overrightarrow{NM}$ متعاكسان: B تنزل بدل أن تصعد، فلا يكون MB′BN متوازي أضلاع ولا يتحقّق $NB = MB'$ .",
   ittijahRight: "$\\overrightarrow{BB'} = \\overrightarrow{NM}$ : نفس منحى الممر ونفس اتجاهه من N نحو M ونفس طوله.",
   tajnid: 'في كل وضعية نبحث عن الأشعة المتساوية التي يعطيها الانسحاب، ثم عن متوازي الأضلاع الذي ينقل طولا إلى مكان آخر، ثم عن الخط المستقيم الذي يعطي أقصر مسافة.',
-  // أتعمّق
-  burhan: 'لإثبات طبيعة شكل بالأشعة: نترجم كل صورة بانسحاب إلى تساوي شعاعين، ونستعمل علاقة شال لإدخال نقطة، ثم نستنتج متوازي أضلاع (أو منتصفا) ونتمّم بخواص القطرين.',
-  burhanWrong: 'من $\\overrightarrow{MN} = \\overrightarrow{PQ}$ نستنتج أنّ MNPQ متوازي أضلاع.',
-  burhanWhy: 'الترتيب مهمّ: $\\overrightarrow{MN} = \\overrightarrow{PQ}$ يعطي MNQP متوازي أضلاع؛ لكي يكون MNPQ متوازي أضلاع نحتاج $\\overrightarrow{MN} = \\overrightarrow{QP}$ .',
-  burhanRight: '$\\overrightarrow{MN} = \\overrightarrow{QP}$ ومنه MNPQ متوازي أضلاع',
 };
-
-/**
- * « أؤكّد تعلّماتي » (p. 136) : les sept QCM, au mot près, chacun renvoyé au درس qui l'enseigne et à la colonne
- * « عند الحاجة أعود إلى الصفحة » du manuel. Items 1 et 2 : DEUX bonnes réponses (une ligne صحيح / خاطئ par réponse).
- * Item 4 : les réponses sont des FIGURES (content/figures.js › QCM4_OPTIONS). Les options sont dans l'ordre (1), (2),
- * (3) du manuel (le tableau les imprime de droite à gauche).
- */
-const QCM_RAW = [
-  { n: 1, text: 'على الشكل المقابل الشعاعان اللذان لهما نفس المنحى ونفس الاتجاه ونفس الطول هما…', options: ['$\\overrightarrow{MN}$ و $\\overrightarrow{GH}$', '$\\overrightarrow{AC}$ و $\\overrightarrow{GH}$', '$\\overrightarrow{GH}$ و $\\overrightarrow{EF}$'], correct: [1, 2],
-    pages: [130], lessons: ['insihab-shuaa'],
-    explain: 'الأشعة الأفقية الأربعة لها نفس المنحى ونفس الطول، لكن $\\overrightarrow{MN}$ نحو اليسار و $\\overrightarrow{AC}$ و $\\overrightarrow{GH}$ و $\\overrightarrow{EF}$ نحو اليمين: الإجابتان (2) و (3) صحيحتان، أمّا $\\overrightarrow{MN}$ و $\\overrightarrow{GH}$ فمتعاكسان.' },
-  { n: 2, text: 'إذا كانت النقطة T هي صورة S بالانسحاب الذي شعاعه $\\overrightarrow{AB}$ فإن…', options: ['$\\overrightarrow{TS} = \\overrightarrow{AB}$', '$\\overrightarrow{TS} = \\overrightarrow{BA}$', '$\\overrightarrow{ST} = \\overrightarrow{AB}$'], correct: [1, 2],
-    pages: [130, 131], lessons: ['insihab-shuaa', 'shuaayn-mutasawiyayn'],
-    explain: 'T صورة S معناه $\\overrightarrow{ST} = \\overrightarrow{AB}$ ، والشعاعان المعاكسان لهما متساويان أيضا: $\\overrightarrow{TS} = \\overrightarrow{BA}$ . الإجابتان (2) و (3) صحيحتان، و $\\overrightarrow{TS}$ يعاكس $\\overrightarrow{AB}$ .' },
-  { n: 3, text: 'في الشكل المقابل لدينا…', options: ['الشعاعان $\\overrightarrow{AB}$ و $\\overrightarrow{CD}$ متعاكسان', 'الشعاعان $\\overrightarrow{AB}$ و $\\overrightarrow{GH}$ متعاكسان', 'الشعاعان $\\overrightarrow{GH}$ و $\\overrightarrow{EH}$ متعاكسان'], correct: 0,
-    pages: [130], lessons: ['insihab-shuaa'],
-    explain: '$\\overrightarrow{AB}$ و $\\overrightarrow{CD}$ لهما نفس المنحى ونفس الطول واتجاهان متعاكسان. $\\overrightarrow{GH}$ أقصر من $\\overrightarrow{AB}$ ، و $\\overrightarrow{EH}$ شاقولي: ليس له منحى $\\overrightarrow{GH}$ .' },
-  { n: 4, text: 'A، B، C ثلاث نقط. ممثل الشعاع $\\overrightarrow{AB} + \\overrightarrow{AC}$ هو …', options: ['الشعاع $\\overrightarrow{CB}$', 'الشعاع $\\overrightarrow{BC}$', 'الشعاع $\\overrightarrow{AE}$'], correct: 2,
-    pages: [132, 133], lessons: ['majmu-shuaayn'],
-    explain: 'قاعدة متوازي الأضلاع: الشعاعان لهما نفس المبدأ A، فمجموعهما هو القطر $\\overrightarrow{AE}$ من A في متوازي الأضلاع ABEC. ( $\\overrightarrow{AC} = \\overrightarrow{BE}$ ثم $\\overrightarrow{AB} + \\overrightarrow{BE} = \\overrightarrow{AE}$ .) $\\overrightarrow{BC}$ و $\\overrightarrow{CB}$ هما القطر الآخر.' },
-  { n: 5, text: 'ABC مثلث قائم في A حيث $AB = 4$ و $AC = 3$ . طول الشعاع $\\overrightarrow{AB} + \\overrightarrow{AC}$ هو..', options: ['7', '$\\sqrt{7}$', '5'], correct: 2,
-    pages: [132], lessons: ['majmu-shuaayn'],
-    explain: '$\\overrightarrow{AB} + \\overrightarrow{AC} = \\overrightarrow{AD}$ قطر المستطيل ABDC، وطوله يساوي طول القطر الآخر BC: $\\sqrt{4^2 + 3^2} = 5$ . 7 مجموع الطولين (طول المجموع ليس مجموع الطولين)، و $\\sqrt{7}$ جذر مجموعهما.' },
-  { n: 6, text: 'A، B، C ثلاث نقط حيث $\\overrightarrow{AB} = \\overrightarrow{CA}$ . إذن', options: ['B و C متناظرتان بالنسبة إلى A', 'A و B متناظرتان بالنسبة إلى C', 'A و C متناظرتان بالنسبة إلى B'], correct: 0,
-    pages: [131, 132], lessons: ['shuaayn-mutasawiyayn'],
-    explain: '$\\overrightarrow{CA} = \\overrightarrow{AB}$ معناه أنّ A منتصف [CB]: النقطتان B و C متناظرتان بالنسبة إلى A.' },
-  { n: 7, text: 'الشعاع $\\overrightarrow{MN} + \\overrightarrow{NP}$ يساوي الشعاع', options: ['$\\overrightarrow{0}$', '$\\overrightarrow{MP}$', '$\\overrightarrow{PM}$'], correct: 1,
-    pages: [132], lessons: ['majmu-shuaayn'],
-    explain: 'علاقة شال: $\\overrightarrow{MN} + \\overrightarrow{NP} = \\overrightarrow{MP}$ ، من مبدأ الأول إلى نهاية الثاني. $\\overrightarrow{PM}$ يعاكسه، و $\\overrightarrow{0}$ يكون فقط لو كانت P هي M.' },
-];
-export const QCM = QCM_RAW.map((it) => ({ ...it, source: src('qcm', 136, 'أؤكّد تعلّماتي', it.n), lessonPaths: it.lessons.map((l) => `${BASE}/${l}`) }));
 
 /** Les titres des leçons du propriétaire (catalogue). */
 export const LESSON_TITLES = {
@@ -158,7 +122,7 @@ export const LESSON_TITLES = {
 };
 
 /**
- * « إختبار أولي » (module 4) — la وضعية TRANSPOSÉE (`synthesis_generation`) : mêmes ressources, autres nombres, pour
+ * « وضعية الاختبار النهائي » (module 8) — la وضعية TRANSPOSÉE (`synthesis_generation`) : mêmes ressources, autres nombres, pour
  * que les réponses n'apparaissent nulle part ailleurs dans la leçon. Une passerelle au-dessus de l'autoroute à Oran
  * (un carreau = 10 m) : largeur 30 m, la station du tramway A à 20 m au-dessus du bord haut, le stade B à 40 m au-dessous
  * du bord bas, 90 m d'écart horizontal. B′ est 10 m sous le bord bas ; AB′ = √(90² + 60²) = 30√13 ≈ 108,17 m ;
@@ -167,5 +131,5 @@ export const LESSON_TITLES = {
 export const TEST = {
   source: addition('synthesis_generation'),
   title: 'وضعية أخرى: جسر للراجلين فوق الطريق السيار بوهران',
-  text: 'قرّرت ولاية وهران بناء جسر للراجلين [MN] فوق الطريق السيار، عموديا على حافتيه المتوازيتين، ليعبر المشجّعون من محطة الترامواي A إلى الملعب B. على الخريطة (ورقة مرصوفة، ضلع المربع يمثّل $10\\,\\mathrm{m}$ ): عرض الطريق $30\\,\\mathrm{m}$ ، والمحطة A فوق الحافة العليا بـ $20\\,\\mathrm{m}$ ، والملعب B تحت الحافة السفلى بـ $40\\,\\mathrm{m}$ ، والمسافة الأفقية بين A و B تساوي $90\\,\\mathrm{m}$ . نريد أن يكون طول المسلك من A إلى B مرورا بـ M ثم N أقصر ما يمكن.',
+  text: 'حفاظًا على سلامة المشجّعين وحرصًا على وصولهم في الوقت، قرّرت ولاية وهران بناء جسر للراجلين [MN] فوق الطريق السيار، عموديا على حافتيه المتوازيتين، ليعبر المشجّعون من محطة الترامواي A إلى الملعب B. على الخريطة (ورقة مرصوفة، ضلع المربع يمثّل $10\\,\\mathrm{m}$ ): عرض الطريق $30\\,\\mathrm{m}$ ، والمحطة A فوق الحافة العليا بـ $20\\,\\mathrm{m}$ ، والملعب B تحت الحافة السفلى بـ $40\\,\\mathrm{m}$ ، والمسافة الأفقية بين A و B تساوي $90\\,\\mathrm{m}$ . نريد أن يكون طول المسلك من A إلى B مرورا بـ M ثم N أقصر ما يمكن.',
 };

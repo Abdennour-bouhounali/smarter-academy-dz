@@ -18,6 +18,7 @@ import { createContext, useContext } from 'react';
  *   scope               la portée présentée : 'lesson' | 'module' | 'exercise' | 'manipulation'
  *   title               le titre annoncé sur la barre d'outils
  *   scale               l'échelle effective (--sa-classroom-scale), 0.55…1.25
+ *   userScale           la part choisie par l'enseignant (90 · 100 · 110 · 125 %), sans l'ajustement
  *   area                { width, height } offerts au contenu, en px
  *   enterClassroomMode({ scope?, title? })  entrer, en disant ce qu'on présente
  *   exitClassroomMode   / toggleClassroomMode
@@ -48,6 +49,7 @@ export const CLASSROOM_INACTIVE = Object.freeze({
   scope: null,
   title: '',
   scale: 1,
+  userScale: 1,
   area: { width: 0, height: 0 },
   enterClassroomMode: noop,
   exitClassroomMode: noop,

@@ -58,6 +58,7 @@ export const MANIPULATION_COMPONENTS = {
   'parallel-level': lazy(() => import('./geometry/ParallelLevel')),
   'segment-divider': lazy(() => import('./geometry/SegmentDivider')),
   'shadow-stick': lazy(() => import('./geometry/ShadowStick')),
+  'shadow-world': lazy(() => import('./geometry/ShadowWorld')),
   'cone-cylinder': lazy(() => import('./geometry/ConeCylinder')),
   // Unité 10 « حساب المثلثات في المثلث القائم » (2026-10-04).
   'ramp-ratios': lazy(() => import('./geometry/RampRatios')),

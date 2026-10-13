@@ -3,7 +3,7 @@
   "lessonCode": "wadiya-idmajiya-khattiya",
   "level": 1,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 8 — تخفيض بـ 10%",
+    "title": "تخفيض بـ 10%",
     "estimatedMinutes": 4,
     "tags": [
       "نسبة مئوية",
@@ -13,7 +13,7 @@
       "type": "textbook",
       "elementId": "qcm",
       "page": 74,
-      "section": "أؤكّد تعلّماتي",
+      "section": "الوضعيات",
       "number": 8,
       "adaptedFrom": "ex-4am-wadiya-idmajiya-khattiya-l1-008"
     },
@@ -25,7 +25,7 @@
     }
   },
   "statement": {
-    "content": "يخفّض محل للأجهزة الكهرومنزلية كل أسعاره بـ 10%. نسمّي $x$ سعر جهاز قبل التخفيض (بـ DA) و $f(x)$ سعره بعد التخفيض."
+    "content": "يخفّض محل للأجهزة الكهرومنزلية كل أسعاره بـ 10%، تضامنًا مع الأسر محدودة الدخل قبل شهر رمضان. نسمّي $x$ سعر جهاز قبل التخفيض (بـ DA) و $f(x)$ سعره بعد التخفيض."
   },
   "questions": [
     {

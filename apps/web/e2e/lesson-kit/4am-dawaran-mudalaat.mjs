@@ -131,7 +131,7 @@ const LABS = [
   ['khawas-dawaran', { beginner: 'shape-turn', advanced: 'shape-turn' }, 1],
   ['zawiya-muhitiya', { beginner: 'inscribed-angle', advanced: 'inscribed-angle' }, 1],
   ['mudalaat-muntazama', { beginner: 'polygon-forge', advanced: 'polygon-forge' }, 1],
-  ['wadiya-idmajiya-dawaran', { beginner: 'lamp-ring', advanced: 'lamp-ring' }, 1],
+  ['wadiya-idmajiya-dawaran', { beginner: 'lamp-ring', advanced: 'lamp-ring' }, 7],
 ].map(([l, t, n]) => [l, t, LAB_MODULE[l] ?? n]);
 for (const [lesson, types, number] of (process.env.MOUNT_ONLY ? [] : LABS)) {
   for (const vp of VIEWPORTS) {

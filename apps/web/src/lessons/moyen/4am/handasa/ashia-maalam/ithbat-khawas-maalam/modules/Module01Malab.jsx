@@ -39,10 +39,10 @@ export default function Module01Malab() {
 
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="ملعب الحي — الفار لا يصدّق عينيه"
-      moduleSubtitle="شواخص على أرضية مرصوفة، وحَكَم لا يقبل إلا الحساب" estimatedTime="12 دقيقة"
+      moduleSubtitle="شواخص على أرضية مرصوفة، وحَكَم لا يقبل إلا الحساب" objectives={['ماذا يقبله الفار دليلًا على طبيعة شكل؟', 'لماذا قد يبدو مثلث قائمًا ولا يكون كذلك؟', 'أيّ أدلة تكفي لإثبات طبيعة رباعي؟']} estimatedTime="12 دقيقة"
       brief={{
         tag: 'مدخل الدرس — مختبر من المنصّة على طريقة الكتاب (ص 145)', headline: 'الفار لا يصدّق عينيه', emoji: '📺',
-        title: 'نثبت طبيعة شكل بمساواة محسوبة من الإحداثيات، لا بما نراه', tone: 'emerald',
+        title: 'ماذا يقبله الفار دليلًا على طبيعة شكل؟', tone: 'emerald',
         visual: <PitchVignette />,
         body: (
           <div className="space-y-2" data-situation="malab">
@@ -66,7 +66,7 @@ export default function Module01Malab() {
         />
       }
       steps={[
-        { num: 1, title: 'بدا قائما… فرفضه الفار', subtitle: 'الشكل لا يبرهن', done: !!q[1],
+        { num: 1, title: 'بدا قائما… فرفضه الفار', subtitle: 'العين أم الحساب؟', done: !!q[1],
           content: (
             <div className="space-y-3">
               <LabEvidence id="beginner-look" trials={trials} level="beginner" title="ما راجعه الفار في المستوى المبتدئ:"

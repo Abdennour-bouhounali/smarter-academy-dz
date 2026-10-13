@@ -41,13 +41,14 @@ export const LESSON_CONFIG = {
   knowledgeMapMode: 'progressive',
   // Les acquis que « أستعدّ » (p. 19, items 1, 2, 4, 10 + deux ajouts) diagnostique.
   priorKnowledge: ['murabba-adad', 'khassiyat-fithaghuras', 'alat-hasiba-jidhr'],
-  // « مسألة الدرس » (content/problems.js › masala-1) : montrée au sommaire et à
-  // la fin du module 1 — le carré construit sur l'hypoténuse du niveau متقدم,
+  // « مسألة الدرس » (content/problems.js › masala-1) : montrée sur la page de l'unité (LessonProblemCard, plus dans le module 1),
+  // résolue au module 4 — le carré construit sur l'hypoténuse du niveau متقدم,
   // avec d'autres nombres (côtés 3 m et 5 m, aire 34).
   lessonProblem: {
     module: 4,
     title: 'حديقة البلدية: حوض أزهار مربّع على الوتر',
-    statement: 'في حديقة البلدية ركن على شكل مثلث $ABC$ قائم في $A$، حيث $AB = 3\\,m$ و $AC = 5\\,m$. يمرّ بجانب هذا الركن ممرّ عرضه $2\\,m$. يريد البستاني أن ينشئ على الضلع $[BC]$، خارج المثلث، حوض أزهار مربّع الشكل $BCDE$. حسب البستاني طول الضلع $BC$ بالحاسبة فعرضت الشاشة 5,830951895. سيُغطّى الحوض بعشب طبيعي ثمن المتر المربّع منه 350 دج، ويُحاط بإطار من الحجارة يُباع بالمتر الكامل، ثمن المتر منه 450 دج.',
+    statement: 'في حديقة البلدية ركن على شكل مثلث $ABC$ قائم في $A$، حيث $AB = 3\\,m$ و $AC = 5\\,m$. يمرّ بجانب هذا الركن ممرّ عرضه $2\\,m$. يريد البستاني، حرصًا على جمال الحديقة ونظافتها، أن ينشئ على الضلع $[BC]$، خارج المثلث، حوض أزهار مربّع الشكل $BCDE$. حسب البستاني طول الضلع $BC$ بالحاسبة فعرضت الشاشة 5,830951895. سيُغطّى الحوض بعشب طبيعي ثمن المتر المربّع منه 350 دج، ويُحاط بإطار من الحجارة يُباع بالمتر الكامل، ثمن المتر منه 450 دج.',
+    illustration: { kind: 'plan', shape: 'tri', fill: 'garden', sides: ['؟', 3, 5], unit: 'm', ariaLabel: 'ركن حديقة على شكل مثلث ABC قائم في A فيه AB = 3 m و AC = 5 m والضلع BC مجهول' },
   },
   resources: [
     // Module 1 — WORKSPACE À DEUX NIVEAUX, un seul instrument : le carré qu'on étire.

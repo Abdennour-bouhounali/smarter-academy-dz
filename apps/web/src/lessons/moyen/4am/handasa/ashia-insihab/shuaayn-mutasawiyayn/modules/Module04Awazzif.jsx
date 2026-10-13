@@ -38,7 +38,7 @@ export default function Module04Awazzif() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
-      moduleNumber={4}
+      moduleNumber={4} objectives={['كيف أبرّر إنشائي بالأشعة؟', 'متى أستعمل متوازي الأضلاع ومتى أستعمل الانسحاب؟', 'ماذا أستنتج من تساوي شعاعين في كل تمرين؟']}
       moduleTitle="أوظّف تعلّماتي"
       moduleSubtitle="تمارين الكتاب 6 و 7 و 9 و 12 و 25"
       estimatedTime="10 دقائق"

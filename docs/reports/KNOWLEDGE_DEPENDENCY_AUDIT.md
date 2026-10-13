@@ -11,7 +11,7 @@
 
 ## Périmètre courant — classes actives (4am, terminale_dz)
 
-64 leçon(s) · critiques 0 · hautes 0 · moyennes 3 · basses 0
+74 leçon(s) · critiques 3 · hautes 0 · moyennes 9 · basses 0
 
 | Leçon | Carte | Bricks | requires | Contrat | C | H | M | L |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -33,7 +33,7 @@
 | `4am:muadalat-x-murabba` | ✅ | 5 | 22/22 | 0 | 0 | 0 | 0 | 0 |
 | `4am:natiqa-ghayr-natiqa` | ✅ | 4 | 15/15 | 0 | 0 | 0 | 0 | 0 |
 | `4am:tawzif-khawass-judhur` | ✅ | 7 | 21/21 | 0 | 0 | 0 | 0 | 0 |
-| `4am:wadiya-idmajiya-judhur` | ✅ | 3 | 25/25 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-judhur` | ✅ | 3 | 25/25 | 0 | 0 | 0 | 6 | 0 |
 | `4am:hall-jabri` | ✅ | 9 | 21/21 | 0 | 0 | 0 | 0 | 0 |
 | `4am:mafhum-jumla` | ✅ | 9 | 23/23 | 0 | 0 | 0 | 0 | 0 |
 | `4am:mushkilat-jumla` | ✅ | 7 | 17/17 | 0 | 0 | 0 | 0 | 0 |
@@ -53,6 +53,16 @@
 | `4am:muntasaf-masafa` | ✅ | 6 | 18/18 | 0 | 0 | 0 | 0 | 0 |
 | `4am:murakkibata-shuaa` | ✅ | 7 | 23/23 | 0 | 0 | 0 | 0 | 0 |
 | `4am:wadiya-idmajiya-maalam` | ✅ | 6 | 26/26 | 0 | 0 | 0 | 0 | 0 |
+| `4am:khawas-dawaran` | ✅ | 9 | 21/21 | 0 | 0 | 0 | 0 | 0 |
+| `4am:mafhum-dawaran` | ✅ | 11 | 25/25 | 0 | 0 | 0 | 0 | 0 |
+| `4am:mudalaat-muntazama` | ✅ | 12 | 21/21 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-dawaran` | ✅ | 5 | 27/27 | 0 | 0 | 0 | 0 | 0 |
+| `4am:zawiya-muhitiya` | ✅ | 10 | 21/21 | 0 | 0 | 0 | 0 | 0 |
+| `4am:kura-julla` | ✅ | 11 | 23/23 | 0 | 0 | 0 | 0 | 0 |
+| `4am:maqati-mustawiya` | ✅ | 9 | 24/24 | 0 | 0 | 0 | 0 | 0 |
+| `4am:misaha-hajm-kura` | ✅ | 9 | 20/20 | 0 | 0 | 0 | 0 | 0 |
+| `4am:takbir-tasghir` | ✅ | 9 | 21/21 | 0 | 0 | 0 | 0 | 0 |
+| `4am:wadiya-idmajiya-fada` | ✅ | 4 | 29/29 | 0 | 0 | 0 | 0 | 0 |
 | `4am:alaqat-muthallathiya` | ✅ | 11 | 26/26 | 0 | 0 | 0 | 0 | 0 |
 | `4am:hasiba-muthallathiya` | ✅ | 8 | 20/20 | 0 | 0 | 0 | 0 | 0 |
 | `4am:nisab-muthallathiya` | ✅ | 14 | 35/35 | 0 | 0 | 0 | 0 | 0 |
@@ -60,7 +70,7 @@
 | `4am:wadiya-idmajiya-muthallathat` | ✅ | 5 | 26/26 | 0 | 0 | 0 | 0 | 0 |
 | `4am:aksiya-talis` | ✅ | 10 | 23/23 | 0 | 0 | 0 | 0 | 0 |
 | `4am:inshaat-talis` | ✅ | 9 | 23/23 | 0 | 0 | 0 | 0 | 0 |
-| `4am:talis-hisab-atwal` | ✅ | 9 | 26/26 | 0 | 0 | 0 | 0 | 0 |
+| `4am:talis-hisab-atwal` | ✅ | 9 | 28/29 | 0 | 0 | 0 | 0 | 0 |
 | `4am:wadiya-idmajiya-talis` | ✅ | 6 | 26/26 | 0 | 0 | 0 | 0 | 0 |
 | `4am:mafhum-taalufiya` | ✅ | 13 | 26/26 | 0 | 0 | 0 | 0 | 0 |
 | `4am:tafsir-bayani-jumla` | ✅ | 10 | 24/24 | 0 | 0 | 0 | 0 | 0 |
@@ -69,8 +79,8 @@
 | `4am:tarrid-taalufi` | ✅ | 10 | 25/25 | 0 | 0 | 0 | 0 | 0 |
 | `4am:wadiya-idmajiya-taalufiya` | ✅ | 10 | 35/35 | 0 | 0 | 0 | 0 | 0 |
 | `4am:mada-wasit-mutawassit` | ✅ | 11 | 26/26 | 0 | 0 | 0 | 0 | 0 |
-| `4am:majdulat-ihsaiya` | ✅ | 10 | 17/17 | 0 | 0 | 0 | 0 | 0 |
-| `4am:qiraat-wadiyat-ihsaiya` | ✅ | 12 | 19/19 | 0 | 0 | 0 | 0 | 0 |
+| `4am:majdulat-ihsaiya` | ✅ | 10 | 17/17 | 1 | 1 | 0 | 0 | 0 |
+| `4am:qiraat-wadiyat-ihsaiya` | ✅ | 12 | 19/19 | 2 | 2 | 0 | 0 | 0 |
 | `4am:takrar-mujamma` | ✅ | 11 | 26/26 | 0 | 0 | 0 | 0 | 0 |
 | `4am:wadiya-idmajiya-ihsa` | ✅ | 7 | 29/29 | 0 | 0 | 0 | 0 | 0 |
 | `4am:dala-khattiya` | ✅ | 9 | 25/25 | 0 | 0 | 0 | 0 | 0 |
@@ -92,7 +102,34 @@
 
 ### `4am:wadiya-idmajiya-aadad`
 
-- **MEDIUM** `W_UNPARSEABLE_STEPS` — apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module02Uakkid.jsx:0  
-  module 2: could not resolve 'steps' to a literal array — its content is invisible to the audit
+- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/lesson.config.js:0  
+  priorKnowledge declares 'qawasim-al-pgcd' but no Module 0 question diagnoses it
+
+### `4am:wadiya-idmajiya-judhur`
+
+- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/wadiya-idmajiya-judhur/lesson.config.js:0  
+  priorKnowledge declares 'ghayr-natiq' but no Module 0 question diagnoses it
+- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/wadiya-idmajiya-judhur/lesson.config.js:0  
+  priorKnowledge declares 'qima-muqarraba' but no Module 0 question diagnoses it
+- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/wadiya-idmajiya-judhur/lesson.config.js:0  
+  priorKnowledge declares 'jidaa-jidhrayn' but no Module 0 question diagnoses it
+- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/wadiya-idmajiya-judhur/lesson.config.js:0  
+  priorKnowledge declares 'qismat-jidhrayn' but no Module 0 question diagnoses it
+- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/wadiya-idmajiya-judhur/lesson.config.js:0  
+  priorKnowledge declares 'tabsit-tawzii' but no Module 0 question diagnoses it
+- **MEDIUM** `W_PRIOR_NOT_DIAGNOSED` — apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/wadiya-idmajiya-judhur/lesson.config.js:0  
+  priorKnowledge declares 'naqt-maqam' but no Module 0 question diagnoses it
+
+### `4am:majdulat-ihsaiya`
+
+- **CRITICAL** `E_REQUIRES_ESTABLISHED_LATER` — apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/modules/Module01Majdul.jsx:151  
+  question 'M01-S2-Q1' requires 'khaliya-majal', established only later by the brick at apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/modules/Module01Majdul.jsx:160
+
+### `4am:qiraat-wadiyat-ihsaiya`
+
+- **CRITICAL** `E_REQUIRES_ESTABLISHED_LATER` — apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx:89  
+  question 'M01-S1-Q1' requires 'mutawassit-majmuat', established only later by the brick at apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx:96
+- **CRITICAL** `E_REQUIRES_ESTABLISHED_LATER` — apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx:124  
+  question 'M01-S3-Q3' requires 'silsila-kamila', established only later by the brick at apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx:138
 
 

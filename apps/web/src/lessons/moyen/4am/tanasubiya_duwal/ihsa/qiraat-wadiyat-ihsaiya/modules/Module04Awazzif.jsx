@@ -18,6 +18,7 @@ export default function Module04Awazzif() {
 
   return (
     <ContentModule
+      objectives={["كيف أقارن سلسلتين بمؤشّرين قبل أن أقرّر؟", "كيف تؤثّر قيمة متطرّفة في ما أستنتجه؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}

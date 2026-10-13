@@ -3,23 +3,23 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { thales as TH, linear as LIN } from '@smarter-academy/core';
 import '../../../../../../i18n';
-import ShadowStick from '../../../../../common/manipulations/geometry/ShadowStick';
+import ShadowWorld from '../../../../../common/manipulations/geometry/ShadowWorld';
 import ConeCylinder from '../../../../../common/manipulations/geometry/ConeCylinder';
 import ManipulationWorkspace from '../../../../../common/manipulations/ManipulationWorkspace';
-import * as SH from '../../../../../common/manipulations/logic/shadowStick';
+import * as SW from '../../../../../common/manipulations/logic/shadowWorld';
 import * as CC from '../../../../../common/manipulations/logic/coneCylinder';
 import { LAB, CHALLENGE, SITUATION, TEST } from './content/textbook';
 
 /**
- * Le workspace du module 1 de la synthèse — deux TYPES dans un workspace (shadow-stick à مبتدئ, cone-cylinder à
+ * Le workspace du module 7 de la synthèse — deux TYPES dans un workspace (shadow-world à مبتدئ, cone-cylinder à
  * متقدم) — rendu avec EXACTEMENT les props que le module étale (content/textbook.js › LAB) ; puis la mathématique
- * que les modules 1 et 4 supposent, recalculée avec packages/core (thales.js) et posée par la main dans la
+ * que les modules 7 et 8 supposent, recalculée avec packages/core (thales.js) et posée par la main dans la
  * logique des deux labs.
  */
 const workspace = () => (
   <ManipulationWorkspace
     levels={{
-      beginner: () => <ShadowStick level="beginner" {...LAB.beginner} />,
+      beginner: () => <ShadowWorld level="beginner" {...LAB.beginner} />,
       advanced: () => <ConeCylinder level="advanced" {...LAB.advanced} />,
     }}
   />
@@ -28,9 +28,9 @@ const t = LIN.fracText;
 
 it('les deux labs se rendent dans le workspace, chacun son monde, sans clé i18n brute ni réponse affichée', () => {
   const html = renderToString(workspace());
-  expect(html).toContain('data-shadow-stick');
+  expect(html).toContain('data-shadow-world');
   expect(html).toContain('data-cone-cylinder');
-  expect(html).toContain('data-sh-glance');
+  expect(html).toContain('data-sw-glance');
   expect(html).toContain('data-cc-glance');
   expect(html).toContain('data-world="minaret"');
   expect(html).toContain('data-world="cornet"');
@@ -41,21 +41,21 @@ it('les deux labs se rendent dans le workspace, chacun son monde, sans clé i18n
 });
 
 it('les props du LAB sont les nombres du تحدّ et de la وضعية (rien retapé)', () => {
-  expect(LAB.beginner).toMatchObject(CHALLENGE.numbers);
+  // la minaret de « ساحة الحيّ » EST celle du تحدّ : AM = 1 × 11,6 ÷ 1,6
+  expect(t(TH.heightFromShadow(CHALLENGE.numbers))).toBe(t(LIN.parseNumber(LAB.beginner.minaret)));
   expect(LAB.advanced).toMatchObject(SITUATION.numbers);
 });
 
-it('le تحدّ : la main plante le bâton à 10 m, la perche monte au pied — 7,25 m', () => {
+it('le تحدّ dans la place : à 15:00 la main plante le bâton à 10 m, les ombres finissent à 11,6 m — 7,25 m', () => {
   expect(t(TH.heightFromShadow({ stick: 1, stickAt: 10, tip: '11,6' }))).toBe('29/4');
-  let lab = SH.init(LAB.beginner);
-  lab = SH.placeStick(lab, lab.iStar - 5);
-  expect(lab.trials.at(-1).kind).toBe('before');
-  lab = SH.placeStick(lab, lab.iStar);
-  expect(SH.meets(lab)).toBe(true);
-  lab = SH.placePole(lab, lab.jA - 7);
-  lab = SH.placePole(lab, lab.jA);
-  expect(SH.dec(lab.poleTrials.at(-1).height)).toBe('7,25');
-  expect(SH.discoveryReady(lab)).toBe(true);
+  let lab = SW.setHour(SW.init(LAB.beginner), SW.TEXTBOOK_HOUR);
+  lab = SW.placeStick(lab, 900);
+  expect(lab.last.hidden).toBe(true);
+  lab = SW.placeStick(lab, 1000);
+  expect(lab.last.meet).toBe(true);
+  expect(SW.m(SW.minaretTip(lab))).toBe('11,6');
+  lab = SW.answer(lab, '7,25');
+  expect(SW.goals(lab).minaret).toBe(true);
 });
 
 it('la وضعية : deux cylindres inscrits, un refus, puis h = r = 4,5 et V = 91,125π ≈ 286,28', () => {
@@ -73,7 +73,7 @@ it('la وضعية : deux cylindres inscrits, un refus, puis h = r = 4,5 et V = 9
   expect(CC.volumeApprox(CC.status(lab).vop)).toBe('286,28');
 });
 
-it('« إختبار أولي » (autres nombres) : r = 4, V = 64π ≈ 201,06 ; la minaret 10,5 m', () => {
+it('« وضعية الاختبار النهائي » (autres nombres) : r = 4, V = 64π ≈ 201,06 ; la minaret 10,5 m', () => {
   const cone = TH.cylinderInCone({ H: TEST.cone.H, R: TEST.cone.R });
   expect(t(cone.equalHR.r)).toBe('4');
   expect(t(cone.equalHR.volumeOverPi)).toBe('64');

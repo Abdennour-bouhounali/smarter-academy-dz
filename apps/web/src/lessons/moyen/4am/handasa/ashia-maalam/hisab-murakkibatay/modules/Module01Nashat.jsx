@@ -70,7 +70,7 @@ export default function Module01Nashat() {
       moduleNumber={1}
       moduleTitle="نشاط 2 — بوابات الخريطة"
       moduleSubtitle="مركبتا شعاع علمت إحداثيات مبدئه ونهايته: هل نحتاج إلى العدّ؟"
-      estimatedTime="14 دقيقة"
+      objectives={['كيف نكتب قفزة بوابة بعددين؟', 'هل نحتاج إلى عدّ المربعات لنعرف رمزها؟', 'متى نقول عن شعاعين إنهما متساويان؟']} estimatedTime="14 دقيقة"
       brief={{
         tag: 'أنشطة — الكتاب ص 140',
         headline: 'بوابات في لعبة الهاتف!',

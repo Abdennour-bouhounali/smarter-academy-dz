@@ -11,7 +11,7 @@ export default function Module03Awazzif() {
   const [done, setDone] = useState({});
   const list = ORDER.map((id) => EXERCISES.find((e) => e.id === id));
   return (
-    <ContentModule
+    <ContentModule objectives={["أبحث عن قواسم عدد بالطريقة المنظّمة", "أحلّ تمارين الكتاب 3 ← 11"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(3)} moduleNumber={3}
       moduleTitle="أوظّف تعلّماتي" moduleSubtitle="تمارين الكتاب 3 ← 11" estimatedTime="15 دقيقة"
       brief={{ tag: 'أوظّف تعلّماتي — الكتاب ص 14', title: 'تمارين قواسم عدد طبيعي', tone: 'amber', body: <p>من السهل إلى الصعب، بترتيب الكتاب. الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}

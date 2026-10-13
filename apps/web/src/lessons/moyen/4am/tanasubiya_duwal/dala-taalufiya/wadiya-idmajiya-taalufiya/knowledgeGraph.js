@@ -6,10 +6,10 @@
  *   — aucune connaissance nouvelle : les ressources des cinq دروس telles que la sortie à la plage les
  *     mobilise (les participants par deux droites, le bus « الأمل » affine, le bus « النورس » par deux
  *     devis, la comparaison par l'intersection, les trois tarifs de kayak, l'interprétation), la
- *     démarche en trois phases, puis les trois cas de « أتعمّق » (parallèles, décroissante, inégalité) ;
+ *     démarche en trois phases ;
  *   — les réponses de « إختبار أولي » (la sortie aux Sablettes : (36 ; 4), 180x + 4000, 38 élèves…)
  *     n'y figurent pas (A.10 règle 14) ;
- *   — les trois erreurs sont celles que le module 1 corrige, avec leur « لماذا؟ » : le couple lu à
+ *   — les trois erreurs sont celles que le module 7 corrige, avec leur « لماذا؟ » : le couple lu à
  *     l'envers (MISC-JUMLA-BAYANI-MAQLUB), la différence des prix prise pour a (MISC-TAGHAYYUR-BIDUN-QISMA),
  *     le petit forfait cru toujours moins cher (MISC-TARRID-AFDAL-DAIMAN).
  *
@@ -24,8 +24,6 @@
  *        خطأ شائع ┌──── [المقارنة بين صيغتين]                         طريقة
  *  ⛔ [الأرخص دائما؟]            │ على الشاطئ
  *                          [ثلاث صيغ] → [التفسير] → [من النص إلى الجواب]
- *                                │ في التمارين
- *                    [متوازيان] → [متناقصة] → [«أرخص» متراجحة]         (محور 3)
  *                                │ نستخلص
  *                           🎯 [ثلاث مراحل]
  */
@@ -42,7 +40,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'jumla', kind: 'method', lane: 'center', requires: 'jumla-bayaniya', notebook: true, title: 'عدد المشاركين', subtitle: 'نقطة تقاطع مستقيمين', reveals: ['maqlub', 'taklifa'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 3 : le couple lu à l'envers (4 ; 32).
+      // ⛔ خطأ شائع — module 7, étape 3 : le couple lu à l'envers (4 ; 32).
       id: 'maqlub', kind: 'common_mistake', lane: 'start', requires: 'jumla-bayaniya',
       title: 'ثنائية مقلوبة', subtitle: 'الفاصلة أولا',
       context: {
@@ -57,7 +55,7 @@ export const KNOWLEDGE_GRAPH = {
     { id: 'taklifa', kind: 'relationship', lane: 'end', requires: 'taklifa-taalufiya', notebook: true, title: 'الأمل: دالة تآلفية', subtitle: 'ثابت + ثمن التلميذ', reveals: ['thunaiyatan'] },
     { id: 'thunaiyatan', kind: 'method', lane: 'end', requires: 'min-thunaiyatayn', notebook: true, title: 'النورس: عرضان', subtitle: 'تناسب التغيّرات', reveals: ['farq', 'ikhtiyar'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 5 : la différence des prix prise pour le coefficient.
+      // ⛔ خطأ شائع — module 7, étape 5 : la différence des prix prise pour le coefficient.
       id: 'farq', kind: 'common_mistake', lane: 'start', requires: 'min-thunaiyatayn',
       title: 'فرق دون قسمة', subtitle: 'ثمن 12 تلميذا',
       context: {
@@ -71,7 +69,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'ikhtiyar', kind: 'method', lane: 'end', requires: 'ikhtiyar-sigha', notebook: true, title: 'المقارنة بين صيغتين', subtitle: 'نقطة التقاطع', reveals: ['afdal', 'thalath'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 6 : le plus petit forfait cru toujours moins cher.
+      // ⛔ خطأ شائع — module 7, étape 6 : le plus petit forfait cru toujours moins cher.
       id: 'afdal', kind: 'common_mistake', lane: 'start', requires: 'ikhtiyar-sigha',
       title: 'الأرخص دائما؟', subtitle: 'بحسب عدد التلاميذ',
       context: {
@@ -85,13 +83,10 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'thalath', kind: 'method', lane: 'end', requires: 'thalath-sigh', notebook: true, title: 'ثلاث صيغ للكراء', subtitle: 'المستقيم الأدنى', reveals: ['tafsir'] },
     { id: 'tafsir', kind: 'relationship', lane: 'center', requires: 'tafsir-natija', notebook: true, title: 'تفسير النتيجة', subtitle: 'عدد طبيعي، بالدينار', reveals: ['marahil'] },
-    { id: 'marahil', kind: 'method', lane: 'center', requires: 'tariqat-wadiya', notebook: true, title: 'من النص إلى الجواب', reveals: ['tawazi'] },
-    { id: 'tawazi', kind: 'relationship', lane: 'center', requires: 'tawazi', notebook: true, title: 'مستقيمان متوازيان', subtitle: 'نفس ثمن الوحدة', reveals: ['tanaqus'] },
-    { id: 'tanaqus', kind: 'method', lane: 'center', requires: 'tanaqus', notebook: true, title: 'دالة متناقصة', subtitle: 'معامل سالب', reveals: ['mutarajiha'] },
-    { id: 'mutarajiha', kind: 'method', lane: 'center', requires: 'mutarajiha-ikhtiyar', notebook: true, title: '«أرخص» متراجحة', reveals: ['khulasa'] },
+    { id: 'marahil', kind: 'method', lane: 'center', requires: 'tariqat-wadiya', notebook: true, title: 'من النص إلى الجواب', reveals: ['khulasa'] },
     {
-      // 🎯 خلاصة — les trois phases de l'analyse (module 1), comme dans les synthèses du manuel.
-      id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'mutarajiha-ikhtiyar',
+      // 🎯 خلاصة — les trois phases de l'analyse (module 7), comme dans les synthèses du manuel.
+      id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'tariqat-wadiya',
       title: 'ثلاث مراحل', subtitle: 'نقرأ · نحلّل · ننفّذ',
       context: { list: SITUATION.analysis.map((a) => a.label) },
       reveals: [],
@@ -108,9 +103,6 @@ export const KNOWLEDGE_GRAPH = {
     { from: 'ikhtiyar', to: 'thalath', label: 'على الشاطئ' },
     { from: 'thalath', to: 'tafsir', label: 'ثم نفسّر' },
     { from: 'tafsir', to: 'marahil', label: 'نجمعها' },
-    { from: 'marahil', to: 'tawazi', label: 'في التمارين' },
-    { from: 'tawazi', to: 'tanaqus', label: 'ثم' },
-    { from: 'tanaqus', to: 'mutarajiha', label: 'ثم' },
-    { from: 'mutarajiha', to: 'khulasa', label: 'نستخلص' },
+    { from: 'marahil', to: 'khulasa', label: 'نستخلص' },
   ],
 };

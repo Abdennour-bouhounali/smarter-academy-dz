@@ -114,7 +114,7 @@ const LABS = [
   ['hasiba-muthallathiya', { beginner: 'trig-calculator', advanced: 'trig-calculator' }, 1],
   ['alaqat-muthallathiya', { beginner: 'angle-compass', advanced: 'angle-compass' }, 1],
   ['tarrid-muthallathiya', { beginner: 'clinometer', advanced: 'clinometer' }, 1],
-  ['wadiya-idmajiya-muthallathat', { beginner: 'clinometer', advanced: 'clinometer' }, 1],
+  ['wadiya-idmajiya-muthallathat', { beginner: 'clinometer', advanced: 'clinometer' }, 7],
 ].map(([l, t, n]) => [l, t, LAB_MODULE[l] ?? n]);
 for (const [lesson, types, number] of (process.env.MOUNT_ONLY ? [] : LABS)) {
   for (const vp of VIEWPORTS) {

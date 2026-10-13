@@ -2611,14 +2611,10 @@
       "module": 3
     },
     "qcm": {
-      "lesson": "wadiya-idmajiya-ashia",
-      "module": 2,
+      "lesson": "insihab-shuaa",
+      "module": 5,
+      "note": "items 1–3 dans le إختبار ; « أؤكّد تعلّماتي » n'entre pas dans « أدمج تعلّماتي » (قرار المالك 2026-10-13)",
       "duplicatedIn": [
-        {
-          "lesson": "insihab-shuaa",
-          "module": 5,
-          "note": "items 1–3 dans le إختبار"
-        },
         {
           "lesson": "shuaayn-mutasawiyayn",
           "module": 5,
@@ -2628,16 +2624,21 @@
           "lesson": "majmu-shuaayn",
           "module": 5,
           "note": "items 4, 5, 7"
+        },
+        {
+          "lesson": "wadiya-idmajiya-ashia",
+          "module": "practice",
+          "note": "بنك التمارين فقط"
         }
       ]
     },
     "situation": {
       "lesson": "wadiya-idmajiya-ashia",
-      "module": 1,
+      "module": 7,
       "duplicatedIn": [
         {
           "lesson": "wadiya-idmajiya-ashia",
-          "module": 4,
+          "module": 8,
           "note": "transposée à d’autres positions de A et B / autre largeur de route"
         }
       ]
@@ -2736,11 +2737,13 @@
     },
     "ex-19": {
       "lesson": "wadiya-idmajiya-ashia",
-      "module": 3
+      "module": "practice",
+      "note": "التمرين 19 من «أتعمّق»: بنك التمارين فقط؛ لا يدخل في «أدمج تعلّماتي» (قرار المالك 2026-10-13)"
     },
     "ex-22": {
       "lesson": "wadiya-idmajiya-ashia",
-      "module": 3
+      "module": "practice",
+      "note": "التمرين 22 من «أتعمّق»: بنك التمارين فقط؛ لا يدخل في «أدمج تعلّماتي» (قرار المالك 2026-10-13)"
     }
   }
 }

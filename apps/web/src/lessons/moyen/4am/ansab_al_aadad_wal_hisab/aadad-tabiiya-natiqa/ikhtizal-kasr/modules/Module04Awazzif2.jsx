@@ -8,7 +8,7 @@ import { EXERCISES_2 } from '../content/exercises';
 export default function Module04Awazzif2() {
   const [done, setDone] = useState({});
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(4)} moduleNumber={4} moduleTitle="أوظّف تعلّماتي (2)" moduleSubtitle="كسور بحرف، وحساب على الأعداد الناطقة" estimatedTime="14 دقيقة"
+    <ContentModule objectives={["أختزل كسرًا فيه حرف", "أحسب على الأعداد الناطقة وأعطي النتيجة مختزلة"]} ctx={MODULE_CTX} navLinks={getNavLinks(4)} moduleNumber={4} moduleTitle="أوظّف تعلّماتي (2)" moduleSubtitle="كسور بحرف، وحساب على الأعداد الناطقة" estimatedTime="14 دقيقة"
       brief={{ tag: 'أوظّف تعلّماتي — الكتاب ص 15', title: 'أحسب وأعطي النتيجة على شكل كسر غير قابل للاختزال', tone: 'rose', body: <p>الأصعب في الأخير: كسور تعتمد على n، وعبارات تجمع العمليات الأربع.</p> }}
       steps={EXERCISES_2.map((ex, i) => ({ num: i + 1, title: `تمرين ${ex.source.number}${ex.source.part ? ' ' + ex.source.part : ''}`, done: !!done[ex.id],
         content: <div className="space-y-3">{i === 0 && <KnowledgeBrick id="kasr-ghayr-qabil" variant="rappel" compact />}<TextbookExercise exercise={ex} requires={['kasr-ghayr-qabil', 'ikhtizal-bil-pgcd']} onAnswered={() => setDone((d) => ({ ...d, [ex.id]: true }))} /></div> }))}

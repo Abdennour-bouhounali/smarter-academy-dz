@@ -20,6 +20,7 @@ export default function Module04Awazzif() {
 
   return (
     <ContentModule
+      objectives={["كيف أحلّ معادلة من الدرجة الأولى بمفردي؟", "كيف أتصرّف مع المعاملات الكسرية والعشرية والجذور؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}

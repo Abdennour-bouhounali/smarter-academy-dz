@@ -25,6 +25,7 @@ export default function Module03Uqarin() {
 
   return (
     <ContentModule
+      objectives={["هل يكفي المتوسط وحده لنقارن مدينتين؟", "ماذا يقول المتوسط وماذا يقول المدى؟", "ما الخطوات التي أتّبعها في كل وضعية إحصائية قبل أن أقرّر؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}
@@ -52,8 +53,8 @@ export default function Module03Uqarin() {
           num: 2, title: 'فسّر النتائج', subtitle: 'موقع وتشتت', done: all('ex14c'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="mawqi-tashattut" lead="المتوسط والوسيط يقولان أين تتمركز الحرارة، والمدى يقول كم تتباعد." />
               <TextbookExercise exercise={EX['ex14-c']} requires={['mawqi-tashattut']} onAnswered={mark('ex14c')} />
+              {done.ex14c && <KnowledgeBrick id="mawqi-tashattut" lead="المتوسط والوسيط يقولان أين تتمركز الحرارة، والمدى يقول كم تتباعد." />}
             </div>
           ),
         },

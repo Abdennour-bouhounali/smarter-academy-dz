@@ -66,7 +66,7 @@ export const LESSON_CONFIG = {
   lessonProblem: {
     module: 5,
     title: 'مترو الجزائر: محطتان جديدتان ونفق جديد',
-    statement: 'في مخطّط لتوسعة مترو الجزائر، كل محطة نقطة وكل تذكرة شعاع: $\\overrightarrow{XY}$ تعني «من $X$ إلى $Y$». المحطات $A$ و $B$ و $C$ و $D$ رؤوس متوازي الأضلاع $ABCD$ الذي مركزه $O$ ، محطة التبادل. تُبنى محطتان جديدتان: $E$ حيث $\\overrightarrow{BE} = \\overrightarrow{AO}$ ، و $F$ حيث $\\overrightarrow{DF} = \\overrightarrow{OC}$ (الشكل المقابل). طول النفق $[BD]$ هو 3 km، وتحفر الآلة 250 m من النفق في الأسبوع. افتُتح الخط الأول سنة 2011، وثمن التذكرة 50 دج.',
+    statement: 'في مخطّط لتوسعة مترو الجزائر الذي يخدم المسافرين بإتقان، كل محطة نقطة وكل تذكرة شعاع: $\\overrightarrow{XY}$ تعني «من $X$ إلى $Y$». المحطات $A$ و $B$ و $C$ و $D$ رؤوس متوازي الأضلاع $ABCD$ الذي مركزه $O$ ، محطة التبادل. تُبنى محطتان جديدتان: $E$ حيث $\\overrightarrow{BE} = \\overrightarrow{AO}$ ، و $F$ حيث $\\overrightarrow{DF} = \\overrightarrow{OC}$ (الشكل المقابل). طول النفق $[BD]$ هو 3 km، وتحفر الآلة 250 m من النفق في الأسبوع. افتُتح الخط الأول سنة 2011، وثمن التذكرة 50 دج.',
     // Le support de la مسألة 1, montré aussi par la carte « مسألة الدرس » (une seule source) — A(0;0), B(4;0), D(2;4),
     // C = B + AD = (6;4), O = (3;2), E = B + AO = (7;2), F = D + OC = (5;6) ; recalculés dans content/problems.test.js.
     figure: {

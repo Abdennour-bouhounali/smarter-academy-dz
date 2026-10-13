@@ -23,6 +23,7 @@ export default function Module02Maarif() {
 
   return (
     <ContentModule
+      objectives={["كيف نكتب ما وجدناه بالقشرة وبالعصير؟", "كيف نحسب مثال الكتاب بالقيمة المضبوطة ثم المدوّرة؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}

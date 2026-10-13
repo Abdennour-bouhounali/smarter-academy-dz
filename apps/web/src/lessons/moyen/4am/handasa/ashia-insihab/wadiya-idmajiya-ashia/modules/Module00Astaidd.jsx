@@ -6,7 +6,7 @@ import { PREP_ITEMS } from '../content/textbook';
 
 /**
  * Module 0 — أستعدّ. Le « أستعدّ » du manuel (p. 128) appartient aux leçons 1 et 2 ; la synthèse pose donc huit
- * affirmations de la plateforme (« عبارة إضافية من المنصّة ») sur ce que la وضعية, « أؤكّد تعلّماتي » et « أتعمّق »
+ * affirmations de la plateforme (« عبارة إضافية من المنصّة ») sur ce que la وضعية et la وضعية finale
  * mobilisent : deux vecteurs égaux, l'image par une translation, l'ordre des sommets d'un متوازي أضلاع, Chasles, la
  * distance entre deux parallèles, l'inégalité triangulaire, Pythagore, la droite des milieux. Quatre vraies, quatre
  * fausses ; aucune n'emploie les nombres de la وضعية, du QCM ou des exercices. Diagnostic JAMAIS bloquant ; `id` et
@@ -22,7 +22,7 @@ export default function Module00Astaidd() {
       estimatedTime="6 دقائق"
       brief={{
         tag: 'أستعدّ — عبارات من المنصّة', title: 'ثماني عبارات قبل الوضعية الإدماجية', tone: 'teal',
-        body: <p>وضعية «ممر الراجلين» وتمارين «أتعمّق» تعبّئ ما تعلّمته في دروس الوحدة وقبلها: تساوي شعاعين، الانسحاب، متوازي الأضلاع، علاقة شال، وأقصر مسافة. تحقّق منها قبل أن تبدأ؛ النتيجة لا تمنعك من المتابعة.</p>,
+        body: <p>وضعية «ممر الراجلين» ووضعية الاختبار النهائي تعبّئان ما تعلّمته في دروس الوحدة وقبلها: تساوي شعاعين، الانسحاب، متوازي الأضلاع، علاقة شال، وأقصر مسافة. تحقّق منها قبل أن تبدأ؛ النتيجة لا تمنعك من المتابعة.</p>,
       }}
       skills={{
         tasawi: { label: 'تساوي شعاعين', emoji: '↔️' },

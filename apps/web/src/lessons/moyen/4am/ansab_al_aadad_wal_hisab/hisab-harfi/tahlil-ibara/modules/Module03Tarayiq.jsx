@@ -34,6 +34,7 @@ export default function Module03Tarayiq() {
   return (
     <ContentModule
       ctx={MODULE_CTX}
+      objectives={["بماذا نبدأ حين نحلّل عبارة؟", "كيف نختار بين عامل مشترك ومتطابقة شهيرة؟", "كيف نتحقّق من صحة تحليلنا؟"]}
       navLinks={getNavLinks(3)}
       moduleNumber={3}
       moduleTitle="طرائق — تحليل عبارة"

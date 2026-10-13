@@ -21,7 +21,7 @@ export const EXERCISES = [
   // 1 — le forfait de téléphone : 500DA + 50DA par Go supplémentaire
   {
     id: 'w1-a', group: 'w1', source: ADD, learningPointId: LP.P1, difficulty: 'facile',
-    statement: 'يقترح متعامل للهاتف النقال على التلاميذ صيغة: 500DA في الشهر، يضاف إليها 50DA عن كل جيغا (Go) إضافية. نسمّي $x$ عدد الجيغات الإضافية و $f(x)$ المبلغ الشهري.',
+    statement: 'يقترح متعامل للهاتف النقال على التلاميذ، تيسيرًا لطلب العلم على الشبكة، صيغة: 500DA في الشهر، يضاف إليها 50DA عن كل جيغا (Go) إضافية. نسمّي $x$ عدد الجيغات الإضافية و $f(x)$ المبلغ الشهري.',
     interaction: 'choice',
     question: {
       prompt: 'عبارة $f(x)$ بدلالة $x$ هي:',

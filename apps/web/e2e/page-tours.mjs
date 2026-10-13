@@ -31,7 +31,7 @@ const USERS = {
   student: { id: 9101, role: 'student', firstName: 'عمر', lastName: 'بن علي', email: 'qa@example.dz', grade: '4am', emailVerified: true, emailVerifiedAt: '2026-01-01' },
   teacher: { id: 9102, role: 'teacher', firstName: 'أمينة', lastName: 'سعدي', email: 'qa-prof@example.dz', emailVerified: true, emailVerifiedAt: '2026-01-01' },
 };
-// Formes RÉELLES du tableau de bord et de la liste des classes (voir e2e/islamic-values.mjs).
+// Formes RÉELLES du tableau de bord et de la liste des classes.
 const ENTITLEMENTS = {
   plan: null, request: null,
   students: { current: 3, maximum: 30, overLimit: false },

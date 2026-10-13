@@ -79,6 +79,7 @@ export default function Module01Majdul() {
 
   return (
     <ContentModule
+      objectives={["كيف أحجز سلسلة في مجدول وأحدّد مجالها؟", "كيف أطلب من المجدول المدى والوسيط والمتوسط والمنوال؟", "ماذا يحدث للنتائج حين أغيّر قيمة في السلسلة؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
@@ -108,7 +109,7 @@ export default function Module01Majdul() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="الفكرة نفسها في المستويين: الدستور يحسب على مجال من الخلايا، ويُعاد حسابه عندما تتغيّر خلية."
+          lead="الفكرة نفسها في المستويين: اكتب في الخلايا واترك المجدول يحسب، ثم غيّر خلية وانظر ماذا يحدث."
           levels={{
             beginner: () => (
               <Manipulation
@@ -147,16 +148,15 @@ export default function Module01Majdul() {
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="hajz-hifz" lead="ما فعلته في المجدول قبل أيّ دستور:" />
-              <KnowledgeBrick id="khaliya-majal" lead="كل خلية لها اسم، ومجموعة خلايا متتالية مجال:" />
               <TapQuestion
                 prompt="نحجز السلسلة ذات القيم السبع في السطر الأول بدءًا من A1. المجال الذي تشغله:"
                 options={[D('A1:G1'), D('A1:F1'), D('A1:A7'), D('A1:H1')]}
                 correct={0}
                 cols={2}
-                requires={['khaliya-majal']}
                 explain={<MathText>{'سبع خلايا في السطر 1: A1 ، B1 ، C1 ، D1 ، E1 ، F1 ، G1 . المجال A1:F1 ستّ خلايا فقط، و A1:A7 في العمود A لا في السطر الأول، و A1:H1 ثماني خلايا.'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="khaliya-majal" lead="كل خلية لها اسم، ومجموعة خلايا متتالية مجال:" />}
             </div>
           ),
         },

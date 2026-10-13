@@ -193,26 +193,5 @@
     "studyContext": "تعذّر تحميل سياق الدراسة.",
     "resetPassword": "تعذّر تغيير كلمة المرور. تحقّق من القواعد وأعد المحاولة.",
     "resetLinkInvalid": "هذا الرابط غير صالح أو انتهت صلاحيته. اطلب رابطًا جديدًا."
-  },
-  "islamic": {
-    "greeting": "السلام عليكم {{name}} 🌿",
-    "greetingAnonymous": "السلام عليكم 🌿",
-    "cardTitle": "تذكرة",
-    "cardAria": "تذكرة إيمانية",
-    "breakTitle": "وقفة إيمانية",
-    "continueStudy": "أكمل الدراسة",
-    "reflectionLabel": "تأمّل",
-    "quranSurah": "سورة {{name}}",
-    "quranAyah": "الآية",
-    "quranAyahs": "الآيات",
-    "quranExcerpt": "من الآية",
-    "hadithNarrator": "عن {{narrator}}",
-    "hadithExcerpt": "من حديث",
-    "hadithGrade": "درجة الحديث: {{grade}}",
-    "proverb": "مثل عربي"
-  },
-  "mathKeyboard": {
-    "close": "إغلاق",
-    "closeLabel": "إغلاق لوحة المفاتيح"
   }
 }

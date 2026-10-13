@@ -30,6 +30,7 @@ export const PROBLEMS = [
     headline: 'مسألة الدرس',
     emoji: '📚',
     source: SOURCE,
+    illustration: LESSON_CONFIG.lessonProblem.illustration,
     statement: LESSON_CONFIG.lessonProblem.statement,
     data: [
       { id: 'books', text: 'عدد الكتب: 96 كتابًا', useful: true },
@@ -165,6 +166,7 @@ export const PROBLEMS = [
     context: 'مجموعات متساوية وخيام: كم يدفع كل كشّاف؟',
     emoji: '⛺',
     source: SOURCE,
+    illustration: { kind: 'scene', icon: 'person', bg: 'green', chips: [{ label: 'كشّافون', value: 135, tone: 'green' }, { label: 'بُعد المخيّم', value: 140, unit: 'كم', tone: 'blue' }, { label: 'كراء الخيمة', value: 2700, unit: 'دج', tone: 'rose' }], extra: ['person', 'person', 'person'], ariaLabel: 'مخيّم كشفي يضمّ 135 كشّافًا على بعد 140 كم من المدينة، وكراء الخيمة الواحدة 2700 دج' },
     statement: 'تنظّم جمعية كشفية مخيّمًا صيفيًا في غابة تيكجدة، يتعلّم فيه الكشّافون التعاون وحبّ الوطن والمحافظة على نظافة الطبيعة، ويشارك فيه 135 كشّافًا. يقع المخيّم على بعد 140 كم من المدينة. يريد القائد تقسيم الكشّافين إلى مجموعات متساوية: لكل المجموعات العدد نفسه من الأفراد، ولا يبقى أيّ كشّاف خارج المجموعات. تنام كل مجموعة في خيمة واحدة، ويبلغ كراء الخيمة الواحدة لكامل مدّة المخيّم 2700 دج مهما كان حجمها.',
     data: [
       { id: 'scouts', text: '135 كشّافًا', useful: true },
@@ -288,6 +290,7 @@ export const PROBLEMS = [
     context: 'علب متماثلة، ثم حبّة مكسورة',
     emoji: '🎁',
     source: SOURCE,
+    illustration: { kind: 'tags', cards: [{ title: 'حلوى المقروط', icon: 'sweet', lines: [{ label: 'العدد', value: 90, unit: 'حبّة' }, { label: 'ثمن الحبّة', value: 40, unit: 'دج' }] }, { title: 'العلبة الفارغة', icon: 'crate', lines: [{ label: 'الثمن', value: 150, unit: 'دج' }, { label: 'أقصى سعة', value: 20, unit: 'حبّة' }] }], ariaLabel: 'بطاقتان: 90 حبّة مقروط بـ 40 دج للحبّة، وعلبة فارغة بـ 150 دج تتّسع لـ 20 حبّة على الأكثر' },
     statement: 'طلبت عائلة من حلواني معروف بأمانته وإتقان صنعته 90 حبّة من حلوى «المقروط» لحفل زفاف، تُسلَّم في علب متماثلة: في كل العلب العدد نفسه من الحبّات، ولا تبقى أيّ حبّة خارج العلب. ثمن الحبّة الواحدة 40 دج، وثمن العلبة الفارغة 150 دج مهما كان حجمها، ولا تتّسع العلبة لأكثر من 20 حبّة. وتحرص العائلة على احترام الوقت، فيبدأ الحفل على الساعة 8 مساءً.',
     data: [
       { id: 'pieces', text: '90 حبّة', useful: true },

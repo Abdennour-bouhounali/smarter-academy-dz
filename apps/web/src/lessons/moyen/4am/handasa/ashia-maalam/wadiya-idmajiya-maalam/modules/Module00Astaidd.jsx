@@ -6,10 +6,10 @@ import { PREP_ITEMS } from '../content/textbook';
 
 /**
  * Module 0 — أستعدّ. Le « أستعدّ » du manuel (p. 139) appartient aux leçons 1 à 3 ; la synthèse pose donc huit affirmations
- * de la plateforme (« عبارة إضافية من المنصّة ») sur ce que la وضعية, « أؤكّد تعلّماتي » et « أتعمّق » mobilisent : lire un
+ * de la plateforme (« عبارة إضافية من المنصّة ») sur ce que les وضعيات d'entraînement, la وضعية finale et son analyse mobilisent : lire un
  * point, les composantes d'un vecteur, le milieu, la distance, la longueur d'un demi-cercle, la réciproque de Pythagore, la
  * valeur approchée d'une racine, l'ordre des sommets d'un متوازي أضلاع. Quatre vraies, quatre fausses ; aucune n'emploie les
- * nombres de la وضعية, du QCM, des exercices ou du lab. Diagnostic JAMAIS bloquant ; `id` et `requires` littéraux (audit),
+ * nombres de la وضعية ou du lab. Diagnostic JAMAIS bloquant ; `id` et `requires` littéraux (audit),
  * une connaissance par affirmation.
  */
 export default function Module00Astaidd() {
@@ -22,7 +22,7 @@ export default function Module00Astaidd() {
       estimatedTime="6 دقائق"
       brief={{
         tag: 'أستعدّ — عبارات من المنصّة', title: 'ثماني عبارات قبل الوضعية الإدماجية', tone: 'teal',
-        body: <p>وضعية «العدّاءين» وتمارين «أتعمّق» تعبّئ ما تعلّمته في دروس الوحدة وقبلها: قراءة نقطة، المركبتان، المنتصف، المسافة، طول نصف دائرة، وعكس خاصية فيثاغورس. تحقّق منها قبل أن تبدأ؛ النتيجة لا تمنعك من المتابعة.</p>,
+        body: <p>الوضعيات التدريبية ووضعية «العدّاءين» تعبّئ ما تعلّمته في دروس الوحدة وقبلها: قراءة نقطة، المركبتان، المنتصف، المسافة، طول نصف دائرة، وعكس خاصية فيثاغورس. تحقّق منها قبل أن تبدأ؛ النتيجة لا تمنعك من المتابعة.</p>,
       }}
       skills={{
         nuqta: { label: 'قراءة نقطة في معلم', emoji: '📍' },

@@ -296,6 +296,12 @@ export default function PrerequisiteDiagnostic({
       {presenting ? (
         <TestPresentation
           title={moduleTitle}
+          overview={{
+            number: 0,
+            title: moduleTitle,
+            subtitle: moduleSubtitle,
+            points: [...Object.values(skills).map((sk) => `${sk.emoji ? `${sk.emoji} ` : ''}${sk.label}`), t('classroom.overview.questions', { count: questions.length })],
+          }}
           questions={questions}
           answers={answers}
           // Une fois le diagnostic soumis, TOUT est révélé : la correction

@@ -22,6 +22,7 @@ export default function Module04Awazzif() {
 
   return (
     <ContentModule
+      objectives={["سأحدّد طبيعة المقطع حسب اتجاه المستوي", "سأحسب أبعاد المقطع"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}

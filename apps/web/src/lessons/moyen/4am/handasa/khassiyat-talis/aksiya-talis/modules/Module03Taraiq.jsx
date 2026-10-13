@@ -35,6 +35,7 @@ export default function Module03Taraiq() {
       moduleNumber={3}
       moduleTitle="طرائق — إثبات التوازي أو عدمه"
       moduleSubtitle="الترتيب، النسبتان، ثم الخلاصة"
+      objectives={['أيّ نسبتين نقارن لنثبت التوازي؟', 'كيف نبرهن أنّ مستقيمين غير متوازيين؟', 'ما خطوات البرهان وبأيّ ترتيب نكتبها؟']}
       estimatedTime="9 دقائق"
       brief={{
         tag: 'طرائق — الكتاب ص 109', title: METHOD.title, tone: 'emerald',

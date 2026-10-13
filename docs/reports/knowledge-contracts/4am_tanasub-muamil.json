@@ -15,7 +15,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module01Rihla.jsx",
-        "line": 127,
+        "line": 129,
         "step": 1,
         "variant": "new"
       }
@@ -26,7 +26,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module02Maarif.jsx",
-        "line": 92,
+        "line": 95,
         "step": 2,
         "variant": "new"
       }
@@ -37,7 +37,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module02Maarif.jsx",
-        "line": 142,
+        "line": 145,
         "step": 4,
         "variant": "new"
       }
@@ -51,7 +51,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module02Maarif.jsx",
-        "line": 56,
+        "line": 59,
         "step": 1,
         "variant": "new"
       }
@@ -62,7 +62,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module02Maarif.jsx",
-        "line": 114,
+        "line": 117,
         "step": 3,
         "variant": "new"
       }
@@ -75,7 +75,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module02Maarif.jsx",
-        "line": 165,
+        "line": 168,
         "step": 5,
         "variant": "new"
       }
@@ -200,7 +200,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module01Rihla.jsx",
-      "line": 118,
+      "line": 120,
       "requires": [
         "darb-qisma-nisbiya"
       ],
@@ -216,7 +216,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module01Rihla.jsx",
-      "line": 139,
+      "line": 141,
       "requires": [
         "nisba-miawiya"
       ],
@@ -232,7 +232,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module01Rihla.jsx",
-      "line": 150,
+      "line": 152,
       "requires": [
         "nisba-miawiya"
       ],
@@ -248,7 +248,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module01Rihla.jsx",
-      "line": 170,
+      "line": 172,
       "requires": [
         "jadwal-tanasub"
       ],
@@ -264,7 +264,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module01Rihla.jsx",
-      "line": 184,
+      "line": 186,
       "requires": [
         "jadwal-tanasub"
       ],
@@ -280,7 +280,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module02Maarif.jsx",
-      "line": 58,
+      "line": 61,
       "requires": [
         "muamil-tanasub"
       ],
@@ -296,7 +296,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module02Maarif.jsx",
-      "line": 73,
+      "line": 76,
       "requires": [
         "muamil-tanasub"
       ],
@@ -312,7 +312,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module02Maarif.jsx",
-      "line": 95,
+      "line": 98,
       "requires": [
         "khawass-tanasub"
       ],
@@ -328,7 +328,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module02Maarif.jsx",
-      "line": 116,
+      "line": 119,
       "requires": [
         "rabi-mutanasib"
       ],
@@ -344,7 +344,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module02Maarif.jsx",
-      "line": 144,
+      "line": 147,
       "requires": [
         "mablagh-thabit",
         "muamil-tanasub"
@@ -362,7 +362,7 @@
       "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module02Maarif.jsx",
-      "line": 167,
+      "line": 170,
       "requires": [
         "y-ax",
         "muamil-tanasub"
@@ -376,10 +376,10 @@
     },
     {
       "questionId": "E1",
-      "module": 4,
+      "module": 7,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module04Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module07Itqan.jsx",
       "line": 41,
       "requires": [
         "muamil-tanasub"
@@ -392,10 +392,10 @@
     },
     {
       "questionId": "E2",
-      "module": 4,
+      "module": 7,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module04Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module07Itqan.jsx",
       "line": 49,
       "requires": [
         "rabi-mutanasib"
@@ -408,10 +408,10 @@
     },
     {
       "questionId": "E3",
-      "module": 4,
+      "module": 7,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module04Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module07Itqan.jsx",
       "line": 57,
       "requires": [
         "mablagh-thabit"
@@ -424,10 +424,10 @@
     },
     {
       "questionId": "E4",
-      "module": 4,
+      "module": 7,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module04Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module07Itqan.jsx",
       "line": 69,
       "requires": [
         "muamil-tanasub"
@@ -440,10 +440,10 @@
     },
     {
       "questionId": "E5",
-      "module": 4,
+      "module": 7,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module04Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module07Itqan.jsx",
       "line": 81,
       "requires": [
         "y-ax"
@@ -455,5 +455,42 @@
       "pedagogicallyValid": true
     }
   ],
-  "findings": []
+  "findings": [
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 4 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module04Masala1.jsx",
+      "line": 0,
+      "module": 4,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 5 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module05Masala2.jsx",
+      "line": 0,
+      "module": 5,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 6 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/modules/Module06Masala3.jsx",
+      "line": 0,
+      "module": 6,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    }
+  ]
 }

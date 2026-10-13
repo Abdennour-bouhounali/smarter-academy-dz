@@ -1,14 +1,14 @@
-import { src, addition, BASE } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
 
 /**
  * « أستعدّ » (module 0) — le « أستعدّ » du manuel (p. 65, items 1–9) est réparti entre
  * les leçons 1, 2 et 4 (extraction › destinations › prep) : la synthèse n'en reçoit
  * aucun. Ses affirmations sont donc des AFFIRMATIONS DE LA PLATEFORME (« عبارة إضافية من
- * المنصّة »), dans la forme du manuel, sur ce que la situation et « أتعمّق » mobilisent :
+ * المنصّة »), dans la forme du manuel, sur ce que la situation mobilise :
  * Pythagore (le câble), la vitesse moyenne et les unités (la durée), la réduction en %
  * comme multiplication par 1 − t/100 (le ticket enfant), la lecture d'un graphique,
  * l'image et le coefficient d'une fonction linéaire, sa forme ax, et un pourcentage
- * d'un tout (ex. 38). Jamais les nombres du téléphérique du manuel.
+ * d'un tout. Jamais les nombres du téléphérique du manuel.
  */
 export const PREP_ITEMS = [
   { n: 1, skill: 'fithaghuras', text: '$ABC$ مثلث قائم في $A$ حيث $AB = 6\\,\\mathrm{cm}$ و $AC = 8\\,\\mathrm{cm}$ ، إذن $BC = 14\\,\\mathrm{cm}$.', answer: false,
@@ -57,9 +57,9 @@ export const SITUATION = {
 };
 
 /**
- * Les nombres de la PLATEFORME pour s'exercer au module 1 (`interactive_example`) — même
+ * Les nombres de la PLATEFORME pour s'exercer au module 7 (`interactive_example`) — même
  * structure que le manuel, d'autres nombres, pour que les réponses du manuel (AB = 500√26,
- * ≈ 7 min 43,55 s, C(x) = 3,8x, 526 DA) restent celles de « إختبار أولي ».
+ * ≈ 7 min 43,55 s, C(x) = 3,8x, 526 DA) restent celles de « وضعية الاختبار النهائي ».
  *   OTHER_CABLE   un autre téléphérique : 300 m → 800 m, 1200 m à l'horizontale, 5 m/s
  *                 (AB = 1300 m, 260 s = 4 min 20 s — triangle 5-12-13 agrandi 100 fois)
  *   FAMILY        une autre famille : 2 adultes et 2 enfants à −50 % (C(x) = 3x) ;
@@ -67,18 +67,18 @@ export const SITUATION = {
  */
 export const OTHER_CABLE = {
   source: addition('interactive_example'),
-  text: 'مصعد هوائي آخر ينطلق من ارتفاع 300m ليصل ارتفاع 800m، والمسافة الأفقية بين نقطتي الانطلاق والوصول 1200m، وسرعته $5\\,\\mathrm{m/s}$.',
+  text: 'مصعد هوائي آخر، يفحصه تقنيّوه بإتقان كل صباح، ينطلق من ارتفاع 300m ليصل ارتفاع 800m، والمسافة الأفقية بين نقطتي الانطلاق والوصول 1200m، وسرعته $5\\,\\mathrm{m/s}$.',
   numbers: { altA: 300, altB: 800, AH: 1200, speed: 5 },
 };
 
 export const FAMILY = {
   source: addition('interactive_example'),
-  text: 'عائلة أخرى متكوّنة من شخصين بالغين وطفلين، وكلّ طفل يستفيد من تخفيض قدره 50% من قيمة $x$ (سعر تذكرة البالغ).',
+  text: 'عائلة أخرى، ادّخر أفرادها ميزانية الرحلة بالتعاون، متكوّنة من شخصين بالغين وطفلين، وكلّ طفل يستفيد من تخفيض قدره 50% من قيمة $x$ (سعر تذكرة البالغ).',
   numbers: { adults: 2, children: 2, discount: 50, budget: 1500, budget2: 1600 },
 };
 
 /**
- * Les props du laboratoire `origin-line` du module 1, à ses DEUX niveaux — contrat des props
+ * Les props du laboratoire `origin-line` du module 7, à ses DEUX niveaux — contrat des props
  * du brief de l'unité 6 §6 (manipulations/proportion/OriginLine.jsx, écrit par la leçon 3).
  * Écrites ici une fois : le module les étale, le test de rendu (lab.render.test.jsx) monte le
  * laboratoire avec exactement ces props. Mode `read` : la droite de coût est donnée, l'élève
@@ -92,7 +92,7 @@ export const LAB = {
 };
 
 /**
- * Les corrections et les méthodes du module 1 — importées aussi par la carte
+ * Les corrections et les méthodes du module 7 — importées aussi par la carte
  * (knowledgeGraph.js) : une aide de la carte cite la leçon mot pour mot. Toute égalité
  * dans `$…$`. Les exemples chiffrés sont ceux de la PLATEFORME (OTHER_CABLE, FAMILY) :
  * les réponses du manuel n'apparaissent qu'en évaluation.
@@ -113,44 +113,5 @@ export const REMARKS = {
   tadwirWrong: 'مع ميزانية 1600 DA نجد $x = \\dfrac{1600}{3} \\approx 533{,}33$ فنأخذ 534 DA.',
   tadwirWhy: 'السعر 534 DA يجعل التكلفة $3 \\times 534 = 1602$ ، أي أكثر من الميزانية.',
   tadwirRight: 'ندوّر نحو الأسفل: $3 \\times 533 = 1599$ ، فأكبر سعر بالدينار هو 533 DA.',
-  notSolvedHere: 'حل وضعية الكتاب كاملا في «إختبار أولي»: هنا قرأنا الوضعية واخترنا الاستراتيجية، ثم طبّقناها على مصعد آخر وعائلة أخرى.',
-  khattiya: 'ننشر ونبسّط العبارة أولا: إذا بقي حد في $x^2$ أو حد ثابت فالدالة ليست خطية.',
-  tarkiz: 'التركيز (الكتلة الحجمية للمادة المذابة) هو كتلة المادة $m$ مقسومة على حجم الماء $V$ : $c = \\dfrac{m}{V}$ ، بعد تحويل الوحدات إلى وحدتي الحد المسموح.',
-  nisba: 'نسبة جزء من كل: نقسم الجزء على الكل، ثم نضرب في 100.',
-};
-
-/**
- * « أؤكّد تعلّماتي » (p. 74) : les huit QCM, au mot près ; chaque item renvoie au درس qui
- * l'enseigne (extraction › qcm › duplicatedIn) — 2, 3, 5, 6 → درس 2 ; 1, 4 → درس 3 ;
- * 7, 8 → درس 4 — et la colonne « عند الحاجة أعود إلى الصفحة » du manuel. L'item 7 a
- * TROIS bonnes réponses : posé en lignes « صحيح / خاطئ ». La figure de l'item 4
- * (components/CableCarFigure.jsx › QcmLineFigure) est redessinée : (D) passe par O et (1 ; 0,25).
- */
-export const QCM = [
-  { n: 1, text: 'معامل الدّالة الخطية التي تمثيلها البياني يشمل النقطة $A(2 ; 7)$ هو:', options: ['$2$', '$3{,}5$', '$7$'], correct: 1, pages: [68], lesson: 'tamthil-bayani-khatti',
-    explain: 'النقطة $A(2 ; 7)$ على المستقيم يعني $f(2) = 7$ ، أي $2a = 7$ ومنه $a = \\dfrac{7}{2} = 3{,}5$. العدد 2 فاصلة النقطة و 7 ترتيبها.' },
-  { n: 2, text: '$-9$ هي صورة $-6$ بالدّالة الخطية:', options: ['$f : x \\longmapsto -\\dfrac{6}{4}x$', '$g : x \\longmapsto 1{,}5x$', '$h : x \\longmapsto -\\dfrac{4}{6}x$'], correct: 1, pages: [69], lesson: 'dala-khattiya',
-    explain: '$g(-6) = 1{,}5 \\times (-6) = -9$ ؛ أمّا $f(-6) = -\\dfrac{6}{4} \\times (-6) = 9$ و $h(-6) = -\\dfrac{4}{6} \\times (-6) = 4$.' },
-  { n: 3, text: '8 هو العدد الذي صورته 14 بالدّالة الخطية:', options: ['$f : x \\longmapsto 1{,}75x$', '$g : x \\longmapsto \\dfrac{8}{14}x$', '$h : x \\longmapsto \\dfrac{4}{7}x$'], correct: 0, pages: [69], lesson: 'dala-khattiya',
-    explain: '$f(8) = 1{,}75 \\times 8 = 14$ ؛ والمعامل هو $\\dfrac{14}{8} = 1{,}75$ ، لا مقلوبه $\\dfrac{8}{14} = \\dfrac{4}{7}$ (فـ $g(8) = h(8) = \\dfrac{32}{7}$ ).' },
-  { n: 4, text: 'المستقيم (D) أدناه هو التمثيل البياني للدّالة:', options: ['$f : x \\longmapsto x + 0{,}25$', '$g : x \\longmapsto 0{,}75x$', '$h : x \\longmapsto 0{,}25x$'], correct: 2, pages: [68, 69], lesson: 'tamthil-bayani-khatti',
-    explain: '(D) يشمل المبدأ $O$ والنقطة $(1 ; 0{,}25)$ : $h(1) = 0{,}25$. الدالة $f$ ليست خطية ($f(0) = 0{,}25$) ، و $g(1) = 0{,}75$.' },
-  { n: 5, text: '$f$ دالة خطية حيث $f(m) = n$ و $m \\neq 0$ ، معاملها هو:', options: ['$\\dfrac{n}{m}$', '$mn$', '$n$'], correct: 0, pages: [68, 69], lesson: 'dala-khattiya',
-    explain: '$a \\times m = n$ ومنه $a = \\dfrac{n}{m}$ (ممكن لأنّ $m \\neq 0$ ).' },
-  { n: 6, text: 'معامل الدّالة الخطية $f$ هو:', table: { x: ['-5', '25', '10'], y: ['2', '-10', '-4'] }, options: ['$\\dfrac{52}{130}$', '$-0{,}4$', '$-\\dfrac{5}{2}$'], correct: 1, pages: [68], lesson: 'dala-khattiya',
-    explain: '$\\dfrac{2}{-5} = \\dfrac{-10}{25} = \\dfrac{-4}{10} = -0{,}4$. أمّا $\\dfrac{52}{130} = 0{,}4$ فإشارته خاطئة، و $-\\dfrac{5}{2}$ مقلوب المعامل.' },
-  { n: 7, text: '$7\\,\\mathrm{cm^3}$ من الذهب يزن $135{,}1\\,\\mathrm{g}$. إذن الكتلة الحجمية للذهب هي :', options: ['$19\\,300\\,\\mathrm{kg/m^3}$', '$19{,}3\\,\\mathrm{kg/L}$', '$19{,}3\\,\\mathrm{g/cm^3}$'], correctSet: [0, 1, 2], pages: [70, 71], lesson: 'tatbiqat-tanasub',
-    rowCorrections: [
-      '$19{,}3\\,\\mathrm{g/cm^3}$ ، و $1\\,\\mathrm{m^3} = 1\\,000\\,000\\,\\mathrm{cm^3}$ : $19{,}3 \\times 1\\,000\\,000\\,\\mathrm{g} = 19\\,300\\,\\mathrm{kg}$ في $1\\,\\mathrm{m^3}$.',
-      '$1\\,\\mathrm{L} = 1000\\,\\mathrm{cm^3}$ : $19{,}3 \\times 1000\\,\\mathrm{g} = 19\\,300\\,\\mathrm{g} = 19{,}3\\,\\mathrm{kg}$ في اللتر.',
-      '$\\dfrac{135{,}1}{7} = 19{,}3$ : الكتلة على الحجم.',
-    ] },
-  { n: 8, text: 'يمكن ترجمة خفض مقدار بـ 10% بالدّالة الخطية :', options: ['$f : x \\longmapsto 0{,}9x$', '$g : x \\longmapsto x - 10$', '$h : x \\longmapsto \\dfrac{10}{100}x$'], correct: 0, pages: [70, 71], lesson: 'tatbiqat-tanasub',
-    explain: 'بعد خفض بـ 10% يبقى $\\left(1 - \\dfrac{10}{100}\\right)x = 0{,}9x$. الدالة $g$ تنقص 10 وحدات (وليست خطية)، و $h$ تعطي مقدار الخفض لا ما يبقى.' },
-].map((it) => ({ ...it, source: src('qcm', 74, 'أؤكّد تعلّماتي', it.n), lessonPath: `${BASE}/${it.lesson}` }));
-
-export const LESSON_TITLES = {
-  'dala-khattiya': 'الدرس 2 — مفهوم وتعيين الدالة الخطية',
-  'tamthil-bayani-khatti': 'الدرس 3 — التمثيل البياني لدالة خطية وقراءته بيانيًا',
-  'tatbiqat-tanasub': 'الدرس 4 — تطبيقات التناسبية (النسب المئوية والمقادير المركبة)',
+  notSolvedHere: 'حل وضعية الكتاب كاملا في «وضعية الاختبار النهائي»: هنا قرأنا الوضعية واخترنا الاستراتيجية، ثم طبّقناها على مصعد آخر وعائلة أخرى.',
 };

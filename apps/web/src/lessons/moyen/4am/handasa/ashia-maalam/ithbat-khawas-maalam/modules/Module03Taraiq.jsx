@@ -30,9 +30,9 @@ export default function Module03Taraiq() {
 
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(3)} moduleNumber={3} moduleTitle="طرائق — إنجاز برهان وحساب مجهول"
-      moduleSubtitle="طريقتا الكتاب سطرا سطرا، ثم دورك" estimatedTime="11 دقيقة"
+      moduleSubtitle="طريقتا الكتاب سطرا سطرا، ثم دورك" objectives={['كيف نكتب برهانًا كاملًا بالإحداثيات؟', 'كيف نعيّن إحداثية مجهولة بشرط التعامد؟', 'أبرهن بنفسي على مربّع وعلى نقطة من دائرة']} estimatedTime="11 دقيقة"
       brief={{
-        tag: 'طرائق — الكتاب ص 145', title: 'نحسب المركبات ثم الأطوال، ونقارن المربعات', tone: 'sky',
+        tag: 'طرائق — الكتاب ص 145', title: 'كيف نكتب برهانًا بالإحداثيات؟', tone: 'sky',
         body: <p>الطريقة الأولى تبرهن طبيعة مثلث، والثانية تعيّن إحداثية مجهولة بشرط التعامد: هي ما فعلته في المستوى المتقدّم للمختبر، حين انزلق الشاخص C.</p>,
         footer: <SourceTag source={METHOD_PROOF.source} />,
       }}

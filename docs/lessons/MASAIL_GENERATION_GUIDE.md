@@ -97,8 +97,20 @@ They **never** change the student's الكفاءات (mastery). Mastery comes on
 - **Duration**: `estimatedMin: 8` each by default. They are excluded from the
   comparison with the owner's catalogue duration but **count toward the 90-min cap**.
   `bahth-pgcd` and `tawzif-khawass-judhur` are already at 71 min → use `6` each there.
-- **Synthesis lessons** (`kind: 'synthesis'`, the 14 « وضعية إدماجية » lessons) are
-  **out of scope** until the owner decides (they are already integrative situations).
+- **Synthesis lessons** (`kind: 'synthesis'`, the 14 « وضعية إدماجية » lessons) have no مسائل **by default**
+  (they are already integrative situations). **First exception, owner decision 2026-10-13: `wadiya-idmajiya-aadad`**
+  (unit 1's « أدمج تعلّماتي ») carries **six « وضعيات تدريبية »** (modules 1–6, titled « الوضعية التدريبية N — … », `track: 'problem'`, `content/problems.js`,
+  ids `wadiya-1…6`) so the student practises many PGCD situations before the one he is evaluated on: module 7
+  « تحليل الوضعية النهائية للاختبار » (read + analyse, no solving; stage `practice_lab`, no `trigger` — `REQUIRED_STAGES_BY_KIND.synthesis`
+  is now `practice_lab, evaluation`) then module 8 « وضعية الاختبار النهائي » = the textbook's aprons challenge, p. 7,
+  936 / 845 — never used in a training; test renumbered 3 → 8; « أؤكّد تعلّماتي » and the p. 16 قصر الرياس situation were removed the same day, owner decision;
+  remap `2026_10_13_000001_remap_wadiya_modules_idmajiya_aadad.php` `{1 → 7, 2 → 0, 3 → 8}` + the `moduleLayoutMigrations.js` entry;
+  textbook tracing: `extraction.json` marks `situation` « notIntegrated » (checker support added), `qcm` lives in the lessons' own tests,
+  `challenge` is declared `duplicatedIn` this lesson). Differences from a regular lesson's three مسائل: SIX of them; no `lessonProblem`
+  card (the lesson already has its situation, module 1); statements come from the owner's sheet
+  « رياضيات ببساطة — وضعيات إدماجية حول PGCD » (declared `addition('exam_style_problem')`, never textbook); 6–9 min each
+  (the lesson stays ≤ 90 min: 87). Same engine, validator and `problems.test.js` pattern (recomputes every number;
+  its evaluator reads `PGCD(a ; b ; c)` for three numbers). Reuse this recipe if the owner extends another synthesis.
 
 ## 5. Designing the three problems (the pedagogical work)
 
@@ -241,6 +253,9 @@ Field reference:
 | `figure` | problem | optional — a declarative `GeoFigure` (or `SpaceFigure` with `kind: 'space'`) shown under the statement; validated by `validateGeoFigure` / `validateSpaceFigure`. A statement that says « الشكل » MUST carry it (added 2026-10-06 for the graph / geometry units) |
 | `visual` | problem | optional — `CoordPlane` props (a function graph, points to read): the same closed prop list and 460 px cap as the practice `visual` |
 | `table` | problem | optional — `{ head, rows, caption? }`, every row as long as `head`, first cell of a row = its header; numbers isolated LTR (`ProblemTable.jsx`) |
+| `tone` | problem | optional (2026-10-13) — one of `indigo violet amber emerald teal sky rose`; default `amber`. Colours the question card, the demand chips and the brief (`problemTone.js`, classes written in full for Tailwind). Give each مسألة of a lesson its own tone when they are meant to feel like distinct situations |
+| `illustration` | problem | the **picture of the situation**, drawn in SVG (`ProblemIllustration.jsx`; data/validator `problemIllustration.js`, closed names in `situationKinds.js`, generic drawers in `situationDrawings.jsx`); shown first under the statement. **Since 2026-10-13 EVERY « مسألة » carries a drawn support** — `illustration`, or a `figure` / `visual` / `table` / `scene` — enforced by `common/problems/masailIllustrations.test.js`. Drawn in code, never a raster. Fourteen kinds. The six of the owner's sheet: `books`, `bouquets`, `field`, `orchard`, `glass`, `hall`. Eight generic ones, driven by data: `plan` (top view with dimension pills — `shape` rect/square/ring/cut/tri/grow, `fill` theme, `diag`, `area`, `border`, `grid:true` = generic « ؟ » tiling), `stacks` (1–3 rows of counted icons), `tags` (1–3 tariff / offer / bill cards, fixed + variable lines), `tanks` (1–3 containers with a level), `route` (two places, distance, ≤ 2 vehicles), `ladder` (right triangle of a ladder / guyed mast; the unknown side shows « ؟ »), `timeline` (icon + 1–4 marks, a mark without `value` shows « ؟ »), `scene` (big icon + 1–4 data chips; the fallback for budget / ages / cards situations). Icons: `ICON_KINDS`. **Rules**: it illustrates the SITUATION, never the solution — every digit it prints must be a number of the statement (`data[].text` / `parts[].question` included; the test checks it), the unknown is omitted (⇒ « ؟ »), a total or a derived value is never drawn; algebraic dimensions are plain strings (`'2x + 3'`); Arabic `ariaLabel` required; a `masala-1` that reads `LESSON_CONFIG.lessonProblem` keeps its drawing in `lessonProblem.illustration` (the lesson-index card and the module show the same data, like `figure`). |
+| `scene` | problem | optional (2026-10-13) — an **interactive drawn scene** (`ProblemScene.jsx`, pure logic `problemScene.js`, validated by `validateScene`): the student moves ONE number (groups / post spacing / tile side) and the SVG shows whether the division is exact (remainder hatched, `total = d × q + r` recomputed). Kinds: `share` (items split in n groups), `fence` (posts every d around a `rect` or `triangle`, one at each corner), `tiles` (rectangle paved with squares). Rules: it never gives the answer (only « sans reste » / « il reste r » — no « c'est le plus grand », no post or tile count); every number is one of the statement's (cm ↔ m allowed); `ariaLabel` in Arabic; UI strings in `lesson.json › problem.scene.*`; hatch colour is rose, so avoid the `rose` tone for a `share` scene. Engine capability only: no lesson uses it now (the six « وضعيات » of `wadiya-idmajiya-aadad` had it and the owner removed it on 2026-10-13 — they keep their `illustration` and `tone`) |
 | — | problem | a statement or question that REFERS to a support (« في الشكل », « الجدول المقابل », « بقراءة بيانية », « في التمثيل البياني »… — `SUPPORT_REFERENCE` in guidedProblem.js; « مربّع الشكل » is not a reference) without `figure`/`visual`/`table` is rejected by `validateProblem` |
 
 ## 7. Wiring checklist (per lesson)
@@ -382,3 +397,28 @@ Follow the unit recipe (brief + lock, see `docs/sources/4am/unit13/`):
 | Validator | `scripts/validate-lessons.mjs` (track `problem`), `scripts/lib/lessonAst.mjs` (`track`) |
 | Reference lesson | `…/aadad-tabiiya-natiqa/qasim-adad-tabii/` |
 | Browser QA | `apps/web/e2e/lesson-kit/masail-pilot.mjs` |
+
+## 14. Synthesis lessons with training situations (unit 1 pattern, 2026-10-13)
+
+**All 14 synthesis lessons have it since 2026-10-13** (owner decision), and **ALL have exactly unit 1's format — owner rule, permanent**:
+M0 أستعدّ · M1–6 « الوضعية التدريبية N » · M7 « تحليل الوضعية النهائية للاختبار » (`al-wadiya`, `practice_lab`) · M8 « وضعية الاختبار النهائي »
+(`ahill`/`itqan`). **« أؤكّد تعلّماتي » (the textbook QCM) and « أتعمّق » never appear in « أدمج تعلّماتي »**: no module, no resource, no
+`section`/title label in the synthesis practice bank (section « الوضعيات »). Their textbook items live in regular lessons or as `module: "practice"`
+destinations in `extraction.json` (`notIntegrated` is refused while the bank cites an item). The old `trigger` stage of the situation module became
+`practice_lab`. **The unit page's « 🏁 تحدّ » is the synthesis lesson's module-7 situation** (owner rule 2026-10-13: `units_4am_2026_2027.json › challenge` = the lesson's `SITUATION`, `sourceElementId: 'situation'` + its page; drawing through `pages/unit/UnitOpenerFigure.jsx › FIGURES['<unit>:challenge']`, reusing the synthesis lesson's figure, never showing an answer; units 3, 9, 14 keep the textbook challenge because module 7 already includes it). Lesson ≤ 90 min; the catalogue `durationMinutes` = the validator's module total (without the trainings). To convert a new one (checklist, as done):
+
+1. **Layout**: M0 أستعدّ (items on what the situations mobilise) · M1…Mn « الوضعية التدريبية N — … » (`stage: 'practice_lab'`,
+   `track: 'problem'`, `GuidedProblem`, ids `<lesson>-1…n`, `color` varied) · analysis module « تحليل الوضعية النهائية للاختبار »
+   (`practice_lab`, read only) · the evaluated situation last. Keep the lesson ≤ 90 min.
+2. **Content**: `content/problems.js` (+ `problems.test.js` recomputing every number), statements declared
+   `addition('exam_style_problem')` unless they are the textbook's; no `assessment` on a training step (mastery comes from the
+   last module only); an `illustration` (or figure/table) per situation; values in the story (LESSON_DEVELOPMENT_GUIDE §5).
+3. **Config**: no `lessonProblem`; `priorKnowledge`, `teachingScope`, `textbookRef`, `description`, `situations` list and the
+   learning-point ids follow the new content; `knowledge.jsx` / `knowledgeGraph.js` move to the analysis module's number.
+4. **Engine**: stages are `practice_lab, evaluation` (no `trigger`, `REQUIRED_STAGES_BY_KIND`); add the lesson to
+   `packages/core/progress/moduleLayoutMigrations.js` (version 2 map) AND a Laravel remap migration (model:
+   `2026_10_13_000001_remap_wadiya_modules_idmajiya_aadad.php`); delete the removed modules' files and e2e/tests that name them.
+5. **Sources**: `docs/sources/4am/unitN/extraction.json` — mark removed textbook items `notIntegrated` with the owner's decision,
+   point `duplicatedIn` at the new module; run `check:textbook`.
+6. **Docs**: LESSON_DEVELOPMENT_GUIDE lesson table, KNOWLEDGE_MAP row, PROGRESS_MODEL migration list.
+

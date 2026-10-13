@@ -25,6 +25,7 @@ export default function Module03Taraiq() {
 
   return (
     <ContentModule
+      objectives={["كيف نجد النسبة $k$ من طولين؟", "كيف نجدها من نسبة مساحتين أو حجمين؟", "كيف نحسب مقادير المجسّم الناتج؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}

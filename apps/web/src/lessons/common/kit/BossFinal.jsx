@@ -414,6 +414,12 @@ export default function BossFinal({
       {presenting ? (
         <TestPresentation
           title={moduleTitle}
+          overview={{
+            number: moduleNumber,
+            title: moduleTitle,
+            subtitle: moduleSubtitle,
+            points: [...Object.values(skills).map((sk) => `${sk.emoji ? `${sk.emoji} ` : ''}${sk.label}`), t('classroom.overview.questions', { count: epreuves.length })],
+          }}
           questions={epreuves}
           answers={bossAnswers}
           // Le test soumis (ici ou sur un autre appareil) est entièrement

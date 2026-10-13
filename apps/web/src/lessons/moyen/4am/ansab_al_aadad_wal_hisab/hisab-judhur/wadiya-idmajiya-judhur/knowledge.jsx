@@ -7,14 +7,14 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
 
 /**
  * Rappels et démarche seulement : une synthèse n'introduit rien (LESSON_CONTRACT :
- * le test final ne doit rien introduire de neuf). Tout est posé au module 1.
+ * le test final ne doit rien introduire de neuf). Tout est posé au module 7 (les six وضعيات d'entraînement, modules 1 à 6, n'introduisent rien).
  *   masahat-mustatil  rappel — l'aire du rectangle (avant « المساحة بدلالة ℓ »)
  *   tadhkir-x2-a      rappel — les deux solutions de x² = a (leçon 3), avant « أيّ حل؟ »
- *   tariqat-wadiya    la démarche de la situation, posée APRÈS la dernière question du module 1
+ *   tariqat-wadiya    la démarche de la situation, posée APRÈS la dernière question du module 7
  */
 export const LESSON_KNOWLEDGE = {
   modules: {
-    1: [
+    7: [
       { id: 'masahat-mustatil', type: 'regles', title: 'تذكير: مساحة المستطيل', summary: 'مساحة المستطيل هي جداء طوله في عرضه.',
         body: <p>مساحة مستطيل طوله <MathText>{'$L$'}</MathText> وعرضه <MathText>{'$\\ell$'}</MathText> هي <MathText>{'$L \\times \\ell$'}</MathText>.</p> },
       { id: 'tadhkir-x2-a', type: 'regles', title: 'تذكير: حلّان متعاكسان', summary: 'إذا كان العدد a موجبا تماما، فللمعادلة حلّان متعاكسان: جذره التربيعي ومعاكسه (الدرس 3).',

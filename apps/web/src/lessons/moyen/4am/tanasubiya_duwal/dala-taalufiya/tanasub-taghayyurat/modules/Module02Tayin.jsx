@@ -58,6 +58,12 @@ export default function Module02Tayin() {
       moduleTitle="تعيين دالة تآلفية من عددين وصورتيهما"
       moduleSubtitle="لماذا يساوي الحاصل a ، ثم من 10 و 30 درجة سلسيوس إلى الفهرنهايت"
       estimatedTime="12 دقيقة"
+      objectives={[
+        'لماذا يبقى حاصل القسمة نفسه مهما كان العددان؟',
+        'كيف نجد عبارة دالة لا نعرف منها إلا عددين وصورتيهما؟',
+        'هل توجد طريقة ثانية؟',
+        'كيف نتحقّق من عبارتنا؟',
+      ]}
       brief={{
         tag: 'معارف — صياغة من المنصّة · تحدّ — الكتاب ص 77',
         headline: 'محرار بتدريجتين!',
@@ -67,7 +73,7 @@ export default function Module02Tayin() {
         body: (
           <div className="space-y-1">
             <p><MathText>{CHALLENGE.text}</MathText></p>
-            <p className="text-sm"><MathText>{'لا نعرف عبارة $f(x)$ ، لكن نعرف صورتي عددين. في المخبر: ابنِ الدرجة بين العددين لتجد $a$ ، ثم انزل إلى $x = 0$ لتجد $b$ .'}</MathText></p>
+            <p className="text-sm"><MathText>{'لا نعرف عبارة $f(x)$ ، لكن نعرف صورتي عددين. في المخبر: ابنِ الدرجة بين العددين، ثم انزل إلى $x = 0$ . ماذا تقرأ في كل مرة؟'}</MathText></p>
           </div>
         ),
         footer: <div className="flex flex-wrap gap-2"><SourceTag source={CHALLENGE.source} /><SourceTag source={KNOWLEDGE.tanasub.source} /></div>,
@@ -91,7 +97,7 @@ export default function Module02Tayin() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا يساوي الحاصل a؟', subtitle: 'الحدّ b يختفي', done: q1a && q1b,
+          num: 1, title: 'لماذا يبقى الحاصل نفسه؟', subtitle: 'ماذا يحدث للحدّ الثابت b؟', done: q1a && q1b,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tanasub-taghayyurat" variant="rappel" compact />
@@ -224,7 +230,7 @@ export default function Module02Tayin() {
               />
               {q4 && (
                 <p className="rounded-xl bg-violet-50 px-3 py-2 text-sm text-violet-900" data-next-module>
-                  <MathText>{'عددان وصورتاهما يكفيان: $a$ بتناسب التغيّرات ثم $b$ ، أو جملة معادلتين. وتحقّق دائمًا بالعدد الآخر. في المحور التالي تتدرّب على جداول ومستقيمات ووضعيات.'}</MathText>
+                  <MathText>{'كم عددًا وصورة تحتاج لتعيين دالة تآلفية؟ وبأيّ طريقتين؟ وبماذا تتحقّق دائمًا؟ في المحور التالي تتدرّب على جداول ومستقيمات ووضعيات.'}</MathText>
                 </p>
               )}
             </div>

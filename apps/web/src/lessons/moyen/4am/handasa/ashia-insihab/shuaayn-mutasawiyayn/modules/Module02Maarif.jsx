@@ -31,7 +31,7 @@ export default function Module02Maarif() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
-      moduleNumber={2}
+      moduleNumber={2} objectives={['كيف نكتب «I منتصف [AB]» بالأشعة؟', 'لماذا يغيّر ترتيب الحروف كل شيء؟', 'ما العلاقة بين تساوي شعاعين ومتوازي الأضلاع؟', 'ماذا يبقى صحيحًا إذا كانت النقط على استقامة واحدة؟']}
       moduleTitle="معارف — المنتصف ومتوازي الأضلاع بالأشعة"
       moduleSubtitle="خاصية من الكتاب في الاتجاهين، وترتيب الحروف الذي يغيّر كل شيء"
       estimatedTime="8 دقائق"

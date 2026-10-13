@@ -131,7 +131,7 @@ const LABS = [
   ['hisab-murakkibatay', { beginner: 'component-calc', advanced: 'component-calc' }, 1],
   ['muntasaf-masafa', { beginner: 'midpoint-distance', advanced: 'midpoint-distance' }, 1],
   ['ithbat-khawas-maalam', { beginner: 'shape-prover', advanced: 'shape-prover' }, 1],
-  ['wadiya-idmajiya-maalam', { beginner: 'route-compare', advanced: 'route-compare' }, 1],
+  ['wadiya-idmajiya-maalam', { beginner: 'route-compare', advanced: 'route-compare' }, 7],
 ].map(([l, t, n]) => [l, t, LAB_MODULE[l] ?? n]);
 for (const [lesson, types, number] of (process.env.MOUNT_ONLY ? [] : LABS)) {
   for (const vp of VIEWPORTS) {

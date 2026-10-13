@@ -7,20 +7,17 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
 
 /**
  * Une synthèse n'introduit aucune notion nouvelle (LESSON_CONTRACT) : ce sont la DÉMARCHE du manuel
- * (قراءة → تحليل واختيار استراتيجية → تنفيذ) appliquée aux médailles d'or, et les outils que « أتعمّق »
- * mobilise.
- *   qiraat-jadwal            module 1 — valeur / effectif / effectif total d'un tableau
- *   qima-makhfiya-wasit      module 1 — une valeur cachée qui contient les rangs de la médiane = la médiane
- *   qima-makhfiya-mutawassit module 1 — moyenne × N = Σ valeur × effectif : une équation en la valeur cachée
- *   kull-min-nisba           module 1 — le tout à partir d'un pourcentage (« أخذ نسبة من عدد » à l'envers)
- *   tariqat-wadiya           module 1 — la démarche en trois phases (les mots du manuel)
- *   takrar-majhul            module 3 — des effectifs inconnus : l'effectif total, puis la médiane (ex. 20)
- *   tajnid-mawarid           module 3 — quel indicateur pour quelle question
+ * (قراءة → تحليل واختيار استراتيجية → تنفيذ) appliquée aux médailles d'or.
+ *   qiraat-jadwal            module 7 — valeur / effectif / effectif total d'un tableau
+ *   qima-makhfiya-wasit      module 7 — une valeur cachée qui contient les rangs de la médiane = la médiane
+ *   qima-makhfiya-mutawassit module 7 — moyenne × N = Σ valeur × effectif : une équation en la valeur cachée
+ *   kull-min-nisba           module 7 — le tout à partir d'un pourcentage (« أخذ نسبة من عدد » à l'envers)
+ *   tariqat-wadiya           module 7 — la démarche en trois phases (les mots du manuel)
  * Les réponses de « إختبار أولي » (une autre compétition) ne sont dans aucun item.
  */
 export const LESSON_KNOWLEDGE = {
   modules: {
-    1: [
+    7: [
       { id: 'qiraat-jadwal', type: 'methodes', title: 'قراءة جدول التكرارات', summary: 'كل قيمة في السطر الأول عدد ميداليات، وتكرارها عدد الدول التي فازت به؛ والتكرار الكلي مجموع التكرارات.',
         body: (
           <ul className="list-disc ms-5 space-y-1">
@@ -59,14 +56,6 @@ export const LESSON_KNOWLEDGE = {
             {SITUATION.analysis.map((a) => <li key={a.label}><strong>{a.label}</strong>: {analysisText(a)}</li>)}
           </ol>
         ) },
-    ],
-    3: [
-      { id: 'takrar-majhul', type: 'methodes', title: 'تكراران مجهولان',
-        predictPrompt: 'وجدت $a + b = 3$ ، ورتبتا الوسيط 5 و 6 ، والوسيط $6{,}5$. لكنّ $a$ و $b$ يمكن أن يكونا 0 و 3 ، أو 1 و 2 ، أو 2 و 1 ، أو 3 و 0. كيف تعرف أيّ توزيع هو الصحيح؟ اكتب الطريقة.',
-        summary: 'التكرار الكلي يعطي مجموع التكرارين المجهولين، ثم تحدّد رتبتا الوسيط أيّ توزيع هو الصحيح.',
-        body: <p><MathText>{REMARKS.majhul}</MathText></p> },
-      { id: 'tajnid-mawarid', type: 'regles', title: 'أيّ مؤشر لأيّ سؤال؟', summary: 'على الأكثر وعلى الأقل تكرار مجمع، التشتت مدى، النصف وسيط، والمجموع متوسط.',
-        body: <p><MathText>{REMARKS.tajnid}</MathText></p> },
     ],
   },
 };

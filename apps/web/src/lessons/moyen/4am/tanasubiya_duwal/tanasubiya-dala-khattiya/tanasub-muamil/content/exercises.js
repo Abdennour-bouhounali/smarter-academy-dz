@@ -109,7 +109,7 @@ export const EXERCISES = [
   // Exercice de la plateforme (P3) — la boutique de chawarma du quartier
   {
     id: 'ex-p1-1', source: PLATFORM, learningPointId: LP.P3, difficulty: 'facile',
-    statement: 'في محلّ «ستريت فود» قرب المتوسطة، ثمن الشاورما 250DA للواحدة. نسمّي $x$ عدد الشاورمات و $y$ الثمن بالدينار.',
+    statement: 'في محلّ «ستريت فود» قرب المتوسطة، يحافظ صاحبه على نظافته، ثمن الشاورما 250DA للواحدة. نسمّي $x$ عدد الشاورمات و $y$ الثمن بالدينار.',
     items: ['$\\begin{array}{|c|c|c|c|} \\hline x & 1 & 2 & 4 \\\\ \\hline y & 250 & 500 & 1000 \\\\ \\hline \\end{array}$'],
     interaction: 'choice',
     question: {

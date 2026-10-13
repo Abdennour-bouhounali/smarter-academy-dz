@@ -35,6 +35,11 @@ export default function Module04Awazzif() {
       moduleTitle="أوظّف تعلّماتي"
       moduleSubtitle="نقرأ، نرسم، ونفسّر"
       estimatedTime="6 دقائق"
+      objectives={[
+        'أقرأ ارتفاع منحدر وميله',
+        'أكتب عبارة دالة من مستقيمها',
+        'أختار نقطتين لرسم مستقيم',
+      ]}
       brief={{
         tag: 'تمارين من المنصّة', title: 'ثلاثة تمارين', tone: 'amber',
         body: <p>منحدر في حديقة التزلّج، مستقيم نقرأ عليه كل شيء، ودالة نختار نقطتين من تمثيلها.</p>,
@@ -45,7 +50,7 @@ export default function Module04Awazzif() {
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" title="تمرين 1" source={PLATFORM} compact
-                text="في حديقة التزلّج، ارتفاع منحدر (بالمتر) على بعد $x$ متر من الجدار هو $h(x) = 0{,}4x + 1{,}2$ ، وتمثيله البياني جزء من مستقيم." />
+                text="في حديقة التزلّج التي بنتها البلدية لسلامة الشباب، ارتفاع منحدر (بالمتر) على بعد $x$ متر من الجدار هو $h(x) = 0{,}4x + 1{,}2$ ، وتمثيله البياني جزء من مستقيم." />
               <NumericQuestion
                 prompt={<MathText>{'ارتفاع المنحدر عند الجدار ($x = 0$) بالمتر، وهو الترتيب عند المبدأ:'}</MathText>}
                 expected={1.2}

@@ -36,6 +36,7 @@ export default function Module02Maarif() {
       moduleNumber={2}
       moduleTitle="معارف — الجملة وحلّها"
       moduleSubtitle="جملة معادلتين، حلّها، الترتيب، والحالات الخاصة"
+      objectives={['ما شكل جملة معادلتين؟ وما معنى حلّها؟', 'هل يهمّ ترتيب العددين في الثنائية؟', 'متى لا يكون للجملة حل وحيد؟']}
       estimatedTime="12 دقيقة"
       brief={{
         tag: 'معارف — الكتاب ص 58', title: KNOWLEDGE.system.title, tone: 'violet',

@@ -8,16 +8,15 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
 /**
  * Une synthèse n'introduit aucune notion nouvelle (LESSON_CONTRACT) : ce sont
  * la DÉMARCHE de modélisation et les moments de choix d'une forme.
- *   namdhaja          module 1 — nommer l'inconnue, exprimer chaque longueur en fonction de x
- *   masaha-tariqatan  module 1 — l'aire du ruban de deux façons (« هناك طرق متعددة »)
- *   musaada-jadaa     module 1 — l'« مساعدة » du manuel : un produit dont un facteur est nul est nul
- *   tariqat-wadiya    module 1 — la démarche complète, posée APRÈS l'équation
- *   ikhtiyar-shakl    module 3 — choisir la forme (développée / factorisée) qui sert le calcul
+ *   namdhaja          module 7 — nommer l'inconnue, exprimer chaque longueur en fonction de x
+ *   masaha-tariqatan  module 7 — l'aire du ruban de deux façons (« هناك طرق متعددة »)
+ *   musaada-jadaa     module 7 — l'« مساعدة » du manuel : un produit dont un facteur est nul est nul
+ *   tariqat-wadiya    module 7 — la démarche complète, posée APRÈS l'équation
  * La SOLUTION de la situation (x = 1) n'est dans aucun item : c'est la réponse de l'évaluation.
  */
 export const LESSON_KNOWLEDGE = {
   modules: {
-    1: [
+    7: [
       { id: 'namdhaja', type: 'methodes', title: 'نمذجة وضعية بدلالة x', summary: 'نسمّي المجهول x، ونعبّر عن كل طول بدلالته انطلاقًا من الشكل، ثم عن المساحة.',
         body: (
           <ol className="list-decimal ms-5 space-y-1">
@@ -49,18 +48,6 @@ export const LESSON_KNOWLEDGE = {
             {SITUATION.analysis.map((a) => <li key={a.label}><strong>{a.label}</strong>: <MathText>{a.text}</MathText></li>)}
             <li><MathText>{REMARKS.check}</MathText></li>
           </ol>
-        ) },
-    ],
-    3: [
-      { id: 'ikhtiyar-shakl', type: 'methodes', title: 'أيّ شكل أختار؟',
-        predictPrompt: 'لديك الآن شكلان للعبارة نفسها: $D = 4x^2 - x - 14$ و $D = (x - 2)(4x + 7)$. لحساب $D$ من أجل $x = 2$ ثم من أجل $x = 0$ ، أيّ الشكلين تختار في كل مرة، ولماذا؟ اكتب القاعدة التي تجعلك تختار.',
-        summary: 'نختار الشكل الذي يسهّل الحساب: المحلّل إذا انعدم أحد عوامله، والمنشور عندما يبقى الحد الثابت وحده.',
-        body: (
-          <ul className="list-disc ms-5 space-y-1">
-            <li>الشكل <strong>المحلّل</strong> إذا جعلت القيمة أحد العوامل معدومًا: الجداء عندئذ معدوم.</li>
-            <li>الشكل <strong>المنشور</strong> من أجل <MathText>{'$x = 0$'}</MathText>: يبقى الحد الثابت وحده.</li>
-            <li>وإذا كان النشر المبسّط عبارة حسبنا قيمتها من قبل، فلا حاجة إلى حساب جديد.</li>
-          </ul>
         ) },
     ],
   },

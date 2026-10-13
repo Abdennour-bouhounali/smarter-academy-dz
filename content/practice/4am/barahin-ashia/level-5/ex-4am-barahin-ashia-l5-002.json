@@ -21,7 +21,7 @@
     }
   },
   "statement": {
-    "content": "في عرض بساحة البريد المركزي، تنطلق طائرة مسيّرة من النقطة S وتصل إلى النقطة X حيث $\\overrightarrow{SX} = \\overrightarrow{AB} + \\overrightarrow{AC}$ (الشكل على المرصوفة).",
+    "content": "في عرض بساحة البريد المركزي يتعاون على إعداده مبرمجون شباب، تنطلق طائرة مسيّرة من النقطة S وتصل إلى النقطة X حيث $\\overrightarrow{SX} = \\overrightarrow{AB} + \\overrightarrow{AC}$ (الشكل على المرصوفة).",
     "figure": {
       "points": {
         "A": [

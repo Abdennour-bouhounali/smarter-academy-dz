@@ -20,6 +20,7 @@ export default function Module04Awazzif() {
 
   return (
     <ContentModule
+      objectives={["سأحدّد النسبة $k$ في كل وضعية", "سأقرّر هل المطلوب طولا أم مساحة أم حجما"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}

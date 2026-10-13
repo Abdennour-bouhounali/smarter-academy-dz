@@ -28,6 +28,7 @@ export const PROBLEMS = [
     headline: 'مسألة الدرس',
     emoji: '🎒',
     source: SOURCE,
+    illustration: LESSON_CONFIG.lessonProblem.illustration,
     statement: LESSON_CONFIG.lessonProblem.statement,
     data: [
       { id: 'pens', text: 'عدد الأقلام: 90 قلمًا', useful: true },
@@ -138,6 +139,7 @@ export const PROBLEMS = [
     context: 'كم عائلة تستفيد؟',
     emoji: '🧺',
     source: SOURCE,
+    illustration: { kind: 'tags', cards: [{ title: 'زيت', icon: 'bottle', lines: [{ label: 'العدد', value: 60, unit: 'قارورة' }] }, { title: 'طماطم', icon: 'tomato', lines: [{ label: 'العدد', value: 84, unit: 'علبة' }] }, { title: 'كيس السكر', icon: 'sack', lines: [{ label: 'الثمن', value: 190, unit: 'دج' }] }], ariaLabel: 'مؤونة القفف: 60 قارورة زيت و 84 علبة طماطم، وكيس السكر ثمنه 190 دج' },
     statement: 'تحضّر بلدية قففًا متماثلة لعائلات معوزة: في كل قفة العدد نفسه من قارورات الزيت والعدد نفسه من علب الطماطم، وتُوزَّع كل القارورات وكل العلب، قفة واحدة لكل عائلة. تريد البلدية أن يستفيد أكبر عدد ممكن من العائلات. في المخزن 60 قارورة زيت و 84 علبة طماطم. يبدأ التوزيع قبل شهر رمضان بـ 10 أيام. تضع البلدية أيضًا في كل قفة كيس سكر ثمنه 190 دج.',
     data: [
       { id: 'oil', text: '60 قارورة زيت', useful: true },
@@ -258,6 +260,7 @@ export const PROBLEMS = [
     context: 'كم فوجًا؟ وكم يدفع كل لاعب؟',
     emoji: '⚽',
     source: SOURCE,
+    illustration: { kind: 'scene', icon: 'ball', bg: 'green', chips: [{ label: 'أشبال', value: 48, tone: 'blue' }, { label: 'أصاغر', value: 80, tone: 'amber' }, { label: 'ثمن الكرة', value: 2400, unit: 'دج', tone: 'rose' }], extra: ['person', 'person', 'person'], ariaLabel: 'تربّص كرة قدم: 48 لاعبًا من الأشبال و 80 من الأصاغر، وثمن الكرة الواحدة 2400 دج' },
     statement: 'ينظّم نادٍ لكرة القدم تربّصًا بملعب الولاية لـ 48 لاعبًا من فئة الأشبال و 80 لاعبًا من فئة الأصاغر، يتدرّبون فيه على التعاون وروح الفريق واحترام المواعيد. يدوم التربّص 5 أيام. يريد المدرّب تقسيم اللاعبين إلى أفواج متماثلة: في كل فوج العدد نفسه من الأشبال والعدد نفسه من الأصاغر، دون أن يبقى أيّ لاعب خارج الأفواج. يشتري النادي كرتين لكل فوج، وثمن الكرة الواحدة 2400 دج.',
     data: [
       { id: 'cubs', text: '48 لاعبًا من فئة الأشبال', useful: true },

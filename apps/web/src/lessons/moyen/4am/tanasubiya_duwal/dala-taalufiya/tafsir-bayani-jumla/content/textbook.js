@@ -11,7 +11,7 @@ import { src, addition } from '../../_unit/unitMeta.js';
 export const ACTIVITY = {
   source: src('act-5', 79, 'أنشطة', 5),
   title: 'التفسير البياني لحل جملة معادلتين',
-  situation: '1) لتزيين قسمهم جمع التلاميذ مبلغ 5000DA من قطع 100DA و 200DA. عدد كلّ القطع النقدية هو 43. ما هو عدد قطع كلّ فئة؟',
+  situation: '1) لتزيين قسمهم بروح التعاون جمع التلاميذ مبلغ 5000DA من قطع 100DA و 200DA. عدد كلّ القطع النقدية هو 43. ما هو عدد قطع كلّ فئة؟',
   questions: [
     '2) نعتبر الجملة: $\\begin{cases} y = 43 - x & (1) \\\\ y = 25 - \\dfrac{1}{2}x & (2) \\end{cases}$ .',
     'أ) ما هي طبيعة كلّ من الدالتين $f : x \\longmapsto 43 - x$ و $g : x \\longmapsto 25 - \\dfrac{1}{2}x$ ؟',

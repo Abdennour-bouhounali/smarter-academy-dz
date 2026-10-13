@@ -2213,28 +2213,24 @@
   },
   "situation": {
    "lesson": "wadiya-idmajiya-khattiya",
-   "module": 1,
+   "module": 7,
    "duplicatedIn": [
     {
      "lesson": "wadiya-idmajiya-khattiya",
-     "module": 4
+     "module": 8
     }
    ]
   },
   "qcm": {
-   "lesson": "wadiya-idmajiya-khattiya",
-   "module": 2,
+   "lesson": "dala-khattiya",
+   "module": 4,
+   "items": [
+    2,
+    3,
+    5,
+    6
+   ],
    "duplicatedIn": [
-    {
-     "lesson": "dala-khattiya",
-     "module": 4,
-     "items": [
-      2,
-      3,
-      5,
-      6
-     ]
-    },
     {
      "lesson": "tamthil-bayani-khatti",
      "module": 4,
@@ -2250,24 +2246,33 @@
       7,
       8
      ]
+    },
+    {
+     "lesson": "wadiya-idmajiya-khattiya",
+     "module": "practice",
+     "note": "قرار المالك 2026-10-13: «أؤكّد تعلّماتي» لا تدخل في «أدمج تعلّماتي» (لا محور لها)؛ تبقى ثمانية أسئلة في بنك تمارين الإدماج فقط"
     }
    ]
   },
   "ex-32": {
    "lesson": "wadiya-idmajiya-khattiya",
-   "module": 3
+   "module": "practice",
+   "note": "قرار المالك 2026-10-13: لا محور «أتعمّق» في «أدمج تعلّماتي»؛ التمرين في بنك التمارين فقط"
   },
   "ex-37": {
    "lesson": "wadiya-idmajiya-khattiya",
-   "module": 3
+   "module": "practice",
+   "note": "قرار المالك 2026-10-13: لا محور «أتعمّق» في «أدمج تعلّماتي»؛ التمرين في بنك التمارين فقط"
   },
   "ex-38": {
    "lesson": "wadiya-idmajiya-khattiya",
-   "module": 3
+   "module": "practice",
+   "note": "قرار المالك 2026-10-13: لا محور «أتعمّق» في «أدمج تعلّماتي»؛ التمرين في بنك التمارين فقط"
   },
   "ex-39": {
    "lesson": "wadiya-idmajiya-khattiya",
-   "module": 3
+   "module": "practice",
+   "note": "قرار المالك 2026-10-13: لا محور «أتعمّق» في «أدمج تعلّماتي»؛ التمرين في بنك التمارين فقط"
   }
  }
 }

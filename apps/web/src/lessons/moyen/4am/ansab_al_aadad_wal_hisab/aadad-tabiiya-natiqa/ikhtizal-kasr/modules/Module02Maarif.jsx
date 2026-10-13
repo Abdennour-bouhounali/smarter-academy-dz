@@ -12,7 +12,7 @@ export default function Module02Maarif() {
   const [q2, setQ2] = useState(false);
   const [read, setRead] = useState(false);
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2} moduleTitle="معارف — الكسور غير القابلة للاختزال" moduleSubtitle="التعريف، وطريقة PGCD" estimatedTime="14 دقيقة"
+    <ContentModule objectives={["متى يكون الكسر غير قابل للاختزال؟", "هل توجد قسمة واحدة تكفي لاختزال 84/48؟", "ما علاقة PGCD بالشكل غير القابل للاختزال؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2} moduleTitle="معارف — الكسور غير القابلة للاختزال" moduleSubtitle="التعريف، وطريقة PGCD" estimatedTime="14 دقيقة"
       brief={{ tag: 'معارف ص 12 — طرائق ص 13', title: 'الكسور غير القابلة للاختزال', tone: 'violet', body: <p>ب) احسب القاسم المشترك الأكبر للعددين 84 و 48، ثمّ استعمله لاختزال الكسر السابق. جـ) استنتج طريقة.</p> }}
       intro={<Manipulation type="fraction-reduction" n={ACTIVITY.numbers.n} d={ACTIVITY.numbers.d} path={[12]} title="ب) 84/48 مرّة أخرى — هل توجد طريقة أقصر؟" lead="اختزل 84/48 كما فعل سمير، ثم ابحث عن العدد الذي يختزله في خطوة واحدة، وقارن عدد الخطوات." />}
       steps={[

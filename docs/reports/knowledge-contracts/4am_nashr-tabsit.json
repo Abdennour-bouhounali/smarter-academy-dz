@@ -15,7 +15,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module01Nashat.jsx",
-        "line": 183,
+        "line": 184,
         "step": 3,
         "variant": "new"
       }
@@ -26,7 +26,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module01Nashat.jsx",
-        "line": 207,
+        "line": 208,
         "step": 4,
         "variant": "new"
       }
@@ -37,9 +37,9 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module02Maarif.jsx",
-        "line": 55,
+        "line": 56,
         "step": 1,
-        "variant": "new"
+        "variant": "rappel"
       }
     }
   ],
@@ -51,7 +51,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module02Maarif.jsx",
-        "line": 90,
+        "line": 91,
         "step": 3,
         "variant": "new"
       }
@@ -225,7 +225,7 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module01Nashat.jsx",
-      "line": 137,
+      "line": 138,
       "requires": [
         "awlawiyat-hisab",
         "khassiya-tawziiya"
@@ -243,7 +243,7 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module01Nashat.jsx",
-      "line": 148,
+      "line": 149,
       "requires": [
         "awlawiyat-hisab",
         "khassiya-tawziiya"
@@ -261,7 +261,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module01Nashat.jsx",
-      "line": 164,
+      "line": 165,
       "requires": [
         "awlawiyat-hisab"
       ],
@@ -277,7 +277,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module01Nashat.jsx",
-      "line": 186,
+      "line": 187,
       "requires": [
         "nashr-taarif",
         "khassiya-tawziiya",
@@ -297,7 +297,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module01Nashat.jsx",
-      "line": 209,
+      "line": 210,
       "requires": [
         "nashr-qawsayn",
         "jidaa-x-fi-x"
@@ -315,7 +315,7 @@
       "step": 5,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module01Nashat.jsx",
-      "line": 225,
+      "line": 227,
       "requires": [
         "nashr-qawsayn"
       ],
@@ -331,7 +331,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module02Maarif.jsx",
-      "line": 56,
+      "line": 57,
       "requires": [
         "tawziiya-nashr"
       ],
@@ -347,7 +347,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module02Maarif.jsx",
-      "line": 74,
+      "line": 75,
       "requires": [
         "nashr-qawsayn"
       ],
@@ -363,7 +363,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module02Maarif.jsx",
-      "line": 91,
+      "line": 92,
       "requires": [
         "tabsit"
       ],
@@ -379,7 +379,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module02Maarif.jsx",
-      "line": 106,
+      "line": 107,
       "requires": [
         "tabsit",
         "hadhf-aqwas"
@@ -393,10 +393,10 @@
     },
     {
       "questionId": "E1",
-      "module": 4,
+      "module": 7,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module04Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module07Itqan.jsx",
       "line": 41,
       "requires": [
         "nashr-taarif"
@@ -409,10 +409,10 @@
     },
     {
       "questionId": "E2",
-      "module": 4,
+      "module": 7,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module04Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module07Itqan.jsx",
       "line": 50,
       "requires": [
         "tawziiya-nashr"
@@ -425,10 +425,10 @@
     },
     {
       "questionId": "E3",
-      "module": 4,
+      "module": 7,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module04Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module07Itqan.jsx",
       "line": 59,
       "requires": [
         "tawziiya-nashr"
@@ -441,10 +441,10 @@
     },
     {
       "questionId": "E4",
-      "module": 4,
+      "module": 7,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module04Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module07Itqan.jsx",
       "line": 68,
       "requires": [
         "nashr-qawsayn",
@@ -459,10 +459,10 @@
     },
     {
       "questionId": "E5",
-      "module": 4,
+      "module": 7,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module04Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module07Itqan.jsx",
       "line": 77,
       "requires": [
         "tabsit",
@@ -478,5 +478,42 @@
       "pedagogicallyValid": true
     }
   ],
-  "findings": []
+  "findings": [
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 4 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module04Masala1.jsx",
+      "line": 0,
+      "module": 4,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 5 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module05Masala2.jsx",
+      "line": 0,
+      "module": 5,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 6 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/modules/Module06Masala3.jsx",
+      "line": 0,
+      "module": 6,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    }
+  ]
 }

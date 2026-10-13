@@ -44,7 +44,7 @@ export default function Module04Awazzif() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
-      moduleNumber={4}
+      moduleNumber={4} objectives={['كيف أقرأ شعاعًا على المرصوفة؟', 'كيف أعرف أنّ شعاعين متساويان؟', 'ماذا يعطيني متوازي الأضلاع من أشعة متساوية؟']}
       moduleTitle="أوظّف تعلّماتي"
       moduleSubtitle="تمارين الكتاب 1 و 2 و 3 و 4 و 5 و 8"
       estimatedTime="10 دقائق"

@@ -29,6 +29,7 @@ export default function Module03Taraiq() {
       moduleNumber={3}
       moduleTitle="طرائق — حساب أطوال"
       moduleSubtitle="وضعية طالس، النسب، المساواة المناسبة، الجداء المتصالب"
+      objectives={['كيف أحسب طولًا مجهولًا في وضعية طالس؟', 'أيّ مساواة أختار من بين النسب الثلاث؟', 'ما خطواتي بالترتيب؟']}
       estimatedTime="7 دقائق"
       brief={{
         tag: 'طرائق — الكتاب ص 107', title: METHOD.title, tone: 'emerald',

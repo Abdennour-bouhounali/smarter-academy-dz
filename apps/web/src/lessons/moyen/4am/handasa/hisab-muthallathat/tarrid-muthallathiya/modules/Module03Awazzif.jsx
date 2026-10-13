@@ -46,6 +46,7 @@ export default function Module03Awazzif() {
 
   return (
     <ContentModule
+      objectives={['أترجم الوضعية إلى مثلث قائم وأختار النسبة', 'أبرهن أن المثلث قائم قبل أن أحسب', 'أحسب أطوالًا وأقياسًا في الأشكال المألوفة']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}

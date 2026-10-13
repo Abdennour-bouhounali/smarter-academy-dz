@@ -36,13 +36,18 @@ export default function Module02Maarif() {
       moduleTitle="معارف — المستقيم الذي يمثّل دالة تآلفية"
       moduleSubtitle="التمثيل البياني، معامل التوجيه، الرسم بنقطتين"
       estimatedTime="11 دقيقة"
+      objectives={[
+        'أين يقطع تمثيل دالة تآلفية محور التراتيب؟',
+        'متى يصعد المستقيم ومتى ينزل؟',
+        'كم نقطة تكفي لرسم المستقيم؟',
+      ]}
       brief={{
         tag: 'معارف — صياغة من المنصّة', title: KNOWLEDGE.title, tone: 'violet',
         body: <p><MathText>{'في النشاط 3 رفعت المستقيم $(d)$ بـ $1$ فصار $(d\')$ ، ورأيته يقطع محور التراتيب في $(0 ; 1)$ . الكتاب لا يكتب هنا معارف لهذه الوحدة: هذه صياغة المنصّة لما رأيته، لكل دالة تآلفية.'}</MathText></p>,
       }}
       steps={[
         {
-          num: 1, title: 'مستقيم لا يشمل المبدأ', subtitle: 'الخاصية', done: q1a && q1b,
+          num: 1, title: 'أين يقطع المستقيم محور التراتيب؟', subtitle: 'الخاصية', done: q1a && q1b,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tartib-mabda" variant="rappel" compact />
@@ -75,7 +80,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 2, title: 'معامل التوجيه', subtitle: 'ما يصعده المستقيم لكل وحدة', done: q2a && q2b,
+          num: 2, title: 'معامل التوجيه', subtitle: 'ماذا يحدث لكل وحدة نتقدّمها؟', done: q2a && q2b,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="definition" text={KNOWLEDGE.names} source={KNOWLEDGE.source} compact />
@@ -115,7 +120,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 3, title: 'نرسم بنقطتين', subtitle: 'طريقة', done: q3,
+          num: 3, title: 'كم نقطة نحتاج لرسم المستقيم؟', subtitle: 'طريقة', done: q3,
           content: (
             <div className="space-y-3">
               <Manipulation

@@ -8,7 +8,7 @@ import ManipulationWorkspace from '../../../../../common/manipulations/Manipulat
 import { LAB, SITUATION, FAMILY } from './content/textbook';
 
 /**
- * Le laboratoire du module 1 de la synthèse (origin-line, réutilisé de « التمثيل البياني لدالة خطية »,
+ * Le laboratoire du module 7 de la synthèse (origin-line, réutilisé de « التمثيل البياني لدالة خطية »,
  * mode `read`, monde `budget`) rendu avec EXACTEMENT les props que le module étale
  * (content/textbook.js › LAB), dans le workspace à deux niveaux ouvert sur متقدم — et la mathématique
  * que le module suppose : la famille du manuel paie 3,8x (plus grand prix entier 526 DA), l'autre

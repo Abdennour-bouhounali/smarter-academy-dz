@@ -2181,6 +2181,10 @@
         {
           "lesson": "bahth-pgcd",
           "module": 4
+        },
+        {
+          "lesson": "wadiya-idmajiya-aadad",
+          "module": 8
         }
       ]
     },
@@ -2470,20 +2474,12 @@
       "module": 4
     },
     "qcm": {
-      "lesson": "wadiya-idmajiya-aadad",
-      "module": 2,
+      "lesson": "qasim-adad-tabii",
+      "module": 7,
       "duplicatedIn": [
         {
-          "lesson": "qasim-adad-tabii",
-          "module": 4,
-          "items": [
-            1,
-            2
-          ]
-        },
-        {
           "lesson": "qawasim-adad-tabii",
-          "module": 4,
+          "module": 7,
           "items": [
             3,
             4,
@@ -2492,14 +2488,14 @@
         },
         {
           "lesson": "bahth-pgcd",
-          "module": 5,
+          "module": 8,
           "items": [
             9
           ]
         },
         {
           "lesson": "awwaliyan-fima-baynahuma",
-          "module": 4,
+          "module": 7,
           "items": [
             8
           ]
@@ -2507,14 +2503,7 @@
       ]
     },
     "situation": {
-      "lesson": "wadiya-idmajiya-aadad",
-      "module": 1,
-      "duplicatedIn": [
-        {
-          "lesson": "wadiya-idmajiya-aadad",
-          "module": 3
-        }
-      ]
+      "notIntegrated": "قرار المالك 2026-10-13: وضعية قصر الرياس (ص 16) استُبدلت في « أدمج تعلّماتي » بوضعية تحدّي المآزر (ص 7، 936 و 845)؛ لم تعد وضعية الاختبار النهائي، ولا يستعملها أي محور."
     }
   }
 }

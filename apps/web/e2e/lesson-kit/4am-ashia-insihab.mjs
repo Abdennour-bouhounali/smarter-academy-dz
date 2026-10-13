@@ -131,7 +131,7 @@ const LABS = [
   ['shuaayn-mutasawiyayn', { beginner: 'parallelogram-pin', advanced: 'parallelogram-pin' }, 1],
   ['majmu-shuaayn', { beginner: 'vector-sum', advanced: 'vector-sum' }, 1],
   ['barahin-ashia', { beginner: 'vector-chain', advanced: 'vector-chain' }, 1],
-  ['wadiya-idmajiya-ashia', { beginner: 'bridge-path', advanced: 'bridge-path' }, 1],
+  ['wadiya-idmajiya-ashia', { beginner: 'bridge-path', advanced: 'bridge-path' }, 7],
 ].map(([l, t, n]) => [l, t, LAB_MODULE[l] ?? n]);
 for (const [lesson, types, number] of (process.env.MOUNT_ONLY ? [] : LABS)) {
   for (const vp of VIEWPORTS) {

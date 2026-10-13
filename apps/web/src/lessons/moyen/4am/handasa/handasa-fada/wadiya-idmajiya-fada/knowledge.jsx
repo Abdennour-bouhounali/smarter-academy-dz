@@ -7,16 +7,15 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
 
 /**
  * Une synthèse n'introduit aucune notion nouvelle (LESSON_CONTRACT) : ce sont la DÉMARCHE (قراءة → تحليل واختيار استراتيجية →
- * تنفيذ) appliquée à la وضعية du seau, et l'outil que « أتعمّق » mobilise.
- *   mukhrut-mukammal  module 1 — compléter le cône : Thalès dans la coupe axiale donne le sommet S et le rayon de la surface
- *   hajm-mabtur       module 1 — le petit cône est une réduction (k) du grand : V = V₁ − V₂ = V₁(1 − k³)
- *   tariqat-wadiya-fada module 1 — la démarche en trois phases, puis l'arrondi et le litre
- *   adawat-wahda-fada module 3 — les outils de l'unité combinés (boule, cône, réduction : k³ ⇒ k)
+ * تنفيذ) appliquée à la وضعية du seau.
+ *   mukhrut-mukammal  module 7 — compléter le cône : Thalès dans la coupe axiale donne le sommet S et le rayon de la surface
+ *   hajm-mabtur       module 7 — le petit cône est une réduction (k) du grand : V = V₁ − V₂ = V₁(1 − k³)
+ *   tariqat-wadiya-fada module 7 — la démarche en trois phases, puis l'arrondi et le litre
  * Les réponses de « إختبار أولي » (le verre de frappé d'Oran) ne sont dans aucun item.
  */
 export const LESSON_KNOWLEDGE = {
   modules: {
-    1: [
+    7: [
       { id: 'mukhrut-mukammal', type: 'methodes', title: 'نكمل المخروط', summary: 'الدلو مخروط مبتور: نمدّد جداريه حتى يلتقيا على المحور في رأس المخروط، ثم نطبّق خاصية طالس في المقطع المحوري لنجد بعد الرأس عن القاع ونصف قطر سطح الماء.',
         body: (
           <ul className="list-disc ms-5 space-y-1">
@@ -40,10 +39,6 @@ export const LESSON_KNOWLEDGE = {
             <li><MathText>{REMARKS.tadwir}</MathText></li>
           </ol>
         ) },
-    ],
-    3: [
-      { id: 'adawat-wahda-fada', type: 'methodes', title: 'أدوات الوحدة في وضعية مركبة', summary: 'نجمع حجم الجلة وحجم المخروط، ومخروطا له نفس رأس مخروط آخر ونفس محوره هو تصغير له: من نسبة الحجمين k مكعّب نجد نسبة الأطوال k.',
-        body: <p><MathText>{REMARKS.adawat}</MathText></p> },
     ],
   },
 };

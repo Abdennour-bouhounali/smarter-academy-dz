@@ -62,7 +62,7 @@ export default function Module01Nashat() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
-      moduleNumber={1}
+      moduleNumber={1} objectives={['ماذا تتشارك أسهم المسيّرات التي تتحرّك بنفس الحركة؟', 'ماذا يكفي لتعيين الانسحاب؟', 'متى نقول عن سهمين إنهما متساويان؟']}
       moduleTitle="نشاط 1 — عرض المسيّرات فوق الخليج"
       moduleSubtitle="التشكيلة كلها تنتقل بحركة واحدة: ما هذه الحركة؟"
       estimatedTime="16 دقيقة"
@@ -85,7 +85,7 @@ export default function Module01Nashat() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين: كل مسيّرة على عقدة من شبكة الرصف، وصورتها تُقبل فقط إذا كان لسهمها نفس المنحى ونفس الاتجاه ونفس الطول."
+          lead="في المستويين: كل مسيّرة على عقدة من شبكة الرصف. لاحظ متى يقبل العرض صورة مسيّرة ومتى يرفضها، وماذا تتشارك أسهم الصور المقبولة."
           levels={{
             beginner: () => (
               <Manipulation
@@ -155,7 +155,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'نشاط 1: انسحاب واحد، ثلاث ثنائيات', subtitle: 'الأسئلة 2 أ، ب، جـ', done: q3,
+          num: 3, title: 'نشاط 1: هل هو انسحاب واحد؟', subtitle: 'الأسئلة 2 أ، ب، جـ', done: q3,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={`${ACTIVITY.part2a} ${ACTIVITY.part2b} ${ACTIVITY.part2c}`} source={ACTIVITY.source} compact />

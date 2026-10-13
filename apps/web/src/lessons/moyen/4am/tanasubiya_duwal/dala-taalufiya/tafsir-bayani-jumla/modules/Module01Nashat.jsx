@@ -94,6 +94,12 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 5 — صندوق القسم"
       moduleSubtitle="التفسير البياني لحل جملة معادلتين"
       estimatedTime="16 دقيقة"
+      objectives={[
+        'كيف نترجم شرطي الصندوق إلى معادلتين؟',
+        'أيّ مستقيم يمثّل أيّ معادلة؟',
+        'هل توجد نقطة تحقّق المعادلتين معًا؟',
+        'ماذا تعني هذه النقطة في صندوق القسم؟',
+      ]}
       brief={{
         tag: 'أنشطة — الكتاب ص 79',
         headline: HOOK.headline,
@@ -164,7 +170,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'دالتان تآلفيتان', subtitle: 'السؤال 2 أ', done: q2,
+          num: 2, title: 'ما طبيعة الدالتين؟', subtitle: 'السؤال 2 أ', done: q2,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[0]}</MathText></p>
@@ -203,7 +209,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'نقطة تحقّق المعادلتين', subtitle: 'السؤال 2 جـ', done: q4,
+          num: 4, title: 'هل من نقطة تُضيء المصباحين؟', subtitle: 'السؤال 2 جـ', done: q4,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[3]}</MathText></p>
@@ -255,7 +261,7 @@ export default function Module01Nashat() {
               />
               {q5 && (
                 <p className="rounded-xl bg-violet-50 px-3 py-2 text-sm text-violet-900" data-next-module>
-                  <MathText>{'كتبت كل شرط على الشكل $y = ax + b$ ، فصار مستقيمًا، ووجدت الحل في نقطة تقاطع المستقيمين. وفي المستوى المتقدّم، هل جرّبت «الحالات الثلاث»؟ المحور التالي يقول ذلك لكل جملة: متى يكون لها حل وحيد، ومتى لا يكون، ومتى تكون لها حلول كثيرة.'}</MathText>
+                  <MathText>{'ماذا حدث لكل شرط حين كتبته على الشكل $y = ax + b$ ؟ وأين وجدت الحل؟ وفي المستوى المتقدّم، هل جرّبت «الحالات الثلاث»؟ المحور التالي يسأل: هل لكل جملة حلّ؟ وكم حلًّا يمكن أن يكون لها؟'}</MathText>
                 </p>
               )}
             </div>

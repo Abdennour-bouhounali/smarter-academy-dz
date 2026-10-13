@@ -54,7 +54,7 @@ export default function Module04Awazzif() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
-      moduleNumber={4}
+      moduleNumber={4} objectives={['شعاعان متعاقبان أم لهما نفس المبدأ؟', 'ماذا أفعل إن لم يكن أيٌّ من الحالتين؟', 'كيف أنشئ ممثلًا للمجموع وأتحقّق منه؟']}
       moduleTitle="أوظّف تعلّماتي"
       moduleSubtitle="تمارين الكتاب 15 و 14 و 16 و 10 و 11 و 13"
       estimatedTime="10 دقائق"

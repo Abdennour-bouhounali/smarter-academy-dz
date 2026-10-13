@@ -61,6 +61,7 @@ export default function Module01Arkhimidis() {
 
   return (
     <ContentModule
+      objectives={["كم قرصا كبيرا تغطي قشرة البرتقالة؟", "إلى أيّ ارتفاع في الكأس يصل عصيرها؟", "هل يتغيّر الجواب إذا غيّرنا نصف القطر؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}

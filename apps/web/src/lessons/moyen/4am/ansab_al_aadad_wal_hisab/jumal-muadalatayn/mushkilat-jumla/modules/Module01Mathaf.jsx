@@ -45,6 +45,7 @@ export default function Module01Mathaf() {
       moduleNumber={1}
       moduleTitle="نشاط 3 — زوار المتحف"
       moduleSubtitle="من القصة إلى جملة معادلتين، ثم إلى الجواب"
+      objectives={['ما المجهولان في القصة؟ وكيف نختارهما؟', 'كيف نحوّل كل معلومة في النص إلى معادلة؟', 'كيف نتأكد من الجواب في القصة نفسها؟']}
       estimatedTime="15 دقيقة"
       brief={{
         tag: 'نشاط 3 — الكتاب ص 57',
@@ -63,7 +64,7 @@ export default function Module01Mathaf() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          lead="نفس المراحل الخمس في المستويين: نختار، نترجم، نحلّ، نتحقق في القصة، نجيب."
+          lead="في المستويين: من أين تبدأ لتحوّل القصة إلى معادلتين؟ وكيف تتأكد من جوابك في القصة نفسها؟"
           defaultLevel="beginner"
           levels={{
             beginner: () => (

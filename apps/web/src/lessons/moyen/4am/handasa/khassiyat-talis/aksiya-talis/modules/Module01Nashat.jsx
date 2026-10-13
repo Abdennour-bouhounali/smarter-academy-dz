@@ -71,6 +71,7 @@ export default function Module01Nashat() {
       moduleNumber={1}
       moduleTitle="نشاط 2 — اللوح الأفقي والأشكال الثلاثة"
       moduleSubtitle="متى يكون (B′C′) موازيا لـ (BC)؟"
+      objectives={['ما الذي يجعل اللوح (B′C′) أفقيًا؟', 'ماذا يحدث لو وضعنا B′ و C′ في جهتين مختلفتين من A؟', 'كيف نكتب النص الكامل للخاصية؟']}
       estimatedTime="13 دقيقة"
       brief={{
         tag: 'أنشطة — الكتاب ص 105',
@@ -196,7 +197,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'نفس الترتيب', subtitle: 'الملاحظة', done: q4,
+          num: 4, title: 'ترتيب النقط على (d′)', subtitle: 'الملاحظة', done: q4,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="aksiya-nashat" variant="rappel" compact />

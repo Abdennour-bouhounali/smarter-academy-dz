@@ -8,7 +8,7 @@ import * as L from '../../../../../common/manipulations/logic/growthRace';
 import { LAB, SITUATION, WARMUP } from './content/textbook';
 
 /**
- * Le laboratoire du module 1 de la synthèse (growth-race, réutilisé de « ترييض مشكلة »)
+ * Le laboratoire du module 7 de la synthèse (growth-race, réutilisé de « ترييض مشكلة »)
  * rendu avec EXACTEMENT les props que le module étale (content/textbook.js › LAB), dans le
  * workspace à deux niveaux ouvert sur متقدم — et la mathématique que le module suppose :
  * la formule 2 meilleure à partir de 9 séances (égalité à 8, 600 دج), à partir de 6 au
@@ -65,7 +65,6 @@ it('la mathématique que le module suppose', () => {
 
 it('les demi-droites du manuel : crochet tourné vers le rouge quand la borne est une solution', async () => {
   const { NumberLine } = await import('./components/MuadalatFigures');
-  const { QCM } = await import('./content/textbook');
   // Le crochet : « M(cx + s) … » — s > 0 : son ouverture regarde la droite.
   const opening = (html) => {
     const m = html.match(/<path d="M([\d.]+) [\d.]+ L([\d.]+) /g).map((d) => d.match(/M([\d.]+) [\d.]+ L([\d.]+)/)).find((p) => Math.abs(Number(p[1]) - Number(p[2])) === 7);
@@ -74,10 +73,4 @@ it('les demi-droites du manuel : crochet tourné vers le rouge quand la borne es
   expect(opening(renderToString(<NumberLine bound={-3} side="left" included label="x ≤ −3" />))).toBe(-1);   // ] vers la gauche, rouge à gauche
   expect(opening(renderToString(<NumberLine bound={-3} side="right" included={false} label="x > −3" />))).toBe(-1); // ] tourné vers l'extérieur
   expect(opening(renderToString(<NumberLine bound={-2} side="left" included={false} label="x < −2" />))).toBe(1);   // [ tourné vers l'extérieur
-  // QCM 6 et 9 : le dessin juste est celui de `optionsMean[correct]` (x > −3, x > −2)
-  for (const it of [QCM[5], QCM[8]]) {
-    const l = it.lines[it.correct];
-    expect(l.side === 'right' && l.included === false).toBe(true);
-    expect(it.optionsMean[it.correct]).toBe(`$x > ${l.bound}$`);
-  }
 });

@@ -37,7 +37,7 @@ export const CHALLENGE = {
 /** La وضعية de lancement pour la مذكرة du professeur (`ACTIVITY` : situation, questions, closing, source). */
 export const ACTIVITY = {
   source: CHALLENGE.source,
-  situation: 'رسّامو الجداريات في الحي يسندون سلّما إلى جدار: رأسه على ارتفاع $1{,}60\\,\\mathrm{m}$ والسلّم يصنع مع الأرض زاوية قيسها $59^{\\circ}$ . اعتمادا على الشكل، احسب قيمة مقربة إلى الجزء من 10 لطول السلّم.',
+  situation: 'يتطوّع رسّامو الجداريات لتجميل الحيّ، ويسندون سلّما إلى جدار: رأسه على ارتفاع $1{,}60\\,\\mathrm{m}$ والسلّم يصنع مع الأرض زاوية قيسها $59^{\\circ}$ . اعتمادا على الشكل، احسب قيمة مقربة إلى الجزء من 10 لطول السلّم.',
   text: CHALLENGE.text,
   questions: [
     'بالنسبة إلى الزاوية التي قيسها $59^{\\circ}$ ، ما طبيعة الضلع الذي طوله $1{,}60\\,\\mathrm{m}$ ؟ وما طبيعة السلّم؟',
@@ -56,7 +56,7 @@ export const LAB = {
 /** Le monde du niveau مبتدئ (plateforme) : le projecteur du stade visé au clinomètre du téléphone. */
 export const STADIUM = {
   source: PLATFORM,
-  text: 'ليلة مباراة في الملعب: عمر يريد معرفة ارتفاع كشّاف الإنارة دون أن يتسلّقه. يضع هاتفه على خط التماس، يسدّد إلى رأس الكشّاف بتطبيق «مقياس الميل»، ويقيس المسافة إلى قاعدة العمود على الأرض.',
+  text: 'ليلة مباراة في الملعب: عمر، المتطوّع في نادي الحيّ، يريد معرفة ارتفاع كشّاف الإنارة بدقّة دون أن يتسلّقه. يضع هاتفه على خط التماس، يسدّد إلى رأس الكشّاف بتطبيق «مقياس الميل»، ويقيس المسافة إلى قاعدة العمود على الأرض.',
 };
 
 /** Les phrases que le module 1 écrit et que la carte reprend mot pour mot (A.10 : jamais retapées). */

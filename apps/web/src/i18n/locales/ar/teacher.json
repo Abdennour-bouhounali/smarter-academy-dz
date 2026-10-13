@@ -63,6 +63,7 @@
   "home": {
     "metaTitle": "فضاء الأستاذ",
     "metaDescription": "أقسامك، تلاميذك، وعرضك في Smarter Academy.",
+    "greeting": "أهلًا {{name}} 👋",
     "tagline": "تابع أقسامك وتقدّم تلاميذك.",
     "usageTitle": "استخدامك",
     "classes": "الأقسام",

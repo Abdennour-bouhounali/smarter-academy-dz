@@ -39,6 +39,7 @@ export const LESSON_CONFIG = {
     module: 4,
     title: 'بائع الورود: 120 وردة حمراء و 84 وردة بيضاء',
     statement: 'اقتنى بائع زهور أمين في البليدة 120 وردة حمراء بـ 40 دج للوردة الواحدة، و 84 وردة بيضاء بـ 30 دج للوردة الواحدة. يريد استعمالها كلّها في تشكيل باقات متماثلة: في كل باقة نفس عدد الورود الحمراء ونفس عدد الورود البيضاء. يكلّفه تغليف الباقة الواحدة 100 دج. وهو حريص على احترام مواعيد زبائنه، فيفتح محلّه كل يوم على الساعة 8 صباحًا.',
+    illustration: { kind: 'tags', cards: [{ title: 'ورود حمراء', icon: 'plant', lines: [{ label: 'العدد', value: 120, unit: 'وردة' }, { label: 'ثمن الوردة', value: 40, unit: 'دج' }] }, { title: 'ورود بيضاء', icon: 'plant', lines: [{ label: 'العدد', value: 84, unit: 'وردة' }, { label: 'ثمن الوردة', value: 30, unit: 'دج' }] }, { title: 'التغليف', icon: 'plant', lines: [{ label: 'ثمن الباقة', value: 100, unit: 'دج' }] }], ariaLabel: 'بطاقات تبيّن 120 وردة حمراء بـ 40 دج للوردة و 84 وردة بيضاء بـ 30 دج للوردة وتغليف الباقة بـ 100 دج' },
   },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.

@@ -138,7 +138,7 @@ export const EXERCISES = [
   {
     // 3 h 2 h 5 h 4 h 6 h → filles ; 1, 2, 2, 9, 1 → garçons. F : moyenne 4, étendue 4 ; G : moyenne 3, étendue 8, médiane 2
     id: 'ecran', source: GEN, learningPointId: LP.P2, difficulty: 'moyen',
-    statement: 'سجّلت ريم ومراد مدّة استعمال الهاتف (بالساعات) خلال 5 أيام. ريم: 3 ، 2 ، 5 ، 4 ، 6. مراد: 1 ، 2 ، 2 ، 9 ، 1.',
+    statement: 'سجّلت ريم ومراد، حرصًا على احترام وقتهما، مدّة استعمال الهاتف (بالساعات) خلال 5 أيام. ريم: 3 ، 2 ، 5 ، 4 ، 6. مراد: 1 ، 2 ، 2 ، 9 ، 1.',
     interaction: 'batch',
     question: {
       rows: [
@@ -153,7 +153,7 @@ export const EXERCISES = [
   {
     // 120 × 400 + 80 × 650 = 48000 + 52000 = 100000 ; 100000 ÷ 200 = 500
     id: 'derby', source: GEN, learningPointId: LP.P3, difficulty: 'difficile',
-    statement: 'في دربي العاصمة باع نادٍ تذاكر في جناحين: 120 تذكرة بمتوسط 400DA و 80 تذكرة بمتوسط 650DA. ما متوسط ثمن التذكرة في الجناحين معا (بالدينار)؟',
+    statement: 'في دربي العاصمة باع نادٍ، في أجواء من الروح الرياضية، تذاكر في جناحين: 120 تذكرة بمتوسط 400DA و 80 تذكرة بمتوسط 650DA. ما متوسط ثمن التذكرة في الجناحين معا (بالدينار)؟',
     interaction: 'numeric',
     question: { expected: 500, display: '500', explain: '$\\dfrac{120 \\times 400 + 80 \\times 650}{120 + 80} = \\dfrac{48000 + 52000}{200} = \\dfrac{100000}{200} = 500$ DA ، وليس متوسط المتوسطين $525$ .' },
     commonError: 'حساب $\\dfrac{400 + 650}{2} = 525$ : عدد التذاكر في الجناحين مختلف.',

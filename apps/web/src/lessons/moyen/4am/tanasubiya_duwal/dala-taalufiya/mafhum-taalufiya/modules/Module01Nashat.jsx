@@ -87,6 +87,11 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 1 — أجرة العامل"
       moduleSubtitle="عدّاد بجزء ثابت وجزء يتغيّر مع الساعات"
       estimatedTime="12 دقيقة"
+      objectives={[
+        'ماذا يبقى ثابتًا في أجرة العامل، وماذا يُضاف عن كل ساعة؟',
+        'كيف نكتب الأجرة بدلالة عدد الساعات $x$؟',
+        'كيف نعرف عدد الساعات من أجرة معلومة؟',
+      ]}
       brief={{
         tag: 'أنشطة — الكتاب ص 78',
         headline: 'كم يتقاضى العامل في آخر الشهر؟',
@@ -220,7 +225,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'دالة تآلفية', subtitle: 'السؤال 4', done: q4,
+          num: 4, title: 'أيّ نوع من الدوال؟', subtitle: 'السؤال 4', done: q4,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[3]}</MathText></p>

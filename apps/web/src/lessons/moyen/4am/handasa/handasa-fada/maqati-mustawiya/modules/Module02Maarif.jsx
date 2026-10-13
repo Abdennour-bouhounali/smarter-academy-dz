@@ -28,6 +28,7 @@ export default function Module02Maarif() {
 
   return (
     <ContentModule
+      objectives={["ما المقطع الذي نحصل عليه في كل حالة؟", "كيف يكتب الكتاب ما طبعته الطابعة؟", "ما مقطع الهرم أو المخروط بمستو؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}

@@ -29,12 +29,13 @@ export const LESSON_CONFIG = {
   estimatedDurationMin: 71,
   textbookRef: { unit: 2, activity: null, pages: '25, 27, 29, 30' },
   // « مسألة الدرس » : l'énoncé de la مسألة 1 (content/problems.js), montré au
-  // sommaire et à la fin du module 1 (LessonProblemCard), résolu au module 6.
+  // sommaire de l'unité (LessonProblemCard, plus dans le module 1), résolu au module 6.
   // Elle prolonge le carré dallé du niveau متقدم : même instrument, autre aire.
   lessonProblem: {
     module: 6,
     title: 'طاولة فسيفساء مربّعة: أصغر قطعة ممكنة',
-    statement: 'في ورشة بغرداية، يصنع حِرفيّ طاولة سطحها مربّع الشكل مساحته $200\\,dm^2$، ويغطّيه كلّه بفسيفساء: قطع مربّعة متماثلة، مساحة كل منها عدد طبيعي من $dm^2$، مرصوفة صفوفًا وأعمدة. تُنجز الطاولة في 12 يومًا، وثمن القطعة الواحدة 120 دج مهما كان مقاسها. يريد الزبون أن تكون القطع أصغر ما يمكن.',
+    illustration: { kind: 'plan', shape: 'square', fill: 'tile', side: '؟', unit: 'dm', area: '200', areaUnit: 'dm²', ariaLabel: 'سطح طاولة مربّع الشكل مساحته 200 دم² يُغطّى بقطع فسيفساء مربّعة متماثلة' },
+    statement: 'في ورشة بغرداية، يصنع حِرفيّ بإتقان ودقّة طاولة سطحها مربّع الشكل مساحته $200\\,dm^2$، ويغطّيه كلّه بفسيفساء: قطع مربّعة متماثلة، مساحة كل منها عدد طبيعي من $dm^2$، مرصوفة صفوفًا وأعمدة. تُنجز الطاولة في 12 يومًا، وثمن القطعة الواحدة 120 دج مهما كان مقاسها. يريد الزبون أن تكون القطع أصغر ما يمكن.',
   },
   skills: [
     'كتابة الجذر التربيعي لعدد طبيعي على الشكل a√b حيث b أصغر ما يمكن',

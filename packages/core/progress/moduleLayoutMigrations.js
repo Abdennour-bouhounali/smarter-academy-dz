@@ -87,6 +87,24 @@ export const MODULE_LAYOUT_MIGRATIONS = {
   'misaha-hajm-kura': [{ version: 2, map: { 5: 8 } }],
   'takbir-tasghir': [{ version: 2, map: { 5: 8 } }],
   'maqati-mustawiya': [{ version: 2, map: { 5: 8 } }],
+  // 2026-10-13 — synthèse « أدمج تعلّماتي » : six وضعيات d'entraînement (1–6) insérées, l'ancienne analyse (1) passe
+  // au module 7, le test de 3 à 8 ; « أؤكّد تعلّماتي » (2) est supprimé : son « 2 » est ramené à « 0 » (module déjà terminé, sans effet).
+  'wadiya-idmajiya-aadad': [{ version: 2, map: { 1: 7, 2: 0, 3: 8 } }],
+  // 2026-10-13 — synthèses « أدمج تعلّماتي » des unités 2–14, au format de l'unité 1 : six « وضعيات تدريبية » (1–6) insérées
+  // après أستعدّ, l'ancienne situation → 7 (analyse), le test final → 8 ; « أؤكّد تعلّماتي » et « أتعمّق » supprimés (→ 0, sans effet).
+  'wadiya-idmajiya-ashia': [{ version: 2, map: { 1: 7, 2: 0, 3: 0, 4: 8 } }],
+  'wadiya-idmajiya-dawaran': [{ version: 2, map: { 1: 7, 2: 0, 3: 0, 4: 8 } }],
+  'wadiya-idmajiya-fada': [{ version: 2, map: { 1: 7, 2: 0, 3: 0, 4: 8 } }],
+  'wadiya-idmajiya-harfi': [{ version: 2, map: { 1: 7, 2: 0, 3: 0, 4: 8 } }],
+  'wadiya-idmajiya-ihsa': [{ version: 2, map: { 1: 7, 2: 0, 3: 0, 4: 8 } }],
+  'wadiya-idmajiya-judhur': [{ version: 2, map: { 1: 7, 2: 0, 3: 8 } }],
+  'wadiya-idmajiya-jumal': [{ version: 2, map: { 1: 7, 2: 0, 3: 0, 4: 8 } }],
+  'wadiya-idmajiya-khattiya': [{ version: 2, map: { 1: 7, 2: 0, 3: 0, 4: 8 } }],
+  'wadiya-idmajiya-maalam': [{ version: 2, map: { 1: 7, 2: 0, 3: 0, 4: 8 } }],
+  'wadiya-idmajiya-muadalat': [{ version: 2, map: { 1: 7, 2: 0, 3: 0, 4: 8 } }],
+  'wadiya-idmajiya-muthallathat': [{ version: 2, map: { 1: 7, 2: 0, 3: 0, 4: 8 } }],
+  'wadiya-idmajiya-taalufiya': [{ version: 2, map: { 1: 7, 2: 0, 3: 0, 4: 8 } }],
+  'wadiya-idmajiya-talis': [{ version: 2, map: { 1: 7, 2: 0, 3: 0, 4: 8 } }],
   // <<masail-rollout: one line per lesson, inserted above this anchor>>
 };
 

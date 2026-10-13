@@ -1,10 +1,12 @@
 /**
  * أدمج تعلّماتي — الوحدة 3 « الحساب الحرفي » (kind: synthesis)
- * Manuel 4AM, unité 3 : « أؤكّد تعلّماتي » (QCM 1–13, p. 40), « أدمج تعلّماتي »
- * (وضعية الحوض والشريط + تحليل الوضعية, p. 40), « أتعمّق » (ex. 37–40, p. 41)
- * et l'exercice 34 (p. 39), le تحدّ de la page d'unité (p. 31) et les items 1–2
- * de « أستعدّ » (p. 31) — extraction.json › destinations.
+ * Manuel 4AM, unité 3 : « أدمج تعلّماتي » (وضعية الحوض والشريط + تحليل الوضعية, p. 40),
+ * le تحدّ de la page d'unité (p. 31) et les items 1–2 de « أستعدّ » (p. 31)
+ * — extraction.json › destinations.
  * Ce n'est PAS un quatrième درس : c'est la synthèse de l'unité, affichée après les trois leçons.
+ * Format de l'unité 1 (décision du propriétaire, 2026-10-13), et seulement lui : 0 أستعدّ · 1–6 six « الوضعية التدريبية N »
+ * (`track: 'problem'`, content/problems.js) · 7 « الوضعية وتحليلها » (lire et analyser, rien n'est résolu) ·
+ * 8 « أحلّ الوضعية » (le test évalué).
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
@@ -17,7 +19,7 @@ export const LESSON_CONFIG = {
   unitTitle: 'الحساب الحرفي',
   sequentialUnlock: true,
   title: 'أدمج تعلّماتي — الحساب الحرفي',
-  description: 'حل وضعيات مركبة وتوظيف الحساب الحرفي: وضعية الحوض والشريط (مساحة الشريط 44m²) وتحدّي المثلث القائم، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه، ثم تمارين «أتعمّق».',
+  description: 'حل وضعيات مركبة وتوظيف الحساب الحرفي: ست وضعيات تدريبية، ثم وضعية الحوض والشريط (مساحة الشريط 44m²) وتحدّي المثلث القائم، ثم اختبار وضعية الحوض والشريط.',
   level: 'moyen',
   grade: '4am',
   chapter: 'ansab_al_aadad_wal_hisab',
@@ -25,15 +27,15 @@ export const LESSON_CONFIG = {
   passingScore: 4,
   masteryThreshold: 0.8,
   emoji: '🏊',
-  estimatedDurationMin: 50,
-  textbookRef: { unit: 3, pages: '31, 39, 40, 41' },
+  estimatedDurationMin: 62,
+  textbookRef: { unit: 3, pages: '31, 40' },
   skills: [
     'تجنيد النشر والتبسيط والتحليل والمتطابقات الشهيرة لحل وضعيات هندسية وعددية مركبة',
     'نمذجة وضعية: التعبير عن أطوال ومساحات بعبارات جبرية بدلالة x',
     'اختيار الشكل المنشور أو المحلّل لحساب قيمة عبارة أو لكتابة معادلة وحلها',
   ],
   teachingScope: {
-    include: ['أؤكّد تعلّماتي: 13 سؤالًا', 'أدمج تعلّماتي: الوضعية وتحليلها في ثلاث مراحل', 'تحدّ الوحدة: المثلث القائم', 'أتعمّق: التمارين 34 و 37 إلى 40'],
+    include: ['ست وضعيات تدريبية تجمع النشر والمتطابقات الشهيرة والتحليل', 'أدمج تعلّماتي: الوضعية وتحليلها في ثلاث مراحل', 'تحدّ الوحدة: المثلث القائم'],
     exclude: ['أي مفهوم جديد', 'حل معادلة جداء معدوم بصفة عامة (تُستعمل مساعدة الكتاب فقط، مع التحقق بالتعويض)'],
   },
   knowledgeMap: true,
@@ -43,12 +45,20 @@ export const LESSON_CONFIG = {
   // le développement (درس 1), les identités (درس 2), la factorisation (درس 3), les aires, Pythagore.
   priorKnowledge: ['qimat-ibara', 'nashr-jadaa', 'mutatabiqat', 'tahlil-ibara', 'masahat-ashkal', 'khassiyat-fithaghuras'],
   resources: [
-    { kind: 'situation', code: 'situation-hawd-shrit', module: 1, title: 'وضعية: الحوض والشريط', learningPointIds: ['4am_wadiya-idmajiya-harfi_P2'], sourceElementIds: ['situation'] },
-    // Module 1 — la situation dans le terrain découpé : x + 10 + x de chaque côté,
+    { kind: 'situation', code: 'situation-hawd-shrit', module: 7, title: 'وضعية: الحوض والشريط', learningPointIds: ['4am_wadiya-idmajiya-harfi_P2'], sourceElementIds: ['situation'] },
+    // Modules 1–6 — six وضعيات d'entraînement (content/problems.js), ajouts de la plateforme ;
+    // le module 7 lit la situation du manuel, le module 8 l'évalue.
+    { kind: 'situation', code: 'wadiya-1', module: 1, title: 'وضعية 1 — مكتبة المتوسطة: 51 × 49 والحديقة 98 م', learningPointIds: ['4am_wadiya-idmajiya-harfi_P1', '4am_wadiya-idmajiya-harfi_P3'] },
+    { kind: 'situation', code: 'wadiya-2', module: 2, title: 'وضعية 2 — مشتلة مساحتها 60 م²: x(x + 7) = 60', learningPointIds: ['4am_wadiya-idmajiya-harfi_P2', '4am_wadiya-idmajiya-harfi_P1'] },
+    { kind: 'situation', code: 'wadiya-3', module: 3, title: 'وضعية 3 — تبادل قطعتي أرض: (x + 3)(x - 3)', learningPointIds: ['4am_wadiya-idmajiya-harfi_P2', '4am_wadiya-idmajiya-harfi_P3'] },
+    { kind: 'situation', code: 'wadiya-4', module: 4, title: 'وضعية 4 — سارية العلم وسلكها: فيثاغورس بدلالة x', learningPointIds: ['4am_wadiya-idmajiya-harfi_P2', '4am_wadiya-idmajiya-harfi_P1'] },
+    { kind: 'situation', code: 'wadiya-5', module: 5, title: 'وضعية 5 — تصحيح الخطأ (2x - 3)² = 4x² - 9', learningPointIds: ['4am_wadiya-idmajiya-harfi_P1', '4am_wadiya-idmajiya-harfi_P3'] },
+    { kind: 'situation', code: 'wadiya-6', module: 6, title: 'وضعية 6 — برنامجا حساب يعطيان النتيجة نفسها', learningPointIds: ['4am_wadiya-idmajiya-harfi_P3', '4am_wadiya-idmajiya-harfi_P1'] },
+    // Module 7 — la situation dans le terrain découpé : x + 10 + x de chaque côté,
     // 9 zones (le centre 10 × 10 est le bassin, les 8 autres le ruban). Un seul
     // niveau (`levels={false}`) : c'est la situation du manuel, modélisée.
     {
-      kind: 'manipulation', code: 'pitch-expansion-hawd', type: 'pitch-expansion', module: 1,
+      kind: 'manipulation', code: 'pitch-expansion-hawd', type: 'pitch-expansion', module: 7,
       title: 'الحوض والشريط: مربع ضلعه x + 10 + x',
       experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'football' },
       learningPointIds: ['4am_wadiya-idmajiya-harfi_P2', '4am_wadiya-idmajiya-harfi_P1'],
@@ -59,18 +69,37 @@ export const LESSON_CONFIG = {
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
       title: 'أستعدّ', desc: 'سبع عبارات: صحيح أم خاطئ؟ قيمة عبارة، النشر، المتطابقات، التحليل، المساحة وفيثاغورس.',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
-    { id: '01', number: 1, slug: 'al-wadiya', path: `${LESSON_BASE_PATH}/al-wadiya`,
+    // Les وضعيات d'entraînement (track: 'problem') : practice_lab, avant la situation évaluée (module 8, toujours
+    // ouvert). Elles comptent dans la complétion, jamais dans la maîtrise — docs/lessons/MASAIL_GENERATION_GUIDE.md, §14.
+    { id: '01', number: 1, slug: 'wadiya-1', path: `${LESSON_BASE_PATH}/wadiya-1`,
+      title: 'الوضعية التدريبية 1 — مكتبة المتوسطة', desc: '51 × 49 وحديقة مربّعة ضلعها 98 م: الحساب الذهني بالمتطابقات، ثم الفرق بين مربّعين محلَّلًا.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_wadiya-idmajiya-harfi_P1', '4am_wadiya-idmajiya-harfi_P3'],
+      color: 'sky', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ الوضعية' },
+    { id: '02', number: 2, slug: 'wadiya-2', path: `${LESSON_BASE_PATH}/wadiya-2`,
+      title: 'الوضعية التدريبية 2 — مشتلة المتوسطة', desc: 'مشتلة مستطيلة مساحتها 60 م²: اكتب المعادلة، وظّف الشكل المحلّل، ثم احسب السياج.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_wadiya-idmajiya-harfi_P2', '4am_wadiya-idmajiya-harfi_P1'],
+      color: 'indigo', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ الوضعية' },
+    { id: '03', number: 3, slug: 'wadiya-3', path: `${LESSON_BASE_PATH}/wadiya-3`,
+      title: 'الوضعية التدريبية 3 — تبادل قطعتي أرض', desc: 'مربّع ومستطيل (x + 3)(x - 3): هل المساحتان متساويتان؟ وما التعويض؟',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_wadiya-idmajiya-harfi_P2', '4am_wadiya-idmajiya-harfi_P3'],
+      color: 'emerald', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ الوضعية' },
+    { id: '04', number: 4, slug: 'wadiya-4', path: `${LESSON_BASE_PATH}/wadiya-4`,
+      title: 'الوضعية التدريبية 4 — سارية العلم', desc: 'فيثاغورس بدلالة x: السارية والسلك، المعادلة، ثم قيمة x المقبولة.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_wadiya-idmajiya-harfi_P2', '4am_wadiya-idmajiya-harfi_P1'],
+      color: 'amber', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ الوضعية' },
+    { id: '05', number: 5, slug: 'wadiya-5', path: `${LESSON_BASE_PATH}/wadiya-5`,
+      title: 'الوضعية التدريبية 5 — تصحيح خطأ زميلتي', desc: 'اختبر المساواة (2x - 3)² = 4x² - 9، صحّحها، ثم احسب ذهنيًا بالتحليل.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_wadiya-idmajiya-harfi_P1', '4am_wadiya-idmajiya-harfi_P3'],
+      color: 'rose', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ الوضعية' },
+    { id: '06', number: 6, slug: 'wadiya-6', path: `${LESSON_BASE_PATH}/wadiya-6`,
+      title: 'الوضعية التدريبية 6 — برنامجا الحساب', desc: 'برنامجان يزعم صاحباهما أنّ نتيجتهما واحدة: أثبت ذلك وتحقّق من أجل عدد كبير.',
+      stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_wadiya-idmajiya-harfi_P3', '4am_wadiya-idmajiya-harfi_P1'],
+      color: 'violet', style: 'featured', estimatedMin: 6, difficulty: 3, actionText: 'أحلّ الوضعية' },
+    { id: '07', number: 7, slug: 'al-wadiya', path: `${LESSON_BASE_PATH}/al-wadiya`,
       title: 'الوضعية وتحليلها', desc: 'الحوض والشريط: اسحب عرض الشريط، عبّر عن مساحته بدلالة x، واكتب المساواة؛ ثم تحدّي المثلث القائم.',
-      stage: 'trigger', teachesLearningPointIds: ['4am_wadiya-idmajiya-harfi_P1', '4am_wadiya-idmajiya-harfi_P2', '4am_wadiya-idmajiya-harfi_P3'],
+      stage: 'practice_lab', teachesLearningPointIds: ['4am_wadiya-idmajiya-harfi_P1', '4am_wadiya-idmajiya-harfi_P2', '4am_wadiya-idmajiya-harfi_P3'],
       color: 'amber', style: 'featured', estimatedMin: 14, difficulty: 3, actionText: 'أقرأ الوضعية' },
-    { id: '02', number: 2, slug: 'uakkid', path: `${LESSON_BASE_PATH}/uakkid`,
-      title: 'أؤكّد تعلّماتي', desc: 'ثلاثة عشر سؤالًا من الكتاب؛ عند الحاجة أعود إلى الدرس.',
-      stage: 'practice_lab', teachesLearningPointIds: ['4am_wadiya-idmajiya-harfi_P1'], color: 'sky', style: 'featured', estimatedMin: 12, difficulty: 2, actionText: 'أؤكّد' },
-    { id: '03', number: 3, slug: 'atamaqq', path: `${LESSON_BASE_PATH}/atamaqq`,
-      title: 'أتعمّق', desc: 'مثلثات ومربعات بدلالة x، ثم الشكل المناسب للحساب: التمارين 34 و 37 إلى 40.',
-      stage: 'practice_lab', teachesLearningPointIds: ['4am_wadiya-idmajiya-harfi_P2', '4am_wadiya-idmajiya-harfi_P3', '4am_wadiya-idmajiya-harfi_P1'],
-      color: 'rose', style: 'featured', estimatedMin: 12, difficulty: 4, actionText: 'أتعمّق' },
-    { id: '04', number: 4, slug: 'ahill', path: `${LESSON_BASE_PATH}/ahill`,
+    { id: '08', number: 8, slug: 'ahill', path: `${LESSON_BASE_PATH}/ahill`,
       title: 'أحلّ الوضعية', desc: 'خمس مراحل تُقيَّم: ضلع المربع الخارجي، مساحة الشريط، المساواة، الشكل المحلّل، ثم عرض الشريط والتحقق.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 4, actionText: 'أحلّ' },
   ],

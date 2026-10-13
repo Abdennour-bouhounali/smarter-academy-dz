@@ -29,6 +29,7 @@ export default function Module04Awazzif() {
   return (
     <ContentModule
       ctx={MODULE_CTX}
+      objectives={["كيف أحلّل عبارة بعامل مشترك أو بمتطابقة؟", "كيف أكشف الخطأ في تحليل مقترح؟", "كيف أحسب ذهنيًا بمتطابقة معكوسة؟"]}
       navLinks={getNavLinks(4)}
       moduleNumber={4}
       moduleTitle="أوظّف تعلّماتي"

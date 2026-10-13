@@ -33,6 +33,9 @@
  */
 
 import { validateStatementFigure } from '../components/statementFigure.js';
+import { validateScene } from './problemScene.js';
+import { validateIllustration } from './problemIllustration.js';
+import { PROBLEM_TONES } from './problemTone.js';
 
 /** Les props de CoordPlane qu'un `problem.visual` peut porter — la même liste fermée que la pratique
  *  (scripts/validate-exercises.mjs › COORDPLANE_PROPS) : une faute de frappe rendrait un plan vide. */
@@ -98,6 +101,10 @@ export function validateProblem(problem) {
   if (SUPPORT_REFERENCE.test(texts) && !problem.figure && !problem.visual && !problem.table) {
     at('the statement refers to a figure / table / graph (« في الشكل », « الجدول المقابل », « بقراءة بيانية »…) but the problem has no figure, visual or table');
   }
+  // La scène interactive (facultative, 2026-10-13) et la teinte de la مسألة.
+  if (problem.illustration != null) for (const e of validateIllustration(problem.illustration)) at(`illustration: ${e}`);
+  if (problem.scene != null) for (const e of validateScene(problem.scene)) at(`scene: ${e}`);
+  if (problem.tone != null && !PROBLEM_TONES[problem.tone]) at(`tone inconnu « ${problem.tone} »`);
   if (problem.visual != null) {
     const v = problem.visual;
     if (typeof v !== 'object' || Array.isArray(v)) at('visual must be an object of CoordPlane props');

@@ -1,4 +1,4 @@
-import { src, addition, BASE } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
 
 /**
  * « أستعدّ » (module 0) — aucun item du « أستعدّ » du manuel (p. 19) n'est
@@ -17,7 +17,8 @@ export const PREP_ITEMS = [
 ].map((it) => ({ ...it, source: addition('prerequisite_diagnostic') }));
 
 /**
- * « أدمج تعلّماتي » (p. 28) — la وضعية, au mot près. L'analyse du manuel en
+ * « أدمج تعلّماتي » (p. 28) — la وضعية (le mot près du manuel reste dans extraction.json ; la mise en scène
+ * porte, depuis le 2026-10-13, un trait de valeur : الكرم والاعتزاز بالتراث — nombres et données inchangés). L'analyse du manuel en
  * trois étapes ; la DEUXIÈME est affichée dans sa version corrigée
  * (`correction.analysis1` de l'extraction, décision du propriétaire du
  * 2026-09-30) : le manuel imprime « استبعاد المعطيات المُشوّشة 24m² », or
@@ -26,7 +27,7 @@ export const PREP_ITEMS = [
 export const SITUATION = {
   source: src('situation', 28, 'أدمج تعلّماتي'),
   title: 'وضعية',
-  text: 'أرادت أم شراء زربية مستطيلة الشكل لوضعها على أرضية غرفة الاستقبال. عندما طلبت من البائع سعر الزربية وبعديها أجاب التاجر بالعبارات التالية: سعر الزربية هو 12000DA ومساحتها $24m^2$ وطولها ضعف عرضها. ساعد هذه الأم على معرفة طول هذه الزربية وعرضها. (تدوّر النتائج إلى cm)',
+  text: 'أرادت أم كريمة تعتزّ بتراث بلدها أن تشتري زربية مستطيلة الشكل لتضعها على أرضية غرفة الاستقبال التي تُكرم فيها ضيوفها. عندما طلبت من البائع سعر الزربية وبعديها أجاب التاجر بالعبارات التالية: سعر الزربية هو 12000DA ومساحتها $24m^2$ وطولها ضعف عرضها. ساعد هذه الأم على معرفة طول هذه الزربية وعرضها. (تدوّر النتائج إلى cm)',
   caption: 'زربية وادي سوف',
   data: [
     { id: 'shakl', text: 'الزربية مستطيلة الشكل', useful: true },
@@ -46,7 +47,7 @@ export const SITUATION = {
 };
 
 /**
- * Les corrections des questions du module 1 — importées aussi par la carte
+ * Les corrections des questions du module 7 — importées aussi par la carte
  * (knowledgeGraph.js) : une aide de la carte cite la leçon mot pour mot.
  */
 export const REMARKS = {
@@ -58,43 +59,5 @@ export const REMARKS = {
   tadwirWrong: 'ندوّر العرض إلى 1cm أولًا، ثم نضرب هذه القيمة المدوّرة في 2 لنحصل على الطول.',
   tadwirWhy: 'الطول ضعف العرض، فضربُ قيمة مدوّرة في 2 يضاعف خطأ التدوير، وقد يتغيّر الرقم الأخير من الطول.',
   tadwirRight: 'نحسب القيمتين المضبوطتين للعرض والطول، ثم ندوّر كلًّا منهما في النهاية فقط.',
-  notSolvedHere: 'الحلّ نفسه في «أحلّ الوضعية»: هنا فهمنا واختطّينا الاستراتيجية فقط.',
-};
-
-/** « أؤكّد تعلّماتي » (p. 28) : les onze QCM, au mot près ; chaque item renvoie au درس qui l'enseigne (le manuel renvoie à la page). */
-export const QCM = [
-  { n: 1, text: 'الجذر التربيعي للعدد 0,25 هو .......', options: ['0,5', '$-0{,}5$', '0,05'], correct: 0, pages: [22], lesson: 'jidhr-tarbii',
-    explain: '0,5 عدد موجب و $0{,}5^2 = 0{,}25$. أما $-0{,}5$ فسالب، و $0{,}05^2 = 0{,}0025$.' },
-  { n: 2, text: '$\\sqrt{3^2}$ يساوي ........', options: ['$\\sqrt{3}$', '3', '$2\\sqrt{3}$'], correct: 1, pages: [22], lesson: 'jidhr-tarbii',
-    explain: '$\\sqrt{3^2} = \\sqrt{9} = 3$.' },
-  { n: 3, text: '$\\sqrt{(-2)^2}$ يساوي ........', options: ['$-2$', '2', '4'], correct: 1, pages: [22], lesson: 'jidhr-tarbii',
-    explain: '$\\sqrt{(-2)^2} = \\sqrt{4} = 2$: الجذر التربيعي عدد موجب.' },
-  { n: 4, text: 'المعادلة $x^2 = 0{,}25$ ........', options: ['تقبل حلين هما $-0{,}5$ و $0{,}5$', 'تقبل حلين هما $-5$ و 5', 'لا تقبل أي حل'], correct: 0, pages: [22, 23], lesson: 'muadalat-x-murabba',
-    explain: '$0{,}25 > 0$ و $0{,}5^2 = (-0{,}5)^2 = 0{,}25$؛ أما $5^2 = 25$.' },
-  { n: 5, text: 'المعادلة $x^2 = (-1)^2$ ........', options: ['تقبل حلين هما $-1$ و 1', 'تقبل حلا واحدا هو 1', 'لا تقبل أي حل'], correct: 0, pages: [22, 23], lesson: 'muadalat-x-murabba',
-    explain: '$(-1)^2 = 1$، فالمعادلة هي $x^2 = 1$: حلّان متعاكسان 1 و $-1$.' },
-  { n: 6, text: 'المعادلة $x^2 = -\\sqrt{3}$ ........', options: ['تقبل حلين هما $-3$ و 3', 'تقبل حلا واحدا هو 3', 'لا تقبل أي حل'], correct: 2, pages: [22, 23], lesson: 'muadalat-x-murabba',
-    explain: '$-\\sqrt{3} < 0$، ومربع أي عدد هو دائما عدد موجب.' },
-  { n: 7, text: 'العدد $\\sqrt{3^2 \\times 7}$ يكتب على الشكل .....', options: ['$3\\sqrt{7}$', '$3 \\times 7$', '$3^2 \\times 7^2$'], correct: 0, pages: [24, 25], lesson: 'tawzif-khawass-judhur',
-    explain: '$\\sqrt{3^2 \\times 7} = \\sqrt{3^2} \\times \\sqrt{7} = 3\\sqrt{7}$.' },
-  { n: 8, text: 'العدد $\\sqrt{\\dfrac{9}{25}}$ يبسط على الشكل......', options: ['$\\dfrac{81}{625}$', '$\\dfrac{3}{5}$', '$\\dfrac{5}{3}$'], correct: 1, pages: [24, 25], lesson: 'amaliyat-judhur',
-    explain: '$\\sqrt{\\dfrac{9}{25}} = \\dfrac{\\sqrt{9}}{\\sqrt{25}} = \\dfrac{3}{5}$.' },
-  // Item 9 : DEUX options justes dans le manuel (1 et 3) — posé en lignes « يساويه / لا يساويه ».
-  { n: 9, text: 'العدد $\\sqrt{\\dfrac{1}{28}}$ يكتب ........', options: ['$\\dfrac{1}{\\sqrt{28}}$', '$\\sqrt{28}$', '$\\dfrac{1}{2\\sqrt{7}}$'], correctSet: [0, 2], pages: [24, 25], lesson: 'amaliyat-judhur',
-    rowCorrections: [
-      '$\\sqrt{\\dfrac{1}{28}} = \\dfrac{\\sqrt{1}}{\\sqrt{28}} = \\dfrac{1}{\\sqrt{28}}$.',
-      '$\\sqrt{28}$ أكبر من 1، بينما $\\dfrac{1}{28}$ أصغر من 1 وجذره كذلك.',
-      '$\\sqrt{28} = \\sqrt{4 \\times 7} = 2\\sqrt{7}$، إذن $\\dfrac{1}{\\sqrt{28}} = \\dfrac{1}{2\\sqrt{7}}$.',
-    ] },
-  { n: 10, text: 'المعادلة $x^2 - 7 = 0$ ..........', options: ['تقبل حلا واحدا هو $\\dfrac{7}{2}$', 'تقبل حلين هما $\\sqrt{7}$ و $-\\sqrt{7}$', 'تقبل حلا واحدا هو 14'], correct: 1, pages: [22, 23], lesson: 'muadalat-x-murabba',
-    explain: '$x^2 - 7 = 0$ يعني $x^2 = 7$، و $7 > 0$: حلّان متعاكسان.' },
-  { n: 11, text: 'المعادلة $-x^2 - 16 = 0$ ..........', options: ['تقبل حلا واحدا هو 4', 'تقبل حلين هما $-4$ و 4', 'لا تقبل أي حل'], correct: 2, pages: [22, 23], lesson: 'muadalat-x-murabba',
-    explain: '$-x^2 - 16 = 0$ يعني $x^2 = -16$، و $-16 < 0$.' },
-].map((it) => ({ ...it, source: src('qcm', 28, 'أؤكّد تعلّماتي', it.n), lessonPath: `${BASE}/${it.lesson}` }));
-
-export const LESSON_TITLES = {
-  'jidhr-tarbii': 'الدرس 1 — الجذر التربيعي لعدد موجب',
-  'muadalat-x-murabba': 'الدرس 3 — حل المعادلة من الشكل $x^2 = a$',
-  'amaliyat-judhur': 'الدرس 4 — العمليات على الجذور التربيعية',
-  'tawzif-khawass-judhur': 'الدرس 5 — توظيف خواص الجذور التربيعية',
+  notSolvedHere: 'الحلّ نفسه في «وضعية الاختبار النهائي»: هنا فهمنا واختطّينا الاستراتيجية فقط.',
 };

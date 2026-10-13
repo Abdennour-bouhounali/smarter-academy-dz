@@ -25,6 +25,7 @@ export default function Module02Maarif() {
 
   return (
     <ContentModule
+      objectives={["متى نقول إنّ مجسّما تكبير لآخر؟", "كيف نعبّر عن الأطوال والمساحات والحجوم بدلالة $k$ ؟", "ماذا يحدث لهرم يقطعه مستو يوازي قاعدته؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}

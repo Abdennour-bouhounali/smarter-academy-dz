@@ -7,7 +7,7 @@ import { PREP_ITEMS } from '../content/textbook';
 /**
  * Module 0 — أستعدّ. Le « أستعدّ » du manuel (p. 55) appartient aux leçons 1
  * et 2 ; la synthèse pose donc sept affirmations de la plateforme (« عبارة
- * إضافية من المنصّة ») sur ce que la situation et « أتعمّق » mobilisent : une
+ * إضافية من المنصّة ») sur ce que la situation mobilise : une
  * équation à deux inconnues et la solution d'une جملة (درس 1), la substitution
  * et l'addition (درس 2), la traduction d'un texte et la vérification dans le
  * texte (درس 3), le pourcentage (ex. 31). Aucune n'emploie les nombres du حفل.

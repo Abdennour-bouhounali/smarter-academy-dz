@@ -31,6 +31,7 @@ export const PROBLEMS = [
     headline: 'مسألة الدرس',
     emoji: '🥣',
     source: SOURCE,
+    illustration: LESSON_CONFIG.lessonProblem.illustration,
     statement: LESSON_CONFIG.lessonProblem.statement,
     data: [
       { id: 'sugar', text: 'في العجينة 105 ملاعق سكّر', useful: true },
@@ -142,6 +143,7 @@ export const PROBLEMS = [
     context: 'أيّ كسر من الأجرة لكل مصروف؟',
     emoji: '🏠',
     source: SOURCE,
+    illustration: { kind: 'tags', cards: [{ title: 'أجرة السيّد سليم', icon: 'coin', lines: [{ label: 'الأجرة', value: 54000, unit: 'دج' }, { label: 'الكراء', value: 12600, unit: 'دج' }, { label: 'النقل والفواتير', value: 16200, unit: 'دج' }] }], ariaLabel: 'بطاقة الأجرة الشهرية 54000 دج منها الكراء 12600 دج والنقل والفواتير 16200 دج' },
     statement: 'السيّد سليم موظّف مجتهد، يتقن عمله ويقتصد في مصاريفه، وأجرته الشهرية 54000 دج. يدفع منها كل شهر 12600 دج لكراء الشقّة، و 16200 دج للنقل والفواتير، ويبقى الباقي للغذاء ومصاريف البيت. للسيّد سليم 3 أولاد، ويسكن في الطابق الرابع.',
     data: [
       { id: 'salary', text: 'الأجرة الشهرية: 54000 دج', useful: true },
@@ -277,6 +279,7 @@ export const PROBLEMS = [
     context: 'أيّ بذور الطماطم أفضل؟',
     emoji: '🌱',
     source: SOURCE,
+    illustration: { kind: 'tags', cards: [{ title: 'النوع «أ»', icon: 'plant', lines: [{ label: 'بذور مزروعة', value: 147 }, { label: 'بذور نبتت', value: 84 }] }, { title: 'النوع «ب»', icon: 'plant', lines: [{ label: 'بذور مزروعة', value: 120 }, { label: 'بذور نبتت', value: 72 }] }], ariaLabel: 'نوعان من بذور الطماطم: النوع أ نبتت منه 84 من 147 والنوع ب نبتت منه 72 من 120' },
     statement: 'يحبّ صاحب مشتلة وطنه ويريد أن يزيد الجزائر خضرة، فيجرّب نوعين من بذور الطماطم. زرع 147 بذرة من النوع «أ» فنبتت منها 84 بذرة، وزرع 120 بذرة من النوع «ب» فنبتت منها 72 بذرة. في المشتلة 6 بيوت بلاستيكية، ويسقي الشتلات مرّتين في اليوم بصبر وإتقان. سيزرع هذا الموسم 350 بذرة من نوع واحد، ويبيع كل شتلة تنبت بـ 150 دج.',
     data: [
       { id: 'typeA', text: 'النوع «أ»: نبتت 84 بذرة من 147', useful: true },

@@ -3,7 +3,7 @@
   "lessonCode": "wadiya-idmajiya-ihsa",
   "level": 2,
   "metadata": {
-    "title": "أؤكّد تعلّماتي 5 — رتبة الوسيط",
+    "title": "رتبة الوسيط",
     "estimatedMinutes": 5,
     "tags": [
       "الوسيط",
@@ -13,7 +13,7 @@
       "type": "textbook",
       "elementId": "qcm",
       "page": 100,
-      "section": "أؤكّد تعلّماتي",
+      "section": "الوضعيات",
       "number": 5
     },
     "exam": {

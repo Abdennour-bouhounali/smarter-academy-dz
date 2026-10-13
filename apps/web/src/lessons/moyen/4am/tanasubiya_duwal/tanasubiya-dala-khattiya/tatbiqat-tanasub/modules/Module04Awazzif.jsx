@@ -23,6 +23,7 @@ export default function Module04Awazzif() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
+      objectives={["كيف أوظّف النسب المئوية والدوال الخطية في تمارين الكتاب؟", "كيف أتعامل مع تغيّرين متتابعين؟", "كيف أحوّل وحدات مقدار مركّب؟"]}
       moduleNumber={4}
       moduleTitle="أوظّف تعلّماتي"
       moduleSubtitle="تمارين الكتاب 3، 4، 5 و 19 ← 27"

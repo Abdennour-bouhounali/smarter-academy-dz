@@ -35,6 +35,7 @@ export default function Module02Maarif() {
 
   return (
     <ContentModule
+      objectives={["كيف أكتب بتعريف ما عددته عند البوابة؟", "كيف أنتقل من التكرار المجمع إلى التواتر المجمع؟", "ماذا يساوي الصاعد لأكبر قيمة؟ وماذا يربط الصاعد والنازل لقيمة؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}
@@ -59,7 +60,7 @@ export default function Module02Maarif() {
                 { label: 'التكرار المجمع الصاعد', cells: t.up },
                 { label: 'التكرار المجمع النازل', cells: t.down },
               ]} />
-              <p className="text-sm font-semibold text-slate-800">مقاسات أحذية فريق: المقاس 38 (4 لاعبين)، 39 (7)، 40 (9)، 41 (5)، 42 (2). <SourceTag source={addition('interaction_generation')} /></p>
+              <p className="text-sm font-semibold text-slate-800">مقاسات أحذية فريق الحيّ، وهو يتبرّع بأحذية قديمة للمحتاجين: المقاس 38 (4 لاعبين)، 39 (7)، 40 (9)، 41 (5)، 42 (2). <SourceTag source={addition('interaction_generation')} /></p>
               <NumericQuestion
                 prompt="التكرار المجمع الصاعد للمقاس 40:"
                 expected={20}

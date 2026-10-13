@@ -54,7 +54,8 @@ export const LESSON_CONFIG = {
   lessonProblem: {
     module: 4,
     title: 'عائلة مراد: الأب وأبناؤه الثلاثة يكبرون معًا',
-    statement: 'نحن في سنة 2026. عمر السيّد مراد 44 سنة، وعمر زوجته 39 سنة، وقد تزوّجا منذ 18 سنة. لهما ثلاثة أبناء أعمارهم 5 و 9 و 16 سنة. يحبّ مراد أن يطرح على أبنائه ألغازًا عن أعمارهم.',
+    statement: 'نحن في سنة 2026. عمر السيّد مراد 44 سنة، وعمر زوجته 39 سنة، وقد تزوّجا منذ 18 سنة. لهما ثلاثة أبناء أعمارهم 5 و 9 و 16 سنة. يحبّ مراد، تشجيعًا لأبنائه على حبّ العلم، أن يطرح عليهم ألغازًا عن أعمارهم.',
+    illustration: { kind: 'scene', icon: 'person', bg: 'amber', extra: ['person', 'person', 'person'], chips: [{ label: 'عمر مراد', value: 44, unit: 'سنة' }, { label: 'عمر زوجته', value: 39, unit: 'سنة', tone: 'rose' }, { label: 'زواجهما منذ', value: 18, unit: 'سنة', tone: 'green' }, { label: 'الأبناء', value: '5 · 9 · 16', unit: 'سنة', tone: 'amber' }], ariaLabel: 'عائلة مراد: الأب عمره 44 سنة والأم 39 سنة وتزوّجا منذ 18 سنة، وثلاثة أبناء أعمارهم 5 و 9 و 16 سنة' },
   },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.

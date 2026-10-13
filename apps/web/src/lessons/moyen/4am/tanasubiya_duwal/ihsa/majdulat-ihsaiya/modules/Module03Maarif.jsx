@@ -24,6 +24,7 @@ export default function Module03Maarif() {
 
   return (
     <ContentModule
+      objectives={["كيف أسمّي خلية وأحدّد مجالًا؟", "أيّ دستور يناسب كل مؤشّر؟", "أيّ تمثيل يناسب أيّ معطيات؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}

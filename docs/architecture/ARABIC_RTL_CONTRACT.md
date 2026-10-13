@@ -550,21 +550,6 @@ Solving one does not solve the other. Verify both independently, then together.
 
 ---
 
-### Quran, hadith and the greeting (2026-10-07)
-
-Owned by `ISLAMIC_VALUES.md`; the RTL rules in short: a verse is the **exact**
-Tanzil text between ﴿ ﴾ in naskh (`.sa-quran`), never retyped — Arabic
-combining marks typed by hand often come out in a different order and are a
-different string; a hadith is « قال رسول الله ﷺ: » then the matn between « »;
-platform-written lines never wear either habit. Ayah and hadith numbers, and
-ranges such as « 5–6 », are isolated with `<bdi dir="ltr">` (an en dash between
-digits reorders to « 6–5 » otherwise). The greeting is one key,
-`common:islamic.greeting` (« السلام عليكم {{name}} 🌿 »); « أهلًا » is no longer
-used. One exception to Western digits: the ayah medallion of `MushafVerse` (student home) writes
-the verse number in Arabic-Indic digits (١), as in the مصحف; its readable reference does not.
-
----
-
 ### The Knowledge Map (2026-09-29)
 
 The progressive map follows this section without exception

@@ -30,15 +30,16 @@ export default function Module03Nisba() {
       navLinks={getNavLinks(3)}
       moduleNumber={3}
       moduleTitle="طرائق — نسبة مقامها عدد غير ناطق"
-      moduleSubtitle="نضرب البسط والمقام في نفس الجذر"
+      moduleSubtitle="كيف نجعل المقام عددًا ناطقًا؟"
       estimatedTime="10 دقائق"
+      objectives={['كيف أتخلّص من الجذر في مقام نسبة؟', 'هل تتغيّر قيمة النسبة حين نغيّر كتابتها؟']}
       brief={{
         tag: 'طرائق — الكتاب ص 25', title: METHOD_RATIONALIZE.title, tone: 'emerald',
         body: <p><MathText>{'في المقام عدد غير ناطق، مثل $\\sqrt{11}$. هل يمكن كتابة النسبة نفسها بمقام ناطق؟'}</MathText></p>,
       }}
       steps={[
         {
-          num: 1, title: 'بأيّ عدد نضرب؟', done: q1,
+          num: 1, title: 'كيف نتخلّص من الجذر في المقام؟', done: q1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" text={METHOD_RATIONALIZE.exercise} source={METHOD_RATIONALIZE.source} />

@@ -15,7 +15,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-        "line": 168,
+        "line": 173,
         "step": 3,
         "variant": "new"
       }
@@ -26,7 +26,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-        "line": 189,
+        "line": 194,
         "step": 4,
         "variant": "new"
       }
@@ -37,7 +37,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module02HalMutarajiha.jsx",
-        "line": 193,
+        "line": 194,
         "step": 2,
         "variant": "new"
       }
@@ -48,7 +48,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module03Maarif.jsx",
-        "line": 48,
+        "line": 57,
         "step": 1,
         "variant": "new"
       }
@@ -59,7 +59,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module03Maarif.jsx",
-        "line": 81,
+        "line": 90,
         "step": 2,
         "variant": "new"
       }
@@ -70,7 +70,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module03Maarif.jsx",
-        "line": 115,
+        "line": 126,
         "step": 3,
         "variant": "new"
       }
@@ -84,7 +84,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module04Tarayiq.jsx",
-        "line": 60,
+        "line": 61,
         "step": 2,
         "variant": "new"
       }
@@ -258,7 +258,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-      "line": 99,
+      "line": 104,
       "requires": [
         "muqarana-adad"
       ],
@@ -274,7 +274,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-      "line": 122,
+      "line": 127,
       "requires": [
         "muqarana-adad"
       ],
@@ -290,7 +290,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-      "line": 139,
+      "line": 144,
       "requires": [
         "muqarana-adad"
       ],
@@ -306,7 +306,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-      "line": 149,
+      "line": 154,
       "requires": [
         "muqarana-adad"
       ],
@@ -322,7 +322,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-      "line": 169,
+      "line": 174,
       "requires": [
         "mutarajiha"
       ],
@@ -338,7 +338,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-      "line": 191,
+      "line": 196,
       "requires": [
         "hal-mutarajiha"
       ],
@@ -354,7 +354,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module02HalMutarajiha.jsx",
-      "line": 128,
+      "line": 129,
       "requires": [
         "amaliyat-mutabayinat"
       ],
@@ -370,7 +370,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module02HalMutarajiha.jsx",
-      "line": 164,
+      "line": 165,
       "requires": [
         "hal-mutarajiha"
       ],
@@ -386,7 +386,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module02HalMutarajiha.jsx",
-      "line": 202,
+      "line": 203,
       "requires": [
         "tamthil-jadwal"
       ],
@@ -402,7 +402,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module03Maarif.jsx",
-      "line": 50,
+      "line": 59,
       "requires": [
         "mutarajiha-ula"
       ],
@@ -418,7 +418,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module03Maarif.jsx",
-      "line": 60,
+      "line": 69,
       "requires": [
         "mutarajiha-ula"
       ],
@@ -434,7 +434,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module03Maarif.jsx",
-      "line": 85,
+      "line": 94,
       "requires": [
         "qawaid-ittijah"
       ],
@@ -450,7 +450,7 @@
       "step": 9,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module05Awazzif.jsx",
-      "line": 90,
+      "line": 91,
       "requires": [
         "qawaid-ittijah"
       ],
@@ -466,7 +466,7 @@
       "step": 9,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module05Awazzif.jsx",
-      "line": 107,
+      "line": 108,
       "requires": [
         "hal-mutarajiha"
       ],
@@ -478,10 +478,10 @@
     },
     {
       "questionId": "E1",
-      "module": 6,
+      "module": 9,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module06Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module09Itqan.jsx",
       "line": 44,
       "requires": [
         "mutarajiha"
@@ -494,10 +494,10 @@
     },
     {
       "questionId": "E2",
-      "module": 6,
+      "module": 9,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module06Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module09Itqan.jsx",
       "line": 52,
       "requires": [
         "hal-mutarajiha"
@@ -510,10 +510,10 @@
     },
     {
       "questionId": "E3",
-      "module": 6,
+      "module": 9,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module06Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module09Itqan.jsx",
       "line": 60,
       "requires": [
         "qawaid-ittijah"
@@ -526,10 +526,10 @@
     },
     {
       "questionId": "E4",
-      "module": 6,
+      "module": 9,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module06Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module09Itqan.jsx",
       "line": 68,
       "requires": [
         "tariqat-hal"
@@ -542,10 +542,10 @@
     },
     {
       "questionId": "E5",
-      "module": 6,
+      "module": 9,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module06Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module09Itqan.jsx",
       "line": 76,
       "requires": [
         "tamthil-bayani"
@@ -558,10 +558,10 @@
     },
     {
       "questionId": "E6",
-      "module": 6,
+      "module": 9,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module06Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module09Itqan.jsx",
       "line": 88,
       "requires": [
         "tamthil-bayani"
@@ -573,5 +573,42 @@
       "pedagogicallyValid": true
     }
   ],
-  "findings": []
+  "findings": [
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 6 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module06Masala1.jsx",
+      "line": 0,
+      "module": 6,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 7 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module07Masala2.jsx",
+      "line": 0,
+      "module": 7,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 8 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module08Masala3.jsx",
+      "line": 0,
+      "module": 8,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    }
+  ]
 }

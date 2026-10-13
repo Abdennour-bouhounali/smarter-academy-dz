@@ -56,6 +56,7 @@ export default function Module01Nashat() {
 
   return (
     <ContentModule
+      objectives={["متى تكون نقطة على الكرة، ومتى تكون داخل الجلة فقط؟", "ما الفرق بين الدائرة والقرص، وبين الكرة والجلة؟", "كيف نحكم على موقع نقطة؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
@@ -81,7 +82,7 @@ export default function Module01Nashat() {
         <ManipulationWorkspace
           title="المسبار في الفضاء"
           defaultLevel="beginner"
-          lead={<MathText>{'في المستويين: النقطة على الكرة إذا كان بعدها عن المركز $O$ يساوي نصف القطر تماما، وفي الجلة إذا كان أصغر منه أو يساويه.'}</MathText>}
+          lead={<MathText>{'في المستويين: لاحظ ماذا يحدث لبعد المسبار عن المركز $O$ كلما انتقلتَ من نقطة تقبلها الكرة إلى نقطة تقبلها الجلة فقط.'}</MathText>}
           levels={{
             beginner: () => (
               <Manipulation

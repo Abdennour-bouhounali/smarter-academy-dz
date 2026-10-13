@@ -71,7 +71,8 @@ export default function Module01Nashat() {
       navLinks={getNavLinks(1)}
       moduleNumber={1}
       moduleTitle="نشاط 1 — 32 عاملا وشرطان"
-      moduleSubtitle="ثنائية تحقّق شرطين في آن واحد"
+      moduleSubtitle="نجرّب ثنائيات على لوحتين"
+      objectives={['متى تقبل اللوحتان ثنائية من عددين؟', 'كيف نترجم نصّا بمعادلتين؟', 'كم قطعة من كل فئة جمعها التلاميذ؟']}
       estimatedTime="16 دقيقة"
       brief={{
         tag: 'تحدّ ص 55 · أنشطة — الكتاب ص 56',

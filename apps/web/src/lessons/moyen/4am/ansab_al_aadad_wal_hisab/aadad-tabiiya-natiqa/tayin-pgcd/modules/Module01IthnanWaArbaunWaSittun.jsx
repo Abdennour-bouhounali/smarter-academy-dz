@@ -32,7 +32,7 @@ export default function Module01IthnanWaArbaunWaSittun() {
   const [q1, setQ1] = useState(false);
   const { a, b } = ACTIVITY.numbers;
   return (
-    <ContentModule
+    <ContentModule objectives={["ما قواسم 42 وقواسم 60؟", "أيّها مشترك بينهما؟ وما أكبرها؟", "في كم خطوة نصل إلى PGCD؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1}
       moduleTitle="نشاط 5 — 42 و 60" moduleSubtitle="قواسم، ثم قواسم مشتركة، ثم أكبرها" estimatedTime="12 دقيقة"
       brief={{ tag: 'أنشطة — الكتاب ص 8', title: ACTIVITY.title, tone: 'indigo',

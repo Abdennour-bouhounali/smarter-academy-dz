@@ -77,6 +77,7 @@ export default function Module02Nashat4() {
 
   return (
     <ContentModule
+      objectives={["أين نضع ستارة تفصل القيم المرتّبة؟", "ماذا يحدث للمتوسط وللوسيط حين نبعد أكبر قيمة؟", "كيف نجد الفئة التي تشمل الوسيط في جدول بفئات؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}
@@ -86,13 +87,13 @@ export default function Module02Nashat4() {
       brief={{
         tag: 'أنشطة ص 93 · معارف ص 96', title: ACT4.title, tone: 'violet', emoji: '🎭',
         headline: 'ستارة تقسم القيم نصفين',
-        body: <p><MathText>{'في الميزان، القيم نفسها على العارضة. هذه المرّة لا نبحث عن نقطة التوازن، بل عن موضع ستارة يترك عدد القيم نفسه في كل جهة.'}</MathText></p>,
+        body: <p><MathText>{'في الميزان، القيم نفسها على العارضة. هذه المرّة لا نبحث عن نقطة التوازن: حرّك ستارة بين القيم، وانظر ماذا يحدث لعدد القيم في كل جهة منها.'}</MathText></p>,
         footer: <SourceTag source={ACT4.source} />,
       }}
       intro={
         <ManipulationWorkspace
           title="الستارة على الميزان"
-          lead="حرّك الستارة حتى يتساوى عدد القيم في الجهتين، ثم اسحب أكبر قيمة بعيدًا."
+          lead="حرّك الستارة بين القيم وقارن عدد القيم في الجهتين، ثم اسحب أكبر قيمة بعيدًا وراقب المتوسط والوسيط."
           levels={{
             beginner: () => (
               <Manipulation type="stat-balance" level="beginner" series={LAB.esport.series} mode="median" theme="esport"

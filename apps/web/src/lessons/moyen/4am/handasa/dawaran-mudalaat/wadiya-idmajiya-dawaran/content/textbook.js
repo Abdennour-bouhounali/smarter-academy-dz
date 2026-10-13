@@ -3,11 +3,11 @@ import { src, addition, BASE } from '../../_unit/unitMeta.js';
 /**
  * « أستعدّ » (module 0) — le « أستعدّ » du manuel (p. 151, items 1–5) appartient aux quatre leçons (extraction ›
  * destinations › prep) : la synthèse n'en reçoit aucun. Ses affirmations sont donc des AFFIRMATIONS DE LA PLATEFORME
- * (« عبارة إضافية من المنصّة »), dans la forme du manuel, sur ce que la وضعية, « أؤكّد تعلّماتي » et « أتعمّق » mobilisent :
+ * (« عبارة إضافية من المنصّة »), dans la forme du manuel, sur ce que la وضعية mobilise :
  * l'image d'un point par un دوران (درس 1), le دوران garde les longueurs (درس 2), l'angle inscrit moitié de l'angle au centre
  * (درس 3), l'angle au centre 360°/n et la définition d'un polygone régulier (درس 4), puis des outils des années précédentes et
  * de l'unité 10 — les angles d'un triangle isocèle, la hauteur d'un triangle isocèle, le sinus, le périmètre du cercle. Cinq
- * vraies, quatre fausses ; jamais les nombres de la وضعية (3 m, 6, 60°), du QCM, des exercices 15 et 20, du lab ni du
+ * vraies, quatre fausses ; jamais les nombres de la وضعية (3 m, 6, 60°), du lab ni du
  * إختبار (5 m, 8, 45°).
  */
 export const PREP_ITEMS = [
@@ -63,7 +63,7 @@ export const SITUATION = {
 export const analysisText = (a) => a.items.join(' — ');
 
 /**
- * Les props du laboratoire du module 1 — `lamp-ring` (écrit pour cette leçon : logic/lampRing.js, rotation/LampRing.jsx),
+ * Les props du laboratoire du module 7 — `lamp-ring` (écrit pour cette leçon : logic/lampRing.js, rotation/LampRing.jsx),
  * écrites ici une fois : le module les étale, le test de rendu (lab.render.test.jsx) monte le workspace avec ces mêmes objets.
  * Ce sont les nombres de levels.js (une seule source).
  *   مبتدئ  un petit massif de 2 m et 4 lampadaires (plateforme) : un carré, l'angle au centre droit, 2√2 ≈ 2,83 m ;
@@ -80,7 +80,7 @@ export const LAB_EXPECT = {
 };
 
 /**
- * Les phrases de la correction du module 1, importées aussi par knowledge.jsx et la carte (knowledgeGraph.js) : une aide de
+ * Les phrases de la correction du module 7, importées aussi par knowledge.jsx et la carte (knowledgeGraph.js) : une aide de
  * la carte cite la leçon mot pour mot. Toute égalité dans `$…$`.
  */
 export const REMARKS = {
@@ -110,55 +110,10 @@ export const REMARKS = {
   sullam: 'بالمقياس $1\\,\\mathrm{cm}$ على المخطط لكل $1\\,\\mathrm{m}$ في الحديقة: نرسم دائرة نصف قطرها $3\\,\\mathrm{cm}$ ، ثم نحمل عليها بالمدوّر، بنفس الفتحة $3\\,\\mathrm{cm}$ ، ست نقط متتالية: هي مواضع الأعمدة.',
   kabl: 'طول الكابل الذي يربط الأعمدة الستة على التوالي هو محيط السداسي: $6 \\times 3 = 18$ (بالمتر).',
   tajnid: 'نترجم «متباعدة بنفس المسافة» بمضلع منتظم، ونضع رؤوسه بالدوران الذي زاويته الزاوية المركزية، ثم نحسب المسافة في المثلث القائم الذي يرسمه الارتفاع.',
-  // أتعمّق
-  adawat: 'في وضعية مركبة نجمع أدوات الوحدة: الدوران المتكرر حول نقطة يعطي مضلعا منتظما مركزه مركز الدوران، والدوران يحافظ على الأطوال، والزاوية المحيطية نصف المركزية، ثم نحسب الأطوال بالنسب المثلثية أو بخاصية طالس.',
-  markazRas: 'مركز الدوران ليس رأسا من رؤوس المضلع: هو مركزه، على بعد نصف القطر من كل رأس.',
 };
 
 /**
- * « أؤكّد تعلّماتي » (p. 160) : les quatre QCM, au mot près, chacun renvoyé au درس qui l'enseigne et à la colonne « عند الحاجة
- * أعود الى الصفحة » du manuel. Les options sont dans l'ordre (1), (2), (3) du manuel (le tableau les imprime de droite à gauche).
- * Item 1 : trois sous-questions, la PREMIÈRE CORRIGÉE (« صورة A هي » n'a aucune bonne option — A est à 30°, son image à 90°
- * n'est pas un sommet ; « صورة B هي » → C, extraction › discrepancies). Item 3 : l'angle plat BOC (180°) compté comme
- * « زاوية مركزية » (lecture déclarée de l'extraction).
- */
-const QCM_RAW = [
-  { n: 1, text: 'في الشكل أدناه: بالدوران الذي مركزه O و زاويته $60^\\circ$ في الاتجاه المباشر',
-    rows: [
-      { text: 'صورة B هي', printed: 'صورة A هي', options: ['B', 'C', 'D'], correct: 1,
-        why: 'B عند $150^\\circ$ من O (المستطيل قطراه يتقاطعان في O و $\\widehat{BOC} = 60^\\circ$ )، فصورتها بـ $60^\\circ$ في الاتجاه المباشر عند $210^\\circ$ : هي C ( $OB = OC$ و $\\widehat{BOC} = 60^\\circ$ ).' },
-      { text: 'صورة D هي', options: ['B', 'C', 'A'], correct: 2,
-        why: '$OD = OA$ و $\\widehat{DOA} = 60^\\circ$ في الاتجاه المباشر (المثلث AOD متقايس الأضلاع): صورة D هي A.' },
-      { text: 'صورة O هي', options: ['A', 'O', 'C'], correct: 1, why: 'مركز الدوران صورة نفسه.' },
-    ],
-    correction: 'صحّحت المنصّة خطأً مطبعيًا: السطر الأول في الكتاب «صورة A هي» لا خيار صحيح فيه (صورة A بهذا الدوران ليست رأسا من رؤوس المستطيل)، فصار «صورة B هي».',
-    pages: [154, 155], lessons: ['mafhum-dawaran'] },
-  { n: 2, text: 'في الشكل الآتي',
-    options: ['الزاوية $\\widehat{BAC}$ محيطية و الزاوية $\\widehat{BOC}$ مركزية مرفقة بها', 'الزاوية $\\widehat{BDC}$ محيطية و الزاوية $\\widehat{BEC}$ مركزية مرفقة بها', 'الزاوية $\\widehat{BDC}$ محيطية و الزاوية $\\widehat{BAC}$ مركزية مرفقة بها'], correct: 0,
-    explain: 'رأس الزاوية المحيطية نقطة من الدائرة (A)، ورأس الزاوية المركزية مركز الدائرة (O)، وتحصران نفس القوس BC. D خارج الدائرة فـ $\\widehat{BDC}$ ليست محيطية، و E ليست المركز، و $\\widehat{BAC}$ رأسها على الدائرة لا في المركز.',
-    pages: [156], lessons: ['zawiya-muhitiya'] },
-  { n: 3, text: 'في الشكل الآتي',
-    options: ['$\\widehat{BAC} = \\dfrac{1}{2}\\widehat{BOC}$', '$\\widehat{BAC} = 2\\widehat{BOC}$', '$\\widehat{ABC} = \\widehat{ACB}$'], correct: 0,
-    explain: '[BC] قطر، فالزاوية المركزية $\\widehat{BOC}$ زاوية مستقيمة ( $180^\\circ$ ) تحصر نصف الدائرة، والزاوية المحيطية $\\widehat{BAC}$ تحصر نفس القوس: $\\widehat{BAC} = 90^\\circ$ ، نصفها. المحيطية ليست ضعف المركزية، و $\\widehat{ABC} = \\widehat{ACB}$ تتطلّب $AB = AC$ ، وفي الشكل $AB < AC$ .',
-    note: 'في هذا السؤال نعدّ الزاوية المستقيمة $\\widehat{BOC}$ ( $180^\\circ$ ) زاوية مركزية تحصر نصف الدائرة.',
-    pages: [156], lessons: ['zawiya-muhitiya'] },
-  { n: 4, text: 'المضلع الآتي',
-    options: ['خماسي منتظم', 'خماسي غير منتظم', 'ليس خماسيا'], correct: 1,
-    explain: 'له خمسة أضلاع متقايسة، لكن زواياه غير متقايسة: $\\widehat{A} = \\widehat{E} = 90^\\circ$ بينما زاوية الخماسي المنتظم $108^\\circ$ . المضلع المنتظم أضلاعه متقايسة وزواياه متقايسة: هو خماسي غير منتظم.',
-    pages: [156], lessons: ['mudalaat-muntazama'] },
-];
-export const QCM = QCM_RAW.map((it) => ({ ...it, source: src('qcm', 160, 'أؤكّد تعلّماتي', it.n), lessonPaths: it.lessons.map((l) => `${BASE}/${l}`) }));
-
-/** Les titres des leçons du propriétaire (catalogue). */
-export const LESSON_TITLES = {
-  'mafhum-dawaran': 'الدرس 1 — مفهوم الدوران وإنشاء صور أشكال هندسية بدوران',
-  'khawas-dawaran': 'الدرس 2 — خواص الدوران وتوظيفها في الأشكال الهندسية',
-  'zawiya-muhitiya': 'الدرس 3 — الزاوية المحيطية والزاوية المركزية والعلاقة بينهما',
-  'mudalaat-muntazama': 'الدرس 4 — المضلعات المنتظمة وتطبيقاتها',
-};
-
-/**
- * « إختبار أولي » (module 4) — la وضعية TRANSPOSÉE (`synthesis_generation`, extraction › situation › duplicatedIn module 4) :
+ * « وضعية الاختبار النهائي » (module 8) — la وضعية TRANSPOSÉE (`synthesis_generation`, extraction › situation › duplicatedIn module 8) :
  * mêmes ressources, autres nombres, pour que les réponses n'apparaissent nulle part ailleurs dans la leçon. Un rond-point à
  * Oran de rayon 5 m et 8 lampadaires : l'octogone régulier, 360°/8 = 45°, le triangle rectangle OHP₁ (22,5° en O),
  * d = 2 × 5 × sin 22,5° ≈ 3,83 m, le câble du tour 8 × d ≈ 30,61 m (30,64 en arrondissant trop tôt).
@@ -166,5 +121,5 @@ export const LESSON_TITLES = {
 export const TEST = {
   source: addition('synthesis_generation'),
   title: 'وضعية أخرى: أعمدة الإنارة حول دوّار بوهران',
-  text: 'قرّرت بلدية وهران تزيين دوّار (ملتقى طرق دائري) نصف قطره $5\\,\\mathrm{m}$ بثمانية أعمدة إنارة مثبّتة على حافته، متباعدة بنفس المسافة. نسمّي O مركز الدوّار، و $P_1$ و $P_2$ عمودين متتاليين، و H منتصف $[P_1P_2]$ .',
+  text: 'قرّرت بلدية وهران تزيين دوّار (ملتقى طرق دائري) نصف قطره $5\\,\\mathrm{m}$ بثمانية أعمدة إنارة مثبّتة على حافته، متباعدة بنفس المسافة، وحرصت على إتقان العمل وسلامة المارّة ليلًا. نسمّي O مركز الدوّار، و $P_1$ و $P_2$ عمودين متتاليين، و H منتصف $[P_1P_2]$ .',
 };

@@ -9,9 +9,9 @@ import * as L from '../../../../../common/manipulations/logic/statBalance';
 import { LAB, SITUATION, SCHOOL_GAMES, TEST } from './content/textbook';
 
 /**
- * Le laboratoire du module 1 de la synthèse (stat-balance, réutilisé de « مدى ووسيط ومتوسط سلسلة إحصائية »,
+ * Le laboratoire du module 7 de la synthèse (stat-balance, réutilisé de « مدى ووسيط ومتوسط سلسلة إحصائية »,
  * mode `hidden`, monde `medals`) rendu avec EXACTEMENT les props que le module étale (content/textbook.js ›
- * LAB), dans le workspace à deux niveaux ouvert sur متقدم — puis la mathématique que les modules 1 et 4
+ * LAB), dans le workspace à deux niveaux ouvert sur متقدم — puis la mathématique que les modules 7 et 8
  * supposent, recalculée avec packages/core (statistics.js) et posée par la main dans la logique du lab.
  */
 const num = (f) => Number(f.n) / Number(f.d);

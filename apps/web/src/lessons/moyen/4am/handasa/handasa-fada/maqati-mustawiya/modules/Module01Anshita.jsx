@@ -66,11 +66,12 @@ export default function Module01Anshita() {
 
   return (
     <ContentModule
+      objectives={["ماذا تطبع الطابعة كلما غيّرنا بُعد المستوي عن المركز؟", "أيّ شكل نحصل عليه حين نقطع بلاطة أو أسطوانة أو هرما؟", "ما الذي يتغيّر من طبقة إلى أخرى وما الذي يبقى؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
       moduleTitle="أنشطة 2 و 3 و 4 و 5 — الطابعة ثلاثية الأبعاد"
-      moduleSubtitle="الطابعة تبني المجسم طبقة بعد طبقة: كل طبقة مقطع مستو"
+      moduleSubtitle="الطابعة تبني المجسم طبقة بعد طبقة: ماذا تطبع في كل طبقة؟"
       estimatedTime="20 دقيقة"
       brief={{
         tag: 'أنشطة — الكتاب ص 164–165',

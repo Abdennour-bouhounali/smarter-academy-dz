@@ -56,6 +56,7 @@ export default function Module01Tamthilat() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
+      objectives={["أيّ التمثيلات البيانية يعبّر عن وضعية تناسبية؟", "كيف نعيّن معامل التناسبية ونفسّره؟", "ماذا يميّز تمثيلًا لا يعبّر عن تناسبية؟"]}
       moduleNumber={1}
       moduleTitle="نشاط 4 — أيّ تمثيل يعبّر عن وضعية تناسبية؟"
       moduleSubtitle="أدِر المستقيم حول المبدأ حتى يمرّ بكل النقط"

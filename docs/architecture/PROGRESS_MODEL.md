@@ -113,7 +113,7 @@ appliquée à chaque lecture (après le changement, « 4 » est légitimement la
   lignes une fois, pour que l'union client ∪ serveur ne réintroduise jamais
   l'ancien sens. Déploiement à toutes les leçons (2026-10-06) : UNE migration
   par unité, qui porte la table de toutes ses leçons
-  (`2026_10_06_000001_remap_problem_modules_unit1_aadad` : 7 leçons, 4 → 7 ou 5 → 8 ; `…000002…unit2_judhur` : 5 leçons, jusqu'à 6 → 9 ; puis `…000003…unit3_harfi`, `…000004…unit4_muadalat`, `…000005…unit5_jumal`, `…000006…unit6_khattiya`, `…000007…unit7_taalufiya`, `…000008…unit8_ihsa`, puis `2026_10_07_000009` à `…000014` pour les unités 9–14 — 60 leçons au total, identiques à la table client).
+  (`2026_10_06_000001_remap_problem_modules_unit1_aadad` : 7 leçons, 4 → 7 ou 5 → 8 ; `…000002…unit2_judhur` : 5 leçons, jusqu'à 6 → 9 ; puis `…000003…unit3_harfi`, `…000004…unit4_muadalat`, `…000005…unit5_jumal`, `…000006…unit6_khattiya`, `…000007…unit7_taalufiya`, `…000008…unit8_ihsa`, puis `2026_10_07_000009` à `…000014` pour les unités 9–14 (et, hors déploiement, `2026_10_13_000002_remap_wadiya_modules_synthesis_units_2_14` (les 13 autres synthèses, format de l'unité 1 : `{1→7, 2→0, 3→0, 4→8}`, `wadiya-idmajiya-judhur` `{1→7, 2→0, 3→8}` — « أؤكّد تعلّماتي » et « أتعمّق » supprimés) et `2026_10_13_000001_remap_wadiya_modules_idmajiya_aadad` : la synthèse `wadiya-idmajiya-aadad` : `{1 → 7, 2 → 0, 3 → 8}`, « أؤكّد تعلّماتي » supprimé, six « وضعيات تدريبية » insérées, l'analyse déplacée au module 7) — 60 leçons au total, identiques à la table client).
 - Toute leçon renumérotée ajoute une étape aux DEUX tables, dans le même
   changement.
 - Au déploiement, l'import du registre crée les nouveaux modules en `draft` :

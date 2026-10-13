@@ -3,8 +3,8 @@ import { src, addition, BASE } from '../../_unit/unitMeta.js';
 /**
  * « أستعدّ » (module 0) — le « أستعدّ » du manuel (p. 103, items 1–5) appartient à la leçon 1 (extraction ›
  * destinations › prep) : la synthèse n'en reçoit aucun. Ses affirmations sont donc des AFFIRMATIONS DE LA
- * PLATEFORME (« عبارة إضافية من المنصّة »), dans la forme du manuel, sur ce que le تحدّ, la وضعية, « أؤكّد
- * تعلّماتي » et « أتعمّق » mobilisent : Thalès et sa réciproque (دروس 1 و 2), le quatrième proportionnel, la coupe
+ * PLATEFORME (« عبارة إضافية من المنصّة »), dans la forme du manuel, sur ce que le تحدّ, la وضعية et le test
+ * final mobilisent : Thalès et sa réciproque (دروس 1 و 2), le quatrième proportionnel, la coupe
  * axiale d'un cône et le volume d'un cylindre (années précédentes), une équation du premier degré, les
  * médianes d'un triangle (ex. 20). Quatre vraies, trois fausses ; jamais les nombres de la minaret ni du cône.
  */
@@ -27,7 +27,7 @@ export const PREP_ITEMS = [
 
 /**
  * Le تحدّ de la page d'unité (p. 103) — DOUBLON DÉCLARÉ (extraction › destinations › challenge › duplicatedIn :
- * cette leçon, module 1). Le texte du manuel, son « الشكل المقابل » redessiné (components/MinaretFigure.jsx, le même
+ * cette leçon, module 7). Le texte du manuel, son « الشكل المقابل » redessiné (components/MinaretFigure.jsx, le même
  * dessin que la page d'unité), et ses nombres : bâton 1 m à 10 m du pied, ombres finissant ensemble à 11,6 m.
  */
 export const CHALLENGE = {
@@ -36,7 +36,7 @@ export const CHALLENGE = {
   numbers: { stick: '1', stickAt: '10', tip: '11,6' },
 };
 
-/** L'encadré d'ouverture (p. 103) « طالس » — DOUBLON DÉCLARÉ (duplicatedIn : module 1) : la méthode de l'ombre. */
+/** L'encadré d'ouverture (p. 103) « طالس » — DOUBLON DÉCLARÉ (duplicatedIn : module 7) : la méthode de l'ombre. */
 export const INTRO_THALES = {
   source: src('intro-thales', 103, 'مدخل الباب'),
   title: 'طالس',
@@ -70,18 +70,19 @@ export const SITUATION = {
 export const analysisText = (a) => a.items.map((s) => `• ${s}`).join(' ');
 
 /**
- * Les props des DEUX laboratoires du module 1, dans UN workspace (MANIPULATION_CONTRACT §2undecies) — écrites ici une
+ * Les props des DEUX laboratoires du module 7, dans UN workspace (MANIPULATION_CONTRACT §2undecies) — écrites ici une
  * fois : le module les étale, le test de rendu (lab.render.test.jsx) monte le workspace avec ces mêmes objets.
- *   مبتدئ  shadow-stick, le تحدّ : bâton de 1 m, ombres qui finissent ensemble à 11,6 m quand il est à 10 m ;
+ *   مبتدئ  shadow-world, le تحدّ dans « ساحة الحيّ » : la minaret de 7,25 m (AM = 1 × 11,6 ÷ 1,6) ; à 15:00 son ombre finit à
+ *          11,6 m et le bâton planté à 10 m y fait finir la sienne — l'élève y arrive par ses propres mesures et sa règle ;
  *   متقدم  cone-cylinder, la وضعية : cône H = 18, R = 6 (le cylindre h = r est sur la règle).
  */
 export const LAB = {
-  beginner: { stick: '1', stickAt: '10', tip: '11,6', theme: 'minaret' },
+  beginner: { minaret: '7,25', theme: 'minaret' },
   advanced: { H: 18, R: 6, theme: 'cornet' },
 };
 
 /**
- * Les phrases de la correction du module 1, importées aussi par knowledge.jsx et la carte (knowledgeGraph.js) :
+ * Les phrases de la correction du module 7, importées aussi par knowledge.jsx et la carte (knowledgeGraph.js) :
  * une aide de la carte cite la leçon mot pour mot. Toute égalité dans `$…$`.
  */
 export const REMARKS = {
@@ -109,42 +110,7 @@ export const REMARKS = {
   qutrRight: '$V = \\pi \\times 4{,}5^2 \\times 4{,}5 = 91{,}125\\pi$',
   mulaama: 'نتحقّق: $4{,}5 < 6$ (الأسطوانة لا تخرج من المخروط) و $4{,}5 < 18$ ، و $\\dfrac{4{,}5}{6} = \\dfrac{18 - 4{,}5}{18} = 0{,}75$ .',
   jumla: 'حجم الأسطوانة في الحالة $h = r$ هو $91{,}125\\pi\\,\\mathrm{cm}^3$ ، أي $286{,}28\\,\\mathrm{cm}^3$ تقريبا.',
-  // أتعمّق
-  masafa: 'المجهول جزء من ضلع: نكتب الطول الكامل بدلالته، مثل $OD = OB + BD$ ، ثم تساوي النسبتين في وضعية طالس، فنحلّ معادلة من الدرجة الأولى.',
   tajnid: 'وضعية طالس تظهر حيث يوجد مستقيمان متوازيان يقطعان مستقيمين متقاطعين: ظلّان، مقطع محوري، ضفّتا نهر، قاعدتا شبه منحرف.',
-};
-
-/**
- * « أؤكّد تعلّماتي » (p. 112) : les quatre QCM, au mot près, chacun renvoyé au درس qui l'enseigne
- * (extraction › qcm › duplicatedIn : 1, 2 → درس 1 ; 3 → درس 2 ; 4 → درس 1 et درس 3) et à la colonne
- * « عند الحاجة أعود إلى الصفحة » du manuel. Items 1 et 2 : une ligne x et une ligne y, chaque cellule se juge
- * seule (item 1 : 9/2 et 4,5 sont DEUX bonnes cellules) ; item 4 : les trois réponses sont justes. Figures :
- * content/figures.js.
- */
-export const QCM = [
-  { n: 1, text: 'في الشكل الآتي (BC)//(IJ). ينتج ………', pages: [106, 107], lessons: ['talis-hisab-atwal'] },
-  { n: 2, text: 'في الشكل الآتي، (LM)//(BC) ينتج ………', pages: [106, 107], lessons: ['talis-hisab-atwal'] },
-  { n: 3, text: 'في الشكل الآتي، ينتج ………', options: ['(EF) لا يوازي (BC)', '(BC)//(EF)', '$BC = \\dfrac{1}{2}EF$'], correct: 0, pages: [108, 109], lessons: ['aksiya-talis'],
-    explain: '$\\dfrac{AB}{AE} = \\dfrac{11}{33} = \\dfrac{1}{3}$ و $\\dfrac{AC}{AF} = \\dfrac{15}{60} = \\dfrac{1}{4}$ : النسبتان مختلفتان، فلو كان (BC)//(EF) لتساوتا حسب خاصية طالس. إذن (EF) لا يوازي (BC)، ولا معنى لـ $BC = \\dfrac{1}{2}EF$ .' },
-  { n: 4, text: 'نختار تدريجا منتظما على [AB] ونرسم مستقيمات موازية لـ (BC)، كما هو مبيّن في الشكل. ينتج …', pages: [106, 107, 109], lessons: ['talis-hisab-atwal', 'inshaat-talis'],
-    rows: ['$\\dfrac{AN}{AC} = \\dfrac{AM}{AB} = \\dfrac{3}{5}$', '$\\dfrac{AM}{AB} = \\dfrac{NM}{CB} = \\dfrac{3}{5}$', '$5 \\times NM = 3 \\times CB$'],
-    explain: 'M النقطة الثالثة من خمس قطع متقايسة: $\\dfrac{AM}{AB} = \\dfrac{3}{5}$ ، و (MN)//(BC) فالمثلثان AMN و ABC في وضعية طالس: $\\dfrac{AM}{AB} = \\dfrac{AN}{AC} = \\dfrac{MN}{BC} = \\dfrac{3}{5}$ ، والجداء التصالبي يعطي $5 \\times NM = 3 \\times CB$ . الإجابات الثلاث صحيحة.' },
-].map((it) => ({ ...it, source: src('qcm', 112, 'أؤكّد تعلّماتي', it.n), lessonPaths: it.lessons.map((l) => `${BASE}/${l}`) }));
-
-/** Le corrigé ligne par ligne des items 1 et 2 (cellules x et y). */
-export const QCM_CELLS = {
-  1: {
-    rows: [
-      { id: 'x6', label: '$x = 6$', correct: 0 }, { id: 'x15', label: '$x = 1{,}5$', correct: 1 }, { id: 'x32', label: '$x = \\dfrac{3}{2}$', correct: 1 },
-      { id: 'y6', label: '$y = 6$', correct: 1 }, { id: 'y92', label: '$y = \\dfrac{9}{2}$', correct: 0 }, { id: 'y45', label: '$y = 4{,}5$', correct: 0 },
-    ],
-    explain: '$AB = 3 + 2 = 5$ ، والمثلثان AIJ و ABC في وضعية طالس: $\\dfrac{AI}{AB} = \\dfrac{IJ}{BC} = \\dfrac{AJ}{AC}$ . إذن $\\dfrac{3}{5} = \\dfrac{x}{10}$ ومنه $x = 6$ ؛ و $\\dfrac{3}{5} = \\dfrac{y}{y + 3}$ ومنه $5y = 3y + 9$ أي $y = \\dfrac{9}{2} = 4{,}5$ : خانتا y الثانية والثالثة صحيحتان معًا.',
-  },
-  2: {
-    x: { options: ['4', '$\\dfrac{1}{2}$', '8'], correct: 0 },
-    y: { options: ['6', '24', '3'], correct: 0 },
-    explain: 'المثلثان ALM و ABC في وضعية طالس (A بين النقطتين): $\\dfrac{AL}{AB} = \\dfrac{AM}{AC} = \\dfrac{LM}{BC} = \\dfrac{2}{4} = \\dfrac{1}{2}$ . إذن $AB = 2 \\times AL = 4$ و $AC = 2 \\times AM = 6$ .',
-  },
 };
 
 export const LESSON_TITLES = {
@@ -154,7 +120,7 @@ export const LESSON_TITLES = {
 };
 
 /**
- * « إختبار أولي » (module 4) — la وضعية et le تحدّ TRANSPOSÉS (`synthesis_generation`) : mêmes ressources, autres
+ * « وضعية الاختبار النهائي » (module 8) — la وضعية et le تحدّ TRANSPOSÉS (`synthesis_generation`) : mêmes ressources, autres
  * nombres, pour que leurs réponses n'apparaissent nulle part ailleurs dans la leçon.
  *   le cornet  H = 12, R = 6 : r ÷ 6 = (12 − h) ÷ 12 ; h = r ⇒ 18r = 72 ⇒ r = 4 ; V = 64π ≈ 201,06 cm³ ;
  *   la minaret  bâton de 1,5 m à 12 m, ombres finissant ensemble à 14 m ⇒ OB = 2 ⇒ AM = 1,5 × 14 ÷ 2 = 10,5 m.
@@ -162,6 +128,6 @@ export const LESSON_TITLES = {
 export const TEST = {
   source: addition('synthesis_generation'),
   title: 'وضعية أخرى: علبة مثلجات في مخروط، ومنارة الحيّ',
-  cone: { H: 12, R: 6, text: 'أسطوانة دوران ارتفاعها $h$ ونصف قطر قاعدتها $r$ ، مرسومة داخل مخروط دوران ارتفاعه $12\\,\\mathrm{cm}$ ونصف قطر قاعدته $6\\,\\mathrm{cm}$ ، بنفس الطريقة التي في الوضعية.' },
-  minaret: { stick: '1,5', stickAt: '12', tip: '14', text: 'غرست ريم عصا شاقولية طولها $1{,}5\\,\\mathrm{m}$ على بعد $12\\,\\mathrm{m}$ من قاعدة منارة، فانتهى ظلّها حيث ينتهي ظلّ المنارة، على بعد $14\\,\\mathrm{m}$ من قاعدة المنارة.' },
+  cone: { H: 12, R: 6, text: 'في مطعم المتوسطة، وحرصًا على نظافة العمل وإتقانه، يضع الطبّاخ علبة مثلجات على شكل أسطوانة دوران ارتفاعها $h$ ونصف قطر قاعدتها $r$ ، مرسومة داخل مخروط دوران ارتفاعه $12\\,\\mathrm{cm}$ ونصف قطر قاعدته $6\\,\\mathrm{cm}$ ، بنفس الطريقة التي في الوضعية.' },
+  minaret: { stick: '1,5', stickAt: '12', tip: '14', text: 'تحبّ ريم العلم وتقيس لتتعلّم، فغرست عصا شاقولية طولها $1{,}5\\,\\mathrm{m}$ على بعد $12\\,\\mathrm{m}$ من قاعدة منارة، فانتهى ظلّها حيث ينتهي ظلّ المنارة، على بعد $14\\,\\mathrm{m}$ من قاعدة المنارة.' },
 };

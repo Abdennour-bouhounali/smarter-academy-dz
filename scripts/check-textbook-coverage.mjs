@@ -149,6 +149,13 @@ for (const gradeDir of existsSync(SOURCES) ? readdirSync(SOURCES) : []) {
     for (const [id, el] of elements) {
       const dest = destinations[id];
       if (!dest) { problems.push(`${unitCode}: l'élément « ${id} » (p. ${el.page}) n'a AUCUNE destination déclarée`); continue; }
+      // Un élément du manuel déclaré NON INTÉGRÉ par décision du propriétaire (`notIntegrated` = la raison) :
+      // aucun contenu ne doit le citer — il est sorti du parcours en le disant, pas par oubli.
+      if (dest.notIntegrated) {
+        const users = [...byLesson.entries()].filter(([, b]) => b.all.has(id)).map(([l]) => l);
+        if (users.length) problems.push(`${unitCode}: « ${id} » est déclaré non intégré mais cité par ${users.join(', ')}`);
+        continue;
+      }
       const allowed = new Set([dest.lesson, ...(dest.duplicatedIn ?? []).map((d) => d.lesson)]);
       for (const sub of Object.values(dest.items ?? {})) allowed.add(sub.lesson);
       const citedBy = [...byLesson.entries()].filter(([, b]) => b.all.has(id)).map(([l]) => l);

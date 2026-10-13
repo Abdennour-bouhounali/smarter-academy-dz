@@ -4020,36 +4020,27 @@
       "module": 3
     },
     "qcm": {
-      "lesson": "wadiya-idmajiya-dawaran",
-      "module": 2,
+      "lesson": "mafhum-dawaran",
+      "module": 5,
       "items": {
         "1": {
-          "lesson": "wadiya-idmajiya-dawaran",
-          "module": 2,
-          "dup": "mafhum-dawaran"
+          "lesson": "mafhum-dawaran",
+          "module": 5
         },
         "2": {
-          "lesson": "wadiya-idmajiya-dawaran",
-          "module": 2,
-          "dup": "zawiya-muhitiya"
+          "lesson": "zawiya-muhitiya",
+          "module": 5
         },
         "3": {
-          "lesson": "wadiya-idmajiya-dawaran",
-          "module": 2,
-          "dup": "zawiya-muhitiya"
+          "lesson": "zawiya-muhitiya",
+          "module": 5
         },
         "4": {
-          "lesson": "wadiya-idmajiya-dawaran",
-          "module": 2,
-          "dup": "mudalaat-muntazama"
+          "lesson": "mudalaat-muntazama",
+          "module": 5
         }
       },
       "duplicatedIn": [
-        {
-          "lesson": "mafhum-dawaran",
-          "module": 5,
-          "note": "item 1 (corrigé) dans le إختبار"
-        },
         {
           "lesson": "zawiya-muhitiya",
           "module": 5,
@@ -4059,16 +4050,20 @@
           "lesson": "mudalaat-muntazama",
           "module": 5,
           "note": "item 4"
+        },
+        {
+          "lesson": "wadiya-idmajiya-dawaran",
+          "note": "الممارسة (content/practice) فقط؛ لا محور في «أدمج تعلّماتي» (قرار المالك 2026-10-13: «أؤكّد تعلّماتي» و«أتعمّق» لا تدخلان في «أدمج تعلّماتي»)"
         }
       ]
     },
     "situation": {
       "lesson": "wadiya-idmajiya-dawaran",
-      "module": 1,
+      "module": 7,
       "duplicatedIn": [
         {
           "lesson": "wadiya-idmajiya-dawaran",
-          "module": 4,
+          "module": 8,
           "note": "transposée : autre rayon / autre nombre de poteaux (4, 8, 5 → côté r√2, 2r sin 22,5°, 2r sin 36°)"
         }
       ]
@@ -4146,24 +4141,22 @@
       "module": 4
     },
     "ex-15": {
-      "lesson": "wadiya-idmajiya-dawaran",
-      "module": 3,
+      "lesson": "mudalaat-muntazama",
+      "module": 4,
       "duplicatedIn": [
         {
-          "lesson": "mudalaat-muntazama",
-          "module": 4,
-          "note": "pentagone BCDEF construit par rotations de 72° (après correction)"
+          "lesson": "wadiya-idmajiya-dawaran",
+          "note": "الممارسة (content/practice) فقط؛ لا محور في «أدمج تعلّماتي» (قرار المالك 2026-10-13: «أؤكّد تعلّماتي» و«أتعمّق» لا تدخلان في «أدمج تعلّماتي»)"
         }
       ]
     },
     "ex-20": {
-      "lesson": "wadiya-idmajiya-dawaran",
-      "module": 3,
+      "lesson": "zawiya-muhitiya",
+      "module": 4,
       "duplicatedIn": [
         {
-          "lesson": "zawiya-muhitiya",
-          "module": 4,
-          "note": "question 1 : angle au centre = 2 × angle inscrit"
+          "lesson": "wadiya-idmajiya-dawaran",
+          "note": "الممارسة (content/practice) فقط؛ لا محور في «أدمج تعلّماتي» (قرار المالك 2026-10-13: «أؤكّد تعلّماتي» و«أتعمّق» لا تدخلان في «أدمج تعلّماتي»)"
         }
       ]
     }

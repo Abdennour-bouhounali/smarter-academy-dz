@@ -34,6 +34,11 @@ export default function Module03Tarayiq() {
       moduleTitle="طرائق — ترييض والمفاضلة بين صيغتين"
       moduleSubtitle="خمس خطوات على باقتي أنترنت"
       estimatedTime="8 دقائق"
+      objectives={[
+        'إلى أيّ خطوة ينتمي كل سطر من الحلّ؟',
+        'كيف نطبّق الطريقة على بطاقة السينما؟',
+        'كيف نكتب الجواب في سياق الوضعية؟',
+      ]}
       brief={{
         tag: 'طرائق — من المنصّة', headline: 'باقة الأنترنت المناسبة', emoji: '📱',
         title: METHOD.title, tone: 'emerald',
@@ -75,7 +80,7 @@ export default function Module03Tarayiq() {
             <div className="space-y-3">
               <KnowledgeBrick id="khutuwat-mufadala" variant="rappel" compact />
               <p className="rounded-xl bg-white px-3 py-2 text-sm text-slate-800">
-                <MathText>{'في قاعة سينما: ببطاقة سنوية ثمنها 1000DA تدفع 300DA للفيلم، ودون بطاقة تدفع 500DA للفيلم. نسمّي $x$ عدد الأفلام في السنة.'}</MathText>
+                <MathText>{'في قاعة سينما تعرض أفلامًا وثائقية عن تاريخ الوطن: ببطاقة سنوية ثمنها 1000DA تدفع 300DA للفيلم، ودون بطاقة تدفع 500DA للفيلم. نسمّي $x$ عدد الأفلام في السنة.'}</MathText>
               </p>
               <NumericQuestion
                 prompt="من أجل كم فيلم تتساوى الصيغتان؟"

@@ -40,7 +40,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module01AlFuruq.jsx",
-        "line": 74,
+        "line": 76,
         "step": 2,
         "variant": "new"
       }
@@ -237,10 +237,10 @@
     },
     {
       "questionId": "E1",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module08Itqan.jsx",
       "line": 17,
       "requires": [
         "pgcd-farq"
@@ -253,10 +253,10 @@
     },
     {
       "questionId": "E2",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module08Itqan.jsx",
       "line": 19,
       "requires": [
         "khwarizmiyat-al-furuq"
@@ -269,10 +269,10 @@
     },
     {
       "questionId": "E3",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module08Itqan.jsx",
       "line": 21,
       "requires": [
         "pgcd-baqi"
@@ -285,10 +285,10 @@
     },
     {
       "questionId": "E4",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module08Itqan.jsx",
       "line": 23,
       "requires": [
         "khwarizmiyat-iqlidus"
@@ -301,10 +301,10 @@
     },
     {
       "questionId": "E5",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module08Itqan.jsx",
       "line": 25,
       "requires": [
         "khwarizmiyat-iqlidus"
@@ -317,10 +317,10 @@
     },
     {
       "questionId": "E6",
-      "module": 5,
+      "module": 8,
       "step": null,
       "component": "boss",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module05Itqan.jsx",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module08Itqan.jsx",
       "line": 27,
       "requires": [
         "ikhtiyar-al-tariqa"
@@ -332,5 +332,42 @@
       "pedagogicallyValid": true
     }
   ],
-  "findings": []
+  "findings": [
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 5 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module05Masala1.jsx",
+      "line": 0,
+      "module": 5,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 6 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module06Masala2.jsx",
+      "line": 0,
+      "module": 6,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_MODULE_NOT_KIT",
+      "severity": "info",
+      "message": "module 7 does not use the lesson kit — not analysable",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module07Masala3.jsx",
+      "line": 0,
+      "module": 7,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    }
+  ]
 }

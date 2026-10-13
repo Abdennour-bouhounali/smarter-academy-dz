@@ -13,7 +13,7 @@ export default function Module02Maarif() {
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
   return (
-    <ContentModule
+    <ContentModule objectives={["ما القاسم المشترك الأكبر لعددين؟", "كيف نكتبه برمز؟", "هل كل قاسم مشترك يقسم القاسم المشترك الأكبر؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2}
       moduleTitle="معارف — القواسم المشتركة والقاسم المشترك الأكبر" moduleSubtitle="التعريف، الرمز، وملاحظة الكتاب" estimatedTime="15 دقيقة"
       brief={{ tag: 'معارف — الكتاب ص 10 و 12', title: 'قواسم → قواسم مشتركة → القاسم المشترك الأكبر', tone: 'violet', body: <p>ثلاث كلمات لا يجوز خلطها. الكتاب يعرّفها بمثالين: 12 و 18، ثم 28 و 42.</p> }}

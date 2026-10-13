@@ -110,7 +110,7 @@ const LABS = [
   ['mada-wasit-mutawassit', 'stat-balance', 1],
   ['majdulat-ihsaiya', 'sheet-lab', 1],
   ['qiraat-wadiyat-ihsaiya', 'group-tanks', 1],
-  ['wadiya-idmajiya-ihsa', 'stat-balance', 1],
+  ['wadiya-idmajiya-ihsa', 'stat-balance', 7],
 ];
 for (const [lesson, type, number] of LABS) {
   for (const vp of VIEWPORTS) {

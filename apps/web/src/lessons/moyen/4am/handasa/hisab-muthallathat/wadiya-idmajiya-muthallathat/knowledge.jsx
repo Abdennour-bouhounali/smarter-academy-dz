@@ -7,17 +7,17 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
 
 /**
  * Une synthèse n'introduit aucune notion nouvelle (LESSON_CONTRACT) : ce sont la DÉMARCHE du manuel
- * (قراءة → تحليل واختيار استراتيجية → تنفيذ) appliquée à la وضعية « مقام الشهيد », et l'outil que « أتعمّق » mobilise.
- *   talis-khatt-nazar   module 1 — Thalès dans la ligne de visée : deux verticales, un sommet commun A
- *   zawiya-bi-zill      module 1 — l'angle x par la tangente dans le petit triangle, la touche inverse, l'arrondi
- *   mulaamat-natija     module 1 — vérifier (même x dans le grand triangle, 92 m réels) et arrondir en fin de calcul
- *   tariqat-wadiya      module 1 — la démarche en trois phases (les mots du manuel)
- *   muthallath-fada     module 3 — un triangle rectangle DANS un solide : Pythagore deux fois, puis le rapport
+ * (قراءة → تحليل واختيار استراتيجية → تنفيذ) appliquée à la وضعية « مقام الشهيد », et le rappel de l'outil que le test final mobilise (un triangle rectangle dans un solide).
+ *   talis-khatt-nazar   module 7 — Thalès dans la ligne de visée : deux verticales, un sommet commun A
+ *   zawiya-bi-zill      module 7 — l'angle x par la tangente dans le petit triangle, la touche inverse, l'arrondi
+ *   mulaamat-natija     module 7 — vérifier (même x dans le grand triangle, 92 m réels) et arrondir en fin de calcul
+ *   tariqat-wadiya      module 7 — la démarche en trois phases (les mots du manuel)
+ *   muthallath-fada     module 7 (rappel) — un triangle rectangle DANS un solide : Pythagore deux fois, puis le rapport
  * Les réponses de « إختبار أولي » (la minaret de جامع الجزائر, le conteneur) ne sont dans aucun item.
  */
 export const LESSON_KNOWLEDGE = {
   modules: {
-    1: [
+    7: [
       { id: 'talis-khatt-nazar', type: 'methodes', title: 'خاصية طالس في خط النظر', summary: 'عمود ومعلم شاقوليان وقمّتاهما على خط نظر واحد: المثلثان اللذان رأسهما موضع الملاحظ في وضعية طالس، والضلع الكبير هو المسافة الكلية من الملاحظ إلى قاعدة المعلم.',
         body: (
           <ul className="list-disc ms-5 space-y-1">
@@ -47,14 +47,11 @@ export const LESSON_KNOWLEDGE = {
             {SITUATION.analysis.map((a) => <li key={a.label}><strong>{a.label}</strong>: {analysisText(a)}</li>)}
           </ol>
         ) },
-    ],
-    3: [
       { id: 'muthallath-fada', type: 'methodes', title: 'مثلث قائم داخل مجسّم', summary: 'نبحث في المجسّم عن مثلث قائم يضمّ الطول المطلوب، نحسب بخاصية فيثاغورس مرتين إن لزم، ونحتفظ بالقيم المضبوطة حتى النسبة المثلثية الأخيرة.',
         body: (
           <ul className="list-disc ms-5 space-y-1">
             <li><MathText>{REMARKS.fada}</MathText></li>
             <li><MathText>{REMARKS.fadaPyth}</MathText></li>
-            <li><MathText>{REMARKS.haram}</MathText></li>
           </ul>
         ) },
     ],

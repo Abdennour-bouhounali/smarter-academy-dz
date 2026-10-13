@@ -7,13 +7,12 @@ import LampRing from '../../../../../common/manipulations/rotation/LampRing';
 import ManipulationWorkspace from '../../../../../common/manipulations/ManipulationWorkspace';
 import * as LR from '../../../../../common/manipulations/logic/lampRing';
 import { LEVELS } from '../../../../../common/manipulations/levels';
-import { LAB, LAB_EXPECT, QCM } from './content/textbook';
-import { EXERCISES } from './content/exercises';
+import { LAB, LAB_EXPECT } from './content/textbook';
 import * as FIG from './content/figures';
 
 /**
- * Le workspace du module 1 de la synthèse — `lamp-ring`, deux niveaux (4 poteaux sur 2 m ; la وضعية, 6 sur 3 m) — rendu avec
- * EXACTEMENT les props que le module étale (content/textbook.js › LAB) ; puis la mathématique que les modules 1 à 4 supposent,
+ * Le workspace du module 7 de la synthèse — `lamp-ring`, deux niveaux (4 poteaux sur 2 m ; la وضعية, 6 sur 3 m) — rendu avec
+ * EXACTEMENT les props que le module étale (content/textbook.js › LAB) ; puis la mathématique que les modules 7 et 8 supposent,
  * recalculée avec packages/core (rotation.js, trigonometry.js) et posée par la main dans la logique du lab (logic/lampRing.js).
  */
 const workspace = () => (
@@ -58,7 +57,7 @@ it.each([['advanced'], ['beginner']])('%s : la main — un « أشعل » refus�
   expect(sx(LR.edge(n, r))).toBe(exp.edge);
 });
 
-it('le module 1 : 60°, triangle équilatéral, d = 3 m ; sin 30° × 3 = 1,5 ; le bord π ≈ 3,14 ; 4 poteaux ≈ 4,24 ; câble 18 m', () => {
+it('le module 7 : 60°, triangle équilatéral, d = 3 m ; sin 30° × 3 = 1,5 ; le bord π ≈ 3,14 ; 4 poteaux ≈ 4,24 ; câble 18 m', () => {
   expect(ROT.centralAngle(6)).toEqual({ n: 60, d: 1 });
   expect(TR.surdText(ROT.sideFromRadius(6, 3).exact)).toBe('3');
   expect(ROT.interiorAngle(6)).toEqual({ n: 120, d: 1 });
@@ -72,41 +71,7 @@ it('le module 1 : 60°, triangle équilatéral, d = 3 m ; sin 30° × 3 = 1,5 ; 
   expect(Math.hypot(P['P₁'][0] - P['P₂'][0], P['P₁'][1] - P['P₂'][1])).toBeCloseTo(3, 2);
 });
 
-it('le module 2 (QCM) : image de B → C, de D → A, de O → O ; 180° ; le pentagone codé n’est pas régulier', () => {
-  const pt = (n) => FIG.QCM1.points[n];
-  const img = (n) => ROT.rotateApprox({ x: pt(n)[0], y: pt(n)[1] }, { x: 0, y: 0 }, 60, 'direct');
-  const near = (p, n) => Math.hypot(p.x - pt(n)[0], p.y - pt(n)[1]) < 0.01;
-  expect(near(img('B'), 'C')).toBe(true);
-  expect(near(img('D'), 'A')).toBe(true);
-  expect(['B', 'C', 'D'].some((v) => near(img('A'), v))).toBe(false); // la coquille du manuel : aucune option juste
-  expect(QCM[0].rows.map((r) => r.options[r.correct])).toEqual(['C', 'A', 'O']);
-  const q3 = FIG.QCM3.points;
-  expect(ROT.angleAt(q3.B, q3.A, q3.C)).toBeCloseTo(90, 0);
-  const q4 = FIG.QCM4.points;
-  expect(ROT.angleAt(q4.B, q4.A, q4.E)).toBeCloseTo(90, 6);
-  expect(ROT.angleAt(q4.B, q4.C, q4.D)).toBeCloseTo(60, 1);
-  expect(ROT.interiorAngle(5)).toEqual({ n: 108, d: 1 });
-});
-
-it('le module 3 : ex. 15 (FB ≈ 4,70 ; 16π ≈ 50,27) et ex. 20 (22°, 44°, DF = 4,5) recalculés', () => {
-  expect(ROT.ringByRotation(5, 72).closes).toBe(true);
-  expect(sx(ROT.chordOfArc(4, 72))).toBe('4,70');
-  expect(EXERCISES.find((e) => e.id === 'ex-15-2').question.expected).toBe(4.7);
-  expect(sx(16 * Math.PI)).toBe('50,27');
-  expect(sx(4.7 ** 2 * Math.PI)).toBe('69,40');
-  const bac = (Math.asin(3 / 8) * 180) / Math.PI;
-  expect(TR.roundTo(bac, 0)).toBe('22');
-  expect(TR.roundTo(2 * bac, 0)).toBe('44');
-  expect(EXERCISES.find((e) => e.id === 'ex-20-1').question.expected).toBe(22);
-  expect((3 * 12) / 8).toBe(4.5);
-  const E = FIG.EX20.points;
-  expect(Math.hypot(E.C[0] - E.B[0], E.C[1] - E.B[1])).toBeCloseTo(3, 2);
-  expect(Math.hypot(E.D[0] - E.F[0], E.D[1] - E.F[1])).toBeCloseTo(4.5, 2);
-  const P = FIG.EX15.points;
-  expect(Math.hypot(P.F[0] - P.B[0], P.F[1] - P.B[1])).toBeCloseTo(ROT.chordOfArc(4, 72), 2);
-});
-
-it('« إختبار أولي » (Oran) : 45°, 22,5°, ≈ 3,83 m, arc ≈ 3,93, 2r sin 45° ≈ 7,07, câble ≈ 30,61 (30,64 en arrondissant trop tôt)', () => {
+it('« وضعية الاختبار النهائي » (Oran) : 45°, 22,5°, ≈ 3,83 m, arc ≈ 3,93, 2r sin 45° ≈ 7,07, câble ≈ 30,61 (30,64 en arrondissant trop tôt)', () => {
   expect(ROT.centralAngle(8)).toEqual({ n: 45, d: 1 });
   expect(ROT.interiorAngle(8)).toEqual({ n: 135, d: 1 });
   expect(sx(ROT.sideFromRadius(8, 5).number)).toBe('3,83');

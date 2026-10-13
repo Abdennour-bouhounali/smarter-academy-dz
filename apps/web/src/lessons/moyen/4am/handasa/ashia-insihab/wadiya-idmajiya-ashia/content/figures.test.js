@@ -3,12 +3,11 @@ import { validateGeoFigure, figureQuality } from '../../../../../../common/compo
 import * as FIG from './figures';
 
 /**
- * Chaque figure de la leçon (modules, إختبار أولي) est une donnée GeoFigure valide ET lisible (règle du propriétaire,
+ * Chaque figure de la leçon (modules, وضعية الاختبار النهائي) est une donnée GeoFigure valide ET lisible (règle du propriétaire,
  * guide §5 « Textbook figures ») : pas de bande étroite, aucune étiquette sur une autre ni sur un point.
  */
 const ALL = {
-  MODEL: FIG.MODEL, QCM1: FIG.QCM1, QCM3: FIG.QCM3, EX19: FIG.EX19, EX22: FIG.EX22, TEST_FIGURE: FIG.TEST_FIGURE,
-  ...Object.fromEntries(FIG.QCM4_OPTIONS.map((f, i) => [`QCM4_OPTIONS[${i}]`, f])),
+  MODEL: FIG.MODEL, TEST_FIGURE: FIG.TEST_FIGURE,
 };
 
 describe('wadiya-idmajiya-ashia — figures', () => {

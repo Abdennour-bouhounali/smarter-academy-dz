@@ -94,7 +94,7 @@ export const EXERCISES = [
   // 5 — une histoire (transfert) : un taxi-application
   {
     id: 'p5-a', source: PLATFORM(5, 'أ'), learningPointId: LP.P2, difficulty: 'difficile',
-    statement: 'في تطبيق لسيارات الأجرة، كلّفت رحلة طولها 6km مبلغ 340DA ، وكلّفت رحلة طولها 10km مبلغ 500DA . ثمن الرحلة دالة تآلفية $f$ لطولها $x$ بالكيلومتر.',
+    statement: 'في تطبيق لسيارات الأجرة يلتزم سائقوه بالأمانة في الأجرة، كلّفت رحلة طولها 6km مبلغ 340DA ، وكلّفت رحلة طولها 10km مبلغ 500DA . ثمن الرحلة دالة تآلفية $f$ لطولها $x$ بالكيلومتر.',
     interaction: 'choice',
     question: {
       prompt: 'أ) عبارة $f(x)$ هي:',

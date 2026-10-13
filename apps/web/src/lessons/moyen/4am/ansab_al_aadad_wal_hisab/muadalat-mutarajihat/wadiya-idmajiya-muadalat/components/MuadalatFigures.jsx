@@ -7,8 +7,7 @@ import React from 'react';
  *               مسبح البلدي couvert de la photographie du manuel (p. 52),
  *               redessiné — toit, gradins, bassin à couloirs, plongeoirs.
  *               Aucune mesure : elle ne porte aucune information mathématique.
- *   NumberLine  un مستقيم مدرّج dans la convention du manuel (QCM 6 et 9 p. 52,
- *               ex. 35 et 42 p. 53) : la partie des SOLUTIONS en rouge, un
+ *   NumberLine  un مستقيم مدرّج dans la convention du manuel (p. 48-49) : la partie des SOLUTIONS en rouge, un
  *               crochet à chaque borne, TOURNÉ VERS LE ROUGE quand la borne est
  *               une solution (≤, ≥) et vers l'extérieur sinon (<, >), une flèche
  *               au bout positif. La géométrie est `dir="ltr"` (les nombres

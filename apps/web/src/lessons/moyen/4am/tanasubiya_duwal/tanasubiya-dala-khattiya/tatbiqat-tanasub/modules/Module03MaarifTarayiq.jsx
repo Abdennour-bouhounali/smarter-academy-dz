@@ -34,6 +34,7 @@ export default function Module03MaarifTarayiq() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
+      objectives={["كيف نحسب مقدارًا تغيّر مرّتين متتاليتين؟", "كيف نحسب مقدارًا مركّبًا ونحوّل وحداته؟", "كيف نعبّر عن مقدار بدلالة مقدار آخر؟"]}
       moduleNumber={3}
       moduleTitle="معارف وطرائق"
       moduleSubtitle="تطبيقات التناسبية"

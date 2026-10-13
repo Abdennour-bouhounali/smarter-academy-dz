@@ -36,6 +36,7 @@ export default function Module02Tarayiq() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
+      objectives={["كيف ننتقل من الجدول إلى الدستور ثم إلى التمثيل البياني؟", "كيف نكتب نتيجة الحساب جوابًا عن سؤال الوضعية؟", "أيّ المركبتين تسير بسرعة ثابتة؟"]}
       moduleNumber={2}
       moduleTitle="طرائق — النابض والتحدّي"
       moduleSubtitle="جدول، دستور، تمثيل بياني، ثم تفسير"

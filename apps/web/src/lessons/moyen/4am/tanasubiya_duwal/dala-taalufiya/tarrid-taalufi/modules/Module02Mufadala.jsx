@@ -59,6 +59,12 @@ export default function Module02Mufadala() {
       moduleTitle="المفاضلة بين صيغتين"
       moduleSubtitle="معادلة، متراجحة، ونقطة تقاطع"
       estimatedTime="12 دقيقة"
+      objectives={[
+        'متى تتساوى الصيغتان؟',
+        'أيّ صيغة أرخص قبل نقطة التقاطع وبعدها؟',
+        'كيف نقرأ الجواب على التمثيل البياني؟',
+        'ماذا يحدث مع ثلاث صيغ؟',
+      ]}
       brief={{
         tag: 'امتداد لنشاط 4 — من المنصّة',
         headline: 'الاشتراك أم التذكرة؟',
@@ -100,12 +106,12 @@ export default function Module02Mufadala() {
           ),
         },
         {
-          num: 2, title: 'التساوي: معادلة ونقطة تقاطع', done: !!q.gym,
+          num: 2, title: 'هل نجد التساوي دون علامة؟', done: !!q.gym,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tasawi-taqatu" lead="ما وجدته بالعلامة نجده أيضا بحلّ معادلة:" />
               <NumericQuestion
-                prompt={<span>قاعة رياضة: الصيغة الأولى <MathText>{'$f(x) = 150x + 1200$'}</MathText> والصيغة الثانية <MathText>{'$g(x) = 350x$'}</MathText> ، حيث <MathText>{'$x$'}</MathText> عدد الحصص. من أجل كم حصة تتساوى التكلفتان؟</span>}
+                prompt={<span>قاعة رياضة يقصدها الشباب للمحافظة على صحتهم: الصيغة الأولى <MathText>{'$f(x) = 150x + 1200$'}</MathText> والصيغة الثانية <MathText>{'$g(x) = 350x$'}</MathText> ، حيث <MathText>{'$x$'}</MathText> عدد الحصص. من أجل كم حصة تتساوى التكلفتان؟</span>}
                 expected={6}
                 requires={['tasawi-taqatu']}
                 explain={<MathText>{'$150x + 1200 = 350x$ أي $1200 = 200x$ ومنه $x = 6$ ، و $f(6) = g(6) = 2100$ .'}</MathText>}
@@ -115,7 +121,7 @@ export default function Module02Mufadala() {
           ),
         },
         {
-          num: 3, title: 'قبل نقطة التقاطع وبعدها', subtitle: 'أيّ صيغة أرخص؟', done: !!q.side,
+          num: 3, title: 'أيّ صيغة أرخص، ومتى؟', subtitle: 'قارن في ثلاث حالات', done: !!q.side,
           content: (
             <div className="space-y-3">
               <BatchChoiceQuestion
@@ -165,7 +171,7 @@ export default function Module02Mufadala() {
           num: 5, title: 'ثلاث صيغ', subtitle: 'قاعة الألعاب (المستوى المتقدّم)', done: !!q.three,
           content: (
             <TapQuestion
-              prompt={<span>في قاعة الألعاب: <MathText>{'$100x$'}</MathText> (الدفع بالساعة)، <MathText>{'$40x + 600$'}</MathText> (بطاقة شهرية)، <MathText>{'$1800$'}</MathText> (دون حدّ). يلعب ياسين 20 ساعة في الشهر. أيّ صيغة أرخص له؟</span>}
+              prompt={<span>في قاعة الألعاب: <MathText>{'$100x$'}</MathText> (الدفع بالساعة)، <MathText>{'$40x + 600$'}</MathText> (بطاقة شهرية)، <MathText>{'$1800$'}</MathText> (دون حدّ). يلعب ياسين 20 ساعة في الشهر بعد إنجاز واجباته. أيّ صيغة أرخص له؟</span>}
               options={['الدفع بالساعة', 'البطاقة الشهرية', 'الصيغة دون حدّ']}
               correct={1}
               cols={1}

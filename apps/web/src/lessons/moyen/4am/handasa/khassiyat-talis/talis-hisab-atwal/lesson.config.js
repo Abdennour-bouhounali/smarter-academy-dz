@@ -6,7 +6,7 @@
  *
  * LE PARCOURS (REAL → DISCOVER → MANIPULATE → UNDERSTAND → TOUCH THE MATH → FORMALIZE → AUTOMATIZE → TRANSFER) :
  *   M0 أستعدّ          — le quatrième proportionnel, la droite des milieux, le tableau de proportionnalité ;
- *   M1 نشاط 1          — REAL (la projection du quartier) → DISCOVER → MANIPULATE (thales-beam : l'écran glissé,
+ *   M1 نشاط 1          — REAL (« ساحة الحيّ », shadow-world : le soleil tenu, la règle ÉCRITE par l'élève, 2026-10-13) → DISCOVER → MANIPULATE (thales-beam : l'écran glissé,
  *                        incliné, poussé à travers A) ; les questions du نشاط 1 répondues depuis les arrêts de
  *                        l'élève ; la brique qui NOMME « خاصية طالس » ;
  *   M2 معارف           — UNDERSTAND (la propriété dans ses trois positions, le tableau de proportionnalité),
@@ -28,7 +28,7 @@ export const LESSON_CONFIG = {
   unitTitle: 'خاصية طالس',
   sequentialUnlock: true,
   title: 'خاصية طالس وحساب الأطوال',
-  description: 'مدخل الوحدة: شاشة تنزلق في حزمة ضوئية تقود إلى خاصية طالس، فالنسب المتساوية بين أطوال مثلثين في وضعية طالس تُوظَّف لحساب أطوال مجهولة، ويُقرأ أحد المثلثين تكبيرا أو تصغيرا للآخر بمعامل التناسبية k.',
+  description: 'مدخل الوحدة: في ساحة الحيّ يحرّك التلميذ الشمس ويكتب بنفسه قاعدة الظلال، فتقوده إلى خاصية طالس؛ ثم النسب المتساوية بين أطوال مثلثين في وضعية طالس تُوظَّف لحساب أطوال مجهولة، ويُقرأ أحد المثلثين تكبيرا أو تصغيرا للآخر بمعامل التناسبية k.',
   level: 'moyen',
   grade: '4am',
   chapter: 'handasa',
@@ -68,7 +68,7 @@ export const LESSON_CONFIG = {
   lessonProblem: {
     module: 5,
     title: 'عرض في ساحة الحيّ: لوحة في الحزمة وشاشة أبعد',
-    statement: "يحضّر نادي السينما بالمتوسطة عرضًا ليليًا في ساحة الحيّ التي تتّسع لـ 180 كرسيًّا. جهاز الإسقاط في النقطة $A$ يرسل حزمة ضوئية يحدّها نصفا المستقيمين $[AB)$ و $[AC)$، فتأتي الصورة على الشاشة الكبيرة $[BC]$، كما في الشكل (منظر من الأعلى)، حيث $AB = 10\\,\\mathrm{m}$ و $AC = 12\\,\\mathrm{m}$ و $BC = 6\\,\\mathrm{m}$. لضبط وضوح الصورة قبل العرض، يضع التقنيّ في الحزمة لوحة بيضاء عرضها 3 m، فتأتي الصورة عليها بين النقطتين $B'$ من $[AB]$ و $C'$ من $[AC]$، حيث $(B'C') \\parallel (BC)$. يضعها أوّلًا بحيث $AB' = 4\\,\\mathrm{m}$. القطعة $[DE]$ في الشكل هي موضع الشاشة في العرض الثاني (السؤال 3).",
+    statement: "يتطوّع نادي السينما بالمتوسطة لإقامة عرض ليلي مجّاني في ساحة الحيّ التي تتّسع لـ 180 كرسيًّا. جهاز الإسقاط في النقطة $A$ يرسل حزمة ضوئية يحدّها نصفا المستقيمين $[AB)$ و $[AC)$، فتأتي الصورة على الشاشة الكبيرة $[BC]$، كما في الشكل (منظر من الأعلى)، حيث $AB = 10\\,\\mathrm{m}$ و $AC = 12\\,\\mathrm{m}$ و $BC = 6\\,\\mathrm{m}$. لضبط وضوح الصورة قبل العرض، يضع التقنيّ في الحزمة لوحة بيضاء عرضها 3 m، فتأتي الصورة عليها بين النقطتين $B'$ من $[AB]$ و $C'$ من $[AC]$، حيث $(B'C') \\parallel (BC)$. يضعها أوّلًا بحيث $AB' = 4\\,\\mathrm{m}$. القطعة $[DE]$ في الشكل هي موضع الشاشة في العرض الثاني (السؤال 3).",
     figure: {
       points: { A: [0, 0], "B'": [2.575, 3.061], "C'": [4.511, 1.642], B: [6.438, 7.652], C: [11.276, 4.104], D: [9.657, 11.478], E: [16.914, 6.156] },
       segments: [['A', 'D'], ['A', 'E'], { from: 'B', to: 'C', arrows: 1 }, { from: "B'", to: "C'", arrows: 1, tone: 'amber' }, { from: 'D', to: 'E', arrows: 1, tone: 'indigo' }],
@@ -78,25 +78,25 @@ export const LESSON_CONFIG = {
     },
   },
   resources: [
-    // Le module 1 ouvre sur LE FAISCEAU (thales-beam). متقدم (ouvert par défaut : le نشاط 1) : AB = 6, AC = 7,
-    // BC = 6,1, l'écran à placer à AB′ = 3,2, puis à pousser à travers A ; مبتدئ : la projection du quartier.
+    // Le module 1 ouvre sur « ساحة الحيّ » (shadow-world, 2026-10-13) aux DEUX niveaux : le même monde, la minaret change
+    // (مبتدئ 5 m, متقدم 6,5 m). Le faisceau (thales-beam) n'est plus dans cette leçon : il reste celui de la leçon 2.
     {
-      kind: 'manipulation', code: 'thales-beam-cinema-4-5-3', type: 'thales-beam', module: 1,
+      kind: 'manipulation', code: 'shadow-world-sahat-alhayy-5', type: 'shadow-world', module: 1,
       level: 'beginner',
-      title: 'عرض في الحي: شاشة في الحزمة',
-      objective: 'إذا كان (B′C′) يوازي (BC) فإن AB′/AB = AC′/AC = B′C′/BC، أينما كانت B′ على المستقيم (AB)؛ وإذا مال (B′C′) لم تعد النسب متساوية',
-      autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'cinema' },
+      title: 'ساحة الحيّ: الشمس والظلال',
+      objective: 'إذا كان (B′C′) يوازي (BC) فإن AB′/AB = AC′/AC = B′C′/BC، أينما كانت B′ على المستقيم (AB)؛ ظلّ كل شيء شاقولي ÷ طوله عدد واحد في اللحظة نفسها لأنّ أشعة الشمس متوازية',
+      autonomy: 'عالم كامل بدل شاشة واحدة: التلميذ يحرّك الشمس الحقيقية (الجزائر، 13 أكتوبر)، يقيس الظلال، يتوقّع ظلّ ما تنصبه البلدية، ويكتب قاعدته بنفسه فيختبرها العالم على كل الأشياء ويُسقطها حين تتحرّك الشمس؛ مقران يسأل ولا يُجيب، وكل سؤال يُحكم على جوابه بأرقام التلميذ',
+      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'minaret' },
       learningPointIds: ['4am_talis-hisab-atwal_P1'],
       sourceElementIds: ['act-1'],
     },
     {
-      kind: 'manipulation', code: 'thales-beam-act1-6-7-61', type: 'thales-beam', module: 1,
+      kind: 'manipulation', code: 'shadow-world-sahat-alhayy-6-5', type: 'shadow-world', module: 1,
       level: 'advanced',
-      title: 'نشاط 1: AB = 6 ، AC = 7 ، AB′ = 3,2',
-      objective: 'إذا كان (B′C′) يوازي (BC) فإن AB′/AB = AC′/AC = B′C′/BC، أينما كانت B′ على المستقيم (AB)؛ وإذا مال (B′C′) لم تعد النسب متساوية',
-      autonomy: 'أطوال الكتاب بالجزء من عشرة: التلميذ يضع الشاشة بنفسه عند 3,2، ويحكم على تساوي نسب مقيسة بقيم مدوّرة (3,73 و 3,25) دون أن تُبسَّط له، ويقرّر أن يدفع الشاشة عبر A إلى الجهة الأخرى (وضعية الفراشة) ليتحقق أن الخاصية تبقى صحيحة',
-      experience: { type: 'textbook', reason: '', theme: 'camera' },
+      title: 'ساحة الحيّ: مئذنة أعلى',
+      objective: 'إذا كان (B′C′) يوازي (BC) فإن AB′/AB = AC′/AC = B′C′/BC، أينما كانت B′ على المستقيم (AB)؛ ظلّ كل شيء شاقولي ÷ طوله عدد واحد في اللحظة نفسها لأنّ أشعة الشمس متوازية',
+      autonomy: 'المسار نفسه بأرقام أخرى (مئذنة 6,5 م): التلميذ يعيد الاكتشاف ويُصلح قاعدته كلّما تغيّرت الساعة، فلا يحفظ عددًا بل يفهم أنّ الشكل (× عدد) هو الباقي',
+      experience: { type: 'textbook', reason: '', theme: 'minaret' },
       learningPointIds: ['4am_talis-hisab-atwal_P1', '4am_talis-hisab-atwal_P2'],
       sourceElementIds: ['act-1'],
     },
@@ -109,9 +109,9 @@ export const LESSON_CONFIG = {
       title: 'أستعدّ', desc: 'ست عبارات: الرابع المتناسب والجداء المتصالب، مستقيم المنتصفين، وجدول التناسبية. صحيح أم خاطئ؟',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 5, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'nashat', path: `${LESSON_BASE_PATH}/nashat`,
-      title: 'نشاط 1 — الشاشة في الحزمة', desc: 'اسحب الشاشة في حزمة جهاز الإسقاط، أمِلها، ادفعها عبر A؛ ثم أسئلة النشاط: الحالة الأولى (AB′ = 3,2)، الحالة الثانية (وضعية الفراشة)، ونص خاصية طالس.',
+      title: 'نشاط 1 — ساحة الحيّ: الظلال والمثلثات', desc: 'حرّك الشمس، قِس الظلال، توقّع واكتب قاعدتك؛ ثم من الساحة إلى الشكل الهندسي، وأسئلة النشاط: الحالة الأولى (AB′ = 3,2)، الحالة الثانية (وضعية الفراشة)، ونص خاصية طالس.',
       stage: 'trigger', teachesLearningPointIds: ['4am_talis-hisab-atwal_P1', '4am_talis-hisab-atwal_P2'],
-      color: 'indigo', style: 'featured', estimatedMin: 12, difficulty: 1, actionText: 'أجرّب الحزمة' },
+      color: 'indigo', style: 'featured', estimatedMin: 20, difficulty: 1, actionText: 'أدخل الساحة' },
     { id: '02', number: 2, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`,
       title: 'معارف — خاصية طالس ومعامل التناسبية', desc: 'الخاصية في وضعياتها الثلاث، جدول التناسبية، متى لا يكون المستقيمان متوازيين، ومعامل التكبير والتصغير k.',
       stage: 'discovery', teachesLearningPointIds: ['4am_talis-hisab-atwal_P1', '4am_talis-hisab-atwal_P3'],

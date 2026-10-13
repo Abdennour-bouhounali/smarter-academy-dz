@@ -46,6 +46,7 @@ export default function Module01NashatMurabba() {
   return (
     <ContentModule
       ctx={MODULE_CTX}
+      objectives={["ماذا يحدث لمساحة ملعب مربّع حين نمدّد ضلعه أو نقتطع منه شريطين؟", "كم منطقة في الملعب، وما مساحة كل منها؟", "كيف نحسب $21^2$ و $19^2$ ذهنيًا دون وضع العملية؟"]}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
       moduleTitle="نشاط 2 — مربّع مجموع ومربّع فرق"
@@ -60,7 +61,7 @@ export default function Module01NashatMurabba() {
         body: (
           <div className="space-y-2">
             <p>
-              ملعب جواري مربّع ضلعه <MathText>{`$${side}\\,m$`}</MathText>. قرّرت البلدية أن تزيد ضلعه <MathText>{`$${extra}\\,m$`}</MathText> في الطول وفي العرض.
+              ملعب جواري مربّع ضلعه <MathText>{`$${side}\\,m$`}</MathText>. قرّرت البلدية، خدمةً لأطفال الحيّ، أن تزيد ضلعه <MathText>{`$${extra}\\,m$`}</MathText> في الطول وفي العرض.
               {' '}يقول أحد العمّال: «نضيف مربّعًا صغيرًا مساحته <MathText>{`$${extra} \\times ${extra}$`}</MathText>، فتصبح المساحة <MathText>{`$${workersClaim}\\,m^2$`}</MathText>». هل هو على حق؟
               {' '}<SourceTag source={HOOK.source} />
             </p>

@@ -8,7 +8,7 @@ import { EXERCISES } from '../content/exercises';
 export default function Module03Awazzif() {
   const [done, setDone] = useState({});
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(3)} moduleNumber={3} moduleTitle="أوظّف تعلّماتي" moduleSubtitle="تمارين 17، 18 و 22" estimatedTime="12 دقيقة"
+    <ContentModule objectives={["أعيّن PGCD في وضعيات متنوّعة", "أحلّ تمارين الكتاب 17 و 18 و 22"]} ctx={MODULE_CTX} navLinks={getNavLinks(3)} moduleNumber={3} moduleTitle="أوظّف تعلّماتي" moduleSubtitle="تمارين 17، 18 و 22" estimatedTime="12 دقيقة"
       brief={{ tag: 'أوظّف تعلّماتي — الكتاب ص 14 و 15', title: 'أعيّن القاسم المشترك الأكبر بالحصر', tone: 'amber', body: <p>الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
       steps={EXERCISES.map((ex, i) => ({ num: i + 1, title: `تمرين ${ex.source.number}${ex.source.part ? ' ' + ex.source.part : ''}`, done: !!done[ex.id],
         content: <div className="space-y-3">{i === 0 && <KnowledgeBrick id="tayin-bil-hasr" variant="rappel" compact />}<TextbookExercise exercise={ex} requires={['tayin-bil-hasr']} onAnswered={() => setDone((d) => ({ ...d, [ex.id]: true }))} /></div> }))}

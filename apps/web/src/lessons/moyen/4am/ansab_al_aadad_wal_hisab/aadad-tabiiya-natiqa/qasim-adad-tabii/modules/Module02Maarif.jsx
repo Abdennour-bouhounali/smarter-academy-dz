@@ -27,7 +27,7 @@ export default function Module02Maarif() {
   const [q3, setQ3] = useState(false);
 
   return (
-    <ContentModule
+    <ContentModule objectives={["كيف نعرّف القاسم بطريقتين مختلفتين؟", "كيف أطبّق ذلك على 143 كتابًا؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}

@@ -1,4 +1,4 @@
-import { src, addition, BASE } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
 
 /**
  * « أستعدّ » (module 0) — les items 1 et 2 du « أستعدّ » du manuel (p. 31,
@@ -19,7 +19,7 @@ export const PREP_ITEMS = [
 ];
 
 /**
- * « أدمج تعلّماتي » (p. 40) — la وضعية, au mot près, et son « تحليل الوضعية »
+ * « أدمج تعلّماتي » (p. 40) — la وضعية, au mot près (+ une phrase de contexte, valeur « التعاون », 2026-10-13 ; le texte du manuel reste dans extraction.json), et son « تحليل الوضعية »
  * en trois étapes (le manuel les nomme). L'« مساعدة » du manuel est la seule
  * factorisation donnée : la plateforme n'enseigne rien de plus (le produit est
  * nul quand un facteur est nul — on vérifie par substitution).
@@ -27,7 +27,7 @@ export const PREP_ITEMS = [
 export const SITUATION = {
   source: src('situation', 40, 'أدمج تعلّماتي'),
   title: 'وضعية',
-  text: 'الشكل الملوّن بالأزرق هو حوض شكله مربع، طول ضلعه 10m. نريد تهيئة شريط منتظم حول هذا الحوض يخصص للراجلين عرضه $x$. ماهي قيمة $x$ حتى تكون مساحة الشريط تساوي $44m^2$؟',
+  text: 'يتعاون سكّان الحيّ على تهيئة حديقة عامة يرتادها الجميع. الشكل الملوّن بالأزرق هو حوض شكله مربع، طول ضلعه 10m. نريد تهيئة شريط منتظم حول هذا الحوض يخصص للراجلين عرضه $x$. ماهي قيمة $x$ حتى تكون مساحة الشريط تساوي $44m^2$؟',
   help: 'مساعدة : $x^2 + 10x - 11 = (x - 1)(x + 11)$',
   figure: 'حوض مربع ضلعه 10m (أزرق)، يحيط به من كل الجهات شريط عرضه $x$.',
   caption: 'الحوض والشريط',
@@ -38,7 +38,7 @@ export const SITUATION = {
   ],
 };
 
-/** « تحدّ » de la page d'unité (p. 31) — l'accroche de la synthèse, résolue à la fin du module 1 (extraction › challenge › duplicatedIn). */
+/** « تحدّ » de la page d'unité (p. 31) — l'accroche de la synthèse, résolue à la fin du module 7 (extraction › challenge › duplicatedIn). */
 export const CHALLENGE = {
   source: src('challenge', 31, 'تحدّ'),
   text: 'لاحظ الشكل المقابل حيث ABC مثلث. ما هي قيمة العدد $x$ التي من أجلها يكون المثلث ABC قائما في A ؟',
@@ -46,7 +46,7 @@ export const CHALLENGE = {
 };
 
 /**
- * Les corrections du module 1 — importées aussi par la carte (knowledgeGraph.js) :
+ * Les corrections du module 7 — importées aussi par la carte (knowledgeGraph.js) :
  * une aide de la carte cite la leçon mot pour mot. Toute égalité dans `$…$`.
  */
 export const REMARKS = {
@@ -61,49 +61,4 @@ export const REMARKS = {
   help: 'إذا كان أحد عاملي جداء معدومًا فإنّ الجداء معدوم: هذا ما يجعل الشكل المحلّل مفيدًا لحل المعادلة.',
   check: 'نتحقق من كل قيمة بالتعويض في مساحة الشريط، ونرفض القيمة السالبة لأنّ العرض طول.',
   notSolvedHere: 'الحل الكامل في «أحلّ الوضعية»: هنا نمذجنا الوضعية واخترنا الاستراتيجية.',
-};
-
-/**
- * « أؤكّد تعلّماتي » (p. 40) : les treize QCM, au mot près ; chaque item renvoie
- * au درس qui l'enseigne (le manuel renvoie à la page : colonne « عند الحاجة
- * أعود إلى الصفحة »). L'item 5 a DEUX bonnes réponses dans le manuel.
- */
-export const QCM = [
-  { n: 1, text: 'نشر الجداء $2x(x + 2)$ هو ........', options: ['$2x^2 + 2x$', '$2x^2 + 4x$', '$2x + 4x$'], correct: 1, pages: [34], lesson: 'nashr-tabsit',
-    explain: '$2x(x + 2) = 2x \\times x + 2x \\times 2 = 2x^2 + 4x$. العدد 2 يُضرب أيضًا في $2x$، و $2x \\times x = 2x^2$.' },
-  { n: 2, text: 'نشر الجداء $(1 - x)(-x)$ هو ........', options: ['$x^2 - x$', '$x + x^2$', '$1 - x^2$'], correct: 0, pages: [34], lesson: 'nashr-tabsit',
-    explain: '$(1 - x)(-x) = 1 \\times (-x) + (-x) \\times (-x) = -x + x^2 = x^2 - x$.' },
-  { n: 3, text: 'نشر الجداء $(4 + x)(1 - x)$ هو ........', options: ['$4 - x^2$', '$4 - 3x - x^2$', '$5 - x^2$'], correct: 1, pages: [34], lesson: 'nashr-tabsit',
-    explain: '$(4 + x)(1 - x) = 4 - 4x + x - x^2 = 4 - 3x - x^2$ : أربعة جداءات، ثم نجمع الحدّين $-4x$ و $x$.' },
-  { n: 4, text: 'تحليل العبارة $ab + b$ هو ........', options: ['$ab^2$', '$(a + 1)b$', '$2ab$'], correct: 1, pages: [34], lesson: 'tahlil-ibara',
-    explain: 'العامل المشترك $b$ ، و $b = b \\times 1$ : $ab + b = (a + 1)b$.' },
-  // Item 5 : DEUX options justes dans le manuel (1 et 3) — posé en lignes « يساويه / لا يساويه ».
-  { n: 5, text: 'تحليل العبارة $\\sqrt{2}x + 2$ هو ........', options: ['$\\sqrt{2}(x + \\sqrt{2})$', '$2\\sqrt{2}x$', '$2\\left(\\dfrac{\\sqrt{2}}{2}x + 1\\right)$'], correctSet: [0, 2], pages: [34, 35], lesson: 'tahlil-ibara',
-    rowCorrections: [
-      '$\\sqrt{2}(x + \\sqrt{2}) = \\sqrt{2}x + \\sqrt{2} \\times \\sqrt{2} = \\sqrt{2}x + 2$.',
-      '$\\sqrt{2}x$ و 2 حدّان غير متشابهين: لا يُجمعان في حدّ واحد.',
-      '$2\\left(\\dfrac{\\sqrt{2}}{2}x + 1\\right) = \\sqrt{2}x + 2$ : العامل المشترك هنا 2.',
-    ] },
-  { n: 6, text: 'تحليل العبارة $a - ab$ هو ........', options: ['$a(1 - b)$', '$b(a - 1)$', '$-a^2b$'], correct: 0, pages: [34, 35], lesson: 'tahlil-ibara',
-    explain: '$a - ab = a \\times 1 - a \\times b = a(1 - b)$.' },
-  { n: 7, text: 'نشر العبارة $(\\sqrt{3} + x)^2$ هو ........', options: ['$3 + x^2$', '$\\sqrt{3} + x^2$', '$3 + 2\\sqrt{3}x + x^2$'], correct: 2, pages: [34, 35], lesson: 'mutatabiqat-shahira',
-    explain: 'مربع مجموع: $(\\sqrt{3})^2 + 2 \\times \\sqrt{3} \\times x + x^2 = 3 + 2\\sqrt{3}x + x^2$.' },
-  { n: 8, text: 'نشر العبارة $(1 - \\sqrt{2}x)^2$ هو ........', options: ['$1 - 2x^2$', '$1 - 2\\sqrt{2}x + 2x^2$', '$-2x^2$'], correct: 1, pages: [34, 35], lesson: 'mutatabiqat-shahira',
-    explain: 'مربع فرق: $1^2 - 2 \\times 1 \\times \\sqrt{2}x + (\\sqrt{2}x)^2 = 1 - 2\\sqrt{2}x + 2x^2$.' },
-  { n: 9, text: 'العبارة $x^2 + 25$ تحلل على الشكل', options: ['$(x + 5)^2$', '$x^2 + 5^2$', 'لا تقبل تحليلا'], correct: 2, pages: [34, 35], lesson: 'tahlil-ibara',
-    explain: '$(x + 5)^2 = x^2 + 10x + 25$ ، و $x^2 + 5^2$ مجموع لا جداء: مجموع مربعين لا يقبل تحليلا بالمتطابقات الشهيرة.' },
-  { n: 10, text: 'العبارة $x^2 + 10x + 25$ تحلل على الشكل', options: ['$(x + 5)^2$', '$x^2 + 5^2$', 'لا تقبل تحليلا'], correct: 0, pages: [34, 36], lesson: 'tahlil-ibara',
-    explain: '$x^2 + 2 \\times x \\times 5 + 5^2 = (x + 5)^2$.' },
-  { n: 11, text: 'العبارة $x^2 - 25$ تحلل على الشكل', options: ['$(x - 5)^2$', '$(x - 5)(x + 5)$', 'لا تقبل تحليلا'], correct: 1, pages: [34, 36], lesson: 'tahlil-ibara',
-    explain: 'فرق مربعين: $x^2 - 5^2 = (x - 5)(x + 5)$. أما $(x - 5)^2 = x^2 - 10x + 25$.' },
-  { n: 12, text: 'العبارة $x^2 - 10x + 25$ تحلل على الشكل', options: ['$(x - 5)(x + 5)$', '$(x - 5)^2$', 'لا تقبل تحليلا'], correct: 1, pages: [34, 36], lesson: 'tahlil-ibara',
-    explain: '$x^2 - 2 \\times x \\times 5 + 5^2 = (x - 5)^2$.' },
-  { n: 13, text: 'الجداء $19 \\times 21$ يساوي', options: ['399', '401', '309'], correct: 0, pages: [34, 36], lesson: 'mutatabiqat-shahira',
-    explain: '$19 \\times 21 = (20 - 1)(20 + 1) = 20^2 - 1^2 = 400 - 1 = 399$.' },
-].map((it) => ({ ...it, source: src('qcm', 40, 'أؤكّد تعلّماتي', it.n), lessonPath: `${BASE}/${it.lesson}` }));
-
-export const LESSON_TITLES = {
-  'nashr-tabsit': 'الدرس 1 — نشر وتبسيط عبارة جبرية',
-  'mutatabiqat-shahira': 'الدرس 2 — المتطابقات الشهيرة',
-  'tahlil-ibara': 'الدرس 3 — تحليل عبارة جبرية',
 };

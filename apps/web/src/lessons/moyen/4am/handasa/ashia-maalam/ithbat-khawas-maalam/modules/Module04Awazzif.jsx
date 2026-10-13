@@ -42,7 +42,7 @@ export default function Module04Awazzif() {
 
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(4)} moduleNumber={4} moduleTitle="أوظّف تعلّماتي"
-      moduleSubtitle="تمارين الكتاب 13 و 18 و 19 و 21 و 24 و 26 و 27" estimatedTime="10 دقائق"
+      moduleSubtitle="تمارين الكتاب 13 و 18 و 19 و 21 و 24 و 26 و 27" objectives={['أوظّف الحساب في إثبات طبيعة مثلث ورباعي', 'أبرهن بنفسي على انتماء نقطة إلى دائرة', 'أنتقي الدليل الكافي في كل تمرين']} estimatedTime="10 دقائق"
       brief={{ tag: 'تمارين الكتاب — ص 147 و 149', title: 'تمارين الكتاب، بعباراته', tone: 'amber',
         body: <p>في كل تمرين: احسب مربعات الأطوال أو المركبات أو المنتصفات من الإحداثيات، ثم اختر الدليل الكافي واستنتج. الخطأ هنا يُصحَّح ولا يُحتسب.</p> }}
       steps={[

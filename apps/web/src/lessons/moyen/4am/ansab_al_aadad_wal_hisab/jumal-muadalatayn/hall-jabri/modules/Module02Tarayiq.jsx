@@ -39,6 +39,7 @@ export default function Module02Tarayiq() {
       moduleNumber={2}
       moduleTitle="طرائق — التعويض أو الجمع"
       moduleSubtitle="حل جملة معادلتين من الدرجة الأولى بمجهولين"
+      objectives={['كيف يُحَلّ تمرين الكتاب سطرًا سطرًا؟', 'متى يكون الجمع أسرع من التعويض؟', 'كيف نختار الطريقة بالنظر إلى المعاملات؟']}
       estimatedTime="12 دقيقة"
       brief={{
         tag: 'طرائق — الكتاب ص 59', title: METHOD.title, tone: 'emerald',

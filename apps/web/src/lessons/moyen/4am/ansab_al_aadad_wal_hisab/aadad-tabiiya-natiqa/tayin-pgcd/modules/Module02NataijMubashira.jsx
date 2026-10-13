@@ -12,7 +12,7 @@ export default function Module02NataijMubashira() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   return (
-    <ContentModule
+    <ContentModule objectives={["متى يكون PGCD معروفًا دون حصر القواسم؟", "ما النتائج المباشرة الأربع؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2}
       moduleTitle="معارف — نتائج مباشرة" moduleSubtitle="أربع نتائج لا تحتاج إلى حصر" estimatedTime="10 دقائق"
       brief={{ tag: 'معارف — الكتاب ص 12', title: 'نتائج مباشرة', tone: 'violet', body: <p>في حالات خاصة نعرف PGCD دون كتابة أي قائمة. الكتاب يذكر أربعًا.</p> }}

@@ -35,6 +35,7 @@ export default function Module03Taraiq() {
 
   return (
     <ContentModule
+      objectives={['أيّ نسبة نختار لحساب طول ضلع؟', 'متى نضرب ومتى نقسم؟', 'هل توجد طريقة ثانية للتحقّق من الطول؟']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}

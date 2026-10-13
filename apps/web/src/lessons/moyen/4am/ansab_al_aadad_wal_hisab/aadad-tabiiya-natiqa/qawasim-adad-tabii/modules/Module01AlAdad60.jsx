@@ -32,7 +32,7 @@ export default function Module01AlAdad60() {
   const [q48, setQ48] = useState(false);
   const [q17, setQ17] = useState(false);
   return (
-    <ContentModule
+    <ContentModule objectives={["كم قاسمًا للعدد 60؟", "كيف أجد القواسم دون أن أنسى أيًّا منها؟", "هل نجد القواسم بنفس الطريقة مع 48؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1}
       moduleTitle="نشاط 2 — قواسم العدد 60" moduleSubtitle="جداء عاملين بكلّ الأشكال الممكنة" estimatedTime="12 دقيقة"
       brief={{ tag: 'أنشطة — الكتاب ص 8', title: ACTIVITY.title, tone: 'indigo',

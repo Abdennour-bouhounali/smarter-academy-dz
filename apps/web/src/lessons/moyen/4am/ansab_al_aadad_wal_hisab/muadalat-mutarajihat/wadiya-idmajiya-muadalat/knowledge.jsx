@@ -7,20 +7,17 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
 
 /**
  * Une synthèse n'introduit aucune notion nouvelle (LESSON_CONTRACT) : ce sont
- * la DÉMARCHE du manuel (ترجمة → تجريب → متراجحة → تفسير) et deux moments de
- * choix des exercices « أتعمّق ».
- *   tarjama-sigha        module 1 — traduire une formule de prix : par séance × x, fixe une fois
- *   tajrib               module 1 — l'essai : coûter les deux formules pour plusieurs x
- *   mutarajiha-mufadala  module 1 — « meilleure » = « coûte moins » : l'inéquation qui départage
- *   tafsir-natija        module 1 — interpréter : x naturel, la valeur d'égalité n'est pas la réponse
- *   tariqat-wadiya       module 1 — la démarche complète en trois étapes
- *   shakl-munasib        module 3 — la forme utile : factorisée pour E = 0, développée pour une inéquation
- *   hall-maan            module 3 — deux inéquations à la fois : les solutions communes
+ * la DÉMARCHE du manuel (ترجمة → تجريب → متراجحة → تفسير), toute au module 7.
+ *   tarjama-sigha        module 7 — traduire une formule de prix : par séance × x, fixe une fois
+ *   tajrib               module 7 — l'essai : coûter les deux formules pour plusieurs x
+ *   mutarajiha-mufadala  module 7 — « meilleure » = « coûte moins » : l'inéquation qui départage
+ *   tafsir-natija        module 7 — interpréter : x naturel, la valeur d'égalité n'est pas la réponse
+ *   tariqat-wadiya       module 7 — la démarche complète en trois étapes
  * La SOLUTION du مسبح (9 séances, égalité à 8) n'est dans aucun item : c'est la réponse de l'évaluation.
  */
 export const LESSON_KNOWLEDGE = {
   modules: {
-    1: [
+    7: [
       { id: 'tarjama-sigha', type: 'methodes', title: 'ترجمة صيغة تسعير بعبارة حرفية', summary: 'نسمّي x عدد الحصص: المبلغ الذي يُدفع في كل حصة يُضرب في x، والمبلغ الذي يُدفع مرّة واحدة يُضاف كما هو.',
         body: (
           <ol className="list-decimal ms-5 space-y-1">
@@ -51,27 +48,6 @@ export const LESSON_KNOWLEDGE = {
         body: (
           <ol className="list-decimal ms-5 space-y-1">
             {SITUATION.analysis.map((a) => <li key={a.label}><strong>{a.label}</strong>: <MathText>{a.text}</MathText></li>)}
-          </ol>
-        ) },
-    ],
-    3: [
-      { id: 'shakl-munasib', type: 'methodes', title: 'أيّ شكل أستعمل؟',
-        predictPrompt: 'لديك الآن شكلان للعبارة نفسها: $E = 15x^2 - 23x + 4$ و $E = (5x - 1)(3x - 4)$ ، ومن أجل $x = \\dfrac{1}{5}$ وجدت $E = 0$ بحساب قصير. لحلّ المعادلة $E = 0$ ، أيّ الشكلين تستعمل، ولماذا؟ اكتب القاعدة التي تجعلك تختار.',
-        summary: 'لحل معادلة تنعدم فيها عبارة نستعمل شكلها المحلّل وخاصية الجداء المعدوم؛ ولحل متراجحة ننشر، فتختفي الحدود من الدرجة الثانية من الطرفين.',
-        body: (
-          <ul className="list-disc ms-5 space-y-1">
-            <li>لحل معادلة <MathText>{'$E = 0$'}</MathText> نستعمل <strong>الشكل المحلّل</strong>: الجداء معدوم إذا كان أحد عوامله معدومًا.</li>
-            <li>لحل متراجحة نستعمل <strong>الشكل المنشور</strong>: في تمارين الكتاب يختفي الحد <MathText>{'$x^2$'}</MathText> من الطرفين، فتبقى متراجحة من الدرجة الأولى.</li>
-          </ul>
-        ) },
-      { id: 'hall-maan', type: 'methodes', title: 'متراجحتان معًا',
-        predictPrompt: 'وجدت حلول المتراجحة الأولى $x < -1$ وحلول الثانية $x \\geq -4$. كيف تجد الأعداد التي تحقّق المتراجحتين معًا؟ اكتب الطريقة، وقل كيف تعرف هل العددان $-4$ و $-1$ منها أم لا.',
-        summary: 'نحلّ كل متراجحة على حدة، ثم نأخذ الأعداد التي تحقّق الاثنتين: الجزء المشترك على المستقيم المدرّج.',
-        body: (
-          <ol className="list-decimal ms-5 space-y-1">
-            <li>نحلّ كل متراجحة وحدها.</li>
-            <li>نأخذ الأعداد المشتركة بين الحلّين: على المستقيم المدرّج، الجزء الملوّن في التمثيلين معًا.</li>
-            <li>عند كل حدّ ننظر: هل هو حلّ (المعقوف نحو الجزء الملوّن) أم لا.</li>
           </ol>
         ) },
     ],

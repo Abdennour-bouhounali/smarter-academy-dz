@@ -33,8 +33,9 @@ export default function Module02Tabsit() {
       navLinks={getNavLinks(2)}
       moduleNumber={2}
       moduleTitle="طرائق — تبسيط عبارة تتضمن جذورًا"
-      moduleSubtitle="أكبر مربّع، ثم الخاصية التوزيعية"
+      moduleSubtitle="كيف نختصر عبارة فيها عدّة جذور؟"
       estimatedTime="12 دقيقة"
+      objectives={['كيف أبسّط عبارة فيها جذور مختلفة؟', 'لماذا نكتب الجذور أولًا بدلالة الجذر نفسه؟', 'كيف أحسب جداء عدّة جذور دفعة واحدة؟']}
       brief={{
         tag: 'طرائق — الكتاب ص 25', title: METHOD_SIMPLIFY.title, tone: 'violet',
         body: <p>في المحور السابق كتبتَ ثلاثة جذور بدلالة الجذر نفسه. الكتاب يستعمل ذلك لتبسيط عبارة كاملة، ثم لحساب جداء جذور.</p>,

@@ -49,6 +49,7 @@ export const LESSON_CONFIG = {
       { label: '2)', text: 'بيّن أنّ 36 قاسم للعدد 756، ثم استنتج عدد الرفوف اللازمة.' },
       { label: '3)', text: 'ما المبلغ الذي سيدفعه القيّم لشراء الرفوف المناسبة؟' },
     ],
+    illustration: { kind: 'scene', icon: 'book', bg: 'blue', chips: [{ label: 'كتب', value: 756, unit: 'كتابًا', tone: 'blue' }, { label: 'رفّ صغير', value: 32, unit: 'كتابًا', tone: 'amber' }, { label: 'رفّ كبير', value: 36, unit: 'كتابًا', tone: 'green' }, { label: 'ثمن الرفّ', value: 1850, unit: 'دج', tone: 'rose' }], ariaLabel: 'كومة كتب عددها 756 ورفوف تتّسع لـ 32 و 36 كتابًا ثمن الرفّ الواحد 1850 دج' },
   },
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.

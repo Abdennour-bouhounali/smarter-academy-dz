@@ -19,7 +19,6 @@ import ExerciseStatement from '../../../features/practice/ExerciseStatement';
 import QuestionRenderer from '../../../features/practice/QuestionRenderer';
 import HintPanel from '../../../features/practice/HintPanel';
 import FeedbackPanel from '../../../features/practice/FeedbackPanel';
-import IslamicMoment from '../../../features/islamic/IslamicMoment';
 import SessionProgress from '../../../features/practice/SessionProgress';
 import NotebookButton from '../../../features/practice/NotebookButton';
 import ReportButton from '../../../features/reports/ReportButton';
@@ -893,16 +892,6 @@ export default function PracticeSession() {
       busy={busy}
       disabled={hintsClosed}
     />
-    )}
-
-    {/* « لا بأس، حاول مرة أخرى » — après une DEUXIÈME réponse fausse à la même
-        question, une ligne courte de patience (features/islamic, moment
-        `mistake`). APRÈS le verdict, le corrigé, « أعد المحاولة » et l'aide :
-        elle ne s'interpose jamais entre la réponse et son retour, ne pousse
-        aucune commande, et se tait 15 minutes ensuite. Pas sur la feuille
-        d'examen (une tentative par étape). `key` : une par question. */}
-    {answered && !evaluation.isCorrect && !isSelfCheck && !isExam && tries >= 2 && (
-      <IslamicMoment key={`islamic-${exercise.id}:${question.id}`} context="mistake" compact only="student" />
     )}
 
     {/* Fin d'exercice : le seul moment qui mérite plus qu'une coche. */}

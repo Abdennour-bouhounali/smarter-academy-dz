@@ -287,6 +287,7 @@
     "required": "يجب قبول شروط الاستعمال وسياسة الخصوصية."
   },
   "studentBanner": {
+    "greeting": "أهلًا {{name}}",
     "chooseGrade": "اختر سنتك الدراسية",
     "resume": "واصل: {{title}}",
     "discoverCourses": "اكتشف دروس {{grade}}",

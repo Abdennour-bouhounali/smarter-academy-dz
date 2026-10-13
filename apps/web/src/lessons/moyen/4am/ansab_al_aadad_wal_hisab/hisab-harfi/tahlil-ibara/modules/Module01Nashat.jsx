@@ -72,6 +72,7 @@ export default function Module01Nashat() {
   return (
     <ContentModule
       ctx={MODULE_CTX}
+      objectives={["متى نستطيع فرش قطع العشب في صفوف متماثلة؟", "ما ارتفاع الملعب الأكبر الممكن؟", "هل نستطيع «إغلاق» ملعب مربّع بشرائط ومربّعات صغيرة؟"]}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
       moduleTitle="نشاط 3 — تحليل عبارة جبرية"
@@ -96,7 +97,7 @@ export default function Module01Nashat() {
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="نفس الفكرة في المستويين: كل القطع في صفوف متماثلة، فيصير العشب ملعبًا مستطيلًا — ارتفاعه وطوله عاملان."
+          lead="نفس الفكرة في المستويين: كل القطع في صفوف متماثلة، فيصير العشب ملعبًا مستطيلًا: ماذا يمثّل ارتفاعه وماذا يمثّل طوله؟"
           levels={{
             beginner: () => (
               <Manipulation
@@ -163,7 +164,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'ارتفاع الملعب هو العامل المشترك', subtitle: 'افرش الملعب الثاني في المستوى المتقدّم، ثم أجب', done: q2,
+          num: 2, title: 'ما ارتفاع الملعب؟', subtitle: 'افرش الملعب الثاني في المستوى المتقدّم، ثم أجب', done: q2,
           content: (
             <TapQuestion
               prompt={<MathText>{'في الملعب $6x^2 + 4x$ ، بأكبر عدد ممكن من الصفوف المتماثلة، كم يكون ارتفاع الملعب؟'}</MathText>}

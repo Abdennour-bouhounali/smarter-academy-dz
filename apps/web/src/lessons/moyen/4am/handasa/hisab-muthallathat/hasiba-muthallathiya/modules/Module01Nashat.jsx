@@ -100,6 +100,7 @@ export default function Module01Nashat() {
 
   return (
     <ContentModule
+      objectives={['كيف نجد نسبة مثلثية لزاوية معلومة بالحاسبة؟', 'وكيف نجد الزاوية إذا عرفنا إحدى نسبها؟', 'لماذا تعطي الحاسبة أحيانًا نتائج يكذّبها الرسم؟']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}

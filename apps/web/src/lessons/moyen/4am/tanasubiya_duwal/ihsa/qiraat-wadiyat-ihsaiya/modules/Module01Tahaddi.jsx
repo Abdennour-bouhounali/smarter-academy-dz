@@ -47,6 +47,7 @@ export default function Module01Tahaddi() {
 
   return (
     <ContentModule
+      objectives={["كم من النقاط جمع القسم (أ) كلّه؟", "هل تكفي مقارنة الذكور بالذكور والإناث بالإناث؟", "متى يصحّ أن نأخذ متوسط معدّلين؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
@@ -71,7 +72,7 @@ export default function Module01Tahaddi() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          lead="نفس الفكرة في المستويين: عندما تجتمع المجموعات يستقر الماء عند مستوى واحد. أين؟"
+          lead="نفس الفكرة في المستويين: راهن على مستوى الماء، ثم افتح الصمام بين الخزانات وانظر إلى أين يصل."
           defaultLevel="beginner"
           levels={{
             beginner: () => <Manipulation type="group-tanks" level="beginner" {...LAB.m1.beginner} />,
@@ -85,14 +86,13 @@ export default function Module01Tahaddi() {
           content: (
             <div className="space-y-3">
               {evidence}
-              <KnowledgeBrick id="mutawassit-majmuat" lead="ما رأيته في المختبر: ماء كل خزان هو العدد × المتوسط، والمستوى المشترك هو مجموع الماء مقسوما على العرض الكلي." />
               <NumericQuestion
                 prompt={<MathText>{'في القسم (أ): 15 ذكرا بمعدّل 10 و 18 أنثى بمعدّل 13. ما مجموع نقاط تلاميذ القسم (أ)؟'}</MathText>}
                 expected={384}
-                requires={['mutawassit-majmuat']}
                 explain={<MathText>{'$15 \\times 10 + 18 \\times 13 = 150 + 234 = 384$ نقطة، لـ $15 + 18 = 33$ تلميذا.'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="mutawassit-majmuat" lead="ما رأيته في المختبر: ماء كل خزان هو العدد × المتوسط، والمستوى المشترك هو مجموع الماء مقسوما على العرض الكلي." />}
             </div>
           ),
         },
@@ -120,7 +120,6 @@ export default function Module01Tahaddi() {
           num: 3, title: 'أيّ القسمين نتائجه أفضل؟', subtitle: 'سؤال الكتاب', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="silsila-kamila" lead="احسب ماء القسم (ب) كما حسبت ماء القسم (أ)، ثم قارن القسمين كاملين." />
               <TapQuestion
                 prompt={<MathText>{CHALLENGE.text}</MathText>}
                 options={[
@@ -131,10 +130,11 @@ export default function Module01Tahaddi() {
                 ]}
                 correct={2}
                 cols={1}
-                requires={['silsila-kamila', 'mutawassit-majmuat']}
+                requires={['mutawassit-majmuat']}
                 explain={<MathText>{'في القسمين مجموع النقاط 384 والعدد 33: المعدّل نفسه $\\dfrac{384}{33} \\approx 11{,}64$ . المقارنة مجموعة بمجموعة تتعاكس ولا تحسم.'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="silsila-kamila" lead="احسب ماء القسم (ب) كما حسبت ماء القسم (أ)، ثم قارن القسمين كاملين." />}
             </div>
           ),
         },

@@ -29,7 +29,7 @@ export default function Module03Taraiq() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
-      moduleNumber={3}
+      moduleNumber={3} objectives={['كيف أنشئ صورة نقطة بانسحاب شعاعه معلوم؟', 'أين تقع النقطة E؟', 'على ماذا نعتمد لنبرهن تساوي شعاعين؟']}
       moduleTitle="طرائق — صورة نقطة بانسحاب، وإثبات تساوي شعاعين"
       moduleSubtitle="نكمل متوازي أضلاع لننشئ صورة نقطة، ونستند إلى متوازي أضلاع لنبرهن"
       estimatedTime="10 دقائق"

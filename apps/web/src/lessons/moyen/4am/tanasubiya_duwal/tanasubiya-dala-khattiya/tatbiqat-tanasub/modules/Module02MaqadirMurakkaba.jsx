@@ -35,6 +35,7 @@ export default function Module02MaqadirMurakkaba() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
+      objectives={["هل ارتكب السائق مخالفة؟", "كيف نعبّر عن تدفق بالوحدة المناسبة؟", "أيّ المعادن أثقل؟"]}
       moduleNumber={2}
       moduleTitle="نشاط 6 — المقادير المركّبة"
       moduleSubtitle="سرعة، تدفق، كتلة حجمية"

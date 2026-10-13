@@ -789,7 +789,7 @@
           "situation": 28
         }
       },
-      "durationMinutes": 45,
+      "durationMinutes": 30,
       "difficulty": "صعب",
       "status": "available",
       "icon": "🧶"
@@ -1001,7 +1001,7 @@
           "deepen": 41
         }
       },
-      "durationMinutes": 50,
+      "durationMinutes": 26,
       "difficulty": "صعب",
       "status": "available",
       "icon": "🏊"
@@ -1249,7 +1249,7 @@
           "deepen": 53
         }
       },
-      "durationMinutes": 50,
+      "durationMinutes": 28,
       "difficulty": "صعب",
       "status": "available",
       "icon": "🏊"
@@ -1454,7 +1454,7 @@
           "deepen": 63
         }
       },
-      "durationMinutes": 50,
+      "durationMinutes": 28,
       "difficulty": "صعب",
       "status": "available",
       "icon": "🎉"
@@ -1764,7 +1764,7 @@
           "deepen": 75
         }
       },
-      "durationMinutes": 50,
+      "durationMinutes": 29,
       "difficulty": "صعب",
       "status": "available",
       "icon": "🚡"
@@ -2052,7 +2052,7 @@
         ]
       },
       "textbookRef": null,
-      "durationMinutes": 50,
+      "durationMinutes": 31,
       "difficulty": "صعب",
       "status": "available",
       "icon": "🧩"
@@ -2299,7 +2299,7 @@
           "deepen": 101
         }
       },
-      "durationMinutes": 50,
+      "durationMinutes": 31,
       "difficulty": "صعب",
       "status": "available",
       "icon": "🏅"
@@ -2485,7 +2485,7 @@
           "deepen": 113
         }
       },
-      "durationMinutes": 50,
+      "durationMinutes": 31,
       "difficulty": "صعب",
       "status": "available",
       "icon": "🕌"
@@ -2732,7 +2732,7 @@
           "deepen": 125
         }
       },
-      "durationMinutes": 55,
+      "durationMinutes": 34,
       "difficulty": "صعب",
       "status": "available",
       "icon": "🏛️"
@@ -2985,7 +2985,7 @@
           "deepen": 137
         }
       },
-      "durationMinutes": 55,
+      "durationMinutes": 35,
       "difficulty": "صعب",
       "status": "available",
       "icon": "🌉"
@@ -3233,7 +3233,7 @@
           "deepen": 149
         }
       },
-      "durationMinutes": 55,
+      "durationMinutes": 35,
       "difficulty": "صعب",
       "status": "available",
       "icon": "🗺️"
@@ -3487,7 +3487,7 @@
           "deepen": 161
         }
       },
-      "durationMinutes": 55,
+      "durationMinutes": 35,
       "difficulty": "صعب",
       "status": "available",
       "icon": "🌸"
@@ -3741,7 +3741,7 @@
           "challenge": 163
         }
       },
-      "durationMinutes": 55,
+      "durationMinutes": 35,
       "difficulty": "صعب",
       "status": "available",
       "icon": "🪣"

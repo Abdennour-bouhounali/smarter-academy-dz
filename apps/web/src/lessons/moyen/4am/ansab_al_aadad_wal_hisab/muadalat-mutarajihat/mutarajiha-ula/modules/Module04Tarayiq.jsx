@@ -27,6 +27,7 @@ export default function Module04Tarayiq() {
 
   return (
     <ContentModule
+      objectives={["كيف نحلّ متراجحة سطرًا بعد سطر؟", "ماذا نفعل عندما يظهر كسران في المتراجحة؟", "كيف نمثّل الحلول بعد حلّها؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}
@@ -49,7 +50,7 @@ export default function Module04Tarayiq() {
           ),
         },
         {
-          num: 2, title: 'المتراجحة ب', subtitle: 'كسران: نضرب في المقام المشترك', done: readB,
+          num: 2, title: 'المتراجحة ب', subtitle: 'كسران في الطرفين: ما أول ما نفعله؟', done: readB,
           content: (
             <div className="space-y-3">
               <MethodSteps method={methodOf(METHOD.solutionB)} onAllRevealed={() => setReadB(true)} />

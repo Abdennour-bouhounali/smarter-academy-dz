@@ -28,6 +28,7 @@ export default function Module02Maarif() {
   return (
     <ContentModule
       ctx={MODULE_CTX}
+      objectives={["ماذا يعني «نشر» عبارة؟", "كيف نضرب قوسين حدًّا حدًّا؟", "ماذا يحدث حين يسبق القوسَين إشارة ناقص؟"]}
       navLinks={getNavLinks(2)}
       moduleNumber={2}
       moduleTitle="معارف — النشر"
@@ -84,7 +85,7 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 3, title: 'التبسيط: نجمع الحدود المتشابهة', done: q3,
+          num: 3, title: 'التبسيط: ماذا نفعل بالحدود؟', done: q3,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tabsit" lead={<MathText>{'في مثال الكتاب جمعنا $8x - x = 7x$، وتركنا $2x^2$ و $-4$ كما هما:'}</MathText>} />

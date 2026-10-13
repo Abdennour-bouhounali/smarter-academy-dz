@@ -37,11 +37,11 @@ export default function Module01TahaddiAnshita() {
   const keep = (e) => setTrials((list) => [...list, e].slice(-30));
 
   return (
-    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="التحدّ ونشاطا 3 و 4"
+    <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} objectives={['هل يصل السبّاح إلى B إذا سبح نحوها مباشرة؟', 'أين ينتهي من انتقل بانسحابين متتابعين؟', 'ماذا يفعل مشوار العودة؟']} moduleTitle="التحدّ ونشاطا 3 و 4"
       moduleSubtitle="سبّاح وتيار، دراجة ومشواران: حركتان متتابعتان، حركة واحدة" estimatedTime="15 دقيقة"
       brief={{
         tag: 'تحدّ الوحدة — الكتاب ص 127، ونشاطا 3 و 4 ص 129', headline: 'هل يصل السبّاح إلى B إذا سبح نحوها؟', emoji: '🏊',
-        title: 'انسحابان متتابعان يعطيان انسحابا واحدا: شعاعه مجموع الشعاعين', tone: 'indigo',
+        title: 'ماذا يحدث حين ننفّذ انسحابين متتابعين؟ وكيف نصف النتيجة؟', tone: 'indigo',
         body: (
           <div className="space-y-2" data-situation="challenge">
             <p><MathText>{CHALLENGE.text}</MathText></p>
@@ -139,7 +139,7 @@ export default function Module01TahaddiAnshita() {
               )}
             </div>
           ) },
-        { num: 3, title: 'نشاط 4: إنشاء ممثل لمجموع', subtitle: 'شعاعان متعاقبان، شعاعان لهما نفس المبدأ', done: !!q[3],
+        { num: 3, title: 'نشاط 4: إنشاء ممثل لمجموع', subtitle: 'كيف نرسم المجموع؟', done: !!q[3],
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" title={`نشاط 4 — ${ACT4.title}`} lines={[ACT4.intro, ...ACT4.parts]} source={ACT4.source} compact>

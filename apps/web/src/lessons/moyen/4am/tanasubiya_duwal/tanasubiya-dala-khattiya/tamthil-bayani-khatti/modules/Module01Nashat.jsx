@@ -102,6 +102,7 @@ export default function Module01Nashat() {
     <ContentModule
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
+      objectives={["كم نقطة نحتاج لنشدّ حبل التلفريك المستقيم؟", "ماذا تقول عن النقط O و A و B؟", "كيف يتحرّك المستقيم عندما يتغيّر المعامل؟"]}
       moduleNumber={1}
       moduleTitle="نشاط 3 — حبل يشدّه المبدأ"
       moduleSubtitle="تمثيل دالة خطية بيانيا"

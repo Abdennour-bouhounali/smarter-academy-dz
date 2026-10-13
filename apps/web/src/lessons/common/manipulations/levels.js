@@ -303,6 +303,12 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { stick: 1, stickAt: 4, tip: 5 }, ...P },
     advanced: { numbers: { stick: 1, stickAt: 10, tip: 11.6 }, ...T('challenge') },
   },
+  // La place du quartier (2026-10-13). مبتدئ : une minaret de 5 m (ombres à deux décimales au plus) ; متقدم (تحدّ) : la
+  // minaret de 7,25 m — à 15:00 son ombre finit à 11,6 m et le bâton de 1 m y fait 1,6 m.
+  'shadow-world': {
+    beginner: { numbers: { minaret: 5 }, ...P },
+    advanced: { numbers: { minaret: 7.25 }, ...T('challenge') },
+  },
   // La coupe du cône. مبتدئ : un cône de 12 sur 4 (h = r ⇒ r = 3) ; متقدم (أدمج تعلّماتي) : 18 sur 6 (r = 4,5).
   'cone-cylinder': {
     beginner: { numbers: { H: 12, R: 4 }, ...P },

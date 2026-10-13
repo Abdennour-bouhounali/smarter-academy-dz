@@ -41,6 +41,8 @@ classroom/
 ├── useClassroomStage.js       a presented page declares title / gestures / slot
 ├── ClassroomFrame.jsx         reading frame (+ ClassroomHidden) for page-authored content
 ├── classroomUnits.js          PURE unit maths: module units, navigation, lesson neighbours
+├── ClassroomPaged.jsx         splits ONE unit (a step, the khulasa) into pages of whole blocks (§5 « Pages »)
+├── classroomPages.js          PURE page maths: budget, greedy plan, clamp
 ├── useFullscreen.js           the browser Fullscreen API (+ WebKit spelling); state = real state
 ├── useScrollLock.js           html/body overflow: hidden, previous inline values restored
 ├── usePresentationFit.js      the viewport-fitting engine (ResizeObserver, rAF, settle, refit)
@@ -228,13 +230,39 @@ Presented, `ModuleLayout`
 drops its breadcrumb, header, XP, progress bar, bottom navigation and footer, and keeps the content.
 
 `ContentModule` turns the module into **pedagogical units** in the order it already had
-(`moduleUnits`): المهمة (brief) → المختبر (intro) → each step → الخلاصة (footer, only when the module
+(`moduleUnits`): المدخل (overview, see below) → المهمة (brief) → المختبر (intro) → each step → الخلاصة (footer, only when the module
 is complete). One unit is shown at a time; the others are rendered in place with `hidden`, so
 nothing remounts and no state is lost. Step locking is untouched: a step that the student has not
 unlocked still shows «أتمِم الخطوة السابقة».
 
 The two **test** engines (`BossFinal`, `PrerequisiteDiagnostic`) have their own unit sequence —
 one *question* at a time — through `TestPresentation`. See **Test** below.
+
+#### Module entry page — « المدخل » (2026-10-13)
+
+Every `ContentModule` opens, when presented, on `kit/ModuleOverview.jsx`: the محور number, its **title**,
+its subtitle and « ماذا سنتعلّم في هذا المحور؟ » as numbered points (+ the estimated time). Points come
+from the optional `objectives` prop (sentences or questions) and otherwise from the **step titles**, so
+all 261 modules are covered with no authoring. It exists only while presenting (`presenting &&`), so the
+student page is unchanged. The test engines (`PrerequisiteDiagnostic`, `BossFinal`) pass an `overview`
+prop to `TestPresentation`: title + the skills it checks + « N أسئلة » shown before question 1
+(`[data-test-overview]`; السابق on question 1 returns to it).
+The lesson index presented (`LessonIndex`) is split in two screens: identity (title, description,
+what you will learn) then « مسار الدرس » (`[data-lesson-overview-page]`, chip « 1 / 2 »).
+
+#### Pages — a step too tall is split, not shrunk (2026-10-13)
+
+The fit engine only shrinks (floor 0.55). A step whose blocks would need shrinking by more than 10 %
+(`MIN_PAGE_FIT = 0.9`) is instead cut into **pages**: `ClassroomPaged` wraps the step body, takes its
+direct children (descending through one wrapper `<div>`) as blocks, measures them at scale 1
+(height ÷ effective scale, so the plan does not depend on the current fit) and packs whole blocks into pages
+(`planPages`, greedy, order preserved). Hidden blocks carry `data-classroom-page-hidden`
+(`display:none`) — they stay mounted, **no state is lost**. The step header stays on every page.
+`التالي` / `السابق` turn pages first, then change unit (السابق into a paged unit lands on its last page);
+the toolbar adds a « الجزء 1 / 2 » chip. Replanned on area / chosen scale / unit change, never on fit
+changes; a block added later (feedback) joins the current page. Applies to steps and the khulasa of
+every `ContentModule`; a single block taller than a screen (a lab) still shrinks. `userScale` is now in
+the classroom context. Tests: `classroomPages.test.js`, `classroomUnits.test.js`.
 
 **Presenting is not learning.** While a session is active, `ModuleLayout` writes neither
 `markModuleVisited` nor `markModuleCompleted`, and the sequential unlock does not apply — a teacher
@@ -650,5 +678,3 @@ factory and the entry button is in `LessonIndex`. A lesson family with its own r
   mitigated only by `overscroll-behavior: contain`.
 * No design tokens and no dark mode: `classroom.css` hard-codes its indigo palette.
 * Not implemented, by design: annotation, drawing, live student sync, recording, remote control.
-* No Islamic reminder is shown while presenting (`LessonIndex` renders its presentation page; the
-  module « وقفة إيمانية » is gated by `!presenting`) — `ISLAMIC_VALUES.md` §7.

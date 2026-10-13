@@ -13,8 +13,6 @@ import React from 'react';
  *                    figure (mêmes conventions, autre échelle calculée pour tenir dans le cadre).
  *   CableCarVignette vignette DÉCORATIVE de la carte d'activité (aria-hidden) : montagne, câble,
  *                    cabine — sans aucun nombre.
- *   QcmLineFigure    la figure de l'item 4 de « أؤكّد تعلّماتي » : (D) passe par O et (1 ; 0,25),
- *                    axes gradués de 0,5 en 0,5 comme dans le manuel.
  */
 const SKY = '#E0F2FE';
 const GRASS = '#BBF7D0';
@@ -94,43 +92,6 @@ export function CableCarVignette() {
       <line x1="14" y1="72" x2="148" y2="34" stroke="#0F172A" strokeWidth="1.2" />
       <Cabin x={78} y={53} />
       {[10, 26, 40, 120, 136].map((x, i) => <Tree key={x} x={x} y={i < 3 ? 84 : 52} s={0.6} />)}
-    </svg>
-  );
-}
-
-/** QCM 4 (p. 74) : (D) passe par O et (1 ; 0,25) ; graduations −1 … 1,5 et −0,5 … 1. */
-export function QcmLineFigure() {
-  const u = 80; // px par unité
-  const ox = 110; const oy = 110;
-  const X = (v) => ox + v * u;
-  const Y = (v) => oy - v * u;
-  const ticksX = [-1, -0.5, 0.5, 1, 1.5];
-  const ticksY = [-0.5, 0.5, 1];
-  const fmt = (v) => String(v).replace('.', ',');
-  return (
-    <svg viewBox="0 0 260 170" className="mx-auto block h-auto w-full max-w-xs" role="img" aria-label="المستقيم D يشمل المبدأ والنقطة التي فاصلتها 1 وترتيبها 0,25" data-qcm-figure="4">
-      <rect width="260" height="170" fill="#FFFFFF" />
-      <line x1="10" y1={oy} x2="250" y2={oy} stroke="#0F172A" strokeWidth="1" />
-      <line x1={ox} y1="160" x2={ox} y2="10" stroke="#0F172A" strokeWidth="1" />
-      <path d={`M250 ${oy} l-6 -3 v6 Z`} fill="#0F172A" />
-      <path d={`M${ox} 10 l-3 6 h6 Z`} fill="#0F172A" />
-      {ticksX.map((v) => (
-        <g key={`x${v}`}>
-          <line x1={X(v)} y1={oy - 3} x2={X(v)} y2={oy + 3} stroke="#0F172A" />
-          <text x={X(v)} y={oy + 15} fontSize="10" textAnchor="middle" direction="ltr">{fmt(v)}</text>
-        </g>
-      ))}
-      {ticksY.map((v) => (
-        <g key={`y${v}`}>
-          <line x1={ox - 3} y1={Y(v)} x2={ox + 3} y2={Y(v)} stroke="#0F172A" />
-          <text x={ox - 6} y={Y(v) + 3} fontSize="10" textAnchor="end" direction="ltr">{fmt(v)}</text>
-        </g>
-      ))}
-      <text x={ox - 6} y={oy + 13} fontSize="10" textAnchor="end">0</text>
-      <line x1={X(-1.2)} y1={Y(-0.3)} x2={X(1.6)} y2={Y(0.4)} stroke="#DC2626" strokeWidth="1.6" />
-      <circle cx={X(1)} cy={Y(0.25)} r="2.5" fill="#DC2626" />
-      <line x1={X(1)} y1={Y(0.25)} x2={X(1)} y2={oy} stroke="#DC2626" strokeDasharray="2 2" strokeWidth=".8" />
-      <text x={X(1.45)} y={Y(0.4) - 4} fontSize="11" fontWeight="700" fill="#DC2626">(D)</text>
     </svg>
   );
 }

@@ -377,6 +377,7 @@ function ClassroomSession({
     scope,
     title,
     scale,
+    userScale,
     area,
     enterClassroomMode,
     exitClassroomMode,
@@ -386,7 +387,7 @@ function ClassroomSession({
     takeArrival,
     refit,
     portalTarget,
-  }), [active, isNative, canPresent, scope, title, scale, area, enterClassroomMode, exitClassroomMode, toggleClassroomMode, registerStage, lessonNav, takeArrival, refit, portalTarget]);
+  }), [active, isNative, canPresent, scope, title, scale, userScale, area, enterClassroomMode, exitClassroomMode, toggleClassroomMode, registerStage, lessonNav, takeArrival, refit, portalTarget]);
 
   const inRouter = useInRouterContext();
 

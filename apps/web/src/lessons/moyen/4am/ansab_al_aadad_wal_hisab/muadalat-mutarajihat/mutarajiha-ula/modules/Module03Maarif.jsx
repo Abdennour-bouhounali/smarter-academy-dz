@@ -33,6 +33,7 @@ export default function Module03Maarif() {
 
   return (
     <ContentModule
+      objectives={["ما المتراجحة؟ وما حلّها؟", "متى يتغيّر اتجاه المتراجحة ومتى يبقى؟", "كيف نمثّل حلول متراجحة على مستقيم مدرّج؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleNumber={3}

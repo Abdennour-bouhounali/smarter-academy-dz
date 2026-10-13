@@ -3,11 +3,10 @@
  * Contrat : docs/architecture/KNOWLEDGE_MAP.md, Part A (A.15, cas de l'intégration) ; modèles : les synthèses des unités 11–12.
  *
  *   — aucune connaissance nouvelle : la DÉMARCHE du manuel appliquée à la وضعية (le polygone régulier posé par le دوران, la
- *     distance dans le triangle équilatéral puis dans le triangle rectangle de la hauteur, le plan à l'échelle) et l'outil de
- *     « أتعمّق » (les outils de l'unité combinés) ;
- *   — la وضعية du manuel est résolue au module 1 (enseignement) ; l'évaluation est un AUTRE tour de lampadaires (Oran), dont
+ *     distance dans le triangle équilatéral puis dans le triangle rectangle de la hauteur, le plan à l'échelle) ;
+ *   — la وضعية du manuel est résolue au module 7 (enseignement) ; l'évaluation est un AUTRE tour de lampadaires (Oran), dont
  *     aucune réponse n'est ici (A.10 règle 14) ;
- *   — les trois erreurs sont celles que le module 1 corrige avec son « لماذا؟ » : n − 1 arcs au lieu de n (MISC-MUNTAZAM-AMDA),
+ *   — les trois erreurs sont celles que le module 7 corrige avec son « لماذا؟ » : n − 1 arcs au lieu de n (MISC-MUNTAZAM-AMDA),
  *     l'arc au lieu de la corde, « d = r » toujours (MISC-MUNTAZAM-DIL).
  *
  *                      [أعمدة متباعدة بانتظام]                  مفهوم
@@ -18,9 +17,7 @@
  *                                │ بصفة عامة
  *     خطأ شائع ┌──────── [d في المثلث القائم]                  علاقة
  *                                │ نجمعها
- *                       [من النص إلى المخطط]                    طريقة
- *                                │ في التمارين
- *                       [أدوات الوحدة] → 🎯
+ *                       [من النص إلى المخطط] → 🎯                طريقة
  */
 import { REMARKS, SITUATION } from './content/textbook';
 
@@ -35,7 +32,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'tawzi', kind: 'method', lane: 'center', requires: 'tawzi-dawaran', notebook: true, title: 'بالدوران حول المركز', subtitle: '$\\alpha = \\dfrac{360^\\circ}{n}$', reveals: ['amdaKhata', 'masafa'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 3 : n − 1 arcs au lieu de n (MISC-MUNTAZAM-AMDA).
+      // ⛔ خطأ شائع — module 7, étape 3 : n − 1 arcs au lieu de n (MISC-MUNTAZAM-AMDA).
       id: 'amdaKhata', kind: 'common_mistake', lane: 'start', requires: 'tawzi-dawaran',
       title: '5 مسافات أم 6؟', subtitle: 'الدائرة مغلقة',
       context: {
@@ -49,7 +46,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'masafa', kind: 'relationship', lane: 'end', requires: 'masafa-amudayn', notebook: true, title: 'السداسي: المسافة = نصف القطر', subtitle: '$d = r$', reveals: ['qawsKhata', 'qanun'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 8 : l'arc au lieu de la corde.
+      // ⛔ خطأ شائع — module 7, étape 8 : l'arc au lieu de la corde.
       id: 'qawsKhata', kind: 'common_mistake', lane: 'start', requires: 'masafa-amudayn',
       title: 'القوس أم الوتر؟', subtitle: 'المسافة مستقيمة',
       context: {
@@ -63,7 +60,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     { id: 'qanun', kind: 'relationship', lane: 'end', requires: 'qanun-masafa', notebook: true, title: 'المسافة في المثلث القائم', subtitle: '$d = 2r\\sin\\dfrac{180^\\circ}{n}$', reveals: ['dilKhata', 'marahil'] },
     {
-      // ⛔ خطأ شائع — module 1, étape 8 : « d = r » toujours (MISC-MUNTAZAM-DIL).
+      // ⛔ خطأ شائع — module 7, étape 8 : « d = r » toujours (MISC-MUNTAZAM-DIL).
       id: 'dilKhata', kind: 'common_mistake', lane: 'start', requires: 'qanun-masafa',
       title: 'نصف القطر دائما؟', subtitle: 'السداسي فقط',
       context: {
@@ -75,11 +72,10 @@ export const KNOWLEDGE_GRAPH = {
       },
       reveals: [],
     },
-    { id: 'marahil', kind: 'method', lane: 'center', requires: 'tariqat-wadiya', notebook: true, title: 'من النص إلى المخطط', reveals: ['adawat'] },
-    { id: 'adawat', kind: 'method', lane: 'center', requires: 'adawat-wahda', notebook: true, title: 'أدوات الوحدة معا', subtitle: 'التمرينان 15 و 20', reveals: ['khulasa'] },
+    { id: 'marahil', kind: 'method', lane: 'center', requires: 'tariqat-wadiya', notebook: true, title: 'من النص إلى المخطط', reveals: ['khulasa'] },
     {
       // 🎯 خلاصة — les trois étapes de l'analyse du manuel, nommées par lui.
-      id: 'khulasa', kind: 'takeaway', lane: 'end', requires: 'adawat-wahda',
+      id: 'khulasa', kind: 'takeaway', lane: 'end', requires: 'tariqat-wadiya',
       title: 'ثلاث مراحل', subtitle: 'نقرأ · نحلّل · ننفّذ',
       context: { list: SITUATION.analysis.map((a) => a.label) },
       reveals: [],
@@ -93,7 +89,6 @@ export const KNOWLEDGE_GRAPH = {
     { from: 'masafa', to: 'qanun', label: 'بصفة عامة' },
     { from: 'qanun', to: 'dilKhata', label: 'خطأ شائع' },
     { from: 'qanun', to: 'marahil', label: 'نجمعها' },
-    { from: 'marahil', to: 'adawat', label: 'في التمارين' },
-    { from: 'adawat', to: 'khulasa', label: 'نستخلص' },
+    { from: 'marahil', to: 'khulasa', label: 'نستخلص' },
   ],
 };

@@ -1554,27 +1554,22 @@
   },
   "situation": {
    "lesson": "wadiya-idmajiya-jumal",
-   "module": 1,
+   "module": 7,
    "duplicatedIn": [
     {
      "lesson": "wadiya-idmajiya-jumal",
-     "module": 4
+     "module": 8
     }
    ]
   },
   "qcm": {
-   "lesson": "wadiya-idmajiya-jumal",
-   "module": 2,
+   "lesson": "mafhum-jumla",
+   "module": 4,
+   "note": "قرار المالك 2026-10-13: «أؤكّد تعلّماتي» لا تدخل في «أدمج تعلّماتي»؛ أسئلتها السبعة في اختبارات الدروس الثلاثة (المحور 4 في كل درس)، وتمارين الممارسة في wadiya-idmajiya-jumal تستعملها دون وحدة نمطية.",
    "duplicatedIn": [
     {
-     "lesson": "mafhum-jumla",
-     "module": 4,
-     "items": [
-      1,
-      2,
-      3,
-      4
-     ]
+     "lesson": "wadiya-idmajiya-jumal",
+     "note": "تمارين الممارسة فقط (content/practice)"
     },
     {
      "lesson": "hall-jabri",
@@ -1595,15 +1590,18 @@
   },
   "ex-29": {
    "lesson": "wadiya-idmajiya-jumal",
-   "module": 3
+   "module": "practice",
+   "note": "قرار المالك 2026-10-13: «أتعمّق» لا تدخل في «أدمج تعلّماتي»؛ التمرين في تمارين الممارسة فقط"
   },
   "ex-30": {
    "lesson": "wadiya-idmajiya-jumal",
-   "module": 3
+   "module": "practice",
+   "note": "قرار المالك 2026-10-13: «أتعمّق» لا تدخل في «أدمج تعلّماتي»؛ التمرين في تمارين الممارسة فقط"
   },
   "ex-31": {
    "lesson": "wadiya-idmajiya-jumal",
-   "module": 3
+   "module": "practice",
+   "note": "قرار المالك 2026-10-13: «أتعمّق» لا تدخل في «أدمج تعلّماتي»؛ التمرين في تمارين الممارسة فقط"
   }
  }
 }

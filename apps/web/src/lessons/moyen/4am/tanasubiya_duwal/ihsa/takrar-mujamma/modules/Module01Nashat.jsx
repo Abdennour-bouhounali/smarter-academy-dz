@@ -57,6 +57,7 @@ export default function Module01Nashat() {
 
   return (
     <ContentModule
+      objectives={["كم تلميذًا قامته 159cm على الأقل؟ وكم قامته 160cm على الأكثر؟", "كيف نملأ الجدولين انطلاقًا من العدّ نفسه؟", "هل نصل إلى العدد نفسه انطلاقًا من مخطط بالأعمدة؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}

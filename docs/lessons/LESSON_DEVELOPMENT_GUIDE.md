@@ -289,7 +289,7 @@ Unit-count assertions that read the real catalogue (`unitGrouping.test.js`, `fin
   rays, polygons, right angles, angles, equality ticks and parallel chevrons, an Arabic `ariaLabel`. Every textbook figure of the unit is
   `content/figures.js` data drawn by it, in modules, in the final test (`inline` inside a prompt) and in the practice bank through the
   new `statement.figure` (EXERCISE_CONTRACT « Unit 9 »). A geometry statement that says « الشكل المقابل » always carries its figure.
-- **A synthesis whose workspace pairs two types** (`shadow-stick` مبتدئ = the تحدّ, `cone-cylinder` متقدم = the situation): the
+- **A synthesis whose workspace pairs two types** (`shadow-world` مبتدئ = the تحدّ — `shadow-stick` until 2026-10-13 —, `cone-cylinder` متقدم = the situation): the
   objective is what both levels share (MANIPULATION_CONTRACT §7bis-levels, §2undecies).
 - **Bidi of geometry names**: the prime (B′) and « )//( » are now isolated by `utils/bidi.js` (ARABIC_RTL_CONTRACT « Geometry names »).
 - **Seed stub `routes.jsx` before parallel authoring.** `App.jsx` imports every lesson's `routes.jsx`; while a sibling's file does not
@@ -747,12 +747,33 @@ in a scene that carries a good value or deed: إتقان العمل، القرا
 - **Woven, not preached**: one clause or sentence, short enough for a phone; rotate the values inside a lesson
   rather than repeating one. Religious phrasing (« الإنفاق في سبيل الله »، « صدقة جارية ») is welcome but sparing.
 - A hint, an explanation or a test that recaps the story must be updated with it.
-- Applied to the nine lessons of « الأعداد الطبيعيّة والأعداد النّاطقة » on 2026-10-10 (≈ 180 stories);
-  **the other units are not converted yet** — new lessons follow the rule from the start.
+- Applied to unit 1 on 2026-10-10 (≈ 180 stories) and **extended to units 2–14 on 2026-10-13** (all lessons: مسائل,
+  `lessonProblem`, platform texts, story exercises of `content/practice`); the unit-card challenge `textAr` was reworded
+  for units 2, 5, 6 and 11 (`units_4am_2026_2027.json`, together with the lesson's `CHALLENGE.text`). New lessons follow the rule from the start.
+- Extension checklist (units 2–14, 65 lessons) and the six places to touch per lesson:
+  [`reports/UNIT1_REFERENCE_CHANGES_2026-10-13.md`](../reports/UNIT1_REFERENCE_CHANGES_2026-10-13.md) §1.
 - Textbook-derived situations were reworded on the platform; `docs/sources/**/extraction.json` keeps the
   verbatim textbook wording (`check:textbook` still passes). The unit page's « تحدّ » card reads the curriculum
   `textAr` (`packages/core/curriculum/dz/units_4am_2026_2027.json`), reworded for unit 1 to match
   `bahth-pgcd/content/textbook.js › CHALLENGE`: change both together.
+
+### Discovery pass on module text (unit 1 pilot, 2026-10-09)
+
+A lesson's text must not state the law before the student has produced it (same principle as MANIPULATION_DNA §16, applied to
+words). When writing or reviewing a module:
+
+1. a manipulation `lead` names an **observation to make**, never the conclusion (« لاحظ ماذا يحدث لـ… », not « لاحظ أنّ… لا يتغيّر »);
+2. a task describes the **action**, not the rule (« وزّع على حصص متماثلة », not « اقسم على قاسم مشترك »);
+3. a step title carries no answer (« إلى أيّ عدد نختبر؟ », not « لماذا نتوقف عند 10؟ »);
+4. an explanation or lead does not use a tool taught later (no √ bound, no « بالخاصية » before the property is seen);
+5. the completion message and a `predictPrompt` are **questions**, and refer to what the student SAW, not to the module's conclusion;
+6. a `PredictRule` sits right after the student produced the material for a name or method — the name is asked for, then given.
+
+Applied to unit 1 (2026-10-09) and **extended to units 2–14 on 2026-10-13** (step titles/subtitles turned into questions, leads that
+stated the law rewritten, `predictPrompt` hints removed, some bricks moved after the answer). One contract detail: a question whose
+`requires` names a brick placed AFTER it fails `audit:knowledge:gate` (`E_REQUIRES_ESTABLISHED_LATER`) — when the brick is moved after a
+discovery question, drop that question's `requires` (the brick then follows the student's answer). Checklist in
+[`reports/UNIT1_REFERENCE_CHANGES_2026-10-13.md`](../reports/UNIT1_REFERENCE_CHANGES_2026-10-13.md) §2.
 
 ---
 
@@ -761,6 +782,12 @@ in a scene that carries a good value or deed: إتقان العمل، القرا
 Read [`MANIPULATION_DNA.md`](../architecture/MANIPULATION_DNA.md) **before designing
 one** (why), then [`MANIPULATION_CONTRACT.md`](../architecture/MANIPULATION_CONTRACT.md)
 before touching one (how). In short:
+
+**Living worlds (2026-10-13, owner directive).** The documented patterns are a floor, not a ceiling. When a concept is a
+law that many objects obey, prefer a WORLD where the hand holds the cause, predictions are classified by misconception model,
+the student WRITES the law and the world tests it on every object, and a companion only asks questions — never the rule. The
+pattern, its gate and its tests are in [`MANIPULATION_DNA.md` §16](../architecture/MANIPULATION_DNA.md); reference
+`geometry/ShadowWorld.jsx` + `logic/shadowWorld.js`.
 
 - **Design from the mathematics, not from a widget.** Fill the DNA's design sheet
   (§7) in the component header first. Name the VARIABLE the finger controls, the
@@ -994,6 +1021,13 @@ modules built with `ContentModule` are already presentable: the lesson shell is
 in the route factory, the entry button is in `LessonIndex` and `ModuleLayout`,
 and `ContentModule` derives the presentation units.
 
+Two things you get for free, and how to write for them (2026-10-13): **an entry page** per module (title +
+« ماذا سنتعلّم » = your step titles, or an `objectives` array on `ContentModule` — write short
+sentences or questions) and **pages** inside a step too tall for the screen. For pages, write a step's
+content as one wrapper `<div>` whose **direct children are whole blocks** (a brick, a question, a figure):
+the engine only cuts between blocks. See `CLASSROOM_MODE.md` § « Pages ». Every `ContentModule` of the 74 lessons now carries
+`objectives` (2–4 short points, questions on discovery modules).
+
 ### Tests present themselves — never write a test UI
 
 A module built on `PrerequisiteDiagnostic` (module 0 « أستعدّ ») or `BossFinal`
@@ -1139,7 +1173,7 @@ references, not templates: read them for the pattern, never copy-and-modify.
 | **`team-builder`** | a platform context replacing a textbook one, declared and traceable: equal teams on a real drawn pitch, where the remainder is a player left standing outside. Pure model in `packages/core/arithmetic/equalGrouping.js`, formation geometry swept by `teamFormation.test.js`. |
 | **`bahth-pgcd`** | two manipulations in one lesson (successive differences, then Euclid), and the longest module sequence in the unit. |
 | **`ikhtizal-kasr`** | a manipulation with two comparable paths (divide repeatedly vs divide once by the GCD), and the `Module00Astaidd` prerequisite diagnostic. |
-| **`wadiya-idmajiya-aadad`** | the `synthesis` kind: no discovery or formalization, mobilises what the other lessons taught. Never counted as a lesson. |
+| **`wadiya-idmajiya-aadad`** | the `synthesis` kind: no discovery or formalization, mobilises what the other lessons taught. Never counted as a lesson. Since 2026-10-13 it carries **six practice « وضعيات تدريبية »** (modules 1–6, GuidedProblem, `content/problems.js`), then « تحليل الوضعية النهائية للاختبار » (module 7) and « وضعية الاختبار النهائي » (module 8, the textbook's aprons challenge) — the only synthesis with `track: 'problem'` modules (`MASAIL_GENERATION_GUIDE.md` §14). |
 | **`khawass-qawasim`** | a proof-oriented module (`أتعلّم البرهان`) inside the standard shape, and the **construction site**: a length drawn in bricks of n (`BrickWall`), one object carried to three zones. |
 | **`qasim-mushtarak-akbar`** | the **drawn grouping scene** (`GroupingScene`) served by two themes from one type: balls and shirts at مبتدئ, the textbook's flowers at متقدم, words overridden by `context`. |
 | **`awwaliyan-fima-baynahuma`** | a beginner level that *adds a stage* (`startWith="groups"`, the school bags) before the textbook's lists, without a new type. |
@@ -1228,10 +1262,10 @@ geometry unit, under the programme's « ميدان الهندسة »:
 
 | Lesson | Read it for |
 |---|---|
-| **`talis-hisab-atwal`** | the unit ENTRY on `thales-beam`: a screen slid in a projector's beam (`cinema`), tilted, and pushed THROUGH A into the camera obscura (`camera`, the butterfly case); every stop JUDGED by the student and decided exactly; the textbook's questions (56/15 ≈ 3,73, 244/75 ≈ 3,25; case 2 k = 1/2) answered under the student's own stops; three misprints corrected in one line each; أستعدّ 4–5 revisited in أوظّف once the property is known; every figure GeoFigure data, also in the BossFinal (`inline`) |
+| **`talis-hisab-atwal`** | the unit ENTRY, rebuilt 2026-10-13 around `shadow-world` at BOTH levels (the same world, minaret 5 m then 6,5 m; MANIPULATION_DNA §16: the student holds the sun, WRITES « shadow ÷ height is one number » and sees it break and mend; the synthesis keeps 7,25 m). The `thales-beam` no longer lives in this lesson. Module 1 now runs **world → figure → equality → calculation → the textbook's general letters**: step 1 « from the square to the figure » (`FIG_SHADOW`, (AM) ∥ (BE) because two verticals), step 2 the Thales equality with its three false friends (inverse, the segment AB, the difference), step 3 a calculation on the square's own objects (palm 4,5 m), then the textbook's case 1 (with a bridge « A is our O » and the cinema vignette), its calculations, case 2 and the text, `PredictRule talis-nashat`. Earlier text that said « the screen » was rewritten (module 0 advice, module 2 brief and brick leads, the knowledge prompts). Generation rule shown by this lesson: **when a world replaces a textbook lab, the textbook's questions stay as the FORMALISATION steps and every later reference to the old lab is rewritten**: a screen slid in a projector's beam (`cinema`), tilted, and pushed THROUGH A into the camera obscura (`camera`, the butterfly case); every stop JUDGED by the student and decided exactly; the textbook's questions (56/15 ≈ 3,73, 244/75 ≈ 3,25; case 2 k = 1/2) answered under the student's own stops; three misprints corrected in one line each; أستعدّ 4–5 revisited in أوظّف once the property is known; every figure GeoFigure data, also in the BossFinal (`inline`) |
 | **`aksiya-talis`** | `parallel-level`: B′ and C′ PLACED notch by notch, a spirit level on the plank centred only when parallel (`thales.converse`); the graffiti A-frame ladder (6/9: two level planks, so « the midpoints » is refuted) then نشاط 2 on an X-trestle (9/12, ratio 1/3 imposed, figure 3 refused by the ORDER); طرائق in both directions (decide, then reveal); ex-16 يونس / إيناس (an approximation is not a proof) as the map's خطأ شائع |
 | **`inshaat-talis`** | a lesson with NO textbook activity whose entry is `segment-divider` (`platform_adaptation`, `tifo` banner): real ruler, compass and set square, a parallel off a mark refused, unequal bands measured exactly; the ratio point inside AND outside on two graduated parallels; دوري الآن done in the lab posed alone; the owner's « نسبة غير ناطقة » taught by one declared example (√13, then 2√13/3 by Thales); a bank that checks the REASONING of constructions |
-| **`wadiya-idmajiya-talis`** | the synthesis with a textbook situation: the تحدّ on `shadow-stick` (plant the stick where both shadows end together — the method — then a pole riding the ray reads 7,25 m) and the cylinder in the cone on `cone-cylinder` (piercing refused, h = r → V = 91,125π), two types in one workspace; `MinaretFigure` drawn once for the unit page, M1 and the final test; QCM cells judged one by one; the pyramid of Khufu by its shadow as transfer; the final test transposes cone and minaret |
+| **`wadiya-idmajiya-talis`** | the synthesis with a textbook situation: the تحدّ in a **living world**, `shadow-world` (2026-10-13, MANIPULATION_DNA §16: the student holds the sun, measures, bets, WRITES the law that the world tests and the moving sun refutes, repairs it, then finds 7,25 m; the stick at the edge of the minaret's shadow is the textbook's method) and the cylinder in the cone on `cone-cylinder` (piercing refused, h = r → V = 91,125π), two types in one workspace; `MinaretFigure` drawn once for the unit page, M1 and the final test; QCM cells judged one by one; the pyramid of Khufu by its shadow as transfer; the final test transposes cone and minaret |
 
 Unit 10 « حساب المثلثات في المثلث القائم » (`lessons/moyen/4am/handasa/hisab-muthallathat/`, 2026-10-04), five authors on a seeded
 foundation, the second geometry unit:
@@ -1469,12 +1503,6 @@ Each of these has actually happened in this repository, or is a standing rule.
   reads the dollars. Use `<MathLabel>{x}</MathLabel>`, or `mathToPlain(x)` where only a string fits
   (ARABIC_RTL_CONTRACT « Content text outside a module »). Owner report, 2026-10-02: 122 raw formulas, 7 units.
 
-**Islamic reminders**
-- Do not put a verse, hadith, du'a or « تذكرة » inside a lesson, a module or a manipulation, and do not
-  import `features/islamic` from lesson content. The lesson shell owns those moments (`LessonIndex`
-  under the hero, `ModuleLayout` below the navigation once a module is done) — never between an action
-  and its mathematical feedback (`docs/architecture/ISLAMIC_VALUES.md` §6–§7).
-
 **Progression**
 - Do not gate a step on a *correct* answer (§4). Release blocker.
 - Do not test a module number for truthiness. Module `0` exists; use
@@ -1660,7 +1688,7 @@ evaluation), built from data with `GuidedProblem`, never hand-written JSX.
 parallel rollout — is in [`MASAIL_GENERATION_GUIDE.md`](./MASAIL_GENERATION_GUIDE.md).**
 Reference lesson: `qasim-adad-tabii`. **Since 2026-10-07 every regular 4AM lesson (60) has its
 three مسائل** — a new lesson ships with them (MASAIL guide §7–§8; statement support `figure` /
-`visual` / `table`, problem 1's support in `lessonProblem`). Synthesis lessons have none.
+`visual` / `table` / `illustration`, problem 1's support in `lessonProblem`). **Since 2026-10-13 every مسألة has a drawn support** (`illustration` kinds `plan` `stacks` `tags` `tanks` `route` `ladder` `timeline` `scene` + the six sheet drawings — `MASAIL_GENERATION_GUIDE.md` § `illustration`; gate `common/problems/masailIllustrations.test.js`: no support, or a number not in the statement, fails). Synthesis lessons have none.
 
 ### 14.3ter « أتوقّع القاعدة » — the student writes the rule before reading it (2026-10-06)
 

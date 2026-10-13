@@ -20,6 +20,7 @@ export default function Module04Awazzif() {
 
   return (
     <ContentModule
+      objectives={["كيف أبني سلسلة تحقّق شروطًا على المتوسط والوسيط والمدى؟", "كيف أتحقّق من أنّ سلسلة ما تحقّق الشروط؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}

@@ -24,6 +24,7 @@ export default function Module02Maarif() {
 
   return (
     <ContentModule
+      objectives={["ماذا يحدث في آخر خطوة من كل ميزان؟", "كيف نكتب حلّ المعادلة ax = b؟", "ماذا يتغيّر عندما يكون المعامل سالبًا؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(2)}
       moduleNumber={2}

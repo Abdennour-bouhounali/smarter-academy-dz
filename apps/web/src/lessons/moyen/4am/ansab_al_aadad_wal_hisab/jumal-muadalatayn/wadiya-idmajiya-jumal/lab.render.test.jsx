@@ -9,7 +9,7 @@ import * as L from '../../../../../common/manipulations/logic/storyModeller';
 import { LAB, SITUATION, WARMUP } from './content/textbook';
 
 /**
- * Le laboratoire du module 1 de la synthèse (story-modeller, réutilisé de « حل مشكلات
+ * Le laboratoire du module 7 de la synthèse (story-modeller, réutilisé de « حل مشكلات
  * بتوظيف جمل معادلتين ») rendu avec EXACTEMENT les props que le module étale
  * (content/textbook.js › LAB), dans le workspace à deux niveaux ouvert sur متقدم — et
  * la mathématique que le module suppose : le حفل donne (25 ; 50), la رحلة القسم (30 ; 50),

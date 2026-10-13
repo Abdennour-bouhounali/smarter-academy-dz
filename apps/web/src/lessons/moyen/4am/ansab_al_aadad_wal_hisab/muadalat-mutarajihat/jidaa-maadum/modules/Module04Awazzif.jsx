@@ -20,6 +20,7 @@ export default function Module04Awazzif() {
 
   return (
     <ContentModule
+      objectives={["كيف أتعرّف على معادلة جداء معدوم وأحلّها؟", "متى أحتاج إلى التحليل قبل الحلّ؟", "ماذا أفعل عندما يكون أحد العاملين عددًا ثابتًا؟"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}

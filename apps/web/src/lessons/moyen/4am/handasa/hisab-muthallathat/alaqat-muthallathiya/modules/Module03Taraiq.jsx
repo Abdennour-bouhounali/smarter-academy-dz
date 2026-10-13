@@ -38,6 +38,7 @@ export default function Module03Taraiq() {
 
   return (
     <ContentModule
+      objectives={['كيف نصل إلى نسبة مجهولة من نسبة معلومة دون قيس الزاوية؟', 'متى يكون الحساب غير ممكن؟', 'أين نضع الأعداد لنرسم الزاوية بالكوس والمدور؟']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(3)}
       moduleTitle="طرائق — نسبة من نسبة، وزاوية بالمدور"

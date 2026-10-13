@@ -1515,28 +1515,28 @@
       "module": 3
     },
     "qcm": {
-      "lesson": "wadiya-idmajiya-muthallathat",
-      "module": 2,
+      "lesson": "nisab-muthallathiya",
+      "module": 8,
       "duplicatedIn": [
         {
-          "lesson": "nisab-muthallathiya",
-          "module": 5,
-          "note": "items 1–5 dans le إختبار أولي"
+          "lesson": "alaqat-muthallathiya",
+          "module": 8,
+          "note": "item 6"
         },
         {
-          "lesson": "alaqat-muthallathiya",
-          "module": 5,
-          "note": "item 6"
+          "lesson": "wadiya-idmajiya-muthallathat",
+          "module": "practice",
+          "note": "item 5 — exercice de pratique (البنك)؛ «أؤكّد تعلّماتي» لا تدخل في «أدمج تعلّماتي» (قرار المالك 2026-10-13)"
         }
       ]
     },
     "situation": {
       "lesson": "wadiya-idmajiya-muthallathat",
-      "module": 1,
+      "module": 7,
       "duplicatedIn": [
         {
           "lesson": "wadiya-idmajiya-muthallathat",
-          "module": 4,
+          "module": 8,
           "note": "transposée à d’autres nombres"
         }
       ]
@@ -1663,11 +1663,11 @@
     },
     "ex-31": {
       "lesson": "wadiya-idmajiya-muthallathat",
-      "module": 3
+      "module": "practice"
     },
     "ex-32": {
       "lesson": "wadiya-idmajiya-muthallathat",
-      "module": 3
+      "module": "practice"
     }
   }
 }

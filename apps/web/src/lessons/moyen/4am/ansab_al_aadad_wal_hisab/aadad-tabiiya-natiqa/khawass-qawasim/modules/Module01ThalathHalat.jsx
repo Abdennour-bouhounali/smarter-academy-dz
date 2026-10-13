@@ -32,7 +32,7 @@ export default function Module01ThalathHalat() {
   const [conj, setConj] = useState(false);
   const [{ a, b, n }, c2v, c3v] = ACTIVITY.cases;
   return (
-    <ContentModule
+    <ContentModule objectives={["إذا كان n يقسم a و b، فماذا يقسم أيضًا؟", "هل تصحّ الملاحظة مع أعداد كبيرة لا نستطيع عدّها؟", "ماذا يحدث في الحالات الثلاث؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1}
       moduleTitle="نشاط 3 — ثلاث حالات" moduleSubtitle="n يقسم a و b. ماذا يقسم أيضًا؟" estimatedTime="12 دقيقة"
       brief={{ tag: 'أنشطة — الكتاب ص 8', title: ACTIVITY.title, tone: 'indigo',

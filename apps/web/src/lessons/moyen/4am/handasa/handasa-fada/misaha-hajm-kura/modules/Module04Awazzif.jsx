@@ -19,6 +19,7 @@ export default function Module04Awazzif() {
 
   return (
     <ContentModule
+      objectives={["سأحسب مساحة كرة وحجم جلة من قطرها", "سأكتب القيمة المضبوطة ثم أدوّر في آخر الحساب"]}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}
