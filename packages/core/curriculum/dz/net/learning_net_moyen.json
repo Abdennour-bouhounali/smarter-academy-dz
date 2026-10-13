@@ -1,0 +1,3706 @@
+{
+  "_comment": "Réseau des الكفاءات du cycle moyen : fils conceptuels, liens entre items du programme officiel (official_programme_moyen.json), leçons PRÉVUES des années 1–3. Les leçons EXISTANTES déclarent leurs items dans lessons_<grade>_*.json › programmeItems. Contrat : docs/architecture/LEARNING_NET.md.",
+  "version": 1,
+  "builtOn": "2026-10-13",
+  "linkTypes": {
+    "requires": "L’item « to » ne peut être construit sans l’item « from » : lien de révision (أستعدّ).",
+    "extends": "Même notion, plus loin dans la spirale : « to » REPART de « from » et n’enseigne que addedValueAr.",
+    "consolidates": "Le programme répète « from » : « to » le rappelle et le consolide (الإرساء), sans le reconstruire."
+  },
+  "threads": [
+    {
+      "id": "naturals-decimals",
+      "titleAr": "الأعداد الطبيعية والعشرية والعمليات",
+      "domain": "numbers",
+      "items": [
+        "1am.m1.r01",
+        "1am.m1.r02",
+        "1am.m1.r03",
+        "1am.m1.r04",
+        "1am.m1.r05",
+        "1am.m1.r06",
+        "1am.m3.r03",
+        "1am.m3.r04",
+        "1am.m3.r05",
+        "1am.m5.r10",
+        "2am.m1.r01",
+        "2am.m1.r02",
+        "2am.m1.r03",
+        "2am.m1.r05",
+        "2am.m1.r06",
+        "3am.m5.x1"
+      ]
+    },
+    {
+      "id": "divisibility",
+      "titleAr": "القسمة والقواسم",
+      "domain": "numbers",
+      "items": [
+        "1am.m3.r01",
+        "1am.m3.r02",
+        "2am.m1.r04",
+        "4am.m1.r01",
+        "4am.m1.r02",
+        "4am.m1.r03",
+        "4am.m1.r04"
+      ]
+    },
+    {
+      "id": "fractions-rationals",
+      "titleAr": "الكسور والأعداد الناطقة",
+      "domain": "numbers",
+      "items": [
+        "1am.m5.r01",
+        "1am.m5.r02",
+        "1am.m5.r03",
+        "1am.m5.x1",
+        "2am.m1.r07",
+        "2am.m1.r08",
+        "2am.m1.r09",
+        "3am.m1.r03",
+        "3am.m1.r04",
+        "3am.m1.r05",
+        "3am.m1.r06",
+        "3am.m1.r07",
+        "3am.m1.r08",
+        "3am.m5.r04",
+        "4am.m1.r05"
+      ]
+    },
+    {
+      "id": "relatives-line-frame",
+      "titleAr": "الأعداد النسبية والمستقيم المدرّج والمعلم",
+      "domain": "numbers",
+      "items": [
+        "1am.m5.r04",
+        "1am.m5.r05",
+        "1am.m5.r06",
+        "1am.m5.r07",
+        "2am.m4.r01",
+        "2am.m4.r02",
+        "2am.m4.r03",
+        "2am.m4.r04",
+        "2am.m4.r05",
+        "2am.m4.r06",
+        "2am.m4.r07",
+        "3am.m1.r01",
+        "3am.m1.r02"
+      ]
+    },
+    {
+      "id": "powers-roots",
+      "titleAr": "القوى والجذور",
+      "domain": "numbers",
+      "items": [
+        "3am.m3.r01",
+        "3am.m3.r02",
+        "3am.m3.r03",
+        "3am.m3.r04",
+        "3am.m3.r05",
+        "3am.m3.r06",
+        "3am.m3.r07",
+        "3am.m3.r08",
+        "4am.m1.r06",
+        "4am.m1.r07"
+      ]
+    },
+    {
+      "id": "literal-calculus",
+      "titleAr": "الحساب الحرفي",
+      "domain": "numbers",
+      "items": [
+        "1am.m5.r08",
+        "1am.m5.r09",
+        "3am.m5.r01",
+        "3am.m5.r02",
+        "3am.m5.r03",
+        "4am.m3.r01",
+        "4am.m3.r02"
+      ]
+    },
+    {
+      "id": "equations",
+      "titleAr": "المعادلات والمتراجحات والجمل",
+      "domain": "numbers",
+      "items": [
+        "2am.m4.r08",
+        "2am.m4.r09",
+        "3am.m5.r05",
+        "3am.m5.r06",
+        "4am.m3.r03",
+        "4am.m3.r04",
+        "4am.m3.r05",
+        "4am.m5.r01",
+        "4am.m5.r02",
+        "4am.m5.r11"
+      ]
+    },
+    {
+      "id": "proportionality-functions",
+      "titleAr": "التناسبية والدوال",
+      "domain": "data",
+      "items": [
+        "1am.m6.r01",
+        "1am.m6.r02",
+        "1am.m6.r03",
+        "1am.m6.r04",
+        "1am.m6.r05",
+        "1am.m6.r06",
+        "1am.m6.r07",
+        "1am.m6.r08",
+        "2am.m6.r01",
+        "2am.m6.r02",
+        "2am.m6.r03",
+        "2am.m6.r04",
+        "2am.m6.r05",
+        "3am.m7.r01",
+        "3am.m7.r06",
+        "4am.m5.r03",
+        "4am.m5.r04",
+        "4am.m5.r05",
+        "4am.m5.r06",
+        "4am.m5.r07",
+        "4am.m5.r08",
+        "4am.m5.r09",
+        "4am.m5.r10",
+        "4am.m5.r12",
+        "4am.m5.r13",
+        "4am.m5.r14"
+      ]
+    },
+    {
+      "id": "measures-units",
+      "titleAr": "المقادير ووحداتها",
+      "domain": "data",
+      "items": [
+        "1am.m6.r09",
+        "2am.m6.r06",
+        "3am.m7.r02",
+        "3am.m7.r03",
+        "3am.m7.r04",
+        "3am.m7.r05"
+      ]
+    },
+    {
+      "id": "statistics",
+      "titleAr": "الإحصاء وتنظيم المعطيات",
+      "domain": "data",
+      "items": [
+        "1am.m6.r10",
+        "1am.m6.r11",
+        "1am.m6.r12",
+        "2am.m6.r07",
+        "2am.m6.r08",
+        "2am.m6.r09",
+        "2am.m6.r10",
+        "2am.m6.r11",
+        "2am.m6.r12",
+        "3am.m7.r07",
+        "3am.m7.r08",
+        "3am.m7.r09",
+        "3am.m7.r10",
+        "3am.m7.r11",
+        "3am.m7.r12",
+        "4am.m7.r01",
+        "4am.m7.r02",
+        "4am.m7.r03"
+      ]
+    },
+    {
+      "id": "plane-figures",
+      "titleAr": "الأشكال المستوية والإنشاءات",
+      "domain": "geometry",
+      "items": [
+        "1am.m2.r01",
+        "1am.m2.r02",
+        "1am.m2.r03",
+        "1am.m2.r04",
+        "1am.m2.r05",
+        "2am.m2.r01",
+        "2am.m3.r05",
+        "2am.m3.r07",
+        "2am.m5.r01",
+        "2am.m5.r02",
+        "4am.m6.r05"
+      ]
+    },
+    {
+      "id": "angles",
+      "titleAr": "الزوايا",
+      "domain": "geometry",
+      "items": [
+        "1am.m4.r01",
+        "1am.m4.r02",
+        "1am.m4.r03",
+        "1am.m4.r04",
+        "1am.m4.r11",
+        "2am.m3.r01",
+        "2am.m3.r02",
+        "2am.m3.r03",
+        "2am.m3.r04",
+        "4am.m6.r03",
+        "4am.m6.r04"
+      ]
+    },
+    {
+      "id": "lengths-areas",
+      "titleAr": "الأطوال والمحيطات والمساحات",
+      "domain": "geometry",
+      "items": [
+        "1am.m2.r06",
+        "1am.m2.r07",
+        "1am.m2.r08",
+        "1am.m2.r09",
+        "1am.m2.r10",
+        "2am.m3.r06",
+        "2am.m3.r08",
+        "2am.m5.r03"
+      ]
+    },
+    {
+      "id": "transformations",
+      "titleAr": "التحويلات النقطية والأشعة",
+      "domain": "geometry",
+      "items": [
+        "1am.m4.r05",
+        "1am.m4.r06",
+        "1am.m4.r07",
+        "1am.m4.r08",
+        "1am.m4.r09",
+        "1am.m4.r10",
+        "2am.m2.r02",
+        "2am.m2.r03",
+        "2am.m2.r04",
+        "2am.m2.r05",
+        "3am.m6.r01",
+        "3am.m6.r02",
+        "3am.m6.r03",
+        "4am.m4.r01",
+        "4am.m4.r02",
+        "4am.m4.r03",
+        "4am.m4.r04",
+        "4am.m4.r05",
+        "4am.m4.r06",
+        "4am.m4.r07",
+        "4am.m6.r01",
+        "4am.m6.r02"
+      ]
+    },
+    {
+      "id": "triangles-proof",
+      "titleAr": "المثلثات والبرهان",
+      "domain": "geometry",
+      "items": [
+        "3am.m2.r01",
+        "3am.m2.r02",
+        "3am.m2.r03",
+        "3am.m2.r04",
+        "3am.m2.r05",
+        "3am.m4.r01",
+        "3am.m4.r02",
+        "3am.m4.r03",
+        "3am.m4.r04",
+        "3am.m4.r05",
+        "3am.m4.r06",
+        "3am.m4.x1",
+        "4am.m2.r01"
+      ]
+    },
+    {
+      "id": "trigonometry",
+      "titleAr": "حساب المثلثات",
+      "domain": "geometry",
+      "items": [
+        "3am.m4.r07",
+        "3am.m4.r08",
+        "3am.m4.r09",
+        "4am.m2.r02",
+        "4am.m2.r03",
+        "4am.m2.r04",
+        "4am.m2.r05",
+        "4am.m2.r06"
+      ]
+    },
+    {
+      "id": "solids",
+      "titleAr": "المجسّمات والهندسة في الفضاء",
+      "domain": "geometry",
+      "items": [
+        "1am.m7.r01",
+        "1am.m7.r02",
+        "1am.m7.r03",
+        "1am.m7.r04",
+        "1am.m7.r05",
+        "2am.m7.r01",
+        "2am.m7.r02",
+        "2am.m7.r03",
+        "2am.m7.r04",
+        "2am.m7.r05",
+        "2am.m7.r06",
+        "2am.m7.r07",
+        "2am.m7.r08",
+        "3am.m6.r04",
+        "3am.m6.r05",
+        "3am.m6.r06",
+        "3am.m6.r07",
+        "3am.m6.r08",
+        "4am.m6.r06",
+        "4am.m6.r07",
+        "4am.m6.r08",
+        "4am.m6.r09",
+        "4am.m6.r10"
+      ]
+    }
+  ],
+  "links": [
+    {
+      "from": "1am.m1.r02",
+      "to": "1am.m1.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r02",
+      "to": "1am.m1.r04",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r01",
+      "to": "1am.m1.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r03",
+      "to": "1am.m1.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r05",
+      "to": "1am.m1.r06",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r02",
+      "to": "1am.m2.r01",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r01",
+      "to": "1am.m2.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r02",
+      "to": "1am.m2.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r04",
+      "to": "1am.m2.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r06",
+      "to": "1am.m2.r07",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r06",
+      "to": "1am.m2.r08",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r05",
+      "to": "1am.m2.r08",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r08",
+      "to": "1am.m2.r09",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r03",
+      "to": "1am.m2.r09",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r05",
+      "to": "1am.m2.r10",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r05",
+      "to": "1am.m2.r10",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r01",
+      "to": "1am.m3.r01",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m3.r01",
+      "to": "1am.m3.r02",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m3.r01",
+      "to": "1am.m3.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r03",
+      "to": "1am.m3.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m3.r03",
+      "to": "1am.m3.r04",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r04",
+      "to": "1am.m3.r04",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r04",
+      "to": "1am.m3.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r02",
+      "to": "1am.m4.r01",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r01",
+      "to": "1am.m4.r02",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r01",
+      "to": "1am.m4.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r03",
+      "to": "1am.m4.r04",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r05",
+      "to": "1am.m4.r06",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r03",
+      "to": "1am.m4.r06",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r06",
+      "to": "1am.m4.r07",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r01",
+      "to": "1am.m4.r07",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r07",
+      "to": "1am.m4.r08",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r08",
+      "to": "1am.m4.r09",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r03",
+      "to": "1am.m4.r09",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r08",
+      "to": "1am.m4.r10",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r01",
+      "to": "1am.m4.r10",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r08",
+      "to": "1am.m4.r11",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r04",
+      "to": "1am.m4.r11",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r02",
+      "to": "1am.m5.r01",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r01",
+      "to": "1am.m5.r02",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m3.r02",
+      "to": "1am.m5.r02",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r01",
+      "to": "1am.m5.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r05",
+      "to": "1am.m5.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r04",
+      "to": "1am.m5.r04",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r04",
+      "to": "1am.m5.r06",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r05",
+      "to": "1am.m5.r06",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r06",
+      "to": "1am.m5.r07",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r08",
+      "to": "1am.m5.r08",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r08",
+      "to": "1am.m5.r09",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r05",
+      "to": "1am.m5.r10",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r01",
+      "to": "1am.m5.x1",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r05",
+      "to": "1am.m6.r01",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r01",
+      "to": "1am.m6.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r02",
+      "to": "1am.m6.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r03",
+      "to": "1am.m6.r04",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r04",
+      "to": "1am.m6.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r01",
+      "to": "1am.m6.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r04",
+      "to": "1am.m6.r06",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r03",
+      "to": "1am.m6.r06",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r04",
+      "to": "1am.m6.r07",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r07",
+      "to": "1am.m6.r08",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r03",
+      "to": "1am.m6.r09",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r10",
+      "to": "1am.m6.r11",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r02",
+      "to": "1am.m6.r11",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r11",
+      "to": "1am.m6.r12",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r03",
+      "to": "1am.m7.r01",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m7.r01",
+      "to": "1am.m7.r02",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m7.r01",
+      "to": "1am.m7.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r03",
+      "to": "1am.m7.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m7.r03",
+      "to": "1am.m7.r04",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m7.r01",
+      "to": "1am.m7.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r05",
+      "to": "1am.m7.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r05",
+      "to": "2am.m1.r01",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m1.r01",
+      "to": "2am.m1.r02",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m1.r02",
+      "to": "2am.m1.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m3.r01",
+      "to": "2am.m1.r04",
+      "type": "extends",
+      "addedValueAr": "القاسم أيّ عدد طبيعي غير معدوم، لا عدد برقم أو رقمين فقط."
+    },
+    {
+      "from": "1am.m3.r04",
+      "to": "2am.m1.r05",
+      "type": "extends",
+      "addedValueAr": "القيمة المقرّبة إلى أيّ رتبة (0,1 ؛ 0,01 …) لا إلى الوحدة فقط."
+    },
+    {
+      "from": "2am.m1.r05",
+      "to": "2am.m1.r06",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r03",
+      "to": "2am.m1.r07",
+      "type": "extends",
+      "addedValueAr": "ضرب كسرين كيفيين، لا الكسور العشرية فقط."
+    },
+    {
+      "from": "1am.m5.r01",
+      "to": "2am.m1.r08",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r02",
+      "to": "2am.m1.r08",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m1.r08",
+      "to": "2am.m1.r09",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r03",
+      "to": "2am.m1.r09",
+      "type": "extends",
+      "addedValueAr": "جمع وطرح كسرين مقام أحدهما مضاعف لمقام الآخر، لا الكسور العشرية فقط."
+    },
+    {
+      "from": "1am.m4.r10",
+      "to": "2am.m2.r01",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r11",
+      "to": "2am.m2.r01",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r03",
+      "to": "2am.m2.r01",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r01",
+      "to": "2am.m2.r01",
+      "type": "extends",
+      "addedValueAr": "الإنشاء بالأدوات الهندسية (الكوس، المسطرة، المدور) بدل الرسم دون التقيّد بطريقة."
+    },
+    {
+      "from": "1am.m4.r05",
+      "to": "2am.m2.r02",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m2.r02",
+      "to": "2am.m2.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r01",
+      "to": "2am.m2.r03",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m2.r03",
+      "to": "2am.m2.r04",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m2.r04",
+      "to": "2am.m2.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r08",
+      "to": "2am.m2.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r04",
+      "to": "2am.m3.r01",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m3.r01",
+      "to": "2am.m3.r02",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m2.r05",
+      "to": "2am.m3.r02",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m3.r01",
+      "to": "2am.m3.r03",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m2.r05",
+      "to": "2am.m3.r03",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m3.r03",
+      "to": "2am.m3.r04",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r04",
+      "to": "2am.m3.r05",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m2.r01",
+      "to": "2am.m3.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r09",
+      "to": "2am.m3.r06",
+      "type": "extends",
+      "addedValueAr": "مساحة مثلث كيفي بالقاعدة والارتفاع، لا المثلث القائم فقط."
+    },
+    {
+      "from": "1am.m4.r10",
+      "to": "2am.m3.r07",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m2.r01",
+      "to": "2am.m3.r07",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r10",
+      "to": "2am.m3.r08",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r06",
+      "to": "2am.m4.r01",
+      "type": "consolidates",
+      "noteAr": "نفس الكفاءة على مستقيم مدرّج: تُستحضر وتُرسى ولا يُعاد بناؤها."
+    },
+    {
+      "from": "2am.m4.r01",
+      "to": "2am.m4.r02",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m4.r02",
+      "to": "2am.m4.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r07",
+      "to": "2am.m4.r04",
+      "type": "consolidates",
+      "noteAr": "الإحداثيات في معلم: تُستحضر ويُضاف إليها صراحةً المعلم المتعامد والمتجانس."
+    },
+    {
+      "from": "2am.m4.r01",
+      "to": "2am.m4.r05",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m4.r05",
+      "to": "2am.m4.r06",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m1.r02",
+      "to": "2am.m4.r06",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m4.r05",
+      "to": "2am.m4.r07",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r10",
+      "to": "2am.m4.r08",
+      "type": "extends",
+      "addedValueAr": "إتمام مساواة بالقسمة ($a \\div \\ldots = b$) بأعداد عشرية."
+    },
+    {
+      "from": "1am.m5.r08",
+      "to": "2am.m4.r09",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m4.r06",
+      "to": "2am.m4.r09",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m2.r05",
+      "to": "2am.m5.r01",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m3.r03",
+      "to": "2am.m5.r01",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m5.r01",
+      "to": "2am.m5.r02",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r09",
+      "to": "2am.m5.r02",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m5.r01",
+      "to": "2am.m5.r03",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m3.r06",
+      "to": "2am.m5.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r03",
+      "to": "2am.m6.r01",
+      "type": "consolidates",
+      "noteAr": "التعرّف على التناسبية من جدول: يُستحضر ويُرسى."
+    },
+    {
+      "from": "1am.m6.r04",
+      "to": "2am.m6.r02",
+      "type": "consolidates",
+      "noteAr": "إتمام جدول تناسبية: يُستحضر ويُرسى."
+    },
+    {
+      "from": "2am.m6.r02",
+      "to": "2am.m6.r03",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r03",
+      "to": "2am.m6.r04",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r06",
+      "to": "2am.m6.r04",
+      "type": "extends",
+      "addedValueAr": "حساب النسبة المئوية نفسها، لا تطبيقها فقط."
+    },
+    {
+      "from": "2am.m6.r03",
+      "to": "2am.m6.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r08",
+      "to": "2am.m6.r05",
+      "type": "extends",
+      "addedValueAr": "حساب المقياس نفسه، لا استعماله فقط."
+    },
+    {
+      "from": "1am.m6.r09",
+      "to": "2am.m6.r06",
+      "type": "consolidates",
+      "noteAr": "تحويلات الوحدات: تُستحضر وتُرسى في وضعيات جديدة."
+    },
+    {
+      "from": "1am.m6.r11",
+      "to": "2am.m6.r07",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r07",
+      "to": "2am.m6.r08",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r10",
+      "to": "2am.m6.r08",
+      "type": "extends",
+      "addedValueAr": "قراءة معطيات إحصائية في تمثيلات بيانية (منحنيات ومخطّطات)، لا في جداول فقط."
+    },
+    {
+      "from": "2am.m6.r08",
+      "to": "2am.m6.r09",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r07",
+      "to": "2am.m6.r10",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r04",
+      "to": "2am.m6.r10",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r04",
+      "to": "2am.m6.r10",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r07",
+      "to": "2am.m6.r11",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r07",
+      "to": "2am.m6.r12",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r04",
+      "to": "2am.m6.r12",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m7.r01",
+      "to": "2am.m7.r01",
+      "type": "extends",
+      "addedValueAr": "الموشور القائم بقاعدة كيفية: متوازي المستطيلات حالة خاصة منه."
+    },
+    {
+      "from": "2am.m7.r01",
+      "to": "2am.m7.r02",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m7.r03",
+      "to": "2am.m7.r02",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m7.r02",
+      "to": "2am.m7.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r05",
+      "to": "2am.m7.r04",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m7.r04",
+      "to": "2am.m7.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r10",
+      "to": "2am.m7.r05",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m7.r05",
+      "to": "2am.m7.r06",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m7.r02",
+      "to": "2am.m7.r07",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m7.r05",
+      "to": "2am.m7.r07",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r08",
+      "to": "2am.m7.r07",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r10",
+      "to": "2am.m7.r07",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m7.r01",
+      "to": "2am.m7.r08",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m7.r04",
+      "to": "2am.m7.r08",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m3.r06",
+      "to": "2am.m7.r08",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m3.r08",
+      "to": "2am.m7.r08",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m7.r05",
+      "to": "2am.m7.r08",
+      "type": "extends",
+      "addedValueAr": "الحجم = مساحة القاعدة × الارتفاع لأيّ موشور قائم ولأسطوانة الدوران."
+    },
+    {
+      "from": "2am.m4.r05",
+      "to": "3am.m1.r01",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m1.r01",
+      "to": "3am.m1.r02",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m1.r02",
+      "to": "3am.m1.r03",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m1.r07",
+      "to": "3am.m1.r03",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m1.r03",
+      "to": "3am.m1.r04",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m1.r08",
+      "to": "3am.m1.r05",
+      "type": "extends",
+      "addedValueAr": "مقارنة كسرين كيفيين بتوحيد المقامات، وبإشارات."
+    },
+    {
+      "from": "2am.m1.r09",
+      "to": "3am.m1.r06",
+      "type": "extends",
+      "addedValueAr": "جمع وطرح كسرين كيفيين بتوحيد المقامات، وبإشارات."
+    },
+    {
+      "from": "3am.m1.r02",
+      "to": "3am.m1.r07",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r01",
+      "to": "3am.m1.r07",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m1.r07",
+      "to": "3am.m1.r08",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m1.r04",
+      "to": "3am.m1.r08",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m1.r06",
+      "to": "3am.m1.r08",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m1.r01",
+      "to": "3am.m1.r08",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m3.r05",
+      "to": "3am.m2.r01",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m2.r05",
+      "to": "3am.m2.r01",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m5.r01",
+      "to": "3am.m2.r02",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r01",
+      "to": "3am.m2.r02",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m2.r02",
+      "to": "3am.m2.r03",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r03",
+      "to": "3am.m2.r03",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m2.r01",
+      "to": "3am.m2.r04",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m3.r07",
+      "to": "3am.m2.r04",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m2.r04",
+      "to": "3am.m2.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r03",
+      "to": "3am.m3.r01",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m3.r01",
+      "to": "3am.m3.r02",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m3.r02",
+      "to": "3am.m3.r03",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m3.r03",
+      "to": "3am.m3.r04",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m3.r04",
+      "to": "3am.m3.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m1.r06",
+      "to": "3am.m3.r05",
+      "type": "extends",
+      "addedValueAr": "رتبة مقدار عدد بالكتابة العلمية، وحصره بين قوّتين للعدد 10."
+    },
+    {
+      "from": "3am.m1.r01",
+      "to": "3am.m3.r06",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m3.r06",
+      "to": "3am.m3.r07",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m3.r02",
+      "to": "3am.m3.r07",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m3.r07",
+      "to": "3am.m3.r08",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m1.r01",
+      "to": "3am.m3.r08",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m3.r07",
+      "to": "3am.m4.r01",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m5.r02",
+      "to": "3am.m4.r01",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m4.r01",
+      "to": "3am.m4.r02",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r08",
+      "to": "3am.m4.r03",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m3.r06",
+      "to": "3am.m4.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r01",
+      "to": "3am.m4.r04",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m4.r03",
+      "to": "3am.m4.r04",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m4.r04",
+      "to": "3am.m4.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r05",
+      "to": "3am.m4.r05",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m4.r05",
+      "to": "3am.m4.r06",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m2.r03",
+      "to": "3am.m4.r07",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m4.r07",
+      "to": "3am.m4.r08",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m4.r08",
+      "to": "3am.m4.r09",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r03",
+      "to": "3am.m4.r09",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m4.r03",
+      "to": "3am.m4.x1",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m1.r03",
+      "to": "3am.m5.r01",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m1.r08",
+      "to": "3am.m5.r01",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m5.r01",
+      "to": "3am.m5.r02",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m1.r01",
+      "to": "3am.m5.r02",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m1.r08",
+      "to": "3am.m5.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r08",
+      "to": "3am.m5.r03",
+      "type": "extends",
+      "addedValueAr": "قيمة عبارة حرفية من أجل قيم نسبية أو ناطقة للمتغيّرات."
+    },
+    {
+      "from": "3am.m1.r05",
+      "to": "3am.m5.r04",
+      "type": "consolidates",
+      "noteAr": "مقارنة عددين ناطقين: هي مقارنة كسرين تُوظَّف في الحساب الحرفي."
+    },
+    {
+      "from": "2am.m4.r09",
+      "to": "3am.m5.r05",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m1.r01",
+      "to": "3am.m5.r05",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m5.r05",
+      "to": "3am.m5.r06",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m5.r01",
+      "to": "3am.m5.r06",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m4.r08",
+      "to": "3am.m5.r06",
+      "type": "extends",
+      "addedValueAr": "المعادلة من الدرجة الأولى بمجهول واحد في شكلها العام $ax + b = cx + d$، وترييض مشكلة بها."
+    },
+    {
+      "from": "1am.m3.r05",
+      "to": "3am.m5.x1",
+      "type": "extends",
+      "addedValueAr": "التدوير إلى أيّ رتبة واستعماله لحصر عدد موجب."
+    },
+    {
+      "from": "2am.m5.r01",
+      "to": "3am.m6.r01",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m6.r01",
+      "to": "3am.m6.r02",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m6.r02",
+      "to": "3am.m6.r03",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m2.r05",
+      "to": "3am.m6.r03",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m7.r01",
+      "to": "3am.m6.r04",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m7.r04",
+      "to": "3am.m6.r04",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m6.r04",
+      "to": "3am.m6.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m7.r02",
+      "to": "3am.m6.r05",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m6.r04",
+      "to": "3am.m6.r06",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m7.r02",
+      "to": "3am.m6.r06",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m6.r06",
+      "to": "3am.m6.r07",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m6.r04",
+      "to": "3am.m6.r08",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m7.r08",
+      "to": "3am.m6.r08",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r01",
+      "to": "3am.m7.r01",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m4.r04",
+      "to": "3am.m7.r01",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r01",
+      "to": "3am.m7.r02",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r06",
+      "to": "3am.m7.r03",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r02",
+      "to": "3am.m7.r04",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r03",
+      "to": "3am.m7.r04",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r04",
+      "to": "3am.m7.r05",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r06",
+      "to": "3am.m7.r05",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r04",
+      "to": "3am.m7.r06",
+      "type": "consolidates",
+      "noteAr": "النسبة المئوية: تُستحضر وتُوظَّف في وضعيات تناسبية جديدة."
+    },
+    {
+      "from": "2am.m6.r11",
+      "to": "3am.m7.r07",
+      "type": "consolidates",
+      "noteAr": "التجميع في فئات: يُستحضر ويُرسى."
+    },
+    {
+      "from": "2am.m6.r12",
+      "to": "3am.m7.r08",
+      "type": "consolidates",
+      "noteAr": "حساب التكرارات: يُستحضر ويُرسى."
+    },
+    {
+      "from": "3am.m7.r07",
+      "to": "3am.m7.r09",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r10",
+      "to": "3am.m7.r09",
+      "type": "extends",
+      "addedValueAr": "المدرج التكراري لسلسلة مجمّعة في فئات."
+    },
+    {
+      "from": "2am.m6.r12",
+      "to": "3am.m7.r10",
+      "type": "consolidates",
+      "noteAr": "التكرارات النسبية: تُستحضر وتُرسى."
+    },
+    {
+      "from": "3am.m7.r08",
+      "to": "3am.m7.r11",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m1.r01",
+      "to": "3am.m7.r11",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r09",
+      "to": "3am.m7.r12",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r11",
+      "to": "3am.m7.r12",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m3.r01",
+      "to": "4am.m1.r01",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m3.r02",
+      "to": "4am.m1.r01",
+      "type": "extends",
+      "addedValueAr": "القاسم والمضاعف علاقةً بين عددين، لا مجرّد قواعد لقابلية القسمة."
+    },
+    {
+      "from": "4am.m1.r01",
+      "to": "4am.m1.r02",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m1.r02",
+      "to": "4am.m1.r03",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m1.r04",
+      "to": "4am.m1.r03",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m1.r03",
+      "to": "4am.m1.r04",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m1.r03",
+      "to": "4am.m1.r05",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m1.r04",
+      "to": "4am.m1.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m5.r02",
+      "to": "4am.m1.r05",
+      "type": "extends",
+      "addedValueAr": "الاختزال في خطوة واحدة بالقاسم المشترك الأكبر حتى الشكل غير القابل للاختزال."
+    },
+    {
+      "from": "3am.m4.r03",
+      "to": "4am.m1.r06",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m3.r06",
+      "to": "4am.m1.r06",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m1.r06",
+      "to": "4am.m1.r07",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m5.r01",
+      "to": "4am.m1.r07",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m1.r08",
+      "to": "4am.m2.r01",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m2.r03",
+      "to": "4am.m2.r01",
+      "type": "extends",
+      "addedValueAr": "خاصية طالس في الوضعيتين، وعكسها لإثبات التوازي، والإنشاءات (تقسيم قطعة)."
+    },
+    {
+      "from": "3am.m4.r07",
+      "to": "4am.m2.r02",
+      "type": "extends",
+      "addedValueAr": "الجيب والظل بعد جيب التمام."
+    },
+    {
+      "from": "4am.m2.r02",
+      "to": "4am.m2.r03",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m4.r08",
+      "to": "4am.m2.r03",
+      "type": "extends",
+      "addedValueAr": "الحاسبة للجيب والظل وتعيين الزاوية بمعرفتهما."
+    },
+    {
+      "from": "4am.m2.r03",
+      "to": "4am.m2.r04",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m4.r09",
+      "to": "4am.m2.r04",
+      "type": "extends",
+      "addedValueAr": "اختيار النسبة المثلثية المناسبة من بين ثلاث."
+    },
+    {
+      "from": "4am.m2.r02",
+      "to": "4am.m2.r05",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m2.r01",
+      "to": "4am.m2.r05",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m2.r02",
+      "to": "4am.m2.r06",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m4.r03",
+      "to": "4am.m2.r06",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m1.r07",
+      "to": "4am.m2.r06",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m5.r02",
+      "to": "4am.m3.r01",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m5.r02",
+      "to": "4am.m3.r02",
+      "type": "extends",
+      "addedValueAr": "التحليل (العامل المشترك والمتطابقات) بعد النشر."
+    },
+    {
+      "from": "4am.m3.r02",
+      "to": "4am.m3.r03",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m5.r06",
+      "to": "4am.m3.r03",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m5.r05",
+      "to": "4am.m3.r04",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m4.r03",
+      "to": "4am.m3.r04",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m3.r03",
+      "to": "4am.m3.r05",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m3.r04",
+      "to": "4am.m3.r05",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m5.r06",
+      "to": "4am.m3.r05",
+      "type": "extends",
+      "addedValueAr": "المتراجحات ومعادلات الجداء المعدوم أدواتٍ لحل المشكلات."
+    },
+    {
+      "from": "3am.m6.r03",
+      "to": "4am.m4.r01",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m4.r01",
+      "to": "4am.m4.r02",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m5.r01",
+      "to": "4am.m4.r02",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m4.r02",
+      "to": "4am.m4.r03",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m4.r01",
+      "to": "4am.m4.r04",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m4.r04",
+      "to": "4am.m4.r04",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m4.r04",
+      "to": "4am.m4.r05",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m4.r07",
+      "to": "4am.m4.r05",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m4.r04",
+      "to": "4am.m4.r06",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m4.r02",
+      "to": "4am.m4.r06",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m4.r03",
+      "to": "4am.m4.r07",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m1.r06",
+      "to": "4am.m4.r07",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m4.r05",
+      "to": "4am.m4.r07",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m5.r06",
+      "to": "4am.m5.r01",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r01",
+      "to": "4am.m5.r02",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m3.r05",
+      "to": "4am.m5.r02",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r01",
+      "to": "4am.m5.r03",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m6.r03",
+      "to": "4am.m5.r03",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r03",
+      "to": "4am.m5.r04",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r01",
+      "to": "4am.m5.r04",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r04",
+      "to": "4am.m5.r05",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r05",
+      "to": "4am.m5.r06",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r03",
+      "to": "4am.m5.r07",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m5.r03",
+      "to": "4am.m5.r07",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r07",
+      "to": "4am.m5.r08",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r04",
+      "to": "4am.m5.r08",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r08",
+      "to": "4am.m5.r09",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r05",
+      "to": "4am.m5.r09",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r09",
+      "to": "4am.m5.r10",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r06",
+      "to": "4am.m5.r10",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r01",
+      "to": "4am.m5.r11",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r08",
+      "to": "4am.m5.r11",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r05",
+      "to": "4am.m5.r12",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r01",
+      "to": "4am.m5.r12",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r12",
+      "to": "4am.m5.r13",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r05",
+      "to": "4am.m5.r13",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m5.r03",
+      "to": "4am.m5.r14",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r04",
+      "to": "4am.m5.r14",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r06",
+      "to": "4am.m5.r14",
+      "type": "extends",
+      "addedValueAr": "النسبة المئوية دالةً خطية (الزيادة والتخفيض: $x \\mapsto \\left(1 \\pm \\frac{t}{100}\\right)x$) والمقادير المركّبة."
+    },
+    {
+      "from": "1am.m4.r04",
+      "to": "4am.m6.r01",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m2.r01",
+      "to": "4am.m6.r01",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m6.r01",
+      "to": "4am.m6.r02",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m6.r03",
+      "to": "4am.m6.r02",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r05",
+      "to": "4am.m6.r03",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r02",
+      "to": "4am.m6.r03",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m6.r03",
+      "to": "4am.m6.r04",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m3.r04",
+      "to": "4am.m6.r04",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m6.r02",
+      "to": "4am.m6.r05",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m6.r04",
+      "to": "4am.m6.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m4.r04",
+      "to": "4am.m6.r05",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m2.r05",
+      "to": "4am.m6.r06",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m7.r04",
+      "to": "4am.m6.r06",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m6.r06",
+      "to": "4am.m6.r07",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m7.r02",
+      "to": "4am.m6.r07",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m6.r06",
+      "to": "4am.m6.r08",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m3.r08",
+      "to": "4am.m6.r08",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m6.r06",
+      "to": "4am.m6.r09",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m6.r04",
+      "to": "4am.m6.r09",
+      "type": "requires"
+    },
+    {
+      "from": "2am.m7.r01",
+      "to": "4am.m6.r09",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m7.r01",
+      "to": "4am.m6.r09",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m4.r03",
+      "to": "4am.m6.r09",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m2.r01",
+      "to": "4am.m6.r10",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m6.r08",
+      "to": "4am.m6.r10",
+      "type": "requires"
+    },
+    {
+      "from": "1am.m6.r07",
+      "to": "4am.m6.r10",
+      "type": "extends",
+      "addedValueAr": "أثر معامل التكبير $k$ على المساحات ($k^2$) والحجوم ($k^3$)."
+    },
+    {
+      "from": "3am.m7.r08",
+      "to": "4am.m7.r01",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r10",
+      "to": "4am.m7.r01",
+      "type": "requires"
+    },
+    {
+      "from": "4am.m7.r01",
+      "to": "4am.m7.r02",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r11",
+      "to": "4am.m7.r02",
+      "type": "extends",
+      "addedValueAr": "الوسيط والمدى بعد المتوسط: مؤشرات الموقع والتشتّت."
+    },
+    {
+      "from": "4am.m7.r02",
+      "to": "4am.m7.r03",
+      "type": "requires"
+    },
+    {
+      "from": "3am.m7.r12",
+      "to": "4am.m7.r03",
+      "type": "extends",
+      "addedValueAr": "المجدولات لحساب المؤشرات وتمثيلها."
+    }
+  ],
+  "plannedUnits": [
+    {
+      "code": "aadad-ushriya-1",
+      "grade": "1am",
+      "segment": "1am.m1",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "titleAr": "الأعداد الطبيعية والأعداد العشرية (1)",
+      "synthesisLessonCode": "wadiya-idmajiya-aadad-ushriya-1"
+    },
+    {
+      "code": "mumathalat-sutuh",
+      "grade": "1am",
+      "segment": "1am.m2",
+      "chapterId": "handasa",
+      "titleAr": "إنجاز مماثلات أشكال مستوية بسيطة – السطوح المستوية",
+      "synthesisLessonCode": "wadiya-idmajiya-mumathalat-sutuh"
+    },
+    {
+      "code": "aadad-ushriya-2",
+      "grade": "1am",
+      "segment": "1am.m3",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "titleAr": "الأعداد الطبيعية والأعداد العشرية (2)",
+      "synthesisLessonCode": "wadiya-idmajiya-aadad-ushriya-2"
+    },
+    {
+      "code": "zawaya-tanazur-mihwari",
+      "grade": "1am",
+      "segment": "1am.m4",
+      "chapterId": "handasa",
+      "titleAr": "الزوايا والتناظر المحوري",
+      "synthesisLessonCode": "wadiya-idmajiya-zawaya-tanazur-mihwari"
+    },
+    {
+      "code": "kitabat-kasriya-nisbiya-harfi",
+      "grade": "1am",
+      "segment": "1am.m5",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "titleAr": "الكتابات الكسرية، الأعداد النسبية والحساب الحرفي",
+      "synthesisLessonCode": "wadiya-idmajiya-kitabat-kasriya-nisbiya-harfi"
+    },
+    {
+      "code": "tanasubiya-tanzim-1",
+      "grade": "1am",
+      "segment": "1am.m6",
+      "chapterId": "tanasubiya_duwal",
+      "titleAr": "التناسبية وتنظيم معطيات",
+      "synthesisLessonCode": "wadiya-idmajiya-tanasubiya-tanzim-1"
+    },
+    {
+      "code": "mutawazi-mustatilat",
+      "grade": "1am",
+      "segment": "1am.m7",
+      "chapterId": "handasa",
+      "titleAr": "متوازي المستطيلات والمكعب",
+      "synthesisLessonCode": "wadiya-idmajiya-mutawazi-mustatilat"
+    },
+    {
+      "code": "amaliyat-kusur",
+      "grade": "2am",
+      "segment": "2am.m1",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "titleAr": "العمليات على الأعداد الطبيعية والأعداد العشرية – العمليات على الكسور",
+      "synthesisLessonCode": "wadiya-idmajiya-amaliyat-kusur"
+    },
+    {
+      "code": "tanazur-markazi",
+      "grade": "2am",
+      "segment": "2am.m2",
+      "chapterId": "handasa",
+      "titleAr": "إنشاء أشكال هندسية بسيطة – التناظر المركزي",
+      "synthesisLessonCode": "wadiya-idmajiya-tanazur-markazi"
+    },
+    {
+      "code": "zawaya-muthallathat-daira",
+      "grade": "2am",
+      "segment": "2am.m3",
+      "chapterId": "handasa",
+      "titleAr": "الزوايا – المثلثات والدائرة",
+      "synthesisLessonCode": "wadiya-idmajiya-zawaya-muthallathat-daira"
+    },
+    {
+      "code": "aadad-nisbiya",
+      "grade": "2am",
+      "segment": "2am.m4",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "titleAr": "الأعداد النسبية",
+      "synthesisLessonCode": "wadiya-idmajiya-aadad-nisbiya"
+    },
+    {
+      "code": "mutawazi-adla",
+      "grade": "2am",
+      "segment": "2am.m5",
+      "chapterId": "handasa",
+      "titleAr": "متوازي الأضلاع",
+      "synthesisLessonCode": "wadiya-idmajiya-mutawazi-adla"
+    },
+    {
+      "code": "tanasubiya-tanzim-2",
+      "grade": "2am",
+      "segment": "2am.m6",
+      "chapterId": "tanasubiya_duwal",
+      "titleAr": "التناسبية وتنظيم معطيات",
+      "synthesisLessonCode": "wadiya-idmajiya-tanasubiya-tanzim-2"
+    },
+    {
+      "code": "mawshur-ustuwana",
+      "grade": "2am",
+      "segment": "2am.m7",
+      "chapterId": "handasa",
+      "titleAr": "الموشور القائم – أسطوانة الدوران",
+      "synthesisLessonCode": "wadiya-idmajiya-mawshur-ustuwana"
+    },
+    {
+      "code": "nisbiya-kusur-natiqa",
+      "grade": "3am",
+      "segment": "3am.m1",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "titleAr": "الأعداد النسبية – العمليات على الكسور – الأعداد الناطقة",
+      "synthesisLessonCode": "wadiya-idmajiya-nisbiya-kusur-natiqa"
+    },
+    {
+      "code": "muthallathat-3",
+      "grade": "3am",
+      "segment": "3am.m2",
+      "chapterId": "handasa",
+      "titleAr": "المثلثات",
+      "synthesisLessonCode": "wadiya-idmajiya-muthallathat-3"
+    },
+    {
+      "code": "quwa",
+      "grade": "3am",
+      "segment": "3am.m3",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "titleAr": "القوى ذات أسس نسبية صحيحة",
+      "synthesisLessonCode": "wadiya-idmajiya-quwa"
+    },
+    {
+      "code": "muthallath-qaim-daira",
+      "grade": "3am",
+      "segment": "3am.m4",
+      "chapterId": "handasa",
+      "titleAr": "المثلث القائم والدائرة",
+      "synthesisLessonCode": "wadiya-idmajiya-muthallath-qaim-daira"
+    },
+    {
+      "code": "hisab-harfi-3",
+      "grade": "3am",
+      "segment": "3am.m5",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "titleAr": "الحساب الحرفي",
+      "synthesisLessonCode": "wadiya-idmajiya-hisab-harfi-3"
+    },
+    {
+      "code": "insihab-haram-makhrut",
+      "grade": "3am",
+      "segment": "3am.m6",
+      "chapterId": "handasa",
+      "titleAr": "الانسحاب – الهرم ومخروط الدوران",
+      "synthesisLessonCode": "wadiya-idmajiya-insihab-haram-makhrut"
+    },
+    {
+      "code": "tanasubiya-tanzim-3",
+      "grade": "3am",
+      "segment": "3am.m7",
+      "chapterId": "tanasubiya_duwal",
+      "titleAr": "التناسبية وتنظيم معطيات",
+      "synthesisLessonCode": "wadiya-idmajiya-tanasubiya-tanzim-3"
+    }
+  ],
+  "plannedLessons": [
+    {
+      "code": "amaliyat-tabiiya",
+      "grade": "1am",
+      "unit": "aadad-ushriya-1",
+      "order": 0,
+      "kind": "lesson",
+      "titleAr": "جمع وطرح وضرب الأعداد الطبيعية",
+      "programmeItems": [
+        "1am.m1.r01"
+      ]
+    },
+    {
+      "code": "kitaba-ushriya-kasriya",
+      "grade": "1am",
+      "unit": "aadad-ushriya-1",
+      "order": 1,
+      "kind": "lesson",
+      "titleAr": "الكتابة العشرية والكتابة الكسرية",
+      "programmeItems": [
+        "1am.m1.r02"
+      ]
+    },
+    {
+      "code": "darb-qisma-ashara",
+      "grade": "1am",
+      "unit": "aadad-ushriya-1",
+      "order": 2,
+      "kind": "lesson",
+      "titleAr": "الضرب والقسمة على 10، 100، 1000 وعلى 0,1، 0,01، 0,001",
+      "programmeItems": [
+        "1am.m1.r03"
+      ]
+    },
+    {
+      "code": "tartib-ushriya",
+      "grade": "1am",
+      "unit": "aadad-ushriya-1",
+      "order": 3,
+      "kind": "lesson",
+      "titleAr": "مقارنة الأعداد العشرية وترتيبها",
+      "programmeItems": [
+        "1am.m1.r04"
+      ]
+    },
+    {
+      "code": "amaliyat-ushriya",
+      "grade": "1am",
+      "unit": "aadad-ushriya-1",
+      "order": 4,
+      "kind": "lesson",
+      "titleAr": "العمليات على الأعداد العشرية ورتبة مقدار النتيجة",
+      "programmeItems": [
+        "1am.m1.r05",
+        "1am.m1.r06"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-aadad-ushriya-1",
+      "grade": "1am",
+      "unit": "aadad-ushriya-1",
+      "order": 5,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — الأعداد الطبيعية والأعداد العشرية (1)",
+      "programmeItems": []
+    },
+    {
+      "code": "mustaqimat-mustalahat",
+      "grade": "1am",
+      "unit": "mumathalat-sutuh",
+      "order": 6,
+      "kind": "lesson",
+      "titleAr": "المستقيم ونصف المستقيم والقطعة: المصطلحات والرسم",
+      "programmeItems": [
+        "1am.m2.r02",
+        "1am.m2.r01"
+      ]
+    },
+    {
+      "code": "mumathalat-ashkal",
+      "grade": "1am",
+      "unit": "mumathalat-sutuh",
+      "order": 7,
+      "kind": "lesson",
+      "titleAr": "إنجاز مثيلات المثلثات والرباعيات الخاصة",
+      "programmeItems": [
+        "1am.m2.r03"
+      ]
+    },
+    {
+      "code": "daira-mustalahat",
+      "grade": "1am",
+      "unit": "mumathalat-sutuh",
+      "order": 8,
+      "kind": "lesson",
+      "titleAr": "الدائرة وقوس الدائرة: الرسم والمصطلحات",
+      "programmeItems": [
+        "1am.m2.r04",
+        "1am.m2.r05"
+      ]
+    },
+    {
+      "code": "misaha-rasf",
+      "grade": "1am",
+      "unit": "mumathalat-sutuh",
+      "order": 9,
+      "kind": "lesson",
+      "titleAr": "المساحة بالرصف ومقارنة المساحات",
+      "programmeItems": [
+        "1am.m2.r06",
+        "1am.m2.r07"
+      ]
+    },
+    {
+      "code": "muhit-misaha-mustatil",
+      "grade": "1am",
+      "unit": "mumathalat-sutuh",
+      "order": 10,
+      "kind": "lesson",
+      "titleAr": "محيط المستطيل ومساحته ومساحة المثلث القائم",
+      "programmeItems": [
+        "1am.m2.r08",
+        "1am.m2.r09"
+      ]
+    },
+    {
+      "code": "muhit-daira",
+      "grade": "1am",
+      "unit": "mumathalat-sutuh",
+      "order": 11,
+      "kind": "lesson",
+      "titleAr": "محيط الدائرة",
+      "programmeItems": [
+        "1am.m2.r10"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-mumathalat-sutuh",
+      "grade": "1am",
+      "unit": "mumathalat-sutuh",
+      "order": 12,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — إنجاز مماثلات أشكال مستوية بسيطة – السطوح المستوية",
+      "programmeItems": []
+    },
+    {
+      "code": "qisma-iqlidiya",
+      "grade": "1am",
+      "unit": "aadad-ushriya-2",
+      "order": 13,
+      "kind": "lesson",
+      "titleAr": "القسمة الإقليدية",
+      "programmeItems": [
+        "1am.m3.r01"
+      ]
+    },
+    {
+      "code": "qabiliyat-qisma",
+      "grade": "1am",
+      "unit": "aadad-ushriya-2",
+      "order": 14,
+      "kind": "lesson",
+      "titleAr": "قواعد قابلية القسمة على 2، 3، 4، 5، 9",
+      "programmeItems": [
+        "1am.m3.r02"
+      ]
+    },
+    {
+      "code": "qisma-ushriya",
+      "grade": "1am",
+      "unit": "aadad-ushriya-2",
+      "order": 15,
+      "kind": "lesson",
+      "titleAr": "القسمة العشرية",
+      "programmeItems": [
+        "1am.m3.r03"
+      ]
+    },
+    {
+      "code": "qima-muqarraba-tadwir",
+      "grade": "1am",
+      "unit": "aadad-ushriya-2",
+      "order": 16,
+      "kind": "lesson",
+      "titleAr": "القيمة المقرّبة إلى الوحدة وتدوير عدد عشري",
+      "programmeItems": [
+        "1am.m3.r04",
+        "1am.m3.r05"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-aadad-ushriya-2",
+      "grade": "1am",
+      "unit": "aadad-ushriya-2",
+      "order": 17,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — الأعداد الطبيعية والأعداد العشرية (2)",
+      "programmeItems": []
+    },
+    {
+      "code": "zawiya-tasmiya",
+      "grade": "1am",
+      "unit": "zawaya-tanazur-mihwari",
+      "order": 18,
+      "kind": "lesson",
+      "titleAr": "الزاوية: المقارنة والتسمية والأنواع",
+      "programmeItems": [
+        "1am.m4.r01",
+        "1am.m4.r02",
+        "1am.m4.r03"
+      ]
+    },
+    {
+      "code": "qiyas-zawaya",
+      "grade": "1am",
+      "unit": "zawaya-tanazur-mihwari",
+      "order": 19,
+      "kind": "lesson",
+      "titleAr": "قياس الزوايا بالمنقلة ورسمها",
+      "programmeItems": [
+        "1am.m4.r04"
+      ]
+    },
+    {
+      "code": "ashkal-mutanazira",
+      "grade": "1am",
+      "unit": "zawaya-tanazur-mihwari",
+      "order": 20,
+      "kind": "lesson",
+      "titleAr": "الأشكال المتناظرة ومحاور التناظر",
+      "programmeItems": [
+        "1am.m4.r05",
+        "1am.m4.r06"
+      ]
+    },
+    {
+      "code": "nazir-mihwari",
+      "grade": "1am",
+      "unit": "zawaya-tanazur-mihwari",
+      "order": 21,
+      "kind": "lesson",
+      "titleAr": "نظير شكل بالتناظر المحوري وخواصه",
+      "programmeItems": [
+        "1am.m4.r07",
+        "1am.m4.r08"
+      ]
+    },
+    {
+      "code": "insha-tanazur-mihwari",
+      "grade": "1am",
+      "unit": "zawaya-tanazur-mihwari",
+      "order": 22,
+      "kind": "lesson",
+      "titleAr": "الإنشاء بالتناظر المحوري: المثلث متساوي الساقين والرباعيات الخاصة",
+      "programmeItems": [
+        "1am.m4.r09"
+      ]
+    },
+    {
+      "code": "mihwar-munassif",
+      "grade": "1am",
+      "unit": "zawaya-tanazur-mihwari",
+      "order": 23,
+      "kind": "lesson",
+      "titleAr": "محور قطعة مستقيم ومنصّف زاوية",
+      "programmeItems": [
+        "1am.m4.r10",
+        "1am.m4.r11"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-zawaya-tanazur-mihwari",
+      "grade": "1am",
+      "unit": "zawaya-tanazur-mihwari",
+      "order": 24,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — الزوايا والتناظر المحوري",
+      "programmeItems": []
+    },
+    {
+      "code": "kitabat-kasriya",
+      "grade": "1am",
+      "unit": "kitabat-kasriya-nisbiya-harfi",
+      "order": 25,
+      "kind": "lesson",
+      "titleAr": "الكتابات الكسرية لعدد واختزال كسر",
+      "programmeItems": [
+        "1am.m5.r01",
+        "1am.m5.r02",
+        "1am.m5.x1"
+      ]
+    },
+    {
+      "code": "kusur-ushriya",
+      "grade": "1am",
+      "unit": "kitabat-kasriya-nisbiya-harfi",
+      "order": 26,
+      "kind": "lesson",
+      "titleAr": "العمليات على الكسور العشرية",
+      "programmeItems": [
+        "1am.m5.r03"
+      ]
+    },
+    {
+      "code": "fasila-nuqta",
+      "grade": "1am",
+      "unit": "kitabat-kasriya-nisbiya-harfi",
+      "order": 27,
+      "kind": "lesson",
+      "titleAr": "فاصلة نقطة على نصف مستقيم مدرّج",
+      "programmeItems": [
+        "1am.m5.r04"
+      ]
+    },
+    {
+      "code": "aadad-salba",
+      "grade": "1am",
+      "unit": "kitabat-kasriya-nisbiya-harfi",
+      "order": 28,
+      "kind": "lesson",
+      "titleAr": "الأعداد السالبة والمستقيم المدرّج",
+      "programmeItems": [
+        "1am.m5.r05",
+        "1am.m5.r06"
+      ]
+    },
+    {
+      "code": "ihdathiya-nuqta",
+      "grade": "1am",
+      "unit": "kitabat-kasriya-nisbiya-harfi",
+      "order": 29,
+      "kind": "lesson",
+      "titleAr": "إحداثيا نقطة في مستوٍ مزوّد بمعلم",
+      "programmeItems": [
+        "1am.m5.r07"
+      ]
+    },
+    {
+      "code": "qaida-harfiya",
+      "grade": "1am",
+      "unit": "kitabat-kasriya-nisbiya-harfi",
+      "order": 30,
+      "kind": "lesson",
+      "titleAr": "تطبيق قاعدة حرفية وإنتاج عبارة حرفية",
+      "programmeItems": [
+        "1am.m5.r08",
+        "1am.m5.r09"
+      ]
+    },
+    {
+      "code": "itmam-musawat",
+      "grade": "1am",
+      "unit": "kitabat-kasriya-nisbiya-harfi",
+      "order": 31,
+      "kind": "lesson",
+      "titleAr": "إتمام مساواة بعدد مجهول",
+      "programmeItems": [
+        "1am.m5.r10"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-kitabat-kasriya-nisbiya-harfi",
+      "grade": "1am",
+      "unit": "kitabat-kasriya-nisbiya-harfi",
+      "order": 32,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — الكتابات الكسرية، الأعداد النسبية والحساب الحرفي",
+      "programmeItems": []
+    },
+    {
+      "code": "wadiyat-tanasubiya",
+      "grade": "1am",
+      "unit": "tanasubiya-tanzim-1",
+      "order": 33,
+      "kind": "lesson",
+      "titleAr": "الوضعيات التناسبية وجداول التناسبية",
+      "programmeItems": [
+        "1am.m6.r01",
+        "1am.m6.r02",
+        "1am.m6.r03"
+      ]
+    },
+    {
+      "code": "itmam-jadwal-tanasub",
+      "grade": "1am",
+      "unit": "tanasubiya-tanzim-1",
+      "order": 34,
+      "kind": "lesson",
+      "titleAr": "إتمام جدول تناسبية ومقارنة حصص",
+      "programmeItems": [
+        "1am.m6.r04",
+        "1am.m6.r05"
+      ]
+    },
+    {
+      "code": "tatbiq-nisba-miawiya",
+      "grade": "1am",
+      "unit": "tanasubiya-tanzim-1",
+      "order": 35,
+      "kind": "lesson",
+      "titleAr": "تطبيق نسبة مئوية",
+      "programmeItems": [
+        "1am.m6.r06"
+      ]
+    },
+    {
+      "code": "miqyas-takbir",
+      "grade": "1am",
+      "unit": "tanasubiya-tanzim-1",
+      "order": 36,
+      "kind": "lesson",
+      "titleAr": "المقياس: التكبير والتصغير والمخطّطات والخرائط",
+      "programmeItems": [
+        "1am.m6.r07",
+        "1am.m6.r08"
+      ]
+    },
+    {
+      "code": "tahwil-wahadat",
+      "grade": "1am",
+      "unit": "tanasubiya-tanzim-1",
+      "order": 37,
+      "kind": "lesson",
+      "titleAr": "تحويلات وحدات الأطوال والمساحات والحجوم",
+      "programmeItems": [
+        "1am.m6.r09"
+      ]
+    },
+    {
+      "code": "jadawil-mukhattatat",
+      "grade": "1am",
+      "unit": "tanasubiya-tanzim-1",
+      "order": 38,
+      "kind": "lesson",
+      "titleAr": "قراءة الجداول والمخطّطات وتنظيم المعطيات",
+      "programmeItems": [
+        "1am.m6.r10",
+        "1am.m6.r11",
+        "1am.m6.r12"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-tanasubiya-tanzim-1",
+      "grade": "1am",
+      "unit": "tanasubiya-tanzim-1",
+      "order": 39,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — التناسبية وتنظيم معطيات",
+      "programmeItems": []
+    },
+    {
+      "code": "wasf-mutawazi-mustatilat",
+      "grade": "1am",
+      "unit": "mutawazi-mustatilat",
+      "order": 40,
+      "kind": "lesson",
+      "titleAr": "وصف متوازي المستطيلات وتمثيله بالمنظور متساوي القياس",
+      "programmeItems": [
+        "1am.m7.r01",
+        "1am.m7.r02"
+      ]
+    },
+    {
+      "code": "tasmim-mutawazi-mustatilat",
+      "grade": "1am",
+      "unit": "mutawazi-mustatilat",
+      "order": 41,
+      "kind": "lesson",
+      "titleAr": "تصميم متوازي المستطيلات وصنعه",
+      "programmeItems": [
+        "1am.m7.r03",
+        "1am.m7.r04"
+      ]
+    },
+    {
+      "code": "hajm-mutawazi-mustatilat",
+      "grade": "1am",
+      "unit": "mutawazi-mustatilat",
+      "order": 42,
+      "kind": "lesson",
+      "titleAr": "حجم متوازي المستطيلات",
+      "programmeItems": [
+        "1am.m7.r05"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-mutawazi-mustatilat",
+      "grade": "1am",
+      "unit": "mutawazi-mustatilat",
+      "order": 43,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — متوازي المستطيلات والمكعب",
+      "programmeItems": []
+    },
+    {
+      "code": "silsilat-amaliyat",
+      "grade": "2am",
+      "unit": "amaliyat-kusur",
+      "order": 0,
+      "kind": "lesson",
+      "titleAr": "سلسلة عمليات والأقواس",
+      "programmeItems": [
+        "2am.m1.r01",
+        "2am.m1.r02"
+      ]
+    },
+    {
+      "code": "tawzi-darb",
+      "grade": "2am",
+      "unit": "amaliyat-kusur",
+      "order": 1,
+      "kind": "lesson",
+      "titleAr": "خاصية توزيع الضرب على الجمع والطرح",
+      "programmeItems": [
+        "2am.m1.r03"
+      ]
+    },
+    {
+      "code": "qisma-hasr",
+      "grade": "2am",
+      "unit": "amaliyat-kusur",
+      "order": 2,
+      "kind": "lesson",
+      "titleAr": "القسمة الإقليدية والقيمة المقرّبة وحصر حاصل القسمة",
+      "programmeItems": [
+        "2am.m1.r04",
+        "2am.m1.r05",
+        "2am.m1.r06"
+      ]
+    },
+    {
+      "code": "darb-kasrayn",
+      "grade": "2am",
+      "unit": "amaliyat-kusur",
+      "order": 3,
+      "kind": "lesson",
+      "titleAr": "ضرب كسرين",
+      "programmeItems": [
+        "2am.m1.r07"
+      ]
+    },
+    {
+      "code": "muqarana-kasrayn",
+      "grade": "2am",
+      "unit": "amaliyat-kusur",
+      "order": 4,
+      "kind": "lesson",
+      "titleAr": "مقارنة كسرين",
+      "programmeItems": [
+        "2am.m1.r08"
+      ]
+    },
+    {
+      "code": "jam-tarh-kasrayn",
+      "grade": "2am",
+      "unit": "amaliyat-kusur",
+      "order": 5,
+      "kind": "lesson",
+      "titleAr": "جمع كسرين وطرحهما",
+      "programmeItems": [
+        "2am.m1.r09"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-amaliyat-kusur",
+      "grade": "2am",
+      "unit": "amaliyat-kusur",
+      "order": 6,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — العمليات على الأعداد الطبيعية والأعداد العشرية – العمليات على الكسور",
+      "programmeItems": []
+    },
+    {
+      "code": "inshaat-adawat",
+      "grade": "2am",
+      "unit": "tanazur-markazi",
+      "order": 7,
+      "kind": "lesson",
+      "titleAr": "الإنشاءات بالأدوات الهندسية",
+      "programmeItems": [
+        "2am.m2.r01"
+      ]
+    },
+    {
+      "code": "markaz-tanazur",
+      "grade": "2am",
+      "unit": "tanazur-markazi",
+      "order": 8,
+      "kind": "lesson",
+      "titleAr": "الشكل الذي يقبل مركز تناظر",
+      "programmeItems": [
+        "2am.m2.r02"
+      ]
+    },
+    {
+      "code": "nazir-markazi",
+      "grade": "2am",
+      "unit": "tanazur-markazi",
+      "order": 9,
+      "kind": "lesson",
+      "titleAr": "نظير شكل بالتناظر المركزي",
+      "programmeItems": [
+        "2am.m2.r03",
+        "2am.m2.r04"
+      ]
+    },
+    {
+      "code": "khawas-tanazur-markazi",
+      "grade": "2am",
+      "unit": "tanazur-markazi",
+      "order": 10,
+      "kind": "lesson",
+      "titleAr": "خواص التناظر المركزي",
+      "programmeItems": [
+        "2am.m2.r05"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-tanazur-markazi",
+      "grade": "2am",
+      "unit": "tanazur-markazi",
+      "order": 11,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — إنشاء أشكال هندسية بسيطة – التناظر المركزي",
+      "programmeItems": []
+    },
+    {
+      "code": "zawaya-mutajawira",
+      "grade": "2am",
+      "unit": "zawaya-muthallathat-daira",
+      "order": 12,
+      "kind": "lesson",
+      "titleAr": "الزوايا المتجاورة والمتتامّة والمتكاملة والمتقابلة بالرأس",
+      "programmeItems": [
+        "2am.m3.r01",
+        "2am.m3.r02"
+      ]
+    },
+    {
+      "code": "mutawaziyan-qati",
+      "grade": "2am",
+      "unit": "zawaya-muthallathat-daira",
+      "order": 13,
+      "kind": "lesson",
+      "titleAr": "الزوايا المعيّنة بمتوازيين وقاطع",
+      "programmeItems": [
+        "2am.m3.r03"
+      ]
+    },
+    {
+      "code": "majmu-zawaya-muthallath",
+      "grade": "2am",
+      "unit": "zawaya-muthallathat-daira",
+      "order": 14,
+      "kind": "lesson",
+      "titleAr": "مجموع أقياس زوايا مثلث",
+      "programmeItems": [
+        "2am.m3.r04"
+      ]
+    },
+    {
+      "code": "insha-muthallath",
+      "grade": "2am",
+      "unit": "zawaya-muthallathat-daira",
+      "order": 15,
+      "kind": "lesson",
+      "titleAr": "إنشاء مثلث",
+      "programmeItems": [
+        "2am.m3.r05"
+      ]
+    },
+    {
+      "code": "misahat-muthallath",
+      "grade": "2am",
+      "unit": "zawaya-muthallathat-daira",
+      "order": 16,
+      "kind": "lesson",
+      "titleAr": "مساحة المثلث",
+      "programmeItems": [
+        "2am.m3.r06"
+      ]
+    },
+    {
+      "code": "daira-muhita-qurs",
+      "grade": "2am",
+      "unit": "zawaya-muthallathat-daira",
+      "order": 17,
+      "kind": "lesson",
+      "titleAr": "الدائرة المحيطة بمثلث ومساحة القرص",
+      "programmeItems": [
+        "2am.m3.r07",
+        "2am.m3.r08"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-zawaya-muthallathat-daira",
+      "grade": "2am",
+      "unit": "zawaya-muthallathat-daira",
+      "order": 18,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — الزوايا – المثلثات والدائرة",
+      "programmeItems": []
+    },
+    {
+      "code": "muqarana-nisbiya",
+      "grade": "2am",
+      "unit": "aadad-nisbiya",
+      "order": 19,
+      "kind": "lesson",
+      "titleAr": "الأعداد النسبية على مستقيم مدرّج: المقارنة والترتيب",
+      "programmeItems": [
+        "2am.m4.r01",
+        "2am.m4.r02",
+        "2am.m4.r03"
+      ]
+    },
+    {
+      "code": "maalam-mustawi",
+      "grade": "2am",
+      "unit": "aadad-nisbiya",
+      "order": 20,
+      "kind": "lesson",
+      "titleAr": "المعلم المتعامد والمتجانس في المستوي",
+      "programmeItems": [
+        "2am.m4.r04"
+      ]
+    },
+    {
+      "code": "jam-tarh-nisbiya",
+      "grade": "2am",
+      "unit": "aadad-nisbiya",
+      "order": 21,
+      "kind": "lesson",
+      "titleAr": "جمع الأعداد النسبية وطرحها والمجموع الجبري",
+      "programmeItems": [
+        "2am.m4.r05",
+        "2am.m4.r06"
+      ]
+    },
+    {
+      "code": "masafa-mustaqim-mudarraj",
+      "grade": "2am",
+      "unit": "aadad-nisbiya",
+      "order": 22,
+      "kind": "lesson",
+      "titleAr": "المسافة بين نقطتين على مستقيم مدرّج",
+      "programmeItems": [
+        "2am.m4.r07"
+      ]
+    },
+    {
+      "code": "muadalat-qisma",
+      "grade": "2am",
+      "unit": "aadad-nisbiya",
+      "order": 23,
+      "kind": "lesson",
+      "titleAr": "حلّ معادلات بسيطة واختبار صحة مساواة",
+      "programmeItems": [
+        "2am.m4.r08",
+        "2am.m4.r09"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-aadad-nisbiya",
+      "grade": "2am",
+      "unit": "aadad-nisbiya",
+      "order": 24,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
+      "programmeItems": []
+    },
+    {
+      "code": "khawas-mutawazi-adla",
+      "grade": "2am",
+      "unit": "mutawazi-adla",
+      "order": 25,
+      "kind": "lesson",
+      "titleAr": "خواص متوازي الأضلاع",
+      "programmeItems": [
+        "2am.m5.r01"
+      ]
+    },
+    {
+      "code": "mutawaziyat-khassa",
+      "grade": "2am",
+      "unit": "mutawazi-adla",
+      "order": 26,
+      "kind": "lesson",
+      "titleAr": "متوازيات الأضلاع الخاصة",
+      "programmeItems": [
+        "2am.m5.r02"
+      ]
+    },
+    {
+      "code": "misahat-mutawazi-adla",
+      "grade": "2am",
+      "unit": "mutawazi-adla",
+      "order": 27,
+      "kind": "lesson",
+      "titleAr": "مساحة متوازي الأضلاع",
+      "programmeItems": [
+        "2am.m5.r03"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-mutawazi-adla",
+      "grade": "2am",
+      "unit": "mutawazi-adla",
+      "order": 28,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — متوازي الأضلاع",
+      "programmeItems": []
+    },
+    {
+      "code": "jadawil-tanasub",
+      "grade": "2am",
+      "unit": "tanasubiya-tanzim-2",
+      "order": 29,
+      "kind": "lesson",
+      "titleAr": "التعرّف على التناسبية وإتمام جداول تناسبية",
+      "programmeItems": [
+        "2am.m6.r01",
+        "2am.m6.r02"
+      ]
+    },
+    {
+      "code": "rabi-mutanasib",
+      "grade": "2am",
+      "unit": "tanasubiya-tanzim-2",
+      "order": 30,
+      "kind": "lesson",
+      "titleAr": "الرابع المتناسب",
+      "programmeItems": [
+        "2am.m6.r03"
+      ]
+    },
+    {
+      "code": "nisba-miawiya",
+      "grade": "2am",
+      "unit": "tanasubiya-tanzim-2",
+      "order": 31,
+      "kind": "lesson",
+      "titleAr": "حساب النسبة المئوية وتوظيفها",
+      "programmeItems": [
+        "2am.m6.r04"
+      ]
+    },
+    {
+      "code": "miqyas-kharita",
+      "grade": "2am",
+      "unit": "tanasubiya-tanzim-2",
+      "order": 32,
+      "kind": "lesson",
+      "titleAr": "مقياس خريطة أو تصميم",
+      "programmeItems": [
+        "2am.m6.r05"
+      ]
+    },
+    {
+      "code": "tahwil-wahadat-qiyas",
+      "grade": "2am",
+      "unit": "tanasubiya-tanzim-2",
+      "order": 33,
+      "kind": "lesson",
+      "titleAr": "تحويل وحدات القياس",
+      "programmeItems": [
+        "2am.m6.r06"
+      ]
+    },
+    {
+      "code": "salasil-ihsaiya",
+      "grade": "2am",
+      "unit": "tanasubiya-tanzim-2",
+      "order": 34,
+      "kind": "lesson",
+      "titleAr": "السلاسل الإحصائية: القراءة والتفسير",
+      "programmeItems": [
+        "2am.m6.r07",
+        "2am.m6.r08",
+        "2am.m6.r09"
+      ]
+    },
+    {
+      "code": "tamthil-ihsai",
+      "grade": "2am",
+      "unit": "tanasubiya-tanzim-2",
+      "order": 35,
+      "kind": "lesson",
+      "titleAr": "تمثيل معطيات إحصائية بمخطّطات",
+      "programmeItems": [
+        "2am.m6.r10"
+      ]
+    },
+    {
+      "code": "fiat-takrarat",
+      "grade": "2am",
+      "unit": "tanasubiya-tanzim-2",
+      "order": 36,
+      "kind": "lesson",
+      "titleAr": "الفئات والتكرارات والتكرارات النسبية",
+      "programmeItems": [
+        "2am.m6.r11",
+        "2am.m6.r12"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-tanasubiya-tanzim-2",
+      "grade": "2am",
+      "unit": "tanasubiya-tanzim-2",
+      "order": 37,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — التناسبية وتنظيم معطيات",
+      "programmeItems": []
+    },
+    {
+      "code": "mawshur-qaim",
+      "grade": "2am",
+      "unit": "mawshur-ustuwana",
+      "order": 38,
+      "kind": "lesson",
+      "titleAr": "الموشور القائم: الوصف والتصميم والصنع",
+      "programmeItems": [
+        "2am.m7.r01",
+        "2am.m7.r02",
+        "2am.m7.r03"
+      ]
+    },
+    {
+      "code": "ustuwanat-dawaran",
+      "grade": "2am",
+      "unit": "mawshur-ustuwana",
+      "order": 39,
+      "kind": "lesson",
+      "titleAr": "أسطوانة الدوران: الوصف والتصميم والصنع",
+      "programmeItems": [
+        "2am.m7.r04",
+        "2am.m7.r05",
+        "2am.m7.r06"
+      ]
+    },
+    {
+      "code": "misaha-janibiya",
+      "grade": "2am",
+      "unit": "mawshur-ustuwana",
+      "order": 40,
+      "kind": "lesson",
+      "titleAr": "المساحة الجانبية للموشور القائم ولأسطوانة الدوران",
+      "programmeItems": [
+        "2am.m7.r07"
+      ]
+    },
+    {
+      "code": "hajm-mawshur-ustuwana",
+      "grade": "2am",
+      "unit": "mawshur-ustuwana",
+      "order": 41,
+      "kind": "lesson",
+      "titleAr": "حجم الموشور القائم وأسطوانة الدوران",
+      "programmeItems": [
+        "2am.m7.r08"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-mawshur-ustuwana",
+      "grade": "2am",
+      "unit": "mawshur-ustuwana",
+      "order": 42,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — الموشور القائم – أسطوانة الدوران",
+      "programmeItems": []
+    },
+    {
+      "code": "darb-qisma-nisbiya",
+      "grade": "3am",
+      "unit": "nisbiya-kusur-natiqa",
+      "order": 0,
+      "kind": "lesson",
+      "titleAr": "ضرب الأعداد النسبية وقسمتها",
+      "programmeItems": [
+        "3am.m1.r01",
+        "3am.m1.r02"
+      ]
+    },
+    {
+      "code": "maqlub-qisma-kasrayn",
+      "grade": "3am",
+      "unit": "nisbiya-kusur-natiqa",
+      "order": 1,
+      "kind": "lesson",
+      "titleAr": "مقلوب عدد وقسمة كسرين",
+      "programmeItems": [
+        "3am.m1.r03",
+        "3am.m1.r04"
+      ]
+    },
+    {
+      "code": "muqarana-jam-kusur",
+      "grade": "3am",
+      "unit": "nisbiya-kusur-natiqa",
+      "order": 2,
+      "kind": "lesson",
+      "titleAr": "مقارنة الكسور وجمعها وطرحها",
+      "programmeItems": [
+        "3am.m1.r05",
+        "3am.m1.r06"
+      ]
+    },
+    {
+      "code": "aadad-natiqa",
+      "grade": "3am",
+      "unit": "nisbiya-kusur-natiqa",
+      "order": 3,
+      "kind": "lesson",
+      "titleAr": "الأعداد الناطقة والعمليات عليها",
+      "programmeItems": [
+        "3am.m1.r07",
+        "3am.m1.r08"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-nisbiya-kusur-natiqa",
+      "grade": "3am",
+      "unit": "nisbiya-kusur-natiqa",
+      "order": 4,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — الأعداد النسبية – العمليات على الكسور – الأعداد الناطقة",
+      "programmeItems": []
+    },
+    {
+      "code": "taqayus-muthallathat",
+      "grade": "3am",
+      "unit": "muthallathat-3",
+      "order": 5,
+      "kind": "lesson",
+      "titleAr": "حالات تقايس المثلثات",
+      "programmeItems": [
+        "3am.m2.r01"
+      ]
+    },
+    {
+      "code": "mustaqim-muntasafayn",
+      "grade": "3am",
+      "unit": "muthallathat-3",
+      "order": 6,
+      "kind": "lesson",
+      "titleAr": "مستقيم المنتصفين في مثلث",
+      "programmeItems": [
+        "3am.m2.r02"
+      ]
+    },
+    {
+      "code": "tanasubiyat-atwal",
+      "grade": "3am",
+      "unit": "muthallathat-3",
+      "order": 7,
+      "kind": "lesson",
+      "titleAr": "تناسبية أطوال أضلاع المثلثين المعيّنين بمتوازيين",
+      "programmeItems": [
+        "3am.m2.r03"
+      ]
+    },
+    {
+      "code": "mustaqimat-khassa",
+      "grade": "3am",
+      "unit": "muthallathat-3",
+      "order": 8,
+      "kind": "lesson",
+      "titleAr": "المستقيمات الخاصة في المثلث",
+      "programmeItems": [
+        "3am.m2.r04",
+        "3am.m2.r05"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-muthallathat-3",
+      "grade": "3am",
+      "unit": "muthallathat-3",
+      "order": 9,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — المثلثات",
+      "programmeItems": []
+    },
+    {
+      "code": "quwa-ashara",
+      "grade": "3am",
+      "unit": "quwa",
+      "order": 10,
+      "kind": "lesson",
+      "titleAr": "قوى العدد 10 وقواعد الحساب عليها",
+      "programmeItems": [
+        "3am.m3.r01",
+        "3am.m3.r02",
+        "3am.m3.r03"
+      ]
+    },
+    {
+      "code": "kitaba-ilmiya",
+      "grade": "3am",
+      "unit": "quwa",
+      "order": 11,
+      "kind": "lesson",
+      "titleAr": "الكتابة العلمية ورتبة مقدار عدد",
+      "programmeItems": [
+        "3am.m3.r04",
+        "3am.m3.r05"
+      ]
+    },
+    {
+      "code": "quwat-adad-nisbi",
+      "grade": "3am",
+      "unit": "quwa",
+      "order": 12,
+      "kind": "lesson",
+      "titleAr": "قوة عدد نسبي وقواعد الحساب عليها",
+      "programmeItems": [
+        "3am.m3.r06",
+        "3am.m3.r07",
+        "3am.m3.r08"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-quwa",
+      "grade": "3am",
+      "unit": "quwa",
+      "order": 13,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
+      "programmeItems": []
+    },
+    {
+      "code": "daira-muthallath-qaim",
+      "grade": "3am",
+      "unit": "muthallath-qaim-daira",
+      "order": 14,
+      "kind": "lesson",
+      "titleAr": "الدائرة المحيطة بالمثلث القائم والمتوسط المتعلّق بالوتر",
+      "programmeItems": [
+        "3am.m4.r01",
+        "3am.m4.r02"
+      ]
+    },
+    {
+      "code": "fithaghuras",
+      "grade": "3am",
+      "unit": "muthallath-qaim-daira",
+      "order": 15,
+      "kind": "lesson",
+      "titleAr": "خاصية فيثاغورس وعكسها",
+      "programmeItems": [
+        "3am.m4.r03",
+        "3am.m4.x1"
+      ]
+    },
+    {
+      "code": "buud-nuqta-mumass",
+      "grade": "3am",
+      "unit": "muthallath-qaim-daira",
+      "order": 16,
+      "kind": "lesson",
+      "titleAr": "بعد نقطة عن مستقيم، الأوضاع النسبية لمستقيم ودائرة، والمماس",
+      "programmeItems": [
+        "3am.m4.r04",
+        "3am.m4.r05",
+        "3am.m4.r06"
+      ]
+    },
+    {
+      "code": "jayb-tamam",
+      "grade": "3am",
+      "unit": "muthallath-qaim-daira",
+      "order": 17,
+      "kind": "lesson",
+      "titleAr": "جيب تمام زاوية حادة",
+      "programmeItems": [
+        "3am.m4.r07",
+        "3am.m4.r08",
+        "3am.m4.r09"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-muthallath-qaim-daira",
+      "grade": "3am",
+      "unit": "muthallath-qaim-daira",
+      "order": 18,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — المثلث القائم والدائرة",
+      "programmeItems": []
+    },
+    {
+      "code": "tabsit-qima-ibara",
+      "grade": "3am",
+      "unit": "hisab-harfi-3",
+      "order": 19,
+      "kind": "lesson",
+      "titleAr": "تبسيط عبارة جبرية وحساب قيمتها",
+      "programmeItems": [
+        "3am.m5.r01",
+        "3am.m5.r03"
+      ]
+    },
+    {
+      "code": "nashr-jida",
+      "grade": "3am",
+      "unit": "hisab-harfi-3",
+      "order": 20,
+      "kind": "lesson",
+      "titleAr": "نشر جداء عبارتين",
+      "programmeItems": [
+        "3am.m5.r02"
+      ]
+    },
+    {
+      "code": "musawat-mutabayinat",
+      "grade": "3am",
+      "unit": "hisab-harfi-3",
+      "order": 21,
+      "kind": "lesson",
+      "titleAr": "المساويات والمتباينات والعمليات، ومقارنة عددين ناطقين",
+      "programmeItems": [
+        "3am.m5.r05",
+        "3am.m5.r04",
+        "3am.m5.x1"
+      ]
+    },
+    {
+      "code": "tarrid-muadala",
+      "grade": "3am",
+      "unit": "hisab-harfi-3",
+      "order": 22,
+      "kind": "lesson",
+      "titleAr": "ترييض مشكلات بمعادلات من الدرجة الأولى بمجهول واحد",
+      "programmeItems": [
+        "3am.m5.r06"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-hisab-harfi-3",
+      "grade": "3am",
+      "unit": "hisab-harfi-3",
+      "order": 23,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — الحساب الحرفي",
+      "programmeItems": []
+    },
+    {
+      "code": "insihab",
+      "grade": "3am",
+      "unit": "insihab-haram-makhrut",
+      "order": 24,
+      "kind": "lesson",
+      "titleAr": "الانسحاب: التعريف والإنشاء والخواص",
+      "programmeItems": [
+        "3am.m6.r01",
+        "3am.m6.r02",
+        "3am.m6.r03"
+      ]
+    },
+    {
+      "code": "haram-makhrut",
+      "grade": "3am",
+      "unit": "insihab-haram-makhrut",
+      "order": 25,
+      "kind": "lesson",
+      "titleAr": "الهرم ومخروط الدوران: الوصف والتمثيل والتصميم والصنع",
+      "programmeItems": [
+        "3am.m6.r04",
+        "3am.m6.r05",
+        "3am.m6.r06",
+        "3am.m6.r07"
+      ]
+    },
+    {
+      "code": "hajm-haram-makhrut",
+      "grade": "3am",
+      "unit": "insihab-haram-makhrut",
+      "order": 26,
+      "kind": "lesson",
+      "titleAr": "حجم الهرم ومخروط الدوران",
+      "programmeItems": [
+        "3am.m6.r08"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-insihab-haram-makhrut",
+      "grade": "3am",
+      "unit": "insihab-haram-makhrut",
+      "order": 27,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — الانسحاب – الهرم ومخروط الدوران",
+      "programmeItems": []
+    },
+    {
+      "code": "tanasub-bayani",
+      "grade": "3am",
+      "unit": "tanasubiya-tanzim-3",
+      "order": 28,
+      "kind": "lesson",
+      "titleAr": "التناسبية في تمثيل بياني",
+      "programmeItems": [
+        "3am.m7.r01"
+      ]
+    },
+    {
+      "code": "haraka-muntazama",
+      "grade": "3am",
+      "unit": "tanasubiya-tanzim-3",
+      "order": 29,
+      "kind": "lesson",
+      "titleAr": "الحركة المنتظمة: المسافة والسرعة والزمن",
+      "programmeItems": [
+        "3am.m7.r02",
+        "3am.m7.r03",
+        "3am.m7.r04",
+        "3am.m7.r05"
+      ]
+    },
+    {
+      "code": "tanasub-nisba-miawiya",
+      "grade": "3am",
+      "unit": "tanasubiya-tanzim-3",
+      "order": 30,
+      "kind": "lesson",
+      "titleAr": "التناسبية والنسبة المئوية",
+      "programmeItems": [
+        "3am.m7.r06"
+      ]
+    },
+    {
+      "code": "tajmi-fiat",
+      "grade": "3am",
+      "unit": "tanasubiya-tanzim-3",
+      "order": 31,
+      "kind": "lesson",
+      "titleAr": "التجميع في فئات والتكرارات والتكرارات النسبية",
+      "programmeItems": [
+        "3am.m7.r07",
+        "3am.m7.r08",
+        "3am.m7.r10"
+      ]
+    },
+    {
+      "code": "mudarraj-takrari",
+      "grade": "3am",
+      "unit": "tanasubiya-tanzim-3",
+      "order": 32,
+      "kind": "lesson",
+      "titleAr": "تمثيل سلسلة إحصائية: الأشرطة والمدرج التكراري",
+      "programmeItems": [
+        "3am.m7.r09"
+      ]
+    },
+    {
+      "code": "mutawassit-mutawazin",
+      "grade": "3am",
+      "unit": "tanasubiya-tanzim-3",
+      "order": 33,
+      "kind": "lesson",
+      "titleAr": "المتوسط المتوازن واستعمال المجدولات",
+      "programmeItems": [
+        "3am.m7.r11",
+        "3am.m7.r12"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-tanasubiya-tanzim-3",
+      "grade": "3am",
+      "unit": "tanasubiya-tanzim-3",
+      "order": 34,
+      "kind": "synthesis",
+      "titleAr": "أدمج تعلّماتي — التناسبية وتنظيم معطيات",
+      "programmeItems": []
+    }
+  ]
+}

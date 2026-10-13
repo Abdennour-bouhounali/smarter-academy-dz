@@ -43,6 +43,14 @@ Unit 1 is the **pilot unit**: rules are tried there, then extended. Three unit-1
 (2026-10-13) — were **extended to units 2–14 on 2026-10-13**; every synthesis lesson now has modules 1–6 « وضعيات تدريبية » and
 every `ContentModule` has `objectives` for the Classroom Mode entry slide. Report: `docs/reports/UNIT1_REFERENCE_CHANGES_2026-10-13.md`.
 
+Since 2026-10-13 the **learning net « شبكة الكفاءات »** covers the WHOLE cycle moyen (1AM–4AM): the official
+programme of the four years as data (224 items transcribed from `docs/Math-Moyenne-programme/`, stable ids
+`<g>am.m<مقطع>.r<nn>`), typed links between items (`requires` / `extends` with its added value / `consolidates` —
+the no-duplication rule), the PLANNED 1AM–3AM lessons (codes, units, items — no content), and each 4AM lesson's
+`programmeItems` (`packages/core/curriculum/dz/net/`, contract `docs/architecture/LEARNING_NET.md`, generated map
+`docs/curriculum/LEARNING_NET_MAP.md`). A 1AM–3AM lesson is generated FROM its planned entry (contract §4); every
+« أستعدّ » shows « راجع قبل أن تنطلق » from the net. The resolver is imported by path, never from the core barrel.
+
 ## Read before any task
 
 - `docs/README.md` — the documentation map: which document is authoritative

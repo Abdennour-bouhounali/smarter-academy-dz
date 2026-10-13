@@ -54,6 +54,7 @@ to read them.
 | Author or generate a lesson's **Knowledge Map** (the progressive map, its guidance layer, its quality checklist) | [`architecture/KNOWLEDGE_MAP.md`](./architecture/KNOWLEDGE_MAP.md) **Part A** |
 | Create or modify a lesson, module, manipulation or exercise | **[`lessons/LESSON_DEVELOPMENT_GUIDE.md`](./lessons/LESSON_DEVELOPMENT_GUIDE.md)** — the single entry point |
 | **Generate a new lesson** | [`lessons/LESSON_DEVELOPMENT_GUIDE.md`](./lessons/LESSON_DEVELOPMENT_GUIDE.md) **§14 — the reference architecture, frozen for generation on 2026-09-29**: the real structure, the generation contract (input, required output, what to reuse, what is prohibited) and the validation a generated lesson must pass |
+| **Generate a 1AM–3AM lesson**, or touch what a lesson assumes from earlier years | **[`architecture/LEARNING_NET.md`](./architecture/LEARNING_NET.md)** §4 — start from the planned lesson of the learning net (code, unit, official items), never from a parallel decomposition |
 | **Generate the « مسائل »** (3 exam-style problem modules) of a lesson | **[`lessons/MASAIL_GENERATION_GUIDE.md`](./lessons/MASAIL_GENERATION_GUIDE.md)** — owner rules, design method, data schema, wiring checklist, validation, pitfalls |
 | **Write the « أتوقّع القاعدة » prompts** of a lesson (the rule the student writes before reading it) | **[`lessons/PREDICT_PROMPT_GUIDE.md`](./lessons/PREDICT_PROMPT_GUIDE.md)** — criteria, procedure, `npm run audit:predict` |
 | Understand the whole system | [`architecture/ARCHITECTURE.md`](./architecture/ARCHITECTURE.md) |
@@ -110,6 +111,7 @@ may describe it, but they defer to this one.
 | **Page tours (« جولة تعريفية »)**: first-visit guided tour per page and per role, `page_tours` table and `/me/tours` API, completed/skipped closure, registry of CSS-selector steps, non-blocking overlay, replay button, `TOURS_ELIGIBLE_SINCE` | [`architecture/PAGE_TOURS.md`](./architecture/PAGE_TOURS.md) |
 | Product scope, access model, Algerian terminology policy | [`ALGERIA_PLATFORM_MASTER_SPEC.md`](./ALGERIA_PLATFORM_MASTER_SPEC.md) |
 | 4AM curriculum inventory and terminology register | [`ALGERIA_4AM_CURRICULUM.md`](./ALGERIA_4AM_CURRICULUM.md) |
+| **The learning net « شبكة الكفاءات » (1AM–4AM)**: the official programme of the four years as data (224 items, verbatim, stable ids `<g>am.m<n>.r<nn>`), the links between items (`requires` / `extends` + added value / `consolidates` — the no-duplication rule), 17 conceptual threads, the planned 1AM–3AM lessons, each lesson's `programmeItems`, the resolver (`reviewLinksForLesson`, `forwardLinksForLesson`, `noRebuildForLesson`) and « راجع قبل أن تنطلق » under every « أستعدّ » | [`architecture/LEARNING_NET.md`](./architecture/LEARNING_NET.md); generated map [`curriculum/LEARNING_NET_MAP.md`](./curriculum/LEARNING_NET_MAP.md); sources `Math-Moyenne-programme/` |
 
 ## Reference material
 

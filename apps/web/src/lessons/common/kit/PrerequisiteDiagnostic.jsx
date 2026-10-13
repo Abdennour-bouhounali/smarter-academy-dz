@@ -10,6 +10,7 @@ import { Feedback, ChoiceGrid, ValidateButton, MissionBrief } from '../component
 import TestPresentation, { useTestPresentation } from './TestPresentation';
 import { revealAll, revealOne } from './testPresentation';
 import { diagnosticAdviceLevel } from './diagnosticLevel';
+import ReviewLinks from './ReviewLinks';
 
 /**
  * Lesson kit — moteur du module 0 « Mission de départ » (diagnostic des
@@ -119,7 +120,7 @@ function DiagnosticQuestionReview({ q, pick, ok }) {
   );
 }
 
-function DiagnosticResult({ score, maxScore, skills, skillScores, levels, onContinue, onRedo }) {
+function DiagnosticResult({ lessonId, score, maxScore, skills, skillScores, levels, onContinue, onRedo }) {
   const { t } = useTranslation('lesson');
   // Un palier fournit SOIT un texte déjà écrit (une leçon qui passe ses
   // propres `levels`), SOIT une clé de traduction (le repli DEFAULT_LEVELS).
@@ -191,6 +192,10 @@ function DiagnosticResult({ score, maxScore, skills, skillScores, levels, onCont
         </p>
         <p className="mt-2">💡 {text(meta, 'advice')}</p>
       </Feedback>
+
+      {/* Les الكفاءات des leçons antérieures sur lesquelles celle-ci s'appuie
+          (réseau des الكفاءات, LEARNING_NET.md) — des liens, jamais un verrou. */}
+      <ReviewLinks lessonId={lessonId} />
 
       <div className="flex flex-col sm:flex-row gap-3">
         <button
@@ -327,6 +332,7 @@ export default function PrerequisiteDiagnostic({
           )}
           summary={(
             <DiagnosticResult
+              lessonId={ctx.lessonId}
               score={score}
               maxScore={maxScore}
               skills={skills}
@@ -475,6 +481,7 @@ export default function PrerequisiteDiagnostic({
           </div>
 
           <DiagnosticResult
+            lessonId={ctx.lessonId}
             score={score}
             maxScore={maxScore}
             skills={skills}

@@ -36,7 +36,7 @@ Avant chaque demande, chaque connaissance requise est dans l'un de ces états :
 
 | État | Sens | Déclaration dans le code |
 | --- | --- | --- |
-| **A — acquis** | vient des années précédentes **ou** d'une leçon antérieure de la même unité | `priorKnowledge: [...]` dans `lesson.config.js` (diagnostiqué par le module 0 quand la leçon en a un) |
+| **A — acquis** | vient des années précédentes **ou** d'une leçon antérieure de la même unité | `priorKnowledge: [...]` dans `lesson.config.js` (diagnostiqué par le module 0 quand la leçon en a un). **D'où vient-il dans le programme ?** Le réseau des الكفاءات le dit au grain du programme officiel : `reviewLinksForLesson(code)` (`LEARNING_NET.md`), affiché sous le résultat du module 0 (« راجع قبل أن تنطلق »). Les slugs `priorKnowledge` restent le vocabulaire de l'audit ; ils ne sont pas (encore) reliés aux items du réseau. |
 | **B — vient d'être enseigné** | posé juste avant, en position d'enseignement | `<KnowledgeBrick id variant="new">` plus haut dans le flux |
 | **C — juste à temps** | montré à l'instant parce que la demande l'exige | `<KnowledgeBrick variant="rappel">` |
 | **D — enrichissement** | signalé comme facultatif, jamais requis | `<KnowledgeBrick variant="enrichment">`, jamais dans un `requires` |

@@ -562,7 +562,7 @@ The recurring module roles in the 4AM unit, by their Arabic names:
 
 | Module | Stage | What it is |
 |---|---|---|
-| `Module00Astaidd` — أستعدّ | `prerequisite_check` | Every lesson of the unit opens on it (9 of 9 since 2026-09-30; guarded by `_unit/prepDiagnostic.test.js`). Diagnoses the lesson's `priorKnowledge` — previous years or earlier lessons of the unit — and never the lesson's own material; every `priorKnowledge` id is measured by at least one question. Built as described under « The « أستعدّ » pattern » below. Never gates, never persists evidence; its result is stored locally and read by nothing but its own results screen, so its copy must not promise that the lesson adapts. Advice tiers are computed on the score ratio (`kit/diagnosticLevel.js`). « التالي » without submitting does not complete it. |
+| `Module00Astaidd` — أستعدّ | `prerequisite_check` | Every lesson of the unit opens on it (9 of 9 since 2026-09-30; guarded by `_unit/prepDiagnostic.test.js`). Diagnoses the lesson's `priorKnowledge` — previous years or earlier lessons of the unit — and never the lesson's own material; every `priorKnowledge` id is measured by at least one question. Built as described under « The « أستعدّ » pattern » below. Never gates, never persists evidence; its result is stored locally and read by nothing but its own results screen, so its copy must not promise that the lesson adapts. Under the result, the kit renders « راجع قبل أن تنطلق » (`kit/ReviewLinks.jsx`, since 2026-10-13): the official الكفاءات of earlier lessons — earlier years included — that this lesson builds on, read from the learning net by `lessonId`; a link when that lesson is published, « قريبًا » when it is only planned. Nothing to write per lesson: it comes from the lesson's `programmeItems` (`LEARNING_NET.md` §3). Advice tiers are computed on the score ratio (`kit/diagnosticLevel.js`). « التالي » without submitting does not complete it. |
 | `Module01…` — the activity | `trigger` | the textbook activity, opening on the signature manipulation in the `intro` slot |
 | `Module02Maarif` — معارف | `discovery` | the textbook's definitions, each laid by a `KnowledgeBrick` at the moment it is needed |
 | `Module0xAwazzif` — أوظّف تعلّماتي | `practice_lab` | the textbook's exercises via `TextbookExercise` |
@@ -1633,7 +1633,10 @@ Practice  = content/practice/<grade>/<lesson>/level-N (separate engine, server-j
 grade and المجال; the الوحدة in `units_<grade>_*.json`; the lesson entry in
 `lessons_<grade>_*.json` with its `pointsToLearn` (learning-point ids are
 DERIVED: `{grade}_{lessonId}_P{n}`), `prerequisiteLessonCodes`,
-`durationMinutes`; the textbook extraction `docs/sources/<grade>/<unit>/extraction.json`
+`durationMinutes`, and its **`programmeItems`** — the official items of the
+learning net it teaches (`LEARNING_NET.md`; for 1AM–3AM, copied with the code
+from the net's planned lesson, and `noRebuildForLesson(code)` says what the
+lesson must recall rather than rebuild — §4 of that contract); the textbook extraction `docs/sources/<grade>/<unit>/extraction.json`
 for every element the lesson cites. Mastery criteria are the server's
 (Mastery V2) — a lesson declares none.
 
@@ -1715,7 +1718,10 @@ generated lesson would inherit if it follows 14.2:
   declared id (the audit reports no `W_PRIOR_NOT_DIAGNOSED`); 39 of the 49
   statements are platform additions, because the textbook has only 10.
 - The weak-prerequisite recommendation links to the prerequisite's lesson
-  (2026-09-29) but the diagnostic result itself drives nothing.
+  (2026-09-29). Since 2026-10-13 the diagnostic result shows « راجع قبل أن
+  تنطلق » from the learning net, but a weak answer does not yet highlight its
+  own card (the `priorKnowledge` slugs are not mapped to net items —
+  `LEARNING_NET.md` §8).
 - Seven textbook-activity steps wait on their lab's `onFinished` (allowed, §6; the list is in
   MANIPULATION_CONTRACT §7bis).
   The reference lesson's module 1 does **not** wait (its default level is the

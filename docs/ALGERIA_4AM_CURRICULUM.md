@@ -16,6 +16,7 @@ et ce qui reste à décider.
 | Contenu des leçons | **EN COURS (phase 8)** — unité 1 du manuel (8 leçons + synthèse) écrite ; voir `ALGERIA_PHASE8_UNIT1_TEXTBOOK_REPORT.md` |
 | Catalogue affiché (`coursesData.js`) | **Depuis le 2026-09-25** : seuls les ميادين qui portent des leçons (aujourd'hui ميدان أنساب الأعداد والحساب et l'unité « الأعداد الطبيعيّة والأعداد النّاطقة »). Le programme JSON garde ses 4 domaines et 28 sujets ; un ميدان réapparaît dès qu'une leçon le nomme. Les leçons françaises et leur catalogue ont été supprimés le même jour. |
 | Terminologie arabe officielle | PARTIELLE — celle du programme fourni est reprise telle quelle |
+| Programme officiel 1AM–4AM et prérequis des années antérieures | **FAIT (2026-10-13)** — le réseau des الكفاءات (`docs/architecture/LEARNING_NET.md`) : 224 موارد des quatre années (منهاج 2016 + المخططات السنوية 2022), liens entre items ; chaque leçon 4AM déclare ses `programmeItems` |
 
 **Note de lecture (phase 7).** Les mentions `À DÉCOMPOSER` et `NOT STARTED`
 des tableaux §2 à §5 ci-dessous datent d'avant le découpage. Elles sont
@@ -36,7 +37,9 @@ dépendent et restent donc ouvertes :
 - l'ordre d'enseignement des domaines dans l'année ;
 - le volume horaire par domaine, donc le nombre de leçons ;
 - le niveau d'exigence attendu en fin de 4AM pour chaque notion ;
-- les prérequis supposés acquis des années 1AM–3AM.
+- les prérequis supposés acquis des années 1AM–3AM — **levé le 2026-10-13** :
+  ils sont les liens du réseau des الكفاءات (`LEARNING_NET.md`), lus dans le
+  منهاج et les المخططات السنوية fournis dans `docs/Math-Moyenne-programme/`.
 
 **Règle de fabrication.** Aucun sujet n'est ajouté à ce programme, aucun n'en
 est retiré. Un sujet du curriculum français qui n'apparaît pas ci-dessous

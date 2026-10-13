@@ -81,6 +81,9 @@
         "معرفة أن 1 قاسم لكل عدد طبيعي وأن كل عدد طبيعي غير معدوم قاسم لنفسه"
       ],
       "pointPrerequisites": {},
+      "programmeItems": [
+        "4am.m1.r01"
+      ],
       "textbookRef": {
         "unit": 1,
         "activity": 1,
@@ -131,6 +134,9 @@
           "4am_qasim-adad-tabii_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m1.r02"
+      ],
       "textbookRef": {
         "unit": 1,
         "activity": 2,
@@ -186,6 +192,9 @@
           "4am_khawass-qawasim_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m1.r02"
+      ],
       "textbookRef": {
         "unit": 1,
         "activity": 3,
@@ -239,6 +248,9 @@
           "4am_qasim-mushtarak-akbar_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m1.r03"
+      ],
       "textbookRef": {
         "unit": 1,
         "activity": 4,
@@ -291,6 +303,9 @@
           "4am_qasim-mushtarak-akbar_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m1.r03"
+      ],
       "textbookRef": {
         "unit": 1,
         "activity": 5,
@@ -353,6 +368,9 @@
           "4am_bahth-pgcd_P4"
         ]
       },
+      "programmeItems": [
+        "4am.m1.r03"
+      ],
       "textbookRef": {
         "unit": 1,
         "activity": 6,
@@ -404,6 +422,9 @@
           "4am_qasim-mushtarak-akbar_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m1.r04"
+      ],
       "textbookRef": {
         "unit": 1,
         "activity": 7,
@@ -458,6 +479,9 @@
           "4am_ikhtizal-kasr_P3"
         ]
       },
+      "programmeItems": [
+        "4am.m1.r05"
+      ],
       "textbookRef": {
         "unit": 1,
         "activity": 8,
@@ -544,6 +568,9 @@
           "4am_jidhr-tarbii_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m1.r06"
+      ],
       "textbookRef": {
         "unit": 2,
         "activity": 1,
@@ -594,6 +621,9 @@
           "4am_natiqa-ghayr-natiqa_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m1.r06"
+      ],
       "textbookRef": {
         "unit": 2,
         "activity": 2,
@@ -640,6 +670,9 @@
           "4am_muadalat-x-murabba_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m1.r06"
+      ],
       "textbookRef": {
         "unit": 2,
         "activity": 3,
@@ -691,6 +724,9 @@
           "4am_jidhr-tarbii_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m1.r07"
+      ],
       "textbookRef": {
         "unit": 2,
         "activity": 4,
@@ -741,6 +777,9 @@
           "4am_jidhr-tarbii_P3"
         ]
       },
+      "programmeItems": [
+        "4am.m1.r07"
+      ],
       "textbookRef": {
         "unit": 2,
         "pages": {
@@ -829,6 +868,9 @@
           "4am_nashr-tabsit_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m3.r02"
+      ],
       "textbookRef": {
         "unit": 3,
         "activity": 1,
@@ -885,6 +927,9 @@
           "4am_mutatabiqat-shahira_P3"
         ]
       },
+      "programmeItems": [
+        "4am.m3.r01"
+      ],
       "textbookRef": {
         "unit": 3,
         "activity": 2,
@@ -938,6 +983,9 @@
           "4am_mutatabiqat-shahira_P3"
         ]
       },
+      "programmeItems": [
+        "4am.m3.r02"
+      ],
       "textbookRef": {
         "unit": 3,
         "activity": 3,
@@ -1039,6 +1087,9 @@
           "4am_nashr-tabsit_P4"
         ]
       },
+      "programmeItems": [
+        "3am.m5.r06"
+      ],
       "textbookRef": {
         "unit": 4,
         "activity": 1,
@@ -1093,6 +1144,9 @@
           "4am_tahlil-ibara_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m3.r03"
+      ],
       "textbookRef": {
         "unit": 4,
         "activity": 2,
@@ -1141,6 +1195,9 @@
           "4am_mutarajiha-ula_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m3.r04"
+      ],
       "textbookRef": {
         "unit": 4,
         "activity": 3,
@@ -1192,6 +1249,9 @@
           "4am_jidaa-maadum_P3"
         ]
       },
+      "programmeItems": [
+        "4am.m3.r05"
+      ],
       "textbookRef": {
         "unit": 4,
         "pages": {
@@ -1294,6 +1354,9 @@
           "4am_muadala-ula_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m5.r01"
+      ],
       "textbookRef": {
         "unit": 5,
         "activity": 1,
@@ -1348,6 +1411,9 @@
           "4am_hall-jabri_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m5.r01"
+      ],
       "textbookRef": {
         "unit": 5,
         "activity": 2,
@@ -1397,6 +1463,9 @@
           "4am_hall-jabri_P3"
         ]
       },
+      "programmeItems": [
+        "4am.m5.r02"
+      ],
       "textbookRef": {
         "unit": 5,
         "activity": 3,
@@ -1492,6 +1561,9 @@
           "4am_tanasub-muamil_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m5.r03"
+      ],
       "textbookRef": {
         "unit": 6,
         "pages": {
@@ -1542,6 +1614,9 @@
           "4am_muadala-ula_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m5.r03"
+      ],
       "textbookRef": {
         "unit": 6,
         "activity": 1,
@@ -1592,6 +1667,11 @@
           "4am_tamthil-bayani-khatti_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m5.r04",
+        "4am.m5.r05",
+        "4am.m5.r06"
+      ],
       "textbookRef": {
         "unit": 6,
         "activity": 3,
@@ -1646,6 +1726,9 @@
           "4am_tatbiqat-tanasub_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m5.r14"
+      ],
       "textbookRef": {
         "unit": 6,
         "activity": 5,
@@ -1700,6 +1783,10 @@
           "4am_tarrid-khatti_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m5.r12",
+        "4am.m5.r13"
+      ],
       "textbookRef": {
         "unit": 6,
         "activity": 4,
@@ -1811,6 +1898,9 @@
           "4am_mafhum-taalufiya_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m5.r07"
+      ],
       "textbookRef": {
         "unit": 7,
         "pages": {
@@ -1861,6 +1951,11 @@
           "4am_tamthil-bayani-khatti_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m5.r08",
+        "4am.m5.r09",
+        "4am.m5.r10"
+      ],
       "textbookRef": {
         "unit": 7,
         "pages": {
@@ -1906,6 +2001,9 @@
           "4am_mafhum-taalufiya_P3"
         ]
       },
+      "programmeItems": [
+        "4am.m5.r07"
+      ],
       "textbookRef": {
         "unit": 7,
         "pages": {
@@ -1956,6 +2054,9 @@
           "4am_mafhum-jumla_P4"
         ]
       },
+      "programmeItems": [
+        "4am.m5.r11"
+      ],
       "textbookRef": {
         "unit": 7,
         "pages": {
@@ -2003,6 +2104,10 @@
           "4am_mutarajiha-ula_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m5.r12",
+        "4am.m5.r13"
+      ],
       "textbookRef": {
         "unit": 7,
         "pages": {
@@ -2089,6 +2194,9 @@
           "4am_takrar-mujamma_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m7.r01"
+      ],
       "textbookRef": {
         "unit": 8,
         "pages": {
@@ -2135,6 +2243,9 @@
           "4am_takrar-mujamma_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m7.r02"
+      ],
       "textbookRef": {
         "unit": 8,
         "pages": {
@@ -2186,6 +2297,9 @@
           "4am_majdulat-ihsaiya_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m7.r03"
+      ],
       "textbookRef": {
         "unit": 8,
         "pages": {
@@ -2237,6 +2351,9 @@
           "4am_qiraat-wadiyat-ihsaiya_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m7.r02"
+      ],
       "textbookRef": {
         "unit": 8,
         "pages": {
@@ -2335,6 +2452,9 @@
           "4am_talis-hisab-atwal_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m2.r01"
+      ],
       "textbookRef": {
         "unit": 9,
         "pages": {
@@ -2379,6 +2499,9 @@
         ],
         "P2": []
       },
+      "programmeItems": [
+        "4am.m2.r01"
+      ],
       "textbookRef": {
         "unit": 9,
         "pages": {
@@ -2425,6 +2548,9 @@
           "4am_talis-hisab-atwal_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m2.r01"
+      ],
       "textbookRef": {
         "unit": 9,
         "pages": {
@@ -2524,6 +2650,9 @@
           "4am_nisab-muthallathiya_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m2.r02"
+      ],
       "textbookRef": {
         "unit": 10,
         "pages": {
@@ -2572,6 +2701,9 @@
         ],
         "P3": []
       },
+      "programmeItems": [
+        "4am.m2.r03"
+      ],
       "textbookRef": {
         "unit": 10,
         "pages": {
@@ -2621,6 +2753,10 @@
           "4am_nisab-muthallathiya_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m2.r05",
+        "4am.m2.r06"
+      ],
       "textbookRef": {
         "unit": 10,
         "pages": {
@@ -2672,6 +2808,9 @@
           "4am_tarrid-muthallathiya_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m2.r04"
+      ],
       "textbookRef": {
         "unit": 10,
         "pages": {
@@ -2770,6 +2909,9 @@
           "4am_insihab-shuaa_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m4.r01"
+      ],
       "textbookRef": {
         "unit": 11,
         "pages": {
@@ -2820,6 +2962,9 @@
           "4am_shuaayn-mutasawiyayn_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m4.r02"
+      ],
       "textbookRef": {
         "unit": 11,
         "pages": {
@@ -2875,6 +3020,9 @@
           "4am_majmu-shuaayn_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m4.r03"
+      ],
       "textbookRef": {
         "unit": 11,
         "pages": {
@@ -2926,6 +3074,9 @@
           "4am_barahin-ashia_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m4.r03"
+      ],
       "textbookRef": {
         "unit": 11,
         "pages": {
@@ -3025,6 +3176,9 @@
           "4am_murakkibata-shuaa_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m4.r04"
+      ],
       "textbookRef": {
         "unit": 12,
         "pages": {
@@ -3076,6 +3230,9 @@
           "4am_hisab-murakkibatay_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m4.r05"
+      ],
       "textbookRef": {
         "unit": 12,
         "pages": {
@@ -3123,6 +3280,10 @@
           "4am_hisab-murakkibatay_P1"
         ]
       },
+      "programmeItems": [
+        "4am.m4.r06",
+        "4am.m4.r07"
+      ],
       "textbookRef": {
         "unit": 12,
         "pages": {
@@ -3174,6 +3335,10 @@
           "4am_muntasaf-masafa_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m4.r05",
+        "4am.m4.r07"
+      ],
       "textbookRef": {
         "unit": 12,
         "pages": {
@@ -3273,6 +3438,9 @@
           "4am_mafhum-dawaran_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m6.r01"
+      ],
       "textbookRef": {
         "unit": 13,
         "pages": {
@@ -3324,6 +3492,9 @@
           "4am_mafhum-dawaran_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m6.r02"
+      ],
       "textbookRef": {
         "unit": 13,
         "pages": {
@@ -3373,6 +3544,10 @@
           "4am_zawiya-muhitiya_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m6.r03",
+        "4am.m6.r04"
+      ],
       "textbookRef": {
         "unit": 13,
         "pages": {
@@ -3424,6 +3599,9 @@
           "4am_mafhum-dawaran_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m6.r05"
+      ],
       "textbookRef": {
         "unit": 13,
         "pages": {
@@ -3532,6 +3710,10 @@
           "4am_kura-julla_P3"
         ]
       },
+      "programmeItems": [
+        "4am.m6.r06",
+        "4am.m6.r07"
+      ],
       "textbookRef": {
         "unit": 14,
         "pages": {
@@ -3582,6 +3764,9 @@
           "4am_misaha-hajm-kura_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m6.r08"
+      ],
       "textbookRef": {
         "unit": 14,
         "pages": {
@@ -3635,6 +3820,9 @@
           "4am_talis-hisab-atwal_P3"
         ]
       },
+      "programmeItems": [
+        "4am.m6.r09"
+      ],
       "textbookRef": {
         "unit": 14,
         "pages": {
@@ -3682,6 +3870,9 @@
           "4am_misaha-hajm-kura_P2"
         ]
       },
+      "programmeItems": [
+        "4am.m6.r10"
+      ],
       "textbookRef": {
         "unit": 14,
         "pages": {
