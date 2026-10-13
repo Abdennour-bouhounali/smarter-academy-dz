@@ -30,7 +30,7 @@ The net solves four problems with one structure:
 | Layer | File | Holds | Edited when |
 |---|---|---|---|
 | Official programme | `packages/core/curriculum/dz/net/official_programme_moyen.json` | 4 grades × 7 مقاطع (`segments`), **224 items**, verbatim, with the source page | a transcription error is found (never to "improve" wording) |
-| The net | `packages/core/curriculum/dz/net/learning_net_moyen.json` | 17 `threads`, **353 `links`** between items, 21 `plannedUnits`, 122 `plannedLessons` | a link is added, corrected or removed; a planned decomposition changes |
+| The net | `packages/core/curriculum/dz/net/learning_net_moyen.json` | 17 `threads`, **353 `links`** between items, **39 `plannedUnits`** and **196 `plannedLessons`** (157 lessons + 39 syntheses) cut from the 1AM–3AM textbooks | a link is added, corrected or removed; a planned decomposition changes |
 | Existing lessons | `packages/core/curriculum/dz/lessons_<grade>_*.json` | each lesson's `programmeItems` (4AM: all 60 non-synthesis lessons) | a lesson is added or re-scoped |
 
 Resolver (pure, tested): `packages/core/curriculum/dz/net/learningNet.js`. **It is not exported from the
@@ -112,13 +112,26 @@ Seventeen conceptual strands. Each item belongs to exactly one (tested). The str
   - **Recall lessons.** A lesson whose textbook content is a recall from an earlier year declares that year's
     item. There is one: `muadala-ula` → `3am.m5.r06`. The list is closed in the test (`RECALL_LESSONS`), so a new
     recall lesson is a decision, not drift.
-- **Planned lessons** (`plannedLessons`): `code`, `grade`, `unit`, `order`, `kind`, `titleAr`, `programmeItems`.
-  1AM–3AM have no lessons yet. Their decomposition is **provisional**: one unit per مقطع, and lessons grouped from
-  the مقطع's موارد in official order. It is to be revised against the textbooks when the owner supplies them, as
-  4AM's 7 مقاطع became 14 textbook units. Each planned unit ends with its « أدمج تعلّماتي » synthesis
-  (`wadiya-idmajiya-<unit>`).
-- **Codes** are globally unique, published and planned together (tested). The 3AM unit المثلثات is `muthallathat-3`
-  because 4AM already owns `wadiya-idmajiya-muthallathat`.
+- **Planned lessons** (`plannedLessons`) — since 2026-10-13 cut from the **official textbooks** (1AM موفم 2017,
+  2AM and 3AM منشورات الشهاب 2017; `docs/official-book-pdfs/`), by the 4AM rule: one textbook باب = one unit, its
+  numbered « أنشطة » / « أكتشف » rubrics grouped as the book's معارف groups them = its lessons.
+  - Fields: `code`, `grade`, `unit`, `order`, `kind`, `titleAr`, `descriptionAr`, **`pointsToLearn`** (DRAFT
+    الكفاءات written from the unit's « سأتعلّم في هذا الباب » and the lesson's activity — owner decision: drafted by
+    the platform, the owner validates), `prerequisitesAr`, `programmeItems`, `textbookRef {unit, pages}`,
+    `decisionStatus: "draft"`.
+  - **Planned units** (`plannedUnits`): `code`, `grade`, `number`, `chapterId` (numbers → `ansab_al_aadad_wal_hisab`,
+    data → `tanasubiya_duwal`, geometry → `handasa`), `domain`, `titleAr`, `objectivesAr` (verbatim), `challengeAr`,
+    `textbook {bookPages, pdfPages, prepPage, exercisesPages, integrationPages}`, `scanIssues`,
+    `synthesisLessonCode`. Each unit ends with its « أدمج تعلّماتي » (`wadiya-idmajiya-<unit>`).
+  - Source of each decomposition, with the reading decisions and scan defects:
+    `docs/sources/<grade>/textbook-map.json` (1AM 14 units / 55 lessons, 2AM 12 / 53, 3AM 13 / 49). The book's
+    unit order is NOT the مقاطع order: a same-year prerequisite taught later in the book is a listed « renvoi en
+    avant » (§4bis), never a reordering.
+  - **Lessons without a programme item** (the book teaches them, the 2022 plan has no item): 3AM unit 8 « البرهان
+    في الرياضيات » (3 lessons), 3AM « المتباينة المثلثية », 2AM « إنتاج عبارة حرفية ». They are queued last (§4bis)
+    and keep `programmeItems: []`.
+- **Codes** are globally unique, published and planned together (tested); a collision is resolved by a grade suffix
+  (`-2`, `-3am`).
 - **Home lesson** of an item: the first lesson in curriculum order (grade, then `order`) that declares it, synthesis
   excluded. A struggling student is sent there.
 
@@ -174,6 +187,22 @@ These rules complete `LESSON_DEVELOPMENT_GUIDE.md` §14.2 for any year other tha
    between the two lessons' items.
 7. Run `npm run generate:learning-net` and commit the regenerated map.
 
+## 4bis. Generation order (owner decision, 2026-10-13)
+
+Lessons are generated **along the net, not grade by grade**. `scripts/learning-net-queue.mjs` writes the queue to
+`docs/curriculum/GENERATION_QUEUE.md` (readable) and `docs/curriculum/generation-queue.json` (machine):
+
+1. **Phase A — the 4AM chains.** For each published 4AM lesson in catalogue order, the WHOLE upstream chain of its
+   items in earlier years (transitive closure of `requires` / `extends` / `consolidates`) is mapped to home lessons
+   and generated oldest first. Then the next 4AM lesson.
+2. **Phases B, C, D** — the same from the remaining 3AM lessons (with their own 1AM–2AM chains), then 2AM, then 1AM.
+3. **Phase E — isolated lessons** (no item, or items linked to nothing) come last.
+4. A **synthesis** enters the queue right after the last lesson of its unit.
+5. The queue also lists the **renvois en avant**: same-year prerequisites the textbook teaches later. The lesson that
+   suffers one recalls it itself (a « تذكّر » box), without building it.
+
+On 2026-10-13: 196 lessons — A 108, B 35, C 22, D 23, E 8; 18 renvois en avant.
+
 ## 5. Editing the net
 
 - **Fix a transcription:** edit the item's `textAr` in `official_programme_moyen.json`. Never change its id.
@@ -182,15 +211,16 @@ These rules complete `LESSON_DEVELOPMENT_GUIDE.md` §14.2 for any year other tha
   `addedValueAr`/`noteAr`, a second base, and a lesson-order contradiction.
 - **Re-scope a lesson:** edit `programmeItems` (published or planned). The coverage tests require every item to
   keep a home lesson, and every 4AM item a published one.
-- **Always regenerate the map:** `npm run generate:learning-net`. `npm run check:learning-net`, part of
-  `check:lessons`, fails while `docs/curriculum/LEARNING_NET_MAP.md` is stale.
+- **Always regenerate the map and the queue:** `npm run generate:learning-net`. `npm run check:learning-net`, part
+  of `check:lessons`, fails while `LEARNING_NET_MAP.md`, `learning-net-map.html`, `GENERATION_QUEUE.md` or
+  `generation-queue.json` is stale.
 
 ## 6. Validation
 
 | Gate | What it checks |
 |---|---|
 | `packages/core/curriculum/dz/net/learningNet.test.js` (17 tests) | items (format, uniqueness, official numbering), links (existence, direction, acyclicity, `extends`/`consolidates` fields, one base), threads (partition), lessons (every item homed, 4AM fully covered by published lessons, closed recall list, unique codes, planned units with synthesis, lesson order), resolver behaviour |
-| `npm run check:learning-net` (in `check:lessons`) | the generated map is up to date |
+| `npm run check:learning-net` (in `check:lessons`) | the generated maps and the generation queue are up to date; the queue also fails if a planned lesson is missing from it |
 
 ## 7. Decisions (2026-10-13)
 
@@ -198,15 +228,22 @@ These rules complete `LESSON_DEVELOPMENT_GUIDE.md` §14.2 for any year other tha
   decompositions belong to lessons and change with textbooks.
 - **The 2022 plan's numbering is the id.** The منهاج 2016 adds three items the plan omits; they are kept (`x<k>`)
   so that nothing official is lost.
-- **Planned 1AM–3AM lessons are data, not content.** No JSX, no route, no catalogue entry. `activeGrades.js` still
-  publishes only 4AM.
+- **Planned 1AM–3AM lessons are data, not content.** No JSX, no route yet. `activeGrades.js` still publishes only
+  4AM. **Owner decisions for the rollout (2026-10-13)** — recorded in
+  `docs/reports/MOYEN_ROLLOUT_PHASE1_REPORT_2026-10-13.md`: الكفاءات drafted by the platform from the textbooks; ALL
+  learning points of all grades imported into the database, the not-yet-generated lessons shown as **draft cards,
+  not clickable**; generation along the net (§4bis); each lesson **published as soon as it is generated**; practice
+  from the term-exam corpus `docs/sources/moyen/exams/` (« على منوال اختبار الفصل … », new exercises generated in the
+  same pattern when needed); links to earlier years also inside **exercises**, not only in « أستعدّ ».
 - **Review links show planned lessons as text, not as hidden.** Telling a 4AM student "revise فيثاغورس, 3AM" is
   useful even before that lesson exists.
 
 ## 8. Open items
 
 - **Not verified.** The transcription has not been re-read against the PDFs by a second reader (`verified: false`).
-- **1AM–3AM decomposition is provisional** until the textbooks are supplied (§2.4).
+- **1AM–3AM decomposition and الكفاءات are drafts** (`decisionStatus: "draft"`) until the owner validates them.
+- **Scans:** 2AM is missing book p.140 and pp.196–198 (unit 12's « أدمج تعلّماتي »); 3AM is missing p.37; details
+  in each `textbook-map.json › scanIssues`.
 - **Not yet implemented:**
   - `forwardLinksForLesson` is not shown anywhere yet.
   - Programme items are not imported into the API database. Mastery V2 knows LPs only; a `programme_items` table

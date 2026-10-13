@@ -1,0 +1,1998 @@
+{
+  "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
+  "queue": [
+    {
+      "code": "mana-jam-tarh",
+      "grade": "1am",
+      "unit": "jam-tarh-ashriya",
+      "titleAr": "معنى الجمع والطرح",
+      "kind": "lesson",
+      "trigger": "qasim-adad-tabii",
+      "via": [
+        "1am.m1.r01"
+      ]
+    },
+    {
+      "code": "qisma-iqlidiya-baqi",
+      "grade": "1am",
+      "unit": "darb-qisma-ashriya",
+      "titleAr": "القسمة الإقليدية",
+      "kind": "lesson",
+      "trigger": "qasim-adad-tabii",
+      "via": [
+        "1am.m3.r01"
+      ]
+    },
+    {
+      "code": "qawaid-qabiliyat-qisma",
+      "grade": "1am",
+      "unit": "darb-qisma-ashriya",
+      "titleAr": "قواعد قابلية القسمة",
+      "kind": "lesson",
+      "trigger": "qasim-adad-tabii",
+      "via": [
+        "1am.m3.r02"
+      ]
+    },
+    {
+      "code": "qisma-iqlidiya-hasr",
+      "grade": "2am",
+      "unit": "kusur-amaliyat",
+      "titleAr": "القسمة الإقليدية وحصر حاصل القسمة",
+      "kind": "lesson",
+      "trigger": "qasim-mushtarak-akbar",
+      "via": [
+        "2am.m1.r04"
+      ]
+    },
+    {
+      "code": "kitabat-adad-tabii",
+      "grade": "1am",
+      "unit": "adad-tabiiya-ashriya",
+      "titleAr": "كتابة الأعداد الطبيعية ودلالة الأرقام",
+      "kind": "lesson",
+      "trigger": "ikhtizal-kasr",
+      "via": [
+        "1am.m1.r02"
+      ]
+    },
+    {
+      "code": "ikhtizal-kitaba-kasriya",
+      "grade": "1am",
+      "unit": "kitabat-kasriya",
+      "titleAr": "الكتابات الكسرية لحاصل قسمة واختزال كسر",
+      "kind": "lesson",
+      "trigger": "ikhtizal-kasr",
+      "via": [
+        "1am.m5.r02"
+      ]
+    },
+    {
+      "code": "hasil-qisma-kasr",
+      "grade": "1am",
+      "unit": "kitabat-kasriya",
+      "titleAr": "حاصل القسمة والكسر",
+      "kind": "lesson",
+      "trigger": "ikhtizal-kasr",
+      "via": [
+        "1am.m5.r01"
+      ]
+    },
+    {
+      "code": "kusur-ashriya-kitaba",
+      "grade": "1am",
+      "unit": "adad-tabiiya-ashriya",
+      "titleAr": "الكسور العشرية والكتابة العشرية",
+      "kind": "lesson",
+      "trigger": "jidhr-tarbii",
+      "via": [
+        "1am.m1.r03"
+      ]
+    },
+    {
+      "code": "muqaranat-adad-ashriya",
+      "grade": "1am",
+      "unit": "adad-tabiiya-ashriya",
+      "titleAr": "مقارنة الأعداد العشرية وترتيبها",
+      "kind": "lesson",
+      "trigger": "jidhr-tarbii",
+      "via": [
+        "1am.m1.r04"
+      ]
+    },
+    {
+      "code": "masahat-muhit-sath",
+      "grade": "1am",
+      "unit": "sutuh-masahat-muhitat",
+      "titleAr": "مساحة سطح مستو ومحيطه",
+      "kind": "lesson",
+      "trigger": "jidhr-tarbii",
+      "via": [
+        "1am.m2.r06"
+      ]
+    },
+    {
+      "code": "mustatil-murabba-masaha",
+      "grade": "1am",
+      "unit": "sutuh-masahat-muhitat",
+      "titleAr": "محيط ومساحة المستطيل والمربع",
+      "kind": "lesson",
+      "trigger": "jidhr-tarbii",
+      "via": [
+        "1am.m2.r08"
+      ]
+    },
+    {
+      "code": "adad-ashri-mustaqim-mudarraj",
+      "grade": "1am",
+      "unit": "adad-tabiiya-ashriya",
+      "titleAr": "الأعداد العشرية ونصف المستقيم المدرّج",
+      "kind": "lesson",
+      "trigger": "jidhr-tarbii",
+      "via": [
+        "1am.m5.r04"
+      ]
+    },
+    {
+      "code": "talim-mustaqim-mudarraj",
+      "grade": "1am",
+      "unit": "adad-nisbiya",
+      "titleAr": "التعليم على مستقيم مدرّج",
+      "kind": "lesson",
+      "trigger": "jidhr-tarbii",
+      "via": [
+        "1am.m5.r06"
+      ]
+    },
+    {
+      "code": "adad-nisbiya-siyaqat",
+      "grade": "1am",
+      "unit": "adad-nisbiya",
+      "titleAr": "الأعداد النسبية وسياقات استعمالها",
+      "kind": "lesson",
+      "trigger": "jidhr-tarbii",
+      "via": [
+        "1am.m5.r05"
+      ]
+    },
+    {
+      "code": "talim-mustaqim-mudarraj-2",
+      "grade": "2am",
+      "unit": "adad-nisbiya-2",
+      "titleAr": "التعليم على مستقيم مدرّج",
+      "kind": "lesson",
+      "trigger": "jidhr-tarbii",
+      "via": [
+        "2am.m4.r01"
+      ]
+    },
+    {
+      "code": "jam-tarh-nisbiya",
+      "grade": "2am",
+      "unit": "adad-nisbiya-2",
+      "titleAr": "جمع وطرح عددين نسبيين",
+      "kind": "lesson",
+      "trigger": "jidhr-tarbii",
+      "via": [
+        "2am.m4.r05"
+      ]
+    },
+    {
+      "code": "jidaa-adadayn-nisbiyayn",
+      "grade": "3am",
+      "unit": "aadad-nisbiya",
+      "titleAr": "جداء عددين نسبيين",
+      "kind": "lesson",
+      "trigger": "jidhr-tarbii",
+      "via": [
+        "3am.m1.r01"
+      ]
+    },
+    {
+      "code": "quwat-adad-nisbi",
+      "grade": "3am",
+      "unit": "quwa-nisbiya",
+      "titleAr": "قوة عدد نسبي",
+      "kind": "lesson",
+      "trigger": "jidhr-tarbii",
+      "via": [
+        "3am.m3.r06"
+      ]
+    },
+    {
+      "code": "khassiyat-fitaghuras",
+      "grade": "3am",
+      "unit": "fitaghuras-jayb-tamam",
+      "titleAr": "خاصية فيثاغورس",
+      "kind": "lesson",
+      "trigger": "jidhr-tarbii",
+      "via": [
+        "3am.m4.r03"
+      ]
+    },
+    {
+      "code": "silsila-bi-aqwas",
+      "grade": "2am",
+      "unit": "amaliyat-tabiiya-ushriya",
+      "titleAr": "سلسلة عمليات تتضمّن أقواسا",
+      "kind": "lesson",
+      "trigger": "amaliyat-judhur",
+      "via": [
+        "2am.m1.r02"
+      ]
+    },
+    {
+      "code": "silsila-bidun-aqwas",
+      "grade": "2am",
+      "unit": "amaliyat-tabiiya-ushriya",
+      "titleAr": "سلسلة عمليات دون أقواس وأولوية العمليات",
+      "kind": "lesson",
+      "trigger": "amaliyat-judhur",
+      "via": [
+        "2am.m1.r01"
+      ]
+    },
+    {
+      "code": "tawzi-darb-jam-tarh",
+      "grade": "2am",
+      "unit": "amaliyat-tabiiya-ushriya",
+      "titleAr": "توزيع الضرب على الجمع والطرح",
+      "kind": "lesson",
+      "trigger": "amaliyat-judhur",
+      "via": [
+        "2am.m1.r03"
+      ]
+    },
+    {
+      "code": "jida-kasrayn",
+      "grade": "2am",
+      "unit": "kusur-amaliyat",
+      "titleAr": "جداء كسرين",
+      "kind": "lesson",
+      "trigger": "amaliyat-judhur",
+      "via": [
+        "2am.m1.r07"
+      ]
+    },
+    {
+      "code": "muqarana-kasrayn",
+      "grade": "2am",
+      "unit": "kusur-amaliyat",
+      "titleAr": "مقارنة كسرين",
+      "kind": "lesson",
+      "trigger": "amaliyat-judhur",
+      "via": [
+        "2am.m1.r08"
+      ]
+    },
+    {
+      "code": "jam-tarh-kusur",
+      "grade": "2am",
+      "unit": "kusur-amaliyat",
+      "titleAr": "جمع وطرح كسرين",
+      "kind": "lesson",
+      "trigger": "amaliyat-judhur",
+      "via": [
+        "2am.m1.r09"
+      ]
+    },
+    {
+      "code": "qismat-nisbiyayn",
+      "grade": "3am",
+      "unit": "aadad-nisbiya",
+      "titleAr": "حاصل قسمة عددين نسبيين",
+      "kind": "lesson",
+      "trigger": "amaliyat-judhur",
+      "via": [
+        "3am.m1.r02"
+      ]
+    },
+    {
+      "code": "maqlub-qismat-kasrayn",
+      "grade": "3am",
+      "unit": "kusur-natiqa",
+      "titleAr": "مقلوب عدد وقسمة كسرين",
+      "kind": "lesson",
+      "trigger": "amaliyat-judhur",
+      "via": [
+        "3am.m1.r04",
+        "3am.m1.r03"
+      ]
+    },
+    {
+      "code": "jam-tarh-kasrayn",
+      "grade": "3am",
+      "unit": "kusur-natiqa",
+      "titleAr": "جمع وطرح كسرين",
+      "kind": "lesson",
+      "trigger": "amaliyat-judhur",
+      "via": [
+        "3am.m1.r06"
+      ]
+    },
+    {
+      "code": "adad-natiq",
+      "grade": "3am",
+      "unit": "kusur-natiqa",
+      "titleAr": "العدد الناطق",
+      "kind": "lesson",
+      "trigger": "amaliyat-judhur",
+      "via": [
+        "3am.m1.r07"
+      ]
+    },
+    {
+      "code": "amaliyat-natiqa",
+      "grade": "3am",
+      "unit": "kusur-natiqa",
+      "titleAr": "العمليات على الأعداد الناطقة",
+      "kind": "lesson",
+      "trigger": "amaliyat-judhur",
+      "via": [
+        "3am.m1.r08"
+      ]
+    },
+    {
+      "code": "tabsit-hadhf-aqwas",
+      "grade": "3am",
+      "unit": "ibarat-harfiya-3",
+      "titleAr": "تبسيط عبارة جبرية وحذف الأقواس",
+      "kind": "lesson",
+      "trigger": "amaliyat-judhur",
+      "via": [
+        "3am.m5.r01"
+      ]
+    },
+    {
+      "code": "nashr-jabri-3am",
+      "grade": "3am",
+      "unit": "ibarat-harfiya-3",
+      "titleAr": "نشر عبارات جبرية",
+      "kind": "lesson",
+      "trigger": "nashr-tabsit",
+      "via": [
+        "3am.m5.r02"
+      ]
+    },
+    {
+      "code": "tatbiq-qaida-harfiya",
+      "grade": "1am",
+      "unit": "ibarat-harfiya",
+      "titleAr": "تطبيق قاعدة حرفية",
+      "kind": "lesson",
+      "trigger": "muadala-ula",
+      "via": [
+        "1am.m5.r08"
+      ]
+    },
+    {
+      "code": "bahth-adad-naqisa",
+      "grade": "1am",
+      "unit": "ibarat-harfiya",
+      "titleAr": "البحث عن أعداد ناقصة",
+      "kind": "lesson",
+      "trigger": "muadala-ula",
+      "via": [
+        "1am.m5.r10"
+      ]
+    },
+    {
+      "code": "majmu-jabri",
+      "grade": "2am",
+      "unit": "adad-nisbiya-2",
+      "titleAr": "حساب مجموع جبري",
+      "kind": "lesson",
+      "trigger": "muadala-ula",
+      "via": [
+        "2am.m4.r06"
+      ]
+    },
+    {
+      "code": "hall-mushkil-muadala",
+      "grade": "2am",
+      "unit": "mafhum-muadala",
+      "titleAr": "حلّ مشكل باستعمال معادلة",
+      "kind": "lesson",
+      "trigger": "muadala-ula",
+      "via": [
+        "2am.m4.r08"
+      ]
+    },
+    {
+      "code": "ikhtibar-musawat-mutabayina",
+      "grade": "2am",
+      "unit": "mafhum-muadala",
+      "titleAr": "اختبار صحة مساواة أو متباينة",
+      "kind": "lesson",
+      "trigger": "muadala-ula",
+      "via": [
+        "2am.m4.r09"
+      ]
+    },
+    {
+      "code": "musawiyat-amaliyat",
+      "grade": "3am",
+      "unit": "musawiyat-mutabayinat",
+      "titleAr": "المساويات والعمليات",
+      "kind": "lesson",
+      "trigger": "muadala-ula",
+      "via": [
+        "3am.m5.r05"
+      ]
+    },
+    {
+      "code": "muadalat-darajat-ula",
+      "grade": "3am",
+      "unit": "musawiyat-mutabayinat",
+      "titleAr": "المعادلات من الدرجة الأولى بمجهول واحد",
+      "kind": "lesson",
+      "trigger": "jidaa-maadum",
+      "via": [
+        "3am.m5.r06"
+      ]
+    },
+    {
+      "code": "muqarana-nisbiya",
+      "grade": "2am",
+      "unit": "adad-nisbiya-2",
+      "titleAr": "مقارنة وترتيب أعداد نسبية",
+      "kind": "lesson",
+      "trigger": "mutarajiha-ula",
+      "via": [
+        "2am.m4.r03",
+        "2am.m4.r02"
+      ]
+    },
+    {
+      "code": "talim-fi-mustawi",
+      "grade": "1am",
+      "unit": "adad-nisbiya",
+      "titleAr": "التعليم في المستوي",
+      "kind": "lesson",
+      "trigger": "tanasub-muamil",
+      "via": [
+        "1am.m5.r07"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-adad-nisbiya",
+      "grade": "1am",
+      "unit": "adad-nisbiya",
+      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
+      "kind": "synthesis",
+      "trigger": "unité adad-nisbiya complète",
+      "via": []
+    },
+    {
+      "code": "wadiyat-tanasubiya",
+      "grade": "1am",
+      "unit": "tanasubiya-nisab-maqayis",
+      "titleAr": "وضعيات تناسبية وجداول تناسبية",
+      "kind": "lesson",
+      "trigger": "tanasub-muamil",
+      "via": [
+        "1am.m6.r03",
+        "1am.m6.r01",
+        "1am.m6.r02"
+      ]
+    },
+    {
+      "code": "itmam-jadwal-tanasubiya",
+      "grade": "1am",
+      "unit": "tanasubiya-nisab-maqayis",
+      "titleAr": "إتمام جدول تناسبية",
+      "kind": "lesson",
+      "trigger": "tanasub-muamil",
+      "via": [
+        "1am.m6.r04"
+      ]
+    },
+    {
+      "code": "talim-nuqta-mustawi",
+      "grade": "2am",
+      "unit": "adad-nisbiya-2",
+      "titleAr": "تعليم نقطة في المستوي",
+      "kind": "lesson",
+      "trigger": "tanasub-muamil",
+      "via": [
+        "2am.m4.r04"
+      ]
+    },
+    {
+      "code": "wadiya-tanasubiya-jadwal",
+      "grade": "2am",
+      "unit": "tanasubiya-2am",
+      "titleAr": "التعرّف على وضعية تناسبية من جدول",
+      "kind": "lesson",
+      "trigger": "tanasub-muamil",
+      "via": [
+        "2am.m6.r02",
+        "2am.m6.r01"
+      ]
+    },
+    {
+      "code": "rabi-mutanasib",
+      "grade": "2am",
+      "unit": "tanasubiya-2am",
+      "titleAr": "حساب الرابع المتناسب",
+      "kind": "lesson",
+      "trigger": "tanasub-muamil",
+      "via": [
+        "2am.m6.r03"
+      ]
+    },
+    {
+      "code": "tanasub-tamthil-bayani",
+      "grade": "3am",
+      "unit": "tanasubiya-sura",
+      "titleAr": "التناسبية والتمثيل البياني",
+      "kind": "lesson",
+      "trigger": "tanasub-muamil",
+      "via": [
+        "3am.m7.r01"
+      ]
+    },
+    {
+      "code": "nisba-miawiya-tatbiq",
+      "grade": "1am",
+      "unit": "tanasubiya-nisab-maqayis",
+      "titleAr": "تطبيق نسبة مئوية",
+      "kind": "lesson",
+      "trigger": "tatbiqat-tanasub",
+      "via": [
+        "1am.m6.r06"
+      ]
+    },
+    {
+      "code": "wahdat-tul-masaha",
+      "grade": "1am",
+      "unit": "sutuh-masahat-muhitat",
+      "titleAr": "وحدات الطول ووحدات المساحة",
+      "kind": "lesson",
+      "trigger": "tatbiqat-tanasub",
+      "via": [
+        "1am.m6.r09"
+      ]
+    },
+    {
+      "code": "nisba-miawiya",
+      "grade": "2am",
+      "unit": "tanasubiya-2am",
+      "titleAr": "حساب نسبة مئوية وتوظيفها",
+      "kind": "lesson",
+      "trigger": "tatbiqat-tanasub",
+      "via": [
+        "2am.m6.r04"
+      ]
+    },
+    {
+      "code": "miqyas-kharita",
+      "grade": "2am",
+      "unit": "tanasubiya-2am",
+      "titleAr": "مقياس خريطة أو تصميم",
+      "kind": "lesson",
+      "trigger": "tatbiqat-tanasub",
+      "via": [
+        "2am.m6.r06"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-tanasubiya-2am",
+      "grade": "2am",
+      "unit": "tanasubiya-2am",
+      "titleAr": "أدمج تعلّماتي — التناسبية",
+      "kind": "synthesis",
+      "trigger": "unité tanasubiya-2am complète",
+      "via": []
+    },
+    {
+      "code": "haraka-muntazama-sura",
+      "grade": "3am",
+      "unit": "tanasubiya-sura",
+      "titleAr": "الحركة المنتظمة والسرعة المتوسطة",
+      "kind": "lesson",
+      "trigger": "tatbiqat-tanasub",
+      "via": [
+        "3am.m7.r04",
+        "3am.m7.r02",
+        "3am.m7.r03"
+      ]
+    },
+    {
+      "code": "nisba-miawiya-3am",
+      "grade": "3am",
+      "unit": "tanasubiya-sura",
+      "titleAr": "النسبة المئوية",
+      "kind": "lesson",
+      "trigger": "tatbiqat-tanasub",
+      "via": [
+        "3am.m7.r06"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-tanasubiya-sura",
+      "grade": "3am",
+      "unit": "tanasubiya-sura",
+      "titleAr": "أدمج تعلّماتي — التناسبية",
+      "kind": "synthesis",
+      "trigger": "unité tanasubiya-sura complète",
+      "via": []
+    },
+    {
+      "code": "qimat-ibara-harfiya",
+      "grade": "3am",
+      "unit": "ibarat-harfiya-3",
+      "titleAr": "حساب قيمة عبارة حرفية",
+      "kind": "lesson",
+      "trigger": "mafhum-taalufiya",
+      "via": [
+        "3am.m5.r03"
+      ]
+    },
+    {
+      "code": "tanzim-muatayat-jadwal",
+      "grade": "1am",
+      "unit": "tanzim-muatayat",
+      "titleAr": "تنظيم معطيات في جدول",
+      "kind": "lesson",
+      "trigger": "takrar-mujamma",
+      "via": [
+        "1am.m6.r11"
+      ]
+    },
+    {
+      "code": "qiraat-jadwal-malumat",
+      "grade": "1am",
+      "unit": "tanzim-muatayat",
+      "titleAr": "قراءة جدول واستخراج معلومات",
+      "kind": "lesson",
+      "trigger": "takrar-mujamma",
+      "via": [
+        "1am.m6.r10"
+      ]
+    },
+    {
+      "code": "takrarat-nisbiya",
+      "grade": "2am",
+      "unit": "tanzim-mutayat-2am",
+      "titleAr": "التكرارات والتكرارات النسبية",
+      "kind": "lesson",
+      "trigger": "takrar-mujamma",
+      "via": [
+        "2am.m6.r12",
+        "2am.m6.r07"
+      ]
+    },
+    {
+      "code": "fiat-takrarat",
+      "grade": "3am",
+      "unit": "tanzim-mutaayat",
+      "titleAr": "تجميع المعطيات في فئات والتكرارات",
+      "kind": "lesson",
+      "trigger": "takrar-mujamma",
+      "via": [
+        "3am.m7.r08",
+        "3am.m7.r10"
+      ]
+    },
+    {
+      "code": "mutawassit-mutawazin",
+      "grade": "3am",
+      "unit": "tanzim-mutaayat",
+      "titleAr": "متوسط سلسلة إحصائية والمتوسط المتوازن",
+      "kind": "lesson",
+      "trigger": "mada-wasit-mutawassit",
+      "via": [
+        "3am.m7.r11"
+      ]
+    },
+    {
+      "code": "mustaqim-qita-istiqamiya",
+      "grade": "1am",
+      "unit": "tawazi-taamud",
+      "titleAr": "المستقيم ونصف المستقيم وقطعة المستقيم والاستقامية",
+      "kind": "lesson",
+      "trigger": "majdulat-ihsaiya",
+      "via": [
+        "1am.m2.r02"
+      ]
+    },
+    {
+      "code": "mudallaat-zawiya",
+      "grade": "1am",
+      "unit": "ashkal-mustawiya",
+      "titleAr": "المضلّعات والزاوية",
+      "kind": "lesson",
+      "trigger": "majdulat-ihsaiya",
+      "via": [
+        "1am.m4.r01"
+      ]
+    },
+    {
+      "code": "tasnif-zawaya-munassif",
+      "grade": "1am",
+      "unit": "zawaya-qiyas",
+      "titleAr": "مقارنة الزوايا وتصنيفها ومنصّف زاوية",
+      "kind": "lesson",
+      "trigger": "majdulat-ihsaiya",
+      "via": [
+        "1am.m4.r03"
+      ]
+    },
+    {
+      "code": "qays-zawiya-minqala",
+      "grade": "1am",
+      "unit": "zawaya-qiyas",
+      "titleAr": "قيس زاوية بالمنقلة ورسم زاوية علم قيسها",
+      "kind": "lesson",
+      "trigger": "majdulat-ihsaiya",
+      "via": [
+        "1am.m4.r04"
+      ]
+    },
+    {
+      "code": "tamthil-mukhattatat",
+      "grade": "2am",
+      "unit": "tanzim-mutayat-2am",
+      "titleAr": "تمثيل معطيات إحصائية بمخطّطات",
+      "kind": "lesson",
+      "trigger": "majdulat-ihsaiya",
+      "via": [
+        "2am.m6.r10"
+      ]
+    },
+    {
+      "code": "tanzim-fiat",
+      "grade": "2am",
+      "unit": "tanzim-mutayat-2am",
+      "titleAr": "تلخيص سلسلة إحصائية في شكل فئات",
+      "kind": "lesson",
+      "trigger": "majdulat-ihsaiya",
+      "via": [
+        "2am.m6.r11"
+      ]
+    },
+    {
+      "code": "tamthil-silsila-ihsaiya",
+      "grade": "3am",
+      "unit": "tanzim-mutaayat",
+      "titleAr": "تمثيل سلسلة إحصائية بمخطط أو بيان",
+      "kind": "lesson",
+      "trigger": "majdulat-ihsaiya",
+      "via": [
+        "3am.m7.r09"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-tanzim-mutaayat",
+      "grade": "3am",
+      "unit": "tanzim-mutaayat",
+      "titleAr": "أدمج تعلّماتي — تنظيم معطيات",
+      "kind": "synthesis",
+      "trigger": "unité tanzim-mutaayat complète",
+      "via": []
+    },
+    {
+      "code": "mustaqimat-mutaamida",
+      "grade": "1am",
+      "unit": "tawazi-taamud",
+      "titleAr": "المستقيمان المتقاطعان والمتعامدان",
+      "kind": "lesson",
+      "trigger": "talis-hisab-atwal",
+      "via": [
+        "1am.m2.r01"
+      ]
+    },
+    {
+      "code": "ashkal-mutanazira",
+      "grade": "1am",
+      "unit": "tanazur-mihwari",
+      "titleAr": "الأشكال المتناظرة بالنسبة إلى مستقيم",
+      "kind": "lesson",
+      "trigger": "talis-hisab-atwal",
+      "via": [
+        "1am.m4.r06",
+        "1am.m4.r05"
+      ]
+    },
+    {
+      "code": "nazir-shakl-khawas",
+      "grade": "1am",
+      "unit": "tanazur-mihwari",
+      "titleAr": "نظير شكل وخواص التناظر المحوري",
+      "kind": "lesson",
+      "trigger": "talis-hisab-atwal",
+      "via": [
+        "1am.m4.r08",
+        "1am.m4.r07"
+      ]
+    },
+    {
+      "code": "markaz-tanazur-shakl",
+      "grade": "2am",
+      "unit": "tanazur-markazi",
+      "titleAr": "مركز تناظر شكل",
+      "kind": "lesson",
+      "trigger": "talis-hisab-atwal",
+      "via": [
+        "2am.m2.r02"
+      ]
+    },
+    {
+      "code": "nazir-shakl-khawas-2",
+      "grade": "2am",
+      "unit": "tanazur-markazi",
+      "titleAr": "نظير شكل وخواص التناظر المركزي",
+      "kind": "lesson",
+      "trigger": "talis-hisab-atwal",
+      "via": [
+        "2am.m2.r05",
+        "2am.m2.r04"
+      ]
+    },
+    {
+      "code": "nazirat-nuqta",
+      "grade": "2am",
+      "unit": "tanazur-markazi",
+      "titleAr": "التناظر المركزي ونظيرة نقطة",
+      "kind": "lesson",
+      "trigger": "talis-hisab-atwal",
+      "via": [
+        "2am.m2.r03"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-tanazur-markazi",
+      "grade": "2am",
+      "unit": "tanazur-markazi",
+      "titleAr": "أدمج تعلّماتي — التناظر المركزي",
+      "kind": "synthesis",
+      "trigger": "unité tanazur-markazi complète",
+      "via": []
+    },
+    {
+      "code": "zawaya-mutajawira-mutatamma",
+      "grade": "2am",
+      "unit": "zawaya-tawazi",
+      "titleAr": "زاويتان متجاورتان، متتامتان، متكاملتان",
+      "kind": "lesson",
+      "trigger": "talis-hisab-atwal",
+      "via": [
+        "2am.m3.r01"
+      ]
+    },
+    {
+      "code": "tawazi-zawaya",
+      "grade": "2am",
+      "unit": "zawaya-tawazi",
+      "titleAr": "التوازي والزوايا",
+      "kind": "lesson",
+      "trigger": "talis-hisab-atwal",
+      "via": [
+        "2am.m3.r03"
+      ]
+    },
+    {
+      "code": "tarif-mutawazi-adla",
+      "grade": "2am",
+      "unit": "mutawazi-adla",
+      "titleAr": "التعرّف على متوازي الأضلاع",
+      "kind": "lesson",
+      "trigger": "talis-hisab-atwal",
+      "via": [
+        "2am.m5.r01"
+      ]
+    },
+    {
+      "code": "mustaqim-muntasafayn",
+      "grade": "3am",
+      "unit": "muthallathat-3am",
+      "titleAr": "مستقيم المنتصفين في مثلث",
+      "kind": "lesson",
+      "trigger": "talis-hisab-atwal",
+      "via": [
+        "3am.m2.r02"
+      ]
+    },
+    {
+      "code": "tanasub-atwal-muthallath",
+      "grade": "3am",
+      "unit": "muthallathat-3am",
+      "titleAr": "تناسبية الأطوال في المثلث",
+      "kind": "lesson",
+      "trigger": "talis-hisab-atwal",
+      "via": [
+        "3am.m2.r03"
+      ]
+    },
+    {
+      "code": "jayb-tamam-zawiya",
+      "grade": "3am",
+      "unit": "fitaghuras-jayb-tamam",
+      "titleAr": "جيب تمام زاوية حادة",
+      "kind": "lesson",
+      "trigger": "nisab-muthallathiya",
+      "via": [
+        "3am.m4.r07"
+      ]
+    },
+    {
+      "code": "hisab-jayb-tamam",
+      "grade": "3am",
+      "unit": "fitaghuras-jayb-tamam",
+      "titleAr": "حساب جيب التمام وتوظيفه",
+      "kind": "lesson",
+      "trigger": "hasiba-muthallathiya",
+      "via": [
+        "3am.m4.r08"
+      ]
+    },
+    {
+      "code": "naql-tul-muntasaf",
+      "grade": "1am",
+      "unit": "tawazi-taamud",
+      "titleAr": "نقل طول ومنتصف قطعة مستقيم",
+      "kind": "lesson",
+      "trigger": "alaqat-muthallathiya",
+      "via": [
+        "1am.m4.r10"
+      ]
+    },
+    {
+      "code": "mustaqimat-mutaamida-mutawazia",
+      "grade": "2am",
+      "unit": "inshaat-handasiya",
+      "titleAr": "إنشاء مستقيمات متعامدة ومتوازية",
+      "kind": "lesson",
+      "trigger": "alaqat-muthallathiya",
+      "via": [
+        "2am.m2.r01"
+      ]
+    },
+    {
+      "code": "tarif-insihab",
+      "grade": "3am",
+      "unit": "insihab-3am",
+      "titleAr": "الانسحاب ومتوازي الأضلاع",
+      "kind": "lesson",
+      "trigger": "insihab-shuaa",
+      "via": [
+        "3am.m6.r01"
+      ]
+    },
+    {
+      "code": "suwar-ashkal-insihab",
+      "grade": "3am",
+      "unit": "insihab-3am",
+      "titleAr": "صور الأشكال بانسحاب وخواصه",
+      "kind": "lesson",
+      "trigger": "insihab-shuaa",
+      "via": [
+        "3am.m6.r03"
+      ]
+    },
+    {
+      "code": "sura-nuqta-insihab",
+      "grade": "3am",
+      "unit": "insihab-3am",
+      "titleAr": "إنشاء صورة نقطة بانسحاب",
+      "kind": "lesson",
+      "trigger": "insihab-shuaa",
+      "via": [
+        "3am.m6.r02"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-insihab-3am",
+      "grade": "3am",
+      "unit": "insihab-3am",
+      "titleAr": "أدمج تعلّماتي — الانسحاب",
+      "kind": "synthesis",
+      "trigger": "unité insihab-3am complète",
+      "via": []
+    },
+    {
+      "code": "masafa-nuqtatayn",
+      "grade": "2am",
+      "unit": "adad-nisbiya-2",
+      "titleAr": "المسافة بين نقطتين على مستقيم مدرّج",
+      "kind": "lesson",
+      "trigger": "hisab-murakkibatay",
+      "via": [
+        "2am.m4.r07"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-adad-nisbiya-2",
+      "grade": "2am",
+      "unit": "adad-nisbiya-2",
+      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
+      "kind": "synthesis",
+      "trigger": "unité adad-nisbiya-2 complète",
+      "via": []
+    },
+    {
+      "code": "daira-mustalahat",
+      "grade": "1am",
+      "unit": "ashkal-mustawiya",
+      "titleAr": "الدائرة: تسميات وتعاريف",
+      "kind": "lesson",
+      "trigger": "zawiya-muhitiya",
+      "via": [
+        "1am.m2.r05",
+        "1am.m2.r04"
+      ]
+    },
+    {
+      "code": "majmu-zawaya-muthallath",
+      "grade": "2am",
+      "unit": "muthallath-daira",
+      "titleAr": "مجموع أقياس زوايا مثلث",
+      "kind": "lesson",
+      "trigger": "zawiya-muhitiya",
+      "via": [
+        "2am.m3.r04"
+      ]
+    },
+    {
+      "code": "wasf-mutawazi-mustatilat",
+      "grade": "1am",
+      "unit": "mutawazi-mustatilat",
+      "titleAr": "وصف متوازي المستطيلات والمكعب",
+      "kind": "lesson",
+      "trigger": "kura-julla",
+      "via": [
+        "1am.m7.r01"
+      ]
+    },
+    {
+      "code": "manzur-mutasawi-qiyas",
+      "grade": "1am",
+      "unit": "mutawazi-mustatilat",
+      "titleAr": "التمثيل بالمنظور متساوي القياس",
+      "kind": "lesson",
+      "trigger": "kura-julla",
+      "via": [
+        "1am.m7.r02"
+      ]
+    },
+    {
+      "code": "ustuwana-dawaran-wasf",
+      "grade": "2am",
+      "unit": "mawshur-ustuwana",
+      "titleAr": "أسطوانة الدوران: الوصف والتصميم والمساحة الجانبية",
+      "kind": "lesson",
+      "trigger": "kura-julla",
+      "via": [
+        "2am.m7.r04"
+      ]
+    },
+    {
+      "code": "muhit-qurs",
+      "grade": "1am",
+      "unit": "sutuh-masahat-muhitat",
+      "titleAr": "محيط القرص والعدد π",
+      "kind": "lesson",
+      "trigger": "misaha-hajm-kura",
+      "via": [
+        "1am.m2.r10"
+      ]
+    },
+    {
+      "code": "masahat-qurs",
+      "grade": "2am",
+      "unit": "muthallath-daira",
+      "titleAr": "مساحة القرص",
+      "kind": "lesson",
+      "trigger": "misaha-hajm-kura",
+      "via": [
+        "2am.m3.r08"
+      ]
+    },
+    {
+      "code": "mawshur-qaim-wasf",
+      "grade": "2am",
+      "unit": "mawshur-ustuwana",
+      "titleAr": "الموشور القائم: الوصف والتصميم والمساحة الجانبية",
+      "kind": "lesson",
+      "trigger": "maqati-mustawiya",
+      "via": [
+        "2am.m7.r01"
+      ]
+    },
+    {
+      "code": "wasf-tamthil-haram",
+      "grade": "3am",
+      "unit": "haram-makhrut",
+      "titleAr": "وصف الهرم وتمثيله وتصميمه",
+      "kind": "lesson",
+      "trigger": "maqati-mustawiya",
+      "via": [
+        "3am.m6.r04"
+      ]
+    },
+    {
+      "code": "masahat-muthallath-qaim",
+      "grade": "1am",
+      "unit": "sutuh-masahat-muhitat",
+      "titleAr": "مساحة المثلث القائم",
+      "kind": "lesson",
+      "trigger": "takbir-tasghir",
+      "via": [
+        "1am.m2.r09"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-sutuh-masahat-muhitat",
+      "grade": "1am",
+      "unit": "sutuh-masahat-muhitat",
+      "titleAr": "أدمج تعلّماتي — السطوح المستوية: الأطوال، المحيطات، المساحات",
+      "kind": "synthesis",
+      "trigger": "unité sutuh-masahat-muhitat complète",
+      "via": []
+    },
+    {
+      "code": "miqyas-kharita-mukhattat",
+      "grade": "1am",
+      "unit": "tanasubiya-nisab-maqayis",
+      "titleAr": "المقياس: الخرائط والمخططات",
+      "kind": "lesson",
+      "trigger": "takbir-tasghir",
+      "via": [
+        "1am.m6.r07"
+      ]
+    },
+    {
+      "code": "hajm-mutawazi-mustatilat",
+      "grade": "1am",
+      "unit": "mutawazi-mustatilat",
+      "titleAr": "حجم متوازي المستطيلات ووحدات الحجوم",
+      "kind": "lesson",
+      "trigger": "takbir-tasghir",
+      "via": [
+        "1am.m7.r05"
+      ]
+    },
+    {
+      "code": "masahat-muthallath",
+      "grade": "2am",
+      "unit": "muthallath-daira",
+      "titleAr": "مساحة المثلث",
+      "kind": "lesson",
+      "trigger": "takbir-tasghir",
+      "via": [
+        "2am.m3.r06"
+      ]
+    },
+    {
+      "code": "hajm-mawshur-qaim",
+      "grade": "2am",
+      "unit": "mawshur-ustuwana",
+      "titleAr": "حجم الموشور القائم",
+      "kind": "lesson",
+      "trigger": "takbir-tasghir",
+      "via": [
+        "2am.m7.r08"
+      ]
+    },
+    {
+      "code": "hajm-haram",
+      "grade": "3am",
+      "unit": "haram-makhrut",
+      "titleAr": "حجم الهرم",
+      "kind": "lesson",
+      "trigger": "takbir-tasghir",
+      "via": [
+        "3am.m6.r08"
+      ]
+    },
+    {
+      "code": "jidaa-ida-nisbiya",
+      "grade": "3am",
+      "unit": "aadad-nisbiya",
+      "titleAr": "جداء عدة أعداد نسبية",
+      "kind": "lesson",
+      "trigger": "jidaa-ida-nisbiya",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-aadad-nisbiya",
+      "grade": "3am",
+      "unit": "aadad-nisbiya",
+      "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
+      "kind": "synthesis",
+      "trigger": "unité aadad-nisbiya complète",
+      "via": []
+    },
+    {
+      "code": "tasawi-muqaranat-kasrayn",
+      "grade": "3am",
+      "unit": "kusur-natiqa",
+      "titleAr": "تساوي كسرين ومقارنتهما",
+      "kind": "lesson",
+      "trigger": "tasawi-muqaranat-kasrayn",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-kusur-natiqa",
+      "grade": "3am",
+      "unit": "kusur-natiqa",
+      "titleAr": "أدمج تعلّماتي — العمليات على الكسور والأعداد الناطقة",
+      "kind": "synthesis",
+      "trigger": "unité kusur-natiqa complète",
+      "via": []
+    },
+    {
+      "code": "quwa-adad-ashara",
+      "grade": "3am",
+      "unit": "quwa-nisbiya",
+      "titleAr": "قوى العدد 10",
+      "kind": "lesson",
+      "trigger": "quwa-adad-ashara",
+      "via": []
+    },
+    {
+      "code": "qawaid-quwa-ashara",
+      "grade": "3am",
+      "unit": "quwa-nisbiya",
+      "titleAr": "قواعد الحساب على قوى العدد 10",
+      "kind": "lesson",
+      "trigger": "qawaid-quwa-ashara",
+      "via": []
+    },
+    {
+      "code": "rutbat-miqdar-jam",
+      "grade": "1am",
+      "unit": "jam-tarh-ashriya",
+      "titleAr": "رتبة مقدار مجموع وفرق",
+      "kind": "lesson",
+      "trigger": "kitaba-ilmiya-rutba",
+      "via": [
+        "1am.m1.r06"
+      ]
+    },
+    {
+      "code": "kitaba-ilmiya-rutba",
+      "grade": "3am",
+      "unit": "quwa-nisbiya",
+      "titleAr": "الكتابة العلمية ورتبة القدر",
+      "kind": "lesson",
+      "trigger": "kitaba-ilmiya-rutba",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-quwa-nisbiya",
+      "grade": "3am",
+      "unit": "quwa-nisbiya",
+      "titleAr": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
+      "kind": "synthesis",
+      "trigger": "unité quwa-nisbiya complète",
+      "via": []
+    },
+    {
+      "code": "muqaranat-natiqayn",
+      "grade": "3am",
+      "unit": "ibarat-harfiya-3",
+      "titleAr": "مقارنة عددين ناطقين",
+      "kind": "lesson",
+      "trigger": "muqaranat-natiqayn",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-ibarat-harfiya-3",
+      "grade": "3am",
+      "unit": "ibarat-harfiya-3",
+      "titleAr": "أدمج تعلّماتي — الحساب الحرفي",
+      "kind": "synthesis",
+      "trigger": "unité ibarat-harfiya-3 complète",
+      "via": []
+    },
+    {
+      "code": "mutabayinat-amaliyat",
+      "grade": "3am",
+      "unit": "musawiyat-mutabayinat",
+      "titleAr": "المتباينات والعمليات",
+      "kind": "lesson",
+      "trigger": "mutabayinat-amaliyat",
+      "via": []
+    },
+    {
+      "code": "hasr-qiyam-muqarraba",
+      "grade": "1am",
+      "unit": "adad-tabiiya-ashriya",
+      "titleAr": "حصر عدد عشري وقيمه المقرّبة",
+      "kind": "lesson",
+      "trigger": "hasr-adad-ushri",
+      "via": [
+        "1am.m3.r05"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-adad-tabiiya-ashriya",
+      "grade": "1am",
+      "unit": "adad-tabiiya-ashriya",
+      "titleAr": "أدمج تعلّماتي — الأعداد الطبيعية والأعداد العشرية",
+      "kind": "synthesis",
+      "trigger": "unité adad-tabiiya-ashriya complète",
+      "via": []
+    },
+    {
+      "code": "hasr-adad-ushri",
+      "grade": "3am",
+      "unit": "musawiyat-mutabayinat",
+      "titleAr": "حصر عدد عشري موجب",
+      "kind": "lesson",
+      "trigger": "hasr-adad-ushri",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-musawiyat-mutabayinat",
+      "grade": "3am",
+      "unit": "musawiyat-mutabayinat",
+      "titleAr": "أدمج تعلّماتي — المساويات – المتباينات – المعادلات",
+      "kind": "synthesis",
+      "trigger": "unité musawiyat-mutabayinat complète",
+      "via": []
+    },
+    {
+      "code": "insha-muthallath-mutabayina",
+      "grade": "2am",
+      "unit": "muthallath-daira",
+      "titleAr": "المتباينة المثلثية وإنشاء مثلثات",
+      "kind": "lesson",
+      "trigger": "taqayus-muthallathat",
+      "via": [
+        "2am.m3.r05"
+      ]
+    },
+    {
+      "code": "taqayus-muthallathat",
+      "grade": "3am",
+      "unit": "muthallathat-3am",
+      "titleAr": "المثلثات المتقايسة",
+      "kind": "lesson",
+      "trigger": "taqayus-muthallathat",
+      "via": []
+    },
+    {
+      "code": "daira-muhita-muthallath",
+      "grade": "2am",
+      "unit": "muthallath-daira",
+      "titleAr": "الدائرة المحيطة بمثلث",
+      "kind": "lesson",
+      "trigger": "mahawir-munassifat",
+      "via": [
+        "2am.m3.r07"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-muthallath-daira",
+      "grade": "2am",
+      "unit": "muthallath-daira",
+      "titleAr": "أدمج تعلّماتي — المثلث والدائرة",
+      "kind": "synthesis",
+      "trigger": "unité muthallath-daira complète",
+      "via": []
+    },
+    {
+      "code": "mahawir-munassifat",
+      "grade": "3am",
+      "unit": "muthallathat-3am",
+      "titleAr": "بعد نقطة عن مستقيم، المحاور والمنصفات",
+      "kind": "lesson",
+      "trigger": "mahawir-munassifat",
+      "via": []
+    },
+    {
+      "code": "mutawassitat-irtifaat",
+      "grade": "3am",
+      "unit": "muthallathat-3am",
+      "titleAr": "المتوسطات والارتفاعات في المثلث",
+      "kind": "lesson",
+      "trigger": "mutawassitat-irtifaat",
+      "via": []
+    },
+    {
+      "code": "mahawir-tanazur-ashkal",
+      "grade": "1am",
+      "unit": "tanazur-mihwari",
+      "titleAr": "محاور تناظر الأشكال المألوفة",
+      "kind": "lesson",
+      "trigger": "daira-muhita-qaim",
+      "via": [
+        "1am.m4.r09"
+      ]
+    },
+    {
+      "code": "mutawaziyat-adla-khassa",
+      "grade": "2am",
+      "unit": "mutawazi-adla",
+      "titleAr": "متوازيات الأضلاع الخاصة",
+      "kind": "lesson",
+      "trigger": "daira-muhita-qaim",
+      "via": [
+        "2am.m5.r02"
+      ]
+    },
+    {
+      "code": "daira-muhita-qaim",
+      "grade": "3am",
+      "unit": "muthallath-qaim-daira",
+      "titleAr": "الدائرة المحيطة بالمثلث القائم",
+      "kind": "lesson",
+      "trigger": "daira-muhita-qaim",
+      "via": []
+    },
+    {
+      "code": "awda-daira-mustaqim",
+      "grade": "3am",
+      "unit": "muthallath-qaim-daira",
+      "titleAr": "الأوضاع النسبية لدائرة ومستقيم",
+      "kind": "lesson",
+      "trigger": "awda-daira-mustaqim",
+      "via": []
+    },
+    {
+      "code": "mumass-daira",
+      "grade": "3am",
+      "unit": "muthallath-qaim-daira",
+      "titleAr": "مماس دائرة في نقطة منها",
+      "kind": "lesson",
+      "trigger": "mumass-daira",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-muthallath-qaim-daira",
+      "grade": "3am",
+      "unit": "muthallath-qaim-daira",
+      "titleAr": "أدمج تعلّماتي — المثلث القائم والدائرة",
+      "kind": "synthesis",
+      "trigger": "unité muthallath-qaim-daira complète",
+      "via": []
+    },
+    {
+      "code": "aksiya-fitaghuras",
+      "grade": "3am",
+      "unit": "fitaghuras-jayb-tamam",
+      "titleAr": "الخاصية العكسية لفيثاغورس",
+      "kind": "lesson",
+      "trigger": "aksiya-fitaghuras",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-fitaghuras-jayb-tamam",
+      "grade": "3am",
+      "unit": "fitaghuras-jayb-tamam",
+      "titleAr": "أدمج تعلّماتي — خاصية فيثاغورس، جيب تمام زاوية",
+      "kind": "synthesis",
+      "trigger": "unité fitaghuras-jayb-tamam complète",
+      "via": []
+    },
+    {
+      "code": "tasmim-mutawazi-mustatilat",
+      "grade": "1am",
+      "unit": "mutawazi-mustatilat",
+      "titleAr": "تصميم متوازي المستطيلات وصنعه",
+      "kind": "lesson",
+      "trigger": "wasf-tamthil-haram",
+      "via": [
+        "1am.m7.r03"
+      ]
+    },
+    {
+      "code": "wadiya-idmajiya-mutawazi-mustatilat",
+      "grade": "1am",
+      "unit": "mutawazi-mustatilat",
+      "titleAr": "أدمج تعلّماتي — متوازي المستطيلات والمكعب",
+      "kind": "synthesis",
+      "trigger": "unité mutawazi-mustatilat complète",
+      "via": []
+    },
+    {
+      "code": "wasf-tamthil-makhrut",
+      "grade": "3am",
+      "unit": "haram-makhrut",
+      "titleAr": "وصف مخروط الدوران وتمثيله وتصميمه",
+      "kind": "lesson",
+      "trigger": "wasf-tamthil-makhrut",
+      "via": []
+    },
+    {
+      "code": "hajm-makhrut",
+      "grade": "3am",
+      "unit": "haram-makhrut",
+      "titleAr": "حجم مخروط الدوران",
+      "kind": "lesson",
+      "trigger": "hajm-makhrut",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-haram-makhrut",
+      "grade": "3am",
+      "unit": "haram-makhrut",
+      "titleAr": "أدمج تعلّماتي — الهرم و مخروط الدوران",
+      "kind": "synthesis",
+      "trigger": "unité haram-makhrut complète",
+      "via": []
+    },
+    {
+      "code": "wasf-silsila-hisab",
+      "grade": "2am",
+      "unit": "amaliyat-tabiiya-ushriya",
+      "titleAr": "وصف سلسلة حسابات",
+      "kind": "lesson",
+      "trigger": "wasf-silsila-hisab",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-amaliyat-tabiiya-ushriya",
+      "grade": "2am",
+      "unit": "amaliyat-tabiiya-ushriya",
+      "titleAr": "أدمج تعلّماتي — العمليات على الأعداد الطبيعية والأعداد العشرية",
+      "kind": "synthesis",
+      "trigger": "unité amaliyat-tabiiya-ushriya complète",
+      "via": []
+    },
+    {
+      "code": "qisma-ashriya-taqrib",
+      "grade": "1am",
+      "unit": "darb-qisma-ashriya",
+      "titleAr": "القسمة العشرية والقيمة المقرّبة لحاصل قسمة",
+      "kind": "lesson",
+      "trigger": "qisma-iqlidiya-hasr",
+      "via": [
+        "1am.m3.r03"
+      ]
+    },
+    {
+      "code": "kasr-hasil-qisma",
+      "grade": "2am",
+      "unit": "kusur-amaliyat",
+      "titleAr": "الكسر: نسبة وحاصل قسمة وقيم مقرّبة",
+      "kind": "lesson",
+      "trigger": "kasr-hasil-qisma",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-kusur-amaliyat",
+      "grade": "2am",
+      "unit": "kusur-amaliyat",
+      "titleAr": "أدمج تعلّماتي — الكسور والعمليات عليها",
+      "kind": "synthesis",
+      "trigger": "unité kusur-amaliyat complète",
+      "via": []
+    },
+    {
+      "code": "qiraat-mutayat-ihsaiya",
+      "grade": "2am",
+      "unit": "tanzim-mutayat-2am",
+      "titleAr": "قراءة معطيات إحصائية وتفسيرها",
+      "kind": "lesson",
+      "trigger": "qiraat-mutayat-ihsaiya",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-tanzim-mutayat-2am",
+      "grade": "2am",
+      "unit": "tanzim-mutayat-2am",
+      "titleAr": "أدمج تعلّماتي — تنظيم معطيات",
+      "kind": "synthesis",
+      "trigger": "unité tanzim-mutayat-2am complète",
+      "via": []
+    },
+    {
+      "code": "mihwar-qita-insha",
+      "grade": "2am",
+      "unit": "inshaat-handasiya",
+      "titleAr": "إنشاء محور قطعة مستقيم",
+      "kind": "lesson",
+      "trigger": "mihwar-qita-insha",
+      "via": []
+    },
+    {
+      "code": "munassif-zawiya-insha",
+      "grade": "2am",
+      "unit": "inshaat-handasiya",
+      "titleAr": "إنشاء منصّف زاوية",
+      "kind": "lesson",
+      "trigger": "munassif-zawiya-insha",
+      "via": []
+    },
+    {
+      "code": "muthallathat-khassa-insha",
+      "grade": "2am",
+      "unit": "inshaat-handasiya",
+      "titleAr": "إنشاء مثلثات خاصة",
+      "kind": "lesson",
+      "trigger": "muthallathat-khassa-insha",
+      "via": []
+    },
+    {
+      "code": "rubaiyat-khassa-insha",
+      "grade": "2am",
+      "unit": "inshaat-handasiya",
+      "titleAr": "إنشاء مستطيل، مربع، معيّن",
+      "kind": "lesson",
+      "trigger": "rubaiyat-khassa-insha",
+      "via": []
+    },
+    {
+      "code": "daira-qaws-insha",
+      "grade": "2am",
+      "unit": "inshaat-handasiya",
+      "titleAr": "إنشاء دائرة وقوس دائرة",
+      "kind": "lesson",
+      "trigger": "daira-qaws-insha",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-inshaat-handasiya",
+      "grade": "2am",
+      "unit": "inshaat-handasiya",
+      "titleAr": "أدمج تعلّماتي — إنشاء أشكال هندسية بسيطة",
+      "kind": "synthesis",
+      "trigger": "unité inshaat-handasiya complète",
+      "via": []
+    },
+    {
+      "code": "zawaya-mutaqabila-ras",
+      "grade": "2am",
+      "unit": "zawaya-tawazi",
+      "titleAr": "الزاويتان المتقابلتان بالرأس",
+      "kind": "lesson",
+      "trigger": "zawaya-mutaqabila-ras",
+      "via": []
+    },
+    {
+      "code": "zawaya-mutabadila-mutamathila",
+      "grade": "2am",
+      "unit": "zawaya-tawazi",
+      "titleAr": "الزاويتان المتبادلتان داخليا والمتماثلتان",
+      "kind": "lesson",
+      "trigger": "zawaya-mutabadila-mutamathila",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-zawaya-tawazi",
+      "grade": "2am",
+      "unit": "zawaya-tawazi",
+      "titleAr": "أدمج تعلّماتي — الزوايا والتوازي",
+      "kind": "synthesis",
+      "trigger": "unité zawaya-tawazi complète",
+      "via": []
+    },
+    {
+      "code": "khawas-mutawazi-adla",
+      "grade": "2am",
+      "unit": "mutawazi-adla",
+      "titleAr": "خواص متوازي الأضلاع",
+      "kind": "lesson",
+      "trigger": "khawas-mutawazi-adla",
+      "via": []
+    },
+    {
+      "code": "masahat-mutawazi-adla",
+      "grade": "2am",
+      "unit": "mutawazi-adla",
+      "titleAr": "مساحة متوازي الأضلاع",
+      "kind": "lesson",
+      "trigger": "masahat-mutawazi-adla",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-mutawazi-adla",
+      "grade": "2am",
+      "unit": "mutawazi-adla",
+      "titleAr": "أدمج تعلّماتي — متوازي الأضلاع",
+      "kind": "synthesis",
+      "trigger": "unité mutawazi-adla complète",
+      "via": []
+    },
+    {
+      "code": "mutawazi-mustatilat-hajm-saa",
+      "grade": "2am",
+      "unit": "mawshur-ustuwana",
+      "titleAr": "متوازي المستطيلات: التمثيل والتصميم والحجم والسعة",
+      "kind": "lesson",
+      "trigger": "mutawazi-mustatilat-hajm-saa",
+      "via": []
+    },
+    {
+      "code": "hajm-ustuwana-dawaran",
+      "grade": "2am",
+      "unit": "mawshur-ustuwana",
+      "titleAr": "حجم أسطوانة الدوران",
+      "kind": "lesson",
+      "trigger": "hajm-ustuwana-dawaran",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-mawshur-ustuwana",
+      "grade": "2am",
+      "unit": "mawshur-ustuwana",
+      "titleAr": "أدمج تعلّماتي — الموشور القائم وأسطوانة الدوران",
+      "kind": "synthesis",
+      "trigger": "unité mawshur-ustuwana complète",
+      "via": []
+    },
+    {
+      "code": "injaz-jam-tarh-mudad",
+      "grade": "1am",
+      "unit": "jam-tarh-ashriya",
+      "titleAr": "إنجاز عمليات الجمع والطرح والحساب على المدد",
+      "kind": "lesson",
+      "trigger": "injaz-jam-tarh-mudad",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-jam-tarh-ashriya",
+      "grade": "1am",
+      "unit": "jam-tarh-ashriya",
+      "titleAr": "أدمج تعلّماتي — الحساب على الأعداد الطبيعية والأعداد العشرية: الجمع والطرح",
+      "kind": "synthesis",
+      "trigger": "unité jam-tarh-ashriya complète",
+      "via": []
+    },
+    {
+      "code": "darb-adad-ashriya",
+      "grade": "1am",
+      "unit": "darb-qisma-ashriya",
+      "titleAr": "ضرب الأعداد العشرية",
+      "kind": "lesson",
+      "trigger": "darb-adad-ashriya",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-darb-qisma-ashriya",
+      "grade": "1am",
+      "unit": "darb-qisma-ashriya",
+      "titleAr": "أدمج تعلّماتي — الحساب على الأعداد الطبيعية والأعداد العشرية: الضرب والقسمة",
+      "kind": "synthesis",
+      "trigger": "unité darb-qisma-ashriya complète",
+      "via": []
+    },
+    {
+      "code": "hasil-qisma-mustaqim",
+      "grade": "1am",
+      "unit": "kitabat-kasriya",
+      "titleAr": "حاصل القسمة على نصف مستقيم مدرّج",
+      "kind": "lesson",
+      "trigger": "hasil-qisma-mustaqim",
+      "via": []
+    },
+    {
+      "code": "akhdh-kasr-min-adad",
+      "grade": "1am",
+      "unit": "kitabat-kasriya",
+      "titleAr": "أخذ كسر من عدد",
+      "kind": "lesson",
+      "trigger": "akhdh-kasr-min-adad",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-kitabat-kasriya",
+      "grade": "1am",
+      "unit": "kitabat-kasriya",
+      "titleAr": "أدمج تعلّماتي — الكتابات الكسرية",
+      "kind": "synthesis",
+      "trigger": "unité kitabat-kasriya complète",
+      "via": []
+    },
+    {
+      "code": "intaj-ibara-harfiya",
+      "grade": "1am",
+      "unit": "ibarat-harfiya",
+      "titleAr": "إنتاج عبارات حرفية",
+      "kind": "lesson",
+      "trigger": "intaj-ibara-harfiya",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-ibarat-harfiya",
+      "grade": "1am",
+      "unit": "ibarat-harfiya",
+      "titleAr": "أدمج تعلّماتي — الحساب الحرفي",
+      "kind": "synthesis",
+      "trigger": "unité ibarat-harfiya complète",
+      "via": []
+    },
+    {
+      "code": "muqaranat-hisas",
+      "grade": "1am",
+      "unit": "tanasubiya-nisab-maqayis",
+      "titleAr": "مقارنة حصص",
+      "kind": "lesson",
+      "trigger": "muqaranat-hisas",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-tanasubiya-nisab-maqayis",
+      "grade": "1am",
+      "unit": "tanasubiya-nisab-maqayis",
+      "titleAr": "أدمج تعلّماتي — التناسبية",
+      "kind": "synthesis",
+      "trigger": "unité tanasubiya-nisab-maqayis complète",
+      "via": []
+    },
+    {
+      "code": "mukhattat-bil-amida",
+      "grade": "1am",
+      "unit": "tanzim-muatayat",
+      "titleAr": "تمثيل معطيات بمخطط بالأعمدة",
+      "kind": "lesson",
+      "trigger": "mukhattat-bil-amida",
+      "via": []
+    },
+    {
+      "code": "tamthil-bayani-dairi",
+      "grade": "1am",
+      "unit": "tanzim-muatayat",
+      "titleAr": "التمثيل البياني والمخطط الدائري",
+      "kind": "lesson",
+      "trigger": "tamthil-bayani-dairi",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-tanzim-muatayat",
+      "grade": "1am",
+      "unit": "tanzim-muatayat",
+      "titleAr": "أدمج تعلّماتي — تنظيم معطيات",
+      "kind": "synthesis",
+      "trigger": "unité tanzim-muatayat complète",
+      "via": []
+    },
+    {
+      "code": "mustaqimat-mutawaziya",
+      "grade": "1am",
+      "unit": "tawazi-taamud",
+      "titleAr": "المستقيمان المتوازيان",
+      "kind": "lesson",
+      "trigger": "mustaqimat-mutawaziya",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-tawazi-taamud",
+      "grade": "1am",
+      "unit": "tawazi-taamud",
+      "titleAr": "أدمج تعلّماتي — التوازي والتعامد",
+      "kind": "synthesis",
+      "trigger": "unité tawazi-taamud complète",
+      "via": []
+    },
+    {
+      "code": "muthallathat-khassa",
+      "grade": "1am",
+      "unit": "ashkal-mustawiya",
+      "titleAr": "المثلثات الخاصة",
+      "kind": "lesson",
+      "trigger": "muthallathat-khassa",
+      "via": []
+    },
+    {
+      "code": "rubaiyat-khassa",
+      "grade": "1am",
+      "unit": "ashkal-mustawiya",
+      "titleAr": "الرباعيات الخاصة",
+      "kind": "lesson",
+      "trigger": "rubaiyat-khassa",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-ashkal-mustawiya",
+      "grade": "1am",
+      "unit": "ashkal-mustawiya",
+      "titleAr": "أدمج تعلّماتي — الأشكال المستوية",
+      "kind": "synthesis",
+      "trigger": "unité ashkal-mustawiya complète",
+      "via": []
+    },
+    {
+      "code": "mafhum-zawiya-tasmiya",
+      "grade": "1am",
+      "unit": "zawaya-qiyas",
+      "titleAr": "مفهوم الزاوية وتسميتها",
+      "kind": "lesson",
+      "trigger": "mafhum-zawiya-tasmiya",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-zawaya-qiyas",
+      "grade": "1am",
+      "unit": "zawaya-qiyas",
+      "titleAr": "أدمج تعلّماتي — الزوايا",
+      "kind": "synthesis",
+      "trigger": "unité zawaya-qiyas complète",
+      "via": []
+    },
+    {
+      "code": "mihwar-qita-mustaqim",
+      "grade": "1am",
+      "unit": "tanazur-mihwari",
+      "titleAr": "محور قطعة مستقيم",
+      "kind": "lesson",
+      "trigger": "mihwar-qita-mustaqim",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-tanazur-mihwari",
+      "grade": "1am",
+      "unit": "tanazur-mihwari",
+      "titleAr": "أدمج تعلّماتي — التناظر المحوري",
+      "kind": "synthesis",
+      "trigger": "unité tanazur-mihwari complète",
+      "via": []
+    },
+    {
+      "code": "ibara-harfiya-intaj",
+      "grade": "2am",
+      "unit": "mafhum-muadala",
+      "titleAr": "إنتاج عبارة حرفية واستعمالها",
+      "kind": "lesson",
+      "trigger": "isolée",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-mafhum-muadala",
+      "grade": "2am",
+      "unit": "mafhum-muadala",
+      "titleAr": "أدمج تعلّماتي — مفهوم معادلة",
+      "kind": "synthesis",
+      "trigger": "unité mafhum-muadala complète",
+      "via": []
+    },
+    {
+      "code": "qawaid-niqash-mithal-mudad",
+      "grade": "3am",
+      "unit": "burhan-riyadi",
+      "titleAr": "قواعد النقاش الرياضي والمثال المضاد",
+      "kind": "lesson",
+      "trigger": "isolée",
+      "via": []
+    },
+    {
+      "code": "nusus-idha-fa-in",
+      "grade": "3am",
+      "unit": "burhan-riyadi",
+      "titleAr": "النصوص «إذا … فإنّ …» والنص العكسي",
+      "kind": "lesson",
+      "trigger": "isolée",
+      "via": []
+    },
+    {
+      "code": "burhan-handasi",
+      "grade": "3am",
+      "unit": "burhan-riyadi",
+      "titleAr": "البحث عن برهان في الهندسة وتحريره",
+      "kind": "lesson",
+      "trigger": "isolée",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-burhan-riyadi",
+      "grade": "3am",
+      "unit": "burhan-riyadi",
+      "titleAr": "أدمج تعلّماتي — البرهان في الرياضيات",
+      "kind": "synthesis",
+      "trigger": "unité burhan-riyadi complète",
+      "via": []
+    },
+    {
+      "code": "mutabayina-muthallathiya",
+      "grade": "3am",
+      "unit": "muthallathat-3am",
+      "titleAr": "المتباينة المثلثية وإنشاء مثلث",
+      "kind": "lesson",
+      "trigger": "isolée",
+      "via": []
+    },
+    {
+      "code": "wadiya-idmajiya-muthallathat-3am",
+      "grade": "3am",
+      "unit": "muthallathat-3am",
+      "titleAr": "أدمج تعلّماتي — المثلثات",
+      "kind": "synthesis",
+      "trigger": "unité muthallathat-3am complète",
+      "via": []
+    }
+  ]
+}

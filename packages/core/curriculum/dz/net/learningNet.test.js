@@ -171,7 +171,7 @@ describe('résolveur — navigation', () => {
     expect(items).toContain('3am.m4.r03');
     expect(items).toContain('3am.m3.r06');
     const pyth = groups.find((g) => g.items.some((i) => i.id === '3am.m4.r03'));
-    expect(pyth.lesson).toMatchObject({ code: 'fithaghuras', grade: '3am', status: 'planned' });
+    expect(pyth.lesson).toMatchObject({ code: homeLessonOf('3am.m4.r03').code, grade: '3am', status: 'planned' });
   });
 
   it('n’envoie jamais une leçon vers elle-même, et groupe du plus ancien au plus récent', () => {
@@ -184,15 +184,15 @@ describe('résolveur — navigation', () => {
   });
 
   it('montre où sert une leçon de 1AM jusqu’en 4AM', () => {
-    const forward = forwardLinksForLesson('qabiliyat-qisma');
+    const forward = forwardLinksForLesson(homeLessonOf('1am.m3.r02').code);
     expect(forward.map((g) => g.lesson.code)).toContain('qasim-adad-tabii');
   });
 
   it('dit à « اختزال كسر » ce qu’il ne doit pas reconstruire', () => {
     const rules = noRebuildForLesson('ikhtizal-kasr');
     expect(rules).toHaveLength(1);
-    expect(rules[0]).toMatchObject({ type: 'extends', base: { id: '1am.m5.r02' }, baseLesson: { code: 'kitabat-kasriya' } });
+    expect(rules[0]).toMatchObject({ type: 'extends', base: { id: '1am.m5.r02' }, baseLesson: { code: homeLessonOf('1am.m5.r02').code } });
     expect(rules[0].addedValueAr).toBeTruthy();
-    expect(getLesson('kitabat-kasriya').status).toBe('planned');
+    expect(getLesson(homeLessonOf('1am.m5.r02').code).status).toBe('planned');
   });
 });
