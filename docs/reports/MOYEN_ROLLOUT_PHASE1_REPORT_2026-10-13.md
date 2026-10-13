@@ -19,6 +19,8 @@ contract, §4bis generation order).
 | D7 | **Links to earlier years also go inside exercises**, not only in the « أستعدّ » prerequisite test. |
 | D8 | **Run one phase per session**, ending with a report and the next session's prompt, to save tokens. |
 | D9 | **Files with bad text are skipped**, never OCR'd. |
+| D10 | **The lessons without a programme item are generated** like the others (2026-10-14): 3AM « البرهان في الرياضيات » (3 lessons), 3AM « المتباينة المثلثية », 2AM « إنتاج عبارة حرفية ». They keep `programmeItems: []`, stay at the end of the queue (phase E), and are labelled as textbook content beyond the 2022 plan. |
+| D11 | **Missing scan pages are generated** (2026-10-14): 2AM p.140 (the second « معارف » page of unit 9) and pp.196–198 (unit 12's « أدمج تعلّماتي », its ICT page and the glossary), and 3AM p.37 (unit 2's ICT page). They are written in the book's format, as **declared platform additions** (`addition('knowledge_formalization' / 'synthesis_generation' / 'interaction_generation')`), never presented as textbook text. |
 
 ## 2. What phase 1 produced
 
@@ -47,8 +49,7 @@ The queue starts with:
   validate them unit by unit, just before each unit's lessons are generated.
 - **The lesson cut decisions** each reader made (merges, splits). They are written in each map's `notes` and
   per-lesson `notes`.
-- **Lessons without a programme item:** 3AM « البرهان » (3 lessons), 3AM « المتباينة المثلثية », 2AM « إنتاج عبارة
-  حرفية ». The books teach them; the 2022 plan doesn't list them.
+- ~~Lessons without a programme item~~ → **decided D10: generated.**
 - **Exam files never to use:**
   - `2am/2AM.pdf` is a commercial exercise book (Dar El Maarifa), not an exam.
   - `2am-s2-61` builds its integration situation on bombings and soldiers killed.
@@ -58,7 +59,7 @@ The queue starts with:
 ### Known gaps carried forward
 
 - **Missing scan pages:** 2AM p.140 and pp.196–198 (unit 12's « أدمج تعلّماتي »); 3AM p.37 (an ICT page).
-  Content for these is generated as declared platform additions.
+  **Decided D11: generated** as declared platform additions when their unit is seeded (phase 3).
 - **Thin exam coverage**, so these lessons will rely on generated exercises:
   - solids: 1am.m7, 2am.m7, 3am.m6;
   - statistics, motion and spreadsheets: 1am.m6, 3am.m7;
@@ -155,7 +156,7 @@ Each session takes the **next entries of `docs/curriculum/generation-queue.json`
 ```text
 Phase 2 of the cycle moyen rollout — platform and database for 1AM–3AM.
 Read first: CLAUDE.md, docs/README.md, docs/architecture/LEARNING_NET.md,
-docs/reports/MOYEN_ROLLOUT_PHASE1_REPORT_2026-10-13.md (owner decisions D1–D9 and §4 "Phase 2" = your scope),
+docs/reports/MOYEN_ROLLOUT_PHASE1_REPORT_2026-10-13.md (owner decisions D1–D11 and §4 "Phase 2" = your scope),
 docs/lessons/LESSON_DEVELOPMENT_GUIDE.md §3 and §14, docs/architecture/BUNDLE_BOUNDARIES.md,
 docs/architecture/EXERCISE_CONTRACT.md, docs/sources/moyen/exams/EXAM_PATTERN.md §6.
 
@@ -180,7 +181,7 @@ Do not generate any lesson in this session.
 ```text
 Phase 3 of the cycle moyen rollout — generate the next N=3 lessons of the learning-net queue.
 Read first: CLAUDE.md, docs/README.md, docs/architecture/LEARNING_NET.md (§4 generation contract, §4bis order),
-the latest docs/reports/MOYEN_ROLLOUT_PHASE*_REPORT_*.md (owner decisions D1–D9, the "publish" procedure),
+the latest docs/reports/MOYEN_ROLLOUT_PHASE*_REPORT_*.md (owner decisions D1–D11, the "publish" procedure),
 docs/lessons/LESSON_DEVELOPMENT_GUIDE.md end to end, docs/architecture/MANIPULATION_DNA.md,
 docs/sources/moyen/exams/EXAM_PATTERN.md.
 
@@ -189,7 +190,8 @@ Take the first N entries of docs/curriculum/generation-queue.json that are not y
 1. If it is the first lesson of its unit: seed the unit (folder, _unit/, routes) and build
    docs/sources/<g>/unit<N>/extraction.json from the textbook pages in the unit's `textbook` block
    (docs/official-book-pdfs/; render pages with pdftoppm, never more than needed; the 2AM scan is the only copy —
-   get the idea and move on).
+   get the idea and move on). Pages missing from the scan (D11) are GENERATED in the book's format as declared
+   platform additions.
 2. Generate the lesson per guide §14 and LEARNING_NET §4 (« أستعدّ » diagnoses reviewLinksForLesson; nothing that
    noRebuildForLesson lists is rebuilt; pointPrerequisites only along net links; links to earlier years inside
    exercises). The draft الكفاءات in lessons_<g>_*.json may be refined, never silently dropped — list changes for me.

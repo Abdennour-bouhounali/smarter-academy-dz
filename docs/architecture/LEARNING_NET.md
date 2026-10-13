@@ -129,7 +129,7 @@ Seventeen conceptual strands. Each item belongs to exactly one (tested). The str
     avant » (§4bis), never a reordering.
   - **Lessons without a programme item** (the book teaches them, the 2022 plan has no item): 3AM unit 8 « البرهان
     في الرياضيات » (3 lessons), 3AM « المتباينة المثلثية », 2AM « إنتاج عبارة حرفية ». They are queued last (§4bis)
-    and keep `programmeItems: []`.
+    and keep `programmeItems: []`. **Owner decision D10 (2026-10-14): they are generated** like every other lesson.
 - **Codes** are globally unique, published and planned together (tested); a collision is resolved by a grade suffix
   (`-2`, `-3am`).
 - **Home lesson** of an item: the first lesson in curriculum order (grade, then `order`) that declares it, synthesis
@@ -243,7 +243,8 @@ On 2026-10-13: 196 lessons — A 108, B 35, C 22, D 23, E 8; 18 renvois en avant
 - **Not verified.** The transcription has not been re-read against the PDFs by a second reader (`verified: false`).
 - **1AM–3AM decomposition and الكفاءات are drafts** (`decisionStatus: "draft"`) until the owner validates them.
 - **Scans:** 2AM is missing book p.140 and pp.196–198 (unit 12's « أدمج تعلّماتي »); 3AM is missing p.37; details
-  in each `textbook-map.json › scanIssues`.
+  in each `textbook-map.json › scanIssues`. **Owner decision D11 (2026-10-14): the missing pages are generated** in
+  the book's format as declared platform additions when their unit is seeded.
 - **Not yet implemented:**
   - `forwardLinksForLesson` is not shown anywhere yet.
   - Programme items are not imported into the API database. Mastery V2 knows LPs only; a `programme_items` table
