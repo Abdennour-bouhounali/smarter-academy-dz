@@ -1,8 +1,9 @@
 // The single allowlist of grade `id`s active in the Algerian product.
 //
-// Les DEUX classes du produit algérien, et elles seules
-// (ALGERIA_PLATFORM_MASTER_SPEC.md §3 : « The initial active curriculum
-// contains ONLY: 4AM — السنة الرابعة متوسط · Terminale — السنة الثالثة ثانوي »).
+// Les classes du produit algérien : à l'origine 4AM et la Terminale seules
+// (ALGERIA_PLATFORM_MASTER_SPEC.md §3) ; depuis le 2026-10-14 (phase 2 du
+// déploiement du cycle moyen, décision D2 du propriétaire) aussi 1AM, 2AM et
+// 3AM, dont toutes les leçons sont encore `coming_soon`.
 //
 // ── Ce qu'« active » veut dire, et ce qu'il ne veut PAS dire ────────────
 // Active = la classe EXISTE : un élève peut s'y inscrire, elle apparaît dans
@@ -12,6 +13,10 @@
 //                  écrite, « الأعداد الطبيعيّة والأعداد النّاطقة » (9 leçons,
 //                  apps/web/src/lessons/moyen/4am/). Le catalogue ne montre
 //                  que les ميادين qui ont des leçons.
+//   1am/2am/3am  → programme (net/official_programme_moyen.json) et découpage
+//                  du manuel arrêtés ; AUCUNE leçon publiée le 2026-10-14 : le
+//                  catalogue montre leurs unités et leurs leçons en cartes non
+//                  cliquables « قيد الإعداد », publiées une à une (LEARNING_NET.md).
 //   terminale_dz → identité seule. Aucun programme n'a été fourni
 //                  (rapport de reprise §19, B1).
 //
@@ -24,7 +29,7 @@
 // Les 8 classes françaises, leurs leçons et leur catalogue de référence ont
 // été SUPPRIMÉS le 2026-09-25 ; `check:dormant-isolation` échoue s'ils
 // reviennent.
-export const ACTIVE_GRADE_IDS = Object.freeze(['4am', 'terminale_dz']);
+export const ACTIVE_GRADE_IDS = Object.freeze(['1am', '2am', '3am', '4am', 'terminale_dz']);
 
 export function isGradeActive(gradeId) {
   return ACTIVE_GRADE_IDS.includes(gradeId);

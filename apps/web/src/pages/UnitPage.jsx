@@ -15,6 +15,7 @@ import { useLearningViewer } from '../features/learning/learningViewer';
 import { LessonModuleChips, TeacherLessonActions } from '../components/teacher/TeacherLessonActions';
 import MathLabel from '../lessons/common/components/MathLabel';
 import PublicationBadge from '../components/content/PublicationBadge';
+import PrerequisiteLessonChips from '../lessons/common/components/PrerequisiteLessonChips';
 import UnitOpenerFigure from './unit/UnitOpenerFigure';
 import { useCatalogueHref } from '../components/student/catalogueLink';
 
@@ -54,6 +55,10 @@ function LessonBlock({ lesson, index, mastery, t }) {
   // Masquée par l'enseignant : traitée comme indisponible pour l'élève de
   // cette classe, sans toucher à la publication.
   const available = lesson.status === 'available' && !isLessonClosed(lesson.id) && !isLessonHiddenByClass(lesson.id);
+  // Pas encore ÉCRITE (`coming_soon` — les leçons 1AM–3AM à générer, 2026-10-14) :
+  // une carte « قيد الإعداد » qui montre ce que la leçon fera acquérir, sans
+  // progression ni geste (LEARNING_NET.md).
+  const draft = lesson.status !== 'available';
   const total = getTotalModules(lesson.id);
   const { progressPercent } = available ? getLessonProgress(lesson.id, total) : { progressPercent: 0 };
   const config = getLessonConfig(lesson.id);
@@ -66,7 +71,7 @@ function LessonBlock({ lesson, index, mastery, t }) {
   const textbookPages = formatTextbookPages(lesson.textbookRef?.pages);
 
   return (
-    <article className={`rounded-3xl border-2 bg-white p-5 sm:p-6 space-y-4 ${isSynthesis ? 'border-amber-300' : 'border-slate-200'}`} data-unit-lesson={lesson.id}>
+    <article className={`rounded-3xl border-2 bg-white p-5 sm:p-6 space-y-4 ${isSynthesis ? 'border-amber-300' : 'border-slate-200'} ${draft ? 'border-dashed' : ''}`} data-unit-lesson={lesson.id}>
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex items-start gap-3">
           <span className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-lg font-bold ${isSynthesis ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-800'}`} aria-hidden="true">
@@ -78,11 +83,15 @@ function LessonBlock({ lesson, index, mastery, t }) {
             <p className="mt-1 text-sm text-slate-600"><MathLabel>{lesson.description}</MathLabel></p>
           </div>
         </div>
+        {draft ? (
+          <span className="rounded-full border border-dashed border-slate-300 bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-500" data-lesson-draft={lesson.id}>{t('unit.comingSoon')}</span>
+        ) : (
         <div className="flex flex-col items-end gap-1 text-xs text-slate-500">
           <span dir="ltr" className={`rounded-full px-2.5 py-1 font-mono font-bold ${progressPercent >= 100 ? 'bg-emerald-50 text-emerald-700' : progressPercent > 0 ? 'bg-blue-50 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{progressPercent}%</span>
           <span>{lesson.duration}</span>
           {lesson.learningPoints.length > 0 && <span dir="ltr">{mastered}/{lesson.learningPoints.length} ✓</span>}
         </div>
+        )}
       </header>
 
       {isTeacher && <LessonModuleChips lessonId={lesson.id} />}
@@ -111,9 +120,7 @@ function LessonBlock({ lesson, index, mastery, t }) {
             <div>
               <h4 className="mb-1 flex items-center gap-1.5 text-sm font-bold text-slate-800"><Compass className="h-4 w-4" aria-hidden="true" /> {t('unit.prerequisites')}</h4>
               <ul className="flex flex-wrap gap-1.5">
-                {prereqLessons.map((p) => (
-                  <li key={p.id}><Link to={p.path} className="rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-0.5 text-xs text-indigo-800 hover:border-indigo-400"><MathLabel>{p.title}</MathLabel></Link></li>
-                ))}
+                <PrerequisiteLessonChips lessonId={lesson.id} />
                 {(lesson.prerequisites ?? []).map((txt) => (
                   <li key={txt} className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-xs text-slate-600"><MathLabel>{txt}</MathLabel></li>
                 ))}
@@ -135,10 +142,11 @@ function LessonBlock({ lesson, index, mastery, t }) {
 
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-3">
         <span className="text-xs text-slate-500">
-          {config ? t('unit.modulesCount', { count: total ?? 0 }) : t('unit.comingSoon')}
+          {/* Brouillon : l'en-tête et le bouton disent déjà « قيد الإعداد » — ici, les pages du manuel seules. */}
+          {config ? t('unit.modulesCount', { count: total ?? 0 }) : !draft && t('unit.comingSoon')}
           {/* `pages` est une carte section → page(s), pas un nombre : sans
               mise en forme, « الكتاب ص {{pages}} » rendait « [object Object] ». */}
-          {textbookPages && <> · {t('unit.textbookPages', { pages: textbookPages })}</>}
+          {textbookPages && <>{(config || !draft) && ' · '}{t('unit.textbookPages', { pages: textbookPages })}</>}
         </span>
         {available && isTeacher && config && (
           <div className="flex flex-wrap items-center gap-2">
@@ -163,7 +171,7 @@ function LessonBlock({ lesson, index, mastery, t }) {
             data-lesson-soon={lesson.id}
           >
             <Lock className="h-4 w-4" aria-hidden="true" />
-            {isLessonHiddenByClass(lesson.id) ? t('hiddenByTeacherBadge', { ns: 'access' }) : t('unit.soon')}
+            {isLessonHiddenByClass(lesson.id) ? t('hiddenByTeacherBadge', { ns: 'access' }) : draft ? t('unit.comingSoon') : t('unit.soon')}
           </span>
         )}
       </footer>

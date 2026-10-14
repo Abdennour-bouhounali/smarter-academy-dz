@@ -314,8 +314,10 @@ Cette section est une recommandation, pas encore implémentée. Elle reprend le 
      `metadata.source: {type:"term_exam", grade, semester, file:"<id de exams-index.json>", exercise:n}` ;
    - **exercice généré à partir du modèle seul :** `metadata.source: {type:"platform_addition", reason:"term_exam_modelled", modelledOn:"<grade>-s<sem>"}`.
 
-   Le contrat (`EXERCISE_CONTRACT.md`) ne connaît aujourd'hui que `type:"bem"`. Le type `term_exam` est donc *Planned*, à ajouter
-   au contrat et au validateur le jour où la première leçon 1–3AM bascule.
+   **Implémenté le 2026-10-14 (phase 2)** : le type `term_exam`, la raison `term_exam_modelled` et le badge sont dans le
+   contrat (`EXERCISE_CONTRACT.md` § « Term-exam provenance (1AM–3AM) »), le validateur (`scripts/lib/examProvenance.mjs`,
+   appelé par `validate-exercises.mjs`) et la feuille (`examPaper` : « على منوال اختبارات الفصل », « n متوسط »). Un sujet
+   `misfiled` y compte pour son en-tête ; `2am-s2-61` y est refusé.
 4. **Points et intitulés écrits comme sur la copie** : « التمرين الأول:(03 ن) », « الجزء الثاني: الوضعية الإدماجية (08 ن) ».
    Les figures sont redessinées en `GeoFigure` avec « (الأطوال غير حقيقية) » ; on n'importe jamais d'image.
 5. **Correction et barème.** Chaque exercice reçoit un corrigé pas à pas dans le style « التصحيح النموذجي » : une ligne par
@@ -331,4 +333,5 @@ Cette section est une recommandation, pas encore implémentée. Elle reprend le 
    - les corrigés fautifs signalés en § 2.
 
    Les contextes culturels et religieux (Omra, Mawlid, solidarité avec Gaza, voisinage) sont fréquents dans le corpus. Ils sont
-   compatibles avec `docs/architecture/ISLAMIC_VALUES.md`, mais ils sont à réécrire selon ce contrat plutôt qu'à recopier.
+   à réécrire plutôt qu'à recopier, comme les autres contextes du corpus (la couche « القيم الإسلامية » et son contrat
+   `ISLAMIC_VALUES.md` ont été retirés le 2026-10-13).

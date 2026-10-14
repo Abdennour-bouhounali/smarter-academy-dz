@@ -1,0 +1,2757 @@
+{
+  "_comment": [
+    "Le DÉCOUPAGE EN LEÇONS de 3AM — une leçon par rubrique numérotée des « أنشطة » du manuel officiel,",
+    "une unité par باب (règle 4AM). Créé le 2026-10-14 (phase 2) depuis les leçons PRÉVUES du réseau des الكفاءات",
+    "(net/learning_net_moyen.json, phase 1, source : docs/sources/<g>/textbook-map.json) : mêmes codes, mêmes items.",
+    "",
+    "STATUT : chaque leçon est `coming_soon` tant qu’elle n’est pas générée — carte NON cliquable « قيد الإعداد »,",
+    "aucune route ; ses الكفاءات (pointsToLearn, BROUILLON rédigé par la plateforme, decisionStatus \"draft\" — décision",
+    "D1 du propriétaire) sont importées en base mais ignorées par Mastery V2 (décision D2). Elle passe `available`",
+    "quand elle est générée et routée : c’est la publication (LESSON_DEVELOPMENT_GUIDE.md § « Publish a lesson »).",
+    "",
+    "`prerequisiteLessonCodes` : les leçons d’accueil des liens « راجع » du réseau qui la PRÉCÈDENT (année antérieure,",
+    "ou plus tôt dans le manuel) ; synthèse : les leçons de son unité. `pointPrerequisites` vides : les liens",
+    "LP→LP se posent à la génération, sur les الكفاءات définitives (LEARNING_NET.md §4.6).",
+    "`programmeItems` : les items officiels enseignés ; [] pour une synthèse et pour les leçons du manuel hors",
+    "plan 2022 (décision D10) — `sourceTopicId` est alors le مقطع dominant de l’unité, ou null."
+  ],
+  "grade": "3am",
+  "schoolYear": "2026/2027",
+  "source": "docs/sources/3am/textbook-map.json (manuel officiel), via net/learning_net_moyen.json › plannedLessons (2026-10-13).",
+  "decompositionRule": "textbook_unit_lessons",
+  "verified": false,
+  "lessons": [
+    {
+      "code": "jidaa-adadayn-nisbiyayn",
+      "sourceTopicId": "3am.m1",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "aadad-nisbiya",
+      "order": 0,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "جداء عددين نسبيين",
+      "description": "يكتشف التلميذ قاعدة إشارة جداء عددين نسبيين ويبرّرها بالخاصية التوزيعية ثم يحسب جداء عددين نسبيين.",
+      "prerequisites": [
+        "جمع وطرح الأعداد النسبية",
+        "المسافة إلى الصفر لعدد نسبي",
+        "الخاصية التوزيعية للضرب على الجمع"
+      ],
+      "prerequisiteLessonCodes": [
+        "jam-tarh-nisbiya"
+      ],
+      "pointsToLearn": [
+        "حساب جداء عدد سالب في عدد موجب بالرجوع إلى معنى الضرب كجمع متكرر",
+        "اكتشاف قاعدة الإشارات: جداء عددين نسبيين لهما نفس الإشارة موجب، ومختلفين في الإشارة سالب",
+        "تبرير قاعدة إشارة جداء عددين سالبين باستعمال الخاصية التوزيعية",
+        "حساب جداء عددين نسبيين بضرب المسافتين إلى الصفر وتطبيق قاعدة الإشارات"
+      ],
+      "programmeItems": [
+        "3am.m1.r01"
+      ],
+      "textbookRef": {
+        "unit": 1,
+        "pages": {
+          "activity": [
+            8,
+            9
+          ],
+          "knowledge": [
+            10,
+            10
+          ],
+          "method": [
+            11,
+            11
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "jidaa-ida-nisbiya",
+      "sourceTopicId": "3am.m1",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "aadad-nisbiya",
+      "order": 1,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "جداء عدة أعداد نسبية",
+      "description": "يعيّن التلميذ إشارة جداء عدة أعداد نسبية من عدد العوامل السالبة، ويوظّف الضرب في (1-) ومربع عدد نسبي وتوزيع الضرب في الحساب.",
+      "prerequisites": [
+        "جداء عددين نسبيين",
+        "الأعداد الزوجية والفردية"
+      ],
+      "prerequisiteLessonCodes": [
+        "jam-tarh-nisbiya"
+      ],
+      "pointsToLearn": [
+        "ضرب عدد نسبي في $(-1)$ وتفسير $(-1)\\times a=-a$ كمعاكس العدد $a$",
+        "تعيين إشارة جداء عدة أعداد نسبية حسب زوجية عدد العوامل السالبة",
+        "معرفة أن مربع عدد نسبي موجب دائما: $(-a)^2=a^2$",
+        "توظيف توزيع الضرب على الجمع أو الطرح لتبسيط حساب"
+      ],
+      "programmeItems": [
+        "3am.m1.r01"
+      ],
+      "textbookRef": {
+        "unit": 1,
+        "pages": {
+          "activity": [
+            9,
+            9
+          ],
+          "knowledge": [
+            10,
+            12
+          ],
+          "method": [
+            11,
+            11
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "qismat-nisbiyayn",
+      "sourceTopicId": "3am.m1",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "aadad-nisbiya",
+      "order": 2,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "حاصل قسمة عددين نسبيين",
+      "description": "يعيّن التلميذ إشارة حاصل قسمة عددين نسبيين ويحسبه، ثم ينظّم سلسلة حسابات على الأعداد النسبية ويبسّطها.",
+      "prerequisites": [
+        "جداء عددين نسبيين",
+        "أولوية العمليات والأقواس"
+      ],
+      "prerequisiteLessonCodes": [
+        "jidaa-adadayn-nisbiyayn"
+      ],
+      "pointsToLearn": [
+        "ربط القسمة بالضرب: $a\\div b=q$ معناه $b\\times q=a$ مع $b\\neq 0$",
+        "تعيين إشارة حاصل قسمة عددين نسبيين بقاعدة الإشارات",
+        "حساب حاصل قسمة عددين نسبيين ومعرفة أن $\\frac{-a}{b}=\\frac{a}{-b}=-\\frac{a}{b}$",
+        "تنظيم وتبسيط سلسلة حسابات باحترام أولوية العمليات"
+      ],
+      "programmeItems": [
+        "3am.m1.r02"
+      ],
+      "textbookRef": {
+        "unit": 1,
+        "pages": {
+          "activity": [
+            9,
+            9
+          ],
+          "knowledge": [
+            12,
+            12
+          ],
+          "method": [
+            13,
+            13
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wadiya-idmajiya-aadad-nisbiya",
+      "sourceTopicId": "3am.m1",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "aadad-nisbiya",
+      "order": 3,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — الأعداد النسبية",
+      "description": "",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "jidaa-adadayn-nisbiyayn",
+        "jidaa-ida-nisbiya",
+        "qismat-nisbiyayn"
+      ],
+      "pointsToLearn": [],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 1,
+        "pages": {
+          "integration": [
+            20
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "maqlub-qismat-kasrayn",
+      "sourceTopicId": "3am.m1",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "kusur-natiqa",
+      "order": 4,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "مقلوب عدد وقسمة كسرين",
+      "description": "يعيّن التلميذ مقلوب عدد غير معدوم ويقسم كسرين بالضرب في مقلوب الكسر الثاني.",
+      "prerequisites": [
+        "ضرب كسرين",
+        "الكسر كحاصل قسمة"
+      ],
+      "prerequisiteLessonCodes": [
+        "jida-kasrayn",
+        "qismat-nisbiyayn"
+      ],
+      "pointsToLearn": [
+        "تعيين مقلوب عدد غير معدوم: مقلوب $a$ هو $\\frac{1}{a}$ ومقلوب $\\frac{a}{b}$ هو $\\frac{b}{a}$",
+        "التعبير عن القسمة على عدد غير معدوم بالضرب في مقلوبه",
+        "قسمة كسرين: $\\frac{a}{b}\\div\\frac{c}{d}=\\frac{a}{b}\\times\\frac{d}{c}$"
+      ],
+      "programmeItems": [
+        "3am.m1.r03",
+        "3am.m1.r04"
+      ],
+      "textbookRef": {
+        "unit": 2,
+        "pages": {
+          "activity": [
+            24,
+            24
+          ],
+          "knowledge": [
+            26,
+            26
+          ],
+          "method": [
+            27,
+            27
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "tasawi-muqaranat-kasrayn",
+      "sourceTopicId": "3am.m1",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "kusur-natiqa",
+      "order": 5,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "تساوي كسرين ومقارنتهما",
+      "description": "يتعرّف التلميذ على خاصية الجداءين المتصالبين لتساوي كسرين ويقارن كسرين بتوحيد المقامات.",
+      "prerequisites": [
+        "اختزال كسر",
+        "مضاعفات عدد طبيعي"
+      ],
+      "prerequisiteLessonCodes": [
+        "muqarana-kasrayn"
+      ],
+      "pointsToLearn": [
+        "التعرّف على تساوي كسرين بالجداءين المتصالبين: $\\frac{a}{b}=\\frac{c}{d}$ يكافئ $a\\times d=b\\times c$",
+        "مقارنة كسرين لهما نفس المقام أو نفس البسط",
+        "مقارنة كسرين مقاماهما مختلفان بتوحيد المقامات أو بالجداءين المتصالبين"
+      ],
+      "programmeItems": [
+        "3am.m1.r05"
+      ],
+      "textbookRef": {
+        "unit": 2,
+        "pages": {
+          "activity": [
+            24,
+            24
+          ],
+          "knowledge": [
+            26,
+            26
+          ],
+          "method": [
+            27,
+            27
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "jam-tarh-kasrayn",
+      "sourceTopicId": "3am.m1",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "kusur-natiqa",
+      "order": 6,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "جمع وطرح كسرين",
+      "description": "يجمع التلميذ ويطرح كسرين مقاماهما مختلفان بالبحث عن مضاعف مشترك للمقامين.",
+      "prerequisites": [
+        "تساوي كسرين",
+        "المضاعفات المشتركة"
+      ],
+      "prerequisiteLessonCodes": [
+        "jam-tarh-kusur"
+      ],
+      "pointsToLearn": [
+        "جمع وطرح كسرين لهما نفس المقام",
+        "جمع وطرح كسرين مقاماهما مختلفان بتوحيد المقامات",
+        "اختيار مضاعف مشترك مناسب للمقامين لتبسيط الحساب"
+      ],
+      "programmeItems": [
+        "3am.m1.r06"
+      ],
+      "textbookRef": {
+        "unit": 2,
+        "pages": {
+          "activity": [
+            24,
+            24
+          ],
+          "knowledge": [
+            26,
+            26
+          ],
+          "method": [
+            27,
+            27
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "adad-natiq",
+      "sourceTopicId": "3am.m1",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "kusur-natiqa",
+      "order": 7,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "العدد الناطق",
+      "description": "يتعرّف التلميذ على العدد الناطق كحاصل قسمة عددين نسبيين ويعيّن إشارته ويرتّب أعدادا ناطقة.",
+      "prerequisites": [
+        "حاصل قسمة عددين نسبيين",
+        "الأعداد العشرية النسبية"
+      ],
+      "prerequisiteLessonCodes": [
+        "hasil-qisma-kasr",
+        "qismat-nisbiyayn"
+      ],
+      "pointsToLearn": [
+        "التعرّف على العدد الناطق كحاصل قسمة عدد نسبي على عدد نسبي غير معدوم $\\frac{a}{b}$",
+        "تعيين إشارة عدد ناطق وكتابته بمقام موجب",
+        "تمثيل أعداد ناطقة على مستقيم مدرج وترتيبها"
+      ],
+      "programmeItems": [
+        "3am.m1.r07"
+      ],
+      "textbookRef": {
+        "unit": 2,
+        "pages": {
+          "activity": [
+            25,
+            25
+          ],
+          "knowledge": [
+            28,
+            28
+          ],
+          "method": [
+            29,
+            29
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "amaliyat-natiqa",
+      "sourceTopicId": "3am.m1",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "kusur-natiqa",
+      "order": 8,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "العمليات على الأعداد الناطقة",
+      "description": "يحسب التلميذ مجموع وفرق وجداء وحاصل قسمة عددين ناطقين ويقارنهما، موسّعا قواعد الكسور إلى الأعداد النسبية.",
+      "prerequisites": [
+        "العدد الناطق",
+        "العمليات على الكسور",
+        "قاعدة الإشارات"
+      ],
+      "prerequisiteLessonCodes": [
+        "jidaa-adadayn-nisbiyayn",
+        "maqlub-qismat-kasrayn",
+        "jam-tarh-kasrayn",
+        "adad-natiq"
+      ],
+      "pointsToLearn": [
+        "حساب مجموع وفرق عددين ناطقين بتوحيد المقامات",
+        "حساب جداء عددين ناطقين: $\\frac{a}{b}\\times\\frac{c}{d}=\\frac{a\\times c}{b\\times d}$",
+        "حساب حاصل قسمة عددين ناطقين بالضرب في المقلوب",
+        "تنظيم سلسلة حسابات على الأعداد الناطقة باحترام أولوية العمليات"
+      ],
+      "programmeItems": [
+        "3am.m1.r08"
+      ],
+      "textbookRef": {
+        "unit": 2,
+        "pages": {
+          "activity": [
+            25,
+            25
+          ],
+          "knowledge": [
+            28,
+            28
+          ],
+          "method": [
+            29,
+            29
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wadiya-idmajiya-kusur-natiqa",
+      "sourceTopicId": "3am.m1",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "kusur-natiqa",
+      "order": 9,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — العمليات على الكسور والأعداد الناطقة",
+      "description": "",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "maqlub-qismat-kasrayn",
+        "tasawi-muqaranat-kasrayn",
+        "jam-tarh-kasrayn",
+        "adad-natiq",
+        "amaliyat-natiqa"
+      ],
+      "pointsToLearn": [],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 2,
+        "pages": {
+          "integration": [
+            36
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "quwa-adad-ashara",
+      "sourceTopicId": "3am.m3",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "quwa-nisbiya",
+      "order": 10,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "قوى العدد 10",
+      "description": "يعرّف التلميذ قوى العدد 10 ذات الأسس الموجبة والسالبة ويكتب كتابتها العشرية.",
+      "prerequisites": [
+        "الضرب والقسمة على 10 و100 و1000…",
+        "الأعداد العشرية"
+      ],
+      "prerequisiteLessonCodes": [
+        "kusur-ashriya-kitaba"
+      ],
+      "pointsToLearn": [
+        "تعريف $10^n$ كجداء $n$ عاملا كلها تساوي 10 من أجل $n$ عدد طبيعي غير معدوم",
+        "تعريف $10^{-n}=\\frac{1}{10^n}$ كمقلوب $10^n$ و $10^0=1$",
+        "الانتقال بين الكتابة العشرية وكتابة قوة للعدد 10 (عدد الأصفار ورتبة الرقم 1)",
+        "كتابة عدد عشري باستعمال قوى 10"
+      ],
+      "programmeItems": [
+        "3am.m3.r01",
+        "3am.m3.r03"
+      ],
+      "textbookRef": {
+        "unit": 3,
+        "pages": {
+          "activity": [
+            40,
+            40
+          ],
+          "knowledge": [
+            42,
+            42
+          ],
+          "method": [
+            43,
+            43
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "qawaid-quwa-ashara",
+      "sourceTopicId": "3am.m3",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "quwa-nisbiya",
+      "order": 11,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "قواعد الحساب على قوى العدد 10",
+      "description": "يكتشف التلميذ قواعد جداء وحاصل قسمة وقوة قوى العدد 10 ويستعملها لتبسيط عبارات.",
+      "prerequisites": [
+        "قوى العدد 10",
+        "الحساب على الأعداد النسبية"
+      ],
+      "prerequisiteLessonCodes": [
+        "quwa-adad-ashara"
+      ],
+      "pointsToLearn": [
+        "استعمال القاعدة $10^m\\times 10^n=10^{m+n}$",
+        "استعمال القاعدة $\\frac{10^m}{10^n}=10^{m-n}$",
+        "استعمال القاعدة $(10^m)^n=10^{m\\times n}$",
+        "تبسيط عبارات تتضمن قوى العدد 10 وكتابتها على شكل قوة واحدة"
+      ],
+      "programmeItems": [
+        "3am.m3.r02"
+      ],
+      "textbookRef": {
+        "unit": 3,
+        "pages": {
+          "activity": [
+            41,
+            41
+          ],
+          "knowledge": [
+            42,
+            42
+          ],
+          "method": [
+            43,
+            43
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "kitaba-ilmiya-rutba",
+      "sourceTopicId": "3am.m3",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "quwa-nisbiya",
+      "order": 12,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "الكتابة العلمية ورتبة القدر",
+      "description": "يكتب التلميذ عددا عشريا كتابة علمية ويستعملها لحصر العدد بين قوتين متتاليتين للعدد 10 ولتعيين رتبة قدره.",
+      "prerequisites": [
+        "قواعد الحساب على قوى العدد 10",
+        "المدوّر إلى الوحدة"
+      ],
+      "prerequisiteLessonCodes": [
+        "rutbat-miqdar-jam",
+        "quwa-adad-ashara"
+      ],
+      "pointsToLearn": [
+        "تعيين الكتابة العلمية لعدد عشري $a\\times 10^n$ حيث $1\\le a<10$",
+        "حصر عدد عشري بين قوتين متتاليتين للعدد 10 انطلاقا من كتابته العلمية",
+        "إعطاء رتبة قدر عدد ومقارنة مقادير كبيرة أو صغيرة جدا"
+      ],
+      "programmeItems": [
+        "3am.m3.r04",
+        "3am.m3.r05"
+      ],
+      "textbookRef": {
+        "unit": 3,
+        "pages": {
+          "activity": [
+            41,
+            41
+          ],
+          "knowledge": [
+            44,
+            44
+          ],
+          "method": [
+            45,
+            45
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "quwat-adad-nisbi",
+      "sourceTopicId": "3am.m3",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "quwa-nisbiya",
+      "order": 13,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "قوة عدد نسبي",
+      "description": "يحسب التلميذ قوة عدد نسبي ويستعمل قواعد الحساب على القوى في سلسلة حسابات.",
+      "prerequisites": [
+        "قواعد الحساب على قوى العدد 10",
+        "جداء عدة أعداد نسبية"
+      ],
+      "prerequisiteLessonCodes": [
+        "silsila-bidun-aqwas",
+        "jidaa-adadayn-nisbiyayn",
+        "qawaid-quwa-ashara"
+      ],
+      "pointsToLearn": [
+        "حساب $a^n$ لعدد نسبي $a$ وتعيين إشارتها حسب إشارة $a$ وزوجية $n$",
+        "معرفة أن $a^{-n}=\\frac{1}{a^n}$ و $a^0=1$ من أجل $a\\neq 0$",
+        "استعمال القواعد $a^m\\times a^n=a^{m+n}$ و $\\frac{a^m}{a^n}=a^{m-n}$ و $(a^m)^n=a^{mn}$ و $(ab)^n=a^nb^n$",
+        "إجراء حساب يتضمن قوى باحترام أولوية القوى على باقي العمليات"
+      ],
+      "programmeItems": [
+        "3am.m3.r06",
+        "3am.m3.r07",
+        "3am.m3.r08"
+      ],
+      "textbookRef": {
+        "unit": 3,
+        "pages": {
+          "activity": [
+            41,
+            41
+          ],
+          "knowledge": [
+            44,
+            44
+          ],
+          "method": [
+            45,
+            45
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wadiya-idmajiya-quwa-nisbiya",
+      "sourceTopicId": "3am.m3",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "quwa-nisbiya",
+      "order": 14,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
+      "description": "",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "quwa-adad-ashara",
+        "qawaid-quwa-ashara",
+        "kitaba-ilmiya-rutba",
+        "quwat-adad-nisbi"
+      ],
+      "pointsToLearn": [],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 3,
+        "pages": {
+          "integration": [
+            52
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "tabsit-hadhf-aqwas",
+      "sourceTopicId": "3am.m5",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "ibarat-harfiya-3",
+      "order": 15,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "تبسيط عبارة جبرية وحذف الأقواس",
+      "description": "يبسّط التلميذ عبارة جبرية بجمع الحدود المتشابهة ويحذف الأقواس المسبوقة بإشارة + أو -.",
+      "prerequisites": [
+        "الحساب على الأعداد النسبية",
+        "التعبير بالحرف عن عدد"
+      ],
+      "prerequisiteLessonCodes": [
+        "tawzi-darb-jam-tarh",
+        "amaliyat-natiqa"
+      ],
+      "pointsToLearn": [
+        "تبسيط جداء أو مجموع في عبارة جبرية بتجميع الحدود المتشابهة",
+        "حذف قوسين مسبوقين بالإشارة $+$ دون تغيير إشارات الحدود",
+        "حذف قوسين مسبوقين بالإشارة $-$ مع تغيير إشارات كل الحدود: $a-(b-c)=a-b+c$",
+        "التمييز بين عبارة على شكل مجموع وعبارة على شكل جداء"
+      ],
+      "programmeItems": [
+        "3am.m5.r01"
+      ],
+      "textbookRef": {
+        "unit": 4,
+        "pages": {
+          "activity": [
+            56,
+            56
+          ],
+          "knowledge": [
+            58,
+            58
+          ],
+          "method": [
+            59,
+            59
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "nashr-jabri-3am",
+      "sourceTopicId": "3am.m5",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "ibarat-harfiya-3",
+      "order": 16,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "نشر عبارات جبرية",
+      "description": "ينشر التلميذ عبارات من الشكلين $k(a+b)$ و $(a+b)(c+d)$ ثم يبسّط الناتج.",
+      "prerequisites": [
+        "تبسيط عبارة جبرية وحذف الأقواس",
+        "قاعدة الإشارات"
+      ],
+      "prerequisiteLessonCodes": [
+        "jidaa-adadayn-nisbiyayn",
+        "tabsit-hadhf-aqwas"
+      ],
+      "pointsToLearn": [
+        "نشر عبارة من الشكل $k(a+b)$ بالخاصية التوزيعية البسيطة",
+        "نشر عبارة من الشكل $(a+b)(c+d)=ac+ad+bc+bd$",
+        "تبرير قاعدة النشر المضاعف بحساب مساحة مستطيل بطريقتين",
+        "نشر ثم تبسيط عبارة جبرية وترتيب حدودها"
+      ],
+      "programmeItems": [
+        "3am.m5.r02"
+      ],
+      "textbookRef": {
+        "unit": 4,
+        "pages": {
+          "activity": [
+            57,
+            57
+          ],
+          "knowledge": [
+            58,
+            58
+          ],
+          "method": [
+            59,
+            59
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "qimat-ibara-harfiya",
+      "sourceTopicId": "3am.m5",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "ibarat-harfiya-3",
+      "order": 17,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "حساب قيمة عبارة حرفية",
+      "description": "يعوّض التلميذ الحرف بعدد نسبي في عبارة حرفية ويحسب قيمتها ليتحقّق من صحة مساواة أو ليقارن عبارتين.",
+      "prerequisites": [
+        "أولوية العمليات",
+        "قوة عدد نسبي"
+      ],
+      "prerequisiteLessonCodes": [
+        "tatbiq-qaida-harfiya",
+        "amaliyat-natiqa"
+      ],
+      "pointsToLearn": [
+        "تعويض الحرف بقيمة نسبية في عبارة حرفية وحساب قيمتها باحترام أولوية العمليات",
+        "إعادة كتابة علامة الضرب واستعمال الأقواس عند تعويض الحرف بعدد سالب",
+        "استعمال قيم عددية لإثبات أن عبارتين غير متساويتين (مثال مضاد)"
+      ],
+      "programmeItems": [
+        "3am.m5.r03"
+      ],
+      "textbookRef": {
+        "unit": 4,
+        "pages": {
+          "activity": [
+            57,
+            57
+          ],
+          "knowledge": [
+            60,
+            60
+          ],
+          "method": [
+            61,
+            61
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "muqaranat-natiqayn",
+      "sourceTopicId": "3am.m5",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "ibarat-harfiya-3",
+      "order": 18,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "مقارنة عددين ناطقين",
+      "description": "يقارن التلميذ عددين ناطقين بدراسة إشارة الفرق بينهما.",
+      "prerequisites": [
+        "العمليات على الأعداد الناطقة",
+        "مقارنة كسرين"
+      ],
+      "prerequisiteLessonCodes": [
+        "tasawi-muqaranat-kasrayn"
+      ],
+      "pointsToLearn": [
+        "الربط بين ترتيب عددين وإشارة فرقهما: $a>b$ يكافئ $a-b>0$",
+        "مقارنة عددين ناطقين بحساب فرقهما وتعيين إشارته",
+        "مقارنة عبارتين حرفيتين بدراسة إشارة الفرق"
+      ],
+      "programmeItems": [
+        "3am.m5.r04"
+      ],
+      "textbookRef": {
+        "unit": 4,
+        "pages": {
+          "activity": [
+            57,
+            57
+          ],
+          "knowledge": [
+            60,
+            60
+          ],
+          "method": [
+            61,
+            61
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wadiya-idmajiya-ibarat-harfiya-3",
+      "sourceTopicId": "3am.m5",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "ibarat-harfiya-3",
+      "order": 19,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — الحساب الحرفي",
+      "description": "",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "tabsit-hadhf-aqwas",
+        "nashr-jabri-3am",
+        "qimat-ibara-harfiya",
+        "muqaranat-natiqayn"
+      ],
+      "pointsToLearn": [],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 4,
+        "pages": {
+          "integration": [
+            68
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "musawiyat-amaliyat",
+      "sourceTopicId": "3am.m5",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "musawiyat-mutabayinat",
+      "order": 20,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "المساويات والعمليات",
+      "description": "يكتشف التلميذ أن المساواة تبقى صحيحة عند إضافة أو طرح نفس العدد من طرفيها أو ضرب طرفيها في نفس العدد.",
+      "prerequisites": [
+        "العمليات على الأعداد الناطقة",
+        "حساب قيمة عبارة حرفية"
+      ],
+      "prerequisiteLessonCodes": [
+        "ikhtibar-musawat-mutabayina",
+        "jidaa-adadayn-nisbiyayn"
+      ],
+      "pointsToLearn": [
+        "معرفة أنه إذا كان $a=b$ فإن $a+c=b+c$ و $a-c=b-c$",
+        "معرفة أنه إذا كان $a=b$ فإن $a\\times c=b\\times c$ و $\\frac{a}{c}=\\frac{b}{c}$ مع $c\\neq 0$",
+        "توظيف خواص المساويات للتحقق من صحة مساواة أو لتحويلها"
+      ],
+      "programmeItems": [
+        "3am.m5.r05"
+      ],
+      "textbookRef": {
+        "unit": 5,
+        "pages": {
+          "activity": [
+            72,
+            72
+          ],
+          "knowledge": [
+            74,
+            74
+          ],
+          "method": [
+            75,
+            75
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "mutabayinat-amaliyat",
+      "sourceTopicId": "3am.m5",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "musawiyat-mutabayinat",
+      "order": 21,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "المتباينات والعمليات",
+      "description": "يكتشف التلميذ أثر الجمع والضرب في عدد موجب أو سالب على اتجاه متباينة.",
+      "prerequisites": [
+        "مقارنة عددين ناطقين",
+        "المساويات والعمليات"
+      ],
+      "prerequisiteLessonCodes": [
+        "ikhtibar-musawat-mutabayina",
+        "jidaa-adadayn-nisbiyayn"
+      ],
+      "pointsToLearn": [
+        "معرفة أنه إذا كان $a<b$ فإن $a+c<b+c$ و $a-c<b-c$",
+        "معرفة أن ضرب طرفي متباينة في عدد موجب تماما لا يغيّر اتجاهها",
+        "معرفة أن ضرب طرفي متباينة في عدد سالب تماما يغيّر اتجاهها",
+        "توظيف خواص المتباينات لمقارنة عبارات أو لحصرها"
+      ],
+      "programmeItems": [
+        "3am.m5.r05"
+      ],
+      "textbookRef": {
+        "unit": 5,
+        "pages": {
+          "activity": [
+            72,
+            73
+          ],
+          "knowledge": [
+            74,
+            74
+          ],
+          "method": [
+            75,
+            75
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "hasr-adad-ushri",
+      "sourceTopicId": "3am.m5",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "musawiyat-mutabayinat",
+      "order": 22,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "حصر عدد عشري موجب",
+      "description": "يحصر التلميذ عددا عشريا موجبا بين قيمتيه المقرّبتين بالنقصان وبالزيادة إلى رتبة معيّنة ويعيّن مدوّره.",
+      "prerequisites": [
+        "الأعداد العشرية ورتب أرقامها",
+        "المتباينات"
+      ],
+      "prerequisiteLessonCodes": [
+        "hasr-qiyam-muqarraba"
+      ],
+      "pointsToLearn": [
+        "حصر عدد عشري موجب بين عددين طبيعيين متتاليين",
+        "إعطاء القيمة المقرّبة بالنقصان وبالزيادة إلى $\\frac{1}{10}$ أو $\\frac{1}{100}$ أو $\\frac{1}{1000}$",
+        "تعيين مدوّر عدد عشري إلى رتبة معيّنة",
+        "حصر حاصل قسمة باستعمال الآلة الحاسبة"
+      ],
+      "programmeItems": [
+        "3am.m5.x1"
+      ],
+      "textbookRef": {
+        "unit": 5,
+        "pages": {
+          "activity": [
+            73,
+            73
+          ],
+          "knowledge": [
+            76,
+            76
+          ],
+          "method": [
+            77,
+            77
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "muadalat-darajat-ula",
+      "sourceTopicId": "3am.m5",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "musawiyat-mutabayinat",
+      "order": 23,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "المعادلات من الدرجة الأولى بمجهول واحد",
+      "description": "يحل التلميذ معادلة من الشكل $ax+b=cx+d$ بتوظيف خواص المساويات ويرَيّض مشكلة بمعادلة ثم يحلها.",
+      "prerequisites": [
+        "المساويات والعمليات",
+        "تبسيط عبارة جبرية"
+      ],
+      "prerequisiteLessonCodes": [
+        "hall-mushkil-muadala",
+        "tabsit-hadhf-aqwas",
+        "musawiyat-amaliyat"
+      ],
+      "pointsToLearn": [
+        "التعرّف على معادلة من الدرجة الأولى بمجهول واحد ومعنى حلها",
+        "التحقق من أن عددا حل لمعادلة بالتعويض",
+        "حل معادلة من الشكل $ax+b=cx+d$ بتوظيف خواص المساويات والعمليات",
+        "ترييض مشكلة: اختيار المجهول وترجمة المعطيات بمعادلة وحلها والتحقق من الحل ضمن السياق"
+      ],
+      "programmeItems": [
+        "3am.m5.r06"
+      ],
+      "textbookRef": {
+        "unit": 5,
+        "pages": {
+          "activity": [
+            73,
+            73
+          ],
+          "knowledge": [
+            76,
+            76
+          ],
+          "method": [
+            77,
+            77
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wadiya-idmajiya-musawiyat-mutabayinat",
+      "sourceTopicId": "3am.m5",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "musawiyat-mutabayinat",
+      "order": 24,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — المساويات – المتباينات – المعادلات",
+      "description": "",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "musawiyat-amaliyat",
+        "mutabayinat-amaliyat",
+        "hasr-adad-ushri",
+        "muadalat-darajat-ula"
+      ],
+      "pointsToLearn": [],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 5,
+        "pages": {
+          "integration": [
+            84
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "tanasub-tamthil-bayani",
+      "sourceTopicId": "3am.m7",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanasubiya-sura",
+      "order": 25,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "التناسبية والتمثيل البياني",
+      "description": "يتعرّف التلميذ على وضعية تناسبية من تمثيلها البياني: نقط على استقامية مع مبدأ المعلم.",
+      "prerequisites": [
+        "جدول التناسبية ومعامل التناسبية",
+        "المعلم في المستوي"
+      ],
+      "prerequisiteLessonCodes": [
+        "talim-nuqta-mustawi",
+        "wadiya-tanasubiya-jadwal"
+      ],
+      "pointsToLearn": [
+        "تمثيل جدول معطيات بنقط في معلم",
+        "التعرّف على وضعية تناسبية من تمثيل بياني نقطه على استقامة واحدة مع مبدأ المعلم",
+        "التعرّف على أن تمثيلا بيانيا لا يمر بالمبدأ أو نقطه غير مستقيمة لا يمثل وضعية تناسبية",
+        "قراءة معامل التناسبية واستغلال التمثيل البياني لإيجاد قيم مجهولة"
+      ],
+      "programmeItems": [
+        "3am.m7.r01"
+      ],
+      "textbookRef": {
+        "unit": 6,
+        "pages": {
+          "activity": [
+            88,
+            88
+          ],
+          "knowledge": [
+            90,
+            90
+          ],
+          "method": [
+            91,
+            91
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "nisba-miawiya-3am",
+      "sourceTopicId": "3am.m7",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanasubiya-sura",
+      "order": 26,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "النسبة المئوية",
+      "description": "يستعمل التلميذ التناسبية لحساب نسب مئوية ولحساب زيادة أو تخفيض بنسبة مئوية.",
+      "prerequisites": [
+        "التناسبية والرابع المتناسب",
+        "الكسور العشرية"
+      ],
+      "prerequisiteLessonCodes": [
+        "nisba-miawiya"
+      ],
+      "pointsToLearn": [
+        "حساب $t\\%$ من عدد بضربه في $\\frac{t}{100}$",
+        "حساب نسبة مئوية بجدول تناسبية أو بالكتابة $\\frac{a}{b}=\\frac{t}{100}$",
+        "حساب ناتج زيادة أو تخفيض بنسبة $t\\%$ بالضرب في $1+\\frac{t}{100}$ أو $1-\\frac{t}{100}$"
+      ],
+      "programmeItems": [
+        "3am.m7.r06"
+      ],
+      "textbookRef": {
+        "unit": 6,
+        "pages": {
+          "activity": [
+            88,
+            88
+          ],
+          "knowledge": [
+            90,
+            90
+          ],
+          "method": [
+            91,
+            91
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "haraka-muntazama-sura",
+      "sourceTopicId": "3am.m7",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanasubiya-sura",
+      "order": 27,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "الحركة المنتظمة والسرعة المتوسطة",
+      "description": "يتعرّف التلميذ على الحركة المنتظمة ويستعمل $d=V\\times t$ لحساب المسافة أو السرعة أو الزمن، ويحوّل وحدات السرعة والزمن.",
+      "prerequisites": [
+        "التناسبية والتمثيل البياني",
+        "وحدات قياس الأطوال والزمن"
+      ],
+      "prerequisiteLessonCodes": [
+        "miqyas-kharita",
+        "tanasub-tamthil-bayani"
+      ],
+      "pointsToLearn": [
+        "التعرّف على الحركة المنتظمة كوضعية تناسبية بين المسافة المقطوعة والمدة",
+        "حساب السرعة المتوسطة $V=\\frac{d}{t}$ واستعمال $d=V\\times t$ لحساب مسافة أو مدة",
+        "توظيف التناسبية لتحويل وحدات الزمن (الساعة والدقيقة والثانية، الكتابة العشرية للمدة)",
+        "تحويل وحدات قياس السرعة بين $km/h$ و $m/s$"
+      ],
+      "programmeItems": [
+        "3am.m7.r02",
+        "3am.m7.r03",
+        "3am.m7.r04",
+        "3am.m7.r05"
+      ],
+      "textbookRef": {
+        "unit": 6,
+        "pages": {
+          "activity": [
+            89,
+            89
+          ],
+          "knowledge": [
+            92,
+            92
+          ],
+          "method": [
+            93,
+            93
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wadiya-idmajiya-tanasubiya-sura",
+      "sourceTopicId": "3am.m7",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanasubiya-sura",
+      "order": 28,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — التناسبية",
+      "description": "",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "tanasub-tamthil-bayani",
+        "nisba-miawiya-3am",
+        "haraka-muntazama-sura"
+      ],
+      "pointsToLearn": [],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 6,
+        "pages": {
+          "integration": [
+            100
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "mutawassit-mutawazin",
+      "sourceTopicId": "3am.m7",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanzim-mutaayat",
+      "order": 29,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "متوسط سلسلة إحصائية والمتوسط المتوازن",
+      "description": "يحسب التلميذ متوسط سلسلة إحصائية ومتوسطها المتوازن، يدويا وباستعمال مجدول.",
+      "prerequisites": [
+        "العمليات على الأعداد العشرية",
+        "قراءة جدول"
+      ],
+      "prerequisiteLessonCodes": [
+        "silsila-bidun-aqwas"
+      ],
+      "pointsToLearn": [
+        "حساب متوسط سلسلة إحصائية بقسمة مجموع قيمها على التكرار الكلي",
+        "حساب المتوسط المتوازن بمجموع جداءات القيم في تكراراتها مقسوما على التكرار الكلي",
+        "تقدير متوسط سلسلة مجمّعة في فئات باستعمال مراكز الفئات",
+        "حساب المتوسط باستعمال مجدول (الدوال MOYENNE و SOMME و SOMMEPROD)"
+      ],
+      "programmeItems": [
+        "3am.m7.r11",
+        "3am.m7.r12"
+      ],
+      "textbookRef": {
+        "unit": 7,
+        "pages": {
+          "activity": [
+            104,
+            104
+          ],
+          "knowledge": [
+            106,
+            106
+          ],
+          "method": [
+            107,
+            107
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "fiat-takrarat",
+      "sourceTopicId": "3am.m7",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanzim-mutaayat",
+      "order": 30,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "تجميع المعطيات في فئات والتكرارات",
+      "description": "يجمّع التلميذ معطيات إحصائية في فئات متساوية المدى وينظّمها في جدول ويحسب التكرارات والتكرارات النسبية.",
+      "prerequisites": [
+        "الحصر",
+        "النسبة المئوية"
+      ],
+      "prerequisiteLessonCodes": [
+        "tanzim-fiat",
+        "takrarat-nisbiya"
+      ],
+      "pointsToLearn": [
+        "تجميع معطيات إحصائية في فئات من الشكل $a\\le x<b$ وتعيين مركز كل فئة",
+        "تنظيم سلسلة إحصائية في جدول تكرارات",
+        "حساب التكرار النسبي لقيمة أو فئة وكتابته على شكل كسر أو عدد عشري أو نسبة مئوية",
+        "التحقق من أن مجموع التكرارات النسبية يساوي 1 (أو 100%)"
+      ],
+      "programmeItems": [
+        "3am.m7.r07",
+        "3am.m7.r08",
+        "3am.m7.r10"
+      ],
+      "textbookRef": {
+        "unit": 7,
+        "pages": {
+          "activity": [
+            104,
+            105
+          ],
+          "knowledge": [
+            108,
+            108
+          ],
+          "method": [
+            109,
+            109
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "tamthil-silsila-ihsaiya",
+      "sourceTopicId": "3am.m7",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanzim-mutaayat",
+      "order": 31,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "تمثيل سلسلة إحصائية بمخطط أو بيان",
+      "description": "يمثّل التلميذ سلسلة إحصائية بمخطط بالأعمدة أو بالأشرطة أو بمخطط دائري، ويمثّل سلسلة مجمّعة في فئات بمدرج تكراري.",
+      "prerequisites": [
+        "تجميع المعطيات في فئات والتكرارات",
+        "التناسبية"
+      ],
+      "prerequisiteLessonCodes": [
+        "tamthil-mukhattatat",
+        "fiat-takrarat"
+      ],
+      "pointsToLearn": [
+        "تمثيل سلسلة إحصائية بمخطط بالأعمدة أو بالأشرطة",
+        "تمثيل سلسلة إحصائية بمخطط دائري أو نصف دائري بأقياس زوايا متناسبة مع التكرارات",
+        "تمثيل سلسلة مجمّعة في فئات متساوية المدى بمدرج تكراري",
+        "قراءة مخطط أو بيان واستخراج معطيات منه"
+      ],
+      "programmeItems": [
+        "3am.m7.r09"
+      ],
+      "textbookRef": {
+        "unit": 7,
+        "pages": {
+          "activity": [
+            105,
+            105
+          ],
+          "knowledge": [
+            108,
+            108
+          ],
+          "method": [
+            109,
+            109
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wadiya-idmajiya-tanzim-mutaayat",
+      "sourceTopicId": "3am.m7",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanzim-mutaayat",
+      "order": 32,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — تنظيم معطيات",
+      "description": "",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "mutawassit-mutawazin",
+        "fiat-takrarat",
+        "tamthil-silsila-ihsaiya"
+      ],
+      "pointsToLearn": [],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 7,
+        "pages": {
+          "integration": [
+            116
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "qawaid-niqash-mithal-mudad",
+      "sourceTopicId": null,
+      "chapterId": "handasa",
+      "unitId": "burhan-riyadi",
+      "order": 33,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "قواعد النقاش الرياضي والمثال المضاد",
+      "description": "يتعرّف التلميذ على قواعد النقاش الرياضي: النص إما صحيح أو خاطئ، الأمثلة لا تكفي للتبرير، ومثال مضاد واحد يكفي لإثبات خطأ نص.",
+      "prerequisites": [
+        "الحساب على الأعداد",
+        "خواص الأشكال الهندسية المألوفة"
+      ],
+      "prerequisiteLessonCodes": [],
+      "pointsToLearn": [
+        "معرفة أن النص الرياضي إما صحيح وإما خاطئ",
+        "التمييز بين التحقق على أمثلة والتبرير: الأمثلة التي تحقق نصا لا تكفي لإثبات صحته",
+        "إثبات خطأ نص رياضي بإعطاء مثال مضاد واحد",
+        "التمييز بين التخمين والنص المبرهن عليه"
+      ],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 8,
+        "pages": {
+          "activity": [
+            120,
+            121
+          ],
+          "knowledge": [
+            124,
+            124
+          ],
+          "method": [
+            125,
+            125
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "nusus-idha-fa-in",
+      "sourceTopicId": null,
+      "chapterId": "handasa",
+      "unitId": "burhan-riyadi",
+      "order": 34,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "النصوص «إذا … فإنّ …» والنص العكسي",
+      "description": "يحلّل التلميذ نصا من الشكل «إذا … فإنّ …» إلى شرط ونتيجة ويكتب نصه العكسي ويحكم على صحة كل منهما.",
+      "prerequisites": [
+        "قواعد النقاش الرياضي والمثال المضاد",
+        "خواص متوازي الأضلاع"
+      ],
+      "prerequisiteLessonCodes": [],
+      "pointsToLearn": [
+        "تحديد الشرط والنتيجة في نص من الشكل «إذا … فإنّ …»",
+        "كتابة النص العكسي لنص رياضي بتبديل الشرط بالنتيجة",
+        "التمييز بين خاصية وخاصيتها العكسية ومعرفة أن عكس نص صحيح قد يكون خاطئا",
+        "الحكم على صحة نص أو خطئه بتبرير أو بمثال مضاد"
+      ],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 8,
+        "pages": {
+          "activity": [
+            120,
+            121
+          ],
+          "knowledge": [
+            124,
+            124
+          ],
+          "method": [
+            125,
+            125
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "burhan-handasi",
+      "sourceTopicId": null,
+      "chapterId": "handasa",
+      "unitId": "burhan-riyadi",
+      "order": 35,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "البحث عن برهان في الهندسة وتحريره",
+      "description": "يبحث التلميذ عن برهان في الهندسة بتحديد المعطيات والمطلوب واختيار الخاصية المناسبة، ويحرّره كسلسلة حلقات استنتاجية.",
+      "prerequisites": [
+        "النصوص «إذا … فإنّ …»",
+        "خواص متوازي الأضلاع والتناظر المركزي"
+      ],
+      "prerequisiteLessonCodes": [],
+      "pointsToLearn": [
+        "تحديد المعطيات المفيدة والمطلوب في تمرين هندسي انطلاقا من الشكل والنص",
+        "اختيار خاصية تسمح بالانتقال من المعطيات إلى النتيجة والتحقق من توفّر شروطها",
+        "تحرير برهان كسلسلة حلقات استنتاجية: «نعلم أنّ … وبما أنّ … إذن …»",
+        "المصادقة على برهان أو نقده واستعمال البرهان أيضا في الجبر"
+      ],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 8,
+        "pages": {
+          "activity": [
+            122,
+            123
+          ],
+          "knowledge": [
+            126,
+            126
+          ],
+          "method": [
+            127,
+            127
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wadiya-idmajiya-burhan-riyadi",
+      "sourceTopicId": null,
+      "chapterId": "handasa",
+      "unitId": "burhan-riyadi",
+      "order": 36,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — البرهان في الرياضيات",
+      "description": "",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "qawaid-niqash-mithal-mudad",
+        "nusus-idha-fa-in",
+        "burhan-handasi"
+      ],
+      "pointsToLearn": [],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 8,
+        "pages": null
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "mutabayina-muthallathiya",
+      "sourceTopicId": "3am.m2",
+      "chapterId": "handasa",
+      "unitId": "muthallathat-3am",
+      "order": 37,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "المتباينة المثلثية وإنشاء مثلث",
+      "description": "يكتشف التلميذ المتباينة المثلثية ويستعملها للحكم على إمكانية إنشاء مثلث علمت أطوال أضلاعه ثم ينشئه.",
+      "prerequisites": [
+        "إنشاء مثلث بالمدور",
+        "مقارنة الأعداد العشرية"
+      ],
+      "prerequisiteLessonCodes": [],
+      "pointsToLearn": [
+        "معرفة المتباينة المثلثية: في مثلث $ABC$ لدينا $BC<AB+AC$",
+        "الحكم على إمكانية إنشاء مثلث بمقارنة أكبر طول بمجموع الطولين الآخرين",
+        "معرفة أن $BC=BA+AC$ يعني أن $A$ تنتمي إلى القطعة $[BC]$",
+        "إنشاء مثلث علمت أطوال أضلاعه الثلاثة بالمدور والمسطرة"
+      ],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 9,
+        "pages": {
+          "activity": [
+            130,
+            130
+          ],
+          "knowledge": [
+            134,
+            134
+          ],
+          "method": [
+            135,
+            135
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "taqayus-muthallathat",
+      "sourceTopicId": "3am.m2",
+      "chapterId": "handasa",
+      "unitId": "muthallathat-3am",
+      "order": 38,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "المثلثات المتقايسة",
+      "description": "يتعرّف التلميذ على حالات تقايس مثلثين الثلاث ويستعملها لإثبات تساوي أطوال أو أقياس زوايا.",
+      "prerequisites": [
+        "المتباينة المثلثية وإنشاء مثلث",
+        "البرهان في الهندسة"
+      ],
+      "prerequisiteLessonCodes": [
+        "nazir-shakl-khawas-2",
+        "insha-muthallath-mutabayina"
+      ],
+      "pointsToLearn": [
+        "التعرّف على مثلثين متقايسين وتعيين العناصر المتماثلة فيهما",
+        "معرفة الحالة الأولى: ضلع محصور بين زاويتين متقايستين",
+        "معرفة الحالة الثانية: زاوية محصورة بين ضلعين متقايسين، والحالة الثالثة: الأضلاع الثلاثة متقايسة",
+        "استعمال حالات التقايس في براهين بسيطة لاستنتاج تقايس عناصر أخرى"
+      ],
+      "programmeItems": [
+        "3am.m2.r01"
+      ],
+      "textbookRef": {
+        "unit": 9,
+        "pages": {
+          "activity": [
+            130,
+            130
+          ],
+          "knowledge": [
+            134,
+            134
+          ],
+          "method": [
+            135,
+            135
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "mustaqim-muntasafayn",
+      "sourceTopicId": "3am.m2",
+      "chapterId": "handasa",
+      "unitId": "muthallathat-3am",
+      "order": 39,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "مستقيم المنتصفين في مثلث",
+      "description": "ينتقل التلميذ من التخمين إلى التبرير لخواص مستقيم المنتصفين الثلاث ويستعملها في براهين بسيطة.",
+      "prerequisites": [
+        "خواص متوازي الأضلاع",
+        "المثلثات المتقايسة"
+      ],
+      "prerequisiteLessonCodes": [
+        "mustaqimat-mutaamida",
+        "tarif-mutawazi-adla"
+      ],
+      "pointsToLearn": [
+        "معرفة أن المستقيم الذي يشمل منتصفي ضلعين في مثلث يوازي الضلع الثالث",
+        "معرفة أن طول القطعة الواصلة بين منتصفي ضلعين يساوي نصف طول الضلع الثالث",
+        "معرفة أن المستقيم الذي يشمل منتصف ضلع ويوازي ضلعا ثانيا يقطع الضلع الثالث في منتصفه",
+        "توظيف خواص مستقيم المنتصفين في براهين بسيطة"
+      ],
+      "programmeItems": [
+        "3am.m2.r02"
+      ],
+      "textbookRef": {
+        "unit": 9,
+        "pages": {
+          "activity": [
+            131,
+            131
+          ],
+          "knowledge": [
+            136,
+            136
+          ],
+          "method": [
+            137,
+            137
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "tanasub-atwal-muthallath",
+      "sourceTopicId": "3am.m2",
+      "chapterId": "handasa",
+      "unitId": "muthallathat-3am",
+      "order": 40,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "تناسبية الأطوال في المثلث",
+      "description": "يكتشف التلميذ تناسبية أطوال أضلاع المثلثين المعيّنين بمستقيمين متوازيين يقطعهما قاطعان غير متوازيين ويحسب أطوالا مجهولة.",
+      "prerequisites": [
+        "مستقيم المنتصفين في مثلث",
+        "الرابع المتناسب"
+      ],
+      "prerequisiteLessonCodes": [
+        "rabi-mutanasib",
+        "mustaqim-muntasafayn"
+      ],
+      "pointsToLearn": [
+        "التعرّف على وضعية المثلثين المعيّنين بمستقيمين متوازيين يقطعهما قاطعان غير متوازيين",
+        "كتابة تناسبية الأطوال: $\\frac{AM}{AB}=\\frac{AN}{AC}=\\frac{MN}{BC}$ عندما $(MN)\\parallel(BC)$",
+        "حساب طول مجهول بتوظيف تناسبية الأطوال والرابع المتناسب"
+      ],
+      "programmeItems": [
+        "3am.m2.r03"
+      ],
+      "textbookRef": {
+        "unit": 9,
+        "pages": {
+          "activity": [
+            131,
+            131
+          ],
+          "knowledge": [
+            136,
+            136
+          ],
+          "method": [
+            137,
+            137
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "mahawir-munassifat",
+      "sourceTopicId": "3am.m2",
+      "chapterId": "handasa",
+      "unitId": "muthallathat-3am",
+      "order": 41,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "بعد نقطة عن مستقيم، المحاور والمنصفات",
+      "description": "يعرّف التلميذ بعد نقطة عن مستقيم وينشئ محاور أضلاع مثلث ومنصفات زواياه ويستعمل تلاقيها لإنشاء الدائرتين المحيطة والمحاطة.",
+      "prerequisites": [
+        "محور قطعة ومنصف زاوية",
+        "إنشاء العمودي على مستقيم"
+      ],
+      "prerequisiteLessonCodes": [
+        "mustaqimat-mutaamida",
+        "mustaqimat-mutaamida-mutawazia",
+        "daira-muhita-muthallath"
+      ],
+      "pointsToLearn": [
+        "تعريف بعد نقطة عن مستقيم كطول القطعة العمودية $[AH]$ وتعيينه كأصغر مسافة",
+        "معرفة أن محاور أضلاع مثلث تتلاقى في نقطة هي مركز الدائرة المحيطة به",
+        "معرفة أن منصفات زوايا مثلث تتلاقى في نقطة متساوية البعد عن أضلاعه هي مركز الدائرة المحاطة به",
+        "إنشاء الدائرة المحيطة والدائرة المحاطة بمثلث"
+      ],
+      "programmeItems": [
+        "3am.m2.r04",
+        "3am.m2.r05",
+        "3am.m4.r04"
+      ],
+      "textbookRef": {
+        "unit": 9,
+        "pages": {
+          "activity": [
+            132,
+            132
+          ],
+          "knowledge": [
+            136,
+            138
+          ],
+          "method": [
+            139,
+            139
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "mutawassitat-irtifaat",
+      "sourceTopicId": "3am.m2",
+      "chapterId": "handasa",
+      "unitId": "muthallathat-3am",
+      "order": 42,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "المتوسطات والارتفاعات في المثلث",
+      "description": "ينشئ التلميذ متوسطات مثلث وارتفاعاته ويستعمل تلاقي المتوسطات في مركز الثقل وتلاقي الارتفاعات في براهين بسيطة.",
+      "prerequisites": [
+        "بعد نقطة عن مستقيم، المحاور والمنصفات",
+        "مستقيم المنتصفين"
+      ],
+      "prerequisiteLessonCodes": [
+        "mustaqimat-mutaamida-mutawazia",
+        "daira-muhita-muthallath"
+      ],
+      "pointsToLearn": [
+        "تعريف متوسط مثلث وإنشاء متوسطاته الثلاثة",
+        "معرفة أن المتوسطات تتلاقى في مركز الثقل $G$ وأن $AG=\\frac{2}{3}AA'$",
+        "تعريف ارتفاع مثلث وإنشاء ارتفاعاته ومعرفة أنها تتلاقى في نقطة (خاصية مقبولة دون برهان)",
+        "استعمال نقطة تلاقي المتوسطات أو الارتفاعات لإثبات استقامية أو تعامد"
+      ],
+      "programmeItems": [
+        "3am.m2.r04",
+        "3am.m2.r05"
+      ],
+      "textbookRef": {
+        "unit": 9,
+        "pages": {
+          "activity": [
+            132,
+            133
+          ],
+          "knowledge": [
+            138,
+            140
+          ],
+          "method": [
+            141,
+            141
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wadiya-idmajiya-muthallathat-3am",
+      "sourceTopicId": "3am.m2",
+      "chapterId": "handasa",
+      "unitId": "muthallathat-3am",
+      "order": 43,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — المثلثات",
+      "description": "",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "mutabayina-muthallathiya",
+        "taqayus-muthallathat",
+        "mustaqim-muntasafayn",
+        "tanasub-atwal-muthallath",
+        "mahawir-munassifat",
+        "mutawassitat-irtifaat"
+      ],
+      "pointsToLearn": [],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 9,
+        "pages": {
+          "integration": [
+            148
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "daira-muhita-qaim",
+      "sourceTopicId": "3am.m4",
+      "chapterId": "handasa",
+      "unitId": "muthallath-qaim-daira",
+      "order": 44,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "الدائرة المحيطة بالمثلث القائم",
+      "description": "يكتشف التلميذ أن وتر المثلث القائم قطر لدائرته المحيطة وأن المتوسط المتعلق بالوتر يساوي نصفه، وعكس الخاصيتين، ويستعملها لإثبات أن مثلثا قائم.",
+      "prerequisites": [
+        "الدائرة المحيطة بمثلث (محاور الأضلاع)",
+        "خواص المستطيل"
+      ],
+      "prerequisiteLessonCodes": [
+        "daira-muhita-muthallath",
+        "mutawaziyat-adla-khassa"
+      ],
+      "pointsToLearn": [
+        "معرفة أنه إذا كان مثلث قائما فإن وتره قطر للدائرة المحيطة به ومركزها منتصف الوتر",
+        "معرفة أن طول المتوسط المتعلق بالوتر في مثلث قائم يساوي نصف طول الوتر",
+        "معرفة أنه إذا كان أحد أضلاع مثلث قطرا لدائرته المحيطة فإن المثلث قائم",
+        "إثبات أن مثلثا قائم باستعمال الدائرة المحيطة أو المتوسط المساوي لنصف الضلع"
+      ],
+      "programmeItems": [
+        "3am.m4.r01",
+        "3am.m4.r02"
+      ],
+      "textbookRef": {
+        "unit": 10,
+        "pages": {
+          "activity": [
+            152,
+            152
+          ],
+          "knowledge": [
+            154,
+            154
+          ],
+          "method": [
+            155,
+            155
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "awda-daira-mustaqim",
+      "sourceTopicId": "3am.m4",
+      "chapterId": "handasa",
+      "unitId": "muthallath-qaim-daira",
+      "order": 45,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "الأوضاع النسبية لدائرة ومستقيم",
+      "description": "يميّز التلميذ الأوضاع النسبية لمستقيم ودائرة بمقارنة بعد مركزها عن المستقيم بنصف قطرها.",
+      "prerequisites": [
+        "بعد نقطة عن مستقيم",
+        "الدائرة ونصف قطرها"
+      ],
+      "prerequisiteLessonCodes": [
+        "mustaqimat-mutaamida",
+        "daira-mustalahat"
+      ],
+      "pointsToLearn": [
+        "حساب بعد مركز دائرة عن مستقيم $OH$ حيث $H$ المسقط العمودي لـ $O$",
+        "تمييز الحالات الثلاث: $OH>r$ (لا يتقاطعان)، $OH=r$ (مماس)، $OH<r$ (متقاطعان في نقطتين)",
+        "تعيين عدد نقط تقاطع مستقيم ودائرة دون رسم"
+      ],
+      "programmeItems": [
+        "3am.m4.r05",
+        "3am.m4.r04"
+      ],
+      "textbookRef": {
+        "unit": 10,
+        "pages": {
+          "activity": [
+            153,
+            153
+          ],
+          "knowledge": [
+            156,
+            156
+          ],
+          "method": [
+            157,
+            157
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "mumass-daira",
+      "sourceTopicId": "3am.m4",
+      "chapterId": "handasa",
+      "unitId": "muthallath-qaim-daira",
+      "order": 46,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "مماس دائرة في نقطة منها",
+      "description": "ينشئ التلميذ مماس دائرة في نقطة منها كالعمودي على نصف القطر في تلك النقطة.",
+      "prerequisites": [
+        "الأوضاع النسبية لدائرة ومستقيم",
+        "الدائرة المحيطة بالمثلث القائم"
+      ],
+      "prerequisiteLessonCodes": [
+        "awda-daira-mustaqim"
+      ],
+      "pointsToLearn": [
+        "معرفة أن مماس دائرة مركزها $O$ في نقطة $A$ منها هو المستقيم العمودي على $(OA)$ في $A$",
+        "إنشاء مماس دائرة في نقطة منها بالكوس والمسطرة أو بالمدور والمسطرة",
+        "معرفة أن المماس يقطع الدائرة في نقطة وحيدة",
+        "إنشاء مماس لدائرة يشمل نقطة خارجها بتوظيف الدائرة المحيطة بالمثلث القائم"
+      ],
+      "programmeItems": [
+        "3am.m4.r06"
+      ],
+      "textbookRef": {
+        "unit": 10,
+        "pages": {
+          "activity": [
+            153,
+            153
+          ],
+          "knowledge": [
+            156,
+            156
+          ],
+          "method": [
+            157,
+            157
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wadiya-idmajiya-muthallath-qaim-daira",
+      "sourceTopicId": "3am.m4",
+      "chapterId": "handasa",
+      "unitId": "muthallath-qaim-daira",
+      "order": 47,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — المثلث القائم والدائرة",
+      "description": "",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "daira-muhita-qaim",
+        "awda-daira-mustaqim",
+        "mumass-daira"
+      ],
+      "pointsToLearn": [],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 10,
+        "pages": {
+          "integration": [
+            164
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "khassiyat-fitaghuras",
+      "sourceTopicId": "3am.m4",
+      "chapterId": "handasa",
+      "unitId": "fitaghuras-jayb-tamam",
+      "order": 48,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "خاصية فيثاغورس",
+      "description": "يكتشف التلميذ خاصية فيثاغورس بتركيب المربعات ويستعملها مع اللمسة √ لحساب طول ضلع في مثلث قائم.",
+      "prerequisites": [
+        "مربع عدد ومساحة مربع",
+        "المثلث القائم ووتره"
+      ],
+      "prerequisiteLessonCodes": [
+        "mustatil-murabba-masaha",
+        "quwat-adad-nisbi"
+      ],
+      "pointsToLearn": [
+        "معرفة خاصية فيثاغورس: إذا كان $ABC$ قائما في $A$ فإن $BC^2=AB^2+AC^2$",
+        "حساب طول الوتر أو طول ضلع قائم بمعرفة طولي الضلعين الآخرين",
+        "استعمال اللمسة $\\sqrt{\\ }$ لإعطاء القيمة المضبوطة أو قيمة مقرّبة لطول",
+        "استعمال خاصية فيثاغورس لإثبات أن مثلثا غير قائم"
+      ],
+      "programmeItems": [
+        "3am.m4.r03",
+        "3am.m4.x1"
+      ],
+      "textbookRef": {
+        "unit": 11,
+        "pages": {
+          "activity": [
+            168,
+            168
+          ],
+          "knowledge": [
+            170,
+            170
+          ],
+          "method": [
+            171,
+            171
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "aksiya-fitaghuras",
+      "sourceTopicId": "3am.m4",
+      "chapterId": "handasa",
+      "unitId": "fitaghuras-jayb-tamam",
+      "order": 49,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "الخاصية العكسية لفيثاغورس",
+      "description": "يستعمل التلميذ الخاصية العكسية لفيثاغورس لإثبات أن مثلثا علمت أطوال أضلاعه قائم.",
+      "prerequisites": [
+        "خاصية فيثاغورس",
+        "النص العكسي"
+      ],
+      "prerequisiteLessonCodes": [
+        "mustatil-murabba-masaha",
+        "quwat-adad-nisbi"
+      ],
+      "pointsToLearn": [
+        "معرفة الخاصية العكسية: إذا كان $BC^2=AB^2+AC^2$ فإن المثلث $ABC$ قائم في $A$",
+        "مقارنة مربع أكبر طول بمجموع مربعي الطولين الآخرين لتقرير طبيعة مثلث",
+        "التمييز بين استعمال خاصية فيثاغورس وخاصيتها العكسية في برهان"
+      ],
+      "programmeItems": [
+        "3am.m4.r03",
+        "3am.m4.x1"
+      ],
+      "textbookRef": {
+        "unit": 11,
+        "pages": {
+          "activity": [
+            168,
+            168
+          ],
+          "knowledge": [
+            170,
+            170
+          ],
+          "method": [
+            171,
+            171
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "jayb-tamam-zawiya",
+      "sourceTopicId": "3am.m4",
+      "chapterId": "handasa",
+      "unitId": "fitaghuras-jayb-tamam",
+      "order": 50,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "جيب تمام زاوية حادة",
+      "description": "يتعرّف التلميذ على جيب تمام زاوية حادة في مثلث قائم كنسبة الضلع المجاور إلى الوتر، الثابتة لنفس الزاوية.",
+      "prerequisites": [
+        "خاصية فيثاغورس",
+        "تناسبية الأطوال في المثلث"
+      ],
+      "prerequisiteLessonCodes": [
+        "tanasub-atwal-muthallath"
+      ],
+      "pointsToLearn": [
+        "تعيين الوتر والضلع المجاور لزاوية حادة في مثلث قائم",
+        "ملاحظة ثبات النسبة $\\frac{\\text{الضلع المجاور}}{\\text{الوتر}}$ لنفس الزاوية في مثلثات قائمة مختلفة",
+        "تعريف $\\cos\\widehat{B}=\\frac{AB}{BC}$ في مثلث $ABC$ قائم في $A$ ومعرفة أن $0<\\cos\\widehat{B}<1$"
+      ],
+      "programmeItems": [
+        "3am.m4.r07"
+      ],
+      "textbookRef": {
+        "unit": 11,
+        "pages": {
+          "activity": [
+            169,
+            169
+          ],
+          "knowledge": [
+            172,
+            172
+          ],
+          "method": [
+            173,
+            173
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "hisab-jayb-tamam",
+      "sourceTopicId": "3am.m4",
+      "chapterId": "handasa",
+      "unitId": "fitaghuras-jayb-tamam",
+      "order": 51,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "حساب جيب التمام وتوظيفه",
+      "description": "يستعمل التلميذ الآلة الحاسبة لحساب جيب تمام زاوية أو قيس زاوية علم جيب تمامها، ويحسب أطوالا وزوايا في مثلث قائم.",
+      "prerequisites": [
+        "جيب تمام زاوية حادة",
+        "حل معادلة من الشكل $\\frac{a}{x}=b$"
+      ],
+      "prerequisiteLessonCodes": [
+        "rabi-mutanasib",
+        "jayb-tamam-zawiya"
+      ],
+      "pointsToLearn": [
+        "حساب قيمة مقرّبة لجيب تمام زاوية حادة بالآلة الحاسبة (اللمسة $\\cos$ بوضع الدرجات)",
+        "تعيين قيس زاوية حادة علم جيب تمامها بالآلة الحاسبة ($\\cos^{-1}$)",
+        "حساب طول ضلع مجاور أو طول وتر بمعرفة زاوية حادة وطول",
+        "حساب قيس زاوية حادة في مثلث قائم علم طولا ضلعها المجاور ووتره"
+      ],
+      "programmeItems": [
+        "3am.m4.r08",
+        "3am.m4.r09"
+      ],
+      "textbookRef": {
+        "unit": 11,
+        "pages": {
+          "activity": [
+            169,
+            169
+          ],
+          "knowledge": [
+            172,
+            172
+          ],
+          "method": [
+            173,
+            173
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wadiya-idmajiya-fitaghuras-jayb-tamam",
+      "sourceTopicId": "3am.m4",
+      "chapterId": "handasa",
+      "unitId": "fitaghuras-jayb-tamam",
+      "order": 52,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — خاصية فيثاغورس، جيب تمام زاوية",
+      "description": "",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "khassiyat-fitaghuras",
+        "aksiya-fitaghuras",
+        "jayb-tamam-zawiya",
+        "hisab-jayb-tamam"
+      ],
+      "pointsToLearn": [],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 11,
+        "pages": {
+          "integration": [
+            180
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "tarif-insihab",
+      "sourceTopicId": "3am.m6",
+      "chapterId": "handasa",
+      "unitId": "insihab-3am",
+      "order": 53,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "الانسحاب ومتوازي الأضلاع",
+      "description": "يتعرّف التلميذ على الانسحاب كإزاحة بطول واتجاه ومنحى معيّنين ويربط صورة نقطة بمتوازي أضلاع.",
+      "prerequisites": [
+        "خواص متوازي الأضلاع",
+        "التناظر المركزي"
+      ],
+      "prerequisiteLessonCodes": [
+        "tarif-mutawazi-adla"
+      ],
+      "pointsToLearn": [
+        "التعرّف على الانسحاب الذي يحوّل $A$ إلى $B$: إزاحة بنفس الطول والحامل والاتجاه",
+        "معرفة أنه إذا كان الانسحاب الذي يحوّل $A$ إلى $B$ يحوّل $C$ إلى $D$ فإن $ABDC$ متوازي أضلاع",
+        "قراءة صور نقط بانسحاب على مرصوفة من متوازيات أضلاع",
+        "التمييز بين حالتي $M$ خارج المستقيم $(AB)$ و $M$ عليه"
+      ],
+      "programmeItems": [
+        "3am.m6.r01"
+      ],
+      "textbookRef": {
+        "unit": 12,
+        "pages": {
+          "activity": [
+            184,
+            184
+          ],
+          "knowledge": [
+            186,
+            186
+          ],
+          "method": [
+            187,
+            187
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "sura-nuqta-insihab",
+      "sourceTopicId": "3am.m6",
+      "chapterId": "handasa",
+      "unitId": "insihab-3am",
+      "order": 54,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "إنشاء صورة نقطة بانسحاب",
+      "description": "ينشئ التلميذ صورة نقطة بانسحاب بإنشاء متوازي أضلاع بالمدور والمسطرة غير المدرجة.",
+      "prerequisites": [
+        "الانسحاب ومتوازي الأضلاع",
+        "إنشاء متوازي أضلاع"
+      ],
+      "prerequisiteLessonCodes": [
+        "tarif-insihab"
+      ],
+      "pointsToLearn": [
+        "إنشاء صورة نقطة بانسحاب بإكمال متوازي أضلاع بالمدور",
+        "إنشاء صورة نقطة تنتمي إلى المستقيم $(AB)$ بانسحاب",
+        "توظيف صور النقط لإثبات أن نقطة منتصف قطعة أو أن رباعيا متوازي أضلاع"
+      ],
+      "programmeItems": [
+        "3am.m6.r02"
+      ],
+      "textbookRef": {
+        "unit": 12,
+        "pages": {
+          "activity": [
+            184,
+            185
+          ],
+          "knowledge": [
+            186,
+            186
+          ],
+          "method": [
+            187,
+            187
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "suwar-ashkal-insihab",
+      "sourceTopicId": "3am.m6",
+      "chapterId": "handasa",
+      "unitId": "insihab-3am",
+      "order": 55,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "صور الأشكال بانسحاب وخواصه",
+      "description": "ينشئ التلميذ صور قطعة ومستقيم ونصف مستقيم ودائرة وزاوية بانسحاب ويستعمل حفاظ الانسحاب على الأطوال والاستقامية والزوايا والمساحات.",
+      "prerequisites": [
+        "إنشاء صورة نقطة بانسحاب",
+        "خواص المستقيمات المتوازية"
+      ],
+      "prerequisiteLessonCodes": [
+        "nazir-shakl-khawas-2",
+        "tarif-insihab"
+      ],
+      "pointsToLearn": [
+        "إنشاء صورة قطعة مستقيم (قطعة توازيها وتقايسها) وصورة مستقيم (مستقيم يوازيه)",
+        "إنشاء صورة نصف مستقيم وصورة دائرة (دائرة لها نفس نصف القطر ومركزها صورة المركز)",
+        "معرفة أن الانسحاب يحافظ على المسافات والاستقامية وأقياس الزوايا والمساحات",
+        "توظيف خواص الانسحاب لإثبات استقامية ثلاث نقط أو تقايس زاويتين"
+      ],
+      "programmeItems": [
+        "3am.m6.r02",
+        "3am.m6.r03"
+      ],
+      "textbookRef": {
+        "unit": 12,
+        "pages": {
+          "activity": [
+            185,
+            185
+          ],
+          "knowledge": [
+            186,
+            188
+          ],
+          "method": [
+            189,
+            189
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wadiya-idmajiya-insihab-3am",
+      "sourceTopicId": "3am.m6",
+      "chapterId": "handasa",
+      "unitId": "insihab-3am",
+      "order": 56,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — الانسحاب",
+      "description": "",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "tarif-insihab",
+        "sura-nuqta-insihab",
+        "suwar-ashkal-insihab"
+      ],
+      "pointsToLearn": [],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 12,
+        "pages": {
+          "integration": [
+            196
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wasf-tamthil-haram",
+      "sourceTopicId": "3am.m6",
+      "chapterId": "handasa",
+      "unitId": "haram-makhrut",
+      "order": 57,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "وصف الهرم وتمثيله وتصميمه",
+      "description": "يصف التلميذ الهرم (القاعدة، الرأس، الأوجه الجانبية، الارتفاع) ويمثّله بالمنظور متساوي القياس وينجز تصميمه ويصنعه.",
+      "prerequisites": [
+        "المضلعات والمثلث متساوي الساقين",
+        "تمثيل الموشور القائم وتصميمه"
+      ],
+      "prerequisiteLessonCodes": [
+        "manzur-mutasawi-qiyas",
+        "mawshur-qaim-wasf",
+        "ustuwana-dawaran-wasf"
+      ],
+      "pointsToLearn": [
+        "وصف هرم: قاعدته مضلع، أوجهه الجانبية مثلثات لها رأس مشترك، وارتفاعه",
+        "التعرّف على الهرم المنتظم (قاعدته مضلع منتظم وأوجهه الجانبية مثلثات متقايسة متساوية الساقين)",
+        "تمثيل هرم بالمنظور متساوي القياس (الخطوط غير المرئية متقطعة)",
+        "إنجاز تصميم هرم أبعاده معلومة وصنعه"
+      ],
+      "programmeItems": [
+        "3am.m6.r04",
+        "3am.m6.r05",
+        "3am.m6.r06",
+        "3am.m6.r07"
+      ],
+      "textbookRef": {
+        "unit": 13,
+        "pages": {
+          "activity": [
+            200,
+            200
+          ],
+          "knowledge": [
+            202,
+            202
+          ],
+          "method": [
+            203,
+            203
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "hajm-haram",
+      "sourceTopicId": "3am.m6",
+      "chapterId": "handasa",
+      "unitId": "haram-makhrut",
+      "order": 58,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "حجم الهرم",
+      "description": "يكتشف التلميذ بتفكيك مكعب إلى ثلاثة أهرامات متقايسة أن حجم الهرم ثلث جداء مساحة قاعدته في ارتفاعه ويحسبه.",
+      "prerequisites": [
+        "وصف الهرم",
+        "حجم الموشور القائم ومساحات المضلعات"
+      ],
+      "prerequisiteLessonCodes": [
+        "hajm-mawshur-qaim",
+        "wasf-tamthil-haram"
+      ],
+      "pointsToLearn": [
+        "ملاحظة أن مكعبا يتفكك إلى ثلاثة أهرامات متقايسة قاعدة كل منها وجه للمكعب",
+        "معرفة دستور حجم الهرم $V=\\frac{B\\times h}{3}$",
+        "حساب حجم هرم أو أحد أبعاده بمعرفة الأبعاد الأخرى مع تحويل الوحدات"
+      ],
+      "programmeItems": [
+        "3am.m6.r08"
+      ],
+      "textbookRef": {
+        "unit": 13,
+        "pages": {
+          "activity": [
+            200,
+            200
+          ],
+          "knowledge": [
+            202,
+            202
+          ],
+          "method": [
+            203,
+            203
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wasf-tamthil-makhrut",
+      "sourceTopicId": "3am.m6",
+      "chapterId": "handasa",
+      "unitId": "haram-makhrut",
+      "order": 59,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "وصف مخروط الدوران وتمثيله وتصميمه",
+      "description": "يتعرّف التلميذ على مخروط الدوران الناتج عن دوران مثلث قائم حول أحد ضلعيه القائمين، ويمثّله وينجز تصميمه (قرص وقطاع دائري) ويصنعه.",
+      "prerequisites": [
+        "الدائرة ومحيطها",
+        "التناسبية"
+      ],
+      "prerequisiteLessonCodes": [
+        "manzur-mutasawi-qiyas",
+        "mawshur-qaim-wasf",
+        "ustuwana-dawaran-wasf"
+      ],
+      "pointsToLearn": [
+        "وصف مخروط الدوران: الرأس، القاعدة (قرص)، الارتفاع، المولّد، السطح الجانبي",
+        "معرفة أن مخروط الدوران ينتج عن دوران مثلث قائم حول أحد ضلعيه القائمين",
+        "تمثيل مخروط دوران بالمنظور متساوي القياس",
+        "إنجاز تصميم مخروط دوران: حساب طول قوس القطاع وزاويته بالتناسبية ($L=2\\pi r$) وصنعه"
+      ],
+      "programmeItems": [
+        "3am.m6.r04",
+        "3am.m6.r05",
+        "3am.m6.r06",
+        "3am.m6.r07"
+      ],
+      "textbookRef": {
+        "unit": 13,
+        "pages": {
+          "activity": [
+            201,
+            201
+          ],
+          "knowledge": [
+            204,
+            204
+          ],
+          "method": [
+            205,
+            205
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "hajm-makhrut",
+      "sourceTopicId": "3am.m6",
+      "chapterId": "handasa",
+      "unitId": "haram-makhrut",
+      "order": 60,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "حجم مخروط الدوران",
+      "description": "يقرّب التلميذ مخروط الدوران بأهرامات تتزايد عدد أوجهها ليستنتج دستور حجمه ويحسبه.",
+      "prerequisites": [
+        "حجم الهرم",
+        "مساحة القرص"
+      ],
+      "prerequisiteLessonCodes": [
+        "hajm-mawshur-qaim",
+        "wasf-tamthil-haram"
+      ],
+      "pointsToLearn": [
+        "ملاحظة أن هرما قاعدته مضلع منتظم عدد أضلاعه كبير يقترب من مخروط دوران",
+        "معرفة دستور حجم مخروط الدوران $V=\\frac{\\pi r^2\\times h}{3}$",
+        "حساب حجم مخروط دوران أو أحد أبعاده (الارتفاع بخاصية فيثاغورس عند الحاجة)"
+      ],
+      "programmeItems": [
+        "3am.m6.r08"
+      ],
+      "textbookRef": {
+        "unit": 13,
+        "pages": {
+          "activity": [
+            201,
+            201
+          ],
+          "knowledge": [
+            204,
+            204
+          ],
+          "method": [
+            205,
+            205
+          ]
+        }
+      },
+      "status": "coming_soon"
+    },
+    {
+      "code": "wadiya-idmajiya-haram-makhrut",
+      "sourceTopicId": "3am.m6",
+      "chapterId": "handasa",
+      "unitId": "haram-makhrut",
+      "order": 61,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "draft",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — الهرم و مخروط الدوران",
+      "description": "",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "wasf-tamthil-haram",
+        "hajm-haram",
+        "wasf-tamthil-makhrut",
+        "hajm-makhrut"
+      ],
+      "pointsToLearn": [],
+      "programmeItems": [],
+      "textbookRef": {
+        "unit": 13,
+        "pages": {
+          "integration": [
+            212
+          ]
+        }
+      },
+      "status": "coming_soon"
+    }
+  ]
+}

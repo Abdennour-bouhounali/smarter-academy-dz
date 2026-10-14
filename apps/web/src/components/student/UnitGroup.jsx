@@ -27,7 +27,13 @@ const UnitGroup = forwardRef(function UnitGroup({ unit, layout = 'grid' }, ref) 
   const { t: tc } = useTranslation('common');
   const done = unit.lessons.filter((l) => l.status === 'available' && getLessonProgress(l.id, getTotalModules(l.id)).progressPercent >= 100).length;
   const pct = unit.lessons.length ? Math.round((done / unit.lessons.length) * 100) : 0;
-  const tally = (
+  // Aucune leçon encore écrite (1AM–3AM, 2026-10-14) : la carte reste un lien —
+  // la page d'unité montre ce que les leçons feront acquérir — mais dit
+  // « قيد الإعداد » au lieu d'un compteur 0/N qui passerait pour un retard.
+  const drafting = !unit.lessons.some((l) => l.status === 'available');
+  const tally = drafting ? (
+    <span className="shrink-0 inline-flex items-center rounded-full border border-dashed border-slate-300 bg-slate-50 px-2.5 py-1 text-[10px] font-bold text-slate-500" data-unit-draft={unit.id}>{t('unit.comingSoon')}</span>
+  ) : (
     <span dir="ltr" className={`shrink-0 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono-jetbrains text-[10px] font-bold ${pct >= 100 ? 'bg-emerald-50 text-emerald-700' : pct > 0 ? 'bg-blue-50 text-blue-700' : 'bg-slate-50 text-slate-500'}`}>{pct >= 100 ? '✓ ' : ''}{done}/{unit.lessons.length}</span>
   );
   const count = `${tc('lessonsCount', { count: unit.lessons.length })}${unit.synthesis ? ` + ${t('unit.synthesisTitle')}` : ''}`;

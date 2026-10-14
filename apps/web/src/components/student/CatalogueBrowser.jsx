@@ -42,7 +42,27 @@ export default function CatalogueBrowser(props) {
     props.view.layout,
     props.searchResults ? `q:${props.searchQuery}` : '',
   ].join('/');
-  return <CatalogueSelection key={selectionKey} {...props} />;
+  // Une classe dont AUCUNE leçon n'est encore publiée (1AM–3AM, 2026-10-14) :
+  // le programme et le découpage du manuel sont là, en cartes « قيد الإعداد » —
+  // on le dit une fois, en tête, pour que l'élève ne prenne pas ça pour une panne.
+  const lessons = props.lessons ?? [];
+  const drafting = !props.searchResults && lessons.length > 0 && !lessons.some((l) => l.status === 'available');
+  return (
+    <>
+      {drafting && <GradeDraftingNotice />}
+      <CatalogueSelection key={selectionKey} {...props} />
+    </>
+  );
+}
+
+function GradeDraftingNotice() {
+  const { t } = useTranslation('common');
+  return (
+    <div className="mb-5 rounded-2xl border border-dashed border-slate-300 bg-white px-4 py-3" role="status" data-grade-drafting>
+      <p className="font-bold text-slate-800">{t('gradeProgrammeOnlyTitle')}</p>
+      <p className="mt-0.5 text-sm text-slate-600">{t('gradeProgrammeOnlyBody')}</p>
+    </div>
+  );
 }
 
 function CatalogueSelection({

@@ -48,8 +48,18 @@ programme of the four years as data (224 items transcribed from `docs/Math-Moyen
 `<g>am.m<مقطع>.r<nn>`), typed links between items (`requires` / `extends` with its added value / `consolidates` —
 the no-duplication rule), the PLANNED 1AM–3AM lessons (codes, units, items — no content), and each 4AM lesson's
 `programmeItems` (`packages/core/curriculum/dz/net/`, contract `docs/architecture/LEARNING_NET.md`, generated map
-`docs/curriculum/LEARNING_NET_MAP.md`). A 1AM–3AM lesson is generated FROM its planned entry (contract §4); every
-« أستعدّ » shows « راجع قبل أن تنطلق » from the net. The resolver is imported by path, never from the core barrel.
+`docs/curriculum/LEARNING_NET_MAP.md`). Every « أستعدّ » shows « راجع قبل أن تنطلق » from the net. The resolver is
+imported by path or by `import()`, never from the core barrel.
+
+Since 2026-10-14 (rollout phase 2) **1AM, 2AM and 3AM are active grades**. Their 196 lessons (39 units, 523 draft
+الكفاءات) are catalogue entries `coming_soon` in `dz/{lessons,units,programme}_<g>_2026_2027.json`:
+- in the UI: non-clickable « قيد الإعداد » cards, and `getLessonPath` gives `null`;
+- in the database: imported `draft`, with all their LPs, ignored by Mastery V2 (`LEARNING_NET.md` §3bis).
+
+A 1AM–3AM lesson is generated INTO its entry (contract §4), then **published = status `available` + export/import +
+commit + push to `dev`** (owner decision; guide §11 « Publish a lesson »). A wrong answer shows « راجع: <درس> (<السنة>) »
+toward earlier years (`features/learning/EarlierYearReview.jsx`). Practice modelled on the 1AM–3AM term exams uses
+`source.type: "term_exam"` / `term_exam_modelled` and the badge « على منوال اختبار الفصل … » (`EXERCISE_CONTRACT.md`).
 
 ## Read before any task
 

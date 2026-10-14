@@ -19,6 +19,9 @@ const GRADES_BY_LEVEL = getAllGrades().reduce((groups, grade) => {
 // La pastille d'une classe : son numéro et son cycle, lisibles d'un coup
 // d'œil. Une classe absente d'ici retombe sur l'icône.
 const GRADE_BADGE = {
+  '1am': { number: '1', cycle: 'م' },
+  '2am': { number: '2', cycle: 'م' },
+  '3am': { number: '3', cycle: 'م' },
   '4am': { number: '4', cycle: 'م' },
   terminale_dz: { number: '3', cycle: 'ث' },
 };

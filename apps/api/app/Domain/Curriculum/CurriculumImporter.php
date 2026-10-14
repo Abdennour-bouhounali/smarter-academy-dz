@@ -171,9 +171,10 @@ class CurriculumImporter
                             ['chapter_id' => $chapter->id, 'code' => $lessonData['code']]
                             + $lessonSource
                             + ['tier' => AccessTier::FREE]
+                            + self::publicationOnCreate($lessonData['status'])
                         );
                     } else {
-                        $existingLesson->fill($lessonSource)->save();
+                        $existingLesson->fill($lessonSource + self::publicationOnUpdate($existingLesson, $lessonData['status']))->save();
                         $lesson = $existingLesson;
                     }
 
@@ -195,6 +196,51 @@ class CurriculumImporter
         $this->syncLearningPointPrerequisites($pointEdges, $summary['learningPointPrerequisites']);
 
         return $summary;
+    }
+
+    /**
+     * L'ÉTAT DE PUBLICATION d'une leçon NOUVELLE (phase 2 du cycle moyen, 2026-10-14).
+     *
+     * `lessons.status` (catalogue : `available` / `coming_soon`) dit si la leçon est
+     * ÉCRITE ; `lessons.publication_status` est ce que le SERVEUR fait respecter
+     * (ContentAccess, Mastery V2, carte de la classe, défi du jour). La colonne naît
+     * `published` par défaut : sans cette règle, les 196 leçons `coming_soon` de
+     * 1AM–3AM — importées avec leurs الكفاءات (décision D2) — seraient OUVERTES côté
+     * serveur alors qu'elles n'ont aucun contenu. Une leçon `coming_soon` naît donc
+     * `draft` ; une leçon `available` naît `published` (comportement d'avant).
+     */
+    private static function publicationOnCreate(string $status): array
+    {
+        return $status === 'available'
+            ? ['publication_status' => Lesson::PUB_PUBLISHED, 'published_at' => now()]
+            : ['publication_status' => Lesson::PUB_DRAFT];
+    }
+
+    /**
+     * L'ÉTAT DE PUBLICATION d'une leçon EXISTANTE. L'administrateur en reste
+     * l'autorité ; l'import n'y touche que dans les deux cas où le catalogue
+     * l'impose :
+     *
+     *  - une leçon `coming_soon` n'est jamais `published` (elle n'a pas de
+     *    contenu) : `published` → `draft` ; `hidden` / `archived` sont gardés ;
+     *  - PUBLIER une leçon générée = la faire passer `coming_soon` → `available`
+     *    dans lessons_<g>_*.json (LESSON_DEVELOPMENT_GUIDE « Publish a lesson ») :
+     *    si elle est encore au `draft` que l'import lui a donné, elle devient
+     *    `published`. Une leçon déjà `available` mise en `draft` par
+     *    l'administrateur le reste.
+     */
+    private static function publicationOnUpdate(Lesson $lesson, string $status): array
+    {
+        if ($status !== 'available') {
+            return $lesson->publication_status === Lesson::PUB_PUBLISHED
+                ? ['publication_status' => Lesson::PUB_DRAFT]
+                : [];
+        }
+        if ($lesson->status !== 'available' && $lesson->publication_status === Lesson::PUB_DRAFT) {
+            return ['publication_status' => Lesson::PUB_PUBLISHED, 'published_at' => now()];
+        }
+
+        return [];
     }
 
     /**

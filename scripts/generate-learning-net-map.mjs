@@ -17,7 +17,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   reviewLinksForLesson,
-  GRADES, SEGMENTS, ITEMS, THREADS, LINKS, LESSONS, PLANNED_UNITS,
+  GRADES, SEGMENTS, ITEMS, THREADS, LINKS, LESSONS, UNITS,
   homeLessonOf, linksInto, getItem,
 } from '../packages/core/curriculum/dz/net/learningNet.js';
 
@@ -51,7 +51,7 @@ out('> Données : `packages/core/curriculum/dz/net/`.');
 out();
 out(`**${ITEMS.length}** items du programme officiel · **${SEGMENTS.length}** مقاطع · **${THREADS.length}** fils conceptuels · `
   + `**${LINKS.length}** liens (${Object.entries(counts).map(([t, n]) => `${n} ${t}`).join(', ')}) · `
-  + `**${available}** leçons publiées · **${planned}** leçons prévues (${PLANNED_UNITS.length} unités).`);
+  + `**${available}** leçons publiées · **${planned}** leçons prévues (${UNITS.filter((u) => u.grade !== '4am').length} unités 1AM–3AM).`);
 out();
 out('Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, '
   + 'la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.');

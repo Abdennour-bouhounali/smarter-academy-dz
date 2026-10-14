@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { BookOpen, Dumbbell, PlayCircle, GraduationCap, Sparkles } from 'lucide-react';
 import SettingsButton from '../../../features/settings/SettingsButton';
 import ExamLevelCards from '../../../features/practice/exam/ExamLevelCards';
-import { isExamLesson } from '../../../features/practice/exam/examSheet';
+import { examPaper, isExamLesson } from '../../../features/practice/exam/examSheet';
 import Modal from '../../../components/admin/ui/Modal';
 import { ArrowBack, ArrowForward } from '../../../components/common/DirectionalIcons';
 import { AuthContext } from '../../../context/AuthContext';
@@ -167,8 +167,8 @@ export default function PracticeHub() {
             <div className="min-w-0 space-y-1.5">
               <p className="inline-flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-700">
                 <GraduationCap className="h-4 w-4 text-[#1f5c4c]" aria-hidden="true" />
-                {t('practice.exam.nav.simulation')}
-                <span className="text-slate-500">· {t('practice.exam.nav.subject')}</span>
+                {t(examPaper(lessonCode).kind === 'term' ? 'practice.exam.nav.simulationTerm' : 'practice.exam.nav.simulation')}
+                <span className="text-slate-500">· {t('practice.exam.nav.subject', { n: examPaper(lessonCode).n })}</span>
               </p>
               <h1 className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl"><MathLabel>{lesson.title}</MathLabel></h1>
               <p className="text-sm text-slate-600">{isTeacher ? t('practice.noTracking', { ns: 'teacher' }) : t('practice.exam.hub.subtitle')}</p>

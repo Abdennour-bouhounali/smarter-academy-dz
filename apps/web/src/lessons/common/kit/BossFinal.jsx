@@ -15,6 +15,7 @@ import {
 import TestPresentation, { useTestPresentation } from './TestPresentation';
 import { revealAll, revealOne, optionOrder } from './testPresentation';
 import LessonLearningPointsStatus from '../components/LessonLearningPointsStatus';
+import EarlierYearReview from '../../../features/learning/EarlierYearReview';
 
 /**
  * Lesson kit — moteur du module final « Boss Final » (évaluatif).
@@ -103,7 +104,13 @@ const optionLabelOf = (ep, i) => (ep.optionLabel ? ep.optionLabel(i) : ep.option
  * sont tous deux les clients : la correction du test final s'écrit ici, et
  * nulle part ailleurs.
  */
-function EpreuveReview({ ep, pick, isCorrect }) {
+/** La الكفاءة évaluée par une épreuve (`assessment.learningPointIds` ou le `primary` de `learningPoints`). */
+const assessedPointOf = (ep) => ep.assessment?.learningPointIds?.[0]
+  ?? ep.assessment?.learningPoints?.find((lp) => lp.role === 'primary')?.code
+  ?? ep.learningPointIds?.[0]
+  ?? null;
+
+function EpreuveReview({ ep, pick, isCorrect, lessonId = null }) {
   const { t } = useTranslation('lesson');
   return (
     <>
@@ -119,11 +126,13 @@ function EpreuveReview({ ep, pick, isCorrect }) {
         )}
       </div>
       <Feedback tone={isCorrect ? 'ok' : 'ko'}>{ep.explain}</Feedback>
+      {/* « راجع: <درس> (<السنة>) » sous une réponse fausse (réseau, décision D7). */}
+      {!isCorrect && <EarlierYearReview learningPointCode={assessedPointOf(ep)} lessonCode={lessonId} />}
     </>
   );
 }
 
-function BossReview({ epreuves, answers, onContinue, onRedo }) {
+function BossReview({ epreuves, answers, onContinue, onRedo, lessonId = null }) {
   const { t } = useTranslation('lesson');
   const correctCount = epreuves.filter((ep) => answers[ep.id] === correctIndexOf(ep)).length;
 
@@ -165,7 +174,7 @@ function BossReview({ epreuves, answers, onContinue, onRedo }) {
 
               <p className="text-sm text-slate-700 leading-relaxed">{ep.prompt}</p>
 
-              <EpreuveReview ep={ep} pick={pick} isCorrect={isCorrect} />
+              <EpreuveReview ep={ep} pick={pick} isCorrect={isCorrect} lessonId={lessonId} />
             </div>
           );
         })}
@@ -447,7 +456,7 @@ export default function BossFinal({
             </div>
           )}
           renderReview={({ question: ep, correct }) => (
-            <EpreuveReview ep={ep} pick={bossAnswers[ep.id]} isCorrect={correct} />
+            <EpreuveReview ep={ep} pick={bossAnswers[ep.id]} isCorrect={correct} lessonId={ctx.lessonId} />
           )}
           // Après la révélation : le profil de maîtrise, la synthèse du
           // moteur — sans remplacer la revue épreuve par épreuve.
@@ -551,7 +560,7 @@ export default function BossFinal({
 
           {phase === 'boss' && bossSubmitted && (
             <motion.div key="boss-review" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <BossReview epreuves={epreuves} answers={bossAnswers} onContinue={() => setPhase('profil')} onRedo={redoBoss} />
+              <BossReview epreuves={epreuves} answers={bossAnswers} onContinue={() => setPhase('profil')} onRedo={redoBoss} lessonId={ctx.lessonId} />
             </motion.div>
           )}
 

@@ -1,7 +1,9 @@
 # The learning net — شبكة الكفاءات of the cycle moyen (1AM–4AM)
 
-**Status:** implemented 2026-10-13. **Authoritative for:** the official programme of the four years as data, the
-links between its items, the planned lessons of 1AM–3AM, and cross-year navigation (« راجع قبل أن تنطلق »).
+**Status:** implemented 2026-10-13; platform and database for 1AM–3AM since 2026-10-14 (phase 2 — §3bis).
+**Authoritative for:** the official programme of the four years as data, the links between its items, the
+lessons of 1AM–3AM still to generate (`coming_soon` in the catalogue), cross-year navigation (« راجع قبل أن تنطلق »
+and « راجع » after a wrong answer), and what the database and Mastery V2 do with unpublished lessons.
 **Readable map (generated):** [`docs/curriculum/LEARNING_NET_MAP.md`](../curriculum/LEARNING_NET_MAP.md). **Interactive map (generated, standalone, open in a browser):** `docs/curriculum/learning-net-map.html` — written by the same script from `scripts/learning-net-map.template.html` (edit the template, never the output); `check:learning-net` checks both files.
 **Sources:** `docs/Math-Moyenne-programme/` — the 2016 منهاج (§3 resource matrix, §4 the four annual programmes)
 and the four المخطّطات السنوية (September 2022).
@@ -30,13 +32,18 @@ The net solves four problems with one structure:
 | Layer | File | Holds | Edited when |
 |---|---|---|---|
 | Official programme | `packages/core/curriculum/dz/net/official_programme_moyen.json` | 4 grades × 7 مقاطع (`segments`), **224 items**, verbatim, with the source page | a transcription error is found (never to "improve" wording) |
-| The net | `packages/core/curriculum/dz/net/learning_net_moyen.json` | 17 `threads`, **353 `links`** between items, **39 `plannedUnits`** and **196 `plannedLessons`** (157 lessons + 39 syntheses) cut from the 1AM–3AM textbooks | a link is added, corrected or removed; a planned decomposition changes |
-| Existing lessons | `packages/core/curriculum/dz/lessons_<grade>_*.json` | each lesson's `programmeItems` (4AM: all 60 non-synthesis lessons) | a lesson is added or re-scoped |
+| The net | `packages/core/curriculum/dz/net/learning_net_moyen.json` | 17 `threads`, **353 `links`** between items | a link is added, corrected or removed |
+| The lessons, four years | `packages/core/curriculum/dz/{lessons,units,programme}_<grade>_2026_2027.json` | every lesson and unit of 1AM–4AM, each lesson's `programmeItems`. 4AM: 74 lessons, all `available`. 1AM–3AM: **196 lessons** (157 + 39 syntheses) in **39 units**, all `coming_soon` until generated | a lesson is generated (published), added or re-scoped; a decomposition changes |
 
-Resolver (pure, tested): `packages/core/curriculum/dz/net/learningNet.js`. **It is not exported from the
-`@smarter-academy/core` barrel**, because the barrel is in the entry bundle (`BUNDLE_BOUNDARIES.md`). Import it by
-path, from the lesson runtime only:
-`import { reviewLinksForLesson } from '@smarter-academy/core/curriculum/dz/net/learningNet.js'`.
+Until 2026-10-14 the 1AM–3AM lessons lived in the net as `plannedUnits` / `plannedLessons`. Phase 2 moved them,
+same codes and same items, into the catalogue trio of their grade (§3bis). The net no longer has a planned layer,
+and a test fails if one comes back.
+
+Resolver (pure, tested): `packages/core/curriculum/dz/net/learningNet.js`. It reads the net and the four
+`lessons_<g>` / `units_<g>` files. **It is not exported from the `@smarter-academy/core` barrel**, because the
+barrel is in the entry bundle (`BUNDLE_BOUNDARIES.md`). Import it by path, and only from code that is already
+lazy: the lesson runtime (`kit/ReviewLinks.jsx`, static import) or a dynamic `import()`
+(`features/learning/EarlierYearReview.jsx`). It builds as its own chunk, `learningNet-*.js` (≈ 80 KB).
 
 ### 2.1 Items
 
@@ -102,7 +109,10 @@ Seventeen conceptual strands. Each item belongs to exactly one (tested). The str
 - **Geometry:** `plane-figures`, `angles`, `lengths-areas`, `transformations`, `triangles-proof`,
   `trigonometry`, `solids`.
 
-### 2.4 Lessons, published and planned
+### 2.4 Lessons, published and to generate
+
+All lessons live in `lessons_<grade>_*.json`. The resolver reports `status: 'available'` for a published lesson and
+`status: 'planned'` for a `coming_soon` one.
 
 - **Published lessons** declare `programmeItems` in `lessons_<grade>_*.json`.
   - Every 4AM item has a published 4AM home lesson (tested).
@@ -112,17 +122,27 @@ Seventeen conceptual strands. Each item belongs to exactly one (tested). The str
   - **Recall lessons.** A lesson whose textbook content is a recall from an earlier year declares that year's
     item. There is one: `muadala-ula` → `3am.m5.r06`. The list is closed in the test (`RECALL_LESSONS`), so a new
     recall lesson is a decision, not drift.
-- **Planned lessons** (`plannedLessons`) — since 2026-10-13 cut from the **official textbooks** (1AM موفم 2017,
-  2AM and 3AM منشورات الشهاب 2017; `docs/official-book-pdfs/`), by the 4AM rule: one textbook باب = one unit, its
-  numbered « أنشطة » / « أكتشف » rubrics grouped as the book's معارف groups them = its lessons.
-  - Fields: `code`, `grade`, `unit`, `order`, `kind`, `titleAr`, `descriptionAr`, **`pointsToLearn`** (DRAFT
-    الكفاءات written from the unit's « سأتعلّم في هذا الباب » and the lesson's activity — owner decision: drafted by
-    the platform, the owner validates), `prerequisitesAr`, `programmeItems`, `textbookRef {unit, pages}`,
-    `decisionStatus: "draft"`.
-  - **Planned units** (`plannedUnits`): `code`, `grade`, `number`, `chapterId` (numbers → `ansab_al_aadad_wal_hisab`,
-    data → `tanasubiya_duwal`, geometry → `handasa`), `domain`, `titleAr`, `objectivesAr` (verbatim), `challengeAr`,
-    `textbook {bookPages, pdfPages, prepPage, exercisesPages, integrationPages}`, `scanIssues`,
-    `synthesisLessonCode`. Each unit ends with its « أدمج تعلّماتي » (`wadiya-idmajiya-<unit>`).
+- **Lessons to generate** (1AM–3AM, `status: "coming_soon"`). Since 2026-10-13 they are cut from the **official
+  textbooks** (1AM موفم 2017, 2AM and 3AM منشورات الشهاب 2017; `docs/official-book-pdfs/`) by the 4AM rule: one
+  textbook باب = one unit, and its numbered « أنشطة » / « أكتشف » rubrics, grouped as the book's معارف groups them,
+  = its lessons. Since 2026-10-14 they sit in `lessons_<g>_2026_2027.json` in the 4AM shape:
+  - `code`, `sourceTopicId` (the مقطع of the first item, else the unit's main مقطع, else `null`), `chapterId`,
+    `unitId`, `order` (global within the grade = the book's order), `kind`, `decompositionType`, `decisionStatus`.
+  - `titleSource: "textbook"`, `title`, `description`, `prerequisites` (Arabic, from the book).
+  - `prerequisiteLessonCodes` (§3bis), `programmeItems`, `textbookRef {unit, pages}`, `status`.
+  - **`pointsToLearn`**: DRAFT الكفاءات written from the unit's « سأتعلّم في هذا الباب » and the lesson's activity
+    (owner decision D1: drafted by the platform, the owner validates); `decisionStatus: "draft"`.
+  - No `durationMinutes`, `difficulty` or `icon` until the lesson is generated.
+  - Synthesis lessons have no `pointsToLearn` yet; they are drafted with the synthesis.
+- **Units** (`units_<g>_2026_2027.json`): `code`, `chapterId` (numbers → `ansab_al_aadad_wal_hisab`, data →
+  `tanasubiya_duwal`, geometry → `handasa`), `order`, `number`, `titleAr`, `sourceTopicIds` (the مقاطع of its
+  lessons' items), `textbook {title, unit, pages, bookPages, pdfPages, prepPage, exercisesPages, integrationPages,
+  map}`, `objectivesAr` (verbatim), `challenge {titleAr, textAr}` or `null`, `synthesisLessonCode`. Each unit ends
+  with its « أدمج تعلّماتي » (`wadiya-idmajiya-<unit>`). Scan defects stay in `textbook-map.json › scanIssues`.
+- **Programme** (`programme_<g>_2026_2027.json`, minimal): three ميادين under the chapter ids above, titled from the
+  official domains (« ميدان الأنشطة العددية », « ميدان الدوال وتنظيم المعطيات », « ميدان الأنشطة الهندسية »). Their
+  topics are the grade's مقاطع (`<g>am.m<n>`, official titles). 4AM keeps its own programme file and its owner
+  display names.
   - Source of each decomposition, with the reading decisions and scan defects:
     `docs/sources/<grade>/textbook-map.json` (1AM 14 units / 55 lessons, 2AM 12 / 53, 3AM 13 / 49). The book's
     unit order is NOT the مقاطع order: a same-year prerequisite taught later in the book is a listed « renvoi en
@@ -130,8 +150,8 @@ Seventeen conceptual strands. Each item belongs to exactly one (tested). The str
   - **Lessons without a programme item** (the book teaches them, the 2022 plan has no item): 3AM unit 8 « البرهان
     في الرياضيات » (3 lessons), 3AM « المتباينة المثلثية », 2AM « إنتاج عبارة حرفية ». They are queued last (§4bis)
     and keep `programmeItems: []`. **Owner decision D10 (2026-10-14): they are generated** like every other lesson.
-- **Codes** are globally unique, published and planned together (tested); a collision is resolved by a grade suffix
-  (`-2`, `-3am`).
+- **Codes** are globally unique across the four grades, lessons and units (tested); a collision is resolved by a
+  grade suffix (`-2`, `-3am`).
 - **Home lesson** of an item: the first lesson in curriculum order (grade, then `order`) that declares it, synthesis
   excluded. A struggling student is sent there.
 
@@ -142,7 +162,9 @@ Seventeen conceptual strands. Each item belongs to exactly one (tested). The str
 | `reviewLinksForLesson(code)` | One step back. The items the lesson builds on (`requires` plus its `extends`/`consolidates` bases), minus its own, grouped by home lesson, oldest first: `[{ lesson: {code, grade, titleAr, status}, items: [{id, grade, segment, textAr, via}] }]` | « أستعدّ » result screen (`kit/ReviewLinks.jsx`) |
 | `forwardLinksForLesson(code)` | One step forward: where the lesson's items serve later, grouped by home lesson | Planned: lesson end / teacher memo |
 | `noRebuildForLesson(code)` | For each item that `extends`/`consolidates` an earlier one: the base, its home lesson and the added value | Lesson generation (§4) |
-| `homeLessonOf(itemId)`, `lessonsOf(itemId)`, `linksInto`, `linksFrom`, `itemRank`, `getItem`, `getLesson` | Primitives | — |
+| `earlierYearReviewFor({ learningPointCode, lessonCode })` | The review links of the learning point's lesson (or of `lessonCode` when the code is not a known LP), keeping only items from an **earlier year** | « راجع » after a wrong answer (`features/learning/EarlierYearReview.jsx`) |
+| `lessonCodeOfLearningPoint(lpCode)` | `{grade}_{lesson}_P{n}` → `lesson`, or `null` | the above |
+| `homeLessonOf(itemId)`, `lessonsOf(itemId)`, `linksInto`, `linksFrom`, `itemRank`, `getItem`, `getLesson`, `UNITS` | Primitives | — |
 
 **« راجع قبل أن تنطلق » (live since 2026-10-13).** `PrerequisiteDiagnostic`'s result screen renders
 `<ReviewLinks lessonId={ctx.lessonId} />` under the advice, both on the page and in the classroom summary. Every
@@ -157,20 +179,106 @@ lesson that uses the kit therefore gets the panel with no per-lesson code: all 6
   links. Strings: `lesson.json › diagnostic.reviewTitle / reviewHint / reviewSoon`.
 - Today each 4AM lesson shows 1–5 cards. Example: الجذر التربيعي → قوة عدد نسبي (3AM) and فيثاغورس (3AM).
 
+**« راجع » after a wrong answer (live since 2026-10-14, owner decision D7).** Links to earlier years also appear
+**inside exercises**, under the verdict of a wrong answer, in two places:
+
+- the practice player (`PracticeSession`): classic card and BEM / term-exam sheet alike, inside `FeedbackPanel`;
+- the lesson's final test review (`BossFinal` › `EpreuveReview`): the student page and the classroom presentation.
+
+How it works:
+
+- One component, `features/learning/EarlierYearReview.jsx`, renders a compact line « راجع: <lesson> (<year>) »,
+  up to three, nearest year first.
+- **Derived, never written in exercises.** The question's primary learning point → its lesson
+  (`lessonCodeOfLearningPoint`) → `reviewLinksForLesson`, keeping only items from earlier years
+  (`earlierYearReviewFor`). Without a known LP it falls back to the exercise's lesson.
+- **Published target:** a link (`getLessonPath`). **Unpublished target:** the official text of the الكفاءة, with no
+  link; it lights up by itself the day the lesson is published.
+- Same contract as the panel: never gates, sends no evidence, renders nothing when there is nothing earlier
+  (every 1AM lesson). Not shown on a self-check (`selfCheck`) or an inert outcome.
+- The resolver is loaded with a dynamic `import()` on the first wrong answer, so it is never in the entry or the
+  practice page chunk.
+- Strings: `lesson.json › review.earlierYear` (« راجع: »), `review.earlierYearLabel`.
+- The pattern is documented for exercise authors in `EXERCISE_CONTRACT.md` § « Earlier-year review link ».
+
 **Relation to the learning-point graph and Mastery V2.** The net works at the *programme-item* level. The finer
 LP→LP graph (`pointPrerequisites`, `{grade}_{lesson}_P{n}`) is unchanged. It still feeds `learning_point_prerequisites`,
 `RecommendationService` (`KIND_PREREQUISITE`) and `nextSteps.js`. A lesson's LPs refine its items. Cross-year LP edges
 become possible once 1AM–3AM lessons exist; `pointPrerequisites` may then name `2am_<lesson>_P<n>` codes.
 
+## 3bis. Platform and database (phase 2, 2026-10-14)
+
+**Catalogue.** `coursesData.js` builds 1AM, 2AM, 3AM and 4AM from their trios (`DZ_MOYEN_GRADES`), and
+`activeGrades.js` activates all four.
+
+- A `coming_soon` lesson is a **non-clickable card**: `LessonCard` / `LessonRow` show « قريبًا » and « قيد الإعداد ».
+- The unit card shows « قيد الإعداد » instead of `0/N` while none of its lessons is published. It stays a link:
+  the unit page shows what each lesson will teach.
+- The unit page draws each draft lesson as a dashed card with its الكفاءات, without progress, and a disabled
+  « قيد الإعداد » button.
+- A grade with no published lesson opens the catalogue with « البرنامج متوفّر، الدروس قيد الإعداد »
+  (`CatalogueBrowser`).
+- `getAllGrades().lessonCount` counts **published** lessons only, so the grade choice shows « قريبًا · البرنامج قيد
+  الإعداد » for 1AM–3AM. A teacher's default grade (catalogue, new class) is the first one with published lessons.
+- **`getLessonPath(code)` returns `null` for a lesson that is not `available`.** Every link that leads to a lesson
+  (review links, recommendations, practice back-link) is therefore safe. Draw a card from `getLessonById(id).path`.
+- Prerequisite chips (`lessons/common/components/PrerequisiteLessonChips.jsx`, unit page and lesson index) name
+  the year of a prerequisite from another year. They are links only when the target is published.
+- The lesson registry's glob and the teacher memo's glob cover `1am`–`3am`, so a generated lesson needs no wiring
+  beyond its own routes.
+
+**Lesson-level prerequisites from the net.** `prerequisiteLessonCodes` of a 1AM–3AM lesson = the home lessons of
+its review links (`reviewLinksForLesson`) that **precede** it: an earlier year, or earlier in the same book.
+
+- A same-year prerequisite taught later in the book (« renvoi en avant », §4bis) is not a prerequisite: the lesson
+  recalls it itself.
+- A synthesis lists the lessons of its unit.
+- These edges are imported into `lesson_prerequisites` (178 on 2026-10-14) and drawn as prerequisite chips.
+
+**Cross-year LP→LP edges: kept at lesson level, on purpose.** `pointPrerequisites` of the 1AM–3AM lessons are empty.
+An "every LP depends on every LP of the review lesson" rule would write hundreds of edges between DRAFT الكفاءات that
+the owner has not validated (D1). `RecommendationService` and the teacher map would then name prerequisites that do
+not exist yet. The precise LP→LP edges are written when a lesson is generated, on its final الكفاءات and only
+along a net link (§4.6). Until then cross-year navigation is lesson- and item-level: the « راجع » panel, the « راجع »
+after an error, and the prerequisite chips. The 4AM lessons' `prerequisiteLessonCodes` are unchanged (4AM only);
+their cross-year links come from the net at run time.
+
+**Database — imported, closed, ignored by Mastery V2.**
+
+- `exportCurriculum.mjs` → `smarter:import-curriculum` imports the three grades, their units, the 196 lessons and
+  **all 523 learning points** (`{g}_{code}_P{n}`), as D2 requires.
+- **The importer creates a `coming_soon` lesson with `publication_status = draft`** (`CurriculumImporter::
+  publicationOnCreate`). The column defaults to `published`: without this rule the 196 empty lessons would be open
+  on the server, since every server gate (`ContentAccess`, `visibleToStudents`) reads `publication_status`, not
+  `status`. An `available` lesson is still created `published`.
+- On re-import, the admin keeps authority (`publicationOnUpdate`):
+  - a `coming_soon` lesson is never `published` (`published` → `draft`; `hidden` / `archived` are kept);
+  - the flip `coming_soon` → `available` (**publishing**, LESSON_DEVELOPMENT_GUIDE § « Publish a lesson ») turns
+    the import's `draft` into `published`;
+  - an `available` lesson that the admin set to `draft` stays `draft`.
+- `smarter:curriculum-sql` (the Hostinger SQL path) emits the same rule.
+- Mastery V2 ignores the unpublished lessons:
+  - **Evidence and practice:** `ContentAccess` refuses a draft lesson, so no progress row is ever created on its LPs.
+  - **Class:** the effective lessons of a class (map, progress, signals, snapshot, daily challenge) are
+    `visibleToStudents`.
+  - **Two prerequisite reads join LPs without that scope, and now filter on the prerequisite lesson's
+    publication:** the LP detail of the teacher map (`ClassroomLearningPointService::prerequisites`) and
+    `RecommendationService` (`KIND_PREREQUISITE` never sends a student to a draft lesson).
+  - The tier stays admin-owned: new lessons are created `free`, and publishing never touches the tier.
+- Tests: `apps/api/tests/Feature/MoyenComingSoonImportTest.php` (MySQL, `phpunit.local.xml`).
+- `smarter:registry-health --gate`, read by `check:activation-drift`, now also fails when the export activates a
+  grade the database does not have yet. Before, the three new grades would have passed it unimported.
+
 ## 4. Generating a 1AM–3AM lesson from the net (contract)
 
 These rules complete `LESSON_DEVELOPMENT_GUIDE.md` §14.2 for any year other than 4AM.
 
-1. **Start from the planned lesson.** Take its `code`, `unit`, `titleAr` and `programmeItems` from
-   `learning_net_moyen.json › plannedLessons`. Create the lesson in `lessons_<grade>_*.json` **under the same code
-   with the same `programmeItems`**, then delete the planned entry. The `learningNet.test.js` code-uniqueness test
-   fails while both exist. If the textbook calls for another decomposition, change the planned entries first; the
-   invariants then check the new one.
+1. **Start from the catalogue entry.** The lesson already exists in `lessons_<grade>_2026_2027.json` with
+   `status: "coming_soon"`, its `code`, `unit`, `title`, `programmeItems`, draft `pointsToLearn` and
+   `prerequisiteLessonCodes`. Generate it **under the same code with the same `programmeItems`**; finalise its
+   `pointsToLearn` (keep their order — the LP ids are positional) and give it `durationMinutes`, `difficulty`, `icon`.
+   If the textbook calls for another decomposition, change the catalogue entries first; the invariants then check
+   the new one. Publishing is the last step (LESSON_DEVELOPMENT_GUIDE § « Publish a lesson »).
 2. **`pointsToLearn` refine the items.** Every item must be taught by at least one LP, and no LP may teach outside
    the lesson's items. Add the programme item's text to the knowledge map's guidance where useful.
 3. **Do not rebuild.** For each entry of `noRebuildForLesson(code)`:
@@ -181,8 +289,8 @@ These rules complete `LESSON_DEVELOPMENT_GUIDE.md` §14.2 for any year other tha
 4. **« أستعدّ » diagnoses the review links.** Every item of `reviewLinksForLesson(code)` must be measured by at
    least one diagnostic question. The `priorKnowledge` slugs remain the audit's vocabulary
    (`KNOWLEDGE_DEPENDENCY.md`). The panel under the result is automatic.
-5. **`prerequisiteLessonCodes`** = the published home lessons of the review links, plus the earlier lessons of the
-   unit the textbook requires.
+5. **`prerequisiteLessonCodes`** = the home lessons of the review links that precede the lesson (already filled by
+   phase 2, §3bis), plus the earlier lessons of the unit the textbook requires.
 6. **`pointPrerequisites`** may name LP codes of an earlier year (`1am_<code>_P<n>`), but only along a net link
    between the two lessons' items.
 7. Run `npm run generate:learning-net` and commit the regenerated map.
@@ -219,7 +327,9 @@ On 2026-10-13: 196 lessons — A 108, B 35, C 22, D 23, E 8; 18 renvois en avant
 
 | Gate | What it checks |
 |---|---|
-| `packages/core/curriculum/dz/net/learningNet.test.js` (17 tests) | items (format, uniqueness, official numbering), links (existence, direction, acyclicity, `extends`/`consolidates` fields, one base), threads (partition), lessons (every item homed, 4AM fully covered by published lessons, closed recall list, unique codes, planned units with synthesis, lesson order), resolver behaviour |
+| `packages/core/curriculum/dz/net/learningNet.test.js` (19 tests) | items (format, uniqueness, official numbering), links (existence, direction, acyclicity, `extends`/`consolidates` fields, one base), threads (partition), lessons (every item homed, 4AM fully covered by published lessons, closed recall list, unique codes, every unit of every grade ends with its synthesis, no planned layer left in the net, lesson order), resolver behaviour (review links, earlier-year review after an error) |
+| `packages/core/curriculum/coursesData.test.js` | the five grades; `lessonCount` counts published lessons; 1AM–3AM lessons all `coming_soon` with no routable path; their 523 LP ids; prerequisites exist and precede |
+| `apps/api/tests/Feature/MoyenComingSoonImportTest.php` | coming_soon imported `draft` with its LPs; cross-year lesson prerequisite; publishing opens without touching the tier; admin authority kept; no recommendation to a draft prerequisite |
 | `npm run check:learning-net` (in `check:lessons`) | the generated maps and the generation queue are up to date; the queue also fails if a planned lesson is missing from it |
 
 ## 7. Decisions (2026-10-13)
@@ -228,8 +338,8 @@ On 2026-10-13: 196 lessons — A 108, B 35, C 22, D 23, E 8; 18 renvois en avant
   decompositions belong to lessons and change with textbooks.
 - **The 2022 plan's numbering is the id.** The منهاج 2016 adds three items the plan omits; they are kept (`x<k>`)
   so that nothing official is lost.
-- **Planned 1AM–3AM lessons are data, not content.** No JSX, no route yet. `activeGrades.js` still publishes only
-  4AM. **Owner decisions for the rollout (2026-10-13)** — recorded in
+- **Planned 1AM–3AM lessons are data, not content.** No JSX, no route yet. Since 2026-10-14 they are catalogue
+  entries (`coming_soon`) of active grades (§3bis). **Owner decisions for the rollout (2026-10-13)** — recorded in
   `docs/reports/MOYEN_ROLLOUT_PHASE1_REPORT_2026-10-13.md`: الكفاءات drafted by the platform from the textbooks; ALL
   learning points of all grades imported into the database, the not-yet-generated lessons shown as **draft cards,
   not clickable**; generation along the net (§4bis); each lesson **published as soon as it is generated**; practice
@@ -249,6 +359,9 @@ On 2026-10-13: 196 lessons — A 108, B 35, C 22, D 23, E 8; 18 renvois en avant
   - `forwardLinksForLesson` is not shown anywhere yet.
   - Programme items are not imported into the API database. Mastery V2 knows LPs only; a `programme_items` table
     and an item code on `learning_points` would let the server recommend across years.
+  - Cross-year LP→LP edges (§3bis): written lesson by lesson at generation, none yet.
   - The teacher memo (مذكرة) does not list the review links yet.
+  - The 1AM–3AM catalogue (≈ 47 KB gzip of Arabic text) is in the entry bundle with the rest of `coursesData`
+    (`BUNDLE_BOUNDARIES.md`); a per-grade lazy catalogue is a possible follow-up.
 - **The 4AM `priorKnowledge` slugs are not mapped to net items.** The panel uses the lesson's `programmeItems`, not
   the diagnostic questions, so a weak answer does not yet highlight its own card.

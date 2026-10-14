@@ -310,6 +310,14 @@ class RegistryHealthService
                     $drift[] = ['code' => $grade->code, 'database' => (bool) $grade->is_active, 'source' => $expected];
                 }
             }
+            // Une classe que l'export ACTIVE mais que la base n'a pas encore : l'import
+            // est en retard (1AM–3AM, 2026-10-14 — le front les montre, l'API les refuse).
+            $known = $db->pluck('code')->all();
+            foreach ($source as $code => $active) {
+                if ($active && ! in_array($code, $known, true)) {
+                    $drift[] = ['code' => $code, 'database' => false, 'source' => true];
+                }
+            }
         }
 
         return [

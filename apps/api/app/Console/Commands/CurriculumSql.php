@@ -138,6 +138,17 @@ class CurriculumSql extends Command
         $this->sql[] = 'START TRANSACTION;';
     }
 
+    /**
+     * Les affectations de publication d'une leçon existante, AVANT `status` :
+     * MySQL évalue l'ON DUPLICATE KEY UPDATE de gauche à droite, donc ces
+     * expressions lisent encore l'ANCIEN `status` et l'ancien état.
+     */
+    private const PUBLICATION_ON_UPDATE =
+        "`published_at` = CASE WHEN VALUES(`status`) = 'available' AND `status` <> 'available' AND `publication_status` = 'draft' THEN NOW() ELSE `published_at` END, "
+        ."`publication_status` = CASE WHEN VALUES(`status`) <> 'available' AND `publication_status` = 'published' THEN 'draft' "
+        ."WHEN VALUES(`status`) = 'available' AND `status` <> 'available' AND `publication_status` = 'draft' THEN 'published' "
+        .'ELSE `publication_status` END,';
+
     private function emitGrade(array $g): void
     {
         $this->sql[] = "\n-- ── Classe {$g['code']} ──";
@@ -160,11 +171,18 @@ class CurriculumSql extends Command
                 // touche jamais au palier qu'un administrateur a décidé
                 // (lessons.tier, seule source de vérité). Même règle que
                 // CurriculumImporter.
+                // L'état de publication : même règle que CurriculumImporter
+                // (publicationOnCreate / publicationOnUpdate) — une leçon
+                // `coming_soon` naît `draft` et n'est jamais `published` ;
+                // `coming_soon` → `available` promeut un `draft` en `published`.
+                $publication = $l['status'] === 'available' ? "'published'" : "'draft'";
+                $publishedAt = $l['status'] === 'available' ? 'NOW()' : 'NULL';
                 $unitSelect = ! empty($l['unitCode'])
                     ? "(SELECT u.id FROM `units` u WHERE u.chapter_id = c.id AND u.code = {$this->q($l['unitCode'])})"
                     : 'NULL';
-                $this->sql[] = "INSERT INTO `lessons` (`chapter_id`, `unit_id`, `code`, `kind`, `official_object_code`, `title`, `title_source`, `description`, `textbook_ref`, `status`, `duration_minutes`, `tier`, `order`, `created_at`, `updated_at`) SELECT c.id, {$unitSelect}, {$this->q($l['code'])}, {$this->q($l['kind'] ?? 'lesson')}, {$this->qn($l['officialObjectCode'] ?? null)}, {$this->q($l['title'])}, {$this->q($l['titleSource'] ?? 'official_topic')}, {$this->qn($l['description'] ?? null)}, {$this->qj($l['textbookRef'] ?? null)}, {$this->q($l['status'])}, {$this->n($l['durationMinutes'] ?? null)}, 'free', ".(int) $l['order'].", NOW(), NOW() FROM `chapters` c JOIN `grades` g ON g.id = c.grade_id WHERE g.code = {$this->q($g['code'])} AND c.code = {$this->q($c['code'])}"
-                    .' ON DUPLICATE KEY UPDATE `unit_id` = VALUES(`unit_id`), `kind` = VALUES(`kind`), `official_object_code` = VALUES(`official_object_code`), `title` = VALUES(`title`), `title_source` = VALUES(`title_source`), `description` = VALUES(`description`), `textbook_ref` = VALUES(`textbook_ref`), `status` = VALUES(`status`), `duration_minutes` = VALUES(`duration_minutes`), `order` = VALUES(`order`), `updated_at` = NOW();';
+                $this->sql[] = "INSERT INTO `lessons` (`chapter_id`, `unit_id`, `code`, `kind`, `official_object_code`, `title`, `title_source`, `description`, `textbook_ref`, `status`, `publication_status`, `published_at`, `duration_minutes`, `tier`, `order`, `created_at`, `updated_at`) SELECT c.id, {$unitSelect}, {$this->q($l['code'])}, {$this->q($l['kind'] ?? 'lesson')}, {$this->qn($l['officialObjectCode'] ?? null)}, {$this->q($l['title'])}, {$this->q($l['titleSource'] ?? 'official_topic')}, {$this->qn($l['description'] ?? null)}, {$this->qj($l['textbookRef'] ?? null)}, {$this->q($l['status'])}, {$publication}, {$publishedAt}, {$this->n($l['durationMinutes'] ?? null)}, 'free', ".(int) $l['order'].", NOW(), NOW() FROM `chapters` c JOIN `grades` g ON g.id = c.grade_id WHERE g.code = {$this->q($g['code'])} AND c.code = {$this->q($c['code'])}"
+                    .' ON DUPLICATE KEY UPDATE `unit_id` = VALUES(`unit_id`), `kind` = VALUES(`kind`), `official_object_code` = VALUES(`official_object_code`), `title` = VALUES(`title`), `title_source` = VALUES(`title_source`), `description` = VALUES(`description`), `textbook_ref` = VALUES(`textbook_ref`), '
+                    .self::PUBLICATION_ON_UPDATE.' `status` = VALUES(`status`), `duration_minutes` = VALUES(`duration_minutes`), `order` = VALUES(`order`), `updated_at` = NOW();';
 
                 foreach ($l['learningPoints'] as $lp) {
                     $this->sql[] = "INSERT INTO `learning_points` (`lesson_id`, `code`, `title`, `order`, `retired_at`, `created_at`, `updated_at`) SELECT l.id, {$this->q($lp['code'])}, {$this->q($lp['title'])}, ".(int) $lp['order'].", NULL, NOW(), NOW() FROM `lessons` l WHERE l.code = {$this->q($l['code'])}"

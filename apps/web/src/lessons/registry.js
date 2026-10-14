@@ -24,7 +24,13 @@
 import { ACTIVE_GRADE_IDS } from '@smarter-academy/core';
 
 const configModules = import.meta.glob(
-  ['./*/4am/**/lesson.config.js', './*/terminale_dz/**/lesson.config.js'],
+  [
+    './*/1am/**/lesson.config.js',
+    './*/2am/**/lesson.config.js',
+    './*/3am/**/lesson.config.js',
+    './*/4am/**/lesson.config.js',
+    './*/terminale_dz/**/lesson.config.js',
+  ],
   { eager: true },
 );
 

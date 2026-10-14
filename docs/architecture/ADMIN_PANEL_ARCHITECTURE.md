@@ -1411,6 +1411,14 @@ Une resynchro ne touche jamais l'état d'une ligne existante.
 `draft`. Publier doit rester un geste, pas un effet de bord du déploiement.
 La règle ne rétroagit pas — le contenu déjà en base garde son état.
 
+**Et la LEÇON elle-même** (`smarter:import-curriculum`, 2026-10-14) : une leçon `coming_soon` du catalogue
+(1AM–3AM, pas encore écrite) naît `draft` — sinon le défaut de colonne `published` l'ouvrait côté serveur ; une
+leçon `available` naît `published`. L'administration garde l'état d'une leçon existante, à deux exceptions dictées
+par le catalogue : une leçon `coming_soon` n'est jamais `published` (→ `draft`), et le passage `coming_soon` →
+`available` (la PUBLICATION d'une leçon générée) promeut le `draft` posé par l'import en `published`
+(`CurriculumImporter::publicationOnCreate/OnUpdate`, même règle dans `smarter:curriculum-sql` ; `LEARNING_NET.md`
+§3bis). Ses modules et exercices, eux, naissent `draft` comme tout contenu découvert.
+
 **On ne supprime pas** : un code disparu prend `retired_at` ;
 `student_lesson_progress.completed_modules` référence ces codes en clair.
 

@@ -390,6 +390,9 @@ class ClassroomLearningPointService
             ->join('lessons as l', 'l.id', '=', 'lp.lesson_id')
             ->where('pr.learning_point_id', $point->id)
             ->whereNull('lp.retired_at')
+            // Un prérequis d'une leçon NON publiée (1AM–3AM `coming_soon`, importée
+            // `draft` — phase 2, 2026-10-14) n'existe pas encore pour la classe.
+            ->where('l.publication_status', Lesson::PUB_PUBLISHED)
             ->get(['lp.id', 'lp.code', 'lp.title', 'l.code as lesson_code', 'l.title as lesson_title']);
         if ($rows->isEmpty()) {
             return [];

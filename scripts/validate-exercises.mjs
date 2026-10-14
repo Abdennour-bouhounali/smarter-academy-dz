@@ -24,6 +24,7 @@
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, basename } from 'node:path';
 import { buildLessonIndex, repoRoot } from './lib/lessonAst.mjs';
+import { examProvenanceErrors } from './lib/examProvenance.mjs';
 import { Rational } from '../packages/core/practice/rational.js';
 import { parseAffineAnswer } from '../packages/core/practice/affineCanonical.js';
 import { parseInterval } from '../packages/core/practice/intervalCompare.js';
@@ -99,6 +100,8 @@ const EXAM_POINTS = /^\d{2}(,\d{1,2})?$/; // « 03 »، « 02,5 »، « 08 » �
 const EXAM_STEP = /^0[1-6]$/;
 const EXAM_SUBS = new Set(['ا', 'ب', 'ج', 'د']);
 const BEM_YEARS = [2007, 2025];
+// Le corpus des examens de فصل 1AM–3AM (phase 1 du cycle moyen) — la source citée par `term_exam`.
+const EXAMS_INDEX = JSON.parse(readFileSync(join(repoRoot, 'docs/sources/moyen/exams/exams-index.json'), 'utf-8'));
 
 function validateExamPresentation(data, where) {
   const exam = data.metadata?.exam;
@@ -109,6 +112,8 @@ function validateExamPresentation(data, where) {
     }
     if (![1, 2].includes(source.part)) err(where, 'metadata.source.part vaut 1 (الجزء الأول) ou 2 (الجزء الثاني)');
   }
+  // Provenance BEM (4AM) / examen de فصل (1AM–3AM), badge « على منوال … » : scripts/lib/examProvenance.mjs.
+  for (const e of examProvenanceErrors(data, EXAMS_INDEX)) err(where, e);
   if (exam === undefined) return;
   if (!exam || typeof exam !== 'object') { err(where, 'metadata.exam doit être un objet'); return; }
   // La feuille d'examen (ExamSheet) ne dessine PAS `statement.visual` (CoordPlane des cartes classiques) :
@@ -120,11 +125,6 @@ function validateExamPresentation(data, where) {
   if (exam.kind === 'official' || exam.kind === 'excerpt') {
     if (source?.type !== 'bem') err(where, `un exercice « ${exam.kind} » cite sa session : metadata.source.type = "bem"`);
     else if (exam.badge !== `BEM ${source.year}`) err(where, `metadata.exam.badge doit valoir « BEM ${source.year} » (reçu ${JSON.stringify(exam.badge)})`);
-  }
-  if (exam.kind === 'modelled') {
-    if (typeof exam.badge !== 'string' || !/^على منوال BEM (20[0-2]\d)$/.test(exam.badge)) {
-      err(where, `un exercice « modelled » porte le badge « على منوال BEM <année> » (reçu ${JSON.stringify(exam.badge)})`);
-    }
   }
   if (exam.kind === 'adapted' && exam.badge != null) err(where, 'un exercice « adapted » ne porte pas de badge BEM : il ne vient pas d\'un sujet');
 

@@ -6,7 +6,7 @@ import ProblemTable from '../../../lessons/common/problems/ProblemTable';
 import { StudentAnswer } from '../QuestionHistory';
 import { ToneIcon, TONE_STYLE } from '../toneStyle';
 import SolutionPanel from './SolutionPanel';
-import { examBadge, examPart, examSession, formatClock, stepMarks, stepSeconds, stepState, solutionReady } from './examSheet';
+import { examBadge, examPaper, examPart, examSession, formatClock, stepMarks, stepSeconds, stepState, solutionReady } from './examSheet';
 import { Timer } from 'lucide-react';
 import StepTimer from './StepTimer';
 import RedactionText from './math/RedactionText';
@@ -42,6 +42,7 @@ const ExamSheet = forwardRef(function ExamSheet({ exercise, questionIndex, histo
 
   const exam = exercise.metadata.exam;
   const badge = examBadge(exam);
+  const paper = examPaper(exercise.lessonCode);
   const part = examPart(exercise);
   const session = examSession(exercise);
   const marks = stepMarks(exercise.questions);
@@ -68,11 +69,11 @@ const ExamSheet = forwardRef(function ExamSheet({ exercise, questionIndex, histo
       >
         <div className="col-span-2 text-center leading-snug sm:order-2 sm:col-span-1">
           <p className="text-sm font-bold text-slate-900 sm:text-base">{t('practice.exam.paper.republic')}</p>
-          <p className="text-base font-bold text-slate-900 sm:text-lg">{t('practice.exam.paper.title')}</p>
+          <p className="text-base font-bold text-slate-900 sm:text-lg" data-exam-paper-kind={paper.kind}>{t(paper.kind === 'term' ? 'practice.exam.paper.titleTerm' : 'practice.exam.paper.title')}</p>
           <p className="text-sm font-bold text-slate-800">{t('practice.exam.paper.subject')}</p>
         </div>
         <dl className="space-y-0.5 justify-self-start sm:order-1 [&_dd]:whitespace-nowrap [&_dt]:whitespace-nowrap" data-exam-info>
-          <div className="flex gap-1"><dt className="font-bold">{t('practice.exam.paper.level')}:</dt><dd>{t('practice.exam.paper.levelValue')}</dd></div>
+          <div className="flex gap-1"><dt className="font-bold">{t('practice.exam.paper.level')}:</dt><dd>{t('practice.exam.paper.levelValue', { n: paper.n })}</dd></div>
           <div className="flex gap-1" data-exam-session={session ?? undefined}>
             <dt className="font-bold">{t('practice.exam.year')}:</dt>
             <dd>{session ? <bdi dir="ltr">{session}</bdi> : t('practice.exam.paper.training')}</dd>
@@ -86,7 +87,7 @@ const ExamSheet = forwardRef(function ExamSheet({ exercise, questionIndex, histo
             <dt className="font-bold">{t('practice.exam.paper.source')}:</dt>
             <dd>
               {badge ? (
-                <>{badge.prefix && <span>{badge.prefix} </span>}<bdi dir="ltr" className="font-bold text-violet-800">{badge.label}</bdi></>
+                <>{badge.prefix && <span>{badge.prefix} </span>}<bdi dir={badge.ltr ? 'ltr' : 'rtl'} className="font-bold text-violet-800">{badge.label}</bdi></>
               ) : t('practice.exam.paper.lessonExercise')}
             </dd>
           </div>

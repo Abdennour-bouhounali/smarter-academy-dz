@@ -1,4 +1,8 @@
 {
+  "review": {
+    "earlierYear": "راجع:",
+    "earlierYearLabel": "مراجعة من سنة سابقة"
+  },
   "nav": {
     "home": "الرئيسية",
     "backToPath": "العودة إلى المسار",

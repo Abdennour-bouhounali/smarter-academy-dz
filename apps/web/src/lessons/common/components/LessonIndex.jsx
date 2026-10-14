@@ -24,6 +24,7 @@ import { useContentAvailability } from '../../../context/ContentAvailabilityCont
 import { useClassroomMode, useClassroomStage, ClassroomEntryButton, ClassroomFrame } from '../classroom';
 import MathLabEntryButton from '../../../features/mathlab/overlay/MathLabEntryButton';
 import MathLabel from './MathLabel';
+import PrerequisiteLessonChips from './PrerequisiteLessonChips';
 import LessonProblemCard from '../problems/LessonProblemCard';
 import { mathToPlain } from '../../../utils/mathPlain';
 import { useCatalogueHref } from '../../../components/student/catalogueLink';
@@ -506,7 +507,7 @@ export default function LessonIndex({ config, basePath }) {
                 <div className="rounded-2xl border border-slate-200 bg-white p-5">
                   <h2 className="mb-2 text-sm font-bold text-slate-800">{ts('unit.prerequisites')}</h2>
                   <ul className="flex flex-wrap gap-1.5">
-                    {prereqLessons.map((p) => <li key={p.id}><Link to={p.path} className="rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-0.5 text-xs text-indigo-800 hover:border-indigo-400"><MathLabel>{p.title}</MathLabel></Link></li>)}
+                    <PrerequisiteLessonChips lessonId={config.id} />
                     {(catalogueLesson.prerequisites ?? []).map((txt) => <li key={txt} className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-xs text-slate-600"><MathLabel>{txt}</MathLabel></li>)}
                   </ul>
                   <p className="mt-1 text-[11px] text-slate-500">{ts('unit.prerequisitesNote')}</p>

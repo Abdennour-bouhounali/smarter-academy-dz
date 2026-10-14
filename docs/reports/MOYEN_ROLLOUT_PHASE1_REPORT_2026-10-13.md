@@ -81,6 +81,9 @@ The queue starts with:
 
 ### Phase 2 — platform and database (one session)
 
+> **Done on 2026-10-14** — see [`MOYEN_ROLLOUT_PHASE2_REPORT_2026-10-14.md`](./MOYEN_ROLLOUT_PHASE2_REPORT_2026-10-14.md)
+> (owner decision D12: publish = push to `dev`; the phase-3 prompt there supersedes the one below).
+
 Goal: the three grades exist in the platform, and all their lessons appear as non-clickable cards. All their
 learning points are in the database. The net reads the new files. Exercises can carry links to earlier years.
 

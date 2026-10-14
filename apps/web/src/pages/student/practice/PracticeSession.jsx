@@ -37,7 +37,8 @@ import AnswerImageGallery from '../../../features/practice/exam/images/AnswerIma
 import ReviewStatus from '../../../features/practice/exam/images/ReviewStatus';
 import { canSendWithImages, pendingKind } from '../../../features/practice/exam/images/answerImages';
 import { SelfMarkChoice } from '../../../features/practice/inputs/SelfCheckInput';
-import { answerChars, answerSize, isExamExercise, solutionReady, stepSeconds } from '../../../features/practice/exam/examSheet';
+import { answerChars, answerSize, examPaper, isExamExercise, solutionReady, stepSeconds } from '../../../features/practice/exam/examSheet';
+import EarlierYearReview from '../../../features/learning/EarlierYearReview';
 import StepTimer from '../../../features/practice/exam/StepTimer';
 import Medal from '../../../features/practice/medals/Medal';
 import MedalTray from '../../../features/practice/medals/MedalTray';
@@ -848,6 +849,14 @@ export default function PracticeSession() {
             <span aria-hidden="true">☁</span> {t('practice.serverVerdict')}
           </p>
         )}
+        {/* « راجع: <درس> (<السنة>) » — une réponse fausse renvoie, d'un pas, à
+            l'année antérieure (réseau des الكفاءات, décision D7). */}
+        {!evaluation.isCorrect && !isInertOutcome(evaluation.outcome) && !isSelfCheck && (
+          <EarlierYearReview
+            learningPointCode={question.learningPoints?.find((lp) => lp.role === 'primary')?.code ?? null}
+            lessonCode={lessonCode}
+          />
+        )}
       </FeedbackPanel>
     )}
 
@@ -998,8 +1007,8 @@ export default function PracticeSession() {
         {isExam && (
           <p className="hidden items-center gap-2 rounded-xl bg-slate-100 px-3.5 py-1.5 text-sm font-semibold text-slate-700 md:inline-flex" data-exam-simulation>
             <GraduationCap className="h-4 w-4 text-[#1f5c4c]" aria-hidden="true" />
-            {t('practice.exam.nav.simulation')}
-            <span className="text-slate-500">· {t('practice.exam.nav.subject')}</span>
+            {t(examPaper(lessonCode).kind === 'term' ? 'practice.exam.nav.simulationTerm' : 'practice.exam.nav.simulation')}
+            <span className="text-slate-500">· {t('practice.exam.nav.subject', { n: examPaper(lessonCode).n })}</span>
           </p>
         )}
         {/* ⛶ عرض التمرين — le mode classe de CET exercice (présentateur

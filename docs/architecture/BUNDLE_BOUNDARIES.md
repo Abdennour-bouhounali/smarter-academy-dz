@@ -60,6 +60,8 @@ Nothing below a line is fetched until the level above needs it.
 | Report screenshot capture (2026-10-05) | `features/reports/screenshot.js` → `await import('html-to-image')` inside `captureRegion()` (snipping tool) | `html-to-image` (≈ 13 KB minified chunk) — only reviewers (admin, ambassador) see the report button | requested when a region (or « الشاشة كاملة ») is captured, never before; pre-bundled in dev by `optimizeDeps.include`. Verified in the build: `skipFonts` (an html-to-image string) is absent from the entry chunk |
 | Photo answers + teacher review (2026-10-06, every BEM exam-sheet lesson) | lazy routes `TeacherReviewsPage` (`/enseignant/tashih`, with `AnnotationEditor`) and `AnswerReviewPage` (`/espace/tashih/:id`); the picker and gallery live in the `PracticeSession` chunk | the review queue, the canvas annotation editor and the read-only correction page | — . In the ENTRY, because `StudentLayout` is eager: `NotificationBell.jsx` + `notificationService.js` (React, lucide and `apiRequest` only, no new dependency; ≈1 KB gzip) and the `nav.notifications.*` keys. Keep the bell dependency-free |
 | Page tours « جولة تعريفية » (2026-10-07) | `features/tours/PageTourProvider.jsx` → `React.lazy(() => import('./TourOverlay'))`; `tour` namespace in `i18n/index.js` `onDemandBackend` | the card, spotlight and keyboard handling (`TourOverlay` chunk) and every tour text (`tour` chunk) | fetched when a page's tour opens (first visit or « جولة في الصفحة »). In the ENTRY, because `StudentLayout` is eager: the provider, the pure model, the registry (keys and selectors only), `tourService.js`, `TourReplayButton` and `nav.tourReplay`, with no new dependency. `PAGE_TOURS.md` §3 |
+| Learning net resolver (2026-10-13; dynamic since 2026-10-14) | `kit/ReviewLinks.jsx` (static, inside the lesson runtime) and `features/learning/EarlierYearReview.jsx` (`import()` on the first wrong answer, practice and lesson final test) | `learningNet.js` + `official_programme_moyen.json` + `learning_net_moyen.json` — its own chunk `learningNet-*.js` (≈ 80 KB). **Never import it from the barrel, a layout, a provider or an eager page** (`LEARNING_NET.md` §2) | — |
+| The catalogue of 1AM–3AM (2026-10-14) — **IN the entry, measured** | `coursesData.js` (core barrel) imports `lessons_/units_/programme_{1,2,3}am_2026_2027.json` | not a boundary: the catalogue is synchronous by design (navigation, grade choice, `getLessonById`). Cost measured: initial JS **576.5 → 629.2 KB gzip (+52.7 KB)**, 2,532 → 2,803 KB raw; of it ≈ 47 KB is the Arabic text of 196 draft lessons (الكفاءات 14.6, descriptions 5.8, unit objectives + challenges 7.3 KB). A per-grade lazy catalogue is the follow-up if this must come down | — |
 | KaTeX dedupe | `vite.config.js` `resolve.dedupe: ['katex']` | a **second** KaTeX copy (react-katex/mafs nested 0.16) | — |
 
 ## 4. Rules (for every future change)
@@ -160,6 +162,13 @@ overlay (Arabic picker, no raw i18n key) and Escape closes it; « كرّاسي �
 opens the notebook window; KaTeX renders. JS request counts rose (lazy
 chunks), but Vite modulepreloads each lazy chunk's dependencies in parallel,
 so the added cost is about one round-trip per lazy level, not per file.
+
+**Drift noticed on 2026-10-14 (not caused by phase 2, not yet investigated).** The single initial script of
+`origin/dev` (ccd83600, built with its own workspace packages) weighs **2,532 KB raw / 576.5 KB gzip**, against the
+768 KB / 224 KB of the table above (2026-09-25). Something re-entered the entry between those dates: re-run §6 to
+find the chain. The same day `vite build` hit the 4 GB heap of `npm run build` at « computing gzip size » (≈ 2,000
+chunks). `vite.config.js` now sets `build.reportCompressedSize: false` (peak RSS 5.7 → 4.5 GB): measure sizes with
+§6, not with Vite's console table.
 
 ## 6. How to measure
 

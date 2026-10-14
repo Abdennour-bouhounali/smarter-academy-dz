@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { answerChars, answerSize, clockState, formatClock, stepSeconds, examBadge, examPart, examSession, isExamExercise, isExamLesson, EXAM_STYLE_LESSONS, solutionReady, stepMarks, stepState } from './examSheet';
+import { answerChars, answerSize, clockState, formatClock, stepSeconds, examBadge, examPaper, examPart, examSession, isExamExercise, isExamLesson, EXAM_STYLE_LESSONS, solutionReady, stepMarks, stepState } from './examSheet';
 import { formatAnswer } from '../questionHistory';
 import { exerciseIdsFor, loadExercise } from '../practiceContent';
 import { isPracticeActive } from '../practiceCapability';
@@ -23,9 +23,20 @@ describe('feuille d\'examen — logique pure', () => {
   });
 
   it('découpe le badge pour isoler « BEM 2015 » du préfixe arabe', () => {
-    expect(examBadge({ badge: 'BEM 2008', kind: 'official' })).toEqual({ prefix: '', label: 'BEM 2008', kind: 'official' });
-    expect(examBadge({ badge: 'على منوال BEM 2015', kind: 'modelled' })).toEqual({ prefix: 'على منوال', label: 'BEM 2015', kind: 'modelled' });
+    expect(examBadge({ badge: 'BEM 2008', kind: 'official' })).toEqual({ prefix: '', label: 'BEM 2008', kind: 'official', ltr: true });
+    expect(examBadge({ badge: 'على منوال BEM 2015', kind: 'modelled' })).toEqual({ prefix: 'على منوال', label: 'BEM 2015', kind: 'modelled', ltr: true });
     expect(examBadge({ badge: null, kind: 'adapted' })).toBeNull();
+  });
+
+  it('garde ARABE (aucun îlot LTR) le badge d’un examen de فصل 1AM–3AM', () => {
+    expect(examBadge({ badge: 'على منوال اختبار الفصل الثاني', kind: 'modelled' }))
+      .toEqual({ prefix: 'على منوال', label: 'اختبار الفصل الثاني', kind: 'modelled', ltr: false });
+  });
+
+  it('simule le BEM en 4AM et l’examen de فصل en 1AM–3AM, selon l’année de la leçon', () => {
+    expect(examPaper('qasim-adad-tabii')).toEqual({ kind: 'bem', n: 4 });
+    expect(examPaper('kitabat-adad-tabii')).toEqual({ kind: 'term', n: 1 });
+    expect(examPaper('inconnue')).toEqual({ kind: 'bem', n: 4 });
   });
 
   it('range la وضعية الإدماجية dans le الجزء الثاني', () => {

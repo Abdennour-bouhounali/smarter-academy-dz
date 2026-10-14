@@ -6,6 +6,17 @@ import programme4am from './dz/programme_4am_2026_2027.json' with { type: 'json'
 // jamais concurrent : chaque leçon y déclare le sujet officiel dont elle vient.
 import lessons4am from './dz/lessons_4am_2026_2027.json' with { type: 'json' };
 import units4am from './dz/units_4am_2026_2027.json' with { type: 'json' };
+// 1AM–3AM (2026-10-14, phase 2 du déploiement du cycle moyen) : même trio, leçons
+// `coming_soon` tant qu'elles ne sont pas générées (docs/architecture/LEARNING_NET.md).
+import programme1am from './dz/programme_1am_2026_2027.json' with { type: 'json' };
+import lessons1am from './dz/lessons_1am_2026_2027.json' with { type: 'json' };
+import units1am from './dz/units_1am_2026_2027.json' with { type: 'json' };
+import programme2am from './dz/programme_2am_2026_2027.json' with { type: 'json' };
+import lessons2am from './dz/lessons_2am_2026_2027.json' with { type: 'json' };
+import units2am from './dz/units_2am_2026_2027.json' with { type: 'json' };
+import programme3am from './dz/programme_3am_2026_2027.json' with { type: 'json' };
+import lessons3am from './dz/lessons_3am_2026_2027.json' with { type: 'json' };
+import units3am from './dz/units_3am_2026_2027.json' with { type: 'json' };
 import { filterActiveCourseLevels } from './activeGrades.js';
 
 
@@ -123,9 +134,22 @@ function buildDzUnit(unit, lessonsOfUnit, { levelId, gradeId }) {
   };
 }
 
-function buildDzCourseLevels() {
+/**
+ * Les classes du cycle moyen, dans l'ordre : chacune construite depuis SON
+ * trio programme / leçons / unités. Ajouter une classe = ajouter ici son trio.
+ */
+const DZ_MOYEN_GRADES = [
+  { programme: programme1am, lessons: lessons1am, units: units1am },
+  { programme: programme2am, lessons: lessons2am, units: units2am },
+  { programme: programme3am, lessons: lessons3am, units: units3am },
+  { programme: programme4am, lessons: lessons4am, units: units4am },
+];
+
+/** Une classe du cycle moyen (ses ميادين, leurs leçons et leurs unités). */
+function buildDzMoyenGrade({ programme, lessons, units }) {
+  const gradeId = programme.grade;
   const lessonsByChapter = new Map();
-  for (const lesson of lessons4am.lessons) {
+  for (const lesson of lessons.lessons) {
     if (!lessonsByChapter.has(lesson.chapterId)) lessonsByChapter.set(lesson.chapterId, []);
     lessonsByChapter.get(lesson.chapterId).push(lesson);
   }
@@ -133,27 +157,27 @@ function buildDzCourseLevels() {
   // Le catalogue ne montre QUE les ميادين qui portent des leçons (décision
   // du propriétaire, 2026-09-25 : l'unité « الأعداد الطبيعيّة والأعداد
   // النّاطقة » seule). Le PROGRAMME, lui, reste entier et vérifié dans
-  // programme_4am_2026_2027.json — on ne retranche rien à la source
+  // programme_<g>_2026_2027.json — on ne retranche rien à la source
   // officielle ; on n'affiche pas un ميدان vide. Un ميدان réapparaît de
-  // lui-même le jour où une leçon de lessons_4am_2026_2027.json le nomme.
+  // lui-même le jour où une leçon de lessons_<g>_2026_2027.json le nomme.
   // `order` reste la position dans le programme, pas dans cette liste.
-  const topicTitleOf = new Map(programme4am.domains.flatMap((d) => d.topics.map((t) => [t.id, t.titleAr])));
+  const topicTitleOf = new Map(programme.domains.flatMap((d) => d.topics.map((t) => [t.id, t.titleAr])));
   // Les ميادين d'AFFICHAGE décidés par le propriétaire (units_4am › ownerChapters,
   // unité 6 « الدالة الخطية والتناسبية » sous « ميدان التناسبية والدوال », 2026-10-02) :
   // rangés APRÈS les domaines du programme, sans aucun sujet officiel — le programme
   // reste une transcription intouchée, et chaque unité qui s'y range déclare son
   // domaine de programme (`placement`).
-  const ownerDomains = (units4am.ownerChapters ?? []).map((c) => ({
+  const ownerDomains = (units.ownerChapters ?? []).map((c) => ({
     id: c.id, titleAr: c.titleAr, subtitleAr: c.subtitleAr, topics: [],
   }));
-  const displayOrder = units4am.chapterOrder?.order ?? [];
+  const displayOrder = units.chapterOrder?.order ?? [];
   const displayRank = (id) => (displayOrder.includes(id) ? displayOrder.indexOf(id) : displayOrder.length);
-  const chapters = [...programme4am.domains, ...ownerDomains].map((domain, index) => ({
+  const chapters = [...programme.domains, ...ownerDomains].map((domain, index) => ({
     id: domain.id,
     title: domain.titleAr,
-    subtitle: domain.subtitleAr,
-    // Icône d'affichage du ميدان (units_4am › chapterIcons) — jamais dans le programme.
-    icon: units4am.chapterIcons?.[domain.id] ?? null,
+    subtitle: domain.subtitleAr ?? null,
+    // Icône d'affichage du ميدان (units_<g> › chapterIcons) — jamais dans le programme.
+    icon: units.chapterIcons?.[domain.id] ?? null,
     order: index,
     // Les sujets OFFICIELS, au mot près. `namedMethodsAr`/`namedPartsAr` ne
     // sont recopiés QUE là où le programme les porte (6 sujets sur 28) :
@@ -175,13 +199,13 @@ function buildDzCourseLevels() {
       .sort((a, b) => a.order - b.order)
       .map((lesson) => buildDzLesson(lesson, {
         levelId: 'moyen',
-        gradeId: programme4am.grade,
+        gradeId,
         // Le sujet est cherché dans TOUT le programme : une unité placée par le
         // propriétaire sous un autre ميدان (`placement`, unité 3) garde son sujet officiel.
         topicTitle: topicTitleOf.get(lesson.sourceTopicId),
       })),
   })).filter((chapter) => chapter.lessons.length > 0)
-    // L'ordre d'AFFICHAGE décidé par le propriétaire (units_4am › chapterOrder,
+    // L'ordre d'AFFICHAGE décidé par le propriétaire (units_<g> › chapterOrder,
     // 2026-10-07 : la géométrie en dernier). `order` reste la position dans le
     // programme ; un ميدان non listé garde sa place relative, après les listés.
     .sort((a, b) => displayRank(a.id) - displayRank(b.id));
@@ -189,16 +213,29 @@ function buildDzCourseLevels() {
   // Les UNITÉS du manuel, greffées sur leur chapitre. Une unité ne possède
   // pas ses leçons : elle les référence (mêmes objets que `chapter.lessons`).
   for (const chapter of chapters) {
-    chapter.units = units4am.units
+    chapter.units = units.units
       .filter((u) => u.chapterId === chapter.id)
       .slice()
       .sort((a, b) => a.order - b.order)
       .map((u) => buildDzUnit(u, chapter.lessons.filter((l) => l.unitId === u.code), {
         levelId: 'moyen',
-        gradeId: programme4am.grade,
+        gradeId,
       }));
   }
 
+  return {
+    id: gradeId,
+    name: programme.gradeLabelAr,
+    // Le programme ET son découpage en leçons sont arrêtés. Chaque leçon porte
+    // son propre `status` : `available` dès que son lesson.config.js existe
+    // (les 74 leçons 4AM), `coming_soon` sinon — carte non cliquable
+    // « قيد الإعداد » (1AM–3AM, 2026-10-14). Voir I2.
+    curriculumStatus: 'lessons_planned',
+    chapters,
+  };
+}
+
+function buildDzCourseLevels() {
   return [
     {
       id: 'moyen',
@@ -208,18 +245,7 @@ function buildDzCourseLevels() {
       lightBg: 'bg-emerald-50/50 border-emerald-200',
       accentColor: 'text-emerald-600',
       badgeBg: 'bg-emerald-100 text-emerald-700',
-      grades: [
-        {
-          id: programme4am.grade,
-          name: programme4am.gradeLabelAr,
-          // Le programme ET son découpage en leçons sont arrêtés (phase 7).
-          // Chaque leçon porte son propre `status` : `available` dès que son
-          // lesson.config.js existe (les 74 leçons 4AM l'ont aujourd'hui),
-          // `coming_soon` sinon — et l'interface le dit. Voir I2.
-          curriculumStatus: 'lessons_planned',
-          chapters,
-        },
-      ],
+      grades: DZ_MOYEN_GRADES.map(buildDzMoyenGrade),
     },
     {
       id: 'thanawi',
@@ -275,9 +301,10 @@ export function getAllGrades() {
       levelId: level.id,
       levelTitle: level.title,
       // L'écran de choix de classe dit ce qui attend l'élève : le nombre
-      // de leçons publiées, et si le programme n'est pas encore fourni.
+      // de leçons PUBLIÉES (`available` — une carte « قيد الإعداد » n'en est
+      // pas une, 1AM–3AM 2026-10-14), et si le programme n'est pas encore fourni.
       curriculumStatus: grade.curriculumStatus ?? null,
-      lessonCount: (grade.chapters || []).reduce((n, c) => n + (c.lessons || []).length, 0),
+      lessonCount: (grade.chapters || []).reduce((n, c) => n + (c.lessons || []).filter((l) => l.status === 'available').length, 0),
     }))
   );
 }
@@ -329,13 +356,16 @@ export function getLessonById(lessonId) {
 }
 
 /**
- * Le chemin de la page d'accueil d'une leçon, ou `null` si elle est inconnue
- * du catalogue. Les appelants DOIVENT traiter le `null` : une leçon peut être
- * active côté pratique avant d'être routée côté cours, et un lien mort vaut
- * moins que pas de lien du tout.
+ * Le chemin de la page d'accueil d'une leçon PUBLIÉE (`status: 'available'`),
+ * ou `null`. Les appelants DOIVENT traiter le `null` : une leçon peut être
+ * inconnue du catalogue (active côté pratique avant d'être routée côté
+ * cours), ou connue mais pas encore écrite (`coming_soon` : 1AM–3AM depuis le
+ * 2026-10-14 — aucune route) ; un lien mort vaut moins que pas de lien du tout.
+ * Pour la carte d'une leçon non publiée, lire `getLessonById(id).path`.
  */
 export function getLessonPath(lessonId) {
-  return getLessonById(lessonId)?.path || null;
+  const lesson = getLessonById(lessonId);
+  return lesson?.status === 'available' ? lesson.path : null;
 }
 
 /** Index des unités par code — même construction que LESSONS_BY_ID. */

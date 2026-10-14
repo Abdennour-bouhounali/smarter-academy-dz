@@ -20,7 +20,9 @@ export default function ClassGroupForm({ onCreated, onCancel, autoFocus = false 
   const grades = getAllGrades();
 
   const [name, setName] = useState('');
-  const [grade, setGrade] = useState(grades[0]?.id ?? '');
+  // Par défaut, la première classe qui a des leçons PUBLIÉES (1AM–3AM n'ont encore
+  // que des cartes « قيد الإعداد », 2026-10-14) ; toutes restent sélectionnables.
+  const [grade, setGrade] = useState((grades.find((g) => g.lessonCount > 0) ?? grades[0])?.id ?? '');
   const [description, setDescription] = useState('');
   const [academicYear, setAcademicYear] = useState('');
   const [pending, setPending] = useState(false);

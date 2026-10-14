@@ -1,8 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { getAllGrades, courseLevels, dzCourseLevels } from './coursesData';
+import { getAllGrades, courseLevels, dzCourseLevels, getLessonPath } from './coursesData';
 import programme4am from './dz/programme_4am_2026_2027.json';
 import units4am from './dz/units_4am_2026_2027.json';
 import decomposition4am from './dz/lessons_4am_2026_2027.json';
+import lessons1am from './dz/lessons_1am_2026_2027.json';
+import lessons2am from './dz/lessons_2am_2026_2027.json';
+import lessons3am from './dz/lessons_3am_2026_2027.json';
 
 // Les invariants de FORME portent sur les leçons du catalogue algérien (le
 // catalogue français hérité a été supprimé le 2026-09-25, avec ses leçons).
@@ -25,8 +28,14 @@ describe('getAllGrades', () => {
     expect(grades).toHaveLength(expectedCount);
   });
 
-  it('expose exactement les deux classes algériennes', () => {
-    expect(grades.map((g) => g.id).sort()).toEqual(['4am', 'terminale_dz']);
+  it('expose les quatre années du moyen et la Terminale', () => {
+    expect(grades.map((g) => g.id).sort()).toEqual(['1am', '2am', '3am', '4am', 'terminale_dz']);
+  });
+
+  it('ne compte que les leçons PUBLIÉES (une carte « قيد الإعداد » n’en est pas une)', () => {
+    const count = Object.fromEntries(grades.map((g) => [g.id, g.lessonCount]));
+    expect(count['1am']).toBe(0);
+    expect(count['4am']).toBeGreaterThan(70);
   });
 
   it('has no duplicate grade ids', () => {
@@ -77,8 +86,8 @@ describe('catalogue algérien (dzCourseLevels)', () => {
 
   const sourceTopics = programme4am.domains.flatMap((d) => d.topics);
 
-  it('ne contient QUE les deux classes algériennes', () => {
-    expect(dzGrades.map(({ grade }) => grade.id).sort()).toEqual(['4am', 'terminale_dz']);
+  it('ne contient QUE les classes algériennes (1AM–4AM, Terminale)', () => {
+    expect(dzGrades.map(({ grade }) => grade.id).sort()).toEqual(['1am', '2am', '3am', '4am', 'terminale_dz']);
   });
 
   it('place chaque classe sous son niveau algérien', () => {
@@ -193,5 +202,51 @@ describe('catalogue algérien (dzCourseLevels)', () => {
     const terminale = dzGrades.find(({ grade }) => grade.id === 'terminale_dz').grade;
     expect(terminale.curriculumStatus).toBe('not_supplied');
     expect(terminale.chapters).toEqual([]);
+  });
+});
+
+describe('1AM–3AM — cartes « قيد الإعداد » (phase 2 du cycle moyen, 2026-10-14)', () => {
+  const moyen = dzCourseLevels.find((l) => l.id === 'moyen');
+  const early = moyen.grades.filter((g) => ['1am', '2am', '3am'].includes(g.id));
+
+  it('range les quatre années dans l’ordre, 1AM d’abord', () => {
+    expect(moyen.grades.map((g) => g.id)).toEqual(['1am', '2am', '3am', '4am']);
+  });
+
+  it('montre toutes leurs unités et leurs leçons, toutes coming_soon, sans lien routable', () => {
+    for (const grade of early) {
+      const lessons = grade.chapters.flatMap((c) => c.lessons);
+      expect(lessons.length, grade.id).toBeGreaterThan(50);
+      for (const l of lessons) {
+        expect(l.status, l.id).toBe('coming_soon');
+        expect(getLessonPath(l.id), l.id).toBeNull();
+        expect(l.path.startsWith(`/courses/moyen/${grade.id}/`)).toBe(true);
+      }
+      expect(grade.chapters.flatMap((c) => c.units).length).toBeGreaterThan(10);
+    }
+  });
+
+  it('porte toutes leurs الكفاءات, avec l’id dérivé `{grade}_{code}_P{n}`', () => {
+    const points = early.flatMap((g) => g.chapters.flatMap((c) => c.lessons.flatMap((l) => l.learningPoints.map((lp) => [g.id, l.id, lp]))));
+    expect(points.length).toBe(523);
+    for (const [g, code, lp] of points) expect(lp.id).toBe(`${g}_${code}_P${lp.order}`);
+  });
+
+  it('ne déclare comme prérequis que des leçons qui existent et qui la PRÉCÈDENT', () => {
+    // Position dans le cursus : année, puis ordre du manuel (`order` des lessons_<g>).
+    const files = { '1am': lessons1am, '2am': lessons2am, '3am': lessons3am, '4am': decomposition4am };
+    const pos = new Map(Object.entries(files).flatMap(([g, f], gi) => f.lessons.map((l) => [l.code, gi * 1000 + l.order])));
+    for (const grade of early) {
+      for (const l of grade.chapters.flatMap((c) => c.lessons)) {
+        for (const pre of l.prerequisiteLessonCodes) {
+          expect(pos.has(pre), `${l.id} → ${pre}`).toBe(true);
+          expect(pos.get(pre), `${l.id} → ${pre}`).toBeLessThan(pos.get(l.id));
+        }
+      }
+    }
+  });
+
+  it('garde 4AM publiée : getLessonPath résout ses leçons', () => {
+    expect(getLessonPath('qasim-adad-tabii')).toMatch(/^\/courses\/moyen\/4am\//);
   });
 });

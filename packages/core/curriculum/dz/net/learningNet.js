@@ -1,6 +1,13 @@
 import programme from './official_programme_moyen.json' with { type: 'json' };
 import net from './learning_net_moyen.json' with { type: 'json' };
+import lessons1am from '../lessons_1am_2026_2027.json' with { type: 'json' };
+import lessons2am from '../lessons_2am_2026_2027.json' with { type: 'json' };
+import lessons3am from '../lessons_3am_2026_2027.json' with { type: 'json' };
 import lessons4am from '../lessons_4am_2026_2027.json' with { type: 'json' };
+import units1am from '../units_1am_2026_2027.json' with { type: 'json' };
+import units2am from '../units_2am_2026_2027.json' with { type: 'json' };
+import units3am from '../units_3am_2026_2027.json' with { type: 'json' };
+import units4am from '../units_4am_2026_2027.json' with { type: 'json' };
 
 /**
  * Le RÉSEAU DES الكفاءات du cycle moyen (1AM–4AM) — résolveur pur.
@@ -10,21 +17,23 @@ import lessons4am from '../lessons_4am_2026_2027.json' with { type: 'json' };
  *   official_programme_moyen.json  les ITEMS du programme officiel, mot pour mot,
  *                                  id stable `<g>am.m<مقطع>.r<nn>` (ou `.x<n>`) ;
  *   learning_net_moyen.json        les LIENS entre items (requires / extends /
- *                                  consolidates), les fils conceptuels, et les
- *                                  leçons PRÉVUES des années sans leçons ;
- *   lessons_<g>_*.json             les leçons EXISTANTES, qui déclarent leurs
- *                                  items dans `programmeItems`.
+ *                                  consolidates) et les fils conceptuels ;
+ *   lessons_<g>_*.json             les leçons des quatre années, qui déclarent
+ *                                  leurs items dans `programmeItems` : publiées
+ *                                  (`available`) ou à générer (`coming_soon`,
+ *                                  vues ici comme `planned`).
  *
- * Une leçon prévue devient existante en passant dans lessons_<g>_*.json sous
- * le MÊME code et les MÊMES items : aucun lien n'est à réécrire.
+ * Une leçon générée garde son code et ses items, et passe `available` : aucun
+ * lien n'est à réécrire.
  *
  * Ce module n'entre PAS dans le barrel `@smarter-academy/core` (bundle
  * d'entrée) : on l'importe par son chemin, depuis le runtime de leçon.
  */
 
-// Leçons existantes, toutes années confondues. Ajouter ici lessons_<g>_*.json
-// le jour où une année reçoit ses leçons.
-const EXISTING_LESSON_FILES = [lessons4am];
+// Les leçons du catalogue, toutes années confondues (depuis le 2026-10-14, les
+// leçons prévues de 1AM–3AM y sont, en `coming_soon`).
+const LESSON_FILES = [lessons1am, lessons2am, lessons3am, lessons4am];
+const UNIT_FILES = [units1am, units2am, units3am, units4am];
 
 const GRADE_ORDER = { '1am': 1, '2am': 2, '3am': 3, '4am': 4 };
 
@@ -33,28 +42,29 @@ export const ITEMS = programme.items;
 export const SEGMENTS = programme.segments;
 export const THREADS = net.threads;
 export const LINKS = net.links;
-export const PLANNED_UNITS = net.plannedUnits;
+/** Les unités du manuel des quatre années, avec leur année. */
+export const UNITS = UNIT_FILES.flatMap((file) => file.units.map((u) => ({ ...u, grade: file.grade })));
 
 const itemById = new Map(ITEMS.map((i) => [i.id, i]));
 const segmentById = new Map(SEGMENTS.map((s) => [s.id, s]));
 const threadOfItem = new Map(THREADS.flatMap((t) => t.items.map((id) => [id, t.id])));
 
-/** Leçons existantes (`status` du JSON) puis leçons prévues, dans l'ordre du cursus. */
-export const LESSONS = [
-  ...EXISTING_LESSON_FILES.flatMap((file) =>
-    file.lessons.map((l) => ({
-      code: l.code,
-      grade: file.grade,
-      unit: l.unitId,
-      order: l.order,
-      kind: l.kind,
-      titleAr: l.title,
-      programmeItems: l.programmeItems ?? [],
-      status: l.status === 'available' ? 'available' : 'planned',
-    }))
-  ),
-  ...net.plannedLessons.map((l) => ({ ...l, status: 'planned' })),
-].sort((a, b) => GRADE_ORDER[a.grade] - GRADE_ORDER[b.grade] || a.order - b.order);
+/**
+ * Toutes les leçons, dans l'ordre du cursus (année, puis `order` du catalogue).
+ * `status` : `available` (publiée) ou `planned` (`coming_soon` au catalogue).
+ */
+export const LESSONS = LESSON_FILES.flatMap((file) =>
+  file.lessons.map((l) => ({
+    code: l.code,
+    grade: file.grade,
+    unit: l.unitId,
+    order: l.order,
+    kind: l.kind,
+    titleAr: l.title,
+    programmeItems: l.programmeItems ?? [],
+    status: l.status === 'available' ? 'available' : 'planned',
+  }))
+).sort((a, b) => GRADE_ORDER[a.grade] - GRADE_ORDER[b.grade] || a.order - b.order);
 
 const lessonByCode = new Map(LESSONS.map((l) => [l.code, l]));
 
@@ -194,4 +204,29 @@ export function noRebuildForLesson(code) {
       noteAr: link.noteAr ?? null,
     }))
   );
+}
+
+/** La leçon d'une الكفاءة : `{grade}_{lessonCode}_P{n}` → `lessonCode` (ou null). */
+export function lessonCodeOfLearningPoint(lpCode) {
+  const m = /^([1-4]am)_([a-z0-9]+(?:-[a-z0-9]+)*)_P\d+$/.exec(lpCode ?? '');
+  return m && lessonByCode.has(m[2]) ? m[2] : null;
+}
+
+/**
+ * « راجع » APRÈS UNE ERREUR (décision D7 du propriétaire, 2026-10-13 : les liens vers
+ * les années antérieures vont aussi DANS les exercices). Pour une question, on part
+ * de sa الكفاءة principale — sinon de la leçon — et on renvoie les liens « راجع » de
+ * sa leçon qui viennent d'une année ANTÉRIEURE : `reviewLinksForLesson` réduit au
+ * pas qui change d'année. Rien n'est écrit à la main dans les exercices : le lien
+ * se dérive du réseau (LEARNING_NET.md §3).
+ *
+ * @returns {Array<{ lesson: {code, grade, titleAr, status} | null, items: Array<{id, grade, segment, textAr, via}> }>}
+ */
+export function earlierYearReviewFor({ learningPointCode = null, lessonCode = null } = {}) {
+  const code = lessonCodeOfLearningPoint(learningPointCode) ?? (lessonByCode.has(lessonCode) ? lessonCode : null);
+  if (!code) return [];
+  const grade = GRADE_ORDER[lessonByCode.get(code).grade];
+  return reviewLinksForLesson(code)
+    .map((g) => ({ ...g, items: g.items.filter((i) => GRADE_ORDER[i.grade] < grade) }))
+    .filter((g) => g.items.length > 0);
 }

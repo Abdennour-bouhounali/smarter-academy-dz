@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import programme from './official_programme_moyen.json';
-import net from './learning_net_moyen.json';
 import lessons4am from '../lessons_4am_2026_2027.json';
 import {
-  ITEMS, LINKS, LESSONS, THREADS, PLANNED_UNITS,
+  ITEMS, LINKS, LESSONS, THREADS, UNITS,
   getItem, getLesson, homeLessonOf, itemRank,
   reviewLinksForLesson, forwardLinksForLesson, noRebuildForLesson,
+  earlierYearReviewFor, lessonCodeOfLearningPoint,
 } from './learningNet.js';
 
 /**
@@ -131,14 +131,26 @@ describe('leçons — existantes et prévues', () => {
     for (const l of LESSONS) expect(l.code).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
   });
 
-  it('range chaque leçon prévue dans SON année, une synthèse en fin de chaque unité', () => {
-    for (const u of PLANNED_UNITS) {
-      const lessons = net.plannedLessons.filter((l) => l.unit === u.code);
+  it('range chaque leçon dans SON année, une synthèse en fin de chaque unité', () => {
+    for (const u of UNITS) {
+      const lessons = LESSONS.filter((l) => l.unit === u.code);
+      expect(lessons.length, u.code).toBeGreaterThan(1);
       expect(lessons.at(-1)).toMatchObject({ code: u.synthesisLessonCode, kind: 'synthesis' });
       for (const l of lessons) {
         expect(l.grade).toBe(u.grade);
-        for (const id of l.programmeItems) expect(gradeOf(id), `${l.code} › ${id}`).toBe(u.grade);
+        // Une leçon de RAPPEL 4AM déclare l'item d'une année antérieure (test ci-dessus) ; ailleurs, l'année de l'item.
+        if (u.grade !== '4am') for (const id of l.programmeItems) expect(gradeOf(id), `${l.code} › ${id}`).toBe(u.grade);
       }
+    }
+  });
+
+  it('n’a plus de couche « prévue » dans le réseau : les leçons 1AM–3AM sont au catalogue, à générer', async () => {
+    const net = (await import('./learning_net_moyen.json')).default;
+    expect(net.plannedLessons).toBeUndefined();
+    expect(net.plannedUnits).toBeUndefined();
+    for (const g of ['1am', '2am', '3am']) {
+      expect(LESSONS.filter((l) => l.grade === g).length, g).toBeGreaterThan(50);
+      expect(UNITS.filter((u) => u.grade === g).length, g).toBeGreaterThan(10);
     }
   });
 
@@ -194,5 +206,18 @@ describe('résolveur — navigation', () => {
     expect(rules[0]).toMatchObject({ type: 'extends', base: { id: '1am.m5.r02' }, baseLesson: { code: homeLessonOf('1am.m5.r02').code } });
     expect(rules[0].addedValueAr).toBeTruthy();
     expect(getLesson(homeLessonOf('1am.m5.r02').code).status).toBe('planned');
+  });
+
+  it('« راجع » après une erreur : de la الكفاءة à sa leçon, puis aux SEULES années antérieures', () => {
+    expect(lessonCodeOfLearningPoint('4am_jidhr-tarbii_P1')).toBe('jidhr-tarbii');
+    expect(lessonCodeOfLearningPoint('4am_n-existe-pas_P1')).toBeNull();
+    const groups = earlierYearReviewFor({ learningPointCode: '4am_jidhr-tarbii_P1' });
+    expect(groups.map((g) => g.lesson.code)).toEqual(expect.arrayContaining([homeLessonOf('3am.m4.r03').code]));
+    for (const g of groups) for (const i of g.items) expect(['1am', '2am', '3am']).toContain(i.grade);
+    // Sans الكفاءة reconnue : la leçon de l'exercice.
+    expect(earlierYearReviewFor({ learningPointCode: null, lessonCode: 'jidhr-tarbii' })).toEqual(groups);
+    // 1AM n'a pas d'année antérieure dans le cycle.
+    expect(earlierYearReviewFor({ lessonCode: LESSONS.find((l) => l.grade === '1am').code })).toEqual([]);
+    expect(earlierYearReviewFor({})).toEqual([]);
   });
 });

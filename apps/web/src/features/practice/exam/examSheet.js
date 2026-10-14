@@ -9,6 +9,7 @@
  * qu'à la PREMIÈRE question qui l'ouvre, comme sur le papier.
  */
 
+import { getLessonById } from '@smarter-academy/core';
 import EXAM_STYLE_LIST from '../../../../../../content/practice/exam-style.json';
 
 /**
@@ -65,14 +66,35 @@ export function stepMarks(questions = []) {
 
 /**
  * Le badge de provenance, découpé pour l'isolement bidi : la partie arabe
- * (« على منوال ») reste RTL, « BEM 2015 » est un îlot LTR.
+ * (« على منوال ») reste RTL, « BEM 2015 » est un îlot LTR (`ltr: true`). Le badge
+ * d'un examen de fin de فصل (1AM–3AM, « على منوال اختبار الفصل الأول ») est
+ * entièrement arabe : aucun îlot LTR (`ltr: false`).
  *
- * @returns {{prefix: string, label: string, kind: string}|null}
+ * @returns {{prefix: string, label: string, kind: string, ltr: boolean}|null}
  */
 export function examBadge(exam) {
   if (!exam?.badge) return null;
   const m = /^(.*?)\s*(BEM\s+\d{4})$/.exec(exam.badge);
-  return m ? { prefix: m[1].trim(), label: m[2], kind: exam.kind } : { prefix: '', label: exam.badge, kind: exam.kind };
+  if (m) return { prefix: m[1].trim(), label: m[2], kind: exam.kind, ltr: true };
+  const term = /^(على منوال)\s+(اختبار الفصل .+)$/.exec(exam.badge);
+  if (term) return { prefix: term[1], label: term[2], kind: exam.kind, ltr: false };
+  return { prefix: '', label: exam.badge, kind: exam.kind, ltr: false };
+}
+
+/**
+ * QUEL examen la feuille simule, selon l'année de la leçon (2026-10-14) :
+ * la شهادة التعليم المتوسط (BEM) en 4AM, l'examen de fin de فصل en 1AM–3AM
+ * (« على منوال اختبار الفصل … », docs/sources/moyen/exams/EXAM_PATTERN.md §6).
+ * `n` est le numéro de l'année (« 2 متوسط »). Une leçon inconnue du catalogue
+ * garde le BEM — le seul format d'examen qui existait avant 1AM–3AM.
+ *
+ * @returns {{kind: 'bem'|'term', n: number}}
+ */
+export function examPaper(lessonCode) {
+  const grade = getLessonById(lessonCode)?.gradeId;
+  const n = /^([1-4])am$/.exec(grade ?? '')?.[1];
+  if (!n) return { kind: 'bem', n: 4 };
+  return { kind: Number(n) === 4 ? 'bem' : 'term', n: Number(n) };
 }
 
 /**

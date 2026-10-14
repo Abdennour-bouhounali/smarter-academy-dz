@@ -136,6 +136,34 @@ only binds them to its `unitMeta` in one line each — a new unit writes its
 `index.jsx`, `routes.jsx` and `moduleContext.js` are boilerplate. The real work
 is `lesson.config.js`, the content files, `knowledge.jsx` and the modules.
 
+### Adding a GRADE (done for 1AM, 2AM and 3AM, 2026-10-14 — cycle moyen rollout phase 2)
+
+A grade is data, not code. It is never a parallel catalogue.
+
+1. **The trio** in `packages/core/curriculum/dz/`:
+   - `programme_<g>_2026_2027.json`: its ميادين and topics. For 1AM–3AM it is minimal, derived from
+     `net/official_programme_moyen.json`: chapter ids `ansab_al_aadad_wal_hisab` / `tanasubiya_duwal` / `handasa`,
+     one topic per مقطع.
+   - `units_<g>_2026_2027.json`: the textbook's units, plus `chapterIcons` / `chapterOrder`.
+   - `lessons_<g>_2026_2027.json`: every lesson in the 4AM shape. A lesson not yet generated has
+     `status: "coming_soon"`. `LEARNING_NET.md` §2.4 lists the fields.
+2. **Register it once:**
+   - `coursesData.js › DZ_MOYEN_GRADES` (one line);
+   - `net/learningNet.js › LESSON_FILES / UNIT_FILES`;
+   - `activeGrades.js › ACTIVE_GRADE_IDS`;
+   - the literal grade list of the eager `import.meta.glob` in `apps/web/src/lessons/registry.js` (`registry.test.js`
+     compares it with `ACTIVE_GRADE_IDS`).
+   - The teacher memo's glob already covers `lessons/moyen/*/`.
+3. **What a `coming_soon` lesson gets for free:** a non-clickable card « قيد الإعداد ». Its unit page shows its
+   الكفاءات with no progress or gesture. `getLessonPath` returns `null`, so no link leads to it. It is in the
+   database as a `draft` lesson with all its LPs, which Mastery V2 ignores (`LEARNING_NET.md` §3bis).
+4. **Lesson codes and unit codes are unique across all grades** (`coursesData.test.js`, `learningNet.test.js`): the
+   API resolves lessons by bare code.
+5. Then the DB handshake (§11) and `npm run generate:learning-net`.
+
+Generating one of those lessons follows §14 and `LEARNING_NET.md` §4. Publishing it is § « Publish a lesson »
+(§11).
+
 ### Adding a textbook UNIT (done for unit 2 « الحساب على الجذور », 2026-09-30)
 
 A second unit is data plus three one-line bindings — never a copy of unit 1's plumbing:
@@ -566,7 +594,7 @@ The recurring module roles in the 4AM unit, by their Arabic names:
 | `Module01…` — the activity | `trigger` | the textbook activity, opening on the signature manipulation in the `intro` slot |
 | `Module02Maarif` — معارف | `discovery` | the textbook's definitions, each laid by a `KnowledgeBrick` at the moment it is needed |
 | `Module0xAwazzif` — أوظّف تعلّماتي | `practice_lab` | the textbook's exercises via `TextbookExercise` |
-| `Module0xItqan` — إختبار أولي | `evaluation` | the only source of assessment evidence (displayed title « إختبار أولي » since 2026-09-24; the slug `itqan` and the file name are unchanged, so URLs and saved progress are stable); its `desc` names learning points « الكفاءات », e.g. « خمسة أسئلة تُقيّم الكفاءات الثلاث. » — never « نقاط التعلّم », see ARABIC_RTL_CONTRACT §terminology) |
+| `Module0xItqan` — إختبار أولي | `evaluation` | the only source of assessment evidence (displayed title « إختبار أولي » since 2026-09-24; the slug `itqan` and the file name are unchanged, so URLs and saved progress are stable); its `desc` names learning points « الكفاءات », e.g. « خمسة أسئلة تُقيّم الكفاءات الثلاث. » — never « نقاط التعلّم », see ARABIC_RTL_CONTRACT §terminology). Since 2026-10-14 its correction shows, under each WRONG answer, « راجع: <درس> (<السنة>) » toward an earlier year — derived from the question's `assessment.learningPointIds` through the learning net, nothing to write (`EXERCISE_CONTRACT.md` § « Earlier-year review link ») |
 
 **Two rules the evaluation module must follow**, both learned from shipped
 defects:
@@ -1348,6 +1376,40 @@ exercise), the situation's analysis (synthesis). Unit 5: ex-31 (« x + y = 216 �
 
 ## 11. What you must run
 
+### Publish a lesson (cycle moyen rollout, owner decisions D6 and 2026-10-14)
+
+A 1AM–3AM lesson is published **as soon as it is generated**, so the owner can review it while the next one is
+written. **Owner decision (2026-10-14): « publish » means pushing to `dev`.** CI runs and nothing is deployed. The owner
+reviews `dev` and promotes it to `main` (the production deploy) when they choose. The exact sequence, for a
+lesson `<code>` of grade `<g>`:
+
+1. **Catalogue flip**, in `packages/core/curriculum/dz/lessons_<g>_2026_2027.json`:
+   - `status: "coming_soon"` → `"available"`;
+   - final `pointsToLearn` (same order: LP ids are positional), `durationMinutes` (≤ 90; `smarter:validate-curriculum`
+     requires it of an `available` lesson), `difficulty`, `icon`;
+   - `pointPrerequisites` only along a net link (`LEARNING_NET.md` §4.6).
+   The lesson keeps its `code` and `programmeItems`.
+2. **Wiring:**
+   - its `routes.jsx` in `App.jsx` (`check:routes`);
+   - if it has practice: its bank in `content/practice/<g>/<code>/`, its `active.json` entry, and `exam-style.json`
+     when its sheets are exam-style (`EXERCISE_CONTRACT.md` § « Term-exam provenance »).
+3. **Regenerate** the net's map and queue (the lesson drops out of the queue): `npm run generate:learning-net`.
+4. **Local DB handshake:**
+   ```bash
+   node packages/core/curriculum/exportCurriculum.mjs
+   (cd apps/api && php artisan smarter:import-curriculum)          # coming_soon → available: draft → published
+   node packages/core/curriculum/exportContentRegistry.mjs
+   (cd apps/api && php artisan smarter:import-content-registry)    # its modules/exercises are born draft
+   ```
+   The import turns the lesson's `draft` into `published` by itself (`CurriculumImporter::publicationOnUpdate`).
+   Its **modules and exercises** are born `draft` (publishing content stays a human act). Open them in the admin
+   panel (« المحتوى ») locally to review; in production the admin does it after the deploy.
+5. **Gates:** `npm test`, `npm run check:lessons`, `npm run build` (§ below). Then a browser check at 320 px, in RTL.
+6. **Commit and publish:** commit on a work branch, fast-forward `dev`, `git push origin dev`. CI (`ci.yml`) runs
+   tests, build and the PHP suite. **Nothing reaches production until `dev` is merged into `main`**: `deploy.yml` then
+   exports, imports (`--from-json`), prunes and checks tiers on the server.
+
+
 ```bash
 npm test                 # packages/core, then apps/web, then scripts
 npm run check:lessons    # the full editorial gate chain (see below)
@@ -1634,9 +1696,11 @@ grade and المجال; the الوحدة in `units_<grade>_*.json`; the lesson e
 `lessons_<grade>_*.json` with its `pointsToLearn` (learning-point ids are
 DERIVED: `{grade}_{lessonId}_P{n}`), `prerequisiteLessonCodes`,
 `durationMinutes`, and its **`programmeItems`** — the official items of the
-learning net it teaches (`LEARNING_NET.md`; for 1AM–3AM, copied with the code
-from the net's planned lesson, and `noRebuildForLesson(code)` says what the
-lesson must recall rather than rebuild — §4 of that contract); the textbook extraction `docs/sources/<grade>/<unit>/extraction.json`
+learning net it teaches (`LEARNING_NET.md`; for 1AM–3AM the entry already
+exists, `coming_soon`, with its code, items, draft الكفاءات and net-derived
+`prerequisiteLessonCodes` since 2026-10-14 — the lesson is generated INTO it,
+then published (§11 « Publish a lesson »); `noRebuildForLesson(code)` says what
+the lesson must recall rather than rebuild — §4 of that contract); the textbook extraction `docs/sources/<grade>/<unit>/extraction.json`
 for every element the lesson cites. Mastery criteria are the server's
 (Mastery V2) — a lesson declares none.
 

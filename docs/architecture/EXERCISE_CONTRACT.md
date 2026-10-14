@@ -609,16 +609,19 @@ lesson).
 ### Data
 
 The JSON schema file is not enforced; `scripts/validate-exercises.mjs`
-(`validateExamPresentation`) checks these fields.
+(`validateExamPresentation`) checks these fields. The provenance rules (`source`, `kind`, `badge`) for both
+examinations live in `scripts/lib/examProvenance.mjs`, tested by `scripts/exam-provenance.test.mjs`.
 
 | Field | Values | Meaning |
 |---|---|---|
 | `metadata.exam.kind` | `official`, `excerpt`, `modelled`, `adapted` | `official`: an annal exercise, word for word. `excerpt`: the same, with steps outside unit 1 removed. `modelled`: « على منوال BEM <year> », the same wording with new numbers. `adapted`: an existing bank exercise rewritten in the exam register. |
-| `metadata.exam.badge` | `BEM <year>` (official, excerpt) · `على منوال BEM <year>` (modelled) · `null` (adapted) | The session ribbon. |
+| `metadata.exam.badge` | `BEM <year>` (official, excerpt) · `على منوال BEM <year>` (modelled, 4AM) · `على منوال اختبار الفصل الأول / الثاني / الثالث` (modelled, 1AM–3AM) · `null` (adapted) | The session ribbon. |
 | `metadata.exam.heading` | « التمرين الأول »، « التمرين »، « الوضعية الإدماجية »… | Rendered « <heading>:(<points> ن) », as in the annals. |
 | `metadata.exam.points` | « 03 »، « 02,5 »، « 08 » | Written as on the exam paper. |
 | `metadata.source` | `{type:"bem", year, part:1\|2, exercise}` | For official / excerpt exercises; `part 2` = الوضعية الإدماجية. |
-| | `{type:"platform_addition", reason:"bem_modelled", modelledOn}` | For modelled exercises. |
+| | `{type:"platform_addition", reason:"bem_modelled", modelledOn}` | For modelled exercises (4AM). |
+| | `{type:"term_exam", grade, semester, file, exercise}` | 1AM–3AM, modelled on ONE exercise of the term-exam corpus (§ « Term-exam provenance »). |
+| | `{type:"platform_addition", reason:"term_exam_modelled", modelledOn:"<g>am-s<n>"}` | 1AM–3AM, generated on the model of a term (§ « Term-exam provenance »). |
 | | the original source + `adaptedFrom` | For adapted exercises. |
 | `statement.formulas[]` | LaTeX strings | Centred on one line under the setup sentence. |
 | `statement.table` | `{head, rows}` | Same shape as a مسألة table (`ProblemTable`). |
@@ -636,6 +639,34 @@ for mastery (`countsForMastery`, in both JS and PHP).
 |---|---|---|---|---|
 | 1 | Writes the proof in a text box, clicks « سجّل إجابتي » | `{text}` | `abandoned`, `normalized: "self:pending"` | Records the attempt. The text is locked from now on. |
 | 2 | The model answer opens under the locked text; the student ticks « مطابق / غير مطابق » | `{text, selfMark}` with the same text | `correct` / `incorrect` | `PracticeEvidenceRecorder::recordSelfMark` accepts one mark, refuses (422) any different text, and replays the stored verdict afterwards. Text is capped at 5000 characters. |
+
+### Term-exam provenance (1AM–3AM, 2026-10-14)
+
+The 4AM sheet simulates the شهادة التعليم المتوسط. A **1AM–3AM** lesson's sheet simulates the end-of-term exam
+(« اختبار الفصل »). Its corpus is `docs/sources/moyen/exams/` (index `exams-index.json`, recipe
+`EXAM_PATTERN.md` §6). The validator tells the two apart by the exercise's year (`ex-<grade>-…`).
+
+- **Never `official` nor `excerpt`.** The term exams are school papers republished by a third-party site, with no
+  official status; the owner allows « على منوال » only. No word-for-word copy, no session year.
+- **`modelled` on one precise exercise** of the corpus: `metadata.source = {type:"term_exam", grade, semester,
+  file:"<exams-index id>", exercise:n}`.
+  - `file` must exist in `exams-index.json`, and `exercise` must be one of its exercises.
+  - A `misfiled` paper counts for the grade and term of its **header** (`gradeInFile` / `semesterInFile`), not of
+    its folder.
+  - `2am-s2-61` (war context) is excluded.
+- **`modelled` on a term's pattern only:** `metadata.source = {type:"platform_addition",
+  reason:"term_exam_modelled", modelledOn:"<g>am-s<n>"}`. `modelledOn` is the exercise's own grade.
+- **Badge:** « على منوال اختبار الفصل الأول » / « … الثاني » / « … الثالث ». Its term must equal `source.semester`
+  (or the `s<n>` of `modelledOn`). `adapted` keeps `badge: null`.
+- **Not allowed:** a 1AM–3AM exercise citing `bem`, and a 4AM exercise citing `term_exam`. The 4AM rules are
+  unchanged.
+- **Screen:** `examPaper(lessonCode)` (`examSheet.js`) reads the lesson's grade from the catalogue.
+  - Paper title: « اختبار تجريبي — على منوال اختبارات الفصل » (`practice.exam.paper.titleTerm`).
+  - Nav pill: « محاكاة اختبار الفصل » (`nav.simulationTerm`).
+  - Level and subject take the grade number (`paper.levelValue` / `nav.subject`: « {{n}} متوسط »).
+  - `examBadge` keeps the all-Arabic badge RTL (`ltr: false`); only « BEM yyyy » is an LTR island.
+- **Status:** the contract, validator and screen are ready. No 1AM–3AM bank exists yet; the first one comes with
+  the first generated lesson (phase 3).
 
 ### Screen (`features/practice/exam/`)
 
@@ -786,6 +817,27 @@ Tests:
 - `scripts/practice-oracle/bahth-pgcd.mjs`
 - browser: `e2e/lesson-kit/practice-exam-sheet.mjs`, which walks levels 1→5, checks the
   progressive steps and the self-check lock, and checks a phone at 360 px
+
+## Earlier-year review link — « راجع » after a wrong answer (2026-10-14)
+
+Owner decision D7: links to earlier years go **inside exercises** too, not only in the lesson's « أستعدّ ».
+
+- **Where:** under the verdict of a wrong answer, in the practice player (`PracticeSession` › `FeedbackPanel`;
+  classic card and exam sheet alike) and in the lesson's final-test review (`BossFinal` › `EpreuveReview`;
+  student page and classroom presentation). Not on `selfCheck` steps or inert outcomes.
+- **What:** up to three compact lines « راجع: <lesson> (<year>) », nearest year first. The lesson title is a link
+  when the target lesson is published. When it is not, the line shows the official text of the الكفاءة with no
+  link; the link appears by itself when the lesson is published.
+- **Authoring: nothing.** The link is derived, never written in an exercise:
+  - the question's primary learning point (`learningPoints[role=primary]`, or `assessment.learningPointIds[0]` in a
+    lesson test);
+  - → its lesson;
+  - → the learning net's review links, kept to earlier years (`earlierYearReviewFor`, `LEARNING_NET.md` §3).
+  - A question whose LP belongs to an earlier lesson (`counted: false` steps) links from THAT lesson.
+- **Component:** `apps/web/src/features/learning/EarlierYearReview.jsx`, the only one. It loads the resolver by
+  dynamic `import()`, so the net never enters the entry or the practice chunk. Do not render review links any
+  other way.
+- **Contract:** never gates and sends no evidence. Strings: `lesson.json › review.*`.
 
 ## Level unlocking and the student setting « open all levels » (2026-10-06)
 
