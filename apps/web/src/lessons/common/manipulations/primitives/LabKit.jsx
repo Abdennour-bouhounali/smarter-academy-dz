@@ -50,19 +50,28 @@ export function QuestionChip({ icon: Icon, children, className = '' }) {
  * `title` est la phrase de l'histoire (grande, épaisse) ; `lamp` ('off' | 'on' | null) l'allume
  * quand elle devient vraie ; `instruction` dit le geste ; `children` (les cartes de réponse…) vient dessous.
  * `size` 'lg' (≥ 520 px) ou 'md' (téléphone) ; `titleClassName` remplace la taille du titre (un labo très étroit).
+ *
+ * CONTEXTE PUIS QUESTION (MANIPULATION_DNA §17.9, 2026-10-14) : `context` (une ou deux phrases simples qui donnent TOUS
+ * les nombres) ouvre la carte, `aside` à côté ; `title` est alors LA question directe qui nomme le but et l'état final
+ * (« اربط الأقلام حتى تستطيع كتابة عدد الأقلام. ») ; `aside` (jalons, compteurs, lectures) passe SOUS la question. Un labo
+ * §17.9 ne passe pas de `chip` (une puce qui ne fait que nommer le labo est un titre déguisé).
+ * DOM : [data-lab-context], [data-lab-question], [data-lab-aside].
  */
-export function PromptCard({ chip, chipIcon, aside, title, lamp = null, instruction, size = 'lg', titleClassName, className = '', children, titleProps = {}, ...rest }) {
+export function PromptCard({ chip, chipIcon, aside, context, contextProps = {}, title, lamp = null, instruction, size = 'lg', titleClassName, className = '', children, titleProps = {}, ...rest }) {
   const on = lamp === 'on';
   return (
     <LabCard className={`${size === 'lg' ? 'space-y-3 p-5' : 'space-y-2 p-3'} ${className}`} {...rest}>
-      {(chip || aside) && (
+      {(chip || (aside && !context)) && (
         <div className="flex flex-wrap items-center justify-between gap-2">
           {chip && <QuestionChip icon={chipIcon}>{chip}</QuestionChip>}
-          {aside}
+          {!context && aside}
         </div>
       )}
+      {context && (
+        <p className={`font-semibold leading-relaxed text-slate-700 ${size === 'lg' ? 'text-lg' : 'text-[15px]'}`} data-lab-context {...contextProps}>{context}</p>
+      )}
       {title && (
-        <p className={`flex items-start gap-2.5 font-black leading-snug text-indigo-950 ${titleClassName ?? (size === 'lg' ? 'text-2xl' : 'text-lg')}`} {...titleProps}>
+        <p className={`flex items-start gap-2.5 font-black leading-snug text-indigo-950 ${titleClassName ?? (size === 'lg' ? 'text-2xl' : 'text-lg')}`} data-lab-question={context ? '' : undefined} {...titleProps}>
           {lamp && (
             <span aria-hidden="true"
               className={`mt-1.5 inline-flex shrink-0 items-center justify-center rounded-full border-2 transition-all duration-300 motion-reduce:transition-none ${size === 'lg' ? 'h-6 w-6' : 'h-5 w-5'} ${on ? 'border-emerald-500 bg-emerald-400 text-white shadow-[0_0_12px_rgba(52,211,153,0.9)]' : 'border-slate-300 bg-slate-100 text-transparent'}`}>
@@ -72,6 +81,7 @@ export function PromptCard({ chip, chipIcon, aside, title, lamp = null, instruct
           <span>{title}</span>
         </p>
       )}
+      {context && aside && <div className="flex flex-wrap items-center gap-2" data-lab-aside>{aside}</div>}
       {instruction && <p className={`font-semibold text-slate-600 ${size === 'lg' ? 'text-base' : 'text-xs'}`}>{instruction}</p>}
       {children}
     </LabCard>

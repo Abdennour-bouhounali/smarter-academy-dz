@@ -57,8 +57,7 @@ export default function Module03Tariqa() {
                 </tbody>
               </table>
               <Manipulation type="story-bars" story="method29" levels={false}
-                title="طريقة الكتاب: قامات أكرم ويونس ومحمد"
-                lead="قامة أكرم معلومة. اسحب قامة يونس ثم قامة محمد حتى تصدق كل جملة." />
+                title="طريقة الكتاب: قامات أكرم ويونس ومحمد" />
               <TapQuestion
                 prompt={<span>أيّ التلميذتين على حق؟</span>}
                 options={['هدى', 'إيناس']}

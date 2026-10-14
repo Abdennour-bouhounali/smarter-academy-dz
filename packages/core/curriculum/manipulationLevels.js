@@ -209,6 +209,18 @@ export const VISUAL_THEMES = Object.freeze({
   //   checkup  la visite médicale scolaire : des élèves debout devant la toise ; la taille inconnue se TIRE jusqu'à ce
   //            que la phrase de l'histoire soit vraie (« أطول من … بـ 6 cm ») — يزيد / ينقص sous la main (story-bars)
   checkup: { kind: 'people', shows: 'تلاميذ أمام مقياس القامة في الفحص الطبي المدرسي' },
+  // 1AM, unité 1 « الأعداد الطبيعية والأعداد العشرية » (2026-10-14) :
+  //   packing  l'atelier d'emballage des crayons offerts par le club de l'école aux élèves d'une école de montagne :
+  //            crayon, paquet de 10, boîte de 100, carton de 1000 — on lie dix pour un, on ouvre un pour dix (rank-exchange)
+  packing: { kind: 'objects', shows: 'أقلام تُربط حزمًا من 10 وعلبًا من 100 وصناديق من 1000' },
+  // 1AM, unité 4 « الكتابات الكسرية » (2026-10-14) :
+  //   sweets-tray  le plateau de قلب اللوز de grand-mère le soir de l'Aïd : la part des voisins (3/5) est fixée, le couteau
+  //                coupe le plateau en d morceaux égaux — la part s'écrit a/d seulement si son bord tombe sur une coupe (fraction-knife)
+  'sweets-tray': { kind: 'objects', shows: 'صينية قلب اللوز تُقطّع إلى قطع متساوية وحصّة الجيران منها' },
+  // 2AM, unité 2 « الكسور والعمليات عليها » (2026-10-14) :
+  //   farm  le poulailler et la station d'emballage du manuel (نشاط 1) : les œufs du jour sur un tapis, des boîtes de 6
+  //         (مبتدئ) ou des plateaux de 30 (متقدم) qui se ferment pleins, et la règle des plateaux sous le tapis (egg-trays)
+  farm: { kind: 'objects', shows: 'بيض مزرعة دواجن يوضَّب في علب وصفائح' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

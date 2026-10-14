@@ -205,7 +205,8 @@ describe('résolveur — navigation', () => {
     expect(rules).toHaveLength(1);
     expect(rules[0]).toMatchObject({ type: 'extends', base: { id: '1am.m5.r02' }, baseLesson: { code: homeLessonOf('1am.m5.r02').code } });
     expect(rules[0].addedValueAr).toBeTruthy();
-    expect(getLesson(homeLessonOf('1am.m5.r02').code).status).toBe('planned');
+    // la leçon de base existe au catalogue, quel que soit son avancement (publiée le 2026-10-14 : ikhtizal-kitaba-kasriya)
+    expect(['planned', 'coming_soon', 'available']).toContain(getLesson(homeLessonOf('1am.m5.r02').code).status);
   });
 
   it('« راجع » après une erreur : de la الكفاءة à sa leçon, puis aux SEULES années antérieures', () => {

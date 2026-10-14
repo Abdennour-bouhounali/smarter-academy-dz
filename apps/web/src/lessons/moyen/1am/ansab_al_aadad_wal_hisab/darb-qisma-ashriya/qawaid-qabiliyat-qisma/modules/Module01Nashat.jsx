@@ -64,14 +64,12 @@ export default function Module01Nashat() {
           levels={{
             beginner: () => (
               <Manipulation type="digit-cards" level="beginner" mode="grid" from={ACTIVITY.numbers.from} to={ACTIVITY.numbers.to}
-                columns={ACTIVITY.numbers.columns} divisors={ACTIVITY.numbers.divisors}
-                lead="لوّن مضاعفات 2 بالأحمر، ثم مضاعفات 5 بالأزرق، ثم مضاعفات 3 بالأخضر. كل خانة تُحكم بباقي قسمتها." onTrial={record} />
+                columns={ACTIVITY.numbers.columns} divisors={ACTIVITY.numbers.divisors} onTrial={record} />
             ),
             advanced: () => (
               <div className="space-y-2">
                 <TextbookBox kind="exercise" text={CARDS.text} source={CARDS.source} compact />
-                <Manipulation type="digit-cards" level="advanced" mode="cards" digits={CARDS.digits} divisors={[2, 3, 5, 4, 9]}
-                  lead="ضع البطاقات في الخانات، ثم احكم: هل يقبل العدد القسمة؟ بدّل بطاقتين ولاحظ أيّ حكم يتغيّر." onTrial={record} />
+                <Manipulation type="digit-cards" level="advanced" mode="cards" digits={CARDS.digits} divisors={[2, 3, 5, 4, 9]} onTrial={record} />
               </div>
             ),
           }}

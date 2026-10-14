@@ -118,7 +118,11 @@ import { ORACLE as ORACLE_BEM_WADIYA_IDMAJIYA_MUTHALLATHAT } from './practice-or
 // Cycle moyen, phase 3 (2026-10-14) : le premier banc 1AM–3AM (feuilles « على منوال اختبار الفصل »).
 import { ORACLE as ORACLE_1AM_MANA_JAM_TARH } from './practice-oracle/mana-jam-tarh.mjs';
 import { ORACLE as ORACLE_1AM_QISMA_IQLIDIYA_BAQI } from './practice-oracle/qisma-iqlidiya-baqi.mjs';
+// Le premier banc 2AM (2026-10-14) : القسمة الإقليدية وحصر حاصل القسمة.
+import { ORACLE as ORACLE_2AM_QISMA_IQLIDIYA_HASR } from './practice-oracle/qisma-iqlidiya-hasr.mjs';
+import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
 import { ORACLE as ORACLE_1AM_QAWAID_QABILIYAT_QISMA } from './practice-oracle/qawaid-qabiliyat-qisma.mjs';
+import { ORACLE as ORACLE_1AM_KITABAT_ADAD_TABII } from './practice-oracle/kitabat-adad-tabii.mjs';
 
 // Toutes les années du cycle moyen (content/practice/<1am…4am>/<leçon>/level-N) : jusqu'au 2026-10-14 seul 4am
 // existait et la racine y était codée en dur — un banc 1AM–3AM aurait échappé à l'oracle sans rien dire.
@@ -263,7 +267,10 @@ const ORACLE = {
   ...ORACLE_BEM_WADIYA_IDMAJIYA_MUTHALLATHAT,
   ...ORACLE_1AM_MANA_JAM_TARH,
   ...ORACLE_1AM_QISMA_IQLIDIYA_BAQI,
+  ...ORACLE_2AM_QISMA_IQLIDIYA_HASR,
+  ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
   ...ORACLE_1AM_QAWAID_QABILIYAT_QISMA,
+  ...ORACLE_1AM_KITABAT_ADAD_TABII,
 };
 
 /**

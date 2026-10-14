@@ -80,18 +80,14 @@ export default function Module01Nashat() {
           levels={{
             beginner: () => (
               <div className="space-y-2">
-                <Manipulation type="story-bars" level="beginner" story="checkup"
-                  lead="اسحب رأس التلميذ حتى تصدق الجملة. ثم اختر الحساب الذي يعطي قامته."
-                  onTrial={record} />
+                <Manipulation type="story-bars" level="beginner" story="checkup" onTrial={record} />
                 <SourceTag source={CHECKUP.source} />
               </div>
             ),
             advanced: () => (
               <div className="space-y-2">
                 <TextbookBox kind="situation" lines={[ACTIVITY.instruction]} source={ACTIVITY.source} compact />
-                <Manipulation type="story-bars" level="advanced" story="act1"
-                  lead="ضع كل بطاقة على النصّ الذي يناسبها. لا مقياس هنا: قرّر أنت، والمخطط يحكم."
-                  onTrial={record} />
+                <Manipulation type="story-bars" level="advanced" story="act1" onTrial={record} />
               </div>
             ),
           }}

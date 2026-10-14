@@ -188,7 +188,9 @@
       ],
       "challenge": {
         "titleAr": "تحدّ",
-        "textAr": "أين أضع الفاصلة؟ $\\frac{235017}{1000}$"
+        "textAr": "أين أضع الفاصلة؟ $\\frac{235017}{1000}$",
+        "sourceElementId": "challenge",
+        "page": 51
       },
       "synthesisLessonCode": "wadiya-idmajiya-kitabat-kasriya"
     },

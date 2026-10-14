@@ -114,7 +114,7 @@ describe('story-bars — rendu', () => {
 
   it('every string a verdict, a refusal or the discovery can show exists, in Arabic, fully interpolated', () => {
     const say = (key, o) => i18n.t(`lesson:manipulation.storyBars.${key}`, o);
-    const o = { name: 'أمين', known: 'سارة', h: 140, d: 6, diff: 10, says: 'جملة', got: 'يكون', calc: '130 − 6', value: '124', a: '6', b: '130', n: 1, k: 130, whole: 'أمين 136', p0: 'سارة 130', p1: 'الفرق 6' };
+    const o = { name: 'أمين', known: 'سارة', h: 140, d: 6, diff: 10, says: 'جملة', got: 'يكون', calc: '130 − 6', value: '124', a: '6', b: '130', n: 1, k: 130, whole: 'أمين 136', p0: 'سارة 130', p1: 'الفرق 6', count: 6 };
     const keys = ['v.ok', 'v.equal', 'v.side', 'v.mirror', 'v.gap', 'v.locked', 'v.calcFirst', 'v.calcOk', 'v.calcWrong', 'v.calcImpossible', 'v.calcDone', 'v.cardOk',
       'discovery.prompt', 'discovery.optRight', 'discovery.optBig', 'formal.rule', 'formal.lineWhole', 'formal.linePart', 'explanation', 'tapeAria', 'tapeAriaOpen'];
     for (const id of ['checkup', 'act1']) keys.push(`stories.${id}.optWord`, `stories.${id}.whyWord`, `stories.${id}.whyBig`);
@@ -123,7 +123,7 @@ describe('story-bars — rendu', () => {
       for (const it of STORIES[id].items) keys.push(...['name', 'sentence', 'taller', 'shorter'].map((w) => `stories.${id}.items.${it.id}.${w}`));
     }
     for (const mode of ['stretch', 'cards']) for (let i = 0; i < 3; i += 1) keys.push(`hints.${mode}.${i}`);
-    keys.push('mission.checkup', 'mission.method29', 'trialStretch', 'gaugeAria');
+    keys.push('itemsLabel', 'calcAsk', 'solvedLabel', 'context.checkup', 'context.method29', 'context.cards', 'question.stretch', 'question.cards', 'trialStretch', 'gaugeAria');
     for (const key of keys) {
       const s = say(key, o);
       expect(bareCm(s), `${key}: « n cm » is one LTR island`).toEqual([]);
@@ -137,6 +137,32 @@ describe('story-bars — rendu', () => {
     }
     // the hints never give the rule before the discovery
     for (const mode of ['stretch', 'cards']) for (let i = 0; i < 3; i += 1) expect(say(`hints.${mode}.${i}`)).not.toContain('نطرح الجزء الآخر');
+  });
+
+  it('opens on its CONTEXT then ONE question naming the end state — no title banner, no shell mission (MANIPULATION_DNA §17.9)', () => {
+    const say = (key, o) => i18n.t(`lesson:manipulation.storyBars.${key}`, o);
+    const text = (out) => out.replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ').replace(/[⁦⁩]/g, '').replace(/\s+/g, ' ');
+    for (const [props, context, question] of [
+      [LEVELS['story-bars'].beginner.numbers, say('context.checkup', { known: 130 }).replace(/[⁦⁩]/g, '').replace(/\s+/g, ' '), say('question.stretch', { name: 'أمين' })],
+      [LEVELS['story-bars'].advanced.numbers, say('context.cards', { count: 6 }), say('question.cards')],
+      [{ story: 'method29', levels: false, title: 'طريقة الكتاب: قامات أكرم ويونس ومحمد' }, 'قامة أكرم', say('question.stretch', { name: 'يونس' })],
+    ]) {
+      const out = html({ ...props });
+      expect(out).toMatch(/<h3 class="sr-only">/);
+      expect(out).not.toContain('data-manipulation-mission');
+      expect(out).not.toMatch(/<span class="inline-flex items-center gap-1\.5 rounded-full bg-indigo-50/);
+      expect(out).toContain('data-sb-context');
+      // no bare row (§17.9): the item chips, the calc cards and the progress each carry their label
+      if (props.story !== 'act1') expect(out).toContain('data-sb-items-label');
+      if (props.story !== 'act1') expect(out.indexOf('data-sb-calc-ask')).toBeLessThan(out.indexOf('data-sb-calcs'));
+      if (props.story === 'act1') expect(text(out)).toContain(say('solvedLabel'));
+      const t = text(out);
+      expect(t.indexOf(context), context).toBeGreaterThan(-1);
+      expect(t.indexOf(question), question).toBeGreaterThan(t.indexOf(context));
+      expect(t.split(question).length - 1).toBe(1);
+      expect(question).toMatch(/حتى/);
+      expect(out.indexOf('data-lab-context')).toBeLessThan(out.indexOf('data-lab-question'));
+    }
   });
 
   it('the tapes the lab draws: closed exactly when the exact verdict says so, with the story\'s words', () => {

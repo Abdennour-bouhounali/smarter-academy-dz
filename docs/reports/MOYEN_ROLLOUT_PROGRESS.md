@@ -101,10 +101,55 @@ Defects found and fixed:
 Known, not a lab defect: the lesson's floating column (« كرّاسي / بطاقتي ») overlaps the bottom-left of a lab on a 390 px phone while
 scrolling (platform layer, `lesson-floating-column`).
 
+## Batch 2 (2026-10-14) — queue entries 1–3
+
+Organisation: three lesson leads (seed + whole-unit extraction + authors' brief, then the lesson), a lab author and a bank author per
+lesson from the brief (`docs/sources/<g>/unit<N>/brief-authors.md`). All three published on `dev` and in the local database.
+
+### 1. `qisma-iqlidiya-hasr` « القسمة الإقليدية وحصر حاصل القسمة » (2AM, unit 2 `kusur-amaliyat`) — published — the FIRST 2AM lesson
+- Nothing was missing for 2AM (`lessonLoaders.js`, the index generator and the practice tooling already covered it). Fix found: a
+  `textbookRef.pages.method: null` was rendered as « page 0 » on the unit page (`textbookPages.js`, with a test); the method page p. 27
+  belongs to `kasr-hasil-qisma`, so this lesson's طريقة is a declared addition.
+- 9 modules, 86 min (catalogue `durationMinutes` 62). New lab `egg-trays` (MANIPULATION_CONTRACT §2unvicies): the hand holds the DIVIDEND a
+  (eggs on a conveyor, trays closing at b), the trays ruler is the same line read ÷ b, the student brackets a ÷ b with a one-unit frame; it
+  does NOT reuse `division-jumps` (1AM holds q) — the net's no-rebuild rule. « تذكّر » box toward the published 1AM lesson.
+- الكفاءات: P1 « …على أيّ عدد طبيعي غير معدوم b … 0 ≤ r < b »; P2 + « قيمتين مقرّبتين إلى الوحدة بالنقصان وبالزيادة »; P3 reworded to
+  « انعدام الباقي: a/b عدد طبيعي ». `pointPrerequisites` P1 ← `1am_qisma-iqlidiya-baqi_P1`, `_P2`.
+- Bank: 50 sheets, 15 `term_exam` (2am-s1-79, -87, -74, -70, -77, -68), `MISC-HASR-*`.
+- URL: `/courses/moyen/2am/ansab_al_aadad_wal_hisab/qisma-iqlidiya-hasr`.
+
+### 2. `kitabat-adad-tabii` « كتابة الأعداد الطبيعية ودلالة الأرقام » (1AM, unit 1 `adad-tabiiya-ashriya`) — published
+- 10 modules, 88 min (catalogue 64). New lab `rank-exchange` (§2novodecies): the hand moves quantities between ranks (ties ten into one,
+  opens one into ten); the written digits are an OUTPUT, never a card (so it differs from `digit-cards`); worlds `packing` (pencils) and
+  `money` (generic drawn notes and coins). Exact maths in the new `packages/core/arithmetic/placeValue.js` (`toArabicWords` identical to
+  the extraction's `words()`).
+- Boundary with `kusur-ashriya-kitaba` (both carry `1am.m1.r02`): this lesson = naturals (classes of three, rank of a digit, « رقم » vs
+  « عدد »), the next = decimal fractions and decimal places; `know-4`, `ex-12`, `deep-3` are split between them.
+- الكفاءات: P2 + « التمييز بين رقم منزلة وعدد وحداتها »; P3 → decomposition of a NATURAL (the decimal part of the draft moved to kusur's P3).
+- Bank: 50 sheets (14 `term_exam`, term 1), `MISC-KITABA-*`; oracle with its own number speller.
+- URL: `/courses/moyen/1am/ansab_al_aadad_wal_hisab/kitabat-adad-tabii`.
+
+### 3. `ikhtizal-kitaba-kasriya` « الكتابات الكسرية لحاصل قسمة واختزال كسر » (1AM, unit 4 `kitabat-kasriya`) — published
+- 10 modules, 89 min (catalogue 65). New lab `fraction-knife` (§2vicies): one whole with one fixed share, the hand holds the knife (d, the
+  number of equal pieces); a/d is writable only when the share's edge falls on a cut; bands when a piece would be < 10 px (d = 45 on a phone).
+  It stands on its own before `hasil-qisma-kasr` (queue order): the fraction-as-quotient idea is only recalled.
+- الكفاءات: P1 + « أو بقسمتهما عليه »; P2 makes `1am.m5.x1` (decimal fraction ↔ decimal writing) explicit; P3 + « حتى أبسط شكل ممكن ».
+  `pointPrerequisites` P3 ← `1am_qawaid-qabiliyat-qisma_P1`, `_P2`; P2 ← `1am_kitabat-adad-tabii_P2` (net link `1am.m1.r02 → 1am.m5.r01`).
+- Bank: 50 sheets (term 2 and term 3 badges by source paper), `MISC-KASRIYA-*`.
+- URL: `/courses/moyen/1am/ansab_al_aadad_wal_hisab/ikhtizal-kitaba-kasriya`.
+
+### Open points for the owner
+1. **2AM unit 2 تحدّ**: no four of the five printed cards (1/24, 1/6, 1/2, 1/12, 1/8) sum to 1 (best 7/8); either the answer is « لا » or the scan hides a card (1/4 would work). Decide before the synthesis.
+2. **Two proposed net links, NOT applied**: `1am.m5.r01 → 2am.m1.r06` (P2 writes 180/8) and `1am.m3.r02 → 2am.m1.r04`.
+3. Brief errors found by authors: unit 4's « readable at {5, 15} » is true only among the divisors of 45 (every multiple of 5 below 45 is readable).
+4. The platform's floating « كرّاسي / بطاقتي » pills still cover the lower-left of a lab on a 390 px phone (platform layer, not a lab).
+
 ## Next batch — prompt
 
-The queue after batch 1 starts with `qisma-iqlidiya-hasr` (2AM), `kitabat-adad-tabii` (1AM), `ikhtizal-kitaba-kasriya` (1AM)
-(`docs/curriculum/GENERATION_QUEUE.md`). Paste:
+The queue after batch 2 starts with `hasil-qisma-kasr` (1AM), `kusur-ashriya-kitaba` (1AM), `muqaranat-adad-ashriya` (1AM)
+(`docs/curriculum/GENERATION_QUEUE.md`; the 1AM unit-1 lesson `kusur-ashriya-kitaba` takes `know-4 b`, `ex-12 ②–④`, `deep-3 ③④` split
+off by `kitabat-adad-tabii`). Organisation that worked twice: a lead per lesson (phase 1: seed + extraction + brief; phase 2: lesson), a lab
+author and a bank author per lesson from the brief. Paste:
 
 ```
 Phase 3 of the cycle moyen rollout — generate the next N=3 lessons of the learning-net queue.
@@ -126,7 +171,7 @@ Run `node scripts/learning-net-queue.mjs` so the queue is fresh, then take its f
    LEARNING_NET §4, in a folder named exactly like the lesson code: « أستعدّ » measures every review-link item; nothing
    noRebuildForLesson lists is rebuilt; pointPrerequisites only along net links; the lab follows MANIPULATION_DNA with
    two levels and meets its §17 Gen Alpha quality bar (push the UI/UX to the limit; the shared kit and KidFigure — girls in
-   hijab; screenshots of initial and mid-activity states at four sizes, reviewed and iterated); knowledge map, « أتوقّع القاعدة », « مسائل », values woven into story contexts. Lab strings go to
+   hijab; no title — context then ONE direct question naming the goal and end state, §17.9; screenshots of initial and mid-activity states at four sizes, reviewed and iterated); knowledge map, « أتوقّع القاعدة », « مسائل », values woven into story contexts. Lab strings go to
    apps/web/src/i18n/locales/ar/lesson.manipulation.json (keys lesson:manipulation.<type>.*), never lesson.json;
    unit maths in packages/core/arithmetic/ are imported BY PATH, never added to the core barrel. Do NOT touch App.jsx:
    run `npm run generate:lesson-index` once the lesson's lesson.config.js and routes.jsx exist. The draft الكفاءات may

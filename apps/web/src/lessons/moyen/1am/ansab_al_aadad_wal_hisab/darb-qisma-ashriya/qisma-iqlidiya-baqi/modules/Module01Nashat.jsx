@@ -63,7 +63,7 @@ export default function Module01Nashat() {
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
-          lead="ابدأ بالمستوى المبتدئ (47 زهرة)، ثم انتقل إلى المتقدّم: أزهار الكتاب الـ 279 على مستقيم مدرّج."
+          lead="ابدأ بأزهار البائعة (مبتدئ)، ثم انتقل إلى أزهار الكتاب على مستقيم مدرّج (متقدّم)."
           levels={{
             beginner: () => (
               <div className="space-y-2">
@@ -76,7 +76,7 @@ export default function Module01Nashat() {
               <div className="space-y-2">
                 <TextbookBox kind="situation" text={ACTIVITY.situation} source={ACTIVITY.source} compact />
                 <Manipulation type="division-jumps" level="advanced" world="line" a={a} b={b}
-                  lead="كل قفزة = باقة من 14 زهرة." onTrial={record} />
+                  lead={`عندنا ${a} زهرة، وفي كل باقة ${b} زهرة: كل قفزة على المستقيم طولها ${b}، أي باقة.`} onTrial={record} />
               </div>
             ),
           }}

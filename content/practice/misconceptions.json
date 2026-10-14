@@ -2621,6 +2621,167 @@
       "1am_qisma-iqlidiya-baqi_P3"
     ]
   },
+  "MISC-KASRIYA-JAMA": {
+    "label": "إضافة نفس العدد إلى البسط والمقام لإنتاج كسر مساوٍ",
+    "explanation": "الكسر لا يتغيّر عندما نضرب البسط والمقام في نفس العدد غير المعدوم أو نقسمهما عليه، أمّا الإضافة فتغيّره: $\\dfrac{3}{5} = \\dfrac{18}{30}$ و $\\dfrac{4}{6} = \\dfrac{20}{30}$ ، إذن $\\dfrac{3}{5} \\neq \\dfrac{4}{6}$.",
+    "relatedLearningPoints": [
+      "1am_ikhtizal-kitaba-kasriya_P1"
+    ]
+  },
+  "MISC-KASRIYA-HADD-WAHID": {
+    "label": "ضرب حدّ واحد أو قسمته (أو الحدّين في عددين مختلفين)",
+    "explanation": "لننتج كتابة مساوية نطبّق نفس العملية على البسط وعلى المقام: $\\dfrac{4}{5} = \\dfrac{12}{15}$ (ضربنا الحدّين في 3)، أمّا $\\dfrac{12}{20}$ فضُرب بسطها في 3 ومقامها في 4، فهي تساوي $\\dfrac{3}{5}$.",
+    "relatedLearningPoints": [
+      "1am_ikhtizal-kitaba-kasriya_P1"
+    ]
+  },
+  "MISC-KASRIYA-QASIM-HADD": {
+    "label": "الاختزال على قاسم لأحد الحدّين فقط",
+    "explanation": "نختزل على قاسم مشترك يقسم البسط والمقام معًا: 7 يقسم 378 ولا يقسم 54، و 5 يقسم 45 ولا يقسم 27 ($27 \\div 5 = 5{,}4$)، فلا يصلح أيّ منهما لاختزال الكسر.",
+    "relatedLearningPoints": [
+      "1am_ikhtizal-kitaba-kasriya_P3"
+    ]
+  },
+  "MISC-KASRIYA-NAQIS": {
+    "label": "التوقّف قبل أبسط شكل ممكن",
+    "explanation": "بعد كل قسمة نبحث من جديد عن قاسم مشترك: $\\dfrac{36}{28} = \\dfrac{18}{14}$ ما زال يقبل الاختزال على 2، و $\\dfrac{18}{14} = \\dfrac{9}{7}$ هو أبسط شكل لأنّ 9 و 7 لا يقبلان قاسمًا مشتركًا غير 1.",
+    "relatedLearningPoints": [
+      "1am_ikhtizal-kitaba-kasriya_P3"
+    ]
+  },
+  "MISC-KASRIYA-LA-QAIDA": {
+    "label": "« لا تنطبق أيّ قاعدة، إذن الكسر لا يقبل الاختزال »",
+    "explanation": "قواعد قابلية القسمة تخصّ 2، 3، 4، 5، 9 فقط. قد يقبل الكسر الاختزال على 7 أو 13 أو 17 أو 23…: $91 = 7 \\times 13$ و $\\dfrac{414}{391} = \\dfrac{18 \\times 23}{17 \\times 23} = \\dfrac{18}{17}$.",
+    "relatedLearningPoints": [
+      "1am_ikhtizal-kitaba-kasriya_P3"
+    ]
+  },
+  "MISC-KASRIYA-FASILA": {
+    "label": "وضع الفاصلة في غير مكانها عند تحويل كسر عشري",
+    "explanation": "عدد أصفار المقام هو عدد الأرقام بعد الفاصلة: $\\dfrac{235017}{1000} = 235{,}017$ (ثلاثة أصفار، ثلاثة أرقام بعد الفاصلة) وليس $2350{,}17$ ، و $\\dfrac{7}{100} = 0{,}07$ وليس $0{,}7$.",
+    "relatedLearningPoints": [
+      "1am_ikhtizal-kitaba-kasriya_P2"
+    ]
+  },
+  "MISC-KASRIYA-ARQAM": {
+    "label": "قراءة الكسر بأرقامه: $\\dfrac{3}{5} = 3{,}5$",
+    "explanation": "الكسر $\\dfrac{3}{5}$ هو حاصل قسمة 3 على 5، وهو أصغر من 1: $\\dfrac{3}{5} = \\dfrac{6}{10} = 0{,}6$. كتابة البسط ثم فاصلة ثم المقام لا تعطي العدد.",
+    "relatedLearningPoints": [
+      "1am_ikhtizal-kitaba-kasriya_P2"
+    ]
+  },
+  "MISC-KASRIYA-MAQLUB": {
+    "label": "الخلط بين كسر ومقلوبه",
+    "explanation": "$1{,}25 = \\dfrac{125}{100} = \\dfrac{5}{4}$ وهو أكبر من 1، بينما $\\dfrac{4}{5} = 0{,}8$ أصغر من 1: تبديل البسط والمقام يغيّر العدد.",
+    "relatedLearningPoints": [
+      "1am_ikhtizal-kitaba-kasriya_P2"
+    ]
+  },
+  "MISC-KASRIYA-AKBAR-ARQAM": {
+    "label": "الحكم على الكسر بحجم حدّيه",
+    "explanation": "كتابتان بأعداد مختلفة قد تمثّلان نفس العدد: $\\dfrac{27}{45} = \\dfrac{3}{5}$ ، و $\\dfrac{12}{40} = \\dfrac{3}{10}$ أصغر من $\\dfrac{8}{20} = \\dfrac{4}{10}$ رغم أنّ حدّيه أكبر. نقارن بعد الاختزال أو بعد الكتابة بنفس المقام.",
+    "relatedLearningPoints": [
+      "1am_ikhtizal-kitaba-kasriya_P1"
+    ]
+  },
+  "MISC-KASRIYA-SHATB": {
+    "label": "شطب رقم مشترك بين البسط والمقام",
+    "explanation": "الاختزال قسمة الحدّين على نفس العدد، لا شطب الأرقام: في $\\dfrac{44}{24}$ شطب الرقم 4 يعطي $\\dfrac{4}{2} = 2$ ، بينما $\\dfrac{44}{24} = \\dfrac{11}{6}$.",
+    "relatedLearningPoints": [
+      "1am_ikhtizal-kitaba-kasriya_P1",
+      "1am_ikhtizal-kitaba-kasriya_P3"
+    ]
+  },
+  "MISC-KASRIYA-KULL-ASHRI": {
+    "label": "« كل كسر يُكتب على شكل كسر عشري »",
+    "explanation": "نكتب كسرًا (بعد الاختزال) بمقام 10 أو 100 أو 1000… فقط إذا وُجد عدد نضرب فيه مقامه لنصل إلى ذلك: $\\dfrac{7}{4} = \\dfrac{175}{100}$ ، أمّا $\\dfrac{2}{3}$ فلا، لأنّ 10 و 100 و 1000… لا تقبل القسمة على 3.",
+    "relatedLearningPoints": [
+      "1am_ikhtizal-kitaba-kasriya_P2"
+    ]
+  },
+  "MISC-KASRIYA-MAQAM-ASHRI": {
+    "label": "« لا كتابة عشرية لكسر مقامه ليس 10 أو 100 أو 1000 »",
+    "explanation": "يمكن أن نحوّل الكسر أوّلًا إلى كسر عشري بضرب حدّيه في نفس العدد: $\\dfrac{4}{5} = \\dfrac{8}{10} = 0{,}8$ و $\\dfrac{12}{16} = \\dfrac{3}{4} = \\dfrac{75}{100} = 0{,}75$.",
+    "relatedLearningPoints": [
+      "1am_ikhtizal-kitaba-kasriya_P2"
+    ]
+  },
+  "MISC-HASR-BAQI-AKBAR": {
+    "label": "قبول باقٍ أكبر من المقسوم عليه أو يساويه",
+    "explanation": "المساواة 2145 = 30 × 70 + 45 صحيحة لكنها ليست القسمة الإقليدية للعدد 2145 على 30: الباقي 45 أكبر من 30، فيمكن ملء صفيحة أخرى (45 = 30 + 15). القسمة الإقليدية هي 2145 = 30 × 71 + 15 مع 15 < 30.",
+    "relatedLearningPoints": [
+      "2am_qisma-iqlidiya-hasr_P1",
+      "2am_qisma-iqlidiya-hasr_P2"
+    ]
+  },
+  "MISC-HASR-BAQI-HASIL": {
+    "label": "أخذ الباقي مكان الحاصل (في القسمة أو في الحصر)",
+    "explanation": "في 180 = 8 × 22 + 4 الحاصل 22 والباقي 4. حاصل القسمة 180/8 محصور بين الحاصل والعدد الذي يليه: 22 < 180/8 < 23 ، لا بين الباقي والعدد الذي يليه (4 و 5).",
+    "relatedLearningPoints": [
+      "2am_qisma-iqlidiya-hasr_P1",
+      "2am_qisma-iqlidiya-hasr_P2"
+    ]
+  },
+  "MISC-HASR-IZAHA": {
+    "label": "حصر مُزاح بوحدة",
+    "explanation": "من 8 × 22 ≤ 180 < 8 × 23 نجد 22 < 180/8 < 23. الحصر 21 < 180/8 < 22 أو 23 < 180/8 < 24 خاطئ: نتحقّق بضرب الطرفين في المقسوم عليه (8 × 22 = 176 < 180 < 184 = 8 × 23).",
+    "relatedLearningPoints": [
+      "2am_qisma-iqlidiya-hasr_P1",
+      "2am_qisma-iqlidiya-hasr_P2"
+    ]
+  },
+  "MISC-HASR-SIFR-SARIM": {
+    "label": "حصر تامّ بين عددين متتاليين رغم أن الباقي معدوم",
+    "explanation": "عندما يكون الباقي معدومًا (1296 = 48 × 27) يكون حاصل القسمة عددًا طبيعيًا: 1296/48 = 27. لا يقع إذن تمامًا بين عددين طبيعيين متتاليين؛ الكتابة 27 < 1296/48 < 28 خاطئة.",
+    "relatedLearningPoints": [
+      "2am_qisma-iqlidiya-hasr_P2",
+      "2am_qisma-iqlidiya-hasr_P3"
+    ]
+  },
+  "MISC-HASR-NAQS-ZIYADA": {
+    "label": "الخلط بين القيمة المقرّبة بالنقصان والقيمة المقرّبة بالزيادة",
+    "explanation": "في 22 < 180/8 < 23 ، 22 هي القيمة المقرّبة إلى الوحدة بالنقصان و 23 بالزيادة. في وضعية « كم يلزم؟ » (صفائح، حافلات، شاحنات) نأخذ القيمة بالزيادة عندما لا يكون الباقي معدومًا: 2145 بيضة في صفائح من 30 تلزمها 72 صفيحة لا 71.",
+    "relatedLearningPoints": [
+      "2am_qisma-iqlidiya-hasr_P2"
+    ]
+  },
+  "MISC-HASR-YAQSIM-AKS": {
+    "label": "قراءة « يقسم » أو « مضاعف لـ » في الاتجاه المعاكس",
+    "explanation": "من 945 = 15 × 63 نقول: 15 يقسم 945 ، و 945 مضاعف لـ 15 ، و 945 يقبل القسمة على 15. العبارة « 945 يقسم 15 » خاطئة: العدد الذي يقسم هو المقسوم عليه.",
+    "relatedLearningPoints": [
+      "2am_qisma-iqlidiya-hasr_P3"
+    ]
+  },
+  "MISC-HASR-TABADUL": {
+    "label": "قراءة المساواة قسمةً على الحاصل رغم أن الباقي ليس أصغر منه",
+    "explanation": "300 = 26 × 11 + 14 هي القسمة الإقليدية للعدد 300 على 26 (14 < 26) ، لكنها ليست قسمته على 11 لأن 14 > 11: القسمة على 11 هي 300 = 11 × 27 + 3.",
+    "relatedLearningPoints": [
+      "2am_qisma-iqlidiya-hasr_P1"
+    ]
+  },
+  "MISC-HASR-HISAB": {
+    "label": "خطأ في الجداء أو في التحقّق",
+    "explanation": "قبل الحكم نحسب b × q + r ونقارنه بالمقسوم: 500 = 23 × 22 + 6 خاطئة لأن 23 × 22 = 506. التحقّق بالحساب يكشف المساواة الخاطئة والقسمة غير التامّة.",
+    "relatedLearningPoints": [
+      "2am_qisma-iqlidiya-hasr_P1",
+      "2am_qisma-iqlidiya-hasr_P2",
+      "2am_qisma-iqlidiya-hasr_P3"
+    ]
+  },
+  "MISC-HASR-TAFKIK": {
+    "label": "كتابة الكسر الباقي على المقسوم بدل المقسوم عليه",
+    "explanation": "من 129 = 11 × 11 + 8 نكتب 129/11 = 11 + 8/11 : الباقي يُقسم على المقسوم عليه 11 ، لا على المقسوم 129.",
+    "relatedLearningPoints": [
+      "2am_qisma-iqlidiya-hasr_P2"
+    ]
+  },
+  "MISC-HASR-KHATT-KASR": {
+    "label": "قراءة خط الكسر فاصلةً",
+    "explanation": "الكسر 11/7 هو حاصل قسمة 11 على 7 (11 ÷ 7 ≈ 1,57) ، لا العدد العشري 11,7.",
+    "relatedLearningPoints": [
+      "2am_qisma-iqlidiya-hasr_P2"
+    ]
+  },
   "MISC-QABILIYA-AHAD-3": {
     "label": "الحكم بالقسمة على 3 أو على 9 من رقم الآحاد",
     "explanation": "رقم الآحاد يكفي للقسمة على 2 وعلى 5 فقط. للقسمة على 3 أو 9 نحسب مجموع الأرقام: 13 ينتهي بـ 3 لكن 13 = 3 × 4 + 1 لا يقبل القسمة على 3، و 12 ينتهي بـ 2 لكن 12 = 3 × 4.",
@@ -2690,6 +2851,92 @@
     "explanation": "السنة التي يقبل عددها القسمة على 4 كبيسة، إلا القرون (عددها يقبل القسمة على 100) التي لا يقبل عددها القسمة على 400: 1800 و 2100 ليستا كبيستين، و 2000 و 2400 كبيستان.",
     "relatedLearningPoints": [
       "1am_qawaid-qabiliyat-qisma_P3"
+    ]
+  },
+  "MISC-KITABA-CONCAT": {
+    "label": "كتابة أعداد المراتب متجاورة دون ربط كل عشرة",
+    "explanation": "كرتونة و 13 علبة و 24 حزمة و 37 قلما لا تُكتب « 1 13 24 37 » = 1132437: مرتبة فيها 10 أو أكثر لا تُكتب برقم واحد. نربط كل عشرة في واحدة من المرتبة التي على يسارها: 1000 + 1300 + 240 + 37 = 2577.",
+    "relatedLearningPoints": [
+      "1am_kitabat-adad-tabii_P3"
+    ]
+  },
+  "MISC-KITABA-SUMCOUNTS": {
+    "label": "جمع الكميات دون قيمة مراتبها",
+    "explanation": "3 كراتين و 12 علبة و 15 حزمة و 8 أقلام ليست 3 + 12 + 15 + 8 = 38 قلما: الكرتونة 1000 قلم والعلبة 100 والحزمة 10، فالعدد 3000 + 1200 + 150 + 8 = 4358.",
+    "relatedLearningPoints": [
+      "1am_kitabat-adad-tabii_P3"
+    ]
+  },
+  "MISC-KITABA-DIGIT-COUNT": {
+    "label": "الخلط بين رقم مرتبة وعدد وحداتها",
+    "explanation": "في 2017 رقم العشرات 1، لكن عدد العشرات 201 لأن 2017 = 201 × 10 + 7: المئات والآلاف تحتوي هي أيضا على عشرات. رقم المرتبة هو ما يبقى فيها وحدها.",
+    "relatedLearningPoints": [
+      "1am_kitabat-adad-tabii_P2"
+    ]
+  },
+  "MISC-KITABA-RANKSHIFT": {
+    "label": "عدّ وحدات المرتبة المجاورة بدل المرتبة المطلوبة",
+    "explanation": "عدد العشرات في 2017 هو 201 وليس 20 (20 هو عدد المئات): نحذف من الكتابة الأرقام التي على يمين المرتبة المطلوبة فقط.",
+    "relatedLearningPoints": [
+      "1am_kitabat-adad-tabii_P2"
+    ]
+  },
+  "MISC-KITABA-LEADING-ZERO": {
+    "label": "افتتاح كتابة عدد بالرقم 0",
+    "explanation": "0138 ليس عددا من أربعة أرقام، بل هو 138: الصفر في بداية الكتابة لا يحفظ أي مرتبة. أصغر عدد بالأرقام 0، 1، 3، 8 هو 1038.",
+    "relatedLearningPoints": [
+      "1am_kitabat-adad-tabii_P2"
+    ]
+  },
+  "MISC-KITABA-ZERO-PLACE": {
+    "label": "إسقاط صفر يحفظ مرتبة فارغة (أو إضافة صفر زائد)",
+    "explanation": "« سبعة آلاف وخمسة وستون » تكتب 7065 لا 765: بلا الصفر ينزل 7 إلى مرتبة المئات. كل فئة بعد الأولى تُكتب بثلاثة أرقام بالضبط، والمرتبة الفارغة يحفظها 0.",
+    "relatedLearningPoints": [
+      "1am_kitabat-adad-tabii_P1",
+      "1am_kitabat-adad-tabii_P3"
+    ]
+  },
+  "MISC-KITABA-CLASS-LEFT": {
+    "label": "تجزئة العدد إلى فئات انطلاقا من اليسار",
+    "explanation": "45671 يُكتب 45 671 لا 456 71: نترك فراغا عقب كل ثلاثة أرقام مبتدئين من اليمين (من رقم الآحاد)، فقد تحوي الفئة الأولى على اليسار رقما أو رقمين فقط.",
+    "relatedLearningPoints": [
+      "1am_kitabat-adad-tabii_P1"
+    ]
+  },
+  "MISC-KITABA-TENS-TENTHS": {
+    "label": "الخلط بين العشرات والأعشار (والمئات والأجزاء من مائة)",
+    "explanation": "العشرات على يسار الآحاد، والأعشار أوّل رقم بعد الفاصلة: في 217,48 رقم العشرات 1 ورقم الأعشار 4.",
+    "relatedLearningPoints": [
+      "1am_kitabat-adad-tabii_P2"
+    ]
+  },
+  "MISC-KITABA-DIGIT-BY-DIGIT": {
+    "label": "قراءة العدد رقما رقما",
+    "explanation": "56419 لا يُقرأ « خمسة ستة أربعة واحد تسعة »: نجزّئه إلى فئات (56 419) ونقرأ كل فئة كعدد ثم اسمها: « ستة وخمسون ألفا وأربعمائة وتسعة عشر ».",
+    "relatedLearningPoints": [
+      "1am_kitabat-adad-tabii_P1"
+    ]
+  },
+  "MISC-KITABA-RANK-NAME": {
+    "label": "تسمية مرتبة رقم بالمرتبة المجاورة",
+    "explanation": "نعدّ المراتب انطلاقا من رقم الآحاد: في 3609 رقم الآحاد 9، العشرات 0، المئات 6، الآلاف 3. الخطأ بمرتبة واحدة يغيّر قيمة الرقم عشر مرات.",
+    "relatedLearningPoints": [
+      "1am_kitabat-adad-tabii_P2",
+      "1am_kitabat-adad-tabii_P3"
+    ]
+  },
+  "MISC-KITABA-COMMA-SHIFT": {
+    "label": "وضع الفاصلة بمرتبة واحدة بعيدا عن مكانها",
+    "explanation": "الفاصلة تُوضع مباشرة على يمين رقم الآحاد. ليكون 4 رقم الأعشار في 906243 نكتب 9062,43 (4 أوّل رقم بعد الفاصلة)، لا 906,243 ولا 90624,3.",
+    "relatedLearningPoints": [
+      "1am_kitabat-adad-tabii_P2"
+    ]
+  },
+  "MISC-KITABA-CLASS-WORD": {
+    "label": "قراءة فئة باسم فئة أخرى",
+    "explanation": "في 149 600 000 الفئة 149 هي فئة الملايين: « مائة وتسعة وأربعون مليونا وستمائة ألف »، لا « … ألفا ». نحدّد اسم كل فئة بعدّ الفئات انطلاقا من اليمين: الوحدات، الآلاف، الملايين، الملايير.",
+    "relatedLearningPoints": [
+      "1am_kitabat-adad-tabii_P1"
     ]
   }
 }

@@ -110,7 +110,7 @@ describe('division-jumps — rendu', () => {
     };
     const keys = ['explanation', 'mark', 'bracketTitle', 'trial', 'trialsTitle', 'next.title', 'next.text', 'next.button', 'next.back', 'formal.then'];
     for (const w of ['flowers', 'line']) {
-      keys.push(`title.${w}`, `chip.${w}`, `prompt.${w}`, `instruction.${w}`, `stepTitle.${w}`, ...(w === 'line' ? ['q', 'land'] : ['q', 'need', 'left']).map((x) => `reading.${w}.${x}`), `handle.${w}`, `handleValue.${w}`, `less.${w}`, `more.${w}`, `sceneAria.${w}`,
+      keys.push(`title.${w}`, `context.${w}`, `question.${w}`, `instruction.${w}`, `stepTitle.${w}`, ...(w === 'line' ? ['q', 'land'] : ['q', 'need', 'left']).map((x) => `reading.${w}.${x}`), `handle.${w}`, `handleValue.${w}`, `less.${w}`, `more.${w}`, `sceneAria.${w}`,
         `discovery.prompt.${w}`, `discovery.right.${w}`, `discovery.nothing.${w}`, `discovery.ten.${w}`, `discovery.whyNothing.${w}`,
         `discovery.whyTen.${w}.over`, `discovery.whyTen.${w}.short`, `formal.rule.${w}`, `need.${w}.over`, `need.${w}.short`,
         ...['over', 'short', 'exact'].map((kd) => `kind.${w}.${kd}`), ...['a', 'b', 'q', 'r'].map((r) => `formal.roles.${r}.${w}`));
@@ -143,6 +143,29 @@ describe('division-jumps — rendu', () => {
       expect(out).not.toContain('data-manipulation-hints');
       expect(out.split(say(`instruction.${w}`)).length - 1).toBe(1);
       expect(out).not.toMatch(/أو استعمل/);
+    }
+  });
+
+  it('opens on its CONTEXT then ONE question naming the end state — no title banner (MANIPULATION_DNA §17.9)', () => {
+    const text = (out) => out.replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+    const lead = 'عندنا 253 لؤلؤة، وفي كل عقد 17 لؤلؤة: كل قفزة على المستقيم طولها 17، أي عقد.';
+    for (const [props, w, context] of [
+      [LEVELS['division-jumps'].beginner.numbers, 'flowers', 'عند بائعة الأزهار 47 زهرةً، وفي كل باقة 6 زهرات.'],
+      [LEVELS['division-jumps'].advanced.numbers, 'line', 'يقفز الأرنب على المستقيم من 0 نحو 279، وطول كل قفزة 14.'],
+      [{ world: 'line', a: 253, b: 17, levels: false, title: 'مثال الكتاب: اللؤلؤ والعقود', lead }, 'line', lead],
+    ]) {
+      const out = html({ ...props });
+      expect(out).toMatch(/<h3 class="sr-only">/);
+      expect(out).not.toMatch(/<span class="inline-flex items-center gap-1\.5 rounded-full bg-indigo-50/);
+      expect(out).toContain(`data-dj-context="${w}"`);
+      const t = text(out);
+      const question = say(`question.${w}`, { a: props.a }).replace(/\s+/g, ' ');
+      expect(t.indexOf(context), context).toBeGreaterThan(-1);
+      expect(t.indexOf(question), question).toBeGreaterThan(t.indexOf(context));
+      expect(t.split(question).length - 1).toBe(1);
+      expect(question).toMatch(/حتى/);
+      // the question never repeats the gesture line nor the stopping rule (§17.4, §17.7)
+      expect(question).not.toMatch(/اسحب|تتجاوز|لا تكفي/);
     }
   });
 

@@ -217,7 +217,7 @@
             ],
             "method": null
           },
-          "notes": "knowledge = §1 p.11 + §4 p.13; plan-2022 has no item for reading/writing natural numbers, r02 is mapped through the decomposition with decimal fractions."
+          "notes": "knowledge = §1 p.11 + §4 p.13; plan-2022 has no item for reading/writing natural numbers, r02 is mapped through the decomposition with decimal fractions. Generated 2026-10-14: the FINAL الكفاءات are in the catalogue (P2 adds « رقم / عدد », P3 is the decomposition of a NATURAL); §4 p.13 is split — item a (the rank table) here, item b (decimal decompositions) in kusur-ashriya-kitaba (docs/sources/1am/unit1/build-extraction.py, header)."
         },
         {
           "titleAr": "الكسور العشرية والكتابة العشرية",
@@ -246,14 +246,14 @@
             ],
             "knowledge": [
               11,
-              11
+              13
             ],
             "method": [
               12,
               14
             ]
           },
-          "notes": "activities 2 and 3 merged (same knowledge: §2–3 p.11); method p.14 (×÷10,100,1000) sits after §4 and is attached here."
+          "notes": "activities 2 and 3 merged (same knowledge: §2–3 p.11); method p.14 (×÷10,100,1000) sits after §4 and is attached here. Knowledge widened to p.13 (2026-10-14): §4 item b, the decimal decompositions, belongs here (owner-approved boundary with kitabat-adad-tabii)."
         },
         {
           "titleAr": "الأعداد العشرية ونصف المستقيم المدرّج",

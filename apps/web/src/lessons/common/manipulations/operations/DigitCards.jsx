@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Check, X, Wand2, Lock, LockKeyhole, Paintbrush, Hand, CheckCircle2, XCircle, RefreshCw, ClipboardList, Lightbulb, Trophy, Ban, Move } from 'lucide-react';
+import { Check, X, Wand2, Lock, Hand, CheckCircle2, XCircle, RefreshCw, ClipboardList, Lightbulb, Trophy, Ban, Move } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
@@ -260,14 +260,16 @@ export default function DigitCards({
   }, [m, lab, k]);
 
   const formal = <Formal lab={lab} k={k} />;
-  const hintO = m === 'grid' ? {} : { digits: iso(lab.digits.join(' ، ')) };
+  // §17.9 : le CONTEXTE (tous les nombres) ouvre la carte de consigne ; la leçon peut l'écrire (`lead`) pour SES nombres
+  const context = (state.isAuthoredLevel && lead) || (m === 'grid'
+    ? k('context.grid', { from: lab.from, to: lab.to })
+    : k('context.cards', { digits: iso(lab.digits.join(' ، ')) }));
 
   return (
     <ManipulationShell
       type="digit-cards"
       title={title ?? k(`title.${m}`)}
-      mission={k(`mission.${m}`, m === 'grid' ? { from: lab.from, to: lab.to } : hintO)}
-      lead={lead}
+      titleHidden
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
@@ -280,8 +282,8 @@ export default function DigitCards({
         <div ref={boxRef} className="space-y-2" data-digit-cards data-mode={m} data-solved={ready ? 'true' : 'false'}
           data-layout={narrow ? 'narrow' : 'wide'}>
           {m === 'grid'
-            ? <GridLab lab={lab} setLab={setLab} k={k} width={width} room={room} tiny={width < 250} screenH={screenH} overhead={overhead} narrow={narrow} glanceRef={glanceRef} tableHRef={tableHRef} />
-            : <CardsLab lab={lab} setLab={setLab} k={k} width={width} room={room} glanceRef={glanceRef} />}
+            ? <GridLab lab={lab} setLab={setLab} k={k} width={width} room={room} tiny={width < 250} screenH={screenH} overhead={overhead} narrow={narrow} glanceRef={glanceRef} tableHRef={tableHRef} context={context} />
+            : <CardsLab lab={lab} setLab={setLab} k={k} width={width} room={room} glanceRef={glanceRef} context={context} />}
 
           {lab.trials.length > 0 && (
             <LabFold id="digit-cards.trials" title={k('trialsTitle')}>
@@ -317,7 +319,7 @@ const stamp = (el) => {
   el.animate([{ transform: 'scale(1.3)' }, { transform: 'scale(0.92)' }, { transform: 'scale(1)' }], { duration: 300, easing: 'ease-out' });
 };
 
-function GridLab({ lab, setLab, k, width, room, tiny, screenH, overhead, narrow, glanceRef, tableHRef }) {
+function GridLab({ lab, setLab, k, width, room, tiny, screenH, overhead, narrow, glanceRef, tableHRef, context }) {
   const cells = L.cellsOf(lab);
   const wide = width >= WIDE_MIN;
   // TÉLÉPHONE (320 px : 238 px utiles) : le bloc « d'un seul regard » déborde symétriquement sur les cadres de la leçon,
@@ -365,7 +367,7 @@ function GridLab({ lab, setLab, k, width, room, tiny, screenH, overhead, narrow,
   const banner = (
     <VerdictBanner tone={kind ? (good ? 'emerald' : 'rose') : 'indigo'} icon={tiny ? null : kind ? (good ? CheckCircle2 : XCircle) : Hand}
       size={tiny ? 'xs' : 'sm'}
-      className={`${tiny ? 'min-h-[2.75rem] px-2.5 py-1.5' : narrow ? 'min-h-[3.25rem] px-3 py-2' : ''} ${!kind && wide ? 'hidden' : ''}`}
+      className={`${tiny ? 'min-h-[2.75rem] px-2.5 py-1.5' : narrow ? 'min-h-[3rem] px-3 py-1.5' : ''} ${!kind && wide ? 'hidden' : ''}`}
       data-dc-verdict={kind} data-dc-refused={v && !v.ok ? 'remainder' : undefined}>
       {kind ? (
         <span className="block">
@@ -385,10 +387,11 @@ function GridLab({ lab, setLab, k, width, room, tiny, screenH, overhead, narrow,
 
   const prompt = (
     <PromptCard size={narrow ? 'md' : 'lg'}
-      chip={tiny ? null : k('chip.grid')} chipIcon={Paintbrush}
+      context={context} contextProps={{ 'data-dc-context': 'grid' }}
       aside={tiny ? null : reveal || null}
-      title={d == null ? k('colouring.pick') : complete ? k('prompt.grid.done', { d }) : k('prompt.grid.title', { d })}
-      lamp={d == null ? null : complete ? 'on' : 'off'}
+      title={k('question.grid', { list: lab.divisors.map((x) => iso(x)).join(k('then')) })}
+      titleClassName={narrow ? 'text-base' : undefined}
+      lamp={allDone ? 'on' : 'off'}
       instruction={narrow ? null : instruction}
       titleProps={{ 'data-dc-prompt': d ?? '' }}>
       <ChoiceTray cols={lab.divisors.length === 3 ? 3 : 4} data-dc-colourings>
@@ -404,15 +407,15 @@ function GridLab({ lab, setLab, k, width, room, tiny, screenH, overhead, narrow,
               aria-pressed={open} title={can ? undefined : k('colouring.locked', { d: lab.divisors[i - 1] })}
               aria-label={k('colouring.aria', { d: dd, colour: k(`colourName.${L.colourOf(dd)}`) })}
               data-dc-colouring={dd} data-open={open ? 'true' : 'false'} data-complete={done ? 'true' : 'false'}
-              className={`flex flex-col items-center justify-center gap-0.5 rounded-2xl border-2 font-black transition-all duration-150 motion-reduce:transition-none disabled:cursor-not-allowed ${narrow ? 'min-h-[50px] px-1 text-sm' : 'min-h-[60px] px-2 text-lg'} ${look} ${ring}`}>
+              className={`flex flex-col items-center justify-center gap-0.5 rounded-2xl border-2 font-black transition-all duration-150 motion-reduce:transition-none disabled:cursor-not-allowed ${narrow ? 'min-h-[44px] px-1 py-1 text-sm' : 'min-h-[60px] px-2 text-lg'} ${look} ${ring}`}>
               <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                 <span className={`inline-block shrink-0 rounded-full ring-2 ring-white ${narrow ? 'h-3 w-3' : 'h-3.5 w-3.5'} ${tone.dot}`} aria-hidden="true" />
-                {narrow ? <bdi dir="ltr" className="text-xl leading-none">{dd}</bdi> : k('colouring.label', { d: dd })}
+                {narrow && lab.divisors.length > 3 ? <bdi dir="ltr" className="text-xl leading-none">{dd}</bdi> : <span className={narrow ? 'text-[11px]' : ''}>{k('colouring.label', { d: dd })}</span>}
               </span>
               <span className={`inline-flex items-center gap-1 ${narrow ? 'text-[11px]' : 'text-xs'} font-extrabold opacity-90`}>
                 {!can ? <Lock className="h-3.5 w-3.5" aria-hidden="true" />
                   : done ? <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" />
-                    : <Formula>{`${lg.count}/${lg.total}`}</Formula>}
+                    : <span data-dc-progress={`${lg.count}/${lg.total}`}>{k(narrow ? 'colouring.progressShort' : 'colouring.progress', { count: lg.count, total: lg.total })}</span>}
               </span>
             </button>
           );
@@ -549,7 +552,7 @@ function Chips({ values, tone, small = false, ...rest }) {
 
 /* ══════════════ متقدم : les cartes du تمرين 26 ══════════════ */
 
-function CardsLab({ lab, setLab, k, width, room, glanceRef }) {
+function CardsLab({ lab, setLab, k, width, room, glanceRef, context }) {
   const wide = width >= WIDE_MIN;
   // téléphone : le même débordement que la table (jusqu'à 280 px, posé sur les cadres)
   const margin = width < 280 ? Math.max(0, Math.min(room, Math.ceil((280 - width) / 2))) : 0;
@@ -682,15 +685,15 @@ function CardsLab({ lab, setLab, k, width, room, glanceRef }) {
 
   /* ── la consigne : les cibles, la phrase, les deux réponses ── */
   const tasks = (
-    <div className={`flex items-center ${tiny ? 'gap-1' : 'gap-1.5'}`} role="group" aria-label={k('tasksTitle')}>
-      {!narrow && <span className="text-sm font-black text-indigo-900/70">{k('tasksTitle')}</span>}
+    <div className={`flex items-center ${narrow ? 'gap-1' : 'gap-1.5'}`} role="group" aria-label={k('tasksTitle')}>
+      <span className={`whitespace-nowrap ${narrow ? 'text-xs' : 'text-sm'} font-black text-indigo-900/70`} data-dc-tasks-label>{k(narrow ? 'tasksShort' : 'tasksTitle')}</span>
       {lab.divisors.map((x, i) => {
         const done = L.taskDone(lab, x);
         const sel = lab.task === i;
         return (
           <button key={x} type="button" onClick={() => setLab((s) => L.selectTask(s, i))} aria-pressed={sel}
             aria-label={k('taskAria', { d: x })} data-dc-task={x} data-done={done ? 'true' : 'false'}
-            className={`relative inline-flex h-11 min-w-[44px] items-center justify-center gap-0.5 rounded-full border-2 px-2 text-base font-black tabular-nums transition-colors motion-reduce:transition-none ${ring} ${sel ? 'border-indigo-600 bg-gradient-to-b from-indigo-500 to-indigo-600 text-white shadow-[0_6px_14px_-8px_rgba(79,70,229,0.9)]' : done ? 'border-emerald-300 bg-emerald-50 text-emerald-800' : 'border-indigo-100 bg-white text-indigo-900 hover:border-indigo-300'}`}>
+            className={`relative inline-flex ${narrow ? 'h-10 min-w-[40px]' : 'h-11 min-w-[44px]'} items-center justify-center gap-0.5 rounded-full border-2 px-2 text-base font-black tabular-nums transition-colors motion-reduce:transition-none ${ring} ${sel ? 'border-indigo-600 bg-gradient-to-b from-indigo-500 to-indigo-600 text-white shadow-[0_6px_14px_-8px_rgba(79,70,229,0.9)]' : done ? 'border-emerald-300 bg-emerald-50 text-emerald-800' : 'border-indigo-100 bg-white text-indigo-900 hover:border-indigo-300'}`}>
             <bdi dir="ltr">{x}</bdi>
             {done && <Check className={`h-3.5 w-3.5 ${sel ? '' : 'text-emerald-600'}`} strokeWidth={3} aria-hidden="true" />}
           </button>
@@ -714,14 +717,14 @@ function CardsLab({ lab, setLab, k, width, room, glanceRef }) {
   );
   const prompt = (
     <PromptCard size={narrow ? 'md' : 'lg'}
-      chip={narrow ? null : k('chip.cards')} chipIcon={LockKeyhole}
+      context={context} contextProps={{ 'data-dc-context': 'cards' }}
       aside={tasks}
-      title={k('task', { d })}
+      title={k('question.cards', { d })}
       lamp={tiny ? null : taskState?.done ? 'on' : 'off'}
       titleProps={{ 'data-dc-prompt': d }} titleClassName={narrow ? (tiny ? 'text-[15px] tracking-tight' : 'text-base') : undefined}
       instruction={taskState?.done
         ? <span className="font-black text-emerald-700" data-dc-answer>{taskState.none ? k('answerNone') : k('answer', { n: taskState.answer })}</span>
-        : needLine || (narrow ? null : k('prompt.cards.do'))}>
+        : needLine || null}>
       {!wide && answers}
     </PromptCard>
   );

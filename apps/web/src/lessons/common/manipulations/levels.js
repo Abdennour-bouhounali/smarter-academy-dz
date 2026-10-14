@@ -629,6 +629,34 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { mode: 'grid', from: 0, to: 48, columns: 7, divisors: [2, 5, 3] }, ...T('act-4') },
     advanced: { numbers: { mode: 'cards', digits: [4, 5, 9, 3], divisors: [2, 3, 5, 4, 9] }, ...T('ex-26') },
   },
+  // ── 1AM, unité 4 « الكتابات الكسرية » (2026-10-14) ──
+  // LE COUTEAU ET LA PART (fraction-knife) : la part p/q est FIXE, la main tient d (le nombre de morceaux du tout). مبتدئ :
+  // le plateau de قلب اللوز (plateforme, thème sweets-tray), 3/5 pour les voisins, d de 1 à 20, et la proposition d'Amine
+  // « 3/5 = 4/6 » jugée au couteau ; متقدم : les trois rectangles du نشاط 4 (3/5, 6/10, 12/20) puis le cadeau du grand-père
+  // 27/45 — d jusqu'à 45, des épingles de prédiction AVANT que le couteau bouge (logic/fractionKnife.js).
+  'fraction-knife': {
+    beginner: { numbers: { world: 'tray', share: [3, 5], start: 5, max: 20, claim: [4, 6] }, ...P },
+    advanced: { numbers: { world: 'paper', share: [3, 5], start: 5, max: 20, targets: [[6, 10], [12, 20]], then: { share: [27, 45], start: 45, max: 45, predict: true } }, ...T('act-4') },
+  },
+  // ── 1AM, unité 1 « الأعداد الطبيعية والأعداد العشرية » (2026-10-14) ──
+  // L'ÉCHANGE DIX POUR UN (rank-exchange). مبتدئ : l'atelier d'emballage des crayons (plateforme, thème packing) — 1 carton,
+  // 13 boîtes, 24 paquets, 37 crayons à emballer (2577, pas « 1132437 »), puis 2017 à déballer en paquets de 10 (201, pas
+  // 1) ; متقدم : les jetons de rang du نشاط 1 ③ et de معارف 1 — 999 + 1 en cascade, 999 − 1, 1000 − 1 (il faut ouvrir), et
+  // les dictées 7065 et 4 908 732 sur le tableau à 7 colonnes par classes. `world: 'money'` (1345 DA en billets de 100, تمرين 2)
+  // se pose seul, levels={false}.
+  'rank-exchange': {
+    beginner: { numbers: { world: 'pencils', tasks: ['pack', 'unpack'], start: { 3: 1, 2: 13, 1: 24, 0: 37 }, n: 2017, rank: 1 }, ...P },
+    advanced: { numbers: { world: 'tokens', tasks: ['next', 'previous', 'borrow', 'dictation'], next: 999, borrow: 1000, dictation: [7065, 4908732] }, ...T('act-1') },
+  },
+  // ── 2AM, unité 2 « الكسور والعمليات عليها » (2026-10-14) ──
+  // LE TAPIS ET LA RÈGLE DES PLATEAUX (egg-trays) : b est DONNÉ, la main tient a (les œufs emballés). مبتدئ : le panier de
+  // Salma (plateforme, thème farm) — 50 œufs en boîtes de 12, chaque œuf dessiné, règle 0 … 7, puis le contraste 60 ;
+  // متقدم : نشاط 1 du manuel — 2145 œufs en plateaux de 30, palettes de 10, règle 0 … 74 et son zoom, le contraste 2160,
+  // puis la division du fils « 2145 = 30 × 70 + 45 » à juger.
+  'egg-trays': {
+    beginner: { numbers: { a: 50, b: 12, then: 60, world: 'carton' }, ...P },
+    advanced: { numbers: { a: 2145, b: 30, then: 2160, claim: { q: 70, r: 45 }, world: 'tray' }, ...T('act-1') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

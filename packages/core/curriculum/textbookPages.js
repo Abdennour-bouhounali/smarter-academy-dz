@@ -27,6 +27,8 @@ export function formatTextbookPages(pages) {
 
   const collected = [];
   const take = (value) => {
+    // Une section sans page (« method »: null — la page appartient à une autre leçon) n'est pas la page 0.
+    if (value === null || value === undefined || value === '') return;
     if (Array.isArray(value)) {
       value.forEach(take);
       return;

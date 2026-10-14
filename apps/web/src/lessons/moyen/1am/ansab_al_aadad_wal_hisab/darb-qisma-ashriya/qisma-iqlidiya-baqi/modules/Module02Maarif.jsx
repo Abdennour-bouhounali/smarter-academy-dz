@@ -69,8 +69,8 @@ export default function Module02Maarif() {
             <div className="space-y-3">
               <TextbookBox kind="remark" text={KNOWLEDGE.remark} source={KNOWLEDGE.source} compact />
               <Manipulation type="division-jumps" world="line" a={example1.numbers.a} b={example1.numbers.b} levels={false}
-                title="مثال الكتاب: 253 لؤلؤة في عقود من 17"
-                lead="كل قفزة = عقد من 17 لؤلؤة." />
+                title="مثال الكتاب: اللؤلؤ والعقود"
+                lead={`عندنا ${example1.numbers.a} لؤلؤة، وفي كل عقد ${example1.numbers.b} لؤلؤة: كل قفزة على المستقيم طولها ${example1.numbers.b}، أي عقد.`} />
               <TapQuestion
                 prompt={<span>لماذا الحاصل 14 وليس 15؟</span>}
                 options={[M('لأنّ $17 \\times 15 = 255$ أكبر من 253'), M('لأنّ الباقي يجب أن يكون معدومًا'), M('لأنّ 14 عدد زوجي')]}

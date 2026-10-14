@@ -132,3 +132,26 @@ describe('LabKit — HTML pieces carry the type’s DOM contract and no text of 
     expect(bare).toBe('1');
   });
 });
+
+describe('PromptCard — context, then ONE question (MANIPULATION_DNA §17.9)', () => {
+  it('renders the context first, the question after it, the aside under the question, and no chip row', () => {
+    const out = renderToStaticMarkup(
+      <PromptCard context="في الورشة 13 علبة." title="اربط الأقلام حتى تستطيع كتابة عدد الأقلام." aside={<span data-steps>1</span>} contextProps={{ 'data-x-context': 'a' }} />,
+    );
+    const c = out.indexOf('data-lab-context');
+    const q = out.indexOf('data-lab-question');
+    const a = out.indexOf('data-lab-aside');
+    expect(c).toBeGreaterThan(-1);
+    expect(q).toBeGreaterThan(c);
+    expect(a).toBeGreaterThan(q);
+    expect(out).toContain('data-x-context="a"');
+    expect(out).not.toContain('bg-indigo-50 px-3 py-1'); // no QuestionChip
+  });
+
+  it('without a context, the card keeps its former layout (chip and aside on the top row)', () => {
+    const out = renderToStaticMarkup(<PromptCard chip="من الأطول؟" title="جملة" aside={<span data-steps>1</span>} />);
+    expect(out).not.toContain('data-lab-context');
+    expect(out).not.toContain('data-lab-question');
+    expect(out.indexOf('data-steps')).toBeLessThan(out.indexOf('جملة'));
+  });
+});

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Minus, Plus, ChevronsLeftRight, Flower2, Undo2, Rabbit, Ribbon, Hand, CheckCircle2, XCircle } from 'lucide-react';
+import { Minus, Plus, ChevronsLeftRight, Flower2, Undo2, Ribbon, Hand, CheckCircle2, XCircle } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import { divmod } from '@smarter-academy/core/arithmetic/divisibility.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -66,7 +66,7 @@ import * as L from '../logic/divisionJumps';
  * quotient. Pas d'auto-complétion (le registre n'en déclare pas). Ce n'est ni le team-builder (b n'est pas
  * choisi, on ne porte aucun objet) ni l'étagère (la main tient q, pas b) : DNA §12.
  *
- * LE KIT (2026-10-14, §8ter) : la carte de consigne `PromptCard` (puce « كم باقة كاملة؟ », la phrase de l'histoire et
+ * LE KIT (2026-10-14, §8ter) : la carte de consigne `PromptCard` (§17.9 : le contexte et ses nombres, la question qui nomme l'état final et
  * sa lampe — allumée à l'arrêt exact —, les pilules de lecture vivante en `aside`) ; la scène dans un `StageFrame`
  * lavande (un auvent de fleuriste ; la mare après a sur la droite) ; large (≥ 600 px) : à côté des fleurs, la colonne
  * `StepperCard` (« عدد الباقات », la grande lecture q, les ronds −/+) + `VerdictBanner` ; sur la droite (qui veut
@@ -383,6 +383,15 @@ export default function DivisionJumps({
     </button>
   );
 
+  const promptArgs = { a: lab.a, b, flowers: flowers(lab.a), per: flowers(b) };
+  const readingPills = (
+    <div className={`flex flex-wrap items-center gap-1.5 ${compact ? 'w-full' : ''}`} data-dj-reading={lab.q}>
+      {reading.map(([key, n, tone]) => (
+        <StatPill key={key} small={compact} label={k(`reading.${world}.${key}`)} value={n} tone={tone} data-dj-read={key} />
+      ))}
+    </div>
+  );
+
   const sceneNode = world === 'flowers'
     ? <FlowerScene lab={lab} lay={fLay} st={st} k={k} W={W} H={stageH} offX={padX} offY={offY} awning={awning} trackBottom={padBottom} v={v} groups={groups} strip={stripNode} />
     : <LineScene lab={lab} lay={lLay} st={st} k={k} W={W} lineY={lineTop} lineH={lineH} compact={compact} v={v} groups={groups} strip={stripNode} />;
@@ -391,7 +400,7 @@ export default function DivisionJumps({
     <ManipulationShell
       type="division-jumps"
       title={title ?? k(`title.${world}`)}
-      lead={lead}
+      titleHidden
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
@@ -407,26 +416,19 @@ export default function DivisionJumps({
           <div className="space-y-3" data-dj-glance>
             {/* la consigne : la question, la phrase de l'histoire (sa lampe s'allume à l'arrêt exact), la lecture vivante */}
             <div ref={promptRef}>
+              {/* §17.9 : le CONTEXTE (tous les nombres) puis UNE question qui nomme l'état final — pas de puce, pas de titre ;
+                  les lectures vivantes à côté du contexte (large) ou sous la question (étroit) */}
               <PromptCard
                 size={compact ? 'md' : 'lg'}
-                chip={compact ? null : k(`chip.${world}`)} chipIcon={world === 'line' ? Rabbit : Flower2}
-                aside={(
-                  <div className={`flex flex-wrap items-center gap-1.5 ${compact ? 'w-full justify-between' : ''}`} data-dj-reading={lab.q}>
-                    {/* étroit : la puce de question, plus petite, partage la rangée des pilules */}
-                    {compact && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700">
-                        {world === 'line' ? <Rabbit className="h-3.5 w-3.5" aria-hidden="true" /> : <Flower2 className="h-3.5 w-3.5" aria-hidden="true" />}{k(`chip.${world}`)}
-                      </span>
-                    )}
-                    {reading.map(([key, n, tone]) => (
-                      <StatPill key={key} small={compact} label={k(`reading.${world}.${key}`)} value={n} tone={tone} data-dj-read={key} />
-                    ))}
-                  </div>
-                )}
-                title={<span className={compact ? 'text-base' : ''}>{k(`prompt.${world}`, { a: lab.a, b, flowers: flowers(lab.a), per: flowers(b) })}</span>}
+                context={(state.isAuthoredLevel && lab.a === lab.a0 && lead) || k(`context.${world}`, promptArgs)}
+                contextProps={{ 'data-dj-context': world }}
+                aside={compact ? null : readingPills}
+                title={<span className={compact ? 'text-base' : ''}>{k(`question.${world}`, promptArgs)}</span>}
                 lamp={v?.kind === 'exact' ? 'on' : 'off'}
                 titleProps={{ 'data-dj-prompt': true, 'data-lit': v?.kind === 'exact' ? 'true' : 'false' }}
-              />
+              >
+                {compact && readingPills}
+              </PromptCard>
             </div>
 
             {sideFlowers ? (

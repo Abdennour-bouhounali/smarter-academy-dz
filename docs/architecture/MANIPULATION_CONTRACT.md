@@ -66,6 +66,7 @@ manipulations/
 │   ├── FlowerFigure.jsx                        a flower, a bouquet sleeve and its ribbon tie (division-jumps)
 │   ├── HopperFigure.jsx                        a drawn rabbit that hops on a number line (division-jumps)
 │   ├── BulbFigure.jsx                          a light bulb lamp, closed / yes / no (digit-cards)
+│   ├── EggFigure.jsx                           an egg, an open tray / carton with exactly r eggs, a closed lid, a full slat, a pallet (egg-trays, §2unvicies)
 │   ├── MovablePanel.jsx + movablePanel.js     a panel floating on the scene that the student moves aside (§8bis)
 │   └── ContextScenes.jsx                      the landscape vignettes of each world, for `MissionBrief.visual`
 ├── divisibility/               the 10 types of unit 1 (+ teamFormation.js, pure geometry)
@@ -414,7 +415,10 @@ options refuted with the student's own items. Props: `story`, `level`, `levels`,
 `onFinished({ story })`. Not eligible for « جرّب كل الإمكانيات » (§6bis). Since the Gen Alpha redesign (2026-10-14, §8ter) the children
 are drawn WHOLE (`KidFigure`): the floor is 0 cm and each crown sits exactly on its height (`gaugeScale(height, GAUGE_PAD)`, 44 px above
 150 cm for the value pills, 46 px under the floor for the name pills; `rulerTicks(k)` adapts ticks and labels to the scale). The layout
-is the kit's: PromptCard (chip « كم قامة …؟ », item tabs, the sentence and its lamp, the three calc cards), then the stage and, at ≥ 600 px,
+is the kit's: PromptCard in the §17.9 form (context « في الفحص الطبي، قامة سارة 130 cm. » + the item's sentence `[data-sb-sentence]`,
+then the question « غيّر قامة أمين حتى تصدق الجملة. » with its lamp, the labelled item tabs « الجمل: », the labelled calc row
+« الحساب الذي يعطي قامة أمين: » `[data-sb-calc-ask]` and its three cards; `act1`: context « تحت البطاقات 6 نصوص… », question « اسحب كل
+بطاقة إلى نصّها حتى تُحلّ النصوص كلّها. », progress « حُلّ 0 / 6 »; no shell `mission`, `titleHidden`), then the stage and, at ≥ 600 px,
 a side column with the StepperCard and the verdict (the result card replaces the stepper when the item is done); narrower, the round
 −/+ live INSIDE the stage, in the handle lane. The difference is a neutral `SvgDimension` « 6 cm » — no sign, so the drawing never
 dictates the operation. DOM: `[data-story-bars][data-story][data-mode][data-item][data-solved]`, `[data-sb-glance]`, `[data-sb-handle]`,
@@ -444,8 +448,9 @@ group too few leaves enough for another (`short`: a ghost bouquet over the lefto
 `[data-dj-handle]`, `[data-dj-less]` / `[data-dj-more]`, `[data-dj-group]`, `[data-dj-left]`, `[data-dj-ghost]`, `[data-dj-verdict]`,
 `[data-dj-refused]`, `[data-dj-bracket]`, `[data-dj-next]`, `[data-dj-formal]`. Browser suite: `e2e/lesson-kit/1am-darb-qisma-ashriya.mjs`.
 
-**Look (2026-10-14, kit §8ter).** A `PromptCard` on top — chip « كم باقة؟ » / « كم قفزة؟ », the story sentence, a lamp lit only at
-the exact stop, live `aside` pills that show only what the hand produced (`[data-dj-reading]`, `[data-dj-read=need|left|land]`) — above a
+**Look (2026-10-14, kit §8ter).** A `PromptCard` on top in the §17.9 form — context with every number (« عند بائعة الأزهار 47 زهرةً، وفي كل باقة 6
+زهرات. »; a lesson `lead` replaces it for its own numbers, e.g. 253 pearls), the question « اصنع الباقات حتى تعرف كم باقة كاملة تخرج من
+هذه الأزهار. » / « اقفز بالأرنب حتى تعرف كم قفزة كاملة من 0 إلى 279. » with a lamp lit only at the exact stop, live `aside` pills that show only what the hand produced (`[data-dj-reading]`, `[data-dj-read=need|left|land]`) — above a
 `StageFrame`. مبتدئ: a florist awning and `primitives/FlowerFigure.jsx` (`FlowerFigure`, `hueOf` — decorative colours that never repeat
 every b flowers, so colour never fakes a group —, `BouquetSleeve`, `BouquetTie`): a paper sleeve behind each bouquet, converging stems and a
 ribbon whose knot is the count pill (rose « 5 » + ghost flowers when flowers are missing); the remainder circled in amber with its pill;
@@ -483,8 +488,10 @@ two gestures land in one render — `onFinished({ mode })`. Not eligible for « 
 [data-claim]`, `[data-dc-task=<d>][data-done]`, `[data-dc-submit]`, `[data-dc-none]`, `[data-dc-verdict]`, `[data-dc-refused]`,
 `[data-dc-formal]`, `[data-dc-rule=<d>]`. Browser suite: `e2e/lesson-kit/1am-qawaid-qabiliyat-qisma.mjs`.
 
-**Look (2026-10-14, kit §8ter).** Both worlds sit on the kit: a `PromptCard` (chip « من يقبل القسمة؟ » / « قفل الأرقام », the task as the
-big sentence with its lamp, then the colouring cards — raised edge in the divisor's colour, a live `5/25` count — or the target pills)
+**Look (2026-10-14, kit §8ter).** Both worlds sit on the kit: a `PromptCard` in the §17.9 form (context « في الجدول الأعداد من 0 إلى 48. » /
+« عندك أربع بطاقات: 4 ، 5 ، 9 ، 3. », question « لوّن كل مضاعفات 2 ثم 5 ثم 3. » / « رتّب البطاقات حتى تكوّن أكبر عدد يقبل القسمة على
+2 — أو قل إنه لا يوجد. » with its lamp, then the colouring cards — « مضاعفات 2 » in the divisor's colour, a live « لوّنتَ 5 من 25 » — or the
+target pills under « القسمة على: »; no shell `mission`, `titleHidden`)
 above a lavender `StageFrame`; ≥ 600 px a side column (verdict + pill ledger for the table; for the cards a control card with the BIG
 formed number, « هذا هو الأكبر » primary / « لا يوجد » secondary, the drag hint, then the verdict); narrow, the verdict sits under the stage
 so nothing under the finger moves. The table is a candy board: each ≥ 40 px cell is the button with a raised tile drawn inside; an accepted
@@ -494,6 +501,171 @@ cell gets a transform-only « stamp » (Web Animations, off under reduced motion
 « لا يقبل », `data-bulb`) — with an « تغيّر / بقي » badge (`[data-dc-flip-badge]`) after a number change. Added DOM: `[data-dc-prompt]`,
 `[data-dc-colourings]`, `[data-dc-board]`, `[data-dc-marks]`, `[data-dc-stage]`, `[data-dc-readout]`, `[data-dc-answer]`. Below 296 px of
 lab width the glance still bleeds over the lesson frames (238 → 280 px at 320).
+
+## 2novodecies. Place value, ten for one — `rank-exchange` (1AM unit 1, 2026-10-14)
+
+`operations/RankExchange.jsx` on `logic/rankExchange.js`, all arithmetic through `packages/core/arithmetic/placeValue.js` (imported by
+path: `digitsByRank`, `countOfRank`, `valueOfCounts`, `isWritable`, `decompose`, `classesOf`, `spaced` with U+00A0, `classWordsOf`,
+`toArabicWords` — byte-identical to `words()` of `docs/sources/1am/unit1/build-extraction.py`, tested against every `words` answer of
+the extraction and a 0..100 000 sweep — and `RANK_NAMES`), lesson `kitabat-adad-tabii`. The hand moves **quantities between ranks**
+(DNA §12): it sweeps ten objects of a column into ONE object of the next rank and carries it one column to the LEFT, or opens one object
+into ten of the rank on its right. The written digits are an OUTPUT — a column's digit box shows its count while 0..9 and OVERFLOWS (two
+digits squeezed, rose, one shake, `data-overflow`) from 10 on; the written number appears only when every column is writable and no
+tied object waits to be carried. The board is an LTR island, the highest rank on the LEFT (the textbook's « جدول المراتب »).
+
+| World (level) | What the hand holds | What resists |
+|---|---|---|
+| `pencils` (مبتدئ, theme `packing`, platform: tasks `pack` 1 · 13 · 24 · 37, then `unpack` 2017 rank 1) | sweep a finger across objects of a column (each lifts with its number 1, 2, 3…; taps add up the same way); exactly 10 ties ONE pack / box / carton that is carried (drag, tap-tap, keyboard ←, « انقل يسارًا ») into its column; `unpack`: drag the top object one column right or the digit box's open action | `short-pack` (7 pencils fall back: « 7 أقلام لا تكفي: حزمة = 10 أقلام »), `wrong-column` (the pack slides back: « مكان الحزمة عمود الحزم »), a prediction card chosen BEFORE the first gesture and judged by the board (1 132 437 / 75 / 2 577; 1 / 20 / 201) |
+| `tokens` (متقدم, textbook act-1 ③ and know-1: tasks `next` 999, `previous` 999, `borrow` 1000, `dictation` 7065 and 4 908 732) | the same sweep and carry on a 7-column board grouped by CLASS (one token colour per class); « +1 / −1 » on the units; the dictation sets any column (tap a column, then − / +, or ↑ / ↓) and « تحقّق » | `next` needs exactly three packs in cascade; `no-unit` (1000 − 1: nothing to remove, three opens first); `overflow` (a column holds 10 or more at « تحقّق »), `wrong-board` (« لوحتك: 765 — سبعمائة وخمسة وستون ») |
+| `money`, `levels={false}` (textbook ex-2: `tasks={['unpack']}`, 1345 DA, rank 2) | open the 1000 DA note into ten 100 DA notes; GENERIC drawn notes and coins (a plain rectangle « 100 », a disc « 10 » — never a real banknote's design) | the prediction (1 / 3 / 13); no discovery — `onFinished` when the task is done |
+
+`discoveryReady` = every task of the level done (`pack` + `unpack`: « ماذا يعني رقم مرتبة في كتابة عدد؟ », wrong options refuted with
+the board as it arrived — 1 · 13 · 24 · 37 side by side is 1 132 437, the board wrote 2 577 — and with the packs sent, 201 against the
+tens digit 1; the four advanced tasks: « لماذا نكتب 0 في 7065؟ », refuted with 765 read aloud and with the one 0 of 4 908 732). Formal:
+the rank table of 2017 with رقم / عدد per rank (7 / 2017, 1 / 201, 0 / 20, 2 / 2), zero ranks greyed, and `2017 = 2 × 1000 + 1 × 10 + 7`
+(zero ranks absent); advanced, the classes of 4 908 732 (spaced writing, each class read « أربعة ملايين | وتسعمائة وثمانية آلاف | … »)
+and its مفكوك. Props `world`, `tasks`, `start`, `n`, `rank`, `next`, `borrow`, `dictation`, `level`, `levels`, `title`, `lead`,
+`onTrial({ task, kind: 'pack' | 'unpack' | 'add' | 'remove' | 'predict' | 'answer', rank, ok, counts, value })` (every judged gesture,
+reported once; a refusal carries `ok: false`), `onFinished({ tasks })`. Not eligible for « جرّب كل الإمكانيات »; « افتح الباقي » (open the
+rest of a column) appears only after two hand-made opens in that column (author's call, like « أكمل » of `digit-cards`). « إعادة »
+restarts the task in progress (finished tasks stay finished; everything restarts once all are done). Invariant tested: the board's value
+(counts + the tied object waiting) never changes under tie, carry or open, whatever the order (property sweep).
+
+**Look (kit §8ter).** A `PromptCard` in the §17.9 form (context = the starting quantities, « في الورشة صندوق واحد و13 علبةً و24
+حزمةً و37 قلمًا. الحزمة 10 أقلام… », then the task's question naming its end state « اربط الأقلام حتى تستطيع كتابة عدد الأقلام. » with its
+lamp; the three prediction cards sit under their own question « توقّعك: كم قلمًا في الورشة؟ » `[data-rx-predict-ask]`, never bare; then
+an aside with the labelled task steps « المهمّة », the chosen prediction pill — green or struck at the end — and, while unpacking, the live counter of packs)
+above a `StageFrame` of columns: drawn objects stacked from the bottom of a bin — honest objects (a pack shows ten pencils and its rubber
+band, a box ten packs, a carton 2 × 5 boxes; tokens stamped with their rank value) —, one object size for the whole board (piles of more
+than 20 shrink alone), tokens and coins STACK into a pile when the height runs out (each keeps a visible sliver), and the exact count of
+each column lives ONCE, in the digit box under it — a row labelled « تحت كل عمود: كم فيه. » `[data-rx-digit-caption]` (the 2026-10-14
+§17.9 sweep removed the duplicate in-column count badge, `[data-rx-badge]` no longer exists). The digit box itself becomes the keyboard / tap action when a column can be tied (≥ 10) or opened
+(an icon badge, a soft pulse). Wide (≥ 600 px): a side column with the packer `KidFigure` (a girl in hijab behind the workshop table,
+`mood` reacting), the big written number, the ± stepper and the verdict; narrow: written number and stepper inside the stage, the
+`VerdictBanner` under it keeps its place; at 320 px the 7-column board bleeds over the lesson frames to 7 × 40 px (`data-bleed`). DOM:
+`[data-rank-exchange][data-world][data-task][data-solved][data-layout]`, `[data-rx-glance][data-bleed]`, `[data-rx-col=<k>][data-count]`,
+`[data-rx-item=<k>-<i>][data-lifted]`, `[data-rx-digit=<k>][data-overflow]`, `[data-rx-digit-caption]`, `[data-rx-predict-ask]`, `[data-rx-steps-label]`, `[data-rx-written]`, `[data-rx-tray]`,
+`[data-rx-carry]`, `[data-rx-tie=<k>]`, `[data-rx-open=<k>]`, `[data-rx-open-all=<k>]`, `[data-rx-grab=<k>]`, `[data-rx-predict=<value>]
+[data-state]`, `[data-rx-counter]`, `[data-rx-step=<task>][data-done]`, `[data-rx-plusminus=<k>]`, `[data-rx-plus]` / `[data-rx-minus]`,
+`[data-rx-check]`, `[data-rx-words]`, `[data-rx-next]`, `[data-rx-verdict]`, `[data-rx-refused=short-pack|wrong-column|overflow|no-unit|
+wrong-board]`, `[data-rx-result]`, `[data-rx-formal=rank|zero]`, `[data-rx-kid]`.
+
+## 2vicies. Fractional writings and reduction — `fraction-knife` (1AM unit 4, 2026-10-14)
+
+`operations/FractionKnife.jsx` on `logic/fractionKnife.js` (every verdict exact through `core/arithmetic/linear.js` — `frac`, `eq`,
+`isInteger`, `fracText`, `fracDecimal` — and `divisibility.js › divmod`, imported by path), lesson `ikhtizal-kitaba-kasriya`. ONE whole
+and ONE FIXED share p/q of it (its edge never moves: the invariant IS the number); the hand holds the KNIFE — d, the number of equal pieces
+of the whole, finer or coarser. The numerator is never chosen: it is READ, and it exists only when the edge falls on a cut
+(`inShare = p × d / q` integer ⇔ q / gcd(p, q) divides d). Otherwise one piece straddles the edge and no writing exists. Not the 4AM
+`fraction-reduction` (there the hand CARRIES a number of portions over two separate quantities) nor `square-root-side` (a 1D length) —
+DNA §12.
+
+| World (level) | What the hand holds | What resists |
+|---|---|---|
+| `tray` (مبتدئ, theme `sweets-tray`: grandmother's brass tray of « قلب اللوز », the neighbours' share 3/5 marked by her red ribbon; a `KidFigure` girl in hijab holds the neighbours' box and reacts — `proud` / `wonder`) | the knife on a rail under the tray, d = 1 … 20 (stretch: drag, tap the rail, ← / → ±1 — ← finer in RTL —, Page ±5, round −/+) | an unreadable cut draws the straddling piece dashed rose, inside part in the box colour, the ribbon visibly apart from the cuts, « 4 قطع وجزء من قطعة »; then Amine's claim « 3/5 = 4/6 » (card opened by the student once 2 writings are stamped) is judged ONLY with the knife at 6: his 4 pieces are dashed ghosts, the 4th overflows the ribbon by 2/5 of a piece |
+| `paper` (متقدم, textbook نشاط 4 on squared paper) | the same knife (a pencil) — task 1 the textbook's rectangles 2 (6/10, red) and 3 (12/20, green) beside rectangle 1 (3/5, yellow), drawn SUPERPOSED as hatchings that coincide; task 2 « هديّة الجدّ » 27/45 (`then`, opened by the student): BEFORE the knife moves, up to 3 pins (d < 45) on the rail, then the knife judges each pin it passes | a pin or a cut at 9 or 3 (divisors of 45) straddles (5,4 / 1,8); readable coarser cuts (15, 5) draw the glue: the 45 old cuts dotted, a bracket over each new piece, « كل 9 قطع ← قطعة واحدة »; at d = 5 rectangle 1 is laid on it (`[data-fk-coincide]`) and « لا فرق بين الهديّتين » |
+
+Each readable commit STAMPS its writing in the « دفتر الكتابات » strip (once; a writing already there is not stamped twice); d = 10, 100,
+1000 adds « كسر عشري: 0,6 » to the stamp. **Bands:** when a piece would be under 10 px (`MIN_PIECE`), the whole is drawn as B bands read
+right-to-left then top-down, B the smallest divisor of `max` that fits (`bandsFor`: d = 45 at 320 px → 3 bands of 15), FIXED for a share;
+a piece crossing a band end is drawn as two segments with one almond / one number (`trayLayout`, swept at five widths: each piece once,
+≥ 6 px, inside the width, the edge at the exact fraction). **Honesty note:** for 27/45 every multiple of 5 below 45 is readable (10 →
+6/10 is a re-cut, not a glue); among the DIVISORS of 45 only 5 and 15 are — the glue is drawn only for those (`glue` needs d′ | d).
+
+`discoveryReady`: tray — 3 writings in the notebook (3/5 + two of the knife), one unreadable cut, Amine's claim answered right (a wrong
+« صحيح » is refuted in his own pieces and can be answered again); paper — both targets stamped, 27/45 cut at 5, one refused d < 45 (a pin
+or a cut). Discovery « ما الذي يجمع كل الكتابات في دفترك؟ » (wrong: add the same number — Amine's 3,6 pieces; « just enlarge the
+denominator » — the student's own unreadable d) / « كيف نمرّ من 27/45 إلى 3/5 …؟ » (wrong: divide the denominator by any divisor — the
+student's refused divisor of 45, else 9: 5,4 pieces; divide the denominator alone — 27/5 = 5,4 rectangles). Formal: a/b = (a × k)/(b × k)
+(k ≠ 0) with the student's k's, the decimal line when 6/10 was stamped, 27/45 = (27 ÷ 9)/(45 ÷ 9) = 3/5 (and the student's chain
+27/45 ÷3 9/15 ÷3 3/5), « نقول إننا اختزلنا الكسر ».
+
+Props `world`, `share` [p, q], `start`, `max`, `claim` [a, b], `targets` [[a, d], …], `then` { share, start, max, predict }, `level`,
+`levels`, `title`, `lead`, `onTrial` — `{ kind: 'cut', share: '3/5', d, inShare: '18/5', readable, writing? }`, `{ kind: 'claim', claim:
+'4/6', ok, answer: 'true' | 'false' }` (`ok` = the student's judgement matches the tray), `{ kind: 'pin', share: '27/45', d, readable }`
+(several trials in one gesture are each reported once) — and `onFinished({ share })` (the share last worked). Not eligible for « جرّب كل
+الإمكانيات » (each cut and each pin is an answer). Layout: `PromptCard` in the §17.9 form (context « قسمت الجدّة صينية قلب اللوز إلى 5 قطع
+متساوية، وحصّة الجيران 3 قطع داخل الشريط الأحمر. », question « اقطع الصينية إلى عدد آخر من القطع حتى تقع حافّة الحصّة على خطّ قصّ. »,
+lamp lit on a readable last cut, the textbook targets under « في الكتاب: ») → the `StageFrame` scene (count pill `[data-fk-count]` above the share, the whole, the rail with the knife; ≥ 600 px
+a side `StepperCard` « عدد القطع », narrower the round −/+ at the two ends of the rail and a d pill on the knife) → the notebook strip (one
+line; older stamps in `LabFold` `fraction-knife.notebook`) → the `VerdictBanner` (it keeps its place; idle = the gesture line) → the cards
+(Amine, the pins, the judged pins row, « لا فرق », the gift). Measured glance (`[data-fk-glance]`, both levels, every state): ≤ 615 / 800, ≤ 583 / 768,
+≤ 553 / 844, ≤ 588 / 640 px. DOM: `[data-fraction-knife][data-world][data-share][data-d][data-stage][data-solved][data-layout]`, `[data-fk-glance]`,
+`[data-fk-scene][data-bands]`, `[data-fk-knife]` (slider, `aria-valuenow` = d), `[data-fk-pin-cursor]` (the slider during the prediction;
+Enter plants), `[data-fk-less]` / `[data-fk-more]`, `[data-fk-piece=<i>][data-in=full|part|out]`, `[data-fk-edge]`, `[data-fk-count]`,
+`[data-fk-notebook]`, `[data-fk-stamp=<a/d>][data-figure]`, `[data-fk-decimal]`, `[data-fk-claim][data-judged]`, `[data-fk-claim-open]`,
+`[data-fk-answer=true|false]`, `[data-fk-ghost]`, `[data-fk-pin=<d>][data-state=planted|readable|straddle]`, `[data-fk-pin-chip]`,
+`[data-fk-plant]`, `[data-fk-start]`, `[data-fk-verdict=readable|straddle|]`, `[data-fk-glue]`, `[data-fk-target=<a/d>][data-done]`,
+`[data-fk-next]`, `[data-fk-back]`, `[data-fk-same]`, `[data-fk-formal]`, `[data-fk-girl][data-mood]`.
+
+## 2unvicies. Euclidean division for any divisor and the bracket of the quotient — `egg-trays` (2AM unit 2, 2026-10-14)
+
+`operations/EggTrays.jsx` on `logic/eggTrays.js` (integers through `core/arithmetic/divisibility.js › divmod`, imported by path; floats
+only DRAW the marker), drawings in `primitives/EggFigure.jsx` (`Egg`, `TrayBody` — b cells in `trayGrid(b)`, exactly r eggs filled column
+by column —, `CartonLid`, `FullTraySlat`, `Pallet`; tested in `primitives/eggFigure.test.jsx`), lesson `qisma-iqlidiya-hasr` (theme
+`farm`). The net forbids rebuilding the 1AM lab (`2am.m1.r04` EXTENDS `1am.m3.r01`), so the variable changes (DNA §12): `division-jumps`
+puts q in the hand; here b is given and the hand holds **a, the eggs swept from a conveyor into trays** — the first division lab that
+holds the dividend. A tray CLOSES by itself at b (a stamp), so it never holds b eggs open: r < b is physical at every scale. Under the
+belt, the **trays ruler** is the SAME line read ÷ b (the belt is drawn at the ruler's scale; a dashed plumb line joins the belt handle to
+the marker « a ÷ b » at q + r/b), and a **zoom** magnifies [q ; q + 1] as the open tray itself, filled to r/b. What 2AM adds — the
+quotient is a NUMBER strictly between q (trays full, by default) and q + 1 (trays needed, by excess), ON a graduation iff r = 0 — is
+DISCOVERED by framing it.
+
+| World (level) | What the hand holds | What resists |
+|---|---|---|
+| `carton` (مبتدئ, platform, Salma in hijab `scarf="mint"`: 50 eggs, cartons of 12 = 2 × 6, ruler 0 … 7, every egg drawn on the belt — `beltLayout`, each egg above i ÷ b) | 1) a one-unit FRAME on the ruler, placed before the first egg (drag / tap the ruler / ←→ / −/+); 2) the belt handle (drag / tap the belt / ←→ ±1, Page ±b / −/+ ±1 egg, ±1 carton) | the belt is LOCKED until the frame is placed (the bet); the frame is LOCKED while eggs flow (0 < a < order) — a bet is not corrected by watching the marker; the belt stops at the last egg (the orange stop shakes, `[data-et-end]`); at the full order the frame is judged — `right` / `below` / `above` (gap in cartons) / `remainder` (the frame on [r ; r + 1]) / `onMark` |
+| `tray` (متقدم, textbook نشاط 1 p. 24: 2145 eggs, trays of 30 = 5 × 6, ruler 0 … 74 labelled every 10, ticks every 1) | the same two gestures, plus ±10 trays (±300 eggs) and frame ±10 — the steppers ARE the division by hand (pallets, trays, eggs) | the same; the belt shows the COUNT left; ten closed trays tie into a pallet (`[data-et-pallet]`, the strap draws itself): 7 pallets + 1 tray = 71, the place value of q is SEEN |
+
+Contrast (§7quater, same lab): after the right frame a card « بيض إضافي! » (`[data-et-next]`) grows the order to
+`then` (default the next multiple of b: 60, 2160); the frame becomes a bet again (`placed: false`); at the full order the last tray closes
+EXACTLY, the marker lands ON 5 / 72: a frame there is judged `onMark`; the student must tap « يقع على عدد طبيعي » (`[data-et-exact]`,
+offered at every full order, wrong on 2145). Then (متقدم, `claim`) the farmer's son's card « 2145 = 30 × 70 + 45 »: أوافق / لا أوافق, and
+either way his state is REPLAYED (70 trays in 7 pallets, 45 loose eggs poured: one more tray closes at 30, 15 remain) — `ok` = disagreed.
+`discoveryReady` = the order done (right frame; or exact when b | a) + `then` done + the claim judged. Discovery « متى يقع حاصل القسمة
+على عدد طبيعي بالضبط؟ » → « عندما لا تبقى علبة / صفيحة مفتوحة: الباقي معدوم »; wrong options refuted with the student's numbers
+(`refutations`: « even » by a0 if even, else the last EVEN count he swept with r ≠ 0 — 2140 = 30 × 71 + 10 —, else a neighbour; « more eggs
+than a tray » by a0 itself and a multiple of b he swept; the « even » option is dropped when b = 2). Formal (`[data-et-formal]`): the
+equality and `r < b` with the المقسوم chip + the shared `DivisionRoles`, the bracket `q < a/b < q + 1` (a stacked fraction), then a
+SECOND short question inside the formal block (`[data-et-ends]`, « ماذا يمثّل طرفا إطارك؟ », the wrong « الحاصل والباقي » refuted with
+the frame and r) that unlocks the names « قيمة مقرّبة إلى الوحدة بالنقصان / بالزيادة » (`[data-et-approx]`, a « renvoi en avant » to
+`kasr-hasil-qisma`), `then/b = q` ⇒ « b يقسم … » « … مضاعف لـ b » « … يقبل القسمة على b », and the son's line struck (« 45 > 30 »).
+
+Props `a`, `b`, `then?`, `claim?` ({ q, r } or null), `world` ('carton' | 'tray'), `max?` (default ⌈max(a, then) ÷ b⌉ + 2), `level`, `levels`,
+`title`, `lead`, `onTrial` — `{ kind: 'frame', a, b, q, r, n, ok, model }` | `{ kind: 'exact', a, b, q, ok }` | `{ kind: 'claim', a, b, claimQ,
+claimR, agree, ok }`, every trial reported once even when two land in one render —, `onFinished({ a, b })`. Not eligible for « جرّب كل
+الإمكانيات » (each frame and claim is an answer); no auto-completion. Default: frame [0 ; 1] NOT placed, 0 eggs — neither is a trial.
+
+**Look and one screen (kit §8ter, DNA §17).** No visible title (DNA §17.9: the shell gets `titleHidden`, its `<h3>` stays for screen
+readers): a `PromptCard` opens on the CONTEXT with every number (`[data-et-context]`, « جمعت سلمى 50 بيضةً، وكل علبة تتّسع لـ 12 بيضةً. »)
+then ONE question naming the goal and the end state (`[data-et-question]`, « ضع إطارك حيث يقع 50 ÷ 12، ثم املأ العلب حتى يفرغ
+الحزام. »; `[data-et-order]` on the pair), a lamp lit by a right verdict, then the live pills — full / open, and at متقدم pallets / trays /
+open / belt, each with what it counts (« بيض في العلبة المفتوحة ») — over a `StageFrame`. No bare number or control (§17.9): the ruler
+carries its caption (`[data-et-ruler-caption]`, « المسطرة: عدد العلب / الصفائح »), the frame pill its label « إطارك », the zoom its caption
+(`[data-et-zoom-caption]`, « العلبة المفتوحة مكبّرة »), the belt handle « معبّأ », every −/+ pair the step it adds (« بيضة واحدة »,
+« علبة كاملة », « بتدريجة »… — ABOVE the two buttons on narrow screens), the exact button its quotient (« 50 ÷ 12 يقع على عدد طبيعي »), and
+the son's replay pills their meaning (« صفائحه المملوءة », « تُملأ صفيحة », « ويبقى »); the scene: a plank wall, a
+belt on rollers, the closed cartons (lids) or tray slats on their ruler segments, the open one dashed with r eggs, the ruler, the frame as a
+translucent column with bracket ends and its pill (a lock while eggs flow), the zoom, and the farm child at the belt's end (`KidFigure`:
+Salma at مبتدئ, the son at متقدم — `mood` happy / wonder / neutral / proud). ONE action panel at a time: ≥ 600 px a side card shows the
+FRAME controls before and after the fill (+ the exact button at the full order) and the EGG steppers during it, then the claim card
+replaces it; narrower, the same pairs live in a strip INSIDE the stage whose height is FIXED per world (1 / 2 rows, 2 / 3 below 300 px —
+full-width pairs), the contrast becomes a one-line card in that strip, and the claim card is laid over the ruler and zoom (without the
+kid, who is in the scene) — the stage never changes height between phases. The `VerdictBanner` under the stage keeps its place and
+says the gesture once per phase (frame / fill / full). The zoom yields height to the budget (`useLessonViewport` minus the measured
+prompt and verdict: 110 → 34 px); on compact widths the belt, gaps, ruler captions and zoom foot are tighter, and on wide screens the contrast
+card takes the side column (it replaces the frame card) instead of adding a row. Measured glance (`[data-et-glance]`, both levels, every
+state, 2026-10-14 after the §17.9 labels): ≤ 663 / 800, ≤ 663 / 768, ≤ 676 / 844, ≤ 618 / 640 px. DOM: `[data-egg-trays][data-world][data-a][data-b]
+[data-count][data-solved][data-layout]`, `[data-et-glance]`, `[data-et-order]`, `[data-et-reading]` / `[data-et-read=<key>]`,
+`[data-et-handle]` (slider, `aria-valuenow` = eggs, `aria-disabled` while the belt is locked), `[data-et-step=egg|tray|pallet][data-dir=less|more]`,
+`[data-et-frame-step=1|10][data-dir]`, `[data-et-panel=frame|eggs]`, `[data-et-strip][data-rows]`, `[data-et-belt-egg=<i>]` (carton) /
+`[data-et-belt=<left>]` (tray), `[data-et-end]`, `[data-et-tray=<i>][data-full]`, `[data-et-pallet=<i>]`, `[data-et-open][data-eggs]`,
+`[data-et-ruler=<max>]`, `[data-et-marker][data-q][data-r]` (from the first egg), `[data-et-zoom=<q>]`, `[data-et-frame][data-n][data-state=idle|right|wrong]
+[data-placed][data-locked]`, `[data-et-frame-handle]` (slider), `[data-et-exact]`, `[data-et-next]` / `[data-et-next-button]`, `[data-et-claim]
+[data-verdict=agree|disagree]`, `[data-et-claim-answer=agree|disagree]`, `[data-et-replay=heap|poured]`, `[data-et-verdict=<kind>][data-et-refused=<model>]`,
+`[data-et-formal]`, `[data-et-bracket]`, `[data-et-ends]` / `[data-et-ends-option]`, `[data-et-approx]`, `[data-et-says]`, `[data-et-formal-claim]`,
+`[data-lab-fold=egg-trays.trials]`. Tests: `logic/eggTrays.test.js` (a ∈ 0..3000 × b ∈ 1..60 state and marker sweeps, the frame judge on
+every (a, b, n), the claim sweep, the flow and gate, the refutation picks, the ruler / belt / zoom geometry at five widths),
+`operations/eggTrays.render.test.jsx` (both levels, says-it-once, no rule word reachable before the discovery, hints free of q, q + 1, r).
 
 ## 2quindecies. The space laboratories and the 3D kit (unit 14, 2026-10-05)
 
@@ -1427,10 +1599,12 @@ Owner reference: a prompt card above a lavender stage with full-body drawn child
 and a control card with a big readout and round −/+. The pieces are shared, never redrawn per lab:
 
 - **`primitives/LabKit.jsx`** (HTML): `LabCard`, `StageFrame` (lavender stage), `QuestionChip`, `PromptCard` (`chip` + `aside` on one
-  row, the big `title` with a `lamp` that lights when the sentence becomes true, the `instruction`, children), `ChoiceTray` +
+  row, the big `title` with a `lamp` that lights when the sentence becomes true, the `instruction`, children; **§17.9 form** (2026-10-14):
+  `context` (+ `contextProps`) opens the card with the givens `[data-lab-context]`, `title` is then THE question `[data-lab-question]`,
+  `aside` moves UNDER the question `[data-lab-aside]` and no `chip` is passed — the five 1AM labs use this form), `ChoiceTray` +
   `ChoiceCard` (big answer cards on a raised edge; `state` idle | selected | right | tried | locked; `size` lg | md | sm; `ltr` for a
   calculation), `RoundButton`, `StepperCard` (title, BIG readout, round − / + with + filled, an optional gesture `hint` — omit it when the verdict line already says the gesture, DNA §17.7; `layout` card | row),
-  `NamePill`, `LabNote` (guides the gesture), `VerdictBanner` (the line the gesture writes, `role=status`). Every `data-*` / `aria-*`
+  `NamePill`, `LabNote` (guides the gesture), `VerdictBanner` (the line the gesture writes, `role=status`). `ManipulationShell` takes `titleHidden` (2026-10-14, DNA §17.9): the shell title becomes `sr-only`, so a lab opens on its context and question. Every `data-*` / `aria-*`
   passes through (`titleProps`, `lessProps`, `moreProps`, `readoutProps`, `...rest`): a lab keeps its DOM contract when it adopts the kit.
   The kit writes no text of its own.
 - **`primitives/SvgPill.jsx`** (inside a scene): `SvgPill` (a value pill, `pointer="down"` above an object; LTR island) and

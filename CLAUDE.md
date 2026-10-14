@@ -192,6 +192,7 @@ platform's CHARACTERS »; the lab visual kit around it: `MANIPULATION_CONTRACT.m
 **Every manipulation is built to the LIMIT of what you can produce for Gen Alpha (11–13)** (owner, 2026-10-14, every
 generation): a lab that merely works is not done. The quality bar — drawn world, shared kit, physical gestures, visual feedback that
 never states the rule, one screen at four sizes, screenshots reviewed with the eyes — is `docs/architecture/MANIPULATION_DNA.md` §17.
+A lab opens on NO title: the context in one or two plain sentences, then ONE direct question naming the goal and the end state (§17.9).
 
 ### Marketing and shell surfaces: generation is fine
 

@@ -544,6 +544,42 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'يقبل العدد القسمة على 2 أو 5 حسب رقم آحاده، وعلى 3 أو 9 حسب مجموع أرقامه، وعلى 4 حسب العدد المشكّل من رقميه الأخيرين ؛ ويقبل a القسمة على b إذا كان باقي القسمة الإقليدية معدومًا',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 1 « الأعداد الطبيعية والأعداد العشرية » (2026-10-14) — l'écriture des entiers et la valeur de position.
+  'rank-exchange': {
+    // L'ÉCHANGE DIX POUR UN : la main déplace des QUANTITÉS entre les rangs — elle lie 10 objets d'un rang en 1 objet du
+    // rang suivant et le porte dans sa colonne, ou ouvre 1 objet en 10 du rang précédent. Le nombre ne s'écrit que
+    // quand aucune colonne n'en tient 10 : le chiffre est ce qui RESTE dans un rang après l'emballage, et « عدد العشرات »
+    // compte aussi les dizaines enfermées dans les centaines et les milliers (2017 : رقم 1، عدد 201). مبتدئ : l'atelier
+    // d'emballage des crayons (crayon, paquet de 10, boîte de 100, carton de 1000) ; متقدم : les jetons de rang du manuel
+    // (999 + 1 en cascade, 1000 − 1, les dictées 7065 et 4 908 732 par classes). Chaque geste est un essai : MANUEL (§6bis).
+    shows: 'كل 10 وحدات من مرتبة تساوي وحدة واحدة من المرتبة التي على يسارها ؛ رقم المرتبة هو ما يبقى فيها بعد التحزيم، وعدد وحداتها يشمل ما في المراتب الأعلى (2017: رقم العشرات 1 وعدد العشرات 201) ؛ والصفر يحفظ مكان مرتبة فارغة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 1AM, unité 4 « الكتابات الكسرية » (2026-10-14) — les écritures fractionnaires d'un même nombre et la réduction.
+  'fraction-knife': {
+    // LE COUTEAU ET LA PART : une part FIXE d'un tout (la part des voisins sur le plateau de قلب اللوز de grand-mère ; le
+    // rectangle du نشاط 4) — son bord ne bouge jamais ; la main tient le COUTEAU : d, le nombre de morceaux égaux du tout
+    // (rail étiré, plus fin ou plus grossier). La part ne s'écrit a/d que si son bord tombe SUR une coupe : sinon un morceau
+    // est à cheval (« 3 قطع وجزء من قطعة ») et aucune écriture n'existe. Les écritures lisibles sont (p×k)/(q×k) ; remonter
+    // vers moins de morceaux (27/45 → 9/15 → 3/5) c'est réunir k morceaux en un : diviser les deux termes par k — réduire.
+    // مبتدئ : 3/5 de plateau, d de 1 à 20, la proposition d'Amine « 4/6 » (ajouter 1 aux deux termes) jugée par le plateau ;
+    // متقدم : les trois rectangles du manuel (3/5, 6/10, 12/20) puis le cadeau du grand-père 27/45 de 3500DA, PRÉDIT (épingles
+    // sur le rail) puis réduit. Chaque coupe est un essai jugé : MANUEL (§6bis).
+    shows: 'نفس الحصّة لها كتابات كسرية عديدة: ضرب البسط والمقام في نفس العدد غير المعدوم أو قسمتهما على نفس العدد لا يغيّر الكسر ؛ والاختزال هو جمع كل k قطع في قطعة واحدة: قسمة البسط والمقام على قاسم مشترك',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 2 « الكسور والعمليات عليها » (2026-10-14) — la division euclidienne pour tout diviseur et l'encadrement du quotient.
+  'egg-trays': {
+    // LE TAPIS ET LA RÈGLE DES PLATEAUX : b est DONNÉ (12 œufs par boîte, 30 par plateau) ; la main tient a, le nombre d'œufs
+    // posés sur le tapis (1AM tenait q, 4AM tenait b). Le plateau ouvert se FERME tout seul à b œufs : il n'en tient jamais b
+    // (r < b est physique), et les plateaux fermés font q. Sous le tapis, la RÈGLE DES PLATEAUX (même ligne, échelle ÷ b) porte
+    // le repère « a ÷ b » : son écart à q EST le remplissage r/b du plateau ouvert. Le quotient tombe SUR une graduation si et
+    // seulement si r = 0 (b يقسم a) ; sinon il est strictement entre q (plateaux pleins, valeur approchée par défaut) et q + 1
+    // (plateaux nécessaires, par excès). L'élève ENCADRE le repère (un cadre d'une unité sur la règle), jugé avec ses propres
+    // œufs ; la division du fils du manuel (2145 = 30 × 70 + 45) est réfutée par le plateau qui se ferme à 30.
+    shows: 'حاصل القسمة a ÷ b عدد يقع بين عددين طبيعيين متتاليين: q (الصفائح المملوءة، قيمة مقرّبة بالنقصان) و q + 1 (الصفائح اللازمة، بالزيادة) ؛ ويقع على عدد طبيعي بالضبط إذا وفقط إذا كان الباقي معدومًا (b يقسم a) ؛ والباقي أصغر دائمًا من b',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

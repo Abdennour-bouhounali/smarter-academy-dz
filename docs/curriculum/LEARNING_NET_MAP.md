@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **77** leçons publiées · **193** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **80** leçons publiées · **190** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -777,7 +777,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
 | `1am.m1.r01` | جمع، طرح وضرب أعداد طبيعية في وضعيات معطاة. | `mana-jam-tarh` | — |
-| `1am.m1.r02` | استعمال الكتابة العشرية والكتابة الكسرية والانتقال بينهما. | `kitabat-adad-tabii` _(prévue)_ | — |
+| `1am.m1.r02` | استعمال الكتابة العشرية والكتابة الكسرية والانتقال بينهما. | `kitabat-adad-tabii` | — |
 | `1am.m1.r03` | ضرب وقسمة عدد عشري في/على 10، 100، 1000 أو في/على 0,1، 0,01، 0,001. | `kusur-ashriya-kitaba` _(prévue)_ | `1am.m1.r02` |
 | `1am.m1.r04` | ترتيب أعداد عشرية. | `muqaranat-adad-ashriya` _(prévue)_ | `1am.m1.r02` |
 | `1am.m1.r05` | جمع، طرح وضرب أعداد عشرية في وضعية معيّنة. | `mana-jam-tarh` | `1am.m1.r01`، `1am.m1.r03` |
@@ -829,7 +829,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
 | `1am.m5.r01` | التعرّف في حالات بسيطة على الكتابات الكسرية لعدد. | `hasil-qisma-kasr` _(prévue)_ | `1am.m1.r02` |
-| `1am.m5.r02` | اختزال كتابة كسرية (كسر). | `ikhtizal-kitaba-kasriya` _(prévue)_ | `1am.m5.r01`، `1am.m3.r02` |
+| `1am.m5.r02` | اختزال كتابة كسرية (كسر). | `ikhtizal-kitaba-kasriya` | `1am.m5.r01`، `1am.m3.r02` |
 | `1am.m5.r03` | جمع وطرح وضرب كسور عشرية. | `kusur-ashriya-kitaba` _(prévue)_ | `1am.m5.r01`، `1am.m1.r05` |
 | `1am.m5.r04` | قراءة فاصلة نقطة (أو إعطاء حصر لها) أو تعيين نقطة ذات فاصلة معلومة على نصف مستقيم مدرّج. | `adad-ashri-mustaqim-mudarraj` _(prévue)_ | `1am.m1.r04` |
 | `1am.m5.r05` | إدراج الأعداد السالبة في وضعيات متنوّعة. | `adad-nisbiya-siyaqat` _(prévue)_ | — |
@@ -876,9 +876,9 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `2am.m1.r01` | إجراء سلسلة عمليات. | `silsila-bidun-aqwas` _(prévue)_ | `1am.m1.r05` |
 | `2am.m1.r02` | استعمال الأقواس. | `silsila-bi-aqwas` _(prévue)_ | `2am.m1.r01` |
 | `2am.m1.r03` | معرفة خاصة توزيع الضرب بالنسبة إلى الجمع والطرح واستعمالها. | `tawzi-darb-jam-tarh` _(prévue)_ | `2am.m1.r02` |
-| `2am.m1.r04` | تعيين حاصل وباقي القسمة الإقليدية لعدد على عدد غير معدوم. | `qisma-iqlidiya-hasr` _(prévue)_ | يمدّد `1am.m3.r01` |
+| `2am.m1.r04` | تعيين حاصل وباقي القسمة الإقليدية لعدد على عدد غير معدوم. | `qisma-iqlidiya-hasr` | يمدّد `1am.m3.r01` |
 | `2am.m1.r05` | تعيين قيمة مقرّبة بالزيادة (أو بالنقصان) لحاصل قسمة عشري. | `kasr-hasil-qisma` _(prévue)_ | يمدّد `1am.m3.r04` |
-| `2am.m1.r06` | حصر حاصل القسمة. | `qisma-iqlidiya-hasr` _(prévue)_ | `2am.m1.r05` |
+| `2am.m1.r06` | حصر حاصل القسمة. | `qisma-iqlidiya-hasr` | `2am.m1.r05` |
 | `2am.m1.r07` | ضرب كسرين. | `jida-kasrayn` _(prévue)_ | يمدّد `1am.m5.r03` |
 | `2am.m1.r08` | مقارنة كسرين لهما نفس المقام أو مقام أحدهما مضاعف لمقام الآخر. | `muqarana-kasrayn` _(prévue)_ | `1am.m5.r01`، `1am.m5.r02` |
 | `2am.m1.r09` | جمع أو طرح كسرين لهما نفس المقام أو مقام أحدهما مضاعف لمقام الآخر. | `jam-tarh-kusur` _(prévue)_ | `2am.m1.r08`، يمدّد `1am.m5.r03` |
@@ -1148,7 +1148,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | # | leçon | statut | items |
 |---:|---|---|---|
-| 1 | `kitabat-adad-tabii` — كتابة الأعداد الطبيعية ودلالة الأرقام | prévue | `1am.m1.r02` |
+| 1 | `kitabat-adad-tabii` — كتابة الأعداد الطبيعية ودلالة الأرقام | publiée | `1am.m1.r02` |
 | 2 | `kusur-ashriya-kitaba` — الكسور العشرية والكتابة العشرية | prévue | `1am.m1.r02` `1am.m5.x1` `1am.m1.r03` `1am.m5.r03` |
 | 3 | `adad-ashri-mustaqim-mudarraj` — الأعداد العشرية ونصف المستقيم المدرّج | prévue | `1am.m5.r04` |
 | 4 | `muqaranat-adad-ashriya` — مقارنة الأعداد العشرية وترتيبها | prévue | `1am.m1.r04` |
@@ -1166,7 +1166,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 16 | `hasil-qisma-kasr` — حاصل القسمة والكسر | prévue | `1am.m5.r01` |
 | 17 | `hasil-qisma-mustaqim` — حاصل القسمة على نصف مستقيم مدرّج | prévue | `1am.m5.r04` `1am.m5.r01` |
 | 18 | `akhdh-kasr-min-adad` — أخذ كسر من عدد | prévue | `1am.m5.r01` `1am.m5.r03` |
-| 19 | `ikhtizal-kitaba-kasriya` — الكتابات الكسرية لحاصل قسمة واختزال كسر | prévue | `1am.m5.r01` `1am.m5.r02` `1am.m5.x1` |
+| 19 | `ikhtizal-kitaba-kasriya` — الكتابات الكسرية لحاصل قسمة واختزال كسر | publiée | `1am.m5.r01` `1am.m5.r02` `1am.m5.x1` |
 | 20 | `wadiya-idmajiya-kitabat-kasriya` — أدمج تعلّماتي — الكتابات الكسرية | synthèse | — |
 | 21 | `adad-nisbiya-siyaqat` — الأعداد النسبية وسياقات استعمالها | prévue | `1am.m5.r05` |
 | 22 | `talim-mustaqim-mudarraj` — التعليم على مستقيم مدرّج | prévue | `1am.m5.r06` `1am.m5.r05` |
@@ -1227,7 +1227,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 3 | `wasf-silsila-hisab` — وصف سلسلة حسابات | prévue | `2am.m1.r01` `2am.m1.r02` |
 | 4 | `tawzi-darb-jam-tarh` — توزيع الضرب على الجمع والطرح | prévue | `2am.m1.r03` |
 | 5 | `wadiya-idmajiya-amaliyat-tabiiya-ushriya` — أدمج تعلّماتي — العمليات على الأعداد الطبيعية والأعداد العشرية | synthèse | — |
-| 6 | `qisma-iqlidiya-hasr` — القسمة الإقليدية وحصر حاصل القسمة | prévue | `2am.m1.r04` `2am.m1.r06` |
+| 6 | `qisma-iqlidiya-hasr` — القسمة الإقليدية وحصر حاصل القسمة | publiée | `2am.m1.r04` `2am.m1.r06` |
 | 7 | `kasr-hasil-qisma` — الكسر: نسبة وحاصل قسمة وقيم مقرّبة | prévue | `2am.m1.r05` `2am.m1.r06` |
 | 8 | `jam-tarh-kusur` — جمع وطرح كسرين | prévue | `2am.m1.r09` |
 | 9 | `jida-kasrayn` — جداء كسرين | prévue | `2am.m1.r07` |

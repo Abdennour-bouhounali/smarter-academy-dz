@@ -5,7 +5,8 @@
  * Lancement (dev server 5173, API 8000, élève QA local, base importée) :
  *   node apps/web/e2e/moyen-draft-grades.mjs [dossier-captures]
  *
- * Vérifie, sur bureau (1440) et téléphone (320) : le catalogue 1AM annonce « البرنامج متوفّر، الدروس
+ * Vérifie, sur bureau (1440) et téléphone (320) : le catalogue 3AM (la seule année ENCORE sans aucune leçon publiée depuis la
+ * première leçon de 2AM, 2026-10-14 ; 1AM depuis le lot 1) annonce « البرنامج متوفّر، الدروس
  * قيد الإعداد » et ses cartes d'unité « قيد الإعداد » ; la page d'unité montre les leçons en brouillon sans
  * aucun lien vers une leçon non écrite ; les prérequis d'une autre année (3AM) disent leur année sans
  * lien ; 4AM est inchangée ; aucun débordement, aucune erreur console. Puis, en pratique 4AM
@@ -47,23 +48,23 @@ for (const [vp, viewport] of [['desktop', { width: 1440, height: 900 }], ['phone
   const errors = [];
   page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
   page.on('pageerror', (e) => errors.push(String(e)));
-  await page.goto(`${BASE}/courses?level=moyen&grade=1am`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/courses?level=moyen&grade=3am`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(800);
-  check(await page.locator('[data-grade-drafting]').count() === 1, `${vp}: 1AM catalogue says « البرنامج متوفّر، الدروس قيد الإعداد »`);
+  check(await page.locator('[data-grade-drafting]').count() === 1, `${vp}: 3AM catalogue says « البرنامج متوفّر، الدروس قيد الإعداد »`);
   const drafts = await page.locator('[data-unit-draft]').count();
-  check(drafts > 0, `${vp}: 1AM unit cards show « قيد الإعداد » (${drafts})`);
+  check(drafts > 0, `${vp}: 3AM unit cards show « قيد الإعداد » (${drafts})`);
   const ov = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   check(ov <= 1, `${vp}: catalogue — no horizontal overflow (${ov}px)`);
-  await page.screenshot({ path: `${OUT}/${vp}-courses-1am.png`, fullPage: false });
+  await page.screenshot({ path: `${OUT}/${vp}-courses-3am.png`, fullPage: false });
   await page.locator('[data-unit-group]').first().click();
   await page.waitForTimeout(1200);
   check(/\/units\//.test(page.url()), `${vp}: unit card opens the unit page (${page.url().replace(BASE, '')})`);
   const draftLessons = await page.locator('[data-lesson-draft]').count();
   check(draftLessons > 0, `${vp}: unit page shows draft lessons (${draftLessons})`);
-  check(await page.locator('[data-unit-lesson] a[href*="/courses/moyen/1am/"]').count() === 0, `${vp}: no link to an unwritten 1AM lesson`);
+  check(await page.locator('[data-unit-lesson] a[href*="/courses/moyen/3am/"]').count() === 0, `${vp}: no link to an unwritten 3AM lesson`);
   const ov2 = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   check(ov2 <= 1, `${vp}: unit page — no horizontal overflow (${ov2}px)`);
-  await page.screenshot({ path: `${OUT}/${vp}-unit-1am.png`, fullPage: false });
+  await page.screenshot({ path: `${OUT}/${vp}-unit-3am.png`, fullPage: false });
   // A 3AM lesson whose prerequisites come from 1AM/2AM: chips name the year, no link.
   await page.goto(`${BASE}/courses/moyen/3am/ansab_al_aadad_wal_hisab/units/kusur-natiqa`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(800);

@@ -92,10 +92,10 @@ describe('digit-cards — rendu', () => {
     };
     const keys = ['explanation', 'tableAria', 'cellAria', 'cellAriaIn', 'reveal', 'revealAria', 'slotsTitle', 'slotAria', 'slotFullAria',
       'trayTitle', 'trayAria', 'trayEmpty', 'cardAria', 'lampsTitle', 'claimYes', 'claimNo', 'claimYesAria', 'claimNoAria', 'claimNeedNumber',
-      'tasksTitle', 'task', 'taskAria', 'submit', 'submitAria', 'none', 'noneAria', 'answer', 'answerNone', 'trialsTitle', 'ok', 'notOk',
-      'need.swap', 'need.targets', 'chip.grid', 'chip.cards', 'numberTitle', 'dragHint', 'ledger.unitsShort', 'ledger.sumsShort',
-      ...['title', 'done', 'do', 'next', 'all', 'start'].map((x) => `prompt.grid.${x}`), 'prompt.cards.do', 'ledger.title', 'ledger.units', 'ledger.sums', 'ledger.empty',
-      'colouring.label', 'colouring.aria', 'colouring.locked', 'colouring.pick', 'colouring.short',
+      'tasksTitle', 'question.cards', 'question.grid', 'context.cards', 'context.grid', 'taskAria', 'submit', 'submitAria', 'none', 'noneAria', 'answer', 'answerNone', 'trialsTitle', 'ok', 'notOk',
+      'need.swap', 'need.targets', 'numberTitle', 'dragHint', 'ledger.unitsShort', 'ledger.sumsShort',
+      ...['do', 'next', 'all', 'start'].map((x) => `prompt.grid.${x}`), 'ledger.title', 'ledger.units', 'ledger.sums', 'ledger.empty',
+      'colouring.label', 'colouring.progress', 'colouring.progressShort', 'tasksShort', 'colouring.aria', 'colouring.locked', 'colouring.short',
       'discovery.column', 'discovery.whyColumn', 'discovery.units3', 'discovery.whyUnits3', 'discovery.even4', 'discovery.whyEven4',
       'discovery.sum2', 'discovery.whySum2', 'discovery.whyGeneric',
       'formal.def', 'formal.rule2', 'formal.rule5', 'formal.rule3', 'formal.rule9', 'formal.rule4', 'formal.why4',
@@ -107,7 +107,7 @@ describe('digit-cards — rendu', () => {
       ...['red', 'blue', 'green', 'amber', 'violet', 'slate'].map((x) => `colourName.${x}`),
       ...[0, 1, 2, 3].map((x) => `places.${x}`)];
     for (const m of ['grid', 'cards']) {
-      keys.push(`title.${m}`, `mission.${m}`, `discovery.prompt.${m}`, `discovery.right.${m}`);
+      keys.push(`title.${m}`, `discovery.prompt.${m}`, `discovery.right.${m}`);
       for (let i = 0; i < 3; i += 1) keys.push(`hints.${m}.${i}`);
     }
     for (const key of keys) {
@@ -124,5 +124,24 @@ describe('digit-cards — rendu', () => {
       }
     }
     expect(say('explanation')).not.toMatch(/رقم آحاد|مجموع أرقام|الرقمين الأخيرين/);
+  });
+
+  it('opens on its CONTEXT then ONE question naming the end state — no title banner, no shell mission (MANIPULATION_DNA §17.9)', () => {
+    const text = (out) => out.replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ').replace(/[⁦⁩]/g, '').replace(/\s+/g, ' ');
+    for (const [lv, m, context, question] of [
+      ['beginner', 'grid', 'في الجدول الأعداد من 0 إلى 48.', 'لوّن كل مضاعفات 2 ثم 5 ثم 3.'],
+      ['advanced', 'cards', 'عندك أربع بطاقات: 4 ، 5 ، 9 ، 3.', 'رتّب البطاقات حتى تكوّن أكبر عدد يقبل القسمة على 2 — أو قل إنه لا يوجد.'],
+    ]) {
+      const out = html({ ...LEVELS['digit-cards'][lv].numbers });
+      expect(out).toMatch(/<h3 class="sr-only">/);
+      expect(out).not.toContain('data-manipulation-mission');
+      expect(out).not.toMatch(/<span class="inline-flex items-center gap-1\.5 rounded-full bg-indigo-50/);
+      expect(out).toContain(`data-dc-context="${m}"`);
+      const t = text(out);
+      expect(t.indexOf(context), context).toBeGreaterThan(-1);
+      expect(t.indexOf(question), question).toBeGreaterThan(t.indexOf(context));
+      expect(t.split(question).length - 1).toBe(1);
+      expect(out.indexOf('data-lab-context')).toBeLessThan(out.indexOf('data-lab-question'));
+    }
   });
 });

@@ -192,6 +192,10 @@ before the next. What that adds to « Adding a textbook UNIT »:
   (« en attente ») until the lesson exists; a pending destination must be a real catalogue lesson, and no other lesson may cite it.
 - **Publishing flips one entry** (§11): `coursesData.test.js` now checks, for 1AM–3AM, « `available` ⇔ `lesson.config.js` on disk »
   (like 4AM's `decomposition.test.js`) and that `lessonCount` counts the published ones.
+- **Two lessons share one programme item** (1AM `1am.m1.r02`: `kitabat-adad-tabii` and `kusur-ashriya-kitaba`, 2026-10-14): write the
+  BOUNDARY once in the unit's `build-extraction.py` header (what each lesson owns), split a textbook element that straddles it with
+  `destinations.<id>.items` (know-4 p. 13: item a → the first lesson, item b → the second), and move a draft الكفاءة's overlapping part
+  to the lesson that teaches its prerequisite knowledge (never two LPs teaching the same thing — the net's no-duplication rule).
 - **Authors in parallel on one lesson**: the lead writes the lesson, a lab author and a bank author work from a brief kept in the
   repo (`docs/sources/1am/unit2/brief-authors.md`: the lab's FIXED props contract, file ownership, the bank's provenance rules).
 - **Make it visible locally** (owner, 2026-10-14): after the DB handshake, publish the lesson's `lesson_modules` and
@@ -201,6 +205,24 @@ before the next. What that adds to « Adding a textbook UNIT »:
   (dispatched by `StatementFigure` / `validateStatementFigure`), a مسألة `figure`, and the live tape of the `story-bars` lab. Lengths are
   schematic (≥ 16 % of the width per part); a statement tape must CLOSE (`validateArcTape`), a lab tape shows the gap / overflow of a
   wrong value. Unique SVG ids per instance (`useId`).
+- **The first lesson of a new grade (2AM, `qisma-iqlidiya-hasr`, 2026-10-14) needed NO new wiring**: « Adding a GRADE » had
+  already globbed `2am` (`lessonLoaders.js`), the index generator follows `ACTIVE_GRADE_IDS`, and the practice tooling reads every
+  grade folder (`content/practice/2am/` is simply created by the bank). Seed `_unit/unitMeta.js` with that grade's labels
+  (`GRADE_ID '2am'`, `GRADE_LABEL 'السنة الثانية متوسط'`, the grade's own ميدان name). While the lesson is still `coming_soon`, its
+  MODULE pages mount (`…/<lesson>/nashat`) — that is what a parallel lab author opens — but its summary page says « هذا الدرس غير
+  متاح حالياً » (the DB lesson is `draft` until the publish flip) and two tests are red by design until the flip:
+  `coursesData.test.js` (« available ⇔ on disk ») and the unit's `prepDiagnostic.test.js` (« the published lessons »).
+  `e2e/moyen-draft-grades.mjs` checks the drafting notice on the grade that still has NO published lesson (3AM since this lesson).
+- **A lesson that EXTENDS a published earlier-year lesson opens on a « تذكّر »** (`LEARNING_NET.md` §4.3): a `TextbookBox
+  kind="remark"` titled « تذكّر — السنة … », source `addition('prior_year_reminder')`, linking the base lesson with
+  `getLessonPath(code)` (null — no link — while it is unpublished). The base item is a `priorKnowledge` id measured by « أستعدّ »,
+  never a `knowledge.jsx` item of the new lesson. A same-year item taught LATER in the book (a « renvoi en avant » of the queue) is
+  measured in « أستعدّ » through its earlier-year base and named in معارف without being built (`qisma-iqlidiya-hasr`: « قيمة
+  مقرّبة بالنقصان / بالزيادة », built by `kasr-hasil-qisma`).
+- **A textbook page that belongs to another lesson** (`qisma-iqlidiya-hasr`: the طرائق p. 27 is `kasr-hasil-qisma`'s) is removed
+  from the lesson's catalogue `textbookRef.pages` (`"method": null`); a method module the lesson still needs is a declared
+  `addition('knowledge_formalization')`, and exercises the textbook lacks are `addition('practice_generation')` « على منوال » the
+  term exams.
 
 ### Adding a textbook UNIT (done for unit 2 « الحساب على الجذور », 2026-09-30)
 
@@ -899,6 +921,15 @@ pattern, its gate and its tests are in [`MANIPULATION_DNA.md` §16](../architect
   shell `mission` on a kit lab), the gesture in one line, the story mapping in a one-line `lead` (« كل قفزة = عقد من 17 لؤلؤة. »)
   — a lesson's `lead` never restates the question, the gesture or the strategy. Hints are closed by default, short thinking
   questions. [`MANIPULATION_DNA.md` §17.7](../architecture/MANIPULATION_DNA.md).
+- **Context, then ONE direct question — no title (owner, 2026-10-14, every lab).** The top of a lab is the context in one or two
+  plain sentences with every given, then one question/instruction that names the goal and the end state (« اربط الأقلام حتى
+  تستطيع كتابة عدد الأقلام. »). A lesson passes no lab `title` that only names the lab or poses a riddle (« صناديق وعلب وحزم وأقلام: كم
+  قلمًا في الورشة؟ » was the counter-example). **No ambiguity:** every card row, number, pill or button on the stage sits under
+  its own question/label that says what to do with it (three bare prediction cards « 1 132 437 · 2 577 · 75 » were the
+  counter-example). [`MANIPULATION_DNA.md` §17.9](../architecture/MANIPULATION_DNA.md).
+  How (kit labs, 2026-10-14): the shell gets `titleHidden`, the `PromptCard` its `context` slot (`MANIPULATION_CONTRACT.md` §8ter);
+  on the five 1AM kit labs a lesson's `lead=` REPLACES the lab's default context on the authored level, so it must carry every number
+  (« عندنا 253 لؤلؤة، وفي كل عقد 17 لؤلؤة: كل قفزة على المستقيم طولها 17، أي عقد. ») — otherwise pass no `lead`.
 - A manipulation is a **tactile laboratory**: the student moves a real object
   and the notation appears as a consequence. Never an animated explanation,
   never a quiz.

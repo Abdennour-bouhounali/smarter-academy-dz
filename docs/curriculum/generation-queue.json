@@ -2,39 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "qisma-iqlidiya-hasr",
-      "grade": "2am",
-      "unit": "kusur-amaliyat",
-      "titleAr": "القسمة الإقليدية وحصر حاصل القسمة",
-      "kind": "lesson",
-      "trigger": "qasim-mushtarak-akbar",
-      "via": [
-        "2am.m1.r04"
-      ]
-    },
-    {
-      "code": "kitabat-adad-tabii",
-      "grade": "1am",
-      "unit": "adad-tabiiya-ashriya",
-      "titleAr": "كتابة الأعداد الطبيعية ودلالة الأرقام",
-      "kind": "lesson",
-      "trigger": "ikhtizal-kasr",
-      "via": [
-        "1am.m1.r02"
-      ]
-    },
-    {
-      "code": "ikhtizal-kitaba-kasriya",
-      "grade": "1am",
-      "unit": "kitabat-kasriya",
-      "titleAr": "الكتابات الكسرية لحاصل قسمة واختزال كسر",
-      "kind": "lesson",
-      "trigger": "ikhtizal-kasr",
-      "via": [
-        "1am.m5.r02"
-      ]
-    },
-    {
       "code": "hasil-qisma-kasr",
       "grade": "1am",
       "unit": "kitabat-kasriya",

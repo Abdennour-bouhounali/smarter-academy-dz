@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChevronsUpDown, ArrowLeft, Check, Move, Ruler, CheckCircle2, XCircle, Info, Minus, Plus, Shapes } from 'lucide-react';
+import { ChevronsUpDown, ArrowLeft, Check, Move, CheckCircle2, XCircle, Info, Minus, Plus } from 'lucide-react';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -230,6 +230,8 @@ export default function StoryBars({
     </div>
   ) : null;
 
+  // §17.9 : la leçon peut écrire le contexte (`lead`) pour SES nombres ; sinon celui de l'histoire
+  const authoredLead = state.isAuthoredLevel ? lead : null;
   const hintKeys = def.mode === 'stretch' ? 'stretch' : 'cards';
   const currentItem = def.mode === 'stretch' ? def.items[lab.cur].id : (def.items[Math.min(L.firstUndone(lab), def.items.length - 1)].id);
 
@@ -237,8 +239,7 @@ export default function StoryBars({
     <ManipulationShell
       type="story-bars"
       title={title ?? k(`title.${story}`)}
-      mission={k(`mission.${story}`, { known: def.known?.h })}
-      lead={lead}
+      titleHidden
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
@@ -253,10 +254,10 @@ export default function StoryBars({
         <div ref={boxRef} className="space-y-2" data-story-bars data-story={story} data-mode={def.mode} data-item={currentItem}
           data-solved={(def.discovery ? ready : done) ? 'true' : 'false'} data-layout={narrow ? 'narrow' : 'wide'} data-scene-h={def.mode === 'stretch' ? sceneH : undefined}>
           {def.mode === 'stretch' ? (
-            <StretchLab lab={lab} setLab={setLab} story={story} def={def} k={k} knownName={knownName} itemWords={itemWords}
+            <StretchLab lab={lab} setLab={setLab} story={story} def={def} k={k} knownName={knownName} itemWords={itemWords} lead={authoredLead}
               width={width} sceneH={sceneH} narrow={narrow} glanceRef={glanceRef} verdictLine={verdictLine} />
           ) : (
-            <CardsLab lab={lab} setLab={setLab} story={story} def={def} k={k} textWords={textWords}
+            <CardsLab lab={lab} setLab={setLab} story={story} def={def} k={k} textWords={textWords} lead={authoredLead}
               narrow={narrow} compact={width < 520} glanceRef={glanceRef} verdictLine={verdictLine} />
           )}
 
@@ -298,7 +299,7 @@ export function stretchTape(story, i, value, k, knownName, name) {
   };
 }
 
-function StretchLab({ lab, setLab, story, def, k, knownName, itemWords, width, sceneH, narrow, glanceRef, verdictLine }) {
+function StretchLab({ lab, setLab, story, def, k, knownName, itemWords, width, sceneH, narrow, glanceRef, verdictLine, lead }) {
   const i = lab.cur;
   const it = lab.items[i];
   const item = def.items[i];
@@ -380,9 +381,12 @@ function StretchLab({ lab, setLab, story, def, k, knownName, itemWords, width, s
       {/* la consigne : les jalons, la phrase et sa lampe, les trois cartes de calcul */}
       <PromptCard
         size={narrow ? 'md' : 'lg'}
-        chip={k('chip', { name: w.name })} chipIcon={Ruler}
+        context={<>{lead || k(`context.${story}`, { known: def.known?.h })}{' '}
+          <span className="font-black text-indigo-900" data-sb-sentence data-ok={it.stretchOk ? 'true' : 'false'}>{"«\u00A0"}{w.sentence}{"\u00A0»"}</span></>}
+        contextProps={{ 'data-sb-context': story }}
         aside={(
         <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label={k('items')}>
+          <span className="text-xs font-black text-indigo-900/60" aria-hidden="true" data-sb-items-label>{k('itemsLabel')}</span>
           {def.items.map((d, j) => {
             const jDone = L.itemDone(lab, j);
             return (
@@ -395,11 +399,12 @@ function StretchLab({ lab, setLab, story, def, k, knownName, itemWords, width, s
           })}
         </div>
         )}
-        title={<>{"«\u00A0"}{w.sentence}{"\u00A0»"}</>}
-        lamp={it.stretchOk ? 'on' : 'off'}
-        titleProps={{ 'data-sb-sentence': true, 'data-ok': it.stretchOk ? 'true' : 'false' }}
-        instruction={it.stretchOk ? k('calcTitle', { name: w.name }) : k('calcWait')}
+        title={k('question.stretch', { name: w.name })}
+        titleClassName={narrow ? 'text-base' : 'text-xl'}
+        lamp={isDone ? 'on' : 'off'}
+        titleProps={{ 'data-sb-question': true }}
       >
+        <p className={`font-extrabold ${it.stretchOk ? 'text-indigo-900' : 'text-slate-400'} ${narrow ? 'text-sm' : 'text-base'}`} data-sb-calc-ask>{k('calcAsk', { name: w.name })}</p>
         <ChoiceTray cols={3} dir="ltr" data-sb-calcs>
           {order.map((ci) => {
             const c = cards[ci];
@@ -544,7 +549,7 @@ export function cardTape(story, tIdx, c, k, words) {
   };
 }
 
-function CardsLab({ lab, setLab, story, def, k, textWords, narrow, compact, glanceRef, verdictLine }) {
+function CardsLab({ lab, setLab, story, def, k, textWords, narrow, compact, glanceRef, verdictLine, lead }) {
   const cards = L.cardsOf(story);
   // ÉTROIT (< 520 px, téléphone) : un texte à la fois — le sélecteur ①–⑥ (tablist) ; chaque onglet est AUSSI la zone
   // d'accueil de son texte, et le panneau du texte choisi en est une seconde (même zone) pour le glisser.
@@ -584,14 +589,17 @@ function CardsLab({ lab, setLab, story, def, k, textWords, narrow, compact, glan
       {/* la consigne et les six cartes de calcul (au-dessus des textes) */}
       <PromptCard
         size={narrow ? 'md' : 'lg'}
-        chip={k('cardsChip')} chipIcon={Shapes}
+        context={lead || k('context.cards', { count: def.items.length })}
+        contextProps={{ 'data-sb-context': story }}
+        title={k('question.cards', { count: def.items.length })}
+        titleClassName={narrow ? 'text-base' : 'text-xl'}
+        lamp={matchedCount === def.items.length ? 'on' : 'off'}
         aside={(
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-sm font-black text-emerald-800" data-sb-progress={matchedCount}>
-            <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" />
+            <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" />{k('solvedLabel')}
             <bdi dir="ltr">{matchedCount} / {def.items.length}</bdi>
           </span>
         )}
-        instruction={k('cardsInstruction')}
         data-sb-cards
       >
         <ChoiceTray cols={compact ? 2 : 3} dir="ltr">

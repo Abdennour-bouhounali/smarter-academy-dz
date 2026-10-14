@@ -55,7 +55,7 @@ import { MANIPULATION_LEVEL_IDS } from './levels';
 export default function ManipulationShell({
   type, title, mission, lead, state, controller, hints = [], numberFields = [], validate, controlsOverride,
   onCheck, checkDisabled, allowModeSwitch = false, representation, explanation, discovery, children, footer, allowFreeLab = true, freeLabAlwaysOpen = false, freeLabLead,
-  headerAction,
+  headerAction, titleHidden = false,
 }) {
   const { t } = useTranslation('lesson');
   const spec = MANIPULATION_TYPES[type];
@@ -90,7 +90,8 @@ export default function ManipulationShell({
     >
       <header className="space-y-2">
         <div className="flex flex-wrap items-start justify-between gap-2">
-          <h3 className="text-base font-bold text-slate-900 sm:text-lg">{shownTitle}</h3>
+          {/* `titleHidden` (MANIPULATION_DNA §17.9) : un labo s'ouvre sur son contexte et sa question, sans titre visible — le titre reste pour les lecteurs d'écran */}
+          <h3 className={titleHidden ? 'sr-only' : 'text-base font-bold text-slate-900 sm:text-lg'}>{shownTitle}</h3>
           <div className="flex items-center gap-2">
             {headerAction}
             <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider text-indigo-500">{t('manipulation.badge')}</span>

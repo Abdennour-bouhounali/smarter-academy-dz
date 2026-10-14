@@ -92,6 +92,12 @@ export const MANIPULATION_COMPONENTS = {
   // 1AM, unité 3 « الضرب والقسمة » (2026-10-14).
   'division-jumps': lazy(() => import('./operations/DivisionJumps')),
   'digit-cards': lazy(() => import('./operations/DigitCards')),
+  // 1AM, unité 4 « الكتابات الكسرية » (2026-10-14).
+  'fraction-knife': lazy(() => import('./operations/FractionKnife')),
+  // 1AM, unité 1 « الأعداد الطبيعية والأعداد العشرية » (2026-10-14).
+  'rank-exchange': lazy(() => import('./operations/RankExchange')),
+  // 2AM, unité 2 « الكسور والعمليات عليها » (2026-10-14).
+  'egg-trays': lazy(() => import('./operations/EggTrays')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

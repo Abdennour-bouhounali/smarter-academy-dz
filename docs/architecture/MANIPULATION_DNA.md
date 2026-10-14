@@ -394,6 +394,8 @@ as a substitute for causality: every motion must show a mathematical change.
 | 1AM unit 2 « الجمع والطرح »: `story-bars` — the hand holds the UNKNOWN (a child's height stretched until the story's sentence is true) or the OPERATION (the textbook's calc cards); the tape closes only when the parts make the whole, so « يزيد » with − and « ينقص » with + are refuted by the drawing (`MANIPULATION_CONTRACT.md` §2sedecies) | **Implemented 2026-10-14** |
 | 1AM unit 3 « الضرب والقسمة »: `division-jumps` — b is given, the hand holds q (a ribbon tying bouquets along a row of flowers, or jumps along a line); one group too many lacks objects, one too few leaves enough for another, so the stop « r < b » is felt from both sides (`MANIPULATION_CONTRACT.md` §2septdecies) | **Implemented 2026-10-14** |
 | 1AM unit 3 « الضرب والقسمة »: `digit-cards` — the divisibility rule is DISCOVERED, never stated: مبتدئ colours the multiples of 2, 5, 3 in the textbook's 0..48 table (a non-multiple refused with its remainder), متقدم arranges the cards 4, 5, 9, 3 and claims divisibility on closed lamps that a swap re-judges (÷3 never flips, ÷2 does); wrong rules refuted with the student's own cells and swap (`MANIPULATION_CONTRACT.md` §2octodecies) | **Implemented 2026-10-14** |
+| 1AM unit 4 « الكتابات الكسرية »: `fraction-knife` — the share is FIXED (its edge never moves), the hand holds the KNIFE, d the number of equal pieces of the whole; the numerator is READ, and exists only when the edge falls on a cut — a straddling piece is the refusal. مبتدئ: grandmother's tray of « قلب اللوز » (3/5 for the neighbours) and Amine's « 4/6 » whose ghost pieces overflow the ribbon; متقدم: the textbook's three rectangles drawn superposed, then 27/45 PREDICTED with pins (9 and 3 divide 45 but straddle) and glued back to 3/5 (`MANIPULATION_CONTRACT.md` §2vicies) | **Implemented 2026-10-14** |
+| 2AM unit 2 « الكسور والعمليات عليها »: `egg-trays` — the first lab whose hand holds the DIVIDEND a (eggs swept from a conveyor into trays of b); a tray CLOSES by itself at b, so r < b is physical at every scale, and the trays ruler under the belt is the same line read ÷ b: the marker « a ÷ b » sits at q + r/b, strictly inside a one-unit frame the student PREDICTED before the first egg (judged with the models below / above / remainder / onMark), and ON a graduation only when the last tray closes exactly (2145 then 2160 ÷ 30); the farmer's son's « 2145 = 30 × 70 + 45 » is refuted by the same closing tray (`MANIPULATION_CONTRACT.md` §2unvicies) | **Implemented 2026-10-14** |
 
 **Lessons 2–9, what the hand now does (2026-09-30).** The instrument is chosen per concept
 (§6, §12). Lessons 4, 5 and 7 share the reserve **on purpose**: coprime is the PGCD = 1 case of
@@ -660,5 +662,21 @@ built to the highest finish the agent can produce — never the first version th
 8. **Reviewed with the eyes, not only the tests.** Before calling it done, the agent takes screenshots of the initial state AND
    mid-activity states (a refusal, a success, the formal phase) at the four sizes, LOOKS at every one, and iterates until it would be
    proud to show it to the owner. Tests and e2e green are necessary, never sufficient.
+
+9. **Context, then ONE direct question — no title** (owner, 2026-10-14, binding on every lab, retrofitted on the earlier ones). The top
+   of a lab has exactly two things, in this order: (a) the CONTEXT in one or two plain sentences that give every number the student
+   needs (« في الورشة 13 صندوقًا، في كل صندوق 10 علب… »), then (b) ONE direct question or instruction that names the GOAL and the END
+   STATE, so the student starts moving at once and knows where to stop (« اربط الأقلام حتى تستطيع كتابة عدد الأقلام. »,
+   « اقطع الحلوى حتى تقع حافة الحصّة على قطع. »). There is NO title above them — no « اسم المختبر: سؤال؟ » banner, no chip that only
+   names the lab, no riddle. The question is a verb the hand can do, never « ما هو… ؟ » about a concept; it never states the rule to
+   discover (§17.4) and says nothing the context already said (§17.7). Test before « done »: cover the lab with a hand, read only the top —
+   can a 12-year-old start dragging and tell when she has finished? If not, rewrite it.
+   **No ambiguity anywhere on the stage (same absolute rule).** Every thing the student can see or touch says what it is FOR: a
+   row of cards, numbers, pills or buttons never appears bare — it sits under its own question or label that tells what to do
+   with it (« توقّع قبل أن تربط: كم قلمًا في الورشة؟ » above the three prediction cards, not three naked numbers « 1 132 437 · 2 577
+   · 75 »). Each control's purpose, each number's meaning (what it counts, in which unit) and each step's end are explicit; if a
+   student could ask « ماذا أفعل بهذا؟ », the lab is not done. Reference: `rank-exchange`, `fraction-knife`,
+   `egg-trays` after the 2026-10-14 retrofit (with `story-bars`, `division-jumps`, `digit-cards`: kit `PromptCard › context`, shell
+   `titleHidden`, render tests « opens on its CONTEXT then ONE question »).
 
 A generation report states, for each lab, the screenshots reviewed and what was improved after looking at them.

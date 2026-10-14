@@ -24,6 +24,10 @@ describe('formatTextbookPages', () => {
     expect(formatTextbookPages({ knowledge: 10, activity: 8, method: 8 })).toBe('8، 10');
   });
 
+  it('ignore une section vidée (« method »: null — sa page est celle d’une autre leçon), jamais la page 0', () => {
+    expect(formatTextbookPages({ activity: [24, 24], knowledge: [26, 26], method: null })).toBe('24، 26');
+  });
+
   it('laisse passer les formes déjà lisibles', () => {
     expect(formatTextbookPages('7–16')).toBe('7–16');   // la page d'unité
     expect(formatTextbookPages(14)).toBe('14');
