@@ -534,6 +534,16 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'القسمة الإقليدية: الحاصل هو أكبر عدد من المجموعات الكاملة، ونتوقف عندما يصبح الباقي أصغر من المقسوم عليه ؛ a = b × q + r مع r < b',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 3 — les critères de divisibilité.
+  'digit-cards': {
+    // LA TABLE ET LES CARTES DE CHIFFRES : (مبتدئ, نشاط 4) l'élève colorie dans la table 0–48 à 7 colonnes les multiples de 2,
+    // 5 puis 3 — chaque case jugée par son reste — et voit apparaître les chiffres des unités / les sommes des chiffres ;
+    // (متقدم, تمرين 26) il FORME des nombres avec les cartes 4, 5, 9, 3 : permuter les chiffres ne change jamais la
+    // divisibilité par 3 ou 9, déplacer le chiffre des unités la change pour 2 et 5, seuls les deux derniers chiffres
+    // décident pour 4 — et aucun arrangement ne se divise par 4.
+    shows: 'يقبل العدد القسمة على 2 أو 5 حسب رقم آحاده، وعلى 3 أو 9 حسب مجموع أرقامه، وعلى 4 حسب العدد المشكّل من رقميه الأخيرين ؛ ويقبل a القسمة على b إذا كان باقي القسمة الإقليدية معدومًا',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

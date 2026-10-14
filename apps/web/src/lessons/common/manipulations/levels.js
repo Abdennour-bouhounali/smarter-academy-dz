@@ -622,6 +622,13 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { a: 47, b: 6, world: 'flowers', then: 48 }, ...P },
     advanced: { numbers: { a: 279, b: 14, world: 'line' }, ...T('act-3') },
   },
+  // LES CRITÈRES DE DIVISIBILITÉ (digit-cards). مبتدئ : la table 0–48 en 7 colonnes du نشاط 4 (rouge ÷2, bleu ÷5, vert ÷3) —
+  // chaque case touchée est jugée par son reste ; متقدم : les cartes 4, 5, 9, 3 du تمرين 26 — plus difficile : quatre chiffres
+  // à disposer, CINQ diviseurs au lieu de trois, des cibles « le plus grand » et deux cibles impossibles (4 et 9, « لا يوجد »).
+  'digit-cards': {
+    beginner: { numbers: { mode: 'grid', from: 0, to: 48, columns: 7, divisors: [2, 5, 3] }, ...T('act-4') },
+    advanced: { numbers: { mode: 'cards', digits: [4, 5, 9, 3], divisors: [2, 3, 5, 4, 9] }, ...T('ex-26') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

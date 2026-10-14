@@ -40,7 +40,7 @@ export default function IntegerSetQuestion({ prompt, expected, explain, requires
             placeholder={t('textbook.integerSetPlaceholder')}
             onChange={(e) => setVal(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter' && val.trim()) check(); }}
-            className="w-64 rounded-xl border-2 border-slate-300 bg-white px-3 py-2.5 font-mono text-base focus:border-blue-500 focus:outline-none"
+            className="w-64 min-w-0 max-w-full rounded-xl border-2 border-slate-300 bg-white px-3 py-2.5 font-mono text-base focus:border-blue-500 focus:outline-none"
           />
           <ValidateButton onClick={check} disabled={!val.trim()}>{t('question.validate')}</ValidateButton>
           <span className="text-xs text-slate-500">{t('textbook.integerSetHint')}</span>

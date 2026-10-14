@@ -54,6 +54,9 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
       const size = (n) => Math.max(...Object.values(n).map((v) => (v && typeof v === 'object' ? nested(v) : scalar(v))));
       // Unité 2 de 1AM : une HISTOIRE (`story: 'act1'`) se mesure par son nombre d'items (logic/storyBars.js).
       if (type === 'story-bars') expect(STORIES[advanced.numbers.story].items.length, type).toBeGreaterThan(STORIES[beginner.numbers.story].items.length);
+      // Unité 3 de 1AM : les critères (`digit-cards`) se mesurent par le nombre de DIVISEURS à juger (la table va jusqu'à 48,
+      // les cartes ne portent que des chiffres : la taille des nombres ne dit pas la difficulté).
+      else if (type === 'digit-cards') expect(advanced.numbers.divisors.length, type).toBeGreaterThan(beginner.numbers.divisors.length);
       else expect(size(advanced.numbers), type).toBeGreaterThan(size(beginner.numbers));
       expect(advanced.source, type).toBe('textbook');
       expect(typeof advanced.ref, type).toBe('string');

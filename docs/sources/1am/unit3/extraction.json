@@ -1499,6 +1499,16 @@
    "text": "La divisibilité par 9 n’est pas dans le معارف p. 41 (2, 5, 3) : l’exercice 23 la fait découvrir (aucun multiple de 3 de la liste ne l’est de 9). La leçon la formalise comme ajout déclaré (programme 1am.m3.r02 : 2, 3, 4, 5, 9)."
   },
   {
+   "elementId": "ex-25",
+   "kind": "scope",
+   "text": "Diviser par 4 en divisant deux fois par 2 : les nombres 40,8, 21 et 21,4 donnent des quotients DÉCIMAUX (10,2 ; 5,25 ; 5,35) — l’exercice va à qisma-ashriya-taqrib (division décimale), pas à la règle de divisibilité par 4."
+  },
+  {
+   "elementId": "deep-6",
+   "kind": "scope",
+   "text": "Les nombres premiers (définition donnée dans l’énoncé) ne sont pas un item du programme 1AM : l’exercice reste un approfondissement de la synthèse de l’unité, où les règles de divisibilité servent à tester un nombre."
+  },
+  {
    "elementId": "unit",
    "kind": "scope",
    "text": "Pages 35–50 complètes. Les éléments des leçons darb-adad-ashriya, qisma-ashriya-taqrib et de la synthèse sont transcrits brièvement (verified: false) : leur leçon les relira."
@@ -1520,7 +1530,7 @@
    "duplicatedIn": [
     {
      "lesson": "qawaid-qabiliyat-qisma",
-     "module": 4,
+     "module": 5,
      "note": "l’année bissextile : la divisibilité par 4 de l’année (et l’exception des siècles, deep-8) — transfert de la leçon"
     }
    ]
@@ -1703,12 +1713,12 @@
    "lesson": "qawaid-qabiliyat-qisma",
    "module": 4
   },
-  "ex-25": {
+  "ex-26": {
    "lesson": "qawaid-qabiliyat-qisma",
    "module": 4
   },
-  "ex-26": {
-   "lesson": "qawaid-qabiliyat-qisma",
+  "ex-25": {
+   "lesson": "qisma-ashriya-taqrib",
    "module": 4
   },
   "ex-27": {
@@ -1791,7 +1801,7 @@
   },
   "self-12": {
    "lesson": "qawaid-qabiliyat-qisma",
-   "module": 8
+   "module": 9
   },
   "deep-1": {
    "lesson": "darb-adad-ashriya",
@@ -1818,12 +1828,12 @@
    "module": null
   },
   "deep-6": {
-   "lesson": "qawaid-qabiliyat-qisma",
+   "lesson": "wadiya-idmajiya-darb-qisma-ashriya",
    "module": null
   },
   "deep-8": {
    "lesson": "qawaid-qabiliyat-qisma",
-   "module": 4
+   "module": 5
   },
   "deep-9": {
    "lesson": "wadiya-idmajiya-darb-qisma-ashriya",

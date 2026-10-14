@@ -433,6 +433,32 @@ group too few leaves enough for another (`short`: a ghost bouquet over the lefto
 `[data-dj-handle]`, `[data-dj-less]` / `[data-dj-more]`, `[data-dj-group]`, `[data-dj-left]`, `[data-dj-ghost]`, `[data-dj-verdict]`,
 `[data-dj-refused]`, `[data-dj-bracket]`, `[data-dj-next]`, `[data-dj-formal]`. Browser suite: `e2e/lesson-kit/1am-darb-qisma-ashriya.mjs`.
 
+## 2octodecies. Divisibility rules — `digit-cards` (1AM unit 3, 2026-10-14)
+
+`operations/DigitCards.jsx` on `logic/digitCards.js` (every verdict by `n % d`, never by a digit rule), lesson
+`qawaid-qabiliyat-qisma`. The rule is DISCOVERED from the student's own trials, never stated by the lab: the hand either colours the
+multiples in a table (the textbook's نشاط 4) or arranges digit cards and claims divisibility (exercise 26). Two worlds, two variables
+(DNA §12):
+
+| World (level) | What the hand holds | What resists |
+|---|---|---|
+| `grid` (مبتدئ, textbook نشاط 4: 0..48 in 7 columns, colourings ÷2 then ÷5 then ÷3, order enforced) | a tap on a cell = « this is a multiple of d » (keyboard Enter, touch) | a non-multiple is refused with its remainder written (`refused=remainder`); after 5 hand-coloured cells « أكمل » may colour the rest PALE and dashed (`data-revealed`, a local shortcut, never a trial) |
+| `cards` (متقدم, textbook ex. 26: cards 4, 5, 9, 3) | placing / swapping the cards (tap-tap, drag, keyboard) and claiming « يقبل / لا يقبل » on a closed lamp per divisor; « هذا هو الأكبر » and « لا يوجد » | a lamp opens on the division whether the claim was right or wrong; open lamps are re-judged on every new number (« تغيّر / بقي »); a valid but not largest « الأكبر » is refused naming the NEXT larger valid arrangement, a wrong « لا يوجد » names the smallest valid one |
+
+`discoveryReady`: grid — the three colourings complete; cards — the three reachable targets (9534 ÷2, 9543 ÷3, 9435 ÷5) plus one swap
+with lamps 2 and 3 open that kept ÷3 and flipped ÷2 (the « لا يوجد » answers for 4 and 9 are optional). Wrong options are refuted with
+the student's material (« the column decides » by m and m ± 7; « the units digit decides for 3 » by m and m ± 10; « even ⇒ ÷4 » by
+`9534 = 4 × 2383 + 2`; « the digit sum decides for 2 » by the student's own swap). Formal: the remainder definition (P4), then the rules
+with the student's numbers (cards adds 9 and 4: `9534 = 95 × 100 + 34`, `100 = 4 × 25`). Props `mode`, `divisors`, `digits`,
+`from` / `to` / `columns`, `level`, `levels`, `title`, `lead`, `onTrial` — grid `{ mode: 'grid', n, d, r, ok }` (one per new cell), cards
+`{ mode: 'cards', n, d, claim: 'yes' | 'no' | 'largest' | 'none', r, ok }` (`n`, `r` null on `none`); every trial reported ONCE even when
+two gestures land in one render — `onFinished({ mode })`. Not eligible for « جرّب كل الإمكانيات ». DOM: `[data-digit-cards][data-mode]
+[data-solved][data-layout]`, `[data-dc-glance][data-bleed]`, `[data-dc-colouring=<d>][data-open][data-complete]`, `[data-dc-reveal]`,
+`[data-dc-cell=<n>][data-colour][data-revealed]`, `[data-dc-ledger-row=<d>]`, `[data-dc-card=<digit>][data-placed]`,
+`[data-dc-slot=<i>][data-digit]` (slot 0 = leftmost digit), `[data-dc-lamp=<d>][data-state][data-flip]`, `[data-dc-claim=<d>]
+[data-claim]`, `[data-dc-task=<d>][data-done]`, `[data-dc-submit]`, `[data-dc-none]`, `[data-dc-verdict]`, `[data-dc-refused]`,
+`[data-dc-formal]`, `[data-dc-rule=<d>]`. Browser suite: `e2e/lesson-kit/1am-qawaid-qabiliyat-qisma.mjs`.
+
 ## 2quindecies. The space laboratories and the 3D kit (unit 14, 2026-10-05)
 
 The first unit IN SPACE. Its labs show REAL solids — light, transparency, an orbit under the finger — and every one of them stands on ONE
@@ -863,7 +889,7 @@ contrast), `shadow-stick`, `group-tanks`, `ramp-ratios` (مبتدئ), `clinomete
 `shape-turn`, `lamp-ring`, `inscribed-angle`, `bucket-fill`, `orange-peel`, `scale-blocks`, `section-slicer`,
 `sphere-probe`, `thales-beam`, `parallel-level`, `cone-cylinder`, `segment-divider`, `angle-compass`,
 `trig-calculator`, `vector-chain`, `translation-glide`, `route-compare`, `shape-prover`, `component-calc`,
-`component-steps`, `midpoint-distance`, `ratio-ride`, `cumul-gate`, `sheet-lab`, `story-bars` (1AM, 2026-10-14: each stretched height and each card IS the answer), `division-jumps` (1AM: each q is the answer). The original three
+`component-steps`, `midpoint-distance`, `ratio-ride`, `cumul-gate`, `sheet-lab`, `story-bars` (1AM, 2026-10-14: each stretched height and each card IS the answer), `division-jumps` (1AM: each q is the answer), `digit-cards` (1AM: each coloured cell and each claim is the answer; its « أكمل » is a local pale reveal, not a trial). The original three
 (`team-builder`, `pgcd-differences`, `euclidean-algorithm`) keep their own `first-gesture` button. Tests: each granted
 type's logic test checks that a sweep reaches the same trials as the hand.
 
@@ -1351,6 +1377,10 @@ Math Lab's « d'un seul regard » (`MATH_LAB.md` §3.5).
 5. **Phones too.** Checked at 1280 × 800, 1366 × 768, 390 × 844 and 320 × 640: on phones the composition
    stacks, but each object keeps its controls in the same sight (side by side columns, or the handle row on
    the scene's edge).
+   **Bleed when the frames eat the width (2026-10-14, `digit-cards`).** At 320 px a lesson nests the lab in
+   padded frames (≈ 182 px usable): when a grid needs more (7 cells × 40 px for the finger), the glance block
+   widens SYMMETRICALLY over those frames as a white card (`margin-inline: -m`, `data-bleed=<m>`), never past
+   the screen gutter, computed from the measured width (`need = columns × 40`). Never shrink a cell below 40 px.
 6. **Measured, not eyeballed.** The type's e2e asserts, for each viewport and both levels, that once the lab is
    scrolled into view the bounding box of the figure + its controls fits the viewport height
    (`fitsOneScreen` in the unit's e2e); the component header says how the rule is met.

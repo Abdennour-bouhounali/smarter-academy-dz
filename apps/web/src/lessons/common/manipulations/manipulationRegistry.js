@@ -91,6 +91,7 @@ export const MANIPULATION_COMPONENTS = {
   'story-bars': lazy(() => import('./operations/StoryBars')),
   // 1AM, unité 3 « الضرب والقسمة » (2026-10-14).
   'division-jumps': lazy(() => import('./operations/DivisionJumps')),
+  'digit-cards': lazy(() => import('./operations/DigitCards')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

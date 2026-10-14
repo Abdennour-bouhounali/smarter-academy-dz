@@ -581,6 +581,20 @@
         "التعرّف على عدد يقبل القسمة على 4 من خلال العدد المشكّل من رقميه الأخيرين",
         "التعبير عن «$a$ يقبل القسمة على $b$» بباقي قسمة إقليدية معدوم"
       ],
+      "pointPrerequisites": {
+        "P1": [
+          "1am_qawaid-qabiliyat-qisma_P4"
+        ],
+        "P2": [
+          "1am_qawaid-qabiliyat-qisma_P4"
+        ],
+        "P3": [
+          "1am_qawaid-qabiliyat-qisma_P1"
+        ],
+        "P4": [
+          "1am_qisma-iqlidiya-baqi_P1"
+        ]
+      },
       "programmeItems": [
         "1am.m3.r02"
       ],
@@ -601,7 +615,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 62,
+      "difficulty": "متوسط",
+      "icon": "🔎"
     },
     {
       "code": "qisma-ashriya-taqrib",
