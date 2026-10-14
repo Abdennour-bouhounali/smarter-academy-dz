@@ -178,6 +178,30 @@ A grade is data, not code. It is never a parallel catalogue.
 Generating one of those lessons follows §14 and `LEARNING_NET.md` §4. Publishing it is § « Publish a lesson »
 (§11).
 
+### Generating a 1AM–3AM unit LESSON BY LESSON (phase 3, first done 2026-10-14 — 1AM unit 2, `mana-jam-tarh`)
+
+The 4AM units were written whole; 1AM–3AM units are generated one lesson at a time along the net queue, each lesson published
+before the next. What that adds to « Adding a textbook UNIT »:
+
+- **Seed the unit at its first GENERATED lesson** (not necessarily its first lesson): `lessons/moyen/<g>/<chapter>/<unit>/_unit/` with
+  `unitMeta.js` (grade labels: `GRADE_ID '1am'`, `GRADE_LABEL 'السنة الأولى متوسط'`, `PRINT_SUBJECT 'الرياضيات · السنة الأولى متوسط'`,
+  `CHAPTER_TITLE` = the grade's own ميدان name, D13) and the three one-line bindings. Its `prepDiagnostic.test.js` compares the
+  lessons on disk with the unit's **`available` lessons of the catalogue**, never with a fixed count.
+- **Extract the whole unit once** (`docs/sources/<g>/unit<N>/build-extraction.py` → `extraction.json`, answers computed in exact
+  decimals): its `destinations` may name lessons that are still `coming_soon`. `check:textbook` counts those elements **pending**
+  (« en attente ») until the lesson exists; a pending destination must be a real catalogue lesson, and no other lesson may cite it.
+- **Publishing flips one entry** (§11): `coursesData.test.js` now checks, for 1AM–3AM, « `available` ⇔ `lesson.config.js` on disk »
+  (like 4AM's `decomposition.test.js`) and that `lessonCount` counts the published ones.
+- **Authors in parallel on one lesson**: the lead writes the lesson, a lab author and a bank author work from a brief kept in the
+  repo (`docs/sources/1am/unit2/brief-authors.md`: the lab's FIXED props contract, file ownership, the bank's provenance rules).
+- **Make it visible locally** (owner, 2026-10-14): after the DB handshake, publish the lesson's `lesson_modules` and
+  `practice_exercises` rows in the LOCAL database (they are born `draft`), so the owner can browse it before `dev` is promoted.
+- **« مخطط بأقواس »** — the textbook's tape diagram (a line cut into parts, an arc above each part, an arc below the whole) is the
+  shared figure `lessons/common/components/ArcTape.jsx` + `arcTape.js`: lesson figures, `statement.figure` with `kind: 'tape'`
+  (dispatched by `StatementFigure` / `validateStatementFigure`), a مسألة `figure`, and the live tape of the `story-bars` lab. Lengths are
+  schematic (≥ 16 % of the width per part); a statement tape must CLOSE (`validateArcTape`), a lab tape shows the gap / overflow of a
+  wrong value. Unique SVG ids per instance (`useId`).
+
 ### Adding a textbook UNIT (done for unit 2 « الحساب على الجذور », 2026-09-30)
 
 A second unit is data plus three one-line bindings — never a copy of unit 1's plumbing:
@@ -1343,6 +1367,13 @@ foundation, the second geometry unit:
 | **`takbir-tasghir`** | `scale-blocks` (`voxel-blocks`): act-6's cuboid built in unit cubes; k held by a 3D handle on the image's far corner (snapped to a list) + a stepper; the image volume predicted (×k, ×k², ×k³) before « ابنِ » and refuted by the COUNT (each cube becomes a same-colour block of k³); the « +1 cm لكل حرف » contrast (6/5 ; 5/4 ; 4/3: not an enlargement); the missing knowledge and methods declared `knowledge_formalization`; act-5 as a duplicate (the pyramid's section = a reduction of ratio 3/4) |
 | **`wadiya-idmajiya-fada`** | the synthesis whose situation is the unit's تحدّ (the scan has no « أدمج تعلّماتي »): the frustum bucket on `bucket-fill` (`beach-bucket`) in three phases the student opens — the water level read from the drawing (7 cm from the BOTTOM refused), the apex S lowered until the generators pass through the rim (SO = 105, Thales in an axial-section `MovablePanel`), V = V₁(1 − k³) = 24388π/3 ≈ 25,54 L chosen by card against k and the mean-radius cylinder; QCM one per lesson, أتعمّق the reverse path (k³ → k, a melting ice cream), the final test a frappé glass in Oran |
 
+1AM unit 2 « الحساب على الأعداد الطبيعية والأعداد العشرية: الجمع والطرح » (`lessons/moyen/1am/ansab_al_aadad_wal_hisab/jam-tarh-ashriya/`,
+2026-10-14), the FIRST 1AM–3AM content, generated lesson by lesson:
+
+| Lesson | Read it for |
+|---|---|
+| **`mana-jam-tarh`** | a lesson whose concept is a MEANING (choose + or −): `story-bars` — مبتدئ the school medical check (the hand stretches the unknown child's height until the sentence is true, then chooses the calc card; « تزيد » with − and « تنقص » with + as traps), متقدم the textbook's six texts and six calc cards (no gauge: the tape judges); module 1's questions answered from the student's own trials; the vocabulary named AFTER it is asked (bricks `predict: false`); the طريقة p. 29 replayed in the same lab posed alone (`levels={false}`); « أستعدّ » measuring the net's review item `1am.m1.r03` with two platform statements; the p. 31 self-assessment items kept for the final test; every tape a tested `ArcTape` figure (`content/tapes.test.js`) |
+
 **Textbook misprints are CORRECTED, not only noted (owner decision, 2026-09-30).**
 The extraction keeps the book's verbatim `text` and adds a `correction`
 `{ decidedBy, decidedOn, text | analysis1, answer?, note }`; `discrepancies`
@@ -1537,6 +1568,7 @@ KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-ihsa.mjs        
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-khassiyat-talis.mjs              # unit 9: unit page + every module at 1280/320 px + the five geometry labs' glance blocks in one screen at 4 viewports (the synthesis switches type with the level)
 #   LABS_ONLY=1 skips the mounts; MOUNT_ONLY=1 (unit 9) skips the labs; MOUNT_LESSONS=a,b mounts only those lessons (the full run is ~35 min — split it)
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-hisab-muthallathat.mjs          # unit 10: unit page + every module at 1280/320 px + the four trigonometry labs (clinometer twice) in one screen at 4 viewports × 2 levels; LAB_MODULES=lesson:N moves a lab's module
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/1am-jam-tarh-ashriya.mjs          # 1AM unit 2: unit page + every module at 1280/320 px, story-bars by keyboard and tap-tap, one-screen fit at 4 viewports × 2 levels
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/manipulations.mjs
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/classroom.mjs
 ```

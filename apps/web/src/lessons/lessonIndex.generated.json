@@ -2,6 +2,7 @@
   "$generated": "scripts/generate-lesson-index.mjs — do not edit; npm run check:lessons checks it",
   "modulesFormat": "[number, slug]",
   "lessons": [
+    {"id":"mana-jam-tarh","level":"moyen","grade":"1am","chapter":"ansab_al_aadad_wal_hisab","modules":[[0,"astaidd"],[1,"nashat"],[2,"maarif"],[3,"tariqa"],[4,"awazzif"],[5,"masala-1"],[6,"masala-2"],[7,"masala-3"],[8,"itqan"]]},
     {"id":"awwaliyan-fima-baynahuma","level":"moyen","grade":"4am","chapter":"ansab_al_aadad_wal_hisab","modules":[[0,"astaidd"],[1,"17-wa-18"],[2,"maarif"],[3,"awazzif"],[4,"masala-1"],[5,"masala-2"],[6,"masala-3"],[7,"itqan"]]},
     {"id":"bahth-pgcd","level":"moyen","grade":"4am","chapter":"ansab_al_aadad_wal_hisab","modules":[[0,"astaidd"],[1,"al-furuq"],[2,"khassiyatan"],[3,"khwarizmiyat-iqlidus"],[4,"awazzif"],[5,"masala-1"],[6,"masala-2"],[7,"masala-3"],[8,"itqan"]]},
     {"id":"ikhtizal-kasr","level":"moyen","grade":"4am","chapter":"ansab_al_aadad_wal_hisab","modules":[[0,"astaidd"],[1,"samir"],[2,"maarif"],[3,"awazzif-1"],[4,"awazzif-2"],[5,"masala-1"],[6,"masala-2"],[7,"masala-3"],[8,"itqan"]]},

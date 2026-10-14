@@ -4,6 +4,7 @@ import { MANIPULATION_TYPE_IDS, MANIPULATION_TYPES } from '@smarter-academy/core
 import * as linearSystem from '@smarter-academy/core/arithmetic/linearSystem.js';
 import * as levelsModule from './levels';
 import { LEVELS, levelsFor, levelMatching, resolveManipulationLevels } from './levels';
+import { STORIES } from './logic/storyBars';
 
 /**
  * Le contrat À DEUX NIVEAUX de chaque manipulation (MANIPULATION_CONTRACT §7).
@@ -51,7 +52,9 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
           : typeof v === 'string' && /^\d+(?:[.,]\d+)?(?:\/\d+)?$/.test(v) ? Math.max(...v.split(/[/.,]/).map(Number))
             : scalar(v));
       const size = (n) => Math.max(...Object.values(n).map((v) => (v && typeof v === 'object' ? nested(v) : scalar(v))));
-      expect(size(advanced.numbers), type).toBeGreaterThan(size(beginner.numbers));
+      // Unité 2 de 1AM : une HISTOIRE (`story: 'act1'`) se mesure par son nombre d'items (logic/storyBars.js).
+      if (type === 'story-bars') expect(STORIES[advanced.numbers.story].items.length, type).toBeGreaterThan(STORIES[beginner.numbers.story].items.length);
+      else expect(size(advanced.numbers), type).toBeGreaterThan(size(beginner.numbers));
       expect(advanced.source, type).toBe('textbook');
       expect(typeof advanced.ref, type).toBe('string');
       expect(['textbook', 'platform'], type).toContain(beginner.source);

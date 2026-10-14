@@ -327,7 +327,8 @@ trusts the configured key:
    accepted, **every** choice distractor must be rejected, and no
    `misconceptionSignature` may itself be a correct answer.
 2. **Independent oracle** — `scripts/practice-answer-oracle.test.mjs` recomputes
-   the answer of every constructed-answer 4AM practice question from the
+   the answer of every constructed-answer practice question of EVERY grade (it walks `content/practice/[1-4]am` since
+   2026-10-14; it read only `4am` before, so a 1AM bank would have been silently skipped) from the
    mathematics (its own gcd, divisor lists, reduced fractions, searches) and
    asserts the evaluator accepts it and the configured key equals it. A new
    constructed-answer question **fails the test until it gets an oracle entry**.
@@ -442,6 +443,14 @@ Arabic DOM text. One switch for every statement figure: `StatementFigure.jsx` (r
 (plane by default, `space`, `chart`). A chart's data is never transcribed into a table with « نُقلت … إلى الجدول » any more. A SPREADSHEET grid (« المجدول », unit 8 lesson 3) is a
 `statement.table` with `sheet: true`: read left to right like Excel, head `['', 'A', 'B', …]`, consecutive row numbers in the first
 column — checked by the validator (ARABIC_RTL_CONTRACT « Spreadsheet formulas are LTR code »).
+
+**1AM unit 2 « الجمع والطرح » (2026-10-14) — the tape diagram « مخطط بأقواس ».** A `statement.figure` may be
+`{ kind: 'tape', parts: [{ label, value?, unknown? }, …], whole: { label, value?, unknown? }, ariaLabel }` (2 to 4 parts), drawn by
+`lessons/common/components/ArcTape.jsx` (data and layout in `arcTape.js`): one line cut into the parts, an arc above each part with its
+label, an arc below the whole — the textbook's representation of a sum or a difference, the unknown written □, △ or ؟ in rose. Labels
+read left to right (an Arabic label right to left); lengths are schematic. `validateArcTape` (through `validateStatementFigure`) refuses
+an unknown key, a missing label, a non-Arabic `ariaLabel` and a tape whose given values do NOT add up (« a statement figure is true »).
+Use it for « مثّل الوضعية بمخطط » steps and for « which diagram fits the story? » choices.
 
 **Unit 14 « الهندسة في الفضاء » (2026-10-05) — figures in SPACE, values with π.** A `statement.figure` may be a figure of space:
 `{ kind: 'space', … }` is drawn by `SpaceFigure` (`lessons/common/components/SpaceFigure.jsx` + `spaceFigure.js`: 3D points with z up,
@@ -665,8 +674,9 @@ The 4AM sheet simulates the شهادة التعليم المتوسط. A **1AM–
   - Nav pill: « محاكاة اختبار الفصل » (`nav.simulationTerm`).
   - Level and subject take the grade number (`paper.levelValue` / `nav.subject`: « {{n}} متوسط »).
   - `examBadge` keeps the all-Arabic badge RTL (`ltr: false`); only « BEM yyyy » is an LTR island.
-- **Status:** the contract, validator and screen are ready. No 1AM–3AM bank exists yet; the first one comes with
-  the first generated lesson (phase 3).
+- **Status:** live since 2026-10-14 — the first 1AM–3AM bank is `content/practice/1am/mana-jam-tarh/` (50 sheets: 15 `term_exam`
+  modelled on one corpus exercise each — `1am-s2-64` ex 4 with the « الفصل الثاني » badge —, 24 `term_exam_modelled` on `1am-s1`,
+  11 `adapted` from the lesson's own textbook elements; `tape` statement figures; misconceptions `MISC-JAMTARH-*`).
 
 ### Screen (`features/practice/exam/`)
 

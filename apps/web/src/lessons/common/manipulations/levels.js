@@ -604,6 +604,15 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { r: 3, R: 4, H: 6, depth: 6 }, ...P },
     advanced: { numbers: { r: 15, R: 20, H: 35, depth: 28 }, ...T('challenge') },
   },
+  // ── 1AM, unité 2 « الجمع والطرح » (2026-10-14) ──
+  // LE MODÈLE EN BARRES (story-bars). مبتدئ : la toise du الفحص الطبي (سارة 130 cm, quatre enfants, entiers, deux
+  // pièges « تزيد / تنقص ») — la main TIRE l'inconnue, la taille se voit ; متقدم : نشاط 1 du manuel (six textes, six
+  // cartes, décimaux) — plus de toise ni de lecture : l'élève DÉCIDE l'opération avant de voir la bande. Le mode vient de
+  // l'histoire (STORIES[id].mode, logic/storyBars.js) ; `method29` (la méthode p. 29) se pose seule, levels={false}.
+  'story-bars': {
+    beginner: { numbers: { story: 'checkup' }, ...P },
+    advanced: { numbers: { story: 'act1' }, ...T('act-1') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

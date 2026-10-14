@@ -87,6 +87,8 @@ export const MANIPULATION_COMPONENTS = {
   'section-slicer': lazy(() => import('./space/SectionSlicer')),
   'scale-blocks': lazy(() => import('./space/ScaleBlocks')),
   'bucket-fill': lazy(() => import('./space/BucketFill')),
+  // 1AM, unité 2 « الجمع والطرح » (2026-10-14).
+  'story-bars': lazy(() => import('./operations/StoryBars')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

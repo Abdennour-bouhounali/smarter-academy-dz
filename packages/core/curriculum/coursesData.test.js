@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { existsSync } from 'node:fs';
 import { getAllGrades, courseLevels, dzCourseLevels, getLessonPath } from './coursesData';
 import programme4am from './dz/programme_4am_2026_2027.json';
 import units4am from './dz/units_4am_2026_2027.json';
@@ -34,7 +35,9 @@ describe('getAllGrades', () => {
 
   it('ne compte que les leçons PUBLIÉES (une carte « قيد الإعداد » n’en est pas une)', () => {
     const count = Object.fromEntries(grades.map((g) => [g.id, g.lessonCount]));
-    expect(count['1am']).toBe(0);
+    // 1AM–3AM sont publiées leçon par leçon depuis la phase 3 (2026-10-14) : le compte suit le catalogue.
+    expect(count['1am']).toBe(lessons1am.lessons.filter((l) => l.status === 'available').length);
+    expect(count['1am']).toBeLessThan(lessons1am.lessons.length);
     expect(count['4am']).toBeGreaterThan(70);
   });
 
@@ -213,13 +216,25 @@ describe('1AM–3AM — cartes « قيد الإعداد » (phase 2 du cycle moy
     expect(moyen.grades.map((g) => g.id)).toEqual(['1am', '2am', '3am', '4am']);
   });
 
-  it('montre toutes leurs unités et leurs leçons, toutes coming_soon, sans lien routable', () => {
+  // Depuis la phase 3 (2026-10-14) les leçons sont générées une à une : une leçon est `available` SI ET SEULEMENT SI
+  // son implémentation existe sur le disque (la règle de decomposition.test.js pour 4AM) ; sinon elle reste une carte
+  // « قيد الإعداد », sans lien routable.
+  const lessonsRoot = new URL('../../../apps/web/src/lessons/moyen/', import.meta.url);
+  const unitOf = new Map([lessons1am, lessons2am, lessons3am].flatMap((f) => f.lessons.map((x) => [x.code, x])));
+  const built = (gradeId, l) => {
+    const entry = unitOf.get(l.id);
+    return existsSync(new URL(`${gradeId}/${entry.chapterId}/${entry.unitId}/${l.id}/lesson.config.js`, lessonsRoot));
+  };
+
+  it('montre toutes leurs unités et leurs leçons : publiée ⇔ écrite sur le disque, sinon « قيد الإعداد » sans lien', () => {
     for (const grade of early) {
       const lessons = grade.chapters.flatMap((c) => c.lessons);
       expect(lessons.length, grade.id).toBeGreaterThan(50);
       for (const l of lessons) {
-        expect(l.status, l.id).toBe('coming_soon');
-        expect(getLessonPath(l.id), l.id).toBeNull();
+        const onDisk = built(grade.id, l);
+        expect(l.status, `${l.id} : lesson.config.js ${onDisk ? 'existe' : "n'existe pas"}`).toBe(onDisk ? 'available' : 'coming_soon');
+        if (onDisk) expect(getLessonPath(l.id), l.id).toBe(l.path);
+        else expect(getLessonPath(l.id), l.id).toBeNull();
         expect(l.path.startsWith(`/courses/moyen/${grade.id}/`)).toBe(true);
       }
       expect(grade.chapters.flatMap((c) => c.units).length).toBeGreaterThan(10);

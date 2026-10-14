@@ -1,6 +1,7 @@
 # The learning net — شبكة الكفاءات of the cycle moyen (1AM–4AM)
 
-**Status:** implemented 2026-10-13; platform and database for 1AM–3AM since 2026-10-14 (phase 2 — §3bis).
+**Status:** implemented 2026-10-13; platform and database for 1AM–3AM since 2026-10-14 (phase 2 — §3bis); phase 3 (lessons
+generated one by one along §4bis, each published on `dev`) started 2026-10-14 — progress in `docs/reports/MOYEN_ROLLOUT_PROGRESS.md`.
 **Authoritative for:** the official programme of the four years as data, the links between its items, the
 lessons of 1AM–3AM still to generate (`coming_soon` in the catalogue), cross-year navigation (« راجع قبل أن تنطلق »
 and « راجع » after a wrong answer), and what the database and Mastery V2 do with unpublished lessons.
@@ -294,6 +295,12 @@ These rules complete `LESSON_DEVELOPMENT_GUIDE.md` §14.2 for any year other tha
 6. **`pointPrerequisites`** may name LP codes of an earlier year (`1am_<code>_P<n>`), but only along a net link
    between the two lessons' items.
 7. Run `npm run generate:learning-net` and commit the regenerated map.
+8. **Phase 3 practice (since 2026-10-14, first lesson `mana-jam-tarh`).** A cross-year LP→LP edge is written only toward a lesson
+   whose الكفاءات are FINAL (published). When the net's prerequisite lesson is still `coming_soon` (its الكفاءات are drafts, D1),
+   the generated lesson declares only its intra-lesson edges (`mana-jam-tarh`: P3 ← P1) and the cross-year link stays at item and
+   lesson level (« راجع », `prerequisiteLessonCodes`) until that lesson is generated — it then adds the edge to its successors.
+   The unit's extraction is written whole; its elements destined to lessons not yet generated are « en attente » in
+   `check:textbook` (`LESSON_DEVELOPMENT_GUIDE.md` § « Generating a 1AM–3AM unit LESSON BY LESSON »).
 
 ## 4bis. Generation order (owner decision, 2026-10-13)
 

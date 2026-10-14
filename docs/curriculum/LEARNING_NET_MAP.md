@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **74** leçons publiées · **196** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **75** leçons publiées · **195** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -776,11 +776,11 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
-| `1am.m1.r01` | جمع، طرح وضرب أعداد طبيعية في وضعيات معطاة. | `mana-jam-tarh` _(prévue)_ | — |
+| `1am.m1.r01` | جمع، طرح وضرب أعداد طبيعية في وضعيات معطاة. | `mana-jam-tarh` | — |
 | `1am.m1.r02` | استعمال الكتابة العشرية والكتابة الكسرية والانتقال بينهما. | `kitabat-adad-tabii` _(prévue)_ | — |
 | `1am.m1.r03` | ضرب وقسمة عدد عشري في/على 10، 100، 1000 أو في/على 0,1، 0,01، 0,001. | `kusur-ashriya-kitaba` _(prévue)_ | `1am.m1.r02` |
 | `1am.m1.r04` | ترتيب أعداد عشرية. | `muqaranat-adad-ashriya` _(prévue)_ | `1am.m1.r02` |
-| `1am.m1.r05` | جمع، طرح وضرب أعداد عشرية في وضعية معيّنة. | `mana-jam-tarh` _(prévue)_ | `1am.m1.r01`، `1am.m1.r03` |
+| `1am.m1.r05` | جمع، طرح وضرب أعداد عشرية في وضعية معيّنة. | `mana-jam-tarh` | `1am.m1.r01`، `1am.m1.r03` |
 | `1am.m1.r06` | تحديد رتبة مقدار لنتيجة حساب على الأعداد العشرية. | `rutbat-miqdar-jam` _(prévue)_ | `1am.m1.r05` |
 
 #### المقطع 2 — إنجاز مماثلات أشكال مستوية بسيطة – السطوح المستوية: الأطوال، المحيطات، المساحات (`1am.m2`, 4 أسابيع)
@@ -1154,7 +1154,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 4 | `muqaranat-adad-ashriya` — مقارنة الأعداد العشرية وترتيبها | prévue | `1am.m1.r04` |
 | 5 | `hasr-qiyam-muqarraba` — حصر عدد عشري وقيمه المقرّبة | prévue | `1am.m3.r05` `1am.m3.r04` |
 | 6 | `wadiya-idmajiya-adad-tabiiya-ashriya` — أدمج تعلّماتي — الأعداد الطبيعية والأعداد العشرية | synthèse | — |
-| 7 | `mana-jam-tarh` — معنى الجمع والطرح | prévue | `1am.m1.r01` `1am.m1.r05` |
+| 7 | `mana-jam-tarh` — معنى الجمع والطرح | publiée | `1am.m1.r01` `1am.m1.r05` |
 | 8 | `injaz-jam-tarh-mudad` — إنجاز عمليات الجمع والطرح والحساب على المدد | prévue | `1am.m1.r01` `1am.m1.r05` |
 | 9 | `rutbat-miqdar-jam` — رتبة مقدار مجموع وفرق | prévue | `1am.m1.r06` |
 | 10 | `wadiya-idmajiya-jam-tarh-ashriya` — أدمج تعلّماتي — الحساب على الأعداد الطبيعية والأعداد العشرية: الجمع والطرح | synthèse | — |

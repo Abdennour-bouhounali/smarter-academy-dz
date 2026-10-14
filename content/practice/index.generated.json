@@ -1,4 +1,66 @@
 {
+  "mana-jam-tarh": {
+    "1": [
+      "ex-1am-mana-jam-tarh-l1-001",
+      "ex-1am-mana-jam-tarh-l1-002",
+      "ex-1am-mana-jam-tarh-l1-003",
+      "ex-1am-mana-jam-tarh-l1-004",
+      "ex-1am-mana-jam-tarh-l1-005",
+      "ex-1am-mana-jam-tarh-l1-006",
+      "ex-1am-mana-jam-tarh-l1-007",
+      "ex-1am-mana-jam-tarh-l1-008",
+      "ex-1am-mana-jam-tarh-l1-009",
+      "ex-1am-mana-jam-tarh-l1-010"
+    ],
+    "2": [
+      "ex-1am-mana-jam-tarh-l2-001",
+      "ex-1am-mana-jam-tarh-l2-002",
+      "ex-1am-mana-jam-tarh-l2-003",
+      "ex-1am-mana-jam-tarh-l2-004",
+      "ex-1am-mana-jam-tarh-l2-005",
+      "ex-1am-mana-jam-tarh-l2-006",
+      "ex-1am-mana-jam-tarh-l2-007",
+      "ex-1am-mana-jam-tarh-l2-008",
+      "ex-1am-mana-jam-tarh-l2-009",
+      "ex-1am-mana-jam-tarh-l2-010"
+    ],
+    "3": [
+      "ex-1am-mana-jam-tarh-l3-001",
+      "ex-1am-mana-jam-tarh-l3-002",
+      "ex-1am-mana-jam-tarh-l3-003",
+      "ex-1am-mana-jam-tarh-l3-004",
+      "ex-1am-mana-jam-tarh-l3-005",
+      "ex-1am-mana-jam-tarh-l3-006",
+      "ex-1am-mana-jam-tarh-l3-007",
+      "ex-1am-mana-jam-tarh-l3-008",
+      "ex-1am-mana-jam-tarh-l3-009",
+      "ex-1am-mana-jam-tarh-l3-010"
+    ],
+    "4": [
+      "ex-1am-mana-jam-tarh-l4-001",
+      "ex-1am-mana-jam-tarh-l4-002",
+      "ex-1am-mana-jam-tarh-l4-003",
+      "ex-1am-mana-jam-tarh-l4-004",
+      "ex-1am-mana-jam-tarh-l4-005",
+      "ex-1am-mana-jam-tarh-l4-006",
+      "ex-1am-mana-jam-tarh-l4-007",
+      "ex-1am-mana-jam-tarh-l4-008",
+      "ex-1am-mana-jam-tarh-l4-009",
+      "ex-1am-mana-jam-tarh-l4-010"
+    ],
+    "5": [
+      "ex-1am-mana-jam-tarh-l5-001",
+      "ex-1am-mana-jam-tarh-l5-002",
+      "ex-1am-mana-jam-tarh-l5-003",
+      "ex-1am-mana-jam-tarh-l5-004",
+      "ex-1am-mana-jam-tarh-l5-005",
+      "ex-1am-mana-jam-tarh-l5-006",
+      "ex-1am-mana-jam-tarh-l5-007",
+      "ex-1am-mana-jam-tarh-l5-008",
+      "ex-1am-mana-jam-tarh-l5-009",
+      "ex-1am-mana-jam-tarh-l5-010"
+    ]
+  },
   "aksiya-talis": {
     "1": [
       "ex-4am-aksiya-talis-l1-001",

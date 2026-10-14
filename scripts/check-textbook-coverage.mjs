@@ -21,7 +21,11 @@
  *      déclarée, donc une dérive ;
  *   3. tout `src('<id>')` cité par un contenu existe dans l'extraction : on ne
  *      cite pas le manuel de mémoire ;
- *   4. tout `type: 'platform_addition'` reste visible comme tel (compteur).
+ *   4. tout `type: 'platform_addition'` reste visible comme tel (compteur) ;
+ *   5. une destination vers une leçon encore `coming_soon` du catalogue (1AM–3AM, générées leçon par leçon depuis
+ *      la phase 3 du cycle moyen, 2026-10-14) est EN ATTENTE : elle n'a pas encore à être citée (comptée à part),
+ *      elle doit nommer une vraie leçon du catalogue, et aucune autre leçon ne peut citer l'élément. Le jour où la
+ *      leçon est générée et publiée (`available`), la règle 1 s'applique à nouveau.
  *
  *   node scripts/check-textbook-coverage.mjs [--json]
  */
@@ -45,6 +49,14 @@ function adaptedOriginLesson(data) {
 }
 const problems = [];
 const report = [];
+
+/** Les leçons du catalogue, toutes années : code → statut (`available` / `coming_soon`). */
+const CATALOGUE_STATUS = new Map();
+for (const f of readdirSync(join(repoRoot, 'packages/core/curriculum/dz')).filter((n) => /^lessons_\d?[a-z]*_2026_2027\.json$/.test(n))) {
+  for (const l of JSON.parse(readFileSync(join(repoRoot, 'packages/core/curriculum/dz', f), 'utf8')).lessons ?? []) CATALOGUE_STATUS.set(l.code, l.status);
+}
+/** Une destination EN ATTENTE : une leçon du catalogue pas encore générée. */
+const isPending = (lesson) => CATALOGUE_STATUS.get(lesson) === 'coming_soon';
 
 function walk(dir, out = []) {
   if (!existsSync(dir)) return out;
@@ -100,6 +112,7 @@ for (const gradeDir of existsSync(SOURCES) ? readdirSync(SOURCES) : []) {
     const extraction = JSON.parse(readFileSync(file, 'utf8'));
     const unitCode = extraction.unitCode ?? readUnitCode(gradeDir, unitDir);
     const elements = new Map(extraction.elements.map((e) => [e.id, e]));
+    let pending = 0;
     const destinations = extraction.destinations ?? {};
 
     // Où vit le contenu : le dossier de l'unité côté web, la pratique, les unités du catalogue.
@@ -159,7 +172,12 @@ for (const gradeDir of existsSync(SOURCES) ? readdirSync(SOURCES) : []) {
       const allowed = new Set([dest.lesson, ...(dest.duplicatedIn ?? []).map((d) => d.lesson)]);
       for (const sub of Object.values(dest.items ?? {})) allowed.add(sub.lesson);
       const citedBy = [...byLesson.entries()].filter(([, b]) => b.all.has(id)).map(([l]) => l);
-      if (!citedBy.includes(dest.lesson)) {
+      for (const l of allowed) {
+        if (l != null && l !== 'unit' && !CATALOGUE_STATUS.has(l)) problems.push(`${unitCode}: « ${id} » est destiné à « ${l} », qui n'est pas une leçon du catalogue`);
+      }
+      if (isPending(dest.lesson)) {
+        pending += 1;
+      } else if (!citedBy.includes(dest.lesson)) {
         problems.push(`${unitCode}: « ${id} » est destiné à « ${dest.lesson} » (module ${dest.module}) mais aucun contenu de cette leçon ne le cite`);
       }
       for (const l of citedBy) {
@@ -175,7 +193,7 @@ for (const gradeDir of existsSync(SOURCES) ? readdirSync(SOURCES) : []) {
     let additions = 0;
     if (unitLessonsDir) for (const f of walk(unitLessonsDir)) additions += (readFileSync(f, 'utf8').match(/addition\(/g) ?? []).length;
 
-    report.push({ unit: unitCode, elements: elements.size, lessons: byLesson.size, platformAdditions: additions });
+    report.push({ unit: unitCode, elements: elements.size, lessons: byLesson.size, platformAdditions: additions, pending });
   }
 }
 
@@ -244,7 +262,7 @@ if (process.argv.includes('--json')) {
 } else {
   for (const r of report) {
     if (r.worksheet) console.log(`fiche « ${r.worksheet} » : ${r.elements} éléments, ${r.integrated} intégrés, ${r.elements - r.integrated} non intégré(s) avec raison`);
-    else console.log(`unité « ${r.unit} » : ${r.elements} éléments du manuel, ${r.lessons} destinations, ${r.platformAdditions} ajout(s) de la plateforme déclaré(s)`);
+    else console.log(`unité « ${r.unit} » : ${r.elements} éléments du manuel, ${r.lessons} destinations, ${r.platformAdditions} ajout(s) de la plateforme déclaré(s)${r.pending ? `, ${r.pending} en attente (leçons coming_soon)` : ''}`);
   }
   if (problems.length) {
     console.error(`\n${problems.length} problème(s) de couverture :`);

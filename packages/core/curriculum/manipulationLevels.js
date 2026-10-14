@@ -205,6 +205,10 @@ export const VISUAL_THEMES = Object.freeze({
   '3d-printer': { kind: 'objects', shows: 'طابعة ثلاثية الأبعاد في نادي العلوم تطبع مجسما طبقة بعد طبقة' },
   'voxel-blocks': { kind: 'objects', shows: 'مكعبات بناء في لعبة على الهاتف' },
   'beach-bucket': { kind: 'objects', shows: 'دلو رمل على شاطئ تيبازة' },
+  // 1AM, unité 2 « الجمع والطرح » (2026-10-14, cycle moyen phase 3) :
+  //   checkup  la visite médicale scolaire : des élèves debout devant la toise ; la taille inconnue se TIRE jusqu'à ce
+  //            que la phrase de l'histoire soit vraie (« أطول من … بـ 6 cm ») — يزيد / ينقص sous la main (story-bars)
+  checkup: { kind: 'people', shows: 'تلاميذ أمام مقياس القامة في الفحص الطبي المدرسي' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

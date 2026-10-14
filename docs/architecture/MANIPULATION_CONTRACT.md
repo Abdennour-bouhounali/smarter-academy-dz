@@ -389,6 +389,28 @@ the first most frequent value in cell order and #N/A when nothing repeats. **`gr
 (groups per class, `'2|2'`), `theme` (`quiz` | `school`); a tank's height is budgeted from the lesson viewport minus what the
 glance block MEASURES besides the tanks, so the block stays in the screen when the reading grows after the valve.
 
+## 2sedecies. The meaning of addition and subtraction — `story-bars` (1AM unit 2, 2026-10-14)
+
+The first lab of the cycle moyen rollout (phase 3), in a new folder `operations/` (`operations/StoryBars.jsx`, pure logic
+`logic/storyBars.js`, 19 logic + 6 render tests). Lesson `mana-jam-tarh` « معنى الجمع والطرح ». The idea: the words « يزيد / ينقص /
+أكثر / أقل » do not decide the operation — the STRUCTURE does. In the textbook's tape diagram (« مخطط بأقواس », drawn by the shared
+`components/ArcTape.jsx`, also a statement-figure kind `tape`), if the unknown is the WHOLE we add the parts, if it is a PART we subtract.
+
+| Story (`story` prop) | Level | What the hand holds | What resists |
+|---|---|---|---|
+| `checkup` (platform, theme `checkup`) | مبتدئ | the unknown child's HEIGHT on a wall gauge (stretch, vertical slider, keyboard ±1 / Page ±5, −/+), then the calc card that gives it | a commit that makes the sentence false is refused in the story's words (`equal / side / mirror / gap`; `mirror` = the trap read as its word, e.g. نزيم at 139); a wrong calc card draws its ghost head and is refused (`wrong / impossible`); only the right one writes `□ = 130 + 6 = 136` and closes the tape |
+| `act1` (textbook نشاط 1 p. 25) | متقدم | the six textbook CALC CARDS, carried onto the six texts (drag, tap-tap, keyboard); no gauge, no reading | a card on the wrong text returns and that text's tape is drawn with the card's value in the unknown's role, NOT closed (gap / overflow), with a reason in the story's words (`operation / numbers`) |
+| `method29` (textbook طريقة p. 29) | alone, `levels={false}` | the heights of يونس and محمد against أكرم 124 cm | same as `checkup`; no discovery, `onFinished` when both are done |
+
+Discovery (`checkup`: items أمين +, ريم −, نزيم trap done; `act1`: all six matched): « ماذا يقرّر العملية: الكلمة أم المخطط؟ », the two wrong
+options refuted with the student's own items. Props: `story`, `level`, `levels`, `title`, `lead`, `onTrial({ story, item, kind:
+'stretch' | 'calc' | 'card', value, ok, calc })` (items `amine…yassine`, `younes`, `mohamed`, `t1…t6`; `calc` is written with « − »),
+`onFinished({ story })`. Not eligible for « جرّب كل الإمكانيات » (§6bis). The gauge frames 97–154 cm so heads sit at their exact height
+(≈ 4 px/cm on a phone). DOM: `[data-story-bars][data-story][data-mode][data-item][data-solved]`, `[data-sb-glance]`, `[data-sb-handle]`,
+`[data-sb-person]`, `[data-sb-sentence][data-ok]`, `[data-sb-calc=<canonical i>]` (0 = known + d, 1 = known − d, 2 = d − known),
+`[data-sb-card=<0..5>][data-placed]`, `[data-sb-slot=<1..6>][data-matched]`, `[data-sb-verdict]`, `[data-sb-refused]`,
+`[data-sb-formal-line]`, the tape's `[data-arc-tape][data-tape-closed]`. Browser suite: `e2e/lesson-kit/1am-jam-tarh-ashriya.mjs`.
+
 ## 2quindecies. The space laboratories and the 3D kit (unit 14, 2026-10-05)
 
 The first unit IN SPACE. Its labs show REAL solids — light, transparency, an orbit under the finger — and every one of them stands on ONE
@@ -819,7 +841,7 @@ contrast), `shadow-stick`, `group-tanks`, `ramp-ratios` (مبتدئ), `clinomete
 `shape-turn`, `lamp-ring`, `inscribed-angle`, `bucket-fill`, `orange-peel`, `scale-blocks`, `section-slicer`,
 `sphere-probe`, `thales-beam`, `parallel-level`, `cone-cylinder`, `segment-divider`, `angle-compass`,
 `trig-calculator`, `vector-chain`, `translation-glide`, `route-compare`, `shape-prover`, `component-calc`,
-`component-steps`, `midpoint-distance`, `ratio-ride`, `cumul-gate`, `sheet-lab`. The original three
+`component-steps`, `midpoint-distance`, `ratio-ride`, `cumul-gate`, `sheet-lab`, `story-bars` (1AM, 2026-10-14: each stretched height and each card IS the answer). The original three
 (`team-builder`, `pgcd-differences`, `euclidean-algorithm`) keep their own `first-gesture` button. Tests: each granted
 type's logic test checks that a sweep reaches the same trials as the hand.
 

@@ -516,6 +516,16 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'حجم مخروط مبتور = حجم المخروط الكبير − حجم المخروط الصغير ، والمخروط الصغير تصغير للكبير نسبته k فحجمه k³ مرة حجم الكبير',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 2 « الجمع والطرح » (2026-10-14, cycle moyen phase 3) — le SENS des deux opérations.
+  'story-bars': {
+    // LE MODÈLE EN BARRES D'UNE HISTOIRE (« مخطط بأقواس », manuel p. 26 et 29) : l'élève tient l'INCONNUE — il tire la
+    // taille d'un élève devant la toise jusqu'à ce que la phrase de l'histoire soit vraie, puis choisit le calcul qui
+    // donne cette taille (مبتدئ) ; ou il pose chaque carte de calcul du manuel sur son texte (نشاط 1, متقدم). La bande
+    // ne se FERME que si les parties font le tout : l'inconnue est le tout ⇒ on additionne, une partie ⇒ on soustrait —
+    // quels que soient les mots « يزيد / ينقص » de l'histoire.
+    shows: 'المجهول هو الكلّ (المجموع) ⇐ نجمع الجزأين ؛ المجهول جزء (حدّ) ⇐ نطرح الجزء الآخر من الكلّ — الكلمة « يزيد » أو « ينقص » وحدها لا تقرّر العملية',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

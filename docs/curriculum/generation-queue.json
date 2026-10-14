@@ -2,17 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "mana-jam-tarh",
-      "grade": "1am",
-      "unit": "jam-tarh-ashriya",
-      "titleAr": "معنى الجمع والطرح",
-      "kind": "lesson",
-      "trigger": "qasim-adad-tabii",
-      "via": [
-        "1am.m1.r01"
-      ]
-    },
-    {
       "code": "qisma-iqlidiya-baqi",
       "grade": "1am",
       "unit": "darb-qisma-ashriya",

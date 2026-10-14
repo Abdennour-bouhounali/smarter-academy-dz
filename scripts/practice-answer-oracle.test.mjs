@@ -1,4 +1,4 @@
-// L'ORACLE des réponses du banc d'exercices 4AM (audit d'intégrité, 2026-09-24).
+// L'ORACLE des réponses du banc d'exercices (4AM depuis l'audit d'intégrité du 2026-09-24 ; toutes les années du cycle moyen depuis le 2026-10-14).
 //
 // Les tests de l'évaluateur prouvent seulement qu'il accepte la clé
 // CONFIGURÉE. Ce test prouve autre chose : que la clé configurée est la
@@ -115,8 +115,13 @@ import { ORACLE as ORACLE_BEM_HASIBA_MUTHALLATHIYA } from './practice-oracle/has
 import { ORACLE as ORACLE_BEM_ALAQAT_MUTHALLATHIYA } from './practice-oracle/alaqat-muthallathiya.mjs';
 import { ORACLE as ORACLE_BEM_TARRID_MUTHALLATHIYA } from './practice-oracle/tarrid-muthallathiya.mjs';
 import { ORACLE as ORACLE_BEM_WADIYA_IDMAJIYA_MUTHALLATHAT } from './practice-oracle/wadiya-idmajiya-muthallathat.mjs';
+// Cycle moyen, phase 3 (2026-10-14) : le premier banc 1AM–3AM (feuilles « على منوال اختبار الفصل »).
+import { ORACLE as ORACLE_1AM_MANA_JAM_TARH } from './practice-oracle/mana-jam-tarh.mjs';
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice/4am');
+// Toutes les années du cycle moyen (content/practice/<1am…4am>/<leçon>/level-N) : jusqu'au 2026-10-14 seul 4am
+// existait et la racine y était codée en dur — un banc 1AM–3AM aurait échappé à l'oracle sans rien dire.
+const practiceRoot = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice');
+const gradeRoots = readdirSync(practiceRoot).filter((g) => /^[1-4]am$/.test(g)).map((g) => join(practiceRoot, g));
 
 /* ── Arithmétique indépendante ─────────────────────────────────────────── */
 const gcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b, a % b]; return a; };
@@ -254,6 +259,7 @@ const ORACLE = {
   ...ORACLE_BEM_ALAQAT_MUTHALLATHIYA,
   ...ORACLE_BEM_TARRID_MUTHALLATHIYA,
   ...ORACLE_BEM_WADIYA_IDMAJIYA_MUTHALLATHAT,
+  ...ORACLE_1AM_MANA_JAM_TARH,
 };
 
 /**
@@ -266,7 +272,7 @@ const REPORTED = { key: 'ex-4am-qasim-adad-tabii-l3-001:q3', isMultiple: divides
 
 /* ── Lecture du banc ───────────────────────────────────────────────────── */
 function* questions() {
-  for (const lesson of readdirSync(root)) {
+  for (const root of gradeRoots) for (const lesson of readdirSync(root)) {
     const ldir = join(root, lesson);
     if (!statSync(ldir).isDirectory()) continue;
     for (const lvl of readdirSync(ldir)) {
