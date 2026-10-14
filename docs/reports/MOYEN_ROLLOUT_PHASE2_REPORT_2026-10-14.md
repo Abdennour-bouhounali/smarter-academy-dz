@@ -12,6 +12,8 @@ D1–D11 from the phase-1 report still bind. Added on 2026-10-14:
 | # | Decision |
 |---|---|
 | D12 | **« Publish » a lesson = push to `dev`** (CI only). The owner reviews `dev` and promotes it to `main` (production deploy) when they choose. The exact sequence is in `LESSON_DEVELOPMENT_GUIDE.md` §11 « Publish a lesson ». |
+| D13 | **Each grade keeps its own ميدان names** (answer to §4.1, 2026-10-14): 1AM–3AM use the official منهاج names, 4AM keeps the owner's display names. Same chapter ids, different titles: intended. |
+| D14 | **Draft الكفاءات may be visible** to students on the 1AM–3AM unit pages (answer to §4.2, 2026-10-14). |
 
 ## 2. What phase 2 produced
 
@@ -134,17 +136,15 @@ stays a human act in « المحتوى »). Production only follows when `dev` i
 - **The build exceeded its 4 GB heap** at « computing gzip size », on origin/dev too. `vite.config.js` now sets
   `build.reportCompressedSize: false`: peak RSS dropped from 5.7 to 4.5 GB, and the build takes 45 s. Bundle sizes are
   measured with `BUNDLE_BOUNDARIES.md` §6 instead.
-- **Entry bundle — please decide.** The 1AM–3AM catalogue lives in the entry (it is `coursesData`): **+52.7 KB gzip**
-  (576.5 → 629.2 KB), ≈ 47 KB of it the Arabic text of 196 draft lessons. A per-grade lazy catalogue is the possible
-  follow-up.
-  **Separately, origin/dev's entry was already 576 KB gzip against the 224 KB recorded on 2026-09-25.** Something
-  re-entered the entry in between; it was not investigated here (`BUNDLE_BOUNDARIES.md` §5 note).
+- **Entry bundle.** The 1AM–3AM catalogue lives in the entry (it is `coursesData`): **+52.7 KB gzip**
+  (576.5 → 629.2 KB), ≈ 47 KB of it the Arabic text of 196 draft lessons. The older drift (224 → 576 KB since
+  2026-09-25) was investigated afterwards: see §6.
 - **4AM grade order in the DB** changed from 0 to 3 (it now follows 1AM–3AM). Only `grades.order` is affected; the
   importer reported it as one updated grade.
 - The local import also applied 62 pending 4AM lesson updates already on origin/dev (durations etc.). Expected: the
   dev DB was behind.
 
-## 4. Things to review (owner)
+## 4. Things to review (owner) — answered 2026-10-14 (D13, D14; item 3 « investigate » → §6)
 
 1. **The ميدان names of 1AM–3AM** come from the official منهاج (« الأنشطة العددية », « الدوال وتنظيم المعطيات »,
    « الأنشطة الهندسية »). 4AM keeps your display names (« أنساب الأعداد والحساب », « التناسبية والدوال »,
@@ -204,6 +204,58 @@ End with a short progress report appended to docs/reports/MOYEN_ROLLOUT_PROGRESS
 next batch.
 ```
 
+## 6. Entry bundle investigation (2026-10-14) and the order of the next sessions
+
+**Finding.** The initial JS grew from 224 KB gzip (2026-09-25) to 576.5 KB (origin/dev), then 629.2 KB with the
+1AM–3AM catalogue. One script, `node scripts/analyze-entry-bundle.mjs`, now measures it and traces any module's import
+chain (`BUNDLE_BOUNDARIES.md` §5–§6, which hold the full table). Gzip estimates by area, then → now:
+
+- the lessons' `lesson.config.js` + `routes.jsx`: **11 → 191 KB**. `App.jsx` imports all 74 `routes.jsx` statically,
+  and `lessons/registry.js` globs every config eagerly;
+- `lesson.json` (eager namespace), almost all of it `manipulation` (every lab's strings, 368 KB raw): **13.6 → 145 KB**;
+- the 4AM catalogue JSON: 7 → 41 KB; the 1AM–3AM catalogue: ≈ 55 KB;
+- unit maths and manipulation registries re-exported by the core barrel: ≈ 9 → ≈ 45 KB.
+
+**Consequence.** Every published lesson costs every visitor ≈ 4.5 KB gzip on the first load, including on the
+marketing home page. Phase 3's 196 lessons would add ≈ 0.9 MB gzip. **Recommendation (not yet an owner decision):** run
+the session below first, then phase 3 (its prompt, §5, is unchanged).
+
+### Next session prompt — the entry bundle (run BEFORE phase 3)
+
+```text
+Entry-bundle fix, before phase 3 of the cycle moyen rollout. No lesson generation in this session.
+Read first: CLAUDE.md, docs/README.md, docs/architecture/BUNDLE_BOUNDARIES.md (all of it, especially §5
+« Entry drift, investigated 2026-10-14 » and §6), docs/reports/MOYEN_ROLLOUT_PHASE2_REPORT_2026-10-14.md §6,
+docs/lessons/LESSON_DEVELOPMENT_GUIDE.md §3 and §14, docs/architecture/LESSON_CONTRACT.md.
+
+Baseline first: `node scripts/analyze-entry-bundle.mjs` (initial JS ≈ 629 KB gzip on dev 01c4c7b8). Then get the
+LESSON CONTENT out of the entry, without changing what any page shows or does:
+1. Lesson routes: App.jsx imports every lesson's routes.jsx statically (74 imports, each pulling its
+   lesson.config.js). Replace them with ONE lazy lesson boundary (a lazy, per-lesson glob of routes.jsx resolved
+   from the URL), so a lesson's routes and config load with the lesson. check:routes must keep its guarantees
+   (update it), deep links, redirects, classroom mode, the knowledge-map column, notebook anchor and page tours must
+   keep working.
+2. The registry (apps/web/src/lessons/registry.js) globs every lesson.config.js EAGERLY. Replace the eager glob with
+   a small GENERATED index (only what synchronous callers need: id, grade, module numbers/slugs/stages, totals…),
+   kept fresh by a check in check:lessons, plus an async loader for the full config. Audit every synchronous caller
+   (getLessonConfig / getTotalModules / getModulePath: cards, UnitPage resources, progress, resume, progression,
+   teacher memo, practice) and keep their behaviour.
+3. `lesson.json › manipulation` (368 KB raw, 132 KB gzip — every lab's strings) is in an EAGER namespace: load it on
+   demand with the lazy lesson runtime (and wherever else a lab renders, e.g. the Math Lab), never showing a raw key;
+   prefer keeping the same keys so call sites do not change.
+4. The core barrel (packages/core/index.js) re-exports every unit's exact-math module and the manipulation
+   registries: keep in the barrel only what eager code needs; import the rest by path.
+5. Add an entry budget gate (e.g. `analyze-entry-bundle.mjs --budget <KB gzip>` wired into check:lessons and CI)
+   set just above the new measurement, so the next lesson that leaks into the entry fails CI.
+Measure after each step (before/after table). Run npm test, npm run check:lessons, npm run build, the browser suites
+that touch these paths (apps/web/e2e/catalogue-views.mjs, knowledge-map.mjs, notebook-lesson.mjs,
+moyen-draft-grades.mjs, a lesson-kit run incl. test-presentation), and PHP tests only if the API changes (MySQL,
+phpunit.local.xml, one run). Follow the documentation synchronization rule (BUNDLE_BOUNDARIES §2–§5, the guide's
+« files of a lesson » / « Adding a GRADE » / « Publish a lesson » if wiring changes). Commit on a branch and push to
+dev. End with docs/reports/BUNDLE_ENTRY_REPORT_<date>.md and the phase-3 prompt (§5 of the phase-2 report, updated
+if the lesson wiring changed).
+```
+
 ## Documentation sync (phase 2)
 
 | File | What changed |
@@ -218,3 +270,4 @@ next batch.
 | `docs/sources/moyen/exams/EXAM_PATTERN.md` | §6: `term_exam` implemented; stale `ISLAMIC_VALUES.md` reference removed |
 | `docs/curriculum/LEARNING_NET_MAP.md` | Regenerated (headline count) |
 | `CLAUDE.md` | 1AM–3AM active, `coming_soon` / draft, publish = push to dev, « راجع » after an error, term-exam practice |
+| `docs/architecture/BUNDLE_BOUNDARIES.md` (follow-up, same day) | §5 « Entry drift, investigated » (attribution table, the rule that broke, the fix plan); §6 the runnable `scripts/analyze-entry-bundle.mjs` + `apps/web/vite.analyze.config.js` |

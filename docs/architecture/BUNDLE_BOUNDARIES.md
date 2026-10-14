@@ -163,14 +163,36 @@ opens the notebook window; KaTeX renders. JS request counts rose (lazy
 chunks), but Vite modulepreloads each lazy chunk's dependencies in parallel,
 so the added cost is about one round-trip per lazy level, not per file.
 
-**Drift noticed on 2026-10-14 (not caused by phase 2, not yet investigated).** The single initial script of
-`origin/dev` (ccd83600, built with its own workspace packages) weighs **2,532 KB raw / 576.5 KB gzip**, against the
-768 KB / 224 KB of the table above (2026-09-25). Something re-entered the entry between those dates: re-run §6 to
-find the chain. The same day `vite build` hit the 4 GB heap of `npm run build` at « computing gzip size » (≈ 2,000
-chunks). `vite.config.js` now sets `build.reportCompressedSize: false` (peak RSS 5.7 → 4.5 GB): measure sizes with
-§6, not with Vite's console table.
+### Entry drift, investigated 2026-10-14 — 224 → 576 KB gzip, then 629 KB with 1AM–3AM
+
+`origin/dev` (ccd83600) shipped ONE initial script of 2,532 KB raw / 576.5 KB gzip, against 768 / 224 KB on
+2026-09-25; the 1AM–3AM catalogue (phase 2) brought it to 2,803 / 629.2 KB. Measured with
+`node scripts/analyze-entry-bundle.mjs` (§6). Contributors, gzip estimated per area from the sources:
+
+| Contributor | 2026-09-25 → 2026-10-14 | Why it is in the entry |
+|---|---|---|
+| The lessons' `lesson.config.js` + `routes.jsx` (9 → 74 lessons; 775 + 122 KB rendered) | 11 → 191 KB | `App.jsx` imports every lesson's `routes.jsx` STATICALLY (74 imports), and each imports its config; `lessons/registry.js` also globs every config **eagerly** |
+| `lesson.json` › `manipulation` — the strings of every lab (368 KB raw) | 13.6 → 145 KB (whole `lesson` namespace) | `lesson` is an eager namespace (`i18n/index.js`); every new lab adds its strings under `lesson.manipulation.<type>` |
+| The catalogue JSON, 4AM | 7 → 41 KB | `coursesData` (barrel) — by design |
+| The catalogue JSON, 1AM–3AM | 0 → ≈ 55 KB | idem (phase 2) |
+| Unit maths and manipulation registries via the core barrel (`arithmetic/rotation.js`, `vectors.js`, `trigonometry.js`, `linear.js` …, `manipulationTypes.js`, `manipulationLevels.js`) | ≈ 9 → ≈ 45 KB | `StudentLayout` → `packages/core/index.js` re-exports every unit's exact-math module |
+| framer-motion | ≈ 100 KB, unchanged | accepted (§7) |
+
+**The rule that broke:** the lesson content was lazy in 2026-09 (§2), but two eager paths grew with every lesson — a
+static route import per lesson and lab strings in an eager namespace — so each published lesson now costs every
+visitor ≈ 4.5 KB gzip. **Phase 3 (196 lessons) would add ≈ 0.9 MB gzip.** The recommended fix (to run before phase 3; prompt in `docs/reports/MOYEN_ROLLOUT_PHASE2_REPORT_2026-10-14.md` §6): one lazy lesson-route boundary, a light
+generated lesson index instead of the eager config glob, `lesson.manipulation` on demand, unit maths out of the
+barrel, and an entry budget gate.
+
+The same day `vite build` hit the 4 GB heap of `npm run build` at « computing gzip size » (≈ 2,000 chunks).
+`vite.config.js` now sets `build.reportCompressedSize: false` (peak RSS 5.7 → 4.5 GB): measure sizes with §6, not
+with Vite's console table.
 
 ## 6. How to measure
+
+**Runnable since 2026-10-14:** `node scripts/analyze-entry-bundle.mjs [--chain <path suffix>]` builds with
+`apps/web/vite.analyze.config.js` (steps 1–3 below) into a temp dir and prints the initial JS (raw, gzip -9), the
+entry's content by area, its largest modules, and the static import chain from `src/main.jsx` to any module.
 
 1. Dump the module graph: a throwaway Vite config that spreads
    `apps/web/vite.config.js` and adds a plugin whose `buildEnd` writes
