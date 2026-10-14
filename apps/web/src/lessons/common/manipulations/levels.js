@@ -613,6 +613,15 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { story: 'checkup' }, ...P },
     advanced: { numbers: { story: 'act1' }, ...T('act-1') },
   },
+  // ── 1AM, unité 3 « الضرب والقسمة » (2026-10-14) ──
+  // LA DIVISION EUCLIDIENNE TIRÉE (division-jumps) : b est DONNÉ, la main tient q. مبتدئ : 47 fleurs dessinées, bouquets
+  // de 6 (plateforme, thème garden) — chaque fleur se voit, puis le contraste 48 ; متقدم : نشاط 3 du manuel, 279 fleurs
+  // en bouquets de 14 sur une droite graduée (sauts de 14) — trop pour les dessiner, les multiples ne sont pas écrits :
+  // l'élève estime 14 × 10, 14 × 20 et encadre 279. `world: 'line'` seul (253 ÷ 17, معارف 2) se pose avec levels={false}.
+  'division-jumps': {
+    beginner: { numbers: { a: 47, b: 6, world: 'flowers', then: 48 }, ...P },
+    advanced: { numbers: { a: 279, b: 14, world: 'line' }, ...T('act-3') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

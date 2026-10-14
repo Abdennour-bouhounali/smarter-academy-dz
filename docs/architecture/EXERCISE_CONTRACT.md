@@ -677,6 +677,8 @@ The 4AM sheet simulates the شهادة التعليم المتوسط. A **1AM–
 - **Status:** live since 2026-10-14 — the first 1AM–3AM bank is `content/practice/1am/mana-jam-tarh/` (50 sheets: 15 `term_exam`
   modelled on one corpus exercise each — `1am-s2-64` ex 4 with the « الفصل الثاني » badge —, 24 `term_exam_modelled` on `1am-s1`,
   11 `adapted` from the lesson's own textbook elements; `tape` statement figures; misconceptions `MISC-JAMTARH-*`).
+  Second: `qisma-iqlidiya-baqi` (50 sheets, term-2 corpus; a bank may mix term badges — each sheet's badge matches its own
+  source paper, `1am-s1-101` keeps « الفصل الأول »; misconceptions `MISC-IQLIDIYA-*`). Later banks: `docs/reports/MOYEN_ROLLOUT_PROGRESS.md`.
 
 ### Screen (`features/practice/exam/`)
 

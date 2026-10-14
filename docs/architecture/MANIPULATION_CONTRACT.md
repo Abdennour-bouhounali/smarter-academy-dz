@@ -411,6 +411,28 @@ options refuted with the student's own items. Props: `story`, `level`, `levels`,
 `[data-sb-card=<0..5>][data-placed]`, `[data-sb-slot=<1..6>][data-matched]`, `[data-sb-verdict]`, `[data-sb-refused]`,
 `[data-sb-formal-line]`, the tape's `[data-arc-tape][data-tape-closed]`. Browser suite: `e2e/lesson-kit/1am-jam-tarh-ashriya.mjs`.
 
+## 2septdecies. Euclidean division — `division-jumps` (1AM unit 3, 2026-10-14)
+
+`operations/DivisionJumps.jsx` on `logic/divisionJumps.js` (integers through `core/arithmetic/divisibility.js › divmod`), lesson
+`qisma-iqlidiya-baqi`. Here b is GIVEN (the size of a bouquet, of a jump) and the hand holds **q, the number of groups** — a different
+variable and gesture from 4AM's team-builder (b = number of teams) and bookshelf (b = shelf length) (DNA §12). Two refusals bracket the
+quotient: one group too many needs objects that do not exist (`over`: the missing flowers drawn as ghosts, « لهذه الباقة تنقص … »), one
+group too few leaves enough for another (`short`: a ghost bouquet over the leftovers). The exact stop writes `a = b × q + r`, `r < b`.
+
+| World (level) | What the hand holds | What resists |
+|---|---|---|
+| `flowers` (مبتدئ, theme `garden`, 47 flowers in bouquets of 6) | a ribbon pulled along the row of drawn flowers (stretch; ← / → keys, −/+, drag, tap) — each step ties the next 6 | `over` / `short` as above; after the exact stop a card « زهرة جديدة! » opens 48 (`then`, default the next multiple of b): one more flower closes a bouquet exactly |
+| `line` (متقدم, textbook نشاط 3: 279 ÷ 14) | the number of jumps of 14 on a graduated line; the multiples are NOT labelled (only 0 and round values that are not multiples of b) | the jump past 279, the stop that leaves ≥ 14; the bracket `14 × 19 ≤ 279 < 14 × 20` is written after the exact stop |
+| `line`, `levels={false}` (معارف 2: 253 ÷ 17) | the same, as the textbook's worked example | — |
+
+`discoveryReady` = one `over` + one `short` + the exact stop on the lesson's own a (trials on 48 never count). Discovery « متى نتوقّف عن
+تشكيل الباقات؟ », wrong options refuted with the student's numbers (« when nothing is left », « at 10 »). Formal: an المقسوم chip + the shared
+`DivisionRoles` for b, q, r. Props `a`, `b`, `world`, `then?`, `level`, `levels`, `title`, `lead`, `onTrial({ a, b, q, r, kind: 'over' |
+'short' | 'exact', ok })` (`r` null on `over`; `a` is 48 during the contrast), `onFinished({ a, b })`. Not eligible for « جرّب كل
+الإمكانيات ». Default q = 0. DOM: `[data-division-jumps][data-world][data-a][data-b][data-q][data-solved]`, `[data-dj-glance]`,
+`[data-dj-handle]`, `[data-dj-less]` / `[data-dj-more]`, `[data-dj-group]`, `[data-dj-left]`, `[data-dj-ghost]`, `[data-dj-verdict]`,
+`[data-dj-refused]`, `[data-dj-bracket]`, `[data-dj-next]`, `[data-dj-formal]`. Browser suite: `e2e/lesson-kit/1am-darb-qisma-ashriya.mjs`.
+
 ## 2quindecies. The space laboratories and the 3D kit (unit 14, 2026-10-05)
 
 The first unit IN SPACE. Its labs show REAL solids — light, transparency, an orbit under the finger — and every one of them stands on ONE
@@ -841,7 +863,7 @@ contrast), `shadow-stick`, `group-tanks`, `ramp-ratios` (مبتدئ), `clinomete
 `shape-turn`, `lamp-ring`, `inscribed-angle`, `bucket-fill`, `orange-peel`, `scale-blocks`, `section-slicer`,
 `sphere-probe`, `thales-beam`, `parallel-level`, `cone-cylinder`, `segment-divider`, `angle-compass`,
 `trig-calculator`, `vector-chain`, `translation-glide`, `route-compare`, `shape-prover`, `component-calc`,
-`component-steps`, `midpoint-distance`, `ratio-ride`, `cumul-gate`, `sheet-lab`, `story-bars` (1AM, 2026-10-14: each stretched height and each card IS the answer). The original three
+`component-steps`, `midpoint-distance`, `ratio-ride`, `cumul-gate`, `sheet-lab`, `story-bars` (1AM, 2026-10-14: each stretched height and each card IS the answer), `division-jumps` (1AM: each q is the answer). The original three
 (`team-builder`, `pgcd-differences`, `euclidean-algorithm`) keep their own `first-gesture` button. Tests: each granted
 type's logic test checks that a sweep reaches the same trials as the hand.
 

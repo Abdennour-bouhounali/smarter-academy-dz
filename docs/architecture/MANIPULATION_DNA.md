@@ -390,6 +390,7 @@ as a substitute for causality: every motion must show a mathematical change.
 | Unit 3 « الحساب الحرفي »: two new labs, one world (the football pitch) for both directions of one reading (see below) | **Implemented 2026-10-01** |
 | Unit 4 « معادلات ومتراجحات »: four new labs, four gestures (balance, collapse, boundary, race) on one exact module (see below) | **Implemented 2026-10-01** |
 | 1AM unit 2 « الجمع والطرح »: `story-bars` — the hand holds the UNKNOWN (a child's height stretched until the story's sentence is true) or the OPERATION (the textbook's calc cards); the tape closes only when the parts make the whole, so « يزيد » with − and « ينقص » with + are refuted by the drawing (`MANIPULATION_CONTRACT.md` §2sedecies) | **Implemented 2026-10-14** |
+| 1AM unit 3 « الضرب والقسمة »: `division-jumps` — b is given, the hand holds q (a ribbon tying bouquets along a row of flowers, or jumps along a line); one group too many lacks objects, one too few leaves enough for another, so the stop « r < b » is felt from both sides (`MANIPULATION_CONTRACT.md` §2septdecies) | **Implemented 2026-10-14** |
 
 **Lessons 2–9, what the hand now does (2026-09-30).** The instrument is chosen per concept
 (§6, §12). Lessons 4, 5 and 7 share the reserve **on purpose**: coprime is the PGCD = 1 case of

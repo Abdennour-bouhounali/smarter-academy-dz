@@ -325,7 +325,7 @@
         }
       },
       "status": "available",
-      "durationMinutes": 80,
+      "durationMinutes": 56,
       "difficulty": "سهل",
       "icon": "➕"
     },
@@ -525,6 +525,15 @@
         "كتابة المساواة $a = b\\times q + r$ مع $r<b$ وتسمية المقسوم والمقسوم عليه والحاصل والباقي",
         "توظيف القسمة الإقليدية لحل مشكلات توزيع وتجميع"
       ],
+      "pointPrerequisites": {
+        "P2": [
+          "1am_qisma-iqlidiya-baqi_P1"
+        ],
+        "P3": [
+          "1am_qisma-iqlidiya-baqi_P1",
+          "1am_mana-jam-tarh_P1"
+        ]
+      },
       "programmeItems": [
         "1am.m3.r01"
       ],
@@ -542,7 +551,10 @@
           "method": null
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 54,
+      "difficulty": "متوسط",
+      "icon": "➗"
     },
     {
       "code": "qawaid-qabiliyat-qisma",

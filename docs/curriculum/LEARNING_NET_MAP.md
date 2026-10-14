@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **75** leçons publiées · **195** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **76** leçons publiées · **194** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -802,7 +802,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
-| `1am.m3.r01` | تعيين حاصل وباقي القسمة الإقليدية لعدد طبيعي على عدد طبيعي مكتوب برقم واحد أو رقمين. | `qisma-iqlidiya-baqi` _(prévue)_ | `1am.m1.r01` |
+| `1am.m3.r01` | تعيين حاصل وباقي القسمة الإقليدية لعدد طبيعي على عدد طبيعي مكتوب برقم واحد أو رقمين. | `qisma-iqlidiya-baqi` | `1am.m1.r01` |
 | `1am.m3.r02` | معرفة قواعد قابلية القسمة على 2، 3، 4، 5، 9 واستعمالها. | `qawaid-qabiliyat-qisma` _(prévue)_ | `1am.m3.r01` |
 | `1am.m3.r03` | إجراء القسمة العشرية لعدد طبيعي أو عشري على عدد طبيعي. | `qisma-ashriya-taqrib` _(prévue)_ | `1am.m3.r01`، `1am.m1.r03` |
 | `1am.m3.r04` | تعيين القيمة المقرّبة إلى الوحدة بالزيادة (أو بالنقصان) لحاصل قسمة عشري. | `hasr-qiyam-muqarraba` _(prévue)_ | `1am.m3.r03`، `1am.m1.r04` |
@@ -1159,7 +1159,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 9 | `rutbat-miqdar-jam` — رتبة مقدار مجموع وفرق | prévue | `1am.m1.r06` |
 | 10 | `wadiya-idmajiya-jam-tarh-ashriya` — أدمج تعلّماتي — الحساب على الأعداد الطبيعية والأعداد العشرية: الجمع والطرح | synthèse | — |
 | 11 | `darb-adad-ashriya` — ضرب الأعداد العشرية | prévue | `1am.m1.r05` `1am.m1.r01` `1am.m1.r03` `1am.m1.r06` |
-| 12 | `qisma-iqlidiya-baqi` — القسمة الإقليدية | prévue | `1am.m3.r01` |
+| 12 | `qisma-iqlidiya-baqi` — القسمة الإقليدية | publiée | `1am.m3.r01` |
 | 13 | `qawaid-qabiliyat-qisma` — قواعد قابلية القسمة | prévue | `1am.m3.r02` |
 | 14 | `qisma-ashriya-taqrib` — القسمة العشرية والقيمة المقرّبة لحاصل قسمة | prévue | `1am.m3.r03` `1am.m3.r04` `1am.m3.r05` |
 | 15 | `wadiya-idmajiya-darb-qisma-ashriya` — أدمج تعلّماتي — الحساب على الأعداد الطبيعية والأعداد العشرية: الضرب والقسمة | synthèse | — |

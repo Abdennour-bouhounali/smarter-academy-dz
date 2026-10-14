@@ -526,6 +526,14 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'المجهول هو الكلّ (المجموع) ⇐ نجمع الجزأين ؛ المجهول جزء (حدّ) ⇐ نطرح الجزء الآخر من الكلّ — الكلمة « يزيد » أو « ينقص » وحدها لا تقرّر العملية',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 3 « الضرب والقسمة » (2026-10-14) — la division euclidienne.
+  'division-jumps': {
+    // LE RUBAN DES BOUQUETS / LES SAUTS SUR LA DROITE : b est DONNÉ (la taille d'un bouquet, d'un saut) ; l'élève tire le
+    // ruban (ou la suite de sauts) : q groupes. Un groupe de trop demande des fleurs qui n'existent pas (b(q+1) > a), un
+    // groupe de moins laisse de quoi en faire un autre (r ≥ b) : le quotient est le plus grand q tel que bq ≤ a, et r < b.
+    shows: 'القسمة الإقليدية: الحاصل هو أكبر عدد من المجموعات الكاملة، ونتوقف عندما يصبح الباقي أصغر من المقسوم عليه ؛ a = b × q + r مع r < b',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

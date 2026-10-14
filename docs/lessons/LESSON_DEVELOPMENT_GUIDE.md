@@ -1373,6 +1373,7 @@ foundation, the second geometry unit:
 | Lesson | Read it for |
 |---|---|
 | **`mana-jam-tarh`** | a lesson whose concept is a MEANING (choose + or −): `story-bars` — مبتدئ the school medical check (the hand stretches the unknown child's height until the sentence is true, then chooses the calc card; « تزيد » with − and « تنقص » with + as traps), متقدم the textbook's six texts and six calc cards (no gauge: the tape judges); module 1's questions answered from the student's own trials; the vocabulary named AFTER it is asked (bricks `predict: false`); the طريقة p. 29 replayed in the same lab posed alone (`levels={false}`); « أستعدّ » measuring the net's review item `1am.m1.r03` with two platform statements; the p. 31 self-assessment items kept for the final test; every tape a tested `ArcTape` figure (`content/tapes.test.js`) |
+| **`qisma-iqlidiya-baqi`** | 1AM unit 3, the first lesson generated in a unit whose earlier lessons are still `coming_soon`: `division-jumps` (b given, the hand holds q; flowers then the textbook's 279 ÷ 14 on a line without labelled multiples); the textbook's questions أ–هـ answered from the student's trials; the four names asked on the story before the brick; the column division revealed line by line (`MethodSteps`) as the answer to يونس's claim; the calculator page (the remainder is RECOMPUTED, the screen shows 19,58…); the first LP edge along a net link toward a published earlier lesson (P3 ← `1am_mana-jam-tarh_P1`) |
 
 **Textbook misprints are CORRECTED, not only noted (owner decision, 2026-09-30).**
 The extraction keeps the book's verbatim `text` and adds a `correction`
@@ -1433,7 +1434,7 @@ lesson `<code>` of grade `<g>`:
 
 1. **Catalogue flip**, in `packages/core/curriculum/dz/lessons_<g>_2026_2027.json`:
    - `status: "coming_soon"` → `"available"`;
-   - final `pointsToLearn` (same order: LP ids are positional), `durationMinutes` (≤ 90; `smarter:validate-curriculum`
+   - final `pointsToLearn` (same order: LP ids are positional), `durationMinutes` (the module total WITHOUT the مسائل — what `validate:lessons` compares it to; the whole lesson, مسائل included, stays ≤ 90; `smarter:validate-curriculum`
      requires it of an `available` lesson), `difficulty`, `icon`;
    - `pointPrerequisites` only along a net link (`LEARNING_NET.md` §4.6).
    The lesson keeps its `code` and `programmeItems`.
@@ -1569,6 +1570,7 @@ KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-khassiyat-talis.
 #   LABS_ONLY=1 skips the mounts; MOUNT_ONLY=1 (unit 9) skips the labs; MOUNT_LESSONS=a,b mounts only those lessons (the full run is ~35 min — split it)
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-hisab-muthallathat.mjs          # unit 10: unit page + every module at 1280/320 px + the four trigonometry labs (clinometer twice) in one screen at 4 viewports × 2 levels; LAB_MODULES=lesson:N moves a lab's module
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/1am-jam-tarh-ashriya.mjs          # 1AM unit 2: unit page + every module at 1280/320 px, story-bars by keyboard and tap-tap, one-screen fit at 4 viewports × 2 levels
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/1am-darb-qisma-ashriya.mjs         # 1AM unit 3: every module at 1280/320 px, division-jumps short/over/exact by −/+ at both levels, one-screen fit at 4 viewports
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/manipulations.mjs
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/classroom.mjs
 ```

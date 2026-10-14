@@ -299,6 +299,7 @@ These rules complete `LESSON_DEVELOPMENT_GUIDE.md` §14.2 for any year other tha
    whose الكفاءات are FINAL (published). When the net's prerequisite lesson is still `coming_soon` (its الكفاءات are drafts, D1),
    the generated lesson declares only its intra-lesson edges (`mana-jam-tarh`: P3 ← P1) and the cross-year link stays at item and
    lesson level (« راجع », `prerequisiteLessonCodes`) until that lesson is generated — it then adds the edge to its successors.
+   First edge written this way: `qisma-iqlidiya-baqi` P3 ← `1am_mana-jam-tarh_P1` (net link `1am.m1.r01` → `1am.m3.r01`).
    The unit's extraction is written whole; its elements destined to lessons not yet generated are « en attente » in
    `check:textbook` (`LESSON_DEVELOPMENT_GUIDE.md` § « Generating a 1AM–3AM unit LESSON BY LESSON »).
 

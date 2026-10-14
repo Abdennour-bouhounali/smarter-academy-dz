@@ -89,6 +89,8 @@ export const MANIPULATION_COMPONENTS = {
   'bucket-fill': lazy(() => import('./space/BucketFill')),
   // 1AM, unité 2 « الجمع والطرح » (2026-10-14).
   'story-bars': lazy(() => import('./operations/StoryBars')),
+  // 1AM, unité 3 « الضرب والقسمة » (2026-10-14).
+  'division-jumps': lazy(() => import('./operations/DivisionJumps')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

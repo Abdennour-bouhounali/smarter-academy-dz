@@ -2,17 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "qisma-iqlidiya-baqi",
-      "grade": "1am",
-      "unit": "darb-qisma-ashriya",
-      "titleAr": "القسمة الإقليدية",
-      "kind": "lesson",
-      "trigger": "qasim-adad-tabii",
-      "via": [
-        "1am.m3.r01"
-      ]
-    },
-    {
       "code": "qawaid-qabiliyat-qisma",
       "grade": "1am",
       "unit": "darb-qisma-ashriya",

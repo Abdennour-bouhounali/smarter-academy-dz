@@ -2557,5 +2557,68 @@
       "1am_mana-jam-tarh_P2",
       "1am_mana-jam-tarh_P1"
     ]
+  },
+  "MISC-IQLIDIYA-BAQI-AKBAR": {
+    "label": "باقٍ أكبر من المقسوم عليه أو يساويه: التوقّف قبل آخر مجموعة ممكنة",
+    "explanation": "في القسمة الإقليدية لـ a على b يكون الباقي أصغر من b: إذا بقي b أو أكثر أمكن تشكيل مجموعة أخرى. المساواة 94 = 8 × 10 + 14 صحيحة لكنها لا تعبّر عن القسمة الإقليدية للعدد 94 على 8 لأن 14 > 8؛ القسمة هي 94 = 8 × 11 + 6.",
+    "relatedLearningPoints": [
+      "1am_qisma-iqlidiya-baqi_P1",
+      "1am_qisma-iqlidiya-baqi_P2"
+    ]
+  },
+  "MISC-IQLIDIYA-BAQI-HASIL": {
+    "label": "الخلط بين الحاصل والباقي",
+    "explanation": "الحاصل هو عدد المجموعات الكاملة (العدد الذي يُضرب في المقسوم عليه)، والباقي هو ما يبقى بعدها: في 1350 = 8 × 168 + 6 نشكّل 168 باقة ويبقى 6 ورود، لا العكس.",
+    "relatedLearningPoints": [
+      "1am_qisma-iqlidiya-baqi_P1",
+      "1am_qisma-iqlidiya-baqi_P3"
+    ]
+  },
+  "MISC-IQLIDIYA-NISYAN-ZIYADA": {
+    "label": "نسيان المجموعة الإضافية عندما يحتاج الباقي إلى مكان",
+    "explanation": "الحاصل يعدّ المجموعات الكاملة فقط. لنقل 287 تلميذًا في حافلات من 45 مقعدًا: 287 = 45 × 6 + 17، فيبقى 17 تلميذًا يحتاجون إلى حافلة سابعة؛ عدد الحافلات اللازمة 7 لا 6.",
+    "relatedLearningPoints": [
+      "1am_qisma-iqlidiya-baqi_P3"
+    ]
+  },
+  "MISC-IQLIDIYA-LA-BAQI": {
+    "label": "« نتوقّف عندما لا يبقى شيء »: مجموعة زائدة لا تكتمل",
+    "explanation": "نتوقّف عندما يصبح الباقي أصغر من المقسوم عليه، لا عندما لا يبقى شيء. مع 400 و 17: 17 × 24 = 408 > 400 ، فالمجموعة الرابعة والعشرون تنقصها 8 عناصر؛ الحاصل 23 والباقي 9.",
+    "relatedLearningPoints": [
+      "1am_qisma-iqlidiya-baqi_P1",
+      "1am_qisma-iqlidiya-baqi_P2",
+      "1am_qisma-iqlidiya-baqi_P3"
+    ]
+  },
+  "MISC-IQLIDIYA-QIRAA": {
+    "label": "قراءة المساواة a = b × q + r في الاتجاهين دون مقارنة الباقي بكل من b و q",
+    "explanation": "المساواة 200 = 23 × 8 + 16 تعبّر عن القسمة الإقليدية للعدد 200 على 23 (16 < 23) لكنها لا تعبّر عن قسمته على 8 (16 > 8). نقرأها في الاتجاهين فقط إذا كان الباقي أصغر من العددين معًا.",
+    "relatedLearningPoints": [
+      "1am_qisma-iqlidiya-baqi_P2"
+    ]
+  },
+  "MISC-IQLIDIYA-JUDA": {
+    "label": "خطأ في الجداء أو في المقارنة عند التحقّق",
+    "explanation": "قبل الحكم نحسب b × q ثم نضيف r ونقارن بالمقسوم: 6 × 36 + 2 = 218 ، و 15 × 30 = 450 > 316. التحقّق بالحساب يكشف المساواة الخاطئة.",
+    "relatedLearningPoints": [
+      "1am_qisma-iqlidiya-baqi_P1",
+      "1am_qisma-iqlidiya-baqi_P2",
+      "1am_qisma-iqlidiya-baqi_P3"
+    ]
+  },
+  "MISC-IQLIDIYA-SIFR": {
+    "label": "نسيان الصفر في الحاصل",
+    "explanation": "عندما يكون الرقم المنزَّل أصغر من المقسوم عليه نكتب 0 في الحاصل قبل تنزيل الرقم التالي: 824 ÷ 4 يعطي 206 لا 26 (وللتحقّق: 4 × 26 = 104 ≠ 824).",
+    "relatedLearningPoints": [
+      "1am_qisma-iqlidiya-baqi_P1"
+    ]
+  },
+  "MISC-IQLIDIYA-ADWAR": {
+    "label": "الخلط بين أدوار الأعداد في القسمة (المقسوم، المقسوم عليه، الحاصل)",
+    "explanation": "المقسوم هو العدد الكلي الذي نوزّعه، والمقسوم عليه هو عدد العناصر في كل مجموعة: في 87 = 6 × 14 + 3 المقسوم 87 والمقسوم عليه 6 والحاصل 14 والباقي 3.",
+    "relatedLearningPoints": [
+      "1am_qisma-iqlidiya-baqi_P2",
+      "1am_qisma-iqlidiya-baqi_P3"
+    ]
   }
 }
