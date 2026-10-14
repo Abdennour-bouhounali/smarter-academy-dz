@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Minus, Plus, ChevronsUpDown, ArrowLeft, Check } from 'lucide-react';
+import { ChevronsUpDown, ArrowLeft, Check, Move, Ruler, CheckCircle2, XCircle, Info, Minus, Plus, Shapes } from 'lucide-react';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -11,6 +11,10 @@ import useDragInteraction from '../useDragInteraction';
 import DropZone from '../primitives/DropZone';
 import DragGhost from '../primitives/DragGhost';
 import LabFold from '../primitives/LabFold';
+import KidFigure from '../primitives/KidFigure';
+import { kidBox, kidLook } from '../primitives/kidFigure.js';
+import { SvgPill, SvgDimension } from '../primitives/SvgPill';
+import { LabCard, StageFrame, PromptCard, ChoiceTray, ChoiceCard, StepperCard, NamePill, VerdictBanner, RoundButton } from '../primitives/LabKit';
 import ArcTape from '../../components/ArcTape';
 import * as L from '../logic/storyBars';
 
@@ -87,8 +91,6 @@ import * as L from '../logic/storyBars';
  * [data-sb-formal], [data-lab-fold=story-bars.trials], et la bande `[data-arc-tape][data-tape-closed]`.
  */
 const NS = 'manipulation.storyBars';
-const SHIRTS = ['#0EA5E9', '#F97316', '#10B981', '#8B5CF6', '#EC4899'];
-const KNOWN_SHIRT = '#E11D48';
 const btn = 'inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border-2 px-2 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-40';
 
 export default function StoryBars({
@@ -155,7 +157,7 @@ export default function StoryBars({
   }, []);
   const vp = useLessonViewport(true);
   const screenH = vp.ready && vp.height > 0 ? vp.height : 640;
-  const sceneH = Math.round(Math.max(170, Math.min(420, screenH - overhead - 16)));
+  const sceneH = Math.round(Math.max(240, Math.min(480, screenH - overhead - 16)));
   sceneHRef.current = def.mode === 'stretch' ? sceneH : 0;
   const narrow = width < 380;
 
@@ -190,10 +192,14 @@ export default function StoryBars({
     }
   }, [lab, story, k]); // eslint-disable-line react-hooks/exhaustive-deps
   const verdictLine = (
-    <p role="status" aria-live="polite" className={`min-h-[2.5rem] rounded-xl px-2 py-1 ${narrow ? 'text-xs' : 'text-sm'} font-bold leading-snug ${verdict?.ok === true ? 'bg-emerald-50 text-emerald-900' : verdict?.ok === false ? 'bg-rose-50 text-rose-900' : 'text-slate-700'}`}
+    <VerdictBanner
+      size="sm"
+      tone={verdict?.ok === true ? 'emerald' : verdict?.ok === false ? 'rose' : 'indigo'}
+      icon={verdict?.ok === true ? CheckCircle2 : verdict?.ok === false ? XCircle : Info}
+      className={`shadow-[0_10px_24px_-14px_rgba(30,27,75,0.5)] ${verdict ? '' : 'hidden'}`}
       data-sb-verdict={verdict?.kind ?? ''} data-sb-refused={verdict?.ok === false ? verdict.kind : undefined}>
       {verdict?.text}
-    </p>
+    </VerdictBanner>
   );
 
   /* ── la découverte : les conjectures fausses réfutées par les items de l'élève ── */
@@ -300,21 +306,29 @@ function StretchLab({ lab, setLab, story, def, k, knownName, itemWords, width, s
   const firstOpen = L.firstUndone(lab);
   const isDone = L.itemDone(lab, i);
   const triedCalc = new Set(lab.trials.filter((tr) => tr.item === i && tr.kind === 'calc').map((tr) => tr.card));
+  const uid = useId().replace(/:/g, '');
 
-  /* la géométrie de la scène (px) : toise à gauche (SVG LTR), l'enfant connu, l'inconnu, la voie de la poignée */
-  const W = Math.min(width, 380);
+  /* la composition : large → la scène et la carte de commande côte à côte ; étroit → la commande en rangée sous la scène */
+  const wide = width >= WIDE_MIN;
+  const W = wide ? width - SIDE_W - 12 : width;
   const H = sceneH;
   const g = L.gaugeScale(H);
-  const rulerW = 38;
-  const lane = 50;
-  const free = W - rulerW - lane;
-  const knownCx = rulerW + free * 0.3;
-  const unkCx = rulerW + free * 0.76;
-  const r = Math.max(10, Math.min(9 * g.k, 26, free * 0.15));
+  const rulerX = 6;
+  const rulerW = narrow ? 40 : 50;
+  const lane = 54;
+  const free = W - rulerX - rulerW - lane;
+  const knownCx = rulerX + rulerW + free * 0.3;
+  const unkCx = rulerX + rulerW + free * 0.75;
   const yKnown = g.yOf(def.known.h);
   const yH = g.yOf(it.h);
+  const halfU = kidBox({ cx: unkCx, top: yH, foot: g.floor }).width / 2;
+  const halfK = kidBox({ cx: knownCx, top: yKnown, foot: g.floor }).width / 2;
   const diff = Math.abs(it.h - def.known.h);
-  const handleX = Math.min(W - 46, unkCx + r + 6);
+  const handleX = Math.min(W - 48, unkCx + halfU + 4);
+  const gapL = knownCx + halfK;
+  const gapR = unkCx - halfU;
+  const dimX = (gapL + gapR) / 2 - (narrow ? 0 : 16);
+  const pillSize = narrow ? 11 : 14;
 
   const toValue = useCallback((_cx, cy, rect) => L.gaugeScale(rect.height).cmAt(cy - rect.top), []);
   const st = useStretchInteraction({
@@ -322,165 +336,199 @@ function StretchLab({ lab, setLab, story, def, k, knownName, itemWords, width, s
     onChange: (v) => setLab((s) => L.setHeight(s, v)),
     onCommit: (v) => setLab((s) => L.commitHeight(s, v)),
   });
-  const ticks = L.gaugeTicks();
-  const ghost = it.ghost && it.ghost.h != null && it.ghost.h >= L.VIEW.lo && it.ghost.h <= L.VIEW.hi ? it.ghost : null;
+  const ticks = L.rulerTicks(g.k);
+  const ghost = !it.calcOk && it.ghost && it.ghost.h != null && it.ghost.h >= L.GAUGE.min - 20 && it.ghost.h <= L.VIEW.hi ? it.ghost : null;
   const tape = isDone ? stretchTape(story, i, L.answerOf(story, i), k, knownName, w.name) : null;
   const order = L.calcOrder(story, i);
   const cards = L.calcCards(story, i);
+  const lookOf = (id, n) => LOOKS[id] ?? kidLook(n);
+  const unkMood = !it.stretchOk ? 'wonder' : it.calcOk ? 'proud' : 'happy';
+
+  const result = tape && (
+    <LabCard className="space-y-2.5 p-4" data-sb-result>
+      <p className="text-sm font-black text-indigo-900">{k('tapeTitle')}</p>
+      <ArcTape {...tape.fig} maxWidth={wide ? SIDE_W - 30 : 300} />
+      <p className="whitespace-nowrap text-center text-lg font-black tabular-nums text-indigo-950"><bdi dir="ltr" data-sb-formal-line>{L.formalLine(story, i)}</bdi></p>
+      {firstOpen < def.items.length ? (
+        <button type="button" onClick={() => setLab(L.next)} data-sb-next
+          className="flex min-h-[48px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-gradient-to-b from-indigo-500 to-indigo-600 px-3 text-sm font-black text-white shadow-[0_8px_18px_-8px_rgba(79,70,229,0.9)] outline-none focus-visible:ring-4 focus-visible:ring-indigo-300">
+          {k('next')} <ArrowLeft className="h-5 w-5" aria-hidden="true" />
+        </button>
+      ) : (
+        <p className="rounded-2xl bg-emerald-50 px-3 py-2 text-sm font-black text-emerald-800" data-sb-all-done>{k('allDone')}</p>
+      )}
+    </LabCard>
+  );
+
+  const stepper = wide && (
+    <StepperCard
+      layout="card"
+      title={k('readingTitle', { name: w.name })}
+      value={it.h} unit="cm"
+      onLess={() => st.nudge(-1)} onMore={() => st.nudge(1)}
+      lessDisabled={it.stretchOk || it.h <= L.GAUGE.min} moreDisabled={it.stretchOk || it.h >= L.GAUGE.max}
+      lessLabel={k('less')} moreLabel={k('more')}
+      lessProps={{ 'data-sb-less': true }} moreProps={{ 'data-sb-more': true }}
+      readoutProps={{ 'data-sb-reading': it.h }}
+      hint={k('dragHint', { name: w.name })} hintIcon={Move}
+    />
+  );
 
   return (
-    <div ref={glanceRef} className="space-y-2" data-sb-glance>
-      {/* les items (dans l'ordre) */}
-      <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label={k('items')}>
-        {def.items.map((d, j) => {
-          const jDone = L.itemDone(lab, j);
-          return (
-            <button key={d.id} type="button" onClick={() => setLab((s) => L.goTo(s, j))} disabled={j > firstOpen}
-              aria-current={j === i ? 'step' : undefined} data-sb-item-chip={j} data-done={jDone ? 'true' : 'false'}
-              className={`${btn} gap-1 text-xs ${j === i ? 'border-indigo-600 bg-indigo-600 text-white' : jDone ? 'border-emerald-400 bg-emerald-50 text-emerald-900' : 'border-slate-300 bg-white text-slate-700'}`}>
-              {jDone && <Check className="h-3.5 w-3.5" aria-hidden="true" />}{itemWords(j).name}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* la phrase et sa lampe */}
-      <p className={`flex items-start gap-2 rounded-xl border-2 px-3 py-2 ${narrow ? 'text-sm' : 'text-base'} font-extrabold leading-snug ${it.stretchOk ? 'border-emerald-400 bg-emerald-50 text-emerald-950' : 'border-amber-300 bg-amber-50/70 text-slate-900'}`}
-        data-sb-sentence data-ok={it.stretchOk ? 'true' : 'false'}>
-        <span aria-hidden="true" className={`mt-1 inline-block h-3.5 w-3.5 shrink-0 rounded-full border-2 transition-colors motion-reduce:transition-none ${it.stretchOk ? 'border-emerald-600 bg-emerald-400 shadow-[0_0_8px_#34d399]' : 'border-slate-400 bg-slate-200'}`} />
-        <span>« {w.sentence} »</span>
-      </p>
-
-      {/* les trois cartes de calcul (au-dessus de la scène) */}
-      <div className="space-y-1" data-sb-calcs>
-        <p className="text-xs font-bold text-slate-600">{it.stretchOk ? k('calcTitle', { name: w.name }) : k('calcWait')}</p>
-        <div className="flex flex-wrap gap-1.5" dir="ltr">
-          {order.map((ci) => {
-            const c = cards[ci];
-            const tried = triedCalc.has(ci);
-            const right = isDone && ci === L.rightCalc(story, i);
+    <>
+    <div ref={glanceRef} className="space-y-3" data-sb-glance>
+      {/* la consigne : les jalons, la phrase et sa lampe, les trois cartes de calcul */}
+      <PromptCard
+        size={narrow ? 'md' : 'lg'}
+        chip={k('chip', { name: w.name })} chipIcon={Ruler}
+        aside={(
+        <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label={k('items')}>
+          {def.items.map((d, j) => {
+            const jDone = L.itemDone(lab, j);
             return (
-              <button key={ci} type="button" onClick={() => setLab((s) => L.chooseCalc(s, ci))} disabled={!it.stretchOk || it.calcOk}
-                aria-label={k('calcAria', { calc: L.calcText(c) })} data-sb-calc={ci} data-value={L.dec(L.calcValue(c))} data-tried={tried ? 'true' : 'false'}
-                className={`${btn} font-mono ${right ? 'border-emerald-600 bg-emerald-600 text-white disabled:opacity-100' : tried ? 'border-rose-300 bg-rose-50 text-rose-800 line-through' : 'border-indigo-300 bg-white text-indigo-950'}`}>
-                {L.calcText(c)}
+              <button key={d.id} type="button" onClick={() => setLab((s) => L.goTo(s, j))} disabled={j > firstOpen}
+                aria-current={j === i ? 'step' : undefined} data-sb-item-chip={j} data-done={jDone ? 'true' : 'false'}
+                className={`inline-flex items-center gap-1 rounded-full border-2 font-black outline-none ${narrow ? 'min-h-[36px] px-2 text-xs' : 'min-h-[40px] px-3.5 text-sm'} transition-colors focus-visible:ring-4 focus-visible:ring-indigo-300 disabled:opacity-40 ${j === i ? 'border-indigo-600 bg-indigo-600 text-white' : jDone ? 'border-emerald-300 bg-emerald-50 text-emerald-800' : 'border-indigo-100 bg-white text-indigo-900'}`}>
+                {jDone && <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" />}{itemWords(j).name}
               </button>
             );
           })}
         </div>
-      </div>
-
-      {verdictLine}
-
-      <div className="flex flex-wrap items-start gap-3">
-        {/* la scène : la toise, les deux enfants, la poignée */}
-        <div className="space-y-1" style={{ width: W }}>
-          <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-gradient-to-b from-sky-50 to-amber-50/40" style={{ width: W, height: H }} data-sb-scene>
-            <svg width={W} height={H} className="absolute inset-0" style={{ direction: 'ltr' }} role="img"
-              aria-label={k('gaugeAria', { known: knownName, k: def.known.h, name: w.name, h: it.h })}>
-              {/* la toise : bois, un trait par cm, un nombre tous les 10 cm */}
-              <rect x={4} y={0} width={rulerW - 8} height={H} fill="#FEF3C7" stroke="#B45309" strokeWidth={1.5} />
-              {ticks.map((tk) => (
-                <g key={tk.cm}>
-                  <line x1={rulerW - 4 - (tk.major ? 14 : tk.mid ? 9 : 5)} x2={rulerW - 4} y1={g.yOf(tk.cm)} y2={g.yOf(tk.cm)} stroke="#78350F" strokeWidth={tk.major ? 1.4 : 0.8} />
-                  {tk.major && <text x={7} y={g.yOf(tk.cm) + 3.5} fontSize={10} fontWeight={700} fill="#78350F" fontFamily="ui-monospace, monospace">{tk.cm}</text>}
-                </g>
-              ))}
-              {/* les hauteurs lues sur la toise : pointillés d'une tête à l'autre */}
-              <line x1={rulerW - 4} x2={unkCx + r} y1={yKnown} y2={yKnown} stroke={KNOWN_SHIRT} strokeWidth={1.5} strokeDasharray="5 4" />
-              <line x1={rulerW - 4} x2={unkCx} y1={yH} y2={yH} stroke="#4F46E5" strokeWidth={1.5} strokeDasharray="5 4" />
-              <Child cx={knownCx} top={yKnown} r={r} H={H} shirt={KNOWN_SHIRT} person={def.known.id} height={def.known.h} />
-              <Child cx={unkCx} top={yH} r={r} H={H} shirt={SHIRTS[i % SHIRTS.length]} person={item.id} height={it.h} unknown={!it.stretchOk} mark={k('unknownMark')} />
-              {/* la barre de la toise posée sur la tête de l'inconnu */}
-              <rect x={unkCx - r - 4} y={yH - 4} width={2 * r + 8} height={4} rx={1.5} fill="#4F46E5" />
-              {/* l'arc de différence, vivant */}
-              {diff > 0 && (
-                <g data-sb-diff={diff}>
-                  <path d={`M${(knownCx + unkCx) / 2} ${yKnown} Q${(knownCx + unkCx) / 2 + 14} ${(yKnown + yH) / 2} ${(knownCx + unkCx) / 2} ${yH}`} fill="none" stroke="#D97706" strokeWidth={2.5} />
-                  <text x={(knownCx + unkCx) / 2 + 12} y={(yKnown + yH) / 2 + 4} fontSize={12} fontWeight={800} fill="#92400E" fontFamily="ui-monospace, monospace"
-                    stroke="#FFFBEB" strokeWidth={3} paintOrder="stroke">{`${diff} cm`}</text>
-                </g>
-              )}
-              {/* la tête fantôme d'une carte de calcul */}
-              {ghost && (
-                <g data-sb-ghost={ghost.h} data-ok={ghost.ok ? 'true' : 'false'}>
-                  <circle cx={unkCx} cy={g.yOf(ghost.h) + r} r={r} fill="none" stroke={ghost.ok ? '#059669' : '#E11D48'} strokeWidth={2} strokeDasharray="4 3" />
-                  <line x1={unkCx - r - 6} x2={unkCx + r + 6} y1={g.yOf(ghost.h)} y2={g.yOf(ghost.h)} stroke={ghost.ok ? '#059669' : '#E11D48'} strokeWidth={1.5} strokeDasharray="3 3" />
-                  <text x={unkCx - r - 8} y={g.yOf(ghost.h) - 3} textAnchor="end" fontSize={11} fontWeight={800} fill={ghost.ok ? '#065F46' : '#9F1239'} fontFamily="ui-monospace, monospace"
-                    stroke="#FFFFFF" strokeWidth={3} paintOrder="stroke">{ghost.h}</text>
-                </g>
-              )}
-            </svg>
-            {/* la scène est la PISTE : toucher y pose la tête ; la poignée est à côté de la tête */}
-            <div {...st.trackProps} className="absolute inset-0" style={{ ...st.trackProps.style, cursor: it.stretchOk ? 'default' : st.trackProps.style.cursor }}>
-              <div {...st.handleProps({ label: k('handle', { name: w.name }), valueText: k('handleValue', { h: it.h }) })}
-                aria-orientation="vertical" aria-disabled={it.stretchOk || undefined} data-sb-handle
-                className={`absolute flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-2 bg-white/95 shadow outline-none focus-visible:ring-4 focus-visible:ring-indigo-300 ${it.stretchOk ? 'border-emerald-500' : 'border-indigo-600'}`}
-                style={{ left: handleX, top: yH, cursor: it.stretchOk ? 'default' : st.dragging ? 'grabbing' : 'grab' }}>
-                <ChevronsUpDown className={`h-5 w-5 ${it.stretchOk ? 'text-emerald-600' : 'text-indigo-700'}`} aria-hidden="true" />
-              </div>
-            </div>
-          </div>
-          {/* les noms sous les enfants, la lecture et −/+ (à portée de la scène) */}
-          <div className="relative h-5 text-[11px] font-bold text-slate-700" aria-hidden="true">
-            <span className="absolute -translate-x-1/2 whitespace-nowrap" style={{ left: knownCx }}>{knownName} <bdi dir="ltr">{def.known.h} cm</bdi></span>
-            <span className="absolute -translate-x-1/2 whitespace-nowrap" style={{ left: unkCx }}>{w.name}</span>
-          </div>
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-sm font-bold text-slate-800" data-sb-reading={it.h}>{k('reading', { name: w.name })} <bdi dir="ltr" className="font-mono">{it.h} cm</bdi></span>
-            <div className="flex items-center gap-1.5" dir="ltr">
-              <button type="button" onClick={() => st.nudge(-1)} disabled={it.stretchOk || it.h <= L.GAUGE.min} aria-label={k('less')} data-sb-less
-                className={`${btn} border-slate-300 bg-white`}><Minus className="h-4 w-4" aria-hidden="true" /></button>
-              <button type="button" onClick={() => st.nudge(1)} disabled={it.stretchOk || it.h >= L.GAUGE.max} aria-label={k('more')} data-sb-more
-                className={`${btn} border-slate-300 bg-white`}><Plus className="h-4 w-4" aria-hidden="true" /></button>
-            </div>
-          </div>
-        </div>
-
-        {/* la bande fermée et la ligne écrite (après la bonne carte) */}
-        {tape && (
-          <div className="min-w-[220px] flex-1 space-y-1.5" data-sb-result>
-            <p className="text-xs font-bold text-slate-600">{k('tapeTitle')}</p>
-            <ArcTape {...tape.fig} maxWidth={narrow ? 300 : 340} />
-            <p className="text-center font-mono text-base font-extrabold text-indigo-950"><bdi dir="ltr" data-sb-formal-line>{L.formalLine(story, i)}</bdi></p>
-            {firstOpen < def.items.length ? (
-              <button type="button" onClick={() => setLab(L.next)} data-sb-next className={`${btn} gap-1 border-indigo-600 bg-indigo-600 text-white`}>
-                {k('next')} <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              </button>
-            ) : (
-              <p className="text-sm font-bold text-emerald-800" data-sb-all-done>{k('allDone')}</p>
-            )}
-          </div>
         )}
+        title={<>{"«\u00A0"}{w.sentence}{"\u00A0»"}</>}
+        lamp={it.stretchOk ? 'on' : 'off'}
+        titleProps={{ 'data-sb-sentence': true, 'data-ok': it.stretchOk ? 'true' : 'false' }}
+        instruction={it.stretchOk ? k('calcTitle', { name: w.name }) : k('calcWait')}
+      >
+        <ChoiceTray cols={3} dir="ltr" data-sb-calcs>
+          {order.map((ci) => {
+            const c = cards[ci];
+            const tried = triedCalc.has(ci);
+            const right = isDone && ci === L.rightCalc(story, i);
+            const state = right ? 'right' : tried ? 'tried' : !it.stretchOk ? 'locked' : 'idle';
+            return (
+              <ChoiceCard key={ci} ltr size={width < 300 ? 'sm' : narrow ? 'md' : 'lg'} state={state}
+                onClick={() => setLab((s) => L.chooseCalc(s, ci))} disabled={!it.stretchOk || it.calcOk}
+                aria-label={k('calcAria', { calc: L.calcText(c) })} data-sb-calc={ci} data-value={L.dec(L.calcValue(c))} data-tried={tried ? 'true' : 'false'}>
+                {L.calcText(c)}
+              </ChoiceCard>
+            );
+          })}
+        </ChoiceTray>
+      </PromptCard>
+
+      <div className={wide ? 'flex items-stretch gap-3' : 'space-y-2.5'}>
+        {/* la scène : la toise, les deux enfants EN ENTIER (pieds sur 0), les lectures, la poignée */}
+        <StageFrame className="overflow-hidden" style={{ width: W, height: H }} data-sb-scene>
+          <svg width={W} height={H} className="absolute inset-0" style={{ direction: 'ltr' }} role="img"
+            aria-label={k('gaugeAria', { known: knownName, k: def.known.h, name: w.name, h: it.h })}>
+            <defs>
+              <linearGradient id={`${uid}-wood`} x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0" stopColor="#FFE8C2" /><stop offset="1" stopColor="#F9D59B" />
+              </linearGradient>
+              <linearGradient id={`${uid}-floor`} x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stopColor="#E3E6FF" /><stop offset="1" stopColor="#EEF0FF" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            {/* le sol */}
+            <rect x={0} y={g.floor} width={W} height={H - g.floor} fill={`url(#${uid}-floor)`} />
+            <line x1={rulerX + rulerW} x2={W - 6} y1={g.floor} y2={g.floor} stroke="#C7CBF5" strokeWidth={1.5} />
+            {/* la toise en bois, de 0 (le sol) à 150 */}
+            <rect x={rulerX} y={g.yOf(L.VIEW.hi) - 10} width={rulerW} height={g.floor - g.yOf(L.VIEW.hi) + 10} rx={10} fill={`url(#${uid}-wood)`} stroke="#E8B86A" strokeWidth={1.5} />
+            {ticks.map((tk) => (
+              <g key={tk.cm}>
+                <line x1={rulerX + rulerW - (tk.major ? 13 : tk.mid ? 9 : 5)} x2={rulerX + rulerW - 1} y1={g.yOf(tk.cm)} y2={g.yOf(tk.cm)} stroke="#8A5A1F" strokeWidth={tk.major ? 1.5 : 0.8} />
+                {tk.label && tk.cm > 0 && (
+                  <text x={rulerX + 5} y={g.yOf(tk.cm) + 4} fontSize={narrow ? 9.5 : 11} fontWeight={800} fill="#6B4416" fontFamily="ui-sans-serif, system-ui, sans-serif">{tk.cm}</text>
+                )}
+              </g>
+            ))}
+            <text x={rulerX + rulerW / 2} y={g.floor + 15} textAnchor="middle" fontSize={narrow ? 10 : 12} fontWeight={900} fill="#8A5A1F">cm</text>
+            {/* les hauteurs lues sur la toise : pointillés de la toise aux têtes */}
+            <line x1={rulerX + rulerW} x2={W - 8} y1={yKnown} y2={yKnown} stroke="#7C6CF2" strokeWidth={1.6} strokeDasharray="6 5" />
+            <line x1={rulerX + rulerW} x2={W - 8} y1={yH} y2={yH} stroke="#4F46E5" strokeWidth={1.6} strokeDasharray="6 5" />
+            {/* les deux enfants */}
+            <KidFigure cx={knownCx} top={yKnown} foot={g.floor} {...lookOf(def.known.id, 0)} mood="happy"
+              data-sb-person={def.known.id} data-height={def.known.h} />
+            <KidFigure cx={unkCx} top={yH} foot={g.floor} {...lookOf(item.id, i + 1)} mood={unkMood}
+              unknown={!it.stretchOk} mark={k('unknownMark')} data-sb-person={item.id} data-height={it.h} />
+            {/* la barre de la toise posée sur la tête de l'inconnu */}
+            <rect x={unkCx - halfU * 0.55} y={yH - 4} width={halfU * 1.1} height={4} rx={2} fill="#4F46E5" />
+            {/* les lectures : une pilule au-dessus de chaque tête */}
+            <SvgPill x={knownCx} y={yKnown - 6} pointer="down" text={`${def.known.h} cm`} fill="#7C6CF2" size={pillSize} />
+            <SvgPill x={unkCx} y={yH - 8} pointer="down" text={`${it.h} cm`} fill="#4F46E5" size={pillSize} />
+            {/* la cote de la différence, vivante (sans signe : le dessin ne dicte pas l'opération) */}
+            {diff > 0 && (
+              <SvgDimension x={dimX} y1={yKnown} y2={yH} label={ghost ? null : `${diff} cm`} color="#4F46E5" pillFill="#6366F1"
+                placement={narrow ? 'above' : 'side'} size={narrow ? 10.5 : 13} data-sb-diff={diff} />
+            )}
+            {/* la tête fantôme d'une carte de calcul */}
+            {ghost && (
+              <g data-sb-ghost={ghost.h} data-ok={ghost.ok ? 'true' : 'false'}>
+                <ellipse cx={unkCx} cy={g.yOf(ghost.h) + halfU * 0.6} rx={halfU * 0.58} ry={halfU * 0.66} fill="none" stroke={ghost.ok ? '#059669' : '#E11D48'} strokeWidth={2.2} strokeDasharray="5 4" />
+                <line x1={unkCx - halfU - 6} x2={unkCx + halfU + 6} y1={g.yOf(ghost.h)} y2={g.yOf(ghost.h)} stroke={ghost.ok ? '#059669' : '#E11D48'} strokeWidth={1.6} strokeDasharray="4 3" />
+                <SvgPill x={unkCx - halfU - 8} y={g.yOf(ghost.h)} anchor="end" text={`${ghost.h} cm`} fill={ghost.ok ? '#059669' : '#E11D48'} size={pillSize - 1} />
+              </g>
+            )}
+          </svg>
+          {/* les noms sous les pieds */}
+          <div className="pointer-events-none absolute inset-x-0" style={{ top: g.floor + 8 }} aria-hidden="true">
+            <NamePill className="absolute -translate-x-1/2" style={{ left: knownCx }}>{knownName}</NamePill>
+            <NamePill active className="absolute -translate-x-1/2" style={{ left: unkCx }}>{w.name}</NamePill>
+          </div>
+          {/* le verdict flotte DANS la scène, sur les jambes (jamais sur les têtes ni la toise) : la scène ne saute pas */}
+          <div className="absolute z-10" style={{ left: wide ? rulerX + rulerW + 8 : 6, right: wide ? 10 : lane + 2, bottom: H - g.floor + 10 }}>
+            {verdictLine}
+          </div>
+          {/* étroit : les ronds −/+ vivent DANS la scène, dans la voie de la poignée, au-dessus du sol (aucune rangée en plus) */}
+          {!wide && (
+            <div className="absolute z-10 flex flex-col gap-2" style={{ right: 5, bottom: H - g.floor + 8 }} dir="ltr">
+              <RoundButton primary size={44} onClick={() => st.nudge(1)} disabled={it.stretchOk || it.h >= L.GAUGE.max} aria-label={k('more')} data-sb-more>
+                <Plus className="h-5 w-5" strokeWidth={3} aria-hidden="true" />
+              </RoundButton>
+              <RoundButton size={44} onClick={() => st.nudge(-1)} disabled={it.stretchOk || it.h <= L.GAUGE.min} aria-label={k('less')} data-sb-less>
+                <Minus className="h-5 w-5" strokeWidth={3} aria-hidden="true" />
+              </RoundButton>
+            </div>
+          )}
+          {/* la scène est la PISTE : toucher y pose la tête ; la poignée est à côté de la tête */}
+          <div {...st.trackProps} className="absolute inset-0" style={{ ...st.trackProps.style, cursor: it.stretchOk ? 'default' : st.trackProps.style.cursor }}>
+            <div {...st.handleProps({ label: k('handle', { name: w.name }), valueText: k('handleValue', { h: it.h }) })}
+              aria-orientation="vertical" aria-disabled={it.stretchOk || undefined} data-sb-handle
+              className={`absolute flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-2 bg-white shadow-[0_6px_16px_-6px_rgba(79,70,229,0.8)] outline-none transition-transform focus-visible:ring-4 focus-visible:ring-indigo-300 motion-reduce:transition-none ${it.stretchOk ? 'border-emerald-500' : `border-indigo-600 ${st.dragging ? 'scale-110' : ''}`}`}
+              style={{ left: handleX, top: yH, cursor: it.stretchOk ? 'default' : st.dragging ? 'grabbing' : 'grab' }}>
+              <ChevronsUpDown className={`h-6 w-6 ${it.stretchOk ? 'text-emerald-600' : 'text-indigo-700'}`} strokeWidth={2.6} aria-hidden="true" />
+            </div>
+          </div>
+        </StageFrame>
+
+        {wide ? (
+          <div className="flex shrink-0 flex-col gap-3" style={{ width: SIDE_W }}>
+            {result || stepper}
+          </div>
+        ) : null}
       </div>
     </div>
+    {/* étroit : le résultat vient APRÈS le bloc « d'un seul regard » — il ne rétrécit pas la scène */}
+    {!wide && result}
+    </>
   );
 }
 
-/**
- * Un enfant dessiné devant la toise : le HAUT de sa tête est exactement à sa taille (même échelle que la
- * toise) ; le corps continue sous le cadre. L'inconnu porte « ؟ » tant que sa phrase n'est pas vraie.
- */
-function Child({ cx, top, r, H, shirt, person, height, unknown = false, mark }) {
-  const cy = top + r;
-  const neckY = top + 2 * r - 1;
-  const bodyY = neckY + r * 0.35;
-  const bw = 2.7 * r;
-  return (
-    <g data-sb-person={person} data-height={height}>
-      <rect x={cx - bw / 2} y={bodyY} width={bw} height={Math.max(0, H - bodyY + 20)} rx={r * 0.6} fill={shirt} opacity={unknown ? 0.75 : 1} />
-      <rect x={cx - r * 0.3} y={neckY - 2} width={r * 0.6} height={r * 0.45} fill="#F1C27D" />
-      <circle cx={cx} cy={cy} r={r} fill="#F8D3A8" stroke="#92400E" strokeWidth={1} />
-      <path d={`M${cx - r} ${cy} A${r} ${r} 0 0 1 ${cx + r} ${cy} Q${cx} ${cy - r * 0.45} ${cx - r} ${cy}`} fill="#3F2A1D" />
-      <circle cx={cx - r * 0.35} cy={cy + r * 0.12} r={Math.max(1.2, r * 0.09)} fill="#1F2937" />
-      <circle cx={cx + r * 0.35} cy={cy + r * 0.12} r={Math.max(1.2, r * 0.09)} fill="#1F2937" />
-      <path d={`M${cx - r * 0.3} ${cy + r * 0.45} Q${cx} ${cy + r * 0.65} ${cx + r * 0.3} ${cy + r * 0.45}`} fill="none" stroke="#7C2D12" strokeWidth={1.2} strokeLinecap="round" />
-      {unknown && mark && (
-        <text x={cx} y={bodyY + r * 1.3} textAnchor="middle" fontSize={Math.max(14, r)} fontWeight={900} fill="#FFFFFF" style={{ direction: 'rtl', unicodeBidi: 'isolate' }}>{mark}</text>
-      )}
-    </g>
-  );
-}
+/** L'apparence de chaque personne des histoires (stable : deux élèves voient la même scène). Les filles portent le hijab
+ *  et la tenue islamique (demande du propriétaire, 2026-10-14). */
+const LOOKS = {
+  sara: { hairStyle: 'hijab', scarf: 'rose', outfit: 'pink', skin: 'light' },
+  amine: { hairStyle: 'short', outfit: 'blue', skin: 'wheat', hair: 'black' },
+  rim: { hairStyle: 'hijab', scarf: 'lavender', outfit: 'violet', skin: 'wheat' },
+  nazim: { hairStyle: 'curly', outfit: 'green', skin: 'brown', hair: 'black' },
+  yassine: { hairStyle: 'short', outfit: 'orange', skin: 'light', hair: 'brown' },
+  akram: { hairStyle: 'short', outfit: 'teal', skin: 'wheat', hair: 'black' },
+  younes: { hairStyle: 'curly', outfit: 'blue', skin: 'brown', hair: 'black' },
+  mohamed: { hairStyle: 'short', outfit: 'red', skin: 'light', hair: 'chestnut' },
+};
+const WIDE_MIN = 600;
+const SIDE_W = 240;
 
 /* ══════════════ متقدم : نشاط 1 — six cartes, six textes ══════════════ */
 
@@ -529,29 +577,40 @@ function CardsLab({ lab, setLab, story, def, k, textWords, narrow, compact, glan
   const slotOf = (c) => lab.slots.findIndex((sl) => sl.matched === c);
 
   const tapeFor = (tIdx, c) => cardTape(story, tIdx, c, k, textWords(tIdx));
+  const matchedCount = lab.slots.filter((sl) => sl.matched != null).length;
 
   return (
-    <div ref={glanceRef} className="space-y-2" data-sb-glance>
-      {/* les six cartes (au-dessus des textes) */}
-      <div className="space-y-1" data-sb-cards>
-        <p className="text-xs font-bold text-slate-600">{k('cardsTitle')}</p>
-        <div className={compact ? 'grid grid-cols-3 gap-1' : 'flex flex-wrap gap-1.5'} dir="ltr">
+    <div ref={glanceRef} className="space-y-3" data-sb-glance>
+      {/* la consigne et les six cartes de calcul (au-dessus des textes) */}
+      <PromptCard
+        size={narrow ? 'md' : 'lg'}
+        chip={k('cardsChip')} chipIcon={Shapes}
+        aside={(
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-sm font-black text-emerald-800" data-sb-progress={matchedCount}>
+            <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" />
+            <bdi dir="ltr">{matchedCount} / {def.items.length}</bdi>
+          </span>
+        )}
+        instruction={k('cardsInstruction')}
+        data-sb-cards
+      >
+        <ChoiceTray cols={compact ? 2 : 3} dir="ltr">
           {cards.map((c, ci) => {
             const placed = L.isPlaced(lab, ci);
             const sp = drag.sourceProps(`card:${ci}`, { disabled: placed });
             const calc = L.calcText(c);
             return (
-              <button key={ci} type="button" {...sp} disabled={placed}
+              <ChoiceCard key={ci} {...sp} disabled={placed} size={narrow ? 'sm' : 'md'} ltr state={placed ? 'right' : drag.held === `card:${ci}` ? 'selected' : 'idle'}
                 aria-label={placed ? k('cardPlacedAria', { calc, n: def.items[slotOf(ci)].n }) : k('cardAria', { calc })}
                 data-sb-card={ci} data-placed={placed ? 'true' : 'false'}
-                className={`sa-manip-object ${btn} ${compact ? 'w-full px-1 text-xs' : ''} select-none whitespace-nowrap font-mono transition-transform duration-150 motion-reduce:transition-none ${placed ? 'border-emerald-300 bg-emerald-50 text-emerald-700 opacity-50' : 'border-indigo-400 bg-white text-indigo-950 shadow-sm'} ${drag.held === `card:${ci}` ? 'scale-105 ring-2 ring-indigo-500' : ''} ${drag.rejected === `card:${ci}` ? 'sa-manip-reject ring-2 ring-rose-400' : ''}`}
+                className={`sa-manip-object select-none ${placed ? 'opacity-60' : ''} ${drag.held === `card:${ci}` ? 'scale-105' : ''} ${drag.rejected === `card:${ci}` ? 'sa-manip-reject ring-2 ring-rose-400' : ''}`}
                 style={sp.style}>
                 {calc}
-              </button>
+              </ChoiceCard>
             );
           })}
-        </div>
-      </div>
+        </ChoiceTray>
+      </PromptCard>
 
       {verdictLine}
 
@@ -589,7 +648,7 @@ function CardsLab({ lab, setLab, story, def, k, textWords, narrow, compact, glan
                 className={`p-2 ${sl.matched != null ? 'border-emerald-400 bg-emerald-50/60' : ''}`}
                 role="tabpanel" aria-labelledby={`sb-tab-${tIdx}`} data-sb-panel={it.n} data-panel-matched={sl.matched != null ? 'true' : 'false'}>
                 <p className="text-sm leading-snug text-slate-800">
-                  <span className="me-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-[11px] font-extrabold text-white">{it.n}</span>
+                  <span className="me-1.5 inline-flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-b from-indigo-500 to-indigo-600 align-middle text-xs font-black text-white">{it.n}</span>
                   {textWords(tIdx).text}
                 </p>
                 {shown != null && (
@@ -607,7 +666,7 @@ function CardsLab({ lab, setLab, story, def, k, textWords, narrow, compact, glan
         </div>
       ) : (
       /* les six textes du manuel : chacun est une zone d'accueil */
-      <div className="grid grid-cols-2 gap-1.5" data-sb-texts>
+      <div className="grid grid-cols-2 gap-2.5" data-sb-texts>
         {def.items.map((it, tIdx) => {
           const sl = lab.slots[tIdx];
           const words = textWords(tIdx);
@@ -617,10 +676,10 @@ function CardsLab({ lab, setLab, story, def, k, textWords, narrow, compact, glan
             <DropZone key={it.id} drag={drag} id={`text:${tIdx}`} tone={sl.matched != null ? 'emerald' : 'indigo'} minHeight="min-h-[64px]"
               disabled={sl.matched != null}
               label={sl.matched != null ? k('slotDoneAria', { n: it.n, calc: L.calcText(cards[sl.matched]) }) : k('slotAria', { n: it.n, text: words.text })}
-              className={`p-1.5 ${sl.matched != null ? 'border-emerald-400 bg-emerald-50/60' : ''}`}
+              className={`rounded-2xl bg-white p-2.5 ${sl.matched != null ? 'border-emerald-400 bg-emerald-50/70' : ''}`}
               data-sb-slot={it.n} data-matched={sl.matched != null ? 'true' : 'false'} data-tried={sl.tried != null ? String(sl.tried) : undefined}>
-              <p className={`${narrow ? 'text-[11px]' : 'text-xs sm:text-sm'} leading-snug text-slate-800`}>
-                <span className="me-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-[11px] font-extrabold text-white">{it.n}</span>
+              <p className={`${narrow ? 'text-xs' : 'text-sm'} font-semibold leading-relaxed text-slate-800`}>
+                <span className="me-1.5 inline-flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-b from-indigo-500 to-indigo-600 align-middle text-xs font-black text-white">{it.n}</span>
                 {words.text}
               </p>
               {shown != null && (

@@ -86,6 +86,21 @@ Three 1AM lessons published on `dev` (units 2 and 3), three new labs (`story-bar
 for `darb-adad-ashriya` and `qisma-ashriya-taqrib`. Open point for the owner: the corpus paper `1am-s2-62` sits in the term-2 folder but is
 a term-3 exam (badges follow its header).
 
+## Audit before batch 2 (2026-10-14) — the batch-1 labs against MANIPULATION_DNA §17
+
+The three batch-1 labs (`story-bars`, `division-jumps`, `digit-cards`) were redesigned to the Gen Alpha bar (shared kit
+`primitives/LabKit.jsx` + `SvgPill.jsx`, the character `KidFigure` — girls in hijab —, `BulbFigure`, `FlowerFigure`, `HopperFigure`;
+hints closed by default platform-wide) and then audited: unit tests (core 816 · web 9688 · scripts 10483), the three browser suites
+`e2e/lesson-kit/1am-*.mjs` (one screen at 1280×800, 1366×768, 390×844, 320×640, both levels) and the screenshots, read one by one.
+Defects found and fixed:
+- `division-jumps` متقدم: the textbook's marks « 10 قفزات؟ / 20 قفزة؟ » were clipped by the bottom of the number-line stage at every
+  size (the stage ended 3 px under their baseline) — the stage is 12 px taller, the grass sits under the marks.
+- « Say it once » (§17.7): `digit-cards` stated the gesture three times (prompt sub-line, side note, hint 1) and its grid hint 1 restated the
+  colouring gesture; `story-bars`' hints were long sentences that repeated the gesture. The prompt keeps only « احكم على المصابيح، ثم أجب. »,
+  every hint is now one short thinking question.
+Known, not a lab defect: the lesson's floating column (« كرّاسي / بطاقتي ») overlaps the bottom-left of a lab on a 390 px phone while
+scrolling (platform layer, `lesson-floating-column`).
+
 ## Next batch — prompt
 
 The queue after batch 1 starts with `qisma-iqlidiya-hasr` (2AM), `kitabat-adad-tabii` (1AM), `ikhtizal-kitaba-kasriya` (1AM)
@@ -110,7 +125,8 @@ Run `node scripts/learning-net-queue.mjs` so the queue is fresh, then take its f
 2. Generate the lesson INTO its existing catalogue entry (same code, same programmeItems) per guide §14 and
    LEARNING_NET §4, in a folder named exactly like the lesson code: « أستعدّ » measures every review-link item; nothing
    noRebuildForLesson lists is rebuilt; pointPrerequisites only along net links; the lab follows MANIPULATION_DNA with
-   two levels; knowledge map, « أتوقّع القاعدة », « مسائل », values woven into story contexts. Lab strings go to
+   two levels and meets its §17 Gen Alpha quality bar (push the UI/UX to the limit; the shared kit and KidFigure — girls in
+   hijab; screenshots of initial and mid-activity states at four sizes, reviewed and iterated); knowledge map, « أتوقّع القاعدة », « مسائل », values woven into story contexts. Lab strings go to
    apps/web/src/i18n/locales/ar/lesson.manipulation.json (keys lesson:manipulation.<type>.*), never lesson.json;
    unit maths in packages/core/arithmetic/ are imported BY PATH, never added to the core barrel. Do NOT touch App.jsx:
    run `npm run generate:lesson-index` once the lesson's lesson.config.js and routes.jsx exist. The draft الكفاءات may

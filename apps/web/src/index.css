@@ -578,6 +578,16 @@ html[data-sa-resizing] .sa-workspace-main {
   }
 }
 
+/* Pas de double gouttière sur téléphone (2026-10-14). Un module de leçon emboîte deux `.sa-page` (le <main> de
+   `ModuleLayout` et le <div> de `ContentModule` / `PrerequisiteDiagnostic` / `BossFinal`) : 2 × 20 px de chaque côté
+   laissaient ~200 px à une manipulation sur un écran de 320 px. Sous 640 px, la page intérieure ne rajoute rien. */
+@media (max-width: 639.98px) {
+  .sa-page .sa-page {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 /* ─────────────────────────────────────────────────────────────────────────
    FOND UNI DU SYSTÈME D'EXERCICES — `.sa-surface-plain`
    ─────────────────────────────────────────────────────────────────────────

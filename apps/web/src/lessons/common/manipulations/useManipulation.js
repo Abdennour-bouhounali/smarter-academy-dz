@@ -15,8 +15,8 @@ import { useWorkspaceLevel } from './workspaceContext';
  *                          apparue, il la formule) → 'formal' (la règle est lue)
  *   mode                   'student' | 'class' (voir ManipulationTeacherMode)
  *   hints                  l'activité n'est pas un quiz : « تلميح » montre TOUS les
- *                          indices d'un coup (`hintsOpen`, ouverts par défaut,
- *                          masquables) ; aucun ne contient la réponse (règle §19)
+ *                          indices d'un coup (`hintsOpen`, FERMÉS par défaut
+ *                          depuis le 2026-10-14 — « on le dit une fois ») ; aucun ne contient la réponse (règle §19)
  *   level                  'beginner' | 'advanced' — les DEUX niveaux, rien
  *                          d'autre (levels.js). Dans un workspace, c'est le
  *                          niveau du panneau et `levels` vaut null (le
@@ -67,7 +67,7 @@ export function useManipulation({
   const [numbers, setNumbersState] = useState(initialNumbers);
   const [mode, setMode] = useState(initialMode);
   const [phase, setPhase] = useState('act');
-  const [hintsOpen, setHintsOpen] = useState(true);
+  const [hintsOpen, setHintsOpen] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
   const [answerHidden, setAnswerHidden] = useState(answerHiddenByDefault);
   const [level, setLevelState] = useState(setup.initial);

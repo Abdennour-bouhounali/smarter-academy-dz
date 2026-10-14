@@ -518,13 +518,15 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   const { ctx, page } = await open(`${CH}/qawasim-adad-tabii/al-adad-60`);
   const m = await visibleManip(page, 'factor-pairs');
   await m.waitFor();
-  const total = await m.locator('[data-manipulation-hints] li').count();
+  const closed = await m.locator('[data-manipulation-hints]').count();
   const hintBtn = m.getByRole('button', { name: /التلميح/ });
+  await hintBtn.click();
+  const total = await m.locator('[data-manipulation-hints] li').count();
   await hintBtn.click();
   const hidden = await m.locator('[data-manipulation-hints]').count();
   await hintBtn.click();
   const back = await m.locator('[data-manipulation-hints] li').count();
-  check('indices : tous affichés d\'emblée, masquables puis rouverts', total >= 2 && hidden === 0 && back === total, `${total} → ${hidden} → ${back}`);
+  check('indices : fermés d\'emblée, tous affichés d\'un coup, masquables puis rouverts', closed === 0 && total >= 2 && hidden === 0 && back === total, `${closed} → ${total} → ${hidden} → ${back}`);
   check('indices : aucun indice ne contient la liste des diviseurs', !(await m.locator('[data-manipulation-hints]').textContent()).includes('12'));
   await ctx.close();
 }

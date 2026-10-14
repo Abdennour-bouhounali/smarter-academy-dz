@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Check, X, Wand2 } from 'lucide-react';
+import { Check, X, Wand2, Lock, LockKeyhole, Paintbrush, Hand, CheckCircle2, XCircle, RefreshCw, ClipboardList, Lightbulb, Trophy, Ban, Move } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
@@ -11,6 +11,8 @@ import useDragInteraction from '../useDragInteraction';
 import LabFold from '../primitives/LabFold';
 import DropZone from '../primitives/DropZone';
 import DragGhost from '../primitives/DragGhost';
+import BulbFigure from '../primitives/BulbFigure';
+import { LabCard, StageFrame, PromptCard, ChoiceTray, VerdictBanner } from '../primitives/LabKit';
 import { LEVELS } from '../levels';
 import * as L from '../logic/digitCards';
 
@@ -63,10 +65,18 @@ import * as L from '../logic/digitCards';
  * (choix de l'auteur du lab : 25 multiples de 2 à toucher un par un sur un téléphone, c'est de la corvée, pas de
  * la découverte ; les 5 premiers suffisent à faire travailler le registre).
  *
- * D'UN SEUL REGARD (§8bis) : `[data-dc-glance]` enveloppe la ligne du verdict, les coloriages et « أكمل », la table
- * et le registre (table) ; le verdict, la cible et ses deux boutons, les cases, le plateau et les lampes (cartes).
- * La case de la table vient de l'écran de leçon (`useLessonViewport`) moins ce qui l'entoure, entre 40 px (le
- * doigt : 7 × 40 = 280 px) et 56 px (`gridLayout`, testé). La liste des essais est dans un `LabFold`.
+ * D'UN SEUL REGARD (§8bis) : `[data-dc-glance]` enveloppe la consigne (le kit LabKit : `PromptCard` — la puce, la
+ * phrase de la tâche et sa lampe, les trois coloriages en cartes tactiles / les cibles, « هذا هو الأكبر » et
+ * « لا يوجد »), le bandeau du verdict (`VerdictBanner`) et la scène (`StageFrame`) : la table en tuiles (table) ; le
+ * cadenas à quatre fenêtres, le plateau et les cinq ampoules dessinées `BulbFigure` (cartes). Large (≥ 600 px) : une
+ * colonne à côté de la scène porte le verdict et le registre (table) ou la GRANDE lecture du nombre (cartes) ; étroit :
+ * le bandeau est toujours là (la consigne avant le premier geste), la scène ne saute jamais sous le doigt. La case de
+ * la table vient de l'écran de leçon (`useLessonViewport`) moins ce qui l'entoure, entre 40 px (le doigt :
+ * 7 × 40 = 280 px) et 56 px (`gridLayout`, testé) ; sous 296 px de large le bloc déborde sur les cadres jusqu'à la
+ * gouttière (`data-bleed`). La liste des essais est dans un `LabFold`.
+ *
+ * Le registre et les ampoules montrent la MATIÈRE (chiffres des unités, sommes, restes), jamais la règle ; la ligne
+ * « ce qui reste » (`data-dc-need`, dans la carte de consigne) ne guide que le geste.
  *
  * Props (contrat fixé avec la leçon) : `mode` ('grid' | 'cards'), `divisors`, `digits` (cartes), `from`, `to`,
  * `columns` (table), `level`, `levels`, `title`, `lead`, `onTrial` à chaque geste JUGÉ — table
@@ -79,22 +89,73 @@ import * as L from '../logic/digitCards';
  * [data-dc-ledger], [data-dc-ledger-row=<d>], [data-dc-card=<digit>][data-placed], [data-dc-slot=<i>][data-digit],
  * [data-dc-tray], [data-dc-number], [data-dc-lamp=<d>][data-state][data-flip], [data-dc-claim=<d>][data-claim],
  * [data-dc-task=<d>][data-done], [data-dc-submit], [data-dc-none], [data-dc-verdict=<kind>],
- * [data-dc-refused=<reason>], [data-dc-need], [data-dc-formal], [data-lab-fold=digit-cards.trials].
+ * [data-dc-refused=<reason>], [data-dc-need], [data-dc-formal], [data-lab-fold=digit-cards.trials] ; ajoutés le
+ * 2026-10-14 (refonte visuelle) : [data-dc-prompt], [data-dc-colourings], [data-dc-board], [data-dc-remainder] (la
+ * pastille « +r » d'une case refusée), [data-dc-marks], [data-dc-stage], [data-dc-readout], [data-dc-answer],
+ * [data-dc-flip-badge], et l'ampoule [data-bulb=<state>].
  */
 const NS = 'manipulation.digitCards';
 const LRI = '⁦';
 const PDI = '⁩';
 const iso = (s) => `${LRI}${s}${PDI}`;
-const btn = 'inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border-2 px-2 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-40';
+const ring = 'outline-none focus-visible:ring-4 focus-visible:ring-indigo-300';
+const WIDE_MIN = 600;
+const SIDE_W = 230;
 
-/** Les couleurs du manuel, en classes littérales (Tailwind). */
+/**
+ * Les couleurs du manuel (rouge ÷2, bleu ÷5, vert ÷3), en classes littérales (Tailwind) : la carte de coloriage
+ * (`idle` / `open` / `done`), la tuile coloriée (`tile`, posée sur un rebord plus foncé), la tuile révélée par « أكمل »
+ * (`soft`, pâle et pointillée), le point, la bande et les pilules du registre.
+ */
 const TONE = {
-  red: { solid: 'border-red-700 bg-red-500 text-white', soft: 'border-dashed border-red-400 bg-red-100 text-red-900', dot: 'bg-red-500', chip: 'border-red-400 bg-red-50 text-red-900', on: 'border-red-600 bg-red-600 text-white' },
-  blue: { solid: 'border-blue-700 bg-blue-500 text-white', soft: 'border-dashed border-blue-400 bg-blue-100 text-blue-900', dot: 'bg-blue-500', chip: 'border-blue-400 bg-blue-50 text-blue-900', on: 'border-blue-600 bg-blue-600 text-white' },
-  green: { solid: 'border-green-800 bg-green-600 text-white', soft: 'border-dashed border-green-500 bg-green-100 text-green-900', dot: 'bg-green-600', chip: 'border-green-500 bg-green-50 text-green-900', on: 'border-green-700 bg-green-700 text-white' },
-  amber: { solid: 'border-amber-700 bg-amber-500 text-white', soft: 'border-dashed border-amber-400 bg-amber-100 text-amber-900', dot: 'bg-amber-500', chip: 'border-amber-400 bg-amber-50 text-amber-900', on: 'border-amber-600 bg-amber-600 text-white' },
-  violet: { solid: 'border-violet-700 bg-violet-500 text-white', soft: 'border-dashed border-violet-400 bg-violet-100 text-violet-900', dot: 'bg-violet-500', chip: 'border-violet-400 bg-violet-50 text-violet-900', on: 'border-violet-600 bg-violet-600 text-white' },
-  slate: { solid: 'border-slate-700 bg-slate-500 text-white', soft: 'border-dashed border-slate-400 bg-slate-100 text-slate-900', dot: 'bg-slate-500', chip: 'border-slate-400 bg-slate-50 text-slate-900', on: 'border-slate-600 bg-slate-600 text-white' },
+  red: {
+    idle: 'border-red-200 bg-white text-red-900 shadow-[0_4px_0_0_#FECACA] hover:-translate-y-0.5 hover:border-red-300 active:translate-y-0.5 active:shadow-none',
+    open: 'border-red-600 bg-gradient-to-b from-red-500 to-red-600 text-white shadow-[0_4px_0_0_#991B1B]',
+    done: 'border-red-200 bg-red-50 text-red-800 shadow-[0_3px_0_0_#FECACA]',
+    tile: 'border-red-600 bg-red-500 text-white shadow-[0_3px_0_0_#B91C1C]',
+    soft: 'border-dashed border-red-400 bg-red-100 text-red-900',
+    dot: 'bg-red-500', band: 'bg-red-50/80', text: 'text-red-900', pill: 'border-red-200 text-red-900',
+  },
+  blue: {
+    idle: 'border-blue-200 bg-white text-blue-900 shadow-[0_4px_0_0_#BFDBFE] hover:-translate-y-0.5 hover:border-blue-300 active:translate-y-0.5 active:shadow-none',
+    open: 'border-blue-600 bg-gradient-to-b from-blue-500 to-blue-600 text-white shadow-[0_4px_0_0_#1E40AF]',
+    done: 'border-blue-200 bg-blue-50 text-blue-800 shadow-[0_3px_0_0_#BFDBFE]',
+    tile: 'border-blue-600 bg-blue-500 text-white shadow-[0_3px_0_0_#1D4ED8]',
+    soft: 'border-dashed border-blue-400 bg-blue-100 text-blue-900',
+    dot: 'bg-blue-500', band: 'bg-blue-50/80', text: 'text-blue-900', pill: 'border-blue-200 text-blue-900',
+  },
+  green: {
+    idle: 'border-green-200 bg-white text-green-900 shadow-[0_4px_0_0_#BBF7D0] hover:-translate-y-0.5 hover:border-green-300 active:translate-y-0.5 active:shadow-none',
+    open: 'border-green-700 bg-gradient-to-b from-green-600 to-green-700 text-white shadow-[0_4px_0_0_#14532D]',
+    done: 'border-green-200 bg-green-50 text-green-800 shadow-[0_3px_0_0_#BBF7D0]',
+    tile: 'border-green-700 bg-green-600 text-white shadow-[0_3px_0_0_#166534]',
+    soft: 'border-dashed border-green-500 bg-green-100 text-green-900',
+    dot: 'bg-green-600', band: 'bg-green-50/80', text: 'text-green-900', pill: 'border-green-200 text-green-900',
+  },
+  amber: {
+    idle: 'border-amber-200 bg-white text-amber-900 shadow-[0_4px_0_0_#FDE68A] hover:-translate-y-0.5 hover:border-amber-300 active:translate-y-0.5 active:shadow-none',
+    open: 'border-amber-600 bg-gradient-to-b from-amber-500 to-amber-600 text-white shadow-[0_4px_0_0_#92400E]',
+    done: 'border-amber-200 bg-amber-50 text-amber-800 shadow-[0_3px_0_0_#FDE68A]',
+    tile: 'border-amber-600 bg-amber-500 text-white shadow-[0_3px_0_0_#B45309]',
+    soft: 'border-dashed border-amber-400 bg-amber-100 text-amber-900',
+    dot: 'bg-amber-500', band: 'bg-amber-50/80', text: 'text-amber-900', pill: 'border-amber-200 text-amber-900',
+  },
+  violet: {
+    idle: 'border-violet-200 bg-white text-violet-900 shadow-[0_4px_0_0_#DDD6FE] hover:-translate-y-0.5 hover:border-violet-300 active:translate-y-0.5 active:shadow-none',
+    open: 'border-violet-600 bg-gradient-to-b from-violet-500 to-violet-600 text-white shadow-[0_4px_0_0_#5B21B6]',
+    done: 'border-violet-200 bg-violet-50 text-violet-800 shadow-[0_3px_0_0_#DDD6FE]',
+    tile: 'border-violet-600 bg-violet-500 text-white shadow-[0_3px_0_0_#6D28D9]',
+    soft: 'border-dashed border-violet-400 bg-violet-100 text-violet-900',
+    dot: 'bg-violet-500', band: 'bg-violet-50/80', text: 'text-violet-900', pill: 'border-violet-200 text-violet-900',
+  },
+  slate: {
+    idle: 'border-slate-200 bg-white text-slate-900 shadow-[0_4px_0_0_#E2E8F0] hover:-translate-y-0.5 hover:border-slate-300 active:translate-y-0.5 active:shadow-none',
+    open: 'border-slate-600 bg-gradient-to-b from-slate-500 to-slate-600 text-white shadow-[0_4px_0_0_#1E293B]',
+    done: 'border-slate-200 bg-slate-50 text-slate-800 shadow-[0_3px_0_0_#E2E8F0]',
+    tile: 'border-slate-600 bg-slate-500 text-white shadow-[0_3px_0_0_#334155]',
+    soft: 'border-dashed border-slate-400 bg-slate-100 text-slate-900',
+    dot: 'bg-slate-500', band: 'bg-slate-50/80', text: 'text-slate-900', pill: 'border-slate-200 text-slate-900',
+  },
 };
 const toneOf = (d) => TONE[L.colourOf(d)] ?? TONE.slate;
 
@@ -215,7 +276,7 @@ export default function DigitCards({
       discovery={<ManipulationDiscovery state={state} prompt={k(`discovery.prompt.${m}`)} options={discoveryOptions} formal={formal} />}
       explanation={k('explanation')}
     >
-      <ManipulationStage className="bg-gradient-to-b from-amber-50/40 to-white">
+      <ManipulationStage className="bg-gradient-to-b from-indigo-50/40 to-white">
         <div ref={boxRef} className="space-y-2" data-digit-cards data-mode={m} data-solved={ready ? 'true' : 'false'}
           data-layout={narrow ? 'narrow' : 'wide'}>
           {m === 'grid'
@@ -249,84 +310,125 @@ function trialText(tr, k) {
 
 /* ══════════════ مبتدئ : la table du نشاط 4 ══════════════ */
 
+const reducedMotion = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+/** Le « tampon » d'une case acceptée : un rebond court en `transform` seulement (coupé sous reduced-motion). */
+const stamp = (el) => {
+  if (!el || typeof el.animate !== 'function' || reducedMotion()) return;
+  el.animate([{ transform: 'scale(1.3)' }, { transform: 'scale(0.92)' }, { transform: 'scale(1)' }], { duration: 300, easing: 'ease-out' });
+};
+
 function GridLab({ lab, setLab, k, width, room, tiny, screenH, overhead, narrow, glanceRef, tableHRef }) {
   const cells = L.cellsOf(lab);
-  // TÉLÉPHONE : la leçon emboîte la scène dans cinq cadres (≈ 182 px utiles à 320 px) ; le bloc « d'un seul regard »
-  // déborde alors symétriquement sur ces cadres (une carte blanche posée dessus), jusqu'à la gouttière de l'écran (20 px),
-  // juste assez pour des cases de 40 px (le doigt) : 7 × 40 = 280 px.
+  const wide = width >= WIDE_MIN;
+  // TÉLÉPHONE (320 px : 238 px utiles) : le bloc « d'un seul regard » déborde symétriquement sur les cadres de la leçon,
+  // jusqu'à la gouttière de l'écran (20 px), juste assez pour des cases de 40 px (le doigt) : 7 × 40 = 280 px.
   const need = lab.columns * 40;
-  const bleed = width < need ? Math.min(room, Math.ceil((need - width) / 2)) : 0;
+  const bleed = !wide && width < need + 16 ? Math.min(room, Math.ceil((need + 16 - width) / 2)) : 0;
+  const inner = width + 2 * bleed;
+  // large : la table prend ce qu'il lui faut (cases ≤ 56 px), la colonne d'à côté le reste (≥ SIDE_W)
+  const boardW = wide ? Math.min(width - SIDE_W - 12, lab.columns * 56 + 16) : inner;
+  const pad = boardW - 2 * 8 >= need ? 8 : 0;
   // − 48 : la barre collante du module et une marge
-  const lay = L.gridLayout({ count: cells.length, columns: lab.columns, width: width + 2 * bleed, maxHeight: Math.max(280, screenH - overhead - 48) });
-  const margin = Math.max(0, (lay.width - width) / 2);
+  const lay = L.gridLayout({ count: cells.length, columns: lab.columns, width: boardW - 2 * pad, maxHeight: Math.max(280, screenH - overhead - 48) });
+  const margin = Math.max(0, (inner - width) / 2);
   tableHRef.current = lay.height;
   const d = L.activeDivisor(lab);
   const v = lab.last;
   const [shake, setShake] = useState(null);
+  const tiles = useRef(new Map());
   useEffect(() => {
-    if (!v || v.ok) return undefined;
+    if (!v) return undefined;
+    if (v.ok) { if (!v.again) stamp(tiles.current.get(v.n)); return undefined; }
     setShake(v.n);
     const id = setTimeout(() => setShake(null), 500);
     return () => clearTimeout(id);
   }, [v]);
 
-  let verdict = '';
+  const complete = d != null && L.colouringComplete(lab, d);
+  const allDone = L.gridDiscoveryReady(lab);
   let kind = '';
+  let verdict = '';
   if (v) {
     kind = v.ok ? (v.again ? 'again' : 'ok') : 'refused';
     verdict = k(`v.grid.${kind}`, { n: v.n, d: v.d, r: v.r });
-  } else if (d != null && L.colouringComplete(lab, d)) {
+  } else if (complete) {
     kind = 'complete';
     verdict = k('v.grid.complete', { d, total: L.multiplesOf(d, lab.from, lab.to).length });
-  } else if (d == null) {
-    verdict = k('colouring.pick');
   }
   const eq = v ? L.equationText(v.n, v.d) : null;
-  const fs = lay.cell >= 48 ? 'text-base' : 'text-sm';
+  const instruction = d == null ? k('prompt.grid.start')
+    : allDone ? k('prompt.grid.all')
+      : complete ? k('prompt.grid.next')
+        : k('prompt.grid.do', { d });
+  const good = v?.ok || kind === 'complete';
+  // étroit : le bandeau est TOUJOURS là (la consigne tant qu'aucun geste n'est jugé) — la table ne saute jamais sous le doigt
+  const banner = (
+    <VerdictBanner tone={kind ? (good ? 'emerald' : 'rose') : 'indigo'} icon={tiny ? null : kind ? (good ? CheckCircle2 : XCircle) : Hand}
+      size={tiny ? 'xs' : 'sm'}
+      className={`${tiny ? 'min-h-[2.75rem] px-2.5 py-1.5' : narrow ? 'min-h-[3.25rem] px-3 py-2' : ''} ${!kind && wide ? 'hidden' : ''}`}
+      data-dc-verdict={kind} data-dc-refused={v && !v.ok ? 'remainder' : undefined}>
+      {kind ? (
+        <span className="block">
+          {eq && <><Formula className={`ml-2 ${tiny ? 'text-sm' : 'text-base'} font-black`}>{eq}</Formula>{' '}</>}
+          {verdict}
+        </span>
+      ) : <span className="font-bold">{instruction}</span>}
+    </VerdictBanner>
+  );
 
-  return (
-    <div ref={glanceRef} className={`space-y-2 ${margin > 0 ? 'relative z-[1] rounded-xl bg-white shadow-md ring-1 ring-slate-200' : ''}`}
-      style={margin > 0 ? { marginInline: -margin } : undefined} data-dc-glance data-bleed={margin > 0 ? Math.round(margin) : undefined}>
-      {/* le verdict du dernier geste — un seul emplacement, mis à jour en place (§6ter) */}
-      <p role="status" aria-live="polite"
-        className={`flex min-h-[2.5rem] flex-wrap items-baseline gap-x-2 rounded-xl px-2 py-1 ${narrow ? 'text-xs' : 'text-sm'} font-bold leading-snug ${v?.ok || kind === 'complete' ? 'bg-emerald-50 text-emerald-900' : v ? 'bg-rose-50 text-rose-900' : 'text-slate-600'}`}
-        data-dc-verdict={kind} data-dc-refused={v && !v.ok ? 'remainder' : undefined}>
-        {eq && <Formula className="text-sm font-extrabold">{eq}</Formula>}
-        <span>{verdict}</span>
-      </p>
+  const reveal = L.canReveal(lab) && (
+    <button type="button" onClick={() => setLab(L.reveal)} aria-label={k('revealAria', { d })} data-dc-reveal
+      className={`inline-flex min-h-[44px] items-center gap-1.5 rounded-full border-2 border-indigo-200 bg-white px-3.5 text-sm font-black text-indigo-700 shadow-[0_3px_0_0_#E0E3FF] transition-all duration-150 hover:border-indigo-400 active:translate-y-0.5 active:shadow-none motion-reduce:transition-none ${ring}`}>
+      <Wand2 className="h-4 w-4" aria-hidden="true" /> {k('reveal')}
+    </button>
+  );
 
-      {/* les trois coloriages, dans l'ordre du manuel, puis « أكمل » */}
-      <div className={`flex flex-wrap items-center gap-1.5 ${margin > 0 ? 'px-1' : ''}`}>
-        {tiny && <span className="text-xs font-bold text-slate-700">{k('colouring.short')}</span>}
+  const prompt = (
+    <PromptCard size={narrow ? 'md' : 'lg'}
+      chip={tiny ? null : k('chip.grid')} chipIcon={Paintbrush}
+      aside={tiny ? null : reveal || null}
+      title={d == null ? k('colouring.pick') : complete ? k('prompt.grid.done', { d }) : k('prompt.grid.title', { d })}
+      lamp={d == null ? null : complete ? 'on' : 'off'}
+      instruction={narrow ? null : instruction}
+      titleProps={{ 'data-dc-prompt': d ?? '' }}>
+      <ChoiceTray cols={lab.divisors.length === 3 ? 3 : 4} data-dc-colourings>
         {lab.divisors.map((dd, i) => {
           const open = lab.active === i;
-          const complete = L.colouringComplete(lab, dd);
+          const done = L.colouringComplete(lab, dd);
           const can = L.canOpen(lab, i);
           const tone = toneOf(dd);
           const lg = L.ledger(lab, dd);
+          const look = open ? tone.open : !can ? 'border-slate-200 bg-white/70 text-slate-400' : done ? tone.done : tone.idle;
           return (
             <button key={dd} type="button" onClick={() => setLab((s) => L.openColouring(s, i))} disabled={!can}
               aria-pressed={open} title={can ? undefined : k('colouring.locked', { d: lab.divisors[i - 1] })}
               aria-label={k('colouring.aria', { d: dd, colour: k(`colourName.${L.colourOf(dd)}`) })}
-              data-dc-colouring={dd} data-open={open ? 'true' : 'false'} data-complete={complete ? 'true' : 'false'}
-              className={`${btn} gap-1.5 ${open ? tone.on : `${tone.chip}`}`}>
-              <span className={`inline-block h-3 w-3 rounded-full border border-white ${tone.dot}`} aria-hidden="true" />
-              {tiny ? <span className="font-mono">{dd}</span> : <span>{k('colouring.label', { d: dd })}</span>}
-              {complete ? <Check className="h-4 w-4" aria-hidden="true" /> : (lg.count > 0 && !tiny && <Formula className="text-xs">{`${lg.count}/${lg.total}`}</Formula>)}
+              data-dc-colouring={dd} data-open={open ? 'true' : 'false'} data-complete={done ? 'true' : 'false'}
+              className={`flex flex-col items-center justify-center gap-0.5 rounded-2xl border-2 font-black transition-all duration-150 motion-reduce:transition-none disabled:cursor-not-allowed ${narrow ? 'min-h-[50px] px-1 text-sm' : 'min-h-[60px] px-2 text-lg'} ${look} ${ring}`}>
+              <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+                <span className={`inline-block shrink-0 rounded-full ring-2 ring-white ${narrow ? 'h-3 w-3' : 'h-3.5 w-3.5'} ${tone.dot}`} aria-hidden="true" />
+                {narrow ? <bdi dir="ltr" className="text-xl leading-none">{dd}</bdi> : k('colouring.label', { d: dd })}
+              </span>
+              <span className={`inline-flex items-center gap-1 ${narrow ? 'text-[11px]' : 'text-xs'} font-extrabold opacity-90`}>
+                {!can ? <Lock className="h-3.5 w-3.5" aria-hidden="true" />
+                  : done ? <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" />
+                    : <Formula>{`${lg.count}/${lg.total}`}</Formula>}
+              </span>
             </button>
           );
         })}
-        {L.canReveal(lab) && (
-          <button type="button" onClick={() => setLab(L.reveal)} aria-label={k('revealAria', { d })} data-dc-reveal
-            className={`${btn} gap-1 border-slate-300 bg-white text-slate-700`}>
-            <Wand2 className="h-4 w-4" aria-hidden="true" /> {k('reveal')}
-          </button>
-        )}
-      </div>
+      </ChoiceTray>
+    </PromptCard>
+  );
 
-      {/* la table : 7 colonnes, de droite à gauche (le sens de la page), cases jointives comme au manuel */}
+  const fs = lay.cell >= 50 ? 'text-lg' : 'text-base';
+  const inset = lay.cell >= 48 ? 3 : 2;
+  const board = (
+    <StageFrame className={`${pad ? 'rounded-3xl' : 'rounded-2xl'} shrink-0`} style={{ width: boardW, padding: pad }} data-dc-board>
+      {/* la table : 7 colonnes, de droite à gauche (le sens de la page) ; chaque case est un bouton de la taille du doigt,
+          la tuile dessinée dedans laisse un joint de 2–3 px */}
       <div role="group" aria-label={k('tableAria', { from: lab.from, to: lab.to, columns: lab.columns })}
-        className="mx-auto grid overflow-hidden rounded-lg bg-white ring-1 ring-slate-400"
+        className="mx-auto grid"
         style={{ width: lay.width, gridTemplateColumns: `repeat(${lab.columns}, ${lay.cell}px)`, gridAutoRows: `${lay.cell}px` }}
         data-dc-table data-cell={lay.cell}>
         {cells.map((n) => {
@@ -336,62 +438,111 @@ function GridLab({ lab, setLab, k, width, room, tiny, screenH, overhead, narrow,
           const tone = d != null ? toneOf(d) : null;
           const others = inSets.filter((dd) => dd !== d);
           const refused = v && !v.ok && v.n === n;
+          const look = here ? (revealed ? tone.soft : tone.tile)
+            : refused ? 'border-rose-300 bg-rose-50 text-rose-800 shadow-[0_3px_0_0_#FECDD3]'
+              : d == null ? 'border-indigo-50 bg-white/80 text-indigo-950/70 shadow-[0_2px_0_0_#E6E8FF]'
+                : 'border-indigo-100 bg-white text-indigo-950 shadow-[0_3px_0_0_#DADDFB] group-hover:-translate-y-0.5 group-hover:border-indigo-300 group-active:translate-y-0.5 group-active:shadow-none';
           return (
             <button key={n} type="button" onClick={() => setLab((s) => L.tapCell(s, n))} disabled={d == null}
               aria-label={inSets.length ? k('cellAriaIn', { n, list: inSets.join(' ، ') }) : k('cellAria', { n })}
               aria-pressed={here}
               data-dc-cell={n} data-colour={inSets.map(L.colourOf).join(' ')} data-revealed={revealed ? 'true' : undefined}
-              className={`relative flex items-center justify-center border border-slate-300 font-mono ${fs} font-bold transition-colors duration-150 motion-reduce:transition-none focus:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-default ${
-                here ? (revealed ? tone.soft : tone.solid) : refused ? 'bg-rose-50 text-rose-800 ring-2 ring-inset ring-rose-400' : 'bg-white text-slate-800 hover:bg-slate-50'} ${shake === n ? 'sa-manip-reject' : ''}`}>
-              <span dir="ltr">{n}</span>
-              {others.length > 0 && (
-                <span className="pointer-events-none absolute bottom-0.5 left-0 right-0 flex justify-center gap-0.5" aria-hidden="true">
-                  {others.map((dd) => <span key={dd} className={`h-1.5 w-1.5 rounded-full ring-1 ring-white ${toneOf(dd).dot}`} />)}
-                </span>
-              )}
+              className={`group relative outline-none disabled:cursor-default focus-visible:z-10 ${shake === n ? 'sa-manip-reject' : ''}`}>
+              <span ref={(el) => { if (el) tiles.current.set(n, el); else tiles.current.delete(n); }}
+                className={`absolute flex items-center justify-center rounded-xl border-2 font-black tabular-nums transition-[transform,background-color,box-shadow] duration-150 motion-reduce:transition-none group-focus-visible:ring-4 group-focus-visible:ring-indigo-300 ${fs} ${look}`}
+                style={{ inset }}>
+                <span dir="ltr">{n}</span>
+                {others.length > 0 && (
+                  <span className="pointer-events-none absolute bottom-0.5 left-0 right-0 flex justify-center gap-0.5" aria-hidden="true" data-dc-marks={others.join(' ')}>
+                    {others.map((dd) => <span key={dd} className={`h-1.5 w-1.5 rounded-full ring-1 ring-white ${toneOf(dd).dot}`} />)}
+                  </span>
+                )}
+                {refused && (
+                  <span className="pointer-events-none absolute -left-1 -top-1.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-rose-500 px-1 text-[11px] font-black leading-none text-white ring-2 ring-white"
+                    aria-hidden="true" data-dc-remainder={v.r} dir="ltr">{`+${v.r}`}</span>
+                )}
+              </span>
             </button>
           );
         })}
       </div>
+    </StageFrame>
+  );
 
-      {/* le registre : ce qu'on lit sur les cases coloriées — la matière de la conjecture, jamais la règle */}
-      <Ledger lab={lab} k={k} narrow={narrow} only={tiny ? d : null} />
+  // sous 250 px : la ligne du coloriage ouvert seulement, compacte, et « أكمل » dans son en-tête (pas de rangée en plus)
+  const ledger = <Ledger lab={lab} k={k} narrow={narrow} compact={narrow} only={tiny ? d : null} action={tiny ? reveal : null} />;
+
+  return (
+    <div ref={glanceRef} className={`space-y-2.5 ${margin > 0 ? 'relative z-[1] rounded-3xl bg-[#F7F7FF]' : ''}`}
+      style={margin > 0 ? { marginInline: -margin } : undefined} data-dc-glance data-bleed={margin > 0 ? Math.round(margin) : undefined}>
+      {prompt}
+      {wide ? (
+        <div className="flex items-start gap-3">
+          {board}
+          <div className="flex min-w-0 flex-1 flex-col gap-2.5">
+            {banner}
+            {ledger}
+          </div>
+        </div>
+      ) : (
+        <>
+          {banner}
+          <div className="flex justify-center">{board}</div>
+          {ledger}
+        </>
+      )}
     </div>
   );
 }
 
-/** `only` (téléphone) : la ligne du coloriage ouvert seulement — rouvrir un coloriage fini remontre la sienne. */
-function Ledger({ lab, k, narrow, only = null }) {
+/** Le registre en pilules. `only` (téléphone) : la ligne du coloriage ouvert seulement — rouvrir un coloriage fini remontre la sienne. */
+function Ledger({ lab, k, narrow, compact = false, only = null, action = null }) {
   const rows = lab.divisors.filter((d) => only == null || d === only).map((d) => L.ledger(lab, d)).filter((lg) => lg.count > 0);
   return (
-    <div className={`space-y-1 rounded-xl border border-slate-200 bg-slate-50/70 px-2 py-1.5 ${narrow ? 'text-[11px]' : 'text-xs'}`} data-dc-ledger>
-      <p className="font-bold text-slate-600">{k('ledger.title')}{rows.length === 0 && <span className="font-normal"> — {k('ledger.empty')}</span>}</p>
+    <LabCard className={`${compact ? 'space-y-1.5 p-2' : narrow ? 'space-y-2 p-2.5' : 'space-y-2 p-3.5'}`} data-dc-ledger>
+      <div className="flex items-center justify-between gap-2">
+        <p className={`flex items-center gap-1.5 ${compact ? 'text-xs' : 'text-sm'} font-black text-indigo-950`}>
+          <ClipboardList className="h-4 w-4 shrink-0 text-indigo-500" aria-hidden="true" />
+          <span>{k('ledger.title')}</span>
+        </p>
+        {action}
+      </div>
+      {rows.length === 0 && <p className="text-xs font-semibold text-slate-500">{k('ledger.empty')}</p>}
       {rows.map((lg) => {
         const tone = toneOf(lg.d);
+        const label = (key) => <span className={`${compact ? 'text-[10px]' : 'text-[11px]'} font-bold text-slate-600`}>{k(key)}</span>;
         return (
-          <div key={lg.d} className="flex flex-wrap items-center gap-x-2 gap-y-0.5" data-dc-ledger-row={lg.d}>
-            <span className={`inline-flex items-center gap-1 rounded-md border px-1.5 font-bold ${tone.chip}`}>
-              <span className={`inline-block h-2 w-2 rounded-full ${tone.dot}`} aria-hidden="true" />{k('colouring.label', { d: lg.d })}
-            </span>
-            <span className="font-bold text-slate-700">{k('ledger.units')}:</span>
-            <Chips values={lg.units} data-dc-units={lg.units.join(' ')} />
+          <div key={lg.d} className={`rounded-2xl ${tone.band} ${compact ? 'space-y-0.5 px-1.5 py-1' : 'space-y-1 px-2 py-1.5'}`} data-dc-ledger-row={lg.d}>
+            <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+              {compact
+                ? <span className={`inline-block h-2.5 w-2.5 shrink-0 rounded-full ${tone.dot}`} aria-hidden="true" />
+                : (
+                  <span className={`inline-flex items-center gap-1 text-xs font-black ${tone.text}`}>
+                    <span className={`inline-block h-2.5 w-2.5 rounded-full ${tone.dot}`} aria-hidden="true" />{k('colouring.label', { d: lg.d })}
+                  </span>
+                )}
+              {label(compact ? 'ledger.unitsShort' : 'ledger.units')}
+              <Chips values={lg.units} tone={tone} small={compact} data-dc-units={lg.units.join(' ')} />
+            </div>
             {lg.sums && (
-              <>
-                <span className="font-bold text-slate-700">{k('ledger.sums')}:</span>
-                <Chips values={lg.sums} data-dc-sums={lg.sums.join(' ')} />
-              </>
+              <div className={`flex flex-wrap items-center gap-x-1.5 gap-y-1 ${compact ? 'ps-4' : ''}`}>
+                {label(compact ? 'ledger.sumsShort' : 'ledger.sums')}
+                <Chips values={lg.sums} tone={tone} small={compact} data-dc-sums={lg.sums.join(' ')} />
+              </div>
             )}
           </div>
         );
       })}
-    </div>
+    </LabCard>
   );
 }
 
-function Chips({ values, ...rest }) {
+function Chips({ values, tone, small = false, ...rest }) {
   return (
-    <span className="inline-flex flex-wrap gap-0.5" dir="ltr" {...rest}>
-      {values.map((x) => <span key={x} className="min-w-[1.25rem] rounded border border-slate-300 bg-white px-1 text-center font-mono font-bold text-slate-900">{x}</span>)}
+    <span className={`inline-flex flex-wrap ${small ? 'gap-0.5' : 'gap-1'}`} dir="ltr" {...rest}>
+      {values.map((x) => (
+        <span key={x} className={`inline-flex items-center justify-center rounded-full border bg-white font-black tabular-nums ${small ? 'h-5 min-w-[1.25rem] px-1 text-[11px]' : 'h-6 min-w-[1.5rem] px-1.5 text-xs'} ${tone.pill}`}>{x}</span>
+      ))}
     </span>
   );
 }
@@ -399,11 +550,12 @@ function Chips({ values, ...rest }) {
 /* ══════════════ متقدم : les cartes du تمرين 26 ══════════════ */
 
 function CardsLab({ lab, setLab, k, width, room, glanceRef }) {
-  // téléphone : le même débordement que la table (jusqu'à 280 px, carte blanche posée sur les cadres)
+  const wide = width >= WIDE_MIN;
+  // téléphone : le même débordement que la table (jusqu'à 280 px, posé sur les cadres)
   const margin = width < 280 ? Math.max(0, Math.min(room, Math.ceil((280 - width) / 2))) : 0;
   const inner = width + 2 * margin;
-  const tiny = inner < 250;
   const narrow = inner < 380;
+  const tiny = inner < 300;
   const n = L.numberOf(lab);
   const drag = useDragInteraction({
     accepts: (src, zone) => {
@@ -445,16 +597,21 @@ function CardsLab({ lab, setLab, k, width, room, glanceRef }) {
     return null;
   })();
 
+  const cardSize = tiny ? 'h-[60px] w-[46px] text-[28px]' : narrow ? 'h-16 w-12 text-3xl' : 'h-[72px] w-14 text-4xl';
+  const slotW = tiny ? 'w-[54px]' : narrow ? 'w-[58px]' : 'w-[66px]';
+  const slotH = tiny ? 'min-h-[68px]' : narrow ? 'min-h-[72px]' : 'min-h-[82px]';
   const d = L.taskDivisor(lab);
   const card = (ci, id, extra = {}) => {
     const sp = drag.sourceProps(id);
     const ic = intercept(id);
     const digit = lab.digits[ci];
+    const held = drag.held === id;
     return (
       <button key={id} type="button" {...sp} {...ic} {...extra}
         aria-label={k('cardAria', { digit })} data-dc-card={digit} data-placed={id.startsWith('slot:') ? 'true' : 'false'}
-        className={`sa-manip-object inline-flex ${tiny ? 'h-12 w-9 text-xl' : 'h-14 w-11 text-2xl'} select-none items-center justify-center rounded-xl border-2 bg-white font-mono font-extrabold text-indigo-950 shadow-sm transition-transform duration-150 motion-reduce:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${drag.held === id ? 'scale-105 border-indigo-600 ring-2 ring-indigo-500' : 'border-indigo-400'} ${drag.rejected === id ? 'sa-manip-reject' : ''}`}
+        className={`sa-manip-object relative inline-flex ${cardSize} shrink-0 select-none items-center justify-center rounded-2xl border-2 bg-gradient-to-b from-white to-[#F5F6FF] font-black tabular-nums text-indigo-950 transition-transform duration-150 motion-reduce:transition-none ${ring} ${held ? '-translate-y-1 scale-105 border-indigo-600 shadow-[0_10px_18px_-8px_rgba(79,70,229,0.75)] ring-4 ring-indigo-300' : 'border-indigo-200 shadow-[0_4px_0_0_#C7CBFF] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-none'} ${drag.rejected === id ? 'sa-manip-reject' : ''}`}
         style={sp.style}>
+        <span aria-hidden="true" className="pointer-events-none absolute inset-x-2 top-1.5 h-1 rounded-full bg-indigo-100" />
         {digit}
       </button>
     );
@@ -466,7 +623,6 @@ function CardsLab({ lab, setLab, k, width, room, glanceRef }) {
   let eq = null;
   let kind = '';
   let refused;
-  let tone = 'text-slate-600';
   if (v?.kind === 'claim') {
     kind = 'claim';
     eq = L.equationText(v.n, v.d);
@@ -486,11 +642,9 @@ function CardsLab({ lab, setLab, k, width, room, glanceRef }) {
   } else if (v?.kind === 'change') {
     kind = 'change';
     verdict = k('v.cards.change', { from: v.from, to: v.to });
-  } else if (n == null) {
-    verdict = k('v.cards.empty');
   }
-  if (kind && kind !== 'change') tone = v.ok ? 'bg-emerald-50 text-emerald-900' : 'bg-rose-50 text-rose-900';
-  if (kind === 'change') tone = 'bg-indigo-50 text-indigo-950';
+  const tone = !kind ? 'indigo' : kind === 'change' ? 'indigo' : v.ok ? 'emerald' : 'rose';
+  const icon = !kind ? Hand : kind === 'change' ? RefreshCw : v.ok ? CheckCircle2 : XCircle;
   const flips = lab.flips ?? {};
   const flipped = lab.divisors.filter((x) => flips[x] === 'flipped');
   const kept = lab.divisors.filter((x) => flips[x] === 'kept');
@@ -500,94 +654,172 @@ function CardsLab({ lab, setLab, k, width, room, glanceRef }) {
   const need = L.discoveryReady(lab) ? null : targetsDone && !lab.swap ? 'swap' : lab.swap && !targetsDone ? 'targets' : null;
   const taskState = lab.tasks[d];
 
-  return (
-    <div ref={glanceRef} className={`space-y-2 ${margin > 0 ? 'relative z-[1] rounded-xl bg-white p-1 shadow-md ring-1 ring-slate-200' : ''}`}
-      style={margin > 0 ? { marginInline: -margin } : undefined} data-dc-glance data-bleed={margin > 0 ? margin : undefined}>
-      {/* le verdict du dernier geste — un seul emplacement (§6ter) */}
-      <div role="status" aria-live="polite"
-        className={`min-h-[2.5rem] space-y-0.5 rounded-xl px-2 py-1 ${narrow ? 'text-xs' : 'text-sm'} font-bold leading-snug ${tone}`}
-        data-dc-verdict={kind} data-dc-refused={refused}>
-        <p className="flex flex-wrap items-baseline gap-x-2">
-          {eq && <Formula className="text-sm font-extrabold">{eq}</Formula>}
-          <span>{verdict}</span>
-        </p>
-        {kind === 'change' && (flipped.length > 0 || kept.length > 0) && (
-          <p className="flex flex-wrap gap-x-3 text-xs">
-            {flipped.length > 0 && <span className="text-amber-800" data-dc-flipped={flipped.join(' ')}>{k('v.cards.flipped', { list: iso(flipped.join(' ، ')) })}</span>}
-            {kept.length > 0 && <span className="text-slate-700" data-dc-kept={kept.join(' ')}>{k('v.cards.kept', { list: iso(kept.join(' ، ')) })}</span>}
-          </p>
-        )}
-      </div>
-      {need && <p className="text-xs font-bold text-indigo-900" data-dc-need={need}>{k(`need.${need}`)}</p>}
+  const banner = (
+    <VerdictBanner tone={tone} icon={tiny ? null : icon} size={tiny ? 'xs' : 'sm'} className={`${tiny ? 'px-2.5 py-1.5' : narrow ? 'px-3 py-2' : ''} ${!kind ? 'hidden' : ''}`}
+      data-dc-verdict={kind} data-dc-refused={refused}>
+      {kind ? (
+        <span className="block space-y-1">
+          <span className="block">
+            {eq && <><Formula className={`ml-2 ${tiny ? 'text-sm' : 'text-base'} font-black`}>{eq}</Formula>{' '}</>}
+            {verdict}
+          </span>
+          {kind === 'change' && (flipped.length > 0 || kept.length > 0) && (
+            <span className="flex flex-wrap gap-1.5 text-xs">
+              {flipped.length > 0 && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-amber-900" data-dc-flipped={flipped.join(' ')}>{k('v.cards.flipped', { list: iso(flipped.join(' ، ')) })}</span>}
+              {kept.length > 0 && <span className="rounded-full bg-white px-2 py-0.5 text-slate-700" data-dc-kept={kept.join(' ')}>{k('v.cards.kept', { list: iso(kept.join(' ، ')) })}</span>}
+            </span>
+          )}
+        </span>
+      ) : <span className="font-bold">{k('v.cards.empty')}</span>}
+    </VerdictBanner>
+  );
+  // ce qui reste à faire pour la découverte : une consigne du GESTE (jamais la règle), dans la carte de consigne
+  const needLine = need && (
+    <span className="flex items-start gap-1.5 text-amber-800" data-dc-need={need}>
+      <Lightbulb className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" /><span>{k(`need.${need}`)}</span>
+    </span>
+  );
 
-      {/* la cible : « le plus grand nombre divisible par d » — ou « لا يوجد » */}
-      <div className="space-y-1.5 rounded-xl border border-amber-200 bg-amber-50/60 px-2 py-1.5">
-        <div className={`flex flex-wrap items-center ${tiny ? 'gap-0.5' : 'gap-1'}`} role="group" aria-label={k('tasksTitle')}>
-          <span className={`text-xs font-bold text-amber-900 ${tiny ? 'w-full' : ''}`}>{k('tasksTitle')}:</span>
-          {lab.divisors.map((x, i) => {
-            const done = L.taskDone(lab, x);
-            const sel = lab.task === i;
+  /* ── la consigne : les cibles, la phrase, les deux réponses ── */
+  const tasks = (
+    <div className={`flex items-center ${tiny ? 'gap-1' : 'gap-1.5'}`} role="group" aria-label={k('tasksTitle')}>
+      {!narrow && <span className="text-sm font-black text-indigo-900/70">{k('tasksTitle')}</span>}
+      {lab.divisors.map((x, i) => {
+        const done = L.taskDone(lab, x);
+        const sel = lab.task === i;
+        return (
+          <button key={x} type="button" onClick={() => setLab((s) => L.selectTask(s, i))} aria-pressed={sel}
+            aria-label={k('taskAria', { d: x })} data-dc-task={x} data-done={done ? 'true' : 'false'}
+            className={`relative inline-flex h-11 min-w-[44px] items-center justify-center gap-0.5 rounded-full border-2 px-2 text-base font-black tabular-nums transition-colors motion-reduce:transition-none ${ring} ${sel ? 'border-indigo-600 bg-gradient-to-b from-indigo-500 to-indigo-600 text-white shadow-[0_6px_14px_-8px_rgba(79,70,229,0.9)]' : done ? 'border-emerald-300 bg-emerald-50 text-emerald-800' : 'border-indigo-100 bg-white text-indigo-900 hover:border-indigo-300'}`}>
+            <bdi dir="ltr">{x}</bdi>
+            {done && <Check className={`h-3.5 w-3.5 ${sel ? '' : 'text-emerald-600'}`} strokeWidth={3} aria-hidden="true" />}
+          </button>
+        );
+      })}
+    </div>
+  );
+  const answers = (
+    <div className={wide ? 'grid grid-cols-1 gap-2' : 'grid grid-cols-2 gap-2'}>
+      <button type="button" onClick={() => setLab((s) => L.submitLargest(s))} disabled={n == null || !!taskState?.done}
+        aria-label={n == null ? k('submit') : k('submitAria', { n, d })} data-dc-submit
+        className={`inline-flex min-h-[48px] items-center justify-center gap-1.5 rounded-2xl border-2 border-indigo-600 bg-gradient-to-b from-indigo-500 to-indigo-600 px-2 font-black text-white shadow-[0_4px_0_0_#3730A3] transition-all duration-150 hover:brightness-110 active:translate-y-0.5 active:shadow-none motion-reduce:transition-none disabled:cursor-not-allowed disabled:border-indigo-200 disabled:from-indigo-200 disabled:to-indigo-200 disabled:shadow-none ${narrow ? 'text-sm' : 'text-base'} ${ring}`}>
+        {!tiny && <Trophy className="h-4 w-4 shrink-0" aria-hidden="true" />}<span className="whitespace-nowrap">{k('submit')}</span>
+      </button>
+      <button type="button" onClick={() => setLab((s) => L.sayNone(s))} disabled={!!taskState?.done}
+        aria-label={k('noneAria', { d })} data-dc-none
+        className={`inline-flex min-h-[48px] items-center justify-center gap-1.5 rounded-2xl border-2 border-indigo-200 bg-white px-2 font-black text-indigo-800 shadow-[0_4px_0_0_#E0E3FF] transition-all duration-150 hover:border-indigo-400 active:translate-y-0.5 active:shadow-none motion-reduce:transition-none disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none ${narrow ? 'text-sm' : 'text-base'} ${ring}`}>
+        {!tiny && <Ban className="h-4 w-4 shrink-0" aria-hidden="true" />}<span className="whitespace-nowrap">{k('none')}</span>
+      </button>
+    </div>
+  );
+  const prompt = (
+    <PromptCard size={narrow ? 'md' : 'lg'}
+      chip={narrow ? null : k('chip.cards')} chipIcon={LockKeyhole}
+      aside={tasks}
+      title={k('task', { d })}
+      lamp={tiny ? null : taskState?.done ? 'on' : 'off'}
+      titleProps={{ 'data-dc-prompt': d }} titleClassName={narrow ? (tiny ? 'text-[15px] tracking-tight' : 'text-base') : undefined}
+      instruction={taskState?.done
+        ? <span className="font-black text-emerald-700" data-dc-answer>{taskState.none ? k('answerNone') : k('answer', { n: taskState.answer })}</span>
+        : needLine || (narrow ? null : k('prompt.cards.do'))}>
+      {!wide && answers}
+    </PromptCard>
+  );
+
+  /* ── la scène : le cadenas à quatre fenêtres, le plateau, les ampoules ── */
+  const lock = (
+    <div className="flex flex-col items-center">
+      {/* l'anse du cadenas, dessinée (pas sous 300 px : la hauteur manque) */}
+      {!tiny && <svg width={tiny ? 120 : 150} height={tiny ? 20 : 24} viewBox="0 0 150 24" aria-hidden="true" className="-mb-1 block">
+        <path d="M30 24 V14 A14 14 0 0 1 44 0 H106 A14 14 0 0 1 120 14 V24" fill="none" stroke="#A5B4FC" strokeWidth="9" strokeLinecap="round" />
+        <path d="M30 24 V14 A14 14 0 0 1 44 0 H106 A14 14 0 0 1 120 14 V24" fill="none" stroke="#C7D2FE" strokeWidth="4" strokeLinecap="round" />
+      </svg>}
+      <div className={`rounded-3xl border-2 border-indigo-200 bg-gradient-to-b from-white to-[#EEF0FF] shadow-[0_6px_0_0_#C7CBFF] ${tiny ? 'px-2 py-2' : 'px-3 py-2.5'}`}>
+        <div className={`flex items-start ${tiny ? 'gap-1.5' : 'gap-2'}`} dir="ltr" data-dc-number={n ?? ''} aria-label={k('slotsTitle')} role="group">
+          {lab.slots.map((ci, i) => {
+            const place = k(`places.${placeIndex(i, lab.slots.length)}`);
             return (
-              <button key={x} type="button" onClick={() => setLab((s) => L.selectTask(s, i))} aria-pressed={sel}
-                aria-label={k('taskAria', { d: x })} data-dc-task={x} data-done={done ? 'true' : 'false'}
-                className={`${btn} ${tiny ? '!min-w-[30px] !px-0.5' : 'min-w-[40px] px-1.5'} gap-0.5 font-mono ${sel ? 'border-amber-600 bg-amber-500 text-white' : done ? 'border-emerald-400 bg-emerald-50 text-emerald-900' : 'border-amber-300 bg-white text-amber-950'}`}>
-                {x}{done && <Check className="h-3.5 w-3.5" aria-hidden="true" />}
-              </button>
+              <div key={i} className="flex flex-col items-center gap-1">
+                <DropZone drag={drag} id={`slot:${i}`} tone="indigo" minHeight={slotH}
+                  label={ci == null ? k('slotAria', { i: i + 1, place }) : k('slotFullAria', { i: i + 1, place, digit: lab.digits[ci] })}
+                  className={`flex ${slotW} items-center justify-center ${ci == null ? 'shadow-[inset_0_3px_6px_rgba(67,56,202,0.12)]' : !drag.held && drag.hoverZone?.id !== `slot:${i}` ? '!border-transparent !bg-transparent' : ''}`}
+                  data-dc-slot={i} data-digit={ci == null ? '' : lab.digits[ci]}>
+                  {ci != null && card(ci, `slot:${i}`)}
+                </DropZone>
+                {!tiny && <span className="text-[10px] font-bold leading-none text-indigo-900/60" dir="rtl" aria-hidden="true">{place}</span>}
+              </div>
             );
           })}
         </div>
-        <div className={tiny ? 'grid grid-cols-2 gap-1' : 'flex flex-wrap items-center gap-1.5'}>
-          <p className={`${tiny ? 'col-span-2' : 'flex-1'} ${narrow ? 'text-xs' : 'text-sm'} font-bold text-amber-950`}>
-            {k('task', { d })}
-            {taskState?.done && <span className="ms-1 text-emerald-800">{taskState.none ? k('answerNone') : k('answer', { n: taskState.answer })}</span>}
-          </p>
-          <button type="button" onClick={() => setLab((s) => L.submitLargest(s))} disabled={n == null || !!taskState?.done}
-            aria-label={n == null ? k('submit') : k('submitAria', { n, d })} data-dc-submit
-            className={`${btn} ${tiny ? '!px-1 text-[11px]' : ''} border-amber-500 bg-white text-amber-900`}>{k('submit')}</button>
-          <button type="button" onClick={() => setLab((s) => L.sayNone(s))} disabled={!!taskState?.done}
-            aria-label={k('noneAria', { d })} data-dc-none
-            className={`${btn} ${tiny ? '!px-1 text-[11px]' : ''} border-slate-400 bg-white text-slate-800`}>{k('none')}</button>
-        </div>
       </div>
+    </div>
+  );
+  const tray = (
+    <DropZone drag={drag} id="tray" tone="slate" minHeight={L.trayOf(lab).length === 0 ? 'min-h-[48px]' : tiny ? 'min-h-[72px]' : 'min-h-[84px]'} label={k('trayAria')}
+      className="flex w-full flex-wrap items-center justify-center gap-2 !border-indigo-100 !bg-white/60 px-2 py-1.5" data-dc-tray>
+      <span className="sr-only">{k('trayTitle')}</span>
+      {L.trayOf(lab).length === 0
+        ? <span className="px-1 text-xs font-bold text-indigo-900/50">{k('trayEmpty')}</span>
+        : <span className="flex flex-wrap justify-center gap-2" dir="ltr">{L.trayOf(lab).map((ci) => card(ci, `card:${ci}`))}</span>}
+    </DropZone>
+  );
+  const bulbs = (
+    <div className="space-y-1.5">
+      <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-0.5">
+        <p className={`${narrow ? 'text-xs' : 'text-sm'} font-black text-indigo-950`}>{k('lampsTitle')}</p>
+      </div>
+      <div className={`grid ${tiny ? 'gap-1' : 'gap-2'}`} style={{ gridTemplateColumns: `repeat(${lab.divisors.length}, minmax(0, 1fr))` }}>
+        {lab.divisors.map((x) => <Lamp key={x} lab={lab} d={x} n={n} k={k} setLab={setLab} narrow={narrow} tiny={tiny} />)}
+      </div>
+    </div>
+  );
+  const stage = (
+    <StageFrame className={`min-w-0 flex-1 ${tiny ? 'space-y-2 p-2' : 'space-y-3 p-3'}`} data-dc-stage>
+      {lock}
+      {tray}
+      {bulbs}
+    </StageFrame>
+  );
+  const readout = wide && (
+    <LabCard className="flex flex-col gap-2.5 p-3.5" data-dc-readout>
+      <p className="text-center text-base font-black text-indigo-950">{k('numberTitle')}</p>
+      <div className="flex items-center justify-center rounded-2xl border border-indigo-100 bg-[#F5F6FF] px-3 py-2">
+        <bdi dir="ltr" className={`font-black tabular-nums tracking-wider ${n == null ? 'text-4xl text-indigo-200' : 'text-5xl text-indigo-900'}`}>
+          {n ?? lab.slots.map((ci) => (ci == null ? '_' : lab.digits[ci])).join('')}
+        </bdi>
+      </div>
+      {answers}
+      {/* l'indice du geste, tant que le nombre n'est pas formé */}
+      {n == null && <p className="flex items-center gap-2 rounded-2xl bg-[#F5F6FF] px-2.5 py-2 text-xs font-bold leading-snug text-slate-600">
+        <Move className="h-5 w-5 shrink-0 text-indigo-500" aria-hidden="true" />
+        <span>{k('dragHint')}</span>
+      </p>}
+    </LabCard>
+  );
 
-      {/* les quatre cases : le nombre, écrit de gauche à droite (la notation est LTR) */}
-      <div className={`flex flex-wrap items-center justify-center ${tiny ? 'gap-1.5' : 'gap-3'}`}>
-        <div className={`flex items-end ${tiny ? 'gap-1' : 'gap-1.5'}`} dir="ltr" data-dc-number={n ?? ''} aria-label={k('slotsTitle')} role="group">
-          {lab.slots.map((ci, i) => (
-            <DropZone key={i} drag={drag} id={`slot:${i}`} tone="indigo" minHeight="min-h-[64px]"
-              label={ci == null ? k('slotAria', { i: i + 1, place: k(`places.${placeIndex(i, lab.slots.length)}`) }) : k('slotFullAria', { i: i + 1, place: k(`places.${placeIndex(i, lab.slots.length)}`), digit: lab.digits[ci] })}
-              className={`flex ${tiny ? 'w-[42px]' : 'w-[52px]'} items-center justify-center`} data-dc-slot={i} data-digit={ci == null ? '' : lab.digits[ci]}>
-              {ci != null && card(ci, `slot:${i}`)}
-            </DropZone>
-          ))}
+  return (
+    <div ref={glanceRef} className={`space-y-2.5 ${margin > 0 ? 'relative z-[1] rounded-3xl bg-[#F7F7FF]' : ''}`}
+      style={margin > 0 ? { marginInline: -margin } : undefined} data-dc-glance data-bleed={margin > 0 ? margin : undefined}>
+      {prompt}
+      {wide ? (
+        <div className="flex items-start gap-3">
+          {stage}
+          <div className="flex shrink-0 flex-col gap-2.5" style={{ width: SIDE_W }}>
+            {readout}
+            {banner}
+          </div>
         </div>
-        {/* le plateau : les cartes pas encore posées ; c'est aussi la zone où l'on rend une carte */}
-        <DropZone drag={drag} id="tray" tone="slate" minHeight={L.trayOf(lab).length === 0 ? 'min-h-[44px]' : 'min-h-[64px]'} label={k('trayAria')}
-          className={`flex ${tiny ? 'w-full' : 'min-w-[120px]'} flex-wrap items-center justify-center gap-1.5 px-1.5 py-1`} data-dc-tray>
-          <span className="sr-only">{k('trayTitle')}</span>
-          {L.trayOf(lab).length === 0
-            ? <span className="px-1 text-[11px] leading-tight text-slate-400">{k('trayEmpty')}</span>
-            : <span className="flex flex-wrap gap-1.5" dir="ltr">{L.trayOf(lab).map((ci) => card(ci, `card:${ci}`))}</span>}
-        </DropZone>
-      </div>
-
-      {/* les lampes : fermées jusqu'à une affirmation ; ouvertes, elles se re-jugent à chaque nouveau nombre */}
-      <div className="space-y-1">
-        <p className="text-xs font-bold text-slate-600">{k('lampsTitle')}</p>
-        {narrow && (
-          <p className="flex gap-3 text-[11px] font-bold text-slate-600" aria-hidden="true">
-            <span className="inline-flex items-center gap-0.5"><Check className="h-3.5 w-3.5 text-emerald-700" />{k('claimYes')}</span>
-            <span className="inline-flex items-center gap-0.5"><X className="h-3.5 w-3.5 text-slate-600" />{k('claimNo')}</span>
-          </p>
-        )}
-        <div className="grid gap-1" style={{ gridTemplateColumns: `repeat(${lab.divisors.length}, minmax(0, 1fr))` }}>
-          {lab.divisors.map((x) => <Lamp key={x} lab={lab} d={x} n={n} k={k} setLab={setLab} tiny={narrow} />)}
-        </div>
-      </div>
+      ) : (
+        <>
+          {/* étroit : sous la scène — un verdict qui apparaît ne déplace jamais le cadenas sous le doigt */}
+          {stage}
+          {banner}
+        </>
+      )}
 
       <DragGhost ghost={drag.ghost}>
         {heldDigit != null && (
-          <span className="inline-flex h-14 w-11 items-center justify-center rounded-xl border-2 border-indigo-500 bg-white font-mono text-2xl font-extrabold text-indigo-950">{heldDigit}</span>
+          <span className={`inline-flex ${cardSize} items-center justify-center rounded-2xl border-2 border-indigo-500 bg-white font-black text-indigo-950`}>{heldDigit}</span>
         )}
       </DragGhost>
     </div>
@@ -597,38 +829,35 @@ function CardsLab({ lab, setLab, k, width, room, glanceRef }) {
 /** L'indice du nom de rang (الآلاف … الآحاد) de la case i sur `len` cases. */
 const placeIndex = (i, len) => Math.max(0, 4 - (len - i));
 
-function Lamp({ lab, d, n, k, setLab, tiny }) {
+function Lamp({ lab, d, n, k, setLab, narrow, tiny }) {
   const st = L.lampState(lab, d);
   const flip = lab.flips?.[d];
-  const look = st === 'yes' ? 'border-emerald-500 bg-emerald-100 text-emerald-900'
-    : st === 'no' ? 'border-slate-400 bg-slate-100 text-slate-700'
-      : 'border-slate-300 bg-white text-slate-500';
+  const claimBtn = 'inline-flex min-h-[44px] w-full items-center justify-center gap-0.5 whitespace-nowrap rounded-xl border-2 bg-white px-0.5 font-black transition-all duration-150 active:translate-y-0.5 active:shadow-none motion-reduce:transition-none disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none';
   return (
-    <div className={`flex flex-col items-stretch gap-1 rounded-xl border-2 p-1 text-center ${look} ${flip === 'flipped' ? 'ring-2 ring-amber-400' : ''}`}
+    <div className={`relative flex min-w-0 flex-col items-center gap-1 rounded-2xl border-2 px-0.5 pb-1 pt-1.5 text-center transition-colors duration-300 motion-reduce:transition-none ${st === 'yes' ? 'border-amber-300 bg-amber-50' : st === 'no' ? 'border-slate-200 bg-slate-50' : 'border-indigo-100 bg-white/80'} ${flip === 'flipped' ? 'ring-4 ring-amber-300' : ''}`}
       role="group" aria-label={k(`lampAria.${st}`, { d })} data-dc-lamp={d} data-state={st} data-flip={flip ?? undefined}>
-      <span className="font-mono text-lg font-extrabold leading-none">{d}</span>
+      {flip && (
+        <span className={`absolute -top-3 left-1/2 z-[1] -translate-x-1/2 whitespace-nowrap rounded-full px-1.5 py-0.5 text-[10px] font-black leading-none ring-2 ring-white ${flip === 'flipped' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-700'}`}
+          data-dc-flip-badge={flip}>{k(`lampFlip.${flip}`)}</span>
+      )}
+      <BulbFigure state={st} label={d} size={tiny ? 30 : narrow ? 36 : 44} />
       {st === 'closed' ? (
-        <>
+        <div className="flex w-full flex-col gap-1">
           <button type="button" onClick={() => setLab((s) => L.claim(s, d, true))} disabled={n == null}
             aria-label={n == null ? k('claimNeedNumber') : k('claimYesAria', { n, d })} data-dc-claim={d} data-claim="yes"
-            className="inline-flex min-h-[44px] items-center justify-center gap-0.5 rounded-lg border-2 border-emerald-400 bg-white px-0.5 text-[11px] font-bold text-emerald-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-40">
-            <Check className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />{!tiny && <span dir="rtl">{k('claimYes')}</span>}
+            className={`${claimBtn} border-emerald-300 text-emerald-800 shadow-[0_3px_0_0_#A7F3D0] hover:border-emerald-500 ${narrow ? 'text-[11px]' : 'text-xs'} ${ring}`}>
+            <Check className={`${tiny ? 'h-4 w-4' : 'h-3.5 w-3.5'} shrink-0`} strokeWidth={3} aria-hidden="true" />{!tiny && <span dir="rtl" className={narrow ? 'text-[10px]' : ''}>{k('claimYes')}</span>}
           </button>
           <button type="button" onClick={() => setLab((s) => L.claim(s, d, false))} disabled={n == null}
             aria-label={n == null ? k('claimNeedNumber') : k('claimNoAria', { n, d })} data-dc-claim={d} data-claim="no"
-            className="inline-flex min-h-[44px] items-center justify-center gap-0.5 rounded-lg border-2 border-slate-300 bg-white px-0.5 text-[11px] font-bold text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-40">
-            <X className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />{!tiny && <span dir="rtl">{k('claimNo')}</span>}
+            className={`${claimBtn} border-slate-200 text-slate-700 shadow-[0_3px_0_0_#E2E8F0] hover:border-slate-400 ${narrow ? 'text-[11px]' : 'text-xs'} ${ring}`}>
+            <X className={`${tiny ? 'h-4 w-4' : 'h-3.5 w-3.5'} shrink-0`} strokeWidth={3} aria-hidden="true" />{!tiny && <span dir="rtl" className={narrow ? 'text-[10px]' : ''}>{k('claimNo')}</span>}
           </button>
-        </>
+        </div>
       ) : (
-        <>
-          <span className={`flex min-h-[44px] flex-col items-center justify-center ${tiny ? 'text-[10px]' : 'text-xs'} font-extrabold leading-tight`} dir="rtl">
-            {st === 'yes' && <Check className="h-4 w-4" aria-hidden="true" />}
-            {st === 'no' && <X className="h-4 w-4" aria-hidden="true" />}
-            {k(`lampState.${st}`)}
-          </span>
-          <span className={`min-h-[1rem] text-[10px] font-bold ${flip === 'flipped' ? 'text-amber-800' : 'text-slate-500'}`} dir="rtl">{flip ? k(`lampFlip.${flip}`) : ''}</span>
-        </>
+        <span className={`inline-flex min-h-[28px] items-center justify-center whitespace-nowrap rounded-full px-1.5 ${narrow ? 'text-[10px]' : 'text-xs'} font-black leading-tight ${st === 'yes' ? 'bg-amber-400 text-amber-950' : st === 'no' ? 'bg-slate-200 text-slate-700' : 'text-slate-500'}`} dir="rtl">
+          {k(`lampState.${st}`)}
+        </span>
       )}
     </div>
   );

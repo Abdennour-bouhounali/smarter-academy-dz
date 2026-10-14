@@ -4,8 +4,9 @@ import { Lightbulb } from 'lucide-react';
 
 /**
  * Les INDICES (§19) : une manipulation est une activité, pas un quiz — ils
- * sont affichés EN ENTIER, d'un coup, sans étapes ; l'élève peut les masquer
- * (« إخفاء التلميح ») et les rouvrir. Aucun ne contient la réponse : le
+ * sont FERMÉS à l'ouverture (2026-10-14 : un mur de texte fait fuir un élève
+ * de 11–13 ans) ; « تلميح » les affiche EN ENTIER, d'un coup, sans étapes, et
+ * « إخفاء التلميح » les referme. Aucun ne contient la réponse : le
  * dernier pose la bonne QUESTION. Seul l'enseignant (mode classe) dispose de
  * « إظهار الحل », ailleurs.
  */

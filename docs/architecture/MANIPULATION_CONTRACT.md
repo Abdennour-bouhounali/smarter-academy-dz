@@ -36,7 +36,7 @@ manipulations/
 ├── ManipulationAutoComplete.jsx the student's « compléter automatiquement » button + useAutoComplete (§6bis)
 ├── autoComplete.js             PURE decisions of that button: status, animation plan (unit-tested)
 ├── ManipulationTeacherMode.jsx class mode: step, replay, hide answer, show solution, change numbers
-├── ManipulationHint.jsx        progressive hints (never the answer)
+├── ManipulationHint.jsx        hints (never the answer) — CLOSED by default since 2026-10-14, « تلميح » shows them all (DNA §17.7)
 ├── ManipulationDiscovery.jsx   conjecture → formal rule (never before the action)
 ├── ManipulationFreeLab.jsx     مختبر حر (constrained) — NOT a level
 ├── ManipulationWorkspace.jsx   ONE workspace, two levels (مبتدئ / متقدم) — §7bis-levels
@@ -60,6 +60,12 @@ manipulations/
 │   ├── RibbonStrip.jsx                        a length drawn as a notched ribbon (the tailor's workshop)
 │   ├── DivisionRoles.jsx                      b · q · r named in the scene's words (partition vs quotition, §2ter)
 │   ├── LabFold.jsx                            « إخفاء / إظهار » for a secondary block of a large lab (§8bis)
+│   ├── LabKit.jsx                              the visual kit: PromptCard, ChoiceCard, StepperCard, NamePill, VerdictBanner… (§8ter)
+│   ├── SvgPill.jsx                             value pills and dimensions inside a scene (§8ter)
+│   ├── KidFigure.jsx + kidFigure.js            THE character: a drawn pupil, girls in hijab, crown = height (§8ter)
+│   ├── FlowerFigure.jsx                        a flower, a bouquet sleeve and its ribbon tie (division-jumps)
+│   ├── HopperFigure.jsx                        a drawn rabbit that hops on a number line (division-jumps)
+│   ├── BulbFigure.jsx                          a light bulb lamp, closed / yes / no (digit-cards)
 │   ├── MovablePanel.jsx + movablePanel.js     a panel floating on the scene that the student moves aside (§8bis)
 │   └── ContextScenes.jsx                      the landscape vignettes of each world, for `MissionBrief.visual`
 ├── divisibility/               the 10 types of unit 1 (+ teamFormation.js, pure geometry)
@@ -405,8 +411,13 @@ The first lab of the cycle moyen rollout (phase 3), in a new folder `operations/
 Discovery (`checkup`: items أمين +, ريم −, نزيم trap done; `act1`: all six matched): « ماذا يقرّر العملية: الكلمة أم المخطط؟ », the two wrong
 options refuted with the student's own items. Props: `story`, `level`, `levels`, `title`, `lead`, `onTrial({ story, item, kind:
 'stretch' | 'calc' | 'card', value, ok, calc })` (items `amine…yassine`, `younes`, `mohamed`, `t1…t6`; `calc` is written with « − »),
-`onFinished({ story })`. Not eligible for « جرّب كل الإمكانيات » (§6bis). The gauge frames 97–154 cm so heads sit at their exact height
-(≈ 4 px/cm on a phone). DOM: `[data-story-bars][data-story][data-mode][data-item][data-solved]`, `[data-sb-glance]`, `[data-sb-handle]`,
+`onFinished({ story })`. Not eligible for « جرّب كل الإمكانيات » (§6bis). Since the Gen Alpha redesign (2026-10-14, §8ter) the children
+are drawn WHOLE (`KidFigure`): the floor is 0 cm and each crown sits exactly on its height (`gaugeScale(height, GAUGE_PAD)`, 44 px above
+150 cm for the value pills, 46 px under the floor for the name pills; `rulerTicks(k)` adapts ticks and labels to the scale). The layout
+is the kit's: PromptCard (chip « كم قامة …؟ », item tabs, the sentence and its lamp, the three calc cards), then the stage and, at ≥ 600 px,
+a side column with the StepperCard and the verdict (the result card replaces the stepper when the item is done); narrower, the round
+−/+ live INSIDE the stage, in the handle lane. The difference is a neutral `SvgDimension` « 6 cm » — no sign, so the drawing never
+dictates the operation. DOM: `[data-story-bars][data-story][data-mode][data-item][data-solved]`, `[data-sb-glance]`, `[data-sb-handle]`,
 `[data-sb-person]`, `[data-sb-sentence][data-ok]`, `[data-sb-calc=<canonical i>]` (0 = known + d, 1 = known − d, 2 = d − known),
 `[data-sb-card=<0..5>][data-placed]`, `[data-sb-slot=<1..6>][data-matched]`, `[data-sb-verdict]`, `[data-sb-refused]`,
 `[data-sb-formal-line]`, the tape's `[data-arc-tape][data-tape-closed]`. Browser suite: `e2e/lesson-kit/1am-jam-tarh-ashriya.mjs`.
@@ -433,6 +444,19 @@ group too few leaves enough for another (`short`: a ghost bouquet over the lefto
 `[data-dj-handle]`, `[data-dj-less]` / `[data-dj-more]`, `[data-dj-group]`, `[data-dj-left]`, `[data-dj-ghost]`, `[data-dj-verdict]`,
 `[data-dj-refused]`, `[data-dj-bracket]`, `[data-dj-next]`, `[data-dj-formal]`. Browser suite: `e2e/lesson-kit/1am-darb-qisma-ashriya.mjs`.
 
+**Look (2026-10-14, kit §8ter).** A `PromptCard` on top — chip « كم باقة؟ » / « كم قفزة؟ », the story sentence, a lamp lit only at
+the exact stop, live `aside` pills that show only what the hand produced (`[data-dj-reading]`, `[data-dj-read=need|left|land]`) — above a
+`StageFrame`. مبتدئ: a florist awning and `primitives/FlowerFigure.jsx` (`FlowerFigure`, `hueOf` — decorative colours that never repeat
+every b flowers, so colour never fakes a group —, `BouquetSleeve`, `BouquetTie`): a paper sleeve behind each bouquet, converging stems and a
+ribbon whose knot is the count pill (rose « 5 » + ghost flowers when flowers are missing); the remainder circled in amber with its pill;
+geometry from `logic › bouquetShape` and `flowerLayout(…, BOUQUET_ROWS)` (tested). متقدم: `primitives/HopperFigure.jsx`, a drawn rabbit at
+the landing point (`[data-dj-hopper][data-mood=idle|happy|oops]`) that hops each step (still under `prefers-reduced-motion`), its landing
+pill, a flag at a and a pond after it (`[data-dj-pond]`: an overshoot lands in the water); multiples are still never printed before a jump
+lands there. Controls: wide flowers = side `StepperCard` (`[data-dj-count]`), wide line = a control bar under the full-width line, narrow =
+the round −/+ in a strip inside the stage; exactly one `[data-dj-less]` / `[data-dj-more]` pair. The `VerdictBanner` sits under the scene
+and keeps its place (it shows the instruction before the first try): the scene never jumps; the scene height is computed from the prompt
+and what follows, never from the scene itself. Added DOM: `[data-dj-prompt][data-lit]`, `[data-layout=wide|narrow]`.
+
 ## 2octodecies. Divisibility rules — `digit-cards` (1AM unit 3, 2026-10-14)
 
 `operations/DigitCards.jsx` on `logic/digitCards.js` (every verdict by `n % d`, never by a digit rule), lesson
@@ -458,6 +482,18 @@ two gestures land in one render — `onFinished({ mode })`. Not eligible for « 
 `[data-dc-slot=<i>][data-digit]` (slot 0 = leftmost digit), `[data-dc-lamp=<d>][data-state][data-flip]`, `[data-dc-claim=<d>]
 [data-claim]`, `[data-dc-task=<d>][data-done]`, `[data-dc-submit]`, `[data-dc-none]`, `[data-dc-verdict]`, `[data-dc-refused]`,
 `[data-dc-formal]`, `[data-dc-rule=<d>]`. Browser suite: `e2e/lesson-kit/1am-qawaid-qabiliyat-qisma.mjs`.
+
+**Look (2026-10-14, kit §8ter).** Both worlds sit on the kit: a `PromptCard` (chip « من يقبل القسمة؟ » / « قفل الأرقام », the task as the
+big sentence with its lamp, then the colouring cards — raised edge in the divisor's colour, a live `5/25` count — or the target pills)
+above a lavender `StageFrame`; ≥ 600 px a side column (verdict + pill ledger for the table; for the cards a control card with the BIG
+formed number, « هذا هو الأكبر » primary / « لا يوجد » secondary, the drag hint, then the verdict); narrow, the verdict sits under the stage
+so nothing under the finger moves. The table is a candy board: each ≥ 40 px cell is the button with a raised tile drawn inside; an accepted
+cell gets a transform-only « stamp » (Web Animations, off under reduced motion), a refused one shakes and carries a « +r » remainder pill
+(`[data-dc-remainder]`). The slots are the windows of a drawn padlock (the lesson's locker code); the lamps are drawn bulbs —
+`primitives/BulbFigure.jsx` (`state` closed | wait | yes | no, the divisor written on the glass, a warm halo for « يقبل », grey with × for
+« لا يقبل », `data-bulb`) — with an « تغيّر / بقي » badge (`[data-dc-flip-badge]`) after a number change. Added DOM: `[data-dc-prompt]`,
+`[data-dc-colourings]`, `[data-dc-board]`, `[data-dc-marks]`, `[data-dc-stage]`, `[data-dc-readout]`, `[data-dc-answer]`. Below 296 px of
+lab width the glance still bleeds over the lesson frames (238 → 280 px at 320).
 
 ## 2quindecies. The space laboratories and the 3D kit (unit 14, 2026-10-05)
 
@@ -1384,6 +1420,36 @@ Math Lab's « d'un seul regard » (`MATH_LAB.md` §3.5).
 6. **Measured, not eyeballed.** The type's e2e asserts, for each viewport and both levels, that once the lab is
    scrolled into view the bounding box of the figure + its controls fits the viewport height
    (`fitsOneScreen` in the unit's e2e); the component header says how the rule is met.
+
+### 8ter. The visual kit — one language for every lab (2026-10-14, owner request « the best possible for Gen Alpha 11–13 »)
+
+Owner reference: a prompt card above a lavender stage with full-body drawn children, value pills, a dimension pill, name pills
+and a control card with a big readout and round −/+. The pieces are shared, never redrawn per lab:
+
+- **`primitives/LabKit.jsx`** (HTML): `LabCard`, `StageFrame` (lavender stage), `QuestionChip`, `PromptCard` (`chip` + `aside` on one
+  row, the big `title` with a `lamp` that lights when the sentence becomes true, the `instruction`, children), `ChoiceTray` +
+  `ChoiceCard` (big answer cards on a raised edge; `state` idle | selected | right | tried | locked; `size` lg | md | sm; `ltr` for a
+  calculation), `RoundButton`, `StepperCard` (title, BIG readout, round − / + with + filled, an optional gesture `hint` — omit it when the verdict line already says the gesture, DNA §17.7; `layout` card | row),
+  `NamePill`, `LabNote` (guides the gesture), `VerdictBanner` (the line the gesture writes, `role=status`). Every `data-*` / `aria-*`
+  passes through (`titleProps`, `lessProps`, `moreProps`, `readoutProps`, `...rest`): a lab keeps its DOM contract when it adopts the kit.
+  The kit writes no text of its own.
+- **`primitives/SvgPill.jsx`** (inside a scene): `SvgPill` (a value pill, `pointer="down"` above an object; LTR island) and
+  `SvgDimension` (a dimension between two levels with its pill at the side or above; arrows turn outside when the gap is small).
+- **`primitives/KidFigure.jsx` + `kidFigure.js`**: a drawn 11–13-year-old — boys in a hoodie (hair `short | curly`), **girls always in
+  Islamic dress** (owner, 2026-10-14): `hairStyle="hijab"` with a `scarf` (`SCARVES`: rose, lavender, mint, sky, sand — a draped scarf over
+  the shoulders and chest, a forehead band, a pin) and a long tunic over wide trousers (`tunic`, default with the hijab); no uncovered-hair
+  style exists (tested). Skins, outfits, moods `happy | neutral | wonder | proud`, the « ؟ » badge. Its geometry is the measure: the crown is exactly `top`, the soles
+  touch `foot` (tested at every scale). A drawing that floats above the ruler's zero is a lie — never do it.
+
+Rules: (1) the PromptCard never states the rule to discover — a `LabNote` guides the gesture only (« discover, don't be told »);
+(2) the verdict sits beside the control or below the stage, never between the prompt and the stage (the stage must not jump when a
+verdict appears); (3) on a narrow lab the controls go INSIDE the stage (a lane), not in an extra row; (4) numbers with Latin units are LTR
+islands; (5) light surfaces only. Tests: `primitives/labKit.test.jsx`. Reference implementation: `operations/StoryBars.jsx`.
+
+**Phone frames (same day).** A lesson module nested two `.sa-page` (ModuleLayout's `<main>` and ContentModule's `<div>`): under 640 px the
+inner page no longer adds gutters (`index.css`), and the lab frames are thinner on phones (ManipulationWorkspace / Shell / Stage
+`p-1.5`, 1 px border): a lab gets ≈ 256 px instead of ≈ 200 px at 320 px. On desktop the double gutter (2 × 60 px) remains — owner's
+call (it would widen every lesson).
 
 ## 9. Checklist — every manipulation, every review
 

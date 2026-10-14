@@ -375,6 +375,8 @@ as a substitute for causality: every motion must show a mathematical change.
    screen, without scrolling, on a phone as on a laptop? If not, the hand
    moves something it cannot see — **not done** (owner rule, 2026-10-01;
    `MANIPULATION_CONTRACT.md` §8bis).
+6. Would an 11–13-year-old (Gen Alpha) WANT to touch it — is it as good as the best app on their phone? If it only
+   « works », it is **not done**: push it to the limit (§17, owner rule, 2026-10-14).
 
 ## 15. Status
 
@@ -624,3 +626,39 @@ executable from where the student is, in one gesture or one button.**
 | A shared multi-gesture engine (pivot, tape) extracted from `ShadowWorld` | **Not yet implemented** |
 | Phone scale: the 22 m world is drawn at ≈ 16 px/m at 390 px (readable, small) | known limit |
 
+## 17. The Gen Alpha quality bar — always push the UI/UX to the limit (owner rule, 2026-10-14, binding on every generation)
+
+Owner: « always use your limit for the UI/UX of the manipulations for the Gen Alpha 11–13 years old ». Our students grew up on
+polished games and apps; a lab that merely works reads as « school software » and loses them. Every NEW or REDESIGNED manipulation is
+built to the highest finish the agent can produce — never the first version that passes the tests. The bar, all of it, every time:
+
+1. **A drawn world, rich and alive.** A real scene in inline SVG (a stall, a track, a padlock, a ruler on a wall), with depth (soft
+   shadows, raised edges, gradients on light surfaces), characters and objects drawn with care — never bare rectangles, circles or
+   emoji. People are always `KidFigure` (girls in hijab; guide §6 « People are the platform's CHARACTERS »). Reference: the three 1AM
+   labs of 2026-10-14 (`story-bars`, `division-jumps`, `digit-cards`).
+2. **The shared visual language.** Compose `primitives/LabKit.jsx` + `SvgPill.jsx` (`MANIPULATION_CONTRACT.md` §8ter): question chip,
+   the big sentence with its lamp, big tactile answer cards, a control card with a BIG readout and round −/+, value and name pills,
+   a verdict banner that never makes the stage jump. Extend the kit (with tests) rather than writing a look-alike.
+3. **The gesture feels physical.** Grab handles ≥ 44 px that lift under the finger, cards that press down, a « stamp » when right, a
+   gentle shake when refused, a character that reacts (`mood`), a hop, a tie, a glow — each micro-animation SERVES the mathematics
+   and stops under `prefers-reduced-motion`.
+4. **Feedback is immediate, visual and in the student's own numbers** — a pill, a ghost, a remainder circled, a bulb that lights — and
+   NEVER states the rule to discover (« discover, don't be told »; §16).
+5. **One screen at four sizes, phone first.** 1280×800, 1366×768, 390×844, 320×640, both levels: the glance fits, no overflow, controls
+   inside the stage on narrow widths, type large and bold (the sentence ≥ 18 px, numbers big), contrast high, Arabic DOM text,
+   numbers in LTR islands.
+6. **Honest drawing.** The picture IS the argument: sizes to scale, a child's crown on its height, counts exact — beauty never bends
+   the mathematics.
+7. **Say it ONCE — Gen Alpha does not read walls of text** (owner, 2026-10-14). Each thing is written in ONE place on the lab:
+   the QUESTION (the `PromptCard` chip + sentence — a kit lab then passes NO shell `mission`), the GESTURE (one line: the idle
+   `VerdictBanner` / `LabNote` — not again under the stepper, not as hint 1, not in the lesson's `lead`), the STORY mapping (the
+   lesson's `lead`, one short line: « كل قفزة = عقد من 17 لؤلؤة. »). Hints are CLOSED by default (`useManipulation › hintsOpen =
+   false`, platform-wide) and each is one short THINKING question — never the gesture again, never the strategy (« اقترب دون أن
+   تتجاوز » is the rule). Before calling a lab done, read every visible string top to bottom: a number, a verb or an instruction that
+   appears twice is cut. Reference: `division-jumps` (2026-10-14: 7 text blocks → 4; `divisionJumps.render.test.jsx` « says each
+   thing ONCE »).
+8. **Reviewed with the eyes, not only the tests.** Before calling it done, the agent takes screenshots of the initial state AND
+   mid-activity states (a refusal, a success, the formal phase) at the four sizes, LOOKS at every one, and iterates until it would be
+   proud to show it to the owner. Tests and e2e green are necessary, never sufficient.
+
+A generation report states, for each lab, the screenshots reviewed and what was improved after looking at them.

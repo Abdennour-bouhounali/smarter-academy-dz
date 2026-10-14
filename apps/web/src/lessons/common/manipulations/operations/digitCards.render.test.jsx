@@ -34,6 +34,8 @@ describe('digit-cards — rendu', () => {
     expect(attrs(out, 'data-dc-colouring')).toEqual(['2', '5', '3']);
     expect(attrs(out, 'data-open')).toEqual(['false', 'false', 'false']);
     expect(out).toContain('data-dc-ledger');
+    expect(out).toContain('data-dc-board');
+    expect(out).not.toContain('data-dc-remainder');
     expect(out).not.toContain('data-dc-reveal');
     expect(out).not.toContain('data-dc-refused');
     expect(out).not.toContain('data-dc-formal');
@@ -57,6 +59,9 @@ describe('digit-cards — rendu', () => {
     expect(out).toContain('data-dc-submit');
     expect(out).toContain('data-dc-none');
     expect(out).toContain('data-dc-number=""');
+    // the lamps are drawn bulbs (inline SVG), all unlit before any claim
+    expect(attrs(out, 'data-bulb')).toEqual(['closed', 'closed', 'closed', 'closed', 'closed']);
+    expect(out).toContain('data-dc-stage');
     expect(out).not.toContain('data-dc-refused');
     expect(out).not.toMatch(RAW);
     expect(out).not.toContain('{{');
@@ -88,7 +93,8 @@ describe('digit-cards — rendu', () => {
     const keys = ['explanation', 'tableAria', 'cellAria', 'cellAriaIn', 'reveal', 'revealAria', 'slotsTitle', 'slotAria', 'slotFullAria',
       'trayTitle', 'trayAria', 'trayEmpty', 'cardAria', 'lampsTitle', 'claimYes', 'claimNo', 'claimYesAria', 'claimNoAria', 'claimNeedNumber',
       'tasksTitle', 'task', 'taskAria', 'submit', 'submitAria', 'none', 'noneAria', 'answer', 'answerNone', 'trialsTitle', 'ok', 'notOk',
-      'need.swap', 'need.targets', 'ledger.title', 'ledger.units', 'ledger.sums', 'ledger.empty',
+      'need.swap', 'need.targets', 'chip.grid', 'chip.cards', 'numberTitle', 'dragHint', 'ledger.unitsShort', 'ledger.sumsShort',
+      ...['title', 'done', 'do', 'next', 'all', 'start'].map((x) => `prompt.grid.${x}`), 'prompt.cards.do', 'ledger.title', 'ledger.units', 'ledger.sums', 'ledger.empty',
       'colouring.label', 'colouring.aria', 'colouring.locked', 'colouring.pick', 'colouring.short',
       'discovery.column', 'discovery.whyColumn', 'discovery.units3', 'discovery.whyUnits3', 'discovery.even4', 'discovery.whyEven4',
       'discovery.sum2', 'discovery.whySum2', 'discovery.whyGeneric',

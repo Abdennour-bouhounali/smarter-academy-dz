@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Minus, Plus, ChevronsLeftRight, Flower2, Undo2 } from 'lucide-react';
+import { Minus, Plus, ChevronsLeftRight, Flower2, Undo2, Rabbit, Ribbon, Hand, CheckCircle2, XCircle } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import { divmod } from '@smarter-academy/core/arithmetic/divisibility.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -10,9 +10,11 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import LabFold from '../primitives/LabFold';
-import ItemFigure from '../primitives/ItemFigure';
 import DivisionRoles from '../primitives/DivisionRoles';
-import { ITEM_THEMES } from '../primitives/itemThemes';
+import { LabCard, StageFrame, PromptCard, StepperCard, RoundButton, VerdictBanner } from '../primitives/LabKit';
+import { SvgPill, pillWidth } from '../primitives/SvgPill';
+import { FlowerFigure, BouquetSleeve, BouquetTie, hueOf } from '../primitives/FlowerFigure';
+import HopperFigure from '../primitives/HopperFigure';
 import { LEVELS } from '../levels';
 import * as L from '../logic/divisionJumps';
 
@@ -23,17 +25,18 @@ import * as L from '../logic/divisionJumps';
  *
  * LES CINQ QUESTIONS (MANIPULATION_CONTRACT §1)
  * A. b est DONNÉ (6 fleurs par bouquet, des sauts de 14) ; l'élève TIENT q, le nombre de groupes. مبتدئ
- *    (`world: 'flowers'`, thème `garden`) : il TIRE le bout d'un RUBAN le long du rang de fleurs dessinées
- *    (glisser sur le rang, flèches ±1 — en RTL ← agrandit —, boutons −/+, toucher le rang) ; chaque pas noue
- *    les 6 fleurs suivantes en un bouquet. متقدم (`world: 'line'`, 279 ÷ 14) : il TIRE la suite de sauts sur
- *    une droite graduée (le point d'arrivée 14 × q avance ; flèches, −/+, toucher la droite).
+ *    (`world: 'flowers'`, thème `garden`) : il TIRE le bout d'un RUBAN le long des rangs de fleurs dessinées
+ *    (glisser sur les fleurs, flèches ±1 — en RTL ← agrandit —, boutons ronds −/+, toucher une fleur) ; chaque pas
+ *    noue les 6 fleurs suivantes en un bouquet. متقدم (`world: 'line'`, 279 ÷ 14) : il TIRE un lapin qui saute
+ *    de 14 en 14 sur une droite graduée (le point d'arrivée 14 × q avance ; flèches, −/+, toucher la droite).
  * B. Le quotient est le PLUS GRAND nombre de groupes de b dans a : on s'arrête quand ce qui reste est plus
  *    PETIT que b — pas quand il ne reste rien. a = b × q + r avec r < b ; b × q ≤ a < b × (q + 1).
- * C. Pendant le geste les bouquets se nouent (enveloppe + ruban au-dessus de chaque groupe de 6) ou les sauts
- *    s'allongent ; au relâchement : `over` — les fleurs qui manquent au dernier bouquet en fantômes roses
- *    pointillés ; `short` — un bouquet fantôme pointillé sur 6 des fleurs restantes ; `exact` — le reste
- *    entouré, « لا تكفي الأزهار الباقية (5) لباقة أخرى من 6 ». Sur la droite : le saut de trop qui passe
- *    après 279, le saut fantôme qui tient encore, ou l'écart 279 − 266 = 13 en segment rose + le حصر.
+ * C. Pendant le geste les bouquets se nouent (les tiges se resserrent dans un cornet de papier, un nœud de ruban,
+ *    une pilule « 6 » au-dessus) ou le lapin saute d'arc en arc ; au relâchement : `over` — le dernier cornet
+ *    rose pointillé, les fleurs qui manquent en fantômes roses, sa pilule « 5 » ; sur la droite le lapin tombe
+ *    dans la mare qui commence après 279 ; `short` — un cornet fantôme indigo sur 6 des fleurs restantes / un saut
+ *    fantôme vert ; `exact` — le reste entouré avec sa pilule, « لا تكفي الأزهار الباقية (5) لباقة أخرى من 6 »,
+ *    l'écart 279 − 266 = 13 en segment rose + le حصر.
  * D. `47 = 6 × 7 + 5` et `5 < 6`, les quatre noms (المقسوم a, المقسوم عليه b, الحاصل q, الباقي r) ; en
  *    متقدم le حصر `14 × 19 ≤ 279 < 14 × 20`.
  * E. Avant la règle : un groupe de TROP (over), un groupe de MOINS (short) ET l'arrêt exact, relâchés par
@@ -44,14 +47,14 @@ import * as L from '../logic/divisionJumps';
  *
  * FICHE (MANIPULATION_DNA §7)
  *   CONCEPT        le quotient euclidien = le plus grand nombre de groupes complets ; r < b
- *   OBJECT         un ruban le long d'un rang de fleurs (مبتدئ) ; une suite de sauts sur une droite (متقدم)
+ *   OBJECT         un ruban le long des rangs de fleurs (مبتدئ) ; un lapin qui saute sur une droite (متقدم)
  *   VARIABLE       q, le nombre de groupes (0 … qMax : le quotient + un groupe entamé + deux de trop)
  *   INVARIANT      a et b ; tous les groupes ont b objets ; le tout = b × q + ce qui reste
  *   TRANSFORMATION les bouquets se nouent / les sauts avancent ; le reste rétrécit de b à chaque pas
  *   CONSTRAINT     un bouquet a b fleurs ou n'existe pas ; un saut a la longueur b
- *   RESISTANCE     over : des fleurs fantômes (elles n'existent pas) / un saut qui passe après a ;
+ *   RESISTANCE     over : des fleurs fantômes (elles n'existent pas) / un saut qui tombe dans la mare après a ;
  *                  short : un bouquet fantôme qui tient encore dans le reste / un saut fantôme
- *   EVIDENCE       le reste visible (entouré / segment rose), comparé à un bouquet ou à un saut
+ *   EVIDENCE       le reste visible (entouré + pilule / segment rose), comparé à un bouquet ou à un saut
  *   CONTRAST       un de trop ET un de moins autour de l'arrêt ; puis 48 : une fleur de plus ferme un bouquet
  *   PREDICTION     sur la droite, les multiples ne sont PAS écrits avant qu'un saut y arrive : l'élève estime
  *                  14 × 10 = 140, 14 × 20 = 280 ; les marques du manuel « 10؟ 20؟ » sont à visiter
@@ -63,32 +66,44 @@ import * as L from '../logic/divisionJumps';
  * quotient. Pas d'auto-complétion (le registre n'en déclare pas). Ce n'est ni le team-builder (b n'est pas
  * choisi, on ne porte aucun objet) ni l'étagère (la main tient q, pas b) : DNA §12.
  *
- * D'UN SEUL REGARD (§8bis) : `[data-dj-glance]` enveloppe le verdict, la lecture et ses −/+, la scène et sa
- * poignée, la carte 48 et le حصر ; la hauteur du bloc de fleurs vient de l'écran de leçon (`useLessonViewport`)
- * moins ce que le bloc mesure autour d'elle (120–420 px), et les fleurs RÉTRÉCISSENT avec lui (rangées
- * d'un nombre entier de bouquets, `flowerLayout`, testé à cinq largeurs). La droite a une hauteur fixe
- * (150 px). La liste des essais est dans un `LabFold` sous le bloc.
+ * LE KIT (2026-10-14, §8ter) : la carte de consigne `PromptCard` (puce « كم باقة كاملة؟ », la phrase de l'histoire et
+ * sa lampe — allumée à l'arrêt exact —, les pilules de lecture vivante en `aside`) ; la scène dans un `StageFrame`
+ * lavande (un auvent de fleuriste ; la mare après a sur la droite) ; large (≥ 600 px) : à côté des fleurs, la colonne
+ * `StepperCard` (« عدد الباقات », la grande lecture q, les ronds −/+) + `VerdictBanner` ; sur la droite (qui veut
+ * toute la largeur) une barre de commande SOUS la scène ; étroit : les ronds −/+ et la lecture sont DANS la scène
+ * (une bande en bas) et le bandeau de verdict garde sa place (la consigne s'y lit avant le premier essai) pour que la
+ * scène ne saute pas. Dessins : `primitives/FlowerFigure.jsx` (fleur, cornet, nœud) et `primitives/HopperFigure.jsx`
+ * (le lapin) ; la géométrie du cornet est `logic › bouquetShape` (testée).
+ *
+ * D'UN SEUL REGARD (§8bis) : `[data-dj-glance]` enveloppe la consigne, la scène, les commandes, le verdict, la carte
+ * 48 et le حصر ; la hauteur de la scène de fleurs vient de l'écran de leçon (`useLessonViewport`) moins la consigne et
+ * ce qui est sous la scène (mesurés, jamais la scène elle-même : pas de boucle), et les fleurs RÉTRÉCISSENT avec elle
+ * (`flowerLayout` + `BOUQUET_ROWS`). La droite a une hauteur fixe. La liste des essais est dans un `LabFold` sous le bloc.
  *
  * Props (contrat fixé avec la leçon) : `a`, `b`, `world` ('flowers' | 'line'), `then` (facultatif ; par
  * défaut, en `flowers`, le multiple suivant de b — 48 pour 47 ÷ 6), `level`, `levels` (false : l'exemple
  * travaillé de معارف), `title`, `lead`, `onTrial({ a, b, q, r, kind: 'over' | 'short' | 'exact', ok })` à
  * chaque essai VALIDÉ (r = null pour `over`), `onFinished({ a, b })` à la règle — tous par `state.report`.
  *
- * CONTRAT DOM : [data-division-jumps][data-world][data-a][data-b][data-solved], [data-dj-glance],
- * [data-dj-scene], [data-dj-handle] (role=slider), [data-dj-less], [data-dj-more], [data-dj-reading],
- * [data-dj-group=<1..q>][data-dj-missing], [data-dj-flower=<i>], [data-dj-left=<r>], [data-dj-ghost],
- * [data-dj-verdict=<kind>], [data-dj-refused=<kind>], [data-dj-need], [data-dj-mark=<q>], [data-dj-landing],
- * [data-dj-target], [data-dj-bracket], [data-dj-next] (47 → 48), [data-dj-back], [data-dj-formal],
- * [data-lab-fold=division-jumps.trials].
+ * CONTRAT DOM : [data-division-jumps][data-world][data-a][data-b][data-q][data-solved][data-layout], [data-dj-glance],
+ * [data-dj-prompt][data-lit], [data-dj-scene], [data-dj-handle] (role=slider), [data-dj-less], [data-dj-more] (une
+ * seule paire rendue), [data-dj-reading] / [data-dj-read=<clé>], [data-dj-count] (la grande lecture q),
+ * [data-dj-group=<1..q>][data-dj-missing], [data-dj-flower=<i>], [data-dj-left=<r>], [data-dj-ghost] (flower | bouquet
+ * | jump | past), [data-dj-verdict=<kind>], [data-dj-refused=<kind>], [data-dj-need], [data-dj-mark=<q>],
+ * [data-dj-landing], [data-dj-hopper][data-mood], [data-dj-pond], [data-dj-target], [data-dj-bracket], [data-dj-next]
+ * (47 → 48), [data-dj-back], [data-dj-formal], [data-lab-fold=division-jumps.trials].
  */
 const NS = 'manipulation.divisionJumps';
-const LINE_H = 150;
-const LINE_Y = 88;
-const LRI = '⁦';
-const PDI = '⁩';
-const iso = (s) => `${LRI}${s}${PDI}`;
-const FLOWER = ITEM_THEMES.garden.itemA;
+const WIDE_MIN = 600;
+const SIDE_W = 214;
+const STRIP_H = 58;
 const btn = 'inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border-2 px-2 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-40';
+/** Les animations servent le geste (un nœud qui se serre, un saut) et se taisent sous `prefers-reduced-motion`. */
+const MOTION_CSS = '@keyframes dj-pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}'
+  + '@keyframes dj-hop{0%{transform:translateY(0)}45%{transform:translateY(-16px)}100%{transform:translateY(0)}}'
+  + '.dj-pop{transform-box:fill-box;transform-origin:50% 35%;animation:dj-pop .3s cubic-bezier(.34,1.56,.64,1) both}'
+  + '.dj-hop{animation:dj-hop .3s ease-out both}'
+  + '@media (prefers-reduced-motion: reduce){.dj-pop,.dj-hop{animation:none}}';
 
 /**
  * Une formule : UN îlot LTR (`<bdi dir="ltr">` en flex LTR) dont les morceaux sont insécables ; à l'étroit elle
@@ -109,6 +124,17 @@ export function thenOf(world, a, b, then) {
   if (then != null) return then;
   const { q, r } = divmod(a, b);
   return r === 0 ? null : b * (q + 1);
+}
+
+/** Une pilule de lecture vivante (« خارج الباقات 29 ») : ce que la main a produit, jamais la réponse. */
+function StatPill({ label, value, tone = 'indigo', small = false, ...rest }) {
+  const tones = { indigo: 'border-indigo-100 bg-white text-indigo-900', rose: 'border-rose-200 bg-rose-50 text-rose-900', amber: 'border-amber-200 bg-amber-50 text-amber-900' };
+  return (
+    <span className={`inline-flex items-center whitespace-nowrap rounded-full border font-bold ${small ? 'gap-1 px-2 text-[11px]' : 'gap-1.5 px-2.5 py-0.5 text-xs'} ${tones[tone] ?? tones.indigo}`} {...rest}>
+      {label}
+      <bdi dir="ltr" className={`font-mono font-black tabular-nums ${small ? 'text-sm' : 'text-base'}`}>{value}</bdi>
+    </span>
+  );
 }
 
 export default function DivisionJumps({
@@ -143,49 +169,64 @@ export default function DivisionJumps({
   const flowers = (n) => k('flowers', { count: n });
   const groups = (n) => k(world === 'line' ? 'jumps' : 'bouquets', { count: n });
 
-  /* ── mesure : largeur, écran de leçon, ce qui entoure la scène ── */
+  /* ── mesure : largeur, écran de leçon, la consigne et ce qui est sous la scène (jamais la scène) ── */
   const boxRef = useRef(null);
-  const glanceRef = useRef(null);
-  const sceneHRef = useRef(240);
+  const promptRef = useRef(null);
+  const belowRef = useRef(null);
   const [width, setWidth] = useState(320);
-  const [overhead, setOverhead] = useState(300);
+  const [around, setAround] = useState(260);
   useLayoutEffect(() => {
     const el = boxRef.current;
     if (!el) return undefined;
     const measure = () => {
-      setWidth(Math.max(160, Math.floor(el.clientWidth)));
-      if (glanceRef.current) setOverhead(Math.max(120, Math.ceil(glanceRef.current.getBoundingClientRect().height) - sceneHRef.current));
+      setWidth(Math.max(200, Math.floor(el.clientWidth)));
+      const h = (r) => (r.current ? Math.ceil(r.current.getBoundingClientRect().height) + 12 : 0);
+      setAround(Math.max(100, h(promptRef) + h(belowRef)));
     };
     measure();
     if (typeof ResizeObserver === 'undefined') return undefined;
     const ro = new ResizeObserver(measure);
     ro.observe(el);
-    if (glanceRef.current) ro.observe(glanceRef.current);
+    if (promptRef.current) ro.observe(promptRef.current);
+    if (belowRef.current) ro.observe(belowRef.current);
     return () => ro.disconnect();
   }, []);
   const vp = useLessonViewport(true);
   const screenH = vp.ready && vp.height > 0 ? vp.height : 640;
+  const compact = width < 380;
+  const wide = width >= WIDE_MIN;
   // − 48 : la barre collante du module (« 0 / 4 ») et une marge
-  const budget = Math.round(Math.max(120, Math.min(420, screenH - overhead - 48)));
-  const narrow = width < 380;
-  const W = Math.min(width, 760);
+  const flowerH = Math.round(Math.max(212, Math.min(460, screenH - around - 48)));
 
   /* ── la géométrie de la scène et LE geste (un seul : la piste, la poignée, −/+) ── */
+  const sideFlowers = wide && world === 'flowers';
+  const W = Math.min(sideFlowers ? width - SIDE_W - 12 : width, 900);
+  const strip = !wide; // étroit : les ronds −/+ et la lecture vivent DANS la scène
+  const awning = compact ? 12 : 18;
+  const padTop = awning + 8;
+  const padBottom = strip ? STRIP_H + 2 : 10;
+  const padX = 8;
+  const padStart = 46; // à droite (le début du rang, en RTL) : la place de la poignée à q = 0
   const slots = b * lab.qMax;
-  const fLay = useMemo(() => (world === 'flowers' ? L.flowerLayout({ slots, b, width: W, maxHeight: budget }) : null), [world, slots, b, W, budget]);
-  const lLay = useMemo(() => (world === 'line' ? L.lineLayout({ a: lab.a, b, qMax: lab.qMax, width: W }) : null), [world, lab.a, b, lab.qMax, W]);
-  // la hauteur RÉELLE de la scène : ce que la mesure du bloc retire pour trouver ce qui l'entoure (sinon la boucle oscille)
-  sceneHRef.current = fLay ? Math.ceil(fLay.height) + 4 : LINE_H;
+  const fLay = useMemo(() => (world === 'flowers'
+    ? L.flowerLayout({ slots, b, width: W - padX - padStart, maxHeight: flowerH - padTop - padBottom, maxSize: 46, ...L.BOUQUET_ROWS })
+    : null), [world, slots, b, W, flowerH, padTop, padBottom]);
+  // la scène épouse son contenu (aucune bande vide) ; les fleurs sont centrées si la colonne d'à côté est plus haute
+  const stageH = fLay ? Math.ceil(fLay.height + padTop + padBottom + 6) : 0;
+  const offY = padTop + 2;
+  const lineTop = compact ? 98 : 104;
+  const lineH = lineTop + 74; // les marques « 10 قفزات؟ » (Y + 59) et leurs lettres sous la ligne tiennent dans la scène
+  const lLay = useMemo(() => (world === 'line' ? L.lineLayout({ a: lab.a, b, qMax: lab.qMax, width: W, pad: 26 }) : null), [world, lab.a, b, lab.qMax, W]);
   const toValue = useCallback((cx, cy, rect) => (lLay
     ? lLay.valueAt(cx - rect.left) / b
-    : fLay.posAt(cx - rect.left, cy - rect.top) / b), [fLay, lLay, b]);
+    : fLay.posAt(cx - rect.left - padX, cy - rect.top - offY) / b), [fLay, lLay, b, offY]);
   const st = useStretchInteraction({
     value: lab.q, range: { min: 0, max: lab.qMax }, toValue, direction: world === 'line' ? 'ltr' : 'rtl', pageStep: 5,
     onChange: (q) => setLab((s) => L.setQ(s, q)),
     onCommit: (q) => setLab((s) => L.commitQ(s, q)),
   });
 
-  /* ── le verdict du dernier relâchement (une seule ligne, au-dessus de la scène) ── */
+  /* ── le verdict du dernier relâchement (un seul emplacement, mis à jour en place) ── */
   const v = L.shownVerdict(lab);
   const verdictText = useMemo(() => {
     if (!v) return '';
@@ -249,84 +290,161 @@ export default function DivisionJumps({
     </div>
   );
 
-  // la lecture, en étiquettes « الوصف: العدد » qui ne se coupent pas (ARABIC_RTL_CONTRACT « Counting nouns »)
+  /* ── la lecture vivante (pilules de la consigne) : seulement ce que la main a produit ── */
+  const land = b * lab.q;
+  const leftNow = Math.max(0, lab.a - land);
   const reading = world === 'line'
-    ? [['q', lab.q], ['land', b * lab.q]]
-    : [['q', lab.q], ['need', b * lab.q], ['left', Math.max(0, lab.a - b * lab.q)]];
+    ? [['land', land, land > lab.a ? 'rose' : 'indigo']]
+    : [...(compact ? [] : [['need', land, land > lab.a ? 'rose' : 'indigo']]), ['left', leftNow, 'indigo']];
+
+  /* ── les commandes : la carte (large), la barre (droite large) ou la bande DANS la scène (étroit) ── */
+  const lessProps = { 'data-dj-less': true };
+  const moreProps = { 'data-dj-more': true };
+  const lessDisabled = lab.q <= 0;
+  const moreDisabled = lab.q >= lab.qMax;
+  const stepper = sideFlowers && (
+    <StepperCard
+      layout="card"
+      title={k(`stepTitle.${world}`)}
+      value={lab.q}
+      onLess={() => st.nudge(-1)} onMore={() => st.nudge(1)}
+      lessDisabled={lessDisabled} moreDisabled={moreDisabled}
+      lessLabel={k(`less.${world}`)} moreLabel={k(`more.${world}`)}
+      lessProps={lessProps} moreProps={moreProps}
+      readoutProps={{ 'data-dj-count': lab.q }}
+    />
+  );
+  const lineBar = wide && world === 'line' && (
+    <LabCard className="flex items-center gap-4 p-3">
+      <p className="min-w-0 flex-1 text-lg font-black text-indigo-950">{k(`stepTitle.${world}`)}</p>
+      <div className="flex items-center gap-3" dir="ltr">
+        <RoundButton size={52} onClick={() => st.nudge(-1)} disabled={lessDisabled} aria-label={k(`less.${world}`)} {...lessProps}>
+          <Minus className="h-6 w-6" strokeWidth={3} aria-hidden="true" />
+        </RoundButton>
+        <div className="flex min-w-[88px] items-baseline justify-center rounded-2xl border border-indigo-100 bg-[#F5F6FF] px-4 py-1.5" data-dj-count={lab.q}>
+          <bdi dir="ltr" className="text-4xl font-black tabular-nums text-indigo-900">{lab.q}</bdi>
+        </div>
+        <RoundButton primary size={52} onClick={() => st.nudge(1)} disabled={moreDisabled} aria-label={k(`more.${world}`)} {...moreProps}>
+          <Plus className="h-6 w-6" strokeWidth={3} aria-hidden="true" />
+        </RoundButton>
+      </div>
+    </LabCard>
+  );
+  const stripNode = strip && (
+    <div className="absolute inset-x-1.5 bottom-1.5 z-10 flex items-center gap-2 rounded-2xl border border-indigo-100 bg-white/95 p-1 shadow-[0_8px_20px_-14px_rgba(67,56,202,0.6)]"
+      style={{ height: STRIP_H - 6 }} dir="ltr">
+      <RoundButton size={44} onClick={() => st.nudge(-1)} disabled={lessDisabled} aria-label={k(`less.${world}`)} {...lessProps}>
+        <Minus className="h-5 w-5" strokeWidth={3} aria-hidden="true" />
+      </RoundButton>
+      <div className="flex min-w-0 flex-1 items-center justify-center gap-2" dir="rtl" data-dj-count={lab.q}>
+        <span className="truncate text-sm font-extrabold text-indigo-800">{k(`reading.${world}.q`)}</span>
+        <bdi dir="ltr" className="text-3xl font-black tabular-nums leading-none text-indigo-900">{lab.q}</bdi>
+      </div>
+      <RoundButton primary size={44} onClick={() => st.nudge(1)} disabled={moreDisabled} aria-label={k(`more.${world}`)} {...moreProps}>
+        <Plus className="h-5 w-5" strokeWidth={3} aria-hidden="true" />
+      </RoundButton>
+    </div>
+  );
+
+  /* ── le verdict : un seul bandeau ; à l'étroit il garde sa place (la consigne avant le premier essai) ── */
+  const verdictTone = v ? (v.ok ? 'emerald' : 'rose') : 'indigo';
+  const verdictLine = (
+    <VerdictBanner tone={verdictTone} icon={v ? (v.ok ? CheckCircle2 : XCircle) : Hand}
+      size={compact ? 'xs' : 'sm'}
+      className={`${compact ? '!gap-2 !px-2.5 !py-1.5' : ''} ${wide ? 'min-h-[3.5rem]' : compact ? 'min-h-[4.25rem]' : 'min-h-[4.75rem]'}`}
+      data-dj-verdict={v?.kind ?? ''} data-dj-refused={v && !v.ok ? v.kind : undefined}>
+      <p className={v ? '' : 'font-bold text-indigo-900'}>{v ? verdictText : k(`instruction.${world}`, { b, per: flowers(b) })}</p>
+      {need.length > 0 && v?.kind === 'exact' && (
+        <p className="mt-1 text-xs font-bold text-indigo-900" data-dj-need={need.join(' ')}>{k(`need.${world}.${need[0]}`, { a: lab.a0 })}</p>
+      )}
+    </VerdictBanner>
+  );
+  const bracket = world === 'line' && v?.kind === 'exact' && (
+    <p className={`flex flex-wrap items-baseline justify-center gap-x-3 gap-y-0.5 rounded-2xl border-2 border-indigo-200 bg-white px-3 py-1.5 ${compact ? 'text-sm' : 'text-base'} font-extrabold text-indigo-950`} data-dj-bracket>
+      <span>{k('bracketTitle')}</span>
+      <Formula pieces={[`${b} × ${v.q} ≤ ${v.a}`, `< ${b} × ${v.q + 1}`]} />
+      <bdi dir="ltr" className="whitespace-nowrap font-mono text-rose-700">{`${v.a} − ${v.need} = ${v.left}`}</bdi>
+    </p>
+  );
+  const nextCard = L.canAddFlower(lab) && (
+    <LabCard className={`space-y-2 border-amber-200 bg-amber-50/70 ${compact ? 'p-2.5' : 'p-3'}`} data-dj-next>
+      <p className={`${compact ? 'text-xs' : 'text-sm'} font-bold leading-snug text-amber-950`}>
+        <span className="font-black">{k('next.title')}</span> {k('next.text', { flowers: flowers(lab.then) })}
+      </p>
+      <button type="button" onClick={() => setLab(L.addFlower)} data-dj-next-button
+        className={`flex min-h-[44px] items-center justify-center gap-2 rounded-2xl w-full px-3 text-sm bg-gradient-to-b from-amber-400 to-amber-500 font-black text-amber-950 shadow-[0_4px_0_0_#D97706] outline-none transition-transform active:translate-y-0.5 active:shadow-none focus-visible:ring-4 focus-visible:ring-amber-300 motion-reduce:transition-none`}>
+        <Flower2 className="h-5 w-5" aria-hidden="true" /> {k('next.button')}
+      </button>
+    </LabCard>
+  );
+  const backButton = lab.then != null && lab.a !== lab.a0 && (
+    <button type="button" onClick={() => setLab(L.backToFirst)} className={`${btn} gap-1 rounded-full border-indigo-100 bg-white px-3 text-xs text-indigo-800`} data-dj-back>
+      <Undo2 className="h-4 w-4" aria-hidden="true" /> {k('next.back', { flowers: flowers(lab.a0) })}
+    </button>
+  );
+
+  const sceneNode = world === 'flowers'
+    ? <FlowerScene lab={lab} lay={fLay} st={st} k={k} W={W} H={stageH} offX={padX} offY={offY} awning={awning} trackBottom={padBottom} v={v} groups={groups} strip={stripNode} />
+    : <LineScene lab={lab} lay={lLay} st={st} k={k} W={W} lineY={lineTop} lineH={lineH} compact={compact} v={v} groups={groups} strip={stripNode} />;
 
   return (
     <ManipulationShell
       type="division-jumps"
       title={title ?? k(`title.${world}`)}
-      mission={k(`mission.${world}`, { a: lab.a0, b, flowers: flowers(lab.a0), per: flowers(b) })}
       lead={lead}
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
-      hints={[0, 1, 2].map((i) => k(`hints.${world}.${i}`, { a: lab.a0, b }))}
+      hints={[0, 1].map((i) => k(`hints.${world}.${i}`, { a: lab.a0, b }))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k(`discovery.prompt.${world}`)} options={discoveryOptions} formal={formal} />}
       explanation={k('explanation')}
     >
-      <ManipulationStage className="bg-gradient-to-b from-rose-50/50 to-white">
+      <ManipulationStage className="bg-gradient-to-b from-indigo-50/40 to-white">
         <div ref={boxRef} className="space-y-2" data-division-jumps data-world={world} data-a={lab.a} data-b={b}
-          data-solved={ready ? 'true' : 'false'} data-q={lab.q} data-layout={narrow ? 'narrow' : 'wide'} data-scene-h={world === 'flowers' ? budget : undefined}>
-          <div ref={glanceRef} className="space-y-2" data-dj-glance>
-            {/* le verdict du dernier relâchement — un seul emplacement, mis à jour en place */}
-            <p role="status" aria-live="polite"
-              className={`min-h-[2.5rem] rounded-xl px-2 py-1 ${narrow ? 'text-xs' : 'text-sm'} font-bold leading-snug ${v?.ok ? 'bg-emerald-50 text-emerald-900' : v ? 'bg-rose-50 text-rose-900' : 'text-slate-600'}`}
-              data-dj-verdict={v?.kind ?? ''} data-dj-refused={v && !v.ok ? v.kind : undefined}>
-              {verdictText}
-            </p>
-            {need.length > 0 && v?.kind === 'exact' && (
-              <p className="text-xs font-bold text-indigo-900" data-dj-need={need.join(' ')}>{k(`need.${world}.${need[0]}`, { a: lab.a0 })}</p>
-            )}
-
-            {/* la lecture et −/+ : AU-DESSUS de la scène (ils ne bougent pas sous le doigt) */}
-            <div className="flex items-center justify-between gap-2">
-              <p className={`flex flex-wrap gap-x-3 gap-y-0.5 ${narrow ? 'text-xs' : 'text-sm'} font-bold text-slate-700`} data-dj-reading={lab.q}>
-                {reading.map(([key, n]) => (
-                  <span key={key} className="whitespace-nowrap" data-dj-read={key}>{k(`reading.${world}.${key}`)}: <span className="font-mono text-base font-extrabold text-slate-900">{n}</span></span>
-                ))}
-              </p>
-              <div className="flex items-center gap-1.5" dir="ltr">
-                <button type="button" onClick={() => st.nudge(-1)} disabled={lab.q <= 0} aria-label={k(`less.${world}`)} data-dj-less
-                  className={`${btn} border-slate-300 bg-white`}><Minus className="h-4 w-4" aria-hidden="true" /></button>
-                <button type="button" onClick={() => st.nudge(1)} disabled={lab.q >= lab.qMax} aria-label={k(`more.${world}`)} data-dj-more
-                  className={`${btn} border-slate-300 bg-white`}><Plus className="h-4 w-4" aria-hidden="true" /></button>
-              </div>
+          data-solved={ready ? 'true' : 'false'} data-q={lab.q} data-layout={wide ? 'wide' : 'narrow'} data-scene-h={world === 'flowers' ? flowerH : undefined}>
+          <style dangerouslySetInnerHTML={{ __html: MOTION_CSS }} />
+          <div className="space-y-3" data-dj-glance>
+            {/* la consigne : la question, la phrase de l'histoire (sa lampe s'allume à l'arrêt exact), la lecture vivante */}
+            <div ref={promptRef}>
+              <PromptCard
+                size={compact ? 'md' : 'lg'}
+                chip={compact ? null : k(`chip.${world}`)} chipIcon={world === 'line' ? Rabbit : Flower2}
+                aside={(
+                  <div className={`flex flex-wrap items-center gap-1.5 ${compact ? 'w-full justify-between' : ''}`} data-dj-reading={lab.q}>
+                    {/* étroit : la puce de question, plus petite, partage la rangée des pilules */}
+                    {compact && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700">
+                        {world === 'line' ? <Rabbit className="h-3.5 w-3.5" aria-hidden="true" /> : <Flower2 className="h-3.5 w-3.5" aria-hidden="true" />}{k(`chip.${world}`)}
+                      </span>
+                    )}
+                    {reading.map(([key, n, tone]) => (
+                      <StatPill key={key} small={compact} label={k(`reading.${world}.${key}`)} value={n} tone={tone} data-dj-read={key} />
+                    ))}
+                  </div>
+                )}
+                title={<span className={compact ? 'text-base' : ''}>{k(`prompt.${world}`, { a: lab.a, b, flowers: flowers(lab.a), per: flowers(b) })}</span>}
+                lamp={v?.kind === 'exact' ? 'on' : 'off'}
+                titleProps={{ 'data-dj-prompt': true, 'data-lit': v?.kind === 'exact' ? 'true' : 'false' }}
+              />
             </div>
 
-            {world === 'flowers'
-              ? <FlowerScene lab={lab} lay={fLay} st={st} k={k} W={W} v={v} groups={groups} />
-              : <LineScene lab={lab} lay={lLay} st={st} k={k} W={W} v={v} groups={groups} />}
-
-            {/* le حصر (droite), après un arrêt exact */}
-            {/* une formule ne se coupe JAMAIS : coupée dans son îlot LTR, « 14 × 19 ≤ 279 » se lisait « 279 > 19 » (QA 320 px) */}
-            {world === 'line' && v?.kind === 'exact' && (
-              <p className={`flex flex-wrap items-baseline justify-center gap-x-3 gap-y-0.5 rounded-xl border border-indigo-200 bg-indigo-50/60 px-2 py-1 ${narrow ? 'text-xs' : 'text-sm'} font-bold text-indigo-950`} data-dj-bracket>
-                <span>{k('bracketTitle')}</span>
-                <Formula pieces={[`${b} × ${v.q} ≤ ${v.a}`, `< ${b} × ${v.q + 1}`]} />
-                <bdi dir="ltr" className="whitespace-nowrap font-mono text-rose-800">{`${v.a} − ${v.need} = ${v.left}`}</bdi>
-              </p>
-            )}
-
-            {/* le contraste 47 → 48 : la même scène, une fleur de plus */}
-            {L.canAddFlower(lab) && (
-              <div className="flex flex-wrap items-center gap-2 rounded-xl border-2 border-amber-300 bg-amber-50 px-2 py-1.5" data-dj-next>
-                <p className={`flex-1 ${narrow ? 'text-xs' : 'text-sm'} font-bold text-amber-950`}>
-                  <span className="font-extrabold">{k('next.title')}</span> {k('next.text', { flowers: flowers(lab.then) })}
-                </p>
-                <button type="button" onClick={() => setLab(L.addFlower)} className={`${btn} gap-1 border-amber-500 bg-white text-amber-900`} data-dj-next-button>
-                  <Flower2 className="h-4 w-4" aria-hidden="true" /> {k('next.button')}
-                </button>
+            {sideFlowers ? (
+              <div className="flex items-start gap-3">
+                {sceneNode}
+                <div className="shrink-0" style={{ width: SIDE_W }}>{stepper}</div>
               </div>
-            )}
-            {lab.then != null && lab.a !== lab.a0 && (
-              <button type="button" onClick={() => setLab(L.backToFirst)} className={`${btn} gap-1 border-slate-300 bg-white text-xs text-slate-700`} data-dj-back>
-                <Undo2 className="h-4 w-4" aria-hidden="true" /> {k('next.back', { flowers: flowers(lab.a0) })}
-              </button>
-            )}
+            ) : sceneNode}
+            {/* sous la scène : la barre de commande (droite, large), le verdict, le حصر, la carte 48 — la scène ne saute jamais */}
+            <div ref={belowRef} className="space-y-2">
+              {lineBar}
+              <div className={wide ? 'flex items-start gap-3' : 'space-y-2'}>
+                <div className="min-w-0 flex-1 space-y-2">{verdictLine}{bracket}</div>
+                {(nextCard || backButton) && (
+                  <div className="space-y-2" style={wide ? { width: SIDE_W } : undefined}>{nextCard}{backButton}</div>
+                )}
+              </div>
+            </div>
           </div>
 
           {lab.trials.length > 0 && (
@@ -346,95 +464,119 @@ export default function DivisionJumps({
   );
 }
 
-/* ══════════════ مبتدئ : le rang de fleurs et le ruban ══════════════ */
+/* ══════════════ le décor : l'auvent du fleuriste ══════════════ */
 
-function FlowerScene({ lab, lay, st, k, W, v, groups }) {
-  const { a, b, q } = lab;
-  const s = lay.size;
-
-  const tied = b * q;
-  const showGhost = v && v.q === q;
-  const missing = new Set();
-  if (showGhost && v.kind === 'over') for (let i = a; i < tied; i += 1) missing.add(i);
-  const left = Math.max(0, a - tied);
-  // le bout du ruban : avant la première fleur (q = 0) ou après la dernière fleur du bouquet q
-  const tipX = q === 0 ? lay.right : lay.x(tied - 1);
-  const tipY = q === 0 ? lay.lane * 0.5 : lay.y(tied - 1) - lay.lane * 0.5;
-  const bouquetBox = (g) => {
-    const first = g * b;
-    const last = first + b - 1;
-    return { x: lay.x(last) - s * 0.12, y: lay.y(first) - lay.lane * 0.85, w: lay.x(first) - lay.x(last) + s * 1.24, h: s + lay.lane * 0.85 + s * 0.06 };
-  };
-
+function Awning({ W, h }) {
+  const n = Math.max(6, Math.round(W / 34));
+  const w = W / n;
   return (
-    <div className="relative mx-auto overflow-hidden rounded-xl border border-rose-100 bg-gradient-to-b from-white to-emerald-50/40"
-      style={{ width: W, height: Math.ceil(lay.height) + 4 }} data-dj-scene data-dj-size={s.toFixed(1)} data-dj-rows={lay.rows} data-dj-per-row={lay.perRow}>
-      <svg width={W} height={Math.ceil(lay.height) + 4} className="absolute inset-0" style={{ direction: 'ltr' }} role="img"
-        aria-label={k('sceneAria.flowers', { a, b, q })}>
-        {/* les bouquets noués : une enveloppe et un ruban au-dessus de chaque groupe de b */}
-        {Array.from({ length: q }, (_, g) => {
-          const box = bouquetBox(g);
-          const incomplete = (g + 1) * b > a;
-          const midX = box.x + box.w / 2;
-          const ry = box.y + lay.lane * 0.35;
-          return (
-            <g key={g} data-dj-group={g + 1} data-dj-missing={incomplete ? Math.min(b, (g + 1) * b - a) : undefined}
-              className="transition-opacity duration-150 motion-reduce:transition-none">
-              <rect x={box.x} y={box.y} width={box.w} height={box.h} rx={s * 0.3}
-                fill={incomplete ? '#FFF1F2' : '#ECFDF5'} stroke={incomplete ? '#E11D48' : '#10B981'} strokeWidth={1.5} strokeDasharray={incomplete ? '4 3' : undefined} />
-              <path d={`M${box.x + s * 0.2} ${ry + lay.lane * 0.25} Q${midX} ${ry - lay.lane * 0.5} ${box.x + box.w - s * 0.2} ${ry + lay.lane * 0.25}`}
-                fill="none" stroke={incomplete ? '#E11D48' : '#DB2777'} strokeWidth={Math.max(2, s * 0.09)} strokeLinecap="round" />
-              <circle cx={midX} cy={ry - lay.lane * 0.12} r={Math.max(2.5, s * 0.1)} fill={incomplete ? '#E11D48' : '#DB2777'} />
-            </g>
-          );
-        })}
-        {/* le bouquet fantôme d'un `short` : il tient encore dans ce qui reste */}
-        {showGhost && v.kind === 'short' && (() => {
-          const box = bouquetBox(q);
-          return <rect data-dj-ghost="bouquet" x={box.x} y={box.y} width={box.w} height={box.h} rx={s * 0.3} fill="none" stroke="#4F46E5" strokeWidth={2} strokeDasharray="5 4" />;
-        })()}
-        {/* les fleurs (une seule fois chacune), puis les fantômes des fleurs qui manquent */}
-        {Array.from({ length: a }, (_, i) => (
-          <g key={i} transform={`translate(${lay.x(i)} ${lay.y(i)})`} data-dj-flower={i}>
-            <ItemFigure kind={FLOWER.kind} tone={FLOWER.tone} width={s} />
-          </g>
-        ))}
-        {[...missing].map((i) => (
-          <circle key={`g${i}`} data-dj-ghost="flower" cx={lay.x(i) + s / 2} cy={lay.y(i) + s * 0.42} r={s * 0.34} fill="none" stroke="#E11D48" strokeWidth={1.6} strokeDasharray="3 3" />
-        ))}
-        {/* ce qui reste hors des bouquets : entouré après un arrêt exact */}
-        {left > 0 && (
-          <g data-dj-left={left}>
-            {showGhost && v.kind === 'exact' && Array.from({ length: left }, (_, j) => {
-              const i = tied + j;
-              return <rect key={i} x={lay.x(i) + 1} y={lay.y(i) - 1} width={s - 2} height={s + 2} rx={s * 0.25} fill="none" stroke="#D97706" strokeWidth={1.6} />;
-            })}
-          </g>
-        )}
-      </svg>
-      {/* le rang est la PISTE : toucher y pose le bout du ruban ; la poignée est au bout du ruban */}
-      <div {...st.trackProps} className="absolute inset-0" style={st.trackProps.style}>
-        <div {...st.handleProps({ label: k('handle.flowers'), valueText: k('handleValue.flowers', { bouquets: groups(q) }) })}
-          data-dj-handle
-          className="group absolute flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full outline-none"
-          style={{ left: Math.max(22, Math.min(W - 22, tipX)), top: Math.max(22, tipY), cursor: st.dragging ? 'grabbing' : 'grab' }}>
-          <span className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-pink-600 bg-white/95 shadow group-focus-visible:ring-4 group-focus-visible:ring-pink-300">
-            <ChevronsLeftRight className="h-4 w-4 text-pink-700" aria-hidden="true" />
-          </span>
-        </div>
-      </div>
-    </div>
+    <g aria-hidden="true">
+      {Array.from({ length: n }, (_, i) => (
+        <path key={i} d={`M${i * w} 0 H${(i + 1) * w} V${h - w / 2 * 0.6} A${w / 2} ${w / 2 * 0.6} 0 0 1 ${i * w} ${h - w / 2 * 0.6} Z`}
+          fill={i % 2 ? '#FFFFFF' : '#F9A8D4'} stroke="#F472B6" strokeWidth={0.8} />
+      ))}
+    </g>
   );
 }
 
-/* ══════════════ متقدم : la droite graduée et les sauts ══════════════ */
+/* ══════════════ مبتدئ : les rangs de fleurs et le ruban ══════════════ */
 
-function LineScene({ lab, lay, st, k, W, v, groups }) {
+function FlowerScene({ lab, lay, st, k, W, H, offX, offY, awning, trackBottom, v, groups, strip }) {
   const { a, b, q } = lab;
+  const s = lay.size;
+  const tied = b * q;
+  const showGhost = v && v.q === q;
+  const left = Math.max(0, a - tied);
+  const shapes = Array.from({ length: q }, (_, g) => L.bouquetShape(lay, g, b));
+  const leanOf = (i) => (i < tied ? shapes[Math.floor(i / b)].leans[i % b] : 0);
+  const pillSize = Math.max(9, Math.min(13, s * 0.4));
+  const toneOf = (g) => (Math.min(b, a - g * b) < b ? 'short' : 'tied');
+  // le bout du ruban : avant la première fleur (q = 0) ou au bout du ruban du dernier bouquet
+  const last = shapes[q - 1];
+  const tipX = q === 0 ? lay.right + 22 : last.x0 - Math.min(20, s * 0.7);
+  const tipY = q === 0 ? lay.y(0) + s * 0.45 : last.band;
+  const hx = Math.max(24, Math.min(W - 24, offX + tipX));
+  const hy = Math.max(24, Math.min(H - trackBottom - 22, offY + tipY));
+  const ghostShape = showGhost && v.kind === 'short' ? L.bouquetShape(lay, q, b) : null;
+
+  return (
+    <StageFrame className="shrink-0 overflow-hidden" style={{ width: W, height: H }}
+      data-dj-scene data-dj-size={s.toFixed(1)} data-dj-rows={lay.rows} data-dj-per-row={lay.perRow}>
+      <svg width={W} height={H} className="absolute inset-0" style={{ direction: 'ltr' }} role="img"
+        aria-label={k('sceneAria.flowers', { a, b, q })}>
+        <Awning W={W} h={awning} />
+        <g transform={`translate(${offX} ${offY})`}>
+          {/* les pochettes de papier, DERRIÈRE les fleurs ; le bouquet fantôme d'un `short` (il tient encore dans le reste) */}
+          {shapes.map((sh, g) => (
+            <BouquetSleeve key={`${g}-${a}`} shape={sh} size={s} tone={toneOf(g)} className="dj-pop" />
+          ))}
+          {ghostShape && <BouquetSleeve shape={ghostShape} size={s} tone="ghost" data-dj-ghost="bouquet" />}
+          {/* ce qui reste hors des bouquets : entouré après un arrêt exact */}
+          {left > 0 && showGhost && v.kind === 'exact' && (
+            <rect x={lay.x(tied + left - 1) - s * 0.1} y={lay.y(tied) - s * 0.02} width={lay.x(tied) - lay.x(tied + left - 1) + s * 1.2} height={s * 1.1}
+              rx={s * 0.3} fill="#FEF3C7" stroke="#D97706" strokeWidth={2} strokeDasharray="6 4" />
+          )}
+          {/* les fleurs (une seule fois chacune) ; les tiges d'un bouquet noué se resserrent */}
+          {Array.from({ length: a }, (_, i) => (
+            <FlowerFigure key={i} x={lay.x(i)} y={lay.y(i)} size={s} lean={leanOf(i)} hue={hueOf(i)} data-dj-flower={i} />
+          ))}
+          {/* les rubans noués : le nœud porte la pilule du compte (rose s'il manque des fleurs), puis les fleurs fantômes */}
+          {shapes.map((sh, g) => {
+            const have = Math.max(0, Math.min(b, a - g * b));
+            const incomplete = have < b;
+            const text = String(have);
+            return (
+              <g key={`${g}-${a}`} data-dj-group={g + 1} data-dj-missing={incomplete ? b - have : undefined} className="dj-pop">
+                {incomplete && showGhost && v.kind === 'over' && Array.from({ length: b - have }, (_, j) => {
+                  const i = g * b + have + j;
+                  return <FlowerFigure key={i} ghost x={lay.x(i)} y={lay.y(i)} size={s} data-dj-ghost="flower" />;
+                })}
+                <BouquetTie shape={sh} size={s} tone={incomplete ? 'short' : 'tied'} knotW={pillWidth(text, pillSize)} />
+                <SvgPill x={sh.cx} y={sh.band} text={text} size={pillSize} fill={incomplete ? '#E11D48' : '#4F46E5'} />
+              </g>
+            );
+          })}
+          {/* le reste : sa pilule (après un arrêt exact) — data-dj-left est toujours là */}
+          {left > 0 && (
+            <g data-dj-left={left}>
+              {showGhost && v.kind === 'exact' && (
+                <SvgPill x={(lay.x(tied + left - 1) + lay.x(tied) + s) / 2} y={lay.y(tied) + s * 0.8} text={String(left)} size={pillSize} fill="#D97706" />
+              )}
+            </g>
+          )}
+          {/* le ruban tiré : du dernier bouquet à la poignée */}
+          {q > 0 && (
+            <path d={`M${last.x0 + s * 0.12} ${last.band} L${tipX} ${tipY}`} fill="none"
+              stroke={a < tied ? '#F43F5E' : '#6366F1'} strokeWidth={Math.max(2.4, s * 0.12)} strokeLinecap="round" />
+          )}
+        </g>
+      </svg>
+      {/* les rangs sont la PISTE : toucher une fleur pose le bout du ruban ; la poignée est au bout du ruban */}
+      <div {...st.trackProps} className="absolute inset-x-0 top-0" style={{ ...st.trackProps.style, bottom: trackBottom }}>
+        <div {...st.handleProps({ label: k('handle.flowers'), valueText: k('handleValue.flowers', { bouquets: groups(q) }) })}
+          data-dj-handle
+          className="group absolute flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full outline-none"
+          style={{ left: hx, top: hy, cursor: st.dragging ? 'grabbing' : 'grab' }}>
+          <span className={`flex h-10 w-10 items-center justify-center rounded-full border-[3px] border-indigo-500 bg-white shadow-[0_6px_16px_-6px_rgba(79,70,229,0.9)] transition-transform group-focus-visible:ring-4 group-focus-visible:ring-indigo-300 motion-reduce:transition-none ${st.dragging ? 'scale-110' : ''}`}>
+            <Ribbon className="h-5 w-5 text-indigo-600" strokeWidth={2.6} aria-hidden="true" />
+          </span>
+        </div>
+      </div>
+      {strip}
+    </StageFrame>
+  );
+}
+
+/* ══════════════ متقدم : la droite graduée, le lapin et ses sauts ══════════════ */
+
+function LineScene({ lab, lay, st, k, W, lineY: Y, lineH, compact, v, groups, strip }) {
+  const { a, b, q } = lab;
+  const H = lineH + (strip ? STRIP_H : 0);
   const showGhost = v && v.q === q;
   const land = b * q;
   const xa = lay.xOf(a);
   const xl = lay.xOf(land);
+  const hs = compact ? 32 : 40;
   // les multiples déjà atteints par un saut relâché (l'élève les a trouvés) ; jamais les autres
   const visited = [...new Set(lab.trials.filter((tr) => tr.a === a).map((tr) => tr.q * b))].filter((m) => m !== land);
   const labelled = [];
@@ -444,75 +586,102 @@ function LineScene({ lab, lay, st, k, W, v, groups }) {
     labelled.push(x);
     return true;
   });
-  const arc = (x0, x1, h) => `M${x0} ${LINE_Y} Q${(x0 + x1) / 2} ${LINE_Y - 2 * h} ${x1} ${LINE_Y}`;
-  const hOf = (w) => Math.max(6, Math.min(26, w * 0.55));
+  const arc = (x0, x1, h) => `M${x0} ${Y} Q${(x0 + x1) / 2} ${Y - 2 * h} ${x1} ${Y}`;
+  const hOf = (w) => Math.max(7, Math.min(28, w * 0.6));
   const marks = L.marksOf(a, b);
+  const past = land > a;
+  const mood = past ? 'oops' : v?.kind === 'exact' ? 'happy' : 'idle';
+  const pillSize = compact ? 11 : 12.5;
+  const landX = Math.max(22, Math.min(W - 22, xl));
 
   return (
-    <div className="relative mx-auto overflow-hidden rounded-xl border border-indigo-100 bg-white" style={{ width: W, height: LINE_H }} data-dj-scene>
-      <svg width={W} height={LINE_H} className="absolute inset-0" style={{ direction: 'ltr' }} role="img"
+    <StageFrame className="overflow-hidden" style={{ width: W, height: H }} data-dj-scene>
+      <svg width={W} height={H} className="absolute inset-0" style={{ direction: 'ltr' }} role="img"
         aria-label={k('sceneAria.line', { a, b, q, land, L: lay.L })}>
-        {/* la droite, ses graduations ; des nombres « ronds » seulement */}
-        <line x1={lay.x0 - 8} x2={lay.x1 + 10} y1={LINE_Y} y2={LINE_Y} stroke="#334155" strokeWidth={2} />
-        <path d={`M${lay.x1 + 10} ${LINE_Y - 4} L${lay.x1 + 17} ${LINE_Y} L${lay.x1 + 10} ${LINE_Y + 4} Z`} fill="#334155" />
+        {/* le sol et la mare : après a, on tombe dans l'eau */}
+        <rect x={0} y={Y + 8} width={W} height={lineH - Y - 8} fill="#E9EBFF" opacity={0.55} />
+        {Array.from({ length: Math.floor(W / 70) }, (_, i) => {
+          const gx = 34 + i * 70;
+          return gx < xa - 10 ? <path key={i} d={`M${gx} ${lineH - 3} q2 -8 4 0 q2 -10 4 0 q2 -7 4 0`} fill="none" stroke="#A5B4FC" strokeWidth={1.4} strokeLinecap="round" aria-hidden="true" /> : null;
+        })}
+        <g data-dj-pond={a} aria-hidden="true">
+          <path d={`M${xa + 4} ${Y - 10} Q${xa + 4} ${Y - 16} ${xa + 14} ${Y - 16} H${W + 2} V${Y + 34} H${xa + 18} Q${xa + 4} ${Y + 34} ${xa + 6} ${Y + 18} Z`} fill="#BAE6FD" />
+          <path d={`M${xa + 10} ${Y - 12} H${W}`} stroke="#E0F2FE" strokeWidth={3} strokeLinecap="round" />
+          {[0, 1, 2].map((i) => (
+            <path key={i} d={`M${xa + 14 + i * 22} ${Y + 12 + (i % 2) * 10} q4 -3 8 0 t8 0`} fill="none" stroke="#38BDF8" strokeWidth={1.4} strokeLinecap="round" />
+          ))}
+        </g>
+        {/* la droite : une piste, ses graduations ; des nombres « ronds » seulement */}
+        <rect x={lay.x0 - 10} y={Y - 4} width={lay.x1 - lay.x0 + 20} height={8} rx={4} fill="#FFFFFF" stroke="#C7D2FE" />
+        <line x1={lay.x0 - 8} x2={lay.x1 + 10} y1={Y} y2={Y} stroke="#475569" strokeWidth={2} />
+        <path d={`M${lay.x1 + 10} ${Y - 4.5} L${lay.x1 + 18} ${Y} L${lay.x1 + 10} ${Y + 4.5} Z`} fill="#475569" />
         {lay.ticks.map((tk) => (
           <g key={tk.v}>
-            <line x1={tk.x} x2={tk.x} y1={LINE_Y - (tk.major ? 6 : 3)} y2={LINE_Y + (tk.major ? 6 : 3)} stroke="#64748B" strokeWidth={tk.major ? 1.4 : 0.8} />
-            {tk.label && <text x={tk.x} y={LINE_Y + 19} textAnchor="middle" fontSize={10} fill="#475569" fontFamily="ui-monospace, monospace">{tk.v}</text>}
+            <line x1={tk.x} x2={tk.x} y1={Y - (tk.major ? 6 : 3)} y2={Y + (tk.major ? 6 : 3)} stroke="#64748B" strokeWidth={tk.major ? 1.4 : 0.8} />
+            {tk.label && <text x={tk.x} y={Y + 21} textAnchor="middle" fontSize={11} fontWeight={700} fill="#475569" fontFamily="ui-monospace, monospace">{tk.v}</text>}
           </g>
         ))}
-        {/* le nombre à atteindre */}
+        {/* le nombre à atteindre : un drapeau */}
         <g data-dj-target={a}>
-          <line x1={xa} x2={xa} y1={LINE_Y - 56} y2={LINE_Y + 8} stroke="#BE123C" strokeWidth={2} />
-          <text x={xa} y={LINE_Y - 60} textAnchor="middle" fontSize={13} fontWeight={800} fill="#9F1239" fontFamily="ui-monospace, monospace">{a}</text>
+          <line x1={xa} x2={xa} y1={Y + 6} y2={Y - 66} stroke="#9F1239" strokeWidth={2.2} strokeLinecap="round" />
+          <path d={`M${xa} ${Y - 66} L${xa - 16} ${Y - 60} L${xa} ${Y - 54} Z`} fill="#F43F5E" />
+          <SvgPill x={xa} y={Y - 68} pointer="down" text={String(a)} size={pillSize + 1} fill="#E11D48" />
         </g>
-        {/* les sauts : de (i − 1)·b à i·b ; ceux qui passent après a sont de trop */}
+        {/* les sauts : de (i − 1)·b à i·b ; ceux qui passent après a sont de trop (pointillés roses) */}
         {Array.from({ length: q }, (_, i) => {
           const j = lay.jump(i + 1);
           const over = j.to > a;
           return (
-            <path key={i} d={arc(j.x0, j.x1, hOf(j.x1 - j.x0))} fill="none" data-dj-group={i + 1} data-dj-missing={over ? j.to - a : undefined}
-              stroke={over ? '#E11D48' : '#4F46E5'} strokeWidth={2} strokeDasharray={over ? '4 3' : undefined} />
+            <g key={i}>
+              <path d={arc(j.x0, j.x1, hOf(j.x1 - j.x0))} fill="none" data-dj-group={i + 1} data-dj-missing={over ? j.to - a : undefined}
+                stroke={over ? '#E11D48' : '#6366F1'} strokeWidth={2.4} strokeLinecap="round" strokeDasharray={over ? '4 3' : undefined} />
+              <circle cx={j.x1} cy={Y} r={3.2} fill={over ? '#E11D48' : '#4F46E5'} stroke="#FFFFFF" strokeWidth={1.2} />
+            </g>
           );
         })}
         {/* le saut fantôme d'un `short` : il tient encore avant a */}
         {showGhost && v.kind === 'short' && (() => {
           const j = lay.jump(q + 1);
-          return <path data-dj-ghost="jump" d={arc(j.x0, j.x1, hOf(j.x1 - j.x0))} fill="none" stroke="#059669" strokeWidth={2} strokeDasharray="5 4" />;
+          return <path data-dj-ghost="jump" d={arc(j.x0, j.x1, hOf(j.x1 - j.x0))} fill="none" stroke="#059669" strokeWidth={2.4} strokeDasharray="5 4" />;
         })()}
         {showGhost && v.kind === 'over' && (
-          <line data-dj-ghost="past" x1={xa} x2={xl} y1={LINE_Y} y2={LINE_Y} stroke="#E11D48" strokeWidth={5} strokeDasharray="3 3" strokeLinecap="round" />
+          <line data-dj-ghost="past" x1={xa} x2={xl} y1={Y} y2={Y} stroke="#E11D48" strokeWidth={5} strokeDasharray="3 3" strokeLinecap="round" />
         )}
         {/* l'écart a − b·q : ce qui reste, en rose, après un arrêt exact */}
         {land <= a && (
           <g data-dj-left={a - land}>
-            {showGhost && v.kind === 'exact' && a > land && <line x1={xl} x2={xa} y1={LINE_Y} y2={LINE_Y} stroke="#E11D48" strokeWidth={5} strokeLinecap="round" />}
+            {showGhost && v.kind === 'exact' && a > land && <line x1={xl} x2={xa} y1={Y} y2={Y} stroke="#E11D48" strokeWidth={6} strokeLinecap="round" />}
           </g>
         )}
-        {/* les multiples trouvés, sous la droite ; le point d'arrivée au-dessus */}
+        {/* les multiples trouvés, sous la droite */}
         {visitedShown.map((m) => (
-          <text key={m} x={lay.xOf(m)} y={LINE_Y + 34} textAnchor="middle" fontSize={10} fontWeight={700} fill="#4338CA" fontFamily="ui-monospace, monospace" data-dj-visited={m}>{m}</text>
+          <text key={m} x={lay.xOf(m)} y={Y + 36} textAnchor="middle" fontSize={10.5} fontWeight={800} fill="#4338CA" fontFamily="ui-monospace, monospace" data-dj-visited={m}>{m}</text>
         ))}
-        <text x={Math.max(14, Math.min(W - 14, xl))} y={LINE_Y - 34} textAnchor="middle" fontSize={12} fontWeight={800} fill="#312E81"
-          fontFamily="ui-monospace, monospace" stroke="#FFFFFF" strokeWidth={3} paintOrder="stroke" data-dj-landing={land}>{land}</text>
         {/* les marques du manuel (« 10؟ 20؟ ») : des nombres de sauts à visiter, jamais des réponses */}
         {marks.map((n) => (
           <g key={n} data-dj-mark={n} data-hit={n === q ? 'true' : 'false'}>
-            <line x1={lay.xOf(n * b)} x2={lay.xOf(n * b)} y1={LINE_Y + 40} y2={LINE_Y + 46} stroke="#A16207" strokeWidth={1.5} />
-            <text x={lay.xOf(n * b)} y={LINE_Y + 58} textAnchor="middle" fontSize={10.5} fontWeight={700} fill={n === q ? '#4338CA' : '#A16207'}
+            <line x1={lay.xOf(n * b)} x2={lay.xOf(n * b)} y1={Y + 42} y2={Y + 48} stroke="#A16207" strokeWidth={1.5} />
+            <text x={lay.xOf(n * b)} y={Y + 59} textAnchor="middle" fontSize={10.5} fontWeight={800} fill={n === q ? '#4338CA' : '#A16207'}
               style={{ direction: 'rtl', unicodeBidi: 'isolate' }}>{k('mark', { jumps: groups(n) })}</text>
           </g>
         ))}
+        {/* le lapin au point d'arrivée (il saute à chaque pas), et la pilule de son arrivée */}
+        <g transform={`translate(${xl} ${Y - 2})`} data-dj-hopper={land} data-mood={mood}>
+          <g key={q} className="dj-hop"><HopperFigure x={0} y={0} size={hs} mood={mood} /></g>
+        </g>
+        <SvgPill x={landX} y={Y - hs * 1.18 - 4} pointer="down" text={String(land)} size={pillSize} fill={past ? '#E11D48' : '#4F46E5'} data-dj-landing={land} />
       </svg>
-      <div {...st.trackProps} className="absolute inset-0" style={st.trackProps.style}>
+      <div {...st.trackProps} className="absolute inset-x-0 top-0" style={{ ...st.trackProps.style, height: lineH }}>
         <div {...st.handleProps({ label: k('handle.line'), valueText: k('handleValue.line', { jumps: groups(q), land }) })}
           data-dj-handle
-          className="absolute flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-indigo-600 bg-white/90 shadow outline-none focus-visible:ring-4 focus-visible:ring-indigo-300"
-          style={{ left: xl, top: LINE_Y, cursor: st.dragging ? 'grabbing' : 'grab' }}>
-          <ChevronsLeftRight className="h-5 w-5 text-indigo-700" aria-hidden="true" />
+          className="group absolute flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-end justify-end rounded-full outline-none focus-visible:ring-4 focus-visible:ring-indigo-300"
+          style={{ left: xl, top: Y - hs * 0.45, cursor: st.dragging ? 'grabbing' : 'grab' }}>
+          <span className={`flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-white shadow transition-transform motion-reduce:transition-none ${st.dragging ? 'scale-125' : ''}`}>
+            <ChevronsLeftRight className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" />
+          </span>
         </div>
       </div>
-    </div>
+      {strip}
+    </StageFrame>
   );
 }
-

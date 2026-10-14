@@ -885,6 +885,20 @@ pattern, its gate and its tests are in [`MANIPULATION_DNA.md` §16](../architect
   drags aside (pointer or arrows) — never write a local version of either.
   Many objects form a near-square block (32 agents = 6 × 6), never a strip.
   [`MANIPULATION_CONTRACT.md` §8bis](../architecture/MANIPULATION_CONTRACT.md).
+- **One visual language (2026-10-14).** A new or redesigned lab composes the shared kit — `primitives/LabKit.jsx`
+  (PromptCard, ChoiceCard, StepperCard, NamePill, VerdictBanner…), `primitives/SvgPill.jsx` (value pills, dimensions) and, when
+  people are measured, `primitives/KidFigure.jsx` (a drawn child whose crown IS its height) — never a local look-alike. Reference:
+  `operations/StoryBars.jsx`; contract [`MANIPULATION_CONTRACT.md` §8ter](../architecture/MANIPULATION_CONTRACT.md).
+- **Always push the UI/UX to the limit — Gen Alpha, 11–13 (owner rule, 2026-10-14, every generation).** A lab that only
+  « works » is not done: build each new or redesigned manipulation to the best finish you can produce — a rich drawn world,
+  the shared kit, physical gestures with purposeful micro-animations, immediate visual feedback in the student's numbers
+  (never the rule), one screen at four sizes, honest drawing — and REVIEW screenshots of the initial and mid-activity states
+  at 1280 / 1366 / 390 / 320 before finishing. The full bar:
+  [`MANIPULATION_DNA.md` §17](../architecture/MANIPULATION_DNA.md); gold-standard question 6 (§14).
+- **Say it ONCE (owner, 2026-10-14).** Gen Alpha does not read repeated text: the question lives in the lab's prompt card (no
+  shell `mission` on a kit lab), the gesture in one line, the story mapping in a one-line `lead` (« كل قفزة = عقد من 17 لؤلؤة. »)
+  — a lesson's `lead` never restates the question, the gesture or the strategy. Hints are closed by default, short thinking
+  questions. [`MANIPULATION_DNA.md` §17.7](../architecture/MANIPULATION_DNA.md).
 - A manipulation is a **tactile laboratory**: the student moves a real object
   and the notation appears as a consequence. Never an animated explanation,
   never a quiz.
@@ -970,6 +984,35 @@ pattern, its gate and its tests are in [`MANIPULATION_DNA.md` §16](../architect
   A world earns its place only when it shows the structure (whole bricks,
   a cut, identical groups); where the textbook's abstract drawing already *is*
   the argument (the rectangle, the divisor lists), keep it.
+- **People are the platform's CHARACTERS — `KidFigure`, never a one-off (owner, 2026-10-14).** Whenever a lab or a
+  scene shows a pupil (a height on a gauge, a team, a queue, a class), draw it with `primitives/KidFigure.jsx` (geometry
+  `primitives/kidFigure.js`, tests `primitives/labKit.test.jsx`, contract
+  [`MANIPULATION_CONTRACT.md` §8ter](../architecture/MANIPULATION_CONTRACT.md)). The cast:
+
+  | Who | How they are drawn |
+  |---|---|
+  | **Girls** | ALWAYS in Islamic dress: `hairStyle="hijab"` + a `scarf` from `SCARVES` (`rose`, `lavender`, `mint`, `sky`, `sand`) — the scarf covers the head, ears and neck and is draped over the shoulders and chest, with a forehead band and a pin — and a long tunic over wide trousers (automatic with the hijab). There is NO uncovered-hair style for a girl. |
+  | **Boys** | a hoodie (hood, drawstrings, kangaroo pocket), `hairStyle` `short` or `curly`, `hair` from `HAIRS`. |
+  | **Everyone** | an 11–13-year-old with a friendly illustrated face; `skin` from `SKINS` (vary it across a scene), `outfit` from `OUTFITS`, `mood` `happy` (default) · `wonder` (still unknown, thinking) · `proud` (just solved) · `neutral`; `unknown` + `mark="؟"` puts a « ؟ » badge on the chest of the person whose value the student is looking for. |
+
+  How to use it:
+  ```jsx
+  import KidFigure from '../primitives/KidFigure';
+  // in the scene's SVG: the crown is EXACTLY `top`, the soles touch `foot`
+  <KidFigure cx={x} top={g.yOf(130)} foot={g.floor} hairStyle="hijab" scarf="rose" outfit="pink" skin="light"
+    mood="happy" data-sb-person="sara" data-height={130} />
+  ```
+  - **The drawing is the measure.** If a height matters, the floor is 0 and the crown is the value on the same scale as
+    the ruler — a child floating above the ruler's zero (as in many mockups) is a wrong lesson.
+  - **A stable cast per lesson.** Give each named person ONE look in a `LOOKS` map inside the lab (story-bars:
+    `sara` rose hijab + pink tunic, `rim` lavender hijab + violet tunic, `amine` blue hoodie…), so every student sees the same
+    سارة; `kidLook(index)` is only a deterministic fallback. Names come from the textbook or are Algerian first names, with
+    the word « زميل / زميلة » the textbook uses.
+  - **Read it with the kit:** a value pill above the head (`SvgPill`, `pointer="down"`), a name pill under the feet
+    (`NamePill`, filled for the person the student holds), a difference as `SvgDimension` without a sign (« 6 cm », not
+    « +6 cm » — the drawing must not dictate the operation).
+  - Need something the character cannot do yet (sitting, holding an object, another age)? Extend `KidFigure` and its
+    tests — never draw a second, local person, and never use a raster or generated image.
 - **Manual first, then « let the lab finish it ».** When a manipulation's
   gesture *repeats* once understood (carrying 20 players into 4 teams, cutting
   the short ribbon a 12th time), the type may offer a student button that
@@ -1444,6 +1487,10 @@ lesson `<code>` of grade `<g>`:
      its routes (nothing to add to `App.jsx` since 2026-10-14; `check:routes` and the index `--check` fail otherwise);
    - if it has practice: its bank in `content/practice/<g>/<code>/`, its `active.json` entry, and `exam-style.json`
      when its sheets are exam-style (`EXERCISE_CONTRACT.md` § « Term-exam provenance »).
+     The lesson summary then shows the bank card (« بنك تمارين هذا الدرس » for a teacher, the practice entry for a student,
+     `features/practice/PracticeEntryCard.jsx`). The dev server watches `content/practice` since 2026-10-14
+     (`vite.config.js › watchPracticeContent`): before that, a server started before the bank existed kept the old
+     `active.json` and hid the card until restarted.
 3. **Regenerate** the net's map and queue (the lesson drops out of the queue): `npm run generate:learning-net`.
 4. **Local DB handshake:**
    ```bash
@@ -1618,6 +1665,11 @@ Each of these has actually happened in this repository, or is a standing rule.
 - Do not print a content string with `{bidi(x)}` (or raw `{x}`) in JSX when it may carry `$…$`: the student
   reads the dollars. Use `<MathLabel>{x}</MathLabel>`, or `mathToPlain(x)` where only a string fits
   (ARABIC_RTL_CONTRACT « Content text outside a module »). Owner report, 2026-10-02: 122 raw formulas, 7 units.
+
+**Characters**
+- Do not draw a person locally (circles, rectangles, a new figure component): use `KidFigure` (§6 « People are the
+  platform's CHARACTERS »). Do not draw a girl without the hijab and Islamic dress (owner, 2026-10-14). Do not let a
+  character's drawn height disagree with the ruler.
 
 **Progression**
 - Do not gate a step on a *correct* answer (§4). Release blocker.
@@ -1812,6 +1864,11 @@ parallel rollout — is in [`MASAIL_GENERATION_GUIDE.md`](./MASAIL_GENERATION_GU
 Reference lesson: `qasim-adad-tabii`. **Since 2026-10-07 every regular 4AM lesson (60) has its
 three مسائل** — a new lesson ships with them (MASAIL guide §7–§8; statement support `figure` /
 `visual` / `table` / `illustration`, problem 1's support in `lessonProblem`). **Since 2026-10-13 every مسألة has a drawn support** (`illustration` kinds `plan` `stacks` `tags` `tanks` `route` `ladder` `timeline` `scene` + the six sheet drawings — `MASAIL_GENERATION_GUIDE.md` § `illustration`; gate `common/problems/masailIllustrations.test.js`: no support, or a number not in the statement, fails). Synthesis lessons have none.
+
+**« مسألة الدرس » lives in ONE place (owner, 2026-10-14).** `config.lessonProblem` is shown on the lesson's summary page
+(`LessonIndex` → `LessonProblemCard`, linked to the module that solves it) and solved step by step in its « مسألة » module
+(`GuidedProblem`). It is NEVER re-printed inside another module (not at the end of the نشاط, not as a reminder): gate
+`common/problems/lessonProblemPlacement.test.js` fails on any module that renders `LessonProblemCard`.
 
 ### 14.3ter « أتوقّع القاعدة » — the student writes the rule before reading it (2026-10-06)
 

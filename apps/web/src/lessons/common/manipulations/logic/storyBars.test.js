@@ -249,4 +249,22 @@ describe('story-bars — gauge geometry', () => {
     expect(ticks).toHaveLength(51);
     expect(ticks.filter((t) => t.major).map((t) => t.cm)).toEqual([100, 110, 120, 130, 140, 150]);
   });
+
+  it('the children stand on the floor: 0 cm is the floor, 150 cm leaves the pill margin, pads are pixels', () => {
+    for (const H of [220, 301, 457]) {
+      const g = L.gaugeScale(H);
+      expect(g.yOf(0)).toBe(H - L.GAUGE_PAD.bottom);
+      expect(g.yOf(L.VIEW.hi)).toBeCloseTo(L.GAUGE_PAD.top, 6);
+      expect(g.yOf(136) - g.yOf(130)).toBeCloseTo(-6 * g.k, 6);
+    }
+  });
+
+  it('rulerTicks: one tick per cm when there is room, labels every 10 cm (or 20 when cramped)', () => {
+    const fine = L.rulerTicks(3.2);
+    expect(fine).toHaveLength(151);
+    expect(fine.filter((t) => t.label).map((t) => t.cm)).toEqual([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]);
+    const coarse = L.rulerTicks(1.5);
+    expect(coarse).toHaveLength(31);
+    expect(coarse.filter((t) => t.label).map((t) => t.cm)).toEqual([0, 20, 40, 60, 80, 100, 120, 140]);
+  });
 });

@@ -6,8 +6,6 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, FLOWERS, GUIDE } from '../content/textbook';
 
@@ -70,7 +68,7 @@ export default function Module01Nashat() {
             beginner: () => (
               <div className="space-y-2">
                 <Manipulation type="division-jumps" level="beginner" world="flowers" a={FLOWERS.numbers.a} b={FLOWERS.numbers.b}
-                  lead="اسحب الشريط على صفّ الزهور: كل باقة 6 زهرات. متى تتوقّف؟" onTrial={record} />
+                  onTrial={record} />
                 <SourceTag source={FLOWERS.source} />
               </div>
             ),
@@ -78,7 +76,7 @@ export default function Module01Nashat() {
               <div className="space-y-2">
                 <TextbookBox kind="situation" text={ACTIVITY.situation} source={ACTIVITY.source} compact />
                 <Manipulation type="division-jumps" level="advanced" world="line" a={a} b={b}
-                  lead="كل قفزة باقة من 14 زهرة. قدّر أوّلًا: هل تصل 10 قفزات؟ 20 قفزة؟" onTrial={record} />
+                  lead="كل قفزة = باقة من 14 زهرة." onTrial={record} />
               </div>
             ),
           }}
@@ -158,7 +156,6 @@ export default function Module01Nashat() {
                 )}
                 onAnswered={() => setQ4(true)}
               />
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

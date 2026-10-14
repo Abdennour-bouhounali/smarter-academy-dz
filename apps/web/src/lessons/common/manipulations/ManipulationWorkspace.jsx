@@ -84,7 +84,7 @@ export default function ManipulationWorkspace({
 
   return (
     <section
-      className={`space-y-3 rounded-3xl border-2 border-indigo-200 bg-white/60 p-2 sm:p-4 ${className}`}
+      className={`space-y-3 rounded-3xl border border-indigo-200 bg-white/60 p-1.5 sm:border-2 sm:p-4 ${className}`}
       data-manipulation-workspace
       data-level={active}
       aria-label={title ?? t('manipulation.level.title')}

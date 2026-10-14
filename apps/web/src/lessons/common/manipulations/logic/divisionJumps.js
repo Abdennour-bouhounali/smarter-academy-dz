@@ -164,8 +164,11 @@ export function bracketPieces(a, b) {
 /* ── Géométrie : le bloc de fleurs (px), pure et testée ───────────────────────────── */
 
 const GAP = 0.4;     // l'espace entre deux bouquets d'une même rangée, en tailles de fleur
-const ROW = 1.5;     // la hauteur d'une rangée : la voie du ruban (0,38) + la fleur (1) + l'interligne
-const LANE = 0.38;
+const ROW_DEFAULT = 1.5;   // la hauteur d'une rangée : la voie du ruban (0,38) + la fleur (1) + l'interligne
+const LANE_DEFAULT = 0.38;
+/** Les proportions de la scène dessinée (2026-10-14) : la pochette de papier d'un bouquet descend à 1,08 taille sous le
+ * haut de la fleur, sa pilule de compte est le nœud du ruban (à 0,8). `lane + 1,08 ≤ row` (testé). */
+export const BOUQUET_ROWS = Object.freeze({ row: 1.5, lane: 0.2 });
 
 /**
  * Les `slots` places de fleurs (b × qMax : les fleurs ET la place des fantômes d'un dépassement), en rangées
@@ -176,9 +179,10 @@ const LANE = 0.38;
  *
  * @returns {{ m, perRow, rows, size, width, height, rowH, lane, x(i), y(i), posAt(x, y) }}
  *   x(i), y(i) : le coin haut-gauche de la fleur i ; posAt : la position continue (en fleurs) sous le
- *   pointeur, 0 … slots (le bout du ruban).
+ *   pointeur, 0 … slots (le bout du ruban). `row` et `lane` (en tailles de fleur) : la hauteur d'une rangée et de
+ *   sa voie (par défaut 1,5 et 0,38 ; la scène dessinée passe `BOUQUET_ROWS`).
  */
-export function flowerLayout({ slots, b, width, maxHeight, maxSize = 44 }) {
+export function flowerLayout({ slots, b, width, maxHeight, maxSize = 44, row: ROW = ROW_DEFAULT, lane: LANE = LANE_DEFAULT }) {
   const groups = Math.ceil(slots / b);
   let best = null;
   for (let m = 1; m <= groups; m += 1) {
@@ -242,4 +246,26 @@ export function lineLayout({ a, b, qMax, width, pad = 22 }) {
   }
   const jump = (i) => ({ i, from: (i - 1) * b, to: i * b, x0: xOf((i - 1) * b), x1: xOf(i * b) });
   return { L, x0, x1, k, a, b, xOf, valueAt, ticks, minor, major, jump };
+}
+
+/**
+ * Le bouquet g (0-based) d'un `flowerLayout` : la pochette de papier derrière ses b fleurs, le ruban qui serre leurs
+ * tiges et l'inclinaison de chaque tige vers le centre. Un bouquet n'est jamais coupé (rangées d'un nombre entier de
+ * bouquets), donc ses b places sont sur UNE rangée ; lues de droite à gauche, la première est la plus à droite.
+ *   { x0, x1 (bords du papier), y (le haut des fleurs), top, band (le ruban, où se pose la pilule), bottom, cx,
+ *     leans: [b] (en tailles de fleur, vers le centre) }
+ */
+export function bouquetShape(lay, g, b) {
+  const s = lay.size;
+  const first = g * b;
+  const last = first + b - 1;
+  const left = lay.x(last);
+  const right = lay.x(first) + s;
+  const y = lay.y(first);
+  const cx = (left + right) / 2;
+  const leans = Array.from({ length: b }, (_, j) => {
+    const fc = lay.x(first + j) + s / 2;
+    return ((cx + (fc - cx) * 0.8) - fc) / s;
+  });
+  return { x0: left - s * 0.08, x1: right + s * 0.08, cx, y, top: y + s * 0.02, band: y + s * 0.8, bottom: y + s * 1.08, leans };
 }

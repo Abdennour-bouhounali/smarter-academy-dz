@@ -178,6 +178,41 @@ describe('division-jumps — the flower block', () => {
     const oneRow = L.flowerLayout({ slots: 12, b: 6, width: 760, maxHeight: 300 });
     expect(oneRow.rows).toBe(1);
   });
+
+  it('the drawn scene (BOUQUET_ROWS): each bouquet\'s paper sleeve stays in its row, its ribbon across the stems, and every stem leans toward the bouquet\'s foot', () => {
+    expect(L.BOUQUET_ROWS.lane + 1.08).toBeLessThanOrEqual(L.BOUQUET_ROWS.row);
+    for (const [a, b] of [[47, 6], [279, 14], [20, 3]]) {
+      const qMax = L.qMaxOf(a, b, 1);
+      const slots = b * qMax;
+      for (const width of [232, 300, 454, 760]) {
+        for (const maxHeight of [150, 260, 420]) {
+          const lay = L.flowerLayout({ slots, b, width, maxHeight, ...L.BOUQUET_ROWS });
+          expect(lay.height).toBeLessThanOrEqual(maxHeight + 0.5);
+          for (let g = 0; g < qMax; g += 1) {
+            const sh = L.bouquetShape(lay, g, b);
+            const row = Math.floor((g * b) / lay.perRow);
+            // the sleeve ends before the next row
+            expect(sh.bottom, `${a}/${b} @${width}×${maxHeight} g${g}`).toBeLessThanOrEqual((row + 1) * lay.rowH + 0.01);
+            expect(sh.top).toBeGreaterThan(sh.y);
+            expect(sh.band).toBeGreaterThan(sh.top);
+            expect(sh.band).toBeLessThan(sh.bottom);
+            // the paper covers exactly the b flowers of the bouquet (never a neighbour)
+            expect(sh.x0).toBeLessThanOrEqual(lay.x(g * b + b - 1));
+            expect(sh.x1).toBeGreaterThanOrEqual(lay.x(g * b) + lay.size);
+            if (g + 1 < qMax && Math.floor(((g + 1) * b) / lay.perRow) === row) expect(sh.x0).toBeGreaterThan(lay.x((g + 1) * b) + lay.size);
+            // stems lean toward the centre, symmetric
+            expect(sh.leans).toHaveLength(b);
+            for (let j = 0; j < b; j += 1) {
+              const fc = lay.x(g * b + j) + lay.size / 2;
+              if (Math.abs(sh.cx - fc) < 1e-6) expect(sh.leans[j]).toBeCloseTo(0, 6);
+              else expect(Math.sign(sh.leans[j])).toBe(Math.sign(sh.cx - fc));
+              expect(sh.leans[j] + sh.leans[b - 1 - j]).toBeCloseTo(0, 6);
+            }
+          }
+        }
+      }
+    }
+  });
 });
 
 describe('division-jumps — the number line', () => {

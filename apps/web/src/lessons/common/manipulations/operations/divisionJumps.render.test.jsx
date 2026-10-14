@@ -110,11 +110,11 @@ describe('division-jumps — rendu', () => {
     };
     const keys = ['explanation', 'mark', 'bracketTitle', 'trial', 'trialsTitle', 'next.title', 'next.text', 'next.button', 'next.back', 'formal.then'];
     for (const w of ['flowers', 'line']) {
-      keys.push(`title.${w}`, `mission.${w}`, ...(w === 'line' ? ['q', 'land'] : ['q', 'need', 'left']).map((x) => `reading.${w}.${x}`), `handle.${w}`, `handleValue.${w}`, `less.${w}`, `more.${w}`, `sceneAria.${w}`,
+      keys.push(`title.${w}`, `chip.${w}`, `prompt.${w}`, `instruction.${w}`, `stepTitle.${w}`, ...(w === 'line' ? ['q', 'land'] : ['q', 'need', 'left']).map((x) => `reading.${w}.${x}`), `handle.${w}`, `handleValue.${w}`, `less.${w}`, `more.${w}`, `sceneAria.${w}`,
         `discovery.prompt.${w}`, `discovery.right.${w}`, `discovery.nothing.${w}`, `discovery.ten.${w}`, `discovery.whyNothing.${w}`,
         `discovery.whyTen.${w}.over`, `discovery.whyTen.${w}.short`, `formal.rule.${w}`, `need.${w}.over`, `need.${w}.short`,
         ...['over', 'short', 'exact'].map((kd) => `kind.${w}.${kd}`), ...['a', 'b', 'q', 'r'].map((r) => `formal.roles.${r}.${w}`));
-      for (let i = 0; i < 3; i += 1) keys.push(`hints.${w}.${i}`);
+      for (let i = 0; i < 2; i += 1) keys.push(`hints.${w}.${i}`);
     }
     keys.push(...['overLast', 'over', 'short', 'shortZero', 'exact', 'exactZero'].map((x) => `v.flowers.${x}`));
     keys.push(...['over', 'short', 'shortZero', 'exact', 'exactZero'].map((x) => `v.line.${x}`));
@@ -131,7 +131,18 @@ describe('division-jumps — rendu', () => {
     }
     // the hints never give the quotient of the lesson's numbers
     for (const [w, a, b, q] of [['flowers', 47, 6, 7], ['line', 279, 14, 19]]) {
-      for (let i = 0; i < 3; i += 1) expect(say(`hints.${w}.${i}`, { a, b })).not.toMatch(new RegExp(`(^|\\D)${q}(\\D|$)`));
+      for (let i = 0; i < 2; i += 1) expect(say(`hints.${w}.${i}`, { a, b })).not.toMatch(new RegExp(`(^|\\D)${q}(\\D|$)`));
+    }
+  });
+
+  it('says each thing ONCE (MANIPULATION_DNA §17): no shell mission over the prompt card, the gesture told once, hints closed', () => {
+    for (const lv of ['beginner', 'advanced']) {
+      const out = html({ ...LEVELS['division-jumps'][lv].numbers });
+      const w = lv === 'beginner' ? 'flowers' : 'line';
+      expect(out).not.toContain('data-manipulation-mission');
+      expect(out).not.toContain('data-manipulation-hints');
+      expect(out.split(say(`instruction.${w}`)).length - 1).toBe(1);
+      expect(out).not.toMatch(/أو استعمل/);
     }
   });
 

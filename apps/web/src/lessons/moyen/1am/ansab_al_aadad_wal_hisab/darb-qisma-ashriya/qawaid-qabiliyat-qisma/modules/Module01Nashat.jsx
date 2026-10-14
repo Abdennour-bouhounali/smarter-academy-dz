@@ -4,8 +4,6 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
-import LessonProblemCard from '../../../../../../common/problems/LessonProblemCard';
-import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, CARDS } from '../content/textbook';
 
@@ -124,7 +122,6 @@ export default function Module01Nashat() {
                 onAnswered={() => setQ3(true)}
               />
               <KnowledgeBrick id="qabiliya-3" lead="رقم الآحاد لم يكفِ هنا: ما الذي كان مشتركًا بين خاناتك الخضراء؟" />
-              <LessonProblemCard problem={LESSON_CONFIG.lessonProblem} compact />
             </div>
           ),
         },

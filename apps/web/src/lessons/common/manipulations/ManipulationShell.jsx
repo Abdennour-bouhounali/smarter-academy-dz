@@ -85,7 +85,7 @@ export default function ManipulationShell({
       data-manipulation-mode={state.mode}
       data-phase={state.phase}
       data-level={state.level}
-      className="space-y-3 rounded-3xl border-2 border-indigo-200 bg-indigo-50/40 p-2 sm:p-5"
+      className="space-y-3 rounded-3xl border border-indigo-200 bg-indigo-50/40 p-1.5 sm:border-2 sm:p-5"
       aria-label={shownTitle}
     >
       <header className="space-y-2">

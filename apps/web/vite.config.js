@@ -2,9 +2,26 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
+import { fileURLToPath } from 'node:url'
+
+/**
+ * Le contenu de pratique vit HORS de apps/web (content/practice, lu aussi par Laravel) : Vite ne le surveillait pas.
+ * Un serveur de dev lancé avant qu'une banque soit ajoutée gardait l'ancien `active.json` / `index.generated.json` —
+ * la carte « بنك تمارين هذا الدرس » manquait jusqu'au redémarrage (constaté le 2026-10-14 sur l'unité 3 1AM).
+ * On ajoute le dossier au watcher : un fichier modifié ou ajouté recharge la page, comme une source.
+ */
+const PRACTICE_CONTENT = fileURLToPath(new URL('../../content/practice', import.meta.url))
+function watchPracticeContent() {
+  return {
+    name: 'sa-watch-practice-content',
+    configureServer(server) {
+      server.watcher.add(PRACTICE_CONTENT)
+    },
+  }
+}
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), watchPracticeContent()],
   build: {
     // Le rapport des tailles gzip de CHAQUE chunk (≈ 2 000 chunks : un par module
     // de leçon) faisait dépasser le tas de 4 Go du build (`npm run build`, CI) :

@@ -184,6 +184,15 @@ content.** If a manipulation needs a new visual, extend its SVG. Four reasons:
 > Le dessin n'est pas une illustration — il se LIT.
 > See `docs/architecture/MANIPULATION_CONTRACT.md`.
 
+**People are one shared character, `primitives/KidFigure.jsx`** (owner, 2026-10-14): boys in a hoodie, **girls always in
+Islamic dress** (hijab draped over the shoulders + long tunic — no uncovered-hair style exists); the crown sits exactly on the
+child's height. Never draw a person locally. Rules and cast: `docs/lessons/LESSON_DEVELOPMENT_GUIDE.md` §6 « People are the
+platform's CHARACTERS »; the lab visual kit around it: `MANIPULATION_CONTRACT.md` §8ter.
+
+**Every manipulation is built to the LIMIT of what you can produce for Gen Alpha (11–13)** (owner, 2026-10-14, every
+generation): a lab that merely works is not done. The quality bar — drawn world, shared kit, physical gestures, visual feedback that
+never states the rule, one screen at four sizes, screenshots reviewed with the eyes — is `docs/architecture/MANIPULATION_DNA.md` §17.
+
 ### Marketing and shell surfaces: generation is fine
 
 Homepage hero, OG/social cards, blog headers, empty-state art, print covers —

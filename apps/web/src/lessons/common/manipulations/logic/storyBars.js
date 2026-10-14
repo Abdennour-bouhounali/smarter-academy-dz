@@ -35,8 +35,14 @@ const { frac, parseNumber, add, sub, eq, cmp, fracDecimal } = LIN;
 
 /** La toise : graduée de 100 à 150 cm, au centimètre (un nombre tous les 10 cm). */
 export const GAUGE = Object.freeze({ min: 100, max: 150 });
-/** Le cadre de la scène (cm) : la caméra montre le haut de la toise, les corps continuent sous le cadre. */
-export const VIEW = Object.freeze({ lo: 97, hi: 154 });
+/**
+ * Le cadre de la scène (cm) : les enfants sont dessinés EN ENTIER, les pieds sur la graduation 0 et le sommet du crâne
+ * sur leur taille (2026-10-14 — refonte « Gen Alpha » ; jamais un enfant qui flotte au-dessus du zéro de la toise).
+ * Au-dessus de `hi` et sous `lo`, la scène réserve des marges en PIXELS (`GAUGE_PAD`) : la pilule de valeur au-dessus
+ * de la tête la plus haute, les pilules de nom sous les pieds.
+ */
+export const VIEW = Object.freeze({ lo: 0, hi: 150 });
+export const GAUGE_PAD = Object.freeze({ top: 44, bottom: 46 });
 
 const OP = { '+': add, '-': sub };
 
@@ -392,21 +398,35 @@ export function trialEvidence(s, trial) {
 /* ── Géométrie de la toise (px), pure et testée ───────────────────────────────────── */
 
 /**
- * La toise dessinée sur une hauteur `height` (px) : `VIEW.lo` en bas, `VIEW.hi` en haut, la même
- * échelle pour la toise et pour chaque enfant (les tailles sont À L'ÉCHELLE).
+ * La toise dessinée sur une hauteur `height` (px) : `VIEW.lo` (le sol) à `height − pad.bottom`, `VIEW.hi` à `pad.top` ;
+ * la même échelle pour la toise et pour chaque enfant (les tailles sont À L'ÉCHELLE).
  */
-export function gaugeScale(height) {
+export function gaugeScale(height, pad = GAUGE_PAD) {
   const span = VIEW.hi - VIEW.lo;
-  const k = height / span;
+  const usable = Math.max(1, height - pad.top - pad.bottom);
+  const k = usable / span;
+  const floor = height - pad.bottom;
   return {
     k,
-    yOf: (cm) => (VIEW.hi - cm) * k,
-    cmAt: (y) => VIEW.hi - y / k,
+    floor,
+    yOf: (cm) => floor - (cm - VIEW.lo) * k,
+    cmAt: (y) => VIEW.lo + (floor - y) / k,
   };
 }
 /** Une taille (cm entier, bornée à la toise) sous le pointeur. */
-export function heightFromY(y, height) {
-  return clampH(gaugeScale(height).cmAt(y));
+export function heightFromY(y, height, pad = GAUGE_PAD) {
+  return clampH(gaugeScale(height, pad).cmAt(y));
 }
-/** Les graduations : chaque cm de la toise, un nombre tous les 10 cm. */
+/** Les graduations de la poignée : chaque cm de 100 à 150, un nombre tous les 10 cm. */
 export const gaugeTicks = () => Array.from({ length: GAUGE.max - GAUGE.min + 1 }, (_, k) => ({ cm: GAUGE.min + k, major: (GAUGE.min + k) % 10 === 0, mid: (GAUGE.min + k) % 5 === 0 }));
+/**
+ * Les graduations DESSINÉES de la toise entière (0 → 150) pour une échelle `k` px/cm : un trait par cm quand il y a la
+ * place (k ≥ 3), sinon tous les 5 cm ; un nombre tous les 10 cm, ou tous les 20 cm quand 10 cm font moins de 18 px.
+ */
+export function rulerTicks(k) {
+  const step = k >= 3 ? 1 : 5;
+  const label = 10 * k >= 18 ? 10 : 20;
+  const out = [];
+  for (let cm = VIEW.lo; cm <= VIEW.hi; cm += step) out.push({ cm, major: cm % 10 === 0, mid: cm % 5 === 0, label: cm % label === 0 });
+  return out;
+}
