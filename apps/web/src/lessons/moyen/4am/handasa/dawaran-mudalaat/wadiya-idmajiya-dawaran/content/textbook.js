@@ -112,6 +112,14 @@ export const REMARKS = {
   tajnid: 'نترجم «متباعدة بنفس المسافة» بمضلع منتظم، ونضع رؤوسه بالدوران الذي زاويته الزاوية المركزية، ثم نحسب المسافة في المثلث القائم الذي يرسمه الارتفاع.',
 };
 
+/** Les titres des leçons du propriétaire (catalogue). */
+export const LESSON_TITLES = {
+  'mafhum-dawaran': 'الدرس 1 — مفهوم الدوران وإنشاء صور أشكال هندسية بدوران',
+  'khawas-dawaran': 'الدرس 2 — خواص الدوران وتوظيفها في الأشكال الهندسية',
+  'zawiya-muhitiya': 'الدرس 3 — الزاوية المحيطية والزاوية المركزية والعلاقة بينهما',
+  'mudalaat-muntazama': 'الدرس 4 — المضلعات المنتظمة وتطبيقاتها',
+};
+
 /**
  * « وضعية الاختبار النهائي » (module 8) — la وضعية TRANSPOSÉE (`synthesis_generation`, extraction › situation › duplicatedIn module 8) :
  * mêmes ressources, autres nombres, pour que les réponses n'apparaissent nulle part ailleurs dans la leçon. Un rond-point à

@@ -5,6 +5,13 @@ import autoprefixer from 'autoprefixer'
 
 export default defineConfig({
   plugins: [react()],
+  build: {
+    // Le rapport des tailles gzip de CHAQUE chunk (≈ 2 000 chunks : un par module
+    // de leçon) faisait dépasser le tas de 4 Go du build (`npm run build`, CI) :
+    // constaté le 2026-10-14 sur origin/dev, « heap out of memory » à « computing
+    // gzip size ». Les tailles se mesurent à part (docs/architecture/BUNDLE_BOUNDARIES.md).
+    reportCompressedSize: false,
+  },
   // `html-to-image` n'est importé que dynamiquement (capture d'écran du
   // signalement) : sans cette ligne, Vite le découvre EN COURS de session,
   // ré-optimise ses dépendances, et chaque onglet déjà ouvert reçoit des 504
