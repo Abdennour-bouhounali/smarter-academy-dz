@@ -24,7 +24,8 @@
  * La découverte s'ouvre quand l'aire ET le volume sont écrits justes ET qu'un contraste a été vu : un refus (prédiction,
  * marque, carte) ou la même expérience réussie à deux rayons différents (« quel que soit R : 4 disques, 2/3 »).
  */
-import { space as S, linear as Q } from '@smarter-academy/core';
+import * as S from '@smarter-academy/core/arithmetic/space.js';
+import * as Q from '@smarter-academy/core/arithmetic/linear.js';
 
 export const K_MIN = 1;
 export const K_MAX = 6;

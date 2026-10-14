@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import AffineMeter from './AffineMeter';
 import ManipulationWorkspace from '../ManipulationWorkspace';
-import lessonAr from '../../../../i18n/locales/ar/lesson.json';
+import manipulationAr from '../../../../i18n/locales/ar/lesson.manipulation.json';
 import source from './AffineMeter.jsx?raw';
 
 /**
@@ -65,7 +65,7 @@ it('une cible sans antécédent entier est une faute de la leçon (erreur au ren
 });
 
 it('chaque clé que le composant lit existe (aucune clé brute à l’écran)', () => {
-  const ns = lessonAr.manipulation.affineMeter;
+  const ns = manipulationAr.affineMeter;
   const own = [...source.matchAll(/\bk\('([a-zA-Z0-9_]+)'/g)].map((m) => m[1]);
   expect(own.length).toBeGreaterThan(15);
   for (const key of own) expect(ns[key], `manipulation.affineMeter.${key}`).toBeTypeOf('string');

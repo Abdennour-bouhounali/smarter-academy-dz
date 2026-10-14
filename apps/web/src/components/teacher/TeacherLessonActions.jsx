@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ClipboardList, GraduationCap } from 'lucide-react';
-import { getLessonConfig } from '../../lessons/registry';
+import { useLessonConfig } from '../../lessons/useLessonConfig';
 import { lessonMemoPath, CLASSROOM_START_STATE } from '../../features/teacher/lessonMemo/memoRoutes';
 
 /**
@@ -12,7 +12,8 @@ import { lessonMemoPath, CLASSROOM_START_STATE } from '../../features/teacher/le
  */
 export function LessonModuleChips({ lessonId }) {
   const { t } = useTranslation('teacher');
-  const modules = getLessonConfig(lessonId)?.modules ?? [];
+  // La config complète (titres des محاور) se charge avec la page d'unité.
+  const modules = useLessonConfig(lessonId)?.modules ?? [];
   if (modules.length === 0) return null;
   return (
     <div data-lesson-modules={lessonId}>

@@ -1,7 +1,8 @@
 import { it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { thales as TH, linear as LIN } from '@smarter-academy/core';
+import * as TH from '@smarter-academy/core/arithmetic/thales.js';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 import '../../../../../../../i18n';
 import { validateGeoFigure } from '../../../../../../common/components/geoFigure';
 import ShadowWorld from '../../../../../../common/manipulations/geometry/ShadowWorld';

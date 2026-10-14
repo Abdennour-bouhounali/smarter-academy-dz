@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import PercentTag from './PercentTag';
 import ManipulationWorkspace from '../ManipulationWorkspace';
-import lessonAr from '../../../../i18n/locales/ar/lesson.json';
+import manipulationAr from '../../../../i18n/locales/ar/lesson.manipulation.json';
 import source from './PercentTag.jsx?raw';
 
 /**
@@ -66,7 +66,7 @@ it('percent-tag se rend dans un workspace à deux niveaux', () => {
 });
 
 it('chaque clé que le composant lit existe (aucune clé brute à l’écran)', () => {
-  const ns = lessonAr.manipulation.percentTag;
+  const ns = manipulationAr.percentTag;
   const own = [...source.matchAll(/\bk\('([a-zA-Z0-9.]+)'/g)].map((m) => m[1]);
   const ternary = [...source.matchAll(/\?\s*'([a-zA-Z0-9.]+)'\s*:\s*'([a-zA-Z0-9.]+)'/g)].flatMap((m) => [m[1], m[2]]);
   const arrays = ['hint1Single', 'hint2Single', 'hint3Single', 'hint1Chain', 'hint2Chain', 'hint3Chain', 'up', 'down'];

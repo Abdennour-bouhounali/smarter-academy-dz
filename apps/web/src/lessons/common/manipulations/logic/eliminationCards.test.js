@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { linear, linearSystem as LS } from '@smarter-academy/core';
+import * as linear from '@smarter-academy/core/arithmetic/linear.js';
+import * as LS from '@smarter-academy/core/arithmetic/linearSystem.js';
 import * as E from './eliminationCards';
 
 const T = (p) => linear.fracText(p);

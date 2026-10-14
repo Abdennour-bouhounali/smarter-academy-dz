@@ -1,7 +1,8 @@
 import { it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { statistics as ST, linear as LIN } from '@smarter-academy/core';
+import * as ST from '@smarter-academy/core/arithmetic/statistics.js';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 import '../../../../../../i18n';
 import GroupTanks from '../../../../../common/manipulations/stats/GroupTanks';
 import ManipulationWorkspace from '../../../../../common/manipulations/ManipulationWorkspace';

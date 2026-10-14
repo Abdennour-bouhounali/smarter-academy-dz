@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { vectors as V, linear as Lq } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
+import * as Lq from '@smarter-academy/core/arithmetic/linear.js';
 import * as L from './shapeProver';
 import { LEVELS } from '../levels';
 

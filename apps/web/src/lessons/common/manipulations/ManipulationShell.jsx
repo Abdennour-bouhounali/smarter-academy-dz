@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MANIPULATION_TYPES } from '@smarter-academy/core';
+import { MANIPULATION_TYPES } from '@smarter-academy/core/curriculum/manipulationTypes.js';
 import ManipulationProgress from './ManipulationProgress';
 import ManipulationControls from './ManipulationControls';
 import ManipulationTeacherMode from './ManipulationTeacherMode';

@@ -32,7 +32,7 @@
  *   translateCard(s, 'm1c0', 'O')     → HB devient OA (« لأن BH = AO »)
  *   couple(…, 'm1c3', 'tail') …       → la preuve HK = … = AC
  */
-import { vectors as V } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 
 export const MODES = Object.freeze(['reduce', 'construct']);
 

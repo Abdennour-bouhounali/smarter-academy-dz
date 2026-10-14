@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSta
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, FlaskConical, ListPlus, RotateCcw } from 'lucide-react';
-import { linear as LIN } from '@smarter-academy/core';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';

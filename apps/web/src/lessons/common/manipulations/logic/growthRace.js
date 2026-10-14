@@ -1,4 +1,4 @@
-import { linear as LIN } from '@smarter-academy/core';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 
 const {
   frac, parseNumber, lin, linAdd, linScale, linAt, linLatex, cmp, eq, isInteger, toNumber, fracLatex, fracText,

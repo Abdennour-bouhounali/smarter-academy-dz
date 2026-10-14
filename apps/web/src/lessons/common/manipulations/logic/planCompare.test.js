@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { affine as AF } from '@smarter-academy/core';
+import * as AF from '@smarter-academy/core/arithmetic/affine.js';
 import * as L from './planCompare';
 
 /**

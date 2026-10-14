@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
-import LESSON_AR from '../../../../i18n/locales/ar/lesson.json';
+import MANIPULATION_AR from '../../../../i18n/locales/ar/lesson.manipulation.json';
 import SRC from './RampRatios.jsx?raw';
 import RampRatios from './RampRatios';
 import ManipulationWorkspace from '../ManipulationWorkspace';
@@ -60,7 +60,7 @@ describe('ramp-ratios — rendu', () => {
     const keys = new Set();
     for (const mm of src.matchAll(/\bk\(\s*'([A-Za-z0-9_]+)'/g)) keys.add(mm[1]);
     for (const mm of src.matchAll(/k\(`([a-zA-Z]+)_\$\{/g)) keys.add(`${mm[1]}_`);
-    const ns = LESSON_AR.manipulation.rampRatios;
+    const ns = MANIPULATION_AR.rampRatios;
     for (const key of keys) {
       if (key.endsWith('_')) expect(Object.keys(ns).some((x) => x.startsWith(key)), key).toBe(true);
       else expect(ns[key], key).toBeTruthy();

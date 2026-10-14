@@ -24,7 +24,8 @@
  * UN ESSAI est une position VALIDÉE (relâchement, Entrée, ثبّت, pause du clavier) ou une réclamation — jamais une valeur
  * que le doigt a traversée.
  */
-import { vectors as V, linear as Q } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
+import * as Q from '@smarter-academy/core/arithmetic/linear.js';
 
 export const STAGES = Object.freeze(['meet', 'distance']);
 export const MEET_STEP = 0.5;

@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import LinearMachine from './LinearMachine';
 import ManipulationWorkspace from '../ManipulationWorkspace';
-import lessonAr from '../../../../i18n/locales/ar/lesson.json';
+import manipulationAr from '../../../../i18n/locales/ar/lesson.manipulation.json';
 import source from './LinearMachine.jsx?raw';
 
 /**
@@ -67,7 +67,7 @@ it('linear-machine se rend dans un workspace à deux niveaux', () => {
 });
 
 it('chaque clé que le composant lit existe, pour chaque monde (aucune clé brute à l’écran)', () => {
-  const ns = lessonAr.manipulation.linearMachine;
+  const ns = manipulationAr.linearMachine;
   const own = [...source.matchAll(/\bk\('([a-zA-Z0-9]+)'/g)].map((m) => m[1]);
   const world = [...source.matchAll(/\bw\('([a-zA-Z0-9]+)'/g), ...source.matchAll(/'w:([a-zA-Z0-9]+)'/g)].map((m) => m[1]);
   const ternary = [...source.matchAll(/\?\s*'([a-zA-Z0-9]+)'\s*:\s*'([a-zA-Z0-9]+)'/g)].flatMap((m) => [m[1], m[2]]);

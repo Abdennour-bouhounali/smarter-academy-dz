@@ -16,7 +16,8 @@
  * manuel) ; virgule décimale. La toise est graduée en UNITÉS ENTIÈRES (des centimètres) : les valeurs
  * doivent être entières (un défaut de contenu lève une erreur au rendu).
  */
-import { statistics as S, linear as Lin } from '@smarter-academy/core';
+import * as S from '@smarter-academy/core/arithmetic/statistics.js';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
 export const SIDES = Object.freeze(['up', 'down']);
 /** La relation de chaque côté : « على الأكثر » = '<=' (الصاعد), « على الأقل » = '>=' (النازل). */

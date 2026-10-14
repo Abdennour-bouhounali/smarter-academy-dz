@@ -1,6 +1,6 @@
 import React, { useCallback, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DEFAULT_MANIPULATION_LEVEL, resolveLevelId } from '@smarter-academy/core';
+import { DEFAULT_MANIPULATION_LEVEL, resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import ManipulationLevelSelector from './ManipulationLevelSelector';
 import { availableLevels, activeLevel, panelKey } from './workspaceLevels';
 import { WorkspaceLevelContext } from './workspaceContext';

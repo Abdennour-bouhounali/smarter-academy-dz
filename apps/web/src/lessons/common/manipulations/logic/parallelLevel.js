@@ -25,7 +25,8 @@
  * différents (1/3 et 2/3 — « les milieux » est ainsi réfuté) et une planche penchée ; متقدم, les trois figures
  * des élèves (1 : de l'autre côté de A, 2 : entre A et les pieds, 3 : une de chaque côté).
  */
-import { thales as TH, linear as LIN } from '@smarter-academy/core';
+import * as TH from '@smarter-academy/core/arithmetic/thales.js';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 
 export const MODES = Object.freeze(['ladder', 'crossing']);
 /** Les figures de نشاط 2 : 1 (B′, C′ de l'autre côté de A), 2 (entre A et les pieds), 3 et son miroir. */

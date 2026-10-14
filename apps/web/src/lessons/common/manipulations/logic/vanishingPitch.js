@@ -1,4 +1,4 @@
-import { linear as Lin } from '@smarter-academy/core';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
 /**
  * vanishing-pitch — LE TERRAIN QUI S'ANNULE (unité 4, leçon 2 « معادلات جداء معدوم »).

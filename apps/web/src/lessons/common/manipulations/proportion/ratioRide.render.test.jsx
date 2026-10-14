@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import RatioRide from './RatioRide';
 import ManipulationWorkspace from '../ManipulationWorkspace';
-import lessonAr from '../../../../i18n/locales/ar/lesson.json';
+import manipulationAr from '../../../../i18n/locales/ar/lesson.manipulation.json';
 import source from './RatioRide.jsx?raw';
 
 /**
@@ -59,7 +59,7 @@ it('ratio-ride se rend dans un workspace à deux niveaux', () => {
 });
 
 it('chaque clé que le composant lit existe (aucune clé brute à l’écran)', () => {
-  const ns = lessonAr.manipulation.ratioRide;
+  const ns = manipulationAr.ratioRide;
   const own = [...source.matchAll(/\bk\('([a-zA-Z0-9]+)'/g)].map((m) => m[1]);
   const ternary = [...source.matchAll(/\?\s*'([a-zA-Z0-9]+)'\s*:\s*'([a-zA-Z0-9]+)'/g)].flatMap((m) => [m[1], m[2]])
     .filter((key) => /^(planA|planB|missionOne|missionTwo|hint2|hint2Two|claimYes|claimNo|claimYesAria|claimNoAria|judgedYes|judgedNo)$/.test(key));

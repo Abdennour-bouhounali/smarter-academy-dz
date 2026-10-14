@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { validateSpaceFigure, spaceFigureQuality } from '../../../../../../common/components/spaceFigure';
-import { space as S, linear as Q } from '@smarter-academy/core';
+import * as S from '@smarter-academy/core/arithmetic/space.js';
+import * as Q from '@smarter-academy/core/arithmetic/linear.js';
 import * as FIGS from './figures';
 import { KNOW2_LINES, METHOD, METHOD_INVERSE } from './textbook';
 

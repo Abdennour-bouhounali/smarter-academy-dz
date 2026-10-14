@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { space as SP } from '@smarter-academy/core';
+import * as SP from '@smarter-academy/core/arithmetic/space.js';
 import { validateProblem } from '../../../../../../common/problems/guidedProblem';
 import { validateSpaceFigure, spaceFigureQuality } from '../../../../../../common/components/spaceFigure';
 import { PROBLEMS, PROBLEM } from './problems';

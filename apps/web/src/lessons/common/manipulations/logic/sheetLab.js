@@ -26,7 +26,9 @@
  * leurs noms anglais (MEDIAN, AVERAGE) ; SOMME / SUM sont connus (ils existent) mais ne sont aucun des
  * quatre indicateurs.
  */
-import { linear as Lin, statistics as S, parseDec } from '@smarter-academy/core';
+import { parseDec } from '@smarter-academy/core';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
+import * as S from '@smarter-academy/core/arithmetic/statistics.js';
 
 export const COLS = 'ABCDEFGHIJKL';
 export const MAX_CELLS = 12;

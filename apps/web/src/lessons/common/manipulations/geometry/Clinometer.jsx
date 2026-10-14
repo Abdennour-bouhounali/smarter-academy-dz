@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSta
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, ChevronUp, ChevronDown, Camera } from 'lucide-react';
-import { trigonometry as TR } from '@smarter-academy/core';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';

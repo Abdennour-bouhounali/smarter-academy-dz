@@ -1,7 +1,8 @@
 import { it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { vectors as V, trigonometry as TR } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 import '../../../../../../i18n';
 import RouteCompare from '../../../../../common/manipulations/vectors/RouteCompare';
 import ManipulationWorkspace from '../../../../../common/manipulations/ManipulationWorkspace';

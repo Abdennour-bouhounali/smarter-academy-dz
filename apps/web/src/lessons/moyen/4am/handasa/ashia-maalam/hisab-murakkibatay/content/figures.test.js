@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
-import { vectors as V } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 import { figureQuality, validateGeoFigure } from '../../../../../../common/components/geoFigure.js';
 import * as FIG from './figures.js';
 

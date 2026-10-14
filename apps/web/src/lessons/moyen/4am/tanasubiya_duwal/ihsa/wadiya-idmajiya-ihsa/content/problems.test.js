@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { statistics as ST } from '@smarter-academy/core';
+import * as ST from '@smarter-academy/core/arithmetic/statistics.js';
 import { validateProblem, demandsOf } from '../../../../../../common/problems/guidedProblem';
 import { PROBLEMS, PROBLEM } from './problems';
 import { LESSON_CONFIG } from '../lesson.config';

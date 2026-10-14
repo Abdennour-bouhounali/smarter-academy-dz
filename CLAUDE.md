@@ -77,6 +77,11 @@ toward earlier years (`features/learning/EarlierYearReview.jsx`). Practice model
 - `docs/architecture/BUNDLE_BOUNDARIES.md` before adding a provider, a route,
   a heavy dependency, an `import.meta.glob` or an i18n namespace — it says
   what may enter the entry bundle and where lazy boundaries sit.
+- The entry bundle has a budget (330 KB gzip, `npm run check:entry-budget`, CI): lessons are mounted by ONE lazy
+  route boundary fed by the generated `lessons/lessonIndex.generated.json` (run `npm run generate:lesson-index` after
+  adding a lesson or changing its modules — never touch `App.jsx`), lab strings live in
+  `i18n/locales/ar/lesson.manipulation.json`, unit maths are imported by path, not from the core barrel
+  (`BUNDLE_BOUNDARIES.md` §3–§4, since 2026-10-14).
 - Terminology: a learning point is « الكفاءة / الكفاءات » in every visible
   string since 2026-10-05 — never « نقطة التعلّم / نقاط التعلّم »; identifiers
   (`learningPoint`…) are unchanged (`docs/architecture/ARABIC_RTL_CONTRACT.md`).

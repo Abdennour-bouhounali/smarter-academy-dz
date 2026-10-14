@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSta
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, RotateCcw, ArrowLeft, Ruler } from 'lucide-react';
-import { trigonometry as TR, linear as LIN } from '@smarter-academy/core';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';

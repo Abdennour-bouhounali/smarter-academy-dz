@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { practice } from '@smarter-academy/core';
+import * as practice from '@smarter-academy/core/practice/index.js';
 import { Feedback, ValidateButton } from '../components/LessonUI';
 import { useKit } from '../kit/kitContext';
 import MathText from '../components/MathText';

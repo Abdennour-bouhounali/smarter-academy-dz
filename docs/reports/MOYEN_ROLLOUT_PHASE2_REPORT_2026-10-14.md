@@ -206,6 +206,10 @@ next batch.
 
 ## 6. Entry bundle investigation (2026-10-14) and the order of the next sessions
 
+> **Done the same day** — 629.2 → 322.1 KB gzip, budget gate at 330 KB: `docs/reports/BUNDLE_ENTRY_REPORT_2026-10-14.md`,
+> which also holds the UPDATED phase-3 prompt (publishing a lesson now regenerates the lesson index instead of editing
+> `App.jsx`). Use that prompt, not §5's.
+
 **Finding.** The initial JS grew from 224 KB gzip (2026-09-25) to 576.5 KB (origin/dev), then 629.2 KB with the
 1AM–3AM catalogue. One script, `node scripts/analyze-entry-bundle.mjs`, now measures it and traces any module's import
 chain (`BUNDLE_BOUNDARIES.md` §5–§6, which hold the full table). Gzip estimates by area, then → now:

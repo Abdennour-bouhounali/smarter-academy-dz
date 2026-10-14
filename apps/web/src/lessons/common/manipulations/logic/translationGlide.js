@@ -28,7 +28,7 @@
  * même منحى même طول mais اتجاه معاكس a été vue et refusée) ; `act1` — les quatre tableaux, dont A ↦ G et A ↦ M
  * (même منحى, اتجاه et طول différents) et A ↦ A′ / K ↦ H (deux couples, une seule translation).
  */
-import { vectors as V } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 
 export const SCENES = Object.freeze(['show', 'act1']);
 

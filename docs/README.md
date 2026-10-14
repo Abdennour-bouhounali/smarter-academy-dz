@@ -96,7 +96,7 @@ may describe it, but they defer to this one.
 | Classroom Mode / presentation layer | [`architecture/CLASSROOM_MODE.md`](./architecture/CLASSROOM_MODE.md) |
 | Arabic, RTL, typography, terminology, bidi rules | [`architecture/ARABIC_RTL_CONTRACT.md`](./architecture/ARABIC_RTL_CONTRACT.md) |
 | Exercise validation boundary, answer shapes, practice engine | [`architecture/EXERCISE_CONTRACT.md`](./architecture/EXERCISE_CONTRACT.md) |
-| What the entry bundle may contain, lazy boundaries (lesson runtime, Math Lab overlay, notebook window, on-demand i18n namespaces), prefetch points, measured before/after | [`architecture/BUNDLE_BOUNDARIES.md`](./architecture/BUNDLE_BOUNDARIES.md) |
+| What the entry bundle may contain, lazy boundaries (lesson route boundary + generated lesson index, lesson runtime, lab strings, Math Lab overlay, notebook window, on-demand i18n namespaces), prefetch points, the entry BUDGET gate (330 KB gzip), measured before/after | [`architecture/BUNDLE_BOUNDARIES.md`](./architecture/BUNDLE_BOUNDARIES.md); the 2026-10-14 entry fix (629 → 322 KB gzip): [`reports/BUNDLE_ENTRY_REPORT_2026-10-14.md`](./reports/BUNDLE_ENTRY_REPORT_2026-10-14.md) |
 | Question metadata, evidence, assessment rules for generated lessons | [`architecture/AI_LESSON_CONTRACT.md`](./architecture/AI_LESSON_CONTRACT.md) |
 | The « مسائل » modules: design, `content/problems.js` schema, one answer per demand, written answers, rollout | [`lessons/MASAIL_GENERATION_GUIDE.md`](./lessons/MASAIL_GENERATION_GUIDE.md) |
 | « أتوقّع القاعدة » — the student writes a rule before reading it (`KnowledgeBrick` default, `PredictRule`, `predictPrompt`) | [`architecture/KNOWLEDGE_DEPENDENCY.md`](./architecture/KNOWLEDGE_DEPENDENCY.md) § « أتوقّع القاعدة » |

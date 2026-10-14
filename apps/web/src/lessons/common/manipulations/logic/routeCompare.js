@@ -21,7 +21,9 @@
  *   2. la montre de chaque coureur additionne les morceaux EXACTEMENT (3π ; √13 + √5 + √17) puis en valeur approchée ;
  *   3. les deux parcours construits : la comparaison, le pari confronté au calcul.
  */
-import { linear as LIN, vectors as V, trigonometry as TR } from '@smarter-academy/core';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 
 const { frac, toNumber } = LIN;
 const num = (p) => toNumber(p);

@@ -9,7 +9,7 @@ import { useManipulation } from '../useManipulation';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
-import { rotation as ROT } from '@smarter-academy/core';
+import * as ROT from '@smarter-academy/core/arithmetic/rotation.js';
 import * as L from '../logic/lampRing';
 
 /**

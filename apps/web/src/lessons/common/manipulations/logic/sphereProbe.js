@@ -17,7 +17,8 @@
  * La découverte s'ouvre quand les trois positions ont été jugées justes (le contraste : un point de la جلة qui n'est pas
  * de la كرة).
  */
-import { space as SP, trigonometry as TR } from '@smarter-academy/core';
+import * as SP from '@smarter-academy/core/arithmetic/space.js';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 
 export const KINDS = Object.freeze(['surface', 'inside', 'outside']);
 /** Les noms de l'exemple de معارف 1 : M ∈ (δ), P ∈ (β) \ (δ), Q hors de (β). */

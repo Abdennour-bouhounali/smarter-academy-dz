@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { space, linear as LN } from '@smarter-academy/core';
+import * as space from '@smarter-academy/core/arithmetic/space.js';
+import * as LN from '@smarter-academy/core/arithmetic/linear.js';
 import * as B from './bucketFill';
 import { LEVELS } from '../levels';
 

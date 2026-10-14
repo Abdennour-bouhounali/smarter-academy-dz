@@ -1,4 +1,4 @@
-import { divisibility } from '@smarter-academy/core';
+import * as divisibility from '@smarter-academy/core/arithmetic/divisibility.js';
 
 const { divmod, divisionTestBound, divisors, factorPairs } = divisibility;
 

@@ -702,9 +702,9 @@ surface them as explicit options; record the answers in the spec.
   + `buildLessonRoutes({ config, basePath, moduleFiles, loadKnowledge, loadIndex })` from
   `_unit/lessonRoutes.jsx`, which resolves each module by the two-digit number in its filename.
   See `LESSON_CONTRACT.md` « L'unité 4AM » and LESSON_DEVELOPMENT_GUIDE §3.
-- **`App.jsx`**: one import + one `{xRoutes()}` call per **new** lesson (nothing for a rebuild
-  of an existing one). The registry auto-discovers configs via `import.meta.glob` — no registry
-  edit.
+- **Mounting** (since 2026-10-14): nothing in `App.jsx`. `node scripts/generate-lesson-index.mjs` adds a **new**
+  lesson to `lessons/lessonIndex.generated.json` (a rebuild only needs it when its modules change);
+  the lazy route boundary and `lessonLoaders.js` do the rest — no registry edit.
 - **Locking**: module-to-module via `isModuleUnlocked(isModuleCompleted, n, { stage,
   firstModuleNumber, previousStage })` in `packages/core/lessonAccess.js` (the lesson's first
   module always open; a module after a `prerequisite_check` never gated by it; `evaluation`
@@ -757,8 +757,8 @@ chain, in order:
    something changed? Would I know what to do next?* Any NO → redesign before shipping.
 7. **Status flip + curriculum sync**: `available` → re-validate → export/import →
    `smarter:validate-curriculum` with drift review recorded.
-8. **Scope check**: `git status` confined to the lesson directory, `coursesData.js`, `App.jsx`
-   (new lessons only), the spec, and the e2e file — sibling lessons untouched.
+8. **Scope check**: `git status` confined to the lesson directory, `coursesData.js`, `lessonIndex.generated.json`
+   (new lessons, or changed modules), the spec, and the e2e file — sibling lessons untouched.
 
 **Definition of Done** (all must hold): every JSON LP taught and assessed; every important
 concept has a meaningful manipulation; the student always knows what to do; rules are discovered

@@ -34,7 +34,7 @@
  *                     │ نستخلص
  *                  🎯 [الخلاصة]
  */
-import { polynomials } from '@smarter-academy/core';
+import * as polynomials from '@smarter-academy/core/arithmetic/polynomials.js';
 import { ACTIVITY, KNOWLEDGE, PLATFORM_NOTES, PREP_ITEMS } from './content/textbook';
 import { EX } from './content/exercises';
 

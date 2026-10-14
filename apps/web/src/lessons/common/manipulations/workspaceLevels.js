@@ -1,4 +1,4 @@
-import { MANIPULATION_LEVEL_IDS, resolveLevelId } from '@smarter-academy/core';
+import { MANIPULATION_LEVEL_IDS, resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 
 /**
  * Les DÉCISIONS du workspace à deux niveaux, en pur — sans React, donc

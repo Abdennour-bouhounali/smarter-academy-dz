@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { squareRoots } from '@smarter-academy/core';
+import * as squareRoots from '@smarter-academy/core/arithmetic/squareRoots.js';
 import { ContentModule, TapQuestion, NumericQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';

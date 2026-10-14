@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { BookOpen, Compass, Layers, Wand2, ListChecks, Landmark, Lock } from 'lucide-react';
 import { getUnitById, getLessonById, formatTextbookPages } from '@smarter-academy/core';
 import { getLessonProgress } from '../lessons/common/utils/progress/getLessonProgress';
-import { getTotalModules, getLessonConfig } from '../lessons/registry';
+import { getTotalModules, isLessonBuilt } from '../lessons/registry';
+import { useLessonConfig } from '../lessons/useLessonConfig';
 import { useLearningProfile } from '../lessons/common/hooks/useLearningProfile';
 import { useLessonChromeLayout } from '../lessons/common/hooks/useLessonChrome';
 import { resolveMasteryState, masteryTooltip } from '../lessons/common/components/LearningPointMastery';
@@ -61,7 +62,10 @@ function LessonBlock({ lesson, index, mastery, t }) {
   const draft = lesson.status !== 'available';
   const total = getTotalModules(lesson.id);
   const { progressPercent } = available ? getLessonProgress(lesson.id, total) : { progressPercent: 0 };
-  const config = getLessonConfig(lesson.id);
+  // Construite ? — l'index léger, synchrone. Les manipulations et méthodes
+  // viennent de la config complète, chargée avec la page (registry.js).
+  const built = isLessonBuilt(lesson.id);
+  const config = useLessonConfig(lesson.id);
   const resources = config?.resources ?? [];
   const manipulations = resources.filter((r) => r.kind === 'manipulation');
   const methods = resources.filter((r) => r.kind === 'method');
@@ -143,12 +147,12 @@ function LessonBlock({ lesson, index, mastery, t }) {
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-3">
         <span className="text-xs text-slate-500">
           {/* Brouillon : l'en-tête et le bouton disent déjà « قيد الإعداد » — ici, les pages du manuel seules. */}
-          {config ? t('unit.modulesCount', { count: total ?? 0 }) : !draft && t('unit.comingSoon')}
+          {built ? t('unit.modulesCount', { count: total ?? 0 }) : !draft && t('unit.comingSoon')}
           {/* `pages` est une carte section → page(s), pas un nombre : sans
               mise en forme, « الكتاب ص {{pages}} » rendait « [object Object] ». */}
-          {textbookPages && <>{(config || !draft) && ' · '}{t('unit.textbookPages', { pages: textbookPages })}</>}
+          {textbookPages && <>{(built || !draft) && ' · '}{t('unit.textbookPages', { pages: textbookPages })}</>}
         </span>
-        {available && isTeacher && config && (
+        {available && isTeacher && built && (
           <div className="flex flex-wrap items-center gap-2">
             <TeacherLessonActions lesson={lesson} />
             <Link to={lesson.path} className="inline-flex min-h-[44px] items-center gap-1 rounded-xl px-3 py-2 text-sm font-bold text-slate-600 hover:text-teal-700">
@@ -156,7 +160,7 @@ function LessonBlock({ lesson, index, mastery, t }) {
             </Link>
           </div>
         )}
-        {available && !(isTeacher && config) && (
+        {available && !(isTeacher && built) && (
           <Link to={lesson.path} className="inline-flex items-center gap-1 rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white hover:bg-blue-700">
             {progressPercent > 0 ? t('unit.continue') : t('unit.start')} <ArrowForward className="h-4 w-4" aria-hidden="true" />
           </Link>

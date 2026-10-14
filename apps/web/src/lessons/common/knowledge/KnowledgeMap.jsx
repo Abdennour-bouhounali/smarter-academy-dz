@@ -12,7 +12,7 @@ import AddToNotebookButton from '../../../features/practice/notebook/AddToNotebo
 import { useLessonKnowledge } from './KnowledgeProvider';
 import { Link } from 'react-router-dom';
 import { getLessonById } from '@smarter-academy/core';
-import { getLessonConfig, getModulePath } from '../../registry';
+import { getLoadedLessonConfig, getModulePath } from '../../registry';
 import { useLearningProfile } from '../hooks/useLearningProfile';
 import { MASTERY_STATES, masteryTooltip } from '../components/LearningPointMastery';
 import { moduleMasteryOverlay } from './knowledgeMastery';
@@ -34,7 +34,7 @@ const LinearKnowledgeView = lazy(() => import('./progressive/LinearKnowledgeView
 function useProgressiveGraph() {
   const { t } = useTranslation('lesson');
   const { lessonId, graph, knowledge } = useLessonKnowledge();
-  const progressive = Boolean(lessonId) && getLessonConfig(lessonId)?.knowledgeMapMode === 'progressive';
+  const progressive = Boolean(lessonId) && getLoadedLessonConfig(lessonId)?.knowledgeMapMode === 'progressive';
   const sequenceLabel = t('map.progressive.fallbackSequence');
   return React.useMemo(
     () => (progressive ? resolveGraph(graph, knowledge, { sequenceLabel }) : null),
@@ -323,7 +323,7 @@ const MASTERY_DOT_TONE = { slate: 'bg-slate-300', rose: 'bg-rose-500', amber: 'b
 
 function ProgressionStrip({ steps }) {
   const { lessonId } = useLessonKnowledge();
-  const config = lessonId ? getLessonConfig(lessonId) : null;
+  const config = lessonId ? getLoadedLessonConfig(lessonId) : null;
   const teaches = config?.modules?.some((m) => m.teachesLearningPointIds?.length);
   // Le profil n'est lu que pour une leçon qui déclare ce qu'enseignent ses
   // modules : sinon, le fil reste exactement celui d'avant.

@@ -1,4 +1,4 @@
-import { squareRoots } from '@smarter-academy/core';
+import * as squareRoots from '@smarter-academy/core/arithmetic/squareRoots.js';
 
 const { rationalSqrt, reduce, exactDecimal } = squareRoots;
 

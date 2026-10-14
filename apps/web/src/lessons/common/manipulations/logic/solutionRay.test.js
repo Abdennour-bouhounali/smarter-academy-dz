@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { linear as Lin } from '@smarter-academy/core';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import * as S from './solutionRay';
 
 const { frac, eq, satisfies, linAt } = Lin;

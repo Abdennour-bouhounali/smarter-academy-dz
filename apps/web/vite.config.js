@@ -30,6 +30,11 @@ export default defineConfig({
     // Voir docs/architecture/BUNDLE_BOUNDARIES.md.
     dedupe: ['katex'],
   },
+  // Vitest : les textes des manipulations (`lesson:manipulation.*`) sont chargés
+  // à la demande en production ; les tests les enregistrent d'emblée.
+  test: {
+    setupFiles: ['./src/test/setupLessonStrings.js'],
+  },
   css: {
     postcssOptions: {
       plugins: [tailwindcss, autoprefixer],

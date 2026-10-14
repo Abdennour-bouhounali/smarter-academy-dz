@@ -1,4 +1,5 @@
-import { linear as Lin, proportional as PR } from '@smarter-academy/core';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
+import * as PR from '@smarter-academy/core/arithmetic/proportional.js';
 
 /**
  * origin-line — LA DROITE ÉPINGLÉE À O (unité 6 « الدالة الخطية والتناسبية », leçon 3

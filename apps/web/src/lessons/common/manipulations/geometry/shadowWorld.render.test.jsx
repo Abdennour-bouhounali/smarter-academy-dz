@@ -6,7 +6,7 @@ import ShadowWorld from './ShadowWorld';
 import ManipulationWorkspace from '../ManipulationWorkspace';
 import { LEVELS } from '../levels';
 import * as W from '../logic/shadowWorld';
-import lessonAr from '../../../../i18n/locales/ar/lesson.json';
+import manipulationAr from '../../../../i18n/locales/ar/lesson.manipulation.json';
 
 /**
  * shadow-world se rend aux deux niveaux, seul et dans un workspace, sans clé i18n brute ni interpolation oubliée,
@@ -106,7 +106,7 @@ describe('shadow-world — la voix de مقران existe en entier', () => {
     // Les questions vivent dans les cartes « سؤال مقران » (q_*, options tapées), les indices (h_*, hq_*) et le défi
     // (rAns_*, répondu dans la case du défi). Une réaction (r*) ou une mission (g_*) qui demande quelque chose sans
     // bouton pour répondre, c'est exactement la confusion relevée par le propriétaire.
-    for (const [key, text] of Object.entries(lessonAr.manipulation.shadowWorld)) {
+    for (const [key, text] of Object.entries(manipulationAr.shadowWorld)) {
       // un « … » cite le TITRE d'un panneau où l'élève répond (« ماذا لاحظت؟ ») : ce n'est pas une question de مقران
       if ((/^r[A-Z]/.test(key) && !key.startsWith('rAns')) || key.startsWith('g_')) expect(text.replace(/«[^»]*»/g, ''), key).not.toContain('؟');
     }
@@ -115,13 +115,13 @@ describe('shadow-world — la voix de مقران existe en entier', () => {
   it('un libellé d’option (`quizOpt_*`) n’est JAMAIS interpolé par la vue (`k()` sans paramètres) : aucun `{{…}}` ne doit y rester', () => {
     // bug réel trouvé en QA navigateur (2026-10-13) : `quizOpt_ruleReflect_number` contenait `{{numText}}`, affiché
     // tel quel sur le bouton (« العدد {{numText}} يبقى... ») faute d'interpolation — les options sont STATIQUES.
-    for (const [key, text] of Object.entries(lessonAr.manipulation.shadowWorld)) {
+    for (const [key, text] of Object.entries(manipulationAr.shadowWorld)) {
       if (key.startsWith('quizOpt_')) expect(text, key).not.toContain('{{');
     }
   });
 
   it('aucun message ne donne la loi avant que l’élève l’ait écrite : ni « × 1,6 », ni « مضروب في 1 » chiffré', () => {
-    const bag = lessonAr.manipulation.shadowWorld;
+    const bag = manipulationAr.shadowWorld;
     expect(Object.keys(bag).length).toBeGreaterThan(100);
     // inclut les checkpoints trend/fastest/ratioSeed (posés AVANT que ruleReflect ait même pu exister) et leurs options,
     // mais PAS ruleReflect/predictReflect eux-mêmes : ceux-ci réagissent à une règle ou un pari déjà faits par l'élève,

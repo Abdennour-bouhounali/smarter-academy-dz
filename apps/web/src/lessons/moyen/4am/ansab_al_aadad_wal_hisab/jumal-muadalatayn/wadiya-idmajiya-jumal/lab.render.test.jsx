@@ -1,7 +1,7 @@
 import { it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { linearSystem } from '@smarter-academy/core';
+import * as linearSystem from '@smarter-academy/core/arithmetic/linearSystem.js';
 import '../../../../../../i18n';
 import StoryModeller from '../../../../../common/manipulations/systems/StoryModeller';
 import ManipulationWorkspace from '../../../../../common/manipulations/ManipulationWorkspace';

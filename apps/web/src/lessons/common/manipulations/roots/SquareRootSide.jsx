@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Minus, Plus, ZoomIn } from 'lucide-react';
-import { squareRoots } from '@smarter-academy/core';
+import * as squareRoots from '@smarter-academy/core/arithmetic/squareRoots.js';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';

@@ -18,23 +18,36 @@
 // ce script était vert, et chaque clic sur la carte renvoyait l'élève à
 // l'accueil. Même symptôme, autre cause — d'où ce second contrôle.
 //
+// TROISIÈME FORME, 2026-10-14 : App.jsx n'importe plus le routes.jsx de chaque
+// leçon (74 imports statiques = tout le contenu des leçons dans le lot
+// d'entrée). Il monte UNE frontière paresseuse, `useLessonRoutes()`
+// (apps/web/src/lessons/lessonRouteBoundary.jsx), qui donne une route par
+// leçon de l'INDEX GÉNÉRÉ (lessonIndex.generated.json) et charge son
+// routes.jsx par les globs de lessonLoaders.js. « Branchée » veut donc dire :
+// la frontière est montée sous RequireAccount, la leçon est dans l'index, son
+// routes.jsx est une fabrique `buildLessonRoutes`, et le glob de sa classe est
+// dans lessonLoaders.js. registry.test.js charge ensuite RÉELLEMENT les routes
+// de chaque leçon et vérifie qu'elles montent son sommaire et ses modules.
+//
 //   node scripts/check-routes.mjs
 //
 // Dormant-grade isolation (docs/ALGERIA_MIGRATION_AUDIT.md §15,
 // ALGERIA_PLATFORM_MASTER_SPEC.md §3): Contrôle 1 below only REQUIRES a
-// mount for lessons under an active grade (activeGrades.js). An inherited
-// French lesson under a dormant grade must NOT be imported/called in
-// App.jsx — mounting one would defeat the isolation this same check exists
-// to protect elsewhere. The script fails just as loudly on that direction
-// of mistake (an unexpected mount) as on the original one (a missing mount).
+// mount for lessons under an active grade (activeGrades.js). A lesson under a
+// dormant grade must NOT be in the index nor in a loader glob — mounting one
+// would defeat the isolation this same check exists to protect elsewhere. The
+// script fails just as loudly on that direction of mistake (an unexpected
+// mount) as on the original one (a missing mount).
 import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { join, relative, dirname, basename } from 'node:path';
 import { dzCourseLevels } from '../packages/core/curriculum/coursesData.js';
 import { ACTIVE_GRADE_IDS } from '../packages/core/curriculum/activeGrades.js';
 
 const ROOT = new URL('../', import.meta.url).pathname;
 const APP = join(ROOT, 'apps/web/src/App.jsx');
 const LESSONS = join(ROOT, 'apps/web/src/lessons');
+const INDEX = JSON.parse(readFileSync(join(LESSONS, 'lessonIndex.generated.json'), 'utf8'));
+const LOADERS = readFileSync(join(LESSONS, 'lessonLoaders.js'), 'utf8');
 
 const walk = (dir, out = []) => {
   for (const e of readdirSync(dir)) {
@@ -51,14 +64,30 @@ const problems = [];
 // Les niveaux ALGÉRIENS (`moyen`, `thanawi`) autant que les français hérités.
 // Sans eux, une leçon de 4AM (apps/web/src/lessons/moyen/4am/...) serait vue
 // comme SANS CLASSE : `gradeIdFromPath` rendrait null, la leçon passerait pour
-// dormante, et la brancher dans App.jsx ferait échouer ce contrôle en
+// dormante, et son entrée dans l'index ferait échouer ce contrôle en
 // annonçant une « fuite de contenu dormant ». Le piège est documenté dans
-// docs/ALGERIA_4AM_CURRICULUM.md §8 : l'expression doit accueillir `moyen`
-// AVANT que la première leçon algérienne soit montée.
+// docs/ALGERIA_4AM_CURRICULUM.md §8.
 const LESSON_PATH_RE = /lessons\/(?:college|lycee|moyen|thanawi)\/([^/]+)\//;
 
 const gradeIdFromPath = (rel) => rel.match(LESSON_PATH_RE)?.[1] ?? null;
 
+// ── Contrôle 0 : la frontière est montée, et c'est la SEULE voie ───────────
+// Aucun routes.jsx importé statiquement par App.jsx : un seul suffirait à
+// remettre une leçon (et sa config) dans le lot d'entrée de chaque visiteur.
+if (/^import\s+\w+\s+from\s+'\.\/lessons\/.+\/routes(?:\.jsx)?';/m.test(app)) {
+  problems.push({ rel: 'apps/web/src/App.jsx', why: "un routes.jsx de leçon est importé STATIQUEMENT — passer par la frontière (useLessonRoutes, BUNDLE_BOUNDARIES.md)" });
+}
+const boundaryImported = /^import\s+\{\s*useLessonRoutes\s*\}\s+from\s+'\.\/lessons\/lessonRouteBoundary';/m.test(app);
+const boundaryCalled = /const\s+lessonRoutes\s*=\s*useLessonRoutes\(\)/.test(app);
+// Montée là où étaient les leçons : sous <RequireAccount />, dans la coquille CourseLayout.
+const requireAccountBlock = app.slice(app.indexOf('<Route element={<RequireAccount />}>'));
+const boundaryMounted = app.includes('<Route element={<RequireAccount />}>') && requireAccountBlock.slice(0, requireAccountBlock.indexOf('</Route>\n')).includes('{lessonRoutes}');
+if (!boundaryImported || !boundaryCalled || !boundaryMounted) {
+  problems.push({ rel: 'apps/web/src/App.jsx', why: `la frontière de routes des leçons n'est pas montée (import ${boundaryImported ? '✓' : '✗'}, appel ${boundaryCalled ? '✓' : '✗'}, {lessonRoutes} sous RequireAccount ${boundaryMounted ? '✓' : '✗'}) — aucune leçon n'est atteignable` });
+}
+
+// ── Contrôle 1 : chaque leçon active est dans l'index et dans un glob ─────
+const indexed = new Map(INDEX.lessons.map((l) => [l.id, l]));
 for (const file of walk(LESSONS)) {
   const src = readFileSync(file, 'utf8');
   const fn = src.match(/export default function (\w+)/)?.[1];
@@ -67,19 +96,23 @@ for (const file of walk(LESSONS)) {
 
   const gradeId = gradeIdFromPath(rel);
   const isActive = ACTIVE_GRADE_IDS.includes(gradeId);
-
-  // Les deux moitiés sont nécessaires : un import sans appel ne route rien,
-  // et un appel sans import ne compile pas.
-  const imported = new RegExp(`^import\\s+${fn}\\s+from`, 'm').test(app);
-  const called = app.includes(`{${fn}()}`);
+  const id = basename(dirname(file));
+  const entry = indexed.get(id);
+  const globbed = LOADERS.includes(`'./*/${gradeId}/**/routes.jsx'`);
 
   if (isActive) {
-    if (!imported && !called) problems.push({ rel, why: `${fn} n'est ni importée ni appelée dans App.jsx` });
-    else if (!imported) problems.push({ rel, why: `${fn} est appelée mais pas importée` });
-    else if (!called) problems.push({ rel, why: `${fn} est importée mais jamais appelée — la leçon est inatteignable` });
-  } else if (imported || called) {
-    problems.push({ rel, why: `${fn} est montée dans App.jsx mais sa classe ('${gradeId}') n'est pas active — fuite de contenu dormant (activeGrades.js)` });
+    if (!/return\s+buildLessonRoutes\(/.test(src)) problems.push({ rel, why: `${fn} n'appelle pas buildLessonRoutes(…) — la frontière ne sait monter que cette fabrique` });
+    if (!entry) problems.push({ rel, why: `« ${id} » n'est pas dans lessonIndex.generated.json — la leçon est inatteignable (node scripts/generate-lesson-index.mjs)` });
+    else if (entry.grade !== gradeId) problems.push({ rel, why: `l'index range « ${id} » en '${entry.grade}', le dossier en '${gradeId}'` });
+    if (!globbed) problems.push({ rel, why: `lessonLoaders.js ne glob pas './*/${gradeId}/**/routes.jsx' — ses routes ne se chargeront jamais` });
+  } else if (entry || globbed) {
+    problems.push({ rel, why: `« ${id} » est montable (index ${entry ? '✓' : '✗'}, glob ${globbed ? '✓' : '✗'}) mais sa classe ('${gradeId}') n'est pas active — fuite de contenu dormant (activeGrades.js)` });
   }
+}
+// L'index ne nomme que des leçons qui existent sur le disque.
+const onDisk = new Set(walk(LESSONS).map((f) => basename(dirname(f))));
+for (const id of indexed.keys()) {
+  if (!onDisk.has(id)) problems.push({ rel: 'apps/web/src/lessons/lessonIndex.generated.json', why: `« ${id} » est indexée mais n'a pas de routes.jsx` });
 }
 
 // ── Contrôle 2 : le chemin déclaré est-il celui du lien de la carte ? ──────
@@ -136,9 +169,9 @@ const totalActive = walk(LESSONS).filter((f) => ACTIVE_GRADE_IDS.includes(gradeI
 if (problems.length) {
   console.error(`\n${problems.length} problème(s) de routage sur ${total} leçon(s) (${totalActive} active(s)) :\n`);
   for (const p of problems) console.error(`  ✗ ${p.rel}\n      ${p.why}`);
-  console.error('\nUne leçon active non branchée dans App.jsx ne renvoie pas une 404 :');
+  console.error('\nUne leçon active non montée ne renvoie pas une 404 :');
   console.error("l'utilisateur atterrit sur la page d'accueil, et aucun autre contrôle ne le voit.");
   console.error("Une leçon dormante branchée par erreur fuit du contenu français désactivé (activeGrades.js).\n");
   process.exit(1);
 }
-console.log(`✅ Les ${totalActive} leçon(s) active(s) sur ${total} sont branchées dans App.jsx (et seulement elles), et leur chemin est celui du catalogue.`);
+console.log(`✅ Les ${totalActive} leçon(s) active(s) sur ${total} sont montées par la frontière de routes (index + globs, et seulement elles), et leur chemin est celui du catalogue.`);

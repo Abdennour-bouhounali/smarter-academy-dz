@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { rotation as RT } from '@smarter-academy/core';
+import * as RT from '@smarter-academy/core/arithmetic/rotation.js';
 import * as L from './rotationDial';
 import { LEVELS } from '../levels';
 

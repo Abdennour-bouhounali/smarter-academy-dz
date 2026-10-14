@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { linear as Q } from '@smarter-academy/core';
+import * as Q from '@smarter-academy/core/arithmetic/linear.js';
 import * as L from './orangePeel';
 
 /**

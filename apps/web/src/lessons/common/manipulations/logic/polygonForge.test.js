@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { rotation as Rot } from '@smarter-academy/core';
+import * as Rot from '@smarter-academy/core/arithmetic/rotation.js';
 import * as L from './polygonForge';
 import { LEVELS } from '../levels';
 

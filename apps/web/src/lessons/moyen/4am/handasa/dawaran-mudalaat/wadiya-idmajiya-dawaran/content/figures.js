@@ -1,4 +1,4 @@
-import { rotation as ROT } from '@smarter-academy/core';
+import * as ROT from '@smarter-academy/core/arithmetic/rotation.js';
 
 /**
  * Les FIGURES que cette leçon dessine (GeoFigure — common/components/geoFigure.js) : la donnée seulement, en unités libres,

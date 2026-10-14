@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { space as S, linear as Q } from '@smarter-academy/core';
+import * as S from '@smarter-academy/core/arithmetic/space.js';
+import * as Q from '@smarter-academy/core/arithmetic/linear.js';
 import { EX } from './exercises';
 
 /** Les réponses de « أوظّف تعلّماتي » (ajouts de la plateforme) recalculées sur space.js. */

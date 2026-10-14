@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { vectors as V, trigonometry as T } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
+import * as T from '@smarter-academy/core/arithmetic/trigonometry.js';
 import { LEVELS } from '../levels';
 import * as L from './vectorSum';
 

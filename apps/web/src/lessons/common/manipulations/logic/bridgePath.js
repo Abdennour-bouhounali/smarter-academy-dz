@@ -18,7 +18,9 @@
  *   3. straight  B′ accepté : MB′BN متوازي أضلاع (NB = MB′), la ficelle [AB′] est tendue ; l'élève ramène le passage
  *                jusqu'à ce que A, M, B′ soient alignés (`collinear`) — la ligne brisée AMB′ devient droite.
  */
-import { linear as LIN, vectors as V, trigonometry as TR } from '@smarter-academy/core';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 
 const { frac, add, sub, mul, div, isInteger, toNumber } = LIN;
 const F = (v) => (typeof v === 'object' && v !== null && 'n' in v ? v : Number.isInteger(v) ? frac(v) : LIN.parseNumber(String(v)));

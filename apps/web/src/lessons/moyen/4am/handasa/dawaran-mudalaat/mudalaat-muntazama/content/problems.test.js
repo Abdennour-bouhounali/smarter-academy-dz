@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { rotation as Rot } from '@smarter-academy/core';
+import * as Rot from '@smarter-academy/core/arithmetic/rotation.js';
 import { validateProblem, SUPPORT_REFERENCE } from '../../../../../../common/problems/guidedProblem';
 import { validateGeoFigure, figureQuality } from '../../../../../../common/components/geoFigure';
 import { PROBLEMS, PROBLEM } from './problems';

@@ -2,7 +2,11 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve, join } from 'node:path';
-import { getModulePath, getLessonConfig, getAnyRegisteredLessonId } from '../../../registry';
+import { getModulePath, getTotalModules, getFirstModuleNumber, getAnyRegisteredLessonId } from '../../../registry';
+
+// Les configs COMPLÈTES, lues ici directement (un test peut les lire toutes) : le registre, lui,
+// répond depuis l'index généré — ce test vérifie que les deux disent la même chose.
+const CONFIGS = Object.values(import.meta.glob('../../../*/*/**/lesson.config.js', { eager: true, import: 'LESSON_CONFIG' }));
 
 const here = dirname(fileURLToPath(import.meta.url));
 const srcRoot = resolve(here, '../../../..');
@@ -30,7 +34,7 @@ const srcRoot = resolve(here, '../../../..');
 const fixtureLessonId = getAnyRegisteredLessonId();
 
 describe.skipIf(!fixtureLessonId)('getModulePath — le pont entre numéro et route', () => {
-  const config = fixtureLessonId ? getLessonConfig(fixtureLessonId) : null;
+  const config = CONFIGS.find((c) => c.id === fixtureLessonId) ?? null;
   const secondModule = config?.modules?.find((m) => Number(m.number) === config.modules[0]?.number + 1) ?? config?.modules?.[1];
 
   it('rend le chemin par SLUG du module, jamais son numéro', () => {
@@ -50,9 +54,12 @@ describe.skipIf(!fixtureLessonId)('getModulePath — le pont entre numéro et ro
     expect(getModulePath(undefined, 1)).toBeNull();
   });
 
-  it('rend, pour CHAQUE module de la leçon, exactement le chemin que la route déclare', () => {
-    for (const m of config.modules) {
-      expect(getModulePath(fixtureLessonId, m.number)).toBe(m.path);
+  it('rend, pour CHAQUE module de CHAQUE leçon, exactement le chemin que la route déclare', () => {
+    expect(CONFIGS.length).toBeGreaterThan(0);
+    for (const c of CONFIGS) {
+      for (const m of c.modules) expect(getModulePath(c.id, m.number), `${c.id} › ${m.number}`).toBe(m.path);
+      expect(getTotalModules(c.id), c.id).toBe(c.modules.length);
+      expect(getFirstModuleNumber(c.id), c.id).toBe(Math.min(...c.modules.map((m) => Number(m.number))));
     }
   });
 });

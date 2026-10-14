@@ -19,7 +19,8 @@
  *   2. tant que les extrémités coïncident, déplacer la perche de B vers A (j = dist ÷ pas de perche) : sa
  *      hauteur suit le rayon ; au pied de la minaret, la perche EST la minaret — h se lit, k = OA ÷ OB.
  */
-import { linear as LIN, thales as TH } from '@smarter-academy/core';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
+import * as TH from '@smarter-academy/core/arithmetic/thales.js';
 
 const { frac, parseNumber, add, sub, mul, div, cmp, eq, isInteger, toNumber } = LIN;
 const F = (v) => (typeof v === 'object' && v !== null ? v : Number.isInteger(v) ? frac(v) : parseNumber(v));

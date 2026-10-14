@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { space as Sp, linear as Lin } from '@smarter-academy/core';
+import * as Sp from '@smarter-academy/core/arithmetic/space.js';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import { validateSpaceFigure, spaceFigureQuality } from '../../../../../../common/components/spaceFigure';
 import { validateGeoFigure, figureQuality } from '../../../../../../common/components/geoFigure';
 import * as FIG from './figures';

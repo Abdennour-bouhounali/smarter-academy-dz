@@ -5,10 +5,18 @@
  *   node scripts/analyze-entry-bundle.mjs                 # build d'analyse + rapport
  *   node scripts/analyze-entry-bundle.mjs --reuse <dir>   # rapport sur un build d'analyse existant
  *   node scripts/analyze-entry-bundle.mjs --chain <suffixe de chemin>   # + la chaîne d'imports qui l'amène
+ *   node scripts/analyze-entry-bundle.mjs --budget <Ko gzip>            # PORTE : échoue au-delà (npm run check:entry-budget)
+ *   node scripts/analyze-entry-bundle.mjs --dist apps/web/dist --budget <Ko gzip>
+ *       # même porte sur un build DÉJÀ fait (CI, après « Build ») : le JS initial = le <script type="module"> de
+ *       # index.html et ses <link rel="modulepreload">, ce que le navigateur charge avant le premier rendu.
  *
  * Mesures : JS initial (le chunk d'entrée et ses imports statiques), brut et gzip -9 ; puis le
  * contenu par zone et les plus gros modules (taille RENDUE) ; puis, pour chaque --chain, le plus
  * court chemin d'imports STATIQUES depuis src/main.jsx. Écrit dans un dossier temporaire.
+ *
+ * Le BUDGET (2026-10-14, BUNDLE_BOUNDARIES.md §4 règle 10) : fixé juste au-dessus de la mesure. Une leçon, un
+ * namespace ou un moteur qui fuit dans le lot d'entrée le fait échouer — on corrige la fuite, on ne relève pas le
+ * budget sans le documenter (§5).
  */
 import { readFileSync, mkdtempSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
@@ -21,6 +29,35 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const argv = process.argv.slice(2);
 const reuse = argv.includes('--reuse') ? argv[argv.indexOf('--reuse') + 1] : null;
 const chains = argv.flatMap((a, i) => (a === '--chain' ? [argv[i + 1]] : []));
+const budget = argv.includes('--budget') ? Number(argv[argv.indexOf('--budget') + 1]) : null;
+const dist = argv.includes('--dist') ? argv[argv.indexOf('--dist') + 1] : null;
+
+function checkBudget(gzKb) {
+  if (budget == null) return;
+  if (!Number.isFinite(budget)) { console.error('✗ --budget attend un nombre de Ko gzip'); process.exit(2); }
+  if (gzKb > budget) {
+    console.error(`\n✗ BUDGET DU LOT D'ENTRÉE DÉPASSÉ : ${gzKb.toFixed(1)} Ko gzip > ${budget} Ko.`);
+    console.error('  Quelque chose est entré dans le premier téléchargement de chaque visiteur. Trouvez-le :');
+    console.error('  node scripts/analyze-entry-bundle.mjs --chain <module>   (docs/architecture/BUNDLE_BOUNDARIES.md §5–§6)');
+    process.exit(1);
+  }
+  console.log(`✅ Lot d'entrée dans le budget : ${gzKb.toFixed(1)} Ko gzip ≤ ${budget} Ko.`);
+}
+
+if (dist) {
+  const html = readFileSync(join(dist, 'index.html'), 'utf8');
+  const files = new Set([
+    ...[...html.matchAll(/<script[^>]*type="module"[^>]*src="\/?([^"]+\.js)"/g)].map((m) => m[1]),
+    ...[...html.matchAll(/<link[^>]*rel="modulepreload"[^>]*href="\/?([^"]+\.js)"/g)].map((m) => m[1]),
+  ]);
+  if (files.size === 0) { console.error(`✗ aucun script module dans ${dist}/index.html`); process.exit(2); }
+  let raw = 0; let gz = 0;
+  for (const f of files) { const b = readFileSync(join(dist, f)); raw += b.length; gz += gzipSync(b, { level: 9 }).length; }
+  console.log(`JS initial (${dist}) : ${files.size} fichier(s), ${(raw / 1024).toFixed(1)} KB brut, ${(gz / 1024).toFixed(1)} KB gzip`);
+  checkBudget(gz / 1024);
+  process.exit(0);
+}
+
 const OUT = reuse ?? mkdtempSync(join(tmpdir(), 'sa-entry-'));
 
 if (!reuse) {
@@ -41,6 +78,7 @@ for (const [n, c] of Object.entries(chunks)) if (c.isEntry) walk(n);
 let raw = 0; let gz = 0;
 for (const n of initial) { const b = readFileSync(join(OUT, 'dist', n)); raw += b.length; gz += gzipSync(b, { level: 9 }).length; }
 console.log(`JS initial : ${initial.size} fichier(s), ${(raw / 1024).toFixed(1)} KB brut, ${(gz / 1024).toFixed(1)} KB gzip — ${OUT}`);
+if (budget != null && !chains.length) { checkBudget(gz / 1024); process.exit(0); }
 
 const mods = [...initial].flatMap((n) => Object.entries(chunks[n].modules));
 const area = (id) => {
@@ -63,3 +101,4 @@ for (const target of chains) {
   const path = []; for (let y = hit; y; y = prev.get(y)) path.unshift(short(y));
   console.log(`\nChaîne vers « ${target} » :\n  ${hit ? path.join('\n  → ') : '(pas dans le graphe statique)'}`);
 }
+checkBudget(gz / 1024);

@@ -23,7 +23,7 @@
  *   FIG_EX18        تمرين 18 p. 161               COMPLÉTÉE : scan presque effacé, nœuds relus (extraction › discrepancies)
  *   FIG_E2, FIG_E4  l'إختبار أولي (plateforme)
  */
-import { rotation as R } from '@smarter-academy/core';
+import * as R from '@smarter-academy/core/arithmetic/rotation.js';
 
 export const REDRAWN = 'أعادت المنصّة رسم شكل الكتاب بوضوح أكبر، بنفس المعطيات';
 const r3 = (p) => [Math.round(p.x * 1000) / 1000, Math.round(p.y * 1000) / 1000];

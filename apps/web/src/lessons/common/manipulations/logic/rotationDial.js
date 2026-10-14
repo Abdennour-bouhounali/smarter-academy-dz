@@ -26,7 +26,7 @@
  * LA DÉCOUVERTE demande le CONTRASTE : `wheel` — toutes les tâches, qui vont par jumeaux (même angle, sens contraires) ;
  * `plane` — les trois missions (un point, une قطعة dont la longueur se garde, une دائرة dont le rayon se garde).
  */
-import { rotation as RT } from '@smarter-academy/core';
+import * as RT from '@smarter-academy/core/arithmetic/rotation.js';
 
 export const SCENES = Object.freeze(['wheel', 'plane']);
 /** Demi-côté du cadre (unités de la figure) : la scène est un CARRÉ centré sur O. */

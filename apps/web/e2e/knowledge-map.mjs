@@ -58,9 +58,23 @@ async function contextFor(browser, token, viewport) {
   return context;
 }
 
+/**
+ * Ferme la « جولة تعريفية » d'une première visite (PAGE_TOURS.md, 2026-10-07) : sa carte intercepte les clics
+ * sur la page. L'état « vu » est côté serveur, par compte — un compte de QA neuf la voit sur chaque page.
+ */
+async function closeTour(page) {
+  const card = page.locator('[data-tour-card]');
+  for (let i = 0; i < 3 && await card.count(); i += 1) {
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(250);
+  }
+}
+
 /** Ouvre « بطاقتي ». Renvoie 'graph', ou 'empty' (rien encore d'établi : l'état vide habituel). */
 async function openMap(page, lesson) {
   await page.goto(`${BASE}${UNIT}/${lesson}`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(600);
+  await closeTour(page);
   const trigger = page.locator('[data-km-trigger]').first();
   await trigger.waitFor({ state: 'visible', timeout: 15000 });
   await trigger.click();

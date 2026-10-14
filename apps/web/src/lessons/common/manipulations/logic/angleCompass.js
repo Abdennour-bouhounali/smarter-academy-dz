@@ -35,7 +35,8 @@
  * LA DÉCOUVERTE (`discoveryReady`) : toutes les cibles atteintes ET un contraste — un essai refusé, ou
  * deux réussites d'échelles différentes pour une même cible (le même angle avec 2 et 5 puis 4 et 10).
  */
-import { trigonometry as T, linear as LIN } from '@smarter-academy/core';
+import * as T from '@smarter-academy/core/arithmetic/trigonometry.js';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 
 export const MAX_LEG = 10;
 export const MAX_OPEN = 12;

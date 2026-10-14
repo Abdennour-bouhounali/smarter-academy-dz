@@ -77,7 +77,7 @@ Not every concept below has a backend representation yet — that's the point of
 
 ```
 src/
-├── App.jsx                 route table (marketing pages + lesson/module routes, static)
+├── App.jsx                 route table (marketing pages, lazy pages; lessons through ONE lazy boundary, lessons/lessonRouteBoundary.jsx)
 ├── pages/                  route-level pages (Home, Courses, About, Contact, Login, Register, AdminDashboard, ...)
 ├── components/             marketing-site UI (not lesson-related)
 ├── components/auth/ProtectedRoute.jsx  role-gated route guard (allowedRoles prop, defaults to ['admin']); a student/teacher with emailVerified === false is sent to /verification-email (utils/emailVerification.js)

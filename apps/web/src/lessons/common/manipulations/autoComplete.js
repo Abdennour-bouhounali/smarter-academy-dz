@@ -1,4 +1,4 @@
-import { AUTO_COMPLETE_UNLOCKS } from '@smarter-academy/core';
+import { AUTO_COMPLETE_UNLOCKS } from '@smarter-academy/core/curriculum/manipulationTypes.js';
 
 /**
  * « COMPLÉTER AUTOMATIQUEMENT » — les décisions PURES du bouton élève

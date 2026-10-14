@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { linear, trigonometry } from '@smarter-academy/core';
+import * as linear from '@smarter-academy/core/arithmetic/linear.js';
+import * as trigonometry from '@smarter-academy/core/arithmetic/trigonometry.js';
 import * as L from './sectionSlicer';
 import { LEVELS } from '../levels';
 import { validateSpaceFigure, spaceFigureQuality } from '../../components/spaceFigure';

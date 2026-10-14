@@ -1,4 +1,6 @@
-import { affine as AF, linearSystem as LS, linear as Lin } from '@smarter-academy/core';
+import * as AF from '@smarter-academy/core/arithmetic/affine.js';
+import * as LS from '@smarter-academy/core/arithmetic/linearSystem.js';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import {
   planeGeometry, ticks, indexRange, indexOf, valueAt, numText, numTex, approxTex, approxText, subdivide, toNum,
 } from './originLine';

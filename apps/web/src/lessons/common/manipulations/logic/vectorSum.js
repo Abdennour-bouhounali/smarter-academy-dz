@@ -21,7 +21,8 @@
  *                    n'arrive en B que si s + c suit (AB) : θ = 30° exactement (vectors.crossingSide) ; ailleurs il
  *                    touche la rive en aval (refusé) ou en amont, à une distance écrite en mètres.
  */
-import { vectors as V, trigonometry as T } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
+import * as T from '@smarter-academy/core/arithmetic/trigonometry.js';
 
 export const MODES = Object.freeze(['chasles', 'parallelogram']);
 const DECOY_IDS = ['P', 'Q', 'R'];

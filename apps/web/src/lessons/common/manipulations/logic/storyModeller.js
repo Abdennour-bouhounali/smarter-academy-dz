@@ -1,4 +1,5 @@
-import { linearSystem as LS, linear as LIN } from '@smarter-academy/core';
+import * as LS from '@smarter-academy/core/arithmetic/linearSystem.js';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 
 const {
   eqn, classify, leftAt, isolate, substitute, eliminationFactors, scale, addEqs, eqLatex, pairLatex,

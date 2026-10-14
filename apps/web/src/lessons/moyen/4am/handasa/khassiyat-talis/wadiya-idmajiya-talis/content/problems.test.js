@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { thales as TH, linear as LIN } from '@smarter-academy/core';
+import * as TH from '@smarter-academy/core/arithmetic/thales.js';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 import { validateProblem, demandsOf } from '../../../../../../common/problems/guidedProblem';
 import { figureQuality, validateGeoFigure } from '../../../../../../common/components/geoFigure';
 import { PROBLEMS, PROBLEM } from './problems';

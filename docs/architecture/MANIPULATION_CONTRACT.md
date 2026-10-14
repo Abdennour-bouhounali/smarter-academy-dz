@@ -49,7 +49,7 @@ manipulations/
 ├── useStretchInteraction.js    STRETCH gesture: a magnitude that follows the finger (slider semantics, −/+)
 ├── levels.js                   the TWO levels per type { beginner, advanced } + resolveManipulationLevels (§7)
 ├── logic/                      PURE interaction logic per type (unit-tested, no React)
-├── themeWords.js               the Arabic words of a theme (lesson.json) merged with a lesson's `context`
+├── themeWords.js               the Arabic words of a theme (lesson.manipulation.json) merged with a lesson's `context`
 ├── primitives/                 shared building blocks, never duplicated by a type
 │   ├── PlayerFigure.jsx + PitchBackdrop.jsx   a drawn footballer and a real-proportioned pitch (2:3)
 │   ├── BookFigure.jsx + BookRectangle.jsx     the library's book, and n of them in shelves of `cols`
@@ -111,7 +111,7 @@ because a length and a number line read left to right), compare squares **in int
 graduation `1/scale`, and `v² × den` is compared to `num × scale²`), and are **manual** (§6bis — each
 position is a trial or an answer). Pure logic: `logic/squareRootSide.js`, `logic/squareFold.js`,
 `logic/squareTiling.js`, tested in `logic/squareLabs.test.js` on the textbook's numbers (sweeps
-included). Strings: `lesson.json › manipulation.squareRoot | squareFold | squareTiling`; every formula
+included). Strings: `lesson.manipulation.json › squareRoot | squareFold | squareTiling`; every formula
 in a string is a `$…$` island, and the components render hints, options, notes and explanations
 through `MathText`.
 
@@ -141,7 +141,7 @@ Exact arithmetic: `packages/core/arithmetic/polynomials.js` (integer-coefficient
 Pure logic: `logic/pitchExpansion.js`, `logic/turfFactoring.js`, tested in `logic/algebraLabs.test.js`
 on the textbook's numbers (geometry swept over every x of the ruler: the signed zones always cover
 exactly the pitch's area); `algebra/algebraLabs.render.test.jsx` renders every kind and mode.
-Strings: `lesson.json › manipulation.pitchExpansion | turfFactoring`. Both are **manual** (§6bis —
+Strings: `lesson.manipulation.json › pitchExpansion | turfFactoring`. Both are **manual** (§6bis —
 each carried zone, merge, row count or strip placement is a decision).
 
 | Type | The hand holds | Resistance | Discovery (contrast) | Lessons |
@@ -174,7 +174,7 @@ move a boundary, modelling = two quantities growing). All four compute through O
 with `flipped`, `applyBoth` refusing ×0, `factors('x-2|x+5')`, `productAt`; `linear.test.js` sweeps the
 textbook's equations, inequalities and products), and live in `manipulations/equations/` with their logic in
 `logic/<name>.js` + `logic/<name>.test.js` (their own test files) and a render test
-`equations/<name>.render.test.jsx`. Strings: `lesson.json › manipulation.equationBalance | vanishingPitch |
+`equations/<name>.render.test.jsx`. Strings: `lesson.manipulation.json › equationBalance | vanishingPitch |
 solutionRay | growthRace`. All four are **manual** (§6bis — every gesture is a decision or an answer), report
 validated trials through `onTrial` (via `state.report`), and carry the owner's decorative layer (below).
 
@@ -217,7 +217,7 @@ frozen by reduced motion — the exception of §2quinquies, not a licence to ani
 ## 2septies. The system laboratories (unit 5, 2026-10-01)
 
 Unit 5 « جمل معادلتين من الدرجة الأولى بمجهولين » added three types by the §7ter recipe, in `manipulations/systems/`
-(logic `logic/<name>.js` + tests, render test `systems/<name>.render.test.jsx`, strings `lesson.json ›
+(logic `logic/<name>.js` + tests, render test `systems/<name>.render.test.jsx`, strings `lesson.manipulation.json ›
 manipulation.pairScoreboard | eliminationCards | storyModeller`). All three compute through ONE exact module,
 `packages/core/arithmetic/linearSystem.js` (on `linear.js` fractions: `eq2('2(x - 5) = y - 3')`, `system`,
 `classify` → unique / none / infinite, `pairHolds`, `isolate`, `substitute`, `scale` refusing ×0, `addEqs`,
@@ -258,7 +258,7 @@ system without a unique solution, throws at render. On phones the chip reserve i
 
 Unit 6 « الدالة الخطية والتناسبية » (ميدان d'affichage « ميدان التناسبية والدوال ») added four types by the §7ter
 recipe, in `manipulations/proportion/` (logic `logic/<name>.js` + tests, render test `proportion/<name>.render.test.jsx`,
-strings `lesson.json › manipulation.ratioRide | linearMachine | originLine | percentTag`). All four compute through ONE
+strings `lesson.manipulation.json › ratioRide | linearMachine | originLine | percentTag`). All four compute through ONE
 exact module, `packages/core/arithmetic/proportional.js` (on `linear.js` fractions: `tableRatios`, `commonRatio`,
 `fourthProportional`, `coefficientFrom` refusing m = 0, `image`, `antecedent`, `onLine`, `direction`,
 `percentMultiplier(t, take|increase|decrease)`, `chainMultiplier`, `percentChange`, `rule('2x-1')`, `isLinear`,
@@ -302,7 +302,7 @@ measured block, `[data-ride-handle]`, `[data-ride-record]`, `[data-ride-claim]`,
 
 Unit 7 « الدالة التآلفية » (same display ميدان « ميدان التناسبية والدوال ») added five types by the §7ter recipe, in
 `manipulations/affine/` (logic `logic/<name>.js` + tests, render test `affine/<name>.render.test.jsx`, strings
-`lesson.json › manipulation.affineMeter | affineLine | slopeStairs | lineCrossing | planCompare`). All five compute through
+`lesson.manipulation.json › affineMeter | affineLine | slopeStairs | lineCrossing | planCompare`). All five compute through
 ONE exact module, `packages/core/arithmetic/affine.js`, built ON `linear.js` (an affine function IS unit 4's `{ a, b }`)
 and `linearSystem.js` (an equation ax + by = c): `affine('3/2x+1' | '2+3x' | a, b)`, `affineLatex`, `kindOf`,
 `classifyRule` (`'3x^2+1'`, `'1/x-3'` → `other`), `imageOf`, `antecedentOf` (`unique` | `none` | `all`), `onLine`,
@@ -354,7 +354,7 @@ measured margins are 8–10 px (L2 advanced, L4 advanced after both lines, the s
 
 Unit 8 « الإحصاء » (same display ميدان « ميدان التناسبية والدوال », programme domain « ميدان تنظيم المعطيات ») added four types by
 the §7ter recipe, in `manipulations/stats/` (logic `logic/<name>.js` + tests, render test `stats/<name>.render.test.jsx`, strings
-`lesson.json › manipulation.cumulGate | statBalance | sheetLab | groupTanks`). All four compute through ONE exact module,
+`lesson.manipulation.json › cumulGate | statBalance | sheetLab | groupTanks`). All four compute through ONE exact module,
 `packages/core/arithmetic/statistics.js`, on `linear.js` fractions (`tableOf`, cumulative up / down and relative, `countAtMost /
 AtLeast / Where`, `range`, `mean`, `median` by ranks, classes / `center` / `medianClass`, `mode`, `combineGroups`,
 `solveValueForMean`, `pieAngles`, `statText` / `approx`) — no lab carries arithmetic. All four are **manual** (§6bis: each gesture
@@ -405,7 +405,7 @@ kit, `manipulations/space/stage3d/` (three.js, already a dependency of the Math 
   `plane`, `dot`, `handle`.
 - **`Stage3D.jsx`** — the React bridge: `build(stage)` runs ONCE and returns `{ update(state), dispose? }`, each `state` change calls `update`
   (never a new scene); the stage is focusable (arrows orbit the VIEW — an aid, not the mathematical gesture — and ↺ resets it,
-  `lesson.json › manipulation.stage3d`). **Until the WebGL scene exists the `fallback` fills the window** — a `SpaceFigure` of the same
+  `lesson.manipulation.json › stage3d`). **Until the WebGL scene exists the `fallback` fills the window** — a `SpaceFigure` of the same
   situation: the server render of the render tests sees it (no WebGL in Node), a browser without WebGL keeps a readable lab, and the scene is
   born in a LAYOUT effect, before the first paint (no flash). `prefersReducedMotion()` cuts the orbit damping; the labs read it for their
   animations.
@@ -536,7 +536,7 @@ its tests and a render test; glance blocks `data-rr|tc|ac|cl-glance`, measured b
 
 Unit 9 « خاصية طالس », the first unit under the programme's « ميدان الهندسة » (`handasa`), added five types by the §7ter
 recipe, in a new folder `manipulations/geometry/` (logic `logic/<name>.js` + tests, render test `geometry/<name>.render.test.jsx`,
-strings `lesson.json › manipulation.thalesBeam | parallelLevel | segmentDivider | shadowStick | coneCylinder`). Every verdict comes
+strings `lesson.manipulation.json › thalesBeam | parallelLevel | segmentDivider | shadowStick | coneCylinder`). Every verdict comes
 from ONE exact module, `packages/core/arithmetic/thales.js` on `linear.js` fractions — drawing coordinates may be floats, they decide
 nothing. Its central convention: points on the two secant lines are SIGNED abscissas from A, so `converse({ b, bp, c, cp })` decides
 the reciprocal on the ratios AND the order at once (`reason: 'ratios' | 'order'`). All five are **manual** (§6bis: each gesture is a
@@ -583,7 +583,7 @@ Rules that make this reusable rather than eight one-offs:
   `resources[].experience.theme`; the closed list is `VISUAL_THEMES` in
   `packages/core/curriculum/manipulationLevels.js`, and `validate:lessons` rejects an unknown id.
   Which objects a theme draws lives in `primitives/itemThemes.js`; its Arabic words live in
-  `lesson.json` under `manipulation.themes.<id>.*` and are read through `themeWords()`, which a
+  `lesson.manipulation.json` under `themes.<id>.*` (keys `lesson:manipulation.themes.<id>.*`) and are read through `themeWords()`, which a
   lesson's `context` (the textbook's own words) may override. **No scene contains Arabic.**
 - **One scene, three types.** `GroupingScene` serves `common-divisors`, the groups stage of
   `coprime-explorer` (`startWith="groups"`) and `fraction-reduction`, because « k identical
@@ -683,7 +683,7 @@ wrapper (`group:add`) from the reserve (`stock` zone) to the type's table, or br
 (`group:remove` → `stock`); −/+ do the same. The type owns the logic (`addGroup` / `removeGroup` in
 `logic/commonDivisors.js`) and the zones' ids; the primitive draws the reserve, the buttons and the
 **trace** of tried numbers (read-only, `[data-tried-k][data-tried-mark]`). The theme words come
-from `lesson.json` `manipulation.themes.<id>.{stock, add, remove}`. It replaced the 1…24 numeral
+from `lesson.manipulation.json` `themes.<id>.{stock, add, remove}`. It replaced the 1…24 numeral
 rail, on which the student could jump straight to the answer.
 
 ### 4.2 Stretch — `useStretchInteraction`
@@ -899,7 +899,7 @@ DOM contract: `[data-manipulation-autocomplete=<status>]` wraps the button.
 3. In `logic/<type>.js`, add the one-gesture step, the completion and the remaining count **built
    on the existing transitions**, and test that step×remaining = completion, and a mixed start.
 4. Pass `controller.autoComplete` as above, with `ready` reading the extracted `validateNumbers`.
-5. Add `manipulation.<ns>.autoComplete` to `lesson.json`, and extend the e2e block 12.
+5. Add `<ns>.autoComplete` to `lesson.manipulation.json` (key `lesson:manipulation.<ns>.autoComplete`), and extend the e2e block 12.
 
 ## 7. Levels and free lab
 
@@ -1230,7 +1230,7 @@ Ten steps, in this order. Steps 1, 2 and 5 are enforced by tests that fail other
    tile or a drop zone.
 5. **Register the component**: `'my-type': lazy(() => import('./divisibility/MyType'))` in
    `manipulationRegistry.js`. `manipulationRegistry.test.js` asserts the two halves agree.
-6. **Add the Arabic strings** to `i18n/locales/ar/lesson.json` under `manipulation.<ns>.*`
+6. **Add the Arabic strings** to `i18n/locales/ar/lesson.manipulation.json` under `<ns>.*` (read as `lesson:manipulation.<ns>.*` — the file is loaded WITH the lesson, never in the entry bundle: BUNDLE_BOUNDARIES §3 « lesson.manipulation »)
    (title, mission, hints, discovery prompt and options, explanation, and one key per reject
    reason). Never hardcode Arabic in the component.
 7. **Declare it as lesson data**: `resources[]` in `lesson.config.js` with
@@ -1298,7 +1298,7 @@ Math Lab's « d'un seul regard » (`MATH_LAB.md` §3.5).
      inside the scene (pure geometry `primitives/movablePanel.js`, tested), position remembered per browser
      (`sa-lab-move:<id>`). Moving a panel is NOT a mathematical gesture: it changes no lab state and is never an
      answer (the mathematical gestures stay `useDragInteraction` / `useStretchInteraction`).
-   Never place secondary material between an object and its controls. Strings: `lesson.json ›
+   Never place secondary material between an object and its controls. Strings: `lesson.manipulation.json ›
    manipulation.layout.*`. DOM: `[data-lab-fold][data-open]`, `[data-lab-fold-toggle]`,
    `[data-movable-panel]`, `[data-movable-handle]`, `[data-movable-reset]`.
 4. **Many objects form a near-square block, never a long strip.** 32 agents are a 6 × 6 office, not a

@@ -1,4 +1,5 @@
-import { equalGrouping, divisibility } from '@smarter-academy/core';
+import * as equalGrouping from '@smarter-academy/core/arithmetic/equalGrouping.js';
+import * as divisibility from '@smarter-academy/core/arithmetic/divisibility.js';
 
 const { groupBy } = equalGrouping;
 const { divisors } = divisibility;

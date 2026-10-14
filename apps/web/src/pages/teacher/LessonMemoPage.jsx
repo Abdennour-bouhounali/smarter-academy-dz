@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ClipboardList, GraduationCap, NotebookPen, Printer, BookOpen } from 'lucide-react';
 import { getLessonById, getUnitOfLesson } from '@smarter-academy/core';
-import { getLessonConfig } from '../../lessons/registry';
+import { isLessonBuilt, loadLessonConfig } from '../../lessons/registry';
 import { useContentAvailability } from '../../context/ContentAvailabilityContext';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { ArrowBack } from '../../components/common/DirectionalIcons';
@@ -71,23 +71,28 @@ function LessonMemo() {
   const { isLessonClosed } = useContentAvailability();
 
   const lesson = getLessonById(lessonId);
-  const config = getLessonConfig(lessonId);
-  const available = !!lesson && !!config && lesson.status === 'available' && !isLessonClosed(lessonId);
+  // Construite ? — l'index léger. La config complète arrive avec le contenu de la leçon (ci-dessous).
+  const available = !!lesson && isLessonBuilt(lessonId) && lesson.status === 'available' && !isLessonClosed(lessonId);
   useDocumentMeta(t('metaTitle', { title: lesson?.title ?? '' }), t('subtitle'));
 
   const [sources, setSources] = useState(null);
+  const [config, setConfig] = useState(null);
   const [error, setError] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     if (!available) return undefined;
     let alive = true;
     setSources(null);
     setError(false);
-    loadLessonMemoSources(lessonId).then((s) => { if (alive) setSources(s); }, () => { if (alive) setError(true); });
+    Promise.all([loadLessonMemoSources(lessonId), loadLessonConfig(lessonId)]).then(
+      ([s, c]) => { if (!alive) return; if (!c) { setError(true); return; } setConfig(c); setSources(s); },
+      () => { if (alive) setError(true); },
+    );
     return () => { alive = false; };
-  }, [lessonId, available]);
+  }, [lessonId, available, attempt]);
 
   const memo = useMemo(() => {
-    if (!available || !sources) return null;
+    if (!available || !sources || config?.id !== lessonId) return null;
     const unit = getUnitOfLesson(lessonId);
     const unitLessons = unit ? [...unit.lessons, ...(unit.synthesis ? [unit.synthesis] : [])] : [];
     return buildLessonMemo({ lesson, config, unit, ...sources, lessonById: getLessonById, unitLessons });
@@ -149,7 +154,7 @@ function LessonMemo() {
         )}
       </div>
 
-      {error && <ErrorBox message={t('loadError')} onRetry={() => { setError(false); loadLessonMemoSources(lessonId).then(setSources, () => setError(true)); }} />}
+      {error && <ErrorBox message={t('loadError')} onRetry={() => setAttempt((n) => n + 1)} />}
       {!memo && !error && <Loading label={t('loading')} />}
 
       {memo && (

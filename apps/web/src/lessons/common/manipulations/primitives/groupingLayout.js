@@ -1,4 +1,4 @@
-import { equalGrouping } from '@smarter-academy/core';
+import * as equalGrouping from '@smarter-academy/core/arithmetic/equalGrouping.js';
 
 const { groupInto } = equalGrouping;
 

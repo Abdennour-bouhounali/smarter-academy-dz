@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { MANIPULATION_TYPE_IDS, MANIPULATION_TYPES, linearSystem } from '@smarter-academy/core';
+import { MANIPULATION_TYPE_IDS, MANIPULATION_TYPES } from '@smarter-academy/core/curriculum/manipulationTypes.js';
+import * as linearSystem from '@smarter-academy/core/arithmetic/linearSystem.js';
 import * as levelsModule from './levels';
 import { LEVELS, levelsFor, levelMatching, resolveManipulationLevels } from './levels';
 
@@ -18,9 +19,9 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
 
   it('l’ancienne échelle à quatre paliers n’existe plus', () => {
     expect(levelsModule.LEVEL_KEYS).toBeUndefined();
-    const lesson = JSON.parse(readFileSync(new URL('../../../i18n/locales/ar/lesson.json', import.meta.url), 'utf8'));
-    expect(lesson.manipulation.levels).toBeUndefined();
-    expect(Object.keys(lesson.manipulation.level)).toEqual(expect.arrayContaining(['label', 'beginner', 'advanced', 'practiceTitle']));
+    const manipulation = JSON.parse(readFileSync(new URL('../../../i18n/locales/ar/lesson.manipulation.json', import.meta.url), 'utf8'));
+    expect(manipulation.levels).toBeUndefined();
+    expect(Object.keys(manipulation.level)).toEqual(expect.arrayContaining(['label', 'beginner', 'advanced', 'practiceTitle']));
   });
 
   it('les deux niveaux diffèrent, l’avancé demande plus, et cite le manuel', () => {

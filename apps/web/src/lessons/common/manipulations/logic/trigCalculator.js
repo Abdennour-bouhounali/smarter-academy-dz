@@ -28,7 +28,7 @@
  *   precision   le trait de coupe ailleurs que la précision demandée ;
  *   truncate    garder le chiffre quand le suivant est ≥ 5 (MISC-MUTH-TADWIR-BATR) ; overRound : l'inverse.
  */
-import { trigonometry as TR } from '@smarter-academy/core';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 
 export const KINDS = Object.freeze(['cos', 'sin', 'tan']); // l'ordre des lignes du tableau du manuel
 export const INV_LABEL = Object.freeze({ sin: 'sin⁻¹', cos: 'cos⁻¹', tan: 'tan⁻¹' });

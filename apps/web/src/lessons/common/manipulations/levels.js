@@ -1,4 +1,4 @@
-import { MANIPULATION_LEVEL_IDS, resolveLevelId } from '@smarter-academy/core';
+import { MANIPULATION_LEVEL_IDS, resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 
 /**
  * Les DEUX NIVEAUX de chaque type de manipulation — مبتدئ / متقدم, et rien

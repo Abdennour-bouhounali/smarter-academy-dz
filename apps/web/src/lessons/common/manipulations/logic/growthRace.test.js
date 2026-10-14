@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { linear } from '@smarter-academy/core';
+import * as linear from '@smarter-academy/core/arithmetic/linear.js';
 import * as G from './growthRace';
 
 const F = (p) => linear.fracText(p);

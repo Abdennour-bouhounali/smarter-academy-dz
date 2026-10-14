@@ -1,4 +1,5 @@
-import { affine as AF, linear as Lin } from '@smarter-academy/core';
+import * as AF from '@smarter-academy/core/arithmetic/affine.js';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import { parseValue, parsePoints, niceStep, numText, numTex } from './originLine';
 
 /**

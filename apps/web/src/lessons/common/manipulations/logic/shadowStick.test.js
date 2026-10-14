@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { linear as LIN } from '@smarter-academy/core';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 import * as L from './shadowStick';
 
 const txt = LIN.fracText;

@@ -35,7 +35,8 @@
  *   const j = join(s, 2);                                   // la 3e marque reliée à B
  *   draw(setSlide(j, 15))  …                                // parallèles par les marques 1 et 2
  */
-import { thales as TH, linear as LIN } from '@smarter-academy/core';
+import * as TH from '@smarter-academy/core/arithmetic/thales.js';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 
 const { frac, sub, div, eq, cmp, toNumber, fracText } = LIN;
 

@@ -1,4 +1,5 @@
-import { linear as Lin, proportional as Pr } from '@smarter-academy/core';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
+import * as Pr from '@smarter-academy/core/arithmetic/proportional.js';
 
 /**
  * linear-machine — LA MACHINE À RÈGLE CACHÉE (unité 6 « الدالة الخطية والتناسبية », leçon 2

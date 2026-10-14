@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { validateProblem, demandsOf } from '../../../../../../common/problems/guidedProblem';
 import { validateGeoFigure, figureQuality } from '../../../../../../common/components/geoFigure';
-import { trigonometry as TR } from '@smarter-academy/core';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 import { PROBLEMS, PROBLEM } from './problems';
 import { LESSON_CONFIG } from '../lesson.config';
 

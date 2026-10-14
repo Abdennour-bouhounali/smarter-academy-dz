@@ -16,7 +16,9 @@
  * pyramid. La variable de chaque étage est un INDICE entier (le geste se pose sur des « hauteurs de couche » exactes) ;
  * `valueOf(lab, stage, i)` en donne la valeur exacte (fraction).
  */
-import { space, linear, trigonometry } from '@smarter-academy/core';
+import * as space from '@smarter-academy/core/arithmetic/space.js';
+import * as linear from '@smarter-academy/core/arithmetic/linear.js';
+import * as trigonometry from '@smarter-academy/core/arithmetic/trigonometry.js';
 import { spaceFigureQuality } from '../../components/spaceFigure';
 
 const { frac, add, sub, mul, div, cmp, eq, toNumber, parseNumber, fracLatex } = linear;

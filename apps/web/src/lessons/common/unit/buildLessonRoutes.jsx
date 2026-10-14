@@ -1,12 +1,14 @@
 import { lazy, Suspense } from 'react';
 import { Route } from 'react-router-dom';
 import { loadLessonRuntime } from '../lessonRuntimeLoader';
+import { rememberLessonConfig } from '../../registry';
 
 // Le runtime de leçon (coquille du mode classe, porte de palier, carte des
 // connaissances, ancre du cahier) est UN lot paresseux partagé par toutes les
-// leçons : ce fichier est importé par App.jsx, donc tout ce qu'il importe
-// statiquement part dans le lot d'entrée. Voir common/lessonRuntime.jsx et
-// docs/architecture/BUNDLE_BOUNDARIES.md.
+// leçons. Ce fichier est chargé avec le routes.jsx d'une leçon, à travers la
+// frontière de routes (lessons/lessonRouteBoundary.jsx) — plus par App.jsx
+// depuis le 2026-10-14 — mais il reste partagé par toutes les leçons : rien de
+// lourd ici. Voir common/lessonRuntime.jsx et docs/architecture/BUNDLE_BOUNDARIES.md.
 const LessonClassroomShell = lazy(() => loadLessonRuntime().then((m) => ({ default: m.LessonClassroomShell })));
 const LessonPageFrame = lazy(() => loadLessonRuntime().then((m) => ({ default: m.LessonPageFrame })));
 const LESSON_FALLBACK = <div className="min-h-screen bg-slate-50" />;
@@ -17,8 +19,8 @@ const LESSON_FALLBACK = <div className="min-h-screen bg-slate-50" />;
  *
  *   export const buildLessonRoutes = createLessonRoutesBuilder({ printSubject: PRINT_SUBJECT });
  *
- * Ce fichier est importé (via les routes.jsx) par App.jsx : il ne doit rien
- * importer de lourd (docs/architecture/BUNDLE_BOUNDARIES.md).
+ * Ce fichier est chargé (via les routes.jsx) par la frontière de routes des
+ * leçons : il ne doit rien importer de lourd (docs/architecture/BUNDLE_BOUNDARIES.md).
  *
  * Fabrique les routes d'une leçon de l'unité : la page d'accueil de la leçon
  * et un module par fichier `modules/Module<NN>*.jsx` (résolu par le NUMÉRO
@@ -28,6 +30,9 @@ const LESSON_FALLBACK = <div className="min-h-screen bg-slate-50" />;
  */
 export function createLessonRoutesBuilder({ printSubject }) {
   return function buildLessonRoutes({ config, basePath, moduleFiles, loadKnowledge, loadIndex }) {
+    // La config complète est désormais lisible SYNCHRONEMENT par les pages de
+    // la leçon (registry.getLoadedLessonConfig : carte des connaissances…).
+    rememberLessonConfig(config);
     const LessonHome = lazy(loadIndex);
     const components = Object.entries(moduleFiles).reduce((acc, [path, loader]) => {
       const match = path.match(/Module(\d+)/);

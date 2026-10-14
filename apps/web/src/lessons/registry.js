@@ -1,5 +1,4 @@
-// Registry of every built lesson implementation, discovered from the
-// lesson.config.js files under this directory. This — not coursesData.js —
+// Registry of every built lesson implementation. This — not coursesData.js —
 // is the source of truth for a lesson's module structure: the catalogue
 // describes what a lesson teaches, the config describes how it is built.
 //
@@ -7,56 +6,56 @@
 // implementation yet (status 'coming_soon'); progress utilities must skip it
 // rather than assume a module count.
 //
-// Active-grade isolation (docs/ALGERIA_MIGRATION_AUDIT.md §15): only folders
-// under an active grade (path shape `./<level>/<gradeId>/...`) are indexed
-// here. (The French lesson folders this once filtered out were deleted on
-// 2026-09-25.) This is defense in
-// depth on top of the coursesData.js catalogue filter (activeGrades.js) —
-// even if some other code path bypassed the catalogue, an inactive grade's
-// lesson.config.js still could not be resolved through this registry.
+// TWO LAYERS since 2026-10-14 (docs/architecture/BUNDLE_BOUNDARIES.md §3,
+// « Lesson index » and « Lesson route boundary »):
 //
-// The glob itself is ALSO scoped to the active grades, at build time. A glob
-// over './**' made Vite inline all 132 French configs into the entry bundle
-// (≈ 1.1 MB of source, every visitor, discarded by the runtime filter below).
-// `import.meta.glob` only accepts literals, so the grade list is spelled out
-// here — registry.test.js fails if it drifts from ACTIVE_GRADE_IDS.
-// See docs/architecture/BUNDLE_BOUNDARIES.md.
+//   1. SYNCHRONOUS answers — built? how many modules? first module? path of
+//      module n? — come from `lessonIndex.generated.json`, a light index
+//      generated from the lesson.config.js files (scripts/generate-lesson-index.mjs,
+//      kept fresh by `npm run check:lessons`). ≈ 20 bytes gzip per lesson, no Arabic.
+//   2. The FULL LESSON_CONFIG (titles, resources, teachesLearningPointIds…)
+//      is loaded WITH its lesson: `loadLessonConfig(id)` (async) or the
+//      `useLessonConfig(id)` hook (lessons/useLessonConfig.js). Once loaded —
+//      always the case on a lesson page, whose routes.jsx imported it — it is
+//      readable synchronously with `getLoadedLessonConfig(id)`.
+//
+// Until 2026-10-14 this file globbed every lesson.config.js EAGERLY: 775 KB of
+// configuration in every visitor's first download, growing with each lesson.
+//
+// Active-grade isolation (docs/ALGERIA_MIGRATION_AUDIT.md §15): the index only
+// lists active grades (the generator filters on ACTIVE_GRADE_IDS), the lazy
+// globs of lessonLoaders.js are literals scoped to the active grades, and this
+// file filters again at runtime — defense in depth on top of the coursesData.js
+// catalogue filter (activeGrades.js).
 import { ACTIVE_GRADE_IDS } from '@smarter-academy/core';
+import LESSON_INDEX from './lessonIndex.generated.json';
 
-const configModules = import.meta.glob(
-  [
-    './*/1am/**/lesson.config.js',
-    './*/2am/**/lesson.config.js',
-    './*/3am/**/lesson.config.js',
-    './*/4am/**/lesson.config.js',
-    './*/terminale_dz/**/lesson.config.js',
-  ],
-  { eager: true },
-);
-
-function gradeIdFromModulePath(path) {
-  // './college/6e/domaine/lecon/lesson.config.js' -> '6e'
-  const parts = path.split('/');
-  return parts.length >= 3 ? parts[2] : null;
+const entryById = new Map();
+for (const entry of LESSON_INDEX.lessons) {
+  if (!ACTIVE_GRADE_IDS.includes(entry.grade)) continue;
+  entryById.set(entry.id, entry);
 }
 
-const configByLessonId = new Map();
-for (const [path, mod] of Object.entries(configModules)) {
-  const gradeId = gradeIdFromModulePath(path);
-  if (!ACTIVE_GRADE_IDS.includes(gradeId)) continue;
-
-  const config = mod.LESSON_CONFIG;
-  if (config?.id) {
-    configByLessonId.set(config.id, config);
-  }
-}
+const basePathOf = (entry) => `/courses/${entry.level}/${entry.grade}/${entry.chapter}/${entry.id}`;
 
 /**
- * @param {string} lessonId - the lesson's coursesData.js id / LESSON_CONFIG.id
- * @returns {object|null} the LESSON_CONFIG, or null when the lesson isn't built
+ * The index entries of every built lesson of the active grades, with their
+ * base path — what App.jsx needs to mount one lazy route boundary per lesson.
+ * @returns {Array<{ id: string, grade: string, basePath: string }>}
  */
-export function getLessonConfig(lessonId) {
-  return configByLessonId.get(lessonId) ?? null;
+export function getBuiltLessons() {
+  return [...entryById.values()].map((e) => ({ id: e.id, grade: e.grade, basePath: basePathOf(e) }));
+}
+
+/** @returns {boolean} whether the lesson has an implementation (a lesson.config.js). */
+export function isLessonBuilt(lessonId) {
+  return entryById.has(lessonId);
+}
+
+/** @returns {string|null} the lesson's LESSON_BASE_PATH, or null when it isn't built. */
+export function getLessonBasePath(lessonId) {
+  const entry = entryById.get(lessonId);
+  return entry ? basePathOf(entry) : null;
 }
 
 /**
@@ -65,7 +64,7 @@ export function getLessonConfig(lessonId) {
  *          never a fabricated default.
  */
 export function getTotalModules(lessonId) {
-  return configByLessonId.get(lessonId)?.modules?.length ?? null;
+  return entryById.get(lessonId)?.modules.length ?? null;
 }
 
 /**
@@ -80,9 +79,9 @@ export function getTotalModules(lessonId) {
  *          leçon n'est pas construite — jamais un défaut fabriqué.
  */
 export function getFirstModuleNumber(lessonId) {
-  const modules = configByLessonId.get(lessonId)?.modules;
+  const modules = entryById.get(lessonId)?.modules;
   if (!Array.isArray(modules) || modules.length === 0) return null;
-  const numbers = modules.map((m) => Number(m.number)).filter(Number.isFinite);
+  const numbers = modules.map(([number]) => Number(number)).filter(Number.isFinite);
   return numbers.length > 0 ? Math.min(...numbers) : null;
 }
 
@@ -100,18 +99,20 @@ export function getFirstModuleNumber(lessonId) {
  * Cette fonction est le seul pont autorisé entre les deux mondes. Elle rend
  * `null` quand la leçon n'est pas construite ou quand le module n'existe
  * pas : l'appelant doit alors se rabattir sur l'index de la leçon plutôt que
- * de fabriquer un lien mort.
+ * de fabriquer un lien mort. (`m.path === LESSON_BASE_PATH/slug` pour chaque
+ * module : le générateur de l'index le vérifie.)
  *
  * @param {string} lessonId
  * @param {number|string} moduleNumber Le `number` du module (pas son index).
  * @returns {string|null}
  */
 export function getModulePath(lessonId, moduleNumber) {
-  const config = configByLessonId.get(lessonId);
-  if (!config?.modules) return null;
+  const entry = entryById.get(lessonId);
+  if (!entry) return null;
   const wanted = Number(moduleNumber);
   if (!Number.isFinite(wanted)) return null;
-  return config.modules.find((m) => Number(m.number) === wanted)?.path ?? null;
+  const slug = entry.modules.find(([number]) => Number(number) === wanted)?.[1];
+  return slug ? `${basePathOf(entry)}/${slug}` : null;
 }
 
 /**
@@ -122,8 +123,75 @@ export function getModulePath(lessonId, moduleNumber) {
  * what those tests are actually checking.
  */
 export function getAnyRegisteredLessonId() {
-  for (const [id, config] of configByLessonId) {
-    if ((config.modules?.length ?? 0) >= 2) return id;
+  for (const [id, entry] of entryById) {
+    if (entry.modules.length >= 2) return id;
   }
   return null;
+}
+
+// ── The full configuration, loaded with the lesson ─────────────────────────
+
+/** The lazy loaders module (two globs) — its own small chunk, never in the entry. */
+export const loadLessonLoaders = () => import('./lessonLoaders.js');
+
+const loadedConfigs = new Map();
+const pendingConfigs = new Map();
+
+/**
+ * Records a lesson's LESSON_CONFIG once its code is loaded. The lesson route
+ * factory (common/unit/buildLessonRoutes.jsx) calls it, so every page of an
+ * open lesson reads its config synchronously.
+ */
+export function rememberLessonConfig(config) {
+  if (config?.id && entryById.has(config.id)) loadedConfigs.set(config.id, config);
+}
+
+/**
+ * @returns {object|null} the LESSON_CONFIG if it has already been loaded
+ *          (always true on that lesson's own pages), else null.
+ */
+export function getLoadedLessonConfig(lessonId) {
+  return loadedConfigs.get(lessonId) ?? null;
+}
+
+/**
+ * @param {string} lessonId
+ * @returns {Promise<object|null>} the LESSON_CONFIG, or null when the lesson
+ *          isn't built (or belongs to an inactive grade).
+ */
+export function loadLessonConfig(lessonId) {
+  if (!entryById.has(lessonId)) return Promise.resolve(null);
+  if (loadedConfigs.has(lessonId)) return Promise.resolve(loadedConfigs.get(lessonId));
+  if (!pendingConfigs.has(lessonId)) {
+    const pending = loadLessonLoaders()
+      .then(({ CONFIG_LOADERS, findLessonLoader }) => {
+        const load = findLessonLoader(CONFIG_LOADERS, lessonId, 'lesson.config.js');
+        return load ? load() : null;
+      })
+      .then((config) => {
+        rememberLessonConfig(config);
+        return loadedConfigs.get(lessonId) ?? null;
+      })
+      .finally(() => pendingConfigs.delete(lessonId));
+    pendingConfigs.set(lessonId, pending);
+  }
+  return pendingConfigs.get(lessonId);
+}
+
+/** Loads several configs at once; resolves to a Map id → config (built lessons only). */
+export async function loadLessonConfigs(lessonIds) {
+  const configs = await Promise.all(lessonIds.map((id) => loadLessonConfig(id)));
+  return new Map(configs.filter(Boolean).map((c) => [c.id, c]));
+}
+
+/**
+ * @returns {Promise<Function|null>} the default export of the lesson's
+ *          routes.jsx (its route factory), or null when it isn't built.
+ */
+export function loadLessonRoutesFactory(lessonId) {
+  if (!entryById.has(lessonId)) return Promise.resolve(null);
+  return loadLessonLoaders().then(({ ROUTES_LOADERS, findLessonLoader }) => {
+    const load = findLessonLoader(ROUTES_LOADERS, lessonId, 'routes.jsx');
+    return load ? load() : null;
+  });
 }

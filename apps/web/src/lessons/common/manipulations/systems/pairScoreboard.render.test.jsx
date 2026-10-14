@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import PairScoreboard from './PairScoreboard';
 import ManipulationWorkspace from '../ManipulationWorkspace';
-import lessonAr from '../../../../i18n/locales/ar/lesson.json';
+import manipulationAr from '../../../../i18n/locales/ar/lesson.manipulation.json';
 import source from './PairScoreboard.jsx?raw';
 
 /**
@@ -63,7 +63,7 @@ it('pair-scoreboard se rend dans un workspace à deux niveaux, ouvert sur متق
 });
 
 it('chaque clé que le composant lit existe, pour chaque monde (aucune clé brute à l’écran)', () => {
-  const ns = lessonAr.manipulation.pairScoreboard;
+  const ns = manipulationAr.pairScoreboard;
   const own = [...source.matchAll(/\bk\('([a-zA-Z0-9]+)'/g)].map((m) => m[1]);
   const world = [...source.matchAll(/\bw\('([a-zA-Z0-9]+)'/g)].map((m) => m[1]);
   // les clés conditionnelles écrites « k(ok ? 'a' : 'b') », « w(i === 0 ? 'g1' : 'g2') »

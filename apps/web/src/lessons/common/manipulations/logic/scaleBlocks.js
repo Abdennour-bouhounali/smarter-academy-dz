@@ -19,7 +19,8 @@
  *   plusOne(lab) · plusReading(dims)              le contraste « + 1 cm partout »
  *   discoveryReady(lab) · evidenceOf(lab)
  */
-import { linear as Lin, space as Sp } from '@smarter-academy/core';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
+import * as Sp from '@smarter-academy/core/arithmetic/space.js';
 
 const { frac, mul, div, cmp, eq, isInteger, toNumber, fracText, fracDecimal, add } = Lin;
 const F = (v) => (typeof v === 'object' && v !== null && 'n' in v ? v : Number.isInteger(v) ? frac(v) : parseK(v));

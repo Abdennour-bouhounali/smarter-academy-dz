@@ -28,7 +28,7 @@
  * départ du dépôt O (le code = l'adresse) contre un départ ailleurs (le code ≠ l'adresse), puis le geste inverse
  * (le code donné, la destination à poser).
  */
-import { vectors as V } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 
 export const KINDS = Object.freeze(['walk', 'walkCode', 'code', 'pin']);
 export const CODE_LIMIT = 12;

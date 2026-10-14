@@ -28,7 +28,9 @@
  * Toute grandeur tenue par la main est un INDICE entier sur une graduation (le moteur « étirer » ne connaît que des
  * entiers) ; `valueAt` le traduit en mètres ou en degrés.
  */
-import { linear as LIN, thales as TH, trigonometry as TR } from '@smarter-academy/core';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
+import * as TH from '@smarter-academy/core/arithmetic/thales.js';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 
 const { frac, parseNumber, add, sub, mul, div, cmp, isInteger, toNumber } = LIN;
 const F = (v) => (typeof v === 'object' && v !== null ? v : Number.isInteger(v) ? frac(v) : parseNumber(String(v)));

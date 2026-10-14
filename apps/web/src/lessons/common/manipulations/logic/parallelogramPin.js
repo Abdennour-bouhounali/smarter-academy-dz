@@ -22,7 +22,7 @@
  * UN ESSAI est une position VALIDÉE (relâchement, Entrée, toucher d'un nœud, pause du curseur, retournement de la
  * flèche) — jamais une valeur que le doigt a traversée.
  */
-import { vectors as V } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 
 export const MODES = Object.freeze(['midpoint', 'parallelogram']);
 export const STEPS = 8;

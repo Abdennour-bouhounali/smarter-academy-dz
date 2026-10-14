@@ -20,7 +20,8 @@
  * La découverte s'ouvre quand le tour est allumé PAR LE دوران, la distance calculée juste, et qu'un contraste a été vu (un
  * refus — à la main, au دوران ou d'une carte — ou un tour allumé à la main aussi).
  */
-import { rotation as ROT, trigonometry as TR } from '@smarter-academy/core';
+import * as ROT from '@smarter-academy/core/arithmetic/rotation.js';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 
 const snap = (deg) => ((Math.round(deg) % 360) + 360) % 360;
 const signed = (deg) => { const a = snap(deg); return a > 180 ? a - 360 : a; };

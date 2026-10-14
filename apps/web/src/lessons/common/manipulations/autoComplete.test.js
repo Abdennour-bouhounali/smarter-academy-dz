@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { MANIPULATION_TYPES, AUTO_COMPLETE_UNLOCKS } from '@smarter-academy/core';
+import { MANIPULATION_TYPES, AUTO_COMPLETE_UNLOCKS } from '@smarter-academy/core/curriculum/manipulationTypes.js';
 import {
   autoCompleteStatus, autoCompletePlan, isAutoCompleteCapability,
   AUTO_COMPLETE_BUDGET_MS, AUTO_COMPLETE_MAX_TICKS,

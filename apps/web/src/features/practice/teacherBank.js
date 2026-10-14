@@ -1,4 +1,4 @@
-import { practice } from '@smarter-academy/core';
+import * as practice from '@smarter-academy/core/practice/index.js';
 import { getLessonById } from '@smarter-academy/core';
 import { levelCounts } from './practiceContent';
 

@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef,
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ArrowUp, ArrowDown, Tv } from 'lucide-react';
-import { vectors as V, linear as Lq } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
+import * as Lq from '@smarter-academy/core/arithmetic/linear.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';

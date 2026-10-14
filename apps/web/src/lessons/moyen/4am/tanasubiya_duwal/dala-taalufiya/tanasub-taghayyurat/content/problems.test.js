@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { affine as Aff, linear as Lin, linearSystem as LS } from '@smarter-academy/core';
+import * as Aff from '@smarter-academy/core/arithmetic/affine.js';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
+import * as LS from '@smarter-academy/core/arithmetic/linearSystem.js';
 import { validateProblem, demandsOf } from '../../../../../../common/problems/guidedProblem';
 import { PROBLEMS, PROBLEM } from './problems';
 import { LESSON_CONFIG } from '../lesson.config';

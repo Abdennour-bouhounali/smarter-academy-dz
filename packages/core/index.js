@@ -39,48 +39,28 @@ export * from './curriculum/coursesData.js';
 export * from './curriculum/lessonStages.js';
 export * from './curriculum/moduleRecommendations.js';
 export * from './curriculum/activeGrades.js';
-export * from './curriculum/manipulationTypes.js';
-export * from './curriculum/manipulationLevels.js';
 export * from './curriculum/textbookPages.js';
-// Divisibilité, PGCD, réduction de fractions — le noyau de l'unité 1 de 4AM,
-// partagé par les leçons, les manipulations et les tests de contenu.
-export * as divisibility from './arithmetic/divisibility.js';
-// Partage équitable — le modèle des situations « n objets en groupes égaux »,
-// commun au rangement des livres du manuel et aux scènes de la plateforme.
-export * as equalGrouping from './arithmetic/equalGrouping.js';
-// Racines carrées exactes — le noyau de l'unité 2 « الحساب على الجذور » :
-// carrés comparés en entiers, écritures décimales exactes, n = a² × b.
-export * as squareRoots from './arithmetic/squareRoots.js';
-export * as polynomials from './arithmetic/polynomials.js';
-// Le premier degré exact de l'unité 4 « معادلات ومتراجحات » : équations, inéquations (sens
-// inversé par un négatif), produits nuls — une seule source pour les quatre labs.
-export * as linear from './arithmetic/linear.js';
-// Les jumal de l'unité 5 « جمل معادلتين من الدرجة الأولى بمجهولين » : deux équations en (x ; y),
-// vérifier une ثنائية, les trois cas, isoler / substituer / combiner — exact, sur les fractions de linear.js.
-export * as linearSystem from './arithmetic/linearSystem.js';
-// La proportionnalité exacte de l'unité 6 « الدالة الخطية والتناسبية » : tableaux, quatrième proportionnel,
-// coefficient depuis (m ; f(m)), droite par O, pourcentages et changements successifs, règles « machines ».
-export * as proportional from './arithmetic/proportional.js';
-// La fonction affine exacte de l'unité 7 « الدالة التآلفية » : image et antécédent, linéaire / constante, droite
-// (b = الترتيب عند المبدأ), تناسب التغيّرات et deux points, ax + by = c écrite y = ax + b, deux droites, deux tarifs.
-export * as affine from './arithmetic/affine.js';
-// La statistique exacte de l'unité 8 « الإحصاء » : effectifs, التكرار / التواتر المجمع الصاعد والنازل, المدى,
-// المتوسط (pondéré, مراكز الفئات), الوسيط (rangs) et الفئة الوسيطية, المنوال, groupes réunis et valeurs cachées.
-export * as statistics from './arithmetic/statistics.js';
-// Thalès exact de l'unité 9 « خاصية طالس » : rapports égaux, quatrième proportionnel, k (تكبير / تصغير), la
-// réciproque sur abscisses SIGNÉES (rapports ET ordre), partage d'un segment, longueur construite, ombre, cylindre dans un cône.
-export * as thales from './arithmetic/thales.js';
-// La trigonométrie du triangle rectangle de l'unité 10 « حساب المثلثات في المثلث القائم » : côtés relatifs à un
-// angle aigu, cos / sin / tan exacts (surds q·√r), relations, choix du rapport, calculatrice et arrondis.
-export * as trigonometry from './arithmetic/trigonometry.js';
-// Les vecteurs exacts des unités 11 « الأشعة والانسحاب » et 12 « الأشعة في معلم » : مركبتان، انسحاب، تساوي شعاعين
-// (منحى، اتجاه، طول)، متوازي أضلاع، علاقة شال sur des vecteurs nommés, منتصف، مسافة exacte (surds), natures analytiques.
-export * as vectors from './arithmetic/vectors.js';
-export * as rotation from './arithmetic/rotation.js';
-export * as space from './arithmetic/space.js';
 
-// Moteur d'exercices (pratique) — arithmétique exacte et évaluation des
-// réponses. Exporté sous un espace de noms : `Rational.parse` et
-// `parseDec` (numberFormat) ne font PAS la même chose, et la confusion
-// coûterait cher. Voir packages/core/practice/rational.js.
-export * as practice from './practice/index.js';
+// ── HORS du baril, importés PAR LEUR CHEMIN (2026-10-14) ─────────────────
+//
+// Ce baril est importé par du code du LOT D'ENTRÉE (StudentLayout, la
+// navigation, les cartes de leçon…). Tout ce qu'il réexporte et que Rollup ne
+// peut pas élaguer — un module dont le haut niveau CALCULE des données — part
+// chez chaque visiteur, page d'accueil comprise. Les modules ci-dessous n'ont
+// AUCUN consommateur hors des leçons, de leurs manipulations ou des pages
+// paresseuses de pratique : ils s'importent par leur chemin, et restent dans
+// les lots de ces pages (docs/architecture/BUNDLE_BOUNDARIES.md §4, règle 9).
+//
+//   Les registres des manipulations :
+//     import { MANIPULATION_TYPES } from '@smarter-academy/core/curriculum/manipulationTypes.js';
+//     import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
+//   Les mathématiques exactes de chaque unité (un espace de noms par module) :
+//     import * as divisibility from '@smarter-academy/core/arithmetic/divisibility.js';  // unité 1
+//     … equalGrouping, squareRoots (2), polynomials (3), linear (4), linearSystem (5),
+//     proportional (6), affine (7), statistics (8), thales (9), trigonometry (10),
+//     vectors (11–12), rotation (13), space (14) — arithmetic/<nom>.js
+//   Le moteur d'exercices (pratique) — un espace de noms : `Rational.parse` et
+//   `parseDec` (numberFormat) ne font PAS la même chose :
+//     import * as practice from '@smarter-academy/core/practice/index.js';
+//
+// barrel.test.js garde cette liste.

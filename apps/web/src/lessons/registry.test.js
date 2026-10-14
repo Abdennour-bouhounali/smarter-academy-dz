@@ -1,58 +1,105 @@
 import { describe, it, expect } from 'vitest';
-import { getLessonConfig, getTotalModules, getModulePath } from './registry';
+import { Children, isValidElement } from 'react';
+import {
+  isLessonBuilt, getTotalModules, getModulePath, getBuiltLessons, getLessonBasePath,
+  loadLessonConfig, loadLessonRoutesFactory, getLoadedLessonConfig,
+} from './registry';
 import { ACTIVE_GRADE_IDS } from '@smarter-academy/core';
 
 /**
  * Dormant-grade isolation, registry half (docs/ALGERIA_MIGRATION_AUDIT.md
- * §15). registry.js filters import.meta.glob's result by
- * ACTIVE_GRADE_IDS — this locks that no lesson under a dormant grade is
- * ever resolvable through the registry, independent of which specific
- * grades are active at any given time.
+ * §15). The generated index only lists active grades and registry.js filters
+ * it again by ACTIVE_GRADE_IDS — this locks that no lesson under a dormant
+ * grade is ever resolvable through the registry, independent of which
+ * specific grades are active at any given time.
  */
 describe('registry — dormant-grade isolation', () => {
-  it('ne résout AUCUNE leçon française, alors que deux classes sont actives', () => {
-    // La version positive du contrôle, et celle qui compte depuis la phase
-    // 6F : les classes actives ne sont plus vides, donc « rien ne résout »
-    // ne peut plus être vrai par accident. (Les dossiers français ont été
-    // supprimés le 2026-09-25 ; ce test garde qu'aucun identifiant français
-    // ne se résout, même si un dossier revenait.)
+  it('ne résout AUCUNE leçon française, alors que des classes sont actives', async () => {
+    // (Les dossiers français ont été supprimés le 2026-09-25 ; ce test garde
+    // qu'aucun identifiant français ne se résout, même si un dossier revenait.)
     expect(ACTIVE_GRADE_IDS.length).toBeGreaterThan(0);
-    expect(getLessonConfig('fonction-affine-2nde')).toBeNull();
+    expect(isLessonBuilt('fonction-affine-2nde')).toBe(false);
     expect(getTotalModules('fonction-affine-2nde')).toBeNull();
     expect(getModulePath('fonction-affine-2nde', 1)).toBeNull();
+    expect(await loadLessonConfig('fonction-affine-2nde')).toBeNull();
+    expect(await loadLessonRoutesFactory('fonction-affine-2nde')).toBeNull();
   });
 
   it('never resolves a lesson whose folder grade is outside ACTIVE_GRADE_IDS', () => {
-    // Exhaustive version of the above, independent of which grades happen
-    // to be active: probes one known lesson id per inherited French grade
-    // and asserts resolution tracks ACTIVE_GRADE_IDS exactly.
     const knownLessonByGrade = {
       '6e': 'fractions',
       '5e': 'operations-5e',
       '4e': 'racines-carrees',
-      '3e': null, // id unknown here on purpose; college/3e coverage below is enough
       seconde: 'fonction-affine-2nde',
       premiere_specialite: 'second-degre-resoudre-1ere',
     };
     for (const [gradeId, lessonId] of Object.entries(knownLessonByGrade)) {
-      if (!lessonId) continue;
       const shouldResolve = ACTIVE_GRADE_IDS.includes(gradeId);
-      const resolved = getLessonConfig(lessonId) !== null;
-      expect(resolved, `grade '${gradeId}' lesson '${lessonId}': expected resolvable=${shouldResolve}`).toBe(shouldResolve);
+      expect(isLessonBuilt(lessonId), `grade '${gradeId}' lesson '${lessonId}'`).toBe(shouldResolve);
     }
+    for (const { grade } of getBuiltLessons()) expect(ACTIVE_GRADE_IDS).toContain(grade);
   });
 });
 
-// The glob in registry.js is a build-time boundary: only the active grades'
-// configs are inlined into the bundle. It must be a literal, so this guards
-// it against drifting from ACTIVE_GRADE_IDS (docs/architecture/BUNDLE_BOUNDARIES.md).
+// The globs of lessonLoaders.js are build-time boundaries: only the active
+// grades' configs and routes become lazy chunks. They must be literals, so
+// this guards them against drifting from ACTIVE_GRADE_IDS
+// (docs/architecture/BUNDLE_BOUNDARIES.md). The registry itself must never
+// glob again — eagerly or not — so its loaders stay out of the entry.
+import loadersSource from './lessonLoaders.js?raw';
 import registrySource from './registry.js?raw';
 
 describe('registry — build-time glob scope', () => {
-  it('globs exactly the active grades, never ./**', () => {
-    const globCall = registrySource.match(/import\.meta\.glob\(\s*\[([^\]]*)\]/);
-    expect(globCall, 'registry.js must glob an explicit list of grade patterns').not.toBeNull();
-    const grades = [...globCall[1].matchAll(/'\.\/\*\/([^/]+)\/\*\*\/lesson\.config\.js'/g)].map((m) => m[1]);
+  it.each([['lesson.config.js'], ['routes.jsx']])('lessonLoaders.js globs %s for exactly the active grades, never ./**', (file) => {
+    const calls = [...loadersSource.matchAll(/import\.meta\.glob\(\s*\[([^\]]*)\]/g)].map((m) => m[1]);
+    const call = calls.find((c) => c.includes(file));
+    expect(call, `lessonLoaders.js must glob an explicit list of grade patterns for ${file}`).toBeTruthy();
+    const escaped = file.replace('.', '\\.');
+    const grades = [...call.matchAll(new RegExp(`'\\./\\*/([^/]+)/\\*\\*/${escaped}'`, 'g'))].map((m) => m[1]);
     expect(grades.sort()).toEqual([...ACTIVE_GRADE_IDS].sort());
+  });
+
+  it('lessonLoaders.js globs lazily; registry.js does not glob at all', () => {
+    expect(loadersSource).not.toMatch(/eager:\s*true/);
+    expect(registrySource).not.toMatch(/import\.meta\.glob\(/);
+    expect(registrySource).toMatch(/import\('\.\/lessonLoaders\.js'\)/);
+  });
+});
+
+/** Les <Route> d'un arbre, à plat. */
+function flattenRoutes(element, out = []) {
+  if (!isValidElement(element)) return out;
+  out.push(element.props);
+  Children.forEach(element.props.children, (child) => flattenRoutes(child, out));
+  return out;
+}
+
+// Modules DÉCLARÉS dans une config mais sans fichier `modules/Module<NN>*.jsx` — donc sans route : leur URL
+// retombe sur l'accueil. Trouvé le 2026-10-14 par ce test (docs/reports/BUNDLE_ENTRY_REPORT_2026-10-14.md) :
+// la synthèse de l'unité 4 est passée au format à 9 modules (2b1e7342, 2026-10-13) sans ses six « وضعيات
+// تدريبية ». Une dette de CONTENU, à générer — pas à masquer : ce test échoue dès qu'elle est réglée (retirer
+// l'entrée) et pour toute autre leçon.
+const KNOWN_UNMOUNTED_MODULES = { 'wadiya-idmajiya-muadalat': [1, 2, 3, 4, 5, 6] };
+
+describe('registry — every indexed lesson loads with its own routes', () => {
+  const lessons = getBuiltLessons();
+
+  it('indexes the built lessons', () => {
+    expect(lessons.length).toBeGreaterThanOrEqual(74);
+  });
+
+  it.each(lessons.map((l) => [l.id, l]))('%s : config + routes resolve, and mount its index and every module', async (id, { basePath }) => {
+    const config = await loadLessonConfig(id);
+    expect(config?.id).toBe(id);
+    expect(getLessonBasePath(id)).toBe(basePath);
+    const factory = await loadLessonRoutesFactory(id);
+    expect(typeof factory).toBe('function');
+    const paths = flattenRoutes(factory()).map((p) => p.path).filter(Boolean);
+    expect(paths).toContain(basePath);
+    const unmounted = config.modules.filter((m) => !paths.includes(getModulePath(id, m.number))).map((m) => m.number);
+    expect(unmounted, `${id} : modules déclarés sans route`).toEqual(KNOWN_UNMOUNTED_MODULES[id] ?? []);
+    expect(paths.length).toBe(1 + config.modules.length - unmounted.length);
+    // Le constructeur de routes la rend lisible synchrone pour les pages de la leçon.
+    expect(getLoadedLessonConfig(id)).toBe(config);
   });
 });

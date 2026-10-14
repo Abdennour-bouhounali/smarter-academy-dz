@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Compass, Network, RotateCcw, Sparkles } from 'lucide-react';
 import { IS_RTL } from '../../../../locale.js';
-import { getLessonConfig } from '../../../registry';
+import { getLoadedLessonConfig } from '../../../registry';
 import { useLessonKnowledge } from '../KnowledgeProvider';
 import {
   discover, exploreProgress, initialExplore, isLocked, nextToDiscover, nodeById, nodeStates, relationsOf, restoreExplore, visibleEdges,
@@ -93,7 +93,7 @@ export default function ProgressiveKnowledgeMap({ graph, items, selectedId, onSe
   const { t } = useTranslation('lesson');
   const reduce = useReducedMotion();
   const { lessonId, knowledge } = useLessonKnowledge();
-  const config = lessonId ? getLessonConfig(lessonId) : null;
+  const config = lessonId ? getLoadedLessonConfig(lessonId) : null;
   const storageKey = `sa_km_explore_${lessonId ?? 'lesson'}`;
 
   const unlocked = useMemo(() => new Set(items.map((it) => it.id)), [items]);

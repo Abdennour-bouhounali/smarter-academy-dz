@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { MANIPULATION_TYPE_IDS } from '@smarter-academy/core';
+import { MANIPULATION_TYPE_IDS } from '@smarter-academy/core/curriculum/manipulationTypes.js';
 
 /**
  * Le registre FERMÉ type → composant (le pendant React de

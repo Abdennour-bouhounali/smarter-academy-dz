@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readdirSync, readFileSync } from 'node:fs';
-import { space, trigonometry } from '@smarter-academy/core';
+import * as space from '@smarter-academy/core/arithmetic/space.js';
+import * as trigonometry from '@smarter-academy/core/arithmetic/trigonometry.js';
 import { validateSpaceFigure, spaceFigureQuality } from '../../../../../../common/components/spaceFigure';
 import * as FIG from './figures';
 

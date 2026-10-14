@@ -200,7 +200,7 @@ export const LESSON_CONFIG = {
 }
 ```
 
-**Id agreement:** `LESSON_CONFIG.id` must equal the catalogue lesson code for the grade the folder path names — `validate-lessons.mjs` fails otherwise. Routes are not a separate table any more: `buildLessonRoutes` (`_unit/lessonRoutes.jsx`) mounts exactly `config.modules[].path`, and `check:routes` verifies that every active lesson is wired in `App.jsx` with the catalogue's base path. Still convention-only: the folder name equal to the id (true for all nine lessons).
+**Id agreement:** `LESSON_CONFIG.id` must equal the catalogue lesson code for the grade the folder path names — `validate-lessons.mjs` fails otherwise. Routes are not a separate table any more: `buildLessonRoutes` (`_unit/lessonRoutes.jsx`) mounts exactly `config.modules[].path`, and since 2026-10-14 `App.jsx` mounts every lesson through ONE lazy route boundary fed by the generated lesson index (`lessons/lessonRouteBoundary.jsx`, `lessons/lessonIndex.generated.json`); `check:routes` verifies the boundary is mounted, that every active lesson is in the index and in the loaders' glob, and that its base path is the catalogue's. The folder name equal to the id is now ENFORCED (`scripts/generate-lesson-index.mjs` fails otherwise): the lazy loader finds a lesson by its folder.
 
 ## Module contract
 
@@ -221,7 +221,8 @@ export const LESSON_CONFIG = {
                         // modules by reading this number out of the filename).
   slug: string,          // REQUIRED. URL segment (routes.jsx maps slug -> the Module<NN>*.jsx
                         // component by module number, not by encoding the slug in the filename).
-  path: string,           // REQUIRED. Full route path — must match an App.jsx <Route>.
+  path: string,           // REQUIRED. Full route path = `${LESSON_BASE_PATH}/${slug}` (the index generator
+                        // checks it; buildLessonRoutes mounts it, and getModulePath rebuilds it from the index).
   title: string,           // REQUIRED. Display name.
   desc: string,             // REQUIRED. One-line teaser, shown on the lesson landing page.
   stage: string,             // REQUIRED. One of LESSON_STAGES (lessonStages.js) — the module's
@@ -452,8 +453,11 @@ leçon se réduit à un `import.meta.glob` (Vite exige le littéral) et un appel
 Depuis le 2026-09-25, ces enveloppes (`LessonClassroomShell`, et
 `LessonPageFrame` = porte de palier → carte des connaissances → page → ancre
 du cahier) vivent dans `common/lessonRuntime.jsx`, UN lot paresseux partagé par
-toutes les leçons : la fabrique est importée par `App.jsx`, donc rien de lourd
-ne doit y être importé statiquement. Une leçon nouvelle n'a rien à faire de
+toutes les leçons : la fabrique est chargée avec CHAQUE leçon (par la frontière
+de routes, `lessons/lessonRouteBoundary.jsx`, depuis le 2026-10-14 — plus par
+`App.jsx`), donc rien de lourd ne doit y être importé statiquement. Elle
+enregistre aussi la config de la leçon (`rememberLessonConfig`) : les pages de
+la leçon la lisent synchrone par `getLoadedLessonConfig`. Une leçon nouvelle n'a rien à faire de
 plus. Voir [`BUNDLE_BOUNDARIES.md`](./BUNDLE_BOUNDARIES.md).
 
 Conséquence pratique : une leçon 4AM obtient le mode classe, le cahier et la

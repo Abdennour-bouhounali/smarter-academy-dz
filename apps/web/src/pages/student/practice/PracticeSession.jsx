@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowBack, ArrowForward } from '../../../components/common/DirectionalIcons';
 import { BarChart3, Check, CheckCircle2, Clock, GraduationCap, Lightbulb, RotateCcw } from 'lucide-react';
 
-import { practice } from '@smarter-academy/core';
+import * as practice from '@smarter-academy/core/practice/index.js';
 import { AuthContext } from '../../../context/AuthContext';
 import {
   fetchPracticeSession, fetchPracticeOverview, openQuestion, requestHint, submitAnswer,

@@ -20,7 +20,8 @@
  *             positions, O tantôt dans l'angle, tantôt dehors — la relation tient), 'interior' (D poussé DANS le disque :
  *             l'angle de l'exercice 12, qui n'est pas inscrit, vaut la demi-somme des deux arcs).
  */
-import { rotation as R, linear } from '@smarter-academy/core';
+import * as R from '@smarter-academy/core/arithmetic/rotation.js';
+import * as linear from '@smarter-academy/core/arithmetic/linear.js';
 
 export const MODES = Object.freeze(['striker', 'act4']);
 export const STAGES = Object.freeze(['mezian', 'houaria', 'interior']);

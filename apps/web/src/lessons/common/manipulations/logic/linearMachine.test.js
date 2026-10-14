@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { linear as Lin, proportional as Pr } from '@smarter-academy/core';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
+import * as Pr from '@smarter-academy/core/arithmetic/proportional.js';
 import * as L from './linearMachine';
 
 /**

@@ -28,7 +28,7 @@
  * UN ESSAI est un code validé (« افتح البوابة ») ou une position validée (relâchement, Entrée, ثبّت, pause du clavier) —
  * jamais une valeur que le doigt a traversée.
  */
-import { vectors as V } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 
 export const PAD_RANGE = Object.freeze({ min: -12, max: 12 });
 

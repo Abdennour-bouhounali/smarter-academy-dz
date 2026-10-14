@@ -1,7 +1,8 @@
 import { it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { space as SP, linear as LN } from '@smarter-academy/core';
+import * as SP from '@smarter-academy/core/arithmetic/space.js';
+import * as LN from '@smarter-academy/core/arithmetic/linear.js';
 import '../../../../../../i18n';
 import BucketFill from '../../../../../common/manipulations/space/BucketFill';
 import ManipulationWorkspace from '../../../../../common/manipulations/ManipulationWorkspace';

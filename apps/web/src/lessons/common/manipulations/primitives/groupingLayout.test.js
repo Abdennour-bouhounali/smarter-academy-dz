@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { groupingLayout, itemWidthFor, perRowFor, itemSizeCss, ITEM_SCALE_MAX, PILE_SCALE } from './groupingLayout';
 import { ITEM_THEME_IDS } from './itemThemes';
-import { VISUAL_THEME_IDS } from '@smarter-academy/core';
+import { VISUAL_THEME_IDS } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 
 /* Les nombres du manuel : 90 fleurs rouges et 54 blanches (activité 4),
    12 et 18 (معارف 3), 8 et 12, 17 et 18 (activité 7), 84/48 (activité 8). */

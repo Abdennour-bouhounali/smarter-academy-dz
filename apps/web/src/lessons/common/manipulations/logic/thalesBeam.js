@@ -18,7 +18,8 @@
  * rationnel, donc B′C′² = b′² + c′² − 2·b′·c′·cos Â aussi ; l'égalité B′C′/BC = k se décide sur les carrés.
  * B′C′ n'est affiché exactement que s'il est rationnel (toujours quand t = 0 : B′C′ = |k|·BC).
  */
-import { thales as TH, linear as LIN } from '@smarter-academy/core';
+import * as TH from '@smarter-academy/core/arithmetic/thales.js';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 
 const { frac, parseNumber, add, sub, mul, div, cmp, eq, isZero, toNumber, fracText, fracLatex, fracDecimal, neg } = LIN;
 

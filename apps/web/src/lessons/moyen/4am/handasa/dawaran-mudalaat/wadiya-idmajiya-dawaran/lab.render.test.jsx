@@ -1,7 +1,8 @@
 import { it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { rotation as ROT, trigonometry as TR } from '@smarter-academy/core';
+import * as ROT from '@smarter-academy/core/arithmetic/rotation.js';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 import '../../../../../../i18n';
 import LampRing from '../../../../../common/manipulations/rotation/LampRing';
 import ManipulationWorkspace from '../../../../../common/manipulations/ManipulationWorkspace';

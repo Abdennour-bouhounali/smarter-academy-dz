@@ -15,7 +15,8 @@
  *   commitRadius(lab, 851)                    → la distance entre deux pointes consécutives, jugée à 0,01 près
  *   tapTip(lab, j)                            → une branche de l'étoile (un sommet sur deux), ou le refus d'un côté
  */
-import { rotation as Rot, trigonometry as T } from '@smarter-academy/core';
+import * as Rot from '@smarter-academy/core/arithmetic/rotation.js';
+import * as T from '@smarter-academy/core/arithmetic/trigonometry.js';
 
 /** Le cadran : α de 20° à 180° (180° : deux images seulement — un segment, pas un polygone). */
 export const ALPHA = Object.freeze({ min: 20, max: 180 });

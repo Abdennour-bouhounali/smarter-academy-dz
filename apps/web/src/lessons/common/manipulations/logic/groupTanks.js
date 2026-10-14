@@ -16,7 +16,8 @@
  * Le pari est un ENTIER k sur une grille de pas `step` (½ si tous les niveaux de départ tombent sur
  * des demis, sinon 1/10) : il est juste quand k est la graduation la plus proche du niveau exact.
  */
-import { statistics as ST, linear as LIN } from '@smarter-academy/core';
+import * as ST from '@smarter-academy/core/arithmetic/statistics.js';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 
 const { frac, add, mul, div, cmp, eq, toNumber, parseNumber, isInteger } = LIN;
 

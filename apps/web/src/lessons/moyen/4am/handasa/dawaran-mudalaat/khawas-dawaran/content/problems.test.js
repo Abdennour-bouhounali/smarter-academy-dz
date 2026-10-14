@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { rotation as R, vectors as V, linear as Lin } from '@smarter-academy/core';
+import * as R from '@smarter-academy/core/arithmetic/rotation.js';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 import { validateProblem, demandsOf } from '../../../../../../common/problems/guidedProblem';
 import { validateGeoFigure, figureQuality } from '../../../../../../common/components/geoFigure';
 import { PROBLEMS, PROBLEM, DOOR_PTS, TURBINE_PTS } from './problems';

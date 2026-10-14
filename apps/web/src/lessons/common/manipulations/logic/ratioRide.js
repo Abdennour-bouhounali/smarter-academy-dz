@@ -1,4 +1,6 @@
-import { proportional as P, linear as Lin, toLatinDigits } from '@smarter-academy/core';
+import { toLatinDigits } from '@smarter-academy/core';
+import * as P from '@smarter-academy/core/arithmetic/proportional.js';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
 /**
  * ratio-ride — LE COMPTEUR DE TRAJET (unité 6 « الدالة الخطية والتناسبية », leçon 1

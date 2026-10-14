@@ -1,4 +1,5 @@
-import { linear as Lin, linearSystem as LS } from '@smarter-academy/core';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
+import * as LS from '@smarter-academy/core/arithmetic/linearSystem.js';
 
 /**
  * pair-scoreboard — LE TABLEAU DES DEUX CONDITIONS (unité 5 « جمل معادلتين », leçon 1

@@ -33,7 +33,7 @@
  *                          │ نستخلص
  *                      🎯 [الخلاصة]
  */
-import { squareRoots } from '@smarter-academy/core';
+import * as squareRoots from '@smarter-academy/core/arithmetic/squareRoots.js';
 import { ACTIVITY, KNOWLEDGE, METHOD, PREP_ITEMS, PREP_PLATFORM_ITEMS } from './content/textbook';
 import { EX } from './content/exercises';
 

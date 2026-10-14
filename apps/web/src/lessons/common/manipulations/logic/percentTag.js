@@ -1,4 +1,5 @@
-import { linear as LIN, proportional as PR } from '@smarter-academy/core';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
+import * as PR from '@smarter-academy/core/arithmetic/proportional.js';
 
 const { frac, parseNumber, mul, sub, add, div, eq, cmp, toNumber, fracDecimal, fracLatex, isZero } = LIN;
 

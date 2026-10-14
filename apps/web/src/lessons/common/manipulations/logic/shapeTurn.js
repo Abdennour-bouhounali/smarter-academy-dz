@@ -26,7 +26,10 @@
  *              distance de chaque point et de son image ; les médiatrices se tracent (celles de [MM′] et [NN′] sont
  *              CONFONDUES : il faut celle de [PP′]).
  */
-import { rotation as R, vectors as V, trigonometry as T, linear as Lin } from '@smarter-academy/core';
+import * as R from '@smarter-academy/core/arithmetic/rotation.js';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
+import * as T from '@smarter-academy/core/arithmetic/trigonometry.js';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
 export const MODES = Object.freeze(['rosette', 'prove']);
 export const STRETCH = Object.freeze({ min: 10, max: 15 });

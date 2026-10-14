@@ -1,7 +1,7 @@
 import { it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { proportional } from '@smarter-academy/core';
+import * as proportional from '@smarter-academy/core/arithmetic/proportional.js';
 import '../../../../../../i18n';
 import OriginLine from '../../../../../common/manipulations/proportion/OriginLine';
 import ManipulationWorkspace from '../../../../../common/manipulations/ManipulationWorkspace';

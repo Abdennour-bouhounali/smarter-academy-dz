@@ -38,7 +38,8 @@
  *
  * UN ESSAI est une demande au فار (`check`) — jamais un déplacement.
  */
-import { vectors as V, linear as Lq } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
+import * as Lq from '@smarter-academy/core/arithmetic/linear.js';
 
 export const MODES = Object.freeze(['triangle', 'unknown']);
 export const TRI_CARDS = Object.freeze(['pyth:A', 'pyth:B', 'pyth:C', 'iso:A', 'iso:B', 'iso:C']);

@@ -14,7 +14,8 @@
  *   hidden    des jetons cachés (« ? ») que la main pose entre leurs bornes jusqu'à ce que la médiane soit
  *             `targetMedian` ET la moyenne `targetMean`
  */
-import { statistics as S, linear as Lin } from '@smarter-academy/core';
+import * as S from '@smarter-academy/core/arithmetic/statistics.js';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
 export const THEMES = Object.freeze(['esport', 'heatwave', 'medals']);
 export const STAGES = Object.freeze(['range', 'mean', 'median', 'contrast', 'hidden']);

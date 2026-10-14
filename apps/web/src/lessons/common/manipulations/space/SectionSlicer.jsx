@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Group } from 'three';
-import { linear } from '@smarter-academy/core';
+import * as linear from '@smarter-academy/core/arithmetic/linear.js';
 import { Minus, Plus, Printer, Check, X, Undo2 } from 'lucide-react';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';

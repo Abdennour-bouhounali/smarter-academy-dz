@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef,
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Group, Mesh, TorusGeometry, CylinderGeometry, Vector3, Quaternion } from 'three';
-import { space, linear as LN } from '@smarter-academy/core';
+import * as space from '@smarter-academy/core/arithmetic/space.js';
+import * as LN from '@smarter-academy/core/arithmetic/linear.js';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';

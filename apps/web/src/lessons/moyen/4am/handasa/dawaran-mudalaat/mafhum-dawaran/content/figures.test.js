@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readdirSync, readFileSync } from 'node:fs';
-import { rotation as RT } from '@smarter-academy/core';
+import * as RT from '@smarter-academy/core/arithmetic/rotation.js';
 import { validateGeoFigure, figureQuality } from '../../../../../../common/components/geoFigure';
 import * as FIG from './figures';
 

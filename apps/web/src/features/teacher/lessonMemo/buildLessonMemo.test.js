@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { getLessonById, getUnitOfLesson } from '@smarter-academy/core';
-import { getLessonConfig } from '../../../lessons/registry';
+import { isLessonBuilt, loadLessonConfig } from '../../../lessons/registry';
 import { buildLessonMemo, collectExercises, pickStartActivity, collectBricks } from './buildLessonMemo';
 import { loadLessonMemoSources, memoSourceLessonIds } from './loadLessonMemoSources';
 import { lessonMemoPath, wantsClassroomStart, CLASSROOM_START_STATE } from './memoRoutes';
@@ -10,11 +10,12 @@ async function memoFor(id) {
   const unit = getUnitOfLesson(id);
   const sources = await loadLessonMemoSources(id);
   const unitLessons = unit ? [...unit.lessons, ...(unit.synthesis ? [unit.synthesis] : [])] : [];
-  return { lesson, sources, memo: buildLessonMemo({ lesson, config: getLessonConfig(id), unit, ...sources, lessonById: getLessonById, unitLessons }) };
+  const config = await loadLessonConfig(id);
+  return { lesson, sources, memo: buildLessonMemo({ lesson, config, unit, ...sources, lessonById: getLessonById, unitLessons }) };
 }
 
 describe('buildLessonMemo — sur chaque leçon réelle de la 4AM', () => {
-  const ids = memoSourceLessonIds().filter((id) => getLessonConfig(id));
+  const ids = memoSourceLessonIds().filter((id) => isLessonBuilt(id));
 
   it('trouve les sources de toutes les leçons construites', () => {
     expect(ids.length).toBeGreaterThanOrEqual(9);
@@ -22,7 +23,7 @@ describe('buildLessonMemo — sur chaque leçon réelle de la 4AM', () => {
 
   it.each(ids)('%s : une phase par محور, dans l’ordre, durées cumulées', async (id) => {
     const { memo } = await memoFor(id);
-    const config = getLessonConfig(id);
+    const config = await loadLessonConfig(id);
     expect(memo.phases.map((p) => p.number)).toEqual(config.modules.map((m) => m.number));
     expect(memo.phases.map((p) => p.stage)).toEqual(config.modules.map((m) => m.stage));
     expect(memo.header.plannedMinutes).toBe(config.modules.reduce((s, m) => s + (m.estimatedMin ?? 0), 0));

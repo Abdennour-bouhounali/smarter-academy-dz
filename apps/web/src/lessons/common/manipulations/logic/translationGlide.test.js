@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { vectors as V } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 import * as L from './translationGlide';
 import { LEVELS } from '../levels';
 

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readdirSync, readFileSync } from 'node:fs';
-import { space as SP } from '@smarter-academy/core';
+import * as SP from '@smarter-academy/core/arithmetic/space.js';
 import { validateSpaceFigure, spaceFigureQuality, layoutSpaceFigure } from '../../../../../../common/components/spaceFigure';
 import { validateGeoFigure, figureQuality } from '../../../../../../common/components/geoFigure';
 import * as FIG from './figures';

@@ -1,4 +1,4 @@
-import { linear as Lin } from '@smarter-academy/core';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
 const {
   linear, frac, linAt, compareWith, solveInequality, applyBoth, relationLatex, flipRelation,

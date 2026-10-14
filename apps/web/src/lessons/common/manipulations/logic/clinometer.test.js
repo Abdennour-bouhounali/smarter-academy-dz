@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { trigonometry as TR } from '@smarter-academy/core';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 import * as L from './clinometer';
 import { LEVELS } from '../levels';
 

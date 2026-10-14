@@ -18,7 +18,7 @@
  *     peut tourner l'angle ; l'élève enregistre des rampes et JUGE, avant de lire, si AC/BC et AC/AB sont restés
  *     ceux de la rampe précédente : la vérité (même angle ⇔ mêmes rapports) tranche.
  */
-import { trigonometry as TR } from '@smarter-academy/core';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 
 export const ROLES = Object.freeze(['hypotenuse', 'opposite', 'adjacent']);
 export const SIDES = Object.freeze(['AB', 'AC', 'BC']);

@@ -1,4 +1,5 @@
-import { affine as A, linear as Lin } from '@smarter-academy/core';
+import * as A from '@smarter-academy/core/arithmetic/affine.js';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
 /**
  * affine-meter — LE COMPTEUR À PARTIE FIXE (unité 7 « الدالة التآلفية », leçon 1

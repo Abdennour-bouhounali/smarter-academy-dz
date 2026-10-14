@@ -19,7 +19,8 @@
  *      surface π·ρ²·d sont refusés avec la valeur qu'ils donnent (ils ne remplissent pas le seau jusqu'au même trait).
  * La découverte s'ouvre quand le sommet est trouvé, la bonne carte choisie, et qu'un contraste a été vu (un refus au moins).
  */
-import { space, linear as LN } from '@smarter-academy/core';
+import * as space from '@smarter-academy/core/arithmetic/space.js';
+import * as LN from '@smarter-academy/core/arithmetic/linear.js';
 
 export const PHASES = Object.freeze(['level', 'apex', 'volume']);
 /** L'ordre d'affichage des cartes (jamais la bonne en premier). */

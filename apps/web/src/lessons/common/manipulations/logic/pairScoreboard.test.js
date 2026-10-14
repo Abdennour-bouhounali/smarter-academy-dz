@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { linearSystem as LS } from '@smarter-academy/core';
+import * as LS from '@smarter-academy/core/arithmetic/linearSystem.js';
 import * as L from './pairScoreboard';
 
 /**

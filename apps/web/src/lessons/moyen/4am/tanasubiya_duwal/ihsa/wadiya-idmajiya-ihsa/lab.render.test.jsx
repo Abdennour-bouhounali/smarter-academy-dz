@@ -1,7 +1,7 @@
 import { it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { statistics as S } from '@smarter-academy/core';
+import * as S from '@smarter-academy/core/arithmetic/statistics.js';
 import '../../../../../../i18n';
 import StatBalance from '../../../../../common/manipulations/stats/StatBalance';
 import ManipulationWorkspace from '../../../../../common/manipulations/ManipulationWorkspace';

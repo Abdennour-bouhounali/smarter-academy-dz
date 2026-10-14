@@ -33,11 +33,14 @@ specs, practice content, e2e scripts and French-only engines were deleted on
 frozen for generation: §14 is the generation contract — what a generated
 lesson must implement, reuse and pass.
 
-**Loading.** A new lesson inherits the loading ladder with nothing to declare:
-its `lesson.config.js` is metadata in the entry bundle (via the registry), the
-shared lesson runtime is one lazy chunk, and each page/module is its own lazy
-chunk. Never import something heavy from `routes.jsx` or `_unit/lessonRoutes.jsx`
-— `App.jsx` imports them. See
+**Loading (since 2026-10-14).** A new lesson costs the entry bundle ≈ 20 bytes gzip — one line of the GENERATED
+lesson index (`lessons/lessonIndex.generated.json`: id, level, grade, chapter, `[number, slug]` per module). Its
+`routes.jsx` and `lesson.config.js` load WITH the lesson through ONE lazy route boundary
+(`lessons/lessonRouteBoundary.jsx`, mounted once in `App.jsx`), its lab strings (`lesson.manipulation.json`) load with
+the first lesson opened, the shared lesson runtime is one lazy chunk, and each page/module is its own lazy chunk. You
+never touch `App.jsx`: run `node scripts/generate-lesson-index.mjs` (`npm run check:lessons` fails when the index is
+stale, and when the entry exceeds its budget). Never import something heavy from `routes.jsx` or
+`_unit/lessonRoutes.jsx` — every lesson shares them. See
 [`../architecture/BUNDLE_BOUNDARIES.md`](../architecture/BUNDLE_BOUNDARIES.md).
 
 ---
@@ -136,6 +139,15 @@ only binds them to its `unitMeta` in one line each — a new unit writes its
 `index.jsx`, `routes.jsx` and `moduleContext.js` are boilerplate. The real work
 is `lesson.config.js`, the content files, `knowledge.jsx` and the modules.
 
+**How a lesson is mounted (2026-10-14).** Nothing to wire by hand. The FOLDER name must be the lesson id (the
+loader finds a lesson by its folder). `node scripts/generate-lesson-index.mjs` adds the lesson to
+`lessons/lessonIndex.generated.json`; `App.jsx` mounts one `<basePath>/*` route per index entry, which loads the
+lesson's `routes.jsx` (and so its config) and then mounts the routes it builds. Code that needs the full config
+outside the lesson's own pages calls `loadLessonConfig(id)` / `useLessonConfig(id)` (`lessons/registry.js`,
+`lessons/useLessonConfig.js`); synchronous questions (built? module count, first module, module path) go to
+`isLessonBuilt` / `getTotalModules` / `getFirstModuleNumber` / `getModulePath`, answered from the index. Lab
+strings go to `i18n/locales/ar/lesson.manipulation.json` (keys `lesson:manipulation.<type>.*`), never `lesson.json`.
+
 ### Adding a GRADE (done for 1AM, 2AM and 3AM, 2026-10-14 — cycle moyen rollout phase 2)
 
 A grade is data, not code. It is never a parallel catalogue.
@@ -151,8 +163,10 @@ A grade is data, not code. It is never a parallel catalogue.
    - `coursesData.js › DZ_MOYEN_GRADES` (one line);
    - `net/learningNet.js › LESSON_FILES / UNIT_FILES`;
    - `activeGrades.js › ACTIVE_GRADE_IDS`;
-   - the literal grade list of the eager `import.meta.glob` in `apps/web/src/lessons/registry.js` (`registry.test.js`
-     compares it with `ACTIVE_GRADE_IDS`).
+   - the literal grade lists of the two LAZY `import.meta.glob` of `apps/web/src/lessons/lessonLoaders.js`
+     (`lesson.config.js` and `routes.jsx`; `registry.test.js` compares each with `ACTIVE_GRADE_IDS`, `check:routes`
+     checks every lesson's grade is globbed). The lesson index (`scripts/generate-lesson-index.mjs`) follows
+     `ACTIVE_GRADE_IDS` by itself.
    - The teacher memo's glob already covers `lessons/moyen/*/`.
 3. **What a `coming_soon` lesson gets for free:** a non-clickable card « قيد الإعداد ». Its unit page shows its
    الكفاءات with no progress or gesture. `getLessonPath` returns `null`, so no link leads to it. It is in the
@@ -191,7 +205,8 @@ A second unit is data plus three one-line bindings — never a copy of unit 1's 
    the unit's `prepDiagnostic.test.js` with the unit's lesson count.
 4. **New mathematics → new manipulation types** by MANIPULATION_CONTRACT §7ter, arithmetic in
    `packages/core/arithmetic/` (unit 2: `squareRoots.js`; the three types of §2quater).
-5. The lessons (this guide), then `App.jsx`, the DB handshake (§11) and the documentation.
+5. The lessons (this guide), then the lesson index (`node scripts/generate-lesson-index.mjs`; `App.jsx` until
+   2026-10-14), the DB handshake (§11) and the documentation.
 
 Unit-count assertions that read the real catalogue (`unitGrouping.test.js`, `finalSynthesis.test.js`,
 `decomposition.test.js`) must be updated in the same task.
@@ -323,6 +338,8 @@ Unit-count assertions that read the real catalogue (`unitGrouping.test.js`, `fin
 - **Seed stub `routes.jsx` before parallel authoring.** `App.jsx` imports every lesson's `routes.jsx`; while a sibling's file does not
   exist yet, Vite answers 500 on EVERY page, so an author cannot open the dev server. Unit 9's authors worked around it with a temporary
   resolver stub; next time the lead seeds a minimal `routes.jsx` per lesson (returning `null`) with the other shared files.
+  *(Obsolete since 2026-10-14: `App.jsx` imports no `routes.jsx`; the lazy glob of `lessonLoaders.js` only sees files that
+  exist, so a sibling's missing lesson no longer breaks the dev server. Run the index generator once all lessons exist.)*
 - **Misprints found and corrected**: أستعدّ 5 (ADE → ADF), معارف 2 example (MN/AC → MN/BC), طرائق « حساب أطوال » (1/2 → 2/1 = 5/DN).
   Figure readings decided in the builder: the تحدّ minaret 7,25 m (shadow method), ex-9 needs the converse of Pythagoras, ex-13
   « not parallel » under either label reading, ex-23 equality marks read at 500 dpi.
@@ -918,7 +935,7 @@ pattern, its gate and its tests are in [`MANIPULATION_DNA.md` §16](../architect
   (`workshop`) and a recipe (`kitchen`). To reuse one, pass `theme="…"` to
   `<Manipulation>` and declare it in `resources[].experience.theme` — the
   objects come from `primitives/itemThemes.js`, the Arabic words from
-  `lesson.json` (`manipulation.themes.<id>`), the scene from `GroupingScene`,
+  `lesson.manipulation.json` (`themes.<id>`, keys `lesson:manipulation.themes.<id>`), the scene from `GroupingScene`,
   `BrickWall` or `RibbonStrip`, and the card vignette from `ContextScenes.jsx`.
   Never write a second grouping scene or hardcode a theme's words in a
   component. Never give drawn countable objects a fixed pixel size either:
@@ -1390,7 +1407,8 @@ lesson `<code>` of grade `<g>`:
    - `pointPrerequisites` only along a net link (`LEARNING_NET.md` §4.6).
    The lesson keeps its `code` and `programmeItems`.
 2. **Wiring:**
-   - its `routes.jsx` in `App.jsx` (`check:routes`);
+   - `node scripts/generate-lesson-index.mjs` — the lesson enters `lessons/lessonIndex.generated.json`, which mounts
+     its routes (nothing to add to `App.jsx` since 2026-10-14; `check:routes` and the index `--check` fail otherwise);
    - if it has practice: its bank in `content/practice/<g>/<code>/`, its `active.json` entry, and `exam-style.json`
      when its sheets are exam-style (`EXERCISE_CONTRACT.md` § « Term-exam provenance »).
 3. **Regenerate** the net's map and queue (the lesson drops out of the queue): `npm run generate:learning-net`.
@@ -1668,7 +1686,9 @@ an architectural change, made deliberately and documented here first.
 ```
 App.jsx ─ CourseLayout
   ├─ /courses/:level/:grade/:chapter/units/:unit      → UnitPage (unit card, 8 lessons + synthesis)
-  └─ <lesson>Routes() ─ buildLessonRoutes (_unit/lessonRoutes.jsx)
+  └─ useLessonRoutes() (lessonRouteBoundary.jsx, one entry per lessonIndex.generated.json line)
+       ├─ not loaded: <basePath>/* → loads routes.jsx (+ config) and lesson.manipulation.json, then ↓
+       └─ loaded:     <lesson>Routes() ─ buildLessonRoutes (_unit/lessonRoutes.jsx)
        └─ LessonClassroomShell   (pathless layout: one Classroom session across modules)
             ├─ LESSON_BASE_PATH  → LessonAccessGate → KnowledgeProvider → LessonIndex
             └─ modules[].path    → LessonAccessGate → KnowledgeProvider → NotebookAnchor → Module<NN>
@@ -1739,9 +1759,9 @@ evidence, a raster image under `lessons/`, a `tier` anywhere in the lesson.
 |---|---|
 | Build | `npm run build` |
 | Unit + scripts tests | `npm test` (core, web, scripts — includes the practice oracle and the memo builder over every lesson) |
-| Editorial gates | `npm run check:lessons` (validate:lessons --strict, validate:exercises --strict, audit:knowledge:gate, check:katex, check:routes, check:non-blocking, check:dormant-isolation, check:textbook, check:activation-drift) |
+| Editorial gates | `npm run check:lessons` (validate:lessons --strict, validate:exercises --strict, audit:knowledge:gate, check:katex, check:lesson-index, check:routes, check:non-blocking, check:dormant-isolation, check:textbook, check:activation-drift, check:learning-net, check:entry-budget) |
 | DB handshake | `node packages/core/curriculum/exportCurriculum.mjs && php artisan smarter:import-curriculum`; `node packages/core/curriculum/exportContentRegistry.mjs && php artisan smarter:import-content-registry` |
-| Runtime | the browser suites of §11 against the dev server (all green on 2026-09-29: 27/27, 183/183, 73/73, 47/47, 9/9) + the new lesson loaded at 320 / 414 / 820 / 1440 px with no console error, no failed request, no horizontal overflow |
+| Runtime | `node apps/web/e2e/lesson-route-boundary.mjs` (the lazy lesson mount: deep link, classroom shell kept, lab strings, unknown module → `*`, unit page, مذكرة; 2026-10-14), the browser suites of §11 against the dev server (all green on 2026-09-29: 27/27, 183/183, 73/73, 47/47, 9/9) + the new lesson loaded at 320 / 414 / 820 / 1440 px with no console error, no failed request, no horizontal overflow |
 | Mathematics | every key recomputed; every distractor false; parsers exercised with Arabic digits |
 | Interaction | the manipulation by drag, tap and keyboard; a deliberately wrong run still progresses; reload keeps progress |
 | Knowledge Map | the checklist of `KNOWLEDGE_MAP.md` A.14 — core items all carried, relationships labelled, guidance grounded in the lesson (automated: each aid quotes the lesson word for word; relevance reviewed by a human), mistakes with wrong / why / right, the map not overloaded, ① first in « المعارف مفصّلة », every equality inside `$…$` and arithmetically true, mathematics never truncated or mirrored, locked until taught, no evaluation answer in the map; browser QA `node apps/web/e2e/knowledge-map.mjs` |

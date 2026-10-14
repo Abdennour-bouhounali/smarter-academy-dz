@@ -1,7 +1,9 @@
 // QA — les VUES du catalogue de leçons (CatalogueBrowser / catalogueView.js).
 //
-// Lancement (Vite sur 5173 en marche ; /courses est public, aucun compte) :
+// Lancement (Vite sur 5173 et l'API sur 8000 en marche) :
 //   node apps/web/e2e/catalogue-views.mjs
+// /courses exige un compte depuis le 2026-10-07 (RequireAccount) : le script se connecte UNE fois en élève
+// de QA (qa-eleve@smarter.dz ; /auth/login est limité à 6/min) et pose le jeton dans chaque contexte.
 //
 // Sur /courses (4AM, tous les ميادين), bureau 1440 et téléphone 390, pour
 // chacune des 3 organisations × 2 dispositions : la vue rendue est la bonne
@@ -18,10 +20,17 @@ const BASE = process.env.QA_BASE || 'http://localhost:5173';
 const OUT = process.env.QA_OUT || '/tmp/catalogue-views-qa';
 const URL = `${BASE}/courses?level=moyen&grade=4am&chapter=all`;
 const KEY = 'sa.catalogue.view';
+const API = process.env.QA_API || 'http://localhost:8000/api/v1';
+const STUDENT = { email: process.env.QA_STUDENT_EMAIL || 'qa-eleve@smarter.dz', password: process.env.QA_PASSWORD || 'QaPass2026!' };
 mkdirSync(OUT, { recursive: true });
 
 const failures = [];
 const check = (ok, label) => { if (!ok) failures.push(label); console.log(`${ok ? '✓' : '✗'} ${label}`); };
+
+const login = await fetch(`${API}/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(STUDENT) });
+const loginData = await login.json().catch(() => ({}));
+const TOKEN = loginData.token ?? loginData.access_token ?? loginData.data?.token;
+if (!TOKEN) throw new Error(`login ${STUDENT.email}: ${login.status}`);
 
 const browser = await chromium.launch();
 for (const [vpName, viewport] of [['desktop', { width: 1440, height: 900 }], ['phone', { width: 390, height: 844 }]]) {
@@ -29,7 +38,7 @@ for (const [vpName, viewport] of [['desktop', { width: 1440, height: 900 }], ['p
   for (const group of ['units', 'chapters', 'all']) {
     for (const layout of ['grid', 'rows']) {
       const ctx = await browser.newContext({ viewport, locale: 'ar' });
-      await ctx.addInitScript(([k, v]) => localStorage.setItem(k, v), [KEY, JSON.stringify({ group, layout })]);
+      await ctx.addInitScript(([k, v, tk]) => { localStorage.setItem(k, v); localStorage.setItem('token', tk); }, [KEY, JSON.stringify({ group, layout }), TOKEN]);
       const page = await ctx.newPage();
       const errors = [];
       page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
@@ -64,6 +73,7 @@ for (const [vpName, viewport] of [['desktop', { width: 1440, height: 900 }], ['p
 // Le choix au clic survit au rechargement ; la recherche n'organise plus.
 {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, locale: 'ar' });
+  await ctx.addInitScript((tk) => localStorage.setItem('token', tk), TOKEN);
   const page = await ctx.newPage();
   await page.goto(URL, { waitUntil: 'networkidle' });
   await page.click('[data-catalogue-group="chapters"]');

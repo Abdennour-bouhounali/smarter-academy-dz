@@ -1,4 +1,4 @@
-import { linear as Lin } from '@smarter-academy/core';
+import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
 /**
  * La logique PURE de `equation-balance` (unité 4, leçon « حل معادلة من الدرجة الأولى

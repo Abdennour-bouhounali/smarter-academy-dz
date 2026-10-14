@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { rotation as R } from '@smarter-academy/core';
+import * as R from '@smarter-academy/core/arithmetic/rotation.js';
 import { validateGeoFigure, figureQuality } from '../../../../../../common/components/geoFigure';
 import { init, mezianNumbers, measure } from '../../../../../../common/manipulations/logic/inscribedAngle';
 import * as FIG from './figures';

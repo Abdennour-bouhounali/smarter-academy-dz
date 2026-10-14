@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { statistics as ST, linear as LIN } from '@smarter-academy/core';
+import * as ST from '@smarter-academy/core/arithmetic/statistics.js';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 import { validateProblem } from '../../../../../../common/problems/guidedProblem';
 import { PROBLEMS, PROBLEM } from './problems';
 import { LESSON_CONFIG } from '../lesson.config';

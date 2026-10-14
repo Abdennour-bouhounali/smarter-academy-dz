@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { trigonometry as TR } from '@smarter-academy/core';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 import { validateProblem } from '../../../../../../common/problems/guidedProblem';
 import { figureQuality, validateGeoFigure } from '../../../../../../common/components/geoFigure';
 import { PROBLEMS, PROBLEM } from './problems';

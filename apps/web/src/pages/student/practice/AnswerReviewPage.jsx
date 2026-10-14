@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Lock } from 'lucide-react';
-import { practice } from '@smarter-academy/core';
+import * as practice from '@smarter-academy/core/practice/index.js';
 import { AuthContext } from '../../../context/AuthContext';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { fetchAnswerImage, fetchAnswerReview } from '../../../services/practiceService';

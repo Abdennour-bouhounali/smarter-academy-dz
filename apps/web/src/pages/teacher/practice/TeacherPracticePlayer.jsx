@@ -3,7 +3,7 @@ import { MotionConfig } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { BarChart3, Check, Clock, Eye, RotateCcw } from 'lucide-react';
-import { practice } from '@smarter-academy/core';
+import * as practice from '@smarter-academy/core/practice/index.js';
 import { ArrowBack, ArrowForward } from '../../../components/common/DirectionalIcons';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { exerciseIdsFor, loadExercise } from '../../../features/practice/practiceContent';

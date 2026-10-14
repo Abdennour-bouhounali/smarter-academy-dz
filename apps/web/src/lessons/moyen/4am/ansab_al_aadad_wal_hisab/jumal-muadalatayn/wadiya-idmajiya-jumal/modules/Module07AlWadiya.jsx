@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { linearSystem } from '@smarter-academy/core';
+import * as linearSystem from '@smarter-academy/core/arithmetic/linearSystem.js';
 import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';

@@ -1,7 +1,8 @@
 import { it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { trigonometry as TR, linear as LIN } from '@smarter-academy/core';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 import '../../../../../../i18n';
 import Clinometer from '../../../../../common/manipulations/geometry/Clinometer';
 import ManipulationWorkspace from '../../../../../common/manipulations/ManipulationWorkspace';

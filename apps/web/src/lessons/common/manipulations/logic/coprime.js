@@ -1,4 +1,4 @@
-import { divisibility } from '@smarter-academy/core';
+import * as divisibility from '@smarter-academy/core/arithmetic/divisibility.js';
 import { initBouquets, choose, canChoose, addGroup, removeGroup } from './commonDivisors';
 
 const { divisors, commonDivisors, gcdByDefinition } = divisibility;

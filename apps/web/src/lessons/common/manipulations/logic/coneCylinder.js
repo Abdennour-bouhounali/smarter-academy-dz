@@ -16,7 +16,8 @@
  * décimal court et (b) le cylindre h = r tombe sur une graduation — ainsi chaque cylindre inscrit a ses deux
  * dimensions sur la règle (au cran i de h, le bord permis est au cran n − i de r : la génératrice).
  */
-import { linear as LIN, thales as TH } from '@smarter-academy/core';
+import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
+import * as TH from '@smarter-academy/core/arithmetic/thales.js';
 
 const { frac, parseNumber, add, sub, mul, div, cmp, eq, isInteger, fracDecimal, toNumber } = LIN;
 const F = (v) => (typeof v === 'object' && v !== null ? v : Number.isInteger(v) ? frac(v) : parseNumber(v));

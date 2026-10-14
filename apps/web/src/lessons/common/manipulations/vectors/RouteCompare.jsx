@@ -9,7 +9,8 @@ import { useManipulation } from '../useManipulation';
 import EquationDisplay from '../primitives/EquationDisplay';
 import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
-import { vectors as V, trigonometry as TR } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
+import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 import * as L from '../logic/routeCompare';
 
 /**

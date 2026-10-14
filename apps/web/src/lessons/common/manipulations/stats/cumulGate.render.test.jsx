@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import CumulGate from './CumulGate';
 import ManipulationWorkspace from '../ManipulationWorkspace';
-import lessonAr from '../../../../i18n/locales/ar/lesson.json';
+import manipulationAr from '../../../../i18n/locales/ar/lesson.manipulation.json';
 import source from './CumulGate.jsx?raw';
 
 /**
@@ -53,7 +53,7 @@ it('cumul-gate se rend dans un workspace à deux niveaux', () => {
 });
 
 it('chaque clé que le composant lit existe (aucune clé brute à l’écran)', () => {
-  const ns = lessonAr.manipulation.cumulGate;
+  const ns = manipulationAr.cumulGate;
   const own = [...source.matchAll(/\bk\('([a-zA-Z0-9]+)'/g)].map((m) => m[1]);
   const quoted = [...source.matchAll(/'((?:v|side|rel|row|rep)[A-Z][a-zA-Z]*)'/g)].map((m) => m[1]);
   expect(own.length).toBeGreaterThan(20);

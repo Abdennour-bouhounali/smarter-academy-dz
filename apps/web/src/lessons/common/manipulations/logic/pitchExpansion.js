@@ -1,4 +1,4 @@
-import { polynomials } from '@smarter-academy/core';
+import * as polynomials from '@smarter-academy/core/arithmetic/polynomials.js';
 
 const { partialProducts, reduce, evaluate, termsTex, factorTex, termTex, samePolynomial } = polynomials;
 

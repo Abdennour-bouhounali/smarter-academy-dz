@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { vectors as V } from '@smarter-academy/core';
+import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 import { validateProblem, demandsOf } from '../../../../../../common/problems/guidedProblem';
 import { figureQuality, validateGeoFigure } from '../../../../../../common/components/geoFigure.js';
 import { PROBLEMS, PROBLEM } from './problems';

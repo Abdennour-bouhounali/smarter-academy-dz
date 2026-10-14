@@ -1,7 +1,8 @@
 import { it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { affine as A, linearSystem } from '@smarter-academy/core';
+import * as A from '@smarter-academy/core/arithmetic/affine.js';
+import * as linearSystem from '@smarter-academy/core/arithmetic/linearSystem.js';
 import '../../../../../../i18n';
 import PlanCompare from '../../../../../common/manipulations/affine/PlanCompare';
 import ManipulationWorkspace from '../../../../../common/manipulations/ManipulationWorkspace';
