@@ -2,17 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "masahat-muhit-sath",
-      "grade": "1am",
-      "unit": "sutuh-masahat-muhitat",
-      "titleAr": "مساحة سطح مستو ومحيطه",
-      "kind": "lesson",
-      "trigger": "jidhr-tarbii",
-      "via": [
-        "1am.m2.r06"
-      ]
-    },
-    {
       "code": "mustatil-murabba-masaha",
       "grade": "1am",
       "unit": "sutuh-masahat-muhitat",

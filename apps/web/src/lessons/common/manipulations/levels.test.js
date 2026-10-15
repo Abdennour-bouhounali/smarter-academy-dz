@@ -57,6 +57,8 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
       // Unité 3 de 1AM : les critères (`digit-cards`) se mesurent par le nombre de DIVISEURS à juger (la table va jusqu'à 48,
       // les cartes ne portent que des chiffres : la taille des nombres ne dit pas la difficulté).
       else if (type === 'digit-cards') expect(advanced.numbers.divisors.length, type).toBeGreaterThan(beginner.numbers.divisors.length);
+      // Unité 11 de 1AM : `tile-yard` change de MODE, pas de nombres — la corde (aires libres) demande plus que les carreaux déplacés (aire fixe).
+      else if (type === 'tile-yard') expect(['fence', 'rope'].indexOf(advanced.numbers.mode), type).toBeGreaterThan(['fence', 'rope'].indexOf(beginner.numbers.mode));
       else expect(size(advanced.numbers), type).toBeGreaterThan(size(beginner.numbers));
       expect(advanced.source, type).toBe('textbook');
       expect(typeof advanced.ref, type).toBe('string');

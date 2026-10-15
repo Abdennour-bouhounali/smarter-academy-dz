@@ -3213,5 +3213,88 @@
       "1am_muqaranat-adad-ashriya_P1",
       "1am_muqaranat-adad-ashriya_P2"
     ]
+  },
+  "MISC-MASAHA-AREA-PERIM-CONFUSED": {
+    "label": "الخلط بين المساحة والمحيط (عدّ البلاطات حين يُطلب طول الحدّ، أو عدّ أضلاع الحدّ حين تُطلب المساحة)",
+    "explanation": "المساحة عدد وحدات المساحة (البلاطات) التي تغطّي السطح، والمحيط طول الحدّ بوحدات الطول. سياج الحوش يتبع المحيط، وعدد بلاطاته يتبع المساحة، وهما عددان مختلفان لسطح واحد.",
+    "relatedLearningPoints": [
+      "1am_masahat-muhit-sath_P1",
+      "1am_masahat-muhit-sath_P2",
+      "1am_masahat-muhit-sath_P3"
+    ]
+  },
+  "MISC-MASAHA-LONGER-BIGGER": {
+    "label": "الاعتقاد أنّ الأطول محيطًا هو الأكبر مساحة",
+    "explanation": "حوض من صفّ واحد بسبع بلاطات محيطه 16 ومساحته 7، وحوض مربع من تسع بلاطات محيطه 12 ومساحته 9: الأطول سياجًا هو الأصغر مساحة.",
+    "relatedLearningPoints": [
+      "1am_masahat-muhit-sath_P3"
+    ]
+  },
+  "MISC-MASAHA-EQUAL-AREA-EQUAL-PERIM": {
+    "label": "الاعتقاد أنّ المساحتين المتساويتين تعنيان محيطين متساويين",
+    "explanation": "سطحان من ثماني بلاطات: مستطيل 2×4 محيطه 12، وشكل من 5+3 بلاطات محيطه 14. المساحة نفسها والمحيط مختلف.",
+    "relatedLearningPoints": [
+      "1am_masahat-muhit-sath_P3"
+    ]
+  },
+  "MISC-MASAHA-EQUAL-PERIM-EQUAL-AREA": {
+    "label": "الاعتقاد أنّ المحيطين المتساويين يعنيان مساحتين متساويتين",
+    "explanation": "حبلان متساويان قد يحيطان بتسع بلاطات (مربع 3×3) أو بخمس بلاطات فقط (صفّ واحد): المحيط 12 في الحالتين والمساحة مختلفة.",
+    "relatedLearningPoints": [
+      "1am_masahat-muhit-sath_P1",
+      "1am_masahat-muhit-sath_P3"
+    ]
+  },
+  "MISC-MASAHA-HALF-IGNORED": {
+    "label": "إهمال أنصاف البلاطات أو عدّ كل نصف بلاطة كاملة",
+    "explanation": "البلاطة المقطوعة قطريًّا نصف بلاطة؛ نصفان يكوّنان بلاطة. مساحة سطح من 8 بلاطات كاملة و4 أنصاف هي 8 + 2 = 10 لا 8 ولا 12.",
+    "relatedLearningPoints": [
+      "1am_masahat-muhit-sath_P2"
+    ]
+  },
+  "MISC-MASAHA-UNIT-DIRECTION": {
+    "label": "عكس العلاقة بين حجم الوحدة وعدد الوحدات",
+    "explanation": "الوحدة ② ضعف الوحدة ①، فنحتاج إلى نصف العدد منها: 18 وحدة ① تساوي 9 وحدات ②، لا 36. وإذا صغرت الوحدة كبر العدد.",
+    "relatedLearningPoints": [
+      "1am_masahat-muhit-sath_P2"
+    ]
+  },
+  "MISC-MASAHA-BOUNDARY-CELLS": {
+    "label": "عدّ البلاطات التي على الحافة بدل عدّ أضلاعها",
+    "explanation": "المحيط يعدّ أطوال الحدّ بوحدات الطول (أضلاع البلاطات)؛ بلاطة في الزاوية يقع ضلعان من أضلاعها على الحدّ فتُحسب مرّتين.",
+    "relatedLearningPoints": [
+      "1am_masahat-muhit-sath_P1"
+    ]
+  },
+  "MISC-MASAHA-INNER-SIDES": {
+    "label": "تتبّع خاطئ للحدّ: نسيان أضلاع الثغرة أو عدّ أضلاع داخلية مشتركة",
+    "explanation": "الحدّ هو كل ضلع يفصل بلاطة عن الفراغ، بما فيه حافة الثغرة، ولا يشمل الأضلاع المشتركة بين بلاطتين متجاورتين.",
+    "relatedLearningPoints": [
+      "1am_masahat-muhit-sath_P1"
+    ]
+  },
+  "MISC-MASAHA-ENTRANCE": {
+    "label": "نسيان طرح عرض المدخل من طول السياج",
+    "explanation": "السياج لا يُنصب عند المدخل: طوله هو المحيط ناقص عرض المدخل، وبه نحسب الثمن.",
+    "relatedLearningPoints": [
+      "1am_masahat-muhit-sath_P1"
+    ]
+  },
+  "MISC-MASAHA-DECISION-INCOMPLETE": {
+    "label": "قرار مبنيّ على جزء من الكلفة أو من المعطيات فقط",
+    "explanation": "القرار يقارن المجموع الكامل بالمبلغ المتوفر: نحسب كل البنود (السياج والعمل…) قبل أن نقول «يكفي» أو «لا يكفي».",
+    "relatedLearningPoints": [
+      "1am_masahat-muhit-sath_P1",
+      "1am_masahat-muhit-sath_P2",
+      "1am_masahat-muhit-sath_P3"
+    ]
+  },
+  "MISC-MASAHA-ROWS-MISCOUNT": {
+    "label": "خطأ في عدّ البلاطات بالصفوف (ضرب أو جمع خاطئ، أو نسيان صف أو بلاطة)",
+    "explanation": "مساحة سطح مرتّب في صفوف = عدد الصفوف مرّات عدد البلاطات في الصف: 2 صفين × 8 بلاطات = 16، أما 3 × 5 = 15 و 4 × 5 = 20. نتحقّق دائمًا بالعدّ صفًّا صفًّا.",
+    "relatedLearningPoints": [
+      "1am_masahat-muhit-sath_P2",
+      "1am_masahat-muhit-sath_P3"
+    ]
   }
 }

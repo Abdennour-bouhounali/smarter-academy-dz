@@ -695,6 +695,16 @@ export const LEVELS = Object.freeze({
       { kind: 'order', values: ['2,5', '2,05', '0,75', '2,500', '3'], dir: 'desc' },
     ] }, ...T('act-5') },
   },
+  // ── 1AM, unité 11 — surface, périmètre, aire (2026-10-15) ──
+  // LE CARREAU SOUS LA MAIN (tile-yard) : la main tient un carreau de zellige (thème courtyard). مبتدئ : la cour de la maison du grand-père,
+  // 12 carreaux seulement DÉPLACÉS (mode fence) : l'aire ne bouge pas, la clôture change — d'abord la plus courte, puis 20 bâtons ;
+  // متقدم : un rouleau de corde de 12 bâtons et des carreaux libres (mode rope) : la même clôture, des aires différentes — le plus de carreaux
+  // (9), puis le moins (5). Le monde `floor` (demi-carreaux, unité double) se pose dans le module de la طريقة avec ses propres `world`,
+  // `tasks` et `levels={false}`.
+  'tile-yard': {
+    beginner: { numbers: { world: 'yard', mode: 'fence' }, ...P },
+    advanced: { numbers: { world: 'yard', mode: 'rope' }, ...T('act-1') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

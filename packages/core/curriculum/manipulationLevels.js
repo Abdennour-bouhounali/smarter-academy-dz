@@ -233,6 +233,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   sandpit  la piste de saut en longueur d'une journée sportive : des sauts mesurés au mètre, au décimètre, au centimètre, au
   //            millimètre (1AM unité 1, `ruler-compare`, 2026-10-15) — la main tient la graduation de la règle
   sandpit: { kind: 'objects', shows: 'حفرة رمل لمسابقة القفز الطويل وقفزات تُقاس بمسطرة تُغيَّر تدريجها' },
+  // 1AM, unité 11 (2026-10-15) :
+  //   courtyard  le حوش d'une maison : des carreaux de zellige posés sur le sol et une clôture en bois autour (1AM `tile-yard`,
+  //              2026-10-15) — la main tient un carreau : l'aire est le nombre de carreaux, le périmètre le nombre de piquets
+  courtyard: { kind: 'objects', shows: 'حوش بيت مفروش ببلاط الزليج ومحاط بسياج خشبي' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

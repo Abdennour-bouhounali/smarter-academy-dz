@@ -618,6 +618,17 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'لمقارنة عددين عشريين نقارن جزأيهما الصحيحين، فإن تساويا قارنّا رقم الأعشار ثم رقم الأجزاء من مائة وهكذا حتى أوّل رتبة يختلف فيها الرقمان ؛ أو نكمل بأصفار غير ضرورية حتى يصير لهما عدد الأرقام نفسه بعد الفاصلة فنقارن عددين طبيعيين ($4{,}6=4{,}60$ أكبر من $4{,}35$) ؛ وبهذا نرتّب سلسلة أعداد عشرية',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 11 (2026-10-15) — surface, périmètre, aire.
+  'tile-yard': {
+    // LE CARREAU SOUS LA MAIN : la main tient UN CARREAU (une unité d'aire). Monde `yard` : une cour de zellige faite de n carreaux
+    // et sa clôture ; on déplace un carreau (jamais de carreau ajouté ni ôté en mode `fence`) : l'AIRE (le nombre de carreaux) ne
+    // bouge pas et le PÉRIMÈTRE (le nombre de piquets de clôture, une unité de longueur chacun) change. Mode `rope` : la clôture a une
+    // longueur FIXE (un rouleau de 12) et les carreaux sont libres : même périmètre, aires différentes. Monde `floor` : poser des
+    // carreaux d'une unité sur un sol (carreaux entiers, demi-carreaux le long d'un bord oblique, puis l'unité double) pour LIRE
+    // l'aire ; le nombre dépend de l'unité (21 unités ① = 10,5 unités ②). Chaque geste validé est un essai : MANUEL (§6bis).
+    shows: 'المساحة هي عدد وحدات المساحة (البلاطات) التي تغطّي السطح، والمحيط هو طول حدّه (عدد وحدات الطول على السياج): تبديل مواضع البلاطات يُبقي المساحة ويغيّر المحيط، وبحبل بطول ثابت نحصل على مساحات مختلفة ؛ وعدد الوحدات يتغيّر بتغيّر وحدة المساحة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

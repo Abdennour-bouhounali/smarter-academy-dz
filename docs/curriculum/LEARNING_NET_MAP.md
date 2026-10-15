@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **83** leçons publiées · **187** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **84** leçons publiées · **186** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -792,8 +792,8 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `1am.m2.r03` | إنجاز مثيل لكل من: مثلث، مثلث متساوي الساقين، مثلث قائم، مثلث متقايس الأضلاع، مستطيل، مربع، معين، على ورقة غير مسطّرة. | `mudallaat-zawiya` _(prévue)_ | `1am.m2.r01`، `1am.m2.r02` |
 | `1am.m2.r04` | رسم دائرة، إنجاز مثيل لقوس دائرة. | `daira-mustalahat` _(prévue)_ | — |
 | `1am.m2.r05` | الاستعمال السليم للمصطلحات: دائرة، مركز، قوس دائرة، وتر، نصف قطر، قطر. | `daira-mustalahat` _(prévue)_ | `1am.m2.r04` |
-| `1am.m2.r06` | تعيين مساحة سطح مستوٍ باستعمال رصف بسيط. | `masahat-muhit-sath` _(prévue)_ | — |
-| `1am.m2.r07` | مقارنة مساحات في وضعيات بسيطة. | `masahat-muhit-sath` _(prévue)_ | `1am.m2.r06` |
+| `1am.m2.r06` | تعيين مساحة سطح مستوٍ باستعمال رصف بسيط. | `masahat-muhit-sath` | — |
+| `1am.m2.r07` | مقارنة مساحات في وضعيات بسيطة. | `masahat-muhit-sath` | `1am.m2.r06` |
 | `1am.m2.r08` | حساب محيط ومساحة مستطيل. | `mustatil-murabba-masaha` _(prévue)_ | `1am.m2.r06`، `1am.m1.r05` |
 | `1am.m2.r09` | حساب مساحة مثلث قائم. | `masahat-muthallath-qaim` _(prévue)_ | `1am.m2.r08`، `1am.m2.r03` |
 | `1am.m2.r10` | حساب محيط دائرة. | `muhit-qurs` _(prévue)_ | `1am.m2.r05`، `1am.m1.r05` |
@@ -1197,7 +1197,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 47 | `muthallathat-khassa` — المثلثات الخاصة | prévue | `1am.m2.r03` |
 | 48 | `rubaiyat-khassa` — الرباعيات الخاصة | prévue | `1am.m2.r03` |
 | 49 | `wadiya-idmajiya-ashkal-mustawiya` — أدمج تعلّماتي — الأشكال المستوية | synthèse | — |
-| 50 | `masahat-muhit-sath` — مساحة سطح مستو ومحيطه | prévue | `1am.m2.r06` `1am.m2.r07` |
+| 50 | `masahat-muhit-sath` — مساحة سطح مستو ومحيطه | publiée | `1am.m2.r06` `1am.m2.r07` |
 | 51 | `wahdat-tul-masaha` — وحدات الطول ووحدات المساحة | prévue | `1am.m6.r09` |
 | 52 | `mustatil-murabba-masaha` — محيط ومساحة المستطيل والمربع | prévue | `1am.m2.r08` |
 | 53 | `masahat-muthallath-qaim` — مساحة المثلث القائم | prévue | `1am.m2.r09` |

@@ -101,6 +101,8 @@ export const MANIPULATION_COMPONENTS = {
   'decimal-comma': lazy(() => import('./operations/DecimalComma')),
   // 1AM, unité 1 — comparer et ranger des nombres décimaux : la graduation de la règle sous la main (2026-10-15).
   'ruler-compare': lazy(() => import('./operations/RulerCompare')),
+  // 1AM, unité 11 « السطوح المستوية : الأطوال، المحيطات، المساحات » : le carreau sous la main (2026-10-15).
+  'tile-yard': lazy(() => import('./surface/TileYard')),
   // 2AM, unité 2 « الكسور والعمليات عليها » (2026-10-14).
   'egg-trays': lazy(() => import('./operations/EggTrays')),
 };
