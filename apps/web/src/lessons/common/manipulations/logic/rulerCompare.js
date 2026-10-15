@@ -107,7 +107,9 @@ export function init({ tasks }) {
 export function activeOf(s) {
   if (s.free) {
     const f = s.free;
-    return { free: true, kind: 'compare', g: f.g, vals: [f.av, f.bv], values: [writeJump(f.av), writeJump(f.bv)], task: null, slots: null, ti: s.ti };
+    const values = f.vals.map(writeJump);
+    if (f.kind === 'order') return { free: true, kind: 'order', g: f.g, vals: f.vals, values, task: { kind: 'order', dir: f.dir, n: f.vals.length }, slots: f.slots, ti: s.ti };
+    return { free: true, kind: 'compare', g: f.g, vals: f.vals, values, task: null, slots: null, ti: s.ti };
   }
   const t = s.tasks[s.ti];
   const b = s.boards[s.ti];
@@ -216,7 +218,7 @@ export const slotOfJump = (s, jump) => (activeOf(s).slots ?? []).indexOf(jump);
  */
 export function place(s, jump, slot) {
   const a = activeOf(s);
-  if (a.kind !== 'order' || s.free || taskDone(s)) return s;
+  if (a.kind !== 'order' || (!a.free && taskDone(s))) return s;
   const slots = a.slots.slice();
   const from = slots.indexOf(jump);
   if (slot === null) {
@@ -249,7 +251,7 @@ export function firstInversion(vals, dir) {
 /** « تحقّق » : refusé si la règle ne sépare pas toutes les paires ; sinon juge l'ordre et montre la première inversion avec ses lectures. */
 export function check(s) {
   const a = activeOf(s);
-  if (a.kind !== 'order' || s.free || taskDone(s) || !slotsFull(s)) return s;
+  if (a.kind !== 'order' || (!a.free && taskDone(s)) || !slotsFull(s)) return s;
   const placed = a.slots.map((i) => a.vals[i]);
   const order = a.slots.map((i) => a.values[i]);
   if (!decidedNow(s)) {
@@ -260,7 +262,7 @@ export function check(s) {
   const ok = inv < 0;
   const counts = a.slots.map((i) => D.readAt(a.vals[i], a.g).count);
   const trial = record(s, a, 'check', { ok, decided: true, inversion: ok ? null : inv, order, counts, a: ok ? null : order[inv], b: ok ? null : order[inv + 1] });
-  if (!ok) return withTrial(s, trial);
+  if (!ok || a.free) return withTrial(s, trial);
   return withTrial(s, trial, {
     done: Object.freeze({ ...s.done, [s.ti]: true }),
     solved: Object.freeze({ ...s.solved, [s.ti]: Object.freeze({ g: a.g, dir: a.task.dir, order, counts }) }),
@@ -282,7 +284,7 @@ export function nextTask(s) {
 }
 /** « إعادة » : la tâche en cours (ou l'essai libre) repart de la règle au mètre. Les essais déjà faits restent. */
 export function restartTask(s) {
-  if (s.free) return put(s, { free: Object.freeze({ ...s.free, g: 0 }), last: null });
+  if (s.free) return put(s, { free: Object.freeze({ ...s.free, g: 0, ...(s.free.slots ? { slots: Object.freeze(Array(s.free.vals.length).fill(null)) } : {}) }), last: null });
   if (taskDone(s)) return put(s, { last: null });
   const boards = s.boards.slice();
   boards[s.ti] = board0(s.tasks[s.ti]);
@@ -291,16 +293,33 @@ export function restartTask(s) {
 
 /* ── Ses propres nombres : l'essai LIBRE ────────────────────────────────────────────────── */
 
+/** Le plus grand nombre de champs de l'essai libre en rangement. */
+export const FREE_MAX_ORDER = 6;
+
 /**
- * « جرّب أعدادك أنت » : deux nombres saisis. Tant que l'un des deux est invalide, rien ne change. Un nouveau couple remet la règle au mètre ;
- * ses essais portent `free: true` et ne comptent JAMAIS pour la tâche, la découverte ou `onFinished`.
+ * « جرّب أعدادك أنت » : ses propres nombres. Le genre de l'essai suit la tâche en cours : `compare` → deux nombres ; `order` → de 2 à 6 nombres
+ * (les champs vides sont ignorés), rangés dans le sens de la tâche. `setFree(s, [t1…t6])` ; l'appel `setFree(s, aText, bText)` reste valable (compare).
+ * Un texte non vide et invalide, ou trop peu de nombres valides (compare : les deux ; order : au moins 2) : rien ne change. Une nouvelle
+ * série remet la règle au mètre (et vide les cases) ; ses essais portent `free: true` et ne comptent JAMAIS pour la tâche, la découverte ou `onFinished`.
  */
-export function setFree(s, aText, bText) {
-  const av = parseJump(aText);
-  const bv = parseJump(bText);
-  if (!av || !bv) return s;
-  if (s.free && D.eq(s.free.av, av) && s.free.av.k === av.k && D.eq(s.free.bv, bv) && s.free.bv.k === bv.k) return s;
-  return put(s, { free: Object.freeze({ av, bv, g: 0 }), last: null });
+export function setFree(s, texts, bText) {
+  const list = Array.isArray(texts) ? texts : [texts, bText];
+  const kind = s.tasks[s.ti].kind;
+  let vals;
+  if (kind === 'compare') {
+    vals = list.slice(0, 2).map(parseJump);
+    if (vals.length < 2 || vals.some((v) => !v)) return s;
+  } else {
+    const filled = list.slice(0, FREE_MAX_ORDER).filter((x) => String(x ?? '').trim() !== '');
+    vals = filled.map(parseJump);
+    if (vals.some((v) => !v) || vals.length < 2) return s;
+  }
+  const same = s.free && s.free.kind === kind && s.free.vals.length === vals.length && s.free.vals.every((v, i) => D.eq(v, vals[i]) && v.k === vals[i].k);
+  if (same) return s;
+  const free = kind === 'order'
+    ? { kind, dir: s.tasks[s.ti].dir, vals: Object.freeze(vals), g: 0, slots: Object.freeze(Array(vals.length).fill(null)) }
+    : { kind, vals: Object.freeze(vals), g: 0 };
+  return put(s, { free: Object.freeze(free), last: null });
 }
 export function toGuided(s) { return s.free ? put(s, { free: null, last: null }) : s; }
 

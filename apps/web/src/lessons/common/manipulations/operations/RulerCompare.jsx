@@ -60,7 +60,7 @@ import * as L from '../logic/rulerCompare';
  *
  * CONTRAT DOM : [data-ruler-compare][data-world][data-task][data-solved][data-layout], [data-rc-glance], [data-rc-grad=<0..3>][data-active],
  * [data-rc-knob], [data-rc-reading=<i>][data-count], [data-rc-rest=<i>], [data-rc-verdicts], [data-rc-verdict=lt|eq|gt], [data-rc-lamp][data-decided],
- * [data-rc-slot=<i>], [data-rc-tray], [data-rc-jump=<i>], [data-rc-check], [data-rc-free][data-active], [data-rc-free-a|b], [data-rc-formal],
+ * [data-rc-slot=<i>], [data-rc-tray], [data-rc-jump=<i>], [data-rc-check], [data-rc-free][data-active], [data-rc-free-a|b] (compare) · [data-rc-free-n=<1..6>] (order : jusqu'à 6 champs, ≥2 valides) · [data-rc-free][data-rc-free-kind], [data-rc-formal],
  * [data-rc-refused=<kind>], [data-rc-next], [data-rc-shown], [data-rc-kid], [data-rc-prompt][data-lit], [data-rc-step=<i>][data-done],
  * [data-lab-fold=ruler-compare.trials].
  */
@@ -253,7 +253,7 @@ function Lab({ lab, setLab, k, width, screenH, glanceRef, lead }) {
   const task = lab.tasks[lab.ti];
   const free = a.free;
   const order = a.kind === 'order';
-  const done = L.taskDone(lab);
+  const done = !free && L.taskDone(lab);
   const ready = L.discoveryReady(lab);
   const narrow = width < 560;
   const compact = screenH < 800;
@@ -267,12 +267,12 @@ function Lab({ lab, setLab, k, width, screenH, glanceRef, lead }) {
   /* ── la consigne : le contexte (tous les nombres), puis UNE question ── */
   const jumpers = a.values.map((_, i) => L.jumperOf(a.kind, lab.ti, i));
   const context = (() => {
-    if (free) return k('context.free');
+    if (free) return k(order ? 'context.freeOrder' : 'context.free');
     if (lead) return lead;
     if (order) return k('context.order', { jumps: k('jump', { count: task.n }) });
     return k('context.compare', { x: jumpers[0].name, a: iso(task.a), y: jumpers[1].name, b: iso(task.b) });
   })();
-  const question = free ? k('question.free') : order ? k(`question.order_${task.dir}`) : k('question.compare');
+  const question = free ? k(order ? `question.freeOrder_${a.task.dir}` : 'question.free') : order ? k(`question.order_${task.dir}`) : k('question.compare');
   const steps = lab.tasks.length > 1 && !free && (
     <div className="flex items-center gap-1" role="list" aria-label={k('stepsAria')}>
       <span className="text-xs font-black text-indigo-900/60" aria-hidden="true">{k('stepsLabel')}</span>
@@ -708,11 +708,11 @@ function Tray({ lab, a, k, readings, jumpers, setLab, width, compact, held, setH
 function Podium({ lab, a, k, readings, jumpers, setLab, width, compact, decided, held, setHeld }) {
   const n = a.vals.length;
   const w = tokenWidth(width, n);
-  const done = L.taskDone(lab);
+  const done = !a.free && L.taskDone(lab);
   const full = L.slotsFull(lab);
   const wrongAt = (() => {
     const l = lab.last;
-    if (l && l.event === 'check' && l.ok === false && !l.free) return [l.inversion, l.inversion + 1];
+    if (l && l.event === 'check' && l.ok === false && Boolean(l.free) === Boolean(a.free)) return [l.inversion, l.inversion + 1];
     return [];
   })();
   const refused = lab.last && lab.last.event === 'check' && lab.last.refused ? lab.last.pair : null;
@@ -762,40 +762,46 @@ function Podium({ lab, a, k, readings, jumpers, setLab, width, compact, decided,
 
 function FreeCard({ lab, setLab, k }) {
   const free = L.isFree(lab);
-  const [va, setVa] = useState('');
-  const [vb, setVb] = useState('');
-  useEffect(() => { if (!lab.free) { setVa(''); setVb(''); } }, [lab.free]);
+  const order = L.taskOf(lab).kind === 'order';
+  const count = order ? L.FREE_MAX_ORDER : 2;
+  const [vals, setVals] = useState(() => Array(L.FREE_MAX_ORDER).fill(''));
+  useEffect(() => { if (!lab.free) setVals(Array(L.FREE_MAX_ORDER).fill('')); }, [lab.free]);
   const clean = (raw) => raw.replace(/[^0-9.,]/g, '').replace(/[.,]/g, (c, i, s) => (s.indexOf(',') === i || s.indexOf('.') === i ? ',' : ''));
-  const onChange = (which, raw) => {
-    const x = clean(raw);
-    const na = which === 'a' ? x : va;
-    const nb = which === 'b' ? x : vb;
-    if (which === 'a') setVa(x); else setVb(x);
-    setLab((s) => L.setFree(s, na, nb));
+  const onChange = (i, raw) => {
+    const next = vals.slice();
+    next[i] = clean(raw);
+    setVals(next);
+    setLab((s) => L.setFree(s, next.slice(0, count)));
   };
-  const bad = (va && !L.parseJump(va)) || (vb && !L.parseJump(vb));
-  const field = (id, val, label) => (
-    <label className="flex items-center gap-2 text-xs font-black text-indigo-950">
-      {label}
-      <input type="text" inputMode="decimal" autoComplete="off" dir="ltr" value={val} onChange={(e) => onChange(id, e.target.value)} maxLength={6}
-        aria-label={k(`free.${id}Aria`)} data-rc-free-input={id} {...{ [`data-rc-free-${id}`]: '' }}
-        className={`h-11 w-28 rounded-xl border-2 bg-white px-3 text-center text-xl font-black tabular-nums text-indigo-950 ${val && !L.parseJump(val) ? 'border-rose-300' : 'border-emerald-300'} ${ring}`} />
-    </label>
-  );
+  const shown = vals.slice(0, count);
+  const bad = shown.some((v) => v && !L.parseJump(v));
+  const field = (i) => {
+    const val = vals[i];
+    const id = order ? String(i + 1) : i === 0 ? 'a' : 'b';
+    const label = order ? k('free.n', { i: iso(String(i + 1)) }) : k(i === 0 ? 'free.a' : 'free.b');
+    const aria = order ? k('free.nAria', { i: iso(String(i + 1)) }) : k(`free.${id}Aria`);
+    return (
+      <label key={id} className={`flex min-w-0 ${order ? 'flex-col items-stretch gap-1' : 'items-center gap-2'} text-xs font-black text-indigo-950`}>
+        {label}
+        <input type="text" inputMode="decimal" autoComplete="off" dir="ltr" value={val} onChange={(e) => onChange(i, e.target.value)} maxLength={6}
+          aria-label={aria} data-rc-free-input={id} {...(order ? { 'data-rc-free-n': String(i + 1) } : { [`data-rc-free-${id}`]: '' })}
+          className={`h-11 ${order ? 'w-full min-w-0' : 'w-28'} rounded-xl border-2 bg-white px-2 text-center text-xl font-black tabular-nums text-indigo-950 ${val && !L.parseJump(val) ? 'border-rose-300' : 'border-emerald-300'} ${ring}`} />
+      </label>
+    );
+  };
   return (
-    <LabCard className="space-y-2 border-emerald-200 bg-emerald-50/50 p-3" data-rc-free data-active={free ? 'true' : 'false'}>
+    <LabCard className="space-y-2 border-emerald-200 bg-emerald-50/50 p-3" data-rc-free data-active={free ? 'true' : 'false'} data-rc-free-kind={order ? 'order' : 'compare'}>
       <p className="flex items-center gap-1.5 text-sm font-black text-emerald-900"><FlaskConical className="h-4 w-4" aria-hidden="true" /> {k('free.title')}</p>
-      <p className="text-xs font-bold leading-snug text-slate-600">{free ? k('free.on') : bad ? k('free.bad') : k('free.hint')}</p>
-      <div className="flex flex-wrap items-center gap-3">
-        {field('a', va, k('free.a'))}
-        {field('b', vb, k('free.b'))}
-        {free && (
-          <button type="button" onClick={() => setLab(L.toGuided)} data-rc-free-back
-            className={`inline-flex min-h-[44px] items-center gap-1 rounded-full border-2 border-emerald-200 bg-white px-3 text-xs font-bold text-emerald-900 ${ring}`}>
-            <Undo2 className="h-4 w-4" aria-hidden="true" /> {k('free.back')}
-          </button>
-        )}
+      <p className="text-xs font-bold leading-snug text-slate-600">{free ? k('free.on') : bad ? k('free.bad') : k(order ? 'free.hintOrder' : 'free.hint')}</p>
+      <div className={order ? 'grid grid-cols-3 gap-2 md:grid-cols-6' : 'flex flex-wrap items-center gap-3'}>
+        {Array.from({ length: count }, (_, i) => field(i))}
       </div>
+      {free && (
+        <button type="button" onClick={() => setLab(L.toGuided)} data-rc-free-back
+          className={`inline-flex min-h-[44px] items-center gap-1 rounded-full border-2 border-emerald-200 bg-white px-3 text-xs font-bold text-emerald-900 ${ring}`}>
+          <Undo2 className="h-4 w-4" aria-hidden="true" /> {k('free.back')}
+        </button>
+      )}
     </LabCard>
   );
 }

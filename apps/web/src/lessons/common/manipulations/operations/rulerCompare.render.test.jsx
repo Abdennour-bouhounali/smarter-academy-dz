@@ -85,7 +85,7 @@ describe('ruler-compare — les textes', () => {
   it('every string exists in Arabic, fully interpolated', () => {
     const o = { x: 'ريم', y: 'سامي', a: '4,6', b: '4,35', ca: '46', cb: '43', jumps: '5 قفزات', ruler: 'الديسيمتر', reading: '46 ديسيمترًا', rest: 'باقٍ', word: 'أصغر من', i: 1, j: 2, list: '1، 2', name: 'ريم',
       text: '4,6', sym: '<', what: 'ما', small: '4,35', big: '4,6', sn: '35', bn: '6', sd: 'رقمان', bd: 'رقم واحد', count: 3, rank: 'الأعشار' };
-    const keys = ['title', 'comma', 'metre', 'context.compare', 'context.order', 'context.free', 'question.compare', 'question.order_asc', 'question.order_desc', 'question.free', 'stepsLabel', 'stepsAria', 'stepAria',
+    const keys = ['title', 'comma', 'metre', 'context.compare', 'context.order', 'context.free', 'context.freeOrder', 'question.freeOrder_asc', 'question.freeOrder_desc', 'free.hintOrder', 'free.n', 'free.nAria', 'question.compare', 'question.order_asc', 'question.order_desc', 'question.free', 'stepsLabel', 'stepsAria', 'stepAria',
       'next', 'stamp', 'check', 'tapeAria', 'readAria', 'rest.none', 'rest.some', 'lamp.yes', 'lamp.no', 'verdictAria', 'shownAria', 'word.lt', 'word.eq', 'word.gt', 'idle.compare', 'idle.order',
       'v.coarse', 'v.wrong', 'v.right', 'v.rightEq', 'v.coarseOrder', 'v.inversion', 'v.orderRight', 'sand.title', 'sand.empty', 'jumpAria', 'podium.title', 'podium.shortest', 'podium.farthest', 'podium.slotAria',
       'free.title', 'free.hint', 'free.bad', 'free.on', 'free.a', 'free.b', 'free.aAria', 'free.bAria', 'free.back', 'trialsTitle', 'trial.line', 'trial.free', 'trial.ruler', 'trial.place', 'trial.checkRefused',
@@ -132,7 +132,7 @@ describe('ruler-compare — les textes', () => {
 
   it('no prompt, question, hint, idle line, coach text or verdict leaks the rule it hides', () => {
     const strings = [say('discovery.prompt'), say('idle.compare'), say('idle.order'), say('explanation'), ...[0, 1, 2].map((i) => say(`hints.${i}`)),
-      ...['compare', 'order_asc', 'order_desc', 'free'].map((x) => say(`question.${x}`)),
+      ...['compare', 'order_asc', 'order_desc', 'free', 'freeOrder_asc', 'freeOrder_desc'].map((x) => say(`question.${x}`)),
       say('context.compare', { x: 'ريم', a: '4,6', y: 'سامي', b: '4,35' }), say('context.order', { jumps: '5' }),
       ...['ruler', 'verdict', 'place', 'check', 'next'].map((x) => say(`coach.${x}`)),
       say('lamp.no'), say('lamp.yes')];

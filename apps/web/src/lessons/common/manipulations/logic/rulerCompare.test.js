@@ -88,6 +88,52 @@ describe('ruler-compare — compare tasks', () => {
   });
 });
 
+describe('ruler-compare — free ordering of up to 6 own numbers', () => {
+  const mk = () => L.init({ tasks: [A.tasks[0]] });
+  it('needs 2..6 valid numbers, ignores empty fields, refuses invalid ones', () => {
+    let s = mk();
+    expect(L.setFree(s, ['4,6', '', '', '', '', ''])).toBe(s);
+    expect(L.setFree(s, ['4,6', 'x', '', '', '', ''])).toBe(s);
+    expect(L.setFree(s, ['4,6789', '4', '', '', '', ''])).toBe(s);
+    s = L.setFree(s, ['4,6', '', '4,35', '4,5', '', '']);
+    expect(L.isFree(s)).toBe(true);
+    expect(L.activeOf(s)).toMatchObject({ free: true, kind: 'order', values: ['4,6', '4,35', '4,5'], slots: [null, null, null] });
+    expect(L.activeOf(s).task.dir).toBe('asc');
+  });
+  it('same activity: refused while coarse, judged when fine, never counted', () => {
+    let s = L.setFree(mk(), ['7,4', '7,04', '7,405', '6,98', '7,45', '7,4']);
+    expect(L.activeOf(s).vals).toHaveLength(6);
+    const f = () => L.activeOf(s);
+    const order = [3, 1, 0, 5, 2, 4]; // 6,98 < 7,04 < 7,4 = 7,4 < 7,405 < 7,45
+    order.forEach((j, slot) => { s = L.place(s, j, slot); });
+    expect(L.slotsFull(s)).toBe(true);
+    s = L.check(s);
+    expect(s.last).toMatchObject({ event: 'check', refused: 'coarse', free: true });
+    s = L.setRuler(s, 3);
+    s = L.check(s);
+    expect(s.last).toMatchObject({ event: 'check', ok: true, free: true });
+    expect(L.taskDone(s)).toBe(false);
+    expect(Object.keys(s.solved)).toHaveLength(0);
+    expect(L.guidedTrials(s)).toHaveLength(0);
+    expect(f().free).toBe(true);
+    s = L.toGuided(s);
+    expect(L.activeOf(s).free).toBe(false);
+    expect(L.activeOf(s).slots.every((x) => x === null)).toBe(true);
+  });
+  it('a wrong free order shows the first inversion; descending follows the task', () => {
+    let s = L.init({ tasks: [{ kind: 'order', values: ['1,2', '1,25', '1,3'], dir: 'desc' }] });
+    s = L.setFree(s, ['1,2', '1,25', '1,3']);
+    s = L.setRuler(s, 2);
+    [0, 1, 2].forEach((j, slot) => { s = L.place(s, j, slot); });
+    s = L.check(s);
+    expect(s.last).toMatchObject({ ok: false, inversion: 0, free: true });
+  });
+  it('compare tasks keep the 2-field behaviour', () => {
+    const s = L.setFree(L.init({ tasks: B.tasks }), ['4.6', '4,65', '9', '', '', '']);
+    expect(L.activeOf(s)).toMatchObject({ kind: 'compare', values: ['4,6', '4,65'] });
+  });
+});
+
 describe('ruler-compare — order tasks', () => {
   const [t1, t2] = A.tasks.map(L.normalizeTask);
 

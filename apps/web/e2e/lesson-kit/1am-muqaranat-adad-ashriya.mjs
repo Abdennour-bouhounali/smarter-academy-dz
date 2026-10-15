@@ -171,6 +171,46 @@ for (const slug of ['nashat']) {
   await ctx.close();
 }
 
+// 6 — l'essai LIBRE du niveau « order » : six nombres à soi, le même rangement, refusé tant que la règle est grossière.
+for (const vp of [{ width: 1280, height: 800 }, { width: 768, height: 1024 }]) {
+  const ctx = await contextFor(browser, token, vp);
+  const page = await ctx.newPage();
+  const tag = `libre-${vp.width}`;
+  await page.goto(`${BASE}${LESSON}/tariqa`, { waitUntil: 'networkidle' });
+  await page.waitForSelector('[data-ruler-compare]');
+  const free = page.locator('[data-rc-free]').first();
+  check(await free.locator('[data-rc-free-n]').count() === 6, `${tag}: six champs dans le panneau libre`);
+  const boxes = await free.locator('[data-rc-free-n]').evaluateAll((els) => els.map((e) => { const r = e.getBoundingClientRect(); return { h: r.height, w: r.width, l: r.left, r: r.right }; }));
+  check(boxes.every((b) => b.h >= 44 && b.w >= 44 && b.l >= 0 && b.r <= window_w(vp)), `${tag}: champs >= 44px et dans la largeur`);
+  const values = ['7,4', '7,04', '7,405', '6,98', '7,45', '7,40'];
+  for (let i = 0; i < 6; i += 1) await free.locator(`[data-rc-free-n="${i + 1}"]`).fill(values[i]);
+  await page.waitForTimeout(300);
+  check((await free.getAttribute('data-active')) === 'true', `${tag}: l'essai libre est actif`);
+  check(await page.locator('[data-rc-jump]').count() === 6 && await page.locator('[data-rc-slot]').count() === 6, `${tag}: six sauts, six cases`);
+  // ordre juste : 6,98 < 7,04 < 7,4 = 7,40 < 7,405 < 7,45 -> indices 3,1,0,5,2,4 (tap-tap)
+  for (const [slot, jump] of [3, 1, 0, 5, 2, 4].entries()) {
+    await page.locator(`[data-rc-jump="${jump}"]`).first().click();
+    await page.locator(`[data-rc-slot="${slot}"]`).first().click();
+  }
+  check(await page.locator('[data-rc-slot][data-filled=true]').count() === 6, `${tag}: les six cases sont pleines`);
+  await page.locator('[data-rc-check]').click();
+  await page.waitForTimeout(300);
+  check(await page.locator('[data-rc-refused]').count() > 0, `${tag}: « تحقّق » refusé tant que la règle est grossière`);
+  await page.screenshot({ path: `${OUT}/free-order-refused-${vp.width}.png`, fullPage: true });
+  await page.locator('[data-rc-grad="3"]').first().click();
+  await page.waitForTimeout(300);
+  await page.locator('[data-rc-check]').click();
+  await page.waitForTimeout(400);
+  check(await page.locator('[data-rc-refused]').count() === 0 && await page.locator('[data-rc-banner="check"]').count() > 0, `${tag}: après le millimètre, le rangement est jugé`);
+  check((await page.locator('[data-ruler-compare]').first().getAttribute('data-solved')) === 'false', `${tag}: l'essai libre ne compte pas pour la découverte`);
+  await page.screenshot({ path: `${OUT}/free-order-judged-${vp.width}.png`, fullPage: true });
+  await free.locator('[data-rc-free-back]').click();
+  await page.waitForTimeout(300);
+  check((await free.getAttribute('data-active')) === 'false' && await page.locator('[data-rc-slot][data-filled=true]').count() === 0, `${tag}: retour aux tâches, planche guidée intacte`);
+  await ctx.close();
+}
+function window_w(vp) { return vp.width + 1; }
+
 await browser.close();
 console.log(failures.length ? `\n${failures.length} échec(s)` : '\n✅ 1AM muqaranat-adad-ashriya — tout est vert');
 process.exit(failures.length ? 1 : 0);
