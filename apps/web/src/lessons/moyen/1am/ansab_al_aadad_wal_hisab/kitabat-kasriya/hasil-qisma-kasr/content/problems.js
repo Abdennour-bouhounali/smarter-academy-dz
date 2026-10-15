@@ -88,7 +88,7 @@ export const PROBLEMS = [
   {
     id: 'masala-2',
     title: 'مسألة 2 — تحقّق من نتيجة',
-    context: 'أتعمّق — الكتاب ص 60',
+    context: 'أتعمّق',
     emoji: '🔎',
     tone: 'emerald',
     source: src('deep-2', 60, 'أتعمّق', 2),

@@ -226,6 +226,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   bakery  les pains d'un partage équitable (1AM unité 4, `fair-share`, 2026-10-15) : des baguettes posées sur la table,
   //           des parts bout à bout, des enfants (KidFigure, filles en hijab) qui attendent leur part
   bakery: { kind: 'objects', shows: 'أرغفة خبز تُقتسم بالتساوي بين أطفال' },
+  // 1AM, unité 1 (2026-10-15) :
+  //   mosaic  l'atelier de zellige : un panneau de 10 × 10 carreaux est l'unité ; bande (1/10), carreau (1/100), éclat (1/1000) ;
+  //           le bon de commande n'a que des chiffres, la main tient la virgule (decimal-comma)
+  mosaic: { kind: 'objects', shows: 'لوحة فسيفساء من مئة بلاطة تُقسَّم إلى أعمدة وبلاطات وشظايا' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

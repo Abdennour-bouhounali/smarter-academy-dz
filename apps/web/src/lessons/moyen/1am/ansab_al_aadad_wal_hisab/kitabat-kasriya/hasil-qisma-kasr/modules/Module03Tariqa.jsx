@@ -33,7 +33,7 @@ export default function Module03Tariqa() {
           content: (
             <div className="space-y-3">
               <MethodSteps method={METHOD} onAllRevealed={() => setRead(true)} />
-              {read && <KnowledgeBrick id="tariqat-adad-naqis" lead="الأطفال والأرغفة: عدد الأطفال × الحصّة = عدد الأرغفة." />}
+              {read && <KnowledgeBrick id="tariqat-adad-naqis" lead="الأطفال والكعكات: عدد الأطفال × الحصّة = عدد الكعكات." />}
               <TapQuestion
                 prompt={<MathText>{'لإكمال $5\\times\\ldots=9$ قال سامي: «أطرح 5 من 9 فأجد 4». ما رأيك؟'}</MathText>}
                 options={[M('خطأ: $5\\times 4=20$ ، العدد الناقص هو حاصل قسمة 9 على 5'), M('صحيح: $5\\times 4=9$'), M('صحيح: العدد الناقص هو $\\frac{5}{9}$')]}

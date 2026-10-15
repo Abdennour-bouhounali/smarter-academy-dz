@@ -11,14 +11,16 @@
 
 ## Périmètre courant — classes actives (1am, 2am, 3am, 4am, terminale_dz)
 
-80 leçon(s) · critiques 3 · hautes 0 · moyennes 8 · basses 0
+82 leçon(s) · critiques 4 · hautes 0 · moyennes 8 · basses 0
 
 | Leçon | Carte | Bricks | requires | Contrat | C | H | M | L |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `1am:kitabat-adad-tabii` | ✅ | 8 | 20/20 | 0 | 0 | 0 | 0 | 0 |
+| `1am:kusur-ashriya-kitaba` | ✅ | 9 | 29/29 | 0 | 0 | 0 | 0 | 0 |
 | `1am:qawaid-qabiliyat-qisma` | ✅ | 6 | 17/17 | 0 | 0 | 0 | 0 | 0 |
 | `1am:qisma-iqlidiya-baqi` | ✅ | 5 | 20/20 | 0 | 0 | 0 | 0 | 0 |
 | `1am:mana-jam-tarh` | ✅ | 5 | 24/24 | 0 | 0 | 0 | 0 | 0 |
+| `1am:hasil-qisma-kasr` | ✅ | 4 | 20/20 | 0 | 0 | 0 | 0 | 0 |
 | `1am:ikhtizal-kitaba-kasriya` | ✅ | 5 | 21/21 | 0 | 0 | 0 | 0 | 0 |
 | `2am:qisma-iqlidiya-hasr` | ✅ | 6 | 24/24 | 0 | 0 | 0 | 0 | 0 |
 | `4am:awwaliyan-fima-baynahuma` | ✅ | 10 | 10/14 | 0 | 0 | 0 | 0 | 0 |
@@ -78,22 +80,22 @@
 | `4am:inshaat-talis` | ✅ | 9 | 23/23 | 0 | 0 | 0 | 0 | 0 |
 | `4am:talis-hisab-atwal` | ✅ | 9 | 24/29 | 0 | 0 | 0 | 0 | 0 |
 | `4am:wadiya-idmajiya-talis` | ✅ | 5 | 22/22 | 0 | 0 | 0 | 0 | 0 |
-| `4am:mafhum-taalufiya` | ✅ | 13 | 26/26 | 0 | 0 | 0 | 0 | 0 |
-| `4am:tafsir-bayani-jumla` | ✅ | 10 | 24/24 | 0 | 0 | 0 | 0 | 0 |
-| `4am:tamthil-bayani-taalufi` | ✅ | 8 | 34/34 | 0 | 0 | 0 | 0 | 0 |
-| `4am:tanasub-taghayyurat` | ✅ | 11 | 28/28 | 0 | 0 | 0 | 0 | 0 |
-| `4am:tarrid-taalufi` | ✅ | 10 | 25/25 | 0 | 0 | 0 | 0 | 0 |
+| `4am:mafhum-taalufiya` | ✅ | 12 | 26/26 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tafsir-bayani-jumla` | ✅ | 9 | 25/25 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tamthil-bayani-taalufi` | ✅ | 8 | 33/33 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tanasub-taghayyurat` | ✅ | 10 | 28/28 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tarrid-taalufi` | ✅ | 10 | 25/26 | 0 | 0 | 0 | 0 | 0 |
 | `4am:wadiya-idmajiya-taalufiya` | ✅ | 7 | 27/27 | 0 | 0 | 0 | 0 | 0 |
-| `4am:mada-wasit-mutawassit` | ✅ | 11 | 26/26 | 0 | 0 | 0 | 0 | 0 |
-| `4am:majdulat-ihsaiya` | ✅ | 10 | 16/17 | 0 | 0 | 0 | 0 | 0 |
-| `4am:qiraat-wadiyat-ihsaiya` | ✅ | 12 | 18/19 | 0 | 0 | 0 | 0 | 0 |
-| `4am:takrar-mujamma` | ✅ | 11 | 26/26 | 0 | 0 | 0 | 0 | 0 |
+| `4am:mada-wasit-mutawassit` | ✅ | 11 | 27/27 | 0 | 0 | 0 | 0 | 0 |
+| `4am:majdulat-ihsaiya` | ✅ | 10 | 16/17 | 0 | 1 | 0 | 0 | 0 |
+| `4am:qiraat-wadiyat-ihsaiya` | ✅ | 12 | 17/19 | 0 | 0 | 0 | 0 | 0 |
+| `4am:takrar-mujamma` | ✅ | 10 | 23/26 | 0 | 0 | 0 | 0 | 0 |
 | `4am:wadiya-idmajiya-ihsa` | ✅ | 5 | 23/23 | 0 | 0 | 0 | 0 | 0 |
 | `4am:dala-khattiya` | ✅ | 9 | 25/25 | 0 | 0 | 0 | 0 | 0 |
 | `4am:tamthil-bayani-khatti` | ✅ | 10 | 24/24 | 0 | 0 | 0 | 0 | 0 |
-| `4am:tanasub-muamil` | ✅ | 12 | 23/23 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tanasub-muamil` | ✅ | 10 | 24/24 | 0 | 0 | 0 | 0 | 0 |
 | `4am:tarrid-khatti` | ✅ | 10 | 21/21 | 0 | 0 | 0 | 0 | 0 |
-| `4am:tatbiqat-tanasub` | ✅ | 14 | 30/30 | 0 | 0 | 0 | 0 | 0 |
+| `4am:tatbiqat-tanasub` | ✅ | 14 | 26/30 | 0 | 0 | 0 | 0 | 0 |
 | `4am:wadiya-idmajiya-khattiya` | ✅ | 5 | 23/23 | 0 | 0 | 0 | 0 | 0 |
 
 ### `4am:qawasim-adad-tabii`
@@ -129,5 +131,10 @@
   « sinus » is a target concept of this lesson but its first appearance is q.explain (module 1, étape 2) and it is never taught in a teaching position
 - **CRITICAL** `C_TARGET_DEMANDED_BEFORE_TAUGHT` — apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module07Itqan.jsx:46 · terme « tangente »  
   « tangente » is a target concept of this lesson but its first appearance is boss.explain (module 7) and it is never taught in a teaching position
+
+### `4am:majdulat-ihsaiya`
+
+- **CRITICAL** `C_TARGET_DEMANDED_BEFORE_TAUGHT` — apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/modules/Module01Majdul.jsx:154 · terme « moyenne »  
+  « moyenne » is a target concept of this lesson but its first appearance is q.prompt (module 1, étape 3); it is only taught later at apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/modules/Module01Majdul.jsx:175
 
 

@@ -593,6 +593,19 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'العدد الذي إذا ضُرب في b أعطى a موجود دائمًا (b ≠ 0) ويُكتب a/b: هو حاصل قسمة a على b ؛ وليس عددًا عشريًا دائمًا: 3 ÷ 4 = 0,75 أمّا 2 ÷ 3 فلا كتابة عشرية مضبوطة له، و 0,66 قيمة مقرّبة فقط ؛ a/b × b = a',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 1 « الأعداد الطبيعية والأعداد العشرية » (2026-10-15) — le كسر عشري, l'écriture à virgule et × ÷ 10, 100, 1000.
+  'decimal-comma': {
+    // LA VIRGULE SOUS LA MAIN : les CHIFFRES d'un bon de commande sont fixes ; la main tient la VIRGULE (sa place dans la suite
+    // de chiffres, donc le nombre de chiffres après elle). La valeur est N / 10^p : chaque cran vers la droite rend la pièce du
+    // dernier chiffre dix fois plus petite. Monde `mosaic` (atelier de zellige) : la valeur se DESSINE en blocs honnêtes — panneau
+    // (1), bande (1/10), carreau (1/100), éclat (1/1000) — et se juge contre la table du client (`match`) ou contre un
+    // كسر عشري donné (`fraction`) : 235 donne 235, 23,5, 2,35 ou 0,235 selon la virgule, et le nombre de chiffres après la
+    // virgule est le nombre de zéros du dénominateur. Monde `machine` : une machine ×10, ×100, ×1000, ÷10, ÷100, ÷1000, ×0,1 …
+    // (`shift`) ; la virgule glisse sous les chiffres, le nom de rang de chaque chiffre suit, et la virgule ne passe jamais le
+    // bout des chiffres : il faut y poser un zéro. Chaque relâchement de la virgule est un essai jugé : MANUEL (§6bis).
+    shows: 'الكسر العشري N/10^k يُكتب بالفاصلة بوضع k رقمًا بعدها ؛ عدد الأرقام بعد الفاصلة هو عدد أصفار المقام ؛ كل رقم يعدّ أجزاءً أصغر بعشر مرّات من الرقم الذي على يساره ؛ وإزاحة الفاصلة مرتبة نحو اليمين تضرب في 10 ونحو اليسار تقسم على 10 مع كتابة الأصفار عند اللزوم',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

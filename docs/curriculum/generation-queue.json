@@ -2,17 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "kusur-ashriya-kitaba",
-      "grade": "1am",
-      "unit": "adad-tabiiya-ashriya",
-      "titleAr": "الكسور العشرية والكتابة العشرية",
-      "kind": "lesson",
-      "trigger": "jidhr-tarbii",
-      "via": [
-        "1am.m1.r03"
-      ]
-    },
-    {
       "code": "muqaranat-adad-ashriya",
       "grade": "1am",
       "unit": "adad-tabiiya-ashriya",

@@ -4,7 +4,6 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { KNOWLEDGE, OPENER } from '../content/textbook';
 
 /**
  * Module 2 — معارف 1 (p. 55) « حاصل القسمة والكسر » : chaque boîte du manuel NOMME ce que l'élève vient de trouver (question → boîte →
@@ -17,6 +16,7 @@ export default function Module02Maarif() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
+  const [qz, setQz] = useState(false);
   return (
     <ContentModule
       objectives={['كيف نكتب حاصل قسمة 7 على 3؟', 'ماذا يعطي ضرب الكسر في مقامه؟', 'هل الكسر عدد عشري دائمًا؟']}
@@ -27,8 +27,8 @@ export default function Module02Maarif() {
       moduleSubtitle="a ÷ b = a/b · a/b × b = a · عشري أو لا"
       estimatedTime="10 دقائق"
       brief={{
-        tag: 'معارف — الكتاب ص 55', title: 'نسمّي ما وجدته في الأرغفة', tone: 'violet',
-        body: <p>الكتاب يكتب بالرموز ما فعلته بالأرغفة. أجب أوّلًا ثم اقرأ ما يقوله الكتاب.</p>,
+        tag: 'معارف', title: 'نسمّي ما وجدته في الكعكات', tone: 'violet',
+        body: <p>ما فعلتَه بالكعكات نكتبه الآن بالرموز. أجب أوّلًا، ثم اقرأ الخلاصة التي تحت كل سؤال.</p>,
       }}
       steps={[
         {
@@ -42,8 +42,20 @@ export default function Module02Maarif() {
                 explain={<MathText>{'$7\\div 3=\\frac{7}{3}$ : المقسوم 7 هو البسط والمقسوم عليه 3 هو المقام.'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
-              {q1 && <TextbookBox kind="definition" lines={[KNOWLEDGE.definition, KNOWLEDGE.vocabulary]} source={KNOWLEDGE.source} compact />}
-              {q1 && <TextbookBox kind="remark" lines={KNOWLEDGE.remarks} source={KNOWLEDGE.source} compact />}
+              {q1 && <TextbookBox kind="definition" compact lines={[
+                'في لوحة الكعكات: $a$ هو عدد الكعكات على الطاولة، و$b$ هو عدد الأطفال الذين يتقاسمونها بالتساوي. حصّة الواحد تُكتب $\\frac{a}{b}$، ونقول: $a\\div b=\\frac{a}{b}$.',
+                'العدد $a$ فوق الخط يسمّى البسط (ما نوزّعه: الكعكات)، والعدد $b$ تحت الخط يسمّى المقام (عدد من نوزّع عليهم: الأطفال).',
+              ]} />}
+              {q1 && (
+                <TapQuestion
+                  prompt={<MathText>{'لماذا لا نكتب $\\frac{5}{0}$، أي لماذا لا يمكن أن يكون $b=0$؟'}</MathText>}
+                  options={[M('لأنّ المقام هو عدد الأطفال، وإذا لم يكن هناك أحد فلا أحد يأخذ حصّة'), M('لأنّ 5 أصغر من 0'), M('لأنّ الناتج يكون دائمًا 5')]}
+                  correct={0} cols={1} requires={['kasr-hasil-qisma']}
+                  explain={<MathText>{'الكسر $\\frac{5}{0}$ يعني عددًا إذا ضُرب في 0 أعطى 5، لكن الضرب في 0 يعطي 0 دائمًا. فلا توجد قسمة على 0، والمقام يختلف عن الصفر.'}</MathText>}
+                  onAnswered={() => setQz(true)}
+                />
+              )}
+              {qz && <TextbookBox kind="remark" compact lines={['المقام $b$ لا يساوي الصفر أبدًا: لا نوزّع كعكات على 0 أطفال.', 'الكسر ليس عددًا عشريًا دائمًا.']} />}
             </div>
           ),
         },
@@ -55,12 +67,12 @@ export default function Module02Maarif() {
                 prompt={<MathText>{'$\\frac{7}{3}\\times 3=\\ldots$'}</MathText>}
                 options={[M('7'), M('3'), M('$\\frac{7}{9}$')]}
                 correct={0} cols={3} requires={['kasr-hasil-qisma']}
-                explain={<MathText>{'ثلاث حصص من $\\frac{7}{3}$ رغيف تملأ 7 أرغفة: $\\frac{7}{3}\\times 3=7$.'}</MathText>}
+                explain={<MathText>{'ثلاث حصص من $\\frac{7}{3}$ كعكة تملأ 7 كعكات: $\\frac{7}{3}\\times 3=7$.'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
-              {q2 && <KnowledgeBrick id="natija-darb" lead="في الأرغفة: حصص الأطفال معًا تملأ الأرغفة بالضبط." />}
-              {q2 && <TextbookBox kind="property" text={KNOWLEDGE.result} source={KNOWLEDGE.source} compact />}
-              {q2 && <TextbookBox kind="example" text={KNOWLEDGE.example1} source={KNOWLEDGE.source} compact />}
+              {q2 && <KnowledgeBrick id="natija-darb" lead="في الكعكات: حصص الأطفال معًا تملأ الكعكات بالضبط." />}
+              {q2 && <TextbookBox kind="property" compact text={'الكسر $\\frac{a}{b}$ هو العدد الذي إذا ضربناه في $b$ حصلنا على $a$: $\\frac{a}{b}\\times b=a$.'} />}
+              {q2 && <TextbookBox kind="example" compact text={'إذا نال كل واحد من 3 أطفال $\\frac{7}{3}$ كعكة فالجميع يأخذ $\\frac{7}{3}\\times 3=7$ كعكات: هي كل ما كان على الطاولة.'} />}
             </div>
           ),
         },
@@ -75,9 +87,8 @@ export default function Module02Maarif() {
                 explain={<MathText>{'$3\\times 2{,}33=6{,}99$ وليس 7: $2{,}33$ قيمة مقرّبة فقط.'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
-              {q3 && <KnowledgeBrick id="ashri-ghayr-ashri" lead="في الأرغفة: 0,66 ثم 0,666 ثم … ولا تنتهي الأرغفة." />}
-              {q3 && <TextbookBox kind="example" text={KNOWLEDGE.example2} source={KNOWLEDGE.source} compact />}
-              {q3 && <TextbookBox kind="remark" title="من تاريخ الكسور" text={OPENER.text} source={OPENER.source} compact />}
+              {q3 && <KnowledgeBrick id="ashri-ghayr-ashri" lead="في الكعكات: 0,66 ثم 0,666 ثم … ولا تنتهي الكعكات." />}
+              {q3 && <TextbookBox kind="example" compact text={'$\\frac{7}{3}$ ليس عددًا عشريًا لأنّ القسمة العشرية لـ 7 على 3 لا تنتهي. $2{,}33$ قيمة مقرّبة فقط، أمّا القيمة المضبوطة فهي الكسر $\\frac{7}{3}$.'} />}
             </div>
           ),
         },

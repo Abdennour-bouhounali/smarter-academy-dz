@@ -8,8 +8,8 @@ question. Contract: `docs/architecture/MANIPULATION_CONTRACT.md` §8quater; phil
 
 ## Status
 
-71 manipulation types are registered (`manipulationRegistry.js`). **Adopted: 12** — `rank-exchange` (prototype), batch 1 (2026-10-15, registry
-order, the six divisibility labs) and the **1AM–2AM lesson labs** (2026-10-15, the five types the generated lessons mount: `story-bars`, `division-jumps`, `digit-cards`, `egg-trays`, `fraction-knife` — done out of registry order, with the lesson retrofit). Everything else (64 types, from `divisor-explorer`'s successors: `pgcd-differences`, `euclidean-algorithm`,
+73 manipulation types are registered (`manipulationRegistry.js`). **Adopted: 14** — `rank-exchange` (prototype), batch 1 (2026-10-15, registry
+order, the six divisibility labs) and the **1AM–2AM lesson labs** (2026-10-15, the five types the generated lessons mount: `story-bars`, `division-jumps`, `digit-cards`, `egg-trays`, `fraction-knife` — done out of registry order, with the lesson retrofit), then `fair-share` and — born WITH its coach (2026-10-15, no retrofit) — `decimal-comma`. Everything else (59 types, from `divisor-explorer`'s successors: `pgcd-differences`, `euclidean-algorithm`,
 `coprime-explorer`, `fraction-reduction`, `square-root-side` …) is pending (the 1AM–2AM lessons mount no other type). Tests: `logic/divisibilityCoach.test.js` (every coach FOLLOWED to
 the lab's goal, at every level), `divisibility/divisibilityCoach.render.test.jsx`, `primitives/labCoach.test.js` (`view`), e2e `lab-coach.mjs`
 (`QA_ONLY=divisibility`, `QA_LAB=<type>/<level>`, `QA_MOBILE=1`).
@@ -28,7 +28,8 @@ the lab's goal, at every level), `divisibility/divisibilityCoach.render.test.jsx
 | `digit-cards` | qawaid-qabiliyat-qisma (module 1) | grid + cards | colouring · nextColouring · cell · reveal · card · lamp · submit · task · swap | 1280 ✓ (first step) | `cell` points at the whole table, never a cell; the « لا يوجد » button is never pointed at (it would reveal the impossible target) |
 | `egg-trays` | qisma-iqlidiya-hasr (module 1) | carton (مبتدئ) + tray (متقدم) | frame · handle · next · claim · exact | 1280 ✓ (first step) | `claim` targets the friend's card, not an answer button; the first bubble sits over the « إطارك على المسطرة » card (kept) |
 | `fraction-knife` | ikhtizal-kitaba-kasriya (module 1) | tray + paper | knife · claim · claim-knife · judge · next · cursor · plant · start | 1280 ✓ (first step) | `judge` points at the claim card, never at true/false; the bubble covers the right of the tray (kept) |
-| `fair-share` | hasil-qisma-kasr (module 1) | canteen + family | handle · again · rulers · next | 1280 ✓ | `rulers` points at the whole group of rulers, never at the cut ruler or a share; the cut ruler stays locked until two decimal trials |
+| `fair-share` | hasil-qisma-kasr (module 1) | canteen + family | pieces · again · split · next (redesigned 2026-10-15) | 1280 ✓ | `rulers` points at the whole group of rulers, never at the cut ruler or a share; the cut ruler stays locked until two decimal trials |
+| `decimal-comma` | kusur-ashriya-kitaba (modules 1 and 4) | mosaic (مبتدئ + متقدم) + machine | grab · move · zero · next (born with the lab, 2026-10-15) | 1280 ✓ (grab, zero) | `grab`/`move` point at the comma handle, never at a gap; `zero` appears only AFTER a refused release (`nodigit`) and points at the « + 0 » of the side the student pushed against, never at the answer position; the bubble covers the digit tiles under the handle (kept) |
 
 **Improved after looking.** (1) At phone height the target and bubble were below the screen → `placeBubble({ view })` edge mode (see §8quater);
 (2) edge mode pinned a bubble for labs entirely off-screen (several labs per page) → only labs intersecting the visible band pin; (3) the edge bubble

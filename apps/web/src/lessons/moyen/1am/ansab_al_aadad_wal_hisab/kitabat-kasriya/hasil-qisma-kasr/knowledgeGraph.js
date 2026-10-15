@@ -4,7 +4,7 @@
  *
  * (Ordre de lecture LTR ; sous RTL le couloir `start` est à DROITE.)
  *
- *                  [الأرغفة والأطفال]                              مفهوم
+ *                  [الكعكات والأطفال]                              مفهوم
  *        نكتب ┌──────────┴──────────┐ نشاط 1
  *   [الكسر حاصل قسمة] (M1)        [خمسة أرغفة لستة]
  *      خطأ شائع │
@@ -27,8 +27,8 @@ export const KNOWLEDGE_GRAPH = {
   nodes: [
     {
       id: 'hasil', kind: 'concept', lane: 'center', requires: 'kasr-hasil-qisma',
-      title: 'أرغفة لأطفال', subtitle: 'حصّة لكل واحد',
-      context: { text: ACTIVITY.text, note: 'وزّعنا الأرغفة بالتساوي على الأطفال.' },
+      title: 'كعكات لأطفال', subtitle: 'حصّة لكل واحد',
+      context: { text: ACTIVITY.text, note: 'وزّعنا الكعكات بالتساوي على الأطفال.' },
       reveals: ['raghif', 'kasr'],
     },
     {

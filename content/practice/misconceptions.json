@@ -3018,5 +3018,120 @@
       "1am_hasil-qisma-kasr_P1",
       "1am_hasil-qisma-kasr_P2"
     ]
+  },
+  "MISC-KUSUR-ADD-ZERO": {
+    "label": "الضرب في 10 يعني إضافة صفر في آخر الكتابة العشرية (3,5 × 10 = 3,50)",
+    "explanation": "إضافة صفر في آخر الجزء العشري لا تغيّر قيمة العدد: $3{,}50 = 3{,}5$. أمّا الضرب في 10 فيجعل كل رقم يرتفع مرتبة، أي ينقل الفاصلة مرتبة نحو اليمين: $3{,}5 \\times 10 = 35$.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P4"
+    ]
+  },
+  "MISC-KUSUR-COMMA-LEFT": {
+    "label": "نقل الفاصلة نحو اليسار عند الضرب في 10 أو 100 أو 1000 (أو عند البحث عن عامل ضرب)",
+    "explanation": "الضرب في 10 أو 100 أو 1000 يكبّر العدد فتنتقل الفاصلة نحو اليمين: $3{,}5 \\times 100 = 350$ وليس $0{,}035$. ونقلها نحو اليسار هو القسمة.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P4"
+    ]
+  },
+  "MISC-KUSUR-COMMA-RIGHT": {
+    "label": "نقل الفاصلة نحو اليمين عند القسمة على 10 أو 100 أو 1000",
+    "explanation": "القسمة على 10 أو 100 أو 1000 تصغّر العدد فتنتقل الفاصلة نحو اليسار: $3{,}5 \\div 100 = 0{,}035$ وليس $350$.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P4"
+    ]
+  },
+  "MISC-KUSUR-MULT-SHRINKS": {
+    "label": "الاعتقاد أنّ الضرب في 0,1 أو 0,01 أو 0,001 يكبّر العدد",
+    "explanation": "الضرب في $0{,}1$ هو أخذ عُشر العدد: $27{,}5 \\times 0{,}1 = 2{,}75$ ، وهو أصغر من $27{,}5$. وكذلك الضرب في $0{,}01$ يصغّره بمرتبتين.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P4"
+    ]
+  },
+  "MISC-KUSUR-DIV-SMALL": {
+    "label": "الاعتقاد أنّ القسمة على 0,1 أو 0,01 أو 0,001 تصغّر العدد",
+    "explanation": "القسمة على $0{,}1$ هي السؤال: كم عُشرًا في هذا العدد؟ إنّها تكبّره: $12 \\div 0{,}01 = 1200$ لأنّ في 12 وحدة مائة وعشرين عُشرًا، أي 1200 جزء من مائة.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P4"
+    ]
+  },
+  "MISC-KUSUR-DEN-DIGITS": {
+    "label": "مقام الكسر العشري لا يطابق عدد الأرقام بعد الفاصلة (35,2 = 352/1000)",
+    "explanation": "عدد أصفار المقام يساوي عدد الأرقام بعد الفاصلة: $35{,}2 = \\dfrac{352}{10}$ (رقم واحد، صفر واحد)، أمّا $\\dfrac{352}{1000} = 0{,}352$.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P2",
+      "1am_kusur-ashriya-kitaba_P4"
+    ]
+  },
+  "MISC-KUSUR-ZERO-PLACE": {
+    "label": "إهمال الصفر الذي يحفظ مرتبة فارغة (0,05 = 5/10، 13,009 = 13,9)",
+    "explanation": "الصفر بين الفاصلة وأول رقم يحفظ مرتبة الأعشار الفارغة: $0{,}05 = \\dfrac{5}{100}$ وليس $\\dfrac{5}{10}$ ، و $13 + \\dfrac{9}{1000} = 13{,}009$ وليس $13{,}9$.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P2",
+      "1am_kusur-ashriya-kitaba_P3"
+    ]
+  },
+  "MISC-KUSUR-NUM-DEN-SWAP": {
+    "label": "قلب البسط والمقام عند كتابة كسر عشري (0,7 = 10/7)",
+    "explanation": "في الكسر العشري المقام هو قوة للعشرة والبسط هو الأرقام بلا فاصلة: $0{,}7 = \\dfrac{7}{10}$. أمّا $\\dfrac{10}{7}$ فأكبر من 1.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P2"
+    ]
+  },
+  "MISC-KUSUR-SPLIT-DIGITS": {
+    "label": "كتابة الجزء العشري كله بسطًا لكسر مقامه 10 (2,35 = 2 + 35/10)",
+    "explanation": "الأرقام بعد الفاصلة لا تُقرأ على الأعشار كلّها: $2{,}35 = 2 + \\dfrac{3}{10} + \\dfrac{5}{100} = 2 + \\dfrac{35}{100}$ ، بينما $2 + \\dfrac{35}{10} = 5{,}5$.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P3"
+    ]
+  },
+  "MISC-KUSUR-ORDER-TERMS": {
+    "label": "قراءة حدود المجموع بالترتيب المكتوب دون النظر إلى مراتبها",
+    "explanation": "قيمة الرقم تحدّدها مرتبته لا موضع حدّه في المجموع: $4 + 7 \\times 100 + 2 \\times 1000 + \\dfrac{3}{10} = 2704{,}3$ وليس $4{,}723$.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P3"
+    ]
+  },
+  "MISC-KUSUR-TRAILING-ZERO": {
+    "label": "اعتبار 2,50 مختلفًا عن 2,5",
+    "explanation": "الصفر الواقع في آخر الجزء العشري لا يغيّر قيمة العدد: $2{,}50 = \\dfrac{250}{100} = \\dfrac{25}{10} = 2{,}5$.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P2"
+    ]
+  },
+  "MISC-KUSUR-TENTHS-COUNT": {
+    "label": "أخذ رقم الأعشار على أنه عدد الأعشار (عدد الأعشار في 217,48 هو 4)",
+    "explanation": "عدد الأعشار في $217{,}48$ يشمل ما في الأجزاء الصحيحة: كل وحدة فيها 10 أعشار، فنجد $2174$ عشرًا، أمّا 4 فهو رقم مرتبة الأعشار فقط.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P3"
+    ]
+  },
+  "MISC-KUSUR-EQUAL-ADD": {
+    "label": "إضافة العدد نفسه إلى البسط والمقام للحصول على كتابة مساوية",
+    "explanation": "نحصل على كتابة مساوية بالضرب (أو القسمة) في العدد نفسه لا بالإضافة: $\\dfrac{3}{10} = \\dfrac{30}{100}$ ، أمّا $\\dfrac{3+90}{10+90} = \\dfrac{93}{100}$ فتخالفه.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P1"
+    ]
+  },
+  "MISC-KUSUR-SUM-NUM": {
+    "label": "جمع الأعداد دون مراعاة قيمة كل وحدة (جمع البسطين عند اختلاف المقامين، أو جمع عدد الأعمدة وعدد البلاطات)",
+    "explanation": "العمود عشر بلاطات، فنحوّل إلى الوحدة الصغرى قبل الجمع: $\\dfrac{3}{10} + \\dfrac{5}{100} = \\dfrac{30}{100} + \\dfrac{5}{100} = \\dfrac{35}{100}$ وليس $\\dfrac{8}{100}$.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P1",
+      "1am_kusur-ashriya-kitaba_P3"
+    ]
+  },
+  "MISC-KUSUR-RANK-NAMES": {
+    "label": "الخلط بين رقم الأعشار ورقم الأجزاء من مائة أو من ألف",
+    "explanation": "بعد الفاصلة: الرقم الأول للأعشار والثاني للأجزاء من مائة والثالث للأجزاء من ألف: في $43{,}948$ رقم الأجزاء من مائة هو 4 وليس 9.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P3"
+    ]
+  },
+  "MISC-KUSUR-DIFF-DEN": {
+    "label": "اعتبار كسرين عشريين مختلفي المقام مختلفين في القيمة ($\\dfrac{3}{10} \\neq \\dfrac{30}{100}$)",
+    "explanation": "قد يمثّل كسران مقاماهما مختلفان القيمة نفسها: $\\dfrac{3}{10} = \\dfrac{30}{100}$ لأنّ كل عُشر يساوي عشرة أجزاء من مائة، وكذلك $1 = \\dfrac{10}{10} = \\dfrac{100}{100}$.",
+    "relatedLearningPoints": [
+      "1am_kusur-ashriya-kitaba_P1"
+    ]
   }
 }

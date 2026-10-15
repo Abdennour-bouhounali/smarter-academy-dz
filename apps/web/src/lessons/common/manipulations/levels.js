@@ -666,6 +666,18 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { scene: 'canteen', orders: [[3, 4], [2, 3]] }, ...P },
     advanced: { numbers: { scene: 'family', orders: [[5, 6], [7, 3]] }, ...T('act-1') },
   },
+  // ── 1AM, unité 1 — le كسر عشري et l'écriture à virgule (2026-10-15) ──
+  // LA VIRGULE SOUS LA MAIN (decimal-comma) : les chiffres du bon de commande sont fixes, la main tient la virgule.
+  // مبتدئ : l'atelier de zellige (plateforme, thème mosaic) — la table du client montre 2 panneaux, 3 bandes et 5 carreaux :
+  // les chiffres 2 3 5 sans virgule ne disent pas « 2,35 » (235 panneaux, 23,5, 2,35, 0,235) ; puis 0,37 et 0,05 (le zéro
+  // garde la place des dixièmes vides) ; متقدم : le bon est un كسر عشري donné (3125/1000 puis 605/100 — le nombre de chiffres
+  // après la virgule est le nombre de zéros du dénominateur), puis le zéro inutile de 2,50 = 2,5. Le monde `machine`
+  // (×10, ×100, ×1000, ÷10 … — `shift`) se pose dans le module de la طريقة avec ses propres `world` et `tasks` : voir le brief
+  // docs/sources/1am/unit1/brief-authors.md.
+  'decimal-comma': {
+    beginner: { numbers: { world: 'mosaic', tasks: [{ kind: 'match', digits: '235', target: '2,35' }, { kind: 'match', digits: '37', target: '0,37' }, { kind: 'match', digits: '05', target: '0,05' }] }, ...P },
+    advanced: { numbers: { world: 'mosaic', tasks: [{ kind: 'fraction', digits: '3125', target: '3125/1000' }, { kind: 'fraction', digits: '605', target: '605/100' }, { kind: 'match', digits: '250', target: '2,5' }] }, ...T('act-3') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

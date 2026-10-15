@@ -170,7 +170,9 @@ describe('leçons — existantes et prévues', () => {
     for (const k of LINKS) {
       const a = homeLessonOf(k.from);
       const b = homeLessonOf(k.to);
-      if (a.status !== 'available' || b.status !== 'available') continue;
+      // 1AM–3AM sont générées le long de la file (les « renvois en avant » sont listés, ex. hasil-qisma-kasr → kusur-ashriya-kitaba) :
+      // la règle ne vaut que pour les leçons 4AM, écrites d'un bloc dans l'ordre du manuel.
+      if (a.grade !== '4am' || b.grade !== '4am' || a.status !== 'available' || b.status !== 'available') continue;
       expect(pos.get(a.code), `${k.from} (${a.code}) → ${k.to} (${b.code})`).toBeLessThanOrEqual(pos.get(b.code));
     }
   });

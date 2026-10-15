@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **81** leçons publiées · **189** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **82** leçons publiées · **188** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -778,7 +778,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 |---|---|---|---|
 | `1am.m1.r01` | جمع، طرح وضرب أعداد طبيعية في وضعيات معطاة. | `mana-jam-tarh` | — |
 | `1am.m1.r02` | استعمال الكتابة العشرية والكتابة الكسرية والانتقال بينهما. | `kitabat-adad-tabii` | — |
-| `1am.m1.r03` | ضرب وقسمة عدد عشري في/على 10، 100، 1000 أو في/على 0,1، 0,01، 0,001. | `kusur-ashriya-kitaba` _(prévue)_ | `1am.m1.r02` |
+| `1am.m1.r03` | ضرب وقسمة عدد عشري في/على 10، 100، 1000 أو في/على 0,1، 0,01، 0,001. | `kusur-ashriya-kitaba` | `1am.m1.r02` |
 | `1am.m1.r04` | ترتيب أعداد عشرية. | `muqaranat-adad-ashriya` _(prévue)_ | `1am.m1.r02` |
 | `1am.m1.r05` | جمع، طرح وضرب أعداد عشرية في وضعية معيّنة. | `mana-jam-tarh` | `1am.m1.r01`، `1am.m1.r03` |
 | `1am.m1.r06` | تحديد رتبة مقدار لنتيجة حساب على الأعداد العشرية. | `rutbat-miqdar-jam` _(prévue)_ | `1am.m1.r05` |
@@ -830,7 +830,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 |---|---|---|---|
 | `1am.m5.r01` | التعرّف في حالات بسيطة على الكتابات الكسرية لعدد. | `hasil-qisma-kasr` | `1am.m1.r02` |
 | `1am.m5.r02` | اختزال كتابة كسرية (كسر). | `ikhtizal-kitaba-kasriya` | `1am.m5.r01`، `1am.m3.r02` |
-| `1am.m5.r03` | جمع وطرح وضرب كسور عشرية. | `kusur-ashriya-kitaba` _(prévue)_ | `1am.m5.r01`، `1am.m1.r05` |
+| `1am.m5.r03` | جمع وطرح وضرب كسور عشرية. | `kusur-ashriya-kitaba` | `1am.m5.r01`، `1am.m1.r05` |
 | `1am.m5.r04` | قراءة فاصلة نقطة (أو إعطاء حصر لها) أو تعيين نقطة ذات فاصلة معلومة على نصف مستقيم مدرّج. | `adad-ashri-mustaqim-mudarraj` _(prévue)_ | `1am.m1.r04` |
 | `1am.m5.r05` | إدراج الأعداد السالبة في وضعيات متنوّعة. | `adad-nisbiya-siyaqat` _(prévue)_ | — |
 | `1am.m5.r06` | توظيف الأعداد النسبية في: تدريج مستقيم؛ قراءة فاصلة نقطة معلومة أو تعيين نقطة ذات فاصلة معلومة على مستقيم مدرّج. | `talim-mustaqim-mudarraj` _(prévue)_ | `1am.m5.r04`، `1am.m5.r05` |
@@ -838,7 +838,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `1am.m5.r08` | تطبيق قاعدة حرفية في وضعية بسيطة. | `tatbiq-qaida-harfiya` _(prévue)_ | `1am.m2.r08` |
 | `1am.m5.r09` | إنتاج عبارة حرفية بسيطة. | `intaj-ibara-harfiya` _(prévue)_ | `1am.m5.r08` |
 | `1am.m5.r10` | إتمام مساواة من الشكل: a + … = b ؛ a - … = b ؛ a × … = b حيث a و b عددان مفروضان. | `bahth-adad-naqisa` _(prévue)_ | `1am.m1.r05` |
-| `1am.m5.x1` | الانتقال من الكتابة العشرية لعدد عشري إلى كتابة كسرية له. _(منهاج 2016)_ | `kusur-ashriya-kitaba` _(prévue)_ | `1am.m5.r01` |
+| `1am.m5.x1` | الانتقال من الكتابة العشرية لعدد عشري إلى كتابة كسرية له. _(منهاج 2016)_ | `kusur-ashriya-kitaba` | `1am.m5.r01` |
 
 #### المقطع 6 — التناسبية وتنظيم معطيات (`1am.m6`, 3 أسابيع)
 
@@ -1149,7 +1149,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | # | leçon | statut | items |
 |---:|---|---|---|
 | 1 | `kitabat-adad-tabii` — كتابة الأعداد الطبيعية ودلالة الأرقام | publiée | `1am.m1.r02` |
-| 2 | `kusur-ashriya-kitaba` — الكسور العشرية والكتابة العشرية | prévue | `1am.m1.r02` `1am.m5.x1` `1am.m1.r03` `1am.m5.r03` |
+| 2 | `kusur-ashriya-kitaba` — الكسور العشرية والكتابة العشرية | publiée | `1am.m1.r02` `1am.m5.x1` `1am.m1.r03` `1am.m5.r03` |
 | 3 | `adad-ashri-mustaqim-mudarraj` — الأعداد العشرية ونصف المستقيم المدرّج | prévue | `1am.m5.r04` |
 | 4 | `muqaranat-adad-ashriya` — مقارنة الأعداد العشرية وترتيبها | prévue | `1am.m1.r04` |
 | 5 | `hasr-qiyam-muqarraba` — حصر عدد عشري وقيمه المقرّبة | prévue | `1am.m3.r05` `1am.m3.r04` |

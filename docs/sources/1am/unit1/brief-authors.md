@@ -254,3 +254,226 @@ Exactly the unit-2 bank brief (`docs/sources/1am/unit2/brief-authors.md` « Bank
   `placeValue.js` (two independent implementations cross-check each other); it also asserts its speller on the extraction's `words`
   answers (`docs/sources/1am/unit1/extraction.json`).
 - Gates you run: `node scripts/validate-exercises.mjs --strict`, `node scripts/check-textbook-coverage.mjs`, `npm run test:scripts`.
+
+---
+
+# Lesson 2 — `kusur-ashriya-kitaba` « الكسور العشرية والكتابة العشرية » (cycle moyen rollout, batch 4, 2026-10-15)
+
+Same organisation as above and as `docs/sources/1am/unit2/brief-authors.md` (file ownership tables apply with the names below). The lead writes
+the lesson (`apps/web/src/lessons/moyen/1am/ansab_al_aadad_wal_hisab/adad-tabiiya-ashriya/kusur-ashriya-kitaba/`) and the extraction
+(destinations updated in `build-extraction.py`: act-2, act-3, ex-4…ex-14, ex-26…ex-28 are APPLICATIONS in module 5; know-2/3/4b module 2;
+method-1 + now-12 module 3; method-2 + now-14 module 4; `deep-3` ③④ stay with `muqaranat-adad-ashriya`).
+
+| Author | Owns | Never touches |
+|---|---|---|
+| **Lab** | `packages/core/arithmetic/decimals.js` (+ `.test.js`), `manipulations/operations/DecimalComma.jsx`, `manipulations/logic/decimalComma.js` (+ `.test.js`), `manipulations/operations/decimalComma.render.test.jsx`, new drawing primitives it needs under `manipulations/primitives/` (e.g. `MosaicFigure.jsx`), the `decimal-comma` entry of `manipulations/manipulationRegistry.js`, the `decimalComma` namespace of `i18n/locales/ar/lesson.manipulation.json`, `primitives/labCoach*` wiring ONLY for its own lab, its section in `MANIPULATION_CONTRACT.md` (`## 2tervicies`, after `2duovicies`) and its row in `MANIPULATION_DNA.md` §15 | the lesson folder, `content/practice/**`, the extraction |
+| **Bank** | `content/practice/1am/kusur-ashriya-kitaba/**`, the lesson's entries in `content/practice/{active,exam-style,policy,misconceptions}.json`, `scripts/practice-oracle/kusur-ashriya-kitaba.mjs` and its import in `scripts/practice-answer-oracle.test.mjs` | the lesson folder, the lab, the extraction |
+
+Already done by the lead (do not redo): the type `'decimal-comma'` is declared in `packages/core/curriculum/manipulationTypes.js`; the drawn
+world `mosaic` is in `VISUAL_THEMES` (`packages/core/curriculum/manipulationLevels.js`); the two level presets are written in
+`manipulations/levels.js` (**their `numbers` are the props contract below — read them first**). Until the lab author adds the registry entry,
+`manipulationRegistry.test.js` and `levels.test.js` are red on `decimal-comma` (expected). The lesson pages mount while the lesson is still
+`coming_soon`: `http://localhost:5174/courses/moyen/1am/ansab_al_aadad_wal_hisab/kusur-ashriya-kitaba/nashat` (module 1 = the lab, both levels)
+and `…/tariqa-ashara` (module 4 = the lab's `machine` world) — the lead writes those pages in the first minutes; until they load use vitest
+render tests. Do NOT start another Vite, never touch 5173. Do NOT run `npm run build`. Screens are TABLET and LAPTOP only (768×1024,
+1024×768, 1280×800, 1366×768, 1920×1080); phones are not supported (owner, 2026-10-15).
+
+## The lesson in one paragraph
+
+Programme items `1am.m1.r02` (decimal/fractional writings and the passage between them), `1am.m5.x1`, `1am.m1.r03` (× ÷ 10, 100, 1000 or
+0,1, 0,01, 0,001), `1am.m5.r03` (adding decimal fractions). The boundary with `kitabat-adad-tabii` (naturals, ranks, رقم ≠ عدد) is in the
+header of `build-extraction.py`. The idea the student must DISCOVER: **a decimal fraction is a count of equal tiny pieces of the unit (tenths,
+hundredths, thousandths); the comma is where the written number changes the size of the piece — every step to the right makes the piece ten
+times smaller — so the SAME digits mean different amounts (235, 23,5, 2,35, 0,235), the digits after the comma are as many as the zeros of the
+denominator (2,35 = 235/100), a zero keeps an empty place (0,05 ≠ 0,5), a zero at the very end changes nothing (2,50 = 2,5), and ×10, ×100,
+×1000 / ÷10, ÷100, ÷1000 only slide the comma (zeros fill the places that appear).**
+
+Final الكفاءات (`1am_kusur-ashriya-kitaba_P<n>`, order of the drafts kept — changes and reasons are in the progress log):
+
+1. **P1** التعرّف على الكسر العشري والتعبير عن جزء من الوحدة، أو عن كمية أكبر منها، بالأجزاء من عشرة، من مائة، من ألف، وكتابته بكتابات متساوية مثل $\frac{3}{10}=\frac{30}{100}$
+2. **P2** الانتقال من الكتابة العشرية لعدد عشري إلى كتابته على شكل كسر عشري، والعكس، مثل $31{,}25=\frac{3125}{100}$ (عدد الأرقام بعد الفاصلة هو عدد أصفار المقام)، وحذف الأصفار غير الضرورية
+3. **P3** كتابة عدد عشري على شكل مجموع عدد طبيعي وكسور عشرية (مفكوكه النموذجي) مثل $2{,}35=2+\frac{3}{10}+\frac{5}{100}$ ، وإعطاء الكتابة العشرية لمجموع كهذا ولو كانت حدوده غير مرتّبة، وتعيين عدد الأعشار أو الأجزاء من مائة في عدد عشري
+4. **P4** ضرب عدد عشري في 10 أو 100 أو 1000 (أو في 0,1 أو 0,01 أو 0,001) أو قسمته عليها بإزاحة الفاصلة، مع كتابة الأصفار عند اللزوم
+
+`pointPrerequisites` (along net links only): P2 ← `1am_hasil-qisma-kasr_P1`, P1; P3 ← `1am_hasil-qisma-kasr_P1`, `1am_mana-jam-tarh_P1`, P2;
+P4 ← `1am_kitabat-adad-tabii_P2`, P2. The lesson stands on `kitabat-adad-tabii` (ranks, ten for one) and recalls it — it does not rebuild it.
+
+Lesson plan (lead, ≈ 85 min): 0 أستعدّ · 1 نشاط « ورشة الزليج » (the lab, both levels) · 2 معارف · 3 طريقة « من الكتابة العشرية إلى الكسر العشري
+وبالعكس » · 4 طريقة « الضرب في 10 و100 و1000 والقسمة عليها » (the lab's `machine` world) · 5 أتمرّن · 6–8 three مسائل · 9 إختبار أولي.
+
+## Lab author — `decimal-comma`
+
+Read first exactly what the unit-1 brief above lists for its lab author (MANIPULATION_DNA all — §12, §16 and **§17 incl. §17.7, §17.9, §17.11
+(LabCoach) are binding**; MANIPULATION_CONTRACT §1, §2, §2bis, §4.2, §6bis, §6ter, §7, §7bis-levels, §7ter, §7quater, §8, §8bis, §8ter (the kit),
+**§8quater (LabCoach — mandatory)**, §9, and the sections of the newest labs `2novodecies` `rank-exchange`, `2vicies` `fraction-knife`,
+`2duovicies` `fair-share` (incl. « جرّب أعدادك أنت — always open »)), plus the newest labs as code idioms: `operations/RankExchange.jsx`
+(columns, ranks, tie/open gestures, `coachOf`), `operations/FairShare.jsx` + `primitives/CakeFigure.jsx` (kit composition, the always-open free
+card, `KidFigure` scene), `operations/FractionKnife.jsx`. Memory rules from the owner: independence from the book (the lab's words are the
+platform's own), girls ALWAYS in hijab (`KidFigure`), tablet/laptop only, the always-open own-numbers panel, say each thing ONCE. Arithmetic:
+exact integers only, in `packages/core/arithmetic/decimals.js` (yours, imported BY PATH, never the core barrel) — a value is `{ n, k }` =
+`n / 10^k` with `Number.isSafeInteger(n)`; write what you need (parse `'2,35'` / `'2.35'` / `'3125/1000'`, exact compare, write with the
+decimal COMMA, `fractionOf`, decomposition by rank, shift by a power of ten, Arabic reading « ثلاثة أعشار وخمسة أجزاء من مائة ») and TEST it.
+
+**Why this is not another lab (DNA §12).** `rank-exchange` (same unit): the hand moves QUANTITIES between ranks (ties ten into one, opens one into
+ten); the written digits are an OUTPUT. `fraction-knife`: the hand holds d, the number of equal pieces, of ONE whole and a fixed share.
+`fair-share`: the hand cuts and picks a share. `digit-cards`: the digit is the object, carried into slots. Here the DIGITS are FIXED on a printed
+slip and **the hand holds the COMMA** — its place in the string of digits, i.e. the number of digits after it. The value is `N / 10^p`; the
+quantity is an OUTPUT drawn in honest blocks (mosaic) or read on rank names (machine). What resists: the comma never leaves the string of digits;
+in `machine`, the comma cannot pass the end of the digits — a zero must be added there first (« لا رقم هنا »).
+
+**Props contract (fixed — the lesson is written against it; `levels.js` already holds the two presets):**
+
+```jsx
+<Manipulation type="decimal-comma"
+  world="mosaic" | "machine"
+  tasks={[ …task objects… ]}          // the sequence of tasks of the level (preset) — the lesson may pass its own for `machine`
+  level, levels, title, lead          // as every type (levels={false} for a standalone use)
+  onTrial={(e) => …}                  // EVERY judged release of the comma / every judged zero
+  onFinished={({ tasks }) => …}       // all tasks of the sequence done
+/>
+```
+
+Task objects (digits are a STRING of 1–6 Latin digits, may contain 0; the decimal mark of every string below is a comma or a slash):
+
+| kind | fields | the student's job | judged by |
+|---|---|---|---|
+| `match` | `digits: '235'`, `target: '2,35'` | the client's TABLE shows the target amount as blocks; the slip prints `digits` with the comma at the far right; slide the comma until the workshop's tray (blocks drawn from the slip) matches the table | exact value `N/10^p` equals the target |
+| `fraction` | `digits: '3125'`, `target: '3125/1000'` | NO table: the order is the fraction (shown as a fraction); slide the comma until the slip's amount equals it; the slip's live readout shows its own fraction `N/10^p` | exact value equals the target |
+| `shift` | `start: '143,75'`, `op: '×1000'` | `machine` world: an input slip (start, comma fixed) goes through a machine whose operator is one of ×10 ×100 ×1000 ÷10 ÷100 ÷1000 ×0,1 ×0,01 ×0,001; the OUTPUT slip starts with the same digits and the same comma; slide the comma (and add zeros where the digits run out) until the output equals the machine's result | exact value of the output = start × 10^e |
+
+`levels.js` presets (mosaic): مبتدئ `[match 235→2,35, match 37→0,37, match 05→0,05]` (platform context: the zellige workshop; 2 panels + 3 strips
++ 5 tiles on the client's table; the same digits make 235 panels, 23,5, 2,35 or 0,235 — the student SEES why the comma matters; the second
+and third tasks teach the zero that keeps an empty tenths place); متقدم `[fraction 3125/1000, fraction 605/100, match 250→2,5]` (the digit count after
+the comma equals the zeros of the denominator; the last task: 2,50 and 2,5 fill the table the same — a zero at the very end changes nothing).
+The `machine` tasks are passed by the module (module 4): مبتدئ `[shift 3,5 ×10, shift 3,5 ×100, shift 3,5 ÷10, shift 3,5 ÷100]`; متقدم
+`[shift 143,75 ×1000, shift 43,7 ÷1000, shift 27,5 ×0,1, shift 0,6 ×0,01]`. Support any task object of these three kinds with any digits (the
+module may pass others), and tolerate `tasks` of a single object.
+
+**The slip (both worlds).** A row of big digit tiles in an LTR island (`dir="ltr"`, bidi isolates, Latin digits). Between/around the tiles the
+gaps (`len + 1` positions). The comma is a BIG round handle (≥ 44 px, lifts under the finger) sitting in a gap: pointer drag with snapping to
+the nearest gap, tap a gap to jump there, keyboard (focus the comma; ← → move it, Home/End; remember the island is LTR: ArrowLeft moves it left).
+`point` = the number of digits after the comma (0 = no decimal part, `len` = the comma before the first digit — the slip then prints `0,` itself).
+Under the digits, the rank of each digit follows the comma (as short pills or as the piece icon of the world — your design call, say it once):
+units, tenths, hundredths, thousandths (آحاد، أعشار، أجزاء من مائة، أجزاء من ألف) to the right of the units digit, tens, hundreds … to the left.
+Live next to the slip: the number as written (`[data-dc-written]`, e.g. `2,35`), and its fraction `235/100` (`[data-dc-fraction]`; the
+denominator's zeros are drawn as visible zeros, never a power of ten notation). Never print a rule.
+
+**World `mosaic` (theme `mosaic`, platform).** A zellige workshop (Algerian geometric tile art, Tlemcen/Fès-style colours — no real artwork, a
+plain 8-point-star tessellation is a fine motif). The UNIT is one PANEL = a 10 × 10 grid of small tiles; blocks, drawn to honest relative sizes:
+PANEL (1), STRIP (1/10: a column of 10 tiles, same height as the panel), TILE (1/100), SHARD (1/1000: a tile cut into ten thin slivers — draw
+it as a tile with a visible 10-way cut; a shard is exactly 1/10 of a tile's area). Blocks of the slip's amount are laid out from the digits
+with the current comma: the digit at the units rank counts panels, at tenths strips, at hundredths tiles, at thousandths shards; ranks above
+units (tens, hundreds…) count GROUPS of ten / a hundred panels (draw a compact ×10 / ×100 bundle icon) or collapse to one panel icon with a
+`×N` badge once N > 12 — exact counts always. Ranks beyond thousandths (a 4th digit after the comma) never occur in tasks; the FREE panel
+limits the slip to 5 digits and the comma so that at most 3 decimal places show blocks — beyond that print the pieces as « أصغر من شظية »
+without lying about their size (your design call; document it). A craftswoman `KidFigure` (a girl in hijab, mood reacts) works at the table.
+Two zones on the stage: **the client's table** (`match`: the target amount in blocks; `fraction`: the fraction printed big instead of blocks)
+and **the workshop tray** (the slip's amount in blocks, re-drawn at every comma move). Verdict states (a banner under the stage that never
+makes the stage jump): `exact` (stamp), `more` (the tray holds more than the order), `less`; never the rule, never the target's comma
+position. The sizes of the blocks DO change as the comma moves — that is the point; make the change legible (blocks regroup with a short
+motion; reduced motion = instant).
+A trial is a RELEASE of the comma (or a tap on a gap) — every release is judged and reported once; a keyboard step is a release.
+
+**World `machine` (theme `mosaic`, same workshop: « آلة العشرة »).** Stage: the machine in the middle with its operator pill; above it the INPUT
+slip (read-only, comma fixed, its ranks named); below it the OUTPUT slip (the student's). Same drag/tap/keyboard comma. **Zeros**: two `+ 0`
+affordances at the ends of the output slip (`[data-dc-zero=left|right]`, ≤ 3 added each side, removable); the comma can only be released inside
+the string of digits + added zeros, so ×1000 of 3,5 needs two zeros on the right and ÷100 of 3,5 needs one on the left: a release that would pass
+the end is refused with the verdict `nodigit` (« لا رقم هنا: أضف صفرًا ») and the comma stays at the end. The rank pills under the output digits
+FOLLOW the comma, so the student sees each digit change rank (the 7 of 143,75 was « أعشار », it is now « آحاد »); thin links from each input digit
+to the same digit of the output show how many places it travelled. Judged on every release/zero change: `exact`, `more`, `less` (the output is
+bigger/smaller than the machine's result). The leading zero before the comma is automatic; an extra zero is never an error when the value is
+right, but the formal phase shows the writing WITHOUT unnecessary zeros.
+
+**Free panel — always open (owner rule, 2026-10-15).** Under each world, a card « جرّب أعدادك أنت » with a digits field (≤ 5 Latin digits;
+`inputMode="numeric"`) lets the student type ANY digits and slide the comma over them: in `mosaic` the blocks of that amount, in `machine` a
+free operator selector (the 9 operators). Free trials carry `free: true` (the lesson ignores them), never count for `discoveryReady`, `canNext`
+or `onFinished`; a button returns to the guided task (see `FairShare.jsx › setCustom / toGuided`).
+
+**Discovery and formal phase.** `discoveryReady` = every task of the level done. Discovery (`ManipulationDiscovery`), mosaic: « ماذا يغيّر موضعُ الفاصلة؟ »
+right: « كلّ خطوة نحو اليمين تجعل القطعة التي يعدّها الرقم أصغر بعشر مرّات » (no digit, no numbers); wrong, each refuted with the student's OWN
+boards (`refutations` from the trials): « لا يغيّر الفاصلةُ المقدارَ، بل طريقة قراءته فقط » (his 235 became 235 panels and 0,235) and « العدد الأطول
+أكبر دائمًا » (his 2,35 has three digits yet is smaller than 23,5, two digits less one… — build it from his trials). Machine: « ماذا فعلت الآلة
+بأرقام عددك؟ » right: « حرّكت كل رقم عدد المراتب نفسه (عشرة في كل مرتبة) » / wrong: « غيّرت الأرقام نفسها » (his digits are the same) and « أضافت
+أصفارًا فقط » (÷10 added none). Formal phase, mosaic: the rank table of the last task with the fraction (`235/100`, read « مئتان وخمسة وثلاثون
+جزءًا من مائة »), the decomposition `2 + 3/10 + 5/100` and `2 + 3 × 0,1 + 5 × 0,01` (zero ranks greyed and absent from the sum), the count
+« عدد الأجزاء من مائة » once; and after a `250 → 2,5` task, `2,50 = 2,5`. Formal, machine: the rank table before/after with the arrows and the
+rule as the student's own boards (« ÷100: الفاصلة انتقلت مرتبتين إلى اليسار »). Exact strings are your call within DNA §16–§17, but NO
+discovery or prompt string may contain the rule it hides (the render test checks it like `fairShare.render.test.jsx`).
+
+**Callbacks.** `onTrial({ task: <index>, kind: 'match'|'fraction'|'shift', digits, point, shown: '23,5' (the slip as written, trailing zeros kept),
+value: '23,5' (exact, comma), target: '2,35', ok: <bool>, verdict: 'exact'|'more'|'less'|'nodigit', zeros: { left, right }, free: <bool> })`
+for every judged release / zero change / refused release; `onFinished({ tasks })` once when all guided tasks are done. `ok` is true ONLY
+when the value equals the target. A solved task stays solved; « إعادة » restarts the task in progress.
+
+**LabCoach.** Mandatory (§8quater): `logic/decimalComma.js › coachOf(state)` → `{ id, target, gesture }` — `grab` (the comma), `move`, `zero`
+(machine, when the comma sits at the end and a zero is needed — it points at the ZERO button, never at the answer position), `next`. Its test
+follows the coach to the end of every task of both levels and both worlds. Strings `decimalComma.coach.*`. It never says WHERE the comma
+should end.
+
+**Layout & measures.** One screen: `[data-dc-glance]` fits at 1280×800, 1366×768, 1024×768 and 768×1024, 1920×1080 for both levels, both worlds
+(initial and mid-activity states); controls inside the stage on 768; sentence ≥ 18 px; the digits ≥ 40 px tall; all numbers LTR islands, Arabic
+as DOM text; `useLessonViewport` budget like the other labs. Opens on CONTEXT then ONE question, NO title (§17.9): e.g. mosaic مبتدئ —
+« بقي من وصل الطلبية الأرقام 2 3 5 دون فاصلة. على طاولة الزبون لوحتان و3 أعمدة و5 بلاطات. » / « حرّك الفاصلة حتى يصنع الحرفيّ ما يطلبه الزبون. »
+(your final wording, your call, but a 12-year-old must be able to start dragging and know when she is done).
+
+**DOM.** `[data-decimal-comma][data-world][data-task][data-solved][data-layout]`, `[data-dc-glance]`, `[data-dc-slip=input|output]`,
+`[data-dc-digit=<i>]`, `[data-dc-comma][data-point]`, `[data-dc-gap=<j>]`, `[data-dc-rank=<i>]`, `[data-dc-written]`, `[data-dc-fraction]`,
+`[data-dc-table=target|tray]`, `[data-dc-block=panel|strip|tile|shard]` (+ `data-count` on collapsed bundles), `[data-dc-op]`, `[data-dc-zero=left|right]`,
+`[data-dc-verdict=exact|more|less|nodigit]`, `[data-dc-prompt][data-lit]`, `[data-dc-next]`, `[data-dc-free][data-active]`, `[data-dc-free-digits]`,
+`[data-dc-formal]`, `[data-dc-kid]`, `[data-lab-fold=decimal-comma.trials]`, LabCoach markers (`[data-lab-coach-toggle]`, `[data-lab-coach][data-step]`…).
+
+**Tests.** `packages/core/arithmetic/decimals.test.js` (exactness sweeps: parse/format round trip over all strings of ≤ 5 digits and every
+comma place, shift ± 3, fraction text, the Arabic reading), `logic/decimalComma.test.js` (for every digits string ≤ 4 digits and every comma
+place the value is `N/10^p` and exactly one comma place matches each target of the presets; the preset tasks are solvable; shift tasks need
+exactly the zeros you document; the coach followed to the end; block counts equal the digits at every comma place; layout swept at five
+widths), `operations/decimalComma.render.test.jsx` (both worlds render, no raw keys, opens on CONTEXT then ONE question, says each thing once,
+no discovery/prompt string leaks the rule). Then `cd apps/web && npx vitest run src/lessons/common/manipulations src/lessons/common/i18nHookScope.test.js`
+and `cd packages/core && npx vitest run arithmetic/decimals.test.js`. Also extend `apps/web/e2e/lesson-kit/lab-coach.mjs` ONLY if its structure
+asks for a per-lab entry. Report: files, tests, the DOM as built, screenshots reviewed (initial, mid-activity, refusal, formal phase, both
+worlds, both levels, at 768×1024, 1024×768, 1280×800, 1366×768, 1920×1080 — taken with Playwright against :5174, LOOKED at one by one) and what
+changed after looking at them.
+
+## Bank author — `content/practice/1am/kusur-ashriya-kitaba/`
+
+Exactly the unit-2 bank brief (`docs/sources/1am/unit2/brief-authors.md` « Bank author » — its reading list, rules, wiring and gates), with:
+
+- LP ids `1am_kusur-ashriya-kitaba_P1..P4` (above), each primary on ≥ 8 questions (P4 ≥ 10: it is the most examined).
+- **Corpus** (`exams-index.json`, `grade: 1am`, items `1am.m1.r02`, `1am.m1.r03`, `1am.m5.x1`; badge « على منوال اختبار الفصل الأول » for
+  semester 1, `semester: 1`, `modelledOn: "1am-s1"` for the generated ones; `1am-s2-64` ex 1 → « الفصل الثاني »). Exercises whose decimal-fraction
+  / decimal-writing / × ÷ 10^k parts are IN this lesson's scope (read the PDFs under `docs/Exames-1 AM to 3AM/1am/`; `pdftotext -layout`, `pdftoppm
+  -r 110` for scans): `1am-s1-91` ex 1 (fraction → decimal writing; the comparison / ordering parts belong to `muqaranat-adad-ashriya`: only as
+  `counted: false` steps) and ex 2 (× ÷ 0,1 0,01 100 1000), `1am-s1-93` ex 1 (rank, × by 10) and ex 2 (decimal from a decomposition, fractional
+  writing; the ordering part excluded), `1am-s1-94` ex 2 (× ÷ 10, 100, 0,1; comparison part excluded), `1am-s1-95` ex 1 (table: decimal number /
+  decimal fraction / decomposition; place the comma) and ex 2 (× 10, 0,01), `1am-s1-96` ex 1 (standard decomposition, ÷ 1000) and ex 2 (blanks × ÷ 1000, 0,01),
+  `1am-s1-97` ex 1 (number of tenths, place the comma) and ex 2, `1am-s1-98` ex 1 (table × ÷ 100 and 0,01; decimal fraction; decomposition),
+  `1am-s1-99` ex 1 (table decimal/fractional writing, × ÷ 0,01 0,001), `1am-s1-101` ex 2 (× ÷ 0,1 0,01; the comparison part excluded),
+  `1am-s1-104` ex 1 (fractional and decomposed writing, × ÷ 100 and 0,001; the descending order excluded), `1am-s1-106` ex 1 (decimal writing of fractions)
+  and ex 2 (× ÷ 100, 0,1, 1000; the descending order excluded), `1am-s2-64` ex 1 (fractional ↔ decimal writing, × ÷). Ordering / comparison is
+  `muqaranat-adad-ashriya`, rank names of naturals `kitabat-adad-tabii`: allowed ONLY as `counted: false` steps of a level-4/5 exercise. `1am-s2-65`
+  ex 1 (adding decimal fractions) may be used for the sum of decimal fractions ONLY (item `1am.m5.r03`: `3/10 + 5/100 = 35/100`, no reduction —
+  reduction is `ikhtizal-kitaba-kasriya`). About half of levels 3–5 modelled on ONE precise corpus exercise; the rest `term_exam_modelled`
+  and a few `adapted` from the textbook elements listed below.
+- **Textbook elements you may cite** (destination `kusur-ashriya-kitaba`): `prep` (items 7–9 only), `act-2`, `act-3`, `know-2`, `know-3`, `know-4`
+  (its item b only), `method-1`, `now-12`, `method-2`, `now-14`, `ex-4` … `ex-11`, `ex-12` (items ②–④ only), `ex-13`, `ex-14`, `ex-26`, `ex-27`, `ex-28`,
+  `self-2` … `self-6`, `self-13`. Nothing else (`check:textbook` fails on any other id; `deep-3` ③④ and every ordering item are `muqaranat`'s).
+  Read `docs/sources/1am/unit1/extraction.json` for the answers (computed), but REWRITE every exercise: own contexts, own numbers (independence from
+  the book — never copy a statement).
+- **What is assessed:** (P1) the tenths / hundredths / thousandths of the unit (a shaded part of a 10 × 10 grid or a bar → a fraction with denominator
+  10, 100, 1000; the equal writings 3/10 = 30/100 = 300/1000; a quantity above 1: 243/100 = 2 + 4/10 + 3/100); (P2) decimal writing → decimal fraction (digits
+  after the comma = zeros: 31,25 = 3125/100; 0,05 = 5/100; 15 = 150/10; 43,5 = …/1000) and back (9345/1000 = 9,345; 356/10; 2017/1000), the zero that keeps a
+  place (0,05 vs 0,5) and the unnecessary zeros (340,40 = 340,4; 07,5 = 7,5; 12,0 = 12); (P3) the standard decomposition both ways, terms out of order
+  (`5 + 6×100 + 3×1000 + 2/10 → 3605,2`), `× 0,1` / `× 1/10` forms, « عدد الأعشار / الأجزاء من مائة » of a decimal (217,48 holds 2174 tenths,
+  21748 hundredths), the sum of decimal fractions; (P4) × ÷ 10, 100, 1000 and × ÷ 0,1 0,01 0,001 mentally, zeros that appear (3,5 × 100 = 350; 3,5 ÷ 100 =
+  0,035; 15 ÷ 10 000), « the missing factor » blanks (… × 100 = 4 , 43,7 ÷ … = 0,437), a calculator exercise with a broken decimal key. Distractors are real
+  misconceptions, every one FALSE: `MISC-KUSUR-ADD-ZERO` (× 10 adds a zero: 3,5 × 10 = 3,50), `MISC-KUSUR-COMMA-LEFT` (× moves the comma left), `MISC-KUSUR-
+  DEN-DIGITS` (35,2 = 352/1000: denominator not matching the digits), `MISC-KUSUR-ZERO-PLACE` (0,05 = 5/10), `MISC-KUSUR-NUM-DEN-SWAP`, `MISC-KUSUR-SPLIT-DIGITS`
+  (2,35 = 2 + 35/10), `MISC-KUSUR-ORDER-TERMS` (the sum's terms read in the order written), `MISC-KUSUR-TRAILING-ZERO` (2,50 ≠ 2,5), `MISC-KUSUR-TENTHS-COUNT`
+  (the number of tenths of 217,48 is 4), `MISC-KUSUR-MULT-SHRINKS` (× 0,1 makes it bigger).
+- `answerType`: `choice` (every distractor FALSE and tagged `misconceptionId`), `rational` (a value; decimal comma accepted; exact decimals via
+  `scripts/practice-oracle/helpers.mjs`), fractions as `a/b` strings per the existing banks (see `ikhtizal-kitaba-kasriya` and `kitabat-adad-tabii`), `selfCheck`
+  for « برّر » steps. A `choice` NEVER opposes two writings of the same value as right/wrong (« 2,5 » / « 2,50 »).
+- **Oracle** `scripts/practice-oracle/kusur-ashriya-kitaba.mjs`: recomputes EVERY constructed answer and every choice key with its OWN exact decimal
+  arithmetic (BigInt or the helpers), never by importing the lab's `decimals.js`.
+- **Wiring + gates you run:** exactly as in the unit-2 brief (`active.json`, `exam-style.json`, `policy.json`, `misconceptions.json`; `node scripts/validate-exercises.mjs
+  --strict`, the oracle test, `node scripts/check-textbook-coverage.mjs`, `npx vitest run scripts`). Do NOT run `npm run build`. Report: files, counts per level
+  and per LP, the corpus exercises used (file + exercise), test results.

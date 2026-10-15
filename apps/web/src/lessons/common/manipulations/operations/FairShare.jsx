@@ -1,17 +1,15 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Minus, Plus, Scissors, Hand, CheckCircle2, XCircle, Lock, Undo2, ChevronsLeftRight } from 'lucide-react';
+import { Minus, Plus, Scissors, Hand, CheckCircle2, XCircle, Undo2, FlaskConical } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import { frac, mul, fracText } from '@smarter-academy/core/arithmetic/linear.js';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
-import useStretchInteraction from '../useStretchInteraction';
 import LabFold from '../primitives/LabFold';
 import { LabCard, StageFrame, PromptCard, RoundButton, VerdictBanner } from '../primitives/LabKit';
-import { SvgPill } from '../primitives/SvgPill';
-import { Loaf } from '../primitives/BreadFigure';
+import { Cake, sectorPath as sectorPathOf } from '../primitives/CakeFigure';
 import KidFigure from '../primitives/KidFigure';
 import { useLabCoach } from '../primitives/LabCoach';
 import { LEVELS } from '../levels';
@@ -22,53 +20,51 @@ import * as L from '../logic/fairShare';
  * معارف 1 p. 55). La logique, exacte, est dans `logic/fairShare.js` (fractions du core, importées par chemin).
  *
  * LES CINQ QUESTIONS (MANIPULATION_CONTRACT §1)
- * A. Des pains sont posés pour b enfants. L'élève TIENT la PART x d'UN enfant : il tire un curseur sur une règle (glisser, toucher
- *    la règle, ← → ±1, Page ±10, boutons ronds −/+). Le labo met b parts bout à bout contre les a pains. L'élève choisit aussi la
- *    RÈGLE : le pas du curseur est un dixième, un centième, un millième de pain — ou un MORCEAU (chaque pain coupé en b morceaux).
+ * A. Des gâteaux ronds sont posés pour b enfants. L'élève agit par DEUX pas discrets : « قسّم كل كعكة إلى n قطع » (n = 1, 2, 3 …) puis
+ *    « كل واحد يأخذ m قطع » (−/+). La part d'un enfant vaut m / n gâteau ; le labo COLORIE les parts de chaque enfant sur les gâteaux.
  *    Ce n'est ni `division-jumps` (b donné, la main tient le nombre de groupes), ni `fraction-knife` (la part est fixe, la main tient
- *    le nombre de morceaux) : ici la main tient la PART, la grandeur inconnue du quotient.
+ *    le nombre de morceaux) : ici la main coupe ET choisit la part, la grandeur inconnue du quotient.
  * B. Le nombre x tel que b × x = a existe pour tout a et b ≠ 0 ; il s'écrit a/b ; il n'est décimal que parfois.
- * C. Le labo juge b × x contre a : du pain reste (rose clair, un reste sur la table), du pain manque (rose pointillé au-delà du
- *    dernier pain : il n'existe pas), ou tout est partagé (les enfants sourient). La règle des morceaux n'est pas donnée : elle
- *    s'ouvre après deux essais décimaux qui n'ont pas tombé juste.
+ * C. Le labo juge b × x contre a : du gâteau reste (un secteur intact cerclé de rose), du gâteau manque (gâteaux fantômes en pointillés
+ *    roses : ils n'existent pas), ou tout est partagé (les enfants sourient). Aucune coupe n'est annoncée juste.
  * D. a ÷ b = a/b et b × a/b = a, écrits avec les demandes de l'élève ; la valeur décimale quand elle existe, sinon deux valeurs
- *    décimales encadrantes (SES essais) : « 0,66 est approchée, 2/3 est la valeur exacte ».
- * E. Avant la règle : le contraste 3 ÷ 4 (tombe juste en décimal) puis 2 ÷ 3 (ne tombe jamais). Les fausses conjectures
- *    (« la division décimale donne toujours la part exacte », « la fraction renversée ») sont réfutées avec SES nombres.
+ *    décimales encadrantes (SES essais en dixièmes) : « 0,6 est approchée, 2/3 est la valeur exacte ».
+ * E. Avant la règle : le contraste 3 ÷ 4 puis 2 ÷ 3 ; couper en dixièmes ne tombe jamais juste, couper en b parts toujours. Les fausses
+ *    conjectures (« la division décimale donne toujours la part exacte », « la fraction renversée ») sont réfutées avec SES nombres.
  *
  * FICHE (DNA §7)
  *   CONCEPT       la fraction a/b est le quotient a ÷ b : le nombre qui multiplié par b donne a
- *   OBJECT        a pains sur une table, b parts de l'élève bout à bout, une règle de la part, b enfants (KidFigure)
- *   VARIABLE      la part x d'un enfant (curseur) et la règle (pas décimal ou morceau)
+ *   OBJECT        a gâteaux ronds, leurs parts coloriées par enfant, b enfants (KidFigure) avec leur assiette
+ *   VARIABLE      n (le nombre de parts par gâteau) et m (les parts de chaque enfant)
  *   INVARIANT     a et b ; toutes les parts sont égales
- *   TRANSFORMATION x bouge : les b segments suivent d'un coup ; le total b × x avance
- *   CONSTRAINT    le pain ne dépasse pas la table ; on ne coupe qu'en b morceaux égaux
- *   RESISTANCE    la graduation décimale ne tombe pas juste pour 2/3, 5/6, 7/3 : il reste ou il manque un peu, toujours
+ *   TRANSFORMATION n change : les coupes de TOUS les gâteaux changent d'un coup ; m grandit : les tranches avancent de gâteau en gâteau
+ *   CONSTRAINT    on ne coupe qu'en parts égales ; les gâteaux ne dépassent pas la table
+ *   RESISTANCE    les dixièmes ne tombent pas juste pour 3 ÷ 4, 2 ÷ 3, 5 ÷ 6, 7 ÷ 3 : il reste ou il manque un peu, toujours
  *   EVIDENCE      le reste / le manque dessinés et écrits avec les chiffres de l'élève ; les enfants réagissent
  *   CONTRAST      3 ÷ 4 puis 2 ÷ 3 (مبتدئ) ; 5 ÷ 6 puis 7 ÷ 3 (متقدم)
- *   PREDICTION    les graduations décimales ne sont pas étiquetées par la part juste ; aucune règle n'annonce le résultat
- *   DISCOVERY     « on écrit la part par une fraction : numérateur = pains, dénominateur = enfants »
+ *   PREDICTION    aucune coupe n'est étiquetée juste ; aucune règle n'annonce le résultat
+ *   DISCOVERY     « on écrit la part par une fraction : numérateur = gâteaux, dénominateur = enfants »
  *   FORMALIZATION a ÷ b = a/b ; b × a/b = a ; décimal ou valeur approchée
- *   TRANSFER      les exercices 4–5 p. 57, معارف 1 (7/3), la banque
+ *   TRANSFER      les exercices 4–5 p. 57, معارف 1 (7/3), la banque ; « جرّب أعدادك » (ses propres a et b, toujours ouvert)
  *
- * « جرّب كل الإمكانيات » : NON (chaque relâchement EST la réponse de l'élève). Pas d'auto-complétion.
+ * « جرّب كل الإمكانيات » : NON (chaque choix EST la réponse de l'élève). Pas d'auto-complétion.
  *
  * LE KIT (§8ter, DNA §17) : `PromptCard` §17.9 (contexte avec les nombres, UNE question qui nomme l'état final et sa lampe, les
- * pilules de lecture), scène dans un `StageFrame`, carte de commande (règles + −/+), `VerdictBanner` à place fixe, LabCoach.
+ * pilules de lecture), scène dans un `StageFrame`, carte de commande (couper + prendre), `VerdictBanner` à place fixe, LabCoach.
  * D'UN SEUL REGARD : `[data-fs-glance]` enveloppe consigne, scène, commandes et verdict.
  *
  * Props : `scene` ('canteen' | 'family'), `orders` [[a, b], …] (la première demande, puis le contraste), `level`, `levels`, `title`,
- * `lead`, `onTrial({ order, ruler, m, x, kind, ok })` à chaque essai VALIDÉ, `onFinished({ orders })` à la règle — par `state.report`.
+ * `lead`, `onTrial({ order, ruler, n, m, x, kind, ok, free })` à chaque essai VALIDÉ, `onFinished({ orders })` à la règle — par `state.report`.
  *
- * CONTRAT DOM : [data-fair-share][data-scene][data-order][data-ruler][data-solved][data-layout], [data-fs-glance],
- * [data-fs-prompt][data-lit], [data-fs-scene], [data-fs-handle] (slider), [data-fs-rulers], [data-fs-ruler=<d1|d2|d3|cut>][data-active],
- * [data-fs-less], [data-fs-more], [data-fs-read=<share|total>], [data-fs-loaf=<i>], [data-fs-share=<i>], [data-fs-gap], [data-fs-over],
- * [data-fs-kid=<i>][data-mood], [data-fs-verdict=<kind>], [data-fs-next], [data-fs-next-button], [data-fs-back], [data-fs-formal],
- * [data-lab-fold=fair-share.trials].
+ * CONTRAT DOM : [data-fair-share][data-scene][data-order][data-split][data-solved][data-layout], [data-fs-glance],
+ * [data-fs-prompt][data-lit], [data-fs-scene], [data-fs-split][data-n], [data-fs-take][data-m], [data-fs-step-less|more=split|take],
+ * [data-fs-step-value=split|take], [data-fs-read=<share|total>], [data-fs-cake=<i>], [data-fs-ghost=<i>], [data-cake-slice=<kid>], [data-fs-gap],
+ * [data-fs-over], [data-fs-plate-share=<kid>], [data-fs-kid=<i>][data-mood], [data-fs-verdict=<kind>], [data-fs-next], [data-fs-next-button],
+ * [data-fs-back], [data-fs-formal], [data-fs-free…], [data-fs-key], [data-fs-nonzero], [data-fs-zero-button], [data-fs-zero], [data-lab-fold=fair-share.trials].
  */
 const NS = 'manipulation.fairShare';
 const WIDE_MIN = 560;
-const COLORS = ['#6366F1', '#F59E0B', '#10B981', '#F43F5E', '#0EA5E9', '#A855F7'];
+const COLORS = ['#6366F1', '#F59E0B', '#10B981', '#F43F5E', '#0EA5E9', '#A855F7', '#EA580C', '#0D9488'];
 const LOOKS = [
   { hairStyle: 'hijab', scarf: 'rose', outfit: 'pink', skin: 'light' },
   { hairStyle: 'short', hair: 'black', outfit: 'blue', skin: 'wheat' },
@@ -76,6 +72,8 @@ const LOOKS = [
   { hairStyle: 'curly', hair: 'brown', outfit: 'orange', skin: 'light' },
   { hairStyle: 'hijab', scarf: 'lavender', outfit: 'violet', skin: 'wheat' },
   { hairStyle: 'short', hair: 'chestnut', outfit: 'green', skin: 'deep' },
+  { hairStyle: 'hijab', scarf: 'sky', outfit: 'blue', skin: 'light' },
+  { hairStyle: 'curly', hair: 'black', outfit: 'orange', skin: 'wheat' },
 ];
 const MOTION_CSS = '@keyframes fs-pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}'
   + '@keyframes fs-hop{0%{transform:translateY(0)}45%{transform:translateY(-7px)}100%{transform:translateY(0)}}'
@@ -121,7 +119,7 @@ export default function FairShare({
   const [seen, setSeen] = useState(sceneKey);
   if (seen !== sceneKey) { setSeen(sceneKey); setLab(L.init({ orders })); }
 
-  const { a, b, ruler, m } = lab;
+  const { a, b, n, m } = lab;
   const ready = L.discoveryReady(lab);
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, L.finishedEvidence(lab)); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -134,11 +132,11 @@ export default function FairShare({
   useEffect(() => { if (nTrials > 0) state.report(onTrial, L.trialEvidence(lab.trials.at(-1))); }, [nTrials]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── les noms comptés ── */
-  const loaves = (n) => k('loaves', { count: n });
+  const cakes = (n) => k('cakes', { count: n });
   const kidsOf = (n) => k(scene === 'family' ? 'persons' : 'kids', { count: n });
   const pieces = (n) => k('pieces', { count: n });
   /** Une quantité de pains : un entier se dit « 3 أرغفة », un décimal « 0,75 رغيف ». */
-  const amount = (x) => (x.d === 1 ? loaves(x.n) : k('loafDec', { x: L.decimalText(x) }));
+  const amount = (x) => (x.d === 1 ? cakes(x.n) : k('cakeDec', { x: L.decimalText(x) }));
 
   /* ── mesure ── */
   const boxRef = useRef(null);
@@ -159,34 +157,23 @@ export default function FairShare({
   const W = Math.min(width, 760);
 
   /* ── la géométrie ── */
-  const rail = L.railMax(a, b);
-  const tbl = useMemo(() => L.tableLayout({ width: W, a, b }), [W, a, b]);
-  const rl = useMemo(() => L.rulerLayout({ width: W, rail, ruler, b }), [W, rail, ruler, b]);
+  const ck = useMemo(() => L.cakesLayout({ width: W, a, b, top: compact ? 22 : 26, maxD: compact ? 92 : 132 }), [W, a, b, compact]);
   const kd = useMemo(() => L.kidsLayout({ width: W, b }), [W, b]);
-  const mMax = L.mMaxOf(a, b, ruler);
-  const Y = compact
-    ? { loaf: 33, loafH: 20, lane: 61, laneH: 18, bar: 107, barH: 18, kidTop: 147, kidFoot: 193, badge: 206, H: 220 }
-    : { loaf: 34, loafH: 32, lane: 76, laneH: 26, bar: 146, barH: 24, kidTop: 212, kidFoot: 276, badge: 290, H: 304 };
-  const pillSize = compact ? 10.5 : 12;
-
-  const st = useStretchInteraction({
-    value: m, range: { min: 0, max: mMax },
-    toValue: (cx, cy, rect) => rl.valueAt(cx - rect.left),
-    direction: 'ltr', pageStep: 10,
-    onChange: (v) => setLab((s) => L.setM(s, v)),
-    onCommit: (v) => setLab((s) => L.commitM(s, v)),
-  });
+  const mMax = L.mMaxOf(a, b, n);
+  const kidTop = ck.height + (compact ? 14 : 18);
+  const kidFoot = kidTop + (compact ? 46 : 62);
+  const yPlate = kidFoot + (compact ? 16 : 20);
+  const Y = { kidTop, kidFoot, plate: yPlate, H: yPlate + (compact ? 18 : 22) };
 
   const v = L.shownVerdict(lab);
-  const x = v ? v.x : L.judge(a, b, ruler, m).x;
+  const x = v ? v.x : frac(m, n);
   const total = mul(x, frac(b));
-  const sharePill = ruler === 'cut' ? pieces(m) : L.decimalText(x);
+  const sharePill = pieces(m);
 
   const verdictText = useMemo(() => {
     if (!v) return '';
-    const o = { kids: kidsOf(b), per: pieces(b), pieces: pieces(v.m), share: amount(v.x), total: amount(v.total), have: loaves(a), gap: amount(v.left ?? v.missing ?? frac(0)) };
-    const mode = v.ruler === 'cut' ? 'cut' : 'dec';
-    return k(`v.${mode}.${v.kind}`, o);
+    const o = { kids: kidsOf(b), per: pieces(v.n), pieces: pieces(v.m), share: amount(v.x), total: amount(v.total), have: cakes(a), gap: amount(v.left ?? v.missing ?? frac(0)) };
+    return k(`v.${v.kind}`, o);
   }, [v, scene]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── la découverte ── */
@@ -194,7 +181,7 @@ export default function FairShare({
   const lastA = orders.at(-1)[0];
   const lastB = orders.at(-1)[1];
   const discoveryOptions = useMemo(() => {
-    const o = { loaves: loaves(lastA), kids: kidsOf(lastB), a: lastA, b: lastB };
+    const o = { cakes: cakes(lastA), kids: kidsOf(lastB), a: lastA, b: lastB };
     const dec = ref.decimal;
     const inv = ref.inverse;
     return [
@@ -209,10 +196,28 @@ export default function FairShare({
 
   const formal = (
     <div className="space-y-2" data-fs-formal>
+      {/* la fraction ÉTIQUETÉE : le haut = les gâteaux de la table, le bas = les enfants qui attendent */}
+      <div className="rounded-2xl border border-emerald-200 bg-white/80 p-3" data-fs-key>
+        <p className="mb-2 text-center text-sm font-black text-emerald-900">{k('formal.keyTitle')}</p>
+        <div className="mx-auto grid w-fit grid-cols-[auto_auto] items-center gap-x-3 gap-y-1" dir="ltr">
+          <span className="rounded-xl bg-indigo-600 px-3 py-1 text-center font-mono text-lg font-black text-white" data-fs-key-a>a</span>
+          <span className="text-right text-sm font-bold text-indigo-900" dir="rtl">{k('formal.keyA')}</span>
+          <span className="block h-[3px] w-full rounded bg-slate-700" aria-hidden="true" />
+          <span />
+          <span className="rounded-xl bg-amber-500 px-3 py-1 text-center font-mono text-lg font-black text-white" data-fs-key-b>b</span>
+          <span className="text-right text-sm font-bold text-amber-900" dir="rtl">{k('formal.keyB')}</span>
+        </div>
+      </div>
       {L.formalOf(lab).map((f) => (
         <div key={f.i} className="space-y-1 rounded-2xl border border-emerald-200 bg-white/70 p-2 text-center text-indigo-950">
+          <p className="text-xs font-bold text-slate-600">{k('formal.caseLine', { cakes: cakes(f.a), kids: kidsOf(f.b) })}</p>
           <Row className="text-base font-extrabold">
-            <span className="font-mono">{f.a} ÷ {f.b}</span><span>=</span><Frac n={f.a} d={f.b} />
+            <span className="font-mono">{f.a} ÷ {f.b}</span><span>=</span>
+            <span className="inline-flex flex-col items-center align-middle font-mono font-black leading-none tabular-nums" dir="ltr" data-fs-frac={`${f.a}/${f.b}`}>
+              <span className="rounded-lg bg-indigo-100 px-2 text-indigo-800">{f.a}</span>
+              <span className="my-[2px] block h-[2px] w-full min-w-[1.4em] rounded bg-current" aria-hidden="true" />
+              <span className="rounded-lg bg-amber-100 px-2 text-amber-800">{f.b}</span>
+            </span>
           </Row>
           <Row className="text-sm font-bold text-slate-700">
             <span className="font-mono">{f.b} ×</span><Frac n={f.a} d={f.b} className="text-sm" /><span>= {f.a}</span>
@@ -223,49 +228,88 @@ export default function FairShare({
         </div>
       ))}
       <p className="text-sm text-emerald-900">{k('formal.rule')}</p>
+      <div className="rounded-2xl border border-rose-200 bg-rose-50/70 p-3 text-sm font-bold leading-relaxed text-rose-950" data-fs-nonzero>
+        <p className="font-black">{k('formal.nonZeroTitle')}</p>
+        <p>{k('formal.nonZero', { a: lastA })}</p>
+      </div>
     </div>
   );
 
-  /* ── les commandes ── */
-  const cutOpen = L.canCut(lab);
-  const chips = L.RULERS.map((r) => {
-    const locked = r === 'cut' && !cutOpen;
-    const active = r === ruler;
-    const dsc = L.digitsOf(r);
-    return (
-      <button key={r} type="button" disabled={locked} data-fs-ruler={r} data-active={active ? 'true' : 'false'} aria-pressed={active}
-        aria-label={r === 'cut' ? k('ruler.cutAria', { per: pieces(b) }) : k('ruler.decAria', { x: `0,${'0'.repeat(dsc - 1)}1` })}
-        onClick={() => setLab((s) => L.setRuler(s, r))}
-        className={`inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-2xl border-2 ${tiny ? 'px-1 text-xs' : 'px-2.5 text-sm'} font-black outline-none transition-colors focus-visible:ring-4 focus-visible:ring-indigo-300 disabled:opacity-50 ${active ? 'border-indigo-600 bg-indigo-600 text-white shadow-[0_4px_0_0_#3730A3]' : 'border-indigo-100 bg-white text-indigo-900 shadow-[0_4px_0_0_#E0E3FF]'}`}>
-        {r === 'cut'
-          ? <>{locked ? <Lock className="h-4 w-4" aria-hidden="true" /> : <Scissors className="h-4 w-4" aria-hidden="true" />}{tiny ? <bdi dir="ltr" className="tabular-nums">{b}</bdi> : <span>{pieces(b)}</span>}</>
-          : <bdi dir="ltr" className="tabular-nums">{`0,${'0'.repeat(dsc - 1)}1`}</bdi>}
-      </button>
-    );
-  });
-  const less = (
-    <RoundButton size={compact ? 44 : 52} onClick={() => st.nudge(-1)} disabled={m <= 0} aria-label={k('step.less')} data-fs-less>
-      <Minus className="h-5 w-5" strokeWidth={3} aria-hidden="true" />
-    </RoundButton>
-  );
-  const more = (
-    <RoundButton primary size={compact ? 44 : 52} onClick={() => st.nudge(1)} disabled={m >= mMax} aria-label={k('step.more')} data-fs-more>
-      <Plus className="h-5 w-5" strokeWidth={3} aria-hidden="true" />
-    </RoundButton>
+  /* ── les commandes : COUPER chaque gâteau en n parts, puis choisir m parts par enfant ── */
+  const [loN, hiN] = L.SPLIT_LIMITS;
+  const commit = (mm) => setLab((q) => L.commitM(q, mm));
+  const stepRow = (key, label, value, lo, hi, onSet, attrs, icon) => (
+    <div className="flex items-center justify-between gap-2 rounded-2xl border border-indigo-100 bg-white px-2 py-1.5" {...attrs}>
+      <span className={`flex items-center gap-1.5 ${compact ? 'text-xs' : 'text-sm'} font-black text-indigo-950`}>{icon}{label}</span>
+      <div className="flex items-center gap-2" dir="ltr">
+        <RoundButton size={compact ? 44 : 52} onClick={() => onSet(value - 1)} disabled={value <= lo} aria-label={k(`${key}.less`)} data-fs-step-less={key}>
+          <Minus className="h-5 w-5" strokeWidth={3} aria-hidden="true" />
+        </RoundButton>
+        <span className={`min-w-[2.2ch] text-center ${compact ? 'text-xl' : 'text-2xl'} font-black tabular-nums text-indigo-900`} data-fs-step-value={key}>{value}</span>
+        <RoundButton primary size={compact ? 44 : 52} onClick={() => onSet(value + 1)} disabled={value >= hi} aria-label={k(`${key}.more`)} data-fs-step-more={key}>
+          <Plus className="h-5 w-5" strokeWidth={3} aria-hidden="true" />
+        </RoundButton>
+      </div>
+    </div>
   );
   const controls = (
-    <LabCard className={`space-y-2 ${compact ? 'p-2' : 'p-3'}`} data-fs-controls>
-      <p className={`${compact ? 'text-xs' : 'text-sm'} font-black text-indigo-950`}>{k('rulerLabel')}</p>
-      <div className={`flex ${wide ? 'items-center justify-between gap-4' : 'flex-col gap-2'}`}>
-        <div className={tiny ? 'grid grid-cols-4 gap-1' : `flex flex-wrap ${compact ? 'gap-1.5' : 'gap-2'}`} data-fs-rulers>{chips}</div>
-        <div className="flex items-center justify-center gap-3" dir="ltr">
-          {less}
-          <div className="flex min-w-[84px] items-baseline justify-center rounded-2xl border border-indigo-100 bg-[#F5F6FF] px-3 py-1" data-fs-read="share" data-fs-count={m}>
-            <bdi dir="ltr" className={`${compact ? 'text-lg' : 'text-2xl'} whitespace-nowrap font-black tabular-nums text-indigo-900`}>{sharePill}</bdi>
-          </div>
-          {more}
-        </div>
+    <LabCard className={`${wide ? 'grid grid-cols-2 gap-3' : 'space-y-2'} ${compact ? 'p-2' : 'p-3'}`} data-fs-controls>
+      {stepRow('split', k('split.label'), n, loN, hiN, (nn) => setLab((q) => L.setN(q, nn)), { 'data-fs-split': true, 'data-n': n }, <Scissors className="h-4 w-4" aria-hidden="true" />)}
+      {stepRow('take', k('take.label'), m, 0, mMax, commit, { 'data-fs-take': true, 'data-m': m })}
+    </LabCard>
+  );
+
+  /* ── ses propres nombres : toujours ouverts ── */
+  const free = L.isFree(lab);
+  const [zero, setZero] = useState(false);
+  const [loA, hiA] = L.FREE_LIMITS.cakes;
+  const [loB, hiB] = L.FREE_LIMITS.kids;
+  const stepper = (key, label, value, lo, hi, onSet) => (
+    <div className="flex items-center justify-between gap-2 rounded-2xl border border-indigo-100 bg-white px-2 py-1.5" data-fs-free-field={key}>
+      <span className="text-xs font-black text-indigo-950">{label}</span>
+      <div className="flex items-center gap-1.5" dir="ltr">
+        <RoundButton size={40} onClick={() => onSet(value - 1)} disabled={value <= lo} aria-label={k('free.less', { what: label })} data-fs-free-less={key}>
+          <Minus className="h-4 w-4" strokeWidth={3} aria-hidden="true" />
+        </RoundButton>
+        <span className="min-w-[2ch] text-center text-xl font-black tabular-nums text-indigo-900" data-fs-free-value={key}>{value}</span>
+        <RoundButton primary size={40} onClick={() => onSet(value + 1)} disabled={value >= hi} aria-label={k('free.more', { what: label })} data-fs-free-more={key}>
+          <Plus className="h-4 w-4" strokeWidth={3} aria-hidden="true" />
+        </RoundButton>
       </div>
+    </div>
+  );
+  const freeCard = (
+    <LabCard className={`space-y-2 border-emerald-200 bg-emerald-50/50 ${compact ? 'p-2' : 'p-3'}`} data-fs-free data-active={free ? 'true' : 'false'}>
+      <p className={`flex items-center gap-1.5 ${compact ? 'text-xs' : 'text-sm'} font-black text-emerald-900`}>
+        <FlaskConical className="h-4 w-4" aria-hidden="true" /> {k('free.title')}
+      </p>
+      <p className="text-xs font-bold leading-snug text-slate-600">{free ? k('free.on') : k('free.hint')}</p>
+      <div className={wide ? 'grid grid-cols-2 gap-3' : 'space-y-2'}>
+        {stepper('cakes', k('free.cakes'), a, loA, hiA, (n) => setLab((q) => L.setCustom(q, n, q.b)))}
+        {stepper('kids', k('free.kids'), b, loB, hiB, (n) => setLab((q) => L.setCustom(q, q.a, n)))}
+      </div>
+      <button type="button" onClick={() => setZero((z) => !z)} aria-expanded={zero} data-fs-zero-button
+        className="inline-flex min-h-[44px] items-center gap-1 rounded-full border-2 border-rose-200 bg-white px-3 text-xs font-bold text-rose-900">
+        {k('free.zeroButton')}
+      </button>
+      {zero && (
+        <div className="space-y-1 rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm font-bold leading-relaxed text-rose-950" data-fs-zero>
+          <svg width="100%" height="46" viewBox="0 0 220 46" role="img" aria-label={k('free.zeroAria')} style={{ direction: 'ltr' }}>
+            <circle cx="40" cy="26" r="16" fill="#FCE7B6" stroke="#9A5A14" strokeWidth="1.5" />
+            <text x="40" y="31" textAnchor="middle" fontSize="14" fontWeight="800" fill="#7C2D12">{a}</text>
+            <text x="110" y="31" textAnchor="middle" fontSize="18" fontWeight="800" fill="#9F1239">÷</text>
+            <rect x="150" y="10" width="44" height="32" rx="8" fill="#FFF1F2" stroke="#E11D48" strokeWidth="1.5" strokeDasharray="4 3" />
+            <text x="172" y="32" textAnchor="middle" fontSize="16" fontWeight="800" fill="#9F1239">0</text>
+          </svg>
+          <p>{k('free.zero', { cakes: cakes(a) })}</p>
+        </div>
+      )}
+      {free && (
+        <button type="button" onClick={() => setLab(L.toGuided)} data-fs-free-back
+          className="inline-flex min-h-[44px] items-center gap-1 rounded-full border-2 border-emerald-200 bg-white px-3 text-xs font-bold text-emerald-900">
+          <Undo2 className="h-4 w-4" aria-hidden="true" /> {k('free.back')}
+        </button>
+      )}
     </LabCard>
   );
 
@@ -280,7 +324,7 @@ export default function FairShare({
   const nextCard = L.canNext(lab) && (
     <LabCard className="space-y-2 border-amber-200 bg-amber-50/70 p-3" data-fs-next>
       <p className="text-sm font-bold leading-snug text-amber-950">
-        <span className="font-black">{k('next.title')}</span> {k('next.text', { loaves: loaves(lab.orders[lab.i + 1][0]), kids: kidsOf(lab.orders[lab.i + 1][1]) })}
+        <span className="font-black">{k('next.title')}</span> {k('next.text', { cakes: cakes(lab.orders[lab.i + 1][0]), kids: kidsOf(lab.orders[lab.i + 1][1]) })}
       </p>
       <button type="button" onClick={() => setLab(L.next)} data-fs-next-button
         className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-amber-400 to-amber-500 px-3 text-sm font-black text-amber-950 shadow-[0_4px_0_0_#D97706] outline-none transition-transform active:translate-y-0.5 active:shadow-none focus-visible:ring-4 focus-visible:ring-amber-300 motion-reduce:transition-none">
@@ -288,10 +332,10 @@ export default function FairShare({
       </button>
     </LabCard>
   );
-  const backButton = lab.i > 0 && (
+  const backButton = lab.i > 0 && !free && (
     <button type="button" onClick={() => setLab((s) => L.back(s))} data-fs-back
       className="inline-flex min-h-[44px] items-center gap-1 rounded-full border-2 border-indigo-100 bg-white px-3 text-xs font-bold text-indigo-800">
-      <Undo2 className="h-4 w-4" aria-hidden="true" /> {k('back', { loaves: loaves(lab.orders[lab.i - 1][0]), kids: kidsOf(lab.orders[lab.i - 1][1]) })}
+      <Undo2 className="h-4 w-4" aria-hidden="true" /> {k('back', { cakes: cakes(lab.orders[lab.i - 1][0]), kids: kidsOf(lab.orders[lab.i - 1][1]) })}
     </button>
   );
 
@@ -304,95 +348,65 @@ export default function FairShare({
 
   /* ── la scène ── */
   const mood = v?.kind === 'exact' ? 'proud' : v?.kind === 'over' ? 'wonder' : v ? 'neutral' : 'happy';
-  const showGap = v && v.kind === 'short';
-  const showOver = v && v.kind === 'over';
   const xv = x.n / x.d;
-  const totalPx = tbl.total(xv);
+  const sl = useMemo(() => L.slicesOf({ a, b, x }), [a, b, x.n, x.d]); // eslint-disable-line react-hooks/exhaustive-deps
+  const slicesOn = (c) => [
+    ...sl.kids.filter((q) => q.cake === c).map((q) => ({ ...q, color: COLORS[q.kid % COLORS.length] })),
+    ...(v && v.kind === 'short' ? sl.rest.filter((q) => q.cake === c).map((q) => ({ ...q, rest: true })) : []),
+  ];
   const kidH = Y.kidFoot - Y.kidTop;
   const kidScale = Math.min(1, (kd.slot * 1.55) / kidH);
   const kH = Math.max(compact ? 38 : 46, kidH * kidScale);
-  const handleX = rl.handleX(m);
-  const handleY = Y.bar + Y.barH / 2;
-  const barEnd = rl.xAt(rail);
+  const whole = Math.floor(xv + 1e-9);
+  const fracPart = xv - whole;
+  const pr = Math.max(8, Math.min(compact ? 12 : 15, kd.slot * 0.3));
+  const nFlags = Math.max(6, Math.floor((W - 24) / 24));
+  const flags = Array.from({ length: nFlags }, (_, i) => ({ x: 12 + ((W - 24) * (i + 0.5)) / nFlags, c: ['#10B981', '#F59E0B', '#FFFFFF'][i % 3] }));
   const sceneNode = (
-    <StageFrame className="overflow-hidden" style={{ width: W, height: Y.H }} data-fs-scene data-fs-rail={rail}>
+    <StageFrame className="overflow-hidden" style={{ width: W, height: Y.H }} data-fs-scene data-fs-split-n={n}>
       <svg width={W} height={Y.H} className="absolute inset-0" style={{ direction: 'ltr' }} role="img" aria-label={k('sceneAria', { a, b, kids: kidsOf(b) })}>
-        {/* la table : un plateau de bois, le drapeau du dernier pain */}
-        <rect x={tbl.x0 - 6} y={Y.loaf + Y.loafH + 2} width={tbl.tableEnd - tbl.x0 + 12} height={8} rx={3} fill="#D9BE90" stroke="#B89460" />
-        {Array.from({ length: a }, (_, i) => (
-          <Loaf key={i} x={tbl.loaf(i).x + 1} y={Y.loaf} w={tbl.u - 2} h={Y.loafH} cuts={ruler === 'cut' ? b : 1} data-fs-loaf={i} />
-        ))}
-        <g aria-hidden="true">
-          <line x1={tbl.tableEnd} x2={tbl.tableEnd} y1={Y.loaf - 8} y2={Y.lane + Y.laneH + 4} stroke="#9F1239" strokeWidth={2} strokeDasharray="4 3" />
+        {/* la nappe de fête du المولد النبوي : une guirlande, puis les gâteaux ronds */}
+        <rect x={4} y={3} width={W - 8} height={ck.height - 4} rx={14} fill="#FFF7ED" stroke="#FDBA74" strokeWidth={1.4} data-fs-table />
+        <g aria-hidden="true" data-fs-bunting>
+          <path d={`M10 9 Q${W / 2} ${compact ? 17 : 21} ${W - 10} 9`} fill="none" stroke="#047857" strokeWidth={1.2} />
+          {flags.map((f, i) => {
+            const t = f.x / W;
+            const sag = (compact ? 8 : 10) * 4 * t * (1 - t) * 0.98 + 9;
+            return <path key={i} d={`M${f.x - 5} ${sag - 0.5} L${f.x + 5} ${sag - 0.5} L${f.x} ${sag + (compact ? 7 : 9)}Z`} fill={f.c} stroke="#047857" strokeWidth={0.8} />;
+          })}
         </g>
-        <SvgPill x={Math.min(W - 30, tbl.tableEnd)} y={Y.loaf - 12} pointer="down" text={loaves(a)} size={pillSize} fill="#E11D48" data-fs-flag={a} />
+        {Array.from({ length: ck.N }, (_, i) => {
+          const c = ck.cell(i);
+          const mine = slicesOn(i);
+          if (i < a) return <Cake key={i} cx={c.cx} cy={c.cy} r={c.r} cuts={n} slices={mine} data-fs-cake={i} />;
+          if (mine.length) return <Cake key={i} cx={c.cx} cy={c.cy} r={c.r} ghost slices={mine} data-fs-over data-fs-ghost={i} />;
+          return <circle key={i} cx={c.cx} cy={c.cy} r={c.r - 2} fill="none" stroke="#CBD5E1" strokeWidth={1.2} strokeDasharray="2 4" opacity={0.7} aria-hidden="true" data-fs-empty={i} />;
+        })}
 
-        {/* les parts de l'élève, bout à bout sous les pains */}
-        <rect x={tbl.x0} y={Y.lane} width={tbl.x1 - tbl.x0} height={Y.laneH} rx={6} fill="#EEF0FF" opacity={0.7} />
-        {xv > 0 && Array.from({ length: b }, (_, i) => {
-          const seg = tbl.share(i, xv);
-          const w = seg.x1 - seg.x0;
-          const out = seg.x0 >= tbl.tableEnd - 0.5;
+        {/* les enfants : chacun garde sa part dans son assiette, de la couleur de ses tranches */}
+        {Array.from({ length: b }, (_, i) => {
+          const cx = kd.cx(i);
+          const top = Y.kidFoot - kH;
+          const col = COLORS[i % COLORS.length];
           return (
-            <g key={`${i}-${m}-${ruler}`} data-fs-share={i} data-over={seg.x1 > tbl.tableEnd + 0.5 ? 'true' : undefined}>
-              <rect x={seg.x0 + 0.8} y={Y.lane + 2} width={Math.max(1, w - 1.6)} height={Y.laneH - 4} rx={5}
-                fill={out ? '#FFE4E6' : COLORS[i % COLORS.length]} fillOpacity={out ? 0.9 : 0.85} stroke={out ? '#E11D48' : COLORS[i % COLORS.length]} strokeWidth={1.2} strokeDasharray={out ? '4 3' : undefined} />
-              {w >= 16 && (
-                <text x={seg.x0 + w / 2} y={Y.lane + Y.laneH / 2 + 4} textAnchor="middle" fontSize={11} fontWeight={800} fill={out ? '#BE123C' : '#FFFFFF'}
-                  style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>{i + 1}</text>
+            <g key={i} data-fs-kid={i} data-mood={mood} className={v?.kind === 'exact' ? 'fs-hop' : undefined}>
+              <KidFigure cx={cx} top={top} foot={Y.kidFoot} mood={mood} {...LOOKS[i % LOOKS.length]} />
+              <circle cx={cx} cy={Y.plate} r={pr + 2} fill="#FFFFFF" stroke={col} strokeWidth={2} />
+              {xv > 0 && fracPart > 1e-9 && <path d={sectorPathOf(cx, Y.plate, pr, 0, fracPart)} fill={col} fillOpacity={0.85} data-fs-plate-share={i} />}
+              {xv > 0 && fracPart <= 1e-9 && <circle cx={cx} cy={Y.plate} r={pr} fill={col} fillOpacity={0.85} data-fs-plate-share={i} />}
+              <circle cx={cx - pr - 1} cy={Y.plate - pr + 1} r={7} fill={col} />
+              <text x={cx - pr - 1} y={Y.plate - pr + 4.8} textAnchor="middle" fontSize={10} fontWeight={800} fill="#FFFFFF" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>{i + 1}</text>
+              {whole >= 1 && fracPart > 1e-9 && (
+                <text x={cx + pr + 3} y={Y.plate + 4} textAnchor="start" fontSize={compact ? 10 : 11} fontWeight={800} fill={col} style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>{whole}+</text>
               )}
             </g>
           );
         })}
-        {showGap && totalPx < tbl.tableEnd - 0.5 && (
-          <rect x={totalPx} y={Y.lane + 2} width={tbl.tableEnd - totalPx} height={Y.laneH - 4} rx={3} fill="#FFE4E6" stroke="#E11D48" strokeWidth={1.4} data-fs-gap />
-        )}
-        {showOver && totalPx > tbl.tableEnd + 0.5 && (
-          <line x1={tbl.tableEnd} x2={totalPx} y1={Y.lane + Y.laneH + 5} y2={Y.lane + Y.laneH + 5} stroke="#E11D48" strokeWidth={4} strokeLinecap="round" strokeDasharray="3 3" data-fs-over />
-        )}
-
-        {/* la règle de la part : des pains mis bout à bout, ses graduations, le morceau */}
-        {Array.from({ length: rail }, (_, i) => (
-          <Loaf key={i} x={rl.xAt(i)} y={Y.bar} w={rl.u} h={Y.barH} cuts={ruler === 'cut' ? b : 1} data-fs-rail-loaf={i} />
-        ))}
-        {xv > 0 && <rect x={rl.x0} y={Y.bar} width={Math.max(0, handleX - rl.x0)} height={Y.barH} rx={5} fill={COLORS[0]} opacity={0.38} aria-hidden="true" />}
-        {rl.ticks.map((tk) => (
-          <g key={tk.j} aria-hidden="true">
-            <line x1={tk.x} x2={tk.x} y1={Y.bar + Y.barH} y2={Y.bar + Y.barH + (tk.major ? 8 : 4)} stroke="#64748B" strokeWidth={tk.major ? 1.5 : 0.9} />
-            {tk.label != null && (
-              <text x={tk.x} y={Y.bar + Y.barH + 20} textAnchor="middle" fontSize={compact ? 10 : 11} fontWeight={700} fill="#475569" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>{tk.label}</text>
-            )}
-          </g>
-        ))}
-        <SvgPill x={Math.max(26, Math.min(W - 26, handleX))} y={Y.bar - 4} pointer="down" text={sharePill} size={pillSize} fill="#4F46E5" data-fs-handle-pill />
-
-        {/* les enfants */}
-        {Array.from({ length: b }, (_, i) => {
-          const cx = kd.cx(i);
-          const top = Y.kidFoot - kH;
-          return (
-            <g key={i} data-fs-kid={i} data-mood={mood} className={v?.kind === 'exact' ? 'fs-hop' : undefined}>
-              <KidFigure cx={cx} top={top} foot={Y.kidFoot} mood={mood} {...LOOKS[i % LOOKS.length]} />
-              <circle cx={cx} cy={Y.badge} r={8} fill={COLORS[i % COLORS.length]} />
-              <text x={cx} y={Y.badge + 3.8} textAnchor="middle" fontSize={11} fontWeight={800} fill="#FFFFFF" style={{ direction: 'ltr', unicodeBidi: 'isolate' }}>{i + 1}</text>
-            </g>
-          );
-        })}
       </svg>
-      {/* la règle est la PISTE : toucher y pose le curseur ; le curseur est au bout de la part */}
-      <div {...st.trackProps} className="absolute inset-x-0" style={{ ...st.trackProps.style, top: Y.bar - 22, height: Y.barH + 44 }}>
-        <div {...st.handleProps({ label: k('handle'), valueText: k('handleValue', { share: sharePill }) })} data-fs-handle
-          className="group absolute flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full outline-none"
-          style={{ left: Math.min(barEnd + 8, handleX), top: handleY - (Y.bar - 22), cursor: st.dragging ? 'grabbing' : 'grab' }}>
-          <span className={`flex h-9 w-9 items-center justify-center rounded-full border-[3px] border-indigo-500 bg-white shadow-[0_6px_16px_-6px_rgba(79,70,229,0.9)] transition-transform group-focus-visible:ring-4 group-focus-visible:ring-indigo-300 motion-reduce:transition-none ${st.dragging ? 'scale-110' : ''}`}>
-            <ChevronsLeftRight className="h-5 w-5 text-indigo-600" strokeWidth={2.6} aria-hidden="true" />
-          </span>
-        </div>
-      </div>
     </StageFrame>
   );
 
-  const ctxArgs = { loaves: loaves(a), kids: kidsOf(b) };
+  const ctxArgs = { cakes: cakes(a), kids: kidsOf(b) };
   return (
     <ManipulationShell
       type="fair-share"
@@ -404,11 +418,11 @@ export default function FairShare({
       coach={coachOn ? coach : null}
       hints={[0, 1, 2].map((i) => k(`hints.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
-      discovery={<ManipulationDiscovery state={state} prompt={k('discovery.prompt', { loaves: loaves(lastA), kids: kidsOf(lastB) })} options={discoveryOptions} formal={formal} />}
+      discovery={<ManipulationDiscovery state={state} prompt={k('discovery.prompt', { cakes: cakes(lastA), kids: kidsOf(lastB) })} options={discoveryOptions} formal={formal} />}
       explanation={k('explanation')}
     >
       <ManipulationStage className="bg-gradient-to-b from-indigo-50/40 to-white">
-        <div ref={boxRef} className="space-y-2" data-fair-share data-scene={scene} data-order={`${a}/${b}`} data-ruler={ruler}
+        <div ref={boxRef} className="space-y-2" data-fair-share data-scene={scene} data-order={`${a}/${b}`} data-split={n}
           data-solved={ready ? 'true' : 'false'} data-layout={wide ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: MOTION_CSS }} />
           <div className="space-y-2" data-fs-glance>
@@ -428,12 +442,13 @@ export default function FairShare({
               {(nextCard || backButton) && <div className="space-y-2" style={wide ? { width: 250 } : undefined}>{nextCard}{backButton}</div>}
             </div>
           </div>
+          {freeCard}
           {lab.trials.length > 0 && (
             <LabFold id="fair-share.trials" title={k('trialsTitle')}>
               <ul className="space-y-0.5 text-xs" data-fs-trials={lab.trials.length}>
                 {lab.trials.map((tr, i) => (
                   <li key={i} className={tr.ok ? 'text-emerald-800' : 'text-rose-800'} data-ok={String(tr.ok)}>
-                    {k('trial', { order: `${tr.a} ÷ ${tr.b}`, x: tr.ruler === 'cut' ? pieces(tr.m) : tr.x, word: k(`kind.${tr.kind}`) })}
+                    {k('trial', { order: `${tr.a} ÷ ${tr.b}`, x: `${pieces(tr.m)} · ${k('split.of', { n: tr.n })}`, word: k(`kind.${tr.kind}`) })}
                   </li>
                 ))}
               </ul>

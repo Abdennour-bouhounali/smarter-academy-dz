@@ -45,6 +45,8 @@ stale, and when the entry exceeds its budget). Never import something heavy from
 
 ---
 
+> **Supported screens: tablet and laptop only (owner, 2026-10-15)** — widths ≥ 768 px (768×1024, 1024×768, 1280×800, 1366×768, 1920×1080). Phones are NOT supported: do not design, tune or test for phone widths (320–430 px); older mentions of them below are superseded.
+
 ## 1. Before you start
 
 **Read, in this order:**
@@ -205,6 +207,7 @@ before the next. What that adds to « Adding a textbook UNIT »:
 - **Make it visible locally** (owner, 2026-10-14): after the DB handshake, publish the lesson's `lesson_modules` and
   `practice_exercises` rows in the LOCAL database (they are born `draft`), so the owner can browse it before `dev` is promoted.
 - **Textbook exercise figures in أتمرّن** (`hasil-qisma-kasr`, 2026-10-15): `TextbookExercise` draws no figure. A module renders the exercise's `GeoFigure` data (`content/figures.js`: hidden points, `polygons` tones for coloured cells, `figureQuality` + recomputed fractions in `content/content.test.js`) above it; a redesigned figure (illegible scan, e.g. the test tubes) says so in one line (`REDRAWN_NOTE`). Keep each figure ≤ 150 px wide on phones or the page overflows at 320 px (an exercise with a long KaTeX chain in a batch `label` did too: split it).
+- **Batch 4 lessons (`kusur-ashriya-kitaba`, 2026-10-15) — patterns to reuse.** (1) `validate:lessons` requires the two levels of a lab resource to carry the SAME `objective` string. (2) One lab TYPE may serve two modules with different worlds (`decimal-comma`: `mosaic` in module 1, `machine` in module 4): the module passes its own `world` and `tasks`, the `levels.js` preset only fixes the module-1 numbers. (3) An exercise redesigned from several textbook elements cites the others in `cites: [src(...)]` (collected by `check:textbook`); `src()` without `number` so the student never sees « تمرين N ». (4) Final-test epreuves stay LITERAL in `Module09Itqan.jsx` (the audit reads them statically) while `FINAL` in `content/exercises.js` holds the same data for `content.test.js`, which recomputes every key in exact BigInt arithmetic and asserts the module source contains each option. (5) A bare number in an option (`3,8`) is wrapped as a math island by `vary`/`num` in `exercises.js`. (6) `learningNet.test.js` forbids a forward net link between published lessons for 4AM only.
 - **« مخطط بأقواس »** — the textbook's tape diagram (a line cut into parts, an arc above each part, an arc below the whole) is the
   shared figure `lessons/common/components/ArcTape.jsx` + `arcTape.js`: lesson figures, `statement.figure` with `kind: 'tape'`
   (dispatched by `StatementFigure` / `validateStatementFigure`), a مسألة `figure`, and the live tape of the `story-bars` lab. Lengths are
@@ -759,6 +762,23 @@ Reference: `kitabat-adad-tabii` (1AM), redesigned 2026-10-14 — entry = the pen
 until every ten is tied); rejected = the book's نشاط 1 (0 1 3 8 / 25 and 52 / 999, answered from memory), now posed in
 أتمرّن; order: ten-for-one → position value (the two 7s of the student's own 2577) → the 0 that keeps a place → reading by
 classes (the dictation lab opens معارف) → rank table → مفكوك → رقم / عدد (banknotes).
+
+### 4ter-bis. INDEPENDENCE FROM THE BOOK — the platform is self-sufficient (owner rule, 2026-10-15, CRITICAL, binding on every generation)
+
+The student never needs the textbook and is never sent to it. **Read the textbook → analyse it → get the idea → generate your OWN content.**
+
+- **Never** write a student-visible string that points to the book: « الكتاب ص 55 », « اقرأ ما يقوله الكتاب », « نشاط الكتاب », « تمارين من الكتاب »,
+  « أرغفة الكتاب », « استحضر مكتسباتي — ص 52 ». Module `brief` tags are the platform's own words (« معارف », « أستعدّ », « أتمرّن »).
+- **Never** copy the book's boxes (تعريف · خاصية · ملاحظة · مثال · طريقة) or exercises to the student verbatim. Re-write each definition, remark and
+  example in the platform's own sentences, with the platform's own contexts and numbers (same mathematical content, same notation, same
+  rigour — different words). The extraction stays the REFERENCE of WHAT is taught (الكفاءات, notations, expected answers), never of HOW it is said.
+- A book activity/exercise is **analysed, then redesigned**: new context, new numbers (checked by computation), same competence. The book's text
+  may survive in `content/textbook.js` only as the authors' reference data; it must not reach the screen as-is.
+- `SourceTag` is **muted for students** (`reveal` is for author / teacher tooling only): no « الكتاب المدرسي — ص 57 — تمرين 1 » badge. The `source`
+  objects stay in the content files for traceability (`check:textbook`).
+- A lab's wording is the platform's too (e.g. `fair-share` speaks of cakes — « كعكات » — not of the book's loaves).
+- Retrofit: lessons generated before this date may still carry book-derived boxes, exercises and tags; each is rewritten when its lesson is next touched
+  (`hasil-qisma-kasr` modules 0, 2 and 4 were cleaned on 2026-10-15; its book-derived exercises in `content/exercises.js` remain to be redesigned).
 
 ### 4quater. One module = one track: act first, answer about what you did, then name it (owner rule, 2026-10-14)
 
@@ -1576,7 +1596,7 @@ exercise), the situation's analysis (synthesis). Unit 5: ex-31 (« x + y = 216 �
 7. Add exercises and the evaluation module with its assessment metadata.
 8. Wire `index.jsx`, `routes.jsx`, `moduleContext.js`.
 9. Run the gates (§11) and fix what they say.
-10. Verify in the browser: Arabic everywhere, RTL at 320 px, the manipulation by
+10. Verify in the browser: Arabic everywhere, RTL at 768 px (tablet) and 1280 px, the manipulation by
     real gesture, progression through the whole lesson, Classroom Mode.
 11. **Update the documentation** if you introduced a reusable pattern — root
     `CLAUDE.md`, Documentation Synchronization Rule.
@@ -1618,7 +1638,7 @@ lesson `<code>` of grade `<g>`:
    The import turns the lesson's `draft` into `published` by itself (`CurriculumImporter::publicationOnUpdate`).
    Its **modules and exercises** are born `draft` (publishing content stays a human act). Open them in the admin
    panel (« المحتوى ») locally to review; in production the admin does it after the deploy.
-5. **Gates:** `npm test`, `npm run check:lessons`, `npm run build` (§ below). Then a browser check at 320 px, in RTL.
+5. **Gates:** `npm test`, `npm run check:lessons`, `npm run build` (§ below). Then a browser check at 768 px and 1280 px, in RTL.
 6. **Commit and publish:** commit on a work branch, fast-forward `dev`, `git push origin dev`. CI (`ci.yml`) runs
    tests, build and the PHP suite. **Nothing reaches production until `dev` is merged into `main`**: `deploy.yml` then
    exports, imports (`--from-json`), prunes and checks tiers on the server.
@@ -1761,10 +1781,10 @@ before concluding a new lesson or unit is broken.
 - *Arabic & RTL*: no French or English prose in any state, including
   `aria-label` and placeholders; every `N / M` pair isolated `dir="ltr"`;
   terminology matching the register.
-- *Responsive*: 320 px with no horizontal scroll, touch targets ≥ 44 px for
-  controls, and the phone, tablet and desktop widths.
+- *Responsive*: 768 px with no horizontal scroll, touch targets ≥ 44 px for
+  controls (tablets are touch), and the tablet and laptop widths. Phones are out of scope.
 - *One screen*: every manipulation fits one viewport with its controls (no
-  vertical scroll to interact) at 1280×800, 1366×768, 390×844, 320×640.
+  vertical scroll to interact) at 1024×768, 1280×800, 1366×768 (phone sizes retired).
 - *Classroom*: entry as a presenter, unit navigation, state surviving
   enter/exit, no page scroll, exit restoring the page.
 - *Accessibility*: keyboard path for every gesture, visible focus, readable
@@ -1951,7 +1971,7 @@ for every element the lesson cites. Mastery criteria are the server's
 | Figures | every textbook figure ANALYSED, then reproduced if readable or REDESIGNED with the same concept (answers recomputed, one-line caption), and `figureQuality(fig)` empty in `content/figures.test.js` (§5 « Textbook figures ») |
 | Practice | a separate bank under `content/practice/**` with provenance, oracle entries for constructed answers (§11) |
 | Arabic/RTL | all user-visible text Arabic (including `aria-label`, `title`, placeholders, KaTeX `\text{}` — put words in DOM, not in KaTeX); numbers and equations `dir="ltr"`; `PGCD` Latin |
-| Responsive / a11y | no horizontal scroll at 320 px; controls ≥ 44 px; every gesture has a tap and keyboard path; visible focus; reduced motion honoured |
+| Responsive / a11y | no horizontal scroll at 768 px; controls ≥ 44 px; every gesture has a tap and keyboard path; visible focus; reduced motion honoured |
 | Teacher / Classroom | nothing: `buildLessonRoutes` + `ContentModule` give free navigation, the مذكرة, the premium gate and Classroom Mode |
 
 **Reuse, never rebuild:** `buildLessonRoutes`, `buildModuleContext`,

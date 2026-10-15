@@ -21,19 +21,20 @@ export default function Module01Nashat() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
-  const record = (e) => setTrials((list) => [...list, e]);
-  const refused = trials.filter((e) => !e.ok && e.ruler !== 'cut').at(-1);
-  const solvedCut = trials.filter((e) => e.ok && e.ruler === 'cut').at(-1);
-  const [a, b] = (solvedCut?.order ?? '5/6').split('/').map(Number);
+  const record = (e) => { if (!e.free) setTrials((list) => [...list, e]); }; // la demande libre (جرّب أعدادك) n'est jamais une preuve
+  const refused = trials.filter((e) => !e.ok && e.n === 10).at(-1);
+  const solved = trials.filter((e) => e.ok).at(-1);
+  const [a, b] = (solved?.order ?? '5/6').split('/').map(Number);
+  const [n, m] = solved ? [solved.n, solved.m] : [b, a];
 
   return (
     <ContentModule
-      objectives={['لماذا لا تنتهي الأرغفة بالخطوة العشرية؟', 'كيف نكتب حصّة الواحد؟', 'ماذا يعطي ضرب الحصّة في عدد الأطفال؟']}
+      objectives={['لماذا لا تنتهي الكعكات إذا قسّمناها إلى عشر قطع؟', 'كيف نكتب حصّة الواحد؟', 'ماذا يعطي ضرب الحصّة في عدد الأطفال؟']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
-      moduleTitle="نشاط — نقتسم الأرغفة"
-      moduleSubtitle="الحصّة التي تُنهي الخبز تمامًا"
+      moduleTitle="نشاط — نقتسم الكعكات"
+      moduleSubtitle="الحصّة التي تُنهي الكعك تمامًا"
       estimatedTime="16 دقيقة"
       intro={
         <ManipulationWorkspace
@@ -45,53 +46,53 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'لماذا بقي شيء دائمًا؟', subtitle: 'الخطوات العشرية', done: q1,
+          num: 1, title: 'لماذا بقي شيء دائمًا؟', subtitle: 'القسمة إلى عشر قطع', done: q1,
           content: (
             <div className="space-y-3">
               <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={refused ? 'true' : 'false'}>
                 {refused
-                  ? <span className="font-bold text-slate-800">جرّبتَ في طلب <bdi dir="ltr">{refused.order.replace('/', ' ÷ ')}</bdi> الحصّة <bdi dir="ltr">{refused.x}</bdi> فلم تنته الأرغفة تمامًا.</span>
-                  : <span className="text-slate-500">لم تجرّب بعد خطوة عشرية في لوحتك: ابدأ بالمقبض في الأعلى.</span>}
+                  ? <span className="font-bold text-slate-800">جرّبتَ في طلب <bdi dir="ltr">{refused.order.replace('/', ' ÷ ')}</bdi> أن تقسّم كل كعكة إلى عشر قطع وأن يأخذ كل واحد <bdi dir="ltr">{refused.m}</bdi> قطع فلم تنته الكعكات تمامًا.</span>
+                  : <span className="text-slate-500">لم تقسّم بعد كل كعكة إلى عشر قطع في لوحتك: جرّب ذلك في الأعلى.</span>}
               </p>
               <TapQuestion
-                prompt="في الطلب الذي لم تقع حصّته على أيّ خطوة عشرية، كلّما غيّرتَ الخطوة إلى مئة ثم إلى ألف ماذا لاحظتَ؟"
-                options={[M('اقتربتُ من الأرغفة لكن بقي دائمًا شيء ولم تقع الحصّة عليها بالضبط'), M('وقعت الحصّة على الأرغفة بالضبط عند الألف'), M('ازداد الخبز الموجود على الطاولة')]}
+                prompt="حين قسّمتَ كل كعكة إلى عشر قطع، هل انتهت الكعكات بالضبط في الطلبين؟"
+                options={[M('لا: بقي أو نقص دائمًا شيء ولم تنته الكعكات بالضبط'), M('نعم: انتهت في الطلبين'), M('ازداد الكعك الموجود على الطاولة')]}
                 correct={0} cols={1} requires={['qisma-ashriya-ibtidai']}
-                explain={<span>كل رقم إضافي بعد الفاصلة يقرّب الحصّة من الأرغفة ولا يصل إليها: يبقى أو ينقص دائمًا جزء صغير.</span>}
+                explain={<span>الأعشار لا تملأ الكعكات بالضبط: يبقى أو ينقص دائمًا جزء صغير، ولا يزول مهما غيّرتَ عدد القطع التي يأخذها كل واحد.</span>}
                 onAnswered={() => setQ1(true)}
               />
             </div>
           ),
         },
         {
-          num: 2, title: 'كيف نكتب حصّة الواحد؟', subtitle: 'مسطرة القطع', done: q2,
+          num: 2, title: 'كيف نكتب حصّة الواحد؟', subtitle: 'تقسيم الكعكة', done: q2,
           content: (
             <div className="space-y-3">
-              <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={solvedCut ? 'true' : 'false'}>
-                {solvedCut
-                  ? <span className="font-bold text-slate-800">مع مسطرة القطع انتهت الأرغفة تمامًا في طلب <bdi dir="ltr">{a} ÷ {b}</bdi>.</span>
-                  : <span className="text-slate-500">لم تستعمل مسطرة القطع بعد: تُفتح في الأعلى بعد تجربتين عشريتين. السؤال هنا عن الطلب <bdi dir="ltr">{a} ÷ {b}</bdi>.</span>}
+              <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={solved ? 'true' : 'false'}>
+                {solved
+                  ? <span className="font-bold text-slate-800">حين قسّمتَ كل كعكة إلى <bdi dir="ltr">{n}</bdi> قطع وأخذ كل واحد <bdi dir="ltr">{m}</bdi> قطع انتهت الكعكات تمامًا في طلب <bdi dir="ltr">{a} ÷ {b}</bdi>.</span>
+                  : <span className="text-slate-500">لم تجد بعد تقسيمًا تنتهي به الكعكات: جرّب في الأعلى. السؤال هنا عن الطلب <bdi dir="ltr">{a} ÷ {b}</bdi>.</span>}
               </p>
               <TapQuestion
-                prompt={<span>قطعتَ كل رغيف إلى {b} قطع متساوية وأخذ كل واحد {a} قطع من {b} في الرغيف. نكتب حصّته بالكسر:</span>}
-                options={[M(frac(a, b)), M(frac(b, a)), M(`$${a}{,}${b}$`)]}
+                prompt={<span>قسّمتَ كل كعكة إلى {n} قطع متساوية وأخذ كل واحد {m} قطع من {n} في الكعكة. نكتب حصّته بالكسر:</span>}
+                options={[M(frac(m, n)), M(frac(n, m)), M(`$${m}{,}${n}$`)]}
                 correct={0} cols={3} requires={['kasr-juz-ibtidai']}
-                explain={<MathText>{`${a} قطع، كل قطعة جزء من ${b} من الرغيف: $\\frac{${a}}{${b}}$ رغيف.`}</MathText>}
+                explain={<MathText>{`${m} قطع، كل قطعة جزء من ${n} من الكعكة: $\\frac{${m}}{${n}}$ كعكة.`}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
-              {q2 && <KnowledgeBrick id="kasr-hasil-qisma" lead="حصّة الواحد هي حاصل قسمة عدد الأرغفة على عدد الأطفال." />}
+              {q2 && <KnowledgeBrick id="kasr-hasil-qisma" lead="حصّة الواحد هي حاصل قسمة عدد الكعكات على عدد الأطفال." />}
             </div>
           ),
         },
         {
-          num: 3, title: 'لماذا تنتهي الأرغفة تمامًا؟', subtitle: 'الحصّة × عدد الأطفال', done: q3,
+          num: 3, title: 'لماذا تنتهي الكعكات تمامًا؟', subtitle: 'الحصّة × عدد الأطفال', done: q3,
           content: (
             <div className="space-y-3">
               <TapQuestion
-                prompt={<span>حصّة الواحد <MathText>{frac(a, b)}</MathText> رغيف، و{b} أطفال يأخذون حصصًا متساوية. لماذا تنتهي الأرغفة تمامًا؟</span>}
-                options={[M('لأنّ حصص الأطفال معًا تملأ الأرغفة بالضبط: العدد مضروبًا في عدد الأطفال يعطي عدد الأرغفة'), M('لأنّ البسط يُحذف مع المقام دائمًا'), M('لأنّ كل طفل يأخذ رغيفًا كاملًا')]}
+                prompt={<span>حصّة الواحد <MathText>{frac(m, n)}</MathText> كعكة، و{b} أطفال يأخذون حصصًا متساوية. لماذا تنتهي الكعكات تمامًا؟</span>}
+                options={[M('لأنّ حصص الأطفال معًا تملأ الكعكات بالضبط: العدد مضروبًا في عدد الأطفال يعطي عدد الكعكات'), M('لأنّ البسط يُحذف مع المقام دائمًا'), M('لأنّ كل طفل يأخذ كعكة كاملة')]}
                 correct={0} cols={1} requires={['kasr-juz-ibtidai']}
-                explain={<MathText>{`$${b}\\times\\frac{${a}}{${b}}=${a}$ : الأطفال الـ ${b} يأخذون معًا ${a} أرغفة.`}</MathText>}
+                explain={<MathText>{`$${b}\\times\\frac{${m}}{${n}}=${a}$ : الأطفال الـ ${b} يأخذون معًا ${a} كعكات.`}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
             </div>

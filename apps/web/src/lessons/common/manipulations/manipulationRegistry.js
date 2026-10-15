@@ -97,6 +97,8 @@ export const MANIPULATION_COMPONENTS = {
   'fair-share': lazy(() => import('./operations/FairShare')),
   // 1AM, unité 1 « الأعداد الطبيعية والأعداد العشرية » (2026-10-14).
   'rank-exchange': lazy(() => import('./operations/RankExchange')),
+  // 1AM, unité 1 — le كسر عشري et l'écriture à virgule (2026-10-15).
+  'decimal-comma': lazy(() => import('./operations/DecimalComma')),
   // 2AM, unité 2 « الكسور والعمليات عليها » (2026-10-14).
   'egg-trays': lazy(() => import('./operations/EggTrays')),
 };

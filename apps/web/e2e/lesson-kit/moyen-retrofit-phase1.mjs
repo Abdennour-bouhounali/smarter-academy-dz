@@ -34,6 +34,11 @@ const LESSONS = [
     { slug: 'nashat', lab: '[data-fraction-knife]', step: 'knife', bricksHidden: ['kitabat-mutasawiya'] },
     { slug: 'maarif', bricksHidden: ['kasr-ashri', 'ikhtizal'] },
   ] },
+  { g: '1am', id: 'kusur-ashriya-kitaba', modules: [
+    { slug: 'nashat', lab: '[data-decimal-comma]', step: 'grab', bricksHidden: ['fasila-hajm', 'kasr-ashri', 'kitaba-bifasila'] },
+    { slug: 'maarif', bricksHidden: ['mafkuk-ashri', 'asfar-ghayr-darurya'] },
+    { slug: 'tariqa-ashara', lab: '[data-decimal-comma]', step: 'grab', bricksHidden: ['azaha-fasila'] },
+  ] },
   // ── PHASE 2 — 4AM unité 1 « الأعداد الطبيعية والناطقة » (2026-10-15) ──
   { g: '4am', id: 'awwaliyan-fima-baynahuma', modules: [
     { slug: '17-wa-18', lab: '[data-manipulation="coprime-explorer"]', bricksHidden: ['awwaliyan-taarif', 'nafy-awwaliyan'] },

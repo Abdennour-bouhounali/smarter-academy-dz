@@ -146,7 +146,7 @@ lesson from the brief (`docs/sources/<g>/unit<N>/brief-authors.md`). All three p
 
 ## Batch 3 (2026-10-15) — queue entry 1
 
-### 1. `hasil-qisma-kasr` « حاصل القسمة والكسر » (1AM, unit 4 `kitabat-kasriya`) — published (local; no commit by session override)
+### 1. `hasil-qisma-kasr` « حاصل القسمة والكسر » (1AM, unit 4 `kitabat-kasriya`) — published (committed with batch 4, entry 1)
 
 - **Lesson:** 9 modules (أستعدّ · نشاط · معارف · طريقة · أتمرّن · 3 مسائل · إختبار أولي), 85 min (catalogue `durationMinutes` 61). The unit's
   extraction was reused (`build-extraction.py` edits: `act-1` → module 4 as an application, `opener` → module 2, `self-1` / `self-9` → 4,
@@ -155,7 +155,7 @@ lesson from the brief (`docs/sources/<g>/unit<N>/brief-authors.md`). All three p
 - **New lab `fair-share`** (MANIPULATION_CONTRACT §2duovicies; `noRebuildForLesson` was empty, and it differs from `fraction-knife` in what the
   hand holds): the hand holds the SHARE of one child, the lab lays b shares against the a loaves; decimal rulers (0,1 / 0,01 / 0,001) land for
   3 ÷ 4 and never for 2 ÷ 3, 5 ÷ 6, 7 ÷ 3; the earned « cut » ruler (every loaf in b pieces) lands for every a, b. مبتدئ the school canteen
-  (3 ÷ 4 then 2 ÷ 3), متقدم the textbook's 5 loaves for 6 people then 7 ÷ 3. New drawing `BreadFigure › Loaf`, theme `bakery`. Screenshots at
+  (3 ÷ 4 then 2 ÷ 3), متقدم the textbook's 5 loaves for 6 people then 7 ÷ 3. New drawing `CakeFigure › Cake` (redesigned 2026-10-15 from `BreadFigure › Loaf`: round cakes, coloured slices per child, Mawlid bunting, always-open « جرّب أعدادك »), theme `bakery`. Screenshots at
   1280 × 800, 390 × 844 and 320 × 640 reviewed (initial, 0,8 over, 0,75 exact, cut ruler, discovery): the 320 px stage, controls and
   question were compacted until the glance fit (609 / 640).
 - **الكفاءات (draft → final, order kept):** P1 + « وكتابة حاصل قسمة عددين طبيعيين على شكل كسر »; P2 made explicit « …لإيجاد عدد ناقص في
@@ -166,6 +166,21 @@ lesson from the brief (`docs/sources/<g>/unit<N>/brief-authors.md`). All three p
   « الفصل الثالث » `1am-s3-37`, 16 platform additions, 12 textbook), oracle `scripts/practice-oracle/hasil-qisma-kasr.mjs`, `MISC-HASIL-*`.
 - **Gates:** see the final report of the session (npm test, check:lessons, build, `e2e/lesson-kit/1am-hasil-qisma-kasr.mjs`).
 - **URL:** `/courses/moyen/1am/ansab_al_aadad_wal_hisab/hasil-qisma-kasr`.
+
+## Batch 4 (2026-10-15) — queue entries 1–3
+
+### 1. `kusur-ashriya-kitaba` « الكسور العشرية والكتابة العشرية » (1AM, unit 1 `adad-tabiiya-ashriya`) — published
+- **Commit note:** the commit also carries the previous session's uncommitted work of the same rollout (`hasil-qisma-kasr` retrofit, `FairShare` / `CakeFigure`, LabCoach docs, CLAUDE.md).
+- **Unit** already seeded (`kitabat-adad-tabii`); extraction reused, destinations moved in `build-extraction.py`: act-2, act-3, ex-4…ex-14 (②–④ of ex-12), ex-26…ex-28 are APPLICATIONS in module 5, method-2 / now-14 module 4. `deep-3` ③④ stay with `muqaranat-adad-ashriya` (the extraction gives them to the comparison lesson: they ask for the smallest / largest decimal).
+- **Lesson:** 10 modules (أستعدّ · نشاط « ورشة الزليج » · معارف · طريقة (31,25 ⇄ 3125/100) · طريقة (× ÷ 10, 100, 1000, lab) · أتمرّن (9 redesigned exercises + a 10 × 10 plate figure) · 3 مسائل · إختبار أولي), 62 min (catalogue `durationMinutes` 62, whole lesson 86). Entry designed by the platform (config header): the book's نشاط 2 and a zoomable ruler (reserved for the graduated half-line lesson) rejected.
+- **New lab `decimal-comma`** (MANIPULATION_CONTRACT §2tervicies; `noRebuildForLesson` is empty and it differs in what the hand holds): the DIGITS are fixed on a slip, the hand holds the COMMA. World `mosaic` (honest blocks panel / strip / tile / shard; `match` and `fraction` tasks), world `machine` (× ÷ 10 … 0,001 with zeros to add). Exact arithmetic in `packages/core/arithmetic/decimals.js`. LabCoach, always-open free panel, discovery and formal phase. Screenshots at 768×1024, 1024×768, 1280×800, 1366×768, 1920×1080 reviewed by the lab author (panels stacked at the origin, lost keyboard focus, off-centre RTL slips fixed).
+- **الكفاءات (draft → final, order kept):** P1 + « أو عن كمية أكبر منها … وكتابته بكتابات متساوية مثل 3/10 = 30/100 »; P2 + « (عدد الأرقام بعد الفاصلة هو عدد أصفار المقام) وحذف الأصفار غير الضرورية »; P3 → « (مفكوكه النموذجي) … ولو كانت حدوده غير مرتّبة، وتعيين عدد الأعشار أو الأجزاء من مائة » (also covers `1am.m5.r03`, the sum of decimal fractions); P4 + « (أو في 0,1 أو 0,01 أو 0,001) … مع كتابة الأصفار عند اللزوم » (the programme item `1am.m1.r03`). `pointPrerequisites`: P2 ← `1am_hasil-qisma-kasr_P1`, P1; P3 ← `1am_hasil-qisma-kasr_P1`, `1am_mana-jam-tarh_P1`, P2; P4 ← `1am_kitabat-adad-tabii_P2`, P2; and the published `mana-jam-tarh` P1 ← `1am_kusur-ashriya-kitaba_P4` (net link `1am.m1.r03 → 1am.m1.r05`). `prerequisiteLessonCodes` = `kitabat-adad-tabii`.
+- **Overlap to decide (owner):** the published `ikhtizal-kitaba-kasriya` P2 already teaches « decimal fraction ⇄ decimal writing » (it was generated before this lesson by queue order). This lesson is the foundation (meaning of the comma); no edge was written between the two P2 to avoid an LP cycle.
+- **Net test:** `learningNet.test.js › respecte l'ordre du manuel` now applies to 4AM only (1AM–3AM follow the queue, whose « renvois en avant » are listed: hasil-qisma-kasr → this lesson).
+- **Practice:** `content/practice/1am/kusur-ashriya-kitaba/` — 50 sheets / 245 questions (24 `term_exam` from 1am-s1-91, -93, -94, -95, -96, -97, -98, -99, -101, -104, -106 and 1am-s2-64, -65; 10 `term_exam_modelled`; 16 `adapted`), oracle `scripts/practice-oracle/kusur-ashriya-kitaba.mjs`, 16 `MISC-KUSUR-*`. `1am-s2-65` is the first corpus source for `1am.m5.r03`.
+- **Gates:** `npm test` (core 841 · web 10142 · scripts 11521), `check:lessons` (entry 323.0 KB gzip ≤ 330), `build`, browser `e2e/lesson-kit/1am-kusur-ashriya-kitaba.mjs`, `lesson-route-boundary.mjs`, block added to `moyen-retrofit-phase1.mjs`. Local DB: imported, 10 modules and 50 exercises published.
+- **URL:** `/courses/moyen/1am/ansab_al_aadad_wal_hisab/kusur-ashriya-kitaba`.
+
 
 ## Method retrofit, phase 1 (2026-10-15)
 
@@ -194,9 +209,7 @@ module: act → answer about what you did → name it). Applied to ONE lesson, `
 
 ## Next batch — prompt
 
-The queue after batch 2 starts with `hasil-qisma-kasr` (1AM), `kusur-ashriya-kitaba` (1AM), `muqaranat-adad-ashriya` (1AM)
-(`docs/curriculum/GENERATION_QUEUE.md`; the 1AM unit-1 lesson `kusur-ashriya-kitaba` takes `know-4 b`, `ex-12 ②–④`, `deep-3 ③④` split
-off by `kitabat-adad-tabii`). Organisation that worked twice: a lead per lesson (phase 1: seed + extraction + brief; phase 2: lesson), a lab
+The queue after batch 4 entry 1 starts with `muqaranat-adad-ashriya` (1AM, unit 1) (`docs/curriculum/GENERATION_QUEUE.md`; `deep-3` ③④ are its extraction items). Organisation that worked twice: a lead per lesson (phase 1: seed + extraction + brief; phase 2: lesson), a lab
 author and a bank author per lesson from the brief. Paste:
 
 ```

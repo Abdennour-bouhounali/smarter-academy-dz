@@ -66,7 +66,7 @@ manipulations/
 │   ├── FlowerFigure.jsx                        a flower, a bouquet sleeve and its ribbon tie (division-jumps)
 │   ├── HopperFigure.jsx                        a drawn rabbit that hops on a number line (division-jumps)
 │   ├── BulbFigure.jsx                          a light bulb lamp, closed / yes / no (digit-cards)
-│   ├── BreadFigure.jsx                         a drawn baguette `Loaf` (optional knife cuts, ghost) (fair-share, §2duovicies)
+│   ├── CakeFigure.jsx                          a round cake seen from above `Cake` (sector slices, knife cuts, ghost) + `sectorPath` (fair-share, §2duovicies)
 │   ├── EggFigure.jsx                           an egg, an open tray / carton with exactly r eggs, a closed lid, a full slat, a pallet (egg-trays, §2unvicies)
 │   ├── MovablePanel.jsx + movablePanel.js     a panel floating on the scene that the student moves aside (§8bis)
 │   └── ContextScenes.jsx                      the landscape vignettes of each world, for `MissionBrief.visual`
@@ -676,36 +676,141 @@ every (a, b, n), the claim sweep, the flow and gate, the refutation picks, the r
 ## 2duovicies. The fraction is the quotient — `fair-share` (1AM unit 4, 2026-10-15)
 
 `operations/FairShare.jsx` on `logic/fairShare.js` (every verdict exact through `core/arithmetic/linear.js` — `frac`, `mul`, `sub`, `cmp`,
-`fracText`, `fracDecimal`, imported by path), drawing `primitives/BreadFigure.jsx › Loaf`, children `KidFigure` (girls in hijab), theme
-`bakery`; lesson `hasil-qisma-kasr`. `a` loaves lie on a table for `b` children. The hand holds the SHARE x of ONE child (a handle on a
-ruler of loaves, stretch gesture: drag, tap the ruler, ← → ±1 step, Page ±10, round −/+); the lab lays b shares end to end under the loaves
-and judges b × x against a: `exact` (all shared), `short` (bread left, a rose sliver), `over` (bread that does not exist, rose dashed past
-the last loaf). The student also chooses the RULER: a step of 0,1 / 0,01 / 0,001 of a loaf (`d1 d2 d3`) or `cut` — every loaf cut into b equal
-pieces, x = m pieces. The decimal rulers land for 3 ÷ 4 (0,75) and NEVER for 2 ÷ 3, 5 ÷ 6, 7 ÷ 3; `cut` lands for every a and b ≠ 0, at m = a.
-The cut ruler is earned: it opens after two decimal trials of the order (or once it is solved). Not `division-jumps` (b given, the hand
-holds the number of groups), not `fraction-knife` (the share is fixed, the hand holds the number of pieces), not `egg-trays` (the hand
-holds the dividend): here the hand holds the unknown QUOTIENT itself.
+`fracText`, `fracDecimal`, imported by path), drawing `primitives/CakeFigure.jsx › Cake` (a ROUND cake: the circle IS the fraction), children `KidFigure` (girls in hijab), theme
+`bakery`; lesson `hasil-qisma-kasr`. `a` round cakes lie on a festive table (bunting, المولد النبوي الشريف) for `b` children. **Two DISCRETE steps, no slider** (owner, 2026-10-15):
+« قسّم كل كعكة إلى n قطع » (n = 1…12, `setN`, every cake shows its n cuts at once) and « كل واحد يأخذ m قطع » (`commitM`, each press is a judged
+trial, m = 0 is none). A child's share is m / n cake. The lab PAINTS the b shares as coloured SLICES on the cakes (kid i takes the interval
+[i·x, (i+1)·x] of the cake line; a share may straddle two cakes — `logic/fairShare.js › slicesOf`; each kid keeps a plate with his slice) and judges
+b × x against a: `exact` (every cake fully taken), `short` (an untouched sector outlined in rose dashes stays on the table), `over` (ghost cakes in
+rose dashes past the last real one: cake that does not exist). Cutting in n = b parts lands for every a and b ≠ 0 (m = a); any n lands iff b divides
+a·n; **n = 10 (tenths, `DECIMAL_SPLIT`) never lands for the four lesson orders** — that is the contrast and the source of the student's own decimal
+bounds (« 0,6 approchée, 0,7 approchée »). Trials carry `ruler: 'cut' | 'dec' | 'other'` (n = b, n = 10, else). Not `division-jumps` (b given, the hand
+holds the number of groups), not `fraction-knife` (the share is fixed, the hand holds the number of pieces), not `egg-trays` (the hand holds the
+dividend): here the hand cuts AND picks the unknown QUOTIENT itself.
 
 | Level | Orders (a, b) | What resists |
 |---|---|---|
-| مبتدئ (`canteen`, platform) | 3 ÷ 4, then « طلب جديد » 2 ÷ 3 | 3 ÷ 4 lands in decimal (0,75); 2 ÷ 3 never does (0,66 leaves 0,02, 0,666 leaves 0,002…) |
-| متقدم (`family`, textbook نشاط 1) | 5 ÷ 6, then 7 ÷ 3 | never decimal; the share of 7 ÷ 3 exceeds one loaf (the rail holds ⌈a/b⌉ loaves) |
+| مبتدئ (`canteen`, platform) | 3 ÷ 4, then « طلب جديد » 2 ÷ 3 | tenths never land (3 ÷ 4: 2,8 then 3,2; 2 ÷ 3: 1,8 then 2,1); quarters / thirds do |
+| متقدم (`family`) | 5 ÷ 6, then 7 ÷ 3 | never decimal; the share of 7 ÷ 3 exceeds one cake (a child may take up to ⌈a/b⌉ cakes) |
 
-`discoveryReady`: every order solved, and every non-decimal order solved by `cut`. Discovery « كيف نكتب حصّة الواحد…؟ »: right « بكسر بسطه عدد
-الأرغفة ومقامه عدد الأطفال » (no digit), wrong « بعدد عشري… » refuted with the student's nearest decimal trial (`refutations`: x, total, gap) and
+`discoveryReady`: every lesson order solved (by whichever cut the student chose). Discovery « كيف نكتب حصّة الواحد…؟ »: right « بكسر بسطه عدد
+الكعكات ومقامه عدد الأطفال » (no digit), wrong « بعدد عشري… » refuted with the student's nearest decimal trial (`refutations`: x, total, gap) and
 « الكسر مقلوب » refuted with b × b/a. Formal: a ÷ b = a/b, b × a/b = a, the decimal when it exists, else the student's own two decimal bounds
 (« قيمة مقرّبة بالنقصان / بالزيادة », the exact value is the fraction). Props: `scene` ('canteen' | 'family'), `orders` [[a, b], …], `level`, `levels`,
-`title`, `lead`, `onTrial` — `{ order: '2/3', ruler, m, x, kind, ok }` — and `onFinished({ orders })`. Not eligible for « جرّب كل الإمكانيات »
-(each release is an answer). LabCoach: `coachOf` = `handle` · `again` · `rulers` · `next` (controls only; unit test follows it to the end).
-Layout: `PromptCard` §17.9 (context with the numbers, ONE question « اختر حصّة الواحد حتى توزَّع الأرغفة كلها بالضبط. », lamp, live pills ≥ 380 px),
-`StageFrame` scene (table + shares, ruler, kids), control card (« الخطوة التي يتحرّك بها المقبض » chips + −/+), `VerdictBanner`, `LabFold`
+`title`, `lead`, `onTrial` — `{ order: '2/3', ruler, n, m, x: 'm/n', kind, ok, free }` — and `onFinished({ orders })`. Not eligible for « جرّب كل الإمكانيات »
+(each choice is an answer). LabCoach: `coachOf` = `pieces` · `again` · `split` · `next` (controls only; unit test follows it to the end).
+Layout: `PromptCard` §17.9 (context with the numbers, ONE question « اختر حصّة الواحد حتى توزَّع الكعكات كلها بالضبط. », lamp, live pills ≥ 380 px),
+`StageFrame` scene (cakes with coloured slices, kids with plates), control card (the two −/+ steppers: split, take), `VerdictBanner`, `LabFold`
 trials. Measured glance (`[data-fs-glance]`): ≤ 705 / 800, ≤ 584 / 844, ≤ 609 / 640 px (1366 × 768 in the unit e2e). DOM: `[data-fair-share][data-scene]
-[data-order][data-ruler][data-solved][data-layout]`, `[data-fs-glance]`, `[data-fs-prompt][data-lit]`, `[data-fs-scene]`, `[data-fs-handle]` (slider),
-`[data-fs-rulers]`, `[data-fs-ruler=d1|d2|d3|cut][data-active]`, `[data-fs-less]`, `[data-fs-more]`, `[data-fs-read=share|total]`, `[data-fs-loaf=<i>]`,
-`[data-fs-share=<i>]`, `[data-fs-gap]`, `[data-fs-over]`, `[data-fs-kid=<i>][data-mood]`, `[data-fs-verdict=exact|short|over]`, `[data-fs-next]`,
+[data-order][data-split][data-solved][data-layout]`, `[data-fs-glance]`, `[data-fs-prompt][data-lit]`, `[data-fs-scene]`,  `[data-fs-read=share|total]`, `[data-fs-cake=<i>]`,
+`[data-fs-table]`, `[data-fs-bunting]`, `[data-fs-split][data-n]`, `[data-fs-take][data-m]`, `[data-fs-step-less|more=split|take]`, `[data-fs-step-value=split|take]`, `[data-cake-slice=<kid>]`, `[data-fs-plate-share=<kid>]`, `[data-fs-gap]` (the untouched sector), `[data-fs-over]` / `[data-fs-ghost=<i>]` (a ghost cake),
+`[data-fs-free][data-active]`, `[data-fs-free-field=cakes|kids]`, `[data-fs-free-less|more=cakes|kids]`, `[data-fs-free-value]`, `[data-fs-free-back]`, `[data-fs-kid=<i>][data-mood]`, `[data-fs-verdict=exact|short|over]`, `[data-fs-next]`,
 `[data-fs-next-button]`, `[data-fs-back]`, `[data-fs-formal]`, `[data-lab-fold=fair-share.trials]`. Tests: `logic/fairShare.test.js` (a ≤ 12 × b ≤ 9
-sweeps: `cut` lands only at m = a, a decimal ruler lands iff b | a·10^d, the rail never ends on the exact share; the flow, the formal bounds, the
+sweeps: n = b lands at m = a, any n lands iff b | a·n, tenths never land for the lesson orders, the share limit never ends on the exact share; the flow, the formal bounds, the
 refutations, the coach followed to the end, geometry at five widths), `operations/fairShare.render.test.jsx`; browser `e2e/lesson-kit/1am-hasil-qisma-kasr.mjs`.
+
+**« جرّب أعدادك أنت » — always open (owner, 2026-10-15).** Under the lab, a card with two steppers (cakes 1–12, kids 2–8; `FREE_LIMITS`) lets the student
+test ANY other numbers at any moment, from the numbers he is on. `setCustom(s, a, b)` opens ONE free order after the lesson orders (`s.base` = the
+number of lesson orders, `isFree(s)`): it restarts (split, pieces, trials of the free order) at every change, its trials carry `free: true` (the lesson
+module ignores them — `Module01Nashat.record`), and it NEVER counts for `discoveryReady`, `canNext`, `formalOf` or `finishedEvidence`. « عُد إلى مسألة الدرس » (`toGuided`) returns
+to the first lesson order not solved yet. Any new lab of this family should keep this rule: the student can always try his own numbers, and what he
+tries on his own never pollutes the guided evidence. Cakes layout: `cakesLayout` (N = b × railMax round cells in 1–3 rows, never overlapping, swept at
+five widths); the 1AM lesson words are « كعكة / كعكات » (book independence: the lab's words are the platform's own, `LESSON_DEVELOPMENT_GUIDE.md` §4ter-bis).
+
+**Naming a and b, and why b ≠ 0 (owner, 2026-10-15).** Formal phase: a labelled key « ماذا يقول الحرفان a و b؟ » (`[data-fs-key]`: a = the cakes on the
+table, b = those who share them, same colours as the fraction written for each of the student's own orders, `[data-fs-frac]`), then « لماذا لا يمكن
+أن يكون b = 0؟ » (`[data-fs-nonzero]`: nobody to give a share to; × 0 always gives 0, so no number times 0 gives a). In the free card a button
+« وماذا لو لم يكن هناك أيّ طفل (0)؟ » (`[data-fs-zero-button]` → `[data-fs-zero]`) lets the student test b = 0 on his own cakes (the kids stepper stays ≥ 2: 0 is
+explained, never simulated). Module 2 repeats it as a platform-worded definition + a TapQuestion on ÷ 0.
+
+## 2tervicies. The comma under the hand — `decimal-comma` (1AM unit 1, 2026-10-15)
+
+`operations/DecimalComma.jsx` on `logic/decimalComma.js` (every verdict exact through `packages/core/arithmetic/decimals.js`, imported BY PATH —
+never the core barrel), drawing `primitives/MosaicFigure.jsx` (the pieces, the tray, the client's table, `TenMachine`, the craftswoman — a girl in
+hijab, `KidFigure`), `primitives/mosaicLayout.js` (pure block layout) and `primitives/CommaSlip.jsx` (the slip of digit tiles and its comma handle);
+theme `mosaic`; lesson `kusur-ashriya-kitaba` (module 1 = the `mosaic` world, module 4 = the `machine` world). **The DIGITS are printed and fixed;
+the hand holds the COMMA** — its place in the string of digits, i.e. the number of digits after it (`point = len − pos`). The value is N / 10^point, an
+OUTPUT: drawn in honest blocks (`mosaic`) or read on rank names (`machine`). Not `rank-exchange` (the hand moves QUANTITIES between ranks, the written
+digits are an output), not `digit-cards` (the digit is the object), not `fraction-knife` / `fair-share` (the hand holds a number of pieces / a share).
+What resists: the comma never leaves the string of digits; in `machine` it cannot pass the last digit (a zero must be ADDED there first).
+
+**Arithmetic — `core/arithmetic/decimals.js`.** A value is `{ n, k }` = n / 10^k (`n` a safe integer ≥ 0; comparisons and shifts through BigInt, text made
+digit by digit — no float). Public API: `make`, `fromSlip(digits, point)`, `parse('2,35' | '2.35' | '3125/1000')` (the denominator must be a power of ten, else
+`null`), `cmp` / `eq`, `normalize`, `format` (keeps the k decimals) / `formatTrim` (2,50 → 2,5), `slipText(digits, point)` (the slip as written: `('05', 2)` →
+`0,05`, `('235', 3)` → `0,235`), `slipValueText`, `fractionOf` / `fractionText` (`235/100`, `235/1`), `shift(v, e)` (× 10^e, exact), `opExponent('×1000' | '÷100' | '×0,01' …)` and
+`OPERATORS` (the nine of the machine), `integerPart`, `countOfExp(v, e)` (« عدد الأعشار » = `countOfExp(v, −1)`: 217,48 → 2174), `rankName(e)` (الآحاد …
+الأعشار، الأجزاء من مائة، من ألف …), `exponentsOf(digits, point)`, `decomposeDigits` / `rankTable` / `decomposition(v)` (`2 + 3/10 + 5/100` and `2 + 3 × 0,1 + 5 × 0,01`, empty ranks
+absent), `partName(k, count)` + `readFraction` (« مائتان وخمسة وثلاثون جزءًا من مائة ») + `readTail` (« ثلاثة أعشار وخمسة أجزاء من مائة »; the noun agrees with
+the last two digits from 100), `piecesOf(v)`. Tests: `arithmetic/decimals.test.js` (14 blocks: parse / format round trip over every string of ≤ 5 digits at every comma place, exact compare, shift ± 3 reversible, the
+Arabic reading).
+
+**Tasks** (the `tasks` prop; a single object is tolerated; digits are a STRING of 1–6 Latin digits, may start with 0):
+
+| kind | fields | the job | judged by |
+|---|---|---|---|
+| `match` | `digits: '235'`, `target: '2,35'` | the client's table shows the target in blocks; slide the comma until the workshop tray equals it | exact value N / 10^p = target |
+| `fraction` | `digits: '3125'`, `target: '3125/1000'` | no blocks on the client's side: an ORDER card with the fraction (the zeros of the denominator drawn as boxes); the tray still shows the slip's blocks | exact value = target |
+| `shift` | `start: '143,75'`, `op: '×1000'` | `machine` world: input slip (comma fixed) → machine → OUTPUT slip that starts with the same digits and the same comma | exact value = start × 10^e |
+
+Presets (`levels.js`, the lead's): مبتدئ `[match 235→2,35, match 37→0,37, match 05→0,05]`, متقدم `[fraction 3125/1000, fraction 605/100, match 250→2,5]` (each target has exactly ONE
+comma place — tested, `solutions()`). The `machine` tasks come from the module (`MACHINE_PRESETS` in `logic/decimalComma.js` when it passes none): مبتدئ `3,5` ×10 · ×100 · ÷10 · ÷100,
+متقدم `143,75 ×1000 · 43,7 ÷1000 · 27,5 ×0,1 · 0,6 ×0,01`. Zeros each shift task needs (`zerosNeeded`, tested): ×10 → 0, ×100 → one on the right, ÷10 → 0, ÷100 → one on the left; ×1000 of 143,75 → one on
+the right, ÷1000 of 43,7 → one on the left, ×0,1 of 27,5 → 0, ×0,01 of 0,6 → one on the left (×1000 of 3,5 would need two on the right).
+
+**The slip (both worlds).** `CommaSlip`: a LTR island of big digit tiles (≥ 40 px tall; the digit is its own, never moved), `len + 1` gaps, a round **comma handle** (48 px, a `role="slider"`
+button: `aria-valuenow` = point, `aria-valuetext` = the number as written) in a lane above the tiles with a small rail and chevrons. Three paths, same result: **drag** the handle (it follows the
+pointer, the nearest gap lights, it snaps on release; pulled at least HALF A STEP beyond an end it reports the out-of-string intent), **tap a gap** (every gap is a button one step wide: tapping a tile picks the nearest
+gap), **keyboard** on the handle (← → one gap — the island is LTR: ArrowLeft goes left —, Home / End). A release that changes nothing is NOT a trial (§6bis.2: a default is not a trial); every other release
+is judged and reported ONCE; a keyboard step is a release (so ArrowLeft ×2 from « 235 » passes « 23,5 » then judges « 2,35 »). The comma is written between the tiles (a drop with a tail); an integer shows none; before
+the first digit the slip prints a ghost `0` (« 0,235 »). Under each tile the **rank pill** follows the comma (colour = the rank: units teal, tenths amber, hundredths rose, thousandths violet, above indigo / blue):
+the same colours as the pieces and the pill is the only place the rank name is written. Beside the lab, the **readout**: the number as written (`[data-dc-written]`, e.g. `2,50` — trailing zeros kept) and its fraction
+(`[data-dc-fraction="235/100"]`, the denominator's zeros drawn as boxes; a whole number shows `/1`).
+
+**World `mosaic` (the zellige workshop).** One PANEL = 10 × 10 tiles = 1; a STRIP is one column of 10 tiles as tall as the panel (1/10); a TILE is one tile (1/100); a SHARD is ONE of the ten
+slivers of a tile (1/1000) — too fine for the scale, so it is shown in a **magnifier** (the tile enlarged, cut in 10, as many slivers filled as the thousandths digit) and `[data-dc-block=shard]` counts the filled
+slivers. Every rank ABOVE the units (tens, hundreds …) collapses into ONE symbol — a stack of panels with a « ×N » badge (`[data-dc-block=panel][data-count=N]`, N exact; not to scale: the badge IS the count). Digits finer than
+the shard (a 4th decimal in the free panel) are not drawn: a pill « + أجزاء أصغر من شظية » says so without lying about their size. One panel side `s` is chosen PER TASK (the smallest that fits the client's table and the tray at every
+comma place, `mosaicLayout.commonScale`), so the table and the tray are drawn to the same scale and the size of the pieces changes when the comma moves while nothing jumps. Two zones: **طاولة الزبون** (the target as blocks, or the order
+card for `fraction`) and **صينيّة الورشة** (the slip's amount, re-drawn at every comma move, a short « fall » of the pieces — instant under `prefers-reduced-motion`). Verdict (a banner that never moves the stage): `exact` — the tray's
+label turns into the « مطابق » stamp, the craftswoman is proud —, `more` / `less` — « في الصينيّة 23 لوحةً و5 أعمدة: أكثر ممّا طلب الزبون » (`exact` says only « الصينيّة تطابق طاولة الزبون بالضبط ») (her own pieces, never the rule, never where the comma should be). A solved task stays solved;
+the comma stays movable.
+
+**World `machine` (« آلة العشرة »).** Input slip (read-only, its ranks named) → a glass machine with the operator pill (`[data-dc-op]`, the links of every digit visible through it) → the OUTPUT slip (the student's). Two `+ 0` buttons at the
+ends of the output (`[data-dc-zero=left|right]`, at most 3 each side; the outermost added zero is removed by tapping it). **An added zero never changes the value** — the comma stays attached to the digits it was between (left zero:
+`pos + 1`; right zero: `pos` unchanged; `activeOf`, `addZero`, `removeZero`, tested). The output tiles stay vertically aligned with the input digits (the core digits keep their x; zeros extend outward), the rank pill of every digit that moved gets an
+amber ring and a `+3` / `−2` chip (the digit's own rank change on HIS board). A release beyond the last digit (pulled half a step past an end, or a key pressed at the end) is **refused with `nodigit`** (« لا رقم هنا: أضف صفرًا »): the comma sits at
+the end, the slip shakes (`dc-shake`, without remounting: the keyboard focus stays on the handle) — unless the value at the end is already right (then it is an ordinary `exact`). Judged on every release and every zero change:
+`exact` · `more` · `less` (« بطاقتك تقرأ 0,35: أكبر ممّا تُخرجه الآلة »). The leading zero before the comma is automatic; an extra zero is never an error when the value is right, and the formal phase shows the writing WITHOUT unnecessary zeros.
+
+**« جرّب أعدادك أنت » — always open.** A card under the glance with a digits field (≤ 5 digits, `inputMode` numeric in `mosaic`, decimal in `machine` where ONE comma may be typed: « 14,37 » sets the input comma) and, in `machine`, the nine operators
+(`D.OPERATORS`). Typing starts a free board (`setFree`, `setFreeOp`): its trials carry `free: true` and NEVER count for `discoveryReady`, `canNext` or `onFinished`; « عُد إلى مهامك » (`toGuided`) returns. In free `mosaic` the left zone disappears (no target)
+and the banner reads the tray (« على الصينيّة … »); in free `machine` the judge compares with the chosen operator.
+
+**Discovery and formal phase.** `discoveryReady` = every task of the sequence solved. Discovery (`ManipulationDiscovery`) — mosaic: « ماذا يغيّر موضع الفاصلة؟ », right « كل خطوة نحو اليمين تجعل القطعة التي يعدّها الرقم أصغر بعشر مرّات » (no digit), wrong
+« الفاصلة لا تغيّر المقدار، بل طريقة قراءته فقط » (refuted with his own boards: the digits 235 wrote `235` then `0,235`; `sameDigitsPair`) and « العدد الذي فيه أرقام أكثر بعد الفاصلة أكبر دائمًا » (« في 0,235 3 أرقام بعد الفاصلة، وفي 23,5 رقم واحد فقط،
+ومع ذلك 0,235 هو الأصغر »); machine: « ماذا فعلت الآلة بأرقام عددك؟ », right « نقلت كل رقم عدد المراتب نفسه … », wrong « غيّرت الأرقام نفسها » and « أضافت أصفارًا فقط » (refuted with the task that needed the fewest zeros, `machineWitness`).
+Formal, mosaic: one card per solved task (`2,35 = 235/100`, its reading, the decomposition in both forms, empty ranks absent), the rank table of the LAST task (zero ranks greyed), « عدد الأجزاء من مائة في 2,35 هو 235 » once, the zero that keeps an empty place
+(0,05) and, if a task ended with a useless zero, `2,50 = 2,5`; formal, machine: the before / after rank table of the last task and « ÷100: انتقلت الفاصلة مرتبتين إلى اليسار » in HIS numbers, the writing without useless zeros, the rule.
+
+**Props.** `world` ('mosaic' | 'machine'), `tasks`, `level`, `levels`, `title`, `lead`, `coach` (default true), `onTrial`, `onFinished`.
+`onTrial({ task, kind, digits, point, shown, value, target, ok, verdict, zeros, free })` — `task`: index of the guided task (a free trial keeps the current one), `kind`: `match` | `fraction` | `shift` (a free `mosaic` trial reports `match`),
+`digits`: the slip's digits INCLUDING added zeros, `point`: digits after the comma, `shown`: the slip as written (`2,50`), `value`: exact, trailing zeros dropped (`2,5`), `target`: the task's string (`2,35`, `3125/1000`) or the machine's result (`143750`) or `null` (free `mosaic`),
+`ok` true ONLY when value = target, `verdict`: `exact` | `more` | `less` | `nodigit` | `null` (free `mosaic`), `zeros: { left, right }`, `free`. `onFinished({ tasks })` — ONCE, when every guided task is solved (before the discovery is answered; `tasks` = the task objects as given).
+Not eligible for « جرّب كل الإمكانيات » (every release is the student's experiment). LabCoach: `coachOf` = `grab` · `move` (the handle) · `zero` (after a `nodigit` refusal, the « + 0 » of the side pushed against) · `next` — never where the comma should end; followed to the end of every task of both worlds
+and levels in `logic/decimalComma.test.js`, strings `decimalComma.coach.*`.
+
+**Layout.** `[data-dc-glance]` = the prompt (CONTEXT with every number, then ONE question, no title — « حرّك الفاصلة حتى تتطابق الصينيّة مع طاولة الزبون. »), the stage, the readout and the banner; the free card sits below the glance. Lab width ≥ 700 px: the stage on one side and a column
+(the craftswoman scene, the readout, the banner) on the other; below 700 px the readout and the banner share a row and the craftswoman is the round avatar at the banner's start (she « speaks » the verdict). The stage height comes from `useLessonViewport` (the `overhead` measure is
+hysteresis-guarded: without the guard two heights chased each other in `machine`). All numbers are LTR islands, Arabic is DOM text. Measured glance (`[data-dc-glance]` height / viewport; lab width): ≤ 846 / 1024 at 768 × 1024 (lab 494 px), ≤ 753 / 768 at 1024 × 768 (lab 414 px), ≤ 761 / 800 at 1280 × 800 (lab 670 px), ≤ 699 / 768 at 1366 × 768 (lab 756 px), ≤ 664 / 1080 at 1920 × 1080 (lab 1310 px), both worlds, both levels, initial and every mid-activity state of the sweep.
+
+**DOM.** `[data-decimal-comma][data-world][data-task][data-solved][data-layout]`, `[data-dc-glance]`, `[data-dc-slip=input|output][data-dc-point]`, `[data-dc-digit=<i>][data-added=left|right]`, `[data-dc-comma][data-point][data-dragging]`, `[data-dc-gap=<j>][data-here]`,
+`[data-dc-rank=<i>][data-exp][data-changed]`, `[data-dc-delta]`, `[data-dc-ghost]`, `[data-dc-written]`, `[data-dc-fraction="N/D"]`, `[data-dc-table=target|tray]`, `[data-dc-order]`, `[data-dc-block=panel|strip|tile|shard]` (`data-count` on a bundle),
+`[data-dc-lens]`, `[data-dc-op]`, `[data-dc-machine]`, `[data-dc-link]`, `[data-dc-zero=left|right]`, `[data-dc-verdict=exact|more|less|nodigit]`, `[data-dc-prompt][data-lit]`, `[data-dc-context]`, `[data-dc-step=<i>][data-done]`, `[data-dc-next]`, `[data-dc-stamp]`,
+`[data-dc-free][data-active]`, `[data-dc-free-digits]`, `[data-dc-free-op]`, `[data-dc-free-op-button=<op>]`, `[data-dc-free-back]`, `[data-dc-formal=mosaic|machine]`, `[data-dc-kid=<mood>]`, `[data-lab-fold=decimal-comma.trials]`, the LabCoach markers.
+
+**Tests.** `logic/decimalComma.test.js` (every digit string ≤ 4 digits at every comma place: value N / 10^p; each preset target has one comma place; the zeros each shift task needs; judge verdicts, `nodigit`, zeros keep the value; the free panel never counts; the coach followed to the end of the 4 suites; blocks equal the digits;
+the slip layout swept at five widths; the discovery witnesses), `primitives/mosaicLayout.test.js` (honest sizes, nothing overlaps, everything inside its zone at four zone sizes, the exact bundle count), `primitives/mosaicFigure.render.test.jsx` (the DOM counts = the digits at every comma place; the handle is a slider ≥ 44 px),
+`operations/decimalComma.render.test.jsx` (both worlds × both levels render, no raw key, context then ONE question, says each thing once, no prompt / hint / idle line leaks the rule, counted nouns, discovery and formal from real states). Browser: `e2e/lesson-kit/1am-kusur-ashriya-kitaba.mjs`.
 
 ## 2quindecies. The space laboratories and the 3D kit (unit 14, 2026-10-05)
 

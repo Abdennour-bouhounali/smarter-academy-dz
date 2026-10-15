@@ -1540,11 +1540,11 @@
   },
   "act-2": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 1
+   "module": 5
   },
   "act-3": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 1
+   "module": 5
   },
   "act-4": {
    "lesson": "adad-ashri-mustaqim-mudarraj",
@@ -1598,11 +1598,11 @@
   },
   "method-2": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 3
+   "module": 4
   },
   "now-14": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 3
+   "module": 4
   },
   "know-6": {
    "lesson": "muqaranat-adad-ashriya",
@@ -1638,39 +1638,39 @@
   },
   "ex-4": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4
+   "module": 5
   },
   "ex-5": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4
+   "module": 5
   },
   "ex-6": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4
+   "module": 5
   },
   "ex-7": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4
+   "module": 5
   },
   "ex-8": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4
+   "module": 5
   },
   "ex-9": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4
+   "module": 5
   },
   "ex-10": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4
+   "module": 5
   },
   "ex-11": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4
+   "module": 5
   },
   "ex-12": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4,
+   "module": 5,
    "items": {
     "1": {
      "lesson": "kitabat-adad-tabii",
@@ -1678,17 +1678,17 @@
     },
     "2-3-4": {
      "lesson": "kusur-ashriya-kitaba",
-     "module": 4
+     "module": 5
     }
    }
   },
   "ex-13": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4
+   "module": 5
   },
   "ex-14": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4
+   "module": 5
   },
   "ex-15": {
    "lesson": "adad-ashri-mustaqim-mudarraj",
@@ -1736,15 +1736,15 @@
   },
   "ex-26": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4
+   "module": 5
   },
   "ex-27": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4
+   "module": 5
   },
   "ex-28": {
    "lesson": "kusur-ashriya-kitaba",
-   "module": 4
+   "module": 5
   },
   "self-1": {
    "lesson": "kitabat-adad-tabii",

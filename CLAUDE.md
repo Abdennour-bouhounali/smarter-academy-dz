@@ -93,6 +93,11 @@ and its modules/exercises published in the LOCAL database so the owner can brows
   later as an application), and every module is ONE track — the action (lab) at the top with nothing above it, then
   questions on what the student did, then the name (`LESSON_DEVELOPMENT_GUIDE.md` §4ter–§4quinquies; reference
   `kitabat-adad-tabii`, validated; applies to every new lesson; existing lessons: `docs/reports/LESSON_METHOD_RETROFIT.md`).
+- **Supported screens: tablet and laptop only (owner, 2026-10-15)** — widths ≥ 768 px (768×1024, 1024×768, 1280×800, 1366×768, 1920×1080). Phones are NOT supported: do not design, tune or test for phone widths (320–430 px); older mentions of them below are superseded.
+- **INDEPENDENCE FROM THE BOOK** (owner, 2026-10-15, CRITICAL): the platform is self-sufficient. Read the textbook, analyse it, get the idea, then
+  GENERATE YOUR OWN content — own boxes, own contexts, own numbers, own wording. Never copy the book's text to the student and never write a
+  student-visible line that sends them to the book (« الكتاب ص 55 », « اقرأ ما يقوله الكتاب », « تمارين من الكتاب »); `SourceTag` is muted for
+  students (`LESSON_DEVELOPMENT_GUIDE.md` §4ter-bis).
 - **Every manipulation has the onboarding** (owner, 2026-10-14): `LabCoach` — at each moment a ring + one-sentence bubble on the button or
   gesture needed now, shown once, hidable, re-summonable; same design in every lab, every lesson, every grade
   (`MANIPULATION_CONTRACT.md` §8quater, `MANIPULATION_DNA.md` §17.11; rollout and its prompt: `docs/reports/LAB_COACH_ROLLOUT.md`).
@@ -199,7 +204,7 @@ platform's CHARACTERS »; the lab visual kit around it: `MANIPULATION_CONTRACT.m
 
 **Every manipulation is built to the LIMIT of what you can produce for Gen Alpha (11–13)** (owner, 2026-10-14, every
 generation): a lab that merely works is not done. The quality bar — drawn world, shared kit, physical gestures, visual feedback that
-never states the rule, one screen at four sizes, screenshots reviewed with the eyes — is `docs/architecture/MANIPULATION_DNA.md` §17.
+never states the rule, one screen at the tablet and laptop sizes, screenshots reviewed with the eyes — is `docs/architecture/MANIPULATION_DNA.md` §17.
 A lab opens on NO title: the context in one or two plain sentences, then ONE direct question naming the goal and the end state (§17.9).
 
 ### Marketing and shell surfaces: generation is fine
