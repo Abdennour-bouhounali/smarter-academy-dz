@@ -492,14 +492,14 @@ E.append({'id': 'ex-15', 'kind': 'exercise', 'number': 15, 'page': 18, 'section'
           'note': 'Lecture des bornes finales à confirmer par la leçon adad-ashri-mustaqim-mudarraj.'})
 E.append({'id': 'ex-16', 'kind': 'exercise', 'number': 16, 'page': 18, 'section': 'أتمرّن', 'verified': False,
           'text': 'اكتب على أربعة أنصاف المستقيمات المدرّجة الآتية الأعداد التي تشير إليها الأسهم. (تدريجات: 0–4 ؛ 9–12 ؛ 0–0,4 ؛ 9,1–9,2)'})
-E.append({'id': 'ex-17', 'kind': 'exercise', 'number': 17, 'page': 18, 'section': 'أتمرّن', 'title': 'مقارنة عددين عشريين', 'verified': False,
+E.append({'id': 'ex-17', 'kind': 'exercise', 'number': 17, 'page': 18, 'section': 'أتمرّن', 'title': 'مقارنة عددين عشريين', 'verified': True,
           'text': 'قارن بين كل عددين في كل حالة مماثلي: 1) 5/10 و 7/10 2) 78/100 و 87/100 3) 25/10 و 32/100 4) 4/10 و 40/100 5) 2017/100 و 20,17'})
-E.append({'id': 'ex-18', 'kind': 'exercise', 'number': 18, 'page': 18, 'section': 'أتمرّن', 'verified': False,
+E.append({'id': 'ex-18', 'kind': 'exercise', 'number': 18, 'page': 18, 'section': 'أتمرّن', 'verified': True,
           'text': 'قارن بين كل عددين في كل حالة مماثلي: 1) 234 و 1253 2) 43 و 12,9 3) 23,56 و 37,56 4) 24,13 و 24,52 5) 28,145 و 28,2'})
-E.append({'id': 'ex-19', 'kind': 'exercise', 'number': 19, 'page': 18, 'section': 'أتمرّن', 'verified': False,
+E.append({'id': 'ex-19', 'kind': 'exercise', 'number': 19, 'page': 18, 'section': 'أتمرّن', 'verified': True,
           'text': 'رتّب تصاعديا الأعداد الآتية: 13,7 ، 12,9 ، 13,2 ، 13,15 ، 17,04',
           'answer': {'order': ' < '.join(fr(x) for x in sorted(dec(s) for s in ('13.7', '12.9', '13.2', '13.15', '17.04')))}, 'answerSource': 'computed'})
-E.append({'id': 'ex-20', 'kind': 'exercise', 'number': 20, 'page': 18, 'section': 'أتمرّن', 'verified': False,
+E.append({'id': 'ex-20', 'kind': 'exercise', 'number': 20, 'page': 18, 'section': 'أتمرّن', 'verified': True,
           'text': 'رتّب تنازليا الأعداد الآتية: 24,3 ، 243 ، 24,039 ، 24,506 ، 24,39',
           'answer': {'order': ' > '.join(fr(x) for x in sorted((dec(s) for s in ('24.3', '243', '24.039', '24.506', '24.39')), reverse=True))}, 'answerSource': 'computed'})
 E.append({'id': 'ex-21', 'kind': 'exercise', 'number': 21, 'page': 18, 'section': 'أتمرّن', 'title': 'الحصر، القيم المقرّبة', 'verified': False,
@@ -622,7 +622,7 @@ DEST = {
     # act-2 / act-3 : posés en APPLICATION au module 5 de kusur-ashriya-kitaba — son entrée est l'atelier de zellige de la plateforme
     # (guide §4ter, 2026-10-15) ; ex-4…ex-14 et ex-26…ex-28 sont REDESSINÉS (autres contextes, autres nombres) en أتمرّن (module 5).
     'act-2': {'lesson': L2, 'module': 5}, 'act-3': {'lesson': L2, 'module': 5},
-    'act-4': {'lesson': L3, 'module': 1}, 'act-5': {'lesson': L4, 'module': 1}, 'act-6': {'lesson': L5, 'module': 1},
+    'act-4': {'lesson': L3, 'module': 1}, 'act-5': {'lesson': L4, 'module': 4}, 'act-6': {'lesson': L5, 'module': 1},
     'know-1': {'lesson': L1, 'module': 2},
     'know-2': {'lesson': L2, 'module': 2}, 'know-3': {'lesson': L2, 'module': 2},
     'method-1': {'lesson': L2, 'module': 3}, 'now-12': {'lesson': L2, 'module': 3},
@@ -646,12 +646,12 @@ DEST = {
     **{f'self-{n}': {'lesson': L5, 'module': None} for n in (10, 11, 12)},
     'deep-1': {'lesson': L1, 'module': None},
     'deep-2': {'lesson': L1, 'module': None},
-    'deep-3': {'lesson': L1, 'module': None, 'items': {'1-2': {'lesson': L1, 'module': None}, '3-4': {'lesson': L4, 'module': None}}},
+    'deep-3': {'lesson': L1, 'module': None, 'items': {'1-2': {'lesson': L1, 'module': None}, '3-4': {'lesson': L4, 'module': 4}}},
     'deep-4': {'lesson': SYN, 'module': None},
     'deep-5': {'lesson': L1, 'module': None},
     'integration': {'lesson': SYN, 'module': None},
     'evaluation': {'lesson': SYN, 'module': None},
-    'ict': {'lesson': L4, 'module': None},
+    'ict': {'lesson': L4, 'module': 4},
 }
 
 DISCREPANCIES = [

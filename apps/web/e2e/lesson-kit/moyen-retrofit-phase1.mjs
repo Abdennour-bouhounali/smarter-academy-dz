@@ -39,6 +39,11 @@ const LESSONS = [
     { slug: 'maarif', bricksHidden: ['mafkuk-ashri', 'asfar-ghayr-darurya'] },
     { slug: 'tariqa-ashara', lab: '[data-decimal-comma]', step: 'grab', bricksHidden: ['azaha-fasila'] },
   ] },
+  { g: '1am', id: 'muqaranat-adad-ashriya', modules: [
+    { slug: 'nashat', lab: '[data-ruler-compare]', step: 'ruler', bricksHidden: ['taqarun-rutab', 'itmam-asfar', 'tartib-silsila'] },
+    { slug: 'maarif', bricksHidden: ['ramz-muqarana'] },
+    { slug: 'tariqa', lab: '[data-ruler-compare]', step: 'ruler', bricksHidden: ['tariqat-muqarana'] },
+  ] },
   // ── PHASE 2 — 4AM unité 1 « الأعداد الطبيعية والناطقة » (2026-10-15) ──
   { g: '4am', id: 'awwaliyan-fima-baynahuma', modules: [
     { slug: '17-wa-18', lab: '[data-manipulation="coprime-explorer"]', bricksHidden: ['awwaliyan-taarif', 'nafy-awwaliyan'] },

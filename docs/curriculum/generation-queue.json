@@ -2,17 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "muqaranat-adad-ashriya",
-      "grade": "1am",
-      "unit": "adad-tabiiya-ashriya",
-      "titleAr": "مقارنة الأعداد العشرية وترتيبها",
-      "kind": "lesson",
-      "trigger": "jidhr-tarbii",
-      "via": [
-        "1am.m1.r04"
-      ]
-    },
-    {
       "code": "masahat-muhit-sath",
       "grade": "1am",
       "unit": "sutuh-masahat-muhitat",

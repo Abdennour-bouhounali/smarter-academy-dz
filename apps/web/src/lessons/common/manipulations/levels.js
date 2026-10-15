@@ -678,6 +678,23 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { world: 'mosaic', tasks: [{ kind: 'match', digits: '235', target: '2,35' }, { kind: 'match', digits: '37', target: '0,37' }, { kind: 'match', digits: '05', target: '0,05' }] }, ...P },
     advanced: { numbers: { world: 'mosaic', tasks: [{ kind: 'fraction', digits: '3125', target: '3125/1000' }, { kind: 'fraction', digits: '605', target: '605/100' }, { kind: 'match', digits: '250', target: '2,5' }] }, ...T('act-3') },
   },
+  // ── 1AM, unité 1 — comparer et ranger des décimaux (2026-10-15) ──
+  // LA GRADUATION SOUS LA MAIN (ruler-compare) : sauts en longueur (monde `jump`, thème sandpit) ; la main tient la graduation de la
+  // règle. مبتدئ : quatre COMPARAISONS (4,6 contre 4,35 — le piège « 35 > 6 » ; 8,05 contre 8,5 — le zéro qui garde la place ;
+  // 12,70 contre 12,7 — l'égalité ; 9,87 contre 10,2 — les parties entières décident, la règle la plus grossière suffit) ;
+  // متقدم : RANGER des suites (croissant, puis décroissant avec des égaux et un nombre entier).
+  'ruler-compare': {
+    beginner: { numbers: { world: 'jump', tasks: [
+      { kind: 'compare', a: '4,6', b: '4,35' },
+      { kind: 'compare', a: '8,05', b: '8,5' },
+      { kind: 'compare', a: '12,70', b: '12,7' },
+      { kind: 'compare', a: '9,87', b: '10,2' },
+    ] }, ...P },
+    advanced: { numbers: { world: 'jump', tasks: [
+      { kind: 'order', values: ['7,4', '7,04', '7,45', '6,98', '7,405'], dir: 'asc' },
+      { kind: 'order', values: ['2,5', '2,05', '0,75', '2,500', '3'], dir: 'desc' },
+    ] }, ...T('act-5') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

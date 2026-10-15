@@ -812,6 +812,42 @@ hysteresis-guarded: without the guard two heights chased each other in `machine`
 the slip layout swept at five widths; the discovery witnesses), `primitives/mosaicLayout.test.js` (honest sizes, nothing overlaps, everything inside its zone at four zone sizes, the exact bundle count), `primitives/mosaicFigure.render.test.jsx` (the DOM counts = the digits at every comma place; the handle is a slider ≥ 44 px),
 `operations/decimalComma.render.test.jsx` (both worlds × both levels render, no raw key, context then ONE question, says each thing once, no prompt / hint / idle line leaks the rule, counted nouns, discovery and formal from real states). Browser: `e2e/lesson-kit/1am-kusur-ashriya-kitaba.mjs`.
 
+## 2quatervicies. The ruler graduation under the hand — `ruler-compare` (1AM unit 1, lesson `muqaranat-adad-ashriya`, 2026-10-15)
+
+`operations/RulerCompare.jsx` on `logic/rulerCompare.js` (exact, through `packages/core/arithmetic/decimals.js` imported BY PATH), drawing `primitives/RulerTape.jsx` (the yellow tape on the sand) and `primitives/KidFigure.jsx`
+(girls in hijab: `JUMPERS` alternate girl / boy); theme `sandpit`; world `jump` (the only one). **The hand holds the GRADUATION of the measuring ruler** shared by the numbers being compared (m · dm · cm · mm), and in `order`
+also places the jumps on the podium. Not `decimal-comma` (the digits are fixed, the hand holds the COMMA), not `rank-exchange` (quantities between ranks), not `fraction-knife` (the number of equal pieces of ONE whole).
+
+**Arithmetic (added to `decimals.js`).** `GRADUATIONS`, `readAt(v, g)` → `{ count: ⌊v·10^g⌋, rest: {n,k} ∈ [0;1[ exact, restIsZero }`, `decidedAt(a, b, g)` (the readings differ, or both fall on the same mark: monotone in g),
+`verdictAt`, `minGraduation(a, b)` (= `firstDifferingRank` when a ≠ b; = the longer normalised length when equal), `firstDifferingRank`, `paddedText(v, k)` (4,6 → 4,60), `rowGraduation(values)`. Sweep-tested on > 100 000 pairs.
+
+**Tasks** (the `tasks` prop; one object tolerated):
+
+| kind | fields | the job | judged by |
+|---|---|---|---|
+| `compare` | `a: '4,6'`, `b: '4,35'` (comma, 1–3 decimals, whole part 0–99) | set the graduation until the ruler separates (or equals) the two jumps, then choose `<` `=` `>` for `a ? b` | exact `cmp` |
+| `order` | `values: [3–6 strings]`, `dir: 'asc'\|'desc'` | ONE graduation for the row, then place the jumps in the podium slots (left = first); « تحقّق » | exact order, equal values in any order |
+
+Presets (`levels.js`): مبتدئ 4 compares (4,6/4,35 → dm · 8,05/8,5 → dm · 12,70/12,7 equal from dm · 9,87/10,2 → m), متقدم 2 orders (asc with 7,4 / 7,405 needing the mm; desc with the tie 2,5 = 2,500 and the integer 3).
+
+**What the student sees.** Each jump = a lane: a KidFigure, its bib (name + the written number, the thing to compare) and a tape: the LAST whole graduations of the reading (numbered cells, the last one dark = the reading), then the LEFTOVER cell,
+hatched, drawn as the exact fraction of one graduation, and the flag at the exact position; a too-long reading is cut on the left (zigzag), a short one starts on the take-off board. The tape never shows the full length to scale (no verdict by eye).
+Beside it the reading badge « n ديسيمتر + باقٍ / بلا باقٍ » (Latin digits). The **ruler control**: a yellow strip of four cells (the tick density grows: 2, 9, 19, 39 ticks) and a 52 px knob (`role="slider"`; drag, tap a cell, ← →); a **lamp**
+« المسطرة تفصل / لا تفصل بعد ». **Resistance:** the verdict (or « تحقّق ») is REFUSED while the ruler cannot separate (rose banner with the student's own readings: « كلتاهما تُقرآن 46 ديسيمترًا » — never which finer ruler);
+a wrong verdict on a deciding ruler is refuted by the readings; a right one SHOWS (the two bibs become the written numbers with the first differing rank highlighted and the completed zeros ghosted); a wrong order shows the FIRST inversion
+with its readings. Placing: pointer drag (ghost follows the finger; drop on a slot or back on the sand), tap-tap (select a jump, tap a slot; a placed jump can be picked up), keyboard (Tab / Enter / ← →).
+**Always-open « جرّب أعدادك أنت »**: two inputs (comma or dot, ≤ 3 decimals, whole part ≤ 99) put the same stage on the student's pair; `free: true` trials never count. Not « جرّب كل الإمكانيات ».
+**Discovery** « ما الذي يحدّد أيّ العددين أكبر؟ » with two wrong options refuted by HIS pairs (`witnesses`: more decimals but smaller; the digits after the comma read as a natural number); formal phase: each solved comparison written with the
+first differing rank highlighted, completed with zeros and as two natural readings, the order chain with its symbols, the rule once. LabCoach (`coachOf`: `ruler` → `verdict` → `next`; `ruler` → `place` → `check` → `next`) never points at an answer.
+
+**Callbacks.** `onTrial({ task, kind: 'compare'|'order', event: 'ruler'|'verdict'|'place'|'check', g: 0..3, a, b, verdict: '<'|'='|'>'|null, ok: true|false|null, decided, free, … })`: `ruler` (graduation changed; `ok` null),
+`verdict` (`ok` null + `refused: 'coarse'` when refused), `place` (+ `jump`, `slot` (null = back to the sand), `text`, `order`), `check` (+ `order`, `inversion`, `refused`; `a`/`b` = the first inverted pair). `onFinished({ tasks })` once.
+**DOM.** `[data-ruler-compare][data-world][data-kind][data-task][data-solved][data-layout=wide|medium|narrow]`, `[data-rc-glance]` (≤ 980 px wide), `[data-rc-grad=0..3][data-active]`, `[data-rc-knob]`, `[data-rc-lamp][data-decided]`,
+`[data-rc-reading=<i>][data-count][data-g]`, `[data-rc-rest=<i>][data-rest="n/10^k"][data-zero]`, `[data-rc-tape][data-count][data-shown][data-broken]` (`[data-rc-restcell][data-frac]`, `[data-rc-flag]`), `[data-rc-verdicts]`, `[data-rc-verdict=lt|eq|gt][data-state][data-locked]`,
+`[data-rc-jump=<i>]`, `[data-rc-tray]`, `[data-rc-slot=<i>]`, `[data-rc-check]`, `[data-rc-next]`, `[data-rc-banner]`, `[data-rc-refused=coarse|order]`, `[data-rc-free][data-active]`, `[data-rc-formal]`, `[data-rc-kid=<id>]`, `[data-lab-fold=ruler-compare.trials]`.
+**Layout.** The lab column is only ≈ 414 px wide at 1024×768 (menu open) and 494 px at 768×1024: below 640 px a lane has two rows (kid + bib + reading, then the tape), below 560 px the verdict and the banner stack. Tests:
+`logic/rulerCompare.test.js`, `operations/rulerCompare.render.test.jsx`, `decimals.test.js`.
+
 ## 2quindecies. The space laboratories and the 3D kit (unit 14, 2026-10-05)
 
 The first unit IN SPACE. Its labs show REAL solids — light, transparency, an orbit under the finger — and every one of them stands on ONE

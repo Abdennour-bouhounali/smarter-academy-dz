@@ -606,6 +606,18 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'الكسر العشري N/10^k يُكتب بالفاصلة بوضع k رقمًا بعدها ؛ عدد الأرقام بعد الفاصلة هو عدد أصفار المقام ؛ كل رقم يعدّ أجزاءً أصغر بعشر مرّات من الرقم الذي على يساره ؛ وإزاحة الفاصلة مرتبة نحو اليمين تضرب في 10 ونحو اليسار تقسم على 10 مع كتابة الأصفار عند اللزوم',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 1 (2026-10-15) — comparer et ranger des nombres décimaux.
+  'ruler-compare': {
+    // LA GRADUATION SOUS LA MAIN : deux (ou plusieurs) nombres décimaux sont des longueurs de sauts (en mètres) ; la main tient la
+    // GRADUATION de la règle (m, dm, cm, mm). À la graduation g, chaque nombre se LIT comme un nombre ENTIER de graduations
+    // (floor(x · 10^g)) plus un reste strictement plus petit qu'une graduation, dessiné hachuré, jamais arrondi. Le jugement
+    // « < = > » n'est permis que lorsque la règle SÉPARE les deux nombres (lectures entières différentes) ou les égale sans reste :
+    // sinon la règle est trop grossière (4,6 et 4,65 se lisent 46 dm tous deux). Ainsi se découvrent la comparaison rang par rang
+    // (le premier rang où les chiffres diffèrent décide) et la comparaison de deux entiers après avoir complété par des zéros
+    // (4,6 = 4,60 : 460 cm contre 435 cm). Tâches `compare` (deux nombres) et `order` (ranger une suite).
+    shows: 'لمقارنة عددين عشريين نقارن جزأيهما الصحيحين، فإن تساويا قارنّا رقم الأعشار ثم رقم الأجزاء من مائة وهكذا حتى أوّل رتبة يختلف فيها الرقمان ؛ أو نكمل بأصفار غير ضرورية حتى يصير لهما عدد الأرقام نفسه بعد الفاصلة فنقارن عددين طبيعيين ($4{,}6=4{,}60$ أكبر من $4{,}35$) ؛ وبهذا نرتّب سلسلة أعداد عشرية',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

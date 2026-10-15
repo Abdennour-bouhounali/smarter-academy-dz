@@ -253,3 +253,78 @@ export function piecesOf(v) {
     finer: finerN && finerN.n !== 0 ? finerN : null,
   };
 }
+
+/* ── La règle graduée (le labo `ruler-compare`, 1AM, unité 1, درس « مقارنة الأعداد العشرية وترتيبها ») ─────────────────── */
+
+/** Les graduations d'une règle : 0 = le mètre, 1 = le décimètre, 2 = le centimètre, 3 = le millimètre (10^g graduations par mètre). */
+export const GRADUATIONS = Object.freeze([0, 1, 2, 3]);
+
+/**
+ * La LECTURE d'une longueur `v` (en mètres) sur une règle graduée au rang `g` : un nombre ENTIER de graduations, `count` = ⌊v · 10^g⌋,
+ * et un RESTE strictement plus petit qu'une graduation, exact (jamais arrondi) : `rest` est une valeur `{ n, k }` de l'intervalle [0 ; 1[
+ * (en graduations) et `restIsZero` dit si la longueur tombe juste sur un trait.
+ *     readAt(parse('4,35'), 1) // { count: 43, rest: { n: 5, k: 1 }, restIsZero: false }   — 43 dm + 5/10 de dm
+ *     readAt(parse('4,6'), 2)  // { count: 460, rest: { n: 0, k: 0 }, restIsZero: true }
+ */
+export function readAt(v, g) {
+  if (!Number.isInteger(g) || g < 0 || g > MAX_DIGITS) throw new RangeError('decimals.readAt: g must be a small non-negative integer');
+  if (g >= v.k) return { count: toSafe(big(v.n) * P10(g - v.k)), rest: make(0, 0), restIsZero: true };
+  const unit = P10(v.k - g);
+  const count = toSafe(big(v.n) / unit);
+  const r = toSafe(big(v.n) % unit);
+  return { count, rest: r === 0 ? make(0, 0) : make(r, v.k - g), restIsZero: r === 0 };
+}
+
+/**
+ * La règle au rang `g` SÉPARE-T-ELLE a et b ? Oui quand les deux lectures entières diffèrent, ou quand elles sont égales et que ni
+ * l'une ni l'autre n'a de reste (les deux longueurs tombent sur le même trait : elles sont égales). Sinon la règle est trop grossière :
+ * 4,6 et 4,65 se lisent « 46 dm » tous les deux. Monotone en g : une fois séparés, toujours séparés.
+ */
+export function decidedAt(a, b, g) {
+  const x = readAt(a, g);
+  const y = readAt(b, g);
+  return x.count !== y.count || (x.restIsZero && y.restIsZero);
+}
+
+/** Le verdict que donnent les lectures entières au rang `g` : −1, 0 ou 1 ; `null` si la règle ne sépare pas (`decidedAt` faux). */
+export function verdictAt(a, b, g) {
+  if (!decidedAt(a, b, g)) return null;
+  const x = readAt(a, g).count;
+  const y = readAt(b, g).count;
+  return x === y ? 0 : x < y ? -1 : 1;
+}
+
+/** La plus fine graduation utile (0…3) à partir de laquelle la règle sépare a et b ; `null` si 3 ne suffit pas (plus de 3 décimales). */
+export function minGraduation(a, b) {
+  return GRADUATIONS.find((g) => decidedAt(a, b, g)) ?? null;
+}
+
+/** Le premier rang (0 = les unités, 1 = les dixièmes, …) où les chiffres de a et de b diffèrent ; `null` si a = b. Égal à `minGraduation` quand a ≠ b. */
+export function firstDifferingRank(a, b) {
+  const [x, y, k] = align(a, b);
+  if (x === y) return null;
+  const w = Math.max(String(x).length, String(y).length, k + 1);
+  const sa = String(x).padStart(w, '0');
+  const sb = String(y).padStart(w, '0');
+  const wholeLen = w - k;
+  for (let i = 0; i < w; i += 1) if (sa[i] !== sb[i]) return Math.max(0, i - wholeLen + 1);
+  return null;
+}
+
+/** La valeur écrite avec exactement `k` chiffres après la virgule (zéros inutiles ajoutés) : (4,6 ; 2) → « 4,60 » ; k plus petit que celui de la valeur : inchangée. */
+export function paddedText(v, k) {
+  return format(make(toSafe(big(v.n) * P10(Math.max(0, k - v.k))), Math.max(k, v.k)));
+}
+
+/** Le nombre de chiffres après la virgule dans l'écriture de v (zéros de fin compris, comme écrit). */
+export const decimalsOf = (v) => v.k;
+
+/** La plus petite graduation qui sépare TOUTES les paires d'une liste de valeurs ; `null` si aucune (plus de 3 décimales). */
+export function rowGraduation(values) {
+  for (const g of GRADUATIONS) {
+    let ok = true;
+    for (let i = 0; i < values.length && ok; i += 1) for (let j = i + 1; j < values.length && ok; j += 1) ok = decidedAt(values[i], values[j], g);
+    if (ok) return g;
+  }
+  return null;
+}

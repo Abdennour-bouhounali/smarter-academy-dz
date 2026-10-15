@@ -987,7 +987,7 @@
    "page": 18,
    "section": "أتمرّن",
    "title": "مقارنة عددين عشريين",
-   "verified": false,
+   "verified": true,
    "text": "قارن بين كل عددين في كل حالة مماثلي: 1) 5/10 و 7/10 2) 78/100 و 87/100 3) 25/10 و 32/100 4) 4/10 و 40/100 5) 2017/100 و 20,17"
   },
   {
@@ -996,7 +996,7 @@
    "number": 18,
    "page": 18,
    "section": "أتمرّن",
-   "verified": false,
+   "verified": true,
    "text": "قارن بين كل عددين في كل حالة مماثلي: 1) 234 و 1253 2) 43 و 12,9 3) 23,56 و 37,56 4) 24,13 و 24,52 5) 28,145 و 28,2"
   },
   {
@@ -1005,7 +1005,7 @@
    "number": 19,
    "page": 18,
    "section": "أتمرّن",
-   "verified": false,
+   "verified": true,
    "text": "رتّب تصاعديا الأعداد الآتية: 13,7 ، 12,9 ، 13,2 ، 13,15 ، 17,04",
    "answer": {
     "order": "12,9 < 13,15 < 13,2 < 13,7 < 17,04"
@@ -1018,7 +1018,7 @@
    "number": 20,
    "page": 18,
    "section": "أتمرّن",
-   "verified": false,
+   "verified": true,
    "text": "رتّب تنازليا الأعداد الآتية: 24,3 ، 243 ، 24,039 ، 24,506 ، 24,39",
    "answer": {
     "order": "243 > 24,506 > 24,39 > 24,3 > 24,039"
@@ -1552,7 +1552,7 @@
   },
   "act-5": {
    "lesson": "muqaranat-adad-ashriya",
-   "module": 1
+   "module": 4
   },
   "act-6": {
    "lesson": "hasr-qiyam-muqarraba",
@@ -1816,7 +1816,7 @@
     },
     "3-4": {
      "lesson": "muqaranat-adad-ashriya",
-     "module": null
+     "module": 4
     }
    }
   },
@@ -1838,7 +1838,7 @@
   },
   "ict": {
    "lesson": "muqaranat-adad-ashriya",
-   "module": null
+   "module": 4
   }
  }
 }

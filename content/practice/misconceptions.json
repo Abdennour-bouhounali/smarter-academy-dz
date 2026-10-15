@@ -3133,5 +3133,85 @@
     "relatedLearningPoints": [
       "1am_kusur-ashriya-kitaba_P1"
     ]
+  },
+  "MISC-MUQARANA-DIGITS-AS-NATURAL": {
+    "label": "قراءة الأرقام بعد الفاصلة كعدد طبيعي منفصل ($3{,}14 > 3{,}2$ لأنّ $14 > 2$)",
+    "explanation": "الأرقام بعد الفاصلة ليست عددًا طبيعيًّا: نقارن الأعشار أولًا. $3{,}2 = 3{,}20$ يحوي 20 جزءًا من مائة، أكثر من 14 جزءًا في $3{,}14$، إذن $3{,}14 < 3{,}2$.",
+    "relatedLearningPoints": [
+      "1am_muqaranat-adad-ashriya_P1",
+      "1am_muqaranat-adad-ashriya_P2",
+      "1am_muqaranat-adad-ashriya_P3"
+    ]
+  },
+  "MISC-MUQARANA-LONGER-BIGGER": {
+    "label": "الاعتقاد أنّ العدد الذي له أرقام أكثر بعد الفاصلة هو الأكبر ($0{,}25 > 0{,}5$)",
+    "explanation": "عدد الأرقام بعد الفاصلة لا يحدّد كِبَر العدد: $0{,}5 = 0{,}50$ أكبر من $0{,}25$ لأنّ 50 جزءًا من مائة أكثر من 25.",
+    "relatedLearningPoints": [
+      "1am_muqaranat-adad-ashriya_P2",
+      "1am_muqaranat-adad-ashriya_P3"
+    ]
+  },
+  "MISC-MUQARANA-IGNORE-WHOLE": {
+    "label": "مقارنة الجزأين العشريين فقط وإهمال الجزأين الصحيحين ($7{,}99 > 25{,}1$)",
+    "explanation": "نبدأ دائمًا بالجزأين الصحيحين: إن اختلفا حُسمت المقارنة. $25 > 7$ إذن $25{,}1 > 7{,}99$.",
+    "relatedLearningPoints": [
+      "1am_muqaranat-adad-ashriya_P1",
+      "1am_muqaranat-adad-ashriya_P3"
+    ]
+  },
+  "MISC-MUQARANA-ZERO-CHANGES": {
+    "label": "الاعتقاد أنّ الصفر الأخير يغيّر قيمة العدد ($4{,}70 > 4{,}7$)",
+    "explanation": "إضافة صفر في آخر الجزء العشري أو حذفه لا يغيّر قيمة العدد: $4{,}70 = 4{,}7$ لأنّ 7 أعشار تساوي 70 جزءًا من مائة.",
+    "relatedLearningPoints": [
+      "1am_muqaranat-adad-ashriya_P2"
+    ]
+  },
+  "MISC-MUQARANA-ZERO-PLACE": {
+    "label": "إهمال الصفر الذي يحجز رتبة ($8{,}05 > 8{,}5$ أو $8{,}05 = 8{,}5$)",
+    "explanation": "الصفر في $8{,}05$ يحجز رتبة الأعشار: رقم الأعشار 0 مقابل 5 في $8{,}5$، إذن $8{,}05 < 8{,}5$. فهذا الصفر ضروري بخلاف الصفر الأخير.",
+    "relatedLearningPoints": [
+      "1am_muqaranat-adad-ashriya_P1",
+      "1am_muqaranat-adad-ashriya_P2"
+    ]
+  },
+  "MISC-MUQARANA-SYMBOL-SWAP": {
+    "label": "وضع الرمز $<$ أو $>$ في الاتجاه المعاكس",
+    "explanation": "الرمز يفتح نحو العدد الأكبر ويشير رأسه إلى العدد الأصغر: $3{,}2 > 3{,}14$ تُقرأ «$3{,}2$ أكبر من $3{,}14$».",
+    "relatedLearningPoints": [
+      "1am_muqaranat-adad-ashriya_P1",
+      "1am_muqaranat-adad-ashriya_P2",
+      "1am_muqaranat-adad-ashriya_P3"
+    ]
+  },
+  "MISC-MUQARANA-ORDER-DIRECTION": {
+    "label": "كتابة الترتيب التنازلي عند طلب الترتيب التصاعدي (أو العكس)",
+    "explanation": "الترتيب التصاعدي يبدأ بالأصغر وينتهي بالأكبر، والتنازلي يبدأ بالأكبر: نتحقق من الرمز بين كل عددين متتاليين.",
+    "relatedLearningPoints": [
+      "1am_muqaranat-adad-ashriya_P3"
+    ]
+  },
+  "MISC-MUQARANA-LAST-DIGIT": {
+    "label": "مقارنة الرقم الأخير في العددين أو الحكم من رقم واحد دون مراعاة الرتب",
+    "explanation": "الرقم الأخير لا يحسم المقارنة: نقارن رتبةً رتبةً من اليسار، وأول رتبة يختلف فيها الرقمان هي الحاسمة.",
+    "relatedLearningPoints": [
+      "1am_muqaranat-adad-ashriya_P1",
+      "1am_muqaranat-adad-ashriya_P2",
+      "1am_muqaranat-adad-ashriya_P3"
+    ]
+  },
+  "MISC-MUQARANA-CARDS-ZERO-FIRST": {
+    "label": "وضع الصفر في البداية دون فاصلة عند تشكيل أصغر عدد ($0379$)",
+    "explanation": "$0379$ ليست كتابة عدد مقبولة: لا صفر في بداية عدد طبيعي. أصغر عدد عشري بالبطاقات $9$ و $0$ و $7$ و $3$ هو $0{,}379$، نضع الصفر قبل الفاصلة.",
+    "relatedLearningPoints": [
+      "1am_muqaranat-adad-ashriya_P3"
+    ]
+  },
+  "MISC-MUQARANA-FRACTION-NUMERATOR": {
+    "label": "مقارنة البسطين فقط عند مقارنة كسرين عشريين ($\\dfrac{25}{10} < \\dfrac{32}{100}$ لأنّ $25 < 32$)",
+    "explanation": "المقاما مختلفان فلا تكفي مقارنة البسطين: نكتب الكسرين بالفاصلة $2{,}5$ و $0{,}32$ ثم نقارن، فنجد $\\dfrac{25}{10} > \\dfrac{32}{100}$.",
+    "relatedLearningPoints": [
+      "1am_muqaranat-adad-ashriya_P1",
+      "1am_muqaranat-adad-ashriya_P2"
+    ]
   }
 }

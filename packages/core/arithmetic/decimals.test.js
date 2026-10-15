@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   make, fromSlip, parse, cmp, eq, normalize, format, formatTrim, slipText, slipValueText, fractionOf, fractionText, shift, opExponent, OPERATORS,
   integerPart, countOfExp, rankName, exponentsOf, decomposeDigits, rankTable, decomposition, partName, readFraction, readTail, piecesOf, pow10,
+  readAt, decidedAt, verdictAt, minGraduation, firstDifferingRank, paddedText, rowGraduation, GRADUATIONS,
 } from './decimals.js';
 
 describe('decimals — parse and format are exact and round-trip', () => {
@@ -173,5 +174,104 @@ describe('decimals — Arabic reading', () => {
       const s = readFraction(make(n, p)) + readTail(make(n, p));
       expect(s).not.toMatch(/undefined|NaN|\s{2}|10\^/);
     }
+  });
+});
+
+describe('decimals — the graduated ruler (ruler-compare)', () => {
+  const v = (t) => parse(t);
+
+  it('readAt: a whole number of graduations and an exact leftover smaller than one graduation', () => {
+    expect(readAt(v('4,35'), 0)).toEqual({ count: 4, rest: { n: 35, k: 2 }, restIsZero: false });
+    expect(readAt(v('4,35'), 1)).toEqual({ count: 43, rest: { n: 5, k: 1 }, restIsZero: false });
+    expect(readAt(v('4,35'), 2)).toEqual({ count: 435, rest: { n: 0, k: 0 }, restIsZero: true });
+    expect(readAt(v('4,6'), 2)).toEqual({ count: 460, rest: { n: 0, k: 0 }, restIsZero: true });
+    expect(readAt(v('4,6'), 3).count).toBe(4600);
+    expect(readAt(v('3'), 2).count).toBe(300);
+    expect(readAt(v('0,75'), 0)).toEqual({ count: 0, rest: { n: 75, k: 2 }, restIsZero: false });
+    expect(() => readAt(v('4'), -1)).toThrow(RangeError);
+    // the reading rebuilds the length exactly: count + rest / 10^g == v, for every length with <= 3 decimals up to 20 m
+    const bad = [];
+    for (let n = 0; n <= 20000; n += 7) for (let k = 0; k <= 3; k += 1) {
+      const x = make(n, k);
+      for (const g of GRADUATIONS) {
+        const r = readAt(x, g);
+        const m = Math.max(k, g); // compare in units of 10^-m
+        const left = BigInt(r.count) * 10n ** BigInt(m - g) + BigInt(r.rest.n) * 10n ** BigInt(m - g - r.rest.k);
+        if (cmp(r.rest, make(1, 0)) !== -1 || left !== BigInt(n) * 10n ** BigInt(m - k)) bad.push(`${n}/${k}@${g}`);
+      }
+    }
+    expect(bad).toEqual([]);
+  });
+
+  it('the documented pairs: the first graduation that separates them', () => {
+    expect(minGraduation(v('4,6'), v('4,35'))).toBe(1); // dm
+    expect(minGraduation(v('8,05'), v('8,5'))).toBe(1);
+    expect(minGraduation(v('12,70'), v('12,7'))).toBe(1); // equal: both fall on a dm mark
+    expect(minGraduation(v('9,87'), v('10,2'))).toBe(0);
+    expect(minGraduation(v('4,6'), v('4,65'))).toBe(2);
+    expect(minGraduation(v('7,4'), v('7,405'))).toBe(3);
+    expect(decidedAt(v('4,6'), v('4,65'), 1)).toBe(false); // both read 46 dm
+    expect(readAt(v('4,6'), 1).count).toBe(readAt(v('4,65'), 1).count);
+    expect(decidedAt(v('4,6'), v('4,35'), 0)).toBe(false); // both read 4 m
+    expect(verdictAt(v('4,6'), v('4,35'), 0)).toBeNull();
+    expect(verdictAt(v('4,6'), v('4,35'), 2)).toBe(1);
+    expect(verdictAt(v('12,70'), v('12,7'), 1)).toBe(0);
+    expect(verdictAt(v('12,70'), v('12,7'), 0)).toBeNull();
+    expect(verdictAt(v('9,87'), v('10,2'), 0)).toBe(-1);
+    expect(minGraduation(v('3'), v('3,000'))).toBe(0);
+    expect(minGraduation(v('2,5'), v('2,500'))).toBe(1);
+  });
+
+  it('sweep: every pair of decimals (<= 3 decimals, whole part <= 20): decidedAt is monotone, agrees with the order once decided, minGraduation is the first differing rank', () => {
+    const all = [];
+    for (let w = 0; w <= 20; w += 1) {
+      all.push(make(w, 0));
+      for (const k of [1, 2, 3]) for (let f = 0; f < 10 ** k; f += (k === 1 ? 1 : k === 2 ? 3 : 37)) all.push(make(w * 10 ** k + f, k));
+    }
+    expect(all.length).toBeGreaterThan(900);
+    let pairs = 0;
+    const bad = [];
+    for (let i = 0; i < all.length; i += 1) {
+      for (let j = 0; j < all.length; j += 5) {
+        const a = all[i];
+        const b = all[j];
+        pairs += 1;
+        const tag = `${format(a)} ? ${format(b)}`;
+        let decided = false;
+        for (const g of GRADUATIONS) {
+          const d = decidedAt(a, b, g);
+          if (decided && !d) bad.push(`${tag} not monotone @${g}`);
+          decided = decided || d;
+          if (verdictAt(a, b, g) !== (d ? cmp(a, b) : null)) bad.push(`${tag} verdict @${g}`);
+        }
+        if (!decided) bad.push(`${tag} undecided at 3`);
+        const mg = minGraduation(a, b);
+        const want = cmp(a, b) !== 0 ? firstDifferingRank(a, b) : Math.max(normalize(a).k, normalize(b).k);
+        if (mg !== want) bad.push(`${tag} min ${mg} != ${want}`);
+        if (mg > 0 && decidedAt(a, b, mg - 1)) bad.push(`${tag} decided before min`);
+      }
+    }
+    expect(bad).toEqual([]);
+    expect(pairs).toBeGreaterThan(100000);
+  });
+
+  it('firstDifferingRank: whole parts, tenths, hundredths…', () => {
+    expect(firstDifferingRank(v('9,87'), v('10,2'))).toBe(0);
+    expect(firstDifferingRank(v('12,6'), v('12,4'))).toBe(1);
+    expect(firstDifferingRank(v('8,05'), v('8,5'))).toBe(1);
+    expect(firstDifferingRank(v('4,6'), v('4,65'))).toBe(2);
+    expect(firstDifferingRank(v('7,4'), v('7,405'))).toBe(3);
+    expect(firstDifferingRank(v('2,5'), v('2,500'))).toBeNull();
+    expect(firstDifferingRank(v('43'), v('12,9'))).toBe(0);
+  });
+
+  it('paddedText completes with unnecessary zeros; rowGraduation separates a whole row', () => {
+    expect(paddedText(v('3,2'), 2)).toBe('3,20');
+    expect(paddedText(v('4,6'), 3)).toBe('4,600');
+    expect(paddedText(v('3'), 2)).toBe('3,00');
+    expect(paddedText(v('3,14'), 1)).toBe('3,14');
+    expect(rowGraduation(['7,4', '7,04', '7,45', '6,98', '7,405'].map(v))).toBe(3);
+    expect(rowGraduation(['2,5', '2,05', '0,75', '2,500', '3'].map(v))).toBe(1);
+    expect(rowGraduation([v('1'), v('2')])).toBe(0);
   });
 });

@@ -230,6 +230,9 @@ export const VISUAL_THEMES = Object.freeze({
   //   mosaic  l'atelier de zellige : un panneau de 10 × 10 carreaux est l'unité ; bande (1/10), carreau (1/100), éclat (1/1000) ;
   //           le bon de commande n'a que des chiffres, la main tient la virgule (decimal-comma)
   mosaic: { kind: 'objects', shows: 'لوحة فسيفساء من مئة بلاطة تُقسَّم إلى أعمدة وبلاطات وشظايا' },
+  //   sandpit  la piste de saut en longueur d'une journée sportive : des sauts mesurés au mètre, au décimètre, au centimètre, au
+  //            millimètre (1AM unité 1, `ruler-compare`, 2026-10-15) — la main tient la graduation de la règle
+  sandpit: { kind: 'objects', shows: 'حفرة رمل لمسابقة القفز الطويل وقفزات تُقاس بمسطرة تُغيَّر تدريجها' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

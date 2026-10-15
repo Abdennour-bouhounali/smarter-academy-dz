@@ -477,3 +477,131 @@ Exactly the unit-2 bank brief (`docs/sources/1am/unit2/brief-authors.md` « Bank
 - **Wiring + gates you run:** exactly as in the unit-2 brief (`active.json`, `exam-style.json`, `policy.json`, `misconceptions.json`; `node scripts/validate-exercises.mjs
   --strict`, the oracle test, `node scripts/check-textbook-coverage.mjs`, `npx vitest run scripts`). Do NOT run `npm run build`. Report: files, counts per level
   and per LP, the corpus exercises used (file + exercise), test results.
+
+
+# Lesson 4 — `muqaranat-adad-ashriya` « مقارنة الأعداد العشرية وترتيبها » (cycle moyen rollout, batch 4 entry 2, 2026-10-15)
+
+Same organisation as the lessons above (file ownership tables apply with the names below). The lead writes the lesson
+(`apps/web/src/lessons/moyen/1am/ansab_al_aadad_wal_hisab/adad-tabiiya-ashriya/muqaranat-adad-ashriya/`) and the extraction destinations
+(`build-extraction.py`: `act-5` moves to module 4 as an APPLICATION; know-6 / know-7 module 2; method-3 + now-16 module 3; ex-17…ex-20 module 4;
+prep item 5 module 0; `deep-3` ③④ and `ict` have module `null` = bank / final test / exercises).
+
+| Author | Owns | Never touches |
+|---|---|---|
+| **Lab** | `manipulations/operations/RulerCompare.jsx`, `manipulations/logic/rulerCompare.js` (+ `.test.js`), `manipulations/operations/rulerCompare.render.test.jsx`, a new section in `packages/core/arithmetic/decimals.js` ONLY by ADDING exports (+ tests in `decimals.test.js`), drawing primitives it needs under `manipulations/primitives/`, the `ruler-compare` entry of `manipulations/manipulationRegistry.js`, the `rulerCompare` namespace of `i18n/locales/ar/lesson.manipulation.json`, its section in `MANIPULATION_CONTRACT.md` (`## 2quatervicies`, after `2tervicies`) and its row in `MANIPULATION_DNA.md` §15 | the lesson folder, `content/practice/**`, the extraction, `levels.js` / `manipulationTypes.js` / `manipulationLevels.js` (the lead already wrote the type, the theme `sandpit` and the two presets — ask the lead if a preset must change; you MAY edit the preset `numbers` if a task proves unsolvable, and report it) |
+| **Bank** | `content/practice/1am/muqaranat-adad-ashriya/**`, the lesson's entries in `content/practice/{active,exam-style,policy,misconceptions}.json`, `scripts/practice-oracle/muqaranat-adad-ashriya.mjs` and its import in `scripts/practice-answer-oracle.test.mjs` | the lesson folder, the lab, the extraction |
+
+Already done by the lead (do not redo): type `'ruler-compare'` in `packages/core/curriculum/manipulationTypes.js` (read its comment), theme
+`sandpit` in `VISUAL_THEMES`, the two presets in `manipulations/levels.js` (**their `numbers` are the props contract below**). Until the lab author
+adds the registry entry `manipulationRegistry.test.js` / `levels.test.js` are red on `ruler-compare` (expected). Lesson pages mount while the
+lesson is `coming_soon`: `http://localhost:5174/courses/moyen/1am/ansab_al_aadad_wal_hisab/muqaranat-adad-ashriya/nashat` (module 1 = the lab,
+both levels) and `…/tariqa` (module 3 = a standalone `order` use) — the lead writes them in the first minutes; until they load use vitest
+render tests. A Vite of the repo may already run on :5174 (check `curl -s localhost:5174`; if not, start ONE with
+`cd apps/web && npx vite --port 5174`; never touch 5173). Do NOT run `npm run build`. Screens are TABLET and LAPTOP only (768×1024, 1024×768,
+1280×800, 1366×768, 1920×1080); phones are not supported (owner, 2026-10-15).
+
+## The lesson in one paragraph
+
+Programme item `1am.m1.r04` « ترتيب أعداد عشرية ». Net link `1am.m1.r02 → 1am.m1.r04` (requires). The idea the student must DISCOVER:
+**a decimal number is compared like a written word of ranks, left to right: first the whole parts; if they are equal, the tenths digit, then
+the hundredths, … — the first rank where the digits differ decides. Equivalently: complete both numbers with unnecessary zeros up to the same
+number of decimals (3,2 = 3,20) and compare two natural numbers (320 hundredths against 314 hundredths). Having more digits after the comma does
+NOT make a number bigger (3,14 < 3,2).** Ordering a series is comparing pairs; `<` and `>` are the symbols, ascending = from the smallest.
+
+Final الكفاءات (`1am_muqaranat-adad-ashriya_P<n>`, order of the drafts kept):
+
+1. **P1** مقارنة عددين عشريين (مكتوبين بالفاصلة أو على شكل كسرين عشريين) جزآهما الصحيحان مختلفان أو متساويان، بمقارنة الجزأين الصحيحين ثم الأرقام رتبة برتبة
+2. **P2** تفادي الخطإ الشائع «$3{,}14 > 3{,}2$ لأن $14>2$» بإتمام الأرقام العشرية بأصفار غير ضرورية ليصير للعددين عدد الأرقام نفسه بعد الفاصلة (مثل $3{,}2=3{,}20$)
+3. **P3** ترتيب سلسلة أعداد عشرية تصاعديا أو تنازليا واستعمال الرمزين $<$ و $>$، وتشكيل أصغر أو أكبر عدد عشري من أرقام معطاة
+
+`pointPrerequisites` (net links only): P1 ← `1am_kitabat-adad-tabii_P2`, `1am_kusur-ashriya-kitaba_P2`; P2 ← `1am_kusur-ashriya-kitaba_P2`, P1; P3 ← P1, P2.
+The lesson stands on `kitabat-adad-tabii` (ranks of a written number) and `kusur-ashriya-kitaba` (the comma, tenths / hundredths, the
+unnecessary zero 2,50 = 2,5): it recalls them, never rebuilds them. NOT in scope (next lessons): the graduated half-line (`adad-ashri-mustaqim-mudarraj`:
+placing and reading a point on a line, zooming), bracketing and rounding (`hasr-qiyam-muqarraba`), inserting a number between two decimals.
+
+Lesson plan (lead, ≈ 85 min): 0 أستعدّ · 1 نشاط « القفز الطويل » (the lab, both levels) · 2 معارف · 3 طريقة « ألف مقارنة وأرتّب » (the lab standalone,
+`order`) · 4 أتمرّن · 5–7 three مسائل · 8 إختبار أولي.
+
+## Lab author — `ruler-compare`
+
+Read first what the lessons above list for their lab authors (MANIPULATION_DNA all — §12, §16 and **§17 incl. §17.7, §17.9, §17.11 (LabCoach) are
+binding**; MANIPULATION_CONTRACT §1, §2, §2bis, §4.2, §6bis, §6ter, §7, §7bis-levels, §7ter, §7quater, §8, §8bis, §8ter (the kit), **§8quater
+(LabCoach — mandatory)**, §9, and the sections of the newest labs `2tervicies` `decimal-comma` and `2duovicies` `fair-share` incl. « جرّب أعدادك أنت
+— always open »), plus the code idioms: `operations/DecimalComma.jsx` (+ `primitives/CommaSlip.jsx`, `MosaicFigure.jsx`: honest blocks), `operations/FairShare.jsx`,
+`operations/RankExchange.jsx`. Owner rules: independence from the book (the lab's wording is the platform's own — no « كتاب »), girls ALWAYS in hijab (`primitives/KidFigure.jsx`,
+never draw a person locally), tablet/laptop only, the always-open own-numbers panel, say each thing ONCE. Arithmetic: exact integers only. `packages/core/arithmetic/decimals.js`
+exists (values `{ n, k }`, `parse`, `cmp`, `normalize`, `format`…): ADD exports there (e.g. `readAt(v, g)` → `{ count, rest }` = `floor(v·10^g)` and the exact remainder,
+`decidedAt(a, b, g)`, `minGraduation(a, b)`), import BY PATH, never the core barrel; test them.
+
+**Why this is not another lab (DNA §12).** `decimal-comma` (same unit): the DIGITS are fixed, the hand holds the COMMA. `rank-exchange`: the hand moves QUANTITIES between ranks.
+`fraction-knife`: the hand holds d, the number of equal pieces of ONE whole. Here the hand holds **the GRADUATION of the measuring ruler** shared by the numbers being
+compared (1 m, 1 dm, 1 cm, 1 mm), and in the ordering level also places the numbers in a row. A jump length in metres is read on the ruler: at graduation g the number is a
+WHOLE number of graduations plus a leftover strictly smaller than one graduation, drawn hatched and never rounded away. What resists: the verdict `< = >` is refused while the ruler
+cannot separate the numbers (4,6 m and 4,65 m both read « 46 dm + leftover »: the lamp says the ruler is too coarse, in the student's numbers, without telling which finer ruler); a wrong
+verdict is refuted by the readings (« على مسطرة السنتيمتر: 460 مقابل 435 »). The mathematical content that must become VISIBLE: (1) when the whole parts differ the coarsest ruler already separates the numbers;
+(2) when they are equal, the first graduation where the two readings differ is the first rank where the digits differ, and the order of the readings is the order of the numbers;
+(3) refining one number alone (4,6 → 4,60) changes nothing, but a ruler fine enough for both turns the comparison into one between NATURAL numbers (460 against 435) — the misleading
+reading « 35 > 6 » (comparing 4,35 with 4,6 as if the digits after the comma were a natural) is refuted by the same ruler; (4) 12,70 and 12,7 read the same at every graduation (equal, no leftover from cm on).
+
+**Props contract (fixed — the lesson is written against it; `levels.js` holds the presets):**
+
+```jsx
+<Manipulation type="ruler-compare"
+  world="jump"                       // the only world: the long-jump pit of a school sports day (theme `sandpit`)
+  tasks={[ …task objects… ]}         // the sequence of tasks of the level (preset); the lesson may pass its own when levels={false}
+  level, levels, title, lead         // as every type (levels={false} for a standalone use)
+  onTrial={(e) => …}                 // EVERY judged gesture, via state.report (see below)
+  onFinished={({ tasks }) => …}      // all tasks of the sequence done
+/>
+```
+
+| task kind | fields | the student's job | judged by |
+|---|---|---|---|
+| `compare` | `a: '4,6'`, `b: '4,35'` (strings with a decimal COMMA, 1–3 decimals, whole part 0–99) | set the graduation until the ruler separates the two jumps (or shows them equal), then choose `<`, `=` or `>` for `a ? b` | exact comparison `cmp(a, b)` |
+| `order` | `values: ['7,4', …]` (3–6 strings, may contain equal values and an integer written without comma), `dir: 'asc' \| 'desc'` | set ONE common graduation for the whole row, and place the jumps in the order of the podium (a row of slots, smallest-first for `asc`) | exact order; equal values may stand in any order among themselves |
+
+`onTrial` event: `{ task: <index>, kind: 'compare' | 'order', event: 'ruler' | 'verdict' | 'place' | 'check', g: 0..3, a, b, verdict: '<' | '=' | '>' | null, ok: boolean | null, decided: boolean, free: boolean, … }`.
+The lesson uses (1) `event: 'verdict'` with `ok` and `g` (« the student found the verdict on the dm ruler / needed the cm ruler »), and `a`, `b` as strings; (2) `event: 'ruler'` with `g` (« the student tried the finer ruler »);
+(3) `free: true` for the always-open own-numbers panel — the lesson ignores those as evidence.
+
+**The lab must offer, in this order (suggested — DNA §17 decides the details):**
+- **Context then ONE direct question, no title** (§17.9): the school sports day, two jumps (names of children, a `KidFigure` girl in hijab and a boy), e.g. « قفزت ريم 4,6 م وقفز سامي 4,35 م. من قفز أبعد؟ ». The question names the goal and the end state.
+- **The ruler** the hand holds: a horizontal tape (LTR island, `dir="ltr"`, labels in Arabic: متر، ديسيمتر، سنتيمتر، ميليمتر) with a handle / stepper with FOUR stops. Each jump is a bar on the pit sand; under it the reading at the current graduation as
+  « n دسم + باقٍ » (number of graduations, leftover hatched, exact — drawn as a fraction of one graduation). The leftover is honest: 4,35 m on the dm ruler is 43 dm + a hatched part of a dm (half) — never rounded.
+  The reading n is a NATURAL number written in Latin digits (LTR islands) — it is the thing the student compares. Bars are NOT drawn to a misleading scale: if you draw them proportional to value the 6 cm difference is ~2 % of the length — use a zoomed
+  "the pit near the take-off board" or a bracket "المسافة الكلية 4 م + …" so the difference is not decided by eye; the visual must not give the verdict away before the student has used the ruler. Decide and defend in your report.
+- **Verdict**: three big buttons `<` `=` `>` (symbols as LTR islands, spoken form on aria-label: « أصغر من »…); enabled in the sense above; wrong → refuted by the readings; right → the lab names nothing, it SHOWS (the two readings side by side with the first differing rank highlighted in the written digits, e.g. 4,**6** / 4,**3**5).
+  Do not state the rule in a string reachable before the formal phase (DNA §17.7; a render test like `decimalComma.render.test.jsx`).
+- **`order` level**: five or six jumps on the sand; ONE ruler for the whole row (the finest needed = the maximum number of decimals); drag (pointer), tap-tap and keyboard to place the jumps into podium slots; « تحقّق » judges; a wrong order shows the first inversion with the readings. An integer (« 3 م ») reads `300 cm` at g = 2: no comma, still on the ruler.
+- **Always-open « جرّب أعدادك »** panel (two inputs, Latin digits, comma or dot accepted, ≤ 3 decimals, whole part 0–99): shows the same readings and verdict lamp; `free: true` events.
+- **Discovery + formal phase** like the other labs (`ManipulationDiscovery`): after the tasks, one question of the kind « ماذا يحدّد أيّ العددين أكبر؟ » with refutable wrong options built from the student's own numbers (`longer = bigger`, `bigger digits after the comma = bigger`),
+  and a formal card: the written comparison with the first differing rank highlighted and `=` / `<` / `>` written; then `onFinished`. LabCoach (default on, one ring + sentence at each moment: the ruler handle, then a verdict button, never pointing at the answer).
+- Not eligible for « جرّب كل الإمكانيات » if the free panel already exists (say so in the header).
+
+**Layout:** one screen at every size, `[data-rc-glance]` = question + both bars + readings + verdict buttons without scrolling at 768×1024, 1024×768, 1280×800, 1366×768, 1920×1080 (use `useLessonViewport`, the kit, stretch like `DivisionJumps`). Strings: `lesson.manipulation.json › rulerCompare`, counted nouns through plural keys (متر/ديسيمتر/سنتيمتر/ميليمتر/قفزة), Latin numbers isolated, no local helper named `t`.
+
+**DOM:** `[data-ruler-compare][data-world][data-task][data-solved]`, `[data-rc-glance]`, `[data-rc-grad=<0..3>]` (the stops), `[data-rc-reading=<index>][data-count]` (the whole-graduations count of jump index), `[data-rc-rest=<index>]` (leftover),
+`[data-rc-verdict=<lt|eq|gt>]` (buttons), `[data-rc-lamp][data-decided]`, `[data-rc-slot=<i>]`, `[data-rc-jump=<index>]`, `[data-rc-check]`, `[data-rc-free]`, `[data-rc-formal]`, `[data-rc-refused=<kind>]`.
+
+**Tests:** `decimals.test.js` additions (sweep: for every pair of decimals ≤ 3 decimals and whole part ≤ 20, `decidedAt` is monotone in g, equals the order of the numbers once decided, and `minGraduation` is the first rank where the digits differ);
+`logic/rulerCompare.test.js` (each preset task solvable; the verdict is never enabled while undecided; the first decided graduation of each preset pair is the one documented: 4,6 / 4,35 → dm; 8,05 / 8,5 → dm; 12,70 / 12,7 → equal from g = 1; 9,87 / 10,2 → g = 0; the order tasks have the documented orders and ties; the coach followed to the end; layout swept at five widths);
+`operations/rulerCompare.render.test.jsx` (both levels render, no raw keys, opens on CONTEXT then ONE question, says each thing once, no string before the formal phase leaks the rule, the free panel is open). Then `cd apps/web && npx vitest run src/lessons/common/manipulations src/lessons/common/i18nHookScope.test.js`
+and `cd packages/core && npx vitest run arithmetic/decimals.test.js`. Extend `apps/web/e2e/lesson-kit/lab-coach.mjs` ONLY if its structure asks for a per-lab entry. Report: files, tests, the DOM as built, the screenshots reviewed (initial, mid-activity, refusal, a decided verdict, the order level mid-drag and solved, the formal phase, both levels, at 768×1024, 1024×768, 1280×800, 1366×768, 1920×1080 — taken with Playwright against :5174, LOOKED at one by one) and what changed after looking at them.
+
+## Bank author — `content/practice/1am/muqaranat-adad-ashriya/`
+
+Exactly the unit-2 bank brief (`docs/sources/1am/unit2/brief-authors.md` « Bank author » — its reading list, rules, wiring and gates) and the unit-1 lesson-2 bank brief above (§ « Bank author — kusur-ashriya-kitaba » — same file layout, `term_exam` /
+`term_exam_modelled` / `adapted` provenance, oracle, `misconceptions.json`), with:
+
+- LP ids `1am_muqaranat-adad-ashriya_P1..P3` (above), each primary on ≥ 12 questions (P2 ≥ 14: the zero-completion is the most examined).
+- **Corpus** (`exams-index.json`, `grade: 1am`, item `1am.m1.r04`; badge by semester — « على منوال اختبار الفصل الأول » for semester 1, `semester: 1`, `modelledOn: "1am-s1"`; other terms by the paper). Search every 1AM paper (the index lists items; read the PDFs under
+  `docs/Exames-1 AM to 3AM/1am/` with `pdftotext -layout`, `pdftoppm -r 110` for scans) for the comparison / ordering parts that the lessons `kusur-ashriya-kitaba` and `hasil-qisma-kasr` EXCLUDED
+  (the « ranger dans l'ordre croissant / décroissant » questions of `1am-s1-91`, `-104`, `-106`, `-101`, `-93` and any other) and use them as `term_exam` exercises (about half of levels 3–5 modelled on ONE precise corpus exercise; the rest `term_exam_modelled` / `adapted`).
+  Comparison parts of exercises whose other parts are decimal-fraction conversions or × ÷ 10^k belong to the other lesson: cite only the part that is IN this lesson's scope.
+- **Textbook elements you may cite** (destination `muqaranat-adad-ashriya`): `prep` (item 5 only), `act-5`, `know-6`, `know-7`, `method-3`, `now-16`, `ex-17` … `ex-20`, `self-8`, `self-9`, `deep-3` (items ③④ only: the smallest / largest decimal formed from the cards 9 0 7 3 and a comma, no unnecessary zero), `ict` (the marks table of a class: largest / smallest mark and who; the spreadsheet sort is described, never required).
+  Nothing else (`check:textbook` fails on any other id). Read `docs/sources/1am/unit1/extraction.json` for the answers (computed), but REWRITE every exercise: own contexts, own numbers (independence from the book — never copy a statement).
+- **What is assessed:** (P1) compare two decimals with different whole parts (9,87 / 10,2), equal whole parts (tenths decide: 12,6 / 12,4; hundredths decide when tenths are equal), a natural number against a decimal (43 / 12,9), fractional writings (5/10 / 7/10, 25/10 / 32/100 → 2,5 / 0,32, 4/10 / 40/100 equal), `<` `>` `=` chosen from a set; (P2) the trap
+  « more digits = bigger » and « the digits after the comma read as a natural » (3,14 / 3,2; 0,5 / 0,25; 8,05 / 8,5), completion with zeros (3,2 = 3,20; 6,5 = 6,500), the equal writings (4,70 = 4,7), the missing digit that makes an inequality true (5,☐2 < 5,3 …); (P3) order of a series ascending / descending (4–6 numbers incl. an integer and a number with a leading 0,…),
+  the smallest / largest number from digit cards with a comma (cards 9 0 7 3 with ONE comma: smallest 0,379? read `deep-3` note: « no unnecessary zero » — the lead's reading is 0,379 and 970,3; keep to it), the symbols in a chain (`0,4 < 1,04 < 1,5`), the greatest / smallest mark of a table, the position of the symbol (`<` versus `>`).
+  Distractors are real misconceptions, every one FALSE: `MISC-MUQARANA-DIGITS-AS-NATURAL` (3,14 > 3,2 because 14 > 2), `MISC-MUQARANA-LONGER-BIGGER` (more digits after the comma is bigger), `MISC-MUQARANA-IGNORE-WHOLE` (compare the decimal parts only), `MISC-MUQARANA-ZERO-CHANGES` (4,70 > 4,7), `MISC-MUQARANA-ZERO-PLACE` (8,05 > 8,5), `MISC-MUQARANA-SYMBOL-SWAP` (the symbol opened toward the smaller), `MISC-MUQARANA-ORDER-DIRECTION` (descending given for ascending), `MISC-MUQARANA-LAST-DIGIT` (compare the last digits), `MISC-MUQARANA-CARDS-ZERO-FIRST` (0 placed first without a comma: 0379 is not a number to write),
+  `MISC-MUQARANA-FRACTION-NUMERATOR` (25/10 < 32/100 because 25 < 32). Each is declared in `misconceptions.json` like the earlier lessons' and the answer oracle recomputes every constructed answer.

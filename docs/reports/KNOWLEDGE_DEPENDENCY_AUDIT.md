@@ -11,12 +11,13 @@
 
 ## Périmètre courant — classes actives (1am, 2am, 3am, 4am, terminale_dz)
 
-82 leçon(s) · critiques 4 · hautes 0 · moyennes 8 · basses 0
+83 leçon(s) · critiques 4 · hautes 0 · moyennes 8 · basses 0
 
 | Leçon | Carte | Bricks | requires | Contrat | C | H | M | L |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `1am:kitabat-adad-tabii` | ✅ | 8 | 20/20 | 0 | 0 | 0 | 0 | 0 |
 | `1am:kusur-ashriya-kitaba` | ✅ | 9 | 29/29 | 0 | 0 | 0 | 0 | 0 |
+| `1am:muqaranat-adad-ashriya` | ✅ | 5 | 24/24 | 0 | 0 | 0 | 0 | 0 |
 | `1am:qawaid-qabiliyat-qisma` | ✅ | 6 | 17/17 | 0 | 0 | 0 | 0 | 0 |
 | `1am:qisma-iqlidiya-baqi` | ✅ | 5 | 20/20 | 0 | 0 | 0 | 0 | 0 |
 | `1am:mana-jam-tarh` | ✅ | 5 | 24/24 | 0 | 0 | 0 | 0 | 0 |
