@@ -13,6 +13,7 @@ import EquationDisplay from '../primitives/EquationDisplay';
 import DivisionRoles from '../primitives/DivisionRoles';
 import PlayerFigure, { FootballIcon } from '../primitives/PlayerFigure';
 import PitchBackdrop from '../primitives/PitchBackdrop';
+import { useLabCoach } from '../primitives/LabCoach';
 import * as L from '../logic/teamBuilder';
 import { formationPositions, playerScale } from './teamFormation';
 
@@ -60,6 +61,10 @@ import { formationPositions, playerScale } from './teamFormation';
  * que des joueurs peuvent encore entrer, et « خارج الفرق — الباقي » quand plus
  * rien ne bouge : une même zone, deux sens, et l'écran nomme celui du moment.
  *
+ * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/teamBuilder.js › coachOf` montre le joueur du banc à porter (sans
+ * nommer l'équipe : c'est le refus d'égalité qui répond), puis la pastille d'un autre nombre d'équipes — ou, au niveau avancé sans
+ * pastilles, le bouton du laboratoire libre.
+ *
  * PARTITION. Ici b est le NOMBRE de groupes que l'élève fixe, q la taille qui
  * en résulte ; aux rayons (divisor-explorer-books) c'est l'inverse. Les rôles
  * sont nommés sous l'égalité (`DivisionRoles`) pour que le passage d'un
@@ -75,6 +80,7 @@ export default function TeamBuilder({
   initialMode = 'student',
   allowModeSwitch = false,
   onVerdict, onFinished,
+  coach: coachOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({
@@ -227,6 +233,12 @@ export default function TeamBuilder({
   // le laboratoire libre / le mode classe ET par « أنشئ الفرق ».
   const validateNumbers = (n) => (n.groups > n.total ? t('manipulation.teamBuilder.reject.moreTeamsThanPlayers') : '');
 
+  const kk = (key, o) => t(`manipulation.teamBuilder.${key}`, o);
+  const coachStep = coachOn && !stale ? L.coachOf(lab, { memory: tried, teamOptions, freeLab: state.freeLab }) : null;
+  const coach = useLabCoach({
+    lab: 'team-builder', step: coachStep, text: coachStep ? kk(`coach.${coachStep.id}`) : '',
+    labels: { hide: kk('coach.hide'), show: kk('coach.show'), ok: kk('coach.ok'), stop: kk('coach.stop') },
+  });
   const setGroupsTo = (k) => state.setNumbers({ ...state.numbers, groups: k });
   const setTotalTo = (n) => state.setNumbers({ ...state.numbers, total: n });
 
@@ -251,6 +263,7 @@ export default function TeamBuilder({
       mission={mission ?? t('manipulation.teamBuilder.mission')}
       lead={lead}
       state={state}
+      coach={coachOn ? coach : null}
       numberFields={[
         { key: 'total', label: t('manipulation.teamBuilder.squadLabel') },
         { key: 'groups', label: t('manipulation.teamBuilder.teamsLabel') },
@@ -335,7 +348,7 @@ export default function TeamBuilder({
                 <div dir="ltr" className="flex flex-wrap gap-1.5" role="group" aria-label={t('manipulation.teamBuilder.teamsLabel')}>
                   {teamOptions.map((k) => (
                     <NumberTile
-                      key={k} value={k} size="sm" onClick={() => setGroupsTo(k)}
+                      key={k} value={k} size="sm" data-tb-teams={k} onClick={() => setGroupsTo(k)}
                       label={t('manipulation.teamBuilder.makeTeams', { teams: t('manipulation.teamBuilder.teamsIn', { count: k }) })}
                       tone={k === groups ? 'common' : 'neutral'}
                     />

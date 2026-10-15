@@ -43,6 +43,8 @@ export const ADAPTATION_REASONS = Object.freeze([
   'larger_numbers_for_autonomy',
   'multiple_representations',
   'reduced_scaffolding',
+  // Le manuel fixe les الكفاءات, la plateforme CHOISIT l'entrée (LESSON_DEVELOPMENT_GUIDE §4ter, propriétaire 2026-10-14).
+  'platform_designed_entry',
 ]);
 
 /**
@@ -221,6 +223,9 @@ export const VISUAL_THEMES = Object.freeze({
   //   farm  le poulailler et la station d'emballage du manuel (نشاط 1) : les œufs du jour sur un tapis, des boîtes de 6
   //         (مبتدئ) ou des plateaux de 30 (متقدم) qui se ferment pleins, et la règle des plateaux sous le tapis (egg-trays)
   farm: { kind: 'objects', shows: 'بيض مزرعة دواجن يوضَّب في علب وصفائح' },
+  //   bakery  les pains d'un partage équitable (1AM unité 4, `fair-share`, 2026-10-15) : des baguettes posées sur la table,
+  //           des parts bout à bout, des enfants (KidFigure, filles en hijab) qui attendent leur part
+  bakery: { kind: 'objects', shows: 'أرغفة خبز تُقتسم بالتساوي بين أطفال' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

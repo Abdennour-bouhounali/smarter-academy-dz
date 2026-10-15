@@ -11,10 +11,10 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, BASKET, RECALL, GUIDE } from '../content/textbook';
 
 /**
- * Module 1 — نشاط 1 (p. 24) « القسمة الإقليدية » : 2145 œufs, des plateaux de 30.
- *
- * On OUVRE par le RAPPEL de 1AM (« تذكّر », la leçon publiée qisma-iqlidiya-baqi) : le réseau dit que 2am.m1.r04 prolonge
- * 1am.m3.r01 — ce qui est ajouté n'est que « tout diviseur » et l'encadrement du quotient (2am.m1.r06).
+ * Module 1 — l'ENTRÉE : le panier de سلمى (50 œufs, boîtes de 12 — plateforme) puis le نشاط 1 du manuel (p. 24 : 2145 œufs,
+ * plateaux de 30) au niveau متقدم. Rétrofit 2026-10-15 : le labo en TÊTE, sans carte ; le RAPPEL de 1AM (« تذكّر », leçon publiée
+ * qisma-iqlidiya-baqi — le réseau dit que 2am.m1.r04 prolonge 1am.m3.r01) vient APRÈS la première réponse, pas avant le geste ;
+ * ce qui est ajouté n'est que « tout diviseur » et l'encadrement du quotient (2am.m1.r06).
  *
  * LABORATOIRE À DEUX NIVEAUX, un seul type `egg-trays` (la main tient a, le nombre d'œufs ; le quotient a ÷ b se lit sur la
  * règle des plateaux) — MANIPULATION_CONTRACT §2unvicies :
@@ -45,6 +45,16 @@ export default function Module01Nashat() {
   const { a, b } = ACTIVITY.numbers;
   const frames = trials.filter((e) => e.kind === 'frame' && e.a === a && e.b === b).slice(-3);
   const base = getLessonPath(RECALL.lesson);
+  const EvidenceFrames = () => (
+    <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
+      {frames.length === 0 && <li className="text-slate-500">لم تضع إطارك بعد على مسطرة الصفائح (المستوى المتقدّم).</li>}
+      {frames.map((e, i) => (
+        <li key={i} data-evidence={e.n} className="font-bold text-slate-800">
+          <MathText>{`إطارك: $${e.n}$ و $${e.n + 1}$ — ${MODEL[e.model] ?? ''}.`}</MathText>
+        </li>
+      ))}
+    </ul>
+  );
 
   return (
     <ContentModule
@@ -55,22 +65,6 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 1 — بيض المزرعة"
       moduleSubtitle="كم صفيحة مملوءة؟ وكم صفيحة تلزم؟"
       estimatedTime="15 دقيقة"
-      brief={{
-        tag: 'نشاط 1 — الكتاب ص 24',
-        headline: 'صفائح البيض!',
-        emoji: '🥚',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-2">
-            <p>{ACTIVITY.situation}</p>
-            <TextbookBox kind="remark" title={RECALL.title} text={RECALL.text} source={RECALL.source} compact>
-              {base && <Link to={base} className="inline-flex min-h-[44px] items-center text-sm font-bold text-teal-700 underline underline-offset-4" data-recall-link>درس « القسمة الإقليدية » — السنة الأولى متوسط</Link>}
-            </TextbookBox>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"
@@ -96,7 +90,9 @@ export default function Module01Nashat() {
         {
           num: 1, title: 'أحصر 2145 بين مضاعفين متتاليين للعدد 30', subtitle: 'السؤال 1) من الكتاب', done: q1,
           content: (
-            <TapQuestion
+            <div className="space-y-3">
+              <EvidenceFrames />
+              <TapQuestion
               prompt={<MathText>{ACTIVITY.questions[0]}</MathText>}
               options={[M('$30 \\times 70 \\le 2145 < 30 \\times 71$'), M('$30 \\times 71 \\le 2145 < 30 \\times 72$'), M('$30 \\times 72 \\le 2145 < 30 \\times 73$')]}
               correct={1}
@@ -104,21 +100,20 @@ export default function Module01Nashat() {
               requires={['qisma-iqlidiya']}
               explain={<MathText>{'$30 \\times 71 = 2130$ و $30 \\times 72 = 2160$ : $2130 \\le 2145 < 2160$.'}</MathText>}
               onAnswered={() => setQ1(true)}
-            />
+              />
+              {q1 && (
+                <TextbookBox kind="remark" title={RECALL.title} text={RECALL.text} source={RECALL.source} compact>
+                  {base && <Link to={base} className="inline-flex min-h-[44px] items-center text-sm font-bold text-teal-700 underline underline-offset-4" data-recall-link>درس « القسمة الإقليدية » — السنة الأولى متوسط</Link>}
+                </TextbookBox>
+              )}
+            </div>
           ),
         },
         {
           num: 2, title: 'الصفائح المملوءة، والصفيحة غير المملوءة', subtitle: 'السؤال 2) من الكتاب', done: q2a && q2b,
           content: (
             <div className="space-y-3">
-              <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
-                {frames.length === 0 && <li className="text-slate-500">لم تضع إطارك بعد على مسطرة الصفائح (المستوى المتقدّم).</li>}
-                {frames.map((e, i) => (
-                  <li key={i} data-evidence={e.n} className="font-bold text-slate-800">
-                    <MathText>{`إطارك: $${e.n}$ و $${e.n + 1}$ — ${MODEL[e.model] ?? ''}.`}</MathText>
-                  </li>
-                ))}
-              </ul>
+              <EvidenceFrames />
               <NumericQuestion prompt={<span>عدد الصفائح التي يمكن ملؤها:</span>} expected={71} parse={parseDec}
                 requires={['qisma-iqlidiya']} explain={<MathText>{'$30 \\times 71 = 2130$ و 72 صفيحة تحتاج 2160 بيضة.'}</MathText>}
                 onAnswered={() => setQ2a(true)} />
@@ -142,8 +137,8 @@ export default function Module01Nashat() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}><MathText>{allRight ? '$2145 = 30 \\times 71 + 15$ مع $15 < 30$.' : GUIDE.son.right}</MathText></Feedback>}
                 onAnswered={() => setQ3(true)}
               />
-              <KnowledgeBrick id="hasr-hasil" lead="71 صفيحة مملوءة، و 72 صفيحة لكل البيض: والحاصل 2145 ÷ 30؟" />
-              <TapQuestion
+              {q3 && <KnowledgeBrick id="hasr-hasil" lead="71 صفيحة مملوءة، و 72 صفيحة لكل البيض: والحاصل 2145 ÷ 30؟" />}
+              {q3 && <TapQuestion
                 prompt={<MathText>{'أيّ حصر صحيح لحاصل القسمة $\\frac{2145}{30}$ ؟'}</MathText>}
                 options={[M('$15 < \\frac{2145}{30} < 16$'), M('$70 < \\frac{2145}{30} < 71$'), M('$71 < \\frac{2145}{30} < 72$')]}
                 correct={2}
@@ -151,12 +146,12 @@ export default function Module01Nashat() {
                 requires={['hasr-hasil']}
                 explain={<MathText>{`${GUIDE.frame.why} ${GUIDE.frame.right}`}</MathText>}
                 onAnswered={() => setQ3b(true)}
-              />
+              />}
             </div>
           ),
         },
         {
-          num: 4, title: 'قسمة ابن صاحب المزرعة', subtitle: 'السؤال 4) من الكتاب', done: q4,
+          num: 4, title: 'لماذا لا نقبل قسمة ابن صاحب المزرعة؟', subtitle: 'السؤال 4) من الكتاب', done: q4,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY.questions[3]} source={ACTIVITY.source} compact>
@@ -165,9 +160,9 @@ export default function Module01Nashat() {
                 </div>
               </TextbookBox>
               <TapQuestion
-                prompt={<span>هل توافق ابن صاحب المزرعة (الحاصل 70 والباقي 45)؟</span>}
-                options={[M('نعم: المساواة $2145 = 30 \\times 70 + 45$ صحيحة'), M('لا: 45 بيضة تملأ صفيحة أخرى، فالحاصل 71 والباقي 15'), M('نعم: 70 صفيحة تكفي لكل البيض')]}
-                correct={1}
+                prompt={<span>المساواة <bdi dir="ltr">2145 = 30 × 70 + 45</bdi> صحيحة، ومع ذلك رفضها إطارك. لماذا؟</span>}
+                options={[M('لأنّ 45 أكبر من 30: تملأ صفيحة أخرى، فالحاصل 71 والباقي 15'), M('لأنّ 45 عدد فردي'), M('لأنّ 70 صفيحة تكفي لكل البيض')]}
+                correct={0}
                 cols={1}
                 requires={['qisma-iqlidiya']}
                 explain={<MathText>{`${GUIDE.son.why} ${GUIDE.son.right}`}</MathText>}

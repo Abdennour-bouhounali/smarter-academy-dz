@@ -9,10 +9,10 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, KNOWLEDGE } from '../content/textbook';
 
 /**
- * Module 2 — معارف 2 (p. 41) « القسمة الإقليدية » :
- *   1. les quatre noms (المقسوم، المقسوم عليه، الحاصل، الباقي) sur l'égalité du manuel, DEMANDÉS puis donnés ;
- *   2. l'exemple 1 (253 perles, colliers de 17) dans le MÊME instrument qu'au module 1, sur la droite (`levels={false}`) :
- *      la remarque du manuel « on s'approche de 253 par valeurs inférieures » se fait à la main ;
+ * Module 2 — معارف 2 (p. 41) « القسمة الإقليدية » (rétrofit 2026-10-15 : il s'ouvre sur le labo, sans carte) :
+ *   1. l'exemple 1 (253 perles, colliers de 17) dans le MÊME instrument qu'au module 1, sur la droite (`levels={false}`) en tête :
+ *      « pourquoi 14 et pas 15 ? » puis la remarque du manuel « on s'approche de 253 par valeurs inférieures », APRÈS la réponse ;
+ *   2. les quatre noms (المقسوم، المقسوم عليه، الحاصل، الباقي) sur l'égalité du manuel, DEMANDÉS puis donnés ;
  *   3. la question د de نشاط 3 (يونس : « une division posée suffit ») : la disposition du manuel ligne à ligne, puis la
  *      méthode (brique gardée par « أتوقّع القاعدة ») ;
  *   4. l'exemple 2 (60 = 4 × 15, reste nul) : مضاعف، يقبل القسمة على، قاسم.
@@ -37,13 +37,30 @@ export default function Module02Maarif() {
       moduleTitle="معارف — القسمة الإقليدية"
       moduleSubtitle="أربعة أسماء، ومساواة، وطريقة"
       estimatedTime="12 دقيقة"
-      brief={{
-        tag: 'معارف — الكتاب ص 41', title: 'ماذا نسمّي كل عدد في القسمة الإقليدية؟', tone: 'violet',
-        body: <p>في النشاط كتبنا 279 = 14 × 19 + 13. الكتاب يعطي لكل عدد في هذه المساواة اسمًا، ويعلّمنا كيف نجد الحاصل والباقي بقسمة عمودية.</p>,
-      }}
+      intro={(
+        <Manipulation type="division-jumps" world="line" a={example1.numbers.a} b={example1.numbers.b} levels={false}
+          lead={`عندنا ${example1.numbers.a} لؤلؤة، وفي كل عقد ${example1.numbers.b} لؤلؤة: كل قفزة على المستقيم طولها ${example1.numbers.b}، أي عقد.`} />
+      )}
       steps={[
         {
-          num: 1, title: 'لكل عدد اسم', subtitle: '$253 = 17 \\times 14 + 15$', done: q1,
+          num: 1, title: 'لماذا الحاصل 14 وليس 15؟', subtitle: 'القفزات من 17 نحو 253', done: q2,
+          content: (
+            <div className="space-y-3">
+              <TapQuestion
+                prompt={<span>أنزلتَ القفزات حتى اقتربت من 253 دون أن تتجاوزها. لماذا الحاصل 14 وليس 15؟</span>}
+                options={[M('لأنّ $17 \\times 15 = 255$ أكبر من 253'), M('لأنّ الباقي يجب أن يكون معدومًا'), M('لأنّ 14 عدد زوجي')]}
+                correct={0}
+                cols={1}
+                requires={['qisma-iqlidiya']}
+                explain={<MathText>{'$17 \\times 14 = 238 < 253 < 255 = 17 \\times 15$ : 15 عقدًا تحتاج لآلئ لا توجد، والباقي $253 - 238 = 15 < 17$.'}</MathText>}
+                onAnswered={() => setQ2(true)}
+              />
+              {q2 && <TextbookBox kind="remark" text={KNOWLEDGE.remark} source={KNOWLEDGE.source} compact />}
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'لكل عدد اسم', subtitle: '$253 = 17 \\times 14 + 15$', done: q1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="example" lines={[example1.text, example1.equality, example1.conclusion]} source={KNOWLEDGE.source} compact />
@@ -60,26 +77,6 @@ export default function Module02Maarif() {
                 onAnswered={() => setQ1(true)}
               />
               {q1 && <KnowledgeBrick id="qisma-mufradat" />}
-            </div>
-          ),
-        },
-        {
-          num: 2, title: 'نقترب من 253 بقفزات من 17', subtitle: 'لماذا 14 وليس 15؟', done: q2,
-          content: (
-            <div className="space-y-3">
-              <TextbookBox kind="remark" text={KNOWLEDGE.remark} source={KNOWLEDGE.source} compact />
-              <Manipulation type="division-jumps" world="line" a={example1.numbers.a} b={example1.numbers.b} levels={false}
-                title="مثال الكتاب: اللؤلؤ والعقود"
-                lead={`عندنا ${example1.numbers.a} لؤلؤة، وفي كل عقد ${example1.numbers.b} لؤلؤة: كل قفزة على المستقيم طولها ${example1.numbers.b}، أي عقد.`} />
-              <TapQuestion
-                prompt={<span>لماذا الحاصل 14 وليس 15؟</span>}
-                options={[M('لأنّ $17 \\times 15 = 255$ أكبر من 253'), M('لأنّ الباقي يجب أن يكون معدومًا'), M('لأنّ 14 عدد زوجي')]}
-                correct={0}
-                cols={1}
-                requires={['qisma-mufradat']}
-                explain={<MathText>{'$17 \\times 14 = 238 < 253 < 255 = 17 \\times 15$ : 15 عقدًا تحتاج لآلئ لا توجد، والباقي $253 - 238 = 15 < 17$.'}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
             </div>
           ),
         },

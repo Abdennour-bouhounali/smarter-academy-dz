@@ -21,6 +21,17 @@
  *                      دوّار, l'عنفة ريحية (content/problems.js) ;
  *   M8 إختبار أولي   — cinq épreuves de la plateforme ; P1, P2, P3 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Candidats d'entrée : (a) la طريقة p. 155 ([AC] / [BD], deux triangles rectangles isocèles) : l'élève devrait prouver avant d'avoir
+ *   vu ce qu'un دوران conserve, et la preuve se répond de mémoire ; (b) la feuille calque de l'artisan de Tlemcen (labo shape-turn,
+ *   rosace, مبتدئ) : la main tourne et imprime, le tableau lit ce qui reste et ce qui change, et l'étirement est REFUSÉ par le labo.
+ *   Retenu : (b), entrée de la plateforme (`platform_designed_entry`) ; (a) devient le niveau متقدم, rouvert au module 3 (qui s'ouvre
+ *   désormais sur ce niveau). Ordre des idées : ce qui reste / change (brique `thabat-dawaran` APRÈS la comparaison) → la feuille
+ *   étirée n'est pas un دوران → 90° ⇒ ⊥ → معارف : les mêmes constats, d'abord ESSAYÉS sur l'exemple de 20° (brique `khawas-dawaran`
+ *   après), puis la droite et son image (brique `zawiya-sura` et remarque APRÈS leur question) → طرائق : le labo متقدم, POURQUOI
+ *   B est l'image de A, puis seulement la solution du manuel et la brique `istimal-khawas`.
+ *   Module 1 / 3 : plus de `brief` ni de `title`/`lead` de workspace ; contexte = la `lead` du labo.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/khawas-dawaran';
@@ -92,7 +103,7 @@ export const LESSON_CONFIG = {
       title: 'وردة الزليج: ورقة شفافة تدور حول دبوس',
       objective: 'الدوران يحافظ على الأطوال وأقياس الزوايا واستقامية النقط والمساحات، والمستقيم وصورته يصنعان زاوية الدوران: نوظّف ذلك لإثبات تقايس قطع وتعامد مستقيمين',
       autonomy: '',
-      experience: { type: 'platform_adaptation', reason: 'improved_interactivity_and_age_appropriateness', theme: 'zellige' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'zellige' },
       learningPointIds: ['4am_khawas-dawaran_P1'],
       sourceElementIds: ['know-3'],
     },

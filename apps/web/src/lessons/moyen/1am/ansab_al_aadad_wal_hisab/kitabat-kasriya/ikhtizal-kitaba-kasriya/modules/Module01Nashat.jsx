@@ -4,12 +4,13 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, GUIDE } from '../content/textbook';
 
 /**
- * Module 1 — نشاط 4 (p. 54) « تحويل الكتابة الكسرية لحاصل قسمة ». LABORATOIRE À DEUX NIVEAUX, un seul type
+ * Module 1 — l'ENTRÉE : le plateau de la grand-mère puis le نشاط 4 du manuel (p. 54) (rétrofit 2026-10-15 : le labo en tête SANS carte
+ * ni titre, la brique APRÈS la réponse, la question du grand-père demande POURQUOI — le labo a déjà fait prédire). LABORATOIRE À DEUX NIVEAUX, un seul type
  * `fraction-knife` (la main tient le COUTEAU : d, le nombre de morceaux égaux du tout ; la part ne bouge jamais) :
  *   مبتدئ  — le plateau de قلب اللوز de grand-mère (plateforme, monde `sweets-tray`) : la part des voisins 3/5, d de 1 à 20,
  *            la proposition d'Amine « 4/6 » jugée par le plateau.
@@ -36,24 +37,8 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 4 — نفس الحصّة"
       moduleSubtitle="نقطع أكثر أو أقل، والحصّة لا تتحرّك"
       estimatedTime="14 دقيقة"
-      brief={{
-        tag: 'نشاط 4 — الكتاب ص 54',
-        headline: 'هل يتغيّر الكسر إذا قطعنا أكثر؟',
-        emoji: '🍰',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-1">
-            <p>{ACTIVITY.text}</p>
-            <ul className="list-disc ps-5 text-sm">{ACTIVITY.parts.slice(0, 2).map((p) => <li key={p}><MathText>{p}</MathText></li>)}</ul>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="ابدأ بصينية الجدّة، ثم انتقل إلى مستطيلات الكتاب وهديّة الجدّ."
           levels={{
             beginner: () => (
               <Manipulation type="fraction-knife" level="beginner" world="tray" share={share} start={share[1]} max={20} claim={[4, 6]} onTrial={record} />
@@ -83,7 +68,7 @@ export default function Module01Nashat() {
                 explain={<MathText>{'قطع أكثر، لكنّ كل قطعة أصغر: نفس السطح. $\\frac{3}{5}=\\frac{6}{10}=\\frac{12}{20}$.'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
-              <KnowledgeBrick id="kitabat-mutasawiya" lead="قطعنا كل قطعة إلى قطعتين، ثم إلى أربع: ماذا حدث للبسط وللمقام؟" />
+              {q1 && <KnowledgeBrick id="kitabat-mutasawiya" lead="قطعنا كل قطعة إلى قطعتين، ثم إلى أربع: ماذا حدث للبسط وللمقام؟" />}
             </div>
           ),
         },
@@ -105,17 +90,17 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'هديّة الجدّ', subtitle: 'السؤال ③ ب) من الكتاب', done: q3,
+          num: 3, title: 'هديّة الجدّ: لماذا لا فرق بين الكسرين؟', subtitle: 'السؤال ③ ب) من الكتاب', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="exercise" text={ACTIVITY.grandfather} source={ACTIVITY.source} compact />
               <TapQuestion
-                prompt={<span>ماذا تختار فاطمة؟</span>}
-                options={[M('لا فرق: $\\frac{27}{45}=\\frac{27\\div 9}{45\\div 9}=\\frac{3}{5}$'), M('$\\frac{27}{45}$ لأنّ 27 أكبر من 3'), M('$\\frac{3}{5}$ لأنّ 5 أصغر من 45')]}
+                prompt={<span>في هديّة الجدّ قطعتَ <bdi dir="ltr">27/45</bdi> حتى صارت <bdi dir="ltr">3/5</bdi>. لماذا تبقى الحصّة نفسها؟</span>}
+                options={[M('جمعنا كل 9 قطع في قطعة أكبر، فبقي السطح الملوّن كما هو'), M('لأنّ البسط صار أصغر'), M('لأنّ المقام صار أكبر')]}
                 correct={0} cols={1} requires={['kitabat-mutasawiya']}
                 explain={<MathText>{'نجمع كل 9 قطع في قطعة: 27 قطعة من 45 تصبح 3 قطع من 5. نفس الحصّة، دون حساب المبلغ.'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <TextbookBox kind="exercise" text={ACTIVITY.grandfather} source={ACTIVITY.source} compact />}
             </div>
           ),
         },

@@ -6,6 +6,18 @@
  * Puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit6/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le CÂBLE du téléphérique (origin-line, niveau مبتدئ) — la main FAIT PIVOTER le câble autour de la station O
+ *   jusqu'à ce qu'il touche trois pylônes ; ce que l'élève voit, c'est qu'une droite qui passe par O suffit, et le laboratoire
+ *   écrit y = a·x ; ajout déclaré de la plateforme (`platform_designed_entry`). Rejeté : le نشاط 4 du manuel (trois graphiques :
+ *   pommes de terre, périmètre, aire — « lequel est proportionnel ? ») comme entrée — c'est un choix à vue entre trois dessins,
+ *   sans geste ; il devient la PREMIÈRE question APRÈS le câble (« le câble passe par O : lequel des trois lui ressemble ? »).
+ *   Rejeté aussi : le ressort de la طريقة (a = 0,3) en premier contact — le coefficient hors des nœuds de la grille ; il reste
+ *   le niveau متقدم. Ordre des idées : câble réglé (mes essais) → quel graphique du livre lui ressemble → a = 50 sur (3 ; 150),
+ *   brique « tanasub-bayan » APRÈS la réponse → ce que signifie a → pourquoi (2) et (3) ne conviennent pas, brique
+ *   « laysat-tanasub » APRÈS la réponse → (module 2) le tableau du ressort d'abord, la solution du livre ensuite, les trois
+ *   formes et l'interprétation en question d'abord, brique après.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/tarrid-khatti';
@@ -72,7 +84,7 @@ export const LESSON_CONFIG = {
       title: 'التلفريك: الحبل يمرّ برؤوس الأعمدة',
       objective: 'ترييض وضعية تناسبية: نقط القياس على مستقيم يشمل المبدأ، معامل توجيهه a هو معامل التناسبية، فنكتب y = ax ونقرأ به',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'cablecar' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'cablecar' },
       learningPointIds: ['4am_tarrid-khatti_P1', '4am_tarrid-khatti_P2'],
       sourceElementIds: ['act-4'],
     },

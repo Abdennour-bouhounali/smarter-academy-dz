@@ -17,7 +17,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module01Nashat5.jsx",
-        "line": 144,
+        "line": 128,
         "step": 3,
         "variant": "new"
       }
@@ -28,7 +28,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module01Nashat5.jsx",
-        "line": 184,
+        "line": 168,
         "step": 5,
         "variant": "new"
       }
@@ -39,7 +39,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module02Maarif.jsx",
-        "line": 79,
+        "line": 99,
         "step": 2,
         "variant": "new"
       }
@@ -50,8 +50,8 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module03Taraiq.jsx",
-        "line": 128,
-        "step": 3,
+        "line": 151,
+        "step": 4,
         "variant": "rappel"
       }
     }
@@ -63,7 +63,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module02Maarif.jsx",
-        "line": 59,
+        "line": 79,
         "step": 1,
         "variant": "new"
       }
@@ -76,8 +76,8 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module03Taraiq.jsx",
-        "line": 71,
-        "step": 1,
+        "line": 94,
+        "step": 2,
         "variant": "new"
       }
     },
@@ -87,8 +87,8 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module03Taraiq.jsx",
-        "line": 162,
-        "step": 4,
+        "line": 187,
+        "step": 5,
         "variant": "new"
       }
     }
@@ -100,7 +100,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module02Maarif.jsx",
-        "line": 48,
+        "line": 66,
         "step": 1,
         "variant": "rappel"
       }
@@ -209,7 +209,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module01Nashat5.jsx",
-      "line": 90,
+      "line": 74,
       "requires": [
         "fithaghuris",
         "taarif-nisab"
@@ -227,7 +227,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module01Nashat5.jsx",
-      "line": 110,
+      "line": 94,
       "requires": [
         "murabba-kasr",
         "taarif-nisab"
@@ -245,7 +245,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module01Nashat5.jsx",
-      "line": 130,
+      "line": 114,
       "requires": [
         "taarif-nisab"
       ],
@@ -261,7 +261,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module01Nashat5.jsx",
-      "line": 156,
+      "line": 140,
       "requires": [
         "fithaghuris",
         "taarif-nisab",
@@ -281,7 +281,7 @@
       "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module01Nashat5.jsx",
-      "line": 175,
+      "line": 159,
       "requires": [
         "taarif-nisab"
       ],
@@ -297,7 +297,23 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module02Maarif.jsx",
-      "line": 50,
+      "line": 49,
+      "requires": [
+        "taarif-nisab"
+      ],
+      "prerequisiteStatus": {
+        "taarif-nisab": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S1-Q2",
+      "module": 2,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module02Maarif.jsx",
+      "line": 68,
       "requires": [
         "alaqatan"
       ],
@@ -308,12 +324,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M02-S2-Q2",
+      "questionId": "M02-S2-Q3",
       "module": 2,
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module02Maarif.jsx",
-      "line": 70,
+      "line": 90,
       "requires": [
         "alaqatan",
         "murabba-jadhr"
@@ -326,12 +342,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M02-S3-Q3",
+      "questionId": "M02-S3-Q4",
       "module": 2,
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module02Maarif.jsx",
-      "line": 87,
+      "line": 107,
       "requires": [
         "alaqatan"
       ],
@@ -345,9 +361,25 @@
       "questionId": "M03-S1-Q1",
       "module": 3,
       "step": 1,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module03Taraiq.jsx",
+      "line": 62,
+      "requires": [
+        "fithaghuris"
+      ],
+      "prerequisiteStatus": {
+        "fithaghuris": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S2-Q2",
+      "module": 3,
+      "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module03Taraiq.jsx",
-      "line": 57,
+      "line": 80,
       "requires": [
         "alaqatan"
       ],
@@ -358,12 +390,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M03-S2-Q2",
+      "questionId": "M03-S3-Q3",
       "module": 3,
-      "step": 2,
+      "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module03Taraiq.jsx",
-      "line": 81,
+      "line": 104,
       "requires": [
         "hisab-nisba",
         "tabsit-jadhr"
@@ -376,12 +408,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M03-S2-Q3",
+      "questionId": "M03-S3-Q4",
       "module": 3,
-      "step": 2,
+      "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module03Taraiq.jsx",
-      "line": 91,
+      "line": 114,
       "requires": [
         "hisab-nisba"
       ],
@@ -392,12 +424,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M03-S2-Q4",
+      "questionId": "M03-S3-Q5",
       "module": 3,
-      "step": 2,
+      "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module03Taraiq.jsx",
-      "line": 100,
+      "line": 123,
       "requires": [
         "alaqatan",
         "hisab-nisba"
@@ -410,12 +442,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M03-S3-Q5",
+      "questionId": "M03-S4-Q6",
       "module": 3,
-      "step": 3,
+      "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module03Taraiq.jsx",
-      "line": 115,
+      "line": 138,
       "requires": [
         "hasr-nisab",
         "hisab-nisba"
@@ -428,35 +460,17 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M03-S4-Q6",
+      "questionId": "M03-S5-Q7",
       "module": 3,
-      "step": 4,
+      "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module03Taraiq.jsx",
-      "line": 149,
+      "line": 160,
       "requires": [
         "taarif-nisab"
       ],
       "prerequisiteStatus": {
         "taarif-nisab": "prior"
-      },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
-    },
-    {
-      "questionId": "M03-S5-Q7",
-      "module": 3,
-      "step": 5,
-      "component": "BatchChoiceQuestion",
-      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/alaqat-muthallathiya/modules/Module03Taraiq.jsx",
-      "line": 175,
-      "requires": [
-        "insha-zawiya",
-        "fithaghuris"
-      ],
-      "prerequisiteStatus": {
-        "insha-zawiya": "established@M3",
-        "fithaghuris": "prior"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true

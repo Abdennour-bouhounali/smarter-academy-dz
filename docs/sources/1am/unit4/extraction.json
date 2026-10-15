@@ -572,9 +572,9 @@
    "page": 57,
    "section": "أتمرّن",
    "group": "الكسر وحاصل القسمة",
-   "verified": false,
-   "text": "في كل حالة من الحالات الآتية، هل الجزء الملوّن يمثّل 3/4 من سطح الشكل؟ (① شريط من 8 خانات، 3 منها ملوّنة ؛ ② مربع 4 × 4 ؛ ③ قرص مقسوم بأوتار متوازية إلى أجزاء غير متقايسة)",
-   "reading": "① 3 cases sur 8 ; ② 12 cases sur 16 colorées (lecture) ; ③ parts non égales.",
+   "verified": true,
+   "text": "في كل حالة من الحالات الآتية، هل الجزء الملوّن يمثّل 3/4 من سطح الشكل؟ (① شريط من 7 خانات، 3 منها ملوّنة ؛ ② مربع 4 × 4 ؛ ③ قرص مقسوم بأوتار متوازية إلى أجزاء غير متقايسة)",
+   "reading": "① 3 cases sur 7 (relu à 300 dpi, 2026-10-15 : sept cases, non huit) ; ② 12 cases sur 16 colorées (la 4e case de la 2e rangée, teintée par le filigrane, est blanche) ; ③ parts non égales.",
    "answer": {
     "1": false,
     "2": true,
@@ -1805,7 +1805,17 @@
   {
    "elementId": "self-1",
    "kind": "reading",
-   "text": "Les graduations des quatre tubes ne se lisent pas sûrement au scan : réponse laissée à hasil-qisma-kasr (relecture à 400 dpi)."
+   "text": "Les graduations des quatre tubes ne se lisent pas sûrement au scan, même à 400 dpi (A, B, D à demi pleins, C plein) : hasil-qisma-kasr REDESSINE la figure (tubes gradués en 4, 5, 6 et 8 parts égales, remplis de 3, 2, 6 et 5 parts : 3/4, 2/5, 6/6 = 1, 5/8) et dit en une ligne que la plateforme l’a redessinée."
+  },
+  {
+   "elementId": "ex-2",
+   "kind": "reading",
+   "text": "① Le ruban de la 1re figure compte SEPT cases (relu à 300 dpi), pas huit : 3 cases sur 7 ; la réponse (non) ne change pas."
+  },
+  {
+   "elementId": "self-9",
+   "kind": "scope",
+   "text": "« 7 × … = 0,7 → 0,1 » et « 27 × … = 0,27 → 0,01 » sont des nombres décimaux : le facteur manquant n’est pas toujours une fraction a/b. 5/12 × 3 = 5/4 et 7 × 2/21 = 2/3 se réduisent (réduction = ikhtizal-kitaba-kasriya) : la leçon accepte la fraction telle qu’elle vient, 15/12 ou 14/21."
   },
   {
    "elementId": "self-6",
@@ -1846,7 +1856,8 @@
   },
   "opener": {
    "lesson": "hasil-qisma-kasr",
-   "module": null
+   "module": 2,
+   "note": "تمهيد p. 51 (الكاشي والكسور العشرية) : une carte « من تاريخ الكسور » à la fin de معارف"
   },
   "challenge": {
    "lesson": "unit",
@@ -1883,7 +1894,8 @@
   },
   "act-1": {
    "lesson": "hasil-qisma-kasr",
-   "module": 1
+   "module": 4,
+   "note": "APPLICATION (guide §4ter) : le labo `fair-share` est l’entrée conçue par la plateforme ; نشاط 1 (5 ÷ 6 = 5/6) est posé dans أتمرّن"
   },
   "act-2": {
    "lesson": "hasil-qisma-mustaqim",
@@ -2056,19 +2068,20 @@
   },
   "self-1": {
    "lesson": "hasil-qisma-kasr",
-   "module": null
+   "module": 4,
+   "note": "figure REDESSINÉE : tubes gradués en 4, 5, 6, 8 (3/4, 2/5, 6/6, 5/8)"
   },
   "self-2": {
    "lesson": "hasil-qisma-kasr",
-   "module": null
+   "module": 8
   },
   "self-3": {
    "lesson": "hasil-qisma-kasr",
-   "module": null
+   "module": 8
   },
   "self-9": {
    "lesson": "hasil-qisma-kasr",
-   "module": null
+   "module": 4
   },
   "self-4": {
    "lesson": "ikhtizal-kitaba-kasriya",
@@ -2096,7 +2109,7 @@
   },
   "deep-2": {
    "lesson": "hasil-qisma-kasr",
-   "module": null
+   "module": 6
   },
   "deep-3": {
    "lesson": "akhdh-kasr-min-adad",

@@ -18,6 +18,9 @@ import { KNOW, METHOD_PERCENT, METHOD_COMPOUND, NOW_71, BIDALALA } from '../cont
  *   5. la grandeur QUOTIENT et la densité de population de l'Algérie (طرائق) → brique
  *      miqdar-bidalala : une grandeur donnée en fonction d'une autre (m = ρ × V).
  * LP : P1 (1–3), P2 (4–5), P3 (5).
+ * RETROFIT 2026-10-15 : nommer APRÈS la réponse — le tableau des pourcentages après les trois traductions, la brique tatabu-darb
+ * et l'encadré de la méthode après « لماذا لا … 15% »، miqdar-jida après le calcul de l'énergie، miqdar-bidalala après la
+ * question m = 920V.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -54,24 +57,6 @@ export default function Module03MaarifTarayiq() {
           num: 1, title: 'جدول النسب المئوية', subtitle: 'معارف ص 70', done: q1,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="property" title={KNOW.title} source={KNOW.source}>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm" data-know-percent-table>
-                    <tbody>
-                      {KNOW.percentTable.map((row) => (
-                        <tr key={row.case} className="border-t border-violet-200">
-                          <td className="py-1 pe-2 font-bold"><MathText>{row.case}</MathText></td>
-                          <td className="py-1 pe-2"><MathText>{row.means}</MathText></td>
-                          <td className="py-1"><MathText>{row.fn}</MathText></td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <ul className="list-disc space-y-0.5 ps-5 text-sm text-slate-700">
-                  {KNOW.percentExamples.map((e) => <li key={e}><MathText>{e}</MathText></li>)}
-                </ul>
-              </TextbookBox>
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">الدالة الخطية المرفقة بكل حالة:</p>}
                 rows={[
@@ -90,6 +75,26 @@ export default function Module03MaarifTarayiq() {
                 )}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && (
+                <TextbookBox kind="property" title={KNOW.title} source={KNOW.source}>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm" data-know-percent-table>
+                      <tbody>
+                        {KNOW.percentTable.map((row) => (
+                          <tr key={row.case} className="border-t border-violet-200">
+                            <td className="py-1 pe-2 font-bold"><MathText>{row.case}</MathText></td>
+                            <td className="py-1 pe-2"><MathText>{row.means}</MathText></td>
+                            <td className="py-1"><MathText>{row.fn}</MathText></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <ul className="list-disc space-y-0.5 ps-5 text-sm text-slate-700">
+                    {KNOW.percentExamples.map((e) => <li key={e}><MathText>{e}</MathText></li>)}
+                  </ul>
+                </TextbookBox>
+              )}
             </div>
           ),
         },
@@ -100,8 +105,6 @@ export default function Module03MaarifTarayiq() {
               <MethodSteps method={{ source: METHOD_PERCENT.source, exercise: METHOD_PERCENT.exercise, solution: METHOD_PERCENT.solution }} onAllRevealed={() => setRead2(true)} />
               {read2 && (
                 <>
-                  <KnowledgeBrick id="tatabu-darb" lead="ما فعله الكتاب بالخزان — وما فعلته في المستوى المتقدّم:" />
-                  <TextbookBox kind="method" title={METHOD_PERCENT.title} text={METHOD_PERCENT.method} source={METHOD_PERCENT.source} compact />
                   <TapQuestion
                     prompt={<MathText>{'لماذا لا يساوي «تفريغ 30% ثم إضافة 15%» تخفيضًا بـ 15%؟'}</MathText>}
                     options={[
@@ -111,10 +114,15 @@ export default function Module03MaarifTarayiq() {
                     ]}
                     correct={0}
                     cols={1}
-                    requires={['tatabu-darb']}
                     explain={<MathText>{'$30 \\times 0{,}805 = 24{,}15$ ، أما تخفيض 15% فيعطي $30 \\times 0{,}85 = 25{,}5$ . حتى زيادتان لا تُجمعان: $+10\\%$ ثم $+10\\%$ تعطيان $1{,}1 \\times 1{,}1 = 1{,}21$ أي $+21\\%$ . والخزان لا يفيض: $24{,}15 < 30$ .'}</MathText>}
                     onAnswered={() => setQ2(true)}
                   />
+                  {q2 && (
+                    <>
+                    <KnowledgeBrick id="tatabu-darb" lead="ما فعله الكتاب بالخزان — وما فعلته في المستوى المتقدّم:" />
+                    <TextbookBox kind="method" title={METHOD_PERCENT.title} text={METHOD_PERCENT.method} source={METHOD_PERCENT.source} compact />
+                    </>
+                  )}
                 </>
               )}
             </div>
@@ -147,16 +155,15 @@ export default function Module03MaarifTarayiq() {
               <PredictRule id="miqdar-jida" prompt={"تعلّمت أنّ حاصل قسمة مقدارين (كالسرعة المتوسطة) يعطي «مقدار حاصل القسمة». بالقياس: ماذا نحصل عليه عندما نضرب مقدارين؟ أعطِ مثالًا من الهندسة وآخر من الكهرباء."}><TextbookBox kind="definition" title="المقادير المركّبة" lines={[KNOW.productQuantity, ...KNOW.productExamples]} source={KNOW.source}>
                 <p className="text-[11px] text-slate-500" data-correction-note><MathText>{KNOW.correctionNote}</MathText></p>
               </TextbookBox></PredictRule>
-              <KnowledgeBrick id="miqdar-jida" lead="الطاقة والمساحة يُحسبان بجداء مقدارين:" />
               <NumericQuestion
                 prompt={<MathText>{'مكيّف هواء استطاعته $2kW$ يشتغل مدة $3{,}5h$ . الطاقة التي يستهلكها (بالكيلوواط ساعي):'}</MathText>}
                 expected={7}
                 parse={parseDec}
                 suffix="kWh"
-                requires={['miqdar-jida']}
                 explain={<MathText>{'$E = P \\times t = 2kW \\times 3{,}5h = 7kWh$ . نضرب الاستطاعة في المدة، ولا نقسم.'}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && <KnowledgeBrick id="miqdar-jida" lead="الطاقة والمساحة يُحسبان بجداء مقدارين:" />}
             </div>
           ),
         },
@@ -169,17 +176,20 @@ export default function Module03MaarifTarayiq() {
               <MethodSteps method={{ source: METHOD_COMPOUND.source, exercise: METHOD_COMPOUND.exercise, solution: METHOD_COMPOUND.solution }} onAllRevealed={() => setRead5(true)} />
               {read5 && (
                 <>
-                  <TextbookBox kind="method" title={METHOD_COMPOUND.title} text={METHOD_COMPOUND.method} source={METHOD_COMPOUND.source} compact />
-                  <KnowledgeBrick id="miqdar-bidalala" lead="نقرأ المقادير المركّبة في الاتجاه الآخر:" />
                   <TapQuestion
                     prompt={<MathText>{'الكتلة الحجمية لزيت الزيتون $920kg/m^3$ . الكتلة $m$ (بالكيلوغرام) لحجم $V$ (بالمتر المكعب) من هذا الزيت هي:'}</MathText>}
                     options={[M('$m = 920V$'), M('$m = \\dfrac{V}{920}$'), M('$m = 920 + V$')]}
                     correct={0}
                     cols={3}
-                    requires={['miqdar-bidalala']}
                     explain={<MathText>{`من $m_v = \\dfrac{m}{V}$ ينتج $m = 920 \\times V$ : مثلا $2m^3$ كتلتها $1840kg$ . ${BIDALALA.example}`}</MathText>}
                     onAnswered={() => setQ5(true)}
                   />
+                  {q5 && (
+                    <>
+                      <TextbookBox kind="method" title={METHOD_COMPOUND.title} text={METHOD_COMPOUND.method} source={METHOD_COMPOUND.source} compact />
+                      <KnowledgeBrick id="miqdar-bidalala" lead="نقرأ المقادير المركّبة في الاتجاه الآخر:" />
+                    </>
+                  )}
                 </>
               )}
             </div>

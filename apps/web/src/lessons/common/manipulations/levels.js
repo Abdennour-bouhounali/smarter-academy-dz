@@ -657,6 +657,15 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { a: 50, b: 12, then: 60, world: 'carton' }, ...P },
     advanced: { numbers: { a: 2145, b: 30, then: 2160, claim: { q: 70, r: 45 }, world: 'tray' }, ...T('act-1') },
   },
+  // ── 1AM, unité 4 « الكتابات الكسرية » — la fraction est le quotient (2026-10-15) ──
+  // LE PARTAGE ÉQUITABLE (fair-share) : a pains pour b enfants, la main tient la part x d'un enfant. مبتدئ : la cantine de
+  // l'école (plateforme, thème bakery) — 3 pains pour 4 enfants (la règle décimale tombe juste : 0,75) puis 2 pains pour 3
+  // (jamais juste en décimal, la règle des morceaux tombe juste) ; متقدم : نشاط 1 du manuel — 5 pains pour 6 personnes puis
+  // 7 pains pour 3 (la part dépasse un pain : 7/3 = 2 pains et un tiers), jamais de part décimale juste.
+  'fair-share': {
+    beginner: { numbers: { scene: 'canteen', orders: [[3, 4], [2, 3]] }, ...P },
+    advanced: { numbers: { scene: 'family', orders: [[5, 6], [7, 3]] }, ...T('act-1') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
-import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { parseDec } from '@smarter-academy/core';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, ACTIVITY_LINES, HOOK, ICT, ICT_PLATFORM } from '../content/textbook';
-import CableCarVignette from '../components/CableCarVignette';
+import { ACTIVITY, ACTIVITY_LINES, ICT, ICT_PLATFORM } from '../content/textbook';
 
 /**
  * Module 1 — نشاط 3 (p. 66) « تمثيل دالة خطية بيانيا », ouvert sur LA DROITE ÉPINGLÉE À O (origin-line).
@@ -25,6 +23,9 @@ import CableCarVignette from '../components/CableCarVignette';
  *           `[data-activity-evidence]`), س 2 أ) sur sa lecture de C, س 2 ب) nomme y = 0,5x.
  * TOUCH / FORMALIZE  la brique tamthil-nashat (« نقول أنّ … ») nomme ce que le lab a montré.
  * TRANSFER  le زالق : la question de la p. 76 se décide sur les droites que l'élève a fixées.
+ * Rétrofit 2026-10-15 (§4quater) : le labo OUVRE le module (plus de carte du livre ni de vignette, plus de titre / lead de workspace ;
+ * l'accroche du téléphérique est le `lead` du labo). L'étape 1 ne redemande plus le tableau f(0), f(1), f(4) que le labo vient de faire
+ * calculer : elle demande POURQUOI un point est refusé et l'autre accepté ; l'étape 2, POURQUOI B tombe sur (OA).
  * AUCUNE étape n'attend `onFinished`. LP : P1, P2 (lecture de C), P3 (le زالق).
  * La dernière étape se termine sur « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire), résolue au module 4.
  */
@@ -107,25 +108,8 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 3 — حبل يشدّه المبدأ"
       moduleSubtitle="تمثيل دالة خطية بيانيا"
       estimatedTime="14 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 66',
-        headline: HOOK.headline,
-        emoji: '🚡',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <CableCarVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="text-sm text-slate-600"><MathText>{HOOK.text}</MathText></p>
-            <p className="font-semibold text-slate-800"><MathText>{ACTIVITY.text}</MathText></p>
-          </div>
-        ),
-        footer: <div className="flex flex-wrap gap-2"><SourceTag source={ACTIVITY.source} /><SourceTag source={HOOK.source} /></div>,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="في المستويين مستقيم مثبّت في المبدأ O. في المبتدئ تضع أنت نقط تمثيل الدالة، وفي المتقدّم تدير المستقيم بالزالق."
           levels={{
             beginner: () => (
               <Manipulation
@@ -134,8 +118,7 @@ export default function Module01Nashat() {
                 a={ACTIVITY.a}
                 mode="draw"
                 theme="cablecar"
-                title="نشاط 3: تمثيل دالة خطية بيانيا"
-                lead="احسب صورة 1 وصورة 4، وضع النقطتين A و B. جرّب أيضًا نقطة لا تحقّق الحساب، وحاول أن تحرّك O."
+                lead={<MathText>{'حبل تلفريك قسنطينة مستقيم، مشدود من محطة الانطلاق O. نمثّل الدالة الخطية $f : x \\longmapsto 0{,}5x$ : احسب صورة $1$ وصورة $4$ وضع النقطتين A و B على المعلم. جرّب أيضًا نقطة لا تحقّق الحساب، وحاول أن تحرّك O.'}</MathText>}
                 onTrial={onDraw}
               />
             ),
@@ -145,8 +128,7 @@ export default function Module01Nashat() {
                 level="advanced"
                 mode="pivot"
                 theme="cablecar"
-                title="الزالق: كيف يتحرّك المستقيم عندما يتغيّر a؟"
-                lead="أمسك المستقيم أو حرّك الزالق على يمين المعلم، وثبّت عدّة مستقيمات: بعضها يصعد وبعضها ينزل."
+                lead="في هذا المستوى لا دالة معطاة: أمسك المستقيم أو حرّك الزالق على يمين المعلم، وثبّت عدّة مستقيمات: بعضها يصعد وبعضها ينزل."
                 onTrial={onPivot}
               />
             ),
@@ -155,37 +137,38 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'أكمل الجدول', subtitle: 'السؤال 1 أ', done: q1,
+          num: 1, title: 'لماذا رفض المعلم نقطة وقبل أخرى؟', subtitle: 'السؤال 1 أ', done: q1,
           content: (
             <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[0]}</MathText></p>
               {pointsEvidence}
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'جدول الدالة $f : x \\longmapsto 0{,}5x$ :'}</MathText></p>}
-                rows={[
-                  { id: 'f0', label: <MathText>{'$f(0)$'}</MathText>, options: ['$0$', '$0{,}5$', '$1$'].map(Opt), correct: 0, correction: <MathText>{'$0{,}5 \\times 0 = 0$'}</MathText> },
-                  { id: 'f1', label: <MathText>{'$f(1)$'}</MathText>, options: ['$1$', '$0{,}5$', '$1{,}5$'].map(Opt), correct: 1, correction: <MathText>{'$0{,}5 \\times 1 = 0{,}5$'}</MathText> },
-                  { id: 'f4', label: <MathText>{'$f(4)$'}</MathText>, options: ['$4{,}5$', '$8$', '$2$'].map(Opt), correct: 2, correction: <MathText>{'$0{,}5 \\times 4 = 2$ (وليس $4 + 0{,}5$ ولا $4 \\div 0{,}5$)'}</MathText> },
-                ]}
+              <p className="text-xs text-slate-500"><MathText>{`نشاط 3: ${ACTIVITY.title}`}</MathText> <SourceTag source={ACTIVITY.source} /></p>
+              <TapQuestion
+                prompt={<MathText>{'عندما تضع النقطة $(4 ; 3)$ يرفضها المعلم ويقبل $B(4 ; 2)$. لماذا؟'}</MathText>}
+                options={[
+                  'لأنّ ترتيب نقطة فاصلتها $4$ على التمثيل هو $f(4) = 0{,}5 \\times 4 = 2$ ، لا $3$.',
+                  'لأنّ الفاصلة $4$ أكبر من أن يقبلها المعلم.',
+                  'لأنّ المعلم لا يقبل إلا نقطتين فقط.',
+                ].map(Opt)}
+                correct={0}
+                cols={1}
                 requires={['notation-fx']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'هذه هي ترتيبات النقط التي يقبلها المعلم.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
+                explain={<MathText>{`${ACTIVITY_LINES.table} فكل نقطة من التمثيل ترتيبها صورة فاصلتها.`}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
             </div>
           ),
         },
         {
-          num: 2, title: 'O و A و B', subtitle: 'السؤال 1 ب', done: q2,
+          num: 2, title: 'لماذا وقعت B على المستقيم (OA)؟', subtitle: 'السؤال 1 ب', done: q2,
           content: (
             <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[1]}</MathText></p>
               {pointsEvidence}
               <TapQuestion
-                prompt={<MathText>{'ضع $A(1 ; 0{,}5)$ و $B(4 ; 2)$ على المعلم إن لم تفعل، ثم اختر:'}</MathText>}
+                prompt={<MathText>{'المستقيم (OA) مرّ بالنقطة $B(4 ; 2)$ دون أن توجّهه إليها. لماذا O و A و B على استقامة واحدة؟'}</MathText>}
                 options={[
-                  'نعم، على استقامة واحدة: المستقيم (OA) يشمل B لأنّ $2 = 0{,}5 \\times 4$.',
-                  'لا: ثلاث نقط فواصلها مختلفة لا تكون على استقامة واحدة.',
-                  'نعم: كل ثلاث نقط في معلم تكون على استقامة واحدة.',
+                  'لأنّ ترتيب B هو $2 = 0{,}5 \\times 4$ ، فهي من نقط تمثيل الدالة نفسها.',
+                  'لأنّ كل ثلاث نقط في معلم تكون على استقامة واحدة.',
+                  'لأنّ B أبعد عن O من A.',
                 ].map(Opt)}
                 correct={0}
                 cols={1}
@@ -197,10 +180,9 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'النقطة C', subtitle: 'السؤال 2 أ', done: q3,
+          num: 3, title: 'ماذا تقرأ عند الفاصلة −2؟', subtitle: 'السؤال 2 أ', done: q3,
           content: (
             <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[2]}</MathText></p>
               {readEvidence}
               <NumericQuestion
                 prompt={<MathText>{'ترتيب النقطة C من المستقيم (OA) ذات الفاصلة $-2$ هو:'}</MathText>}
@@ -215,10 +197,9 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'النقطة M(x ; y)', subtitle: 'السؤال 2 ب', done: q4,
+          num: 4, title: 'كيف نصف كل نقطة من المستقيم؟', subtitle: 'السؤال 2 ب', done: q4,
           content: (
             <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[3]}</MathText></p>
               <TapQuestion
                 prompt={<MathText>{'إذا كانت $M(x ; y)$ نقطة من (OA) فإنّ:'}</MathText>}
                 options={['$y = 0{,}5x$', '$y = x + 0{,}5$', '$x = 0{,}5y$', '$y = 0{,}5$'].map(Opt)}
@@ -233,7 +214,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 5, title: 'الزالق', subtitle: 'أوظّف تكنولوجيات الإعلام والاتصال — ص 76', done: q5,
+          num: 5, title: 'متى يصعد المستقيم ومتى ينزل؟', subtitle: 'أوظّف تكنولوجيات الإعلام والاتصال — ص 76', done: q5,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" title="الزالق (جيوجيبرا)" text={ICT.question} source={ICT.source} compact />

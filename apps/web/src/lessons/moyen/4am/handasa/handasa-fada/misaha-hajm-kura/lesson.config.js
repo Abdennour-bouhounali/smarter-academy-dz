@@ -18,6 +18,14 @@
  *                      de propane d'Arzew, la coupole de la mosquée à repeindre (content/problems.js) ;
  *   M8 إختبار أولي    — cinq épreuves de la plateforme ; P1, P2, P3 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : l'orange de Boufarik (labo `orange-peel`) — la main éplucha la peau, la répartit en disques de rayon R, puis presse
+ *   le jus dans le verre sur mesure et MARQUE où il s'arrête : « quatre disques » et « deux tiers » se voient avant de se lire. Rejetée :
+ *   le texte d'Archimède + la figure + 4 questions sur le cylindre en ouverture (de la lecture et du rappel, la découverte déjà donnée
+ *   par le texte) ; il devient l'étape 3, APRÈS les deux découvertes, pour les nommer (boîte du texte après la réponse).
+ *   Ordre des idées : la peau (pourquoi 4 disques quel que soit R) → brique 𝒜 → le jus (pourquoi la même marque, le tiers vide = la
+ *   moitié de la boule) → brique 𝒱 → Archimède et son cylindre → module 2 : les questions d'abord, les boîtes et briques ensuite.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/misaha-hajm-kura';
@@ -89,7 +97,7 @@ export const LESSON_CONFIG = {
       title: 'برتقالة نصف قطرها 3 cm: كم قرصا تغطي قشرتها، وأين يتوقّف عصيرها؟',
       objective: 'مساحة الكرة التي نصف قطرها R تساوي أربعة أقراص كبرى (المساحة الجانبية للأسطوانة التي تحيط بها)، أي 4πR²، وحجم الجلة يساوي ثلثي حجم هذه الأسطوانة، أي 4/3·πR³',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'boufarik-orange' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'boufarik-orange' },
       learningPointIds: ['4am_misaha-hajm-kura_P1', '4am_misaha-hajm-kura_P2'],
       sourceElementIds: ['intro-archimedes'],
     },
@@ -99,7 +107,7 @@ export const LESSON_CONFIG = {
       title: 'أرخميدس: نصف القطر من 1 إلى 6 cm، ثم مثال الكتاب R = 1,4 cm',
       objective: 'مساحة الكرة التي نصف قطرها R تساوي أربعة أقراص كبرى (المساحة الجانبية للأسطوانة التي تحيط بها)، أي 4πR²، وحجم الجلة يساوي ثلثي حجم هذه الأسطوانة، أي 4/3·πR³',
       autonomy: 'نصف قطر عشري يختاره التلميذ بين 1 و 6 والكأس دون تدريج، والعلامة إلى جزء من اثني عشر من الارتفاع؛ ثم مثال الكتاب R = 1,4 cm حيث يختار بنفسه عدد الأرقام بعد الفاصلة للتدوير إلى 1 mm² وإلى 1 mm³',
-      experience: { type: 'platform_context', reason: 'improved_interactivity_and_age_appropriateness', theme: 'boufarik-orange' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'boufarik-orange' },
       learningPointIds: ['4am_misaha-hajm-kura_P1', '4am_misaha-hajm-kura_P2', '4am_misaha-hajm-kura_P3'],
       sourceElementIds: ['intro-archimedes', 'know-2'],
     },

@@ -41,15 +41,13 @@ export default function Module02Maarif() {
       estimatedTime="11 دقيقة"
       brief={{
         tag: 'معارف — الكتاب ص 116 و 118', title: 'جيب زاوية حادة وظلها', tone: 'violet',
-        body: <p>على المنحدرات رأيت أن النسبتين لا تتعلقان إلا بالزاوية. الكتاب يسمّيهما الجيب والظل، ويكتب تعريفهما بالكلمات.</p>,
+        body: <p>أربعة أسئلة على مثلثات الكتاب؛ بعد كل جواب يأتي ما يسمّي ما وجدته.</p>,
       }}
       steps={[
         {
-          num: 1, title: 'نشاط 3: بالكلمات', subtitle: 'المقابل، المجاور، الوتر', done: q1,
+          num: 1, title: 'كيف نقرأ الجيب والظل بالكلمات؟', subtitle: 'المقابل، المجاور، الوتر', done: q1,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" title={TUSI.title} text={TUSI.text} source={TUSI.source} compact />
-              <KnowledgeBrick id="nisab-zawiya" variant="rappel" compact />
               <TextbookBox kind="situation" text={ACT3.part1} source={ACT3.source} compact />
               <GeoFigure {...FIG_ACT3} />
               <TapQuestion
@@ -80,50 +78,64 @@ export default function Module02Maarif() {
                   onAnswered={() => setQ1(true)}
                 />
               )}
+              {q1 && (
+                <>
+                  <TextbookBox kind="remark" title={TUSI.title} text={TUSI.text} source={TUSI.source} compact />
+                  <KnowledgeBrick id="nisab-zawiya" variant="rappel" compact />
+                </>
+              )}
             </div>
           ),
         },
         {
-          num: 2, title: 'جيب زاوية حادة', subtitle: 'معارف 1', done: q2,
+          num: 2, title: 'ما جيب الزاوية P في هذا المثلث؟', subtitle: 'ثم معارف 1', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="jayb" lead="معارف 1، كما في الكتاب: الجيب، ومعه تذكير بجيب التمام." />
-              <TextbookBox kind="example" text={KNOW1.example2} source={KNOW1.source} compact />
-              <GeoFigure {...FIG_KNOW1_EFG} />
-              <p className="text-sm text-slate-700"><MathText>{KNOW1.exact}</MathText></p>
-              <p className="text-sm font-semibold text-slate-800"><MathText>{'مثلث آخر: PQR قائم في Q حيث $PQ = 5$ ، $QR = 12$ و $PR = 13$ .'}</MathText> <SourceTag source={PLATFORM_SOURCE} /></p>
+              <p className="text-sm font-semibold text-slate-800"><MathText>{'مثلث PQR قائم في Q حيث $PQ = 5$ ، $QR = 12$ و $PR = 13$ .'}</MathText> <SourceTag source={PLATFORM_SOURCE} /></p>
               <GeoFigure {...FIG_PQR} />
               <TapQuestion
                 prompt={<MathText>{'$\\sin\\widehat{P} =$'}</MathText>}
                 options={['$\\dfrac{12}{13}$', '$\\dfrac{5}{13}$', '$\\dfrac{12}{5}$'].map(M)}
                 correct={0}
                 cols={3}
-                requires={['jayb']}
+                requires={['nisab-zawiya']}
                 explain={<MathText>{'بالنسبة إلى P: [QR] مقابل و [PR] وتر: $\\sin\\widehat{P} = \\dfrac{12}{13}$ . ($\\dfrac{5}{13}$ هو $\\cos\\widehat{P}$ ، و $\\dfrac{12}{5}$ هو $\\tan\\widehat{P}$ .)'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && (
+                <>
+                  <KnowledgeBrick id="jayb" lead="معارف 1، كما في الكتاب: الجيب، ومعه تذكير بجيب التمام." />
+                  <TextbookBox kind="example" text={KNOW1.example2} source={KNOW1.source} compact />
+                  <GeoFigure {...FIG_KNOW1_EFG} />
+                  <p className="text-sm text-slate-700"><MathText>{KNOW1.exact}</MathText></p>
+                </>
+              )}
             </div>
           ),
         },
         {
-          num: 3, title: 'ظل زاوية حادة', subtitle: 'معارف 2', done: q3,
+          num: 3, title: 'وما ظل الزاوية R؟', subtitle: 'ثم معارف 2', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="thill" lead="معارف 2، كما في الكتاب:" />
-              <p className="text-xs text-slate-500" data-correction><MathText>{KNOW2.correction}</MathText></p>
-              <TextbookBox kind="example" text={KNOW2.example2} source={KNOW2.source} compact />
-              <GeoFigure {...FIG_KNOW2_EFG} />
-              <TextbookBox kind="remark" lines={KNOW2.remarks} source={KNOW2.source} compact />
-              <KnowledgeBrick id="qiyam-madbuta" lead="قيمتان لعدد واحد:" />
               <TapQuestion
-                prompt={<MathText>{'في المثلث PQR القائم في Q ($PQ = 5$ ، $QR = 12$ ، $PR = 13$): $\\tan\\widehat{R} =$'}</MathText>}
+                prompt={<MathText>{'في المثلث PQR نفسه (الشكل أعلاه): $\\tan\\widehat{R} =$'}</MathText>}
                 options={['$\\dfrac{5}{12}$', '$\\dfrac{12}{5}$', '$\\dfrac{5}{13}$'].map(M)}
                 correct={0}
                 cols={3}
-                requires={['thill']}
+                requires={['nisab-zawiya']}
                 explain={<MathText>{'بالنسبة إلى R: [PQ] مقابل و [QR] مجاور: $\\tan\\widehat{R} = \\dfrac{5}{12}$ . ($\\dfrac{12}{5}$ هو ظل الزاوية P، و $\\dfrac{5}{13}$ جيب R.)'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && (
+                <>
+                  <KnowledgeBrick id="thill" lead="معارف 2، كما في الكتاب:" />
+                  <p className="text-xs text-slate-500" data-correction><MathText>{KNOW2.correction}</MathText></p>
+                  <TextbookBox kind="example" text={KNOW2.example2} source={KNOW2.source} compact />
+                  <GeoFigure {...FIG_KNOW2_EFG} />
+                  <TextbookBox kind="remark" lines={KNOW2.remarks} source={KNOW2.source} compact />
+                  <KnowledgeBrick id="qiyam-madbuta" lead="قيمتان لعدد واحد:" />
+                </>
+              )}
             </div>
           ),
         },

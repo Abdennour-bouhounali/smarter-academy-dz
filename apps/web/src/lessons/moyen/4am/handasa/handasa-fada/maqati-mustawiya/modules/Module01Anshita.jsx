@@ -5,7 +5,7 @@ import MathText from '../../../../../../common/components/MathText';
 import SpaceFigure from '../../../../../../common/components/SpaceFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import {
   ACTIVITY, ACTIVITY_LINES, ACTIVITY_3, ACTIVITY_3_LINES, ACTIVITY_4, ACTIVITY_4_LINES, ACTIVITY_5, ACTIVITY_5_LINES, LAB,
@@ -13,7 +13,6 @@ import {
 import {
   FIG_ACT2, FIG_ACT3_FACE_1, FIG_ACT3_FACE_2, FIG_ACT3_EDGE_1, FIG_ACT3_EDGE_2, FIG_ACT4_AXIS, FIG_ACT4_BASE, FIG_ACT5,
 } from '../content/figures';
-import PrinterVignette from '../components/PrinterVignette';
 
 /**
  * Module 1 — أنشطة 2, 3, 4, 5 (pp. 164–165), ouvert sur L'IMPRIMANTE 3D DU FABLAB (section-slicer).
@@ -26,12 +25,16 @@ import PrinterVignette from '../components/PrinterVignette';
  *           figures du manuel analysées (la partie 2 du نشاط 3 redessinée sans le « I » égaré), la complétion F, G, H du نشاط 5.
  * AUCUNE étape n'attend `onFinished`. LP : P1 (sphère), P2 (pavé), P3 (cylindre), P4 (pyramide).
  * Le lab est dans l'`intro` (deux niveaux) : le rappel de la « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) clôt la DERNIÈRE étape.
+ * Rétrofit 2026-10-15 (§4quater) : l'imprimante ouvre le module (plus de carte du manuel, ni titre ni `lead` de workspace, ni titre de labo) ;
+ * `onTrial` aux DEUX niveaux ; une étape 1 POURQUOI la couche rétrécit quand le plan s'éloigne (sur les couches de l'élève, avant la
+ * formule IM² du manuel, qui devient l'étape 2) ; les questions du manuel suivent. La brique `maqta-tajribi` était déjà après sa réponse.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const STAGE_NAME = { sphere: 'الكرة', 'cuboid-face': 'البلاطة', 'cuboid-edge': 'البلاطة', 'cylinder-base': 'الأسطوانة', 'cylinder-axis': 'الأسطوانة', pyramid: 'الهرم' };
 
 export default function Module01Anshita() {
   const [trials, setTrials] = useState([]);
+  const [q0, setQ0] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
@@ -73,26 +76,9 @@ export default function Module01Anshita() {
       moduleTitle="أنشطة 2 و 3 و 4 و 5 — الطابعة ثلاثية الأبعاد"
       moduleSubtitle="الطابعة تبني المجسم طبقة بعد طبقة: ماذا تطبع في كل طبقة؟"
       estimatedTime="20 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 164–165',
-        headline: 'طابعة نادي العلوم تبني مجسما طبقة بعد طبقة!',
-        emoji: '🖨️',
-        title: 'المقاطع المستوية لمجسمات مألوفة',
-        tone: 'indigo',
-        visual: <PrinterVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={ACTIVITY_LINES.source} /></p>
-            <p className="text-sm text-slate-600">في المستوى «متقدم»: كرة نشاط 2، ثم البلاطة والأسطوانة والهرم (أنشطة 3 و 4 و 5). في المستوى «مبتدئ»: كرة نصف قطرها 5 بطبقات على كل سنتيمتر. في المستويين تتوقّع كل طبقة قبل أن تطبعها الطابعة.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين: حرّك المستوي، توقّع الطبقة، ثم اطبعها؛ الطابعة تطبع دائما المقطع الحقيقي، وتترك توقّعك الخاطئ متقطعا."
           levels={{
             beginner: () => (
               <Manipulation
@@ -100,8 +86,8 @@ export default function Module01Anshita() {
                 level="beginner"
                 {...LAB.beginner.numbers}
                 theme="3d-printer"
-                title="الطابعة ثلاثية الأبعاد: طبقات كرة نصف قطرها 5"
                 lead={<MathText>{'كرة مركزها O ونصف قطرها $5$ : الطبقة على بعد $h$ من O، كل سنتيمتر طبقة.'}</MathText>}
+                onTrial={onTrial}
               />
             ),
             advanced: () => (
@@ -110,7 +96,6 @@ export default function Module01Anshita() {
                 level="advanced"
                 {...LAB.advanced.numbers}
                 theme="3d-printer"
-                title="نشاط 2: كرة نصف قطرها 3، ثم البلاطة والأسطوانة والهرم"
                 lead={<MathText>{'الكرة (d) مركزها O ونصف قطرها $3$ ، والمستوي (P) عمودي على $[NS]$ في I حيث $OI = x$ . جرّب قيم الكتاب ثم افتح المجسمات الأخرى.'}</MathText>}
                 onTrial={onTrial}
               />
@@ -120,12 +105,34 @@ export default function Module01Anshita() {
       }
       steps={[
         {
-          num: 1, title: 'نشاط 2: عبارة $IM^2$', subtitle: 'السؤال 1', done: q1,
+          num: 1, title: 'لماذا تصغر الطبقة كلما ابتعد المستوي؟', subtitle: 'من طبقاتك', done: q0,
+          content: (
+            <div className="space-y-3">
+              {evidence(['sphere'], 'لم تطبع بعد أي طبقة من الكرة: اطبع طبقتين على الأقل أعلاه، فتظهر هنا.')}
+              <TapQuestion
+                prompt={<MathText>{'في طبقاتك: كلما ابتعد المستوي عن المركز $O$ صغرت الدائرة المطبوعة. لماذا؟'}</MathText>}
+                options={[
+                  'لأن نقط الدائرة تبقى على الكرة: كلما ابتعد المستوي عن $O$ قصر الضلع $IM$ من المثلث القائم $OIM$ ، وطول $OM$ ثابت',
+                  // l'impression « réduite » (MISC-MAQTA-SHAKL)
+                  'لأن الطابعة تصغّر كل طبقة عن التي قبلها بنسبة ثابتة',
+                  // R − x au carré (MISC-MAQTA-TARH)
+                  'لأن نصف قطر الدائرة ينقص بالقدر نفسه الذي يبتعد به المستوي',
+                ].map(M)}
+                correct={0}
+                cols={1}
+                explain={<MathText>{'$M$ على الكرة دائما: $OM = R$ ثابت. المثلث $OIM$ قائم في $I$ ووتره $OM$ ثابت، فإذا زاد $OI$ نقص $IM$ . الطابعة لا تصغّر شيئا: الكرة هي التي تضيق.'}</MathText>}
+                onAnswered={() => setQ0(true)}
+              />
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'نشاط 2: عبارة $IM^2$', subtitle: 'السؤال 1', done: q1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={`${ACTIVITY.intro} ${ACTIVITY.part1}`} source={ACTIVITY.source} compact />
               <SpaceFigure {...FIG_ACT2} />
-              {evidence(['sphere'], 'لم تطبع بعد أي طبقة من الكرة (المستوى «متقدم»).')}
+              {evidence(['sphere'], 'لم تطبع بعد أي طبقة من الكرة: اطبع طبقة أو أكثر في الطابعة أعلاه.')}
               <TapQuestion
                 prompt={<MathText>{'M نقطة من المقطع. عبارة $IM^2$ بدلالة x هي:'}</MathText>}
                 options={[
@@ -145,10 +152,10 @@ export default function Module01Anshita() {
           ),
         },
         {
-          num: 2, title: 'نشاط 2: أربعة مستويات', subtitle: 'طبيعة المقطع وعناصره', done: q2,
+          num: 3, title: 'نشاط 2: أربعة مستويات', subtitle: 'طبيعة المقطع وعناصره', done: q2,
           content: (
             <div className="space-y-3">
-              {evidence(['sphere'], 'اطبع في المستوى «متقدم» الطبقات عند قيم الكتاب ثم أجب.')}
+              {evidence(['sphere'], 'اطبع طبقات الكرة (المستوى «متقدم»: قيم الكتاب) ثم أجب.')}
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">طبيعة المقطع وعناصره:</p>}
                 rows={[
@@ -166,7 +173,7 @@ export default function Module01Anshita() {
           ),
         },
         {
-          num: 3, title: 'نشاط 2: المستوي عند القطب', subtitle: 'السؤال 2', done: q3,
+          num: 4, title: 'نشاط 2: المستوي عند القطب', subtitle: 'السؤال 2', done: q3,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY.part2} source={ACTIVITY.source} compact />
@@ -189,7 +196,7 @@ export default function Module01Anshita() {
           ),
         },
         {
-          num: 4, title: 'نشاط 3: مستو موازٍ لوجه', subtitle: 'الجزء 1', done: q4,
+          num: 5, title: 'نشاط 3: مستو موازٍ لوجه', subtitle: 'الجزء 1', done: q4,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={`${ACTIVITY_3.part1} ${ACTIVITY_3.dims}`} source={ACTIVITY_3.source} compact />
@@ -210,7 +217,7 @@ export default function Module01Anshita() {
           ),
         },
         {
-          num: 5, title: 'نشاط 3: مستو موازٍ لحرف', subtitle: 'الجزء 2', done: q5,
+          num: 6, title: 'نشاط 3: مستو موازٍ لحرف', subtitle: 'الجزء 2', done: q5,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY_3.part2} source={ACTIVITY_3.source} compact />
@@ -235,7 +242,7 @@ export default function Module01Anshita() {
           ),
         },
         {
-          num: 6, title: 'نشاط 4: أسطوانة الدوران', subtitle: 'موازٍ للمحور، موازٍ للقاعدة', done: q6,
+          num: 7, title: 'نشاط 4: أسطوانة الدوران', subtitle: 'موازٍ للمحور، موازٍ للقاعدة', done: q6,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={`${ACTIVITY_4.intro} ${ACTIVITY_4.question}`} source={ACTIVITY_4.source} compact />
@@ -260,7 +267,7 @@ export default function Module01Anshita() {
           ),
         },
         {
-          num: 7, title: 'نشاط 5: مقطع هرم بمستو', subtitle: 'الأسئلة 1 و 2 و 3', done: q7,
+          num: 8, title: 'نشاط 5: مقطع هرم بمستو', subtitle: 'الأسئلة 1 و 2 و 3', done: q7,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={`${ACTIVITY_5.intro} ${ACTIVITY_5.part1} ${ACTIVITY_5.part2} ${ACTIVITY_5.part3}`} source={ACTIVITY_5.source} compact />

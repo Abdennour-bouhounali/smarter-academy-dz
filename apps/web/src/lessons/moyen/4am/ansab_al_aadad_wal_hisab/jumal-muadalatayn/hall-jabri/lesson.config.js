@@ -5,6 +5,18 @@
  * (p. 62), puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit5/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : les deux CARTES DU KIOSQUE (labo `elimination-cards`, thème `snack`, niveau مبتدئ : x + y = 10 ; x − y = 2) —
+ *   la main pose une carte sur l'autre et un prix disparaît : « faire disparaître une inconnue » se fait avant de se lire dans la
+ *   copie de deux élèves. Le niveau متقدم est la jumla du نشاط 2 (2x + y = 7 ; 3x − 2y = 4,2), où l'on refait les deux gestes du livre.
+ *   Rejetées : (a) les questions أ) et ب) du manuel en ouverture (« (2 ; 3) est-elle solution ? », réponse de tête, sans besoin : elles
+ *   viennent APRÈS le labo, pour dire pourquoi essayer ne finit pas) ; (b) la carte « لغز الكشك » au-dessus du labo (deux départs) :
+ *   son histoire devient le `lead` du labo, et l'énigme revient en transfert à l'étape 6.
+ *   Ordre des idées : labo → pourquoi chaque élève du livre écrit sa ligne (preuve : ses propres essais) → brique takhallus-majhul →
+ *   pourquoi on ne s'arrête pas à x (la ثنائية se retrouve dans (1) comme dans (2)) → brique hall-thunaiya → أ) une ثنائية de (1) n'est pas
+ *   solution de la jumla → ب) essayer ne finit pas → جـ 2 (les deux méthodes) → l'énigme du kiosque. Module 2 (sans labo) : chaque
+ *   brique et l'encadré « طريقة » APRÈS la question qui les nomme.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/hall-jabri';
@@ -72,7 +84,7 @@ export const LESSON_CONFIG = {
       title: 'بطاقتا الكشك: x + y = 10 و x − y = 2',
       objective: 'حل جملة معادلتين بالتخلّص من أحد المجهولين — بالتعويض أو بالجمع — ثم إيجاد المجهول الآخر: الحل ثنائية (x ; y)',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'snack' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'snack' },
       learningPointIds: ['4am_hall-jabri_P2', '4am_hall-jabri_P1'],
       sourceElementIds: ['act-2'],
     },

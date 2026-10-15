@@ -15,8 +15,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module01Nashat.jsx",
-        "line": 197,
-        "step": 4,
+        "line": 119,
+        "step": 1,
         "variant": "new"
       }
     },
@@ -26,7 +26,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module02Maarif.jsx",
-        "line": 47,
+        "line": 65,
         "step": 1,
         "variant": "rappel"
       }
@@ -37,7 +37,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module02Maarif.jsx",
-        "line": 105,
+        "line": 126,
         "step": 3,
         "variant": "rappel"
       }
@@ -51,7 +51,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module03Taraiq.jsx",
-        "line": 78,
+        "line": 79,
         "step": 1,
         "variant": "new"
       }
@@ -62,7 +62,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module03Taraiq.jsx",
-        "line": 103,
+        "line": 110,
         "step": 2,
         "variant": "new"
       }
@@ -172,12 +172,14 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module01Nashat.jsx",
-      "line": 125,
+      "line": 105,
       "requires": [
-        "qiraat-murakkibatayn"
+        "qiraat-murakkibatayn",
+        "tarh-nisbi"
       ],
       "prerequisiteStatus": {
-        "qiraat-murakkibatayn": "prior"
+        "qiraat-murakkibatayn": "prior",
+        "tarh-nisbi": "prior"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -188,40 +190,54 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module01Nashat.jsx",
-      "line": 146,
+      "line": 127,
       "requires": [
-        "qiraat-murakkibatayn",
-        "tarh-nisbi"
+        "farq-ihdathiyat"
       ],
       "prerequisiteStatus": {
-        "qiraat-murakkibatayn": "prior",
-        "tarh-nisbi": "prior"
+        "farq-ihdathiyat": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S4-Q3",
+      "questionId": "M01-S3-Q3",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module01Nashat.jsx",
+      "line": 149,
+      "requires": [
+        "qiraat-murakkibatayn"
+      ],
+      "prerequisiteStatus": {
+        "qiraat-murakkibatayn": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S4-Q4",
       "module": 1,
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module01Nashat.jsx",
-      "line": 183,
+      "line": 169,
       "requires": [
-        "qiraat-murakkibatayn",
+        "farq-ihdathiyat",
         "tarh-nisbi"
       ],
       "prerequisiteStatus": {
-        "qiraat-murakkibatayn": "prior",
+        "farq-ihdathiyat": "established@M1",
         "tarh-nisbi": "prior"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S5-Q4",
+      "questionId": "M01-S6-Q5",
       "module": 1,
-      "step": 5,
+      "step": 6,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module01Nashat.jsx",
       "line": 205,
@@ -240,12 +256,12 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module02Maarif.jsx",
-      "line": 48,
+      "line": 47,
       "requires": [
-        "qanun-murakkibatayn"
+        "farq-ihdathiyat"
       ],
       "prerequisiteStatus": {
-        "qanun-murakkibatayn": "established@M2"
+        "farq-ihdathiyat": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -256,12 +272,12 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module02Maarif.jsx",
-      "line": 69,
+      "line": 75,
       "requires": [
-        "qanun-murakkibatayn"
+        "farq-ihdathiyat"
       ],
       "prerequisiteStatus": {
-        "qanun-murakkibatayn": "established@M2"
+        "farq-ihdathiyat": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -272,7 +288,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module02Maarif.jsx",
-      "line": 83,
+      "line": 89,
       "requires": [
         "qanun-murakkibatayn"
       ],
@@ -288,12 +304,12 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module02Maarif.jsx",
-      "line": 109,
+      "line": 110,
       "requires": [
-        "tasawi-murakkibat"
+        "farq-ihdathiyat"
       ],
       "prerequisiteStatus": {
-        "tasawi-murakkibat": "established@M2"
+        "farq-ihdathiyat": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -304,12 +320,12 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module03Taraiq.jsx",
-      "line": 65,
+      "line": 61,
       "requires": [
-        "tasawi-murakkibat"
+        "farq-ihdathiyat"
       ],
       "prerequisiteStatus": {
-        "tasawi-murakkibat": "established@M2"
+        "farq-ihdathiyat": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -320,7 +336,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module03Taraiq.jsx",
-      "line": 90,
+      "line": 89,
       "requires": [
         "tasawi-murakkibat"
       ],
@@ -336,7 +352,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module03Taraiq.jsx",
-      "line": 105,
+      "line": 112,
       "requires": [
         "nuqta-majhula"
       ],
@@ -352,7 +368,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/hisab-murakkibatay/modules/Module03Taraiq.jsx",
-      "line": 128,
+      "line": 135,
       "requires": [
         "qanun-murakkibatayn"
       ],

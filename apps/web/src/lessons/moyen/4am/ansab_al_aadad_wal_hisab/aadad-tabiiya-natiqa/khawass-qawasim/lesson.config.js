@@ -3,6 +3,14 @@
  * Manuel 4AM, unité 1 : activité 3 (p. 8), معارف 2 (p. 10), « أتعلّم البرهنة » (p. 11), دوري الآن p. 11 (2),
  * exercices 12, 13, 14, 15, 16 (p. 14), puis trois « مسائل » de la plateforme (modules 5–7).
  * Source : docs/sources/4am/unit1/extraction.json.
+ *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le CHANTIER (labo divisor-properties, murs de briques de longueur n) posé seul en tête — la main colle,
+ *   retire, mesure, et au niveau متقدم (9 | 900 et 90) elle PRÉDIT avant de bâtir ; la première question demande POURQUOI
+ *   aucune demi-brique n'est apparue. Rejetée : le نشاط 3 comme entrée (trois triplets a, b, n à « vérifier » sous une carte
+ *   qui annonce déjà ce qui est vrai : on vérifie une propriété énoncée, on ne la découvre pas) ; les cas 2 et 3 y deviennent
+ *   une APPLICATION, après la réponse. Ordre des idées : POURQUOI pas de demi-brique (rappel « n divise a » APRÈS) → cas 2 et 3
+ *   du livre → conjecture à compléter → معارف : خاصية 1 / 2, chacune avec sa brique APRÈS la question → أتعلّم البرهنة.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/khawass-qawasim';
 
@@ -69,7 +77,7 @@ export const LESSON_CONFIG = {
       title: 'أعداد لا تُعدّ: n = 9، a = 900، b = 90',
       objective: 'n يقسم a و b ⇒ n يقسم a + b و a − b وباقي قسمة a على b',
       autonomy: 'أعداد كبيرة لا تُتحقّق بالعدّ: على التلميذ أن يتوقّع بالخاصية قبل الكشف',
-      experience: { type: 'platform_adaptation', reason: 'larger_numbers_for_autonomy', theme: 'construction' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'construction' },
       learningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P3'], sourceElementIds: ['act-3'] },
     { kind: 'method', code: 'method-proof', module: 3, title: 'أتعلّم البرهنة: «إذا … فإنّ …»',
       learningPointIds: ['4am_khawass-qawasim_P4'], sourceElementIds: ['method-proof'] },

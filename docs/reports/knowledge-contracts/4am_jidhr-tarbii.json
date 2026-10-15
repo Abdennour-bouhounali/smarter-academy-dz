@@ -14,8 +14,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module01Nashat.jsx",
-        "line": 220,
-        "step": 4,
+        "line": 202,
+        "step": 3,
         "variant": "new"
       }
     },
@@ -25,7 +25,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module01Nashat.jsx",
-        "line": 221,
+        "line": 225,
         "step": 4,
         "variant": "new"
       }
@@ -36,7 +36,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module02Maarif.jsx",
-        "line": 74,
+        "line": 82,
         "step": 2,
         "variant": "new"
       }
@@ -47,7 +47,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module02Maarif.jsx",
-        "line": 91,
+        "line": 99,
         "step": 3,
         "variant": "new"
       }
@@ -159,7 +159,7 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module01Nashat.jsx",
-      "line": 136,
+      "line": 125,
       "requires": [
         "khassiyat-fithaghuras"
       ],
@@ -175,7 +175,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module01Nashat.jsx",
-      "line": 152,
+      "line": 141,
       "requires": [
         "khassiyat-fithaghuras",
         "murabba-adad"
@@ -193,7 +193,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module01Nashat.jsx",
-      "line": 199,
+      "line": 188,
       "requires": [
         "alat-hasiba-jidhr",
         "murabba-adad"
@@ -211,12 +211,12 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module01Nashat.jsx",
-      "line": 222,
+      "line": 210,
       "requires": [
-        "jidhr-taarif"
+        "qima-mudbuta"
       ],
       "prerequisiteStatus": {
-        "jidhr-taarif": "established@M1"
+        "qima-mudbuta": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -227,7 +227,7 @@
       "step": 5,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module01Nashat.jsx",
-      "line": 244,
+      "line": 233,
       "requires": [
         "jidhr-taarif",
         "qima-mudbuta"
@@ -245,7 +245,7 @@
       "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module01Nashat.jsx",
-      "line": 261,
+      "line": 250,
       "requires": [
         "jidhr-taarif"
       ],
@@ -261,7 +261,7 @@
       "step": 6,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module01Nashat.jsx",
-      "line": 286,
+      "line": 275,
       "requires": [
         "khassiyat-fithaghuras",
         "jidhr-taarif",
@@ -281,7 +281,7 @@
       "step": 7,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module01Nashat.jsx",
-      "line": 307,
+      "line": 296,
       "requires": [],
       "prerequisiteStatus": {},
       "lexiconHits": [],
@@ -293,7 +293,7 @@
       "step": 7,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module01Nashat.jsx",
-      "line": 316,
+      "line": 305,
       "requires": [
         "jidhr-taarif",
         "qima-mudbuta"
@@ -311,7 +311,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module02Maarif.jsx",
-      "line": 54,
+      "line": 47,
       "requires": [
         "jidhr-taarif"
       ],
@@ -327,12 +327,12 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module02Maarif.jsx",
-      "line": 75,
+      "line": 73,
       "requires": [
-        "murabba-jidhr"
+        "jidhr-taarif"
       ],
       "prerequisiteStatus": {
-        "murabba-jidhr": "established@M2"
+        "jidhr-taarif": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -343,12 +343,12 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/modules/Module02Maarif.jsx",
-      "line": 92,
+      "line": 90,
       "requires": [
-        "jidhr-murabba"
+        "jidhr-taarif"
       ],
       "prerequisiteStatus": {
-        "jidhr-murabba": "established@M2"
+        "jidhr-taarif": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true

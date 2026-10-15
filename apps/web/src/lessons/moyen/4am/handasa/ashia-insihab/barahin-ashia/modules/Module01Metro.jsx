@@ -4,9 +4,9 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { LAB, METRO, EX18, REMARKS } from '../content/textbook';
+import { LAB, EX18, REMARKS } from '../content/textbook';
 import { FIG_EX18 } from '../content/figures';
 import LabEvidence from '../components/LabEvidence';
 
@@ -30,6 +30,7 @@ import LabEvidence from '../components/LabEvidence';
  * après le laboratoire et AVANT la question. La brique 3 (mutaakisan-sifr) est un rappel : la leçon 3 a posé AB + BA = 0⃗.
  * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape : le métro, d'autres stations, résolue au module 5.
  */
+const METRO_LEAD = 'في مترو الجزائر كل محطة نقطة وكل تذكرة شعاع: $\\overrightarrow{AB}$ تعني «من A إلى B».';
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
 export default function Module01Metro() {
@@ -41,23 +42,11 @@ export default function Module01Metro() {
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} objectives={['متى نستطيع أن نربط تذكرتين فنختصر الرحلة؟', 'متى نقبل أن ننقل تذكرة إلى محطة أخرى؟', 'ماذا يعطي ذهاب وإياب على نفس الطريق؟', 'هل يكفي أن نرى المساواة على الشكل لنبرهنها؟']} moduleTitle="مترو الجزائر — نختصر ونبرهن"
       moduleSubtitle="تذاكر المترو أشعة: من محطة إلى محطة" estimatedTime="12 دقيقة"
-      brief={{
-        tag: 'مدخل الدرس — مختبر من المنصّة على التمرين 18 (ص 137)', headline: 'رحلة واحدة، مهما كانت المحطات', emoji: '🚇',
-        title: 'كيف نختصر رحلة من عدّة تذاكر؟ ومتى ننقل تذكرة إلى محطة أخرى؟', tone: 'indigo',
-        body: (
-          <div className="space-y-2" data-situation="metro">
-            <p><MathText>{METRO.text}</MathText> <SourceTag source={METRO.source} /></p>
-          </div>
-        ),
-        footer: <SourceTag source={EX18.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="خريطة المترو"
-          lead="المستوى المبتدئ: أربع محطات ورحلتان تختصرهما. المستوى المتقدّم هو التمرين 18: برهن أن OL = AC و HK = AC بالمعطيات وحدها."
           levels={{
             beginner: () => (
-              <Manipulation type="vector-chain" level="beginner" {...LAB.beginner} theme="metro" title="مترو الجزائر: رحلتان في متوازي الأضلاع ABCD" onTrial={keep('beginner')} />
+              <Manipulation type="vector-chain" level="beginner" {...LAB.beginner} theme="metro" title="مترو الجزائر: رحلتان في متوازي الأضلاع ABCD" lead={<MathText>{METRO_LEAD}</MathText>} onTrial={keep('beginner')} />
             ),
             advanced: () => (
               <Manipulation type="vector-chain" level="advanced" {...LAB.advanced} theme="metro" title="التمرين 18: برهن أن OL = AC و HK = AC" onTrial={keep('advanced')} />
@@ -73,8 +62,8 @@ export default function Module01Metro() {
                 empty="في المستوى المبتدئ، الرحلة 1: اسحب تذكرة إلى القطار، ثم اربط الأخرى قبله أو بعده." />
               <PredictRule id="rabt-shal">
                 <TapQuestion
-                  prompt={<MathText>{'$\\overrightarrow{BC} + \\overrightarrow{AB}$ يساوي:'}</MathText>}
-                  options={['$\\overrightarrow{AC}$', '$\\overrightarrow{CA}$', 'لا يُختصر لأن نهاية $\\overrightarrow{BC}$ ليست مبدأ $\\overrightarrow{AB}$'].map(M)}
+                  prompt={<MathText>{'ربط المترو التذكرتين $\\overrightarrow{AB}$ و $\\overrightarrow{BC}$ في تذكرة واحدة. لماذا قبل الربط؟'}</MathText>}
+                  options={['لأن التذكرة الثانية تنطلق من المحطة التي وصلت إليها الأولى، والمحطة الأخيرة بقيت هي نفسها: $\\overrightarrow{AC}$', 'لأن للتذكرتين الطول نفسه', 'لأن التذكرتين تحملان الحرفين نفسيهما'].map(M)}
                   correct={0} cols={1} requires={['shal']}
                   explain={<MathText>{REMARKS.shalRule}</MathText>}
                   onAnswered={mark(1)} />

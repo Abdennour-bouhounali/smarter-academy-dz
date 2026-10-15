@@ -16,6 +16,15 @@
  *   5–7 مسائل                     puis trois « مسائل » de la plateforme (modules 5–7) ;
  *   8 إختبار أولي (evaluation)
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — la leçon n'a pas d'activité du manuel : l'entrée est déjà une
+ *   situation de la plateforme. Entrée retenue : le ملعب الحي, niveau مبتدئ de `shape-prover` — trois plots, un triangle qui A L'AIR droit
+ *   en A (98°) et que le فار refuse : la figure ne prouve pas, seul compte ce qui est calculé ; l'élève demande lui-même « قائم في A » et
+ *   « متساوي الساقين رأسه C » avec une carte de preuve. Rejetée : ouvrir sur la طريقة p. 145 (C(−2 ; y), le carré, le cercle) — elle suppose
+ *   déjà qu'on sait ce qu'est une preuve ; elle reste le niveau متقدم du MÊME labo et le module 3.
+ *   Ordre des idées : (1) pourquoi le فار refuse un triangle qui paraît droit → (2) quelle égalité il vérifie (le côté seul) → (3) isocèle,
+ *   calculé par l'élève → (4) des preuves SUFFISANTES (D(2 ; 2) : diagonales égales ne font pas un rectangle) → M2 : la QUESTION d'abord,
+ *   la règle écrite par l'élève puis l'encadré et la brique APRÈS la réponse → M3 : la solution rédigée du livre APRÈS la réponse.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/ithbat-khawas-maalam';
@@ -88,7 +97,7 @@ export const LESSON_CONFIG = {
       title: 'ملعب الحي: مثلث يبدو قائما',
       objective: 'إثبات طبيعة شكل في معلم متعامد ومتجانس بمساواة محسوبة من الإحداثيات وبأدلة كافية، لا بما نراه على الشكل',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'football' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'football' },
       learningPointIds: ['4am_ithbat-khawas-maalam_P1'],
       sourceElementIds: ['method-unknown'],
     },

@@ -48,6 +48,10 @@ import { MANIPULATION_LEVEL_IDS } from './levels';
  * cèdent la place à un titre neutre (« تدرّب: المستوى المتقدم ») — sinon
  * « مثال الكتاب: 28 و 42 » coifferait 65 et 78.
  *
+ * ONBOARDING (2026-10-14, §8quater du contrat) : la prop `coach` reçoit `{ toggle, overlay }` de `useLabCoach` (appelé PAR le type,
+ * qui connaît son prochain geste). L'enveloppe est `relative` : la couche du guide couvre tout le cadre, donc un
+ * `target` peut être un contrôle de l'en-tête, de la scène ou du bas. L'interrupteur se pose sous la consigne.
+ *
  * CONTRAT DOM (e2e) :
  *   [data-manipulation=<type>] [data-level=beginner|advanced] [data-manipulation-mode=<mode>] [data-phase]
  *   [data-manipulation-stage] [data-manipulation-discovery] [data-manipulation-formal]
@@ -55,7 +59,7 @@ import { MANIPULATION_LEVEL_IDS } from './levels';
 export default function ManipulationShell({
   type, title, mission, lead, state, controller, hints = [], numberFields = [], validate, controlsOverride,
   onCheck, checkDisabled, allowModeSwitch = false, representation, explanation, discovery, children, footer, allowFreeLab = true, freeLabAlwaysOpen = false, freeLabLead,
-  headerAction, titleHidden = false,
+  headerAction, titleHidden = false, coach = null,
 }) {
   const { t } = useTranslation('lesson');
   const spec = MANIPULATION_TYPES[type];
@@ -85,7 +89,7 @@ export default function ManipulationShell({
       data-manipulation-mode={state.mode}
       data-phase={state.phase}
       data-level={state.level}
-      className="space-y-3 rounded-3xl border border-indigo-200 bg-indigo-50/40 p-1.5 sm:border-2 sm:p-5"
+      className="relative space-y-3 rounded-3xl border border-indigo-200 bg-indigo-50/40 p-1.5 sm:border-2 sm:p-5"
       aria-label={shownTitle}
     >
       <header className="space-y-2">
@@ -112,6 +116,8 @@ export default function ManipulationShell({
           </p>
         )}
         {shownLead && <p className="text-sm text-slate-700">{shownLead}</p>}
+        {/* L'ONBOARDING (LabCoach, MANIPULATION_CONTRACT §8quater) : l'interrupteur sous la consigne, avant la scène */}
+        {coach && <div className="flex" data-lab-coach-slot>{coach.toggle}</div>}
         {spec?.shows && state.showExplanation && (
           <p className="text-xs text-indigo-700"><strong>{t('manipulation.shows')}:</strong> {spec.shows}</p>
         )}
@@ -145,6 +151,7 @@ export default function ManipulationShell({
 
       {!freeLabAlwaysOpen && <ManipulationFreeLab state={state} numberFields={numberFields} constraints={constraints} validate={validate} allowFreeLab={allowFreeLab} lead={freeLabLead} />}
       {footer}
+      {coach && coach.overlay}
     </section>
   );
 }

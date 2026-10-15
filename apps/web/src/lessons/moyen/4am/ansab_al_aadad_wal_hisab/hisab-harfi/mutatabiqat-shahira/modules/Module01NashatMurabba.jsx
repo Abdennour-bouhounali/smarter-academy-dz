@@ -33,6 +33,11 @@ import DescartesTable from '../components/DescartesTable';
  * la question (`[data-activity-evidence]`) ; les identités ne sont NOMMÉES
  * (KnowledgeBrick) qu'après la chaîne « انقل وأكمل » que l'élève a complétée.
  * LP enseignés : P1, P2, P4.
+ *
+ * Rétrofit 2026-10-15 (§4quater) : le labo OUVRE le module — plus de carte `brief` (l'accroche de l'ouvrier est devenue
+ * l'application finale, étape « عودة إلى الملعب »), plus de `title` / `lead` de workspace. Deux étapes POURQUOI ouvrent chaque
+ * moitié (pourquoi deux carrés ne suffisent pas ; pourquoi le coin se rajoute), répondues depuis les essais de l'élève ; les
+ * briques viennent après la réponse (déjà gatées par `d.*`).
  */
 const m = (tex) => <MathText key={tex}>{tex}</MathText>;
 
@@ -50,30 +55,10 @@ export default function Module01NashatMurabba() {
       navLinks={getNavLinks(1)}
       moduleNumber={1}
       moduleTitle="نشاط 2 — مربّع مجموع ومربّع فرق"
-      moduleSubtitle="مدّد الملعب، احسب مناطقه، ثم أكمل سلسلتي الكتاب"
+      moduleSubtitle="ملعب مربّع يكبر، ثم ملعب تُقتطع منه أشرطة"
       estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 32 · ديكارت ص 31',
-        headline: 'ملعب جواري يكبر: كم تزيد مساحته؟',
-        emoji: '⚽',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-2">
-            <p>
-              ملعب جواري مربّع ضلعه <MathText>{`$${side}\\,m$`}</MathText>. قرّرت البلدية، خدمةً لأطفال الحيّ، أن تزيد ضلعه <MathText>{`$${extra}\\,m$`}</MathText> في الطول وفي العرض.
-              {' '}يقول أحد العمّال: «نضيف مربّعًا صغيرًا مساحته <MathText>{`$${extra} \\times ${extra}$`}</MathText>، فتصبح المساحة <MathText>{`$${workersClaim}\\,m^2$`}</MathText>». هل هو على حق؟
-              {' '}<SourceTag source={HOOK.source} />
-            </p>
-            <p>قبل أن تحسب، جرّب في المختبر: ملعب ضلعه <MathText>{'$x + 3$'}</MathText> يكبر كلما مدّدت <MathText>{'$x$'}</MathText>. ثم أسئلة الكتاب: <strong>{ACTIVITY.subtitle}</strong> و<strong>{ACTIVITY_B.subtitle}</strong>.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="مدّد الملعب، اسحب كل منطقة إلى «المجموع» ثم تحقّق من أجل قيمتين لـ x على الأقل. في المبتدئ يكبر الملعب، وفي المتقدم تُقتطع منه أشرطة."
           levels={{
             beginner: () => (
               <div className="space-y-2">
@@ -82,7 +67,7 @@ export default function Module01NashatMurabba() {
                   level="beginner"
                   expr={LABS.squareSum}
                   title="ملعب مربّع ضلعه x + 3"
-                  lead="كم منطقة في الملعب؟ اسحبها كلها، ثم تحقّق: هل يكفي المربّعان الكبير والصغير؟"
+                  lead="ملعب جواري مربّع تمدّد البلدية ضلعه كلما كبر x."
                   onTrial={(t) => setSumTrials((list) => upsertTrial(list, t))}
                 />
                 <SourceTag source={LABS.source} />
@@ -95,7 +80,7 @@ export default function Module01NashatMurabba() {
                   level="advanced"
                   expr={LABS.squareDiff}
                   title="ملعب مربّع ضلعه x − 2: شريطان مقتطعان"
-                  lead="المناطق المخطّطة مقتطعة. قرّر بنفسك ما يُطرح وما يُضاف، ثم تحقّق من أجل قيمتين لـ x."
+                  lead="تُقتطع من الملعب أشرطة: المناطق المخطّطة مقتطعة."
                   onTrial={(t) => setDiffTrials((list) => upsertTrial(list, t))}
                 />
                 <SourceTag source={LABS.source} />
@@ -106,7 +91,33 @@ export default function Module01NashatMurabba() {
       }
       steps={[
         {
-          num: 1, title: 'مربع مجموع — أ) بطريقتين', done: !!d.a1,
+          num: 1, title: 'لماذا لا يكفي مربّعان؟', subtitle: 'من ملعبك في المستوى المبتدئ', done: !!d.w1,
+          content: (
+            <div className="space-y-3">
+              <p className="text-sm font-semibold text-slate-700">ملعبك <MathText>{'$(x + 3)^2$'}</MathText> — ما تحقّقت منه:</p>
+              <TrialEvidence
+                trials={sumTrials}
+                line={(x) => `$x = ${x}$ : $(x + 3)^2 = ${(x + 3) ** 2}$ و $${x * x} + ${3 * x} + ${3 * x} + 9 = ${(x + 3) ** 2}$`}
+                empty="لم تتحقّق بعد: اسحب مناطق الملعب في المستوى المبتدئ، ثم اضغط «تحقّق»."
+              />
+              <TapQuestion
+                prompt={<span>عند <MathText>{'$x = 4$'}</MathText> مساحة ملعبك <MathText>{'$49\\,m^2$'}</MathText>، ومجموع المربّعين الكبير والصغير <MathText>{'$16 + 9 = 25$'}</MathText> فقط. أين ذهبت المساحة الباقية <MathText>{'$24\\,m^2$'}</MathText>؟</span>}
+                options={[
+                  'في شريطين مستطيلين مساحة كل منهما $3x = 12$',
+                  'في مربّع ثالث مساحته $24$',
+                  'لم تضِع مساحة: الملعب مساحته $25$',
+                ].map(m)}
+                correct={0}
+                cols={1}
+                requires={['nashr-qawsayn']}
+                explain={<MathText>{'الملعب أربع مناطق: $x^2 = 16$ و $9$ وشريطان $3x = 12$ و $3x = 12$؛ والمجموع $16 + 9 + 12 + 12 = 49$. المربّعان وحدهما ينسيان الشريطين.'}</MathText>}
+                onAnswered={done('w1')}
+              />
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'مربع مجموع — أ) بطريقتين', done: !!d.a1,
           content: (
             <BatchChoiceQuestion
               intro={<p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY.questions[0]}</MathText></p>}
@@ -127,7 +138,7 @@ export default function Module01NashatMurabba() {
           ),
         },
         {
-          num: 2, title: 'مربع مجموع — ب) مساحة المربع بطريقتين', subtitle: 'أجب من ملعبك في المستوى المبتدئ', done: !!d.b1,
+          num: 3, title: 'مربع مجموع — ب) مساحة المربع بطريقتين', subtitle: 'أجب من ملعبك في المستوى المبتدئ', done: !!d.b1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" title="الشكل" text={ACTIVITY.text} source={ACTIVITY.source} compact />
@@ -155,7 +166,7 @@ export default function Module01NashatMurabba() {
           ),
         },
         {
-          num: 3, title: 'مربع مجموع — جـ) انقل وأكمل', subtitle: 'من أجل كل عددين', done: !!d.c1,
+          num: 4, title: 'مربع مجموع — جـ) انقل وأكمل', subtitle: 'من أجل كل عددين', done: !!d.c1,
           content: (
             <div className="space-y-3">
               <BatchChoiceQuestion
@@ -178,7 +189,7 @@ export default function Module01NashatMurabba() {
           ),
         },
         {
-          num: 4, title: 'مربع مجموع — د) انشر', done: !!d.d1,
+          num: 5, title: 'مربع مجموع — د) انشر', done: !!d.d1,
           content: (
             <BatchChoiceQuestion
               intro={<p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY.questions[3]}</MathText></p>}
@@ -193,7 +204,7 @@ export default function Module01NashatMurabba() {
           ),
         },
         {
-          num: 5, title: 'جدول ديكارت', subtitle: 'الكتاب ص 31 — الجدول تحت ملعبك', done: !!d.dk,
+          num: 6, title: 'جدول ديكارت', subtitle: 'الكتاب ص 31 — الجدول تحت ملعبك', done: !!d.dk,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-700">
@@ -215,7 +226,7 @@ export default function Module01NashatMurabba() {
           ),
         },
         {
-          num: 6, title: 'مربع مجموع — هـ) احسب ذهنيا', subtitle: 'دون وضع العملية', done: !!d.e1,
+          num: 7, title: 'مربع مجموع — هـ) احسب ذهنيا', subtitle: 'دون وضع العملية', done: !!d.e1,
           content: (
             <div className="space-y-3">
               <BatchChoiceQuestion
@@ -233,7 +244,33 @@ export default function Module01NashatMurabba() {
           ),
         },
         {
-          num: 7, title: 'مربع فرق — أ) بطريقتين', done: !!d.a2,
+          num: 8, title: 'لماذا يُضاف الركن؟', subtitle: 'من ملعبك في المستوى المتقدم', done: !!d.w2,
+          content: (
+            <div className="space-y-3">
+              <p className="text-sm font-semibold text-slate-700">ملعبك <MathText>{'$(x - 2)^2$'}</MathText> — ما تحقّقت منه:</p>
+              <TrialEvidence
+                trials={diffTrials}
+                line={(x) => `$x = ${x}$ : $(x - 2)^2 = ${(x - 2) ** 2}$ و $${x * x} - ${2 * x} - ${2 * x} + 4 = ${(x - 2) ** 2}$`}
+                empty="لم تتحقّق بعد: افتح المستوى المتقدم، اسحب كل المناطق — المقتطعة أيضًا — ثم اضغط «تحقّق»."
+              />
+              <TapQuestion
+                prompt={<span>في ملعبك <MathText>{'$(x - 2)^2$'}</MathText> طرحتَ الشريطين <MathText>{'$2x$'}</MathText> و <MathText>{'$2x$'}</MathText> من <MathText>{'$x^2$'}</MathText>، ثم أضفتَ الركن <MathText>{'$+4$'}</MathText>. لماذا يُضاف الركن؟</span>}
+                options={[
+                  'لأنّه اقتُطع مرّتين، مرّة داخل كل شريط، فنُعيده مرّة واحدة',
+                  'لأنّ مساحة الركن موجبة، فتُضاف دائمًا',
+                  'لأنّ الركن ليس جزءًا من الملعب',
+                ]}
+                correct={0}
+                cols={1}
+                requires={['nashr-qawsayn']}
+                explain={<MathText>{'كل شريط عرضه $2$ يشمل الركن $2 \\times 2 = 4$، فاقتطعنا الركن مرّتين: نطرح $2x + 2x$ ثم نعيد $4$ مرّة واحدة.'}</MathText>}
+                onAnswered={done('w2')}
+              />
+            </div>
+          ),
+        },
+        {
+          num: 9, title: 'مربع فرق — أ) بطريقتين', done: !!d.a2,
           content: (
             <BatchChoiceQuestion
               intro={<p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY_B.questions[0]}</MathText></p>}
@@ -254,7 +291,7 @@ export default function Module01NashatMurabba() {
           ),
         },
         {
-          num: 8, title: 'مربع فرق — ب) مربع تُقتطع منه أشرطة', subtitle: 'أجب من ملعبك في المستوى المتقدم', done: !!d.b2,
+          num: 10, title: 'مربع فرق — ب) مربع تُقتطع منه أشرطة', subtitle: 'أجب من ملعبك في المستوى المتقدم', done: !!d.b2,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" title="الشكل" text={ACTIVITY_B.text} source={ACTIVITY_B.source} compact />
@@ -281,7 +318,7 @@ export default function Module01NashatMurabba() {
           ),
         },
         {
-          num: 9, title: 'مربع فرق — جـ) انقل وأكمل', subtitle: 'من أجل كل عددين', done: !!d.c2,
+          num: 11, title: 'مربع فرق — جـ) انقل وأكمل', subtitle: 'من أجل كل عددين', done: !!d.c2,
           content: (
             <div className="space-y-3">
               <BatchChoiceQuestion
@@ -304,7 +341,7 @@ export default function Module01NashatMurabba() {
           ),
         },
         {
-          num: 10, title: 'مربع فرق — د) انشر، هـ) احسب ذهنيا', done: !!d.d2,
+          num: 12, title: 'مربع فرق — د) انشر، هـ) احسب ذهنيا', done: !!d.d2,
           content: (
             <BatchChoiceQuestion
               intro={(
@@ -326,11 +363,15 @@ export default function Module01NashatMurabba() {
           ),
         },
         {
-          num: 11, title: 'عودة إلى الملعب الجواري', subtitle: 'هل العامل على حق؟', done: !!d.h,
+          num: 13, title: 'عودة إلى الملعب الجواري', subtitle: 'هل العامل على حق؟', done: !!d.h,
           content: (
             <div className="space-y-3">
+            <p className="text-sm text-slate-700">
+              ملعب جواري مربّع ضلعه <MathText>{`$${side}\\,m$`}</MathText>، وتزيد البلدية ضلعه <MathText>{`$${extra}\\,m$`}</MathText> في الطول وفي العرض.
+              {' '}يقول أحد العمّال: «نضيف مربّعًا صغيرًا مساحته <MathText>{`$${extra} \\times ${extra}$`}</MathText>، فتصبح المساحة <MathText>{`$${workersClaim}\\,m^2$`}</MathText>». <SourceTag source={HOOK.source} />
+            </p>
             <TapQuestion
-              prompt={<span>ضلع الملعب صار <MathText>{`$${side} + ${extra} = ${side + extra}\\,m$`}</MathText>. ما مساحته الجديدة؟</span>}
+              prompt={<span>ضلع الملعب صار <MathText>{`$${side} + ${extra} = ${side + extra}\\,m$`}</MathText>. هل العامل على حق؟ ما مساحته الجديدة؟</span>}
               options={[`$${workersClaim}\\,m^2$`, `$${(side + extra) ** 2}\\,m^2$`, `$${side * side + 2 * side * extra}\\,m^2$`, `$${side * side + side * extra + extra * extra}\\,m^2$`].map(m)}
               correct={1}
               cols={2}

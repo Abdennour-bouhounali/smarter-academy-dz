@@ -6,7 +6,7 @@ import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACT3, ACT3_LINES, HOOK1, MEAN_REMINDER, LAB } from '../content/textbook';
+import { ACT3, ACT3_LINES, MEAN_REMINDER, LAB } from '../content/textbook';
 import BarChart from '../components/BarChart';
 import FreqTable from '../components/FreqTable';
 
@@ -23,6 +23,9 @@ import FreqTable from '../components/FreqTable';
  *             المتوسط المتوازن ; س 2 أ (étendues 5 et 10), س 2 ب (482/30 pour les deux villes, la moyenne SANS
  *             pondération 17,25 réfutée), et la question honnête : même moyenne, (ب) plus dispersée.
  * AUCUNE étape n'attend `onFinished`. LP : P1 (étendue), P2 (moyenne pondérée).
+ * Rétrofit 2026-10-15 (§4quater) : le labo OUVRE le module — plus de carte `brief`, ni `title` / `lead` de workspace ; l'accroche
+ * (salaires, deux villes) n'est plus l'entrée mais l'APPLICATION de ce que la main vient de faire : la 1re étape rappelle le
+ * calibre posé par l'élève (`[data-activity-evidence]`) avant la question des salaires.
  * Les labs vivent dans l'`intro` (deux niveaux) : « مسألة الدرس » (la chaleur de juillet à El Oued, module 5) est
  * rappelée à la fin de la DERNIÈRE étape. Le المتوسط المتوازن est un acquis des années précédentes : sa brique est
  * un rappel (`variant="rappel"`), sans « أتوقّع القاعدة ».
@@ -57,8 +60,17 @@ export default function Module01Nashat3() {
               </li>
             ))}
           </ul>
-          {ranges.length > 0 && <p className="mt-1 text-xs text-slate-600"><MathText>{`وأمسك الكلّاب كل القيم: المدى $${ranges[ranges.length - 1].width.replace(',', '{,}')}$ .`}</MathText></p>}
         </>
+      )}
+    </div>
+  );
+
+  const rangeEvidence = (
+    <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence="range" data-tried={ranges.length ? 'true' : 'false'}>
+      {ranges.length === 0 ? (
+        <p className="text-slate-500">لم تضبط الكلّاب على القيمتين الطرفيتين بعد (المرحلة 1 من الميزان، في المستوى الذي تختاره).</p>
+      ) : (
+        <p><MathText>{`أمسك الكلّاب في ميزانك كل القيم: المدى $${ranges[ranges.length - 1].width.replace(',', '{,}')}$ .`}</MathText></p>
       )}
     </div>
   );
@@ -77,29 +89,16 @@ export default function Module01Nashat3() {
       moduleTitle="نشاط 3 — المدى والمتوسط"
       moduleSubtitle="المدى والمتوسط لسلسلة إحصائية"
       estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 93',
-        headline: HOOK1.headline,
-        emoji: '🌡️',
-        title: ACT3.title,
-        tone: 'rose',
-        body: <p className="text-sm text-slate-700"><MathText>{HOOK1.text}</MathText></p>,
-        footer: <div className="flex flex-wrap gap-2"><SourceTag source={ACT3.source} /><SourceTag source={HOOK1.source} /></div>,
-      }}
       intro={
         <ManipulationWorkspace
-          title="ميزان القيم"
-          lead="في المستويين: كل قيمة جسم على عارضة مدرّجة. اضبط الكلّاب على القيمتين الطرفيتين، ثم حرّك نقطة الارتكاز حتى تتوازن العارضة."
           levels={{
             beginner: () => (
               <Manipulation type="stat-balance" level="beginner" series={LAB.esport.series} mode="range|mean" theme="esport"
-                title="ميزان النقاط: 2، 3، 3، 4، 8"
                 lead="خمسة أصدقاء في دورة ألعاب: نقاط كل لاعب بطاقة على العارضة."
                 onTrial={onTrial} />
             ),
             advanced: () => (
               <Manipulation type="stat-balance" level="advanced" series={LAB.oasis.series} mode="range|mean" theme="heatwave"
-                title="ميزان الحرارة: عشرة أيام بالوادي"
                 lead="درجات الحرارة القصوى بمدينة الوادي في الأيام العشرة الأولى من جوان (نشاط 4)."
                 onTrial={onTrial} />
             ),
@@ -108,10 +107,12 @@ export default function Module01Nashat3() {
       }
       steps={[
         {
-          num: 1, title: 'أكبر راتب وأصغر راتب', subtitle: 'السؤال 1', done: q1,
+          num: 1, title: 'كم يبعد أكبر راتب عن أصغر راتب؟', subtitle: 'السؤال 1', done: q1,
           content: (
             <div className="space-y-3">
+              {rangeEvidence}
               <p className="text-sm text-slate-800"><MathText>{ACT3.q1}</MathText></p>
+              <p className="text-xs text-slate-500"><SourceTag source={ACT3.source} /></p>
               <BarChart testId="salaries" values={ACT3.chart.values} freqs={ACT3.chart.freqs} xLabel="الرواتب (DA)" yLabel="عدد العمال" yMax={6}
                 caption="المخطط بالأعمدة: 4 عمال براتب 30000 ، 3 بـ 35000 ، 6 بـ 40000 ، 5 بـ 45000 ، 4 بـ 50000 ، 3 بـ 60000 ، وعامل واحد بـ 75000." />
               <NumericQuestion

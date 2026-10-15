@@ -17,6 +17,9 @@ import { FIG_METHOD, FIG_METHOD_TURN, FIG_NOW155, FIG_NOW155_SOL } from '../cont
  * ligne (MethodSteps) → brique istimal-khawas ; 2) دوري الآن : l'image d'un angle de 45° par (K, 60°) — figure REDESSINÉE
  * (avec le K du manuel, B′ tombait sur A) → brique surat-zawiya ; 3) le centre : deux médiatrices → brique markaz-dawaran.
  * LP : P2 (prouver), P3 (construire des images, trouver le centre).
+ * RÉTROFIT 2026-10-15 (§4quater) : plus de `brief` (il décrivait le geste du labo), plus de `title`/`lead` sur le workspace ; le labo s'ouvre
+ * réellement sur متقدم (`defaultLevel="advanced"`, comme le disait déjà ce commentaire) ; la solution du manuel (MethodSteps/PredictRule)
+ * et la brique viennent APRÈS la réponse de l'étape 1, `markaz-dawaran` après celle de l'étape 3 (`requires` → khawas-dawaran, module 2).
  * « أتوقّع القاعدة » : la solution du manuel (MethodSteps) énonce la méthode avant sa brique → enveloppée dans
  * <PredictRule id="istimal-khawas"> ; ni la question ni l'explain de دوري الآن ne décrivent plus la construction (« ننشئ O′ و A′ و
  * B′ », NOW155.answer : la brique surat-zawiya la montre APRÈS la prédiction, la figure-solution la suit), seulement la
@@ -37,16 +40,9 @@ export default function Module03Taraiq() {
       moduleSubtitle="قطعة صورة أخرى بدوران: هما متقايستان، وبزاوية $90^\circ$ متعامدتان"
       estimatedTime="10 دقائق"
       objectives={["كيف أثبت بدوران أن قطعتين متقايستان ومتعامدتان؟", "كيف أنشئ صورة زاوية؟", "كيف أجد مركز دوران مجهول؟"]}
-      brief={{
-        tag: 'طرائق — الكتاب ص 155', title: METHOD.title, tone: 'emerald',
-        body: <p>في المستوى «متقدم» من الورقة الشفافة: أدر نسخة [AC] حتى تنطبق على [BD]، ثم أثبت العبارتين ببطاقات الخواص. بعدها اقرأ حلّ الكتاب سطرا سطرا.</p>,
-        footer: <SourceTag source={METHOD.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الورقة الشفافة"
-          defaultLevel="beginner"
-          lead="المستوى «متقدم» هو طريقة الكتاب: لا زاوية ولا اتجاه معطيان."
+          defaultLevel="advanced"
           levels={{
             beginner: () => (
               <Manipulation type="shape-turn" level="beginner" numbers={LAB.beginner.numbers} theme="zellige"
@@ -66,9 +62,6 @@ export default function Module03Taraiq() {
             <div className="space-y-3">
               <GeoFigure {...FIG_METHOD} />
               <p className="text-xs text-slate-500" data-correction><MathText>{METHOD.stated}</MathText></p>
-              {/* La solution du manuel ÉNONCE la méthode avant sa brique : une seule prédiction (istimal-khawas), puis
-                  la solution, la question et la brique — guide PREDICT §3.5. */}
-              <PredictRule id="istimal-khawas"><MethodSteps method={METHOD} /></PredictRule>
               <TapQuestion
                 prompt={<MathText>{'لماذا B صورة A بالدوران الذي مركزه O وزاويته $90^\\circ$ ؟'}</MathText>}
                 options={[
@@ -84,6 +77,9 @@ export default function Module03Taraiq() {
               />
               {q[1] && (
                 <>
+                  {/* La solution du manuel ÉNONCE la méthode avant sa brique : une seule prédiction (istimal-khawas), puis
+                      la solution et la brique — APRÈS la réponse (rétrofit 2026-10-15), guide PREDICT §3.5. */}
+                  <PredictRule id="istimal-khawas"><MethodSteps method={METHOD} /></PredictRule>
                   <GeoFigure {...FIG_METHOD_TURN} />
                   <KnowledgeBrick id="istimal-khawas" lead="الطريقة، في سطر واحد:" />
                 </>
@@ -120,7 +116,6 @@ export default function Module03Taraiq() {
           num: 3, title: 'مركز دوران', subtitle: 'معارف من المنصّة', done: !!q[3],
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="markaz-dawaran" lead="ما يفعله الدبوس في المستوى «متقدم» (تمرين 18):" />
               <TapQuestion
                 prompt={<MathText>{"M′ و N′ صورتا M و N بدوران مركزه W، لكن محوري [MM′] و [NN′] منطبقان. كيف نجد W؟"}</MathText>}
                 options={[
@@ -130,10 +125,11 @@ export default function Module03Taraiq() {
                 ].map(M)}
                 correct={0}
                 cols={1}
-                requires={['markaz-dawaran']}
+                requires={['khawas-dawaran']}
                 explain={<MathText>{CENTER.warning}</MathText>}
                 onAnswered={mark(3)}
               />
+              {q[3] && <KnowledgeBrick id="markaz-dawaran" lead="ما يفعله الدبوس في المستوى «متقدم» (تمرين 18):" />}
             </div>
           ),
         },

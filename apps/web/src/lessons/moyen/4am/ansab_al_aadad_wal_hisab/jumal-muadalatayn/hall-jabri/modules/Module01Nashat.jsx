@@ -4,7 +4,7 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag, PairQuestion } from '../../../../../../common/textbook';
+import { TextbookBox, PairQuestion } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, HOOK } from '../content/textbook';
 import KioskVignette from '../components/KioskVignette';
@@ -13,17 +13,15 @@ import KioskVignette from '../components/KioskVignette';
  * Module 1 — نشاط 2 (p. 56) : « حل جملة معادلتين من الدرجة الأولى بمجهولين جبريا », ouvert sur
  * les CARTES DU KIOSQUE (elimination-cards).
  *
- * REAL → l'accroche : les deux cartes du vendeur (2x + y = 70 ; 3x − 2y = 42), que tester des
- * prix un à un ne résout pas. DISCOVER / MANIPULATE → le laboratoire à deux niveaux, UN instrument,
- * même objectif (faire disparaître une inconnue, puis revenir chercher l'autre) :
- *   متقدم (ouvert par défaut : c'est la jumla du نشاط 2) : 2x + y = 7 ; 3x − 2y = 4,2 — isoler
- *          y = 7 − 2x (التلميذ 1) ou multiplier (1) par 2 (التلميذ 2) : les deux sont à faire ;
- *   مبتدئ : x + y = 10 ; x − y = 2 (plateforme) — les y sont déjà opposés.
- * UNDERSTAND → أ) et ب) montrent qu'essayer des ثنائيات ne finit pas ; جـ 1) explique les deux
- * élèves avec, au-dessus de la question, ce que l'élève a LUI-MÊME écrit dans les cartes
- * (`[data-activity-evidence]`) ; TOUCH THE MATH → les briques takhallus-majhul et hall-thunaiya
- * nomment ce que la main a fait ; جـ 2) applique les deux méthodes ; TRANSFER → retour au kiosque.
- * AUCUNE étape n'attend `onFinished`. LP : P1, P2.
+ * Rétrofit 2026-10-15 (§4quater) : le labo OUVRE le module (plus de carte « لغز الكشك » au-dessus, plus de
+ * titre / `lead` de workspace). Le labo à deux niveaux, UN instrument, même objectif (faire disparaître une
+ * inconnue, puis revenir chercher l'autre) : متقدم = la jumla du نشاط 2 (2x + y = 7 ; 3x − 2y = 4,2) ;
+ * مبتدئ = x + y = 10 ; x − y = 2 (plateforme, kiosque). Puis, sur ce que l'élève a FAIT :
+ *   1. pourquoi chaque élève du livre écrit sa ligne (جـ 1, avec ses propres essais en preuve) → brique takhallus-majhul ;
+ *   2. pourquoi on ne s'arrête pas à x (la ثنائية se retrouve dans (2) comme dans (1)) → brique hall-thunaiya ;
+ *   3–4. أ) et ب) : une ثنائية qui vérifie UNE équation n'est pas une solution, et essayer ne finit pas ;
+ *   5. جـ 2 : les deux méthodes sur une autre jumla ; 6. l'énigme du kiosque (HOOK) en transfert.
+ * AUCUNE étape n'attend `onFinished` ni `onTrial`. LP : P1, P2.
  */
 const BEGINNER = 'x+y=10|x-y=2';
 const ADVANCED = ACTIVITY.systems.main;
@@ -42,6 +40,7 @@ export default function Module01Nashat() {
   const [q6, setQ6] = useState(false);
   const onTrial = (sys) => (summary) => setTrial((t) => ({ ...t, [sys]: summary }));
   const mine = trial[ADVANCED];
+  const first = trial[BEGINNER];
 
   return (
     <ContentModule
@@ -52,33 +51,18 @@ export default function Module01Nashat() {
       moduleSubtitle="نجعل مجهولًا يختفي"
       objectives={['كيف نجد ثمنين مجهولين من بطاقتين فقط؟', 'ماذا يفعل كل تلميذ ليصل إلى مجهول واحد؟', 'هل تكفي معادلة واحدة لمعرفة الثمنين؟']}
       estimatedTime="16 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 56',
-        headline: HOOK.headline,
-        emoji: '🥤',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <KioskVignette />,
-        body: (
-          <div className="space-y-2">
-            <p><MathText>{HOOK.text}</MathText></p>
-            <p className="text-sm text-slate-600"><MathText>{'في الكتاب جملة من النوع نفسه: $\\begin{cases} 2x + y = 7 \\\\ 3x - 2y = 4{,}2 \\end{cases}$ . في البطاقتين أدناه، اجعل أحد المجهولين يختفي — مرّة بالتعويض ومرّة بالجمع.'}</MathText></p>
-          </div>
-        ),
-        footer: <div className="flex flex-wrap gap-2"><SourceTag source={ACTIVITY.source} /><SourceTag source={HOOK.source} /></div>,
-      }}
       intro={
+        // LE LABO OUVRE LE MODULE (§4quater) : ni carte du kiosque, ni titre / `lead` de workspace. Le contexte tient dans le `lead`
+        // de chaque niveau ; la question est celle du labo. L'énigme du kiosque (HOOK) revient à l'étape 6, en transfert.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين: كيف تصل إلى الثنائية دون أن تختبر الأعداد واحدًا واحدًا؟ ماذا يمكنك أن تفعل بالبطاقتين؟"
           levels={{
             beginner: () => (
               <Manipulation
                 type="elimination-cards"
                 level="beginner"
                 system={BEGINNER}
-                lead="مجموع عددين 10 وفرقهما 2: هل ترى حدّين يمكن أن يُلغي أحدهما الآخر؟"
+                lead="على كشك عمّي الطاهر بطاقتان: مجموع ثمنين 10 وفرقهما 2."
                 onTrial={onTrial(BEGINNER)}
               />
             ),
@@ -87,8 +71,7 @@ export default function Module01Nashat() {
                 type="elimination-cards"
                 level="advanced"
                 system={ADVANCED}
-                title="جملة النشاط 2: 2x + y = 7 و 3x − 2y = 4,2"
-                lead="افعل ما فعله التلميذ 1 (التعويض)، ثم ما فعله التلميذ 2 (الجمع): هل تجد الثنائية نفسها؟"
+                lead="جملة نشاط الكتاب على البطاقتين: كل بطاقة وحدها تقبل أثمانًا كثيرة، والبطاقتان معًا تحدّدان الثمنين."
                 onTrial={onTrial(ADVANCED)}
               />
             ),
@@ -97,50 +80,7 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'هل هذه الثنائية حل؟', subtitle: 'السؤال أ', done: q1,
-          content: (
-            <div className="space-y-3">
-              <TextbookBox kind="exercise" text={ACTIVITY.text} source={ACTIVITY.source} compact />
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY.questions[0]}</MathText></p>}
-                rows={[
-                  { id: 'a1', label: M('$(2 ; 3)$ حل للمعادلة (1) $2x + y = 7$ ؟'), options: YN, correct: 0, correction: M('$2 \\times 2 + 3 = 4 + 3 = 7$ : المعادلة (1) محققة.') },
-                  { id: 'a2', label: 'هل هي حل لجملة المعادلتين؟', options: YN, correct: 1, correction: M('$3 \\times 2 - 2 \\times 3 = 6 - 6 = 0$ و $0 \\neq 4{,}2$ : المعادلة (2) غير محققة، فليست حلا للجملة.') },
-                ]}
-                requires={['taawid-qima']}
-                feedback={({ allRight }) => (
-                  <Feedback tone={allRight ? 'ok' : 'ko'}>
-                    <MathText>{'حل الجملة ثنائية تحقق المعادلتين في آن واحد: $(2 ; 3)$ تحقق (1) وحدها.'}</MathText>
-                  </Feedback>
-                )}
-                onAnswered={() => setQ1(true)}
-              />
-            </div>
-          ),
-        },
-        {
-          num: 2, title: 'ثنائية أخرى', subtitle: 'السؤال ب', done: q2,
-          content: (
-            <div className="space-y-3">
-              <TapQuestion
-                prompt={<MathText>{`${ACTIVITY.questions[1]} — أيّ ثنائية مما يلي حل للمعادلة (1)؟`}</MathText>}
-                options={[M('$(3 ; 1)$'), M('$(1 ; 3)$'), M('$(7 ; 0)$')]}
-                correct={0}
-                cols={3}
-                requires={['taawid-qima']}
-                explain={<MathText>{'$2 \\times 3 + 1 = 7$ : $(3 ; 1)$ حل للمعادلة (1). لكنّ $3 \\times 3 - 2 \\times 1 = 7 \\neq 4{,}2$ : ليست حلا للجملة. أمّا $(1 ; 3)$ فتعطي $2 + 3 = 5$ ، و $(7 ; 0)$ تعطي $14$ .'}</MathText>}
-                onAnswered={() => setQ2(true)}
-              />
-              {q2 && (
-                <p className="rounded-xl bg-indigo-50 px-3 py-2 text-sm text-indigo-900">
-                  <MathText>{'للمعادلة (1) وحدها ثنائيات كثيرة: $(0 ; 7)$ ، $(1 ; 5)$ ، $(3 ; 1)$ … وتجريبها واحدة واحدة لا ينتهي. التلميذان في السؤال جـ لم يجرّبا: جعلا أحد المجهولين يختفي — كما تفعل بالبطاقتين في الأعلى.'}</MathText>
-                </p>
-              )}
-            </div>
-          ),
-        },
-        {
-          num: 3, title: 'عمل التلميذين', subtitle: 'السؤال جـ 1 — جرّب الطريقتين في المستوى المتقدّم، ثم أجب', done: q3,
+          num: 1, title: 'لماذا كتب كل تلميذ سطره؟', subtitle: 'السؤال جـ 1 — بعد أن جرّبت البطاقتين', done: q3,
           content: (
             <div className="space-y-3">
               <p className="text-sm font-semibold text-slate-800"><MathText>{ACTIVITY.questions[2]}</MathText></p>
@@ -150,9 +90,7 @@ export default function Module01Nashat() {
               </div>
               {/* CE QUE L'ÉLÈVE A ÉCRIT dans les cartes (niveau متقدم), et rien d'autre. */}
               <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={mine ? 'true' : 'false'}>
-                {!mine || mine.attempts.length === 0 ? (
-                  <p className="text-slate-500">لم تحلّ جملة النشاط بالبطاقتين بعد (المستوى المتقدّم).</p>
-                ) : (
+                {mine && mine.attempts.length > 0 ? (
                   <ul className="space-y-2" data-evidence="attempts">
                     {mine.attempts.map((a, i) => (
                       <li key={i} data-evidence-method={a.method}>
@@ -164,6 +102,10 @@ export default function Module01Nashat() {
                       {mine.lines.map((l, i) => <p key={i} dir="ltr" className="text-start"><MathText>{`$${l}$`}</MathText></p>)}
                     </li>
                   </ul>
+                ) : first ? (
+                  <p className="text-slate-600">حللتَ بطاقتَي المستوى المبتدئ{first.pairTex ? <> وبلغتَ <MathText>{`$${first.pairTex}$`}</MathText></> : null}. افتح المستوى المتقدّم لتجرّب الطريقتين على جملة الكتاب.</p>
+                ) : (
+                  <p className="text-slate-500">لم تحلّ البطاقتين بعد: جرّبهما في المناولة أعلاه.</p>
                 )}
               </div>
               <BatchChoiceQuestion
@@ -191,17 +133,64 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'حل الجملة', subtitle: 'السؤال جـ 1 — واستنتج حل الجملة', done: q4,
+          num: 2, title: 'لماذا لا نتوقّف عند x؟', subtitle: 'السؤال جـ 1 — ونستنتج حل الجملة', done: q4,
           content: (
             <div className="space-y-3">
-              <PairQuestion
-                prompt={<MathText>{'استنتج حل الجملة $\\begin{cases} 2x + y = 7 \\\\ 3x - 2y = 4{,}2 \\end{cases}$ :'}</MathText>}
-                expected={{ x: '2,6', y: '1,8' }}
-                requires={['takhallus-majhul']}
-                explain={'$7x = 18{,}2$ أي $x = 2{,}6$ ، و $y = 7 - 2 \\times 2{,}6 = 1{,}8$ .'}
+              <TapQuestion
+                prompt={<MathText>{'وجد التلميذان $x = 2{,}6$ ، وعوّضا في المعادلة (1) فوجدا $y = 1{,}8$ . لو عوّضنا $x = 2{,}6$ في المعادلة (2) $3x - 2y = 4{,}2$ بدل (1) لوجدنا:'}</MathText>}
+                options={[
+                  M('$y = 1{,}8$ كذلك: الثنائية نفسها تحقق المعادلتين'),
+                  M('قيمة أخرى لـ $y$ ، فنختار إحدى القيمتين'),
+                  M('لا نستطيع إيجاد $y$ ، فالعدد $x$ وحده يكفي')]}
+                correct={0}
+                cols={1}
+                explain={<MathText>{'$3 \\times 2{,}6 = 7{,}8$ ، و $7{,}8 - 2y = 4{,}2$ تعطي $2y = 3{,}6$ أي $y = 1{,}8$ . الثنائية $(2{,}6 ; 1{,}8)$ تحقق المعادلتين في آن واحد، وهذا ما يجعلها حل الجملة.'}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
               {q4 && <KnowledgeBrick id="hall-thunaiya" lead="لا نتوقّف عند x:" />}
+            </div>
+          ),
+        },
+        {
+          num: 3, title: 'هل تكفي معادلة واحدة؟', subtitle: 'السؤال أ — ثنائية تحقق (1)', done: q1,
+          content: (
+            <div className="space-y-3">
+              <TextbookBox kind="exercise" text={ACTIVITY.text} source={ACTIVITY.source} compact />
+              <BatchChoiceQuestion
+                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY.questions[0]}</MathText></p>}
+                rows={[
+                  { id: 'a1', label: M('$(2 ; 3)$ حل للمعادلة (1) $2x + y = 7$ ؟'), options: YN, correct: 0, correction: M('$2 \\times 2 + 3 = 4 + 3 = 7$ : المعادلة (1) محققة.') },
+                  { id: 'a2', label: 'هل هي حل لجملة المعادلتين؟', options: YN, correct: 1, correction: M('$3 \\times 2 - 2 \\times 3 = 6 - 6 = 0$ و $0 \\neq 4{,}2$ : المعادلة (2) غير محققة، فليست حلا للجملة.') },
+                ]}
+                requires={['taawid-qima']}
+                feedback={({ allRight }) => (
+                  <Feedback tone={allRight ? 'ok' : 'ko'}>
+                    <MathText>{'حل الجملة ثنائية تحقق المعادلتين في آن واحد: $(2 ; 3)$ تحقق (1) وحدها.'}</MathText>
+                  </Feedback>
+                )}
+                onAnswered={() => setQ1(true)}
+              />
+            </div>
+          ),
+        },
+        {
+          num: 4, title: 'ثنائية أخرى للمعادلة (1)', subtitle: 'السؤال ب', done: q2,
+          content: (
+            <div className="space-y-3">
+              <TapQuestion
+                prompt={<MathText>{`${ACTIVITY.questions[1]} — أيّ ثنائية مما يلي حل للمعادلة (1)؟`}</MathText>}
+                options={[M('$(3 ; 1)$'), M('$(1 ; 3)$'), M('$(7 ; 0)$')]}
+                correct={0}
+                cols={3}
+                requires={['taawid-qima']}
+                explain={<MathText>{'$2 \\times 3 + 1 = 7$ : $(3 ; 1)$ حل للمعادلة (1). لكنّ $3 \\times 3 - 2 \\times 1 = 7 \\neq 4{,}2$ : ليست حلا للجملة. أمّا $(1 ; 3)$ فتعطي $2 + 3 = 5$ ، و $(7 ; 0)$ تعطي $14$ .'}</MathText>}
+                onAnswered={() => setQ2(true)}
+              />
+              {q2 && (
+                <p className="rounded-xl bg-indigo-50 px-3 py-2 text-sm text-indigo-900">
+                  <MathText>{'للمعادلة (1) وحدها ثنائيات كثيرة: $(0 ; 7)$ ، $(1 ; 5)$ ، $(3 ; 1)$ … وتجريبها واحدة واحدة لا ينتهي. لهذا لم تجرّب الأثمان في البطاقتين: جعلتَ أحد المجهولين يختفي.'}</MathText>
+                </p>
+              )}
             </div>
           ),
         },
@@ -242,6 +231,7 @@ export default function Module01Nashat() {
           num: 6, title: 'لغز الكشك', subtitle: 'نعود إلى البطاقتين', done: q6,
           content: (
             <div className="space-y-3">
+              <div className="flex justify-center"><KioskVignette /></div>
               <TextbookBox kind="situation" title={HOOK.headline} lines={[HOOK.text, HOOK.unknowns]} source={HOOK.source} compact />
               <TapQuestion
                 prompt="أيّ جملة تترجم بطاقتي البائع؟"

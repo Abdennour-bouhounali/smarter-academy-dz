@@ -7,6 +7,17 @@
  * puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit2/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le DÉBAT de مراد et عمر sur x² = 9, tranché PAR LA MAIN sur la droite qui se plie (niveau مبتدئ : x² = 9, 0, −9) —
+ *   l'élève VOIT les flèches de 3 et de −3 arriver au même point avant qu'on lui demande « êtes-vous d'accord ? ». Rejeté : le
+ *   tableau de carrés du manuel (question 1 أ : (−3/2)², (−1)²…) comme ouverture — c'est un calcul de mémoire, sans raison pour la
+ *   main ; il devient le TEST de l'idée sur des fractions (étape 2). Rejeté aussi : ouvrir sur la خاصية 2 (aucun besoin de la
+ *   main). Le labo reste l'activité du manuel (aucune situation de plateforme : pas de `platform_designed_entry`).
+ *   Ordre des idées : pourquoi deux flèches arrivent à 9 → le tableau (fractions) → la conjecture (carrés de deux opposés) → sa
+ *   preuve par la lettre b → pourquoi aucune flèche n'atteint −9 → de deux solutions à l'équation → la relation solutions / a, PUIS
+ *   la brique `murabba-mutaakisayn` → (module 2) pourquoi −√a a pour carré a → comment écrire les deux solutions de x² = 5, PUIS la
+ *   brique `hulul-x2-a` et son application à des équations nouvelles → pourquoi a < 0 : aucune solution, PUIS les exemples du livre.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-x-murabba';

@@ -18,7 +18,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module01Waraqa.jsx",
-        "line": 100,
+        "line": 84,
         "step": 1,
         "variant": "new"
       }
@@ -29,7 +29,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module02Maarif.jsx",
-        "line": 48,
+        "line": 64,
         "step": 1,
         "variant": "rappel"
       }
@@ -40,7 +40,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module02Maarif.jsx",
-        "line": 69,
+        "line": 86,
         "step": 2,
         "variant": "new"
       }
@@ -54,7 +54,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module03Taraiq.jsx",
-        "line": 88,
+        "line": 84,
         "step": 1,
         "variant": "new"
       }
@@ -65,7 +65,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module03Taraiq.jsx",
-        "line": 112,
+        "line": 108,
         "step": 2,
         "variant": "new"
       }
@@ -76,7 +76,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module03Taraiq.jsx",
-        "line": 123,
+        "line": 132,
         "step": 3,
         "variant": "new"
       }
@@ -202,7 +202,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module01Waraqa.jsx",
-      "line": 87,
+      "line": 71,
       "requires": [
         "surat-qita-dawaran"
       ],
@@ -218,7 +218,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module01Waraqa.jsx",
-      "line": 110,
+      "line": 94,
       "requires": [
         "thabat-dawaran"
       ],
@@ -234,7 +234,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module01Waraqa.jsx",
-      "line": 132,
+      "line": 116,
       "requires": [
         "thabat-dawaran"
       ],
@@ -250,12 +250,12 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module02Maarif.jsx",
-      "line": 51,
+      "line": 53,
       "requires": [
-        "khawas-dawaran"
+        "thabat-dawaran"
       ],
       "prerequisiteStatus": {
-        "khawas-dawaran": "established@M2"
+        "thabat-dawaran": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -266,12 +266,12 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module02Maarif.jsx",
-      "line": 71,
+      "line": 73,
       "requires": [
-        "zawiya-sura"
+        "thabat-dawaran"
       ],
       "prerequisiteStatus": {
-        "zawiya-sura": "established@M2"
+        "thabat-dawaran": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -282,7 +282,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module02Maarif.jsx",
-      "line": 93,
+      "line": 95,
       "requires": [
         "zawiya-sura"
       ],
@@ -298,7 +298,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module03Taraiq.jsx",
-      "line": 72,
+      "line": 65,
       "requires": [
         "surat-nuqta-dawaran"
       ],
@@ -314,7 +314,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module03Taraiq.jsx",
-      "line": 100,
+      "line": 96,
       "requires": [
         "khawas-dawaran"
       ],
@@ -330,12 +330,12 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/khawas-dawaran/modules/Module03Taraiq.jsx",
-      "line": 124,
+      "line": 119,
       "requires": [
-        "markaz-dawaran"
+        "khawas-dawaran"
       ],
       "prerequisiteStatus": {
-        "markaz-dawaran": "established@M3"
+        "khawas-dawaran": "established@M2"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true

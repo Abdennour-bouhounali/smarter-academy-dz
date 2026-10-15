@@ -12,7 +12,7 @@ import { KNOWLEDGE } from '../content/textbook';
  * remarque, ملاحظة 3. Les propriétés, établies au module 1 (et la remarque 3
  * au module 2), reviennent en RAPPEL (`variant="rappel"`) ; la seule
  * connaissance NOUVELLE ici est √(a²b) = a√b (remarque 1), posée par sa
- * brique AVANT la question qui l'exige. Chaque question précède l'exemple
+ * brique APRÈS la réponse (rétrofit 2026-10-15) ; la remarque 1 (les deux sens) suit la réponse du premier calcul. Chaque question précède l'exemple
  * du manuel qui y répond : l'exemple devient la correction. LP : P1, P2, P3.
  */
 const { product, quotient, sum } = KNOWLEDGE;
@@ -44,7 +44,6 @@ export default function Module03Maarif() {
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="jidaa-jidhrayn" variant="rappel" />
-              <TextbookBox kind="remark" text={product.remarks[0]} source={KNOWLEDGE.source} compact />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">احسب مستعملًا الخاصية 1:</p>}
                 rows={[
@@ -55,7 +54,12 @@ export default function Module03Maarif() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>أمثلة الكتاب أدناه.</Feedback>}
                 onAnswered={() => setQ1(true)}
               />
-              {q1 && <TextbookBox kind="example" lines={[product.examples[0], product.examples[2]]} compact />}
+              {q1 && (
+                <>
+                  <TextbookBox kind="remark" text={product.remarks[0]} source={KNOWLEDGE.source} compact />
+                  <TextbookBox kind="example" lines={[product.examples[0], product.examples[2]]} compact />
+                </>
+              )}
             </div>
           ),
         },
@@ -80,16 +84,16 @@ export default function Module03Maarif() {
           num: 3, title: 'خاصية 1 في الاتجاه الآخر — جذر جداء فيه مربّع', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="jidhr-a2b" lead={<MathText>{'نستعمل الخاصية 1 في الاتجاه الآخر، من $\\sqrt{a \\times b}$ إلى $\\sqrt{a} \\times \\sqrt{b}$: إذا كان أحد العاملين مربّعًا، خرج جذره.'}</MathText>} />
               <TapQuestion
                 prompt={<span>لدينا <MathText>{'$63 = 9 \\times 7 = 3^2 \\times 7$'}</MathText>. العدد <MathText>{'$\\sqrt{63}$'}</MathText> يُكتب:</span>}
                 options={['$9\\sqrt{7}$', '$7\\sqrt{3}$', '$3\\sqrt{7}$', '$\\sqrt{9} + \\sqrt{7}$'].map(m)}
                 correct={2}
                 cols={2}
-                requires={['jidhr-a2b']}
+                requires={['jidaa-jidhrayn']}
                 explain={<MathText>{product.examples[3]}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="jidhr-a2b" lead={<MathText>{'استعملت الخاصية 1 في الاتجاه الآخر، من $\\sqrt{a \\times b}$ إلى $\\sqrt{a} \\times \\sqrt{b}$: إذا كان أحد العاملين مربّعًا، خرج جذره.'}</MathText>} />}
             </div>
           ),
         },

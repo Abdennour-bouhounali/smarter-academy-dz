@@ -26,6 +26,8 @@ import SightLineFigure from '../components/SightLineFigure';
  *   مبتدئ  un réverbère de 3 m à 89 m : le même مقام, l'alignement à 3 m (tan x = 1, x = 45°).
  * Ouvert sur متقدم (ouvert sur مبتدئ par défaut depuis 2026-10-09) : c'est la وضعية du module. Les essais de l'élève (`onTrial`) sont
  * listés au-dessus des questions d'exécution (`[data-activity-evidence]`). Aucune étape n'attend le lab (`onFinished`).
+ * Rétrofit 2026-10-15 : plus de carte `brief` au-dessus du labo (le labo ouvre le module, contexte dans son `lead`) ; le texte de la وضعية et sa
+ * figure sont lus à l'étape 1, avec la phase « قراءة الوضعية » ; briques déjà APRÈS la réponse.
  * LP : P2 (lire, modéliser), P1 (mobiliser Thalès, la tangente, la calculatrice), P3 (écrire, calculer, arrondir, vérifier).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -79,30 +81,15 @@ export default function Module07AlWadiya() {
   return (
     <ContentModule objectives={["كيف نقيس ارتفاع معلم لا نصعده؟", "أيّ معرفة تناسب الشكل: طالس أم النسب المثلثية؟", "كيف نعيّن قيس الزاوية x ثم نتحقّق من ملاءمة النتيجة؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها" moduleSubtitle="ارتفاع «مقام الشهيد» بعمود كهربائي وخط نظر" estimatedTime="20 دقيقة"
-      brief={{
-        tag: 'أدمج تعلّماتي — الكتاب ص 124', headline: 'معلم لا نصعده: كم ارتفاع «مقام الشهيد»؟', emoji: '🏛️',
-        title: 'وضعية واحدة وأدوات الوحدة كلها: أيّ أداة لأيّ مطلوب؟', tone: 'amber',
-        body: (
-          <div className="space-y-2" data-situation="maqam-echahid">
-            <p className="font-bold">{SITUATION.title}</p>
-            <p><MathText>{SITUATION.text}</MathText></p>
-            <SightLineFigure {...SITUATION.figure} landmark="maqam" />
-            <p className="text-xs text-slate-500" data-reading-note="95,65"><MathText>{REMARKS.reading}</MathText></p>
-          </div>
-        ),
-        footer: <SourceTag source={SITUATION.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="المستوى المتقدّم هو وضعية الكتاب: حرّك أريس على الأرض حتى تختفي قمة المقام خلف قمة العمود. في المستوى المبتدئ عمود إنارة آخر طوله 3 أمتار أمام المعلم نفسه."
           levels={{
             beginner: () => (
-              <Manipulation type="clinometer" level="beginner" {...LAB.beginner} title="عمود إنارة طوله 3 أمتار على بعد 89 مترا من «مقام الشهيد»" onTrial={keep} />
+              <Manipulation type="clinometer" level="beginner" {...LAB.beginner} lead="أريس يريد قياس ارتفاع «مقام الشهيد»: عمود إنارة طوله 3 أمتار على بعد 89 مترا منه." onTrial={keep} />
             ),
             advanced: () => (
-              <Manipulation type="clinometer" level="advanced" {...LAB.advanced} title="وضعية الكتاب: عمود كهربائي طوله 2,30 مترا على بعد 95,65 مترا من «مقام الشهيد»" onTrial={keep} />
+              <Manipulation type="clinometer" level="advanced" {...LAB.advanced} lead="وضعية الكتاب: عمود كهربائي طوله 2,30 مترا على بعد 95,65 مترا من «مقام الشهيد»." onTrial={keep} />
             ),
           }}
         />
@@ -110,7 +97,12 @@ export default function Module07AlWadiya() {
       steps={[
         { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1 من الكتاب: ما المطلوب؟', done: !!q[1],
           content: (
-            <div className="space-y-3">
+            <div className="space-y-3" data-situation="maqam-echahid">
+              <p className="font-bold">{SITUATION.title}</p>
+              <p><MathText>{SITUATION.text}</MathText></p>
+              <SightLineFigure {...SITUATION.figure} landmark="maqam" />
+              <p className="text-xs text-slate-500" data-reading-note="95,65"><MathText>{REMARKS.reading}</MathText></p>
+              <SourceTag source={SITUATION.source} />
               <Phase i={0} />
               <TapQuestion
                 prompt="ما المطلوب في نص الوضعية؟"

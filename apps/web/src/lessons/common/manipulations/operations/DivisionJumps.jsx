@@ -15,6 +15,7 @@ import { LabCard, StageFrame, PromptCard, StepperCard, RoundButton, VerdictBanne
 import { SvgPill, pillWidth } from '../primitives/SvgPill';
 import { FlowerFigure, BouquetSleeve, BouquetTie, hueOf } from '../primitives/FlowerFigure';
 import HopperFigure from '../primitives/HopperFigure';
+import { useLabCoach } from '../primitives/LabCoach';
 import { LEVELS } from '../levels';
 import * as L from '../logic/divisionJumps';
 
@@ -85,6 +86,9 @@ import * as L from '../logic/divisionJumps';
  * travaillé de معارف), `title`, `lead`, `onTrial({ a, b, q, r, kind: 'over' | 'short' | 'exact', ok })` à
  * chaque essai VALIDÉ (r = null pour `over`), `onFinished({ a, b })` à la règle — tous par `state.report`.
  *
+ * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/divisionJumps.js › coachOf` montre la poignée à tirer, puis
+ * les boutons −/+ tant que le contraste n'est pas vu, puis la carte 48 ; jamais une taille de saut ni un nombre de groupes.
+ *
  * CONTRAT DOM : [data-division-jumps][data-world][data-a][data-b][data-q][data-solved][data-layout], [data-dj-glance],
  * [data-dj-prompt][data-lit], [data-dj-scene], [data-dj-handle] (role=slider), [data-dj-less], [data-dj-more] (une
  * seule paire rendue), [data-dj-reading] / [data-dj-read=<clé>], [data-dj-count] (la grande lecture q),
@@ -139,7 +143,7 @@ function StatPill({ label, value, tone = 'indigo', small = false, ...rest }) {
 
 export default function DivisionJumps({
   a: a0, b: b0, world: world0, then: then0, title, lead, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -162,6 +166,11 @@ export default function DivisionJumps({
   const ready = L.discoveryReady(lab);
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { a: lab.a0, b }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coach = useLabCoach({
+    lab: 'division-jumps', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
+    labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
+  });
   const nTrials = lab.trials.length;
   useEffect(() => { if (nTrials > 0) state.report(onTrial, L.trialEvidence(lab.trials.at(-1))); }, [nTrials]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -404,6 +413,7 @@ export default function DivisionJumps({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      coach={coachOn ? coach : null}
       hints={[0, 1].map((i) => k(`hints.${world}.${i}`, { a: lab.a0, b }))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k(`discovery.prompt.${world}`)} options={discoveryOptions} formal={formal} />}

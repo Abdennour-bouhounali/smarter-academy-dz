@@ -64,33 +64,18 @@ export default function Module02Tayin() {
         'هل توجد طريقة ثانية؟',
         'كيف نتحقّق من عبارتنا؟',
       ]}
-      brief={{
-        tag: 'معارف — صياغة من المنصّة · تحدّ — الكتاب ص 77',
-        headline: 'محرار بتدريجتين!',
-        emoji: '🌡️',
-        title: 'عددان وصورتاهما يكفيان',
-        tone: 'violet',
-        body: (
-          <div className="space-y-1">
-            <p><MathText>{CHALLENGE.text}</MathText></p>
-            <p className="text-sm"><MathText>{'لا نعرف عبارة $f(x)$ ، لكن نعرف صورتي عددين. في المخبر: ابنِ الدرجة بين العددين، ثم انزل إلى $x = 0$ . ماذا تقرأ في كل مرة؟'}</MathText></p>
-          </div>
-        ),
-        footer: <div className="flex flex-wrap gap-2"><SourceTag source={CHALLENGE.source} /><SourceTag source={KNOWLEDGE.tanasub.source} /></div>,
-      }}
       intro={
+        // LE LABO OUVRE LE MODULE (§4quater) : ni carte du manuel (le تحدّ devient le `lead` du niveau متقدم), ni titre / `lead` de workspace.
         <ManipulationWorkspace
-          title="سلّم التغيّرات — عددان وصورتاهما"
-          lead="الدالة مجهولة: لا يقبل المخبر إلا العددين اللذين نعرف صورتيهما، حتى تبني الدرجة بينهما."
           defaultLevel="beginner"
           levels={{
             beginner: () => (
               <Manipulation type="slope-stairs" level="beginner" {...LAB.m2.beginner}
-                title="اشتراك نادي الأحياء: 4 مقابلات بـ 1300DA و 10 مقابلات بـ 2500DA" lead={BEGINNER_M2.text} />
+                lead={<MathText>{BEGINNER_M2.text}</MathText>} />
             ),
             advanced: () => (
               <Manipulation type="slope-stairs" level="advanced" {...LAB.m2.advanced}
-                title="تحدّ: من 10 و 30 درجة سلسيوس إلى الفهرنهايت" />
+                lead={<MathText>{`محرار بتدريجتين: $x$ درجة الحرارة بالسلسيوس و $f(x)$ بالفهرنهايت. لا نعرف عبارة $f(x)$ ، لكن نعرف صورتي عددين.`}</MathText>} />
             ),
           }}
         />
@@ -100,12 +85,6 @@ export default function Module02Tayin() {
           num: 1, title: 'لماذا يبقى الحاصل نفسه؟', subtitle: 'ماذا يحدث للحدّ الثابت b؟', done: q1a && q1b,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tanasub-taghayyurat" variant="rappel" compact />
-              {/* La preuve ÉNONCE la règle burhan-taghayyurat : l'élève la prédit d'abord (une prédiction, puis boîte + brique). */}
-              <PredictRule id="burhan-taghayyurat">
-                <TextbookBox kind="property" title={KNOWLEDGE.burhan.title} lines={[...KNOWLEDGE.burhan.lines, KNOWLEDGE.burhan.remark]} source={KNOWLEDGE.burhan.source} compact />
-              </PredictRule>
-              <KnowledgeBrick id="burhan-taghayyurat" lead="ما رأيته في كل درجاتك، مبرهنًا:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'أكمل البرهان من أجل $f(x) = 5x - 2$ :'}</MathText></p>}
                 rows={[
@@ -114,7 +93,7 @@ export default function Module02Tayin() {
                   { id: 'p2', label: <MathText>{'$5x_1 - 5x_2 =$'}</MathText>, options: ['$5(x_1 - x_2)$', '$5 - (x_1 - x_2)$', '$x_1 - 5x_2$'].map(Opt), correct: 0,
                     correction: <MathText>{'نخرج العامل المشترك 5 : $5x_1 - 5x_2 = 5(x_1 - x_2)$ ، ومنه $\\dfrac{f(x_1) - f(x_2)}{x_1 - x_2} = 5$ .'}</MathText> },
                 ]}
-                requires={['burhan-taghayyurat']}
+                requires={['tanasub-taghayyurat']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}><MathText>{allRight ? 'أحسنت: $f(x_1) - f(x_2) = 5(x_1 - x_2)$ ، والحاصل $5$ مهما كان العددان.' : 'راجع التصحيح تحت كل سطر.'}</MathText></Feedback>}
                 onAnswered={() => setQ1a(true)}
               />
@@ -128,10 +107,19 @@ export default function Module02Tayin() {
                   ].map(Opt)}
                   correct={1}
                   cols={1}
-                  requires={['burhan-taghayyurat']}
+                  requires={['tanasub-taghayyurat']}
                   explain={<MathText>{KNOWLEDGE.burhan.warning}</MathText>}
                   onAnswered={() => setQ1b(true)}
                 />
+              )}
+              {q1b && (
+                <>
+              {/* La preuve ÉNONCE la règle burhan-taghayyurat : elle vient APRÈS les deux réponses, et l'élève la prédit d'abord. */}
+              <PredictRule id="burhan-taghayyurat">
+                <TextbookBox kind="property" title={KNOWLEDGE.burhan.title} lines={[...KNOWLEDGE.burhan.lines, KNOWLEDGE.burhan.remark]} source={KNOWLEDGE.burhan.source} compact />
+              </PredictRule>
+              <KnowledgeBrick id="burhan-taghayyurat" lead="ما رأيته في كل درجاتك، مبرهنًا:" />
+                </>
               )}
             </div>
           ),
@@ -154,13 +142,12 @@ export default function Module02Tayin() {
               />
               {q2a && (
                 <>
-                  <KnowledgeBrick id="hisab-muamil-a" lead="الدرجة بين 10 و 30 ، حسابًا:" />
                   <NumericQuestion
                     prompt="المعامل $a$ :"
                     expected={near(1.8)}
                     display="1,8"
                     parse={parseDec}
-                    requires={['hisab-muamil-a']}
+                    requires={['tanasub-taghayyurat']}
                     explain={<MathText>{KNOWLEDGE.hisabA.example}</MathText>}
                     explainFor={(n) => (near(36)(n) ? <MathText>{`خطأ شائع: ${MISTAKES.bidunQisma.wrong} ${MISTAKES.bidunQisma.why}`}</MathText> : near(-1.8)(n) ? <MathText>{`${MISTAKES.tartib.wrong} ${MISTAKES.tartib.why}`}</MathText> : null)}
                     onAnswered={() => setQ2b(true)}
@@ -169,13 +156,13 @@ export default function Module02Tayin() {
               )}
               {q2b && (
                 <>
-                  <KnowledgeBrick id="hisab-b" lead="بعد a ، العدد b من عدد واحد وصورته:" />
+                  <KnowledgeBrick id="hisab-muamil-a" lead="الدرجة بين 10 و 30 ، حسابًا:" />
                   <NumericQuestion
                     prompt="العدد $b$ :"
                     expected={near(CHALLENGE.answer.b)}
                     display="32"
                     parse={parseDec}
-                    requires={['hisab-b']}
+                    requires={['hisab-muamil-a']}
                     explain={<MathText>{KNOWLEDGE.hisabB.example}</MathText>}
                     explainFor={(n) => (near(5)(n) ? <MathText>{`خطأ شائع: ${MISTAKES.bNisba.wrong} ${MISTAKES.bNisba.why}`}</MathText> : null)}
                     onAnswered={() => setQ2c(true)}
@@ -183,6 +170,8 @@ export default function Module02Tayin() {
                 </>
               )}
               {q2c && (
+                <>
+                  <KnowledgeBrick id="hisab-b" lead="بعد a ، العدد b من عدد واحد وصورته:" />
                 <TapQuestion
                   prompt="2) عبارة $f(x)$ بدلالة $x$ :"
                   options={['$f(x) = 36x + 50$', '$f(x) = 1{,}8x + 5$', '$f(x) = 1{,}8x + 32$', '$f(x) = 32x + 1{,}8$'].map(Opt)}
@@ -192,6 +181,7 @@ export default function Module02Tayin() {
                   explain={<MathText>{'$f(x) = 1{,}8x + 32$ ؛ تحقّق: $f(10) = 18 + 32 = 50$ و $f(30) = 54 + 32 = 86$ . أمّا $36x + 50$ فتعطي $f(10) = 410$ ، و $1{,}8x + 5$ تعطي $f(10) = 23$ ، و $32x + 1{,}8$ تعطي $f(10) = 321{,}8$ .'}</MathText>}
                   onAnswered={() => setQ2d(true)}
                 />
+                </>
               )}
             </div>
           ),

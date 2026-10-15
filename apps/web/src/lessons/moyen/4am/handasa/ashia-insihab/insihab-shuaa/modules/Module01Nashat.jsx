@@ -5,11 +5,10 @@ import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import { FIG_ACT1, FIG_ACT1_ARROWS, FIG_ACT1_2D } from '../content/figures';
-import DroneShowVignette from '../components/DroneShowVignette';
 
 /**
  * Module 1 — نشاط 1 (p. 128), ouvert sur LE SPECTACLE DE DRONES (translation-glide).
@@ -66,26 +65,9 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 1 — عرض المسيّرات فوق الخليج"
       moduleSubtitle="التشكيلة كلها تنتقل بحركة واحدة: ما هذه الحركة؟"
       estimatedTime="16 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 128',
-        headline: 'عرض مسيّرات مضيئة فوق خليج الجزائر!',
-        emoji: '🚁',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <DroneShowVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={ACTIVITY_LINES.source} /></p>
-            <p className="text-sm text-slate-600">في المستوى «متقدم» (نشاط 1): شكل الكتاب المرصوف (أعادت المنصّة رسمه بوضوح أكبر) وانسحاباته الأربعة. في المستوى «مبتدئ»: أنت مُخرج العرض، تختار سهم المسيّرة القائدة بنفسك.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين: كل مسيّرة على عقدة من شبكة الرصف. لاحظ متى يقبل العرض صورة مسيّرة ومتى يرفضها، وماذا تتشارك أسهم الصور المقبولة."
           levels={{
             beginner: () => (
               <Manipulation

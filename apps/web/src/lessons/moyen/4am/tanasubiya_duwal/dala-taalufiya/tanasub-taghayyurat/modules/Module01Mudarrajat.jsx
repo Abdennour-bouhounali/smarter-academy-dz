@@ -5,10 +5,9 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { HOOK, ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
-import StadiumVignette from '../components/StadiumVignette';
+import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 
 /**
  * Module 1 — نشاط 4 « تناسب التغيّرات » (p. 79), ouvert sur L'ESCALIER DES ACCROISSEMENTS (slope-stairs).
@@ -79,36 +78,47 @@ export default function Module01Mudarrajat() {
         'ماذا نلاحظ في حاصل قسمة تغيّر المبلغ على تغيّر عدد المقابلات؟',
         'كم يزيد المبلغ في كل درجة من الشكل؟',
       ]}
-      brief={{
-        tag: 'أنشطة — الكتاب ص 79',
-        headline: HOOK.headline,
-        emoji: '🏟️',
-        title: 'تناسب التغيّرات',
-        tone: 'indigo',
-        visual: <StadiumVignette />,
-        body: <p><MathText>{HOOK.text}</MathText></p>,
-        footer: <div className="flex flex-wrap gap-2"><SourceTag source={HOOK.source} /><SourceTag source={ACTIVITY.source} /></div>,
-      }}
       intro={
+        // LE LABO OUVRE LE MODULE (§4quater) : ni carte du manuel, ni titre / `lead` de workspace ; le contexte est le `lead` du labo.
         <ManipulationWorkspace
-          title="سلّم التغيّرات"
-          lead="في المستويين تحرّك عددين x₁ و x₂ بيدك: ترتسم الدرجة بين صورتيهما، ويُكتب حاصل القسمة. المتقدّم هو سلّم الكتاب."
           defaultLevel="beginner"
           levels={{
             beginner: () => (
               <Manipulation type="slope-stairs" level="beginner" {...LAB.m1.beginner}
-                title="اشتراك الأشبال: 100DA يضاف إليه 50DA للمقابلة" onTrial={onTrial('beginner')} />
+                lead="نادي المدينة يعرض على أشباله اشتراكًا: 100DA مرّة واحدة يضاف إليها 50DA عن كل مقابلة." onTrial={onTrial('beginner')} />
             ),
             advanced: () => (
               <Manipulation type="slope-stairs" level="advanced" {...LAB.m1.advanced}
-                title="نشاط 4: اشتراك سنوي 2000DA يضاف إليه 200DA للمقابلة" onTrial={onTrial('advanced')} />
+                lead="نشاط الكتاب: اشتراك سنوي لمناصر 2000DA يضاف إليه 200DA عند كل دخول لمقابلة." onTrial={onTrial('advanced')} />
             ),
           }}
         />
       }
       steps={[
         {
-          num: 1, title: 'الاشتراك السنوي', subtitle: 'نشاط 4 — السؤال 1', done: q1a && q1b,
+          num: 1, title: 'ماذا تلاحظ في درجاتك؟', subtitle: 'حاصل قسمة الارتفاع على الامتداد', done: q3b,
+          content: (
+            <div className="space-y-3">
+              {evidence}
+              <TapQuestion
+                prompt="في كل درجة بنيتها، قسمتَ ما زاد في المبلغ على ما زاد في عدد المقابلات. ماذا تلاحظ في الحواصل من درجة إلى أخرى؟"
+                options={[
+                  'الحاصل يكبر كلما اتّسعت الدرجة (كلما ابتعد العددان)',
+                  'الحاصل هو نفسه في كل درجة مهما كان العددان، ويساوي ثمن المقابلة الواحدة',
+                  'الحاصل يساوي فرق الصورتين',
+                ].map(Opt)}
+                correct={1}
+                cols={1}
+                requires={['hisab-farq-nisbi']}
+                explain={<MathText>{'في كل درجة بنيتها الحاصل هو العدد نفسه: ما يدفعه المناصر عن مقابلة واحدة، أي المعامل $a$ في $f(x) = ax + b$ . الاشتراك الثابت لا يدخل في الفرق بين صورتين.'}</MathText>}
+                onAnswered={() => setQ3b(true)}
+              />
+              {q3b && <KnowledgeBrick id="tanasub-taghayyurat" lead="ما تقوله كل درجاتك، باسمه:" />}
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'الاشتراك السنوي', subtitle: 'نشاط 4 — السؤال 1', done: q1a && q1b,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" title={`نشاط 4 — ${ACTIVITY.title}`} lines={[ACTIVITY.situation, ...ACTIVITY.q1]} source={ACTIVITY.source} compact />
@@ -138,7 +148,7 @@ export default function Module01Mudarrajat() {
           ),
         },
         {
-          num: 2, title: 'الدالة f', subtitle: 'نشاط 4 — السؤال 2', done: q2a && q2b && q2c,
+          num: 3, title: 'الدالة f', subtitle: 'نشاط 4 — السؤال 2', done: q2a && q2b && q2c,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" lines={[ACTIVITY.q2intro, ...ACTIVITY.q2]} source={ACTIVITY.source} compact />
@@ -187,11 +197,10 @@ export default function Module01Mudarrajat() {
           ),
         },
         {
-          num: 3, title: 'حواصل القسمة', subtitle: 'نشاط 4 — ماذا تلاحظ؟', done: q3a && q3b,
+          num: 4, title: 'حواصل الكتاب', subtitle: 'نشاط 4 — ثلاثة حواصل', done: q3a,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" lines={[ACTIVITY.q3]} source={ACTIVITY.source} compact />
-              {evidence}
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">احسب الحواصل الثلاثة:</p>}
                 rows={[
@@ -199,31 +208,15 @@ export default function Module01Mudarrajat() {
                   { id: 'r10', label: <MathText>{'$\\dfrac{f(1) - f(0)}{1 - 0}$'}</MathText>, options: ['$2200$', '$200$', '$2000$'].map(Opt), correct: 1, correction: <MathText>{'$\\dfrac{2200 - 2000}{1} = 200$'}</MathText> },
                   { id: 'r64', label: <MathText>{'$\\dfrac{f(6) - f(4)}{6 - 4}$'}</MathText>, options: ['$400$', '$1600$', '$200$'].map(Opt), correct: 2, correction: <MathText>{'$\\dfrac{3200 - 2800}{2} = \\dfrac{400}{2} = 200$'}</MathText> },
                 ]}
-                requires={['hisab-farq-nisbi', 'surat-adad-taalufiya']}
+                requires={['tanasub-taghayyurat', 'surat-adad-taalufiya']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}><MathText>{allRight ? ACTIVITY_LINES.ratios : 'نقسم فرق الصورتين على فرق العددين: راجع التصحيح تحت كل حاصل.'}</MathText></Feedback>}
                 onAnswered={() => setQ3a(true)}
               />
-              {q3a && (
-                <TapQuestion
-                  prompt="ماذا تلاحظ، في حواصل الكتاب وفي درجاتك؟"
-                  options={[
-                    'الحاصل يكبر كلما اتّسعت الدرجة (كلما ابتعد العددان)',
-                    'الحاصل هو نفسه في كل مرة، ويساوي 200 : معامل $x$ في $f(x)$',
-                    'الحاصل يساوي فرق الصورتين',
-                  ].map(Opt)}
-                  correct={1}
-                  cols={1}
-                  requires={['hisab-farq-nisbi']}
-                  explain={<MathText>{`${ACTIVITY_LINES.ratios} — والعدد نفسه في كل درجة بنيتها في المخبر: 200 هو معامل $x$ في $f(x) = 200x + 2000$ .`}</MathText>}
-                  onAnswered={() => setQ3b(true)}
-                />
-              )}
-              {q3b && <KnowledgeBrick id="tanasub-taghayyurat" lead="ما تقوله كل درجاتك، باسمه:" />}
             </div>
           ),
         },
         {
-          num: 4, title: 'أكمل الشكل', subtitle: 'نشاط 4 — درجات السلّم', done: q4,
+          num: 5, title: 'أكمل الشكل', subtitle: 'نشاط 4 — درجات السلّم', done: q4,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" lines={[ACTIVITY.q4]} source={ACTIVITY.source} compact />

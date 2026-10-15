@@ -22,6 +22,7 @@ import StatTable, { MedalVignette } from '../components/StatTable';
  *          2 quoi qu'on fasse, seule la balance (3) la trouve.
  * Les essais de l'élève (`onTrial`) sont listés au-dessus des questions d'exécution (`[data-activity-evidence]`).
  * Aucune étape n'attend le laboratoire (`onFinished`) : chaque étape se termine sur une RÉPONSE.
+ * Rétrofit 2026-10-15 : le labo ouvre le module ; l'énoncé du manuel (ancienne carte) passe en tête de l'étape 1 (lecture de la situation).
  * LP : P2 (lire, ranger, choisir), P3 (exécuter et rédiger).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -76,32 +77,17 @@ export default function Module07AlWadiya() {
 
   return (
     <ContentModule objectives={["أيّ معطى يكشف القيمة المخفية الأولى، وأيّ معطى يكشف الثانية؟", "كيف أعرف عدد الدول التي لم تفز بالذهب انطلاقًا من نسبة؟", "كيف أحرّر الحلّ بجمل واضحة؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها" moduleSubtitle="الميداليات الذهبية الأولمبية: قيمتان مخفيتان، وعدد الدول دون ذهب" estimatedTime="18 دقيقة"
-      brief={{
-        tag: 'أدمج تعلّماتي — الكتاب ص 100', headline: 'حصيلة الميداليات الذهبية الأولمبية', emoji: '🏅', visual: <MedalVignette />,
-        title: 'القيمتان المخفيتان في الجدول، ثم عدد الدول التي لم تفز إلا بالفضة أو البرونز', tone: 'amber',
-        body: (
-          <div className="space-y-2" data-situation="midaliyat">
-            <p>{SITUATION.intro}</p>
-            <StatTable id="situation" valueLabel={SITUATION.valueLabel} countLabel={SITUATION.countLabel} values={values} counts={counts} />
-            <p className="text-xs text-slate-500">{SITUATION.figure}</p>
-            <p>{SITUATION.data}</p>
-            <p>{SITUATION.q1}</p>
-            <p>{SITUATION.q2}</p>
-          </div>
-        ),
-        footer: <SourceTag source={SITUATION.source} />,
-      }}
       intro={
+        // LE LABO OUVRE LE MODULE (§4quater, rétrofit 2026-10-15) : ni `brief`, ni titre / `lead` d'atelier ; l'énoncé du manuel
+        // (tableau, données, questions) est lu à l'étape 1. `lead` des labos = le contexte seul.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="المستوى المتقدّم هو جدول الكتاب: اسحب كل قيمة مخفية على الميزان حتى يستقرّ الوسيط على 3 ويتوازن الميزان على 7. في المستوى المبتدئ عشر متوسطات وقيمة مخفية واحدة."
           levels={{
             beginner: () => (
-              <Manipulation type="stat-balance" level="beginner" {...LAB.beginner} title="الألعاب المدرسية: قيمة مخفية واحدة" />
+              <Manipulation type="stat-balance" level="beginner" {...LAB.beginner} lead="في الألعاب المدرسية سُجّلت ميداليات عشرة متوسطات، وبقيت قيمة واحدة مخفية في الجدول." />
             ),
             advanced: () => (
-              <Manipulation type="stat-balance" level="advanced" {...LAB.advanced} title="الميداليات الأولمبية: قيمتان مخفيتان" onTrial={keep} />
+              <Manipulation type="stat-balance" level="advanced" {...LAB.advanced} lead="جدول الميداليات الذهبية لثلاثين دولة في دورة أولمبية، وقيمتان فيه مخفيتان." onTrial={keep} />
             ),
           }}
         />
@@ -110,6 +96,16 @@ export default function Module07AlWadiya() {
         { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1 من الكتاب: عمّ يتحدث النص؟', done: !!q[1],
           content: (
             <div className="space-y-3">
+              <div className="space-y-2" data-situation="midaliyat">
+                <MedalVignette />
+                <p>{SITUATION.intro}</p>
+                <StatTable id="situation" valueLabel={SITUATION.valueLabel} countLabel={SITUATION.countLabel} values={values} counts={counts} />
+                <p className="text-xs text-slate-500">{SITUATION.figure}</p>
+                <p>{SITUATION.data}</p>
+                <p>{SITUATION.q1}</p>
+                <p>{SITUATION.q2}</p>
+                <SourceTag source={SITUATION.source} />
+              </div>
               <Phase i={0} />
               <TapQuestion
                 prompt="في الجدول، ماذا يعني العدد 11 المكتوب تحت القيمة 1؟"

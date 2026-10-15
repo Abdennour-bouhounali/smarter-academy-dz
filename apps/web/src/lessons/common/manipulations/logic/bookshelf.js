@@ -195,3 +195,20 @@ export function defaultShelf(total, range) {
   for (let b = range.min; b <= range.max; b += 1) if (total % b !== 0) return b;
   return range.min;
 }
+
+/* ── Le guide d'onboarding (LabCoach, MANIPULATION_CONTRACT §8quater) ─────────────────────────────────────────── */
+
+/**
+ * La prochaine action attendue du serre-livres : tirer la poignée une première fois (`handle`), puis — le geste est connu —
+ * montrer le chemin sans glisser, les boutons « + / − » (`nudge`, `rank` = +1 | −1, le côté qui a de la place). Le guide
+ * ne désigne JAMAIS une longueur : il montre le geste. `null` quand la découverte est méritée.
+ *
+ * @param {{tried:Object, b:number|null, range:{min:number,max:number}, discovery?:'remainder'|'symmetry', total:number}} s
+ */
+export function coachOf({ tried, b, range, discovery = 'remainder', total }) {
+  const ready = discovery === 'symmetry' ? symmetryPair(tried, total) != null : remainderDiscoveryReady(tried);
+  if (ready) return null;
+  if (Object.keys(tried).length === 0) return { id: 'handle', target: '[data-stretch-handle]', gesture: 'drag' };
+  const dir = b != null && b >= range.max ? -1 : 1;
+  return { id: 'nudge', target: `[data-shelf-nudge="${dir}"]`, rank: dir, gesture: 'tap' };
+}

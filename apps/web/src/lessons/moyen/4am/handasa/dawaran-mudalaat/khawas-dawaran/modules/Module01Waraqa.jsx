@@ -4,11 +4,9 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, LAB, MISTAKES } from '../content/textbook';
+import { LAB, MISTAKES } from '../content/textbook';
 import LabEvidence from '../components/LabEvidence';
-import ZelligeVignette from '../components/ZelligeVignette';
 
 /**
  * Module 1 — l'ENTRÉE de la leçon (pas d'activité du manuel, DÉCLARÉ) : le laboratoire `shape-turn`, la feuille calque
@@ -24,6 +22,8 @@ import ZelligeVignette from '../components/ZelligeVignette';
  *   1. ce qui reste, ce qui change (le tableau de bord)     → brique thabat-dawaran (P1)
  *   2. la feuille étirée n'est pas un دوران                (P1)
  *   3. 90° : la droite et son image sont perpendiculaires   (P1, préparé pour معارف)
+ * RÉTROFIT 2026-10-15 (§4quater) : plus de `brief` au-dessus du labo (la carte « وردة زليج في دقائق » + l'énoncé de ACTIVITY), plus de
+ * `title`/`lead` sur le workspace : le labo ouvre la page, son contexte tient dans sa `lead` (une phrase) et sa mission.
  * Les deux niveaux vivent dans l'`intro` : le rappel de la « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) clôt la DERNIÈRE étape.
  * « أتوقّع القاعدة » : le feedback du tableau de bord ne dit PAS la règle (la brique thabat-dawaran la fait écrire), et
  * l'explain de l'étape 3 rapporte la lecture (90° ⇒ متعامدان) sans énoncer la règle zawiya-sura (prédite au module 2).
@@ -45,28 +45,12 @@ export default function Module01Waraqa() {
       moduleSubtitle="ورقة تدور حول دبوس: ماذا يتغيّر في البتلة، وماذا لا يتغيّر؟"
       estimatedTime="12 دقيقة"
       objectives={["ماذا يتغيّر في البتلة حين تدور الورقة، وماذا يبقى؟", "هل تبقى الورقة الممطّطة صورة بدوران؟", "كيف يقف مستقيم من صورته حين أدير الورقة 90 درجة؟"]}
-      brief={{
-        tag: 'مدخل الدرس — مختبر من المنصّة',
-        headline: 'وردة زليج في دقائق!',
-        emoji: '🌸',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <ZelligeVignette />,
-        body: (
-          <div className="space-y-2" data-situation="zellige">
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation}</p>
-            <p className="text-sm text-slate-600">المستوى «مبتدئ»: وردة من ست بتلات. المستوى «متقدم»: طريقة الكتاب (ص 155) ثم مركز دوران مجهول (تمرين 18).</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الورقة الشفافة"
-          lead="في المستويين: الورقة مثبّتة بدبوس في O، تدور ولا تنزلق؛ اللوحة تقرأ ما يبقى وما يتغيّر."
           levels={{
             beginner: () => (
               <Manipulation type="shape-turn" level="beginner" numbers={LAB.beginner.numbers} theme="zellige"
+                lead="معلّم الزليج المتقن لحرفته في تلمسان يرسم بتلة على ورقة شفافة، ويثبّتها بدبوس في مركز الوردة."
                 title="وردة الزليج: ورقة شفافة تدور حول دبوس" onTrial={keep} />
             ),
             advanced: () => (

@@ -17,6 +17,7 @@ import { EX, EX19_CHART } from '../content/exercises';
  *   (3) ex-19 (p. 101) : la brique « tarjama-jadwal », les deux barres qui réunissent deux chaînes
  *       (D = 700 ⇒ B = 550 ⇒ A = 400 — un casse-tête, PAS une coquille) ;
  *   (4) ex-19 : le total 2450 et les تواترات en 49ᵉ.
+ * Rétrofit 2026-10-15 : les briques « qiraat-mukhattat » et « tarjama-jadwal » n'apparaissent qu'APRÈS la réponse (elles donnaient la lecture avant la question).
  * Les deux graphiques sont DESSINÉS ici (components/BarChart), la valeur d'une barre n'y est pas écrite.
  */
 export default function Module02Aqra() {
@@ -46,14 +47,13 @@ export default function Module02Aqra() {
             <div className="space-y-3">
               <TextbookBox kind="situation" text={CARS.text} source={CARS.source} />
               <BarChart bars={CARS.bars} yMax={CARS.yMax} step={CARS.step} axis={CARS.axis} labelEvery={2} />
-              <KnowledgeBrick id="qiraat-mukhattat" lead="قبل أي حساب: ماذا يعدّ المحور العمودي؟ وما خطوة تدريجه؟" />
               <NumericQuestion
                 prompt="كم سيارة مرّت بين 8h و 9h؟"
                 expected={CARS.numbers.peak}
-                requires={['qiraat-mukhattat']}
                 explain="خطوة التدريج 50 (والأرقام مكتوبة كل 100): العمود يصل إلى 600 سيارة."
                 onAnswered={mark('peak')}
               />
+              {done.peak && <KnowledgeBrick id="qiraat-mukhattat" lead="ما فعلته لتقرأ العمود: ماذا يعدّ المحور العمودي؟ وكيف استعملت خطوة تدريجه؟" />}
             </div>
           ),
         },
@@ -89,9 +89,9 @@ export default function Module02Aqra() {
           num: 3, title: 'القنوات التلفزيونية', subtitle: 'التمرين 19 — عمودان يجمعان قناتين', done: all('ex19a'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tarjama-jadwal" lead="اقرأ أسماء الأعمدة قبل ارتفاعاتها: عمودان هنا يحملان قناتين." />
               <BarChart bars={EX19_CHART.bars} yMax={EX19_CHART.yMax} step={EX19_CHART.step} axis={EX19_CHART.axis} labelEvery={EX19_CHART.labelEvery} height={300} />
-              <TextbookExercise exercise={EX['ex19-a']} requires={['qiraat-mukhattat', 'tarjama-jadwal']} onAnswered={mark('ex19a')} />
+              <TextbookExercise exercise={EX['ex19-a']} requires={['qiraat-mukhattat']} onAnswered={mark('ex19a')} />
+              {done.ex19a && <KnowledgeBrick id="tarjama-jadwal" lead="ما فعلته: قرأت أسماء الأعمدة قبل ارتفاعاتها، فعمودان يحملان قناتين." />}
             </div>
           ),
         },
@@ -99,7 +99,7 @@ export default function Module02Aqra() {
           num: 4, title: 'أتمم الجدول', subtitle: 'التكرار الكلي والتواترات', done: all('ex19b', 'ex19c'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tarjama-jadwal" variant="rappel" compact />
+              {done.ex19a && <KnowledgeBrick id="tarjama-jadwal" variant="rappel" compact />}
               <TextbookExercise exercise={EX['ex19-b']} requires={['tarjama-jadwal']} onAnswered={mark('ex19b')} />
               <TextbookExercise exercise={EX['ex19-c']} requires={['tarjama-jadwal']} onAnswered={mark('ex19c')} />
             </div>

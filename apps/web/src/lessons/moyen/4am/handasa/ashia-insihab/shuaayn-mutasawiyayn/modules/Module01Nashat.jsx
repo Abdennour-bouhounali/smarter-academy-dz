@@ -5,11 +5,10 @@ import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import { FIG_ACT2B } from '../content/figures';
-import TifoVignette from '../components/TifoVignette';
 
 /**
  * Module 1 — نشاط 2 ب (p. 129), ouvert sur LA BANDEROLE DU TIFO (parallelogram-pin).
@@ -21,6 +20,9 @@ import TifoVignette from '../components/TifoVignette';
  * UNDERSTAND  la question « متى AI = IB ؟ » sous les essais de l'élève (`onTrial`, `[data-activity-evidence]`) ; puis le
  *           نشاط 2 ب sur sa figure (FIG_ACT2B) : O milieu de [BC] et [AD] ⇒ AB = CD ; AC et DB de sens contraires.
  * FORMALIZE  la brique muntasaf-mushtarak (le « متوازي أضلاع مسطّح »).
+ * RÉTROFIT 2026-10-15 (§4quater) : plus de carte du manuel ; le labo ouvre le module sans titre ni `lead` de workspace (le contexte du
+ * tifo est dans le `lead` du labo) ; l'étape 1 ne re-pose plus « متى AI = IB ؟ » (le labo le demande) mais POURQUOI les mêmes
+ * منحى et اتجاه ne suffisent pas, sur les propres essais de l'élève ; la brique reste APRÈS l'étape 3.
  * AUCUNE étape n'attend `onFinished`. LP : P1, P2.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -62,26 +64,9 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 2 ب — منتصف مشترك على مستقيم"
       moduleSubtitle="متى يكون شعاعان متساويين؟ القائد على الوشاح، ثم النقط على المستقيم (d)"
       estimatedTime="12 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 129',
-        headline: 'تيفو في ملعب 5 جويلية!',
-        emoji: '🏟️',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <TifoVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={ACTIVITY_LINES.source} /></p>
-            <p className="text-sm text-slate-600">في المستوى «مبتدئ»: حرّك قائد المدرّج I على الوشاح [AB] وقارن الشعاعين. في المستوى «متقدم»: ضع ركن الراية D (ستعود إليه في الطرائق).</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="الوشاح مقسّم إلى 8 أقسام متقايسة، والراية تمسكها أربعة أيادٍ على شبكة المدرّج."
           levels={{
             beginner: () => (
               <Manipulation
@@ -89,8 +74,7 @@ export default function Module01Nashat() {
                 level="beginner"
                 {...LAB.beginner.numbers}
                 theme="tifo"
-                title="الوشاح: أين يقف قائد المدرّج؟"
-                lead={<MathText>{'حامِلا الوشاح في A و B. القائد I يتحرّك على [AB]: قارن $\\overrightarrow{AI}$ و $\\overrightarrow{IB}$ .'}</MathText>}
+                lead="في مدرّجات ملعب 5 جويلية يرفع مشجّعان وشاحًا مقسّمًا إلى 8 أقسام متقايسة."
                 onTrial={onTrial}
               />
             ),
@@ -100,7 +84,6 @@ export default function Module01Nashat() {
                 level="advanced"
                 {...LAB.advanced.numbers}
                 theme="tifo"
-                title="طرائق: راية التيفو، D صورة C ثم النقطة E"
               />
             ),
           }}
@@ -108,21 +91,21 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'على الوشاح', subtitle: 'متى يتساوى الشعاعان؟', done: q1,
+          num: 1, title: 'لماذا لا يكفي أن تكون I بين A و B؟', subtitle: 'عن مواضعك على الوشاح', done: q1,
           content: (
             <div className="space-y-3">
               {evidence}
               <TapQuestion
-                prompt={<MathText>{'متى يكون $\\overrightarrow{AI} = \\overrightarrow{IB}$ ؟'}</MathText>}
+                prompt={<MathText>{'في كل مواضعك كان للشعاعين $\\overrightarrow{AI}$ و $\\overrightarrow{IB}$ نفس المنحى ونفس الاتجاه، ومع ذلك لم يتساويا إلا في موضع واحد. لماذا؟'}</MathText>}
                 options={[
-                  'عندما تكون I في منتصف [AB]',
-                  'كلما كانت I بين A و B', // même منحى et même اتجاه, mais pas même طول
-                  'عندما يكون $\\overrightarrow{AI} = \\overrightarrow{BI}$', // au milieu, AI et BI sont de sens contraires
+                  'لأنّ الطولين لا يتساويان إلا حين تقسم I الوشاح إلى قسمين متقايسين',
+                  'لأنّ اتجاه أحد الشعاعين يتغيّر كلما تحرّكت I',
+                  'لأنّ المنحى يتغيّر كلما ابتعدت I عن A',
                 ].map(M)}
                 correct={0}
                 cols={1}
                 requires={['tasawi-shuaayn']}
-                explain={<MathText>{'بين A و B للشعاعين دائما نفس المنحى ونفس الاتجاه، والطولان لا يتساويان إلا في المنتصف (4 أقسام و 4 أقسام). أما $\\overrightarrow{BI}$ فيتجه من B نحو I: عكس $\\overrightarrow{AI}$ .'}</MathText>}
+                explain={<MathText>{'بين A و B للشعاعين دائما نفس المنحى ونفس الاتجاه (جرّب أن تقلب السهم الثاني لترى ما يتغيّر)، والطولان لا يتساويان إلا في المنتصف: 4 أقسام و 4 أقسام.'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
             </div>

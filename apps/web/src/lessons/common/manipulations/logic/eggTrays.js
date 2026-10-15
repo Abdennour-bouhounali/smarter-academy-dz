@@ -333,3 +333,25 @@ export function zoomLayout({ b, width, maxH, maxCell = 30, minCell = 9 }) {
   const cell = Math.max(minCell, Math.min(maxCell, width / cols, maxH / rows));
   return { rows, cols, cell, w: cols * cell, h: rows * cell, fillW: (r) => (cols * cell * r) / b };
 }
+
+/* ── LabCoach (MANIPULATION_CONTRACT §8quater) ───────────────────────────────────── */
+
+/**
+ * La prochaine action utile, en données pures `{ id, target, gesture }` — elle montre la COMMANDE, jamais la réponse
+ * (ni le nombre de plateaux, ni le reste, ni si le quotient tombe sur une graduation) :
+ *   frame  — avant le premier œuf : le cadre se pose sur la règle (le tapis est fermé tant qu'il n'est pas posé) ;
+ *   handle — le manche du tapis, tant que la commande n'est pas pleine ;
+ *   exact  — commande pleine, rien de jugé : le bouton « يقع على عدد طبيعي » existe (il est montré pour TOUT nombre) ;
+ *   next   — la carte « بيض إضافي » (contraste) ;
+ *   claim  — la carte du camarade (متقدم) : on montre la carte, pas un des deux avis.
+ * `null` : rien à montrer (but atteint, ou un cadre à rejouer librement).
+ */
+export function coachOf(s) {
+  if (discoveryReady(s)) return null;
+  if (fillLocked(s)) return { id: 'frame', target: '[data-et-frame-handle]', gesture: 'drag' };
+  if (!full(s)) return { id: 'handle', target: '[data-et-handle]', gesture: 'drag' };
+  if (canAddEggs(s)) return { id: 'next', target: '[data-et-next-button]', gesture: 'tap' };
+  if (claimOpen(s) && s.claimAnswer == null) return { id: 'claim', target: '[data-et-claim]', gesture: 'tap' };
+  if (!orderDone(s, s.a)) return { id: 'exact', target: '[data-et-exact]', gesture: 'tap' };
+  return null;
+}

@@ -4,7 +4,6 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { METHOD_MODELLING, RACE, MISTAKE_ONE_X } from '../content/textbook';
 
@@ -24,8 +23,9 @@ import { METHOD_MODELLING, RACE, MISTAKE_ONE_X } from '../content/textbook';
  * `onModel` et `onTrial` listent, au-dessus des questions, ce que l'élève a fait lui-même
  * au niveau متقدم (`[data-activity-evidence]`).
  *
- * Étapes : (1) ب) quelle équation traduit le problème — depuis SON modèle ; (2) la brique
- * « tarrid-namdhaja », puis جـ) la solution — depuis SES essais ; (3) التحقق. LP : P1, P2.
+ * UNE PISTE (rétrofit 2026-10-15) : labo en tête SANS carte ni titre de workspace (le contexte est le `lead` du labo متقدم).
+ * Étapes : (1) POURQUOI chaque enfant porte son « + x » (le labo a déjà fait construire le modèle) ; (2) جـ) la solution — depuis SES
+ * essais —, PUIS la brique « tarrid-namdhaja » ; (3) التحقق. LP : P1, P2.
  */
 export default function Module01Sibaq() {
   const [model, setModel] = useState(null);
@@ -57,24 +57,8 @@ export default function Module01Sibaq() {
       moduleTitle="سباق الأعمار — من النص إلى المعادلة"
       moduleSubtitle="من يحمل x؟"
       estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'طرائق — الكتاب ص 49',
-        headline: 'عائلة تكبر معًا!',
-        emoji: '🎂',
-        title: 'ترييض مشكلة: نترجم نص المشكلة إلى معادلة',
-        tone: 'indigo',
-        body: (
-          <div className="space-y-1">
-            <p><MathText>{METHOD_MODELLING.exercise}</MathText></p>
-            <p className="text-sm text-slate-600">في المختبر: ضع البطاقة «+ x» على كل من يكبر، تحقّق من نموذجك، ثم مدّد الزمن وراقب العمودين.</p>
-          </div>
-        ),
-        footer: <div className="flex flex-wrap gap-2"><SourceTag source={METHOD_MODELLING.source} /><SourceTag source={RACE.source} /></div>,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="نفس الفكرة في المستويين: من يتغيّر مع الزمن؟ ومتى يتساوى العمودان؟"
           defaultLevel="beginner"
           levels={{
             beginner: () => (
@@ -97,6 +81,7 @@ export default function Module01Sibaq() {
                 right={RACE.advanced.right}
                 goal="equal"
                 title="مثال الكتاب: أب عمره 36 سنة وأبناؤه 4 و 6 و 8"
+                lead="عمر الأب 36 سنة وأعمار أبنائه الثلاثة 4 و 6 و 8: ضع البطاقة «+ x» على كل من يكبر، ثم تحقّق من نموذجك."
                 onModel={({ tex }) => setModel(tex)}
                 onTrial={addTrial}
               />
@@ -106,19 +91,18 @@ export default function Module01Sibaq() {
       }
       steps={[
         {
-          num: 1, title: 'ب) أيّ معادلة تترجم المشكلة؟', subtitle: 'ابنِ النموذج في المستوى المتقدّم، ثم أجب', done: q1,
+          num: 1, title: 'لماذا يحمل كل ابن «+ x» وحده؟', subtitle: 'ابنِ النموذج في المستوى المتقدّم، ثم أجب', done: q1,
           content: (
             <div className="space-y-3">
               {evidence}
               <TapQuestion
-                prompt={<span>نسمّي <MathText>{'$x$'}</MathText> عدد السنوات. أيّ معادلة تترجم المشكلة؟</span>}
+                prompt={<span>في نموذج الأبناء الثلاثة وضعتَ «+ x» على كل ابن، لا «+ x» واحدة على مجموع أعمارهم. لماذا؟</span>}
                 options={[
-                  <MathText key="a">{'$36 + x = 4 + 6 + 8 + x$'}</MathText>,
-                  <MathText key="b">{'$36 + x = (4 + x) + (6 + x) + (8 + x)$'}</MathText>,
-                  <MathText key="c">{'$36 = (4 + x) + (6 + x) + (8 + x)$'}</MathText>,
-                  <MathText key="d">{'$36 + x = 3(4 + 6 + 8)$'}</MathText>,
+                  'لأنّ كل ابن يكبر بـ x سنة، فمجموع أعمار الأبناء الثلاثة يزيد ثلاث مرّات x',
+                  'لأنّ مجموع أعمار الأبناء يزيد بـ x سنة فقط مهما كان عدد الأبناء',
+                  'لأنّ الأب وحده هو الذي يكبر مع الزمن',
                 ]}
-                correct={1}
+                correct={0}
                 cols={1}
                 requires={['hal-muadala']}
                 explain={<span className="block space-y-1"><MathText>{MISTAKE_ONE_X.why}</MathText><MathText>{MISTAKE_ONE_X.right}</MathText></span>}
@@ -131,15 +115,15 @@ export default function Module01Sibaq() {
           num: 2, title: 'جـ) بعد كم سنة؟', subtitle: 'السباق يعطيك الجواب: تحقّق منه بالحساب', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tarrid-namdhaja" lead="ما فعلته بالبطاقات هو الخطوة «ب)» من طريقة الكتاب:" />
               {evidence}
               <NumericQuestion
                 prompt={<span>المعادلة تُكتب <MathText>{'$36 + x = 3x + 18$'}</MathText>. بعد كم سنة يكون عمر الأب مساويًا مجموع أعمار أبنائه؟</span>}
                 expected={9}
-                requires={['tarrid-namdhaja', 'hal-muadala']}
+                requires={['hal-muadala']}
                 explain={<MathText>{'$36 - 18 = 3x - x$ أي $2x = 18$ ومنه $x = 9$ : بعد 9 سنوات.'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="tarrid-namdhaja" lead="ما فعلته بالبطاقات هو الخطوة «ب)» من طريقة الكتاب:" />}
             </div>
           ),
         },

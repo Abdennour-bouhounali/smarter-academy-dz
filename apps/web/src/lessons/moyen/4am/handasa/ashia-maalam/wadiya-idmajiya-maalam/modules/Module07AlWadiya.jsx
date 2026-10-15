@@ -75,31 +75,15 @@ export default function Module07AlWadiya() {
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها" moduleSubtitle="عدّاءان ومساران في معلم: أيّهما أقصر؟" estimatedTime="22 دقيقة"
       objectives={['أيّ المسارين أقصر: ما تراه العين أم ما يقوله الحساب؟', 'أين مركز كل نصف دائرة، وما طول مساره؟', 'كيف نعرف طول مسار من قطع مستقيمة في معلم؟', 'كيف نقارن طولين متقاربين دون أن نخطئ في التدوير؟']}
-      brief={{
-        tag: 'أدمج تعلّماتي — الكتاب ص 148', headline: 'عدّاءان يتدرّبان: أيّ المسارين أقصر؟', emoji: '🏃',
-        title: 'وضعية واحدة وأدوات الوحدة كلها: قراءة الإحداثيات، المنتصف، المسافة بين نقطتين، والمقارنة', tone: 'amber',
-        body: (
-          <div className="space-y-2" data-situation="addaan">
-            <p className="font-bold">{SITUATION.title}</p>
-            <p><MathText>{SITUATION.text}</MathText></p>
-            <GeoFigure {...SITUATION_FIGURE} />
-            <p className="text-sm"><MathText>{SITUATION.scale}</MathText></p>
-            <p className="text-xs text-slate-500" data-names-note><MathText>{'الكتاب لا يسمّي النقطة $(2\\,;\\,0)$ ولا رأسي المسار (2) الأوسطين: سمّتها المنصّة E و P و Q، فقطع المسار (2) هي $[MP]$ و $[PQ]$ و $[QN]$ .'}</MathText> <MathText>{REMARKS.muhit}</MathText> <SourceTag source={SITUATION.names} /></p>
-          </div>
-        ),
-        footer: <SourceTag source={SITUATION.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="المستوى المتقدّم هو وضعية الكتاب: توقّع أولا أيّ المسارين أقصر، ثم ابنِ كل مسار جزءا بجزء وراقب ساعتي العدّاءين. في المستوى المبتدئ رالي في الصحراء."
           levels={{
             beginner: () => (
-              <Manipulation type="route-compare" level="beginner" {...LAB.beginner} title="رالي في الصحراء: مساران بين المخيّم والواحة (مثال من المنصّة)" onTrial={keep} />
+              <Manipulation type="route-compare" level="beginner" {...LAB.beginner} lead="رالي في الصحراء: مساران بين المخيّم والواحة. توقّع أيّهما أقصر، ثم ابنِ كل مسار." onTrial={keep} />
             ),
             advanced: () => (
-              <Manipulation type="route-compare" level="advanced" {...LAB.advanced} title="وضعية الكتاب: عدّاءان ومساران في معلم" onTrial={keep} />
+              <Manipulation type="route-compare" level="advanced" {...LAB.advanced} lead="وضعية الكتاب: عدّاءان ومساران في معلم. توقّع أيّهما أقصر، ثم ابنِ كل مسار جزءا بجزء وراقب الساعتين." onTrial={keep} />
             ),
           }}
         />
@@ -108,6 +92,14 @@ export default function Module07AlWadiya() {
         { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1 من الكتاب: عمّ يتحدث النص؟', done: !!q[1],
           content: (
             <div className="space-y-3">
+              <div className="space-y-2 rounded-2xl border-2 border-amber-200 bg-amber-50/60 p-3" data-situation="addaan">
+                <p className="font-bold">{SITUATION.title}</p>
+                <p><MathText>{SITUATION.text}</MathText></p>
+                <GeoFigure {...SITUATION_FIGURE} />
+                <p className="text-sm"><MathText>{SITUATION.scale}</MathText></p>
+                <p className="text-xs text-slate-500" data-names-note><MathText>{'الكتاب لا يسمّي النقطة $(2\\,;\\,0)$ ولا رأسي المسار (2) الأوسطين: سمّتها المنصّة E و P و Q، فقطع المسار (2) هي $[MP]$ و $[PQ]$ و $[QN]$ .'}</MathText> <MathText>{REMARKS.muhit}</MathText> <SourceTag source={SITUATION.names} /></p>
+                <SourceTag source={SITUATION.source} />
+              </div>
               <Phase i={0} />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">رتّب المعطيات: احكم على كل عبارة.</p>}

@@ -88,6 +88,14 @@ and its modules/exercises published in the LOCAL database so the owner can brows
   adding a lesson or changing its modules — never touch `App.jsx`), lab strings live in
   `i18n/locales/ar/lesson.manipulation.json`, unit maths are imported by path, not from the core barrel
   (`BUNDLE_BOUNDARIES.md` §3–§4, since 2026-10-14).
+- **The textbook is the REFERENCE of the الكفاءات, not the script of the lesson** (owner, 2026-10-14): the entry point,
+  examples, contexts and order of ideas are designed by the platform (the book's activity is one candidate, often posed
+  later as an application), and every module is ONE track — the action (lab) at the top with nothing above it, then
+  questions on what the student did, then the name (`LESSON_DEVELOPMENT_GUIDE.md` §4ter–§4quinquies; reference
+  `kitabat-adad-tabii`, validated; applies to every new lesson; existing lessons: `docs/reports/LESSON_METHOD_RETROFIT.md`).
+- **Every manipulation has the onboarding** (owner, 2026-10-14): `LabCoach` — at each moment a ring + one-sentence bubble on the button or
+  gesture needed now, shown once, hidable, re-summonable; same design in every lab, every lesson, every grade
+  (`MANIPULATION_CONTRACT.md` §8quater, `MANIPULATION_DNA.md` §17.11; rollout and its prompt: `docs/reports/LAB_COACH_ROLLOUT.md`).
 - Terminology: a learning point is « الكفاءة / الكفاءات » in every visible
   string since 2026-10-05 — never « نقطة التعلّم / نقاط التعلّم »; identifiers
   (`learningPoint`…) are unchanged (`docs/architecture/ARABIC_RTL_CONTRACT.md`).

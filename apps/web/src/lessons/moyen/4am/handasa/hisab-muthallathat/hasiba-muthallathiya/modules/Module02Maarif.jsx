@@ -10,6 +10,8 @@ import { KNOW3, ROUNDING_RULE, PLATFORM_SOURCE, key } from '../content/textbook'
 import KeySequence from '../components/KeySequence';
 
 /**
+ * Rétrofit 2026-10-15 : dans chaque étape la QUESTION vient d'abord (R de la calculatrice, B depuis cos 0,8, l'arrondi de A) ; l'encadré / l'exemple
+ * du manuel et la brique (barmaja-daraja, hasiba-zawiya, tadwir-dalaqa) viennent APRÈS la réponse. Le brief ne dit aucun fait.
  * Module 2 — معارف 3 (p. 120) « استعمال حاسبة في حساب نسب مثلثية ».
  *   1. UNDERSTAND : la programmation en degrés (la phrase du manuel), l'exemple 1 (sin, cos, tan 54°) avec ses
  *      touches en code LTR, la brique barmaja-daraja ; TOUCH THE MATH : une calculatrice en mode R (cos 60 = −0,952),
@@ -65,12 +67,6 @@ export default function Module02Maarif() {
           num: 1, title: 'قبل أيّ حساب', subtitle: 'مثال 1', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="hasiba-nisba" variant="rappel" compact />
-              <PredictRule id="barmaja-daraja"><TextbookBox kind="property" title={KNOW3.title} text={KNOW3.intro} source={KNOW3.source} compact /></PredictRule>
-              <TextbookBox kind="example" text={KNOW3.example1.text} source={KNOW3.source} compact>
-                <Steps steps={KNOW3.example1.steps} />
-              </TextbookBox>
-              <KnowledgeBrick id="barmaja-daraja" lead="الحرف R الذي رأيته على الشاشة في النشاط له معنى:" />
               <p className="text-sm font-semibold text-slate-800"><MathText>{`حاسبة يظهر في أعلى شاشتها الحرف ${key('R')}. تلميذ ضغط ${key('ON cos 60 =')} فظهر $-0{,}9524129804$ .`}</MathText> <SourceTag source={PLATFORM_SOURCE} /></p>
               <TapQuestion
                 prompt="ماذا يفعل؟"
@@ -81,10 +77,19 @@ export default function Module02Maarif() {
                 ].map(M)}
                 correct={0}
                 cols={1}
-                requires={['barmaja-daraja']}
                 explain={<MathText>{`في وضع ${key('R')} تحسب الحاسبة جيب تمام 60 راديانًا. جيب تمام زاوية حادة موجب وأصغر من 1، فـ $-0{,}95$ مستحيل. و ${key('2nd')} ${key('cos')} يعطي زاوية لا نسبة.`}</MathText>}
                 onAnswered={() => setQ1a(true)}
               />
+              {q1a && (
+                <>
+                <KnowledgeBrick id="hasiba-nisba" variant="rappel" compact />
+                <PredictRule id="barmaja-daraja"><TextbookBox kind="property" title={KNOW3.title} text={KNOW3.intro} source={KNOW3.source} compact /></PredictRule>
+                <TextbookBox kind="example" text={KNOW3.example1.text} source={KNOW3.source} compact>
+                  <Steps steps={KNOW3.example1.steps} />
+                </TextbookBox>
+                <KnowledgeBrick id="barmaja-daraja" lead="الحرف R الذي رأيته على الشاشة في النشاط له معنى:" />
+                </>
+              )}
               {q1a && (
                 <NumericQuestion
                   prompt={<MathText>{'بحاسبة مبرمجة بالدرجة: $\\sin 37^{\\circ}$ المدوّر إلى الجزء من 100:'}</MathText>}
@@ -104,11 +109,6 @@ export default function Module02Maarif() {
           num: 2, title: 'قيس زاوية من نسبتها', subtitle: 'مثال 2', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="hasiba-zawiya" variant="rappel" compact />
-              <TextbookBox kind="example" text={KNOW3.example2.text} source={KNOW3.source} compact>
-                <Steps steps={KNOW3.example2.steps} />
-              </TextbookBox>
-              <p className="text-xs text-slate-500" data-correction><MathText>{KNOW3.correction}</MathText></p>
               <p className="text-sm font-semibold text-slate-800"><MathText>{'B زاوية حادة حيث $\\cos\\widehat{B} = 0{,}8$ .'}</MathText> <SourceTag source={PLATFORM_SOURCE} /></p>
               <TapQuestion
                 prompt="المدوّر إلى الوحدة لقيس الزاوية B (بالدرجة):"
@@ -119,6 +119,15 @@ export default function Module02Maarif() {
                 explain={<MathText>{`${key('ON 2nd cos⁻¹ 0,8 =')} يعطي $36{,}86989765$ ، إذن $\\widehat{B} \\approx 37^{\\circ}$ . ( $53^{\\circ}$ هي الزاوية التي جيبها $0{,}8$ : ${key('sin⁻¹')} بدل ${key('cos⁻¹')} ؛ و $1$ هو $\\cos 0{,}8^{\\circ} \\approx 0{,}9999$ : نسيان ${key('2nd')}.)`}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && (
+                <>
+                <KnowledgeBrick id="hasiba-zawiya" variant="rappel" compact />
+                <TextbookBox kind="example" text={KNOW3.example2.text} source={KNOW3.source} compact>
+                  <Steps steps={KNOW3.example2.steps} />
+                </TextbookBox>
+                <p className="text-xs text-slate-500" data-correction><MathText>{KNOW3.correction}</MathText></p>
+                </>
+              )}
             </div>
           ),
         },
@@ -126,8 +135,6 @@ export default function Module02Maarif() {
           num: 3, title: 'تدوير نتيجة الحاسبة', subtitle: 'الدقة المطلوبة', done: q3,
           content: (
             <div className="space-y-3">
-              <PredictRule id="tadwir-dalaqa"><TextbookBox kind="method" title={ROUNDING_RULE.title} lines={ROUNDING_RULE.lines} source={ROUNDING_RULE.source} compact /></PredictRule>
-              <KnowledgeBrick id="tadwir-dalaqa" lead="ما فعلته بخط القطع ✂ على الشاشة، بالكلمات:" />
               <p className="text-sm font-semibold text-slate-800"><MathText>{'شاشة المثال 2: $\\widehat{A} = 23{,}57817848^{\\circ}$ .'}</MathText></p>
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">دوّر هذه النتيجة:</p>}
@@ -137,10 +144,15 @@ export default function Module02Maarif() {
                   { id: 't', label: 'إلى الجزء من 10', options: ['$23{,}5$', '$23{,}6$', '$24$'].map(M), correct: 1, correction: <MathText>{'الرقم الموالي 7: نضيف 1، $\\widehat{A} \\approx 23{,}6^{\\circ}$'}</MathText> },
                   { id: 'h', label: 'إلى الجزء من 100', options: ['$23{,}58$', '$23{,}57$', '$23{,}6$'].map(M), correct: 0, correction: <MathText>{'الرقم الموالي 8: نضيف 1، $\\widehat{A} \\approx 23{,}58^{\\circ}$'}</MathText> },
                 ]}
-                requires={['tadwir-dalaqa']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: الشاشة نفسها تعطي ثلاث قيم مدوّرة حسب الدقة المطلوبة.' : 'راجع التصحيح تحت كل سطر: هل نظرت إلى الرقم الموالي؟'}</Feedback>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && (
+                <>
+                <PredictRule id="tadwir-dalaqa"><TextbookBox kind="method" title={ROUNDING_RULE.title} lines={ROUNDING_RULE.lines} source={ROUNDING_RULE.source} compact /></PredictRule>
+                <KnowledgeBrick id="tadwir-dalaqa" lead="ما فعلته بخط القطع ✂ على الشاشة، بالكلمات:" />
+                </>
+              )}
             </div>
           ),
         },

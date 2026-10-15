@@ -4,7 +4,6 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, TILING } from '../content/textbook';
 
@@ -26,6 +25,10 @@ import { ACTIVITY, TILING } from '../content/textbook';
  * pavages justes (logic/squareTiling.js `discoveryReady`), donc une aire
  * qui a deux carrés diviseurs > 1.
  *
+ * UNE PISTE (rétrofit 2026-10-15) : le labo en tête, SANS carte `brief` ni titre/lead de workspace ; la question 1 demande POURQUOI
+ * l'écriture k√8 ne suffit pas, sur le carré que l'élève a réellement fini (32 : k = 2, 288 : k = 6 — la dalle 8 est la même) ;
+ * la brique « kitaba-a-jidhr-b » vient APRÈS la réponse ; l'étape 2 (تمرين 1, question 1 du manuel) est l'application.
+ *
  * AUCUNE étape n'attend `onFinished` : ce n'est pas une activité du manuel
  * (MANIPULATION_CONTRACT §7bis). `onFinished` sert seulement à lister, au-
  * dessus de la question, ce que l'élève a trouvé lui-même.
@@ -39,9 +42,13 @@ const simplestTex = (n) => { const a = largestSquare(n); const b = n / (a * a); 
 
 export default function Module01Nashat() {
   const [found, setFound] = useState({});
+  const [last, setLast] = useState(null);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const { beginner, advanced } = TILING.numbers;
+  // La question porte sur le carré que l'élève a réellement fini (32 : k = 2 ; 288 : k = 6) — la dalle 8 est la même.
+  const n1 = last ?? (found[advanced] ? advanced : beginner);
+  const k1 = n1 === advanced ? 6 : 2;
 
   return (
     <ContentModule
@@ -52,24 +59,9 @@ export default function Module01Nashat() {
       moduleSubtitle="أكبر مربّع يقسم العدد"
       estimatedTime="12 دقيقة"
       objectives={['أيّ تبليط لمربّع مساحته 288 يعطي أبسط كتابة لضلعه؟', 'ماذا يحدث لمساحة البلاطة حين يزداد عدد البلاطات على الضلع؟', 'كيف أكتب جذرًا على أبسط شكل؟']}
-      brief={{
-        tag: 'طرائق — الكتاب ص 25',
-        headline: 'بلّط المربّع!',
-        emoji: '🧱',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-1">
-            <p><MathText>{'مربّع مساحته 288. نريد تبليطه ببلاطات مربّعة متساوية مساحة كل منها عدد طبيعي. كلّ تبليط يعطي كتابة لطول ضلعه $\\sqrt{288}$؛ أيّها أبسط؟'}</MathText></p>
-            <p className="text-sm text-slate-600"><MathText>{ACTIVITY.questions[0]}</MathText></p>
-          </div>
-        ),
-        footer: <div className="flex flex-wrap gap-2"><SourceTag source={ACTIVITY.source} /><SourceTag source={TILING.source} /></div>,
-      }}
       intro={
+        // Le labo EN TÊTE, sans carte ni titre de workspace (§4quater) : il porte son contexte et sa question.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="نفس الفكرة في المستويين: غيّر عدد البلاطات على الضلع وراقب ما يحدث لمساحة البلاطة، وما إذا كانت تُبلَّط من جديد."
           defaultLevel="beginner"
           levels={{
             beginner: () => (
@@ -79,7 +71,7 @@ export default function Module01Nashat() {
                 n={beginner}
                 mode="simplest"
                 lead="ابدأ ببلاطتين على الضلع، ثم جرّب أعدادًا أخرى: أيّ بلاطة لا يمكن تبليطها من جديد؟"
-                onFinished={() => setFound((f) => ({ ...f, [beginner]: true }))}
+                onFinished={() => { setFound((f) => ({ ...f, [beginner]: true })); setLast(beginner); }}
               />
             ),
             advanced: () => (
@@ -88,7 +80,7 @@ export default function Module01Nashat() {
                 n={advanced}
                 mode="simplest"
                 lead="بلّط المربّع بكل الطرق التي تقبلها المساحة 288، وقارن البلاطات."
-                onFinished={() => setFound((f) => ({ ...f, [advanced]: true }))}
+                onFinished={() => { setFound((f) => ({ ...f, [advanced]: true })); setLast(advanced); }}
               />
             ),
           }}
@@ -96,7 +88,7 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'أيّ تبليط يعطي أبسط كتابة؟', subtitle: 'بلّط المربّع في المستوى المتقدّم، ثم أجب', done: q1,
+          num: 1, title: 'لماذا لا تكفي هذه الكتابة؟', subtitle: 'أجب عمّا فعلته بالبلاطات', done: q1,
           content: (
             <div className="space-y-3">
               {/* CE QUE L'ÉLÈVE A TROUVÉ, et rien d'autre : la réponse de chaque
@@ -111,27 +103,28 @@ export default function Module01Nashat() {
                 ))}
               </ul>
               <TapQuestion
-                prompt={<span>مع <MathText>{'$k = 6$'}</MathText> مساحة كل بلاطة 8، فنكتب <MathText>{'$\\sqrt{288} = 6\\sqrt{8}$'}</MathText>. ماذا تقول عن هذه الكتابة مقارنةً بأصغر بلاطة وجدتها؟</span>}
+                prompt={<span>مع <MathText>{`$k = ${k1}$`}</MathText> مساحة كل بلاطة 8، فنكتب <MathText>{`$\\sqrt{${n1}} = ${k1}\\sqrt{8}$`}</MathText>. لماذا لا نتوقّف عند هذه الكتابة؟</span>}
                 options={[
-                  <MathText key="a">{'لا تساوي $\\sqrt{288}$'}</MathText>,
+                  <MathText key="a">{`لا تساوي $\\sqrt{${n1}}$`}</MathText>,
                   <MathText key="b">{'صحيحة، لكنّ البلاطة 8 نفسها تُبلَّط من جديد: $8 = 2^2 \\times 2$'}</MathText>,
-                  <MathText key="c">{'خاطئة لأن 6 ليس قاسمًا للعدد 288'}</MathText>,
+                  <MathText key="c">{`خاطئة لأن ${k1} ليس قاسمًا للعدد ${n1}`}</MathText>,
                   <MathText key="d">{'خاطئة لأن مساحة البلاطة 8 ليست عددًا طبيعيًا'}</MathText>,
                 ]}
                 correct={1}
                 cols={1}
                 requires={['jidhr-a2b']}
-                explain={<MathText>{'$\\sqrt{288} = 6\\sqrt{8}$ صحيحة، لكن $\\sqrt{8} = 2\\sqrt{2}$، إذن $\\sqrt{288} = 6 \\times 2\\sqrt{2} = 12\\sqrt{2}$: أكبر مربّع يقسم 288 هو $144 = 12^2$، والبلاطة 2 لا تُبلَّط أكثر.'}</MathText>}
+                explain={<MathText>{`$\\sqrt{${n1}} = ${k1}\\sqrt{8}$ صحيحة، لكن $\\sqrt{8} = 2\\sqrt{2}$، إذن $${simplestTex(n1)}$ ، والبلاطة 2 لا تُبلَّط أكثر (أكبر مربّع يقسم ${n1} هو $${largestSquare(n1) ** 2} = ${largestSquare(n1)}^2$).`}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
+              {/* Le nom de la طريقة APRÈS la réponse : il dit ce que la main vient de faire. */}
+              {q1 && <KnowledgeBrick id="kitaba-a-jidhr-b" lead="ما فعلته بالبلاطات، يقوله الكتاب في طريقة:" />}
             </div>
           ),
         },
         {
-          num: 2, title: 'تمرين 1 من الكتاب — السؤال 1', done: q2,
+          num: 2, title: 'هل تنجح الطريقة نفسها مع √8 و √18 و √50؟', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="kitaba-a-jidhr-b" lead="ما فعلته بالبلاطات، يقوله الكتاب في طريقة:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY.questions[0]}</MathText></p>}
                 rows={[

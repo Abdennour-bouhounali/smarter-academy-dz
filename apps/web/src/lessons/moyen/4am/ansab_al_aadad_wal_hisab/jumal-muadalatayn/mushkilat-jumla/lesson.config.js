@@ -7,6 +7,18 @@
  * puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit5/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le DERBY du labo `story-modeller` (thème `stadium`, niveau مبتدئ : 20 billets, 300 / 150 DA, 4800 DA, inconnues
+ *   déjà nommées) — la main traverse les cinq étapes sans la charge de nommer, et c'est le LABO qui REFUSE « 300x + 150y = 20 »
+ *   (un prix compté comme une personne) : la règle de traduction se voit avant de se lire. Rejetée : le musée du manuel comme
+ *   entrée unique (« quelles sont les inconnues ? » se répond de mémoire) ; il reste le niveau متقدم du MÊME labo, où l'élève nomme
+ *   lui-même les inconnues et remplit la colonne « حل » du tableau (`StepsTable`).
+ *   Ordre des idées (module 1, une étape par ligne du tableau, chacune un POURQUOI sur les nombres du niveau joué) : pourquoi ces
+ *   inconnues et pas les prix → pourquoi le labo refuse la mauvaise équation (brique « jumla-tarjama » APRÈS) → pourquoi x seul ne
+ *   répond pas → pourquoi vérifier les DEUX informations (brique « khutuwat-hall » et tableau APRÈS). Module 2 : les cinq étapes sur
+ *   le تحدّ, une solution qui ne répond pas à l'histoire (brique « tahaqquq-nas » APRÈS), أبو كامل (la lecture retenue APRÈS).
+ *   Modules 0, 3–7 : non touchés (pas de labo ; le module 3 garde sa carte qui dit ce qu'est le module).
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/mushkilat-jumla';
@@ -69,7 +81,7 @@ export const LESSON_CONFIG = {
       title: 'تذاكر الديربي: 20 تذكرة و 4800 DA',
       objective: 'حل مشكلة بجملة معادلتين: نختار المجهولين، نترجم كل معلومة بمعادلة، نحل الجملة، نتحقق في القصة نفسها، ثم نجيب',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'stadium' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'stadium' },
       learningPointIds: ['4am_mushkilat-jumla_P1', '4am_mushkilat-jumla_P2'],
       sourceElementIds: ['act-3'],
     },

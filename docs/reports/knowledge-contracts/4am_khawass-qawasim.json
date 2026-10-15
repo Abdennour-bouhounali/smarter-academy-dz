@@ -13,7 +13,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module02Khassiyatan.jsx",
-        "line": 25,
+        "line": 27,
         "step": 1,
         "variant": "new"
       }
@@ -24,7 +24,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module02Khassiyatan.jsx",
-        "line": 41,
+        "line": 44,
         "step": 3,
         "variant": "new"
       }
@@ -166,12 +166,24 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S2-Q1",
+      "questionId": "M01-S1-Q1",
       "module": 1,
-      "step": 2,
+      "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module01ThalathHalat.jsx",
-      "line": 73,
+      "line": 60,
+      "requires": null,
+      "prerequisiteStatus": {},
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q2",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module01ThalathHalat.jsx",
+      "line": 78,
       "requires": [
         "qasim-mushtarak-rappel"
       ],
@@ -187,13 +199,9 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module02Khassiyatan.jsx",
-      "line": 27,
-      "requires": [
-        "khassiya-1"
-      ],
-      "prerequisiteStatus": {
-        "khassiya-1": "established@M2"
-      },
+      "line": 25,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -219,13 +227,9 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module02Khassiyatan.jsx",
-      "line": 46,
-      "requires": [
-        "khassiya-2"
-      ],
-      "prerequisiteStatus": {
-        "khassiya-2": "established@M2"
-      },
+      "line": 41,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },

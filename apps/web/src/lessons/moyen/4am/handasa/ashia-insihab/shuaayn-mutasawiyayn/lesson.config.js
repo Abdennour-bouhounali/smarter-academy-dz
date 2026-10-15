@@ -19,6 +19,14 @@
  *                        d'une conserverie, la porte coulissante d'une armoire ;
  *   M8 إختبار أولي     — l'item 6 de أؤكّد تعلّماتي et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le foulard du tifo (labo `parallelogram-pin`, niveau مبتدئ, ouvert par défaut) — la main déplace le capo I sur le
+ *   foulard [AB] coupé en 8 parts et compare AI et IB : le milieu se VOIT (même منحى et اتجاه partout, seule la longueur change). Rejetée :
+ *   le نشاط 2 ب du livre tel quel (O milieu de [BC] et de [AD] sur une droite (d), « vérifie… » — des lettres sur une figure, répondues de
+ *   mémoire) ; il devient l'application des étapes 2–4 après les essais de l'élève. Ordre des idées : pourquoi AI = IB seulement au milieu
+ *   (ses propres positions) → نشاط 2 ب (O milieu commun ⇒ AB = CD) puis la brique APRÈS la réponse → AC et DB (opposés) → module 2 : question
+ *   avant brique (RT = TS, K milieu de [UV]), l'ordre des lettres, « أتوقّع القاعدة » avant mutawazi-shuaa, le cas aligné.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/shuaayn-mutasawiyayn';
@@ -87,7 +95,7 @@ export const LESSON_CONFIG = {
       title: 'وشاح المدرّج: أين يقف القائد؟',
       objective: 'تساوي شعاعين يترجم المنتصف ومتوازي الأضلاع: I منتصف [AB] يعني تساوي الشعاعين AI و IB، وتساوي الشعاعين CD و AB يعني أن ABDC متوازي أضلاع قطراه متناصفان',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'tifo' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'tifo' },
       learningPointIds: ['4am_shuaayn-mutasawiyayn_P1'],
       sourceElementIds: ['know-3'],
     },

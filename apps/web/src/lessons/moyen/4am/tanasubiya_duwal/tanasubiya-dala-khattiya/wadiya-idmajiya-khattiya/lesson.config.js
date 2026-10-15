@@ -7,6 +7,10 @@
  * (p. 75) ne font plus partie de la synthèse (décision du propriétaire) ; anciens modules
  * (moduleLayoutMigrations : v2 {1→7, 2→8, 3→9, 4→10}, puis le retrait de ces deux modules : 2→0, 3→0, 4→8).
  *
+ * RETROFIT « méthode » (2026-10-15) — synthèse : format fixe conservé. Seul le module 7 (le seul avec un labo, origin-line) change :
+ * plus de titre d'atelier, et l'encadré « تحليل الوضعية » de l'étape 2 vient APRÈS la réponse. Son brief reste l'ÉNONCÉ de
+ * la situation finale (objet de l'analyse, pas une entrée). Modules 0–6 et 8 inchangés.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/wadiya-idmajiya-khattiya';

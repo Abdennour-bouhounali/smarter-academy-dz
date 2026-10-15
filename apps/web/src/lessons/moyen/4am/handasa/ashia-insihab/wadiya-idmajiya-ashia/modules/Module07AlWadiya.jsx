@@ -23,6 +23,8 @@ import { BASE } from '../../_unit/unitMeta';
  *   مبتدئ  une passerelle sur la gorge du Rhummel (Constantine), l'optimum hors du milieu, un fantôme de NM attaché à B.
  * Ouvert sur متقدم (ouvert sur مبتدئ par défaut depuis 2026-10-09) : c'est la وضعية du module. Les essais de l'élève (`onTrial`) sont listés
  * au-dessus des questions d'exécution (`[data-activity-evidence]`). Aucune étape n'attend le lab (`onFinished`).
+ * RÉTROFIT 2026-10-15 (§4quater, synthèse : édition minimale) : plus de carte au-dessus du labo ni de titre / `lead` de workspace ;
+ * l'énoncé et son modèle (`[data-situation]`) sont lus à l'étape 1 ; les briques restaient déjà après leurs réponses.
  * LP : P2 (lire, fixe / variable, modéliser), P3 (B′, le متوازي أضلاع, M et N), P1 (tout mobiliser, le minimum chiffré).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -70,30 +72,15 @@ export default function Module07AlWadiya() {
 
   return (
     <ContentModule objectives={["أين نضع الممر ليكون المسلك أقصر ما يمكن؟", "ما الذي يتغيّر في المسلك وما الذي يبقى ثابتًا؟", "كيف أستبدل المسلك بمسلك له الطول نفسه؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها" moduleSubtitle="ممر الراجلين أمام المدرسة: أين نضعه؟" estimatedTime="22 دقيقة"
-      brief={{
-        tag: 'أدمج تعلّماتي — الكتاب ص 136', headline: 'ممر للراجلين أمام المدرسة: أين نضعه؟', emoji: '🚸',
-        title: 'وضعية واحدة وأدوات الوحدة كلها: الانسحاب، تساوي شعاعين، متوازي الأضلاع، وأقصر مسافة', tone: 'amber',
-        body: (
-          <div className="space-y-2" data-situation="mamar-rajilin">
-            <p className="font-bold">{SITUATION.title}</p>
-            <p><MathText>{SITUATION.text}</MathText></p>
-            <GeoFigure {...MODEL} />
-            <p className="text-xs text-slate-500" data-example-note><MathText>{REMARKS.example}</MathText> <SourceTag source={SITUATION.example} /></p>
-          </div>
-        ),
-        footer: <SourceTag source={SITUATION.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="المستوى المتقدّم هو وضعية الكتاب: حرّك الممر وقارن أطوال المسلك، ثم انقل المدرسة B بشعاع الممر. في المستوى المبتدئ جسر للراجلين فوق وادي الرمال بقسنطينة."
           levels={{
             beginner: () => (
-              <Manipulation type="bridge-path" level="beginner" {...LAB.beginner} title="جسر للراجلين فوق وادي الرمال بقسنطينة (مثال من المنصّة)" onTrial={keep} />
+              <Manipulation type="bridge-path" level="beginner" {...LAB.beginner} lead="جسر للراجلين فوق وادي الرمال بقسنطينة." onTrial={keep} />
             ),
             advanced: () => (
-              <Manipulation type="bridge-path" level="advanced" {...LAB.advanced} title="وضعية الكتاب: ممر الراجلين بين الحي والمدرسة" onTrial={keep} />
+              <Manipulation type="bridge-path" level="advanced" {...LAB.advanced} lead="وضعية الكتاب: ممر للراجلين بين الحي والمدرسة." onTrial={keep} />
             ),
           }}
         />
@@ -102,6 +89,13 @@ export default function Module07AlWadiya() {
         { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1 من الكتاب: ما الثابت وما المتغيّر؟', done: !!q[1],
           content: (
             <div className="space-y-3">
+              {/* La وضعية (ex-carte du haut) : le lab ouvre le module, l'énoncé et son modèle sont lus ici, à l'étape « قراءة الوضعية ». */}
+              <div className="space-y-2" data-situation="mamar-rajilin">
+                <p className="font-bold">{SITUATION.title}</p>
+                <p><MathText>{SITUATION.text}</MathText></p>
+                <GeoFigure {...MODEL} />
+                <p className="text-xs text-slate-500" data-example-note><MathText>{REMARKS.example}</MathText> <SourceTag source={SITUATION.example} /></p>
+              </div>
               <Phase i={0} />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">عندما نحرّك الممر على الطريق (المختبر أعلاه)، احكم على كل عنصر.</p>}

@@ -3,12 +3,11 @@ import { parseDec } from '@smarter-academy/core';
 import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
-import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
+import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, ACT_ROW_OPTIONS, ACTIVITY2 } from '../content/textbook';
 import ValueTable from '../components/ValueTable';
-import SoukVignette from '../components/SoukVignette';
 
 /**
  * Module 1 — نشاط 1 (p. 66) : « تعيين دالة خطية », la remise de l'Aïd CORRIGÉE (2 % → 20 %, une ligne
@@ -22,6 +21,8 @@ import SoukVignette from '../components/SoukVignette';
  *           qu'il a atteintes (`onReverse`) sont listés au-dessus des questions (`[data-activity-evidence]`).
  * FORMALIZE  la brique dala-nashat (« نقول أنّنا عرّفنا دالة … دالة خطية معاملها a ») nomme ce que la
  *           machine a montré.
+ * Rétrofit 2026-10-15 (§4quater) : le labo OUVRE le module (plus de carte du livre ni de titre / lead de workspace ; le contexte du livre
+ * est le `lead` du labo) ; la brique dala-nashat et la phrase qui nomme arrivent APRÈS la réponse.
  * AUCUNE étape n'attend `onFinished`. LP : P1 (س 3, la brique), P2 (f(120)), P3 (س 1 : le coefficient,
  * f(x) = 6 et 1,4).
  */
@@ -84,27 +85,9 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 1 — تخفيضات العيد"
       moduleSubtitle="آلة تخفيض بقاعدة مخفية"
       estimatedTime="14 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 66',
-        headline: 'تخفيضات عيد الفطر في السوق!',
-        emoji: '🏮',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <SoukVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800"><MathText>{ACTIVITY.text}</MathText></p>
-            <p className="text-sm text-slate-600">قبل أسئلة النشاط: آلة التخفيض تُخفي قاعدتها. أدخل فيها الأسعار التي تختارها، واضبط آلتك الشاهدة حتى تطابقها.</p>
-            <p className="text-xs text-slate-500" data-correction-note><MathText>{ACTIVITY.correctionNote}</MathText></p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين آلة بقاعدة مخفية: تُدخل فيها أعدادًا تختارها، وتقرأ ما يخرج، وتحاول أن تضبط آلتَك الشاهدة حتى تطابق الآلة — أو تُثبت أنّ ذلك مستحيل."
           levels={{
             beginner: () => (
               <Manipulation
@@ -113,7 +96,6 @@ export default function Module01Nashat() {
                 rules={ACTIVITY.rules}
                 targets={ACTIVITY.targets}
                 theme="souk"
-                title="نشاط 1: آلة تخفيضات العيد (20%)"
                 lead="أدخل أسعار الكتاب (50، 100، 150، 200) وأسعارًا أخرى، ثم ابحث عن السعر الذي يصبح 6DA وعن الذي يصبح 1,4DA."
                 onTrial={onTrial}
                 onReverse={onReverse}
@@ -125,8 +107,7 @@ export default function Module01Nashat() {
                 level="advanced"
                 rules={ACTIVITY2.rules}
                 theme="souk"
-                title="نشاط 2: ثلاث آلات بقواعد مخفية"
-                lead="لكل آلة: هل يوجد عدد a تطابق به آلتك الشاهدة الآلةَ؟ أثبت ذلك بجدولك."
+                lead="ثلاث آلات بقواعد مخفية: لكل آلة، هل يوجد عدد a تطابق به آلتك الشاهدة الآلةَ؟ أثبت ذلك بجدولك."
               />
             ),
           }}
@@ -134,12 +115,13 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'جدول الأسعار', subtitle: 'السؤال 1', done: q1,
+          num: 1, title: 'ماذا فعلت الآلة بالأسعار التي أدخلتها؟', subtitle: 'السؤال 1', done: q1,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[0]}</MathText></p>
               <ValueTable rows={[{ label: ACTIVITY.rows[0], cells: ACTIVITY.table.before }, { label: ACTIVITY.rows[1], cells: ['…', '…', '…', '…'] }]} />
               {evidence}
+              <p className="text-xs text-slate-500" data-correction-note><MathText>{ACTIVITY.correctionNote}</MathText> <SourceTag source={ACTIVITY.source} /></p>
               <TapQuestion
                 prompt="السطر الثاني من الجدول (الأسعار بعد التخفيض) هو:"
                 options={ACT_ROW_OPTIONS.map((o) => <MathText key={o}>{o}</MathText>)}
@@ -164,7 +146,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'السعر بعد التخفيض وقبله', subtitle: 'السؤال 2', done: q2,
+          num: 2, title: 'ما السعر بعد التخفيض، وما السعر قبله؟', subtitle: 'السؤال 2', done: q2,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[1]}</MathText></p>
@@ -208,7 +190,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'عبارة f(x) بدلالة x', subtitle: 'السؤال 3', done: q3,
+          num: 3, title: 'كيف نكتب ما تفعله الآلة بكل سعر؟', subtitle: 'السؤال 3', done: q3,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[2]}</MathText></p>

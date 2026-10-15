@@ -3,11 +3,10 @@ import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { parseDec } from '@smarter-academy/core';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACT5_ANSWERS, LAB } from '../content/textbook';
-import SoldesVignette from '../components/SoldesVignette';
 
 /**
  * Module 1 — نشاط 5 (p. 67) « استعمال النسبة المئوية », ouvert sur L'ÉTIQUETTE QU'ON ÉTIRE
@@ -25,6 +24,12 @@ import SoldesVignette from '../components/SoldesVignette';
  * PROPRES essais de l'élève dans la vitrine (`[data-activity-evidence]`) ; TOUCH THE MATH → les
  * briques nisba-akhdh, takhfid-darb, ziyada-darb, dala-murfaqa ; TRANSFER → −20 % puis +20 %.
  * AUCUNE étape n'attend `onFinished`. LP : P1.
+ *
+ * RETROFIT 2026-10-15 (méthode « lab d'abord ») : plus de `brief` ni de titre/lead d'atelier — l'étiquette
+ * est LA première chose ; les étapes interrogent ce que l'élève a fait (le multiplicateur de SA barre
+ * « après », puis y = 1,05x), les questions 1 et 2 du manuel (le pourcentage de filles, la baisse de
+ * consommation, posées de mémoire) deviennent des APPLICATIONS qui suivent ; la brique nisba-akhdh vient
+ * après sa question ; la chaîne −20 % puis +20 % reste en dernier.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -86,26 +91,9 @@ export default function Module01NashatNisab() {
       moduleTitle="نشاط 5 — النسب المئوية"
       moduleSubtitle="نمدّد بطاقة السعر"
       estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 67',
-        headline: 'تخفيضات وزيادات في المركز التجاري!',
-        emoji: '🏷️',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <SoldesVignette />,
-        body: (
-          <div className="space-y-2">
-            <p>سعر حذائك الرياضي المفضّل على البطاقة. التاجر يرفع السعر أو يخفّضه «بنسبة مئوية»: هل يضيف عددًا إلى السعر، أم يفعل شيئًا آخر؟</p>
-            <p className="text-sm text-slate-600"><MathText>{'في الأسفل: مدّد بطاقة السعر بزيادة 5% على 1200DA (السؤال 3 من النشاط)، وجرّب أيضًا «إضافة 5» بدل النسبة، وطبّق النسبة نفسها على قطعة أخرى.'}</MathText></p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="الفكرة نفسها في المستويين: غيّر مقدارًا بنسبة مئوية ولاحظ ما يحدث للشريط الملوّن."
           levels={{
             beginner: () => (
               <Manipulation
@@ -132,7 +120,47 @@ export default function Module01NashatNisab() {
       }
       steps={[
         {
-          num: 1, title: 'النسبة المئوية للبنات', subtitle: 'السؤال 1', done: q1,
+          num: 1, title: 'بماذا ضُرب السعر؟', subtitle: 'عن بطاقتك — المستوى المبتدئ', done: q3,
+          content: (
+            <div className="space-y-3">
+              {evidencePrice}
+              <NumericQuestion
+                prompt="في بطاقتك، شريط «بعد» لزيادة 5% هو شريط «قبل» مضروبًا في العدد:"
+                expected={1.05}
+                display="1,05"
+                parse={parseDec}
+                explainFor={(n) => (n === 5
+                  ? <MathText>{'«أضف 5» هو ما رفضته الواجهة: $1200 + 5 = 1205$ ليس 5% من 1200. الزيادة 5% هي $1200 \\times \\dfrac{5}{100} = 60$ ، والسعر $1260 = 1200 \\times 1{,}05$ .'}</MathText>
+                  : n === 0.05
+                    ? <MathText>{'$0{,}05$ هو مقدار الزيادة وحده ( $1200 \\times 0{,}05 = 60$ ). الشريط «بعد» يضمّ السعر الأول والزيادة: $1 + 0{,}05 = 1{,}05$ .'}</MathText>
+                    : <MathText>{ACT5_ANSWERS.price}</MathText>)}
+                explain={<MathText>{ACT5_ANSWERS.price}</MathText>}
+                onAnswered={() => setQ3(true)}
+              />
+              {q3 && <KnowledgeBrick id="ziyada-darb" lead="ما فعله الشريط الملوّن: لم يُضف 5، بل ضرب في 1,05:" />}
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'السعر y بدلالة السعر x', subtitle: 'السؤال 3 ب', done: q4,
+          content: (
+            <div className="space-y-3">
+              {evidenceTable}
+              <TapQuestion
+                prompt={<MathText>{'ب) السعر $y$ للمنتوج بعد الزيادة بدلالة السعر $x$ قبل الزيادة:'}</MathText>}
+                options={[M('$y = 1{,}05x$'), M('$y = x + 5$'), M('$y = x + 60$'), M('$y = 0{,}05x$')]}
+                correct={0}
+                cols={2}
+                requires={['ziyada-darb']}
+                explain={<MathText>{`السعر بعد الزيادة هو السعر قبلها مضروبًا في $1 + \\dfrac{5}{100} = 1{,}05$ : $y = 1{,}05x$ . أمّا $y = x + 60$ فلا تصحّ إلا لسعر 1200DA (لقميص بـ 3000DA تكون الزيادة 150DA)، و $y = 0{,}05x$ هي مقدار الزيادة وحده.`}</MathText>}
+                onAnswered={() => setQ4(true)}
+              />
+              {q4 && <KnowledgeBrick id="dala-murfaqa" lead="في جدولك حاصل القسمة نفسه لكل القطع:" />}
+            </div>
+          ),
+        },
+        {
+          num: 3, title: 'النسبة المئوية للبنات', subtitle: 'نطبّق: السؤال 1 من الكتاب', done: q1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" text={ACTIVITY.questions[0]} source={ACTIVITY.source} compact>
@@ -170,7 +198,7 @@ export default function Module01NashatNisab() {
           ),
         },
         {
-          num: 2, title: 'انخفاض الاستهلاك', subtitle: 'السؤال 2', done: q2,
+          num: 4, title: 'انخفاض الاستهلاك', subtitle: 'نطبّق: السؤال 2 من الكتاب', done: q2,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" text={ACTIVITY.questions[1]} source={ACTIVITY.source} compact />
@@ -184,45 +212,6 @@ export default function Module01NashatNisab() {
                 onAnswered={() => setQ2(true)}
               />
               {q2 && <KnowledgeBrick id="takhfid-darb" lead="الاستهلاك الجديد هو القديم مضروبًا في عدد أصغر من 1:" />}
-            </div>
-          ),
-        },
-        {
-          num: 3, title: 'السعر بعد الزيادة', subtitle: 'السؤال 3 أ — مدّد بطاقة السعر في المستوى المبتدئ، ثم أجب', done: q3,
-          content: (
-            <div className="space-y-3">
-              <TextbookBox kind="exercise" text={ACTIVITY.questions[2]} source={ACTIVITY.source} compact />
-              {evidencePrice}
-              <NumericQuestion
-                prompt="أ) سعر المنتوج بعد زيادة 5% (بالدينار):"
-                expected={1260}
-                parse={parseDec}
-                requires={['nisba-akhdh']}
-                explainFor={(n) => (n === 1205
-                  ? <MathText>{'أضفت 5 دنانير: $1200 + 5 = 1205$ . الزيادة 5% من 1200، أي $1200 \\times \\dfrac{5}{100} = 60$ ، والسعر $1260$ .'}</MathText>
-                  : <MathText>{ACT5_ANSWERS.price}</MathText>)}
-                explain={<MathText>{ACT5_ANSWERS.price}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
-              {q3 && <KnowledgeBrick id="ziyada-darb" lead="ما فعله الشريط الملوّن: لم يُضف 5، بل ضرب في 1,05:" />}
-            </div>
-          ),
-        },
-        {
-          num: 4, title: 'السعر y بدلالة السعر x', subtitle: 'السؤال 3 ب', done: q4,
-          content: (
-            <div className="space-y-3">
-              {evidenceTable}
-              <TapQuestion
-                prompt={<MathText>{'ب) السعر $y$ للمنتوج بعد الزيادة بدلالة السعر $x$ قبل الزيادة:'}</MathText>}
-                options={[M('$y = 1{,}05x$'), M('$y = x + 5$'), M('$y = x + 60$'), M('$y = 0{,}05x$')]}
-                correct={0}
-                cols={2}
-                requires={['ziyada-darb']}
-                explain={<MathText>{`السعر بعد الزيادة هو السعر قبلها مضروبًا في $1 + \\dfrac{5}{100} = 1{,}05$ : $y = 1{,}05x$ . أمّا $y = x + 60$ فلا تصحّ إلا لسعر 1200DA (لقميص بـ 3000DA تكون الزيادة 150DA)، و $y = 0{,}05x$ هي مقدار الزيادة وحده.`}</MathText>}
-                onAnswered={() => setQ4(true)}
-              />
-              {q4 && <KnowledgeBrick id="dala-murfaqa" lead="في جدولك حاصل القسمة نفسه لكل القطع:" />}
             </div>
           ),
         },

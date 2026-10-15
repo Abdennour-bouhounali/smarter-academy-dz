@@ -4,6 +4,16 @@
  * n'a ni معارف, ni طرائق, ni exercices : la formalisation, les exercices et la « أستعدّ » sont des ajouts
  * DÉCLARÉS de la plateforme (`addition(...)`), puis trois « مسائل » de la plateforme (modules 4–6). Source de vérité : docs/sources/4am/unit7/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue (module 1) : deux faisceaux laser dans le lab line-crossing (2x − y = 1 et x + y = 5) — l'élève promène P,
+ *   une lampe par équation : il lui faut UN point sur les deux droites, et il le trouve de la main. La caisse de la classe
+ *   (43 pièces, 5000DA) reste le niveau متقدم du MÊME lab.
+ *   Rejetée : le texte de la caisse posé en carte au-dessus du lab puis « traduis en système » avant tout geste (une traduction
+ *   répondue de mémoire) ; elle devient l'APPLICATION de l'étape 3, après la découverte.
+ *   Ordre des idées : une seule lampe (POURQUOI) → un point qui allume les deux, ses coordonnées, la brique APRÈS la réponse →
+ *   le livre : traduire la caisse en système → f et g sont affines → quelle droite pour quelle fonction → le sens dans la caisse.
+ *   Aucune destination du manuel n'a bougé (act-5 reste au module 1). Le module 2 (معارف) s'ouvre sur sa première question.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/tafsir-bayani-jumla';
@@ -82,7 +92,7 @@ export const LESSON_CONFIG = {
       title: 'شعاعا ليزر: جملة بأعداد صغيرة',
       objective: 'كل معادلة من الجملة تُكتب $y = ax + b$ ويمثّلها مستقيم، وحلّ الجملة إحداثيتا نقطة تقاطع المستقيمين',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'laser' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'laser' },
       learningPointIds: ['4am_tafsir-bayani-jumla_P1', '4am_tafsir-bayani-jumla_P2'],
       sourceElementIds: ['act-5'],
     },

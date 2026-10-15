@@ -17,6 +17,16 @@
  *                        la مئذنة du quartier, le pont sur l'oued — content/problems.js ;
  *   M7 إختبار أولي     — six épreuves de la plateforme ; P1, P2, P3 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la CALCULATRICE DU DRONE (trig-calculator, مبتدئ 30°/45°/60°) — la main appuie sur les touches et le dessin du
+ *   drone CONTREDIT le premier résultat (mode R) : c'est là que « programmer en degrés » devient nécessaire (ajout déclaré de la
+ *   plateforme, `platform_designed_entry`). Rejetée : le نشاط 4 comme entrée seule (un tableau de sept angles à remplir, puis
+ *   trois angles : des touches sans enjeu) ; il reste le niveau متقدم du même labo, et ses réponses (tableau, angles) ne
+ *   s'affichent qu'APRÈS la réponse. Ordre des idées : le labo seul (plus de carte `brief`, ni titre/lead du workspace ni du labo) →
+ *   le tableau (cos 75°, la monotonie ; brique hasiba-nisba après) → l'angle depuis un rapport (brique hasiba-zawiya après) ;
+ *   معارف : chaque étape pose d'abord SA question (la calculatrice en R, B depuis cos 0,8, l'arrondi de A) et seulement après
+ *   l'encadré / l'exemple du manuel et la brique (barmaja-daraja, hasiba-zawiya, tadwir-dalaqa). Aucune destination du manuel n'a bougé.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/hasiba-muthallathiya';
@@ -90,7 +100,7 @@ export const LESSON_CONFIG = {
       title: 'حاسبة الدرون: 30° و 45° و 60°',
       objective: 'الحاسبة المبرمجة بالدرجة تعطي قيمة مقربة لنسبة زاوية معلومة، واللمسات العكسية تعطي قيس الزاوية من نسبتها، ثم ندوّر النتيجة حسب الدقة المطلوبة',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'drone' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'drone' },
       learningPointIds: ['4am_hasiba-muthallathiya_P1', '4am_hasiba-muthallathiya_P3'],
       sourceElementIds: ['act-4'],
     },

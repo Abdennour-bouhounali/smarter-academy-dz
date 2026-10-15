@@ -142,6 +142,9 @@ for (const vp of [{ width: 1280, height: 800 }, { width: 1366, height: 768 }, { 
   await page.goto(`${BASE}${LESSON}/nashat`, { waitUntil: 'networkidle' });
   const lab = page.locator('[data-manipulation-level-panel=beginner] [data-rank-exchange]');
   await lab.waitFor();
+  // guide §4quater (2026-10-14) : une seule piste — rien au-dessus du labo, la brique arrive APRÈS la réponse.
+  check(await page.locator('[data-module-brief]').count() === 0, 'module 1 : aucune carte au-dessus du labo');
+  check(await page.locator('[data-knowledge-brick="qima-mawdi"], [data-brick-id="qima-mawdi"]').count() === 0, 'module 1 : « قيمة الرقم حسب موقعه » cachée avant la réponse');
   check((await lab.getAttribute('data-world')) === 'pencils', 'مبتدئ : monde « pencils »');
   check(((await lab.locator('[data-rx-written]').first().textContent()) || '').trim() === '', 'مبتدئ : 1 · 13 · 24 · 37 ne s\'écrit pas encore');
   const predict = lab.locator('[data-rx-predict="2577"][data-state=idle]').first();
@@ -160,13 +163,21 @@ for (const vp of [{ width: 1280, height: 800 }, { width: 1366, height: 768 }, { 
   const adv = page.locator('[data-manipulation-level-panel=advanced] [data-rank-exchange]');
   await adv.waitFor();
   check((await adv.getAttribute('data-world')) === 'tokens', 'متقدم : monde « tokens »');
+  check(await adv.locator('[data-rx-step=dictation]').count() === 0, 'متقدم : la dictée est passée au module 2');
   const written = ((await adv.locator('[data-rx-written]').first().textContent()) || '').replace(/\s/g, '');
   check(written === '999', `متقدم : la tâche « next » part de 999 (${written})`);
   await page.screenshot({ path: `${OUT}/lab-advanced-999.png` });
 
+  await page.goto(`${BASE}${LESSON}/maarif`, { waitUntil: 'networkidle' });
+  const dict = page.locator('[data-rank-exchange][data-task=dictation]');
+  await dict.waitFor();
+  check(await page.locator('[data-module-brief]').count() === 0, 'module 2 : il s\'ouvre sur la dictée, pas sur une carte de définitions');
+  await page.screenshot({ path: `${OUT}/maarif-dictation-1280.png` });
+
   await page.goto(`${BASE}${LESSON}/tariqa`, { waitUntil: 'networkidle' });
   const money = page.locator('[data-rank-exchange][data-world=money]');
   check(await money.count() === 1, 'module 3 : le monde « money » (1345 DA) est monté seul');
+  check(await page.locator('[data-module-brief]').count() === 0, 'module 3 : le labo est en haut, sans carte');
   await page.screenshot({ path: `${OUT}/lab-money-1280.png` });
   await ctx.close();
 }

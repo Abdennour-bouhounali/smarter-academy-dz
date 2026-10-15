@@ -3,13 +3,16 @@ import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from 
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
+import { Manipulation } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { KNOWLEDGE, RANKS, DECOMPOSITION } from '../content/textbook';
+import { KNOWLEDGE, RANKS, DECOMPOSITION, LAB } from '../content/textbook';
 
 /**
- * Module 2 — معارف 1 (p. 11) et 4 (a) (p. 13) : lire un grand nombre par classes de trois (brique gardée par « أتوقّع
- * القاعدة »), le tableau des rangs de 6 392,459 (les rangs décimaux comme NOMS de rangs), puis le مفكوك d'un ENTIER
+ * Module 2 — معارف 1 (p. 11) et 4 (a) (p. 13), UNE SEULE PISTE (LESSON_DEVELOPMENT_GUIDE §4quater) : l'élève AGIT d'abord —
+ * il construit au labo les nombres dictés en lettres (7065, 4 908 732 : `rank-exchange` tâche `dictation`, posé seul) —,
+ * répond ensuite sur ce qu'il a construit, et le texte du manuel NOMME après coup (jamais une carte de définitions en
+ * tête). Puis le tableau des rangs de 6 392,459 (les rangs décimaux comme NOMS de rangs) et le مفكوك d'un ENTIER
  * (formalisation déclarée ; le مفكوك décimal est la leçon suivante). LP : P1, P2, P3.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -56,18 +59,14 @@ export default function Module02Maarif() {
       moduleTitle="معارف — كتابة الأعداد الطبيعية"
       moduleSubtitle="فئات · مراتب · مفكوك"
       estimatedTime="12 دقيقة"
-      brief={{
-        tag: 'أحوصل تعلّماتي — الكتاب ص 11 و 13', title: 'من الورشة إلى الكتاب', tone: 'violet',
-        body: <p>{KNOWLEDGE.digits}</p>,
-      }}
+      intro={<Manipulation type="rank-exchange" world="tokens" tasks={['dictation']} dictation={LAB.dictation} levels={false} />}
       steps={[
         {
-          num: 1, title: 'القراءة فئةً فئةً', subtitle: 'معارف 1', done: q1,
+          num: 1, title: 'كيف نقرأ عددًا كبيرًا دون أن نخطئ؟', subtitle: 'بعد الإملاء', done: q1,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="example" lines={[KNOWLEDGE.example2017, KNOWLEDGE.example5]} source={KNOWLEDGE.source} compact />
               <TapQuestion
-                prompt={<span>كيف نجزّئ <bdi dir="ltr">45671</bdi> لنقرأه بسهولة؟</span>}
+                prompt={<span>على اللوحة بنيتَ العدد المُملى فئةً بعد فئة. والآن عدد جديد: كيف نجزّئ <bdi dir="ltr">45671</bdi> لنقرأه دون خطأ؟</span>}
                 options={[M('$45\\,671$ : من اليمين، ثلاثة أرقام ثلاثة أرقام'), M('$456\\,71$ : من اليسار، ثلاثة أرقام أوّلًا'), M('$4\\,5\\,6\\,7\\,1$ : رقمًا رقمًا')]}
                 correct={0} cols={1} requires={['kitabat-adad-ibtidai']}
                 explain={<MathText>{`$45\\,671$ : ${KNOWLEDGE.readingExamples[0].words}.`}</MathText>}
@@ -78,12 +77,10 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 2, title: 'جدول المراتب', subtitle: 'معارف 4', done: q2,
+          num: 2, title: 'ما رقم كل مرتبة؟', subtitle: 'جدول المراتب', done: q2,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="property" text={RANKS.box} source={RANKS.source} compact>
-                <RanksTable />
-              </TextbookBox>
+              <RanksTable />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{`في العدد $${RANKS.number}$ :`}</MathText></p>}
                 rows={[
@@ -95,12 +92,18 @@ export default function Module02Maarif() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'تمامًا.' : 'العشرات قبل الفاصلة، والأعشار بعدها.'}</Feedback>}
                 onAnswered={() => setQ2(true)}
               />
-              <KnowledgeBrick id="jadwal-maratib" />
+              {q2 && (
+                <>
+                  <TextbookBox kind="property" text={RANKS.box} source={RANKS.source} compact />
+                  <TextbookBox kind="example" lines={[KNOWLEDGE.digits, KNOWLEDGE.example2017, KNOWLEDGE.example5]} source={KNOWLEDGE.source} compact />
+                  <KnowledgeBrick id="jadwal-maratib" />
+                </>
+              )}
             </div>
           ),
         },
         {
-          num: 3, title: 'المفكوك النموذجي', subtitle: 'قيمة كل رقم', done: q3,
+          num: 3, title: 'أيّ مجموع يُظهر قيمة كل رقم؟', subtitle: 'المفكوك', done: q3,
           content: (
             <div className="space-y-3">
               <TapQuestion

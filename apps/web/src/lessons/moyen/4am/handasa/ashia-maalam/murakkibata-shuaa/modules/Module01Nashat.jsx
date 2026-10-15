@@ -9,7 +9,6 @@ import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, DESCARTES, LAB } from '../content/textbook';
 import { FIG_ACT1, FIG_ACT1_D } from '../content/figures';
-import DeliveryVignette from '../components/DeliveryVignette';
 
 /**
  * Module 1 — نشاط 1 (p. 140), ouvert sur L'APPLI DE LIVRAISON (component-steps), avec l'accroche de Descartes (la
@@ -66,29 +65,9 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 1 — تطبيق التوصيل في الحيّ"
       moduleSubtitle="كيف نكتب رحلة بعددين؟"
       objectives={['كيف نكتب رحلة بعددين؟', 'ماذا يمثّل كل عدد من العددين؟', 'ما مركبتا شعاع ينطلق من المبدأ O؟']} estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 140',
-        headline: 'طلبك في الطريق!',
-        emoji: '🛵',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <DeliveryVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="rounded-lg bg-amber-50 px-2 py-1 text-sm text-amber-900">
-              <MathText>{DESCARTES.text}</MathText> <SourceTag source={DESCARTES.source} />
-            </p>
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={ACTIVITY_LINES.source} /></p>
-            <p className="text-sm text-slate-600">في المستوى «متقدم» (نشاط 1): شكل الكتاب صار حيًّا — النقاط A و B و C والمبدأ O. في المستوى «مبتدئ»: حيّ من الجزائر العاصمة وخمسة طلبات، والعدّادان يكتبان رحلتك أمامك.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين: الدراجة تسير في الشوارع، أفقيا أو عموديا، خطوة خطوة؛ والطلب لا يصل إلا إذا قادته الرحلة إلى باب الزبون."
           levels={{
             beginner: () => (
               <Manipulation
@@ -96,7 +75,6 @@ export default function Module01Nashat() {
                 level="beginner"
                 {...LAB.beginner.numbers}
                 theme="delivery"
-                title="تطبيق التوصيل: خمسة طلبات في الحيّ"
                 lead="المستودع في O، والشارعان الكبيران محورا المعلم."
               />
             ),
@@ -106,8 +84,7 @@ export default function Module01Nashat() {
                 level="advanced"
                 {...LAB.advanced.numbers}
                 theme="delivery"
-                title="نشاط 1: من A إلى B ثم إلى D ومن المبدأ O"
-                lead={<MathText>{'شكل الكتاب صار حيًّا: $A(-2\\,;\\,4)$ و $C(6\\,;\\,4)$ و $B(6\\,;\\,2)$ ، والنقطة D معطاة بإحداثيتيها فقط.'}</MathText>}
+                lead="شكل الكتاب صار حيًّا: النقاط A و B و C، والنقطة D معطاة بإحداثيتيها فقط."
                 onTrial={onTrial}
               />
             ),
@@ -132,6 +109,11 @@ export default function Module01Nashat() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}><MathText>{allRight ? `أحسنت: ${ACTIVITY_LINES.coords}` : 'راجع التصحيح تحت كل سطر.'}</MathText></Feedback>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && (
+                <p className="rounded-lg bg-amber-50 px-2 py-1 text-sm text-amber-900" data-descartes>
+                  <MathText>{DESCARTES.text}</MathText> <SourceTag source={DESCARTES.source} />
+                </p>
+              )}
             </div>
           ),
         },
@@ -162,15 +144,14 @@ export default function Module01Nashat() {
             <div className="space-y-3">
               {evidence}
               <TapQuestion
-                prompt={<MathText>{'من A إلى C ثم من C إلى B: كيف تكتب الرحلة من A إلى B بعددين، كما كتبتها في تطبيق التوصيل؟'}</MathText>}
+                prompt={<MathText>{'في رحلتك من A إلى B كتبت عددين. لماذا لا يكونان $6$ و $2$ ، إحداثيتي B؟'}</MathText>}
                 options={[
-                  col(8, -2),
-                  col(8, 2), // le signe de la descente oublié (MISC-MAALAM-ISHARA)
-                  col(-2, 8), // l'ordre échangé (MISC-MAALAM-TABDIL-X-Y)
-                  col(6, 2), // les coordonnées de B (MISC-MAALAM-IHDATHIYAT-MURAKKIBAT)
-                ].map(M)}
+                  'لأن الرحلة تبدأ من A لا من المبدأ O: العددان يقيسان الانتقال لا موضع النقطة',
+                  'لأن B بعيدة جدا عن A',
+                  'لأن إحداثيتي B تُكتبان بترتيب مختلف',
+                ]}
                 correct={0}
-                cols={4}
+                cols={1}
                 requires={['shuaa-anasir']}
                 explain={<MathText>{'8 وحدات بموازاة (OI) نحو اليمين ثم وحدتان بموازاة (OJ) نحو الأسفل: $\\begin{pmatrix} 8 \\\\ -2 \\end{pmatrix}$ . أما $\\begin{pmatrix} 6 \\\\ 2 \\end{pmatrix}$ فهما إحداثيتا B، والمبدأ A ليس O.'}</MathText>}
                 onAnswered={() => setQ3(true)}
@@ -190,15 +171,14 @@ export default function Module01Nashat() {
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY.part4} source={ACTIVITY.source} compact />
               <TapQuestion
-                prompt={<MathText>{'مركبتا الشعاع $\\overrightarrow{BD}$ :'}</MathText>}
+                prompt={<MathText>{'رحلة B إلى D مركبتاها $\\begin{pmatrix} -3 \\\\ -4 \\end{pmatrix}$ . لماذا كلتاهما سالبة؟'}</MathText>}
                 options={[
-                  col(-3, -4),
-                  col(3, -2), // les coordonnées de D (MISC-MAALAM-IHDATHIYAT-MURAKKIBAT)
-                  col(3, 4), // le trajet de D vers B (signes oubliés)
-                  col(-4, -3), // échangé (MISC-MAALAM-TABDIL-X-Y)
-                ].map(M)}
+                  'لأن D على يسار B وتحتها: الرحلة نحو اليسار ثم نحو الأسفل',
+                  'لأن إحداثيتي D موجبتان',
+                  'لأن الإشارة السالبة تعني أن الشعاع أقصر',
+                ]}
                 correct={0}
-                cols={4}
+                cols={1}
                 requires={['murakkibatan']}
                 explain={<MathText>{ACTIVITY_LINES.bd}</MathText>}
                 onAnswered={() => setQ4(true)}
@@ -213,12 +193,10 @@ export default function Module01Nashat() {
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY.part5} source={ACTIVITY.source} compact />
               <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">من المستودع O إلى كل نقطة:</p>}
+                intro={<p className="text-sm font-semibold text-slate-700">من المستودع O (OA و OD أنجزتهما في التطبيق):</p>}
                 rows={[
-                  { id: 'OA', label: '$\\overrightarrow{OA}$', options: [col(-2, 4), col(2, 4), col(4, -2)], correct: 0, correction: 'من O: وحدتان نحو اليسار ثم 4 نحو الأعلى.' },
                   { id: 'OB', label: '$\\overrightarrow{OB}$', options: [col(6, 2), col(8, -2), col(2, 6)], correct: 0, correction: 'من O لا من A: 6 نحو اليمين ثم 2 نحو الأعلى.' },
                   { id: 'OC', label: '$\\overrightarrow{OC}$', options: [col(6, 4), col(8, 0), col(4, 6)], correct: 0, correction: '6 نحو اليمين ثم 4 نحو الأعلى.' },
-                  { id: 'OD', label: '$\\overrightarrow{OD}$', options: [col(3, -2), col(-3, -4), col(3, 2)], correct: 0, correction: '3 نحو اليمين ثم 2 نحو الأسفل.' },
                   // la règle : l'ordre et les signes
                   { id: 'rule', label: 'أتمم: إذا كانت $M(x\\,;\\,y)$ فإن مركبتي $\\overrightarrow{OM}$ هما…', options: ['x و y', 'y و x', '$-x$ و $-y$'], correct: 0, correction: <MathText>{ACTIVITY_LINES.rule}</MathText> },
                 ].map((r) => ({ ...r, label: <MathText>{r.label}</MathText>, options: r.options.map((o) => <MathText key={o}>{o}</MathText>), correction: typeof r.correction === 'string' ? <MathText>{r.correction}</MathText> : r.correction }))}

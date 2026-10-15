@@ -34,7 +34,7 @@ export default function Module02Maarif() {
       objectives={['كيف يسمّي الكتاب العددين اللذين كتبتهما؟', 'كيف نقرأ مركبتي شعاع على تمثيل بياني؟', 'ما أنواع المعالم؟']} estimatedTime="10 دقائق"
       brief={{
         tag: 'معارف — الكتاب ص 142 و 144', title: KNOW3.title, tone: 'violet',
-        body: <p>كل رحلة في تطبيق التوصيل كانت انتقالين: بموازاة محور الفواصل ثم بموازاة محور التراتيب، بإشارتيهما. الكتاب يسمّي العددين مركبتي الشعاع.</p>,
+        body: <p>ثلاث محطات: قراءة شعاع على الشبكة، ثم شعاع مبدؤه O، ثم أنواع المعالم.</p>,
         footer: <SourceTag source={KNOW3.source} />,
       }}
       steps={[
@@ -42,9 +42,6 @@ export default function Module02Maarif() {
           num: 1, title: 'القراءة في تمثيل بياني', subtitle: 'معارف 3 — أ)', done: q1,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="definition" text={KNOW3.intro} source={KNOW3.source} compact />
-              <GeoFigure {...FIG_KNOW3} />
-              <KnowledgeBrick id="qiraa-bayaniya" lead="الطريقة التي اتّبعها سائقك، بكلمات الكتاب:" />
               <TextbookBox kind="example" text="على شبكة المنصّة: اقرأ مركبتي كل شعاع." source={PLATFORM_SOURCE} compact />
               <GeoFigure {...FIG_READ} />
               <BatchChoiceQuestion
@@ -55,10 +52,12 @@ export default function Module02Maarif() {
                   // (2 ; 4) : les signes oubliés ; (2 ; −1) : les coordonnées de H
                   { id: 'GH', label: <MathText>{'$\\overrightarrow{GH}$'}</MathText>, options: [col(-2, -4), col(2, 4), col(2, -1)].map(M), correct: 0, correction: <MathText>{'من G: وحدتان نحو اليسار ($-2$) ثم 4 نحو الأسفل ($-4$).'}</MathText> },
                 ]}
-                requires={['qiraa-bayaniya']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: الأفقي أولا ثم العمودي، والإشارة تقول الجهة.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <TextbookBox kind="definition" text={KNOW3.intro} source={KNOW3.source} compact />}
+              {q1 && <GeoFigure {...FIG_KNOW3} />}
+              {q1 && <KnowledgeBrick id="qiraa-bayaniya" lead="الطريقة التي اتّبعها سائقك، بكلمات الكتاب:" />}
             </div>
           ),
         },
@@ -67,9 +66,6 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_KNOW1} />
-              <KnowledgeBrick id="murakkibata-om" lead="كما في طلب المستودع: من O، الكود هو العنوان." />
-              <TextbookBox kind="example" text={KNOW_ORIGIN.example} source={KNOW_ORIGIN.source} compact />
-              <p className="text-xs text-slate-500" data-correction><MathText>{KNOW_ORIGIN.correction}</MathText></p>
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">في معلم مبدؤه O:</p>}
                 rows={[
@@ -78,10 +74,12 @@ export default function Module02Maarif() {
                   // le vecteur AB n'a pas pour composantes les coordonnées de B (MISC-MAALAM-IHDATHIYAT-MURAKKIBAT)
                   { id: 'AB', label: <MathText>{'$A(1\\,;\\,1)$ و $B(4\\,;\\,3)$ ، مركبتا $\\overrightarrow{AB}$'}</MathText>, options: [col(3, 2), col(4, 3), col(1, 1)].map(M), correct: 0, correction: <MathText>{'المبدأ A ليس O: من A نسير 3 نحو اليمين ثم 2 نحو الأعلى، فليست المركبتان إحداثيتي B.'}</MathText> },
                 ]}
-                requires={['murakkibata-om']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: الإحداثيتان والمركبتان تتساويان فقط عندما يكون المبدأ O.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="murakkibata-om" lead="كما في طلب المستودع: من O، الكود هو العنوان." />}
+              {q2 && <TextbookBox kind="example" text={KNOW_ORIGIN.example} source={KNOW_ORIGIN.source} compact />}
+              {q2 && <p className="text-xs text-slate-500" data-correction><MathText>{KNOW_ORIGIN.correction}</MathText></p>}
             </div>
           ),
         },

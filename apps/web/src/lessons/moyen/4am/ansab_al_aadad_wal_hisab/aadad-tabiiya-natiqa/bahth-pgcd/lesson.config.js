@@ -3,6 +3,18 @@
  * Manuel 4AM, unité 1 : activité 6 أ/ب (p. 9), معارف 4 خاصيتان (p. 12), طرائق p. 13 (الفروق المتتابعة، خوارزمية إقليدس),
  * دوري الآن p. 13 (1), exercices 19, 20, 21 (p. 14), et le تحدّ d'ouverture (p. 7),
  * puis trois « مسائل » de la plateforme (modules 5–7).
+ *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue (modules 1 et 3) : l'atelier de couture — deux rubans, le petit coupé dans le grand (M1) puis REPORTÉ le long
+ *   du grand (M3). L'élève commence par le petit couple (21 et 14 ; 45 et 18), le couple du manuel (252 et 140 ; 765 et 135) est à
+ *   un clic ; la fatigue de la longue chaîne de M1 est ce qui rend la division désirable en M3.
+ *   Rejetées : (1) l'énoncé du نشاط 6 posé en carte au-dessus du labo (« احسب الفرق ثم اشرح… » avant tout geste) ; (2) le تحدّ des
+ *   936 et 845 mètres de tabliers comme entrée — il suppose déjà la méthode, il reste l'application de أوظّف تعلّماتي.
+ *   Ordre des idées : couper (le PGCD ne bouge pas) → POURQUOI → la brique APRÈS la réponse → 378 et 315 (la méthode se
+ *   formule après la chaîne) → معارف : pourquoi 7 et 7 → la propriété → plusieurs soustractions = une division (l'exemple et la
+ *   brique APRÈS la question) → M3 : reporter, pourquoi continuer avec le reste → 3356 et 1528 → le choix de la méthode.
+ *   Aucune destination du manuel n'a bougé. Pas de lab dont le type change ; aucune ressource `platform_designed_entry` (les
+ *   deux couples sont les nombres du manuel ou une réduction de ceux-ci, déjà déclarée `platform_adaptation`).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/bahth-pgcd';
 

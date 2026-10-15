@@ -18,6 +18,18 @@
  *   M5–M7 مسائل        — puis trois « مسائل » de la plateforme (modules 5–7) : les trois rampes du skatepark (مسألة الدرس), la rampe d'accès d'une متوسطة, le toit d'une maison ;
  *   M8 إختبار أولي     — QCM 1–5 et une épreuve de la plateforme ; P1, P2, P3 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la rampe du skatepark du niveau مبتدئ (labo `ramp-ratios`, mode « name », 30° et planche de 4 m) — la main
+ *   lève la rampe, doit NOMMER les côtés avant de pouvoir composer cos / sin / tan, et voit les nombres bouger : le besoin des mots
+ *   précède les mots. Le labo ouvre le module sans carte ni titre (contexte dans son `lead`). Rejetée : la page du نشاط 1 telle quelle
+ *   (une figure à 25° et quatre phrases à compléter de mémoire : un test, pas une découverte) ; elle devient l'application « dans le
+ *   triangle du livre » des étapes 1–3, APRÈS les lectures de l'élève. Le نشاط 2 reste le niveau متقدم (ses 3 rampes à 40°).
+ *   Ordre des idées : nommer et composer (labo) → transporter au triangle du livre (cos 25°, cos B̂) → ce que l'élève a lu (valeurs
+ *   arrondies, brique cos-nashat) → conjecture sur ses 3 rampes → preuve par Thalès → brique nisab-zawiya. Module 2 : chaque
+ *   question (sin P̂, tan R̂ sur PQR) AVANT sa définition ; l'encadré Tusi / brique rappel, la brique jayb + exemple EFG, la brique
+ *   thill + remarques + qiyam-madbuta viennent APRÈS la réponse. Modules 3–8 : déjà conformes (révélation ligne à ligne, bricks
+ *   gated), inchangés.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/nisab-muthallathiya';
@@ -86,7 +98,7 @@ export const LESSON_CONFIG = {
       title: 'منحدر حديقة التزلج: سمِّ الأضلاع وركّب النسب',
       objective: 'في مثلث قائم، بالنسبة إلى زاوية حادة: جيب التمام = المجاور ÷ الوتر، الجيب = المقابل ÷ الوتر، الظل = المقابل ÷ المجاور؛ هذه النسب لا تتعلق إلا بقيس الزاوية، والجيب وجيب التمام محصوران بين 0 و 1',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'skatepark' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'skatepark' },
       learningPointIds: ['4am_nisab-muthallathiya_P1', '4am_nisab-muthallathiya_P2'],
       sourceElementIds: ['act-1'],
     },

@@ -43,7 +43,7 @@ export default function Module02Maarif() {
       estimatedTime="10 دقائق"
       brief={{
         tag: 'معارف — الكتاب ص 106', title: KNOW1.title, tone: 'violet',
-        body: <p>الظلال في الساحة، ثم شكل النشاط، أعطياك النسب الثلاث المتساوية، أمام A وخلفها. الكتاب يكتب ذلك خاصية، ويسمّي النسبة المشتركة معامل التناسبية.</p>,
+        body: <p>معارف الكتاب في أربع خطوات: في كل خطوة سؤال أولًا، وبعد جوابك يأتي اسم ما وجدته وملاحظته.</p>,
       }}
       steps={[
         {
@@ -60,7 +60,6 @@ export default function Module02Maarif() {
                   </div>
                 ))}
               </div>
-              <KnowledgeBrick id="khassiyat-talis" lead="ما رأيته في الساحة وفي الشكل، بكلمات الكتاب:" />
               <p className="text-sm font-semibold text-slate-800"><MathText>{'في الشكل الآتي، المستقيمان $(EG)$ و $(FH)$ متقاطعان في O، و $(EF) \\parallel (GH)$ .'}</MathText> <SourceTag source={PLATFORM_SOURCE} /></p>
               <GeoFigure {...FIG_M2Q1} />
               <TapQuestion
@@ -72,10 +71,10 @@ export default function Module02Maarif() {
                 ].map(M)}
                 correct={0}
                 cols={1}
-                requires={['khassiyat-talis']}
                 explain={<MathText>{'G يقابل E و H يقابل F (طرفا المستقيمين المتوازيين): $\\dfrac{OG}{OE} = \\dfrac{OH}{OF} = \\dfrac{GH}{EF}$ ، والخاصية صحيحة من الجهة الأخرى للنقطة O أيضا. ($GE$ و $HF$ قطعتان وليستا ضلعين.)'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="khassiyat-talis" lead="ما رأيته في الساحة وفي الشكل، بكلمات الكتاب:" />}
             </div>
           ),
         },
@@ -106,17 +105,16 @@ export default function Module02Maarif() {
               <GeoFigure {...FIG_REMARK1} />
               <PredictRule id="adam-tawazi"><TextbookBox kind="remark" lines={[KNOW1.remark1]} source={KNOW1.source} compact /></PredictRule>
               <p className="rounded-xl bg-violet-50 px-3 py-2 text-sm text-violet-900"><MathText>{KNOW1.remark1Answer}</MathText></p>
-              <KnowledgeBrick id="adam-tawazi" lead="إذا لم يتوازَ المستقيمان اختلفت النسب. والعكس يفيدنا:" />
               <p className="text-sm font-semibold text-slate-800"><MathText>{'النقطة M من $[AB]$ و N من $[AC]$ حيث $AM = 3$ ، $AB = 5$ ، $AN = 4$ و $AC = 7$ .'}</MathText> <SourceTag source={PLATFORM_SOURCE} /></p>
               <TapQuestion
                 prompt="المستقيمان (MN) و (BC):"
                 options={['غير متوازيين لأن $\\dfrac{3}{5} \\neq \\dfrac{4}{7}$', 'متوازيان لأن $\\dfrac{3}{5}$ و $\\dfrac{4}{7}$ متقاربتان', 'لا يمكن الحكم دون قياس MN و BC'].map(M)}
                 correct={0}
                 cols={1}
-                requires={['adam-tawazi']}
                 explain={<MathText>{'$3 \\times 7 = 21$ و $5 \\times 4 = 20$ : $\\dfrac{3}{5} \\neq \\dfrac{4}{7}$ . نسبتان غير متساويتين تكفيان: لو كانا متوازيين لتساوت النسب حسب خاصية طالس.'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="adam-tawazi" lead="إذا لم يتوازَ المستقيمان اختلفت النسب. والعكس يفيدنا:" />}
             </div>
           ),
         },
@@ -128,17 +126,16 @@ export default function Module02Maarif() {
               <TextbookBox kind="example" text={KNOW2.example} source={KNOW2.source} compact />
               <GeoFigure {...FIG_KNOW2} />
               <p className="text-xs text-slate-500" data-correction><MathText>{KNOW2.correction}</MathText></p>
-              <KnowledgeBrick id="muamil-tanasub" lead="النسبة المشتركة التي رأيتها في الساحة (الظلّ ÷ الطول) لها اسم:" />
               <p className="text-sm font-semibold text-slate-800"><MathText>{'المثلثان ABC و AB′C′ في وضعية طالس، حيث $AB = 8$ ، $AB\' = 6$ و $AC = 10$ .'}</MathText> <SourceTag source={PLATFORM_SOURCE} /></p>
               <TapQuestion
                 prompt="المثلث AB′C′ بالنسبة إلى المثلث ABC هو:"
                 options={['تصغير بمعامل $\\dfrac{3}{4}$', 'تكبير بمعامل $\\dfrac{4}{3}$', 'تصغير بمعامل $2$'].map(M)}
                 correct={0}
                 cols={1}
-                requires={['muamil-tanasub']}
                 explain={<MathText>{'$k = \\dfrac{AB\'}{AB} = \\dfrac{6}{8} = \\dfrac{3}{4} < 1$ : تصغير. ($\\dfrac{4}{3}$ يكبّر AB′C′ إلى ABC، و 2 هو الفرق $8 - 6$ .)'}</MathText>}
                 onAnswered={() => setQ4a(true)}
               />
+              {q4a && <KnowledgeBrick id="muamil-tanasub" lead="النسبة المشتركة التي رأيتها في الساحة (الظلّ ÷ الطول) لها اسم:" />}
               {q4a && (
                 <NumericQuestion
                   prompt={<MathText>{'احسب $AC\'$ :'}</MathText>}

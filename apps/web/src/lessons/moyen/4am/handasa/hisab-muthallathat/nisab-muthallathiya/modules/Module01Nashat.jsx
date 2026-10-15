@@ -6,11 +6,10 @@ import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, ACTIVITY_2, ACTIVITY_2_LINES, LAB } from '../content/textbook';
 import { FIG_ACT1, FIG_ACT2 } from '../content/figures';
-import SkateparkVignette from '../components/SkateparkVignette';
 
 /**
  * Module 1 — نشاط 1 et نشاط 2 (p. 116), ouverts sur LES RAMPES DU SKATEPARK (ramp-ratios).
@@ -25,6 +24,8 @@ import SkateparkVignette from '../components/SkateparkVignette';
  * FORMALIZE  les briques cos-nashat (نشاط 1, rappel du cosinus de 3AM) et nisab-zawiya (نشاط 2 : sin et tan nommés) ;
  *           puis la « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire, module 5 : trois rampes, mêmes gestes, autres nombres).
  * AUCUNE étape n'attend `onFinished`. LP : P1.
+ * Rétrofit 2026-10-15 (§4quater) : plus de carte `brief` ni de titre / `lead` de workspace ni de `title` de labo — le labo ouvre le module
+ * avec son contexte (`lead` du labo) ; les étapes renvoient aux lectures de l'élève ; briques (cos-nashat, nisab-zawiya) déjà APRÈS la réponse.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const near = (target, tol = 0.0001) => (x) => Number.isFinite(x) && Math.abs(x - target) <= tol;
@@ -87,28 +88,11 @@ export default function Module01Nashat() {
       navLinks={getNavLinks(1)}
       moduleNumber={1}
       moduleTitle="نشاط 1 و 2 — منحدرات حديقة التزلج"
-      moduleSubtitle="منحدرات بأطوال مختلفة وبالزاوية نفسها: ماذا يبقى ثابتا؟"
+      moduleSubtitle="من المنحدر إلى مثلث الكتاب، ثم منحدرات بزاوية واحدة"
       estimatedTime="14 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 116',
-        headline: 'جلسة تصوير في حديقة التزلج!',
-        emoji: '🛹',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <SkateparkVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={ACTIVITY_LINES.source} /></p>
-            <p className="text-sm text-slate-600">في المستوى «مبتدئ»: اختر زاوية حادة، سمِّ الأضلاع، ركّب النسب الثلاث ثم ارفع المنحدر. في المستوى «متقدم» (نشاط 2): ابنِ منحدرات بالزاوية 40° واحكم قبل أن تقرأ.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين: المنحدر مثلث ABC قائم في A — اللوح [BC]، الارتفاع [AC]، والأرض [AB]."
           levels={{
             beginner: () => (
               <Manipulation
@@ -116,7 +100,6 @@ export default function Module01Nashat() {
                 level="beginner"
                 {...LAB.beginner.numbers}
                 theme="skatepark"
-                title="منحدر حديقة التزلج: سمِّ الأضلاع وركّب النسب"
                 lead="المنحدر يبدأ بزاوية 30° ولوح طوله 4 م؛ الأرض AB ثابتة، والمقبض C يرفع المنحدر درجة درجة."
                 onTrial={onTrialName}
               />
@@ -127,7 +110,6 @@ export default function Module01Nashat() {
                 level="advanced"
                 {...LAB.advanced.numbers}
                 theme="skatepark"
-                title="نشاط 2: ثلاثة منحدرات بزاوية 40°"
                 lead={<MathText>{'الزاوية $\\widehat{B} = 40^{\\circ}$ . العلامات 4 و 6 و 8 على اللوح هي أطوال يمكنك أن تبدأ بها.'}</MathText>}
                 onTrial={onTrialScale}
               />
@@ -137,7 +119,7 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'نشاط 1: الوتر والزوايا', subtitle: 'السؤال 1', done: q1,
+          num: 1, title: 'في مثلث الكتاب: أيّ ضلع هو اللوح؟', subtitle: 'نقل ما سمّيته إلى الشكل', done: q1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY.text} source={ACTIVITY.source} compact />
@@ -159,13 +141,13 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'نشاط 1: جيب التمام', subtitle: 'السؤال 2', done: q2,
+          num: 2, title: 'أيّ نسبة تعطي جيب تمام الزاوية؟', subtitle: 'الزاوية C ثم الزاوية B', done: q2,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY.part2} source={ACTIVITY.source} compact />
               <GeoFigure {...FIG_ACT1} />
               <TapQuestion
-                prompt={<MathText>{'أتمم: $\\cos 25^{\\circ} = \\dfrac{\\ldots}{\\ldots}$'}</MathText>}
+                prompt={<MathText>{'كما ركّبت جيب التمام على منحدرك، أتمم في مثلث الكتاب: $\\cos 25^{\\circ} = \\dfrac{\\ldots}{\\ldots}$'}</MathText>}
                 options={['$\\dfrac{AC}{BC}$', '$\\dfrac{AB}{BC}$', '$\\dfrac{BC}{AC}$'].map(M)}
                 correct={0}
                 cols={3}
@@ -188,7 +170,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'نشاط 1: القيم المدوّرة', subtitle: 'على منحدرك أو بالحاسبة', done: q3,
+          num: 3, title: 'ماذا قرأت حين رفعت المنحدر؟', subtitle: 'قيمتان مدوّرتان', done: q3,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-700"><MathText>{'في المستوى «مبتدئ» اختر $\\widehat{C}$ ثم ارفع المنحدر حتى $\\widehat{C} = 25^{\\circ}$ ، ثم اخفضه حتى $\\widehat{C} = 75^{\\circ}$ : جيب التمام المقروء هو ما تعطيه الحاسبة.'}</MathText></p>
@@ -221,7 +203,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'نشاط 2: التخمين', subtitle: 'ثلاثة منحدرات بزاوية 40°', done: q4,
+          num: 4, title: 'ماذا لاحظت في منحدراتك؟', subtitle: 'ثلاثة منحدرات بزاوية 40°', done: q4,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY_2.part1} source={ACTIVITY_2.source} compact />
@@ -243,7 +225,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 5, title: 'نشاط 2: من التخمين إلى البرهان', subtitle: 'لماذا يصحّ في كل حالة؟', done: q5,
+          num: 5, title: 'هل يصحّ ما رأيته مهما كان المنحدر؟', subtitle: 'من التخمين إلى البرهان', done: q5,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY_2.part2} source={ACTIVITY_2.source} compact />

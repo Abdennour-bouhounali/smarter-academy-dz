@@ -64,7 +64,6 @@ export default function Module02Maarif() {
           num: 2, title: 'حصر حاصل القسمة', subtitle: '$22 < \\frac{180}{8} < 23$', done: q2 && q2b,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" title={hasr.title} text={hasr.text} source={hasr.source} compact />
               <TapQuestion
                 prompt={<MathText>{'بين أيّ عددين طبيعيين متتاليين يقع $\\frac{180}{8}$ ؟'}</MathText>}
                 options={[M('بين 4 و 5'), M('بين 22 و 23'), M('بين 8 و 9')]}
@@ -74,6 +73,7 @@ export default function Module02Maarif() {
                 explain={<MathText>{'$8 \\times 22 = 176 < 180 < 184 = 8 \\times 23$ : الحاصل بين 22 و 23 ، لا بين الباقي 4 والعدد 5.'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <TextbookBox kind="remark" title={hasr.title} text={hasr.text} source={hasr.source} compact />}
               {q2 && <KnowledgeBrick id="qiyam-muqarraba" />}
               {q2 && (
                 <BatchChoiceQuestion
@@ -94,7 +94,6 @@ export default function Module02Maarif() {
           num: 3, title: 'عندما يكون الباقي 0', subtitle: '$2160 = 30 \\times 72$', done: q3 && q3b,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="definition" text={KNOWLEDGE.divisibility} source={KNOWLEDGE.source} compact />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'في النشاط وصل البيض إلى 2160 : $2160 = 30 \\times 72$ . أيّ الجمل صحيحة؟'}</MathText></p>}
                 rows={[
@@ -106,6 +105,7 @@ export default function Module02Maarif() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'تمامًا:' : 'انتبه إلى الاتجاه:'}</Feedback>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <TextbookBox kind="definition" text={KNOWLEDGE.divisibility} source={KNOWLEDGE.source} compact />}
               {q3 && <KnowledgeBrick id="qabiliya" />}
               {q3 && (
                 <TapQuestion

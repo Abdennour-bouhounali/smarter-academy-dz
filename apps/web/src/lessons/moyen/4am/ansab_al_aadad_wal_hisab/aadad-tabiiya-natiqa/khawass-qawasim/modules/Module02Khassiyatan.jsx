@@ -22,10 +22,10 @@ export default function Module02Khassiyatan() {
         { num: 1, title: 'خاصية 1 — المجموع والفرق', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="khassiya-1" />
-              <TextbookBox kind="example" text={p1.example} source={KNOWLEDGE.source} compact />
-              <NumericQuestion prompt={<span>9 يقسم 90 و 900. أي عدد يقسمه 9 أيضًا حسب المثال: <MathText>{'$900 - 90 = ?$'}</MathText></span>} expected={810} display="810"
-                requires={['khassiya-1']} explain={<span>9 يقسم الفرق 810 والمجموع 990، دون إجراء القسمة.</span>} onAnswered={() => setQ1(true)} />
+              <NumericQuestion prompt={<span>9 يقسم 90 و 900. في الورشة، 9 يقسم طولَي الجدارين. احسب الفرق، فهو عدد يقسمه 9 أيضًا: <MathText>{'$900 - 90 = ?$'}</MathText></span>} expected={810} display="810"
+                explain={<span>9 يقسم الفرق 810 والمجموع 990، دون إجراء القسمة.</span>} onAnswered={() => setQ1(true)} />
+              {q1 && <KnowledgeBrick id="khassiya-1" />}
+              {q1 && <TextbookBox kind="example" text={p1.example} source={KNOWLEDGE.source} compact />}
             </div>
           ) },
         { num: 2, title: 'خاصية 1 — المضاعفات', done: q2,
@@ -38,15 +38,16 @@ export default function Module02Khassiyatan() {
         { num: 3, title: 'خاصية 2 — باقي القسمة', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="khassiya-2" />
-              <div className="flex flex-wrap items-center gap-4">
-                <DivisionDisplay dividend={90} divisor={25} quotient={3} remainder={15} />
-                <TextbookBox kind="example" text={p2.example} compact />
-              </div>
               <TapQuestion prompt={<span>5 يقسم 90 و 25. لماذا يقسم 5 العدد 15؟</span>}
-                options={['لأن 15 هو باقي القسمة الإقليدية لـ 90 على 25: 90 = 25 × 3 + 15', 'لأن 15 أصغر من 25', 'لأن 15 عدد فردي', 'لأن 90 = 6 × 15']} correct={0} cols={1} requires={['khassiya-2']}
-                explain={<span><MathText>{'$15 = 90 - 25 \\times 3$'}</MathText>: فرق عددين يقسمهما 5، فهو يقبل القسمة على 5.</span>}
+                options={['لأن 15 هو باقي القسمة الإقليدية لـ 90 على 25: 90 = 25 × 3 + 15', 'لأن 15 أصغر من 25', 'لأن 15 عدد فردي', 'لأن 90 = 6 × 15']} correct={0} cols={1} explain={<span><MathText>{'$15 = 90 - 25 \\times 3$'}</MathText>: فرق عددين يقسمهما 5، فهو يقبل القسمة على 5.</span>}
                 onAnswered={() => setQ3(true)} />
+              {q3 && <KnowledgeBrick id="khassiya-2" />}
+              {q3 && (
+                <div className="flex flex-wrap items-center gap-4">
+                  <DivisionDisplay dividend={90} divisor={25} quotient={3} remainder={15} />
+                  <TextbookBox kind="example" text={p2.example} compact />
+                </div>
+              )}
             </div>
           ) },
       ]}

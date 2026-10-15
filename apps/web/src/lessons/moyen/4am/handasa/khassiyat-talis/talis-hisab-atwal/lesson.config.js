@@ -17,6 +17,15 @@
  *   M5–M7 مسائل        — puis trois « مسائل » de la plateforme (modules 5–7) ;
  *   M8 إختبار أولي     — QCM 1–2 et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Module 1 — entrée retenue : « ساحة الحيّ » (labo `shadow-world`, niveau مبتدئ, thème `minaret` : le soleil tenu, l'ombre de
+ *   chaque chose, SA règle que le monde teste puis réfute) — le rapport constant se découvre avant tout triangle. Rejetée : la
+ *   figure de l'activité 1 du manuel (A, B, C, B′, C′ en lettres générales) comme point de départ ; elle devient l'étape 4 « le MÊME
+ *   dessin que la place ». Ordre inchangé : labo (sans carte, sans titre de workspace, contexte = `lead` du labo) → de la place à la
+ *   figure → les calculs → le texte (PredictRule, brique APRÈS la réponse).
+ *   Modules 2–3 (sans labo) : chaque brique vient APRÈS la question qu'elle nomme (khassiyat-talis, adam-tawazi, muamil-tanasub,
+ *   hisab-atwal) ; la carte du haut dit ce qu'est le module sans énoncer de fait.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/talis-hisab-atwal';
@@ -86,7 +95,7 @@ export const LESSON_CONFIG = {
       title: 'ساحة الحيّ: الشمس والظلال',
       objective: 'إذا كان (B′C′) يوازي (BC) فإن AB′/AB = AC′/AC = B′C′/BC، أينما كانت B′ على المستقيم (AB)؛ ظلّ كل شيء شاقولي ÷ طوله عدد واحد في اللحظة نفسها لأنّ أشعة الشمس متوازية',
       autonomy: 'عالم كامل بدل شاشة واحدة: التلميذ يحرّك الشمس الحقيقية (الجزائر، 13 أكتوبر)، يقيس الظلال، يتوقّع ظلّ ما تنصبه البلدية، ويكتب قاعدته بنفسه فيختبرها العالم على كل الأشياء ويُسقطها حين تتحرّك الشمس؛ مقران يسأل ولا يُجيب، وكل سؤال يُحكم على جوابه بأرقام التلميذ',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'minaret' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'minaret' },
       learningPointIds: ['4am_talis-hisab-atwal_P1'],
       sourceElementIds: ['act-1'],
     },

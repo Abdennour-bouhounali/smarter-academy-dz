@@ -9,6 +9,10 @@
  * رحلة إلى شاطئ تيبازة, juste avant le test) puis le test « إختبار أولي » (module 8). Ni « أؤكّد تعلّماتي »
  * ni « أتعمّق » (décision du propriétaire).
  *
+ * Rétrofit 2026-10-15 (§4quater, synthèse : format fixe, retouches minimales) : module 7 sans titre / `lead` de workspace (le contexte
+ * de chaque niveau est le `lead` du labo) et la boîte « تحليل الوضعية » de l'étape 2 passée APRÈS la réponse. La carte de la situation
+ * reste au-dessus du labo (c'est l'énoncé des étapes 1–8, le labo ne sert qu'à l'étape 7) ; modules 0–6 et 8 inchangés (pas de labo).
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/wadiya-idmajiya-taalufiya';

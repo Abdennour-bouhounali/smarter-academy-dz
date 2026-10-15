@@ -5,6 +5,14 @@
  * La règle de 9 (exercice 23) est une formalisation DÉCLARÉE de la plateforme. Généré DANS son entrée du catalogue
  * (item 1am.m3.r02), cycle moyen phase 3, 2026-10-14. Source : docs/sources/1am/unit3/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la table 0–48 coloriée à la main (le نشاط 4 du manuel, niveau مبتدئ) — chaque case est JUGÉE par son reste, et
+ *   les chiffres des unités / les sommes des chiffres s'accumulent à côté : la règle devient nécessaire sous la main. Gardée
+ *   car c'est déjà un labo où la main décide (pas une lecture) ; rejetée : l'exercice 26 (les cartes 4, 5, 9, 3) comme entrée —
+ *   il suppose les règles, il en est l'application (niveau متقدم). Ordre des idées : ÷2 → ÷5 (brique APRÈS la réponse) → ÷3
+ *   (l'unité ne suffit plus, la somme des chiffres) → cartes → معارف : les règles essayées sur des nombres, ÷9, le reste nul →
+ *   méthode ÷4 → exercices → le défi de l'année bissextile.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/1am/ansab_al_aadad_wal_hisab/qawaid-qabiliyat-qisma';

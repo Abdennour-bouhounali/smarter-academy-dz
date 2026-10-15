@@ -17,8 +17,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module01Nashat.jsx",
-        "line": 182,
-        "step": 3,
+        "line": 191,
+        "step": 4,
         "variant": "new"
       }
     },
@@ -28,7 +28,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module02Maarif.jsx",
-        "line": 45,
+        "line": 58,
         "step": 1,
         "variant": "new"
       }
@@ -39,7 +39,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module02Maarif.jsx",
-        "line": 66,
+        "line": 80,
         "step": 2,
         "variant": "new"
       }
@@ -50,7 +50,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module02Maarif.jsx",
-        "line": 107,
+        "line": 106,
         "step": 3,
         "variant": "new"
       }
@@ -64,7 +64,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module03Taraiq.jsx",
-        "line": 46,
+        "line": 61,
         "step": 1,
         "variant": "new"
       }
@@ -75,7 +75,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module03Taraiq.jsx",
-        "line": 70,
+        "line": 84,
         "step": 2,
         "variant": "new"
       }
@@ -86,7 +86,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module03Taraiq.jsx",
-        "line": 94,
+        "line": 107,
         "step": 3,
         "variant": "new"
       }
@@ -194,9 +194,21 @@
       "questionId": "M01-S1-Q1",
       "module": 1,
       "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module01Nashat.jsx",
+      "line": 116,
+      "requires": null,
+      "prerequisiteStatus": {},
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S2-Q2",
+      "module": 1,
+      "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module01Nashat.jsx",
-      "line": 125,
+      "line": 134,
       "requires": [
         "masaha-kulliya"
       ],
@@ -207,28 +219,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S2-Q2",
-      "module": 1,
-      "step": 2,
-      "component": "BatchChoiceQuestion",
-      "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module01Nashat.jsx",
-      "line": 146,
-      "requires": [
-        "nisbat-takbir-mustawi"
-      ],
-      "prerequisiteStatus": {
-        "nisbat-takbir-mustawi": "prior"
-      },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
-    },
-    {
       "questionId": "M01-S3-Q3",
       "module": 1,
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module01Nashat.jsx",
-      "line": 169,
+      "line": 155,
       "requires": [
         "nisbat-takbir-mustawi"
       ],
@@ -244,7 +240,23 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module01Nashat.jsx",
-      "line": 192,
+      "line": 178,
+      "requires": [
+        "nisbat-takbir-mustawi"
+      ],
+      "prerequisiteStatus": {
+        "nisbat-takbir-mustawi": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S5-Q5",
+      "module": 1,
+      "step": 5,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module01Nashat.jsx",
+      "line": 201,
       "requires": [
         "takbir-tajribi"
       ],
@@ -261,12 +273,8 @@
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module02Maarif.jsx",
       "line": 47,
-      "requires": [
-        "takbir-tarif"
-      ],
-      "prerequisiteStatus": {
-        "takbir-tarif": "established@M2"
-      },
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -276,13 +284,9 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module02Maarif.jsx",
-      "line": 68,
-      "requires": [
-        "takbir-khassiya"
-      ],
-      "prerequisiteStatus": {
-        "takbir-khassiya": "established@M2"
-      },
+      "line": 66,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -292,7 +296,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module02Maarif.jsx",
-      "line": 94,
+      "line": 93,
       "requires": [
         "takbir-khassiya",
         "talis-nisab"
@@ -311,12 +315,8 @@
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module03Taraiq.jsx",
       "line": 47,
-      "requires": [
-        "tariqat-k"
-      ],
-      "prerequisiteStatus": {
-        "tariqat-k": "established@M3"
-      },
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -326,13 +326,9 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module03Taraiq.jsx",
-      "line": 71,
-      "requires": [
-        "tariqat-judhur"
-      ],
-      "prerequisiteStatus": {
-        "tariqat-judhur": "established@M3"
-      },
+      "line": 70,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -342,13 +338,9 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/takbir-tasghir/modules/Module03Taraiq.jsx",
-      "line": 95,
-      "requires": [
-        "tariqat-maqadir"
-      ],
-      "prerequisiteStatus": {
-        "tariqat-maqadir": "established@M3"
-      },
+      "line": 93,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },

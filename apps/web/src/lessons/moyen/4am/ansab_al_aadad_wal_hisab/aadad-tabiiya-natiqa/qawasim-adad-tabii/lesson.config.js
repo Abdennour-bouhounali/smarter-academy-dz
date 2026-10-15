@@ -3,6 +3,16 @@
  * Manuel 4AM, unité 1 : activité 2 (p. 8), معارف 1 (p. 10), طريقة « تعيين قواسم عدد طبيعي » (p. 11),
  * exercices 3, 4, 6, 7, 8, 9, 11 (p. 14). Source : docs/sources/4am/unit1/extraction.json.
  * puis trois « مسائل » de la plateforme (modules 4–6).
+ *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la bibliothèque, des livres rangés en rayons (labo `factor-pairs`, niveau مبتدئ 24 puis متقدم 60) — la main
+ *   allonge le rayon et seul un rectangle PARFAIT est gardé : chaque rectangle livre deux diviseurs, et la règle d'arrêt se VIT
+ *   (le rectangle se couche). C'est elle qui remplace le tableau à compléter de l'activité 2 ; rejetée : l'activité du manuel telle
+ *   quelle (écrire 60 = a × b de tête dans un tableau, puis lire les diviseurs) — c'est un formulaire, la main ne décide rien ;
+ *   le nombre 60, les deux sous-questions et 48 / 17 restent dans le labo (niveau متقدم) et les étapes 2–3.
+ *   Ordre des idées : un rectangle parfait donne DEUX diviseurs (brique APRÈS la réponse) → tous les diviseurs de 60 → 48 et 17 →
+ *   module 2 (105) : un diviseur reçu « gratuitement » comme partenaire → jusqu'où tester AVANT tout calcul → la méthode du
+ *   manuel lue ligne à ligne (après) → les règles de divisibilité qui accélèrent (brique après).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/qawasim-adad-tabii';
 
@@ -59,7 +69,7 @@ export const LESSON_CONFIG = {
       title: 'قواسم العدد 24 بجداءات عاملين',
       objective: 'قواسم عدد تأتي أزواجًا d × (a ÷ d) ولا حاجة للاختبار بعد الجذر',
       autonomy: '',
-      experience: { type: 'platform_adaptation', reason: 'smaller_numbers_for_first_contact', theme: 'library' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'library' },
       learningPointIds: ['4am_qawasim-adad-tabii_P1'], sourceElementIds: ['act-2'] },
     { kind: 'manipulation', code: 'factor-pairs-60', type: 'factor-pairs', module: 1,
       level: 'advanced',

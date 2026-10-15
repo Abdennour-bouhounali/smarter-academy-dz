@@ -17,6 +17,8 @@ import {
  * FORMALIZE : أ) la sphère et le tableau des quatre cas (brique maqta-kura, trois figures) ; ب) la بلاطة (titre rétabli, une
  * ligne le dit) ; جـ) la أسطوانة ; د) la pyramide et le cône (réduction de rapport SE/SA). Une question par معرفة, sur des
  * nombres neufs (ni ceux des نشاطات, ni ceux du إختبار). LP : P1–P4.
+ * Rétrofit 2026-10-15 (§4quater) : module sans labo, la carte du haut ne dit plus de fait ; dans chaque étape la QUESTION vient avant la
+ * brique qui la nomme (`{qN && <KnowledgeBrick/>}`, sans `requires` sur elle) — les figures et les couches du module 1 suffisent.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -37,7 +39,7 @@ export default function Module02Maarif() {
       estimatedTime="10 دقائق"
       brief={{
         tag: 'معارف — الكتاب ص 168', title: KNOW3.title, tone: 'violet',
-        body: <p>كل طبقة طبعتها كانت مقطعا مستويا لمجسم: الكرة، البلاطة، الأسطوانة، الهرم. ما الذي بقي ثابتا من طبقة إلى أخرى، وما الذي تغيّر؟ اكتب توقّعك قبل كل خاصية، ثم قارنه بصياغة الكتاب.</p>,
+        body: <p>أربع فقرات تضع كلمات الكتاب على طبقات الطابعة: الكرة، البلاطة، الأسطوانة، الهرم. في كل فقرة سؤال بأعداد جديدة، ثم صياغة الكتاب.</p>,
         footer: <SourceTag source={KNOW3.source} />,
       }}
       steps={[
@@ -45,7 +47,6 @@ export default function Module02Maarif() {
           num: 1, title: 'أ) مقطع كرة بمستو', subtitle: 'أربع حالات', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="maqta-kura" lead="الطبقات التي طبعتها، في جدول الكتاب:" />
               <div className="grid gap-2 sm:grid-cols-3" data-know3-sphere>
                 <SpaceFigure {...FIG_KNOW3_IN} />
                 <SpaceFigure {...FIG_KNOW3_ZERO} />
@@ -60,10 +61,10 @@ export default function Module02Maarif() {
                   { id: 'h10', label: <MathText>{'$h = 10$'}</MathText>, options: ['نقطة واحدة (المستوي مماس)', 'لا شيء', 'دائرة كبرى'], correct: 0, correction: <MathText>{KNOW3.tangent}</MathText> },
                   { id: 'h12', label: <MathText>{'$h = 12$'}</MathText>, options: ['لا يقطع المستوي الكرة', 'نقطة واحدة', 'دائرة نصف قطرها $\\sqrt{44}$'].map(M), correct: 0, correction: <MathText>{KNOW3.outside}</MathText> },
                 ]}
-                requires={['maqta-kura']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: نقارن h بـ R، ثم نحسب بخاصية فيثاغورس.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="maqta-kura" lead="الطبقات التي طبعتها، في جدول الكتاب:" />}
             </div>
           ),
         },
@@ -72,7 +73,6 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <p className="text-xs text-slate-500" data-correction>{KNOW3.cuboidRestored}</p>
-              <KnowledgeBrick id="maqta-balata" lead="مثل الطبقات المتطابقة التي طبعتها في البلاطة:" />
               <SpaceFigure {...FIG_KNOW3_CUBOID_FACE} />
               <SpaceFigure {...FIG_KNOW3_CUBOID_EDGE} />
               <TapQuestion
@@ -86,10 +86,10 @@ export default function Module02Maarif() {
                 ].map(M)}
                 correct={0}
                 cols={1}
-                requires={['maqta-balata']}
                 explain={<MathText>{KNOW3.cuboidFace}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="maqta-balata" lead="مثل الطبقات المتطابقة التي طبعتها في البلاطة:" />}
             </div>
           ),
         },
@@ -97,7 +97,6 @@ export default function Module02Maarif() {
           num: 3, title: 'جـ) مقطعا أسطوانة الدوران', subtitle: 'موازٍ للقاعدة أو للمحور', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="maqta-ustuwana" lead="دوائر متطابقة أو مستطيلات، حسب اتجاه المستوي:" />
               <div className="grid gap-2 lg:grid-cols-2">
                 <SpaceFigure {...FIG_KNOW3_CYL_BASE} />
                 <SpaceFigure {...FIG_KNOW3_CYL_AXIS} />
@@ -108,10 +107,10 @@ export default function Module02Maarif() {
                   { id: 'base', label: 'موازٍ لقاعدتها', options: ['دائرة نصف قطرها $3\\,\\mathrm{cm}$', 'مستطيل أحد بعديه $11\\,\\mathrm{cm}$', 'دائرة نصف قطرها أصغر من $3\\,\\mathrm{cm}$'].map(M), correct: 0, correction: <MathText>{KNOW3.cylinderBase}</MathText> },
                   { id: 'axis', label: 'موازٍ لمحورها (يقطعها)', options: ['مستطيل أحد بعديه $11\\,\\mathrm{cm}$', 'دائرة نصف قطرها $3\\,\\mathrm{cm}$', 'مستطيل أحد بعديه $3\\,\\mathrm{cm}$'].map(M), correct: 0, correction: <MathText>{KNOW3.cylinderAxis}</MathText> },
                 ]}
-                requires={['maqta-ustuwana']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: اتجاه المستوي يقرّر شكل المقطع.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="maqta-ustuwana" lead="دوائر متطابقة أو مستطيلات، حسب اتجاه المستوي:" />}
             </div>
           ),
         },
@@ -120,7 +119,6 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <p className="text-xs text-slate-500">{KNOW_APEX.note} <SourceTag source={KNOW_APEX.source} /></p>
-              <KnowledgeBrick id="maqta-haram" lead="المربعات التي صغرت كلما صعد المستوي نحو الرأس:" />
               <TapQuestion
                 prompt={<MathText>{'مخروط آيس كريم مقلوب: مخروط دوران رأسه S ونصف قطر قاعدته $6\\,\\mathrm{cm}$ . مستو موازٍ للقاعدة يقطع المحور SO في O′ حيث $\\dfrac{SO\'}{SO} = \\dfrac{1}{3}$ . نصف قطر المقطع:'}</MathText>}
                 options={[
@@ -132,10 +130,10 @@ export default function Module02Maarif() {
                 ].map(M)}
                 correct={0}
                 cols={3}
-                requires={['maqta-haram']}
                 explain={<MathText>{`${KNOW_APEX.cone} هنا $r = \\dfrac{1}{3} \\times 6 = 2\\,\\mathrm{cm}$ .`}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && <KnowledgeBrick id="maqta-haram" lead="المربعات التي صغرت كلما صعد المستوي نحو الرأس:" />}
             </div>
           ),
         },

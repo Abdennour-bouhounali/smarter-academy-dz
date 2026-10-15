@@ -29,7 +29,7 @@ export default function Module05AadadKabira() {
       moduleTitle="أعداد كبيرة"
       moduleSubtitle="من الألف إلى المليار"
       estimatedTime="8 دقائق"
-      brief={{ tag: 'أتعمّق — الكتاب ص 20', title: 'أعداد كبيرة', tone: 'rose', body: <p>{BIG.facts.join(' ')}</p> }}
+      brief={{ tag: 'أتعمّق — الكتاب ص 20', title: 'أعداد كبيرة', tone: 'rose', body: <p>أعداد أكبر من كل ما كتبناه: مسافات الكواكب، ونظام عدّ آخر. أجب أوّلًا، ثم اقرأ التصحيح.</p> }}
       steps={[
         { num: 1, title: 'المليون والمليار', done: !!done['deep-2'],
           content: <div className="space-y-3"><TextbookExercise exercise={EX['deep-2']} requires={['fiaat']} onAnswered={mark('deep-2')} /><KnowledgeBrick id="malyun-milyar" /></div> },

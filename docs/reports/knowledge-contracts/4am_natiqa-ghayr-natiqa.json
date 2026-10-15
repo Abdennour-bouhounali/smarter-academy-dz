@@ -14,7 +14,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/natiqa-ghayr-natiqa/modules/Module01Nashat.jsx",
-        "line": 200,
+        "line": 187,
         "step": 2,
         "variant": "new"
       }
@@ -25,7 +25,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/natiqa-ghayr-natiqa/modules/Module02Maarif.jsx",
-        "line": 62,
+        "line": 81,
         "step": 2,
         "variant": "new"
       }
@@ -133,7 +133,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/natiqa-ghayr-natiqa/modules/Module01Nashat.jsx",
-      "line": 162,
+      "line": 135,
       "requires": [
         "jidhr-taarif",
         "adad-natiq"
@@ -151,7 +151,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/natiqa-ghayr-natiqa/modules/Module01Nashat.jsx",
-      "line": 185,
+      "line": 172,
       "requires": [
         "jidhr-taarif",
         "adad-natiq"
@@ -164,12 +164,28 @@
       "pedagogicallyValid": true
     },
     {
+      "questionId": "M01-S3-Q3",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/natiqa-ghayr-natiqa/modules/Module01Nashat.jsx",
+      "line": 196,
+      "requires": [
+        "murabba-natiq"
+      ],
+      "prerequisiteStatus": {
+        "murabba-natiq": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
       "questionId": "M02-S1-Q1",
       "module": 2,
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/natiqa-ghayr-natiqa/modules/Module02Maarif.jsx",
-      "line": 45,
+      "line": 46,
       "requires": [
         "murabba-natiq"
       ],
@@ -187,12 +203,10 @@
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/natiqa-ghayr-natiqa/modules/Module02Maarif.jsx",
       "line": 64,
       "requires": [
-        "murabba-natiq",
-        "ghayr-natiq"
+        "murabba-natiq"
       ],
       "prerequisiteStatus": {
-        "murabba-natiq": "established@M1",
-        "ghayr-natiq": "established@M2"
+        "murabba-natiq": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -203,7 +217,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/natiqa-ghayr-natiqa/modules/Module02Maarif.jsx",
-      "line": 93,
+      "line": 94,
       "requires": [
         "ghayr-natiq",
         "qima-mudbuta"

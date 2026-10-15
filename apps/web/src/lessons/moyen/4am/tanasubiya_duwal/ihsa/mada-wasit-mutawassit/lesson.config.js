@@ -15,6 +15,18 @@
  *   M5–M7 مسائل      puis trois « مسائل » de la plateforme (modules 5–7) : la chaleur d'El Oued (مسألة الدرس), un BEM blanc, les nuits de Tamanrasset
  *   M8 إختبار أولي   QCM 3–6 + une moyenne pondérée de la plateforme
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Module 1 — entrée retenue : la BALANCE de l'esport (labo `stat-balance`, 5 scores 2, 3, 3, 4, 8) : la main serre le كلّاب sur les
+ *   extrêmes (l'étendue se lit) puis déplace l'appui (la moyenne = le point d'équilibre) AVANT toute question. Rejetée : l'activité 3
+ *   du manuel posée d'abord (salaires, puis deux villes : calculs de tête sur un graphique) ; elle devient l'APPLICATION qui suit
+ *   (étape 1 avec le rappel du calibre de l'élève, étapes 3–5). Ordre : étendue (essai de l'élève) → équilibre (ses positions) →
+ *   étendue de deux villes → moyennes pondérées → « même moyenne, dispersion différente ».
+ *   Module 2 — entrée retenue : le RIDEAU du même labo (pas de carte, pas de titre) : pourquoi il ne se verrouille qu'en un endroit
+ *   (autant de valeurs de chaque côté) → la définition de Med APRÈS la réponse → la valeur tirée (la moyenne court, la médiane reste)
+ *   → les notes et l'exemple 1 du livre APRÈS la réponse → les 11 salaires et El Oued du livre (applications) → المدى (question avant
+ *   la boîte et la brique) → les 41 poids (prédiction de la règle des مراكز الفئات). Rejetée : les 11 salaires d'abord (trier un
+ *   tableau de mémoire) ; ils servent d'application, avec Med déjà nommée.
+ *   Modules 0, 3–8 : inchangés (م3 et م4 = exercices résolus et pratique du livre ; مسائل et test hors rétrofit).
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/mada-wasit-mutawassit';
@@ -80,7 +92,7 @@ export const LESSON_CONFIG = {
       title: 'ميزان النقاط: خمسة لاعبين',
       objective: 'المدى هو الفرق بين أكبر قيمة وأصغر قيمة، والمتوسط هو نقطة توازن القيم (مجموع القيم مقسومًا على عددها)',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'esport' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'esport' },
       learningPointIds: ['4am_mada-wasit-mutawassit_P1', '4am_mada-wasit-mutawassit_P2'],
       sourceElementIds: ['act-3'],
     },
@@ -101,7 +113,7 @@ export const LESSON_CONFIG = {
       title: 'الستارة: خمس نقاط (عدد فردي)',
       objective: 'الوسيط يجزئ السلسلة المرتّبة إلى سلسلتين لهما نفس التكرار، ولا يتأثّر بقيمة متطرّفة بخلاف المتوسط',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'esport' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'esport' },
       learningPointIds: ['4am_mada-wasit-mutawassit_P3'],
       sourceElementIds: ['act-4'],
     },

@@ -3,10 +3,8 @@ import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../co
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { IntegerSetQuestion, SourceTag } from '../../../../../../common/textbook';
-import { LibraryScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
+import { IntegerSetQuestion } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY } from '../content/textbook';
 
 /**
  * Module 1 — نشاط 2 (p. 8) : les jداءات de 60 puis ses diviseurs.
@@ -25,57 +23,60 @@ import { ACTIVITY } from '../content/textbook';
  * parfait). Lui plaquer un thème le rendrait moins lisible, pas plus
  * engageant — brief §11, « ne jamais forcer un contexte ».
  *
- * Les étapes : lire ses propres résultats (60), puis 48 et 17. LP : P1, P2.
+ * Rétrofit 2026-10-15 (§4quater) : le labo ouvre le module, SANS carte ni titre ni `lead` de workspace (le labo dit son contexte et
+ * sa question) ; les étapes : ce qu'un rectangle parfait livre (la brique APRÈS la réponse), tous les diviseurs de 60, puis 48
+ * et 17. LP : P1, P2.
  */
 export default function Module01AlAdad60() {
-  const [finished, setFinished] = useState(false);
-  const [q48, setQ48] = useState(false);
+  const [tested, setTested] = useState({});
+  const [q1, setQ1] = useState(false);
+  const [q60, setQ60] = useState(false);
   const [q17, setQ17] = useState(false);
+  const finish = (n) => setTested((t) => ({ ...t, [n]: true }));
   return (
-    <ContentModule objectives={["كم قاسمًا للعدد 60؟", "كيف أجد القواسم دون أن أنسى أيًّا منها؟", "هل نجد القواسم بنفس الطريقة مع 48؟"]}
+    <ContentModule objectives={["ماذا يعطيني كل مستطيل تامّ؟", "كم قاسمًا للعدد 60؟", "هل نجد القواسم بنفس الطريقة مع 48؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1}
       moduleTitle="نشاط 2 — قواسم العدد 60" moduleSubtitle="جداء عاملين بكلّ الأشكال الممكنة" estimatedTime="12 دقيقة"
-      brief={{ tag: 'أنشطة — الكتاب ص 8', title: ACTIVITY.title, tone: 'indigo',
-        // L'accroche et la vignette : la même bibliothèque que le laboratoire
-        // (les 60 livres en rayons), dessinée, jamais générée.
-        headline: 'هيا نرتّب المكتبة!', emoji: '📚', visual: <LibraryScene />,
-        body: <div className="space-y-1">{ACTIVITY.questions.slice(0, 3).map((q) => <p key={q}>{q}</p>)}<SourceTag source={ACTIVITY.source} /></div> }}
       intro={
-        // L'ACTIVITÉ DU MANUEL OUVRE LE MODULE. Ce module EST « نشاط 2 —
-        // قواسم العدد 60 » : son titre le dit, et sa première étape demande
-        // de compléter le tableau de 60. Ouvrir sur 24 cachait donc
-        // l'activité derrière un onglet que l'élève devait deviner — et le
-        // laissait devant une question qu'il n'avait pas de quoi traiter.
-        //
-        // Depuis le 2026-10-09 (décision du propriétaire, TOUTES les leçons) le
-        // workspace s'ouvre sur مبتدئ — le petit nombre — puis l'élève passe
-        // à متقدم, le 60 du manuel. Le 60 reste à un clic.
+        // LE LABO OUVRE LE MODULE (§4quater) : ni carte du manuel, ni titre / `lead` de workspace. Le workspace s'ouvre sur
+        // مبتدئ (24, un regard suffit) puis متقدم = le 60 du manuel. Le CONTEXTE ne change pas d'un niveau à l'autre : le rectangle
+        // de livres EST l'argument (n = d × e ⇔ rectangle parfait). `lead` ci-dessous = le contexte seul ; la question est celle du labo.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="ابدأ بالمستوى المبتدئ بعدد أصغر، ثم انتقل إلى المتقدّم لتملأ جدول الكتاب: العدد 60."
           levels={{
             beginner: () => (
-              <Manipulation type="factor-pairs" n={24} title="تمرّن أولًا: 24 = … × …"
-                lead="أطِل الصفّ كتابًا بعد كتاب: متى تُكوّن الكتب مستطيلًا تامًّا؟ لاحظ ما يعطيه لك كل مستطيل تامّ." />
+              <Manipulation type="factor-pairs" n={24} onFinished={finish}
+                lead="في المكتبة 24 كتابًا نريد ترتيبها على رفّ في صفوف متساوية، دون صفّ ناقص." />
             ),
             advanced: () => (
-              <Manipulation type="factor-pairs" n={60} title="جدول الكتاب: 60 = … × …"
-                lead="أطِل الصفّ ابتداءً من كتاب واحد. كل مستطيل تامّ يضيف سطرًا إلى الجدول. متى تستطيع أن تتوقّف؟" onFinished={() => setFinished(true)} />
+              <Manipulation type="factor-pairs" n={60} onFinished={finish}
+                lead="هذه المرّة 60 كتابًا: كل مستطيل تامّ تجده يضيف سطرًا إلى لوح الأزواج." />
             ),
           }}
         />
       }
       steps={[
-        { num: 1, title: 'استنتج كل قواسم العدد 60', subtitle: 'أكمل الجدول في المناولة أولًا', done: finished && q48 === 'set60',
+        { num: 1, title: 'ماذا يعطيك كل مستطيل تامّ؟', subtitle: 'سطر في لوح الأزواج', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="jidaa-aamilayn" lead="كل سطر في الجدول أعطاك قاسمين: العاملين." />
-              <IntegerSetQuestion prompt={<span>اكتب كل قواسم العدد <MathText>{'$60$'}</MathText>.</span>} expected={[1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]}
-                explain="ستّ كتابات على شكل جداء عاملين، اثنا عشر قاسمًا." requires={['jidaa-aamilayn']} onAnswered={() => setQ48('set60')} />
+              <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-600" data-activity-evidence data-tried={tested[24] || tested[60] ? 'true' : 'false'}>
+                {tested[24] || tested[60] ? 'أكملت لوح الأزواج في المناولة.' : 'لم تُكمل بعدُ لوح الأزواج: جرّب الصفوف في المناولة أعلاه.'}
+              </p>
+              <TapQuestion prompt={<span>في لوح الأزواج سطر مثل <MathText>{'$60 = 4 \\times 15$'}</MathText> : في كل صفّ 4 كتب وهناك 15 صفًّا. ماذا يعطيك هذا السطر عن العدد 60؟</span>}
+                options={['قاسمًا واحدًا: عدد الكتب في الصفّ', 'قاسمين: عدد الكتب في الصفّ وعدد الصفوف', 'مضاعفًا للعدد 60']} correct={1} cols={1}
+                explain={<span>عدد الكتب في الصفّ (4) وعدد الصفوف (15) يقسمان 60 معًا: كل مستطيل تامّ يعطي قاسمين.</span>}
+                onAnswered={() => setQ1(true)} />
+              {q1 && <KnowledgeBrick id="jidaa-aamilayn" lead="كل سطر في لوح الأزواج أعطاك قاسمين: العاملين." />}
             </div>
           ) },
-        { num: 2, title: 'ب) قواسم العدد 48، كذلك بالنسبة إلى العدد 17', done: q17,
+        { num: 2, title: 'استنتج كل قواسم العدد 60', subtitle: 'من أسطر اللوح', done: q60,
+          content: (
+            <div className="space-y-3">
+              <IntegerSetQuestion prompt={<span>اكتب كل قواسم العدد <MathText>{'$60$'}</MathText>.</span>} expected={[1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]}
+                explain="ستّ كتابات على شكل جداء عاملين، اثنا عشر قاسمًا." requires={['jidaa-aamilayn']} onAnswered={() => setQ60(true)} />
+            </div>
+          ) },
+        { num: 3, title: 'ب) قواسم العدد 48، كذلك بالنسبة إلى العدد 17', done: q17,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="qasim-rappel" variant="rappel" compact />

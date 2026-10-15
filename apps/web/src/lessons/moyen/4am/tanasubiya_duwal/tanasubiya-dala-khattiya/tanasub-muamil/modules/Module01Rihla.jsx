@@ -5,10 +5,9 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { HOOK, ACTIVITY, ACTIVITY_LINES } from '../content/textbook';
-import ScooterVignette from '../components/ScooterVignette';
+import { ACTIVITY, ACTIVITY_LINES } from '../content/textbook';
 import DataTable from '../components/DataTable';
 
 /**
@@ -23,6 +22,9 @@ import DataTable from '../components/DataTable';
  * UNDERSTAND l'étape 1 se décide sur les colonnes de l'élève (`onTrial`, `[data-activity-evidence]`) ;
  *           la brique jadwal-tanasub NOMME ce qu'elles montrent.
  * TRANSFER  la remise de l'Aïd (2% CORRIGÉ en 20 %, une ligne) : compléter, montrer, coefficient 0,8.
+ * RÉTROFIT 2026-10-15 (guide §4quater) : le lab EN TÊTE, sans carte, sans titre ni lead d'atelier (le lab porte son contexte en un
+ * `lead` court et sa question) ; l'étape 1 demande POURQUOI le quotient ne bouge pas (et non « que remarques-tu » : le lab a fait
+ * juger le tableau) ; la brique de l'étape 3 (rappel) ne précède plus sa question — `jadwal-tanasub` est nommée à l'étape 1.
  * « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) clôt la dernière étape : les labs vivent dans l'intro (deux niveaux).
  * Aucune étape n'attend `onFinished` (le module ne porte pas d'activité du manuel dans son lab).
  * LP : P1 (P2 et P3 sont l'objet du متقدم, enseignés en معارف).
@@ -73,20 +75,8 @@ export default function Module01Rihla() {
       moduleTitle="رحلة بالتروتينة — جدول التناسبية"
       moduleSubtitle="المدة والسعر: ما الذي يجمع أعمدة الجدول؟"
       estimatedTime="12 دقيقة"
-      brief={{
-        tag: 'مدخل الوحدة · أنشطة — الكتاب ص 66',
-        headline: HOOK.headline,
-        emoji: '🛴',
-        title: 'جدول تناسبية ومعامله',
-        tone: 'indigo',
-        visual: <ScooterVignette />,
-        body: <p><MathText>{HOOK.text}</MathText></p>,
-        footer: <div className="flex flex-wrap gap-2"><SourceTag source={HOOK.source} /><SourceTag source={ACTIVITY.source} /></div>,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="في المستويين تحرّك التروتينة بيدك لتختار المدة، وتسجّل كل رحلة في جدولك. ثم تحكم على الجدول بأعمدته."
           levels={{
             beginner: () => (
               <Manipulation
@@ -94,7 +84,7 @@ export default function Module01Rihla() {
                 level="beginner"
                 plans={BEGINNER}
                 theme="scooter"
-                title="تروتينة 15DA للدقيقة"
+                lead="في عطلة الصيف تؤجّر تروتينات كهربائية بالدقيقة على كورنيش الصابلات: 15DA لكل دقيقة."
                 onTrial={onTrial(BEGINNER)}
               />
             ),
@@ -104,7 +94,7 @@ export default function Module01Rihla() {
                 level="advanced"
                 plans={ADVANCED}
                 theme="scooter"
-                title="صيغتان للكراء: 15DA للدقيقة أو 50DA + 10DA للدقيقة"
+                lead="على الكورنيش نفسه صيغتان للكراء: 15DA لكل دقيقة، أو 50DA لفتح القفل ثم 10DA لكل دقيقة."
                 onTrial={onTrial(ADVANCED)}
               />
             ),
@@ -113,17 +103,21 @@ export default function Module01Rihla() {
       }
       steps={[
         {
-          num: 1, title: 'جدول رحلاتك', subtitle: 'السعر على المدة', done: q1,
+          num: 1, title: 'لماذا لا يتغيّر حاصل القسمة في جدولك؟', subtitle: 'من رحلاتك في المخبر', done: q1,
           content: (
             <div className="space-y-3">
               {evidence}
               <TapQuestion
-                prompt={<MathText>{'في جدول رحلاتك بصيغة 15DA للدقيقة، ماذا تلاحظ على حواصل القسمة $y \\div x$ (السعر على المدة)؟'}</MathText>}
-                options={['هي العدد نفسه في كل الأعمدة', 'تزداد كلما ازدادت المدة', 'تنقص كلما ازدادت المدة'].map(Opt)}
+                prompt={<MathText>{'سجّلتَ في جدولك رحلات بمدد مختلفة، وبقي حاصل القسمة $y \\div x$ (السعر على المدة) هو نفسه في كل عمود. لماذا لا يتغيّر عندما تتغيّر المدة؟'}</MathText>}
+                options={[
+                  'لأنّ كل دقيقة تُدفع بـ 15DA ، فسعر رحلة مدتها $x$ دقيقة هو $15 \\times x$ ، وقسمته على $x$ تعطي 15',
+                  'لأنّ السعر يزداد كلما ازدادت المدة',
+                  'لأنّ الفرق $y - x$ هو نفسه في كل الأعمدة',
+                ].map(Opt)}
                 correct={0}
                 cols={1}
                 requires={['darb-qisma-nisbiya']}
-                explain={<MathText>{'كل دقيقة بـ 15DA ، فسعر رحلة مدتها $x$ دقيقة هو $15 \\times x$ ، وحاصل القسمة $\\dfrac{15 \\times x}{x} = 15$ في كل عمود: مثلا $\\dfrac{30}{2} = \\dfrac{75}{5} = 15$.'}</MathText>}
+                explain={<MathText>{'كل دقيقة بـ 15DA ، فسعر رحلة مدتها $x$ دقيقة هو $15 \\times x$ ، وحاصل القسمة $\\dfrac{15 \\times x}{x} = 15$ في كل عمود: مثلا $\\dfrac{30}{2} = \\dfrac{75}{5} = 15$. أمّا الفرق $y - x$ فيتغيّر من عمود إلى آخر (في العمود $(2 ; 30)$ هو 28 ، وفي $(5 ; 75)$ هو 70)، والزيادة وحدها لا تكفي.'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
               {q1 && <KnowledgeBrick id="jadwal-tanasub" lead="ما يجمع أعمدة جدولك، باسمه:" />}
@@ -168,7 +162,6 @@ export default function Module01Rihla() {
           content: (
             <div className="space-y-3">
               <DataTable rows={[{ label: ACTIVITY.rows[0], values: ACTIVITY.table.before }, { label: ACTIVITY.rows[1], values: ACTIVITY.table.after }]} />
-              <KnowledgeBrick id="jadwal-tanasub" variant="rappel" compact />
               <TapQuestion
                 prompt="لماذا هذا الجدول جدول تناسبية؟"
                 options={[

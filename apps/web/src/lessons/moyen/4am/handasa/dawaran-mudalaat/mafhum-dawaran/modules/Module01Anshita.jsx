@@ -5,14 +5,13 @@ import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, ACTIVITY_2, ACTIVITY_3, ACTIVITY_3_LINES, LAB } from '../content/textbook';
 import {
   FIG_ACT1, FIG_ACT2_STEPS, FIG_ACT3_SEG, FIG_ACT3_SEG_SOL, FIG_ACT3_LINE1, FIG_ACT3_LINE1_SOL, FIG_ACT3_LINE2, FIG_ACT3_LINE2_SOL,
   FIG_ACT3_RAY, FIG_ACT3_RAY_SOL, FIG_ACT3_CIRCLE, FIG_ACT3_CIRCLE_SOL,
 } from '../content/figures';
-import FerrisVignette from '../components/FerrisVignette';
 
 /**
  * Module 1 — أنشطة 1, 2, 3 (pp. 152–153), ouvert sur LA GRANDE ROUE DE BEN AKNOUN (rotation-dial).
@@ -25,6 +24,10 @@ import FerrisVignette from '../components/FerrisVignette';
  * UNDERSTAND  نشاط 1 (le papier calque, deux symétries puis le « tour ») ; la brique « نقطة وصورتها » ; نشاط 2 (les
  *           étapes du شريط, l'image de B) sous les essais de l'élève (`onTrial`, `[data-activity-evidence]`) ; نشاط 3 (قطعة،
  *           مستقيم dans ses deux cas — figures rattachées à leur cas —, نصف مستقيم، دائرة), la figure solution après la réponse.
+ * RÉTROFIT 2026-10-15 (§4quater) : plus de `brief` (la carte « العجلة الدوّارة » + l'énoncé de ACTIVITY) ni de `title`/`lead` sur le workspace ;
+ * le labo (la roue) ouvre la page, son contexte (le parc de Ben Aknoun) est la `lead` de la roue. Le نشاط 1 du manuel (trois
+ * formes, papier calque) n'est plus l'entrée mais l'APPLICATION qui suit la roue (étape 1 : évidence `onFinished` de la roue,
+ * jamais bloquante). Les briques / figures-solutions étaient déjà après leur réponse.
  * AUCUNE étape n'attend `onFinished`. LP : P1 (le دوران), P2 (l'image d'un point), P3 (les images de figures).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -33,6 +36,7 @@ const SENSE = { direct: '↺', indirect: '↻' };
 
 export default function Module01Anshita() {
   const [trials, setTrials] = useState([]);
+  const [wheelDone, setWheelDone] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
@@ -70,26 +74,9 @@ export default function Module01Anshita() {
       moduleSubtitle="كل مقصورة تدور حول نفس المحور، بنفس الزاوية: ما هذه الحركة؟"
       estimatedTime="20 دقيقة"
       objectives={["ما الذي يجب أن أعرفه لأحدّد مكان وصول مقصورة بعد دوران؟", "كيف أنشئ صورة نقطة بالمدور والمنقلة؟", "ماذا تصبح قطعة ومستقيم ونصف مستقيم ودائرة بعد الدوران؟"]}
-      brief={{
-        tag: 'أنشطة — الكتاب ص 152–153',
-        headline: 'العجلة الدوّارة في حديقة بن عكنون!',
-        emoji: '🎡',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <FerrisVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={ACTIVITY_LINES.source} /></p>
-            <p className="text-sm text-slate-600">في المستوى «متقدم» (نشاطا 2 و 3): ورقة الكتاب والمدور والمنقلة. في المستوى «مبتدئ»: العجلة نفسها، تضع بيدك المكان الذي تصل إليه كل مقصورة.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين: اقترح مكانًا للصورة، ولاحظ متى تقبله اللوحة ومتى ترفضه، وماذا يقول لك الرفض."
           levels={{
             beginner: () => (
               <Manipulation
@@ -98,7 +85,8 @@ export default function Module01Anshita() {
                 {...LAB.beginner.numbers}
                 theme="ferris-wheel"
                 title="العجلة الدوّارة: أين تصل المقصورة؟"
-                lead={<MathText>{'ست مقصورات من A إلى F، بين كل مقصورتين متجاورتين $60^\\circ$ . كل دوران يُطلب في الاتجاهين.'}</MathText>}
+                lead={<MathText>{'في حديقة التسلية ببن عكنون تدور العجلة الكبيرة حول محورها، وكل مقصورة ترسم دائرة. ست مقصورات من A إلى F، بين كل مقصورتين متجاورتين $60^\\circ$ . كل دوران يُطلب في الاتجاهين.'}</MathText>}
+                onFinished={() => setWheelDone(true)}
               />
             ),
             advanced: () => (
@@ -117,9 +105,14 @@ export default function Module01Anshita() {
       }
       steps={[
         {
-          num: 1, title: 'نشاط 1: ثلاثة أشكال', subtitle: 'السؤال 1', done: q1,
+          num: 1, title: 'نشاط 1: هل يكفي تناظران أو انسحاب؟', subtitle: 'من العجلة إلى الورقة', done: q1,
           content: (
             <div className="space-y-3">
+              <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence="wheel" data-tried={wheelDone ? 'true' : 'false'}>
+                {wheelDone
+                  ? <span className="font-bold text-slate-800">أنهيت مهام العجلة: وضعت صورة كل مقصورة في الاتجاهين.</span>
+                  : <span className="text-slate-500">لم تنهِ العجلة بعد (المستوى «مبتدئ»): ضع الصورة التي تصل إليها كل مقصورة، في الاتجاهين، قبل أن تنتقل إلى الورقة.</span>}
+              </p>
               <TextbookBox kind="situation" text={`${ACTIVITY.intro} ${ACTIVITY.part1}`} source={ACTIVITY.source} compact />
               <GeoFigure {...FIG_ACT1} />
               <BatchChoiceQuestion

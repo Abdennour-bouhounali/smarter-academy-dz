@@ -20,6 +20,15 @@
  *                      la maquette d'un نصب تذكاري, l'aquarium agrandi (content/problems.js) ;
  *   M8 إختبار أولي    — cinq épreuves ; P1 et P2 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le jeu de construction (labo `scale-blocks`, thème `voxel-blocks`, niveau مبتدئ : un cube d'arête 1 que la main
+ *   agrandit de k = 2 puis 3, le volume PRÉDIT puis compté) — « × k³ » se voit en cubes avant de s'écrire, et la première étape
+ *   interroge le POURQUOI (8 cubes et non 2) sur les bâtis de l'élève. Rejetée : l'ouverture directe sur le نشاط 6 (calculer V et
+ *   A du pavé 5 × 4 × 3, puis ses dimensions et V′, A′ réduits de 3/5, puis « vérifier » la règle que l'énoncé donne déjà) : des
+ *   calculs dont la réponse est la règle ; il reste le niveau متقدم du MÊME labo et les étapes 2–4, en application sur les bâtis du pavé.
+ *   Ordre des idées : pourquoi 8 cubes (k dans les trois directions) → نشاط 6 : V, A du pavé → dimensions réduites → V′, A′ sous
+ *   « أتوقّع القاعدة », brique APRÈS la réponse → k = 2 sans recalcul → module 2 : questions d'abord, briques et exemple de la balle ensuite.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/takbir-tasghir';
@@ -87,7 +96,7 @@ export const LESSON_CONFIG = {
       title: 'مكعّب في لعبة البناء: كبّره مرّتين ثم ثلاث مرّات',
       objective: 'في تكبير أو تصغير نسبته k تُضرب الأطوال في k والمساحات في k² والحجوم في k³',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'voxel-blocks' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'voxel-blocks' },
       learningPointIds: ['4am_takbir-tasghir_P1'],
       sourceElementIds: ['act-6'],
     },

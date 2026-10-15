@@ -7,6 +7,16 @@
  * Source de vérité : docs/sources/4am/unit2/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
+ *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le carré de côté BC (labo `square-root-side`, mode refine) — la main étire le côté d'un carré d'aire 5 : aucune graduation ne
+ *   tombe juste, on l'encadre, et c'est CE refus qui rend nécessaires un nom et un symbole ; le niveau مبتدئ (aire 36, le côté tombe sur 6) donne
+ *   le contraste. Rejetées : (1) le تحدّ du réservoir (volume 36, hauteur 1,80 m) comme accroche — il suppose déjà le symbole et l'arrondi ; il devient
+ *   l'APPLICATION de l'étape 7 ; (2) la carte du manuel « triangle puis BC² » au-dessus du labo — un deuxième début ; le triangle passe à l'étape 1,
+ *   qui demande POURQUOI l'aire du carré sur BC vaut 5 (Pythagore) après que la main a cherché le côté.
+ *   Ordre des idées : le labo (36 puis 5, encadrement) → pourquoi aire 5 → la calculatrice et إيمان, sur les encadrements de l'élève → brique `qima-mudbuta`
+ *   APRÈS la réponse → √36, √81, √0,49 → brique `jidhr-taarif` APRÈS la réponse → √(a²) et (√a)² → spirale → réservoir ; module 2 : le labo 0,04 ouvre,
+ *   la définition du manuel et les briques `murabba-jidhr` / `jidhr-murabba` viennent APRÈS les réponses. Aucune destination du manuel n'a bougé.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/jidhr-tarbii';
 

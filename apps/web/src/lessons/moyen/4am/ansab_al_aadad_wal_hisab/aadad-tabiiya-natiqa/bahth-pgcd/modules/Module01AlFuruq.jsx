@@ -3,24 +3,18 @@ import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../co
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
-import { WorkshopScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY_A } from '../content/textbook';
 
 /**
- * Module 1 — نشاط 6 أ (p. 9) : les différences successives.
- *
- * Laboratoire d'ouverture À DEUX NIVEAUX (MANIPULATION_CONTRACT §7bis-levels),
- * dans l'ATELIER DE COUTURE (thème `workshop`) : deux rubans, et le petit
- * qu'on coupe dans le grand, encore et encore. La plus grande longueur qui
- * mesure les deux rubans mesure aussi ce qui reste après chaque coupe.
- *   مبتدئ  — 21 cm et 14 cm : trois coupes, la chaîne tient dans un écran,
- *            l'invariant se voit d'un maillon à l'autre.
- *   متقدم  — 252 cm et 140 cm, les nombres du manuel : la chaîne est longue,
- *            et cette longueur est ce qui rendra la division désirable (M3).
- *
- * Puis 378 et 315 à l'étape 2, comme le manuel le demande. LP : P1, P2.
+ * Module 1 — l'ENTRÉE : deux rubans dans l'atelier de couture (thème `workshop`), le petit coupé dans le grand, encore et encore.
+ * UNE PISTE (rétrofit 2026-10-15) : le labo en tête SANS carte ni titre de workspace ; la question porte sur ce que l'élève a vu
+ * (pourquoi le PGCD des deux rubans ne change pas à chaque coupe) ; la brique APRÈS la réponse.
+ *   مبتدئ  — 21 cm et 14 cm : trois coupes, la chaîne tient dans un écran, l'invariant se voit d'un maillon à l'autre.
+ *   متقدم  — 252 cm et 140 cm, les nombres du manuel : la chaîne est longue, et cette longueur rendra la division désirable (M3).
+ * Étape 1 : POURQUOI le PGCD ne bouge pas (252 − 140 = 112 vient du manuel, dans l'explication) ; étape 2 : 378 et 315 « de la
+ * même manière » (manuel, question 4), brique de la méthode APRÈS la chaîne finie. LP : P1, P2.
  */
 export default function Module01AlFuruq() {
   const [d1, setD1] = useState(false);
@@ -31,50 +25,49 @@ export default function Module01AlFuruq() {
     <ContentModule objectives={["ماذا يحدث للقواسم المشتركة عندما نطرح عددين؟", "هل نجد PGCD(252، 140) من الفرق وحده؟", "كيف أتابع الطرح خطوة بعد خطوة؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1}
       moduleTitle="نشاط 6 أ — الفروق المتتابعة" moduleSubtitle={ACTIVITY_A.subtitle} estimatedTime="14 دقيقة"
-      brief={{ tag: 'أنشطة — الكتاب ص 9', title: ACTIVITY_A.title, tone: 'indigo',
-        headline: 'هيا نقصّ الأشرطة!', emoji: '✂️', visual: <WorkshopScene />,
-        body: <div className="space-y-1"><p>{ACTIVITY_A.intro}</p>{ACTIVITY_A.questions.slice(0, 3).map((q) => <p key={q}><MathText>{q}</MathText></p>)}<SourceTag source={ACTIVITY_A.source} /></div> }}
       intro={(
-        // Le niveau par défaut sert LA TÂCHE DU MODULE : ce module porte
-        // l'activité du manuel dans son titre, et sa première étape attend
-        // que CETTE manipulation soit finie (`onFinished`). Ouvrir sur le
-        // petit nombre cachait l'activité derrière un onglet et laissait
-        // l'élève devant une étape qu'il ne pouvait pas satisfaire.
+        // Le niveau par défaut est le PETIT couple : premier contact court ; 252 et 140 (manuel) sont à un clic.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="شريطان في ورشة الخياطة: 252 سم و 140 سم. نقصّ الأصغر من الأكبر، مرّة بعد مرّة. وللتمرّن أولًا، جرّب المستوى المبتدئ بشريطين أقصر."
           levels={{
             beginner: () => (
               <Manipulation type="pgcd-differences" a={21} b={14}
-                title="تمرّن أولًا: 21 و 14"
-                lead="اسحب الشريط الأصغر على الأكبر لتقصّ منه طوله، وأعد. لاحظ ماذا يحدث للقاسم المشترك الأكبر للشريطين من قصّة إلى أخرى." />
+                title="شريطان في ورشة الخياطة: 21 سم و 14 سم"
+                onFinished={() => setD1(true)} />
             ),
             advanced: () => (
               <Manipulation type="pgcd-differences" a={a} b={b}
-                title="جدول الكتاب: 252 و 140 وفرقهما"
-                lead="قصّ الشريط الأصغر من الأكبر إلى أن لا يبقى شيء. قارن في كل سطر القاسم المشترك الأكبر للشريطين قبل القصّة وبعدها."
+                title="شريطان في ورشة الخياطة: 252 سم و 140 سم"
                 onFinished={() => setD1(true)} />
             ),
           }}
         />
       )}
       steps={[
-        { num: 1, title: '1) لماذا PGCD(252 ; 140) = PGCD(140 ; 112)؟', subtitle: 'أنهِ الطرحات في المناولة أولًا', done: d1 && q1,
+        { num: 1, title: 'لماذا لا يتغيّر القاسم المشترك الأكبر بعد كل قصّة؟', subtitle: 'السؤال 1) من الكتاب', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="pgcd-farq" lead="تذكّر خاصية الدرس 3 عن الفرق، ثم طبّقها على 252 و 140." />
-              <TapQuestion prompt={<span>لماذا <MathText>{'$\\mathrm{PGCD}(252\\ ;\\ 140) = \\mathrm{PGCD}(140\\ ;\\ 112)$'}</MathText>؟</span>}
-                options={['كل قاسم مشترك لـ 252 و 140 يقسم أيضًا 252 − 140 = 112، فللزوجين نفس القواسم المشتركة', 'لأن 112 أصغر من 140', 'لأن 252 = 2 × 140 − 28', 'لأن 140 قاسم للعدد 252']} correct={0} cols={1} requires={['pgcd-farq']}
+              <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
+                <li data-evidence="chain" data-tried={d1 ? 'true' : 'false'} className={d1 ? 'font-bold text-slate-800' : 'text-slate-500'}>
+                  {d1 ? 'أنهيتَ القصّ حتى صار الفرق معدومًا.' : 'لم تنهِ القصّ بعد: عُد إلى المناولة أعلاه واسحب الشريط الأصغر على الأكبر مرّة بعد مرّة.'}
+                </li>
+              </ul>
+              <TapQuestion prompt={<span>قصصتَ الشريط الأصغر من الأكبر مرّة بعد مرّة، وبقي القاسم المشترك الأكبر للشريطين كما هو. لماذا مثلًا <MathText>{'$\\mathrm{PGCD}(252\\ ;\\ 140) = \\mathrm{PGCD}(140\\ ;\\ 112)$'}</MathText>؟</span>}
+                options={['كل قاسم مشترك لـ 252 و 140 يقسم أيضًا 252 − 140 = 112، فللزوجين نفس القواسم المشتركة', 'لأن 112 أصغر من 140', 'لأن 252 = 2 × 140 − 28', 'لأن 140 قاسم للعدد 252']} correct={0} cols={1}
                 explain={<span>خاصية 1 (الدرس 3): القاسم المشترك يقسم الفرق. والعكس صحيح: قاسم مشترك لـ 140 و 112 يقسم مجموعهما 252.</span>} onAnswered={() => setQ1(true)} />
-              <TextbookBox kind="remark" text={ACTIVITY_A.misprint} compact />
+              {q1 && (
+                <>
+                  <KnowledgeBrick id="pgcd-farq" lead="قارن بما رأيته في الورشة بعد كل قصّة: ماذا بقي ثابتًا؟" />
+                  <TextbookBox kind="remark" text={ACTIVITY_A.misprint} compact />
+                </>
+              )}
             </div>
           ) },
         { num: 2, title: '4) عيّن بطريقة مماثلة PGCD(378 ; 315)', done: d2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="khwarizmiyat-al-furuq" />
               <Manipulation type="pgcd-differences" a={second.a} b={second.b} title="378 و 315" onFinished={() => setD2(true)} />
+              {d2 && <KnowledgeBrick id="khwarizmiyat-al-furuq" />}
             </div>
           ) },
       ]}

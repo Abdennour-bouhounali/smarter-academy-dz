@@ -7,7 +7,7 @@ import { SourceTag, TextbookExercise } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { EX7, EX7_OUTLIER, EX7_RANGE_TRAP, LAB } from '../content/textbook';
 import { byId } from '../content/exercises';
-import { Dustur, SeriesRow } from '../components/Figures';
+import { Dustur } from '../components/Figures';
 
 /**
  * Module 1 — تمرين 7 (p. 99, corrigé) « استعمال مجدول لحساب مؤشرات سلسلة », ouvert sur LE MAJDOUL (sheet-lab).
@@ -24,6 +24,10 @@ import { Dustur, SeriesRow } from '../components/Figures';
  * « أتوقّع القاعدة » : l'explication de la question de l'étape 4 ÉNONCE la règle `iadat-hisab` (la moyenne
  * bouge, la médiane reste, le nombre écrit à la main ne bouge pas) ; la question est donc enveloppée dans
  * <PredictRule id="iadat-hisab"> — l'élève écrit la règle d'après SA modification du lab avant de répondre.
+ * Rétrofit 2026-10-15 (§4quater) : le tableur OUVRE le module — plus de carte `brief` (elle étalait les questions أ ب جـ ET les
+ * quatre دساتير : de quoi dispenser l'élève de les trouver), ni `title` / `lead` de workspace ; le niveau par défaut est مبتدئ (cinq
+ * notes du club, platform_designed_entry) ; le texte du livre devient l'application des étapes 1 et 3, et les briques / les
+ * دساتير du livre n'apparaissent qu'APRÈS la réponse.
  * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape (les labs vivent dans `intro`) : une autre
  * série dans la ligne 1, les quatre دساتير en B2 ← B5, résolue au module 5.
  */
@@ -46,7 +50,7 @@ export default function Module01Majdul() {
   const evidenceFormulas = (
     <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence="formulas" data-tried={log.commits.length > 0 ? 'true' : 'false'}>
       {log.commits.length === 0 ? (
-        <p className="text-slate-500">لم تحجز أيّ دستور بعد (المجدول في الأعلى، المستوى المتقدّم).</p>
+        <p className="text-slate-500">لم تحجز أيّ دستور بعد (المجدول في الأعلى).</p>
       ) : (
         <ul className="space-y-1">
           <li className="text-xs text-slate-500">دساتيرك في المجدول:</li>
@@ -65,7 +69,7 @@ export default function Module01Majdul() {
   const evidenceEdit = (
     <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence="edit" data-tried={lastEdit ? 'true' : 'false'}>
       {!lastEdit ? (
-        <p className="text-slate-500">بعد التحقق من الدساتير الأربعة، غيّر قيمة في السطر 1 من المجدول وراقب العمود B.</p>
+        <p className="text-slate-500">بعد أن تتحقّق من دساتيرك، غيّر قيمة في السطر 1 من المجدول وراقب العمود B.</p>
       ) : (
         <ul className="space-y-1">
           <li className="text-xs text-slate-500">آخر تعديل لك: <bdi dir="ltr" className="font-mono">{`${lastEdit.cell} = ${lastEdit.value}`}</bdi></li>
@@ -86,38 +90,17 @@ export default function Module01Majdul() {
       moduleTitle="تمرين 7 — المجدول"
       moduleSubtitle="نحسب باليد ثم نتأكّد بالمجدول"
       estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'أوظّف تعلّماتي — الكتاب ص 99',
-        headline: 'إلى قاعة الإعلام الآلي!',
-        emoji: '💻',
-        title: EX7.group,
-        tone: 'emerald',
-        body: (
-          <div className="space-y-2">
-            <p><MathText>{EX7.intro}</MathText></p>
-            <SeriesRow values={EX7.series} />
-            <ul className="space-y-1 text-sm">
-              {EX7.questions.map((q) => <li key={q}><MathText>{q}</MathText></li>)}
-              {EX7.steps.map((s) => <li key={s} className="ps-3"><MathText>{`• ${s}`}</MathText></li>)}
-            </ul>
-            <p className="text-xs text-slate-500" data-correction><MathText>{EX7.correctionNote}</MathText></p>
-          </div>
-        ),
-        footer: <SourceTag source={EX7.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="الفكرة نفسها في المستويين: اكتب في الخلايا واترك المجدول يحسب، ثم غيّر خلية وانظر ماذا يحدث."
           levels={{
             beginner: () => (
               <Manipulation
                 type="sheet-lab"
                 level="beginner"
                 {...LAB.beginner}
-                title="مجدول: نقاط خمسة أصدقاء في مسابقة القسم"
                 lead="النقاط محجوزة في A1:E1. احسب المدى والمتوسط باليد في العمود C ، ثم اكتب الدستورين في B."
+                onTrial={onTrial}
               />
             ),
             advanced: () => (
@@ -125,7 +108,6 @@ export default function Module01Majdul() {
                 type="sheet-lab"
                 level="advanced"
                 {...LAB.advanced}
-                title="تمرين 7: السلسلة 4، 10، 8، 4، 3، 2، 4 في مجدول"
                 lead="احجز السلسلة في A1:G1 واحفظ الملف، ثم احسب باليد في C واكتب الدساتير الأربعة في B2 ← B5."
                 onTrial={onTrial}
               />
@@ -138,8 +120,8 @@ export default function Module01Majdul() {
           num: 1, title: 'أ) ب) الحساب باليد', subtitle: 'المدى، الوسيط، المتوسط، المنوال', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="manwal" lead="ب) يعرّف التمرين نفسه المنوال:" />
-              <TextbookExercise exercise={byId['ex-7-ab']} requires={['mada-silsila', 'wasit-silsila', 'mutawassit-silsila', 'manwal']} onAnswered={() => setQ1(true)} />
+              <TextbookExercise exercise={byId['ex-7-ab']} requires={['mada-silsila', 'wasit-silsila', 'mutawassit-silsila']} onAnswered={() => setQ1(true)} />
+              {q1 && <KnowledgeBrick id="manwal" lead="ب) يعرّف التمرين نفسه المنوال:" />}
             </div>
           ),
         },
@@ -147,7 +129,6 @@ export default function Module01Majdul() {
           num: 2, title: 'جـ) نحجز السلسلة في المجدول', subtitle: 'السطر الأول: من A1 إلى G1', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="hajz-hifz" lead="ما فعلته في المجدول قبل أيّ دستور:" />
               <TapQuestion
                 prompt="نحجز السلسلة ذات القيم السبع في السطر الأول بدءًا من A1. المجال الذي تشغله:"
                 options={[D('A1:G1'), D('A1:F1'), D('A1:A7'), D('A1:H1')]}
@@ -156,17 +137,20 @@ export default function Module01Majdul() {
                 explain={<MathText>{'سبع خلايا في السطر 1: A1 ، B1 ، C1 ، D1 ، E1 ، F1 ، G1 . المجال A1:F1 ستّ خلايا فقط، و A1:A7 في العمود A لا في السطر الأول، و A1:H1 ثماني خلايا.'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
-              {q2 && <KnowledgeBrick id="khaliya-majal" lead="كل خلية لها اسم، ومجموعة خلايا متتالية مجال:" />}
+              {q2 && (
+                <>
+                  <KnowledgeBrick id="hajz-hifz" lead="ما فعلته في المجدول قبل أيّ دستور:" />
+                  <KnowledgeBrick id="khaliya-majal" lead="كل خلية لها اسم، ومجموعة خلايا متتالية مجال:" />
+                </>
+              )}
             </div>
           ),
         },
         {
-          num: 3, title: 'جـ) نتأكّد بالدساتير', subtitle: 'اكتب الدساتير في المستوى المتقدّم، ثم أجب', done: q3,
+          num: 3, title: 'جـ) نتأكّد بالدساتير', subtitle: 'اكتب الدساتير في المجدول، ثم أجب', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="dustur" lead="في الشريط كتبت ما يبدأ بـ « ⁦=⁩ »، ثم ENTER:" />
               {evidenceFormulas}
-              <KnowledgeBrick id="dasatir-arbaa" lead="الدساتير الأربعة التي يطلبها التمرين، كلٌّ في سطره:" />
               <TapQuestion
                 prompt={<span>كتب زميلك في الخلية B4 الدستور <Dustur>=MOYENNE(A1:F1)</Dustur> فأظهر المجدول 5,17 ، وحسابه باليد 5 . لماذا؟</span>}
                 options={[
@@ -176,10 +160,21 @@ export default function Module01Majdul() {
                 ]}
                 correct={0}
                 cols={1}
-                requires={['dustur', 'khaliya-majal', 'dasatir-arbaa']}
+                requires={['khaliya-majal']}
                 explain={<MathText>{`${EX7_RANGE_TRAP.wrong} ${EX7_RANGE_TRAP.why} ${EX7_RANGE_TRAP.right} المجدول يحسب على المجال المكتوب بالضبط، ولا يخطئ في الحساب.`}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && (
+                <>
+                  <KnowledgeBrick id="dustur" lead="في الشريط كتبت ما يبدأ بـ « ⁦=⁩ »، ثم ENTER:" />
+                  <p className="text-sm text-slate-800"><MathText>{EX7.questions[2]}</MathText></p>
+                  <ul className="space-y-1 text-sm">
+                    {EX7.steps.map((st) => <li key={st} className="ps-3"><MathText>{`• ${st}`}</MathText></li>)}
+                  </ul>
+                  <p className="text-xs text-slate-500" data-correction><MathText>{EX7.correctionNote}</MathText></p>
+                  <KnowledgeBrick id="dasatir-arbaa" lead="الدساتير الأربعة التي يطلبها التمرين، كلٌّ في سطره:" />
+                </>
+              )}
             </div>
           ),
         },

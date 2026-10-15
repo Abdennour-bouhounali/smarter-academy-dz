@@ -18,6 +18,8 @@ import { FIG_METHOD, FIG_NOW169 } from '../content/figures';
  * « أتوقّع القاعدة » : le حل du manuel ÉNONCE la méthode juste avant sa brique — il est enveloppé dans une PredictRule portant
  * l'id de la brique (tariqat-nisf-qutr) : l'élève écrit d'abord sa méthode (predictPrompt de knowledge.jsx, qui redonne les
  * données du تمرين), puis le حل et la brique s'affichent, une seule « توقّعك ». La figure reste AVANT : la prompt s'y appuie.
+ * Rétrofit 2026-10-15 (§4quater) : module sans labo, la carte du haut ne dit plus de fait ; « أتوقّع القاعدة » inchangée ; la brique
+ * `tariqat-nisf-qutr` vient APRÈS le calcul de 13 et 5 (sans `requires` sur elle).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const near = (v) => (n) => Number.isFinite(n) && Math.abs(n - v) < 1e-9;
@@ -37,7 +39,7 @@ export default function Module03Taraiq() {
       estimatedTime="8 دقائق"
       brief={{
         tag: 'طرائق — الكتاب ص 169', title: 'حساب نصف قطر مقطع كُرة بمستو', tone: 'emerald',
-        body: <p>اقرأ الحل سطرا بسطر: هو الحساب الذي كانت الطابعة تتحقّق منه عند كل طبقة.</p>,
+        body: <p>حلّ تمرين الكتاب سطرا بسطر، ثم حساب بأعداد جديدة، ثم تمرين «دوري الآن» على الأسطوانة.</p>,
         footer: <SourceTag source={METHOD_RADIUS.source} />,
       }}
       steps={[
@@ -50,17 +52,16 @@ export default function Module03Taraiq() {
                 <MethodSteps method={METHOD_RADIUS} />
               </PredictRule>
               <p className="text-xs text-slate-500" data-correction>{METHOD_RADIUS.spelling}</p>
-              <KnowledgeBrick id="tariqat-nisf-qutr" lead="الطريقة، في سطر واحد:" />
               <NumericQuestion
                 prompt={<MathText>{'كرة نصف قطرها $13\\,\\mathrm{cm}$ يقطعها مستو يبعد عن مركزها بـ $5\\,\\mathrm{cm}$ . نصف قطر المقطع (بـ $\\mathrm{cm}$):'}</MathText>}
                 expected={near(12)}
                 display="12"
                 parse={parseDec}
-                requires={['tariqat-nisf-qutr']}
                 explain={<MathText>{'$O\'M^2 = 13^2 - 5^2 = 169 - 25 = 144$ ، إذن $O\'M = \\sqrt{144} = 12\\,\\mathrm{cm}$ .'}</MathText>}
                 explainFor={(n) => (n === 8 ? <MathText>{'$13 - 5 = 8$ : طرحت الطولين، والمطلوب طرح مربعيهما ثم أخذ الجذر.'}</MathText> : null)}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="tariqat-nisf-qutr" lead="الطريقة، في سطر واحد:" />}
             </div>
           ),
         },

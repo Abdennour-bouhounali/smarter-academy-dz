@@ -6,7 +6,11 @@
  */
 import { src, addition } from '../../_unit/unitMeta.js';
 
-/** نشاط 1 « أكوّن أعدادا » (p. 9). */
+/**
+ * نشاط 1 « أكوّن أعدادا » (p. 9) — une APPLICATION, pas l'entrée de la leçon (règle du propriétaire, 2026-10-14 : le manuel
+ * est la référence des الكفاءات, pas le script ; LESSON_DEVELOPMENT_GUIDE §4ter). L'entrée est l'atelier des crayons
+ * (`WORKSHOP`) ; ces trois questions sont posées dans أتمرّن (module 4, `EX['act-1']`) une fois l'échange découvert.
+ */
 export const ACTIVITY = {
   source: src('act-1', 9, 'اكتشف', 1),
   title: 'أكوّن أعدادا',
@@ -17,6 +21,19 @@ export const ACTIVITY = {
   ],
   digits: [0, 1, 3, 8],
   answers: { largest: 8310, smallest: 1038, next: 1000, previous: 998 },
+};
+
+/**
+ * L'ENTRÉE de la leçon (module 1), choisie par la plateforme : l'atelier où l'on ne peut ÉCRIRE le nombre de crayons
+ * qu'après avoir lié chaque dizaine. Rejetée comme entrée : l'activité du manuel (trois questions posées avant toute
+ * expérience — l'élève répond de mémoire, il ne découvre rien). Les questions du module portent sur les nombres que
+ * l'élève a lui-même obtenus au labo.
+ */
+export const WORKSHOP = {
+  source: addition('platform_designed_entry'),
+  sevens: 'في 2577 يعدّ الرقم 7 الذي في عمود الأقلام 7 أقلام، ويعدّ الرقم 7 الذي في عمود الحزم 7 حزم، أي 70 قلمًا: نفس الرقم، وقيمتان مختلفتان حسب العمود.',
+  cascade: '10 أقلام تصير حزمة، فتصير الحزم 10 فتُربط علبة، فتصير العلب 10 فتُربط صندوقًا: ثلاث ربطات متتالية، و $999 + 1 = 1000$.',
+  zero: 'في 2017 لا علبة: نكتب 0 في عمود العلب. بدونه نكتب 217، فينزل الرقم 2 من الصناديق (الآلاف) إلى العلب (المئات).',
 };
 
 /** Le labo (MANIPULATION_CONTRACT « rank-exchange ») : les nombres des deux niveaux et du standalone `money` (ex-2). */

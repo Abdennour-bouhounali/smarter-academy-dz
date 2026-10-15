@@ -5,6 +5,18 @@
  * جيوجيبرا (p. 76), puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit6/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la droite épinglée en O (labo `origin-line`, thème `cablecar`) posée seule en tête du module 1 — le câble du
+ *   téléphérique de Constantine tendu depuis la station O ; l'élève POSE des points, le repère refuse (avec l'écart) ceux qui ne sont
+ *   pas sur la droite de f(x) = 0,5x et O résiste. Le contexte (câble, station, f) est le `lead` du labo ; plus de carte du livre
+ *   au-dessus. Rejetée : le tableau f(0), f(1), f(4) à « compléter » en premier (le labo vient de faire calculer f(1) et f(4) : la
+ *   question répétait le labo) — l'étape 1 demande POURQUOI un point est refusé, l'étape 2 POURQUOI B tombe sur (OA).
+ *   Ordre des idées : points posés / refusés → B sur (OA) → lecture de C (−2) → y = 0,5x et la brique `tamthil-nashat` (après la réponse)
+ *   → le curseur (niveau متقدم) : monte / descend → module 2 : la propriété prédite puis appliquée AVANT sa brique, l'exemple −2x / 2x
+ *   et la figure après la 1re réponse, la brique du sens après le classement, la méthode de tracé puis sa brique, la lecture graphique
+ *   (labo en tête de l'étape) puis sa brique, دوري الآن.
+ *   Le labo est le niveau du livre (نشاط 3) : `experience.reason` reste vide (pas `platform_designed_entry`). Modules 0, 3–7 inchangés.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/tamthil-bayani-khatti';

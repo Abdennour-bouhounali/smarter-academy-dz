@@ -18,7 +18,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module01Lafita.jsx",
-        "line": 120,
+        "line": 103,
         "step": 2,
         "variant": "new"
       }
@@ -29,7 +29,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module02Taraiq.jsx",
-        "line": 88,
+        "line": 90,
         "step": 2,
         "variant": "new"
       }
@@ -43,7 +43,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module01Lafita.jsx",
-        "line": 100,
+        "line": 83,
         "step": 1,
         "variant": "new"
       }
@@ -54,7 +54,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module01Lafita.jsx",
-        "line": 182,
+        "line": 165,
         "step": 4,
         "variant": "new"
       }
@@ -65,7 +65,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module02Taraiq.jsx",
-        "line": 70,
+        "line": 72,
         "step": 1,
         "variant": "new"
       }
@@ -76,7 +76,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module02Taraiq.jsx",
-        "line": 135,
+        "line": 134,
         "step": 4,
         "variant": "new"
       }
@@ -87,7 +87,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module02Taraiq.jsx",
-        "line": 166,
+        "line": 165,
         "step": 5,
         "variant": "new"
       }
@@ -213,7 +213,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module01Lafita.jsx",
-      "line": 87,
+      "line": 70,
       "requires": [
         "qitaa-mutaqayisa"
       ],
@@ -229,7 +229,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module01Lafita.jsx",
-      "line": 111,
+      "line": 94,
       "requires": [
         "talis-nisab",
         "taqsim-qitaa"
@@ -247,7 +247,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module01Lafita.jsx",
-      "line": 129,
+      "line": 112,
       "requires": [
         "tabrir-taqsim"
       ],
@@ -263,7 +263,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module01Lafita.jsx",
-      "line": 154,
+      "line": 137,
       "requires": [
         "qitaa-mutaqayisa"
       ],
@@ -279,7 +279,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module01Lafita.jsx",
-      "line": 168,
+      "line": 151,
       "requires": [
         "mustaqim-muntasafayn"
       ],
@@ -295,7 +295,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module02Taraiq.jsx",
-      "line": 61,
+      "line": 63,
       "requires": [
         "kitabat-tanasub"
       ],
@@ -311,7 +311,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module02Taraiq.jsx",
-      "line": 79,
+      "line": 81,
       "requires": [
         "nuqta-nisba",
         "talis-nisab"
@@ -329,7 +329,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module02Taraiq.jsx",
-      "line": 101,
+      "line": 100,
       "requires": [
         "nuqtatan"
       ],
@@ -345,7 +345,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module02Taraiq.jsx",
-      "line": 122,
+      "line": 121,
       "requires": [
         "talis-nisab",
         "kitabat-tanasub"
@@ -363,7 +363,7 @@
       "step": 4,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module02Taraiq.jsx",
-      "line": 137,
+      "line": 136,
       "requires": [
         "insha-tul"
       ],
@@ -379,7 +379,7 @@
       "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/modules/Module02Taraiq.jsx",
-      "line": 157,
+      "line": 156,
       "requires": [
         "fithaghuris",
         "tabrir-taqsim"

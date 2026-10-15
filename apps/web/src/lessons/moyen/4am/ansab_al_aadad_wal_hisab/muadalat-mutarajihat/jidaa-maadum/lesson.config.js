@@ -8,6 +8,19 @@
  * puis trois « مسائل » de la plateforme (modules 5–7).
  * Source de vérité : docs/sources/4am/unit4/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue (module 1) : le terrain d'entraînement dont les deux côtés sont les deux facteurs (vanishing-pitch), niveau مبتدئ
+ *   3(x − 5) — un côté constant qui ne s'écrase jamais, un seul zéro — ajout déclaré de la plateforme (`platform_designed_entry`) ;
+ *   le niveau متقدم (x − 2)(x + 5) est l'équation du نشاط 2. L'élève ÉPINGLE les valeurs où le terrain disparaît et c'est sur SES
+ *   épingles que la règle est posée (PredictRule, puis la brique APRÈS la réponse).
+ *   Rejetée : le نشاط 2 tel quel — « انقل وأكمل 2 × … = 0 » et « a × b = 0 ⇒ a = … أو b = … » comme carte au-dessus du labo : ce sont
+ *   des questions auxquelles on répond de mémoire avant tout geste (un test, pas une découverte) ; elles viennent APRÈS la règle (étape 2),
+ *   comme application sur des nombres. Le module 2 s'ouvre sur le terrain de l'exemple 3 du livre (3x − 4)(−2x + 1) ; la définition
+ *   et la propriété y sont nommées APRÈS leur question.
+ *   Ordre des idées : épingler les zéros → la règle (sur ses épingles) → les produits du livre → إلياس وأمين (pourquoi la propriété
+ *   est plus courte) → −1,2(3x + 2,7) des deux façons → (x − 2)(x + 5) où le نشر échoue → M2 : l'exemple 3 sur le terrain, « de quelle
+ *   forme ? », la définition, la propriété et ses solutions, (E). Modules 3–8 inchangés. Aucune destination du manuel n'a bougé.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/jidaa-maadum';
@@ -75,7 +88,7 @@ export const LESSON_CONFIG = {
       title: 'ملعب ضلعاه 3 و x − 5: متى يختفي؟',
       objective: 'خاصية الجداء المعدوم: A × B = 0 يعني A = 0 أو B = 0 — مساحة الملعب تنعدم فقط عندما ينعدم أحد ضلعيه',
       autonomy: '',
-      experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'football' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'football' },
       learningPointIds: ['4am_jidaa-maadum_P2'],
       sourceElementIds: ['act-2b'],
     },

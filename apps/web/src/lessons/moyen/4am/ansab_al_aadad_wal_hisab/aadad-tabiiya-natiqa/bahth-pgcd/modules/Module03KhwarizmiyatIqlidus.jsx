@@ -3,25 +3,18 @@ import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../co
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { MethodSteps, SourceTag } from '../../../../../../common/textbook';
-import { WorkshopScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
+import { MethodSteps } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY_B, METHOD_EUCLID } from '../content/textbook';
 
 /**
- * Module 3 — نشاط 6 ب (p. 9) + طريقة إقليدس (p. 13).
- *
- * Laboratoire d'ouverture À DEUX NIVEAUX (MANIPULATION_CONTRACT §7bis-levels),
- * dans le MÊME atelier de couture que le module 1 (thème `workshop`) : on ne
- * coupe plus, on REPORTE le petit ruban le long du grand autant de fois qu'il
- * tient ; le bout qui dépasse est le reste — une division en un geste.
- *   مبتدئ  — 45 cm et 18 cm : deux divisions, l'algorithme entier tient dans
- *            un écran, et la règle d'arrêt (le reste nul) se voit arriver.
- *   متقدم  — 765 et 135, les nombres du manuel, AVEC la comparaison aux
- *            différences : trois divisions contre huit soustractions. C'est
- *            la question même de l'activité.
- *
- * Puis 3356 et 1528 à l'étape 3. LP : P3, P4, P5.
+ * Module 3 — l'ENTRÉE de la division : le MÊME atelier de couture (thème `workshop`) ; on ne coupe plus, on REPORTE le petit
+ * ruban le long du grand autant de fois qu'il tient ; le bout qui dépasse est le reste. UNE PISTE (rétrofit 2026-10-15) : le
+ * labo en tête SANS carte ni titre de workspace, la question sur ce que l'élève a fait, les briques APRÈS la réponse.
+ *   مبتدئ  — 45 cm et 18 cm : deux divisions, l'algorithme entier tient dans un écran, la règle d'arrêt se voit arriver.
+ *   متقدم  — 765 et 135, les nombres du manuel, AVEC la comparaison aux différences : trois divisions contre huit soustractions.
+ * Étape 1 : POURQUOI le reste remplace le plus petit couple (manuel, question 2) ; étape 2 : l'exemple résolu du manuel
+ * (836 et 1938) ; étape 3 : 3356 et 1528, la brique du choix de méthode APRÈS la comparaison. LP : P3, P4, P5.
  */
 export default function Module03KhwarizmiyatIqlidus() {
   const [e1, setE1] = useState(false);
@@ -31,48 +24,48 @@ export default function Module03KhwarizmiyatIqlidus() {
   const { a, b, second } = ACTIVITY_B.numbers;
   return (
     <ContentModule objectives={["كم نسخة من الشريط الأصغر تلزم، وماذا يتبقّى؟", "متى نتوقّف عن إعادة القسمة؟", "أين نجد PGCD في آخر الخطوات؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(3)} moduleNumber={3} moduleTitle="نشاط 6 ب — خوارزمية إقليدس" moduleSubtitle={ACTIVITY_B.subtitle} estimatedTime="15 دقيقة"
-      brief={{ tag: 'أنشطة ص 9 — طرائق ص 13', title: 'قسمة واحدة تختصر طرحات كثيرة', tone: 'emerald',
-        headline: 'هيا نقيس الأشرطة!', emoji: '📏', visual: <WorkshopScene />,
-        body: <div className="space-y-1"><p><MathText>{ACTIVITY_B.questions[0]}</MathText></p><p>{ACTIVITY_B.questions[1]}</p><SourceTag source={ACTIVITY_B.source} /></div> }}
       intro={(
-        // Le niveau par défaut sert LA TÂCHE DU MODULE : ce module porte
-        // l'activité du manuel dans son titre, et sa première étape attend
-        // que CETTE manipulation soit finie (`onFinished`). Ouvrir sur le
-        // petit nombre cachait l'activité derrière un onglet et laissait
-        // l'élève devant une étape qu'il ne pouvait pas satisfaire.
+        // Le niveau par défaut est le PETIT couple : premier contact court ; 765 et 135 (manuel) sont à un clic.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="نشاط الكتاب: 765 و 135، مع المقارنة بعدد خطوات الفروق. وللتمرّن أولًا، جرّب المستوى المبتدئ."
           levels={{
             beginner: () => (
               <Manipulation type="euclidean-algorithm" a={45} b={18}
-                title="تمرّن أولًا: 45 و 18"
-                lead="ضع نسخًا من الشريط الأصغر على الأكبر، واقرأ ما يبقى. ثم أعد مع القطعة الباقية: متى تتوقّف؟" />
+                title="شريطان في ورشة الخياطة: 45 سم و 18 سم"
+                onFinished={() => setE1(true)} />
             ),
             advanced: () => (
               <Manipulation type="euclidean-algorithm" a={a} b={b} compareWith="differences"
-                title="765 و 135 بطريقة القسمة"
-                lead="ضع نسخ الشريط الأصغر على الأكبر، وانقل ما يبقى إلى السطر التالي. في النهاية قارن عدد القسمات بعدد القصّات."
+                title="شريطان في ورشة الخياطة: 765 سم و 135 سم"
                 onFinished={() => setE1(true)} />
             ),
           }}
         />
       )}
       steps={[
-        { num: 1, title: '2) اشرح لماذا PGCD(765 ; 135) = PGCD(135 ; 90)', subtitle: 'أنهِ القسمات في المناولة أولًا', done: e1 && q1,
+        { num: 1, title: 'لماذا نكمل بالباقي بدل الشريط الأكبر؟', subtitle: 'السؤال 2) من الكتاب', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="khwarizmiyat-iqlidus" />
-              <TapQuestion prompt={<span>باقي القسمة الإقليدية للعدد 765 على 135 هو 90. لماذا <MathText>{'$\\mathrm{PGCD}(765\\ ;\\ 135) = \\mathrm{PGCD}(135\\ ;\\ 90)$'}</MathText>؟</span>}
-                options={['لأن كل قاسم مشترك لـ 765 و 135 يقسم الباقي 90 (خاصية 2)، والعكس', 'لأن 90 < 135', 'لأن 765 = 135 × 5', 'لأن 90 قاسم للعدد 135']} correct={0} cols={1} requires={['pgcd-baqi', 'khwarizmiyat-iqlidus']}
+              <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
+                <li data-evidence="divisions" data-tried={e1 ? 'true' : 'false'} className={e1 ? 'font-bold text-slate-800' : 'text-slate-500'}>
+                  {e1 ? 'أنهيتَ القسمات حتى صار الباقي معدومًا.' : 'لم تنهِ القسمات بعد: عُد إلى المناولة أعلاه وضع النسخ، ثم انقل ما يبقى إلى السطر التالي.'}
+                </li>
+              </ul>
+              <TapQuestion prompt={<span>في كل سطر تنقل الباقي وتترك الشريط الأكبر. باقي القسمة الإقليدية للعدد 765 على 135 هو 90. لماذا <MathText>{'$\\mathrm{PGCD}(765\\ ;\\ 135) = \\mathrm{PGCD}(135\\ ;\\ 90)$'}</MathText>؟</span>}
+                options={['لأن كل قاسم مشترك لـ 765 و 135 يقسم الباقي 90 (خاصية 2)، والعكس', 'لأن 90 < 135', 'لأن 765 = 135 × 5', 'لأن 90 قاسم للعدد 135']} correct={0} cols={1}
                 explain={<span><MathText>{'$765 = 135 \\times 5 + 90$'}</MathText>؛ قاسم مشترك لـ 765 و 135 يقسم 90 = 765 − 135 × 5، وقاسم مشترك لـ 135 و 90 يقسم 765.</span>} onAnswered={() => setQ1(true)} />
+              {q1 && <KnowledgeBrick id="khwarizmiyat-iqlidus" />}
             </div>
           ) },
         { num: 2, title: 'طريقة الكتاب: 836 و 1938', done: read,
           content: <MethodSteps method={METHOD_EUCLID} onAllRevealed={() => setRead(true)} /> },
         { num: 3, title: '5) عيّن بطريقة مماثلة PGCD(3356 ; 1528)', done: e2,
-          content: <div className="space-y-3"><KnowledgeBrick id="ikhtiyar-al-tariqa" compact /><Manipulation type="euclidean-algorithm" a={second.a} b={second.b} compareWith="differences" title="3356 و 1528" onFinished={() => setE2(true)} /></div> },
+          content: (
+            <div className="space-y-3">
+              <Manipulation type="euclidean-algorithm" a={second.a} b={second.b} compareWith="differences" title="3356 و 1528" onFinished={() => setE2(true)} />
+              {e2 && <KnowledgeBrick id="ikhtiyar-al-tariqa" compact />}
+            </div>
+          ) },
       ]}
       footer={<KnowledgeSnapshot moduleNumber={3} />} />
   );

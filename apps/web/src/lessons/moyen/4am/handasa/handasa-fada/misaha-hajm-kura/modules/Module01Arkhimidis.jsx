@@ -5,9 +5,9 @@ import MathText from '../../../../../../common/components/MathText';
 import SpaceFigure from '../../../../../../common/components/SpaceFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, ARCHIMEDES, ARCH_LINES, LAB } from '../content/textbook';
+import { ARCHIMEDES, ARCH_LINES, LAB } from '../content/textbook';
 import { FIG_ARCHIMEDES } from '../content/figures';
 
 /**
@@ -23,6 +23,9 @@ import { FIG_ARCHIMEDES } from '../content/figures';
  * UNDERSTAND  le texte d'Archimède et sa figure (le cylindre de hauteur 2R : volume 2πR³, aire latérale 4πR²), puis les
  *           questions sous les essais de l'élève (`onTrial`, `[data-activity-evidence]`) : 4 disques ; 2/3 du cylindre.
  * AUCUNE étape n'attend `onFinished`. LP : P1 (l'aire), P2 (le volume).
+ * Rétrofit 2026-10-15 (§4quater) : le labo en tête (ni carte, ni titre/`lead` de workspace) ; les étapes interrogent ce que l'élève
+ * a FAIT (pourquoi 4 disques quel que soit R, le vide de 1/3 au-dessus du jus), sans reposer ce que le labo demande ; les briques
+ * APRÈS la réponse ; le texte d'Archimède et le cylindre viennent en dernier, après la découverte, pour la NOMMER.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const gcd = (a, b) => { while (b) [a, b] = [b, a % b]; return a || 1; };
@@ -68,25 +71,9 @@ export default function Module01Arkhimidis() {
       moduleTitle="أرخميدس والبرتقالة — كرة داخل أسطوانة"
       moduleSubtitle="قشرة برتقالة وعصيرها: ماذا اكتشف أرخميدس؟"
       estimatedTime="14 دقيقة"
-      brief={{
-        tag: 'مدخل الوحدة — الكتاب ص 163',
-        headline: 'برتقالة من بوفاريك على طاولة المطبخ!',
-        emoji: '🍊',
-        title: ACTIVITY.title,
-        tone: 'amber',
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={ACTIVITY.situationSource} /></p>
-            <p className="text-sm text-slate-600">في المستوى «متقدم» (أرخميدس): نصف قطر تختاره بين 1 و 6 سنتيمترات، كأس دون تدريج، ثم مثال الكتاب. في المستوى «مبتدئ»: برتقالة نصف قطرها عدد طبيعي، وكأس مدرّجة.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ARCHIMEDES.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="المناولة: القشرة والعصير"
           defaultLevel="beginner"
-          lead="في المستويين: توقّع أولا، ثم قشّر واعصر. القشرة تُقاس بأقراص نصف قطر كل منها R، والعصير يُقاس بالكأس التي تدخل فيها البرتقالة تماما."
           levels={{
             beginner: () => (
               <Manipulation
@@ -115,11 +102,51 @@ export default function Module01Arkhimidis() {
       }
       steps={[
         {
-          num: 1, title: 'أرخميدس: كرة داخل أسطوانة', subtitle: 'الأسطوانة التي تحيط بالكرة', done: q1,
+          num: 1, title: 'القشرة: لماذا أربعة أقراص دائما؟', subtitle: 'مساحة الكرة', done: q1,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="situation" text={`${ARCHIMEDES.text} ${ARCHIMEDES.setup}`} source={ARCHIMEDES.source} compact />
-              <p className="text-xs text-slate-500" data-correction>{ARCHIMEDES.reading}</p>
+              {evidence(peels, 'peel')}
+              <BatchChoiceQuestion
+                intro={<p className="text-sm font-semibold text-slate-700">من تجاربك مع قشرة البرتقالة:</p>}
+                rows={[
+                  // le nombre de disques change avec R ; la peau ne change pas
+                  { id: 'R', label: <MathText>{'غيّرت $R$ فبقيت القشرة تغطي أربعة أقراص. السبب:'}</MathText>, options: ['القرص نفسه $\\pi R^2$ هو الذي يكبر أو يصغر مع $R$ ، فيبقى العدد 4', 'الكرة الكبيرة تحتاج إلى أقراص أكثر', 'مساحة القشرة لا تتغيّر أبدا'].map(M), correct: 0, correction: <MathText>{'العدد 4 لا يتغيّر: القرص نفسه $\\pi R^2$ هو الذي يكبر أو يصغر مع $R$ .'}</MathText> },
+                  // le volume du cylindre ; la base seule
+                  { id: 'eq', label: 'مساحة القشرة (مساحة الكرة) تساوي', options: ['حجم الأسطوانة $2\\pi R^3$', 'مساحة قاعدة الأسطوانة $\\pi R^2$', 'المساحة الجانبية للأسطوانة $4\\pi R^2$'].map(M), correct: 2, correction: <MathText>{ARCH_LINES.areaEqual}</MathText> },
+                ]}
+                requires={['misaha-janibiya']}
+                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: أربعة أقراص كبرى، كما وجد أرخميدس.' : 'راجع التصحيح تحت كل سطر، وأعد تجربة القشرة.'}</Feedback>}
+                onAnswered={() => setQ1(true)}
+              />
+              {q1 && <KnowledgeBrick id="arkhimidis-misaha" lead="ما وجدته بالقشرة، وما وجده أرخميدس:" />}
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'العصير: ماذا يبقى فارغا؟', subtitle: 'حجم الجلّة', done: q2,
+          content: (
+            <div className="space-y-3">
+              {evidence(pours, 'pour')}
+              <BatchChoiceQuestion
+                intro={<p className="text-sm font-semibold text-slate-700">من تجاربك مع العصير في الكأس التي نصف قطرها R وارتفاعها 2R:</p>}
+                rows={[
+                  // le même rapport quel que soit R : le verre est fait sur mesure
+                  { id: 'why', label: <MathText>{'غيّرت $R$ فبقيت العلامة عند الجزء نفسه من الكأس. السبب:'}</MathText>, options: ['الكأس تكبر أو تصغر مع البرتقالة بالنسبة نفسها', 'العصير يملأ نصف الكأس دائما', 'العلامة لا علاقة لها بحجم البرتقالة'], correct: 0, correction: <MathText>{'الكأس على مقاس البرتقالة دائما (نصف القطر $R$ والارتفاع $2R$ )، فالجزء الذي تملؤه الجلّة منها ثابت.'}</MathText> },
+                  // le tiers vide : la moitié du jus
+                  { id: 'empty', label: 'الجزء الفارغ فوق العصير، بالنسبة إلى حجم الجلّة، يساوي', options: ['نصف حجم الجلّة', 'ثلث حجم الجلّة', 'حجم الجلّة كله'], correct: 0, correction: <MathText>{'الثلث الفارغ $\\frac{1}{3} \\times 2\\pi R^3 = \\frac{2}{3}\\pi R^3$ ، ونصف حجم الجلّة $\\frac{1}{2} \\times \\frac{4}{3}\\pi R^3 = \\frac{2}{3}\\pi R^3$ : الفراغ نصف الجلّة.'}</MathText> },
+                ]}
+                requires={['hajm-ustuwana']}
+                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: ثلثا الأسطوانة — اكتشاف أرخميدس الثاني.' : 'راجع التصحيح تحت كل سطر، وأعد تجربة العصير.'}</Feedback>}
+                onAnswered={() => setQ2(true)}
+              />
+              {q2 && <KnowledgeBrick id="arkhimidis-hajm" lead="ما وجدته بالعصير، بكلمات أرخميدس:" />}
+            </div>
+          ),
+        },
+        {
+          num: 3, title: 'أرخميدس: الأسطوانة التي تحيط بالكرة', subtitle: 'كرة داخل أسطوانة', done: q3,
+          content: (
+            <div className="space-y-3">
               <SpaceFigure {...FIG_ARCHIMEDES} />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">الأسطوانة التي توجد داخلها الكرة (نصف قطر الكرة R):</p>}
@@ -134,51 +161,10 @@ export default function Module01Arkhimidis() {
                 ]}
                 requires={['hajm-ustuwana', 'misaha-janibiya']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: الأسطوانة على مقاس الكرة تماما — حجمها ومساحتها الجانبية معروفان.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
-                onAnswered={() => setQ1(true)}
-              />
-            </div>
-          ),
-        },
-        {
-          num: 2, title: 'القشرة: كم قرصا؟', subtitle: 'مساحة الكرة', done: q2,
-          content: (
-            <div className="space-y-3">
-              {evidence(peels, 'peel')}
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">من تجاربك مع قشرة البرتقالة:</p>}
-                rows={[
-                  // 1 disque : MISC-MISAHA-DAIRA ; 2 disques : la moitié
-                  { id: 'n', label: <MathText>{'قشرة كرة نصف قطرها $R$ تغطي تماما'}</MathText>, options: ['أربعة أقراص نصف قطر كل منها R', 'قرصا واحدا نصف قطره R', 'قرصين نصف قطر كل منهما R'], correct: 0, correction: <MathText>{ARCH_LINES.areaEqual}</MathText> },
-                  { id: 'R', label: <MathText>{'إذا غيّرنا $R$'}</MathText>, options: ['يتغيّر عدد الأقراص مع R', 'تبقى القشرة أربعة أقراص، لكن كل قرص يتغيّر مع R', 'لا تتغيّر مساحة القشرة'], correct: 1, correction: <MathText>{'العدد 4 لا يتغيّر: القرص نفسه $\\pi R^2$ هو الذي يكبر أو يصغر مع $R$ .'}</MathText> },
-                  // le volume du cylindre ; la base seule
-                  { id: 'eq', label: 'مساحة الكرة تساوي', options: ['حجم الأسطوانة $2\\pi R^3$', 'مساحة قاعدة الأسطوانة $\\pi R^2$', 'المساحة الجانبية للأسطوانة $4\\pi R^2$'].map(M), correct: 2, correction: <MathText>{ARCH_LINES.areaEqual}</MathText> },
-                ]}
-                requires={['misaha-janibiya']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: أربعة أقراص كبرى، كما وجد أرخميدس.' : 'راجع التصحيح تحت كل سطر، وأعد تجربة القشرة.'}</Feedback>}
-                onAnswered={() => setQ2(true)}
-              />
-              {q2 && <KnowledgeBrick id="arkhimidis-misaha" lead="ما وجدته بالقشرة، وما وجده أرخميدس:" />}
-            </div>
-          ),
-        },
-        {
-          num: 3, title: 'العصير: إلى أين؟', subtitle: 'حجم الجلّة', done: q3,
-          content: (
-            <div className="space-y-3">
-              {evidence(pours, 'pour')}
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">من تجاربك مع العصير في الكأس التي نصف قطرها R وارتفاعها 2R:</p>}
-                rows={[
-                  // la moitié ; plein : MISC-HAJM (le cylindre entier)
-                  { id: 'lvl', label: 'يتوقّف عصير البرتقالة عند', options: ['نصف ارتفاع الكأس', 'ثلثي ارتفاع الكأس', 'أعلى الكأس: يملؤها'], correct: 1, correction: <MathText>{'الجلّة تملأ ثلثي الأسطوانة: يصل العصير إلى الارتفاع $\\frac{2}{3} \\times 2R = \\frac{4}{3}R$ .'}</MathText> },
-                  // le cylindre entier ; la moitié
-                  { id: 'vol', label: 'حجم الجلّة', options: ['$\\frac{2}{3} \\times 2\\pi R^3 = \\frac{4}{3}\\pi R^3$', '$2\\pi R^3$', '$\\frac{1}{2} \\times 2\\pi R^3 = \\pi R^3$'].map(M), correct: 0, correction: <MathText>{ARCH_LINES.volumeTwoThirds}</MathText> },
-                ]}
-                requires={['hajm-ustuwana']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: ثلثا الأسطوانة — اكتشاف أرخميدس الثاني.' : 'راجع التصحيح تحت كل سطر، وأعد تجربة العصير.'}</Feedback>}
                 onAnswered={() => setQ3(true)}
               />
-              {q3 && <KnowledgeBrick id="arkhimidis-hajm" lead="ما وجدته بالعصير، بكلمات أرخميدس:" />}
+              {q3 && <TextbookBox kind="situation" text={`${ARCHIMEDES.text} ${ARCHIMEDES.setup}`} source={ARCHIMEDES.source} compact />}
+              {q3 && <p className="text-xs text-slate-500" data-correction>{ARCHIMEDES.reading}</p>}
             </div>
           ),
         },

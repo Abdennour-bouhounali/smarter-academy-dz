@@ -6,6 +6,18 @@
  * puis trois « مسائل » de la plateforme (modules 5–7).
  * Source de vérité : docs/sources/4am/unit4/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue (module 1) : la balance du vestiaire (equation-balance), niveau مبتدئ 3x + 2 = 11 — l'élève doit savoir ce que
+ *   contient UN sac sans l'ouvrir, donc agir sur les DEUX plateaux (ajout déclaré de la plateforme, `platform_designed_entry`) ;
+ *   le niveau متقدم 9x + 1 = −26 est la balance de فاطمة (نشاط 1, س 3), où poser une baudruche EST retrancher 1.
+ *   Rejetée : le programme de calcul du نشاط 1 (« تحقّق أنّ 2 يعطي 19 », « بيّن أنّ النتيجة 9x + 1 ») comme ouverture : calcul de
+ *   routine sans besoin d'équation. Il vient APRÈS la balance (étape 2) et explique d'où vient l'équation de la balance ; la
+ *   vérification de فاطمة (appliquer le programme à −3) remplace « quel nombre a-t-elle choisi ? » que la balance posait déjà.
+ *   Ordre des idées : agir sur la balance → POURQUOI les deux plateaux (la brique `muadala-tarafayn` APRÈS la réponse) → le
+ *   programme et 9x + 1 → فاطمة : baudruche = −1, vérification → مصطفى (le contraste : la balance demanderait un septième de
+ *   baudruche) → M2 : la balance de 4x − 3 = 2x + 6 ouvre, le livre ligne à ligne, puis la propriété en « أتوقّع القاعدة ».
+ *   Modules 3–8 inchangés. Aucune destination du manuel n'a bougé.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/muadala-ula';
@@ -73,7 +85,7 @@ export const LESSON_CONFIG = {
       title: 'ميزان: 3 أكياس وكرتان مقابل 11 كرة',
       objective: 'حل معادلة من الدرجة الأولى بإجراء العملية نفسها على طرفيها حتى الشكل ax = b ثم x = b/a',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'football' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'football' },
       learningPointIds: ['4am_muadala-ula_P2', '4am_muadala-ula_P1'],
       sourceElementIds: ['act-1'],
     },

@@ -375,3 +375,45 @@ export function pitchOf(world, rank) {
   if (world === 'money') return 0.32;
   return rank === 0 ? 0.8 : 0.6;
 }
+
+/* ── Le guide d'onboarding : « que doit faire la main MAINTENANT ? » ─────────────────────────────────────────── */
+
+/**
+ * La prochaine action attendue de l'élève, comme une DONNÉE pure (le composant `LabCoach` la montre) :
+ * `{ id, target, rank?, gesture }` — `target` est un sélecteur du contrat DOM du labo, `gesture` : 'tap' | 'drag' | 'sweep'.
+ * `null` quand rien n'est à guider (tâche finale faite). Ne dit JAMAIS la règle : elle montre le BOUTON, pas la raison.
+ * `focusCol` : la colonne choisie de la dictée.
+ */
+export function coachOf(s, { focusCol = 0 } = {}) {
+  const task = taskOf(s);
+  if (!task) return null;
+  if (needsPrediction(s)) return { id: 'predict', target: '[data-rx-cards]', gesture: 'tap' };
+  if (taskDone(s)) return s.ti < s.tasks.length - 1 ? { id: 'next-task', target: '[data-rx-next]', gesture: 'tap' } : null;
+  if (s.tray) return { id: 'carry', target: '[data-rx-tray]', rank: s.tray.to, gesture: 'drag' };
+  const cols = Array.from({ length: s.columns }, (_, r) => r);
+  const full = cols.find((r) => (s.counts[r] ?? 0) >= 10 && allows(s, 'tie', r));
+  if (task === 'pack' || (task === 'next' && full != null)) {
+    return full != null ? { id: 'tie', target: `[data-rx-tie="${full}"]`, rank: full, gesture: 'tap' } : null;
+  }
+  if (task === 'unpack') {
+    const r = [...cols].reverse().find((x) => (s.counts[x] ?? 0) > 0 && allows(s, 'open', x));
+    return r != null ? { id: 'open', target: `[data-rx-open="${r}"]`, rank: r, gesture: 'tap' } : null;
+  }
+  if (task === 'next') return { id: 'plus', target: '[data-rx-plus="0"]', rank: 0, gesture: 'tap' };
+  if (task === 'previous') return { id: 'minus', target: '[data-rx-minus="0"]', rank: 0, gesture: 'tap' };
+  if (task === 'borrow') {
+    if ((s.counts[0] ?? 0) > 0) return { id: 'minus', target: '[data-rx-minus="0"]', rank: 0, gesture: 'tap' };
+    const r = cols.find((x) => x >= 1 && (s.counts[x] ?? 0) > 0 && allows(s, 'open', x));
+    return r != null ? { id: 'open', target: `[data-rx-open="${r}"]`, rank: r, gesture: 'tap' } : null;
+  }
+  if (task === 'dictation') {
+    const want = digitsByRank(targetOf(s) ?? 0);
+    const r = [...cols].reverse().find((x) => (s.counts[x] ?? 0) !== (want[x] ?? 0));
+    if (r == null) return { id: 'check', target: '[data-rx-check]', gesture: 'tap' };
+    if (focusCol !== r) return { id: 'pick', target: `[data-rx-body="${r}"]`, rank: r, gesture: 'tap' };
+    return (s.counts[r] ?? 0) < (want[r] ?? 0)
+      ? { id: 'plus', target: `[data-rx-plus="${r}"]`, rank: r, gesture: 'tap' }
+      : { id: 'minus', target: `[data-rx-minus="${r}"]`, rank: r, gesture: 'tap' };
+  }
+  return null;
+}

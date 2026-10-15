@@ -4,10 +4,9 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { PitchScene } from '../../../../../../common/manipulations/primitives/PitchBackdrop';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, ACTIVITY_A, ELIAS_AMINE, HOOK } from '../content/textbook';
+import { ACTIVITY, ACTIVITY_A, ELIAS_AMINE } from '../content/textbook';
 
 /**
  * Module 1 — نشاط 2 (p. 44) : « خاصية الجداء المعدوم » puis « تطبيق أ », ouvert sur
@@ -32,6 +31,9 @@ import { ACTIVITY, ACTIVITY_A, ELIAS_AMINE, HOOK } from '../content/textbook';
  * voir les options, puis la question et la brique s'affichent.
  * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape : le même ملعب à deux
  * côtés variables, d'autres nombres, résolu au module 5.
+ * RÉTROFIT 2026-10-15 (guide §4quater) : UNE PISTE. Plus de carte `brief` ni de titre/lead de workspace : le labo est en tête et
+ * porte son contexte et sa question. Étape 1 = la règle, posée sur ce que l'élève a ÉPINGLÉ (PredictRule, puis la brique APRÈS la
+ * réponse) ; étape 2 = les produits du livre (س 1–2) APRÈS la règle ; les cahiers d'إلياس وأمين, (E) et le نشر échoué suivent.
  * LP : P1, P2.
  */
 const { beginner: BEGINNER, advanced: ADVANCED } = ACTIVITY.numbers;
@@ -80,34 +82,17 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 2 — خاصية الجداء المعدوم"
       moduleSubtitle="متى ينعدم جداء عاملين؟"
       estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 44',
-        headline: HOOK.headline,
-        emoji: '⚽',
-        title: ACTIVITY_A.title,
-        tone: 'indigo',
-        visual: <PitchScene />,
-        body: (
-          <div className="space-y-2">
-            <p><MathText>{HOOK.text}</MathText></p>
-            <p className="text-sm text-slate-600"><MathText>{'في المستوى المبتدئ ملعب ضلعاه $3$ و $x - 5$ : مساحته $3(x - 5)$.'}</MathText></p>
-          </div>
-        ),
-        footer: <div className="flex flex-wrap gap-2"><SourceTag source={ACTIVITY.source} /><SourceTag source={HOOK.source} /></div>,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="نفس الفكرة في المستويين: ضلعا الملعب هما عاملا الجداء، ومساحته هي الجداء. متى تنعدم؟"
           levels={{
             beginner: () => (
               <Manipulation
                 type="vanishing-pitch"
                 level="beginner"
                 expr={BEGINNER}
-                title="ملعب ضلعاه 3 و x − 5: متى يختفي؟"
-                lead="الضلع A طوله 3 دائمًا، والضلع B طوله x − 5. حرّك x وراقب: أيّ الضلعين يمكن أن ينعدم؟"
+                title={'ملعب ضلعاه \u20663\u2069 و \u2066x − 5\u2069'}
+                lead={<MathText>{'يرسم مدرّب الحيّ ملعب تدريب ضلعه A طوله $3$ دائمًا وضلعه B طوله $x - 5$ ، ومساحته جداء الضلعين.'}</MathText>}
                 onTrial={onTrial(BEGINNER)}
               />
             ),
@@ -116,8 +101,8 @@ export default function Module01Nashat() {
                 type="vanishing-pitch"
                 level="advanced"
                 expr={ADVANCED}
-                title="نشاط 2: ملعب ضلعاه x − 2 و x + 5"
-                lead="الضلعان يتغيّران معًا. جد كل قيم x التي يختفي عندها الملعب، ثم احكم: هل بقيت قيم أخرى؟"
+                title={'ملعب ضلعاه \u2066x − 2\u2069 و \u2066x + 5\u2069'}
+                lead="ملعب آخر في الحيّ: الضلعان يتغيّران معًا مع x، ومساحته جداؤهما."
                 onTrial={onTrial(ADVANCED)}
               />
             ),
@@ -126,11 +111,36 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'الجداء المعدوم', subtitle: 'انقل وأكمل — السؤالان 1 و 2', done: q1,
+          num: 1, title: 'ما الذي يجمع بين القيم التي ثبّتّها؟', subtitle: 'السؤال 3 — من تجربتك', done: q2,
+          content: (
+            <div className="space-y-3">
+              {/* LES ESSAIS DE L'ÉLÈVE, et rien d'autre. */}
+              {evidence([BEGINNER, ADVANCED])}
+              <PredictRule id="khassiya-jidaa-maadum">
+                <TapQuestion
+                  prompt={<MathText>{'اختفى الملعب عند كل قيمة ثبّتّها. ما الذي يجمع بين هذه القيم؟ عبّر عنه بالعبارة الصحيحة.'}</MathText>}
+                  options={[
+                    M('إذا كان جداء عاملين معدوما فإن العاملين معدومان معًا.'),
+                    M('إذا كان أحد العاملين سالبًا فإن الجداء معدوم.'),
+                    M(ACTIVITY_A.statement),
+                  ]}
+                  correct={2}
+                  cols={1}
+                  requires={['darb-nisbiya']}
+                  explain={<MathText>{'في المختبر اختفى الملعب كلّما صار أحد ضلعيه $0$ ، ولو بقي الضلع الآخر غير معدوم: في $3(x - 5)$ الضلع $3$ لا ينعدم أبدًا والملعب يختفي عند $x = 5$. وضلع سالب يعطي مساحة سالبة، لا معدومة.'}</MathText>}
+                  onAnswered={() => setQ2(true)}
+                />
+              </PredictRule>
+              {q2 && <KnowledgeBrick id="khassiya-jidaa-maadum" lead="ما رأيته في الملعب يسمّيه الكتاب:" />}
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'الجداء المعدوم في الأعداد', subtitle: 'انقل وأكمل — السؤالان 1 و 2', done: q1,
           content: (
             <div className="space-y-3">
               <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY_A.questions[0]}</MathText> <SourceTag source={ACTIVITY_A.source} /></p>}
+                intro={<p className="text-sm font-semibold text-slate-700">الجداء المعدوم: انقل وأكمل كلًّا مما يلي، ثم أجب عن السؤال 2. <SourceTag source={ACTIVITY_A.source} /></p>}
                 rows={ACTIVITY_A.products.map(({ known, missing }, i) => {
                   const label = missing === 'right' ? `$${known} \\times \\ldots = 0$` : `$\\ldots \\times ${known} = 0$`;
                   const wrong1 = known.startsWith('-') ? known.slice(1) : `-${known}`;
@@ -162,31 +172,6 @@ export default function Module01Nashat() {
                   onAnswered={() => setQ1(true)}
                 />
               )}
-            </div>
-          ),
-        },
-        {
-          num: 2, title: 'متى يختفي الملعب؟', subtitle: 'ثبّت الحلول في المختبر، ثم السؤال 3', done: q2,
-          content: (
-            <div className="space-y-3">
-              {/* LES ESSAIS DE L'ÉLÈVE, et rien d'autre. */}
-              {evidence([BEGINNER, ADVANCED])}
-              <PredictRule id="khassiya-jidaa-maadum">
-                <TapQuestion
-                  prompt={<MathText>{ACTIVITY_A.questions[2]}</MathText>}
-                  options={[
-                    M('إذا كان جداء عاملين معدوما فإن العاملين معدومان معًا.'),
-                    M('إذا كان أحد العاملين سالبًا فإن الجداء معدوم.'),
-                    M(ACTIVITY_A.statement),
-                  ]}
-                  correct={2}
-                  cols={1}
-                  requires={['darb-nisbiya']}
-                  explain={<MathText>{'في المختبر اختفى الملعب كلّما صار أحد ضلعيه $0$ ، ولو بقي الضلع الآخر غير معدوم: في $3(x - 5)$ الضلع $3$ لا ينعدم أبدًا والملعب يختفي عند $x = 5$. وضلع سالب يعطي مساحة سالبة، لا معدومة.'}</MathText>}
-                  onAnswered={() => setQ2(true)}
-                />
-              </PredictRule>
-              {q2 && <KnowledgeBrick id="khassiya-jidaa-maadum" lead="ما رأيته في الملعب يسمّيه الكتاب:" />}
             </div>
           ),
         },

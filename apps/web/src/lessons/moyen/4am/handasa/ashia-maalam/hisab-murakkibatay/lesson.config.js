@@ -18,6 +18,16 @@
  *   M5–M7 مسائل        — puis trois « مسائل » de la plateforme (modules 5–7, content/problems.js) ;
  *   M8 إختبار أولي     — cinq épreuves de la plateforme ; P1, P2, P3 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : les portails A(1 ; 2) et B(4 ; 3) de la carte de jeu (labo `component-calc`, niveau مبتدئ, thème `game-map`) — la main
+ *   écrit le code de la porte AB AVANT que le héros saute, puis place D pour qu'une seconde porte ait le MÊME code : « fin moins début »
+ *   et « mêmes composantes ⇒ égaux » se font avant de se lire. Rejetée : le نشاط 2 du manuel tel quel (lire C et D sur une figure, CD,
+ *   E, puis la règle demandée en partie ب — questions de tête sur une figure, la règle donnée après coup) ; il reste le niveau متقدم du MÊME
+ *   labo (C, D, E, F à nombres négatifs) et devient application aux étapes 3–6 du module 1, « نشاط الكتاب ».
+ *   Ordre des idées : la règle écrite sur A et B (« أتوقّع القاعدة », brique APRÈS) → pourquoi deux portes de places différentes ont le même
+ *   code → le نشاط 2 en application → M2 معارف nomme (les rappels et les exemples du livre APRÈS la réponse) → M3 : le labo ouvre en
+ *   متقدم (E se calcule, ne s'essaie pas), la solution rédigée du livre APRÈS la réponse, la méthode « نقطة مجهولة » écrite par l'élève d'abord.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/hisab-murakkibatay';
@@ -78,14 +88,14 @@ export const LESSON_CONFIG = {
   // la lecture des composantes (درس 1 de l'unité) et la soustraction des nombres relatifs (السنة الثانية والثالثة).
   priorKnowledge: ['mutawazi-tasawi', 'insihab-mutawazi', 'qiraat-murakkibatayn', 'tarh-nisbi'],
   resources: [
-    // Le module 1 ouvre sur LE نشاط 2 (متقدم, les portails C, D, F) ; مبتدئ = les portails A, B et D (plateforme).
+    // Le module 1 ouvre sur les portails A, B et D (مبتدئ, plateforme = l'ENTRÉE choisie) ; le نشاط 2 (متقدم, C, D, F) est le même labo, repris en application.
     {
       kind: 'manipulation', code: 'component-calc-portals-m1', type: 'component-calc', module: 1,
       level: 'beginner',
       title: 'بوابات الخريطة: رمز AB ثم البوابة D',
       objective: 'مركبتا الشعاع AB هما xB − xA و yB − yA، ويتساوى شعاعان إذا تساوت مركباتهما، ومنه نحسب إحداثيتي نقطة مجهولة',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'game-map' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'game-map' },
       learningPointIds: ['4am_hisab-murakkibatay_P1', '4am_hisab-murakkibatay_P3'],
       sourceElementIds: ['know-3'],
     },

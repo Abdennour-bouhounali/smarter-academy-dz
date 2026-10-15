@@ -45,10 +45,12 @@ export default function Module02Taraiq() {
       moduleSubtitle="موازيان مدرّجان، وتناسب يصير إنشاءً"
       objectives={['كيف أنشئ نقطة M من [AB] حيث MA/MB = 3/2 ؟', 'أين تقع النقطة الثانية التي لها النسبة نفسها؟', 'كيف أنشئ قطعة طولها معلوم، ولو كان غير ناطق؟']}
       estimatedTime="12 دقيقة"
-      brief={{
-        tag: 'طرائق — الكتاب ص 107 و 109', title: 'نقطة تقسم قطعة بنسبة معلومة، وقطعة طولها معلوم', tone: 'emerald',
-        body: <p>طريقتان محلولتان من الكتاب: اقرأ كل سطر وحاول أن تتوقّع السطر التالي قبل أن تكشفه، ثم أنجز «دوري الآن» بالمسطرة والمدور في المختبر.</p>,
-      }}
+      // LE LABO OUVRE LE MODULE (§4quater, rétrofit 2026-10-15) : « دوري الآن » (CA/CB = 2/5, les deux points) est cherché AVANT que les
+      // طرائق ne nomment la construction ; l'énoncé du manuel est le `lead` du labo, l'étape 3 interroge ses deux points.
+      intro={(
+        <Manipulation type="segment-divider" levels={false} mode={LAB.m2.mode} p={LAB.m2.p} q={LAB.m2.q} marks={LAB.m2.marks}
+          theme={LAB.m2.theme} lead="(xy) مستقيم، A و B نقطتان منه. لا تتوفّر إلا مسطرة غير مدرّجة ومدور." onTrial={(t) => setNowTrials((x) => [...x, t].slice(-8))} />
+      )}
       steps={[
         {
           num: 1, title: 'نقطة تقسم [AB] بنسبة 3 إلى 2', subtitle: 'طرائق ص 109', done: q1,
@@ -90,13 +92,10 @@ export default function Module02Taraiq() {
           ),
         },
         {
-          num: 3, title: 'دوري الآن', subtitle: 'في المختبر', done: q3,
+          num: 3, title: 'عن نقطتيك في المختبر', subtitle: 'دوري الآن', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="exercise" text={NOW.text} source={NOW.source} compact />
-              <Manipulation type="segment-divider" levels={false} mode={LAB.m2.mode} p={LAB.m2.p} q={LAB.m2.q} marks={LAB.m2.marks}
-                theme={LAB.m2.theme} title={LAB.m2.title} onTrial={(t) => setNowTrials((x) => [...x, t].slice(-8))} />
-              <TrialsEvidence trials={nowTrials} empty="أنشئ النقطتين في المختبر أعلاه: درّج (d₁) و (d₂) ثم ضع طرفي المسطرة." />
+              <TrialsEvidence trials={nowTrials} empty="أنشئ النقطتين في المختبر أعلاه: درّج (d₁) و (d₂) ثم ضع طرفي المسطرة. (دوري الآن، الكتاب ص 109)" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'النقطتان C حيث $\\dfrac{CA}{CB} = \\dfrac{2}{5}$ :'}</MathText></p>}
                 rows={[

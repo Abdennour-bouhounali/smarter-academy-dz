@@ -216,3 +216,31 @@ describe('rank-exchange — rendu', () => {
     expect(say('zeros', { count: 1 })).toBe('صفر واحد');
   });
 });
+
+describe('rank-exchange — onboarding (prop `coach`, prototype)', () => {
+  const base = { ...LEVELS['rank-exchange'].beginner.numbers };
+  it('est PRÉSENT par défaut et s\u2019éteint avec coach={false} : aucun interrupteur, aucune couche', () => {
+    expect(html(base)).toContain('data-lab-coach-toggle');
+    const out = html({ ...base, coach: false });
+    expect(out).not.toContain('data-lab-coach-toggle');
+    expect(out).not.toContain('data-lab-coach-layer');
+  });
+  it('avec `coach` : l’interrupteur est sous la consigne, avant la scène, et la couche est dans le cadre', () => {
+    const out = html({ ...base, coach: true });
+    expect(out).toContain('data-lab-coach-toggle');
+    expect(out).toContain('data-lab-coach-layer');
+    expect(out).toContain(say('coach.hide'));
+    expect(out.indexOf('data-rx-prompt')).toBeLessThan(out.indexOf('data-lab-coach-toggle'));
+    expect(out.indexOf('data-lab-coach-toggle')).toBeLessThan(out.indexOf('data-rx-stage'));
+    expect(out).not.toMatch(RAW);
+  });
+  it('chaque astuce existe, sans clé brute ni interpolation oubliée, et ne donne JAMAIS la règle', () => {
+    const vars = { ten: '10 أقلام', obj: 'حزمة', col: 'الحزم' };
+    for (const key of ['predict', 'tie', 'carry', 'open', 'plus', 'minus', 'pick', 'check', 'nextTask', 'hide', 'show', 'ok', 'stop']) {
+      const text = say(`coach.${key}`, vars);
+      expect(text, key).toBeTruthy();
+      expect(text, key).not.toMatch(/manipulation\.|\{\{/);
+      expect(statesRule(text), key).toBe(false);
+    }
+  });
+});

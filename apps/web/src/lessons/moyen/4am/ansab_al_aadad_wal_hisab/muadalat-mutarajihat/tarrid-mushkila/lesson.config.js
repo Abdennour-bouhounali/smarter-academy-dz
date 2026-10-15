@@ -8,6 +8,19 @@
  * Puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit4/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue (module 1) : la course des âges (growth-race) — un père de 30 ans et son fils de 6 ans (niveau مبتدئ, ouvert par
+ *   défaut), puis l'exercice du manuel, le père de 36 ans et ses trois enfants (متقدم). Le manuel n'a pas d'activité pour ce sujet :
+ *   la course EST l'entrée de la plateforme (déjà déclarée `platform_adaptation`, inchangée) ; l'élève pose lui-même « + x » sur chaque
+ *   personne qui grandit, et le labo refuse un enfant oublié.
+ *   Rejetées : (1) la solution de la طريقة (أ ب جـ التحقق) lue d'abord — elle donne la réponse avant tout geste (elle vient au
+ *   module 2, APRÈS la course) ; (2) l'énoncé du manuel en carte au-dessus du labo (retirée : devenu le `lead` du labo متقدم).
+ *   Ordre des idées : « + x » sur chacun (la course) → POURQUOI chaque enfant porte son « + x » (le labo a déjà fait construire
+ *   l'équation) → résoudre 36 + x = 3x + 18 → la brique « tarrid-namdhaja » APRÈS → le التحقق → M2 : la solution du manuel ligne à
+ *   ligne → les quatre étapes (la brique APRÈS la question) → دوري الآن 2 → la course à solution négative (la brique APRÈS la question)
+ *   → un حل qui ne convient pas (la brique APRÈS).
+ *   Aucune destination du manuel n'a bougé ; aucune ressource `platform_designed_entry` ajoutée (non touché : déjà `platform_adaptation`).
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/tarrid-mushkila';

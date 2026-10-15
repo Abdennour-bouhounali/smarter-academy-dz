@@ -12,6 +12,11 @@
  *          (قراءة · تحليل · تنفيذ) : tableau, `stat-balance` mode hidden (la main pose les jetons cachés jusqu'à ce que
  *          le rideau du وسيط tombe sur 3 et que la poutre s'équilibre sur 7), 176 + 2 × 3 + y = 210, puis 0,69 × T = 30
  *   8      « إختبار أولي » (slug `itqan`) — la situation TRANSPOSÉE (autres nombres), évaluée
+ *
+ * RÉTROFIT 2026-10-15 (§4ter, minimal — format fixe) : seul le module 7 a un labo. Entrée gardée : la balance des valeurs (stat-balance,
+ * مبتدئ par défaut puis la situation du manuel en متقدم) ; rejetée : lire d'abord l'énoncé du manuel sous forme de carte au-dessus du labo.
+ * L'énoncé passe en tête de l'étape 1 (lecture) ; le labo ouvre le module, sans titre ni `lead` d'atelier. Les rappels de briques
+ * étaient déjà APRÈS la réponse. Modules 0–6 et 8 : inchangés (GuidedProblem, diagnostic, test).
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/wadiya-idmajiya-ihsa';

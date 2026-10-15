@@ -39,7 +39,7 @@ export default function GroupStock({ drag, theme, words, k, canAdd, onAdd, onRem
   const list = Object.keys(tried).map(Number).sort((x, y) => x - y);
   return (
     <div className="space-y-2">
-      <div className="flex flex-wrap items-center justify-center gap-2">
+      <div className="flex flex-wrap items-center justify-center gap-2" data-group-row>
         <DropZone drag={drag} id="stock" label={words.stock} tone="emerald" minHeight="min-h-[56px]" className="flex items-center gap-2 px-2 py-1" data-group-stock>
           <DraggableObject drag={drag} id="group:add" label={words.add} className="rounded-lg"><GroupWrapper theme={theme} /></DraggableObject>
           <span className="text-xs font-bold text-emerald-900">{words.stock}</span>
@@ -52,7 +52,7 @@ export default function GroupStock({ drag, theme, words, k, canAdd, onAdd, onRem
           <span className="min-w-[5.5rem] text-center text-sm font-bold text-slate-700">
             {t('manipulation.common.onTable')}: <b dir="ltr" data-groups-count className="text-base">{k ?? 0}</b>
           </span>
-          <button type="button" onClick={onAdd} aria-label={words.add} disabled={!canAdd}
+          <button type="button" onClick={onAdd} aria-label={words.add} disabled={!canAdd} data-group-add
             className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
             <Plus className="h-5 w-5" aria-hidden="true" />
           </button>

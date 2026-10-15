@@ -19,6 +19,18 @@
  *   M5–M7 مسائل        — puis trois « مسائل » de la plateforme (modules 5–7) ;
  *   M8 إختبار أولي     — QCM 1 et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : l'appli de livraison (labo `component-steps`, thème `delivery`, niveau مبتدئ par défaut : le quartier d'Alger et ses
+ *   cinq commandes) — la main CONDUIT la moto (horizontal puis vertical) et le code du trajet apparaît comme les deux nombres dont la
+ *   commande a besoin : « مركبتان » est nécessaire avant d'être nommé. Rejetée : le نشاط 1 du manuel tel quel en ouverture (lire les
+ *   coordonnées de A, B, C sur la figure puis des longueurs : des questions de lecture, sans besoin) ; il reste le niveau متقدم du MÊME
+ *   labo et ses questions suivent l'essai de l'élève ; la mouche de Descartes (accroche du manuel, doublon déclaré) vient APRÈS la
+ *   première réponse, comme une histoire de ce que l'élève vient de faire.
+ *   Ordre des idées : lire A, B, C → A→C puis C→B → pourquoi le code de A→B n'est pas l'adresse de B (la brique « مركبتان » APRÈS la
+ *   prédiction) → pourquoi les deux nombres de B→D sont négatifs → OB / OC depuis O et la règle OM ↔ M(x ; y) ; module 2 : la lecture
+ *   graphique et OM d'abord essayés, la boîte et la brique APRÈS la réponse ; module 3 : « دوري الآن » ouvre le module (le labo
+ *   d'abord, la طريقة ensuite).
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/murakkibata-shuaa';
@@ -90,7 +102,7 @@ export const LESSON_CONFIG = {
       title: 'تطبيق التوصيل: خمسة طلبات في الحيّ',
       objective: 'مركبتا شعاع في معلم متعامد ومتجانس هما الإزاحة الأفقية ثم الإزاحة العمودية من مبدئه إلى نهايته بإشارتيهما؛ لا تتعلقان بنقطة الانطلاق، ومركبتا OM هما إحداثيتا M، ونمثّل شعاعا علمت مركبتاه من أي نقطة',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'delivery' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'delivery' },
       learningPointIds: ['4am_murakkibata-shuaa_P1', '4am_murakkibata-shuaa_P2', '4am_murakkibata-shuaa_P3'],
       sourceElementIds: ['act-1'],
     },

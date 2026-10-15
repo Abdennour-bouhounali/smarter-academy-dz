@@ -17,6 +17,15 @@
  *   puis trois « مسائل » de la plateforme (modules 5–7) : le métro d'Alger (« مسألة الدرس »), une table pliante, une nacelle à ciseaux
  *   8 إختبار أولي (evaluation)
  *
+ * Rétrofit 2026-10-15 (guide §4ter–§4quinquies). ENTRÉE — candidats : (a) l'exercice 18 du manuel posé d'emblée (huit stations, six
+ * données : une preuve à écrire sans avoir jamais raccordé des tickets — réponse de mémoire) ; (b) le métro d'Alger sur quatre
+ * stations (plateforme) où la main raccorde, transporte et annule avant de prouver. CHOIX : (b), l'ex. 18 reste le niveau متقدم.
+ * ORDRE : raccorder → pourquoi l'échange est permis → l'aller-retour → la figure ne prouve pas ; puis la démarche (module 2) :
+ * la boîte de la démarche et celle de ce qu'on conclut s'ouvrent APRÈS la réponse. Module 1 : ni carte ni titre/lead de workspace,
+ * le labo en tête (`lead` du labo = le contexte), l'étape 1 demande POURQUOI le raccord est accepté (le labo a déjà posé « combien »).
+ * Module 3 : l'énoncé de دوري الآن devient le `lead` du labo (plus de carte au-dessus) ; l'étape 1 demande POURQUOI le centre est
+ * la fin du dernier représentant. Les briques restent derrière leur réponse. Destinations inchangées.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/barahin-ashia';
@@ -87,7 +96,7 @@ export const LESSON_CONFIG = {
       title: 'مترو الجزائر: تذكرتان في رحلة واحدة',
       objective: 'تبسيط عبارة شعاعية بعلاقة شال وتعويض شعاع بشعاع يساويه حسب المعطيات وحذف شعاعين متعاكسين، لإنجاز برهان',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'metro' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'metro' },
       learningPointIds: ['4am_barahin-ashia_P1'],
       sourceElementIds: ['ex-18'],
     },

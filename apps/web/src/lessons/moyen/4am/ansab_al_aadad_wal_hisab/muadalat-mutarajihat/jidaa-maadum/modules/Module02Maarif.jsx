@@ -18,7 +18,9 @@ import { ACTIVITY_C, KNOWLEDGE } from '../content/textbook';
  *      4/3 — vanishing-pitch, `levels={false}` : exemple du livre), puis la solution du
  *      livre ligne à ligne (MethodSteps) ;
  *   4. تطبيق ب : l'équation (E) — factoriser fait apparaître un produit nul.
- * LP : P1, P2, P3.
+ * RÉTROFIT 2026-10-15 (guide §4quater) : le terrain de l'exemple 3 OUVRE le module (plus de carte `brief`), puis la solution du livre
+ * ligne à ligne ; la définition et la brique `taarif-muadala-jidaa` viennent APRÈS la question « est-ce de cette forme ? » ; la
+ * propriété (exemple 2) et la brique `hulul-muadala-jidaa` APRÈS la question. LP : P1, P2, P3.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const EXAMPLE3 = { source: KNOWLEDGE.source, exercise: KNOWLEDGE.examples[2], solution: KNOWLEDGE.example3 };
@@ -27,6 +29,8 @@ export default function Module02Maarif() {
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [read3, setRead3] = useState(false);
+  const [pins, setPins] = useState([]);
+  const onTrial = (tr) => setPins((all) => [...all.filter((u) => u.xTex !== tr.xTex), tr]);
   const [q4a, setQ4a] = useState(false);
   const [q4, setQ4] = useState(false);
 
@@ -39,25 +43,50 @@ export default function Module02Maarif() {
       moduleTitle="معارف — معادلات جداء معدوم"
       moduleSubtitle="تعريف، خاصية، وثلاثة أمثلة"
       estimatedTime="9 دقائق"
-      brief={{
-        tag: 'معارف — الكتاب ص 46', title: KNOWLEDGE.title, tone: 'violet',
-        body: <p>ما رأيته في الملعب الذي يختفي يقوله الكتاب في تعريف وخاصية، مع ثلاثة أمثلة.</p>,
-      }}
+      intro={(
+        <Manipulation
+          type="vanishing-pitch"
+          expr={KNOWLEDGE.example3Expr}
+          levels={false}
+          title={'ملعب ضلعاه \u20663x − 4\u2069 و \u2066−2x + 1\u2069'}
+          lead="ملعب جديد في الحيّ، ومسطرته مدرّجة بالأسداس: مساحته جداء ضلعيه."
+          onTrial={onTrial}
+        />
+      )}
       steps={[
         {
-          num: 1, title: 'التعريف', subtitle: 'مثال 1', done: q1,
+          num: 1, title: 'ما القيمتان اللتان وجدتهما؟', subtitle: 'مثال 3 — حلّ الكتاب سطرًا سطرًا', done: read3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="taarif-muadala-jidaa" lead="المعادلة التي حللتها بالملعب لها اسم:" />
+              <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={pins.some((t) => t.ok) ? 'true' : 'false'}>
+                {pins.filter((t) => t.ok).length === 0
+                  ? <p className="text-slate-500">لم تثبّت أي قيمة على المسطرة بعد: اختفى الملعب عند قيمتين، فابحث عنهما أعلاه.</p>
+                  : (
+                    <p className="flex flex-wrap items-center gap-1.5">
+                      <span>القيم التي ثبّتّها:</span>
+                      {pins.filter((t) => t.ok).map((t) => (
+                        <span key={t.xTex} dir="ltr" className="rounded-lg bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-900"><MathText>{`$x = ${t.xTex}$`}</MathText></span>
+                      ))}
+                    </p>
+                  )}
+              </div>
+              <p className="text-sm text-slate-700"><MathText>{'قارن هذه القيم بسطور الكتاب: أيّ معادلتين من الدرجة الأولى يبدأ بهما حلّ $(3x - 4)(-2x + 1) = 0$ ؟'}</MathText></p>
+              <MethodSteps method={EXAMPLE3} onAllRevealed={() => setRead3(true)} />
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'هل هي من الشكل نفسه؟', subtitle: 'مثال 1', done: q1,
+          content: (
+            <div className="space-y-3">
               <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">هل هي معادلة جداء معدوم؟</p>}
+                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'المعادلة $(3x - 4)(-2x + 1) = 0$ التي حللتها على الملعب لها شكل معيّن. أيّ المعادلات الآتية من الشكل نفسه؟'}</MathText></p>}
                 rows={[
                   { id: 'a', label: M('$(x + 1)(2x - 3) = 0$'), options: ['نعم', 'لا'], correct: 0, correction: M('جداء عاملين من الدرجة الأولى يساوي 0 : $a = 1$ ، $b = 1$ ، $c = 2$ ، $d = -3$ .') },
                   { id: 'b', label: M('$(x + 1)(2x - 3) = 5$'), options: ['نعم', 'لا'], correct: 1, correction: M('الطرف الثاني 5 وليس 0 : خاصية الجداء المعدوم لا تُطبَّق.') },
                   { id: 'c', label: M('$(x + 1) + (2x - 3) = 0$'), options: ['نعم', 'لا'], correct: 1, correction: M('الطرف الأول مجموع لا جداء: هي معادلة من الدرجة الأولى $3x - 2 = 0$ .') },
                   { id: 'd', label: M('$3x(x - 7) = 0$'), options: ['نعم', 'لا'], correct: 0, correction: M('جداء العاملين $3x$ و $(x - 7)$ يساوي 0 : هنا $b = 0$ في العامل $3x + 0$ .') },
                 ]}
-                requires={['taarif-muadala-jidaa']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     <MathText>{allRight
@@ -67,16 +96,15 @@ export default function Module02Maarif() {
                 )}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="taarif-muadala-jidaa" lead="المعادلة التي حللتها بالملعب لها اسم:" />}
             </div>
           ),
         },
         {
-          num: 2, title: 'الخاصية وحلول المعادلة', subtitle: 'مثال 2', done: q2,
+          num: 3, title: 'الخاصية وحلول المعادلة', subtitle: 'مثال 2', done: q2,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="khassiya-jidaa-maadum" variant="rappel" compact />
-              <TextbookBox kind="property" title={KNOWLEDGE.propertyTitle} lines={[...KNOWLEDGE.property, KNOWLEDGE.note]} source={KNOWLEDGE.source} compact />
-              <KnowledgeBrick id="hulul-muadala-jidaa" lead="الخاصية تحوّل معادلة جداء معدوم إلى معادلتين من الدرجة الأولى:" />
               <TapQuestion
                 prompt={<MathText>{'مثال 2 من الكتاب: لماذا $2x = 0$ يعني $x = 0$ ؟'}</MathText>}
                 options={[
@@ -86,25 +114,16 @@ export default function Module02Maarif() {
                 ]}
                 correct={0}
                 cols={1}
-                requires={['hulul-muadala-jidaa']}
+                requires={['khassiya-jidaa-maadum']}
                 explain={<MathText>{`${KNOWLEDGE.examples[1]} — كما كتب أمين: $x - 5 = 0$ بما أنّ $3 \\neq 0$.`}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
-            </div>
-          ),
-        },
-        {
-          num: 3, title: 'مثال 3 على الملعب', subtitle: 'مسطرة مدرّجة بالأسداس', done: read3,
-          content: (
-            <div className="space-y-3">
-              <Manipulation
-                type="vanishing-pitch"
-                expr={KNOWLEDGE.example3Expr}
-                levels={false}
-                title="مثال الكتاب: ملعب ضلعاه 3x − 4 و −2x + 1"
-                lead="المسطرة مدرّجة بالأسداس. جد القيمتين اللتين يختفي عندهما الملعب، ثم قارن بحلّ الكتاب."
-              />
-              <MethodSteps method={EXAMPLE3} onAllRevealed={() => setRead3(true)} />
+              {q2 && (
+                <>
+                  <TextbookBox kind="property" title={KNOWLEDGE.propertyTitle} lines={[...KNOWLEDGE.property, KNOWLEDGE.note]} source={KNOWLEDGE.source} compact />
+                  <KnowledgeBrick id="hulul-muadala-jidaa" lead="الخاصية تحوّل معادلة جداء معدوم إلى معادلتين من الدرجة الأولى:" />
+                </>
+              )}
             </div>
           ),
         },

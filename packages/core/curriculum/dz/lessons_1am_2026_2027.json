@@ -732,9 +732,21 @@
       "prerequisiteLessonCodes": [
         "kitabat-adad-tabii"
       ],
+      "pointPrerequisites": {
+        "P1": [
+          "1am_kitabat-adad-tabii_P2"
+        ],
+        "P2": [
+          "1am_hasil-qisma-kasr_P1"
+        ],
+        "P3": [
+          "1am_hasil-qisma-kasr_P1",
+          "1am_kitabat-adad-tabii_P2"
+        ]
+      },
       "pointsToLearn": [
-        "التعرّف على الكسر $\\frac{a}{b}$ كحاصل قسمة $a$ على $b$ ($b\\neq0$)",
-        "توظيف النتيجة $\\frac{a}{b}\\times b = a$ لإيجاد عدد ناقص",
+        "التعرّف على الكسر $\\frac{a}{b}$ كحاصل قسمة $a$ على $b$ ($b\\neq0$)، وكتابة حاصل قسمة عددين طبيعيين على شكل كسر",
+        "توظيف النتيجة $\\frac{a}{b}\\times b=a$ لإيجاد عدد ناقص في مساواة من الشكل $b\\times\\ldots=a$",
         "التمييز بين حاصل قسمة عدد عشري وحاصل قسمة غير عشري (مثل $\\frac{7}{3}$) وإعطاء قيمة مقرّبة له"
       ],
       "programmeItems": [
@@ -754,7 +766,10 @@
           "method": null
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 61,
+      "difficulty": "متوسط",
+      "icon": "🥖"
     },
     {
       "code": "hasil-qisma-mustaqim",
@@ -875,6 +890,9 @@
         "اختزال كتابة كسرية بالبحث عن قاسم مشترك للبسط والمقام بقواعد قابلية القسمة، مرّة أو عدّة مرّات حتى أبسط شكل ممكن"
       ],
       "pointPrerequisites": {
+        "P1": [
+          "1am_hasil-qisma-kasr_P1"
+        ],
         "P2": [
           "1am_ikhtizal-kitaba-kasriya_P1",
           "1am_kitabat-adad-tabii_P2"

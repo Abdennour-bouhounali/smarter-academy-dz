@@ -54,7 +54,6 @@ export default function Module02Tabsit() {
           num: 2, title: 'الخاصية التوزيعية', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tabsit-tawzii" lead="الحدود الأربعة صارت كلها مضاعفات للجذر نفسه، فنجمع معاملاتها:" />
               <TapQuestion
                 prompt={<MathText>{'لماذا كتبنا أولًا $\\sqrt{8}$ ، $\\sqrt{18}$ و $\\sqrt{50}$ على الشكل $a\\sqrt{2}$؟'}</MathText>}
                 options={[
@@ -64,10 +63,12 @@ export default function Module02Tabsit() {
                 ]}
                 correct={2}
                 cols={1}
-                requires={['kitaba-a-jidhr-b', 'tabsit-tawzii']}
+                requires={['kitaba-a-jidhr-b']}
                 explain={<MathText>{'الخاصية التوزيعية تجمع حدودًا لها نفس الجذر: $x\\sqrt{b} + y\\sqrt{b} = (x + y)\\sqrt{b}$. أما $\\sqrt{8} + \\sqrt{50}$ فلا يساوي $\\sqrt{58}$: $2\\sqrt{2} + 5\\sqrt{2} = 7\\sqrt{2} = \\sqrt{98}$. و $A = -4\\sqrt{2}$ ليس عددًا طبيعيًا.'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
+              {/* La طريقة est nommée APRÈS la réponse (rétrofit 2026-10-15). */}
+              {q1 && <KnowledgeBrick id="tabsit-tawzii" lead="الحدود الأربعة صارت كلها مضاعفات للجذر نفسه، فنجمع معاملاتها:" />}
             </div>
           ),
         },

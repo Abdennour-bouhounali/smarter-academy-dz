@@ -22,6 +22,7 @@ import { BASE } from '../../_unit/unitMeta';
  *   متقدم  la وضعية : six poteaux à la main (refusés tant que les écarts diffèrent), puis le دوران par le seul deuxième poteau
  *          (60° referme le tour), puis la distance choisie et calculée — 3 m ; en extra, 12 poteaux ;
  *   مبتدئ  un petit massif de 2 m et quatre poteaux (un carré : 90°, 2√2 ≈ 2,83 m).
+ * RÉTROFIT 2026-10-15 : le labo ouvre le module (plus de carte `brief` ni de `title` / `lead` d'atelier) ; la وضعية du livre est lue à l'étape 1. Les briques étaient déjà APRÈS leur réponse.
  * Ouvert sur متقدم (ouvert sur مبتدئ par défaut depuis 2026-10-09) : c'est la وضعية du module. Les gestes jugés de l'élève (`onTrial`) sont listés
  * au-dessus de la question sur l'angle (`[data-activity-evidence]`). Aucune étape n'attend le lab (`onFinished`).
  * Déclarés : les noms P₁ … P₆ et H (la plateforme), la longueur le long du bord (π ≈ 3,14 m, ajout de l'extraction), le plan.
@@ -80,29 +81,15 @@ export default function Module07AlWadiya() {
 
   return (
     <ContentModule objectives={['كيف نضع ستة أعمدة متباعدة بنفس المسافة على محيط حوض دائري؟', 'بأيّ دوران ينتقل كل عمود إلى الذي يليه؟', 'كيف نحسب المسافة بين عمودين متتاليين؟']} ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها" moduleSubtitle="ستة أعمدة إنارة حول حوض الأزهار: أين نضعها وكم تبعد عن بعضها؟" estimatedTime="22 دقيقة"
-      brief={{
-        tag: 'أدمج تعلّماتي — الكتاب ص 160', headline: 'أعمدة إنارة حول حوض الأزهار في الحديقة العمومية', emoji: '🌸',
-        title: 'وضعية واحدة وأدوات الوحدة كلها: المضلع المنتظم، الدوران، الزاوية المركزية، والنسب المثلثية في المثلث القائم', tone: 'amber',
-        body: (
-          <div className="space-y-2" data-situation="hadiqa">
-            <p className="font-bold">{SITUATION.title}</p>
-            <p><MathText>{SITUATION.text}</MathText></p>
-            <p className="text-xs text-slate-500" data-names-note>الكتاب لا يرسم الوضعية ولا يسمّي الأعمدة: سمّتها المنصّة <bdi dir="ltr">P₁</bdi> إلى <bdi dir="ltr">P₆</bdi>، ومركز الحيّز O. <SourceTag source={SITUATION.edge} /></p>
-          </div>
-        ),
-        footer: <SourceTag source={SITUATION.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="المستوى المتقدّم هو وضعية الكتاب: ضع الأعمدة الستة باليد واضغط «أشعل»، ثم جرّب الدوران، ثم احسب المسافة. في المستوى المبتدئ حوض صغير وأربعة أعمدة."
           levels={{
             beginner: () => (
-              <Manipulation type="lamp-ring" level="beginner" {...LAB.beginner} title="حوض صغير نصف قطره 2 m وأربعة أعمدة (مثال من المنصّة)" onTrial={keep} />
+              <Manipulation type="lamp-ring" level="beginner" {...LAB.beginner} onTrial={keep} />
             ),
             advanced: () => (
-              <Manipulation type="lamp-ring" level="advanced" {...LAB.advanced} title="وضعية الكتاب: ستة أعمدة حول حيّز نصف قطره 3 m" onTrial={keep} />
+              <Manipulation type="lamp-ring" level="advanced" {...LAB.advanced} onTrial={keep} />
             ),
           }}
         />
@@ -111,6 +98,12 @@ export default function Module07AlWadiya() {
         { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1 من الكتاب: ما الشكل؟ وكيف توضع الأعمدة؟', done: !!q[1],
           content: (
             <div className="space-y-3">
+              <div className="space-y-2 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm" data-situation="hadiqa">
+                <p className="font-bold">{SITUATION.title}</p>
+                <p><MathText>{SITUATION.text}</MathText></p>
+                <p className="text-xs text-slate-500" data-names-note>الكتاب لا يرسم الوضعية ولا يسمّي الأعمدة: سمّتها المنصّة <bdi dir="ltr">P₁</bdi> إلى <bdi dir="ltr">P₆</bdi>، ومركز الحيّز O. <SourceTag source={SITUATION.edge} /></p>
+                <SourceTag source={SITUATION.source} />
+              </div>
               <Phase i={0} />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">رتّب المعطيات: احكم على كل عبارة.</p>}

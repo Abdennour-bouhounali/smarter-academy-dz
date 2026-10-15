@@ -46,7 +46,6 @@ export default function Module02Taraiq() {
           content: (
             <div className="space-y-3">
               <PredictRule id="khatawat-burhan">
-                <TextbookBox kind="method" title={PROOF_STEPS.title} lines={PROOF_STEPS.lines} source={PROOF_STEPS.source} compact />
                 <TapQuestion
                   prompt={<MathText>{'لنبرهن أن النقطة I منتصف القطعة [AB]، نترجم المطلوب إلى:'}</MathText>}
                   options={['$\\overrightarrow{AI} = \\overrightarrow{IB}$', '$\\overrightarrow{AI} = \\overrightarrow{BI}$', 'الطولان AI و IB متساويان فقط'].map(M)}
@@ -54,7 +53,12 @@ export default function Module02Taraiq() {
                   explain={<MathText>{'I منتصف [AB] يعني $\\overrightarrow{AI} = \\overrightarrow{IB}$ : نفس المنحى ونفس الاتجاه ونفس الطول. $\\overrightarrow{BI}$ يعاكس $\\overrightarrow{IB}$ ، وتساوي الطولين وحده تحقّقه كل نقطة من محور [AB].'}</MathText>}
                   onAnswered={mark(1)} />
               </PredictRule>
-              {q[1] && <KnowledgeBrick id="khatawat-burhan" lead="ما فعلته في المترو، مكتوبا:" />}
+              {q[1] && (
+                <>
+                  <TextbookBox kind="method" title={PROOF_STEPS.title} lines={PROOF_STEPS.lines} source={PROOF_STEPS.source} compact />
+                  <KnowledgeBrick id="khatawat-burhan" lead="ما فعلته في المترو، مكتوبا:" />
+                </>
+              )}
             </div>
           ),
         },
@@ -83,7 +87,6 @@ export default function Module02Taraiq() {
           content: (
             <div className="space-y-3">
               <PredictRule id="istintajat">
-                <TextbookBox kind="definition" title={CONCLUSIONS.title} lines={CONCLUSIONS.lines} source={CONCLUSIONS.source} compact />
                 <BatchChoiceQuestion
                   intro={<p className="text-sm font-semibold text-slate-700">ماذا نستنتج من كل مساواة؟</p>}
                   rows={[
@@ -102,6 +105,7 @@ export default function Module02Taraiq() {
               </PredictRule>
               {q[3] && (
                 <>
+                  <TextbookBox kind="definition" title={CONCLUSIONS.title} lines={CONCLUSIONS.lines} source={CONCLUSIONS.source} compact />
                   <KnowledgeBrick id="istintajat" />
                   <p className="text-xs text-slate-600" data-misconception-note="shal-istiqama"><MathText>{`انتبه: ${CONCLUSIONS.warning}`}</MathText></p>
                 </>

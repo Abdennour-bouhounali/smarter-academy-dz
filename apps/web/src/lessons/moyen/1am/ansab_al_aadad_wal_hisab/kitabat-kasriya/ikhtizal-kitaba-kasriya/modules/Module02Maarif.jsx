@@ -38,8 +38,6 @@ export default function Module02Maarif() {
           num: 1, title: 'قاعدة الكتاب', subtitle: 'مثال 1: 7/4', done: q1,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="property" text={KNOWLEDGE.rule} source={KNOWLEDGE.source} compact />
-              <TextbookBox kind="remark" text={RECALL.text} source={RECALL.source} compact />
               <TapQuestion
                 prompt={<MathText>{'$\\frac{7}{4}=\\frac{7\\times 25}{4\\times 25}=\\frac{\\ldots}{100}$'}</MathText>}
                 options={[M('175'), M('32'), M('700')]}
@@ -47,6 +45,8 @@ export default function Module02Maarif() {
                 explain={<MathText>{'$7\\times 25=175$ : نضرب البسط في نفس العدد 25 الذي ضربنا فيه المقام.'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <TextbookBox kind="property" text={KNOWLEDGE.rule} source={KNOWLEDGE.source} compact />}
+              {q1 && <TextbookBox kind="remark" text={RECALL.text} source={RECALL.source} compact />}
             </div>
           ),
         },
@@ -61,10 +61,10 @@ export default function Module02Maarif() {
                 explain={<MathText>{'$\\frac{3\\times 25}{4\\times 25}=\\frac{75}{100}=0{,}75$ ؛ أمّا $\\frac{34}{100}$ فهو 0,34 : الأرقام لا تُلصق.'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
-              <KnowledgeBrick id="kasr-ashri" lead="في الصينية: 10 قطع، 6 منها للجيران." />
-              <TextbookBox kind="example" lines={[KNOWLEDGE.example2, KNOWLEDGE.example2Math]} source={KNOWLEDGE.source} compact />
-              <TextbookExercise exercise={EX['ex-16']} requires={['kasr-ashri']} onAnswered={() => {}} />
-              <TextbookExercise exercise={EX['ex-19']} requires={['kasr-ashri']} onAnswered={() => setE19(true)} />
+              {q2 && <KnowledgeBrick id="kasr-ashri" lead="في الصينية: 10 قطع، 6 منها للجيران." />}
+              {q2 && <TextbookBox kind="example" lines={[KNOWLEDGE.example2, KNOWLEDGE.example2Math]} source={KNOWLEDGE.source} compact />}
+              {q2 && <TextbookExercise exercise={EX['ex-16']} requires={['kasr-ashri']} onAnswered={() => {}} />}
+              {q2 && <TextbookExercise exercise={EX['ex-19']} requires={['kasr-ashri']} onAnswered={() => setE19(true)} />}
             </div>
           ),
         },
@@ -79,8 +79,8 @@ export default function Module02Maarif() {
                 explain={<span>قسمنا البسط والمقام على نفس العدد 9 : نفس العدد بكتابة أبسط.</span>}
                 onAnswered={() => setQ3(true)}
               />
-              <KnowledgeBrick id="ikhtizal" />
-              <TextbookExercise exercise={EX['ex-17']} requires={['ikhtizal']} onAnswered={() => {}} />
+              {q3 && <KnowledgeBrick id="ikhtizal" />}
+              {q3 && <TextbookExercise exercise={EX['ex-17']} requires={['ikhtizal']} onAnswered={() => {}} />}
             </div>
           ),
         },

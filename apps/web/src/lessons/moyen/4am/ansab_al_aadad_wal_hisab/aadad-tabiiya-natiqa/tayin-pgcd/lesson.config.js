@@ -2,6 +2,16 @@
  * الدرس 5 — تعيين القاسم المشترك الأكبر لعددين طبيعيين
  * Manuel 4AM, unité 1 : activité 5 (p. 8), معارف 4 نتائج مباشرة (p. 12), exercices 17, 18 (p. 14), 22 (p. 15),
  * puis trois « مسائل » de la plateforme (modules 4–6).
+ *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : les trousses identiques (labo `common-divisors`, thème `school`, niveau مبتدئ : 8 stylos et 12 cahiers à
+ *   ranger SANS rien laisser dehors) — la main ajoute des trousses et seul un nombre qui range les DEUX piles est gardé : « commun »
+ *   se voit avant de se lire dans des listes, et « le plus grand » est la question de la main. Rejetée : l'activité 5 du manuel
+ *   telle quelle (trois consignes sur 42 et 60 : lister, croiser, prendre le plus grand — le tout de tête, sans besoin) ; elle reste le
+ *   niveau متقدم du MÊME labo (les deux listes) et la question de l'étape 2 (« انقل وأكمل »).
+ *   Ordre des idées : pourquoi 3 trousses ne marchent pas (3 divise 12 mais pas 8 : « commun ») → 42 et 60 sur les listes, la phrase
+ *   du manuel à compléter, puis la méthode (boîte puis brique APRÈS la réponse) → module 2 : PGCD sans listes, essayé AVANT la règle,
+ *   puis la règle « b divise a » (rappel et boîte APRÈS la réponse).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/tayin-pgcd';
 
@@ -55,7 +65,7 @@ export const LESSON_CONFIG = {
       title: 'حقائب متماثلة: 8 أقلام و 12 كراسًا، حتى أكبر عدد من الحقائب',
       objective: 'تعيين PGCD بحصر القواسم ثم القواسم المشتركة ثم أكبرها',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'school' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'school' },
       learningPointIds: ['4am_tayin-pgcd_P1'], sourceElementIds: ['act-5'] },
     { kind: 'manipulation', code: 'common-divisors-42-60', type: 'common-divisors', module: 1,
       level: 'advanced',

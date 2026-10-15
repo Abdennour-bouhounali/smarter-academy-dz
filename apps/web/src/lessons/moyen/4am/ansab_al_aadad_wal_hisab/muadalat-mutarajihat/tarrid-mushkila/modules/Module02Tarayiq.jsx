@@ -20,6 +20,7 @@ import { SquareTriangleFigure } from '../components/Figures';
  *      ⇔ x = −3) : l'élève voit que les colonnes ne se rejoignent jamais sur la règle —
  *      le laboratoire en un seul niveau (`levels={false}`, un exemple travaillé) ;
  *   5. la brique « tahaqquq-waqi », puis une solution à refuser (longueur négative).
+ * Rétrofit 2026-10-15 : les trois briques (tarrid-tariqa, tarrid-mutarajiha, tahaqquq-waqi) s'affichent APRÈS la réponse de leur étape.
  * La leçon a `knowledgeMap: true` : pas de module de formalisation séparé. LP : P1, P2.
  */
 const STEP_OPTIONS = ['أ) نسمّي', 'ب) نعبّر', 'جـ) نحلّ', 'التحقق'];
@@ -58,7 +59,6 @@ export default function Module02Tarayiq() {
           num: 2, title: 'الطريقة: أربع خطوات', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tarrid-tariqa" lead="الأسطر الأربعة هي خطوات كل ترييض:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">إلى أيّ خطوة ينتمي كل سطر؟</p>}
                 rows={[
@@ -67,7 +67,6 @@ export default function Module02Tarayiq() {
                   { id: 'chk', label: <MathText>{'$13 + 15 + 17 = 45$'}</MathText>, options: STEP_OPTIONS, correct: 3, correction: 'نعوّض الحل في نص المشكلة: الأعمار بعد 9 سنوات.' },
                   { id: 'nm', label: 'عدد السنوات التي يكون بعدها عمر الأب هو مجموع أعمار أبنائه', options: STEP_OPTIONS, correct: 0, correction: <MathText>{'نسمّي المجهول: نقول بالكلمات ماذا يمثّل $x$ .'}</MathText> },
                 ]}
-                requires={['tarrid-tariqa']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     {allRight ? 'تمامًا: نسمّي، نعبّر، نحلّ، ثم نتحقّق في النص نفسه.' : 'أعد قراءة الأسطر أ) ب) جـ) والتحقق في حلّ الكتاب.'}
@@ -75,6 +74,7 @@ export default function Module02Tarayiq() {
                 )}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="tarrid-tariqa" lead="الأسطر الأربعة هي خطوات كل ترييض:" />}
             </div>
           ),
         },
@@ -91,7 +91,6 @@ export default function Module02Tarayiq() {
           num: 4, title: 'سباق جديد: هل يلتقي الطرفان؟', subtitle: 'ابنِ النموذج، ثم مدّد x وراقب', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tarrid-mutarajiha" lead="ما فعلته في دوري الآن 2:" />
               <Manipulation
                 type="growth-race"
                 levels={false}
@@ -114,6 +113,7 @@ export default function Module02Tarayiq() {
                 explain={<MathText>{'منذ 3 سنوات كان الأب 33 والابن 11: $33 = 3 \\times 11$ . أما «بعد $x$ سنة» فيتطلّب $x \\geq 0$ : ليس للسؤال حلّ في المستقبل. التحقق يقول لنا متى يجيب الحل عن السؤال.'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="tarrid-mutarajiha" lead="ما فعلته في دوري الآن 2:" />}
             </div>
           ),
         },
@@ -121,7 +121,6 @@ export default function Module02Tarayiq() {
           num: 5, title: 'هل كل حلّ يصلح جوابًا؟', done: q4,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tahaqquq-waqi" lead="قبل أن نكتب الجواب، نسأل: هل يلائم هذا الحل الوضعية؟" />
               <TapQuestion
                 prompt={<span>مستطيل طوله <MathText>{'$x + 2$'}</MathText> وعرضه <MathText>{'$x$'}</MathText> (بالسنتيمتر) ومساحته <MathText>{'$15cm^2$'}</MathText>. المعادلة <MathText>{'$x(x + 2) = 15$'}</MathText> تُكتب <MathText>{'$(x + 5)(x - 3) = 0$'}</MathText>. ما عرض المستطيل؟</span>}
                 options={[
@@ -132,10 +131,11 @@ export default function Module02Tarayiq() {
                 ]}
                 correct={1}
                 cols={2}
-                requires={['tahaqquq-waqi', 'jidaa-maadum']}
+                requires={['jidaa-maadum']}
                 explain={<MathText>{'الجداء معدوم: $x = -5$ أو $x = 3$ ، لكن $x$ عرض، فهو موجب: العرض 3cm والطول 5cm ، و $3 \\times 5 = 15$ .'}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && <KnowledgeBrick id="tahaqquq-waqi" lead="قبل أن نكتب الجواب، نسأل: هل يلائم هذا الحل الوضعية؟" />}
             </div>
           ),
         },

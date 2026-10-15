@@ -17,8 +17,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module01Nashat.jsx",
-        "line": 179,
-        "step": 3,
+        "line": 186,
+        "step": 4,
         "variant": "new"
       }
     },
@@ -28,7 +28,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module02Maarif.jsx",
-        "line": 46,
+        "line": 63,
         "step": 1,
         "variant": "new"
       }
@@ -39,7 +39,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module02Maarif.jsx",
-        "line": 47,
+        "line": 64,
         "step": 1,
         "variant": "new"
       }
@@ -50,7 +50,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module02Maarif.jsx",
-        "line": 71,
+        "line": 88,
         "step": 2,
         "variant": "new"
       }
@@ -61,7 +61,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module02Maarif.jsx",
-        "line": 94,
+        "line": 110,
         "step": 3,
         "variant": "new"
       }
@@ -74,7 +74,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module02Maarif.jsx",
-        "line": 118,
+        "line": 132,
         "step": 4,
         "variant": "new"
       }
@@ -87,7 +87,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module03Taraiq.jsx",
-        "line": 60,
+        "line": 76,
         "step": 1,
         "variant": "new"
       }
@@ -98,7 +98,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module03Taraiq.jsx",
-        "line": 89,
+        "line": 104,
         "step": 2,
         "variant": "new"
       }
@@ -109,7 +109,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module03Taraiq.jsx",
-        "line": 113,
+        "line": 126,
         "step": 3,
         "variant": "new"
       }
@@ -217,15 +217,11 @@
       "questionId": "M01-S1-Q1",
       "module": 1,
       "step": 1,
-      "component": "BatchChoiceQuestion",
+      "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module01Nashat.jsx",
-      "line": 118,
-      "requires": [
-        "daira-qurs"
-      ],
-      "prerequisiteStatus": {
-        "daira-qurs": "prior"
-      },
+      "line": 102,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -235,7 +231,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module01Nashat.jsx",
-      "line": 143,
+      "line": 125,
       "requires": [
         "daira-qurs"
       ],
@@ -251,7 +247,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module01Nashat.jsx",
-      "line": 167,
+      "line": 150,
       "requires": [
         "daira-qurs"
       ],
@@ -265,14 +261,14 @@
       "questionId": "M01-S4-Q4",
       "module": 1,
       "step": 4,
-      "component": "TapQuestion",
+      "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module01Nashat.jsx",
-      "line": 188,
+      "line": 174,
       "requires": [
-        "kura-julla-nashat"
+        "daira-qurs"
       ],
       "prerequisiteStatus": {
-        "kura-julla-nashat": "established@M1"
+        "daira-qurs": "prior"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -283,13 +279,9 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module02Maarif.jsx",
-      "line": 50,
-      "requires": [
-        "tarif-julla"
-      ],
-      "prerequisiteStatus": {
-        "tarif-julla": "established@M2"
-      },
+      "line": 52,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -299,13 +291,9 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module02Maarif.jsx",
-      "line": 72,
-      "requires": [
-        "aqtar"
-      ],
-      "prerequisiteStatus": {
-        "aqtar": "established@M2"
-      },
+      "line": 74,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -315,13 +303,9 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module02Maarif.jsx",
-      "line": 95,
-      "requires": [
-        "tawlid"
-      ],
-      "prerequisiteStatus": {
-        "tawlid": "established@M2"
-      },
+      "line": 96,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -329,9 +313,21 @@
       "questionId": "M02-S4-Q4",
       "module": 2,
       "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module02Maarif.jsx",
+      "line": 119,
+      "requires": null,
+      "prerequisiteStatus": {},
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S4-Q5",
+      "module": 2,
+      "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module02Maarif.jsx",
-      "line": 120,
+      "line": 134,
       "requires": [
         "dawair"
       ],
@@ -347,13 +343,9 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module03Taraiq.jsx",
-      "line": 61,
-      "requires": [
-        "tamthil-kura"
-      ],
-      "prerequisiteStatus": {
-        "tamthil-kura": "established@M3"
-      },
+      "line": 62,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -364,12 +356,8 @@
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module03Taraiq.jsx",
       "line": 90,
-      "requires": [
-        "tamthil-nuqta"
-      ],
-      "prerequisiteStatus": {
-        "tamthil-nuqta": "established@M3"
-      },
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -379,13 +367,9 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module03Taraiq.jsx",
-      "line": 115,
-      "requires": [
-        "masafa-maalam"
-      ],
-      "prerequisiteStatus": {
-        "masafa-maalam": "established@M3"
-      },
+      "line": 114,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -395,7 +379,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/kura-julla/modules/Module03Taraiq.jsx",
-      "line": 139,
+      "line": 138,
       "requires": [
         "tarif-kura",
         "fithaghuras"

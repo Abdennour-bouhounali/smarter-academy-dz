@@ -17,6 +17,17 @@
  *                      le bloc de fromage tranché, la verrière pyramidale et ses deux cadres ;
  *   M8 إختبار أولي   — cinq épreuves de la plateforme, P1–P4 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : l'imprimante 3D du fablab (labo `section-slicer`, niveau مبتدئ, sphère de rayon 5, une couche par centimètre) —
+ *   la main DÉPLACE le plan de coupe et prédit chaque couche avant que la machine l'imprime : le rétrécissement de la couche est ce
+ *   que l'élève voit venir (il écrit ses couches, `onTrial` aux deux niveaux), la formule vient ensuite. Rejetée : le نشاط 2 du manuel
+ *   en premier (« exprimer IM² en fonction de x » avant d'avoir vu une seule couche : calcul de mémoire) ; il reste le niveau متقدم du
+ *   MÊME labo (sphère R = 3 et cinq x, puis بلاطة, أسطوانة, هرم) et ses questions viennent APRÈS la première réponse.
+ *   Ordre des idées : le labo seul en tête (aucune carte du manuel, ni titre ni `lead` de workspace) → POURQUOI la couche rétrécit
+ *   quand le plan s'éloigne (OM constant, triangle OIM) → IM² du manuel → quatre plans → le plan au pôle (brique après la réponse) →
+ *   نشاط 3, 4, 5 sur les couches du niveau متقدم → module 2 : chaque question avant la brique qui la nomme → module 3 : la brique de
+ *   la méthode après le calcul de 13 et 5.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/maqati-mustawiya';

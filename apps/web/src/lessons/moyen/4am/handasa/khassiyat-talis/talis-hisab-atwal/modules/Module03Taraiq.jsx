@@ -45,7 +45,6 @@ export default function Module03Taraiq() {
               <MethodSteps method={{ source: METHOD.source, exercise: METHOD.exercise, solution: METHOD.solution }} onAllRevealed={() => setSeen(true)} />
               {seen && <p className="text-xs text-slate-500" data-correction><MathText>{METHOD.correction}</MathText></p>}
               <PredictRule id="hisab-atwal"><TextbookBox kind="method" lines={METHOD_RULE.lines} source={METHOD_RULE.source} compact /></PredictRule>
-              <KnowledgeBrick id="hisab-atwal" lead={seen ? 'الأسطر الثلاثة، مسمّاة:' : 'الطريقة التي ستكشفها سطرا سطرا:'} />
               <TapQuestion
                 prompt={<MathText>{'لماذا نحتفظ بالمساواة $\\dfrac{MA}{MD} = \\dfrac{AB}{DN}$ دون $\\dfrac{MB}{MN}$ ؟'}</MathText>}
                 options={[
@@ -55,10 +54,10 @@ export default function Module03Taraiq() {
                 ].map(M)}
                 correct={0}
                 cols={1}
-                requires={['hisab-atwal']}
                 explain={<MathText>{'MB و MN مجهولان: $\\dfrac{MB}{MN}$ تساوي النسبتين الأخريين لكنها لا تفيد في حساب DN. نختار المساواة التي فيها DN و $MA = 2$ و $MD = 1$ و $AB = 5$ .'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="hisab-atwal" lead="الأسطر الثلاثة، مسمّاة:" />}
             </div>
           ),
         },

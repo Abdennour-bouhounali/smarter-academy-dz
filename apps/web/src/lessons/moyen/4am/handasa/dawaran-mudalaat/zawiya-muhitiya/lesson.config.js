@@ -18,6 +18,16 @@
  *   M5–M7 مسائل      — puis trois « مسائل » de la plateforme (modules 5–7) : l'entraînement de tir (مسألة الدرس), le théâtre en plein air, le rond-point ;
  *   M8 إختبار أولي   — QCM 2–3 et trois épreuves de la plateforme ; P1, P2, P3 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le TIREUR sur le cercle (inscribed-angle, niveau مبتدئ, ouvert par défaut) — la main déplace le tireur, parie sur
+ *   l'angle de tir à partir du seul angle au centre, puis voit le même angle depuis tout le grand arc (refusé dedans / dehors) :
+ *   c'est la situation où « l'angle inscrit vaut la moitié de l'angle au centre » devient nécessaire pour la main. Rejetée : le
+ *   نشاط 4 (قول مزيان / قول هوارية) comme entrée — l'énoncé et la carte de contexte sont lus avant tout geste et les deux
+ *   égalités se répondent par le texte ; il reste le niveau متقدم (et les étapes 2–3, en application sous les essais de l'élève).
+ *   Ordre des idées : qui sont O et D (brique `tasmiya` APRÈS) → قول مزيان → قول هوارية (brique `alaqa-nashat` APRÈS « هل هوارية
+ *   على صواب ؟ ») ; معارف : chaque propriété est posée en question AVANT sa brique (`tarif`, `khassiya-nisf`, `khassiya-tasawi`) ;
+ *   طريقة : le calcul de la roue avant la brique `tariqa-qaws`, le diamètre avant `qutr-qaima`.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/zawiya-muhitiya';
@@ -89,7 +99,7 @@ export const LESSON_CONFIG = {
       title: 'زاوية التسديد: الرامي على الدائرة المرسومة',
       objective: 'الزاوية المحيطية التي تحصر القوس AB قيسها نصف قيس الزاوية المركزية AOB، ولا يتغير قيسها حين يتحرك رأسها على الدائرة؛ وزاوية رأسها خارج الدائرة أو داخلها ليست محيطية',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'improved_interactivity_and_age_appropriateness', theme: 'football' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'football' },
       learningPointIds: ['4am_zawiya-muhitiya_P1', '4am_zawiya-muhitiya_P2', '4am_zawiya-muhitiya_P3'],
       sourceElementIds: ['act-4'],
     },

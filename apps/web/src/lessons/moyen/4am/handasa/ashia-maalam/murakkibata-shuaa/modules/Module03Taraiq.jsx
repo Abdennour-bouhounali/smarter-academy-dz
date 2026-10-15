@@ -4,7 +4,7 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Manipulation } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox, MethodSteps } from '../../../../../../common/textbook';
+import { TextbookBox, MethodSteps } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { METHOD_DRAW, NOW_143, LAB } from '../content/textbook';
 import { FIG_METHOD } from '../content/figures';
@@ -32,11 +32,15 @@ export default function Module03Taraiq() {
       moduleTitle="طرائق — تمثيل شعاع علمت مركبتاه"
       moduleSubtitle="الكود معطى: أين تضع الوجهة؟"
       objectives={['أين نضع الوجهة إذا عُرف الكود؟', 'كيف نمثّل الشعاع نفسه انطلاقًا من نقطة أخرى؟']} estimatedTime="9 دقائق"
-      brief={{
-        tag: 'طرائق — الكتاب ص 143', title: METHOD_DRAW.title, tone: 'emerald',
-        body: <p>في تطبيق التوصيل وضعت دبوس الوجهة انطلاقا من كود معطى. الكتاب يكتب الحركة نفسها بلغة الانسحابات.</p>,
-        footer: <SourceTag source={METHOD_DRAW.source} />,
-      }}
+      intro={(
+        <Manipulation
+          type="component-steps"
+          levels={false}
+          {...LAB.draw.numbers}
+          theme="delivery"
+          lead={NOW_143.lead}
+        />
+      )}
       steps={[
         {
           num: 1, title: 'ممثّل أول للشعاع u', subtitle: 'الطريقة، السؤال 1', done: q1,
@@ -47,7 +51,6 @@ export default function Module03Taraiq() {
                 <MethodSteps method={{ ...METHOD_DRAW, solution: METHOD_DRAW.solution.slice(0, 4) }} />
               </PredictRule>
               <p className="text-xs text-slate-500"><MathText>{METHOD_DRAW.rename}</MathText></p>
-              <KnowledgeBrick id="tamthil-shuaa" lead="ما فعله الطيار الآلي في التطبيق، بكلمات الطريقة:" />
               <TapQuestion
                 prompt={<MathText>{'من $A(-2\\,;\\,1)$ ، بالانسحاب الأفقي ثم الانسحاب العمودي للشعاع $\\vec{u}\\begin{pmatrix} 3 \\\\ -4 \\end{pmatrix}$ نجد:'}</MathText>}
                 options={[
@@ -58,10 +61,10 @@ export default function Module03Taraiq() {
                 ].map(M)}
                 correct={0}
                 cols={1}
-                requires={['tamthil-shuaa']}
                 explain={<MathText>{'3 وحدات نحو اليمين: $A_1(1\\,;\\,1)$ ، ثم 4 وحدات نحو الأسفل: $B(1\\,;\\,-3)$ . النقطة $(3\\,;\\,-4)$ هي نهاية الممثّل الذي مبدؤه O فقط.'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="tamthil-shuaa" lead="ما فعله الطيار الآلي في التطبيق، بكلمات الطريقة:" />}
             </div>
           ),
         },
@@ -90,18 +93,10 @@ export default function Module03Taraiq() {
           ),
         },
         {
-          num: 3, title: 'دوري الآن', subtitle: 'تمثيل u و v', done: q3,
+          num: 3, title: 'وجهة شعاع من نقطة غير O', subtitle: 'دوري الآن — تمثيل u و v', done: q3,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" text={NOW_143.text} source={NOW_143.source} compact />
-              <p className="text-sm text-slate-700">{NOW_143.lead}</p>
-              <Manipulation
-                type="component-steps"
-                levels={false}
-                {...LAB.draw.numbers}
-                theme="delivery"
-                title="دوري الآن: ضع وجهة الشعاعين u و v"
-              />
               <TapQuestion
                 prompt={<MathText>{'ممثّل الشعاع $\\vec{w}\\begin{pmatrix} -4 \\\\ -1 \\end{pmatrix}$ الذي مبدؤه $K(2\\,;\\,3)$ ينتهي عند:'}</MathText>}
                 options={[

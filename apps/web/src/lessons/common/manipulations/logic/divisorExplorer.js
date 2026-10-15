@@ -72,3 +72,19 @@ export function initWithDefault({ a, b = null, candidates = [] }) {
 export function untried(state, rail) {
   return rail.filter((c) => state.tried[c] === undefined && canPlace(state, c) === true);
 }
+
+/* ── Le guide d'onboarding (LabCoach, MANIPULATION_CONTRACT §8quater) ─────────────────────────────────────────── */
+
+/**
+ * La prochaine action attendue : porter une taille du rail JAMAIS essayée vers la bibliothèque. Le guide ne choisit pas
+ * « la bonne » taille (ce serait donner un diviseur) : il suit l'ordre du rail et saute la taille déjà posée à l'ouverture.
+ * `{ id, target, rank, gesture }` | `null` une fois le contraste vu (la découverte prend la suite). `rank` = la taille.
+ */
+export function coachOf(state, rail) {
+  if (discoveryReady(state)) return null;
+  const todo = untried(state, rail);
+  const next = todo.find((c) => c !== state.b) ?? todo[0];
+  if (next === undefined) return null;
+  const first = Object.keys(state.tried).length === 0;
+  return { id: first ? 'size' : 'again', target: `[data-drag-source="size:${next}"]`, rank: next, gesture: 'drag' };
+}

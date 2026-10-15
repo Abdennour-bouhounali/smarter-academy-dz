@@ -16,6 +16,7 @@ import { kidBox, kidLook } from '../primitives/kidFigure.js';
 import { SvgPill, SvgDimension } from '../primitives/SvgPill';
 import { LabCard, StageFrame, PromptCard, ChoiceTray, ChoiceCard, StepperCard, NamePill, VerdictBanner, RoundButton } from '../primitives/LabKit';
 import ArcTape from '../../components/ArcTape';
+import { useLabCoach } from '../primitives/LabCoach';
 import * as L from '../logic/storyBars';
 
 /**
@@ -76,6 +77,9 @@ import * as L from '../logic/storyBars';
  * de haut sinon), les cartes en grille de 3 et UN texte à la fois — le sélecteur ①–⑥ (`role=tablist`, flèches,
  * ✓ sur un texte résolu) dont chaque onglet est la zone d'accueil de son texte, plus le panneau du texte choisi.
  *
+ * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/storyBars.js › coachOf` montre la poignée de la toise, les
+ * cartes de calcul, « suivant » ou la première carte du manuel ; jamais la taille, la carte juste ni l'opération.
+ *
  * Props (contrat fixé avec la leçon) : `story` ('checkup' | 'act1' | 'method29'), `level`, `levels`
  * (false : l'exemple travaillé de M3), `title`, `lead`, `onTrial({ story, item, kind, value, ok, calc? })`
  * à chaque essai VALIDÉ, `onFinished({ story })` à la règle (ou, sans découverte, quand tout est fait) —
@@ -95,7 +99,7 @@ const btn = 'inline-flex min-h-[44px] min-w-[44px] items-center justify-center r
 
 export default function StoryBars({
   story: story0 = 'checkup', title, lead, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -230,6 +234,12 @@ export default function StoryBars({
     </div>
   ) : null;
 
+  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coach = useLabCoach({
+    lab: 'story-bars', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
+    labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
+  });
+
   // §17.9 : la leçon peut écrire le contexte (`lead`) pour SES nombres ; sinon celui de l'histoire
   const authoredLead = state.isAuthoredLevel ? lead : null;
   const hintKeys = def.mode === 'stretch' ? 'stretch' : 'cards';
@@ -243,6 +253,7 @@ export default function StoryBars({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      coach={coachOn ? coach : null}
       hints={[0, 1, 2].map((i) => k(`hints.${hintKeys}.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={def.discovery ? (

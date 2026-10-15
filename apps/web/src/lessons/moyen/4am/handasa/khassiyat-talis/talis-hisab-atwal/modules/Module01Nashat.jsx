@@ -5,7 +5,7 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, SHADOW_WORLD, SHADOW_STEPS } from '../content/textbook';
 import { FIG_ACT1_CASE1, FIG_ACT1_CASE2, FIG_SHADOW } from '../content/figures';
@@ -77,31 +77,16 @@ export default function Module01Nashat() {
       moduleSubtitle="اكتشف بنفسك ما يربط طول كل شيء بظلّه، ثم اقرأه في المثلثات"
       objectives={['ما العلاقة بين طول شيء شاقولي وطول ظلّه؟', 'كيف نعرف ارتفاع ما لا نصل إليه؟', 'أيّ نسب تتساوى في المثلثين عندما يتوازى مستقيمان؟']}
       estimatedTime="20 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 104 (والمنصّة)',
-        headline: 'كيف نعرف ارتفاع ما لا نصل إليه؟',
-        emoji: '🕌',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800">{SHADOW_STEPS.situation} <SourceTag source={SHADOW_STEPS.source} /></p>
-            <p className="text-sm text-slate-600">قبل أي سؤال: حرّك الشمس واترك مقران يسألك. اقترح قاعدة تعطي ظلّ أيّ شيء من طوله، فيختبرها العالم أمامك. بعدها ينقل النشاط ما وجدتَه إلى شكل هندسي.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
+        // LE LABO OUVRE LE MODULE (§4quater) : ni carte du manuel ni titre / lead de workspace ; le contexte est le `lead` du labo.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="المستويان في ساحة الحيّ نفسها وبالأدوات نفسها: مئذنة 5 أمتار في المبتدئ و 6,5 متر في المتقدّم. حرّك الشمس، قِس الظلال، توقّع، واكتب قاعدتك بنفسك."
           levels={{
             beginner: () => (
-              <Manipulation type="shadow-world" level="beginner" {...SHADOW_WORLD.beginner} title="ساحة الحيّ: الشمس والظلال" onTrial={onTrial} />
+              <Manipulation type="shadow-world" level="beginner" {...SHADOW_WORLD.beginner} lead={SHADOW_STEPS.situation} onTrial={onTrial} />
             ),
             advanced: () => (
-              <Manipulation type="shadow-world" level="advanced" {...SHADOW_WORLD.advanced} title="ساحة الحيّ: مئذنة أعلى" onTrial={onTrial} />
+              <Manipulation type="shadow-world" level="advanced" {...SHADOW_WORLD.advanced} lead={SHADOW_STEPS.situation} onTrial={onTrial} />
             ),
           }}
         />

@@ -42,14 +42,13 @@ export default function Module02Maarif() {
       estimatedTime="10 دقائق"
       brief={{
         tag: 'معارف — الكتاب ص 108 (و ص 106)', title: KNOWLEDGE3.title, tone: 'violet',
-        body: <p>ما وجدته على الحامل يكتبه الكتاب خاصيةً. اقرأ كل شرط، ثم جرّبه على شكل جديد.</p>,
+        body: <p>معارف الكتاب في أربع خطوات: كل خطوة سؤال أولًا، وبعد جوابك يأتي الاسم أو الملاحظة.</p>,
       }}
       steps={[
         {
           num: 1, title: 'الخاصية', subtitle: 'معارف 3', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="khassiya-aksiya" variant="rappel" lead="الكتاب يكتب ما رأيته على الحامل:" />
               <p className="text-sm text-slate-700">{KNOWLEDGE3.figuresText}</p>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2" data-know3-figures>
                 <GeoFigure {...FIG_KNOW3_BETWEEN} />
@@ -63,10 +62,11 @@ export default function Module02Maarif() {
                 options={['نعم: النسبتان متساويتان ونفس الترتيب', 'لا: النسبتان مختلفتان', 'لا يمكن الحكم دون رسم']}
                 correct={0}
                 cols={1}
-                requires={['khassiya-aksiya', 'tasawi-kasrayn']}
+                requires={['tasawi-kasrayn']}
                 explain={<MathText>{"$\\dfrac{AB'}{AB} = \\dfrac{2}{5}$ و $\\dfrac{AC'}{AC} = \\dfrac{3}{7{,}5}$ و $2 \\times 7{,}5 = 15 = 5 \\times 3$ : النسبتان متساويتان، والنقط مرتبة بنفس الترتيب، فـ $(B'C') \\parallel (BC)$ ."}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="khassiya-aksiya" variant="rappel" lead="الكتاب يكتب ما رأيته على الحامل:" />}
             </div>
           ),
         },
@@ -74,16 +74,15 @@ export default function Module02Maarif() {
           num: 2, title: 'نسبتان متساويتان: هل يكفي؟', subtitle: 'ملاحظة', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="shart-tartib" lead="الشرط الثاني ليس زينة:" />
               <TapQuestion
                 prompt={<MathText>{"في شكل الملاحظة $\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC} = \\dfrac{1}{2}$ . لماذا لا يوازي (B′C′) المستقيم (BC)؟"}</MathText>}
                 options={['لأن النقط A، B، B′ و A، C، C′ ليست مرتبة بنفس الترتيب', 'لأن النسبتين مختلفتان', 'لأن C′ منتصف [AC]']}
                 correct={0}
                 cols={1}
-                requires={['shart-tartib']}
                 explain={<MathText>{"النسبتان متساويتان (كلتاهما $\\dfrac{1}{2}$)، لكن B′ من الجهة الأخرى للنقطة A بينما C′ بين A و C. أن تكون C′ منتصفا لا يمنع التوازي (في مستقيم المنتصفين مثلا)."}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="shart-tartib" lead="الشرط الثاني ليس زينة:" />}
             </div>
           ),
         },
@@ -92,7 +91,6 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_KNOW3_EXAMPLE} />
-              <TextbookBox kind="example" lines={KNOWLEDGE3.example} source={KNOWLEDGE3.source} compact />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">أعد الحساب بنفسك:</p>}
                 rows={[
@@ -105,6 +103,7 @@ export default function Module02Maarif() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: النسبتان متساويتان ونفس الترتيب، إذن (MN)//(PR).' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <TextbookBox kind="example" lines={KNOWLEDGE3.example} source={KNOWLEDGE3.source} compact />}
             </div>
           ),
         },
@@ -113,16 +112,15 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_KNOW1_REMARK1} />
-              <KnowledgeBrick id="nisbatan-mukhtalifatan" variant="rappel" lead="ومن خاصية طالس نفسها (الدرس السابق):" />
               <TapQuestion
                 prompt={<MathText>{'في وضعية الفراشة: $AN = 1$ ، $AM = 2$ ، $AB = 3$ ، $AC = 2$ . ماذا ينتج؟'}</MathText>}
                 options={['(MN) و (BC) غير متوازيين', '$(MN) \\parallel (BC)$', 'لا يمكن الحكم لأن النقط من جهتين مختلفتين'].map(M)}
                 correct={0}
                 cols={1}
-                requires={['nisbatan-mukhtalifatan']}
                 explain={<MathText>{KNOW1_REMARK1.answer}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && <KnowledgeBrick id="nisbatan-mukhtalifatan" variant="rappel" lead="ومن خاصية طالس نفسها (الدرس السابق):" />}
             </div>
           ),
         },

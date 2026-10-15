@@ -12,6 +12,7 @@ import DragGhost from '../primitives/DragGhost';
 import BrickWall from '../primitives/BrickWall';
 import EquationDisplay from '../primitives/EquationDisplay';
 import { measureLayout } from '../primitives/brickLayout';
+import { useLabCoach } from '../primitives/LabCoach';
 import * as L from '../logic/divisorProperties';
 
 /**
@@ -33,6 +34,9 @@ import * as L from '../logic/divisorProperties';
  * E. À découvrir : ce n'est pas un hasard des nombres choisis — c'est n en
  *    facteur commun ; la preuve, construite à la main, le dit avec des lettres.
  *
+ * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/divisorProperties.js › coachOf` montre le mur de b à porter
+ * (et, au niveau avancé, la prédiction à choisir d'abord) ; la zone est désignée par son rang, jamais par ses mots.
+ *
  * Thème `construction` (packages/core VISUAL_THEMES). Le geste est le même
  * à tous les niveaux ; au niveau avancé (900, 90, 9) les briques sont trop
  * petites pour être comptées : l'élève PRÉDIT avec la propriété — « طوب كامل »
@@ -50,7 +54,7 @@ const ZONES = Object.freeze([
 const targetOfZone = (zoneId) => ZONES.find((z) => `zone:${z.id}` === zoneId)?.target ?? null;
 
 export default function DivisorProperties({
-  n: n0, a: a0, b: b0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onFinished,
+  n: n0, a: a0, b: b0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onFinished, coach: coachOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({ type: 'divisor-properties', initialNumbers: { n: n0, a: a0, b: b0 }, initialMode, hintCount: 3 });
@@ -60,6 +64,12 @@ export default function DivisorProperties({
 
   useEffect(() => { setLab(L.init({ n, a, b })); setReject(null); }, [n, a, b, state.epoch]);
   const isAdvanced = state.level === 'advanced';
+  const coachStep = coachOn ? L.coachOf(lab, { advanced: isAdvanced }) : null;
+  const coachK = (key, o) => t(`manipulation.props.coach.${key}`, o);
+  const coach = useLabCoach({
+    lab: 'divisor-properties', step: coachStep, text: coachStep ? coachK(coachStep.id === 'carry-next' ? 'carryNext' : coachStep.id, { zone: coachK(`zone${coachStep.rank}`) }) : '',
+    labels: { hide: coachK('hide'), show: coachK('show'), ok: coachK('ok'), stop: coachK('stop') },
+  });
 
   const drag = useDragInteraction({
     onDrop: (sourceId, zoneId) => {
@@ -130,6 +140,7 @@ export default function DivisorProperties({
       mission={mission ?? t('manipulation.props.wallMission', { n, a, b })}
       lead={lead}
       state={state}
+      coach={coachOn ? coach : null}
       numberFields={[{ key: 'n', label: 'n' }, { key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
       validate={(x) => (x.a % x.n !== 0 || x.b % x.n !== 0 ? t('manipulation.props.mustDivideBoth') : x.a < x.b ? t('manipulation.props.aBeforeB') : '')}
       allowModeSwitch={allowModeSwitch}

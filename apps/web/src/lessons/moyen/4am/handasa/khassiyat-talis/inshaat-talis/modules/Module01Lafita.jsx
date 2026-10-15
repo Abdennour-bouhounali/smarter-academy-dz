@@ -5,10 +5,9 @@ import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox, MethodSteps } from '../../../../../../common/textbook';
+import { TextbookBox, MethodSteps } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { TIFO, LAB, METHOD_RAY, METHOD_DIVIDE, LINES } from '../content/textbook';
-import TifoVignette from '../components/TifoVignette';
 import TrialsEvidence from '../components/TrialsEvidence';
 
 /**
@@ -47,33 +46,17 @@ export default function Module01Lafita() {
       moduleSubtitle="نصف مستقيم، مدور، كوس: والقطع تتقايس من تلقاء نفسها"
       objectives={['كيف نقسم [AB] إلى 3 قطع متقايسة دون قياس 10 ÷ 3 ؟', 'لماذا تتقايس القطع؟ وهل لفتحة المدور دور؟', 'كيف يقسم الكتاب ضلعًا بطريقة أخرى؟']}
       estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'مدخل الدرس — وضعية من المنصّة',
-        headline: TIFO.headline,
-        emoji: '🥁',
-        title: 'تقسيم قطعة مستقيم إلى قطع متقايسة',
-        tone: 'indigo',
-        visual: <TifoVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800"><MathText>{TIFO.text}</MathText></p>
-            <p className="text-sm text-slate-700"><MathText>{TIFO.question}</MathText></p>
-          </div>
-        ),
-        footer: <SourceTag source={TIFO.source} />,
-      }}
       intro={
+        // LE LABO OUVRE LE MODULE (§4quater) : le contexte du tifo est le `lead` du labo, ni carte ni titre de workspace.
         <ManipulationWorkspace
-          title="الأدوات: مسطرة غير مدرّجة، مدور، كوس"
-          lead="في المستويين لا قياس: المدور ينقل طولًا واحدًا، والكوس ينزلق على المسطرة فيرسم موازيات. المنصّة تقيس النتيجة في النهاية."
           levels={{
             beginner: () => (
               <Manipulation type="segment-divider" level="beginner" mode={LAB.m1.beginner.mode} parts={LAB.m1.beginner.parts}
-                theme={LAB.m1.beginner.theme} title={LAB.m1.beginner.title} onTrial={onTrial} />
+                theme={LAB.m1.beginner.theme} lead={TIFO.text} onTrial={onTrial} />
             ),
             advanced: () => (
               <Manipulation type="segment-divider" level="advanced" mode={LAB.m1.advanced.mode} p={LAB.m1.advanced.p} q={LAB.m1.advanced.q}
-                marks={LAB.m1.advanced.marks} theme={LAB.m1.advanced.theme} title={LAB.m1.advanced.title} onTrial={onTrial} />
+                marks={LAB.m1.advanced.marks} theme={LAB.m1.advanced.theme} onTrial={onTrial} />
             ),
           }}
         />
@@ -85,7 +68,7 @@ export default function Module01Lafita() {
             <div className="space-y-3">
               <TrialsEvidence trials={trials} />
               <TapQuestion
-                prompt="لتقسيم [AB] إلى 3 قطع متقايسة بنصف مستقيم مساعد [Ax) :"
+                prompt="في إنشائك الأخير: لماذا عيّنتَ 3 علامات متقايسة على [Ax) ثم وصلتَ الثالثة بـ B ؟"
                 options={[
                   'نعيّن 3 علامات متقايسة ونصل الثالثة بـ B',
                   'نعيّن علامتين متقايستين ونصل الثانية بـ B',

@@ -3,39 +3,31 @@ import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../.
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 
 /**
- * Module 1 — نشاط 2 (p. 20) : le classement de huit racines en deux صنفين.
+ * Module 1 — نشاط 2 (p. 20) : « هل يقع الجذر على تدريجة ؟ » (rétrofit 2026-10-15 : le labo en tête SANS carte, SANS titre ni lead
+ * d'atelier ; le classement du manuel ne vient qu'APRÈS la première réponse ; la question أ (√169) devient une application).
  *
- * LABORATOIRE À DEUX NIVEAUX, un seul instrument (`square-root-side`, mode
- * `graduation`) : l'élève choisit une aire, choisit la graduation de la règle
- * (1/1, 1/2, 1/3 …) et TIRE le côté du carré. Une racine « tombe » sur une
- * graduation — √(16/9) sur les tiers, √0,25 sur les demis — ou n'y tombe sur
- * aucune (√6, √7, √13, √(25/13)) : c'est le critère du classement, vécu avant
- * d'être lu.
+ * LABORATOIRE À DEUX NIVEAUX, un seul instrument (`square-root-side`, mode `graduation`) : l'élève choisit une aire, choisit la
+ * graduation de la règle (1/1, 1/2, 1/3 …) et TIRE le côté du carré. Une racine « tombe » sur une graduation — √(16/9) sur les
+ * tiers, √0,25 sur les demis — ou n'y tombe sur aucune (√6, √7, √13, √(25/13)) : c'est le critère du classement, vécu avant d'être lu.
  *
- *   مبتدئ  — 9, 0,25 et 7 (trois nombres du classement), graduations jusqu'à 1/10.
- *   متقدم  — les six autres aires du classement, graduations jusqu'à 1/12 ;
- *            ouvert par défaut : c'est l'activité du manuel.
+ *   مبتدئ  — 9, 0,25 et 7 (trois nombres du classement), graduations jusqu'à 1/10 : l'ENTRÉE retenue.
+ *   متقدم  — les six autres aires du classement, graduations jusqu'à 1/12 ; l'activité complète du manuel.
  *
- * Les ÉTAPES sont les deux questions du manuel (أ : √169, ب : le critère). La
- * réponse se lit dans les ESSAIS DE L'ÉLÈVE, listés au-dessus de la question
- * (`data-activity-evidence`) — les options ne portent pas la preuve. La
- * brique `murabba-natiq` nomme ensuite ce que l'élève a vu (6bis.1).
+ * ENTRÉE (§4ter) — candidats : (A) le classement imprimé du manuel (huit racines déjà rangées en deux صنفين) puis « à quel صنف
+ * appartient √169 ? » — rejeté : la liste donne la réponse et √169 se tranche de mémoire (13² = 169), sans rien faire de la main ;
+ * (B) la règle graduée sur trois aires seulement, dont une qui ne tombe nulle part — RETENU : pour savoir si un côté « tombe », il
+ * faut le TIRER ; 7 refuse toute graduation, sans jamais dire pourquoi. Même instrument que le manuel, trois de ses nombres.
+ * ORDRE DES IDÉES (étapes) : 1. pourquoi √0,25 tombe sur les demis (sa propre trace) → 2. le classement du manuel (encadré, APRÈS la
+ * 1re réponse) et son critère, écrit d'abord avec les mots de l'élève (« أتوقّع القاعدة »), PUIS la brique `murabba-natiq` →
+ * 3. l'application : le صنف de √169 (question أ du manuel). Les essais de l'élève sont listés au-dessus (`data-activity-evidence`).
  *
- * « أتوقّع القاعدة » : la question ب) a pour bonne option la règle elle-même ;
- * elle est donc enveloppée dans <PredictRule id="murabba-natiq"> — l'élève
- * écrit le critère avec ses mots (predictPrompt de knowledge.jsx) AVANT de
- * voir les options, puis la question et la brique s'affichent.
- * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape : même règle
- * graduée, d'autres aires (les زرابي), résolue au module 4.
- *
- * Le laboratoire RÉDUIT chaque aire (logic/squareRootSide `init`) : la carte
- * de 0,25 s'affiche √(1/4). La leçon le dit dans le `lead` ; la liste des
- * essais garde l'écriture du manuel (√0,25).
+ * Le laboratoire RÉDUIT chaque aire (logic/squareRootSide `init`) : la carte de 0,25 s'affiche √(1/4). La leçon le dit dans le
+ * `lead` ; la liste des essais garde l'écriture du manuel (√0,25).
  * LP : P1, P2.
  */
 const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
@@ -84,6 +76,7 @@ export default function Module01Nashat() {
   const [trials, setTrials] = useState({});
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
+  const [q3, setQ3] = useState(false);
   const record = useCallback(({ area, side, scale, cmp }) => {
     const key = keyOf(area);
     setTrials((all) => {
@@ -104,27 +97,9 @@ export default function Module01Nashat() {
       moduleSubtitle="هل يقع الجذر على تدريجة؟"
       estimatedTime="12 دقيقة"
       objectives={['هل يقع الجذر التربيعي دائمًا على تدريجة المسطرة؟', 'ما الذي يميّز الأعداد تحت الجذر في الصنفين؟', 'كيف نصنّف جذرًا جديدًا دون مسطرة؟']}
-      brief={{
-        tag: 'أنشطة — الكتاب ص 20',
-        headline: 'هل يقع الجذر على تدريجة؟',
-        emoji: '📏',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-1">
-            <p><MathText>{ACTIVITY.text}</MathText></p>
-            <p><strong>{ACTIVITY.classes.first.label}</strong>{' '}<MathText>{ACTIVITY.classes.first.items.join(' ، ')}</MathText></p>
-            <p><strong>{ACTIVITY.classes.second.label}</strong>{' '}<MathText>{ACTIVITY.classes.second.items.join(' ، ')}</MathText></p>
-            <p className="text-xs text-slate-500">{ACTIVITY.correctionNote}</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="الجذر التربيعي للعدد a هو طول ضلع المربّع الذي مساحته a. اختر مساحة من التصنيف، ثم تدريجة للمسطرة، واسحب طرف الضلع: هل يقع الضلع على تدريجة بالضبط؟ المساحة 0,25 تظهر على بطاقتها كسرًا يساوي الربع."
           levels={{
             beginner: () => (
               <Manipulation
@@ -133,8 +108,7 @@ export default function Module01Nashat() {
                 level="beginner"
                 areas={BEGINNER}
                 scale={10}
-                title="ثلاث مساحات من التصنيف: 9 ، 0,25 ، 7"
-                lead="ابدأ بمسطرة مقسّمة إلى وحدات، ثم إلى أنصاف، ثم إلى أعشار…"
+                lead="الجذر التربيعي للعدد a هو طول ضلع المربّع الذي مساحته a. ابدأ بالمساحة 9، ثم 0,25 (تظهر على بطاقتها كسرًا يساوي الربع)، ثم 7: مسطرة بوحدات، ثم بأنصاف، ثم بأعشار…"
                 onTrial={record}
               />
             ),
@@ -145,8 +119,7 @@ export default function Module01Nashat() {
                 level="advanced"
                 areas={ADVANCED}
                 scale={12}
-                title="تصنيف الكتاب: ست مساحات، وتدريجات حتى الجزء من 12"
-                lead="أنت من يختار التدريجة لكل مساحة، وأنت من يقرّر متى تتوقّف عن البحث."
+                lead="ست مساحات أخرى: أنت من يختار التدريجة لكل مساحة، وأنت من يقرّر متى تتوقّف عن البحث."
                 onTrial={record}
               />
             ),
@@ -155,50 +128,85 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: <MathText>{ACTIVITY.questions[0]}</MathText>, subtitle: 'جرّب مساحات الصنفين على المسطرة، ثم أجب', done: q1,
+          num: 1, title: <MathText>{'لماذا وقع ضلع المربّع الذي مساحته $0{,}25$ على تدريجة؟'}</MathText>, subtitle: 'جرّب مساحات على المسطرة، ثم أجب', done: q1,
           content: (
             <div className="space-y-3">
               <Evidence trials={trials} entries={ENTRIES} />
               <TapQuestion
-                prompt={<span>إلى أي الصنفين ينتمي العدد <MathText>{`$\\sqrt{${question}}$`}</MathText>؟</span>}
+                prompt={<span>في لوحتك وقع ضلع المربّع الذي مساحته <MathText>{'$0{,}25$'}</MathText> على تدريجة الأنصاف. لماذا؟</span>}
                 options={[
-                  <span key="a">الصنف الأول، لأن <MathText>{'$13^2 = 169$'}</MathText> فـ <MathText>{'$\\sqrt{169} = 13$'}</MathText></span>,
-                  <span key="b">الصنف الثاني، لأنه لا يوجد عدد ناطق مربعه 169</span>,
-                  <span key="c">الصنف الثاني، لأن <MathText>{'$\\sqrt{169} = 84{,}5$'}</MathText></span>,
-                  <span key="d">لا ينتمي إلى أيّ من الصنفين</span>,
+                  <span key="a">لأن <MathText>{'$\\dfrac{1}{2} \\times \\dfrac{1}{2} = 0{,}25$'}</MathText>: ضلع المربّع هو <MathText>{'$\\dfrac{1}{2}$'}</MathText>، وهو عدد ناطق</span>,
+                  <span key="b">لأن 0,25 أصغر من 1</span>,
+                  <span key="c">لأن 0,25 عدد عشري والمسطرة عشرية</span>,
+                  <span key="d">لأن المسطرة المقسّمة إلى أنصاف تصلح لكل المساحات</span>,
                 ]}
                 correct={0}
                 cols={1}
                 requires={['jidhr-taarif', 'adad-natiq']}
-                explain={<span><MathText>{'$13^2 = 169$'}</MathText> و 13 عدد موجب، إذن <MathText>{'$\\sqrt{169} = 13$'}</MathText>: يقع على تدريجة الوحدات، مثل <MathText>{'$\\sqrt{100} = 10$'}</MathText> و <MathText>{'$\\sqrt{9} = 3$'}</MathText>.</span>}
+                explain={<span><MathText>{'$\\left(\\dfrac{1}{2}\\right)^2 = \\dfrac{1}{4} = 0{,}25$'}</MathText> و <MathText>{'$\\dfrac{1}{2}$'}</MathText> عدد موجب، إذن <MathText>{'$\\sqrt{0{,}25} = \\dfrac{1}{2}$'}</MathText>: يقع على تدريجة الأنصاف، مثلما يقع <MathText>{'$\\sqrt{9} = 3$'}</MathText> على تدريجة الوحدات.</span>}
                 onAnswered={() => setQ1(true)}
               />
             </div>
           ),
         },
         {
-          num: 2, title: ACTIVITY.questions[1], done: q2,
+          num: 2, title: ACTIVITY.questions[1], subtitle: 'ما الذي يميّز ما وقع على تدريجة عمّا لم يقع؟', done: q2,
           content: (
             <div className="space-y-3">
               <Evidence trials={trials} entries={ENTRIES} />
-              <PredictRule id="murabba-natiq">
-                <TapQuestion
-                  prompt={<span>ما هو معيار التصنيف؟</span>}
-                  options={[
-                    'الأعداد تحت الجذر في الصنف الأول أعداد طبيعية، وفي الصنف الثاني ليست أعدادًا طبيعية',
-                    'في الصنف الأول العدد تحت الجذر مربع لعدد ناطق، فجذره عدد ناطق؛ وفي الصنف الثاني ليس مربعًا لعدد ناطق، فجذره ليس عددًا ناطقًا',
-                    'الأعداد تحت الجذر في الصنف الأول أصغر من الأعداد تحت الجذر في الصنف الثاني',
-                    'الأعداد تحت الجذر في الصنف الثاني أعداد أولية',
-                  ]}
-                  correct={1}
-                  cols={1}
-                  requires={['jidhr-taarif', 'adad-natiq']}
-                  explain={<span>جذور الصنف الأول وقعت على تدريجة: <MathText>{'$\\sqrt{100} = 10$ ، $\\sqrt{9} = 3$ ، $\\sqrt{\\dfrac{16}{9}} = \\dfrac{4}{3}$ ، $\\sqrt{0{,}25} = \\dfrac{1}{2}$'}</MathText>. أما جذور الصنف الثاني فلم تقع على أيّ تدريجة. (الصنف الأول فيه <MathText>{'$\\dfrac{16}{9}$'}</MathText> وليس عددًا طبيعيًا، وفيه 100 وهو أكبر من 7، و 6 في الصنف الثاني ليس عددًا أوليًا.)</span>}
-                  onAnswered={() => setQ2(true)}
-                />
-              </PredictRule>
-              {q2 && <KnowledgeBrick id="murabba-natiq" lead="ما رأيته على المسطرة يقوله الكتاب في «معارف»:" />}
+              {q1 && (
+                <>
+                  <TextbookBox
+                    kind="situation"
+                    lines={[
+                      ACTIVITY.text,
+                      `${ACTIVITY.classes.first.label} ${ACTIVITY.classes.first.items.join(' ، ')}`,
+                      `${ACTIVITY.classes.second.label} ${ACTIVITY.classes.second.items.join(' ، ')}`,
+                    ]}
+                    source={ACTIVITY.source}
+                    compact
+                  >
+                    <p className="text-xs text-slate-500">{ACTIVITY.correctionNote}</p>
+                  </TextbookBox>
+                  <PredictRule id="murabba-natiq">
+                    <TapQuestion
+                      prompt={<span>ما هو معيار التصنيف؟</span>}
+                      options={[
+                        'الأعداد تحت الجذر في الصنف الأول أعداد طبيعية، وفي الصنف الثاني ليست أعدادًا طبيعية',
+                        'في الصنف الأول العدد تحت الجذر مربع لعدد ناطق، فجذره عدد ناطق؛ وفي الصنف الثاني ليس مربعًا لعدد ناطق، فجذره ليس عددًا ناطقًا',
+                        'الأعداد تحت الجذر في الصنف الأول أصغر من الأعداد تحت الجذر في الصنف الثاني',
+                        'الأعداد تحت الجذر في الصنف الثاني أعداد أولية',
+                      ]}
+                      correct={1}
+                      cols={1}
+                      requires={['jidhr-taarif', 'adad-natiq']}
+                      explain={<span>جذور الصنف الأول وقعت على تدريجة: <MathText>{'$\\sqrt{100} = 10$ ، $\\sqrt{9} = 3$ ، $\\sqrt{\\dfrac{16}{9}} = \\dfrac{4}{3}$ ، $\\sqrt{0{,}25} = \\dfrac{1}{2}$'}</MathText>. أما جذور الصنف الثاني فلم تقع على أيّ تدريجة. (الصنف الأول فيه <MathText>{'$\\dfrac{16}{9}$'}</MathText> وليس عددًا طبيعيًا، وفيه 100 وهو أكبر من 7، و 6 في الصنف الثاني ليس عددًا أوليًا.)</span>}
+                      onAnswered={() => setQ2(true)}
+                    />
+                  </PredictRule>
+                  {q2 && <KnowledgeBrick id="murabba-natiq" lead="ما رأيته على المسطرة يقوله الكتاب في «معارف»:" />}
+                </>
+              )}
             </div>
+          ),
+        },
+        {
+          num: 3, title: ACTIVITY.questions[0], subtitle: 'نطبّق المعيار على جذر جديد', done: q3,
+          content: (
+            <TapQuestion
+              prompt={<span>إلى أي الصنفين ينتمي العدد <MathText>{`$\\sqrt{${question}}$`}</MathText>؟</span>}
+              options={[
+                <span key="a">الصنف الأول، لأن <MathText>{'$13^2 = 169$'}</MathText> فـ <MathText>{'$\\sqrt{169} = 13$'}</MathText></span>,
+                <span key="b">الصنف الثاني، لأنه لا يوجد عدد ناطق مربعه 169</span>,
+                <span key="c">الصنف الثاني، لأن <MathText>{'$\\sqrt{169} = 84{,}5$'}</MathText></span>,
+                <span key="d">لا ينتمي إلى أيّ من الصنفين</span>,
+              ]}
+              correct={0}
+              cols={1}
+              requires={['murabba-natiq']}
+              explain={<span><MathText>{'$13^2 = 169$'}</MathText> و 13 عدد موجب، إذن <MathText>{'$\\sqrt{169} = 13$'}</MathText>: يقع على تدريجة الوحدات، مثل <MathText>{'$\\sqrt{100} = 10$'}</MathText> و <MathText>{'$\\sqrt{9} = 3$'}</MathText>.</span>}
+              onAnswered={() => setQ3(true)}
+            />
           ),
         },
       ]}

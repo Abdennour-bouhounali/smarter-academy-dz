@@ -4,7 +4,7 @@ import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick, PredictRul
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { CHALLENGE, LAB, STADIUM, REMARKS } from '../content/textbook';
 import LadderFigure from '../components/LadderFigure';
@@ -17,8 +17,8 @@ import LabEvidence from '../components/LabEvidence';
  *   مبتدئ  `height`, le projecteur du stade (plateforme) : viser le sommet depuis le bord du terrain, choisir tan et ×,
  *          mesurer depuis deux distances — la même hauteur ;
  *   متقدم  `ladder`, le تحدّ : l'échelle télescopique posée à 59° allongée jusqu'à la marque de 1,60 m (encadrée à la main
- *          entre 1,8 et 1,9), puis sin et ÷ : L ≈ 1,9 m. OUVERT PAR DÉFAUT (ouvert sur مبتدئ par défaut depuis 2026-10-09) : c'est le تحدّ que
- *          le module porte, et son titre nomme ses nombres.
+ *          entre 1,8 et 1,9), puis sin et ÷ : L ≈ 1,9 m. OUVERT PAR DÉFAUT (de nouveau depuis le rétrofit du 2026-10-15 : les étapes 1–3 portent sur lui) : c'est le تحدّ que
+ *          le module porte, et son `lead` nomme ses nombres.
  * Aucune étape n'attend le laboratoire (`onFinished`) : les questions portent sur la figure du manuel (LadderFigure) et
  * les essais de l'élève (`onTrial`) sont listés au-dessus d'elles ([data-activity-evidence]).
  *   1. lire la figure : 1,60 m est OPPOSÉ à 59°, l'échelle est le وتر → brique tarid-muthallath   (LP P1)
@@ -44,37 +44,26 @@ export default function Module01AtTahaddi() {
 
   return (
     <ContentModule objectives={['كيف نترجم الوضعية إلى مثلث قائم؟', 'أيّ نسبة تربط المعلوم بالمجهول؟', 'كيف نحسب ارتفاعًا لا نستطيع الوصول إليه؟']} ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="التحدّ — سلّم الجدارية"
-      moduleSubtitle="ارتفاع لا نصل إليه، وسلّم لا نعرف طوله" estimatedTime="14 دقيقة"
-      brief={{
-        tag: 'تحدّ الوحدة — الكتاب ص 115', headline: 'هاتفك يقيس الزوايا: كم طول سلّم الجدارية؟', emoji: '📱',
-        title: 'كيف نترجم الوضعية إلى مثلث قائم؟ وأيّ نسبة تربط المعلوم بالمجهول؟', tone: 'indigo',
-        body: (
-          <div className="space-y-2" data-situation="challenge">
-            <p><MathText>{'رسّامو جدارية الحي يسندون سلّمهم إلى الجدار: رأسه يجب أن يصل إلى العلامة على ارتفاع $1{,}60\\,\\mathrm{m}$ ، وتطبيق «مقياس الميل» في الهاتف يقرأ ميل السلّم: $59^{\\circ}$ .'}</MathText></p>
-            <p className="text-sm text-slate-600"><MathText>{STADIUM.text}</MathText> <SourceTag source={STADIUM.source} /></p>
-          </div>
-        ),
-        footer: <SourceTag source={CHALLENGE.source} />,
-      }}
+      moduleSubtitle="من السلّم الذي حصرته إلى الحساب" estimatedTime="14 دقيقة"
       intro={
         <ManipulationWorkspace
-          defaultLevel="beginner"
-          title="مقياس الميل في الهاتف"
-          lead="المستوى المتقدّم هو تحدّ الوحدة: أطِل السلّم حتى يصل رأسه إلى العلامة، ثم اختر النسبة واحسب طوله. المستوى المبتدئ هو كشّاف الملعب: سدّد بالهاتف من مسافتين واحسب الارتفاع."
+          defaultLevel="advanced"
           levels={{
             beginner: () => (
-              <Manipulation type="clinometer" level="beginner" {...LAB.beginner} title="كشّاف الملعب: سدّد من مسافة بين 10 و 40 مترا" onTrial={keep} />
+              <Manipulation type="clinometer" level="beginner" {...LAB.beginner} lead={STADIUM.text} onTrial={keep} />
             ),
             advanced: () => (
-              <Manipulation type="clinometer" level="advanced" {...LAB.advanced} title="تحدّ الوحدة: سلّم مائل بزاوية 59 درجة ورأسه عند 1,60 متر" onTrial={keep} />
+              <Manipulation type="clinometer" level="advanced" {...LAB.advanced} lead={<MathText>{'رسّامو جدارية الحي يسندون سلّمهم إلى جدار شاقولي، وتطبيق «مقياس الميل» في الهاتف يقرأ ميله: $59^{\\circ}$ . رأس السلّم يجب أن يصل إلى العلامة على ارتفاع $1{,}60\\,\\mathrm{m}$ .'}</MathText>} onTrial={keep} />
             ),
           }}
         />
       }
       steps={[
-        { num: 1, title: 'اقرأ الشكل', subtitle: 'ما المقابل؟ ما الوتر؟', done: !!q[1],
+        { num: 1, title: 'أين الارتفاع 1,60 من الزاوية 59°؟', subtitle: 'ما المقابل؟ ما الوتر؟', done: !!q[1],
           content: (
             <div className="space-y-3">
+              <LabEvidence id="advanced-read" trials={trials} filter={isLadder} title="محاولاتك بالسلّم (المستوى المتقدّم):"
+                empty="لم تحرّك السلّم بعد: في المستوى المتقدّم اسحب رأسه (⇕) على الجدار." />
               <TextbookBox kind="exercise" title="تحدّ" text={CHALLENGE.text} source={CHALLENGE.source} compact>
                 <LadderFigure height={CHALLENGE.numbers.height} angle={CHALLENGE.numbers.angle} label={CHALLENGE.ariaLabel} />
               </TextbookBox>
@@ -87,27 +76,31 @@ export default function Module01AtTahaddi() {
               {q[1] && <KnowledgeBrick id="tarid-muthallath" lead="أول خطوة في كل وضعية:" />}
             </div>
           ) },
-        { num: 2, title: 'أيّ نسبة؟', subtitle: 'ماذا نعرف؟ وماذا نريد؟', done: !!q[2],
+        { num: 2, title: 'لماذا الجيب لحساب طول السلّم؟', subtitle: 'ماذا نعرف؟ وماذا نريد؟', done: !!q[2],
           content: (
             <div className="space-y-3">
               <LabEvidence id="advanced" trials={trials} filter={isLadder} title="محاولاتك بالسلّم (المستوى المتقدّم):"
                 empty="لم تحرّك السلّم بعد: في المستوى المتقدّم اسحب رأسه (⇕) على الجدار وراقب هل يصل إلى العلامة." />
               <TapQuestion
-                prompt={<MathText>{'نسمّي L طول السلّم. المساواة التي تربط الارتفاع المعلوم بطول السلّم المجهول هي:'}</MathText>}
-                options={['$\\sin 59^{\\circ} = \\dfrac{1{,}6}{L}$', '$\\cos 59^{\\circ} = \\dfrac{1{,}6}{L}$', '$\\tan 59^{\\circ} = \\dfrac{1{,}6}{L}$'].map(M)}
-                correct={0} cols={3} requires={['tarid-muthallath', 'tarif-nisab']}
+                prompt={<MathText>{'اخترت أنت نسبة وقسمة لتحسب طول السلّم L. المساواة $\\sin 59^{\\circ} = \\dfrac{1{,}6}{L}$ هي التي تصلح. لماذا الجيب وليس جيب التمام أو الظل؟'}</MathText>}
+                options={[
+                  'لأن الارتفاع 1,6 مقابل للزاوية والسلّم هو الوتر، والجيب هو النسبة التي تجمع المقابل والوتر',
+                  'لأن قيس الزاوية $59^{\\circ}$ أكبر من $45^{\\circ}$',
+                  'لأن الجيب أكبر من جيب التمام دائما',
+                ].map(M)}
+                correct={0} cols={1} requires={['tarid-muthallath', 'tarif-nisab']}
                 explain={<MathText>{REMARKS.sinChoice}</MathText>}
                 onAnswered={mark(2)} />
               {q[2] && <KnowledgeBrick id="ikhtiyar-nisba" variant="rappel" lead="النسبة التي تجمع المعلوم والمطلوب:" />}
             </div>
           ) },
-        { num: 3, title: 'احسب طول السلّم', subtitle: 'قيمة مقربة إلى الجزء من 10', done: !!q[3],
+        { num: 3, title: 'هل يوافق الحساب ما حصرته بيدك؟', subtitle: 'قيمة مقربة إلى الجزء من 10', done: !!q[3],
           content: (
             <div className="space-y-3">
               <LabEvidence id="advanced-result" trials={trials} filter={isLadder} title="محاولاتك بالسلّم (المستوى المتقدّم):"
                 empty="جرّب في المستوى المتقدّم: طولان متتاليان، واحد تحت العلامة وواحد فوقها، يحصران طول السلّم." />
               <NumericQuestion
-                prompt={<MathText>{'من $\\sin 59^{\\circ} = \\dfrac{1{,}6}{L}$ ، ما قيمة L المقربة إلى الجزء من 10 (بالمتر)؟'}</MathText>}
+                prompt={<MathText>{'حصرت السلّم بين طولين بالتجريب. من $\\sin 59^{\\circ} = \\dfrac{1{,}6}{L}$ ، ما قيمة L المقربة إلى الجزء من 10 (بالمتر)؟'}</MathText>}
                 expected={close(1.9)} display="1,9" parse={parseDec}
                 requires={['ikhtiyar-nisba', 'muadala-majhul-maqam', 'hasiba']}
                 explain={<MathText>{REMARKS.ladderCalc}</MathText>}
@@ -125,7 +118,7 @@ export default function Module01AtTahaddi() {
               )}
             </div>
           ) },
-        { num: 4, title: 'كشّاف الملعب', subtitle: 'ارتفاع من مسافتين', done: !!q[4],
+        { num: 4, title: 'لماذا اختلف قياسا الكشّاف؟', subtitle: 'ارتفاع من مسافتين', done: !!q[4],
           content: (
             <div className="space-y-3">
               <LabEvidence id="beginner" trials={trials} filter={isHeight} title="قياساتك للكشّاف (المستوى المبتدئ):"

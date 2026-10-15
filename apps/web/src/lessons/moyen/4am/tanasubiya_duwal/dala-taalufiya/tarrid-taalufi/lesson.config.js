@@ -7,6 +7,18 @@
  * la plateforme, déclarés (`addition(...)`). Source de vérité : docs/sources/4am/unit7/extraction.json.
  * Puis trois « مسائل » de la plateforme (modules 5–7), avant le إختبار أولي (module 8).
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la salle de jeux (labo `plan-compare`, thème `gaming`, niveau مبتدئ : 500DA une fois + 150DA l'heure) — la
+ *   main doit placer « payé une fois » et « payé à chaque heure » dans la facture, et le labo REFUSE l'abonnement payé à chaque
+ *   fois : la forme ax + b devient nécessaire avant toute écriture. Rejetée : la facture du supporter du manuel (نشاط 4, 2000DA +
+ *   200DA par match) comme premier contact — ses grands nombres noient le refus ; elle reste le niveau متقدم du MÊME labo ET revient,
+ *   après le premier pourquoi, comme APPLICATION (étapes 2–4 : la fonction du manuel, 7 matchs, 4800DA). Aucune destination déplacée.
+ *   Ordre des idées : pourquoi l'abonnement n'est pas multiplié par x (brique « namdhaja-taalufiya » APRÈS la réponse) → l'activité
+ *   du manuel en application (fonction, image, antécédent) → la brique « sura-fi-wadiya » après ses deux questions → module 2 : pourquoi
+ *   le labo refuse une marque à 8 matchs, la salle de sport par l'équation (brique « tasawi-taqatu » APRÈS la réponse), avant / après le
+ *   croisement (« sigha-afdal » APRÈS), lecture graphique, trois formules → module 3 : la méthode (brique « khutuwat-mufadala » APRÈS
+ *   l'association ligne ↔ étape, pas avant). Les modules 0, 4–8 sont inchangés (pas de labo ; les rappels y viennent après le cours).
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/tarrid-taalufi';
@@ -73,7 +85,7 @@ export const LESSON_CONFIG = {
       title: 'قاعة الألعاب: بطاقة شهرية وساعات لعب',
       objective: 'نمذجة تكلفة بجزء ثابت يُدفع مرّة واحدة وجزء يُدفع عن كل وحدة بدالة تآلفية f(x) = ax + b، ثم حساب مبلغ أو عدد وحدات',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'gaming' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'gaming' },
       learningPointIds: ['4am_tarrid-taalufi_P1'],
       sourceElementIds: ['act-4'],
     },

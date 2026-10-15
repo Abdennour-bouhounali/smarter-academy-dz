@@ -16,6 +16,9 @@ import { FIG_KNOW3, FIG_PERP } from '../content/figures';
  * FORMALIZE : 1) la propriété (brique khawas-dawaran) et son exemple de 20° (figure REDESSINÉE : dans le manuel les points
  * et leurs images étaient collés sur deux demi-droites à 20°) ; 2) la droite et son image (brique zawiya-sura).
  * LP : P1 (les quatre conservations), P2 (perpendiculaire / parallèle).
+ * RÉTROFIT 2026-10-15 (§4quater) : la question d'abord, la brique / la boîte qui NOMME ensuite ({q1 && khawas-dawaran}, {q2 && zawiya-sura},
+ * {q3 && remarque}) ; `requires` des deux premières questions = thabat-dawaran (module 1), la brique suivant la réponse ; le `brief` ne
+ * dit plus de fait. Module sans labo : pas de labo à ouvrir.
  * « أتوقّع القاعدة » : khawas-dawaran est un RAPPEL (variant="rappel") — la brique thabat-dawaran du module 1 a déjà fait
  * écrire puis posé ces quatre conservations, et la consigne du module les redit ; zawiya-sura se prédit (knowledge.jsx).
  */
@@ -37,7 +40,7 @@ export default function Module02Maarif() {
       objectives={["ما الذي يحافظ عليه الدوران؟", "كيف يكون المستقيم وصورته بزاوية دوران معيّنة؟", "ماذا أقول عن زوايا 60 و120 و180 درجة؟"]}
       brief={{
         tag: 'معارف — الكتاب ص 154', title: KNOW3.title, tone: 'violet',
-        body: <p>على لوحة الورقة الشفافة بقي الطول والزاوية والمساحة والاستقامية كما هي في كل نسخة. الكتاب يسمّي ذلك خواص الدوران.</p>,
+        body: <p>ثلاث خطوات على شكل من الكتاب: تجيب أولًا عمّا رأيته على اللوحة، ثم نضع الكلمات الدقيقة.</p>,
         footer: <SourceTag source={KNOW3.source} />,
       }}
       steps={[
@@ -45,7 +48,6 @@ export default function Module02Maarif() {
           num: 1, title: 'الدوران يحافظ على…', subtitle: 'معارف 3 ومثالها', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="khawas-dawaran" variant="rappel" lead="أربع خواص، كأسطر اللوحة الأربعة:" />
               <GeoFigure {...FIG_KNOW3} />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'في المثال: الدوران الذي مركزه O وزاويته $20^\\circ$ في الاتجاه المباشر، و $AB = 2\\,\\mathrm{cm}$ و A، B، C على استقامية.'}</MathText></p>}
@@ -55,10 +57,11 @@ export default function Module02Maarif() {
                   { id: 'align', label: 'A′ و B′ و C′', options: ['على استقامية واحدة', 'ليست على استقامية', 'على استقامية مع O'], correct: 0, correction: 'الدوران يحافظ على استقامية النقط.' },
                   { id: 'area', label: 'مساحة المثلث OA′B′ مقارنة بمساحة OAB', options: ['متساويتان', 'مساحة OA′B′ أكبر', 'مساحة OA′B′ أصغر'], correct: 0, correction: 'الدوران الذي مركزه O يحوّل المثلث OAB إلى OA′B′، ويحافظ على المساحات.' },
                 ]}
-                requires={['khawas-dawaran']}
+                requires={['thabat-dawaran']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: الصورة تقايس الشكل، تتغيّر وضعيتها فقط.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="khawas-dawaran" variant="rappel" lead="أربع خواص، كأسطر اللوحة الأربعة:" />}
             </div>
           ),
         },
@@ -66,7 +69,6 @@ export default function Module02Maarif() {
           num: 2, title: 'المستقيم وصورته', subtitle: 'معارف من المنصّة', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="zawiya-sura" lead="ما قرأته في «الزاوية بين المستقيمين»:" />
               <GeoFigure {...FIG_PERP} />
               <TapQuestion
                 prompt={<MathText>{"(d′) صورة المستقيم (d) بالدوران الذي مركزه O وزاويته $90^\\circ$ في الاتجاه المباشر. إذن:"}</MathText>}
@@ -77,10 +79,11 @@ export default function Module02Maarif() {
                 ].map(M)}
                 correct={0}
                 cols={1}
-                requires={['zawiya-sura']}
+                requires={['thabat-dawaran']}
                 explain={<MathText>{`${PERP.cases[0]} ${MISTAKES.tawazi.right}`}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="zawiya-sura" lead="ما قرأته في «الزاوية بين المستقيمين»:" />}
             </div>
           ),
         },
@@ -88,7 +91,6 @@ export default function Module02Maarif() {
           num: 3, title: 'زوايا أخرى', subtitle: 'المستقيم وصورته', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" text={PERP.text} source={PERP.source} compact />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">الزاوية بين مستقيم وصورته بالدوران الذي زاويته:</p>}
                 rows={[
@@ -100,6 +102,7 @@ export default function Module02Maarif() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}><MathText>{allRight ? 'أحسنت: $90^\\circ$ تعطي التعامد، و $180^\\circ$ تعطي التوازي.' : 'راجع التصحيح تحت كل سطر.'}</MathText></Feedback>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <TextbookBox kind="remark" text={PERP.text} source={PERP.source} compact />}
             </div>
           ),
         },

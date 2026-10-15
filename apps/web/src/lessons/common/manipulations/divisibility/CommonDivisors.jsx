@@ -14,6 +14,7 @@ import DraggableObject from '../primitives/DraggableObject';
 import GroupStock, { GroupWrapper } from '../primitives/GroupStock';
 import { themeWords } from '../themeWords';
 import EquationDisplay from '../primitives/EquationDisplay';
+import { useLabCoach } from '../primitives/LabCoach';
 import * as L from '../logic/commonDivisors';
 
 /**
@@ -49,6 +50,10 @@ import * as L from '../logic/commonDivisors';
  *    qu'un seul côté est refusé AVEC LA RAISON. Puis il porte le plus grand
  *    dans la case PGCD : le 6 de « PGCD(42 ; 60) = 6 » vient de son geste.
  *
+ * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/commonDivisors.js › coachOf` montre l'emballage à tirer puis le
+ * « + » (groupes), le bouton vers les listes ; dans les listes il montre la zone du milieu puis la case PGCD, jamais un jeton
+ * (savoir lesquels divisent les deux nombres EST l'exercice : la complétion par le guide seul y est volontairement impossible).
+ *
  * `theme` choisit les OBJETS DESSINÉS de la scène des groupes (fleurs rouges
  * et blanches, ballons et maillots, stylos et cahiers — primitives/itemThemes)
  * et `context` peut en remplacer les mots par ceux de la SITUATION du manuel
@@ -59,7 +64,7 @@ import * as L from '../logic/commonDivisors';
  * nombre d'objets dessinés en dehors, jamais une décimale.
  */
 export default function CommonDivisors({
-  a: a0, b: b0, title, lead, mission, context, theme = 'garden', startWith = 'bouquets', initialMode = 'student', allowModeSwitch = false, onFinished,
+  a: a0, b: b0, title, lead, mission, context, theme = 'garden', startWith = 'bouquets', initialMode = 'student', allowModeSwitch = false, onFinished, coach: coachOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({ type: 'common-divisors', initialNumbers: { a: a0, b: b0 }, initialMode, hintCount: 3 });
@@ -131,6 +136,12 @@ export default function CommonDivisors({
   const addGroup = () => { setReject(null); setBouquets((s) => L.addGroup(s)); };
   const removeGroup = () => { setReject(null); setBouquets((s) => L.removeGroup(s)); };
   const wrapper = <GroupWrapper theme={theme} />;
+  const coachStep = coachOn ? L.coachOf({ stage, bouquets, lists, groupsOnly }) : null;
+  const coachK = (key, o) => t(`manipulation.common.coach.${key}`, o);
+  const coach = useLabCoach({
+    lab: 'common-divisors', step: coachStep, text: coachStep ? coachK(coachStep.id === 'to-lists' ? 'toLists' : coachStep.id, { group: words.group, groups: words.groups, stock: words.stock }) : '',
+    labels: { hide: coachK('hide'), show: coachK('show'), ok: coachK('ok'), stop: coachK('stop') },
+  });
 
   return (
     <ManipulationShell
@@ -141,6 +152,7 @@ export default function CommonDivisors({
         : t('manipulation.common.listsMission', { a, b }))}
       lead={lead}
       state={state}
+      coach={coachOn ? coach : null}
       numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
       allowModeSwitch={allowModeSwitch}
       hints={stage === 'bouquets'

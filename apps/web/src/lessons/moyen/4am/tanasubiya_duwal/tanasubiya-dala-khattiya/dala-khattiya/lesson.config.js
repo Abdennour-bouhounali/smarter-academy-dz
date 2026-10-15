@@ -6,6 +6,18 @@
  * puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit6/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la machine à règle cachée `linear-machine` (thème `souk`) posée seule en tête du module 1, sur la remise de l'Aïd
+ *   du نشاط 1 (20 %, corrigé) — l'élève ENTRE ses prix et la machine répond : la fonction est d'abord un appareil qu'on interroge, le mot
+ *   « دالة » vient après. Le contexte du livre (le commerçant, les 20 %) est le `lead` du labo ; plus de carte du livre au-dessus.
+ *   Rejetée : le tableau du livre rempli de tête (50, 100, 150, 200 → 40, 80, 120, 160 : une question de mémoire, sans besoin) ;
+ *   elle reste la question 1 de l'étape 1, APRÈS les essais de l'élève (preuve `[data-activity-evidence]`).
+ *   Le نشاط 2 (trois tableaux) reste le niveau متقدم du MÊME labo et l'ouverture du module 2.
+ *   Ordre des idées : la machine → le tableau et son coefficient 0,8 → f(120) et les prix 6 / 1,4 → f(x) = 0,8x → la brique qui NOMME (après
+ *   la réponse) → module 2 : trois tableaux, quelles fonctions sont des multiplications → classer quatre fonctions AVANT la définition →
+ *   f(−4) AVANT la brique « صورة » → le tableau de valeurs → a depuis un couple (h(4) = −10) AVANT la brique tayin-dala.
+ *   Le labo est le niveau du livre : `experience.reason` reste vide (pas `platform_designed_entry`). Modules 0, 3–7 inchangés.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/dala-khattiya';

@@ -6,6 +6,14 @@
  * cycle moyen phase 3, 2026-10-14 — AVANT « حاصل القسمة والكسر » (file du réseau) : le sens quotient n'est que rappelé.
  * Source : docs/sources/1am/unit4/extraction.json ; brief : docs/sources/1am/unit4/brief-authors.md.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le plateau de la grand-mère (قلب اللوز, 3/5 pour les voisins) — la main tient le COUTEAU : le nombre de
+ *   morceaux change, la part ne bouge jamais ; la proposition 4/6 est jugée par le plateau (plateforme). Rejetée : le نشاط 4 du
+ *   manuel comme entrée (trois rectangles et la comparaison posée avant tout geste) ; il reste le niveau متقدم, avec le cadeau
+ *   du grand-père 27/45 prédit puis réduit. Ordre des idées : couteau (même part, d'autres écritures) → comparaison →
+ *   compléter (brique APRÈS la réponse) → POURQUOI 27/45 = 3/5 → معارف : appliquer la règle, la règle ENSUITE, l'écriture
+ *   décimale, l'irréductible → méthode.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/1am/ansab_al_aadad_wal_hisab/ikhtizal-kitaba-kasriya';
@@ -63,7 +71,7 @@ export const LESSON_CONFIG = {
       title: 'صينية الجدّة: حصّة الجيران',
       objective: 'نفس الحصّة لها كتابات كسرية عديدة: نضرب البسط والمقام في نفس العدد، أو نقسمهما على نفس العدد فنختزل الكسر',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'sweets-tray' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'sweets-tray' },
       learningPointIds: ['1am_ikhtizal-kitaba-kasriya_P1', '1am_ikhtizal-kitaba-kasriya_P2'],
       sourceElementIds: ['act-4'],
     },

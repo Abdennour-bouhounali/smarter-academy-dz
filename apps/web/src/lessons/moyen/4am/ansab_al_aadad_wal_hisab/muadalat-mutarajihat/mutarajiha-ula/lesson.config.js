@@ -5,6 +5,18 @@
  * 32 (p. 51), « أستعدّ » items 6–11 (p. 43), QCM 5–9 (p. 52), puis trois « مسائل » de la plateforme (modules 6–8).
  * Source de vérité : docs/sources/4am/unit4/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue (modules 1 et 2) : le rayon-solution (solution-ray) sur le رصيد de يونس — 2,5x + 100 ≤ 150, l'élève ÉTIRE x et la
+ *   kalfa rencontre le رصيد : 20 messages atteignent 150, 21 le dépassent. Ce sont les nombres du manuel, mais le geste (une trace
+ *   rouge ou grise par essai) est ce qui rend la question « quels x conviennent ? » nécessaire ; ce n'est pas une question de mémoire.
+ *   Rejetées : (1) l'énoncé du نشاط 3 posé en carte au-dessus du labo (retirée) ; (2) le رصيد de رياض (600 DA, 3 DA le message) comme
+ *   entrée — il exige déjà la division par un négatif, il reste la مسألة du module 6.
+ *   Ordre des idées : étirer x → POURQUOI 20 suffit et pas 21 → quelle متباينة → deux valeurs de l'élève → le nom « متراجحة » APRÈS la
+ *   question sur 2,5×16+100 ≤ 150 → 2 et 21 testés par substitution → le nom « حل » et l'encadré APRÈS la réponse → M2 : la chaîne
+ *   −3x+5 ≤ 20, POURQUOI le sens change après ÷(−3) (à partir des points rouges de l'élève) → le tableau → M3 : les trois règles
+ *   APRÈS la question keep/change.
+ *   Aucune destination du manuel n'a bougé ; aucune ressource `platform_designed_entry` (le labo est l'activité du manuel).
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/mutarajiha-ula';

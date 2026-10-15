@@ -3,7 +3,7 @@ import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../.
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { LAB, NOW138, CONSTRUCT } from '../content/textbook';
 import LabEvidence from '../components/LabEvidence';
@@ -31,20 +31,9 @@ export default function Module03Inshaat() {
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(3)} moduleNumber={3} objectives={['أين نصل إذا رسمنا عدّة أشعة واحدًا بعد الآخر؟', 'ماذا يحدث لنصف قطر الدائرة عند الانسحاب؟', 'هل يهمّ ترتيب الأشعة في المجموع؟']} moduleTitle="إنشاءات — صور دائرة بانسحاب"
       moduleSubtitle="دوري الآن (ص 138) على المرصوفة" estimatedTime="8 دقائق"
-      brief={{
-        tag: 'دوري الآن — الكتاب ص 138', headline: 'القطار ينطلق من مركز الدائرة', emoji: '⭕',
-        title: 'أين يقع مركز الدائرة بعد أن ننقلها بمجموع عدّة أشعة؟', tone: 'sky',
-        body: (
-          <div className="space-y-2" data-situation="now-138">
-            <p><MathText>{NOW138.text}</MathText></p>
-            <p className="text-xs text-slate-500" data-completion="now-138">{NOW138.completion}</p>
-          </div>
-        ),
-        footer: <SourceTag source={NOW138.source} />,
-      }}
       intro={
         <Manipulation type="vector-chain" levels={false} {...LAB.construct} theme="metro"
-          title="دوري الآن: الدوائر (Γ) و (Γ₁) و (Γ₂)" onTrial={keep} />
+          title="دوري الآن: الدوائر (Γ) و (Γ₁) و (Γ₂)" lead={<MathText>{`${NOW138.text} ${NOW138.completion}`}</MathText>} onTrial={keep} />
       }
       steps={[
         { num: 1, title: 'مركز الدائرة الأولى', subtitle: 'الممثّلات متتابعة', done: !!q[1],
@@ -54,11 +43,11 @@ export default function Module03Inshaat() {
                 empty="في المختبر: اسحب $\\overrightarrow{AB}$ إلى المحطة E ، ثم $\\overrightarrow{AC}$ إلى نهاية الممثّل." />
               <PredictRule id="insha-majmu">
                 <TapQuestion
-                  prompt={<MathText>{'مركز $(\\Gamma_1)$ هو النقطة $E_1$ حيث:'}</MathText>}
+                  prompt={<MathText>{'في المختبر رسمت $\\overrightarrow{AC}$ من نهاية ممثّل $\\overrightarrow{AB}$ لا من E . لماذا يكون مركز $(\\Gamma_1)$ هو نهاية الممثّل الأخير؟'}</MathText>}
                   options={[
-                    '$\\overrightarrow{EE_1} = \\overrightarrow{AB} + \\overrightarrow{AC}$',
-                    '$\\overrightarrow{E_1E} = \\overrightarrow{AB} + \\overrightarrow{AC}$',
-                    '$\\overrightarrow{AE_1} = \\overrightarrow{AB} + \\overrightarrow{AC}$',
+                    'لأن مجموع شعاعين ممثَّل بتتابع ممثّليهما، فالنقطة $E_1$ حيث $\\overrightarrow{EE_1} = \\overrightarrow{AB} + \\overrightarrow{AC}$',
+                    'لأن كل ممثّل يجب أن يبدأ من E ، ونأخذ نهاية الأخير',
+                    'لأن $E_1$ هي النقطة التي يكون فيها $\\overrightarrow{E_1E} = \\overrightarrow{AB} + \\overrightarrow{AC}$',
                   ].map(M)}
                   correct={0} cols={1} requires={['rabt-shal', 'qaidat-mutawazi']}
                   explain={<MathText>{`صورة E بالانسحاب الذي شعاعه $\\vec{u}$ هي النقطة $E_1$ حيث $\\overrightarrow{EE_1} = \\vec{u}$ . ${CONSTRUCT.startRight}`}</MathText>}

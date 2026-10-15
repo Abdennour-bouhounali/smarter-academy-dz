@@ -18,7 +18,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/tarrid-muthallathiya/modules/Module01AtTahaddi.jsx",
-        "line": 101,
+        "line": 94,
         "step": 2,
         "variant": "rappel"
       }
@@ -29,7 +29,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/tarrid-muthallathiya/modules/Module01AtTahaddi.jsx",
-        "line": 122,
+        "line": 115,
         "step": 3,
         "variant": "rappel"
       }
@@ -65,7 +65,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/tarrid-muthallathiya/modules/Module01AtTahaddi.jsx",
-        "line": 87,
+        "line": 76,
         "step": 1,
         "variant": "new"
       }
@@ -76,7 +76,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/tarrid-muthallathiya/modules/Module01AtTahaddi.jsx",
-        "line": 149,
+        "line": 142,
         "step": 4,
         "variant": "new"
       }
@@ -235,7 +235,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/tarrid-muthallathiya/modules/Module01AtTahaddi.jsx",
-      "line": 81,
+      "line": 70,
       "requires": [
         "shaquli-ufuqi",
         "tarif-nisab"
@@ -253,7 +253,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/tarrid-muthallathiya/modules/Module01AtTahaddi.jsx",
-      "line": 95,
+      "line": 84,
       "requires": [
         "tarid-muthallath",
         "tarif-nisab"
@@ -271,7 +271,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/tarrid-muthallathiya/modules/Module01AtTahaddi.jsx",
-      "line": 109,
+      "line": 102,
       "requires": [
         "ikhtiyar-nisba",
         "muadala-majhul-maqam",
@@ -291,7 +291,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/tarrid-muthallathiya/modules/Module01AtTahaddi.jsx",
-      "line": 135,
+      "line": 128,
       "requires": [
         "ikhtiyar-nisba",
         "majhul-maqam"

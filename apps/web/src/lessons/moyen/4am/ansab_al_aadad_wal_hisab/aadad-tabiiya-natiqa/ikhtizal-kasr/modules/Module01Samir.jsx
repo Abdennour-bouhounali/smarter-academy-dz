@@ -4,11 +4,11 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
-import { KitchenScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 /**
- * Module 1 — نشاط 8 (p. 9) : la réduction de سمير, manipulée (fraction-reduction). LP : P1, P2.
+ * Module 1 — l'ENTRÉE : la recette qu'on partage (fraction-reduction), puis le نشاط 8 (p. 9) de سمير posé APRÈS la réponse (rétrofit 2026-10-15 :
+ * labo en tête sans carte ni titre, briques `ikhtizal` / `kasr-ghayr-qabil` après leur question, la 1re question demande POURQUOI). LP : P1, P2.
  *
  * Le kasr est une RECETTE (thème `kitchen`) : 84 cuillères de sucre pour 48
  * tasses de farine. Diviser les deux termes par 4, c'est répartir les deux
@@ -23,52 +23,52 @@ export default function Module01Samir() {
   const { n, d, path } = ACTIVITY.numbers;
   return (
     <ContentModule objectives={["كيف اختزل سمير 84/48 خطوة بعد خطوة؟", "متى لا يمكن الاختزال أكثر؟", "كيف أتأكّد أن الكسر انتهى اختزاله؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="نشاط 8 — كيف اختزل سمير 84/48؟" moduleSubtitle="÷4 ثم ÷3 … ثم لا شيء" estimatedTime="12 دقيقة"
-      brief={{ tag: 'أنشطة — الكتاب ص 9', title: ACTIVITY.title, tone: 'indigo',
-        headline: 'هيا نحضّر الوصفة!', emoji: '🥣', visual: <KitchenScene />,
-        body: <div className="space-y-1"><p><MathText>{ACTIVITY.questions[0]}</MathText></p><p className="text-center text-lg"><MathText>{ACTIVITY.samirPath}</MathText></p><SourceTag source={ACTIVITY.source} /></div> }}
       intro={(
-        // Le niveau par défaut sert LA TÂCHE DU MODULE : ce module porte
-        // l'activité du manuel dans son titre, et sa première étape attend
-        // que CETTE manipulation soit finie (`onFinished`). Ouvrir sur le
-        // petit nombre cachait l'activité derrière un onglet et laissait
-        // l'élève devant une étape qu'il ne pouvait pas satisfaire.
+        // Le labo EN TÊTE, sans carte ni titre (rétrofit 2026-10-15) : la recette (contexte) et la mission
+        // (UNE question) sont ceux du labo. Le niveau par défaut sert la tâche du module :
+        // la première étape attend que CETTE manipulation soit finie (`onFinished`), sans jamais bloquer.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="كسر سمير 84/48 كوصفة: 84 ملعقة سكّر لـ 48 كوب دقيق. نحضّرها لنتقاسمها مع الجيران. جرّب توزيعها على حصص متماثلة وانظر ما تحتويه الحصة الواحدة. وللتمرّن أولًا، جرّب المستوى المبتدئ بوصفة أصغر."
           levels={{
             beginner: () => (
-              <Manipulation type="fraction-reduction" n={12} d={18}
-                title="تمرّن أولًا: 12/18"
-                lead="12 ملعقة سكّر لـ 18 كوبًا من الدقيق. اسحب عددًا من الحصص على الوصفة: إن كانت الحصص متماثلة، فالحصة الواحدة هي الوصفة المختزلة. وعندما لا تستطيع المواصلة، قل ذلك." />
+              <Manipulation type="fraction-reduction" n={12} d={18} />
             ),
             advanced: () => (
               <Manipulation type="fraction-reduction" n={n} d={d} path={path}
-                title="اختزل 84/48 بنفسك"
-                lead="اسحب عددًا من الحصص على الوصفة، اقرأ الحصة الواحدة، وأعد. أنت من يقرّر متى لا يمكن الاختزال أكثر."
                 onFinished={() => setLabDone(true)} />
             ),
           }}
         />
       )}
       steps={[
-        { num: 1, title: 'أ) اشرح طريقة سمير', subtitle: 'أنهِ الاختزال في المناولة أولًا', done: q1,
+        { num: 1, title: 'أ) لماذا تبقى الوصفة هي نفسها؟', subtitle: 'أنهِ الاختزال في المناولة أولًا', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="ikhtizal" />
-              {!labDone && <p className="text-sm text-slate-600">في المناولة: وزّع الوصفة على حصص متماثلة، ثم أعد، حتى لا تستطيع المواصلة.</p>}
-              <TapQuestion prompt={<span>ما الذي فعله سمير في كل خطوة؟</span>}
-                options={['قسم البسط والمقام على قاسم مشترك لهما (4 ثم 3)', 'طرح 4 ثم 3 من البسط والمقام', 'قسم البسط فقط', 'ضرب البسط والمقام في 4 ثم 3']} correct={0} cols={1} requires={['ikhtizal']}
+              <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={labDone ? 'true' : 'false'}>
+                {labDone
+                  ? <span className="font-bold text-slate-800">أنهيتَ اختزال <bdi dir="ltr">84/48</bdi> في المناولة.</span>
+                  : <span className="text-slate-500">لم تنهِ اختزال 84/48 بعد في المناولة (المستوى المتقدّم): وزّع الوصفة على حصص متماثلة حتى لا تستطيع المواصلة.</span>}
+              </p>
+              <TapQuestion prompt={<span>في كل مرة وزّعتَ فيها الوصفة على حصص متماثلة، كانت الحصة الواحدة تحمل الكسر الجديد. لماذا بقيت قيمة الكسر نفسها؟</span>}
+                options={['لأن البسط والمقام قُسما على العدد نفسه، وهو قاسم لهما معًا', 'لأن العددين صغرا، فصار الكسر أصغر', 'لأننا قسمنا البسط فقط', 'لأننا طرحنا العدد نفسه من البسط والمقام']} correct={0} cols={1}
                 explain={<span>القسمة على قاسم مشترك لا تغيّر قيمة الكسر: <MathText>{'$\\dfrac{84}{48} = \\dfrac{21}{12} = \\dfrac{7}{4}$'}</MathText>.</span>} onAnswered={() => setQ1(true)} />
+              {q1 && <KnowledgeBrick id="ikhtizal" />}
+              {q1 && (
+                <div className="space-y-1 text-center">
+                  <p className="text-sm text-slate-600">وهكذا فعل سمير في نشاط الكتاب:</p>
+                  <p className="text-lg"><MathText>{ACTIVITY.samirPath}</MathText></p>
+                  <SourceTag source={ACTIVITY.source} />
+                </div>
+              )}
             </div>
           ) },
         { num: 2, title: 'هل يمكن مواصلة اختزال 7/4؟ لماذا؟', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="kasr-ghayr-qabil" lead="7 و 4 لا يقسمهما معًا إلا 1: أوليان فيما بينهما." />
               <TapQuestion prompt={<span>لماذا لا يمكن مواصلة اختزال <MathText>{'$\\dfrac{7}{4}$'}</MathText>؟</span>}
-                options={['لأن 7 و 4 أوليان فيما بينهما: PGCD(7 ; 4) = 1', 'لأن 7 عدد أولي', 'لأن 4 أصغر من 7', 'لأن 7 − 4 = 3 عدد فردي']} correct={0} cols={1} requires={['kasr-ghayr-qabil']}
+                options={['لأن 7 و 4 أوليان فيما بينهما: PGCD(7 ; 4) = 1', 'لأن 7 عدد أولي', 'لأن 4 أصغر من 7', 'لأن 7 − 4 = 3 عدد فردي']} correct={0} cols={1}
                 explain={<MathText>{ACTIVITY.questions[2]}</MathText>} onAnswered={() => setQ2(true)} />
+              {q2 && <KnowledgeBrick id="kasr-ghayr-qabil" lead="7 و 4 لا يقسمهما معًا إلا 1: أوليان فيما بينهما." />}
               {q2 && <TextbookBox kind="remark" text={ACTIVITY.questions[2]} compact />}
             </div>
           ) },

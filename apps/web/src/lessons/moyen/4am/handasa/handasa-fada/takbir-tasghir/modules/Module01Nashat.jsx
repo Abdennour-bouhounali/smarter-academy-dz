@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { ContentModule, BatchChoiceQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
+import { ContentModule, BatchChoiceQuestion, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import SpaceFigure from '../../../../../../common/components/SpaceFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, ACT6, ACT6_LINES, LAB, PLATFORM_SOURCE } from '../content/textbook';
+import { ACT6, ACT6_LINES, LAB, PLATFORM_SOURCE } from '../content/textbook';
 import { FIG_ACT6, FIG_ACT6_SOL } from '../content/figures';
-import VoxelVignette from '../components/VoxelVignette';
 
 /**
  * Module 1 — نشاط 6 « التكبير - التصغير » (p. 165), ouvert sur LES BLOCS DE CONSTRUCTION (scale-blocks).
@@ -27,11 +26,15 @@ import VoxelVignette from '../components/VoxelVignette';
  * l'aire et le volume sont multipliés (predictPrompt de knowledge.jsx).
  * La « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) ferme la dernière étape : le même jeu de construction, un autre pavé (8 × 6 × 4)
  * réduit de 3/4, résolu au module 5.
+ * Rétrofit 2026-10-15 (§4quater) : le labo en tête (ni carte ni vignette, ni titre/`lead` de workspace) ; la première étape part de
+ * ce que l'élève vient de BÂTIR (pourquoi 8 cubes et non 2) ; les questions du نشاط 6 viennent ensuite, comme application sur les
+ * bâtis du pavé ; la brique `takbir-tajribi` reste après la question 2 ب (sous « أتوقّع القاعدة »).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
+  const [q0, setQ0] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
@@ -39,15 +42,19 @@ export default function Module01Nashat() {
 
   const onTrial = (ev) => { if (ev) setTrials((s) => [...s, ev].slice(-8)); };
 
-  const evidence = (
-    <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={trials.length ? 'true' : 'false'}>
-      {trials.length === 0 ? (
-        <p className="text-slate-500">لم تبنِ بعد أي مجسّم في المستوى «متقدم» (النشاط 6).</p>
+  // les bâtis du cube (مبتدئ : dims égales) et ceux du pavé du نشاط 6 (متقدم)
+  const isCube = (t) => Array.isArray(t.dims) && t.dims.every((d) => d === t.dims[0]);
+  const cubeTrials = trials.filter(isCube);
+  const boxTrials = trials.filter((t) => !isCube(t));
+  const evidenceOf = (list, none, head, kind) => (
+    <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence={kind} data-tried={list.length ? 'true' : 'false'}>
+      {list.length === 0 ? (
+        <p className="text-slate-500">{none}</p>
       ) : (
         <>
-          <p className="mb-1 font-bold text-slate-700">بناءاتك في النشاط 6:</p>
+          <p className="mb-1 font-bold text-slate-700">{head}</p>
           <ul className="flex flex-wrap gap-1.5" data-evidence="builds">
-            {trials.map((t) => (
+            {list.map((t) => (
               <li key={t.n} className={`rounded-lg border px-2 py-0.5 text-xs font-bold ${t.kind === 'plus' || !t.ok ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-emerald-200 bg-emerald-50 text-emerald-900'}`} data-evidence-build={t.kind === 'plus' ? 'plus' : t.k}>
                 {t.kind === 'plus'
                   ? <MathText>{`$+1$ لكل حرف: $${t.dims.join(' \\times ')}$ صار $${t.image.join(' \\times ')}$`}</MathText>
@@ -59,6 +66,8 @@ export default function Module01Nashat() {
       )}
     </div>
   );
+  const evidence = evidenceOf(boxTrials, 'لم تبنِ بعد أي مجسّم في المستوى «متقدم» (النشاط 6) في المناولة أعلاه.', 'بناءاتك في النشاط 6:', 'builds');
+  const cubeEvidence = evidenceOf(cubeTrials, 'لم تبنِ بعد أي مكعّب في المناولة أعلاه.', 'بناءاتك بالمكعبات:', 'cube');
 
   return (
     <ContentModule
@@ -69,26 +78,9 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 6 — مكعبات البناء"
       moduleSubtitle="نكبّر مجسّما أو نصغّره بنسبة k: ماذا يحدث لأحرفه ومساحته وحجمه؟"
       estimatedTime="15 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 165',
-        headline: 'لعبة البناء على الهاتف!',
-        emoji: '🧱',
-        title: ACT6.title,
-        tone: 'indigo',
-        visual: <VoxelVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={PLATFORM_SOURCE} /></p>
-            <p className="text-sm text-slate-600">في المستوى «متقدم» (النشاط 6): متوازي المستطيلات 5 × 4 × 3 مبني من 60 مكعّبا. في المستوى «مبتدئ»: مكعّب واحد حرفه 1 cm. في المستويين: توقّع الحجم قبل أن تبني.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACT6.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="المختبر التفاعلي"
           defaultLevel="beginner"
-          lead="في المستويين: اسحب النسبة k، توقّع حجم المجسّم الناتج، ثم ابنِه: عدّ المكعبات يحكم على توقّعك."
           levels={{
             beginner: () => (
               <Manipulation
@@ -98,6 +90,7 @@ export default function Module01Nashat() {
                 theme="voxel-blocks"
                 title="مكعّب في لعبة البناء: كبّره مرّتين ثم ثلاث مرّات"
                 lead={<MathText>{'مكعّب حرفه $1\\,\\mathrm{cm}$ . كبّره بالنسبة $k = 2$ ثم $k = 3$ ، وتوقّع كل مرة كم مكعّبا يحتاج اللاعب.'}</MathText>}
+                onTrial={onTrial}
               />
             ),
             advanced: () => (
@@ -116,7 +109,23 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'نشاط 6: الحجم والمساحة الكلية', subtitle: 'السؤال 1', done: q1,
+          num: 1, title: 'لماذا ثمانية مكعبات وليس اثنين؟', subtitle: 'من بناءاتك', done: q0,
+          content: (
+            <div className="space-y-3">
+              {cubeEvidence}
+              <TapQuestion
+                prompt={<MathText>{'كبّرت المكعّب بالنسبة $k = 2$ فصار حرفه ضعفين، لكنّ اللعبة طلبت منك ثمانية مكعبات صغيرة لا اثنين. لماذا؟'}</MathText>}
+                options={['لأنّ المكعّب يتضاعف في الطول وفي العرض وفي الارتفاع معًا', 'لأنّ المكعّب يتضاعف في اتجاه واحد فقط', 'لأنّ اللعبة تضيف دائما مكعبا لكل وجه من أوجهه']}
+                correct={0}
+                cols={1}
+                explain={<MathText>{'في كل اتجاه صار الحرف مكعبين: $2 \\times 2 \\times 2 = 8$ . وبالنسبة $k = 3$ نجد $3 \\times 3 \\times 3 = 27$ .'}</MathText>}
+                onAnswered={() => setQ0(true)}
+              />
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'نشاط 6: الحجم والمساحة الكلية', subtitle: 'السؤال 1', done: q1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACT6.part1} source={ACT6.source} compact />
@@ -137,7 +146,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'نشاط 6: أبعاد المجسّم المصغّر', subtitle: 'السؤال 2 أ', done: q2,
+          num: 3, title: 'نشاط 6: أبعاد المجسّم المصغّر', subtitle: 'السؤال 2 أ', done: q2,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACT6.part2a} source={ACT6.source} compact />
@@ -159,7 +168,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'نشاط 6: حجم المصغّر ومساحته', subtitle: 'السؤال 2 ب', done: q3,
+          num: 4, title: 'نشاط 6: حجم المصغّر ومساحته', subtitle: 'السؤال 2 ب', done: q3,
           content: (
             <div className="space-y-3">
               {evidence}
@@ -184,7 +193,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'وماذا لو كبّرناه بالنسبة 2؟', subtitle: 'هل تتغيّر النتيجة؟', done: q4,
+          num: 5, title: 'وماذا لو كبّرناه بالنسبة 2؟', subtitle: 'هل تتغيّر النتيجة؟', done: q4,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" text="نكبّر الآن متوازي المستطيلات ABCDEFGH (5 و 4 و 3) بالنسبة $k = 2$ ، كما فعلت في المستوى «متقدم»." source={PLATFORM_SOURCE} compact />

@@ -14,6 +14,9 @@ import { EX } from '../content/exercises';
  *      qui ne répond pas à l'histoire (10/3 d'une personne) ;
  *   3. أبو كامل (p. 55) : le problème du أجير, une jumla écrite mille ans avant la notation — la
  *      lecture retenue (mois de 30 jours, au prorata) dite en une ligne.
+ * Rétrofit 2026-10-15 (§4quater) : la brique « tahaqquq-nas » vient APRÈS la réponse de « not-natural » (elle disait déjà que la
+ * vérification se fait dans l'histoire), et la lecture retenue du problème d'أبو كامل (qui écrit la jumla x + y = 30 ; 6x = 4y)
+ * APRÈS l'exercice qui la fait choisir. Module sans labo : la carte du haut dit ce qu'est le module et n'énonce aucun fait.
  * La leçon a `knowledgeMap: true` : pas de module de formalisation séparé. LP : P1, P2.
  */
 export default function Module02Marahil() {
@@ -51,8 +54,8 @@ export default function Module02Marahil() {
           num: 2, title: 'نتحقق في القصة نفسها', subtitle: 'هل يجيب حلّ الجملة عن القصة؟', done: all('not-natural'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tahaqquq-nas" lead="المرحلتان 4 و 5 لا تعودان إلى الجملة، بل إلى القصة:" />
-              <TextbookExercise exercise={EX['not-natural']} requires={['tahaqquq-nas']} onAnswered={mark('not-natural')} />
+              <TextbookExercise exercise={EX['not-natural']} requires={['khutuwat-hall']} onAnswered={mark('not-natural')} />
+              {done['not-natural'] && <KnowledgeBrick id="tahaqquq-nas" lead="المرحلتان 4 و 5 لا تعودان إلى الجملة، بل إلى القصة:" />}
             </div>
           ),
         },
@@ -61,8 +64,8 @@ export default function Module02Marahil() {
           content: (
             <div className="space-y-3">
               <TextbookBox kind="remark" text={ABU_KAMIL.intro} source={ABU_KAMIL.source} compact />
-              <TextbookBox kind="remark" text={ABU_KAMIL_READING.text} source={ABU_KAMIL_READING.source} compact />
               <TextbookExercise exercise={EX['abu-kamil']} requires={['jumla-tarjama', 'tahaqquq-nas']} onAnswered={mark('abu-kamil')} />
+              {done['abu-kamil'] && <TextbookBox kind="remark" text={ABU_KAMIL_READING.text} source={ABU_KAMIL_READING.source} compact />}
               <TextbookExercise exercise={EX['abu-kamil-2']} requires={['tahaqquq-nas', 'hall-jumla']} onAnswered={mark('abu-kamil-2')} />
             </div>
           ),

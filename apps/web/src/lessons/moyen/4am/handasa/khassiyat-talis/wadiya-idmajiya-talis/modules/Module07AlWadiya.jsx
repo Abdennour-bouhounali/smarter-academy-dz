@@ -88,28 +88,15 @@ export default function Module07AlWadiya() {
   return (
     <ContentModule objectives={["كيف نعرف ارتفاع مئذنة دون أن نصعدها؟", "أيّ شكل مستوٍ يختصر أسطوانة داخل مخروط؟", "كيف نجد r ثم الحجم ونتحقّق من ملاءمة النتيجة؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="تحليل الوضعية النهائية للاختبار" moduleSubtitle="ارتفاع المئذنة بالظل، ثم أسطوانة داخل مخروط" estimatedTime="18 دقيقة"
-      brief={{
-        tag: 'أدمج تعلّماتي — الكتاب ص 112 (وتحدّ الوحدة ص 103)', headline: 'أطوال لا نصل إليها: مئذنة الحيّ وعلبة داخل مخروط', emoji: '🕌',
-        title: 'وضعيتان، فكرة واحدة: ما الذي يجمع بين المئذنة والمخروط؟', tone: 'amber',
-        body: (
-          <div className="space-y-2" data-situation="ustuwana-makhrut">
-            <p className="font-bold">{SITUATION.title}</p>
-            <p><MathText>{SITUATION.text}</MathText></p>
-            <ConeFigure H="18" R="6" />
-          </div>
-        ),
-        footer: <SourceTag source={SITUATION.source} />,
-      }}
       intro={
+        // LE LABO OUVRE LE MODULE (rétrofit 2026-10-15) : plus de carte ni de titre / lead de workspace ; l'énoncé de la وضعية (ex-carte) ouvre l'étape 3.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="المستوى المبتدئ هو تحدّ الوحدة في ساحة الحيّ: حرّك الشمس، قِس الظلال، توقّع واكتب قاعدتك حتى تعرف ارتفاع المئذنة دون أن تصعدها. المستوى المتقدّم هو وضعية الكتاب: غيّر طول الأسطوانة ونصف قطرها حتى تلمس المخروط."
           levels={{
             beginner: () => (
-              <Manipulation type="shadow-world" level="beginner" {...LAB.beginner} title="تحدّ الوحدة: ارتفاع مئذنة الحيّ بالظلال" onTrial={keepStick} />
+              <Manipulation type="shadow-world" level="beginner" {...LAB.beginner} onTrial={keepStick} />
             ),
             advanced: () => (
-              <Manipulation type="cone-cylinder" level="advanced" {...LAB.advanced} title="وضعية الكتاب: مخروط ارتفاعه 18 ونصف قطر قاعدته 6" onTrial={keepCone} />
+              <Manipulation type="cone-cylinder" level="advanced" {...LAB.advanced} onTrial={keepCone} />
             ),
           }}
         />
@@ -163,6 +150,12 @@ export default function Module07AlWadiya() {
         { num: 3, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1 من الكتاب: ما المطلوب؟', done: !!q[3],
           content: (
             <div className="space-y-3">
+              <div className="space-y-2 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm" data-situation="ustuwana-makhrut">
+                <p className="font-bold">{SITUATION.title}</p>
+                <p><MathText>{SITUATION.text}</MathText></p>
+                <ConeFigure H="18" R="6" />
+                <p className="text-xs text-slate-500"><SourceTag source={SITUATION.source} /></p>
+              </div>
               <Phase i={0} />
               <TapQuestion
                 prompt="ما المطلوب في نص الوضعية؟"

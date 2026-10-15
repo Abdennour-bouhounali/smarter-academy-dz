@@ -110,7 +110,6 @@ export default function Module03Mutawazi() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_KNOW2} />
-              <KnowledgeBrick id="mulahazat" lead="ما يصحّ من أجل كل أربع نقط:" />
               <GeoFigure {...FIG_KNOW2_FLAT} />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{`${KNOW2.special} في الشكل أعلاه $\\overrightarrow{AB} = \\overrightarrow{DC}$ :`}</MathText></p>}
@@ -118,10 +117,11 @@ export default function Module03Mutawazi() {
                   { id: 'quad', label: 'هل ABCD متوازي أضلاع؟', options: ['لا: النقط في استقامية، لا يتكوّن رباعي', 'نعم'], correct: 0, correction: <MathText>{KNOW2.specialLine}</MathText> },
                   { id: 'mid', label: 'القطعتان [AC] و [BD]', options: ['لهما نفس المنتصف E', 'ليس لهما نفس المنتصف'], correct: 0, correction: <MathText>{KNOW2.remarks[0]}</MathText> },
                 ]}
-                requires={['mulahazat']}
+                requires={['mutawazi-adlaa']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: المنتصف المشترك يبقى حتى حين يصبح متوازي الأضلاع «مسطّحا».' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && <KnowledgeBrick id="mulahazat" lead="ما يصحّ من أجل كل أربع نقط:" />}
             </div>
           ),
         },

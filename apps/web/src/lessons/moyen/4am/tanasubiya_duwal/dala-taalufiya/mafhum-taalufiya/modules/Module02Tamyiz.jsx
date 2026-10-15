@@ -3,7 +3,7 @@ import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick, Predic
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { SourceTag } from '../../../../../../common/textbook';
 import { addition } from '../../_unit/unitMeta';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY2 } from '../content/textbook';
@@ -16,6 +16,8 @@ import { ACTIVITY2 } from '../content/textbook';
  *   3. le cas a = 0 (plateforme, déclaré) : un tarif fixe — la brique thabita (ce que l'étape 3 du
  *      compteur a fait toucher).
  * LP : P1 (a et b), P4 (les deux cas particuliers).
+ * RÉTROFIT 2026-10-15 (une piste) : plus de rappel de brique ni de carte du livre au-dessus de la première question (la
+ * question est l'action) ; la brief ne dit plus la forme ax + b. Pas de lab dans ce module (le compteur est au module 1).
  * « أتوقّع القاعدة » : les questions des étapes 2 et 3 ont pour BONNE OPTION la règle elle-même (b = 0 : la
  * linéaire est affine ; a = 0 : la constante est affine) — chacune est donc enveloppée dans
  * <PredictRule id="khattiya-taalufiya"> / <PredictRule id="thabita"> : l'élève écrit d'abord (predictPrompt
@@ -44,7 +46,7 @@ export default function Module02Tamyiz() {
       ]}
       brief={{
         tag: 'أنشطة — الكتاب ص 78', title: ACTIVITY2.title, tone: 'violet',
-        body: <p><MathText>{'أجرة العامل $S(x) = 185x + 35000$ من الشكل $ax + b$ . هل كل عبارة فيها $x$ من هذا الشكل؟ ست دوال من الكتاب، ثم حالتان خاصتان.'}</MathText></p>,
+        body: <p>ست دوال من الكتاب تحكم عليها بنفسك، ثم حالتان خاصتان تختبر فيهما ما رأيته على العدّاد.</p>,
         footer: <SourceTag source={ACTIVITY2.source} />,
       }}
       steps={[
@@ -52,10 +54,8 @@ export default function Module02Tamyiz() {
           num: 1, title: 'ست دوال', subtitle: 'السؤال 1', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="dala-ujra" variant="rappel" compact />
-              <TextbookBox kind="situation" title={`نشاط 2: ${ACTIVITY2.title}`} lines={ACTIVITY2.questions} source={ACTIVITY2.source} compact />
               <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'لكل دالة: هل هي تآلفية؟ وإن كانت، ما معاملاها $a$ و $b$ ؟'}</MathText></p>}
+                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'ما هي الدوال التي تعتبر دوال تآلفية؟ عيّن عندئذ المعاملين $a$ و $b$ لكلّ دالة تآلفية.'}</MathText> <SourceTag source={ACTIVITY2.source} /></p>}
                 rows={ACTIVITY2.rows.map((r) => ({ id: r.id, label: M(r.label), options: r.options.map(M), correct: r.correct, correction: M(r.correction) }))}
                 requires={['dala-ujra']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: أربع دوال تآلفية من ست.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}

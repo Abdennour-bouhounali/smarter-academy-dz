@@ -5,10 +5,12 @@ import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import DataTable from '../components/DataTable';
 import { CHALLENGE, LAB, MISTAKE_MM } from '../content/textbook';
 
 /**
+ * Rétrofit 2026-10-15 (§4quater) : le labo en tête (ni `brief`, ni titre / `lead` d'atelier), la question 1 interroge le pari de l'élève,
+ * le rappel de l'étape 4 n'apparaît qu'APRÈS sa réponse (il donnait le cas des effectifs égaux). Le tableau du manuel n'est plus
+ * recopié : la mission du labo liste les quatre groupes (n et m).
  * Module 1 — le تحدّ (p. 91, doublon déclaré de la page d'unité) : REAL → DISCOVER → MANIPULATE → UNDERSTAND.
  *
  * Le laboratoire `group-tanks` (écrit par cette leçon) : chaque groupe est un réservoir de largeur n rempli
@@ -54,40 +56,25 @@ export default function Module01Tahaddi() {
       moduleTitle="تحدّ — قسمان ومعدّل واحد"
       moduleSubtitle="أيّ القسمين نتائجه أفضل؟"
       estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'تحدّ — الكتاب ص 91',
-        headline: 'إناث (أ) أفضل، وذكور (ب) أفضل… فمن يفوز؟',
-        emoji: '🏆',
-        title: 'متوسط مجموعات مجتمعة',
-        tone: 'indigo',
-        body: (
-          <div className="space-y-2">
-            <p><MathText>{CHALLENGE.text}</MathText></p>
-            <DataTable head={CHALLENGE.head} rows={CHALLENGE.rows} />
-            <p className="text-sm text-slate-600">في المختبر: كل مجموعة خزان عرضه عدد أفرادها وماؤه إلى ارتفاع معدّلها. راهن بـ 🎯 على مستوى الماء في خزان القسم، ثم افتح الصمام.</p>
-          </div>
-        ),
-        footer: <SourceTag source={CHALLENGE.source} />,
-      }}
       intro={
+        // LE LABO OUVRE LE MODULE (§4quater) : ni carte du manuel, ni titre / `lead` d'atelier ; le `lead` du labo = le contexte seul,
+        // la question (parier puis ouvrir la vanne) est celle de la mission du labo.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="نفس الفكرة في المستويين: راهن على مستوى الماء، ثم افتح الصمام بين الخزانات وانظر إلى أين يصل."
           defaultLevel="beginner"
           levels={{
-            beginner: () => <Manipulation type="group-tanks" level="beginner" {...LAB.m1.beginner} />,
-            advanced: () => <Manipulation type="group-tanks" {...LAB.m1.advanced} onTrial={setEv} />,
+            beginner: () => <Manipulation type="group-tanks" level="beginner" {...LAB.m1.beginner} lead="في مسابقة القسم جمع فريقان من الأصدقاء نقاطهم، ويريدون معدّلًا واحدًا للفريقين معًا." />,
+            advanced: () => <Manipulation type="group-tanks" {...LAB.m1.advanced} lead="في الامتحان نفسه: قسمان من السنة الرابعة متوسط، في كلّ قسم ذكور وإناث." onTrial={setEv} />,
           }}
         />
       }
       steps={[
         {
-          num: 1, title: 'مجموع نقاط القسم (أ)', subtitle: 'الماء في الخزانين', done: q1,
+          num: 1, title: 'كم من الماء في خزان القسم (أ)؟', subtitle: 'من رهانك إلى المجموع', done: q1,
           content: (
             <div className="space-y-3">
               {evidence}
               <NumericQuestion
-                prompt={<MathText>{'في القسم (أ): 15 ذكرا بمعدّل 10 و 18 أنثى بمعدّل 13. ما مجموع نقاط تلاميذ القسم (أ)؟'}</MathText>}
+                prompt={<MathText>{'لتفهم لماذا استقرّ الماء حيث استقرّ، احسب ما يحمله خزان القسم (أ): 15 ذكرا بمعدّل 10 و 18 أنثى بمعدّل 13. ما مجموع نقاط تلاميذ القسم (أ)؟'}</MathText>}
                 expected={384}
                 explain={<MathText>{'$15 \\times 10 + 18 \\times 13 = 150 + 234 = 384$ نقطة، لـ $15 + 18 = 33$ تلميذا.'}</MathText>}
                 onAnswered={() => setQ1(true)}
@@ -134,6 +121,7 @@ export default function Module01Tahaddi() {
                 explain={<MathText>{'في القسمين مجموع النقاط 384 والعدد 33: المعدّل نفسه $\\dfrac{384}{33} \\approx 11{,}64$ . المقارنة مجموعة بمجموعة تتعاكس ولا تحسم.'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <SourceTag source={CHALLENGE.source} />}
               {q3 && <KnowledgeBrick id="silsila-kamila" lead="احسب ماء القسم (ب) كما حسبت ماء القسم (أ)، ثم قارن القسمين كاملين." />}
             </div>
           ),
@@ -142,7 +130,6 @@ export default function Module01Tahaddi() {
           num: 4, title: 'متى يصحّ متوسط المتوسطين؟', subtitle: 'تكراران متساويان', done: q4,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="mutawassit-majmuat" variant="rappel" compact />
               <NumericQuestion
                 prompt={<MathText>{'في قسم آخر: 16 ذكرا بمعدّل 11 و 16 أنثى بمعدّل 13. ما معدّل القسم؟'}</MathText>}
                 expected={12}
@@ -150,6 +137,7 @@ export default function Module01Tahaddi() {
                 explain={<MathText>{'$\\dfrac{16 \\times 11 + 16 \\times 13}{32} = \\dfrac{176 + 208}{32} = \\dfrac{384}{32} = 12$ : التكراران متساويان، فالمعدّل هو متوسط المعدّلين $\\dfrac{11 + 13}{2} = 12$ .'}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && <KnowledgeBrick id="mutawassit-majmuat" variant="rappel" compact />}
             </div>
           ),
         },

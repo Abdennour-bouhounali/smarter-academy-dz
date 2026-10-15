@@ -12,6 +12,8 @@ import { METHOD, METHOD_INVERSE } from '../content/textbook';
  * TOUCH THE MATH : 1) du diamètre (8 cm) à la valeur exacte puis arrondie au dixième — révélée ligne à ligne (MethodSteps),
  * brique tariqa-hisab, une question sur une bille de diamètre 2 cm ; 2) l'inverse, de l'aire (100π) au rayon puis au volume,
  * brique tariqa-aksiya, une question (324π → 9 cm). LP : P1, P2, P3.
+ * Rétrofit 2026-10-15 : l'exemple se lit ligne à ligne (l'élève essaie la ligne suivante), puis la question, PUIS la brique qui
+ * résume la méthode (elle ne précède plus la question qui l'exerce).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -39,7 +41,6 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <MethodSteps method={METHOD} />
-              <KnowledgeBrick id="tariqa-hisab" lead="الطريقة في سطر:" />
               <TapQuestion
                 prompt={<MathText>{'كرية زجاجية قطرها $2\\,\\mathrm{cm}$ . القيمة المضبوطة لحجم الجلة:'}</MathText>}
                 options={[
@@ -51,10 +52,10 @@ export default function Module03Taraiq() {
                 ].map(M)}
                 correct={0}
                 cols={3}
-                requires={['tariqa-hisab']}
                 explain={<MathText>{'$R = 2 \\div 2 = 1\\,\\mathrm{cm}$ ، $\\mathcal{V} = \\frac{4}{3}\\pi \\times 1^3 = \\frac{4}{3}\\pi\\,\\mathrm{cm}^3$ . بالقطر نجد $\\frac{4}{3}\\pi \\times 2^3 = \\frac{32}{3}\\pi$ ، ثمانية أضعاف الحجم.'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="tariqa-hisab" lead="الطريقة في سطر:" />}
             </div>
           ),
         },
@@ -63,7 +64,6 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <MethodSteps method={METHOD_INVERSE} />
-              <KnowledgeBrick id="tariqa-aksiya" lead="نعكس القانون:" />
               <TapQuestion
                 prompt={<MathText>{'مساحة كرة $324\\pi\\,\\mathrm{cm}^2$ . نصف قطرها هو:'}</MathText>}
                 options={[
@@ -75,10 +75,10 @@ export default function Module03Taraiq() {
                 ].map(M)}
                 correct={2}
                 cols={3}
-                requires={['tariqa-aksiya']}
                 explain={<MathText>{'$4\\pi R^2 = 324\\pi$ أي $R^2 = 324 \\div 4 = 81$ ، و $R = \\sqrt{81} = 9\\,\\mathrm{cm}$ . العدد $81$ هو $R^2$ ، و $18 = \\sqrt{324}$ نسي القسمة على 4.'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="tariqa-aksiya" lead="نعكس القانون:" />}
             </div>
           ),
         },

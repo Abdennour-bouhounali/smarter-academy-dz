@@ -94,6 +94,7 @@ export const MANIPULATION_COMPONENTS = {
   'digit-cards': lazy(() => import('./operations/DigitCards')),
   // 1AM, unité 4 « الكتابات الكسرية » (2026-10-14).
   'fraction-knife': lazy(() => import('./operations/FractionKnife')),
+  'fair-share': lazy(() => import('./operations/FairShare')),
   // 1AM, unité 1 « الأعداد الطبيعية والأعداد العشرية » (2026-10-14).
   'rank-exchange': lazy(() => import('./operations/RankExchange')),
   // 2AM, unité 2 « الكسور والعمليات عليها » (2026-10-14).

@@ -33,10 +33,9 @@ export default function Module02Maarif() {
       }}
       steps={[
         {
-          num: 1, title: 'قواعد الكتاب', subtitle: 'على 2 ، 5 ، 3', done: q1,
+          num: 1, title: 'هل تنجح قواعدك على هذه الأعداد؟', subtitle: 'على 2 ، 5 ، 3', done: q1,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="property" lines={[KNOWLEDGE.rule2, KNOWLEDGE.rule5, KNOWLEDGE.rule3]} source={KNOWLEDGE.source} compact />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">طبّق القواعد على أعداد الكتاب:</p>}
                 rows={[
@@ -49,6 +48,7 @@ export default function Module02Maarif() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}><MathText>{allRight ? 'تمامًا.' : GUIDE.units3.right}</MathText></Feedback>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <TextbookBox kind="property" lines={[KNOWLEDGE.rule2, KNOWLEDGE.rule5, KNOWLEDGE.rule3]} source={KNOWLEDGE.source} compact />}
             </div>
           ),
         },
@@ -63,7 +63,7 @@ export default function Module02Maarif() {
                 explain={<span>كل عدد يقبل القسمة على 9 يقبلها على 3 ، لكنّ العكس غير صحيح.</span>}
                 onAnswered={() => setQ2(true)}
               />
-              <KnowledgeBrick id="qabiliya-9" lead="مجموع أرقام 150 هو 6، و 174 هو 12، و 918 هو 18." />
+              {q2 && <KnowledgeBrick id="qabiliya-9" lead="مجموع أرقام 150 هو 6، و 174 هو 12، و 918 هو 18." />}
               <SourceTag source={NINE.source} />
             </div>
           ),
@@ -79,7 +79,7 @@ export default function Module02Maarif() {
                 explain={<MathText>{'الباقي 0 : 2019 مضاعف للعدد 3. في المساواتين الأخريين الباقي (3 ، 9) ليس أصغر من 3: ليستا قسمة إقليدية.'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
-              <KnowledgeBrick id="qabiliya-baqi" />
+              {q3 && <KnowledgeBrick id="qabiliya-baqi" />}
             </div>
           ),
         },

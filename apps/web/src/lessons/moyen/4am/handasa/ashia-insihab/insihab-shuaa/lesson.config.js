@@ -18,6 +18,14 @@
  *                        portail coulissant, un drone de cartographie en ligne droite (content/problems.js) ;
  *   M8 إختبار أولي     — QCM 1–3 et deux épreuves de la plateforme ; P1, P2, P3 couverts.
  *
+ * Rétrofit 2026-10-15 (guide §4ter–§4quinquies). ENTRÉE — candidats : (a) le نشاط 1 du manuel tel quel (neuf images d'un triangle
+ * sur la figure du livre, puis quatre questions copiées) ; (b) le spectacle de drones (plateforme) où l'élève CHOISIT la flèche du meneur
+ * et voit un drone égaré refusé. CHOIX : (b) est le niveau مبتدئ par défaut (`platform_designed_entry`), le نشاط 1 reste le niveau
+ * متقدم et ses questions suivent sur la figure du livre. ORDRE : translation → المنحى والاتجاه والطول → تساوي شعاعين → ABDC.
+ * Module 1 : pas de carte (la vignette `DroneShowVignette` n'est plus montée) ni titre/lead de workspace ; le labo en tête, son `lead` = le
+ * contexte. Modules 2 et 3 (sans labo) : les briques manha-ittijah, shuaa, tasawi-shuaayn et mulahazat s'ouvrent APRÈS la réponse
+ * (leurs `requires` descendent d'un cran). Destinations inchangées.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/insihab-shuaa';
@@ -88,7 +96,7 @@ export const LESSON_CONFIG = {
       title: 'عرض المسيّرات: حرّك القائدة وضع صور التشكيلة',
       objective: 'الانسحاب يحرّك كل نقطة بسهم واحد: نقطة وصورتها تعرّفان شعاعا له منحى واتجاه وطول، وصورة نقطة أخرى تُقبل فقط إذا كان لسهمها نفس المنحى ونفس الاتجاه ونفس الطول',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'drone-show' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'drone-show' },
       learningPointIds: ['4am_insihab-shuaa_P1', '4am_insihab-shuaa_P2'],
       sourceElementIds: ['act-1'],
     },

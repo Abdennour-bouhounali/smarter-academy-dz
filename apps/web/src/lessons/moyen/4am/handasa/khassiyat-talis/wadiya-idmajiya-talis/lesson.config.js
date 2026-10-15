@@ -20,6 +20,10 @@
  *   FORMALISER         les briques et les trois phases du manuel (قراءة · تحليل · تنفيذ), la vérification
  *   TRANSFÉRER         module 8 — la وضعية et le تحدّ TRANSPOSÉS (autres nombres) : le test final
  *
+ * Rétrofit du 2026-10-15 (synthèse : format fixe, retouches minimales) : le module 7 s'ouvre sur le labo (plus de carte au-dessus, plus de
+ * titre / lead de workspace) ; l'énoncé du manuel (ex-carte) ouvre l'étape 3 « قراءة الوضعية » ; toutes les briques étaient déjà
+ * APRÈS leur réponse.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/wadiya-idmajiya-talis';

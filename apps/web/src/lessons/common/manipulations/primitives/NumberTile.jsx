@@ -20,7 +20,7 @@ const TONES = {
  * qu'on pose. Sans `drag`, c'est une tuile statique (même dessin). La valeur
  * est toujours LTR ; `tone` dit son RÔLE mathématique. Cible ≥ 44 px.
  */
-export default function NumberTile({ value, drag, id, label, tone = 'neutral', size = 'md', disabled = false, className = '', badge, onClick }) {
+export default function NumberTile({ value, drag, id, label, tone = 'neutral', size = 'md', disabled = false, className = '', badge, onClick, ...rest }) {
   const text = size === 'lg' ? 'min-w-[56px] min-h-[52px] text-2xl px-3' : size === 'sm' ? 'min-w-[40px] min-h-[40px] text-sm px-2' : 'min-w-[44px] min-h-[44px] text-lg px-2.5';
   const base = `relative inline-flex items-center justify-center rounded-xl border-2 font-mono font-extrabold tabular-nums ${text} ${TONES[tone] ?? TONES.neutral} ${className}`;
   const inner = (
@@ -37,7 +37,7 @@ export default function NumberTile({ value, drag, id, label, tone = 'neutral', s
     );
   }
   if (onClick) {
-    return <button type="button" onClick={onClick} disabled={disabled} aria-label={label} className={`${base} focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-50`}>{inner}</button>;
+    return <button type="button" onClick={onClick} disabled={disabled} aria-label={label} {...rest} className={`${base} focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-50`}>{inner}</button>;
   }
   return <span className={base} aria-label={label}>{inner}</span>;
 }

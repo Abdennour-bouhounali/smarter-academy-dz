@@ -42,16 +42,15 @@ export default function Module03Maarif() {
           num: 1, title: 'إحداثيتا منتصف قطعة', subtitle: 'معارف د)', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="ihdathiyata-muntasaf" lead="ما كتبته في النشاط 3، بكلمات الكتاب:" />
-              <p className="text-xs text-slate-600"><MathText>{KNOW_LINES.midTrap}</MathText></p>
               <TextbookBox kind="example" text={'على خريطة المنصّة: $A(-1\\,;\\,4)$ و $B(6\\,;\\,-3)$ . أوجد إحداثيتي I منتصف [AB].'} source={PLATFORM_SOURCE} compact />
               <PairQuestion
                 prompt="إحداثيتا I (يمكنك كتابة كسر مثل 5/2 أو عدد عشري مثل 2,5):"
                 expected={{ x: '5/2', y: '1/2' }}
                 explain={<MathText>{'$x_I = \\dfrac{-1 + 6}{2} = \\dfrac{5}{2}$ و $y_I = \\dfrac{4 + (-3)}{2} = \\dfrac{1}{2}$ : $I\\left(\\dfrac{5}{2}\\,;\\,\\dfrac{1}{2}\\right)$ — المنتصف لا يقع دائما على عقدة.'}</MathText>}
-                requires={['ihdathiyata-muntasaf']}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="ihdathiyata-muntasaf" lead="ما كتبته في النشاط 3، بكلمات الكتاب:" />}
+              {q1 && <p className="text-xs text-slate-600"><MathText>{KNOW_LINES.midTrap}</MathText></p>}
             </div>
           ),
         },
@@ -59,9 +58,6 @@ export default function Module03Maarif() {
           num: 2, title: 'المسافة بين نقطتين', subtitle: 'معارف هـ)', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="masafa" lead="ما كتبته في النشاط 4، بكلمات الكتاب:" />
-              <GeoFigure {...FIG_KNOW_DIST} />
-              <p className="text-xs text-slate-600"><MathText>{KNOW_LINES.distTrap}</MathText></p>
               <TapQuestion
                 prompt={<MathText>{'$C(-2\\,;\\,1)$ و $D(4\\,;\\,-1)$ في معلم متعامد ومتجانس. القيمة المضبوطة للمسافة CD هي:'}</MathText>}
                 options={[
@@ -71,10 +67,13 @@ export default function Module03Maarif() {
                 ].map(M)}
                 correct={0}
                 cols={3}
-                requires={['masafa', 'judhur-tabsit']}
+                requires={['judhur-tabsit']}
                 explain={<MathText>{'$CD = \\sqrt{(4 - (-2))^2 + (-1 - 1)^2} = \\sqrt{36 + 4} = \\sqrt{40} = \\sqrt{4 \\times 10} = 2\\sqrt{10}$ . ($8 = 6 + 2$ مسافة السير، و $40$ هو $CD^2$ .)'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="masafa" lead="ما كتبته في النشاط 4، بكلمات الكتاب:" />}
+              {q2 && <GeoFigure {...FIG_KNOW_DIST} />}
+              {q2 && <p className="text-xs text-slate-600"><MathText>{KNOW_LINES.distTrap}</MathText></p>}
             </div>
           ),
         },

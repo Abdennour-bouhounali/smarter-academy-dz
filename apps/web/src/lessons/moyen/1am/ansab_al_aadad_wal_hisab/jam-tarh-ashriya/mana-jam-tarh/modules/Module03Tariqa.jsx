@@ -5,7 +5,7 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import ArcTape from '../../../../../../common/components/ArcTape';
 import { Manipulation } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { METHOD, NOW_29, TAPES } from '../content/textbook';
 
@@ -38,17 +38,16 @@ export default function Module03Tariqa() {
       moduleTitle="طريقة — حلّ مشكلة بتمثيل مناسب"
       moduleSubtitle="نرسم القطع قبل أن نحسب"
       estimatedTime="12 دقيقة"
-      brief={{
-        tag: 'أكتسب طرائق — الكتاب ص 29', title: METHOD.title, tone: 'emerald',
-        body: <p><MathText>{METHOD.text}</MathText></p>,
-        footer: <SourceTag source={METHOD.source} />,
-      }}
+      intro={(
+        <Manipulation type="story-bars" story="method29" levels={false} />
+      )}
       steps={[
         {
           num: 1, title: 'هدى أم إيناس: من على حق؟', subtitle: 'اسحب القامتين بنفسك أوّلًا', done: q1,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-700">{METHOD.intro}</p>
+              <p className="text-sm font-bold text-slate-600">{METHOD.title}</p>
               <table className="w-full max-w-md table-fixed border-collapse text-center text-xs sm:text-sm" data-method-answers>
                 <thead><tr className="bg-slate-100"><th className="border p-1" />{['هدى', 'إيناس'].map((h) => <th key={h} className="border p-1">إجابة {h}</th>)}</tr></thead>
                 <tbody>
@@ -56,8 +55,6 @@ export default function Module03Tariqa() {
                   <tr><th className="border p-1">قامة محمد</th><td className="border p-1">{ltr(`${METHOD.answers.hoda.mohamed} cm`)}</td><td className="border p-1">{ltr(`${METHOD.answers.ines.mohamed} cm`)}</td></tr>
                 </tbody>
               </table>
-              <Manipulation type="story-bars" story="method29" levels={false}
-                title="طريقة الكتاب: قامات أكرم ويونس ومحمد" />
               <TapQuestion
                 prompt={<span>أيّ التلميذتين على حق؟</span>}
                 options={['هدى', 'إيناس']}
@@ -71,22 +68,26 @@ export default function Module03Tariqa() {
           ),
         },
         {
-          num: 2, title: 'ما الطريقة التي انتهجتها إيناس؟', subtitle: 'اكتب خطواتك قبل أن تقرأها', done: q2,
+          num: 2, title: 'أين نضع المجهول في المخطط؟', subtitle: 'قبل أن تقرأ طريقة إيناس', done: q2,
           content: (
             <div className="space-y-3">
-              <ul className="space-y-1 rounded-xl border-2 border-emerald-200 bg-emerald-50/60 px-3 py-2 text-sm" data-method-dialogue>
-                {METHOD.dialogue.map((d, i) => <li key={i}><strong>{d.who}:</strong> {d.text}</li>)}
-              </ul>
-              <KnowledgeBrick id="tamthil-aqwas" lead="الشكل التوضيحي الذي رسمته إيناس: قطع مستقيمات وأقواس." />
               <TapQuestion
                 prompt={<span>في المخطط، أين نضع الرمز □ لقامة يونس؟</span>}
                 options={['تحت الخطّ: قامة يونس هي الكلّ', 'فوق الخطّ: قامة يونس جزء']}
                 correct={0}
                 cols={1}
-                requires={['tamthil-aqwas']}
+                requires={['ikhtiyar-amaliya']}
                 explain={<MathText>{'«تزيد قامة يونس عن قامة أكرم بـ $3\\,\\mathrm{cm}$»: يونس هو الأطول، فقامته تغطّي قامة أكرم والـ $3\\,\\mathrm{cm}$ معًا: $\\square = 124 + 3$.'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && (
+                <>
+                  <ul className="space-y-1 rounded-xl border-2 border-emerald-200 bg-emerald-50/60 px-3 py-2 text-sm" data-method-dialogue>
+                    {METHOD.dialogue.map((d, i) => <li key={i}><strong>{d.who}:</strong> {d.text}</li>)}
+                  </ul>
+                  <KnowledgeBrick id="tamthil-aqwas" lead="الشكل التوضيحي الذي رسمته إيناس: قطع مستقيمات وأقواس." />
+                </>
+              )}
             </div>
           ),
         },

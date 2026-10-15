@@ -2,6 +2,17 @@
  * الدرس 4 — القاسم المشترك الأكبر لعددين طبيعيين
  * Manuel 4AM, unité 1 : activité 4 (p. 8), معارف 3 (p. 10), معارف 4 تعريف + ملاحظة (p. 12), دوري الآن p. 11 (1), exercice 10 (p. 14),
  * puis trois « مسائل » de la plateforme (modules 4–6).
+ *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : 12 balles et 18 maillots à répartir en équipes identiques (niveau مبتدئ, ajout déclaré de la plateforme,
+ *   `platform_designed_entry`) — la main ajoute les équipes une à une et VOIT qu'un nombre d'équipes n'est accepté que s'il range les
+ *   deux collections à la fois (4 range les balles, laisse deux maillots) : « commun » devient nécessaire avant le mot. Rejeté :
+ *   le نشاط 4 du manuel (90 roses rouges, 54 blanches, « 9 bouquets ? ») comme entrée — 90 et 54 sont trop grands pour qu'on
+ *   VOIE pourquoi un nombre échoue, et la question « 9 ? » est un test de division, pas une découverte ; il reste le niveau
+ *   متقدم du MÊME labo (bouquets puis listes) et la question « 9 bouquets » est posée à l'étape 2. Rejeté aussi : partir des listes de
+ *   diviseurs (c'est la méthode, pas la raison). Ordre des idées : pourquoi 4 équipes échouent → brique « قواسم مشتركة » →
+ *   9 bouquets (90 et 54) → les fleurs par couleur au plus grand nombre de bouquets → « أتوقّع القاعدة » du PGCD → (module 2) les
+ *   communs de 28 et 42 posés dans le labo → définition → écriture PGCD(28 ; 42) → briques → communs = diviseurs du PGCD → remarque.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/qasim-mushtarak-akbar';
 
@@ -54,7 +65,7 @@ export const LESSON_CONFIG = {
       title: 'مجموعات متماثلة: 12 و 18',
       objective: 'القواسم المشتركة لعددين، وأكبرها هو القاسم المشترك الأكبر',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'football' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'football' },
       learningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2'], sourceElementIds: ['act-4'] },
     { kind: 'manipulation', code: 'common-divisors-90-54', type: 'common-divisors', module: 1,
       level: 'advanced',

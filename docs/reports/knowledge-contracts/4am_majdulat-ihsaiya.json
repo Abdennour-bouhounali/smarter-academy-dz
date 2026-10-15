@@ -17,7 +17,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/modules/Module01Majdul.jsx",
-        "line": 160,
+        "line": 159,
         "step": 2,
         "variant": "new"
       }
@@ -28,7 +28,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/modules/Module01Majdul.jsx",
-        "line": 168,
+        "line": 167,
         "step": 3,
         "variant": "new"
       }
@@ -39,7 +39,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/modules/Module01Majdul.jsx",
-        "line": 170,
+        "line": 169,
         "step": 3,
         "variant": "new"
       }
@@ -61,7 +61,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/modules/Module01Majdul.jsx",
-        "line": 207,
+        "line": 206,
         "step": 4,
         "variant": "new"
       }
@@ -220,14 +220,10 @@
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/modules/Module01Majdul.jsx",
       "line": 151,
-      "requires": [
-        "khaliya-majal"
-      ],
-      "prerequisiteStatus": {
-        "khaliya-majal": "later@M1"
-      },
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
-      "pedagogicallyValid": false
+      "pedagogicallyValid": true
     },
     {
       "questionId": "M01-S3-Q2",
@@ -235,7 +231,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/modules/Module01Majdul.jsx",
-      "line": 171,
+      "line": 170,
       "requires": [
         "dustur",
         "khaliya-majal",
@@ -255,7 +251,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/modules/Module01Majdul.jsx",
-      "line": 193,
+      "line": 192,
       "requires": [
         "dustur",
         "dasatir-arbaa"
@@ -411,18 +407,6 @@
     }
   ],
   "findings": [
-    {
-      "code": "E_REQUIRES_ESTABLISHED_LATER",
-      "severity": "critical",
-      "message": "question 'M01-S2-Q1' requires 'khaliya-majal', established only later by the brick at apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/modules/Module01Majdul.jsx:160",
-      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/modules/Module01Majdul.jsx",
-      "line": 151,
-      "module": 1,
-      "step": 2,
-      "term": null,
-      "questionId": "M01-S2-Q1",
-      "position": 16
-    },
     {
       "code": "W_MODULE_NOT_KIT",
       "severity": "info",

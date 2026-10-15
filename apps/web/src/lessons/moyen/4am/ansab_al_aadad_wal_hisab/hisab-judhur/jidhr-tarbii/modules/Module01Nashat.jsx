@@ -22,6 +22,9 @@ const { squareOf, squareOfDecimal, exactDecimal } = squareRoots;
  *          0,01 → 0,001) — c'est sa preuve pour répondre à إيمان.
  *   مبتدئ  : le carré d'aire 36 (question 3 du livre) : le côté tombe sur 6.
  *
+ * RÉTROFIT 2026-10-15 (§4quater) : le labo en tête, sans carte (le triangle et son texte sont passés à l'étape 1, le تحدّ reste à l'étape 7),
+ * sans titre/`lead` de workspace ; `qima-mudbuta` APRÈS la réponse sur la calculatrice, `jidhr-taarif` APRÈS la question 3.
+ *
  * LES ÉTAPES sont les questions du livre, dans son ordre : BC² (Pythagore),
  * « BC هو العدد الموجب الذي مربعه … », la calculatrice et إيمان — répondue
  * depuis les ESSAIS DE L'ÉLÈVE listés au-dessus (`[data-activity-evidence]`),
@@ -78,26 +81,10 @@ export default function Module01Nashat() {
       moduleSubtitle="العدد الموجب الذي مربّعه 5"
       estimatedTime="14 دقيقة"
       objectives={['كيف نكتب طول الوتر $BC$ الذي مربّعه 5 دون خطأ في الأرقام؟', 'هل تعطينا الحاسبة القيمة المضبوطة؟', 'ماذا نحصل عليه إذا ربّعنا جذرًا تربيعيًا، أو أخذنا جذر مربّع؟']}
-      brief={{
-        tag: 'تحدّ ص 19 — أنشطة ص 20',
-        headline: 'خزان ماء قاعدته مربعة',
-        emoji: '🚜',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-2">
-            <p className="rounded-lg bg-amber-50 px-2 py-1"><MathText>{CHALLENGE.text}</MathText> <SourceTag source={CHALLENGE.source} /></p>
-            <p>قبل الخزان، مثلث صغير من الكتاب: {ACTIVITY.text}</p>
-            <TriangleABC ab={ab} ac={ac} caption={ACTIVITY.figure} />
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
+        // LE LABO OUVRE LE MODULE (§4quater) : pas de carte du manuel ni de titre / `lead` de workspace ; le contexte est le `lead` du labo.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="المستوى المتقدّم هو النشاط: مربّع مساحته 5. في المستوى المبتدئ مربّع مساحته 36."
           levels={{
             beginner: () => (
               <Manipulation
@@ -120,7 +107,7 @@ export default function Module01Nashat() {
                 scale={1000}
                 calculator={calculator}
                 figure="bc-square"
-                lead="اسحب طرف الضلع: هل تجد طولًا مساحة مربّعه 5 بالضبط؟ إن لم تجده، احصره بين تدريجتين متجاورتين ثم دقّق."
+                lead="مثلث ABC قائم في A حيث AB = 1 و AC = 2، ومربّع مبنيّ على وتره BC مساحته 5. اسحب طرف الضلع: هل تجد طولًا مساحة مربّعه 5 بالضبط؟ إن لم تجده، احصره بين تدريجتين متجاورتين ثم دقّق."
                 onTrial={onTrial}
               />
             ),
@@ -129,9 +116,11 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'خاصية فيثاغورس في المثلث ABC', subtitle: 'السؤال 1 أ', done: q1,
+          num: 1, title: 'لماذا مساحة المربّع على الوتر BC تساوي 5؟', subtitle: 'خاصية فيثاغورس في المثلث ABC — السؤال 1 أ', done: q1,
           content: (
             <div className="space-y-3">
+              <p className="text-sm text-slate-800">{ACTIVITY.text}</p>
+              <TriangleABC ab={ab} ac={ac} caption={ACTIVITY.figure} />
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[0]}</MathText></p>
               <NumericQuestion
                 prompt={<MathText>{'$BC^2 = \\ldots$'}</MathText>}
@@ -210,6 +199,7 @@ export default function Module01Nashat() {
                 explain={<MathText>{`$${texNum(calculator)}^2 = ${texNum(squareOfDecimal(calculator))}$ وهو ليس 5. والطول BC موجود (مربّعه 5 بخاصية فيثاغورس)، لكن الحاسبة لا تعرض إلا قيمة مقربة له.`}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="qima-mudbuta" lead="ما وجدته له اسم ورمز في الكتاب:" />}
             </div>
           ),
         },
@@ -217,8 +207,6 @@ export default function Module01Nashat() {
           num: 4, title: 'كيف نكتب هذا الطول بدقّة؟ وماذا عن بقية الأعداد الموجبة؟', subtitle: 'السؤال 3: أعط الناتج ذهنيا', done: q4,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="qima-mudbuta" lead="ما وجدته له اسم ورمز في الكتاب:" />
-              <KnowledgeBrick id="jidhr-taarif" lead="ونفس الفكرة لكل عدد موجب، لا للعدد 5 وحده:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY.questions[5]}</MathText></p>}
                 rows={[
@@ -226,7 +214,7 @@ export default function Module01Nashat() {
                   { id: 'r81', label: <MathText>{'$\\sqrt{81} = \\ldots$'}</MathText>, options: ['9', '40,5', '6561'], correct: 0, correction: <MathText>{'9 موجب و $9^2 = 81$'}</MathText> },
                   { id: 'r049', label: <MathText>{'$\\sqrt{0{,}49} = \\ldots$'}</MathText>, options: ['0,07', '0,245', '0,7'], correct: 2, correction: <MathText>{'0,7 موجب و $0{,}7^2 = 0{,}49$'}</MathText> },
                 ]}
-                requires={['jidhr-taarif']}
+                requires={['qima-mudbuta']}
                 feedback={({ allRight }) => (
                   <p className={`rounded-xl px-3 py-2 text-sm ${allRight ? 'bg-emerald-50 text-emerald-900' : 'bg-rose-50 text-rose-900'}`}>
                     <MathText>{`$\\sqrt{${roots3[0].num}} = 6$ ، $\\sqrt{${roots3[1].num}} = 9$ ، $\\sqrt{0{,}49} = 0{,}7$: في كل مرّة العدد الموجب الذي مربّعه العدد المعطى.`}</MathText>
@@ -234,6 +222,7 @@ export default function Module01Nashat() {
                 )}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && <KnowledgeBrick id="jidhr-taarif" lead="ونفس الفكرة لكل عدد موجب، لا للعدد 5 وحده:" />}
             </div>
           ),
         },
@@ -300,7 +289,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 7, title: 'عودة إلى التحدّي: خزان الفلاح', subtitle: 'تحدّ — الكتاب ص 19', done: q7,
+          num: 7, title: 'التحدّي: خزان الفلاح', subtitle: 'تحدّ — الكتاب ص 19', done: q7,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{CHALLENGE.text}</MathText></p>

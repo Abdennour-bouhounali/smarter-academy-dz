@@ -280,6 +280,10 @@ These rules complete `LESSON_DEVELOPMENT_GUIDE.md` §14.2 for any year other tha
    `pointsToLearn` (keep their order — the LP ids are positional) and give it `durationMinutes`, `difficulty`, `icon`.
    If the textbook calls for another decomposition, change the catalogue entries first; the invariants then check
    the new one. Publishing is the last step (LESSON_DEVELOPMENT_GUIDE § « Publish a lesson »).
+1bis. **The textbook is the reference, not the script** (owner, 2026-10-14). The extraction fixes WHAT the lesson teaches;
+   the entry point, the examples, the contexts and the order of ideas are designed by the platform, and each module is one
+   track (act → answer about what you did → name it). `LESSON_DEVELOPMENT_GUIDE.md` §4ter–§4quater; reference
+   `kitabat-adad-tabii`.
 2. **`pointsToLearn` refine the items.** Every item must be taught by at least one LP, and no LP may teach outside
    the lesson's items. Add the programme item's text to the knowledge map's guidance where useful.
 3. **Do not rebuild.** For each entry of `noRebuildForLesson(code)`:

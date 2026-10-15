@@ -10,7 +10,9 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, FLOWERS, GUIDE } from '../content/textbook';
 
 /**
- * Module 1 — نشاط 3 (p. 37) « القسمة الإقليدية » : 279 fleurs, des bouquets de 14.
+ * Module 1 — l'ENTRÉE : le jardin du club (47 fleurs, bouquets de 6 — plateforme) puis le نشاط 3 du manuel (p. 37 : 279
+ * fleurs, bouquets de 14) au niveau متقدم. UNE PISTE (rétrofit 2026-10-15) : le labo en tête SANS carte ni titre ; des questions
+ * sur ce que l'élève a essayé ; la brique de la règle APRÈS la réponse.
  *
  * LABORATOIRE À DEUX NIVEAUX, un seul type `division-jumps` (b est DONNÉ, la main tient q) :
  *   مبتدئ  — 47 fleurs DESSINÉES (plateforme, thème `garden`) : l'élève tire le ruban le long de la rangée ; un bouquet de
@@ -46,24 +48,8 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 3 — باقات الزهور"
       moduleSubtitle="كم باقة كاملة؟ وماذا يبقى؟"
       estimatedTime="12 دقيقة"
-      brief={{
-        tag: 'نشاط 3 — باقات العرفان',
-        headline: 'باقات لعيد المعلّم!',
-        emoji: '💐',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-1">
-            <p>{FLOWERS.situation}</p>
-            <p className="font-semibold">{FLOWERS.question}</p>
-          </div>
-        ),
-        footer: <SourceTag source={FLOWERS.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="ابدأ بأزهار البائعة (مبتدئ)، ثم انتقل إلى أزهار الكتاب على مستقيم مدرّج (متقدّم)."
           levels={{
             beginner: () => (
               <div className="space-y-2">
@@ -125,30 +111,32 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'كم باقة على الأكثر؟ وهل تبقى أزهار؟', subtitle: 'السؤال ج) من الكتاب', done: q3a && q3b,
+          num: 3, title: 'لماذا نتوقّف عند 19 باقة؟', subtitle: 'السؤال ج) من الكتاب', done: q3a && q3b,
           content: (
             <div className="space-y-3">
-              <NumericQuestion prompt={<span>أكبر عدد ممكن من الباقات:</span>} expected={19} parse={parseDec}
-                requires={['darb-tabii']} explain={<MathText>{'19 باقة تستعمل $14 \\times 19 = 266$ زهرة، و 20 باقة تحتاج 280.'}</MathText>}
-                onAnswered={() => setQ3a(true)} />
-              <NumericQuestion prompt={<span>عدد الأزهار التي تبقى:</span>} expected={13} parse={parseDec}
+              <NumericQuestion prompt={<span>ربطنا 19 باقة كاملة من 279 زهرة. كم زهرة تبقى؟</span>} expected={13} parse={parseDec}
                 requires={['tarh-tabii']} explain={<MathText>{'$279 - 266 = 13$ ، و 13 لا تكفي لباقة أخرى من 14.'}</MathText>}
                 onAnswered={() => setQ3b(true)} />
+              <TapQuestion
+                prompt={<span>بعد 19 باقة تبقى 13 زهرة. لماذا لا نربط بها باقة أخرى؟</span>}
+                options={['لأنّ 13 أقل من 14، عدد أزهار الباقة الواحدة', 'لأنّ 13 عدد فردي', 'لأنّ 19 هو آخر عدد في الجدول']}
+                correct={0} cols={1} requires={['darb-tabii']}
+                explain={<MathText>{'19 باقة تستعمل $14 \\times 19 = 266$ زهرة، و 20 باقة تحتاج 280 : 13 لا تكفي.'}</MathText>}
+                onAnswered={() => setQ3a(true)} />
             </div>
           ),
         },
         {
-          num: 4, title: 'متى نتوقّف؟ وكيف نكتب ما وجدناه؟', subtitle: 'اكتب قاعدتك، ثم أتمم المساواة هـ)', done: q4,
+          num: 4, title: 'كيف نكتب ما وجدناه؟', subtitle: 'أتمم المساواة هـ)، ثم اكتب قاعدتك', done: q4,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="qisma-iqlidiya" lead="ما الذي جعلك تتوقّف عند 19 باقة، ولم يجعلك تنتظر أن لا يبقى شيء؟" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'أتمم المساواة $279 = 14 \\times \\ldots + \\ldots$'}</MathText></p>}
                 rows={[
                   { id: 'q', label: 'العدد بعد 14 ×', options: ['19', '20', '13'], correct: 0, correction: 'عدد الباقات الكاملة: 19.' },
                   { id: 'r', label: 'العدد بعد +', options: ['13', '27', '0'], correct: 0, correction: <MathText>{'ما يبقى: 13 ، و $13 < 14$. (27 أكبر من 14: تكفي لباقة أخرى.)'}</MathText> },
                 ]}
-                requires={['qisma-iqlidiya']}
+                requires={['darb-tabii']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     <MathText>{allRight ? '$279 = 14 \\times 19 + 13$ مع $13 < 14$.' : GUIDE.stop.right}</MathText>
@@ -156,6 +144,7 @@ export default function Module01Nashat() {
                 )}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && <KnowledgeBrick id="qisma-iqlidiya" lead="ما الذي جعلك تتوقّف عند 19 باقة، ولم يجعلك تنتظر أن لا يبقى شيء؟" />}
             </div>
           ),
         },

@@ -9,16 +9,17 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOWLEDGE } from '../content/textbook';
 
 /**
- * Module 2 — معارف 3 (p. 22) : « المعادلات من الشكل x² = a ».
+ * Module 2 — معارف 3 (p. 22) : « المعادلات من الشكل x² = a » (rétrofit 2026-10-15 : le labo ouvre SANS carte ni titre ; la question
+ * d'abord, la brique et les encadrés du livre APRÈS).
  *
- * L'instrument du module 1 revient, sur les TROIS EXEMPLES de la خاصية 2
- * (x² = 9, x² = 5, x² = −1) : un exemple travaillé, un seul niveau
- * (`levels={false}`). √5 ne tombe sur aucune graduation — l'élève s'en
- * approche et c'est √5 exact qui est épinglé.
+ * L'instrument du module 1 revient, sur les TROIS EXEMPLES de la خاصية 2 (x² = 9, x² = 5, x² = −1) : un exemple travaillé, un seul
+ * niveau (`levels={false}`). √5 ne tombe sur aucune graduation — l'élève s'en approche et c'est √5 exact qui est épinglé.
  *
- *   étape 1  la خاصية 1 (posée au module 1) avec ses remarques et ses exemples ;
- *   étape 2  brique `hulul-x2-a` (خاصية 2) PUIS la question ;
- *   étape 3  pourquoi a < 0 ne donne aucune solution.
+ *   étape 1  pourquoi −√a a pour carré a (la خاصية 1) → ALORS le rappel `murabba-mutaakisayn`, les remarques et les exemples ;
+ *   étape 2  comment écrire les deux solutions de x² = 5 (aucune ne tombe sur une graduation) → brique `hulul-x2-a` (خاصية 2)
+ *            PUIS son application à trois équations nouvelles ;
+ *   étape 3  pourquoi a < 0 ne donne aucune solution → les exemples de la خاصية 2 APRÈS.
+ * La question « combien de solutions » des trois exemples n'est plus posée : le labo l'a déjà fait juger carte par carte.
  * LP : P1.
  */
 const { prop1, prop2 } = KNOWLEDGE;
@@ -27,6 +28,7 @@ const COUNT = ['تقبل حلين متعاكسين', 'تقبل حلا واحدا
 
 export default function Module02Maarif() {
   const [q1, setQ1] = useState(false);
+  const [q2a, setQ2a] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
 
@@ -39,28 +41,20 @@ export default function Module02Maarif() {
       moduleSubtitle="خاصيتان"
       estimatedTime="12 دقيقة"
       objectives={['كيف نكتب حلول المعادلة $x^2 = a$ حسب إشارة $a$؟', 'ماذا يحدث للمعادلة $x^2 = -1$؟']}
-      brief={{
-        tag: 'معارف — الكتاب ص 22', title: <MathText>{KNOWLEDGE.title}</MathText>, tone: 'violet',
-        body: <p>في النشاط رأيت أن لعددين متعاكسين نفس المربع، وأن لا سهم يصل إلى الأعداد السالبة. الكتاب يكتب ذلك في خاصيتين.</p>,
-      }}
       intro={
         <Manipulation
           type="square-fold"
           targets={prop2.targets}
           scale={10}
           levels={false}
-          title="أمثلة الكتاب: ثلاث معادلات"
-          lead="هذه معادلات أمثلة الكتاب. حلّ كل واحدة على المستقيم قبل أن تقرأ الخاصية 2."
+          lead={<MathText>{'ثلاث بطاقات جديدة: $x^2 = 9$ ، $x^2 = 5$ ، $x^2 = -1$. بعضها لن يقع حلّه على أي تدريجة.'}</MathText>}
         />
       }
       steps={[
         {
-          num: 1, title: 'خاصية 1: عددان متعاكسان', done: q1,
+          num: 1, title: <MathText>{'ما مربّع العدد $-\\sqrt{a}$؟'}</MathText>, subtitle: 'من تجربتك: سهم x وسهم −x', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="murabba-mutaakisayn" variant="rappel" compact />
-              <TextbookBox kind="remark" lines={prop1.aside} source={KNOWLEDGE.source} compact />
-              <TextbookBox kind="example" lines={prop1.examples} compact />
               <TapQuestion
                 prompt={<span>ليكن <MathText>{'$a$'}</MathText> عددا موجبا. ماذا نقول عن العدد <MathText>{'$-\\sqrt{a}$'}</MathText>؟</span>}
                 options={[
@@ -75,37 +69,61 @@ export default function Module02Maarif() {
                 explain={<MathText>{`${prop1.aside[1]}. ${prop1.note}`}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && (
+                <div className="space-y-3">
+                  <KnowledgeBrick id="murabba-mutaakisayn" variant="rappel" compact />
+                  <TextbookBox kind="remark" lines={prop1.aside} source={KNOWLEDGE.source} compact />
+                  <TextbookBox kind="example" lines={prop1.examples} compact />
+                </div>
+              )}
             </div>
           ),
         },
         {
-          num: 2, title: 'خاصية 2: ثلاث حالات', subtitle: 'حسب إشارة العدد a', done: q2,
+          num: 2, title: <MathText>{'كيف نكتب حلّي $x^2 = 5$ بالضبط؟'}</MathText>, subtitle: 'لم يقع أيّ منهما على تدريجة', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="hulul-x2-a" lead="الكتاب يجمع ما حدث على المستقيم في ثلاث حالات، حسب إشارة a:" />
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">طبّق الخاصية 2 على معادلات الأمثلة:</p>}
-                rows={[
-                  { id: 'e9', label: M('$x^2 = 9$'), options: COUNT, correct: 0, correction: M(prop2.examples[0]) },
-                  { id: 'e5', label: M('$x^2 = 5$'), options: COUNT, correct: 0, correction: M(prop2.examples[1]) },
-                  { id: 'em1', label: M('$x^2 = -1$'), options: COUNT, correct: 2, correction: M(prop2.examples[2]) },
-                ]}
-                requires={['hulul-x2-a']}
-                feedback={({ allRight }) => (
-                  <Feedback tone={allRight ? 'ok' : 'ko'}>
-                    {allRight ? 'تمامًا. ' : 'انظر إلى التصحيحات. '}<MathText>{prop2.examples[1]}</MathText>
-                  </Feedback>
-                )}
-                onAnswered={() => setQ2(true)}
+              <TapQuestion
+                prompt={<span>في المختبر لم يقع حلّا المعادلة <MathText>{'$x^2 = 5$'}</MathText> على أي تدريجة. كيف نكتب كلاًّ منهما بالضبط؟</span>}
+                options={[
+                  '$\\sqrt{5}$ و $-\\sqrt{5}$',
+                  '$2{,}2$ و $-2{,}2$',
+                  '$\\dfrac{5}{2}$ و $-\\dfrac{5}{2}$',
+                  '$\\sqrt{5}$ فقط',
+                ].map(M)}
+                correct={0}
+                cols={2}
+                requires={['murabba-mutaakisayn']}
+                explain={<span><MathText>{'$(\\sqrt{5})^2 = 5$ و $(-\\sqrt{5})^2 = 5$'}</MathText>؛ أما <MathText>{'$2{,}2^2 = 4{,}84$'}</MathText> و <MathText>{'$\\left(\\dfrac{5}{2}\\right)^2 = 6{,}25$'}</MathText>.</span>}
+                onAnswered={() => setQ2a(true)}
               />
+              {q2a && (
+                <div className="space-y-3">
+                  <KnowledgeBrick id="hulul-x2-a" lead="الكتاب يجمع ما حدث على المستقيم في ثلاث حالات، حسب إشارة a:" />
+                  <BatchChoiceQuestion
+                    intro={<p className="text-sm font-semibold text-slate-700">طبّق الخاصية 2 على معادلات جديدة:</p>}
+                    rows={[
+                      { id: 'e16', label: M('$x^2 = 16$'), options: COUNT, correct: 0, correction: M('$16 > 0$: حلّان متعاكسان هما $4$ و $-4$.') },
+                      { id: 'e0', label: M('$x^2 = 0$'), options: COUNT, correct: 1, correction: M('$a = 0$: حلّ واحد هو العدد $0$.') },
+                      { id: 'em4', label: M('$x^2 = -4$'), options: COUNT, correct: 2, correction: M('$-4 < 0$: لا يوجد عدد مربعه $-4$.') },
+                    ]}
+                    requires={['hulul-x2-a']}
+                    feedback={({ allRight }) => (
+                      <Feedback tone={allRight ? 'ok' : 'ko'}>
+                        {allRight ? 'تمامًا. ' : 'انظر إلى التصحيحات. '}<MathText>{prop2.examples[1]}</MathText>
+                      </Feedback>
+                    )}
+                    onAnswered={() => setQ2(true)}
+                  />
+                </div>
+              )}
             </div>
           ),
         },
         {
-          num: 3, title: 'ماذا يحدث عندما يكون a سالبا؟', done: q3,
+          num: 3, title: <MathText>{'لماذا لا تقبل $x^2 = -1$ أي حل؟'}</MathText>, subtitle: 'ماذا يحدث عندما يكون a سالبا؟', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="example" lines={prop2.examples} compact />
               <TapQuestion
                 prompt={<span>لماذا لا تقبل المعادلة <MathText>{'$x^2 = -1$'}</MathText> أي حل؟</span>}
                 options={[
@@ -120,6 +138,7 @@ export default function Module02Maarif() {
                 explain={<span><MathText>{'$(-1)^2 = 1$'}</MathText> و <MathText>{'$1^2 = 1$'}</MathText>: <MathText>{prop1.note}</MathText></span>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <TextbookBox kind="example" lines={prop2.examples} compact />}
             </div>
           ),
         },

@@ -5,6 +5,18 @@
  * exercices : la formalisation, les méthodes et les exercices sont des AJOUTS déclarés de la plateforme,
  * puis trois « مسائل » de la plateforme (modules 5–7).
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la rampe du skatepark posée sur une base (labo `affine-line`, mode `shift`, niveau مبتدئ : x ⟼ ½x relevée de 2) —
+ *   la main SOULÈVE la droite et le pointillé de la droite par O reste là : « tout monte du même nombre » se voit avant de s'écrire.
+ *   Rejetée : le نشاط 3 du manuel comme carte d'ouverture (la figure de g, la consigne de la recopier en cm, puis quatre questions
+ *   de calcul — c'est un énoncé à lire, la main n'a pas encore besoin de la droite relevée) ; il reste le niveau متقدم du MÊME
+ *   labo (g(x) = 3/2 x relevée de 1) et ses questions 1-2 sont les étapes du module 1.
+ *   Ordre des idées : on relève la droite → même abscisse, ordonnée + 1 (س 1 أ) → la règle générale (س 1 ب, brique `irtifa-b` APRÈS)
+ *   → (0 ; 1) puis (0 ; b) (س 2, brique `tartib-mabda` APRÈS) → seconde rampe cachée → module 2 : la question d'abord (où coupe-t-elle
+ *   l'axe ?), la propriété nommée APRÈS ; « parallèles » AVANT le nom معامل التوجيه ; le tracé par deux points essayé AVANT la méthode
+ *   → module 3 : le labo `identify` ouvre (la formule de la droite cachée), la méthode de lecture est nommée APRÈS, puis (L) et le
+ *   labo de lecture d'une image / d'un antécédent (méthode APRÈS les deux lectures).
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/tamthil-bayani-taalufi';
@@ -74,7 +86,7 @@ export const LESSON_CONFIG = {
       title: 'منحدر أوّل: $x \\longmapsto \\dfrac{1}{2}x$ يصعد بـ 2',
       objective: 'التمثيل البياني للدالة التآلفية $x \\longmapsto ax + b$ هو تمثيل الدالة الخطية $x \\longmapsto ax$ مرفوعًا بـ $b$ : مستقيم يوازيه ويقطع محور التراتيب في $(0 ; b)$',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'ramp' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'ramp' },
       learningPointIds: ['4am_tamthil-bayani-taalufi_P1'],
       sourceElementIds: ['act-3'],
     },

@@ -5,9 +5,9 @@ import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { CHALLENGE, SCOOTER, ACT3, ACT4, LAB } from '../content/textbook';
+import { CHALLENGE, ACT3, ACT4, LAB } from '../content/textbook';
 import { FIG_ACT3, FIG_ACT3_SOL, FIG_ACT4, FIG_ACT4_SOL } from '../content/figures';
 import RiverFigure from '../components/RiverFigure';
 import LabEvidence from '../components/LabEvidence';
@@ -22,9 +22,12 @@ import LabEvidence from '../components/LabEvidence';
  *          DÉFAUT (ouvert sur مبتدئ par défaut depuis 2026-10-09) : c'est le تحدّ que le module porte, et son titre nomme ses nombres.
  * Aucune étape n'attend le laboratoire (`onFinished`) : les essais de l'élève (`onTrial`) sont listés au-dessus des
  * questions ([data-activity-evidence]).
- *   1. le تحدّ : viser B ne suffit pas ; dans quel sens viser                              (LP P1)
- *   2. نشاط 3 : M′, M″, les trois parallélogrammes, M″ image de M par AC → brique tarkib-insihabayn  (LP P1, P2)
- *   3. نشاط 4 : AB + BC, D, AB + AD, AB + BA, AB et BA — les phrases du manuel sur 0 et les opposés  (LP P2)
+ * RÉTROFIT 2026-10-15 (§4quater) : aucune carte au-dessus ; le labo ouvre le module (niveau مبتدئ = la trottinette de la
+ * plateforme, choisie comme ENTRÉE ; le تحدّ du livre reste le niveau متقدم et devient l'étape 2).
+ *   1. POURQUOI le compteur lit plus que la distance droite (les propres essais de la trottinette)   (LP P2)
+ *   2. le تحدّ : viser B ne suffit pas ; dans quel sens viser                              (LP P1)
+ *   3. نشاط 3 : M′, M″, les trois parallélogrammes, M″ image de M par AC → brique tarkib-insihabayn  (LP P1, P2)
+ *   4. نشاط 4 : AB + BC, D, AB + AD, AB + BA, AB et BA — les phrases du manuel sur 0 et les opposés  (LP P2)
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const isSwim = (e) => e?.mode === 'parallelogram';
@@ -39,34 +42,38 @@ export default function Module01TahaddiAnshita() {
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} objectives={['هل يصل السبّاح إلى B إذا سبح نحوها مباشرة؟', 'أين ينتهي من انتقل بانسحابين متتابعين؟', 'ماذا يفعل مشوار العودة؟']} moduleTitle="التحدّ ونشاطا 3 و 4"
       moduleSubtitle="سبّاح وتيار، دراجة ومشواران: حركتان متتابعتان، حركة واحدة" estimatedTime="15 دقيقة"
-      brief={{
-        tag: 'تحدّ الوحدة — الكتاب ص 127، ونشاطا 3 و 4 ص 129', headline: 'هل يصل السبّاح إلى B إذا سبح نحوها؟', emoji: '🏊',
-        title: 'ماذا يحدث حين ننفّذ انسحابين متتابعين؟ وكيف نصف النتيجة؟', tone: 'indigo',
-        body: (
-          <div className="space-y-2" data-situation="challenge">
-            <p><MathText>{CHALLENGE.text}</MathText></p>
-            <p className="text-sm text-slate-600"><MathText>{SCOOTER.text}</MathText> <SourceTag source={SCOOTER.source} /></p>
-          </div>
-        ),
-        footer: <SourceTag source={CHALLENGE.source} />,
-      }}
       intro={
         <ManipulationWorkspace
           defaultLevel="beginner"
-          title="حركتان متتابعتان"
-          lead="المستوى المتقدّم هو تحدّ الوحدة: أدِر سرعة السبّاح حتى يصل إلى B. المستوى المبتدئ هو الدراجة الكهربائية: ضع المشوار الثاني حيث يجب أن يبدأ، واقرأ المجموع."
           levels={{
             beginner: () => (
-              <Manipulation type="vector-sum" level="beginner" {...LAB.beginner} title="الدراجة الكهربائية: مشوار من A إلى B ثم مشوار ثانٍ" onTrial={keep} />
+              <Manipulation type="vector-sum" level="beginner" {...LAB.beginner} lead="دراجة كهربائية في شوارع الجزائر تقطع مشوارين متتابعين." onTrial={keep} />
             ),
             advanced: () => (
-              <Manipulation type="vector-sum" level="advanced" {...LAB.advanced} title="تحدّ الوحدة: سبّاح بسرعة 4 km/h وتيار بسرعة 2 km/h" onTrial={keep} />
+              <Manipulation type="vector-sum" level="advanced" {...LAB.advanced} lead="تحدّ الوحدة: سبّاح سرعته 4 km/h يعبر نهرًا يجري تيّاره بسرعة 2 km/h." onTrial={keep} />
             ),
           }}
         />
       }
       steps={[
-        { num: 1, title: 'التحدّ: نحو B مباشرة؟', subtitle: 'الماء يتحرّك أيضا', done: !!q[1],
+        { num: 1, title: 'لماذا يقرأ العدّاد أكثر؟', subtitle: 'عن مشاويرك بالدراجة', done: !!q.ride,
+          content: (
+            <div className="space-y-3">
+              <LabEvidence id="beginner-first" trials={trials} filter={isRide} title="مشاويرك بالدراجة (المستوى المبتدئ):"
+                empty="لم تضع مشوارًا ثانيًا بعد: في المستوى المبتدئ اسحب بطاقة مشوار ثانٍ وضع ذيل سهمها حيث تقف الدراجة." />
+              <TapQuestion
+                prompt={<MathText>{'حين ينعطف المشوار الثاني، يقرأ العدّاد أكثر من المسافة المستقيمة بين A ونهاية المشوار الثاني. لماذا؟'}</MathText>}
+                options={[
+                  'لأنّ الدراجة مرّت بـ B: العدّاد يجمع طولَي المشوارين، أمّا الانتقال الفعلي فهو من A مباشرةً إلى النهاية',
+                  'لأنّ العدّاد معطّل',
+                  'لأنّ المشوار الثاني بدأ من A لا من B',
+                ].map(M)}
+                correct={0} cols={1} requires={['anasir-shuaa']}
+                explain={<MathText>{'العدّاد يقيس المسافة المقطوعة على الطريق (AB ثم BC) ، والانتقال الفعلي هو الشعاع من المبدأ الأول إلى النهاية الأخيرة: طوله لا يساوي مجموع الطولين إلا إذا لم تنعطف الدراجة.'}</MathText>}
+                onAnswered={mark('ride')} />
+            </div>
+          ) },
+        { num: 2, title: 'التحدّ: نحو B مباشرة؟', subtitle: 'الماء يتحرّك أيضا', done: !!q[1],
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" title="تحدّ" text={CHALLENGE.text} source={CHALLENGE.source} compact>
@@ -98,7 +105,7 @@ export default function Module01TahaddiAnshita() {
               )}
             </div>
           ) },
-        { num: 2, title: 'نشاط 3: انسحابان متتابعان', subtitle: 'M ثم M′ ثم M″', done: !!q[2],
+        { num: 3, title: 'نشاط 3: انسحابان متتابعان', subtitle: 'M ثم M′ ثم M″', done: !!q[2],
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" title={`نشاط 3 — ${ACT3.title}`} lines={ACT3.parts} source={ACT3.source} compact>
@@ -139,7 +146,7 @@ export default function Module01TahaddiAnshita() {
               )}
             </div>
           ) },
-        { num: 3, title: 'نشاط 4: إنشاء ممثل لمجموع', subtitle: 'كيف نرسم المجموع؟', done: !!q[3],
+        { num: 4, title: 'نشاط 4: إنشاء ممثل لمجموع', subtitle: 'كيف نرسم المجموع؟', done: !!q[3],
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" title={`نشاط 4 — ${ACT4.title}`} lines={[ACT4.intro, ...ACT4.parts]} source={ACT4.source} compact>

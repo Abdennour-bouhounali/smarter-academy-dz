@@ -144,6 +144,54 @@ lesson from the brief (`docs/sources/<g>/unit<N>/brief-authors.md`). All three p
 3. Brief errors found by authors: unit 4's « readable at {5, 15} » is true only among the divisors of 45 (every multiple of 5 below 45 is readable).
 4. The platform's floating « كرّاسي / بطاقتي » pills still cover the lower-left of a lab on a 390 px phone (platform layer, not a lab).
 
+## Batch 3 (2026-10-15) — queue entry 1
+
+### 1. `hasil-qisma-kasr` « حاصل القسمة والكسر » (1AM, unit 4 `kitabat-kasriya`) — published (local; no commit by session override)
+
+- **Lesson:** 9 modules (أستعدّ · نشاط · معارف · طريقة · أتمرّن · 3 مسائل · إختبار أولي), 85 min (catalogue `durationMinutes` 61). The unit's
+  extraction was reused (`build-extraction.py` edits: `act-1` → module 4 as an application, `opener` → module 2, `self-1` / `self-9` → 4,
+  `self-2` / `self-3` → 8, `deep-2` → 6; `ex-2 ①` re-read at 300 dpi: SEVEN cells, not eight; `self-1` tubes unreadable → REDESIGNED, a
+  discrepancy is recorded). Unit NOT complete (`hasil-qisma-mustaqim`, `akhdh-kasr-min-adad` and the synthesis are still `coming_soon`).
+- **New lab `fair-share`** (MANIPULATION_CONTRACT §2duovicies; `noRebuildForLesson` was empty, and it differs from `fraction-knife` in what the
+  hand holds): the hand holds the SHARE of one child, the lab lays b shares against the a loaves; decimal rulers (0,1 / 0,01 / 0,001) land for
+  3 ÷ 4 and never for 2 ÷ 3, 5 ÷ 6, 7 ÷ 3; the earned « cut » ruler (every loaf in b pieces) lands for every a, b. مبتدئ the school canteen
+  (3 ÷ 4 then 2 ÷ 3), متقدم the textbook's 5 loaves for 6 people then 7 ÷ 3. New drawing `BreadFigure › Loaf`, theme `bakery`. Screenshots at
+  1280 × 800, 390 × 844 and 320 × 640 reviewed (initial, 0,8 over, 0,75 exact, cut ruler, discovery): the 320 px stage, controls and
+  question were compacted until the glance fit (609 / 640).
+- **الكفاءات (draft → final, order kept):** P1 + « وكتابة حاصل قسمة عددين طبيعيين على شكل كسر »; P2 made explicit « …لإيجاد عدد ناقص في
+  مساواة من الشكل $b\times\ldots=a$ »; P3 unchanged. `pointPrerequisites`: P1 ← `1am_kitabat-adad-tabii_P2`, P2 ← P1, P3 ← P1 and
+  `1am_kitabat-adad-tabii_P2` (net link `1am.m1.r02` → `1am.m5.r01`); and the published sibling `ikhtizal-kitaba-kasriya` gained P1 ←
+  `1am_hasil-qisma-kasr_P1` (net link `1am.m5.r01` → `1am.m5.r02`), as its brief had announced.
+- **Practice:** `content/practice/1am/hasil-qisma-kasr/` — 50 sheets / 207 questions (22 `term_exam` from `1am-s2-72`, `-78`, `-64`, `-65` and
+  « الفصل الثالث » `1am-s3-37`, 16 platform additions, 12 textbook), oracle `scripts/practice-oracle/hasil-qisma-kasr.mjs`, `MISC-HASIL-*`.
+- **Gates:** see the final report of the session (npm test, check:lessons, build, `e2e/lesson-kit/1am-hasil-qisma-kasr.mjs`).
+- **URL:** `/courses/moyen/1am/ansab_al_aadad_wal_hisab/hasil-qisma-kasr`.
+
+## Method retrofit, phase 1 (2026-10-15)
+
+The five generated lessons (`mana-jam-tarh`, `qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`, `ikhtizal-kitaba-kasriya`) were retrofitted to « the textbook is the reference, not the script » (guide §4ter–§4quinquies): lab on top with no card / workspace title / lead, questions on what the student did (WHY, not a repeated calculation), bricks and naming boxes after the answer, the design written in each `lesson.config.js` header. Table and judgement calls: [`LESSON_METHOD_RETROFIT.md`](LESSON_METHOD_RETROFIT.md). The same day their five labs (`story-bars`, `division-jumps`, `digit-cards`, `egg-trays`, `fraction-knife`) received the LabCoach onboarding ([`LAB_COACH_ROLLOUT.md`](LAB_COACH_ROLLOUT.md)). Browser check: `apps/web/e2e/lesson-kit/moyen-retrofit-phase1.mjs`. Phase 2 started the same day: the eight lessons of 4AM unit 1 « الأعداد الطبيعية والناطقة » — then 4AM units 2–14 (all remaining 4AM lessons, phase 2): [`LESSON_METHOD_RETROFIT_PHASE2.md`](LESSON_METHOD_RETROFIT_PHASE2.md).
+
+## Methodology correction (owner, 2026-10-14) — pending validation
+
+The owner found the generated lessons copying the textbook (activity as the entry, its questions as steps, its order) and
+modules with two competing starts (a card of textbook questions above a lab that has its own question). Rule written in
+`LESSON_DEVELOPMENT_GUIDE.md` §4ter (the textbook is the reference of الكفاءات, not the script) and §4quater (one track per
+module: act → answer about what you did → name it). Applied to ONE lesson, `kitabat-adad-tabii`:
+- module 1: no brief, no workspace title/lead — the pencil lab is the top; three steps on the student's own lab numbers (the
+  two 7s of 2577, one pencil more on 999, the 0 of 2017); the book's نشاط 1 moved to أتمرّن (`EX['act-1']`, destination
+  module 4); new `ADAPTATION_REASONS` value `platform_designed_entry`;
+- module 2 (معارف): opens on the dictation lab (7065, 4 908 732, moved from module 1's advanced level); question → book box →
+  brick (the definitions no longer head the module);
+- module 3 (طريقة): the money lab at the top, the brief that asked the question removed;
+- module 5: the brief no longer states the facts the module asks for.
+- **Onboarding prototype (same day, same lesson):** `LabCoach` on the `rank-exchange` labs of modules 1–3 (prop `coach`):
+  a pulsing ring + one-sentence bubble on the button the student needs now, shown once, hidable (« فهمت » / « إيقاف الإرشاد » /
+  Esc / the switch under the question). Contract MANIPULATION_CONTRACT §8quater, DNA §17.11; screenshots reviewed at 1280, 390, 320.
+  Validated by the owner the same day: now MANDATORY for every manipulation — rollout in `LAB_COACH_ROLLOUT.md`.
+
+**After the owner validates, extend to the other generated lessons** (1AM–2AM batches 1–2, then the 4AM units) and add a gate
+(e.g. a lab module with a `brief`, or a `ManipulationWorkspace` with `title`/`lead`, fails `check:lessons`).
+
 ## Next batch — prompt
 
 The queue after batch 2 starts with `hasil-qisma-kasr` (1AM), `kusur-ashriya-kitaba` (1AM), `muqaranat-adad-ashriya` (1AM)
@@ -168,10 +216,14 @@ Run `node scripts/learning-net-queue.mjs` so the queue is fresh, then take its f
    only copy — get the idea and move on, D5/D9). Pages missing from the scan (D11) are GENERATED in the book's format
    as declared platform additions.
 2. Generate the lesson INTO its existing catalogue entry (same code, same programmeItems) per guide §14 and
-   LEARNING_NET §4, in a folder named exactly like the lesson code: « أستعدّ » measures every review-link item; nothing
+   LEARNING_NET §4, in a folder named exactly like the lesson code. FIRST design it (guide §4ter): the textbook is the
+   REFERENCE of the الكفاءات, not the script — choose the entry point (compare the book's activity with at least one
+   platform situation where the idea becomes necessary for the hand), the examples and the order of ideas, and write the
+   choice in the lesson.config.js header; every module is ONE track (guide §4quater: the lab at the top with no card above
+   it, then questions on what the student did, then the name). Then: « أستعدّ » measures every review-link item; nothing
    noRebuildForLesson lists is rebuilt; pointPrerequisites only along net links; the lab follows MANIPULATION_DNA with
    two levels and meets its §17 Gen Alpha quality bar (push the UI/UX to the limit; the shared kit and KidFigure — girls in
-   hijab; no title — context then ONE direct question naming the goal and end state, §17.9; screenshots of initial and mid-activity states at four sizes, reviewed and iterated); knowledge map, « أتوقّع القاعدة », « مسائل », values woven into story contexts. Lab strings go to
+   hijab; no title — context then ONE direct question naming the goal and end state, §17.9; screenshots of initial and mid-activity states at four sizes, reviewed and iterated; the LabCoach onboarding on the lab — MANIPULATION_CONTRACT §8quater, default on; the module redesign checklist of guide §4quinquies); knowledge map, « أتوقّع القاعدة », « مسائل », values woven into story contexts. Lab strings go to
    apps/web/src/i18n/locales/ar/lesson.manipulation.json (keys lesson:manipulation.<type>.*), never lesson.json;
    unit maths in packages/core/arithmetic/ are imported BY PATH, never added to the core barrel. Do NOT touch App.jsx:
    run `npm run generate:lesson-index` once the lesson's lesson.config.js and routes.jsx exist. The draft الكفاءات may

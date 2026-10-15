@@ -5,15 +5,16 @@ import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { KITE, LAB, ACT5, TABLE_TEX, LINES } from '../content/textbook';
-import KiteVignette from '../components/KiteVignette';
+import { LAB, ACT5, TABLE_TEX, LINES } from '../content/textbook';
 import TrialsEvidence from '../components/TrialsEvidence';
 
 /**
  * Module 1 — نشاط 5 « العلاقات المثلثية » (p. 117), stage `trigger`.
  *
+ * Rétrofit 2026-10-15 : le labo EN TÊTE (ni carte `brief` du cerf-volant, ni titre/lead du workspace ni titre du labo : le contexte et la
+ * mission sont ceux du labo) ; les briques restent après leur question.
  * REAL / MANIPULATE  le cerf-volant sur la plage (déclaré) : le lab `angle-compass` à deux niveaux, même objectif —
  *   مبتدئ (ouvert par défaut) : construire, sans rapporteur, l'angle dont le sinus vaut 3/5 (hauteur 3, fil 5 → 4 sur
  *   le sable) ; la lecture montre cos = 4/5 et la barre 16/25 + 9/25 qui remplit 1 ;
@@ -50,33 +51,16 @@ export default function Module01Nashat5() {
       moduleTitle="نشاط 5 — العلاقات المثلثية"
       moduleSubtitle="خيط طائرة ورقية، ومثلث قائم ترسمه دون منقلة"
       estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'نشاط 5 — الكتاب ص 117 (في عالم الطائرة الورقية)',
-        headline: KITE.headline,
-        emoji: '🪁',
-        title: 'ما الذي يربط جيب الزاوية بجيب تمامها وبظلها؟',
-        tone: 'indigo',
-        visual: <KiteVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800"><MathText>{KITE.text}</MathText></p>
-            <p className="text-sm text-slate-700"><MathText>{KITE.question}</MathText></p>
-          </div>
-        ),
-        footer: <SourceTag source={KITE.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأدوات: كوس، مسطرة مدرّجة، مدور — ولا منقلة"
-          lead="الكوس يعطي الزاوية القائمة، والمسطرة تنقل طولًا، والمدور يرسم مسافة ثابتة من نقطة. ماذا يمثّل الخيط في المثلث الذي ترسمه؟ المنقلة لا تظهر إلا للتحقّق في النهاية."
           levels={{
             beginner: () => (
               <Manipulation type="angle-compass" level="beginner" targets={LAB.m1.beginner.targets} theme={LAB.m1.beginner.theme}
-                title={LAB.m1.beginner.title} onTrial={onTrial} />
+                onTrial={onTrial} />
             ),
             advanced: () => (
               <Manipulation type="angle-compass" level="advanced" targets={LAB.m1.advanced.targets} theme={LAB.m1.advanced.theme}
-                title={LAB.m1.advanced.title} onTrial={onTrial} />
+                onTrial={onTrial} />
             ),
           }}
         />

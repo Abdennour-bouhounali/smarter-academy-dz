@@ -5,28 +5,23 @@ import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox, PairQuestion } from '../../../../../../common/textbook';
+import { TextbookBox, PairQuestion } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import { FIG_ACT2, FIG_ACT2_SOLVED } from '../content/figures';
-import GameMapVignette from '../components/GameMapVignette';
 
 /**
- * Module 1 — نشاط 2 (p. 140), ouvert sur LES PORTAILS DE LA CARTE DE JEU (component-calc).
+ * Module 1 — ouvert sur LES PORTAILS DE LA CARTE DE JEU (component-calc), rétrofit 2026-10-15 (§4quater).
  *
- * REAL / DISCOVER / MANIPULATE  le lab à deux niveaux, même objectif :
- *   متقدم (ouvert par défaut : c'est le نشاط 2, le niveau avancé du lab) : le code de CD prédit puis sauté, E posé tel
- *          que DE(3 ; 4) (jugé seulement à la validation), le code de CF comparé à DE — les portails jumeaux ;
- *   مبتدئ : les portails A(1 ; 2), B(4 ; 3) puis D tel que AB = DC (voyants en direct) — repris au module 3.
- * UNDERSTAND  les questions du نشاط 2 sous les essais de l'élève (`onTrial`, `[data-activity-evidence]`) : lire C et D,
- *           les composantes de CD, E, puis la règle a = x_B − x_A (partie ب) et DE = CF.
- * FORMALIZE  la brique farq-ihdathiyat (« النهاية ناقص المبدأ »).
- * « أتوقّع القاعدة » : la bonne option du نشاط 2 ب 1 (étape 4) EST la règle (a = x_B − x_A, b = y_B − y_A) ; la question
- * est donc enveloppée dans <PredictRule id="farq-ihdathiyat"> — l'élève écrit la règle avec ses mots (predictPrompt de
- * knowledge.jsx) AVANT de voir les options, puis la question et la brique s'affichent.
- * Les deux niveaux du lab vivent dans l'`intro` : la « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) clôt donc la DERNIÈRE étape —
- * d'autres portails sur une autre carte, résolue au module 5.
- * AUCUNE étape n'attend `onFinished`. LP : P1, P2.
+ * LE LABO OUVRE LE MODULE : pas de carte du manuel, pas de titre de workspace, pas de titre de labo ; `lead` = le contexte seul.
+ * Le niveau par défaut est مبتدئ — les portails A(1 ; 2), B(4 ; 3) puis D tel que AB = DC (situation de la plateforme,
+ * ENTRÉE choisie ; voir l'en-tête de lesson.config.js). Le نشاط 2 du manuel (C, D, E, F) est le niveau متقدم du MÊME labo
+ * et revient en application aux étapes 3 à 6, « نشاط الكتاب ».
+ * ORDRE : (1) la règle, écrite par l'élève sur SES nombres (A, B, le code qu'il a ouvert) — « أتوقّع القاعدة » puis la brique
+ * farq-ihdathiyat APRÈS la réponse ; (2) pourquoi deux portails de places différentes ont le même code (D de l'élève) ;
+ * (3–5) le نشاط 2 أ du manuel (lire C et D, le code de CD, la porte E) = application de la règle ; (6) نشاط 2 ب 2 : DE = CF.
+ * Les étapes ne répètent pas la consigne du labo (« écris le code », « place D ») : elles demandent POURQUOI.
+ * AUCUNE étape n'attend `onFinished` ; les essais (`onTrial`, deux niveaux) nourrissent la ligne de preuve. LP : P1, P2.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const KIND = { ok: 'صحيح', reversed: 'طرح مقلوب', swapped: 'مبدّلتان', coords: 'إحداثيتا النهاية', signX: 'إشارة', signY: 'إشارة', xOnly: 'نصف صحيح', yOnly: 'نصف صحيح', none: 'بعيد', zero: 'لا قفزة', order: 'ترتيب الحروف', onPoint: 'بوابة أخرى' };
@@ -34,10 +29,11 @@ const tex = (v) => (v < 0 ? `-${Math.abs(v)}` : `${v}`);
 
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
+  const [qRule, setQRule] = useState(false);
+  const [qTwin, setQTwin] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
-  const [q4, setQ4] = useState(false);
   const [q5, setQ5] = useState(false);
 
   const onTrial = (ev) => { if (ev) setTrials((s) => [...s, ev].slice(-8)); };
@@ -45,7 +41,7 @@ export default function Module01Nashat() {
   const evidence = (
     <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={trials.length ? 'true' : 'false'}>
       {trials.length === 0 ? (
-        <p className="text-slate-500">لم تجرّب بعد أي رمز (المستوى «متقدم»: اكتب رمز البوابة CD ثم افتحها).</p>
+        <p className="text-slate-500">لم تجرّب بعد أي رمز: اكتب رمز البوابة في المناولة أعلاه ثم افتحها.</p>
       ) : (
         <>
           <p className="mb-1 font-bold text-slate-700">محاولاتك على الخريطة:</p>
@@ -71,26 +67,9 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 2 — بوابات الخريطة"
       moduleSubtitle="مركبتا شعاع علمت إحداثيات مبدئه ونهايته: هل نحتاج إلى العدّ؟"
       objectives={['كيف نكتب قفزة بوابة بعددين؟', 'هل نحتاج إلى عدّ المربعات لنعرف رمزها؟', 'متى نقول عن شعاعين إنهما متساويان؟']} estimatedTime="14 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 140',
-        headline: 'بوابات في لعبة الهاتف!',
-        emoji: '🎮',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <GameMapVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={ACTIVITY_LINES.source} /></p>
-            <p className="text-sm text-slate-600">في المستوى «متقدم» (نشاط 2): اكتب رمز البوابة CD قبل القفزة، ضع البوابة E، ثم افتح CF. في المستوى «مبتدئ»: بوابتان A و B، ثم البوابة D.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="الخريطة مزوّدة بمعلم: إحداثيتا كل بوابة مكتوبتان بجانبها، والبطل يقفز بالرمز الذي تكتبه."
           levels={{
             beginner: () => (
               <Manipulation
@@ -98,7 +77,8 @@ export default function Module01Nashat() {
                 level="beginner"
                 {...LAB.beginner.numbers}
                 theme="game-map"
-                title="بوابات الخريطة: رمز AB ثم البوابة D"
+                lead="في لعبة على الهاتف، بوابات سحرية تنقل البطل على خريطة مزوّدة بمعلم. رمز كل بوابة هو مركبتا الشعاع الذي تقفز به."
+                onTrial={onTrial}
               />
             ),
             advanced: () => (
@@ -107,8 +87,7 @@ export default function Module01Nashat() {
                 level="advanced"
                 {...LAB.advanced.numbers}
                 theme="game-map"
-                title="نشاط 2: بوابات C و D و E و F"
-                lead={<MathText>{'$C(3\\,;\\,1)$ و $D(2\\,;\\,-5)$ و $F(6\\,;\\,5)$ ، والبوابة E مجهولة: مركبتا $\\overrightarrow{DE}$ هما 3 و 4.'}</MathText>}
+                lead={<MathText>{'نشاط الكتاب: $C(3\\,;\\,1)$ و $D(2\\,;\\,-5)$ و $F(6\\,;\\,5)$ ، والبوابة E مجهولة: مركبتا $\\overrightarrow{DE}$ هما 3 و 4.'}</MathText>}
                 onTrial={onTrial}
               />
             ),
@@ -117,7 +96,52 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'نشاط 2 أ: النقطتان C و D', subtitle: 'السؤال 1', done: q1,
+          num: 1, title: 'كيف عرفتَ رمز البوابة دون عدّ؟', subtitle: 'من إحداثيتي A و B', done: qRule,
+          content: (
+            <div className="space-y-3">
+              {evidence}
+              {/* « أتوقّع القاعدة » : la bonne option EST la règle ; l'élève l'écrit d'abord avec ses mots, la brique vient APRÈS la réponse. */}
+              <PredictRule id="farq-ihdathiyat">
+                <TapQuestion
+                  prompt={<MathText>{'$A(1\\,;\\,2)$ و $B(4\\,;\\,3)$ ، والرمز الذي فتح البوابة هو $\\begin{pmatrix} 3 \\\\ 1 \\end{pmatrix}$ . عبّر عن $a$ و $b$ ، مركبتي $\\overrightarrow{AB}$ ، بدلالة الإحداثيات:'}</MathText>}
+                  options={[
+                    '$a = x_B - x_A$ و $b = y_B - y_A$',
+                    '$a = x_A - x_B$ و $b = y_A - y_B$', // la soustraction à l'envers : le héros saute dans le sens contraire
+                    '$a = x_B$ و $b = y_B$', // seulement quand A = O
+                  ].map(M)}
+                  correct={0}
+                  cols={1}
+                  requires={['qiraat-murakkibatayn', 'tarh-nisbi']}
+                  explain={<MathText>{`${ACTIVITY_LINES.ab} هنا: $x_B - x_A = 4 - 1 = 3$ و $y_B - y_A = 3 - 2 = 1$ .`}</MathText>}
+                  onAnswered={() => setQRule(true)}
+                />
+              </PredictRule>
+              {qRule && <KnowledgeBrick id="farq-ihdathiyat" lead="ما وجدته على الخريطة، بكلمات النشاط:" />}
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'لماذا يصلح للبوابتين الرمز نفسه؟', subtitle: 'البوابة D التي وضعتَها', done: qTwin,
+          content: (
+            <div className="space-y-3">
+              <TapQuestion
+                prompt={<MathText>{'عندما وضعتَ D بحيث يفتح الرمز $\\begin{pmatrix} 3 \\\\ 1 \\end{pmatrix}$ البوابتين معًا (من A إلى B ومن D إلى C) كانت النقطتان A و D في موضعين مختلفين. ما الذي جعل الشعاعين $\\overrightarrow{AB}$ و $\\overrightarrow{DC}$ متساويين؟'}</MathText>}
+                options={[
+                  'لهما نفس المركبتين، ولا يهمّ أين يبدآن',
+                  'لأنّ لهما المبدأ نفسه', // deux vecteurs égaux peuvent avoir des origines différentes
+                  'لأنّ لهما الطول نفسه فقط', // l'égalité demande aussi la même direction et le même sens
+                ].map(M)}
+                correct={0}
+                cols={1}
+                requires={['farq-ihdathiyat']}
+                explain={<MathText>{'$\\overrightarrow{DC}$ مركبتاه $5 - x_D$ و $5 - y_D$ ، وتساويان 3 و 1 عندما يكون $D(2\\,;\\,4)$ : شعاعان لهما نفس المركبتين متساويان، ولو بدآ من موضعين مختلفين.'}</MathText>}
+                onAnswered={() => setQTwin(true)}
+              />
+            </div>
+          ),
+        },
+        {
+          num: 3, title: 'نشاط الكتاب 2 أ: النقطتان C و D', subtitle: 'السؤال 1', done: q1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={`${ACTIVITY.intro} ${ACTIVITY.partA}`} source={ACTIVITY.source} compact />
@@ -139,12 +163,11 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'نشاط 2 أ: رمز البوابة CD', subtitle: 'السؤال 2', done: q2,
+          num: 4, title: 'نشاط الكتاب 2 أ: رمز البوابة CD', subtitle: 'السؤال 2', done: q2,
           content: (
             <div className="space-y-3">
-              {evidence}
               <TapQuestion
-                prompt={<MathText>{'ما هما مركبتا الشعاع $\\overrightarrow{CD}$ ؟'}</MathText>}
+                prompt={<MathText>{'طبّق القاعدة: ما هما مركبتا الشعاع $\\overrightarrow{CD}$ ؟'}</MathText>}
                 options={[
                   '$\\overrightarrow{CD}\\begin{pmatrix} -1 \\\\ -6 \\end{pmatrix}$',
                   '$\\overrightarrow{CD}\\begin{pmatrix} 1 \\\\ 6 \\end{pmatrix}$', // C − D : la soustraction à l'envers (MISC-MAALAM-TARH-MAQLUB)
@@ -153,7 +176,7 @@ export default function Module01Nashat() {
                 ].map(M)}
                 correct={0}
                 cols={2}
-                requires={['qiraat-murakkibatayn', 'tarh-nisbi']}
+                requires={['farq-ihdathiyat', 'tarh-nisbi']}
                 explain={<MathText>{ACTIVITY_LINES.cd}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
@@ -161,47 +184,24 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'نشاط 2 أ: البوابة E', subtitle: 'السؤال 3', done: q3,
+          num: 5, title: 'نشاط الكتاب 2 أ: البوابة E', subtitle: 'السؤال 3', done: q3,
           content: (
             <div className="space-y-3">
               <PairQuestion
                 prompt={<MathText>{'مركبتا $\\overrightarrow{DE}$ هما 3 و 4. إحداثيتا النقطة E:'}</MathText>}
                 expected={{ x: '5', y: '-1' }}
                 explain={ACTIVITY_LINES.e}
-                requires={['qiraat-murakkibatayn', 'tarh-nisbi']}
+                requires={['farq-ihdathiyat', 'tarh-nisbi']}
                 onAnswered={() => setQ3(true)}
               />
             </div>
           ),
         },
         {
-          num: 4, title: 'نشاط 2 ب: القاعدة', subtitle: 'السؤال 1', done: q4,
+          num: 6, title: 'نشاط الكتاب 2 ب: البوابتان التوأمان', subtitle: 'السؤال 2', done: q5,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY.partB} source={ACTIVITY.source} compact />
-              <PredictRule id="farq-ihdathiyat">
-                <TapQuestion
-                  prompt={<MathText>{'عبّر عن $a$ و $b$ ، مركبتي $\\overrightarrow{AB}$ :'}</MathText>}
-                  options={[
-                    '$a = x_B - x_A$ و $b = y_B - y_A$',
-                    '$a = x_A - x_B$ و $b = y_A - y_B$', // la soustraction à l'envers : le héros saute dans le sens contraire
-                    '$a = x_B$ و $b = y_B$', // seulement quand A = O
-                  ].map(M)}
-                  correct={0}
-                  cols={1}
-                  requires={['qiraat-murakkibatayn', 'tarh-nisbi']}
-                  explain={<MathText>{`${ACTIVITY_LINES.ab} وهذا ما فتح كل بوابة: $x_D - x_C = -1$ و $y_D - y_C = -6$ .`}</MathText>}
-                  onAnswered={() => setQ4(true)}
-                />
-              </PredictRule>
-              {q4 && <KnowledgeBrick id="farq-ihdathiyat" lead="ما وجدته على الخريطة، بكلمات النشاط:" />}
-            </div>
-          ),
-        },
-        {
-          num: 5, title: 'نشاط 2 ب: البوابتان التوأمان', subtitle: 'السؤال 2', done: q5,
-          content: (
-            <div className="space-y-3">
               <TapQuestion
                 prompt={<MathText>{'$F(6\\,;\\,5)$ . الشعاع $\\overrightarrow{CF}$ والشعاع $\\overrightarrow{DE}$ :'}</MathText>}
                 options={[

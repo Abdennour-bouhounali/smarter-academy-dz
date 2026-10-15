@@ -15,7 +15,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-        "line": 173,
+        "line": 172,
         "step": 3,
         "variant": "new"
       }
@@ -26,7 +26,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-        "line": 194,
+        "line": 197,
         "step": 4,
         "variant": "new"
       }
@@ -37,7 +37,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module02HalMutarajiha.jsx",
-        "line": 194,
+        "line": 176,
         "step": 2,
         "variant": "new"
       }
@@ -59,7 +59,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module03Maarif.jsx",
-        "line": 90,
+        "line": 108,
         "step": 2,
         "variant": "new"
       }
@@ -70,7 +70,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module03Maarif.jsx",
-        "line": 126,
+        "line": 125,
         "step": 3,
         "variant": "new"
       }
@@ -256,9 +256,9 @@
       "questionId": "M01-S1-Q1",
       "module": 1,
       "step": 1,
-      "component": "BatchChoiceQuestion",
+      "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-      "line": 104,
+      "line": 94,
       "requires": [
         "muqarana-adad"
       ],
@@ -274,7 +274,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-      "line": 127,
+      "line": 114,
       "requires": [
         "muqarana-adad"
       ],
@@ -290,7 +290,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-      "line": 144,
+      "line": 131,
       "requires": [
         "muqarana-adad"
       ],
@@ -306,7 +306,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-      "line": 154,
+      "line": 141,
       "requires": [
         "muqarana-adad"
       ],
@@ -322,13 +322,9 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-      "line": 174,
-      "requires": [
-        "mutarajiha"
-      ],
-      "prerequisiteStatus": {
-        "mutarajiha": "established@M1"
-      },
+      "line": 160,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -338,13 +334,9 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module01RasailYunus.jsx",
-      "line": 196,
-      "requires": [
-        "hal-mutarajiha"
-      ],
-      "prerequisiteStatus": {
-        "hal-mutarajiha": "established@M1"
-      },
+      "line": 181,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -352,9 +344,9 @@
       "questionId": "M02-S1-Q1",
       "module": 2,
       "step": 1,
-      "component": "BatchChoiceQuestion",
+      "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module02HalMutarajiha.jsx",
-      "line": 129,
+      "line": 116,
       "requires": [
         "amaliyat-mutabayinat"
       ],
@@ -370,7 +362,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module02HalMutarajiha.jsx",
-      "line": 165,
+      "line": 147,
       "requires": [
         "hal-mutarajiha"
       ],
@@ -386,7 +378,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module02HalMutarajiha.jsx",
-      "line": 203,
+      "line": 185,
       "requires": [
         "tamthil-jadwal"
       ],
@@ -434,13 +426,9 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/modules/Module03Maarif.jsx",
-      "line": 94,
-      "requires": [
-        "qawaid-ittijah"
-      ],
-      "prerequisiteStatus": {
-        "qawaid-ittijah": "established@M3"
-      },
+      "line": 93,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },

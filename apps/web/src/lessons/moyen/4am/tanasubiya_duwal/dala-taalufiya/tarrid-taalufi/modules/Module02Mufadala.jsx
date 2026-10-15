@@ -4,29 +4,27 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { TICKET, LAB, TAXI, MISTAKE_ALWAYS } from '../content/textbook';
+import { LAB, TAXI, MISTAKE_ALWAYS } from '../content/textbook';
 import TaxiGraph from '../components/TaxiGraph';
 
 /**
  * Module 2 — المفاضلة بين صيغتين (stage: discovery). Le manuel ne compare pas de tarifs : la comparaison
  * est un AJOUT de la plateforme, dans le monde de نشاط 4 (le stade propose aussi le billet seul, 400DA).
  *
- * Le laboratoire `plan-compare` en mode `compare` : x glisse (les barres et les droites bougent ensemble),
- * l'élève POSE une marque sur le croisement (refusée ailleurs avec les deux coûts), puis PEINT l'axe des x
- * de la formule la moins chère (refus avec un de ses essais comme témoin : MISC-TARRID-AFDAL-DAIMAN).
+ * Rétrofit 2026-10-15 (§4quater) : le laboratoire OUVRE le module — plus de carte `brief`, ni de titre / `lead` de
+ * workspace (le contexte tient dans le `lead` de chaque labo). Le laboratoire `plan-compare` en mode `compare` : x glisse
+ * (les barres et les droites bougent ensemble), l'élève POSE une marque sur le croisement (refusée ailleurs avec les deux
+ * coûts), puis PEINT l'axe des x de la formule la moins chère (refus avec un de ses essais comme témoin).
  *   مبتدئ (défaut) — le stade : l'abonnement contre le billet → égalité à 10 matchs (4000DA) ;
  *   متقدم — la salle de jeux, trois formules du mois (100x ; 40x + 600 ; 1800) → changements à 10 h et 30 h.
  *
  * AUCUNE étape n'attend `onFinished` ; ce que l'élève a marqué et peint est listé au-dessus des questions.
- * Étapes : (1) l'égalité trouvée ; (2) la brique « tasawi-taqatu », un autre couple de tarifs ;
+ * Étapes : (1) POURQUOI le labo refuse une marque à 8 matchs (l'ancienne question « combien de matchs ? » répétait celle du
+ * labo) ; (2) un autre couple de tarifs (salle de sport) à résoudre par l'équation, PUIS la brique « tasawi-taqatu » ;
  * (3) avant / après le croisement, puis la brique « sigha-afdal » ; (4) lire deux tarifs sur un graphique ;
  * (5) trois formules. LP : P2.
- *
- * « أتوقّع القاعدة » : ni la consigne de l'atelier ni le retour de l'étape 3 ne disent les règles avant leurs
- * briques (l'ancienne consigne énonçait « tasawi-taqatu », l'ancien retour « sigha-afdal » : MISTAKE_ALWAYS.right
- * reste dans la carte des erreurs).
  */
 export default function Module02Mufadala() {
   const [marks, setMarks] = useState({});
@@ -65,58 +63,51 @@ export default function Module02Mufadala() {
         'كيف نقرأ الجواب على التمثيل البياني؟',
         'ماذا يحدث مع ثلاث صيغ؟',
       ]}
-      brief={{
-        tag: 'امتداد لنشاط 4 — من المنصّة',
-        headline: 'الاشتراك أم التذكرة؟',
-        emoji: '⚖️',
-        title: 'أيّ الصيغتين أرخص؟ الجواب يتعلّق بعدد المقابلات',
-        tone: 'violet',
-        body: (
-          <div className="space-y-1">
-            <p><MathText>{TICKET.text}</MathText></p>
-            <p className="text-sm text-slate-600">في المختبر: حرّك x وقارن العمودين والمستقيمين، ضع العلامة حيث تتساوى التكلفتان، ثم لوّن محور الفواصل بلون الصيغة الأرخص.</p>
-          </div>
-        ),
-        footer: <SourceTag source={TICKET.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="نفس السؤال في المستويين: متى تتساوى التكلفتان؟ وأيّ صيغة أرخص؟ حرّك x وراقب العمودين والمستقيمين."
           levels={{
-            beginner: () => <Manipulation type="plan-compare" level="beginner" {...LAB.m2.beginner} onTrial={onTrial('beginner')} />,
-            advanced: () => <Manipulation type="plan-compare" level="advanced" {...LAB.m2.advanced} onTrial={onTrial('advanced')} />,
+            beginner: () => <Manipulation type="plan-compare" level="beginner" {...LAB.m2.beginner} onTrial={onTrial('beginner')}
+              lead="يعرض المركّب الرياضي صيغة ثانية دون اشتراك: 400DA عند كل دخول إلى الملعب." />,
+            advanced: () => <Manipulation type="plan-compare" level="advanced" {...LAB.m2.advanced} onTrial={onTrial('advanced')}
+              lead="في قاعة الألعاب ثلاث صيغ للشهر: الدفع بالساعة، بطاقة شهرية، وصيغة دون حدّ." />,
           }}
         />
       }
       steps={[
         {
-          num: 1, title: 'متى تتساوى الصيغتان؟', subtitle: 'من علامتك في المختبر', done: !!q.eq,
+          num: 1, title: 'لماذا يرفض المختبر علامة عند 8 مقابلات؟', subtitle: 'عن علامتك في المختبر', done: !!q.eq,
           content: (
             <div className="space-y-3">
               {evidence}
-              <NumericQuestion
-                prompt="من أجل كم مقابلة يدفع المناصر المبلغ نفسه بالصيغتين؟"
-                expected={TICKET.numbers.cross}
-                requires={['namdhaja-taalufiya', 'hall-muadala']}
-                explain={<MathText>{'$200x + 2000 = 400x$ أي $2000 = 200x$ ومنه $x = 10$ : من أجل 10 مقابلات يدفع 4000DA بالصيغتين.'}</MathText>}
+              <TapQuestion
+                prompt="في الملعب (المستوى المبتدئ)، لو وضعت العلامة عند 8 مقابلات لرُفضت. لماذا؟"
+                options={[
+                  'لأنّ المبلغين مختلفان عند 8 مقابلات: الاشتراك 3600DA والتذكرة 3200DA',
+                  'لأنّ 8 أصغر من عدد مقابلات الموسم كلّه',
+                  'لأنّ التذكرة وحدها لا تقبل علامة',
+                  'لأنّ العلامة لا توضع إلا عند عدد زوجي',
+                ]}
+                correct={0}
+                cols={1}
+                requires={['namdhaja-taalufiya']}
+                explain={<MathText>{'العلامة تُقبل حيث تتساوى التكلفتان فقط: $200 \\times 8 + 2000 = 3600$ و $400 \\times 8 = 3200$ . أمّا $200x + 2000 = 400x$ فحلّها $x = 10$ : عندها يدفع المناصر 4000DA بالصيغتين.'}</MathText>}
                 onAnswered={mark('eq')}
               />
             </div>
           ),
         },
         {
-          num: 2, title: 'هل نجد التساوي دون علامة؟', done: !!q.gym,
+          num: 2, title: 'هل نجد التساوي دون علامة؟', subtitle: 'قاعة رياضة', done: !!q.gym,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tasawi-taqatu" lead="ما وجدته بالعلامة نجده أيضا بحلّ معادلة:" />
               <NumericQuestion
                 prompt={<span>قاعة رياضة يقصدها الشباب للمحافظة على صحتهم: الصيغة الأولى <MathText>{'$f(x) = 150x + 1200$'}</MathText> والصيغة الثانية <MathText>{'$g(x) = 350x$'}</MathText> ، حيث <MathText>{'$x$'}</MathText> عدد الحصص. من أجل كم حصة تتساوى التكلفتان؟</span>}
                 expected={6}
-                requires={['tasawi-taqatu']}
+                requires={['namdhaja-taalufiya', 'hall-muadala']}
                 explain={<MathText>{'$150x + 1200 = 350x$ أي $1200 = 200x$ ومنه $x = 6$ ، و $f(6) = g(6) = 2100$ .'}</MathText>}
                 onAnswered={mark('gym')}
               />
+              {q.gym && <KnowledgeBrick id="tasawi-taqatu" lead="ما وجدته بالعلامة نجده أيضا بحلّ معادلة:" />}
             </div>
           ),
         },

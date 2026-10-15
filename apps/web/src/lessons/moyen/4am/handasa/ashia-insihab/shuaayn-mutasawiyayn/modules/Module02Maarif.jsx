@@ -15,6 +15,8 @@ import { FIG_KNOW3 } from '../content/figures';
  *   3. FORMALIZE : AB = DC ⇔ ABCD متوازي أضلاع ⇔ diagonales de même milieu (rappel du درس 1, déclaré) et les étapes de
  *      la preuve (brique mutawazi-shuaa) ; l'ordre des sommets ;
  *   4. le cas aligné (نشاط 2 ب) : une égalité de vecteurs sans متوازي أضلاع « vrai ».
+ * RÉTROFIT 2026-10-15 (§4quater) : chaque question AVANT sa brique / sa boîte — RT = TS d'abord (on vient de le vivre sur le foulard),
+ * puis `muntasaf-shuaa` et sa figure ; la remarque du cas aligné après la réponse du cas aligné. L'étape 3 garde « أتوقّع القاعدة ».
  * LP : P1 (1–2), P2 (3–4).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -44,17 +46,20 @@ export default function Module02Maarif() {
           num: 1, title: 'معارف 3', subtitle: 'المنتصف وتساوي شعاعين', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="muntasaf-shuaa" lead="معارف 3، كما في الكتاب:" />
-              <GeoFigure {...FIG_KNOW3} />
               <TapQuestion
                 prompt={<MathText>{'R، S، T ثلاث نقط حيث $\\overrightarrow{RT} = \\overrightarrow{TS}$ . إذن:'}</MathText>}
                 options={['T منتصف [RS]', 'R منتصف [TS]', 'S منتصف [RT]'].map(M)}
                 correct={0}
                 cols={3}
-                requires={['muntasaf-shuaa']}
                 explain={<MathText>{'في $\\overrightarrow{RT} = \\overrightarrow{TS}$ النقطة المشتركة T هي نهاية الأول ومبدأ الثاني: T منتصف [RS] (معارف 3).'}</MathText>}
                 onAnswered={() => setQ1a(true)}
               />
+              {q1a && (
+                <>
+                  <KnowledgeBrick id="muntasaf-shuaa" lead="معارف 3، كما في الكتاب:" />
+                  <GeoFigure {...FIG_KNOW3} />
+                </>
+              )}
               {q1a && (
                 <TapQuestion
                   prompt={<MathText>{'K منتصف القطعة [UV]. أيّ مساواة صحيحة؟'}</MathText>}
@@ -134,7 +139,6 @@ export default function Module02Maarif() {
           num: 4, title: 'حالة خاصة', subtitle: 'النقط على استقامة واحدة', done: q4,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" text={KNOW2_REMINDER.special} source={KNOW2_REMINDER.source} compact />
               <TapQuestion
                 prompt={<span>A، B، C، D على مستقيم واحد بهذا الترتيب، و <MathText>{'$\\overrightarrow{AB} = \\overrightarrow{CD}$'}</MathText> . <SourceTag source={PLATFORM_SOURCE} /></span>}
                 options={[
@@ -148,6 +152,7 @@ export default function Module02Maarif() {
                 explain={<MathText>{'كما في نشاط 2 ب: تساوي الشعاعين يعطي المنتصف المشترك، لكن «متوازي الأضلاع» مسطّح لأن الرؤوس على استقامة واحدة.'}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && <TextbookBox kind="remark" text={KNOW2_REMINDER.special} source={KNOW2_REMINDER.source} compact />}
             </div>
           ),
         },

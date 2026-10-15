@@ -18,8 +18,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module01Arkhimidis.jsx",
-        "line": 160,
-        "step": 2,
+        "line": 121,
+        "step": 1,
         "variant": "new"
       }
     },
@@ -29,8 +29,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module01Arkhimidis.jsx",
-        "line": 181,
-        "step": 3,
+        "line": 142,
+        "step": 2,
         "variant": "new"
       }
     },
@@ -40,7 +40,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module02Maarif.jsx",
-        "line": 43,
+        "line": 59,
         "step": 1,
         "variant": "rappel"
       }
@@ -51,7 +51,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module02Maarif.jsx",
-        "line": 66,
+        "line": 81,
         "step": 2,
         "variant": "rappel"
       }
@@ -62,7 +62,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module02Maarif.jsx",
-        "line": 95,
+        "line": 110,
         "step": 3,
         "variant": "new"
       }
@@ -76,7 +76,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module03Taraiq.jsx",
-        "line": 42,
+        "line": 58,
         "step": 1,
         "variant": "new"
       }
@@ -87,7 +87,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module03Taraiq.jsx",
-        "line": 66,
+        "line": 81,
         "step": 2,
         "variant": "new"
       }
@@ -213,7 +213,39 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module01Arkhimidis.jsx",
-      "line": 125,
+      "line": 110,
+      "requires": [
+        "misaha-janibiya"
+      ],
+      "prerequisiteStatus": {
+        "misaha-janibiya": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S2-Q2",
+      "module": 1,
+      "step": 2,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module01Arkhimidis.jsx",
+      "line": 131,
+      "requires": [
+        "hajm-ustuwana"
+      ],
+      "prerequisiteStatus": {
+        "hajm-ustuwana": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q3",
+      "module": 1,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module01Arkhimidis.jsx",
+      "line": 152,
       "requires": [
         "hajm-ustuwana",
         "misaha-janibiya"
@@ -226,50 +258,14 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S2-Q2",
-      "module": 1,
-      "step": 2,
-      "component": "BatchChoiceQuestion",
-      "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module01Arkhimidis.jsx",
-      "line": 148,
-      "requires": [
-        "misaha-janibiya"
-      ],
-      "prerequisiteStatus": {
-        "misaha-janibiya": "prior"
-      },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
-    },
-    {
-      "questionId": "M01-S3-Q3",
-      "module": 1,
-      "step": 3,
-      "component": "BatchChoiceQuestion",
-      "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module01Arkhimidis.jsx",
-      "line": 170,
-      "requires": [
-        "hajm-ustuwana"
-      ],
-      "prerequisiteStatus": {
-        "hajm-ustuwana": "prior"
-      },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
-    },
-    {
       "questionId": "M02-S1-Q1",
       "module": 2,
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module02Maarif.jsx",
-      "line": 44,
-      "requires": [
-        "misahat-kura"
-      ],
-      "prerequisiteStatus": {
-        "misahat-kura": "established@M2"
-      },
+      "line": 45,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -280,12 +276,8 @@
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module02Maarif.jsx",
       "line": 67,
-      "requires": [
-        "hajm-julla"
-      ],
-      "prerequisiteStatus": {
-        "hajm-julla": "established@M2"
-      },
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -295,13 +287,9 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module02Maarif.jsx",
-      "line": 97,
-      "requires": [
-        "qima-muqarraba"
-      ],
-      "prerequisiteStatus": {
-        "qima-muqarraba": "established@M2"
-      },
+      "line": 90,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -311,13 +299,9 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module03Taraiq.jsx",
-      "line": 43,
-      "requires": [
-        "tariqa-hisab"
-      ],
-      "prerequisiteStatus": {
-        "tariqa-hisab": "established@M3"
-      },
+      "line": 44,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -328,12 +312,8 @@
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/misaha-hajm-kura/modules/Module03Taraiq.jsx",
       "line": 67,
-      "requires": [
-        "tariqa-aksiya"
-      ],
-      "prerequisiteStatus": {
-        "tariqa-aksiya": "established@M3"
-      },
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },

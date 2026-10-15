@@ -14,6 +14,9 @@ import { FIG_METHOD_IMAGE, FIG_METHOD_EQUAL } from '../content/figures';
  * Module 3 — طرائق (p. 131) : « إنشاء صورة نقطة بانسحاب عُلم شعاعه » avec LA BANDEROLE (parallelogram-pin, متقدم ouvert
  * par défaut : c'est la طريقة du manuel, le niveau avancé du lab) ; la solution du manuel révélée ligne à ligne
  * (MethodSteps), puis la construction au compas ligne à ligne (plateforme, déclarée) ; « إثبات تساوي شعاعين » ; دوري الآن.
+ * RÉTROFIT 2026-10-15 (§4quater) : le labo s'ouvre sur متقدم (la banderole : c'est ce que les questions suivantes commentent) ; plus de carte ni de titre / `lead` de workspace, le labo ouvre le module ; les deux questions de
+ * la banderole ne re-posent plus la mission du labo (ce que dit la مساواة, où tombe E) ; la fin de la solution du livre vient APRÈS la
+ * réponse sur E.
  * Les briques surat-nuqta et ithbat-tasawi NOMMENT ce que la main a fait. AUCUNE étape n'attend `onFinished`.
  * LP : P3 (1–2), P2 (3–4).
  */
@@ -33,21 +36,15 @@ export default function Module03Taraiq() {
       moduleTitle="طرائق — صورة نقطة بانسحاب، وإثبات تساوي شعاعين"
       moduleSubtitle="نكمل متوازي أضلاع لننشئ صورة نقطة، ونستند إلى متوازي أضلاع لنبرهن"
       estimatedTime="10 دقائق"
-      brief={{
-        tag: 'طرائق — الكتاب ص 131', title: METHOD_IMAGE.title, tone: 'emerald',
-        body: <p>ضع أولا ركن الراية D صورة C بالانسحاب الذي شعاعه AB، ثم النقطة E. بعدها اقرأ حل الكتاب سطرا سطرا، وحاول أن تتوقّع السطر التالي قبل أن تكشفه.</p>,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الطريقة بيدك"
-          defaultLevel="beginner"
-          lead="الشبكة شبكة المدرّج: عدّ المربعات من A إلى B، ثم أعِد الحركة نفسها."
+          defaultLevel="advanced"
           levels={{
             beginner: () => (
-              <Manipulation type="parallelogram-pin" level="beginner" {...LAB.beginner.numbers} theme="tifo" title="الوشاح: أين يقف قائد المدرّج؟" />
+              <Manipulation type="parallelogram-pin" level="beginner" {...LAB.beginner.numbers} theme="tifo" />
             ),
             advanced: () => (
-              <Manipulation type="parallelogram-pin" level="advanced" {...LAB.advanced.numbers} theme="tifo" title="طرائق: راية التيفو، D صورة C ثم النقطة E" />
+              <Manipulation type="parallelogram-pin" level="advanced" {...LAB.advanced.numbers} theme="tifo" lead="الشبكة شبكة المدرّج: أربعة مشجّعين يمسكون أركان الراية." />
             ),
           }}
         />
@@ -64,7 +61,7 @@ export default function Module03Taraiq() {
                 <p className="text-xs text-slate-500">{METHOD_IMAGE.note}</p>
               </PredictRule>
               <TapQuestion
-                prompt={<MathText>{'D صورة C بالانسحاب الذي شعاعه $\\overrightarrow{AB}$ يعني:'}</MathText>}
+                prompt={<MathText>{'أعدتَ من C الحركة نفسها التي تنقل A إلى B فبلغتَ D. ماذا تقول المساواة بين الشعاعين، وماذا يعني ذلك للرباعي؟'}</MathText>}
                 options={[
                   '$\\overrightarrow{CD} = \\overrightarrow{AB}$ ، أي ABDC متوازي أضلاع',
                   '$\\overrightarrow{DC} = \\overrightarrow{AB}$ ، أي ABCD متوازي أضلاع', // la flèche part de C : la banderole se croise
@@ -85,9 +82,8 @@ export default function Module03Taraiq() {
           num: 2, title: 'النقطة E', subtitle: 'الطريقة 1، السؤال 2', done: q2,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="solution" lines={METHOD_IMAGE.solution.slice(4)} source={METHOD_IMAGE.source} compact />
               <TapQuestion
-                prompt={<MathText>{'النقطة E حيث $\\overrightarrow{EB} = \\overrightarrow{AC}$ هي:'}</MathText>}
+                prompt={<MathText>{'وضعتَ E بحيث $\\overrightarrow{EB} = \\overrightarrow{AC}$ . أين تقع E بالنسبة إلى D و B ؟'}</MathText>}
                 options={[
                   'نظيرة D بالنسبة إلى B',
                   'صورة B بالانسحاب الذي شعاعه $\\overrightarrow{AC}$', // c'est D (BD = AC)
@@ -99,6 +95,7 @@ export default function Module03Taraiq() {
                 explain={<MathText>{'$\\overrightarrow{EB} = \\overrightarrow{AC} = \\overrightarrow{BD}$ : B منتصف [DE]. أما صورة B بالانسحاب الذي شعاعه $\\overrightarrow{AC}$ فهي D نفسها ($\\overrightarrow{BD} = \\overrightarrow{AC}$).'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <TextbookBox kind="solution" lines={METHOD_IMAGE.solution.slice(4)} source={METHOD_IMAGE.source} compact />}
             </div>
           ),
         },

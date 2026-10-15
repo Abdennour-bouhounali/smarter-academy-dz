@@ -6,8 +6,7 @@ import { Manipulation, ManipulationWorkspace } from '../../../../../../common/ma
 import { SourceTag } from '../../../../../../common/textbook';
 import { parseDec } from '@smarter-academy/core';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, ACTIVITY_LINES, HOOK, RAMP2 } from '../content/textbook';
-import SkateVignette from '../components/SkateVignette';
+import { ACTIVITY, ACTIVITY_LINES, RAMP2 } from '../content/textbook';
 
 /**
  * Module 1 — نشاط 3 (p. 78) « تمثيل دالة تآلفية », ouvert sur LA DROITE QUI A QUITTÉ L'ORIGINE (affine-line).
@@ -47,7 +46,6 @@ const Evidence = ({ items, empty, title, kind }) => (
 export default function Module01Nashat() {
   const [probes, setProbes] = useState([]);
   const [tries, setTries] = useState([]);
-  const [q1a, setQ1a] = useState(false);
   const [q1b, setQ1b] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
@@ -73,25 +71,9 @@ export default function Module01Nashat() {
         'أين يقطع المستقيم الجديد محور التراتيب؟',
         'ماذا نقرأ على منحدر عبارته مخفية؟',
       ]}
-      brief={{
-        tag: 'أنشطة — الكتاب ص 78',
-        headline: HOOK.headline,
-        emoji: '🛹',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <SkateVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="text-sm text-slate-600"><MathText>{HOOK.text}</MathText></p>
-            <p className="font-semibold text-slate-800"><MathText>{ACTIVITY.text}</MathText></p>
-          </div>
-        ),
-        footer: <div className="flex flex-wrap gap-2"><SourceTag source={ACTIVITY.source} /><SourceTag source={HOOK.source} /></div>,
-      }}
       intro={
+        // LE LABO OUVRE LE MODULE (§4quater) : ni carte du manuel, ni titre / `lead` de workspace ; le contexte est le `lead` du labo.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="في المستويين مستقيم متقطع يشمل المبدأ، ومستقيمك فوقه. ارفع مستقيمك من نقطته على محور التراتيب، وقارن بالمسبار."
           defaultLevel="beginner"
           levels={{
             beginner: () => (
@@ -102,8 +84,7 @@ export default function Module01Nashat() {
                 b="2"
                 mode="shift"
                 theme="ramp"
-                title="منحدر أوّل يبدأ على ارتفاع 2"
-                lead={<MathText>{'ارفع المستقيم حتى يصير تمثيل $f(x) = \\dfrac{1}{2}x + 2$ ، ثم حرّك المسبار إلى فاصلتين مختلفتين.'}</MathText>}
+                lead={<MathText>{'في حديقة التزلّج منحدر مستقيم يبدأ من الأرض (المستقيم المتقطع)، ومنحدر مثله مبنيّ فوق قاعدة ارتفاعها 2، تمثيل $f(x) = \\dfrac{1}{2}x + 2$ .'}</MathText>}
               />
             ),
             advanced: () => (
@@ -115,8 +96,7 @@ export default function Module01Nashat() {
                 mode="shift|identify"
                 find={`${RAMP2.a}:${RAMP2.b}`}
                 theme="ramp"
-                title="نشاط 3: نرفع المستقيم بـ 1"
-                lead={<MathText>{"اسحب نقطة مستقيمك على محور التراتيب حتى يصير $(d')$ ، ثم اقرأ بالمسبار ترتيبَي النقطتين اللتين فاصلتهما 2. بعدها افتح المختبر الثاني."}</MathText>}
+                lead={<MathText>{"$(d)$ تمثيل الدالة الخطية $g(x) = \\dfrac{3}{2}x$ ، و $(d')$ تمثيل الدالة التآلفية $f(x) = \\dfrac{3}{2}x + 1$ ."}</MathText>}
                 onTrial={onTrial}
               />
             ),
@@ -125,27 +105,18 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'الفاصلة 2', subtitle: 'السؤال 1 أ', done: q1a && q1b,
+          num: 1, title: 'الفاصلة 2', subtitle: 'السؤال 1 أ', done: q1b,
           content: (
             <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[0]}</MathText></p>
               <Evidence items={probes} kind="probes" title="ما فعلته على المختبر:" empty="ارفع مستقيمك، ثم حرّك المسبار تحت محور الفواصل إلى $2$ (المستوى المتقدّم)." />
+              {/* Le lab a déjà demandé de LIRE les deux ordonnées ; l'étape part de la lecture sur (d) et demande ce qu'on en déduit sans nouvelle lecture. */}
               <NumericQuestion
-                prompt={<MathText>{'ترتيب النقطة من $(d)$ التي فاصلتها $2$ هو:'}</MathText>}
-                expected={3}
-                parse={parseDec}
-                display="3"
-                requires={['tamthil-khatti']}
-                explain={<MathText>{ACTIVITY_LINES.g2}</MathText>}
-                onAnswered={() => setQ1a(true)}
-              />
-              <NumericQuestion
-                prompt={<MathText>{'دون حساب جديد: ترتيب النقطة من $(d\')$ التي فاصلتها $2$ هو:'}</MathText>}
+                prompt={<MathText>{'ترتيب النقطة من $(d)$ التي فاصلتها $2$ هو $3$ . دون أي قراءة أو حساب جديد، ترتيب النقطة من $(d\')$ التي فاصلتها $2$ هو:'}</MathText>}
                 expected={4}
                 parse={parseDec}
                 display="4"
                 requires={['notation-fx']}
-                explain={<MathText>{ACTIVITY_LINES.f2}</MathText>}
+                explain={<MathText>{`${ACTIVITY_LINES.g2} ${ACTIVITY_LINES.f2}`}</MathText>}
                 onAnswered={() => setQ1b(true)}
               />
             </div>
@@ -155,12 +126,11 @@ export default function Module01Nashat() {
           num: 2, title: 'بشكل عام', subtitle: 'السؤال 1 ب', done: q2,
           content: (
             <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[1]}</MathText></p>
               <Evidence items={probes.filter((p) => p.kind === 'probe')} kind="reads" title="قراءاتك بالمسبار:" empty="جرّب المسبار عند فاصلتين مختلفتين، إحداهما سالبة." />
               {/* « أتوقّع القاعدة » : les options et l'explication de س 1 ب énoncent irtifa-b — l'élève l'écrit d'abord. */}
               <PredictRule id="irtifa-b">
                 <TapQuestion
-                  prompt={<MathText>{'نجد ترتيب نقطة من $(d\')$ انطلاقا من نقطة $(d)$ التي لها نفس الفاصلة:'}</MathText>}
+                  prompt={<MathText>{'نجد ترتيب نقطة من $(d\')$ انطلاقا من نقطة $(d)$ التي لها نفس الفاصلة، أيًّا كانت هذه الفاصلة:'}</MathText>}
                   options={[
                     'نضيف $1$ إلى ترتيب نقطة $(d)$ ، مهما كانت الفاصلة.',
                     'نضيف $1$ إلى فاصلة نقطة $(d)$ .',

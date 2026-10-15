@@ -4,26 +4,23 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag, PairQuestion } from '../../../../../../common/textbook';
+import { TextbookBox, PairQuestion } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, ACTIVITY_LINES, ACT_A_OPTIONS, CHALLENGE, HOOK } from '../content/textbook';
+import { ACTIVITY, ACTIVITY_LINES, ACT_A_OPTIONS, CHALLENGE } from '../content/textbook';
 import ChallengeVignette from '../components/ChallengeVignette';
 
 /**
  * Module 1 — نشاط 1 (p. 56) : « جملة معادلتين من الدرجة الأولى بمجهولين », ouvert sur le TABLEAU
  * DES DEUX CONDITIONS (pair-scoreboard).
  *
- * REAL      la carte d'activité pose le تحدّ de la page d'ouverture (37 pièces, 610DA pour décorer
- *           la classe) : deux conditions à la fois — puis le نشاط 1, au mot près.
- * DISCOVER / MANIPULATE   le lab à deux niveaux, UN instrument, même objectif :
- *   متقدم (ouvert par défaut : c'est le نشاط 1) : 32 agents, x hommes et y femmes ; la jauge (2)
- *          lit l'APRÈS (5 hommes et 3 femmes partis) : 2(x − 5) = y − 3 ;
- *   مبتدئ : la carte de saison d'un club (plateforme) — 10 matchs sans défaite, 22 points.
- * UNDERSTAND  س أ se décide sur les jauges : la table des essais de l'élève (`onTrial`) est
- *           affichée au-dessus de la question (`[data-activity-evidence]`) ; س ب la traduction, س جـ
- *           la simplification et les deux vérifications du livre.
- * TOUCH / FORMALIZE  la brique jumla-nashat (« نقول أنّ … ») nomme ce que les jauges ont montré.
- * TRANSFER  س د puis le تحدّ : le MÊME tableau, monde de la cagnotte (posé seul, un niveau).
+ * Rétrofit 2026-10-15 (§4quater) : le labo OUVRE le module (plus de carte « تحدّ + نشاط » au-dessus, plus de titre / `lead`
+ * de workspace, plus de `title` de labo qui répète sa mission). Le labo à deux niveaux, UN instrument, même objectif :
+ *   متقدم (le نشاط 1) : 32 agents, x hommes et y femmes ; la jauge (2) lit l'APRÈS (5 hommes et 3 femmes partis) ;
+ *   مبتدئ : la carte de saison d'un club (plateforme, défaut) — 10 matchs sans défaite, 22 points.
+ * Puis, sur ce que l'élève a FAIT : س أ (pourquoi (24 ; 8) n'allume qu'une jauge, ses propres essais en preuve
+ * `[data-activity-evidence]`), س ب la traduction, س جـ la simplification et les deux vérifications → brique jumla-nashat
+ * APRÈS la réponse ; س د ne redemande plus la ثنائية (le labo l'a fait) : elle demande ce que (13 ; 19) DIT du service
+ * (avant ou après la retraite) ; puis le تحدّ : le MÊME tableau, monde de la cagnotte (posé seul, un niveau), avec sa vignette.
  * AUCUNE étape n'attend `onFinished`. LP : P2, P3 (et P1 nommé par la brique).
  * Les labs vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire)
  * clôt donc la DERNIÈRE étape.
@@ -43,10 +40,13 @@ export default function Module01Nashat() {
   const [q5, setQ5] = useState(false);
   const onTrial = (sys) => (tr) => setTrials((t) => ({ ...t, [sys]: [...t[sys].filter((p) => p.pair !== tr.pair), tr] }));
   const mine = trials[ADVANCED];
+  const first = trials[BEGINNER];
 
   const evidence = (
     <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={mine.length ? 'true' : 'false'}>
-      {mine.length === 0 ? (
+      {mine.length === 0 && first.length > 0 ? (
+        <p className="text-slate-600">جرّبتَ {first.length} ثنائيات على بطاقة الموسم. افتح المستوى المتقدّم لتجرّب لوحة العمّال.</p>
+      ) : mine.length === 0 ? (
         <p className="text-slate-500">لم تجرّب أي ثنائية بعد على لوحة الشرطين (المستوى المتقدّم).</p>
       ) : (
         <>
@@ -74,27 +74,11 @@ export default function Module01Nashat() {
       moduleSubtitle="نجرّب ثنائيات على لوحتين"
       objectives={['متى تقبل اللوحتان ثنائية من عددين؟', 'كيف نترجم نصّا بمعادلتين؟', 'كم قطعة من كل فئة جمعها التلاميذ؟']}
       estimatedTime="16 دقيقة"
-      brief={{
-        tag: 'تحدّ ص 55 · أنشطة — الكتاب ص 56',
-        headline: HOOK.headline,
-        emoji: '🪙',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <ChallengeVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800"><MathText>{CHALLENGE.text}</MathText></p>
-            <p className="text-sm text-slate-600"><MathText>{HOOK.text}</MathText></p>
-            <p><MathText>{ACTIVITY.text}</MathText></p>
-          </div>
-        ),
-        footer: <div className="flex flex-wrap gap-2"><SourceTag source={CHALLENGE.source} /><SourceTag source={ACTIVITY.source} /><SourceTag source={HOOK.source} /></div>,
-      }}
       intro={
+        // LE LABO OUVRE LE MODULE (§4quater) : ni carte du manuel, ni titre / `lead` de workspace ; le contexte est le `lead` du niveau
+        // (le texte du نشاط), la question est celle du labo.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين ثنائية من عددين تحرّكهما بيدك، ولوحتان تقرأ كل منهما شرطًا. متى تقبل اللوحة أنّ ثنائيتك حل؟"
           levels={{
             beginner: () => (
               <Manipulation
@@ -102,7 +86,6 @@ export default function Module01Nashat() {
                 level="beginner"
                 system={BEGINNER}
                 theme="football"
-                title="بطاقة الموسم: 10 مباريات و 22 نقطة"
                 onTrial={onTrial(BEGINNER)}
               />
             ),
@@ -112,8 +95,7 @@ export default function Module01Nashat() {
                 level="advanced"
                 system={ADVANCED}
                 theme="staff"
-                title="نشاط 1: 32 عاملا قبل التقاعد وبعده"
-                lead="جرّب عدة ثنائيات، منها ما يقترحه الكتاب: 24 رجلا و 8 نساء، واقرأ اللوحتين."
+                lead="أُحيل 5 رجال و 3 نساء إلى التقاعد ولم يُعوَّضوا، فأصبح عدد النساء ضعف عدد الرجال."
                 onTrial={onTrial(ADVANCED)}
               />
             ),
@@ -125,7 +107,7 @@ export default function Module01Nashat() {
           num: 1, title: '24 رجلا و 8 نساء؟', subtitle: 'السؤال أ', done: q1,
           content: (
             <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[0]}</MathText></p>
+              <TextbookBox kind="exercise" text={ACTIVITY.questions[0]} source={ACTIVITY.source} compact />
               {evidence}
               <TapQuestion
                 prompt={<MathText>{'جرّب الثنائية $(24 ; 8)$ على لوحة العمّال إن لم تفعل، ثم اختر:'}</MathText>}
@@ -188,15 +170,21 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'عدد الرجال وعدد النساء', subtitle: 'السؤال د', done: q4,
+          num: 4, title: 'ماذا تقول الثنائية عن المصلحة؟', subtitle: 'السؤال د', done: q4,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[3]}</MathText></p>
-              <PairQuestion
-                prompt={<MathText>{'اكتب الثنائية $(x ; y)$ : عدد الرجال ثم عدد النساء قبل الإحالة على التقاعد.'}</MathText>}
-                expected={ACTIVITY.answer}
+              <TapQuestion
+                prompt={<MathText>{'أضاءت اللوحتان معًا مع الثنائية $(13 ; 19)$ . ماذا تقول هذه الثنائية عن المصلحة؟'}</MathText>}
+                options={[
+                  'قبل الإحالة على التقاعد: 13 رجلا و 19 امرأة',
+                  'بعد الإحالة على التقاعد: 13 رجلا و 19 امرأة',
+                  'قبل الإحالة على التقاعد: 19 رجلا و 13 امرأة',
+                ]}
+                correct={0}
+                cols={1}
                 requires={['jumla-nashat']}
-                explain={ACTIVITY_LINES.d}
+                explain={<MathText>{ACTIVITY_LINES.d}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
             </div>
@@ -206,6 +194,7 @@ export default function Module01Nashat() {
           num: 5, title: 'تحدّ القسم', subtitle: 'الشرطان نفساهما، بالقطع النقدية', done: q5,
           content: (
             <div className="space-y-3">
+              <div className="flex justify-center"><ChallengeVignette /></div>
               <TextbookBox kind="situation" title="تحدّ" text={CHALLENGE.text} source={CHALLENGE.source} compact />
               <p className="text-sm text-slate-700"><MathText>{CHALLENGE.unknowns}</MathText></p>
               <Manipulation
@@ -213,7 +202,6 @@ export default function Module01Nashat() {
                 system={CHALLENGE.system}
                 theme="coins"
                 levels={false}
-                title="تحدّ القسم: 37 قطعة و 610DA"
               />
               <PairQuestion
                 prompt={<MathText>{'عدد قطع 20DA ثم عدد قطع 10DA: الثنائية $(x ; y)$ ='}</MathText>}

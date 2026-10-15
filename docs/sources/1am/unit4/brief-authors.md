@@ -210,3 +210,76 @@ Exactly the unit-2 bank brief (`docs/sources/1am/unit2/brief-authors.md` « Bank
   gcd, never a divisibility rule), including the « simplest form » keys.
 - Gates you run: `node scripts/validate-exercises.mjs --strict`, the oracle test, `node scripts/check-textbook-coverage.mjs`,
   `npm run test:scripts`. Do NOT run `npm run build`.
+
+---
+
+# Lesson `hasil-qisma-kasr` « حاصل القسمة والكسر » — authors' brief (2026-10-15, batch 3, queue entry 1)
+
+The unit is already seeded (`kitabat-kasriya/_unit/`, this extraction). The lead writes the lesson folder
+(`apps/web/src/lessons/moyen/1am/ansab_al_aadad_wal_hisab/kitabat-kasriya/hasil-qisma-kasr/`) and a NEW lab `fair-share`
+(`operations/FairShare.jsx`, MANIPULATION_CONTRACT § next free number). The Bank author owns ONLY
+`content/practice/1am/hasil-qisma-kasr/**`, the lesson's entries in `content/practice/{active,exam-style,policy,misconceptions}.json`,
+`scripts/practice-oracle/hasil-qisma-kasr.mjs` and its import in `scripts/practice-answer-oracle.test.mjs`; never the lesson folder, the lab,
+the extraction or the catalogue.
+
+**The lesson in one paragraph.** « الكسر $\frac{a}{b}$ هو حاصل قسمة $a$ على $b$ » (textbook نشاط 1 p. 53 « تقسيم رغيف تقليدي » — 5 loaves among 6
+people —, معارف 1 p. 55, exercises 1–5 p. 57, أقوّم 1, 2, 3, 9 p. 59, أتعمّق 2 p. 60). Programme item `1am.m5.r01`. The idea the student
+DISCOVERS in the lab (the hand holds the SHARE of one person; the lab compares b shares with the a loaves): the number x such that
+b × x = a exists for EVERY a and b ≠ 0 — it is written a/b (a pieces of 1/b of a loaf) — and it is a DECIMAL number only sometimes
+(3 ÷ 4 = 0,75 lands, 2 ÷ 3 / 5 ÷ 6 / 7 ÷ 3 never do: 2,33 is only an approximate value, 7/3 is the exact one).
+
+Final الكفاءات (ids positional, `1am_hasil-qisma-kasr_P<n>`; each primary on ≥ 8 questions):
+
+1. **P1** التعرّف على الكسر $\frac{a}{b}$ كحاصل قسمة $a$ على $b$ ($b\neq0$)، وكتابة حاصل قسمة عددين طبيعيين على شكل كسر
+2. **P2** توظيف النتيجة $\frac{a}{b}\times b=a$ لإيجاد عدد ناقص في مساواة من الشكل $b\times\ldots=a$
+3. **P3** التمييز بين حاصل قسمة عدد عشري وحاصل قسمة غير عشري (مثل $\frac{7}{3}$) وإعطاء قيمة مقرّبة له
+
+**Boundaries (the net's no-duplication rule — each belongs to ANOTHER lesson of the unit, never a primary LP here, at most a step
+`counted: false`):** reducing a fraction / equal writings (`ikhtizal-kitaba-kasriya`, published), placing a quotient on a graduated half-line
+(`hasil-qisma-mustaqim`), taking a fraction of a number or an amount (`akhdh-kasr-min-adad`), decimal division with rounding to the unit
+(`qisma-ashriya-taqrib`, unit 3, not yet generated). Reading the fraction of a coloured figure with EQUAL parts (numerator = coloured
+parts, denominator = all equal parts) IS this lesson (ex-1, ex-2: « 3 ÷ 4 ») — draw it as a `statement.figure` (GeoFigure `polygons` with a
+tone for the coloured cells, `figureQuality` clean) or describe the grid in words.
+
+**Textbook elements you may cite** (destination `hasil-qisma-kasr`, as `adapted` sheets, badge `null`): `act-1`, `know-1` (NOT its item
+« 0,7 = 7/10 » → `ikhtizal-kitaba-kasriya`), `ex-1` … `ex-5`, `self-1` (the four test tubes — the lead REDESIGNS it with the
+graduations 3/4, 2/5, 6/6, 5/8 of the tubes A, B, C, D), `self-2`, `self-3`, `self-9`, `deep-2`, `prep` (items 5, 6, 7 only), `opener`.
+NOT any other element of the unit (citing one breaks `check:textbook`).
+
+**Corpus** (`docs/sources/moyen/exams/exams-index.json`; read the PDFs under `docs/Exames-1 AM to 3AM/1am/`: `pdftotext -layout` then
+NFKC, or `pdftoppm -r 110` — rendered pages of `1am-s3-37` p. 1 and `1am-s2-64` p. 1 are already in the lead's scratchpad
+`/tmp/claude-1000/-home-abdennour-websites-smarter-academy-smarter-academy-dz/c83946f0-8d92-4bf2-bb25-f71d55b9166d/scratchpad/ex/` as
+`s337-1.png`, `s264-1.png`). Exercises of THIS lesson, to model one by one (keep the structure and register, CHANGE numbers and context):
+- `1am-s2-72` (TERM 2) ex 1 item 3 « حاصل قسمة العدد 20 على 3 هو عدد عشري : صحيح أو خطأ مع تصحيح الخطأ » (false — it is a fraction, 6,66… never ends)
+  and ex 3 item 4 « اكتب العدد الناقص على شكل كسر : 3 × … = 5 ؛ 9 × … = 7 » (the figures of ex 3 — a graduated line — are NOT this lesson);
+- `1am-s2-78` (TERM 2) ex 2 item 2 « انقل وأتمم : 17/3 × 3 = … ؛ …/… × 7 = 3 ؛ 28/2 × … = 28 » (the 4th fraction of the first blank is 17/3);
+- `1am-s3-37` (TERM 3, badge « على منوال اختبار الفصل الثالث ») ex 2 item 1 « انقل وأتمم : 45 × …/… = 102 ؛ …/19 × 19 = 23 » (read `s337-1.png`: the
+  unknown of the first is a blank fraction — its answer 102/45 is NOT in lowest terms and for this lesson stays as it comes, reduction is another
+  lesson —, the second is 23/19);
+- `1am-s2-64` (TERM 2) ex 1 item 3 « أكمل بما يناسب : 0.24 × … = 24 ؛ 15 ÷ … = 1500 » (decimal factor; answers 100 and 0,01; `counted: true`,
+  P2-flavoured) and its ex 2 (decimal division 459 ÷ 8 and 126,7 ÷ 2 with the table of approximate values — usable ONLY for the vocabulary
+  « قيمة مقرّبة بالنقصان / بالزيادة / مدوّر » of an exact quotient, `counted: false` otherwise);
+- `1am-s2-65` ex 3 (NO text layer — render it at 110 dpi and read: sharing 7000 DA among three sons, true/false on a decimal division);
+- NOT usable: `1am-s2-62` (a term-3 paper filed under s2; its fractions are « كسور من مربعات ملونة » — you MAY model that idea as a platform
+  sheet), `1am-s3-44`, `1am-s3-45` (examType `remedial`), `1am-s1-100` (a 3AM paper).
+About half of levels 3–5 modelled on ONE precise corpus exercise above (`metadata.source = {type:"term_exam", grade:"1am", semester, file,
+exercise}`, kind `modelled`, badge « على منوال اختبار الفصل الثاني » — « الثالث » for `1am-s3-37`); the rest
+`{type:"platform_addition", reason:"term_exam_modelled", modelledOn:"1am-s2"}` with the term-2 badge, a few `adapted` from the textbook
+elements above.
+
+**What is assessed:** writing a quotient as a fraction (5 ÷ 6 = 5/6, 7 ÷ 3 = 7/3, never 6/5, never 5,6) and the other way (« 9 ÷ 11 »: the
+fraction among 13/9, 9/11, … that equals it); reading a coloured figure with equal parts; the missing factor (b × … = a → a/b; … × 8 = 13;
+a/b × b = a, also with decimals 0,24 × … = 24); « نضرب الكسر في مقامه فنجد بسطه »; decided true/false « حاصل قسمة a على b عدد عشري » with
+the correction (3 ÷ 4 = 0,75 yes — decimal division stops; 20 ÷ 3 no — it never stops) and a decimal writing when it exists (3/4 = 0,75, 9/2 =
+4,5 — by ×25 / ×5 or by the division); an approximate value of a non-decimal quotient to 0,1 or 0,01 (BY DEFECT / BY EXCESS — 7/3: 2,3 and
+2,4; 2,33 and 2,34) and the sentence « 7/3 هي القيمة المضبوطة و 2,33 قيمة مقرّبة ». Vocabulary: البسط، المقام، كسر، حاصل قسمة.
+New misconception ids `MISC-HASIL-*` (e.g. the quotient written upside down 6/5, the comma for the bar 5,6, « every quotient is decimal »,
+the figure's coloured parts counted over UNEQUAL parts, the missing factor found by subtraction (3 × … = 7 → 4) or taken as a product (21),
+the denominator zero).
+Everything else as `docs/sources/1am/unit2/brief-authors.md` « Bank author » (50 sheets = 10 per level, ids `ex-1am-hasil-qisma-kasr-l<N>-<NNN>`,
+levels per EXAM_PATTERN §6, oracle recomputing every constructed answer with exact BigInt fractions — copy the helper idiom of
+`scripts/practice-oracle/ikhtizal-kitaba-kasriya.mjs`, the previous 1AM unit-4 bank —, hints that never give the answer, explicit keys,
+every distractor FALSE, values woven into story contexts, « دج » in Arabic text). Gates you run: `node scripts/validate-exercises.mjs
+--strict`, the oracle test (`npx vitest run scripts/practice-answer-oracle.test.mjs` from the repo root), `node scripts/check-textbook-coverage.mjs`
+(the lesson folder does not exist yet: its destination is « pending » — expected). Do NOT run `npm run build` or the PHP suite. Report:
+files, counts per level and per LP, the corpus exercises used (file + exercise), test results.

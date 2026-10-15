@@ -15,7 +15,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/mafhum-taalufiya/modules/Module01Nashat.jsx",
-        "line": 260,
+        "line": 242,
         "step": 4,
         "variant": "new"
       }
@@ -194,7 +194,7 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/mafhum-taalufiya/modules/Module01Nashat.jsx",
-      "line": 152,
+      "line": 134,
       "requires": [
         "taawid-qima"
       ],
@@ -210,7 +210,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/mafhum-taalufiya/modules/Module01Nashat.jsx",
-      "line": 182,
+      "line": 164,
       "requires": [
         "taawid-qima"
       ],
@@ -226,7 +226,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/mafhum-taalufiya/modules/Module01Nashat.jsx",
-      "line": 192,
+      "line": 174,
       "requires": [
         "mafhum-khattiya"
       ],
@@ -242,7 +242,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/mafhum-taalufiya/modules/Module01Nashat.jsx",
-      "line": 215,
+      "line": 197,
       "requires": [
         "taawid-qima"
       ],
@@ -258,7 +258,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/mafhum-taalufiya/modules/Module01Nashat.jsx",
-      "line": 232,
+      "line": 214,
       "requires": [
         "taawid-qima"
       ],
@@ -274,7 +274,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/mafhum-taalufiya/modules/Module01Nashat.jsx",
-      "line": 246,
+      "line": 228,
       "requires": [
         "taawid-qima"
       ],
@@ -290,7 +290,7 @@
       "step": 5,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/mafhum-taalufiya/modules/Module01Nashat.jsx",
-      "line": 270,
+      "line": 252,
       "requires": [
         "dala-ujra",
         "hal-muadala-ula"

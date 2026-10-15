@@ -14,7 +14,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module01Nashat.jsx",
-        "line": 186,
+        "line": 168,
         "step": 3,
         "variant": "new"
       }
@@ -25,7 +25,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module02Maarif.jsx",
-        "line": 57,
+        "line": 59,
         "step": 1,
         "variant": "new"
       }
@@ -36,7 +36,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module02Maarif.jsx",
-        "line": 85,
+        "line": 87,
         "step": 2,
         "variant": "new"
       }
@@ -47,7 +47,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module02Maarif.jsx",
-        "line": 138,
+        "line": 140,
         "step": 4,
         "variant": "new"
       }
@@ -61,7 +61,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module02Maarif.jsx",
-        "line": 87,
+        "line": 98,
         "step": 2,
         "variant": "new"
       }
@@ -74,7 +74,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module02Maarif.jsx",
-        "line": 105,
+        "line": 107,
         "step": 3,
         "variant": "new"
       }
@@ -215,7 +215,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module01Nashat.jsx",
-      "line": 130,
+      "line": 112,
       "requires": [
         "taawid-majhulayn"
       ],
@@ -231,7 +231,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module01Nashat.jsx",
-      "line": 148,
+      "line": 130,
       "requires": [
         "hal-muadala-ula"
       ],
@@ -247,7 +247,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module01Nashat.jsx",
-      "line": 165,
+      "line": 147,
       "requires": [
         "hal-muadala-ula"
       ],
@@ -263,7 +263,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module01Nashat.jsx",
-      "line": 176,
+      "line": 158,
       "requires": [
         "taawid-majhulayn"
       ],
@@ -274,12 +274,28 @@
       "pedagogicallyValid": true
     },
     {
+      "questionId": "M01-S4-Q5",
+      "module": 1,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module01Nashat.jsx",
+      "line": 177,
+      "requires": [
+        "jumla-nashat"
+      ],
+      "prerequisiteStatus": {
+        "jumla-nashat": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
       "questionId": "M02-S1-Q1",
       "module": 2,
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module02Maarif.jsx",
-      "line": 58,
+      "line": 60,
       "requires": [
         "jumla-tarif"
       ],
@@ -295,7 +311,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module02Maarif.jsx",
-      "line": 68,
+      "line": 70,
       "requires": [
         "jumla-tarif"
       ],
@@ -313,10 +329,10 @@
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module02Maarif.jsx",
       "line": 88,
       "requires": [
-        "ikhtibar-thunaiya"
+        "hall-jumla"
       ],
       "prerequisiteStatus": {
-        "ikhtibar-thunaiya": "established@M2"
+        "hall-jumla": "established@M2"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -327,7 +343,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module02Maarif.jsx",
-      "line": 106,
+      "line": 108,
       "requires": [
         "tartib-thunaiya",
         "ikhtibar-thunaiya"
@@ -345,7 +361,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/modules/Module02Maarif.jsx",
-      "line": 140,
+      "line": 142,
       "requires": [
         "halat-khassa",
         "ikhtibar-thunaiya"

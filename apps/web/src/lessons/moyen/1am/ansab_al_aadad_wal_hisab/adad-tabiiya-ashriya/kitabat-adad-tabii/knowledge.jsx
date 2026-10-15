@@ -25,11 +25,10 @@ export const LESSON_KNOWLEDGE = {
       },
       {
         id: 'qima-mawdi', type: 'concepts', title: 'قيمة الرقم حسب موقعه', predict: false,
-        summary: 'يأخذ كل رقم معناه تبعًا لموقعه: في 25 الرقم 2 يمثّل عشرتين (20)، وفي 52 يمثّل وحدتين (2).',
+        summary: 'يأخذ كل رقم معناه تبعًا لموقعه: في 2577 الرقم 7 الذي في مرتبة الآحاد يمثّل 7، والرقم 7 الذي في مرتبة العشرات يمثّل 70.',
         body: (
           <div className="space-y-2">
             <p>{RANKS.box}</p>
-            <p className="text-sm text-slate-600"><MathText>{'$25 = 2 \\times 10 + 5$ ، $52 = 5 \\times 10 + 2$'}</MathText></p>
           </div>
         ),
       },

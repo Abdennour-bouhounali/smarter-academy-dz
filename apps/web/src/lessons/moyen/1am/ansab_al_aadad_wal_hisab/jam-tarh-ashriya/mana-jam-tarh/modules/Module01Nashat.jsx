@@ -9,7 +9,9 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACT, CHECKUP, GUIDE } from '../content/textbook';
 
 /**
- * Module 1 — نشاط 1 (p. 25) « أيّ حساب أقوم به؟ ».
+ * Module 1 — l'ENTRÉE : la toise de la visite médicale (plateforme) ; le نشاط 1 du manuel (p. 25, six textes) est le niveau
+ * متقدم, posé après. UNE SEULE PISTE (§4quater, rétrofit 2026-10-14) : le labo en haut, SANS carte ni titre au-dessus ; des
+ * questions sur ce que l'élève a fait (POURQUOI, pas « quel calcul » — le labo l'a déjà demandé) ; la brique APRÈS la réponse.
  *
  * LABORATOIRE À DEUX NIVEAUX (MANIPULATION_CONTRACT §7bis-levels), un seul type `story-bars` :
  *
@@ -59,24 +61,8 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 1 — أيّ حساب أقوم به؟"
       moduleSubtitle="من الأطول؟ ومن الأقصر؟"
       estimatedTime="12 دقيقة"
-      brief={{
-        tag: 'نشاط 1 — الفحص الطبي المدرسي',
-        headline: 'من الأطول؟',
-        emoji: '📏',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-1">
-            <p><MathText>{CHECKUP.situation}</MathText></p>
-            <p className="font-semibold">{CHECKUP.question}</p>
-          </div>
-        ),
-        footer: <SourceTag source={CHECKUP.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="ابدأ بالمستوى المبتدئ (مقياس القامة)، ثم انتقل إلى المتقدّم: نصوص الكتاب الستة وبطاقاته الست."
           levels={{
             beginner: () => (
               <div className="space-y-2">
@@ -95,7 +81,7 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'النصّ ③: أيّ حساب يعطي علامة يونس؟', subtitle: 'ضع بطاقة على النصّ ③ في المستوى المتقدّم، ثم أجب', done: q1,
+          num: 1, title: 'النصّ ③: لماذا طرحنا رغم كلمة «زادت»؟', subtitle: 'ضع بطاقة على النصّ ③ في المستوى المتقدّم، ثم أجب', done: q1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACT[3].text} source={ACTIVITY.source} compact />
@@ -109,10 +95,10 @@ export default function Module01Nashat() {
                 </li>
               </ul>
               <TapQuestion
-                prompt={<span>أيّ حساب يعطي العلامة التي تحصّل عليها يونس؟</span>}
-                options={[M('$17{,}5 + 1{,}5$'), M('$17{,}5 - 1{,}5$'), M('$1{,}5 - 17{,}5$')]}
-                correct={1}
-                cols={3}
+                prompt={<span>في النصّ ③ كلمة «زادت»، ومع ذلك طرحتَ <bdi dir="ltr">1,5</bdi> من <bdi dir="ltr">17,5</bdi>. لماذا؟</span>}
+                options={['لأنّ علامة إيناس هي الكلّ، وعلامة يونس جزء منه', 'لأنّ كلمة «زادت» تعني دائمًا أن نطرح', 'لأنّ 1,5 أصغر من 17,5 فقط']}
+                correct={0}
+                cols={1}
                 requires={['jam-tarh-tabii']}
                 explain={<span><MathText>{GUIDE.keyword.why}</MathText> <MathText>{GUIDE.keyword.right}</MathText></span>}
                 onAnswered={() => setQ1(true)}
@@ -121,16 +107,16 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'النصّ ①: ما ثمن الكرّاس؟', subtitle: 'كلمة «ينقصه»… هل نطرح؟', done: q2,
+          num: 2, title: 'النصّ ①: لماذا جمعنا رغم كلمة «ينقصه»؟', subtitle: 'كلمة «ينقصه»… هل نطرح؟', done: q2,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACT[1].text} source={ACTIVITY.source} compact />
               <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>{evidence(1)}</ul>
               <TapQuestion
-                prompt={<span>أيّ حساب يعطي ثمن الكرّاس؟</span>}
-                options={[M('$24{,}5 - 11{,}5$'), M('$24{,}5 + 11{,}5$'), M('$11{,}5 - 24{,}5$')]}
-                correct={1}
-                cols={3}
+                prompt={<span>في النصّ ① كلمة «ينقصه»، ومع ذلك جمعتَ <bdi dir="ltr">11,5</bdi> مع <bdi dir="ltr">24,5</bdi>. لماذا؟</span>}
+                options={['لأنّ ثمن الكرّاس هو الكلّ: ما يملكه يونس جزء منه، وما ينقصه الجزء الآخر', 'لأنّ كلمة «ينقصه» تعني دائمًا أن نجمع', 'لأنّ 11,5 أصغر من 24,5 فقط']}
+                correct={0}
+                cols={1}
                 requires={['jam-tarh-tabii']}
                 explain={<span><MathText>{GUIDE.lacking.why}</MathText> <MathText>{GUIDE.lacking.right}</MathText></span>}
                 onAnswered={() => setQ2(true)}
@@ -142,7 +128,6 @@ export default function Module01Nashat() {
           num: 3, title: 'متى نجمع ومتى نطرح؟', subtitle: 'اكتب قاعدتك، ثم صنّف وضعيات أخرى', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="ikhtiyar-amaliya" lead="الكلمة وحدها لم تكفِ في النصّين: ما الذي قرّر العملية في كل مرّة؟" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">في كل وضعية: هل المجهول هو الكلّ أم جزء منه؟</p>}
                 rows={[
@@ -153,7 +138,7 @@ export default function Module01Nashat() {
                   { id: 'ry', label: <MathText>{'تنقص قامة سارة ($130\\,\\mathrm{cm}$) عن قامة ياسين بـ $5\\,\\mathrm{cm}$: قامة ياسين'}</MathText>, options: ['المجهول هو الكلّ: نجمع', 'المجهول جزء: نطرح'], correct: 0,
                     correction: <MathText>{'ياسين هو الأطول، فقامته هي الكلّ: $130 + 5 = 135$ ، رغم كلمة «تنقص».'}</MathText> },
                 ]}
-                requires={['ikhtiyar-amaliya']}
+                requires={['jam-tarh-tabii']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     {allRight ? 'تمامًا: ابحث عن الكلّ قبل أن تحسب.' : 'ابحث عن العدد الأكبر في الوضعية: هو الكلّ.'}
@@ -161,6 +146,7 @@ export default function Module01Nashat() {
                 )}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="ikhtiyar-amaliya" lead="الكلمة وحدها لم تكفِ في النصّين: ما الذي قرّر العملية في كل مرّة؟" />}
             </div>
           ),
         },

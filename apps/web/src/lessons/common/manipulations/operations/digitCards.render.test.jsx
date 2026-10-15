@@ -53,7 +53,7 @@ describe('digit-cards — rendu', () => {
     expect(attrs(out, 'data-dc-slot')).toEqual(['0', '1', '2', '3']);
     expect(out).toContain('data-dc-tray');
     expect(attrs(out, 'data-dc-lamp')).toEqual(['2', '3', '5', '4', '9']);
-    expect(attrs(out, 'data-state')).toEqual(['closed', 'closed', 'closed', 'closed', 'closed']);
+    expect(attrs(out, 'data-state').filter((x) => x !== 'on')).toEqual(['closed', 'closed', 'closed', 'closed', 'closed']);
     expect(attrs(out, 'data-dc-claim')).toHaveLength(10);
     expect(attrs(out, 'data-dc-task')).toEqual(['2', '3', '5', '4', '9']);
     expect(out).toContain('data-dc-submit');

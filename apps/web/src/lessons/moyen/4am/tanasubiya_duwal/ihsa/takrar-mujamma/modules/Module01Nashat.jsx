@@ -9,11 +9,12 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, FUNPARK } from '../content/textbook';
 import FreqTable from '../components/FreqTable';
 import { BarChart } from '../components/Charts';
-import FunparkVignette from '../components/FunparkVignette';
 
 /**
  * Module 1 — نشاط 1 (p. 92) « التكرار المجمع », ouvert sur LA TOISE DU MANÈGE (cumul-gate).
  *
+ * Rétrofit 2026-10-15 (§4quater) : le labo en tête (ni `brief` ni titres de labo / d'atelier), la question 2 renvoie aux annonces de
+ * l'élève, le rappel de l'étape 4 retiré avant sa question (la brique est nommée à l'étape 3). Modules 2–3 : voir lesson.config.js.
  * REAL / DISCOVER / MANIPULATE  le lab à deux niveaux, même objectif :
  *   متقدم (ouvert par défaut : le نشاط 1) : les 20 élèves dans l'ordre du manuel, le tableau des questions 4–5
  *          (cases imprimées données) que remplissent les comptes acceptés de l'élève ;
@@ -64,27 +65,10 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 1 — بوابة القامة"
       moduleSubtitle="كم تلميذا قامته t على الأكثر؟ على الأقل؟"
       estimatedTime="12 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 92',
-        headline: `في حديقة التسلية: «${FUNPARK.sign}»`,
-        emoji: '🎡',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <FunparkVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800"><MathText>{ACTIVITY.text}</MathText></p>
-            <p className="font-mono text-sm text-slate-700" dir="ltr">{ACTIVITY.series.join('  ')}</p>
-            <p className="text-sm text-slate-600">قبل أسئلة النشاط: حرّك شريط المقياس، اختر «على الأكثر» أو «على الأقل»، وأعلن عند البوابة كم تلميذا يحقّق الشرط. البوابة تتحقّق.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
+        // LE LABO OUVRE LE MODULE (§4quater) : ni carte du manuel, ni titre / `lead` d'atelier ; le `lead` du labo = le contexte seul.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين مقياس قامة وطابور: الشريط هو القيمة t، والمضاؤون هم الذين يحقّقون الشرط. لا تعدّ المضائين فقط — أعلن العدد، والبوابة تقبله أو ترفضه بشاهد."
           levels={{
             beginner: () => (
               <Manipulation
@@ -93,8 +77,7 @@ export default function Module01Nashat() {
                 series={FUNPARK.series}
                 mode="up|down"
                 theme="funpark"
-                title="طابور اللعبة: 130cm على الأقل"
-                lead="ثمانية أطفال في الطابور. كم طفلا يركب اللعبة؟ وكم طفلا قامته 130cm على الأكثر؟"
+                lead="ثمانية أطفال ينتظرون دورهم في طابور إحدى ألعاب حديقة التسلية."
               />
             ),
             advanced: () => (
@@ -105,8 +88,7 @@ export default function Module01Nashat() {
                 mode="up|down|table"
                 given={ACTIVITY.given}
                 theme="school"
-                title="نشاط 1: قامات 20 تلميذا"
-                lead="التلاميذ في ترتيب الكتاب. كل عدد تُعلنه صحيحا يملأ خانة من جدول السؤالين 4 و 5."
+                lead="قامات 20 تلميذا من قسم واحد، كما سُجّلت (غير مرتّبة). كل عدد تُعلنه صحيحا يملأ خانة في الجدول."
                 onTrial={onTrial}
               />
             ),
@@ -115,10 +97,9 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'ترتيب السلسلة', subtitle: 'السؤال 1', done: q1,
+          num: 1, title: 'كيف يبدو الطابور بعد أن ترتّبه؟', subtitle: 'السؤال 1', done: q1,
           content: (
             <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[0]}</MathText></p>
               <TapQuestion
                 prompt="الترتيب التصاعدي لقامات العشرين تلميذا هو:"
                 options={[
@@ -136,12 +117,12 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'على الأقل، على الأكثر', subtitle: 'السؤالان 2 و 3', done: q2,
+          num: 2, title: 'ماذا قبلت البوابة عند 159؟', subtitle: 'السؤالان 2 و 3', done: q2,
           content: (
             <div className="space-y-3">
               {evidence}
               <NumericQuestion
-                prompt={<MathText>{ACTIVITY.questions[1]}</MathText>}
+                prompt={<MathText>{'أعلنتَ عند البوابة أعدادًا لقيم من اختيارك. جرّب الآن القيمة 159 بالذات: ما عدد التلاميذ الذين أطوال قاماتهم 159cm على الأقل؟'}</MathText>}
                 expected={ACTIVITY.answer.atLeast159}
                 display={String(ACTIVITY.answer.atLeast159)}
                 requires={['ala-aqal-akthar']}
@@ -189,6 +170,7 @@ export default function Module01Nashat() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: السطر الأول 3 ، 7 ، 12 ، 17 ، 20 والسطر الثاني 20 ، 17 ، 13 ، 8 ، 3.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <SourceTag source={ACTIVITY.source} />}
               {q3 && <KnowledgeBrick id="mujamma-nashat" lead="الكتاب يسمّي ما عددته عند البوابة:" />}
             </div>
           ),
@@ -200,12 +182,10 @@ export default function Module01Nashat() {
               <TextbookBox kind="situation" text={ACTIVITY.chartText} source={ACTIVITY.source} compact />
               <BarChart labels={ACTIVITY.chart.values.map((v) => `${v}`)} freqs={ACTIVITY.chart.freqs} yMax={ACTIVITY.chart.yMax} yStep={ACTIVITY.chart.yStep}
                 xLabel="الأعمار (بالسنة)" yLabel={ACTIVITY.chart.yLabel} label="مخطط بالأعمدة: 11 سنة 40 تلميذا، 12 سنة 50، 13 سنة 80، 14 سنة 30" />
-              <KnowledgeBrick id="mujamma-nashat" variant="rappel" compact />
               <NumericQuestion
                 prompt="التكرار المجمع الصاعد الموافق للقيمة 12:"
                 expected={ACTIVITY.chartAnswer.up12}
                 display={String(ACTIVITY.chartAnswer.up12)}
-                requires={['mujamma-nashat']}
                 explain={<MathText>{ACTIVITY_LINES.up12}</MathText>}
                 onAnswered={() => setQ4a(true)}
               />

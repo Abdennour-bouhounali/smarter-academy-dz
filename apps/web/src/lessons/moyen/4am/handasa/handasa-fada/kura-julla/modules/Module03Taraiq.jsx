@@ -17,6 +17,8 @@ import { FIG_DRAW_1, FIG_DRAW_2, FIG_DRAW_3, FIG_POINT_GIVEN, FIG_POINT_SOLUTION
  * sur la كرة et B dans la جلّة par des دوائر كبرى (la figure donnée, puis la solution — brique tamthil-nuqta) ; 3) la méthode
  * DÉCLARÉE de la plateforme : OM² = x² + y² + z² dans un repère de l'espace (ce que le lab lisait — brique masafa-maalam) ;
  * 4) دوري الآن : AOB équilatéral (60°), OI = √3 par Pythagore. LP : P3, P4.
+ * Rétrofit 2026-10-15 (§4quater) : module sans labo ; la carte du haut ne dit aucun fait ; « أتوقّع القاعدة » inchangée ; les trois briques
+ * qui NOMMENT la méthode viennent après la question de l'étape (`{qN && <KnowledgeBrick/>}`), sans `requires` sur elles.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -57,7 +59,6 @@ export default function Module03Taraiq() {
                   ))}
                 </div>
               </PredictRule>
-              <KnowledgeBrick id="tamthil-kura" lead="الطريقة في سطرين:" />
               <TapQuestion
                 prompt="في تمثيل الكرة، الجزء الخلفي من الشكل البيضوي (الدائرة الكبرى الأفقية) يُرسم:"
                 options={[
@@ -69,10 +70,10 @@ export default function Module03Taraiq() {
                 ]}
                 correct={0}
                 cols={1}
-                requires={['tamthil-kura']}
                 explain="الجزء الأمامي للشكل البيضوي يكون بخط مستمر والجزء الخلفي بخط متقطّع: هكذا نرى أن الدائرة الكبرى «تدور» خلف الكرة."
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="tamthil-kura" lead="الطريقة في سطرين:" />}
             </div>
           ),
         },
@@ -86,7 +87,6 @@ export default function Module03Taraiq() {
                 <MethodSteps method={METHOD_POINT} />
                 <SpaceFigure {...FIG_POINT_SOLUTION} />
               </PredictRule>
-              <KnowledgeBrick id="tamthil-nuqta" lead="دائرة كبرى لكل نقطة:" />
               <TapQuestion
                 prompt="لماذا لا يكفي الشكل المعطى (الدائرة والنقط A و O و B) لنعرف أن A على الكرة و B داخلها؟"
                 options={[
@@ -98,10 +98,10 @@ export default function Module03Taraiq() {
                 ]}
                 correct={0}
                 cols={1}
-                requires={['tamthil-nuqta']}
                 explain={<MathText>{`${METHOD_POINT.rule} على الرسم المستوي تظهر A و B داخل الدائرة الكفاف معا؛ الدائرة الكبرى التي تمر بـ A تُظهر أنها على السطح.`}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="tamthil-nuqta" lead="دائرة كبرى لكل نقطة:" />}
             </div>
           ),
         },
@@ -110,7 +110,6 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <PredictRule id="masafa-maalam"><TextbookBox kind="method" title={METHOD_DISTANCE.title} lines={METHOD_DISTANCE.lines} source={METHOD_DISTANCE.source} compact /></PredictRule>
-              <KnowledgeBrick id="masafa-maalam" lead="ما كان المسبار يحسبه أمامك:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'كرة مركزها O ونصف قطرها $7$ ، في معلم متعامد ومتجانس مبدؤه O:'}</MathText></p>}
                 rows={[
@@ -121,10 +120,10 @@ export default function Module03Taraiq() {
                   // 1 + 16 + 16 = 33 < 49 ; « dehors » : 1 + 4 + 4 = 9 > 7 (on additionne les coordonnées)
                   { id: 'n', label: <MathText>{'$N(1\\,;\\,4\\,;\\,4)$'}</MathText>, options: ['على الكرة', 'داخل الجلة', 'خارج الجلة'], correct: 1, correction: <MathText>{'$ON^2 = 1 + 16 + 16 = 33 < 49$ : N داخل الجلة وليست على الكرة.'}</MathText> },
                 ]}
-                requires={['masafa-maalam']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? <MathText>{'أحسنت: مربع البعد يُقارن بـ $R^2 = 49$ ، لا الإحداثيات وحدها.'}</MathText> : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="masafa-maalam" lead="ما كان المسبار يحسبه أمامك:" />}
             </div>
           ),
         },

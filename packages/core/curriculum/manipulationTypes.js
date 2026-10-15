@@ -580,6 +580,19 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'حاصل القسمة a ÷ b عدد يقع بين عددين طبيعيين متتاليين: q (الصفائح المملوءة، قيمة مقرّبة بالنقصان) و q + 1 (الصفائح اللازمة، بالزيادة) ؛ ويقع على عدد طبيعي بالضبط إذا وفقط إذا كان الباقي معدومًا (b يقسم a) ؛ والباقي أصغر دائمًا من b',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 1AM, unité 4 « الكتابات الكسرية » (2026-10-15) — la fraction est le quotient : le nombre qui, multiplié par b, donne a.
+  'fair-share': {
+    // LE PARTAGE ÉQUITABLE : a pains sont posés sur la table pour b enfants ; la main tient la PART x d'un enfant (un curseur sur
+    // une règle) et le labo met b parts bout à bout contre les a pains : b × x < a (il reste du pain), b × x > a (il manque du pain
+    // qui n'existe pas), ou b × x = a. La règle décimale (pas d'un dixième, d'un centième, d'un millième) tombe juste pour 3 pains
+    // et 4 enfants (0,75) mais JAMAIS pour 2 pains et 3 enfants, 5 et 6, 7 et 3 (il manque toujours un peu) ; la règle des morceaux
+    // (chaque pain coupé en b morceaux égaux, x = m morceaux) tombe juste pour tout a et tout b ≠ 0, à m = a. Le nombre qui multiplié
+    // par b donne a s'écrit a/b ; il est décimal seulement parfois ; 0,66 n'en est qu'une valeur approchée. مبتدئ : la cantine de
+    // l'école (3 ÷ 4 puis 2 ÷ 3) ; متقدم : نشاط 1 du manuel (5 ÷ 6) puis 7 ÷ 3 (la part dépasse un pain). Chaque relâchement est
+    // un essai jugé : MANUEL (§6bis).
+    shows: 'العدد الذي إذا ضُرب في b أعطى a موجود دائمًا (b ≠ 0) ويُكتب a/b: هو حاصل قسمة a على b ؛ وليس عددًا عشريًا دائمًا: 3 ÷ 4 = 0,75 أمّا 2 ÷ 3 فلا كتابة عشرية مضبوطة له، و 0,66 قيمة مقرّبة فقط ؛ a/b × b = a',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

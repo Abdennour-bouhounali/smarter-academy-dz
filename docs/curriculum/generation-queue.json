@@ -2,17 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "hasil-qisma-kasr",
-      "grade": "1am",
-      "unit": "kitabat-kasriya",
-      "titleAr": "حاصل القسمة والكسر",
-      "kind": "lesson",
-      "trigger": "ikhtizal-kasr",
-      "via": [
-        "1am.m5.r01"
-      ]
-    },
-    {
       "code": "kusur-ashriya-kitaba",
       "grade": "1am",
       "unit": "adad-tabiiya-ashriya",

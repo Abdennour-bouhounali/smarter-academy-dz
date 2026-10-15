@@ -35,7 +35,7 @@ export default function Module02Maarif() {
       objectives={["ما الزاوية المركزية وما الزاوية المحيطية؟", "كيف ترتبط الزاويتان اللتان تحصران نفس القوس؟", "ماذا أقول عن محيطيتين تحصران نفس القوس؟"]}
       brief={{
         tag: 'معارف — الكتاب ص 156', title: KNOW4.title, tone: 'violet',
-        body: <p>الرامي على الدائرة رأى المرمى بنفس الزاوية من كل موضع، نصف الزاوية المركزية. الكتاب يسمّي الزاويتين ويكتب الخاصيتين.</p>,
+        body: <p>ثلاث أسئلة على أشكال الكتاب، وبعد كل جواب يكتب الكتاب ما وجدتَه في منطقة الجزاء.</p>,
         footer: <SourceTag source={KNOW4.source} />,
       }}
       steps={[
@@ -43,7 +43,6 @@ export default function Module02Maarif() {
           num: 1, title: 'تعريف الزاويتين', subtitle: 'معارف 4 — تعريف', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tarif" variant="rappel" lead="الزاويتان اللتان قستهما في اللوحة:" />
               <GeoFigure {...FIG_KNOW4_EX1} />
               <TextbookBox kind="example" text={KNOW4.example1} source={KNOW4.source} compact />
               <BatchChoiceQuestion
@@ -56,10 +55,10 @@ export default function Module02Maarif() {
                     correct: 0, correction: 'رأسها A على الدائرة، وضلعاها يقطعان الدائرة في M و N: تحصر القوس MN.',
                   },
                 ]}
-                requires={['tarif']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: الرأس يحدّد النوع، والضلعان يحدّدان القوس.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="tarif" variant="rappel" lead="الزاويتان اللتان قستهما في اللوحة:" />}
             </div>
           ),
         },
@@ -67,7 +66,6 @@ export default function Module02Maarif() {
           num: 2, title: 'الخاصية 1: المحيطية نصف المركزية', subtitle: 'معارف 4 — مثال 2', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="khassiya-nisf" variant="rappel" lead="ما رأيته في كل مواضع الرامي:" />
               <GeoFigure {...FIG_KNOW4_EX2} />
               <TextbookBox kind="example" text={KNOW4.example2} source={KNOW4.source} compact />
               <NumericQuestion
@@ -78,9 +76,9 @@ export default function Module02Maarif() {
                 suffix="°"
                 explain={<MathText>{'$\\widehat{AMB} = \\dfrac{1}{2}\\widehat{AOB} = \\dfrac{80^\\circ}{2} = 40^\\circ$ .'}</MathText>}
                 explainFor={(n) => (n === 160 ? <MathText>{'ضاعفت بدل أن تنصّف: الزاوية المحيطية نصف المركزية، لا ضعفها.'}</MathText> : n === 80 ? <MathText>{'الزاويتان تحصران نفس القوس لكنهما غير متساويتين: المحيطية نصف المركزية.'}</MathText> : null)}
-                requires={['khassiya-nisf']}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="khassiya-nisf" variant="rappel" lead="ما رأيته في كل مواضع الرامي:" />}
             </div>
           ),
         },
@@ -88,7 +86,6 @@ export default function Module02Maarif() {
           num: 3, title: 'الخاصية 2: محيطيتان تحصران نفس القوس', subtitle: 'معارف 4 — مثال 3', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="khassiya-tasawi" lead="ومنه، لزاويتين محيطيتين:" />
               <GeoFigure {...FIG_KNOW4_EX3} />
               <TextbookBox kind="example" text={KNOW4.example3} source={KNOW4.source} compact />
               <p className="text-xs text-slate-500" data-correction><MathText>{KNOW4.correction3}</MathText></p>
@@ -97,10 +94,10 @@ export default function Module02Maarif() {
                 options={['$40^\\circ$', '$80^\\circ$', '$20^\\circ$'].map(M)}
                 correct={0}
                 cols={3}
-                requires={['khassiya-tasawi']}
                 explain={<MathText>{'$\\widehat{AMB}$ و $\\widehat{ANB}$ محيطيتان تحصران القوس AB نفسه: متقايستان. ($80^\\circ$ هي الزاوية المركزية $\\widehat{AOB}$ ، و $20^\\circ$ نصف المحيطية.)'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="khassiya-tasawi" lead="ومنه، لزاويتين محيطيتين:" />}
             </div>
           ),
         },

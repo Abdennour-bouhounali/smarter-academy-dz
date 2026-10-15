@@ -7,6 +7,19 @@
  * x ⟼ ax (leçon 2). Source de vérité : docs/sources/4am/unit6/extraction.json.
  * Puis trois « مسائل » de la plateforme (modules 4–6) ; l'إختبار أولي passe au module 7.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la TROTTINETTE du kornich (compteur de trajet) — la main FIXE la durée x, enregistre SA colonne, et c'est son
+ *   propre tableau qui se laisse juger : y ÷ x ne bouge pas ; ajout déclaré de la plateforme (`platform_designed_entry`, niveau
+ *   مبتدئ), le niveau متقدم (50DA + 10DA la minute) est le contraste. Rejeté : le نشاط 1 du manuel (remise de l'Aïd 50 → 40…)
+ *   comme entrée — il se résout par un calcul de pourcentage fait de mémoire, la proportionnalité n'y devient jamais nécessaire
+ *   pour la main ; il reste l'APPLICATION après la première réponse (étapes 2–3). Rejeté aussi : ouvrir sur la définition du
+ *   tableau de proportionnalité (rien à faire pour la main).
+ *   Ordre des idées : (module 1) mes colonnes → POURQUOI y ÷ x ne bouge pas (le prix de x minutes est 15 × x) → brique « جدول
+ *   التناسبية » APRÈS la réponse → la remise de l'Aïd, même idée sur le tableau du livre → (module 2) le coefficient sur un tableau
+ *   (l'inverse 0,4 expliqué) → les colonnes se somment et se multiplient → le quatrième proportionnel → le montant fixe : « le
+ *   prix augmente » ne suffit pas → y = a × x. Module 2 sans labo : la question d'abord, « أتوقّع القاعدة », l'encadré et la
+ *   brique APRÈS la réponse.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/tanasub-muamil';
@@ -80,7 +93,7 @@ export const LESSON_CONFIG = {
       title: 'تروتينة 15DA للدقيقة',
       objective: 'جدول تناسبية: حاصل القسمة y ÷ x ثابت، هو معامل التناسبية a ، و y = a × x ؛ مبلغ ثابت يكسر التناسبية',
       autonomy: '',
-      experience: { type: 'platform_adaptation', reason: 'improved_interactivity_and_age_appropriateness', theme: 'scooter' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'scooter' },
       learningPointIds: ['4am_tanasub-muamil_P1', '4am_tanasub-muamil_P3'],
       sourceElementIds: ['act-1'],
     },

@@ -19,6 +19,16 @@
  *                             الدرس), la grue du chantier, la descente de l'avion — content/problems.js
  *   7 إختبار أولي (evaluation)
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le تحدّ de l'échelle de la جدارية (labo `clinometer` niveau متقدم, OUVERT PAR DÉFAUT : l'élève allonge l'échelle
+ *   jusqu'à la marque et la ENCADRE à la main avant tout calcul ; le besoin du rapport naît de cet encadrement). Rejetée : le projecteur
+ *   du stade (niveau مبتدئ) comme entrée — bonne situation, mais h = d × tan α n'a ni hypoténuse ni choix de rapport, et la question
+ *   « pourquoi les deux mesures diffèrent » suppose le rapport déjà choisi : elle reste l'étape 4. Rejetée aussi : la carte `brief`
+ *   qui énonçait le تحدّ au-dessus du labo (le contexte est maintenant le `lead` du labo, le texte du livre vit à l'étape 1 avec sa figure).
+ *   Ordre des idées : lire la figure (opposé / وتر, brique tarid-muthallath) → POURQUOI sin (le choix de la main devient un argument,
+ *   brique ikhtiyar-nisba) → le calcul confronté à l'encadrement de l'élève → POURQUOI deux mesures du projecteur diffèrent
+ *   (« أتوقّع القاعدة » zawiyat-nazar). Modules 2–7 : déjà conformes (boîtes dans PredictRule, briques après la réponse), inchangés.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/tarrid-muthallathiya';

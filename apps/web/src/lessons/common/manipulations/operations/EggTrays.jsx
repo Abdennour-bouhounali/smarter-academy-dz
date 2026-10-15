@@ -15,6 +15,7 @@ import KidFigure from '../primitives/KidFigure';
 import { LabCard, StageFrame, PromptCard, RoundButton, VerdictBanner, ChoiceCard } from '../primitives/LabKit';
 import { SvgPill, pillWidth } from '../primitives/SvgPill';
 import { Egg, TrayBody, CartonLid, FullTraySlat, Pallet } from '../primitives/EggFigure';
+import { useLabCoach } from '../primitives/LabCoach';
 import { LEVELS } from '../levels';
 import * as L from '../logic/eggTrays';
 
@@ -72,6 +73,10 @@ import * as L from '../logic/eggTrays';
  * D'UN SEUL REGARD (§8bis) : `[data-et-glance]` = consigne + scène + commandes + verdict + cartes ; la scène est budgétée
  * sur l'écran de leçon (`useLessonViewport`) moins la consigne et ce qui suit (mesurés, jamais la scène) : le ZOOM cède sa
  * hauteur (110 → 34 px), le reste est fixe. La liste des essais est dans un `LabFold`.
+ *
+ * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/eggTrays.js › coachOf` montre, dans l'ordre, la poignée du
+ * cadre (avant le premier œuf), le manche du tapis, le bouton « يقع على عدد طبيعي » (commande pleine), la carte « بيض إضافي » puis la
+ * carte du camarade — la COMMANDE, jamais le nombre de plateaux, le reste ni l'avis juste.
  *
  * CONTRAT DOM : [data-egg-trays][data-world][data-a][data-b][data-count][data-solved][data-layout], [data-et-glance],
  * [data-et-order], [data-et-handle] (slider, aria-valuenow = œufs), [data-et-step=egg|tray|pallet][data-dir=less|more],
@@ -178,7 +183,7 @@ function Pair({ label, onLess, onMore, lessDisabled, moreDisabled, lessLabel, mo
 
 export default function EggTrays({
   a: a0, b: b0, then: then0, claim: claim0, world: world0, max: max0, title, lead, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -201,6 +206,12 @@ export default function EggTrays({
   const [scene, setScene] = useState(sceneKey);
   if (scene !== sceneKey) { setScene(sceneKey); setLab(mk()); }
   const tray = world === 'tray';
+
+  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coach = useLabCoach({
+    lab: 'egg-trays', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
+    labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
+  });
 
   const ready = L.discoveryReady(lab);
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -488,6 +499,7 @@ export default function EggTrays({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      coach={coachOn ? coach : null}
       hints={[0, 1, 2].map((i) => k(`hints.${world}.${i}`, { a: lab.a0, b }))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k('discovery.prompt')} options={discoveryOptions} formal={formal} />}

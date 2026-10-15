@@ -430,3 +430,25 @@ export function rulerTicks(k) {
   for (let cm = VIEW.lo; cm <= VIEW.hi; cm += step) out.push({ cm, major: cm % 10 === 0, mid: cm % 5 === 0, label: cm % label === 0 });
   return out;
 }
+
+/* ── L'onboarding (LabCoach, MANIPULATION_CONTRACT §8quater) ─────────────────────────── */
+
+/**
+ * Le bouton ou le geste dont la main a besoin MAINTENANT : `{ id, target, gesture }` (target = un sélecteur du contrat
+ * DOM) ou `null` (tout est fait). Il montre la poignée / la rangée de cartes / le bouton « suivant », JAMAIS la taille,
+ * la carte juste ni l'opération : choisir reste à l'élève.
+ *   stretch : la poignée → les cartes de calcul → « التلميذ التالي » ;
+ *   cards   : une carte (premier essai seulement : le glisser ou le toucher-toucher ensuite se connaît).
+ */
+export function coachOf(s) {
+  if (allDone(s)) return null;
+  if (s.mode === 'stretch') {
+    const it = s.items[s.cur];
+    if (!it.stretchOk) return { id: 'handle', target: '[data-sb-handle]', gesture: 'drag' };
+    if (!it.calcOk) return { id: 'calc', target: '[data-sb-calcs]', gesture: 'tap' };
+    return { id: 'next', target: '[data-sb-next]', gesture: 'tap' };
+  }
+  if (s.trials.length > 0) return null;
+  const c = cardsOf(s.story).findIndex((_, ci) => !isPlaced(s, ci));
+  return c < 0 ? null : { id: 'card', target: `[data-sb-card="${c}"]`, gesture: 'drag' };
+}

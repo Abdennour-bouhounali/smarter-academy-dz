@@ -9,6 +9,7 @@ import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
 import useStretchInteraction from '../useStretchInteraction';
 import LabFold from '../primitives/LabFold';
+import { useLabCoach } from '../primitives/LabCoach';
 import KidFigure from '../primitives/KidFigure';
 import { LabCard, StageFrame, PromptCard, StepperCard, RoundButton, VerdictBanner, ChoiceCard } from '../primitives/LabKit';
 import { LEVELS } from '../levels';
@@ -75,6 +76,10 @@ import * as L from '../logic/fractionKnife';
  * `lead`, `onTrial(e)` — e = { kind: 'cut', share, d, inShare, readable, writing? } | { kind: 'claim', claim, ok, answer }
  * | { kind: 'pin', share, d, readable } —, `onFinished({ share })` à la règle ; tous par `state.report`.
  *
+ * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/fractionKnife.js › coachOf` montre la poignée du couteau,
+ * la proposition à ouvrir, la carte de réponse, le cadeau, puis le curseur / « غرس » / « ابدأ » des épingles ; jamais un nombre
+ * de morceaux ni une réponse.
+ *
  * CONTRAT DOM : [data-fraction-knife][data-world][data-share][data-d][data-solved][data-stage][data-layout],
  * [data-fk-glance], [data-fk-scene][data-bands], [data-fk-knife] (role=slider, aria-valuenow = d), [data-fk-pin-cursor]
  * (slider de prédiction), [data-fk-less] / [data-fk-more] (une seule paire), [data-fk-piece=<i>][data-in] (full | part |
@@ -112,7 +117,7 @@ function Row({ children, className = '', ...rest }) {
 
 export default function FractionKnife({
   world: world0, share: share0, start: start0, max: max0, claim: claim0, targets: targets0, then: then0,
-  title, lead, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  title, lead, level, levels: withLevels = true, initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -142,6 +147,11 @@ export default function FractionKnife({
   const st = L.current(lab);
 
   const ready = L.discoveryReady(lab);
+  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coach = useLabCoach({
+    lab: 'fraction-knife', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
+    labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
+  });
   useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, { share: L.finishedShare(lab) }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
   // chaque essai rapporté UNE fois, même quand un geste en produit plusieurs (une épingle traversée + la coupe)
@@ -546,6 +556,7 @@ export default function FractionKnife({
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
       hints={[0, 1, 2].map((i) => k(`hints.${world}.${i}`))}
+      coach={coachOn ? coach : null}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k(`discovery.prompt.${world}`, discoveryPromptArgs)} options={discoveryOptions} formal={formal} />}
       explanation={k('explanation')}

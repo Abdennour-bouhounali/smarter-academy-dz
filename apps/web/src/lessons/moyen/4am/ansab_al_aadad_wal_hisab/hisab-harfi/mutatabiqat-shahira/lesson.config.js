@@ -7,6 +7,21 @@
  * Source de vérité : docs/sources/4am/unit3/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
+ *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le ملعب جواري carré `pitch-expansion` ((x + 3)², puis (x − 2)²), le labo EN TÊTE du module sans carte : la main
+ *   étire x, porte les quatre zones et voit qu'avec deux carrés la somme ne rejoint jamais l'aire (les deux bandes manquent) ; la
+ *   question « pourquoi » porte sur ses propres essais. Candidats écartés : (a) l'activité 2 du manuel telle quelle — l'identité
+ *   du carré MNPQ et des calculs (8 + 2)², (3 + 0,5)² faits de tête avant tout besoin (elle devient la 2e étape, un calcul à deux
+ *   façons APRÈS le « pourquoi ») ; (b) l'accroche de l'ouvrier (404 m² ou 484 m² ?) en carte au-dessus du labo — un second
+ *   départ concurrent et une question tranchée avant que l'élève ait la moindre règle : elle devient l'APPLICATION finale du
+ *   module 1 (et celle de l'entraîneur, +5 / −5, la finale du module 2). Le labo reste `platform_adaptation` : c'est la figure du
+ *   livre (MNPQ, KLMN) redessinée en terrain, pas une situation de la plateforme étrangère au livre.
+ *   Ordre des idées : pourquoi deux carrés ne suffisent pas → deux façons de calculer (8 + 2)² → l'aire en a, b → انقل وأكمل (brique
+ *   `murabba-majmu` APRÈS) → développer → tableau de Descartes → calcul mental ; puis moitié « différence » : pourquoi le coin se
+ *   rajoute → mêmes étapes → l'ouvrier. Module 2 : pourquoi le terme en x disparaît → preuve par les aires → انقل وأكمل (brique après)
+ *   → développer → calcul mental (105 × 95) → l'entraîneur. Module 3 (معارف) : le contre-exemple d'abord, la brique `mutatabiqa`
+ *   (la définition) APRÈS ; les trois identités reviennent en rappel. Modules 0, 4–8 : pratique, مسائل, test — inchangés.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/mutatabiqat-shahira';
 

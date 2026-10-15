@@ -14,8 +14,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/muadala-ula/modules/Module01Nashat.jsx",
-        "line": 166,
-        "step": 3,
+        "line": 131,
+        "step": 1,
         "variant": "new"
       }
     },
@@ -25,8 +25,8 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/muadala-ula/modules/Module02Maarif.jsx",
-        "line": 46,
-        "step": 1,
+        "line": 103,
+        "step": 2,
         "variant": "new"
       }
     }
@@ -147,41 +147,9 @@
       "questionId": "M01-S1-Q1",
       "module": 1,
       "step": 1,
-      "component": "NumericQuestion",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/muadala-ula/modules/Module01Nashat.jsx",
-      "line": 106,
-      "requires": [
-        "taawid-musawat"
-      ],
-      "prerequisiteStatus": {
-        "taawid-musawat": "prior"
-      },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
-    },
-    {
-      "questionId": "M01-S2-Q2",
-      "module": 1,
-      "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/muadala-ula/modules/Module01Nashat.jsx",
-      "line": 120,
-      "requires": [
-        "nashr-tabsit"
-      ],
-      "prerequisiteStatus": {
-        "nashr-tabsit": "prior"
-      },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
-    },
-    {
-      "questionId": "M01-S3-Q3",
-      "module": 1,
-      "step": 3,
-      "component": "NumericQuestion",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/muadala-ula/modules/Module01Nashat.jsx",
-      "line": 156,
+      "line": 118,
       "requires": [
         "amaliyat-tarafayn"
       ],
@@ -192,12 +160,76 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S4-Q4",
+      "questionId": "M01-S2-Q2",
+      "module": 1,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/muadala-ula/modules/Module01Nashat.jsx",
+      "line": 140,
+      "requires": [
+        "taawid-musawat"
+      ],
+      "prerequisiteStatus": {
+        "taawid-musawat": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S2-Q3",
+      "module": 1,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/muadala-ula/modules/Module01Nashat.jsx",
+      "line": 149,
+      "requires": [
+        "nashr-tabsit"
+      ],
+      "prerequisiteStatus": {
+        "nashr-tabsit": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q4",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/muadala-ula/modules/Module01Nashat.jsx",
+      "line": 174,
+      "requires": [
+        "amaliyat-tarafayn"
+      ],
+      "prerequisiteStatus": {
+        "amaliyat-tarafayn": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q5",
+      "module": 1,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/muadala-ula/modules/Module01Nashat.jsx",
+      "line": 188,
+      "requires": [
+        "muadala-tarafayn"
+      ],
+      "prerequisiteStatus": {
+        "muadala-tarafayn": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S4-Q6",
       "module": 1,
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/muadala-ula/modules/Module01Nashat.jsx",
-      "line": 178,
+      "line": 210,
       "requires": [
         "muadala-tarafayn"
       ],
@@ -213,12 +245,12 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/muadala-ula/modules/Module02Maarif.jsx",
-      "line": 47,
+      "line": 65,
       "requires": [
-        "hal-ax-b"
+        "muadala-tarafayn"
       ],
       "prerequisiteStatus": {
-        "hal-ax-b": "established@M2"
+        "muadala-tarafayn": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -229,14 +261,12 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/muadala-ula/modules/Module02Maarif.jsx",
-      "line": 77,
+      "line": 89,
       "requires": [
-        "muadala-tarafayn",
-        "hal-ax-b"
+        "muadala-tarafayn"
       ],
       "prerequisiteStatus": {
-        "muadala-tarafayn": "established@M1",
-        "hal-ax-b": "established@M2"
+        "muadala-tarafayn": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true

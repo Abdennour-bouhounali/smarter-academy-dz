@@ -40,22 +40,51 @@ export default function Module03Qiraa() {
         'كيف نعرف عبارة الدالة من مستقيمها؟',
         'كيف نقرأ صورة عدد والعدد الذي صورته معلومة؟',
       ]}
-      brief={{
-        tag: 'طرائق — صياغة من المنصّة', title: 'ماذا نقرأ على مستقيم؟', tone: 'blue',
-        body: <p><MathText>{'على المختبر جعلت مستقيمك ينطبق على $(D)$ . نتعلّم هنا أن نقرأ مباشرة على أي مستقيم: أين يقطع محور التراتيب، كم يصعد لكل وحدة، ثم صورة عدد والعدد الذي علمت صورته.'}</MathText></p>,
-      }}
+      // LE LABO OUVRE LE MODULE (§4quater, rétrofit 2026-10-15) : la droite cachée (3x − 2) à faire coïncider, puis la formule ; la méthode
+      // (figure, règle révélée, brique) vient APRÈS cette réponse, puis la transposition sur (L), puis le second labo (image / antécédent).
+      intro={
+        <Manipulation
+          type="affine-line"
+          a="3"
+          b="-2"
+          mode="identify"
+          xMin="-2" xMax="3" yMin="-4" yMax="6"
+          theme="ramp"
+          levels={false}
+        />
+      }
       steps={[
         {
-          num: 1, title: 'ماذا نقرأ أوّلًا على المستقيم؟', subtitle: 'طريقة', done: q1a && q1b,
+          num: 1, title: 'عبارة الدالة', subtitle: 'مستقيم عبارته مخفية', done: q2,
           content: (
             <div className="space-y-3">
-              <AffineFigure testId="method-ab" win={{ xMin: -1, xMax: 3, yMin: -2, yMax: 3 }} height={200} width={200}
-                lines={[{ a: -1.5, b: 2, label: '(D)' }]} points={[{ x: 0, y: 2 }, { x: 2, y: -1 }]}
-                caption="الشكل: المستقيم $(D)$ يشمل النقطتين $(0 ; 2)$ و $(2 ; -1)$ ."
-                ariaLabel="مستقيم (D) ينزل ويشمل النقطتين (0 ; 2) و (2 ; −1)" />
-              {/* La طريقة révèle sa règle (encadré final) juste avant la brique : prédiction d'abord. */}
-              <PredictRule id="qiraa-ab"><MethodSteps method={METHOD_AB} /></PredictRule>
-              <KnowledgeBrick id="qiraa-ab" lead="الطريقة:" />
+              <TapQuestion
+                prompt={<MathText>{'عبارة الدالة التي تمثيلها $(D)$ في المختبر هي:'}</MathText>}
+                options={['$f(x) = 3x - 2$', '$f(x) = -2x + 3$', '$f(x) = 3x + 2$', '$f(x) = \\dfrac{1}{3}x - 2$'].map(Opt)}
+                correct={0}
+                cols={2}
+                requires={['muamil-tawjih']}
+                explain={<MathText>{'$(D)$ يقطع محور التراتيب في $(0 ; -2)$ : $b = -2$ ؛ ومن هذه النقطة يصعد $3$ لكل وحدة إلى اليمين: $a = 3$ . أمّا $-2x + 3$ فتقلب المعاملين، و $3x + 2$ تنسى إشارة $b$ ، و $\\dfrac{1}{3}$ مقلوب الدرجة.'}</MathText>}
+                onAnswered={() => setQ2(true)}
+              />
+              {q2 && (
+                <>
+                  <AffineFigure testId="method-ab" win={{ xMin: -1, xMax: 3, yMin: -2, yMax: 3 }} height={200} width={200}
+                    lines={[{ a: -1.5, b: 2, label: '(D)' }]} points={[{ x: 0, y: 2 }, { x: 2, y: -1 }]}
+                    caption="الشكل: المستقيم $(D)$ يشمل النقطتين $(0 ; 2)$ و $(2 ; -1)$ ."
+                    ariaLabel="مستقيم (D) ينزل ويشمل النقطتين (0 ; 2) و (2 ; −1)" />
+                  {/* La طريقة révèle sa règle (encadré final) juste avant la brique : prédiction d'abord. */}
+                  <PredictRule id="qiraa-ab"><MethodSteps method={METHOD_AB} /></PredictRule>
+                  <KnowledgeBrick id="qiraa-ab" lead="ما فعلته على المختبر، طريقةً:" />
+                </>
+              )}
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'ماذا نقرأ على مستقيم آخر؟', subtitle: 'طريقة', done: q1a && q1b,
+          content: (
+            <div className="space-y-3">
               <AffineFigure testId="q-b" win={{ xMin: -1, xMax: 5, yMin: -3, yMax: 1 }} height={180} width={260}
                 lines={[{ a: 0.5, b: -2, label: '(L)' }]} points={[{ x: 0, y: -2 }, { x: 4, y: 0 }]}
                 caption="الشكل: المستقيم $(L)$ يشمل النقطتين $(0 ; -2)$ و $(4 ; 0)$ ."
@@ -65,7 +94,7 @@ export default function Module03Qiraa() {
                 options={[COMMON_ERRORS.bFasila.right, COMMON_ERRORS.bFasila.wrong, '$b = 2$ : المسافة بين O ونقطة محور التراتيب.'].map(Opt)}
                 correct={0}
                 cols={1}
-                requires={['qiraa-ab']}
+                requires={['tartib-mabda']}
                 explain={<MathText>{`${COMMON_ERRORS.bFasila.why} أمّا $2$ فيُنسي الإشارة: النقطة تحت محور الفواصل.`}</MathText>}
                 onAnswered={() => setQ1a(true)}
               />
@@ -74,36 +103,9 @@ export default function Module03Qiraa() {
                 options={['$\\dfrac{1}{2}$', '$2$', '$-\\dfrac{1}{2}$', '$4$'].map(Opt)}
                 correct={0}
                 cols={4}
-                requires={['qiraa-ab']}
+                requires={['muamil-tawjih']}
                 explain={<MathText>{'من $(0 ; -2)$ إلى $(4 ; 0)$ : تقدّمنا $4$ وحدات فصعد المستقيم $2$ ، أي $\\dfrac{2}{4} = \\dfrac{1}{2}$ لكل وحدة. أمّا $2$ فهو $\\dfrac{4}{2}$ (قسمنا تغيّر الفاصلة على تغيّر الترتيب)، و $-\\dfrac{1}{2}$ لمستقيم ينزل، و $4$ فاصلة نقطة لا معامل.'}</MathText>}
                 onAnswered={() => setQ1b(true)}
-              />
-            </div>
-          ),
-        },
-        {
-          num: 2, title: 'على المختبر', subtitle: 'مستقيم عبارته مخفية', done: q2,
-          content: (
-            <div className="space-y-3">
-              <Manipulation
-                type="affine-line"
-                a="3"
-                b="-2"
-                mode="identify"
-                xMin="-2" xMax="3" yMin="-4" yMax="6"
-                theme="ramp"
-                levels={false}
-                title="اقرأ a و b على المستقيم (D)"
-                lead="اجعل مستقيمك ينطبق على (D): نقطته على محور التراتيب أولًا، ثم الدرجة."
-              />
-              <TapQuestion
-                prompt={<MathText>{'عبارة الدالة التي تمثيلها $(D)$ في المختبر هي:'}</MathText>}
-                options={['$f(x) = 3x - 2$', '$f(x) = -2x + 3$', '$f(x) = 3x + 2$', '$f(x) = \\dfrac{1}{3}x - 2$'].map(Opt)}
-                correct={0}
-                cols={2}
-                requires={['qiraa-ab']}
-                explain={<MathText>{'$(D)$ يقطع محور التراتيب في $(0 ; -2)$ : $b = -2$ ؛ ومن هذه النقطة يصعد $3$ لكل وحدة إلى اليمين: $a = 3$ . أمّا $-2x + 3$ فتقلب المعاملين، و $3x + 2$ تنسى إشارة $b$ ، و $\\dfrac{1}{3}$ مقلوب الدرجة.'}</MathText>}
-                onAnswered={() => setQ2(true)}
               />
             </div>
           ),
@@ -121,22 +123,13 @@ export default function Module03Qiraa() {
                 xMin="-4" xMax="6" yMin="-1" yMax="5"
                 theme="ramp"
                 levels={false}
-                title="المنحدر الثاني: صورة 4، والعدد الذي صورته 4"
-                lead="حرّك المسبار تحت محور الفواصل إلى 4، ثم المسبار على يسار محور التراتيب إلى 4، واتبع الخط المتقطع."
               />
-              <PredictRule id="qiraa-sura-taalufi">
-                <div className="space-y-1 rounded-xl border-2 border-emerald-200 bg-emerald-50/60 px-3 py-2 text-sm" data-method-read>
-                  {METHOD_READ.rule.map((r) => <p key={r}><MathText>{r}</MathText></p>)}
-                  <SourceTag source={METHOD_READ.source} />
-                </div>
-              </PredictRule>
-              <KnowledgeBrick id="qiraa-sura-taalufi" lead="ما فعلته بالمسبارين، طريقةً:" />
               <NumericQuestion
                 prompt={<MathText>{'على المستقيم نفسه، اقرأ صورة $2$ :'}</MathText>}
                 expected={2}
                 parse={parseDec}
                 display="2"
-                requires={['qiraa-sura-taalufi']}
+                requires={['notation-fx']}
                 explain={<MathText>{'من $2$ على محور الفواصل نصعد إلى المستقيم ثم نقرأ الترتيب: $2$ ، أي $f(2) = 2$ (وبالحساب: $-\\dfrac{1}{2} \\times 2 + 3 = 2$).'}</MathText>}
                 onAnswered={() => setQ3a(true)}
               />
@@ -145,10 +138,21 @@ export default function Module03Qiraa() {
                 expected={-4}
                 parse={parseDec}
                 display="-4"
-                requires={['qiraa-sura-taalufi']}
+                requires={['notation-fx']}
                 explain={<MathText>{'من $5$ على محور التراتيب نذهب أفقيًا إلى المستقيم ثم نقرأ الفاصلة: $-4$ ، أي $f(-4) = 5$ — وليس $\\dfrac{1}{2}$ وهي صورة $5$ .'}</MathText>}
                 onAnswered={() => setQ3b(true)}
               />
+              {q3b && (
+                <>
+                  <PredictRule id="qiraa-sura-taalufi">
+                    <div className="space-y-1 rounded-xl border-2 border-emerald-200 bg-emerald-50/60 px-3 py-2 text-sm" data-method-read>
+                      {METHOD_READ.rule.map((r) => <p key={r}><MathText>{r}</MathText></p>)}
+                      <SourceTag source={METHOD_READ.source} />
+                    </div>
+                  </PredictRule>
+                  <KnowledgeBrick id="qiraa-sura-taalufi" lead="ما فعلته بالمسبارين، طريقةً:" />
+                </>
+              )}
             </div>
           ),
         },

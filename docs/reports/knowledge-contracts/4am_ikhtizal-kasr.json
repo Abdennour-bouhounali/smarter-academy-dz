@@ -14,7 +14,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module01Samir.jsx",
-        "line": 68,
+        "line": 71,
         "step": 2,
         "variant": "new"
       }
@@ -28,7 +28,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module01Samir.jsx",
-        "line": 58,
+        "line": 55,
         "step": 1,
         "variant": "new"
       }
@@ -39,8 +39,8 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module02Maarif.jsx",
-        "line": 32,
-        "step": 2,
+        "line": 49,
+        "step": 3,
         "variant": "new"
       }
     }
@@ -52,8 +52,8 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module02Maarif.jsx",
-        "line": 39,
-        "step": 3,
+        "line": 53,
+        "step": 4,
         "variant": "new"
       }
     }
@@ -161,13 +161,9 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module01Samir.jsx",
-      "line": 60,
-      "requires": [
-        "ikhtizal"
-      ],
-      "prerequisiteStatus": {
-        "ikhtizal": "established@M1"
-      },
+      "line": 52,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -177,13 +173,9 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module01Samir.jsx",
-      "line": 69,
-      "requires": [
-        "kasr-ghayr-qabil"
-      ],
-      "prerequisiteStatus": {
-        "kasr-ghayr-qabil": "established@M1"
-      },
+      "line": 68,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -193,13 +185,9 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module02Maarif.jsx",
-      "line": 24,
-      "requires": [
-        "kasr-ghayr-qabil"
-      ],
-      "prerequisiteStatus": {
-        "kasr-ghayr-qabil": "established@M1"
-      },
+      "line": 28,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -209,13 +197,21 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module02Maarif.jsx",
-      "line": 33,
-      "requires": [
-        "ikhtizal-bil-pgcd"
-      ],
-      "prerequisiteStatus": {
-        "ikhtizal-bil-pgcd": "established@M2"
-      },
+      "line": 36,
+      "requires": null,
+      "prerequisiteStatus": {},
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q3",
+      "module": 2,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module02Maarif.jsx",
+      "line": 46,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },

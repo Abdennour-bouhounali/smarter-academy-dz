@@ -13,6 +13,8 @@ import { FIG_METHOD_POINT, FIG_METHOD_SEG, FIG_METHOD_SEG_SOL, FIG_NOW } from '.
  * TOUCH THE MATH : تمرين 1 (l'image d'un point par 50° direct) et تمرين 2 (l'image d'une قطعة par 40° indirect) révélés ligne
  * à ligne (MethodSteps), la question après la méthode ; puis les images de figures du نشاط 3 formalisées (brique suwar-ashkal), et le دوري الآن (doublon
  * déclaré du درس « خواص الدوران ») : l'image d'un angle se construit point par point. LP : P2, P3.
+ * RÉTROFIT 2026-10-15 (§4quater) : la question d'abord ; la solution du manuel (MethodSteps sous PredictRule) et la brique APRÈS la réponse
+ * (`{qN && …}`) ; `requires` = la brique précédente (surat-nuqta → tariqat-nuqta → tariqat-qitaa), jamais celle qui suit.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -32,7 +34,7 @@ export default function Module03Taraiq() {
       objectives={["كيف أنشئ صورة نقطة بدوران معلوم؟", "ما الذي يكفي لإنشاء صورة قطعة؟", "أيّ النقط أدوّر لأنشئ صورة زاوية؟"]}
       brief={{
         tag: 'طرائق — الكتاب ص 155', title: 'إنشاء صور أشكال هندسية', tone: 'emerald',
-        body: <p>اقرأ الحل سطرا بسطر: هو البرنامج نفسه الذي نفّذته بالمدور والمنقلة على الورقة.</p>,
+        body: <p>ثلاثة تمارين من الكتاب: تجيب أولًا عن سؤال كل تمرين، ثم تقرأ الحل سطرا بسطر.</p>,
         footer: <SourceTag source={METHOD_POINT.source} />,
       }}
       steps={[
@@ -40,10 +42,7 @@ export default function Module03Taraiq() {
           num: 1, title: 'تمرين 1: صورة نقطة', subtitle: 'زاوية 50 درجة في الاتجاه المباشر', done: q1,
           content: (
             <div className="space-y-3">
-              {/* La طريقة du livre ÉNONCE la méthode tariqat-nuqta : l'élève l'écrit d'abord (prompt dans knowledge.jsx). */}
-              <PredictRule id="tariqat-nuqta"><MethodSteps method={METHOD_POINT} /></PredictRule>
               <GeoFigure {...FIG_METHOD_POINT} />
-              <KnowledgeBrick id="tariqat-nuqta" lead="الطريقة، ثلاث خطوات:" />
               <TapQuestion
                 prompt={<MathText>{'نصف المستقيم [Ox) حيث $\\widehat{AOx} = 50^\\circ$ في الاتجاه المباشر يُرسم:'}</MathText>}
                 options={[
@@ -55,10 +54,17 @@ export default function Module03Taraiq() {
                 ]}
                 correct={0}
                 cols={1}
-                requires={['tariqat-nuqta']}
+                requires={['surat-nuqta']}
                 explain="مركز المنقلة على O وصفرها على [OA)، ونقرأ 50 درجة في الاتجاه المباشر (عكس عقارب الساعة)؛ ثم المدور يعطي A′ على [Ox) حيث OA′ = OA."
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && (
+                <>
+                  {/* La طريقة du livre ÉNONCE la méthode tariqat-nuqta : l'élève l'écrit d'abord (prompt dans knowledge.jsx) — APRÈS sa réponse. */}
+                  <PredictRule id="tariqat-nuqta"><MethodSteps method={METHOD_POINT} /></PredictRule>
+                  <KnowledgeBrick id="tariqat-nuqta" lead="الطريقة، ثلاث خطوات:" />
+                </>
+              )}
             </div>
           ),
         },
@@ -67,9 +73,6 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_METHOD_SEG} />
-              {/* Idem pour tariqat-qitaa : la solution et l'encadré « طريقة » la disent. */}
-              <PredictRule id="tariqat-qitaa"><MethodSteps method={METHOD_SEGMENT} /></PredictRule>
-              <KnowledgeBrick id="tariqat-qitaa" lead="يكفي طرفان:" />
               <TapQuestion
                 prompt="صورة القطعة [AB] بالدوران الذي مركزه O وزاويته 40 درجة في الاتجاه غير المباشر:"
                 options={[
@@ -81,11 +84,18 @@ export default function Module03Taraiq() {
                 ]}
                 correct={0}
                 cols={1}
-                requires={['tariqat-qitaa']}
+                requires={['tariqat-nuqta']}
                 explain={<MathText>{METHOD_SEGMENT.rule}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
-              {q2 && <GeoFigure {...FIG_METHOD_SEG_SOL} />}
+              {q2 && (
+                <>
+                  {/* Idem pour tariqat-qitaa : la solution et l'encadré « طريقة » la disent — après la réponse. */}
+                  <PredictRule id="tariqat-qitaa"><MethodSteps method={METHOD_SEGMENT} /></PredictRule>
+                  <KnowledgeBrick id="tariqat-qitaa" lead="يكفي طرفان:" />
+                  <GeoFigure {...FIG_METHOD_SEG_SOL} />
+                </>
+              )}
             </div>
           ),
         },
@@ -93,7 +103,6 @@ export default function Module03Taraiq() {
           num: 3, title: 'صور المستقيم ونصف المستقيم والدائرة', subtitle: 'ودوري الآن', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="suwar-ashkal" lead="ما بنيته في نشاط 3، قاعدةً لكل شكل:" />
               <TextbookBox kind="exercise" text={NOW_155.text} source={NOW_155.source} compact />
               <GeoFigure {...FIG_NOW} />
               <TapQuestion
@@ -107,10 +116,11 @@ export default function Module03Taraiq() {
                 ].map(M)}
                 correct={0}
                 cols={1}
-                requires={['suwar-ashkal']}
+                requires={['tariqat-qitaa']}
                 explain={<MathText>{`${NOW_155.answer} ${NOW_155.later}`}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="suwar-ashkal" lead="ما بنيته في نشاط 3، قاعدةً لكل شكل:" />}
             </div>
           ),
         },

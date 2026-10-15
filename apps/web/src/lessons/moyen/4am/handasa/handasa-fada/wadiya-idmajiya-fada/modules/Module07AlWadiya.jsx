@@ -28,6 +28,8 @@ import { BASE } from '../../_unit/unitMeta';
  * Déclarés : la lecture des cotes empilées (extraction › discrepancies › challenge), les noms S, O, O₁, W, A, B, M (plateforme),
  * l'échelle verticale réduite de la coupe axiale.
  * LP : P2 (lire, modéliser), P3 (Thalès, volumes, k³, arrondi), P1 (tout mobiliser).
+ * Rétrofit 2026-10-15 (§4quater, édition minimale d'une synthèse) : le labo ouvre le module (plus de carte au-dessus, ni titre/`lead` de
+ * workspace) ; l'énoncé du تحدّ (texte, figure, notes de lecture) passe en tête de l'étape 1 « قراءة الوضعية وفهمها », où on le lit.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const TRUE_FALSE = ['صحيح', 'خاطئ'];
@@ -82,32 +84,15 @@ export default function Module07AlWadiya() {
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها" moduleSubtitle="دلو على شكل مخروط مبتور فيه ماء: كم لترا من الماء فيه؟" estimatedTime="22 دقيقة"
       objectives={["أيّ مجسّم يشغله الماء في دلو على شكل مخروط مبتور؟", "أين يلتقي جدارا الدلو الممدّدان، وماذا يعطينا ذلك عن نصف قطر سطح الماء؟", "ما العلاقة بين المخروط الصغير والمخروط الكبير، وماذا تفيدنا في حساب حجم الماء؟"]}
-      brief={{
-        tag: 'تحدّي الوحدة — الكتاب ص 163', headline: 'دلو ماء على شاطئ تيبازة', emoji: '🪣',
-        title: 'وضعية واحدة وأدوات الوحدة كلها: مقطع المخروط، خاصية طالس، حجم المخروط، والتصغير وأثره على الحجوم', tone: 'amber',
-        body: (
-          <div className="space-y-2" data-situation="dalw">
-            <p className="font-bold">{SITUATION.title}</p>
-            <p className="text-sm text-slate-700" data-context="nadafa">في حملة تطوعية لتنظيف شاطئ تيبازة، يغسل التلاميذ أدواتهم بماء دلو حفاظا على نظافة المكان.</p>
-            <p><MathText>{SITUATION.text}</MathText></p>
-            <BucketFigure />
-            <p className="text-xs text-slate-600" data-reading-note="challenge"><MathText>{SITUATION.reading}</MathText></p>
-            <p className="text-xs text-slate-500" data-names-note>الكتاب لا يسمّي النقط: سمّت المنصّة O مركز القاع و <bdi dir="ltr">O₁</bdi> مركز الحافة و W مركز سطح الماء، و S رأس المخروط المكتمل.</p>
-          </div>
-        ),
-        footer: <SourceTag source={SITUATION.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="المستوى المتقدّم هو تحدّي الكتاب: ضع الماء في مستوى الشكل، ثم أكمل المخروط بإنزال رأسه S، ثم اختر طريقة حساب الحجم. في المستوى المبتدئ دلو رمل صغير ممتلئ."
           levels={{
             beginner: () => (
-              <Manipulation type="bucket-fill" level="beginner" {...LAB.beginner} title="دلو رمل صغير ممتلئ: نصفا قطريه 3 و 4 سنتيمترات وارتفاعه 6 سنتيمترات (مثال من المنصّة)" onTrial={keep} />
+              <Manipulation type="bucket-fill" level="beginner" {...LAB.beginner} lead="دلو رمل صغير ممتلئ: نصفا قطريه 3 و 4 سنتيمترات وارتفاعه 6 سنتيمترات." onTrial={keep} />
             ),
             advanced: () => (
-              <Manipulation type="bucket-fill" level="advanced" {...LAB.advanced} title="تحدّي الكتاب: دلو قطراه 40 و 30 سنتيمترا، والماء على بعد 7 سنتيمترات من الحافة" onTrial={keep} />
+              <Manipulation type="bucket-fill" level="advanced" {...LAB.advanced} lead="تحدّي الكتاب: دلو قطراه 40 و 30 سنتيمترا، والماء على بعد 7 سنتيمترات من الحافة." onTrial={keep} />
             ),
           }}
         />
@@ -116,6 +101,15 @@ export default function Module07AlWadiya() {
         { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1: ما أبعاد الدلو؟ أين سطح الماء؟', done: !!q[1],
           content: (
             <div className="space-y-3">
+              <div className="space-y-2 rounded-2xl border-2 border-amber-200 bg-amber-50/60 p-3" data-situation="dalw">
+                <p className="font-bold">{SITUATION.title}</p>
+                <p className="text-sm text-slate-700" data-context="nadafa">في حملة تطوعية لتنظيف شاطئ تيبازة، يغسل التلاميذ أدواتهم بماء دلو حفاظا على نظافة المكان.</p>
+                <p><MathText>{SITUATION.text}</MathText></p>
+                <BucketFigure />
+                <p className="text-xs text-slate-600" data-reading-note="challenge"><MathText>{SITUATION.reading}</MathText></p>
+                <p className="text-xs text-slate-500" data-names-note>الكتاب لا يسمّي النقط: سمّت المنصّة O مركز القاع و <bdi dir="ltr">O₁</bdi> مركز الحافة و W مركز سطح الماء، و S رأس المخروط المكتمل.</p>
+                <SourceTag source={SITUATION.source} />
+              </div>
               <Phase i={0} />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">اقرأ الشكل: احكم على كل عبارة.</p>}

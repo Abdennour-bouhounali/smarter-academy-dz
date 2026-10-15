@@ -3,13 +3,13 @@ import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../co
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
-import { ConstructionScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 
 /**
- * Module 1 — نشاط 3 (p. 8) : les trois cas, manipulés avant d'être nommés.
+ * Module 1 — l'ENTRÉE : le chantier, puis le نشاط 3 (p. 8) (rétrofit 2026-10-15 : labo en tête sans carte ni titre, la 1re question
+ * demande POURQUOI pas de demi-brique, le rappel APRÈS la réponse, les cas 2 et 3 du livre en application).
  *
  * Laboratoire d'ouverture À DEUX NIVEAUX (MANIPULATION_CONTRACT §7bis-levels) :
  *
@@ -29,44 +29,49 @@ import { ACTIVITY } from '../content/textbook';
 export default function Module01ThalathHalat() {
   const [c1, setC1] = useState(false);
   const [c2, setC2] = useState(false);
+  const [q1, setQ1] = useState(false);
   const [conj, setConj] = useState(false);
   const [{ a, b, n }, c2v, c3v] = ACTIVITY.cases;
   return (
     <ContentModule objectives={["إذا كان n يقسم a و b، فماذا يقسم أيضًا؟", "هل تصحّ الملاحظة مع أعداد كبيرة لا نستطيع عدّها؟", "ماذا يحدث في الحالات الثلاث؟"]}
       ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1}
       moduleTitle="نشاط 3 — ثلاث حالات" moduleSubtitle="n يقسم a و b. ماذا يقسم أيضًا؟" estimatedTime="12 دقيقة"
-      brief={{ tag: 'أنشطة — الكتاب ص 8', title: ACTIVITY.title, tone: 'indigo',
-        headline: 'هيا نبني بالطوب!', emoji: '🧱', visual: <ConstructionScene />,
-        body: <div className="space-y-1"><p><MathText>{ACTIVITY.questions[0]}</MathText></p><p dir="ltr" className="font-mono text-sm">1) a = 18, b = 12, n = 3 &nbsp; 2) a = 35, b = 15, n = 5 &nbsp; 3) a = 56, b = 21, n = 7</p><SourceTag source={ACTIVITY.source} /></div> }}
       intro={(
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="جداران من طوب طوله n. في المستوى المبتدئ يمكنك عدّ الطوب. في المستوى المتقدّم لا يمكن: عليك أن تتوقّع بما لاحظته في الحالة 1."
           levels={{
             beginner: () => (
-              <Manipulation type="divisor-properties" n={n} a={a} b={b}
-                title="الحالة 1: n = 3، a = 18، b = 12"
-                lead="جدار من 18 وجدار من 12، بطوب طوله 3. اسحب جدار b: ألصقه بجدار a، ثم انزعه منه، ثم قِس به جدار a. هل يظهر نصف طوبة؟"
-                onFinished={() => setC1(true)} />
+              <Manipulation type="divisor-properties" n={n} a={a} b={b} onFinished={() => setC1(true)} />
             ),
             advanced: () => (
-              <Manipulation type="divisor-properties" n={9} a={900} b={90}
-                title="أعداد لا تُعدّ: n = 9، a = 900، b = 90"
-                lead="الطوب هنا أصغر من أن يُعدّ. توقّع بما لاحظته في الحالة 1 قبل أن تسحب: هل 9 يقسم المجموع؟ الفرق؟ الباقي؟" />
+              <Manipulation type="divisor-properties" n={9} a={900} b={90} onFinished={() => setC1(true)} />
             ),
           }}
         />
       )}
       steps={[
-        { num: 1, title: 'الحالتان 2 و 3', subtitle: 'أكمل الحالة 1 في المناولة أولًا', done: c1 && c2,
+        { num: 1, title: 'لماذا لم يظهر نصف طوبة؟', subtitle: 'أنهِ الحالة في المناولة أولًا', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="qasim-mushtarak-rappel" variant="rappel" compact />
+              <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={c1 ? 'true' : 'false'}>
+                {c1
+                  ? <span className="font-bold text-slate-800">بنيتَ الجدران الثلاثة في المناولة.</span>
+                  : <span className="text-slate-500">لم تُنهِ بناء الجدران الثلاثة في المناولة بعد: ألصق جدار b، انزعه، ثم قِس به جدار a.</span>}
+              </p>
+              <TapQuestion prompt={<span>عندما ألصقتَ الجدارين أو نزعتَ أحدهما من الآخر، لم يظهر نصف طوبة أبدًا. لماذا؟</span>}
+                options={['كل جدار مبنيّ بعدد صحيح من الطوب، فجمعهما أو نزع أحدهما يترك أيضًا عددًا صحيحًا من الطوب', 'لأن الجدارين متساويان في الطول', 'لأن مجموع الطولين أكبر من كل منهما', 'لأن طول الطوبة أصغر من طول الجدارين']} correct={0} cols={1}
+                explain={<span>طول كل جدار هو <MathText>{'$n \\times q$'}</MathText> بعدد صحيح q من الطوب؛ والمجموع والفرق عدد صحيح من الطوب أيضًا.</span>}
+                onAnswered={() => setQ1(true)} />
+              {q1 && <KnowledgeBrick id="qasim-mushtarak-rappel" variant="rappel" compact />}
+            </div>
+          ) },
+        { num: 2, title: 'الحالتان 2 و 3 من الكتاب', subtitle: 'هل يصحّ ما لاحظته مع أعداد أخرى؟', done: c2,
+          content: (
+            <div className="space-y-3">
               <Manipulation type="divisor-properties" n={c2v.n} a={c2v.a} b={c2v.b} title="الحالة 2: n = 5، a = 35، b = 15" onFinished={() => setC2(true)} />
               <Manipulation type="divisor-properties" n={c3v.n} a={c3v.a} b={c3v.b} title="الحالة 3: n = 7، a = 56، b = 21" />
             </div>
           ) },
-        { num: 2, title: 'انقل وأكمل التخمين', done: conj,
+        { num: 3, title: 'انقل وأكمل التخمين', done: conj,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="conjecture" text={ACTIVITY.conjectures[0].blank} compact />

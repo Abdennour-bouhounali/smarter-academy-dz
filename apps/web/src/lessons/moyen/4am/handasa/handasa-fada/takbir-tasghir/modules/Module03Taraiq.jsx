@@ -15,6 +15,7 @@ import { METHOD_K, METHOD_ROOTS, METHOD_IMAGE, KNOWLEDGE_SOURCE } from '../conte
  * « أتوقّع القاعدة » : chaque MethodSteps se termine sur l'encadré de SA règle, avant la brique ; elle est donc enveloppée
  * dans un PredictRule (id de sa brique) — l'élève écrit la méthode (predictPrompt, ancré sur les modules 1 et 2) avant de lire le
  * corrigé ; la brique qui suit n'est plus bloquée.
+ * Rétrofit 2026-10-15 : la brique vient APRÈS la question qui exerce la méthode (plus avant elle) ; la question n'exige plus la brique.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -43,7 +44,6 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <PredictRule id="tariqat-k"><MethodSteps method={METHOD_K} /></PredictRule>
-              <KnowledgeBrick id="tariqat-k" lead="الطريقة:" />
               <TapQuestion
                 prompt={<MathText>{'مكعّب حرفه $4\\,\\mathrm{cm}$ ، وتكبيره حرفه $10\\,\\mathrm{cm}$ . نسبة التكبير:'}</MathText>}
                 options={[
@@ -55,10 +55,10 @@ export default function Module03Taraiq() {
                 ].map(M)}
                 correct={0}
                 cols={3}
-                requires={['tariqat-k']}
                 explain={<MathText>{'$k = \\dfrac{10}{4} = \\dfrac{5}{2} = 2{,}5$ ، و $k > 1$ : تكبير.'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="tariqat-k" lead="الطريقة:" />}
             </div>
           ),
         },
@@ -67,7 +67,6 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <PredictRule id="tariqat-judhur"><MethodSteps method={METHOD_ROOTS} /></PredictRule>
-              <KnowledgeBrick id="tariqat-judhur" lead="الطريقة:" />
               <TapQuestion
                 prompt={<MathText>{'مساحة أوجه مجسّم تصغير ضُربت في $\\dfrac{4}{9}$ . نسبة التصغير:'}</MathText>}
                 options={[
@@ -79,10 +78,10 @@ export default function Module03Taraiq() {
                 ].map(M)}
                 correct={0}
                 cols={3}
-                requires={['tariqat-judhur']}
                 explain={<MathText>{'$k^2 = \\dfrac{4}{9}$ ، إذن $k = \\sqrt{\\dfrac{4}{9}} = \\dfrac{2}{3}$ ، وتحقّق: $\\dfrac{2}{3} \\times \\dfrac{2}{3} = \\dfrac{4}{9}$ .'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="tariqat-judhur" lead="الطريقة:" />}
             </div>
           ),
         },
@@ -91,7 +90,6 @@ export default function Module03Taraiq() {
           content: (
             <div className="space-y-3">
               <PredictRule id="tariqat-maqadir"><MethodSteps method={METHOD_IMAGE} /></PredictRule>
-              <KnowledgeBrick id="tariqat-maqadir" lead="الطريقة:" />
               <TapQuestion
                 prompt={<MathText>{'جرّة زيت زيتون سعتها $40\\,\\mathrm{L}$ ، وجرّة أخرى هي تكبير لها بالنسبة $\\dfrac{3}{2}$ . سعة الجرّة الكبيرة:'}</MathText>}
                 options={[
@@ -103,10 +101,10 @@ export default function Module03Taraiq() {
                 ].map(M)}
                 correct={0}
                 cols={3}
-                requires={['tariqat-maqadir']}
                 explain={<MathText>{'السعة حجم: $\\left(\\dfrac{3}{2}\\right)^3 \\times 40 = \\dfrac{27}{8} \\times 40 = 135\\,\\mathrm{L}$ .'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="tariqat-maqadir" lead="الطريقة:" />}
             </div>
           ),
         },

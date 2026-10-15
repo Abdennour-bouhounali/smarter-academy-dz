@@ -13,7 +13,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module01AlMaktaba.jsx",
-        "line": 159,
+        "line": 150,
         "step": 2,
         "variant": "new"
       }
@@ -24,7 +24,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-        "line": 79,
+        "line": 96,
         "step": 2,
         "variant": "new"
       }
@@ -37,8 +37,8 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-        "line": 95,
-        "step": 3,
+        "line": 138,
+        "step": 4,
         "variant": "new"
       }
     }
@@ -51,8 +51,8 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-        "line": 96,
-        "step": 3,
+        "line": 139,
+        "step": 4,
         "variant": "new"
       }
     }
@@ -160,7 +160,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module01AlMaktaba.jsx",
-      "line": 143,
+      "line": 98,
       "requires": [
         "qisma-iqlidiya"
       ],
@@ -176,7 +176,23 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module01AlMaktaba.jsx",
-      "line": 176,
+      "line": 141,
+      "requires": [
+        "qisma-iqlidiya"
+      ],
+      "prerequisiteStatus": {
+        "qisma-iqlidiya": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q3",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module01AlMaktaba.jsx",
+      "line": 158,
       "requires": [
         "qasim-baqi"
       ],
@@ -192,7 +208,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-      "line": 65,
+      "line": 67,
       "requires": [
         "qasim-baqi"
       ],
@@ -208,7 +224,23 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-      "line": 81,
+      "line": 87,
+      "requires": [
+        "qasim-baqi"
+      ],
+      "prerequisiteStatus": {
+        "qasim-baqi": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q3",
+      "module": 2,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
+      "line": 107,
       "requires": [
         "qasim-jidaa"
       ],
@@ -219,18 +251,14 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M02-S3-Q3",
+      "questionId": "M02-S4-Q4",
       "module": 2,
-      "step": 3,
+      "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-      "line": 98,
-      "requires": [
-        "siyagh-mutakafia"
-      ],
-      "prerequisiteStatus": {
-        "siyagh-mutakafia": "established@M2"
-      },
+      "line": 122,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },

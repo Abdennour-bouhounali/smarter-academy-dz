@@ -11,6 +11,10 @@ import { SITUATION, PARTS, LESSON_TITLES, lessonPath, REMARKS, LAB } from '../co
 import { ParticipantsFigure, BusFigure, BeachVignette } from '../components/TripFigures';
 
 /**
+ * Rétrofit 2026-10-15 (§4quater, synthèse = modifications minimales) : plus de titre / `lead` de workspace (le contexte de chaque
+ * niveau est le `lead` du labo) ; la boîte « تحليل الوضعية » (qui donne l'association partie ↔ درس) vient APRÈS la réponse de l'étape 2.
+ * La carte de la situation reste au-dessus du labo : c'est l'énoncé de la وضعية (étapes 1–8), le labo ne sert qu'à l'étape 7.
+ *
  * Module 7 — la وضعية de la PLATEFORME (le manuel n'a pas de « أدمج تعلّماتي » pour cette unité) :
  * رحلة إلى شاطئ تيبازة, lue dans les TROIS phases des synthèses du manuel (قراءة · تحليل · تنفيذ),
  * chaque partie RENVOYANT au درس qu'elle mobilise (lien sous l'étape) :
@@ -110,15 +114,14 @@ export default function Module07AlWadiya() {
       }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="المستوى المتقدّم هو صيغ الوضعية الثلاث لكراء قارب كاياك. في المستوى المبتدئ صيغتان لكراء دراجة: ننمذج صيغة الرسم الثابت أولا ثم نقارن."
           levels={{
             beginner: () => (
               <Manipulation
                 type="plan-compare"
                 level="beginner"
                 {...LAB.beginner}
+                lead="في المستوى المبتدئ صيغتان لكراء دراجة: ننمذج صيغة الرسم الثابت أولا ثم نقارن."
                 title={bidi('كراء دراجة: رسم ثابت 200 DA و 50 DA للساعة، أو 100 DA للساعة')}
               />
             ),
@@ -127,6 +130,7 @@ export default function Module07AlWadiya() {
                 type="plan-compare"
                 level="advanced"
                 {...LAB.advanced}
+                lead="المستوى المتقدّم هو صيغ الوضعية الثلاث لكراء قارب كاياك."
                 title={bidi('كراء قارب كاياك: الصيغ الثلاث أ و ب و جـ')}
                 onTrial={keep}
               />
@@ -155,7 +159,6 @@ export default function Module07AlWadiya() {
         { num: 2, title: 'تحليل الوضعية واختيار استراتيجية', subtitle: 'المرحلة 2: كل جزء يعيدنا إلى درس', done: !!q[2],
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" title={SITUATION.analysis[1].label} text={SITUATION.analysis[1].text} source={SITUATION.source} compact />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">أيّ مورد من موارد الوحدة يحلّ كل جزء؟</p>}
                 rows={[
@@ -167,6 +170,7 @@ export default function Module07AlWadiya() {
                 requires={['taqatu-jumla', 'sura-taalufiya', 'tanasub-taghayyurat', 'mufadala']}
                 feedback={({ allRight }) => <MathText>{allRight ? 'أحسنت: أربعة أجزاء، أربعة موارد من دروس الوحدة.' : 'الدستور المعطى نحسب به صورة، والعرضان عددان وصورتاهما، والمجهولان جملة، والاختيار مقارنة.'}</MathText>}
                 onAnswered={mark(2)} />
+              {q[2] && <TextbookBox kind="remark" title={SITUATION.analysis[1].label} text={SITUATION.analysis[1].text} source={SITUATION.source} compact />}
             </div>
           ) },
         { num: 3, title: 'تنفيذ: عدد المشاركين', subtitle: 'الجزء 1 — كيف نجد عددين من معلومتين؟', done: !!q['3a'] && !!q['3b'],

@@ -12,6 +12,9 @@ import { LAB, METHOD_REL, METHOD_CONSTRUCT, NOW, POSSIBLE, LINES } from '../cont
 import TrialsEvidence from '../components/TrialsEvidence';
 
 /**
+ * Rétrofit 2026-10-15 : le labo (دوري الآن 2, cos 3/4) EN TÊTE, sans carte ni titre ; ses questions (sur les essais de l'élève) ouvrent les
+ * étapes ; la طريقة de construction du livre (figures et solutions) n'est révélée qu'APRÈS la question « pourquoi le compas ici et pas là »,
+ * puis la brique insha-zawiya. Ordre actuel : 1 le labo (cos 3/4) → 2 cos 0,6 → 3 دوري الآن 1 → 4 « إن أمكن » → 5 la construction nommée.
  * Module 3 — طرائق (p. 121), stage `formalization` : TOUCH → AUTOMATIZE. Chaque méthode est approchée par une
  * question, puis révélée ligne à ligne (MethodSteps), puis nommée par une brique :
  *   1. « استعمال العلاقات المثلثية » : cos x = 0,6 → sin² x = 0,64 (le distracteur 0,4 : MISC-MUTH-JADHR-NASI) → hisab-nisba ;
@@ -45,13 +48,33 @@ export default function Module03Taraiq() {
       moduleNumber={3}
       moduleSubtitle="نحسب دون قيس الزاوية، وننشئ دون منقلة"
       estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'طرائق — الكتاب ص 121', title: 'استعمال العلاقات المثلثية، وإنشاء زاوية علمت إحدى نسبها', tone: 'emerald',
-        body: <p>طريقتان محلولتان من الكتاب: حاول أن تتوقّع كل سطر قبل أن تكشفه، ثم أنجز «دوري الآن» — الثاني بالكوس والمسطرة والمدور في المختبر.</p>,
-      }}
+      intro={
+        <Manipulation type="angle-compass" levels={false} targets={LAB.m3.targets} theme={LAB.m3.theme}
+          onTrial={(t) => setNowTrials((x) => [...x, t].slice(-8))} />
+      }
       steps={[
         {
-          num: 1, title: 'من جيب التمام إلى الجيب والظل', subtitle: 'طرائق ص 121', done: q1,
+          num: 1, title: 'ما فعلته في المختبر', subtitle: 'دوري الآن (2)', done: q5,
+          content: (
+            <div className="space-y-3">
+              <TrialsEvidence trials={nowTrials} empty="أنشئ الزاوية في المختبر أعلاه: الكوس، ثم طول على ضلع، ثم المدور." />
+              <BatchChoiceQuestion
+                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'الزاوية x حيث $\\cos x = \\dfrac{3}{4}$ :'}</MathText></p>}
+                rows={[
+                  { id: 'vertex', label: 'بعد نقل 3 على ضلع ورسم دائرة نصف قطرها 4 مركزها طرف القطعة، رأس الزاوية x هو', options: ['مركز الدائرة', 'النقطة التي قطعتها الدائرة', 'رأس الزاوية القائمة'], correct: 0, correction: <MathText>{'عند مركز الدائرة القطعة 3 مجاورة والقطعة 4 وتر: $\\cos x = \\dfrac{3}{4}$ . (عند نقطة التقاطع 3 مقابل: هناك الجيب هو $\\dfrac{3}{4}$ .)'}</MathText> },
+                  { id: 'third', label: 'الضلع الثالث (خاصية فيثاغورس)', options: ['$\\sqrt{7}$', '$5$', '$1$'].map(M), correct: 0, correction: <MathText>{'$4^2 - 3^2 = 7$ : الضلع الثالث $\\sqrt{7}$ و $\\sin x = \\dfrac{\\sqrt{7}}{4}$ . (5 لو كان 3 و 4 ضلعين، و $1 = 4 - 3$ .)'}</MathText> },
+                  { id: 'calc', label: <MathText>{'بالحاسبة $\\cos^{-1}\\left(\\dfrac{3}{4}\\right) \\approx$'}</MathText>, options: ['$41{,}4^{\\circ}$', '$48{,}6^{\\circ}$', '$36{,}9^{\\circ}$'].map(M), correct: 0, correction: <MathText>{'$41{,}4^{\\circ}$ وبالمنقلة نحو $41^{\\circ}$ . ($48{,}6^{\\circ}$ هي الزاوية الحادة الأخرى، جيبها $\\dfrac{3}{4}$ .)'}</MathText> },
+                ]}
+                requires={['fithaghuris']}
+                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: الإنشاء صحيح، والحاسبة والمنقلة تؤكّدانه.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
+                onAnswered={() => setQ5(true)}
+              />
+              {q5 && <TextbookBox kind="exercise" text={NOW.item2} source={NOW.source} compact />}
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'من جيب التمام إلى الجيب والظل', subtitle: 'طرائق ص 121', done: q1,
           content: (
             <div className="space-y-3">
               <TapQuestion
@@ -73,7 +96,7 @@ export default function Module03Taraiq() {
           ),
         },
         {
-          num: 2, title: 'دوري الآن (1)', subtitle: 'جيبها 0,4', done: q2,
+          num: 3, title: 'دوري الآن (1)', subtitle: 'جيبها 0,4', done: q2,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="exercise" text={NOW.item1} source={NOW.source} compact />
@@ -109,7 +132,7 @@ export default function Module03Taraiq() {
           ),
         },
         {
-          num: 3, title: 'إن أمكن', subtitle: 'قبل أي حساب', done: q3,
+          num: 4, title: 'إن أمكن', subtitle: 'قبل أي حساب', done: q3,
           content: (
             <div className="space-y-3">
               <TapQuestion
@@ -131,25 +154,13 @@ export default function Module03Taraiq() {
           ),
         },
         {
-          num: 4, title: 'إنشاء زاوية دون منقلة', subtitle: 'طرائق ص 121', done: q4,
+          num: 5, title: 'أين نضع الأعداد لنرسم الزاوية؟', subtitle: 'طرائق ص 121', done: q4,
           content: (
             <div className="space-y-3">
-              <PredictRule id="insha-zawiya">
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <GeoFigure {...METHOD_CONSTRUCT.ex1.figure} />
-                  <MethodSteps method={{ source: METHOD_CONSTRUCT.source, exercise: METHOD_CONSTRUCT.ex1.exercise, solution: METHOD_CONSTRUCT.ex1.solution }} />
-                </div>
-                <div className="space-y-2">
-                  <GeoFigure {...METHOD_CONSTRUCT.ex2.figure} />
-                  <MethodSteps method={{ source: METHOD_CONSTRUCT.source, exercise: METHOD_CONSTRUCT.ex2.exercise, solution: METHOD_CONSTRUCT.ex2.solution }} />
-                </div>
-              </div>
-              </PredictRule>
               <TapQuestion
-                prompt={<MathText>{'لماذا رسم الكتاب دائرة في التمرين 1 ولم يرسمها في التمرين 2؟'}</MathText>}
+                prompt={<MathText>{'في إنشائك لزاوية $\\cos x = \\dfrac{3}{4}$ فتحتَ المدور بالعدد 4 . فلماذا نفتح المدور بمقام الجيب $\\sin x = \\dfrac{2}{5}$ ، ولا نفتحه في إنشاء $\\tan x = \\dfrac{7}{3}$ ؟'}</MathText>}
                 options={[
-                  <MathText key="a">{'لأن مقام $\\sin x = \\dfrac{2}{5}$ هو الوتر، يُنقل بالمدور؛ أما في $\\tan x = \\dfrac{7}{3}$ فالعددان ضلعا الزاوية القائمة'}</MathText>,
+                  <MathText key="a">{'لأن مقام الجيب (وجيب التمام) هو الوتر، يُنقل بالمدور؛ أما في الظل فالعددان ضلعا الزاوية القائمة'}</MathText>,
                   'لأن 5 أكبر من 7',
                   'لأن الدائرة تعطي زاوية أكبر من الأخرى',
                 ]}
@@ -159,29 +170,21 @@ export default function Module03Taraiq() {
                 explain={<MathText>{`${LINES.construct} ${LINES.legsWhy}`}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && (
+                <PredictRule id="insha-zawiya">
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <GeoFigure {...METHOD_CONSTRUCT.ex1.figure} />
+                      <MethodSteps method={{ source: METHOD_CONSTRUCT.source, exercise: METHOD_CONSTRUCT.ex1.exercise, solution: METHOD_CONSTRUCT.ex1.solution }} />
+                    </div>
+                    <div className="space-y-2">
+                      <GeoFigure {...METHOD_CONSTRUCT.ex2.figure} />
+                      <MethodSteps method={{ source: METHOD_CONSTRUCT.source, exercise: METHOD_CONSTRUCT.ex2.exercise, solution: METHOD_CONSTRUCT.ex2.solution }} />
+                    </div>
+                  </div>
+                </PredictRule>
+              )}
               {q4 && <KnowledgeBrick id="insha-zawiya" lead="الطريقة، كما فعلتها يداك في النشاط 5:" />}
-            </div>
-          ),
-        },
-        {
-          num: 5, title: 'دوري الآن (2)', subtitle: 'في المختبر', done: q5,
-          content: (
-            <div className="space-y-3">
-              <TextbookBox kind="exercise" text={NOW.item2} source={NOW.source} compact />
-              <Manipulation type="angle-compass" levels={false} targets={LAB.m3.targets} theme={LAB.m3.theme} title={LAB.m3.title}
-                onTrial={(t) => setNowTrials((x) => [...x, t].slice(-8))} />
-              <TrialsEvidence trials={nowTrials} empty="أنشئ الزاوية في المختبر أعلاه: الكوس، ثم طول على ضلع، ثم المدور." />
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'الزاوية x حيث $\\cos x = \\dfrac{3}{4}$ :'}</MathText></p>}
-                rows={[
-                  { id: 'vertex', label: 'بعد نقل 3 على ضلع ورسم دائرة نصف قطرها 4 مركزها طرف القطعة، رأس الزاوية x هو', options: ['مركز الدائرة', 'النقطة التي قطعتها الدائرة', 'رأس الزاوية القائمة'], correct: 0, correction: <MathText>{'عند مركز الدائرة القطعة 3 مجاورة والقطعة 4 وتر: $\\cos x = \\dfrac{3}{4}$ . (عند نقطة التقاطع 3 مقابل: هناك الجيب هو $\\dfrac{3}{4}$ .)'}</MathText> },
-                  { id: 'third', label: 'الضلع الثالث (خاصية فيثاغورس)', options: ['$\\sqrt{7}$', '$5$', '$1$'].map(M), correct: 0, correction: <MathText>{'$4^2 - 3^2 = 7$ : الضلع الثالث $\\sqrt{7}$ و $\\sin x = \\dfrac{\\sqrt{7}}{4}$ . (5 لو كان 3 و 4 ضلعين، و $1 = 4 - 3$ .)'}</MathText> },
-                  { id: 'calc', label: <MathText>{'بالحاسبة $\\cos^{-1}\\left(\\dfrac{3}{4}\\right) \\approx$'}</MathText>, options: ['$41{,}4^{\\circ}$', '$48{,}6^{\\circ}$', '$36{,}9^{\\circ}$'].map(M), correct: 0, correction: <MathText>{'$41{,}4^{\\circ}$ وبالمنقلة نحو $41^{\\circ}$ . ($48{,}6^{\\circ}$ هي الزاوية الحادة الأخرى، جيبها $\\dfrac{3}{4}$ .)'}</MathText> },
-                ]}
-                requires={['insha-zawiya', 'fithaghuris']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: الإنشاء صحيح، والحاسبة والمنقلة تؤكّدانه.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
-                onAnswered={() => setQ5(true)}
-              />
             </div>
           ),
         },

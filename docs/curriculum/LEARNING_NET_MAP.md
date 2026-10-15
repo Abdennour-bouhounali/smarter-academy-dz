@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **80** leçons publiées · **190** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **81** leçons publiées · **189** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -828,7 +828,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
-| `1am.m5.r01` | التعرّف في حالات بسيطة على الكتابات الكسرية لعدد. | `hasil-qisma-kasr` _(prévue)_ | `1am.m1.r02` |
+| `1am.m5.r01` | التعرّف في حالات بسيطة على الكتابات الكسرية لعدد. | `hasil-qisma-kasr` | `1am.m1.r02` |
 | `1am.m5.r02` | اختزال كتابة كسرية (كسر). | `ikhtizal-kitaba-kasriya` | `1am.m5.r01`، `1am.m3.r02` |
 | `1am.m5.r03` | جمع وطرح وضرب كسور عشرية. | `kusur-ashriya-kitaba` _(prévue)_ | `1am.m5.r01`، `1am.m1.r05` |
 | `1am.m5.r04` | قراءة فاصلة نقطة (أو إعطاء حصر لها) أو تعيين نقطة ذات فاصلة معلومة على نصف مستقيم مدرّج. | `adad-ashri-mustaqim-mudarraj` _(prévue)_ | `1am.m1.r04` |
@@ -1163,7 +1163,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 13 | `qawaid-qabiliyat-qisma` — قواعد قابلية القسمة | publiée | `1am.m3.r02` |
 | 14 | `qisma-ashriya-taqrib` — القسمة العشرية والقيمة المقرّبة لحاصل قسمة | prévue | `1am.m3.r03` `1am.m3.r04` `1am.m3.r05` |
 | 15 | `wadiya-idmajiya-darb-qisma-ashriya` — أدمج تعلّماتي — الحساب على الأعداد الطبيعية والأعداد العشرية: الضرب والقسمة | synthèse | — |
-| 16 | `hasil-qisma-kasr` — حاصل القسمة والكسر | prévue | `1am.m5.r01` |
+| 16 | `hasil-qisma-kasr` — حاصل القسمة والكسر | publiée | `1am.m5.r01` |
 | 17 | `hasil-qisma-mustaqim` — حاصل القسمة على نصف مستقيم مدرّج | prévue | `1am.m5.r04` `1am.m5.r01` |
 | 18 | `akhdh-kasr-min-adad` — أخذ كسر من عدد | prévue | `1am.m5.r01` `1am.m5.r03` |
 | 19 | `ikhtizal-kitaba-kasriya` — الكتابات الكسرية لحاصل قسمة واختزال كسر | publiée | `1am.m5.r01` `1am.m5.r02` `1am.m5.x1` |

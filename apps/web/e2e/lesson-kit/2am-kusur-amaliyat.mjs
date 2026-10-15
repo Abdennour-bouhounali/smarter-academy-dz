@@ -95,7 +95,7 @@ if (!ONLY_LAB) for (const vp of [{ width: 1280, height: 800 }, { width: 320, hei
     await page.waitForTimeout(500);
     const mounted = await page.locator('main, [data-module-layout], h1').first().isVisible().catch(() => false);
     check(mounted, `${tag} ${slug} monté`);
-    if (slug === 'nashat') check(await page.locator('[data-recall-link]').count() === 1, `${tag} nashat : la « تذكّر » renvoie à la leçon 1AM publiée`);
+    if (slug === 'nashat') check(await page.locator('[data-recall-link]').count() === 0 && await page.locator('[data-module-brief]').count() === 0, `${tag} nashat : le labo en tête, la « تذكّر » vient après la réponse`);
     await pageHealth(page, `${tag} ${slug}`);
     await page.screenshot({ path: `${OUT}/${slug}-${vp.width}.png`, fullPage: true });
   }

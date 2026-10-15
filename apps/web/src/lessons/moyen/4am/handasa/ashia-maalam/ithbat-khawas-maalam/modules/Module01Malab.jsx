@@ -3,11 +3,9 @@ import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { LAB, PITCH, REMARKS, METHOD_UNKNOWN } from '../content/textbook';
+import { LAB, REMARKS } from '../content/textbook';
 import LabEvidence from '../components/LabEvidence';
-import PitchVignette from '../components/PitchVignette';
 
 /**
  * Module 1 — l'entrée de la leçon (pas d'activité du manuel) : le laboratoire `shape-prover`, le فار du ملعب الحي.
@@ -17,6 +15,9 @@ import PitchVignette from '../components/PitchVignette';
  *          (98°) et le فار le refuse ; « قائم في A » puis « متساوي الساقين رأسه C » ;
  *   متقدم  la طريقة p. 145 « حساب مسافات » : C(−2 ; y) sur sa droite jusqu'à (AB) ⊥ (BC) (y = −4), puis le carré ABCD et
  *          le cercle de diamètre [AC], avec des preuves SUFFISANTES.
+ * Rétrofit 2026-10-15 (§4quater) : le labo OUVRE le module — plus de carte « الفار لا يصدّق عينيه » au-dessus, ni de titre / `lead` de workspace
+ * ni de titre de labo ; `lead` du labo = le contexte seul. Les briques (déjà derrière `{qN && …}`) restent après la réponse ; l'étape 2 ne redemande
+ * plus « quel calcul » mais l'égalité que le فار a vérifiée sur le C de l'élève.
  * Le module n'ouvre PAS sur la طريقة : elle n'est pas une « نشاط » du module (sa destination est le module 3) et le premier
  * contact se fait sur trois plots. Aucune étape n'attend le laboratoire (`onFinished`) : les questions portent sur des
  * gestes que l'élève a faits, listés au-dessus d'elles ([data-activity-evidence]).
@@ -40,27 +41,16 @@ export default function Module01Malab() {
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="ملعب الحي — الفار لا يصدّق عينيه"
       moduleSubtitle="شواخص على أرضية مرصوفة، وحَكَم لا يقبل إلا الحساب" objectives={['ماذا يقبله الفار دليلًا على طبيعة شكل؟', 'لماذا قد يبدو مثلث قائمًا ولا يكون كذلك؟', 'أيّ أدلة تكفي لإثبات طبيعة رباعي؟']} estimatedTime="12 دقيقة"
-      brief={{
-        tag: 'مدخل الدرس — مختبر من المنصّة على طريقة الكتاب (ص 145)', headline: 'الفار لا يصدّق عينيه', emoji: '📺',
-        title: 'ماذا يقبله الفار دليلًا على طبيعة شكل؟', tone: 'emerald',
-        visual: <PitchVignette />,
-        body: (
-          <div className="space-y-2" data-situation="malab">
-            <p><MathText>{PITCH.text}</MathText> <SourceTag source={PITCH.source} /></p>
-          </div>
-        ),
-        footer: <SourceTag source={METHOD_UNKNOWN.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="ملعب الحي"
-          lead="المستوى المبتدئ: ثلاثة شواخص ومثلث يبدو قائما. المستوى المتقدّم هو طريقة الكتاب (ص 145): C ينزلق على مستقيم، ثم المربّع والدائرة."
           levels={{
             beginner: () => (
-              <Manipulation type="shape-prover" level="beginner" {...LAB.beginner} theme="football" title="ملعب الحي: مثلث يبدو قائما في A" onTrial={keep('beginner')} />
+              <Manipulation type="shape-prover" level="beginner" {...LAB.beginner} theme="football"
+                lead="في ملعب الحي شواخص على أرضية مرصوفة، والفار حَكَم لا يقبل إلا ما يثبته الحساب." onTrial={keep('beginner')} />
             ),
             advanced: () => (
-              <Manipulation type="shape-prover" level="advanced" {...LAB.advanced} theme="football" title="طريقة الكتاب (ص 145): عيّن y ثم أكمل المربّع ABCD" onTrial={keep('advanced')} />
+              <Manipulation type="shape-prover" level="advanced" {...LAB.advanced} theme="football"
+                lead="طريقة الكتاب (ص 145): الشاخص C ينزلق على مستقيم، ثم المربّع والدائرة." onTrial={keep('advanced')} />
             ),
           }}
         />
@@ -91,7 +81,7 @@ export default function Module01Malab() {
               <LabEvidence id="beginner-right" trials={trials} level="beginner" filter={(e) => e.claim === 'right:A'} title="مراجعاتك لـ «قائم في A»:"
                 empty="في المستوى المبتدئ: حرّك C حتى يقبل الفار «قائم في A»." />
               <TapQuestion
-                prompt={<MathText>{'لإثبات أن المثلث ABC قائم في A ، نتحقق أن:'}</MathText>}
+                prompt={<MathText>{'قبل الفار «قائم في A» عند $C(-1\\,;\\,3)$ . أيّ مساواة بين مربعات الأطوال حقّقها ليقبل؟'}</MathText>}
                 options={['$AB^2 + AC^2 = BC^2$', '$AB^2 + BC^2 = AC^2$', '$AC^2 + BC^2 = AB^2$', '$AB = AC$'].map(M)}
                 correct={0} cols={2} requires={['dalil-hisabi', 'aks-fithaghuras']}
                 explain={<MathText>{'عند $C(-1\\,;\\,3)$ قبل الفار «قائم في A» : $AB^2 + AC^2 = 10 + 10 = 20 = BC^2$ .'}</MathText>}

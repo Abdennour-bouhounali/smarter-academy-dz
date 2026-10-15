@@ -65,7 +65,7 @@ export default function Module03Nisba() {
           content: (
             <div className="space-y-3">
               <MethodSteps method={SOLUTION} onAllRevealed={() => setRead(true)} />
-              <KnowledgeBrick id="naqt-maqam" lead="البسط والمقام ضُربا في نفس العدد، فالنسبة لم تتغيّر:" />
+              {read && <KnowledgeBrick id="naqt-maqam" lead="البسط والمقام ضُربا في نفس العدد، فالنسبة لم تتغيّر:" />}
             </div>
           ),
         },

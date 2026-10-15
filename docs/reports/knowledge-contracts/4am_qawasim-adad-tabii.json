@@ -14,8 +14,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/modules/Module01AlAdad60.jsx",
-        "line": 81,
-        "step": 2,
+        "line": 82,
+        "step": 3,
         "variant": "rappel"
       }
     }
@@ -27,7 +27,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/modules/Module01AlAdad60.jsx",
-        "line": 73,
+        "line": 69,
         "step": 1,
         "variant": "new"
       }
@@ -38,8 +38,8 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/modules/Module02Tariqa105.jsx",
-        "line": 37,
-        "step": 2,
+        "line": 45,
+        "step": 3,
         "variant": "new"
       }
     }
@@ -51,8 +51,8 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/modules/Module02Tariqa105.jsx",
-        "line": 41,
-        "step": 3,
+        "line": 53,
+        "step": 4,
         "variant": "new"
       }
     }
@@ -155,12 +155,24 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S2-Q1",
+      "questionId": "M01-S1-Q1",
       "module": 1,
-      "step": 2,
+      "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/modules/Module01AlAdad60.jsx",
-      "line": 83,
+      "line": 65,
+      "requires": null,
+      "prerequisiteStatus": {},
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q2",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/modules/Module01AlAdad60.jsx",
+      "line": 84,
       "requires": [
         "qasim-rappel"
       ],
@@ -177,6 +189,18 @@
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/modules/Module02Tariqa105.jsx",
       "line": 29,
+      "requires": null,
+      "prerequisiteStatus": {},
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S2-Q2",
+      "module": 2,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/modules/Module02Tariqa105.jsx",
+      "line": 37,
       "requires": [
         "jidaa-aamilayn"
       ],
@@ -187,18 +211,14 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M02-S3-Q2",
+      "questionId": "M02-S4-Q3",
       "module": 2,
-      "step": 3,
+      "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/modules/Module02Tariqa105.jsx",
-      "line": 42,
-      "requires": [
-        "qawaid-qisma"
-      ],
-      "prerequisiteStatus": {
-        "qawaid-qisma": "established@M2"
-      },
+      "line": 49,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },

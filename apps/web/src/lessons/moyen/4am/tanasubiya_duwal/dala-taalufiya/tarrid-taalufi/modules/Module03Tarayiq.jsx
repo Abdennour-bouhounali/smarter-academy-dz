@@ -54,7 +54,6 @@ export default function Module03Tarayiq() {
           num: 2, title: 'خطوات الطريقة', done: !!done.order,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="khutuwat-mufadala" lead="الأسطر الخمسة هي خطوات كل مفاضلة بين صيغتين:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">إلى أيّ خطوة ينتمي كل سطر؟</p>}
                 rows={[
@@ -63,7 +62,7 @@ export default function Module03Tarayiq() {
                   { id: 'ans', label: 'أقل من 4Go: الباقة B ، أكثر من 4Go: الباقة A', options: STEPS, correct: 3, correction: 'نكتب الاختيار بجملة وبوحدته.' },
                   { id: 'solve', label: <MathText>{'$600 < 150x$ ومنه $x > 4$'}</MathText>, options: STEPS, correct: 2, correction: 'نحلّ المتراجحة التي تقارن التكلفتين.' },
                 ]}
-                requires={['khutuwat-mufadala']}
+                requires={['namdhaja-taalufiya', 'tasawi-taqatu']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     {allRight ? 'تمامًا: متغير، دالتان، حلّ، ثم جواب في سياق الوضعية.' : 'أعد قراءة الأسطر 1) إلى 5) في الحلّ.'}
@@ -71,6 +70,7 @@ export default function Module03Tarayiq() {
                 )}
                 onAnswered={mark('order')}
               />
+              {done.order && <KnowledgeBrick id="khutuwat-mufadala" lead="الأسطر الخمسة هي خطوات كل مفاضلة بين صيغتين:" />}
             </div>
           ),
         },
@@ -78,7 +78,7 @@ export default function Module03Tarayiq() {
           num: 3, title: 'طبّق الطريقة', subtitle: 'بطاقة السينما', done: !!done.cine1 && !!done.cine2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="khutuwat-mufadala" variant="rappel" compact />
+              {done.order && <KnowledgeBrick id="khutuwat-mufadala" variant="rappel" compact />}
               <p className="rounded-xl bg-white px-3 py-2 text-sm text-slate-800">
                 <MathText>{'في قاعة سينما تعرض أفلامًا وثائقية عن تاريخ الوطن: ببطاقة سنوية ثمنها 1000DA تدفع 300DA للفيلم، ودون بطاقة تدفع 500DA للفيلم. نسمّي $x$ عدد الأفلام في السنة.'}</MathText>
               </p>

@@ -5,6 +5,17 @@
  * « √2 » (p. 30), puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit2/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la règle graduée sur TROIS aires seulement (9, 0,25, 7 — le niveau مبتدئ) : pour savoir si un côté « tombe » sur
+ *   une graduation il faut le TIRER, et 7 refuse toute graduation sans dire pourquoi. Rejeté : le classement imprimé du manuel
+ *   (huit racines déjà rangées en deux صنفين, puis « à quel صنف appartient √169 ? ») comme ouverture — la liste donne la réponse et
+ *   √169 se tranche de mémoire (13² = 169). Le classement n'apparaît qu'APRÈS la 1re réponse, comme encadré du manuel dont on cherche le
+ *   critère ; la question أ (√169) devient l'APPLICATION du critère ; les six autres aires du manuel restent le niveau متقدم du MÊME labo.
+ *   Le labo reste une activité du manuel (pas de `platform_designed_entry`).
+ *   Ordre des idées : pourquoi √0,25 tombe sur les demis → le classement du manuel et son critère (écrit d'abord avec les mots de
+ *   l'élève), PUIS la brique `murabba-natiq` → le صنف de √169 → (module 2) rationnel ou non ? (le critère seul), PUIS la brique
+ *   `ghayr-natiq` → ce que la calculatrice cache de √2.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/natiqa-ghayr-natiqa';

@@ -10,6 +10,17 @@
  * (module 3) → AUTOMATIZE / TRANSFER (module 4), puis trois « مسائل » de la plateforme (modules 5–7) →
  * évaluation (module 8).
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue (module 1) : la course en taxi-application (100DA à la montée, 40DA le km) sur le compteur à partie fixe —
+ *   l'élève essaie 0 km et voit que le compteur ne part pas de 0 : la partie fixe devient nécessaire à sa main. La paie du
+ *   نشاط 1 (35000DA + 185DA l'heure, la cible 37775, les boutons a et b) reste le niveau متقدم du MÊME lab.
+ *   Rejetée : le texte du نشاط 1 posé en carte au-dessus du lab, puis « vérifie 36850 » et « complète le tableau » avant tout
+ *   geste (une vérification, répondue sans le compteur) ; le tableau 5/8/12/15 est déjà fait par les repères du lab.
+ *   Ordre des idées : 0 km et la partie fixe (POURQUOI) → x double, la lecture non (le « جدول تناسبية » du livre) → le livre
+ *   en APPLICATION (10 heures, S(x)) → type de fonction, programme, brique dala-ujra APRÈS la réponse → l'antécédent 38330.
+ *   Module 2 : la question d'abord (plus de rappel ni de carte au-dessus). Module 3 : chaque étape s'ouvre sur sa question, les
+ *   encadrés et les briques viennent après. Aucune destination du manuel n'a bougé (act-1 et act-2 restent aux modules 1 et 2).
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/mafhum-taalufiya';
@@ -77,7 +88,7 @@ export const LESSON_CONFIG = {
       title: 'عدّاد سيارة الأجرة: 100DA عند الركوب و 40DA للكيلومتر',
       objective: 'الدالة التآلفية x ⟼ ax + b: جزء ثابت b يُدفع مرة واحدة وجزء a عن كل وحدة؛ العدد الذي صورته m حل ax + b = m؛ b = 0 دالة خطية و a = 0 دالة ثابتة',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'ride' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'ride' },
       learningPointIds: ['4am_mafhum-taalufiya_P1', '4am_mafhum-taalufiya_P2'],
       sourceElementIds: ['act-1'],
     },

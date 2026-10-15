@@ -20,6 +20,16 @@
  *   M5–M7 مسائل        — puis trois « مسائل » de la plateforme (modules 5–7) ;
  *   M8 إختبار أولي     — l'item 3 de أؤكّد تعلّماتي et quatre épreuves de la plateforme ; P1 et P2 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : l'échelle double du mur du quartier (labo `parallel-level`, niveau مبتدئ, thème `mural` : AB = 6, AC = 9, une
+ *   planche qui doit être de niveau) — la main pose B′ et C′ et la bulle dit « parallèle » ou non : la condition (deux rapports égaux)
+ *   et la jambe de l'ordre se VOIENT avant de s'écrire. Rejetée : la fiche de l'activité 2 posée en carte au-dessus du labo (trois
+ *   figures d'élèves à juger de tête) ; elle devient l'ouverture de l'étape 1 (situation + figure sous le labo) et le niveau متقدم
+ *   (le tréteau en X, rapport 1/3) reproduit ses trois figures par les placements de l'élève.
+ *   Ordre : labo (sans carte, sans titre de workspace) → les trois figures du manuel jugées sur les figures de l'élève → le texte à
+ *   compléter (PredictRule, puis la brique APRÈS la réponse) → l'ordre des points (la brique de rappel seulement après la réponse).
+ *   Modules 2–3 (sans labo) : chaque brique vient APRÈS la question qu'elle nomme.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/aksiya-talis';
@@ -87,7 +97,7 @@ export const LESSON_CONFIG = {
       title: 'السلّم المزدوج: لوح أفقي بين الساقين',
       objective: 'يكون (B′C′) موازيا لـ (BC) عندما تتساوى النسبتان AB′/AB و AC′/AC وتكون النقط A، B، B′ و A، C، C′ مرتبة بنفس الترتيب؛ ونسبتان مختلفتان تعنيان عدم التوازي',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'mural' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'mural' },
       learningPointIds: ['4am_aksiya-talis_P1'],
       sourceElementIds: ['act-2'],
     },

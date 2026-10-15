@@ -3,12 +3,13 @@ import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../co
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, CARDS } from '../content/textbook';
 
 /**
- * Module 1 — نشاط 4 (pp. 37–38) « قواعد قابلية القسمة ». LABORATOIRE À DEUX NIVEAUX, un seul type `digit-cards`, le
+ * Module 1 — l'ENTRÉE : la table 0–48 de نشاط 4 (pp. 37–38) coloriée à la main (rétrofit 2026-10-15 : le labo en tête SANS carte
+ * ni titre, la brique de chaque règle APRÈS la réponse). LABORATOIRE À DEUX NIVEAUX, un seul type `digit-cards`, le
  * MANUEL aux deux niveaux :
  *   مبتدئ  — la table 0–48 en 7 colonnes : colorier les multiples de 2, 5 puis 3 ; chaque case jugée par son reste ; les
  *            chiffres des unités / les sommes des chiffres s'accumulent à côté (jamais la règle).
@@ -43,24 +44,8 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 4 — جدول الأعداد"
       moduleSubtitle="نلوّن المضاعفات ونقرأ أرقامها"
       estimatedTime="12 دقيقة"
-      brief={{
-        tag: 'نشاط 4 — الكتاب ص 37',
-        headline: 'هل يمكن أن نعرف دون أن نقسم؟',
-        emoji: '🔎',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-1">
-            <p>{ACTIVITY.text}</p>
-            <ul className="list-disc ps-5 text-sm">{ACTIVITY.parts.map((p) => <li key={p}>{p}</li>)}</ul>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="ابدأ بالمستوى المبتدئ (جدول الكتاب)، ثم انتقل إلى المتقدّم: بطاقات التمرين 26."
           levels={{
             beginner: () => (
               <Manipulation type="digit-cards" level="beginner" mode="grid" from={ACTIVITY.numbers.from} to={ACTIVITY.numbers.to}
@@ -103,7 +88,7 @@ export default function Module01Nashat() {
                 explain={<span>0 ، 5 ، 10 ، 15 ، … ، 45 : رقم الآحاد 0 أو 5.</span>}
                 onAnswered={() => setQ2(true)}
               />
-              <KnowledgeBrick id="qabiliya-2-5" lead="أرقام آحاد خاناتك الحمراء والزرقاء: ماذا يكفي أن ننظر إليه؟" />
+              {q2 && <KnowledgeBrick id="qabiliya-2-5" lead="أرقام آحاد خاناتك الحمراء والزرقاء: ماذا يكفي أن ننظر إليه؟" />}
             </div>
           ),
         },
@@ -119,7 +104,7 @@ export default function Module01Nashat() {
                 explain={<MathText>{'27 : $2 + 7 = 9$ ، 39 : $3 + 9 = 12$ ، 48 : $4 + 8 = 12$ — كلها تقبل القسمة على 3. أمّا رقم الآحاد فيأخذ كل القيم (3 ، 6 ، 9 ، 12 ، 15…).'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
-              <KnowledgeBrick id="qabiliya-3" lead="رقم الآحاد لم يكفِ هنا: ما الذي كان مشتركًا بين خاناتك الخضراء؟" />
+              {q3 && <KnowledgeBrick id="qabiliya-3" lead="رقم الآحاد لم يكفِ هنا: ما الذي كان مشتركًا بين خاناتك الخضراء؟" />}
             </div>
           ),
         },

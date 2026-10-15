@@ -19,6 +19,8 @@ import ValueTable from '../components/ValueTable';
  *   4. la طريقة g(−2) = 6, révélée ligne à ligne (MethodSteps), la brique tayin-dala et la condition
  *      m ≠ 0 (la carte 0 du lab).
  * Les questions utilisent d'AUTRES nombres que les encadrés (la réponse n'est jamais au-dessus).
+ * Rétrofit 2026-10-15 (§4quater) : sans labo, il s'ouvre sur la première question (les trois tableaux, plus de carte des questions
+ * du livre au-dessus) ; les classements, la صورة et le calcul de a sont essayés AVANT leurs encadrés / briques (gardés par la réponse).
  * LP : P1, P2, P3.
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
@@ -31,7 +33,7 @@ export default function Module02Maarif() {
   const [q2, setQ2] = useState(false);
   const [q3a, setQ3a] = useState(false);
   const [q3, setQ3] = useState(false);
-  const [lines, setLines] = useState(false);
+  const [, setLines] = useState(false);
   const [q4a, setQ4a] = useState(false);
   const [q4, setQ4] = useState(false);
 
@@ -50,10 +52,10 @@ export default function Module02Maarif() {
       }}
       steps={[
         {
-          num: 1, title: 'تمييز دوال خطية', subtitle: 'نشاط 2 — ثلاثة جداول', done: q1,
+          num: 1, title: 'أيّ هذه الدوال آلة ضرب؟', subtitle: 'نشاط 2 — ثلاثة جداول', done: q1,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="situation" title={`نشاط 2: ${ACTIVITY2.title}`} lines={ACTIVITY2.questions} source={ACTIVITY2.source} compact />
+              <p className="text-xs text-slate-500"><MathText>{`نشاط 2: ${ACTIVITY2.title}`}</MathText> <SourceTag source={ACTIVITY2.source} /></p>
               <div className="grid gap-2 sm:grid-cols-3" data-act2-tables>
                 {ACTIVITY2.tables.map((tb) => (
                   <ValueTable key={tb.n} n={tb.n} rows={[{ label: '$x$', cells: tb.x }, { label: '$y$', cells: tb.y }]} />
@@ -96,13 +98,9 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 2, title: 'الدالة الخطية', subtitle: 'معارف 1', done: q2,
+          num: 2, title: 'أيّ هذه الدوال خطية؟', subtitle: 'معارف 1', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="dala-nashat" variant="rappel" compact />
-              <TextbookBox kind="definition" title={KNOWLEDGE.linear.title} lines={KNOWLEDGE.linear.definition} source={KNOWLEDGE.linear.source} compact />
-              <TextbookBox kind="example" lines={KNOWLEDGE.linear.examples} source={KNOWLEDGE.linear.source} compact />
-              <KnowledgeBrick id="dala-khattiya" lead="ما تفعله الآلة التي تطابقها آلة الضرب، معرَّفًا:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">هل هي دالة خطية؟ وإن كانت، ما معاملها؟</p>}
                 rows={[
@@ -111,27 +109,31 @@ export default function Module02Maarif() {
                   { id: 'l3', label: <MathText>{'$x \\longmapsto \\dfrac{2}{3}x$'}</MathText>, options: ['خطية معاملها $\\dfrac{2}{3}$', 'خطية معاملها $\\dfrac{3}{2}$', 'ليست خطية'].map(Opt), correct: 0, correction: <MathText>{'$\\dfrac{2}{3}x = \\dfrac{2}{3} \\times x$ : $a = \\dfrac{2}{3}$.'}</MathText> },
                   { id: 'l4', label: <MathText>{'$x \\longmapsto 5x^2$'}</MathText>, options: ['خطية معاملها $5$', 'خطية معاملها $10$', 'ليست خطية'].map(Opt), correct: 2, correction: <MathText>{'$5x^2 = 5x \\times x$ : المضروب في $x$ ليس عددًا ثابتًا ($1 \\longmapsto 5$ لكن $2 \\longmapsto 20 \\neq 10$).'}</MathText> },
                 ]}
-                requires={['dala-khattiya']}
+                requires={['dala-nashat']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="dala-nashat" variant="rappel" compact />}
+              {q2 && <TextbookBox kind="definition" title={KNOWLEDGE.linear.title} lines={KNOWLEDGE.linear.definition} source={KNOWLEDGE.linear.source} compact />}
+              {q2 && <TextbookBox kind="example" lines={KNOWLEDGE.linear.examples} source={KNOWLEDGE.linear.source} compact />}
+              {q2 && <KnowledgeBrick id="dala-khattiya" lead="ما تفعله الآلة التي تطابقها آلة الضرب، معرَّفًا:" />}
             </div>
           ),
         },
         {
-          num: 3, title: 'صورة عدد وجدول القيم', subtitle: 'معارف 1 و 2', done: q3,
+          num: 3, title: 'ما صورة عدد، وماذا يميّز جدول القيم؟', subtitle: 'معارف 1 و 2', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="hisab-sura" lead="من التعريف: «العدد a × x يسمى صورة x»." />
               <NumericQuestion
                 prompt={<MathText>{'$f$ الدالة الخطية $f(x) = 1{,}5x$ : $f(-4) =$'}</MathText>}
                 expected={(n) => Math.abs(n + 6) < 1e-9}
                 parse={parseDec}
                 display="-6"
-                requires={['hisab-sura']}
+                requires={['dala-khattiya']}
                 explain={<MathText>{'$f(-4) = 1{,}5 \\times (-4) = -6$.'}</MathText>}
                 onAnswered={() => setQ3a(true)}
               />
+              {q3a && <KnowledgeBrick id="hisab-sura" lead="من التعريف: «العدد a × x يسمى صورة x»." />}
               {q3a && (
                 <>
                   <PredictRule id="jadwal-khattiya" prompt={"في آلة التخفيض كانت الدالة $f(x) = 0{,}8x$ وجدول الأسعار جدول تناسبية. ماذا تستنتج عن جدول قيم أيّ دالة خطية $f(x) = ax$؟ وما معامل التناسبية فيه؟"}><TextbookBox kind="definition" title={KNOWLEDGE.table.title} lines={KNOWLEDGE.table.definition} source={KNOWLEDGE.table.source} compact /></PredictRule>
@@ -153,23 +155,23 @@ export default function Module02Maarif() {
           ),
         },
         {
-          num: 4, title: 'تعيين دالة خطية من عدد وصورته', subtitle: 'طرائق', done: q4,
+          num: 4, title: 'كيف نعيّن المعامل من عدد وصورته؟', subtitle: 'طرائق', done: q4,
           content: (
             <div className="space-y-3">
               {/* « أتوقّع القاعدة » : la طريقة (g(−2) = 6) énonce la méthode — l'élève l'écrit avant (prompt : knowledge.jsx). */}
               <PredictRule id="tayin-dala"><MethodSteps method={METHOD} onAllRevealed={() => setLines(true)} /></PredictRule>
-              <KnowledgeBrick id="tayin-dala" lead="ما فعلته حين وضعت زوجًا من جدولك على مقبض a:" />
-              <p className="text-xs text-slate-600"><MathText>{IMAGE_METHOD.rule}</MathText> <SourceTag source={IMAGE_METHOD.source} /></p>
               <NumericQuestion
                 prompt={<MathText>{'$h$ دالة خطية حيث $h(4) = -10$ . معاملها $a =$'}</MathText>}
                 expected={(n) => Math.abs(n + 2.5) < 1e-9}
                 parse={parseDec}
                 display="-2,5"
-                requires={['tayin-dala']}
+                requires={['dala-khattiya']}
                 explain={<MathText>{'$a \\times 4 = -10$ ، إذن $a = -10 \\div 4 = -2{,}5$ : $h(x) = -2{,}5x$.'}</MathText>}
                 onAnswered={() => setQ4a(true)}
               />
-              {(q4a || lines) && (
+              {q4a && <KnowledgeBrick id="tayin-dala" lead="ما فعلته حين وضعت زوجًا من جدولك على مقبض a:" />}
+              {q4a && <p className="text-xs text-slate-600"><MathText>{IMAGE_METHOD.rule}</MathText> <SourceTag source={IMAGE_METHOD.source} /></p>}
+              {q4a && (
                 <TapQuestion
                   prompt={<MathText>{'نعرف عن دالة خطية $k$ أنّ $k(0) = 0$ فقط. هل يكفي هذا لتعيين معاملها؟'}</MathText>}
                   options={['لا: $a \\times 0 = 0$ مهما كان $a$', 'نعم: معاملها $a = 0$', 'نعم: معاملها $a = 1$'].map(Opt)}

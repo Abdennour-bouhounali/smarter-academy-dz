@@ -269,3 +269,22 @@ export function bouquetShape(lay, g, b) {
   });
   return { x0: left - s * 0.08, x1: right + s * 0.08, cx, y, top: y + s * 0.02, band: y + s * 0.8, bottom: y + s * 1.08, leans };
 }
+
+/* ── Onboarding (LabCoach, MANIPULATION_CONTRACT §8quater) ────────────────────────── */
+
+/**
+ * La prochaine commande à montrer à l'élève — jamais la réponse (ni la taille du saut, ni q) : seulement le CONTRÔLE.
+ *   handle  tant qu'aucun relâchement n'a eu lieu : la poignée (ruban / lapin) à tirer ;
+ *   step    ensuite, tant que la découverte n'est pas prête : les boutons −/+ (le + ; le − si la piste est au bout) ;
+ *   next    (fleurs) la carte « زهرة جديدة! » une fois ouverte, après la découverte.
+ * Un pas n'est montré qu'une fois (LabCoach retient les ids) : les ids sont par genre de commande.
+ * @returns {{ id: string, target: string, gesture: 'tap' | 'drag' } | null}
+ */
+export function coachOf(s) {
+  if (s.trials.length === 0) return { id: 'handle', target: '[data-dj-handle]', gesture: 'drag' };
+  if (!discoveryReady(s)) {
+    return { id: 'step', target: s.q >= s.qMax ? '[data-dj-less]' : '[data-dj-more]', gesture: 'tap' };
+  }
+  if (canAddFlower(s)) return { id: 'next', target: '[data-dj-next-button]', gesture: 'tap' };
+  return null;
+}

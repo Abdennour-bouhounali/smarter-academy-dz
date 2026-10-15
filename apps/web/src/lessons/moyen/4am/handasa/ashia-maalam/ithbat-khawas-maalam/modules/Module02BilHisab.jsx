@@ -15,9 +15,10 @@ import { TRIANGLE, PERP, QUAD, CIRCLE } from '../content/textbook';
  *   2. la perpendicularité sans produit scalaire (réciproque de Pythagore)                       → taamud            (P1)
  *   3. l'échelle des quadrilatères : parallélogramme d'abord, puis diagonales / côtés            → tabiat-rubai      (P2)
  *   4. un point d'un cercle : distance au centre = rayon (pas le diamètre)                        → intima-daira      (P3)
- * « أتوقّع القاعدة » (2026-10-06) : chaque étape OUVRE sur l'encadré qui énonce la règle ; il est donc enveloppé dans
- * une PredictRule portant l'id de l'item (prompt : knowledge.jsx › predictPrompt, ancré sur le laboratoire du module 1) — l'élève écrit
- * la règle, puis lit l'encadré et l'applique ; la brique qui suit ne redemande rien (règle déjà établie).
+ * « أتوقّع القاعدة » (2026-10-06) : l'encadré qui énonce la règle est enveloppé dans une PredictRule portant l'id de l'item (prompt :
+ * knowledge.jsx › predictPrompt, ancré sur le laboratoire du module 1) — l'élève écrit la règle, puis lit l'encadré ; la brique qui suit ne
+ * redemande rien (règle déjà établie). Rétrofit 2026-10-15 (§4quater) : la QUESTION d'abord (elle se résout avec ce que le module 1 a
+ * établi), puis — APRÈS la réponse — la prédiction, l'encadré de la règle et la brique.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -37,7 +38,6 @@ export default function Module02BilHisab() {
         { num: 1, title: 'طبيعة مثلث', subtitle: 'ثلاثة مربعات نقارنها', done: !!q[1],
           content: (
             <div className="space-y-3">
-              <PredictRule id="tabiat-muthallath"><TextbookBox kind="method" title={TRIANGLE.title} lines={TRIANGLE.lines} source={TRIANGLE.source} compact /></PredictRule>
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">ما طبيعة كل مثلث؟ (مربعات أطوال أضلاعه محسوبة من الإحداثيات)</p>}
                 rows={[
@@ -51,26 +51,34 @@ export default function Module02BilHisab() {
                 requires={['qaim-fithaghuras', 'mutasawi-saqayn']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'قارنت المربعات الثلاثة كما يفعل الفار.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={mark(1)} />
-              {q[1] && <KnowledgeBrick id="tabiat-muthallath" lead="القاعدة كاملة:" />}
+              {q[1] && (
+                <>
+                  <PredictRule id="tabiat-muthallath"><TextbookBox kind="method" title={TRIANGLE.title} lines={TRIANGLE.lines} source={TRIANGLE.source} compact /></PredictRule>
+                  <KnowledgeBrick id="tabiat-muthallath" lead="القاعدة كاملة:" />
+                </>
+              )}
             </div>
           ) },
         { num: 2, title: 'تعامد مستقيمين', subtitle: 'دون جداء سلمي', done: !!q[2],
           content: (
             <div className="space-y-3">
-              <PredictRule id="taamud"><TextbookBox kind="definition" title={PERP.title} lines={PERP.lines} source={PERP.source} compact /></PredictRule>
               <TapQuestion
                 prompt={<MathText>{'لإثبات أن $(PQ) \\perp (QR)$ ، نتحقق أن:'}</MathText>}
                 options={['$QP^2 + QR^2 = PR^2$', '$PQ^2 + PR^2 = QR^2$', '$PQ = QR$', '$PR^2 + QR^2 = PQ^2$'].map(M)}
                 correct={0} cols={2} requires={['tabiat-muthallath', 'qaim-fithaghuras']}
                 explain={<MathText>{'المستقيمان (PQ) و (QR) يتقاطعان في Q : تعامدهما يعني أن المثلث PQR قائم في Q ، والضلع المقابل لـ Q هو [PR] ، فهو الذي يكون وحده. تساوي الطولين يجعل المثلث متساوي الساقين فقط.'}</MathText>}
                 onAnswered={mark(2)} />
-              {q[2] && <KnowledgeBrick id="taamud" />}
+              {q[2] && (
+                <>
+                  <PredictRule id="taamud"><TextbookBox kind="definition" title={PERP.title} lines={PERP.lines} source={PERP.source} compact /></PredictRule>
+                  <KnowledgeBrick id="taamud" />
+                </>
+              )}
             </div>
           ) },
         { num: 3, title: 'طبيعة رباعي', subtitle: 'متوازي أضلاع أولا', done: !!q[3],
           content: (
             <div className="space-y-3">
-              <PredictRule id="tabiat-rubai"><TextbookBox kind="method" title={QUAD.title} lines={[...QUAD.lines, QUAD.warning]} source={QUAD.source} compact /></PredictRule>
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">ماذا يكفي أن نستنتج من كل دليل عن الرباعي ABCD؟</p>}
                 rows={[
@@ -86,20 +94,29 @@ export default function Module02BilHisab() {
                 requires={['adilla-kafiya', 'tasawi-mutawazi', 'khawass-rubaiyat']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'دليل لكل خطوة: متوازي أضلاع، ثم القطران أو الضلعان.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={mark(3)} />
-              {q[3] && <KnowledgeBrick id="tabiat-rubai" />}
+              {q[3] && (
+                <>
+                  <PredictRule id="tabiat-rubai"><TextbookBox kind="method" title={QUAD.title} lines={[...QUAD.lines, QUAD.warning]} source={QUAD.source} compact /></PredictRule>
+                  <KnowledgeBrick id="tabiat-rubai" />
+                </>
+              )}
             </div>
           ) },
         { num: 4, title: 'نقطة على دائرة', subtitle: 'البعد عن المركز', done: !!q[4],
           content: (
             <div className="space-y-3">
-              <PredictRule id="intima-daira"><TextbookBox kind="definition" title={CIRCLE.title} lines={[...CIRCLE.lines, CIRCLE.trap]} source={CIRCLE.source} compact /></PredictRule>
               <TapQuestion
                 prompt={<MathText>{'دائرة مركزها $\\Omega(1\\,;\\,2)$ ونصف قطرها $5$ . أيّ نقطة تنتمي إليها؟'}</MathText>}
                 options={['$(4\\,;\\,6)$', '$(5\\,;\\,6)$', '$(1\\,;\\,12)$', '$(3\\,;\\,5)$'].map(M)}
                 correct={0} cols={2} requires={['masafa-maalam', 'daira-nisf-qutr']}
                 explain={<MathText>{'$(4 - 1)^2 + (6 - 2)^2 = 9 + 16 = 25 = 5^2$ . أما $(5\\,;\\,6)$ : $16 + 16 = 32$ ؛ و $(1\\,;\\,12)$ على بعد $10$ (القطر لا نصف القطر)؛ و $(3\\,;\\,5)$ : $4 + 9 = 13$ (مجموع الفرقين $2 + 3 = 5$ ليس المسافة).'}</MathText>}
                 onAnswered={mark(4)} />
-              {q[4] && <KnowledgeBrick id="intima-daira" />}
+              {q[4] && (
+                <>
+                  <PredictRule id="intima-daira"><TextbookBox kind="definition" title={CIRCLE.title} lines={[...CIRCLE.lines, CIRCLE.trap]} source={CIRCLE.source} compact /></PredictRule>
+                  <KnowledgeBrick id="intima-daira" />
+                </>
+              )}
             </div>
           ) },
       ]}

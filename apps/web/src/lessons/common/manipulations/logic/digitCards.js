@@ -360,3 +360,41 @@ export function gridLayout({ count, columns, width, maxHeight = Infinity, minCel
   const cell = Math.min(byW, Math.max(minCell, Math.min(maxCell, byH)));
   return { rows, columns, cell, width: cell * columns, height: cell * rows };
 }
+
+/* ══════════════ LabCoach (MANIPULATION_CONTRACT §8quater) ══════════════ */
+
+/**
+ * L'étape de l'onboarding : montre le CONTRÔLE à trouver, jamais la case, la carte ou l'affirmation juste.
+ *   grid  : `colouring` (ouvrir un coloriage) → `cell` (toucher la table) → `reveal` (« أكمل », après REVEAL_AFTER cases)
+ *           → `nextColouring` (le coloriage suivant) ;
+ *   cards : `card` (porter une carte) → `lamp` (affirmer sur une ampoule) → `submit` (valider le nombre pour la cible)
+ *           → `task` (la cible suivante) → `swap` (échanger deux cartes posées).
+ * « لا يوجد » n'est jamais montré : le montrer dirait que la cible est impossible.
+ */
+export function coachOf(s) {
+  if (discoveryReady(s)) return null;
+  if (s.mode === 'grid') {
+    const f = s.divisors.findIndex((d) => !colouringComplete(s, d));
+    if (f < 0) return null;
+    if (s.active !== f) return { id: s.active == null ? 'colouring' : 'nextColouring', target: `[data-dc-colouring="${s.divisors[f]}"]`, gesture: 'tap' };
+    if (canReveal(s)) return { id: 'reveal', target: '[data-dc-reveal]', gesture: 'tap' };
+    return { id: 'cell', target: '[data-dc-table]', gesture: 'tap' };
+  }
+  if (numberOf(s) == null) {
+    const ci = trayOf(s)[0];
+    return ci == null ? null : { id: 'card', target: `[data-dc-card="${s.digits[ci]}"]`, gesture: 'drag' };
+  }
+  const closed = s.divisors.find((d) => !s.lamps[d]);
+  if (closed != null && Object.keys(s.lamps).length === 0) return { id: 'lamp', target: `[data-dc-lamp="${closed}"]`, gesture: 'tap' };
+  const undone = s.divisors.filter((d) => !taskDone(s, d));
+  if (undone.length > 0) {
+    if (!taskDone(s, taskDivisor(s))) return { id: 'submit', target: '[data-dc-submit]', gesture: 'tap' };
+    return { id: 'task', target: `[data-dc-task="${undone[0]}"]`, gesture: 'tap' };
+  }
+  if (s.swap == null) {
+    const shut = [2, 3].find((d) => s.divisors.includes(d) && !s.lamps[d]);
+    if (shut != null) return { id: 'lamp', target: `[data-dc-lamp="${shut}"]`, gesture: 'tap' };
+    return { id: 'swap', target: '[data-dc-slot="0"]', gesture: 'drag' };
+  }
+  return null;
+}

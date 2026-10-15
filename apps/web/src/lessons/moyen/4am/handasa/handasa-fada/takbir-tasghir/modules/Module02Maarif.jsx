@@ -15,6 +15,7 @@ import { FIG_ACT5, FIG_KNOW_CONE } from '../content/figures';
  * 2) la propriété k / k² / k³ (brique takbir-khassiya), l'exemple de la balle de handball (aire et volume recalculés deux fois) ;
  * 3) le نشاط 5 en DOUBLON déclaré (la section EFGH d'une pyramide, F, G, H définis par l'extraction) → la section d'une
  * pyramide ou d'un cône est une réduction (brique maqta-tasghir), le cône de la plateforme. LP : P1.
+ * Rétrofit 2026-10-15 (§4quater) : question d'abord, brique (et exemple de la balle) APRÈS la réponse ; la carte du haut dit ce qu'est le module.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -42,7 +43,6 @@ export default function Module02Maarif() {
           num: 1, title: 'التكبير والتصغير بالنسبة k', subtitle: 'تعريف', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="takbir-tarif" lead="ما فعلته في لعبة البناء، معرّفا:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">لكل مجسّم ناتج، هل هو تكبير أم تصغير للمجسّم الأصلي؟</p>}
                 rows={[
@@ -52,10 +52,10 @@ export default function Module02Maarif() {
                   // + 1 cm à chaque arête d'un pavé non cubique : le contraste du lab
                   { id: 'c', label: <MathText>{'متوازي مستطيلات $2 \\times 3 \\times 6$ صار $3 \\times 4 \\times 7$'}</MathText>, options: ['تكبير', 'تصغير', 'ليس تكبيرا ولا تصغيرا'], correct: 2, correction: <MathText>{'النسب $\\dfrac{3}{2}$ و $\\dfrac{4}{3}$ و $\\dfrac{7}{6}$ مختلفة: إضافة نفس الطول لكل حرف ليست ضربا في نفس العدد، وشكل المجسّم تغيّر.'}</MathText> },
                 ]}
-                requires={['takbir-tarif']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: نفس العدد k لكل الأطوال، وموقعه بالنسبة إلى 1 يقرّر.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="takbir-tarif" lead="ما فعلته في لعبة البناء، معرّفا:" />}
             </div>
           ),
         },
@@ -63,8 +63,6 @@ export default function Module02Maarif() {
           num: 2, title: 'الأطوال والمساحات والحجوم', subtitle: 'خاصية', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="takbir-khassiya" lead="القاعدة التي عدّتها المكعبات:" />
-              <TextbookBox kind="example" lines={[EXAMPLE_BALL.text, ...EXAMPLE_BALL.lines]} source={EXAMPLE_BALL.source} compact />
               <TapQuestion
                 prompt={<MathText>{'مكعّب حجمه $64\\,\\mathrm{cm}^3$ صُغّر بالنسبة $k = \\dfrac{1}{2}$ . حجم المكعّب الناتج:'}</MathText>}
                 options={[
@@ -76,10 +74,11 @@ export default function Module02Maarif() {
                 ].map(M)}
                 correct={0}
                 cols={3}
-                requires={['takbir-khassiya']}
                 explain={<MathText>{'$\\left(\\dfrac{1}{2}\\right)^3 \\times 64 = \\dfrac{64}{8} = 8\\,\\mathrm{cm}^3$ : المكعّب الذي حرفه $4\\,\\mathrm{cm}$ صار حرفه $2\\,\\mathrm{cm}$ .'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="takbir-khassiya" lead="القاعدة التي عدّتها المكعبات:" />}
+              {q2 && <TextbookBox kind="example" lines={[EXAMPLE_BALL.text, ...EXAMPLE_BALL.lines]} source={EXAMPLE_BALL.source} compact />}
             </div>
           ),
         },

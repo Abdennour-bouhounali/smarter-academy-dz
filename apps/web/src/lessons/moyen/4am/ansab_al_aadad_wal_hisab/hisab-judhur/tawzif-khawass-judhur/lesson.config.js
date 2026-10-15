@@ -7,6 +7,18 @@
  * puis trois « مسائل » de la plateforme (modules 6–8).
  * Source de vérité : docs/sources/4am/unit2/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Cette leçon est une page de طرائق : le manuel n'a PAS d'activité, donc pas d'« entrée du livre » à copier.
+ *   Entrée retenue (module 1) : le carré dallé (square-tiling, 32 puis 288 à un clic) — la main choisit le nombre de dalles sur
+ *   le côté et voit qu'une dalle encore pavable n'est pas la plus petite : l'idée « le plus grand carré a² qui divise n » devient
+ *   NÉCESSAIRE pour décider quand s'arrêter. Rejetées : (1) تمرين 1 du livre (√8, √18, √50 → a√2) comme première question — il
+ *   se répond de mémoire, c'est un test ; il devient l'application de l'étape 2 ; (2) la solution rédigée de A en tête de leçon.
+ *   Ordre des idées : paver (aucune étape n'attend le labo) → POURQUOI k√8 ne suffit pas (sur le carré que l'élève a fini) → la
+ *   brique « kitaba-a-jidhr-b » APRÈS la réponse → √8, √18, √50 → M2 : la solution de A ligne à ligne, POURQUOI tout écrire avec
+ *   √2, la brique « tabsit-tawzii » APRÈS cette réponse → جداء de racines → M3 : prédire le facteur qui rend le dénominateur
+ *   ناطق, la solution du livre, la brique « naqt-maqam » APRÈS la lecture. M2/M3 sont des modules sans labo : leur carte reste
+ *   (elle dit ce qu'est le module, sans fait). M4–M9 inchangés. Aucune destination du manuel n'a bougé.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/tawzif-khawass-judhur';
@@ -74,7 +86,7 @@ export const LESSON_CONFIG = {
       title: 'مربّع مساحته 32: أيّ تبليط يعطي أصغر بلاطة؟',
       objective: 'كتابة √n على الشكل a√b حيث b أصغر ما يمكن: a² أكبر مربّع يقسم n',
       autonomy: '',
-      experience: { type: 'platform_adaptation', reason: 'improved_interactivity_and_age_appropriateness', theme: 'abstract' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'abstract' },
       learningPointIds: ['4am_tawzif-khawass-judhur_P1'],
       sourceElementIds: ['method-simplify', 'ex-18'],
     },
@@ -84,7 +96,7 @@ export const LESSON_CONFIG = {
       title: 'مربّع مساحته 288: ستّة تبليطات، واحد فقط أبسطها',
       objective: 'كتابة √n على الشكل a√b حيث b أصغر ما يمكن: a² أكبر مربّع يقسم n',
       autonomy: 'ستة تبليطات صالحة (1، 2، 3، 4، 6 أو 12 بلاطة على الضلع) دون أي اقتراح: التلميذ يجرّب بنفسه ويقرّر أيّها يعطي بلاطة لا يمكن تبليطها من جديد؛ ست بلاطات على الضلع تعطي بلاطة مساحتها 8 تبدو صغيرة وليست أصغر ما يمكن',
-      experience: { type: 'platform_adaptation', reason: 'improved_interactivity_and_age_appropriateness', theme: 'abstract' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'abstract' },
       learningPointIds: ['4am_tawzif-khawass-judhur_P1'],
       sourceElementIds: ['method-simplify', 'ex-18'],
     },

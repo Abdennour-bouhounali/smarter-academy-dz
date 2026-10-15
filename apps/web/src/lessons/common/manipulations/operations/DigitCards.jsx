@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useSta
 import { useTranslation } from 'react-i18next';
 import { Check, X, Wand2, Lock, Hand, CheckCircle2, XCircle, RefreshCw, ClipboardList, Lightbulb, Trophy, Ban, Move } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
+import { useLabCoach } from '../primitives/LabCoach';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -77,6 +78,10 @@ import * as L from '../logic/digitCards';
  *
  * Le registre et les ampoules montrent la MATIÈRE (chiffres des unités, sommes, restes), jamais la règle ; la ligne
  * « ce qui reste » (`data-dc-need`, dans la carte de consigne) ne guide que le geste.
+ *
+ * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/digitCards.js › coachOf` montre le CONTRÔLE à trouver, jamais la
+ * case, la carte ou l'affirmation juste — table : un coloriage → la table → « أكمل » → le coloriage suivant ; cartes : une carte → une
+ * ampoule → « هذا هو الأكبر » → la cible suivante → l'échange de deux cartes posées (« لا يوجد » n'est jamais montré).
  *
  * Props (contrat fixé avec la leçon) : `mode` ('grid' | 'cards'), `divisors`, `digits` (cartes), `from`, `to`,
  * `columns` (table), `level`, `levels`, `title`, `lead`, `onTrial` à chaque geste JUGÉ — table
@@ -179,7 +184,7 @@ export function numbersFor({ mode, divisors, digits, from, to, columns, level })
 
 export default function DigitCards({
   mode, divisors, digits, from, to, columns, title, lead, level, levels: withLevels = true,
-  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
+  initialMode = 'student', allowModeSwitch = false, onTrial, onFinished, coach: coachOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`${NS}.${key}`, o), [t]);
@@ -265,6 +270,12 @@ export default function DigitCards({
     ? k('context.grid', { from: lab.from, to: lab.to })
     : k('context.cards', { digits: iso(lab.digits.join(' ، ')) }));
 
+  const coachStep = coachOn ? L.coachOf(lab) : null;
+  const coach = useLabCoach({
+    lab: 'digit-cards', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
+    labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
+  });
+
   return (
     <ManipulationShell
       type="digit-cards"
@@ -273,6 +284,7 @@ export default function DigitCards({
       state={state}
       allowModeSwitch={allowModeSwitch}
       allowFreeLab={false}
+      coach={coachOn ? coach : null}
       hints={[0, 1, 2].map((i) => k(`hints.${m}.${i}`))}
       controller={{ autoStep: () => false, canAutoStep: () => false }}
       discovery={<ManipulationDiscovery state={state} prompt={k(`discovery.prompt.${m}`)} options={discoveryOptions} formal={formal} />}

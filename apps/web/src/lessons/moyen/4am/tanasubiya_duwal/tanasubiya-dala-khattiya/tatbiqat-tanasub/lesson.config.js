@@ -5,6 +5,18 @@
  * (p. 73), QCM 7 et 8 (p. 74). Source de vérité : docs/sources/4am/unit6/extraction.json.
  * Puis trois « مسائل » de la plateforme (modules 5–7), avant le إختبار أولي (module 8).
  *
+ * RETROFIT « méthode » (2026-10-15, LESSON_DEVELOPMENT_GUIDE §4ter–§4quinquies). ENTRÉE — candidats : (A) l'activité 5 du
+ * manuel telle quelle (le pourcentage de filles puis la baisse de consommation, deux calculs posés de mémoire, AVANT toute
+ * manipulation) ; (B) l'étiquette de prix qu'on étire (percent-tag, +5 % sur 1200 DA) où « ajouter 5 » est refusé et où seul le
+ * multiplicateur 1,05 fait grandir la barre « après ». CHOIX : B (c'était déjà le niveau مبتدئ ; le labo reste l'entrée, il est le
+ * premier élément du module, sans brief ni titre d'atelier). REJETÉ : A comme entrée — ses questions 1 et 2 passent APRÈS le labo
+ * comme applications de « prendre t % » (briques nisba-akhdh, takhfid-darb). ORDRE des idées (module 1) : par quel nombre ma barre
+ * a-t-elle été multipliée (brique ziyada-darb) → y = 1,05x sur MON tableau (brique dala-murfaqa) → pourcentage de filles →
+ * baisse de consommation → −20 % puis +20 % (chaîne du labo avancé). Module 2 (sans labo) : le brief ne nomme plus
+ * « مقادير مركّبة » ; module 3 : encadrés et briques APRÈS la réponse (tableau des pourcentages, tatabu-darb, miqdar-jida,
+ * miqdar-bidalala). Mathématiques, الكفاءات, ordre, slugs, nombre de modules INCHANGÉS ; `experience.reason` du labo inchangé
+ * (le labo n'est pas une entrée « platform_designed_entry » : il reprend l'activité 5 du manuel). Modules 4–8 inchangés.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/tatbiqat-tanasub';

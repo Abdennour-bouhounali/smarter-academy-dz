@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
-import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag } from '../../../../../../common/textbook';
 import RayFigure from '../components/RayFigure';
 import GraphChoice from '../components/GraphChoice';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
@@ -25,7 +23,7 @@ import { ACTIVITY_B } from '../content/textbook';
  * AUCUNE étape n'attend `onFinished` : `onTrial` liste les essais, le crochet et la chaîne
  * de l'élève au-dessus des questions (`[data-activity-evidence]`).
  *
- * Étapes : (1) س 1 : compléter les deux étapes ; (2) س 2 : la dernière ligne du tableau,
+ * Étapes : (1) WHY le sens change après ÷(−3) (depuis les points rouges de l'élève) ; (2) س 2 : la dernière ligne du tableau,
  * en mots et en dessin, puis la brique tamthil-jadwal ; (3) le contraste du tableau
  * (x < 3 et x ≥ 2) depuis le niveau مبتدئ. LP : P2, P3.
  */
@@ -84,20 +82,9 @@ export default function Module02HalMutarajiha() {
       moduleTitle="نشاط 3 — حل متراجحة وتمثيل حلولها"
       moduleSubtitle="من المتراجحة إلى نصف مستقيم ملوّن"
       estimatedTime="11 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 45',
-        headline: 'أين تبدأ الحلول؟',
-        emoji: '📏',
-        title: ACTIVITY_B.title,
-        tone: 'violet',
-        body: <p><MathText>{ACTIVITY_B.text}</MathText></p>,
-        footer: <SourceTag source={ACTIVITY_B.source} />,
-      }}
       intro={(
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="نفس الفكرة في المستويين: ماذا تقول لك نقاطك الحمراء؟ وماذا يقول الرمز عند الحدّ؟"
           levels={{
             beginner: () => (
               <Manipulation
@@ -122,26 +109,21 @@ export default function Module02HalMutarajiha() {
       )}
       steps={[
         {
-          num: 1, title: 'أتمم الخطوتين', subtitle: 'السؤال 1 — حوّل المتراجحة في المستوى المتقدّم، ثم أجب', done: q1,
+          num: 1, title: 'لماذا رفضت نقاطك الحمراء الاتجاه بعد القسمة على −3؟', subtitle: 'السؤال 1 — حوّل المتراجحة في المستوى المتقدّم، ثم أجب', done: q1,
           content: (
             <div className="space-y-3">
               {evidence([ADV])}
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY_B.questions[0]}</MathText></p>}
-                rows={[
-                  { id: 's1', label: <MathText>{'الخطوة 1: $(-\\ldots)$'}</MathText>, options: [<MathText key="a">{'$-5$'}</MathText>, <MathText key="b">{'$-20$'}</MathText>, <MathText key="c">{'$-3$'}</MathText>], correct: 0, correction: <MathText>{'نطرح 5 من الطرفين لنُبعد العدد المضاف إلى $-3x$ : $-3x + 5 - 5 \\leq 20 - 5$.'}</MathText> },
-                  { id: 'r1', label: <MathText>{'$-3x \\ldots 15$'}</MathText>, options: [<MathText key="a">{'$\\leq$'}</MathText>, <MathText key="b">{'$\\geq$'}</MathText>], correct: 0, correction: <MathText>{'طرح عدد من الطرفين لا يغيّر الاتجاه: $-3x \\leq 15$.'}</MathText> },
-                  { id: 's2', label: <MathText>{'الخطوة 2: $(\\div \\ldots)$'}</MathText>, options: [<MathText key="a">{'$15$'}</MathText>, <MathText key="b">{'$-3$'}</MathText>, <MathText key="c">{'$5$'}</MathText>], correct: 1, correction: <MathText>{'نقسم الطرفين على معامل $x$ ، أي $-3$ : $\\dfrac{15}{-3} = -5$.'}</MathText> },
-                  { id: 'r2', label: <MathText>{'$x \\ldots -5$'}</MathText>, options: [<MathText key="a">{'$\\leq$'}</MathText>, <MathText key="b">{'$\\geq$'}</MathText>], correct: 1, correction: <MathText>{'القسمة على عدد سالب تغيّر الاتجاه: $x \\geq -5$ — نقاطك الحمراء على يمين $-5$.'}</MathText> },
+              <TapQuestion
+                prompt={<MathText>{'في المستوى المتقدّم، نقطتك الحمراء عند $x = 0$ (لأنّ $-3 \\times 0 + 5 = 5 \\leq 20$). بعد أن بلغتَ $-3x \\leq 15$ قسمتَ الطرفين على $-3$ فرفض المختبر $x \\leq -5$. لماذا؟'}</MathText>}
+                options={[
+                  <MathText key="a">{'لأنّ 0 حلّ للمتراجحة الأصلية ولا يحقّق $0 \\leq -5$ ، فلا يمكن أن يبقى الاتجاه كما هو'}</MathText>,
+                  <MathText key="b">{'لأنّ 15 لا يقبل القسمة على $-3$'}</MathText>,
+                  <MathText key="c">{'لأنّ القسمة تُنقص عدد الحلول إلى حلّ واحد'}</MathText>,
                 ]}
+                correct={0}
+                cols={1}
                 requires={['amaliyat-mutabayinat']}
-                feedback={({ allRight }) => (
-                  <Feedback tone={allRight ? 'ok' : 'ko'}>
-                    <MathText>{allRight
-                      ? 'الخطوة 1 حافظت على الاتجاه، والخطوة 2 (القسمة على $-3$) غيّرته: $x \\geq -5$.'
-                      : 'ارجع إلى المختبر: أيّ سطر رفضته نقاطك الحمراء، ولماذا؟'}</MathText>
-                  </Feedback>
-                )}
+                explain={<MathText>{'نقاطك الحمراء (منها 0) يجب أن تبقى حلولًا بعد كل خطوة. القسمة على $-3$ تقلب الترتيب فنكتب $x \\geq -5$ : 0 يحقّقها، وطرح 5 من الطرفين لم يغيّر الاتجاه.'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
             </div>

@@ -61,6 +61,8 @@ to read them.
 | **Write the « أتوقّع القاعدة » prompts** of a lesson (the rule the student writes before reading it) | **[`lessons/PREDICT_PROMPT_GUIDE.md`](./lessons/PREDICT_PROMPT_GUIDE.md)** — criteria, procedure, `npm run audit:predict` |
 | Understand the whole system | [`architecture/ARCHITECTURE.md`](./architecture/ARCHITECTURE.md) |
 | Work on Classroom Mode (وضع القسم) | [`architecture/CLASSROOM_MODE.md`](./architecture/CLASSROOM_MODE.md) |
+| **Retrofit** an existing lesson to « the textbook is the reference, not the script » (one track per module; prompt and per-lesson status) | [`reports/LESSON_METHOD_RETROFIT.md`](./reports/LESSON_METHOD_RETROFIT.md) (+ [`LESSON_METHOD_RETROFIT_PHASE2.md`](./reports/LESSON_METHOD_RETROFIT_PHASE2.md): 4AM units 2–14, open points) — rules: guide §4ter–§4quinquies |
+| **Onboard** a manipulation (the `LabCoach` ring + bubble, mandatory for every lab; rollout prompt and per-lab status) | [`reports/LAB_COACH_ROLLOUT.md`](./reports/LAB_COACH_ROLLOUT.md) — contract: `MANIPULATION_CONTRACT.md` §8quater |
 | **Design** a manipulation (what the hand controls, resistance, contrast, the design sheet, anti-template rules) | [`architecture/MANIPULATION_DNA.md`](./architecture/MANIPULATION_DNA.md) — read it before the contract |
 | Work on a manipulation | [`architecture/MANIPULATION_CONTRACT.md`](./architecture/MANIPULATION_CONTRACT.md) |
 | Work on exercises or the practice engine | [`architecture/EXERCISE_CONTRACT.md`](./architecture/EXERCISE_CONTRACT.md) |

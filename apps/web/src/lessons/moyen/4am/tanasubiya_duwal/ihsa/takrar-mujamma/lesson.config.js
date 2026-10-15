@@ -16,6 +16,16 @@
  *   M5–M7 مسائل         — puis trois « مسائل » de la plateforme (modules 5–7) ;
  *   M8 إختبار أولي      — QCM 1–2 et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la toise du manège (labo `cumul-gate`, thème `funpark`, niveau مبتدئ par défaut : « يجب أن تكون قامتك 130cm على
+ *   الأقل », 8 enfants) — la main déplace la toise et ANNONCE un nombre que la porte accepte ou refuse avec un témoin : « على الأقل » et
+ *   « على الأكثر » se vivent avant de se nommer (resource `platform_designed_entry`). Rejetée : le نشاط 1 du manuel lu comme une page
+ *   (la liste de 20 valeurs, « rangez-les », « combien ≥ 159 ? ») : il reste le niveau متقدم du MÊME labo (les 20 élèves, le tableau
+ *   rempli par les annonces) et les questions des étapes 1–4, désormais posées APRÈS les annonces de l'élève.
+ *   Ordre des idées : annonces à la porte → l'ordre croissant → 159 « au moins » / 160 « au plus » → les deux tableaux, puis les phrases
+ *   du manuel qui nomment (brique APRÈS) → le مخطط des âges (même idée sans personnes). Module 3 : « hisab-mujamma » et « tawatur-fiat »
+ *   APRÈS la réponse. Modules 2 et 4 : déjà conformes (PredictRule avant les boîtes ; rappels de briques déjà nommées), laissés tels quels.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/takrar-mujamma';
@@ -82,7 +92,7 @@ export const LESSON_CONFIG = {
       title: 'طابور اللعبة: 130cm على الأقل',
       objective: 'التكرار المجمع الصاعد لقيمة t هو عدد القيم الأصغر من أو تساوي t، والنازل عدد القيم الأكبر من أو تساوي t؛ والقيمة t تُعدّ في الجهتين',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'funpark' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'funpark' },
       learningPointIds: ['4am_takrar-mujamma_P1'],
       sourceElementIds: ['act-1'],
     },

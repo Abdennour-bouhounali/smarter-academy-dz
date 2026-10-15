@@ -7,6 +7,18 @@
  * 12 (p. 40), puis trois « مسائل » de la plateforme (modules 5–7).
  * Source de vérité : docs/sources/4am/unit3/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le gazon du terrain de football (labo `turf-factoring`, mode rows, niveau مبتدئ : 9 bandes et 3 petits carrés à
+ *   poser en rangées IDENTIQUES) — la main cherche le nombre de rangées, et le facteur commun est ce que le terrain accepte ou refuse
+ *   (un refus se VOIT : une pièce reste dehors). Rejetée : le cahier d'إيمان (س 1, 3,5 × 1,7 + 3,5 × 0,3) comme ouverture — un calcul
+ *   que l'élève sait faire par habitude, sans besoin de factoriser ; il devient une APPLICATION à l'étape 3, après le terrain.
+ *   Ordre des idées : pourquoi r = 9 est refusé pour 9x + 3 (r divise les DEUX nombres) → la longueur de 6x² + 4x (ce que contient
+ *   chaque rangée ; la hauteur 2x est la question du labo) → le cahier d'إيمان, puis س 2 et la brique tahlil-taarif APRÈS la réponse →
+ *   le carré x² + 6x + 9 fermé à la main, إيمان, l'encadré des trois متطابقات APRÈS sa réponse → module 2 : le contraste x² + 25
+ *   (labo en tête, aucune bande ne ferme le terrain) → x² − 9 / x² + 9 et les exemples 3–5 (brique APRÈS la réponse) → POURQUOI
+ *   2x(3x + 2) et non 2(3x² + 2x), puis définition et brique de la propriété APRÈS cette réponse. Module 3 (MethodSteps) et module 4
+ *   inchangés : ils n'ont ni labo ni encadré posé avant sa question.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/tahlil-ibara';
@@ -75,7 +87,7 @@ export const LESSON_CONFIG = {
       title: 'ملعب من 9 شرائط و 3 مربّعات صغيرة: كم صفًّا متماثلًا؟',
       objective: 'التحليل باستخراج عامل مشترك: ka + kb = k(a + b)، والعامل المشترك الكامل هو أكبر عدد من الصفوف المتماثلة',
       autonomy: '',
-      experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'football' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'football' },
       learningPointIds: ['4am_tahlil-ibara_P2'],
       sourceElementIds: ['act-3'],
     },

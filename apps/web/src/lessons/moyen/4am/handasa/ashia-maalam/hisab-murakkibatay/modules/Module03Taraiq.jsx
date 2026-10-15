@@ -11,6 +11,10 @@ import { METHOD_EQUAL, METHOD_UNKNOWN, NOW2, MISTAKES, LAB } from '../content/te
 import { FIG_METHOD_EQUAL } from '../content/figures';
 
 /**
+ * Rétrofit 2026-10-15 (§4quater) : le labo OUVRE le module (sans carte ni titre ; `lead` = le contexte), niveau متقدم par défaut — E se calcule,
+ * ne s'essaie pas (c'est le passage de l'essai au calcul que formalise la méthode) ; la solution rédigée du livre (figure + MethodSteps) et
+ * la brique tahaqquq-tasawi viennent APRÈS la réponse de l'étape 1. La « طريقة نقطة مجهولة » reste écrite par l'élève d'abord (PredictRule).
+ *
  * Module 3 — طرائق (p. 143) : « حساب مركبتا شعاع، علمت إحداثيات مبدئه ونهايته » (la conclusion CORRIGÉE AB = DC, une
  * ligne), la brique tahaqquq-tasawi ; puis « حساب إحداثيتي نقطة مجهولة » (méthode de la plateforme, déclarée) AVEC le
  * lab مبتدئ ouvert par défaut — la porte D aux deux coordonnées inconnues, AB = DC, le piège CD = AB qui croise ABCD — et
@@ -35,21 +39,16 @@ export default function Module03Taraiq() {
       moduleTitle="طرائق — التحقق من التساوي ونقطة مجهولة"
       moduleSubtitle="كيف نقارن شعاعين؟ وكيف نجد نقطة مجهولة؟"
       objectives={['كيف نتحقق من تساوي شعاعين في معلم؟', 'كيف نعيّن نقطة مجهولة لنكوّن متوازي أضلاع؟', 'أطبّق الطريقتين بنفسي']} estimatedTime="10 دقائق"
-      brief={{
-        tag: 'طرائق — الكتاب ص 143', title: METHOD_EQUAL.title, tone: 'emerald',
-        body: <p>أولا طريقة الكتاب: كيف نتحقق من تساوي شعاعين في معلم؟ ثم نعكس السؤال: البوابة D مجهولة الإحداثيتين، ونريد أن يكون ABCD متوازي أضلاع — ضعها في المختبر قبل أن تقرأ الطريقة سطرا سطرا.</p>,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الطريقة بيدك"
-          defaultLevel="beginner"
-          lead="المهمة 2 من المستوى «مبتدئ»: البوابة D مجهولة الإحداثيتين، ونريد أن يكون ABCD متوازي أضلاع."
+          defaultLevel="advanced"
           levels={{
             beginner: () => (
-              <Manipulation type="component-calc" level="beginner" {...LAB.beginner.numbers} theme="game-map" title="بوابات الخريطة: رمز AB ثم البوابة D" />
+              <Manipulation type="component-calc" level="beginner" {...LAB.beginner.numbers} theme="game-map" />
             ),
             advanced: () => (
-              <Manipulation type="component-calc" level="advanced" {...LAB.advanced.numbers} theme="game-map" title="نشاط 2: بوابات C و D و E و F" />
+              <Manipulation type="component-calc" level="advanced" {...LAB.advanced.numbers} theme="game-map"
+                lead="نعود إلى بوابات الكتاب: الشعاع DE معروف المركبتين والنقطة E مجهولة — تُحسب ولا تُجرَّب." />
             ),
           }}
         />
@@ -59,9 +58,6 @@ export default function Module03Taraiq() {
           num: 1, title: 'التحقق من تساوي شعاعين', subtitle: 'طريقة الكتاب', done: q1,
           content: (
             <div className="space-y-3">
-              <GeoFigure {...FIG_METHOD_EQUAL} />
-              <MethodSteps method={METHOD_EQUAL} />
-              <p className="text-xs text-slate-500" data-misprint-note><MathText>{METHOD_EQUAL.correction}</MathText></p>
               <TapQuestion
                 prompt={<MathText>{'للشعاعين $\\overrightarrow{AB}$ و $\\overrightarrow{DC}$ نفس المركبتين $\\begin{pmatrix} -1 \\\\ 3 \\end{pmatrix}$ . ماذا نستنتج؟'}</MathText>}
                 options={[
@@ -71,11 +67,18 @@ export default function Module03Taraiq() {
                 ].map(M)}
                 correct={0}
                 cols={1}
-                requires={['tasawi-murakkibat']}
+                requires={['farq-ihdathiyat']}
                 explain={<MathText>{`${METHOD_EQUAL.solution[4]} و A، B، C ليست على استقامة واحدة: ABCD متوازي أضلاع. أما $\\overrightarrow{CD}\\begin{pmatrix} 1 \\\\ -3 \\end{pmatrix}$ فهو المعاكس.`}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
-              {q1 && <KnowledgeBrick id="tahaqquq-tasawi" lead="القاعدة التي يكتبها الكتاب بعد الحل:" />}
+              {q1 && (
+                <>
+                  <GeoFigure {...FIG_METHOD_EQUAL} />
+                  <MethodSteps method={METHOD_EQUAL} />
+                  <p className="text-xs text-slate-500" data-misprint-note><MathText>{METHOD_EQUAL.correction}</MathText></p>
+                  <KnowledgeBrick id="tahaqquq-tasawi" lead="القاعدة التي يكتبها الكتاب بعد الحل:" />
+                </>
+              )}
             </div>
           ),
         },
@@ -83,12 +86,8 @@ export default function Module03Taraiq() {
           num: 2, title: 'نقطة مجهولة', subtitle: 'البوابة D بالحساب', done: q2,
           content: (
             <div className="space-y-3">
-              {/* « أتوقّع القاعدة » : la طريقة écrit la méthode ligne à ligne — l'élève l'écrit d'abord (predictPrompt de nuqta-majhula). */}
-              <PredictRule id="nuqta-majhula">
-                <MethodSteps method={METHOD_UNKNOWN} />
-              </PredictRule>
               <TapQuestion
-                prompt={<MathText>{'في المختبر («مبتدئ»): $A(1\\,;\\,2)$ ، $B(4\\,;\\,3)$ ، $C(5\\,;\\,5)$ . أيّ معادلتين تعطيان D حيث ABCD متوازي أضلاع؟'}</MathText>}
+                prompt={<MathText>{'بوابات المستوى الأول: $A(1\\,;\\,2)$ ، $B(4\\,;\\,3)$ ، $C(5\\,;\\,5)$ . أيّ معادلتين تعطيان D حيث ABCD متوازي أضلاع؟'}</MathText>}
                 options={[
                   '$5 - x_D = 3$ و $5 - y_D = 1$',
                   '$x_D - 5 = 3$ و $y_D - 5 = 1$', // CD = AB : ABCD croisé (MISC-MAALAM-TARTIB-NUQAT)
@@ -100,6 +99,14 @@ export default function Module03Taraiq() {
                 explain={<MathText>{`$\\overrightarrow{AB}\\begin{pmatrix} 3 \\\\ 1 \\end{pmatrix}$ و $\\overrightarrow{DC}\\begin{pmatrix} 5 - x_D \\\\ 5 - y_D \\end{pmatrix}$ : $x_D = 2$ و $y_D = 4$ . ${MISTAKES.order.note}`}</MathText>}
                 onAnswered={() => setQ2a(true)}
               />
+              {q2a && (
+                <>
+                {/* « أتوقّع القاعدة » : la طريقة écrit la méthode ligne à ligne — l'élève l'écrit d'abord (predictPrompt de nuqta-majhula). */}
+                <PredictRule id="nuqta-majhula">
+                  <MethodSteps method={METHOD_UNKNOWN} />
+                </PredictRule>
+                </>
+              )}
               {q2a && <KnowledgeBrick id="nuqta-majhula" lead="الطريقة التي طبّقتها على البوابة D:" />}
               {q2a && (
                 <TapQuestion

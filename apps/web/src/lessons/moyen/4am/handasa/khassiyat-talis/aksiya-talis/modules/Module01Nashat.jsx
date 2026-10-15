@@ -9,7 +9,6 @@ import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, LAB } from '../content/textbook';
 import { FIG_ACT2, FIG_ACT2_STUDENTS } from '../content/figures';
-import MuralVignette from '../components/MuralVignette';
 
 /**
  * Module 1 — نشاط 2 (p. 105) « الخاصية العكسية لخاصية طالس », ouvert sur LE NIVEAU À BULLE (parallel-level).
@@ -73,29 +72,10 @@ export default function Module01Nashat() {
       moduleSubtitle="متى يكون (B′C′) موازيا لـ (BC)؟"
       objectives={['ما الذي يجعل اللوح (B′C′) أفقيًا؟', 'ماذا يحدث لو وضعنا B′ و C′ في جهتين مختلفتين من A؟', 'كيف نكتب النص الكامل للخاصية؟']}
       estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 105',
-        headline: 'على جدار الحي: هل اللوح أفقي؟',
-        emoji: '🎨',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <MuralVignette />,
-        body: (
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
-            <div className="shrink-0 sm:w-36"><GeoFigure {...FIG_ACT2} maxWidth={150} /></div>
-            <div className="space-y-2">
-            <p className="font-semibold text-slate-800"><MathText>{ACTIVITY.situation}</MathText></p>
-            <p className="text-sm text-slate-600"><MathText>{'قبل الأسئلة: ضع طرفي اللوح B′ و C′ على العارضتين وراقب ميزان الماء. في المستوى المتقدم، الأستاذ يفرض النسبة 1/3: أنجز أشكال التلاميذ الثلاثة بنفسك.'}</MathText></p>
-            </div>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
+        // LE LABO OUVRE LE MODULE (§4quater) : ni carte du manuel, ni titre / lead de workspace ; le contexte est le `lead` de chaque labo.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead={<MathText>{'في المستويين: عارضتان تتقاطعان في A، والأرض هي (BC). اللوح (B′C′) أفقي — أي موازٍ للأرض — عندما تكون الفقاعة في الوسط.'}</MathText>}
           levels={{
             beginner: () => (
               <Manipulation
@@ -103,8 +83,7 @@ export default function Module01Nashat() {
                 level="beginner"
                 {...LAB.beginner}
                 theme="mural"
-                title="السلّم المزدوج: لوح أفقي بين الساقين"
-                lead="ساقا السلّم مختلفتا الطول: AB = 6 و AC = 9. ابحث عن وضعين أفقيين للوح."
+                lead="سلّم مزدوج على جدار الحي: ساقاه AB = 6 و AC = 9 والأرض (BC). اللوح (B′C′) أفقي عندما تكون الفقاعة في الوسط. ابحث عن وضعين أفقيين للوح."
               />
             ),
             advanced: () => (
@@ -113,8 +92,7 @@ export default function Module01Nashat() {
                 level="advanced"
                 {...LAB.advanced}
                 theme="mural"
-                title="نشاط 2: النسبة 1/3 وأشكال التلاميذ الثلاثة"
-                lead="الحامل على شكل X: العارضتان تستمرّان بعد A. AB = 9 و AC = 12."
+                lead="الحامل على شكل X: العارضتان تستمرّان بعد A، و AB = 9 و AC = 12. اللوح (B′C′) أفقي عندما تكون الفقاعة في الوسط."
                 onTrial={onTrial}
               />
             ),
@@ -126,6 +104,10 @@ export default function Module01Nashat() {
           num: 1, title: 'أ) توافق الأشكال مع الشروط', subtitle: 'السؤال 1) أ', done: q1,
           content: (
             <div className="space-y-3">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-start" data-act2-situation>
+                <div className="shrink-0 sm:w-36"><GeoFigure {...FIG_ACT2} maxWidth={150} /></div>
+                <p className="text-sm font-semibold text-slate-800"><MathText>{ACTIVITY.situation}</MathText> <SourceTag source={ACTIVITY.source} /></p>
+              </div>
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[0]}</MathText></p>
               {figures}
               <BatchChoiceQuestion
@@ -200,7 +182,6 @@ export default function Module01Nashat() {
           num: 4, title: 'ترتيب النقط على (d′)', subtitle: 'الملاحظة', done: q4,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="aksiya-nashat" variant="rappel" compact />
               <GeoFigure {...FIG_ACT2_STUDENTS[3]} maxWidth={220} />
               <TapQuestion
                 prompt="في الشكل 3 النقط مرتبة على (d) هكذا: A ، B′ ، B (B′ بين A و B). كيف ترتّب النقط على (d′)؟"
@@ -211,6 +192,7 @@ export default function Module01Nashat() {
                 explain={<MathText>{'C′ من الجهة الأخرى للنقطة A: موقع B′ بالنسبة إلى A و B لا يماثل موقع C′ بالنسبة إلى A و C، فالشرط الثاني غير محقّق — ولهذا بقيت الفقاعة مائلة.'}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && <KnowledgeBrick id="aksiya-nashat" variant="rappel" compact />}
             </div>
           ),
         },

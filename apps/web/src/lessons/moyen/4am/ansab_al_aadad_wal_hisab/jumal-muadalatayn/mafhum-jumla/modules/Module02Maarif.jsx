@@ -16,6 +16,8 @@ import { KNOWLEDGE, CASES_LINES } from '../content/textbook';
  *   3. l'ordre dans la ثنائية (tartib-thunaiya) ;
  *   4. les deux cas particuliers : les calculs que le livre résume en « تبسّط إلى الشكل » écrits
  *      ligne à ligne (déclarés), la brique halat-khassa, puis trois jumla à classer.
+ * Rétrofit 2026-10-15 (§4quater) : module sans labo, qui s'ouvre sur « أتوقّع القاعدة » (PredictRule, intact) ; à l'étape 2 la question (la ثنائية
+ * (1 ; −1)) précède les deux exemples du livre et la brique ikhtibar-thunaiya, qui la nomment APRÈS la réponse.
  * Les questions utilisent d'AUTRES nombres que les encadrés (la réponse n'est jamais au-dessus).
  * LP : P1, P2, P3, P4.
  */
@@ -83,17 +85,17 @@ export default function Module02Maarif() {
             <div className="space-y-3">
               <PredictRule id="hall-jumla" prompt={"ما الذي جعل الثنائية التي قبلتها اللوحتان في النشاط 1 حلًّا للجملة؟ متى نقول إنّ ثنائية $(x_0 ; y_0)$ حلّ لجملة معادلتين؟ وماذا يعني «حلّ الجملة»؟"}><TextbookBox kind="definition" title={KNOWLEDGE.solution.title} lines={[KNOWLEDGE.solution.definition, KNOWLEDGE.solution.rule]} source={KNOWLEDGE.solution.source} compact /></PredictRule>
               <KnowledgeBrick id="hall-jumla" lead="ما قبلته لوحتا النشاط 1، معرَّفًا:" />
-              <TextbookBox kind="example" lines={KNOWLEDGE.solution.examples} source={KNOWLEDGE.solution.source} compact />
-              <KnowledgeBrick id="ikhtibar-thunaiya" lead="ما فعله الكتاب في المثالين، طريقةً:" />
               <TapQuestion
                 prompt={<MathText>{'هل الثنائية $(1 ; -1)$ حل للجملة $\\begin{cases} x - y = 2 \\\\ 2x - 5y = 4 \\end{cases}$ ؟'}</MathText>}
                 options={['نعم: $1 - (-1) = 2$', 'لا: $2 \\times 1 - 5 \\times (-1) = 7 \\neq 4$', 'لا: $1 - (-1) \\neq 2$'].map(Opt)}
                 correct={1}
                 cols={1}
-                requires={['ikhtibar-thunaiya']}
+                requires={['hall-jumla']}
                 explain={<MathText>{'المعادلة الأولى محقّقة: $1 - (-1) = 2$ ، لكن الثانية لا: $2 + 5 = 7 \\neq 4$. معادلة واحدة لا تكفي: $(1 ; -1)$ ليست حلا للجملة.'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <TextbookBox kind="example" lines={KNOWLEDGE.solution.examples} source={KNOWLEDGE.solution.source} compact />}
+              {q2 && <KnowledgeBrick id="ikhtibar-thunaiya" lead="ما فعلتَه للتوّ، وما فعله الكتاب في المثالين، طريقةً:" />}
             </div>
           ),
         },

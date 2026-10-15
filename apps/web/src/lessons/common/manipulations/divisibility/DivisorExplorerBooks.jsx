@@ -10,6 +10,7 @@ import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import DivisionRoles from '../primitives/DivisionRoles';
 import { BOOK_PALETTE } from '../primitives/BookFigure';
+import { useLabCoach } from '../primitives/LabCoach';
 import * as S from '../logic/bookshelf';
 
 /**
@@ -54,6 +55,9 @@ import * as S from '../logic/bookshelf';
  * demande trois longueurs, dont une qui vide le sol et une qui en laisse
  * (`remainderDiscoveryReady`) — le contraste, pas une longueur chanceuse.
  *
+ * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/bookshelf.js › coachOf` montre la poignée du serre-livres
+ * (glisser), puis les boutons « + / − » (le chemin sans glisser) ; jamais une longueur. Le guide se tait quand la découverte est méritée.
+ *
  * Même coquille que les autres laboratoires (ManipulationShell) : indices,
  * conjecture, règle, « إعادة ». Le mode classe de la PLATEFORME (⛶ عرض
  * المناولة) enveloppe le tout sans rien remonter.
@@ -85,7 +89,7 @@ function BookshelfLab({
   levels: withLevels = true,
   discovery = 'remainder',
   title, lead, mission,
-  onVerdict, onFinished,
+  onVerdict, onFinished, coach: coachOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.bookshelf.${key}`, o), [t]);
@@ -245,6 +249,11 @@ function BookshelfLab({
     return preferred == null ? null : { b: preferred, q: total / preferred };
   }, [tried, total, range, marks]);
 
+  const coachStep = coachOn ? S.coachOf({ tried, b, range, discovery, total }) : null;
+  const coach = useLabCoach({
+    lab: 'divisor-explorer-books', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
+    labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
+  });
   const hints = [k('hint1'), marks.length ? k('hint2') : k('hint2NoMarks'), k('hint3')];
 
   const discoveryBlock = discovery === 'symmetry' ? (
@@ -332,6 +341,7 @@ function BookshelfLab({
       mission={presentation ? null : (mission ?? k('mission'))}
       lead={presentation ? null : lead}
       state={state}
+      coach={coachOn ? coach : null}
       hints={hints}
       headerAction={<ClassroomEntryButton />}
       representation={settled && (
@@ -406,14 +416,14 @@ function BookshelfLab({
 
           {/* ── Le chemin sans glisser : − / + (la réglette se touche aussi) ── */}
           <div className="flex flex-wrap items-center justify-center gap-2">
-            <button type="button" onClick={() => stretch.nudge(-1)} aria-label={k('shorter')} disabled={b != null && b <= range.min}
+            <button type="button" onClick={() => stretch.nudge(-1)} aria-label={k('shorter')} data-shelf-nudge="-1" disabled={b != null && b <= range.min}
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white text-slate-800 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
               <Minus className="h-5 w-5" aria-hidden="true" />
             </button>
             <p className="min-w-[7rem] text-center text-sm font-bold text-slate-700" data-shelf-readout>
               {b == null ? k('notSet') : k('valueText', { books: books(b) })}
             </p>
-            <button type="button" onClick={() => stretch.nudge(1)} aria-label={k('longer')} disabled={b != null && b >= range.max}
+            <button type="button" onClick={() => stretch.nudge(1)} aria-label={k('longer')} data-shelf-nudge="1" disabled={b != null && b >= range.max}
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white text-slate-800 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
               <Plus className="h-5 w-5" aria-hidden="true" />
             </button>

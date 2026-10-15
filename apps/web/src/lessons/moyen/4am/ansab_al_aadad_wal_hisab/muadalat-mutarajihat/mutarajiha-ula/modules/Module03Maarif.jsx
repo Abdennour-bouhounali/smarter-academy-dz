@@ -13,7 +13,7 @@ import { KNOWLEDGE_3, KNOWLEDGE_4 } from '../content/textbook';
  * Module 3 — معارف 3 et 4 (p. 48).
  *   1. l'متراجحة, ses حلول, « حل متراجحة » et la forme du premier degré (brique
  *      mutarajiha-ula), l'exemple 1 (4x > −3) ;
- *   2. les trois règles (brique qawaid-ittijah) et l'exemple 2 — CORRIGÉ : « قد تغيّر » ;
+ *   2. l'exemple 2 — CORRIGÉ : « قد تغيّر » —, la question keep/change, PUIS les trois règles (brique qawaid-ittijah, après la réponse, rétrofit 2026-10-15) ;
  *   3. le dessin du manuel (brique tamthil-bayani) : 5x ≤ 3 et x > 6, puis 2x ≥ 6 à dessiner.
  * LP : P1, P2, P3.
  *
@@ -87,7 +87,6 @@ export default function Module03Maarif() {
           num: 2, title: 'القواعد الثلاث', subtitle: 'معارف 3 — المثال 2', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="qawaid-ittijah" lead="خطواتك في المختبر — ما قبلته نقاطك وما رفضته — في ثلاث قواعد:" />
               <TextbookBox kind="example" lines={[KNOWLEDGE_3.example2a, KNOWLEDGE_3.example2b]} source={KNOWLEDGE_3.source} compact />
               <p className="text-xs text-slate-500" data-correction-note><MathText>{KNOWLEDGE_3.correctionNote}</MathText></p>
               <BatchChoiceQuestion
@@ -97,7 +96,6 @@ export default function Module03Maarif() {
                   { id: 'k2', label: <MathText>{'نقسم طرفي $3x \\leq 4$ على 3'}</MathText>, options: KEEP, correct: 0, correction: <MathText>{'3 موجب تمامًا: $x \\leq \\dfrac{4}{3}$.'}</MathText> },
                   { id: 'k3', label: <MathText>{'نقسم طرفي $-3x > 18$ على $-3$'}</MathText>, options: KEEP, correct: 1, correction: <MathText>{'$-3$ سالب تمامًا: $x < -6$ ، الاتجاه تغيّر.'}</MathText> },
                 ]}
-                requires={['qawaid-ittijah']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     <MathText>{allRight
@@ -107,6 +105,7 @@ export default function Module03Maarif() {
                 )}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="qawaid-ittijah" lead="خطواتك في المختبر — ما قبلته نقاطك وما رفضته — في ثلاث قواعد:" />}
             </div>
           ),
         },

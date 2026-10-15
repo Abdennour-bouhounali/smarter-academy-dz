@@ -22,6 +22,8 @@ import ShootingVignette from '../components/ShootingVignette';
  *          angle (60°) depuis tout le grand arc, refusé dedans / dehors.
  * UNDERSTAND  les questions du نشاط 4 sous les essais de l'élève (`onTrial`, `[data-activity-evidence]`) ; les briques
  *           « تسمية » (le texte du نشاط 4) et « المركزية ضعف المحيطية » (sa conclusion).
+ * RÉTROFIT 2026-10-15 (§4ter–§4quinquies) : plus de carte `brief` ni de `title` / `lead` d'atelier au-dessus du labo (la vignette du tireur et
+ * la situation du livre passent à l'étape 1) ; la brique `alaqa-nashat` vient APRÈS « هل هوارية على صواب؟ ».
  * AUCUNE étape n'attend `onFinished`. LP : P1 (central / inscrit), P2 (la moitié).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -72,26 +74,9 @@ export default function Module01Nashat() {
       moduleSubtitle="الرامي يتحرّك على الدائرة: هل تتغيّر زاوية التسديد؟"
       estimatedTime="17 دقيقة"
       objectives={["هل تتغيّر زاوية التسديد حين يتحرّك الرامي على الدائرة؟", "ما العلاقة بين زاويتين رأساهما المركز ونقطة من الدائرة؟", "ماذا يحدث إن خرج الرامي عن الدائرة أو دخل فيها؟"]}
-      brief={{
-        tag: 'أنشطة — الكتاب ص 153',
-        headline: 'من أين تسدّد؟ منطقة الجزاء في ملعب 5 جويلية!',
-        emoji: '⚽',
-        title: ACTIVITY.title,
-        tone: 'emerald',
-        visual: <ShootingVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={ACTIVITY_LINES.source} /></p>
-            <p className="text-sm text-slate-600">في المستوى «متقدم» (نشاط 4): الدائرة (𝒞) والنقطة D التي تضعها بنفسك لتختبر قول مزيان ثم قول هوارية. في المستوى «مبتدئ»: أنت الرامي، تراهن على زاوية التسديد ثم تتحقّق.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين: حرّك الرامي إلى مواضع مختلفة، ولاحظ ما تقرؤه اللوحة؛ وإن رفضت موضعًا فاقرأ سبب الرفض."
           levels={{
             beginner: () => (
               <Manipulation
@@ -99,7 +84,6 @@ export default function Module01Nashat() {
                 level="beginner"
                 {...LAB.beginner.numbers}
                 theme="football"
-                title="زاوية التسديد: الرامي على الدائرة المرسومة"
                 lead="القائمان A و B على دائرة مركزها O مرسومة على العشب. اللوحة تعطيك الزاوية المركزية فقط."
               />
             ),
@@ -109,7 +93,6 @@ export default function Module01Nashat() {
                 level="advanced"
                 {...LAB.advanced.numbers}
                 theme="football"
-                title="نشاط 4: قول مزيان وقول هوارية"
                 lead={<MathText>{'(𝒞) دائرة مركزها O، و A و B نقطتان منها. D نقطة من (𝒞) خارج القوس الملونة $\\overset{\\frown}{AB}$ .'}</MathText>}
                 onTrial={onTrial}
               />
@@ -122,6 +105,8 @@ export default function Module01Nashat() {
           num: 1, title: 'نشاط 4: رأسا الزاويتين', subtitle: 'الزاوية المركزية والزاوية المحيطية', done: q1,
           content: (
             <div className="space-y-3">
+              <ShootingVignette />
+              <p className="text-sm font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={ACTIVITY_LINES.source} /></p>
               <TextbookBox kind="situation" text={ACTIVITY.intro} source={ACTIVITY.source} compact />
               <GeoFigure {...FIG_ACT4} />
               <BatchChoiceQuestion
@@ -189,9 +174,7 @@ export default function Module01Nashat() {
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY.part2} source={ACTIVITY.source} compact />
               {evidence}
-              {/* « أتوقّع القاعدة » : la brique AVANT la question — la réponse et l'explication de « هل هوارية على صواب؟ »
-                  énoncent la règle ; l'élève l'écrit d'abord à partir de ses mesures, la question vient après. */}
-              <KnowledgeBrick id="alaqa-nashat" lead="ما وجدته في النشاط:" />
+              {/* Rétrofit 2026-10-15 : la question d'abord (ses mesures suffisent), la brique « ما وجدته » après la réponse. */}
               <TapQuestion
                 prompt="هل هوارية على صواب؟"
                 options={[
@@ -205,6 +188,7 @@ export default function Module01Nashat() {
                 explain={<MathText>{ACTIVITY_LINES.houaria}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="alaqa-nashat" lead="ما وجدته في النشاط:" />}
             </div>
           ),
         },

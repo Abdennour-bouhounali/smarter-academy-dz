@@ -19,7 +19,7 @@ import { FIG_TARIQA, FIG_QUTR } from '../content/figures';
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
 export default function Module03Tariqa() {
-  const [shown, setShown] = useState(false);
+  const [, setShown] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
 
@@ -34,7 +34,7 @@ export default function Module03Tariqa() {
       objectives={["بأيّ خطوات أجد قيس زاوية في دائرة؟", "ماذا يحدث حين يكون الوتر قطرًا؟"]}
       brief={{
         tag: 'طريقة — من المنصّة', title: METHOD.title, tone: 'indigo',
-        body: <p>تمارين الكتاب تطلب أقياس زوايا في دائرة. الطريقة واحدة دائما: من رأس الزاوية إلى القوس الذي تحصره، ثم إلى زاوية معلومة تحصر نفس القوس.</p>,
+        body: <p>مثال محلول سطرًا سطرًا على عجلة الملاهي، ثم سؤالان لك.</p>,
         footer: <SourceTag source={METHOD.source} />,
       }}
       steps={[
@@ -44,7 +44,6 @@ export default function Module03Tariqa() {
             <div className="space-y-3">
               <GeoFigure {...FIG_TARIQA} />
               <MethodSteps method={{ source: METHOD.source, exercise: METHOD.exampleText, solution: METHOD.exampleSteps }} onAllRevealed={() => setShown(true)} />
-              {shown && <KnowledgeBrick id="tariqa-qaws" lead="الطريقة التي طبّقتها:" />}
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'على نفس العجلة، مقعدان آخران: الزاوية المركزية $\\widehat{POQ}$ صارت $110^\\circ$ .'}</MathText></p>}
                 rows={[
@@ -57,6 +56,7 @@ export default function Module03Tariqa() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: نفس القوس، نفس الزاوية المحيطية، نصف المركزية.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="tariqa-qaws" lead="الطريقة التي طبّقتها:" />}
             </div>
           ),
         },
@@ -65,17 +65,16 @@ export default function Module03Tariqa() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_QUTR} />
-              <KnowledgeBrick id="qutr-qaima" lead="عندما يكون الوتر قطرا:" />
               <TextbookBox kind="remark" text={METHOD.notInscribed} source={METHOD.source} compact />
               <TapQuestion
                 prompt={<MathText>{`${QCM[3].reading} إذن $\\widehat{BAC}$ يساوي:`}</MathText>}
                 options={['$90^\\circ$', '$180^\\circ$', '$360^\\circ$'].map(M)}
                 correct={0}
                 cols={3}
-                requires={['qutr-qaima']}
                 explain={<MathText>{'$\\widehat{BAC} = \\dfrac{1}{2}\\widehat{BOC} = \\dfrac{180^\\circ}{2} = 90^\\circ$ : المثلث ABC قائم في A، كما في «أستعدّ».'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="qutr-qaima" lead="عندما يكون الوتر قطرا:" />}
             </div>
           ),
         },

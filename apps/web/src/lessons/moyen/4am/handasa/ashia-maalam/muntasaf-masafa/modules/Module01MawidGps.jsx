@@ -5,11 +5,10 @@ import MathText from '../../../../../../common/components/MathText';
 import GeoFigure from '../../../../../../common/components/GeoFigure';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { CHALLENGE, CHALLENGE_LINES, ACTIVITY, ACTIVITY_LINES, ACTIVITY_4, ACTIVITY_4_LINES, LAB } from '../content/textbook';
 import { FIG_CHALLENGE, FIG_ACT3_KL, FIG_ACT3, FIG_ACT4, FIG_ACT4_TRI } from '../content/figures';
-import GpsVignette from '../components/GpsVignette';
 
 /**
  * Module 1 — تحدّ, نشاط 3 et نشاط 4 (pp. 139 et 141), ouvert sur LE RENDEZ-VOUS GPS (midpoint-distance).
@@ -74,26 +73,9 @@ export default function Module01MawidGps() {
       moduleTitle="تحدّ ونشاط 3 و 4 — موعد عبر GPS"
       moduleSubtitle="أين نلتقي في منتصف الطريق؟ وكم يبعد أحدنا عن الآخر في خط مستقيم؟"
       objectives={['أين نضع دبّوس اللقاء بين صديقين؟', 'كم يبعد أحدهما عن الآخر في خط مستقيم؟', 'لماذا لا تكفي المسطرة لمسافة دقيقة؟']} estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 141',
-        headline: 'شارك موقعك… ونلتقي في المنتصف!',
-        emoji: '📍',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <GpsVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={ACTIVITY_LINES.source} /></p>
-            <p className="text-sm text-slate-600">في المستوى «متقدم» (نشاط 3 ثم نشاط 4): نقط الكتاب على الواجهة البحرية لوهران. في المستوى «مبتدئ»: صديقان في الصابلات، والحركتان تُقرآن مباشرة على الخريطة.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين: ضع دبّوس اللقاء ولاحظ متى يقبله التطبيق، ثم قارن مسافة الشوارع بالمسافة في خط مستقيم."
           levels={{
             beginner: () => (
               <Manipulation
@@ -101,7 +83,6 @@ export default function Module01MawidGps() {
                 level="beginner"
                 {...LAB.beginner.numbers}
                 theme="gps-meet"
-                title="موعد GPS في الصابلات: نقطة اللقاء ثم المسافة"
                 lead={<MathText>{'ريم في $A(1\\,;\\,-1)$ وياسين في $B(4\\,;\\,3)$ .'}</MathText>}
               />
             ),
@@ -111,7 +92,6 @@ export default function Module01MawidGps() {
                 level="advanced"
                 {...LAB.advanced.numbers}
                 theme="gps-meet"
-                title="نشاط 3 و 4: منتصف [KL] ثم المثلث KLM"
                 lead={<MathText>{'نشاط 3: $K(5\\,;\\,3)$ و $L(-3\\,;\\,1)$ و J منتصف [KL]. ثم نشاط 4: $L(1\\,;\\,-2)$ و $K(5\\,;\\,1)$ والزاوية M.'}</MathText>}
                 onTrial={onTrial}
               />
@@ -121,7 +101,51 @@ export default function Module01MawidGps() {
       }
       steps={[
         {
-          num: 1, title: 'التحدّ: مسافة لا تكفيها المسطرة', subtitle: 'تحدّ — الكتاب ص 139', done: q1,
+          num: 1, title: 'لماذا قبل التطبيق دبّوسك هنا؟', subtitle: 'نشاط 3 — السؤال 1)', done: q2,
+          content: (
+            <div className="space-y-3">
+              <TextbookBox kind="situation" text={`${ACTIVITY.intro} ${ACTIVITY.part1}`} source={ACTIVITY.source} compact />
+              {evidence('meet', 'لم تثبّت بعد دبّوس اللقاء J في المستوى «متقدم».')}
+              <GeoFigure {...(q2 ? FIG_ACT3 : FIG_ACT3_KL)} />
+              <BatchChoiceQuestion
+                intro={<p className="text-sm font-semibold text-slate-700">اختر لكل سطر:</p>}
+                rows={[
+                  { id: 'why', label: 'لماذا لا يقبل التطبيق دبّوسك إلا في موضع واحد؟', options: ['لأن الحركة من K إلى J يجب أن تساوي الحركة من J إلى L', 'لأن J يجب أن يكون أقرب إلى K منه إلى L', 'لأن J يجب أن يكون مجموع إحداثيتي K و L'].map(M), correct: 0, correction: <MathText>{`${ACTIVITY_LINES.j} (ودبّوس اللقاء حيث تتساوى الحركتان: لا أقرب إلى طرف ولا مجموع إحداثيات.)`}</MathText> },
+                  { id: 'kj', label: <MathText>{'مركبتا $\\overrightarrow{KJ}$'}</MathText>, options: ['$\\begin{pmatrix} -4 \\\\ -1 \\end{pmatrix}$', '$\\begin{pmatrix} 4 \\\\ 1 \\end{pmatrix}$', '$\\begin{pmatrix} 1 \\\\ 2 \\end{pmatrix}$'].map(M), correct: 0, correction: <MathText>{ACTIVITY_LINES.kj}</MathText> },
+                  { id: 'jl', label: <MathText>{'مركبتا $\\overrightarrow{JL}$'}</MathText>, options: ['$\\begin{pmatrix} -4 \\\\ -1 \\end{pmatrix}$', '$\\begin{pmatrix} -3 \\\\ 1 \\end{pmatrix}$', '$\\begin{pmatrix} 4 \\\\ 1 \\end{pmatrix}$'].map(M), correct: 0, correction: <MathText>{ACTIVITY_LINES.kj}</MathText> },
+                  { id: 'conc', label: 'ماذا تستنتج؟', options: ['$\\overrightarrow{KJ} = \\overrightarrow{JL}$', '$\\overrightarrow{KJ} = \\overrightarrow{LJ}$', '$\\overrightarrow{KJ} = \\overrightarrow{KL}$'].map(M), correct: 0, correction: <MathText>{ACTIVITY_LINES.conclusion}</MathText> },
+                ]}
+                requires={['muntasaf-shuaa', 'murakkibat-hisab']}
+                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: نفس الحركة من K إلى J ومن J إلى L، كما في دبّوس اللقاء.' : 'راجع التصحيح تحت كل سطر، وقارن بدبّوسك في المستوى «متقدم».'}</Feedback>}
+                onAnswered={() => setQ2(true)}
+              />
+              {q2 && <KnowledgeBrick id="muntasaf-murakkibat" variant="rappel" lead="ما وجدته على الخريطة:" />}
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'ما الذي بنيته بين L و K؟', subtitle: 'نشاط 4 — الجزء أ)', done: q3,
+          content: (
+            <div className="space-y-3">
+              <TextbookBox kind="situation" text={ACTIVITY_4.partA} source={ACTIVITY_4.source} compact />
+              <GeoFigure {...(q3 ? FIG_ACT4_TRI : FIG_ACT4)} />
+              {evidence('distance', 'لم تبنِ بعد درج الشوارع من L إلى K في المستوى «متقدم».')}
+              <BatchChoiceQuestion
+                intro={<p className="text-sm font-semibold text-slate-700">اختر لكل سطر:</p>}
+                rows={[
+                  { id: 'coords', label: 'إحداثيات النقط K و L و M', options: ['$K(5\\,;\\,1)$ ، $L(1\\,;\\,-2)$ ، $M(5\\,;\\,-2)$', '$K(1\\,;\\,5)$ ، $L(-2\\,;\\,1)$ ، $M(-2\\,;\\,5)$', '$K(5\\,;\\,1)$ ، $L(-2\\,;\\,1)$ ، $M(5\\,;\\,-2)$'].map(M), correct: 0, correction: <MathText>{`الفاصلة أولا ثم الترتيب: ${ACTIVITY_4_LINES.coords} .`}</MathText> },
+                  { id: 'legs', label: 'الضلعان القائمان', options: ['$KM = 3$ و $LM = 4$', '$KM = 4$ و $LM = 3$', '$KM = 1$ و $LM = 5$'].map(M), correct: 0, correction: <MathText>{ACTIVITY_4_LINES.legs}</MathText> },
+                  { id: 'kl', label: 'لماذا لا تساوي المسافة بين L و K طول الدرج كلّه (7)؟', options: ['لأن المسافة في خط مستقيم هي وتر المثلث القائم، وهو أقصر من مجموع ضلعيه', 'لأن الدرج يُحسب مرّتين', 'لأن الوتر يساوي مجموع الضلعين'].map(M), correct: 0, correction: <MathText>{`${ACTIVITY_4_LINES.kl} ${ACTIVITY_4_LINES.taxi}`}</MathText> },
+                ]}
+                requires={['fithaghuras', 'ihdathiyat-qiraa']}
+                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: المسافة في خط مستقيم وتر المثلث القائم، لا مجموع ضلعي الدرج.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
+                onAnswered={() => setQ3(true)}
+              />
+            </div>
+          ),
+        },
+        {
+          num: 3, title: 'التحدّ: مسافة لا تكفيها المسطرة', subtitle: 'تحدّ — الكتاب ص 139', done: q1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={CHALLENGE.text} source={CHALLENGE.source} compact />
@@ -138,50 +162,6 @@ export default function Module01MawidGps() {
                 requires={['ihdathiyat-qiraa']}
                 explain={<MathText>{`${CHALLENGE_LINES.measure} سنحسب AB بالضبط بعد أن نكتشف القانون في هذا الدرس.`}</MathText>}
                 onAnswered={() => setQ1(true)}
-              />
-            </div>
-          ),
-        },
-        {
-          num: 2, title: 'نشاط 3: منتصف [KL]', subtitle: 'السؤال 1)', done: q2,
-          content: (
-            <div className="space-y-3">
-              <TextbookBox kind="situation" text={`${ACTIVITY.intro} ${ACTIVITY.part1}`} source={ACTIVITY.source} compact />
-              {evidence('meet', 'لم تثبّت بعد دبّوس اللقاء J في المستوى «متقدم».')}
-              <GeoFigure {...(q2 ? FIG_ACT3 : FIG_ACT3_KL)} />
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">اختر لكل سطر:</p>}
-                rows={[
-                  { id: 'j', label: 'منتصف [KL]', options: ['$J(1\\,;\\,2)$', '$J(2\\,;\\,4)$', '$J(-4\\,;\\,-1)$'].map(M), correct: 0, correction: <MathText>{`${ACTIVITY_LINES.j} ($J(2\\,;\\,4)$ مجموع دون قسمة على 2، و $(-4\\,;\\,-1)$ نصف مركبتي $\\overrightarrow{KL}$ .)`}</MathText> },
-                  { id: 'kj', label: <MathText>{'مركبتا $\\overrightarrow{KJ}$'}</MathText>, options: ['$\\begin{pmatrix} -4 \\\\ -1 \\end{pmatrix}$', '$\\begin{pmatrix} 4 \\\\ 1 \\end{pmatrix}$', '$\\begin{pmatrix} 1 \\\\ 2 \\end{pmatrix}$'].map(M), correct: 0, correction: <MathText>{ACTIVITY_LINES.kj}</MathText> },
-                  { id: 'jl', label: <MathText>{'مركبتا $\\overrightarrow{JL}$'}</MathText>, options: ['$\\begin{pmatrix} -4 \\\\ -1 \\end{pmatrix}$', '$\\begin{pmatrix} -3 \\\\ 1 \\end{pmatrix}$', '$\\begin{pmatrix} 4 \\\\ 1 \\end{pmatrix}$'].map(M), correct: 0, correction: <MathText>{ACTIVITY_LINES.kj}</MathText> },
-                  { id: 'conc', label: 'ماذا تستنتج؟', options: ['$\\overrightarrow{KJ} = \\overrightarrow{JL}$', '$\\overrightarrow{KJ} = \\overrightarrow{LJ}$', '$\\overrightarrow{KJ} = \\overrightarrow{KL}$'].map(M), correct: 0, correction: <MathText>{ACTIVITY_LINES.conclusion}</MathText> },
-                ]}
-                requires={['muntasaf-shuaa', 'murakkibat-hisab']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: نفس الحركة من K إلى J ومن J إلى L، كما في دبّوس اللقاء.' : 'راجع التصحيح تحت كل سطر، وقارن بدبّوسك في المستوى «متقدم».'}</Feedback>}
-                onAnswered={() => setQ2(true)}
-              />
-              {q2 && <KnowledgeBrick id="muntasaf-murakkibat" variant="rappel" lead="ما وجدته على الخريطة:" />}
-            </div>
-          ),
-        },
-        {
-          num: 3, title: 'نشاط 4: المثلث KLM', subtitle: 'الجزء أ)', done: q3,
-          content: (
-            <div className="space-y-3">
-              <TextbookBox kind="situation" text={ACTIVITY_4.partA} source={ACTIVITY_4.source} compact />
-              <GeoFigure {...(q3 ? FIG_ACT4_TRI : FIG_ACT4)} />
-              {evidence('distance', 'لم تبنِ بعد درج الشوارع من L إلى K في المستوى «متقدم».')}
-              <BatchChoiceQuestion
-                intro={<p className="text-sm font-semibold text-slate-700">اختر لكل سطر:</p>}
-                rows={[
-                  { id: 'coords', label: 'إحداثيات النقط K و L و M', options: ['$K(5\\,;\\,1)$ ، $L(1\\,;\\,-2)$ ، $M(5\\,;\\,-2)$', '$K(1\\,;\\,5)$ ، $L(-2\\,;\\,1)$ ، $M(-2\\,;\\,5)$', '$K(5\\,;\\,1)$ ، $L(-2\\,;\\,1)$ ، $M(5\\,;\\,-2)$'].map(M), correct: 0, correction: <MathText>{`الفاصلة أولا ثم الترتيب: ${ACTIVITY_4_LINES.coords} .`}</MathText> },
-                  { id: 'legs', label: 'الضلعان القائمان', options: ['$KM = 3$ و $LM = 4$', '$KM = 4$ و $LM = 3$', '$KM = 1$ و $LM = 5$'].map(M), correct: 0, correction: <MathText>{ACTIVITY_4_LINES.legs}</MathText> },
-                  { id: 'kl', label: 'الطول KL', options: ['$KL = 5$', '$KL = 7$', '$KL = 25$'].map(M), correct: 0, correction: <MathText>{`${ACTIVITY_4_LINES.kl} ${ACTIVITY_4_LINES.taxi}`}</MathText> },
-                ]}
-                requires={['fithaghuras', 'ihdathiyat-qiraa']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: المسافة في خط مستقيم وتر المثلث القائم، لا مجموع ضلعي الدرج.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
-                onAnswered={() => setQ3(true)}
               />
             </div>
           ),

@@ -13,6 +13,10 @@
  *   8  « إختبار أولي » : la وضعية TRANSPOSÉE évaluée (deux pistes de VTT à Constantine)
  * Layout v2 : {1→7, 2→0, 3→0, 4→8} (moduleLayoutMigrations.js, côté lead) ; les deux anciens modules supprimés comptent pour 0.
  *
+ * Rétrofit 2026-10-15 (§4quater, synthèse = format fixe, retouches minimales) : le module 7 s'ouvre sur le labo `route-compare` (ni carte, ni
+ * titre / `lead` de workspace) ; la وضعية du manuel (énoncé + figure) passe en tête de l'étape 1 « قراءة الوضعية » ; les briques restent des
+ * « rappel » APRÈS la réponse. Les autres modules (وضعيات, إختبار) ne changent pas.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/wadiya-idmajiya-maalam';

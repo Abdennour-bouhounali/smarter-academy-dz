@@ -14,7 +14,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module02Maarif.jsx",
-        "line": 73,
+        "line": 90,
         "step": 1,
         "variant": "new"
       }
@@ -28,7 +28,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module01Nashat.jsx",
-        "line": 191,
+        "line": 173,
         "step": 1,
         "variant": "new"
       }
@@ -39,7 +39,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module01Nashat.jsx",
-        "line": 240,
+        "line": 222,
         "step": 2,
         "variant": "new"
       }
@@ -50,7 +50,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module02Maarif.jsx",
-        "line": 130,
+        "line": 153,
         "step": 3,
         "variant": "new"
       }
@@ -160,15 +160,17 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module01Nashat.jsx",
-      "line": 161,
+      "line": 143,
       "requires": [
         "tadwir-adad"
       ],
       "prerequisiteStatus": {
         "tadwir-adad": "prior"
       },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
+      "lexiconHits": [
+        "cosinus"
+      ],
+      "pedagogicallyValid": false
     },
     {
       "questionId": "M01-S1-Q2",
@@ -176,7 +178,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module01Nashat.jsx",
-      "line": 172,
+      "line": 154,
       "requires": [
         "nisba-muthallathiya"
       ],
@@ -192,15 +194,17 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module01Nashat.jsx",
-      "line": 203,
+      "line": 185,
       "requires": [
         "hasiba-nisba"
       ],
       "prerequisiteStatus": {
         "hasiba-nisba": "established@M1"
       },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
+      "lexiconHits": [
+        "sinus"
+      ],
+      "pedagogicallyValid": false
     },
     {
       "questionId": "M01-S2-Q4",
@@ -208,7 +212,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module01Nashat.jsx",
-      "line": 213,
+      "line": 195,
       "requires": [
         "hasiba-nisba"
       ],
@@ -224,13 +228,9 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module02Maarif.jsx",
-      "line": 75,
-      "requires": [
-        "barmaja-daraja"
-      ],
-      "prerequisiteStatus": {
-        "barmaja-daraja": "established@M2"
-      },
+      "line": 71,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -240,7 +240,7 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module02Maarif.jsx",
-      "line": 89,
+      "line": 94,
       "requires": [
         "barmaja-daraja"
       ],
@@ -272,13 +272,9 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module02Maarif.jsx",
-      "line": 133,
-      "requires": [
-        "tadwir-dalaqa"
-      ],
-      "prerequisiteStatus": {
-        "tadwir-dalaqa": "established@M2"
-      },
+      "line": 140,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -295,8 +291,10 @@
       "prerequisiteStatus": {
         "hasiba-nisba": "established@M1"
       },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
+      "lexiconHits": [
+        "tangente"
+      ],
+      "pedagogicallyValid": false
     },
     {
       "questionId": "E2",
@@ -380,6 +378,42 @@
     }
   ],
   "findings": [
+    {
+      "code": "C_TARGET_DEMANDED_BEFORE_TAUGHT",
+      "severity": "critical",
+      "message": "« cosinus » is a target concept of this lesson but its first appearance is q.explain (module 1, étape 1); it is only taught later at apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module02Maarif.jsx:70",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module01Nashat.jsx",
+      "line": 149,
+      "module": 1,
+      "step": 1,
+      "term": "cosinus",
+      "questionId": "M01-S1-Q1",
+      "position": 10
+    },
+    {
+      "code": "C_TARGET_DEMANDED_BEFORE_TAUGHT",
+      "severity": "critical",
+      "message": "« sinus » is a target concept of this lesson but its first appearance is q.explain (module 1, étape 2) and it is never taught in a teaching position",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module01Nashat.jsx",
+      "line": 191,
+      "module": 1,
+      "step": 2,
+      "term": "sinus",
+      "questionId": "M01-S2-Q3",
+      "position": 19
+    },
+    {
+      "code": "C_TARGET_DEMANDED_BEFORE_TAUGHT",
+      "severity": "critical",
+      "message": "« tangente » is a target concept of this lesson but its first appearance is boss.explain (module 7) and it is never taught in a teaching position",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/hisab-muthallathat/hasiba-muthallathiya/modules/Module07Itqan.jsx",
+      "line": 46,
+      "module": 7,
+      "step": null,
+      "term": "tangente",
+      "questionId": "E1",
+      "position": 77
+    },
     {
       "code": "W_MODULE_NOT_KIT",
       "severity": "info",

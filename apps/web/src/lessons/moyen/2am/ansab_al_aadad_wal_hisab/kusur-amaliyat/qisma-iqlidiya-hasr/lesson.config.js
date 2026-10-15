@@ -6,6 +6,13 @@
  * pas ; ce qui est ajouté : tout diviseur, et le quotient a ÷ b encadré entre deux entiers consécutifs (2am.m1.r06).
  * Source de vérité : docs/sources/2am/unit2/extraction.json ; brief : docs/sources/2am/unit2/brief-authors.md.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le panier de سلمى (50 œufs à ranger en boîtes de 12, puis 60) — le cadre posé sur la règle montre où se range le
+ *   quotient avant tout calcul ; la main tient a, le quotient se lit sur la règle (plateforme). Rejetée : le نشاط 1 du manuel
+ *   comme entrée (2145 œufs, quatre questions et le rappel de 1AM avant tout geste) ; il reste le niveau متقدم, avec la division
+ *   du fils à juger. Ordre des idées : cadre (50, 60) → cadre de 2145 → pourquoi 70 / 45 est refusé → égalité, encadrement
+ *   (brique APRÈS la réponse) → معارف : les noms, l'encadrement (la remarque APRÈS la réponse), le reste nul (la définition APRÈS).
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/2am/ansab_al_aadad_wal_hisab/qisma-iqlidiya-hasr';
@@ -64,7 +71,7 @@ export const LESSON_CONFIG = {
       title: 'سلّة سلمى: علب من 12 بيضة',
       objective: 'حاصل القسمة a ÷ b يقع بين عددين طبيعيين متتاليين (المملوءة واللازمة)، ويقع على عدد طبيعي بالضبط عندما يكون الباقي معدومًا',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'farm' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'farm' },
       learningPointIds: ['2am_qisma-iqlidiya-hasr_P1', '2am_qisma-iqlidiya-hasr_P2', '2am_qisma-iqlidiya-hasr_P3'],
       sourceElementIds: ['act-1'],
     },

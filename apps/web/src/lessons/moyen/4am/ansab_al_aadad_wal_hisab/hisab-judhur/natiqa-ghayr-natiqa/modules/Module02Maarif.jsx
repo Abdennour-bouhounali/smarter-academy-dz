@@ -12,8 +12,9 @@ import { KNOWLEDGE, ICT_SQRT2 } from '../content/textbook';
  * par les briques : l'exemple 25/9 avec le 1er résultat, √6 avec le 2e),
  * puis « أوظّف تكنولوجيات الإعلام والاتصال » (p. 30) : la valeur de √2 que
  * montre la calculatrice n'est qu'une valeur approchée. Le 1er résultat a été
- * nommé au module 1 (rappel) ; le 2e est posé ici, avant la question qui s'en
- * sert. LP : P1, P2, P3.
+ * nommé au module 1 (rappel) ; le 2e est NOMMÉ APRÈS la réponse de l'élève à « ناطق أم لا ? » (rétrofit 2026-10-15 :
+ * il se résout avec le critère trouvé au module 1 ; la brique ne le donne plus d'avance), et la carte du haut
+ * dit ce qu'est le module sans énoncer de fait. LP : P1, P2, P3.
  */
 const M = (tex) => <MathText key={tex}>{tex}</MathText>;
 
@@ -33,7 +34,7 @@ export default function Module02Maarif() {
       objectives={['كيف أعرف إن كان جذر عدد ناطقًا؟', 'ماذا تعرض الحاسبة حين لا يكون ناطقًا؟']}
       brief={{
         tag: 'معارف — الكتاب ص 22', title: KNOWLEDGE.title, tone: 'violet',
-        body: <p>في النشاط وقعت جذور الصنف الأول على تدريجة، ولم تقع جذور الصنف الثاني على أيّ تدريجة. الكتاب يصوغ ذلك في نتيجتين، لكل منهما مثال.</p>,
+        body: <p>نصوغ ما وجدناه على المسطرة في «معارف» الكتاب، ثم نرى ما تفعله الحاسبة بجذر من هذا النوع.</p>,
         footer: <SourceTag source={KNOWLEDGE.source} />,
       }}
       steps={[
@@ -59,7 +60,6 @@ export default function Module02Maarif() {
           num: 2, title: 'النتيجة الثانية: جذر عدد ليس مربعًا لعدد ناطق', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="ghayr-natiq" lead="وجذور الصنف الثاني؟ الكتاب يعطي نتيجة ثانية:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">لكل عدد: هل هو عدد ناطق؟</p>}
                 rows={[
@@ -69,7 +69,7 @@ export default function Module02Maarif() {
                   { id: 'd', label: M('$\\sqrt{\\dfrac{25}{13}}$'), options: ['عدد ناطق', 'ليس عددًا ناطقًا'], correct: 1, correction: 'هذا الكسر ليس مربعًا لعدد ناطق (الصنف الثاني).' },
                   { id: 'e', label: M('$\\sqrt{2}$'), options: ['عدد ناطق', 'ليس عددًا ناطقًا'], correct: 1, correction: 'لا يوجد عدد ناطق مربعه 2.' },
                 ]}
-                requires={['murabba-natiq', 'ghayr-natiq']}
+                requires={['murabba-natiq']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     {allRight ? 'تمامًا: ' : 'السؤال دائمًا: هل العدد تحت الجذر مربع لعدد ناطق؟ '}
@@ -78,6 +78,7 @@ export default function Module02Maarif() {
                 )}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="ghayr-natiq" lead="وجذور الصنف الثاني؟ هذا ما طبّقته للتوّ، والكتاب يصوغه نتيجة ثانية:" />}
             </div>
           ),
         },

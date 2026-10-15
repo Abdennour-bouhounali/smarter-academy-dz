@@ -8,8 +8,8 @@ import { Manipulation, ManipulationWorkspace } from '../../../../../../common/ma
 import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, AIDS, CHALLENGE, NATURE, LAB } from '../content/textbook';
-import { FIG_ACT5, FIG_ACT5_SOL, FIG_CHALLENGE_SOL } from '../content/figures';
 import FlagStarFigure from '../components/FlagStarFigure';
+import { FIG_ACT5, FIG_ACT5_SOL, FIG_CHALLENGE_SOL } from '../content/figures';
 
 /**
  * Module 1 — التحدّي (p. 151, l'ENTRÉE du درس) et نشاط 5 (p. 153), ouvert sur LA FORGE DE POLYGONES (polygon-forge).
@@ -23,6 +23,8 @@ import FlagStarFigure from '../components/FlagStarFigure';
  * UNDERSTAND  la brique « الرؤوس صور بالدوران » sous les tours de l'élève (`onTrial`, `[data-activity-evidence]`) et
  *           une question qui l'applique (40° → 9 sommets) ; le نشاط 5 (MPN : trois زوايا مركزية de 120°, la rotation
  *           P ↦ M) ; le تحدّ résolu (72°, R ≈ 8,51 cm, la branche ≈ 16,18 cm) et sa construction.
+ * RÉTROFIT 2026-10-15 (§4ter–§4quinquies) : plus de carte `brief` au-dessus du labo, plus de `title` / `lead` d'atelier ; le labo
+ * ouvre le module, la brique `ruus-bidawaran` vient APRÈS la question, le tifo / la نجمة البحر / la lecture du تحدّ sont à l'étape 4.
  * AUCUNE étape n'attend `onFinished`. LP : P1, P2, P3.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -74,28 +76,9 @@ export default function Module01Tahaddi() {
       moduleSubtitle="رؤوس متساوية البعد عن مركز واحد: كيف ننشئها؟"
       estimatedTime="16 دقيقة"
       objectives={["متى تنغلق حلقة الرؤوس المدوَّرة مضلعًا؟", "ما الزاوية المركزية التي تعطي مثلثًا متقايس الأضلاع؟", "كيف أنشئ نجمة العلم؟"]}
-      brief={{
-        tag: 'تحدّ — الكتاب ص 151',
-        headline: 'تيفو نجمة العلم في المدرجات!',
-        emoji: '⭐',
-        title: 'المضلعات المنتظمة بالدوران',
-        tone: 'indigo',
-        visual: <FlagStarFigure compact />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800"><MathText>{CHALLENGE.text}</MathText> <SourceTag source={CHALLENGE.source} /></p>
-            <p className="text-sm text-slate-600">{NATURE.text} <SourceTag source={NATURE.source} /></p>
-            <p className="text-sm text-slate-600">في المستوى «متقدم» (التحدّي): ارسم نجمة العلم في ثلاث مراحل. في المستوى «مبتدئ»: خلية نحل من القبائل.</p>
-            <p className="text-xs text-slate-500" data-reading><MathText>{CHALLENGE.reading}</MathText></p>
-          </div>
-        ),
-        footer: <SourceTag source={CHALLENGE.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين: كل رأس جديد صورة الذي قبله بالدوران الذي مركزه O، وبنفس الزاوية α في كل مرة."
           levels={{
             beginner: () => (
               <Manipulation
@@ -103,8 +86,7 @@ export default function Module01Tahaddi() {
                 level="beginner"
                 {...LAB.beginner.numbers}
                 theme="honeycomb"
-                title="خلية النحل: سداسي منتظم بالدوران"
-                lead="خلية النحل سداسية: ابحث عن زاوية الدوران التي تغلق الحلقة خليةً."
+                lead="خلية النحل سداسية. كل رأس جديد صورة الذي قبله بالدوران الذي مركزه O، وبنفس الزاوية α في كل مرة."
                 onTrial={onTrial}
               />
             ),
@@ -114,8 +96,7 @@ export default function Module01Tahaddi() {
                 level="advanced"
                 {...LAB.advanced.numbers}
                 theme="flag-star"
-                title="التحدّي: نجمة العلم، رأسان متتاليان على بعد 10 cm"
-                lead="ثلاث مراحل: الرؤوس، ثم نصف القطر، ثم الفروع."
+                lead="نجمة العلم على دائرة مركزها O: رأسان متتاليان على بعد 10 cm، ثلاث مراحل."
                 onTrial={onTrial}
               />
             ),
@@ -124,20 +105,19 @@ export default function Module01Tahaddi() {
       }
       steps={[
         {
-          num: 1, title: 'ما وجدته في الورشة', subtitle: 'متى تنغلق الحلقة؟', done: q1,
+          num: 1, title: 'عند أيّ زاوية تنغلق الحلقة؟', subtitle: 'من محاولاتك في الورشة', done: q1,
           content: (
             <div className="space-y-3">
               {evidence}
-              <KnowledgeBrick id="ruus-bidawaran" lead="ما رأيته عند كل دوران، بكلمات واضحة:" />
               <TapQuestion
-                prompt={<MathText>{'ندوّر رأسا حول O بالدوران الذي زاويته $40^\\circ$ مرة بعد مرة. بعد كم صورة تعود الصورة إلى الرأس الأول، أي كم رأسا للمضلع المنتظم؟'}</MathText>}
+                prompt={<MathText>{'في الورشة رأيت الحلقة تنغلق عند بعض الزوايا فقط. لو دوّرت رأسا حول O بالدوران الذي زاويته $40^\\circ$ مرة بعد مرة، فبعد كم صورة تعود الصورة إلى الرأس الأول، أي كم رأسا للمضلع المنتظم؟'}</MathText>}
                 options={['$9$', '$8$', '$4{,}5$'].map(M)}
                 correct={0}
                 cols={3}
-                requires={['ruus-bidawaran']}
                 explain={<MathText>{`$9 \\times 40^\\circ = 360^\\circ$ : الصورة التاسعة هي الرأس الأول، فالمضلع تساعي منتظم. ($8 \\times 40^\\circ = 320^\\circ$ لا يكمل الدورة، و $4{,}5$ يأتي من قسمة $180^\\circ$ : ${AIDS.why180})`}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="ruus-bidawaran" lead="ما رأيته عند كل دوران، بكلمات واضحة:" />}
             </div>
           ),
         },
@@ -186,7 +166,10 @@ export default function Module01Tahaddi() {
           num: 4, title: 'التحدّي: نجمة العلم', subtitle: 'الزاوية ونصف القطر والفرع', done: q4,
           content: (
             <div className="space-y-3">
+              <FlagStarFigure compact />
               <TextbookBox kind="situation" text={CHALLENGE.text} source={CHALLENGE.source} compact />
+              <p className="text-sm text-slate-600">{NATURE.text} <SourceTag source={NATURE.source} /></p>
+              <p className="text-xs text-slate-500" data-reading><MathText>{CHALLENGE.reading}</MathText></p>
               <p className="text-sm text-slate-700">في المستوى «متقدم» رسمت النجمة بنفسك: أجب من محاولاتك.</p>
               {evidence}
               <BatchChoiceQuestion

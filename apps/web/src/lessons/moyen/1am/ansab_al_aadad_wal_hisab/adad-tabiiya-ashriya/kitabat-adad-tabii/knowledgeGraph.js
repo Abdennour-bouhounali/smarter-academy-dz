@@ -22,7 +22,7 @@
  *                    نستخلص └───┐
  *                          🎯 [الخلاصة]
  */
-import { ACTIVITY, KNOWLEDGE, RANKS, DECOMPOSITION, BIG, GUIDE } from './content/textbook';
+import { WORKSHOP, KNOWLEDGE, RANKS, DECOMPOSITION, BIG, GUIDE } from './content/textbook';
 
 export const KNOWLEDGE_GRAPH = {
   root: 'nizam',
@@ -35,8 +35,8 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'mawdi', kind: 'relationship', lane: 'start', requires: 'qima-mawdi', notebook: true,
-      title: 'قيمة الرقم حسب موقعه', subtitle: '25 ، 52',
-      context: { text: ACTIVITY.questions[1], note: RANKS.box },
+      title: 'قيمة الرقم حسب موقعه', subtitle: '7 ، 70',
+      context: { text: WORKSHOP.sevens, note: RANKS.box },
       reveals: ['khataConcat', 'jadwal'],
     },
     {

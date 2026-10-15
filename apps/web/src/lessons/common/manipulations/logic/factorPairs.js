@@ -108,3 +108,28 @@ export function allDivisors(state) {
 export function expectedPairs(state) {
   return factorPairs(state.n);
 }
+
+/* ── Le guide d'onboarding (LabCoach, MANIPULATION_CONTRACT §8quater) ─────────────────────────────────────────── */
+
+/**
+ * La prochaine largeur à essayer, SANS la nommer à l'élève : le plus petit d de 1 … √n pas encore testé ; quand tous le
+ * sont, le plus petit d au-delà pas encore testé (le rectangle couché qui montre qu'on peut s'arrêter). `null` : rien à tester.
+ */
+export function nextWidth(state, range) {
+  const todo = (from, to) => { for (let v = from; v <= to; v += 1) if (!state.tested.some((t) => t.d === v)) return v; return null; };
+  return todo(1, state.bound) ?? todo(state.bound + 1, range.max);
+}
+
+/**
+ * La prochaine action attendue : tirer la poignée du rectangle une première fois (`handle`), puis montrer les boutons
+ * « + / − » (`nudge`, `rank` = +1 | −1 : le côté de la prochaine largeur à essayer). `d` = la largeur vivante.
+ * `null` quand la règle d'arrêt est visible (`discoveryReady`).
+ */
+export function coachOf(state, { d, range }) {
+  if (discoveryReady(state)) return null;
+  if (state.tested.length === 0) return { id: 'handle', target: '[data-stretch-handle]', gesture: 'drag' };
+  const want = nextWidth(state, range);
+  if (want == null) return null;
+  const dir = d != null && want < d ? -1 : 1;
+  return { id: 'nudge', target: `[data-fp-nudge="${dir}"]`, rank: dir, gesture: 'tap' };
+}

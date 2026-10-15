@@ -4,11 +4,13 @@ import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, DRONE, key } from '../content/textbook';
 
 /**
+ * Rétrofit 2026-10-15 : le labo EN TÊTE (plus de carte `brief`, ni titre/lead du workspace, ni titre/lead des labos : le contexte et la
+ * mission sont ceux du labo) ; les briques et les réponses du livre restent après leur question.
  * Module 1 — نشاط 4 (p. 117) « استعمال حاسبة في حساب نسب مثلثية », ouvert sur LA CALCULATRICE DU DRONE (trig-calculator).
  *
  * REAL / DISCOVER / MANIPULATE  le lab à deux niveaux, même objectif :
@@ -107,25 +109,9 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 4 — حاسبة الدرون"
       moduleSubtitle="الحاسبة تعطي النسبة من الزاوية، والزاوية من النسبة"
       estimatedTime="14 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 117',
-        headline: 'درون فوق الكورنيش… والكاميرا تنتظر زاويتك!',
-        emoji: '🚁',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={ACTIVITY.source} /></p>
-            <p className="text-sm text-slate-600"><MathText>{`قبل أسئلة النشاط: الحاسبة استعرتها من أخيك في الثانوي، وكاميرا الدرون تميل بالزاوية التي تكتبها. اضغط اللمسات بنفسك (${key('cos')} أو ${key('sin')} أو ${key('tan')} ثم الزاوية ثم ${key('=')})، وقارن الشاشة بمثلث الدرون، ثم دوّر بخط القطع ✂.`}</MathText></p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="في المستويين: حاسبة علمية تضغط لمساتها بإصبعك أو بلوحة المفاتيح، ودرون تميل كاميرته بالزاوية التي تحسبها؛ خط القطع ✂ على الشاشة يحدّد الدقة."
           levels={{
             beginner: () => (
               <Manipulation
@@ -133,8 +119,6 @@ export default function Module01Nashat() {
                 level="beginner"
                 {...DRONE.numbers}
                 theme="drone"
-                title="حاسبة الدرون: 30° و 45° و 60°"
-                lead="ثلاث زوايا، وثلاث نسب لكل زاوية، والمدوّر إلى الجزء من 100."
               />
             ),
             advanced: () => (
@@ -143,8 +127,6 @@ export default function Module01Nashat() {
                 level="advanced"
                 {...ACTIVITY.numbers}
                 theme="drone"
-                title="نشاط 4: الجدول من 10° إلى 75° ثم الزوايا من نسبها"
-                lead="أتمم جدول الكتاب (المدوّر إلى الجزء من 100)، ثم انتقل بنفسك إلى الزوايا الثلاث التي تعرف إحدى نسبها."
                 onTrial={setEv}
               />
             ),

@@ -396,6 +396,7 @@ as a substitute for causality: every motion must show a mathematical change.
 | 1AM unit 3 « الضرب والقسمة »: `digit-cards` — the divisibility rule is DISCOVERED, never stated: مبتدئ colours the multiples of 2, 5, 3 in the textbook's 0..48 table (a non-multiple refused with its remainder), متقدم arranges the cards 4, 5, 9, 3 and claims divisibility on closed lamps that a swap re-judges (÷3 never flips, ÷2 does); wrong rules refuted with the student's own cells and swap (`MANIPULATION_CONTRACT.md` §2octodecies) | **Implemented 2026-10-14** |
 | 1AM unit 4 « الكتابات الكسرية »: `fraction-knife` — the share is FIXED (its edge never moves), the hand holds the KNIFE, d the number of equal pieces of the whole; the numerator is READ, and exists only when the edge falls on a cut — a straddling piece is the refusal. مبتدئ: grandmother's tray of « قلب اللوز » (3/5 for the neighbours) and Amine's « 4/6 » whose ghost pieces overflow the ribbon; متقدم: the textbook's three rectangles drawn superposed, then 27/45 PREDICTED with pins (9 and 3 divide 45 but straddle) and glued back to 3/5 (`MANIPULATION_CONTRACT.md` §2vicies) | **Implemented 2026-10-14** |
 | 2AM unit 2 « الكسور والعمليات عليها »: `egg-trays` — the first lab whose hand holds the DIVIDEND a (eggs swept from a conveyor into trays of b); a tray CLOSES by itself at b, so r < b is physical at every scale, and the trays ruler under the belt is the same line read ÷ b: the marker « a ÷ b » sits at q + r/b, strictly inside a one-unit frame the student PREDICTED before the first egg (judged with the models below / above / remainder / onMark), and ON a graduation only when the last tray closes exactly (2145 then 2160 ÷ 30); the farmer's son's « 2145 = 30 × 70 + 45 » is refuted by the same closing tray (`MANIPULATION_CONTRACT.md` §2unvicies) | **Implemented 2026-10-14** |
+| 1AM unit 4 « الكتابات الكسرية » (2026-10-15): `fair-share` — the hand holds the SHARE of ONE child (the unknown quotient itself) on a ruler of loaves, and the RULER (decimal steps or every loaf cut in b pieces); the lab lays b shares against the a loaves: the decimal ruler lands for 3 ÷ 4 and never for 2 ÷ 3 / 5 ÷ 6 / 7 ÷ 3, the cut ruler always (m = a) — a/b is the number that times b gives a, decimal only sometimes. Differs from `division-jumps` (holds the number of groups), `fraction-knife` (fixed share, holds the number of pieces) and `egg-trays` (holds the dividend). Contract §2duovicies. |
 
 **Lessons 2–9, what the hand now does (2026-09-30).** The instrument is chosen per concept
 (§6, §12). Lessons 4, 5 and 7 share the reserve **on purpose**: coprime is the PGCD = 1 case of
@@ -678,5 +679,18 @@ built to the highest finish the agent can produce — never the first version th
    student could ask « ماذا أفعل بهذا؟ », the lab is not done. Reference: `rank-exchange`, `fraction-knife`,
    `egg-trays` after the 2026-10-14 retrofit (with `story-bars`, `division-jumps`, `digit-cards`: kit `PromptCard › context`, shell
    `titleHidden`, render tests « opens on its CONTEXT then ONE question »).
+
+10. **Nothing above the lab** (owner, 2026-10-14). In a module, the lab IS the start: no textbook card, no list of questions, no
+   workspace `title` / `lead` above it — they would be a second, competing start. The module's questions come AFTER the lab and
+   ask about what the student did in it (`LESSON_DEVELOPMENT_GUIDE.md` §4quater). And the lab's situation is chosen by the
+   platform, not copied from the book: the textbook fixes the الكفاءة, the lab is the best situation in which the hand makes it
+   necessary (guide §4ter).
+
+11. **Onboarding — « what do I do now? » must never be a question — MANDATORY for EVERY manipulation** (owner, 2026-10-14: « one of
+   the best features »; validated on `rank-exchange`). Every lab — new, redesigned or already shipped, in every lesson of every grade —
+   shows, at each moment, the button or gesture the hand needs NOW with `LabCoach` (MANIPULATION_CONTRACT §8quater): a pulsing ring
+   and a ONE-sentence bubble placed on the element, never over it, shown once, hidable (« فهمت » / « إيقاف الإرشاد » / Esc) and
+   re-summonable by the always-visible switch under the question. It shows the CONTROL, never the rule. Identical design details in
+   every lab (same component, same strings structure, same gates): a lab without it is not done, like a lab without its screenshots.
 
 A generation report states, for each lab, the screenshots reviewed and what was improved after looking at them.

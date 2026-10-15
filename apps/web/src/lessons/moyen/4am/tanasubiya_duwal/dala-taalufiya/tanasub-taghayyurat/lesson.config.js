@@ -7,6 +7,17 @@
  * puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit7/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : l'abonnement des Éclaireurs / cadets de la plateforme (labo `slope-stairs`, niveau مبتدئ : 100 DA + 50 DA par match,
+ *   monde `stadium`) — la main CHOISIT deux nombres de matchs et construit la marche entre eux : « le quotient ne bouge pas » se
+ *   voit sur SES marches avant que le manuel ne donne trois quotients. Rejetée : le نشاط 4 comme carte d'ouverture suivie de ses
+ *   questions de calcul (7 matchs → 3400, 4800 DA → 14 matchs, f(1), f(4)… : des calculs que l'élève fait de tête, SANS besoin de la
+ *   marche) ; il reste le niveau متقدم du MÊME labo (200x + 2000, l'escalier du livre) et ses questions deviennent l'application
+ *   après la brique `tanasub-taghayyurat` (étapes 2 à 5 du module 1).
+ *   Ordre des idées : la marche de l'élève → « que remarques-tu dans tes quotients ? » (brique APRÈS) → les calculs du livre
+ *   (S 1, 2) → les trois quotients du livre → l'escalier à compléter → module 2 : le labo « deux couples » ouvre (pas de carte),
+ *   la preuve (pourquoi le quotient vaut a) PUIS la boîte et la brique, le تحدّ lu a PUIS b avec leurs briques APRÈS chaque réponse.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/tanasub-taghayyurat';
@@ -73,7 +84,7 @@ export const LESSON_CONFIG = {
       title: 'اشتراك الأشبال: 100DA يضاف إليه 50DA للمقابلة',
       objective: 'تناسب التغيّرات: حاصل القسمة (f(x₁) − f(x₂)) ÷ (x₁ − x₂) ثابت يساوي المعامل a مهما كان العددان المتمايزان x₁ و x₂',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'stadium' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'stadium' },
       learningPointIds: ['4am_tanasub-taghayyurat_P1'],
       sourceElementIds: ['act-4'],
     },

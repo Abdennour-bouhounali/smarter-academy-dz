@@ -16,7 +16,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module01Nashat.jsx",
-        "line": 172,
+        "line": 155,
         "step": 3,
         "variant": "new"
       }
@@ -27,7 +27,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module02Maarif.jsx",
-        "line": 47,
+        "line": 59,
         "step": 1,
         "variant": "new"
       }
@@ -38,7 +38,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module02Maarif.jsx",
-        "line": 101,
+        "line": 106,
         "step": 3,
         "variant": "new"
       }
@@ -52,7 +52,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module03Taraiq.jsx",
-        "line": 79,
+        "line": 76,
         "step": 1,
         "variant": "new"
       }
@@ -63,7 +63,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module03Taraiq.jsx",
-        "line": 125,
+        "line": 122,
         "step": 3,
         "variant": "new"
       }
@@ -173,7 +173,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module01Nashat.jsx",
-      "line": 115,
+      "line": 98,
       "requires": [
         "tasawi-shuaayn"
       ],
@@ -189,7 +189,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module01Nashat.jsx",
-      "line": 138,
+      "line": 121,
       "requires": [
         "muntasaf-qita"
       ],
@@ -205,7 +205,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module01Nashat.jsx",
-      "line": 159,
+      "line": 142,
       "requires": [
         "tasawi-shuaayn",
         "shuaa-mutawazi"
@@ -223,7 +223,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module01Nashat.jsx",
-      "line": 181,
+      "line": 164,
       "requires": [
         "tasawi-shuaayn"
       ],
@@ -240,12 +240,8 @@
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module02Maarif.jsx",
       "line": 49,
-      "requires": [
-        "muntasaf-shuaa"
-      ],
-      "prerequisiteStatus": {
-        "muntasaf-shuaa": "established@M2"
-      },
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -255,7 +251,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module02Maarif.jsx",
-      "line": 59,
+      "line": 64,
       "requires": [
         "muntasaf-shuaa"
       ],
@@ -271,7 +267,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module02Maarif.jsx",
-      "line": 80,
+      "line": 85,
       "requires": [
         "muntasaf-shuaa"
       ],
@@ -287,7 +283,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module02Maarif.jsx",
-      "line": 102,
+      "line": 107,
       "requires": [
         "mutawazi-shuaa"
       ],
@@ -303,7 +299,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module02Maarif.jsx",
-      "line": 116,
+      "line": 121,
       "requires": [
         "mutawazi-shuaa"
       ],
@@ -319,7 +315,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module02Maarif.jsx",
-      "line": 138,
+      "line": 142,
       "requires": [
         "mutawazi-shuaa",
         "muntasaf-mushtarak"
@@ -337,7 +333,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module03Taraiq.jsx",
-      "line": 66,
+      "line": 63,
       "requires": [
         "tasawi-shuaayn",
         "mutawazi-shuaa"
@@ -355,7 +351,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module03Taraiq.jsx",
-      "line": 89,
+      "line": 85,
       "requires": [
         "surat-nuqta",
         "muntasaf-shuaa"
@@ -373,7 +369,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module03Taraiq.jsx",
-      "line": 112,
+      "line": 109,
       "requires": [
         "muntasaf-shuaa"
       ],
@@ -389,7 +385,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/shuaayn-mutasawiyayn/modules/Module03Taraiq.jsx",
-      "line": 135,
+      "line": 132,
       "requires": [
         "muntasaf-shuaa",
         "mutawazi-shuaa"

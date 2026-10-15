@@ -14,8 +14,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module01NashatJidaa.jsx",
-        "line": 197,
-        "step": 4,
+        "line": 222,
+        "step": 5,
         "variant": "new"
       }
     },
@@ -25,8 +25,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module01NashatJidaa.jsx",
-        "line": 275,
-        "step": 7,
+        "line": 300,
+        "step": 8,
         "variant": "new"
       }
     },
@@ -36,7 +36,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module03Maarif.jsx",
-        "line": 83,
+        "line": 96,
         "step": 3,
         "variant": "new"
       }
@@ -158,14 +158,14 @@
       "questionId": "M01-S1-Q1",
       "module": 1,
       "step": 1,
-      "component": "BatchChoiceQuestion",
+      "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module01NashatJidaa.jsx",
-      "line": 110,
+      "line": 113,
       "requires": [
-        "jidhr-taarif"
+        "murabba-jidhr"
       ],
       "prerequisiteStatus": {
-        "jidhr-taarif": "prior"
+        "murabba-jidhr": "prior"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -174,9 +174,9 @@
       "questionId": "M01-S2-Q2",
       "module": 1,
       "step": 2,
-      "component": "TapQuestion",
+      "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module01NashatJidaa.jsx",
-      "line": 138,
+      "line": 135,
       "requires": [
         "jidhr-taarif"
       ],
@@ -190,9 +190,25 @@
       "questionId": "M01-S3-Q3",
       "module": 1,
       "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module01NashatJidaa.jsx",
+      "line": 163,
+      "requires": [
+        "jidhr-taarif"
+      ],
+      "prerequisiteStatus": {
+        "jidhr-taarif": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S4-Q4",
+      "module": 1,
+      "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module01NashatJidaa.jsx",
-      "line": 160,
+      "line": 185,
       "requires": [
         "murabba-jidhr",
         "quwa-jidaa-kasr"
@@ -205,12 +221,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S4-Q4",
+      "questionId": "M01-S5-Q5",
       "module": 1,
-      "step": 4,
+      "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module01NashatJidaa.jsx",
-      "line": 183,
+      "line": 208,
       "requires": [
         "murabba-jidhr"
       ],
@@ -221,28 +237,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S5-Q5",
-      "module": 1,
-      "step": 5,
-      "component": "BatchChoiceQuestion",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module01NashatJidaa.jsx",
-      "line": 208,
-      "requires": [
-        "jidhr-taarif"
-      ],
-      "prerequisiteStatus": {
-        "jidhr-taarif": "prior"
-      },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
-    },
-    {
       "questionId": "M01-S6-Q6",
       "module": 1,
       "step": 6,
-      "component": "TapQuestion",
+      "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module01NashatJidaa.jsx",
-      "line": 237,
+      "line": 233,
       "requires": [
         "jidhr-taarif"
       ],
@@ -256,9 +256,25 @@
       "questionId": "M01-S7-Q7",
       "module": 1,
       "step": 7,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module01NashatJidaa.jsx",
+      "line": 262,
+      "requires": [
+        "jidhr-taarif"
+      ],
+      "prerequisiteStatus": {
+        "jidhr-taarif": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S8-Q8",
+      "module": 1,
+      "step": 8,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module01NashatJidaa.jsx",
-      "line": 258,
+      "line": 283,
       "requires": [
         "murabba-jidhr",
         "quwa-jidaa-kasr"
@@ -326,7 +342,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module03Maarif.jsx",
-      "line": 49,
+      "line": 48,
       "requires": [
         "jidaa-jidhrayn"
       ],
@@ -342,7 +358,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module03Maarif.jsx",
-      "line": 66,
+      "line": 70,
       "requires": [
         "jidaa-jidhrayn"
       ],
@@ -358,12 +374,12 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module03Maarif.jsx",
-      "line": 84,
+      "line": 87,
       "requires": [
-        "jidhr-a2b"
+        "jidaa-jidhrayn"
       ],
       "prerequisiteStatus": {
-        "jidhr-a2b": "established@M3"
+        "jidaa-jidhrayn": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -374,7 +390,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module03Maarif.jsx",
-      "line": 102,
+      "line": 106,
       "requires": [
         "qismat-jidhrayn"
       ],
@@ -390,7 +406,7 @@
       "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/modules/Module03Maarif.jsx",
-      "line": 127,
+      "line": 131,
       "requires": [
         "jidaa-jidhrayn",
         "la-tawzi-jam"

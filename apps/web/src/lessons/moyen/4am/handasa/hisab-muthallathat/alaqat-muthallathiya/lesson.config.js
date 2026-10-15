@@ -22,6 +22,18 @@
  * manuel n'est pas le niveau avancé du laboratoire (son avancé est la طريقة de construction p. 121), donc le
  * workspace ouvre sur مبتدئ (règle du brief §2) et aucune étape n'attend `onFinished`.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le cerf-volant sur la plage (labo angle-compass, مبتدئ sin x = 3/5) — la main construit au compas l'angle
+ *   d'un sinus ; le triangle 3-4-5 fait apparaître cos = 4/5 et 9/25 + 16/25 = 1 AVANT toute conjecture (ajout déclaré de la
+ *   plateforme, `platform_designed_entry`). Rejetée : le نشاط 5 du livre comme entrée (le tableau ARRONDI de نشاط 4 à remplir,
+ *   0,87² + 0,50² = 1,0069, puis « ضع تخمينا » : un calcul de tableau dont la conjecture se répond de mémoire) ; il devient
+ *   l'étape 2–3 APRÈS le labo. Ordre des idées : le labo seul (plus de carte `brief`, ni titre ni lead du workspace ni titre du labo) →
+ *   cos lu sur SON triangle → le tableau et la conjecture (brique après) → la preuve par Pythagore → tan = sin/cos (brique après) ;
+ *   معارف : la question « qu'avez-vous prouvé ? » AVANT l'encadré du manuel et la brique `alaqatan` ; طرائق : le labo
+ *   دوري الآن (2) (cos 3/4) EN TÊTE du module, ses questions d'abord, puis cos 0,6 → دوري الآن 1 → « إن أمكن » → la طريقة de
+ *   construction (figures et solutions du livre) révélée APRÈS la question « pourquoi le compas ici et pas là », puis `insha-zawiya`.
+ *   Aucune destination du manuel n'a bougé.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/alaqat-muthallathiya';
@@ -91,7 +103,7 @@ export const LESSON_CONFIG = {
       title: 'على الشاطئ: زاوية جيبها 3 على 5',
       objective: 'إنشاء زاوية حادة علمت إحدى نسبها بمثلث قائم تحقّق أطواله هذه النسبة، وملاحظة أن $\\cos^2 x + \\sin^2 x = 1$ في كل مثلث قائم',
       autonomy: '',
-      experience: { type: 'platform_adaptation', reason: 'improved_interactivity_and_age_appropriateness', theme: 'kite' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'kite' },
       learningPointIds: ['4am_alaqat-muthallathiya_P1', '4am_alaqat-muthallathiya_P3'],
       sourceElementIds: ['act-5'],
     },

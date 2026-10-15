@@ -18,6 +18,8 @@ import { FIG_METHOD_PROOF, FIG_METHOD_UNKNOWN, FIG_METHOD_UNKNOWN_DONE, FIG_NOW1
  *      « après » (C et l'angle droit)                                                       → brique tariqat-majhul (P1)
  *   3. دوري الآن 1 : ABCD مربّع, preuve en quatre lignes (P2)
  *   4. دوري الآن 2 : I(−1 ; −1) puis O sur le cercle (P3)
+ * Rétrofit 2026-10-15 (§4quater) : à l'étape 1 l'énoncé du livre est posé, la QUESTION vient d'abord ; la figure, la solution rédigée
+ * (MethodSteps) et la brique viennent APRÈS la réponse.
  * « أتوقّع القاعدة » (2026-10-06) : tariqat-burhan redit, dans les mots du manuel, la méthode tabiat-muthallath posée au
  * module 2 → brique `rappel`. tariqat-majhul est neuve, mais la solution du manuel (MethodSteps) l'énonce juste avant sa
  * brique : MethodSteps + développement + vérification sont enveloppés dans une PredictRule (id tariqat-majhul).
@@ -40,9 +42,7 @@ export default function Module03Taraiq() {
         { num: 1, title: 'إنجاز برهان', subtitle: 'قائم في A ومتساوي الساقين', done: !!q[1],
           content: (
             <div className="space-y-3">
-              <GeoFigure {...FIG_METHOD_PROOF} />
-              <MethodSteps method={{ source: METHOD_PROOF.source, exercise: METHOD_PROOF.exercise, solution: METHOD_PROOF.solution }} />
-              <p className="text-xs text-slate-600" data-platform-note="sqrt32"><MathText>{METHOD_PROOF.simplify}</MathText></p>
+              <TextbookBox kind="exercise" title={METHOD_PROOF.title} text={METHOD_PROOF.exercise} source={METHOD_PROOF.source} compact />
               <TapQuestion
                 prompt={<MathText>{'لماذا قارن الكتاب $AB^2 + AC^2$ بـ $BC^2$ (لا بـ $AB^2$ أو $AC^2$ )؟'}</MathText>}
                 options={[
@@ -54,7 +54,14 @@ export default function Module03Taraiq() {
                 correct={0} cols={1} requires={['tabiat-muthallath', 'qaim-fithaghuras']}
                 explain={<MathText>{'الزاوية القائمة في A تقابل الضلع [BC]، فهو الذي يكون وحده: $32 + 32 = 64$ . بترتيب آخر نختبر زاوية أخرى: $AB^2 + BC^2 = 96 \\neq 32$ .'}</MathText>}
                 onAnswered={mark(1)} />
-              {q[1] && <KnowledgeBrick id="tariqat-burhan" variant="rappel" />}
+              {q[1] && (
+                <>
+                  <GeoFigure {...FIG_METHOD_PROOF} />
+                  <MethodSteps method={{ source: METHOD_PROOF.source, exercise: METHOD_PROOF.exercise, solution: METHOD_PROOF.solution }} />
+                  <p className="text-xs text-slate-600" data-platform-note="sqrt32"><MathText>{METHOD_PROOF.simplify}</MathText></p>
+                  <KnowledgeBrick id="tariqat-burhan" variant="rappel" />
+                </>
+              )}
             </div>
           ) },
         { num: 2, title: 'حساب مسافات', subtitle: 'إحداثية مجهولة y', done: !!q[2],

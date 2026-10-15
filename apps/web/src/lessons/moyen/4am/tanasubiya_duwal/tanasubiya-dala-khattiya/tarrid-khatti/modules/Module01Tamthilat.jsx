@@ -4,7 +4,6 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACT_4, LAB, MISTAKE_NOT_O } from '../content/textbook';
 import { Act4Graphs } from '../components/Graphs';
@@ -25,11 +24,14 @@ import { Act4Graphs } from '../components/Graphs';
  * (redessinés), et `onFinished` / `onTrial` ne font que lister ce que l'élève a fait lui-même
  * (`[data-activity-evidence]`, MANIPULATION_DNA §9).
  *
- * Étapes : (1) quel graphique est proportionnel ; (2) la brique « tanasub-bayan », puis a = 50 ;
- * (3) ce que signifie a ; (4) la brique « laysat-tanasub » et le contraste (2) / (3). LP : P1, P2.
+ * RÉTROFIT 2026-10-15 (guide §4quater) : le lab EN TÊTE, sans carte, sans titre ni lead d'atelier (chaque niveau porte son contexte en
+ * un `lead` court) ; l'étape 1 part du câble que l'élève a réglé (« il passe par O ») ; les briques `tanasub-bayan` et `laysat-tanasub`
+ * viennent APRÈS la réponse (`{q2 && …}`, `{q4 && …}`), et leurs questions ne les nomment plus dans `requires`.
+ * Étapes : (1) quel graphique est proportionnel ; (2) a = 50, puis la brique « tanasub-bayan » ;
+ * (3) ce que signifie a ; (4) le contraste (2) / (3), puis la brique « laysat-tanasub ». LP : P1, P2.
  * Les deux niveaux du lab vivent dans `intro` : le rappel de la « مسألة الدرس » (un autre ressort,
- * module 4) clôt donc la DERNIÈRE étape. Le `lead` du workspace ne dit pas la règle « tanasub-bayan »
- * (elle est prédite à l'étape 2 — « أتوقّع القاعدة ») : il ne donne que la consigne.
+ * module 4) clôt donc la DERNIÈRE étape. Les `lead` des labs ne disent pas la règle « tanasub-bayan »
+ * (elle est prédite à l'étape 2 — « أتوقّع القاعدة ») : ils ne donnent que le contexte.
  */
 export default function Module01Tamthilat() {
   const [fitted, setFitted] = useState({});
@@ -61,31 +63,17 @@ export default function Module01Tamthilat() {
       moduleTitle="نشاط 4 — أيّ تمثيل يعبّر عن وضعية تناسبية؟"
       moduleSubtitle="أدِر المستقيم حول المبدأ حتى يمرّ بكل النقط"
       estimatedTime="12 دقيقة"
-      brief={{
-        tag: 'نشاط 4 — الكتاب ص 67',
-        headline: 'حبل التلفريك، نابض، وسعر البطاطا',
-        emoji: '🚡',
-        title: ACT_4.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-1">
-            <p><MathText>{ACT_4.text}</MathText></p>
-            <p className="text-sm text-slate-600">في المختبر: المبدأ O مثبّت، أدِر المستقيم حتى يمرّ بكل نقط القياس، وراقب الدستور الذي يكتبه المختبر.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACT_4.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="المهمّة نفسها في المستويين: أدِر المستقيم حول المبدأ حتى يمرّ بكل نقط القياس، وراقب الدستور الذي يكتبه المختبر."
           levels={{
             beginner: () => (
               <Manipulation type="origin-line" level="beginner" {...LAB.beginner}
+                lead="يُثبَّت حبل التلفريك في المحطة O ويجب أن يمرّ برؤوس ثلاثة أعمدة."
                 onFinished={fit('beginner')} onTrial={() => setTrials((n) => n + 1)} />
             ),
             advanced: () => (
               <Manipulation type="origin-line" {...LAB.advanced}
+                lead="في حصّة علمية علّق تلاميذ أثقالًا في نابض وسجّلوا استطالته في كل مرة."
                 onFinished={fit('advanced')} onTrial={() => setTrials((n) => n + 1)} />
             ),
           }}
@@ -99,7 +87,7 @@ export default function Module01Tamthilat() {
               {evidence}
               <Act4Graphs />
               <TapQuestion
-                prompt="من بين التمثيلات البيانية الثلاثة، ما هو التمثيل الذي يعبّر عن وضعية تناسبية؟"
+                prompt={<MathText>{'الحبل الذي ضبطتَه مستقيم يمرّ بالمبدأ $O$ . من بين التمثيلات البيانية الثلاثة للكتاب، ما هو التمثيل الذي يعبّر عن وضعية تناسبية؟'}</MathText>}
                 options={['التمثيل (1): السعر بدلالة كتلة البطاطا', 'التمثيل (2): محيط المستطيل بدلالة عرضه', 'التمثيل (3): مساحة المربع بدلالة طول ضلعه', 'التمثيلات الثلاثة']}
                 correct={0}
                 cols={1}
@@ -114,14 +102,14 @@ export default function Module01Tamthilat() {
           num: 2, title: 'عيّن معامل التناسبية a', subtitle: 'اقرأ نقطة من التمثيل (1)', done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tanasub-bayan" lead={<MathText>{'ما فعلته في المختبر: مستقيم واحد يشمل المبدأ يمرّ بكل النقط، فنمذج الوضعية بالدالة الخطية $f(x) = ax$ .'}</MathText>} />
               <NumericQuestion
                 prompt={<span>النقطة <MathText>{'$(3 ; 150)$'}</MathText> من التمثيل (1). ما هو معامل التناسبية <MathText>{'$a$'}</MathText> ؟</span>}
                 expected={ACT_4.numbers.a}
-                requires={['tanasub-bayan']}
+                requires={['tayin-dala-khattiya']}
                 explain={<MathText>{'$a = \\dfrac{150}{3} = 50$ ، وكذلك $\\dfrac{25}{0{,}5} = 50$ : السعر $y = 50x$ .'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="tanasub-bayan" lead={<MathText>{'ما فعلته في المختبر وفي القراءة: مستقيم واحد يشمل المبدأ يمرّ بكل النقط، فنمذج الوضعية بالدالة الخطية $f(x) = ax$ .'}</MathText>} />}
             </div>
           ),
         },
@@ -143,14 +131,13 @@ export default function Module01Tamthilat() {
           num: 4, title: 'لماذا ليس التمثيلان (2) و (3)؟', done: q4,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="laysat-tanasub" lead="المقارنة التي يطلبها الكتاب:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">ماذا نرى في كل تمثيل؟</p>}
                 rows={[
                   { id: 'perim', label: 'التمثيل (2): محيط المستطيل', options: ['مستقيم يشمل المبدأ', 'مستقيم لا يشمل المبدأ', 'منحنى'], correct: 1, correction: <MathText>{ACT_4.others.perimeter}</MathText> },
                   { id: 'area', label: 'التمثيل (3): مساحة المربع', options: ['مستقيم يشمل المبدأ', 'مستقيم لا يشمل المبدأ', 'منحنى'], correct: 2, correction: <MathText>{ACT_4.others.area}</MathText> },
                 ]}
-                requires={['laysat-tanasub']}
+                requires={['qiraa-bayaniya']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     <MathText>{allRight ? MISTAKE_NOT_O.right : MISTAKE_NOT_O.why}</MathText>
@@ -158,6 +145,7 @@ export default function Module01Tamthilat() {
                 )}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && <KnowledgeBrick id="laysat-tanasub" lead="المقارنة التي يطلبها الكتاب:" />}
             </div>
           ),
         },

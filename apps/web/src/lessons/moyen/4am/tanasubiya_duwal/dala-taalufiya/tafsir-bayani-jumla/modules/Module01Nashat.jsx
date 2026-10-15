@@ -11,29 +11,25 @@ import ClassFundVignette from '../components/ClassFundVignette';
 import LinesFigure from '../components/LinesFigure';
 
 /**
- * Module 1 — نشاط 5 (p. 79) « التفسير البياني لحل جملة معادلتين », ouvert sur DEUX DROITES, UN POINT
- * (line-crossing).
+ * Module 1 — l'ENTRÉE : DEUX DROITES, UN POINT (line-crossing), UNE PISTE (rétrofit 2026-10-15).
  *
- * REAL      la carte d'activité : la caisse de la classe (43 pièces, 5000DA), au mot près, et la note de la
- *           plateforme sur les inconnues (le manuel ne les nomme qu'à la question 2).
- * DISCOVER / MANIPULATE   le lab à deux niveaux, UN instrument, même objectif :
- *   متقدم (ouvert par défaut : c'est le نشاط 5) : x + y = 43 et 100x + 200y = 5000 à écrire y = … (cartes
- *          refusées par un témoin), puis P promené jusqu'aux deux lampes, puis (bouton) les trois cas ;
- *   مبتدئ : deux faisceaux laser (plateforme), 2x − y = 1 et x + y = 5.
- * UNDERSTAND  س 1 la traduction ; س 2 أ) la nature de f et g et l'écriture de (2) — les écritures que l'élève a
- *           choisies sont listées au-dessus (`onTrial`) ; ب) la figure du livre redessinée ; جـ) ses propres
- *           essais de P (lampes) au-dessus de la question.
- * TOUCH / FORMALIZE  la brique tafsir-nashat (« نقول إنّ … ») nomme ce que les lampes ont montré.
- * TRANSFER  د) l'interprétation dans la situation ; l'étape des cas prépare le module 2.
- * AUCUNE étape n'attend `onFinished`. LP : P1 (س 2 أ), P2 (جـ, د), P3 (l'étape des cas du lab).
- * Les labs vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس » (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire) clôt la
- * DERNIÈRE étape ; la مسألة se résout au module 4.
+ * Le lab est EN TÊTE, sans carte, sans titre ni consigne de workspace (deux niveaux, UN instrument) :
+ *   مبتدئ (par défaut) : deux faisceaux laser, 2x − y = 1 et x + y = 5 (plateforme) ;
+ *   متقدم : la caisse de la classe, x + y = 43 et 100x + 200y = 5000 à écrire y = … (cartes refusées par un témoin), P promené
+ *          jusqu'aux deux lampes, puis (bouton) les trois cas. Les essais (`onTrial`, deux niveaux) sont listés (`[data-activity-evidence]`).
+ * ÉTAPES : 1 POURQUOI une seule lampe s'allume sur une droite ; 2 existe-t-il un point qui allume les deux, et lequel
+ *   (2 جـ du livre), puis la brique tafsir-nashat APRÈS la réponse ; 3 le livre en APPLICATION : la carte de la caisse (43 pièces,
+ *   5000DA) et sa traduction en système (س 1) ; 4 la nature de f et g, l'écriture de (2) (س 2 أ) ; 5 quelle droite pour quelle
+ *   fonction (س 2 ب, la figure redessinée) ; 6 le sens dans la caisse (س 2 د).
+ * AUCUNE étape n'attend `onFinished`. LP : P1 (s4), P2 (s2, s6), P3 (le lab, bouton « الحالات الثلاث »).
+ * Les labs vivent dans l'`intro` (deux niveaux) : le rappel de « مسألة الدرس » ne vit qu'au sommaire (la مسألة se résout au module 4).
  */
 const Opt = (s) => <MathText key={s}>{s}</MathText>;
 
 export default function Module01Nashat() {
   const [forms, setForms] = useState([]);
   const [points, setPoints] = useState([]);
+  const [q0, setQ0] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
@@ -68,7 +64,7 @@ export default function Module01Nashat() {
   const pointsEvidence = (
     <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={points.length ? 'true' : 'false'}>
       {points.length === 0 ? (
-        <p className="text-slate-500">لم تضع النقطة P بعد على لوحة صندوق القسم (المستوى المتقدّم).</p>
+        <p className="text-slate-500">لم تضع النقطة P بعد على اللوحة: حرّكها أعلاه وراقب المصباحين.</p>
       ) : (
         <>
           <p className="mb-1 font-bold text-slate-700">النقط التي جرّبتها والمصابيح التي أضاءت:</p>
@@ -100,27 +96,9 @@ export default function Module01Nashat() {
         'هل توجد نقطة تحقّق المعادلتين معًا؟',
         'ماذا تعني هذه النقطة في صندوق القسم؟',
       ]}
-      brief={{
-        tag: 'أنشطة — الكتاب ص 79',
-        headline: HOOK.headline,
-        emoji: '🪙',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <ClassFundVignette />,
-        body: (
-          <div className="space-y-2">
-            <p className="text-sm text-slate-600"><MathText>{HOOK.text}</MathText></p>
-            <p className="font-semibold text-slate-800"><MathText>{ACTIVITY.situation}</MathText></p>
-            <p className="text-xs text-slate-600" data-platform-note="unknowns"><MathText>{UNKNOWNS.text}</MathText></p>
-          </div>
-        ),
-        footer: <div className="flex flex-wrap gap-2"><SourceTag source={ACTIVITY.source} /><SourceTag source={HOOK.source} /></div>,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead={<MathText>{'في المستويين جملة معادلتين: تكتب كل معادلة على الشكل $y = ax + b$ فيُرسم مستقيمها، ثم تحرّك نقطة P ويُضيء مصباح كل معادلة تحقّقها P.'}</MathText>}
           levels={{
             beginner: () => (
               <Manipulation
@@ -129,6 +107,7 @@ export default function Module01Nashat() {
                 system="2x-y=1|x+y=5"
                 theme="laser"
                 title="شعاعا ليزر: جملة بأعداد صغيرة"
+                onTrial={onTrial}
               />
             ),
             advanced: () => (
@@ -148,11 +127,70 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'شرطان بمعادلتين', subtitle: 'السؤال 1', done: q1,
+          num: 1, title: 'لماذا يضيء مصباح واحد فقط؟', subtitle: 'ما رأيته على اللوحة', done: q0,
           content: (
             <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{ACTIVITY.situation}</MathText></p>
-              <p className="text-xs text-slate-600"><MathText>{UNKNOWNS.text}</MathText> <SourceTag source={UNKNOWNS.source} /></p>
+              {pointsEvidence}
+              <TapQuestion
+                prompt={<MathText>{'حرّكتَ النقطة P على مستقيم واحد، فأضاء مصباح واحد فقط. لماذا لم يضئ الثاني؟'}</MathText>}
+                options={[
+                  'لأنّ إحداثيتَي P تحقّقان معادلة هذا المستقيم وحدها',
+                  'لأنّ المصباح الثاني معطّل',
+                  'لأنّ P بعيدة عن المبدأ',
+                  'لأنّ المستقيمين متطابقان',
+                ].map(Opt)}
+                correct={0}
+                cols={1}
+                requires={['thunaiya-hall']}
+                explain={<MathText>{'مصباح كل معادلة يضيء حين تحقّقها إحداثيتا P، أي حين تقع P على مستقيمها. نقطة على مستقيم واحد تحقّق معادلة واحدة، فيضيء مصباح واحد.'}</MathText>}
+                onAnswered={() => setQ0(true)}
+              />
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'هل من نقطة تُضيء المصباحين؟', subtitle: 'وكم نقطة؟', done: q4,
+          content: (
+            <div className="space-y-3">
+              <p className="text-xs text-slate-600">على المنصّة، لوحة صندوق القسم (المستوى المتقدّم) هي الرسم على الورق المليمتري: كل عقدة من الشبكة نقطة إحداثياها عددان طبيعيان.</p>
+              {pointsEvidence}
+              <TapQuestion
+                prompt="هل توجد نقاط إحداثياتها تحقّق معادلتي المستقيمين في آن واحد؟"
+                options={[
+                  'نعم، نقطة واحدة: النقطة المشتركة بين المستقيمين',
+                  'لا: كل نقطة تحقّق معادلة واحدة على الأكثر',
+                  'نعم: كل نقاط المستقيم (d₁)',
+                ]}
+                correct={0}
+                cols={1}
+                requires={['tamthil-taalufi', 'thunaiya-hall']}
+                explain={<MathText>{`النقطة $(36 ; 7)$ على المستقيمين معًا: إذا وضعت $x = 36$ في المعادلة (1) وجدت $y = 43 - 36 = 7$ ، وفي المعادلة (2) وجدت $y = 25 - 18 = 7$ . أمّا نقطة أخرى من $(d_1)$ ، مثل $(40 ; 3)$ ، فتحقّق المعادلة (1) وحدها: في المعادلة (2) نجد $y = 25 - 20 = 5 \\neq 3$.`}</MathText>}
+                onAnswered={() => setQ4a(true)}
+              />
+              {q4a && (
+                <PairQuestion
+                  prompt={<MathText>{'إحداثيتا نقطة تقاطع المستقيمين: $(x ; y)$ ='}</MathText>}
+                  expected={ACTIVITY.answer}
+                  requires={['tamthil-taalufi', 'thunaiya-hall']}
+                  explain={<MathText>{'النقطة $(36 ; 7)$ على المستقيمين معًا: إذا وضعت $x = 36$ في المعادلة (1) وجدت $y = 43 - 36 = 7$ ، وفي المعادلة (2) وجدت $y = 25 - 18 = 7$ .'}</MathText>}
+                  onAnswered={() => setQ4(true)}
+                />
+              )}
+              {q4 && <KnowledgeBrick id="tafsir-nashat" lead="ما أضاءه المصباحان معًا، بالكلمات:" />}
+            </div>
+          ),
+        },
+        {
+          num: 3, title: 'نشاط الكتاب: شرطا الصندوق', subtitle: 'السؤال 1', done: q1,
+          content: (
+            <div className="space-y-3">
+              <div className="space-y-2 rounded-2xl border-2 border-indigo-200 bg-indigo-50/60 p-3" data-book-activity>
+                <ClassFundVignette />
+                <p className="text-sm text-slate-600"><MathText>{HOOK.text}</MathText></p>
+                <p className="font-semibold text-slate-800"><MathText>{ACTIVITY.situation}</MathText></p>
+                <p className="text-xs text-slate-600" data-platform-note="unknowns"><MathText>{UNKNOWNS.text}</MathText></p>
+                <div className="flex flex-wrap gap-2"><SourceTag source={ACTIVITY.source} /><SourceTag source={HOOK.source} /></div>
+              </div>
               <TapQuestion
                 prompt="عدد القطع والمبلغ يُترجمان بالجملة:"
                 options={[
@@ -170,7 +208,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'ما طبيعة الدالتين؟', subtitle: 'السؤال 2 أ', done: q2,
+          num: 4, title: 'ما طبيعة الدالتين؟', subtitle: 'السؤال 2 أ', done: q2,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[0]}</MathText></p>
@@ -191,7 +229,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'أيّ مستقيم لأيّ دالة؟', subtitle: 'السؤال 2 ب', done: q3,
+          num: 5, title: 'أيّ مستقيم لأيّ دالة؟', subtitle: 'السؤال 2 ب', done: q3,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[2]}</MathText></p>
@@ -209,40 +247,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 4, title: 'هل من نقطة تُضيء المصباحين؟', subtitle: 'السؤال 2 جـ', done: q4,
-          content: (
-            <div className="space-y-3">
-              <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[3]}</MathText></p>
-              <p className="text-xs text-slate-600">على المنصّة، لوحة صندوق القسم أعلاه هي الرسم على الورق المليمتري: كل عقدة من الشبكة نقطة إحداثياها عددان طبيعيان.</p>
-              {pointsEvidence}
-              <TapQuestion
-                prompt="هل توجد نقاط إحداثياتها تحقّق معادلتي المستقيمين في آن واحد؟"
-                options={[
-                  'نعم، نقطة واحدة: النقطة المشتركة بين المستقيمين',
-                  'لا: كل نقطة تحقّق معادلة واحدة على الأكثر',
-                  'نعم: كل نقاط المستقيم (d₁)',
-                ]}
-                correct={0}
-                cols={1}
-                requires={['tamthil-taalufi', 'thunaiya-hall']}
-                explain={<MathText>{`${ACTIVITY_LINES.point} أمّا نقطة أخرى من $(d_1)$ ، مثل $(40 ; 3)$ ، فتحقّق المعادلة (1) وحدها: $g(40) = 5 \\neq 3$.`}</MathText>}
-                onAnswered={() => setQ4a(true)}
-              />
-              {q4a && (
-                <PairQuestion
-                  prompt={<MathText>{'إحداثيتا نقطة تقاطع المستقيمين: $(x ; y)$ ='}</MathText>}
-                  expected={ACTIVITY.answer}
-                  requires={['tamthil-taalufi', 'thunaiya-hall']}
-                  explain={<MathText>{ACTIVITY_LINES.point}</MathText>}
-                  onAnswered={() => setQ4(true)}
-                />
-              )}
-              {q4 && <KnowledgeBrick id="tafsir-nashat" lead="ما أضاءه المصباحان معًا، بالكلمات:" />}
-            </div>
-          ),
-        },
-        {
-          num: 5, title: 'في صندوق القسم', subtitle: 'السؤالان 2 د و 1', done: q5,
+          num: 6, title: 'في صندوق القسم', subtitle: 'السؤالان 2 د و 1', done: q5,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[4]}</MathText></p>

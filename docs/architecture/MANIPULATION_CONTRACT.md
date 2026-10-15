@@ -66,6 +66,7 @@ manipulations/
 │   ├── FlowerFigure.jsx                        a flower, a bouquet sleeve and its ribbon tie (division-jumps)
 │   ├── HopperFigure.jsx                        a drawn rabbit that hops on a number line (division-jumps)
 │   ├── BulbFigure.jsx                          a light bulb lamp, closed / yes / no (digit-cards)
+│   ├── BreadFigure.jsx                         a drawn baguette `Loaf` (optional knife cuts, ghost) (fair-share, §2duovicies)
 │   ├── EggFigure.jsx                           an egg, an open tray / carton with exactly r eggs, a closed lid, a full slat, a pallet (egg-trays, §2unvicies)
 │   ├── MovablePanel.jsx + movablePanel.js     a panel floating on the scene that the student moves aside (§8bis)
 │   └── ContextScenes.jsx                      the landscape vignettes of each world, for `MissionBrief.visual`
@@ -549,6 +550,11 @@ each column lives ONCE, in the digit box under it — a row labelled « تحت �
 [data-state]`, `[data-rx-counter]`, `[data-rx-step=<task>][data-done]`, `[data-rx-plusminus=<k>]`, `[data-rx-plus]` / `[data-rx-minus]`,
 `[data-rx-check]`, `[data-rx-words]`, `[data-rx-next]`, `[data-rx-verdict]`, `[data-rx-refused=short-pack|wrong-column|overflow|no-unit|
 wrong-board]`, `[data-rx-result]`, `[data-rx-formal=rank|zero]`, `[data-rx-kid]`.
+**Onboarding (mandatory for every lab, 2026-10-14, prop `coach`, default on):** `LabCoach` (§8quater) shows, at each moment, the
+button or gesture the hand needs — the step comes from the pure `logic/rankExchange.js › coachOf(lab, { focusCol })` (predict → tie →
+carry → open / ± / pick a column → check → next task), whose test follows the guide to the letter and checks that every task ends.
+Strings: `rankExchange.coach.*`. DOM additions: `[data-lab-coach-toggle][data-state]`, `[data-lab-coach][data-step]`,
+`[data-lab-coach-ring]`, `[data-lab-coach-ok]`, `[data-lab-coach-stop]`; e2e `e2e/lesson-kit/lab-coach.mjs`.
 
 ## 2vicies. Fractional writings and reduction — `fraction-knife` (1AM unit 4, 2026-10-14)
 
@@ -666,6 +672,40 @@ state, 2026-10-14 after the §17.9 labels): ≤ 663 / 800, ≤ 663 / 768, ≤ 67
 `[data-lab-fold=egg-trays.trials]`. Tests: `logic/eggTrays.test.js` (a ∈ 0..3000 × b ∈ 1..60 state and marker sweeps, the frame judge on
 every (a, b, n), the claim sweep, the flow and gate, the refutation picks, the ruler / belt / zoom geometry at five widths),
 `operations/eggTrays.render.test.jsx` (both levels, says-it-once, no rule word reachable before the discovery, hints free of q, q + 1, r).
+
+## 2duovicies. The fraction is the quotient — `fair-share` (1AM unit 4, 2026-10-15)
+
+`operations/FairShare.jsx` on `logic/fairShare.js` (every verdict exact through `core/arithmetic/linear.js` — `frac`, `mul`, `sub`, `cmp`,
+`fracText`, `fracDecimal`, imported by path), drawing `primitives/BreadFigure.jsx › Loaf`, children `KidFigure` (girls in hijab), theme
+`bakery`; lesson `hasil-qisma-kasr`. `a` loaves lie on a table for `b` children. The hand holds the SHARE x of ONE child (a handle on a
+ruler of loaves, stretch gesture: drag, tap the ruler, ← → ±1 step, Page ±10, round −/+); the lab lays b shares end to end under the loaves
+and judges b × x against a: `exact` (all shared), `short` (bread left, a rose sliver), `over` (bread that does not exist, rose dashed past
+the last loaf). The student also chooses the RULER: a step of 0,1 / 0,01 / 0,001 of a loaf (`d1 d2 d3`) or `cut` — every loaf cut into b equal
+pieces, x = m pieces. The decimal rulers land for 3 ÷ 4 (0,75) and NEVER for 2 ÷ 3, 5 ÷ 6, 7 ÷ 3; `cut` lands for every a and b ≠ 0, at m = a.
+The cut ruler is earned: it opens after two decimal trials of the order (or once it is solved). Not `division-jumps` (b given, the hand
+holds the number of groups), not `fraction-knife` (the share is fixed, the hand holds the number of pieces), not `egg-trays` (the hand
+holds the dividend): here the hand holds the unknown QUOTIENT itself.
+
+| Level | Orders (a, b) | What resists |
+|---|---|---|
+| مبتدئ (`canteen`, platform) | 3 ÷ 4, then « طلب جديد » 2 ÷ 3 | 3 ÷ 4 lands in decimal (0,75); 2 ÷ 3 never does (0,66 leaves 0,02, 0,666 leaves 0,002…) |
+| متقدم (`family`, textbook نشاط 1) | 5 ÷ 6, then 7 ÷ 3 | never decimal; the share of 7 ÷ 3 exceeds one loaf (the rail holds ⌈a/b⌉ loaves) |
+
+`discoveryReady`: every order solved, and every non-decimal order solved by `cut`. Discovery « كيف نكتب حصّة الواحد…؟ »: right « بكسر بسطه عدد
+الأرغفة ومقامه عدد الأطفال » (no digit), wrong « بعدد عشري… » refuted with the student's nearest decimal trial (`refutations`: x, total, gap) and
+« الكسر مقلوب » refuted with b × b/a. Formal: a ÷ b = a/b, b × a/b = a, the decimal when it exists, else the student's own two decimal bounds
+(« قيمة مقرّبة بالنقصان / بالزيادة », the exact value is the fraction). Props: `scene` ('canteen' | 'family'), `orders` [[a, b], …], `level`, `levels`,
+`title`, `lead`, `onTrial` — `{ order: '2/3', ruler, m, x, kind, ok }` — and `onFinished({ orders })`. Not eligible for « جرّب كل الإمكانيات »
+(each release is an answer). LabCoach: `coachOf` = `handle` · `again` · `rulers` · `next` (controls only; unit test follows it to the end).
+Layout: `PromptCard` §17.9 (context with the numbers, ONE question « اختر حصّة الواحد حتى توزَّع الأرغفة كلها بالضبط. », lamp, live pills ≥ 380 px),
+`StageFrame` scene (table + shares, ruler, kids), control card (« الخطوة التي يتحرّك بها المقبض » chips + −/+), `VerdictBanner`, `LabFold`
+trials. Measured glance (`[data-fs-glance]`): ≤ 705 / 800, ≤ 584 / 844, ≤ 609 / 640 px (1366 × 768 in the unit e2e). DOM: `[data-fair-share][data-scene]
+[data-order][data-ruler][data-solved][data-layout]`, `[data-fs-glance]`, `[data-fs-prompt][data-lit]`, `[data-fs-scene]`, `[data-fs-handle]` (slider),
+`[data-fs-rulers]`, `[data-fs-ruler=d1|d2|d3|cut][data-active]`, `[data-fs-less]`, `[data-fs-more]`, `[data-fs-read=share|total]`, `[data-fs-loaf=<i>]`,
+`[data-fs-share=<i>]`, `[data-fs-gap]`, `[data-fs-over]`, `[data-fs-kid=<i>][data-mood]`, `[data-fs-verdict=exact|short|over]`, `[data-fs-next]`,
+`[data-fs-next-button]`, `[data-fs-back]`, `[data-fs-formal]`, `[data-lab-fold=fair-share.trials]`. Tests: `logic/fairShare.test.js` (a ≤ 12 × b ≤ 9
+sweeps: `cut` lands only at m = a, a decimal ruler lands iff b | a·10^d, the rail never ends on the exact share; the flow, the formal bounds, the
+refutations, the coach followed to the end, geometry at five widths), `operations/fairShare.render.test.jsx`; browser `e2e/lesson-kit/1am-hasil-qisma-kasr.mjs`.
 
 ## 2quindecies. The space laboratories and the 3D kit (unit 14, 2026-10-05)
 
@@ -1592,6 +1632,57 @@ Math Lab's « d'un seul regard » (`MATH_LAB.md` §3.5).
 6. **Measured, not eyeballed.** The type's e2e asserts, for each viewport and both levels, that once the lab is
    scrolled into view the bounding box of the figure + its controls fits the viewport height
    (`fitsOneScreen` in the unit's e2e); the component header says how the rule is met.
+
+### 8quater. LabCoach — the onboarding of EVERY lab (validated 2026-10-14 on `rank-exchange`; MANDATORY for all manipulations)
+
+**Every manipulation type, at every level, in every lesson of every grade must adopt it** (owner, 2026-10-14) with the SAME design:
+the shared `useLabCoach` + `placeBubble`, the same ring, bubble, buttons, switch, strings layout (`<type>.coach.{hide,show,ok,stop,<stepId>}`),
+storage keys and DOM contract below — never a look-alike, never a per-lab restyle. Per lab you write only: (1) a pure
+`coachOf(state)` in the lab's `logic/` returning `{ id, target, rank?, gesture }`, whose unit test FOLLOWS it to the end of every task
+(the lab must be completable by the coach alone) ; (2) the Arabic sentences ; (3) the wiring (`coachText`, toggle under the question,
+overlay in the positioned glance). Because a lab used in several lessons shares one storage namespace per TYPE (`sa.labCoach.<type>`), tips
+are learned once per type, not per lesson. The `coach` prop is therefore ON by default for adopting labs (`coach = true`; a lab not yet
+adopted simply lacks the wiring — tracked by the gate in `LAB_COACH_ROLLOUT.md`).
+
+Goal: the student never wonders « how does this work? » or « what am I supposed to do now? ». `primitives/LabCoach.jsx`
+(`useLabCoach({ lab, step, text, labels })` → `{ toggle, overlay, visible }`) + pure `primitives/labCoach.js` (`placeBubble`, storage).
+Rules (the contract for any lab that adopts it):
+
+- **Contextual, not a tour.** The lab computes the NEXT useful action as pure data `{ id, target, gesture }` (`target` = a selector of
+  the lab's DOM contract; the function is unit-tested by FOLLOWING it until the task ends). `null` ⇒ nothing shown.
+- **Shows the button, never the rule** (« discover, don't be told »): one sentence of gesture (« اضغط هنا لتربط 10 أقلام في حزمة »);
+  the render test refuses a coach string that states the rule.
+- **One tip, once.** A step the student has done (the step changed) or dismissed (« فهمت ») is never shown again, stored in
+  `localStorage` `sa.labCoach.<lab>.learned`; a returning student sees nothing.
+- **Hidable, and brought back.** « فهمت » (this tip), « إيقاف الإرشاد » (all, persisted `…off`), Escape, and an ALWAYS-VISIBLE switch under
+  the question (« إخفاء الإرشاد » ⇄ « أرِني ماذا أفعل »). Storage always under try/catch.
+- **Never in the way.** The ring and the layer are `pointer-events: none` (the finger passes through to the real button); the bubble
+  sits below or above the target, never on it, clamped inside the lab frame (checked at 1280 / 390 / 320 px); no focus stealing;
+  `prefers-reduced-motion` stops the pulse; bubble targets ≥ 40 px.
+- **Switchable.** The lab takes a `coach` prop (adopting labs: default true; pass `coach={false}` only for a lab that has no control to find,
+  and say why in its header): nothing is rendered and no storage is read when off.
+
+**Wiring for labs built on `ManipulationShell` (batch 1, 2026-10-15 — the divisibility labs; the pattern for the ~60 shell labs).** The lab
+calls `useLabCoach` itself (it knows its next gesture) and passes `coach={coachOn ? coach : null}` to the shell, prop `coach` default TRUE:
+the shell is `relative`, puts `coach.toggle` right under the mission / lead (`[data-lab-coach-slot]`, before the stage) and `coach.overlay` as its
+last child — so a `target` may be ANY control of the frame (header, stage, bottom). Strings live under the lab's own i18n key
+(`divisorExplorer`, `bookshelf`, `teamBuilder`, `factorPairs`, `props`, `common` → `.coach.{hide,show,ok,stop,<stepId>}`), storage under the TYPE
+(`sa.labCoach.<type>`). Targets reuse the DOM contract the drag kit already writes (`[data-drag-source="<id>"]`, `[data-drop-zone="<id>"]`,
+`[data-stretch-handle]`) plus the few markers added for it (`data-shelf-nudge`, `data-fp-nudge`, `data-tb-teams`, `data-group-add`, `data-group-row`;
+`NumberTile` now forwards extra props on its `onClick` form).
+
+- **Rules this batch added.** (1) A step whose answer IS the exercise never points at the answer: `common-divisors` lists point at the DROP ZONE
+  (middle, then PGCD), never at a token — its unit test follows the coach with an oracle for that decision only. (2) A zone is named by its
+  rank (« المنطقة الأولى »), not by the words it already shows (§17.7). (3) When the tip also names the non-drag path (« أو اضغط + »), the ring
+  covers the row holding BOTH (`[data-group-row]`) so the bubble never sits on the alternative. (4) The lab's own « اسحب بإصبعك… » hint line is
+  silent while the coach is visible (`divisor-explorer`). (5) The discovery question (ManipulationDiscovery) that follows a lab is a plain answer card
+  that nothing hides: out of the coach; `coachOf` ends (`null`) when the lab's own goal (the discovery) is earned.
+- **`placeBubble({ view })` — always seen (extends LabCoach for ALL labs).** A lab is taller than a phone screen; when the target is off-screen the
+  bubble sticks to the visible edge (`view` = the visible band of the frame: below the header, above the bottom nav and, under `lg`, above the
+  floating كرّاسي / بطاقتي column), its arrow points toward the target, `data-edge="true"`, and it follows the scroll. A lab entirely off-screen pins
+  nothing (several labs share a page). Tested in `primitives/labCoach.test.js`; **verified in the browser at 1280×800 only** — the owner skipped the
+  mobile screens for this batch (`QA_MOBILE=1` runs 390 / 320), so the phone placement is unit-tested, not eyeballed.
+- Known limit: in `common-divisors` lists the bubble above the middle zone covers part of the 60-list chips (no room below); « فهمت » clears it.
 
 ### 8ter. The visual kit — one language for every lab (2026-10-14, owner request « the best possible for Gen Alpha 11–13 »)
 

@@ -64,7 +64,11 @@ stale, and when the entry exceeds its budget). Never import something heavy from
   textbook lesson cites `docs/sources/<grade>/<unit>/extraction.json` through a
   `source` object. If the extraction does not exist for your unit, it must be
   produced first — content is never invented, and the textbook is never
-  "completed" because it seems incomplete.
+  "completed" because it seems incomplete. **The extraction is the REFERENCE of
+  what the lesson must teach (its الكفاءات, definitions, notations, expected
+  answers) — not the script of the lesson.** The entry point, the examples, the
+  contexts and the order of ideas are DESIGNED by the platform (§4ter, owner rule
+  2026-10-14).
 - The **catalogue entry**: the lesson must exist in
   `packages/core/curriculum/dz/lessons_4am_2026_2027.json` with its
   `pointsToLearn`, and its unit in `units_4am_2026_2027.json`.
@@ -200,6 +204,7 @@ before the next. What that adds to « Adding a textbook UNIT »:
   repo (`docs/sources/1am/unit2/brief-authors.md`: the lab's FIXED props contract, file ownership, the bank's provenance rules).
 - **Make it visible locally** (owner, 2026-10-14): after the DB handshake, publish the lesson's `lesson_modules` and
   `practice_exercises` rows in the LOCAL database (they are born `draft`), so the owner can browse it before `dev` is promoted.
+- **Textbook exercise figures in أتمرّن** (`hasil-qisma-kasr`, 2026-10-15): `TextbookExercise` draws no figure. A module renders the exercise's `GeoFigure` data (`content/figures.js`: hidden points, `polygons` tones for coloured cells, `figureQuality` + recomputed fractions in `content/content.test.js`) above it; a redesigned figure (illegible scan, e.g. the test tubes) says so in one line (`REDRAWN_NOTE`). Keep each figure ≤ 150 px wide on phones or the page overflows at 320 px (an exercise with a long KaTeX chain in a batch `label` did too: split it).
 - **« مخطط بأقواس »** — the textbook's tape diagram (a line cut into parts, an arc above each part, an arc below the whole) is the
   shared figure `lessons/common/components/ArcTape.jsx` + `arcTape.js`: lesson figures, `statement.figure` with `kind: 'tape'`
   (dispatched by `StatementFigure` / `validateStatementFigure`), a مسألة `figure`, and the live tape of the `story-bars` lab. Lengths are
@@ -654,7 +659,7 @@ The recurring module roles in the 4AM unit, by their Arabic names:
 | Module | Stage | What it is |
 |---|---|---|
 | `Module00Astaidd` — أستعدّ | `prerequisite_check` | Every lesson of the unit opens on it (9 of 9 since 2026-09-30; guarded by `_unit/prepDiagnostic.test.js`). Diagnoses the lesson's `priorKnowledge` — previous years or earlier lessons of the unit — and never the lesson's own material; every `priorKnowledge` id is measured by at least one question. Built as described under « The « أستعدّ » pattern » below. Never gates, never persists evidence; its result is stored locally and read by nothing but its own results screen, so its copy must not promise that the lesson adapts. Under the result, the kit renders « راجع قبل أن تنطلق » (`kit/ReviewLinks.jsx`, since 2026-10-13): the official الكفاءات of earlier lessons — earlier years included — that this lesson builds on, read from the learning net by `lessonId`; a link when that lesson is published, « قريبًا » when it is only planned. Nothing to write per lesson: it comes from the lesson's `programmeItems` (`LEARNING_NET.md` §3). Advice tiers are computed on the score ratio (`kit/diagnosticLevel.js`). « التالي » without submitting does not complete it. |
-| `Module01…` — the activity | `trigger` | the textbook activity, opening on the signature manipulation in the `intro` slot |
+| `Module01…` — the activity | `trigger` | the lesson's ENTRY POINT, designed by the platform (§4ter): the signature manipulation in the `intro` slot, at the TOP of the page, then questions on what the student did there (§4quater). The textbook's own activity is one candidate for this entry, never the default — when it is not chosen it is posed as an application later (typically in أتمرّن) |
 | `Module02Maarif` — معارف | `discovery` | the textbook's definitions, each laid by a `KnowledgeBrick` at the moment it is needed |
 | `Module0xAwazzif` — أوظّف تعلّماتي | `practice_lab` | the textbook's exercises via `TextbookExercise` |
 | `Module0xItqan` — إختبار أولي | `evaluation` | the only source of assessment evidence (displayed title « إختبار أولي » since 2026-09-24; the slug `itqan` and the file name are unchanged, so URLs and saved progress are stable); its `desc` names learning points « الكفاءات », e.g. « خمسة أسئلة تُقيّم الكفاءات الثلاث. » — never « نقاط التعلّم », see ARABIC_RTL_CONTRACT §terminology). Since 2026-10-14 its correction shows, under each WRONG answer, « راجع: <درس> (<السنة>) » toward an earlier year — derived from the question's `assessment.learningPointIds` through the learning net, nothing to write (`EXERCISE_CONTRACT.md` § « Earlier-year review link ») |
@@ -700,7 +705,7 @@ this visual order:
 | `tag` | where does this come from? (pill, top) | no |
 | `headline` + `emoji` | what are we doing? (the hook) | no |
 | `title` | what idea will we discover? (the objective) | yes in practice |
-| `body` | what is the concrete situation? (the textbook's words) | yes |
+| `body` | what is the concrete situation? (one or two sentences — never a list of questions the student cannot answer yet, never a rule) | yes when there is a brief |
 | `footer` | on what source does it rest? (`SourceTag`) | no |
 | `visual` | an optional context vignette | no |
 | `tone` | the accent colour (8 available) | defaults to `slate` |
@@ -711,8 +716,10 @@ A module that supplies neither headline nor visual gets the same card, plainer
 — which is why the 40 existing modules needed no change when it was redesigned
 (2026-09-21).
 
-Two rules worth knowing:
+Three rules worth knowing:
 
+- **A lab module passes NO brief** (since 2026-10-14, §4quater): the lab's own top — its context and its ONE question
+  (MANIPULATION_DNA §17.9) — is the brief. A card above it would be a second, competing start.
 - **The visual is decorative and optional.** It helps the student picture the
   situation; it never carries mathematical information, so it is `aria-hidden`
   unless it has its own `alt`. Do not force one where it adds nothing.
@@ -720,6 +727,80 @@ Two rules worth knowing:
   root `CLAUDE.md` no-raster rule applies to it as to everything else
   (`PitchScene` in `manipulations/primitives/PitchBackdrop.jsx` is the worked
   example).
+
+### 4ter. The textbook is the REFERENCE of الكفاءات, not the script of the lesson (owner rule, 2026-10-14, binding on every generation)
+
+The owner, on the generated 1AM lessons: « the book is the truth reference of the learning points of the lessons, not
+necessarily the content itself — the platform has more capabilities of demonstrating the ideas to the student ». A lesson
+that copies the book — its activity as the entry, its questions as the steps, its examples, its order — repeats a page the
+student already has on the desk and wastes what only the platform can do (a lab where the hand makes the mathematics,
+immediate feedback, a drawn world, a refusal).
+
+**What the textbook decides:** WHAT is taught — the lesson's الكفاءات (with the catalogue `pointsToLearn` and the programme
+items), the definitions and their wording, the notations and vocabulary the class uses, the expected answers, the boundary
+with the neighbouring lessons. Every textbook element still has exactly one destination (`check:textbook`).
+
+**What the platform designs, deliberately and ambitiously:** HOW it is learned —
+
+1. **The entry point.** Ask « in which situation does this idea become NECESSARY for the student's hand? »
+   (MANIPULATION_DNA §1–§2). Compare at least two candidates; the textbook's activity is ONE candidate, never the default.
+   Reject an entry that asks questions the student can only answer from memory (that is a test, not a discovery).
+2. **The order of ideas** — by what the student can discover from what they just did, not by the page order of the book.
+3. **The examples and contexts** — chosen for what they make VISIBLE (a contrast, a refusal, a surprise, the student's own
+   number); textbook numbers are kept where they serve, replaced where the platform's serve better.
+4. **The place of each textbook element** — where it serves best. Typically: the activity becomes an APPLICATION after the
+   discovery (in أتمرّن, « نشاط الكتاب ص N »), the معارف box NAMES what the student has just found, the exercises are
+   practice. Move the element's `destinations.<id>.module` in `build-extraction.py` accordingly.
+5. **Write the design down**, in the `lesson.config.js` header: the chosen entry, the rejected candidates and why, the order
+   of ideas. A lab that is the designed entry declares `experience: { type: 'platform_context', reason:
+   'platform_designed_entry' }` (`ADAPTATION_REASONS`, `packages/core/curriculum/manipulationLevels.js`).
+
+Reference: `kitabat-adad-tabii` (1AM), redesigned 2026-10-14 — entry = the pencil workshop (the number cannot be WRITTEN
+until every ten is tied); rejected = the book's نشاط 1 (0 1 3 8 / 25 and 52 / 999, answered from memory), now posed in
+أتمرّن; order: ten-for-one → position value (the two 7s of the student's own 2577) → the 0 that keeps a place → reading by
+classes (the dictation lab opens معارف) → rank table → مفكوك → رقم / عدد (banknotes).
+
+### 4quater. One module = one track: act first, answer about what you did, then name it (owner rule, 2026-10-14)
+
+The page of a module reads top to bottom as ONE path. Two parallel tracks — a card of questions on top, then a lab with its
+own question, then steps that answer the card — leave the student asking « where do I start? ». The order is always:
+
+1. **Act.** The top of the module is the student's ACTION: the lab (its context + ONE question, DNA §17.9), or — in a module
+   without a lab — the first question to try. Never above it: a textbook statement, a card listing questions, a definition, a
+   `ManipulationWorkspace` `title` / `lead` repeating what the lab already says (pass neither; the level selector stays).
+2. **Answer about what you did.** Each step's question is about what the student just DID or SAW, in their own numbers
+   (« في لوحتك 2577 يظهر الرقم 7 مرّتين… »), and can be answered from that experience. A short evidence line recalls the
+   trial (`onTrial` → `[data-activity-evidence]`) and, if the student skipped it, says where to go — it never blocks.
+   A step never re-poses a textbook question the lab did not prepare.
+3. **Name it.** Then the brick (with « أتوقّع القاعدة » first, §14.3ter) and the textbook's box that NAMES what was found —
+   after the answer, never before the question (`معارف`: question → box → brick).
+
+`brief` is optional: a lab module passes none; a practice module (أتمرّن, أتعمّق) may keep one that says what the module is
+(« ستة تمارين من الكتاب… »), never a rule or a fact the module asks for. Step titles are questions (§5 « Discovery pass »).
+A lab's own onboarding (« what do I press now? ») is `LabCoach` — **mandatory for every manipulation** (owner, 2026-10-14;
+MANIPULATION_CONTRACT §8quater, DNA §17.11), validated on `kitabat-adad-tabii`; a new or modified lab without it is not done.
+Reference: `kitabat-adad-tabii` modules 1–3 (2026-10-14). The owner validated this reference the same day: it applies to every NEW lesson
+now and to the existing ones by the retrofit in [`../reports/LESSON_METHOD_RETROFIT.md`](../reports/LESSON_METHOD_RETROFIT.md).
+
+### 4quinquies. The redesign checklist — what was done to `kitabat-adad-tabii` (2026-10-14; follow it for a new lesson and for a retrofit)
+
+1. **Design the entry first** (§4ter): candidates compared, the choice and the rejected ones written in the `lesson.config.js` header.
+2. **Module 1**: no `brief`, no `ManipulationWorkspace` `title` / `lead`; the lab (both levels) in `intro`; `moduleSubtitle` never repeats the
+   lab's question; steps = questions on the student's OWN lab numbers (« في لوحتك 2577 يظهر الرقم 7 مرّتين… »), each preceded by an
+   evidence line from `onTrial` (`[data-activity-evidence]`, never blocking) and followed by its brick.
+3. **Bricks after the answer**: `{q1 && <KnowledgeBrick …/>}` and the textbook box that NAMES the idea after the question — a brick or
+   box visible before the answer gives it away. Re-check `audit:knowledge:gate` (`E_REQUIRES_ESTABLISHED_LATER` ⇒ drop that question's `requires`).
+4. **No question that repeats the lab's own prediction** (module 3 asked « كم ورقة؟ » right after the lab did): ask WHY / the next idea instead.
+5. **Module 2 (معارف)** opens on a lab (the dictation, posed alone with `levels={false}`) or its first question; definitions come after.
+6. **The book's activity** becomes an application: an `EXERCISES` entry (`id: 'act-1'`, `TextbookExercise`) in أتمرّن, its
+   `destinations.<id>.module` moved in `docs/sources/<g>/unit<N>/build-extraction.py`, `extraction.json` rebuilt, the content test extended;
+   knowledge items / map nodes that quoted the book's numbers now quote the student's own (`WORKSHOP`-style data in `content/textbook.js`,
+   `addition('platform_designed_entry')`, lab resource `experience.reason: 'platform_designed_entry'`).
+7. **A top card on a non-lab module** says what the module is, never states a fact the module asks for.
+8. **Every lab** carries the onboarding (`LabCoach`, MANIPULATION_CONTRACT §8quater) — default on. Shell-based labs wire it through the shell's `coach` prop (§8quater « Wiring for labs built on `ManipulationShell` »); never point at the answer the student must find.
+9. **e2e + tests**: assertions « no `[data-module-brief]` above the lab », « the brick is hidden before the answer » (see
+   `e2e/lesson-kit/1am-adad-tabiiya-ashriya.mjs`), the coach script `e2e/lesson-kit/lab-coach.mjs`, the retrofit check `e2e/lesson-kit/moyen-retrofit-phase1.mjs` (no `[data-module-brief]` above the lab, lab before the first question, bricks absent before their answer, coach step id — copy a block per new lesson); a step question asks WHY or about the student's own trial, never « which calculation » when the lab already asked it (phase-1 retrofit, 2026-10-15); `check:lessons`, `check:textbook`,
+   web tests from `apps/web`; entry budget unchanged.
 
 ### The rule that breaks lessons most often
 
@@ -1466,12 +1547,16 @@ exercise), the situation's analysis (synthesis). Unit 5: ex-31 (« x + y = 216 �
 2. Confirm the textbook extraction and the catalogue entry exist.
 3. Design the **pedagogical sequence** before writing any JSX: what the student
    already knows, what they will do, what they should notice, what they will
-   name, and what proves they understood. Map it onto the stages.
+   name, and what proves they understood. Map it onto the stages. The entry
+   point and the order of ideas are YOUR design, not the book's page order
+   (§4ter); every module is one track — act, answer about it, name it (§4quater).
 4. Decide the manipulation, **at two levels**. Work in this order, and never
    start from a widget:
 
    ```
-   textbook activity
+   the lesson's الكفاءات (catalogue + textbook)        — the textbook is the reference, not the script (§4ter)
+      ↓  candidate entries: the textbook activity, AND at least one platform situation
+      ↓  choose the one where the idea becomes NECESSARY for the hand; write why in lesson.config.js
       ↓  extract the mathematical objective and structure (not the story)
       ↓  judge the textbook's context: is it already manipulable and engaging?
       ↓  keep it, adapt it, or choose a context a 4AM student lives in
@@ -1792,6 +1877,10 @@ pattern, or a reusable component — update this guide and the relevant contract
 > is unchanged. **Same day, later:** the eight other lessons were migrated to the
 > map and its blockers resolved (gate in `validate-lessons.mjs`, per-lesson
 > invariants in `lessonGraphs.test.js`) — `KNOWLEDGE_MAP.md` A.15.
+>
+> **Amended 2026-10-14 (owner):** two rows added to §14.2 — « Pedagogical design » (the textbook is the reference of
+> the الكفاءات, not the script: §4ter) and « Module track » (act first, answer about it, then name it: §4quater). The
+> file layout, the components and the gates are unchanged; reference `kitabat-adad-tabii`.
 
 The architecture below was audited end to end on 2026-09-29 (all nine lessons,
 every shared component, every gate, the server judge and the browser suites;
@@ -1849,6 +1938,9 @@ for every element the lesson cites. Mastery criteria are the server's
 |---|---|
 | Files | exactly the layout of §3; `index.jsx`, `routes.jsx`, `moduleContext.js` are the one-line factories |
 | `lesson.config.js` | static literals only; `id` = catalogue code; `kind`; `unit`; stages in journey order with the required set per kind (§3); `teachesLearningPointIds` on every learning module covering every LP; `estimatedDurationMin` = Σ `estimatedMin` ≤ 90; `color` a `COLOR_MAP` key; `resources[]` for every workspace manipulation (both levels, same `objective`, `autonomy` on advanced, `experience` with reason and theme) |
+| Pedagogical design | §4ter: the textbook fixes the الكفاءات, the platform designs the entry point, the examples and the order; the design (chosen entry, rejected candidates) is written in the `lesson.config.js` header; a textbook activity not chosen as entry is posed as an application |
+| Lab onboarding | every manipulation has `LabCoach` (default on): a ring + one-sentence bubble on the control needed now, shown once, hidable — MANIPULATION_CONTRACT §8quater; the lab's pure `coachOf` is tested by following it to the end of every task |
+| Module track | §4quater: one track per module — the action at the top (lab with no brief above it, or the first question), then questions on what the student did, then the name (box, brick) |
 | Module shape | `ContentModule` for content, `PrerequisiteDiagnostic` for « أستعدّ » (module 0, `priorKnowledge` only, questions as literal objects with `requires` — §4 « The « أستعدّ » pattern »), `BossFinal` for « إختبار أولي » — never a hand-rolled module shell, test UI, fullscreen, toolbar or progress write |
 | Steps | `done` on ANSWERED, never on correct (`check:non-blocking`); a step may wait on `onFinished` only per §6; never pass `locked` |
 | Questions | kit components only (`TapQuestion`, `BatchChoiceQuestion`, `NumericQuestion`, `TextbookExercise` for the textbook's exercises); explicit `correct`; every distractor FALSE; `requires` on every question; the parsers of §5, never a custom one |

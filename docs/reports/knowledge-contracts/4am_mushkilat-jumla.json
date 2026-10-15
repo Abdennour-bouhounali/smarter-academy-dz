@@ -16,7 +16,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mushkilat-jumla/modules/Module01Mathaf.jsx",
-        "line": 118,
+        "line": 133,
         "step": 2,
         "variant": "new"
       }
@@ -27,7 +27,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mushkilat-jumla/modules/Module02Marahil.jsx",
-        "line": 54,
+        "line": 58,
         "step": 2,
         "variant": "new"
       }
@@ -41,7 +41,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mushkilat-jumla/modules/Module01Mathaf.jsx",
-        "line": 156,
+        "line": 179,
         "step": 4,
         "variant": "new"
       }
@@ -199,7 +199,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mushkilat-jumla/modules/Module01Mathaf.jsx",
-      "line": 98,
+      "line": 97,
       "requires": [
         "tarjama-ibara"
       ],
@@ -213,9 +213,25 @@
       "questionId": "M01-S2-Q2",
       "module": 1,
       "step": 2,
-      "component": "BatchChoiceQuestion",
+      "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mushkilat-jumla/modules/Module01Mathaf.jsx",
-      "line": 119,
+      "line": 120,
+      "requires": [
+        "tarjama-ibara"
+      ],
+      "prerequisiteStatus": {
+        "tarjama-ibara": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q3",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mushkilat-jumla/modules/Module01Mathaf.jsx",
+      "line": 144,
       "requires": [
         "jumla-tarjama"
       ],
@@ -226,17 +242,17 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S4-Q3",
+      "questionId": "M01-S4-Q4",
       "module": 1,
       "step": 4,
-      "component": "BatchChoiceQuestion",
+      "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mushkilat-jumla/modules/Module01Mathaf.jsx",
-      "line": 158,
+      "line": 164,
       "requires": [
-        "khutuwat-hall"
+        "jumla-tarjama"
       ],
       "prerequisiteStatus": {
-        "khutuwat-hall": "established@M1"
+        "jumla-tarjama": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true

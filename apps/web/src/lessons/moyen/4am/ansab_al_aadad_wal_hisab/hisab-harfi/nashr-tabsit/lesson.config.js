@@ -6,6 +6,20 @@
  * Source de vérité : docs/sources/4am/unit3/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
+ *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le terrain de la متوسطة `pitch-expansion` niveau مبتدئ, 3(x + 5) (largeur 3, longueur x + 5 après l'ajout d'une
+ *   bande de 5) : deux zones, la main étire x et porte chaque aire dans « المجموع » — « écrire l'aire en somme » devient un geste
+ *   avant d'être un mot ; x = 9 donne le calcul 3 × (9 + 5) du livre, tiré des essais de l'élève. Le labo est EN TÊTE du module (le
+ *   contexte est son `lead`). Candidats écartés : (a) l'activité 1 du livre telle quelle — (4 − 2,5)(3 + 1,2), « جداء أم مجموع ? »,
+ *   انشر… — trois consignes calculées de tête, avant tout besoin (ses questions restent les étapes 1 à 3 et le niveau متقدم
+ *   (3x − 1)(3 + x) en est la question 3 sur terrain) ; (b) l'accroche du terrain en CARTE au-dessus du labo (l'ancien parcours) —
+ *   un second départ concurrent. Le labo débutant est une situation de la plateforme (3(x + 5) n'est pas dans le livre) :
+ *   `platform_designed_entry`.
+ *   Ordre des idées : les zones d'un terrain 3(x + 5) et 3 × (9 + 5) → جداء أم مجموع ? (brique `nashr-taarif` APRÈS) → انشر
+ *   x(3x + 1), 5x(1 − x) → le terrain (3x − 1)(3 + x) vérifié pour deux x (brique `nashr-qawsayn` APRÈS le نشر) → les deux
+ *   formes d'une même aire. Module 2 (معارف) : l'exemple du livre dans le même labo ; définition, brique et exemple du livre APRÈS
+ *   leur question ; التبسيط (brique `tabsit` APRÈS). Modules 0, 3–7 : pratique, مسائل, test — inchangés.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/nashr-tabsit';
 
@@ -59,7 +73,7 @@ export const LESSON_CONFIG = {
       title: 'ملعب عرضه 3 وطوله x + 5',
       objective: 'النشر: مساحة الملعب (جداء بعديه) تساوي مجموع مساحات مناطقه، من أجل كل قيمة لـ x',
       autonomy: '',
-      experience: { type: 'platform_adaptation', reason: 'smaller_numbers_for_first_contact', theme: 'football' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'football' },
       learningPointIds: ['4am_nashr-tabsit_P1', '4am_nashr-tabsit_P2'],
       sourceElementIds: ['act-1'],
     },

@@ -9,6 +9,7 @@ import { METHOD, MISTAKE_MEAN_ONLY } from '../content/textbook';
 import { EX, EX14_TABLE } from '../content/exercises';
 
 /**
+ * Rétrofit 2026-10-15 : la brique « hadhf-qiyam » vient après la première réponse d'ex-22 (elle annonçait quoi retirer).
  * Module 3 — أقارن وأقرّر (stage: formalization) — FORMALIZE. LP : P2, P3.
  *   (1) ex-14 (p. 99) : le tableau des deux villes, les indicateurs de « أ » puis la moyenne de « ب » ;
  *   (2) la brique « mawqi-tashattut » et l'interprétation (position ET dispersion) ;
@@ -62,9 +63,9 @@ export default function Module03Uqarin() {
           num: 3, title: 'علامات قسم بعد الحذف', subtitle: 'التمرين 22', done: all('ex22a', 'ex22b'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="hadhf-qiyam" lead="ماذا يتغيّر عندما نحذف علامة: مجموع العلامات، عدد التلاميذ، أم الاثنان؟" />
-              <TextbookExercise exercise={EX['ex22-a']} requires={['hadhf-qiyam']} onAnswered={mark('ex22a')} />
-              <TextbookExercise exercise={EX['ex22-b']} requires={['hadhf-qiyam']} onAnswered={mark('ex22b')} />
+              <TextbookExercise exercise={EX['ex22-a']} onAnswered={mark('ex22a')} />
+              {done.ex22a && <KnowledgeBrick id="hadhf-qiyam" lead="ما فعلته: ماذا تغيّر عندما حذفنا علامة، مجموع العلامات، عدد التلاميذ، أم الاثنان؟" />}
+              {done.ex22a && <TextbookExercise exercise={EX['ex22-b']} requires={['hadhf-qiyam']} onAnswered={mark('ex22b')} />}
             </div>
           ),
         },

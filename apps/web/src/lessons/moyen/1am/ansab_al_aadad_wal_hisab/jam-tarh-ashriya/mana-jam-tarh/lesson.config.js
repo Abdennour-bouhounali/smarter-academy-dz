@@ -6,6 +6,22 @@
  * (lessons_1am_2026_2027.json : même code, mêmes items 1am.m1.r01 et 1am.m1.r05).
  * Source de vérité : docs/sources/1am/unit2/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-14) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la toise de la visite médicale (plateforme) — l'élève TIRE la taille inconnue jusqu'à ce que la phrase
+ *   soit vraie (« تزيد » et pourtant 130 − 9), puis choisit le calcul : le piège du mot devient nécessaire sous sa main.
+ *   Rejetée : le نشاط 1 du manuel comme entrée (six textes jugés sur le papier, la réponse se devine à la mémoire) ; il reste
+ *   le niveau متقدم du même labo, posé après la toise. Ordre des idées : toise (le mot ne décide pas) → POURQUOI pour les
+ *   textes ③ et ① (le tout) → la règle (brique APRÈS la classification) → les noms (معارف) → la méthode p. 29 (labo en tête,
+ *   la brique de la méthode après le choix de la place de □) → exercices.
+ *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la toise de la visite médicale (plateforme) — l'élève TIRE la taille inconnue jusqu'à ce que la phrase
+ *   soit vraie (« تزيد » et pourtant 130 − 9), puis choisit le calcul : le piège du mot devient nécessaire sous sa main.
+ *   Rejetée : le نشاط 1 du manuel comme entrée (six textes jugés sur le papier, la réponse se devine de mémoire) ; il reste
+ *   le niveau متقدم du même labo, posé après la toise. Ordre des idées : toise (le mot ne décide pas) → POURQUOI pour les
+ *   textes ③ et ① (le tout) → classification puis la règle (brique APRÈS la réponse) → les noms (معارف) → la méthode p. 29
+ *   (labo en tête, la brique de la méthode après le choix de la place de □) → exercices.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/1am/ansab_al_aadad_wal_hisab/mana-jam-tarh';
@@ -67,7 +83,7 @@ export const LESSON_CONFIG = {
       title: 'الفحص الطبي: من الأطول؟',
       objective: 'المجهول هو الكلّ ⇐ نجمع الجزأين؛ المجهول جزء ⇐ نطرح الجزء الآخر من الكلّ، مهما كانت الكلمة (يزيد، ينقص)',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'checkup' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'checkup' },
       learningPointIds: ['1am_mana-jam-tarh_P1', '1am_mana-jam-tarh_P3'],
       sourceElementIds: ['act-1'],
     },

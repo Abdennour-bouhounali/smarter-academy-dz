@@ -60,3 +60,22 @@ export function discoveryReady(state) {
   return TARGETS.every((t) => state.built.includes(t));
 }
 
+
+/* ── Le guide d'onboarding (LabCoach, MANIPULATION_CONTRACT §8quater) ─────────────────────────────────────────── */
+
+/** Les zones du chantier, dans l'ordre de TARGETS : ألصق, انزع, قِس. */
+const ZONE_OF = Object.freeze({ sum: 'join', diff: 'remove', rem: 'measure' });
+
+/**
+ * La prochaine action attendue : pour le premier mur pas encore bâti, (niveau avancé) choisir d'abord la prédiction
+ * (`predict`, `rank` = le n° de la zone), puis porter le mur de b dans la zone (`carry` la première fois, `carry-next`
+ * ensuite, `rank` = le n° 1 · 2 · 3 de la zone — le guide ne reprend pas les mots affichés dans la zone). `null` quand
+ * les trois murs sont bâtis.
+ */
+export function coachOf(state, { advanced = false } = {}) {
+  const target = TARGETS.find((x) => !state.built.includes(x));
+  if (!target) return null;
+  const rank = TARGETS.indexOf(target) + 1;
+  if (advanced && !state.predictions[target]) return { id: 'predict', target: `[data-site-zone="${ZONE_OF[target]}"] [data-prediction]`, rank, gesture: 'tap' };
+  return { id: state.built.length === 0 ? 'carry' : 'carry-next', target: '[data-drag-source="wall:b"]', rank, gesture: 'drag' };
+}

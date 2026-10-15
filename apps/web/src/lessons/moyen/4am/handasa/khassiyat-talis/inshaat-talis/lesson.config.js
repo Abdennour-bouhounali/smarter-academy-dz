@@ -20,6 +20,15 @@
  * Le module 2 porte le stage `discovery` (comme les طرائق de `tawzif-khawass-judhur`) : la leçon a sa carte
  * des connaissances, qui formalise en continu — aucun module `formalization` n'est requis (validate-lessons).
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Module 1 — entrée retenue : le tifo du derby (labo `segment-divider`, niveau مبتدئ : 10 cm ÷ 3 ne se mesure pas, la main
+ *   règle, compas et équerre) — c'est déjà une situation de la plateforme (le manuel n'a pas d'activité) ; elle passe de la carte
+ *   au `lead` du labo, qui ouvre le module. Rejetée : la طريقة p. 107 du manuel comme entrée (une solution à lire) — elle reste
+ *   à l'étape 4, après que l'élève a construit lui-même. Étape 1 : POURQUOI 3 marques (sur sa dernière construction).
+ *   Module 2 — le labo « دوري الآن » (CA/CB = 2/5, les deux points) passe EN TÊTE : l'élève cherche les deux points avant que les
+ *   طرائق (3 : 2, la longueur 14/3) ne nomment la construction ; l'étape 3 interroge ses deux points. Les briques restent
+ *   après leur question.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/inshaat-talis';
@@ -104,7 +113,7 @@ export const LESSON_CONFIG = {
       title: 'لافتة التيفو: ثلاث قطع متقايسة',
       objective: 'تقسيم قطعة مستقيم بالمسطرة غير المدرّجة والمدور: قطع متقايسة على مستقيم مساعد وموازيات، وخاصية طالس تبرّر التقسيم',
       autonomy: '',
-      experience: { type: 'platform_adaptation', reason: 'improved_interactivity_and_age_appropriateness', theme: 'tifo' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'tifo' },
       learningPointIds: ['4am_inshaat-talis_P1'],
       sourceElementIds: ['method-divide'],
     },

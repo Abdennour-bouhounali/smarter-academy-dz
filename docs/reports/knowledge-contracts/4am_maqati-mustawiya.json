@@ -17,8 +17,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module01Anshita.jsx",
-        "line": 187,
-        "step": 3,
+        "line": 194,
+        "step": 4,
         "variant": "new"
       }
     },
@@ -28,7 +28,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module02Maarif.jsx",
-        "line": 48,
+        "line": 67,
         "step": 1,
         "variant": "new"
       }
@@ -39,7 +39,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module02Maarif.jsx",
-        "line": 75,
+        "line": 92,
         "step": 2,
         "variant": "new"
       }
@@ -50,7 +50,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module02Maarif.jsx",
-        "line": 100,
+        "line": 113,
         "step": 3,
         "variant": "new"
       }
@@ -61,7 +61,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module02Maarif.jsx",
-        "line": 123,
+        "line": 136,
         "step": 4,
         "variant": "new"
       }
@@ -75,7 +75,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module03Taraiq.jsx",
-        "line": 53,
+        "line": 64,
         "step": 1,
         "variant": "new"
       }
@@ -86,7 +86,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module03Taraiq.jsx",
-        "line": 85,
+        "line": 86,
         "step": 2,
         "variant": "new"
       }
@@ -196,13 +196,9 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module01Anshita.jsx",
-      "line": 129,
-      "requires": [
-        "fithaghuras"
-      ],
-      "prerequisiteStatus": {
-        "fithaghuras": "prior"
-      },
+      "line": 112,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -210,9 +206,9 @@
       "questionId": "M01-S2-Q2",
       "module": 1,
       "step": 2,
-      "component": "BatchChoiceQuestion",
+      "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module01Anshita.jsx",
-      "line": 153,
+      "line": 136,
       "requires": [
         "fithaghuras"
       ],
@@ -226,41 +222,9 @@
       "questionId": "M01-S3-Q3",
       "module": 1,
       "step": 3,
-      "component": "TapQuestion",
-      "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module01Anshita.jsx",
-      "line": 173,
-      "requires": [
-        "kura-markaz"
-      ],
-      "prerequisiteStatus": {
-        "kura-markaz": "prior"
-      },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
-    },
-    {
-      "questionId": "M01-S4-Q4",
-      "module": 1,
-      "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module01Anshita.jsx",
-      "line": 199,
-      "requires": [
-        "balata-qaima"
-      ],
-      "prerequisiteStatus": {
-        "balata-qaima": "prior"
-      },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
-    },
-    {
-      "questionId": "M01-S5-Q5",
-      "module": 1,
-      "step": 5,
-      "component": "BatchChoiceQuestion",
-      "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module01Anshita.jsx",
-      "line": 222,
+      "line": 160,
       "requires": [
         "fithaghuras"
       ],
@@ -271,17 +235,49 @@
       "pedagogicallyValid": true
     },
     {
+      "questionId": "M01-S4-Q4",
+      "module": 1,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module01Anshita.jsx",
+      "line": 180,
+      "requires": [
+        "kura-markaz"
+      ],
+      "prerequisiteStatus": {
+        "kura-markaz": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S5-Q5",
+      "module": 1,
+      "step": 5,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module01Anshita.jsx",
+      "line": 206,
+      "requires": [
+        "balata-qaima"
+      ],
+      "prerequisiteStatus": {
+        "balata-qaima": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
       "questionId": "M01-S6-Q6",
       "module": 1,
       "step": 6,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module01Anshita.jsx",
-      "line": 248,
+      "line": 229,
       "requires": [
-        "ustuwana-dawaran"
+        "fithaghuras"
       ],
       "prerequisiteStatus": {
-        "ustuwana-dawaran": "prior"
+        "fithaghuras": "prior"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -292,7 +288,23 @@
       "step": 7,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module01Anshita.jsx",
-      "line": 271,
+      "line": 255,
+      "requires": [
+        "ustuwana-dawaran"
+      ],
+      "prerequisiteStatus": {
+        "ustuwana-dawaran": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S8-Q8",
+      "module": 1,
+      "step": 8,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module01Anshita.jsx",
+      "line": 278,
       "requires": [
         "talis-nisab"
       ],
@@ -308,13 +320,9 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module02Maarif.jsx",
-      "line": 55,
-      "requires": [
-        "maqta-kura"
-      ],
-      "prerequisiteStatus": {
-        "maqta-kura": "established@M2"
-      },
+      "line": 56,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -325,12 +333,8 @@
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module02Maarif.jsx",
       "line": 78,
-      "requires": [
-        "maqta-balata"
-      ],
-      "prerequisiteStatus": {
-        "maqta-balata": "established@M2"
-      },
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -340,13 +344,9 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module02Maarif.jsx",
-      "line": 106,
-      "requires": [
-        "maqta-ustuwana"
-      ],
-      "prerequisiteStatus": {
-        "maqta-ustuwana": "established@M2"
-      },
+      "line": 105,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -356,13 +356,9 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module02Maarif.jsx",
-      "line": 124,
-      "requires": [
-        "maqta-haram"
-      ],
-      "prerequisiteStatus": {
-        "maqta-haram": "established@M2"
-      },
+      "line": 122,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -372,13 +368,9 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module03Taraiq.jsx",
-      "line": 54,
-      "requires": [
-        "tariqat-nisf-qutr"
-      ],
-      "prerequisiteStatus": {
-        "tariqat-nisf-qutr": "established@M3"
-      },
+      "line": 55,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -388,7 +380,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/handasa-fada/maqati-mustawiya/modules/Module03Taraiq.jsx",
-      "line": 74,
+      "line": 75,
       "requires": [
         "maqta-ustuwana",
         "tariqat-nisf-qutr"

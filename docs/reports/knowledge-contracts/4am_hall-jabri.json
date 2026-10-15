@@ -15,8 +15,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module01Nashat.jsx",
-        "line": 189,
-        "step": 3,
+        "line": 131,
+        "step": 1,
         "variant": "new"
       }
     }
@@ -29,7 +29,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module02Tarayiq.jsx",
-        "line": 63,
+        "line": 73,
         "step": 1,
         "variant": "new"
       }
@@ -40,7 +40,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module02Tarayiq.jsx",
-        "line": 85,
+        "line": 94,
         "step": 2,
         "variant": "new"
       }
@@ -53,8 +53,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module01Nashat.jsx",
-        "line": 204,
-        "step": 4,
+        "line": 150,
+        "step": 2,
         "variant": "new"
       }
     },
@@ -64,7 +64,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module02Tarayiq.jsx",
-        "line": 105,
+        "line": 125,
         "step": 3,
         "variant": "new"
       }
@@ -205,39 +205,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module01Nashat.jsx",
-      "line": 104,
-      "requires": [
-        "taawid-qima"
-      ],
-      "prerequisiteStatus": {
-        "taawid-qima": "prior"
-      },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
-    },
-    {
-      "questionId": "M01-S2-Q2",
-      "module": 1,
-      "step": 2,
-      "component": "TapQuestion",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module01Nashat.jsx",
-      "line": 125,
-      "requires": [
-        "taawid-qima"
-      ],
-      "prerequisiteStatus": {
-        "taawid-qima": "prior"
-      },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
-    },
-    {
-      "questionId": "M01-S3-Q3",
-      "module": 1,
-      "step": 3,
-      "component": "BatchChoiceQuestion",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module01Nashat.jsx",
-      "line": 169,
+      "line": 111,
       "requires": [
         "naql-hudud",
         "darb-tarafayn"
@@ -250,12 +218,56 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S5-Q4",
+      "questionId": "M01-S2-Q2",
+      "module": 1,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module01Nashat.jsx",
+      "line": 139,
+      "requires": null,
+      "prerequisiteStatus": {},
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q3",
+      "module": 1,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module01Nashat.jsx",
+      "line": 159,
+      "requires": [
+        "taawid-qima"
+      ],
+      "prerequisiteStatus": {
+        "taawid-qima": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S4-Q4",
+      "module": 1,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module01Nashat.jsx",
+      "line": 180,
+      "requires": [
+        "taawid-qima"
+      ],
+      "prerequisiteStatus": {
+        "taawid-qima": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S5-Q5",
       "module": 1,
       "step": 5,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module01Nashat.jsx",
-      "line": 214,
+      "line": 203,
       "requires": [
         "takhallus-majhul"
       ],
@@ -266,12 +278,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S6-Q5",
+      "questionId": "M01-S6-Q6",
       "module": 1,
       "step": 6,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module01Nashat.jsx",
-      "line": 246,
+      "line": 236,
       "requires": [
         "takhallus-majhul"
       ],
@@ -287,13 +299,9 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module02Tarayiq.jsx",
-      "line": 64,
-      "requires": [
-        "tariqat-tawid"
-      ],
-      "prerequisiteStatus": {
-        "tariqat-tawid": "established@M2"
-      },
+      "line": 65,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -303,13 +311,9 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module02Tarayiq.jsx",
-      "line": 87,
-      "requires": [
-        "tariqat-jam"
-      ],
-      "prerequisiteStatus": {
-        "tariqat-jam": "established@M2"
-      },
+      "line": 86,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -319,13 +323,9 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/modules/Module02Tarayiq.jsx",
-      "line": 107,
-      "requires": [
-        "ikhtiyar-tariqa"
-      ],
-      "prerequisiteStatus": {
-        "ikhtiyar-tariqa": "established@M2"
-      },
+      "line": 106,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },

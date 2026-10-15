@@ -18,6 +18,16 @@
  *   puis trois « مسائل » de la plateforme (modules 5–7 : content/problems.js), avant le test
  *   8 إختبار أولي (evaluation)
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la trottinette dans Alger (labo `vector-sum`, niveau مبتدئ, ouvert par défaut) — la main pose le second trajet
+ *   au bout du premier, le compteur lit plus que la distance droite quand on tourne : « enchaîner » se voit avant de s'écrire
+ *   AB + BC = AC. Rejetée comme entrée : le تحدّ du nageur tel quel (une question posée de mémoire — « viser B ? » — avant que la main
+ *   ait rien enchaîné) ; il reste le niveau متقدم du MÊME labo et devient l'étape 2 du module 1, une fois la somme comprise.
+ *   Ordre des idées : pourquoi le compteur lit plus (ses propres trajets) → le nageur : viser B ne suffit pas → نشاط 3 (deux
+ *   translations = une) puis la brique APRÈS la réponse → نشاط 4 (somme, 0, opposés) → module 2 : chaque question AVANT sa boîte et
+ *   sa brique (RS + ST, EF + FE, EFGH) → le retour au تحدّ par le calcul. Modules 3–8 inchangés (méthode révélée ligne à ligne,
+ *   exercices, مسائل, test).
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/majmu-shuaayn';
@@ -89,7 +99,7 @@ export const LESSON_CONFIG = {
       title: 'دراجة كهربائية في الجزائر: مشواران متتابعان',
       objective: 'مجموع شعاعين هو شعاع الانسحاب الناتج عن انسحابين متتابعين: نجمع شعاعين متعاقبين بعلاقة شال وشعاعين لهما نفس المبدأ بقاعدة متوازي الأضلاع',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'improved_interactivity_and_age_appropriateness', theme: 'scooter' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'scooter' },
       learningPointIds: ['4am_majmu-shuaayn_P1', '4am_majmu-shuaayn_P2', '4am_majmu-shuaayn_P4'],
       sourceElementIds: ['act-3', 'act-4'],
     },

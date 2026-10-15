@@ -41,17 +41,17 @@ export default function Module02Maarif() {
           num: 1, title: 'المنحى والاتجاه', subtitle: 'معارف 1 — 1)', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="manha-ittijah" lead="الكلمتان اللتان قرأتهما على أضواء التطبيق:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">اختر لكل سطر:</p>}
                 rows={[
                   { id: 'par', label: 'المستقيمان (d) و (d′) متوازيان، إذن', options: ['لهما نفس المنحى', 'لهما نفس الاتجاه', 'لهما نفس الطول'], correct: 0, correction: 'المنحى يخصّ المستقيمات: مستقيمان متوازيان لهما نفس المنحى.' },
                   { id: 'two', label: 'النقطتان المتمايزتان A و B تعيّنان على المستقيم (AB)', options: ['اتجاهين: من A نحو B ومن B نحو A', 'اتجاها واحدا', 'منحيين مختلفين'], correct: 0, correction: KNOW1.manha },
                 ]}
-                requires={['manha-ittijah']}
+                requires={['tawazi-mustaqimat']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: المنحى هو المستقيم، والاتجاه هو جهة السير عليه.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="manha-ittijah" lead="الكلمتان اللتان قرأتهما على أضواء التطبيق:" />}
             </div>
           ),
         },
@@ -60,7 +60,6 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_KNOW1} />
-              <KnowledgeBrick id="shuaa" lead="كل ثنائية من نقطة وصورتها تعرّف الشعاع نفسه:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'على الشكل، الأسهم الأربعة تمثّل الشعاع $\\vec{u}$ :'}</MathText></p>}
                 rows={[
@@ -70,10 +69,11 @@ export default function Module02Maarif() {
                   { id: 'tul', label: <MathText>{'طويلة الشعاع $\\vec{u}$'}</MathText>, options: ['طول القطعة [AB]', 'طول المستقيم (AB)', 'المسافة بين A و M'], correct: 0, correction: 'الطويلة طول القطعة [AB] (المستقيم لا طول له).' },
                   { id: 'rep', label: <MathText>{'$\\overrightarrow{CD}$ و $\\overrightarrow{MN}$'}</MathText>, options: ['ممثّلان للشعاع $\\vec{u}$', 'شعاعان مختلفان لأن مبدأيهما مختلفان'].map(M), correct: 0, correction: 'تغيير المبدأ لا يغيّر الشعاع: كلاهما له منحى (AB) والاتجاه نفسه والطول نفسه.' },
                 ]}
-                requires={['shuaa']}
+                requires={['manha-ittijah']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: شعاع واحد وأربعة ممثّلات، كأسهم مسيّراتك.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="shuaa" lead="كل ثنائية من نقطة وصورتها تعرّف الشعاع نفسه:" />}
             </div>
           ),
         },
@@ -82,7 +82,6 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <GeoFigure {...FIG_KNOW1_EQ} />
-              <KnowledgeBrick id="tasawi-shuaayn" lead="ثلاثة شروط معا، كأضواء التطبيق الثلاثة:" />
               <TextbookBox kind="example" text={'على شبكة المنصّة: أي سهم يساوي $\\overrightarrow{AB}$ ؟'} source={PLATFORM_SOURCE} compact />
               <GeoFigure {...FIG_EQ_PICK} />
               <TapQuestion
@@ -94,10 +93,11 @@ export default function Module02Maarif() {
                 ].map(M)}
                 correct={0}
                 cols={3}
-                requires={['tasawi-shuaayn']}
+                requires={['shuaa']}
                 explain={<MathText>{'$\\overrightarrow{CD} = \\overrightarrow{AB}$ : ثلاثة مربعات يمينا ومربع نحو الأعلى. $\\overrightarrow{EF}$ له نفس المنحى ونفس الطول لكن اتجاهه معاكس، و $\\overrightarrow{GH}$ له نفس المنحى والاتجاه لكن طوله ضعف الطول.'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="tasawi-shuaayn" lead="ثلاثة شروط معا، كأضواء التطبيق الثلاثة:" />}
             </div>
           ),
         },

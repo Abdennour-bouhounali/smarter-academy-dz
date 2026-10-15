@@ -12,6 +12,7 @@ import ObjectField from '../primitives/ObjectField';
 import EquationBuilder from '../primitives/EquationBuilder';
 import DivisionDisplay from '../primitives/DivisionDisplay';
 import EquationDisplay from '../primitives/EquationDisplay';
+import { useLabCoach } from '../primitives/LabCoach';
 import * as L from '../logic/divisorExplorer';
 
 /**
@@ -25,9 +26,13 @@ import * as L from '../logic/divisorExplorer';
  * D. Représentation qui ÉMERGE : la division posée, puis l'égalité
  *    a = b × q + r qui se remplit case par case, puis, si r = 0, a = b × q.
  * E. À découvrir avant la règle : « diviseur » = « il ne reste rien ».
+ *
+ * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/divisorExplorer.js › coachOf` montre la prochaine carte à
+ * porter à la bibliothèque (jamais « la bonne » : l'ordre du rail) ; la ligne « اسحب بإصبعك… » se tait tant que le guide est visible.
+ * La question de découverte qui suit est une carte-réponse que rien ne cache : hors guide.
  */
 export default function DivisorExplorer({
-  a: a0, b: b0 = null, candidates: authoredCandidates, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onVerdict, onFinished,
+  a: a0, b: b0 = null, candidates: authoredCandidates, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onVerdict, onFinished, coach: coachOn = true,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({ type: 'divisor-explorer', initialNumbers: { a: a0, b: b0 ?? 0 }, initialMode, hintCount: 3 });
@@ -43,6 +48,12 @@ export default function DivisorExplorer({
   useEffect(() => { setLab(L.initWithDefault({ a, b: null, candidates })); setReject(null); }, [a, state.epoch, candidates]);
 
   const rail = useMemo(() => L.railOf({ a, candidates }), [candidates, a]);
+  const k = useCallback((key, o) => t(`manipulation.divisorExplorer.${key}`, o), [t]);
+  const coachStep = coachOn ? L.coachOf(lab, rail) : null;
+  const coach = useLabCoach({
+    lab: 'divisor-explorer', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`, { n: coachStep.rank }) : '',
+    labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
+  });
 
   // Miroir synchrone de `lab` : « جرّب كل الإمكانيات » enchaîne des pas plus vite qu'un rendu.
   const labRef = useRef(lab);
@@ -91,6 +102,7 @@ export default function DivisorExplorer({
       mission={mission ?? t('manipulation.divisorExplorer.mission', { a })}
       lead={lead}
       state={state}
+      coach={coachOn ? coach : null}
       numberFields={[{ key: 'a', label: 'a' }]}
       validate={() => ''}
       allowModeSwitch={allowModeSwitch}
@@ -158,7 +170,7 @@ export default function DivisorExplorer({
           <div className="space-y-1.5">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <span className="text-sm font-bold text-slate-800">{t('manipulation.divisorExplorer.shelfSize')}</span>
-              <span className="text-[11px] text-slate-500">{t('manipulation.divisorExplorer.tried', { count: Object.keys(lab.tried).length })} · {t('manipulation.dragHint')}</span>
+              <span className="text-[11px] text-slate-500">{t('manipulation.divisorExplorer.tried', { count: Object.keys(lab.tried).length })}{coach.visible ? '' : ` · ${t('manipulation.dragHint')}`}</span>
             </div>
             <div dir="ltr" className="flex flex-wrap gap-1.5" role="group" aria-label={t('manipulation.divisorExplorer.candidates')}>
               {rail.map((c) => {

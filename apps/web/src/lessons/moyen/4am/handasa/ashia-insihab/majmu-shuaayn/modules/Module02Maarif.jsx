@@ -47,17 +47,21 @@ export default function Module02Maarif() {
           num: 1, title: 'علاقة شال', subtitle: 'معارف 4', done: !!q[1],
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="property" title={`1) ${KNOW4.title}: صورة نقطة بانسحابين متتابعين`} text={KNOW4.images} source={KNOW4.source} compact>
-                <GeoFigure {...FIG_KNOW4} />
-              </TextbookBox>
-              <KnowledgeBrick id="alaqat-shal" variant="rappel" lead="2) مجموع شعاعين، كما في الكتاب:" />
-              <TextbookBox kind="remark" title={HISTORY.title} text={HISTORY.text} source={HISTORY.source} compact />
               <TapQuestion
                 prompt={<MathText>{'$\\overrightarrow{RS} + \\overrightarrow{ST} =$'}</MathText>}
                 options={['$\\overrightarrow{RT}$', '$\\overrightarrow{TR}$', '$\\overrightarrow{SS}$'].map(M)}
-                correct={0} cols={3} requires={['alaqat-shal']}
+                correct={0} cols={3}
                 explain={<MathText>{`${REMARKS.chainEnd} ( $\\overrightarrow{TR}$ هو العكس: ${REMARKS.reverseWhy})`}</MathText>}
                 onAnswered={mark('1a')} />
+              {q['1a'] && (
+                <>
+                <TextbookBox kind="property" title={`1) ${KNOW4.title}: صورة نقطة بانسحابين متتابعين`} text={KNOW4.images} source={KNOW4.source} compact>
+                  <GeoFigure {...FIG_KNOW4} />
+                </TextbookBox>
+                <KnowledgeBrick id="alaqat-shal" variant="rappel" lead="2) مجموع شعاعين، كما في الكتاب:" />
+                <TextbookBox kind="remark" title={HISTORY.title} text={HISTORY.text} source={HISTORY.source} compact />
+                </>
+              )}
               {q['1a'] && (
                 <TapQuestion
                   prompt={<MathText>{'K، L، M، N أربع نقط مختلفة. هل نستطيع تبسيط $\\overrightarrow{KL} + \\overrightarrow{MN}$ بعلاقة شال مباشرة؟'}</MathText>}
@@ -77,14 +81,18 @@ export default function Module02Maarif() {
           num: 2, title: 'الشعاع المعدوم والشعاعان المتعاكسان', subtitle: 'معارف 4 (حالة خاصة) و 5', done: !!q[2],
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="shuaa-maadum" variant="rappel" lead="حالة خاصة، كما في الكتاب: مشوار العودة." />
-              <KnowledgeBrick id="mutaakisan" variant="rappel" lead="معارف 5:" />
               <TapQuestion
                 prompt={<MathText>{'$\\overrightarrow{EF} + \\overrightarrow{FE} =$'}</MathText>}
                 options={['$\\vec{0}$', 'العدد 0', '$2\\overrightarrow{EF}$'].map(M)}
-                correct={0} cols={3} requires={['shuaa-maadum', 'alaqat-shal']}
+                correct={0} cols={3} requires={['alaqat-shal']}
                 explain={<MathText>{`علاقة شال: $\\overrightarrow{EF} + \\overrightarrow{FE} = \\overrightarrow{EE} = \\vec{0}$ . ${REMARKS.zeroNumber}`}</MathText>}
                 onAnswered={mark('2a')} />
+              {q['2a'] && (
+                <>
+                  <KnowledgeBrick id="shuaa-maadum" variant="rappel" lead="حالة خاصة، كما في الكتاب: مشوار العودة." />
+                  <KnowledgeBrick id="mutaakisan" variant="rappel" lead="معارف 5:" />
+                </>
+              )}
               {q['2a'] && (
                 <TapQuestion
                   prompt={<MathText>{'$-\\overrightarrow{GH} =$'}</MathText>}
@@ -100,14 +108,14 @@ export default function Module02Maarif() {
           num: 3, title: 'قاعدة متوازي الأضلاع', subtitle: 'معارف 6', done: !!q[3],
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="qaidat-mutawazi" lead="معارف 6: شعاعان لهما نفس المبدأ." />
               <p className="text-sm font-semibold text-slate-800"><MathText>{'متوازي أضلاع آخر: EFGH (الرؤوس بهذا الترتيب).'}</MathText> <SourceTag source={PLATFORM_SOURCE} /></p>
               <TapQuestion
                 prompt={<MathText>{'EFGH متوازي أضلاع. $\\overrightarrow{EF} + \\overrightarrow{EH} =$'}</MathText>}
                 options={['$\\overrightarrow{EG}$', '$\\overrightarrow{FH}$', '$\\overrightarrow{HF}$'].map(M)}
-                correct={0} cols={3} requires={['qaidat-mutawazi']}
+                correct={0} cols={3}
                 explain={<MathText>{`للشعاعين نفس المبدأ E ، والرأس المقابل لـ E في EFGH هو G: المجموع هو القطر $\\overrightarrow{EG}$ . [FH] هو القطر الآخر: لا يمرّ بالمبدأ المشترك E.`}</MathText>}
                 onAnswered={mark('3a')} />
+              {q['3a'] && <KnowledgeBrick id="qaidat-mutawazi" lead="معارف 6: شعاعان لهما نفس المبدأ." />}
               {q['3a'] && (
                 <TapQuestion
                   prompt={<MathText>{`${KNOW6.property} النقطة D هي نظيرة A بالنسبة إلى:`}</MathText>}

@@ -2,6 +2,16 @@
  * الدرس 7 — العددان الأوّليّان فيما بينهما
  * Manuel 4AM, unité 1 : activité 7 (p. 9), معارف 5 (p. 12), exercices 23–27, 39 (p. 15),
  * puis trois « مسائل » de la plateforme (modules 4–6).
+ *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : 17 stylos et 18 cahiers à ranger en trousses identiques (thème `school`) — la main ajoute une trousse à la
+ *   fois et RIEN ne marche sauf 1 ; l'idée « le seul diviseur commun est 1 » devient nécessaire pour expliquer ce qu'elle a vu.
+ *   Rejetée : l'énoncé du نشاط 7 posé en carte au-dessus du labo (« اشرح لماذا PGCD = 1 » avant tout geste) ; et l'entrée par
+ *   les listes (22 et 35) : trop abstraite pour un premier contact, elle reste le niveau متقدم. Ordre des idées : trousses
+ *   (seul 1 marche) → POURQUOI (question sur ce qu'on a fait) → la définition (brique + remarque du manuel APRÈS la réponse) →
+ *   مريم (27 et 36) : qu'est-ce qui suffit à la contredire ? → la brique de réfutation → معارف : le labo 15 / 22 en tête, « 15
+ *   est-il premier ? », puis la définition et l'exemple du manuel, puis comment PROUVER (PGCD, Euclide).
+ *   Aucune destination du manuel n'a bougé (act-7 reste au module 1, know-5 au module 2).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/awwaliyan-fima-baynahuma';
 
@@ -57,7 +67,7 @@ export const LESSON_CONFIG = {
       title: '17 قلمًا و 18 كراسًا: كم حقيبة متماثلة؟',
       objective: 'عددان أوليان فيما بينهما ⇔ قاسمهما المشترك الوحيد هو 1',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'improved_interactivity_and_age_appropriateness', theme: 'school' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'school' },
       learningPointIds: ['4am_awwaliyan-fima-baynahuma_P1'], sourceElementIds: ['act-7'] },
     { kind: 'manipulation', code: 'coprime-22-35', type: 'coprime-explorer', module: 1,
       level: 'advanced',

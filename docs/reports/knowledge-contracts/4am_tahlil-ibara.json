@@ -15,7 +15,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module01Nashat.jsx",
-        "line": 257,
+        "line": 238,
         "step": 4,
         "variant": "new"
       }
@@ -26,8 +26,8 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module02Maarif.jsx",
-        "line": 48,
-        "step": 1,
+        "line": 106,
+        "step": 2,
         "variant": "new"
       }
     },
@@ -37,8 +37,8 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module02Maarif.jsx",
-        "line": 85,
-        "step": 2,
+        "line": 83,
+        "step": 1,
         "variant": "new"
       }
     }
@@ -204,7 +204,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module01Nashat.jsx",
-      "line": 149,
+      "line": 132,
       "requires": [
         "pgcd"
       ],
@@ -220,7 +220,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module01Nashat.jsx",
-      "line": 169,
+      "line": 151,
       "requires": [
         "pgcd",
         "nashr-tawzii"
@@ -238,7 +238,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module01Nashat.jsx",
-      "line": 190,
+      "line": 171,
       "requires": [
         "nashr-tawzii"
       ],
@@ -254,7 +254,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module01Nashat.jsx",
-      "line": 207,
+      "line": 188,
       "requires": [
         "nashr-tawzii"
       ],
@@ -270,7 +270,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module01Nashat.jsx",
-      "line": 225,
+      "line": 206,
       "requires": [
         "nashr-tawzii"
       ],
@@ -286,7 +286,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module01Nashat.jsx",
-      "line": 243,
+      "line": 224,
       "requires": [
         "nashr-tawzii"
       ],
@@ -302,7 +302,7 @@
       "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module01Nashat.jsx",
-      "line": 286,
+      "line": 266,
       "requires": [
         "mutatabiqat"
       ],
@@ -318,7 +318,7 @@
       "step": 5,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module01Nashat.jsx",
-      "line": 300,
+      "line": 281,
       "requires": [
         "mutatabiqat"
       ],
@@ -334,12 +334,12 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module02Maarif.jsx",
-      "line": 50,
+      "line": 51,
       "requires": [
-        "khassiya-tawziiya"
+        "mutatabiqat"
       ],
       "prerequisiteStatus": {
-        "khassiya-tawziiya": "established@M2"
+        "mutatabiqat": "prior"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -348,14 +348,14 @@
       "questionId": "M02-S1-Q2",
       "module": 2,
       "step": 1,
-      "component": "TapQuestion",
+      "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module02Maarif.jsx",
-      "line": 64,
+      "line": 66,
       "requires": [
-        "khassiya-tawziiya"
+        "mutatabiqat"
       ],
       "prerequisiteStatus": {
-        "khassiya-tawziiya": "established@M2"
+        "mutatabiqat": "prior"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -364,30 +364,30 @@
       "questionId": "M02-S2-Q3",
       "module": 2,
       "step": 2,
-      "component": "BatchChoiceQuestion",
+      "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module02Maarif.jsx",
-      "line": 87,
+      "line": 91,
       "requires": [
-        "tahlil-mutatabiqat"
+        "nashr-tawzii"
       ],
       "prerequisiteStatus": {
-        "tahlil-mutatabiqat": "established@M2"
+        "nashr-tawzii": "prior"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M02-S3-Q4",
+      "questionId": "M02-S2-Q4",
       "module": 2,
-      "step": 3,
+      "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/modules/Module02Maarif.jsx",
-      "line": 117,
+      "line": 109,
       "requires": [
-        "tahlil-mutatabiqat"
+        "khassiya-tawziiya"
       ],
       "prerequisiteStatus": {
-        "tahlil-mutatabiqat": "established@M2"
+        "khassiya-tawziiya": "established@M2"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true

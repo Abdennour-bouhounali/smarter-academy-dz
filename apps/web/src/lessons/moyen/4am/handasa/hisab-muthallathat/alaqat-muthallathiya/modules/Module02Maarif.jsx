@@ -9,6 +9,8 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { KNOW4 } from '../content/textbook';
 
 /**
+ * Rétrofit 2026-10-15 : l'encadré du manuel et la brique `alaqatan` viennent APRÈS une question sur ce que l'élève a prouvé au module 1
+ * (plus de définition avant la question) ; pas de labo dans ce module.
  * Module 2 — معارف 4 « العلاقات المثلثية » (p. 120), stage `discovery` : FORMALIZE.
  *   1. l'encadré du manuel — la coquille « sin²x + sin²x = 1 » CORRIGÉE en une ligne (extraction › know-4 ›
  *      correction) → briques alaqatan puis, après la question sur la notation, kitabat-murabba ;
@@ -21,6 +23,7 @@ import { KNOW4 } from '../content/textbook';
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
 export default function Module02Maarif() {
+  const [q1a, setQ1a] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const [q3, setQ3] = useState(false);
@@ -36,26 +39,43 @@ export default function Module02Maarif() {
       estimatedTime="8 دقائق"
       brief={{
         tag: 'معارف — الكتاب ص 120', title: 'العلاقتان بين النسب المثلثية لزاوية حادة', tone: 'violet',
-        body: <p>اقرأ الإطار، ثم تحقّق منه على مثال الكتاب: الزاوية التي قيسها 60 درجة.</p>,
+        body: <p>سؤال عمّا برهنتَه في النشاط 5، ثم إطار الكتاب الذي يكتبه، ثم مثال الزاوية التي قيسها 60 درجة.</p>,
       }}
       steps={[
         {
           num: 1, title: 'الإطار', subtitle: 'معارف 4', done: q1,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="property" text={KNOW4.property} source={KNOW4.source} />
-              <p className="text-xs text-slate-500" data-misprint-correction><MathText>{KNOW4.correction}</MathText></p>
-              <KnowledgeBrick id="alaqatan" variant="rappel" lead="احفظهما:" />
-              <TextbookBox kind="remark" compact text={KNOW4.remark} />
               <TapQuestion
-                prompt={<MathText>{'الكتابة $\\cos^2 x$ تعني:'}</MathText>}
-                options={['$(\\cos x)^2$', '$\\cos(x^2)$', '$2\\cos x$'].map(M)}
+                prompt={<MathText>{'في مثلث الشاطئ 3 ـ 4 ـ 5 وجدتَ $\\dfrac{9}{25} + \\dfrac{16}{25} = 1$ . فأيّ كتابة تصحّ لكل زاوية حادة x ؟'}</MathText>}
+                options={[
+                  '$(\\cos x)^2 + (\\sin x)^2 = 1$',
+                  '$\\cos x + \\sin x = 1$',
+                  '$(\\cos x)^2 + (\\sin x)^2 = \\tan x$',
+                ].map(M)}
                 correct={0}
-                cols={3}
-                requires={['alaqatan']}
-                explain={<MathText>{'الأس فوق الدالة يخص العدد $\\cos x$ نفسه: $\\cos^2 x = \\cos x \\times \\cos x$ . (لا نربّع الزاوية، ولا نضرب في 2.)'}</MathText>}
-                onAnswered={() => setQ1(true)}
+                cols={1}
+                requires={['taarif-nisab']}
+                explain={<MathText>{'جمع مربعي نسبتين، لا جمع النسبتين: $\\dfrac{3}{5} + \\dfrac{4}{5} = \\dfrac{7}{5} \\neq 1$ ، أما المربعان فمجموعهما 1 دائمًا (برهان النشاط 5).'}</MathText>}
+                onAnswered={() => setQ1a(true)}
               />
+              {q1a && (
+                <>
+                  <TextbookBox kind="property" text={KNOW4.property} source={KNOW4.source} />
+                  <p className="text-xs text-slate-500" data-misprint-correction><MathText>{KNOW4.correction}</MathText></p>
+                  <KnowledgeBrick id="alaqatan" variant="rappel" lead="احفظهما:" />
+                  <TextbookBox kind="remark" compact text={KNOW4.remark} />
+                  <TapQuestion
+                    prompt={<MathText>{'الكتابة $\\cos^2 x$ تعني:'}</MathText>}
+                    options={['$(\\cos x)^2$', '$\\cos(x^2)$', '$2\\cos x$'].map(M)}
+                    correct={0}
+                    cols={3}
+                    requires={['alaqatan']}
+                    explain={<MathText>{'الأس فوق الدالة يخص العدد $\\cos x$ نفسه: $\\cos^2 x = \\cos x \\times \\cos x$ . (لا نربّع الزاوية، ولا نضرب في 2.)'}</MathText>}
+                    onAnswered={() => setQ1(true)}
+                  />
+                </>
+              )}
               {q1 && <KnowledgeBrick id="kitabat-murabba" />}
             </div>
           ),

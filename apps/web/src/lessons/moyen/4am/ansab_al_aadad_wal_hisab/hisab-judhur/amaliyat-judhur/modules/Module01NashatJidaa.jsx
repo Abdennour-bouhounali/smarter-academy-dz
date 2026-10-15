@@ -12,6 +12,10 @@ import RootTable from '../components/RootTable';
 /**
  * Module 1 — نشاط 4 (p. 21) : جداء جذرين تربيعيين، ثم حاصل قسمتهما.
  *
+ * RÉTROFIT 2026-10-15 (§4quater) : le labo en tête, sans carte du manuel ni titre/`lead` de workspace ; l'étape 1 (nouvelle) demande POURQUOI
+ * un pavage est refusé, sur les essais de l'élève (`onTrial` → ligne `[data-activity-evidence]`, jamais bloquante) ; les tableaux du manuel
+ * suivent (étapes 2–8), les briques restent derrière les réponses.
+ *
  * LABORATOIRE D'OUVERTURE À DEUX NIVEAUX — le carré dallé (`square-tiling`,
  * mode product). L'élève ÉTIRE k, le nombre de dalles sur le côté d'un carré
  * d'aire n ; une dalle d'aire non entière est refusée. Chaque pavage juste
@@ -34,6 +38,13 @@ const fb = ({ allRight }) => (
 );
 
 export default function Module01NashatJidaa() {
+  const [qRefuse, setQRefuse] = useState(false);
+  // Les essais de l'élève dans le labo (k validés par la main), pour la ligne de trace de l'étape 1.
+  const [trials, setTrials] = useState({});
+  const addTrial = (n, t) => setTrials((o) => ({ ...o, [n]: { ...(o[n] || {}), [t.k]: t } }));
+  const tried = Object.values(trials).flatMap((o) => Object.values(o));
+  const refusedTry = tried.filter((t) => !t.valid).sort((x, y) => x.k - y.k)[0];
+  const validTry = tried.filter((t) => t.valid && t.k > 1).sort((x, y) => x.k - y.k)[0];
   const [tableA, setTableA] = useState(false);
   const [conjA, setConjA] = useState(false);
   const [proofA, setProofA] = useState(false);
@@ -50,28 +61,11 @@ export default function Module01NashatJidaa() {
       moduleTitle="نشاط 4 — جداء جذرين وحاصل قسمتهما"
       moduleSubtitle="بلّط، أكمل الجدولين، خمّن، ثم برهن"
       estimatedTime="14 دقيقة"
-      objectives={['كم بلاطة على ضلع مربّع مساحته 144؟ وكيف يُكتب ضلعه؟', 'ماذا نلاحظ في جدولَي الجداء وحاصل القسمة؟', 'هل يكفي التخمين، أم نحتاج إلى برهان؟']}
-      brief={{
-        tag: 'أنشطة — الكتاب ص 21',
-        headline: 'مربّع مساحته 144: كم بلاطة على ضلعه؟',
-        emoji: '🧩',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-1">
-            <p>
-              <strong>{ACTIVITY.subtitle}</strong>، ثم <strong>{ACTIVITY_B.subtitle}</strong>.
-              {' '}السطر الأول من جدول الكتاب هو <MathText>{'$a = 4$'}</MathText> و <MathText>{'$b = 36$'}</MathText>،
-              {' '}أي مربّع مساحته <MathText>{'$4 \\times 36 = 144$'}</MathText>: بلّطه ببلاطات مربّعة، واقرأ ضلعه.
-            </p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
+      objectives={['كم بلاطة على ضلع مربّع مساحته 36 أو 144؟ وكيف يُكتب ضلعه؟', 'ماذا نلاحظ في جدولَي الجداء وحاصل القسمة؟', 'هل يكفي التخمين، أم نحتاج إلى برهان؟']}
       intro={
+        // LE LABO OUVRE LE MODULE (§4quater) : pas de carte du manuel, pas de titre / `lead` de workspace. `lead` des labos = le contexte seul ;
+        // la question est celle du labo. Le niveau متقدم (144 = 4 × 36) est la première ligne du tableau du manuel.
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="غيّر عدد البلاطات على الضلع: متى تكون مساحة البلاطة عددًا طبيعيًا؟ وكيف يُكتب ضلع المربّع الكبير عندئذ؟"
           defaultLevel="beginner"
           levels={{
             beginner: () => (
@@ -81,8 +75,8 @@ export default function Module01NashatJidaa() {
                   level="beginner"
                   n={36}
                   mode="product"
-                  title="مربّع مساحته 36"
-                  lead="ابدأ بـ 2 بلاطة على الضلع، ثم 3، ثم جرّب 4: ماذا يحدث للبلاطة؟"
+                  lead="لوحة زليج مربّعة مساحتها 36، نغطّيها ببلاطات مربّعة متماثلة، كل بلاطة مساحتها عدد طبيعي."
+                  onTrial={(t) => addTrial(36, t)}
                 />
                 <SourceTag source={TILING_BEGINNER.source} />
               </div>
@@ -93,8 +87,8 @@ export default function Module01NashatJidaa() {
                 level="advanced"
                 n={144}
                 mode="product"
-                title="مربّع مساحته 144 — السطر الأول من الجدول"
-                lead="ابحث بنفسك عن كل عدد بلاطات يصلح، وعن عدد لا يصلح. أي تبليط يقرأ الضلع جداءً لجذري العددين 4 و 36؟"
+                lead="نشاط الكتاب: مربّع مساحته 144 = 4 × 36، وهو السطر الأول من الجدول."
+                onTrial={(t) => addTrial(144, t)}
               />
             ),
           }}
@@ -102,7 +96,38 @@ export default function Module01NashatJidaa() {
       }
       steps={[
         {
-          num: 1, title: 'جداء جذرين — 1) انقل وأكمل الجدول', subtitle: 'اختر في كل سطر القيمة الصحيحة', done: tableA,
+          num: 1, title: 'لماذا يُرفض بعض التبليط؟', subtitle: 'عن تبليطاتك في المناولة', done: qRefuse,
+          content: (
+            <div className="space-y-3">
+              {/* LA TRACE DE L'ÉLÈVE (jamais bloquante) : ses propres essais dans le labo. */}
+              <p className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm text-slate-600" data-activity-evidence data-tried={tried.length ? 'true' : 'false'}>
+                {tried.length
+                  ? (
+                    <span>
+                      {validTry ? <>جرّبت <MathText>{`$k = ${validTry.k}$`}</MathText>: بلاطة مساحتها <bdi dir="ltr">{validTry.b}</bdi>. </> : null}
+                      {refusedTry ? <>ورُفض عندك <MathText>{`$k = ${refusedTry.k}$`}</MathText>. </> : null}
+                    </span>
+                  )
+                  : 'لم تجرّب تبليطًا بعدُ: اسحب عدد البلاطات على الضلع في المناولة أعلاه.'}
+              </p>
+              <TapQuestion
+                prompt={<span>في مربّع مساحته <MathText>{'$36$'}</MathText> يُرفض التبليط بـ <MathText>{'$4$'}</MathText> بلاطات على الضلع ويُقبل بـ <MathText>{'$3$'}</MathText>. لماذا؟</span>}
+                options={[
+                  'لأنّ $4 \\times 4 = 16$ لا يقسم $36$، فلا تكون مساحة البلاطة عددًا طبيعيًا',
+                  'لأنّ $4$ أكبر من $3$',
+                  'لأنّ $4$ لا يقسم $36$',
+                ].map(cell)}
+                correct={0}
+                cols={1}
+                requires={['murabba-jidhr']}
+                explain={<span>عدد البلاطات في المربّع الكبير هو <MathText>{'$k \\times k$'}</MathText>، ومساحة البلاطة <MathText>{'$36 \\div k^2$'}</MathText>: مع <MathText>{'$k = 3$'}</MathText> تساوي <MathText>{'$4$'}</MathText>، ومع <MathText>{'$k = 4$'}</MathText> تساوي <MathText>{'$36 \\div 16 = 2{,}25$'}</MathText>.</span>}
+                onAnswered={() => setQRefuse(true)}
+              />
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'جداء جذرين — 1) انقل وأكمل الجدول', subtitle: 'اختر في كل سطر القيمة الصحيحة', done: tableA,
           content: (
             <div className="space-y-3">
               <RootTable columns={ACTIVITY.columns} rows={ACTIVITY.rows} caption="الجدول قبل الإكمال" />
@@ -125,7 +150,7 @@ export default function Module01NashatJidaa() {
           ),
         },
         {
-          num: 2, title: 'جداء جذرين — 2) ضع تخمينًا', done: conjA,
+          num: 3, title: 'جداء جذرين — 2) ضع تخمينًا', done: conjA,
           content: (
             <div className="space-y-3">
               {/* LA TRACE DE L'ÉLÈVE : le tableau qu'il vient de compléter, pas une option-réponse. */}
@@ -133,7 +158,7 @@ export default function Module01NashatJidaa() {
                 <p className="text-sm font-semibold text-slate-700">جدولك:</p>
                 {tableA
                   ? <RootTable columns={ACTIVITY.columns} rows={ACTIVITY.rows} filled />
-                  : <p className="text-sm text-slate-500">أكمل الجدول في الخطوة 1 أولًا.</p>}
+                  : <p className="text-sm text-slate-500">أكمل الجدول في الخطوة 2 أولًا.</p>}
               </div>
               <TapQuestion
                 prompt={<MathText>{ACTIVITY.questions[1]}</MathText>}
@@ -153,7 +178,7 @@ export default function Module01NashatJidaa() {
           ),
         },
         {
-          num: 3, title: 'جداء جذرين — 3) أ) و ب) نحو البرهان', subtitle: 'من أجل كل عددين موجبين', done: proofA,
+          num: 4, title: 'جداء جذرين — 3) أ) و ب) نحو البرهان', subtitle: 'من أجل كل عددين موجبين', done: proofA,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-700"><MathText>{ACTIVITY.questions[2]}</MathText></p>
@@ -177,7 +202,7 @@ export default function Module01NashatJidaa() {
           ),
         },
         {
-          num: 4, title: 'جداء جذرين — 3) جـ) استنتج', done: concA,
+          num: 5, title: 'جداء جذرين — 3) جـ) استنتج', done: concA,
           content: (
             <div className="space-y-3">
               <TapQuestion
@@ -200,7 +225,7 @@ export default function Module01NashatJidaa() {
           ),
         },
         {
-          num: 5, title: 'حاصل قسمة جذرين — 1) انقل وأكمل الجدول', subtitle: 'انظر جيّدًا إلى كل سطر، وإلى السطر الأخير خاصةً', done: tableB,
+          num: 6, title: 'حاصل قسمة جذرين — 1) انقل وأكمل الجدول', subtitle: 'انظر جيّدًا إلى كل سطر، وإلى السطر الأخير خاصةً', done: tableB,
           content: (
             <div className="space-y-3">
               <RootTable columns={ACTIVITY_B.columns} rows={ACTIVITY_B.rows} noMeaning={ACTIVITY_B.noMeaning} caption="الجدول قبل الإكمال" />
@@ -225,14 +250,14 @@ export default function Module01NashatJidaa() {
           ),
         },
         {
-          num: 6, title: 'حاصل قسمة جذرين — 2) ضع تخمينًا', done: conjB,
+          num: 7, title: 'حاصل قسمة جذرين — 2) ضع تخمينًا', done: conjB,
           content: (
             <div className="space-y-3">
               <div className="space-y-1" data-activity-evidence>
                 <p className="text-sm font-semibold text-slate-700">جدولك:</p>
                 {tableB
                   ? <RootTable columns={ACTIVITY_B.columns} rows={ACTIVITY_B.rows} noMeaning={ACTIVITY_B.noMeaning} filled />
-                  : <p className="text-sm text-slate-500">أكمل الجدول في الخطوة 5 أولًا.</p>}
+                  : <p className="text-sm text-slate-500">أكمل الجدول في الخطوة 6 أولًا.</p>}
               </div>
               <TapQuestion
                 prompt={<span><MathText>{ACTIVITY_B.questions[1]}</MathText> (في الأسطر التي يكون فيها <MathText>{'$a$'}</MathText> و <MathText>{'$b$'}</MathText> موجبين)</span>}
@@ -251,7 +276,7 @@ export default function Module01NashatJidaa() {
           ),
         },
         {
-          num: 7, title: 'حاصل قسمة جذرين — 3) البرهان', subtitle: 'من أجل كل عددين موجبين، والمقام غير معدوم', done: proofB,
+          num: 8, title: 'حاصل قسمة جذرين — 3) البرهان', subtitle: 'من أجل كل عددين موجبين، والمقام غير معدوم', done: proofB,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-700"><MathText>{ACTIVITY_B.questions[2]}</MathText></p>

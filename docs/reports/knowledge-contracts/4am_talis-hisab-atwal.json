@@ -14,7 +14,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module01Nashat.jsx",
-        "line": 291,
+        "line": 276,
         "step": 7,
         "variant": "new"
       }
@@ -25,7 +25,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module02Maarif.jsx",
-        "line": 63,
+        "line": 77,
         "step": 1,
         "variant": "new"
       }
@@ -36,7 +36,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module02Maarif.jsx",
-        "line": 109,
+        "line": 117,
         "step": 3,
         "variant": "new"
       }
@@ -47,7 +47,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module02Maarif.jsx",
-        "line": 131,
+        "line": 138,
         "step": 4,
         "variant": "new"
       }
@@ -61,7 +61,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module03Taraiq.jsx",
-        "line": 48,
+        "line": 60,
         "step": 1,
         "variant": "new"
       }
@@ -171,7 +171,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module01Nashat.jsx",
-      "line": 117,
+      "line": 102,
       "requires": null,
       "prerequisiteStatus": {},
       "lexiconHits": [],
@@ -183,7 +183,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module01Nashat.jsx",
-      "line": 137,
+      "line": 122,
       "requires": [
         "jadwal-tanasub"
       ],
@@ -199,7 +199,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module01Nashat.jsx",
-      "line": 159,
+      "line": 144,
       "requires": [
         "rabi-mutanasib"
       ],
@@ -215,7 +215,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module01Nashat.jsx",
-      "line": 179,
+      "line": 164,
       "requires": [
         "jadwal-tanasub"
       ],
@@ -231,7 +231,7 @@
       "step": 5,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module01Nashat.jsx",
-      "line": 200,
+      "line": 185,
       "requires": [
         "rabi-mutanasib"
       ],
@@ -247,7 +247,7 @@
       "step": 5,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module01Nashat.jsx",
-      "line": 211,
+      "line": 196,
       "requires": [
         "rabi-mutanasib"
       ],
@@ -263,7 +263,7 @@
       "step": 6,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module01Nashat.jsx",
-      "line": 230,
+      "line": 215,
       "requires": [
         "mustaqim-muntasafayn"
       ],
@@ -279,7 +279,7 @@
       "step": 6,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module01Nashat.jsx",
-      "line": 246,
+      "line": 231,
       "requires": [
         "rabi-mutanasib"
       ],
@@ -295,7 +295,7 @@
       "step": 6,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module01Nashat.jsx",
-      "line": 258,
+      "line": 243,
       "requires": [
         "rabi-mutanasib"
       ],
@@ -311,7 +311,7 @@
       "step": 7,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module01Nashat.jsx",
-      "line": 277,
+      "line": 262,
       "requires": [
         "jadwal-tanasub"
       ],
@@ -327,13 +327,9 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module02Maarif.jsx",
-      "line": 66,
-      "requires": [
-        "khassiyat-talis"
-      ],
-      "prerequisiteStatus": {
-        "khassiyat-talis": "established@M2"
-      },
+      "line": 65,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -343,7 +339,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module02Maarif.jsx",
-      "line": 89,
+      "line": 88,
       "requires": [
         "khassiyat-talis"
       ],
@@ -359,13 +355,9 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module02Maarif.jsx",
-      "line": 111,
-      "requires": [
-        "adam-tawazi"
-      ],
-      "prerequisiteStatus": {
-        "adam-tawazi": "established@M2"
-      },
+      "line": 109,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -375,13 +367,9 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module02Maarif.jsx",
-      "line": 133,
-      "requires": [
-        "muamil-tanasub"
-      ],
-      "prerequisiteStatus": {
-        "muamil-tanasub": "established@M2"
-      },
+      "line": 130,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -391,7 +379,7 @@
       "step": 4,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module02Maarif.jsx",
-      "line": 143,
+      "line": 140,
       "requires": [
         "muamil-tanasub"
       ],
@@ -407,13 +395,9 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module03Taraiq.jsx",
-      "line": 49,
-      "requires": [
-        "hisab-atwal"
-      ],
-      "prerequisiteStatus": {
-        "hisab-atwal": "established@M3"
-      },
+      "line": 48,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -423,7 +407,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/modules/Module03Taraiq.jsx",
-      "line": 71,
+      "line": 70,
       "requires": [
         "hisab-atwal"
       ],

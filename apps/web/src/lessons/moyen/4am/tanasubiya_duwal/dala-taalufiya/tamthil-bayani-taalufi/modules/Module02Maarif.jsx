@@ -50,21 +50,24 @@ export default function Module02Maarif() {
           num: 1, title: 'أين يقطع المستقيم محور التراتيب؟', subtitle: 'الخاصية', done: q1a && q1b,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tartib-mabda" variant="rappel" compact />
-              <PredictRule id="tamthil-taalufi">
-                <TextbookBox kind="property" text={KNOWLEDGE.property} source={KNOWLEDGE.source} compact />
-                <TextbookBox kind="remark" text={KNOWLEDGE.special} source={KNOWLEDGE.source} compact />
-              </PredictRule>
-              <KnowledgeBrick id="tamthil-taalufi" lead="ما رأيته في النشاط 3، لكل دالة تآلفية:" />
               <TapQuestion
                 prompt={<MathText>{'التمثيل البياني للدالة $k : x \\longmapsto 0{,}5x - 4$ يقطع محور التراتيب في النقطة:'}</MathText>}
                 options={['$(0 ; -4)$', '$(-4 ; 0)$', '$(0 ; 0{,}5)$', 'O'].map(Opt)}
                 correct={0}
                 cols={2}
-                requires={['tamthil-taalufi']}
+                requires={['tartib-mabda']}
                 explain={<MathText>{'$k(0) = 0{,}5 \\times 0 - 4 = -4$ : النقطة $(0 ; -4)$ . أمّا $(-4 ; 0)$ فقلبٌ للإحداثيين، و $0{,}5$ معامل $x$ لا الحدّ الثابت، و O ليست من التمثيل لأنّ $k(0) \\neq 0$ .'}</MathText>}
                 onAnswered={() => setQ1a(true)}
               />
+              {q1a && <KnowledgeBrick id="tartib-mabda" variant="rappel" compact />}
+              {q1a && (
+              <PredictRule id="tamthil-taalufi">
+                <TextbookBox kind="property" text={KNOWLEDGE.property} source={KNOWLEDGE.source} compact />
+                <TextbookBox kind="remark" text={KNOWLEDGE.special} source={KNOWLEDGE.source} compact />
+              </PredictRule>
+              )}
+              {q1a && <KnowledgeBrick id="tamthil-taalufi" lead="ما رأيته في النشاط 3، لكل دالة تآلفية:" />}
+              {q1a && (
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'هل النقطة من المستقيم $y = 0{,}5x - 4$ ؟'}</MathText></p>}
                 rows={[
@@ -76,6 +79,7 @@ export default function Module02Maarif() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: نقطة من المستقيم ترتيبها صورة فاصلتها.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ1b(true)}
               />
+              )}
             </div>
           ),
         },
@@ -83,6 +87,21 @@ export default function Module02Maarif() {
           num: 2, title: 'معامل التوجيه', subtitle: 'ماذا يحدث لكل وحدة نتقدّمها؟', done: q2a && q2b,
           content: (
             <div className="space-y-3">
+              <TapQuestion
+                prompt={<MathText>{'المستقيمان اللذان يمثّلان الدالتين $x \\longmapsto 2x + 1$ و $x \\longmapsto 2x - 3$ :'}</MathText>}
+                options={[
+                  'متوازيان: لهما المعامل $2$ نفسه في عبارتيهما، ويقطعان محور التراتيب في نقطتين مختلفتين.',
+                  'يتقاطعان في النقطة $(0 ; 2)$ .',
+                  'منطبقان لأنّ لهما المعامل $2$ نفسه.',
+                ].map(Opt)}
+                correct={0}
+                cols={1}
+                requires={['tamthil-taalufi']}
+                explain={<MathText>{'كلاهما تمثيل $x \\longmapsto 2x$ مرفوعًا: الأول بـ $1$ والثاني بـ $-3$ ، فهما متوازيان ويقطعان محور التراتيب في $(0 ; 1)$ و $(0 ; -3)$ . لا يتقاطعان، ولا ينطبقان لأنّ $1 \\neq -3$ .'}</MathText>}
+                onAnswered={() => setQ2b(true)}
+              />
+              {q2b && (
+              <>
               <TextbookBox kind="definition" text={KNOWLEDGE.names} source={KNOWLEDGE.source} compact />
               <PredictRule id="muamil-tawjih" prompt={"على المستقيمات $y = ax + b$ التي رأيتها: عندما نتقدّم وحدة واحدة إلى اليمين، بكم يتغيّر الترتيب؟ ومتى «يصعد» المستقيم، ومتى «ينزل»، ومتى يوازي محور الفواصل؟"}><TextbookBox kind="property" text={KNOWLEDGE.slope} source={KNOWLEDGE.source} compact /></PredictRule>
               <TextbookBox kind="example" text={KNOWLEDGE.example} source={KNOWLEDGE.source} compact />
@@ -103,19 +122,8 @@ export default function Module02Maarif() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'إشارة معامل التوجيه وحدها تعيّن المنحى.' : 'راجع التصحيح: انظر إلى معامل x لا إلى الحدّ الثابت.'}</Feedback>}
                 onAnswered={() => setQ2a(true)}
               />
-              <TapQuestion
-                prompt={<MathText>{'المستقيمان اللذان يمثّلان الدالتين $x \\longmapsto 2x + 1$ و $x \\longmapsto 2x - 3$ :'}</MathText>}
-                options={[
-                  'متوازيان: لهما معامل التوجيه نفسه $2$ ، ويقطعان محور التراتيب في نقطتين مختلفتين.',
-                  'يتقاطعان في النقطة $(0 ; 2)$ .',
-                  'منطبقان لأنّ لهما المعامل $2$ نفسه.',
-                ].map(Opt)}
-                correct={0}
-                cols={1}
-                requires={['muamil-tawjih', 'tamthil-taalufi']}
-                explain={<MathText>{'كلاهما تمثيل $x \\longmapsto 2x$ مرفوعًا: الأول بـ $1$ والثاني بـ $-3$ ، فهما متوازيان ويقطعان محور التراتيب في $(0 ; 1)$ و $(0 ; -3)$ . لا يتقاطعان، ولا ينطبقان لأنّ $1 \\neq -3$ .'}</MathText>}
-                onAnswered={() => setQ2b(true)}
-              />
+              </>
+              )}
             </div>
           ),
         },
@@ -134,9 +142,6 @@ export default function Module02Maarif() {
                 title="نرسم تمثيل الدالة f(x) = 2x − 3"
                 lead={<MathText>{'ضع نقطتين من تمثيل $f(x) = 2x - 3$ . جرّب أيضًا المبدأ O: هل يقبله المعلم؟'}</MathText>}
               />
-              {/* La طريقة révèle sa règle (encadré final) juste avant la brique : prédiction d'abord. */}
-              <PredictRule id="rasm-taalufi"><MethodSteps method={METHOD_DRAW} /></PredictRule>
-              <KnowledgeBrick id="rasm-taalufi" lead="الطريقة:" />
               <TapQuestion
                 prompt={<MathText>{'لرسم التمثيل البياني للدالة $f : x \\longmapsto 3x - 1$ نرسم المستقيم الذي يشمل النقطتين:'}</MathText>}
                 options={[
@@ -147,10 +152,17 @@ export default function Module02Maarif() {
                 ].map(Opt)}
                 correct={0}
                 cols={1}
-                requires={['rasm-taalufi']}
+                requires={['tamthil-taalufi']}
                 explain={<MathText>{`${COMMON_ERRORS.mabda.why} الصحيح: ${COMMON_ERRORS.mabda.right} أمّا $(0 ; 3)$ فتخلط بين المعاملين ($f(0) = -1$)، و $f(-1) = -4 \\neq 0$ .`}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && (
+              <>
+              {/* La طريقة vient APRÈS la réponse (nommer après avoir fait) ; elle révèle sa règle : prédiction d'abord. */}
+              <PredictRule id="rasm-taalufi"><MethodSteps method={METHOD_DRAW} /></PredictRule>
+              <KnowledgeBrick id="rasm-taalufi" lead="الطريقة:" />
+              </>
+              )}
             </div>
           ),
         },

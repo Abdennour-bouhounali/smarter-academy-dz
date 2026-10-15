@@ -27,6 +27,9 @@ import { PoolScene } from '../components/MuadalatFigures';
  * Les essais de l'élève (`onTrial`) sont listés au-dessus des questions
  * (`[data-activity-evidence]`) ; le modèle qu'il a vérifié (`onModel`) aussi.
  *
+ * RÉTROFIT 2026-10-15 : plus de carte au-dessus du labo ; l'énoncé du manuel (avec la scène PoolScene) est lu à l'étape 1 (« قراءة
+ * الوضعية »), le contexte du labo متقدم est son `lead`.
+ *
  * Les étapes : ce qui est cherché (étape 1 du manuel), la traduction de chaque
  * formule (brique `tarjama-sigha` APRÈS la réponse), l'essai (étape 2 —
  * `tajrib`), l'inéquation qui départage (`mutarajiha-mufadala`), puis
@@ -65,27 +68,9 @@ export default function Module07AlWadiya() {
 
   return (
     <ContentModule objectives={["ما المطلوب بالضبط في وضعية المسبح؟", "كيف أترجم كل صيغة اشتراك بعبارة حرفية؟", "ماذا أكتب لأعرف الصيغة الأفضل، وكيف أفسّر النتيجة؟"]} ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="تحليل الوضعية النهائية للاختبار" moduleSubtitle="المسبح البلدي: أيّ صيغة اشتراك أفضل؟" estimatedTime="16 دقيقة"
-      brief={{
-        tag: 'أدمج تعلّماتي — الكتاب ص 52', headline: 'صيغتان للاشتراك في المسبح البلدي', emoji: '🏊', visual: <PoolScene />,
-        title: 'ابتداءً من أي عدد للحصص تكون التسعيرة الثانية أفضل؟', tone: 'amber',
-        body: (
-          <div className="space-y-2">
-            <p>{SITUATION.intro}</p>
-            <ul className="ms-4 list-disc space-y-1">
-              <li>{SITUATION.formula1}</li>
-              <li>{SITUATION.formula2}</li>
-            </ul>
-            <p className="font-semibold">{SITUATION.question}</p>
-            <p className="text-xs text-slate-500">{SITUATION.figure}</p>
-          </div>
-        ),
-        footer: <SourceTag source={SITUATION.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead={<MathText>{'المستوى المتقدّم هو وضعية الكتاب: 75 دينارًا للحصة، أو 560 دينارًا سنويًا و 5 دنانير للحصة. في المستوى المبتدئ مسبح الحيّ بأعداد أصغر.'}</MathText>}
           levels={{
             beginner: () => (
               <Manipulation
@@ -103,7 +88,7 @@ export default function Module07AlWadiya() {
                 level="advanced"
                 {...LAB.advanced}
                 title={bidi('المسبح البلدي: 75x أم 560 + 5x؟')}
-                lead="ضع البطاقة «× x» على كل مبلغ يُدفع في كل حصة، ثم مدّد عدد الحصص: متى يصبح ثمن الصيغة الأولى أكبر من ثمن الثانية؟"
+                lead="في المسبح البلدي: 75 دينارًا للحصة، أو 560 دينارًا سنويًا و 5 دنانير للحصة. ضع البطاقة «× x» على كل مبلغ يُدفع في كل حصة، ثم مدّد عدد الحصص: متى يصبح ثمن الصيغة الأولى أكبر من ثمن الثانية؟"
                 onTrial={keep(setBig)}
                 onModel={({ tex }) => setModel(tex)}
               />
@@ -115,6 +100,18 @@ export default function Module07AlWadiya() {
         { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1 من الكتاب', done: q1,
           content: (
             <div className="space-y-3">
+              {/* La وضعية du manuel (p. 52) : lue ICI, après l'action du labo (rétrofit 2026-10-15 — le labo est le premier bloc du module). */}
+              <div className="space-y-2 rounded-xl border-2 border-amber-200 bg-amber-50 p-3 text-sm" data-situation-statement>
+                <PoolScene />
+                <p>{SITUATION.intro}</p>
+                <ul className="ms-4 list-disc space-y-1">
+                  <li>{SITUATION.formula1}</li>
+                  <li>{SITUATION.formula2}</li>
+                </ul>
+                <p className="font-semibold">{SITUATION.question}</p>
+                <p className="text-xs text-slate-500">{SITUATION.figure}</p>
+                <SourceTag source={SITUATION.source} />
+              </div>
               <TapQuestion
                 prompt="ما المطلوب في الوضعية؟"
                 options={['أصغر عدد من الحصص تكون ابتداءً منه الصيغة الثانية أقل تكلفة', 'عدد الحصص الذي تتساوى فيه تكلفتا الصيغتين', 'ثمن حصة واحدة في كل صيغة', 'الصيغة الأرخص إذا سبحنا حصة واحدة']}

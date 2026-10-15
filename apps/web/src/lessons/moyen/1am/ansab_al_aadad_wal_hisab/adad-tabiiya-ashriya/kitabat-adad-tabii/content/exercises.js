@@ -5,6 +5,7 @@
  * docs/sources/1am/unit1/extraction.json dans ./content.test.js.
  */
 import { src } from '../../_unit/unitMeta.js';
+import { ACTIVITY } from './textbook.js';
 
 export const LP = {
   P1: '1am_kitabat-adad-tabii_P1',
@@ -13,6 +14,24 @@ export const LP = {
 };
 
 export const EXERCISES = [
+  {
+    // نشاط 1 (p. 9) posé en APPLICATION, après la découverte au labo (LESSON_DEVELOPMENT_GUIDE §4ter) — ses trois questions.
+    id: 'act-1', source: src('act-1', 9, 'اكتشف', 1), learningPointId: LP.P2, difficulty: 'facile',
+    statement: ACTIVITY.questions.join(' '),
+    interaction: 'batch',
+    question: {
+      prompt: 'أجب عن أسئلة نشاط الكتاب:',
+      rows: [
+        { label: '1) أ) أكبر عدد بالأرقام 0 ، 1 ، 3 ، 8', options: ['8310', '8301', '1038'], correct: 0, correction: 'الرقم الأكبر في المرتبة الأعلى: 8 آلاف، ثم 3 مئات، ثم 1 عشرة، ثم 0.' },
+        { label: '1) ب) أصغر عدد بالأرقام 0 ، 1 ، 3 ، 8', options: ['0138', '1038', '1083'], correct: 1, correction: 'لا نبدأ بالصفر: 0138 هو 138 بثلاثة أرقام فقط. أصغر رقم غير معدوم في المرتبة الأعلى: 1038.' },
+        { label: '2) الرقم 2 في 25 وفي 52', options: ['يمثّل 20 في 25 ، و 2 في 52', 'يمثّل 2 في العددين', 'يمثّل 2 في 25 ، و 20 في 52'], correct: 0, correction: '$25 = 2 \\times 10 + 5$ و $52 = 5 \\times 10 + 2$ : نفس الرقمين، وقيمتان مختلفتان حسب الموقع.' },
+        { label: '3) العدد الذي يلي تسعمائة وتسعة وتسعين', options: ['9910', '1000 — ألف', '99910'], correct: 1, correction: 'كما في الورشة: ثلاث ربطات متتالية، 1000.' },
+        { label: '3) العدد الذي يسبق تسعمائة وتسعة وتسعين', options: ['998 — تسعمائة وثمانية وتسعون', '989', '899'], correct: 0, correction: 'ننقص وحدة من الآحاد: 998.' },
+      ],
+      explain: 'الموقع يقرّر قيمة الرقم: المرتبة الأعلى على اليسار.',
+    },
+    commonError: 'كتابة 0138 أصغرَ عدد، أو 9910 بعد 999.',
+  },
   {
     id: 'ex-1', source: src('ex-1', 17, 'أتمرّن', 1), learningPointId: LP.P2, difficulty: 'moyen',
     statement: 'أتمم الفراغات بما يناسب في العدد 2017 : رقم الآحاد هو ... وعدد الوحدات هو... ؛ رقم العشرات هو ... وعدد العشرات هو... ؛ رقم المئات هو ... وعدد المئات هو... ؛ رقم الآلاف هو ... وعدد الآلاف هو...',

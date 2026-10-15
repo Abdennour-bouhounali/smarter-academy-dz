@@ -617,7 +617,8 @@ DEST = {
         '10': {'lesson': L3, 'module': 0},
         '5': {'lesson': L4, 'module': 0},
         '11': {'lesson': L5, 'module': 0}}},
-    'act-1': {'lesson': L1, 'module': 1},
+    # act-1 : posé en APPLICATION au module 4 (أتمرّن) — l'entrée du درس est l'atelier de la plateforme (guide §4ter, 2026-10-14).
+    'act-1': {'lesson': L1, 'module': 4},
     'act-2': {'lesson': L2, 'module': 1}, 'act-3': {'lesson': L2, 'module': 1},
     'act-4': {'lesson': L3, 'module': 1}, 'act-5': {'lesson': L4, 'module': 1}, 'act-6': {'lesson': L5, 'module': 1},
     'know-1': {'lesson': L1, 'module': 2},

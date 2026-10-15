@@ -17,6 +17,18 @@
  *                      la mairie, le plateau tournant de la Foire d'Alger — content/problems.js ;
  *   M8 إختبار أولي   — QCM 1 corrigé et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Candidats d'entrée : (a) le نشاط 1 du manuel (trois formes F, F₁, F′ : « comment passe-t-on de l'une à l'autre ? ») : une page de
+ *   questions sur une figure imprimée, sans geste, et la bonne réponse (« il faut tourner ») ne se découvre pas ; (b) la grande roue
+ *   de Ben Aknoun (labo rotation-dial, مبتدئ) : la main place l'image de chaque nacelle dans les DEUX sens, le labo refuse en nommant
+ *   la condition qui manque (le sens, le rayon, l'angle). Retenu : (b), entrée de la plateforme (`platform_designed_entry`) ; (a)
+ *   devient l'APPLICATION qui suit la roue (étapes 1–2 : pourquoi deux symétries ou une translation ne suffisent pas, puis le
+ *   papier calque). Ordre des idées : la roue → نشاط 1 (forme à forme, papier calque ; brique `dawaran-tajribi` après) → نشاط 2 (le
+ *   شريط de la construction, au niveau متقدم) → نشاط 3 (segment, droite, demi-droite, cercle) → معارف : chaque question AVANT
+ *   l'exemple du manuel et la brique qui NOMME (dawaran, ittijah, surat-nuqta, nisf-dawra) → طرائق : la question AVANT la solution du
+ *   manuel (tariqat-nuqta, tariqat-qitaa) et la brique (suwar-ashkal).
+ *   Module 1 : plus de `brief` ni de `title`/`lead` de workspace ; contexte = la `lead` de la roue.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/mafhum-dawaran';
@@ -90,7 +102,7 @@ export const LESSON_CONFIG = {
       title: 'العجلة الدوّارة: أين تصل المقصورة؟',
       objective: 'صورة نقطة M بالدوران الذي مركزه O وزاويته α في اتجاه معيّن هي النقطة M′ حيث OM′ = OM والزاوية MOM′ = α في ذلك الاتجاه، ومنها صور القطعة والدائرة',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'ferris-wheel' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'ferris-wheel' },
       learningPointIds: ['4am_mafhum-dawaran_P1', '4am_mafhum-dawaran_P2'],
       sourceElementIds: ['act-2'],
     },

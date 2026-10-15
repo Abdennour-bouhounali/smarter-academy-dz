@@ -18,6 +18,8 @@ import { NOW_59 } from '../content/exercises';
  *      distracteur affirme un fait FAUX sur la jumla (un coefficient 1 qui n'existe pas, des
  *      coefficients « opposés » qui ne le sont pas) ;
  *   4. دوري الآن : les deux jumal du manuel, « مبيّنا طريقة الحل المستعملة ».
+ * Rétrofit 2026-10-15 (§4quater) : module SANS labo — il ouvre sur la lecture ligne à ligne ; les briques (tariqat-tawid,
+ * tariqat-jam, ikhtiyar-tariqa) et l'encadré « طريقة » viennent APRÈS la réponse (plus de `requires` sur ces questions).
  * LP : P1, P2, P3.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -60,16 +62,15 @@ export default function Module02Tarayiq() {
               <MethodSteps method={solutionOf(METHOD.one)} onAllRevealed={() => setRead1(true)} />
               {read1 && (
                 <>
-                  <KnowledgeBrick id="tariqat-tawid" lead="ما فعله الكتاب في الجملة (1):" />
                   <TapQuestion
                     prompt={<MathText>{'لو عوّضنا $y$ بالعبارة $x - 2$ في المعادلة $x - y = 2$ نفسها التي أخذناها منها، لوجدنا:'}</MathText>}
                     options={[M('$x - (x - 2) = 2$ ، أي $2 = 2$ : مساواة صحيحة دائمًا لا تحدّد $x$'), M('$x = 2$'), M('$y = -2$')]}
                     correct={0}
                     cols={1}
-                    requires={['tariqat-tawid']}
                     explain={<MathText>{'$x - x + 2 = 2$ : يختفي $x$ ويبقى $2 = 2$ . لهذا نعوّض في المعادلة الأخرى $3x + y = -4$ .'}</MathText>}
                     onAnswered={() => setQ1(true)}
                   />
+                  {q1 && <KnowledgeBrick id="tariqat-tawid" lead="ما فعله الكتاب في الجملة (1):" />}
                 </>
               )}
             </div>
@@ -82,17 +83,16 @@ export default function Module02Tarayiq() {
               <MethodSteps method={solutionOf(METHOD.two)} onAllRevealed={() => setRead2(true)} />
               {read2 && (
                 <>
-                  <KnowledgeBrick id="tariqat-jam" lead="ما فعله الكتاب في الجملة (2):" />
-                  <TextbookBox kind="method" title={METHOD_BOX.title} lines={[METHOD_BOX.text, ...METHOD_BOX.items]} source={METHOD_BOX.source} />
                   <TapQuestion
                     prompt={<MathText>{'في الجملة (2) جمعنا المعادلتين مباشرة دون ضرب في معامل، لأنّ:'}</MathText>}
                     options={[M('معاملي $x$ متعاكسان: $4x$ و $-4x$'), M('معاملي $y$ متعاكسان'), M('الطرفين الثانيين موجبان')]}
                     correct={0}
                     cols={1}
-                    requires={['tariqat-jam']}
                     explain={<MathText>{'$4x + (-4x) = 0$ : يختفي $x$ ويبقى $2y + 3y = 9 + 6$ أي $5y = 15$ . أمّا $2y$ و $3y$ فليسا متعاكسين، وإشارة الطرفين الثانيين لا تُلغي شيئًا.'}</MathText>}
                     onAnswered={() => setQ2(true)}
                   />
+                  {q2 && <KnowledgeBrick id="tariqat-jam" lead="ما فعله الكتاب في الجملة (2):" />}
+                  {q2 && <TextbookBox kind="method" title={METHOD_BOX.title} lines={[METHOD_BOX.text, ...METHOD_BOX.items]} source={METHOD_BOX.source} />}
                 </>
               )}
             </div>
@@ -102,7 +102,6 @@ export default function Module02Tarayiq() {
           num: 3, title: 'أيّ طريقة نختار؟', subtitle: 'ننظر إلى المعاملات', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="ikhtiyar-tariqa" lead="الطريقتان تصلان إلى الحل نفسه؛ الفرق في طول الطريق:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">لكل جملة، اختر الطريقة الأنسب مع سببها الصحيح:</p>}
                 rows={[
@@ -116,7 +115,6 @@ export default function Module02Tarayiq() {
                     options: [M('التعويض، لأنّ معامل $y$ يساوي 1'), M('الجمع مباشرة، لأنّ معاملي $x$ متعاكسان'), M('الجمع بعد الضرب في معاملين مناسبين، لأنه لا يوجد معامل يساوي 1 أو $-1$')],
                     correct: 2, correction: M('نضرب الأولى في 3 والثانية في $-2$ : $12x + 9y = 30$ و $-12x + 10y = -68$ ؛ بالجمع $19y = -38$ ، ومنه $y = -2$ ثم $x = 4$ .') },
                 ]}
-                requires={['ikhtiyar-tariqa']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     <MathText>{allRight ? CHOICE.rule : 'اقرأ المعاملات قبل أن تختار: هل يوجد معامل يساوي $1$ أو $-1$ ؟ هل يوجد معاملان متعاكسان؟'}</MathText>
@@ -124,6 +122,7 @@ export default function Module02Tarayiq() {
                 )}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="ikhtiyar-tariqa" lead="الطريقتان تصلان إلى الحل نفسه؛ الفرق في طول الطريق:" />}
             </div>
           ),
         },

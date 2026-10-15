@@ -448,3 +448,29 @@ export function railX(d, { x0, x1, max }) {
 export const decimalText = (f) => fracDecimal(f, 3) ?? fracText(f);
 /** Le produit exact p × d / q, pour les phrases (« 27 × 9 ÷ 45 = 5,4 »). */
 export const product = (p, q, d) => mul(frac(p, q), d);
+
+/* ── Onboarding (LabCoach, MANIPULATION_CONTRACT §8quater) ──────────────────────────── */
+
+/**
+ * LE GUIDE : montre la COMMANDE à trouver maintenant, jamais la réponse (ni le nombre de morceaux, ni la fraction réduite).
+ * Les ids se rangent par sorte de commande : knife (glisser le couteau), claim (ouvrir la proposition), claim-knife (recouper
+ * pour la juger), judge (la carte de réponse — pas un bouton vrai/faux), next (le cadeau), cursor / plant / start (les épingles).
+ * @returns {{ id: string, target: string, gesture: 'tap'|'drag' } | null}
+ */
+export function coachOf(s) {
+  const st = current(s);
+  if (s.predicting) {
+    if (s.pins.length > 0) return { id: 'start', target: '[data-fk-start]', gesture: 'tap' };
+    if (s.cursor === Math.max(1, st.start - 1)) return { id: 'cursor', target: '[data-fk-pin-cursor]', gesture: 'drag' };
+    return { id: 'plant', target: '[data-fk-plant]', gesture: 'tap' };
+  }
+  if (!cutsOf(s, s.stage).length) return { id: 'knife', target: '[data-fk-knife]', gesture: 'drag' };
+  if (canOpenClaim(s)) return { id: 'claim', target: '[data-fk-claim-open]', gesture: 'tap' };
+  if (s.claim && s.stage === 0 && s.claim.state !== 'closed' && s.claim.state !== 'right') {
+    return claimCuttable(s)
+      ? { id: 'judge', target: '[data-fk-claim]', gesture: 'tap' }
+      : { id: 'claim-knife', target: '[data-fk-knife]', gesture: 'drag' };
+  }
+  if (canOpenNext(s)) return { id: 'next', target: '[data-fk-next-button]', gesture: 'tap' };
+  return null;
+}

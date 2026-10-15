@@ -18,6 +18,8 @@ import GraphFigure from '../components/GraphFigure';
  *   4. طريقة « قراءة تمثيل بياني » sur le lab en lecture (la droite du livre, a = 0,4) : f(4) et le
  *      nombre dont l'image est 3,5, puis la règle (brique qiraa-bayaniya) ;
  *   5. دوري الآن : a = 9/4 par A(−2/3 ; −3/2), la droite tracée dans le lab, B(√32 ; √162).
+ * Rétrofit 2026-10-15 (§4quater) : les briques, l'exemple et la figure du livre, et les questions suivantes viennent APRÈS la réponse ;
+ * les labos de lecture / de tracé n'ont plus de titre (leur `lead` suffit). Les PredictRule restent intactes.
  * Les questions utilisent d'AUTRES nombres que les encadrés (la réponse n'est jamais au-dessus).
  * « أتوقّع القاعدة » : chaque encadré du livre qui ÉNONCE une règle (propriété, ملاحظة, les deux طرائق)
  * est enveloppé dans une PredictRule (même id que la brique) — l'élève écrit la règle (predictPrompt de knowledge.jsx), puis la lit.
@@ -47,32 +49,34 @@ export default function Module02Maarif() {
       estimatedTime="13 دقيقة"
       brief={{
         tag: 'معارف ص 68 · طرائق ص 69', title: KNOWLEDGE.title, tone: 'violet',
-        body: <p><MathText>{'في النشاط 3 كان التمثيل مستقيمًا يشمل O، ورأيت بالزالق أنّه يصعد أو ينزل. الكتاب يقول ذلك لكل دالة خطية، ثم يعلّمنا كيف نرسمه وكيف نقرأ عليه.'}</MathText></p>,
+        body: <p><MathText>{'نجرّب أولًا على دوال جديدة ما فعلته في النشاط 3: ماذا يكون مستقيمها؟ متى يصعد ومتى ينزل؟ ثم نتعلّم كيف نرسمه وكيف نقرأ عليه صورة عدد.'}</MathText></p>,
       }}
       steps={[
         {
-          num: 1, title: 'شكل التمثيل البياني', subtitle: 'معارف — الخاصية', done: q1a && q1b,
+          num: 1, title: 'ما شكل تمثيل دالة خطية؟', subtitle: 'معارف — الخاصية', done: q1a && q1b,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="tamthil-nashat" variant="rappel" compact />
               {/* « أتوقّع القاعدة » : l'encadré du livre ÉNONCE la règle — l'élève la prédit d'abord. */}
               <PredictRule id="tamthil-mustaqim"><TextbookBox kind="property" text={KNOWLEDGE.property} source={KNOWLEDGE.source} compact /></PredictRule>
-              <KnowledgeBrick id="tamthil-mustaqim" lead="ما رأيته في النشاط 3، لكل دالة خطية:" />
-              <TextbookBox kind="example" text={KNOWLEDGE.example} source={KNOWLEDGE.source} compact />
-              <GraphFigure testId="know-3" win={{ xMin: -3, xMax: 3, yMin: -5, yMax: 5 }} height={240}
-                lines={[{ a: -2, label: '(D)', color: '#E11D48' }, { a: 2, label: "(D')", color: '#059669' }]}
-                points={[{ x: 1, y: -2, label: 'A' }, { x: 1, y: 2 }]}
-                caption="الشكل: المستقيم (D) يشمل O و A(1 ; −2)، والمستقيم (D′) يشمل O و (1 ; 2)." />
               <TapQuestion
                 prompt={<MathText>{'معادلة المستقيم الذي يمثّل الدالة الخطية $k : x \\longmapsto -0{,}6x$ هي:'}</MathText>}
                 options={['$y = -0{,}6x$', '$y = x - 0{,}6$', '$y = -0{,}6$', '$x = -0{,}6y$'].map(Opt)}
                 correct={0}
                 cols={2}
-                requires={['tamthil-mustaqim']}
+                requires={['tamthil-nashat']}
                 explain={<MathText>{'التمثيل البياني لدالة خطية معاملها $a$ معادلته $y = ax$ : هنا $y = -0{,}6x$ ، و $-0{,}6$ معامل توجيهه.'}</MathText>}
                 onAnswered={() => setQ1a(true)}
               />
-              <BatchChoiceQuestion
+              {q1a && <KnowledgeBrick id="tamthil-mustaqim" lead="ما رأيته في النشاط 3، لكل دالة خطية:" />}
+              {q1a && <TextbookBox kind="example" text={KNOWLEDGE.example} source={KNOWLEDGE.source} compact />}
+              {q1a && (
+                <GraphFigure testId="know-3" win={{ xMin: -3, xMax: 3, yMin: -5, yMax: 5 }} height={240}
+                  lines={[{ a: -2, label: '(D)', color: '#E11D48' }, { a: 2, label: "(D')", color: '#059669' }]}
+                  points={[{ x: 1, y: -2, label: 'A' }, { x: 1, y: 2 }]}
+                  caption="الشكل: المستقيم (D) يشمل O و A(1 ; −2)، والمستقيم (D′) يشمل O و (1 ; 2)." />
+              )}
+              {q1a && <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'هل النقطة من المستقيم $y = -0{,}6x$ ؟'}</MathText></p>}
                 rows={[
                   { id: 'p5', label: <MathText>{'$P(5 ; -3)$'}</MathText>, options: ['نعم', 'لا'], correct: 0, correction: <MathText>{'$-0{,}6 \\times 5 = -3$ : ترتيبها صورة فاصلتها.'}</MathText> },
@@ -82,16 +86,15 @@ export default function Module02Maarif() {
                 requires={['tamthil-mustaqim']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: نقطة من المستقيم ترتيبها صورة فاصلتها.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ1b(true)}
-              />
+              />}
             </div>
           ),
         },
         {
-          num: 2, title: 'يصعد أم ينزل؟', subtitle: 'معارف — ملاحظة', done: q2,
+          num: 2, title: 'متى يصعد المستقيم ومتى ينزل؟', subtitle: 'معارف — ملاحظة', done: q2,
           content: (
             <div className="space-y-3">
               <PredictRule id="munha-mustaqim"><TextbookBox kind="remark" text={KNOWLEDGE.note} source={KNOWLEDGE.source} compact /></PredictRule>
-              <KnowledgeBrick id="munha-mustaqim" lead="ما رأيته على الزالق، بكلمات الكتاب:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">من اليسار إلى اليمين، التمثيل البياني للدالة:</p>}
                 rows={[
@@ -100,10 +103,11 @@ export default function Module02Maarif() {
                   { id: 'm3', label: <MathText>{'$x \\longmapsto -x$'}</MathText>, options: DIR, correct: 1, correction: <MathText>{'المعامل $-1 < 0$ : ينزل.'}</MathText> },
                   { id: 'm4', label: <MathText>{'$x \\longmapsto 4x$'}</MathText>, options: DIR, correct: 0, correction: <MathText>{'المعامل $4 > 0$ : يصعد.'}</MathText> },
                 ]}
-                requires={['munha-mustaqim']}
+                requires={['tamthil-nashat']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'إشارة المعامل وحدها تكفي.' : 'راجع التصحيح تحت كل سطر: انظر إلى إشارة المعامل.'}</Feedback>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="munha-mustaqim" lead="ما رأيته على الزالق، بكلمات الكتاب:" />}
             </div>
           ),
         },
@@ -112,16 +116,16 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <PredictRule id="rasm-tamthil"><MethodSteps method={METHOD_DRAW} /></PredictRule>
-              <KnowledgeBrick id="rasm-tamthil" lead="الطريقة، كما تعلّمها الكتاب:" />
               <TapQuestion
                 prompt={<MathText>{'لرسم التمثيل البياني للدالة $h : x \\longmapsto -2{,}5x$ نرسم المستقيم الذي يشمل O والنقطة:'}</MathText>}
                 options={['$(1 ; -2{,}5)$', '$(-2{,}5 ; 1)$', '$(1 ; 2{,}5)$', '$(0 ; -2{,}5)$'].map(Opt)}
                 correct={0}
                 cols={2}
-                requires={['rasm-tamthil']}
+                requires={['tamthil-mustaqim']}
                 explain={<MathText>{'$h(1) = -2{,}5$ : النقطة $(1 ; -2{,}5)$. أمّا $(-2{,}5 ; 1)$ فقلبٌ للإحداثيين ($h(-2{,}5) = 6{,}25$)، و $(1 ; 2{,}5)$ تنسى الإشارة، و $(0 ; -2{,}5)$ لا تقع على مستقيم يشمل O لأنّ $h(0) = 0$.'}</MathText>}
                 onAnswered={() => setQ3(true)}
               />
+              {q3 && <KnowledgeBrick id="rasm-tamthil" lead="الطريقة، كما تعلّمها الكتاب:" />}
             </div>
           ),
         },
@@ -137,30 +141,31 @@ export default function Module02Maarif() {
                 xMin="0" xMax="10" yMin="0" yMax="5"
                 theme="cablecar"
                 levels={false}
-                title="طرائق: صورة 4، والعدد الذي صورته 3,5"
                 lead="حرّك المسبار تحت محور الفواصل إلى 4، ثم المسبار على يسار محور التراتيب إلى 3,5، واتبع الخط المتقطع."
               />
               <p className="text-xs text-slate-500"><MathText>{METHOD_READ_WINDOW.note}</MathText> <SourceTag source={METHOD_READ_WINDOW.source} /></p>
               <PredictRule id="qiraa-bayaniya"><MethodSteps method={METHOD_READ} /></PredictRule>
-              <KnowledgeBrick id="qiraa-bayaniya" lead="ما فعلته بالمسبارين، طريقةً:" />
               <NumericQuestion
                 prompt={<MathText>{'على المستقيم (D) نفسه، اقرأ صورة $7{,}5$ :'}</MathText>}
                 expected={3}
                 parse={parseDec}
                 display="3"
-                requires={['qiraa-bayaniya']}
+                requires={['tamthil-mustaqim']}
                 explain={<MathText>{'من $7{,}5$ على محور الفواصل نصعد إلى (D) ثم نقرأ الترتيب: $3$ ، أي $f(7{,}5) = 3$.'}</MathText>}
                 onAnswered={() => setQ4a(true)}
               />
-              <NumericQuestion
-                prompt={<MathText>{'واقرأ العدد الذي صورته $2$ :'}</MathText>}
-                expected={5}
-                parse={parseDec}
-                display="5"
-                requires={['qiraa-bayaniya']}
-                explain={<MathText>{'من $2$ على محور التراتيب نذهب أفقيًا إلى (D) ثم نقرأ الفاصلة: $5$ ، أي $f(5) = 2$ — وليس $0{,}8$ وهي صورة $2$.'}</MathText>}
-                onAnswered={() => setQ4b(true)}
-              />
+              {q4a && <KnowledgeBrick id="qiraa-bayaniya" lead="ما فعلته بالمسبارين، طريقةً:" />}
+              {q4a && (
+                <NumericQuestion
+                  prompt={<MathText>{'واقرأ العدد الذي صورته $2$ :'}</MathText>}
+                  expected={5}
+                  parse={parseDec}
+                  display="5"
+                  requires={['qiraa-bayaniya']}
+                  explain={<MathText>{'من $2$ على محور التراتيب نذهب أفقيًا إلى (D) ثم نقرأ الفاصلة: $5$ ، أي $f(5) = 2$ — وليس $0{,}8$ وهي صورة $2$.'}</MathText>}
+                  onAnswered={() => setQ4b(true)}
+                />
+              )}
             </div>
           ),
         },
@@ -186,7 +191,6 @@ export default function Module02Maarif() {
                   points="-2/3:-3/2"
                   theme="cablecar"
                   levels={false}
-                  title="دوري الآن: مثّل الدالة بيانيا"
                   lead="النقطة البرتقالية هي A. ضع نقطة ثانية من التمثيل غير O — نقطة إحداثياها أبسط."
                 />
               )}

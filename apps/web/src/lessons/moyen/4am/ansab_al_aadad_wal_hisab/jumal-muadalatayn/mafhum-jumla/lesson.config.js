@@ -5,6 +5,18 @@
  * puis trois « مسائل » de la plateforme (modules 4–6).
  * Source de vérité : docs/sources/4am/unit5/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la carte de saison d'un club (labo `pair-scoreboard`, thème `football`, niveau مبتدئ : 10 matchs sans défaite,
+ *   22 points) — la main fixe deux nombres et DEUX jauges se prononcent : une ثنائية qui allume une seule jauge ne « marche » pas,
+ *   « les deux conditions à la fois » se voit avant de se nommer. Le niveau متقدم est le نشاط 1 du livre (32 agents, avant / après la
+ *   retraite). Rejetées : (a) la carte « تحدّ + نشاط » du livre au-dessus du labo (deux départs, la question du تحدّ posée avant tout geste) —
+ *   le تحدّ de la cagnotte (37 pièces, 610DA) devient le TRANSFERT de l'étape 5, sur le MÊME tableau ; (b) س أ) du livre en ouverture
+ *   (« 24 et 8 ? », réponse de tête) : elle vient après le labo, avec les essais de l'élève en preuve.
+ *   Ordre des idées : labo → pourquoi (24 ; 8) n'allume qu'une jauge → la traduction en deux équations → simplifier et vérifier
+ *   (13 ; 19) et (24 ; 8) → brique jumla-nashat APRÈS la réponse → ce que (13 ; 19) dit du service (avant la retraite) → le تحدّ.
+ *   Module 2 (معارف, sans labo) : « أتوقّع القاعدة » d'abord ; à l'étape 2, la question sur (1 ; −1) avant les exemples du livre et la
+ *   brique de la vérification d'une ثنائية.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/mafhum-jumla';
@@ -71,7 +83,7 @@ export const LESSON_CONFIG = {
       title: 'بطاقة الموسم: 10 مباريات و 22 نقطة',
       objective: 'حل جملة معادلتين ثنائية (x ; y) تحقق المعادلتين في آن واحد، والترتيب في الثنائية مهم',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'football' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'football' },
       learningPointIds: ['4am_mafhum-jumla_P2', '4am_mafhum-jumla_P3'],
       sourceElementIds: ['act-1'],
     },

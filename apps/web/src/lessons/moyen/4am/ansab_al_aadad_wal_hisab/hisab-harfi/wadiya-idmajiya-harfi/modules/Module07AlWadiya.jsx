@@ -6,7 +6,7 @@ import { Manipulation } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { SITUATION, CHALLENGE, REMARKS } from '../content/textbook';
-import { PoolScene, RightTriangle } from '../components/HarfiFigures';
+import { RightTriangle } from '../components/HarfiFigures';
 
 /**
  * Module 7 — la وضعية (p. 40) : le bassin carré de côté 10 m et le ruban de
@@ -22,6 +22,8 @@ import { PoolScene, RightTriangle } from '../components/HarfiFigures';
  * (`[data-activity-evidence]`) avec l'aire du ruban = grand carré − 100 :
  * c'est là qu'il VOIT pour quel x le ruban vaut 44.
  *
+ * Rétrofit 2026-10-15 (§4quater) : ni carte du manuel ni titre de labo au-dessus du labo (le contexte est son `lead`, la question sa `mission`) ;
+ * l'étape 1 demande ce que l'élève a VU en tirant x (le labo posait déjà « quel x ? »), puis l'encadré du manuel.
  * Les étapes : ce qui est cherché (étape 1 du manuel), le côté du grand carré
  * (brique `namdhaja`), l'aire du ruban de deux façons (« هناك طرق متعددة »),
  * sa forme développée (brique `masaha-tariqatan` APRÈS la réponse), le x des
@@ -60,27 +62,13 @@ export default function Module07AlWadiya() {
 
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} objectives={["كيف نعبّر عن ضلع المربع الذي يضمّ الحوض والشريط؟", "بأيّ طرق نكتب مساحة الشريط؟", "ما عرض الشريط الذي تكون مساحته 44 مترًا مربّعًا؟", "متى يكون المثلث ABC قائمًا في A؟"]} moduleTitle="الوضعية وتحليلها" moduleSubtitle="الحوض والشريط: ما عرض الشريط؟" estimatedTime="14 دقيقة"
-      brief={{
-        tag: 'أدمج تعلّماتي — الكتاب ص 40', headline: 'شريط للراجلين حول الحوض', emoji: '🏊', visual: <PoolScene />,
-        title: 'ما عرض الشريط حتى تكون مساحته 44 مترًا مربّعًا؟', tone: 'amber',
-        body: (
-          <div className="space-y-2">
-            <p><MathText>{SITUATION.text}</MathText></p>
-            <p className="text-sm"><MathText>{SITUATION.help}</MathText></p>
-            <p className="text-xs text-slate-500"><MathText>{`في الكتاب: ${SITUATION.figure}`}</MathText></p>
-            <p className="rounded-lg bg-amber-50 px-2 py-1 text-sm">وتحدٍّ من أول الوحدة نعود إليه في آخر المحور: <MathText>{CHALLENGE.text}</MathText> <SourceTag source={CHALLENGE.source} /></p>
-          </div>
-        ),
-        footer: <SourceTag source={SITUATION.source} />,
-      }}
       intro={
         <Manipulation
           type="pitch-expansion"
           expr="x+10+x"
           levels={false}
-          title="الحوض والشريط: مربع ضلعه x + 10 + x"
           mission="المنطقة المركزية 10 × 10 هي الحوض، والمناطق الثماني حولها هي الشريط. اسحب عرض الشريط x، احسب المناطق، ثم تحقّق: من أجل أيّ قيمة لـ x تكون مساحة الشريط 44؟"
-          lead="لاحظ كيف يحيط الشريط بالحوض عند كل ضلع من أضلاعه، ثم اسحب x وتابع ما يحدث للمناطق."
+          lead="يهيّئ سكّان الحيّ حديقة عامة فيها حوض مربّع ضلعه 10 م، ويحيط به من كل الجهات شريط للراجلين عرضه x."
           onTrial={onTrial}
         />
       }
@@ -89,10 +77,10 @@ export default function Module07AlWadiya() {
           content: (
             <div className="space-y-3">
               <TapQuestion
-                prompt="ما المطلوب في الوضعية؟"
-                options={['عرض الشريط x الذي تكون من أجله مساحة الشريط 44 مترًا مربّعًا', 'مساحة الحوض', 'طول ضلع الحوض', 'محيط الشريط']}
+                prompt="حين سحبت x في الملعب، ما الذي بقي ثابتًا وما الذي تغيّر؟"
+                options={['الحوض 10 × 10 ثابت، أمّا الشريط وضلع المربع الخارجي فيتغيّران مع x', 'مساحة الحوض تكبر مع x', 'كل المناطق التسع تتغيّر مع x', 'محيط الحوض يتغيّر مع x']}
                 correct={0} cols={1} requires={['masahat-ashkal']}
-                explain="مساحة الحوض وضلعه معلومان (ضلعه 10m). المجهول هو عرض الشريط، والمعلومة التي توظَّف هي مساحة الشريط."
+                explain="مساحة الحوض وضلعه معلومان (ضلعه 10m) ولا يتغيّران. المجهول هو عرض الشريط x، والمعلومة التي توظَّف هي مساحة الشريط."
                 onAnswered={() => setQ1(true)} />
               {q1 && <TextbookBox kind="remark" title={SITUATION.analysis[0].label} text={SITUATION.analysis[0].text} source={SITUATION.source} compact />}
             </div>

@@ -16,7 +16,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module01Nashat.jsx",
-        "line": 181,
+        "line": 162,
         "step": 3,
         "variant": "new"
       }
@@ -27,7 +27,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module02Maarif.jsx",
-        "line": 70,
+        "line": 80,
         "step": 2,
         "variant": "new"
       }
@@ -40,7 +40,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module02Maarif.jsx",
-        "line": 102,
+        "line": 100,
         "step": 3,
         "variant": "new"
       }
@@ -53,7 +53,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module02Maarif.jsx",
-        "line": 47,
+        "line": 60,
         "step": 1,
         "variant": "new"
       }
@@ -64,7 +64,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module03Taraiq.jsx",
-        "line": 50,
+        "line": 67,
         "step": 1,
         "variant": "new"
       }
@@ -190,7 +190,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module01Nashat.jsx",
-      "line": 125,
+      "line": 102,
       "requires": [
         "ihdathiyat-nuqta"
       ],
@@ -206,7 +206,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module01Nashat.jsx",
-      "line": 144,
+      "line": 126,
       "requires": [
         "shuaa-anasir"
       ],
@@ -222,7 +222,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module01Nashat.jsx",
-      "line": 164,
+      "line": 146,
       "requires": [
         "shuaa-anasir"
       ],
@@ -238,7 +238,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module01Nashat.jsx",
-      "line": 192,
+      "line": 173,
       "requires": [
         "murakkibatan"
       ],
@@ -254,7 +254,7 @@
       "step": 5,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module01Nashat.jsx",
-      "line": 216,
+      "line": 196,
       "requires": [
         "murakkibatan"
       ],
@@ -270,13 +270,9 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module02Maarif.jsx",
-      "line": 51,
-      "requires": [
-        "qiraa-bayaniya"
-      ],
-      "prerequisiteStatus": {
-        "qiraa-bayaniya": "established@M2"
-      },
+      "line": 48,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -286,13 +282,9 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module02Maarif.jsx",
-      "line": 74,
-      "requires": [
-        "murakkibata-om"
-      ],
-      "prerequisiteStatus": {
-        "murakkibata-om": "established@M2"
-      },
+      "line": 70,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -302,7 +294,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module02Maarif.jsx",
-      "line": 104,
+      "line": 102,
       "requires": [
         "anwa-maalim"
       ],
@@ -318,13 +310,9 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module03Taraiq.jsx",
-      "line": 51,
-      "requires": [
-        "tamthil-shuaa"
-      ],
-      "prerequisiteStatus": {
-        "tamthil-shuaa": "established@M3"
-      },
+      "line": 54,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -334,7 +322,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module03Taraiq.jsx",
-      "line": 75,
+      "line": 78,
       "requires": [
         "tamthil-shuaa"
       ],
@@ -350,7 +338,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/murakkibata-shuaa/modules/Module03Taraiq.jsx",
-      "line": 105,
+      "line": 100,
       "requires": [
         "tamthil-shuaa"
       ],

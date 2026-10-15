@@ -19,6 +19,14 @@
  * Les exercices sont rangés aux modules 2–3 (et non tous au module 2 comme le plan l'esquissait) : la
  * lecture (P1) précède la comparaison (P2) et la modélisation (P3).
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : les réservoirs `group-tanks`, niveau مبتدئ par défaut (4 amis à 12 et 6 à 7 : la main PARIE 9,5, l'eau s'arrête
+ *   à 9) puis le تحدّ du manuel au niveau متقدم — le pari est NÉCESSAIRE avant le calcul, et la fausse moyenne des moyennes se voit.
+ *   Rejetée : le tableau du manuel lu en tête (« أيّ القسمين أفضل ? » répondu de mémoire, avant tout geste) : il reste la question
+ *   de l'étape 3, APRÈS que l'élève a parié et ouvert les vannes. Aucun changement de destination.
+ *   Ordre des idées : pari → somme d'eau du القسم (أ) (brique APRÈS) → piège 11,5 → question du manuel + brique → effectifs égaux
+ *   (rappel APRÈS la réponse). Modules 2–3 : briques « qiraat-mukhattat », « tarjama-jadwal », « hadhf-qiyam » APRÈS la réponse.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/qiraat-wadiyat-ihsaiya';

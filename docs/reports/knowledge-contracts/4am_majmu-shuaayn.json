@@ -17,8 +17,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module01TahaddiAnshita.jsx",
-        "line": 137,
-        "step": 2,
+        "line": 144,
+        "step": 3,
         "variant": "new"
       }
     },
@@ -28,7 +28,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module02Maarif.jsx",
-        "line": 53,
+        "line": 61,
         "step": 1,
         "variant": "rappel"
       }
@@ -39,7 +39,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module02Maarif.jsx",
-        "line": 80,
+        "line": 92,
         "step": 2,
         "variant": "rappel"
       }
@@ -50,7 +50,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module02Maarif.jsx",
-        "line": 81,
+        "line": 93,
         "step": 2,
         "variant": "rappel"
       }
@@ -61,7 +61,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module02Maarif.jsx",
-        "line": 103,
+        "line": 118,
         "step": 3,
         "variant": "new"
       }
@@ -185,7 +185,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module01TahaddiAnshita.jsx",
-      "line": 77,
+      "line": 64,
       "requires": [
         "anasir-shuaa"
       ],
@@ -196,12 +196,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S1-Q2",
+      "questionId": "M01-S2-Q2",
       "module": 1,
-      "step": 1,
+      "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module01TahaddiAnshita.jsx",
-      "line": 88,
+      "line": 84,
       "requires": [
         "anasir-shuaa"
       ],
@@ -217,7 +217,23 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module01TahaddiAnshita.jsx",
-      "line": 107,
+      "line": 95,
+      "requires": [
+        "anasir-shuaa"
+      ],
+      "prerequisiteStatus": {
+        "anasir-shuaa": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q4",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module01TahaddiAnshita.jsx",
+      "line": 114,
       "requires": [
         "surat-insihab"
       ],
@@ -228,12 +244,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S2-Q4",
+      "questionId": "M01-S3-Q5",
       "module": 1,
-      "step": 2,
+      "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module01TahaddiAnshita.jsx",
-      "line": 117,
+      "line": 124,
       "requires": [
         "surat-insihab",
         "tasawi-mutawazi"
@@ -246,12 +262,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S3-Q5",
+      "questionId": "M01-S4-Q6",
       "module": 1,
-      "step": 3,
+      "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module01TahaddiAnshita.jsx",
-      "line": 151,
+      "line": 158,
       "requires": [
         "tarkib-insihabayn",
         "tasawi-mutawazi",
@@ -271,13 +287,9 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module02Maarif.jsx",
-      "line": 55,
-      "requires": [
-        "alaqat-shal"
-      ],
-      "prerequisiteStatus": {
-        "alaqat-shal": "established@M2"
-      },
+      "line": 50,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -287,7 +299,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module02Maarif.jsx",
-      "line": 62,
+      "line": 66,
       "requires": [
         "alaqat-shal"
       ],
@@ -303,13 +315,11 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module02Maarif.jsx",
-      "line": 82,
+      "line": 84,
       "requires": [
-        "shuaa-maadum",
         "alaqat-shal"
       ],
       "prerequisiteStatus": {
-        "shuaa-maadum": "established@M2",
         "alaqat-shal": "established@M2"
       },
       "lexiconHits": [],
@@ -321,7 +331,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module02Maarif.jsx",
-      "line": 89,
+      "line": 97,
       "requires": [
         "mutaakisan"
       ],
@@ -337,13 +347,9 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module02Maarif.jsx",
-      "line": 105,
-      "requires": [
-        "qaidat-mutawazi"
-      ],
-      "prerequisiteStatus": {
-        "qaidat-mutawazi": "established@M2"
-      },
+      "line": 112,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -353,7 +359,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module02Maarif.jsx",
-      "line": 112,
+      "line": 120,
       "requires": [
         "qaidat-mutawazi",
         "muntasaf-nazira"
@@ -371,7 +377,7 @@
       "step": 4,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module02Maarif.jsx",
-      "line": 130,
+      "line": 138,
       "requires": [
         "qaidat-mutawazi",
         "jayb"
@@ -389,7 +395,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-insihab/majmu-shuaayn/modules/Module02Maarif.jsx",
-      "line": 140,
+      "line": 148,
       "requires": [
         "qaidat-mutawazi",
         "fithaghuras"

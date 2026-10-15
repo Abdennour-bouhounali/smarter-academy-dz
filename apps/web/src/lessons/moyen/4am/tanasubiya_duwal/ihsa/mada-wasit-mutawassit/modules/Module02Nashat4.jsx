@@ -21,6 +21,10 @@ import FreqTable from '../components/FreqTable';
  *             الفئات, 1816/41 ≈ 44,29, la classe médiane par les effectifs cumulés).
  * FORMALIZE   معارف 4 (définition, quatre ملاحظات, les deux exemples CORRIGÉS en une ligne chacun) et معارف 3.
  * AUCUNE étape n'attend `onFinished`. LP : P3, P1, P2.
+ * Rétrofit 2026-10-15 (§4quater) : le labo (le rideau) OUVRE le module — plus de carte `brief`, ni `title` / `lead` de workspace.
+ * Ordre des étapes = ce que la main a fait : 1) POURQUOI le rideau ne se verrouille qu'à un endroit (essais de l'élève) puis la
+ * définition de Med APRÈS la réponse ; 2) la valeur tirée (contraste) puis les ملاحظات / مثال 1 APRÈS la réponse ; 3–4) les
+ * 11 salaires et El Oued du livre deviennent des APPLICATIONS ; 5) المدى (معارف 3) : question puis boîte et brique ; 6) les 41 poids.
  * « أتوقّع القاعدة » : la question des 41 poids est enveloppée (<PredictRule id="markaz-fia">) — ses corrections
  * énoncent la méthode des مراكز الفئات juste avant la brique ; la brique `mada` est un rappel (posée au module 1).
  */
@@ -28,6 +32,7 @@ const Opt = (s) => <MathText key={s}>{s}</MathText>;
 
 export default function Module02Nashat4() {
   const [trials, setTrials] = useState([]);
+  const [q0, setQ0] = useState(false);
   const [q1a, setQ1a] = useState(false);
   const [q1b, setQ1b] = useState(false);
   const [q2a, setQ2a] = useState(false);
@@ -84,34 +89,82 @@ export default function Module02Nashat4() {
       moduleTitle="نشاط 4 ومعارف — الوسيط"
       moduleSubtitle="وسيط سلسلة إحصائية، المدى، الفئة الوسيطية"
       estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'أنشطة ص 93 · معارف ص 96', title: ACT4.title, tone: 'violet', emoji: '🎭',
-        headline: 'ستارة تقسم القيم نصفين',
-        body: <p><MathText>{'في الميزان، القيم نفسها على العارضة. هذه المرّة لا نبحث عن نقطة التوازن: حرّك ستارة بين القيم، وانظر ماذا يحدث لعدد القيم في كل جهة منها.'}</MathText></p>,
-        footer: <SourceTag source={ACT4.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الستارة على الميزان"
-          lead="حرّك الستارة بين القيم وقارن عدد القيم في الجهتين، ثم اسحب أكبر قيمة بعيدًا وراقب المتوسط والوسيط."
           levels={{
             beginner: () => (
               <Manipulation type="stat-balance" level="beginner" series={LAB.esport.series} mode="median" theme="esport"
-                title="الستارة: خمس نقاط 2، 3، 3، 4، 8" onTrial={onTrial} />
+                onTrial={onTrial} />
             ),
             advanced: () => (
               <Manipulation type="stat-balance" level="advanced" series={LAB.oasis.series} mode="median" theme="heatwave"
-                title="الستارة: حرارة الوادي، عشرة أيام" onTrial={onTrial} />
+                onTrial={onTrial} />
             ),
           }}
         />
       }
       steps={[
         {
-          num: 1, title: 'رواتب 11 عاملًا', subtitle: 'نشاط 4 — الجزء الأول', done: q1a && q1b,
+          num: 1, title: 'لماذا تقف الستارة في هذا الموضع؟', subtitle: 'على الميزان', done: q0,
+          content: (
+            <div className="space-y-3">
+              {curtainEvidence}
+              <TapQuestion
+                prompt="في ميزانك لم تثبت الستارة عند منتصف المسافة بين أصغر قيمة وأكبر قيمة. لماذا؟"
+                options={[
+                  'لأنّ موضعها تحدّده أعداد القيم في الجهتين، لا المسافات بين القيم.',
+                  'لأنّ الميزان لا يقبل إلا مواضع محدّدة سلفًا.',
+                  'لأنّ منتصف المسافة يقع دائمًا خارج السلسلة.',
+                ].map(Opt)}
+                correct={0}
+                cols={1}
+                requires={['tartib-adad']}
+                explain={<MathText>{'في $2$ ، $3$ ، $3$ ، $4$ ، $8$ تقف الستارة على البطاقة الثالثة: قيمتان قبلها وقيمتان بعدها. منتصف المسافة بين $2$ و $8$ هو $5$ ، وهو ليس موضع الستارة؛ والمسافات لا تحدّد موضعها: يحدّده عدد القيم في كل جهة.'}</MathText>}
+                onAnswered={() => setQ0(true)}
+              />
+              {q0 && (
+                <>
+                  <PredictRule id="wasit" prompt={"قسمت الستارة القيم المرتّبة إلى جهتين لهما العدد نفسه من القيم. بكلماتك: كيف نعرّف القيمة التي تقف عندها؟ وكيف نجدها في سلسلة مرتّبة؟"}><TextbookBox kind="definition" title={KNOW4.title} text={KNOW4.definition} source={KNOW4.source} compact /></PredictRule>
+                  <KnowledgeBrick id="wasit" lead="القيمة التي تقف عندها الستارة هي وسيط السلسلة:" />
+                </>
+              )}
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'ماذا تغيّر حين تبعد أكبر قيمة؟', subtitle: 'على الميزان', done: q3,
+          content: (
+            <div className="space-y-3">
+              {pullEvidence}
+              <TapQuestion
+                prompt="عندما سحبتَ أكبر قيمة بعيدًا على الميزان:"
+                options={[
+                  'تغيّر المتوسط وبقي الوسيط كما هو.',
+                  'تغيّر المتوسط والوسيط معًا.',
+                  'بقي المتوسط كما هو وتغيّر الوسيط.',
+                ].map(Opt)}
+                correct={0}
+                cols={1}
+                requires={['wasit', 'mutawassit-mutawazin']}
+                explain={<MathText>{'المتوسط يجمع كل القيم، فيتبع القيمة البعيدة: في $2$ ، $3$ ، $3$ ، $4$ ، $8$ يصير $6{,}4$ إذا صارت $8$ عشرين. أمّا الوسيط فيتعلّق بالرتب: أكبر قيمة تبقى الأخيرة، والقيمة الوسطى لا تتغيّر ($3$).'}</MathText>}
+                onAnswered={() => setQ3(true)}
+              />
+              {q3 && (
+                <>
+                  <TextbookBox kind="remark" title="ملاحظات" lines={KNOW4.notes} source={KNOW4.source} compact />
+                  <TextbookBox kind="example" title="مثال 1" text={KNOW4.example1} source={KNOW4.source} compact />
+                  <p className="text-xs text-slate-500" data-correction="know-4-1"><MathText>{KNOW4_CORRECTIONS.example1}</MathText></p>
+                </>
+              )}
+            </div>
+          ),
+        },
+        {
+          num: 3, title: 'رواتب 11 عاملًا', subtitle: 'نشاط 4 — الجزء الأول', done: q1a && q1b,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACT4.salariesText}</MathText></p>
+              <p className="text-xs text-slate-500"><SourceTag source={ACT4.source} /></p>
               <p className="text-sm font-semibold text-slate-800" dir="ltr"><MathText>{ACT4.salaries.map((v) => `$${v}$`).join(' ، ')}</MathText></p>
               <TapQuestion
                 prompt="الترتيب التصاعدي لهذه الرواتب هو:"
@@ -133,21 +186,15 @@ export default function Module02Nashat4() {
                 prompt={<MathText>{'الراتب الذي يجزئ هذه السلسلة إلى سلسلتين لهما نفس التكرار (بالدينار):'}</MathText>}
                 expected={42000}
                 display="42000"
-                requires={['tartib-adad']}
+                requires={['tartib-adad', 'wasit']}
                 explain={<MathText>{`${ACT4_LINES.sorted} . ${ACT4_LINES.salaryMed}`}</MathText>}
                 onAnswered={() => setQ1b(true)}
               />
-              {q1b && (
-                <>
-                  <PredictRule id="wasit" prompt={"وجدت قيمة تقسم سلسلة الرواتب إلى جزأين لهما نفس التكرار. بكلماتك: كيف نعرّف هذه القيمة؟ وكيف نجدها في سلسلة مرتّبة؟"}><TextbookBox kind="definition" title={KNOW4.title} text={KNOW4.definition} source={KNOW4.source} compact /></PredictRule>
-                  <KnowledgeBrick id="wasit" lead="الراتب 42000 هو وسيط هذه السلسلة:" />
-                </>
-              )}
             </div>
           ),
         },
         {
-          num: 2, title: 'حرارة الوادي', subtitle: 'نشاط 4 — الجزء الثاني', done: q2a && q2b,
+          num: 4, title: 'حرارة الوادي', subtitle: 'نشاط 4 — الجزء الثاني', done: q2a && q2b,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACT4.oasisText}</MathText></p>
@@ -177,51 +224,31 @@ export default function Module02Nashat4() {
           ),
         },
         {
-          num: 3, title: 'قيمة بعيدة', subtitle: 'معارف 4 — ملاحظات', done: q3,
+          num: 5, title: 'مدى سلسلة إحصائية', subtitle: 'معارف 3', done: q4,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" title="ملاحظات" lines={KNOW4.notes} source={KNOW4.source} compact />
-              <TextbookBox kind="example" title="مثال 1" text={KNOW4.example1} source={KNOW4.source} compact />
-              <p className="text-xs text-slate-500" data-correction="know-4-1"><MathText>{KNOW4_CORRECTIONS.example1}</MathText></p>
-              {pullEvidence}
-              <TapQuestion
-                prompt="عندما سحبتَ أكبر قيمة بعيدًا على الميزان:"
-                options={[
-                  'تغيّر المتوسط وبقي الوسيط كما هو.',
-                  'تغيّر المتوسط والوسيط معًا.',
-                  'بقي المتوسط كما هو وتغيّر الوسيط.',
-                ].map(Opt)}
-                correct={0}
-                cols={1}
-                requires={['wasit', 'mutawassit-mutawazin']}
-                explain={<MathText>{'المتوسط يجمع كل القيم، فيتبع القيمة البعيدة: في $2$ ، $3$ ، $3$ ، $4$ ، $8$ يصير $6{,}4$ إذا صارت $8$ عشرين. أمّا الوسيط فيتعلّق بالرتب: أكبر قيمة تبقى الأخيرة، والقيمة الوسطى لا تتغيّر ($3$).'}</MathText>}
-                onAnswered={() => setQ3(true)}
-              />
-            </div>
-          ),
-        },
-        {
-          num: 4, title: 'مدى سلسلة إحصائية', subtitle: 'معارف 3', done: q4,
-          content: (
-            <div className="space-y-3">
-              <TextbookBox kind="definition" title={KNOW3.title} text={KNOW3.definition} source={KNOW3.source} compact />
-              <TextbookBox kind="remark" text={KNOW3.note} source={KNOW3.source} compact />
-              <TextbookBox kind="example" text={KNOW3.example} source={KNOW3.source} compact />
-              <KnowledgeBrick id="mada" variant="rappel" lead="ما سمّيناه في نشاط 3، لكل سلسلة:" />
               <NumericQuestion
                 prompt={<MathText>{'مدى السلسلة $-3$ ، $7$ ، $2$ ، $-8$ ، $5$ هو:'}</MathText>}
                 expected={15}
                 parse={parseDec}
                 display="15"
-                requires={['mada']}
+                requires={['mada-nashat']}
                 explain={<MathText>{'أكبر قيمة $7$ وأصغر قيمة $-8$ : $7 - (-8) = 15$ . (ليس $7 - 2$ ولا $7 - (-3)$ : أصغر قيمة هي $-8$.)'}</MathText>}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && (
+                <>
+                  <TextbookBox kind="definition" title={KNOW3.title} text={KNOW3.definition} source={KNOW3.source} compact />
+                  <TextbookBox kind="remark" text={KNOW3.note} source={KNOW3.source} compact />
+                  <TextbookBox kind="example" text={KNOW3.example} source={KNOW3.source} compact />
+                  <KnowledgeBrick id="mada" variant="rappel" lead="ما سمّيناه في نشاط 3، لكل سلسلة:" />
+                </>
+              )}
             </div>
           ),
         },
         {
-          num: 5, title: 'أوزان 41 تلميذًا', subtitle: 'نشاط 4 — الجزء الثالث', done: q5,
+          num: 6, title: 'أوزان 41 تلميذًا', subtitle: 'نشاط 4 — الجزء الثالث', done: q5,
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACT4.weightsText}</MathText></p>

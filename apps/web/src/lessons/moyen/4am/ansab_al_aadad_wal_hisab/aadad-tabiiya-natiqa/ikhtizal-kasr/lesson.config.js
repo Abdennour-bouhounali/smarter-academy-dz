@@ -3,6 +3,16 @@
  * Manuel 4AM, unité 1 : أستعدّ 7–10 (p. 7), activité 8 (p. 9), معارف 6 (p. 12), طريقة الاختزال 595/560 (p. 13), دوري الآن p. 13 (2),
  * exercices 28–38, 40 (p. 15),
  * puis trois « مسائل » de la plateforme (modules 5–7).
+ *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la RECETTE qu'on partage (labo fraction-reduction, thème cuisine, niveau مبتدئ 12/18) — la main choisit
+ *   le nombre de parts égales et lit UNE part ; diviser par un diviseur commun ne change pas la recette, et la main décide
+ *   d'elle-même quand elle ne peut plus continuer. Rejetée : le نشاط 8 comme entrée (la chaîne de سمير ÷4 puis ÷3 est
+ *   énoncée dans une carte au-dessus du labo avant tout geste, et la question « que fait سمير ? » se répond de mémoire) ;
+ *   il reste le niveau متقدم (84/48) et le chemin de سمير est montré APRÈS la réponse. Ordre des idées : POURQUOI la recette ne
+ *   change pas (brique `ikhtizal` après) → POURQUOI 7/4 ne se réduit plus (brique `kasr-ghayr-qabil` après) → معارف :
+ *   POURQUOI une seule division (12 = 4 × 3 = PGCD) → la définition APRÈS la question sur 15/22 → la méthode PGCD (brique
+ *   après 28/42) → la méthode du livre 595/560.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/ikhtizal-kasr';
 
@@ -61,7 +71,7 @@ export const LESSON_CONFIG = {
       title: 'وصفة صغيرة: 12 ملعقة سكّر لـ 18 كوب دقيق (12/18)',
       objective: 'اختزال كسر = القسمة على قاسم مشترك؛ نتوقف عندما لا يبقى قاسم مشترك أكبر من 1',
       autonomy: '',
-      experience: { type: 'platform_adaptation', reason: 'smaller_numbers_for_first_contact', theme: 'kitchen' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'kitchen' },
       learningPointIds: ['4am_ikhtizal-kasr_P1'], sourceElementIds: ['act-8'] },
     { kind: 'manipulation', code: 'fraction-reduction-84-48', type: 'fraction-reduction', module: 1,
       level: 'advanced',

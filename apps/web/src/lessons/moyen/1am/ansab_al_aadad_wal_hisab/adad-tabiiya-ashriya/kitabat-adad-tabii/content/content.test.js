@@ -18,9 +18,16 @@ describe('« كتابة الأعداد الطبيعية » — les clés du manu
     const a = el('act-1').answer;
     expect([ACTIVITY.answers.largest, ACTIVITY.answers.smallest]).toEqual([a.largest, a.smallest]);
     expect([ACTIVITY.answers.next, ACTIVITY.answers.previous]).toEqual([a.next.digits, a.previous.digits]);
+    // posé en application au module 4 (EX['act-1'])
+    const k = choice(EX['act-1'].question.rows);
+    expect([Number(k[0]), Number(k[1]), parseInt(k[3], 10), parseInt(k[4], 10)]).toEqual([a.largest, a.smallest, a.next.digits, a.previous.digits]);
+    expect(k[2]).toContain('20 في 25');
   });
 
   it('les nombres du labo', () => {
+    // module 1 : les deux 7 de 2577 (unités et dizaines), le 0 des centaines de 2017
+    expect([LAB.packValue % 10, count(LAB.packValue, 1) % 10]).toEqual([7, 7]);
+    expect(count(LAB.unpack.n, 2) % 10).toBe(0);
     expect(valueOfCounts(LAB.pack)).toBe(LAB.packValue);
     expect(count(LAB.unpack.n, LAB.unpack.rank)).toBe(LAB.unpack.count);
     expect([count(LAB.money.n, LAB.money.rank), LAB.money.n % 100]).toEqual([LAB.money.notes, LAB.money.left]);

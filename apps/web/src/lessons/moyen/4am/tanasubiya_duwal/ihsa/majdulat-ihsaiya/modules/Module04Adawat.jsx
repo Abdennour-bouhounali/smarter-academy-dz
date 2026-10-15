@@ -36,9 +36,9 @@ export default function Module04Adawat() {
           num: 1, title: 'تمرين 23 — ذاكرة الحاسبة', subtitle: 'اللمسات M+ و MR', done: !!done['ex-23-1'] && !!done['ex-23-2'],
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="dhakira-hasiba" lead="الحاسبة تحفظ مجموعًا في ذاكرتها:" />
               <MiniTable rows={[{ label: 'القيم', cells: EX23.table.values }, { label: 'التكرار', cells: EX23.table.freqs }]} />
-              <TextbookExercise exercise={byId['ex-23-1']} requires={['dhakira-hasiba']} onAnswered={mark('ex-23-1')} />
+              <TextbookExercise exercise={byId['ex-23-1']} onAnswered={mark('ex-23-1')} />
+              {done['ex-23-1'] && <KnowledgeBrick id="dhakira-hasiba" lead="الحاسبة تحفظ مجموعًا في ذاكرتها:" />}
               <TextbookExercise exercise={byId['ex-23-2']} requires={['dhakira-hasiba', 'mutawassit-silsila']} onAnswered={mark('ex-23-2')} />
               {done['ex-23-2'] && (
                 <p className="text-sm text-slate-700" data-calc-keys>

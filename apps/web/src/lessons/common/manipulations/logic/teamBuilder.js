@@ -178,3 +178,29 @@ export function remainingMoves(state) {
   const placed = (x) => x.teams.reduce((n, team) => n + team.length, 0);
   return placed(fill(state)) - placed(state);
 }
+
+/* ── Le guide d'onboarding (LabCoach, MANIPULATION_CONTRACT §8quater) ─────────────────────────────────────────── */
+
+/**
+ * La prochaine action attendue. Tant que des joueurs peuvent entrer : porter le premier du banc vers une équipe
+ * (`place` la première fois, `more` ensuite) — le guide ne nomme pas l'équipe, c'est la règle d'égalité qui répond.
+ * Une fois la scène stabilisée sans contraste vu : changer le nombre d'équipes (`teams`, la première pastille jamais
+ * essayée) ou, sans pastilles (niveau avancé), ouvrir le laboratoire libre (`free`). `null` quand la découverte est méritée.
+ *
+ * @param {object} lab           l'état de la scène (`init`)
+ * @param {{memory:Object, teamOptions:number[], squadOptions?:number[], freeLab?:boolean}} ctx
+ *   `memory` : les configurations stabilisées (`{ "15:3": true }`), comme `discoveryReady`.
+ */
+export function coachOf(lab, { memory = {}, teamOptions = [], freeLab = false } = {}) {
+  if (discoveryReady(memory)) return null;
+  if (!isSettled(lab)) {
+    const p = lab.bench[0];
+    if (p === undefined) return null;
+    const placed = lab.teams.some((team) => team.length > 0);
+    return { id: placed ? 'more' : 'place', target: `[data-drag-source="player:${p}"]`, rank: p, gesture: 'drag' };
+  }
+  const k = teamOptions.find((x) => x !== lab.groups && !(`${lab.total}:${x}` in memory));
+  if (k !== undefined) return { id: 'teams', target: `[data-tb-teams="${k}"]`, rank: k, gesture: 'tap' };
+  if (teamOptions.length === 0 && !freeLab) return { id: 'free', target: '[data-manipulation-free-lab] button', gesture: 'tap' };
+  return null;
+}

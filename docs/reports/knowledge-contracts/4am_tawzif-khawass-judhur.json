@@ -18,8 +18,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/tawzif-khawass-judhur/modules/Module01Nashat.jsx",
-        "line": 134,
-        "step": 2,
+        "line": 120,
+        "step": 1,
         "variant": "new"
       }
     },
@@ -29,7 +29,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/tawzif-khawass-judhur/modules/Module02Tabsit.jsx",
-        "line": 57,
+        "line": 71,
         "step": 2,
         "variant": "new"
       }
@@ -198,7 +198,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/tawzif-khawass-judhur/modules/Module01Nashat.jsx",
-      "line": 113,
+      "line": 105,
       "requires": [
         "jidhr-a2b"
       ],
@@ -214,7 +214,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/tawzif-khawass-judhur/modules/Module01Nashat.jsx",
-      "line": 135,
+      "line": 128,
       "requires": [
         "kitaba-a-jidhr-b"
       ],
@@ -230,14 +230,12 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/tawzif-khawass-judhur/modules/Module02Tabsit.jsx",
-      "line": 58,
+      "line": 57,
       "requires": [
-        "kitaba-a-jidhr-b",
-        "tabsit-tawzii"
+        "kitaba-a-jidhr-b"
       ],
       "prerequisiteStatus": {
-        "kitaba-a-jidhr-b": "established@M1",
-        "tabsit-tawzii": "established@M2"
+        "kitaba-a-jidhr-b": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -248,7 +246,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/tawzif-khawass-judhur/modules/Module02Tabsit.jsx",
-      "line": 79,
+      "line": 80,
       "requires": [
         "jidaa-jidhrayn",
         "qismat-jidhrayn",

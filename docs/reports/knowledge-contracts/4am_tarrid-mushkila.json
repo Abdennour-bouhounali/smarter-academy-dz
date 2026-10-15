@@ -16,7 +16,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/tarrid-mushkila/modules/Module01Sibaq.jsx",
-        "line": 134,
+        "line": 126,
         "step": 2,
         "variant": "new"
       }
@@ -27,7 +27,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/tarrid-mushkila/modules/Module02Tarayiq.jsx",
-        "line": 94,
+        "line": 116,
         "step": 4,
         "variant": "new"
       }
@@ -38,7 +38,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/tarrid-mushkila/modules/Module02Tarayiq.jsx",
-        "line": 124,
+        "line": 138,
         "step": 5,
         "variant": "new"
       }
@@ -52,7 +52,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/tarrid-mushkila/modules/Module02Tarayiq.jsx",
-        "line": 61,
+        "line": 77,
         "step": 2,
         "variant": "new"
       }
@@ -210,7 +210,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/tarrid-mushkila/modules/Module01Sibaq.jsx",
-      "line": 113,
+      "line": 98,
       "requires": [
         "hal-muadala"
       ],
@@ -226,13 +226,11 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/tarrid-mushkila/modules/Module01Sibaq.jsx",
-      "line": 136,
+      "line": 119,
       "requires": [
-        "tarrid-namdhaja",
         "hal-muadala"
       ],
       "prerequisiteStatus": {
-        "tarrid-namdhaja": "established@M1",
         "hal-muadala": "prior"
       },
       "lexiconHits": [],
@@ -244,7 +242,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/tarrid-mushkila/modules/Module01Sibaq.jsx",
-      "line": 151,
+      "line": 135,
       "requires": [
         "tarrid-namdhaja"
       ],
@@ -261,12 +259,8 @@
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/tarrid-mushkila/modules/Module02Tarayiq.jsx",
       "line": 63,
-      "requires": [
-        "tarrid-tariqa"
-      ],
-      "prerequisiteStatus": {
-        "tarrid-tariqa": "established@M2"
-      },
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -276,7 +270,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/tarrid-mushkila/modules/Module02Tarayiq.jsx",
-      "line": 104,
+      "line": 103,
       "requires": [
         "tarrid-tariqa"
       ],
@@ -292,13 +286,11 @@
       "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/tarrid-mushkila/modules/Module02Tarayiq.jsx",
-      "line": 125,
+      "line": 124,
       "requires": [
-        "tahaqquq-waqi",
         "jidaa-maadum"
       ],
       "prerequisiteStatus": {
-        "tahaqquq-waqi": "established@M2",
         "jidaa-maadum": "prior"
       },
       "lexiconHits": [],

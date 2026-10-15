@@ -17,8 +17,8 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/muntasaf-masafa/modules/Module01MawidGps.jsx",
-        "line": 164,
-        "step": 2,
+        "line": 122,
+        "step": 1,
         "variant": "rappel"
       }
     },
@@ -28,7 +28,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/muntasaf-masafa/modules/Module03Maarif.jsx",
-        "line": 45,
+        "line": 52,
         "step": 1,
         "variant": "new"
       }
@@ -39,7 +39,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/muntasaf-masafa/modules/Module03Maarif.jsx",
-        "line": 62,
+        "line": 74,
         "step": 2,
         "variant": "new"
       }
@@ -149,25 +149,9 @@
       "questionId": "M01-S1-Q1",
       "module": 1,
       "step": 1,
-      "component": "TapQuestion",
-      "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/muntasaf-masafa/modules/Module01MawidGps.jsx",
-      "line": 129,
-      "requires": [
-        "ihdathiyat-qiraa"
-      ],
-      "prerequisiteStatus": {
-        "ihdathiyat-qiraa": "prior"
-      },
-      "lexiconHits": [],
-      "pedagogicallyValid": true
-    },
-    {
-      "questionId": "M01-S2-Q2",
-      "module": 1,
-      "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/muntasaf-masafa/modules/Module01MawidGps.jsx",
-      "line": 153,
+      "line": 111,
       "requires": [
         "muntasaf-shuaa",
         "murakkibat-hisab"
@@ -180,12 +164,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S3-Q3",
+      "questionId": "M01-S2-Q2",
       "module": 1,
-      "step": 3,
+      "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/muntasaf-masafa/modules/Module01MawidGps.jsx",
-      "line": 176,
+      "line": 134,
       "requires": [
         "fithaghuras",
         "ihdathiyat-qiraa"
@@ -198,18 +182,34 @@
       "pedagogicallyValid": true
     },
     {
+      "questionId": "M01-S3-Q3",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/muntasaf-masafa/modules/Module01MawidGps.jsx",
+      "line": 153,
+      "requires": [
+        "ihdathiyat-qiraa"
+      ],
+      "prerequisiteStatus": {
+        "ihdathiyat-qiraa": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
       "questionId": "M02-S1-Q1",
       "module": 2,
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/muntasaf-masafa/modules/Module02HalaAmma.jsx",
-      "line": 46,
+      "line": 45,
       "requires": [
-        "muntasaf-murakkibat",
+        "muntasaf-shuaa",
         "murakkibat-hisab"
       ],
       "prerequisiteStatus": {
-        "muntasaf-murakkibat": "established@M1",
+        "muntasaf-shuaa": "prior",
         "murakkibat-hisab": "prior"
       },
       "lexiconHits": [],
@@ -239,13 +239,11 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/muntasaf-masafa/modules/Module03Maarif.jsx",
-      "line": 65,
+      "line": 61,
       "requires": [
-        "masafa",
         "judhur-tabsit"
       ],
       "prerequisiteStatus": {
-        "masafa": "established@M3",
         "judhur-tabsit": "prior"
       },
       "lexiconHits": [],
@@ -257,7 +255,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/ashia-maalam/muntasaf-masafa/modules/Module03Maarif.jsx",
-      "line": 88,
+      "line": 87,
       "requires": [
         "masafa"
       ],

@@ -9,8 +9,9 @@ import { METHOD, LAB } from '../content/textbook';
 
 /**
  * Module 3 — طريقة de la plateforme (déclarée) « رقم المرتبة وعدد وحداتها », sur l'exercice 2 du manuel (p. 17) : 1345 DA
- * échangés en billets de 100 DA. Le MÊME instrument que le module 1, monde `money`, posé seul (levels={false}) ; puis la
- * solution ligne à ligne, puis la méthode (brique gardée par « أتوقّع القاعدة »). LP : P2.
+ * échangés en billets de 100 DA. UNE SEULE PISTE (LESSON_DEVELOPMENT_GUIDE §4quater) : le MÊME instrument que le module 1,
+ * monde `money`, posé seul (levels={false}) EN HAUT — il porte le contexte et la question ; puis « combien de billets ? »
+ * sur ce que l'élève a ouvert, la solution ligne à ligne, et la méthode (brique gardée par « أتوقّع القاعدة »). LP : P2.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
@@ -27,26 +28,25 @@ export default function Module03Tariqa() {
       moduleTitle="طريقة — رقم المرتبة وعدد وحداتها"
       moduleSubtitle="حصّالة يونس"
       estimatedTime="8 دقائق"
-      brief={{ tag: 'طريقة — على التمرين 2 ص 17', title: METHOD.title, tone: 'emerald',
-        body: <p>رقم المئات في 1345 هو 3، فكم ورقة من 100 دج فيه؟ افتح الأوراق والقطع لتعرف.</p>, footer: <SourceTag source={METHOD.source} /> }}
+      intro={<Manipulation type="rank-exchange" world="money" tasks={['unpack']} n={LAB.money.n} rank={LAB.money.rank} levels={false} />}
       steps={[
-        { num: 1, title: 'افتح الأوراق والقطع', subtitle: 'في الدكّان', done: q1,
+        { num: 1, title: 'من أين جاءت الأوراق العشر الأخرى؟', subtitle: 'بعد أن فتحتَ الأوراق', done: q1,
           content: (
             <div className="space-y-3">
-              <Manipulation type="rank-exchange" world="money" tasks={['unpack']} n={LAB.money.n} rank={LAB.money.rank} levels={false} />
               <TapQuestion
-                prompt={<span>كم ورقة من فئة 100 دج يأخذ يونس مقابل <bdi dir="ltr">1345</bdi> دج؟</span>}
-                options={[M('13 ورقة، ويبقى 45 دج'), M('3 أوراق، ويبقى 45 دج'), M('1 ورقة، ويبقى 345 دج')]}
+                prompt={<span>رقم المئات في <bdi dir="ltr">1345</bdi> هو 3، لكنّ يونس أخذ 13 ورقة من 100 دج. من أين جاءت الأوراق العشر الأخرى؟</span>}
+                options={[M('من ورقة الألف: فتحناها فصارت 10 أوراق من 100 دج'), M('من القطع الصغيرة: 45 دج صارت 10 أوراق'), M('أخطأ صاحب الدكّان: يجب أن يأخذ 3 أوراق فقط')]}
                 correct={0} cols={1} requires={['jadwal-maratib']}
                 explain={<MathText>{'$1345 = 13 \\times 100 + 45$ : رقم المئات 3، لكنّ الألف فيه 10 مئات أيضًا.'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
             </div>
           ) },
-        { num: 2, title: 'الحلّ سطرًا سطرًا، ثم الطريقة', subtitle: 'عدد المئات', done: q2,
+        { num: 2, title: 'هل نستطيع أن نقرأ 13 دون أن نفتح شيئًا؟', subtitle: 'عدد المئات', done: q2,
           content: (
             <div className="space-y-3">
               <MethodSteps method={METHOD} onAllRevealed={() => setRead(true)} />
+              <SourceTag source={METHOD.source} />
               {read && <KnowledgeBrick id="raqm-adad" lead="13 ، و 1345: ماذا حذفنا من الكتابة لنقرأ 13؟" />}
               <TapQuestion
                 prompt={<span>عدد المئات في العدد <bdi dir="ltr">2017</bdi> هو:</span>}

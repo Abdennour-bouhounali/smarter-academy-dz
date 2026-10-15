@@ -14,7 +14,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/modules/Module01Nashat.jsx",
-        "line": 234,
+        "line": 232,
         "step": 7,
         "variant": "new"
       }
@@ -25,7 +25,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/modules/Module02Maarif.jsx",
-        "line": 85,
+        "line": 102,
         "step": 2,
         "variant": "new"
       }
@@ -147,9 +147,9 @@
       "questionId": "M01-S1-Q1",
       "module": 1,
       "step": 1,
-      "component": "BatchChoiceQuestion",
+      "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/modules/Module01Nashat.jsx",
-      "line": 98,
+      "line": 93,
       "requires": [
         "murabba-adad"
       ],
@@ -163,9 +163,9 @@
       "questionId": "M01-S2-Q2",
       "module": 1,
       "step": 2,
-      "component": "TapQuestion",
+      "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/modules/Module01Nashat.jsx",
-      "line": 121,
+      "line": 116,
       "requires": [
         "murabba-adad"
       ],
@@ -181,7 +181,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/modules/Module01Nashat.jsx",
-      "line": 137,
+      "line": 139,
       "requires": [
         "murabba-adad"
       ],
@@ -197,14 +197,12 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/modules/Module01Nashat.jsx",
-      "line": 157,
+      "line": 155,
       "requires": [
-        "murabba-adad",
-        "jidhr-taarif"
+        "murabba-adad"
       ],
       "prerequisiteStatus": {
-        "murabba-adad": "prior",
-        "jidhr-taarif": "prior"
+        "murabba-adad": "prior"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -213,16 +211,14 @@
       "questionId": "M01-S5-Q5",
       "module": 1,
       "step": 5,
-      "component": "BatchChoiceQuestion",
+      "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/modules/Module01Nashat.jsx",
-      "line": 174,
+      "line": 175,
       "requires": [
-        "murabba-adad",
-        "jidhr-taarif"
+        "murabba-adad"
       ],
       "prerequisiteStatus": {
-        "murabba-adad": "prior",
-        "jidhr-taarif": "prior"
+        "murabba-adad": "prior"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -233,7 +229,7 @@
       "step": 6,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/modules/Module01Nashat.jsx",
-      "line": 198,
+      "line": 196,
       "requires": [
         "murabba-adad"
       ],
@@ -249,7 +245,7 @@
       "step": 7,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/modules/Module01Nashat.jsx",
-      "line": 219,
+      "line": 217,
       "requires": [
         "murabba-adad",
         "jidhr-taarif"
@@ -267,7 +263,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/modules/Module02Maarif.jsx",
-      "line": 64,
+      "line": 58,
       "requires": [
         "murabba-mutaakisayn"
       ],
@@ -281,9 +277,25 @@
       "questionId": "M02-S2-Q2",
       "module": 2,
       "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/modules/Module02Maarif.jsx",
+      "line": 86,
+      "requires": [
+        "murabba-mutaakisayn"
+      ],
+      "prerequisiteStatus": {
+        "murabba-mutaakisayn": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S2-Q3",
+      "module": 2,
+      "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/modules/Module02Maarif.jsx",
-      "line": 87,
+      "line": 104,
       "requires": [
         "hulul-x2-a"
       ],
@@ -294,12 +306,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M02-S3-Q3",
+      "questionId": "M02-S3-Q4",
       "module": 2,
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/modules/Module02Maarif.jsx",
-      "line": 109,
+      "line": 127,
       "requires": [
         "murabba-mutaakisayn",
         "hulul-x2-a"

@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
-import { ContentModule, TapQuestion, BatchChoiceQuestion, KnowledgeBrick } from '../../../../../../common/kit';
+import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
-import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, LAB } from '../content/textbook';
+import { LAB, WORKSHOP } from '../content/textbook';
 
 /**
- * Module 1 — نشاط 1 « أكوّن أعدادا » (p. 9). LABORATOIRE À DEUX NIVEAUX, un seul type `rank-exchange` (l'échange dix pour
- * un, brief docs/sources/1am/unit1/brief-authors.md) :
- *   مبتدئ  — l'atelier d'emballage des crayons (plateforme) : 1 carton, 13 boîtes, 24 paquets, 37 crayons à emballer avant
- *            de pouvoir ÉCRIRE le nombre ; puis 2017 crayons ouverts en paquets de 10 (201, alors que رقم العشرات = 1).
- *   متقدم  — les jetons de rang du manuel : 999 + 1 en cascade (نشاط 1 ③), 999 − 1, 1000 − 1, les dictées 7065, 4 908 732.
- * Les ÉTAPES sont les trois questions du manuel ; la brique « عشرة بواحدة » est gardée par « أتوقّع القاعدة ». LP : P2.
+ * Module 1 — l'ENTRÉE de la leçon, choisie par la plateforme (LESSON_DEVELOPMENT_GUIDE §4ter, règle du propriétaire
+ * 2026-10-14 : le manuel est la référence des الكفاءات, pas le script). UNE SEULE PISTE (§4quater) :
+ *   1. le labo `rank-exchange` en haut, sans carte au-dessus — il porte lui-même son contexte et SA question ;
+ *        مبتدئ — l'atelier des crayons : 1 carton, 13 boîtes, 24 paquets, 37 crayons à lier avant de pouvoir écrire le
+ *                 nombre (2577) ; puis 2017 crayons ouverts en paquets ;
+ *        متقدم — les jetons de rang : 999 + 1 en cascade, 999 − 1, 1000 − 1 ;
+ *   2. des questions sur CE QUE L'ÉLÈVE A FAIT : les deux 7 de SON 2577, le crayon ajouté à 999, le 0 de 2017 ;
+ *   3. les noms (briques), APRÈS la réponse — une brique visible avant la réponse la donnerait.
+ * Le نشاط 1 du manuel (0 1 3 8 ; 25 / 52 ; 999) est posé en application au module 4. LP : P2.
  */
-const M = (s) => <MathText key={s}>{s}</MathText>;
-
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);
   const [q1, setQ1] = useState(false);
@@ -26,97 +25,85 @@ export default function Module01Nashat() {
   const record = (e) => setTrials((list) => [...list, e]);
   const did = (task) => trials.some((e) => e.task === task && e.ok);
 
+  /** Ce que l'élève a fait au labo, rappelé au-dessus de la question qui s'en sert. */
+  const Evidence = ({ task, done, todo }) => (
+    <p data-evidence={task} data-tried={did(task) ? 'true' : 'false'}
+      className={`rounded-xl border-2 px-3 py-2 text-sm ${did(task) ? 'border-emerald-200 bg-emerald-50 font-bold text-emerald-900' : 'border-slate-200 bg-white text-slate-500'}`}>
+      {did(task) ? done : todo}
+    </p>
+  );
+
   return (
     <ContentModule
-      objectives={['متى نستطيع أن نكتب عدد الأقلام؟', 'هل للرقم نفس القيمة في كل موقع؟', 'ما العدد الذي يلي 999؟']}
+      objectives={['متى نستطيع أن نكتب عدد الأقلام؟', 'هل للرقم نفس القيمة في كل عمود؟', 'ماذا يحدث عندما نضيف قلمًا إلى 999 قلمًا؟']}
       ctx={MODULE_CTX}
       navLinks={getNavLinks(1)}
       moduleNumber={1}
-      moduleTitle="نشاط 1 — أكوّن أعدادا"
-      moduleSubtitle="نربط كل عشرة في واحدة"
+      moduleTitle="نشاط — ورشة تحزيم الأقلام"
+      moduleSubtitle="أقلام، حزم، علب، صناديق"
       estimatedTime="14 دقيقة"
-      brief={{
-        tag: 'نشاط 1 — الكتاب ص 9',
-        headline: 'ماذا يعني رقم في كتابة عدد؟',
-        emoji: '🔢',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <ol className="list-decimal space-y-1 ps-5 text-sm">
-            {ACTIVITY.questions.map((q) => <li key={q}>{q}</li>)}
-          </ol>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="ابدأ بورشة الأقلام (مبتدئ)، ثم انتقل إلى أعداد الكتاب (متقدّم)."
           levels={{
             beginner: () => (
               <Manipulation type="rank-exchange" level="beginner" world="pencils" tasks={['pack', 'unpack']}
                 start={LAB.pack} n={LAB.unpack.n} rank={LAB.unpack.rank} onTrial={record} />
             ),
             advanced: () => (
-              <Manipulation type="rank-exchange" level="advanced" world="tokens" tasks={['next', 'previous', 'borrow', 'dictation']}
-                next={LAB.next} borrow={LAB.borrow} dictation={LAB.dictation} onTrial={record} />
+              <Manipulation type="rank-exchange" level="advanced" world="tokens" tasks={['next', 'previous', 'borrow']}
+                next={LAB.next} borrow={LAB.borrow} onTrial={record} />
             ),
           }}
         />
       }
       steps={[
         {
-          num: 1, title: 'أكبر عدد وأصغر عدد بالأرقام 0 ، 1 ، 3 ، 8', subtitle: 'السؤال 1 من الكتاب', done: q1,
+          num: 1, title: 'هل يعدّ الرقمان 7 نفس العدد من الأقلام؟', subtitle: 'في لوحتك', done: q1,
           content: (
-            <BatchChoiceQuestion
-              intro={<p className="text-sm font-semibold text-slate-700">كل رقم مرّة واحدة:</p>}
-              rows={[
-                { id: 'big', label: 'أ) أكبر عدد طبيعي ممكن', options: ['8310', '8301', '1038'], correct: 0, correction: 'نضع الرقم الأكبر في المرتبة الأعلى: 8 آلاف، ثم 3 مئات، ثم 1 عشرة، ثم 0.' },
-                { id: 'small', label: 'ب) أصغر عدد طبيعي ممكن', options: ['0138', '1038', '1083'], correct: 1, correction: 'لا نبدأ بالصفر: 0138 هو 138 بثلاثة أرقام فقط. أصغر رقم غير معدوم في المرتبة الأعلى: 1038.' },
-              ]}
-              requires={['maratib-ibtidai']}
-              feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'تمامًا: الرقم الأكبر في المرتبة الأعلى.' : 'الموقع يقرّر: المرتبة الأعلى على اليسار.'}</Feedback>}
-              onAnswered={() => setQ1(true)}
-            />
-          ),
-        },
-        {
-          num: 2, title: 'العددان 25 و 52', subtitle: 'السؤال 2 من الكتاب', done: q2,
-          content: (
-            <div className="space-y-3">
+            <div className="space-y-3" data-activity-evidence>
+              <Evidence task="pack" done={<span>ربطتَ حتى صار العدد مكتوبًا: <bdi dir="ltr">{LAB.packValue}</bdi>.</span>}
+                todo="اربط أقلام الورشة أوّلًا (مبتدئ)، ثم عُد إلى هذا السؤال." />
               <TapQuestion
-                prompt={<span>هل للرقم 2 نفس الدلالة في 25 وفي 52؟</span>}
-                options={[M('لا: في 25 يمثّل عشرتين (20)، وفي 52 يمثّل وحدتين (2)'), M('نعم: 2 هو 2 أينما كُتب'), M('لا: في 52 يمثّل 20')]}
+                prompt={<span>في لوحتك <bdi dir="ltr">{LAB.packValue}</bdi> يظهر الرقم 7 مرّتين: في عمود الأقلام وفي عمود الحزم. كم قلمًا يعدّ كلّ واحد منهما؟</span>}
+                options={['7 أقلام ، و 70 قلمًا', '7 أقلام ، و 7 أقلام', '70 قلمًا ، و 7 أقلام']}
                 correct={0} cols={1} requires={['maratib-ibtidai']}
-                explain={<MathText>{'$25 = 2 \\times 10 + 5$ و $52 = 5 \\times 10 + 2$ : نفس الرقمين، وقيمتان مختلفتان حسب الموقع.'}</MathText>}
-                onAnswered={() => setQ2(true)}
+                explain={WORKSHOP.sevens}
+                onAnswered={() => setQ1(true)}
               />
-              <KnowledgeBrick id="qima-mawdi" />
+              {q1 && <KnowledgeBrick id="qima-mawdi" />}
             </div>
           ),
         },
         {
-          num: 3, title: 'العدد الذي يلي 999 والذي يسبقه', subtitle: 'السؤال 3 من الكتاب', done: q3,
+          num: 2, title: 'ماذا يحدث إذا وصل قلم واحد؟', subtitle: 'إلى 999 قلمًا', done: q2,
           content: (
-            <div className="space-y-3">
-              <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
-                <li data-evidence="pack" data-tried={did('pack') ? 'true' : 'false'} className={did('pack') ? 'font-bold text-slate-800' : 'text-slate-500'}>
-                  {did('pack') ? <span>ورشة الأقلام: ربطتَ حتى صار العدد مكتوبًا: <bdi dir="ltr">{LAB.packValue}</bdi>.</span> : 'ورشة الأقلام: لم تربط بعد (المستوى المبتدئ).'}
-                </li>
-                <li data-evidence="next" data-tried={did('next') ? 'true' : 'false'} className={did('next') ? 'font-bold text-slate-800' : 'text-slate-500'}>
-                  {did('next') ? <span>أضفتَ 1 إلى <bdi dir="ltr">999</bdi> وربطتَ ثلاث مرّات.</span> : 'العدد الذي يلي 999: لم تجرّبه بعد (المستوى المتقدّم).'}
-                </li>
-              </ul>
-              <BatchChoiceQuestion
-                rows={[
-                  { id: 'next', label: 'العدد الذي يلي تسعمائة وتسعة وتسعين', options: ['9910', '1000 — ألف', '99910'], correct: 1, correction: '10 آحاد = عشرة، 10 عشرات = مئة، 10 مئات = ألف: 1000.' },
-                  { id: 'prev', label: 'العدد الذي يسبق تسعمائة وتسعة وتسعين', options: ['998 — تسعمائة وثمانية وتسعون', '989', '899'], correct: 0, correction: 'ننقص وحدة من الآحاد: 998.' },
-                ]}
-                requires={['maratib-ibtidai', 'kitabat-adad-ibtidai']}
-                feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'تمامًا.' : 'جرّب 999 + 1 في المستوى المتقدّم.'}</Feedback>}
+            <div className="space-y-3" data-activity-evidence>
+              <Evidence task="next" done={<span>أضفتَ 1 إلى <bdi dir="ltr">999</bdi> وربطتَ حتى صار العدد مكتوبًا.</span>}
+                todo="جرّب المهمة « العدد الموالي » في المستوى المتقدّم، أو أجب ثم تحقّق هناك." />
+              <TapQuestion
+                prompt={<span>في ورشة أخرى 9 علب و 9 حزم و 9 أقلام، أي <bdi dir="ltr">999</bdi> قلمًا. وصل قلم واحد. بعد أن نربط كل عشرة، ماذا يبقى في الورشة؟</span>}
+                options={['صندوق واحد فقط: 1000', '9 علب و 9 حزم و 10 أقلام: 99910', '9 علب و 10 حزم: 9910']}
+                correct={0} cols={1} requires={['maratib-ibtidai', 'kitabat-adad-ibtidai']}
+                explain={<MathText>{WORKSHOP.cascade}</MathText>}
+                onAnswered={() => setQ2(true)}
+              />
+              {q2 && <KnowledgeBrick id="tabadul" lead="عمود فيه 10: ماذا فعلتَ قبل أن تستطيع كتابة العدد؟" />}
+            </div>
+          ),
+        },
+        {
+          num: 3, title: 'لماذا نكتب 0 في عمود فارغ؟', subtitle: 'طلبية المدرسة الجبلية', done: q3,
+          content: (
+            <div className="space-y-3" data-activity-evidence>
+              <Evidence task="unpack" done={<span>فتحتَ صندوقَي المخزن: <bdi dir="ltr">{LAB.unpack.n}</bdi> قلمًا.</span>}
+                todo="افتح صناديق المخزن (المهمة 2 في المستوى المبتدئ)، ثم عُد إلى هذا السؤال." />
+              <TapQuestion
+                prompt={<span>في المخزن صندوقان، ولا علبة، وحزمة واحدة، و 7 أقلام. لو لم نكتب شيئًا في عمود العلب الفارغ، ماذا نقرأ؟</span>}
+                options={['217 — عددًا آخر أصغر بكثير', '2017 — نفس العدد', '2170 — عددًا أكبر']}
+                correct={0} cols={1} requires={['tabadul']}
+                explain={WORKSHOP.zero}
                 onAnswered={() => setQ3(true)}
               />
-              <KnowledgeBrick id="tabadul" lead="عمود فيه 10: ماذا فعلتَ قبل أن تستطيع كتابة العدد؟" />
             </div>
           ),
         },

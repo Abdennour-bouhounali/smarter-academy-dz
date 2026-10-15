@@ -15,7 +15,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module01AlFuruq.jsx",
-        "line": 66,
+        "line": 60,
         "step": 1,
         "variant": "new"
       }
@@ -26,7 +26,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module02Khassiyatan.jsx",
-        "line": 34,
+        "line": 44,
         "step": 3,
         "variant": "new"
       }
@@ -40,7 +40,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module01AlFuruq.jsx",
-        "line": 76,
+        "line": 70,
         "step": 2,
         "variant": "new"
       }
@@ -51,7 +51,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module03KhwarizmiyatIqlidus.jsx",
-        "line": 66,
+        "line": 57,
         "step": 1,
         "variant": "new"
       }
@@ -64,7 +64,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module03KhwarizmiyatIqlidus.jsx",
-        "line": 75,
+        "line": 66,
         "step": 3,
         "variant": "new"
       }
@@ -173,13 +173,9 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module01AlFuruq.jsx",
-      "line": 67,
-      "requires": [
-        "pgcd-farq"
-      ],
-      "prerequisiteStatus": {
-        "pgcd-farq": "established@M1"
-      },
+      "line": 55,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -189,7 +185,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module02Khassiyatan.jsx",
-      "line": 24,
+      "line": 22,
       "requires": [
         "pgcd-farq",
         "nataij-mubashira"
@@ -207,13 +203,9 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module02Khassiyatan.jsx",
-      "line": 36,
-      "requires": [
-        "pgcd-baqi"
-      ],
-      "prerequisiteStatus": {
-        "pgcd-baqi": "established@M2"
-      },
+      "line": 38,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -223,15 +215,9 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module03KhwarizmiyatIqlidus.jsx",
-      "line": 67,
-      "requires": [
-        "pgcd-baqi",
-        "khwarizmiyat-iqlidus"
-      ],
-      "prerequisiteStatus": {
-        "pgcd-baqi": "established@M2",
-        "khwarizmiyat-iqlidus": "established@M3"
-      },
+      "line": 54,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },

@@ -1,0 +1,86 @@
+# LabCoach rollout — the onboarding on EVERY manipulation (owner, 2026-10-14)
+
+Validated on `rank-exchange` (lesson `kitabat-adad-tabii`): at each moment a pulsing ring + a ONE-sentence bubble on the button or
+gesture the hand needs now; shown once per step, hidable (« فهمت » / « إيقاف الإرشاد » / Esc), re-summonable by the switch under the
+question. Contract: `docs/architecture/MANIPULATION_CONTRACT.md` §8quater; philosophy: `MANIPULATION_DNA.md` §17.11. Reference code:
+`lessons/common/manipulations/primitives/LabCoach.jsx` + `labCoach.js`, `logic/rankExchange.js › coachOf`, `operations/RankExchange.jsx`
+(`useLabCoach`, `coachText`), strings `rankExchange.coach.*`, e2e `apps/web/e2e/lesson-kit/lab-coach.mjs`.
+
+## Status
+
+71 manipulation types are registered (`manipulationRegistry.js`). **Adopted: 12** — `rank-exchange` (prototype), batch 1 (2026-10-15, registry
+order, the six divisibility labs) and the **1AM–2AM lesson labs** (2026-10-15, the five types the generated lessons mount: `story-bars`, `division-jumps`, `digit-cards`, `egg-trays`, `fraction-knife` — done out of registry order, with the lesson retrofit). Everything else (64 types, from `divisor-explorer`'s successors: `pgcd-differences`, `euclidean-algorithm`,
+`coprime-explorer`, `fraction-reduction`, `square-root-side` …) is pending (the 1AM–2AM lessons mount no other type). Tests: `logic/divisibilityCoach.test.js` (every coach FOLLOWED to
+the lab's goal, at every level), `divisibility/divisibilityCoach.render.test.jsx`, `primitives/labCoach.test.js` (`view`), e2e `lab-coach.mjs`
+(`QA_ONLY=divisibility`, `QA_LAB=<type>/<level>`, `QA_MOBILE=1`).
+
+| Type | Lessons (4AM) | Levels | Tips (step ids) | Browser | Notes / improvements after looking |
+|---|---|---|---|---|---|
+| `rank-exchange` | kitabat-adad-tabii (1AM) | both | predict · tie · carry · open · plus · minus · pick · check · next-task | 1280/390/320 | prototype |
+| `divisor-explorer` | none (registered, mounted by no lesson; levels 24 / 1512) | both | size · again | **not in a browser** (no lesson mounts it): logic + render only | the « اسحب بإصبعك » hint line is silent while the coach shows |
+| `divisor-explorer-books` | qasim-adad-tabii (modules 1 and 2, 24 / 420 / 143) | both + symmetry | handle · nudge | 1280 ✓ (initial + after a real drag) | « + » shown as the no-drag path; the bubble at 1280 sits over the first bookcase row (kept) |
+| `team-builder` | qasim-adad-tabii module 1 | both | place · more · teams · free | 1280 ✓ | the coach names no team (the equality refusal answers); advanced has no chips → points at the free lab |
+| `factor-pairs` | qawasim-adad-tabii modules 1–2 (24 / 60 / 48) | both | handle · nudge | 1280 ✓ | the next width to try is never named: only the ± button on its side |
+| `divisor-properties` | khawass-qawasim module 1 | both | predict (advanced) · carry · carry-next | 1280 ✓ | zones by rank (« الأولى »), not by their on-screen words |
+| `common-divisors` | qasim-mushtarak-akbar, tayin-pgcd | both + lists-first | add · more · to-lists · middle · pgcd | 1280 ✓ | `add` targets `[data-group-row]` (a bubble under the stack covered « + »); lists point at the zones, never at a token |
+| `story-bars` | mana-jam-tarh (modules 1, 3) | both + method29 | handle · calc · next · card | 1280 ✓ (bubble over the child's « 130 cm » label, kept) | no direction button is pointed at (which side decides the word trap); the advanced cards step shows only the FIRST card, the tap-tap path is in the sentence |
+| `division-jumps` | qisma-iqlidiya-baqi (modules 1, 2) | flowers · line · line-253 | handle · step · next | 1280 ✓ | the bubble covers the lower flower rows (kept); `step` points at « − » when the track is at its end; no jump size is ever named |
+| `digit-cards` | qawaid-qabiliyat-qisma (module 1) | grid + cards | colouring · nextColouring · cell · reveal · card · lamp · submit · task · swap | 1280 ✓ (first step) | `cell` points at the whole table, never a cell; the « لا يوجد » button is never pointed at (it would reveal the impossible target) |
+| `egg-trays` | qisma-iqlidiya-hasr (module 1) | carton (مبتدئ) + tray (متقدم) | frame · handle · next · claim · exact | 1280 ✓ (first step) | `claim` targets the friend's card, not an answer button; the first bubble sits over the « إطارك على المسطرة » card (kept) |
+| `fraction-knife` | ikhtizal-kitaba-kasriya (module 1) | tray + paper | knife · claim · claim-knife · judge · next · cursor · plant · start | 1280 ✓ (first step) | `judge` points at the claim card, never at true/false; the bubble covers the right of the tray (kept) |
+| `fair-share` | hasil-qisma-kasr (module 1) | canteen + family | handle · again · rulers · next | 1280 ✓ | `rulers` points at the whole group of rulers, never at the cut ruler or a share; the cut ruler stays locked until two decimal trials |
+
+**Improved after looking.** (1) At phone height the target and bubble were below the screen → `placeBubble({ view })` edge mode (see §8quater);
+(2) edge mode pinned a bubble for labs entirely off-screen (several labs per page) → only labs intersecting the visible band pin; (3) the edge bubble
+overlapped the floating كرّاسي / بطاقتي column → higher bottom inset under `lg`; (4) « المس + » wrapped a lone « + » → « اضغط زرّ الزيادة ».
+**Known / not done (1AM–2AM batch).** The four agent-written coaches were verified by logic tests FOLLOWING the coach to the goal (`logic/moyenLabsCoach.test.js`, 12 blocks) and by a 1280×800 browser pass of the FIRST step of each lab (`e2e/lesson-kit/moyen-retrofit-phase1.mjs`, which also asserts the bubble's step id); the later steps (mid-activity states) were not photographed — do that in the next pass. Mobile skipped by the owner. The `digit-cards` render test now filters the coach toggle's `data-state="on"` from its lamp-state assertion.
+**Known / not done.** Mobile (390 / 320) was skipped by the owner request: the edge placement is unit-tested only; at 320 the first tip may sit over the
+mission text of a tall lab. `common-divisors` lists: the bubble covers part of the 60-chip list. The `common-divisors` lists step cannot be completed by
+the coach alone on purpose (which tokens divide both is the exercise). Pre-existing, not from the coach: at 320 px `factor-pairs` has a 356 px page width (a `math`
+element of the equation line).
+
+## The prompt (paste into a fresh session; one batch = N types, in registry order, resumable from this file's table)
+
+```
+Rollout of the LabCoach onboarding — give EVERY manipulation type the same onboarding as `rank-exchange`. N = 6 types per batch.
+
+Read first: CLAUDE.md, docs/README.md, docs/reports/LAB_COACH_ROLLOUT.md (status table), docs/architecture/MANIPULATION_CONTRACT.md §8quater,
+docs/architecture/MANIPULATION_DNA.md §17 (esp. §17.7 « say it once », §17.9, §17.11), and the reference implementation:
+primitives/LabCoach.jsx, primitives/labCoach.js (+ test), logic/rankExchange.js › coachOf (+ « coachOf » test), operations/RankExchange.jsx
+(useLabCoach, coachText, the toggle under the prompt, the overlay inside the positioned glance), i18n rankExchange.coach.*,
+apps/web/e2e/lesson-kit/lab-coach.mjs.
+
+Take the next N types of apps/web/src/lessons/common/manipulations/manipulationRegistry.js whose status in the table is not « adopted » (next: `pgcd-differences`, `euclidean-algorithm`, `coprime-explorer`, `fraction-reduction`, `square-root-side`, `square-fold`). Shell labs: wire through the shell's `coach` prop (§8quater); for a lab with several `ManipulationShell` levels run `QA_LAB=<type>/<level>`.
+For EACH type, at EVERY level (مبتدئ / متقدم) and EVERY mode it has (tasks, worlds, sections), in every lesson of every grade that mounts it:
+1. List the controls and gestures the student must FIND (buttons, handles, drag sources, sweeps, steppers, check / next buttons, cards).
+   Decide for each moment which ONE element the hand needs next. A lab with nothing to find (pure reading) says so in its header and
+   passes coach={false} with the reason.
+2. Write a pure `coachOf(state, ctx)` in the lab's logic file returning `{ id, target, rank?, gesture }` (target = a selector of the lab's
+   existing DOM contract, add a data-attribute if one is missing) or null. Its unit test FOLLOWS the coach to the end of every task, level
+   and world and asserts the lab ends solved — the lab must be completable by the coach alone, and never point at an element absent from the DOM.
+3. Wire it exactly like rank-exchange: `useLabCoach({ lab: '<type>', step, text, labels })`, `coach.toggle` right under the question,
+   `coach.overlay` inside the glance (add `relative`), prop `coach` default TRUE. Reuse the shared component and the same design — NEVER
+   restyle, never write a look-alike; extend LabCoach (with tests) if a real need appears (e.g. a drag arrow), for ALL labs.
+4. Strings in apps/web/src/i18n/locales/ar/lesson.manipulation.json under `<type>.coach.{hide,show,ok,stop,<stepId>}`: ONE Arabic sentence per
+   step that names the CONTROL and the gesture (tap / drag / sweep), never the rule or the answer (« discover, don't be told »), no word
+   the lab already says on screen at that moment (§17.7 « say it once » — if the gesture hint duplicates the tip, keep ONE: remove the
+   hint line only while the coach is visible, or shorten it). Counted nouns follow ARABIC_RTL_CONTRACT; numbers in LTR islands.
+5. Render test (like rankExchange.render.test.jsx › onboarding): absent when `coach={false}`; toggle under the question and before the
+   stage; every coach string exists, fully interpolated, and does not state the rule.
+6. In the browser (Playwright, apps/web/e2e/lesson-kit/lab-coach.mjs adapted per type — extend it, keep one script with per-type blocks):
+   at 1280×800, 390×844 and 320×640 and at both levels: a bubble on the first step; it stays inside the lab frame; it never covers the
+   element it points at; the real control under the ring still works (click it); « فهمت » hides one tip; the switch brings it back;
+   « إيقاف الإرشاد » is remembered after a reload. LOOK at the screenshots (initial + two mid-activity states per level) and iterate until
+   you would be proud to show them: bubble never over the object being manipulated if avoidable, no overlap with the verdict banner, the
+   ring tight around the target, no horizontal overflow, nothing in English.
+7. Update docs/reports/LAB_COACH_ROLLOUT.md (the status table: type, lessons, levels, tips, screenshots reviewed, what you improved after
+   looking) and, if you extended LabCoach, MANIPULATION_CONTRACT.md §8quater. Follow the documentation synchronization rule.
+
+Gates per batch (from apps/web for vitest): `npx vitest run src/lessons/common/manipulations`, then from the repo root `npm run check:lessons`
+(entry budget 330 KB gzip: LabCoach must stay in the lab chunk, never the entry), and `npm test` once at the end of the batch. Tests run from
+apps/web (its vitest config loads the lab strings). Do not start/leave dev servers running: stop the ones you started by pid.
+When every type is adopted, add a gate to `check:lessons` that fails a registered manipulation type that neither calls `useLabCoach` nor
+declares `coachNotNeeded: '<reason>'` in its header, document it in §8quater, and report: per type — the tips, the screenshots reviewed,
+the improvements; the final status table; and the prompt for the next batch if any type remains.
+Do NOT commit or push unless I ask. End with the Documentation Sync section.
+```

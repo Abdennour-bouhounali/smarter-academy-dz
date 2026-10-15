@@ -17,7 +17,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx",
-        "line": 96,
+        "line": 95,
         "step": 1,
         "variant": "new"
       }
@@ -28,7 +28,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx",
-        "line": 138,
+        "line": 137,
         "step": 3,
         "variant": "new"
       }
@@ -197,14 +197,10 @@
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx",
       "line": 89,
-      "requires": [
-        "mutawassit-majmuat"
-      ],
-      "prerequisiteStatus": {
-        "mutawassit-majmuat": "later@M1"
-      },
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
-      "pedagogicallyValid": false
+      "pedagogicallyValid": true
     },
     {
       "questionId": "M01-S2-Q2",
@@ -212,7 +208,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx",
-      "line": 103,
+      "line": 102,
       "requires": [
         "mutawassit-majmuat"
       ],
@@ -228,17 +224,15 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx",
-      "line": 124,
+      "line": 123,
       "requires": [
-        "silsila-kamila",
         "mutawassit-majmuat"
       ],
       "prerequisiteStatus": {
-        "silsila-kamila": "later@M1",
         "mutawassit-majmuat": "established@M1"
       },
       "lexiconHits": [],
-      "pedagogicallyValid": false
+      "pedagogicallyValid": true
     },
     {
       "questionId": "M01-S4-Q4",
@@ -246,7 +240,7 @@
       "step": 4,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx",
-      "line": 147,
+      "line": 146,
       "requires": [
         "mutawassit-majmuat"
       ],
@@ -404,30 +398,6 @@
     }
   ],
   "findings": [
-    {
-      "code": "E_REQUIRES_ESTABLISHED_LATER",
-      "severity": "critical",
-      "message": "question 'M01-S1-Q1' requires 'mutawassit-majmuat', established only later by the brick at apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx:96",
-      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx",
-      "line": 89,
-      "module": 1,
-      "step": 1,
-      "term": null,
-      "questionId": "M01-S1-Q1",
-      "position": 10
-    },
-    {
-      "code": "E_REQUIRES_ESTABLISHED_LATER",
-      "severity": "critical",
-      "message": "question 'M01-S3-Q3' requires 'silsila-kamila', established only later by the brick at apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx:138",
-      "file": "apps/web/src/lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/modules/Module01Tahaddi.jsx",
-      "line": 124,
-      "module": 1,
-      "step": 3,
-      "term": null,
-      "questionId": "M01-S3-Q3",
-      "position": 23
-    },
     {
       "code": "W_MODULE_NOT_KIT",
       "severity": "info",

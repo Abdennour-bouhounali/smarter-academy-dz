@@ -16,7 +16,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/modules/Module01Nashat.jsx",
-        "line": 195,
+        "line": 177,
         "step": 3,
         "variant": "new"
       }
@@ -27,7 +27,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/modules/Module02Maarif.jsx",
-        "line": 52,
+        "line": 69,
         "step": 1,
         "variant": "rappel"
       }
@@ -38,7 +38,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/modules/Module02Maarif.jsx",
-        "line": 116,
+        "line": 123,
         "step": 4,
         "variant": "rappel"
       }
@@ -76,7 +76,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/modules/Module02Maarif.jsx",
-        "line": 77,
+        "line": 85,
         "step": 2,
         "variant": "new"
       }
@@ -185,7 +185,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/modules/Module01Nashat.jsx",
-      "line": 132,
+      "line": 114,
       "requires": [
         "tartib-nuqat"
       ],
@@ -201,7 +201,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/modules/Module01Nashat.jsx",
-      "line": 143,
+      "line": 125,
       "requires": [
         "tartib-nuqat"
       ],
@@ -217,7 +217,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/modules/Module01Nashat.jsx",
-      "line": 163,
+      "line": 145,
       "requires": [
         "tartib-nuqat"
       ],
@@ -233,7 +233,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/modules/Module01Nashat.jsx",
-      "line": 183,
+      "line": 165,
       "requires": [
         "tartib-nuqat"
       ],
@@ -249,7 +249,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/modules/Module01Nashat.jsx",
-      "line": 205,
+      "line": 186,
       "requires": [
         "aksiya-nashat"
       ],
@@ -265,13 +265,11 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/modules/Module02Maarif.jsx",
-      "line": 61,
+      "line": 60,
       "requires": [
-        "khassiya-aksiya",
         "tasawi-kasrayn"
       ],
       "prerequisiteStatus": {
-        "khassiya-aksiya": "established@M2",
         "tasawi-kasrayn": "prior"
       },
       "lexiconHits": [],
@@ -283,13 +281,9 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/modules/Module02Maarif.jsx",
-      "line": 78,
-      "requires": [
-        "shart-tartib"
-      ],
-      "prerequisiteStatus": {
-        "shart-tartib": "established@M2"
-      },
+      "line": 77,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -299,7 +293,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/modules/Module02Maarif.jsx",
-      "line": 97,
+      "line": 95,
       "requires": [
         "khassiya-aksiya"
       ],
@@ -315,13 +309,9 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/modules/Module02Maarif.jsx",
-      "line": 117,
-      "requires": [
-        "nisbatan-mukhtalifatan"
-      ],
-      "prerequisiteStatus": {
-        "nisbatan-mukhtalifatan": "established@M2"
-      },
+      "line": 115,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },

@@ -32,7 +32,7 @@ export default function Module02HalaAmma() {
       objectives={['كيف نكتب إحداثيتي منتصف قطعة لأيّ نقطتين؟', 'كيف نعبّر عن المسافة بين نقطتين بإحداثيتيهما؟']} estimatedTime="8 دقائق"
       brief={{
         tag: 'أنشطة — الكتاب ص 141', title: 'من الأمثلة إلى القانونين', tone: 'violet',
-        body: <p>على الخريطة كان دبّوس اللقاء يُقبل حين تتساوى الحركتان، وكانت المسافة وتر درج الشوارع. الآن نكتب ذلك لأي نقطتين A و B.</p>,
+        body: <p>ما فعلته بالدبّوس وبالدرج على الخريطة، نكتبه الآن بالحروف لأي نقطتين A و B.</p>,
         footer: <SourceTag source={ACTIVITY.source} />,
       }}
       steps={[
@@ -41,7 +41,6 @@ export default function Module02HalaAmma() {
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={`${ACTIVITY.part2} ${ACTIVITY.part3}`} source={ACTIVITY.source} compact />
-              <KnowledgeBrick id="muntasaf-murakkibat" variant="rappel" compact />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">اختر لكل سطر:</p>}
                 rows={[
@@ -50,10 +49,11 @@ export default function Module02HalaAmma() {
                   { id: 'ib', label: <MathText>{'جـ) مركبتا $\\overrightarrow{IB}$'}</MathText>, options: ['$\\begin{pmatrix} x_B - x_I \\\\ y_B - y_I \\end{pmatrix}$', '$\\begin{pmatrix} x_I - x_B \\\\ y_I - y_B \\end{pmatrix}$', '$\\begin{pmatrix} x_B - x_A \\\\ y_B - y_A \\end{pmatrix}$'].map(M), correct: 0, correction: <MathText>{ACTIVITY_LINES.ai}</MathText> },
                   { id: 'xi', label: <MathText>{'عبّر عن $x_I$'}</MathText>, options: ['$x_I = \\dfrac{x_A + x_B}{2}$', '$x_I = \\dfrac{x_B - x_A}{2}$', '$x_I = x_A + x_B$'].map(M), correct: 0, correction: <MathText>{ACTIVITY_LINES.solve}</MathText> },
                 ]}
-                requires={['muntasaf-murakkibat', 'murakkibat-hisab']}
+                requires={['muntasaf-shuaa', 'murakkibat-hisab']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: نفس الحركة قبل I وبعدها، فـ I في منتصف الفاصلتين ومنتصف الترتيبين.' : 'راجع التصحيح تحت كل سطر: النهاية ناقص المبدأ، ثم نحلّ المعادلة.'}</Feedback>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="muntasaf-murakkibat" variant="rappel" compact />}
               {q1 && (
                 <div className="space-y-2" data-hala-mid>
                   <TextbookBox kind="example" text={`3) ${ACTIVITY_LINES.complete}`} source={ACTIVITY_LINES.source} compact />

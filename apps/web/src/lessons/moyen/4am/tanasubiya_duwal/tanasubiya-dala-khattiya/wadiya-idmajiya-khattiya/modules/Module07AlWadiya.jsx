@@ -86,7 +86,6 @@ export default function Module07AlWadiya() {
       }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
           lead="المستوى المتقدّم هو عائلة الكتاب: مستقيم التكلفة وخط الميزانية 2000 DA. في المستوى المبتدئ عائلة أخرى بتكلفة 3x وميزانية 1500 DA."
           levels={{
@@ -132,7 +131,6 @@ export default function Module07AlWadiya() {
         { num: 2, title: 'تحليل الوضعية واختيار استراتيجية', subtitle: 'المرحلة 2 من الكتاب: ماذا نحتاج لحساب المدة؟', done: !!q[2],
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" title={SITUATION.analysis[1].label} text={SITUATION.analysis[1].text} source={SITUATION.source} compact />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">على شكل الكتاب: احكم على كل عبارة.</p>}
                 rows={[
@@ -145,6 +143,7 @@ export default function Module07AlWadiya() {
                 requires={['fithaghuras', 'maqadir-murakkaba']}
                 feedback={({ allRight }) => <MathText>{allRight ? 'أحسنت. ماذا يمثّل الحبل في المثلث $AHB$ ، وكيف نصل منه إلى المدة؟' : 'الحبل وتر المثلث القائم $AHB$ ، وضلعه $BH$ هو الفرق بين الارتفاعين.'}</MathText>}
                 onAnswered={mark(2)} />
+              {q[2] && <TextbookBox kind="remark" title={SITUATION.analysis[1].label} text={SITUATION.analysis[1].text} source={SITUATION.source} compact />}
             </div>
           ) },
         { num: 3, title: 'تنفيذ: طول الحبل', subtitle: 'المرحلة 3 — على مصعد هوائي آخر', done: !!q[3],

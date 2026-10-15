@@ -25,6 +25,10 @@ import { ACTIVITY_C, HOOK, LABS } from '../content/textbook';
  * L'activité est répondue depuis LES ESSAIS DE L'ÉLÈVE (`onTrial`), listés au
  * pas 1 (`[data-activity-evidence]`) ; l'identité n'est NOMMÉE qu'après la
  * preuve « انقل وأكمل » (ب). LP enseignés : P3, P4.
+ *
+ * Rétrofit 2026-10-15 (§4quater) : le labo OUVRE le module — plus de carte `brief` (l'accroche de l'entraîneur est devenue
+ * l'application finale « عودة إلى الملعب »), plus de `title` / `lead` de workspace ; une étape POURQUOI ouvre le module
+ * (pourquoi le terme en x disparaît chez l'élève), répondue depuis ses essais.
  */
 const m = (tex) => <MathText key={tex}>{tex}</MathText>;
 
@@ -42,29 +46,10 @@ export default function Module02NashatJidaa() {
       navLinks={getNavLinks(2)}
       moduleNumber={2}
       moduleTitle="نشاط 2 — جداء مجموع حدين وفرقهما"
-      moduleSubtitle="ملعب يطول ويضيق بالقدر نفسه"
+      moduleSubtitle="ملعب يطول بقدر ما يضيق"
       estimatedTime="8 دقائق"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 33',
-        headline: 'أطول بـ 5 وأضيق بـ 5: هل تبقى المساحة نفسها؟',
-        emoji: '🥅',
-        title: ACTIVITY_C.subtitle,
-        tone: 'rose',
-        body: (
-          <div className="space-y-2">
-            <p>
-              مدرّب يتطوّع لتدريب أطفال الحيّ يحوّل ملعبًا مربّعًا ضلعه <MathText>{`$${side}\\,m$`}</MathText> إلى ملعب مستطيل: يزيد طوله <MathText>{`$${change}\\,m$`}</MathText> ويُنقص عرضه <MathText>{`$${change}\\,m$`}</MathText>.
-              {' '}يقول: «أضفت ما أنقصت، فالمساحة لم تتغيّر». هل هو على حق؟ <SourceTag source={HOOK.source} />
-            </p>
-            <p>في المختبر ملعب طوله مجموع حدّين وعرضه فرقهما: اسحب المناطق إلى «المجموع» وضع كل حدّ على الحدّ المشابه له. ماذا يبقى؟</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY_C.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
-          lead="المستوى المتقدم بأعداد الكتاب: (2x + 5)(2x − 5). في المستوى المبتدئ (x + 3)(x − 3)."
           defaultLevel="beginner"
           levels={{
             beginner: () => (
@@ -73,7 +58,7 @@ export default function Module02NashatJidaa() {
                 level="beginner"
                 expr={LABS.sumDiffBeginner}
                 title="ملعب طوله x + 3 وعرضه x − 3"
-                lead="الشريط المضاف في الطول والشريط المقتطع من العرض: قارن مساحتيهما."
+                lead="ملعب يطول بقدر ما يضيق: شريط يُضاف في الطول وشريط يُقتطع من العرض."
                 onTrial={(t) => setBeginnerTrials((list) => upsertTrial(list, t))}
               />
             ),
@@ -83,7 +68,7 @@ export default function Module02NashatJidaa() {
                 level="advanced"
                 expr={LABS.sumDiffAdvanced}
                 title="ملعب طوله 2x + 5 وعرضه 2x − 5"
-                lead="اسحب كل المناطق، اجمع ما يتشابه منها، وتحقّق من أجل قيمتين لـ x. ماذا يبقى من الملعب؟"
+                lead="الفكرة نفسها بأعداد أكبر: ملعب يطول بقدر ما يضيق."
                 onTrial={(t) => setAdvancedTrials((list) => upsertTrial(list, t))}
               />
             ),
@@ -92,10 +77,9 @@ export default function Module02NashatJidaa() {
       }
       steps={[
         {
-          num: 1, title: 'أ) مساحة المستطيل (1) بطريقتين', subtitle: 'أجب من ملعبك', done: !!d.a,
+          num: 1, title: 'لماذا اختفى الحدّ في x؟', subtitle: 'من ملعبك', done: !!d.w,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="exercise" title="الشكل" text={ACTIVITY_C.text} source={ACTIVITY_C.source} compact />
               <p className="text-sm font-semibold text-slate-700">ما تحقّقت منه في المختبر:</p>
               <TrialEvidence
                 trials={advancedTrials}
@@ -107,6 +91,27 @@ export default function Module02NashatJidaa() {
                 line={(x) => `$x = ${x}$ : $(x + 3)(x - 3) = ${(x + 3) * (x - 3)}$ و $${x * x} - ${3 * x} + ${3 * x} - 9 = ${x * x - 9}$`}
                 empty="المستوى المبتدئ: لم تتحقّق بعد."
               />
+              <TapQuestion
+                prompt={<span>في ملعبك <MathText>{'$(x + 3)(x - 3)$'}</MathText> وجدتَ منطقة <MathText>{'$+3x$'}</MathText> ومنطقة <MathText>{'$-3x$'}</MathText>، ولم يبقَ في الجواب حدّ في <MathText>{'$x$'}</MathText>. لماذا؟</span>}
+                options={[
+                  'لأنّ المنطقتين مساحتاهما متساويتان وإشارتاهما متعاكستان، فتتعادلان عند الجمع',
+                  'لأنّ المنطقة $-3x$ أصغر من $+3x$ فتُحذف',
+                  'لأنّ كل حدّ فيه $x$ يُهمل في الجواب',
+                ].map(m)}
+                correct={0}
+                cols={1}
+                requires={['nashr-qawsayn', 'tabsit-hudud']}
+                explain={<MathText>{'$+3x$ و $-3x$ حدّان متشابهان مجموعهما $0$ مهما كان $x$: يبقى $x^2 - 9$. وكذلك $+10x$ و $-10x$ في ملعب $(2x + 5)(2x - 5)$.'}</MathText>}
+                onAnswered={done('w')}
+              />
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'أ) مساحة المستطيل (1) بطريقتين', subtitle: 'أجب من ملعبك', done: !!d.a,
+          content: (
+            <div className="space-y-3">
+              <TextbookBox kind="exercise" title="الشكل" text={ACTIVITY_C.text} source={ACTIVITY_C.source} compact />
               <TapQuestion
                 prompt={<MathText>{ACTIVITY_C.questions[0]}</MathText>}
                 options={[
@@ -124,7 +129,7 @@ export default function Module02NashatJidaa() {
           ),
         },
         {
-          num: 2, title: 'ب) البرهان: انقل وأكمل', subtitle: 'من أجل كل عددين', done: !!d.b,
+          num: 3, title: 'ب) البرهان: انقل وأكمل', subtitle: 'من أجل كل عددين', done: !!d.b,
           content: (
             <div className="space-y-3">
               <BatchChoiceQuestion
@@ -146,7 +151,7 @@ export default function Module02NashatJidaa() {
           ),
         },
         {
-          num: 3, title: 'جـ) انشر', done: !!d.c,
+          num: 4, title: 'جـ) انشر', done: !!d.c,
           content: (
             <BatchChoiceQuestion
               intro={<p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY_C.questions[2]}</MathText></p>}
@@ -161,7 +166,7 @@ export default function Module02NashatJidaa() {
           ),
         },
         {
-          num: 4, title: 'د) احسب ذهنيا', subtitle: 'دون وضع العملية', done: !!d.dh,
+          num: 5, title: 'د) احسب ذهنيا', subtitle: 'دون وضع العملية', done: !!d.dh,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="hisab-mutamaan" variant="rappel" compact />
@@ -179,8 +184,13 @@ export default function Module02NashatJidaa() {
           ),
         },
         {
-          num: 5, title: 'عودة إلى الملعب', subtitle: 'هل المدرّب على حق؟', done: !!d.h,
+          num: 6, title: 'عودة إلى الملعب', subtitle: 'هل المدرّب على حق؟', done: !!d.h,
           content: (
+            <div className="space-y-3">
+            <p className="text-sm text-slate-700">
+              مدرّب يتطوّع لتدريب أطفال الحيّ يحوّل ملعبًا مربّعًا ضلعه <MathText>{`$${side}\\,m$`}</MathText> إلى ملعب مستطيل: يزيد طوله <MathText>{`$${change}\\,m$`}</MathText> ويُنقص عرضه <MathText>{`$${change}\\,m$`}</MathText>.
+              {' '}يقول: «أضفت ما أنقصت، فالمساحة لم تتغيّر». <SourceTag source={HOOK.source} />
+            </p>
             <TapQuestion
               prompt={<span>الملعب صار طوله <MathText>{`$${side + change}\\,m$`}</MathText> وعرضه <MathText>{`$${side - change}\\,m$`}</MathText>. ماذا تقول للمدرّب؟</span>}
               options={[
@@ -194,6 +204,7 @@ export default function Module02NashatJidaa() {
               explain={<MathText>{`$(${side} + ${change})(${side} - ${change}) = ${side}^2 - ${change}^2$ : المنطقتان المضافة والمقتطعة متساويتان، لكن الركن $${change}^2 = ${change * change}$ يضيع.`}</MathText>}
               onAnswered={done('h')}
             />
+            </div>
           ),
         },
       ]}

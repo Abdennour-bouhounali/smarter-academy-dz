@@ -254,3 +254,61 @@ describe('rank-exchange — column layout', () => {
     }
   });
 });
+
+describe('coachOf — le guide montre toujours le prochain geste utile', () => {
+  /** Suit le guide à la lettre, geste après geste ; renvoie les ids vus. */
+  function follow(init, maxSteps = 600) {
+    let s = L.init(init);
+    let focusCol = 0;
+    const seen = [];
+    for (let i = 0; i < maxSteps; i += 1) {
+      const c = L.coachOf(s, { focusCol });
+      if (!c) break;
+      seen.push(c.id);
+      if (c.id === 'predict') s = L.choose(s, L.cardsOf(s)[0]);
+      else if (c.id === 'tie') s = L.tie(s, c.rank, 10);
+      else if (c.id === 'carry') s = L.carry(s, c.rank);
+      else if (c.id === 'open') s = L.open(s, c.rank);
+      else if (c.id === 'plus') s = L.add(s, c.rank, 1);
+      else if (c.id === 'minus') s = L.add(s, c.rank, -1);
+      else if (c.id === 'pick') focusCol = c.rank;
+      else if (c.id === 'check') s = L.check(s);
+      else if (c.id === 'next-task') s = L.nextTask(s);
+    }
+    return { s, seen };
+  }
+
+  it('pack puis unpack (atelier des crayons) : chaque tâche se termine en suivant le guide', () => {
+    const { s, seen } = follow({ world: 'pencils', tasks: ['pack', 'unpack'], start: B.start, n: B.n, rank: B.rank });
+    expect(L.allDone(s)).toBe(true);
+    expect(seen[0]).toBe('predict');
+    expect(seen).toContain('tie');
+    expect(seen).toContain('carry');
+    expect(seen).toContain('open');
+    expect(seen).toContain('next-task');
+  });
+
+  it('next, previous, borrow : le guide mène à la cible', () => {
+    const { s, seen } = follow({ world: 'tokens', tasks: ['next', 'previous', 'borrow'], next: A.next, borrow: A.borrow });
+    expect(L.allDone(s)).toBe(true);
+    expect(seen).toEqual(expect.arrayContaining(['plus', 'tie', 'carry', 'minus', 'open']));
+  });
+
+  it('dictée : choisir la colonne, ± puis « تحقّق », pour chaque nombre dicté', () => {
+    const { s, seen } = follow({ world: 'tokens', tasks: ['dictation'], dictation: [7065, 4908732] });
+    expect(L.allDone(s)).toBe(true);
+    expect(seen).toEqual(expect.arrayContaining(['pick', 'plus', 'check']));
+  });
+
+  it('money (déballage seul) et la fin : plus rien à guider une fois tout fait', () => {
+    const { s } = follow({ world: 'money', tasks: ['unpack'], n: 1345, rank: 2 });
+    expect(L.allDone(s)).toBe(true);
+    expect(L.coachOf(s)).toBeNull();
+  });
+
+  it('ne cible que des éléments du contrat DOM', () => {
+    const s = L.init({ world: 'pencils', tasks: ['pack', 'unpack'] });
+    expect(L.coachOf(s).target).toBe('[data-rx-cards]');
+    expect(L.coachOf(L.choose(s, L.cardsOf(s)[0]))).toMatchObject({ id: 'tie', target: '[data-rx-tie="0"]' });
+  });
+});

@@ -119,3 +119,29 @@ export function untriedGroups(state) {
   for (let k = 1; k <= top; k += 1) if (state.tried[k] === undefined) out.push(k);
   return out;
 }
+
+/* ── Le guide d'onboarding (LabCoach, MANIPULATION_CONTRACT §8quater) ─────────────────────────────────────────── */
+
+/**
+ * La prochaine action attendue, selon le temps où l'on est.
+ *  - GROUPES : tirer un emballage vide sur la table (`add`, la première fois), puis montrer le « + » (`more`) ; au niveau
+ *    avancé, une fois « le plus grand » trouvé, le bouton qui mène aux listes (`to-lists`).
+ *  - LISTES : le guide NE DÉSIGNE PAS les bons jetons (savoir lesquels divisent les deux nombres EST l'exercice) : il montre
+ *    la zone du milieu où un jeton quelconque se pose — un jeton refusé dit pourquoi — (`middle`), puis la case PGCD
+ *    (`pgcd`) quand l'élève a posé tous les communs.
+ * `null` quand rien n'est à guider.
+ *
+ * @param {{stage:'bouquets'|'lists', bouquets:object, lists:object, groupsOnly:boolean}} s
+ */
+export function coachOf({ stage, bouquets, lists, groupsOnly }) {
+  if (stage === 'bouquets') {
+    if (greatestGroupFound(bouquets)) return groupsOnly ? null : { id: 'to-lists', target: '[data-common-next] button', gesture: 'tap' };
+    if (canChoose(bouquets, (bouquets.k ?? 0) + 1) !== true) return null;
+    return bouquets.k === null
+      ? { id: 'add', target: '[data-group-row]', gesture: 'drag' } // la rangée réserve + boutons : la bulle ne couvre ainsi aucune des deux voies
+      : { id: 'more', target: '[data-group-add]', gesture: 'tap' };
+  }
+  if (lists.pgcd !== null) return null;
+  if (allCommonPlaced(lists)) return { id: 'pgcd', target: '[data-drop-zone="pgcd"]', gesture: 'drag' };
+  return { id: 'middle', target: '[data-drop-zone="middle"]', gesture: 'drag' };
+}

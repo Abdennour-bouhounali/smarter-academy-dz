@@ -14,6 +14,7 @@ import DragGhost from '../primitives/DragGhost';
 import KidFigure from '../primitives/KidFigure';
 import { LabCard, StageFrame, PromptCard, ChoiceTray, ChoiceCard, VerdictBanner } from '../primitives/LabKit';
 import { SvgPill } from '../primitives/SvgPill';
+import { useLabCoach } from '../primitives/LabCoach';
 import { LEVELS } from '../levels';
 import * as L from '../logic/rankExchange';
 
@@ -67,8 +68,12 @@ import * as L from '../logic/rankExchange';
  * sous la scène garde sa place. La hauteur des colonnes vient de l'écran de leçon (`useLessonViewport`) moins ce qui
  * entoure ; 7 colonnes de ≥ 40 px à 320 px (le bloc déborde sur les cadres jusqu'à la gouttière, `data-bleed`).
  *
+ * ONBOARDING (obligatoire pour tout labo, 2026-10-14) : la prop `coach` (défaut true ; `false` l'éteint) active `LabCoach` — à chaque instant un anneau + une bulle
+ * d'une phrase montrent le bouton ou le geste attendu (`logic/rankExchange.js › coachOf`, pure et testée : suivre le guide
+ * à la lettre termine chaque tâche), masquable (« فهمت », « إيقاف الإرشاد », Échap, l'interrupteur sous la consigne).
+ *
  * Props (contrat fixé avec la leçon) : `world` ('pencils' | 'tokens' | 'money'), `tasks`, `start`, `n`, `rank`, `next`,
- * `borrow`, `dictation`, `level`, `levels`, `title`, `lead`, `onTrial({ task, kind, rank, ok, counts, value })`,
+ * `borrow`, `dictation`, `level`, `levels`, `coach`, `title`, `lead`, `onTrial({ task, kind, rank, ok, counts, value })`,
  * `onFinished({ tasks })` — à la règle, ou (sans découverte : `money`) quand la tâche est faite ; tous par `state.report`.
  *
  * CONTRAT DOM : [data-rank-exchange][data-world][data-task][data-solved][data-layout], [data-rx-glance][data-bleed],
@@ -130,7 +135,7 @@ export function numbersFor({ world, tasks, start, n, rank, next, borrow, dictati
 export const discoveryKindOf = (tasks) => (tasks.includes('pack') && tasks.includes('unpack') ? 'rank' : tasks.includes('dictation') ? 'zero' : null);
 
 export default function RankExchange({
-  world, tasks, start, n, rank, next, borrow, dictation, title, lead, level, levels: withLevels = true,
+  world, tasks, start, n, rank, next, borrow, dictation, title, lead, level, levels: withLevels = true, coach = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -218,7 +223,7 @@ export default function RankExchange({
           data-solved={ready ? 'true' : 'false'} data-layout={width >= WIDE_MIN ? 'wide' : 'narrow'}>
           <style dangerouslySetInnerHTML={{ __html: MOTION_CSS }} />
           <Lab lab={lab} setLab={setLab} k={k} names={names} width={width} room={room} screenH={screenH} overhead={overhead}
-            glanceRef={glanceRef} bodyHRef={bodyHRef} lead={state.isAuthoredLevel ? lead : null} />
+            glanceRef={glanceRef} bodyHRef={bodyHRef} lead={state.isAuthoredLevel ? lead : null} coach={coach} />
           {lab.trials.length > 0 && (
             <LabFold id="rank-exchange.trials" title={k('trialsTitle')}>
               <ul className="space-y-0.5 text-xs" data-rx-trials={lab.trials.length}>
@@ -288,7 +293,7 @@ function trialText(tr, k, names) {
 
 /* ══════════════ Le laboratoire (consigne, scène, verdict) ══════════════ */
 
-function Lab({ lab, setLab, k, names, width, room, screenH, overhead, glanceRef, bodyHRef, lead }) {
+function Lab({ lab, setLab, k, names, width, room, screenH, overhead, glanceRef, bodyHRef, lead, coach: coachOn }) {
   const world = lab.world;
   const task = L.taskOf(lab);
   const cols = lab.columns;
@@ -393,6 +398,12 @@ function Lab({ lab, setLab, k, names, width, room, screenH, overhead, glanceRef,
 
   /* ── les tâches et la consigne ── */
   const nm = names;
+  // l'onboarding : la prochaine action attendue, dite en UNE phrase (désactivé : aucun pas, aucun rendu)
+  const coachStep = coachOn ? L.coachOf(lab, { focusCol }) : null;
+  const coach = useLabCoach({
+    lab: 'rank-exchange', step: coachStep, text: coachText(coachStep, lab, k, nm),
+    labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
+  });
   const cfg = lab.cfg;
   const done = L.taskDone(lab);
   const predicting = L.needsPrediction(lab);
@@ -591,10 +602,12 @@ function Lab({ lab, setLab, k, names, width, room, screenH, overhead, glanceRef,
 
   const margin = Math.max(0, (inner - width) / 2);
   return (
-    <div ref={glanceRef} className={`space-y-2.5 ${margin > 0 ? 'relative z-[1] rounded-3xl bg-[#F7F7FF]' : ''}`}
+    <div ref={glanceRef} className={`relative space-y-2.5 ${margin > 0 ? 'z-[1] rounded-3xl bg-[#F7F7FF]' : ''}`}
       style={margin > 0 ? { marginInline: -margin } : undefined} data-rx-glance data-bleed={margin > 0 ? Math.round(margin) : undefined}>
       {prompt}
+      {coachOn && <div className="flex">{coach.toggle}</div>}
       {wide ? <div className="flex items-start gap-3">{stage}{side}</div> : <>{stage}{banner}</>}
+      {coachOn && coach.overlay}
       <DragGhost ghost={drag.ghost}>
         {drag.held && (
           <svg width={52} height={52} viewBox="0 0 40 40" aria-hidden="true" className="rounded-xl bg-white/90">
@@ -604,6 +617,22 @@ function Lab({ lab, setLab, k, names, width, room, screenH, overhead, glanceRef,
       </DragGhost>
     </div>
   );
+}
+
+/** L'astuce de l'onboarding : UNE phrase qui montre le bouton ou le geste (jamais la règle). */
+function coachText(step, lab, k, nm) {
+  if (!step) return '';
+  const r = step.rank;
+  switch (step.id) {
+    case 'tie': return k('coach.tie', { ten: nm[r].count(10), obj: nm[r + 1]?.one ?? '' });
+    case 'carry': return k('coach.carry', { col: nm[r].col });
+    case 'open': return k('coach.open', { obj: nm[r].the });
+    case 'plus': case 'minus': case 'pick': return k(`coach.${step.id}`, { col: nm[r].col });
+    case 'predict': return k('coach.predict');
+    case 'check': return k('coach.check');
+    case 'next-task': return k('coach.nextTask');
+    default: return '';
+  }
 }
 
 /** Le texte du bandeau : la consigne du GESTE au repos (une ligne), sinon ce que le dernier geste a produit. */

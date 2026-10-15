@@ -6,6 +6,17 @@
  * Source de vérité : docs/sources/4am/unit2/extraction.json.
  *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
+ *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le carré dallé (labo `square-tiling`, niveau مبتدئ : 36 = 4 × 9) — la main étire k, le nombre de dalles sur le côté,
+ *   un pavage dont la dalle n'a pas d'aire entière est REFUSÉ, et chaque pavage juste montre le côté du grand carré comme k côtés de dalle :
+ *   le produit de racines se VOIT avant de s'écrire. Rejetée : le نشاط 4 du manuel tel quel (deux tableaux à compléter de tête : √4 × √36, √9 × √25…
+ *   puis « ضع تخمينًا ») comme entrée — l'élève calcule des racines connues sans besoin, la conjecture sort d'une colonne de chiffres ; le
+ *   tableau reste le niveau متقدم du même labo (144 = 4 × 36, première ligne) et les étapes 2–8 du module 1, APRÈS le pavage.
+ *   Ordre des idées : le labo, puis POURQUOI un pavage est refusé (étape 1, sur les essais de l'élève) → tableau du produit → conjecture → preuve
+ *   par élévation au carré → brique `jidaa-jidhrayn` APRÈS la conclusion → même chemin pour le quotient (`qismat-jidhrayn`) → module 2 : la tentation
+ *   du + et du − (calculer, voir, trancher, brique `la-tawzi-jam` après) → module 3 : remarque 1 (√(a²b) = a√b) essayée AVANT sa brique `jidhr-a2b`.
+ *   Aucune destination du manuel n'a bougé ; les modules 2, 4 à 8 ne portent aucun labo et gardent leur carte courte (module 2 : sans fait nouveau).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/amaliyat-judhur';
 
@@ -70,7 +81,7 @@ export const LESSON_CONFIG = {
       title: 'مربّع مساحته 36 — كم بلاطة على الضلع؟',
       objective: 'جذر جداء عددين موجبين يساوي جداء جذريهما: √(k² × b) = √(k²) × √b = k√b',
       autonomy: '',
-      experience: { type: 'platform_adaptation', reason: 'smaller_numbers_for_first_contact', theme: 'abstract' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'abstract' },
       learningPointIds: ['4am_amaliyat-judhur_P1'],
       sourceElementIds: ['act-4a'],
     },

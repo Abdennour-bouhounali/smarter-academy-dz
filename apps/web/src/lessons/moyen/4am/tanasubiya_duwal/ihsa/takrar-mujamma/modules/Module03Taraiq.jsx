@@ -16,6 +16,7 @@ import { addition } from '../../_unit/unitMeta';
  *   1. les séismes (pour CHAQUE VALEUR) — brique hisab-mujamma ;
  *   2. les ouvriers (pour CHAQUE FAÏE / فئة, le مدرّج تكراري redessiné) — brique tawatur-fiat ;
  *   3. دوري الآن.
+ * Rétrofit 2026-10-15 : les briques « hisab-mujamma » et « tawatur-fiat » ne paraissent qu'APRÈS la réponse de leur étape.
  * LP : P1 (1), P2 (2, 3), P3 (les tableaux lus et complétés).
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
@@ -54,7 +55,6 @@ export default function Module03Taraiq() {
                 { label: 'التكرار المجمع الصاعد', cells: tv.up },
                 { label: 'التكرار المجمع النازل', cells: tv.down },
               ]} />
-              <KnowledgeBrick id="hisab-mujamma" lead="الطريقة كما يكتبها الكتاب:" />
               <p className="text-sm font-semibold text-slate-800">نقاط فريق الحيّ، المعروف باللعب النظيف، في 12 مباراة: 0 (مرتان)، 1 (5 مرات)، 3 (4 مرات)، 4 (مرة واحدة). <SourceTag source={PLATFORM} /></p>
               <BatchChoiceQuestion
                 rows={[
@@ -62,10 +62,10 @@ export default function Module03Taraiq() {
                   { id: 'd1', label: 'النازل للقيمة 1', options: ['$5$', '$10$', '$12$'].map(M), correct: 1, correction: <MathText>{'$5 + 4 + 1 = 10$'}</MathText> },
                   { id: 'd3', label: 'النازل للقيمة 3', options: ['$5$', '$4$', '$11$'].map(M), correct: 0, correction: <MathText>{'$4 + 1 = 5$'}</MathText> },
                 ]}
-                requires={['hisab-mujamma']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت.' : 'راجع التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && <KnowledgeBrick id="hisab-mujamma" lead="الطريقة كما يكتبها الكتاب، وقد طبّقتها للتوّ:" />}
             </div>
           ),
         },
@@ -82,16 +82,15 @@ export default function Module03Taraiq() {
                 { label: 'التواتر المجمع الصاعد', cells: tc.up },
                 { label: 'التواتر المجمع النازل', cells: tc.down },
               ]} />
-              <KnowledgeBrick id="tawatur-fiat" lead="ونفس الطريقة للفئات، بالتواترات:" />
               <TapQuestion
                 prompt="التواتر المجمع النازل لفئة هو مجموع تواتر هذه الفئة و:"
                 options={['تواترات الفئات التي تليها', 'تواترات الفئات التي تسبقها', 'تكرارات الفئات التي تليها دون قسمة']}
                 correct={0}
                 cols={1}
-                requires={['tawatur-fiat']}
                 explain={<MathText>{'النازل يجمع الفئة وما يليها، مثلا للفئة $40 \\le a < 45$ : $0{,}1 + 0{,}3 + 0{,}1 + 0{,}05 = 0{,}55$ . ما يسبقها يعطي الصاعد، والتكرارات دون قسمة تعطي التكرار المجمع لا التواتر.'}</MathText>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <KnowledgeBrick id="tawatur-fiat" lead="ونفس الطريقة للفئات، بالتواترات:" />}
             </div>
           ),
         },

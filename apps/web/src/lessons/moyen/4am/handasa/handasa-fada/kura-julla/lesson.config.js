@@ -17,6 +17,18 @@
  *                      خزّان d'eau sphérique, le ballon de football coupé ;
  *   M8 إختبار أولي   — cinq épreuves ; P1–P4 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : la lampe-globe de verre (labo `sphere-probe`, niveau مبتدئ, R = 3, trois sondes A, B, C) — la main POSE la sonde
+ *   sur une vraie sphère 3D et la plateforme refuse « داخل الجلة » pour une sonde à OM = √3 : le besoin d'un second mot (جلّة à côté
+ *   de كرة) naît du refus, avant tout vocabulaire. Rejetée : le نشاط 1 tel quel (« cercle ou disque ? », « كرة ou جلّة pour ces objets »,
+ *   puis deux phrases à compléter — des réponses de mémoire, qui livrent la définition avant le geste) ; il reste le niveau متقدم du MÊME
+ *   labo (M, P, Q, le قطر, les دوائر) et ses trois questions viennent APRÈS la première réponse.
+ *   Ordre des idées : le labo seul en tête (aucune carte du manuel, ni titre ni `lead` de workspace ; `onTrial` aux deux niveaux) →
+ *   POURQUOI la جلّة accepte ce que la كرة refuse → le même fait dans le plan (cercle / disque) → les objets du quotidien (كرة ou جلّة)
+ *   → les deux phrases du manuel (« أتوقّع القاعدة », brique APRÈS la réponse) → module 2 : les mots du manuel viennent après la
+ *   question (M, P, Q ; قطر = 2R ; cercle qui tourne ; rayon d'un cercle de centre O₁ AVANT le nom دائرة صغرى) → module 3 : les trois
+ *   briques de méthode après la question de l'étape.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/kura-julla';

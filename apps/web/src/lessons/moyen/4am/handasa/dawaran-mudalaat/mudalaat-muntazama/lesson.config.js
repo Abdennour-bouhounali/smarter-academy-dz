@@ -19,6 +19,16 @@
  *                      hexagonal, les panneaux « قف » octogonaux (content/problems.js) ;
  *   M8 إختبار أولي   — l'item 4 de أؤكّد تعلّماتي et quatre épreuves de la plateforme ; P1, P2, P3 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : l'ALVÉOLE DE RUCHE (polygon-forge, niveau مبتدئ, ouvert par défaut) — la main choisit l'angle α et tourne le
+ *   sommet jusqu'à ce que la boucle se referme : la figure ne se ferme que si n × α = 360° ; c'est la situation où « le polygone
+ *   régulier est une suite d'images par une même rotation » devient NÉCESSAIRE pour la main. Rejetée : le تحدّ de l'étoile comme
+ *   entrée unique (il est posé dans une carte au-dessus du labo avec ses trois phases lues d'avance, et sa fin se répond par
+ *   cœur) ; il reste le niveau متقدم, et le texte du تحدّ, la نجمة البحر et le tifo viennent à l'étape 4, après les essais.
+ *   Le نشاط 5 (MPN) reste une APPLICATION aux étapes 2–3 (destination inchangée). Ordre des idées : quand la boucle se ferme (brique
+ *   `ruus-bidawaran` APRÈS la question 40° → 9 sommets) → le نشاط 5 (120°) → le تحدّ ; معارف : POURQUOI deux conditions (cellule),
+ *   l'octogone de la fontaine avant le cercle circonscrit et 360°/n, l'image C ↦ D avant la brique `surat-mudalla`.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/mudalaat-muntazama';
@@ -91,7 +101,7 @@ export const LESSON_CONFIG = {
       title: 'خلية النحل: سداسي منتظم بالدوران',
       objective: 'رؤوس المضلع المنتظم ذي n ضلعا صور متتالية لرأس واحد بالدوران الذي مركزه مركز المضلع: الحلقة تنغلق مضلعا منتظما فقط إذا كان n × α = 360°، ومنها الزاوية المركزية وزاوية المضلع وطول ضلعه',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'honeycomb' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'honeycomb' },
       learningPointIds: ['4am_mudalaat-muntazama_P2', '4am_mudalaat-muntazama_P3'],
       sourceElementIds: ['challenge', 'act-5'],
     },

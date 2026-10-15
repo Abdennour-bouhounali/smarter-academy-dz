@@ -4,10 +4,9 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { PitchScene } from '../../../../../../common/manipulations/primitives/PitchBackdrop';
-import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, HOOK } from '../content/textbook';
+import { ACTIVITY } from '../content/textbook';
 
 /**
  * Module 1 — نشاط 3 (p. 33) : « تحليل عبارة جبرية », ouvert sur le monde de
@@ -26,10 +25,11 @@ import { ACTIVITY, HOOK } from '../content/textbook';
  * AUCUNE étape n'attend `onFinished` : `onTrial` sert seulement à lister,
  * au-dessus des questions, les essais de l'élève (`[data-activity-evidence]`).
  *
- * Étapes : (1) quand un nombre de rangées est-il juste ? (2) la hauteur du
- * terrain 6x² + 4x ; (3) le cahier d'إيمان (س 1) ; (4) س 2, puis l'encadré
- * du livre posé en brique (tahlil-taarif) ; (5) س 3 : le carré x² + 6x + 9
- * fermé à la main (mode square), إيمان et les trois متطابقات.
+ * Rétrofit 2026-10-15 (§4quater) : le labo ouvre le module (ni carte, ni titre / `lead` de workspace). Étapes : (1) POURQUOI le terrain
+ * 9x + 3 refuse r = 9 alors que 9 divise le nombre de bandes ; (2) ce que contient chaque rangée de 6x² + 4x, donc la LONGUEUR du
+ * terrain (la hauteur est la question du labo) ; (3) le cahier d'إيمان (س 1), application du livre ; (4) س 2, puis la brique
+ * tahlil-taarif APRÈS la réponse ; (5) س 3 : le carré x² + 6x + 9 fermé à la main (mode square), إيمان, puis l'encadré des trois
+ * متطابقات APRÈS sa réponse (il donnerait la réponse), puis les trois décompositions.
  * Les deux niveaux du laboratoire vivent dans l'`intro` : la « مسألة الدرس »
  * (ANCIENNE carte, retirée du module le 2026-10-09 — elle ne vit plus qu'au sommaire — le gazon en rangées du niveau متقدم, d'autres nombres,
  * résolue au module 5) clôt donc la DERNIÈRE étape.
@@ -78,26 +78,9 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 3 — تحليل عبارة جبرية"
       moduleSubtitle="من مجموع إلى جداء"
       estimatedTime="13 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 33',
-        headline: HOOK.headline,
-        emoji: '⚽',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <PitchScene />,
-        body: (
-          <div className="space-y-2">
-            <p><MathText>{HOOK.text}</MathText></p>
-            <p className="text-sm text-slate-600"><MathText>{'في المستوى المبتدئ: 9 شرائط و 3 مربّعات صغيرة، أي $9x + 3$ مترًا مربّعًا من العشب.'}</MathText></p>
-          </div>
-        ),
-        footer: <div className="flex flex-wrap gap-2"><SourceTag source={ACTIVITY.source} /><SourceTag source={HOOK.source} /></div>,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="نفس الفكرة في المستويين: كل القطع في صفوف متماثلة، فيصير العشب ملعبًا مستطيلًا: ماذا يمثّل ارتفاعه وماذا يمثّل طوله؟"
           levels={{
             beginner: () => (
               <Manipulation
@@ -105,7 +88,7 @@ export default function Module01Nashat() {
                 level="beginner"
                 mode="rows"
                 expr={BEGINNER}
-                lead="اسحب r، عدد الصفوف: متى تتوزّع الشرائط التسعة والمربّعات الثلاثة كلها على صفوف متماثلة؟"
+                lead="وصلت إلى ملعب الحيّ قطع عشب: 9 شرائط و 3 مربّعات صغيرة. اسحب r، عدد الصفوف: متى تتوزّع القطع كلها على صفوف متماثلة دون أن تُقطَّع قطعة؟"
                 onTrial={onRows(BEGINNER)}
               />
             ),
@@ -115,7 +98,7 @@ export default function Module01Nashat() {
                 level="advanced"
                 mode="rows"
                 expr={ADVANCED}
-                lead="ستة مربّعات كبيرة وأربعة شرائط: ما أكبر عدد من الصفوف المتماثلة؟ واقرأ ارتفاع الملعب كاملًا."
+                lead="وصلت قطع عشب أخرى: ستة مربّعات كبيرة وأربعة شرائط. ما أكبر عدد من الصفوف المتماثلة؟ واقرأ ارتفاع الملعب كاملًا."
                 onTrial={onRows(ADVANCED)}
               />
             ),
@@ -124,7 +107,7 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'متى يصلح عدد الصفوف؟', subtitle: 'جرّب أعدادًا للصفوف في المستوى المبتدئ، ثم أجب', done: q1,
+          num: 1, title: 'لماذا يرفض الملعب بعض الأعداد؟', subtitle: 'جرّب أعدادًا للصفوف في المستوى المبتدئ، ثم أجب', done: q1,
           content: (
             <div className="space-y-3">
               {/* LES ESSAIS DE L'ÉLÈVE, et rien d'autre. */}
@@ -147,37 +130,35 @@ export default function Module01Nashat() {
                 ))}
               </ul>
               <TapQuestion
-                prompt={<MathText>{'في الملعب $9x + 3$ : متى يصلح عدد الصفوف $r$ ، أي متى تتوزّع كل القطع على $r$ صفوف متماثلة؟'}</MathText>}
+                prompt={<MathText>{'في الملعب $9x + 3$ يقسم العدد $9$ عدد الشرائط، ومع ذلك يرفض الملعب $r = 9$. لماذا؟'}</MathText>}
                 options={[
-                  <MathText key="a">{'عندما يقسم $r$ عدد الشرائط فقط'}</MathText>,
-                  <MathText key="b">{'عندما يقسم $r$ العددين 9 و 3 معًا، أي عندما يكون $r$ قاسمًا مشتركًا لهما'}</MathText>,
-                  <MathText key="c">{'من أجل كل عدد $r$ بين 1 و 9'}</MathText>,
-                  <MathText key="d">{'عندما يساوي $r$ عدد أنواع القطع'}</MathText>,
+                  <MathText key="a">{'لأنّ $9$ لا يقسم عدد المربّعات الصغيرة $3$ ، فلا تتوزّع هذه على تسعة صفوف متماثلة'}</MathText>,
+                  <MathText key="b">{'لأنّ عدد الصفوف لا يمكن أن يتجاوز عدد أنواع القطع'}</MathText>,
+                  <MathText key="c">{'لأنّ $9$ عدد كبير جدًّا على ملعب واحد'}</MathText>,
                 ]}
-                correct={1}
+                correct={0}
                 cols={1}
                 requires={['pgcd']}
-                explain={<MathText>{'كل صفّ يأخذ العدد نفسه من الشرائط ومن المربّعات الصغيرة، فـ $r$ يقسم 9 و 3. القاسمان المشتركان هما 1 و 3، وأكبرهما PGCD$(9 ; 3) = 3$ : ثلاثة صفوف، في كل صفّ 3 شرائط ومربّع صغير واحد.'}</MathText>}
+                explain={<MathText>{'كل صفّ يأخذ العدد نفسه من الشرائط ومن المربّعات الصغيرة، فـ $r$ يقسم $9$ و $3$ معًا. القاسمان المشتركان هما 1 و 3، وأكبرهما PGCD$(9 ; 3) = 3$ : ثلاثة صفوف، في كل صفّ 3 شرائط ومربّع صغير واحد.'}</MathText>}
                 onAnswered={() => setQ1(true)}
               />
             </div>
           ),
         },
         {
-          num: 2, title: 'ما ارتفاع الملعب؟', subtitle: 'افرش الملعب الثاني في المستوى المتقدّم، ثم أجب', done: q2,
+          num: 2, title: 'ماذا يمثّل طول الملعب؟', subtitle: 'افرش الملعب الثاني في المستوى المتقدّم، ثم أجب', done: q2,
           content: (
             <TapQuestion
-              prompt={<MathText>{'في الملعب $6x^2 + 4x$ ، بأكبر عدد ممكن من الصفوف المتماثلة، كم يكون ارتفاع الملعب؟'}</MathText>}
+              prompt={<MathText>{'في الملعب $6x^2 + 4x$ بصفّين متماثلين ارتفاع كل منهما $x$ : ماذا يوجد في كل صفّ، وماذا يمثّل إذن طول الملعب؟'}</MathText>}
               options={[
-                <MathText key="a">{'$2$'}</MathText>,
-                <MathText key="b">{'$x$'}</MathText>,
-                <MathText key="c">{'$2x$'}</MathText>,
-                <MathText key="d">{'$6x$'}</MathText>,
+                <MathText key="a">{'$6x + 4$ : كل القطع في صفّ واحد'}</MathText>,
+                <MathText key="b">{'$3x + 2$ : في كل صفّ ثلاثة مربّعات كبيرة عرض كل منها $x$ وشريطان عرض كل منهما 1'}</MathText>,
+                <MathText key="c">{'$3x^2 + 2x$ : طول الصفّ هو مساحته'}</MathText>,
               ]}
-              correct={2}
-              cols={2}
+              correct={1}
+              cols={1}
               requires={['pgcd', 'nashr-tawzii']}
-              explain={<MathText>{'PGCD$(6 ; 4) = 2$ : صفّان، وارتفاع كل صفّ $x$ (طول ضلع المربّع الكبير)، إذن الارتفاع $2x$ ، وفي كل صفّ $3x + 2$ : $6x^2 + 4x = 2x(3x + 2)$. أمّا $2(3x^2 + 2x)$ فصحيحة لكنّ العامل المشترك فيها غير كامل.'}</MathText>}
+              explain={<MathText>{'PGCD$(6 ; 4) = 2$ : صفّان، ارتفاع كل منهما $x$ ، فارتفاع الملعب $2x$ وطوله $3x + 2$ ، أي $6x^2 + 4x = 2x(3x + 2)$. أمّا $2(3x^2 + 2x)$ فصحيحة لكنّ العامل المشترك فيها غير كامل.'}</MathText>}
               onAnswered={() => setQ2(true)}
             />
           ),
@@ -263,7 +244,6 @@ export default function Module01Nashat() {
           content: (
             <div className="space-y-3">
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[3]}</MathText></p>
-              <TextbookBox kind="remark" lines={ACTIVITY.aside} source={ACTIVITY.source} compact />
               <Manipulation
                 type="turf-factoring"
                 mode="square"
@@ -296,6 +276,7 @@ export default function Module01Nashat() {
                 explain={<MathText>{'$x^2 + 6x + 9 = x^2 + 2 \\times x \\times 3 + 3^2$ من الشكل $a^2 + 2ab + b^2$ ، و $x^2 - 4x + 4 = x^2 - 2 \\times x \\times 2 + 2^2$ من الشكل $a^2 - 2ab + b^2$ ، و $x^2 - 16 = x^2 - 4^2$ من الشكل $a^2 - b^2$.'}</MathText>}
                 onAnswered={() => setQ5a(true)}
               />
+              {q5a && <TextbookBox kind="remark" lines={ACTIVITY.aside} source={ACTIVITY.source} compact />}
               {q5a && (
                 <BatchChoiceQuestion
                   intro={<p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY.questions[5]}</MathText></p>}

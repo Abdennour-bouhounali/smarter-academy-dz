@@ -10,6 +10,7 @@ import useStretchInteraction from '../useStretchInteraction';
 import EquationDisplay from '../primitives/EquationDisplay';
 import DivisorSet from '../primitives/DivisorSet';
 import { BOOK_PALETTE } from '../primitives/BookFigure';
+import { useLabCoach } from '../primitives/LabCoach';
 import * as L from '../logic/factorPairs';
 
 const { divisionTestBound } = divisibility;
@@ -35,11 +36,14 @@ const { divisionTestBound } = divisibility;
  * découverte : tous les d jusqu'au carré testés ET un rectangle couché vu
  * (`discoveryReady`, indépendant de l'ordre depuis 2026-09-30).
  *
+ * ONBOARDING (prop `coach`, défaut true — `LabCoach`, §8quater) : `logic/factorPairs.js › coachOf` montre la poignée de la réglette
+ * (glisser), puis le bouton « + » ou « − » du côté de la prochaine largeur à essayer ; il ne la nomme pas.
+ *
  * Jusqu'au 2026-09-30 l'élève portait un NOMBRE d'un rail où les tuiles
  * au-delà de √n étaient grisées d'avance — la règle d'arrêt était affichée
  * avant d'être découverte. Rien ici ne marque √n : c'est le carré qui le dit.
  */
-export default function FactorPairs({ n: n0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onFinished }) {
+export default function FactorPairs({ n: n0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onFinished, coach: coachOn = true }) {
   const { t } = useTranslation('lesson');
   const k = useCallback((key, o) => t(`manipulation.factorPairs.${key}`, o), [t]);
   const state = useManipulation({ type: 'factor-pairs', initialNumbers: { n: n0 }, initialMode, hintCount: 3 });
@@ -113,6 +117,11 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
   // Le résultat SUIT le geste : calculé pour le d vivant, jamais retiré.
   const live = d == null ? null : { rows: Math.floor(n / d), rest: n % d, divides: n % d === 0, repeat: n % d === 0 && d > Math.floor(n / d) };
   const untested = () => Array.from({ length: range.max }, (_, i) => i + 1).filter((v) => !labRef.current.tested.some((x) => x.d === v));
+  const coachStep = coachOn ? L.coachOf(lab, { d, range }) : null;
+  const coach = useLabCoach({
+    lab: 'factor-pairs', step: coachStep, text: coachStep ? k(`coach.${coachStep.id}`) : '',
+    labels: { hide: k('coach.hide'), show: k('coach.show'), ok: k('coach.ok'), stop: k('coach.stop') },
+  });
   const color = (i) => BOOK_PALETTE[i % BOOK_PALETTE.length][0];
   const labelStep = [1, 2, 5, 10].find((s) => s * mu >= 22) ?? 10;
 
@@ -124,6 +133,7 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
       mission={mission ?? k('mission', { n })}
       lead={n === n0 ? lead : null}
       state={state}
+      coach={coachOn ? coach : null}
       freeLabAlwaysOpen
       freeLabLead={k('freeLead')}
       numberFields={[{ key: 'n', label: 'a' }]}
@@ -217,7 +227,7 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
               <button type="button" onClick={() => stretch.nudge(-5)} aria-label={k('shorter5')} disabled={d != null && d <= range.min}
                 className="inline-flex h-11 min-w-[2.75rem] items-center justify-center rounded-xl border-2 border-slate-300 bg-white px-2 text-sm font-extrabold disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" dir="ltr">−5</button>
             )}
-            <button type="button" onClick={() => stretch.nudge(-1)} aria-label={k('shorter')} disabled={d != null && d <= range.min}
+            <button type="button" onClick={() => stretch.nudge(-1)} aria-label={k('shorter')} data-fp-nudge="-1" disabled={d != null && d <= range.min}
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Minus className="h-5 w-5" aria-hidden="true" /></button>
             <label className="inline-flex items-center gap-2 text-sm font-bold text-slate-700">
               <input type="text" inputMode="numeric" dir="ltr" data-row-input aria-label={k('typeRow', { min: range.min, max: range.max })}
@@ -229,7 +239,7 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
                 className="w-20 rounded-xl border-2 border-slate-300 bg-white px-2 py-2 text-center font-mono text-lg font-extrabold tabular-nums focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" />
               <span>{k('perRow')}</span>
             </label>
-            <button type="button" onClick={() => stretch.nudge(1)} aria-label={k('longer')} disabled={d != null && d >= range.max}
+            <button type="button" onClick={() => stretch.nudge(1)} aria-label={k('longer')} data-fp-nudge="1" disabled={d != null && d >= range.max}
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Plus className="h-5 w-5" aria-hidden="true" /></button>
             {range.max > 20 && (
               <button type="button" onClick={() => stretch.nudge(5)} aria-label={k('longer5')} disabled={d != null && d >= range.max}

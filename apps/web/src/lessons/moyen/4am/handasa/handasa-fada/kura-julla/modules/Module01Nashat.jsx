@@ -4,7 +4,7 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag, TextbookBox } from '../../../../../../common/textbook';
+import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY, ACTIVITY_LINES, LAB } from '../content/textbook';
 import BallsCutaway from '../components/BallsCutaway';
@@ -21,6 +21,9 @@ import BallsCutaway from '../components/BallsCutaway';
  *           phrases à compléter → la brique « kura-julla-nashat » ; enfin une question posée SOUS les essais de l'élève
  *           (`onTrial`, `[data-activity-evidence]`).
  * AUCUNE étape n'attend `onFinished`. LP : P1 (كرة / جلّة), P2 (le قطر, les دوائر — au niveau متقدم), P4 (situer un point).
+ * Rétrofit 2026-10-15 (§4quater) : la sonde ouvre le module (plus de carte du manuel, ni titre ni `lead` de workspace) ; `onTrial` aux
+ * DEUX niveaux ; l'étape 1 demande POURQUOI la جلّة accepte ce que la كرة refuse (elle ne redemande pas la classification du labo) ;
+ * le cercle / disque du manuel, les objets du quotidien et les deux phrases viennent APRÈS, la brique après la phrase complétée.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const WHERE = { surface: 'على الكرة', inside: 'داخل الجلة', outside: 'خارج الجلة' };
@@ -38,14 +41,14 @@ export default function Module01Nashat() {
   const evidence = (
     <div className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence data-tried={trials.length ? 'true' : 'false'}>
       {trials.length === 0 ? (
-        <p className="text-slate-500">لم تضع بعد أي نقطة في المسبار (المستوى «متقدم»).</p>
+        <p className="text-slate-500">لم تحكم بعد على أي نقطة في المسبار: جرّب أعلاه، فنقطك المقبولة تظهر هنا.</p>
       ) : (
         <>
           <p className="mb-1 font-bold text-slate-700">نقطك المقبولة:</p>
           <ul className="flex flex-wrap gap-1.5" data-evidence="points">
             {trials.map((t) => (
-              <li key={t.n} className="rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-900" data-evidence-point={t.name}>
-                <MathText>{`${pt(t.name, t.at)} : ${WHERE[t.where]}`}</MathText>
+              <li key={t.n} className="rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-900" data-evidence-point={t.name ?? 'M'}>
+                <MathText>{`${pt(t.name ?? 'M', t.at)} : ${WHERE[t.where]}`}</MathText>
               </li>
             ))}
           </ul>
@@ -63,26 +66,9 @@ export default function Module01Nashat() {
       moduleTitle="نشاط 1 — الكرة والجلة"
       moduleSubtitle="كرة أجوف وكرة مملوءة: ما الفرق رياضيا؟"
       estimatedTime="18 دقيقة"
-      brief={{
-        tag: 'نشاط 1 — الكتاب ص 164',
-        headline: 'من ملعب كرة اليد إلى مصباح الكرة الزجاجية!',
-        emoji: '🔮',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        visual: <BallsCutaway decorative labels={false} />,
-        body: (
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-800">{ACTIVITY.situation} <SourceTag source={ACTIVITY_LINES.source} /></p>
-            <p className="text-sm text-slate-600">في المستوى «متقدم» (نشاط 1، نصف القطر 4): تضع بنفسك نقطة على الكرة ونقطة في الجلة ونقطة خارجها، ثم الأقطار والدوائر. في المستوى «مبتدئ»: مصباح كرة زجاجية نصف قطرها 3 وثلاث نقط مضيئة تحكم على موقعها. أدِر المشهد بإصبعك لترى من كل الجهات.</p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="المسبار في الفضاء"
           defaultLevel="beginner"
-          lead={<MathText>{'في المستويين: لاحظ ماذا يحدث لبعد المسبار عن المركز $O$ كلما انتقلتَ من نقطة تقبلها الكرة إلى نقطة تقبلها الجلة فقط.'}</MathText>}
           levels={{
             beginner: () => (
               <Manipulation
@@ -90,8 +76,8 @@ export default function Module01Nashat() {
                 level="beginner"
                 numbers={LAB.beginner.numbers}
                 theme="glass-globe"
-                title="الكرة الزجاجية المضيئة: أين تقع النقط A و B و C؟"
-                lead={<MathText>{'مصباح كرة زجاجية مركزها $O$ ونصف قطرها $3$ في غرفة لاعب. حرّك المسبار $M$ إلى كل نقطة مضيئة واحكم على موقعها.'}</MathText>}
+                lead={<MathText>{'مصباح كرة زجاجية مركزها $O$ ونصف قطرها $3$ في غرفة لاعب.'}</MathText>}
+                onTrial={onTrial}
               />
             ),
             advanced: () => (
@@ -100,7 +86,6 @@ export default function Module01Nashat() {
                 level="advanced"
                 numbers={LAB.advanced.numbers}
                 theme="shot-put"
-                title="نشاط 1: الكرة والجلة (نصف القطر 4)"
                 lead={<MathText>{'كرة مركزها $O$ ونصف قطرها $4$ — كرة اليد الجوفاء أم جلة رمي الجلة المملوءة؟ ضع $M$ و $P$ و $Q$ كما في معارف 1، ثم ابنِ قطرا ودائرتين.'}</MathText>}
                 onTrial={onTrial}
               />
@@ -110,7 +95,29 @@ export default function Module01Nashat() {
       }
       steps={[
         {
-          num: 1, title: 'نشاط 1: الدائرة والقرص', subtitle: 'السؤال 1', done: q1,
+          num: 1, title: 'لماذا قبلت الجلة نقطة رفضتها الكرة؟', subtitle: 'من المسبار', done: q4,
+          content: (
+            <div className="space-y-3">
+              {evidence}
+              <TapQuestion
+                prompt={<MathText>{'قبلت الجلة في المسبار نقطة لم تقبلها الكرة. لماذا لا تضمّ الكرة هذه النقطة؟'}</MathText>}
+                options={[
+                  'لأن الكرة سطح أجوف: لا تضمّ إلا النقط التي بعدها عن المركز يساوي نصف القطر',
+                  // l'inégalité renversée : dehors
+                  'لأن هذه النقطة أبعد عن المركز من نصف القطر',
+                  // « dans la boule » pris pour « sur la كرة » (MISC-KURA-JULLA)
+                  'لأن الكرة تضمّ كل ما بداخلها، والنقطة خارجها',
+                ].map(M)}
+                correct={0}
+                cols={1}
+                explain={<MathText>{'نقط الكرة تحقّق $OM = R$ فقط (سطح أجوف)، ونقط الجلة تحقّق $OM \\le R$ . النقطة الداخلية تحقّق $OM < R$ : من الجلة، وليست من الكرة. ' + ACTIVITY_LINES.lab}</MathText>}
+                onAnswered={() => setQ4(true)}
+              />
+            </div>
+          ),
+        },
+        {
+          num: 2, title: 'وفي المستوي: الدائرة والقرص؟', subtitle: 'السؤال 1 من الكتاب', done: q1,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={ACTIVITY.part1} source={ACTIVITY.source} compact />
@@ -131,7 +138,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 2, title: 'نشاط 1: أجوف أم مملوء؟', subtitle: 'السؤالان 2 و 3', done: q2,
+          num: 3, title: 'نشاط 1: أجوف أم مملوء؟', subtitle: 'السؤالان 2 و 3', done: q2,
           content: (
             <div className="space-y-3">
               <TextbookBox kind="situation" text={`${ACTIVITY.part2} ${ACTIVITY.part3}`} source={ACTIVITY.source} compact />
@@ -156,7 +163,7 @@ export default function Module01Nashat() {
           ),
         },
         {
-          num: 3, title: 'نشاط 1: أتمم', subtitle: 'السؤال 4', done: q3,
+          num: 4, title: 'نشاط 1: أتمم', subtitle: 'السؤال 4', done: q3,
           content: (
             <div className="space-y-3">
               {/* « أتوقّع القاعدة » : la consigne 4) du manuel donne déjà les deux conditions (bonne réponse = la règle) —
@@ -177,29 +184,6 @@ export default function Module01Nashat() {
                 />
               </PredictRule>
               {q3 && <KnowledgeBrick id="kura-julla-nashat" lead="الجملتان كاملتين، بكلمات الكتاب:" />}
-            </div>
-          ),
-        },
-        {
-          num: 4, title: 'من المسبار: النقطة P', subtitle: 'كرة أم جلة؟', done: q4,
-          content: (
-            <div className="space-y-3">
-              {evidence}
-              <TapQuestion
-                prompt={<MathText>{'في المسبار (المستوى «متقدم») وضعت النقطة $P$ في الجلة التي مركزها $O$ ونصف قطرها $4$ ، دون أن تكون على الكرة. ماذا تحقّق $P$ ؟'}</MathText>}
-                options={[
-                  '$OP < 4$ : P من الجلة، وليست من الكرة',
-                  // « dans la boule » pris pour « sur la كرة » (MISC-KURA-JULLA)
-                  '$OP = 4$ : P من الكرة لأنها داخلها',
-                  // l'inégalité renversée : dehors
-                  '$OP > 4$ : P من الجلة لأنها بعيدة عن المركز',
-                ].map(M)}
-                correct={0}
-                cols={1}
-                requires={['kura-julla-nashat']}
-                explain={<MathText>{'نقط الكرة تحقّق $OM = 4$ فقط (سطح أجوف)، ونقط الجلة تحقّق $OM \\le 4$ . النقطة P داخل الجلة وليست على سطحها: $OP < 4$ . ' + ACTIVITY_LINES.lab}</MathText>}
-                onAnswered={() => setQ4(true)}
-              />
             </div>
           ),
         },

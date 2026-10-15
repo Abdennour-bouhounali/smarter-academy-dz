@@ -16,7 +16,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module01Nashat.jsx",
-        "line": 137,
+        "line": 122,
         "step": 1,
         "variant": "new"
       }
@@ -27,7 +27,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module01Nashat.jsx",
-        "line": 194,
+        "line": 191,
         "step": 3,
         "variant": "new"
       }
@@ -38,7 +38,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module02Maarif.jsx",
-        "line": 46,
+        "line": 61,
         "step": 1,
         "variant": "rappel"
       }
@@ -49,7 +49,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module02Maarif.jsx",
-        "line": 70,
+        "line": 81,
         "step": 2,
         "variant": "rappel"
       }
@@ -60,7 +60,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module02Maarif.jsx",
-        "line": 91,
+        "line": 100,
         "step": 3,
         "variant": "new"
       }
@@ -71,7 +71,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module03Tariqa.jsx",
-        "line": 68,
+        "line": 77,
         "step": 2,
         "variant": "new"
       }
@@ -85,7 +85,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module03Tariqa.jsx",
-        "line": 47,
+        "line": 59,
         "step": 1,
         "variant": "new"
       }
@@ -227,7 +227,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module01Nashat.jsx",
-      "line": 128,
+      "line": 113,
       "requires": [
         "anasir-daira"
       ],
@@ -243,7 +243,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module01Nashat.jsx",
-      "line": 149,
+      "line": 134,
       "requires": [
         "mutasawi-saqayn",
         "qaim-nisf-daira",
@@ -263,7 +263,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module01Nashat.jsx",
-      "line": 195,
+      "line": 178,
       "requires": [
         "tasmiya"
       ],
@@ -279,13 +279,9 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module02Maarif.jsx",
-      "line": 50,
-      "requires": [
-        "tarif"
-      ],
-      "prerequisiteStatus": {
-        "tarif": "established@M2"
-      },
+      "line": 49,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -295,13 +291,9 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module02Maarif.jsx",
-      "line": 73,
-      "requires": [
-        "khassiya-nisf"
-      ],
-      "prerequisiteStatus": {
-        "khassiya-nisf": "established@M2"
-      },
+      "line": 71,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -311,13 +303,9 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module02Maarif.jsx",
-      "line": 95,
-      "requires": [
-        "khassiya-tasawi"
-      ],
-      "prerequisiteStatus": {
-        "khassiya-tasawi": "established@M2"
-      },
+      "line": 92,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -327,7 +315,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module03Tariqa.jsx",
-      "line": 49,
+      "line": 48,
       "requires": [
         "khassiya-nisf",
         "khassiya-tasawi"
@@ -345,13 +333,9 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/handasa/dawaran-mudalaat/zawiya-muhitiya/modules/Module03Tariqa.jsx",
-      "line": 70,
-      "requires": [
-        "qutr-qaima"
-      ],
-      "prerequisiteStatus": {
-        "qutr-qaima": "established@M3"
-      },
+      "line": 69,
+      "requires": null,
+      "prerequisiteStatus": {},
       "lexiconHits": [],
       "pedagogicallyValid": true
     },

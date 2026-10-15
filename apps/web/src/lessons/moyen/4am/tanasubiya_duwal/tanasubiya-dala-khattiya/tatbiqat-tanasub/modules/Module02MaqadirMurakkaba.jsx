@@ -19,6 +19,7 @@ import { ACTIVITY_6 } from '../content/textbook';
  *      renversé, unité oubliée, le 6 cm³ du misprint) ;
  *   4. lire une grandeur en fonction d'une autre (P3) : à 25 m/s, d = 25t.
  * LP : P2, P3.
+ * RETROFIT 2026-10-15 : module sans labo — le brief ne nomme plus la notion (« مقادير مركّبة ») avant qu'elle ne soit trouvée.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const YN = ['نعم', 'لا'];
@@ -48,8 +49,8 @@ export default function Module02MaqadirMurakkaba() {
         tone: 'sky',
         body: (
           <div className="space-y-2">
-            <p>عدّاد السيارة بالمتر في الثانية، واللافتة بالكيلومتر في الساعة؛ المحطة تحسب الماء باللتر في الساعة، والمهندس يريده بالمتر المكعب في الثانية. كل هذه مقادير «مركّبة» من مقدارين.</p>
-            <p className="text-sm text-slate-600">ثلاثة أسئلة من الكتاب: نحسب، نحوّل الوحدات، ثم نقارن.</p>
+            <p>سيارة أمام لافتة، ومحطة تضخّ الماء، وثلاث قطع من معادن مختلفة: في كل موقف مقداران يجب أن نقارنهما أو نحوّلهما.</p>
+            <p className="text-sm text-slate-600">ثلاثة أسئلة: نحسب، ونحوّل الوحدات، ثم نقارن.</p>
           </div>
         ),
         footer: <SourceTag source={ACTIVITY_6.source} />,

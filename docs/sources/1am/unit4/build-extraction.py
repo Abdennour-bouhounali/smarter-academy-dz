@@ -222,9 +222,9 @@ G1, G2, G3 = 'الكسر وحاصل القسمة', 'حاصل القسمة ونص
 exercise(1, 57, G1, 'في كل حالة، عبّر بكسر عن السطح الملون بالأزرق. (ثلاثة مستطيلات: ① قطرا المستطيل وخط أفقي في منتصفه ؛ ② مستطيل 2 × 3 مربعات، كل مربع مقسوم بقطره ؛ ③ مستطيل مقسوم إلى 2 × 6 مستطيلات)', verified=False,
          reading='① le triangle du haut (1/4) + les moitiés basses des triangles gauche et droit (1/8 + 1/8) ; ② 5 demi-carrés bleus sur 12 ; ③ 7 cases bleues sur 12.',
          answer={'1': frac(F(1, 4) + F(1, 8) + F(1, 8)), '2': frac(F(5, 12)), '3': frac(F(7, 12))}, answerSource='computed')
-exercise(2, 57, G1, 'في كل حالة من الحالات الآتية، هل الجزء الملوّن يمثّل 3/4 من سطح الشكل؟ (① شريط من 8 خانات، 3 منها ملوّنة ؛ ② مربع 4 × 4 ؛ ③ قرص مقسوم بأوتار متوازية إلى أجزاء غير متقايسة)', verified=False,
-         reading='① 3 cases sur 8 ; ② 12 cases sur 16 colorées (lecture) ; ③ parts non égales.',
-         answer={'1': F(3, 8) == F(3, 4), '2': F(12, 16) == F(3, 4), '3': False}, answerSource='computed')
+exercise(2, 57, G1, 'في كل حالة من الحالات الآتية، هل الجزء الملوّن يمثّل 3/4 من سطح الشكل؟ (① شريط من 7 خانات، 3 منها ملوّنة ؛ ② مربع 4 × 4 ؛ ③ قرص مقسوم بأوتار متوازية إلى أجزاء غير متقايسة)', verified=True,
+         reading='① 3 cases sur 7 (relu à 300 dpi, 2026-10-15 : sept cases, non huit) ; ② 12 cases sur 16 colorées (la 4e case de la 2e rangée, teintée par le filigrane, est blanche) ; ③ parts non égales.',
+         answer={'1': F(3, 7) == F(3, 4), '2': F(12, 16) == F(3, 4), '3': False}, answerSource='computed')
 EX3 = ['13/9', '6/8', '9/11', '11/6', '17/17', '9/13']
 exercise(3, 57, G1, 'اذكر من بين الكسور: 9/13 ، 17/17 ، 11/6 ، 9/11 ، 6/8 ، 13/9 : 1) الكسر الذي نضربه في 9 يعطينا 13. 2) الكسر الذي يساوي 9 ÷ 11. 3) الكسر الذي يساوي 0,75. 4) الكسر الذي يساوي 1. 5) الكسر الذي بسطه 11. 6) الكسر الذي مقامه 13.', verified=False,
          answer={'1': '13/9', '2': '9/11', '3': next(s for s in EX3 if F(s) == F(3, 4)), '4': '17/17', '5': '11/6', '6': '9/13'}, answerSource='computed')
@@ -434,14 +434,14 @@ L1, L2, L3, L4, SYN = 'hasil-qisma-kasr', 'hasil-qisma-mustaqim', 'akhdh-kasr-mi
 DEST = {
     '_comment': 'elementId → { lesson, module } ; `items` répartit un élément ; une leçon encore coming_soon est une destination EN ATTENTE (check-textbook-coverage.mjs). Première leçon générée de l’unité : ikhtizal-kitaba-kasriya (2026-10-14).',
     'objectives': {'lesson': 'unit', 'module': 'page'},
-    'opener': {'lesson': L1, 'module': None},
+    'opener': {'lesson': L1, 'module': 2, 'note': 'تمهيد p. 51 (الكاشي والكسور العشرية) : une carte « من تاريخ الكسور » à la fin de معارف'},
     'challenge': {'lesson': 'unit', 'module': 'page', 'duplicatedIn': [{'lesson': L4, 'module': 5, 'note': '« أين أضع الفاصلة؟ » 235017/1000 = 235,017 : le passage كسر عشري → كتابة عشرية (P2) — module « تحدّ » de la leçon'}]},
     'prep': {'lesson': L4, 'module': 0, 'items': {
         '1-2-9': {'lesson': L4, 'module': 0},
         '5-6-7': {'lesson': L1, 'module': 0},
         '3-4': {'lesson': L2, 'module': 0},
         '8-10': {'lesson': L3, 'module': 0}}},
-    'act-1': {'lesson': L1, 'module': 1}, 'act-2': {'lesson': L2, 'module': 1}, 'act-3': {'lesson': L3, 'module': 1},
+    'act-1': {'lesson': L1, 'module': 4, 'note': 'APPLICATION (guide §4ter) : le labo `fair-share` est l’entrée conçue par la plateforme ; نشاط 1 (5 ÷ 6 = 5/6) est posé dans أتمرّن'}, 'act-2': {'lesson': L2, 'module': 1}, 'act-3': {'lesson': L3, 'module': 1},
     'act-4': {'lesson': L4, 'module': 1},
     'know-1': {'lesson': L1, 'module': 2, 'items': {'definition-result-vocabulary-remarks-7/3': {'lesson': L1, 'module': 2},
                                                     '0,7=7/10': {'lesson': L4, 'module': 2, 'note': 'programme 1am.m5.x1 (عشري → كسري) : la leçon le cite dans son معارف'}}},
@@ -455,12 +455,14 @@ DEST = {
     **{f'ex-{n}': {'lesson': L3, 'module': 4} for n in range(10, 15)},
     **{f'ex-{n}': {'lesson': L4, 'module': 4} for n in range(15, 28)},
     'aside-58': {'lesson': L3, 'module': None},
-    **{f'self-{n}': {'lesson': L1, 'module': None} for n in (1, 2, 3, 9)},
+    'self-1': {'lesson': L1, 'module': 4, 'note': 'figure REDESSINÉE : tubes gradués en 4, 5, 6, 8 (3/4, 2/5, 6/6, 5/8)'},
+    'self-2': {'lesson': L1, 'module': 8}, 'self-3': {'lesson': L1, 'module': 8},
+    'self-9': {'lesson': L1, 'module': 4},
     'self-4': {'lesson': L4, 'module': 9}, 'self-5': {'lesson': L4, 'module': 9},
     'self-6': {'lesson': L2, 'module': None},
     'self-7': {'lesson': L3, 'module': None}, 'self-8': {'lesson': L3, 'module': None},
     'deep-1': {'lesson': L4, 'module': 6},
-    'deep-2': {'lesson': L1, 'module': None},
+    'deep-2': {'lesson': L1, 'module': 6},
     **{f'deep-{n}': {'lesson': L3, 'module': None} for n in (3, 4, 5, 6, 7)},
     'deep-8': {'lesson': L4, 'module': 7},
     'integration': {'lesson': SYN, 'module': None},
@@ -478,7 +480,9 @@ DISCREPANCIES = [
     {'elementId': 'ex-26', 'kind': 'scope', 'text': '414/391 = 18/17 par le diviseur commun 23, qu’aucune règle de divisibilité ne donne : la vérification se fait par les produits (18 × 23, 17 × 23) ou en croix — ce n’est pas une réduction « par les critères ».'},
     {'elementId': 'ex-27', 'kind': 'intended', 'text': '91 = 7 × 13 : les règles (2, 3, 4, 5, 9) ne disent rien de 7 — « pas de diviseur selon les règles » ≠ « pas de diviseur ». C’est la question.'},
     {'elementId': 'now-56', 'kind': 'reading', 'text': 'Les trois jauges (item 1) sont lues 3/4, 5/6, 3/8 (4, 6, 8 graduations) ⇒ 37,5 L ; 50 L ; 26,25 L — à relire avec akhdh-kasr-min-adad.'},
-    {'elementId': 'self-1', 'kind': 'reading', 'text': 'Les graduations des quatre tubes ne se lisent pas sûrement au scan : réponse laissée à hasil-qisma-kasr (relecture à 400 dpi).'},
+    {'elementId': 'self-1', 'kind': 'reading', 'text': 'Les graduations des quatre tubes ne se lisent pas sûrement au scan, même à 400 dpi (A, B, D à demi pleins, C plein) : hasil-qisma-kasr REDESSINE la figure (tubes gradués en 4, 5, 6 et 8 parts égales, remplis de 3, 2, 6 et 5 parts : 3/4, 2/5, 6/6 = 1, 5/8) et dit en une ligne que la plateforme l’a redessinée.'},
+    {'elementId': 'ex-2', 'kind': 'reading', 'text': '① Le ruban de la 1re figure compte SEPT cases (relu à 300 dpi), pas huit : 3 cases sur 7 ; la réponse (non) ne change pas.'},
+    {'elementId': 'self-9', 'kind': 'scope', 'text': '« 7 × … = 0,7 → 0,1 » et « 27 × … = 0,27 → 0,01 » sont des nombres décimaux : le facteur manquant n’est pas toujours une fraction a/b. 5/12 × 3 = 5/4 et 7 × 2/21 = 2/3 se réduisent (réduction = ikhtizal-kitaba-kasriya) : la leçon accepte la fraction telle qu’elle vient, 15/12 ou 14/21.'},
     {'elementId': 'self-6', 'kind': 'scope', 'text': '55/33 = 5/3 = 2 − 1/3 : un même point ; la réduction (÷ 11) sert la graduation (lesson hasil-qisma-mustaqim).'},
     {'elementId': 'deep-1', 'kind': 'reading', 'text': 'Sommets lus sur la grille 4 × 4 : triangle 1 (1;4) (0;1) (3;0) ⇒ 5/16 ; triangle 2 (2;4) (0;0) (4;2) ⇒ 6/16 = 3/8.'},
     {'elementId': 'deep-2', 'kind': 'intended', 'text': 'Le reste écrit « 08 » est 0,08 (centièmes) : 27,28 × 14 + 0,08 = 382 ; Fatima a ajouté 8 au lieu de 0,08.'},

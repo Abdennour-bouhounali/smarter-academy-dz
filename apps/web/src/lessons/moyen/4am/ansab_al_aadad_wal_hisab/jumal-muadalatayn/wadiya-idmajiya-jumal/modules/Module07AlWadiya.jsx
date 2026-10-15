@@ -5,7 +5,6 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag, PairQuestion } from '../../../../../../common/textbook';
-import { bidi } from '../../../../../../../utils/bidi';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { SITUATION, WARMUP, REMARKS, LAB } from '../content/textbook';
 import { PartyScene } from '../components/JumalFigures';
@@ -34,6 +33,10 @@ import { PartyScene } from '../components/JumalFigures';
  * (`ikhtiyar-tariqa`), puis la résolution et la vérification sur la رحلة القسم
  * (`tahaqquq-tafsir`, `tariqat-wadiya`). La résolution du حفل est le module 8
  * (évaluation). LP : P2, P1.
+ *
+ * Retouche minimale 2026-10-15 (§4quater, synthèse au format fixe) : le labo OUVRE le module — la carte du haut est supprimée (la situation
+ * se lit dans l'étape 1), le workspace n'a plus ni titre ni `lead`, les labos plus de titre ; les cases « تحليل الوضعية » 2 et 3 du manuel
+ * (qui disent la stratégie) viennent APRÈS la réponse de leur étape.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const FITS = ['يترجمها', 'لا يترجمها'];
@@ -78,33 +81,15 @@ export default function Module07AlWadiya() {
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(7)} moduleNumber={7} moduleTitle="الوضعية وتحليلها" moduleSubtitle="حفل البلدية: ما سعر علبة العصير وسعر قطعة الحلوى؟" estimatedTime="16 دقيقة"
       objectives={["ما المجهولان في وضعية حفل البلدية؟ وكيف نختارهما؟", "كيف نترجم كل معلومة عن مبلغ بمعادلة؟", "أيّ طريقة تحلّ الجملة بأقل حساب؟ وكيف نتحقق من الجواب؟"]}
-      brief={{
-        tag: 'أدمج تعلّماتي — الكتاب ص 62', headline: 'علب العصير وقطع الحلوى في حفل البلدية', emoji: '🎉', visual: <PartyScene />,
-        title: 'ما هو سعر علبة عصير وسعر قطعة حلوى؟', tone: 'amber',
-        body: (
-          <div className="space-y-2">
-            <p>{SITUATION.intro}</p>
-            <ul className="ms-4 list-disc space-y-1">
-              <li>{SITUATION.fact1}</li>
-              <li>{SITUATION.fact2}</li>
-            </ul>
-            <p className="font-semibold">{SITUATION.question}</p>
-          </div>
-        ),
-        footer: <SourceTag source={SITUATION.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead="المستوى المتقدّم هو وضعية الكتاب: حفل البلدية بأعداده. في المستوى المبتدئ رحلة القسم بأعداد أصغر والمجهولان مسمّيان."
           levels={{
             beginner: () => (
               <Manipulation
                 type="story-modeller"
                 level="beginner"
                 {...LAB.beginner}
-                title={bidi('رحلة القسم: 10 علب و 10 قطع حلوى بـ 800 DA')}
                 onModel={keepModel(setSmall)}
                 onSolved={keepPair(setSmall)}
               />
@@ -114,7 +99,6 @@ export default function Module07AlWadiya() {
                 type="story-modeller"
                 level="advanced"
                 {...LAB.advanced}
-                title={bidi('حفل البلدية: 150 علبة و 150 قطعة بـ 11 250 DA')}
                 onModel={keepModel(setBig)}
                 onSolved={keepPair(setBig)}
               />
@@ -126,6 +110,17 @@ export default function Module07AlWadiya() {
         { num: 1, title: 'قراءة الوضعية وفهمها', subtitle: 'المرحلة 1 من الكتاب: المعطيات والمطلوب', done: q1,
           content: (
             <div className="space-y-3">
+              {/* La situation (p. 62) était la carte du haut : le labo ouvre le module, la situation se lit ici, dans la 1re étape (« قراءة الوضعية »). */}
+              <div className="space-y-2 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2 text-sm text-slate-800" data-situation>
+                <PartyScene />
+                <p>{SITUATION.intro}</p>
+                <ul className="ms-4 list-disc space-y-1">
+                  <li>{SITUATION.fact1}</li>
+                  <li>{SITUATION.fact2}</li>
+                </ul>
+                <p className="font-semibold">{SITUATION.question}</p>
+                <SourceTag source={SITUATION.source} />
+              </div>
               <TapQuestion
                 prompt="ما المطلوب في الوضعية، وماذا نسمّي المجهولين؟"
                 options={[
@@ -172,7 +167,6 @@ export default function Module07AlWadiya() {
         { num: 3, title: 'اختيار استراتيجية حل مناسبة', subtitle: 'المرحلة 2 من الكتاب', done: q3,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" title={SITUATION.analysis[1].label} text={SITUATION.analysis[1].text} source={SITUATION.source} compact />
               <TapQuestion
                 prompt={<span>لحل الجملة <MathText>{'$\\begin{cases} 150x + 150y = 11250 \\\\ 24x + 30y = 2100 \\end{cases}$'}</MathText> ، أيّ اقتراح يوصل إلى الحل بأقل حساب؟</span>}
                 options={[
@@ -186,13 +180,17 @@ export default function Module07AlWadiya() {
                 onAnswered={() => setQ3(true)} />
               {/* Rappel (2026-10-06, « أتوقّع القاعدة ») : le choix de méthode est ikhtiyar-tariqa de الحل الجبري (درس 2), et l’explication de la
                   question ci-dessus vient de simplifier puis de choisir la substitution (التعويض). */}
-              {q3 && <KnowledgeBrick id="ikhtiyar-tariqa" variant="rappel" />}
+              {q3 && (
+                <>
+                  <TextbookBox kind="remark" title={SITUATION.analysis[1].label} text={SITUATION.analysis[1].text} source={SITUATION.source} compact />
+                  <KnowledgeBrick id="ikhtiyar-tariqa" variant="rappel" />
+                </>
+              )}
             </div>
           ) },
         { num: 4, title: 'تنفيذ استراتيجية الحل', subtitle: 'المرحلة 3 من الكتاب — على رحلة القسم', done: q4,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="remark" title={SITUATION.analysis[2].label} text={SITUATION.analysis[2].text} source={SITUATION.source} compact />
               <p className="rounded-lg bg-amber-50 px-2 py-1 text-sm">{WARMUP.text} <SourceTag source={WARMUP.source} /></p>
               <p className="text-sm font-semibold text-slate-700">ما وجدته في رحلة القسم (المستوى المبتدئ):</p>
               <Evidence model={small.model} pair={small.pair} level="beginner" empty="لم تحلّ بعد رحلة القسم: افتح المستوى المبتدئ، ضع الأعداد في الخانات ثم اختر طريقة الحل." />
@@ -202,6 +200,7 @@ export default function Module07AlWadiya() {
                 requires={['ikhtiyar-tariqa', 'tawid']}
                 explain={<MathText>{'نقسم الأولى على 10: $x + y = 80$ ، فـ $y = 80 - x$. نعوّض في الثانية: $2x + 3(80 - x) = 210$ أي $240 - x = 210$ ، $x = 30$ ، ثم $y = 80 - 30 = 50$.'}</MathText>}
                 onAnswered={() => setQ4(true)} />
+              {q4 && <TextbookBox kind="remark" title={SITUATION.analysis[2].label} text={SITUATION.analysis[2].text} source={SITUATION.source} compact />}
             </div>
           ) },
         { num: 5, title: 'التحقق وتحرير الإجابة', subtitle: 'نعود إلى النص', done: q5,

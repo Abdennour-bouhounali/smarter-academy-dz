@@ -17,6 +17,16 @@
  *   M5–M7 مسائل (practice_lab)         puis trois « مسائل » de la plateforme (modules 5–7)
  *   M8 إختبار أولي (evaluation)        la seule preuve
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Module 1 — entrée retenue : la feuille du club de maths (labo `sheet-lab`, niveau مبتدئ, par défaut : cinq notes déjà saisies,
+ *   la main calcule le مدى et le متوسط dans la colonne C PUIS écrit les deux دساتير : le tableur confirme, et recalcule dès qu'une
+ *   cellule change) — le besoin « laisser la machine compter » naît du calcul à la main. Rejetée : le تمرين 7 du manuel étalé d'abord
+ *   dans une carte (la série, les questions أ ب جـ ET les quatre دساتير déjà écrits : rien à trouver) ; il reste le niveau متقدم du MÊME
+ *   labo et l'APPLICATION des étapes 1–4 (série 4, 10, 8, 4, 3, 2, 4 : calcul à la main, plage A1:G1, دساتير, valeur aberrante), les
+ *   consignes du livre n'apparaissant qu'APRÈS la réponse. Ordre : à la main → la plage → pourquoi MOYENNE(A1:F1) ≠ 5 (avec les دساتير
+ *   de l'élève) → les quatre دساتير du livre → « la moyenne bouge, la médiane reste » (prédite d'abord).
+ *   Module 3 (معارف) : la question d'abord (associer indicateur ↔ دستور, donnée ↔ graphique), les boîtes APRÈS la réponse.
+ *   Module 4 (أتعمّق) : la brique de la mémoire de la calculatrice APRÈS le 1er exercice. Modules 0, 2, 5–8 : inchangés.
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/tanasubiya_duwal/majdulat-ihsaiya';
@@ -88,7 +98,7 @@ export const LESSON_CONFIG = {
       title: 'مجدول: نقاط خمسة أصدقاء في مسابقة القسم',
       objective: 'الدستور (=…) يحسب مؤشّرًا على مجال من الخلايا ويُعاد حسابه وحده عندما تتغيّر خلية؛ مجال ناقص أو دالة غير مناسبة يعطيان عددًا آخر',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'sheet' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'sheet' },
       learningPointIds: ['4am_majdulat-ihsaiya_P2'],
       sourceElementIds: ['ex-7'],
     },

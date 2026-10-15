@@ -5,10 +5,9 @@ import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import { Feedback } from '../../../../../../common/components/LessonUI';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { SourceTag } from '../../../../../../common/textbook';
 import { bidi } from '../../../../../../../utils/bidi';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, HOOK, PLATFORM_NOTES } from '../content/textbook';
+import { ACTIVITY, PLATFORM_NOTES } from '../content/textbook';
 
 /**
  * Module 1 — نشاط 1 (p. 32) : « نشر عبارة جبرية », ouvert par une accroche
@@ -30,6 +29,11 @@ import { ACTIVITY, HOOK, PLATFORM_NOTES } from '../content/textbook';
  * (`[data-activity-evidence]`), en nommant la propriété chaque fois. Les
  * briques `nashr-taarif` (avant « انشر ») et `nashr-qawsayn` (après le
  * terrain vérifié) nomment ce que l'élève vient de faire. LP : P1–P4.
+ *
+ * Rétrofit 2026-10-15 (§4quater) : le labo OUVRE le module — plus de carte `brief` (l'accroche du terrain de la متوسطة est le
+ * contexte du `lead` du niveau مبتدئ), plus de `title` / `lead` de workspace. Les briques viennent APRÈS la réponse :
+ * `nashr-taarif` après le classement (étape 2), `nashr-qawsayn` après le نشر du terrain (étape 4, son `requires` retiré sur la
+ * question).
  */
 const { q1a, q1b } = ACTIVITY.numbers;
 const fb = (right, wrong) => ({ allRight }) => (
@@ -77,30 +81,11 @@ export default function Module01Nashat() {
       navLinks={getNavLinks(1)}
       moduleNumber={1}
       moduleTitle="نشاط 1 — نشر عبارة جبرية"
-      moduleSubtitle="مساحة الملعب: جداء أم مجموع؟"
+      moduleSubtitle="ملعب مقسّم إلى مناطق"
       estimatedTime="14 دقيقة"
-      brief={{
-        tag: 'أنشطة — الكتاب ص 32',
-        headline: HOOK.headline,
-        emoji: '⚽',
-        title: ACTIVITY.title,
-        tone: 'indigo',
-        body: (
-          <div className="space-y-2">
-            <p className="rounded-lg bg-amber-50 px-2 py-1"><MathText>{HOOK.text}</MathText> <SourceTag source={HOOK.source} /></p>
-            <p>
-              احسب المساحة منطقةً منطقة في الملعب أدناه. المستوى المتقدّم هو السؤال 3 من النشاط:
-              {' '}ملعب بعداه <MathText>{'$3x - 1$'}</MathText> و <MathText>{'$3 + x$'}</MathText>.
-            </p>
-          </div>
-        ),
-        footer: <SourceTag source={ACTIVITY.source} />,
-      }}
       intro={
         <ManipulationWorkspace
-          title="الأنشطة التفاعلية"
           defaultLevel="beginner"
-          lead={<MathText>{'المستوى المتقدّم هو النشاط: ملعب بعداه $3x - 1$ و $3 + x$. في المستوى المبتدئ ملعب المتوسطة $3(x + 5)$.'}</MathText>}
           levels={{
             beginner: () => (
               <Manipulation
@@ -109,7 +94,7 @@ export default function Module01Nashat() {
                 expr={ACTIVITY.pitch.beginner}
                 span={9}
                 title={bidi('ملعب المتوسطة: عرضه 3 وطوله x + 5')}
-                lead={<MathText>{'اسحب المنطقتين إلى «المجموع» ثم تحقّق من أجل قيمتين لـ $x$ — منهما $x = 9$ : عندئذ مساحة الملعب $3 \\times (9 + 5)$، حساب السؤال 1.'}</MathText>}
+                lead={<MathText>{'قرّرت إدارة المتوسطة إطالة ملعب كرة القدم: عرضه $3$ وطوله $x + 5$. جرّب $x = 9$ بين قيمك.'}</MathText>}
                 onTrial={keep(setSmall)}
               />
             ),
@@ -119,7 +104,7 @@ export default function Module01Nashat() {
                 level="advanced"
                 expr={ACTIVITY.pitch.advanced}
                 title={bidi('نشاط 1 — ملعب بعداه 3x − 1 و 3 + x')}
-                lead={<MathText>{'أربع مناطق، منها اثنتان مقتطعتان (مخطّطتان): احسبها كلها، اجمع الحدود المتشابهة، ثم تحقّق من أجل قيمتين لـ $x$ على الأقل.'}</MathText>}
+                lead={<MathText>{'أربع مناطق، منها اثنتان مقتطعتان (مخطّطتان).'}</MathText>}
                 onTrial={keep(setBig)}
               />
             ),
@@ -162,6 +147,7 @@ export default function Module01Nashat() {
         {
           num: 2, title: 'جداء أم مجموع؟', subtitle: 'السؤال 2', done: q2,
           content: (
+            <div className="space-y-3">
             <BatchChoiceQuestion
               intro={<p className="text-sm font-semibold text-slate-700"><MathText>{ACTIVITY.questions[1]}</MathText></p>}
               rows={[
@@ -175,13 +161,14 @@ export default function Module01Nashat() {
               feedback={fb(PLATFORM_NOTES.classify, PLATFORM_NOTES.classify)}
               onAnswered={() => setQ2(true)}
             />
+            {q2 && <KnowledgeBrick id="nashr-taarif" lead="ما ميّزته الآن له اسم في الكتاب: نكتب الجداء مجموعًا." />}
+            </div>
           ),
         },
         {
           num: 3, title: 'انشر وبسّط، واذكر الخاصية', subtitle: 'السؤال 3: العبارتان الأوليان', done: q3,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="nashr-taarif" lead="ما ميّزته الآن له اسم في الكتاب: نكتب الجداء مجموعًا." />
               <p className="text-sm text-slate-800"><MathText>{ACTIVITY.questions[2]}</MathText></p>
               <BatchChoiceQuestion
                 intro={<p className="text-sm text-slate-600"><MathText>{'العبارة $5x(1 - x)$ ليست ملعبًا: $1 - x$ سالب لكل $x$ أكبر من 1. نجيب بالحساب.'}</MathText></p>}
@@ -205,7 +192,6 @@ export default function Module01Nashat() {
               <p className="text-sm font-semibold text-slate-700"><MathText>{'تحقّقاتك على الملعب $(3x - 1)(3 + x)$:'}</MathText></p>
               <Evidence trials={big} level="advanced" empty="لم تتحقّق بعد من ملعب المستوى المتقدّم: احسب كل مناطقه ثم اضغط «تحقّق»." />
               {bigVerified < 2 && <p className="text-xs text-slate-500"><MathText>{'تحقّق من أجل قيمتين لـ $x$ على الأقل: هل بقيت المساواة صحيحة في كل مرّة؟'}</MathText></p>}
-              <KnowledgeBrick id="nashr-qawsayn" lead="ما فعلته في الملعب: كل حد من الضلع الأول في كل حد من الضلع الثاني." />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700"><MathText>{'انشر $(3x - 1)(3 + x)$ وبسّطها، واذكر الخاصية:'}</MathText></p>}
                 rows={[
@@ -213,10 +199,11 @@ export default function Module01Nashat() {
                   { id: 'c2', label: 'بعد التبسيط', options: ['$3x^2 + 10x - 3$', '$11x^2 - 3$', '$3x^2 + 8x - 3$'].map(M), correct: 2, correction: M('$9x - x = 8x$') },
                   { id: 'cp', label: 'الخاصية المعتمدة', options: PROPS.map(M), correct: 2, correction: M('$(a + b)(c + d) = ac + ad + bc + bd$') },
                 ]}
-                requires={['nashr-qawsayn', 'jidaa-x-fi-x']}
+                requires={['jidaa-x-fi-x']}
                 feedback={fb(PLATFORM_NOTES.unlikeRight, PLATFORM_NOTES.unlike)}
                 onAnswered={() => setQ4(true)}
               />
+              {q4 && <KnowledgeBrick id="nashr-qawsayn" lead="ما فعلته في الملعب: كل حد من الضلع الأول في كل حد من الضلع الثاني." />}
             </div>
           ),
         },

@@ -2938,5 +2938,85 @@
     "relatedLearningPoints": [
       "1am_kitabat-adad-tabii_P1"
     ]
+  },
+  "MISC-HASIL-QALB": {
+    "label": "كتابة حاصل القسمة مقلوبًا (المقسوم عليه فوق الشرطة)",
+    "explanation": "في الكسر $\\dfrac{a}{b}$ البسط $a$ هو المقسوم والمقام $b$ هو المقسوم عليه : $5 \\div 6 = \\dfrac{5}{6}$ وليس $\\dfrac{6}{5}$ ، والعدد $\\dfrac{6}{5}$ أكبر من 1 بينما $5 \\div 6$ أصغر من 1.",
+    "relatedLearningPoints": [
+      "1am_hasil-qisma-kasr_P1",
+      "1am_hasil-qisma-kasr_P2"
+    ]
+  },
+  "MISC-HASIL-FASILA": {
+    "label": "استبدال الشرطة الكسرية بالفاصلة (5 ÷ 6 = 5,6)",
+    "explanation": "الكتابة $5{,}6$ عدد عشري أكبر من 5، أمّا $5 \\div 6$ فهو أصغر من 1 : نكتب $5 \\div 6 = \\dfrac{5}{6}$ ، ولا يُقرأ الكسر كأنّه رقمان تفصل بينهما فاصلة.",
+    "relatedLearningPoints": [
+      "1am_hasil-qisma-kasr_P1"
+    ]
+  },
+  "MISC-HASIL-KULL-ASHRI": {
+    "label": "اعتبار كل حاصل قسمة عددًا عشريًا",
+    "explanation": "حاصل القسمة عدد عشري عندما تتوقّف أرقامه بعد الفاصلة ($3 \\div 4 = 0{,}75$). أمّا $20 \\div 3 = 6{,}666\\ldots$ فتتكرّر أرقامه بلا نهاية : ليس عددًا عشريًا، وكتابته المضبوطة هي الكسر $\\dfrac{20}{3}$.",
+    "relatedLearningPoints": [
+      "1am_hasil-qisma-kasr_P3"
+    ]
+  },
+  "MISC-HASIL-AJZAA": {
+    "label": "عدّ الأجزاء الملوّنة على أجزاء غير متقايسة",
+    "explanation": "لا يدلّ الكسر على الجزء الملوّن إلاّ إذا كانت كل أجزاء الشكل متقايسة : نقسّم أولًا حتى تتساوى الأجزاء، ثم نعدّ الملوّنة منها على الأجزاء كلّها.",
+    "relatedLearningPoints": [
+      "1am_hasil-qisma-kasr_P1"
+    ]
+  },
+  "MISC-HASIL-JUZ-JUZ": {
+    "label": "مقارنة الجزء الملوّن بالجزء غير الملوّن بدل الشكل كلّه",
+    "explanation": "مقام الكسر هو عدد الأجزاء المتقايسة في الشكل كلّه، لا عدد الأجزاء غير الملوّنة : 7 أجزاء ملوّنة من 12 تعطي $\\dfrac{7}{12}$ وليس $\\dfrac{7}{5}$.",
+    "relatedLearningPoints": [
+      "1am_hasil-qisma-kasr_P1"
+    ]
+  },
+  "MISC-HASIL-TARH": {
+    "label": "إيجاد العامل الناقص بالطرح (3 × … = 7 فيكون الناقص 4)",
+    "explanation": "العدد الناقص في $b \\times \\ldots = a$ هو حاصل قسمة $a$ على $b$ ، لا فرقهما : $3 \\times 4 = 12 \\neq 7$ بينما $3 \\times \\dfrac{7}{3} = 7$.",
+    "relatedLearningPoints": [
+      "1am_hasil-qisma-kasr_P2"
+    ]
+  },
+  "MISC-HASIL-DARB": {
+    "label": "إيجاد العامل الناقص بضرب العددين المعطيين (3 × … = 7 فيكون الناقص 21)",
+    "explanation": "لو كان الناقص هو 21 لكان $3 \\times 21 = 63$ لا 7. العدد الذي نضربه في $b$ لنحصل على $a$ هو $a \\div b$ ، أي $\\dfrac{a}{b}$.",
+    "relatedLearningPoints": [
+      "1am_hasil-qisma-kasr_P2"
+    ]
+  },
+  "MISC-HASIL-QIMA": {
+    "label": "اعتبار القيمة المقرّبة قيمة مضبوطة (7/3 = 2,33)",
+    "explanation": "$2{,}33$ قيمة مقرّبة لـ $\\dfrac{7}{3}$ لأنّ $3 \\times 2{,}33 = 6{,}99$ لا 7. القيمة المضبوطة هي الكسر $\\dfrac{7}{3}$ ، أمّا العدد العشري فيعطي قيمة مقرّبة فقط.",
+    "relatedLearningPoints": [
+      "1am_hasil-qisma-kasr_P3"
+    ]
+  },
+  "MISC-HASIL-TAQRIB": {
+    "label": "الخلط بين القيمة المقرّبة بالنقصان والقيمة المقرّبة بالزيادة",
+    "explanation": "$\\dfrac{7}{3} = 2{,}333\\ldots$ : القيمة المقرّبة إلى 0,1 بالنقصان هي $2{,}3$ (أصغر من الحاصل) وبالزيادة هي $2{,}4$ (أكبر منه، نزيد وحدة على آخر رقم محتفَظ به).",
+    "relatedLearningPoints": [
+      "1am_hasil-qisma-kasr_P3"
+    ]
+  },
+  "MISC-HASIL-IQLIDI": {
+    "label": "الخلط بين حاصل القسمة الإقليدية وحاصل القسمة الكسري",
+    "explanation": "في القسمة الإقليدية $47 = 6 \\times 7 + 5$ حاصلها العدد الطبيعي 7 وباقيها 5، أمّا حاصل قسمة 47 على 6 فهو العدد $\\dfrac{47}{6}$ الذي إذا ضُرب في 6 أعطى 47.",
+    "relatedLearningPoints": [
+      "1am_hasil-qisma-kasr_P1",
+      "1am_hasil-qisma-kasr_P3"
+    ]
+  },
+  "MISC-HASIL-SIFR": {
+    "label": "قسمة عدد على الصفر",
+    "explanation": "لا يوجد عدد إذا ضُرب في 0 أعطى 5 ، لأنّ كل عدد مضروب في 0 يعطي 0 : لا حاصل لقسمة عدد غير معدوم على 0 ، ولا نكتب الكسر $\\dfrac{5}{0}$.",
+    "relatedLearningPoints": [
+      "1am_hasil-qisma-kasr_P1",
+      "1am_hasil-qisma-kasr_P2"
+    ]
   }
 }

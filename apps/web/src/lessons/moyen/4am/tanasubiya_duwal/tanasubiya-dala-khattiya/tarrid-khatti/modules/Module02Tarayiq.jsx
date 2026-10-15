@@ -22,6 +22,9 @@ import { SpringTable, ChallengeGraph } from '../components/Graphs';
  *   3. le pont des trois représentations (brique « tamthilat-thalath ») ;
  *   4. interpréter (brique « tafsir-siyaq ») : la phrase et l'unité, un résultat qui n'a pas de sens ;
  *   5. le تحدّ de la page d'unité (p. 65, doublon déclaré) comme transfert : B proportionnel, A non.
+ * RÉTROFIT 2026-10-15 (guide §4quater) : les briques `tamthilat-thalath` et `tafsir-siyaq` viennent APRÈS la réponse (les questions
+ * portent sur le ressort déjà résolu, `requires: ['tariqat-jadwal']`) ; le rappel `tanasub-bayan` du défi attend la première réponse ;
+ * la carte d'entrée dit ce qu'est le module sans énoncer la méthode.
  * La leçon a `knowledgeMap: true` : pas de module de formalisation séparé. LP : P1, P2, P3.
  */
 // La طريقة sans son encadré de règle : la règle est posée par la brique « tariqat-jadwal » (même phrase).
@@ -44,7 +47,7 @@ export default function Module02Tarayiq() {
       brief={{
         tag: 'طرائق — الكتاب ص 71', headline: 'نابض يستطيل', emoji: '🪝',
         title: METHOD_SPRING.title, tone: 'violet',
-        body: <p>في المحور السابق ضبطتَ مستقيمًا يشمل المبدأ على نقط قياس. الكتاب يحلّ وضعية النابض بالخطوات نفسها: جدول تناسبية، ثم دستور، ثم قراءة، ثم جواب بجملة.</p>,
+        body: <p>حلّ الكتاب لوضعية النابض سطرًا سطرًا، ثم الانتقال بين الجدول والدستور والتمثيل البياني، وتفسير النتيجة بجملة، وأخيرًا تحدّي المركبتين.</p>,
       }}
       steps={[
         {
@@ -83,7 +86,6 @@ export default function Module02Tarayiq() {
           num: 3, title: 'ثلاثة أشكال لعلاقة واحدة', subtitle: 'جدول ↔ دستور ↔ تمثيل بياني', done: all('bridge'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tamthilat-thalath" lead="العدد 0,3 الذي وجدته في الجدول هو نفسه في الدستور وفي التمثيل البياني:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">في وضعية النابض:</p>}
                 rows={[
@@ -91,7 +93,7 @@ export default function Module02Tarayiq() {
                   { id: 'dus', label: 'الدستور', options: [<MathText key="a">{'$y = x + 0{,}3$'}</MathText>, <MathText key="b">{'$y = 0{,}3x$'}</MathText>, <MathText key="c">{'$x = 0{,}3y$'}</MathText>], correct: 1, correction: <MathText>{'$y = 0{,}3x$ : الاستطالة بدلالة الكتلة.'}</MathText> },
                   { id: 'bay', label: 'التمثيل البياني مستقيم يشمل', options: [<MathText key="a">{'$O$ و $(3 ; 10)$'}</MathText>, <MathText key="b">{'$(0 ; 0{,}3)$ و $(1 ; 0{,}6)$'}</MathText>, <MathText key="c">{'$O$ و $(10 ; 3)$'}</MathText>], correct: 2, correction: <MathText>{'$0{,}3 \\times 10 = 3$ : النقطة $(10 ; 3)$ على المستقيم، و $O$ لأن $0{,}3 \\times 0 = 0$ .'}</MathText> },
                 ]}
-                requires={['tamthilat-thalath']}
+                requires={['tariqat-jadwal']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     {allRight ? 'تمامًا: معامل واحد، ثلاثة أشكال.' : 'ابحث عن 0,3 في كل شكل: مضروب في الجدول، معامل في الدستور، ترتيب النقطة التي فاصلتها 1.'}
@@ -99,6 +101,7 @@ export default function Module02Tarayiq() {
                 )}
                 onAnswered={mark('bridge')}
               />
+              {done.bridge && <KnowledgeBrick id="tamthilat-thalath" lead="العدد 0,3 الذي وجدته في الجدول هو نفسه في الدستور وفي التمثيل البياني:" />}
             </div>
           ),
         },
@@ -106,14 +109,13 @@ export default function Module02Tarayiq() {
           num: 4, title: 'نفسّر النتيجة في سياق الوضعية', done: all('tafsir'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tafsir-siyaq" lead="الكتاب لا يكتب «x = 7» فقط، بل يكتب جملة:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-semibold text-slate-700">ما الجواب الذي يفسّر النتيجة في الوضعية؟</p>}
                 rows={[
                   { id: 'seven', label: <MathText>{'من $2{,}1 = 0{,}3x$ وجدنا $x = 7$'}</MathText>, options: ['نعلّق كتلة قدرها 7g', 'الاستطالة 7cm', 'نعلّق 7 أجسام'], correct: 0, correction: <MathText>{METHOD_SPRING.solution[3]}</MathText> },
                   { id: 'neg', label: <MathText>{'حلّ معادلة أعطى كتلة $x = -2$'}</MathText>, options: ['نعلّق كتلة قدرها 2g', 'لا يلائم الوضعية: الكتلة لا تكون سالبة', 'الاستطالة 2cm'], correct: 1, correction: 'الكتلة مقدار موجب: نراجع النموذج أو الحساب.' },
                 ]}
-                requires={['tafsir-siyaq']}
+                requires={['tariqat-jadwal']}
                 feedback={({ allRight }) => (
                   <Feedback tone={allRight ? 'ok' : 'ko'}>
                     {allRight ? 'تمامًا: جملة، وحدة، ونتيجة معقولة.' : 'نعود إلى معنى x في الوضعية: كتلة بالغرام.'}
@@ -121,6 +123,7 @@ export default function Module02Tarayiq() {
                 )}
                 onAnswered={mark('tafsir')}
               />
+              {done.tafsir && <KnowledgeBrick id="tafsir-siyaq" lead="الكتاب لا يكتب «x = 7» فقط، بل يكتب جملة:" />}
             </div>
           ),
         },
@@ -128,11 +131,11 @@ export default function Module02Tarayiq() {
           num: 5, title: 'تحدّ — مركبتان على الطريق', subtitle: 'أيّهما تسير بسرعة ثابتة؟', done: all('challenge', 'challenge-2', 'challenge-3'),
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tanasub-bayan" variant="rappel" compact />
               <TextbookBox kind="exercise" text={CHALLENGE.text} source={CHALLENGE.source} />
               <ChallengeGraph />
               <TextbookBox kind="remark" text={CHALLENGE_NOTE.text} source={CHALLENGE_NOTE.source} compact />
               <TextbookExercise exercise={EX.challenge} requires={['tanasub-bayan']} onAnswered={mark('challenge')} />
+              {done.challenge && <KnowledgeBrick id="tanasub-bayan" variant="rappel" compact />}
               <TextbookExercise exercise={EX['challenge-2']} requires={['tanasub-bayan', 'sura-mutawassita']} onAnswered={mark('challenge-2')} />
               <TextbookExercise exercise={EX['challenge-3']} requires={['laysat-tanasub', 'sura-mutawassita', 'tafsir-siyaq']} onAnswered={mark('challenge-3')} />
             </div>

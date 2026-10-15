@@ -41,9 +41,6 @@ export default function Module03Maarif() {
           num: 1, title: 'الخلية، المجال، الدستور', subtitle: 'ودساتير المؤشّرات الأربعة', done: q1,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="definition" title="المجدول" lines={[KNOW.cells, KNOW.range, KNOW.entry, KNOW.formula]} source={KNOW.source} compact />
-              <TextbookBox kind="property" title="دساتير المؤشّرات" lines={KNOW.four} source={KNOW.source} compact />
-              <KnowledgeBrick id="asmaa-dawal" lead="الكتاب يكتب أسماء الدوال بالفرنسية:" />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-bold">السلسلة في المجال A1:G1 . الدستور المناسب لكل مؤشّر:</p>}
                 rows={[
@@ -52,10 +49,17 @@ export default function Module03Maarif() {
                   { id: 'a', label: 'المتوسط', options: [D('=AVERAGE(A1:G1)'), D('=MEDIANE(A1:G1)'), D('=MODE(A1:G1)')], correct: 0, correction: <MathText>{'AVERAGE هو اسم MOYENNE في مجدول بالإنجليزية.'}</MathText> },
                   { id: 'o', label: 'المنوال', options: [D('=MODE(A1:G1)'), D('=MAX(A1:G1)'), D('=MEDIANE(A1:G1)')], correct: 0, correction: <MathText>{'المنوال القيمة ذات أكبر تكرار، لا أكبر قيمة.'}</MathText> },
                 ]}
-                requires={['dasatir-arbaa', 'asmaa-dawal']}
+                requires={['dasatir-arbaa']}
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت: كل مؤشّر ودستوره.' : 'اقرأ التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ1(true)}
               />
+              {q1 && (
+                <>
+                  <TextbookBox kind="definition" title="المجدول" lines={[KNOW.cells, KNOW.range, KNOW.entry, KNOW.formula]} source={KNOW.source} compact />
+                  <TextbookBox kind="property" title="دساتير المؤشّرات" lines={KNOW.four} source={KNOW.source} compact />
+                  <KnowledgeBrick id="asmaa-dawal" lead="الكتاب يكتب أسماء الدوال بالفرنسية:" />
+                </>
+              )}
             </div>
           ),
         },
@@ -63,7 +67,6 @@ export default function Module03Maarif() {
           num: 2, title: 'التمثيل المناسب', subtitle: 'أعمدة، دائري، مدرّج', done: q2,
           content: (
             <div className="space-y-3">
-              <TextbookBox kind="property" title="أيّ تمثيل؟" lines={KNOW.charts} source={KNOW.source} compact />
               <BatchChoiceQuestion
                 intro={<p className="text-sm font-bold">التمثيل المناسب لكل معطيات:</p>}
                 rows={[
@@ -75,6 +78,7 @@ export default function Module03Maarif() {
                 feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? 'أحسنت.' : 'اقرأ التصحيح تحت كل سطر.'}</Feedback>}
                 onAnswered={() => setQ2(true)}
               />
+              {q2 && <TextbookBox kind="property" title="أيّ تمثيل؟" lines={KNOW.charts} source={KNOW.source} compact />}
             </div>
           ),
         },

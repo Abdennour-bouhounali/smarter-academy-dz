@@ -17,6 +17,17 @@
  *                      entre deux مشتتين, deux établissements sur un plan quadrillé ;
  *   M8 إختبار أولي   — QCM 2–5 et une épreuve de la plateforme ; P1 et P2 couverts.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le rendez-vous GPS (labo `midpoint-distance`, thème `gps-meet`, niveau مبتدئ par défaut : ريم en A(1 ; −1) et ياسين en
+ *   B(4 ; 3) aux Sablettes) — la main POSE le dubbus et le refus du téléphone fait voir que seul un point où les deux déplacements sont
+ *   égaux est accepté ; puis la marche dans les rues contre la ligne droite. Rejetée : le تحدّ du manuel en ouverture (« 6,4 cm est-il la
+ *   valeur exacte ? » — une question de mémoire qui donne déjà la réponse « il faut calculer ») ; il devient l'APPLICATION qui ferme le
+ *   module 1 (étape 3, après que l'élève a obtenu une distance exacte) et est résolu au module 3. Le niveau متقدم garde les points du
+ *   manuel (نشاط 3 et 4 : K, L, M) du MÊME labo.
+ *   Ordre des idées : pourquoi le téléphone n'accepte J qu'à un endroit (déplacements égaux) → ce qu'on a construit entre L et K
+ *   (le triangle rectangle, KL plus court que l'escalier) → le تحدّ → module 2 : les deux formules en lettres (la brique du milieu
+ *   APRÈS la réponse) → module 3 : un milieu et une distance de la plateforme, PUIS les propriétés du manuel (brique après la réponse).
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/handasa/muntasaf-masafa';
@@ -82,7 +93,7 @@ export const LESSON_CONFIG = {
       title: 'موعد GPS في الصابلات: نقطة اللقاء ثم المسافة',
       objective: 'منتصف القطعة هو النقطة I التي تحقّق AI = IB، فإحداثيتاه متوسطا إحداثيات الطرفين؛ والمسافة بين نقطتين في معلم متعامد ومتجانس هي وتر المثلث القائم الذي ضلعاه فرقا الإحداثيات',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'gps-meet' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'gps-meet' },
       learningPointIds: ['4am_muntasaf-masafa_P1', '4am_muntasaf-masafa_P2'],
       sourceElementIds: ['act-3', 'act-4'],
     },

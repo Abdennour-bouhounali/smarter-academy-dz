@@ -4,6 +4,14 @@
  * أقوّم تعلّماتي 7, 8 p. 47 au إختبار أولي. Généré DANS son entrée du catalogue (même code, item 1am.m3.r01),
  * cycle moyen phase 3, 2026-10-14. Source de vérité : docs/sources/1am/unit3/extraction.json.
  *
+ * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
+ *   Entrée retenue : le jardin du club (47 fleurs, bouquets de 6) — l'élève TIRE le ruban le long de la rangée : un bouquet de
+ *   trop manque de fleurs, un de moins en laisse assez pour un autre ; il lui faut donc s'arrêter, et c'est l'idée de la division.
+ *   Rejetée : le نشاط 3 du manuel comme entrée (279 fleurs et des questions أ، ب، ج posées avant tout geste) ; il reste le niveau
+ *   متقدم du même labo, avec ses nombres du manuel. Ordre des idées : ruban (s'arrêter) → 10 ? 20 bouquets ? (nombres du
+ *   manuel) → POURQUOI s'arrêter à 19 → l'égalité (brique APRÈS la réponse) → معارف : le labo 253 / 17 en tête (« pourquoi 14 et
+ *   pas 15 ? »), la remarque, les noms, la division posée, le reste nul → exercices.
+ *
  * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
  */
 export const LESSON_BASE_PATH = '/courses/moyen/1am/ansab_al_aadad_wal_hisab/qisma-iqlidiya-baqi';
@@ -62,7 +70,7 @@ export const LESSON_CONFIG = {
       title: 'باقات العرفان: 47 زهرة',
       objective: 'الحاصل هو أكبر عدد من المجموعات الكاملة: نتوقّف عندما يصبح الباقي أصغر من المقسوم عليه، a = b × q + r مع r < b',
       autonomy: '',
-      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'garden' },
+      experience: { type: 'platform_context', reason: 'platform_designed_entry', theme: 'garden' },
       learningPointIds: ['1am_qisma-iqlidiya-baqi_P1', '1am_qisma-iqlidiya-baqi_P2'],
       sourceElementIds: ['act-3'],
     },
