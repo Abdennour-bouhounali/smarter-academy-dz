@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { renderSharePage, renderBookPage, replaceRoot } from './vite-plugin-share-pages.js';
+import { renderSharePage, renderBookPage, replaceRoot, shareRewriteRules, shareFileOf } from './vite-plugin-share-pages.js';
 import cards from './src/features/books/shareCards.json';
 
 const BASE = `<html><head><title>Accueil</title>
@@ -66,5 +66,19 @@ describe('renderBookPage — le premier écran de la fiche en HTML', () => {
 describe('replaceRoot', () => {
   it('remplace l’élément #root entier, divs imbriquées comprises', () => {
     expect(replaceRoot('<body><div id="root"><div><div></div></div></div><p>après</p></body>', 'X')).toBe('<body>X<p>après</p></body>');
+  });
+});
+
+describe('shareRewriteRules — aucune page de partage au chemin public', () => {
+  it('écrit sous share/ et réécrit le chemin public, avec ou sans « / » final', () => {
+    expect(shareFileOf('/books/smart-protocol')).toBe('share/books/smart-protocol.html');
+    const rules = shareRewriteRules(cards);
+    expect(rules).toContain('RewriteRule ^books/smart-protocol/?$ share/books/smart-protocol.html [L]');
+    expect(rules).toContain('RewriteRule ^books/?$ share/books.html [L]');
+  });
+
+  it('le .htaccess source porte le marqueur que le build remplace', async () => {
+    const { readFileSync } = await import('node:fs');
+    expect(readFileSync(new URL('./public/.htaccess', import.meta.url), 'utf8')).toContain('  # @share-pages');
   });
 });

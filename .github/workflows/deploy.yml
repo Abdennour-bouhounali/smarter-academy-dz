@@ -295,6 +295,14 @@ jobs:
             -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT" \
             apps/web/dist/ \
             "$SSH_USER@$SSH_HOST:$REMOTE_PATH/"
+          # Share pages from older builds lived at the PUBLIC path (books/, books.html,
+          # books/smart-protocol/index.html). Since 2026-10-17 they are under share/
+          # (vite-plugin-share-pages.js) — and while a books/ DIRECTORY exists,
+          # LiteSpeed answers /books/<slug> with a 301 to « …/ » before any rewrite
+          # rule runs. rsync never deletes, so remove those leftovers here. Nothing
+          # else lives there: book images are under images/books/.
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
+            "rm -rf '$REMOTE_PATH/books' '$REMOTE_PATH/books.html'"
 
       # ──────────────────────── Deploy the backend ───────────────────────────
       # Also no --delete, and with an exclusion list that is the heart of the
@@ -691,6 +699,22 @@ jobs:
           [ "$code" = "200" ] \
             || { echo "::error::SPA fallback broken: /progression returned $code"; exit 1; }
           echo "SPA deep-link routing works."
+
+          # The book purchase page answers DIRECTLY (no 301 to « …/ », which cost a
+          # round trip before anything showed) with its own share page — and, when
+          # the API answered during the build, the pre-rendered first screen
+          # (BOOKS_STORE.md §6bis). The query string bypasses a CDN copy of the old 301.
+          book="$(curl --silent --max-time 30 -w '\n%{http_code}' "$base/books/smart-protocol?deploy=${GITHUB_SHA::8}")"
+          code="$(tail -n1 <<<"$book")"
+          [ "$code" = "200" ] \
+            || { echo "::error::/books/smart-protocol returned $code (expected 200, no redirect)."; exit 1; }
+          grep -q 'og:image" content="[^"]*/og/smart-protocol.png' <<<"$book" \
+            || { echo "::error::/books/smart-protocol is not its share page (og:image)."; exit 1; }
+          if grep -q 'id="sa-static-shell"' <<<"$book"; then
+            echo "Book page: 200, share page, pre-rendered first screen."
+          else
+            echo "::warning::Book page has no pre-rendered first screen (API unreachable during the build?)."
+          fi
 
       # Proves Laravel is executing, not merely that a file was uploaded.
       # /api/v1/legal/versions is public, read-only, touches no database and

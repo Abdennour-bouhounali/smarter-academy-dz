@@ -1,23 +1,14 @@
-# Pages de partage des livres (vite-plugin-share-pages.js) : des FICHIERS
-# `books.html`, `books/smart-protocol.html`. Avant, des DOSSIERS (`…/index.html`)
-# faisaient répondre un 301 vers `/books/smart-protocol/` — un aller-retour de
-# plus avant tout affichage de la page d'achat. Les dossiers d'un build plus
-# ancien restent sur le serveur (rsync sans --delete) : DirectorySlash Off les
-# empêche de redéclencher ce 301.
-<IfModule mod_dir.c>
-  DirectorySlash Off
-</IfModule>
-
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
   RewriteRule ^index\.html$ - [L]
-  # Un ancien lien avec « / » final (copié après l'ancien 301) → l'adresse propre.
-  RewriteRule ^(books(?:/[^/]+)?)/$ /$1 [R=301,L]
-  # `/books/<slug>` → `books/<slug>.html` quand ce fichier existe.
-  RewriteCond %{REQUEST_URI} !^/api [NC]
-  RewriteCond %{REQUEST_FILENAME}.html -f
-  RewriteRule ^(.+)$ $1.html [L]
+  # Pages de partage des livres : vite-plugin-share-pages.js remplace la ligne
+  # suivante, dans dist/.htaccess, par UNE règle explicite par page
+  # (`^books/smart-protocol/?$ → share/books/smart-protocol.html`). Les fichiers
+  # vivent sous share/ : AUCUN dossier ne porte le chemin public — LiteSpeed
+  # (Hostinger) redirige tout dossier existant vers « …/ » AVANT ces règles, et
+  # ignore DirectorySlash (constaté le 2026-10-17 : un 301 avant tout affichage).
+  # @share-pages
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_URI} !^/api [NC]

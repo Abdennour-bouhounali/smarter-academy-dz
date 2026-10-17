@@ -109,13 +109,17 @@ n'écrase jamais une fiche existante ; aussi appelé par `DatabaseSeeder`).
 ## 6bis. Aperçu de partage (WhatsApp / Facebook / Telegram)
 
 Les robots de partage lisent le HTML sans exécuter React. Le build écrit donc,
-pour chaque entrée de `apps/web/src/features/books/shareCards.json`, un FICHIER
-`dist/<path>.html` (`books.html`, `books/smart-protocol.html`) = l'`index.html` du build dont `<title>`, description,
+pour chaque entrée de `apps/web/src/features/books/shareCards.json`, un fichier
+`dist/share/<path>.html` (`share/books.html`, `share/books/smart-protocol.html`) = l'`index.html` du build dont `<title>`, description,
 `og:*`, `twitter:*` et `canonical` parlent de CETTE page
-(`apps/web/vite-plugin-share-pages.js`, testé par `vite-plugin-share-pages.test.js`).
-`.htaccess` sert `<chemin>.html` quand il existe, avant le repli SPA, avec `DirectorySlash Off`
-et un 301 de `/books/<slug>/` vers `/books/<slug>`. Jusqu'au 2026-10-17 c'était un DOSSIER
-`<path>/index.html` : le serveur répondait un 301 vers l'adresse avec « / », un aller-retour de plus.
+(`apps/web/vite-plugin-share-pages.js`, testé par `vite-plugin-share-pages.test.js`), et remplace
+le marqueur `# @share-pages` de `dist/.htaccess` par UNE règle explicite par page
+(`RewriteRule ^books/smart-protocol/?$ share/books/smart-protocol.html [L]`, avec ou sans « / » final).
+**Aucun dossier ni fichier ne porte le chemin public** : LiteSpeed (Hostinger) redirige tout dossier
+existant vers « …/ » AVANT les règles de réécriture et ignore `DirectorySlash` — jusqu'au 2026-10-17,
+`dist/books/smart-protocol/index.html` coûtait un 301 avant tout affichage. Le déploiement efface les
+restes des anciens builds (`books/`, `books.html` à la racine ; rsync ne supprime rien) et vérifie que
+`/books/smart-protocol` répond 200 avec sa page de partage (`deploy.yml`, « Verify the assets and SPA routing »).
 
 **Le premier écran de la fiche est dans le HTML (2026-10-17).** Pour une carte de livre, le
 plugin lit le livre à l'API (`VITE_API_URL`, délai 8 s) pendant le build et écrit :

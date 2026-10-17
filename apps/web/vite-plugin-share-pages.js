@@ -120,15 +120,31 @@ async function fetchBook(apiUrl, slug) {
   }
 }
 
+/** Où le build écrit la page de partage d'un chemin public (`/books/x` → `share/books/x.html`). */
+export const shareFileOf = (path) => `share${path}.html`;
+
 /**
- * Écrit dist/<path>.html pour chaque carte de partage — un FICHIER, pas un dossier :
- * `dist/books/smart-protocol/index.html` faisait répondre le serveur par un 301 vers
- * `/books/smart-protocol/` (un aller-retour de plus avant tout affichage). Le
- * .htaccess sert `<chemin>.html` quand il existe, avant la règle de repli SPA.
+ * Les règles de réécriture des pages de partage, posées à la place du marqueur
+ * `# @share-pages` de dist/.htaccess : une règle EXPLICITE par page, avec ou sans
+ * « / » final (les anciens liens copiés après l'ancien 301 en portent un).
+ */
+export function shareRewriteRules(cards) {
+  return cards.map((card) => {
+    const pattern = card.path.replace(/^\//, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return `  RewriteRule ^${pattern}/?$ ${shareFileOf(card.path)} [L]`;
+  }).join('\n');
+}
+
+/**
+ * Écrit dist/share/<path>.html pour chaque carte de partage, et ses règles dans
+ * dist/.htaccess. Ni dossier ni fichier ne porte le chemin public : avant le
+ * 2026-10-17, `dist/books/smart-protocol/index.html` faisait répondre le serveur
+ * par un 301 vers `/books/smart-protocol/` (un aller-retour de plus avant tout
+ * affichage), et LiteSpeed redirige tout dossier existant avant les règles.
  * Une carte de LIVRE reçoit en plus son premier écran (renderBookPage) si l'API
  * (VITE_API_URL) répond pendant le build ; sinon la page reste une simple page de
  * partage. Un nouveau livre = une entrée dans src/features/books/shareCards.json
- * (+ sa carte dans public/og/, voir scripts/og-card.py) — docs/architecture/BOOKS_STORE.md §6.
+ * (+ sa carte dans public/og/, voir scripts/og-card.py) — docs/architecture/BOOKS_STORE.md §6bis.
  */
 export default function sharePages({ cards }) {
   let outDir = 'dist';
@@ -164,7 +180,7 @@ export default function sharePages({ cards }) {
       const base = readFileSync(join(root, 'index.html'), 'utf8');
       let renderHero = null;
       for (const card of cards) {
-        const file = join(root, `${card.path}.html`);
+        const file = join(root, shareFileOf(card.path));
         mkdirSync(dirname(file), { recursive: true });
         const slug = bookSlugOf(card);
         const book = slug ? await fetchBook(apiUrl, slug) : null;
@@ -172,6 +188,10 @@ export default function sharePages({ cards }) {
         if (book && !renderHero) renderHero = await loadHeroRenderer(projectRoot);
         writeFileSync(file, book ? renderBookPage(base, { card, book, heroHtml: renderHero(book), preloadChunks: bookChunks }) : renderSharePage(base, card));
       }
+      const htaccess = join(root, '.htaccess');
+      const rules = readFileSync(htaccess, 'utf8');
+      if (!rules.includes('# @share-pages')) throw new Error('dist/.htaccess sans le marqueur « # @share-pages » : les pages de partage ne seraient pas servies.');
+      writeFileSync(htaccess, rules.replace('  # @share-pages', shareRewriteRules(cards)));
     },
   };
 }
