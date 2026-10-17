@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, BarChart3, BookOpen, Flag, Users, KeyRound, Package,
-  UserCog, ScrollText, GraduationCap, School, BadgeCheck, Inbox, CreditCard, SlidersHorizontal, Flame,
+  UserCog, ScrollText, Library, ShoppingBag, MessageSquare, GraduationCap, School, BadgeCheck, Inbox, CreditCard, SlidersHorizontal, Flame,
 } from 'lucide-react';
 
 /**
@@ -99,6 +99,17 @@ export const adminNavSections = [
     links: [
       { labelKey: 'nav.activationCodes', path: '/admin/codes-activation', icon: KeyRound, end: true },
       { labelKey: 'nav.activationBatches', path: '/admin/codes-activation/lots', icon: Package },
+    ],
+  },
+  {
+    // La LIBRAIRIE : livres papier vendus sans paiement en ligne — commandes,
+    // livraison, encaissements, messages. docs/architecture/BOOKS_STORE.md.
+    labelKey: 'nav.books',
+    icon: Library,
+    links: [
+      { labelKey: 'nav.booksOrders', path: '/admin/livres/commandes', icon: ShoppingBag },
+      { labelKey: 'nav.booksCatalog', path: '/admin/livres', icon: Library, end: true },
+      { labelKey: 'nav.booksMessages', path: '/admin/livres/messages', icon: MessageSquare },
     ],
   },
   {

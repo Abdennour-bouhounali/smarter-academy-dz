@@ -167,6 +167,19 @@ class ActivityLogger
     /** « التحدّي اليومي » : le barème global (écran d'administration). */
     public const DAILY_CHALLENGE_CONFIG_UPDATED = 'daily_challenge.config_updated';
 
+    /** La LIBRAIRIE (livres papier) : fiche livre, commande, paiement. Voir docs/architecture/BOOKS_STORE.md. */
+    public const BOOK_SAVED = 'book.saved';
+
+    public const BOOK_ORDER_STATUS = 'book_order.status_changed';
+
+    public const BOOK_ORDER_UPDATED = 'book_order.updated';
+
+    public const BOOK_ORDER_PAYMENT = 'book_order.payment_recorded';
+
+    public const BOOK_ORDER_PAYMENT_REMOVED = 'book_order.payment_removed';
+
+    public const BOOK_ORDER_DELETED = 'book_order.deleted';
+
     /**
      * Clés dont la valeur n'est jamais journalisée, quelle que soit la façon
      * dont l'appelant les nomme. Défense en profondeur : l'appelant est déjà

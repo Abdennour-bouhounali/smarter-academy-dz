@@ -1,0 +1,111 @@
+# La librairie — livres papier vendus par la plateforme
+
+> **Faisant autorité pour** : le catalogue public `/books`, la page d'un livre
+> (`/books/:slug`), la commande SANS paiement en ligne, le formulaire de
+> contact d'un livre, et le suivi administrateur (commandes, livraison,
+> encaissements, messages). Établi le 2026-10-17 par l'intégration du site
+> autonome du premier livre (« بروتوكول SMART لحل المسائل الرياضية »).
+> Le code est la source de vérité ; ce fichier le décrit.
+
+## 1. Décision d'architecture
+
+La librairie est un **module de la plateforme** (`smarter-academy.com/books`),
+pas un site à part (`books.…`). Un compte, une API (Laravel), une base, un
+panneau d'administration. Le livre n'est PAS lu en ligne : la page est une
+vitrine + une demande de commande.
+
+L'ancien site (React + Express + Postgres) n'est pas repris tel quel : son
+contenu (textes, FAQ, chiffres, images, wilayas, champs du formulaire de
+contact) est porté ; son backend est remplacé par l'API Laravel.
+
+## 2. Modèle de données (migration `2026_10_17_000001`)
+
+| Table | Rôle |
+|---|---|
+| `books` | un livre : `slug`, titre, prix (DA, entier), `status` (`draft` \| `published`), `content` JSON (badge, stats, steps, highlights, faq), `gallery` JSON |
+| `book_orders` | une commande : client, wilaya/commune/adresse, `quantity`, `unit_price` **figé**, `delivery_fee` **NULLABLE** (fixé plus tard), `status` |
+| `book_order_payments` | un encaissement = UNE ligne (`payment` ou `refund`, montant, méthode, date) |
+| `book_order_events` | l'historique d'une commande (création, états, livraison, paiements) |
+| `book_messages` | la boîte de réception des formulaires de contact des pages livres |
+
+Règles :
+- **Total et état du paiement sont CALCULÉS** (`BookOrder::total()`,
+  `paymentStatus()` : `unpaid | partial | paid | overpaid`), jamais stockés.
+- Le prix d'une commande est figé : modifier le prix du livre ne réécrit pas
+  les commandes reçues.
+- États : `pending → confirmed → in_way → delivered`, `→ cancelled` (avant
+  l'expédition), `→ returned` (depuis `in_way`/`delivered`). Transitions
+  contrôlées par `BookOrder::TRANSITIONS` (422 sinon). Seule une commande
+  annulée ou retournée peut être supprimée.
+- Un remboursement ne peut dépasser l'encaissé.
+- Aucun frais de livraison n'est calculé : le formulaire dit « تُحدَّد لاحقًا »,
+  l'administrateur le saisit sur la commande (`PATCH /admin/book-orders/{id}`).
+
+## 3. API (`/api/v1`)
+
+Public (`BookStoreController`) : `GET /books`, `GET /books/{slug}`,
+`GET /books/wilayas`, `POST /books/{slug}/orders` (limiteur nommé `book-orders` : 8 / 10 min / IP),
+`POST /books/messages` (`book-messages` : 5 / 10 min / IP). Limiteurs NOMMÉS
+(`AppServiceProvider`) : un `throttle:8,10` en ligne partagerait sa clé « domaine|IP »
+avec les autres routes publiques et la navigation l'épuiserait. Un livre en brouillon répond 404.
+Les deux POST ont un **pot de miel** (champ caché `website`) : rempli → faux
+succès, rien d'enregistré. Le téléphone est validé (format algérien) et la
+wilaya doit appartenir à `App\Domain\Books\Wilayas`.
+
+Admin (`can:admin`, `/admin/…`) : `books` (liste, création, mise à jour),
+`book-orders` (liste filtrable `status|bookId|wilaya|paymentStatus|search`,
+`stats`, fiche, `PATCH` livraison/note, `PATCH …/status`, `POST …/payments`,
+`DELETE`), `book-order-payments/{id}` (DELETE), `book-messages` (liste, PATCH
+état/note). Gestes journalisés (`ActivityLogger::BOOK_*`). Les formes JSON
+sont dans `Domain/Books/BookPresenter.php` (camelCase).
+
+## 4. Frontend
+
+- Public (lots paresseux sous `MainLayout`) : `features/books/` —
+  `BooksPage` (catalogue), `BookDetailPage` (présentation, étapes SMART,
+  galerie, commande, FAQ, contact), `OrderForm`, `ContactForm`,
+  `bookService.js`.
+- Chaînes arabes : `features/books/strings.js` (module local, **pas** un
+  namespace i18n : rien de la librairie n'entre dans le lot d'entrée).
+- Contenu d'une page livre : entièrement tiré de la fiche (`content` JSON,
+  éditable dans « الكتب »). Un nouveau livre = une ligne, aucun code.
+- Admin : `pages/admin/books/` — `BookOrders` (chiffres + liste),
+  `BookOrderDetail` (état, livraison, paiements, historique),
+  `BookCatalog` (fiches), `BookMessages`. Routes `/admin/livres/*`, section
+  « الكتب » de la barre latérale. Images : `public/images/books/<slug>/`.
+- Lien « الكتب » dans la navigation visiteur (`data/navigation.js`).
+
+## 5. Premier livre et mise en service
+
+`php artisan db:seed --class=BookSeeder` crée `smart-protocol` (idempotent,
+n'écrase jamais une fiche existante ; aussi appelé par `DatabaseSeeder`).
+
+## 6. Non implémenté / à venir
+
+- Frais de livraison par wilaya et transporteur (« set later » par le
+  propriétaire) : aujourd'hui saisis à la main, commande par commande.
+- Paiement en ligne : volontairement absent.
+- Stock, export CSV des commandes, notification (e-mail/WhatsApp) à la
+  réception d'une commande.
+
+## 6bis. Aperçu de partage (WhatsApp / Facebook / Telegram)
+
+Les robots de partage lisent le HTML sans exécuter React. Le build écrit donc,
+pour chaque entrée de `apps/web/src/features/books/shareCards.json`, un
+`dist/<path>/index.html` = l'`index.html` du build dont `<title>`, description,
+`og:*`, `twitter:*` et `canonical` parlent de CETTE page
+(`apps/web/vite-plugin-share-pages.js`, testé par `vite-plugin-share-pages.test.js`).
+Apache sert ce dossier avant le repli SPA (`.htaccess` : `!-d`) ; l'application
+démarre à l'identique. **Un nouveau livre** : une entrée dans `shareCards.json`,
+sa carte 1200×630 dans `public/og/` (`python3 scripts/og-book-card.py <couverture>.webp "<titre>"
+--eyebrow "…" -o apps/web/public/og/<slug>.png` : la VRAIE couverture + le titre ;
+`scripts/og-card.py` reste le gabarit texte seul) et une ligne dans
+`public/sitemap.xml`. Le premier livre : `og/smart-protocol.png`.
+Limite : titre/description de partage sont figés au build — les modifier dans
+l'admin ne change pas l'aperçu avant un nouveau build.
+
+## 7. Tests
+
+`apps/api/tests/Feature/BookStoreTest.php` (vitrine, prix figé, validation,
+pot de miel, états, livraison, paiements, statistiques, interdiction élève) ;
+le balayage `AdminAuthorizationTest` couvre les routes `/admin/book*`.

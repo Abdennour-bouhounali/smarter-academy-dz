@@ -168,5 +168,21 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute(5)->by('activation-user:'.($request->user()?->id ?? $request->ip())),
             Limit::perHour(30)->by('activation-ip:'.$request->ip()),
         ]);
+
+        /**
+         * La LIBRAIRIE (BOOKS_STORE.md) : commande et message d'un visiteur.
+         *
+         * Nommés, et non `throttle:8,10` en ligne : la clé d'un throttle en
+         * ligne est « domaine|IP », SANS la route — elle partage donc son
+         * compteur avec toutes les autres routes publiques en ligne que la
+         * page appelle à chaque chargement. Constaté le 2026-10-17 : la simple
+         * navigation épuisait les 8 commandes autorisées (429 au premier envoi).
+         */
+        RateLimiter::for('book-orders', fn (Request $request) => [
+            Limit::perMinutes(10, 8)->by('book-order-ip:'.$request->ip()),
+        ]);
+        RateLimiter::for('book-messages', fn (Request $request) => [
+            Limit::perMinutes(10, 5)->by('book-message-ip:'.$request->ip()),
+        ]);
     }
 }

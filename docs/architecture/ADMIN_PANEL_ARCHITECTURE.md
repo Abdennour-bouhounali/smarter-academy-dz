@@ -2030,3 +2030,14 @@ ferme le compte en gardant tout. La suppression ne laisse **rien**.
   ce qui sera perdu (l'aperçu), e-mail à retaper — le bouton reste inactif
   tant qu'il ne correspond pas —, puis retour à la liste.
 - Tests : `AdminUserDeletionTest` (API), `DeleteUserSection.render.test.jsx`.
+
+---
+
+# Annexe A10 — La librairie (2026-10-17)
+
+Section « الكتب » de la barre latérale (`/admin/livres/*`) : commandes de
+livres papier (états contrôlés, frais de livraison fixé après coup, paiements
+en lignes, historique), fiches livres (prix, publication, contenu de la page
+publique) et messages reçus. Même chrome que les autres écrans (`AdminPage`,
+`DataTable`, `FilterBar`), routes `can:admin`, gestes dans le journal
+(`book.*`, `book_order.*`). Contrat complet : [`BOOKS_STORE.md`](./BOOKS_STORE.md).

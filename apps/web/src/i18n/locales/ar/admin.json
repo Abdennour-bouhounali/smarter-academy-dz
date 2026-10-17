@@ -109,7 +109,11 @@
     "registryHealth": "سلامة السجلّ",
     "contactMessages": "رسائل الاتصال",
     "accessLimits": "الوصول والحدود",
-    "dailyChallenge": "التحدّي اليومي"
+    "dailyChallenge": "التحدّي اليومي",
+    "books": "الكتب",
+    "booksOrders": "الطلبات",
+    "booksCatalog": "الكتب",
+    "booksMessages": "الرسائل"
   },
   "dashboard": {
     "metaTitle": "لوحة التحكم — الإدارة",

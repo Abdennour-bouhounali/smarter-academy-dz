@@ -26,6 +26,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillingCheckoutController;
 use App\Http\Controllers\BillingSubscriptionController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\BookStoreController;
+use App\Http\Controllers\Admin\AdminBookController;
+use App\Http\Controllers\Admin\AdminBookOrderController;
+use App\Http\Controllers\Admin\AdminBookMessageController;
 use App\Http\Controllers\ContentAvailabilityController;
 use App\Http\Controllers\FeatureAccessController;
 use App\Http\Controllers\CurriculumController;
@@ -75,6 +79,16 @@ use Laravel\Sanctum\Http\Middleware\AuthenticateSession;
 Route::prefix('v1')->group(function () {
     // Public routes
     Route::post('/contact', [ContactController::class, 'store']);
+
+    // ── La LIBRAIRIE : vitrine publique (livres papier, commande sans paiement
+    // en ligne). Voir docs/architecture/BOOKS_STORE.md.
+    Route::prefix('books')->group(function () {
+        Route::get('/', [BookStoreController::class, 'index']);
+        Route::get('/wilayas', [BookStoreController::class, 'wilayas']);
+        Route::post('/messages', [BookStoreController::class, 'message'])->middleware('throttle:book-messages');
+        Route::get('/{slug}', [BookStoreController::class, 'show']);
+        Route::post('/{slug}/orders', [BookStoreController::class, 'order'])->middleware('throttle:book-orders');
+    });
 
     // ── Webhooks de fournisseur de paiement ─────────────────────────────
     // La SEULE route publique en écriture, et la seule authentifiée
@@ -518,6 +532,23 @@ Route::prefix('v1')->group(function () {
 
         Route::prefix('admin')->group(function () {
             Route::get('/dashboard', [AdminDashboardController::class, 'index']);
+
+            // La librairie : fiches livres, commandes (états, livraison,
+            // paiements en lignes), messages reçus.
+            Route::get('/books', [AdminBookController::class, 'index']);
+            Route::post('/books', [AdminBookController::class, 'store']);
+            Route::get('/books/{id}', [AdminBookController::class, 'show'])->whereNumber('id');
+            Route::put('/books/{id}', [AdminBookController::class, 'update'])->whereNumber('id');
+            Route::get('/book-orders', [AdminBookOrderController::class, 'index']);
+            Route::get('/book-orders/stats', [AdminBookOrderController::class, 'stats']);
+            Route::get('/book-orders/{id}', [AdminBookOrderController::class, 'show'])->whereNumber('id');
+            Route::patch('/book-orders/{id}', [AdminBookOrderController::class, 'update'])->whereNumber('id');
+            Route::patch('/book-orders/{id}/status', [AdminBookOrderController::class, 'updateStatus'])->whereNumber('id');
+            Route::post('/book-orders/{id}/payments', [AdminBookOrderController::class, 'addPayment'])->whereNumber('id');
+            Route::delete('/book-orders/{id}', [AdminBookOrderController::class, 'destroy'])->whereNumber('id');
+            Route::delete('/book-order-payments/{id}', [AdminBookOrderController::class, 'removePayment'])->whereNumber('id');
+            Route::get('/book-messages', [AdminBookMessageController::class, 'index']);
+            Route::patch('/book-messages/{id}', [AdminBookMessageController::class, 'update'])->whereNumber('id');
 
             Route::get('/analytics/platform', [AdminDashboardController::class, 'platform']);
             Route::get('/analytics/learning', [AdminDashboardController::class, 'learning']);

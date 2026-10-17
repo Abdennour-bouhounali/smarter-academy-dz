@@ -47,6 +47,15 @@ const AdminActivationCodeDetail = lazy(() => import('./pages/admin/activation/Ac
 const AdminActivityLog = lazy(() => import('./pages/admin/system/ActivityLog'));
 const AdminRegistryHealth = lazy(() => import('./pages/admin/system/RegistryHealth'));
 const AdminContactMessages = lazy(() => import('./pages/admin/system/ContactMessages'));
+// La LIBRAIRIE (livres papier, commande sans paiement en ligne) : vitrine
+// publique et suivi admin — lots paresseux, rien dans l'entrée.
+// Voir docs/architecture/BOOKS_STORE.md.
+const BooksPage = lazy(() => import('./features/books/BooksPage'));
+const BookDetailPage = lazy(() => import('./features/books/BookDetailPage'));
+const AdminBookOrders = lazy(() => import('./pages/admin/books/BookOrders'));
+const AdminBookOrderDetail = lazy(() => import('./pages/admin/books/BookOrderDetail'));
+const AdminBookCatalog = lazy(() => import('./pages/admin/books/BookCatalog'));
+const AdminBookMessages = lazy(() => import('./pages/admin/books/BookMessages'));
 // Les ENSEIGNANTS, leurs CLASSES et les OFFRES — le modèle commercial
 // configuré depuis le panneau, sans déploiement ni paiement en ligne.
 const AdminTeacherList = lazy(() => import('./pages/admin/teachers/TeacherList'));
@@ -271,6 +280,10 @@ function AppRoutes() {
           <Route path="systeme/journal" element={<AdminActivityLog />} />
           <Route path="systeme/coherence" element={<AdminRegistryHealth />} />
           <Route path="systeme/messages" element={<AdminContactMessages />} />
+          <Route path="livres" element={<AdminBookCatalog />} />
+          <Route path="livres/commandes" element={<AdminBookOrders />} />
+          <Route path="livres/commandes/:id" element={<AdminBookOrderDetail />} />
+          <Route path="livres/messages" element={<AdminBookMessages />} />
         </Route>
       </Route>
 
@@ -399,6 +412,8 @@ function AppRoutes() {
         <Route path="/about"    element={<About />} />
         <Route path="/faq"      element={<FAQ />} />
         <Route path="/contact"  element={<Contact />} />
+        <Route path="/books"        element={<BooksPage />} />
+        <Route path="/books/:slug"  element={<BookDetailPage />} />
 
         {/* L'écran d'attente entre l'inscription et l'espace élève.
             Publique : l'élève y arrive aussi en revenant du lien reçu

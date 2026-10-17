@@ -8,6 +8,7 @@ export const navLinks = [
   { labelKey: 'home', path: '/' },
   { labelKey: 'method', path: '/methode' },
   { labelKey: 'about', path: '/about' },
+  { labelKey: 'books', path: '/books' },
   { labelKey: 'faq', path: '/faq' },
   { labelKey: 'contact', path: '/contact' },
 ];

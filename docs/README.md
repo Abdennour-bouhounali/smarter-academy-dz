@@ -70,6 +70,7 @@ to read them.
 | Add a provider, a route, a heavy dependency, an `import.meta.glob` or an i18n namespace — or ask « why is this in the bundle? » | [`architecture/BUNDLE_BOUNDARIES.md`](./architecture/BUNDLE_BOUNDARIES.md) |
 | Work on the Math Lab (مختبر الرياضيات) or add an instrument to it | [`architecture/MATH_LAB.md`](./architecture/MATH_LAB.md) |
 | Work on teachers — how a teacher reads lessons (free navigation, no progress), classes (الأقسام), seat-based plans and pricing tiers, subscriptions, requests or plan-bound activation codes | [`architecture/TEACHER_CLASSROOM_ARCHITECTURE.md`](./architecture/TEACHER_CLASSROOM_ARCHITECTURE.md) |
+| Sell a printed book (catalogue `/books`, order request without online payment, delivery fee set later, payments as lines, admin tracking, contact messages) | [`architecture/BOOKS_STORE.md`](./architecture/BOOKS_STORE.md) |
 | Build or change an admin screen (Arabic, RTL, shared design system) | [`architecture/ADMIN_PANEL_ARCHITECTURE.md`](./architecture/ADMIN_PANEL_ARCHITECTURE.md) §33.0 |
 | Ambassadors (« سفراء »), who sees which publication state (admin: all; ambassador: published + hidden), lesson → module status cascade, problem reports with screenshots | [`architecture/ADMIN_PANEL_ARCHITECTURE.md`](./architecture/ADMIN_PANEL_ARCHITECTURE.md) Annexe A8 |
 | Permanent deletion of a student or teacher account (admin only, e-mail retyped, files removed) | [`architecture/ADMIN_PANEL_ARCHITECTURE.md`](./architecture/ADMIN_PANEL_ARCHITECTURE.md) Annexe A9 |

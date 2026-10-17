@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
 import { fileURLToPath } from 'node:url'
+import { readFileSync } from 'node:fs'
+import sharePages from './vite-plugin-share-pages.js'
 
 /**
  * Le contenu de pratique vit HORS de apps/web (content/practice, lu aussi par Laravel) : Vite ne le surveillait pas.
@@ -21,7 +23,12 @@ function watchPracticeContent() {
 }
 
 export default defineConfig({
-  plugins: [react(), watchPracticeContent()],
+  // Pages de partage (aperçu WhatsApp/Facebook) des livres : BOOKS_STORE.md §6.
+  plugins: [
+    react(),
+    watchPracticeContent(),
+    sharePages({ cards: JSON.parse(readFileSync(new URL('./src/features/books/shareCards.json', import.meta.url), 'utf8')) }),
+  ],
   build: {
     // Le rapport des tailles gzip de CHAQUE chunk (≈ 2 000 chunks : un par module
     // de leçon) faisait dépasser le tas de 4 Go du build (`npm run build`, CI) :
@@ -34,8 +41,11 @@ export default defineConfig({
   // ré-optimise ses dépendances, et chaque onglet déjà ouvert reçoit des 504
   // « Outdated Optimize Dep » sur ses chunks paresseux — les liens changent
   // l'URL mais la page ne suit plus. Pré-optimisé au démarrage, plus de surprise.
+  // Même cause pour `mafs` (le graphe du héros de l'accueil, chargé en lazy) : découvert
+  // à la première visite de « / », il déclenchait la même ré-optimisation et un 504 sur
+  // `MafsGraph.jsx` (constaté le 2026-10-17).
   optimizeDeps: {
-    include: ['html-to-image'],
+    include: ['html-to-image', 'mafs'],
   },
   resolve: {
     // UNE seule copie de KaTeX. react-katex et mafs déclarent katex ^0.16 et

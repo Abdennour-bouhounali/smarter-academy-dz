@@ -72,11 +72,11 @@ describe('navigation d’administration', () => {
     // « Enseignants » et « Offres » : le modèle commercial configuré depuis
     // le panneau — activation MANUELLE, jamais un paiement en ligne.
     // « Accès » reste : les codes d'activation, liés ou non à une offre
-    // (master spec §17/§18).
+    // (master spec §17/§18). « الكتب » : la librairie (BOOKS_STORE.md).
     expect(keys).toEqual([
       null, 'nav.analytics', 'nav.content', 'nav.reports',
       'nav.students', 'nav.teachers', 'nav.plans', 'nav.access',
-      'nav.account', 'nav.system',
+      'nav.books', 'nav.account', 'nav.system',
     ]);
   });
 

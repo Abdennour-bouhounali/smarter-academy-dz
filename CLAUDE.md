@@ -67,6 +67,10 @@ written whole (`docs/sources/<g>/unit<N>/`), elements of lessons not yet generat
 diagram « مخطط بأقواس » is the shared figure `ArcTape` (statement figure `kind: 'tape'`). Owner rule: a generated lesson is also imported
 and its modules/exercises published in the LOCAL database so the owner can browse it.
 
+Since 2026-10-17 the platform has a **printed-books store** (`/books`, `/books/:slug`, admin « الكتب » at `/admin/livres/*`): orders WITHOUT online
+payment, delivery fee set later by the admin, payments recorded as lines; the first book is « بروتوكول SMART » (`BookSeeder`, slug
+`smart-protocol`). Contract: `docs/architecture/BOOKS_STORE.md`.
+
 ## Read before any task
 
 - `docs/README.md` — the documentation map: which document is authoritative

@@ -26,5 +26,6 @@ class DatabaseSeeder extends Seeder
         // Les offres initiales : des valeurs de départ que l'administration
         // modifie ensuite depuis le panneau. Idempotent, jamais destructif.
         $this->call(PlanSeeder::class);
+        $this->call(BookSeeder::class);
     }
 }
