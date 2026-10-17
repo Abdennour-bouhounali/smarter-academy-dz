@@ -63,11 +63,11 @@ export default function OrderForm({ book }) {
   const subtotal = book.price * form.quantity;
 
   return (
-    <form onSubmit={submit} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8" noValidate>
-      <div className="grid gap-5 md:grid-cols-2">
+    <form onSubmit={submit} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8" noValidate>
+      <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
         <div>
           <label className={lbl} htmlFor="bo-name">{S.order.name}</label>
-          <input id="bo-name" required minLength={3} autoComplete="name" className={field} value={form.customerName} onChange={set('customerName')} />
+          <input id="bo-name" required minLength={3} autoComplete="name" enterKeyHint="next" className={field} value={form.customerName} onChange={set('customerName')} />
         </div>
         <div>
           <label className={lbl} htmlFor="bo-phone">{S.order.phone}</label>
@@ -83,17 +83,13 @@ export default function OrderForm({ book }) {
         </div>
         <div>
           <label className={lbl} htmlFor="bo-commune">{S.order.commune}</label>
-          <input id="bo-commune" required className={field} value={form.commune} onChange={set('commune')} />
+          <input id="bo-commune" required autoComplete="address-level2" enterKeyHint="next" className={field} value={form.commune} onChange={set('commune')} />
         </div>
         <div className="md:col-span-2">
           <label className={lbl} htmlFor="bo-address">{S.order.address}</label>
-          <textarea id="bo-address" required minLength={5} rows={2} className={field} value={form.address} onChange={set('address')} />
+          <textarea id="bo-address" required minLength={5} rows={2} autoComplete="street-address" className={field} value={form.address} onChange={set('address')} />
         </div>
-        <div>
-          <label className={lbl} htmlFor="bo-email">{S.order.email}</label>
-          <input id="bo-email" type="email" dir="ltr" autoComplete="email" className={`${field} text-end`} value={form.email} onChange={set('email')} />
-        </div>
-        <div>
+        <div className="md:col-span-2">
           <span className={lbl}>{S.order.quantity}</span>
           <div className="inline-flex items-center gap-3 rounded-xl border border-slate-300 bg-white p-1">
             <button type="button" onClick={() => setQty(-1)} disabled={form.quantity <= 1} aria-label="-" className="flex h-11 w-11 items-center justify-center rounded-lg text-slate-700 enabled:hover:bg-slate-100 disabled:opacity-40"><Minus size={16} /></button>
@@ -101,10 +97,23 @@ export default function OrderForm({ book }) {
             <button type="button" onClick={() => setQty(1)} disabled={form.quantity >= 10} aria-label="+" className="flex h-11 w-11 items-center justify-center rounded-lg text-slate-700 enabled:hover:bg-slate-100 disabled:opacity-40"><Plus size={16} /></button>
           </div>
         </div>
-        <div className="md:col-span-2">
-          <label className={lbl} htmlFor="bo-note">{S.order.note}</label>
-          <input id="bo-note" className={field} value={form.customerNote} onChange={set('customerNote')} />
-        </div>
+        {/* Les champs FACULTATIFS sont repliés : chaque champ visible de plus coûte des
+            commandes, surtout sur téléphone. Ouverts d'office s'ils sont déjà remplis. */}
+        <details className="group md:col-span-2" open={Boolean(form.email || form.customerNote)}>
+          <summary className="cursor-pointer list-none font-inter text-sm font-semibold text-blue-700 hover:underline">
+            {S.order.optionalMore}
+          </summary>
+          <div className="mt-4 grid gap-4 sm:gap-5 md:grid-cols-2">
+            <div>
+              <label className={lbl} htmlFor="bo-email">{S.order.email}</label>
+              <input id="bo-email" type="email" dir="ltr" autoComplete="email" className={`${field} text-end`} value={form.email} onChange={set('email')} />
+            </div>
+            <div>
+              <label className={lbl} htmlFor="bo-note">{S.order.note}</label>
+              <input id="bo-note" className={field} value={form.customerNote} onChange={set('customerNote')} />
+            </div>
+          </div>
+        </details>
       </div>
 
       {/* Pot de miel : hors écran, hors tabulation, hors lecteur d'écran. */}

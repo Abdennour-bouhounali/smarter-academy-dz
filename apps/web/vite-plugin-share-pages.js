@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { join, resolve, dirname } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const SITE = 'https://smarter-academy.com';
 
@@ -34,30 +35,142 @@ export function renderSharePage(html, card) {
   return out.replace('</head>', `  <link rel="canonical" href="${url}" />\n</head>`);
 }
 
+const escapeHtml = (value) => String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+/** Le slug d'une carte de LIVRE (`/books/<slug>`), sinon null. */
+export const bookSlugOf = (card) => card.path.match(/^\/books\/([^/]+)$/)?.[1] ?? null;
+
 /**
- * Écrit dist/<path>/index.html pour chaque carte de partage. Apache sert un
- * dossier existant avant la règle de repli SPA (.htaccess : `!-d`). Un nouveau
- * livre = une entrée dans src/features/books/shareCards.json (+ sa carte dans
- * public/og/, voir scripts/og-card.py) — docs/architecture/BOOKS_STORE.md §6.
+ * LE PREMIER ÉCRAN DE LA FICHE, EN HTML (2026-10-17).
+ *
+ * La page d'achat ne doit jamais montrer « جارٍ تحميل Smarter Academy » : elle
+ * attendait le lot d'entrée (≈ 324 Ko gzip), puis le lot de la page, puis l'API.
+ * Le build écrit donc dans son HTML le composant RÉEL du premier écran
+ * (src/features/books/BookHero.jsx, rendu par react-dom/server — aucune copie à
+ * tenir à jour) ; la feuille de style, bloquante, l'habille dès le premier octet.
+ * C'est un calque posé AU-DESSUS de #root : React se monte dessous, et
+ * BookDetailPage le retire une fois la vraie fiche affichée
+ * (bookCache.removeStaticBookShell) — jamais d'écran blanc entre les deux.
+ */
+export function renderBookShell(heroHtml) {
+  return `<div id="sa-static-shell" dir="rtl" style="position:absolute;inset:0 0 auto 0;z-index:60;min-height:100vh;background:#fafafa">
+  <div class="fixed top-0 left-0 right-0 z-50 bg-white/90 border-b border-gray-100"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex flex-nowrap items-center justify-between h-16 gap-3">
+    <a href="/" class="flex items-center gap-2.5"><img src="/smarter-academy-logo-sm.webp" width="216" height="144" alt="Smarter Academy" class="h-10 w-auto rounded-lg object-contain" /><span class="hidden sm:flex font-space font-bold text-slate-900 text-sm leading-none whitespace-nowrap">Smarter Academy</span></a>
+  </div></div></div>
+  <div class="pt-16">${heroHtml}</div>
+</div>`;
+}
+
+/** BookHero.jsx → du HTML statique (esbuild le compile, react-dom/server le rend). */
+async function loadHeroRenderer(projectRoot) {
+  const { build } = await import('esbuild');
+  const out = resolve(projectRoot, 'node_modules/.cache/sa-share-pages/BookHero.mjs');
+  mkdirSync(dirname(out), { recursive: true });
+  await build({
+    entryPoints: [resolve(projectRoot, 'src/features/books/BookHero.jsx')],
+    bundle: true, format: 'esm', platform: 'node', jsx: 'automatic', packages: 'external', outfile: out, logLevel: 'silent',
+  });
+  const [{ default: BookHero }, { createElement }, { renderToStaticMarkup }] = await Promise.all([
+    import(`${pathToFileURL(out).href}?t=${Date.now()}`), import('react'), import('react-dom/server'),
+  ]);
+  return (book) => renderToStaticMarkup(createElement(BookHero, { book }));
+}
+
+/** Remplace l'élément <div id="root">…</div> entier (balises <div> équilibrées). */
+export function replaceRoot(html, replacement) {
+  const start = html.indexOf('<div id="root">');
+  if (start < 0) return html;
+  const tag = /<\/?div\b[^>]*>/g;
+  tag.lastIndex = start;
+  let depth = 0;
+  for (let m = tag.exec(html); m; m = tag.exec(html)) {
+    depth += m[0].startsWith('</') ? -1 : 1;
+    if (depth === 0) return html.slice(0, start) + replacement + html.slice(m.index + m[0].length);
+  }
+  return html;
+}
+
+/**
+ * La page de partage d'un livre, augmentée : le premier écran en HTML (ci-dessus),
+ * l'instantané des données pour React (`window.__SA_BOOK_SNAPSHOT__`, lu par
+ * bookCache.js), le préchargement de l'image et du lot de la page.
+ */
+export function renderBookPage(html, { card, book, heroHtml, preloadChunks = [] }) {
+  const c = book.content ?? {};
+  const image = c.heroImage || book.coverImage;
+  const json = JSON.stringify({ path: `/books/${encodeURIComponent(book.slug)}`, data: { success: true, book } }).replace(/</g, '\\u003c');
+  const head = [
+    image ? `<link rel="preload" as="image" href="${escapeHtml(image)}" fetchpriority="high" />` : '',
+    ...preloadChunks.map((file) => `<link rel="modulepreload" crossorigin href="/${escapeHtml(file)}" />`),
+    `<script>window.__SA_BOOK_SNAPSHOT__=${json};</script>`,
+  ].filter(Boolean).join('\n  ');
+  let out = renderSharePage(html, card).replace('</head>', `  ${head}\n</head>`);
+  // L'écran d'attente de l'application (spinner + « جارٍ تحميل ») n'a rien à faire ici.
+  return replaceRoot(out, `<div id="root"></div>\n  ${renderBookShell(heroHtml)}`);
+}
+
+async function fetchBook(apiUrl, slug) {
+  if (!apiUrl) return null;
+  try {
+    const res = await fetch(`${apiUrl.replace(/\/$/, '')}/books/${encodeURIComponent(slug)}`, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return null;
+    return (await res.json())?.book ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Écrit dist/<path>.html pour chaque carte de partage — un FICHIER, pas un dossier :
+ * `dist/books/smart-protocol/index.html` faisait répondre le serveur par un 301 vers
+ * `/books/smart-protocol/` (un aller-retour de plus avant tout affichage). Le
+ * .htaccess sert `<chemin>.html` quand il existe, avant la règle de repli SPA.
+ * Une carte de LIVRE reçoit en plus son premier écran (renderBookPage) si l'API
+ * (VITE_API_URL) répond pendant le build ; sinon la page reste une simple page de
+ * partage. Un nouveau livre = une entrée dans src/features/books/shareCards.json
+ * (+ sa carte dans public/og/, voir scripts/og-card.py) — docs/architecture/BOOKS_STORE.md §6.
  */
 export default function sharePages({ cards }) {
   let outDir = 'dist';
   let projectRoot = process.cwd();
+  let apiUrl = null;
+  let bookChunks = [];
   return {
     name: 'sa-share-pages',
     apply: 'build',
     configResolved(config) {
       outDir = config.build.outDir;
       projectRoot = config.root;
+      apiUrl = config.env?.VITE_API_URL || process.env.VITE_API_URL || null;
     },
-    closeBundle() {
+    generateBundle(_options, bundle) {
+      // Le lot de BookDetailPage et ses imports statiques : préchargés par la page du livre.
+      const entry = Object.values(bundle).find((c) => c.type === 'chunk' && c.facadeModuleId?.endsWith('features/books/BookDetailPage.jsx'));
+      if (!entry) return;
+      const seen = new Set();
+      const walk = (file) => {
+        if (seen.has(file)) return;
+        const chunk = bundle[file];
+        if (!chunk || chunk.type !== 'chunk' || chunk.isEntry) return;
+        seen.add(file);
+        chunk.imports.forEach(walk);
+      };
+      walk(entry.fileName);
+      bookChunks = [...seen];
+    },
+    async closeBundle() {
       // resolve, pas join : l'outDir peut être absolu (scripts/analyze-entry-bundle.mjs construit dans /tmp).
       const root = resolve(projectRoot, outDir);
       const base = readFileSync(join(root, 'index.html'), 'utf8');
+      let renderHero = null;
       for (const card of cards) {
-        const dir = join(root, card.path);
-        mkdirSync(dir, { recursive: true });
-        writeFileSync(join(dir, 'index.html'), renderSharePage(base, card));
+        const file = join(root, `${card.path}.html`);
+        mkdirSync(dirname(file), { recursive: true });
+        const slug = bookSlugOf(card);
+        const book = slug ? await fetchBook(apiUrl, slug) : null;
+        if (slug && !book) this.warn(`page de ${card.path} : API injoignable (${apiUrl ?? 'VITE_API_URL absent'}) — page de partage sans premier écran.`);
+        if (book && !renderHero) renderHero = await loadHeroRenderer(projectRoot);
+        writeFileSync(file, book ? renderBookPage(base, { card, book, heroHtml: renderHero(book), preloadChunks: bookChunks }) : renderSharePage(base, card));
       }
     },
   };

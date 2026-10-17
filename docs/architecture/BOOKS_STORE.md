@@ -80,6 +80,15 @@ sont dans `Domain/Books/BookPresenter.php` (camelCase).
   lot `BookDetailPage` au survol / focus (`prefetchBookPage`). Une réponse reçue est rendue tout de suite
   au retour (`peekBook`, `peekBooks`), gardée 5 min puis redemandée en arrière-plan. Les pages publiques
   lisent `bookCache` ; `bookService.js` garde les écritures (commande, message) et l'admin.
+- **Conversion, téléphone d'abord (2026-10-17)** — le lien arrive par WhatsApp : la page d'achat
+  est la SEULE surface de la plateforme conçue aussi pour le téléphone (le reste : tablette et
+  ordinateur). `BookHero` : sur téléphone l'image compacte d'abord, puis titre, prix « للنسخة »,
+  bouton pleine largeur et trois garanties vérifiées (`S.detail.trust` : sans paiement en ligne,
+  appel de confirmation, 58 wilayas) — résumé et auteur APRÈS (`order-last`), pour que l'achat
+  tienne au-dessus du pli. `StickyOrderBar` (< lg) : prix + « اطلب نسختك » collés en bas dès que
+  le bouton du haut sort de la vue, effacés quand le formulaire est à l'écran. Étapes SMART en
+  cartes compactes, galerie en carrousel glissé au pouce, espacements resserrés. Formulaire :
+  courriel et note repliés (« + بريد إلكتروني أو ملاحظة »), `autocomplete` adresse.
 - **Aucun saut de mise en page** : squelettes à la forme des cartes / de la présentation pendant le
   chargement ; l'image de présentation est dans une boîte de hauteur fixe (`h-[420px] lg:h-[540px]`,
   `fetchpriority="high"`). CLS de la fiche mesuré 0,44 avant ce changement.
@@ -100,12 +109,28 @@ n'écrase jamais une fiche existante ; aussi appelé par `DatabaseSeeder`).
 ## 6bis. Aperçu de partage (WhatsApp / Facebook / Telegram)
 
 Les robots de partage lisent le HTML sans exécuter React. Le build écrit donc,
-pour chaque entrée de `apps/web/src/features/books/shareCards.json`, un
-`dist/<path>/index.html` = l'`index.html` du build dont `<title>`, description,
+pour chaque entrée de `apps/web/src/features/books/shareCards.json`, un FICHIER
+`dist/<path>.html` (`books.html`, `books/smart-protocol.html`) = l'`index.html` du build dont `<title>`, description,
 `og:*`, `twitter:*` et `canonical` parlent de CETTE page
 (`apps/web/vite-plugin-share-pages.js`, testé par `vite-plugin-share-pages.test.js`).
-Apache sert ce dossier avant le repli SPA (`.htaccess` : `!-d`) ; l'application
-démarre à l'identique. **Un nouveau livre** : une entrée dans `shareCards.json`,
+`.htaccess` sert `<chemin>.html` quand il existe, avant le repli SPA, avec `DirectorySlash Off`
+et un 301 de `/books/<slug>/` vers `/books/<slug>`. Jusqu'au 2026-10-17 c'était un DOSSIER
+`<path>/index.html` : le serveur répondait un 301 vers l'adresse avec « / », un aller-retour de plus.
+
+**Le premier écran de la fiche est dans le HTML (2026-10-17).** Pour une carte de livre, le
+plugin lit le livre à l'API (`VITE_API_URL`, délai 8 s) pendant le build et écrit :
+- le composant RÉEL `features/books/BookHero.jsx` rendu par `react-dom/server` (aucune copie à
+  maintenir : BookHero doit rester pur — ni hook, ni contexte, ni routeur ; le lien « كل الكتب »
+  est une prop `LinkComponent`), dans un calque `#sa-static-shell` posé AU-DESSUS de `#root`
+  (avec une barre de navigation réduite) ; l'écran « جارٍ تحميل Smarter Academy » est retiré ;
+- `window.__SA_BOOK_SNAPSHOT__` (lu par `bookCache.js` : la fiche React s'affiche sans attendre
+  l'API, puis se met à jour — prix compris — si le livre a changé depuis le build) ;
+- `<link rel="preload">` de l'image et `<link rel="modulepreload">` du lot `BookDetailPage` et
+  de ses imports.
+`BookDetailPage` retire le calque (`removeStaticBookShell`) une fois la vraie fiche montée :
+jamais d'écran blanc. Si l'API ne répond pas au build, la page reste une simple page de partage
+(avertissement dans le log du build). Mesuré (téléphone 390×844 et tablette, 1,6 Mbit/s, 4× CPU) :
+contenu visible à ≈ 1,0 s au lieu de 4,8 s, sans écran de chargement. **Un nouveau livre** : une entrée dans `shareCards.json`,
 sa carte 1200×630 dans `public/og/` (`python3 scripts/og-book-card.py <couverture>.webp "<titre>"
 --eyebrow "…" -o apps/web/public/og/<slug>.png` : la VRAIE couverture + le titre ;
 `scripts/og-card.py` reste le gabarit texte seul) et une ligne dans

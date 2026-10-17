@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { renderSharePage } from './vite-plugin-share-pages.js';
+import { renderSharePage, renderBookPage, replaceRoot } from './vite-plugin-share-pages.js';
 import cards from './src/features/books/shareCards.json';
 
 const BASE = `<html><head><title>Accueil</title>
@@ -33,5 +33,38 @@ describe('renderSharePage', () => {
   it('échappe les guillemets d’un titre', () => {
     const out = renderSharePage(BASE, { path: '/books/x', title: 'Le "livre"', description: 'd', image: '/og/x.png' });
     expect(out).toContain('content="Le &quot;livre&quot;"');
+  });
+});
+
+describe('renderBookPage — le premier écran de la fiche en HTML', () => {
+  const card = cards.find((c) => c.path === '/books/smart-protocol');
+  const html = `<html><head><title>x</title><script type="module" src="/assets/index-abc.js"></script></head><body>
+  <div id="root">
+    <div style="display:flex"><style>.s{}</style><div class="root-spinner"></div><p>جارٍ تحميل Smarter Academy...</p></div>
+  </div>
+</body></html>`;
+  const book = { slug: 'smart-protocol', title: 'بروتوكول <SMART>', price: 1400, content: { heroImage: '/images/b.webp' } };
+  const out = renderBookPage(html, { card, book, heroHtml: '<section>HERO</section>', preloadChunks: ['assets/BookDetailPage-x.js'] });
+
+  it('remplace l’écran d’attente par le premier écran, posé au-dessus de #root', () => {
+    expect(out).not.toContain('جارٍ تحميل');
+    expect(out).toContain('<div id="root"></div>');
+    expect(out).toContain('id="sa-static-shell"');
+    expect(out).toContain('<section>HERO</section>');
+    expect(out.indexOf('<div id="root"></div>')).toBeLessThan(out.indexOf('sa-static-shell'));
+  });
+
+  it('précharge l’image et le lot de la page, et donne les données à React sans balise cassable', () => {
+    expect(out).toContain('<link rel="preload" as="image" href="/images/b.webp" fetchpriority="high" />');
+    expect(out).toContain('<link rel="modulepreload" crossorigin href="/assets/BookDetailPage-x.js" />');
+    expect(out).toContain('window.__SA_BOOK_SNAPSHOT__=');
+    expect(out).toContain('"path":"/books/smart-protocol"');
+    expect(out).not.toContain('<SMART>');
+  });
+});
+
+describe('replaceRoot', () => {
+  it('remplace l’élément #root entier, divs imbriquées comprises', () => {
+    expect(replaceRoot('<body><div id="root"><div><div></div></div></div><p>après</p></body>', 'X')).toBe('<body>X<p>après</p></body>');
   });
 });

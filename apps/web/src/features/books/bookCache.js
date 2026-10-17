@@ -37,6 +37,23 @@ function load(path, fallback) {
   return cache.get(path);
 }
 
+// L'INSTANTANÉ écrit dans le HTML de la page d'un livre au build
+// (vite-plugin-share-pages.js) : la fiche s'affiche sans attendre l'API. Il n'est
+// PAS mis dans `cache` : le premier `loadBook` relit quand même le serveur, et la
+// page se met à jour si le livre a changé depuis le build (prix compris).
+if (typeof window !== 'undefined' && window.__SA_BOOK_SNAPSHOT__?.path) {
+  resolved.set(window.__SA_BOOK_SNAPSHOT__.path, window.__SA_BOOK_SNAPSHOT__.data);
+}
+
+/**
+ * Retire le premier écran HTML de la fiche (#sa-static-shell, posé au-dessus de
+ * #root par le build) une fois la vraie page affichée dessous.
+ */
+export function removeStaticBookShell() {
+  if (typeof document === 'undefined') return;
+  document.getElementById('sa-static-shell')?.remove();
+}
+
 /** La réponse déjà reçue, ou undefined. */
 export const peekBooks = () => resolved.get('/books');
 export const peekBook = (slug) => resolved.get(`/books/${encodeURIComponent(slug)}`);
