@@ -6,7 +6,7 @@ import { ArrowForward } from '../../components/common/DirectionalIcons';
 import { AuthContext } from '../../context/AuthContext';
 import { practiceHubPath } from './practiceCapability';
 import { useLearningViewer } from '../learning/learningViewer';
-import { levelCounts } from './practiceContent';
+import { levelCounts } from './practiceCounts';
 import { teacherBankPath } from './teacherBank';
 
 /**

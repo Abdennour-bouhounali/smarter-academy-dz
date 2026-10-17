@@ -70,7 +70,7 @@ export default function AdminSidebar({ collapsed, onToggle }) {
           « عرض الموقع » est plus bas, explicite, avec son icône de lien
           sortant. */}
       <div className={`flex items-center h-16 border-b border-slate-100 flex-shrink-0 ${collapsed ? 'justify-center px-0' : 'gap-2.5 px-6'}`}>
-        <img src="/smarter-academy-logo.webp" alt="Smarter Academy" className="h-9 w-auto rounded-lg object-contain flex-shrink-0" />
+        <img src="/smarter-academy-logo-sm.webp" width="216" height="144" decoding="async" alt="Smarter Academy" className="h-9 w-auto rounded-lg object-contain flex-shrink-0" />
         {!collapsed && (
           <div className="flex flex-col leading-none">
             <span className="font-space font-bold text-slate-900 text-sm">Smarter Academy</span>
@@ -214,7 +214,7 @@ export function AdminMobileBar() {
     <div className="lg:hidden">
       <header className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-slate-200 bg-white px-4">
         <div className="flex min-w-0 items-center gap-2">
-          <img src="/smarter-academy-logo.webp" alt="Smarter Academy" className="h-8 w-auto flex-shrink-0 rounded-md object-contain" />
+          <img src="/smarter-academy-logo-sm.webp" width="216" height="144" decoding="async" alt="Smarter Academy" className="h-8 w-auto flex-shrink-0 rounded-md object-contain" />
           <span className="whitespace-nowrap font-mono-jetbrains text-[10px] font-semibold uppercase tracking-wider text-violet-600">
             {tNav('adminSpace')}
           </span>

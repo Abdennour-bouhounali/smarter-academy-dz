@@ -22,13 +22,50 @@ function watchPracticeContent() {
   }
 }
 
+/**
+ * `virtual:practice-level-counts` — leçon → { niveau: nombre d'exercices }.
+ *
+ * La carte « بنك تمارين هذا الدرس » du sommaire d'une leçon n'a besoin QUE de ces
+ * nombres. Elle les lisait dans practiceContent.js, qui embarque l'index complet
+ * (183 Ko de JSON : chaque identifiant d'exercice) et la table du glob de
+ * ≈ 4 200 exercices — un lot de 80 Ko gzip téléchargé par chaque sommaire de
+ * leçon (mesuré le 2026-10-17). Ce module, calculé au build depuis le même
+ * index, pèse ≈ 2 Ko. Voir docs/architecture/BUNDLE_BOUNDARIES.md.
+ */
+const PRACTICE_INDEX = fileURLToPath(new URL('../../content/practice/index.generated.json', import.meta.url))
+function practiceLevelCounts() {
+  const id = 'virtual:practice-level-counts'
+  const resolved = '\0' + id
+  return {
+    name: 'sa-practice-level-counts',
+    resolveId: (source) => (source === id ? resolved : null),
+    load(source) {
+      if (source !== resolved) return null
+      this.addWatchFile(PRACTICE_INDEX)
+      const index = JSON.parse(readFileSync(PRACTICE_INDEX, 'utf8'))
+      const counts = Object.fromEntries(Object.entries(index).map(([lesson, levels]) => [
+        lesson,
+        Object.fromEntries(Object.entries(levels).map(([level, ids]) => [level, Array.isArray(ids) ? ids.length : 0])),
+      ]))
+      return `export default JSON.parse(${JSON.stringify(JSON.stringify(counts))})`
+    },
+  }
+}
+
 export default defineConfig({
   // Pages de partage (aperçu WhatsApp/Facebook) des livres : BOOKS_STORE.md §6.
   plugins: [
     react(),
     watchPracticeContent(),
+    practiceLevelCounts(),
     sharePages({ cards: JSON.parse(readFileSync(new URL('./src/features/books/shareCards.json', import.meta.url), 'utf8')) }),
   ],
+  // Le JSON importé devient `JSON.parse("…")` au lieu d'un littéral d'objet :
+  // V8 analyse une chaîne JSON bien plus vite qu'un objet JS de même taille. Le
+  // catalogue des quatre années (≈ 430 Ko de JSON) et les namespaces i18n sont
+  // dans l'entrée : c'est du temps de script en moins au démarrage de CHAQUE page.
+  // Aucun import NOMMÉ depuis un .json n'existe (ce mode les interdit).
+  json: { stringify: true },
   build: {
     // Le rapport des tailles gzip de CHAQUE chunk (≈ 2 000 chunks : un par module
     // de leçon) faisait dépasser le tas de 4 Go du build (`npm run build`, CI) :

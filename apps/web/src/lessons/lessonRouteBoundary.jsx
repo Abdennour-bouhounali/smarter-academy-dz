@@ -1,7 +1,17 @@
-import { Suspense, useMemo, useSyncExternalStore } from 'react';
+import { Suspense, useEffect, useMemo, useSyncExternalStore } from 'react';
 import { Route } from 'react-router-dom';
 import { getBuiltLessons, loadLessonRoutesFactory } from './registry';
+import { loadLessonRuntimeCore } from './common/lessonRuntimeLoader';
 import { loadLessonManipulationStrings } from '../i18n/lessonManipulationStrings';
+
+/**
+ * Un chemin de MODULE (pas le sommaire) : la page qui s'ouvrira attend les textes
+ * des labs — on les demande tout de suite, en parallèle des routes, au lieu de
+ * les découvrir après le rendu (un aller-retour et ≈ 137 Ko plus tard).
+ */
+function startStringsIfModule(pathname, basePath) {
+  if (pathname !== basePath && pathname !== `${basePath}/`) loadLessonManipulationStrings().catch(() => {});
+}
 
 /**
  * LA FRONTIÈRE DE ROUTES DES LEÇONS — une seule pour toutes les leçons (2026-10-14).
@@ -14,7 +24,9 @@ import { loadLessonManipulationStrings } from '../i18n/lessonManipulationStrings
  *
  *   - une leçon PAS ENCORE CHARGÉE → UNE route `<basePath>/*` (son chemin vient
  *     de l'index léger, registry.js) dont l'élément charge son routes.jsx (et
- *     donc sa config) ET les textes des manipulations, sous un <Suspense> ;
+ *     donc sa config) sous un <Suspense>, et lance en parallèle le runtime de
+ *     leçon. Les textes des manipulations ne bloquent PLUS (2026-10-17) : les
+ *     pages de module les attendent, le sommaire s'affiche sans eux ;
  *   - une leçon CHARGÉE → SES PROPRES routes, exactement celles que son
  *     routes.jsx fabrique (buildLessonRoutes) : coquille du mode classe en
  *     route « layout », sommaire, un module par fichier. La route `/*` d'attente
@@ -49,15 +61,21 @@ const subscribe = (listener) => { listeners.add(listener); return () => listener
 const getVersion = () => version;
 
 /**
- * Charge les routes d'une leçon (et les textes des manipulations). Idempotent ;
+ * Charge les routes d'une leçon (et lance le runtime). Idempotent ;
  * utilisable comme préchargement (survol d'une carte de leçon).
  * @returns {Promise<void>}
  */
 export function loadLessonRoutes(lessonId) {
   if (loadedRoutes.has(lessonId)) return Promise.resolve();
   if (!pending.has(lessonId)) {
-    const promise = Promise.all([loadLessonRoutesFactory(lessonId), loadLessonManipulationStrings()])
-      .then(([factory]) => {
+    // Le runtime part EN MÊME TEMPS que les routes (sinon : routes → runtime →
+    // page, un aller-retour de plus). Les textes des labs ne bloquent plus : les
+    // pages de module les attendent elles-mêmes (et partent dès maintenant pour
+    // une URL de module), le sommaire s'en passe et les précharge une fois
+    // affiché (LessonIndex › prefetchLessonStringsWhenIdle) (2026-10-17).
+    loadLessonRuntimeCore().catch(() => {});
+    const promise = loadLessonRoutesFactory(lessonId)
+      .then((factory) => {
         if (typeof factory !== 'function') throw new Error(`Lesson routes not found: ${lessonId}`);
         loadedRoutes.set(lessonId, factory());
         notify();
@@ -69,9 +87,52 @@ export function loadLessonRoutes(lessonId) {
   return pending.get(lessonId);
 }
 
+/**
+ * L'id de la leçon qu'ouvre ce chemin (sommaire ou module), ou null.
+ * @param {string} pathname
+ */
+export function lessonIdForPath(pathname) {
+  for (const { id, basePath } of getBuiltLessons()) {
+    if (pathname === basePath || pathname.startsWith(`${basePath}/`)) return id;
+  }
+  return null;
+}
+
+let intentPrefetchInstalled = false;
+
+/**
+ * PRÉCHARGEMENT À L'INTENTION (2026-10-17) : survoler, viser au doigt ou
+ * atteindre au clavier N'IMPORTE QUEL lien vers une leçon (carte d'unité,
+ * « واصل », « دروسي », lien de prérequis…) lance le chargement de ses routes et
+ * du runtime. Le clic, ≈ 100–300 ms plus tard, trouve le code déjà en route.
+ * Un seul écouteur délégué sur le document, posé une fois ; rien n'est chargé
+ * pour un lien qui ne mène pas à une leçon.
+ */
+function installIntentPrefetch() {
+  if (intentPrefetchInstalled || typeof document === 'undefined') return;
+  intentPrefetchInstalled = true;
+  const seen = new WeakSet();
+  const onIntent = (event) => {
+    const anchor = event.target?.closest?.('a[href]');
+    if (!anchor || seen.has(anchor)) return;
+    seen.add(anchor);
+    let url;
+    try { url = new URL(anchor.href, window.location.href); } catch { return; }
+    if (url.origin !== window.location.origin || !url.pathname.startsWith('/courses/')) return;
+    const id = lessonIdForPath(url.pathname);
+    if (!id) return;
+    loadLessonRoutes(id);
+    startStringsIfModule(url.pathname, getBuiltLessons().find((l) => l.id === id)?.basePath);
+  };
+  document.addEventListener('pointerover', onIntent, { passive: true });
+  document.addEventListener('touchstart', onIntent, { passive: true });
+  document.addEventListener('focusin', onIntent);
+}
+
 /** L'élément de la route d'attente : suspend jusqu'à l'arrivée des routes réelles. */
-function LessonRoutesLoader({ lessonId }) {
+function LessonRoutesLoader({ lessonId, basePath }) {
   if (loadedRoutes.has(lessonId)) return LESSON_FALLBACK; // App remonte les routes réelles
+  if (typeof window !== 'undefined') startStringsIfModule(window.location.pathname, basePath);
   if (failures.has(lessonId)) {
     const error = failures.get(lessonId);
     failures.delete(lessonId);
@@ -87,12 +148,13 @@ function LessonRoutesLoader({ lessonId }) {
  */
 export function useLessonRoutes() {
   const current = useSyncExternalStore(subscribe, getVersion, getVersion);
+  useEffect(installIntentPrefetch, []);
   return useMemo(
     () => getBuiltLessons().map(({ id, basePath }) => loadedRoutes.get(id) ?? (
       <Route
         key={`${id}-lazy`}
         path={`${basePath}/*`}
-        element={<Suspense fallback={LESSON_FALLBACK}><LessonRoutesLoader lessonId={id} /></Suspense>}
+        element={<Suspense fallback={LESSON_FALLBACK}><LessonRoutesLoader lessonId={id} basePath={basePath} /></Suspense>}
       />
     )),
     // `current` : un nouveau tableau à chaque leçon chargée.

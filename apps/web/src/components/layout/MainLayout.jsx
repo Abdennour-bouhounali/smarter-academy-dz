@@ -37,7 +37,11 @@ export default function MainLayout() {
         {/* Les pages sont des lots paresseux (App.jsx) : cette frontière
             garde la coquille — barre, navigation — à l'écran pendant
             qu'une page arrive, au lieu du repli plein écran du routeur. */}
-        <Suspense fallback={<div className="min-h-[60vh]" aria-busy="true" />}>
+        {/* min-h-screen : pendant l'arrivée du lot de la page, le pied de page reste
+            SOUS le pli. À 60vh il se peignait à mi-écran puis était chassé par la
+            page — le plus gros décalage de mise en page des pages visiteur
+            (CLS 0,40 sur la fiche d'un livre, mesuré le 2026-10-17). */}
+        <Suspense fallback={<div className="min-h-screen" aria-busy="true" />}>
           <Outlet />
         </Suspense>
       </main>

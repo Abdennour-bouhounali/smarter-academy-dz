@@ -179,7 +179,7 @@ export default function Navbar() {
               to="/"
               className="flex items-center gap-2.5 group flex-shrink-0 min-w-0"
             >
-              <img src="/smarter-academy-logo.webp" alt="Smarter Academy" className="h-10 w-auto rounded-lg object-contain flex-shrink-0" />
+              <img src="/smarter-academy-logo-sm.webp" width="216" height="144" decoding="async" alt="Smarter Academy" className="h-10 w-auto rounded-lg object-contain flex-shrink-0" />
               <div className="hidden sm:flex flex-col min-w-0">
                 <span className="font-space font-bold text-slate-900 text-sm leading-none whitespace-nowrap">
                   Smarter Academy

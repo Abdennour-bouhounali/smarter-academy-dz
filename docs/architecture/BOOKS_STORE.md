@@ -74,6 +74,15 @@ sont dans `Domain/Books/BookPresenter.php` (camelCase).
   `BookCatalog` (fiches), `BookMessages`. Routes `/admin/livres/*`, section
   « الكتب » de la barre latérale. Images : `public/images/books/<slug>/`.
 - Lien « الكتب » dans la navigation visiteur (`data/navigation.js`).
+- **Chargement sans cascade (2026-10-17)** : `features/books/bookCache.js` (importé par `App.jsx`,
+  ne dépend que d'`apiClient`) lance `/books` ou `/books/:slug` DANS le `lazy()` de la route — les
+  données partent avec le lot de la page, pas après lui. Une carte de la liste précharge la fiche et le
+  lot `BookDetailPage` au survol / focus (`prefetchBookPage`). Une réponse reçue est rendue tout de suite
+  au retour (`peekBook`, `peekBooks`), gardée 5 min puis redemandée en arrière-plan. Les pages publiques
+  lisent `bookCache` ; `bookService.js` garde les écritures (commande, message) et l'admin.
+- **Aucun saut de mise en page** : squelettes à la forme des cartes / de la présentation pendant le
+  chargement ; l'image de présentation est dans une boîte de hauteur fixe (`h-[420px] lg:h-[540px]`,
+  `fetchpriority="high"`). CLS de la fiche mesuré 0,44 avant ce changement.
 
 ## 5. Premier livre et mise en service
 

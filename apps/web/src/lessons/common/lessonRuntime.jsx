@@ -34,6 +34,9 @@ export { LessonClassroomShell };
  * `withSuspense` ; seul l'endroit où elle vit a changé.
  */
 export function LessonPageFrame({ config, Component, module = null, loadKnowledge, printSubject }) {
+  // La page part EN MÊME TEMPS que la carte des connaissances, qui suspend
+  // au-dessus d'elle (buildLessonRoutes.jsx › lazyWithPreload). Idempotent.
+  Component.preload?.();
   return (
     <LessonAccessGate lessonId={config.id} title={config.title}>
       <Suspense fallback={<div className="min-h-screen bg-slate-50" />}>

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Lock, Compass } from 'lucide-react';
@@ -29,6 +29,7 @@ import LessonProblemCard from '../problems/LessonProblemCard';
 import { mathToPlain } from '../../../utils/mathPlain';
 import { useCatalogueHref } from '../../../components/student/catalogueLink';
 import { useDeclarePageTour } from '../../../features/tours/PageTourProvider';
+import { prefetchLessonStringsWhenIdle } from '../lessonRuntimeLoader';
 
 /**
  * Static color map — replaces dynamic `bg-${color}-100` patterns.
@@ -124,6 +125,9 @@ function getColor(color, variant) {
  */
 export default function LessonIndex({ config, basePath }) {
   const { t: ts } = useTranslation('student');
+  // Le sommaire ne lit aucun texte de lab ; ses modules, si. On les précharge
+  // une fois le sommaire affiché : le clic sur un module ne les attend plus.
+  useEffect(() => { prefetchLessonStringsWhenIdle(); }, []);
   const catalogueLesson = getLessonById(config.id);
   const unit = config.unit ? getUnitById(config.unit) : null;
   const prereqLessons = (catalogueLesson?.prerequisiteLessonCodes ?? []).map((code) => getLessonById(code)).filter(Boolean);

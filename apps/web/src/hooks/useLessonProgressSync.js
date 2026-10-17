@@ -29,6 +29,7 @@ export const LESSON_PROGRESS_SYNCED_EVENT = 'smarter:lesson-progress-synced';
 export function useLessonProgressSync() {
   const { token, user } = useContext(AuthContext);
   const { tracksProgress } = useLearningViewer();
+  const userId = user?.id ?? null;
 
   useEffect(() => {
     // Wait for `user` to resolve too, not just `token` — storage.js's
@@ -38,7 +39,7 @@ export function useLessonProgressSync() {
     // (anon) scope for the instant before that resolves.
     // Un lecteur qui n'apprend pas (enseignant, administrateur) n'a ni lignes
     // à rapatrier ni file à vider.
-    if (!token || !user || !tracksProgress) return undefined;
+    if (!token || userId == null || !tracksProgress) return undefined;
 
     let cancelled = false;
     (async () => {
@@ -66,5 +67,8 @@ export function useLessonProgressSync() {
       cancelled = true;
       window.removeEventListener('online', onOnline);
     };
-  }, [token, user, tracksProgress]);
+    // `user?.id`, pas `user` : `/auth/me` remplace l'objet du compte gardé
+    // (context/sessionUserCache.js) par un objet neuf du même élève — la
+    // synchronisation ne doit pas repartir pour autant (2026-10-17).
+  }, [token, userId, tracksProgress]);
 }

@@ -1,6 +1,6 @@
 import * as practice from '@smarter-academy/core/practice/index.js';
 import { getLessonById } from '@smarter-academy/core';
-import { levelCounts } from './practiceContent';
+import { levelCounts } from './practiceCounts';
 
 /**
  * « بنك التمارين » de l'ENSEIGNANT — logique pure, sans React.

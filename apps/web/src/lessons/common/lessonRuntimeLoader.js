@@ -24,6 +24,36 @@ import { loadLessonLoaders } from '../registry';
  */
 export const loadLessonRuntime = () => Promise.all([import('./lessonRuntime'), loadLessonManipulationStrings()]).then(([runtime]) => runtime);
 
+/**
+ * Le runtime SEUL, sans attendre les textes des manipulations (2026-10-17).
+ *
+ * La coquille et le cadre de page (common/unit/buildLessonRoutes.jsx) n'en lisent
+ * aucun ; seules les pages de MODULE (et leurs labs) en ont besoin — elles les
+ * attendent elles-mêmes (`withLessonStrings`). Le SOMMAIRE d'une leçon ne paie
+ * donc plus ≈ 137 Ko gzip de textes de 133 labs avant de s'afficher (mesuré :
+ * 7,5 s à froid sur tablette 1,6 Mbit/s avant ce changement).
+ */
+export const loadLessonRuntimeCore = () => import('./lessonRuntime');
+
+/** Un chargeur de page de module qui n'aboutit qu'avec `lesson:manipulation.*` lisible. */
+export const withLessonStrings = (loader) => () =>
+  Promise.all([loader(), loadLessonManipulationStrings()]).then(([module]) => module);
+
+/**
+ * Précharge les textes des labs APRÈS l'affichage du sommaire (appelé par
+ * LessonIndex), pour que le clic sur un module ne les attende plus. Un délai,
+ * puis un moment libre : lancés plus tôt, ces 137 Ko disputaient la bande
+ * passante aux lots du sommaire lui-même (mesuré le 2026-10-17).
+ */
+export function prefetchLessonStringsWhenIdle(delayMs = 2000) {
+  if (typeof window === 'undefined') return;
+  const run = () => { loadLessonManipulationStrings().catch(() => {}); };
+  window.setTimeout(() => {
+    if ('requestIdleCallback' in window) window.requestIdleCallback(run, { timeout: 3000 });
+    else run();
+  }, delayMs);
+}
+
 let requested = false;
 
 export function prefetchLessonRuntimeWhenIdle() {

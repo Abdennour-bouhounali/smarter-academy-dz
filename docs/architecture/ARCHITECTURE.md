@@ -83,7 +83,7 @@ src/
 ├── components/auth/ProtectedRoute.jsx  role-gated route guard (allowedRoles prop, defaults to ['admin']); a student/teacher with emailVerified === false is sent to /verification-email (utils/emailVerification.js)
 ├── components/auth/GradeSwitcher.jsx    "Ma classe : 6e ▾" — changes a student's current grade (see §10)
 ├── components/student/StudentHomeBanner.jsx  homepage grade context for logged-in students (see §10)
-├── context/AuthContext.jsx auth state — student, teacher or admin (+ `isAmbassador` / `canReviewContent`), same session mechanism; user.grade is the current-grade source of truth
+├── context/AuthContext.jsx auth state — student, teacher or admin (+ `isAmbassador` / `canReviewContent`), same session mechanism; user.grade is the current-grade source of truth. Since 2026-10-17 the user is cached per token (`context/sessionUserCache.js`, key `session_user`, a token fingerprint — never the token): a known user renders at once (`loading` false) and `/auth/me` revalidates in the background; only a 401/403 closes a cached session (BUNDLE_BOUNDARIES.md §9)
 ├── features/tours/         « جولة تعريفية »: first-visit guided tour per page and role, mounted by StudentLayout / TeacherLayout, closure stored by /me/tours (see PAGE_TOURS.md)
 ├── data/                   portfolio/marketing content only (education.js, experience.js, projects.js, skills.js)
 ├── services/                apiClient, authService, contactService (see §5)

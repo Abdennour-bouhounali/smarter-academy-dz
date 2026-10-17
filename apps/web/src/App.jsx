@@ -50,8 +50,9 @@ const AdminContactMessages = lazy(() => import('./pages/admin/system/ContactMess
 // La LIBRAIRIE (livres papier, commande sans paiement en ligne) : vitrine
 // publique et suivi admin — lots paresseux, rien dans l'entrée.
 // Voir docs/architecture/BOOKS_STORE.md.
-const BooksPage = lazy(() => import('./features/books/BooksPage'));
-const BookDetailPage = lazy(() => import('./features/books/BookDetailPage'));
+// Les données du livre partent AVEC le lot de la page, pas après lui (bookCache.js).
+const BooksPage = lazy(() => { prefetchBooksForLocation(); return import('./features/books/BooksPage'); });
+const BookDetailPage = lazy(() => { prefetchBooksForLocation(); return import('./features/books/BookDetailPage'); });
 const AdminBookOrders = lazy(() => import('./pages/admin/books/BookOrders'));
 const AdminBookOrderDetail = lazy(() => import('./pages/admin/books/BookOrderDetail'));
 const AdminBookCatalog = lazy(() => import('./pages/admin/books/BookCatalog'));
@@ -123,6 +124,7 @@ const AdminDailyChallenge = lazy(() => import('./pages/admin/dailyChallenge/Dail
 const MathLabHome = lazy(() => import('./pages/student/MathLab'));
 const MathLabToolPage = lazy(() => import('./pages/student/MathLab').then((m) => ({ default: m.MathLabToolPage })));
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import { prefetchBooksForLocation } from './features/books/bookCache';
 import RequireAccount from './components/auth/RequireAccount';
 
 /**

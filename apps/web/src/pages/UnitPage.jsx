@@ -205,7 +205,10 @@ export default function UnitPage() {
   return (
     <div className={`min-h-screen bg-slate-50 ${chrome.contentOffsetClass}`}>
       <main className="sa-page space-y-8 py-8">
-        <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500" aria-label={t('unit.breadcrumb')}>
+        {/* Pas de `font-mono` : ce fil d'Ariane est en arabe (JetBrains Mono n'a aucun
+            glyphe arabe) et l'arrivée tardive de cette police changeait la hauteur
+            de la ligne — toute l'unité descendait de 28 px (CLS 0,25, 2026-10-17). */}
+        <nav className="flex flex-wrap items-center gap-2 text-xs text-slate-500" aria-label={t('unit.breadcrumb')}>
           <Link to={catalogueHref()} className="hover:text-blue-600">{t('unit.home')}</Link><span>/</span>
           <Link to={catalogueHref({ level: levelId, grade: gradeId })} className="hover:text-blue-600">{unit.gradeName}</Link><span>/</span>
           <Link to={catalogueHref({ level: levelId, grade: gradeId, chapter: chapterId })} className="hover:text-blue-600">{unit.chapterTitle}</Link><span>/</span>

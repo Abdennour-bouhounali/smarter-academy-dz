@@ -40,15 +40,18 @@ export function useEvidenceSubmission(lessonCode) {
   // connectivity returns. Gated on `user`, not just `token`: the offline
   // queue is per-student scoped storage, which needs the current user id
   // resolved (see AuthContext/authUserId.js) before it can be read safely.
+  // `user?.id` : la revalidation de `/auth/me` remplace l'objet du compte sans
+  // changer d'élève — pas de nouveau vidage pour autant.
+  const userId = user?.id ?? null;
   useEffect(() => {
-    if (!token || !user) return undefined;
+    if (!token || userId == null) return undefined;
 
     flushEvidenceQueue(token);
     const onOnline = () => flushEvidenceQueue(token);
     window.addEventListener('online', onOnline);
 
     return () => window.removeEventListener('online', onOnline);
-  }, [token, user]);
+  }, [token, userId]);
 
   /**
    * @param {{id: string, assessment?: {enabled: boolean, type: string, learningPointIds: string[]}}} question

@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Route } from 'react-router-dom';
-import { loadLessonRuntime } from '../lessonRuntimeLoader';
+import { loadLessonRuntimeCore, withLessonStrings } from '../lessonRuntimeLoader';
 import { rememberLessonConfig } from '../../registry';
 
 // Le runtime de leçon (coquille du mode classe, porte de palier, carte des
@@ -9,9 +9,24 @@ import { rememberLessonConfig } from '../../registry';
 // frontière de routes (lessons/lessonRouteBoundary.jsx) — plus par App.jsx
 // depuis le 2026-10-14 — mais il reste partagé par toutes les leçons : rien de
 // lourd ici. Voir common/lessonRuntime.jsx et docs/architecture/BUNDLE_BOUNDARIES.md.
-const LessonClassroomShell = lazy(() => loadLessonRuntime().then((m) => ({ default: m.LessonClassroomShell })));
-const LessonPageFrame = lazy(() => loadLessonRuntime().then((m) => ({ default: m.LessonPageFrame })));
+const LessonClassroomShell = lazy(() => loadLessonRuntimeCore().then((m) => ({ default: m.LessonClassroomShell })));
+const LessonPageFrame = lazy(() => loadLessonRuntimeCore().then((m) => ({ default: m.LessonPageFrame })));
 const LESSON_FALLBACK = <div className="min-h-screen bg-slate-50" />;
+
+/**
+ * Un `lazy()` qui se PRÉCHARGE : `LessonPageFrame` appelle `Component.preload()`
+ * dès son rendu. Sans cela, la page (sommaire ou module) n'était demandée
+ * qu'APRÈS la carte des connaissances (`knowledge.jsx` + KaTeX, ≈ 80 Ko), qui
+ * suspend au-dessus d'elle : deux téléchargements en série au lieu de deux en
+ * parallèle (≈ 0,9 s sur tablette à 1,6 Mbit/s, mesuré le 2026-10-17).
+ */
+function lazyWithPreload(loader) {
+  let promise = null;
+  const load = () => (promise ??= loader().catch((error) => { promise = null; throw error; }));
+  const Component = lazy(load);
+  Component.preload = load;
+  return Component;
+}
 
 /**
  * La fabrique des routes d'une leçon, commune à TOUTES les unités : chaque
@@ -33,10 +48,12 @@ export function createLessonRoutesBuilder({ printSubject }) {
     // La config complète est désormais lisible SYNCHRONEMENT par les pages de
     // la leçon (registry.getLoadedLessonConfig : carte des connaissances…).
     rememberLessonConfig(config);
-    const LessonHome = lazy(loadIndex);
+    const LessonHome = lazyWithPreload(loadIndex);
     const components = Object.entries(moduleFiles).reduce((acc, [path, loader]) => {
       const match = path.match(/Module(\d+)/);
-      if (match) acc[Number(match[1])] = lazy(loader);
+      // Un module (et ses labs) lit `lesson:manipulation.*` : il attend ces textes.
+      // Le sommaire, non — il s'affiche sans eux (lessonRuntimeLoader.js).
+      if (match) acc[Number(match[1])] = lazyWithPreload(withLessonStrings(loader));
       return acc;
     }, {});
     // `module` : l'entrée de config.modules de la page (null pour l'accueil).

@@ -2,10 +2,32 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
-import { fetchBook } from './bookService';
+import { loadBook, peekBook } from './bookCache';
 import OrderForm from './OrderForm';
 import ContactForm from './ContactForm';
 import { S, formatDa } from './strings';
+
+/** La forme de la présentation pendant le chargement (même hauteur, aucun saut). */
+function BookDetailSkeleton() {
+  return (
+    <div aria-busy="true" className="min-h-screen pt-16">
+      <section className="bg-gradient-to-b from-blue-50/60 to-transparent px-4 pb-16 pt-10">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
+          <div className="space-y-5">
+            <div className="h-4 w-24 animate-pulse rounded bg-slate-200/70" />
+            <div className="h-12 w-4/5 animate-pulse rounded-lg bg-slate-200/70" />
+            <div className="h-6 w-3/5 animate-pulse rounded bg-slate-200/70" />
+            <div className="h-24 animate-pulse rounded-lg bg-slate-200/50" />
+            <div className="h-14 w-2/3 animate-pulse rounded-2xl bg-slate-200/70" />
+          </div>
+          <div className="flex h-[420px] items-center justify-center lg:h-[540px]">
+            <div className="h-full w-3/5 animate-pulse rounded-xl bg-slate-200/60" />
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
 
 const H2 = ({ children }) => <h2 className="mb-8 text-center font-space text-3xl font-bold text-slate-900">{children}</h2>;
 
@@ -16,17 +38,21 @@ const H2 = ({ children }) => <h2 className="mb-8 text-center font-space text-3xl
  */
 export default function BookDetailPage() {
   const { slug } = useParams();
-  const [book, setBook] = useState(undefined); // undefined = chargement, null = introuvable
+  // undefined = chargement, null = introuvable. Une fiche déjà reçue (préchargée
+  // au survol de sa carte, ou déjà vue) s'affiche tout de suite (bookCache.js).
+  const [book, setBook] = useState(() => peekBook(slug)?.book);
   const [openFaq, setOpenFaq] = useState(0);
 
   useEffect(() => {
-    setBook(undefined);
-    fetchBook(slug).then((d) => setBook(d.book)).catch(() => setBook(null));
+    let alive = true;
+    setBook(peekBook(slug)?.book);
+    loadBook(slug).then((d) => alive && setBook(d.book)).catch(() => alive && setBook(null));
+    return () => { alive = false; };
   }, [slug]);
 
   useDocumentMeta(book?.title ?? S.list.metaTitle, book?.summary ?? undefined);
 
-  if (book === undefined) return <div aria-busy="true" className="min-h-[60vh] pt-16" />;
+  if (book === undefined) return <BookDetailSkeleton />;
   if (book === null) {
     return (
       <div className="px-4 pb-24 pt-32 text-center">
@@ -56,11 +82,14 @@ export default function BookDetailPage() {
               <a href="#contact" className="rounded-2xl border border-slate-300 bg-white px-6 py-4 font-space text-base font-semibold text-slate-700 hover:bg-slate-50">{S.detail.contactCta}</a>
             </div>
           </div>
-          <div className="flex justify-center">
+          {/* Hauteur RÉSERVÉE avant l'arrivée de l'image : le texte et le bouton de
+              commande ne sautent plus quand elle se charge (CLS mesuré 0,44 avant).
+              `fetchpriority="high"` : c'est l'image principale de la page. */}
+          <div className="flex h-[420px] items-center justify-center lg:h-[540px]">
             {/* `content.heroImage` (maquette 3D) prime sur la couverture à plat. */}
             {c.heroImage
-              ? <img src={c.heroImage} alt={book.title} className="max-h-[560px] w-auto drop-shadow-2xl" />
-              : book.coverImage && <img src={book.coverImage} alt={book.title} className="max-h-[520px] w-auto rounded-md shadow-2xl" />}
+              ? <img src={c.heroImage} alt={book.title} fetchpriority="high" decoding="async" className="max-h-full max-w-full w-auto object-contain drop-shadow-2xl" />
+              : book.coverImage && <img src={book.coverImage} alt={book.title} fetchpriority="high" decoding="async" className="max-h-full max-w-full w-auto rounded-md object-contain shadow-2xl" />}
           </div>
         </div>
       </section>
@@ -120,7 +149,7 @@ export default function BookDetailPage() {
           <H2>{S.detail.galleryTitle}</H2>
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             {book.gallery.map((src) => (
-              <img key={src} src={src} alt="" loading="lazy" className="aspect-[3/4] w-full rounded-2xl border border-slate-200 bg-white object-cover shadow-sm" />
+              <img key={src} src={src} alt="" loading="lazy" decoding="async" className="aspect-[3/4] w-full rounded-2xl border border-slate-200 bg-white object-cover shadow-sm" />
             ))}
           </div>
         </section>

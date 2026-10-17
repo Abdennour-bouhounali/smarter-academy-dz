@@ -17,7 +17,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->statefulApi();
+        // PAS de `statefulApi()` (retiré le 2026-10-17) : le SPA s'authentifie
+        // UNIQUEMENT par jeton Bearer (connexion, Google sans état, déconnexion
+        // qui révoque le jeton). En mode « stateful », chaque appel venu du
+        // domaine du site ouvrait aussi une session en base (lecture + écriture
+        // de `sessions`, 2–3 requêtes SQL de plus par appel) — et une session
+        // cookie pouvait survivre au jeton révoqué. Voir
+        // docs/architecture/BUNDLE_BOUNDARIES.md §9 (performance du serveur).
 
         // This is a pure JSON API with no server-rendered login page, so there is
         // no "login" route to redirect guests to. Without this, Laravel's default

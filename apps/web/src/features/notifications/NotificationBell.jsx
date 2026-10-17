@@ -11,6 +11,25 @@ import { fetchNotifications, markAllNotificationsRead, markNotificationRead } fr
  */
 export const NOTIFICATIONS_CHANGED = 'sa:notifications-changed';
 
+/**
+ * UNE requête pour toutes les cloches montées. La barre latérale et l'en-tête
+ * mobile montent chacun la leur (l'une masquée par CSS) : chacune relisait à
+ * l'ouverture, toutes les 2 minutes et au retour sur l'onglet — deux appels
+ * identiques à chaque fois (mesuré le 2026-10-17). Un appel parti il y a moins
+ * de SHARE_MS est partagé ; un « lu » (NOTIFICATIONS_CHANGED) force une relecture.
+ */
+const SHARE_MS = 5000;
+let shared = null; // { token, at, promise }
+
+function loadNotifications(token, { force = false } = {}) {
+  const now = Date.now();
+  if (!force && shared && shared.token === token && now - shared.at < SHARE_MS) return shared.promise;
+  const promise = fetchNotifications(token);
+  shared = { token, at: now, promise };
+  promise.catch(() => { if (shared?.promise === promise) shared = null; });
+  return promise;
+}
+
 /** Où mène une notification (null : rien à ouvrir). */
 export function notificationTarget(notification) {
   if (notification?.type === 'answer_reviewed' && notification.data?.reviewId) {
@@ -36,14 +55,16 @@ export default function NotificationBell({ className = '', align = 'start', dire
   const [open, setOpen] = useState(false);
   const box = useRef(null);
 
-  const refresh = useCallback(() => {
+  const refresh = useCallback((event) => {
     if (!token) return;
-    fetchNotifications(token).then((d) => setData({ unread: d.unread ?? 0, notifications: d.notifications ?? [] })).catch(() => {});
+    // Après un « lu », la première cloche relit le serveur, les autres partagent sa réponse.
+    const force = event?.type === NOTIFICATIONS_CHANGED && !(shared && Date.now() - shared.at < 300);
+    loadNotifications(token, { force }).then((d) => setData({ unread: d.unread ?? 0, notifications: d.notifications ?? [] })).catch(() => {});
   }, [token]);
 
   useEffect(() => {
     refresh();
-    const timer = window.setInterval(refresh, 120000);
+    const timer = window.setInterval(() => refresh(), 120000);
     const onVisible = () => document.visibilityState === 'visible' && refresh();
     document.addEventListener('visibilitychange', onVisible);
     window.addEventListener(NOTIFICATIONS_CHANGED, refresh);

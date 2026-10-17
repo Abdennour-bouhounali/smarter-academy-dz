@@ -97,7 +97,9 @@ export default function StudentHome() {
 
   // La maîtrise vient de l'API groupée par classe : on ne garde que la
   // sienne, sinon la tuile « كفاءات » compterait des acquis invisibles ici.
-  const { profile, status, reload } = useLearningProfile();
+  // Filtrée par le SERVEUR (`?grade=`) : le profil complet pesait ≈ 147 Ko et
+  // grandit avec chaque classe (mesuré le 2026-10-17) ; le filtre local reste.
+  const { profile, status, reload } = useLearningProfile(gradeId ? { grade: gradeId } : undefined);
   const currentMastery = useMemo(() => {
     const all = profile?.currentMastery || [];
     return gradeId ? all.filter((g) => g.grade === gradeId) : all;

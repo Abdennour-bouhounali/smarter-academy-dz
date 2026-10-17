@@ -84,7 +84,7 @@ export default function StudentNavbar() {
         <div className={`flex items-center h-16 border-b border-slate-100 flex-shrink-0 ${sidebarCollapsed ? 'justify-center px-0' : 'gap-2.5 px-6'}`}>
           {/* Ouverte : le nom seul. Réduite : le logo seul. */}
           {sidebarCollapsed ? (
-            <img src="/smarter-academy-logo.webp" alt="Smarter Academy" className="h-9 w-auto rounded-lg object-contain flex-shrink-0" />
+            <img src="/smarter-academy-logo-sm.webp" width="216" height="144" decoding="async" alt="Smarter Academy" className="h-9 w-auto rounded-lg object-contain flex-shrink-0" />
           ) : (
             <span dir="ltr" className="font-space font-bold text-slate-900 text-lg leading-none whitespace-nowrap">Smarter Academy</span>
           )}
@@ -251,7 +251,7 @@ export default function StudentNavbar() {
       <header id="app-header" className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b border-slate-200 z-40 flex items-center justify-between px-4">
         {/* Même règle que la barre latérale : marque, pas lien. */}
         <div className="flex items-center gap-2 min-w-0">
-          <img src="/smarter-academy-logo.webp" alt="Smarter Academy" className="h-8 w-auto rounded-md object-contain flex-shrink-0" />
+          <img src="/smarter-academy-logo-sm.webp" width="216" height="144" decoding="async" alt="Smarter Academy" className="h-8 w-auto rounded-md object-contain flex-shrink-0" />
           <span className="font-mono-jetbrains text-[10px] text-blue-500 font-semibold tracking-wider uppercase whitespace-nowrap">{t('studentSpace')}</span>
         </div>
         <div className="flex items-center gap-2">

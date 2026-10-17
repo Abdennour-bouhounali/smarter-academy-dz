@@ -51,7 +51,10 @@ return [
 
     'exposed_headers' => [],
 
-    'max_age' => 0,
+    // Le navigateur garde la réponse au « preflight » (OPTIONS) au lieu de la
+    // redemander avant CHAQUE appel portant un jeton (Chrome plafonne à 2 h).
+    // Sans effet quand le SPA et l'API partagent l'origine (production).
+    'max_age' => 7200,
 
     'supports_credentials' => true,
 

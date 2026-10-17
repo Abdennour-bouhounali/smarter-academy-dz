@@ -42,6 +42,11 @@ class AppServiceProvider extends ServiceProvider
          */
         $this->app->singleton(EntitlementService::class);
 
+        // Même raison : ExerciseRepository mémorise l'index et les exercices
+        // déjà lus le temps de la requête (le défi du jour en lisait des
+        // milliers, une requête SQL de cache chacun). Voir sa classe.
+        $this->app->singleton(\App\Domain\Practice\ExerciseRepository::class);
+
         /**
          * Deux autres mémoires PAR REQUÊTE, pour les mêmes raisons :
          *   — PlanEntitlementResolver : les limites d'offre d'un compte,
@@ -126,6 +131,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // `last_used_at` écrit au plus toutes les cinq minutes, pas à chaque requête.
+        \Laravel\Sanctum\Sanctum::usePersonalAccessTokenModel(\App\Models\PersonalAccessToken::class);
+
         Gate::define('admin', fn (User $user) => $user->role === 'admin');
 
         // Le rôle ENSEIGNANT — première couche d'autorisation des routes
