@@ -45,7 +45,7 @@ export default function AdminBookMessages() {
           empty={<EmptyState icon={Mail} title={A.noMessages} />}
           columns={[
             { key: 'sender', label: A.sender, render: (m) => (<div><span className="font-semibold text-slate-900">{m.fullName}</span><a href={`mailto:${m.email}`} dir="ltr" className="block text-xs text-blue-600 hover:underline">{m.email}</a>{m.phone && <Num className="block text-xs text-slate-500">{m.phone}</Num>}</div>) },
-            { key: 'subject', label: A.subject, render: (m) => (<div><span>{C.subjects[m.subject] ?? m.subject}</span><span className="block text-xs text-slate-500">{C.roles[m.role] ?? m.role}{m.bookOwner ? ' · ' + C.bookOwner : ''}{m.wantsFreeSession ? ' · ' + C.freeSession : ''}</span></div>) },
+            { key: 'subject', label: A.subject, render: (m) => (<div><span>{C.subjects[m.subject] ?? m.subject}</span><span className="block text-xs text-slate-500">{C.roles[m.role] ?? m.role}{m.bookOwner ? ' · ' + C.bookOwner : ''}</span></div>) },
             { key: 'message', label: A.messageCol, render: (m) => <span className="line-clamp-3 max-w-md whitespace-pre-line text-slate-700">{m.message}</span> },
             { key: 'status', label: A.columns.status, render: (m) => (
               <select aria-label={A.columns.status} value={m.status} onChange={(e) => change(m.id, { status: e.target.value })} className={`${input} !w-auto !py-1 text-xs`}>

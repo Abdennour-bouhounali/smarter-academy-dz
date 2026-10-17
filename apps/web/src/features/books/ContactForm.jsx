@@ -8,7 +8,7 @@ const lbl = 'mb-1.5 block font-inter text-sm font-semibold text-slate-700';
 
 const EMPTY = {
   fullName: '', email: '', phone: '', country: '', role: 'student', school: '',
-  bookOwner: false, wantsFreeSession: false, subject: 'general', message: '', consent: false, website: '',
+  bookOwner: false, subject: 'general', message: '', consent: false, website: '',
 };
 
 /** Le formulaire de contact d'une page livre (mêmes champs que l'ancien site du livre). */
@@ -74,7 +74,6 @@ export default function ContactForm({ bookSlug }) {
 
       <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-inter text-sm text-slate-700">
         <label className="inline-flex items-center gap-2"><input type="checkbox" checked={form.bookOwner} onChange={set('bookOwner')} className="h-4 w-4" />{C.bookOwner}</label>
-        <label className="inline-flex items-center gap-2"><input type="checkbox" checked={form.wantsFreeSession} onChange={set('wantsFreeSession')} className="h-4 w-4" />{C.freeSession}</label>
       </div>
       <label className="mt-3 flex items-start gap-2 font-inter text-sm text-slate-600">
         <input required type="checkbox" checked={form.consent} onChange={set('consent')} className="mt-1 h-4 w-4" />{C.consent}

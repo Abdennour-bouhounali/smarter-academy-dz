@@ -70,7 +70,6 @@ export const S = {
     roles: { student: 'تلميذ', teacher: 'أستاذ', parent: 'ولي أمر', other: 'آخر' },
     school: 'المؤسسة (اختياري)',
     bookOwner: 'أملك الكتاب',
-    freeSession: 'أرغب في حصة مجانية',
     subject: 'الموضوع',
     subjects: {
       general: 'سؤال عام',

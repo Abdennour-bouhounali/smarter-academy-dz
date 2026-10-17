@@ -98,7 +98,6 @@ class BookStoreController extends Controller
             'role' => ['required', Rule::in(BookMessage::ROLES)],
             'school' => 'nullable|string|max:190',
             'bookOwner' => 'nullable|boolean',
-            'wantsFreeSession' => 'nullable|boolean',
             'subject' => ['required', Rule::in(BookMessage::SUBJECTS)],
             'message' => 'required|string|min:10|max:5000',
             'consent' => 'accepted',
@@ -114,7 +113,6 @@ class BookStoreController extends Controller
             'role' => $data['role'],
             'school' => $data['school'] ?? null,
             'book_owner' => (bool) ($data['bookOwner'] ?? false),
-            'wants_free_session' => (bool) ($data['wantsFreeSession'] ?? false),
             'subject' => $data['subject'],
             'message' => $data['message'],
         ]);

@@ -106,7 +106,6 @@ final class BookPresenter
             'role' => $m->role,
             'school' => $m->school,
             'bookOwner' => $m->book_owner,
-            'wantsFreeSession' => $m->wants_free_session,
             'subject' => $m->subject,
             'message' => $m->message,
             'status' => $m->status,

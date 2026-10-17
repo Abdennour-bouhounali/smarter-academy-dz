@@ -14,11 +14,11 @@ class BookMessage extends Model
 
     protected $fillable = [
         'book_id', 'full_name', 'email', 'phone', 'country', 'role', 'school',
-        'book_owner', 'wants_free_session', 'subject', 'message', 'status', 'admin_note',
+        'book_owner', 'subject', 'message', 'status', 'admin_note',
     ];
 
     protected function casts(): array
     {
-        return ['book_owner' => 'boolean', 'wants_free_session' => 'boolean'];
+        return ['book_owner' => 'boolean'];
     }
 }
