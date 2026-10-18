@@ -22,7 +22,7 @@ function BookDetailSkeleton() {
             <div className="h-24 animate-pulse rounded-lg bg-slate-200/50" />
             <div className="h-14 w-2/3 animate-pulse rounded-2xl bg-slate-200/70" />
           </div>
-          <div className="order-first flex h-[200px] items-center justify-center sm:h-[320px] md:order-none md:h-[420px] lg:h-[540px]">
+          <div className="order-first flex h-[140px] items-center justify-center sm:h-[320px] md:order-none md:h-[420px] lg:h-[540px]">
             <div className="h-full w-3/5 animate-pulse rounded-xl bg-slate-200/60" />
           </div>
         </div>

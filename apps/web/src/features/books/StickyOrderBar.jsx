@@ -18,15 +18,13 @@ export default function StickyOrderBar({ book }) {
     if (typeof IntersectionObserver === 'undefined') return undefined;
     const hero = document.getElementById('book-hero-cta');
     const order = document.getElementById('order');
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.target === hero) setHeroVisible(entry.isIntersecting);
-        if (entry.target === order) setOrderVisible(entry.isIntersecting);
-      }
-    });
-    if (hero) observer.observe(hero);
-    if (order) observer.observe(order);
-    return () => observer.disconnect();
+    // Le bouton du haut compte comme « visible » seulement ENTIÈREMENT à l'écran (un
+    // bouton coupé en bas ne se voit pas) ; le formulaire, dès qu'il en entre un bout.
+    const heroObserver = new IntersectionObserver(([entry]) => setHeroVisible(entry.isIntersecting), { threshold: 1 });
+    const orderObserver = new IntersectionObserver(([entry]) => setOrderVisible(entry.isIntersecting));
+    if (hero) heroObserver.observe(hero);
+    if (order) orderObserver.observe(order);
+    return () => { heroObserver.disconnect(); orderObserver.disconnect(); };
   }, []);
 
   const shown = !heroVisible && !orderVisible;

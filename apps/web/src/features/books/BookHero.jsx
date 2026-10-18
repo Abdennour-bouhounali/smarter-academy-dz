@@ -21,28 +21,28 @@ export default function BookHero({ book, LinkComponent = 'a' }) {
   const image = c.heroImage || book.coverImage;
   const backProps = LinkComponent === 'a' ? { href: '/books' } : { to: '/books' };
   return (
-    <section className="bg-gradient-to-b from-blue-50/60 to-transparent px-4 pb-10 pt-4 md:pb-16 md:pt-10">
-      <div className="mx-auto grid max-w-6xl items-center gap-6 md:grid-cols-2 md:gap-12">
+    <section className="bg-gradient-to-b from-blue-50/60 to-transparent px-4 pb-8 pt-2 md:pb-16 md:pt-10">
+      <div className="mx-auto grid max-w-6xl items-center gap-3 md:grid-cols-2 md:gap-12">
         {/* Colonne en `flex-col` : sur téléphone, le résumé et l'auteur passent APRÈS
             le prix, le bouton et les garanties (`order-last`) — l'achat d'abord, au-dessus
             du pli ; dès `md`, l'ordre classique revient. */}
         <div className="flex flex-col items-start">
-          <LinkComponent {...backProps} className="font-inter text-sm font-semibold text-blue-700 hover:underline">{S.detail.back}</LinkComponent>
-          {c.badge && <p className="mt-3 inline-block rounded-full border border-blue-200 bg-white px-3 py-1 text-xs font-semibold text-blue-700 sm:mt-4 sm:px-4 sm:py-1.5">{c.badge}</p>}
-          <h1 className="mt-3 font-space text-3xl font-bold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">{book.title}</h1>
-          {book.subtitle && <p className="mt-2 font-inter text-lg text-slate-600 sm:mt-3 sm:text-xl">{book.subtitle}</p>}
+          <LinkComponent {...backProps} className="hidden font-inter text-sm font-semibold text-blue-700 hover:underline sm:inline">{S.detail.back}</LinkComponent>
+          {c.badge && <p className="inline-block rounded-full border border-blue-200 bg-white px-3 py-1 text-xs font-semibold text-blue-700 sm:mt-4 sm:px-4 sm:py-1.5">{c.badge}</p>}
+          <h1 className="mt-2 font-space text-2xl font-bold leading-snug text-slate-900 sm:mt-3 sm:text-4xl sm:leading-tight lg:text-5xl">{book.title}</h1>
+          {book.subtitle && <p className="order-last mt-4 font-inter text-lg text-slate-600 sm:order-none sm:mt-3 sm:text-xl">{book.subtitle}</p>}
           {book.summary && <p className="order-last mt-5 font-inter text-base leading-loose text-slate-600 md:order-none sm:text-lg">{book.summary}</p>}
           {book.author && <p className="order-last mt-3 font-inter text-sm text-slate-500 md:order-none sm:mt-4">{book.author}</p>}
 
-          <div className="mt-6 flex items-baseline gap-2 sm:mt-8">
-            <span dir="ltr" className="font-space text-4xl font-bold text-blue-700">{formatDa(book.price)}</span>
+          <div className="mt-3 flex items-baseline gap-2 sm:mt-8">
+            <span dir="ltr" className="font-space text-3xl font-bold text-blue-700 sm:text-4xl">{formatDa(book.price)}</span>
             <span className="font-inter text-sm text-slate-500">{S.detail.perCopy}</span>
           </div>
-          <div className="mt-4 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
-            <a id="book-hero-cta" href="#order" className="rounded-2xl bg-blue-600 px-8 py-4 text-center font-space text-lg font-bold text-white shadow-lg shadow-blue-600/25 transition hover:bg-blue-700">{S.detail.orderCta}</a>
+          <div className="mt-3 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+            <a id="book-hero-cta" href="#order" className="rounded-2xl bg-blue-600 px-8 py-3.5 text-center font-space text-lg font-bold text-white shadow-lg shadow-blue-600/25 transition hover:bg-blue-700">{S.detail.orderCta}</a>
             <a href="#contact" className="rounded-2xl border border-slate-300 bg-white px-6 py-3.5 text-center font-space text-base font-semibold text-slate-700 hover:bg-slate-50">{S.detail.contactCta}</a>
           </div>
-          <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2">
+          <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
             {S.detail.trust.map((label, i) => {
               const Icon = TRUST_ICONS[i] ?? ShieldCheck;
               return (
@@ -56,7 +56,7 @@ export default function BookHero({ book, LinkComponent = 'a' }) {
         </div>
         {/* Hauteur RÉSERVÉE avant l'arrivée de l'image (aucun saut de mise en page) ;
             compacte et EN PREMIER sur téléphone, à côté du texte dès `md`. */}
-        <div className="order-first flex h-[200px] items-center justify-center sm:h-[320px] md:order-none md:h-[420px] lg:h-[540px]">
+        <div className="order-first flex h-[140px] items-center justify-center sm:h-[320px] md:order-none md:h-[420px] lg:h-[540px]">
           {image && (
             <img
               src={image}
