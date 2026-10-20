@@ -132,7 +132,11 @@ plugin lit le livre à l'API (`VITE_API_URL`, délai 8 s) pendant le build et é
 - `<link rel="preload">` de l'image et `<link rel="modulepreload">` du lot `BookDetailPage` et
   de ses imports.
 `BookDetailPage` retire le calque (`removeStaticBookShell`) une fois la vraie fiche montée :
-jamais d'écran blanc. Si l'API ne répond pas au build, la page reste une simple page de partage
+jamais d'écran blanc. **« هذا الكتاب غير موجود » n'apparaît que sur un 404** : un échec de la
+relecture (réseau, 429, 500, CORS) laisse la fiche déjà affichée (2026-10-20 — sur
+`www.smarter-academy.com`, l'appel à `https://smarter-academy.com/api/v1` était bloqué par le CORS
+et remplaçait la fiche par ce message). Depuis, `public/.htaccess` redirige (301) tout `www.` vers
+le domaine nu : le site n'a qu'un hôte, celui de `VITE_API_URL`. Si l'API ne répond pas au build, la page reste une simple page de partage
 (avertissement dans le log du build). Mesuré (téléphone 390×844 et tablette, 1,6 Mbit/s, 4× CPU) :
 contenu visible à ≈ 1,0 s au lieu de 4,8 s, sans écran de chargement. **Un nouveau livre** : une entrée dans `shareCards.json`,
 sa carte 1200×630 dans `public/og/` (`python3 scripts/og-book-card.py <couverture>.webp "<titre>"

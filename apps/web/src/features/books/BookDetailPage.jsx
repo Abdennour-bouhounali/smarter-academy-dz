@@ -48,7 +48,11 @@ export default function BookDetailPage() {
   useEffect(() => {
     let alive = true;
     setBook(peekBook(slug)?.book);
-    loadBook(slug).then((d) => alive && setBook(d.book)).catch(() => alive && setBook(null));
+    // « Introuvable » seulement sur un 404 : une panne réseau, un 429 ou un 500
+    // ne remplace JAMAIS une fiche déjà affichée (instantané du build, cache).
+    loadBook(slug)
+      .then((d) => alive && setBook(d.book))
+      .catch((e) => alive && setBook((shown) => (e?.status === 404 || !shown ? null : shown)));
     return () => { alive = false; };
   }, [slug]);
 
