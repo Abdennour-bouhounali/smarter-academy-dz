@@ -48,6 +48,11 @@ class BookSeeder extends Seeder
                     ['title' => 'البكالوريا ليست عشوائية', 'description' => 'المواضيع تُبنى بمنطق دقيق: السؤال الأول مفتاح الثاني، والمتأخر يحمل تلميحًا لما سبقه.'],
                     ['title' => 'القراءة التحليلية تغيّر كل شيء', 'description' => 'حين تترجم المطلوب إلى أهداف واضحة، يتحول الحل من فوضى إلى خطوات منظمة.'],
                 ],
+                // Chaînes du livre (section « تابعنا » de la page) ; `network` : youtube | facebook.
+                'socials' => [
+                    ['network' => 'youtube', 'url' => 'https://www.youtube.com/@SmartMathProtocol'],
+                    ['network' => 'facebook', 'url' => 'https://www.facebook.com/SmartMathProtocol'],
+                ],
                 'faq' => [
                     ['question' => 'هل هذا مجرد كتاب تمارين آخر؟', 'answer' => 'لا. إنه بروتوكول للتفكير. لا حشو ولا تمارين مكررة، بل بناء المنهجية التي تمكّنك من حل أي تمرين.'],
                     ['question' => 'هل أحتاج لأن أكون ممتازًا في الرياضيات؟', 'answer' => 'الكتاب مصمم للطلاب الذين يفهمون الدروس ويحفظون القوانين لكنهم يعجزون عن الانطلاق في الحل.'],

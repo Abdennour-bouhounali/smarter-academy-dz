@@ -69,6 +69,10 @@ sont dans `Domain/Books/BookPresenter.php` (camelCase).
   namespace i18n : rien de la librairie n'entre dans le lot d'entrée).
 - Contenu d'une page livre : entièrement tiré de la fiche (`content` JSON,
   éditable dans « الكتب »). Un nouveau livre = une ligne, aucun code.
+  `content.socials` = `[{ network: 'youtube'|'facebook', url }]` → section « تابعنا » (avant le
+  contact), un bouton par chaîne, nouvel onglet ; un réseau inconnu est ignoré. `smart-protocol` :
+  `@SmartMathProtocol` sur YouTube et Facebook (2026-10-20, migration
+  `2026_10_20_000001_add_socials_to_smart_protocol_book` — le seeder n'écrase pas une fiche existante).
 - Admin : `pages/admin/books/` — `BookOrders` (chiffres + liste),
   `BookOrderDetail` (état, livraison, paiements, historique),
   `BookCatalog` (fiches), `BookMessages`. Routes `/admin/livres/*`, section

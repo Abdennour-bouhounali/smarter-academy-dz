@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Facebook, Youtube } from 'lucide-react';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { loadBook, peekBook, removeStaticBookShell } from './bookCache';
 import BookHero from './BookHero';
@@ -30,6 +30,12 @@ function BookDetailSkeleton() {
     </div>
   );
 }
+
+// Les réseaux connus de `content.socials` : icône et couleur de marque.
+const SOCIALS = {
+  youtube: { Icon: Youtube, className: 'bg-red-600 hover:bg-red-700' },
+  facebook: { Icon: Facebook, className: 'bg-blue-600 hover:bg-blue-700' },
+};
 
 const H2 = ({ children }) => <h2 className="mb-6 text-center font-space text-2xl font-bold text-slate-900 sm:mb-8 sm:text-3xl">{children}</h2>;
 
@@ -175,6 +181,25 @@ export default function BookDetailPage() {
                 {openFaq === i && <p className="px-5 pb-5 font-inter leading-loose text-slate-600">{item.answer}</p>}
               </div>
             ))}
+          </div>
+        </section>
+      )}
+
+      {/* Chaînes */}
+      {c.socials?.some((x) => SOCIALS[x.network]) && (
+        <section className="mx-auto max-w-3xl px-4 py-10 text-center sm:py-14">
+          <H2>{S.detail.socialsTitle}</H2>
+          <p className="-mt-4 mb-6 font-inter text-slate-600">{S.detail.socialsSubtitle}</p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {c.socials.filter((x) => SOCIALS[x.network]).map(({ network, url }) => {
+              const { Icon, className } = SOCIALS[network];
+              return (
+                <a key={network} href={url} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-2 rounded-2xl px-6 py-3 font-space text-base font-bold text-white transition ${className}`}>
+                  <Icon size={20} aria-hidden="true" />
+                  {S.detail.socials[network]}
+                </a>
+              );
+            })}
           </div>
         </section>
       )}
