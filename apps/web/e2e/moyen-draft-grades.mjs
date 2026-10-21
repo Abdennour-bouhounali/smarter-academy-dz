@@ -5,13 +5,13 @@
  * Lancement (dev server 5173, API 8000, élève QA local, base importée) :
  *   node apps/web/e2e/moyen-draft-grades.mjs [dossier-captures]
  *
- * Vérifie, sur bureau (1440) et téléphone (320) : le catalogue 3AM (la seule année ENCORE sans aucune leçon publiée depuis la
- * première leçon de 2AM, 2026-10-14 ; 1AM depuis le lot 1) annonce « البرنامج متوفّر، الدروس
- * قيد الإعداد » et ses cartes d'unité « قيد الإعداد » ; la page d'unité montre les leçons en brouillon sans
- * aucun lien vers une leçon non écrite ; les prérequis d'une autre année (3AM) disent leur année sans
- * lien ; 4AM est inchangée ; aucun débordement, aucune erreur console. Puis, en pratique 4AM
- * (jidhr-tarbii), une réponse fausse affiche « راجع: … (السنة الثالثة متوسط) », en texte tant que la
- * leçon 3AM n'est pas publiée. Une seule connexion (throttle 6/min), puis storageState.
+ * Depuis la première leçon de 3AM (`quwat-adad-nisbi`, 2026-10-21), AUCUNE année n'est plus entièrement en brouillon : le
+ * catalogue 3AM n'affiche plus « البرنامج متوفّر، الدروس قيد الإعداد » ; ses autres unités restent « قيد الإعداد ». Vérifie, sur
+ * ordinateur (1440) et tablette (768 — les téléphones ne sont pas pris en charge, 2026-10-15) : la page d'unité
+ * « القوى ذات أسس نسبية صحيحة » montre la leçon publiée (un lien) et les leçons en brouillon SANS lien ; une unité 3AM sans leçon
+ * publiée montre ses prérequis d'une autre année avec leur année et sans lien ; 4AM est inchangée ; aucun débordement, aucune
+ * erreur console. Puis, en pratique 4AM (jidhr-tarbii), une réponse fausse affiche « راجع: … (السنة الثالثة متوسط) » : un LIEN
+ * vers une leçon 3AM publiée, du texte vers une leçon encore en brouillon. Une seule connexion (throttle 6/min), puis storageState.
  */
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
@@ -42,7 +42,7 @@ const token = (() => {
 })();
 const fails = [];
 const check = (ok, label) => { if (!ok) fails.push(label); console.log(`${ok ? '✓' : '✗'} ${label}`); };
-for (const [vp, viewport] of [['desktop', { width: 1440, height: 900 }], ['phone', { width: 320, height: 760 }]]) {
+for (const [vp, viewport] of [['desktop', { width: 1440, height: 900 }], ['tablet', { width: 768, height: 1024 }]]) {
   const ctx = await browser.newContext({ viewport, storageState: authState });
   const page = await ctx.newPage();
   const errors = [];
@@ -50,18 +50,18 @@ for (const [vp, viewport] of [['desktop', { width: 1440, height: 900 }], ['phone
   page.on('pageerror', (e) => errors.push(String(e)));
   await page.goto(`${BASE}/courses?level=moyen&grade=3am`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(800);
-  check(await page.locator('[data-grade-drafting]').count() === 1, `${vp}: 3AM catalogue says « البرنامج متوفّر، الدروس قيد الإعداد »`);
+  check(await page.locator('[data-grade-drafting]').count() === 0, `${vp}: 3AM catalogue — no « الدروس قيد الإعداد » notice since its first published lesson`);
   const drafts = await page.locator('[data-unit-draft]').count();
-  check(drafts > 0, `${vp}: 3AM unit cards show « قيد الإعداد » (${drafts})`);
+  check(drafts > 0, `${vp}: the other 3AM unit cards still show « قيد الإعداد » (${drafts})`);
   const ov = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   check(ov <= 1, `${vp}: catalogue — no horizontal overflow (${ov}px)`);
   await page.screenshot({ path: `${OUT}/${vp}-courses-3am.png`, fullPage: false });
-  await page.locator('[data-unit-group]').first().click();
+  await page.goto(`${BASE}/courses/moyen/3am/ansab_al_aadad_wal_hisab/units/quwa-nisbiya`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(1200);
-  check(/\/units\//.test(page.url()), `${vp}: unit card opens the unit page (${page.url().replace(BASE, '')})`);
   const draftLessons = await page.locator('[data-lesson-draft]').count();
-  check(draftLessons > 0, `${vp}: unit page shows draft lessons (${draftLessons})`);
-  check(await page.locator('[data-unit-lesson] a[href*="/courses/moyen/3am/"]').count() === 0, `${vp}: no link to an unwritten 3AM lesson`);
+  check(draftLessons > 0, `${vp}: unit page shows the unit's draft lessons (${draftLessons})`);
+  const hrefs = await page.locator('[data-unit-lesson] a[href*="/courses/moyen/3am/"]').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+  check(hrefs.length > 0 && hrefs.every((h) => h.includes('/quwat-adad-nisbi')), `${vp}: links only to the published lesson (${hrefs.length}: ${[...new Set(hrefs)].join(' ')})`);
   const ov2 = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   check(ov2 <= 1, `${vp}: unit page — no horizontal overflow (${ov2}px)`);
   await page.screenshot({ path: `${OUT}/${vp}-unit-3am.png`, fullPage: false });
@@ -97,7 +97,10 @@ for (const [vp, viewport] of [['desktop', { width: 1440, height: 900 }], ['phone
       await page.waitForTimeout(2500);
       const review = page.locator('[data-earlier-year-review]');
       check(await review.count() === 1, `practice: wrong answer shows « راجع » (${(await review.innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 140)})`);
-      check(await page.locator('[data-earlier-year-linked="true"]').count() === 0, 'practice: unpublished 3AM targets are text, not links');
+      const text = (await review.innerText().catch(() => '')).replace(/\s+/g, ' ');
+      const linked = await page.locator('[data-earlier-year-linked="true"]').count();
+      // « قوة عدد نسبي » est publiée (2026-10-21) : un lien ; toute autre leçon 3AM encore en brouillon : du texte
+      check(text.includes('قوة عدد نسبي') ? linked > 0 : linked === 0, `practice: published 3AM targets are links, drafts are text (${linked} link(s))`);
       await page.screenshot({ path: `${OUT}/${vp}-practice-wrong.png`, fullPage: false });
     } else {
       check(false, 'practice: no answer field found');

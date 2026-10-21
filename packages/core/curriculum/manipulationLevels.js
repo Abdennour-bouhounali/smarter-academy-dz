@@ -237,6 +237,46 @@ export const VISUAL_THEMES = Object.freeze({
   //   courtyard  le حوش d'une maison : des carreaux de zellige posés sur le sol et une clôture en bois autour (1AM `tile-yard`,
   //              2026-10-15) — la main tient un carreau : l'aire est le nombre de carreaux, le périmètre le nombre de piquets
   courtyard: { kind: 'objects', shows: 'حوش بيت مفروش ببلاط الزليج ومحاط بسياج خشبي' },
+  // 3AM, unité 4 (2026-10-20) :
+  //   workbench  l'établi du club de mathématiques : des pièces de bois à la forme de chaque terme (carré x², réglette x, petit
+  //              carré 1 ; pièce « opposée » rouge pour le signe −), des plateaux par forme et des caisses à parenthèses (`like-terms`)
+  workbench: { kind: 'objects', shows: 'طاولة نادي الرياضيات: قطع خشبية على شكل كل حدّ وصوانٍ لكل شكل وصناديق أقواس' },
+  // 3AM, unité 11 (2026-10-20) :
+  //   sciencefair  le stand d'un معرض العلوم de l'école : une machine à trois bassins carrés transparents posée sur une table,
+  //                une élève (KidFigure, hijab) qui la présente (`pythagoras-tanks`)
+  sciencefair: { kind: 'objects', shows: 'جناح في معرض العلوم: آلة من ثلاثة أحواض مربعة شفافة على أضلاع مثلث' },
+  // 3AM, unité 3 (2026-10-21) :
+  //   railway  la gare du « قطار القوى » : une locomotive qui part en portant 1, des wagons « × a » derrière elle et « ÷ a »
+  //            devant, sur un rail gradué ; une cheffe de gare (KidFigure, hijab) sur le quai (`power-train`)
+  railway: { kind: 'objects', shows: 'محطة قطار: قاطرة تنطلق حاملة العدد 1 وعربات تضرب حمولتها أو تقسمها على العدد نفسه' },
+  // 2AM, unité 3 (2026-10-21) :
+  //   researchBoat  un bateau de recherche sur la mer : la ligne du zéro est la surface, un capteur fixe et un capteur au bout d'un
+  //                 câble qui descend ou monte, un drone au-dessus, un robot plongeur dessous, une chercheuse (KidFigure, hijab) sur le
+  //                 pont (`zero-probe`)
+  researchBoat: { kind: 'objects', shows: 'سفينة بحث في عرض البحر: مسبار ثابت وآخر معلّق بحبل يهبط تحت سطح الماء أو يرتفع فوقه' },
+  // 3AM, unité 5 (2026-10-21) :
+  //   stadium  le مضمار de la cour de l'école : un mur de graduations et deux coureurs (KidFigure, une élève en hijab et un élève), chacun
+  //            à la valeur d'un membre d'une égalité ; ils se tiennent sur la même graduation tant que l'égalité est vraie (`equality-lanes`)
+  stadium: { kind: 'objects', shows: 'مضمار مدرسة: متسابقان يقفان على جدار مدرّج، كلّ عند قيمة أحد طرفي مساواة' },
+  // 3AM, unité 4 (2026-10-21) :
+  //   schoolgarden  le jardin de l'école vu d'en haut : un terrain rectangulaire (pelouse, massif de fleurs, allée dallée) que la
+  //                 main coupe en parcelles, et une jardinière (KidFigure, hijab) à son bord (`area-split`)
+  schoolgarden: { kind: 'objects', shows: 'حديقة المدرسة من الأعلى: قطعة أرض مستطيلة (عشب وأزهار وممرّ مبلّط) تُقسَّم إلى أجزاء' },
+  //   river  le fleuve de la « عبّارة الحدود » : deux rives (les deux membres d'une équation), des caisses (les termes), une barque ; une élève
+  //          (KidFigure, hijab) est la passeuse (`term-ferry`, 3AM unité 5, 2026-10-21)
+  river: { kind: 'objects', shows: 'نهر بين ضفتين: الضفة اليسرى والضفة اليمنى لمعادلة، وصناديق هي حدودها، وعبّارة تنقلها من ضفة إلى أخرى' },
+  // 2AM, unité 5 (2026-10-21) :
+  //   souk  le سوق الخضر de la semaine : un auvent à rayures, des cagettes (tomates, oranges, pommes de terre, dattes), une planche de prix
+  //         en bois (le tableau 2×2), une balance de marchand en laiton, trois petites balances d'égalité alignées dessous, une jeune
+  //         cliente (KidFigure, hijab) et son panier (`fourth-gauges`)
+  souk: { kind: 'objects', shows: 'سوق الخضر: لوحة أسعار من خشب فيها أربع بطاقات (بطاقة ناقصة) وثلاث موازين صغيرة من النحاس تحتها وصناديق فاكهة' },
+  // 3AM, unité 6 (2026-10-21) :
+  //   pantry  le مخزن d'une جمعيّة خيريّة : un plateau de 100 cases égales sur une table, des sacs de tamr, un panier, une gardienne de stock (KidFigure,
+  //           hijab) qui prépare les dons (`hundred-grid`)
+  pantry: { kind: 'objects', shows: 'مخزن جمعية خيرية: صينية من مئة خانة متساوية وسلّة وأكياس تمر تُحضَّر للتبرّع' },
+  //   stall  l'étal d'une papeterie de quartier : un repère quadrillé sur une planche de liège, des boîtes de punaises, une règle de laiton, une
+  //          vendeuse (KidFigure, hijab) à côté du tableau de prix (`pin-rails`)
+  stall: { kind: 'objects', shows: 'دكّان أدوات مدرسية: لوحة فلّين فيها معلم مربّعات ودبابيس ومسطرة من نحاس وبائعة بجانب جدول الأسعار' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

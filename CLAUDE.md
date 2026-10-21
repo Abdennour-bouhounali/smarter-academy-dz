@@ -62,7 +62,9 @@ toward earlier years (`features/learning/EarlierYearReview.jsx`). Practice model
 `source.type: "term_exam"` / `term_exam_modelled` and the badge « على منوال اختبار الفصل … » (`EXERCISE_CONTRACT.md`).
 
 Since 2026-10-14 (rollout phase 3) the 1AM–3AM lessons are **generated one by one along `docs/curriculum/GENERATION_QUEUE.md`** and each
-is published on `dev` before the next; progress and the next batch's prompt: `docs/reports/MOYEN_ROLLOUT_PROGRESS.md`. A unit's extraction is
+is published on `dev` before the next; progress and the next batch's prompt: `docs/reports/MOYEN_ROLLOUT_PROGRESS.md`. Since 2026-10-20 the queue
+opens with **Phase A « what 4AM needs NOW »** (owner): 4AM units in textbook order, each lesson's DIRECT earlier-year prerequisites taken from
+the most recent year (3AM, otherwise 2AM, otherwise 1AM) — 35 entries; the full chains come after (`LEARNING_NET.md` §4bis). A unit's extraction is
 written whole (`docs/sources/<g>/unit<N>/`), elements of lessons not yet generated are « pending » in `check:textbook`; the textbook's tape
 diagram « مخطط بأقواس » is the shared figure `ArcTape` (statement figure `kind: 'tape'`). Owner rule: a generated lesson is also imported
 and its modules/exercises published in the LOCAL database so the owner can browse it.

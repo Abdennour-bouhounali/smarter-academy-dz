@@ -1,5 +1,20 @@
 {
   "_comment": "Registre partagé des erreurs de raisonnement (cible §25 : des entités réutilisables, pas du texte libre dupliqué). Un identifiant partagé permet de COMPTER : « cet élève retombe trois fois sur MISC-PGCD-LAYSA-AKBAR » est une information que du texte libre ne donnera jamais. Précédent : App\\Domain\\Diagnostic\\Grades\\SixiemeDiagnosticProvider::QUESTIONS mappe déjà distracteur → id de misconception côté serveur. `relatedLearningPoints` cite des codes de LP canoniques, vérifiés par scripts/validate-exercises.mjs.",
+  "MISC-TAMTHIL-LINE-ANY": {"label": "اعتبار كل مستقيم تمثيلا لوضعية تناسبية (« النقط على استقامة واحدة إذن تناسبية »)", "explanation": "النقط على استقامة واحدة لا تكفي: يجب أن يشمل هذا المستقيم مبدأ المعلم $O$ . مستقيم يقطع محور التراتيب فوق $O$ (رسم توصيل، رسم ثابت) لا يمثّل وضعية تناسبية، فضعف الفاصلة لا يعطي ضعف الترتيب.", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P3", "3am_tanasub-tamthil-bayani_P2"]},
+  "MISC-TAMTHIL-THROUGH-O-ANY": {"label": "اعتبار كل رسم ينطلق من المبدأ تمثيلا لوضعية تناسبية ولو كان منحنيا أو منكسرا", "explanation": "المرور بالمبدأ شرط لازم لا كاف: يجب أيضا أن تكون كل النقط على استقامة واحدة. رسم يمرّ بـ $O$ لكنه ينكسر أو ينحني لا يمثّل وضعية تناسبية.", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P3", "3am_tanasub-tamthil-bayani_P2"]},
+  "MISC-TAMTHIL-RISING": {"label": "الحكم بالتناسبية لأنّ الترتيب يكبر كلما كبرت الفاصلة", "explanation": "ارتفاع الرسم لا يعني التناسبية: كثير من الوضعيات تتزايد دون أن تكون تناسبية (رسم ثابت، تخفيض بعد كمية معيّنة). المعيار هو استقامة النقط مع المبدأ $O$ ، أي ثبات الناتج $y \\div x$ .", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P2", "3am_tanasub-tamthil-bayani_P3"]},
+  "MISC-TAMTHIL-SWAP-XY": {"label": "عكس الفاصلة والترتيب (قراءة الترتيب على أنه فاصلة أو كتابة الزوج معكوسا)", "explanation": "في الزوج $(x\\,;\\,y)$ تأتي الفاصلة أوّلا وتُقرأ على المحور الأفقي، ثم الترتيب ويُقرأ على المحور العمودي. $(5\\,;\\,3)$ و $(3\\,;\\,5)$ نقطتان مختلفتان.", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P1"]},
+  "MISC-TAMTHIL-SCALE-READ": {"label": "قراءة التدريج بعدد المربعات دون مراعاة قيمة المربع الواحد (مربع = 2 أو 5 وحدات)", "explanation": "عندما يمثّل المربع الواحد وحدتين أو خمس وحدات، لا نعدّ المربعات بل نقرأ الأعداد المكتوبة على المحور أو نضرب عدد المربعات في قيمة المربع: 3 مربعات من 2 تساوي 6.", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P1"]},
+  "MISC-TAMTHIL-DIFFERENCE": {"label": "طرح الفاصلة من الترتيب بدل قسمته عليها (أو إضافة نفس العدد بدل الضرب في نفس المعامل)", "explanation": "في وضعية تناسبية يُضرب العددان في المعامل نفسه ولا يُضاف إليهما العدد نفسه: $a = y \\div x$ لا $y - x$ ، و $y = a\\,x$ لا $y = x + b$ .", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P4", "3am_tanasub-tamthil-bayani_P3"]},
+  "MISC-TAMTHIL-COEF-INVERSE": {"label": "قلب قسمة معامل التناسبية ($a = x \\div y$) أو الضرب بدل القسمة عند إيجاد الفاصلة", "explanation": "معامل التناسبية $a = y \\div x$ : الترتيب على الفاصلة. ولإيجاد الفاصلة من ترتيب معلوم نقسم على $a$ ($x = y \\div a$) ولا نضرب.", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P4"]},
+  "MISC-TAMTHIL-TWO-POINTS": {"label": "الاكتفاء باختبار نقطتين فقط والحكم بالتناسبية", "explanation": "نقطتان تعيّنان دائما مستقيما، فلا يكفي أن تكون نقطتان مع $O$ على استقامة: يجب أن تقع كل النقط المعطاة على هذا المستقيم، وتكفي نقطة واحدة خارجه لرفض التناسبية.", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P3", "3am_tanasub-tamthil-bayani_P2"]},
+  "MISC-TAMTHIL-JOIN-DOTS": {"label": "وصل النقط بقطع واعتبار القراءة بينها صحيحة (أو تجاهل أنّ الرسم المنكسر ليس مستقيما)", "explanation": "وصل نقاط لا يقع بعضها على استقامة واحدة بقطع منكسرة لا يعطي مستقيما، ولا يصحّ استنتاج قيمة بين نقطتين من ميل مختلف عن ميل بقية الرسم.", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P3", "3am_tanasub-tamthil-bayani_P4"]},
+  "MISC-TAMTHIL-ORIGIN-DROP": {"label": "نسيان أنّ المبدأ $O$ جزء من التمثيل البياني (مقدار صفر يقابل صفرا)", "explanation": "في وضعية تناسبية $0$ يقابل $0$ دائما، فالمبدأ $O$ نقطة من التمثيل حتى لو لم يُعلَّم في الجدول. وإذا قطع المستقيم محور التراتيب في ترتيب غير $0$ فهو لا يشمل $O$ .", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P2", "3am_tanasub-tamthil-bayani_P3"]},
+  "MISC-TAMTHIL-EQUAL-ONLY": {"label": "الاعتقاد أنّ الوضعية تناسبية فقط إذا تساوت الفاصلة والترتيب", "explanation": "التناسبية لا تعني $y = x$ : الترتيب هو الفاصلة مضروبة في أيّ معامل ثابت $a$ ($y = a\\,x$) والمستقيم يشمل المبدأ مهما كان $a$ .", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P2"]},
+  "MISC-TAMTHIL-UNIT-AXIS": {"label": "نسيان وحدة المحور العمودي (قراءة العدد بالدنانير وهو بمئات الدنانير)", "explanation": "عندما يقول النص إنّ وحدة المحور العمودي مئة دينار، فالعدد $3$ على هذا المحور يعني $300$ دج. نضرب القراءة في وحدة المحور قبل كتابة الثمن بالدنانير.", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P4"]},
+  "MISC-TAMTHIL-FEE-ONLY": {"label": "الحكم بمكوّن واحد من الثمن (الرسم الثابت أو ثمن الوحدة) دون حساب الثمن الكلي", "explanation": "لمقارنة عرضين نحسب ثمن الكمية المطلوبة عند كل منهما ثم نقارن: عرض برسم ثابت قد يكون أرخص عندما تكبر الكمية لأنّ ثمن الوحدة عنده أقل، وعرض بلا رسم قد يكون أرخص عندما تصغر.", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P4"]},
+  "MISC-TAMTHIL-CROSS-ALWAYS": {"label": "الاعتقاد أنّ العرضين متساويان دائما لأنّ مستقيميهما يتقاطعان (أو أنّ نقطة التقاطع تهمّ كل الكميات)", "explanation": "المستقيمان يتقاطعان في نقطة واحدة فقط: عندها يتساوى الثمنان. قبل هذه الكمية أحد العرضين أرخص، وبعدها يصير الآخر هو الأرخص.", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P4"]},
+  "MISC-TAMTHIL-APPROX-DECISION": {"label": "قبول « قريب من » بدل المقارنة الدقيقة عند اتخاذ قرار (« 2500 تكاد تساوي 2550 فهي تكفي »)", "explanation": "عندما نقرّر هل يكفي مبلغ، نقارن العددين بدقّة: إذا كان الثمن أكبر ولو بقليل فالمبلغ لا يكفي. القرب بين عددين لا يغني عن المقارنة.", "relatedLearningPoints": ["3am_tanasub-tamthil-bayani_P4"]},
   "MISC-QISMA-BAQI-KABIR": {
     "label": "باقي القسمة الإقليدية أكبر من المقسوم عليه أو يساويه",
     "explanation": "في القسمة الإقليدية $a = b \\times q + r$ يكون الباقي $r$ أصغر تمامًا من $b$. كتابة $137 = 5 \\times 25 + 12$ صحيحة حسابيًا لكنها ليست قسمة إقليدية: يمكن إدخال 5 في 12 مرتين أخريين.",
@@ -3296,5 +3311,281 @@
       "1am_masahat-muhit-sath_P2",
       "1am_masahat-muhit-sath_P3"
     ]
-  }
+  },
+  "MISC-TABSIT-UNLIKE-MERGED": {
+    "label": "جمع حدّين غير متشابهين: حدّ في $x$ مع عدد ($5x - 3 = 2x$ ، $3x + 2 = 5x$)",
+    "explanation": "لا يجتمع إلا الحدّان اللذان لهما الجزء الحرفي نفسه. $5x$ و $-3$ غير متشابهين: من أجل $x = 1$ نجد $5x - 3 = 2$ بينما $2x = 2$ ، ومن أجل $x = 2$ نجد $7$ و $4$ : القيمة تغيّرت، إذن $5x - 3$ لا تُبسّط أكثر.",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P1", "3am_tabsit-hadhf-aqwas_P2", "3am_tabsit-hadhf-aqwas_P3"]
+  },
+  "MISC-TABSIT-X-X2-MERGED": {
+    "label": "جمع حدّ في $x$ مع حدّ في $x^2$ ($2x^2 + 3x = 5x^2$ أو $5x^3$)",
+    "explanation": "$x$ و $x^2$ ليس لهما الجزء الحرفي نفسه ولا يأخذان القيمة نفسها (من أجل $x = 3$ : $3$ و $9$). العبارة $2x^2 + 3x$ مكتوبة على أبسط شكل.",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P1"]
+  },
+  "MISC-TABSIT-SUM-POWER-ADDED": {
+    "label": "ضرب الحروف في مجموع ($3x + 7x = 10x^2$)",
+    "explanation": "في مجموع حدود متشابهة نجمع المعاملات ويبقى الجزء الحرفي كما هو: $3x + 7x = (3 + 7)x = 10x$ . الأس يتغيّر في الجداء فقط ($x \\times x = x^2$).",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P1"]
+  },
+  "MISC-TABSIT-SUM-COEF-MULT": {
+    "label": "ضرب المعاملات في مجموع ($3x + 7x = 21x$)",
+    "explanation": "$3x + 7x$ مجموع: نجمع عدد القطع $3 + 7 = 10$ ، فنجد $10x$ . ضرب المعاملات يخصّ الجداء $3x \\times 7x = 21x^2$ .",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P1"]
+  },
+  "MISC-TABSIT-PRODUCT-LETTER": {
+    "label": "عدم ضرب الحروف في جداء ($2x \\times 3x = 6x$)",
+    "explanation": "في جداء حدّين نضرب الأعداد معًا والحروف معًا: $2x \\times 3x = (2 \\times 3)(x \\times x) = 6x^2$ . من أجل $x = 2$ : $4 \\times 6 = 24$ وهي قيمة $6x^2$ لا $6x$ .",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P1"]
+  },
+  "MISC-TABSIT-PRODUCT-COEF-ADDED": {
+    "label": "جمع المعاملات في جداء ($2x \\times 3x = 5x^2$ أو $5x$)",
+    "explanation": "الجداء ليس مجموعًا: نضرب المعاملات $2 \\times 3 = 6$ ، ونضرب الحروف $x \\times x = x^2$ ، فنجد $6x^2$ .",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P1"]
+  },
+  "MISC-TABSIT-PRODUCT-SIGN": {
+    "label": "نسيان قاعدة إشارة الجداء ($(-2x) \\times 4x = 8x^2$)",
+    "explanation": "جداء عدد سالب في عدد موجب سالب: $(-2) \\times 4 = -8$ ، إذن $(-2x) \\times 4x = -8x^2$ .",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P1"]
+  },
+  "MISC-TABSIT-SIGN-LOST": {
+    "label": "ضياع إشارة حدّ عند جمع الحدود المتشابهة",
+    "explanation": "كل حدّ يُجمع بإشارته التي أمامه: في $4x^2 + 7 - x^2 - 2$ نجمع $4x^2 - x^2 = 3x^2$ و $7 - 2 = 5$ . نتحقّق بتعويض $x$ بعدد صغير قبل التبسيط وبعده.",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P1", "3am_tabsit-hadhf-aqwas_P2", "3am_tabsit-hadhf-aqwas_P3"]
+  },
+  "MISC-TABSIT-CANCEL-ONE": {
+    "label": "حدّ ومعاكسه لا يُلغيان ($6x - 6x = x$)",
+    "explanation": "الحدّ ومعاكسه مجموعهما صفر: $6x - 6x = (6 - 6)x = 0$ ، فيختفي الحدّ من العبارة.",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P1"]
+  },
+  "MISC-TABSIT-PLUS-CHANGED": {
+    "label": "تغيير الإشارات عند حذف قوسين مسبوقين بالإشارة $+$",
+    "explanation": "قوسان مسبوقان بالإشارة $+$ (وغير متبوعين بـ $\\times$ أو $\\div$) يُحذفان دون تغيير أي إشارة: $8 + (3x - 5) = 8 + 3x - 5$ . تغيير الإشارات يغيّر قيمة العبارة.",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P2"]
+  },
+  "MISC-TABSIT-MINUS-KEPT": {
+    "label": "الإبقاء على الإشارات عند حذف قوسين مسبوقين بالإشارة $-$ ($10 - (4x - 7) = 10 + 4x - 7$)",
+    "explanation": "القوسان مسبوقان بـ $-$ : نطرح كل حدّ بينهما، فتتغيّر إشارة كل حدّ: $10 - (4x - 7) = 10 - 4x + 7$ .",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P3"]
+  },
+  "MISC-TABSIT-MINUS-FIRST-ONLY": {
+    "label": "تغيير إشارة الحدّ الأول وحده بعد $-(\\ldots)$ ($a - (b - c) = a - b - c$)",
+    "explanation": "الإشارة $-$ أمام القوسين تخصّ كل الحدود التي بينهما: $a - (b - c) = a - b + c$ . من أجل $a = 10$ و $b = 4$ و $c = 7$ : $10 - (4 - 7) = 13$ ، أما $10 - 4 - 7 = -1$ .",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P3"]
+  },
+  "MISC-TABSIT-SUM-PRODUCT-CONFUSED": {
+    "label": "الخلط بين عبارة على شكل مجموع وعبارة على شكل جداء",
+    "explanation": "نوع العبارة تحدّده آخر عملية تُنجز عند حسابها: $3(x + 2)$ جداء (الضرب آخرًا)، و $3x + 2$ مجموع (الجمع آخرًا)، و $5 - 2x \\times x$ مجموع لأن الضرب يُنجز قبل الطرح.",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P4", "3am_tabsit-hadhf-aqwas_P1"]
+  },
+  "MISC-TABSIT-DECISION-UNCHECKED": {
+    "label": "حكم أو قرار دون حساب القيم من أجل $x$ المعطى",
+    "explanation": "قبل أن نقرّر (يكفي / لا يكفي، أقصر، نوع المثلث) نعوّض $x$ بالقيمة المعطاة في الأشكال المبسّطة، ثم نقارن الأعداد التي حصلنا عليها.",
+    "relatedLearningPoints": ["3am_tabsit-hadhf-aqwas_P1", "3am_tabsit-hadhf-aqwas_P2", "3am_tabsit-hadhf-aqwas_P3"]
+  },
+  "MISC-FITAGHURAS-HYP-WRONG": {
+    "label": "ضلع قائم يُؤخذ على أنه الوتر (نجمع حيث يجب أن نطرح: « $EG^2 = 17^2 + 15^2$ »)",
+    "explanation": "الوتر هو الضلع المقابل للزاوية القائمة، أي الضلع الذي لا يمرّ برأسها، وهو أطول الأضلاع. في المثلث $EFG$ القائم في $E$ الوتر $[FG]$ : $FG^2 = EF^2 + EG^2$ ، ومنه $EG^2 = FG^2 - EF^2$ .",
+    "relatedLearningPoints": ["3am_khassiyat-fitaghuras_P1", "3am_khassiyat-fitaghuras_P2"]
+  },
+  "MISC-FITAGHURAS-ADD-LENGTHS": {
+    "label": "جمع الأطوال أو طرحها بدل مربعاتها ($BC = AB + AC$)",
+    "explanation": "خاصية فيثاغورس تربط مربعات الأطوال لا الأطوال: $BC^2 = AB^2 + AC^2$ . مثلا $3^2 + 4^2 = 25 = 5^2$ فالوتر $5$ لا $3 + 4 = 7$ ؛ والوتر دائما أقصر من مجموع الضلعين الآخرين.",
+    "relatedLearningPoints": ["3am_khassiyat-fitaghuras_P1", "3am_khassiyat-fitaghuras_P2"]
+  },
+  "MISC-FITAGHURAS-SQUARE-DOUBLE": {
+    "label": "قراءة $a^2$ على أنها $2a$ ($4{,}5^2 = 9$)",
+    "explanation": "مربع العدد جداؤه في نفسه: $4{,}5^2 = 4{,}5 \\times 4{,}5 = 20{,}25$ ، أما $2 \\times 4{,}5 = 9$ فهو الضعف. في مساواة فيثاغورس كل طول يُضرب في نفسه.",
+    "relatedLearningPoints": ["3am_khassiyat-fitaghuras_P1", "3am_khassiyat-fitaghuras_P4"]
+  },
+  "MISC-FITAGHURAS-NO-ROOT": {
+    "label": "إعطاء مربع الطول على أنه الطول ($BC^2 = 56{,}25$ إذن $BC = 56{,}25$)",
+    "explanation": "المساواة تعطي $BC^2$ . الطول $BC$ هو العدد الموجب الذي مربعه $56{,}25$ ، أي $\\sqrt{56{,}25} = 7{,}5$ . نتحقّق: طول ضلع لا يمكن أن يتجاوز مجموع الضلعين الآخرين.",
+    "relatedLearningPoints": ["3am_khassiyat-fitaghuras_P2", "3am_khassiyat-fitaghuras_P3"]
+  },
+  "MISC-FITAGHURAS-ROOT-SPLIT": {
+    "label": "توزيع الجذر على المجموع ($\\sqrt{a^2 + b^2} = a + b$)",
+    "explanation": "$\\sqrt{2^2 + 5^2} = \\sqrt{29} \\approx 5{,}39$ بينما $2 + 5 = 7$ . الجذر التربيعي لمجموع ليس مجموع الجذرين: نحسب المجموع أولا ثم نأخذ جذره.",
+    "relatedLearningPoints": ["3am_khassiyat-fitaghuras_P3"]
+  },
+  "MISC-FITAGHURAS-LEG-ADD": {
+    "label": "حساب ضلع قائم بجمع المربعين بدل طرحهما",
+    "explanation": "إذا كان المجهول ضلعا قائما فهو أقصر من الوتر: نعزله في المساواة $BC^2 = AB^2 + AC^2$ فنجد $AC^2 = BC^2 - AB^2$ . جمع المربعين يعطي طولا أكبر من الوتر، وهذا مستحيل.",
+    "relatedLearningPoints": ["3am_khassiyat-fitaghuras_P2"]
+  },
+  "MISC-FITAGHURAS-ROUND-TRUNC": {
+    "label": "البتر بدل التدوير ($\\sqrt{29} \\approx 5{,}385$ تُكتب $5{,}38$)",
+    "explanation": "التدوير إلى $0{,}01$ ينظر إلى الرقم الموالي (رقم أجزاء الألف): إذا كان $5$ أو أكثر نضيف $1$ إلى رقم أجزاء المائة. $5{,}385… \\approx 5{,}39$ ، أما $5{,}38$ فهو قيمة مقرّبة بالنقصان (بتر).",
+    "relatedLearningPoints": ["3am_khassiyat-fitaghuras_P3"]
+  },
+  "MISC-FITAGHURAS-ROUND-EARLY": {
+    "label": "تدوير نتيجة وسيطة قبل نهاية الحساب",
+    "explanation": "إذا دوّرنا طولا ثم استعملناه في حساب آخر (محيط، مساحة، مجموع مسار) تتراكم الأخطاء وقد يتغيّر الرقم الأخير. نحتفظ بالقيمة المضبوطة $\\sqrt{n}$ أو بقيمة الآلة كاملة، ولا ندوّر إلا النتيجة النهائية.",
+    "relatedLearningPoints": ["3am_khassiyat-fitaghuras_P3"]
+  },
+  "MISC-FITAGHURAS-NOT-LONGEST": {
+    "label": "مقارنة مربع ضلع ليس الأطول بمجموع مربعي الضلعين الآخرين",
+    "explanation": "إذا كان المثلث قائما فوتره هو أطول أضلاعه. لذلك نختبر دائما مربع طول الضلع الأطول ونقارنه بمجموع مربعي الضلعين الآخرين؛ مقارنة ضلع آخر لا تعني شيئا.",
+    "relatedLearningPoints": ["3am_khassiyat-fitaghuras_P4"]
+  },
+  "MISC-FITAGHURAS-LOOKS-RIGHT": {
+    "label": "الحكم بالعين أو بالتقارب: « العددان متقاربان إذن المثلث قائم » ($9{,}4^2 = 88{,}36$ و $90{,}25$)",
+    "explanation": "الرسم والقياس بالعين لا يثبتان شيئا. لو كان المثلث قائما لكانت المساواة $BC^2 = AB^2 + AC^2$ محقّقة تماما (خاصية فيثاغورس)؛ إذا اختلف العددان ولو قليلا ($88{,}36 \\neq 90{,}25$) فالمثلث ليس قائما.",
+    "relatedLearningPoints": ["3am_khassiyat-fitaghuras_P4"]
+  },
+  "MISC-FITAGHURAS-NON-RIGHT-APPLIED": {
+    "label": "تطبيق خاصية فيثاغورس في مثلث لا نعلم أنه قائم",
+    "explanation": "خاصية فيثاغورس تبدأ بـ « إذا كان المثلث قائما »: لا نكتب $BC^2 = AB^2 + AC^2$ إلا إذا عرفنا أن الزاوية في $A$ قائمة (معطى، ارتفاع، مستطيل، مماس…). في مثلث لا نعرف طبيعته نحسب العددين $BC^2$ و $AB^2 + AC^2$ كلا على حدة ثم نقارنهما.",
+    "relatedLearningPoints": ["3am_khassiyat-fitaghuras_P1", "3am_khassiyat-fitaghuras_P4"]
+  },
+  "MISC-QUWA-MINUS-BASE": {
+    "label": "قراءة $-a^n$ على أنها $(-a)^n$ ($-2^4 = 16$)",
+    "explanation": "في $-a^n$ يخصّ الأس العدد $a$ وحده، ثم نأخذ المعاكس: $-2^4 = -(2^4) = -16$ . أما $(-2)^4 = 16$ فالأس يخصّ العدد $-2$ كله لأنه بين قوسين.",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P1", "3am_quwat-adad-nisbi_P2"]
+  },
+  "MISC-QUWA-POWER-AS-PRODUCT": {
+    "label": "قراءة $a^n$ على أنها $a \\times n$ ($3^4 = 12$)",
+    "explanation": "$a^n$ جداء $n$ عاملًا كلها مساوية للعدد $a$: $3^4 = 3 \\times 3 \\times 3 \\times 3 = 81$ ، وليس $3 \\times 4 = 12$ .",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P1", "3am_quwat-adad-nisbi_P4"]
+  },
+  "MISC-QUWA-NEG-EXP-NEGATIVE": {
+    "label": "اعتبار $a^{-n}$ عددًا سالبًا ($2^{-3} = -8$)",
+    "explanation": "$a^{-n}$ هو مقلوب $a^n$ ، وليس معاكسه: $2^{-3} = \\dfrac{1}{2^3} = \\dfrac{1}{8}$ ، وهو عدد موجب. الإشارة السالبة في الأس لا تغيّر إشارة العدد.",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P2"]
+  },
+  "MISC-QUWA-ZERO-ONE-EXP": {
+    "label": "الخلط في الأسّين 0 و 1 ($a^0 = 0$ أو $a^1 = 1$)",
+    "explanation": "من أجل $a \\neq 0$ : $a^0 = 1$ (لأن $\\dfrac{a^n}{a^n} = a^{n-n} = 1$)، و $a^1 = a$ . مثلًا $5^0 = 1$ و $5^1 = 5$ .",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P2"]
+  },
+  "MISC-QUWA-PRODUCT-MULTIPLY-EXP": {
+    "label": "ضرب الأسس في جداء قوتين ($a^m \\times a^n = a^{m \\times n}$)",
+    "explanation": "في جداء قوتين لهما الأساس نفسه نجمع الأسس: $2^3 \\times 2^4 = (2 \\times 2 \\times 2) \\times (2 \\times 2 \\times 2 \\times 2) = 2^7$ ، وليس $2^{12}$ .",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P3"]
+  },
+  "MISC-QUWA-POWER-ADD-EXP": {
+    "label": "جمع الأسين في قوة قوة ($(a^m)^n = a^{m+n}$)",
+    "explanation": "$(a^m)^n$ جداء $n$ عاملًا كلها مساوية لـ $a^m$ ، فنضرب الأسين: $(5^2)^3 = 5^2 \\times 5^2 \\times 5^2 = 5^6$ ، وليس $5^5$ .",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P3"]
+  },
+  "MISC-QUWA-QUOTIENT-EXP": {
+    "label": "قسمة الأسين أو جمعهما في حاصل قسمة قوتين",
+    "explanation": "$\\dfrac{a^m}{a^n} = a^{m-n}$ : نطرح أس المقام من أس البسط. مثلًا $\\dfrac{2^{10}}{2^5} = 2^5$ ، وليس $2^2$ ولا $2^{15}$ ، ونصف $2^{10}$ هو $2^9$ .",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P3"]
+  },
+  "MISC-QUWA-MIXED-BASES": {
+    "label": "جمع أسس قوى أساساتها مختلفة أو العمل على الأساسات ($2^3 \\times 3^3 = 6^6$)",
+    "explanation": "لا تُجمع أسس قوى أساساتها مختلفة. عندما يكون الأس نفسه: $a^n \\times b^n = (ab)^n$ ، مثلًا $2^3 \\times 3^3 = 6^3$ . وعندما يكون الأساس نفسه نُبقيه ولا نضربه: $3^5 \\times 3^5 = 3^{10}$ وليس $9^{10}$ .",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P3"]
+  },
+  "MISC-QUWA-ODD-EVEN-SIGN": {
+    "label": "خطأ في إشارة قوة عدد سالب",
+    "explanation": "قوة عدد سالب موجبة إذا كان الأس زوجيًا، وسالبة إذا كان الأس فرديًا: $(-2)^4 = 16$ و $(-2)^5 = -32$ . نعدّ العوامل السالبة: كل عاملين سالبين جداؤهما موجب.",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P1", "3am_quwat-adad-nisbi_P4"]
+  },
+  "MISC-QUWA-PRIORITY": {
+    "label": "عدم احترام أولوية القوى في سلسلة حسابات",
+    "explanation": "نحسب ما بين الأقواس، ثم القوى، ثم الضرب والقسمة، ثم الجمع والطرح: $2 \\times 3^2 = 2 \\times 9 = 18$ ، أما $(2 \\times 3)^2 = 36$ . الأس يخصّ العدد الذي يسبقه مباشرة فقط.",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P4"]
+  },
+  "MISC-QUWA-SUM-OF-POWERS": {
+    "label": "معاملة مجموع قوى معاملة جداء ($3^{20} + 3^{20} + 3^{20} = 3^{60}$)",
+    "explanation": "قواعد الأسس تخصّ الجداء وحاصل القسمة، لا المجموع: $3^{20} + 3^{20} + 3^{20} = 3 \\times 3^{20} = 3^{21}$ ، و $(a + b)^2$ لا يساوي $a^2 + b^2$ ($(3 + 4)^2 = 49$ و $3^2 + 4^2 = 25$).",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P3", "3am_quwat-adad-nisbi_P4"]
+  },
+  "MISC-QUWA-FRACTION-POWER": {
+    "label": "رفع البسط وحده إلى القوة ($\\left(\\dfrac{2}{3}\\right)^3 = \\dfrac{8}{3}$)",
+    "explanation": "الأس خارج القوسين يخصّ البسط والمقام معًا: $\\left(\\dfrac{a}{b}\\right)^n = \\dfrac{a^n}{b^n}$ ، مثلًا $\\left(\\dfrac{2}{3}\\right)^3 = \\dfrac{8}{27}$ .",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P3"]
+  },
+  "MISC-QUWA-FORGET-EXPONENT-ONE": {
+    "label": "نسيان أن $a = a^1$ عند تجميع القوى",
+    "explanation": "العدد $a$ وحده قوة أسها 1: $5^6 \\times 5 = 5^6 \\times 5^1 = 5^7$ ، و $\\dfrac{2^7}{2 \\times 2^4} = \\dfrac{2^7}{2^5} = 2^2$ .",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P3"]
+  },
+  "MISC-QUWA-EXP-SIGN-SLIP": {
+    "label": "خطأ في إشارة الأس عند جمع الأسس أو طرحها",
+    "explanation": "نطبّق قواعد الحساب على الأعداد النسبية على الأسس: $3^{-2} \\times 3^5 = 3^{-2+5} = 3^3$ و $\\dfrac{4^7}{4^{-2}} = 4^{7-(-2)} = 4^9$ ؛ طرح عدد سالب هو إضافة معاكسه.",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P3"]
+  },
+  "MISC-QUWA-DECISION-UNCHECKED": {
+    "label": "قرار دون مقارنة القيم المحسوبة",
+    "explanation": "قبل أن نقرّر (يكفي / لا يكفي، أيّهما أكبر، متى) نحسب القوى المعنية ثم نقارن الأعداد التي حصلنا عليها، مع الانتباه إلى « أقل من » و « أقل من أو يساوي » وإلى الوحدات.",
+    "relatedLearningPoints": ["3am_quwat-adad-nisbi_P1", "3am_quwat-adad-nisbi_P3", "3am_quwat-adad-nisbi_P4"]
+  },
+  "MISC-MUSAWIYA-ONE-SIDE": {"label": "إجراء العملية على طرف واحد فقط من المساواة", "explanation": "لا تبقى المساواة صحيحة إلا إذا أجرينا العملية نفسها على طرفيها معًا. إضافة 3 إلى طرف واحد من $x = 5$ تعطي $x + 3 = 5$ ، وهي خاطئة.", "relatedLearningPoints": ["3am_musawiyat-amaliyat_P1", "3am_musawiyat-amaliyat_P2", "3am_musawiyat-amaliyat_P3"]},
+  "MISC-MUSAWIYA-ADD-MULT-MIX": {"label": "الجمع حيث يجب الضرب (أو العكس) عند تطبيق العملية", "explanation": "عند ضرب طرفي المساواة في $c$ يُضرب كلّ حدّ في $c$ ولا يُجمع معه $c$ . مثلًا ضرب $2x - 5 = 3$ في $-3$ يعطي $-6x + 15 = -9$ وليس $-6x - 8 = 0$ .", "relatedLearningPoints": ["3am_musawiyat-amaliyat_P1", "3am_musawiyat-amaliyat_P2", "3am_musawiyat-amaliyat_P3"]},
+  "MISC-MUSAWIYA-SIGN-NEG": {"label": "الضرب في عدد سالب مع إبقاء الإشارات", "explanation": "عند الضرب في عدد سالب تتغيّر إشارة كلّ حدّ في الطرفين معًا: $-3 \\times (2x - 6) = -6x + 18$ وليس $6x - 18$ . المساواة تبقى مساواة.", "relatedLearningPoints": ["3am_musawiyat-amaliyat_P2", "3am_musawiyat-amaliyat_P3"]},
+  "MISC-MUSAWIYA-DIV-ZERO": {"label": "القسمة على الصفر للحفاظ على المساواة", "explanation": "لا نقسم طرفي مساواة على $0$ . القسمة على $c$ مشروطة بـ $c \\neq 0$ ؛ والضرب في $0$ ممكن لكنه يُنتج $0 = 0$ .", "relatedLearningPoints": ["3am_musawiyat-amaliyat_P2"]},
+  "MISC-MUSAWIYA-MULT-ZERO": {"label": "استنتاج مساواة جديدة من $0 = 0$", "explanation": "الضرب في $0$ يحفظ المساواة لكنه يُضيّع كلّ المعلومة: $3 \\times 0 = 5 \\times 0$ ولا يعني ذلك أنّ $3 = 5$ .", "relatedLearningPoints": ["3am_musawiyat-amaliyat_P2"]},
+  "MISC-MUSAWIYA-TERM-LOST": {"label": "عدم تطبيق العملية على كلّ حدّ من الطرف", "explanation": "تُطبَّق العملية على الطرف كلّه: ضرب $2x - 5$ في $-3$ يعطي $-6x + 15$ ، فالحدّ الثابت يتأثّر أيضًا.", "relatedLearningPoints": ["3am_musawiyat-amaliyat_P1", "3am_musawiyat-amaliyat_P2", "3am_musawiyat-amaliyat_P3"]},
+  "MISC-MUSAWIYA-CONVERSE": {"label": "اعتبار مساواة صحيحة لأنّ العملية «مسموحة» وقد أُضيف عدد مختلف", "explanation": "لا نصل إلى مساواة صحيحة إلا بإضافة العدد نفسه إلى الطرفين. من $3 = 2x - 4$ بإضافة $8$ نجد $11 = 2x + 4$ ، أمّا $2x + 4 = -3$ فخاطئة.", "relatedLearningPoints": ["3am_musawiyat-amaliyat_P1", "3am_musawiyat-amaliyat_P3"]},
+  "MISC-MUSAWIYA-VALUE-CHECK-ONLY": {"label": "الحكم من قيمة واحدة دون استعمال الخاصية", "explanation": "تعويض قيمة واحدة لا يُثبت مساواة من أجل كلّ القيم؛ وللانتقال من مساواة معطاة إلى أخرى نستعمل عملية على الطرفين.", "relatedLearningPoints": ["3am_musawiyat-amaliyat_P3"]},
+  "MISC-MUSAWIYA-DOUBT-OP": {"label": "الظنّ بأنّ عملية على الطرفين معًا تُفسد المساواة", "explanation": "إضافة العدد نفسه إلى طرفين متساويين (أو طرحه أو الضرب فيه أو القسمة عليه) تُبقيهما متساويين، فالمساواة الناتجة صحيحة.", "relatedLearningPoints": ["3am_musawiyat-amaliyat_P1", "3am_musawiyat-amaliyat_P2", "3am_musawiyat-amaliyat_P3"]},
+  "MISC-MUSAWIYA-PREREQ": {"label": "خطأ في كفاءة سابقة (نشر، كسور، نسبة، فيثاغورس) داخل تمرين عن المساويات", "explanation": "هذه الخطوة تستعمل كفاءة من درس آخر؛ أعد حسابها بقاعدتها الخاصة ثم عد إلى خواص المساويات.", "relatedLearningPoints": ["3am_musawiyat-amaliyat_P3"]},
+  "MISC-MUSAWIYA-DECISION": {"label": "قرار دون مقارنة القيم المحسوبة", "explanation": "قبل أن نقرّر (يكفي / لا يكفي) نحسب القيمة ثم نقارنها بالمعطى، مع الانتباه إلى الوحدات.", "relatedLearningPoints": ["3am_musawiyat-amaliyat_P3"]},
+  "MISC-MUADALA-SIGN-KEPT": {"label": "نقل حدّ إلى الطرف الآخر دون تغيير إشارته", "explanation": "عندما ينتقل حدّ عبر علامة « = » تتغيّر إشارته لأنّنا نضيف معاكسه إلى الطرفين. في $3x - 5 = x + 7$ ننقل $x$ فنطرحه: $2x - 5 = 7$ وليس $4x - 5 = 7$ .", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P3", "3am_muadalat-darajat-ula_P4"]},
+  "MISC-MUADALA-ONE-SIDE": {"label": "إجراء العملية على طرف واحد من المعادلة", "explanation": "لا تبقى المعادلة صحيحة إلا إذا أجرينا العملية نفسها على الطرفين معًا؛ إضافة $5$ إلى طرف واحد تغيّر الحلّ.", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P3", "3am_muadalat-darajat-ula_P4"]},
+  "MISC-MUADALA-DIV-PART": {"label": "القسمة على المعامل في حدّ واحد فقط", "explanation": "عند القسمة على $a$ نقسم كلّ حدّ من الطرفين: من $4x = 16 + 8$ نجد $x = \\dfrac{16 + 8}{4}$ وليس $x = 16 + 2$ .", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P3"]},
+  "MISC-MUADALA-DIV-WRONG": {"label": "ضرب العدد أو طرحه بدل القسمة على معامل المجهول", "explanation": "من $ax = n$ نجد $x = \\dfrac{n}{a}$ : القسمة هي العملية العكسية للضرب في $a$ ، لا الضرب ولا الطرح.", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P3", "3am_muadalat-darajat-ula_P4"]},
+  "MISC-MUADALA-NEG-COEF": {"label": "فقدان الإشارة عند القسمة على معامل سالب", "explanation": "من $-3x = 12$ نقسم الطرفين على $-3$ فنجد $x = -4$ ، لا $x = 4$ .", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P3", "3am_muadalat-darajat-ula_P4"]},
+  "MISC-MUADALA-NO-CHECK": {"label": "عدم التحقّق من الحلّ", "explanation": "التحقّق بالتعويض في المعادلة الأصلية (أو في نصّ المسألة) هو الذي يكشف أخطاء الحساب والترجمة.", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P2", "3am_muadalat-darajat-ula_P3", "3am_muadalat-darajat-ula_P4"]},
+  "MISC-MUADALA-UNKNOWN-UNIT": {"label": "تسمية المجهول دون وحدة أو بصفة مبهمة", "explanation": "نكتب مثلًا: « نسمّي $x$ ثمن الكرّاس الواحد بالدينار » ، لا « $x$ الكرّاس » ولا « $x$ الثمن ».", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P4"]},
+  "MISC-MUADALA-TRANSLATE": {"label": "ترجمة خاطئة لعبارة في نصّ المسألة", "explanation": "« يقلّ عن » تُترجم بالطرح و « ضعف » بالضرب في $2$ و « يزيد عن » بالجمع؛ نترجم كلّ معطى بدلالة المجهول ثمّ نكتب المساواة.", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P4"]},
+  "MISC-MUADALA-SOLUTION-CONTEXT": {"label": "قبول حلّ لا يناسب القصة", "explanation": "بعد حلّ المعادلة نتحقّق أنّ الحلّ يناسب القصة: عمر موجب، عدد أشخاص صحيح، علامة بين $0$ و $20$ .", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P4"]},
+  "MISC-MUADALA-PARTIAL-SOLVE": {"label": "التوقّف عند $ax = n$ دون القسمة", "explanation": "الحلّ هو قيمة $x$ نفسها: بعد $3x = 12$ نقسم على $3$ لنجد $x = 4$ .", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P3", "3am_muadalat-darajat-ula_P4"]},
+  "MISC-MUADALA-DEGREE": {"label": "الخلط في درجة المعادلة", "explanation": "المعادلة من الدرجة الأولى يظهر فيها المجهول بقوّة $1$ فقط؛ $x^2 + 1 = 5$ ليست منها.", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P1"]},
+  "MISC-MUADALA-NOT-EQUATION": {"label": "اعتبار عبارة بلا علامة مساواة معادلة (أو العكس)", "explanation": "المعادلة مساواة، فلا بدّ فيها من علامة « = » ؛ $4y - 3$ عبارة جبرية وليست معادلة.", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P1"]},
+  "MISC-MUADALA-SOLUTION-MEANING": {"label": "الخلط في معنى المجهول والحلّ", "explanation": "المجهول حرف نبحث عن قيمته، وحلّ المعادلة عدد يجعل الطرفين متساويين عند تعويضه.", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P1"]},
+  "MISC-MUADALA-SIDE-CONFUSION": {"label": "الخلط بين طرفي المعادلة", "explanation": "الطرف الأيسر هو ما يقع يسار علامة « = » والأيمن ما يقع يمينها.", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P1"]},
+  "MISC-MUADALA-CHECK-ONE-SIDE": {"label": "الحكم على عدد دون حساب الطرفين ومقارنتهما", "explanation": "نعوّض العدد في الطرفين ونحسب كلًّا منهما ثمّ نقارن: يكفي أن يختلفا ليكون العدد غير حلّ.", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P1", "3am_muadalat-darajat-ula_P2"]},
+  "MISC-MUADALA-SUBST": {"label": "تعويض خاطئ للقيمة مكان المجهول", "explanation": "$3x - 5$ عند $x = 4$ تساوي $3 \\times 4 - 5 = 7$ (الجداء)، لا $3 + 4 - 5$ .", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P2"]},
+  "MISC-MUADALA-PREREQ": {"label": "خطأ في كفاءة سابقة داخل مسألة عن المعادلات", "explanation": "هذه الخطوة تستعمل كفاءة من درس آخر (تبسيط عبارة، فيثاغورس، مجموع زوايا مثلث...)؛ أعد حسابها بقاعدتها ثمّ عد إلى المعادلة.", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P3", "3am_muadalat-darajat-ula_P4"]},
+  "MISC-MUADALA-DECISION": {"label": "قرار دون مقارنة القيم المحسوبة", "explanation": "قبل أن نقرّر (يكفي / لا يكفي، أرخص) نحسب القيمتين ونقارنهما مع الانتباه إلى الوحدة.", "relatedLearningPoints": ["3am_muadalat-darajat-ula_P4"]},
+  "MISC-MUQARANA-NISBIYA-BDG": {"label": "اعتبار العدد السالب الأبعد عن الصفر هو الأكبر ($-5 > -3$ لأن $5 > 3$)", "explanation": "بين عددين سالبين يكون الأصغر هو الأبعد عن الصفر: $-5 < -3$ لأن مسافة $-5$ إلى الصفر (5) أكبر من مسافة $-3$ (3). مقارنة المسافتين تعطي الحكم معكوسًا عندما يكون العددان سالبين.", "relatedLearningPoints": ["2am_muqarana-nisbiya_P1"]},
+  "MISC-MUQARANA-NISBIYA-DAN": {"label": "مقارنة الجزء العشري كأنه عدد طبيعي ($0{,}25 > 0{,}5$ لأن $25 > 5$ ، أو $-1{,}91$ و $-1{,}9$ « متساويان » أو معكوسان بسبب $91$ و $9$)", "explanation": "نكتب العددين بالعدد نفسه من الأرقام بعد الفاصلة قبل المقارنة: $0{,}5 = 0{,}50 > 0{,}25$ و $1{,}9 = 1{,}90 < 1{,}91$ . وعند السالبين نقارن المسافتين إلى الصفر ثم نعكس الحكم.", "relatedLearningPoints": ["2am_muqarana-nisbiya_P1","2am_muqarana-nisbiya_P2"]},
+  "MISC-MUQARANA-NISBIYA-ZS": {"label": "اعتبار الصفر أصغر من الأعداد السالبة ($0 < -4$)", "explanation": "الصفر أكبر من كل عدد سالب وأصغر من كل عدد موجب: $-4 < 0 < 4$ . على المستقيم المدرّج يقع الصفر على يمين كل عدد سالب.", "relatedLearningPoints": ["2am_muqarana-nisbiya_P2","2am_muqarana-nisbiya_P3"]},
+  "MISC-MUQARANA-NISBIYA-SI": {"label": "إهمال الإشارة عند المقارنة ($-7 > 3$ لأن $7 > 3$)", "explanation": "عند اختلاف الإشارتين يكفي النظر إلى الإشارة: كل عدد سالب أصغر من كل عدد موجب، مهما كانت مسافته إلى الصفر: $-7 < 3$ .", "relatedLearningPoints": ["2am_muqarana-nisbiya_P2"]},
+  "MISC-MUQARANA-NISBIYA-OD": {"label": "عكس اتجاه الترتيب (تصاعدي بدل تنازلي أو العكس)", "explanation": "الترتيب التصاعدي يبدأ بالأصغر ويستعمل الرمز $<$ ، والتنازلي يبدأ بالأكبر ويستعمل الرمز $>$ . نتحقق بقراءة السلسلة من اليسار إلى اليمين.", "relatedLearningPoints": ["2am_muqarana-nisbiya_P3"]},
+  "MISC-MUQARANA-NISBIYA-SBD": {"label": "ترتيب الأعداد النسبية حسب مسافاتها إلى الصفر", "explanation": "الترتيب بالقيمة ليس ترتيبًا بالمسافة إلى الصفر: $-5 < -1 < 4$ ، بينما حسب المسافة يأتي $-1$ قبل $4$ قبل $-5$ . العدد السالب البعيد عن الصفر هو الأصغر.", "relatedLearningPoints": ["2am_muqarana-nisbiya_P3"]},
+  "MISC-MUQARANA-NISBIYA-NNB": {"label": "الظنّ بأنه لا يوجد عدد بين عددين متقاربين أو متتاليين", "explanation": "بين أي عددين نسبيين مختلفين يوجد عدد نسبي ثالث على الأقل، مثل $-2{,}5$ بين $-3$ و $-2$ ، و $-0{,}25$ بين $-0{,}3$ و $-0{,}2$ .", "relatedLearningPoints": ["2am_muqarana-nisbiya_P3"]},
+  "MISC-MUQARANA-NISBIYA-EI": {"label": "حساب الحدّين ضمن العدد المحصور بينهما (متباينة غير صارمة)", "explanation": "العدد المحصور بين $a$ و $b$ بصرامة يحقق $a < x < b$ : لا يساوي أيًّا من الطرفين. مثلًا الأعداد الصحيحة بين $-2$ و $2$ هي $-1, 0, 1$ فقط.", "relatedLearningPoints": ["2am_muqarana-nisbiya_P3"]},
+  "MISC-MUQARANA-NISBIYA-IBS": {"label": "الخلط بين أكبر عدد صحيح أصغر من $x$ وأصغر عدد صحيح أكبر منه عند السالبين ($-3{,}7$ بين $-3$ و $-4$ فيُكتب $-3 < -3{,}7 < -4$)", "explanation": "العدد الصحيح الأصغر من $-3{,}7$ هو $-4$ ، والأكبر منه هو $-3$ : $-4 < -3{,}7 < -3$ . الحصر يُقرأ من الأصغر إلى الأكبر على المستقيم المدرّج.", "relatedLearningPoints": ["2am_muqarana-nisbiya_P3"]},
+  "MISC-MUQARANA-NISBIYA-ND": {"label": "اعتبار المسافة إلى الصفر عددًا سالبًا (المسافة بين $-4{,}5$ والصفر هي $-4{,}5$)", "explanation": "المسافة إلى الصفر لا تكون سالبة أبدًا: هي العدد دون إشارته، فالمسافة بين $-4{,}5$ والصفر هي $4{,}5$ .", "relatedLearningPoints": ["2am_muqarana-nisbiya_P1"]},
+  "MISC-MUQARANA-NISBIYA-SRR": {"label": "قراءة الرمز بالعكس ($a < b$ تُقرأ « $a$ أكبر من $b$ »)", "explanation": "الرمز $<$ يُقرأ « أصغر من » وطرفه المفتوح جهة العدد الأكبر: $-2{,}5 < 1$ . يُنصح بإعادة قراءة العبارة بالكلمات ثم بوضع العددين على المستقيم المدرّج.", "relatedLearningPoints": ["2am_muqarana-nisbiya_P3"]},
+  "MISC-MUQARANA-NISBIYA-NZS": {"label": "الخلط بين « الأقرب إلى الصفر » و « الأصغر »", "explanation": "الأقرب إلى الصفر هو صاحب أصغر مسافة إلى الصفر، وليس الأصغر قيمة: بين $-2$ و $-7$ الأقرب إلى الصفر هو $-2$ بينما الأصغر هو $-7$ .", "relatedLearningPoints": ["2am_muqarana-nisbiya_P1","2am_muqarana-nisbiya_P3"]},
+  "MISC-NASHR-FIRST-ONLY": {"label": "العدد (أو الحرف) الذي أمام القوسين يضرب الحدّ الأول وحده ($3(x + 4) = 3x + 4$)", "explanation": "العدد الذي أمام القوسين يضرب كل حدّ بين القوسين: $3(x + 4) = 3 \\times x + 3 \\times 4 = 3x + 12$ . من أجل $x = 1$ : $3(1 + 4) = 15$ بينما $3x + 4 = 7$ .", "relatedLearningPoints": ["3am_nashr-jabri-3am_P1", "3am_nashr-jabri-3am_P2", "3am_nashr-jabri-3am_P4"]},
+  "MISC-NASHR-SIGN-NEG": {"label": "ضياع الإشارة السالبة للعامل أو لحدّ ($-2(x + 5) = -2x + 10$ أو $(x - 3)(x + 2) = x^2 + 2x + 3x - 6$)", "explanation": "كل جداء يحمل إشارته: $-2 \\times 5 = -10$ ، و $(-3) \\times x = -3x$ . اكتب الجداءات كلها بإشاراتها قبل الجمع، ثم تحقّق بتعويض $x$ بعدد صغير.", "relatedLearningPoints": ["3am_nashr-jabri-3am_P1", "3am_nashr-jabri-3am_P2", "3am_nashr-jabri-3am_P4"]},
+  "MISC-NASHR-NEG-NEG": {"label": "جداء عددين سالبين يُؤخذ سالبًا ($(-3) \\times (-4) = -12$ ، أي $(x - 3)(x - 4) = x^2 - 7x - 12$)", "explanation": "جداء عددين لهما الإشارة نفسها موجب: $(-3) \\times (-4) = +12$ ، فـ $(x - 3)(x - 4) = x^2 - 4x - 3x + 12 = x^2 - 7x + 12$ . من أجل $x = 1$ : $(1 - 3)(1 - 4) = 6$ .", "relatedLearningPoints": ["3am_nashr-jabri-3am_P1", "3am_nashr-jabri-3am_P2", "3am_nashr-jabri-3am_P4"]},
+  "MISC-NASHR-PRIORITY": {"label": "جمع الأعداد قبل الضرب ($3 + 5(x - 2) = 8(x - 2)$)", "explanation": "الضرب أولى بالإجراء من الجمع: $3 + 5(x - 2)$ مجموع حدّه الثاني جداء، فننشر الجداء ثم نجمع: $3 + 5x - 10 = 5x - 7$ . من أجل $x = 2$ : $3 + 5 \\times 0 = 3$ بينما $8(x - 2) = 0$ .", "relatedLearningPoints": ["3am_nashr-jabri-3am_P1", "3am_nashr-jabri-3am_P4"]},
+  "MISC-NASHR-PRODUCT-MISSING": {"label": "نسيان جداءات عند نشر $(a + b)(c + d)$ (الاكتفاء بـ $ac + bd$ أو بثلاثة جداءات)", "explanation": "نشر $(a + b)(c + d)$ يعطي أربعة جداءات: $ac + ad + bc + bd$ . من أجل $x = 1$ : $(1 + 4)(1 + 1) = 10$ بينما $x^2 + 4 = 5$ .", "relatedLearningPoints": ["3am_nashr-jabri-3am_P2", "3am_nashr-jabri-3am_P3", "3am_nashr-jabri-3am_P4"]},
+  "MISC-NASHR-LETTER-NOT-SQUARED": {"label": "عدم ضرب الحروف عند نشر $x(x + 5)$ ($x \\times x$ تُكتب $x$ أو $2x$)", "explanation": "$x \\times x = x^2$ : $x(x + 5) = x^2 + 5x$ . الأس يتغيّر عند ضرب حرف في نفسه، لا عند الجمع.", "relatedLearningPoints": ["3am_nashr-jabri-3am_P1"]},
+  "MISC-NASHR-SQUARE-TERMWISE": {"label": "مربّع عبارة هو مجموع مربّعي حدّيها ($(x + 3)^2 = x^2 + 9$)", "explanation": "$(x + 3)^2 = (x + 3)(x + 3)$ جداء قوسين، فيعطي أربعة جداءات: $x^2 + 3x + 3x + 9 = x^2 + 6x + 9$ . من أجل $x = 1$ : $(1 + 3)^2 = 16$ بينما $x^2 + 9 = 10$ .", "relatedLearningPoints": ["3am_nashr-jabri-3am_P2", "3am_nashr-jabri-3am_P4"]},
+  "MISC-NASHR-FACTOR-TWICE": {"label": "ضرب العدد في القوسين معًا ($2(x - 3)(3x + 4) = (2x - 6)(6x + 8)$)", "explanation": "عدد واحد يضرب العبارة كلها مرّة واحدة: يمكن إدخاله في قوس واحد فقط. $2(x - 3)(3x + 4) = (2x - 6)(3x + 4)$ .", "relatedLearningPoints": ["3am_nashr-jabri-3am_P4", "3am_nashr-jabri-3am_P2"]},
+  "MISC-NASHR-CORNER-TWICE": {"label": "الركن المشترك بين شريطين يُحسب مرّتين أو يُنسى ($40x + 25x$ دون ردّ $x^2$)", "explanation": "إذا اقتطعنا شريطين يتقاطعان فالمربّع المشترك طُرح مرّتين، فنردّه مرّة واحدة: المساحة المطروحة $= 40x + 25x - x^2$ والمساحة المتبقية $= 1000 - 65x + x^2$ .", "relatedLearningPoints": ["3am_nashr-jabri-3am_P3"]},
+  "MISC-NASHR-AREA-SIDE-MISSING": {"label": "مساحة جزء تُكتب ببعد واحد أو ببعدين مجموعين لا مضروبين", "explanation": "مساحة المستطيل جداء بعديه: جزء أبعاده $3$ و $x + 2$ مساحته $3(x + 2)$ ، لا $3$ ولا $3 + x + 2$ . مساحة المستطيل الكبير = مجموع مساحات أجزائه.", "relatedLearningPoints": ["3am_nashr-jabri-3am_P3"]},
+  "MISC-NASHR-ONE-VALUE-PROOF": {"label": "الاكتفاء بقيمة واحدة لـ $x$ لإثبات مساواة", "explanation": "قيمة واحدة تُثبت أنّ مساواة خاطئة (مثال مضاد)، ولا تُثبت أنها صحيحة من أجل كل $x$ : $4x^2 = x^2 + 6x$ من أجل $x = 2$ فقط. لإثبات مساواة ننشر الطرفين فنجد الشكل نفسه.", "relatedLearningPoints": ["3am_nashr-jabri-3am_P4", "3am_nashr-jabri-3am_P3"]},
+  "MISC-NASHR-DIFFERENT-LOOK": {"label": "الحكم بأنّ عبارتين مكتوبتين بشكلين مختلفين غير متساويتين دون نشرهما", "explanation": "عبارتان قد تبدوان مختلفتين وتساويان العبارة نفسها بعد النشر والتبسيط: ننشر الطرفين ثم نقارن الشكلين المبسّطين.", "relatedLearningPoints": ["3am_nashr-jabri-3am_P4", "3am_nashr-jabri-3am_P3", "3am_nashr-jabri-3am_P1"]},
+  "MISC-NASHR-X-X2-MERGED": {"label": "جمع حدّ في $x^2$ مع حدّ في $x$ بعد النشر ($x^2 + 5x = 6x^2$)", "explanation": "$x^2$ و $x$ ليسا متشابهين: لا يُجمعان. نرتّب الحدود فقط: $x^2 + 5x + 4$ .", "relatedLearningPoints": ["3am_nashr-jabri-3am_P4"]},
+  "MISC-NASHR-DECISION-UNCHECKED": {"label": "اتخاذ قرار دون حساب القيمة المعطاة بعد التعويض", "explanation": "قبل أن نقرّر (يكفي أو لا يكفي، يطابق أو لا يطابق) نعوّض $x$ بالقيمة المعطاة في الشكل المبسّط، ثم نقارن العدد الحاصل بالعدد المعطى.", "relatedLearningPoints": ["3am_nashr-jabri-3am_P4", "3am_nashr-jabri-3am_P3"]},
+  "MISC-RABI-ADD": {"label":"جمع الفرق نفسه بدل الضرب في العدد نفسه ($5 \\to 6$ فيصير $625 \\to 626$)","explanation":"في جدول تناسبية يُضرب العددان في العدد نفسه ولا يُضاف إليهما العدد نفسه: من 5 إلى 6 نضرب في $1{,}2$ ، فيصير 625 إلى $625 \\times 1{,}2 = 750$ لا إلى 626.","relatedLearningPoints":["2am_rabi-mutanasib_P1","2am_rabi-mutanasib_P3"]},
+  "MISC-RABI-ALIGN": {"label":"جدول مختلّ المحاذاة: وضع كمية مقابل كمية أو ثمن مقابل ثمن","explanation":"يوضع في العمود الواحد عددان يخصان الشيء نفسه (الكمية وثمنها). إذا وُضعت الكمية الأولى مع ثمن شيء آخر فلا يصلح الجدول لحساب الرابع المتناسب.","relatedLearningPoints":["2am_rabi-mutanasib_P1","2am_rabi-mutanasib_P2"]},
+  "MISC-RABI-CROSS": {"label":"أخذ الجداءين على القطر غير المناسب (الجداءان المتصالبان يخلطان العددين)","explanation":"الجداءان المتصالبان في الجدول $\\begin{array}{c|c} a & c \\\\ \\hline b & d \\end{array}$ هما $a \\times d$ و $b \\times c$ : كل جداء يضم عددًا من سطر وعددًا من السطر الآخر في عمودين مختلفين. $a \\times b$ جداء عددين من العمود نفسه.","relatedLearningPoints":["2am_rabi-mutanasib_P2"]},
+  "MISC-RABI-INV": {"label":"قسمة بدل الضرب أو مقلوب معامل التناسبية ($a \\div b$ بدل $b \\div a$)","explanation":"معامل التناسبية هو خارج قسمة عدد السطر الثاني على مقابله في السطر الأول ($b \\div a$) ، وليس العكس. اقلب الاتجاه فتنقلب الدلالة (ثمن الكيلوغرام يصير كمية الكيلوغرامات للدينار الواحد).","relatedLearningPoints":["2am_rabi-mutanasib_P1"]},
+  "MISC-RABI-LIMIT": {"label":"اختيار أكبر عدد من النتائج بدل أصغرها عند تعدّد المكوّنات","explanation":"عندما تلزم عدة مكوّنات معًا، يتوقف الإنتاج عند أول مكوّن ينفد: العدد الأقصى هو أصغر الأعداد التي حسبناها وليس أكبرها.","relatedLearningPoints":["2am_rabi-mutanasib_P1","2am_rabi-mutanasib_P3"]},
+  "MISC-RABI-MULROW": {"label":"ضرب العددين المعلومين من السطر نفسه أو من العمود نفسه ($5 \\times 625$)","explanation":"الرابع المتناسب يُحسب من الأعداد الثلاثة بعلاقة جداء وقسمة: $x = \\dfrac{b \\times c}{a}$ ، وليس بضرب عددين من العمود نفسه. العدد الناتج يجب أن يبقى مناسبًا للوضعية.","relatedLearningPoints":["2am_rabi-mutanasib_P1","2am_rabi-mutanasib_P2"]},
+  "MISC-RABI-ROUND": {"label":"تقريب خارج القسمة الوسيط فيضيع التطابق ($10 \\div 3 \\approx 3{,}33$ ثم $3{,}33 \\times 12 = 39{,}96$)","explanation":"إذا لم يكن ثمن الوحدة عددًا عشريًا فلا نقرّبه قبل نهاية الحساب: نحتفظ به كسرًا أو نغيّر الطريقة (مثلًا نضرب أولًا ثم نقسم): $10 \\times 12 \\div 3 = 40$ .","relatedLearningPoints":["2am_rabi-mutanasib_P1","2am_rabi-mutanasib_P3"]},
+  "MISC-RABI-TOTAL": {"label":"مقارنة الثمنين الكليين دون النظر إلى الكميتين (الأرخص هو الأقل ثمنًا كليًّا)","explanation":"لا نقارن إلا ما قُدّر بالوحدة نفسها: نحسب ثمن الوحدة الواحدة في كل عرض (أو ثمن الكمية نفسها) ثم نقارن. ثمنان كليّان لكميتين مختلفتين لا يُقارنان.","relatedLearningPoints":["2am_rabi-mutanasib_P3"]},
+  "MISC-RABI-UNITONLY": {"label":"التوقف عند قيمة الوحدة الواحدة وعدم ضربها في الكمية المطلوبة","explanation":"المرور بالوحدة يتم على مرحلتين: نحسب قيمة الوحدة الواحدة ثم نضربها في الكمية المطلوبة. قيمة الوحدة ليست الجواب إلا إذا طُلبت الوحدة الواحدة.","relatedLearningPoints":["2am_rabi-mutanasib_P1"]},
+  "MISC-NISBA3-DIV100-ONLY": {"label":"يقسم على مئة وينسى أن يضرب في النسبة (يأخذ $1\\,\\%$ بدل $t\\,\\%$)","explanation":"$t\\,\\%$ من عدد هي $t$ حصّة من مئة حصّة متساوية: نقسم العدد على مئة ثم نضرب في $t$ ، أي نضرب في $\\dfrac{t}{100}$ . مثلا $35\\,\\%$ من $240$ هي $240 \\times 0{,}35 = 84$ لا $2{,}4$ .","relatedLearningPoints":["3am_nisba-miawiya-3am_P1"]},
+  "MISC-NISBA3-MULT-T": {"label":"يضرب في $t$ بدل أن يضرب في $\\dfrac{t}{100}$","explanation":"النسبة المئوية هي $t$ من مئة: العدد الذي نضرب فيه هو $\\dfrac{t}{100}$ لا $t$ . مثلا $15\\,\\%$ من $80$ ليست $80 \\times 15 = 1\\,200$ (أكبر من $80$ !) بل $80 \\times 0{,}15 = 12$ .","relatedLearningPoints":["3am_nisba-miawiya-3am_P1", "3am_nisba-miawiya-3am_P2"]},
+  "MISC-NISBA3-ADD-T": {"label":"يضيف النسبة أو يطرحها كعدد ($x + t$ أو $x - t$)","explanation":"النسبة المئوية ليست عددا يُجمع إلى الثمن: هي كسر من الثمن. زيادة $15\\,\\%$ على $2\\,000$ تضيف $15\\,\\%$ من $2\\,000$ أي $300$ لا $15$ . ننتقل من الأصل إلى الناتج بالضرب في $1 + \\dfrac{t}{100}$ .","relatedLearningPoints":["3am_nisba-miawiya-3am_P1", "3am_nisba-miawiya-3am_P3"]},
+  "MISC-NISBA3-COEF-INC": {"label":"زيادة بـ $15\\,\\%$ هي الضرب في $0{,}15$ (ينسى حصص الأصل)","explanation":"الزيادة بـ $t\\,\\%$ تُبقي الأصل كلّه (مئة حصّة) وتضيف إليه $t$ حصّة: معاملها $1 + \\dfrac{t}{100}$ ، فمعامل زيادة $15\\,\\%$ هو $1{,}15$ . الضرب في $0{,}15$ يعطي الزيادة وحدها.","relatedLearningPoints":["3am_nisba-miawiya-3am_P3"]},
+  "MISC-NISBA3-COEF-DEC": {"label":"تخفيض بـ $20\\,\\%$ هو الضرب في $1{,}2$ أو في $0{,}2$","explanation":"التخفيض بـ $t\\,\\%$ يسحب $t$ حصّة من مئة حصّة: معامله $1 - \\dfrac{t}{100}$ ، فمعامل تخفيض $20\\,\\%$ هو $0{,}8$ . الضرب في $1{,}2$ يزيد الثمن، والضرب في $0{,}2$ يعطي قيمة التخفيض وحدها.","relatedLearningPoints":["3am_nisba-miawiya-3am_P3"]},
+  "MISC-NISBA3-WRONG-BASE": {"label":"يحسب النسبة على الثمن الجديد بدل الثمن القديم","explanation":"النسبة تُحسب دائما على الكمية الأصلية (الثمن القديم). الثمن الجديد هو الأصل مضروبا في المعامل، فنجد الأصل بالقسمة على المعامل لا بتطبيق النسبة المعاكسة على الثمن الجديد. مثلا $4\\,440$ بعد زيادة $20\\,\\%$ أصلها $4\\,440 \\div 1{,}2 = 3\\,700$ لا $4\\,440 \\times 0{,}8$ .","relatedLearningPoints":["3am_nisba-miawiya-3am_P2", "3am_nisba-miawiya-3am_P3"]},
+  "MISC-NISBA3-PART-WHOLE-SWAP": {"label":"يقلب الكسر فيقسم الكلّ على الجزء ($\\dfrac{b}{a}$ بدل $\\dfrac{a}{b}$)","explanation":"النسبة المئوية لجزء $a$ من كلّ $b$ هي العدد $t$ حيث $\\dfrac{a}{b} = \\dfrac{t}{100}$ : الكلّ تحت مئة والجزء تحت $t$ . قسمة الكلّ على الجزء تعطي نسبة أكبر من مئة وهذا لا يناسب جزءا.","relatedLearningPoints":["3am_nisba-miawiya-3am_P2"]},
+  "MISC-NISBA3-SUM-RATES": {"label":"يجمع أو يتوسّط نسبتين مأخوذتين من كلّين مختلفين","explanation":"لا نجمع نسبتين مئويتين ولا نأخذ متوسطهما إلا إذا كان الكلّان متساويين. نحسب الجزء في كل مجموعة، نجمع الأجزاء ثم نقسمها على مجموع الكلّين. وكذلك زيادة $20\\,\\%$ ثم تخفيض $10\\,\\%$ ليسا زيادة $10\\,\\%$ بل الضرب في $1{,}2 \\times 0{,}9 = 1{,}08$ .","relatedLearningPoints":["3am_nisba-miawiya-3am_P2", "3am_nisba-miawiya-3am_P3"]},
+  "MISC-NISBA3-UNDO": {"label":"يظنّ أن زيادة بنسبة ثم تخفيضا بالنسبة نفسها يعيدان الثمن إلى أصله","explanation":"النسبة الثانية تُحسب على الثمن الجديد لا على الأصل. زيادة $10\\,\\%$ ثم تخفيض $10\\,\\%$ تعطي $1{,}1 \\times 0{,}9 = 0{,}99$ ، أي الثمن الأصلي مضروبا في $0{,}99$ : لا نعود إلى الأصل.","relatedLearningPoints":["3am_nisba-miawiya-3am_P3"]},
+  "MISC-NISBA3-ROUND-EARLY": {"label":"يدوّر نتيجة وسيطة قبل نهاية الحساب","explanation":"ندوّر النتيجة النهائية فقط: التدوير في مرحلة وسطى يضيف خطأ يكبر في الحسابات اللاحقة.","relatedLearningPoints":["3am_nisba-miawiya-3am_P2", "3am_nisba-miawiya-3am_P3"]},
+  "MISC-NISBA3-DECIMAL-SHIFT": {"label":"يخطئ في إزاحة الفاصلة عند كتابة النسبة على شكل عدد عشري ($5\\,\\% = 0{,}5$)","explanation":"$t\\,\\%$ تعني $\\dfrac{t}{100}$ ، فنزيح الفاصلة منزلتين: $5\\,\\% = 0{,}05$ و $12{,}5\\,\\% = 0{,}125$ . إزاحتها منزلة واحدة تعطي $10$ أضعاف النسبة الصحيحة.","relatedLearningPoints":["3am_nisba-miawiya-3am_P1", "3am_nisba-miawiya-3am_P3"]},
+  "MISC-NISBA3-BIGGER-RATE": {"label":"يظنّ أن أكبر نسبة تخفيض تعطي دائما أقلّ ثمن","explanation":"نسبة التخفيض تُطبّق على ثمن أصلي قد يختلف من متجر إلى آخر. للمقارنة نحسب الثمن الجديد في كل متجر: تخفيض $15\\,\\%$ على $12\\,000$ يعطي $10\\,200$ بينما تخفيض $5\\,\\%$ على $9\\,000$ يعطي $8\\,550$ وهو أقلّ.","relatedLearningPoints":["3am_nisba-miawiya-3am_P3"]}
 }

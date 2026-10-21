@@ -629,6 +629,108 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'المساحة هي عدد وحدات المساحة (البلاطات) التي تغطّي السطح، والمحيط هو طول حدّه (عدد وحدات الطول على السياج): تبديل مواضع البلاطات يُبقي المساحة ويغيّر المحيط، وبحبل بطول ثابت نحصل على مساحات مختلفة ؛ وعدد الوحدات يتغيّر بتغيّر وحدة المساحة',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 3AM, unité 4 « الحساب الحرفي » (2026-10-20) — simplifier, supprimer les parenthèses.
+  'like-terms': {
+    // LE TERME SOUS LA MAIN : chaque terme d'une expression est une PIÈCE dessinée à sa forme (x² un carré de côté x, x une
+    // réglette de longueur x, 1 un petit carré ; le signe − une pièce « opposée » rouge). Monde `collect` : la main porte chaque
+    // pièce dans le plateau de SA forme ; une pièce d'une autre forme est refusée (ses valeurs à x diffèrent) ; une pièce et son
+    // opposée s'annulent ; l'expression réduite S'ÉCRIT quand tout est rangé, et sa valeur à x reste celle de l'expression de départ.
+    // Monde `brackets` : des caisses « +( … ) » / « −( … ) » ; la main fait sortir chaque pièce « telle quelle » ou « signe changé »
+    // et la valeur de l'expression à x (que la main règle aussi) refuse la mauvaise sortie. Chaque geste est une réponse : MANUEL (§6bis).
+    shows: 'نجمع الحدود المتشابهة فقط (لها الجزء الحرفي نفسه) فنجمع معاملاتها، ونحذف قوسين مسبوقين بـ $+$ دون تغيير الإشارات وقوسين مسبوقين بـ $-$ بتغيير إشارة كل حدّ بينهما، وقيمة العبارة لا تتغيّر',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 4 « الحساب الحرفي » (2026-10-21) — développer : k(a + b) et (a + b)(c + d).
+  'area-split': {
+    // LA COUPURE SOUS LA MAIN : un terrain de jardin d'école dont les deux côtés sont les facteurs (k, x + 4, x − 3, 2x + 1…). Monde
+    // `plot` : la main FAIT GLISSER la coupure (poignée sur un bord) jusqu'à l'endroit où l'écriture du côté change de terme, puis
+    // DÉCIDE le signe de chaque parcelle (une parcelle ôtée — une allée dallée — se soustrait ; la parcelle du COIN, ôtée deux fois,
+    // se rend) : le juge est l'aire comptée du terrain, au x que la main règle aussi ; une coupure ailleurs qu'au bord d'un terme et un
+    // signe faux sont refusés avec les deux aires. Monde `arrows` : l'expression est écrite, la main TRACE les flèches du facteur vers
+    // chaque terme de l'autre parenthèse (les flèches rouges du manuel) ; chaque produit partiel est jugé par sa valeur à x, puis les
+    // termes semblables se réunissent. Chaque geste validé est une réponse : MANUEL (§6bis).
+    shows: 'مساحة المستطيل تساوي جداء بعديه وتساوي مجموع مساحات أجزائه، فنحصل على النشر: $k(a+b)=ka+kb$ و $(a+b)(c+d)=ac+ad+bc+bd$ ، وكل حدّ في القوس الأول يضرب كل حدّ في القوس الثاني',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 11 « خاصية فيثاغورس، جيب تمام زاوية » (2026-10-20) — la propriété de Pythagore et sa contraposée.
+  'pythagoras-tanks': {
+    // LES BASSINS CARRÉS SOUS LA MAIN : une machine d'exposition scientifique — trois bassins carrés minces (même épaisseur : l'eau
+    // se mesure en AIRE) construits sur les côtés d'un triangle ABC articulé en A. La main tient l'ANGLE en A (mode `angle`) ou la
+    // LONGUEUR BC sur un ruban au dixième (mode `length`) ; « اسكب » verse l'eau des deux petits bassins (AB² + AC²) dans le grand
+    // (BC²) : plein juste seulement quand l'angle est droit, débordement s'il est aigu, vide s'il est obtus. La touche √ règle le
+    // ruban sur la longueur exacte √n. Chaque versement est un essai : MANUEL (§6bis).
+    shows: 'في مثلث قائم مربع طول الوتر يساوي مجموع مربعي طولي الضلعين الآخرين، وإذا لم تتحقّق المساواة فالمثلث غير قائم',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 3 « القوى ذات أسس نسبية صحيحة » (2026-10-21) — la puissance d'un nombre relatif.
+  'power-train': {
+    // L'EXPOSANT SOUS LA MAIN : un train part de la gare en portant 1 ; chaque wagon attelé à droite de la locomotive est
+    // « × a », chaque wagon à sa gauche est « ÷ a ». La main tient n, la longueur SIGNÉE du train (poignée de queue sur un rail
+    // gradué de −5 à 6, −/+, flèches) : le train porte aⁿ. Base négative : la charge change de signe à chaque wagon ; aucun
+    // wagon : 1 ; n wagons « ÷ » : 1/aⁿ. Monde `couple` : deux trains de même base attelés (B retourné pour diviser), les wagons
+    // × et ÷ s'annulent par paires : aᵐ × aⁿ = aᵐ⁺ⁿ, aᵐ ÷ aⁿ = aᵐ⁻ⁿ. Chaque exposant lâché est un essai : MANUEL (§6bis).
+    shows: 'القوة $a^n$ جداء $n$ عاملًا كلّها تساوي $a$ ، وإشارتها سالبة فقط إذا كان $a$ سالبًا و $n$ فرديًا ؛ $a^0 = 1$ و $a^{-n} = \\frac{1}{a^n}$ ؛ و $a^m \\times a^n = a^{m+n}$ و $\\frac{a^m}{a^n} = a^{m-n}$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 3 « الأعداد النسبية » (2026-10-21) — comparer et ranger des relatifs.
+  'zero-probe': {
+    // LA DISTANCE À ZÉRO SOUS LA MAIN : un capteur A est fixé à un nombre relatif (une altitude en mètres) ; un second capteur B
+    // pend au bout d'un câble qui part du zéro (la surface de la mer). La main tient la LONGUEUR du câble (nœud glissant sur
+    // l'échelle −10 … 10, −/+, flèches), le CÔTÉ (فوق / تحت الصفر) est un interrupteur à part : le nombre relatif de B est une sortie.
+    // Il faut rendre B plus bas / plus haut que A, ou entre deux repères ; sous le zéro, plus de câble rend B plus BAS ; un côté peut
+    // interdire une tâche (bouton « لا يوجد طول »). Chaque relâchement est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'من بين عددين نسبيين سالبين، الأصغر هو الذي له أكبر مسافة إلى الصفر ؛ والعدد السالب أصغر من الصفر ومن كل عدد موجب',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 5 « المساويات – المتباينات – المعادلات » (2026-10-21) — les opérations sur les deux membres d'une égalité.
+  'equality-lanes': {
+    // LE NOMBRE D'UNE OPÉRATION SOUS LA MAIN : une égalité dont x est un nombre caché ; deux coureurs se tiennent sur un mur gradué,
+    // chacun à la valeur de son membre (ils sont sur la même graduation ⇔ l'égalité est vraie). La main règle c (−9 … 9) et l'opération
+    // (+, −, ×, ÷), choisit QUI la reçoit (les deux, ou un seul) et appuie sur « نفّذ » : sur les deux membres l'égalité reste vraie,
+    // sur un seul elle se casse du poids de c. Diviser par 0 est refusé, multiplier par 0 vide l'égalité (0 = 0). Chaque pression est
+    // un essai : MANUEL (§6bis).
+    shows: 'لا تتغيّر مساواة عندما نضيف إلى طرفيها (أو نطرح منهما) العدد نفسه، ولا عندما نضرب طرفيها (أو نقسمهما) في العدد نفسه غير المعدوم؛ أمّا إذا مسّت العملية طرفًا واحدًا فتنكسر المساواة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 5 (2026-10-21) — résoudre ax + b = cx + d en traversant les termes avec leur signe, puis en divisant.
+  'term-ferry': {
+    // LE SIGNE D'UN TERME SOUS LA MAIN : une équation dont la solution est CACHÉE ; chaque membre est une rive, chaque terme une caisse. La
+    // main porte une caisse d'une rive à l'autre et choisit son signe à l'arrivée (« كما هو » ou « بعكس إشارته ») : changer le signe revient à
+    // ajouter l'opposé aux deux membres (l'équation garde sa solution), garder le signe la casse — le refus est le calcul des deux membres au x
+    // caché. Quand x est seul d'un côté (a·x = n), la main règle le diviseur ; « عوّض » écrit la vérification. Chaque geste est un essai : MANUEL.
+    shows: 'نحلّ معادلة من الشكل $ax + b = cx + d$ بإضافة معاكس حدّ إلى الطرفين (فيعبر الحدّ بإشارة معاكسة) ثم بقسمة الطرفين على معامل $x$ ، ونتحقق بالتعويض',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 2AM, unité 5 « التناسبية » (2026-10-21) — le quatrième proportionnel.
+  'fourth-gauges': {
+    // LE NOMBRE QUI MANQUE SOUS LA MAIN : une planche de prix de marchand (tableau 2×2 de cartes) dont UNE case manque ; la main tient ce
+    // nombre (poignée sur une règle, −/+, flèches, saisie) et trois balances d'égalité (« في الكيلو » : le prix d'une unité dans chaque
+    // colonne ; « بين العمودين » : combien de fois la quantité et le prix ont grandi ; « الجداءان » : les deux produits en croix)
+    // s'inclinent sous le doigt — elles ne s'équilibrent ENSEMBLE que pour un seul nombre ; une 4e balance « الفرق » (c − a contre d − b)
+    // s'équilibre au MAUVAIS nombre. Niveau متقدم : balances voilées jusqu'au relâchement. Chaque relâchement est un essai : MANUEL (§6bis).
+    shows: 'في جدول تناسبية، إذا علمنا ثلاثة أعداد فالعدد الرابع واحد فقط: يحسب بالمرور بالوحدة أو بمعامل التناسبية أو بالخاصية الجمعية أو الضربية أو بمساواة الجداءين المتصالبين $a \\times d = b \\times c$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 6 « التناسبية » (2026-10-21) — le pourcentage comme situation de proportionnalité.
+  'hundred-grid': {
+    // LE POURCENTAGE SOUS LA MAIN : un stock de x sacs coupé en 100 paquets égaux (un plateau de 10 × 10 cases, chaque case vaut x/100). La main
+    // PEINT t cases ; le panier reçoit t paquets, soit x × t/100 sacs. L'élève écrit sa réponse AVANT l'ouverture du panier (t % de x, le nouveau stock
+    // après +t % ou −t %), cherche le nombre de cases qui remplit un panier donné (le taux a/b = t/100), ou le stock entier dont une part est t % ;
+    // une augmentation AJOUTE t cases aux 100, une diminution en RETIRE t ; une hausse puis une baisse du même t % ne ramène pas au départ. Chaque
+    // « انقل » est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'لحساب $t\\%$ من عدد نضرب هذا العدد في $\\frac{t}{100}$ ؛ ونحسب نسبة مئوية من المساواة $\\frac{a}{b}=\\frac{t}{100}$ ؛ والزيادة بـ $t\\%$ هي الضرب في $1+\\frac{t}{100}$ والتخفيض هو الضرب في $1-\\frac{t}{100}$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'pin-rails': {
+    // LA PUNAISE SUR SA RAINURE ET LA RÈGLE SUR DEUX NŒUDS : un tableau de prix devient des points d'un repère — la main GLISSE chaque punaise
+    // le long de la rainure de sa colonne jusqu'à son prix (la punaise posée au mauvais prix retombe, le tableau fait foi) puis POSE une règle
+    // droite sur deux nœuds au choix (O ou une punaise) : elle touche exactement les nœuds de sa droite. Une boutique est proportionnelle quand
+    // une règle touche O et toutes les punaises ; des frais fixes laissent les punaises alignées mais O dehors ; un prix qui change les brise.
+    // En متقدم : décider sur des « photos » de points, puis LIRE sur la droite (la punaise glisse sur sa rainure ou le long de sa rangée
+    // jusqu'à la droite). Chaque lâcher est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'تمثّل وضعية تناسبية بنقط على استقامة واحدة مع مبدأ المعلم ؛ وإذا لم تمرّ المسطرة بالمبدأ أو لم تكن النقط على استقامة فليست الوضعية تناسبية ؛ ويُقرأ معامل التناسبية $a$ من $y = ax$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

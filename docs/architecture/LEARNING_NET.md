@@ -310,18 +310,34 @@ These rules complete `LESSON_DEVELOPMENT_GUIDE.md` §14.2 for any year other tha
 ## 4bis. Generation order (owner decision, 2026-10-13)
 
 Lessons are generated **along the net, not grade by grade**. `scripts/learning-net-queue.mjs` writes the queue to
-`docs/curriculum/GENERATION_QUEUE.md` (readable) and `docs/curriculum/generation-queue.json` (machine):
+`docs/curriculum/GENERATION_QUEUE.md` (readable) and `docs/curriculum/generation-queue.json` (machine). Batches take
+the queue's first entries that are still `coming_soon`, in order.
 
-1. **Phase A — the 4AM chains.** For each published 4AM lesson in catalogue order, the WHOLE upstream chain of its
-   items in earlier years (transitive closure of `requires` / `extends` / `consolidates`) is mapped to home lessons
-   and generated oldest first. Then the next 4AM lesson.
-2. **Phases B, C, D** — the same from the remaining 3AM lessons (with their own 1AM–2AM chains), then 2AM, then 1AM.
-3. **Phase E — isolated lessons** (no item, or items linked to nothing) come last.
-4. A **synthesis** enters the queue right after the last lesson of its unit.
-5. The queue also lists the **renvois en avant**: same-year prerequisites the textbook teaches later. The lesson that
+1. **Phase A — what the 4AM student needs NOW** (owner, 2026-10-20). The 4AM students already use the platform, so their
+   current needs come first, before lessons they will need later in the year or not at all in 4AM. The 4AM units are taken in
+   textbook order (`units_4am › number`, 1 → 14), and their lessons in catalogue order. For each lesson:
+   - take its **direct** prerequisites: the earlier-year items linked INTO its `programmeItems`, one hop, no closure;
+   - use the **most recent year** for each one: an item that a later year (< 4AM) extends is replaced by that extension, so
+     3AM is used, otherwise 2AM, otherwise 1AM. For example, `2am.m4.r08` → `3am.m5.r06`, so the queue takes
+     `muadalat-darajat-ula`, not `hall-mushkil-muadala`;
+   - map each item to its home lesson. Published lessons and lessons already queued are skipped. Within one 4AM lesson,
+     the oldest year comes first, then catalogue order.
+
+   A unit with no new need is listed as « rien à générer ».
+2. **Phase B — the full 4AM chains** (rule of 2026-10-13). For each 4AM lesson in catalogue order, the WHOLE upstream chain
+   of its items in earlier years (transitive closure of `requires` / `extends` / `consolidates`) is mapped to home lessons
+   and generated oldest first.
+3. **Phases C, D, E** — the same from the remaining 3AM lessons (with their own 1AM–2AM chains), then 2AM, then 1AM.
+4. **Phase F — isolated lessons** (no item, or items linked to nothing) come last.
+5. A **synthesis** enters the queue right after the last lesson of its unit, in any phase. In Phase A, for example,
+   `wadiya-idmajiya-tanasubiya-sura` follows #9–#11.
+6. The queue also lists the **renvois en avant**: same-year prerequisites the textbook teaches later. The lesson that
    suffers one recalls it itself (a « تذكّر » box), without building it.
 
-On 2026-10-13: 196 lessons — A 108, B 35, C 22, D 23, E 8; 18 renvois en avant.
+On 2026-10-13: 196 lessons — A 108, B 35, C 22, D 23, E 8 (the previous phase letters); 18 renvois en avant.
+On 2026-10-20 (10 lessons published): 186 — A 35 (34 lessons + 1 synthesis), B 63, C 35, D 22, E 23, F 8.
+Phase A does not change what a lesson builds. A Phase-A lesson whose own earlier prerequisites are not generated yet still
+reviews them in its « أستعدّ » (« راجع قبل أن تنطلق »), and they come in Phase B.
 
 ## 5. Editing the net
 

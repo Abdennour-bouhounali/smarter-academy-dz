@@ -705,6 +705,149 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { world: 'yard', mode: 'fence' }, ...P },
     advanced: { numbers: { world: 'yard', mode: 'rope' }, ...T('act-1') },
   },
+  // ── 3AM, unité 4 « الحساب الحرفي » — réduire une somme, supprimer des parenthèses (2026-10-20) ──
+  // LE TERME SOUS LA MAIN (like-terms, thème workbench) : chaque terme est une pile de pièces de bois à sa forme (x², x, 1), la main la
+  // porte dans la صينية de sa forme. مبتدئ (plateforme) : des x et des nombres seulement, lectures visibles, la forme réduite s'écrit
+  // seule — 2x + 3 + 4x + 1 + x, puis 5x + 6 − 2x − 4 (des pièces opposées s'annulent). متقدم (نشاط 1 du manuel) : des x² entrent,
+  // plus de lecture : l'élève écrit le coefficient de chaque صينية et « تحقّق » juge — 4x² + 7 − x − 2x² + 5x − 9, puis
+  // 3x² − 4x + 6 + x − 3x² − 2 (la صينية x² se vide : le terme disparaît). Le monde `brackets` (caisses « +( ) » / « −( ) ») se pose
+  // dans le module de la طريقة avec `world="brackets"` et `levels={false}`.
+  'like-terms': {
+    beginner: { numbers: { world: 'collect', tasks: [
+      { id: 'collect-1', expr: [{ c: 2, p: 1 }, { c: 3, p: 0 }, { c: 4, p: 1 }, { c: 1, p: 0 }, { c: 1, p: 1 }] },
+      { id: 'collect-2', expr: [{ c: 5, p: 1 }, { c: 6, p: 0 }, { c: -2, p: 1 }, { c: -4, p: 0 }] },
+    ] }, ...P },
+    advanced: { numbers: { world: 'collect', tasks: [
+      { id: 'collect-3', expr: [{ c: 4, p: 2 }, { c: 7, p: 0 }, { c: -1, p: 1 }, { c: -2, p: 2 }, { c: 5, p: 1 }, { c: -9, p: 0 }] },
+      { id: 'collect-4', expr: [{ c: 3, p: 2 }, { c: -4, p: 1 }, { c: 6, p: 0 }, { c: 1, p: 1 }, { c: -3, p: 2 }, { c: -2, p: 0 }] },
+    ] }, ...T('act-1') },
+  },
+  // ── 3AM, unité 4 « الحساب الحرفي » — développer (2026-10-21) ──
+  // LA COUPURE SOUS LA MAIN (area-split, thème schoolgarden) : un terrain du jardin de l'école dont les côtés sont les facteurs ;
+  // la main fait glisser la coupure puis DÉCIDE le signe de chaque parcelle (l'aire comptée du terrain est le juge). مبتدئ (plateforme) :
+  // k(x + 4) puis k(x − 3) — un massif, puis une allée dallée ôtée ; accolades, aires écrites et ligne réduite qui s'écrit seule.
+  // متقدم (نشاط 3 du manuel) : (x + 3)(x + 2) — quatre parcelles, deux coupures, deux parcelles semblables —, puis (x − 2)(x − 3) :
+  // deux allées qui se croisent, le COIN ôté deux fois se rend ; plus d'accolades ni d'aires, la main écrit le coefficient de chaque
+  // puissance. Le monde `arrows` (flèches du facteur vers chaque terme) se pose seul dans la طريقة avec `world="arrows"`, ses `tasks`
+  // et `levels={false}`.
+  'area-split': {
+    beginner: { numbers: { world: 'plot', tasks: [
+      { id: 'p1', h: { m: 0, n: 3 }, w: { m: 1, n: 4 } },
+      { id: 'p2', h: { m: 0, n: 2 }, w: { m: 1, n: -3 } },
+    ] }, ...P },
+    advanced: { numbers: { world: 'plot', tasks: [
+      { id: 'p3', h: { m: 1, n: 3 }, w: { m: 1, n: 2 } },
+      { id: 'p4', h: { m: 1, n: -2 }, w: { m: 1, n: -3 } },
+    ] }, ...T('act-3') },
+  },
+  // ── 3AM, unité 11 « خاصية فيثاغورس، جيب تمام زاوية » (2026-10-20) ──
+  // LES BASSINS CARRÉS SOUS LA MAIN (pythagoras-tanks, thème sciencefair). مبتدئ (plateforme) : bras 3 et 4, la main tient l'ANGLE
+  // en A ; « اسكب » : plein juste à 90° seulement, puis un angle plus petit (déborde) et plus grand (vide). متقدم (تمرين 6 : 5 et 12) :
+  // la main tient la LONGUEUR BC sur un ruban au dixième — il faut la PRÉVOIR (13) ; puis 2 et 3 : aucun dixième ne remplit, la touche
+  // √ donne √13 (une décision de plus, des nombres plus grands).
+  'pythagoras-tanks': {
+    beginner: { numbers: { mode: 'angle', b: 3, c: 4 }, ...P },
+    advanced: { numbers: { mode: 'length', b: 5, c: 12 }, ...T('ex-6') },
+  },
+  // ── 3AM, unité 3 « القوى ذات أسس نسبية صحيحة » (2026-10-21) ──
+  // L'EXPOSANT SOUS LA MAIN (power-train, thème railway) : un train part en portant 1, chaque wagon « × a » (ou « ÷ a » sous
+  // zéro) agit sur sa charge ; la main tient n, la longueur signée du train. مبتدئ (plateforme) : base −2, les charges 16, −32
+  // puis 1 (aucun wagon), charges écrites au-dessus de chaque wagon et paires de wagons négatifs liées. متقدم (معارف 6 : a⁻ⁿ) :
+  // base −3, −27, 81, 1/9 et −1/27 — des wagons « ÷ » sous zéro, et plus aucune charge intermédiaire écrite. Le monde `couple`
+  // (deux trains attelés) se pose seul dans معارف avec `world="couple"`, ses `tasks` et `levels={false}`.
+  'power-train': {
+    beginner: { numbers: { world: 'build', base: '-2', targets: ['16', '-32', '1'] }, ...P },
+    advanced: { numbers: { world: 'build', base: '-3', targets: ['-27', '81', '1/9', '-1/27'] }, ...T('know-6') },
+  },
+  // ── 3AM, unité 5 « المساويات – المتباينات – المعادلات » (2026-10-21) ──
+  // LE NOMBRE D'UNE OPÉRATION SOUS LA MAIN (equality-lanes, thème stadium) : x est un nombre caché ; deux coureurs se tiennent chacun à la
+  // valeur d'un membre. La main règle c et l'opération et choisit qui la reçoit. مبتدئ (plateforme : 10 = 4x − 2, x = 3) : quatre tâches d'une
+  // seule opération (−2, +2, ×3, ÷2). متقدم (c négatifs, deux opérations) : 5 = −3x + 1 (x = −4/3) — ×(−2), puis ×2 et −3, puis −1 et ÷(−3), jusqu'à
+  // x seul. Le test des niveaux mesure ces presets par leur nombre d'opérations.
+  'equality-lanes': {
+    beginner: { numbers: { left: '10', right: '4x-2', x: '3', tasks: [[['add', -2]], [['add', 2]], [['mul', 3]], [['div', 2]]] }, ...P },
+    advanced: { numbers: { left: '5', right: '-3x+1', x: '-4/3', tasks: [[['mul', -2]], [['mul', 2], ['add', -3]], [['add', -1], ['div', -3]]] }, ...T('method-1b') },
+  },
+  // LE SIGNE D'UN TERME SOUS LA MAIN (term-ferry, thème river) : l'équation a une solution CACHÉE ; la main porte chaque caisse (terme) d'une rive à
+  // l'autre en choisissant son signe, puis le diviseur. مبتدئ (plateforme) : 3x + 2 = x + 8 (x = 3) puis 4x − 3 = 2x + 7 (x = 5), x se rassemble à gauche.
+  // متقدم (طريقة p. 77) : 9x + 1 = 5x − 7 (x = −2), puis −2x + 5 = 3x − 10 (un coefficient NÉGATIF : on divise par −5), puis 7x − 190 = 6x + 110 (x = 300).
+  // Le test des niveaux mesure ces presets par leur nombre de tâches.
+  'term-ferry': {
+    beginner: { numbers: { tasks: [{ left: '3x+2', right: 'x+8' }, { left: '4x-3', right: '2x+7' }] }, ...P },
+    advanced: { numbers: { tasks: [{ left: '9x+1', right: '5x-7' }, { left: '-2x+5', right: '3x-10' }, { left: '7x-190', right: '6x+110' }] }, ...T('method-4') },
+  },
+  // ── 2AM, unité 3 « الأعداد النسبية » (2026-10-21) ──
+  // LA DISTANCE À ZÉRO SOUS LA MAIN (zero-probe, thème researchBoat) : la main tient la longueur d'un câble qui descend (ou monte)
+  // du zéro, le côté est un interrupteur à part, le nombre relatif de B est leur sortie. مبتدئ (plateforme, pas 1) : A=−3 sous le zéro,
+  // plus de câble rend B plus BAS puis moins de câble le rend plus haut ; A=4 au-dessus du zéro, plus de câble rend B plus haut ;
+  // puis A=2 : aucune longueur ne rend B plus haut (le bouton « لا يوجد طول »). متقدم (method-1, pas 0,1) : la zone étroite −4,5 < B <
+  // −4,3 (une seule dixième), « plus bas que 1,2 » des DEUX côtés, puis −0,4 < B < −0,2.
+  'zero-probe': {
+    beginner: { numbers: { world: 'sea', step: '1', tasks: [
+      { kind: 'beat', a: '-3', side: 'below', want: 'lower' },
+      { kind: 'beat', a: '-3', side: 'below', want: 'higher' },
+      { kind: 'beat', a: '4', side: 'above', want: 'lower' },
+      { kind: 'beat', a: '2', side: 'below', want: 'higher' },
+    ] }, ...P },
+    advanced: { numbers: { world: 'sea', step: '0,1', tasks: [
+      { kind: 'between', lo: '-4,5', hi: '-4,3', side: null },
+      { kind: 'beat', a: '1,2', side: null, want: 'lower', both: true },
+      { kind: 'between', lo: '-0,4', hi: '-0,2', side: null },
+    ] }, ...T('method-1') },
+  },
+  // ── 3AM, unité 6 « التناسبية » (2026-10-21) ──
+  // LE POURCENTAGE SOUS LA MAIN (hundred-grid, thème pantry) : un stock coupé en 100 paquets égaux (10 × 10 cases) ; la main PEINT t cases, le panier
+  // reçoit t paquets (x × t/100). مبتدئ (plateforme) : 15 % de 240 (la réponse écrite AVANT l'ouverture), le taux qui remplit un panier de 60 sur 150, +15 %
+  // de 200 puis −20 % de 250. متقدم (platform + method-2) : 70 % de 75 et 25 % de 32 (taux cherchés), 84 est 60 % de ? (le stock entier), puis la chaîne
+  // +20 % puis −20 % qui ne ramène pas à 200. Le test des niveaux mesure ces presets par leur nombre de tâches.
+  'hundred-grid': {
+    beginner: { numbers: { tasks: [
+      { kind: 'of', x: '240', t: 15 }, { kind: 'rate', x: '150', part: '60' },
+      { kind: 'change', x: '200', dir: 'up', t: 15 }, { kind: 'change', x: '250', dir: 'down', t: 20 },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { kind: 'rate', x: '75', part: '52.5' }, { kind: 'rate', x: '32', part: '8' }, { kind: 'whole', part: '84', t: 60 },
+      { kind: 'change', x: '200', dir: 'up', t: 20 }, { kind: 'change', carry: true, dir: 'down', t: 20 },
+    ] }, ...T('method-2') },
+  },
+  // LA PUNAISE SUR SA RAINURE ET LA RÈGLE SUR DEUX NŒUDS (pin-rails, thème stall) : مبتدئ (plateforme) : trois boutiques de punaises à 2, 6, 12 et 14 boîtes — 5 DA
+  // la boîte (la main LÈVE les quatre punaises à leur prix, la règle par O les touche toutes), 2,5 DA + 10 DA de livraison (alignées, O dehors), 5 DA
+  // les 8 premières puis 2 DA (brisées). متقدم (platform + method-1b) : des « photos » de points sans tableau — des sacs de 1,5 kg (la règle par O) et un
+  // caisson vide de 4 kg + 0,5 kg par sac (alignées sans O) — puis trois LECTURES sur la droite : 1 sac, 7 sacs, la masse 15 kg. Le test des niveaux
+  // mesure ces presets par leur nombre de tâches et par les lectures.
+  'pin-rails': {
+    beginner: { numbers: { tasks: [
+      { mode: 'plot', shop: 'one', xs: [2, 6, 12, 14], rule: { a: '5' }, frame: { xMax: 16, yMax: 80, xStep: 2, yStep: 10, unit: 5 } },
+      { mode: 'given', shop: 'two', xs: [2, 6, 12, 14], rule: { a: '2.5', b: '10' }, frame: { xMax: 16, yMax: 80, xStep: 2, yStep: 10, unit: 5 } },
+      { mode: 'given', shop: 'three', xs: [2, 6, 12, 14], rule: { a: '5', k: 8, a2: '2' }, frame: { xMax: 16, yMax: 80, xStep: 2, yStep: 10, unit: 5 } },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { mode: 'given', shop: 'bags', xs: [2, 4, 6, 8], rule: { a: '1.5' }, frame: { xMax: 12, yMax: 18, xStep: 2, yStep: 2, unit: 0.5 } },
+      { mode: 'given', shop: 'crate', xs: [2, 4, 6, 8], rule: { a: '0.5', b: '4' }, frame: { xMax: 12, yMax: 18, xStep: 2, yStep: 2, unit: 0.5 } },
+      { mode: 'read', shop: 'unit', xs: [2, 4, 6, 8], rule: { a: '1.5' }, ask: { x: '1' }, frame: { xMax: 12, yMax: 18, xStep: 2, yStep: 2, unit: 0.5 } },
+      { mode: 'read', shop: 'seven', xs: [2, 4, 6, 8], rule: { a: '1.5' }, ask: { x: '7' }, frame: { xMax: 12, yMax: 18, xStep: 2, yStep: 2, unit: 0.5 } },
+      { mode: 'read', shop: 'mass', xs: [2, 4, 6, 8], rule: { a: '1.5' }, ask: { y: '15' }, frame: { xMax: 12, yMax: 18, xStep: 2, yStep: 2, unit: 0.5 } },
+    ] }, ...T('method-1b') },
+  },
+  // ── 2AM, unité 5 « التناسبية » (2026-10-21) ──
+  // LE NOMBRE QUI MANQUE SOUS LA MAIN (fourth-gauges, thème souk) : un tableau 2×2 de cartes de prix dont UNE case manque ; la main
+  // tient ce nombre, trois balances d'égalité (« في الكيلو », « بين العمودين », « الجداءان ») ne s'équilibrent ENSEMBLE que pour un seul.
+  // مبتدئ (plateforme, balances ouvertes) : 4 kg → 520 DA / 6 kg → ? (780) ; la QUANTITÉ à trouver (3 kg → 840 DA, ? kg → 1400 DA : 5) ; puis
+  // 8 kg → 400 DA / 12 kg → ? où la balance « الفرق » ment (404 au lieu de 600). متقدم (method-1, balances VOILÉES, le nombre se calcule
+  // AVANT de lâcher) : décimaux (2,5 kg), un trou en b, un trou en a (pas 0,1), puis le dernier avec des décimaux (4,5).
+  'fourth-gauges': {
+    beginner: { numbers: { world: 'market', tasks: [
+      { hole: 'd', a: '4', b: '520', c: '6', rows: ['التفاح (kg)', 'الثمن (DA)'], step: '1', max: '1560' },
+      { hole: 'c', a: '3', b: '840', d: '1400', rows: ['التمر (kg)', 'الثمن (DA)'], step: '1', max: '10' },
+      { hole: 'd', a: '8', b: '400', c: '12', rows: ['البطاطا (kg)', 'الثمن (DA)'], step: '1', max: '1200', decoy: true },
+    ] }, ...P },
+    advanced: { numbers: { world: 'market', tasks: [
+      { hole: 'd', a: '2,5', b: '325', c: '4', rows: ['الجزر (kg)', 'الثمن (DA)'], step: '1', max: '1000', covered: true },
+      { hole: 'b', a: '6', c: '9', d: '2700', rows: ['الكتلة (kg)', 'الثمن (DA)'], step: '10', max: '5400', covered: true },
+      { hole: 'a', b: '720', c: '7,5', d: '1800', rows: ['الكتلة (kg)', 'الثمن (DA)'], step: '0,1', max: '15', covered: true },
+      { hole: 'd', a: '12', b: '3', c: '18', rows: ['مساحة الجدار (m²)', 'الدهان (L)'], step: '0,1', max: '10', covered: true },
+    ] }, ...T('method-1') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

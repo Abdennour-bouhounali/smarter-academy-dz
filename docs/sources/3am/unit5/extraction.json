@@ -1,0 +1,2053 @@
+{
+ "_comment": [
+  "EXTRACTION CANONIQUE du manuel scolaire officiel — 3AM, الجيل الثاني (منشورات الشهاب 2017), unité 5 « المساويات – المتباينات – المعادلات ».",
+  "Source : docs/official-book-pdfs/كتاب الرياضيات للسنة الثالثة متوسط الجيل الثاني.pdf, pages 70 à 85 du livre (PDF 70 à 85).",
+  "Ce fichier est LA source de vérité pédagogique de l’unité ; tout contenu cite un `id` d’ici via `source.elementId`.",
+  "Transcription VISUELLE ; réponses calculées (Fraction exacte) dans build-extraction.py, `answerSource: computed`.",
+  "Généré par docs/sources/3am/unit5/build-extraction.py — ne pas éditer à la main."
+ ],
+ "unitCode": "musawiyat-mutabayinat",
+ "textbook": {
+  "title": "كتاب الرياضيات — السنة الثالثة من التعليم المتوسط",
+  "generation": "الجيل الثاني",
+  "unitNumber": 5,
+  "unitTitle": "المساويات – المتباينات – المعادلات",
+  "pages": {
+   "first": 70,
+   "last": 85
+  },
+  "pdfPageOffset": 0,
+  "sections": [
+   "سأتعلّم في هذا الباب",
+   "تحدّي",
+   "أستعدّ",
+   "أنشطة",
+   "معارف",
+   "طرائق",
+   "دوري الآن",
+   "أوظّف تعلّماتي",
+   "أؤكّد تعلّماتي",
+   "أتعمّق",
+   "أدمج تعلّماتي",
+   "وضعية للتقويم",
+   "أوظّف تكنولوجيات الإعلام والاتصال"
+  ]
+ },
+ "frozenAt": "2026-10-21",
+ "terminology": {
+  "note": "Le manuel écrit « المساويات », « المتباينات », « المعادلة », « المجهول », « طرفا المساواة », « حل معادلة », « ترييض مشكلة », « الحصر », « المدوّر », « قيمة مقرّبة بالنقصان / بالزيادة ».",
+  "terms": [
+   "مساواة",
+   "متباينة",
+   "طرفا المساواة",
+   "معادلة",
+   "مجهول",
+   "حل",
+   "ترييض",
+   "حصر",
+   "مدوّر",
+   "قيمة مقرّبة"
+  ]
+ },
+ "elements": [
+  {
+   "id": "objectives",
+   "kind": "objectives",
+   "page": 70,
+   "section": "سأتعلّم في هذا الباب",
+   "verified": true,
+   "items": [
+    "معرفة الخواص المتعلقة بالمساويات (أو المتباينات) والعمليات واستعمالها في وضعيات بسيطة.",
+    "حصر عدد موجب مكتوب في الشكل العشري باستعمال التدوير إلى رتبة معينة.",
+    "ترييض مشكلات وحلها بتوظيف المعادلات من الدرجة الأولى ذات مجهول واحد."
+   ]
+  },
+  {
+   "id": "opener",
+   "kind": "aside",
+   "page": 70,
+   "section": "تمهيد",
+   "verified": false,
+   "text": "استعمال المعادلات الرياضية قديم قدم الحضارة الإنسانية: منذ 2000 سنة قبل الميلاد استعملت في مصر القديمة لتقسيم المحاصيل بين الفراعنة والكهنة والعمال، وعرفوا معادلات من الدرجة الثانية. الخوارزمي (القرن 8م) أول من حلّ معادلات من الدرجة الثانية بطريقة جبرية، ثم عمر الخيام (القرن 11) حلّ معادلات من الدرجة الثالثة، ولم يتم حلّ معادلات من الدرجة الرابعة إلا بعد 5 قرون (القرن 16) من طرف رافائيل بومبيلي.",
+   "reading": "photo de عمر بن إبراهيم الخيام (1048م – 1131م)"
+  },
+  {
+   "id": "challenge",
+   "kind": "challenge",
+   "page": 70,
+   "section": "تحدّي",
+   "verified": true,
+   "text": "قرّر أبٌ مكافأة كل واحد من أبنائه الثلاثة بمبلغ مالي بمناسبة نجاحهم في امتحانات نهاية السنة الدراسية: يأخذ صاحب أعلى معدل مبلغ 15750 DA ويأخذ صاحب أدنى معدل ربع المبلغ، بينما يتحصل الولد الثالث على ثلاثة أعشار المبلغ. ماهي حصة كل من الولدين الآخرين؟",
+   "answer": {
+    "lowest": "3937,5 DA",
+    "third": "4725 DA"
+   },
+   "answerSource": "computed",
+   "note": "« المبلغ » = 15750 DA : ربع المبلغ = 3937,5 DA ؛ ثلاثة أعشاره = 4725 DA."
+  },
+  {
+   "id": "prep",
+   "kind": "prep",
+   "page": 71,
+   "section": "أستعدّ",
+   "verified": true,
+   "text": "جد الإجابة الصحيحة (أو الإجابات الصحيحة) في كل حالة، مبرّرا إياها.",
+   "items": [
+    {
+     "n": 1,
+     "question": "العدد المجهول في المساواة x + 5 = 0 هو ……",
+     "options": [
+      "0",
+      "5",
+      "-5"
+     ],
+     "correct": [
+      2
+     ]
+    },
+    {
+     "n": 2,
+     "question": "العدد المجهول في المساواة x - 4 = 0 هو ……",
+     "options": [
+      "4",
+      "-4",
+      "0"
+     ],
+     "correct": [
+      0
+     ]
+    },
+    {
+     "n": 3,
+     "question": "العدد المجهول في المساواة 7 × x = 1 هو ……",
+     "options": [
+      "7",
+      "1/7",
+      "-7"
+     ],
+     "correct": [
+      1
+     ]
+    },
+    {
+     "n": 4,
+     "question": "العدد المجهول في المساواة -8x = 8 هو ……",
+     "options": [
+      "0",
+      "1",
+      "-1"
+     ],
+     "correct": [
+      2
+     ]
+    },
+    {
+     "n": 5,
+     "question": "العدد المجهول في المساواة 3 ÷ x = 3 هو ……",
+     "options": [
+      "1",
+      "1/9",
+      "-1"
+     ],
+     "correct": [
+      0
+     ]
+    },
+    {
+     "n": 6,
+     "question": "العدد المجهول في المساواة x ÷ 10 = 1 هو ……",
+     "options": [
+      "-9",
+      "10",
+      "1/10"
+     ],
+     "correct": [
+      1
+     ]
+    },
+    {
+     "n": 7,
+     "question": "العدد الأكبر من بين العددين 2/3 و -2/3 هو ……",
+     "options": [
+      "2/3",
+      "-2/3",
+      "لا يمكن تعيينه"
+     ],
+     "correct": [
+      0
+     ]
+    },
+    {
+     "n": 8,
+     "question": "العدد الأصغر من بين العددين -5/4 و -7/4 هو ……",
+     "options": [
+      "-5/4",
+      "-7/4",
+      "لا يمكن تعيينه"
+     ],
+     "correct": [
+      1
+     ]
+    },
+    {
+     "n": 9,
+     "question": "قيمة العبارة 7 + 3x من أجل x = 0 هي ……",
+     "options": [
+      "10",
+      "7",
+      "-7/3"
+     ],
+     "correct": [
+      1
+     ]
+    },
+    {
+     "n": 10,
+     "question": "قيمة العبارة 8y - 8 من أجل y = 1 هي ……",
+     "options": [
+      "8",
+      "0",
+      "1"
+     ],
+     "correct": [
+      1
+     ]
+    },
+    {
+     "n": 11,
+     "question": "العبارة (1 - x) × (1 + x) تبسّط على الشكل ……",
+     "options": [
+      "2",
+      "1 + x²",
+      "1 - x²"
+     ],
+     "correct": [
+      2
+     ]
+    },
+    {
+     "n": 12,
+     "question": "العبارة (t + 3) × (t - 2) تبسّط على الشكل ……",
+     "options": [
+      "t² + 1",
+      "t² - 6",
+      "t² + t - 6"
+     ],
+     "correct": [
+      2
+     ]
+    },
+    {
+     "n": 13,
+     "question": "المدوّر إلى الوحدة لحاصل القسمة 135/14 هو ……",
+     "options": [
+      "9,6",
+      "10",
+      "9"
+     ],
+     "correct": [
+      1
+     ]
+    },
+    {
+     "n": 14,
+     "question": "المدوّر إلى الجزء من 10 لحاصل القسمة 135/14 هو ……",
+     "options": [
+      "9,6",
+      "10",
+      "9"
+     ],
+     "correct": [
+      0
+     ]
+    },
+    {
+     "n": 15,
+     "question": "شاشة حاسبة: 46 ÷ 6 = 7.666666667. المدوّر إلى الوحدة هو ……؛ إلى 1/10 ……؛ إلى 1/100 ……",
+     "options": [
+      "7,67",
+      "7,7",
+      "8"
+     ],
+     "correct": [
+      0,
+      1,
+      2
+     ],
+     "note": "colonne (1) = 7,67 (1/100), (2) = 7,7 (1/10), (3) = 8 (unité)"
+    }
+   ],
+   "columns": "[(1), (2), (3)] ; (1) = colonne de droite",
+   "answerSource": "computed",
+   "reading": "p. 71 relue à 220 dpi : lignes 1–8 nettes ; 5 « 3 ÷ x = 3 » (x = 1) ; 11 lu « (1 − x)(1 + x) » (seule option cohérente : 1 − x²)."
+  },
+  {
+   "id": "act-1",
+   "kind": "activity",
+   "page": 72,
+   "section": "أنشطة 1 — المساويات والعمليات",
+   "verified": true,
+   "text": "المساويات والجمع: 1) عند أحمد ومريم نفس المبلغ المالي. أضاف أبوهما لكل واحد نفس المبلغ المقدّر بـ 200 DA. قارن بين المبلغين عند كل من الولدين. اشترى كل منهما كتابا بسعر 350 DA. قارن بين المبلغين المتبقيين عندهما. 2) a = b أعداد ناطقة a, b, c : احسب (a + c) − (b + c) ثم قارن بين a + c و b + c ؛ احسب (a − c) − (b − c) ثم قارن بين a − c و b − c. 3) أكمل: « إذا كان a = b فإن a + c … b + c » ؛ « إذا كان a = b فإن a − c … b − c ». المساويات والضرب: 1) a = b : حلّل إلى جداء عاملين ac − bc ؛ احسب الفرق ac − bc ثم قارن بين ac و bc ؛ أكمل « إذا كان a = b فإن ac … bc ». 2) c ≠ 0 : احسب a/c − b/c ثم قارن a/c و b/c ؛ أكمل « … فإن a/c … b/c ».",
+   "answer": {
+    "addition": "a + c = b + c ; a − c = b − c",
+    "multiplication": "ac = bc ; a/c = b/c (c ≠ 0)",
+    "money": "les deux enfants gardent le même montant : (m + 200) − 350 pour chacun"
+   },
+   "answerSource": "computed",
+   "figure": "aucune",
+   "note": "Posée en APPLICATION (guide §4ter) : le lab de la plateforme est l’entrée conçue."
+  },
+  {
+   "id": "act-2",
+   "kind": "activity",
+   "page": 72,
+   "section": "أنشطة 2 — المتباينات والعمليات",
+   "verified": false,
+   "text": "المتباينات والجمع: 1) أنقل وأتمم الجدول (a, b, a − b, « قارن بين a و b ») : (3 ; 7), (−5 ; 1), (−2 ; −4), (5 ; −3). 2) أكمل: « إذا كان a … b فإن a − b > 0 » ؛ « إذا كان a … b فإن a − b < 0 ». 3) هل النص صحيح؟ برّر: « a + c < b + c إذا كان a < b ». 4) « a − c < b − c إذا كان a < b ». 5) a < b : أكمل بأحد الرمزين < ، > : a − 7/2 … b − 9/2 ؛ a + 3/5 … b + 6/5 ؛ a − 4 … b − 4 ؛ a + 3 … b + 3.",
+   "answer": {
+    "table": [
+     {
+      "a": 3,
+      "b": 7,
+      "a-b": -4,
+      "cmp": "<"
+     },
+     {
+      "a": -5,
+      "b": 1,
+      "a-b": -6,
+      "cmp": "<"
+     },
+     {
+      "a": -2,
+      "b": -4,
+      "a-b": 2,
+      "cmp": ">"
+     },
+     {
+      "a": 5,
+      "b": -3,
+      "a-b": 8,
+      "cmp": ">"
+     }
+    ]
+   },
+   "answerSource": "computed",
+   "reading": "act-2 5) : les deux premiers compléments comparent des termes de la forme a − 7/2 et b − 9/2 (constantes différentes : aucun symbole sûr)."
+  },
+  {
+   "id": "act-2b",
+   "kind": "activity",
+   "page": 73,
+   "section": "أنشطة 2 — المتباينات والضرب",
+   "verified": false,
+   "text": "1) أتمم الجدول (a, b, c, ac, bc, قارن بين ac و bc) : (1/3 ; 2/5 ; 4), (−1/3 ; −2/9 ; −3), (2/9 ; −4/5 ; 5/4), (−7/3 ; 6/7 ; −1/2). 2) a < b : قارن بين ac و bc. 3) k < l : أكمل بأحد الرمزين: k/(−6) … l/(−6) ؛ k/5 … l/5 ؛ −3k … −3l ؛ 2k … 2l.",
+   "answer": {
+    "rows": [
+     {
+      "ac": "4/3",
+      "bc": "8/5",
+      "cmp": "<"
+     },
+     {
+      "ac": "1",
+      "bc": "2/3",
+      "cmp": ">"
+     },
+     {
+      "ac": "5/18",
+      "bc": "-1",
+      "cmp": ">"
+     },
+     {
+      "ac": "7/6",
+      "bc": "-3/7",
+      "cmp": ">"
+     }
+    ]
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "act-3",
+   "kind": "activity",
+   "page": 73,
+   "section": "أنشطة 3 — حصر عدد عشري موجب",
+   "verified": false,
+   "text": "1) محيط مربع هو P ، مدوّر P إلى الجزء من 10 هو 10,7 (cm). أعط ثلاث قيم ممكنة للعدد P. انقل المستقيم المدرّج (10,5 … 11) ثم حدّد المنطقة التي يقع فيها P. أعط حصرا لقيم P. 2) استعمال حاسبة: 247 ÷ 83 = 2.975903614 ، A = 247/83 : 2 < A < 3 تسمّى حصرا بالعددين الطبيعيين 2 و 3؛ 2 قيمة مقرّبة بالنقصان إلى الوحدة و 3 قيمة مقرّبة بالزيادة. أعط حصرا للعدد A باستعمال قيم مقرّبة بالزيادة وبالنقصان إلى 1/10 ، 1/100 ، 1/1000.",
+   "answer": {
+    "P": "10,65 ≤ P < 10,75",
+    "A": {
+     "1/10": "2,9 ≤ A < 3",
+     "1/100": "2,97 ≤ A < 2,98",
+     "1/1000": "2,975 ≤ A < 2,976",
+     "value": "2.9759036144"
+    }
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "act-4",
+   "kind": "activity",
+   "page": 73,
+   "section": "أنشطة 4 — المعادلات من الدرجة الأولى بمجهول واحد",
+   "verified": false,
+   "text": "1) اختار كل من سمير وليلى نفس العدد. أضاف سمير لهذا العدد 3 وضرب النتيجة في 2 ، بينما ليلى أضافت له 7. عند مقارنة النتيجتين تفاجأ بأنهما متساويتان. جد هذا العدد إذا أمكن. 2) اختار كريم وسعاد نفس العدد. أضاف له كريم 2 وضرب النتيجة في 5. ضاعفت سعاد العدد الذي اختارته وأضافت للنتيجة 25. عند مقارنة النتيجتين لاحظا أنهما متساويتان. جد، إذا أمكن، العدد الذي اختاره كل من كريم وسعاد.",
+   "answer": {
+    "1": "1",
+    "2": "5"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "know-1a",
+   "kind": "knowledge",
+   "page": 74,
+   "section": "معارف 1 — المساويات والجمع",
+   "verified": true,
+   "text": "خاصية: a, b, c أعداد ناطقة. إذا كان a = b فإن a + c = b + c و a − c = b − c. بتعبير آخر: لا تتغير مساواة عندما نضيف إلى (أو نطرح من) طرفيها نفس العدد الناطق. مثال: إذا كان a = −2 فإن a + 13 = 11 و a − 5 = −7.",
+   "answer": {
+    "example": [
+     11,
+     -7
+    ]
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "know-1b",
+   "kind": "knowledge",
+   "page": 74,
+   "section": "معارف 1 — المساويات والضرب",
+   "verified": true,
+   "text": "خاصية: a, b, c أعداد ناطقة. إذا كان a = b فإن ac = bc ؛ إذا كان a = b و c ≠ 0 فإن a/c = b/c. بتعبير آخر: لا تتغير مساواة عندما نضرب طرفيها في نفس العدد الناطق أو نقسّم طرفيها على نفس العدد الناطق غير المعدوم. مثال: إذا كان x = 3/2 فإن 5x = 15/2 و x/(−5) = −3/10.",
+   "answer": {
+    "example": [
+     "15/2",
+     "-3/10"
+    ]
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "know-2a",
+   "kind": "knowledge",
+   "page": 74,
+   "section": "معارف 2 — المتباينات والجمع",
+   "verified": false,
+   "text": "خاصية: إذا كان a < b فإن a + c < b + c و a − c < b − c. لا يتغير اتجاه متباينة عندما نضيف إلى (أو نطرح من) طرفيها نفس العدد الناطق. ملاحظة: يمكن استبدال < بأحد الرمزين ≤ ، ≥ و تبقى الخاصيتان صحيحتين؛ a ≤ b يُقرأ a أصغر أو يساوي b.",
+   "answer": {
+    "example": [
+     "7"
+    ]
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "know-2b",
+   "kind": "knowledge",
+   "page": 74,
+   "section": "معارف 2 — المتباينات والضرب",
+   "verified": false,
+   "text": "خاصية: إذا كان a < b و c > 0 فإن ac < bc و a/c < b/c. إذا كان a < b و c < 0 فإن ac > bc و a/c > b/c. إذا ضربنا طرفي متباينة في (أو قسمناهما على) نفس العدد الناطق السالب تماما فإننا نغيّر اتجاهها. مثال: z < −4 ⟹ 2z < −8 ؛ x < 15 ⟹ x/(−3) > −5.",
+   "answer": {
+    "example": [
+     "2z < -8",
+     "-5"
+    ]
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "know-3",
+   "kind": "knowledge",
+   "page": 76,
+   "section": "معارف 3 — حصر عدد عشري موجب",
+   "verified": false,
+   "text": "x عدد عشري موجب مدوّره إلى الوحدة هو 15: لا يمكن أن يساوي 14,4 ولا 15,5 ؛ 14,5 ≤ x < 15,5 هي حصر لكل عدد مدوّره إلى الوحدة هو 15. المدوّر إلى الوحدة للعدد 3,647 هو 4 ؛ المدوّر إلى 1/10 هو 3,6 ؛ المدوّر إلى 1/100 هو 3,65.",
+   "answer": {
+    "3,647": {
+     "unit": 4,
+     "1/10": "3,6",
+     "1/100": "3,65"
+    }
+   },
+   "answerSource": "computed",
+   "reading": "معارف 3 : « المدوّر » est ici la valeur approchée par excès ou défaut selon le chiffre suivant ; 3,647 → 4 ; 3,6 (le chiffre suivant est 4) ; 3,65 (le chiffre suivant est 7) — lu tel quel."
+  },
+  {
+   "id": "know-4",
+   "kind": "knowledge",
+   "page": 76,
+   "section": "معارف 4 — المعادلات من الدرجة الأولى بمجهول واحد",
+   "verified": true,
+   "text": "المعادلة هي مساواة تتضمن عددا أو أعدادا مجهولة معبّر عنها بحروف. مثال: 3x − 1 = 4x + 5 معادلة ذات المجهول x ، طرفها الأيسر 3x − 1 والأيمن 4x + 5. مثال: 5x + 3 = −8x − 1 معادلة من الدرجة الأولى ذات المجهول x. كل معادلة من الشكل ax + b = cx + d حيث a, b, c, d أعداد معلومة و x مجهول واحد تسمّى معادلة من الدرجة الأولى ذات المجهول x. حل معادلة ذات المجهول x يعود إلى تعيين قيمة هذا المجهول التي تحقق المساواة المعطاة. مثلا: −2 ليس حلا للمعادلة 0 = −8x + 4 بينما العدد 1/2 هو حل لها.",
+   "answer": {
+    "-2": false,
+    "1/2": true
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "know-5",
+   "kind": "knowledge",
+   "page": 76,
+   "section": "معارف 5 — ترييض مشكلة وحلها",
+   "verified": true,
+   "text": "ترييض مشكلة وحلها يتطلب المرور على المراحل الآتية: اختيار المجهول، وليكن مثلا x ؛ ترجمة كل المعطيات الواردة في النص بدلالة x ؛ إيجاد معادلة مناسبة تعبّر عن المشكلة ؛ حل المعادلة ؛ التصريح بالحل ؛ التحقق من صحة النتيجة بالعودة إلى نص المشكلة. مثال: عند كريم 500 DA مكوّنة من قطع نقدية من فئتي 50 DA و 100 DA. ما هو عدد القطع من فئة 50 DA إذا علمت أنه يملك 3 قطع من فئة 100 DA؟ 50x + 300 = 500 ، حلها 4.",
+   "answer": {
+    "x": "4"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "method-1a",
+   "kind": "method",
+   "page": 75,
+   "section": "طرائق — توظيف خواص المساويات والعمليات (1)",
+   "verified": true,
+   "text": "تمرين: x عدد ناطق حيث 3 = 2x − 4. هل المساواتان الآتيتان صحيحتان؟ 2 = 2x − 5 ؛ 2x + 4 = −3. حل: لدينا 3 = 2x − 4. بإضافة −1 إلى طرفي هذه المساواة نجد 3 − 1 = 2x − 4 − 1 أي 2 = 2x − 5 : المساواة صحيحة. بإضافة 8 إلى طرفيها نجد 11 = 2x + 4 : إذن 2x + 4 = −3 غير صحيحة. تعاليق: للتحقق من صحة كل مساواة لاحظ أننا استعملنا خواص المساواة وعمليتي الجمع والطرح.",
+   "answer": {
+    "x": "7/2",
+    "2x-5=2": true,
+    "2x+4=-3": false,
+    "value of 2x+4": 11
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "method-1b",
+   "kind": "method",
+   "page": 75,
+   "section": "طرائق — توظيف خواص المساويات والعمليات (2)",
+   "verified": true,
+   "text": "تمرين: x عدد ناطق حيث 5 = −5x + 1. هل كل مساواة مما يلي صحيحة؟ 21 = −25x + 1 ؛ −1/2 x + 1/10 = 1/2. حل: بضرب طرفي المساواة 5 = −5x + 1 في 5 نجد 25 = −25x + 5 وبإضافة −4 إلى طرفيها نجد 21 = −25x + 1 : صحيحة. بقسمة طرفي 5 = −5x + 1 على 10 نجد ... −1/2 x + 1/10 = 1/2 : صحيحة.",
+   "answer": {
+    "x": "-4/5",
+    "21=-25x+1": true,
+    "-x/2+1/10=1/2": true
+   },
+   "answerSource": "computed",
+   "reading": "La seconde équation du scan est lue « −1/2 x + 1/10 = 1/2 » (÷ 10 de 5 = −5x + 1)."
+  },
+  {
+   "id": "method-2",
+   "kind": "method",
+   "page": 75,
+   "section": "طرائق — توظيف خواص المتباينات والعمليات",
+   "verified": false,
+   "text": "تمرين: x عدد ناطق حيث x > 7/5. A = 3x − 2 و B = 5 − 2x. قارن بين A و B من أجل x = 3/2 ثم x = 10. ضع تخمينا حول مقارنة العددين A و B. أثبت صحة هذا التخمين. حل: x = 3/2 : A = 5/2 و B = 2 ؛ x = 10 : A = 28 و B = −15 : A > B. A − B = 5x − 7 ، x > 7/5 إذن 5x > 7 ومنه A − B > 0.",
+   "answer": {
+    "3/2": [
+     "5/2",
+     "2"
+    ],
+    "10": [
+     "28",
+     "-15"
+    ]
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "now-75-1",
+   "kind": "now",
+   "page": 75,
+   "section": "دوري الآن — 1",
+   "verified": false,
+   "text": "x عدد ناطق حيث x < −6. ما هي المتباينة التي يمكن كتابتها من أجل x + 4 ؟ −6x ؟ x/12 ؟",
+   "answer": {
+    "x+4": "< -2",
+    "-6x": "> 36",
+    "x/12": "< -1/2"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "now-75-2",
+   "kind": "now",
+   "page": 75,
+   "section": "دوري الآن — 2",
+   "verified": false,
+   "text": "في كل حالة مما يلي: 7 > x − 8 ؛ −3x > 15 ؛ −x/4 < 9. استعمل خواص المتباينات للحصول على متباينة من الشكل x > … أو x < …",
+   "answer": {
+    "1": "x < 15",
+    "2": "x < -5",
+    "3": "x > -36"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "method-3",
+   "kind": "method",
+   "page": 77,
+   "section": "طرائق — حصر عدد عشري موجب",
+   "verified": false,
+   "text": "تمرين: 1) احصر العدد 4,679 بين عددين طبيعيين متتاليين. 2) عيّن حصرا لهذا العدد باستعمال قيم مقرّبة بالنقصان وبالزيادة إلى 1/10. حل: 4 ≤ 4,679 < 5 ؛ 4,6 ≤ 4,679 < 4,7.",
+   "answer": {
+    "1": "4 ≤ 4,679 < 5",
+    "2": "4,6 ≤ 4,679 < 4,7"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "method-4",
+   "kind": "method",
+   "page": 77,
+   "section": "طرائق — حل معادلة من الدرجة الأولى بمجهول واحد",
+   "verified": true,
+   "text": "تمرين: حلّ المعادلة 9x + 1 = 5x − 7. حل: 1) نتبع المراحل: نقل كل الحدود التي تتضمن المجهول x إلى الطرف الأيسر للمعادلة (9x + 1 − 5x = 5x − 7 − 5x أي 4x + 1 = −7) ؛ نقل كل الحدود التي لا تتضمن x إلى الطرف الأيمن (4x + 1 − 1 = −7 − 1 أي 4x = −8) ؛ حساب قيمة المجهول (4x/4 = −8/4 ، x = −2). 2) تحقق: 9 × (−2) + 1 = −17 و 5 × (−2) − 7 = −17. 3) الخلاصة: العدد −2 هو حل المعادلة.",
+   "answer": {
+    "x": "-2",
+    "both sides at x": [
+     "-17",
+     "-17"
+    ]
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "method-5",
+   "kind": "method",
+   "page": 77,
+   "section": "طرائق — ترييض مشكلة وحلها",
+   "verified": true,
+   "text": "تمرين: يريد مدير متوسطة شراء كتب علمية تباع بنفس السعر لوضعها في مكتبة المؤسسة. إذا اشترى 7 كتب، فينقصه 190DA و إذا اشترى 6 كتب، فيبقى عنده 110DA. ما هو سعر الكتاب الواحد؟ حل: نسمّي x سعر الكتاب الواحد. 7x − 190 = 6x + 110 (نفس المبلغ في الحالتين). حل المعادلة 300. التحقق: 7 × 300 − 190 = 1910 و 6 × 300 + 110 = 1910. سعر الكتاب 300 DA.",
+   "answer": {
+    "price": "300 DA",
+    "budget": "1910 DA"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "now-77-1",
+   "kind": "now",
+   "page": 77,
+   "section": "دوري الآن — 1",
+   "verified": false,
+   "text": "a ، 8,34 هو المدوّر إلى الجزء من 100 للعدد a. هل يمكن أن يكون a يساوي 8,342 ؟ 8,336 ؟ 8,345 ؟ أعط حصرا للعدد a باستعمال قيمتين تقريبيتين إلى الجزء من 100 للعدد a.",
+   "answer": {
+    "8,342": true,
+    "8,336": false,
+    "8,345": true,
+    "range": "8,335 ≤ a < 8,345"
+   },
+   "answerSource": "computed",
+   "reading": "« 8,345 » : selon la convention du manuel (arrondi au plus proche, demi vers le haut) 8,345 donne 8,35 : réponse « non » ; lu tel quel par la leçon hasr-adad-ushri."
+  },
+  {
+   "id": "now-77-2",
+   "kind": "now",
+   "page": 77,
+   "section": "دوري الآن — 2",
+   "verified": true,
+   "text": "عُمر أب هو 42 سنة و عُمر ابنه هو 12 سنة. بعد كم سنة يكون عُمر الأب ثلاث أضعاف عُمر ابنه؟",
+   "answer": {
+    "years": "3"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-1",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 1",
+   "verified": true,
+   "text": "x عدد ناطق. أكمل: إذا كان x = 24 فإن x + 6 = … ؛ x = −3 فإن x − 4 = … ؛ x = 0 فإن 2x + 8 = … ؛ x = 1/2 فإن 4x − 1/2 = …",
+   "answer": [
+    "30",
+    "-7",
+    "8",
+    "3/2"
+   ],
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-2",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 2",
+   "verified": true,
+   "text": "a عدد ناطق. أكمل: إذا كان 3a − 4 = 0 فإن a = … ؛ −2a + 1 = −1 فإن a = … ؛ 5a = −a + 2 فإن a = … ؛ 7a − 3 = 7 − 3a فإن a = …",
+   "answer": [
+    "4/3",
+    "1",
+    "1/3",
+    "1"
+   ],
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-3",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 3",
+   "verified": true,
+   "text": "صحيح أو خاطئ: إذا كان 3x = 4 فإن x = 1 ؛ إذا كان 17 − x = 0 فإن x = 17 ؛ إذا كان 8x = 8 فإن x = 0 ؛ إذا كان 2 − 5x = 0 فإن x = 2/5",
+   "answer": [
+    false,
+    true,
+    false,
+    true
+   ],
+   "answerSource": "computed",
+   "reading": "p. 78 relue à 200 dpi."
+  },
+  {
+   "id": "ex-4",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 4",
+   "verified": true,
+   "text": "اكتب المساواة التي تتحصل عليها عندما تضرب طرفي المساواة 2 = 2x − 5 في العدد −3 ؛ ثم طرفي المساواة 1 = 3x − 15 (لا يُقرأ بوضوح : −15 + 3x = 1) في العدد −1.",
+   "answer": {
+    "1": "-6 = -6x + 15",
+    "2": "-1 = -3x + 15"
+   },
+   "answerSource": "computed",
+   "reading": "« 3x − 15 + 1 = … » : le scan imprime « −15 + 3x = 1 » ; lu ainsi."
+  },
+  {
+   "id": "ex-5",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 5",
+   "verified": true,
+   "text": "x عدد نسبي حيث 2x = −1. أكمل كل مساواة: −4x = … ؛ x − 3 = … ؛ 2x + 5 = … ؛ −5/2 x + 5/2 = … ؛ x/2 − 1 = … ؛ x + 1/2 = …",
+   "answer": [
+    "2",
+    "-7/2",
+    "4",
+    "15/4",
+    "-5/4",
+    "0"
+   ],
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-6",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 6",
+   "verified": false,
+   "text": "x عدد ناطق. أكمل: إذا كان x > 10 فإن x − 10 > … ؛ x < −3 فإن x + 3 < … ؛ x ≥ −2 فإن x + 2 ≥ … ؛ x ≤ 1/2 فإن x − 1/2 ≤ …",
+   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+  },
+  {
+   "id": "ex-7",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 7",
+   "verified": false,
+   "text": "m عدد ناطق، أكمل: إذا كان m ≥ 0 فإن 5m ≥ … ؛ m ≤ 0 … ؛ m − 1 ≤ 0 … ؛ 1 + 4m > 0 … ؛ 3 − 2m < 0 …",
+   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+  },
+  {
+   "id": "ex-8",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 8",
+   "verified": false,
+   "text": "قارن بين العددين الناطقين 6/5 و 5/4.",
+   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+  },
+  {
+   "id": "ex-9",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 9",
+   "verified": false,
+   "text": "قارن بين العددين الناطقين a و b في كل حالة: أ) a = 4/3 ، b = −9/14 ؛ ب) …",
+   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+  },
+  {
+   "id": "ex-10",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 10",
+   "verified": false,
+   "text": "تحصلت ليلى على علامتين في الرياضيات، إحداهما ثلاثة أخماس والأخرى إحدى عشرة على عشرين. أي علامة أكبر؟",
+   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+  },
+  {
+   "id": "ex-11",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 11",
+   "verified": false,
+   "text": "إذا كان a عددا أصغر من 2000، فما الذي يمكن قوله عن العدد a + 18 ؟",
+   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+  },
+  {
+   "id": "ex-12",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 12",
+   "verified": false,
+   "text": "إذا كان x عددا أكبر من أو يساوي 5، فما الذي يمكن قوله عن العدد x − 10 ؟",
+   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+  },
+  {
+   "id": "ex-13",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 13",
+   "verified": false,
+   "text": "m عدد نسبي حيث m > 3. استنتج متباينة يحققها كل عدد مما يلي: m + 3 ؛ m − 3 ؛ −5 + m ؛ 3m ؛ −3m ؛ −1/4 m + 4",
+   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+  },
+  {
+   "id": "ex-14",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 14",
+   "verified": false,
+   "text": "x عدد ناطق حيث −2x + 3 ≤ 18. استنتج متباينة يكون فيها x هو الحد الأول.",
+   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+  },
+  {
+   "id": "ex-15",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 15",
+   "verified": false,
+   "text": "y عدد ناطق حيث 3y + 5 ≤ −5. استنتج متباينة يكون فيها y هو الحد الأول.",
+   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+  },
+  {
+   "id": "ex-16",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 16",
+   "verified": false,
+   "text": "z عدد ناطق حيث −2z ≥ −7. استنتج متباينة يكون فيها z هو الحد الأول.",
+   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+  },
+  {
+   "id": "ex-17",
+   "kind": "exercise",
+   "page": 78,
+   "section": "أوظّف تعلّماتي — 17",
+   "verified": false,
+   "text": "انقل وأكمل: إذا كان a ≥ b فإن a … b ؛ … ",
+   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+  },
+  {
+   "id": "ex-18",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 18",
+   "verified": false,
+   "text": "a و b عددان ناطقان. انقل وأكمل: إذا كان a ≥ b فإن 7a … 7b ؛ إذا كان a > b فإن −2/5 a … −2/5 b ؛ …",
+   "reading": "transcription brève (leçon mutabayinat-amaliyat à relire)"
+  },
+  {
+   "id": "ex-19",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 19 (حصر عدد عشري موجب)",
+   "verified": false,
+   "text": "t عدد عشري موجب حيث 1 ≤ t ≤ 3 : أعط حصرا لكل عبارة: t + 10 ؛ 3t − 1 ؛ 1/2 t ؛ 14/3 t − 2.",
+   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+  },
+  {
+   "id": "ex-20",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 20 (حصر عدد عشري موجب)",
+   "verified": false,
+   "text": "أثبت أنّ 17/19 < 1 < 19/17.",
+   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+  },
+  {
+   "id": "ex-21",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 21 (حصر عدد عشري موجب)",
+   "verified": false,
+   "text": "استعمل حاسبة لإثبات أنّ 3 + 10/71 < π < 3 + 1/7.",
+   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+  },
+  {
+   "id": "ex-22",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 22 (حصر عدد عشري موجب)",
+   "verified": false,
+   "text": "أثبت أنّ 2/5 < 33/50 < 3/4.",
+   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+  },
+  {
+   "id": "ex-23",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 23 (حصر عدد عشري موجب)",
+   "verified": false,
+   "text": "x هو طول ضلع معيّن 3 < x < 8 (cm). عيّن حصرا لمحيط هذا المعيّن.",
+   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+  },
+  {
+   "id": "ex-24",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 24 (حصر عدد عشري موجب)",
+   "verified": false,
+   "text": "ABC مثلث متقايس الأضلاع محيطه P محصور بين 5cm و 6cm. عيّن حصرا لطول ضلع هذا المثلث.",
+   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+  },
+  {
+   "id": "ex-25",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 25 (حصر عدد عشري موجب)",
+   "verified": false,
+   "text": "a ، b ، c أعداد عشرية حيث a = 5,12 ؛ b = 5,3 ؛ c = 5,115. أثبت أنّ c < a < b.",
+   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+  },
+  {
+   "id": "ex-26",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 26 (حصر عدد عشري موجب)",
+   "verified": false,
+   "text": "x عدد عشري حيث 1 ≤ 2x + 1 < 3. استنتج حصرا للعدد x.",
+   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+  },
+  {
+   "id": "ex-27",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 27 (حصر عدد عشري موجب)",
+   "verified": false,
+   "text": "طول ملعب كرة القدم محصور بين 100m و 110m وعرضه محصور بين 64m و 75m. علما أن الملعب مستطيل الشكل، عيّن حصرا لمساحة هذا الملعب.",
+   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+  },
+  {
+   "id": "ex-28",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 28 (حصر عدد عشري موجب)",
+   "verified": false,
+   "text": "الشكل متوازي مستطيلات 5cm × 3cm × h. 1) عيّن حصرا للارتفاع h علما أن المدوّر إلى الجزء من 100 لـ h هو 5,41. 2) استنتج حصرا للحجم V.",
+   "reading": "transcription brève (leçon hasr-adad-ushri à relire)"
+  },
+  {
+   "id": "ex-29",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 29 (المعادلات)",
+   "verified": false,
+   "text": "انقل وأتمم: إذا كانت 0 = x + 8 فإن x = … ؛ −2x = 0 فإن x = … ؛ x/2 = 1 فإن x = … ؛ 4x − 4 = 0 فإن x = …",
+   "answer": [
+    "-8",
+    "0",
+    "2",
+    "1"
+   ],
+   "answerSource": "computed",
+   "reading": "transcription brève ; les quatre lignes sont lues « 0 = x + 8 », « 0 = −2x », « x/2 = 1 », « 0 = 4x − 4 »."
+  },
+  {
+   "id": "ex-30",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 30",
+   "verified": false,
+   "text": "تحقق إن كانت المعادلة الآتية من الدرجة الأولى بمجهول واحد. برّر إجابتك: 3x + 1/2 = 7 − 2x",
+   "answer": true,
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-31",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 31",
+   "verified": false,
+   "text": "تحقق إن كانت المعادلة الآتية من الدرجة الأولى بمجهول واحد: −2(x + 1/2) = 3x + 4 − 5x",
+   "answer": {
+    "first degree": false,
+    "reason": "les x s’annulent : −2x − 1 = −2x + 4"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-32",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 32",
+   "verified": false,
+   "text": "هل العدد 0 هو حل للمعادلة 2x + 1 = 3x − 5 ؟",
+   "answer": false,
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-33",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 33",
+   "verified": false,
+   "text": "هل العدد −1 هو حل للمعادلة −m − 2 = 2m + 1 ؟",
+   "answer": true,
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-34",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 34",
+   "verified": false,
+   "text": "حلّ كل معادلة من المعادلات الآتية: x − 5 = 6 ؛ 3 + x = 8,4 ؛ −30x = 90 ؛ 4x = x + 4 ؛ −x/3 = 3 ؛ 7x = 2,8 ؛ 11x + 5 = 4x + 9 ؛ 3x − 5 = 5 − 3x",
+   "answer": [
+    "11",
+    "5,4",
+    "-3",
+    "4/3",
+    "-9",
+    "0,4",
+    "4/7",
+    "5/3"
+   ],
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-35",
+   "kind": "exercise",
+   "page": 79,
+   "section": "أوظّف تعلّماتي — 35",
+   "verified": false,
+   "text": "عند ليلى 27 زهرة، هي تعلم أن لديها 5 زهرات زائدة عن ضعف عدد الأزهار الموجودة عند مريم. 1) اكتب معادلة تترجم بها هذه الوضعية. 2) جد عدد الأزهار الموجودة عند مريم.",
+   "answer": {
+    "equation": "2x + 5 = 27",
+    "x": "11"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-36",
+   "kind": "exercise",
+   "page": 80,
+   "section": "أوظّف تعلّماتي — 36",
+   "verified": false,
+   "text": "نعتبر المعادلة 4x − 8 = 2x + 3. 1) تصوّر وضعية يمكن ترجمتها بالمعادلة السابقة. 2) حلّ هذه المعادلة.",
+   "answer": {
+    "x": "11/2"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-37",
+   "kind": "exercise",
+   "page": 80,
+   "section": "أوظّف تعلّماتي — 37",
+   "verified": false,
+   "text": "المحيط P للمستطيل يعطى بالصيغة P = 2L + 2ℓ. 1) انقل وأكمل 2L = … 2) عبّر عن L بدلالة P و ℓ. 3) احسب L إذا كان P = 31cm و ℓ = 6,4cm.",
+   "answer": {
+    "L": "9,1"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-38",
+   "kind": "exercise",
+   "page": 80,
+   "section": "ترييض مشكلات — 38",
+   "verified": false,
+   "text": "مجموع ثلاثة أعداد طبيعية متتابعة هو 30. ما هي هذه الأعداد؟",
+   "answer": [
+    9,
+    10,
+    11
+   ],
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-39",
+   "kind": "exercise",
+   "page": 80,
+   "section": "ترييض مشكلات — 39",
+   "verified": false,
+   "text": "مجموع ثلاثة أعداد صحيحة متتابعة هو −12. ما هي هذه الأعداد؟",
+   "answer": [
+    -5,
+    -4,
+    -3
+   ],
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-40",
+   "kind": "exercise",
+   "page": 80,
+   "section": "ترييض مشكلات — 40",
+   "verified": false,
+   "text": "يقول سمير: أفكر في عدد، أضفت 21 إلى ضعفه، إني أجد نفس النتيجة إذا طرحت 13 من ثلاثة أضعاف هذا العدد. ما هو العدد الذي فكر فيه سمير؟",
+   "answer": "34",
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-41",
+   "kind": "exercise",
+   "page": 80,
+   "section": "ترييض مشكلات — 41",
+   "verified": false,
+   "text": "ABC مثلث. أحسب قيسي الزاويتين ACB و BAC (الزاوية B = 83°, A = 2x, C = x) 1) ذهنيا 2) بكتابة معادلة ثم حلها.",
+   "answer": {
+    "x": "97/3"
+   },
+   "answerSource": "computed",
+   "reading": "angles 2x, x et 83° : 3x + 83 = 180 → x = 97/3 (≈ 32,33°) ; lecture du scan à confirmer"
+  },
+  {
+   "id": "ex-42",
+   "kind": "exercise",
+   "page": 80,
+   "section": "ترييض مشكلات — 42",
+   "verified": false,
+   "text": "في مثلث قائم، قيس زاوية حادة منه هو ثلاثة أضعاف قيس الزاوية الحادة الأخرى. ما هو قيس الزاوية الحادة الأصغر (بالدرجة)؟ استنتج قيس الزاوية الحادة الأكبر.",
+   "answer": {
+    "small": "45/2",
+    "big": "135/2"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-43",
+   "kind": "exercise",
+   "page": 80,
+   "section": "ترييض مشكلات — 43",
+   "verified": false,
+   "text": "ABC مثلث أنجزته باليد الحرة (A = 3x ، B = 2x ، C = x). عيّن قيس زوايا هذا المثلث.",
+   "answer": {
+    "x": "30"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-44",
+   "kind": "exercise",
+   "page": 80,
+   "section": "ترييض مشكلات — 44",
+   "verified": false,
+   "text": "طول مستطيل هو ثلاثة أضعاف عرضه، جد بعدي هذا المستطيل إذا علمت أن محيطه هو 168m.",
+   "answer": {
+    "width": "21"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-45",
+   "kind": "exercise",
+   "page": 80,
+   "section": "ترييض مشكلات — 45",
+   "verified": false,
+   "text": "ABC مثلث أضلاعه x − 2 ، x ، x + 2 . جد x إذا علمت أن محيط هذا المثلث يساوي 90cm.",
+   "answer": {
+    "x": "30"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-46",
+   "kind": "exercise",
+   "page": 80,
+   "section": "ترييض مشكلات — 46",
+   "verified": false,
+   "text": "عندما نضيف 20cm إلى طول مستطيل، تزداد مساحته بـ 250 cm². ما هو عرض هذا المستطيل؟",
+   "answer": {
+    "width": "25/2"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-47",
+   "kind": "exercise",
+   "page": 80,
+   "section": "ترييض مشكلات — 47",
+   "verified": false,
+   "text": "ABCD مستطيل عرضه 50cm، جد x إذا علمت أن مساحة هذا المستطيل هي 280 cm².",
+   "answer": {
+    "x": "28/5"
+   },
+   "answerSource": "computed",
+   "reading": "figure : segment x ; lecture à confirmer"
+  },
+  {
+   "id": "ex-48",
+   "kind": "exercise",
+   "page": 80,
+   "section": "ترييض مشكلات — 48",
+   "verified": false,
+   "text": "لاحظ الرسم المقابل. محيط المستطيل هو نفس محيط المثلث متقايس الأضلاع. جد x.",
+   "reading": "figure d’un triangle équilatéral (côté 5, x) et d’un rectangle",
+   "answer": "à lire sur la figure"
+  },
+  {
+   "id": "ex-49",
+   "kind": "exercise",
+   "page": 80,
+   "section": "ترييض مشكلات — 49",
+   "verified": false,
+   "text": "اشترى رضا من المكتبة 5 كراريس و 3 أقلام و دفع له 420DA. إذا علمت أن سعر الكراس الواحد يبلغ خمسة أضعاف سعر القلم الواحد، ماهو سعر كل كراس و كل قلم بالدينار؟",
+   "answer": {
+    "pen": "15",
+    "notebook": "75"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-50",
+   "kind": "exercise",
+   "page": 82,
+   "section": "أتعمّق — 50",
+   "verified": false,
+   "text": "يبلغ عمر رجل 45 سنة بينما يبلغ عمر ابنه فيفضل 6 سنوات. بعد كم سنة يكون عمر الأب ضعف عمر ابنه؟",
+   "answer": "33",
+   "answerSource": "computed",
+   "reading": "« عمر ابنه 6 سنوات » : lu « ابنه 6 ans » (45 + n = 2(6 + n) → n = 33)"
+  },
+  {
+   "id": "ex-51",
+   "kind": "exercise",
+   "page": 82,
+   "section": "أتعمّق — 51",
+   "verified": false,
+   "text": "يبلغ عمر سامية ثلث عمر أمها بينما يبلغ عمر أم سامية نصف عمر أمها (جدتها). إذا علمت أن مجموع أعمار سامية وأمها وجدتها هو 110 سنوات، فما هو عمر سامية؟",
+   "answer": {
+    "samia": "11"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-52",
+   "kind": "exercise",
+   "page": 82,
+   "section": "أتعمّق — 52",
+   "verified": false,
+   "text": "يريد فلاح تكبير حقله بالاعتماد على التصميم (80m × 100m + x). ما قيمة العدد x إذا علمت أن هذا الفلاح يملك 150m من السياج؟",
+   "answer": "à lire sur la figure",
+   "reading": "figure : 80 × 100, extension x"
+  },
+  {
+   "id": "ex-53",
+   "kind": "exercise",
+   "page": 82,
+   "section": "أتعمّق — 53",
+   "verified": false,
+   "text": "ABC مثلث متساوي الساقين في A حيث BC = 7cm. نسمي x طول الضلع [AC]. ما هو الشرط الذي يجب أن يحققه x حتى يكون الشكل ممكنا؟ احسب x إذا علمت أن محيط ABC يساوي 16cm.",
+   "answer": {
+    "x": "4,5"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-54",
+   "kind": "exercise",
+   "page": 82,
+   "section": "أتعمّق — 54",
+   "verified": false,
+   "text": "مساحة الشكل ABCDE هي 1161 cm². استعمل المعطيات على الشكل لإيجاد الطول AB.",
+   "answer": "à lire sur la figure",
+   "reading": "figure : 43 cm ; transcription brève"
+  },
+  {
+   "id": "ex-55",
+   "kind": "exercise",
+   "page": 82,
+   "section": "أتعمّق — 55",
+   "verified": false,
+   "text": "تضمنت مسابقة اختبارات في ثلاث مواد: الرياضيات والعلوم الفيزيائية واللغة العربية مع العلم أن معامل الرياضيات هو 4 ومعامل العلوم الفيزيائية هو 2 ومعامل اللغة العربية هو 5. تحصلت عائشة على 12 من 20 في الرياضيات و 11 من 20 في العلوم الفيزيائية. ما هي العلامة التي تحصلت عليها في اللغة العربية إذا علمت أن معدلها بلغ 11,5 ؟",
+   "answer": {
+    "arabic": "11,3"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-56",
+   "kind": "exercise",
+   "page": 82,
+   "section": "أتعمّق — 56",
+   "verified": false,
+   "text": "تحصلت خديجة على معدل 13,5 من 20 في 3 فروض في الرياضيات. ما هي العلامة التي ينبغي أن تتحصل عليها في الفرض القادم حتى يبلغ معدلها 14 من 20 ؟",
+   "answer": "15,5",
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-57",
+   "kind": "exercise",
+   "page": 82,
+   "section": "أتعمّق — 57",
+   "verified": false,
+   "text": "t = 5/9 × (T − 32). ما هي الدرجة (°F) التي سيسجلها المحرار إذا كانت الدرجة المسجلة (°C) هي 25 ؟",
+   "answer": "77",
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-58",
+   "kind": "exercise",
+   "page": 82,
+   "section": "أتعمّق — 58",
+   "verified": false,
+   "text": "لاحظ أن المسلكين الأسود والأحمر يؤديان إلى نفس العبارة (× 4 ثم + 27 ؛ × 7). ما هي الأعداد التي نسجلها في الأقراص الثلاثة ؟",
+   "answer": {
+    "start": "9"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-59",
+   "kind": "exercise",
+   "page": 83,
+   "section": "أتعمّق — 59",
+   "verified": false,
+   "text": "ABC مثلث والشكل الملوّن بالأحمر هو مربع (x ، 6cm). جد العدد x حتى يكون للمربع الأحمر والمثلث ABC نفس المساحة.",
+   "answer": "à lire sur la figure"
+  },
+  {
+   "id": "ex-60",
+   "kind": "exercise",
+   "page": 83,
+   "section": "أتعمّق — 60",
+   "verified": false,
+   "text": "لاحظ الشكل الآتي (cm): مستطيل 5 × 12 وجانب مربع. عيّن العدد x حتى يكون للمربع والمستطيل نفس المحيط.",
+   "answer": "à lire sur la figure"
+  },
+  {
+   "id": "ex-61",
+   "kind": "exercise",
+   "page": 83,
+   "section": "أتعمّق — 61",
+   "verified": false,
+   "text": "يقول بائع الأزهار لسمير: «أقترح عليك باقة من 9 أزهار حتى يبقى عندك 14DA. للحصول على باقة من 11 زهرة اعلم أنه ينقصك 36DA». حدّد سعر الزهرة الواحدة.",
+   "answer": "25",
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-62",
+   "kind": "exercise",
+   "page": 83,
+   "section": "أتعمّق — 62",
+   "verified": false,
+   "text": "مسبح دائري نصف قطر قاعدته 2,5m. احسب القيمة المضبوطة لمحيط قاعدة المسبح. عيّن حصرا لمحيط هذه القاعدة إذا علمت أن 3,14 < π < 3,15.",
+   "answer": {
+    "exact": "5π",
+    "bounds": "15,7 < P < 15,75"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ex-63",
+   "kind": "exercise",
+   "page": 83,
+   "section": "أتعمّق — 63",
+   "verified": false,
+   "text": "لاحظ الشكل: مربعان (x + 2) و x . عبّر بدلالة x عن مساحة الجزء الملوّن. احسب مساحة هذا الجزء من أجل x = 3.",
+   "answer": {
+    "area": "4x + 4",
+    "x=3": 16
+   },
+   "answerSource": "computed",
+   "reading": "(x + 2)² − x² = 4x + 4"
+  },
+  {
+   "id": "ex-64",
+   "kind": "exercise",
+   "page": 83,
+   "section": "أتعمّق — 64",
+   "verified": false,
+   "text": "قرّر صاحب محل تجاري تهيئته حسب التصميم (10m × 5m ؛ ورشة 1 عرضها 2m ؛ ورشة 2 عرضها x). كيف يجب اختيار عرض الورشة 1 حتى يكون للورشتين 1 و 2 نفس المساحة ؟",
+   "answer": "à lire sur la figure"
+  },
+  {
+   "id": "ex-65",
+   "kind": "exercise",
+   "page": 83,
+   "section": "أتعمّق — 65",
+   "verified": false,
+   "text": "تريد إكمالية تنظيم رحلة لصالح التلاميذ إلى حديقة الحيوانات. إذا ساهم كل مشارك بمبلغ 80DA فينقص 1620DA لتسديد مبلغ كلفة السفر، وإذا ساهم كل مشارك بمبلغ 120DA فيتعدّى مبلغ المساهمة مبلغ كلفة السفر بـ 540DA. ما هو عدد التلاميذ؟",
+   "answer": {
+    "n": "54",
+    "cost": "5940"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "self-1",
+   "kind": "self",
+   "page": 81,
+   "section": "أؤكّد تعلّماتي — 1",
+   "verified": true,
+   "text": "a عدد ناطق. أكمل: إذا كان a = −2 فإن a + 2 = …",
+   "answer": "0",
+   "answerSource": "computed",
+   "retour": "74"
+  },
+  {
+   "id": "self-2",
+   "kind": "self",
+   "page": 81,
+   "section": "أؤكّد تعلّماتي — 2",
+   "verified": true,
+   "text": "b عدد ناطق. أكمل: إذا كان 0 = 5 − 3b فإن b = …",
+   "answer": "5/3",
+   "answerSource": "computed",
+   "retour": "74"
+  },
+  {
+   "id": "self-3",
+   "kind": "self",
+   "page": 81,
+   "section": "أؤكّد تعلّماتي — 3",
+   "verified": false,
+   "text": "x عدد ناطق. أكمل: إذا كان x < −3 فإن −x > …",
+   "answer": "3",
+   "answerSource": "computed",
+   "retour": "74 و 75"
+  },
+  {
+   "id": "self-4",
+   "kind": "self",
+   "page": 81,
+   "section": "أؤكّد تعلّماتي — 4",
+   "verified": false,
+   "text": "y عدد ناطق. أكمل: إذا كان 2y − 2 ≥ 4 فإن y ≥ …",
+   "answer": "3",
+   "answerSource": "computed",
+   "retour": "74 و 75"
+  },
+  {
+   "id": "self-5",
+   "kind": "self",
+   "page": 81,
+   "section": "أؤكّد تعلّماتي — 5",
+   "verified": false,
+   "text": "عيّن المدوّر إلى الوحدة لحاصل القسمة 136/14. احصر هذا العدد بين عددين طبيعيين متتاليين.",
+   "answer": {
+    "rounded": 10,
+    "bracket": "9 ≤ 136/14 < 10"
+   },
+   "answerSource": "computed",
+   "retour": "76 و 77"
+  },
+  {
+   "id": "self-6",
+   "kind": "self",
+   "page": 81,
+   "section": "أؤكّد تعلّماتي — 6",
+   "verified": true,
+   "text": "أفكر في عدد. أضربه في 7 وأجد 4. ما هو هذا العدد؟",
+   "answer": "4/7",
+   "answerSource": "computed",
+   "retour": "76 و 77"
+  },
+  {
+   "id": "self-7",
+   "kind": "self",
+   "page": 81,
+   "section": "أؤكّد تعلّماتي — 7",
+   "verified": true,
+   "text": "احسب قيمة العبارة 13y − 4 من أجل y = −2. ما هي قيمة هذه العبارة من أجل y = 4/13 ؟",
+   "answer": [
+    "-30",
+    "0"
+   ],
+   "answerSource": "computed",
+   "retour": "75"
+  },
+  {
+   "id": "self-8",
+   "kind": "self",
+   "page": 81,
+   "section": "أؤكّد تعلّماتي — 8",
+   "verified": true,
+   "text": "هل العدد 5 هو حل للمعادلة 2x − 7 = 3x + 11 ؟",
+   "answer": false,
+   "answerSource": "computed",
+   "retour": "76 و 77"
+  },
+  {
+   "id": "self-9",
+   "kind": "self",
+   "page": 81,
+   "section": "أؤكّد تعلّماتي — 9",
+   "verified": true,
+   "text": "هل للمعادلتين 5x − 3 = 0 و 2x + 1 = −3x + 4 نفس الحل؟",
+   "answer": true,
+   "answerSource": "computed",
+   "retour": "76 و 77"
+  },
+  {
+   "id": "self-10",
+   "kind": "self",
+   "page": 81,
+   "section": "أؤكّد تعلّماتي — 10",
+   "verified": true,
+   "text": "حل المعادلة: 2x − 1 = 3x + 5.",
+   "answer": "-6",
+   "answerSource": "computed",
+   "retour": "76 و 77"
+  },
+  {
+   "id": "self-11",
+   "kind": "self",
+   "page": 81,
+   "section": "أؤكّد تعلّماتي — 11",
+   "verified": false,
+   "text": "لاحظ الشكل المقابل: قطعة طولها 36 مقسّمة بعلامات (x ثم أقسام متساوية). عيّن العدد x.",
+   "answer": "à lire sur la figure",
+   "retour": "76 و 77"
+  },
+  {
+   "id": "self-12",
+   "kind": "self",
+   "page": 81,
+   "section": "أؤكّد تعلّماتي — 12",
+   "verified": true,
+   "text": "لاحظ الشكل (الوحدة 1cm): مثلث أضلاعه 5 ، 8 ، x + 2. عيّن x إذا علمت أن محيط المثلث هو 22cm.",
+   "answer": "7",
+   "answerSource": "computed",
+   "retour": "76 و 77",
+   "reading": "les côtés sont lus 5, 8 et x + 2 (périmètre 22 → x = 7)"
+  },
+  {
+   "id": "self-13",
+   "kind": "self",
+   "page": 81,
+   "section": "أؤكّد تعلّماتي — 13",
+   "verified": false,
+   "text": "لاحظ الشكل المقابل (مثلث بزاوية 70° وضلعين متقايسين وزاوية قائمة). عيّن العدد a.",
+   "answer": "à lire sur la figure",
+   "retour": "76 و 77"
+  },
+  {
+   "id": "integration",
+   "kind": "integration",
+   "page": 84,
+   "section": "أدمج تعلّماتي — وضعية",
+   "verified": false,
+   "text": "في منافسة سباق الدراجات، انطلق دراج بسرعة متوسطة قدرها 50km/h وهو يتابع دراجا آخر انطلق قبله بسرعة متوسطة قدرها 45km/h. ما هي المدة الزمنية اللازمة لهذا الدراج للالتحاق بمنافسه إذا علمت أن المسافة التي كانت تفصلهما عند الانطلاق هي 1km ؟ ما هي المسافة التي يقطعها الدراجان عندما يلتحق الدراج الثاني بالدراج الأول؟ تحليل: المجهول t الزمن؛ 50 × t = 45 × t + 1 ؛ t = 1/5 h = 12 min ؛ المسافة 10 km.",
+   "answer": {
+    "t": "قيمة 1/5 h = 12 min",
+    "distance": "10 km"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "evaluation",
+   "kind": "integration",
+   "page": 84,
+   "section": "وضعية للتقويم",
+   "verified": false,
+   "text": "تحمل سيارة 15 كيسا من الفرينة و 25kg من السكر، وتحمل سيارة أخرى 10 أكياس مماثلة من الفرينة و 150kg من السكر. يقول إحدى السائقين للآخر: «إن السيارتين تحملان نفس الكتلة من السلع». ماهي كتلة كل كيس من الفرينة؟",
+   "answer": {
+    "sack": "25 kg"
+   },
+   "answerSource": "computed"
+  },
+  {
+   "id": "ict",
+   "kind": "ict",
+   "page": 85,
+   "section": "أوظّف تكنولوجيات الإعلام والاتصال — جيوجبرا",
+   "verified": false,
+   "text": "حل معادلات أو متراجحات باستعمال جيوجبرا. مسألة: [KL] قطعة طولها 10cm، M نقطة متحركة عليها. كيف يجب اختيار طول ضلع المربع KMNP حتى يكون لهذا المربع والمثلث المتقايس الأضلاع MLS نفس المحيط؟ تمرين: نفس العملية بتعويض المربع KMNL بمستطيل حيث KM = 2LP.",
+   "answer": {
+    "KM": "30/7 (4 KM = 3(10 − KM))",
+    "rect": "KM = 2LP : 6 KM/2... à relire"
+   },
+   "answerSource": "computed",
+   "reading": "4m = 3(10 − m) → m = 30/7 ≈ 4,29"
+  }
+ ],
+ "discrepancies": [
+  {
+   "elementId": "prep",
+   "kind": "reading",
+   "text": "Ligne 5 lue « 3 ÷ x = 3 » (x = 1, option (1)) et ligne 6 « x ÷ 10 = 1 » (x = 10, option (2)) à 220 dpi ; la ligne 11 imprime « (x − 1)(1 + x) » dans le texte mais la seule option cohérente est 1 − x² : lue « (1 − x)(1 + x) ». Ligne 15 : trois sous-questions (unité, 1/10, 1/100) pour les options 8 / 7,7 / 7,67 (les colonnes de réponses sont lues par rang)."
+  },
+  {
+   "elementId": "act-1",
+   "kind": "reading",
+   "text": "L’activité 1 pose la propriété pour a, b, c RATIONNELS ; le texte « أعداد ناطقة » est gardé (la leçon travaille avec des nombres relatifs et des fractions)."
+  },
+  {
+   "elementId": "know-3",
+   "kind": "scope",
+   "text": "معارف 3 définit le « مدوّر » : la leçon hasr-adad-ushri relira les cas limites (14,5 ≤ x < 15,5) ; 3,647 → 4 ; 3,6 ; 3,65."
+  },
+  {
+   "elementId": "method-1b",
+   "kind": "reading",
+   "text": "La seconde égalité (−1/2 x + 1/10 = 1/2) obtenue en divisant 5 = −5x + 1 par 10 : le scan écrit « −1/2 x + 1/10 = 1/2 » (valeur 1/2 correcte : x = −4/5)."
+  },
+  {
+   "elementId": "ex-4",
+   "kind": "reading",
+   "text": "« 1 = 3x − 15 » est lu « −15 + 3x = 1 » dans le scan ; × (−1) donne 15 − 3x = −1."
+  },
+  {
+   "elementId": "ex-41",
+   "kind": "reading",
+   "text": "Les angles du triangle sont lus A = 2x, C = x et B = 83° : 3x = 97, x = 97/3 non décimal — à confirmer par la leçon qui l’utilisera."
+  },
+  {
+   "elementId": "ex-50",
+   "kind": "reading",
+   "text": "« يبلغ عمر ابنه فيفضل 6 سنوات » est ambigu ; lu : le fils a 6 ans (45 + n = 2(6 + n), n = 33)."
+  },
+  {
+   "elementId": "unit",
+   "kind": "scope",
+   "text": "Pages 70–85 complètes. Éléments des leçons non générées transcrits brièvement à 110 dpi (verified: false) ; figures des ex-47, 48, 52, 54, 59, 60, 64 à relire par leur leçon (réponses « à lire sur la figure »)."
+  }
+ ],
+ "destinations": {
+  "_comment": "elementId → { lesson, module } ; `items` répartit un élément ; une leçon encore coming_soon est une destination EN ATTENTE (check-textbook-coverage.mjs). Modules de musawiyat-amaliyat : 0 أستعدّ · 1 نشاط (lab) · 2 معارف · 3 طريقة · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي.",
+  "objectives": {
+   "lesson": "unit",
+   "module": "page"
+  },
+  "opener": {
+   "lesson": "wadiya-idmajiya-musawiyat-mutabayinat",
+   "module": null
+  },
+  "challenge": {
+   "lesson": "wadiya-idmajiya-musawiyat-mutabayinat",
+   "module": null
+  },
+  "prep": {
+   "lesson": "musawiyat-amaliyat",
+   "module": 0,
+   "items": {
+    "1-3-4-9": {
+     "lesson": "musawiyat-amaliyat",
+     "module": 0
+    },
+    "7-8": {
+     "lesson": "mutabayinat-amaliyat",
+     "module": null
+    },
+    "13-14-15": {
+     "lesson": "hasr-adad-ushri",
+     "module": null
+    },
+    "2-5-6-10-11-12": {
+     "lesson": "muadalat-darajat-ula",
+     "module": null
+    }
+   }
+  },
+  "act-1": {
+   "lesson": "musawiyat-amaliyat",
+   "module": 4,
+   "note": "APPLICATION (guide §4ter) : le lab `equality-lanes` est l’entrée conçue ; l’activité du manuel est posée en أتمرّن."
+  },
+  "act-2": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "act-2b": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "act-3": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "act-4": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "know-1a": {
+   "lesson": "musawiyat-amaliyat",
+   "module": 2
+  },
+  "know-1b": {
+   "lesson": "musawiyat-amaliyat",
+   "module": 2
+  },
+  "know-2a": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "know-2b": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "know-3": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "know-4": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "know-5": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "method-1a": {
+   "lesson": "musawiyat-amaliyat",
+   "module": 3
+  },
+  "method-1b": {
+   "lesson": "musawiyat-amaliyat",
+   "module": 3
+  },
+  "method-2": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "now-75-1": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "now-75-2": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "method-3": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "now-77-1": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "method-4": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "method-5": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "now-77-2": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-1": {
+   "lesson": "musawiyat-amaliyat",
+   "module": 4
+  },
+  "ex-2": {
+   "lesson": "musawiyat-amaliyat",
+   "module": 4
+  },
+  "ex-3": {
+   "lesson": "musawiyat-amaliyat",
+   "module": 4
+  },
+  "ex-4": {
+   "lesson": "musawiyat-amaliyat",
+   "module": 4
+  },
+  "ex-5": {
+   "lesson": "musawiyat-amaliyat",
+   "module": 4
+  },
+  "ex-6": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "ex-7": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "ex-8": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "ex-9": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "ex-10": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "ex-11": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "ex-12": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "ex-13": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "ex-14": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "ex-15": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "ex-16": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "ex-17": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "ex-18": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "ex-19": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "ex-20": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "ex-21": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "ex-22": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "ex-23": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "ex-24": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "ex-25": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "ex-26": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "ex-27": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "ex-28": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "ex-62": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "ex-29": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-30": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-31": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-32": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-33": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-34": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-35": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-36": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-37": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-38": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-39": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-40": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-41": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-42": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-43": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-44": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-45": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-46": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-47": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-48": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-49": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-50": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-51": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-52": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-53": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-54": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-55": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-56": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-57": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-58": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-59": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-60": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-61": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-63": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-64": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "ex-65": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "self-1": {
+   "lesson": "musawiyat-amaliyat",
+   "module": 8
+  },
+  "self-2": {
+   "lesson": "musawiyat-amaliyat",
+   "module": 8
+  },
+  "self-3": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "self-4": {
+   "lesson": "mutabayinat-amaliyat",
+   "module": null
+  },
+  "self-5": {
+   "lesson": "hasr-adad-ushri",
+   "module": null
+  },
+  "self-6": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "self-7": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "self-8": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "self-9": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "self-10": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "self-11": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "self-12": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "self-13": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  },
+  "integration": {
+   "lesson": "wadiya-idmajiya-musawiyat-mutabayinat",
+   "module": null
+  },
+  "evaluation": {
+   "lesson": "wadiya-idmajiya-musawiyat-mutabayinat",
+   "module": null
+  },
+  "ict": {
+   "lesson": "muadalat-darajat-ula",
+   "module": null
+  }
+ }
+}

@@ -25,7 +25,7 @@ import { placeBubble, readLearned, writeLearned, readOff, writeOff } from './lab
  * Contrat DOM : [data-lab-coach-toggle][data-state=on|off], [data-lab-coach][data-step=<id>], [data-lab-coach-ring],
  * [data-lab-coach-ok], [data-lab-coach-stop].
  *
- * @param {{lab:string, step:null|{id:string,target:string,gesture?:string}, text:string, labels:{hide:string,show:string,ok:string,stop:string}}} p
+ * @param {{lab:string, step:null|{id:string,target:string,gesture?:string,prefer?:'above'|'below',noFlip?:boolean}, text:string, labels:{hide:string,show:string,ok:string,stop:string}}} p
  */
 export function useLabCoach({ lab, step, text, labels }) {
   const [enabled, setEnabled] = useState(() => !readOff(lab));
@@ -96,7 +96,7 @@ function CoachOverlay({ visible, step, text, labels, onOk, onStop }) {
     // un labo ENTIÈREMENT hors écran (il y en a plusieurs dans une page) ne colle pas de bulle au bord de l'écran : il n'est pas regardé
     const onScreen = w.bottom > bandTop && w.top < bandBottom;
     const view = onScreen ? { top: bandTop - w.top, bottom: bandBottom - w.top } : null;
-    const place = placeBubble({ target, box: { w: w.width, h: w.height }, bubble: { w: bw, h: bh }, view });
+    const place = placeBubble({ target, box: { w: w.width, h: w.height }, bubble: { w: bw, h: bh }, view, prefer: step.prefer, noFlip: step.noFlip });
     const next = { target, bw, ...place };
     setGeo((g) => (g && Object.keys(next).every((k) => JSON.stringify(g[k]) === JSON.stringify(next[k])) ? g : next));
   }, [visible, step]);

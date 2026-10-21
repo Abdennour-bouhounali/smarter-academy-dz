@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **84** leçons publiées · **186** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **94** leçons publiées · **176** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -911,8 +911,8 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
 | `2am.m4.r01` | قراءة فاصلة نقطة معلومة أو وضع نقطة ذات فاصلة معلومة على مستقيم مدرّج. | `talim-mustaqim-mudarraj-2` _(prévue)_ | يرسّخ `1am.m5.r06` |
-| `2am.m4.r02` | مقارنة عددين نسبيين. | `muqarana-nisbiya` _(prévue)_ | `2am.m4.r01` |
-| `2am.m4.r03` | ترتيب أعداد نسبية تصاعديا أو تنازليا. | `muqarana-nisbiya` _(prévue)_ | `2am.m4.r02` |
+| `2am.m4.r02` | مقارنة عددين نسبيين. | `muqarana-nisbiya` | `2am.m4.r01` |
+| `2am.m4.r03` | ترتيب أعداد نسبية تصاعديا أو تنازليا. | `muqarana-nisbiya` | `2am.m4.r02` |
 | `2am.m4.r04` | قراءة إحداثيي نقطة معلومة أو وضع نقطة ذات إحداثيين معلومين في مستوٍ منسوب إلى معلم متعامد ومتجانس. | `talim-nuqta-mustawi` _(prévue)_ | يرسّخ `1am.m5.r07` |
 | `2am.m4.r05` | جمع وطرح عددين نسبيين. | `jam-tarh-nisbiya` _(prévue)_ | `2am.m4.r01` |
 | `2am.m4.r06` | حساب مجموع جبري. | `majmu-jabri` _(prévue)_ | `2am.m4.r05`، `2am.m1.r02` |
@@ -934,7 +934,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 |---|---|---|---|
 | `2am.m6.r01` | التعرّف على وضعية تناسبية من جدول أعداد. | `wadiya-tanasubiya-jadwal` _(prévue)_ | يرسّخ `1am.m6.r03` |
 | `2am.m6.r02` | إتمام جدول أعداد يمثّل تناسبية. | `wadiya-tanasubiya-jadwal` _(prévue)_ | يرسّخ `1am.m6.r04` |
-| `2am.m6.r03` | تعيين الرابع المتناسب. | `rabi-mutanasib` _(prévue)_ | `2am.m6.r02` |
+| `2am.m6.r03` | تعيين الرابع المتناسب. | `rabi-mutanasib` | `2am.m6.r02` |
 | `2am.m6.r04` | حساب نسبة مئوية وتوظيفها. | `nisba-miawiya` _(prévue)_ | `2am.m6.r03`، يمدّد `1am.m6.r06` |
 | `2am.m6.r05` | حساب مقياس خريطة أو تصميم واستعماله. | `miqyas-kharita` _(prévue)_ | `2am.m6.r03`، يمدّد `1am.m6.r08` |
 | `2am.m6.r06` | تحويل وحدات القياس (أطوال ومساحات وحجوم). | `miqyas-kharita` _(prévue)_ | يرسّخ `1am.m6.r09` |
@@ -992,9 +992,9 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `3am.m3.r03` | كتابة عدد عشري باستعمال قوى 10. | `quwa-adad-ashara` _(prévue)_ | `3am.m3.r02` |
 | `3am.m3.r04` | تعيين الكتابة العلمية لعدد عشري. | `kitaba-ilmiya-rutba` _(prévue)_ | `3am.m3.r03` |
 | `3am.m3.r05` | استعمال الكتابة العلمية لحصر عدد عشري ولإيجاد رتبة مقدار عدد. | `kitaba-ilmiya-rutba` _(prévue)_ | `3am.m3.r04`، يمدّد `1am.m1.r06` |
-| `3am.m3.r06` | حساب قوة عدد نسبي. | `quwat-adad-nisbi` _(prévue)_ | `3am.m1.r01` |
-| `3am.m3.r07` | معرفة قواعد الحساب على قوة عدد نسبي واستعمالها في وضعيات بسيطة. | `quwat-adad-nisbi` _(prévue)_ | `3am.m3.r06`، `3am.m3.r02` |
-| `3am.m3.r08` | إجراء حساب يتضمّن قوى. | `quwat-adad-nisbi` _(prévue)_ | `3am.m3.r07`، `2am.m1.r01` |
+| `3am.m3.r06` | حساب قوة عدد نسبي. | `quwat-adad-nisbi` | `3am.m1.r01` |
+| `3am.m3.r07` | معرفة قواعد الحساب على قوة عدد نسبي واستعمالها في وضعيات بسيطة. | `quwat-adad-nisbi` | `3am.m3.r06`، `3am.m3.r02` |
+| `3am.m3.r08` | إجراء حساب يتضمّن قوى. | `quwat-adad-nisbi` | `3am.m3.r07`، `2am.m1.r01` |
 
 #### المقطع 4 — المثلث القائم والدائرة (`3am.m4`, 4 أسابيع)
 
@@ -1002,25 +1002,25 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 |---|---|---|---|
 | `3am.m4.r01` | معرفة خاصية الدائرة المحيطة بالمثلث القائم واستعمالها. | `daira-muhita-qaim` _(prévue)_ | `2am.m3.r07`، `2am.m5.r02` |
 | `3am.m4.r02` | معرفة خاصية المتوسط المتعلق بالوتر في مثلث قائم واستعمالها. | `daira-muhita-qaim` _(prévue)_ | `3am.m4.r01` |
-| `3am.m4.r03` | معرفة خاصية فيثاغورس واستعمالها. | `khassiyat-fitaghuras` _(prévue)_ | `1am.m2.r08`، `3am.m3.r06` |
+| `3am.m4.r03` | معرفة خاصية فيثاغورس واستعمالها. | `khassiyat-fitaghuras` | `1am.m2.r08`، `3am.m3.r06` |
 | `3am.m4.r04` | تعريف بعد نقطة عن مستقيم وتعيينه. | `mahawir-munassifat` _(prévue)_ | `1am.m2.r01`، `3am.m4.r03` |
 | `3am.m4.r05` | معرفة الوضعيات النسبية لمستقيم ودائرة. | `awda-daira-mustaqim` _(prévue)_ | `3am.m4.r04`، `1am.m2.r05` |
 | `3am.m4.r06` | إنشاء مماس لدائرة في نقطة منها. | `mumass-daira` _(prévue)_ | `3am.m4.r05` |
 | `3am.m4.r07` | تعريف جيب تمام زاوية حادة في مثلث قائم. | `jayb-tamam-zawiya` _(prévue)_ | `3am.m2.r03` |
 | `3am.m4.r08` | تعيين قيمة مقرّبة أو القيمة المضبوطة لجيب تمام زاوية حادة أو لزاوية بمعرفة جيب التمام لها. | `hisab-jayb-tamam` _(prévue)_ | `3am.m4.r07` |
 | `3am.m4.r09` | حساب زوايا أو أطوال بتوظيف جيب تمام زاوية حادة. | `hisab-jayb-tamam` _(prévue)_ | `3am.m4.r08`، `2am.m6.r03` |
-| `3am.m4.x1` | خاصية فيثاغورس: المبرهنة والمبرهنة العكسية. _(منهاج 2016)_ | `khassiyat-fitaghuras` _(prévue)_ | `3am.m4.r03` |
+| `3am.m4.x1` | خاصية فيثاغورس: المبرهنة والمبرهنة العكسية. _(منهاج 2016)_ | `khassiyat-fitaghuras` | `3am.m4.r03` |
 
 #### المقطع 5 — الحساب الحرفي (`3am.m5`, 4 أسابيع)
 
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
-| `3am.m5.r01` | تبسيط عبارة جبرية. | `tabsit-hadhf-aqwas` _(prévue)_ | `2am.m1.r03`، `3am.m1.r08` |
-| `3am.m5.r02` | نشر عبارات جبرية من الشكل: (a + b)(c + d) حيث a، b، c و d أعداد نسبية. | `nashr-jabri-3am` _(prévue)_ | `3am.m5.r01`، `3am.m1.r01` |
+| `3am.m5.r01` | تبسيط عبارة جبرية. | `tabsit-hadhf-aqwas` | `2am.m1.r03`، `3am.m1.r08` |
+| `3am.m5.r02` | نشر عبارات جبرية من الشكل: (a + b)(c + d) حيث a، b، c و d أعداد نسبية. | `nashr-jabri-3am` | `3am.m5.r01`، `3am.m1.r01` |
 | `3am.m5.r03` | حساب قيمة عبارة حرفية. | `qimat-ibara-harfiya` _(prévue)_ | `3am.m1.r08`، يمدّد `1am.m5.r08` |
 | `3am.m5.r04` | مقارنة عددين ناطقين. | `muqaranat-natiqayn` _(prévue)_ | يرسّخ `3am.m1.r05` |
-| `3am.m5.r05` | معرفة الخواص المتعلقة بالمساويات (أو المتباينات) والعمليات واستعمالها في وضعيات بسيطة. | `musawiyat-amaliyat` _(prévue)_ | `2am.m4.r09`، `3am.m1.r01` |
-| `3am.m5.r06` | ترييض مشكلات وحلّها بتوظيف المعادلات من الدرجة الأولى ذات مجهول واحد. | `muadalat-darajat-ula` _(prévue)_ | `3am.m5.r05`، `3am.m5.r01`، يمدّد `2am.m4.r08` |
+| `3am.m5.r05` | معرفة الخواص المتعلقة بالمساويات (أو المتباينات) والعمليات واستعمالها في وضعيات بسيطة. | `musawiyat-amaliyat` | `2am.m4.r09`، `3am.m1.r01` |
+| `3am.m5.r06` | ترييض مشكلات وحلّها بتوظيف المعادلات من الدرجة الأولى ذات مجهول واحد. | `muadalat-darajat-ula` | `3am.m5.r05`، `3am.m5.r01`، يمدّد `2am.m4.r08` |
 | `3am.m5.x1` | حصر عدد موجب مكتوب في الشكل العشري باستعمال التدوير إلى رتبة معيّنة. _(منهاج 2016)_ | `hasr-adad-ushri` _(prévue)_ | يمدّد `1am.m3.r05` |
 
 #### المقطع 6 — الانسحاب – الهرم ومخروط الدوران (`3am.m6`, 3 أسابيع)
@@ -1040,12 +1040,12 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
-| `3am.m7.r01` | التعرّف على وضعية تناسبية في تمثيل بياني. | `tanasub-tamthil-bayani` _(prévue)_ | `2am.m6.r01`، `2am.m4.r04` |
+| `3am.m7.r01` | التعرّف على وضعية تناسبية في تمثيل بياني. | `tanasub-tamthil-bayani` | `2am.m6.r01`، `2am.m4.r04` |
 | `3am.m7.r02` | التعرّف على الحركة المنتظمة. | `haraka-muntazama-sura` _(prévue)_ | `3am.m7.r01` |
 | `3am.m7.r03` | توظيف التناسبية لاستعمال وحدات الزمن. | `haraka-muntazama-sura` _(prévue)_ | `2am.m6.r06` |
 | `3am.m7.r04` | استعمال المساواة d = v × t في حسابات متعلّقة بالمسافة المقطوعة والسرعة والزمن. | `haraka-muntazama-sura` _(prévue)_ | `3am.m7.r02`، `3am.m7.r03` |
 | `3am.m7.r05` | تحويل وحدات قياس السرعة. | `haraka-muntazama-sura` _(prévue)_ | `3am.m7.r04`، `2am.m6.r06` |
-| `3am.m7.r06` | استعمال التناسبية في وضعيات تدخل فيه النسبة المئوية. | `nisba-miawiya-3am` _(prévue)_ | يرسّخ `2am.m6.r04` |
+| `3am.m7.r06` | استعمال التناسبية في وضعيات تدخل فيه النسبة المئوية. | `nisba-miawiya-3am` | يرسّخ `2am.m6.r04` |
 | `3am.m7.r07` | تجميع معطيات إحصائية في فئات وتنظيمها في جدول. | `fiat-takrarat` _(prévue)_ | يرسّخ `2am.m6.r11` |
 | `3am.m7.r08` | حساب تكرارات. | `fiat-takrarat` _(prévue)_ | يرسّخ `2am.m6.r12` |
 | `3am.m7.r09` | تقديم سلسلة إحصائية في جدول وتمثيلها بمخطّط أو بيان (الأشرطة، المدرج التكراري). | `tamthil-silsila-ihsaiya` _(prévue)_ | `3am.m7.r07`، يمدّد `2am.m6.r10` |
@@ -1234,7 +1234,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 10 | `muqarana-kasrayn` — مقارنة كسرين | prévue | `2am.m1.r08` |
 | 11 | `wadiya-idmajiya-kusur-amaliyat` — أدمج تعلّماتي — الكسور والعمليات عليها | synthèse | — |
 | 12 | `talim-mustaqim-mudarraj-2` — التعليم على مستقيم مدرّج | prévue | `2am.m4.r01` |
-| 13 | `muqarana-nisbiya` — مقارنة وترتيب أعداد نسبية | prévue | `2am.m4.r02` `2am.m4.r03` |
+| 13 | `muqarana-nisbiya` — مقارنة وترتيب أعداد نسبية | publiée | `2am.m4.r02` `2am.m4.r03` |
 | 14 | `talim-nuqta-mustawi` — تعليم نقطة في المستوي | prévue | `2am.m4.r04` |
 | 15 | `jam-tarh-nisbiya` — جمع وطرح عددين نسبيين | prévue | `2am.m4.r05` |
 | 16 | `masafa-nuqtatayn` — المسافة بين نقطتين على مستقيم مدرّج | prévue | `2am.m4.r07` |
@@ -1245,7 +1245,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 21 | `hall-mushkil-muadala` — حلّ مشكل باستعمال معادلة | prévue | `2am.m4.r08` |
 | 22 | `wadiya-idmajiya-mafhum-muadala` — أدمج تعلّماتي — مفهوم معادلة | synthèse | — |
 | 23 | `wadiya-tanasubiya-jadwal` — التعرّف على وضعية تناسبية من جدول | prévue | `2am.m6.r01` `2am.m6.r02` |
-| 24 | `rabi-mutanasib` — حساب الرابع المتناسب | prévue | `2am.m6.r02` `2am.m6.r03` |
+| 24 | `rabi-mutanasib` — حساب الرابع المتناسب | publiée | `2am.m6.r02` `2am.m6.r03` |
 | 25 | `nisba-miawiya` — حساب نسبة مئوية وتوظيفها | prévue | `2am.m6.r04` |
 | 26 | `miqyas-kharita` — مقياس خريطة أو تصميم | prévue | `2am.m6.r05` `2am.m6.r06` |
 | 27 | `wadiya-idmajiya-tanasubiya-2am` — أدمج تعلّماتي — التناسبية | synthèse | — |
@@ -1305,20 +1305,20 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 11 | `quwa-adad-ashara` — قوى العدد 10 | prévue | `3am.m3.r01` `3am.m3.r03` |
 | 12 | `qawaid-quwa-ashara` — قواعد الحساب على قوى العدد 10 | prévue | `3am.m3.r02` |
 | 13 | `kitaba-ilmiya-rutba` — الكتابة العلمية ورتبة القدر | prévue | `3am.m3.r04` `3am.m3.r05` |
-| 14 | `quwat-adad-nisbi` — قوة عدد نسبي | prévue | `3am.m3.r06` `3am.m3.r07` `3am.m3.r08` |
+| 14 | `quwat-adad-nisbi` — قوة عدد نسبي | publiée | `3am.m3.r06` `3am.m3.r07` `3am.m3.r08` |
 | 15 | `wadiya-idmajiya-quwa-nisbiya` — أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة | synthèse | — |
-| 16 | `tabsit-hadhf-aqwas` — تبسيط عبارة جبرية وحذف الأقواس | prévue | `3am.m5.r01` |
-| 17 | `nashr-jabri-3am` — نشر عبارات جبرية | prévue | `3am.m5.r02` |
+| 16 | `tabsit-hadhf-aqwas` — تبسيط عبارة جبرية وحذف الأقواس | publiée | `3am.m5.r01` |
+| 17 | `nashr-jabri-3am` — نشر عبارات جبرية | publiée | `3am.m5.r02` |
 | 18 | `qimat-ibara-harfiya` — حساب قيمة عبارة حرفية | prévue | `3am.m5.r03` |
 | 19 | `muqaranat-natiqayn` — مقارنة عددين ناطقين | prévue | `3am.m5.r04` |
 | 20 | `wadiya-idmajiya-ibarat-harfiya-3` — أدمج تعلّماتي — الحساب الحرفي | synthèse | — |
-| 21 | `musawiyat-amaliyat` — المساويات والعمليات | prévue | `3am.m5.r05` |
+| 21 | `musawiyat-amaliyat` — المساويات والعمليات | publiée | `3am.m5.r05` |
 | 22 | `mutabayinat-amaliyat` — المتباينات والعمليات | prévue | `3am.m5.r05` |
 | 23 | `hasr-adad-ushri` — حصر عدد عشري موجب | prévue | `3am.m5.x1` |
-| 24 | `muadalat-darajat-ula` — المعادلات من الدرجة الأولى بمجهول واحد | prévue | `3am.m5.r06` |
+| 24 | `muadalat-darajat-ula` — المعادلات من الدرجة الأولى بمجهول واحد | publiée | `3am.m5.r06` |
 | 25 | `wadiya-idmajiya-musawiyat-mutabayinat` — أدمج تعلّماتي — المساويات – المتباينات – المعادلات | synthèse | — |
-| 26 | `tanasub-tamthil-bayani` — التناسبية والتمثيل البياني | prévue | `3am.m7.r01` |
-| 27 | `nisba-miawiya-3am` — النسبة المئوية | prévue | `3am.m7.r06` |
+| 26 | `tanasub-tamthil-bayani` — التناسبية والتمثيل البياني | publiée | `3am.m7.r01` |
+| 27 | `nisba-miawiya-3am` — النسبة المئوية | publiée | `3am.m7.r06` |
 | 28 | `haraka-muntazama-sura` — الحركة المنتظمة والسرعة المتوسطة | prévue | `3am.m7.r02` `3am.m7.r03` `3am.m7.r04` `3am.m7.r05` |
 | 29 | `wadiya-idmajiya-tanasubiya-sura` — أدمج تعلّماتي — التناسبية | synthèse | — |
 | 30 | `mutawassit-mutawazin` — متوسط سلسلة إحصائية والمتوسط المتوازن | prévue | `3am.m7.r11` `3am.m7.r12` |
@@ -1340,7 +1340,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 46 | `awda-daira-mustaqim` — الأوضاع النسبية لدائرة ومستقيم | prévue | `3am.m4.r05` `3am.m4.r04` |
 | 47 | `mumass-daira` — مماس دائرة في نقطة منها | prévue | `3am.m4.r06` |
 | 48 | `wadiya-idmajiya-muthallath-qaim-daira` — أدمج تعلّماتي — المثلث القائم والدائرة | synthèse | — |
-| 49 | `khassiyat-fitaghuras` — خاصية فيثاغورس | prévue | `3am.m4.r03` `3am.m4.x1` |
+| 49 | `khassiyat-fitaghuras` — خاصية فيثاغورس | publiée | `3am.m4.r03` `3am.m4.x1` |
 | 50 | `aksiya-fitaghuras` — الخاصية العكسية لفيثاغورس | prévue | `3am.m4.r03` `3am.m4.x1` |
 | 51 | `jayb-tamam-zawiya` — جيب تمام زاوية حادة | prévue | `3am.m4.r07` |
 | 52 | `hisab-jayb-tamam` — حساب جيب التمام وتوظيفه | prévue | `3am.m4.r08` `3am.m4.r09` |

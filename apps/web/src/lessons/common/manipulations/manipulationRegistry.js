@@ -105,6 +105,26 @@ export const MANIPULATION_COMPONENTS = {
   'tile-yard': lazy(() => import('./surface/TileYard')),
   // 2AM, unité 2 « الكسور والعمليات عليها » (2026-10-14).
   'egg-trays': lazy(() => import('./operations/EggTrays')),
+  // 3AM, unité 4 « الحساب الحرفي » : le terme sous la main — réduire, supprimer des parenthèses (2026-10-20).
+  'like-terms': lazy(() => import('./algebra/LikeTerms')),
+  // 3AM, unité 4 « الحساب الحرفي » : la coupure sous la main — l'aire d'un terrain comptée de deux façons, développer (2026-10-21).
+  'area-split': lazy(() => import('./algebra/AreaSplit')),
+  // 3AM, unité 11 « خاصية فيثاغورس، جيب تمام زاوية » : les bassins carrés sous la main (2026-10-20).
+  'pythagoras-tanks': lazy(() => import('./geometry/PythagorasTanks')),
+  // 3AM, unité 3 « القوى ذات أسس نسبية صحيحة » : l'exposant sous la main — le train des puissances (2026-10-21).
+  'power-train': lazy(() => import('./operations/PowerTrain')),
+  // 3AM, unité 5 « المساويات – المتباينات – المعادلات » : le nombre d'une opération sous la main — le مضمار des deux membres (2026-10-21).
+  'equality-lanes': lazy(() => import('./operations/EqualityLanes')),
+  // 3AM, unité 5 : le signe d'un terme sous la main — la عبّارة des caisses d'une équation (2026-10-21).
+  'term-ferry': lazy(() => import('./algebra/TermFerry')),
+  // 2AM, unité 3 « الأعداد النسبية » : la distance à zéro sous la main — le مسبار (2026-10-21).
+  'zero-probe': lazy(() => import('./operations/ZeroProbe')),
+  // 3AM, unité 6 « التناسبية » : le pourcentage sous la main — l'inconnue est le nombre de cases peintes d'un plateau de 100 (2026-10-21).
+  'hundred-grid': lazy(() => import('./proportion/HundredGrid')),
+  // 3AM, unité 6 « التناسبية » : la punaise sur sa rainure et la règle sur deux nœuds — du tableau au graphique d'une situation proportionnelle (2026-10-21).
+  'pin-rails': lazy(() => import('./proportion/PinRails')),
+  // 2AM, unité 5 « التناسبية » : le nombre qui manque sous la main — les موازين الرابع المتناسب (2026-10-21).
+  'fourth-gauges': lazy(() => import('./operations/FourthGauges')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

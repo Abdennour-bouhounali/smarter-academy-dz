@@ -13,12 +13,14 @@ const KEY = (lab) => `sa.labCoach.${lab}`;
  * @param {{x:number,y:number,w:number,h:number}} target  rectangle de l'élément, dans le repère du cadre
  * @param {{w:number,h:number}} box                         taille du cadre
  * @param {{w:number,h:number}} bubble                      taille de la bulle
+ * @param {'above'|'below'} [prefer]                       le côté voulu par le labo (une scène où la zone de travail est SOUS l'élément : `above`) ; défaut : le plus de place
+ * @param {boolean} [noFlip]                                avec `prefer` : ne jamais retourner la bulle de l'autre côté — elle peut dépasser la bande visible (2026-10-21)
  * @param {{top:number,bottom:number}} [view]               la bande VISIBLE de l'écran, dans le repère du cadre (le cadre est plus
  *   haut que l'écran sur un téléphone) : la bulle y reste, jamais cachée hors écran ; si l'élément est hors de la bande, elle se colle
  *   au bord le plus proche et sa flèche le montre (`edge`). Sans `view` : le comportement d'origine (cadre seul).
  * @returns {{side:'below'|'above', left:number, top:number, arrow:number, edge:boolean}}
  */
-export function placeBubble({ target, box, bubble, view = null, gap = 12, margin = 6 }) {
+export function placeBubble({ target, box, bubble, view = null, prefer = null, noFlip = false, gap = 12, margin = 6 }) {
   const roomBelow = box.h - (target.y + target.h);
   const roomAbove = target.y;
   const cx = target.x + target.w / 2;
@@ -26,8 +28,10 @@ export function placeBubble({ target, box, bubble, view = null, gap = 12, margin
   const left = Math.min(maxLeft, Math.max(margin, cx - bubble.w / 2));
   const arrow = Math.min(bubble.w - 18, Math.max(18, cx - left));
   const topOf = (side) => (side === 'below' ? target.y + target.h + gap : Math.max(margin, target.y - gap - bubble.h));
-  const preferred = roomBelow >= bubble.h + gap || roomBelow >= roomAbove ? 'below' : 'above';
+  const preferred = prefer === 'above' || prefer === 'below' ? prefer : (roomBelow >= bubble.h + gap || roomBelow >= roomAbove ? 'below' : 'above');
   const other = preferred === 'below' ? 'above' : 'below';
+  // `noFlip` (a lab whose scene sits on the other side of the target): the bubble keeps its preferred side whatever the screen, never covering what lies on the other one
+  if (noFlip && (prefer === 'above' || prefer === 'below')) return { side: preferred, left, top: topOf(preferred), arrow, edge: false };
   const fits = (top) => !view || (top >= view.top && top + bubble.h <= view.bottom);
   if (fits(topOf(preferred))) return { side: preferred, left, top: topOf(preferred), arrow, edge: false };
   if (fits(topOf(other))) return { side: other, left, top: topOf(other), arrow, edge: false };

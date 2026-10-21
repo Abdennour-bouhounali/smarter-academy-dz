@@ -228,9 +228,82 @@ module: act → answer about what you did → name it). Applied to ONE lesson, `
 **After the owner validates, extend to the other generated lessons** (1AM–2AM batches 1–2, then the 4AM units) and add a gate
 (e.g. a lab module with a `brief`, or a `ManipulationWorkspace` with `title`/`lead`, fails `check:lessons`).
 
+## Queue reorder (owner, 2026-10-20) — what 4AM needs NOW
+
+The 4AM students already use the platform, so the queue now starts with their CURRENT needs. The new **Phase A**
+(`LEARNING_NET.md` §4bis) takes the 4AM units in textbook order. For each lesson it takes only the DIRECT earlier-year
+prerequisites, from the most recent year (3AM, otherwise 2AM, otherwise 1AM). Phase A has 35 entries:
+- U2: `quwat-adad-nisbi`, `khassiyat-fitaghuras`, `tabsit-hadhf-aqwas`;
+- U3: `nashr-jabri-3am`;
+- U4: `musawiyat-amaliyat`, `muadalat-darajat-ula`, `muqarana-nisbiya`;
+- U6: `rabi-mutanasib`, `tanasub-tamthil-bayani`, `nisba-miawiya-3am`, `haraka-muntazama-sura` + synthesis
+  `wadiya-idmajiya-tanasubiya-sura`;
+- U7: `qimat-ibara-harfiya`;
+- U8: `fiat-takrarat`, `mutawassit-mutawazin`;
+- U9: `amaliyat-natiqa`, `tanasub-atwal-muthallath`;
+- U10: `jayb-tamam-zawiya`, `hisab-jayb-tamam`, `mustaqimat-mutaamida-mutawazia`;
+- U11: `suwar-ashkal-insihab`, `tarif-mutawazi-adla`;
+- U12: `talim-nuqta-mustawi`, `masafa-nuqtatayn`;
+- U13: `qays-zawiya-minqala`, `daira-mustalahat`, `mudallaat-zawiya`, `majmu-zawaya-muthallath`;
+- U14: `manzur-mutasawi-qiyas`, `ustuwana-dawaran-wasf`, `masahat-qurs`, `mawshur-qaim-wasf`, `wasf-tamthil-haram`,
+  `miqyas-kharita-mukhattat`, `hajm-haram`.
+
+Units 1 and 5 add nothing: unit 1 is covered by the published lessons, unit 5 by `muadalat-darajat-ula`. The full chains
+of the previous rule follow as Phase B; the old head `mustatil-murabba-masaha` is now #36. `hall-mushkil-muadala` (2AM) and
+`wasf-mutawazi-mustatilat` (1AM) are not in Phase A because a more recent lesson there extends their item.
+
+## Batches 5–8 (2026-10-20 → 10-21) — Phase A « what 4AM needs NOW », queue entries 1–10 (all published)
+
+Organisation: one lead per lesson (three in parallel, then the freed slot), each with a lab author and a bank author working from the unit's
+`brief-authors.md`; one dev-server port per lead (5173 / 5174 / 4173 — the local API's CORS allows only these). The coordinator reviewed the
+lab screenshots, ran the full gates and published each lesson in the LOCAL database (lesson, 9 modules and 50 practice exercises set to
+`published`) as soon as it was done. Lessons: 3AM `quwat-adad-nisbi`, `khassiyat-fitaghuras`, `tabsit-hadhf-aqwas`, `nashr-jabri-3am`,
+`musawiyat-amaliyat`, `muadalat-darajat-ula`, `tanasub-tamthil-bayani`, `nisba-miawiya-3am`; 2AM `muqarana-nisbiya`, `rabi-mutanasib`.
+Seven units were seeded and extracted whole: 3AM units 3, 4, 5, 6, 11 (`docs/sources/3am/unit{3,4,5,6,11}/`) and 2AM units 3, 5
+(`docs/sources/2am/unit{3,5}/`). Each lesson: 9 modules (أستعدّ · نشاط · معارف · طريقة · أتمرّن · 3 مسائل · إختبار أولي), a new lab, a 50-sheet bank.
+
+| # | Lesson | Lab (what the hand holds) | Bank (`term_exam` / modelled / adapted) |
+|---:|---|---|---|
+| 1 | `quwat-adad-nisbi` (3AM) — the FIRST 3AM lesson | `power-train` — the exponent n, signed train length | 16 / 23 / 11 |
+| 2 | `khassiyat-fitaghuras` (3AM) | `pythagoras-tanks` — the angle at A or the length BC | 16 / 27 / 7 |
+| 3 | `tabsit-hadhf-aqwas` (3AM) | `like-terms` — a term (wooden pieces), brackets world | 15 / 35 / 0 |
+| 4 | `nashr-jabri-3am` (3AM) | `area-split` — the cut line and the sign of each parcel | 16 / 11 / 23 |
+| 5 | `musawiyat-amaliyat` (3AM) | `equality-lanes` — the number c of an operation and who receives it | 17 / 26 / 7 |
+| 6 | `muadalat-darajat-ula` (3AM) | `term-ferry` — the sign of a carried term, then the divisor | 14 / 29 / 7 |
+| 7 | `muqarana-nisbiya` (2AM) | `zero-probe` — the distance to zero of a sensor on a cable | 8 / 42 / 0 |
+| 8 | `rabi-mutanasib` (2AM) | `fourth-gauges` — the missing cell of a price table | 7 / 31 / 12 |
+| 9 | `tanasub-tamthil-bayani` (3AM) | `pin-rails` — a pin on its rail, a ruler on two nodes | 8 / 22 / 20 |
+| 10 | `nisba-miawiya-3am` (3AM) | `hundred-grid` — t painted cells of a 10×10 tray | 7 / 34 / 9 |
+
+- **Fidelity rule applied during review:** a `term_exam` sheet is a faithful corpus exercise; sheets that only keep a paper's situation are
+  `term_exam_modelled` (6 sources of `muqarana-nisbiya` relabelled; `rabi-mutanasib`, `tanasub-tamthil-bayani` and `nisba-miawiya-3am` ship fewer
+  than 15 `term_exam` because the 2AM/3AM corpus holds few faithful exercises on those topics).
+- **الكفاءات:** order kept everywhere, wording sharpened only (every change is listed in each lesson's `lesson.config.js` header history and in the
+  agents' reports). `pointPrerequisites` are intra-lesson, plus the first cross-lesson edges between published lessons: `nashr-jabri-3am` ←
+  `tabsit-hadhf-aqwas` (P1←P3, P4←P1), `muadalat-darajat-ula` ← `musawiyat-amaliyat` (P1, P2).
+- **Shared infrastructure added:** LabCoach `prefer` / `noFlip` on a coach step (`primitives/labCoach.js`, tested); `e2e/moyen-draft-grades.mjs`
+  adapted (3AM now has published lessons); `units_{2am,3am} › challenge.sourceElementId` set for the units whose تحدّ is cited.
+- **Owner report, 2026-10-21 — `rabi-mutanasib` نشاط, mission 3 « not clear »:** the refusal text showed a raw fraction (« يعطي 130 مقابل 551/6 »),
+  the stepper clipped « 551 », and the decoy question said « أضئ ميزان الفرق ». Fixed: verdicts now write both sides as calculations
+  (« 520 ÷ 4 = 130 بـ 551 ÷ 6 ≈ 91,8 », `fourthGauges.js › calcText`, LTR isolates with non-breaking spaces), the decoy question states the two end
+  states, the number scales down with its digits. Rule written in MANIPULATION_CONTRACT (§2tertricies, « Verdicts say the CALCULATION »).
+- **Open for the owner:** `area-split` folds « جرّب أعدادك أنت » into a closed `LabFold` only at 1024×768 with the sidebar open (to keep one screen);
+  the rule says always open. At 1024×768 the `pythagoras-tanks` machine is small (the lesson column is 414 px) and its coach bubble covers part of it.
+- **Gates (final tree):** `npm test` core 965 · web 11794 · scripts 13777; `npm run check:lessons` every step green (entry 325.5 KB gzip ≤ 330);
+  `npm run build`; per-lesson browser e2e (`3am-quwa-nisbiya`, `3am-fitaghuras-jayb-tamam`, `3am-ibarat-harfiya-3`, `3am-ibarat-harfiya-3-nashr`,
+  `3am-musawiyat-mutabayinat`, `2am-adad-nisbiya-2`, `2am-tanasubiya-2am`, `3am-tanasubiya-sura`, `lesson-route-boundary`, `moyen-draft-grades`).
+  Local DB: the ten lessons, their 90 modules and 500 exercises are `published`.
+- **URLs:** `/courses/moyen/3am/ansab_al_aadad_wal_hisab/{quwat-adad-nisbi,tabsit-hadhf-aqwas,nashr-jabri-3am,musawiyat-amaliyat,muadalat-darajat-ula}`,
+  `/courses/moyen/3am/handasa/khassiyat-fitaghuras`, `/courses/moyen/3am/tanasubiya_duwal/{tanasub-tamthil-bayani,nisba-miawiya-3am}`,
+  `/courses/moyen/2am/ansab_al_aadad_wal_hisab/muqarana-nisbiya`, `/courses/moyen/2am/tanasubiya_duwal/rabi-mutanasib`.
+- **Next (Phase A):** #11 `haraka-muntazama-sura` + the synthesis `wadiya-idmajiya-tanasubiya-sura` (closes 3AM unit 6), then `qimat-ibara-harfiya`
+  (4AM unit 7), `fiat-takrarat`, `mutawassit-mutawazin`, … (`docs/curriculum/GENERATION_QUEUE.md`, run `node scripts/learning-net-queue.mjs`).
+
 ## Next batch — prompt
 
-The queue after batch 4 starts with `mustatil-murabba-masaha` (1AM, unit `sutuh-masahat-muhitat`, the unit's extraction `docs/sources/1am/unit11/` already exists — reuse it and move destinations in `build-extraction.py`; reuse the lab `tile-yard` only if it serves, otherwise a new lab whose hand holds something else), then `adad-ashri-mustaqim-mudarraj` (`docs/curriculum/GENERATION_QUEUE.md`; run `node scripts/learning-net-queue.mjs` first). Organisation that worked twice: a lead per lesson (phase 1: seed + extraction + brief; phase 2: lesson), a lab
+Phase A entries 1–10 are published (see « Batches 5–8 »). The queue now continues at Phase A #11 `haraka-muntazama-sura` (3AM unit 6, whose
+extraction `docs/sources/3am/unit6/` already exists — move its destinations in `build-extraction.py`), then the synthesis
+`wadiya-idmajiya-tanasubiya-sura` and `qimat-ibara-harfiya` (`docs/curriculum/GENERATION_QUEUE.md`; run `node scripts/learning-net-queue.mjs` first). Organisation that worked twice: a lead per lesson (phase 1: seed + extraction + brief; phase 2: lesson), a lab
 author and a bank author per lesson from the brief. Paste:
 
 ```

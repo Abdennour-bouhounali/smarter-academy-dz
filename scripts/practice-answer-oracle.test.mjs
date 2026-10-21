@@ -120,6 +120,8 @@ import { ORACLE as ORACLE_1AM_MANA_JAM_TARH } from './practice-oracle/mana-jam-t
 import { ORACLE as ORACLE_1AM_QISMA_IQLIDIYA_BAQI } from './practice-oracle/qisma-iqlidiya-baqi.mjs';
 // Le premier banc 2AM (2026-10-14) : القسمة الإقليدية وحصر حاصل القسمة.
 import { ORACLE as ORACLE_2AM_QISMA_IQLIDIYA_HASR } from './practice-oracle/qisma-iqlidiya-hasr.mjs';
+import { ORACLE as ORACLE_2AM_MUQARANA_NISBIYA } from './practice-oracle/muqarana-nisbiya.mjs';
+import { ORACLE as ORACLE_2AM_RABI_MUTANASIB } from './practice-oracle/rabi-mutanasib.mjs';
 import { ORACLE as ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA } from './practice-oracle/ikhtizal-kitaba-kasriya.mjs';
 import { ORACLE as ORACLE_1AM_QAWAID_QABILIYAT_QISMA } from './practice-oracle/qawaid-qabiliyat-qisma.mjs';
 import { ORACLE as ORACLE_1AM_KITABAT_ADAD_TABII } from './practice-oracle/kitabat-adad-tabii.mjs';
@@ -127,6 +129,14 @@ import { ORACLE as ORACLE_1AM_HASIL_QISMA_KASR } from './practice-oracle/hasil-q
 import { ORACLE as ORACLE_1AM_KUSUR_ASHRIYA_KITABA } from './practice-oracle/kusur-ashriya-kitaba.mjs';
 import { ORACLE as ORACLE_1AM_MUQARANAT_ADAD_ASHRIYA } from './practice-oracle/muqaranat-adad-ashriya.mjs';
 import { ORACLE as ORACLE_1AM_MASAHAT_MUHIT_SATH } from './practice-oracle/masahat-muhit-sath.mjs';
+import { ORACLE as ORACLE_3AM_TABSIT_HADHF_AQWAS } from './practice-oracle/tabsit-hadhf-aqwas.mjs';
+import { ORACLE as ORACLE_3AM_KHASSIYAT_FITAGHURAS } from './practice-oracle/khassiyat-fitaghuras.mjs';
+import { ORACLE as ORACLE_3AM_QUWAT_ADAD_NISBI } from './practice-oracle/quwat-adad-nisbi.mjs';
+import { ORACLE as ORACLE_3AM_MUSAWIYAT_AMALIYAT } from './practice-oracle/musawiyat-amaliyat.mjs';
+import { ORACLE as ORACLE_3AM_MUADALAT_DARAJAT_ULA } from './practice-oracle/muadalat-darajat-ula.mjs';
+import { ORACLE as ORACLE_3AM_NASHR_JABRI } from './practice-oracle/nashr-jabri-3am.mjs';
+import { ORACLE as ORACLE_3AM_NISBA_MIAWIYA_3AM } from './practice-oracle/nisba-miawiya-3am.mjs';
+import { ORACLE as ORACLE_3AM_TANASUB_TAMTHIL_BAYANI } from './practice-oracle/tanasub-tamthil-bayani.mjs';
 
 // Toutes les années du cycle moyen (content/practice/<1am…4am>/<leçon>/level-N) : jusqu'au 2026-10-14 seul 4am
 // existait et la racine y était codée en dur — un banc 1AM–3AM aurait échappé à l'oracle sans rien dire.
@@ -272,6 +282,8 @@ const ORACLE = {
   ...ORACLE_1AM_MANA_JAM_TARH,
   ...ORACLE_1AM_QISMA_IQLIDIYA_BAQI,
   ...ORACLE_2AM_QISMA_IQLIDIYA_HASR,
+  ...ORACLE_2AM_MUQARANA_NISBIYA,
+  ...ORACLE_2AM_RABI_MUTANASIB,
   ...ORACLE_1AM_IKHTIZAL_KITABA_KASRIYA,
   ...ORACLE_1AM_QAWAID_QABILIYAT_QISMA,
   ...ORACLE_1AM_KITABAT_ADAD_TABII,
@@ -279,6 +291,14 @@ const ORACLE = {
   ...ORACLE_1AM_KUSUR_ASHRIYA_KITABA,
   ...ORACLE_1AM_MUQARANAT_ADAD_ASHRIYA,
   ...ORACLE_1AM_MASAHAT_MUHIT_SATH,
+  ...ORACLE_3AM_TABSIT_HADHF_AQWAS,
+  ...ORACLE_3AM_KHASSIYAT_FITAGHURAS,
+  ...ORACLE_3AM_QUWAT_ADAD_NISBI,
+  ...ORACLE_3AM_MUSAWIYAT_AMALIYAT,
+  ...ORACLE_3AM_MUADALAT_DARAJAT_ULA,
+  ...ORACLE_3AM_NASHR_JABRI,
+  ...ORACLE_3AM_NISBA_MIAWIYA_3AM,
+  ...ORACLE_3AM_TANASUB_TAMTHIL_BAYANI,
 };
 
 /**

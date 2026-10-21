@@ -185,7 +185,8 @@ describe('résolveur — navigation', () => {
     expect(items).toContain('3am.m4.r03');
     expect(items).toContain('3am.m3.r06');
     const pyth = groups.find((g) => g.items.some((i) => i.id === '3am.m4.r03'));
-    expect(pyth.lesson).toMatchObject({ code: homeLessonOf('3am.m4.r03').code, grade: '3am', status: 'planned' });
+    // khassiyat-fitaghuras est publiée depuis 2026-10-20 (phase 3, file A entrée 2) : le lien « راجع » mène à une leçon disponible.
+    expect(pyth.lesson).toMatchObject({ code: homeLessonOf('3am.m4.r03').code, grade: '3am', status: 'available' });
   });
 
   it('n’envoie jamais une leçon vers elle-même, et groupe du plus ancien au plus récent', () => {
