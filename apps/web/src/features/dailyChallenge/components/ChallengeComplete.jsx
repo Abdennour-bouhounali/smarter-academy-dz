@@ -7,6 +7,7 @@ import ScoreCounter from './ScoreCounter';
 import StreakDisplay from './StreakDisplay';
 import Leaderboard from './Leaderboard';
 import { formatSeconds, rankMovement, scoreParts } from '../challengeModel';
+import MathLabel from '../../../lessons/common/components/MathLabel';
 
 const PART_ICON = { accuracy: BarChart3, speed: Zap, streak: Flame, penalty: RotateCcw };
 
@@ -109,10 +110,10 @@ function Insights({ insights }) {
       <h2 id="dc-insights" className="font-space text-base font-bold text-slate-900">{t('complete.insightsTitle')}</h2>
       {weakest.length === 0 && slowCorrect.length === 0 && <p className="mt-2 font-inter text-sm text-slate-600">{t('complete.allGood')}</p>}
       {weakest[0] && (
-        <p className="mt-3 font-inter text-sm text-slate-700"><span className="font-semibold text-rose-700">{t('complete.weakest')}: </span>{weakest[0].title}</p>
+        <p className="mt-3 font-inter text-sm text-slate-700"><span className="font-semibold text-rose-700">{t('complete.weakest')}: </span><MathLabel>{weakest[0].title}</MathLabel></p>
       )}
       {slowCorrect[0] && (
-        <p className="mt-1 font-inter text-sm text-slate-700"><span className="font-semibold text-amber-700">{t('complete.slowCorrect')}: </span>{slowCorrect.map((p) => p.title).join(' · ')}</p>
+        <p className="mt-1 font-inter text-sm text-slate-700"><span className="font-semibold text-amber-700">{t('complete.slowCorrect')}: </span>{slowCorrect.map((p, i) => <span key={p.code ?? i}>{i > 0 && ' · '}<MathLabel>{p.title}</MathLabel></span>)}</p>
       )}
       {suggestion?.lessonCode && (
         <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-indigo-50 p-3">

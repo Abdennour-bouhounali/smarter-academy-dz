@@ -9,6 +9,7 @@ import ChallengeProgress from './ChallengeProgress';
 import ChallengeTimer from './ChallengeTimer';
 import AnswerFeedback from './AnswerFeedback';
 import { canSubmit } from '../challengeModel';
+import MathLabel from '../../../lessons/common/components/MathLabel';
 
 /**
  * UNE question du défi, dans un cadre sans distraction : en haut la
@@ -59,7 +60,7 @@ export default function ChallengeQuestion({
           className="rounded-[28px] bg-white p-4 shadow-xl shadow-slate-200/60 ring-1 ring-slate-200 sm:p-7"
         >
           {current.learningPoint?.title && (
-            <p className="mb-2 font-inter text-xs font-semibold text-indigo-600">{t('session.learningPoint')}: {current.learningPoint.title}</p>
+            <p className="mb-2 font-inter text-xs font-semibold text-indigo-600">{t('session.learningPoint')}: <MathLabel>{current.learningPoint.title}</MathLabel></p>
           )}
           {statement?.content && (
             <div className="mb-4 rounded-2xl bg-slate-50 p-3 sm:p-4">

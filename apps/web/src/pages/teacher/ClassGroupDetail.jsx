@@ -17,9 +17,11 @@ import OverviewTab from '../../features/teacher/overview/OverviewTab';
 import InterventionsTab from '../../features/teacher/interventions/InterventionsTab';
 // « التحدّي اليومي » : lot et catalogue `challenge` chargés à l'ouverture de l'onglet.
 const DailyChallengeTab = lazy(() => import('../../features/teacher/dailyChallenge/DailyChallengeTab'));
+// « لعبة مدار » : lot et catalogue `madar` chargés à l'ouverture de l'onglet.
+const MadarTab = lazy(() => import('../../features/teacher/madar/MadarTab'));
 import { TeacherPage, Loading, ErrorBox, useTableLabels, btnSecondary, btnPrimary, btnDanger, input } from './teacherUi';
 
-const TABS = ['overview', 'students', 'learningPoints', 'interventions', 'dailyChallenge', 'lessons', 'settings'];
+const TABS = ['overview', 'students', 'learningPoints', 'interventions', 'dailyChallenge', 'madar', 'lessons', 'settings'];
 
 /**
  * La page d'une classe, et la façon d'y entrer toujours visible en haut : le
@@ -111,6 +113,11 @@ export default function ClassGroupDetail() {
           {tab === 'dailyChallenge' && (
             <Suspense fallback={<Loading />}>
               <DailyChallengeTab classGroup={classGroup} onOpenPoint={(code) => { setFocusPoint(code); setTab('learningPoints'); }} />
+            </Suspense>
+          )}
+          {tab === 'madar' && (
+            <Suspense fallback={<Loading />}>
+              <MadarTab classGroup={classGroup} />
             </Suspense>
           )}
           {tab === 'students' && <MembersTab classGroup={classGroup} entitlements={data.entitlements} onChanged={reload} />}

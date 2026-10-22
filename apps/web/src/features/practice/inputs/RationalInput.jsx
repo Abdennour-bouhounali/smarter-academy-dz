@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import AnswerField from './AnswerField';
 import { LazyExamMathField } from '../exam/math/lazy';
+import MathLabel from '../../../lessons/common/components/MathLabel';
+import { mathToPlain } from '../../../utils/mathPlain';
 
 /**
  * MathLive rend l'ASCII-math (« 7/9 », « (7)/(9) », « 12{,}5 ») : on le ramène à
@@ -21,6 +23,9 @@ export function asciiToAnswer(ascii) {
  */
 export default function RationalInput({ question, value, onChange, disabled, exam = false }) {
   const { t } = useTranslation('student');
+  // La consigne de format peut porter une formule (« اكتب قيمة $K$ فقط ») : jamais
+  // de dollars à l'écran — MathLabel pour le texte, mathToPlain pour les attributs.
+  const formatPlain = question.answerFormat ? mathToPlain(question.answerFormat) : '';
   // Feuille d'examen : un champ MathLive (formule LTR, vraie fraction, clavier
   // virtuel). La valeur envoyée reste l'écriture lue par l'évaluateur.
   if (exam) {
@@ -35,8 +40,8 @@ export default function RationalInput({ question, value, onChange, disabled, exa
           value={value?.latex ?? value?.value ?? ''}
           onChange={(latex, ascii) => onChange(latex.trim() ? { value: asciiToAnswer(ascii), latex } : null)}
           disabled={disabled}
-          ariaLabel={question.answerFormat || t('practice.field.answer')}
-          placeholder={question.answerFormat ? `\\text{${question.answerFormat}}` : ''}
+          ariaLabel={formatPlain || t('practice.field.answer')}
+          placeholder={formatPlain ? `\\text{${formatPlain.replace(/[\\{}$]/g, '')}}` : ''}
           className="w-full"
         />
       </div>
@@ -47,13 +52,13 @@ export default function RationalInput({ question, value, onChange, disabled, exa
       <AnswerField
         value={value?.value ?? ''}
         onChange={(v) => onChange({ value: v })}
-        ariaLabel={question.answerFormat || t('practice.field.answer')}
-        placeholder={question.answerFormat}
+        ariaLabel={formatPlain || t('practice.field.answer')}
+        placeholder={formatPlain}
         width="min-w-[10rem]"
         disabled={disabled}
       />
       {question.answerFormat && (
-        <span className="text-sm text-slate-500 font-mono" data-answer-format>{question.answerFormat}</span>
+        <span className="text-sm text-slate-500 font-mono" data-answer-format><MathLabel>{question.answerFormat}</MathLabel></span>
       )}
     </div>
   );

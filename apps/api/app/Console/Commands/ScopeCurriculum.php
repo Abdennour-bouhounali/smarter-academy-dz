@@ -93,6 +93,9 @@ class ScopeCurriculum extends Command
         // et un point ; leur suppression emporterait les RÉPONSES des élèves
         // (daily_challenge_answers). Donnée élève : elle bloque la commande.
         'daily_challenge_questions' => 'cascade',
+        // « مدار » : une question d'approvisionnement référence une leçon et un
+        // point, et porte la réponse de l'élève. Donnée élève : elle bloque.
+        'madar_refuels' => 'cascade',
     ];
 
     /**
@@ -111,6 +114,7 @@ class ScopeCurriculum extends Command
         'practice_sessions',
         'learning_point_state_transitions',
         'daily_challenge_questions',
+        'madar_refuels',
     ];
 
     public function handle(): int
@@ -354,6 +358,7 @@ class ScopeCurriculum extends Command
             'student_lesson_progress', 'lesson_final_test_attempts',
             'practice_sessions', 'notebook_notes', 'student_reports',
             'assessment_items', 'classroom_interventions', 'daily_challenge_questions',
+            'madar_refuels',
         ];
 
         $counts = [];

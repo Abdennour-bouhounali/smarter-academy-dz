@@ -4,6 +4,7 @@ namespace App\Domain\DailyChallenge;
 
 use App\Domain\Practice\ExerciseRepository;
 use App\Models\DailyChallengeQuestion;
+use App\Models\MadarRefuel;
 
 /**
  * La question d'un défi telle que le CLIENT la reçoit — servie par le
@@ -16,6 +17,10 @@ use App\Models\DailyChallengeQuestion;
  * des choix, ni les signatures de misconception, ni les indices, ni le
  * retour. La correction (`reveal`) n'est servie qu'une fois la réponse
  * enregistrée.
+ *
+ * La « محطة التزوّد » du jeu « مدار » sert ses questions par le même
+ * présentateur (MadarRefuel porte les mêmes `exercise_code` / `question_id`) :
+ * une seule frontière entre la clé de réponse et le client.
  */
 class ChallengeQuestionPresenter
 {
@@ -25,13 +30,13 @@ class ChallengeQuestionPresenter
     public function __construct(private ExerciseRepository $exercises) {}
 
     /** Le contenu complet (serveur seulement). */
-    public function content(DailyChallengeQuestion $q, string $lessonCode): ?array
+    public function content(DailyChallengeQuestion|MadarRefuel $q, string $lessonCode): ?array
     {
         return $this->exercises->findQuestion($lessonCode, $q->exercise_code, $q->question_id);
     }
 
     /** @return array<string, mixed>|null ce que l'élève voit pour répondre */
-    public function public(DailyChallengeQuestion $q, string $lessonCode): ?array
+    public function public(DailyChallengeQuestion|MadarRefuel $q, string $lessonCode): ?array
     {
         $exercise = $this->exercises->find($lessonCode, $q->exercise_code);
         $question = $this->content($q, $lessonCode);
@@ -69,7 +74,7 @@ class ChallengeQuestionPresenter
      *
      * @return array{correctAnswer: mixed, correctChoiceIds: string[], explanation: ?string}
      */
-    public function reveal(DailyChallengeQuestion $q, string $lessonCode): array
+    public function reveal(DailyChallengeQuestion|MadarRefuel $q, string $lessonCode): array
     {
         $question = $this->content($q, $lessonCode) ?? [];
         $correctChoiceIds = [];

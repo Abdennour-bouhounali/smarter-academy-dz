@@ -914,6 +914,14 @@ Owner's rules, implemented in the shared players, so they hold for every practic
 - **Exam answer field width** = the expected answer + 2 characters, or the `answerFormat` placeholder if longer
   (`answerChars`), PLUS the MathLive keyboard button inside the field (`--answer-chrome`, index.css). Before, the
   keyboard and menu buttons (68 px) left ~5 px for the answer and cut « عدد طبيعي ».
+- **`answerFormat` may carry a formula, and the student never sees a raw `$`** (2026-10-22). The case that triggered the rule: « اكتب قيمة $K$ فقط (عدد طبيعي) »
+  was displayed with its dollar signs under the field and in the placeholder, reported from the game « مدار ».
+  The rule for every input:
+  - The visible hint goes through `MathLabel`.
+  - String-only attributes (`placeholder`, `aria-label`, the MathLive `\text{}` placeholder) go through `mathToPlain`.
+
+  The inputs concerned are `RationalInput`, `IntegerSetInput` and `SelfCheckInput`. Locked by `features/practice/QuestionRenderer.math.test.jsx`: no `$` in the HTML of any answer type.
+  The same rule applies to a skill title (الكفاءة) or a lesson title shown outside a lesson: it goes through `MathLabel`, never `{title}`.
 - **MathLive, every field (practice and Math Lab)**: the menu ☰ is hidden (`math-field::part(menu-toggle)`; its items
   were already emptied and it did nothing), and the virtual keyboard has a « ✕ إغلاق » tab on its top edge
   (`features/mathlab/tools/functionGrapher/keyboardClose.js`, installed by `ensureMathLive()`), which closes like the

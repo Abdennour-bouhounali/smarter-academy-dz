@@ -59,6 +59,10 @@ const ON_DEMAND_NAMESPACES = {
   // d'affichage). Chacun est un lot paresseux sous <Suspense> ; la carte de
   // l'accueil et l'onglet de la classe lisent `student` / `teacher`.
   challenge: () => import('./locales/ar/challenge.json'),
+  // « مدار » : le jeu (page élève plein écran, onglet de la classe, écran du
+  // tableau). Lus seulement par ces lots paresseux ; le libellé de navigation
+  // vit dans `nav`, celui de l'onglet dans `teacher`.
+  madar: () => import('./locales/ar/madar.json'),
   // « مذكرة الدرس » : la page de préparation de l'enseignant
   // (pages/teacher/LessonMemoPage.jsx, lot paresseux, sa propre <Suspense>).
   // Les deux libellés des boutons qui y mènent vivent dans `teacher`.

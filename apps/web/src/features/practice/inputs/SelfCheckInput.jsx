@@ -3,6 +3,7 @@ import { Check, Lock, X } from 'lucide-react';
 import SolutionPanel from '../exam/SolutionPanel';
 import { LazyMathLinesEditor } from '../exam/math/lazy';
 import RedactionText from '../exam/math/RedactionText';
+import { mathToPlain } from '../../../utils/mathPlain';
 
 /**
  * L'ÉTAPE « بيّن أن »، « برّر » d'une feuille d'examen (décision du propriétaire,
@@ -36,8 +37,8 @@ export default function SelfCheckInput({ question, value, onChange, disabled, on
         value={text}
         onChange={(v) => onChange(proofLength(v) >= MIN_PROOF_CHARS ? { text: v } : { draft: v })}
         startWith="text"
-        ariaLabel={question.answerFormat || t('practice.yourAnswerLabel')}
-        placeholder={question.answerFormat}
+        ariaLabel={(question.answerFormat && mathToPlain(question.answerFormat)) || t('practice.yourAnswerLabel')}
+        placeholder={question.answerFormat ? mathToPlain(question.answerFormat) : undefined}
       />
       {proofLength(text) < MIN_PROOF_CHARS && (
         <p className="text-xs text-slate-600" data-proof-too-short>{t('practice.exam.selfCheck.tooShort', { count: MIN_PROOF_CHARS })}</p>

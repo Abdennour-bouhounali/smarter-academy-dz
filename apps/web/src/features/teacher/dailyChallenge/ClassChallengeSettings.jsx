@@ -3,9 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../../../context/AuthContext';
 import { updateClassChallengeSettings } from '../../../services/teacher/dailyChallengeService';
 import { btnPrimary, input } from '../../../pages/teacher/teacherUi';
+import MathLabel from '../../../lessons/common/components/MathLabel';
 
-/** Un interrupteur accessible (role="switch") : l'état se lit sans la couleur (« ON / OFF »). */
-function Toggle({ checked, onChange, label, hint, disabled, name }) {
+/**
+ * Un interrupteur accessible (role="switch") : l'état se lit sans la couleur
+ * (« ON / OFF »). Partagé avec les réglages de « مدار » (features/teacher/madar).
+ */
+export function Toggle({ checked, onChange, label, hint, disabled, name }) {
   return (
     <div className="flex items-start gap-3 py-3">
       <button
@@ -114,7 +118,7 @@ export default function ClassChallengeSettings({ classGroupId, initial, options,
               return (
                 <button key={l.code} type="button" aria-pressed={on} onClick={() => toggleLesson(l.code)}
                   className={`min-h-[36px] rounded-full border px-3 text-xs font-semibold ${on ? 'border-teal-600 bg-teal-50 text-teal-800' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-400'}`}>
-                  {on ? '✓ ' : ''}{l.title}
+                  {on ? '✓ ' : ''}<MathLabel>{l.title}</MathLabel>
                 </button>
               );
             })}

@@ -64,6 +64,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(FeatureAccessService::class);
         // « التحدّي اليومي » : la configuration effective, mémorisée par requête.
         $this->app->singleton(\App\Domain\DailyChallenge\DailyChallengeConfig::class);
+        // « مدار » : les réglages de classe, mémorisés par requête.
+        $this->app->singleton(\App\Domain\Madar\MadarConfig::class);
 
         /**
          * … mais RECOMMENCÉ à chaque requête.
@@ -90,6 +92,7 @@ class AppServiceProvider extends ServiceProvider
                     $this->app->make(ClassroomProgressService::class)->forget();
                     $this->app->make(FeatureAccessService::class)->forget();
                     $this->app->make(\App\Domain\DailyChallenge\DailyChallengeConfig::class)->forget();
+                    $this->app->make(\App\Domain\Madar\MadarConfig::class)->forget();
                 },
             );
         });

@@ -1,4 +1,4 @@
-import { House, BookOpen, Compass, TrendingUp, NotebookPen, PencilRuler, Users, Flame } from 'lucide-react';
+import { House, BookOpen, Compass, TrendingUp, NotebookPen, PencilRuler, Users, Flame, Rocket } from 'lucide-react';
 
 // The authenticated student area's own navigation — deliberately separate
 // from data/navigation.js (the visitor IA). A student's workspace is a
@@ -11,6 +11,10 @@ export const studentNavLinks = [
   // « التحدّي اليومي » : cinq minutes par jour pour RETROUVER ce qu'on a
   // appris — l'habitude quotidienne, juste après les cours.
   { labelKey: 'dailyChallenge', shortLabelKey: 'dailyChallengeShort', path: '/espace/defi', icon: Flame },
+  // « فضاء الألعاب » : trois jeux, des cœurs communs gagnés par des réponses
+  // justes à SES كفاءات — juste après le défi, l'autre porte « jouer pour
+  // réviser » (docs/architecture/MADAR_GAME.md). Plein écran, hors de la coquille.
+  { labelKey: 'madar', shortLabelKey: 'madarShort', path: '/espace/jeux', icon: Rocket },
   { labelKey: 'explore', path: '/espace/explorer', icon: Compass },
   // Le مختبر الرياضيات : les instruments LIBRES (سبّورة, et demain les
   // autres), hors de toute leçon. Après « explorer » (le programme) vient

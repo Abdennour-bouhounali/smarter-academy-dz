@@ -360,6 +360,16 @@ i18n/locales/ar/challenge.json                      ON-DEMAND namespace (BUNDLE_
 | `features/dailyChallenge/challengeModel.test.js` | the pure formatting |
 | `apps/web/e2e/daily-challenge.mjs` | browser QA on the demo dataset (student A/B/C, mobile/tablet/desktop, reduced motion, teacher tab + display, admin) |
 
+## 16bis. Shared with « مدار » (2026-10-22)
+
+The game's refuel station (`MADAR_GAME.md` §5) reuses this feature's selector and presenter instead of a second engine:
+- `ChallengeQuestionSelector::select()` takes an optional `$options`:
+  - `seed` is appended to the tie-break seed, so several services in one day differ;
+  - `exclude` is a list of `item_key`s to leave out;
+  - `warmup` keeps never-worked skills **after** the learned ones instead of dropping them. Madar uses it when the learned pool is exhausted; the daily challenge never sets it.
+- In the `student` scope, `snapshot.lessonCodes` now restricts the lessons, as it already did in the classroom scope. The personal daily challenge never sets it, so its behaviour is unchanged.
+- `ChallengeQuestionPresenter` accepts a `DailyChallengeQuestion` or a `MadarRefuel`. There is still one boundary between the answer key and the client.
+
 ## 17. Not built (Planned)
 
 Seasons and special events; school-wide / curriculum-wide challenges; a

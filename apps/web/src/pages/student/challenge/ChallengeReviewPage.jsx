@@ -9,6 +9,7 @@ import { fetchChallengeReview } from '../../../services/dailyChallengeService';
 import ExerciseStatement from '../../../features/practice/ExerciseStatement';
 import RichText from '../../../features/practice/RichText';
 import { correctAnswerText, formatSeconds, reasonKey } from '../../../features/dailyChallenge/challengeModel';
+import MathLabel from '../../../lessons/common/components/MathLabel';
 
 /** Ce que l'élève avait répondu, en texte (QCM : le contenu du choix). */
 function answerText(question, answer) {
@@ -71,7 +72,7 @@ export default function ChallengeReviewPage() {
                       {q.isCorrect ? <Check size={16} aria-label={t('session.state.correct')} /> : <X size={16} aria-label={t('session.state.wrong')} />}
                     </span>
                     <span className="font-space font-bold text-slate-900">{q.position}</span>
-                    {q.learningPoint?.title && <span className="font-inter text-xs text-indigo-600">{q.learningPoint.title}</span>}
+                    {q.learningPoint?.title && <span className="font-inter text-xs text-indigo-600"><MathLabel>{q.learningPoint.title}</MathLabel></span>}
                     <span dir="ltr" className="ms-auto font-mono-jetbrains text-xs text-slate-500">{formatSeconds(q.responseTimeMs)} ث · +{q.score.total}</span>
                   </div>
                   {q.content?.statement?.content && <div className="mt-3 rounded-2xl bg-slate-50 p-3"><ExerciseStatement content={q.content.statement.content} visual={q.content.statement.visual} figure={q.content.statement.figure} /></div>}

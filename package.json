@@ -31,7 +31,8 @@
     "check:activation-drift": "node scripts/check-activation-drift.mjs",
     "check:learning-net": "node scripts/generate-learning-net-map.mjs --check && node scripts/learning-net-queue.mjs --check",
     "generate:learning-net": "node scripts/generate-learning-net-map.mjs && node scripts/learning-net-queue.mjs",
-    "check:textbook": "node scripts/check-textbook-coverage.mjs"
+    "check:textbook": "node scripts/check-textbook-coverage.mjs",
+    "check:explorer-levels": "node scripts/games/build-explorer-levels.mjs --check"
   },
   "devDependencies": {
     "@babel/parser": "^7.29.0",

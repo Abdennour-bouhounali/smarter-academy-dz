@@ -6,6 +6,7 @@ import InterventionForm from '../interventions/InterventionForm';
 import { studentName } from '../insights/insights';
 import { formatSeconds, percent } from '../../dailyChallenge/challengeModel';
 import { btnSecondary } from '../../../pages/teacher/teacherUi';
+import MathLabel from '../../../lessons/common/components/MathLabel';
 
 function Tile({ label, value, hint, testId }) {
   return (
@@ -78,7 +79,7 @@ export default function ClassChallengeResults({ classGroupId, data, onOpenPoint,
                   <span className="font-mono-jetbrains text-sm font-bold text-slate-700">{t('teacher.results.questionN', { n: q.position })}</span>
                   <div className="min-w-0">
                     <RateBar rate={q.correctRate} flagged={q.flagged} />
-                    <p className="mt-1 truncate font-inter text-[11px] text-slate-500">{q.learningPoint?.title} · {t('teacher.results.answered', { count: q.answered })}</p>
+                    <p className="mt-1 truncate font-inter text-[11px] text-slate-500">{q.learningPoint?.title && <MathLabel>{q.learningPoint.title}</MathLabel>} · {t('teacher.results.answered', { count: q.answered })}</p>
                   </div>
                   <span className={`text-end font-mono-jetbrains text-sm font-bold ${q.flagged ? 'text-amber-700' : 'text-slate-800'}`} dir="ltr">
                     {percent(q.correctRate)} {q.flagged && <AlertTriangle size={13} className="inline" aria-label={t('teacher.results.flagged')} />}
@@ -93,8 +94,8 @@ export default function ClassChallengeResults({ classGroupId, data, onOpenPoint,
               {data.learningPoints.filter((p) => p.flagged).map((p) => (
                 <div key={p.code} className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4" data-struggling-point={p.code}>
                   <p className="font-inter text-sm text-amber-900">⚠ {t('teacher.results.struggling', { count: p.strugglingStudentIds.length })}</p>
-                  <p className="mt-1 font-space text-base font-bold text-slate-900">{p.title}</p>
-                  <p className="font-inter text-xs text-slate-600">{p.lessonTitle} · {t('teacher.results.correctRate', { rate: percent(p.correctRate) })}</p>
+                  <p className="mt-1 font-space text-base font-bold text-slate-900"><MathLabel>{p.title}</MathLabel></p>
+                  <p className="font-inter text-xs text-slate-600"><MathLabel>{p.lessonTitle}</MathLabel> · {t('teacher.results.correctRate', { rate: percent(p.correctRate) })}</p>
                   <p className="mt-1 font-inter text-xs text-slate-500">{p.strugglingStudentIds.map((id) => studentName(byId.get(id))).join('، ')}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     <button type="button" onClick={() => onOpenPoint(p.code)} className={btnSecondary}><Crosshair size={14} aria-hidden="true" /> {t('teacher.results.openPoint')}</button>

@@ -147,7 +147,8 @@
       "settings": "الإعدادات",
       "learningPoints": "الكفاءات",
       "interventions": "التدخّلات",
-      "dailyChallenge": "التحدّي اليومي"
+      "dailyChallenge": "التحدّي اليومي",
+      "madar": "فضاء الألعاب"
     },
     "errors": {
       "limit_reached": "عرضك لا يسمح بقسم إضافي. راجع صفحة « عرضي ».",

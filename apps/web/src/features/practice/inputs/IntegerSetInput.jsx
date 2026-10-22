@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import MathLabel from '../../../lessons/common/components/MathLabel';
+import { mathToPlain } from '../../../utils/mathPlain';
 
 /**
  * Un ENSEMBLE d'entiers naturels (« عيّن كل قواسم العدد 84 ») : l'élève tape
@@ -48,15 +50,15 @@ export default function IntegerSetInput({ question, value, onChange, disabled })
         autoCorrect="off"
         spellCheck="false"
         value={text}
-        aria-label={question.answerFormat || t('practice.integerSetAria')}
-        placeholder={question.answerFormat || '1 ؛ 2 ؛ 3 ؛ …'}
+        aria-label={(question.answerFormat && mathToPlain(question.answerFormat)) || t('practice.integerSetAria')}
+        placeholder={(question.answerFormat && mathToPlain(question.answerFormat)) || '1 ؛ 2 ؛ 3 ؛ …'}
         disabled={disabled}
         onChange={(e) => onChange({ value: e.target.value })}
         className={`w-full min-h-[76px] resize-y overflow-hidden rounded-xl border-2 px-3 py-2.5 text-start font-mono text-lg sm:text-xl leading-relaxed tabular-nums transition-colors focus:outline-none focus:ring-2 focus:ring-blue-200 ${
           disabled ? 'border-slate-200 bg-slate-50 text-slate-500' : 'border-slate-300 bg-white text-slate-800 focus:border-blue-500'
         }`}
       />
-      {question.answerFormat && <span className="block font-mono text-xs text-slate-500">{question.answerFormat}</span>}
+      {question.answerFormat && <span className="block font-mono text-xs text-slate-500"><MathLabel>{question.answerFormat}</MathLabel></span>}
     </div>
   );
 }

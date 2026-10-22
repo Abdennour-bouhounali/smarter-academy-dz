@@ -76,12 +76,16 @@ class ChallengeQuestionSelector
 
     /**
      * @param  array<string, mixed>  $snapshot  config_snapshot du défi
+     * @param  array{seed?: string, exclude?: string[], warmup?: bool}  $options  `seed` varie le départage (plusieurs
+     *                                                          services le même jour, « مدار ») ; `exclude` écarte des item_key ;
+     *                                                          `warmup` garde les points jamais travaillés APRÈS les appris
+     *                                                          (« مدار », quand les appris sont épuisés)
      * @return array<int, array<string, mixed>> une entrée par position, dans l'ordre
      */
-    public function select(string $scopeType, int $scopeId, string $date, array $snapshot, ?User $student = null): array
+    public function select(string $scopeType, int $scopeId, string $date, array $snapshot, ?User $student = null, array $options = []): array
     {
         $count = (int) $snapshot['questionCount'];
-        $seed = "{$scopeType}:{$scopeId}:{$date}";
+        $seed = "{$scopeType}:{$scopeId}:{$date}".(isset($options['seed']) ? ':'.$options['seed'] : '');
         $today = CarbonImmutable::parse($date);
 
         [$lessonIds, $memberIds] = $scopeType === DailyChallenge::SCOPE_CLASSROOM
@@ -99,9 +103,15 @@ class ChallengeQuestionSelector
         }
 
         $facts = $this->facts($memberIds, $points->pluck('id')->all(), $scopeType, $scopeId, $today);
-        $ranked = $this->rankPoints($points, $facts, count($memberIds), $seed, $today);
+        $ranked = $this->rankPoints($points, $facts, count($memberIds), $seed, $today, (bool) ($options['warmup'] ?? false));
 
         $items = $this->candidateItems($points->pluck('id')->all(), $scopeType, $student, $lessonIds);
+        if (($options['exclude'] ?? []) !== []) {
+            $excluded = array_fill_keys($options['exclude'], true);
+            foreach ($items as $lp => $list) {
+                $items[$lp] = array_values(array_filter($list, fn ($i) => ! isset($excluded[$i['itemKey']])));
+            }
+        }
         $seen = $this->seenItems($memberIds, $scopeType, $scopeId, $today);
 
         return $this->pick($ranked, $items, $seen, $count, $seed, $snapshot['difficulty'] ?? null);
@@ -139,6 +149,10 @@ class ChallengeQuestionSelector
         $lessonIds = Lesson::whereHas('chapter', fn ($q) => $q->where('grade_id', $gradeId))
             ->visibleToStudents()
             ->when($hidden !== [], fn ($q) => $q->whereNotIn('code', $hidden))
+            // Une portée de leçons explicite (la « محطة التزوّد » d'un élève
+            // dont l'enseignant a restreint les leçons) ; le défi personnel
+            // n'en pose jamais.
+            ->when(($snapshot['lessonCodes'] ?? []) !== [], fn ($q) => $q->whereIn('code', $snapshot['lessonCodes']))
             ->pluck('id')->all();
 
         return [$lessonIds, [$student->id]];
@@ -223,7 +237,7 @@ class ChallengeQuestionSelector
     /**
      * @return array<int, array{id: int, lessonId: int, tier: int, reason: string, tie: int, recentlyLearned: bool}>
      */
-    private function rankPoints(Collection $points, array $facts, int $members, string $seed, CarbonImmutable $today): array
+    private function rankPoints(Collection $points, array $facts, int $members, string $seed, CarbonImmutable $today, bool $keepWarmup = false): array
     {
         $recentCut = $today->subDays((int) $this->config->get('selection.recently_learned_days', 14));
         $ranked = [];
@@ -263,7 +277,11 @@ class ChallengeQuestionSelector
 
         usort($ranked, fn ($a, $b) => [$a['tier'], $a['tie']] <=> [$b['tier'], $b['tie']]);
 
-        // Sans rien d'appris, on s'échauffe ; avec, on n'ajoute jamais de l'inconnu.
+        // Sans rien d'appris, on s'échauffe ; avec, on n'ajoute jamais de l'inconnu
+        // — sauf demande explicite (`warmup`) : l'inconnu vient alors APRÈS (tri par rang).
+        if ($keepWarmup) {
+            return $ranked;
+        }
         $learned = array_values(array_filter($ranked, fn ($r) => $r['reason'] !== self::REASON_WARMUP));
 
         return $learned !== [] ? $learned : $ranked;

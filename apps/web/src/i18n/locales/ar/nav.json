@@ -18,6 +18,8 @@
   "myCourses": "دروسي",
   "dailyChallenge": "التحدّي اليومي",
   "dailyChallengeShort": "التحدّي",
+  "madar": "فضاء الألعاب",
+  "madarShort": "الألعاب",
   "explore": "استكشاف",
   "admin": "الإدارة",
   "adminSpace": "لوحة الإدارة",
@@ -38,6 +40,7 @@
   "myPlan": "عرضي",
   "myClass": "قسمي",
   "answerReviews": "تصحيح الإجابات",
+  "teacherGames": "فضاء الألعاب",
   "notifications": {
     "title": "الإشعارات",
     "open": "الإشعارات",

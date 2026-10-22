@@ -72,6 +72,8 @@ use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DailyChallengeController;
+use App\Http\Controllers\MadarController;
+use App\Http\Controllers\Teacher\TeacherClassroomMadarController;
 use App\Http\Controllers\Teacher\TeacherClassroomDailyChallengeController;
 use App\Http\Controllers\Admin\AdminDailyChallengeController;
 use Laravel\Sanctum\Http\Middleware\AuthenticateSession;
@@ -236,6 +238,17 @@ Route::prefix('v1')->group(function () {
                 Route::post('/daily-challenge/attempts/{uuid}/answers', [DailyChallengeController::class, 'answer'])->whereUuid('uuid')->middleware('throttle:60,1');
                 Route::post('/daily-challenge/attempts/{uuid}/complete', [DailyChallengeController::class, 'complete'])->whereUuid('uuid');
                 Route::get('/daily-challenge/attempts/{uuid}/review', [DailyChallengeController::class, 'review'])->whereUuid('uuid');
+
+                // « مدار » — le jeu (MADAR_GAME.md). Élève seulement : les
+                // réponses de la « محطة التزوّد » sont des preuves d'apprentissage.
+                Route::get('/madar', [MadarController::class, 'show']);
+                Route::post('/madar/runs', [MadarController::class, 'start'])->middleware('throttle:60,1');
+                Route::post('/madar/runs/{uuid}/revive', [MadarController::class, 'revive'])->whereUuid('uuid')->middleware('throttle:60,1');
+                Route::post('/madar/runs/{uuid}/finish', [MadarController::class, 'finish'])->whereUuid('uuid')->middleware('throttle:60,1');
+                Route::patch('/madar/ship', [MadarController::class, 'ship'])->middleware('throttle:30,1');
+                Route::post('/madar/refuel', [MadarController::class, 'refuel'])->middleware('throttle:60,1');
+                Route::post('/madar/refuel/{uuid}/answer', [MadarController::class, 'answer'])->whereUuid('uuid')->middleware('throttle:60,1');
+                Route::post('/madar/refuel/{uuid}/left', [MadarController::class, 'left'])->whereUuid('uuid')->middleware('throttle:120,1');
             });
             Route::get('/lessons/{lessonCode}/final-test-attempt', [LessonFinalTestAttemptController::class, 'show']);
             // Moteur d'exercices. Activé leçon par leçon
@@ -527,6 +540,15 @@ Route::prefix('v1')->group(function () {
             Route::patch('/classrooms/{id}/daily-challenge/settings', [TeacherClassroomDailyChallengeController::class, 'updateSettings'])->whereNumber('id');
             Route::get('/classrooms/{id}/daily-challenge/results', [TeacherClassroomDailyChallengeController::class, 'results'])->whereNumber('id');
             Route::get('/classrooms/{id}/daily-challenge/display', [TeacherClassroomDailyChallengeController::class, 'display'])->whereNumber('id');
+
+            // « مدار » de la classe : réglages, semaine, affichage.
+            Route::get('/classrooms/{id}/madar/settings', [TeacherClassroomMadarController::class, 'settings'])->whereNumber('id');
+            Route::patch('/classrooms/{id}/madar/settings', [TeacherClassroomMadarController::class, 'updateSettings'])->whereNumber('id');
+            Route::get('/classrooms/{id}/madar/results', [TeacherClassroomMadarController::class, 'results'])->whereNumber('id');
+            Route::get('/classrooms/{id}/madar/display', [TeacherClassroomMadarController::class, 'display'])->whereNumber('id');
+            Route::get('/classrooms/{id}/madar/items', [TeacherClassroomMadarController::class, 'items'])->whereNumber('id');
+            Route::put('/classrooms/{id}/madar/time-limits', [TeacherClassroomMadarController::class, 'timeLimit'])->whereNumber('id');
+            Route::post('/classrooms/{id}/madar/hearts', [TeacherClassroomMadarController::class, 'hearts'])->whereNumber('id')->middleware('throttle:60,1');
         });
 
     // Protected routes — admin only

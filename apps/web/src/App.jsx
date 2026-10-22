@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './components/layout/MainLayout';
 import HomeRedirect from './components/auth/HomeRedirect';
 import StudentLayout from './components/layout/StudentLayout';
@@ -117,6 +117,11 @@ const DailyChallengePage = lazy(() => import('./pages/student/challenge/DailyCha
 const ChallengeHistoryPage = lazy(() => import('./pages/student/challenge/ChallengeHistoryPage'));
 const ChallengeReviewPage = lazy(() => import('./pages/student/challenge/ChallengeReviewPage'));
 const TeacherChallengeDisplay = lazy(() => import('./pages/teacher/ChallengeDisplayPage'));
+// « مدار » : le jeu (plein écran, hors des coquilles) et son écran du tableau.
+const MadarPage = lazy(() => import('./pages/student/madar/MadarPage'));
+const GamesHub = lazy(() => import('./pages/student/madar/GamesHub'));
+const TeacherMadarDisplay = lazy(() => import('./pages/teacher/MadarDisplayPage'));
+const TeacherGamesPage = lazy(() => import('./pages/teacher/TeacherGamesPage'));
 const AdminDailyChallenge = lazy(() => import('./pages/admin/dailyChallenge/DailyChallengeConfig'));
 // Le مختبر الرياضيات (Math Lab) : les instruments LIBRES de l'élève, hors de
 // toute leçon. Paresseux, comme la pratique — et la سبّورة charge son moteur
@@ -300,6 +305,14 @@ function AppRoutes() {
         <Route path="diagnostic" element={<DiagnosticIntro />} />
         <Route path="diagnostic/run" element={<DiagnosticRun />} />
         <Route path="diagnostic/resultat" element={<DiagnosticResult />} />
+        {/* « مدار » : PLEIN ÉCRAN, hors de StudentLayout — un jeu se joue sans
+            barre latérale ni barre d'onglets, au téléphone comme au portable
+            (MADAR_GAME.md). Le serveur tient cœurs, parties et classement. */}
+        {/* « فضاء الألعاب » : la salle (trois jeux) puis la page de chaque jeu.
+            L'ancienne adresse /espace/madar mène à la salle. */}
+        <Route path="jeux" element={<GamesHub />} />
+        <Route path="jeux/:game" element={<MadarPage />} />
+        <Route path="madar" element={<Navigate to="/espace/jeux" replace />} />
         <Route element={<StudentLayout />}>
           <Route index element={<StudentHome />} />
           <Route path="cours" element={<MesCours />} />
@@ -352,10 +365,12 @@ function AppRoutes() {
         {/* Le mode d'AFFICHAGE du défi : plein écran, hors de la coquille
             enseignant — c'est ce que la classe voit au tableau. */}
         <Route path="classes/:id/defi/affichage" element={<TeacherChallengeDisplay />} />
+        <Route path="classes/:id/madar/affichage" element={<TeacherMadarDisplay />} />
         <Route path="bienvenue" element={<CompleteName />} />
         <Route element={<TeacherLayout />}>
           <Route index element={<TeacherHome />} />
           <Route path="classes" element={<TeacherClassGroupList />} />
+          <Route path="jeux" element={<TeacherGamesPage />} />
           <Route path="classes/nouveau" element={<TeacherClassGroupCreate />} />
           <Route path="classes/:id" element={<TeacherClassGroupDetail />} />
           <Route path="classes/:id/eleves/:studentId" element={<TeacherStudentProgress />} />
