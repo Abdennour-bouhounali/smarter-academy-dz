@@ -7,12 +7,13 @@
       - Cairo (texte) et Amiri (titre) via Google Fonts : Apple Mail, iOS et
         Thunderbird les chargent ; Gmail les ignore et retombe sur Tahoma /
         Arial, deux polices arabes présentes partout ;
-      - le logo est un PNG servi par le frontend (`/email/logo.png`) : Gmail
-        n'affiche ni SVG ni WebP ;
+      - le logo est un PNG servi par le frontend (`/email/logo.png`, généré par
+        scripts/brand/build-logo.py) : Gmail n'affiche ni SVG ni WebP ;
       - le dégradé du bouton a une couleur pleine de repli (Outlook).
 
-    Couleurs : marine #022660 et sarcelle #0FA597 (le logo), bleu #3B82F6 →
-    violet #8B5CF6 (l'accent élève de l'interface), or #F1B10C (l'étoile).
+    Couleurs (docs/architecture/BRAND.md) : marine #0B2A6F et indigo #4F46E5
+    (l'anneau et le cube du logo), bleu #3B82F6 → violet #8B5CF6 (l'accent
+    élève de l'interface), cyan #22D3EE (la face haute du cube).
 
     Variables : $preheader, $title ; sections : content.
 --}}
@@ -60,7 +61,7 @@
         <tr>
             <td align="center" style="padding:32px 40px 8px;">
                 <a href="{{ $site }}" target="_blank" style="text-decoration:none;">
-                    <img src="{{ $site }}/email/logo.png" width="132" alt="Smarter Academy" style="display:block; width:132px; max-width:132px; height:auto; border:0;">
+                    <img src="{{ $site }}/email/logo.png" width="200" alt="Smarter Academy" style="display:block; width:200px; max-width:200px; height:auto; border:0;">
                 </a>
             </td>
         </tr>
@@ -77,11 +78,11 @@
         </tr>
         <tr>
             <td class="pad" align="center" style="padding:20px 40px 32px; font-family:{!! $font !!}; font-size:13px; line-height:22px; color:#64748B;">
-                <span style="color:#022660; font-weight:700;">Smarter Academy</span>
+                <span style="color:#0B2A6F; font-weight:700;">Smarter Academy</span>
                 — الرياضيات وفق البرنامج الرسمي الجزائري
                 <br>
                 سؤال؟ اكتب إلينا على
-                <a href="mailto:contact@smarter-academy.com" style="color:#0FA597; text-decoration:none; font-weight:600;">contact@smarter-academy.com</a>
+                <a href="mailto:contact@smarter-academy.com" style="color:#4F46E5; text-decoration:none; font-weight:600;">contact@smarter-academy.com</a>
             </td>
         </tr>
     </table>

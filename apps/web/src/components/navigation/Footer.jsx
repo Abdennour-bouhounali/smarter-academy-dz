@@ -21,7 +21,7 @@ export default function Footer() {
             className="max-w-xs"
           >
             <div className="flex items-center gap-3 mb-4">
-              <img src="/smarter-academy-logo-sm.webp" width="216" height="144" decoding="async" alt="Smarter Academy" className="h-12 w-auto rounded-lg object-contain bg-white/10" />
+              <img src="/brand/mark-white.svg" width="200" height="200" decoding="async" alt="Smarter Academy" className="h-12 w-12" />
               <div>
                 <p className="font-space font-bold text-white text-lg">Smarter Academy</p>
               </div>

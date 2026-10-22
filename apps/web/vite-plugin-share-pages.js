@@ -55,7 +55,7 @@ export const bookSlugOf = (card) => card.path.match(/^\/books\/([^/]+)$/)?.[1] ?
 export function renderBookShell(heroHtml) {
   return `<div id="sa-static-shell" dir="rtl" style="position:absolute;inset:0 0 auto 0;z-index:60;min-height:100vh;background:#fafafa">
   <div class="fixed top-0 left-0 right-0 z-50 bg-white/90 border-b border-gray-100"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex flex-nowrap items-center justify-between h-16 gap-3">
-    <a href="/" class="flex items-center gap-2.5"><img src="/smarter-academy-logo-sm.webp" width="216" height="144" alt="Smarter Academy" class="h-10 w-auto rounded-lg object-contain" /><span class="hidden sm:flex font-space font-bold text-slate-900 text-sm leading-none whitespace-nowrap">Smarter Academy</span></a>
+    <a href="/" class="flex items-center gap-2.5"><img src="/brand/mark-color.svg" width="200" height="200" alt="Smarter Academy" class="h-10 w-10" /><span class="hidden sm:flex font-space font-bold text-slate-900 text-sm leading-none whitespace-nowrap">Smarter Academy</span></a>
   </div></div></div>
   <div class="pt-16">${heroHtml}</div>
 </div>`;

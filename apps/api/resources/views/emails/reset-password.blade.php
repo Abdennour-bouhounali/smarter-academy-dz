@@ -15,7 +15,7 @@
 @section('content')
         {{-- Titre --}}
         <tr>
-            <td class="pad" align="center" style="padding:16px 40px 4px; font-family:{!! $serif !!}; font-size:30px; line-height:44px; font-weight:700; color:#022660;">
+            <td class="pad" align="center" style="padding:16px 40px 4px; font-family:{!! $serif !!}; font-size:30px; line-height:44px; font-weight:700; color:#0B2A6F;">
                 إعادة تعيين كلمة المرور
             </td>
         </tr>
@@ -23,7 +23,7 @@
             <td align="center" style="padding:4px 40px 0;">
                 <table role="presentation" cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                        <td width="48" height="3" style="width:48px; height:3px; line-height:3px; font-size:0; background-color:#F1B10C; border-radius:3px;">&nbsp;</td>
+                        <td width="48" height="3" style="width:48px; height:3px; line-height:3px; font-size:0; background-color:#22D3EE; border-radius:3px;">&nbsp;</td>
                     </tr>
                 </table>
             </td>
@@ -32,7 +32,7 @@
         {{-- Message --}}
         <tr>
             <td class="pad" align="right" dir="rtl" style="padding:28px 40px 0; font-family:{!! $font !!}; font-size:17px; line-height:30px; color:#1E293B; text-align:right;">
-                <strong style="color:#022660;">السلام عليكم{{ $firstName !== '' ? ' '.$firstName : '' }}،</strong>
+                <strong style="color:#0B2A6F;">السلام عليكم{{ $firstName !== '' ? ' '.$firstName : '' }}،</strong>
                 <br>
                 تلقّينا طلبًا لإعادة تعيين كلمة مرور حسابك في Smarter Academy. اضغط على الزرّ لاختيار كلمة مرور جديدة.
             </td>
@@ -58,7 +58,7 @@
             <td class="pad" style="padding:24px 40px 0;">
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" dir="rtl">
                     <tr>
-                        <td dir="rtl" style="padding:14px 18px; background-color:#ECFDF9; border-right:4px solid #0FA597; border-radius:10px; font-family:{!! $font !!}; font-size:15px; line-height:26px; color:#0F5F57; text-align:right;">
+                        <td dir="rtl" style="padding:14px 18px; background-color:#EEF2FF; border-right:4px solid #4F46E5; border-radius:10px; font-family:{!! $font !!}; font-size:15px; line-height:26px; color:#0F5F57; text-align:right;">
                             ⏳ هذا الرابط صالح لمدة <strong>{{ $minutes }} دقيقة</strong> ويُستعمل مرة واحدة. بعدها، اطلب رابطًا جديدًا من صفحة تسجيل الدخول.
                         </td>
                     </tr>
@@ -89,7 +89,7 @@
             <td class="pad" dir="rtl" style="padding:24px 40px 28px; font-family:{!! $font !!}; font-size:14px; line-height:24px; color:#64748B; text-align:right;">
                 لم تطلب هذا؟ تجاهل هذه الرسالة ببساطة: تبقى كلمة مرورك كما هي ولن يتغيّر شيء.
                 <br>
-                <span style="color:#022660; font-weight:600;">إلى اللقاء قريبًا، فريق Smarter Academy</span>
+                <span style="color:#0B2A6F; font-weight:600;">إلى اللقاء قريبًا، فريق Smarter Academy</span>
             </td>
         </tr>
 @endsection

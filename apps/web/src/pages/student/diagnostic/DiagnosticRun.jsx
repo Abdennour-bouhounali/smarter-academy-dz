@@ -107,7 +107,7 @@ export default function DiagnosticRun() {
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <header className="flex items-center justify-between px-4 sm:px-6 py-4">
         <Link to="/" className="flex items-center gap-2">
-          <img src="/smarter-academy-logo-sm.webp" width="216" height="144" decoding="async" alt="Smarter Academy" className="h-8 w-auto rounded-lg object-contain" />
+          <img src="/brand/logo-horizontal-color.svg" width="490" height="200" decoding="async" alt="Smarter Academy" className="h-8 w-auto" />
         </Link>
         <Link
           to="/espace"
