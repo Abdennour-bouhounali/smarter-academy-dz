@@ -170,6 +170,7 @@ class PersonNameTest extends TestCase
         $this->postJson('/api/v1/auth/google/complete', [
             'handoff' => $this->handoff(),
             'accept_legal' => true,
+            'password' => 'Secret123',
             'firstName' => 'ليا',
             'lastName' => 'مرابط',
         ])->assertCreated()->assertJsonPath('user.nameComplete', true);
@@ -184,6 +185,7 @@ class PersonNameTest extends TestCase
         $this->postJson('/api/v1/auth/google/complete', [
             'handoff' => $this->handoff(),
             'accept_legal' => true,
+            'password' => 'Secret123',
             'firstName' => 'Léa',
             'lastName' => 'M',
         ])->assertStatus(422)->assertJsonValidationErrors(['firstName', 'lastName']);
@@ -196,6 +198,7 @@ class PersonNameTest extends TestCase
         $this->postJson('/api/v1/auth/google/complete', [
             'handoff' => $this->handoff(),
             'accept_legal' => true,
+            'password' => 'Secret123',
         ])->assertStatus(422)->assertJsonValidationErrors(['firstName', 'lastName']);
 
         $this->assertDatabaseCount('users', 0);

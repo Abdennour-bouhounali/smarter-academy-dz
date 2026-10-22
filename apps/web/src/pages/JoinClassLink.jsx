@@ -142,6 +142,11 @@ export default function JoinClassLink() {
     if (request && preview.joiningOpen) {
       autoTried.current = true;
       join(request);
+    } else if (request) {
+      // Inscriptions fermées : l'attente est levée, sinon l'accueil
+      // (ChooseGrade) renverrait ici sans fin au lieu de proposer l'année.
+      autoTried.current = true;
+      clearPendingClassJoin();
     }
   }, [status, preview, verifiedStudent, linkToken, goToClass, join]);
 

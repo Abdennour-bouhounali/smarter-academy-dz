@@ -2,12 +2,13 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, Eye, EyeOff } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { completeGoogleSignup, fetchCurrentUser } from '../services/authService';
 import { postAuthPath } from '../features/classJoin/pendingClassJoin';
 import LegalConsentCheckbox from '../components/auth/LegalConsentCheckbox';
 import PersonNameFields from '../components/auth/PersonNameFields';
+import { authInputClass } from '../components/auth/AuthShell';
 import { nameError, normalizeName, personNameErrors } from '../utils/personName';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
@@ -72,6 +73,11 @@ export default function AuthGoogle() {
   const [names, setNames] = useState({ firstName: suggested('prenom'), lastName: suggested('nom') });
   const [nameErrors, setNameErrors] = useState({});
   const prefilledByGoogle = Boolean(names.firstName || names.lastName);
+  // Le mot de passe, obligatoire depuis le 2026-10-22 : le compte s'ouvre
+  // aussi par courriel + mot de passe (GoogleAuthController::complete).
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const [acceptLegal, setAcceptLegal] = useState(false);
   const [consentError, setConsentError] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
@@ -111,6 +117,12 @@ export default function AuthGoogle() {
     setNameErrors(errors);
     if (Object.keys(errors).length > 0) return;
 
+    // Mêmes règles que le serveur : 8 caractères, une lettre, un chiffre.
+    if (password.length < 8 || !/\p{L}/u.test(password) || !/\d/.test(password)) {
+      setPasswordError(true);
+      return;
+    }
+
     if (!acceptLegal) {
       setConsentError(
         tm('consent.required'),
@@ -124,6 +136,7 @@ export default function AuthGoogle() {
         handoff,
         firstName: normalizeName(names.firstName),
         lastName: normalizeName(names.lastName),
+        password,
         acceptLegal,
         accountType,
       });
@@ -223,6 +236,44 @@ export default function AuthGoogle() {
                   tone={accountType === 'teacher' ? 'teal' : 'blue'}
                   hint={prefilledByGoogle ? t('name.googlePrefilled') : undefined}
                 />
+
+                <div>
+                  <label htmlFor="google-password" className="block text-sm font-medium text-slate-700">
+                    {t('googlePasswordLabel')}
+                  </label>
+                  <div className="relative mt-1.5">
+                    <input
+                      id="google-password"
+                      name="password"
+                      type={showPassword ? 'text' : 'password'}
+                      dir="ltr"
+                      required
+                      minLength={8}
+                      autoComplete="new-password"
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        setPasswordError(false);
+                      }}
+                      disabled={loading}
+                      aria-invalid={passwordError ? 'true' : undefined}
+                      aria-describedby="google-password-hint"
+                      className={`pr-12 text-start ${authInputClass(accountType)}`}
+                    />
+                    {/* Toggle at the FIELD's own (LTR) end — see Register.jsx. */}
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      aria-label={showPassword ? t('hidePassword') : t('showPassword')}
+                      className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+                    >
+                      {showPassword ? <EyeOff className="h-5 w-5" aria-hidden="true" /> : <Eye className="h-5 w-5" aria-hidden="true" />}
+                    </button>
+                  </div>
+                  <p id="google-password-hint" role={passwordError ? 'alert' : undefined} className={`mt-1.5 text-xs ${passwordError ? 'font-medium text-rose-700' : 'text-slate-500'}`}>
+                    {t('googlePasswordHint')}
+                  </p>
+                </div>
 
                 <LegalConsentCheckbox
                   id="accept-legal-google"

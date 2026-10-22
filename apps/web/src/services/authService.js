@@ -254,11 +254,11 @@ export function googleRedirectUrl(accountType = 'student') {
  * `handoff` est le jeton d'attente opaque rendu par le serveur au retour de
  * Google. Il est chiffré : ni lisible ni falsifiable ici.
  */
-export async function completeGoogleSignup({ handoff, firstName, lastName, acceptLegal, accountType = 'student' }) {
+export async function completeGoogleSignup({ handoff, firstName, lastName, password, acceptLegal, accountType = 'student' }) {
   const { ok, status, data } = await apiRequest('/auth/google/complete', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ handoff, firstName, lastName, accept_legal: acceptLegal, accountType }),
+    body: JSON.stringify({ handoff, firstName, lastName, password, accept_legal: acceptLegal, accountType }),
   });
 
   if (!ok) {

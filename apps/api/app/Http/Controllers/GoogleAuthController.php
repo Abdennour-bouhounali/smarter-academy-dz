@@ -14,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password as PasswordRule;
 use Laravel\Socialite\Facades\Socialite;
 use Throwable;
 
@@ -158,10 +159,18 @@ class GoogleAuthController extends Controller
             // Le type de compte, confirmé (ou changé) sur l'écran de
             // consentement — même liste blanche que l'inscription classique.
             'accountType' => ['nullable', 'string', Rule::in(User::SELF_REGISTERABLE_ROLES)],
+            // Un mot de passe, OBLIGATOIRE depuis le 2026-10-22 (propriétaire) :
+            // le compte Google s'ouvre aussi par courriel + mot de passe — sur
+            // la tablette de la classe, où l'élève n'a pas sa session Google.
+            // Mêmes règles que l'inscription classique (AuthController::register).
+            'password' => ['required', 'string', PasswordRule::min(8)->letters()->numbers()],
         ], [
             'accept_legal.required' => "Vous devez accepter les Conditions Générales d'Utilisation et la Politique de confidentialité.",
             'accept_legal.accepted' => "Vous devez accepter les Conditions Générales d'Utilisation et la Politique de confidentialité.",
             ...PersonName::messages(),
+            'password.min' => 'Le mot de passe doit faire au moins 8 caractères.',
+            'password.letters' => 'Le mot de passe doit contenir au moins une lettre.',
+            'password.numbers' => 'Le mot de passe doit contenir au moins un chiffre.',
         ]);
 
         $identity = PendingGoogleSignup::open($validated['handoff']);
@@ -180,6 +189,7 @@ class GoogleAuthController extends Controller
                 $identity->withName($validated['firstName'], $validated['lastName']),
                 LegalConsent::current(),
                 $role,
+                $validated['password'],
             );
         } catch (GoogleIdentityRejected $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 422);

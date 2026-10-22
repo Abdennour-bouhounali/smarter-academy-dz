@@ -473,6 +473,9 @@ Route::prefix('v1')->group(function () {
             Route::get('/answer-images/{uuid}', [TeacherAnswerReviewController::class, 'image'])->whereUuid('uuid');
             Route::post('/answer-images/{uuid}/annotation', [TeacherAnswerReviewController::class, 'annotate'])->whereUuid('uuid')->middleware('throttle:60,1');
             Route::get('/classrooms/{id}/students', [TeacherClassroomStudentController::class, 'index'])->whereNumber('id');
+            // « بطاقات الدخول » : émet un nouveau mot de passe et le rend UNE fois, pour l'imprimer.
+            Route::post('/classrooms/{id}/students/credentials', [TeacherClassroomStudentController::class, 'credentials'])
+                ->whereNumber('id')->middleware('throttle:10,1');
             Route::get('/classrooms/{id}/students/{studentId}/progress', [TeacherClassroomStudentController::class, 'progress'])
                 ->whereNumber('id')->whereNumber('studentId');
             Route::delete('/classrooms/{id}/students/{studentId}', [TeacherClassroomStudentController::class, 'destroy'])

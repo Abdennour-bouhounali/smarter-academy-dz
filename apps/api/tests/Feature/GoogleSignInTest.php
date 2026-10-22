@@ -288,6 +288,44 @@ class GoogleSignInTest extends TestCase
         $this->assertDatabaseCount('users', 0);
     }
 
+    /** Depuis le 2026-10-22 : pas de compte Google sans mot de passe choisi. */
+    public function test_la_creation_google_exige_un_mot_de_passe_valide(): void
+    {
+        foreach ([null, 'court1', 'sanschiffre', '12345678'] as $password) {
+            $handoff = \App\Domain\Identity\PendingGoogleSignup::issue($this->identity());
+
+            $this->postJson('/api/v1/auth/google/complete', array_filter([
+                'firstName' => 'أمين', 'lastName' => 'بن علي',
+                'handoff' => $handoff,
+                'accept_legal' => true,
+                'password' => $password,
+            ], fn ($v) => $v !== null))
+                ->assertStatus(422)
+                ->assertJsonValidationErrors('password');
+        }
+
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    /** Le compte Google s'ouvre ensuite AUSSI par courriel + mot de passe. */
+    public function test_le_compte_google_se_connecte_aussi_par_mot_de_passe(): void
+    {
+        $handoff = \App\Domain\Identity\PendingGoogleSignup::issue($this->identity());
+
+        $this->postJson('/api/v1/auth/google/complete', [
+            'firstName' => 'أمين', 'lastName' => 'بن علي',
+            'handoff' => $handoff,
+            'accept_legal' => true,
+            'password' => 'Secret123',
+        ])->assertCreated();
+
+        $this->postJson('/api/v1/auth/login', ['email' => 'eleve@gmail.com', 'password' => 'Secret123'])
+            ->assertOk()
+            ->assertJsonStructure(['token']);
+        $this->postJson('/api/v1/auth/login', ['email' => 'eleve@gmail.com', 'password' => 'Autre1234'])
+            ->assertStatus(401);
+    }
+
     public function test_la_creation_google_enregistre_les_versions_du_serveur(): void
     {
         $handoff = \App\Domain\Identity\PendingGoogleSignup::issue($this->identity());
@@ -296,6 +334,7 @@ class GoogleSignInTest extends TestCase
             'firstName' => 'أمين', 'lastName' => 'بن علي',
             'handoff' => $handoff,
             'accept_legal' => true,
+            'password' => 'Secret123',
             // Le client tente d'imposer sa version : ignorée.
             'terms_accepted_version' => '1999-01-01',
         ]);
@@ -303,7 +342,7 @@ class GoogleSignInTest extends TestCase
         $response->assertStatus(201)
             ->assertJsonStructure(['token'])
             ->assertJsonPath('user.emailVerified', true)
-            ->assertJsonPath('user.hasPassword', false)
+            ->assertJsonPath('user.hasPassword', true)
             ->assertJsonPath('user.termsAcceptedVersion', config('legal.terms_version'));
     }
 
@@ -317,6 +356,7 @@ class GoogleSignInTest extends TestCase
             'firstName' => 'أمين', 'lastName' => 'بن علي',
             'handoff' => base64_encode(json_encode(['sub' => '1', 'email' => 'victime@example.com', 'verified' => true, 'exp' => time() + 600])),
             'accept_legal' => true,
+            'password' => 'Secret123',
         ])->assertStatus(422);
 
         $this->assertDatabaseCount('users', 0);
@@ -332,6 +372,7 @@ class GoogleSignInTest extends TestCase
             'firstName' => 'أمين', 'lastName' => 'بن علي',
             'handoff' => $handoff,
             'accept_legal' => true,
+            'password' => 'Secret123',
         ])->assertStatus(422);
 
         $this->assertDatabaseCount('users', 0);
@@ -350,7 +391,7 @@ class GoogleSignInTest extends TestCase
 
         $reponses = [
             $this->getJson('/api/v1/legal/versions')->getContent(),
-            $this->postJson('/api/v1/auth/google/complete', ['firstName' => 'أمين', 'lastName' => 'بن علي', 'handoff' => 'x', 'accept_legal' => true])->getContent(),
+            $this->postJson('/api/v1/auth/google/complete', ['firstName' => 'أمين', 'lastName' => 'بن علي', 'handoff' => 'x', 'accept_legal' => true, 'password' => 'Secret123'])->getContent(),
         ];
 
         foreach ($reponses as $contenu) {
@@ -387,13 +428,13 @@ class GoogleSignInTest extends TestCase
         $handoff = \App\Domain\Identity\PendingGoogleSignup::issue($this->identity(['email' => 'prof@gmail.com']), User::ROLE_TEACHER);
         $this->assertSame(User::ROLE_TEACHER, \App\Domain\Identity\PendingGoogleSignup::roleOf($handoff));
 
-        $response = $this->postJson('/api/v1/auth/google/complete', ['firstName' => 'أمين', 'lastName' => 'بن علي', 'handoff' => $handoff, 'accept_legal' => true])
+        $response = $this->postJson('/api/v1/auth/google/complete', ['firstName' => 'أمين', 'lastName' => 'بن علي', 'handoff' => $handoff, 'accept_legal' => true, 'password' => 'Secret123'])
             ->assertCreated()
             ->assertJsonPath('user.role', User::ROLE_TEACHER);
 
         $user = User::where('email', 'prof@gmail.com')->firstOrFail();
         $this->assertNotNull($user->email_verified_at);
-        $this->assertNull($user->password);
+        $this->assertTrue($user->hasPassword());
 
         // Le jeton ouvre l'espace enseignant, pas l'espace élève.
         $this->withToken($response->json('token'))->getJson('/api/v1/teacher/dashboard')->assertOk();
@@ -404,12 +445,12 @@ class GoogleSignInTest extends TestCase
         $handoff = \App\Domain\Identity\PendingGoogleSignup::issue($this->identity(['email' => 'a@gmail.com']));
 
         // Venu par la porte élève, il se dit enseignant : accepté.
-        $this->postJson('/api/v1/auth/google/complete', ['firstName' => 'أمين', 'lastName' => 'بن علي', 'handoff' => $handoff, 'accept_legal' => true, 'accountType' => 'teacher'])
+        $this->postJson('/api/v1/auth/google/complete', ['firstName' => 'أمين', 'lastName' => 'بن علي', 'handoff' => $handoff, 'accept_legal' => true, 'password' => 'Secret123', 'accountType' => 'teacher'])
             ->assertCreated()->assertJsonPath('user.role', User::ROLE_TEACHER);
 
         // Jamais admin — refusé avant toute création.
         $other = \App\Domain\Identity\PendingGoogleSignup::issue($this->identity(['sub' => '2', 'email' => 'b@gmail.com']));
-        $this->postJson('/api/v1/auth/google/complete', ['firstName' => 'أمين', 'lastName' => 'بن علي', 'handoff' => $other, 'accept_legal' => true, 'accountType' => 'admin'])
+        $this->postJson('/api/v1/auth/google/complete', ['firstName' => 'أمين', 'lastName' => 'بن علي', 'handoff' => $other, 'accept_legal' => true, 'password' => 'Secret123', 'accountType' => 'admin'])
             ->assertStatus(422);
         $this->assertDatabaseMissing('users', ['email' => 'b@gmail.com']);
     }

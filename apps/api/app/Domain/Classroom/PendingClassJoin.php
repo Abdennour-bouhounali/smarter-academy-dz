@@ -51,7 +51,18 @@ class PendingClassJoin
         $student->forceFill([
             'pending_class_join_token' => $token,
             'pending_class_join_at' => Carbon::now(),
-        ])->save();
+        ]);
+
+        // La classe scolaire du قسم, DÈS l'inscription (propriétaire,
+        // 2026-10-22) : l'élève venu par le lien de son enseignant n'a pas à
+        // choisir son année — c'est celle de la classe qu'il rejoint. Même
+        // règle que ClassroomMembershipService::join(), avancée à l'instant
+        // de l'inscription : une classe déjà choisie n'est jamais touchée.
+        if ($student->grade === null || $student->grade === '') {
+            $student->grade = $classroom->grade;
+        }
+
+        $student->save();
     }
 
     /**

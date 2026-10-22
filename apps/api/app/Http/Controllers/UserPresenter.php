@@ -41,8 +41,8 @@ final class UserPresenter
             // « vérifiez votre adresse ». La décision reste serveur (le
             // middleware refuse), ceci ne fait qu'éviter un aller-retour.
             'emailVerified' => $user->hasVerifiedEmail(),
-            // Un compte Google n'a pas de mot de passe : l'interface ne doit
-            // pas lui proposer d'en changer un.
+            // Un compte Google créé avant le 2026-10-22 n'a pas de mot de
+            // passe : l'interface ne doit pas lui proposer d'en changer un.
             'hasPassword' => $user->hasPassword(),
             // Le consentement tel qu'il a été donné. `null` pour les comptes
             // antérieurs à sa mise en place — jamais une date fabriquée.

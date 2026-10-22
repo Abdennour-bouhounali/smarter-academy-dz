@@ -9,6 +9,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { isDiagnosticAvailableForGrade } from '../../services/diagnosticService';
 import { needsName } from '../../utils/personName';
+import { postAuthPath } from '../../features/classJoin/pendingClassJoin';
 import { getDisplayName } from '../../utils/userDisplay';
 
 const GRADES_BY_LEVEL = getAllGrades().reduce((groups, grade) => {
@@ -55,6 +56,16 @@ export default function ChooseGrade() {
 
   if (needsName(user)) {
     return <Navigate to="/espace/bienvenue/nom" replace />;
+  }
+
+  // Venu par le lien de classe de son enseignant (propriétaire, 2026-10-22) :
+  // l'année est celle du قسم, pas un choix. Une adhésion encore en attente
+  // dans ce navigateur (inscription Google, ordre des redirections) renvoie
+  // à la page du lien, qui rejoint — et le serveur donne alors la classe
+  // scolaire du قسم (ClassroomMembershipService::join).
+  const pendingJoinPath = postAuthPath(user, null);
+  if (pendingJoinPath) {
+    return <Navigate to={pendingJoinPath} replace />;
   }
 
   const handleSelect = async (gradeId) => {

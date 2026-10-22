@@ -104,6 +104,9 @@ class ActivityLogger
     /** L'enseignant a lu le cahier d'un élève (une ligne par jour et par élève). */
     public const TEACHER_NOTEBOOK_READ = 'teacher.notebook_read';
 
+    /** L'enseignant a émis de nouveaux mots de passe (« بطاقات الدخول ») — jamais le mot de passe lui-même. */
+    public const TEACHER_STUDENT_CREDENTIALS_ISSUED = 'teacher.student_credentials_issued';
+
     public const CLASSROOM_LESSON_STATUS_CHANGED = 'classroom_lesson.status_changed';
 
     /** Les OFFRES et leur configuration — le modèle commercial, sans déploiement. */

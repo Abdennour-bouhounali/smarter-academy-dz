@@ -110,7 +110,7 @@ student and admin.
 | `ClassroomMembershipService` | `joinByCode`, **`joinByLink`** (idempotent: an active member gets `alreadyMember: true`, no consent asked, even if joining was closed since), `classroomForLink`, `remove`, `leave`, `confirmConsent`; **both doors end in the same `join()`**; every join takes `consented: true` or fails with `consent_required`; capacity checked **at join, under `DB::transaction` with `lockForUpdate` on the class AND on the teacher row** (so two joins into two different classes of one teacher serialise): the technical per-class limit, then the seat capacity through `TeacherCapacityService` |
 | `TeacherCapacityService` | the **seat capacity**: `seatLimit` (`students_total.max` resolved from the plan / purchased seats / override), `currentStudentCount` (**distinct** active students across the teacher's non-archived classes — a student in two classes is one seat), `remainingSeats`, `isSeated`, `canAddStudent` (an already-seated student never consumes a second seat), `assertCanSeat` → `seats_exhausted`, `summary` |
 | `JoinLinkToken` | 32 base62 symbols from `random_int` (CSPRNG, ≈190 bits), derived from nothing (not the id, teacher, code); unique; **stored in clear** like `join_code`, because the teacher must re-read it on the class page and it is semi-public by nature (shared on WhatsApp). Protected by its length, the rate limit, `join_code_enabled` and rotation |
-| `PendingClassJoin` | the join that waits for the verified address: `remember` at registration (valid link of an open class + consent + student, otherwise silently ignored — registration never fails on a stale link), `complete` in `EmailVerificationController::verify` (re-validates the token; any refusal just clears the wait) |
+| `PendingClassJoin` | the join that waits for the verified address: `remember` at registration (valid link of an open class + consent + student, otherwise silently ignored — registration never fails on a stale link; since 2026-10-22 it also gives the student the class's grade when they have none), `complete` in `EmailVerificationController::verify` (re-validates the token; any refusal just clears the wait) |
 | `ClassroomLessonService` | the class's curriculum tree (ميادين → وحدات → دروس) with `publicationStatus`, `tier`, `classStatus`, `effectiveForStudents`; `setStatus`; `bulkSetStatus` (a unit = its lessons repeated) → `{applied, unchanged, failed}` in the `ContentService::bulk()` shape |
 | `ClassroomProgressService` | **singleton** (per-request memo of the effective lessons, flushed on `RequestHandled` and on every visibility change); per-student rows (`studentList`) + `rosterFor` (statistics only with `progress.class`), from existing progress data only |
 | `ClassroomAccess` | **the one teacher → student gate and the one teacher-facing identity** — see « Consent and what the teacher may read » |
@@ -118,6 +118,7 @@ student and admin.
 | `ClassroomInsightService` + `Insights/*` | DETECT: attention signals, recent changes, the student snapshot — § 4a |
 | `ClassroomInterventionService` | INTERVENE and MEASURE — § 4b |
 | `StudyContextService` | singleton, per-request memo: `{mode, classrooms[], primary, hiddenLessonCodes}` for a student |
+| `StudentCredentials` | « بطاقات الدخول » (2026-10-22): `issue(teacher, classroom, studentIds)` — active class, active members only (one outsider refuses all), a NEW password per student (`generate()`: 4 unambiguous letters + 4 digits, e.g. `kmar4827`), stored hashed, returned ONCE with the email; logs `teacher.student_credentials_issued` (ids only) |
 | `ClassroomException` | closed reasons: `limit_reached`, `grade_not_allowed`, `feature_unavailable`, `class_inactive`, `class_full`, `seats_exhausted`, `already_member`, `not_a_student`, `invalid`, **`joining_closed`** (link only: a valid link of a class that no longer accepts new members; the CODE answers `invalid` there, since six symbols can be guessed and a distinct reason would reveal which exist), `expired`, `revoked`, `not_member`, `lesson_out_of_scope`, `consent_required` → 422 `{reason}`; the client renders Arabic from the reason, never the French message |
 
 Rate limiter `classroom-join` (per user and per IP, registered beside
@@ -134,7 +135,11 @@ join code  6 symbols in «قسمي» ───────┘  (manual fallback:
 
 - **A student who joins without a grade takes the class's grade**
   (`join()`, only when `users.grade` is null): a brand-new account arriving
-  by the link lands in its class instead of the grade picker.
+  by the link lands in its class instead of the grade picker. Since
+  2026-10-22 (owner) the grade is written **at registration** already
+  (`PendingClassJoin::remember`, e-mail sign-up), and `ChooseGrade` sends a
+  student with a consented pending join back to the link page instead of
+  asking (Google sign-up) — `ARCHITECTURE.md` §10.
 - **Closing** (`joinCodeEnabled: false`, « السماح بالانضمام » in الإعدادات)
   refuses new students by both doors; members stay, and a member reopening
   the link is still sent to the class. **Rotating the link**
@@ -235,7 +240,22 @@ Arabic placeholder «تلميذ بدون اسم» (`common.unnamedStudent`), nev
 email. Since 2026-09-29 that placeholder is transitional: every student is
 asked for « الاسم و اللقب » at signup or, for older accounts, at their next
 visit (see §1 « Who exists »). The admin detail of a class adds the email itself
-(`ClassroomAdminService::withEmails`) — the admin surface may show it. The
+(`ClassroomAdminService::withEmails`) — the admin surface may show it.
+
+**The one exception — « بطاقات الدخول » (owner, 2026-10-22).** A teacher may print
+login cards for the students of their class: « التلاميذ » → « طباعة بيانات الدخول »
+(`features/teacher/members/CredentialsDialog.jsx`) → choose students →
+`POST /teacher/classrooms/{id}/students/credentials {studentIds}` (`manage`,
+throttle 10/min, `Cache-Control: no-store`). A password is hashed and cannot be
+read back, so the teacher never sees the one the student chose: the server
+**issues a new one** (it replaces the old one; open sessions are kept) and the
+response — the only place it exists in clear — carries `{id, firstName,
+lastName, email, password}`. The cards are printed from a portal
+`[data-credentials-print]` (`credentials.css` hides the rest of the page) and
+vanish when the dialog closes. The email is therefore shown in this gesture's
+response only; no `/teacher` READ returns it (`TeacherPrivacyContractTest` is
+unchanged), and `pages/teacherContract.test.js` allows `.email` in
+`CredentialsDialog.jsx` alone. Locked by `TeacherStudentCredentialsTest`. The
 public join-link preview returns the class name, grade, teacher name and
 `joiningOpen` — never an id, an address or the roster.
 

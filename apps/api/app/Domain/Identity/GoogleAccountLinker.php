@@ -121,9 +121,15 @@ final class GoogleAccountLinker
      *
      * Le compte et son identité naissent dans la MÊME transaction : un compte
      * sans identité serait un compte auquel son propriétaire ne pourrait plus
-     * se connecter (il n'a pas de mot de passe).
+     * se connecter s'il n'a pas de mot de passe.
+     *
+     * `$password` : celui que la personne a CHOISI sur l'écran de
+     * consentement (obligatoire depuis le 2026-10-22, voir
+     * GoogleAuthController::complete). NULL reste possible ici — les comptes
+     * Google créés avant cette date n'en ont pas — mais jamais un secret
+     * inventé (migration 2026_09_18_000003).
      */
-    public function createFromIdentity(GoogleIdentity $identity, LegalConsent $consent, string $role = User::ROLE_STUDENT): User
+    public function createFromIdentity(GoogleIdentity $identity, LegalConsent $consent, string $role = User::ROLE_STUDENT, ?string $password = null): User
     {
         if (! $identity->emailVerified) {
             throw GoogleIdentityRejected::unverifiedEmail();
@@ -135,7 +141,7 @@ final class GoogleAccountLinker
             $role = User::ROLE_STUDENT;
         }
 
-        return DB::transaction(function () use ($identity, $consent, $role) {
+        return DB::transaction(function () use ($identity, $consent, $role, $password) {
             // Course possible : deux onglets, deux créations. L'unicité de
             // users.email tranche ; on relit plutôt que de supposer.
             $existing = User::query()->where('email', $identity->email)->first();
@@ -151,9 +157,9 @@ final class GoogleAccountLinker
                 // pré-remplis depuis Google, jamais pris tels quels.
                 'first_name' => $identity->firstName,
                 'last_name' => $identity->lastName,
-                // PAS de mot de passe. Ni vide, ni aléatoire : NULL.
-                // Voir la migration 2026_09_18_000003.
-                'password' => null,
+                // Le mot de passe choisi (haché par le cast du modèle), ou NULL.
+                // Jamais vide, jamais aléatoire : migration 2026_09_18_000003.
+                'password' => $password,
                 'role' => $role,
                 ...$consent->attributes(),
             ]);

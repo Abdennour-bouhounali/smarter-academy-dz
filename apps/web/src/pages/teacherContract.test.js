@@ -146,7 +146,10 @@ describe('la carte de leçon lit le troisième axe', () => {
  * élèves entrent par le lien ou le code de la classe.)
  */
 describe('aucun écran enseignant ne lit le courriel d’un élève', () => {
-  const ALLOWED = [/TeacherProfile\.jsx$/];
+  // CredentialsDialog : « بطاقات الدخول » (propriétaire, 2026-10-22) — la
+  // carte imprimée porte le courriel, rendu UNE fois par le geste qui émet un
+  // nouveau mot de passe (StudentCredentials), jamais par une lecture.
+  const ALLOWED = [/TeacherProfile\.jsx$/, /members\/CredentialsDialog\.jsx$/];
   it('l’invitation par courriel n’existe plus dans l’espace enseignant', () => {
     for (const rel of ['pages/teacher', 'features/teacher', 'services/teacher']) {
       for (const file of walk(resolve(src, rel))) {

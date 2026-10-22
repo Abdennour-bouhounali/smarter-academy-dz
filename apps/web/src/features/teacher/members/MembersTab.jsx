@@ -1,17 +1,18 @@
 import { useCallback, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Users, UserMinus, NotebookPen } from 'lucide-react';
+import { Users, UserMinus, NotebookPen, Printer } from 'lucide-react';
 import { AuthContext } from '../../../context/AuthContext';
 import { useAdminResource } from '../../../hooks/useAdminResource';
 import DataTable from '../../../components/admin/ui/DataTable';
 import { ConfirmDialog } from '../../../components/admin/ui/Modal';
 import PathProgress from '../../progression/components/PathProgress';
 import { fetchClassStudents, removeClassStudent } from '../../../services/teacher/classGroupService';
-import { useTableLabels, formatDate, btnDanger } from '../../../pages/teacher/teacherUi';
+import { useTableLabels, formatDate, btnDanger, btnSecondary } from '../../../pages/teacher/teacherUi';
+import CredentialsDialog from './CredentialsDialog';
 import { studentName } from '../insights/insights';
 
-/** Les élèves d'une classe : progression, dernière activité, retrait. */
+/** Les élèves d'une classe : progression, dernière activité, retrait, « بطاقات الدخول ». */
 export default function MembersTab({ classGroup, entitlements, onChanged }) {
   const { t } = useTranslation('teacher');
   const { token } = useContext(AuthContext);
@@ -21,6 +22,7 @@ export default function MembersTab({ classGroup, entitlements, onChanged }) {
   const [removing, setRemoving] = useState(null);
   const [busy, setBusy] = useState(false);
   const [removeError, setRemoveError] = useState(null);
+  const [printing, setPrinting] = useState(false);
 
   const confirmRemove = async () => {
     setBusy(true);
@@ -49,6 +51,13 @@ export default function MembersTab({ classGroup, entitlements, onChanged }) {
           {seatsFull ? t('students.seatsFull') : t('students.seatsHint', { current: seats.current, limit: seats.maximum ?? '∞' })}
           {seatsFull && <> <Link to="/enseignant/offre" className="font-semibold text-teal-800 hover:underline">{t('subscription.title')}</Link></>}
         </p>
+      )}
+      {classGroup.status === 'active' && students?.length > 0 && (
+        <div className="flex justify-end">
+          <button type="button" onClick={() => setPrinting(true)} className={btnSecondary} data-credentials-open>
+            <Printer size={14} aria-hidden="true" /> {t('students.credentials.open')}
+          </button>
+        </div>
       )}
       <DataTable
         rows={students ?? []}
@@ -104,6 +113,8 @@ export default function MembersTab({ classGroup, entitlements, onChanged }) {
         confirmLabel={t('students.remove')}
         {...labels.dialog}
       />
+
+      <CredentialsDialog open={printing} onClose={() => setPrinting(false)} classGroup={classGroup} students={students ?? []} />
     </div>
   );
 }

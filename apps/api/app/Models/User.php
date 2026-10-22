@@ -218,8 +218,10 @@ class User extends Authenticatable implements HasLocalePreference
     /**
      * Ce compte peut-il se connecter par mot de passe ?
      *
-     * Faux pour un compte créé par Google, qui n'en a pas (NULL, et non un
-     * secret aléatoire — voir la migration qui rend la colonne facultative).
+     * Faux pour un compte créé par Google AVANT le 2026-10-22, qui n'en a pas
+     * (NULL, et non un secret aléatoire — voir la migration qui rend la
+     * colonne facultative). Depuis, l'écran de consentement Google exige un
+     * mot de passe, et l'enseignant peut en émettre un (StudentCredentials).
      */
     public function hasPassword(): bool
     {

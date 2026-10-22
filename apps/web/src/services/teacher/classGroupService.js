@@ -155,3 +155,11 @@ export function createClassIntervention(token, id, payload) {
 export function updateClassIntervention(token, id, interventionId, patch) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/interventions/${encodeURIComponent(interventionId)}`, send('PATCH', token, patch), 'classroomSave').then((d) => d.intervention);
 }
+
+/**
+ * « بطاقات الدخول » : un NOUVEAU mot de passe pour chaque élève choisi, rendu
+ * une seule fois avec son courriel — à imprimer, jamais à garder.
+ */
+export function issueStudentCredentials(token, id, studentIds) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/students/credentials`, send('POST', token, { studentIds }), 'classroomSave').then((d) => d.credentials);
+}

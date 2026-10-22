@@ -7,6 +7,7 @@ use App\Domain\Classroom\ClassroomInsightService;
 use App\Domain\Classroom\ClassroomInterventionService;
 use App\Domain\Classroom\ClassroomMembershipService;
 use App\Domain\Classroom\ClassroomProgressService;
+use App\Domain\Classroom\StudentCredentials;
 use App\Http\Controllers\Controller;
 use DomainException;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class TeacherClassroomStudentController extends Controller
         private ClassroomMembershipService $memberships,
         private ClassroomInsightService $insights,
         private ClassroomInterventionService $interventions,
+        private StudentCredentials $credentials,
     ) {}
 
     public function index(Request $request, int $id)
@@ -66,5 +68,28 @@ class TeacherClassroomStudentController extends Controller
         }
 
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * « بطاقات الدخول » : un NOUVEAU mot de passe pour chaque élève choisi,
+     * rendu une seule fois avec son courriel, pour être imprimé
+     * (StudentCredentials).
+     */
+    public function credentials(Request $request, int $id)
+    {
+        $classroom = TeacherClassroomController::ownedClassroom($request, $id, 'manage');
+        $validated = $request->validate([
+            'studentIds' => 'required|array|min:1|max:200',
+            'studentIds.*' => 'integer',
+        ]);
+
+        try {
+            $cards = $this->credentials->issue($request->user(), $classroom, $validated['studentIds']);
+        } catch (DomainException $e) {
+            return TeacherClassroomController::refuse($e);
+        }
+
+        return response()->json(['success' => true, 'credentials' => $cards])
+            ->header('Cache-Control', 'no-store');
     }
 }

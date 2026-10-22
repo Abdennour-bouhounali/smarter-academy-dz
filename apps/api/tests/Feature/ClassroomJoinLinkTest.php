@@ -297,6 +297,9 @@ class ClassroomJoinLinkTest extends TestCase
         // Rien avant la vérification : l'espace élève est encore fermé.
         $this->assertSame(0, ClassroomMembership::count());
         $this->assertSame($classroom->join_link_token, $student->pending_class_join_token);
+        // …mais la classe scolaire du قسم, DÈS l'inscription : l'accueil ne
+        // demandera pas l'année (propriétaire, 2026-10-22).
+        $this->assertSame('4am', $student->grade);
 
         // Le lien du courriel, ouvert SANS session (autre navigateur).
         $this->get(EmailVerificationLink::for($student))->assertRedirect();
@@ -327,6 +330,8 @@ class ClassroomJoinLinkTest extends TestCase
         $this->postJson('/api/v1/auth/register', $payload('c@example.dz', ['classJoinLink' => $classroom->join_link_token, 'classJoinConsent' => true, 'accountType' => 'teacher']))->assertCreated();
 
         $this->assertSame(0, User::whereNotNull('pending_class_join_token')->count());
+        // Sans adhésion attendue, aucune classe scolaire n'est imposée.
+        $this->assertSame(0, User::whereNotNull('grade')->where('email', '!=', $classroom->teacher->email)->count());
     }
 
     public function test_un_lien_renouvele_entre_inscription_et_verification_n_ouvre_rien(): void
