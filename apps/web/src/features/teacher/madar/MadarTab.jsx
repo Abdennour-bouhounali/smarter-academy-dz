@@ -1,10 +1,10 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle, Eye, Heart, MonitorPlay, Timer } from 'lucide-react';
+import { AlertTriangle, Eye, Gamepad2, Heart, Lock, MonitorPlay, Timer } from 'lucide-react';
 import { AuthContext } from '../../../context/AuthContext';
 import {
-  adjustStudentHearts, fetchClassMadarItems, fetchClassMadarResults, fetchClassMadarSettings, setClassMadarItemLimit, updateClassMadarSettings,
+  adjustStudentHearts, fetchClassMadarItems, fetchClassMadarResults, fetchClassMadarSettings, setClassMadarItemLimit, setStudentMadarGames, updateClassMadarSettings,
 } from '../../../services/teacher/madarService';
 import { Loading, ErrorBox, btnPrimary, btnSecondary, input } from '../../../pages/teacher/teacherUi';
 import Modal from '../../../components/admin/ui/Modal';
@@ -14,6 +14,7 @@ import { formatScore } from '../../madar/madarModel';
 import MathLabel from '../../../lessons/common/components/MathLabel';
 import RichText from '../../practice/RichText';
 
+const GAMES = ['orbit', 'defense', 'explorer', 'sniper'];
 const percent = (x) => (x == null ? '—' : `${Math.round(x * 100)}%`);
 const fullName = (s) => [s.firstName, s.lastName].filter(Boolean).join(' ');
 
@@ -61,7 +62,7 @@ function Settings({ classGroupId, initial, options, onSaved }) {
         <fieldset className="py-3" data-setting="games">
           <legend className="font-inter text-sm font-semibold text-slate-900">{t('teacher.games.enabled')}</legend>
           <div className="mt-1 flex flex-wrap gap-3">
-            {(options.games ?? ['orbit', 'defense', 'explorer']).map((g) => {
+            {(options.games ?? GAMES).map((g) => {
               const on = !(s.disabledGames ?? []).includes(g);
               return (
                 <label key={g} className="flex items-center gap-2 font-inter text-sm text-slate-700">
@@ -197,6 +198,74 @@ function HeartsDialog({ classGroupId, student, maxHearts, maxDelta, onClose, onD
   );
 }
 
+/**
+ * Les jeux d'UN élève : l'enseignant en ferme un (ou plusieurs) pour lui seul.
+ * Un jeu fermé pour toute la classe reste fermé ici (case grisée) : ce
+ * réglage-ci s'y ajoute, il ne le remplace pas.
+ */
+function StudentGamesDialog({ classGroupId, student, options, classDisabled, onClose, onDone }) {
+  const { t } = useTranslation('madar');
+  const { token } = useContext(AuthContext);
+  const [closed, setClosed] = useState(student.disabledGames ?? []);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
+  const games = options.games ?? GAMES;
+  const categories = options.gameCategories ?? {};
+
+  const save = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      await setStudentMadarGames(token, classGroupId, student.student.id, closed);
+      onDone();
+    } catch (e) {
+      setError(t(`teacher.studentGames.errors.${e?.reason ?? 'generic'}`, { defaultValue: t('teacher.studentGames.errors.generic') }));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Modal open onClose={() => (busy ? null : onClose())} title={t('teacher.studentGames.title', { name: fullName(student.student) })}>
+      <div className="space-y-4" data-student-games-dialog>
+        <p className="font-inter text-sm text-slate-600">{t('teacher.studentGames.help')}</p>
+        {['fun', 'math'].map((cat) => {
+          const list = games.filter((g) => (categories[g] ?? 'fun') === cat);
+          if (!list.length) return null;
+          return (
+            <fieldset key={cat}>
+              <legend className="font-inter text-sm font-semibold text-slate-800">{t(`hub.categories.${cat}.title`)}</legend>
+              <div className="mt-1 space-y-1">
+                {list.map((g) => {
+                  const byClass = classDisabled.includes(g);
+                  const open = !byClass && !closed.includes(g);
+                  return (
+                    <label key={g} className={`flex items-center justify-between gap-2 rounded-lg px-2 py-2 ${byClass ? 'opacity-60' : 'hover:bg-slate-50'}`} data-student-game={g}>
+                      <span className="flex items-center gap-2 font-inter text-sm text-slate-700">
+                        <input type="checkbox" checked={open} disabled={byClass || busy}
+                          onChange={() => setClosed((cur) => (cur.includes(g) ? cur.filter((x) => x !== g) : [...cur, g]))} />
+                        {t(`teacher.games.${g}`)}
+                      </span>
+                      <span className="font-inter text-xs text-slate-500">
+                        {byClass ? t('teacher.studentGames.closedForClass') : open ? t('teacher.studentGames.open') : t('teacher.studentGames.closed')}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+          );
+        })}
+        {error && <p role="alert" className="rounded-xl bg-rose-50 p-2 text-sm text-rose-800">{error}</p>}
+        <div className="flex justify-end gap-2">
+          <button type="button" className={btnSecondary} onClick={onClose} disabled={busy}>{t('teacher.hearts.cancel')}</button>
+          <button type="button" className={btnPrimary} onClick={save} disabled={busy} data-action="save-student-games">{t('teacher.studentGames.save')}</button>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
 /** Les questions servies à la classe : énoncé, statistiques, et le délai de CHACUNE. */
 function Items({ classGroupId, range }) {
   const { t } = useTranslation('madar');
@@ -281,6 +350,7 @@ export default function MadarTab({ classGroup }) {
   const [settings, setSettings] = useState(null);
   const [error, setError] = useState(null);
   const [adjusting, setAdjusting] = useState(null);
+  const [gamesFor, setGamesFor] = useState(null);
 
   const load = useCallback(async () => {
     setError(null);
@@ -302,6 +372,7 @@ export default function MadarTab({ classGroup }) {
 
   const isDefense = results.game === 'defense';
   const isExplorer = results.game === 'explorer';
+  const isSniper = results.game === 'sniper';
   const { summary, students, adjustments } = results;
   const tiles = [
     ['players', `${summary.players} / ${results.members}`],
@@ -316,7 +387,7 @@ export default function MadarTab({ classGroup }) {
         <p className="max-w-2xl font-inter text-sm text-slate-600">{t('teacher.intro')}</p>
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex rounded-lg border border-slate-200 bg-white p-0.5" role="tablist" aria-label={t('teacher.games.label')}>
-            {['orbit', 'defense', 'explorer'].map((g) => (
+            {(settings.options.games ?? GAMES).map((g) => (
               <button key={g} type="button" role="tab" aria-selected={game === g} onClick={() => setGame(g)} data-teacher-game={g}
                 className={`rounded-md px-3 py-1.5 font-inter text-sm font-semibold ${game === g ? 'bg-teal-700 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>
                 {t(`teacher.games.${g}`)}
@@ -365,12 +436,14 @@ export default function MadarTab({ classGroup }) {
                     <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.student')}</th>
                     <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.weekBest')}</th>
                     {isDefense && <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.weekWave')}</th>}
+                    {isSniper && <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.weekRound')}</th>}
                     {isExplorer && <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.levelStars')}</th>}
                     {isExplorer && <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.levelsCompleted')}</th>}
                     <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.runs')}</th>
                     <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.refuel')}</th>
                     <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.alerts')}</th>
                     <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.hearts')}</th>
+                    <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.games')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -385,6 +458,7 @@ export default function MadarTab({ classGroup }) {
                       </td>
                       <td className="px-3 py-3 font-space font-bold" dir="ltr">{row.weekBest != null ? formatScore(row.weekBest) : t('teacher.table.none')}</td>
                       {isDefense && <td className="px-3 py-3 font-space font-bold" dir="ltr">{row.weekWave ?? t('teacher.table.none')}</td>}
+                      {isSniper && <td className="px-3 py-3 font-space font-bold" dir="ltr">{row.weekWave ?? t('teacher.table.none')}</td>}
                       {isExplorer && <td className="px-3 py-3 font-space font-bold" dir="ltr">★ {row.levelStars ?? 0}</td>}
                       {isExplorer && <td className="px-3 py-3" dir="ltr">{row.levelsCompleted ?? 0} / 12</td>}
                       <td className="px-3 py-3" dir="ltr">{row.runs}</td>
@@ -403,6 +477,13 @@ export default function MadarTab({ classGroup }) {
                       <td className="px-3 py-3">
                         <button type="button" onClick={() => setAdjusting(row)} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 font-semibold text-slate-700 hover:bg-rose-50" data-action="adjust-hearts">
                           <Heart size={14} className="text-rose-500" aria-hidden="true" /> <span dir="ltr">{row.hearts}</span> ±
+                        </button>
+                      </td>
+                      <td className="px-3 py-3">
+                        <button type="button" onClick={() => setGamesFor(row)} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 font-semibold text-slate-700 hover:bg-slate-50" data-action="student-games">
+                          {(row.disabledGames ?? []).length > 0
+                            ? <><Lock size={14} className="text-amber-600" aria-hidden="true" /> {t('teacher.studentGames.closedCount', { count: row.disabledGames.length })}</>
+                            : <><Gamepad2 size={14} className="text-teal-700" aria-hidden="true" /> {t('teacher.studentGames.allOpen')}</>}
                         </button>
                       </td>
                     </tr>
@@ -440,6 +521,16 @@ export default function MadarTab({ classGroup }) {
         </div>
       </div>
 
+      {gamesFor && (
+        <StudentGamesDialog
+          classGroupId={classGroup.id}
+          student={gamesFor}
+          options={settings.options}
+          classDisabled={settings.settings.disabledGames ?? []}
+          onClose={() => setGamesFor(null)}
+          onDone={() => { setGamesFor(null); load(); }}
+        />
+      )}
       {adjusting && (
         <HeartsDialog
           classGroupId={classGroup.id}

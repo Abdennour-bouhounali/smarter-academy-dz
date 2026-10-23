@@ -549,6 +549,7 @@ Route::prefix('v1')->group(function () {
             Route::get('/classrooms/{id}/madar/items', [TeacherClassroomMadarController::class, 'items'])->whereNumber('id');
             Route::put('/classrooms/{id}/madar/time-limits', [TeacherClassroomMadarController::class, 'timeLimit'])->whereNumber('id');
             Route::post('/classrooms/{id}/madar/hearts', [TeacherClassroomMadarController::class, 'hearts'])->whereNumber('id')->middleware('throttle:60,1');
+            Route::put('/classrooms/{id}/madar/students/{studentId}/games', [TeacherClassroomMadarController::class, 'studentGames'])->whereNumber('id')->whereNumber('studentId')->middleware('throttle:60,1');
         });
 
     // Protected routes — admin only

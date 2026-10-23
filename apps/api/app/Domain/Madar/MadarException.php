@@ -35,6 +35,9 @@ class MadarException extends RuntimeException
     /** L'enseignant a fermé CE jeu pour sa classe (les autres restent ouverts). */
     public const GAME_DISABLED = 'game_disabled';
 
+    /** L'enseignant a fermé CE jeu pour CET élève (la classe peut y jouer). */
+    public const GAME_DISABLED_FOR_STUDENT = 'game_disabled_for_student';
+
     /** « المستكشف » : ce niveau ne s'ouvre qu'une fois le précédent réussi. */
     public const LEVEL_LOCKED = 'level_locked';
 

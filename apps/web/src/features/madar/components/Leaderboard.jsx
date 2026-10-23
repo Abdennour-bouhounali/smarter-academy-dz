@@ -53,7 +53,7 @@ export default function Leaderboard({ competition, classroom, game = 'orbit' }) 
               </span>
               {game !== 'orbit' && row.wave != null && (
                 <span className="rounded-full bg-cyan-400/15 px-1.5 py-0.5 font-inter text-[10px] font-bold text-cyan-100">
-                  {game === 'explorer' ? t('explorer.board.level', { n: row.wave }) : t('defense.board.wave', { n: row.wave })}
+                  {game === 'explorer' ? t('explorer.board.level', { n: row.wave }) : game === 'sniper' ? t('sniper.board.round', { n: row.wave }) : t('defense.board.wave', { n: row.wave })}
                 </span>
               )}
               <span className="font-space text-base font-black tabular-nums" dir="ltr">{formatScore(row.best)}</span>

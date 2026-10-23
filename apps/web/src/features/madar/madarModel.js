@@ -39,13 +39,37 @@ export function nextShipGoal(ships) {
     .sort((a, b) => b.ratio - a.ratio)[0];
 }
 
-/** Ce qui empêche de lancer une partie maintenant (null = rien). */
-export function playBlocker(state) {
+/** Les jeux qui ne coûtent aucun cœur (le serveur fait foi : `games[].free`). */
+export const FREE_GAMES = ['sniper'];
+
+/** Un jeu gratuit, d'après l'état du serveur (repli : FREE_GAMES). */
+export function isFreeGame(state, game) {
+  const entry = (state?.games ?? []).find((g) => g.id === game);
+  return entry ? Boolean(entry.free) : FREE_GAMES.includes(game);
+}
+
+/**
+ * Ce qui empêche de lancer une partie maintenant (null = rien). Avec `game` :
+ * ce jeu fermé (pour la classe ou pour CET élève) bloque, et un jeu gratuit
+ * ne demande pas de cœur. La limite du jour compte tous les jeux.
+ */
+export function playBlocker(state, game = null) {
   if (!state) return 'loading';
   if (!state.available) return state.reason ?? 'disabled';
+  if (game) {
+    const entry = (state.games ?? []).find((g) => g.id === game);
+    if (entry && entry.enabled === false) return entry.closedBy === 'student' ? 'game_disabled_for_student' : 'game_disabled';
+  }
   if (state.runsToday >= state.dailyRunCap) return 'daily_cap';
-  if (state.hearts < 1) return 'no_hearts';
+  if (state.hearts < 1 && !(game && isFreeGame(state, game))) return 'no_hearts';
   return null;
+}
+
+/** Les jeux de la salle, rangés par famille : ترفيه puis رياضيات. */
+export function gamesByCategory(games) {
+  const groups = { fun: [], math: [] };
+  for (const g of games ?? []) (groups[g.category] ?? groups.fun).push(g);
+  return groups;
 }
 
 /** Le temps qui reste (ms) sur une question, d'après l'horloge corrigée du serveur. */

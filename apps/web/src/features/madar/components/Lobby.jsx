@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Fuel, Hand, Keyboard, Rocket, Volume2, VolumeX } from 'lucide-react';
+import { Crosshair, Fuel, Hand, Keyboard, Rocket, Volume2, VolumeX } from 'lucide-react';
 import { ArrowBack } from '../../../components/common/DirectionalIcons';
-import { formatScore, nextShipGoal, playBlocker } from '../madarModel';
+import { formatScore, isFreeGame, nextShipGoal, playBlocker } from '../madarModel';
+import { LEVEL_IDS } from '../sniper/cards';
 import CostBadge from './CostBadge';
 import AdjustmentNotice from './AdjustmentNotice';
 import HeartsRow from './HeartsRow';
@@ -25,16 +26,18 @@ import TurretIcon from './TurretIcon';
  *
  * L'accueil d'UN jeu de « فضاء الألعاب » (le choix du jeu se fait sur la page
  * de la salle, /espace/jeux) : records, classement, collection (vaisseaux,
- * tourelles) ou carte des niveaux (« المستكشف »). Les cœurs et la محطة
- * التزوّد sont communs aux trois jeux.
+ * tourelles) ou carte des niveaux (« المستكشف »), ou les six familles
+ * d'écritures de « قنّاص القيم » (jeu de mathématiques, GRATUIT : son bouton ne
+ * montre pas de coût). Les cœurs et la محطة التزوّد sont communs aux jeux.
  */
 export default function Lobby({ state, game = 'orbit', busy, error, muted, onToggleMute, onPlay, onRefuel, onSelectShip, onDismissNotices }) {
   const { t } = useTranslation('madar');
   const reduce = useReducedMotion();
   const isDefense = game === 'defense';
   const isExplorer = game === 'explorer';
-  const gameOpen = (state.games ?? []).find((g) => g.id === game)?.enabled ?? true;
-  const blocker = playBlocker(state) ?? (gameOpen ? null : 'game_disabled');
+  const isSniper = game === 'sniper';
+  const free = isFreeGame(state, game);
+  const blocker = playBlocker(state, game);
   const goal = isDefense ? nextShipGoal(state.defense?.turrets) : nextShipGoal(state.ships);
   const needsFuel = blocker === 'no_hearts';
   const canRefuel = state.available && state.hearts < state.maxHearts;
@@ -74,11 +77,16 @@ export default function Lobby({ state, game = 'orbit', busy, error, muted, onTog
                 <HeartsRow hearts={state.hearts} max={state.maxHearts} size={26} />
                 <p className="mt-1 font-inter text-xs text-white/60">{t('hearts.daily', { n: state.dailyFreeHearts })}</p>
               </div>
-              {isDefense ? <TurretIcon type="laser" size={52} /> : isExplorer ? <span className="text-5xl" aria-hidden="true">🧑‍🚀</span> : <ShipIcon id={state.ship} size={56} />}
+              {isSniper ? <Crosshair size={52} className="text-amber-300" aria-hidden="true" />
+                : isDefense ? <TurretIcon type="laser" size={52} /> : isExplorer ? <span className="text-5xl" aria-hidden="true">🧑‍🚀</span> : <ShipIcon id={state.ship} size={56} />}
             </div>
 
             <dl className="grid grid-cols-3 gap-2 text-center">
-              {(isExplorer ? [
+              {(isSniper ? [
+                ['lobby.best', formatScore(state.sniper?.best)],
+                ['sniper.lobby.bestRound', state.sniper?.bestRound ?? 0],
+                ['lobby.weekBest', formatScore(state.sniper?.weekBest)],
+              ] : isExplorer ? [
                 ['explorer.stars', `${state.explorer?.totalStars ?? 0}/${state.explorer?.maxStars ?? 36}`],
                 ['lobby.best', formatScore(state.explorer?.best)],
                 ['lobby.weekBest', formatScore(state.explorer?.weekBest)],
@@ -141,8 +149,9 @@ export default function Lobby({ state, game = 'orbit', busy, error, muted, onTog
                   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition duration-700 group-hover:translate-x-full" aria-hidden="true" />
                   <Rocket size={26} aria-hidden="true" className="-scale-x-100" />
                   {t('lobby.play')}
-                  <CostBadge />
+                  {free ? <span className="rounded-full bg-slate-950/15 px-2 py-0.5 font-inter text-xs font-black" data-free>{t('sniper.free')}</span> : <CostBadge />}
                 </motion.button>
+                {free && <p className="text-center font-inter text-xs text-white/60">{t('sniper.lobby.freeHint')}</p>}
                 {canRefuel && (
                   <button type="button" onClick={onRefuel} disabled={busy}
                     className="flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-white/10 px-4 font-inter text-sm font-bold text-white ring-1 ring-white/15 transition hover:bg-white/15 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300/50"
@@ -156,15 +165,29 @@ export default function Lobby({ state, game = 'orbit', busy, error, muted, onTog
 
             {isExplorer && <LevelMap explorer={state.explorer} disabled={Boolean(blocker) || busy} onPlay={onPlay} />}
 
+            {isSniper && (
+              <div className="rounded-2xl bg-white/[0.04] p-3" data-sniper-levels>
+                <p className="font-inter text-xs font-semibold text-white/75">{t('sniper.lobby.levels')}</p>
+                <ol className="mt-2 grid grid-cols-2 gap-1.5">
+                  {LEVEL_IDS.map((id, i) => (
+                    <li key={id} className="flex items-center gap-2 rounded-xl bg-white/[0.05] px-2 py-1.5 font-inter text-xs text-white/80">
+                      <span className="grid h-5 w-5 shrink-0 place-items-center rounded-md bg-amber-300/20 font-space text-[11px] font-black text-amber-200" dir="ltr">{i + 1}</span>
+                      {t(`sniper.levels.${id}`)}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
             {error && <p role="alert" className="rounded-2xl bg-rose-500/15 p-3 text-center font-inter text-sm text-rose-100 ring-1 ring-rose-300/30">{error}</p>}
 
             <p className="flex items-center justify-center gap-2 font-inter text-xs text-white/55">
-              <Hand size={14} aria-hidden="true" /> {isExplorer ? t('explorer.controls.hint') : isDefense ? t('defense.coach.tap') : t('lobby.controlsShort')}
+              <Hand size={14} aria-hidden="true" /> {isSniper ? t('sniper.coach.tap') : isExplorer ? t('explorer.controls.hint') : isDefense ? t('defense.coach.tap') : t('lobby.controlsShort')}
               <Keyboard size={14} className="hidden sm:block" aria-hidden="true" />
             </p>
             {isDefense && <p className="text-center font-inter text-[11px] text-white/45">{t('defense.lobby.map')}</p>}
 
-            {goal && !isExplorer && (
+            {goal && !isExplorer && !isSniper && (
               <div className="flex items-center gap-3 rounded-2xl bg-white/[0.04] p-3">
                 {isDefense ? <TurretIcon type={goal.id} size={36} locked /> : <ShipIcon id={goal.id} size={36} locked />}
                 <div className="min-w-0 flex-1">
@@ -187,7 +210,7 @@ export default function Lobby({ state, game = 'orbit', busy, error, muted, onTog
         <div className="hidden lg:block" aria-hidden="true" />
 
         <div className="space-y-4">
-          <Leaderboard competition={isExplorer ? state.explorer?.competition : isDefense ? state.defense?.competition : state.competition} classroom={state.scope?.classroom} game={game} />
+          <Leaderboard competition={isSniper ? state.sniper?.competition : isExplorer ? state.explorer?.competition : isDefense ? state.defense?.competition : state.competition} classroom={state.scope?.classroom} game={game} />
           {isDefense && <TurretBay turrets={state.defense?.turrets ?? []} />}
           {game === 'orbit' && <ShipBay ships={state.ships} selected={state.ship} onSelect={onSelectShip} busy={busy} />}
         </div>

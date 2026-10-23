@@ -29,7 +29,7 @@ class TeacherClassroomMadarController extends Controller
         $classroom = TeacherClassroomController::ownedClassroom($request, $id, 'manage');
         $data = $request->validate([
             'enabled' => 'sometimes|boolean',
-            'disabledGames' => 'sometimes|array|max:5',
+            'disabledGames' => 'sometimes|array|max:8',
             'disabledGames.*' => 'string|max:16',
             'competitionEnabled' => 'sometimes|boolean',
             'dailyFreeHearts' => 'sometimes|integer|min:0|max:10',
@@ -78,6 +78,15 @@ class TeacherClassroomMadarController extends Controller
         ]);
 
         return $this->guard(fn () => $this->service->adjustHearts($request->user(), $classroom, (int) $data['studentId'], (int) $data['delta'], $data['reason'], $data['note'] ?? null), 201);
+    }
+
+    /** PUT …/madar/students/{studentId}/games — {disabledGames: string[]} : les jeux fermés pour UN élève. */
+    public function studentGames(Request $request, int $id, int $studentId)
+    {
+        $classroom = TeacherClassroomController::ownedClassroom($request, $id, 'manage');
+        $data = $request->validate(['disabledGames' => 'present|array|max:8', 'disabledGames.*' => 'string|max:16']);
+
+        return $this->guard(fn () => $this->service->setStudentGames($request->user(), $classroom, $studentId, $data['disabledGames']));
     }
 
     private function guard(callable $action, int $status = 200)

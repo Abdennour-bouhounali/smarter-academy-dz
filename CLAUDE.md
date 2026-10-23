@@ -102,9 +102,13 @@ payment, delivery fee set later by the admin, payments recorded as lines; the fi
 - **Supported screens: tablet and laptop only (owner, 2026-10-15)** — widths ≥ 768 px (768×1024, 1024×768, 1280×800, 1366×768, 1920×1080). Phones are NOT supported: do not design, tune or test for phone widths (320–430 px); older mentions of them below are superseded.
   **Exception (owner, 2026-10-17): the printed-books pages `/books` and `/books/:slug`** are opened from WhatsApp on phones —
   they are designed and tested mobile-first for conversion too (`docs/architecture/BOOKS_STORE.md` §4).
-  **Exception (owner, 2026-10-22): « فضاء الألعاب », the game space `/espace/jeux` (the orbit runner, « دفاع الكوكب », the « المستكشف » platformer)** is played on phones AND laptops — designed and tested at
-  390×844 and 1366×768 (`docs/architecture/MADAR_GAME.md` §11). Its hearts are earned in the « محطة التزوّد » (correct answers on the
-  student's own الكفاءات); finishing a lesson unlocks NOTHING in the game (owner).
+  **Exception (owner, 2026-10-22): « فضاء الألعاب », the game space `/espace/jeux`** is played on phones AND laptops — designed and tested at
+  390×844 and 1366×768 (`docs/architecture/MADAR_GAME.md` §11). Since 2026-10-23 it has two families:
+  - « ألعاب ترفيهية » (the orbit runner, « دفاع الكوكب », the « المستكشف » platformer): their hearts are earned in the « محطة التزوّد »
+    (correct answers on the student's own الكفاءات);
+  - « ألعاب رياضيات » (« قنّاص القيم »): free, the maths is the gameplay.
+
+  The teacher closes a game for the class or for one student. Finishing a lesson unlocks NOTHING in the game (owner).
 - **INDEPENDENCE FROM THE BOOK** (owner, 2026-10-15, CRITICAL): the platform is self-sufficient. Read the textbook, analyse it, get the idea, then
   GENERATE YOUR OWN content — own boxes, own contexts, own numbers, own wording. Never copy the book's text to the student and never write a
   student-visible line that sends them to the book (« الكتاب ص 55 », « اقرأ ما يقوله الكتاب », « تمارين من الكتاب »); `SourceTag` is muted for

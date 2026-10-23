@@ -38,6 +38,12 @@ class MadarConfig
         return (array) $this->get('defense', []);
     }
 
+    /** @return array<string, float|int> config('madar.sniper') */
+    public function sniper(): array
+    {
+        return (array) $this->get('sniper', []);
+    }
+
     /** @return array<string, float|int> */
     public function physics(): array
     {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { adjustmentKind, countsAsLeft, crashOptions, formatScore, heartSlots, nextShipGoal, playBlocker, rankMovement, remainingMs, timerTone } from './madarModel';
+import { adjustmentKind, countsAsLeft, crashOptions, formatScore, gamesByCategory, heartSlots, isFreeGame, nextShipGoal, playBlocker, rankMovement, remainingMs, timerTone } from './madarModel';
 
 describe('madarModel', () => {
   it('formats scores in grouped western digits', () => {
@@ -41,6 +41,27 @@ describe('madarModel', () => {
     expect(playBlocker({ available: true, runsToday: 30, dailyRunCap: 30, hearts: 2 })).toBe('daily_cap');
     expect(playBlocker({ available: true, runsToday: 1, dailyRunCap: 30, hearts: 0 })).toBe('no_hearts');
     expect(playBlocker({ available: true, runsToday: 1, dailyRunCap: 30, hearts: 1 })).toBeNull();
+  });
+
+  it('a free maths game needs no heart, a game closed for the class or for this student blocks', () => {
+    const games = [
+      { id: 'orbit', category: 'fun', free: false, enabled: true, closedBy: null },
+      { id: 'defense', category: 'fun', free: false, enabled: false, closedBy: 'student' },
+      { id: 'explorer', category: 'fun', free: false, enabled: false, closedBy: 'class' },
+      { id: 'sniper', category: 'math', free: true, enabled: true, closedBy: null },
+    ];
+    const state = { available: true, runsToday: 1, dailyRunCap: 30, hearts: 0, games };
+    expect(playBlocker(state, 'orbit')).toBe('no_hearts');
+    expect(playBlocker(state, 'sniper')).toBeNull();
+    expect(playBlocker({ ...state, runsToday: 30 }, 'sniper')).toBe('daily_cap');
+    expect(playBlocker(state, 'defense')).toBe('game_disabled_for_student');
+    expect(playBlocker(state, 'explorer')).toBe('game_disabled');
+    expect(isFreeGame(state, 'sniper')).toBe(true);
+    expect(isFreeGame({}, 'sniper')).toBe(true);
+    expect(isFreeGame(state, 'orbit')).toBe(false);
+    const groups = gamesByCategory(games);
+    expect(groups.fun.map((g) => g.id)).toEqual(['orbit', 'defense', 'explorer']);
+    expect(groups.math.map((g) => g.id)).toEqual(['sniper']);
   });
 });
 

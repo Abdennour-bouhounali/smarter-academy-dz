@@ -2,13 +2,13 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { MotionConfig, motion, useReducedMotion } from 'framer-motion';
-import { Fuel, Gamepad2, Loader2, Lock, Play, Star, Trophy } from 'lucide-react';
+import { Calculator, Fuel, Gamepad2, Loader2, Lock, Play, Sparkles, Star, Trophy } from 'lucide-react';
 import { AuthContext } from '../../../context/AuthContext';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { fetchMadar } from '../../../services/madarService';
 import { ArrowBack } from '../../../components/common/DirectionalIcons';
 import { createAudio } from '../../../features/madar/engine/audio';
-import { formatScore } from '../../../features/madar/madarModel';
+import { formatScore, gamesByCategory } from '../../../features/madar/madarModel';
 import AdjustmentNotice from '../../../features/madar/components/AdjustmentNotice';
 import HeartsRow from '../../../features/madar/components/HeartsRow';
 import RefuelStation from '../../../features/madar/components/RefuelStation';
@@ -26,6 +26,22 @@ function Art({ game }) {
         <polygon points="40,40 46,36 44,46" fill="#fde047" />
         <circle cx="120" cy="66" r="6" fill="#7a6658" />
         <g transform="translate(62 80)"><ShipIcon id="sahm" size={30} /></g>
+      </svg>
+    );
+  }
+  if (game === 'sniper') {
+    return (
+      <svg viewBox="0 0 160 100" className="h-full w-full" aria-hidden="true">
+        <path d="M0 96 Q80 70 160 96 L160 100 L0 100 Z" fill="#6d4c8f" />
+        <ellipse cx="44" cy="30" rx="30" ry="15" fill="#6b5d55" />
+        <rect x="22" y="21" width="44" height="18" rx="6" fill="#fff" />
+        <text x="44" y="34" textAnchor="middle" fontSize="11" fontWeight="800" fill="#0f172a" direction="ltr">√50</text>
+        <ellipse cx="116" cy="50" rx="30" ry="15" fill="#6b5d55" />
+        <rect x="94" y="41" width="44" height="18" rx="6" fill="#fff" />
+        <text x="116" y="54" textAnchor="middle" fontSize="11" fontWeight="800" fill="#0f172a" direction="ltr">2√5</text>
+        <line x1="80" y1="88" x2="44" y2="38" stroke="#fde68a" strokeWidth="3" />
+        <circle cx="44" cy="30" r="20" fill="none" stroke="#fde68a" strokeWidth="2" strokeDasharray="4 3" />
+        <path d="M70 92 a10 10 0 0 1 20 0 z" fill="#c4b5fd" />
       </svg>
     );
   }
@@ -64,11 +80,13 @@ function Art({ game }) {
 /**
  * « فضاء الألعاب » — la salle des jeux de l'élève (/espace/jeux), plein écran.
  *
- * Ce qui est COMMUN aux trois jeux vit ici : les cœurs, la « محطة التزوّد »
- * (où une réponse juste rend un cœur), les messages de l'enseignant, la limite
- * de parties du jour. Chaque jeu est une carte (ce qu'il entraîne, le record,
- * le rang de la semaine) qui ouvre sa page /espace/jeux/:game. Un jeu fermé
- * par l'enseignant reste visible, verrouillé.
+ * Ce qui est COMMUN aux jeux vit ici : les cœurs, la « محطة التزوّد » (où une
+ * réponse juste rend un cœur), les messages de l'enseignant, la limite de
+ * parties du jour. Les jeux sont rangés en DEUX familles (`games[].category`) :
+ * « ألعاب ترفيهية » (ils coûtent un cœur) et « ألعاب رياضيات » (gratuits : leurs
+ * mathématiques sont le jeu). Chaque jeu est une carte (ce qu'il entraîne, le
+ * record, le rang de la semaine) qui ouvre /espace/jeux/:game. Un jeu fermé par
+ * l'enseignant — pour la classe ou pour CET élève — reste visible, verrouillé.
  */
 export default function GamesHub() {
   const { t } = useTranslation('madar');
@@ -104,13 +122,18 @@ export default function GamesHub() {
     );
   }
 
-  const enabled = Object.fromEntries((state.games ?? []).map((g) => [g.id, g.enabled]));
-  const cards = [
-    { id: 'orbit', stat: formatScore(state.best), statLabel: t('lobby.best'), rank: state.competition?.me?.rank },
-    { id: 'defense', stat: state.defense?.bestWave ?? 0, statLabel: t('defense.lobby.bestWave'), rank: state.defense?.competition?.me?.rank },
-    { id: 'explorer', stat: `${state.explorer?.totalStars ?? 0}/${state.explorer?.maxStars ?? 36}`, statLabel: t('explorer.stars'), rank: state.explorer?.competition?.me?.rank, star: true },
-  ];
+  const meta = {
+    orbit: { stat: formatScore(state.best), statLabel: t('lobby.best'), rank: state.competition?.me?.rank },
+    defense: { stat: state.defense?.bestWave ?? 0, statLabel: t('defense.lobby.bestWave'), rank: state.defense?.competition?.me?.rank },
+    explorer: { stat: `${state.explorer?.totalStars ?? 0}/${state.explorer?.maxStars ?? 36}`, statLabel: t('explorer.stars'), rank: state.explorer?.competition?.me?.rank, star: true },
+    sniper: { stat: formatScore(state.sniper?.best), statLabel: t('lobby.best'), rank: state.sniper?.competition?.me?.rank },
+  };
+  const groups = gamesByCategory((state.games ?? []).filter((g) => meta[g.id]));
   const closed = !state.available;
+  const sections = [
+    { id: 'fun', icon: Sparkles, games: groups.fun },
+    { id: 'math', icon: Calculator, games: groups.math },
+  ].filter((sec) => sec.games.length > 0);
 
   return (
     <MotionConfig reducedMotion="user">
@@ -146,41 +169,57 @@ export default function GamesHub() {
           <div className="mx-auto mt-3 max-w-3xl"><AdjustmentNotice adjustments={notices} onDismiss={() => setNotices([])} /></div>
           {closed && <p className="mx-auto mt-4 max-w-3xl rounded-2xl bg-white/[0.06] p-3 text-center font-inter text-sm text-white/80" role="status">{t(`reasons.${state.reason}`, { defaultValue: t('reasons.disabled') })}</p>}
 
-          <ul className="mt-8 grid gap-4 md:grid-cols-3" data-games>
-            {cards.map((card, i) => {
-              const open = !closed && enabled[card.id] !== false;
-              return (
-                <motion.li key={card.id} initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 * i }}>
-                  <article className={`group flex h-full flex-col overflow-hidden rounded-[28px] bg-slate-950/60 ring-1 backdrop-blur transition ${open ? 'ring-white/15 hover:-translate-y-1 hover:ring-amber-300/50' : 'opacity-70 ring-white/10'}`} data-game-card={card.id}>
-                    <div className="relative h-36 bg-gradient-to-b from-indigo-500/20 to-transparent p-3"><Art game={card.id} /></div>
-                    <div className="flex flex-1 flex-col gap-2 p-4">
-                      <h2 className="font-space text-2xl font-black text-white">{t(`games.${card.id}.name`)}</h2>
-                      <p className="font-inter text-xs font-semibold text-amber-200/90">{t(`games.${card.id}.skill`)}</p>
-                      <p className="font-inter text-sm leading-relaxed text-white/70">{t(`games.${card.id}.tagline`)}</p>
-                      <div className="mt-auto flex items-center gap-2 pt-2">
-                        <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 font-inter text-xs">
-                          {card.star && <Star size={12} className="fill-amber-300 text-amber-300" aria-hidden="true" />}
-                          <span className="text-white/60">{card.statLabel}:</span> <b className="font-space" dir="ltr">{card.stat}</b>
-                        </span>
-                        {card.rank && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-amber-300/15 px-2.5 py-1 font-inter text-xs text-amber-100">
-                            <Trophy size={12} aria-hidden="true" /> <span dir="ltr">#{card.rank}</span>
-                          </span>
-                        )}
-                      </div>
-                      {open ? (
-                        <Link to={`/espace/jeux/${card.id}`} className="mt-2 flex min-h-[52px] items-center justify-center gap-2 rounded-2xl bg-white font-space text-lg font-black text-slate-950 transition group-hover:bg-amber-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300/60" data-action="open-game">
-                          <Play size={18} className="-scale-x-100" aria-hidden="true" /> {t('hub.play')}
-                        </Link>
-                      ) : (
-                        <p className="mt-2 flex min-h-[52px] items-center justify-center gap-2 rounded-2xl bg-white/5 font-inter text-sm text-white/60"><Lock size={16} aria-hidden="true" /> {t('games.closed')}</p>
-                      )}
-                    </div>
-                  </article>
-                </motion.li>
-              );
-            })}
-          </ul>
+          {sections.map((sec) => (
+            <section key={sec.id} className="mt-8" aria-labelledby={`games-${sec.id}`} data-games-category={sec.id}>
+              <div className="flex flex-wrap items-end justify-between gap-2">
+                <h2 id={`games-${sec.id}`} className="flex items-center gap-2 font-space text-2xl font-black text-white">
+                  <sec.icon size={22} className={sec.id === 'math' ? 'text-emerald-300' : 'text-fuchsia-300'} aria-hidden="true" /> {t(`hub.categories.${sec.id}.title`)}
+                </h2>
+                <p className="font-inter text-sm text-white/60">{t(`hub.categories.${sec.id}.subtitle`)}</p>
+              </div>
+              <ul className="mt-3 grid gap-4 md:grid-cols-3" data-games>
+                {sec.games.map((g, i) => {
+                  const card = { id: g.id, ...meta[g.id] };
+                  const open = !closed && g.enabled !== false;
+                  return (
+                    <motion.li key={card.id} initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 * i }}>
+                      <article className={`group flex h-full flex-col overflow-hidden rounded-[28px] bg-slate-950/60 ring-1 backdrop-blur transition ${open ? 'ring-white/15 hover:-translate-y-1 hover:ring-amber-300/50' : 'opacity-70 ring-white/10'}`} data-game-card={card.id}>
+                        <div className={`relative h-36 bg-gradient-to-b p-3 ${sec.id === 'math' ? 'from-emerald-500/20' : 'from-indigo-500/20'} to-transparent`}>
+                          <Art game={card.id} />
+                          {g.free && <span className="absolute start-3 top-3 rounded-full bg-emerald-300 px-2.5 py-1 font-inter text-xs font-black text-emerald-950" data-free>{t('sniper.free')}</span>}
+                        </div>
+                        <div className="flex flex-1 flex-col gap-2 p-4">
+                          <h3 className="font-space text-2xl font-black text-white">{t(`games.${card.id}.name`)}</h3>
+                          <p className="font-inter text-xs font-semibold text-amber-200/90">{t(`games.${card.id}.skill`)}</p>
+                          <p className="font-inter text-sm leading-relaxed text-white/70">{t(`games.${card.id}.tagline`)}</p>
+                          <div className="mt-auto flex items-center gap-2 pt-2">
+                            <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 font-inter text-xs">
+                              {card.star && <Star size={12} className="fill-amber-300 text-amber-300" aria-hidden="true" />}
+                              <span className="text-white/60">{card.statLabel}:</span> <b className="font-space" dir="ltr">{card.stat}</b>
+                            </span>
+                            {card.rank && (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-amber-300/15 px-2.5 py-1 font-inter text-xs text-amber-100">
+                                <Trophy size={12} aria-hidden="true" /> <span dir="ltr">#{card.rank}</span>
+                              </span>
+                            )}
+                          </div>
+                          {open ? (
+                            <Link to={`/espace/jeux/${card.id}`} className="mt-2 flex min-h-[52px] items-center justify-center gap-2 rounded-2xl bg-white font-space text-lg font-black text-slate-950 transition group-hover:bg-amber-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300/60" data-action="open-game">
+                              <Play size={18} className="-scale-x-100" aria-hidden="true" /> {t('hub.play')}
+                            </Link>
+                          ) : (
+                            <p className="mt-2 flex min-h-[52px] items-center justify-center gap-2 rounded-2xl bg-white/5 px-3 text-center font-inter text-sm text-white/60" data-closed-by={g.closedBy ?? 'all'}>
+                              <Lock size={16} aria-hidden="true" /> {g.closedBy === 'student' ? t('games.closedForYou') : t('games.closed')}
+                            </p>
+                          )}
+                        </div>
+                      </article>
+                    </motion.li>
+                  );
+                })}
+              </ul>
+            </section>
+          ))}
         </main>
 
         {refuel && (

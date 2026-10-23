@@ -26,7 +26,21 @@ class MadarRun extends Model
     /** « المستكشف » — plates-formes, niveaux (une partie = un niveau). */
     public const GAME_EXPLORER = 'explorer';
 
-    public const GAMES = [self::GAME_ORBIT, self::GAME_DEFENSE, self::GAME_EXPLORER];
+    /** « قنّاص القيم » — viser les expressions ÉGALES à la cible (jeu de mathématiques, gratuit). */
+    public const GAME_SNIPER = 'sniper';
+
+    public const GAMES = [self::GAME_ORBIT, self::GAME_DEFENSE, self::GAME_EXPLORER, self::GAME_SNIPER];
+
+    /** La famille d'un jeu dans « فضاء الألعاب » : ترفيه (fun) ou رياضيات (math). */
+    public const CATEGORIES = [
+        self::GAME_ORBIT => 'fun',
+        self::GAME_DEFENSE => 'fun',
+        self::GAME_EXPLORER => 'fun',
+        self::GAME_SNIPER => 'math',
+    ];
+
+    /** Les jeux qui ne coûtent aucun cœur (et n'ont pas de reprise) : leurs mathématiques sont le jeu. */
+    public const FREE_GAMES = [self::GAME_SNIPER];
 
     protected $dateFormat = 'Y-m-d H:i:s.v';
 

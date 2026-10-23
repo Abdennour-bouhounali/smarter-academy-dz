@@ -39,7 +39,7 @@ const CONFETTI = ['#fde68a', '#f472b6', '#67e8f9', '#a78bfa', '#fb923c', '#86efa
  * frôlés, série, planète la plus lointaine), la montée au classement — jamais
  * une descente — et le vaisseau débloqué. Puis : rejouer, ou faire le plein.
  */
-export default function Results({ game = 'orbit', local, result, saving, error, hearts, maxHearts, canPlay, onAgain, onRefuel, onHome, onFlyShip }) {
+export default function Results({ game = 'orbit', local, result, saving, error, hearts, maxHearts, canPlay, free = false, onAgain, onRefuel, onHome, onFlyShip }) {
   const { t } = useTranslation('madar');
   const reduce = useReducedMotion();
   const score = result?.run?.score ?? local.score;
@@ -77,7 +77,12 @@ export default function Results({ game = 'orbit', local, result, saving, error, 
       <p className="text-center font-inter text-xs text-white/55">{t('results.score')}</p>
 
       <dl className="mt-4 grid grid-cols-4 gap-1.5 text-center">
-        {(game === 'defense' ? [
+        {(game === 'sniper' ? [
+          ['sniper.results.round', result?.run?.wave ?? local.round],
+          ['sniper.results.hits', local.hits],
+          ['sniper.results.accuracy', local.accuracy == null ? '—' : `${Math.round(local.accuracy * 100)}%`],
+          ['results.combo', local.bestStreak],
+        ] : game === 'defense' ? [
           ['defense.results.wave', result?.run?.wave ?? local.wave],
           ['defense.results.kills', local.kills],
           ['lobby.best', formatScore(result?.best ?? 0)],
@@ -132,8 +137,8 @@ export default function Results({ game = 'orbit', local, result, saving, error, 
       <div className="mt-3 space-y-2.5">
         {canPlay ? (
           <button type="button" className={primaryBtn} onClick={onAgain} disabled={saving} data-action="again" data-autofocus>
-            <RotateCcw size={20} aria-hidden="true" /> {t('results.again')}
-            <CostBadge />
+            <RotateCcw size={20} aria-hidden="true" /> {game === 'sniper' ? t('sniper.results.again') : t('results.again')}
+            {!free && <CostBadge />}
           </button>
         ) : hearts < maxHearts ? (
           <button type="button" className={primaryBtn} onClick={onRefuel} disabled={saving} data-action="refuel" data-autofocus>

@@ -5,7 +5,11 @@
 
 ## 1. What it is, and what it is not
 
-Madar is a fun-first **game space** of three games: the one-tap orbit runner « قفزة المدار », the tower defense « دفاع الكوكب » (§14) and the multi-level platformer « المستكشف » (§15). They are joined to learning by one rule: **hearts are earned by answering the student's own skills (الكفاءات) correctly.**
+Madar is a **game space** of four games in two families (since 2026-10-23):
+- **« ألعاب ترفيهية »** (fun): the one-tap orbit runner « قفزة المدار », the tower defense « دفاع الكوكب » (§14) and the multi-level platformer « المستكشف » (§15). They are joined to learning by one rule: **hearts are earned by answering the student's own skills (الكفاءات) correctly.**
+- **« ألعاب رياضيات »** (maths): « قنّاص القيم » (§16), where the maths IS the gameplay. A maths game is **free**: it costs no heart and has no revive.
+
+The teacher can close any game for the whole class or for **one student** (§16bis).
 
 ```text
 PLAY            a run costs ❤️; a revive after a crash costs ❤️
@@ -19,6 +23,7 @@ PLAY AGAIN      beat your record, climb this week's class ranking, unlock ships
 
 The game owner made these decisions on 2026-10-22:
 - The game does **not** have to be 100 % educational. Gameplay trains reflexes, attention and timing. The maths lives in the refuel station.
+- Since 2026-10-23 the space also has maths games, where the maths is inside the mechanic. They are free (§16).
 - **Finishing a lesson unlocks nothing in the game.** Ships unlock by flying far (personal record) or by correct refuel answers. Nothing is bought.
 - The game is played on **phones and laptops**. It is the second exception to the tablet/laptop-only rule, after `/books`.
 
@@ -319,6 +324,9 @@ Entry cost: two nav strings, one tab label and one error key. Everything else is
 | `apps/api/tests/Unit/Madar/DefenseScoringTest.php` | fixed schedule, wave reached bounded by time, settle keeps / clamps, the cap counts completed waves and bosses |
 | `features/madar/defense/sim.test.js` | waves at their fixed instants; the map comes from the seed; an undefended planet falls and the shield revives it; build / upgrade / sell; locked turret refused; a defended planet holds and scores; **never above the server cap or a later wave**; beam resistance |
 | `features/madar/madarModel.test.js` | the pure UI helpers, including the timer, absence and adjustment helpers |
+| `apps/api/tests/Feature/MadarSniperTest.php` | the value sniper (§16) and closing a game for one student (§16bis) |
+| `features/madar/sniper/cards.test.js` | exact values; **each displayed card re-read by an independent evaluator** (11,520 cards); 8 distinct cards, 3–4 equal, never the target as written; levels in order then mixed; seed determinism |
+| `features/madar/sniper/sim.test.js` | fixed round instants; hit, trap, landed equal card; no revive; multiplier and perfect round; **a perfect player stays within the server bound and the reachable round**; attract mode; seed determinism |
 
 ## 14. « دفاع الكوكب » — Planet Defense (2026-10-22)
 
@@ -404,21 +412,26 @@ A rule of `null` means "always open". It is checked with `array_key_exists`, not
 
 ### The student space: `/espace/jeux`
 
-`GamesHub` is full screen. It holds what the three games **share**:
+`GamesHub` is full screen. It holds what the games **share**:
 - the hearts and their daily rule, and today's runs out of the cap;
 - the refuel station (`RefuelStation`, `base` context);
 - the teacher's heart messages (`AdjustmentNotice`).
 
-Each game is a card with a code-drawn illustration, the skill it trains, a short description, the record (orbit score, defense wave, explorer stars) and the week's rank. Clicking a card opens `/espace/jeux/:game` (`orbit | defense | explorer`). That page is `MadarPage`: the same state machine, with the game taken from the URL, and « فضاء الألعاب » as the back link.
+The cards are grouped in **two sections**, from `GET /madar › games[].category` (`MadarRun::CATEGORIES`):
+- « ألعاب ترفيهية » (`fun`): each run costs a heart;
+- « ألعاب رياضيات » (`math`): free, with a « مجانية » badge (`games[].free`).
 
-- A game the teacher closed stays visible but **locked**.
+Each game is a card with a code-drawn illustration, the skill it trains, a short description, the record (orbit score, defense wave, explorer stars, sniper score) and the week's rank. Clicking a card opens `/espace/jeux/:game` (`orbit | defense | explorer | sniper`). That page is `MadarPage`: the same state machine, with the game taken from the URL, and « فضاء الألعاب » as the back link.
+
+- A game the teacher closed stays visible but **locked**: « أغلق أستاذك هذه اللعبة » for the class, « أغلق أستاذك هذه اللعبة لك » for this student only (`games[].closedBy`: `class | student`).
 - `/espace/madar` redirects to the space.
 - The student navigation entry is « فضاء الألعاب » (`/espace/jeux`).
 
 ### The teacher space: `/enseignant/jeux`
 
 `TeacherGamesPage`, with the « فضاء الألعاب » entry in the teacher navigation (not on the mobile bar). The teacher picks a class (`?classe=`) and gets the full panel (`MadarTab`):
-- a picker for **the three games**;
+- a picker for **the four games**;
+- per student, a « الألعاب » button that opens a dialog to close games for **this student only** (§16bis);
 - the week's tiles, with « تستحق نظرة » alerts;
 - the heart dialog and its history;
 - the refuel questions with their time limits;
@@ -485,9 +498,134 @@ The **next level unlocks** when the previous one is completed (`madar_level_prog
 - `apps/api/tests/Feature/MadarExplorerTest.php`: level 1 open; unlock and 3 stars; stars need all crystals and no revive; a failed level unlocks nothing; too fast = not completed; score cap; own ranking and teacher view; the shared file is valid;
 - `features/madar/explorer/sim.test.js`: levels load; landing and running; variable jump; death and revive; **all 12 levels can be completed**; winning runs stay within the server cap.
 
-## 16. Not built (Planned)
+## 16. « قنّاص القيم » — the value sniper, the first maths game (2026-10-23)
+
+**Goal: observation.** The student sees an expression and recognises its value.
+
+**How it plays:**
+- **The board.** Asteroids fall from the top, each carrying an expression on a **white plate** (black on white). The TARGET (a value) sits in the HUD on a white card.
+- **Hitting.** The student taps only the asteroids **equal** to the target. A cannon on the planet fires at the card.
+- **Gestures.** One gesture: tap or click. It is played on phones and laptops (§11).
+- **A round** = one target and **8 cards**, 3 or 4 of them equal. The rest are **traps**: the real mistakes of 11–13-year-olds.
+
+**Feedback shows the value; it never states the rule:**
+
+| Event | Effect |
+|---|---|
+| equal card hit | +10 × level × multiplier (×1 → ×4, one step every 5 hits in a row) |
+| trap hit | −1 shield, the streak drops, and the card shows « = » **what it is really worth** (red plate) |
+| equal card that lands | −1 shield, it shows « = » the target (green plate) |
+| trap that lands | nothing: well seen |
+| perfect round (all equal cards hit, no fault) | + 50 × level and one shield back (3 at most) |
+
+**No revive.** At 0 shields the run ends and the results screen opens directly. The game is free: the student just plays again.
+
+### The six levels (`sniper/cards.js`)
+
+Rounds 1–18 open the levels in order, 3 rounds each. After that the rounds mix levels 3–6.
+
+| Level | Target | Equal forms | Traps |
+|---|---|---|---|
+| `ops` العمليات والأولويات | an integer 12–40 | a + b, a × b, a + b × c, (a + b) × c, a × b − c, a ÷ b | left-to-right reading, parentheses ignored, a × (b − c), n ± 1 |
+| `powers` القوى | bᵏ (b = 2, 3, 5, 10; k may be negative) | bᵏ, bᵐ × bⁿ, bᵐ ÷ bⁿ, (bᵐ)ⁿ, another base, repeated product, 1/10ᵏ | exponents multiplied, kᵇ, b × k, exponent sign forgotten, b^(k±1) |
+| `fractions` الكسور والأعداد العشرية | p/q | scaled fraction, decimal (comma), p ÷ q, percent, sums, 1 − …, 2 × … | inverted, numerators and denominators added, the same number added top and bottom, « 0,pq », (p ± 1)/q |
+| `roots` الجذور التربيعية | a√r | √(a²r), √m × √n, b√r + c√r, √(b²r) + √(c²r) | √(ar), r√a, √(x + y) taken for √x + √y, (a + 1)√r, a nearby radicand |
+| `literal` الحساب الحرفي | ax + b | a(x + b/a), (a−1)x + x + b, (a+k)x + b − kx, (2ax + 2b) ÷ 2, mixed | distributivity forgotten, (a + b)x, bx + a, a sign error, a doubled constant |
+| `identities` المتطابقات الشهيرة | (x ± k)², x² − k² | the square, the product, (k ± x)², the expanded sum | x² ± k², a half-forgotten double product, the wrong sign, 2x ± 2k, 2k for k² |
+
+**Truth comes from the exact value, not from the template.**
+- Each card carries a value: a reduced rational, a·√r simplified, or a polynomial. It is « equal » only if its key equals the target's.
+- A trap that would be equal by accident is dropped, and so are duplicates, commuted sums included.
+- `cards.test.js` re-reads **every displayed card** with an independent evaluator (×, ÷, −, decimal comma, %, fractions, √, exponents, x at two values) over 60 seeds × 24 rounds: 11,520 cards checked.
+
+Decimals are written with a **comma** (`0,75`), as in the platform's exercises.
+
+### Schedule and server bound
+
+The rounds follow a **fixed schedule** (`sniper/constants.js › SCHEDULE`, mirrored in `config/madar.php › sniper`):
+- round k starts at `roundStart(k)`, and its 8 cards appear every `gap(k)` seconds (1.6 s, falling to 0.85);
+- a card takes `fall(k)` to reach the ground (7.5 s, falling to 4);
+- 2.5 s of breather separate two rounds.
+
+Nobody can speed the schedule up, so the duration T bounds everything (`SniperScoring`, mirrored by `sniper/bound.js`):
+
+```text
+round reached ≤ max { k : roundStart(k) ≤ T }
+score         ≤ Σ cards spawned by T of 10 × level(k) × 4  +  Σ rounds started of 50 × level(k)
+```
+
+This is multiplied by 1.1, plus 100. Anything above is clamped and flagged.
+- `finish {score, stars = hits, wave = round}`.
+- Hits are capped by score / 10.
+- `sim.test.js` checks that a perfect player never exceeds `perfectScore(T)` or `maxRound(T)`.
+
+**The week's targets.** The seed is `crc32("sniper|c{class}|{week}")`, as for Defense: the whole class gets the same targets all week, so the ranking compares like with like.
+
+### Free, no revive
+
+- `MadarRun::FREE_GAMES`: `startRun` neither checks nor spends a heart.
+- `revive` answers `revive_limit`.
+- The **daily run cap still counts** this game: it is a screen-time limit.
+- The record is read from `madar_runs`: no profile column.
+- `GET /madar › sniper {best, bestRound, runsCount, weekBest, competition}`.
+- The leaderboard and board display show « ج n » (the round).
+
+### Code
+
+- `features/madar/sniper/`:
+  - `cards.js`: exact values, the six levels, `makeRound(seed, k)`;
+  - `constants.js`: the schedule mirror;
+  - `sim.js`: the pure simulation, `step` / `tap`, plus the attract-mode autopilot;
+  - `bound.js`;
+  - `mathDraw.js`: maths on the canvas — stacked fractions, a drawn radical, exponents, written piece by piece from left to right because the page is RTL;
+  - `render.js`: asteroids, plates, the cannon, the ground;
+  - tests `cards.test.js` and `sim.test.js`.
+- Components:
+  - `SniperCanvas.jsx`: `dir="ltr"` canvas, loop, tap, feedback;
+  - `SniperHud.jsx`: target card, score, 3 shields, multiplier, the round and its level;
+  - `MathTokens.jsx`: the same expression in DOM, `dir="ltr"`, `role="math"`.
+- The lobby shows « مجانية » instead of the cost, plus the list of the six levels. The coach sits under the field so it does not cover the target.
+- API: `SniperScoring.php`, `MadarRun::GAME_SNIPER / CATEGORIES / FREE_GAMES`, `MadarService::sniperView`.
+
+**Not a source of learning evidence.** Like every game score, a sniper run never touches mastery. Only the refuel station writes evidence.
+
+## 16bis. Closing a game for one student (2026-10-23)
+
+The class-wide switch (`madar_class_settings.disabled_games`) is unchanged. On top of it the teacher can close games for **one active student** of the class.
+
+- **API:** `PUT /teacher/classrooms/{id}/madar/students/{studentId}/games {disabledGames: string[]}`.
+  - It replaces the whole list; `[]` reopens everything.
+  - Refusals: `student_not_in_class` and `unknown_game` (422); 403 for another teacher's class.
+- **Data:** `madar_student_game_blocks` (classroom, student, game, teacher; unique on the three). Migration `2026_10_23_000002`.
+- **Effect:**
+  - `MadarService::context` reads the blocks of the student's play class;
+  - `startRun` refuses with `game_disabled_for_student`, or `game_disabled` when the whole class is closed (the class wins);
+  - `GET /madar › games[].closedBy` is `class | student | null`.
+- **Teacher:**
+  - `results.students[].disabledGames`;
+  - the « الألعاب » column: « كلها مفتوحة » or « n لعبة مغلقة »;
+  - `StudentGamesDialog`: checkboxes grouped fun / maths, with a game closed for the class shown greyed out as « مغلقة للقسم ».
+
+**Tests:** `MadarSniperTest` covers:
+- free start, even at 0 hearts;
+- no revive, and the daily cap counts;
+- the same week seed for the class, different from Defense's;
+- a plausible score kept and the record set;
+- an impossible round or score clamped and flagged;
+- the separate leaderboard and teacher view;
+- a game closed for one student only (other students unaffected, the class closure wins, reopening);
+- the refusals: outsider, unknown game, another teacher.
+
+## 17. Not built (Planned)
 
 - More games (the live class race « سباق المجرّة » is next on the list); they would share the hearts and refuel station.
+- More maths games, proposed 2026-10-23 and not built:
+  - « سهم على المستقيم »: placing √10, 7/3, π on a number line;
+  - « الدخيل »: the odd one out of nine;
+  - « الروبوت والمتجهات »: vector commands;
+  - « تضاريس الدالة »: shaping y = ax + b.
+
+  They would reuse the free rule, `cards.js`'s exact values and the week seed.
 - A teacher-chosen map for « دفاع الكوكب » (today the week's map comes from the seed).
 - A student home card.
 - An admin screen for `config/madar.php`.

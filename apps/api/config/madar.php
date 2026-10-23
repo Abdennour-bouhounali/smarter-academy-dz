@@ -93,6 +93,29 @@ return [
         'slack' => 50,
     ],
 
+    // « قنّاص القيم » — MIROIR de apps/web/src/features/madar/sniper/constants.js
+    // › SCHEDULE. Les manches suivent un calendrier FIXE : la durée réelle borne
+    // la manche atteinte et le score (SniperScoring). Le jeu est GRATUIT : il ne
+    // coûte aucun cœur (ses mathématiques sont le jeu lui-même) et n'a pas de reprise.
+    'sniper' => [
+        'first_at' => 2.5,
+        'cards_per_round' => 8,
+        'gap_start' => 1.6,
+        'gap_min' => 0.85,
+        'gap_step' => 0.05,
+        'fall_start' => 7.5,
+        'fall_min' => 4,
+        'fall_step' => 0.2,
+        'breather' => 2.5,
+        'rounds_per_level' => 3,
+        'max_level' => 6,
+        'points_per_level' => 10,
+        'max_multiplier' => 4,
+        'perfect_bonus' => 50,
+        'tolerance' => 1.1,
+        'slack' => 100,
+    ],
+
     'physics' => [
         'omega_start' => 1.25,
         'omega_accel' => 0.018,

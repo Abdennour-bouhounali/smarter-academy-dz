@@ -62,10 +62,14 @@ export function markCoached(game = 'orbit') {
 
 export function Coach({ game = 'orbit' }) {
   const { t } = useTranslation('madar');
-  const k = game === 'defense' ? 'defense.coach' : game === 'explorer' ? 'explorer.coach' : 'coach';
+  const k = game === 'defense' ? 'defense.coach' : game === 'explorer' ? 'explorer.coach' : game === 'sniper' ? 'sniper.coach' : 'coach';
   const reduce = useReducedMotion();
+  // « قنّاص القيم » : la cible occupe le haut de l'écran ; le coach se place sous le champ.
+  const place = game === 'sniper'
+    ? 'bottom-[14%] lg:bottom-auto lg:top-1/2'
+    : 'top-[13%] lg:top-1/2';
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[13%] z-20 flex flex-col items-center gap-3 px-4 lg:inset-x-auto lg:end-10 lg:top-1/2 lg:w-80 lg:-translate-y-1/2" data-madar-coach>
+    <div className={`pointer-events-none absolute inset-x-0 z-20 flex flex-col items-center gap-3 px-4 lg:inset-x-auto lg:end-10 lg:w-80 lg:-translate-y-1/2 ${place}`} data-madar-coach>
       <motion.span
         className="grid h-16 w-16 place-items-center rounded-full ring-4 ring-amber-300/80"
         animate={reduce ? undefined : { scale: [1, 1.18, 1], opacity: [1, 0.6, 1] }}

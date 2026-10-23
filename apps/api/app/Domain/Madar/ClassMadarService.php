@@ -16,6 +16,7 @@ use App\Models\MadarLevelProgress;
 use App\Models\MadarProfile;
 use App\Models\MadarRefuel;
 use App\Models\MadarRun;
+use App\Models\MadarStudentGameBlock;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use DomainException;
@@ -68,6 +69,8 @@ class ClassMadarService
                     ->map(fn ($l) => ['code' => $l->code, 'title' => $l->title])->all(),
                 'globallyEnabled' => $this->config->enabled(),
                 'games' => MadarRun::GAMES,
+                'gameCategories' => MadarRun::CATEGORIES,
+                'freeGames' => MadarRun::FREE_GAMES,
             ],
         ];
     }
@@ -115,6 +118,53 @@ class ClassMadarService
         $this->config->forget();
 
         return $this->settings($classroom);
+    }
+
+    // ── Un jeu fermé pour UN élève ──────────────────────────────────────────
+
+    /**
+     * Les jeux fermés pour un élève ACTIF de la classe — la liste entière est
+     * remplacée ([] = tous ses jeux rouverts). Ce qui est fermé pour la classe
+     * entière reste fermé : ce réglage-ci s'y AJOUTE.
+     *
+     * @param  string[]  $games
+     */
+    public function setStudentGames(User $teacher, Classroom $classroom, int $studentId, array $games): array
+    {
+        $games = array_values(array_unique($games));
+        if (array_diff($games, MadarRun::GAMES) !== []) {
+            throw new DomainException('unknown_game');
+        }
+        $isMember = ClassroomMembership::where('classroom_id', $classroom->id)->where('student_id', $studentId)->active()->exists();
+        if (! $isMember) {
+            throw new DomainException('student_not_in_class');
+        }
+
+        DB::transaction(function () use ($teacher, $classroom, $studentId, $games) {
+            MadarStudentGameBlock::where('classroom_id', $classroom->id)->where('student_id', $studentId)->whereNotIn('game', $games ?: [''])->delete();
+            foreach ($games as $game) {
+                MadarStudentGameBlock::firstOrCreate(
+                    ['classroom_id' => $classroom->id, 'student_id' => $studentId, 'game' => $game],
+                    ['teacher_id' => $teacher->id],
+                );
+            }
+        });
+
+        return ['studentId' => $studentId, 'disabledGames' => $this->studentBlocks($classroom, [$studentId])[$studentId] ?? []];
+    }
+
+    /**
+     * @param  int[]  $studentIds
+     * @return array<int, string[]>
+     */
+    private function studentBlocks(Classroom $classroom, array $studentIds): array
+    {
+        $out = [];
+        foreach (MadarStudentGameBlock::where('classroom_id', $classroom->id)->whereIn('student_id', $studentIds ?: [0])->orderBy('game')->get(['student_id', 'game']) as $row) {
+            $out[(int) $row->student_id][] = $row->game;
+        }
+
+        return $out;
     }
 
     // ── Les questions et leur délai ─────────────────────────────────────────
@@ -307,6 +357,12 @@ class ClassMadarService
                 ->selectRaw('user_id, MAX(best_score) as best, SUM(stars) as stars, SUM(CASE WHEN completed_at IS NOT NULL THEN 1 ELSE 0 END) as completed')
                 ->get()->keyBy('user_id')
             : collect();
+        // « قنّاص القيم » : le record se lit dans les parties terminées.
+        $sniperBest = $game === MadarRun::GAME_SNIPER
+            ? MadarRun::where('game', MadarRun::GAME_SNIPER)->where('status', MadarRun::STATUS_FINISHED)->whereIn('user_id', $memberIds ?: [0])
+                ->groupBy('user_id')->selectRaw('user_id, MAX(score) as best')->pluck('best', 'user_id')
+            : collect();
+        $blocks = $this->studentBlocks($classroom, $memberIds);
 
         $students = [];
         foreach ($memberIds as $id) {
@@ -322,6 +378,7 @@ class ClassMadarService
                 'allTimeBest' => (int) match ($game) {
                     MadarRun::GAME_DEFENSE => $profiles->get($id)?->defense_best ?? 0,
                     MadarRun::GAME_EXPLORER => $levels->get($id)?->best ?? 0,
+                    MadarRun::GAME_SNIPER => $sniperBest->get($id) ?? 0,
                     default => $profiles->get($id)?->best_score ?? 0,
                 },
                 'levelStars' => $game === MadarRun::GAME_EXPLORER ? (int) ($levels->get($id)?->stars ?? 0) : null,
@@ -335,6 +392,7 @@ class ClassMadarService
                 'fast' => (int) ($r?->fast ?? 0),
                 'gap' => $g,
                 'flaggedRuns' => (int) ($flagged[$id] ?? 0),
+                'disabledGames' => $blocks[$id] ?? [],
             ];
             $row['alerts'] = array_values(array_filter([
                 $g !== null && $g['flagged'] ? 'gap' : null,

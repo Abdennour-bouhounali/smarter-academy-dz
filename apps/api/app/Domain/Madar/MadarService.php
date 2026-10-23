@@ -15,6 +15,7 @@ use App\Models\MadarLevelProgress;
 use App\Models\MadarProfile;
 use App\Models\MadarRefuel;
 use App\Models\MadarRun;
+use App\Models\MadarStudentGameBlock;
 use App\Models\User;
 use DomainException;
 use Illuminate\Support\Facades\DB;
@@ -60,10 +61,11 @@ class MadarService
     // ── Contexte ────────────────────────────────────────────────────────────
 
     /**
-     * La classe dans laquelle l'élève joue (sa classe principale) et ses
-     * réglages. Un élève indépendant joue seul, sans classement.
+     * La classe dans laquelle l'élève joue (sa classe principale), ses
+     * réglages, et les jeux que l'enseignant a fermés pour CET élève. Un élève
+     * indépendant joue seul, sans classement.
      *
-     * @return array{classroom: ?Classroom, settings: array<string, mixed>}
+     * @return array{classroom: ?Classroom, settings: array<string, mixed>, studentDisabledGames: string[]}
      */
     public function context(User $student): array
     {
@@ -72,8 +74,26 @@ class MadarService
         if ($classroom !== null && ! $classroom->isActive()) {
             $classroom = null;
         }
+        $blocked = $classroom !== null
+            ? MadarStudentGameBlock::where('classroom_id', $classroom->id)->where('student_id', $student->id)->pluck('game')->all()
+            : [];
 
-        return ['classroom' => $classroom, 'settings' => $this->config->forClassroom($classroom)];
+        return ['classroom' => $classroom, 'settings' => $this->config->forClassroom($classroom), 'studentDisabledGames' => $blocked];
+    }
+
+    /** Qui a fermé ce jeu pour cet élève : `class`, `student`, ou personne (null). */
+    private function gameClosedBy(array $ctx, string $game): ?string
+    {
+        if (in_array($game, $ctx['settings']['disabledGames'], true)) {
+            return 'class';
+        }
+
+        return in_array($game, $ctx['studentDisabledGames'] ?? [], true) ? 'student' : null;
+    }
+
+    public static function isFree(string $game): bool
+    {
+        return in_array($game, MadarRun::FREE_GAMES, true);
     }
 
     private function closedReason(array $ctx): ?string
@@ -147,7 +167,13 @@ class MadarService
                 'classroom' => $ctx['classroom'] ? ['id' => $ctx['classroom']->id, 'name' => $ctx['classroom']->name] : null,
             ],
             'competition' => $this->competitionView($ctx, $student, $week),
-            'games' => array_map(fn ($g) => ['id' => $g, 'enabled' => ! in_array($g, $ctx['settings']['disabledGames'], true)], MadarRun::GAMES),
+            'games' => array_map(fn ($g) => [
+                'id' => $g,
+                'category' => MadarRun::CATEGORIES[$g],
+                'free' => self::isFree($g),
+                'enabled' => $this->gameClosedBy($ctx, $g) === null,
+                'closedBy' => $this->gameClosedBy($ctx, $g),
+            ], MadarRun::GAMES),
             'defense' => [
                 'best' => (int) $profile->defense_best,
                 'bestWave' => (int) $profile->defense_best_wave,
@@ -157,6 +183,7 @@ class MadarService
                 'competition' => $this->competitionView($ctx, $student, $week, MadarRun::GAME_DEFENSE),
             ],
             'explorer' => $this->explorerView($ctx, $student, $week),
+            'sniper' => $this->sniperView($ctx, $student, $week),
             'adjustments' => $this->consumeAdjustments($student),
         ];
     }
@@ -191,6 +218,25 @@ class MadarService
             'best' => (int) $progress->max('best_score'),
             'weekBest' => $this->weekBest($student, $week, MadarRun::GAME_EXPLORER),
             'competition' => $this->competitionView($ctx, $student, $week, MadarRun::GAME_EXPLORER),
+        ];
+    }
+
+    /**
+     * « قنّاص القيم » : le record, la manche la plus lointaine, les parties, le
+     * classement de la semaine. Rien n'est gardé dans le profil : tout se lit
+     * dans les parties terminées.
+     */
+    private function sniperView(array $ctx, User $student, string $week): array
+    {
+        $runs = MadarRun::where('user_id', $student->id)->where('game', MadarRun::GAME_SNIPER)->where('status', MadarRun::STATUS_FINISHED)
+            ->selectRaw('MAX(score) as best, MAX(wave) as best_round, COUNT(*) as n')->first();
+
+        return [
+            'best' => (int) ($runs?->best ?? 0),
+            'bestRound' => (int) ($runs?->best_round ?? 0),
+            'runsCount' => (int) ($runs?->n ?? 0),
+            'weekBest' => $this->weekBest($student, $week, MadarRun::GAME_SNIPER),
+            'competition' => $this->competitionView($ctx, $student, $week, MadarRun::GAME_SNIPER),
         ];
     }
 
@@ -266,18 +312,19 @@ class MadarService
     }
 
     /**
-     * La graine d'une partie. Orbite : au hasard. « دفاع الكوكب » : la carte
-     * de la SEMAINE — la même pour toute la classe (ou pour l'élève seul), pour
-     * que le classement compare des parties sur la même carte.
+     * La graine d'une partie. Orbite : au hasard. « دفاع الكوكب » et « قنّاص
+     * القيم » : la carte (les cibles) de la SEMAINE — la même pour toute la
+     * classe (ou pour l'élève seul), pour que le classement compare des parties
+     * sur le même terrain.
      */
     private function seedFor(string $game, array $ctx, User $student, string $week): int
     {
-        if ($game !== MadarRun::GAME_DEFENSE) {
+        if (! in_array($game, [MadarRun::GAME_DEFENSE, MadarRun::GAME_SNIPER], true)) {
             return random_int(1, 2_147_483_646);
         }
         $scope = $ctx['classroom'] ? 'c'.$ctx['classroom']->id : 'u'.$student->id;
 
-        return max(1, crc32("defense|{$scope}|{$week}") & 0x7FFFFFFF);
+        return max(1, crc32("{$game}|{$scope}|{$week}") & 0x7FFFFFFF);
     }
 
     /** Une partie ouverte depuis trop longtemps ne se terminera plus. */
@@ -291,9 +338,10 @@ class MadarService
     // ── Les parties ─────────────────────────────────────────────────────────
 
     /**
-     * Une partie : un cœur, une graine (le monde est généré depuis elle), un
-     * départ posé par le serveur. Une partie restée ouverte est abandonnée —
-     * son cœur était déjà dépensé.
+     * Une partie : un cœur (sauf un jeu gratuit, MadarRun::FREE_GAMES), une
+     * graine (le monde est généré depuis elle), un départ posé par le serveur.
+     * Une partie restée ouverte est abandonnée — son cœur était déjà dépensé.
+     * La limite de parties du jour compte TOUS les jeux, gratuits compris.
      */
     public function startRun(User $student, string $game = MadarRun::GAME_ORBIT, ?int $level = null): array
     {
@@ -302,8 +350,9 @@ class MadarService
         if (! in_array($game, MadarRun::GAMES, true)) {
             throw new MadarException(MadarException::NOT_FOUND);
         }
-        if (in_array($game, $ctx['settings']['disabledGames'], true)) {
-            throw new MadarException(MadarException::GAME_DISABLED);
+        $closedBy = $this->gameClosedBy($ctx, $game);
+        if ($closedBy !== null) {
+            throw new MadarException($closedBy === 'class' ? MadarException::GAME_DISABLED : MadarException::GAME_DISABLED_FOR_STUDENT);
         }
         if ($game === MadarRun::GAME_EXPLORER) {
             $level ??= 1;
@@ -321,14 +370,17 @@ class MadarService
             if ($this->runsToday($student) >= (int) $ctx['settings']['dailyRunCap']) {
                 throw new MadarException(MadarException::DAILY_CAP);
             }
-            if ((int) $profile->hearts < 1) {
+            $free = self::isFree($game);
+            if (! $free && (int) $profile->hearts < 1) {
                 throw new MadarException(MadarException::NO_HEARTS);
             }
 
             MadarRun::where('user_id', $student->id)->where('status', MadarRun::STATUS_IN_PROGRESS)
                 ->update(['status' => MadarRun::STATUS_ABANDONED]);
 
-            $profile->decrement('hearts');
+            if (! $free) {
+                $profile->decrement('hearts');
+            }
             $today = $this->config->today();
             $week = $this->config->weekStart($today);
             $run = MadarRun::create([
@@ -374,7 +426,8 @@ class MadarService
             if (! $locked->isOpen()) {
                 throw new MadarException(MadarException::RUN_CLOSED);
             }
-            if ((int) $locked->revives >= (int) $this->config->get('runs.max_revives', 2)) {
+            // Un jeu gratuit n'a pas de reprise : la partie s'arrête, on en relance une.
+            if (self::isFree($locked->game) || (int) $locked->revives >= (int) $this->config->get('runs.max_revives', 2)) {
                 throw new MadarException(MadarException::REVIVE_LIMIT);
             }
             $profile = $this->profile($student, $ctx, lock: true);
@@ -391,7 +444,8 @@ class MadarService
     /**
      * La fin d'une partie. Le score annoncé est borné par la durée RÉELLE —
      * MadarScoring pour l'orbite, DefenseScoring pour « دفاع الكوكب » (qui
-     * borne aussi la vague) ; une seconde clôture renvoie la première, inchangée.
+     * borne aussi la vague), SniperScoring pour « قنّاص القيم » (qui borne la
+     * manche) ; une seconde clôture renvoie la première, inchangée.
      */
     public function finishRun(User $student, MadarRun $run, int $claimed, int $stars, int $wave = 0, bool $completed = false): array
     {
@@ -400,8 +454,9 @@ class MadarService
         }
         $ctx = $this->context($student);
         $isDefense = $run->game === MadarRun::GAME_DEFENSE;
+        $isSniper = $run->game === MadarRun::GAME_SNIPER;
 
-        $outcome = DB::transaction(function () use ($student, $ctx, $run, $claimed, $stars, $wave, $isDefense) {
+        $outcome = DB::transaction(function () use ($student, $ctx, $run, $claimed, $stars, $wave, $isDefense, $isSniper) {
             $locked = MadarRun::whereKey($run->id)->lockForUpdate()->first();
             if ($locked->status === MadarRun::STATUS_FINISHED) {
                 return ['run' => $locked, 'previousBest' => null, 'unlocked' => [], 'unlockedTurrets' => [], 'rankBefore' => null, 'duplicate' => true];
@@ -425,6 +480,11 @@ class MadarService
                 $settled = (new DefenseScoring($this->config->defense()))->settle($claimed, $wave, $duration);
                 // `stars` porte les ennemis abattus : jamais plus que le score n'en contient.
                 $stars = min(max(0, $stars), $settled['score']);
+            } elseif ($isSniper) {
+                $sniper = $this->config->sniper();
+                $settled = (new SniperScoring($sniper))->settle($claimed, $wave, $duration);
+                // `stars` porte les cibles touchées : chacune vaut au moins `points_per_level`.
+                $stars = min(max(0, $stars), intdiv($settled['score'], max(1, (int) $sniper['points_per_level'])));
             } else {
                 $settled = (new MadarScoring($this->config->physics()))->settle($claimed, $duration) + ['wave' => null];
                 $physics = $this->config->physics();
@@ -443,7 +503,11 @@ class MadarService
                 'flagged' => $settled['flagged'],
             ])->save();
 
-            if ($isDefense) {
+            if ($isSniper) {
+                // Le record se lit dans les parties terminées avant celle-ci.
+                $previousBest = (int) MadarRun::where('user_id', $student->id)->where('game', MadarRun::GAME_SNIPER)
+                    ->where('status', MadarRun::STATUS_FINISHED)->whereKeyNot($locked->id)->max('score');
+            } elseif ($isDefense) {
                 $previousBest = (int) $profile->defense_best;
                 $profile->defense_runs = (int) $profile->defense_runs + 1;
                 if ($settled['score'] > $previousBest) {
@@ -481,7 +545,11 @@ class MadarService
         $profile = MadarProfile::where('user_id', $student->id)->first();
         $competes = $finished->classroom_id !== null && $ctx['settings']['competitionEnabled'];
         $week = $finished->week_start->format('Y-m-d');
-        $best = $isDefense ? (int) $profile->defense_best : (int) $profile->best_score;
+        $best = match (true) {
+            $isDefense => (int) $profile->defense_best,
+            $isSniper => (int) MadarRun::where('user_id', $student->id)->where('game', MadarRun::GAME_SNIPER)->where('status', MadarRun::STATUS_FINISHED)->max('score'),
+            default => (int) $profile->best_score,
+        };
 
         return [
             'duplicate' => $outcome['duplicate'],
@@ -495,7 +563,11 @@ class MadarService
                 'flagged' => (bool) $finished->flagged,
             ],
             'best' => $best,
-            'bestWave' => $isDefense ? (int) $profile->defense_best_wave : null,
+            'bestWave' => match (true) {
+                $isDefense => (int) $profile->defense_best_wave,
+                $isSniper => (int) MadarRun::where('user_id', $student->id)->where('game', MadarRun::GAME_SNIPER)->where('status', MadarRun::STATUS_FINISHED)->max('wave'),
+                default => null,
+            },
             'newBest' => ! $outcome['duplicate'] && (int) $finished->score > 0 && (int) $finished->score > $outcome['previousBest'],
             'previousBest' => $outcome['previousBest'],
             'weekBest' => $this->weekBest($student, $week, $finished->game),

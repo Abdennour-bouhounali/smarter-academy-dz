@@ -83,7 +83,7 @@ function MadarDisplay() {
                         <ShipIcon id={row.ship} size={place === 1 ? 110 : 80} />
                         <p className="mt-2 max-w-full truncate font-inter text-xl font-bold sm:text-3xl"><bdi>{row.name}</bdi></p>
                         <p className="font-space text-2xl font-black tabular-nums text-amber-200 sm:text-4xl" dir="ltr">{formatScore(row.best)}</p>
-                        {row.wave != null && <p className="font-inter text-base text-cyan-200">{t('defense.hud.wave', { n: row.wave })}</p>}
+                        {row.wave != null && <p className="font-inter text-base text-cyan-200">{t(progressKey(data?.game, true), { n: row.wave })}</p>}
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -103,7 +103,7 @@ function MadarDisplay() {
                 <span className="font-space text-2xl font-black text-white/60" dir="ltr">{row.rank}</span>
                 <ShipIcon id={row.ship} size={44} />
                 <span className="min-w-0 flex-1 truncate font-inter text-xl font-semibold"><bdi>{row.name}</bdi></span>
-                {row.wave != null && <span className="font-inter text-sm text-cyan-200">{t('defense.board.wave', { n: row.wave })}</span>}
+                {row.wave != null && <span className="font-inter text-sm text-cyan-200">{t(progressKey(data?.game), { n: row.wave })}</span>}
                 <span className="font-space text-2xl font-black tabular-nums" dir="ltr">{formatScore(row.best)}</span>
               </li>
             ))}
@@ -117,6 +117,11 @@ function MadarDisplay() {
     </MotionConfig>
   );
 }
+
+/** Ce que porte `wave` selon le jeu : la vague, le niveau, ou la manche. */
+const progressKey = (game, long = false) => (game === 'explorer' ? 'explorer.board.level'
+  : game === 'sniper' ? 'sniper.board.round'
+    : long ? 'defense.hud.wave' : 'defense.board.wave');
 
 export default function MadarDisplayPage() {
   return (

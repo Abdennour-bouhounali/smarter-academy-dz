@@ -25,7 +25,7 @@ class MadarController extends Controller
         return response()->json(['success' => true] + $this->madar->state($request->user()));
     }
 
-    /** POST /madar/runs — {game?: orbit|defense|explorer, level?} une partie (−1 ❤️). */
+    /** POST /madar/runs — {game?: orbit|defense|explorer|sniper, level?} une partie (−1 ❤️, sauf un jeu gratuit). */
     public function start(Request $request): JsonResponse
     {
         $data = $request->validate(['game' => 'sometimes|string|max:16', 'level' => 'sometimes|integer|min:1|max:999']);
@@ -39,7 +39,7 @@ class MadarController extends Controller
         return $this->attempt(fn () => $this->madar->revive($request->user(), $this->madar->ownedRun($request->user(), $uuid)));
     }
 
-    /** POST /madar/runs/{uuid}/finish — {score, stars, wave?} (`stars` = ennemis abattus pour « دفاع الكوكب »). */
+    /** POST /madar/runs/{uuid}/finish — {score, stars, wave?} (`stars` = ennemis abattus pour « دفاع الكوكب », cibles touchées pour « قنّاص القيم » ; `wave` = vague ou manche). */
     public function finish(Request $request, string $uuid): JsonResponse
     {
         $data = $request->validate([
