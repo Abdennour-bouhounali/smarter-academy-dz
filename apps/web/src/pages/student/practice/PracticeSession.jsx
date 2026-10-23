@@ -993,16 +993,32 @@ export default function PracticeSession() {
           Le travail déjà validé est enregistré côté serveur à chaque réponse,
           donc quitter ne perd rien — et la séance reste ouverte, le Hub
           propose de la « Reprendre ». */}
-      <ClassroomHidden><nav className="flex items-center justify-between gap-3 flex-wrap" aria-label={t('nav.breadcrumb', { ns: 'lesson' })}>
-        <Link
-          to={`/espace/pratique/${lessonCode}`}
-          className="inline-flex min-h-[44px] items-center gap-2 rounded-lg px-1 text-sm font-bold text-slate-700 hover:text-indigo-700 whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
-        >
-          <ArrowBack className="w-4 h-4" aria-hidden="true" />
-          {isExam && lessonTitle
-            ? <span className="max-w-[16rem] truncate sm:max-w-md"><span className="font-semibold text-slate-500">{t('practice.exam.nav.lesson')}:</span> {lessonTitle}</span>
-            : t('practice.backToLevels')}
-        </Link>
+      <ClassroomHidden><nav className="flex items-center justify-between gap-3 flex-wrap pb-2" aria-label={t('nav.breadcrumb', { ns: 'lesson' })}>
+        {/* Un vrai bouton « رجوع إلى المستويات », puis le titre du cours en
+            contexte — un simple lien « الدرس: … » ne se lisait pas comme un retour. */}
+        <span className="inline-flex min-w-0 flex-wrap items-center gap-3">
+          <Link
+            to={`/espace/pratique/${lessonCode}`}
+            className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-xl border border-indigo-200 bg-white px-4 text-sm font-bold text-indigo-700 shadow-sm hover:border-indigo-400 hover:bg-indigo-50 whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+            data-practice-back
+          >
+            <ArrowBack className="w-4 h-4" aria-hidden="true" />
+            {t('practice.backToLevels')}
+          </Link>
+          {isExam && lessonTitle && (
+            <span className="max-w-[14rem] truncate text-sm text-slate-600 lg:max-w-md">
+              <span className="font-semibold text-slate-500">{t('practice.exam.nav.lesson')}:</span> {lessonTitle}
+            </span>
+          )}
+          {/* Feuille d'examen : le niveau courant vit ici, à côté du cours,
+              en pastille — plus de ligne orpheline au-dessus de la barre de progression. */}
+          {isExam && (
+            <span className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full bg-indigo-50 px-3.5 text-sm font-bold text-indigo-700 ring-1 ring-indigo-100 whitespace-nowrap" data-exercise-level>
+              <BarChart3 className="h-4 w-4" aria-hidden="true" />
+              {t('practice.levelLabel', { level: session.level })}{levelName ? ` · ${levelName}` : ''}
+            </span>
+          )}
+        </span>
         {/* « محاكاة شهادة التعليم المتوسط » — la pastille de la maquette. */}
         {isExam && (
           <p className="hidden items-center gap-2 rounded-xl bg-slate-100 px-3.5 py-1.5 text-sm font-semibold text-slate-700 md:inline-flex" data-exam-simulation>
@@ -1054,10 +1070,10 @@ export default function PracticeSession() {
         </div>
       </aside></ClassroomHidden>}
 
-      <div className="min-w-0 space-y-3">
+      <div className="min-w-0 space-y-5">
       {/* ── 2 — QUEL exercice : niveau (surtitre), titre (h1), méta. ────── */}
-      <ClassroomHidden><header className={isExam ? 'flex flex-wrap items-baseline gap-x-3 gap-y-0.5' : 'space-y-1'} data-exercise-header>
-        <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm font-semibold text-slate-600" data-exercise-level>
+      <ClassroomHidden><header className={isExam ? 'flex flex-wrap items-baseline gap-x-3 gap-y-0.5' : 'space-y-2'} data-exercise-header>
+        {!isExam && <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm font-semibold text-slate-600" data-exercise-level>
           <span className="inline-flex items-center gap-1.5 font-bold text-indigo-700">
             <BarChart3 className="h-4 w-4" aria-hidden="true" />
             {t('practice.levelLabel', { level: session.level })}{levelName ? ` · ${levelName}` : ''}
@@ -1068,8 +1084,8 @@ export default function PracticeSession() {
               {t('practice.meta.minutes', { count: minutes })}
             </span>
           ) : null}
-          {tags.length > 0 && !isExam && <span>{tags.join(' ، ')}</span>}
-        </p>
+          {tags.length > 0 && <span>{tags.join(' ، ')}</span>}
+        </p>}
         <h1
           id="practice-exercise-title"
           tabIndex={-1}
@@ -1079,7 +1095,7 @@ export default function PracticeSession() {
         </h1>
         {/* Pourquoi CET exercice — une phrase discrète, jamais un blocage. */}
         {selectedBecause && (
-          <p className="text-sm text-slate-600" data-selected-because={selectedBecause}>
+          <p className="pb-2 text-sm leading-relaxed text-slate-600" data-selected-because={selectedBecause}>
             {t(`practice.selectedBecause.${selectedBecause}`)}
           </p>
         )}
@@ -1211,7 +1227,7 @@ export default function PracticeSession() {
             >
               {/* « السؤال n من N » (N = les questions de CET exercice) et
                   « التمرين n من N » : la position, une seule fois, ici. */}
-              <header className="border-b border-indigo-100 bg-indigo-50/50 px-4 py-2.5 sm:px-5">
+              <header className="border-b border-indigo-100 bg-indigo-50/50 px-5 py-3.5 sm:px-6">
                 <SessionProgress
                   index={position}
                   total={exerciseIds.length}

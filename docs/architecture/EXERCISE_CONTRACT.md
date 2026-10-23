@@ -788,7 +788,8 @@ Behaviour:
     server state);
   - « تُحفظ إجاباتك تلقائيًا ».
 
-  The top bar reads « الدرس: <lesson title> » with the pill « محاكاة شهادة التعليم المتوسط
+  The top bar opens on a clear outlined button « رجوع إلى المستويات » (back to the level
+  cards, `data-practice-back`; owner, 2026-10-23) followed by « الدرس: <lesson title> » and the current-level pill « المستوى N · name » (`data-exercise-level`, no longer a loose line above the progress bar), with the pill « محاكاة شهادة التعليم المتوسط
   · رياضيات · 4 متوسط ». The main action is dark green. In the footer « السابق » is on the
   right and « التالي » on the left, the natural RTL order (owner, 2026-10-06). (The countdown is per question; see the next bullet.)
 - **Countdown per question** (owner, 2026-10-06; this OVERRIDES the player's former « no
