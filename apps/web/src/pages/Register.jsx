@@ -33,7 +33,8 @@ export default function Register() {
   const [pendingJoin] = useState(() => readPendingClassJoin());
   // Le TYPE de compte se choisit ici : élève (défaut) ou enseignant
   // (`?type=enseignant`). Un seul formulaire, une seule vérification
-  // d'adresse ; le serveur tient la liste blanche.
+  // d'adresse ; le serveur tient la liste blanche. Le parent n'a PAS de compte
+  // à créer : il lit par le « رابط الوليّ » (PARENT_SPACE.md §2, 2026-10-23).
   const [searchParams, setSearchParams] = useSearchParams();
   const isTeacher = searchParams.get('type') === 'enseignant';
   const accountType = isTeacher ? 'teacher' : 'student';
@@ -61,6 +62,8 @@ export default function Register() {
       navigate(postAuthPath(user, user.emailVerified === false ? '/verification-email' : '/espace'));
     } else if (user.role === 'teacher') {
       navigate(user.emailVerified === false ? '/verification-email' : '/enseignant');
+    } else if (user.role === 'parent') {
+      navigate(user.emailVerified === false ? '/verification-email' : '/wali');
     } else {
       navigate('/');
     }
@@ -158,7 +161,7 @@ export default function Register() {
       {/* Google, pour l'élève COMME pour l'enseignant : le type de compte
           choisi ici part avec la navigation et revient sur l'écran de
           consentement, où il peut encore être confirmé. */}
-      {pendingJoin && !isTeacher && <ClassJoinNotice text={t('classJoinPendingRegister', { name: pendingJoin.classroomName || '—' })} />}
+      {pendingJoin && accountType === 'student' && <ClassJoinNotice text={t('classJoinPendingRegister', { name: pendingJoin.classroomName || '—' })} />}
       <GoogleButton label={t('continueWithGoogleRegister')} accountType={accountType} />
       <AuthDivider />
 

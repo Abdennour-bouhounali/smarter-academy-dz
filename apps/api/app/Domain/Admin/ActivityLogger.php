@@ -107,6 +107,9 @@ class ActivityLogger
     /** L'enseignant a émis de nouveaux mots de passe (« بطاقات الدخول ») — jamais le mot de passe lui-même. */
     public const TEACHER_STUDENT_CREDENTIALS_ISSUED = 'teacher.student_credentials_issued';
 
+    /** L'enseignant a imprimé des « بطاقات الأولياء » (QR du رابط الوليّ) — jamais le lien lui-même. */
+    public const TEACHER_PARENT_CARDS_ISSUED = 'teacher.parent_cards_issued';
+
     public const CLASSROOM_LESSON_STATUS_CHANGED = 'classroom_lesson.status_changed';
 
     /** Les OFFRES et leur configuration — le modèle commercial, sans déploiement. */

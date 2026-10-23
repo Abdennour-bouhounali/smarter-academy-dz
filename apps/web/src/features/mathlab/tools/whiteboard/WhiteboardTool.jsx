@@ -47,6 +47,24 @@ const UI_OPTIONS = Object.freeze({
   tools: { image: false },
 });
 
+/**
+ * Le JARDIN CLOS (docs/architecture/PARENT_SPACE.md §7) : la سبّورة est la
+ * seule surface de l'espace élève où l'élève pourrait faire entrer le web.
+ * Excalidraw accepte par défaut d'y INTÉGRER YouTube, Vimeo, Figma… (outil
+ * « embeddable », ou un lien collé) et ouvre dans un nouvel onglet le lien
+ * posé sur une forme. Ici : aucune intégration, et aucun lien sortant ne
+ * s'ouvre (un lien vers la plateforme elle-même reste permis).
+ * Verrouillé par pages/studentClosedGarden.test.js.
+ */
+const BLOCK_ALL_EMBEDS = () => false;
+
+function keepLinksInside(element, event) {
+  const link = String(element?.link || '');
+  if (/^[a-z][a-z0-9+.-]*:/i.test(link) && !link.startsWith(window.location.origin)) {
+    event.preventDefault();
+  }
+}
+
 /** Le délai entre un trait et sa sérialisation : un dessin en cours bouge à chaque pixel. */
 const SERIALIZE_MS = 300;
 
@@ -447,6 +465,8 @@ export default function WhiteboardTool({ initialData, title, onChange, onReady, 
         UIOptions={UI_OPTIONS}
         onLibraryChange={handleLibraryChange}
         handleKeyboardGlobally={false}
+        validateEmbeddable={BLOCK_ALL_EMBEDS}
+        onLinkOpen={keepLinksInside}
         autoFocus
       >
         <MainMenu>

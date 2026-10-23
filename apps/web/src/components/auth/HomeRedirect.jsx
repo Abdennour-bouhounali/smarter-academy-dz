@@ -15,6 +15,7 @@ import { AuthContext } from '../../context/AuthContext';
  *
  *   élève      → /espace      son tableau de bord (reprendre sa leçon)
  *   enseignant → /enseignant  ses classes
+ *   parent     → /wali        فضاء الوليّ (ses enfants liés)
  *   admin      → /admin       le panneau d'administration
  *   visiteur → la page d'accueil, inchangée
  *
@@ -47,6 +48,10 @@ export default function HomeRedirect() {
 
   if (!loading && user?.role === 'teacher') {
     return <Navigate to="/enseignant" replace />;
+  }
+
+  if (!loading && user?.role === 'parent') {
+    return <Navigate to="/wali" replace />;
   }
 
   return <Home />;

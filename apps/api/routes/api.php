@@ -76,6 +76,9 @@ use App\Http\Controllers\MadarController;
 use App\Http\Controllers\Teacher\TeacherClassroomMadarController;
 use App\Http\Controllers\Teacher\TeacherClassroomDailyChallengeController;
 use App\Http\Controllers\Admin\AdminDailyChallengeController;
+use App\Http\Controllers\Family\ParentController;
+use App\Http\Controllers\Family\ParentLinkController;
+use App\Http\Controllers\Family\StudentFamilyController;
 use Laravel\Sanctum\Http\Middleware\AuthenticateSession;
 
 Route::prefix('v1')->group(function () {
@@ -133,6 +136,17 @@ Route::prefix('v1')->group(function () {
     // lecture, un visiteur ne saurait pas qu'une leçon est premium. Même
     // calcul que /content/availability, pour un utilisateur null : aucune
     // donnée personnelle, et aucune écriture n'en dépend (ContentAccess).
+    // « رابط الوليّ » — le lien PRIVÉ du parent, sans compte (PARENT_SPACE.md §2).
+    // Public par nature : le jeton (32 caractères) est la porte ; débit borné,
+    // et le code à 4 chiffres du parent a son propre verrou (5 essais / 15 min).
+    Route::prefix('parent-link/{token}')->where(['token' => '[A-Za-z0-9]{32}'])->middleware('throttle:parent-link')->group(function () {
+        Route::get('/', [ParentLinkController::class, 'show']);
+        Route::get('/report', [ParentLinkController::class, 'report']);
+        Route::get('/progress', [ParentLinkController::class, 'progress']);
+        Route::post('/pin', [ParentLinkController::class, 'setPin'])->middleware('throttle:parent-link-pin');
+        Route::post('/unlock', [ParentLinkController::class, 'unlock'])->middleware('throttle:parent-link-pin');
+    });
+
     Route::get('/content/availability/public', [ContentAvailabilityController::class, 'guest'])
         ->middleware('throttle:60,1');
 
@@ -424,6 +438,22 @@ Route::prefix('v1')->group(function () {
             // Les suggestions de l'enseignant (interventions visibles) — jamais un verrou.
             Route::get('/student/teacher-recommendations', [StudentClassroomController::class, 'recommendations']);
 
+            // ── « فضاء الوليّ », côté ÉLÈVE (PARENT_SPACE.md) ──────────────
+            // Le temps d'étude, le code de liaison (après consentement), ses
+            // أولياء et « ما يراه وليّك ». Élève seulement (`learner`).
+            Route::middleware('learner')->group(function () {
+                Route::post('/student/study-time', [StudentFamilyController::class, 'heartbeat'])->middleware('throttle:30,1');
+                Route::get('/student/parents', [StudentFamilyController::class, 'index']);
+                Route::post('/student/parents/code', [StudentFamilyController::class, 'issueCode'])->middleware('throttle:10,1');
+                Route::delete('/student/parents/code', [StudentFamilyController::class, 'cancelCode']);
+                Route::delete('/student/parents/{linkId}', [StudentFamilyController::class, 'revoke'])->whereNumber('linkId');
+                Route::get('/student/parents/report', [StudentFamilyController::class, 'report']);
+                Route::get('/student/parents/progress', [StudentFamilyController::class, 'progress']);
+                Route::get('/student/parent-link', [StudentFamilyController::class, 'accessLink']);
+                Route::post('/student/parent-link', [StudentFamilyController::class, 'createAccessLink'])->middleware('throttle:10,1');
+                Route::delete('/student/parent-link', [StudentFamilyController::class, 'revokeAccessLink']);
+            });
+
             // ── « Mon offre » — élève comme enseignant ───────────────────
             // AUCUN paiement en ligne : ces routes montrent les offres (prix
             // informatif), enregistrent une DEMANDE et rendent l'état. Elles
@@ -438,6 +468,23 @@ Route::prefix('v1')->group(function () {
                 ->whereNumber('requestId');
         });
     });
+
+    // ── « فضاء الوليّ » — L'ESPACE PARENT ───────────────────────────────
+    //
+    //     authentifié  ET  compte actif  ET  adresse vérifiée  ET  rôle parent
+    //
+    // Chaque lecture d'un enfant passe par un LIEN ACTIF (ParentLinkService::
+    // activeLink, 404 sinon). Voir docs/architecture/PARENT_SPACE.md.
+    Route::middleware(['auth:sanctum', 'account.active', 'email.verified', 'can:parent'])
+        ->prefix('parent')
+        ->group(function () {
+            Route::get('/children', [ParentController::class, 'children']);
+            Route::post('/children/link', [ParentController::class, 'link'])->middleware('throttle:10,1');
+            Route::get('/children/{studentId}/report', [ParentController::class, 'report'])->whereNumber('studentId');
+            Route::get('/children/{studentId}/progress', [ParentController::class, 'progress'])->whereNumber('studentId');
+            Route::patch('/children/{studentId}', [ParentController::class, 'update'])->whereNumber('studentId');
+            Route::delete('/children/{studentId}', [ParentController::class, 'unlink'])->whereNumber('studentId');
+        });
 
     // ── L'ESPACE ENSEIGNANT ──────────────────────────────────────────────
     //
@@ -488,6 +535,8 @@ Route::prefix('v1')->group(function () {
             Route::get('/classrooms/{id}/students', [TeacherClassroomStudentController::class, 'index'])->whereNumber('id');
             // « بطاقات الدخول » : émet un nouveau mot de passe et le rend UNE fois, pour l'imprimer.
             Route::post('/classrooms/{id}/students/credentials', [TeacherClassroomStudentController::class, 'credentials'])
+                ->whereNumber('id')->middleware('throttle:10,1');
+            Route::post('/classrooms/{id}/students/parent-cards', [TeacherClassroomStudentController::class, 'parentCards'])
                 ->whereNumber('id')->middleware('throttle:10,1');
             Route::get('/classrooms/{id}/students/{studentId}/progress', [TeacherClassroomStudentController::class, 'progress'])
                 ->whereNumber('id')->whereNumber('studentId');

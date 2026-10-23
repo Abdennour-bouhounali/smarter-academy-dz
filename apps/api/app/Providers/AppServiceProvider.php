@@ -143,6 +143,8 @@ class AppServiceProvider extends ServiceProvider
         // /teacher. La propriété d'une classe est la deuxième (ClassroomPolicy),
         // l'offre la troisième (PlanEntitlementResolver, dans les services).
         Gate::define('teacher', fn (User $user) => $user->role === User::ROLE_TEACHER);
+        // « فضاء الوليّ » : le compte parent (PARENT_SPACE.md).
+        Gate::define('parent', fn (User $user) => $user->role === User::ROLE_PARENT);
         Gate::policy(Classroom::class, ClassroomPolicy::class);
 
         /**
@@ -194,6 +196,14 @@ class AppServiceProvider extends ServiceProvider
         ]);
         RateLimiter::for('book-messages', fn (Request $request) => [
             Limit::perMinutes(10, 5)->by('book-message-ip:'.$request->ip()),
+        ]);
+        // « رابط الوليّ » (PARENT_SPACE.md §2) : lecture publique, et un compteur À PART
+        // pour le code à 4 chiffres — deux `throttle:n,1` anonymes partageraient la même clé.
+        RateLimiter::for('parent-link', fn (Request $request) => [
+            Limit::perMinute(60)->by('parent-link-ip:'.$request->ip()),
+        ]);
+        RateLimiter::for('parent-link-pin', fn (Request $request) => [
+            Limit::perMinute(10)->by('parent-link-pin:'.$request->ip().':'.$request->route('token')),
         ]);
     }
 }

@@ -29,6 +29,10 @@ function postLoginPath(user) {
   if (user.role === 'teacher') {
     return user.emailVerified === false ? '/verification-email' : '/enseignant';
   }
+  // Le وليّ (PARENT_SPACE.md) : même vérification, puis فضاء الوليّ.
+  if (user.role === 'parent') {
+    return user.emailVerified === false ? '/verification-email' : '/wali';
+  }
   return '/';
 }
 

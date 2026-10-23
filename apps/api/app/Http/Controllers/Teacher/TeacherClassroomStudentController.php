@@ -7,6 +7,7 @@ use App\Domain\Classroom\ClassroomInsightService;
 use App\Domain\Classroom\ClassroomInterventionService;
 use App\Domain\Classroom\ClassroomMembershipService;
 use App\Domain\Classroom\ClassroomProgressService;
+use App\Domain\Classroom\ParentCards;
 use App\Domain\Classroom\StudentCredentials;
 use App\Http\Controllers\Controller;
 use DomainException;
@@ -90,6 +91,25 @@ class TeacherClassroomStudentController extends Controller
         }
 
         return response()->json(['success' => true, 'credentials' => $cards])
+            ->header('Cache-Control', 'no-store');
+    }
+
+    /** « بطاقات الأولياء » : le QR du « رابط الوليّ » de chaque élève choisi (PARENT_SPACE.md §2bis). */
+    public function parentCards(Request $request, int $id, ParentCards $parentCards)
+    {
+        $classroom = TeacherClassroomController::ownedClassroom($request, $id, 'manage');
+        $validated = $request->validate([
+            'studentIds' => 'required|array|min:1|max:200',
+            'studentIds.*' => 'integer',
+        ]);
+
+        try {
+            $cards = $parentCards->issue($request->user(), $classroom, $validated['studentIds']);
+        } catch (DomainException $e) {
+            return TeacherClassroomController::refuse($e);
+        }
+
+        return response()->json(['success' => true, 'cards' => $cards])
             ->header('Cache-Control', 'no-store');
     }
 }

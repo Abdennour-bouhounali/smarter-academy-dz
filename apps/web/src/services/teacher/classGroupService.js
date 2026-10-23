@@ -163,3 +163,11 @@ export function updateClassIntervention(token, id, interventionId, patch) {
 export function issueStudentCredentials(token, id, studentIds) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/students/credentials`, send('POST', token, { studentIds }), 'classroomSave').then((d) => d.credentials);
 }
+
+/**
+ * « بطاقات الأولياء » : le « رابط الوليّ » de chaque élève choisi, pour l'imprimer
+ * en QR (PARENT_SPACE.md §2bis). Le lien existant est réutilisé.
+ */
+export function issueParentCards(token, id, studentIds) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/students/parent-cards`, send('POST', token, { studentIds }), 'classroomSave').then((d) => d.cards);
+}

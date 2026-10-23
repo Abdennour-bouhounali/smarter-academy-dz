@@ -73,6 +73,18 @@ Since 2026-10-17 the platform has a **printed-books store** (`/books`, `/books/:
 payment, delivery fee set later by the admin, payments recorded as lines; the first book is « بروتوكول SMART » (`BookSeeder`, slug
 `smart-protocol`). Contract: `docs/architecture/BOOKS_STORE.md`.
 
+Since 2026-10-22 the platform answers parents' fear of an open laptop (« فضاء الوليّ »).
+It works in three layers and claims nothing more, because a web page cannot block other sites:
+- since 2026-10-23 the parent needs **NO account** (owner): they read through « رابط الوليّ », a private link `/w/:token`. The student creates it
+  after consenting in « حسابي » (share sheet, copy, or a QR on screen), or the teacher prints it as a QR on « بطاقات الأولياء ». An optional
+  4-digit parent code protects it. The parent reads ONE week report, the same one the student sees at « ما يراه وليّك »: REAL study time measured
+  on the platform's own pages (active / idle / away, bounded server-side), exercises, lessons and الكفاءات. The `parent` account (`/wali`)
+  is kept in code but is no longer self-registerable;
+- a public device-lock guide `/himaya`;
+- a closed-garden test that keeps every external link out of the student space.
+Since 2026-10-23 the parent also has « التقدّم بالتفصيل »: the whole year lesson by lesson, the الكفاءات that need support and the activity timeline,
+shared with the student too, on the link page as well. The parent pages are phone-first. Contract: `docs/architecture/PARENT_SPACE.md`.
+
 ## Read before any task
 
 - `docs/README.md` — the documentation map: which document is authoritative
@@ -102,6 +114,9 @@ payment, delivery fee set later by the admin, payments recorded as lines; the fi
 - **Supported screens: tablet and laptop only (owner, 2026-10-15)** — widths ≥ 768 px (768×1024, 1024×768, 1280×800, 1366×768, 1920×1080). Phones are NOT supported: do not design, tune or test for phone widths (320–430 px); older mentions of them below are superseded.
   **Exception (owner, 2026-10-17): the printed-books pages `/books` and `/books/:slug`** are opened from WhatsApp on phones —
   they are designed and tested mobile-first for conversion too (`docs/architecture/BOOKS_STORE.md` §4).
+  **Exception (owner, 2026-10-23): the parent pages — the link page `/w/:token`, `/wali/*` and the guide `/himaya`** — are opened
+  from WhatsApp or a QR on phones. They are designed phone-first and tested at 390×844 and 1366×768
+  (`docs/architecture/PARENT_SPACE.md` « Screens »).
   **Exception (owner, 2026-10-22): « فضاء الألعاب », the game space `/espace/jeux`** is played on phones AND laptops — designed and tested at
   390×844 and 1366×768 (`docs/architecture/MADAR_GAME.md` §11). Since 2026-10-23 it has two families:
   - « ألعاب ترفيهية » (the orbit runner, « دفاع الكوكب », the « المستكشف » platformer): their hearts are earned in the « محطة التزوّد »

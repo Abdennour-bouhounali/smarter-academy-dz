@@ -247,6 +247,9 @@
       "syntax_error": "كتابة غير مقروءة",
       "abandoned": "دون إجابة"
     },
+    "parentCards": {
+      "open": "بطاقات الأولياء (QR)"
+    },
     "credentials": {
       "open": "طباعة بيانات الدخول",
       "title": "بطاقات الدخول",

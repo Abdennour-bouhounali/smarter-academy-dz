@@ -71,6 +71,8 @@ const ON_DEMAND_NAMESPACES = {
   // features/tours/TourOverlay (lot paresseux, sous sa propre <Suspense>).
   // Le libellé du bouton « جولة في الصفحة » vit dans `nav`.
   tour: () => import('./locales/ar/tour.json'),
+  // « فضاء الوليّ », « وليّ الأمر » du profil élève, le guide « حماية الجهاز » (PARENT_SPACE.md).
+  family: () => import('./locales/ar/family.json'),
 };
 
 const onDemandBackend = {

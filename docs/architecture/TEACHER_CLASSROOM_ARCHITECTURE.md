@@ -40,6 +40,7 @@ role        registers via                       lands on         gate
 admin       seeded / promoted only              /admin           can:admin
 teacher     /register?type=enseignant, Google   /enseignant      can:teacher
 student     /register, Google                   /espace          (default)
+parent      not self-registerable (2026-10-23)  /wali            can:parent
 ```
 
 - **Ambassador (« سفير », 2026-10-05)** is not a role: it is a flag
@@ -52,6 +53,10 @@ student     /register, Google                   /espace          (default)
   can report problems. Classes, plan and account status
   are untouched. Contract: `ADMIN_PANEL_ARCHITECTURE.md` Annexe A8.
 
+- **Parent (« وليّ الأمر », 2026-10-22)** is a role kept for later. Since
+  2026-10-23 a parent needs no account: they read through « رابط الوليّ », a
+  private link, which may come from a teacher's « بطاقات الأولياء » (QR).
+  Contract: `PARENT_SPACE.md`.
 - `users.role` stays a free string. `User::SELF_REGISTERABLE_ROLES` is
   `['student', 'teacher']`; `POST /auth/register` accepts an optional
   `accountType` from that list and **ignores any `role` field**. Nothing else
@@ -258,6 +263,19 @@ unchanged), and `pages/teacherContract.test.js` allows `.email` in
 `CredentialsDialog.jsx` alone. Locked by `TeacherStudentCredentialsTest`. The
 public join-link preview returns the class name, grade, teacher name and
 `joiningOpen` — never an id, an address or the roster.
+
+**« بطاقات الأولياء » (owner, 2026-10-23).** « التلاميذ » → « بطاقات الأولياء (QR) »
+(`features/teacher/members/ParentCardsDialog.jsx`) →
+`POST /teacher/classrooms/{id}/students/parent-cards {studentIds}`.
+
+- It follows the same rules as the login cards: `manage`, active members only,
+  throttle 10/min, `no-store`, audit `teacher.parent_cards_issued`.
+- It returns each student's « رابط الوليّ » (`{id, firstName, lastName, url}`,
+  never an email), printed as a QR for the guardian.
+- An existing link is REUSED, never replaced.
+- The student sees the link in their profile and can revoke it.
+
+Contract: `PARENT_SPACE.md` §2bis. Locked by `ParentAccessLinkTest`.
 
 **Scope.** Teacher reads stay bounded to the class's effective lessons
 (published, not hidden, of the class grade). History before joining in those

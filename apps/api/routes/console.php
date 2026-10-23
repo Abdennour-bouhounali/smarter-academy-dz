@@ -14,3 +14,8 @@ Artisan::command('inspire', function () {
 
 // Photos de copie (prototype BEM, 2026-10-06) : effacées au bout de 12 mois.
 \Illuminate\Support\Facades\Schedule::command('smarter:answer-images:purge')->dailyAt('04:10')->withoutOverlapping();
+
+// « فضاء الوليّ » : le résumé de la semaine écoulée, chaque dimanche matin à Alger
+// (PARENT_SPACE.md §5). La commande est idempotente.
+\Illuminate\Support\Facades\Schedule::command('smarter:family:weekly-reports')
+    ->weeklyOn(0, '08:00')->timezone('Africa/Algiers')->withoutOverlapping();

@@ -39,6 +39,7 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta';
  */
 function landingFor(user) {
   if (user?.role === 'teacher') return '/enseignant';
+  if (user?.role === 'parent') return '/wali';
   if (user?.role === 'admin') return '/admin';
   // Arrivé par le lien d'une classe (et consentant) : on y retourne, et la
   // page du lien rejoint seule. Voir features/classJoin/pendingClassJoin.js.

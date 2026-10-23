@@ -15,8 +15,8 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * `role` is a free-text string, not an enum: 'admin', 'student' ("Élève") and
  * 'teacher' ("Enseignant", added without any migration — exactly the additive
- * path this note used to promise). "Famille" remains a future account type;
- * this is a note on the existing column, not a speculative table.
+ * path this note used to promise) and, since 2026-10-22, 'parent' (« وليّ
+ * الأمر », the family account — docs/architecture/PARENT_SPACE.md).
  */
 #[Hidden(['password', 'remember_token', 'pending_class_join_token'])]
 class User extends Authenticatable implements HasLocalePreference
@@ -87,7 +87,21 @@ class User extends Authenticatable implements HasLocalePreference
      */
     public const ROLE_TEACHER = 'teacher';
 
-    /** Les rôles qu'une inscription publique peut choisir. Jamais admin. */
+    /**
+     * Le compte « وليّ الأمر » (2026-10-22). Il ne possède ni contenu ni
+     * classe : il LIT le travail des élèves qui lui ont donné leur code
+     * (ParentLink). Aucune progression, aucune offre (PARENT_SPACE.md).
+     */
+    public const ROLE_PARENT = 'parent';
+
+    /**
+     * Les rôles qu'une inscription publique peut choisir. Jamais admin.
+     *
+     * `parent` n'y est PLUS depuis le 2026-10-23 (propriétaire) : deux comptes
+     * et un code à saisir, c'est trop pour beaucoup de parents au départ. Le
+     * parent lit par le « رابط الوليّ », sans compte (PARENT_SPACE.md §2). Le
+     * rôle et /parent/* restent pour plus tard (comptes existants, admin).
+     */
     public const SELF_REGISTERABLE_ROLES = [self::ROLE_STUDENT, self::ROLE_TEACHER];
 
     /**
@@ -125,6 +139,11 @@ class User extends Authenticatable implements HasLocalePreference
     public function isStudent(): bool
     {
         return $this->role === self::ROLE_STUDENT;
+    }
+
+    public function isParent(): bool
+    {
+        return $this->role === self::ROLE_PARENT;
     }
 
     /**

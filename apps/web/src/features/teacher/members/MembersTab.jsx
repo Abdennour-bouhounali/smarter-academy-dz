@@ -1,7 +1,7 @@
-import { useCallback, useContext, useState } from 'react';
+import { Suspense, lazy, useCallback, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Users, UserMinus, NotebookPen, Printer } from 'lucide-react';
+import { Users, UserMinus, NotebookPen, Printer, QrCode } from 'lucide-react';
 import { AuthContext } from '../../../context/AuthContext';
 import { useAdminResource } from '../../../hooks/useAdminResource';
 import DataTable from '../../../components/admin/ui/DataTable';
@@ -12,7 +12,10 @@ import { useTableLabels, formatDate, btnDanger, btnSecondary } from '../../../pa
 import CredentialsDialog from './CredentialsDialog';
 import { studentName } from '../insights/insights';
 
-/** Les élèves d'une classe : progression, dernière activité, retrait, « بطاقات الدخول ». */
+// « بطاقات الأولياء » : paresseux — il tire qrcode-generator et le namespace `family` (PARENT_SPACE.md §2bis).
+const ParentCardsDialog = lazy(() => import('./ParentCardsDialog'));
+
+/** Les élèves d'une classe : progression, dernière activité, retrait, « بطاقات الدخول », « بطاقات الأولياء ». */
 export default function MembersTab({ classGroup, entitlements, onChanged }) {
   const { t } = useTranslation('teacher');
   const { token } = useContext(AuthContext);
@@ -23,6 +26,7 @@ export default function MembersTab({ classGroup, entitlements, onChanged }) {
   const [busy, setBusy] = useState(false);
   const [removeError, setRemoveError] = useState(null);
   const [printing, setPrinting] = useState(false);
+  const [parentCards, setParentCards] = useState(false);
 
   const confirmRemove = async () => {
     setBusy(true);
@@ -53,7 +57,10 @@ export default function MembersTab({ classGroup, entitlements, onChanged }) {
         </p>
       )}
       {classGroup.status === 'active' && students?.length > 0 && (
-        <div className="flex justify-end">
+        <div className="flex flex-wrap justify-end gap-2">
+          <button type="button" onClick={() => setParentCards(true)} className={btnSecondary} data-parent-cards-open>
+            <QrCode size={14} aria-hidden="true" /> {t('students.parentCards.open')}
+          </button>
           <button type="button" onClick={() => setPrinting(true)} className={btnSecondary} data-credentials-open>
             <Printer size={14} aria-hidden="true" /> {t('students.credentials.open')}
           </button>
@@ -115,6 +122,11 @@ export default function MembersTab({ classGroup, entitlements, onChanged }) {
       />
 
       <CredentialsDialog open={printing} onClose={() => setPrinting(false)} classGroup={classGroup} students={students ?? []} />
+      {parentCards && (
+        <Suspense fallback={null}>
+          <ParentCardsDialog open onClose={() => setParentCards(false)} classGroup={classGroup} students={students ?? []} />
+        </Suspense>
+      )}
     </div>
   );
 }

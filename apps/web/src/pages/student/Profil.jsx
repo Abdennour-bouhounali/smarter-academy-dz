@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { Suspense, lazy, useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -11,6 +11,11 @@ import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { getFullName, getInitials } from '../../utils/userDisplay';
 import NameEditor from '../../components/account/NameEditor';
 import { LOCALE } from '../../locale.js';
+
+// « وليّ الأمر » — le « رابط الوليّ », sans compte parent (PARENT_SPACE.md §2) :
+// chaînes du namespace à la demande `family` et QR (qrcode-generator) — carte
+// paresseuse, sous son propre <Suspense>.
+const ParentLinkCard = lazy(() => import('../../features/family/ParentLinkCard'));
 
 /**
  * Une date d'échéance, sans heure : l'élève a besoin du jour, pas de la
@@ -185,6 +190,10 @@ export default function Profil() {
           تفعيل الوصول
         </Link>
       </motion.div>
+
+      <Suspense fallback={null}>
+        <ParentLinkCard />
+      </Suspense>
 
       {/* « الإعدادات » — les réglages de l'élève (niveaux de l'espace d'exercices…). */}
       <SettingsButton

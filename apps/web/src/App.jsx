@@ -81,6 +81,16 @@ const TeacherSubscription = lazy(() => import('./pages/teacher/SubscriptionPage'
 const TeacherProfile = lazy(() => import('./pages/teacher/TeacherProfile'));
 const TeacherLessonMemo = lazy(() => import('./pages/teacher/LessonMemoPage'));
 const TeacherReviews = lazy(() => import('./pages/teacher/TeacherReviewsPage'));
+// « فضاء الوليّ » — l'espace PARENT (docs/architecture/PARENT_SPACE.md) : sa
+// coquille, ses pages, le guide « حماية الجهاز » (public aussi) et, côté élève,
+// « ما يراه وليّك ». Tout est paresseux ; les chaînes sont dans `family` (à la demande).
+const ParentLayout = lazy(() => import('./components/layout/ParentLayout'));
+const ParentHome = lazy(() => import('./pages/parent/ParentHome'));
+const ParentChildReport = lazy(() => import('./pages/parent/ParentChildReport'));
+const DeviceGuidePage = lazy(() => import('./pages/parent/DeviceGuidePage'));
+const StudentParentView = lazy(() => import('./pages/student/ParentView'));
+// « رابط الوليّ » : la page PUBLIQUE du parent, sans compte (owner, 2026-10-23).
+const ParentLinkPage = lazy(() => import('./pages/parent/ParentLinkPage'));
 // L'élève et sa classe (« قسمي »), et le lien public d'une classe.
 const Qism = lazy(() => import('./pages/student/Qism'));
 const JoinClassLink = lazy(() => import('./pages/JoinClassLink'));
@@ -167,6 +177,7 @@ import { StudyContextProvider } from './context/StudyContextContext';
 import { useLessonProgressSync } from './hooks/useLessonProgressSync';
 import { useLessonRoutes } from './lessons/lessonRouteBoundary';
 import { loadLessonManipulationStrings } from './i18n/lessonManipulationStrings';
+import StudyTimeTracker from './features/studyTime/StudyTimeTracker';
 
 // ---- PREMIÈRE SPÉCIALITÉ ----
 
@@ -207,6 +218,9 @@ export default function App() {
           place (features/mathlab/overlay/). */}
       <MathLabOverlayProvider>
       <Router>
+        {/* Le TEMPS RÉEL d'étude de l'élève (PARENT_SPACE.md §3) : un composant
+            nul sous le routeur — il lit l'adresse pour savoir où le temps passe. */}
+        <StudyTimeTracker />
         {/* Frontière d'attente UNIQUE pour les routes découpées (admin,
             moteur d'exercices, pages légales, diagnostic). Elle est posée
             AUTOUR du routeur : la coquille (barre de navigation, pied de
@@ -325,6 +339,8 @@ function AppRoutes() {
           <Route path="cahier/revision" element={<NotebookReviewPage />} />
           <Route path="cahier/:noteId" element={<NotebookNotePage />} />
           <Route path="profil" element={<Profil />} />
+          {/* « ما يراه وليّك » : le rapport que lit le وليّ, lu par l'élève lui-même. */}
+          <Route path="profil/wali" element={<StudentParentView />} />
           {/* La saisie d'un code d'activation — le seul geste par lequel
               un élève ouvre ses propres droits (master spec §17). */}
           <Route path="activation" element={<Activation />} />
@@ -414,6 +430,24 @@ function AppRoutes() {
         </Route>
       </Route>
 
+      {/* « رابط الوليّ » — le lien privé du parent, SANS compte : hors de toute
+          coquille, téléphone d'abord. Le jeton est la porte ; le serveur la
+          garde (ParentAccessLinkService). PARENT_SPACE.md §2. */}
+      <Route path="/w/:token" element={<ParentLinkPage />} />
+
+      {/* « فضاء الوليّ » (compte parent — gardé pour plus tard, plus d'inscription
+          publique depuis 2026-10-23). Rôle vérifié ici ; la vraie porte est le serveur :
+          chaque /api/v1/parent/* est derrière can:parent, et chaque lecture
+          d'un enfant derrière un LIEN ACTIF (ParentLinkService::activeLink). */}
+      <Route path="/wali" element={<ProtectedRoute allowedRoles={['parent']} />}>
+        <Route path="bienvenue" element={<CompleteName />} />
+        <Route element={<ParentLayout />}>
+          <Route index element={<ParentHome />} />
+          <Route path="abnaa/:studentId" element={<ParentChildReport />} />
+          <Route path="himaya" element={<DeviceGuidePage />} />
+        </Route>
+      </Route>
+
       <Route element={<MainLayout />}>
         {/* Connexion et inscription SOUS la coquille visiteur : ce sont
             des pages publiques, et arriver sur « Se connecter » sans
@@ -457,6 +491,8 @@ function AppRoutes() {
             depuis le pied de page et depuis la case de consentement. */}
         <Route path="/confidentialite"  element={<Confidentialite />} />
         <Route path="/cgu"              element={<CGU />} />
+        {/* « اجعل الجهاز للدراسة فقط » : le guide des parents, PUBLIC (PARENT_SPACE.md §6). */}
+        <Route path="/himaya"           element={<DeviceGuidePage />} />
 
         <Route path="*" element={<HomeRedirect />} />
       </Route>
