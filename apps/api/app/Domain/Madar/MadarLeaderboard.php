@@ -3,6 +3,7 @@
 namespace App\Domain\Madar;
 
 use App\Domain\DailyChallenge\DailyChallengeLeaderboard;
+use App\Models\Classroom;
 use App\Models\ClassroomMembership;
 use App\Models\MadarProfile;
 use App\Models\MadarRun;
@@ -20,11 +21,18 @@ use App\Models\User;
 class MadarLeaderboard
 {
     /**
-     * @return array<int, array{userId: int, rank: int, best: int, runs: int, reachedAt: ?string}>
+     * Les membres ACTIFS de la classe — et son ENSEIGNANT, qui peut jouer avec
+     * elle (« نافس أستاذك ») : sa ligne porte `isTeacher`.
+     *
+     * @return array<int, array{userId: int, rank: int, best: int, runs: int, reachedAt: ?string, isTeacher: bool}>
      */
     public function standings(int $classroomId, string $weekStart, string $game = MadarRun::GAME_ORBIT): array
     {
         $members = ClassroomMembership::where('classroom_id', $classroomId)->active()->pluck('student_id')->map(fn ($id) => (int) $id)->all();
+        $teacherId = (int) Classroom::whereKey($classroomId)->value('teacher_id');
+        if ($teacherId > 0) {
+            $members[] = $teacherId;
+        }
         if ($members === []) {
             return [];
         }
@@ -43,7 +51,7 @@ class MadarLeaderboard
             $uid = (int) $r->user_id;
             $runs[$uid] = ($runs[$uid] ?? 0) + 1;
             if (! isset($best[$uid])) {
-                $best[$uid] = ['userId' => $uid, 'best' => (int) $r->score, 'wave' => $r->wave !== null ? (int) $r->wave : null, 'reachedAt' => $r->finished_at?->toIso8601String()];
+                $best[$uid] = ['userId' => $uid, 'isTeacher' => $uid === $teacherId, 'best' => (int) $r->score, 'wave' => $r->wave !== null ? (int) $r->wave : null, 'reachedAt' => $r->finished_at?->toIso8601String()];
             }
         }
 
@@ -88,6 +96,7 @@ class MadarLeaderboard
                 'best' => $row['best'],
                 'wave' => $row['wave'],
                 'ship' => $ships->get($row['userId']) ?? 'sahm',
+                'isTeacher' => $row['isTeacher'],
                 'isMe' => $row['userId'] === $viewerId,
             ], $top),
             'me' => $me,

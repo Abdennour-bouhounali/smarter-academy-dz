@@ -382,6 +382,10 @@ function AppRoutes() {
             enseignant — c'est ce que la classe voit au tableau. */}
         <Route path="classes/:id/defi/affichage" element={<TeacherChallengeDisplay />} />
         <Route path="classes/:id/madar/affichage" element={<TeacherMadarDisplay />} />
+        {/* « نافس أستاذك » : l'enseignant joue dans UNE de ses classes — la même
+            salle et les mêmes jeux que l'élève, plein écran, hors coquille. */}
+        <Route path="classes/:classId/jeux" element={<GamesHub />} />
+        <Route path="classes/:classId/jeux/:game" element={<MadarPage />} />
         <Route path="bienvenue" element={<CompleteName />} />
         <Route element={<TeacherLayout />}>
           <Route index element={<TeacherHome />} />

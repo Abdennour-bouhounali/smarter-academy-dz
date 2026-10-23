@@ -5,7 +5,7 @@ import { MotionConfig, useReducedMotion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import { AuthContext } from '../../../context/AuthContext';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
-import { chooseShip, fetchMadar, finishRun, reviveRun, startRun } from '../../../services/madarService';
+import { useMadarScope } from '../../../features/madar/madarScope';
 import { createAudio } from '../../../features/madar/engine/audio';
 import { playBlocker } from '../../../features/madar/madarModel';
 import GameCanvas from '../../../features/madar/components/GameCanvas';
@@ -73,6 +73,9 @@ export default function MadarPage() {
   useDocumentMeta(t('pageTitle'));
   const navigate = useNavigate();
   const { token } = useContext(AuthContext);
+  // L'élève, ou l'enseignant qui joue dans une de ses classes (« نافس أستاذك »).
+  const scope = useMadarScope();
+  const { fetchMadar, startRun, reviveRun, finishRun, chooseShip } = scope.api;
   const reduced = Boolean(useReducedMotion());
 
   const [state, setState] = useState(null);
@@ -113,7 +116,7 @@ export default function MadarPage() {
     } catch (err) {
       setLoadError(err.message);
     }
-  }, [token]);
+  }, [token, fetchMadar]);
 
   useEffect(() => { if (token) load(); }, [token, load]);
 
@@ -294,7 +297,7 @@ export default function MadarPage() {
     return () => clearTimeout(id);
   }, [coach, phase, run]);
 
-  if (!lobbyGame) return <Navigate to="/espace/jeux" replace />;
+  if (!lobbyGame) return <Navigate to={scope.hub} replace />;
 
   if (!state) {
     return (
@@ -303,7 +306,7 @@ export default function MadarPage() {
           <div className="space-y-3 text-center">
             <p role="alert" className="font-inter text-sm text-rose-200">{loadError}</p>
             <button type="button" onClick={load} className="rounded-2xl bg-white/10 px-5 py-3 font-inter text-sm font-bold ring-1 ring-white/20">{t('retry')}</button>
-            <button type="button" onClick={() => navigate('/espace')} className="block w-full font-inter text-sm text-white/60 underline">{t('back')}</button>
+            <button type="button" onClick={() => navigate(scope.exit)} className="block w-full font-inter text-sm text-white/60 underline">{t('back')}</button>
           </div>
         ) : (
           <p className="flex items-center gap-2 font-inter text-white/70" role="status"><Loader2 size={18} className="animate-spin" aria-hidden="true" /> {t('loading')}</p>
@@ -404,6 +407,7 @@ export default function MadarPage() {
             onRefuel={() => openRefuel('base')}
             onSelectShip={selectShip}
             onDismissNotices={() => setNotices([])}
+            hubPath={scope.hub}
           />
         )}
 

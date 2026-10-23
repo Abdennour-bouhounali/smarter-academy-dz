@@ -125,7 +125,9 @@ shared with the student too, on the link page as well. The parent pages are phon
   - « ألعاب ترفيهية » (the orbit runner, « دفاع الكوكب », the « المستكشف » platformer), below: their hearts are earned in the
     « محطة التزوّد » (correct answers on the student's own الكفاءات).
 
-  The teacher closes a game for the class or for one student. Finishing a lesson unlocks NOTHING in the game (owner).
+  The teacher closes a game for the class or for one student, and can PLAY with each class (« نافس أستاذك »: one score per class,
+  name in that class's ranking with a « الأستاذ » badge, no hearts, never learning evidence — `MADAR_GAME.md` §18).
+  Finishing a lesson unlocks NOTHING in the game (owner).
 - **INDEPENDENCE FROM THE BOOK** (owner, 2026-10-15, CRITICAL): the platform is self-sufficient. Read the textbook, analyse it, get the idea, then
   GENERATE YOUR OWN content — own boxes, own contexts, own numbers, own wording. Never copy the book's text to the student and never write a
   student-visible line that sends them to the book (« الكتاب ص 55 », « اقرأ ما يقوله الكتاب », « تمارين من الكتاب »); `SourceTag` is muted for

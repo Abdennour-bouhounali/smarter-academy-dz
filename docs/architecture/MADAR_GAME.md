@@ -817,3 +817,45 @@ The positions (0…149) and points come from `SniperScoring`.
 - Server-side replay of runs, which the bound makes unnecessary for now.
 - Inter-class or school-wide seasons.
 - Push reminders. Notifications pressuring students are deliberately avoided.
+
+## 18. « نافس أستاذك » — the teacher plays with each class (2026-10-23, owner)
+
+The teacher can play every game **inside one of their classes**, and has **one score per class**. Example: 21,542 in class A and 25,684 in class B.
+
+**In the ranking.**
+- The teacher's runs count in that class's weekly ranking (`MadarLeaderboard::standings` adds the class's `teacher_id` to its active members).
+- Their name shows like a student's (first name + initial), with a **« الأستاذ » badge** (`isTeacher`). It shows even when the teacher is first: that is the challenge.
+- They play the **same weekly map / targets** as the class (the class seed), so the comparison is fair.
+
+**How the teacher plays** (`MadarService::asTeacherIn($classroom)`, a copy of the service bound to that class):
+- **No hearts.** Every game is free for them (`games[].free = true`; revives cost nothing, within the revive limit). There is **no refuel station**: it draws on a student's own skills.
+- **Never learning evidence.** Their runs are never evidence, and mastery is untouched.
+- **Any game.** They can play a game closed to the class, and every maths level is open (`unlockedUpTo = 50`). Their maths position is their own, as for a student.
+- **Records per class.** « رقمك القياسي » and « هذا الأسبوع » are computed from the runs of THIS class only (`classBest`, `weekBest` with `classroom_id`). They always see the class ranking, even when it is hidden from students.
+- **Their own class only.** A run finishes only in the class where it started (404 otherwise). Another teacher's class answers 403.
+
+**API** (`TeacherMadarPlayController`, behind `can:teacher` + `ClassroomPolicy`). It mirrors the student routes:
+
+```text
+GET    /teacher/classrooms/{id}/madar/play                    state, + classroom {id, name}
+POST   /teacher/classrooms/{id}/madar/play/runs               {game, level?}
+POST   /teacher/classrooms/{id}/madar/play/runs/{uuid}/revive
+POST   /teacher/classrooms/{id}/madar/play/runs/{uuid}/finish {score, stars, wave?, completed?, position?, peak?}
+PATCH  /teacher/classrooms/{id}/madar/play/ship               {ship}
+```
+
+**Teacher view.**
+- `results.teacher {rank, best, wave}` gives the teacher's place this week. `summary.players` and `summary.runs` count students only.
+- The class tab shows « ترتيبك في القسم هذا الأسبوع: n · score » and the button « العب مع قسمك ونافس تلاميذك ».
+
+**Frontend.**
+- The SAME pages (`GamesHub`, `MadarPage`) serve `/enseignant/classes/:classId/jeux` and `/enseignant/classes/:classId/jeux/:game`, full screen.
+- `features/madar/madarScope.js › useMadarScope()` picks the API (`services/madarService.js › madarApi(classId)`), the hub address and the exit.
+- The hub shows the class and the teacher's rule (« تلعب بلا قلوب… »).
+- `Leaderboard` and the board display show the « الأستاذ » badge.
+
+**Test:** `MadarTeacherPlayTest`:
+- one score per class, and first in the students' ranking with its name and `isTeacher`;
+- free play, even of a closed game, with every level open;
+- a run cannot be finished in another class, nor played in another teacher's class.
+

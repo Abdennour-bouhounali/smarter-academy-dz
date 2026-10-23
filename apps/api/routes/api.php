@@ -74,6 +74,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DailyChallengeController;
 use App\Http\Controllers\MadarController;
 use App\Http\Controllers\Teacher\TeacherClassroomMadarController;
+use App\Http\Controllers\Teacher\TeacherMadarPlayController;
 use App\Http\Controllers\Teacher\TeacherClassroomDailyChallengeController;
 use App\Http\Controllers\Admin\AdminDailyChallengeController;
 use App\Http\Controllers\Family\ParentController;
@@ -599,6 +600,12 @@ Route::prefix('v1')->group(function () {
             Route::put('/classrooms/{id}/madar/time-limits', [TeacherClassroomMadarController::class, 'timeLimit'])->whereNumber('id');
             Route::post('/classrooms/{id}/madar/hearts', [TeacherClassroomMadarController::class, 'hearts'])->whereNumber('id')->middleware('throttle:60,1');
             Route::put('/classrooms/{id}/madar/students/{studentId}/games', [TeacherClassroomMadarController::class, 'studentGames'])->whereNumber('id')->whereNumber('studentId')->middleware('throttle:60,1');
+            // « نافس أستاذك » : l'enseignant joue dans une de ses classes.
+            Route::get('/classrooms/{id}/madar/play', [TeacherMadarPlayController::class, 'show'])->whereNumber('id');
+            Route::post('/classrooms/{id}/madar/play/runs', [TeacherMadarPlayController::class, 'start'])->whereNumber('id')->middleware('throttle:60,1');
+            Route::post('/classrooms/{id}/madar/play/runs/{uuid}/revive', [TeacherMadarPlayController::class, 'revive'])->whereNumber('id')->whereUuid('uuid')->middleware('throttle:60,1');
+            Route::post('/classrooms/{id}/madar/play/runs/{uuid}/finish', [TeacherMadarPlayController::class, 'finish'])->whereNumber('id')->whereUuid('uuid')->middleware('throttle:60,1');
+            Route::patch('/classrooms/{id}/madar/play/ship', [TeacherMadarPlayController::class, 'ship'])->whereNumber('id')->middleware('throttle:30,1');
         });
 
     // Protected routes — admin only

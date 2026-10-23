@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle, Eye, Gamepad2, Heart, Lock, MonitorPlay, Timer } from 'lucide-react';
+import { AlertTriangle, Eye, Gamepad2, Heart, Lock, MonitorPlay, Swords, Timer } from 'lucide-react';
 import { AuthContext } from '../../../context/AuthContext';
 import {
   adjustStudentHearts, fetchClassMadarItems, fetchClassMadarResults, fetchClassMadarSettings, setClassMadarItemLimit, setStudentMadarGames, updateClassMadarSettings,
@@ -406,6 +406,19 @@ export default function MadarTab({ classGroup }) {
             <MonitorPlay size={16} aria-hidden="true" /> {t('teacher.display')}
           </Link>
         </div>
+      </div>
+
+      {/* « نافس أستاذك » : l'enseignant joue avec CETTE classe ; sa place dans le classement de la semaine. */}
+      <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-fuchsia-200 bg-gradient-to-l from-fuchsia-50 to-amber-50 p-4" data-teacher-play-card>
+        <Swords size={22} className="text-fuchsia-700" aria-hidden="true" />
+        <p className="min-w-0 flex-1 font-inter text-sm font-semibold text-slate-800" data-teacher-standing>
+          {results.teacher
+            ? t('teacherPlay.standing', { rank: results.teacher.rank, best: formatScore(results.teacher.best) })
+            : t('teacherPlay.notYet')}
+        </p>
+        <Link to={`/enseignant/classes/${classGroup.id}/jeux`} className={btnPrimary} data-action="teacher-play">
+          <Gamepad2 size={16} aria-hidden="true" /> {t('teacherPlay.cta')}
+        </Link>
       </div>
 
       {/* Les réglages passent SOUS le tableau jusqu'à 1536 px : à 1366 px, une colonne latérale

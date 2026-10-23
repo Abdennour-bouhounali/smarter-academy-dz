@@ -30,7 +30,7 @@ import TurretIcon from './TurretIcon';
  * d'écritures de « قنّاص القيم » (jeu de mathématiques, GRATUIT : son bouton ne
  * montre pas de coût). Les cœurs et la محطة التزوّد sont communs aux jeux.
  */
-export default function Lobby({ state, game = 'orbit', busy, error, muted, onToggleMute, onPlay, onRefuel, onSelectShip, onDismissNotices }) {
+export default function Lobby({ state, game = 'orbit', busy, error, muted, onToggleMute, onPlay, onRefuel, onSelectShip, onDismissNotices, hubPath = '/espace/jeux' }) {
   const { t } = useTranslation('madar');
   const reduce = useReducedMotion();
   const isDefense = game === 'defense';
@@ -47,7 +47,7 @@ export default function Lobby({ state, game = 'orbit', busy, error, muted, onTog
   return (
     <div className="absolute inset-0 z-10 overflow-y-auto overscroll-contain" data-madar-lobby>
       <header className="sticky top-0 z-20 flex items-center justify-between gap-3 bg-gradient-to-b from-slate-950/80 to-transparent px-4 pb-6 pt-[max(12px,env(safe-area-inset-top))] sm:px-8">
-        <Link to="/espace/jeux" className="inline-flex min-h-[44px] items-center gap-2 rounded-2xl bg-white/10 px-3 font-inter text-sm font-semibold text-white ring-1 ring-white/15 backdrop-blur transition hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300/50" data-action="hub">
+        <Link to={hubPath} className="inline-flex min-h-[44px] items-center gap-2 rounded-2xl bg-white/10 px-3 font-inter text-sm font-semibold text-white ring-1 ring-white/15 backdrop-blur transition hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300/50" data-action="hub">
           <ArrowBack size={16} aria-hidden="true" /> <span>{t('hub.back')}</span>
         </Link>
         <button type="button" onClick={onToggleMute} aria-pressed={muted} aria-label={muted ? t('sound.unmute') : t('sound.mute')}

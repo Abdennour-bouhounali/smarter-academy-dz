@@ -424,14 +424,17 @@ class ClassMadarService
             'settings' => $settings,
             'members' => count($memberIds),
             'summary' => [
-                'players' => $standings->count(),
-                'runs' => (int) $standings->sum('runs'),
+                // L'enseignant joue aussi : il est classé, mais n'est pas un « joueur » de la classe.
+                'players' => $standings->where('isTeacher', false)->count(),
+                'runs' => (int) $standings->where('isTeacher', false)->sum('runs'),
                 'refuelAnswered' => $answered,
                 'refuelCorrect' => $correct,
                 'refuelAccuracy' => $answered > 0 ? round($correct / $answered, 3) : null,
                 'alerts' => count(array_filter($students, fn ($s) => $s['alerts'] !== [])),
             ],
             'students' => $students,
+            // La place de l'enseignant dans le classement de la semaine (« نافس أستاذك »), s'il a joué.
+            'teacher' => ($t = $standings->firstWhere('isTeacher', true)) ? ['rank' => $t['rank'], 'best' => $t['best'], 'wave' => $t['wave']] : null,
             'adjustments' => MadarHeartAdjustment::where('classroom_id', $classroom->id)->latest('id')->limit(20)->get()
                 ->map(fn ($row) => $this->adjustmentView($row, $users->get($row->student_id)))->all(),
         ];

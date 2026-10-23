@@ -5,7 +5,7 @@ import { MotionConfig, motion, useReducedMotion } from 'framer-motion';
 import { Calculator, Fuel, Gamepad2, Loader2, Lock, Play, Sparkles, Star, Trophy } from 'lucide-react';
 import { AuthContext } from '../../../context/AuthContext';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
-import { fetchMadar } from '../../../services/madarService';
+import { useMadarScope } from '../../../features/madar/madarScope';
 import { ArrowBack } from '../../../components/common/DirectionalIcons';
 import { createAudio } from '../../../features/madar/engine/audio';
 import { formatScore, gamesByCategory } from '../../../features/madar/madarModel';
@@ -126,6 +126,8 @@ export default function GamesHub() {
   const { t } = useTranslation('madar');
   useDocumentMeta(t('hub.title'));
   const { token } = useContext(AuthContext);
+  // L'élève, ou l'enseignant qui joue dans une de ses classes (« نافس أستاذك »).
+  const scope = useMadarScope();
   const reduce = useReducedMotion();
   const [state, setState] = useState(null);
   const [error, setError] = useState(null);
@@ -136,14 +138,14 @@ export default function GamesHub() {
 
   const load = useCallback(async () => {
     try {
-      const data = await fetchMadar(token);
+      const data = await scope.api.fetchMadar(token);
       setState(data);
       if (data.adjustments?.length) setNotices((cur) => [...cur, ...data.adjustments]);
       setError(null);
     } catch (e) {
       setError(e.message);
     }
-  }, [token]);
+  }, [token, scope.api]);
   useEffect(() => { if (token) load(); }, [token, load]);
   const onHearts = useCallback(({ hearts }) => setState((s) => (s ? { ...s, hearts } : s)), []);
 
@@ -175,8 +177,8 @@ export default function GamesHub() {
     <MotionConfig reducedMotion="user">
       <div className="fixed inset-0 overflow-y-auto bg-[radial-gradient(ellipse_at_top,_#1e1b4b_0%,_#0b0720_50%,_#05040f_100%)] text-white" data-games-hub>
         <header className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 pt-[max(14px,env(safe-area-inset-top))] sm:px-8">
-          <Link to="/espace" className="inline-flex min-h-[44px] items-center gap-2 rounded-2xl bg-white/10 px-3 font-inter text-sm font-semibold ring-1 ring-white/15 hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300/50">
-            <ArrowBack size={16} aria-hidden="true" /> <span>{t('back')}</span>
+          <Link to={scope.exit} className="inline-flex min-h-[44px] items-center gap-2 rounded-2xl bg-white/10 px-3 font-inter text-sm font-semibold ring-1 ring-white/15 hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300/50">
+            <ArrowBack size={16} aria-hidden="true" /> <span>{scope.teacher ? t('teacherPlay.back') : t('back')}</span>
           </Link>
           <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-3 py-2 ring-1 ring-white/15">
             <HeartsRow hearts={state.hearts} max={state.maxHearts} size={20} />
@@ -187,10 +189,10 @@ export default function GamesHub() {
           <motion.div initial={reduce ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="text-center">
             <p className="inline-flex items-center gap-2 rounded-full bg-amber-300/15 px-3 py-1 font-inter text-xs font-bold text-amber-200"><Gamepad2 size={14} aria-hidden="true" /> {t('hub.eyebrow')}</p>
             <h1 className="mt-3 bg-gradient-to-b from-white via-amber-100 to-amber-300 bg-clip-text font-space text-5xl font-black leading-tight text-transparent sm:text-6xl">{t('hub.title')}</h1>
-            <p className="mx-auto mt-2 max-w-xl font-inter text-sm leading-relaxed text-white/75 sm:text-base">{t('hub.subtitle')}</p>
+            <p className="mx-auto mt-2 max-w-xl font-inter text-sm leading-relaxed text-white/75 sm:text-base">{scope.teacher ? t('teacherPlay.subtitle', { name: state.classroom?.name ?? '' }) : t('hub.subtitle')}</p>
           </motion.div>
 
-          <div className="mx-auto mt-6 grid max-w-3xl gap-3 sm:grid-cols-[1fr_auto] sm:items-center">
+          {!scope.teacher && <div className="mx-auto mt-6 grid max-w-3xl gap-3 sm:grid-cols-[1fr_auto] sm:items-center">
             <div className="rounded-2xl bg-white/[0.06] p-3 ring-1 ring-white/10">
               <p className="font-inter text-sm text-white/80">{t('hub.heartsRule', { n: state.dailyFreeHearts })}</p>
               <p className="mt-0.5 font-inter text-xs text-white/55">{t('lobby.runsToday')}: <bdi dir="ltr">{t('lobby.runsTodayValue', { n: state.runsToday, cap: state.dailyRunCap })}</bdi></p>
@@ -201,7 +203,12 @@ export default function GamesHub() {
                 <Fuel size={20} aria-hidden="true" /> {t('lobby.refuel')}
               </button>
             )}
-          </div>
+          </div>}
+          {scope.teacher && (
+            <p className="mx-auto mt-6 max-w-3xl rounded-2xl bg-amber-300/15 p-3 text-center font-inter text-sm font-semibold text-amber-100 ring-1 ring-amber-300/30" data-teacher-play>
+              {t('teacherPlay.rule')}
+            </p>
+          )}
           <div className="mx-auto mt-3 max-w-3xl"><AdjustmentNotice adjustments={notices} onDismiss={() => setNotices([])} /></div>
           {closed && <p className="mx-auto mt-4 max-w-3xl rounded-2xl bg-white/[0.06] p-3 text-center font-inter text-sm text-white/80" role="status">{t(`reasons.${state.reason}`, { defaultValue: t('reasons.disabled') })}</p>}
 
@@ -240,7 +247,7 @@ export default function GamesHub() {
                             )}
                           </div>
                           {open ? (
-                            <Link to={`/espace/jeux/${card.id}`} className="mt-2 flex min-h-[52px] items-center justify-center gap-2 rounded-2xl bg-white font-space text-lg font-black text-slate-950 transition group-hover:bg-amber-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300/60" data-action="open-game">
+                            <Link to={`${scope.hub}/${card.id}`} className="mt-2 flex min-h-[52px] items-center justify-center gap-2 rounded-2xl bg-white font-space text-lg font-black text-slate-950 transition group-hover:bg-amber-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300/60" data-action="open-game">
                               <Play size={18} className="-scale-x-100" aria-hidden="true" /> {t('hub.play')}
                             </Link>
                           ) : (

@@ -81,7 +81,7 @@ function MadarDisplay() {
                     {row && (
                       <motion.div key={`${row.name}-${row.best}`} initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="mb-3 flex flex-col items-center text-center">
                         <ShipIcon id={row.ship} size={place === 1 ? 110 : 80} />
-                        <p className="mt-2 max-w-full truncate font-inter text-xl font-bold sm:text-3xl"><bdi>{row.name}</bdi></p>
+                        <p className="mt-2 max-w-full truncate font-inter text-xl font-bold sm:text-3xl"><bdi>{row.name}</bdi>{row.isTeacher && <span className="ms-2 rounded-full bg-fuchsia-400 px-2 py-0.5 align-middle text-sm font-black text-fuchsia-950">{t('board.teacher')}</span>}</p>
                         <p className="font-space text-2xl font-black tabular-nums text-amber-200 sm:text-4xl" dir="ltr">{formatScore(row.best)}</p>
                         {row.wave != null && <p className="font-inter text-base text-cyan-200">{t(progressKey(data?.game, true), { n: row.wave })}</p>}
                       </motion.div>
@@ -102,7 +102,7 @@ function MadarDisplay() {
               <li key={`${row.rank}-${row.name}`} className="flex items-center gap-4 rounded-2xl bg-white/[0.06] px-5 py-3 ring-1 ring-white/10">
                 <span className="font-space text-2xl font-black text-white/60" dir="ltr">{row.rank}</span>
                 <ShipIcon id={row.ship} size={44} />
-                <span className="min-w-0 flex-1 truncate font-inter text-xl font-semibold"><bdi>{row.name}</bdi></span>
+                <span className="min-w-0 flex-1 truncate font-inter text-xl font-semibold"><bdi>{row.name}</bdi>{row.isTeacher && <span className="ms-2 rounded-full bg-fuchsia-400 px-2 py-0.5 align-middle text-sm font-black text-fuchsia-950">{t('board.teacher')}</span>}</span>
                 {row.wave != null && <span className="font-inter text-sm text-cyan-200">{t(progressKey(data?.game), { n: row.wave })}</span>}
                 <span className="font-space text-2xl font-black tabular-nums" dir="ltr">{formatScore(row.best)}</span>
               </li>

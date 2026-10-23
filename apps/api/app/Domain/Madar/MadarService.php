@@ -59,6 +59,42 @@ class MadarService
         private ExplorerLevels $levels,
     ) {}
 
+    /**
+     * L'ENSEIGNANT qui joue dans une de ses classes (« نافس أستاذك ») : ses
+     * parties comptent dans le classement de CETTE classe, son record se lit
+     * classe par classe. Il joue librement (aucun cœur, pas de محطة التزوّد —
+     * ses parties ne sont jamais des preuves d'apprentissage), même un jeu fermé
+     * aux élèves, et tous les niveaux des jeux de mathématiques lui sont ouverts.
+     */
+    private ?Classroom $teacherClass = null;
+
+    /** Le même service, pour un enseignant qui joue dans `$classroom` (le contrôleur a vérifié la propriété). */
+    public function asTeacherIn(Classroom $classroom): static
+    {
+        $copy = clone $this;
+        $copy->teacherClass = $classroom;
+
+        return $copy;
+    }
+
+    private function isTeacherPlay(array $ctx): bool
+    {
+        return (bool) ($ctx['teacher'] ?? false);
+    }
+
+    /** Un jeu sans cœur : un jeu gratuit, ou n'importe quel jeu pour l'enseignant. */
+    private function isFreeFor(array $ctx, string $game): bool
+    {
+        return $this->isTeacherPlay($ctx) || self::isFree($game);
+    }
+
+    /** Le record de l'enseignant DANS la classe où il joue (une partie exclue au besoin). */
+    private function classBest(User $user, string $game, ?int $exceptRunId = null, string $column = 'score'): int
+    {
+        return (int) MadarRun::where('user_id', $user->id)->where('game', $game)->where('classroom_id', $this->teacherClass?->id)
+            ->where('status', MadarRun::STATUS_FINISHED)->when($exceptRunId, fn ($q) => $q->whereKeyNot($exceptRunId))->max($column);
+    }
+
     // ── Contexte ────────────────────────────────────────────────────────────
 
     /**
@@ -70,6 +106,9 @@ class MadarService
      */
     public function context(User $student): array
     {
+        if ($this->teacherClass !== null) {
+            return ['classroom' => $this->teacherClass, 'settings' => $this->config->forClassroom($this->teacherClass), 'studentDisabledGames' => [], 'teacher' => true];
+        }
         $primary = $this->studyContext->resolve($student)['primary'] ?? null;
         $classroom = $primary !== null ? Classroom::find($primary['id']) : null;
         if ($classroom !== null && ! $classroom->isActive()) {
@@ -85,6 +124,9 @@ class MadarService
     /** Qui a fermé ce jeu pour cet élève : `class`, `student`, ou personne (null). */
     private function gameClosedBy(array $ctx, string $game): ?string
     {
+        if ($this->isTeacherPlay($ctx)) {
+            return null;
+        }
         if (in_array($game, $ctx['settings']['disabledGames'], true)) {
             return 'class';
         }
@@ -102,7 +144,7 @@ class MadarService
         if (! $this->config->enabled()) {
             return MadarException::DISABLED;
         }
-        if ($ctx['classroom'] !== null && ! $ctx['settings']['enabled']) {
+        if ($ctx['classroom'] !== null && ! $ctx['settings']['enabled'] && ! $this->isTeacherPlay($ctx)) {
             return MadarException::DISABLED_BY_TEACHER;
         }
 
@@ -171,12 +213,13 @@ class MadarService
             'games' => array_map(fn ($g) => [
                 'id' => $g,
                 'category' => MadarRun::CATEGORIES[$g],
-                'free' => self::isFree($g),
+                'free' => $this->isFreeFor($ctx, $g),
                 'enabled' => $this->gameClosedBy($ctx, $g) === null,
                 'closedBy' => $this->gameClosedBy($ctx, $g),
             ], MadarRun::GAMES),
+            'teacher' => $this->isTeacherPlay($ctx),
             'defense' => [
-                'best' => (int) $profile->defense_best,
+                'best' => $this->isTeacherPlay($ctx) ? $this->classBest($student, MadarRun::GAME_DEFENSE) : (int) $profile->defense_best,
                 'bestWave' => (int) $profile->defense_best_wave,
                 'runsCount' => (int) $profile->defense_runs,
                 'weekBest' => $this->weekBest($student, $week, MadarRun::GAME_DEFENSE),
@@ -237,7 +280,7 @@ class MadarService
         $math = $this->mathProgress($ctx, $student, $game);
 
         return [
-            'best' => (int) ($runs?->best ?? 0),
+            'best' => $this->isTeacherPlay($ctx) ? $this->classBest($student, $game) : (int) ($runs?->best ?? 0),
             'bestRound' => (int) ($runs?->best_round ?? 0),
             'runsCount' => (int) ($runs?->n ?? 0),
             'weekBest' => $this->weekBest($student, $week, $game),
@@ -284,7 +327,8 @@ class MadarService
             'bestPosition' => $best,
             'bestLevel' => $scoring->levelOf($best),
             'entryLevel' => $entry,
-            'unlockedUpTo' => max($entry, $scoring->levelOf($best)),
+            // L'enseignant peut essayer n'importe quel niveau.
+            'unlockedUpTo' => $this->isTeacherPlay($ctx) ? (int) $this->config->sniper()['levels'] : max($entry, $scoring->levelOf($best)),
             'levels' => (int) $sniper['levels'],
             'subLevels' => (int) $sniper['sub_levels'],
         ];
@@ -325,13 +369,14 @@ class MadarService
     private function profileView(User $student, MadarProfile $profile, array $ctx): array
     {
         return [
-            'hearts' => (int) $profile->hearts,
+            // L'enseignant joue sans cœur : la réserve est toujours pleine.
+            'hearts' => $this->isTeacherPlay($ctx) ? $this->config->maxHearts() : (int) $profile->hearts,
             'maxHearts' => $this->config->maxHearts(),
             'dailyFreeHearts' => (int) $ctx['settings']['dailyFreeHearts'],
             'runsToday' => $this->runsToday($student),
             'dailyRunCap' => (int) $ctx['settings']['dailyRunCap'],
             'maxRevives' => (int) $this->config->get('runs.max_revives', 2),
-            'best' => (int) $profile->best_score,
+            'best' => $this->isTeacherPlay($ctx) ? $this->classBest($student, MadarRun::GAME_ORBIT) : (int) $profile->best_score,
             'runsCount' => (int) $profile->runs_count,
             'starsTotal' => (int) $profile->stars_total,
             'refuel' => ['answered' => (int) $profile->refuel_answered, 'correct' => (int) $profile->refuel_correct],
@@ -342,7 +387,8 @@ class MadarService
 
     private function competitionView(array $ctx, User $student, string $week, string $game = MadarRun::GAME_ORBIT): ?array
     {
-        if ($ctx['classroom'] === null || ! $ctx['settings']['competitionEnabled']) {
+        // L'enseignant voit toujours le classement de la classe où il joue.
+        if ($ctx['classroom'] === null || (! $ctx['settings']['competitionEnabled'] && ! $this->isTeacherPlay($ctx))) {
             return null;
         }
 
@@ -358,6 +404,7 @@ class MadarService
     private function weekBest(User $student, string $week, string $game = MadarRun::GAME_ORBIT): int
     {
         return (int) MadarRun::where('user_id', $student->id)->where('week_start', $week)->where('game', $game)
+            ->when($this->teacherClass, fn ($q) => $q->where('classroom_id', $this->teacherClass->id))
             ->where('status', MadarRun::STATUS_FINISHED)->max('score');
     }
 
@@ -436,7 +483,7 @@ class MadarService
             if ($this->runsToday($student) >= (int) $ctx['settings']['dailyRunCap']) {
                 throw new MadarException(MadarException::DAILY_CAP);
             }
-            $free = self::isFree($game);
+            $free = $this->isFreeFor($ctx, $game);
             if (! $free && (int) $profile->hearts < 1) {
                 throw new MadarException(MadarException::NO_HEARTS);
             }
@@ -498,13 +545,16 @@ class MadarService
                 throw new MadarException(MadarException::REVIVE_LIMIT);
             }
             $profile = $this->profile($student, $ctx, lock: true);
-            if ((int) $profile->hearts < 1) {
-                throw new MadarException(MadarException::NO_HEARTS);
+            // L'enseignant reprend sans cœur (toujours dans la limite de reprises).
+            if (! $this->isTeacherPlay($ctx)) {
+                if ((int) $profile->hearts < 1) {
+                    throw new MadarException(MadarException::NO_HEARTS);
+                }
+                $profile->decrement('hearts');
             }
-            $profile->decrement('hearts');
             $locked->increment('revives');
 
-            return ['revives' => (int) $locked->revives, 'hearts' => (int) $profile->fresh()->hearts];
+            return ['revives' => (int) $locked->revives, 'hearts' => $this->isTeacherPlay($ctx) ? $this->config->maxHearts() : (int) $profile->fresh()->hearts];
         });
     }
 
@@ -537,7 +587,7 @@ class MadarService
             $shipsBefore = MadarShips::unlocked($profile);
             $turretsBefore = MadarTurrets::unlocked($profile);
             $week = $locked->week_start->format('Y-m-d');
-            $competes = $locked->classroom_id !== null && $ctx['settings']['competitionEnabled'];
+            $competes = $locked->classroom_id !== null && ($ctx['settings']['competitionEnabled'] || $this->isTeacherPlay($ctx));
             $rankBefore = $competes ? $this->leaderboard->rankOf($locked->classroom_id, $week, $student->id, $locked->game) : null;
 
             $finishedAt = now();
@@ -604,6 +654,10 @@ class MadarService
                 }
             }
             $profile->save();
+            // L'enseignant : son record, c'est celui de CETTE classe.
+            if ($this->isTeacherPlay($ctx)) {
+                $previousBest = $this->classBest($student, $locked->game, $locked->id);
+            }
 
             if ($settled['flagged']) {
                 Log::warning('madar.score_clamped', ['run' => $locked->uuid, 'game' => $locked->game, 'claimed' => $claimed, 'score' => $settled['score'], 'duration_ms' => $duration]);
@@ -622,9 +676,10 @@ class MadarService
         /** @var MadarRun $finished */
         $finished = $outcome['run'];
         $profile = MadarProfile::where('user_id', $student->id)->first();
-        $competes = $finished->classroom_id !== null && $ctx['settings']['competitionEnabled'];
+        $competes = $finished->classroom_id !== null && ($ctx['settings']['competitionEnabled'] || $this->isTeacherPlay($ctx));
         $week = $finished->week_start->format('Y-m-d');
         $best = match (true) {
+            $this->isTeacherPlay($ctx) => $this->classBest($student, $finished->game),
             $isDefense => (int) $profile->defense_best,
             $isMath => (int) MadarRun::where('user_id', $student->id)->where('game', $finished->game)->where('status', MadarRun::STATUS_FINISHED)->max('score'),
             default => (int) $profile->best_score,
@@ -657,7 +712,7 @@ class MadarService
             'unlocked' => $outcome['unlocked'],
             'unlockedTurrets' => $outcome['unlockedTurrets'],
             'level' => $isMath ? $this->levelChange($finished) : null,
-            'hearts' => (int) $profile->hearts,
+            'hearts' => $this->isTeacherPlay($ctx) ? $this->config->maxHearts() : (int) $profile->hearts,
             'runsToday' => $this->runsToday($student),
         ];
     }
@@ -698,7 +753,7 @@ class MadarService
             }
 
             $week = $locked->week_start->format('Y-m-d');
-            $competes = $locked->classroom_id !== null && $ctx['settings']['competitionEnabled'];
+            $competes = $locked->classroom_id !== null && ($ctx['settings']['competitionEnabled'] || $this->isTeacherPlay($ctx));
             $rankBefore = $competes ? $this->leaderboard->rankOf($locked->classroom_id, $week, $student->id, MadarRun::GAME_EXPLORER) : null;
             $finishedAt = now();
             $maxMs = (int) $this->config->get('runs.max_minutes', 30) * 60_000;
@@ -745,7 +800,7 @@ class MadarService
         $finished = $outcome['run'];
         $n = (int) $finished->wave;
         $week = $finished->week_start->format('Y-m-d');
-        $competes = $finished->classroom_id !== null && $ctx['settings']['competitionEnabled'];
+        $competes = $finished->classroom_id !== null && ($ctx['settings']['competitionEnabled'] || $this->isTeacherPlay($ctx));
         $profile = MadarProfile::where('user_id', $student->id)->first();
         $levelRow = MadarLevelProgress::where('user_id', $student->id)->where('game', MadarRun::GAME_EXPLORER)->where('level', $n)->first();
 

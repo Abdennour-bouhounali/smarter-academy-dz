@@ -49,7 +49,9 @@ export default function Leaderboard({ competition, classroom, game = 'orbit' }) 
               </span>
               <ShipIcon id={row.ship} size={30} />
               <span className="min-w-0 flex-1 truncate font-inter text-sm font-semibold">
-                <bdi>{row.name}</bdi>{row.isMe && <span className="ms-1.5 rounded-full bg-amber-300 px-1.5 py-0.5 text-[10px] font-black text-amber-950">{t('board.me')}</span>}
+                <bdi>{row.name}</bdi>
+                {row.isTeacher && <span className="ms-1.5 rounded-full bg-fuchsia-400 px-1.5 py-0.5 text-[10px] font-black text-fuchsia-950" data-teacher-row>{t('board.teacher')}</span>}
+                {row.isMe && <span className="ms-1.5 rounded-full bg-amber-300 px-1.5 py-0.5 text-[10px] font-black text-amber-950">{t('board.me')}</span>}
               </span>
               {game !== 'orbit' && row.wave != null && (
                 <span className="rounded-full bg-cyan-400/15 px-1.5 py-0.5 font-inter text-[10px] font-bold text-cyan-100">
