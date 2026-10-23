@@ -253,7 +253,7 @@ features/mathlab/
 ├── mathLabDocument.js     pure document helpers: paths (with `?lab=`), new/from-API document, title cleaning
 ├── labScope.js            the two labs (§2.1): scopes, resolution, capabilities, data.labScope, work lab
 ├── useMathLabDocument.js  load · autosave · title · save state (one document, any tool)
-├── MathLabShell.jsx       the shared frame: back · tool name · title · save status · actions
+├── MathLabShell.jsx       the shared frame: back · tool name · title · save status · actions (incl. « ملء الشاشة » — native Fullscreen on the tool root via `useFullscreen`, app-level `fixed inset-0` fallback `.sa-ml-tool--wide`, same `fullscreenAction` as the overlay)
 ├── MathLabToolPage.jsx    route element: slug → tool → lazy component → shell
 ├── openMathLab.js         the lesson → Lab integration point (buildMathLabLaunch / readMathLabLaunch)
 ├── mathlab.css            shell + home styles (.sa-ml-*)
