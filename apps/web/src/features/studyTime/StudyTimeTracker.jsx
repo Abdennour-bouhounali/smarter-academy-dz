@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { createClock, drain, step, surfaceFor } from './studyClock';
-import { sendStudyTime } from '../../services/studyTimeService';
+import { isDeadTokenError, registerStudyTimeFlusher, sendStudyTime } from '../../services/studyTimeService';
 
 const TICK_MS = 5_000;
 const FLUSH_MS = 60_000;
@@ -44,6 +44,7 @@ export default function StudyTimeTracker() {
     if (!enabled) return undefined;
     clock.current = createClock(Date.now());
     lastInputAt.current = Date.now();
+    let dead = false;
 
     const tick = () => {
       clock.current = step(clock.current, {
@@ -60,8 +61,10 @@ export default function StudyTimeTracker() {
       tick();
       const { clock: rest, segments } = drain(clock.current);
       clock.current = rest;
-      if (segments.length === 0) return;
-      sendStudyTime(token, segments).catch(() => {
+      if (segments.length === 0 || dead) return Promise.resolve();
+      return sendStudyTime(token, segments).catch((error) => {
+        // Jeton refusé : on n'insiste pas (la session sera nettoyée par `/me`).
+        if (isDeadTokenError(error)) { dead = true; return; }
         // Remis dans l'horloge : le prochain battement les reportera.
         const buckets = { ...clock.current.buckets };
         for (const s of segments) {
@@ -88,8 +91,10 @@ export default function StudyTimeTracker() {
     window.addEventListener('pagehide', flush);
     const tickTimer = window.setInterval(tick, TICK_MS);
     const flushTimer = window.setInterval(flush, FLUSH_MS);
+    registerStudyTimeFlusher(flush);
 
     return () => {
+      registerStudyTimeFlusher(null);
       flush();
       advance.current = () => {};
       for (const e of INPUT_EVENTS) window.removeEventListener(e, onInput, { capture: true });

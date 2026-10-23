@@ -201,7 +201,12 @@ The **surface** comes from the URL (`surfaceFor`):
 **Transport.** Every 60 s, and when the page hides or closes, the tracker sends
 `POST /student/study-time {segments:[{surface, active, idle, away, leaves}]}`
 (seconds) with `fetch keepalive` (it survives tab close). A failed send is put
-back into the clock. Throttle 30/min, `learner` only.
+back into the clock — except a 401/403 (revoked or expired token): those seconds
+are dropped and the tracker stops sending. On logout, `AuthContext` first awaits
+`flushStudyTimeNow()` (the mounted tracker registers its flush in
+`studyTimeService`; bounded to 2 s), THEN clears the session and revokes the
+token, so the last beat never leaves with a dead token. Throttle 30/min,
+`learner` only.
 
 **Server** (`Domain/Family/StudyTimeService`):
 

@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Save, Trash2, Download, Paperclip, Grid3x3, Loader2, Check, CloudOff, CircleAlert, X } from 'lucide-react';
+import { Save, Trash2, Download, Paperclip, Grid3x3, Maximize2, Minimize2, Loader2, Check, CloudOff, CircleAlert, X } from 'lucide-react';
 import { ArrowBack } from '../../components/common/DirectionalIcons';
 import ConfirmDialog from '../practice/notebook/space/ConfirmDialog';
 import { mathLabBasePath } from './mathLabDocument';
 import { useWorkspaceBase } from '../learning/learningViewer';
+import { useFullscreen } from '../../lessons/common/classroom/useFullscreen';
+import { fullscreenAction } from './overlay/overlayState.js';
 import AttachmentsPanel from './attachments/AttachmentsPanel';
 import './mathlab.css';
 
@@ -31,6 +33,10 @@ export default function MathLabShell({
   const [gridOn, setGridOn] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState(false);
+  const { supported, isFullscreen, request, exit } = useFullscreen(rootRef);
+  // Repli applicatif : API absente ou demande refusée → l'outil prend la fenêtre.
+  const [appFullscreen, setAppFullscreen] = useState(false);
+  const wide = isFullscreen || appFullscreen;
   const Icon = tool.icon;
   const toolName = t(tool.labelKey);
   const workspaceLabHome = mathLabBasePath(useWorkspaceBase());
@@ -46,6 +52,33 @@ export default function MathLabShell({
     const next = toolApi?.toggleGrid?.();
     setGridOn(typeof next === 'boolean' ? next : Boolean(toolApi?.isGridEnabled?.()));
   }, [toolApi]);
+
+  const toggleFullscreen = useCallback(async () => {
+    switch (fullscreenAction({ wide, supported })) {
+      case 'exit':
+        setAppFullscreen(false);
+        await exit();
+        break;
+      case 'requestBrowser':
+        if (!(await request())) setAppFullscreen(true);
+        break;
+      default:
+        setAppFullscreen(true);
+    }
+  }, [wide, supported, request, exit]);
+
+  useEffect(() => {
+    if (isFullscreen) setAppFullscreen(false);
+  }, [isFullscreen]);
+
+  // Échap quitte le repli applicatif (le plein écran natif gère le sien).
+  useEffect(() => {
+    if (!appFullscreen) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') setAppFullscreen(false); };
+    document.addEventListener('keydown', onKey);
+
+    return () => document.removeEventListener('keydown', onKey);
+  }, [appFullscreen]);
 
   const exportPng = useCallback(async () => {
     if (!toolApi?.exportPng) return;
@@ -92,7 +125,12 @@ export default function MathLabShell({
   }, []);
 
   return (
-    <div ref={rootRef} className="sa-ml-tool" data-ml-tool={tool.id}>
+    <div
+      ref={rootRef}
+      className={`sa-ml-tool${wide ? ' sa-ml-tool--wide' : ''}`}
+      data-ml-tool={tool.id}
+      data-ml-fullscreen={wide ? (isFullscreen ? 'browser' : 'app') : undefined}
+    >
       <header ref={barRef} className="sa-ml-bar">
         <Link
           to={labHome}
@@ -192,6 +230,17 @@ export default function MathLabShell({
               <Trash2 size={18} aria-hidden="true" />
             </button>
           )}
+          <button
+            type="button"
+            className="sa-ml-btn sa-ml-btn--icon"
+            onClick={toggleFullscreen}
+            aria-pressed={wide}
+            aria-label={wide ? t('overlay.fullscreenExit') : t('overlay.fullscreenEnter')}
+            title={wide ? t('overlay.fullscreenExit') : t('overlay.fullscreenEnter')}
+            data-ml-fullscreen-toggle
+          >
+            {wide ? <Minimize2 size={18} aria-hidden="true" /> : <Maximize2 size={18} aria-hidden="true" />}
+          </button>
           <button
             type="button"
             className="sa-ml-btn sa-ml-btn--primary"

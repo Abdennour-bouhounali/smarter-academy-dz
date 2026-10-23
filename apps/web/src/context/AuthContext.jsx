@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import { fetchCurrentUser, logout as logoutRequest, updateGrade as updateGradeRequest, updateProfile as updateProfileRequest } from '../services/authService';
 import { storage, migrateLegacyStorageToUser } from '../utils/storage';
 import { setCurrentUserId } from '../utils/authUserId';
+import { flushStudyTimeNow } from '../services/studyTimeService';
 import { LEGACY_PER_STUDENT_KEYS, isLegacyLessonKey } from '../lessons/common/studentStorageKeys';
 import { readCachedSessionUser, writeCachedSessionUser, clearCachedSessionUser } from './sessionUserCache';
 
@@ -52,6 +53,9 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     const currentToken = token;
+    // The last study-time beat must leave while the token is still valid
+    // (docs/architecture/PARENT_SPACE.md §3) — bounded, never throws.
+    await flushStudyTimeNow();
     // Clear local state immediately so the UI reflects logout without
     // waiting on the network; the revocation call happens best-effort after.
     clearSession();
