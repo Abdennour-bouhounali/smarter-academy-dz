@@ -94,9 +94,11 @@ return [
     ],
 
     // « قنّاص القيم » — MIROIR de apps/web/src/features/madar/sniper/constants.js
-    // › SCHEDULE. Les manches suivent un calendrier FIXE : la durée réelle borne
-    // la manche atteinte et le score (SniperScoring). Le jeu est GRATUIT : il ne
-    // coûte aucun cœur (ses mathématiques sont le jeu lui-même) et n'a pas de reprise.
+    // › SCHEDULE et de sniper/levels.js. Les manches suivent un calendrier FIXE ;
+    // le niveau s'ADAPTE (50 niveaux × 3 sous-niveaux = 150 positions) et monte
+    // d'au plus une position par manche : la durée réelle et la position de
+    // départ bornent la manche, la position atteinte et le score (SniperScoring).
+    // Le jeu est GRATUIT : aucun cœur, aucune reprise.
     'sniper' => [
         'first_at' => 2.5,
         'cards_per_round' => 8,
@@ -107,11 +109,53 @@ return [
         'fall_min' => 4,
         'fall_step' => 0.2,
         'breather' => 2.5,
-        'rounds_per_level' => 3,
-        'max_level' => 6,
-        'points_per_level' => 10,
+        'points_base' => 10,
+        'points_step' => 2,
+        'bonus_factor' => 3,
         'max_multiplier' => 4,
-        'perfect_bonus' => 50,
+        'levels' => 50,
+        'sub_levels' => 3,
+        // Une mauvaise manche fait descendre d'une position ; deux de suite, d'un niveau.
+        'max_drop_per_round' => 3,
+        // Le niveau de départ de chaque année : tout ce qui précède est ouvert.
+        // On ne commence JAMAIS par du difficile (propriétaire) : l'entrée est dans les acquis des années d'avant.
+        'entry' => ['1am' => 1, '2am' => 5, '3am' => 12, '4am' => 19],
+        // Chaque partie s'échauffe deux niveaux sous la position de l'élève (sniper/adapt.js › WARMUP_DROP).
+        'warmup_drop' => 6,
+        'tolerance' => 1.1,
+        'slack' => 100,
+    ],
+
+    // « الدخيل » — MIROIR de apps/web/src/features/madar/odd/constants.js › SCHEDULE.
+    // Ses niveaux, son entrée par année et ses points sont ceux de `sniper`.
+    // Une énigme ne se résout pas plus vite que `min_puzzle_ms` (le client montre
+    // la réponse `reveal_ms`) ; le niveau s'adapte toutes les `puzzles_per_round`.
+    'odd' => [
+        'puzzles_per_round' => 5,
+        'reveal_ms' => 1200,
+        'min_puzzle_ms' => 1000,
+        'time_start' => 15,
+        'time_min' => 7,
+        'time_step' => 0.15,
+        'bonus_factor' => 3,
+        'max_multiplier' => 4,
+        'max_drop_per_round' => 3,
+        'tolerance' => 1.1,
+        'slack' => 100,
+    ],
+
+    // « الحساب الذهني » — MIROIR de apps/web/src/features/madar/mental/constants.js
+    // › SCHEDULE. Même borne que « الدخيل » (OddScoring), plus le bonus de vitesse
+    // (`speed_factor` × points du niveau au plus, par problème). Ses 50 niveaux
+    // sont les siens (mental/levels.js) ; son entrée par année aussi.
+    'mental' => [
+        'puzzles_per_round' => 5,
+        'min_puzzle_ms' => 700,
+        'bonus_factor' => 3,
+        'max_multiplier' => 4,
+        'speed_factor' => 1,
+        'max_drop_per_round' => 3,
+        'entry' => ['1am' => 3, '2am' => 7, '3am' => 11, '4am' => 15],
         'tolerance' => 1.1,
         'slack' => 100,
     ],

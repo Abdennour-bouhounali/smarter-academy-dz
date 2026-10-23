@@ -40,7 +40,10 @@ export function nextShipGoal(ships) {
 }
 
 /** Les jeux qui ne coûtent aucun cœur (le serveur fait foi : `games[].free`). */
-export const FREE_GAMES = ['sniper'];
+export const FREE_GAMES = ['sniper', 'odd', 'mental'];
+
+/** Les jeux de mathématiques : 50 niveaux partagés, une position par élève et par jeu. */
+export const MATH_GAMES = ['sniper', 'odd', 'mental'];
 
 /** Un jeu gratuit, d'après l'état du serveur (repli : FREE_GAMES). */
 export function isFreeGame(state, game) {

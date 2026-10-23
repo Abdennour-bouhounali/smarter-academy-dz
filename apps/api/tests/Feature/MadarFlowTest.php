@@ -178,6 +178,8 @@ class MadarFlowTest extends TestCase
             $this->assertStringNotContainsString($secret, $payload);
         }
         $this->assertNotNull($res->json('refuel.content.question.statement'));
+        // La raison du choix, que l'élève lit en bas de la carte.
+        $this->assertContains($res->json('refuel.reason'), ['retrieval', 'recent_mistake', 'reinforce', 'recently_learned', 'review', 'warmup']);
         $this->assertSame($res->json('refuel.id'), $this->api('POST', '/madar/refuel')->json('refuel.id'), 'un rechargement ne change pas la question');
     }
 

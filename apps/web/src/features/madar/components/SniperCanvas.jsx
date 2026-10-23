@@ -1,8 +1,8 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
-import { createSniper, multiplierFor, resultOf, step, tap } from '../sniper/sim';
+import { createSniper, isWarmingUp, multiplierFor, resultOf, step, tap } from '../sniper/sim';
 import { createSniperRenderer } from '../sniper/render';
 import { valueTokens } from '../sniper/cards';
-import { levelOf } from '../sniper/constants';
+import { levelOfPos, subOfPos } from '../sniper/levels';
 import { buzz } from '../engine/audio';
 
 /**
@@ -19,7 +19,7 @@ import { buzz } from '../engine/audio';
  * boucliers, série, manche).
  */
 const SniperCanvas = forwardRef(function SniperCanvas({
-  mode = 'play', seed, paused = false, reduced = false, audio, statsRef, onOver, onTap,
+  mode = 'play', seed, start = 0, paused = false, reduced = false, audio, statsRef, onOver, onTap,
 }, ref) {
   const hostRef = useRef(null);
   const canvasRef = useRef(null);
@@ -32,9 +32,9 @@ const SniperCanvas = forwardRef(function SniperCanvas({
   const freshFx = () => ({ effects: [], floaters: [], shake: 0, flash: 0, groundHit: 0, aim: -Math.PI / 2 });
 
   useEffect(() => {
-    gameRef.current = createSniper(seed ?? 1, { autopilot: mode === 'attract' });
+    gameRef.current = createSniper(seed ?? 1, { autopilot: mode === 'attract', start });
     fxRef.current = freshFx();
-  }, [seed, mode]);
+  }, [seed, mode, start]);
 
   useImperativeHandle(ref, () => ({
     result: () => (gameRef.current ? resultOf(gameRef.current) : null),
@@ -95,7 +95,13 @@ const SniperCanvas = forwardRef(function SniperCanvas({
           streak: game.streak,
           mult: multiplierFor(game.streak),
           round: game.roundIndex + 1,
-          level: game.roundIndex >= 0 ? levelOf(game.roundIndex) : 1,
+          level: game.round?.level ?? levelOfPos(game.pos),
+          sub: game.round?.sub ?? subOfPos(game.pos),
+          mode: game.round?.mode ?? 'value',
+          at: game.round?.at ?? null,
+          position: game.pos,
+          change: game.lastChange ?? null,
+          warming: isWarmingUp(game),
           levelId: r?.levelId ?? null,
           target: r?.target ?? null,
           targetKey: r ? `${r.k}:${r.target.key}` : null,
@@ -156,6 +162,9 @@ const SniperCanvas = forwardRef(function SniperCanvas({
         break;
       }
       case 'roundEnd':
+        // Le niveau a changé : l'affichage l'annonce (« ارتقيت » / « نتمرّن قليلًا »).
+        if (e.change !== 'same') game.lastChange = { kind: e.change, level: e.level, sub: e.sub, id: e.k };
+        if (play && e.change === 'up') audio?.multiplier(2);
         if (play && e.perfect) {
           const { field } = renderer.layout();
           fx.effects.push({ type: 'ring', x: renderer.cannon()[0], y: renderer.cannon()[1] - 20, size: field * 0.25, life: 0.9, max: 0.9 });

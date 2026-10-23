@@ -119,9 +119,11 @@ shared with the student too, on the link page as well. The parent pages are phon
   (`docs/architecture/PARENT_SPACE.md` « Screens »).
   **Exception (owner, 2026-10-22): « فضاء الألعاب », the game space `/espace/jeux`** is played on phones AND laptops — designed and tested at
   390×844 and 1366×768 (`docs/architecture/MADAR_GAME.md` §11). Since 2026-10-23 it has two families:
-  - « ألعاب ترفيهية » (the orbit runner, « دفاع الكوكب », the « المستكشف » platformer): their hearts are earned in the « محطة التزوّد »
-    (correct answers on the student's own الكفاءات);
-  - « ألعاب رياضيات » (« قنّاص القيم »): free, the maths is the gameplay.
+  - « ألعاب رياضيات » (« قنّاص القيم », « الدخيل », « الحساب الذهني »), shown FIRST: free, the maths is the gameplay. They have 50 levels × 3 sub-levels covering
+    1AM–4AM. They NEVER start hard (owner): each game opens with a free warm-up round two levels below the student, then the
+    level rises progressively and adapts every round (`MADAR_GAME.md` §16);
+  - « ألعاب ترفيهية » (the orbit runner, « دفاع الكوكب », the « المستكشف » platformer), below: their hearts are earned in the
+    « محطة التزوّد » (correct answers on the student's own الكفاءات).
 
   The teacher closes a game for the class or for one student. Finishing a lesson unlocks NOTHING in the game (owner).
 - **INDEPENDENCE FROM THE BOOK** (owner, 2026-10-15, CRITICAL): the platform is self-sufficient. Read the textbook, analyse it, get the idea, then

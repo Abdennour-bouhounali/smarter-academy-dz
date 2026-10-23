@@ -9,6 +9,7 @@ import HeartsRow from './HeartsRow';
 import Sheet, { primaryBtn, secondaryBtn } from './Sheet';
 import ShipIcon from './ShipIcon';
 import TurretIcon from './TurretIcon';
+import { SUB_LETTERS } from './SniperHud';
 
 function useCountUp(target, reduce) {
   const [value, setValue] = useState(reduce ? target : 0);
@@ -77,7 +78,7 @@ export default function Results({ game = 'orbit', local, result, saving, error, 
       <p className="text-center font-inter text-xs text-white/55">{t('results.score')}</p>
 
       <dl className="mt-4 grid grid-cols-4 gap-1.5 text-center">
-        {(game === 'sniper' ? [
+        {(free ? [
           ['sniper.results.round', result?.run?.wave ?? local.round],
           ['sniper.results.hits', local.hits],
           ['sniper.results.accuracy', local.accuracy == null ? '—' : `${Math.round(local.accuracy * 100)}%`],
@@ -107,6 +108,14 @@ export default function Results({ game = 'orbit', local, result, saving, error, 
         {movement?.kind === 'same' && <p className="text-white/70">{t('results.rank', { n: movement.to })}</p>}
         {toBeat !== null && <p className="text-white/60">{t('results.toBeat', { n: formatScore(toBeat) })}</p>}
         {result?.run?.flagged && <p className="text-xs text-white/45">{t('results.flagged')}</p>}
+        {free && result?.level && (
+          <p className={`inline-flex items-center gap-1.5 font-bold ${result.level.change === 'up' ? 'text-emerald-300' : 'text-white/75'}`} data-level-result={result.level.change}>
+            {t(`sniper.results.level.${result.level.change}`, {
+              from: t('sniper.hud.level', { n: result.level.from.level, sub: SUB_LETTERS[result.level.from.sub - 1] }),
+              to: t('sniper.hud.level', { n: result.level.to.level, sub: SUB_LETTERS[result.level.to.sub - 1] }),
+            })}
+          </p>
+        )}
       </div>
 
       {unlocked.map((id) => (
@@ -137,7 +146,7 @@ export default function Results({ game = 'orbit', local, result, saving, error, 
       <div className="mt-3 space-y-2.5">
         {canPlay ? (
           <button type="button" className={primaryBtn} onClick={onAgain} disabled={saving} data-action="again" data-autofocus>
-            <RotateCcw size={20} aria-hidden="true" /> {game === 'sniper' ? t('sniper.results.again') : t('results.again')}
+            <RotateCcw size={20} aria-hidden="true" /> {free ? t('sniper.results.again') : t('results.again')}
             {!free && <CostBadge />}
           </button>
         ) : hearts < maxHearts ? (

@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { createSniper, multiplierFor, resultOf, step, tap } from './sim.js';
-import { LIVES, SCHEDULE, roundStart, spawnAt } from './constants.js';
+import { LIVES, SCHEDULE, perHit, perfectBonus, roundStart, spawnAt } from './constants.js';
 import { maxRound, perfectScore } from './bound.js';
+import { adaptStep } from './adapt.js';
+import { POSITIONS, levelOfPos, posOf, subOfPos } from './levels.js';
 
 const DT = 1 / 60;
 
@@ -34,7 +36,7 @@ describe('value sniper simulation', () => {
   });
 
   it('a hit scores, a trap costs a shield, and an equal card that lands costs one too', () => {
-    const game = createSniper(3);
+    const game = createSniper(3, { warmup: false });
     // Avant que la première carte touche le sol : une égale et un piège en l'air.
     while (!(game.cards.some((c) => c.equal) && game.cards.some((c) => !c.equal))) step(game, DT);
     expect(game.lives).toBe(LIVES);
@@ -42,7 +44,7 @@ describe('value sniper simulation', () => {
     const trap = game.cards.find((c) => !c.equal);
     const hit = tap(game, equal.id);
     expect(hit.type).toBe('hit');
-    expect(hit.points).toBe(SCHEDULE.pointsPerLevel * 1 * 1);
+    expect(hit.points).toBe(perHit(1));
     expect(tap(game, equal.id)).toBeNull();
     const wrong = tap(game, trap.id);
     expect(wrong.type).toBe('wrong');
@@ -57,7 +59,7 @@ describe('value sniper simulation', () => {
   });
 
   it('ends with no revive when the shields are gone', () => {
-    const game = createSniper(5);
+    const game = createSniper(5, { warmup: false });
     const events = [];
     runUntil(game, 400, (e) => events.push(e.type));
     expect(game.status).toBe('over');
@@ -74,20 +76,59 @@ describe('value sniper simulation', () => {
       perfect(e, g);
       if (e.type === 'roundEnd') ends.push(e);
     });
-    expect(ends[0]).toMatchObject({ k: 0, perfect: true, bonus: SCHEDULE.perfectBonus });
+    expect(ends[0]).toMatchObject({ k: 0, perfect: true, bonus: perfectBonus(1) });
     expect(game.lives).toBe(3);
   });
 
-  it('a perfect player never goes above the server bound nor beyond the reachable round', () => {
-    for (const seed of [1, 2, 77, 2026]) {
-      const game = createSniper(seed);
+  it('a perfect player never goes above the server bound nor beyond the reachable round or level', () => {
+    for (const [seed, start] of [[1, 0], [2, posOf(12)], [77, posOf(32, 2)], [2026, POSITIONS - 4]]) {
+      const game = createSniper(seed, { start });
       for (let s = 30; s <= 300; s += 30) {
         runUntil(game, s, perfect);
         expect(game.status).toBe('playing');
-        expect(game.score).toBeLessThanOrEqual(perfectScore(game.t));
-        expect(resultOf(game).round).toBeLessThanOrEqual(maxRound(game.t));
+        expect(game.score).toBeLessThanOrEqual(perfectScore(game.t, start));
+        const r = resultOf(game);
+        expect(r.round).toBeLessThanOrEqual(maxRound(game.t));
+        expect(r.peak).toBeLessThanOrEqual(Math.min(POSITIONS - 1, start + r.round));
       }
     }
+  });
+
+  it('adapts: a perfect round climbs one sub-level, two faults go down, two bad rounds in a row drop a level', () => {
+    expect(adaptStep(10, { perfect: true, faults: 0 })).toMatchObject({ pos: 11, change: 'up' });
+    expect(adaptStep(10, { perfect: false, faults: 1 })).toMatchObject({ pos: 10, change: 'same' });
+    expect(adaptStep(10, { perfect: false, faults: 2 })).toMatchObject({ pos: 9, change: 'down', bad: true });
+    expect(adaptStep(10, { perfect: false, faults: 3 }, true)).toMatchObject({ pos: 7, change: 'down' });
+    expect(adaptStep(0, { perfect: false, faults: 5 }, true)).toMatchObject({ pos: 0, change: 'same' });
+    expect(adaptStep(POSITIONS - 1, { perfect: true, faults: 0 })).toMatchObject({ pos: POSITIONS - 1, change: 'same' });
+    expect([levelOfPos(posOf(33, 2)), subOfPos(posOf(33, 2))]).toEqual([33, 2]);
+  });
+
+  it('plays each round at the student position: a perfect player climbs, an absent one comes down', () => {
+    const climber = createSniper(5, { start: posOf(20), warmup: false });
+    const levels = [];
+    runUntil(climber, roundStart(4) + 0.01, (e, g) => { perfect(e, g); if (e.type === 'round') levels.push([e.level, e.sub]); });
+    expect(levels).toEqual([[20, 1], [20, 2], [20, 3], [21, 1], [21, 2]]);
+
+    const absent = createSniper(5, { start: posOf(20), warmup: false });
+    absent.lives = 99;
+    const seen = [];
+    runUntil(absent, roundStart(3) + 0.01, (e) => { if (e.type === 'round') seen.push(e.pos); });
+    expect(seen[0]).toBe(posOf(20));
+    expect(seen[seen.length - 1]).toBeLessThan(posOf(20));
+  });
+
+  it('never starts hard: a warm-up two levels below, with no shield lost, then back home fast', () => {
+    const game = createSniper(8, { start: posOf(30, 2) });
+    expect(game.pos).toBe(posOf(28, 2));
+    const levels = [];
+    runUntil(game, roundStart(1) - 0.01, (e) => { if (e.type === 'round') levels.push(e.level); });
+    expect(levels).toEqual([28]);
+    expect(game.lives).toBe(LIVES);
+    const hero = createSniper(8, { start: posOf(30, 2) });
+    const seen = [];
+    runUntil(hero, roundStart(3) + 0.01, (e, g) => { perfect(e, g); if (e.type === 'round') seen.push(e.pos); });
+    expect(seen).toEqual([posOf(28, 2), posOf(29, 2), posOf(30, 2), posOf(30, 3)]);
   });
 
   it('the attract mode plays alone and never ends', () => {

@@ -13,7 +13,7 @@ const KEY = 'madar';
 export const fetchMadar = (token) => call('/madar', get(token), KEY);
 export const startRun = (token, game = 'orbit', level = null) => call('/madar/runs', send('POST', token, { game, ...(level ? { level } : {}) }), KEY);
 export const reviveRun = (token, runId) => call(`/madar/runs/${encodeURIComponent(runId)}/revive`, send('POST', token), KEY);
-export const finishRun = (token, runId, score, stars, wave, completed) => call(`/madar/runs/${encodeURIComponent(runId)}/finish`, send('POST', token, { score, stars, ...(wave != null ? { wave } : {}), ...(completed != null ? { completed } : {}) }), KEY);
+export const finishRun = (token, runId, score, stars, wave, completed, extra = {}) => call(`/madar/runs/${encodeURIComponent(runId)}/finish`, send('POST', token, { score, stars, ...(wave != null ? { wave } : {}), ...(completed != null ? { completed } : {}), ...extra }), KEY);
 export const chooseShip = (token, ship) => call('/madar/ship', send('PATCH', token, { ship }), KEY);
 export const fetchRefuel = (token) => call('/madar/refuel', send('POST', token), KEY);
 export const answerRefuel = (token, refuelId, answer, left = false) => call(`/madar/refuel/${encodeURIComponent(refuelId)}/answer`, send('POST', token, { answer, left }), KEY);

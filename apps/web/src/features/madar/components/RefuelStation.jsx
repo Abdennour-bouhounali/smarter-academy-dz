@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { Check, DoorOpen, Fuel, Home, Loader2, Rocket, Timer, X } from 'lucide-react';
+import { Check, DoorOpen, Fuel, Home, Loader2, Rocket, Target, Timer, X } from 'lucide-react';
 import { AuthContext } from '../../../context/AuthContext';
 import ExerciseStatement from '../../practice/ExerciseStatement';
 import QuestionRenderer from '../../practice/QuestionRenderer';
@@ -237,6 +237,14 @@ export default function RefuelStation({ context = 'base', hearts, maxHearts, aud
                   </motion.div>
                 )}
                 {error && <p role="alert" className="mt-4 rounded-2xl bg-rose-50 p-3 text-sm text-rose-800 ring-1 ring-rose-200">{error}</p>}
+
+                {/* Pourquoi CETTE question : la raison du sélecteur, dite vraie (jamais « à renforcer » pour une révision). */}
+                {refuel.reason && (
+                  <p className="mt-5 flex items-start gap-2 rounded-2xl bg-indigo-50 p-3 font-inter text-sm leading-relaxed text-indigo-900 ring-1 ring-indigo-100" data-refuel-reason={refuel.reason}>
+                    <Target size={16} className="mt-0.5 shrink-0" aria-hidden="true" />
+                    {t(`refuel.reason.${refuel.reason}`, { defaultValue: t('refuel.reason.review') })}
+                  </p>
+                )}
 
                 {/* Les boutons : collés en bas sur téléphone, à portée de pouce ; dans la carte sur ordinateur. */}
                 <div className="fixed inset-x-0 bottom-0 z-20 border-t border-white/10 bg-slate-950/90 p-3 pb-[max(12px,env(safe-area-inset-bottom))] backdrop-blur lg:static lg:mt-6 lg:border-0 lg:bg-transparent lg:p-0">

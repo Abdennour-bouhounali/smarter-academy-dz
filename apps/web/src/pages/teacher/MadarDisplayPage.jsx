@@ -120,7 +120,7 @@ function MadarDisplay() {
 
 /** Ce que porte `wave` selon le jeu : la vague, le niveau, ou la manche. */
 const progressKey = (game, long = false) => (game === 'explorer' ? 'explorer.board.level'
-  : game === 'sniper' ? 'sniper.board.round'
+  : ['sniper', 'odd', 'mental'].includes(game) ? 'sniper.board.round'
     : long ? 'defense.hud.wave' : 'defense.board.wave');
 
 export default function MadarDisplayPage() {

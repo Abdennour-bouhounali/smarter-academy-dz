@@ -13,6 +13,7 @@ use App\Models\MadarClassSetting;
 use App\Models\MadarHeartAdjustment;
 use App\Models\MadarItemTimeLimit;
 use App\Models\MadarLevelProgress;
+use App\Models\MadarMathProgress;
 use App\Models\MadarProfile;
 use App\Models\MadarRefuel;
 use App\Models\MadarRun;
@@ -357,12 +358,17 @@ class ClassMadarService
                 ->selectRaw('user_id, MAX(best_score) as best, SUM(stars) as stars, SUM(CASE WHEN completed_at IS NOT NULL THEN 1 ELSE 0 END) as completed')
                 ->get()->keyBy('user_id')
             : collect();
-        // « قنّاص القيم » : le record se lit dans les parties terminées.
-        $sniperBest = $game === MadarRun::GAME_SNIPER
-            ? MadarRun::where('game', MadarRun::GAME_SNIPER)->where('status', MadarRun::STATUS_FINISHED)->whereIn('user_id', $memberIds ?: [0])
+        // Un jeu de mathématiques : le record se lit dans les parties terminées.
+        $mathBest = MadarRun::isMath($game)
+            ? MadarRun::where('game', $game)->where('status', MadarRun::STATUS_FINISHED)->whereIn('user_id', $memberIds ?: [0])
                 ->groupBy('user_id')->selectRaw('user_id, MAX(score) as best')->pluck('best', 'user_id')
             : collect();
         $blocks = $this->studentBlocks($classroom, $memberIds);
+        // Un jeu de mathématiques : la position de chaque élève dans les 50 niveaux.
+        $math = MadarRun::isMath($game)
+            ? MadarMathProgress::where('game', $game)->whereIn('user_id', $memberIds ?: [0])->get()->keyBy('user_id')
+            : collect();
+        $scoring = new SniperScoring($this->config->sniper());
 
         $students = [];
         foreach ($memberIds as $id) {
@@ -378,7 +384,7 @@ class ClassMadarService
                 'allTimeBest' => (int) match ($game) {
                     MadarRun::GAME_DEFENSE => $profiles->get($id)?->defense_best ?? 0,
                     MadarRun::GAME_EXPLORER => $levels->get($id)?->best ?? 0,
-                    MadarRun::GAME_SNIPER => $sniperBest->get($id) ?? 0,
+                    MadarRun::GAME_SNIPER, MadarRun::GAME_ODD, MadarRun::GAME_MENTAL => $mathBest->get($id) ?? 0,
                     default => $profiles->get($id)?->best_score ?? 0,
                 },
                 'levelStars' => $game === MadarRun::GAME_EXPLORER ? (int) ($levels->get($id)?->stars ?? 0) : null,
@@ -393,6 +399,9 @@ class ClassMadarService
                 'gap' => $g,
                 'flaggedRuns' => (int) ($flagged[$id] ?? 0),
                 'disabledGames' => $blocks[$id] ?? [],
+                'mathLevel' => ($m = $math->get($id)) !== null
+                    ? ['level' => $scoring->levelOf((int) $m->position), 'sub' => $scoring->subOf((int) $m->position), 'bestLevel' => $scoring->levelOf((int) $m->best_position)]
+                    : null,
             ];
             $row['alerts'] = array_values(array_filter([
                 $g !== null && $g['flagged'] ? 'gap' : null,

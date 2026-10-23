@@ -4,11 +4,16 @@
  * Des cartes tombent ; chacune porte une écriture. En haut, la CIBLE (une
  * valeur). L'élève touche les cartes qui lui sont ÉGALES :
  *
- *   carte égale touchée     +points (10 × niveau × multiplicateur ≤ ×4)
+ *   carte égale touchée     +points (10 + 2 × (niveau − 1), × multiplicateur ≤ ×4)
  *   carte piège touchée     −1 bouclier, la série retombe ; on voit ce qu'elle valait
  *   carte égale qui tombe   −1 bouclier (« c'était égal »)
  *   piège qui tombe         rien : bien vu
  *   manche parfaite         +bonus et un bouclier rendu (3 au plus)
+ *
+ * Le niveau S'ADAPTE (adapt.js) : chaque manche se joue à la position de
+ * l'élève (niveau 1…50, sous-niveau أ/ب/ج) ; une manche parfaite le fait monter,
+ * deux fautes le font descendre. La partie commence à la position que donne le
+ * serveur et lui rend la position atteinte.
  *
  * Plus de bouclier : la partie s'arrête (pas de reprise — le jeu est gratuit).
  * Le calendrier est FIXE (constants.js) : la cible change à des instants
@@ -19,14 +24,29 @@
  */
 import { createRng } from '../engine/rng';
 import { makeRound } from './cards';
-import { LANES, LIVES, SCHEDULE, STREAK_STEP, fall, levelOf, roundStart, spawnAt } from './constants';
+import { LANES, LIVES, SCHEDULE, STREAK_STEP, fall, perHit, perfectBonus, roundStart, spawnAt } from './constants';
+import { clampPos, levelOfPos, subOfPos } from './levels';
+import { adaptStep, warmStart } from './adapt';
 
 export function multiplierFor(streak) {
   return Math.min(SCHEDULE.maxMultiplier, 1 + Math.floor(streak / STREAK_STEP));
 }
 
-export function createSniper(seed, { autopilot = false } = {}) {
+/**
+ * `start` = la position de l'élève (`home`). Avec `warmup` (le défaut), la
+ * partie commence deux niveaux plus bas et sa première manche ne coûte aucun
+ * bouclier : on gagne d'abord (sniper/adapt.js).
+ */
+export function createSniper(seed, { autopilot = false, start = 0, warmup = true } = {}) {
+  const home = clampPos(start);
+  const pos = warmup && !autopilot ? warmStart(home) : home;
   return {
+    start: home,
+    home,
+    warmup: warmup && !autopilot,
+    pos,
+    peak: pos,
+    prevBad: false,
     seed: seed >>> 0 || 1,
     autopilot,
     rng: createRng((seed ^ 0x5bd1e995) >>> 0),
@@ -56,11 +76,13 @@ export function cardY(card, t) {
 }
 
 function openRound(game, k, events) {
-  game.round = makeRound(game.seed, k, SCHEDULE);
+  const level = levelOfPos(game.pos);
+  const sub = subOfPos(game.pos);
+  game.round = makeRound(game.seed, k, { level, sub, cardsPerRound: SCHEDULE.cardsPerRound });
   game.roundIndex = k;
   game.nextCard = 0;
-  game.roundStats = { k, equal: game.round.cards.filter((c) => c.equal).length, hits: 0, faults: 0, closed: false };
-  events.push({ type: 'round', k, level: levelOf(k), levelId: game.round.levelId });
+  game.roundStats = { k, level, equal: game.round.cards.filter((c) => c.equal).length, hits: 0, faults: 0, closed: false };
+  events.push({ type: 'round', k, level, sub, levelId: game.round.levelId, pos: game.pos });
 }
 
 function pickLane(game) {
@@ -70,8 +92,11 @@ function pickLane(game) {
   return lane;
 }
 
+/** La manche d'échauffement : on peut se tromper sans perdre de bouclier. */
+export const isWarmingUp = (game) => game.warmup && game.roundIndex <= 0;
+
 function loseLife(game, events) {
-  if (game.autopilot) return;
+  if (game.autopilot || isWarmingUp(game)) return;
   game.lives -= 1;
   if (game.lives <= 0 && game.status === 'playing') {
     game.status = 'over';
@@ -86,11 +111,16 @@ function closeRound(game, events) {
   const perfect = s.faults === 0 && s.hits === s.equal;
   let bonus = 0;
   if (perfect) {
-    bonus = SCHEDULE.perfectBonus * levelOf(s.k);
+    bonus = perfectBonus(s.level);
     game.score += bonus;
     if (game.lives < LIVES) game.lives += 1;
   }
-  events.push({ type: 'roundEnd', k: s.k, perfect, bonus });
+  const from = game.pos;
+  const next = adaptStep(game.pos, { perfect, faults: s.faults }, game.prevBad, game.home);
+  game.pos = next.pos;
+  game.prevBad = next.bad;
+  game.peak = Math.max(game.peak, game.pos);
+  events.push({ type: 'roundEnd', k: s.k, perfect, bonus, change: next.change, from, pos: game.pos, level: levelOfPos(game.pos), sub: subOfPos(game.pos) });
 }
 
 export function step(game, dt) {
@@ -110,7 +140,7 @@ export function step(game, dt) {
   const k = game.roundIndex;
   while (game.round && game.nextCard < game.round.cards.length && t >= spawnAt(k, game.nextCard)) {
     const c = game.round.cards[game.nextCard];
-    game.cards.push({ ...c, lane: pickLane(game), born: spawnAt(k, game.nextCard), fall: fall(k), level: levelOf(k), state: 'falling' });
+    game.cards.push({ ...c, lane: pickLane(game), born: spawnAt(k, game.nextCard), fall: fall(k), level: game.roundStats.level, state: 'falling' });
     game.nextCard += 1;
   }
 
@@ -154,7 +184,7 @@ export function tap(game, cardId) {
     game.streak += 1;
     game.bestStreak = Math.max(game.bestStreak, game.streak);
     const mult = multiplierFor(game.streak);
-    const points = SCHEDULE.pointsPerLevel * c.level * mult;
+    const points = perHit(c.level) * mult;
     game.score += points;
     game.hits += 1;
     if (sameRound) game.roundStats.hits += 1;
@@ -180,7 +210,11 @@ export function resultOf(game) {
     missed: game.missed,
     bestStreak: game.bestStreak,
     round: game.roundIndex + 1,
-    level: game.roundIndex >= 0 ? levelOf(game.roundIndex) : 1,
+    start: game.start,
+    position: game.pos,
+    peak: game.peak,
+    level: levelOfPos(game.pos),
+    sub: subOfPos(game.pos),
     accuracy: game.hits + game.wrong > 0 ? game.hits / (game.hits + game.wrong) : null,
   };
 }

@@ -38,6 +38,12 @@ class MadarConfig
         return (array) $this->get('defense', []);
     }
 
+    /** @return array<string, mixed> config('madar.odd') */
+    public function odd(): array
+    {
+        return (array) $this->get('odd', []);
+    }
+
     /** @return array<string, float|int> config('madar.sniper') */
     public function sniper(): array
     {

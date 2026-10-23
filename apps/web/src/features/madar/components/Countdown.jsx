@@ -62,7 +62,7 @@ export function markCoached(game = 'orbit') {
 
 export function Coach({ game = 'orbit' }) {
   const { t } = useTranslation('madar');
-  const k = game === 'defense' ? 'defense.coach' : game === 'explorer' ? 'explorer.coach' : game === 'sniper' ? 'sniper.coach' : 'coach';
+  const k = game === 'defense' ? 'defense.coach' : game === 'explorer' ? 'explorer.coach' : game === 'sniper' ? 'sniper.coach' : game === 'odd' ? 'odd.coach' : game === 'mental' ? 'mental.coach' : 'coach';
   const reduce = useReducedMotion();
   // « قنّاص القيم » : la cible occupe le haut de l'écran ; le coach se place sous le champ.
   const place = game === 'sniper'

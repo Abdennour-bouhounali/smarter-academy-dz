@@ -58,12 +58,12 @@ class MadarSniperTest extends TestCase
         return $this->withToken($this->tokenOf($this->classroom->teacher))->json($method, "/api/v1/teacher/classrooms/{$this->classroom->id}{$uri}", $body);
     }
 
-    private function snipe(User $student, int $seconds, int $score, int $round, int $hits = 0)
+    private function snipe(User $student, int $seconds, int $score, int $round, int $hits = 0, array $extra = [], array $start = [])
     {
-        $id = $this->as($student, 'POST', '/madar/runs', ['game' => 'sniper'])->assertCreated()->assertJsonPath('run.game', 'sniper')->json('run.id');
+        $id = $this->as($student, 'POST', '/madar/runs', ['game' => 'sniper'] + $start)->assertCreated()->assertJsonPath('run.game', 'sniper')->json('run.id');
         $now = now();
         Carbon::setTestNow($now->copy()->addSeconds($seconds));
-        $res = $this->as($student, 'POST', "/madar/runs/{$id}/finish", ['score' => $score, 'stars' => $hits, 'wave' => $round]);
+        $res = $this->as($student, 'POST', "/madar/runs/{$id}/finish", ['score' => $score, 'stars' => $hits, 'wave' => $round] + $extra);
         Carbon::setTestNow($now->copy()->addSeconds($seconds + 1));
 
         return $res;
@@ -131,11 +131,76 @@ class MadarSniperTest extends TestCase
     public function test_an_impossible_round_or_score_is_clamped_and_flagged(): void
     {
         $scoring = new SniperScoring(config('madar.sniper'));
+        $start = $this->as($this->students[0], 'GET', '/madar')->json('sniper.position');
         $this->snipe($this->students[0], 20, 50, 30)->assertOk()
             ->assertJsonPath('run.wave', $scoring->maxRound(20_000))->assertJsonPath('run.flagged', true);
         $this->snipe($this->students[0], 20, 999_999, 1, 999)->assertOk()
-            ->assertJsonPath('run.score', $scoring->maxPlausible(20_000))->assertJsonPath('run.flagged', true);
-        $this->assertLessThanOrEqual(intdiv($scoring->maxPlausible(20_000), 10), MadarRun::latest('id')->value('stars'));
+            ->assertJsonPath('run.score', $scoring->maxPlausible(20_000, $start))->assertJsonPath('run.flagged', true);
+        $this->assertLessThanOrEqual(intdiv($scoring->maxPlausible(20_000, $start), 10), MadarRun::latest('id')->value('stars'));
+    }
+
+    public function test_a_student_starts_at_the_entry_level_of_their_year(): void
+    {
+        $scoring = new SniperScoring(config('madar.sniper'));
+        $student = $this->students[0];
+        $student->update(['grade' => '4am']);
+        $this->as($student, 'GET', '/madar')->assertOk()
+            ->assertJsonPath('sniper.level', 19)->assertJsonPath('sniper.sub', 1)->assertJsonPath('sniper.entryLevel', 19)
+            ->assertJsonPath('sniper.unlockedUpTo', 19)->assertJsonPath('sniper.levels', 50)->assertJsonPath('sniper.subLevels', 3);
+        $this->as($student, 'POST', '/madar/runs', ['game' => 'sniper'])->assertCreated()->assertJsonPath('run.position', $scoring->positionOf(19));
+
+        $young = $this->students[1];
+        $young->update(['grade' => '1am']);
+        $this->as($young, 'GET', '/madar')->assertJsonPath('sniper.level', 1)->assertJsonPath('sniper.unlockedUpTo', 1);
+    }
+
+    public function test_a_lower_open_level_can_be_replayed_a_closed_one_cannot(): void
+    {
+        $scoring = new SniperScoring(config('madar.sniper'));
+        $student = $this->students[0];
+        $student->update(['grade' => '3am']);
+        $this->as($student, 'POST', '/madar/runs', ['game' => 'sniper', 'level' => 5])->assertCreated()->assertJsonPath('run.position', $scoring->positionOf(5));
+        $this->as($student, 'POST', '/madar/runs', ['game' => 'sniper', 'level' => 40])->assertStatus(422)->assertJsonPath('reason', 'level_locked');
+        $this->as($student, 'POST', '/madar/runs', ['game' => 'sniper', 'level' => 51])->assertStatus(404);
+    }
+
+    public function test_the_position_adapts_is_saved_and_is_bounded_by_the_rounds_played(): void
+    {
+        $scoring = new SniperScoring(config('madar.sniper'));
+        $student = $this->students[0];
+        $student->update(['grade' => '2am']);
+        $start = $scoring->positionOf(5);
+        $seconds = (int) ceil($scoring->roundStart(4)) + 1;
+
+        // Quatre manches parfaites : quatre positions plus haut.
+        $res = $this->snipe($student, $seconds, 600, 5, 20, ['position' => $start + 4, 'peak' => $start + 4])->assertOk()
+            ->assertJsonPath('run.flagged', false)
+            ->assertJsonPath('level.from.level', 5)->assertJsonPath('level.to.level', 6)->assertJsonPath('level.to.sub', 2)->assertJsonPath('level.change', 'up');
+        $this->as($student, 'GET', '/madar')->assertJsonPath('sniper.position', $start + 4)->assertJsonPath('sniper.unlockedUpTo', 6);
+        $this->as($student, 'POST', '/madar/runs', ['game' => 'sniper'])->assertCreated()->assertJsonPath('run.position', $start + 4);
+
+        // Annoncer 30 positions de plus en 2 manches : ramené à +2, signalé.
+        $this->snipe($student, (int) ceil($scoring->roundStart(1)) + 1, 100, 2, 0, ['position' => $start + 40, 'peak' => $start + 40])->assertOk()
+            ->assertJsonPath('run.flagged', true)->assertJsonPath('level.to.position', $start + 4 + 2);
+
+        // Une partie ratée : la position redescend, jamais sous 0, et le plus haut atteint reste ouvert.
+        $this->snipe($student, (int) ceil($scoring->roundStart(1)) + 1, 0, 2, 0, ['position' => $start, 'peak' => $start + 6])->assertOk()
+            ->assertJsonPath('level.change', 'down');
+        $this->as($student, 'GET', '/madar')->assertJsonPath('sniper.position', $start)->assertJsonPath('sniper.unlockedUpTo', 7);
+    }
+
+    public function test_the_warm_up_may_end_below_the_start_but_never_lower_than_it_allows(): void
+    {
+        $scoring = new SniperScoring(config('madar.sniper'));
+        $student = $this->students[0];
+        $student->update(['grade' => '4am']);
+        $start = $scoring->positionOf(19);
+        // L'échauffement commence deux niveaux plus bas : finir là, sans manche jouée, est permis.
+        $this->snipe($student, 5, 0, 0, 0, ['position' => $start - 6, 'peak' => $start - 6])->assertOk()
+            ->assertJsonPath('run.flagged', false)->assertJsonPath('level.to.position', $start - 6);
+        // Plus bas que l'échauffement ne le permet : ramené, signalé.
+        $this->snipe($student, 5, 0, 0, 0, ['position' => 0])->assertOk()
+            ->assertJsonPath('run.flagged', true)->assertJsonPath('level.to.position', $start - 12);
     }
 
     public function test_it_has_its_own_week_leaderboard_and_teacher_view(): void
@@ -149,6 +214,9 @@ class MadarSniperTest extends TestCase
         $this->asTeacher('GET', '/madar/results?game=sniper')->assertOk()
             ->assertJsonPath('game', 'sniper')->assertJsonPath('summary.players', 1)
             ->assertJsonPath('students.0.allTimeBest', 500)->assertJsonPath('students.0.weekWave', 3);
+        $row = collect($this->asTeacher('GET', '/madar/results?game=sniper')->json('students'))->firstWhere('student.id', $this->students[1]->id);
+        $this->assertNotNull($row['mathLevel']);
+        $this->assertArrayHasKey('bestLevel', $row['mathLevel']);
         $this->asTeacher('GET', '/madar/settings')->assertOk()->assertJsonPath('options.gameCategories.sniper', 'math');
     }
 

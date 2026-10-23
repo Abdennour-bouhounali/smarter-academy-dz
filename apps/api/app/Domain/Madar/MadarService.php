@@ -12,6 +12,7 @@ use App\Domain\Progress\ProgressEngine;
 use App\Models\Classroom;
 use App\Models\MadarHeartAdjustment;
 use App\Models\MadarLevelProgress;
+use App\Models\MadarMathProgress;
 use App\Models\MadarProfile;
 use App\Models\MadarRefuel;
 use App\Models\MadarRun;
@@ -183,7 +184,9 @@ class MadarService
                 'competition' => $this->competitionView($ctx, $student, $week, MadarRun::GAME_DEFENSE),
             ],
             'explorer' => $this->explorerView($ctx, $student, $week),
-            'sniper' => $this->sniperView($ctx, $student, $week),
+            'sniper' => $this->mathView($ctx, $student, $week, MadarRun::GAME_SNIPER),
+            'odd' => $this->mathView($ctx, $student, $week, MadarRun::GAME_ODD),
+            'mental' => $this->mathView($ctx, $student, $week, MadarRun::GAME_MENTAL),
             'adjustments' => $this->consumeAdjustments($student),
         ];
     }
@@ -222,21 +225,68 @@ class MadarService
     }
 
     /**
-     * « قنّاص القيم » : le record, la manche la plus lointaine, les parties, le
-     * classement de la semaine. Rien n'est gardé dans le profil : tout se lit
-     * dans les parties terminées.
+     * Un jeu de mathématiques (« قنّاص القيم », « الدخيل ») : le record, la
+     * manche la plus lointaine, les parties, le classement de la semaine — tout
+     * se lit dans les parties terminées — et la position de l'élève dans les 50
+     * niveaux, propre à CE jeu.
      */
-    private function sniperView(array $ctx, User $student, string $week): array
+    private function mathView(array $ctx, User $student, string $week, string $game): array
     {
-        $runs = MadarRun::where('user_id', $student->id)->where('game', MadarRun::GAME_SNIPER)->where('status', MadarRun::STATUS_FINISHED)
+        $runs = MadarRun::where('user_id', $student->id)->where('game', $game)->where('status', MadarRun::STATUS_FINISHED)
             ->selectRaw('MAX(score) as best, MAX(wave) as best_round, COUNT(*) as n')->first();
+        $math = $this->mathProgress($ctx, $student, $game);
 
         return [
             'best' => (int) ($runs?->best ?? 0),
             'bestRound' => (int) ($runs?->best_round ?? 0),
             'runsCount' => (int) ($runs?->n ?? 0),
-            'weekBest' => $this->weekBest($student, $week, MadarRun::GAME_SNIPER),
-            'competition' => $this->competitionView($ctx, $student, $week, MadarRun::GAME_SNIPER),
+            'weekBest' => $this->weekBest($student, $week, $game),
+            'competition' => $this->competitionView($ctx, $student, $week, $game),
+        ] + $math;
+    }
+
+    /** La borne d'un jeu de mathématiques ; les positions viennent toujours de SniperScoring. */
+    private function mathScoring(string $game): SniperScoring|OddScoring
+    {
+        return in_array($game, [MadarRun::GAME_ODD, MadarRun::GAME_MENTAL], true)
+            ? new OddScoring((array) $this->config->get($game, []), $this->sniperScoring())
+            : $this->sniperScoring();
+    }
+
+    private function sniperScoring(): SniperScoring
+    {
+        return new SniperScoring($this->config->sniper());
+    }
+
+    /**
+     * Où en est l'élève dans les 50 niveaux d'un jeu de mathématiques. Sans
+     * partie jouée : au niveau d'entrée de son année (`sniper.entry`). Ouvert :
+     * tout ce qui précède l'entrée de son année, et jusqu'au plus haut atteint.
+     *
+     * @return array{position: int, level: int, sub: int, bestPosition: int, bestLevel: int, entryLevel: int, unlockedUpTo: int, levels: int, subLevels: int}
+     */
+    private function mathProgress(array $ctx, User $student, string $game): array
+    {
+        $scoring = $this->sniperScoring();
+        $grade = strtolower((string) ($student->grade ?? $ctx['classroom']?->grade));
+        // Un jeu peut avoir sa propre entrée par année (« الحساب الذهني ») ; sinon celle des 50 niveaux partagés.
+        $own = (array) $this->config->get("{$game}.entry", []);
+        $entry = isset($own[$grade]) ? (int) $own[$grade] : $scoring->entryLevel($grade);
+        $row = MadarMathProgress::where('user_id', $student->id)->where('game', $game)->first();
+        $position = $row ? (int) $row->position : $scoring->positionOf($entry);
+        $best = $row ? max((int) $row->best_position, $position) : $position;
+        $sniper = $this->config->sniper();
+
+        return [
+            'position' => $position,
+            'level' => $scoring->levelOf($position),
+            'sub' => $scoring->subOf($position),
+            'bestPosition' => $best,
+            'bestLevel' => $scoring->levelOf($best),
+            'entryLevel' => $entry,
+            'unlockedUpTo' => max($entry, $scoring->levelOf($best)),
+            'levels' => (int) $sniper['levels'],
+            'subLevels' => (int) $sniper['sub_levels'],
         ];
     }
 
@@ -319,7 +369,7 @@ class MadarService
      */
     private function seedFor(string $game, array $ctx, User $student, string $week): int
     {
-        if (! in_array($game, [MadarRun::GAME_DEFENSE, MadarRun::GAME_SNIPER], true)) {
+        if ($game !== MadarRun::GAME_DEFENSE && ! MadarRun::isMath($game)) {
             return random_int(1, 2_147_483_646);
         }
         $scope = $ctx['classroom'] ? 'c'.$ctx['classroom']->id : 'u'.$student->id;
@@ -354,6 +404,22 @@ class MadarService
         if ($closedBy !== null) {
             throw new MadarException($closedBy === 'class' ? MadarException::GAME_DISABLED : MadarException::GAME_DISABLED_FOR_STUDENT);
         }
+        $startPosition = null;
+        if (MadarRun::isMath($game)) {
+            // Le jeu reprend à la position de l'élève ; il peut aussi rejouer un niveau OUVERT.
+            $math = $this->mathProgress($ctx, $student, $game);
+            if ($level !== null) {
+                if ($level < 1 || $level > $math['levels']) {
+                    throw new MadarException(MadarException::NOT_FOUND);
+                }
+                if ($level > $math['unlockedUpTo']) {
+                    throw new MadarException(MadarException::LEVEL_LOCKED);
+                }
+                $startPosition = $level === $math['level'] ? $math['position'] : $this->sniperScoring()->positionOf($level);
+            } else {
+                $startPosition = $math['position'];
+            }
+        }
         if ($game === MadarRun::GAME_EXPLORER) {
             $level ??= 1;
             if ($this->levels->find($level) === null) {
@@ -364,7 +430,7 @@ class MadarService
             }
         }
 
-        return DB::transaction(function () use ($student, $ctx, $game, $level) {
+        return DB::transaction(function () use ($student, $ctx, $game, $level, $startPosition) {
             $profile = $this->profile($student, $ctx, lock: true);
 
             if ($this->runsToday($student) >= (int) $ctx['settings']['dailyRunCap']) {
@@ -393,12 +459,13 @@ class MadarService
                 // « المستكشف » : la carte EST le niveau — la graine est son numéro.
                 'seed' => $game === MadarRun::GAME_EXPLORER ? $level : $this->seedFor($game, $ctx, $student, $week),
                 'wave' => $game === MadarRun::GAME_EXPLORER ? $level : null,
+                'level_start' => $startPosition,
                 'status' => MadarRun::STATUS_IN_PROGRESS,
                 'started_at' => now(),
             ]);
 
             return [
-                'run' => ['id' => $run->uuid, 'game' => $game, 'seed' => (int) $run->seed, 'level' => $game === MadarRun::GAME_EXPLORER ? $level : null, 'revives' => 0],
+                'run' => ['id' => $run->uuid, 'game' => $game, 'seed' => (int) $run->seed, 'level' => $game === MadarRun::GAME_EXPLORER ? $level : null, 'position' => $startPosition, 'revives' => 0],
                 'hearts' => (int) $profile->fresh()->hearts,
                 'runsToday' => $this->runsToday($student),
             ];
@@ -447,16 +514,17 @@ class MadarService
      * borne aussi la vague), SniperScoring pour « قنّاص القيم » (qui borne la
      * manche) ; une seconde clôture renvoie la première, inchangée.
      */
-    public function finishRun(User $student, MadarRun $run, int $claimed, int $stars, int $wave = 0, bool $completed = false): array
+    /** @param  array{position?: ?int, peak?: ?int}  $math  « قنّاص القيم » : la position d'arrivée et la plus haute annoncées */
+    public function finishRun(User $student, MadarRun $run, int $claimed, int $stars, int $wave = 0, bool $completed = false, array $math = []): array
     {
         if ($run->game === MadarRun::GAME_EXPLORER) {
             return $this->finishLevel($student, $run, $claimed, $stars, $completed);
         }
         $ctx = $this->context($student);
         $isDefense = $run->game === MadarRun::GAME_DEFENSE;
-        $isSniper = $run->game === MadarRun::GAME_SNIPER;
+        $isMath = MadarRun::isMath($run->game);
 
-        $outcome = DB::transaction(function () use ($student, $ctx, $run, $claimed, $stars, $wave, $isDefense, $isSniper) {
+        $outcome = DB::transaction(function () use ($student, $ctx, $run, $claimed, $stars, $wave, $isDefense, $isMath, $math) {
             $locked = MadarRun::whereKey($run->id)->lockForUpdate()->first();
             if ($locked->status === MadarRun::STATUS_FINISHED) {
                 return ['run' => $locked, 'previousBest' => null, 'unlocked' => [], 'unlockedTurrets' => [], 'rankBefore' => null, 'duplicate' => true];
@@ -480,11 +548,11 @@ class MadarService
                 $settled = (new DefenseScoring($this->config->defense()))->settle($claimed, $wave, $duration);
                 // `stars` porte les ennemis abattus : jamais plus que le score n'en contient.
                 $stars = min(max(0, $stars), $settled['score']);
-            } elseif ($isSniper) {
+            } elseif ($isMath) {
                 $sniper = $this->config->sniper();
-                $settled = (new SniperScoring($sniper))->settle($claimed, $wave, $duration);
-                // `stars` porte les cibles touchées : chacune vaut au moins `points_per_level`.
-                $stars = min(max(0, $stars), intdiv($settled['score'], max(1, (int) $sniper['points_per_level'])));
+                $settled = $this->mathScoring($locked->game)->settle($claimed, $wave, $duration, (int) ($locked->level_start ?? 0), $math['position'] ?? null, $math['peak'] ?? null);
+                // `stars` porte les cibles touchées : chacune vaut au moins `points_base`.
+                $stars = min(max(0, $stars), intdiv($settled['score'], max(1, (int) $sniper['points_base'])));
             } else {
                 $settled = (new MadarScoring($this->config->physics()))->settle($claimed, $duration) + ['wave' => null];
                 $physics = $this->config->physics();
@@ -500,12 +568,23 @@ class MadarService
                 'score' => $settled['score'],
                 'stars' => min($stars, 65535),
                 'wave' => $settled['wave'],
+                'level_end' => $isMath ? $settled['position'] : null,
                 'flagged' => $settled['flagged'],
             ])->save();
 
-            if ($isSniper) {
+            if ($isMath) {
+                // La position de l'élève avance (ou recule) : la prochaine partie reprend là.
+                $progress = MadarMathProgress::where('user_id', $student->id)->where('game', $locked->game)->lockForUpdate()->first()
+                    ?? new MadarMathProgress(['user_id' => $student->id, 'game' => $locked->game, 'position' => 0, 'best_position' => 0]);
+                $progress->position = $settled['position'];
+                $progress->best_position = max((int) $progress->best_position, $settled['peak'], $settled['position']);
+                $progress->rounds = (int) $progress->rounds + (int) $settled['wave'];
+                $progress->save();
+            }
+
+            if ($isMath) {
                 // Le record se lit dans les parties terminées avant celle-ci.
-                $previousBest = (int) MadarRun::where('user_id', $student->id)->where('game', MadarRun::GAME_SNIPER)
+                $previousBest = (int) MadarRun::where('user_id', $student->id)->where('game', $locked->game)
                     ->where('status', MadarRun::STATUS_FINISHED)->whereKeyNot($locked->id)->max('score');
             } elseif ($isDefense) {
                 $previousBest = (int) $profile->defense_best;
@@ -547,7 +626,7 @@ class MadarService
         $week = $finished->week_start->format('Y-m-d');
         $best = match (true) {
             $isDefense => (int) $profile->defense_best,
-            $isSniper => (int) MadarRun::where('user_id', $student->id)->where('game', MadarRun::GAME_SNIPER)->where('status', MadarRun::STATUS_FINISHED)->max('score'),
+            $isMath => (int) MadarRun::where('user_id', $student->id)->where('game', $finished->game)->where('status', MadarRun::STATUS_FINISHED)->max('score'),
             default => (int) $profile->best_score,
         };
 
@@ -565,7 +644,7 @@ class MadarService
             'best' => $best,
             'bestWave' => match (true) {
                 $isDefense => (int) $profile->defense_best_wave,
-                $isSniper => (int) MadarRun::where('user_id', $student->id)->where('game', MadarRun::GAME_SNIPER)->where('status', MadarRun::STATUS_FINISHED)->max('wave'),
+                $isMath => (int) MadarRun::where('user_id', $student->id)->where('game', $finished->game)->where('status', MadarRun::STATUS_FINISHED)->max('wave'),
                 default => null,
             },
             'newBest' => ! $outcome['duplicate'] && (int) $finished->score > 0 && (int) $finished->score > $outcome['previousBest'],
@@ -577,8 +656,23 @@ class MadarService
             ] : null,
             'unlocked' => $outcome['unlocked'],
             'unlockedTurrets' => $outcome['unlockedTurrets'],
+            'level' => $isMath ? $this->levelChange($finished) : null,
             'hearts' => (int) $profile->hearts,
             'runsToday' => $this->runsToday($student),
+        ];
+    }
+
+    /** « قنّاص القيم » : d'où la partie est partie, où elle est arrivée. */
+    private function levelChange(MadarRun $run): array
+    {
+        $scoring = $this->sniperScoring();
+        $from = (int) ($run->level_start ?? 0);
+        $to = (int) ($run->level_end ?? $from);
+
+        return [
+            'from' => ['position' => $from, 'level' => $scoring->levelOf($from), 'sub' => $scoring->subOf($from)],
+            'to' => ['position' => $to, 'level' => $scoring->levelOf($to), 'sub' => $scoring->subOf($to)],
+            'change' => $to > $from ? 'up' : ($to < $from ? 'down' : 'same'),
         ];
     }
 
@@ -830,6 +924,8 @@ class MadarService
             'content' => $this->presenter->public($refuel, $refuel->lesson->code),
             'learningPoint' => ['code' => $refuel->learningPoint?->code, 'title' => $refuel->learningPoint?->title],
             'lesson' => ['code' => $refuel->lesson->code, 'title' => $refuel->lesson->title],
+            // Pourquoi cette question (ChallengeQuestionSelector::REASON_*) : l'élève le lit en bas de la carte.
+            'reason' => $refuel->reason,
             // Le chronomètre est celui du SERVEUR : le client corrige l'horloge du téléphone avec serverNow.
             'timeLimitS' => (int) round($this->timeLimitMs($refuel) / 1000),
             'servedAt' => $refuel->served_at->format('Y-m-d\TH:i:s.vP'),

@@ -47,9 +47,14 @@ class MadarController extends Controller
             'stars' => 'required|integer|min:0|max:1000000',
             'wave' => 'sometimes|integer|min:0|max:10000',
             'completed' => 'sometimes|boolean',
+            'position' => 'sometimes|integer|min:0|max:10000',
+            'peak' => 'sometimes|integer|min:0|max:10000',
         ]);
 
-        return $this->attempt(fn () => $this->madar->finishRun($request->user(), $this->madar->ownedRun($request->user(), $uuid), (int) $data['score'], (int) $data['stars'], (int) ($data['wave'] ?? 0), (bool) ($data['completed'] ?? false)));
+        return $this->attempt(fn () => $this->madar->finishRun(
+            $request->user(), $this->madar->ownedRun($request->user(), $uuid), (int) $data['score'], (int) $data['stars'], (int) ($data['wave'] ?? 0), (bool) ($data['completed'] ?? false),
+            ['position' => isset($data['position']) ? (int) $data['position'] : null, 'peak' => isset($data['peak']) ? (int) $data['peak'] : null],
+        ));
     }
 
     /** PATCH /madar/ship — {ship}. */

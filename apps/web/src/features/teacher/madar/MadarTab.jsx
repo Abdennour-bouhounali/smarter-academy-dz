@@ -11,10 +11,11 @@ import Modal from '../../../components/admin/ui/Modal';
 import { Toggle } from '../dailyChallenge/ClassChallengeSettings';
 import ShipIcon from '../../madar/components/ShipIcon';
 import { formatScore } from '../../madar/madarModel';
+import { SUB_LETTERS } from '../../madar/components/SniperHud';
 import MathLabel from '../../../lessons/common/components/MathLabel';
 import RichText from '../../practice/RichText';
 
-const GAMES = ['orbit', 'defense', 'explorer', 'sniper'];
+const GAMES = ['orbit', 'defense', 'explorer', 'sniper', 'odd', 'mental'];
 const percent = (x) => (x == null ? '—' : `${Math.round(x * 100)}%`);
 const fullName = (s) => [s.firstName, s.lastName].filter(Boolean).join(' ');
 
@@ -229,7 +230,7 @@ function StudentGamesDialog({ classGroupId, student, options, classDisabled, onC
     <Modal open onClose={() => (busy ? null : onClose())} title={t('teacher.studentGames.title', { name: fullName(student.student) })}>
       <div className="space-y-4" data-student-games-dialog>
         <p className="font-inter text-sm text-slate-600">{t('teacher.studentGames.help')}</p>
-        {['fun', 'math'].map((cat) => {
+        {['math', 'fun'].map((cat) => {
           const list = games.filter((g) => (categories[g] ?? 'fun') === cat);
           if (!list.length) return null;
           return (
@@ -372,7 +373,8 @@ export default function MadarTab({ classGroup }) {
 
   const isDefense = results.game === 'defense';
   const isExplorer = results.game === 'explorer';
-  const isSniper = results.game === 'sniper';
+  // Les jeux de mathématiques montrent la manche et le niveau de chaque élève.
+  const isSniper = ['sniper', 'odd', 'mental'].includes(results.game);
   const { summary, students, adjustments } = results;
   const tiles = [
     ['players', `${summary.players} / ${results.members}`],
@@ -437,6 +439,7 @@ export default function MadarTab({ classGroup }) {
                     <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.weekBest')}</th>
                     {isDefense && <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.weekWave')}</th>}
                     {isSniper && <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.weekRound')}</th>}
+                    {isSniper && <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.mathLevel')}</th>}
                     {isExplorer && <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.levelStars')}</th>}
                     {isExplorer && <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.levelsCompleted')}</th>}
                     <th className="px-3 py-3 text-start font-semibold">{t('teacher.table.runs')}</th>
@@ -459,6 +462,16 @@ export default function MadarTab({ classGroup }) {
                       <td className="px-3 py-3 font-space font-bold" dir="ltr">{row.weekBest != null ? formatScore(row.weekBest) : t('teacher.table.none')}</td>
                       {isDefense && <td className="px-3 py-3 font-space font-bold" dir="ltr">{row.weekWave ?? t('teacher.table.none')}</td>}
                       {isSniper && <td className="px-3 py-3 font-space font-bold" dir="ltr">{row.weekWave ?? t('teacher.table.none')}</td>}
+                      {isSniper && (
+                        <td className="px-3 py-3" data-math-level>
+                          {row.mathLevel ? (
+                            <span className="font-inter text-sm">
+                              <b className="font-space">{t('sniper.hud.level', { n: row.mathLevel.level, sub: SUB_LETTERS[row.mathLevel.sub - 1] })}</b>
+                              <span className="ms-1 text-xs text-slate-500">{t('teacher.table.mathBest', { n: row.mathLevel.bestLevel })}</span>
+                            </span>
+                          ) : t('teacher.table.none')}
+                        </td>
+                      )}
                       {isExplorer && <td className="px-3 py-3 font-space font-bold" dir="ltr">★ {row.levelStars ?? 0}</td>}
                       {isExplorer && <td className="px-3 py-3" dir="ltr">{row.levelsCompleted ?? 0} / 12</td>}
                       <td className="px-3 py-3" dir="ltr">{row.runs}</td>

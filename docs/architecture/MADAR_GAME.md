@@ -7,7 +7,7 @@
 
 Madar is a **game space** of four games in two families (since 2026-10-23):
 - **« ألعاب ترفيهية »** (fun): the one-tap orbit runner « قفزة المدار », the tower defense « دفاع الكوكب » (§14) and the multi-level platformer « المستكشف » (§15). They are joined to learning by one rule: **hearts are earned by answering the student's own skills (الكفاءات) correctly.**
-- **« ألعاب رياضيات »** (maths): « قنّاص القيم » (§16), where the maths IS the gameplay. A maths game is **free**: it costs no heart and has no revive.
+- **« ألعاب رياضيات »** (maths): « قنّاص القيم » (§16), « الدخيل » (§16ter) and « الحساب الذهني » (§16quater), where the maths IS the gameplay. A maths game is **free**: it costs no heart and has no revive. It adapts to the student over 50 levels.
 
 The teacher can close any game for the whole class or for **one student** (§16bis).
 
@@ -139,6 +139,17 @@ The question is served **without its answer key** (`ChallengeQuestionPresenter::
 Every judged answer becomes **ordinary learning evidence**: practice weight, `attemptId = evidence_attempt_id`, `sourceId = madar:{uuid}`.
 
 On screen the question sits on a **white card** in the middle of the dark game. Maths reads best black on white.
+
+**Why this question** (owner, 2026-10-23). At the bottom of the card, one line says why the selector chose the question: `refuel.reason`, which is `madar_refuels.reason` (`ChallengeQuestionSelector::REASON_*`). The sentence is always true to the reason:
+
+| `reason` | Line shown |
+|---|---|
+| `reinforce`, `recent_mistake` | « اخترنا لك هذا التمرين لأنه يتناول كفاءة تحتاج إلى تدعيم » |
+| `retrieval` | « … لتتذكّر كفاءة أتقنتها قبل مدّة » |
+| `recently_learned` | « … لأنه يتناول كفاءة تعلّمتها مؤخرًا » |
+| `review`, `warmup` | « … لتراجع كفاءة من برنامجك » |
+
+A review question is never called « تحتاج إلى تدعيم ». The strings are in `madar.json › refuel.reason.*`.
 
 ## 5bis. Integrity — did the student do it themselves? (2026-10-22)
 
@@ -417,9 +428,9 @@ A rule of `null` means "always open". It is checked with `array_key_exists`, not
 - the refuel station (`RefuelStation`, `base` context);
 - the teacher's heart messages (`AdjustmentNotice`).
 
-The cards are grouped in **two sections**, from `GET /madar › games[].category` (`MadarRun::CATEGORIES`):
-- « ألعاب ترفيهية » (`fun`): each run costs a heart;
-- « ألعاب رياضيات » (`math`): free, with a « مجانية » badge (`games[].free`).
+The cards are grouped in **two sections**, from `GET /madar › games[].category` (`MadarRun::CATEGORIES`), **maths first** (owner, 2026-10-23):
+- « ألعاب رياضيات » (`math`), on top: free, with a « مجانية » badge (`games[].free`), adapted to the student's level (§16);
+- « ألعاب ترفيهية » (`fun`), below: each run costs a heart.
 
 Each game is a card with a code-drawn illustration, the skill it trains, a short description, the record (orbit score, defense wave, explorer stars, sniper score) and the week's rank. Clicking a card opens `/espace/jeux/:game` (`orbit | defense | explorer | sniper`). That page is `MadarPage`: the same state machine, with the game taken from the URL, and « فضاء الألعاب » as the back link.
 
@@ -512,31 +523,89 @@ The **next level unlocks** when the previous one is completed (`madar_level_prog
 
 | Event | Effect |
 |---|---|
-| equal card hit | +10 × level × multiplier (×1 → ×4, one step every 5 hits in a row) |
+| equal card hit | + (10 + 2 × (level − 1)) × multiplier (×1 → ×4, one step every 5 hits in a row) |
 | trap hit | −1 shield, the streak drops, and the card shows « = » **what it is really worth** (red plate) |
 | equal card that lands | −1 shield, it shows « = » the target (green plate) |
 | trap that lands | nothing: well seen |
-| perfect round (all equal cards hit, no fault) | + 50 × level and one shield back (3 at most) |
+| perfect round (all equal cards hit, no fault) | + 3 × the level's points, and one shield back (3 at most) |
 
 **No revive.** At 0 shields the run ends and the results screen opens directly. The game is free: the student just plays again.
 
-### The six levels (`sniper/cards.js`)
+### 50 levels × 3 sub-levels, adapted to the student (2026-10-23, owner)
 
-Rounds 1–18 open the levels in order, 3 rounds each. After that the rounds mix levels 3–6.
+The maths games cover **the whole cycle moyen**: 50 levels in 11 families, each in three sub-levels أ / ب / ج (bigger numbers, subtler traps). A **position** is a sub-level, from 0 to 149, with `position = (level − 1) × 3 + (sub − 1)`. The catalogue is `features/madar/sniper/levels.js`, mirrored in `config/madar.php › sniper`.
 
-| Level | Target | Equal forms | Traps |
-|---|---|---|---|
-| `ops` العمليات والأولويات | an integer 12–40 | a + b, a × b, a + b × c, (a + b) × c, a × b − c, a ÷ b | left-to-right reading, parentheses ignored, a × (b − c), n ± 1 |
-| `powers` القوى | bᵏ (b = 2, 3, 5, 10; k may be negative) | bᵏ, bᵐ × bⁿ, bᵐ ÷ bⁿ, (bᵐ)ⁿ, another base, repeated product, 1/10ᵏ | exponents multiplied, kᵇ, b × k, exponent sign forgotten, b^(k±1) |
-| `fractions` الكسور والأعداد العشرية | p/q | scaled fraction, decimal (comma), p ÷ q, percent, sums, 1 − …, 2 × … | inverted, numerators and denominators added, the same number added top and bottom, « 0,pq », (p ± 1)/q |
-| `roots` الجذور التربيعية | a√r | √(a²r), √m × √n, b√r + c√r, √(b²r) + √(c²r) | √(ar), r√a, √(x + y) taken for √x + √y, (a + 1)√r, a nearby radicand |
-| `literal` الحساب الحرفي | ax + b | a(x + b/a), (a−1)x + x + b, (a+k)x + b − kx, (2ax + 2b) ÷ 2, mixed | distributivity forgotten, (a + b)x, bx + a, a sign error, a doubled constant |
-| `identities` المتطابقات الشهيرة | (x ± k)², x² − k² | the square, the product, (k ± x)², the expanded sum | x² ± k², a half-forgotten double product, the wrong sign, 2x ± 2k, 2k for k² |
+| Family | Levels |
+|---|---|
+| الأعداد الطبيعية والعمليات | 1 sums · 2 differences · 3 times tables · 4 division |
+| أولويات العمليات والأقواس | 5 + and − together · 6 × before + · 7 parentheses · 8 compound priorities |
+| القواسم والمضاعفات | 9 prime factorisation · 10 PGCD · 11 PPCM |
+| الكسور | 12 equivalent · 13 simplifying · 14 same denominator · 15 different denominators · 16 product · 17 quotient · 18 fraction of a number |
+| الأعداد العشرية والنسب المئوية | 19 fraction ↔ decimal · 20 decimal operations · 21 percentage · 22 percentage of a quantity |
+| الأعداد النسبية | 23 sum · 24 difference · 25 product and quotient · 26 compound |
+| القوى | 27 powers of an integer · 28 same-base rules · 29 powers of 10 · 30 scientific notation · 31 power of a product |
+| الجذور التربيعية | 32 perfect squares · 33 simplifying · 34 product and quotient · 35 sums · 36 rationalising the denominator |
+| الحساب الحرفي | 37 reducing · 38 simple expansion · 39 double expansion · 40 (a + b)² · 41 (a − b)² · 42 (a − b)(a + b) · 43 factorising |
+| المعادلات | 44 x + a = b · 45 ax + b = c · 46 parentheses / unknown on both sides · 47 value of an expression |
+| حساب المثلثات | 48 sin and cos of 30°, 45°, 60° · 49 tan · 50 relations (sin² + cos² = 1, tan = sin ÷ cos) |
+
+**Three ways to read a card** (the level's `mode`):
+
+| Mode | The card is equal when… | HUD prompt |
+|---|---|---|
+| `value` | its value equals the target | « أصِب ما يساوي » |
+| `solution` | it is an equation whose solution is the target | « أصِب المعادلات التي حلّها » |
+| `at` | its value at x = a is the target | « أصِب ما قيمته عندما x = a » |
+
+**The traps are the real mistakes** of 11–13-year-olds:
+- left-to-right reading and parentheses ignored;
+- numerators and denominators added, or a fraction inverted;
+- a misplaced decimal comma;
+- the sign of a signed number, or of an exponent, forgotten;
+- exponents multiplied;
+- √(x + y) taken for √x + √y;
+- distributivity forgotten, and (a + b)² = a² + b²;
+- in an equation, a term moved across without changing its sign;
+- (2x)² for 2x².
+
+**Placement by year.** The first game starts at the entry level of the student's year (`sniper.entry`):
+
+| Year | Entry level |
+|---|---|
+| 1AM | 1 |
+| 2AM | 5 |
+| 3AM | 12 |
+| 4AM | 19 |
+
+The entry is taken from what the earlier years already covered: **never start hard** (owner, 2026-10-23).
+
+Everything before the entry is **open** (the earlier years), and so is everything up to the highest position the student has reached. The student can replay any open level from the lobby's level map (`POST /madar/runs {game: 'sniper', level}`); a closed one answers `level_locked`.
+
+**Never start hard: the warm-up** (owner, 2026-10-23, every maths game).
+- Every game opens **two levels below** the student's position, `home` (`WARMUP_DROP` = 6 positions, mirrored by `sniper.warmup_drop`).
+- Its **first round costs no shield** (`isWarmingUp`; the HUD shows « 🔥 جولة إحماء — أخطاؤها لا تكلّف دروعًا »).
+- Below `home`, a round with at most one fault climbs **a whole level**, never above `home`.
+- The student wins first, then the level rises progressively.
+
+**Adaptation (`sniper/adapt.js`), after each round:**
+
+| The round | The position |
+|---|---|
+| below `home`, at most one fault (the warm-up) | one level up, never above `home` |
+| perfect (all equal cards hit, no fault) | one sub-level up |
+| 2 faults or more (a trap hit, an equal card landed) | one sub-level down |
+| two such bad rounds in a row | a whole level down |
+| otherwise | unchanged |
+
+- A rise is announced in the HUD (« أحسنت! ارتقيت إلى المستوى n ب »). A step down is worded as practice, never as failure (« نتمرّن قليلًا… »).
+- The results screen shows the change from → to.
+- The server keeps the position per student and per game (`madar_math_progress`: position, best position, rounds). The next game resumes there.
 
 **Truth comes from the exact value, not from the template.**
-- Each card carries a value: a reduced rational, a·√r simplified, or a polynomial. It is « equal » only if its key equals the target's.
+- Each card carries a value: a reduced rational, (n/d)·√r simplified, or a polynomial. It is « equal » only if its key equals the target's.
 - A trap that would be equal by accident is dropped, and so are duplicates, commuted sums included.
-- `cards.test.js` re-reads **every displayed card** with an independent evaluator (×, ÷, −, decimal comma, %, fractions, √, exponents, x at two values) over 60 seeds × 24 rounds: 11,520 cards checked.
+- `cards.test.js` re-reads **every displayed card** with an independent evaluator: ×, ÷, −, the decimal comma, %, fractions, √, exponents, x, sin / cos / tan in degrees, PGCD, PPCM, linear equations solved, the value at x = a.
+- The check runs on all 50 levels × 3 sub-levels × 10 seeds × 4 rounds: 48,000 cards.
 
 Decimals are written with a **comma** (`0,75`), as in the platform's exercises.
 
@@ -547,45 +616,53 @@ The rounds follow a **fixed schedule** (`sniper/constants.js › SCHEDULE`, mirr
 - a card takes `fall(k)` to reach the ground (7.5 s, falling to 4);
 - 2.5 s of breather separate two rounds.
 
-Nobody can speed the schedule up, so the duration T bounds everything (`SniperScoring`, mirrored by `sniper/bound.js`):
+Nobody can speed the schedule up. During the warm-up the position stays at or below the student's `home` = s0; above it, it rises **at most one sub-level per round**. So the duration T and s0, which the server stores in `madar_runs.level_start`, bound everything (`SniperScoring`, mirrored by `sniper/bound.js`):
 
 ```text
-round reached ≤ max { k : roundStart(k) ≤ T }
-score         ≤ Σ cards spawned by T of 10 × level(k) × 4  +  Σ rounds started of 50 × level(k)
+round reached     ≤ max { k : roundStart(k) ≤ T }
+level of round k  ≤ level(s0 + k)
+score             ≤ Σ cards spawned by T of points(level) × 4  +  Σ rounds started of 3 × points(level)
+end position      ∈ [s0 − 6 (warm-up) − 3 × rounds, s0 + rounds]
 ```
 
-This is multiplied by 1.1, plus 100. Anything above is clamped and flagged.
-- `finish {score, stars = hits, wave = round}`.
+The score bound is multiplied by 1.1, plus 100. Anything above is clamped and flagged; a position outside its range is clamped too.
+- `finish {score, stars = hits, wave = round, position, peak}`. It answers with `level {from, to, change}` and stores `madar_runs.level_end`.
 - Hits are capped by score / 10.
-- `sim.test.js` checks that a perfect player never exceeds `perfectScore(T)` or `maxRound(T)`.
+- `sim.test.js` checks that a perfect player, starting from 0, 33, 97 or 146, never exceeds `perfectScore(T, s0)`, `maxRound(T)` or `s0 + rounds`.
 
-**The week's targets.** The seed is `crc32("sniper|c{class}|{week}")`, as for Defense: the whole class gets the same targets all week, so the ranking compares like with like.
+**The week's targets.** The seed is `crc32("sniper|c{class}|{week}")`, as for Defense. Each round's content depends on (seed, round, level, sub-level): classmates at the same level get the same targets.
 
 ### Free, no revive
 
 - `MadarRun::FREE_GAMES`: `startRun` neither checks nor spends a heart.
 - `revive` answers `revive_limit`.
 - The **daily run cap still counts** this game: it is a screen-time limit.
-- The record is read from `madar_runs`: no profile column.
-- `GET /madar › sniper {best, bestRound, runsCount, weekBest, competition}`.
+- The record is read from `madar_runs`, the level from `madar_math_progress`.
+- `GET /madar › sniper {best, bestRound, runsCount, weekBest, competition, position, level, sub, bestPosition, bestLevel, entryLevel, unlockedUpTo, levels, subLevels}`.
 - The leaderboard and board display show « ج n » (the round).
+- The teacher's table shows each student's maths level and the highest reached (`students[].mathLevel`).
 
 ### Code
 
 - `features/madar/sniper/`:
-  - `cards.js`: exact values, the six levels, `makeRound(seed, k)`;
-  - `constants.js`: the schedule mirror;
-  - `sim.js`: the pure simulation, `step` / `tap`, plus the attract-mode autopilot;
+  - `levels.js`: the 50 levels, families, entry by year, positions;
+  - `cards.js`: exact values, the 50 generators, `makeRound(seed, k, {level, sub})`;
+  - `adapt.js`: the step up or down;
+  - `constants.js`: the schedule and points mirror;
+  - `sim.js`: the pure simulation, `step` / `tap`, the position changing round after round, plus the attract-mode autopilot;
   - `bound.js`;
   - `mathDraw.js`: maths on the canvas — stacked fractions, a drawn radical, exponents, written piece by piece from left to right because the page is RTL;
   - `render.js`: asteroids, plates, the cannon, the ground;
   - tests `cards.test.js` and `sim.test.js`.
 - Components:
-  - `SniperCanvas.jsx`: `dir="ltr"` canvas, loop, tap, feedback;
-  - `SniperHud.jsx`: target card, score, 3 shields, multiplier, the round and its level;
-  - `MathTokens.jsx`: the same expression in DOM, `dir="ltr"`, `role="math"`.
-- The lobby shows « مجانية » instead of the cost, plus the list of the six levels. The coach sits under the field so it does not cover the target.
-- API: `SniperScoring.php`, `MadarRun::GAME_SNIPER / CATEGORIES / FREE_GAMES`, `MadarService::sniperView`.
+  - `SniperCanvas.jsx`: `dir="ltr"` canvas, loop, tap, feedback, level change;
+  - `SniperHud.jsx`: target card with its prompt, score, 3 shields, multiplier, level n أ/ب/ج, the level-change banner;
+  - `MathTokens.jsx`: the same expression in DOM, `dir="ltr"`, `role="math"`;
+  - `MathLevelMap.jsx`: the student's position, a bar over 150 sub-levels, the map of the 11 families with open and closed levels.
+- The lobby shows « مجانية » instead of the cost. The coach sits under the field so it does not cover the target.
+- API: `SniperScoring.php` (positions, entry, bound, settle), `MadarMathProgress`, `MadarRun::GAME_SNIPER / CATEGORIES / FREE_GAMES`, `MadarService::sniperView / mathProgress / levelChange`. Migration `2026_10_23_000003`.
+
+**Future maths games reuse this framework**: the same 50 levels, positions, adaptation and progress table, with `game` as the key.
 
 **Not a source of learning evidence.** Like every game score, a sniper run never touches mastery. Only the refuel station writes evidence.
 
@@ -616,12 +693,120 @@ The class-wide switch (`madar_class_settings.disabled_games`) is unchanged. On t
 - a game closed for one student only (other students unaffected, the class closure wins, reopening);
 - the refusals: outsider, unknown game, another teacher.
 
+## 16ter. « الدخيل » — the odd one out, the second maths game (2026-10-23)
+
+**Goal: observation one step further.** No target is written. The student must SEE what the cards share.
+
+**How it plays:**
+- **The puzzle.** 4 or 5 white cards are all equal except ONE, « الدخيل ». The student taps the odd one out before the time bar runs out: 15 s, then less and less, never under 7 s.
+- **The reveal.** After each pick the answer stays on screen for 1.2 s (`reveal_ms`):
+  - « كلّها تساوي 3 » (or « حلّها جميعًا … » / « قيمتها جميعًا عندما x = … », depending on the level's mode);
+  - the odd card marked « الدخيل = 9 »;
+  - a wrongly picked card shows its own value.
+- **Shields.** A wrong pick or a timeout costs one of 3 shields. There is no revive; the game is free.
+- **Controls.** Tap or click a card; on a laptop, the keys 1–5.
+- **The board** is DOM, not a canvas: real text, big tap targets, `MathTokens` for the maths.
+
+**The same 50 levels.**
+- Each puzzle is built from the « قنّاص القيم » deck (`odd/puzzle.js` → `makeRound`): the cards equal to the round's target, plus ONE trap, the typical mistake that looks like the others.
+- Its truth is therefore the deck's, re-read by `cards.test.js`. `odd/sim.test.js` checks every level × sub-level: exactly one odd card, and all the others share the round's value.
+- The student has their **own position in this game** (`madar_math_progress`, `game = 'odd'`), with the same entry by year and the same map.
+- Adaptation runs **every 5 puzzles** (`puzzles_per_round`), with the same rules (`sniper/adapt.js`).
+
+**Server bound (`OddScoring`, mirrored by `odd/bound.js`).** A puzzle cannot be solved faster than `min_puzzle_ms` (1 s), because the client shows the answer for 1.2 s:
+
+```text
+puzzles          ≤ ⌊T / 1 s⌋ + 1
+rounds           ≤ ⌊puzzles / 5⌋
+level of puzzle i ≤ level(s0 + ⌊i / 5⌋)
+score            ≤ Σ puzzles of points(level) × 4  +  Σ rounds of 3 × points(level)
+```
+
+The positions, the entry by year and the points come from `SniperScoring`: the maths games share their 50 levels.
+- `finish {score, stars = hits, wave = rounds, position, peak}`.
+- Config: `config/madar.php › odd`, mirrored by `odd/constants.js`.
+
+**Code:**
+- `features/madar/odd/`: `constants.js`, `puzzle.js`, `sim.js` (`pick` / `step`, reveal, rounds, autopilot), `bound.js`, `sim.test.js`;
+- `components/OddBoard.jsx`: board, HUD, timer, reveal, keyboard;
+- API: `OddScoring.php`, `MadarRun::GAME_ODD`, `MadarRun::isMath()`, `MadarService::mathView / mathScoring`;
+- test `MadarOddTest`.
+
+The generalisation for any maths game: `MadarRun::isMath`, `mathView(game)` in `GET /madar › {sniper, odd}`, and the teacher's `mathLevel` for both games.
+
+## 16quater. « الحساب الذهني » — mental arithmetic, the third maths game (2026-10-23)
+
+**Goal: fast, exact mental arithmetic, all four operations.** The owner's range: from « 2 + 1 » to « 2569 + 176 », from « 2 × 3 » to « 11 × 25 ».
+
+**How it plays:**
+- **A problem** sits in a white card inside a **time ring**: 12 s, then less and less, never under 6 s.
+- **Answering.** The student types the answer on the on-screen **keypad** (thumb on a phone) or the keyboard (laptop: digits, `-`, `,`, Backspace, Enter).
+- **The slots.** Boxes show how many characters the answer has. The answer is **sent by itself** when they are full, so the game is fast.
+
+**What makes it fun, without ever stating a rule:**
+- a **rocket** climbs one step per correct answer toward the next planet, with a new planet every 10 correct answers (« وصلت إلى المريخ! »);
+- the stars scroll faster as the streak grows; « 🔥 n · ×m »; « سرعة الضوء! » every 5 in a row;
+- a **speed bonus** « ⚡ » from the time left;
+- a wrong answer shakes the card and shows the right answer for 1.4 s, long enough to read it.
+
+**Shields and adaptation.**
+- 3 shields; a wrong answer or a timeout costs one. There is no revive, and the game is free.
+- The level adapts every 5 answers (`sniper/adapt.js`), with the same rules as the other maths games.
+
+### Its own 50 levels (`mental/levels.js`)
+
+The game has its own ladder, 3 sub-levels each, in 9 families:
+
+| Family | Levels |
+|---|---|
+| الجمع والطرح | to 10 and to 20; two-digit numbers, with and without carrying or borrowing; three numbers |
+| الضرب | the tables (2–5–10, 3–4, 6–7, 8–9, 11–12); a two-digit number × a digit; two two-digit numbers, then large ones |
+| القسمة | the tables backwards; ÷ 10 / 100 / 1000; a two- or three-digit number ÷ a digit; ÷ a two-digit number |
+| الأعداد الكبيرة | 3 digits + 2; subtracting from hundreds and thousands; 3 + 3 digits; 4 + 3 digits (2569 + 176); big mixes |
+| حيل الحساب | × 10 / 100 / 1000; × 5 / 25 / 50; × 11; × 9 / 99 / 999 |
+| العمليات المركّبة | parentheses; × before +; chains (48 ÷ 6 × 7 − 9); level 50 « تحدّي البطل » |
+| الأعداد العشرية والكسور والنسب | adding decimals; × 10 and × 0,1; a fraction of a number; a percentage of a number |
+| الأعداد النسبية | sum; product and quotient; compound |
+| المربعات والقوى والجذور | squares to 15, then to 25, and cubes; perfect square roots; powers of 2 and a × 10ᵏ |
+
+- Level 1 starts at « 2 + 1 ». Level 50 draws from the hardest levels at sub-level ج.
+- **Entry by year** (`mental.entry`, mirrored by `MENTAL_ENTRY`): 1AM → 3, 2AM → 7, 3AM → 11, 4AM → 15. Every easier level is open, so « 2 + 1 » can always be replayed.
+- **Warm-up.** Like every maths game, it opens two levels lower with a free first round (§16).
+- **Answers** are always an integer or a finite decimal, written with the comma (« 1,2 », « −4 »).
+- **Tests:** `mental/levels.test.js` re-reads every problem (50 levels × 3 sub-levels × 4 seeds × 25) with an independent evaluator, and checks that answers grow from level 1 to 28.
+
+### Server bound
+
+It is the « الدخيل » bound (`OddScoring`) with `config/madar.php › mental`:
+- a problem ≥ 700 ms (`min_puzzle_ms`): the client shows the result 0.7 s, 1.4 s after a fault;
+- 5 problems per round;
+- plus a speed bonus of at most 1 × the level's points per problem (`speed_factor`).
+
+The positions (0…149) and points come from `SniperScoring`.
+- `finish {score, stars = hits, wave = rounds, position, peak}`.
+- `mental/bound.js` mirrors it, and `mental/sim.test.js` checks that an instant, perfect player never exceeds it.
+
+### Code
+
+- `features/madar/mental/`:
+  - `levels.js`: the catalogue, the generators, `makeProblem(seed, i, {level, sub})`, `MENTAL_ENTRY`;
+  - `constants.js`;
+  - `sim.js`: `press` / `step`, auto-submit, feedback, rounds, autopilot;
+  - `bound.js`;
+  - tests `levels.test.js` and `sim.test.js`.
+- `components/MentalBoard.jsx`: rocket, stars, time ring, slots, keypad, keyboard, banners.
+- `MathLevelMap` takes `catalog="mental"`, so the map shows this game's own 9 families.
+- Server:
+  - API: `MadarRun::GAME_MENTAL`; `mathScoring()` returns `OddScoring` with `config('madar.mental')`;
+  - a game's own `{game}.entry` takes precedence over the shared entry;
+  - `GET /madar › mental`.
+- Test: `MadarOddTest::test_mental_arithmetic_is_a_third_free_math_game_with_its_own_entry`.
+
 ## 17. Not built (Planned)
 
 - More games (the live class race « سباق المجرّة » is next on the list); they would share the hearts and refuel station.
 - More maths games, proposed 2026-10-23 and not built:
   - « سهم على المستقيم »: placing √10, 7/3, π on a number line;
-  - « الدخيل »: the odd one out of nine;
   - « الروبوت والمتجهات »: vector commands;
   - « تضاريس الدالة »: shaping y = ax + b.
 

@@ -45,6 +45,39 @@ function Art({ game }) {
       </svg>
     );
   }
+  if (game === 'mental') {
+    return (
+      <svg viewBox="0 0 160 100" className="h-full w-full" aria-hidden="true">
+        <rect x="44" y="14" width="72" height="30" rx="10" fill="#fff" />
+        <text x="80" y="35" textAnchor="middle" fontSize="15" fontWeight="900" fill="#0f172a" direction="ltr">11 × 25</text>
+        {[0, 1, 2].map((i) => <rect key={i} x={56 + i * 17} y="52" width="14" height="18" rx="4" fill={i < 2 ? '#fde68a' : '#ffffff33'} />)}
+        <text x="63" y="66" textAnchor="middle" fontSize="11" fontWeight="900" fill="#0f172a">2</text>
+        <text x="80" y="66" textAnchor="middle" fontSize="11" fontWeight="900" fill="#0f172a">7</text>
+        <rect x="20" y="78" width="4" height="18" rx="2" fill="#ffffff22" />
+        <rect x="20" y="86" width="4" height="10" rx="2" fill="#fbbf24" />
+        <circle cx="22" cy="72" r="6" fill="#d2532c" />
+        <path d="M128 70 l8 -14 l8 14 z" fill="#f472b6" />
+        <path d="M132 70 l4 10 l4 -10 z" fill="#fbbf24" />
+      </svg>
+    );
+  }
+  if (game === 'odd') {
+    const cell = (x, y, label, hot) => (
+      <g key={label + x}>
+        <rect x={x} y={y} width="42" height="26" rx="7" fill="#fff" stroke={hot ? '#fbbf24' : '#34d39988'} strokeWidth={hot ? 3 : 1.5} />
+        <text x={x + 21} y={y + 17} textAnchor="middle" fontSize="11" fontWeight="800" fill="#0f172a" direction="ltr">{label}</text>
+      </g>
+    );
+    return (
+      <svg viewBox="0 0 160 100" className="h-full w-full" aria-hidden="true">
+        {cell(30, 18, '3 × 4', false)}
+        {cell(88, 18, '7 + 5', false)}
+        {cell(30, 56, '2 + 5 × 2', true)}
+        {cell(88, 56, '24 ÷ 2', false)}
+        <circle cx="51" cy="69" r="27" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="4 3" />
+      </svg>
+    );
+  }
   if (game === 'defense') {
     return (
       <svg viewBox="0 0 160 100" className="h-full w-full" aria-hidden="true">
@@ -82,9 +115,10 @@ function Art({ game }) {
  *
  * Ce qui est COMMUN aux jeux vit ici : les cœurs, la « محطة التزوّد » (où une
  * réponse juste rend un cœur), les messages de l'enseignant, la limite de
- * parties du jour. Les jeux sont rangés en DEUX familles (`games[].category`) :
- * « ألعاب ترفيهية » (ils coûtent un cœur) et « ألعاب رياضيات » (gratuits : leurs
- * mathématiques sont le jeu). Chaque jeu est une carte (ce qu'il entraîne, le
+ * parties du jour. Les jeux sont rangés en DEUX familles (`games[].category`),
+ * les MATHÉMATIQUES D'ABORD (choix du propriétaire) : « ألعاب رياضيات » (gratuits,
+ * leurs mathématiques sont le jeu, ils s'adaptent au niveau de l'élève), puis
+ * « ألعاب ترفيهية » (ils coûtent un cœur). Chaque jeu est une carte (ce qu'il entraîne, le
  * record, le rang de la semaine) qui ouvre /espace/jeux/:game. Un jeu fermé par
  * l'enseignant — pour la classe ou pour CET élève — reste visible, verrouillé.
  */
@@ -126,13 +160,15 @@ export default function GamesHub() {
     orbit: { stat: formatScore(state.best), statLabel: t('lobby.best'), rank: state.competition?.me?.rank },
     defense: { stat: state.defense?.bestWave ?? 0, statLabel: t('defense.lobby.bestWave'), rank: state.defense?.competition?.me?.rank },
     explorer: { stat: `${state.explorer?.totalStars ?? 0}/${state.explorer?.maxStars ?? 36}`, statLabel: t('explorer.stars'), rank: state.explorer?.competition?.me?.rank, star: true },
-    sniper: { stat: formatScore(state.sniper?.best), statLabel: t('lobby.best'), rank: state.sniper?.competition?.me?.rank },
+    sniper: { stat: `${state.sniper?.level ?? 1}/50`, statLabel: t('sniper.lobby.levelShort'), rank: state.sniper?.competition?.me?.rank },
+    odd: { stat: `${state.odd?.level ?? 1}/50`, statLabel: t('sniper.lobby.levelShort'), rank: state.odd?.competition?.me?.rank },
+    mental: { stat: `${state.mental?.level ?? 1}/50`, statLabel: t('sniper.lobby.levelShort'), rank: state.mental?.competition?.me?.rank },
   };
   const groups = gamesByCategory((state.games ?? []).filter((g) => meta[g.id]));
   const closed = !state.available;
   const sections = [
-    { id: 'fun', icon: Sparkles, games: groups.fun },
     { id: 'math', icon: Calculator, games: groups.math },
+    { id: 'fun', icon: Sparkles, games: groups.fun },
   ].filter((sec) => sec.games.length > 0);
 
   return (

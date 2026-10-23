@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { MotionConfig, useReducedMotion } from 'framer-motion';
@@ -13,6 +13,9 @@ import DefenseCanvas from '../../../features/madar/components/DefenseCanvas';
 import ExplorerCanvas from '../../../features/madar/components/ExplorerCanvas';
 import SniperCanvas from '../../../features/madar/components/SniperCanvas';
 import SniperHud from '../../../features/madar/components/SniperHud';
+import OddBoard from '../../../features/madar/components/OddBoard';
+import MentalBoard from '../../../features/madar/components/MentalBoard';
+import { MATH_GAMES } from '../../../features/madar/madarModel';
 import ExplorerHud from '../../../features/madar/components/ExplorerHud';
 import ExplorerResults from '../../../features/madar/components/ExplorerResults';
 import TouchControls from '../../../features/madar/components/TouchControls';
@@ -28,6 +31,8 @@ import { Coach, Countdown, hasBeenCoached, markCoached } from '../../../features
 
 /** La graine du monde qui tourne seul derrière l'accueil. */
 const ATTRACT_SEED = 20261022;
+/** « قنّاص القيم » derrière l'accueil : le niveau 33 (les racines), sous-niveau أ. */
+const ATTRACT_POSITION = 96;
 
 /**
  * « مدار » — la page du jeu, PLEIN ÉCRAN, hors de la coquille de l'espace
@@ -52,7 +57,16 @@ const ATTRACT_SEED = 20261022;
  * pendant une partie, c'est le jeu de la partie (`run.game`). La salle
  * elle-même (le choix du jeu) est GamesHub.
  */
-const GAMES = ['orbit', 'defense', 'explorer', 'sniper'];
+const GAMES = ['orbit', 'defense', 'explorer', ...MATH_GAMES];
+const MATH = MATH_GAMES;
+/** Les jeux de mathématiques dessinés en DOM (plateau + affichage intégrés). */
+const BOARDS = { odd: OddBoard, mental: MentalBoard };
+
+/** Le plateau DOM d'un jeu de mathématiques (« الدخيل », « الحساب الذهني »). */
+const BoardFor = forwardRef(function BoardFor({ game, ...props }, ref) {
+  const Board = BOARDS[game];
+  return <Board ref={ref} {...props} />;
+});
 
 export default function MadarPage() {
   const { t } = useTranslation('madar');
@@ -120,7 +134,7 @@ export default function MadarPage() {
     setBusy(true);
     setError(null);
     try {
-      const data = await startRun(token, lobbyGame, lobbyGame === 'explorer' && typeof level === 'number' ? level : null);
+      const data = await startRun(token, lobbyGame, (lobbyGame === 'explorer' || MATH.includes(lobbyGame)) && typeof level === 'number' ? level : null);
       setRun(data.run);
       setLocal(null);
       setFinish(null);
@@ -151,6 +165,12 @@ export default function MadarPage() {
       return false;
     });
   }, []);
+  const onBoardTap = useCallback(() => {
+    setCoach((c) => {
+      if (c && run?.game) markCoached(run.game);
+      return false;
+    });
+  }, [run]);
   const onFlip = useCallback(() => {
     setCoach((c) => {
       if (c) markCoached('orbit');
@@ -193,7 +213,7 @@ export default function MadarPage() {
   const end = async () => {
     const isDefense = run?.game === 'defense';
     const isExplorer = run?.game === 'explorer';
-    const isSniper = run?.game === 'sniper';
+    const isSniper = MATH.includes(run?.game);
     const result = canvasRef.current?.result() ?? local ?? { score: 0, stars: 0, nearMisses: 0, bestCombo: 0, sector: 0, kills: 0, wave: 0, hits: 0, round: 0 };
     setLocal(result);
     setSelected(null);
@@ -204,7 +224,7 @@ export default function MadarPage() {
       const data = isExplorer
         ? await finishRun(token, run.id, result.score, result.crystals, result.level, result.completed)
         : isSniper
-          ? await finishRun(token, run.id, result.score, result.hits, result.round)
+          ? await finishRun(token, run.id, result.score, result.hits, result.round, null, { position: result.position, peak: result.peak })
           : isDefense
           ? await finishRun(token, run.id, result.score, result.kills, result.wave)
           : await finishRun(token, run.id, result.score, result.stars);
@@ -269,7 +289,7 @@ export default function MadarPage() {
 
   // Le coach de « المستكشف » et de « قنّاص القيم » disparaît après quelques secondes de jeu.
   useEffect(() => {
-    if (!(coach && phase === 'playing' && ['explorer', 'sniper'].includes(run?.game))) return undefined;
+    if (!(coach && phase === 'playing' && ['explorer', ...MATH].includes(run?.game))) return undefined;
     const id = setTimeout(() => { markCoached(run.game); setCoach(false); }, run.game === 'sniper' ? 9000 : 6000);
     return () => clearTimeout(id);
   }, [coach, phase, run]);
@@ -301,11 +321,28 @@ export default function MadarPage() {
   return (
     <MotionConfig reducedMotion="user">
       <div className="fixed inset-0 overflow-hidden bg-[#060414] text-white" data-madar-page={phase}>
-        {game === 'sniper' ? (
+        {BOARDS[game] ? (
+          <BoardFor
+            game={game}
+            ref={canvasRef}
+            mode={inRun ? 'play' : 'attract'}
+            seed={inRun ? run.seed : ATTRACT_SEED}
+            start={inRun ? run.position ?? 0 : ATTRACT_POSITION}
+            paused={inRun && phase !== 'playing'}
+            reduced={reduced}
+            audio={audio}
+            muted={muted}
+            onToggleMute={toggleMute}
+            onPause={() => setPhase('paused')}
+            onOver={onSniperOver}
+            onTap={onBoardTap}
+          />
+        ) : game === 'sniper' ? (
           <SniperCanvas
             ref={canvasRef}
             mode={inRun ? 'play' : 'attract'}
             seed={inRun ? run.seed : ATTRACT_SEED}
+            start={inRun ? run.position ?? 0 : ATTRACT_POSITION}
             paused={inRun && phase !== 'playing'}
             reduced={reduced}
             audio={audio}
@@ -370,7 +407,7 @@ export default function MadarPage() {
           />
         )}
 
-        {inRun && ['countdown', 'playing', 'paused'].includes(phase) && (game === 'sniper'
+        {inRun && !BOARDS[game] && ['countdown', 'playing', 'paused'].includes(phase) && (game === 'sniper'
           ? <SniperHud statsRef={statsRef} muted={muted} onToggleMute={toggleMute} onPause={() => setPhase('paused')} />
           : game === 'explorer'
           ? <ExplorerHud statsRef={statsRef} hearts={state.hearts} maxHearts={state.maxHearts} muted={muted} onToggleMute={toggleMute} onPause={() => setPhase('paused')} />
@@ -435,7 +472,7 @@ export default function MadarPage() {
             hearts={state.hearts}
             maxHearts={state.maxHearts}
             canPlay={canPlay}
-            free={game === 'sniper'}
+            free={MATH.includes(game)}
             onAgain={play}
             onRefuel={() => { setRun(null); openRefuel('base'); }}
             onHome={toLobby}

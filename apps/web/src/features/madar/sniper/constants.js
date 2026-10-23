@@ -2,9 +2,11 @@
  * « قنّاص القيم » — les constantes du jeu.
  *
  * SCHEDULE est le MIROIR de apps/api/config/madar.php › sniper : le calendrier
- * des manches est FIXE (la manche k commence à un instant connu), donc le
- * serveur borne la manche atteinte et le score par la durée réelle
- * (SniperScoring ↔ bound.js). Changer une valeur ici, c'est la changer là-bas.
+ * des manches est FIXE (la manche k commence à un instant connu), et le niveau
+ * monte d'au plus un sous-niveau par manche (adapt.js). Le serveur borne donc
+ * la manche atteinte, le niveau atteint et le score par la durée réelle et la
+ * position de départ (SniperScoring ↔ bound.js). Changer une valeur ici, c'est
+ * la changer là-bas.
  */
 export const SCHEDULE = Object.freeze({
   firstAt: 2.5,
@@ -16,11 +18,10 @@ export const SCHEDULE = Object.freeze({
   fallMin: 4,
   fallStep: 0.2,
   breather: 2.5,
-  roundsPerLevel: 3,
-  maxLevel: 6,
-  pointsPerLevel: 10,
+  pointsBase: 10,
+  pointsStep: 2,
+  bonusFactor: 3,
   maxMultiplier: 4,
-  perfectBonus: 50,
 });
 
 /** Trois boucliers ; une manche parfaite en rend un. */
@@ -32,8 +33,11 @@ export const LANES = 4;
 
 export const gap = (k) => Math.max(SCHEDULE.gapMin, SCHEDULE.gapStart - SCHEDULE.gapStep * k);
 export const fall = (k) => Math.max(SCHEDULE.fallMin, SCHEDULE.fallStart - SCHEDULE.fallStep * k);
-/** Le niveau de points (1…6) d'une manche k (0, 1, …). */
-export const levelOf = (k) => Math.min(SCHEDULE.maxLevel, 1 + Math.floor(k / SCHEDULE.roundsPerLevel));
+
+/** Les points d'une carte égale touchée au niveau n (1…50), avant multiplicateur. */
+export const perHit = (level) => SCHEDULE.pointsBase + SCHEDULE.pointsStep * (level - 1);
+/** Le bonus d'une manche parfaite au niveau n. */
+export const perfectBonus = (level) => SCHEDULE.bonusFactor * perHit(level);
 
 /** L'instant (s) où commence la manche k. */
 export function roundStart(k) {
