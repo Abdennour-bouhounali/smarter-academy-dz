@@ -139,7 +139,12 @@ export default function JoinClassLink() {
       goToClass(!request);
       return;
     }
-    if (request && preview.joiningOpen) {
+    if (request && preview.currentClassroomName) {
+      // Déjà dans un autre قسم : rien ne rejoint, l'attente est levée et la
+      // page explique qu'il faut d'abord quitter sa classe.
+      autoTried.current = true;
+      clearPendingClassJoin();
+    } else if (request && preview.joiningOpen) {
       autoTried.current = true;
       join(request);
     } else if (request) {
@@ -196,6 +201,14 @@ export default function JoinClassLink() {
           {(() => {
             if (verifiedStudent && preview.alreadyMember) {
               return <Notice icon={CheckCircle2} tone="emerald">{t('qism.joinLink.alreadyMember')}</Notice>;
+            }
+            if (verifiedStudent && preview.currentClassroomName) {
+              return (
+                <div data-join-link-other-class>
+                  <Notice icon={AlertCircle} tone="amber" title={t('qism.joinLink.otherClassTitle')}>{t('qism.joinLink.otherClassBody', { name: preview.currentClassroomName })}</Notice>
+                  <Link to="/espace/qism" className="mt-4 flex h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-700 hover:bg-slate-50">{t('qism.joinLink.openClass')}</Link>
+                </div>
+              );
             }
             if (!preview.joiningOpen) {
               return (

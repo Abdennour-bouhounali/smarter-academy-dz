@@ -217,6 +217,6 @@ class TeacherPrivacyContractTest extends TestCase
         $body = $preview->getContent();
         $this->assertStringNotContainsString('membre.secret@example.dz', $body);
         $this->assertStringNotContainsString((string) $classroom->teacher->email, $body);
-        $this->assertSame(['classroomName', 'grade', 'teacherName', 'joiningOpen', 'alreadyMember'], array_keys($preview->json('joinLink')));
+        $this->assertSame(['classroomName', 'grade', 'teacherName', 'joiningOpen', 'alreadyMember', 'currentClassroomName'], array_keys($preview->json('joinLink')));
     }
 }

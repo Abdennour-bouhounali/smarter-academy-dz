@@ -18,7 +18,9 @@ use Illuminate\Http\Request;
  *
  * Si la requête porte le jeton d'un ÉLÈVE connecté (Sanctum, facultatif),
  * elle dit aussi s'il est déjà membre : la page le renvoie alors à sa classe
- * sans rien lui redemander. Rien n'est écrit ici — l'adhésion reste
+ * sans rien lui redemander — et, s'il est déjà dans une AUTRE classe, le nom
+ * de SA classe (`currentClassroomName`) : un élève n'a qu'un قسم à la fois,
+ * la page le lui dit avant qu'il consente. Rien n'est écrit ici — l'adhésion reste
  * `POST /student/classrooms/join`, derrière `email.verified`.
  */
 class ClassJoinLinkController extends Controller
@@ -35,11 +37,13 @@ class ClassJoinLinkController extends Controller
 
         $viewer = $request->user('sanctum');
         $alreadyMember = null;
+        $currentClassroomName = null;
         if ($viewer !== null && $viewer->isStudent()) {
             $alreadyMember = ClassroomMembership::where('classroom_id', $classroom->id)
                 ->where('student_id', $viewer->id)
                 ->active()
                 ->exists();
+            $currentClassroomName = $alreadyMember ? null : $this->memberships->currentClassroomOf($viewer, except: $classroom->id)?->name;
         }
 
         $teacher = $classroom->teacher;
@@ -52,6 +56,7 @@ class ClassJoinLinkController extends Controller
                 'teacherName' => trim(($teacher?->first_name ?? '').' '.($teacher?->last_name ?? '')),
                 'joiningOpen' => $classroom->acceptsNewMembers(),
                 'alreadyMember' => $alreadyMember,
+                'currentClassroomName' => $currentClassroomName,
             ],
         ]);
     }

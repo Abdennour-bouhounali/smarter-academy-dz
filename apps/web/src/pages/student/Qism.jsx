@@ -36,6 +36,11 @@ import { joinRequest, classroomsAwaitingConsent, visibleRecommendations } from '
  * وأنضمّ ». Le lien de classe applique la même règle sur sa page.
  * Une adhésion antérieure au texte (`consentRequired`) reçoit une carte
  * non bloquante : confirmer, ou quitter.
+ *
+ * ── Un seul قسم à la fois (2026-10-24) ─────────────────────────────────
+ * Un élève déjà dans un قسم ne voit PAS le formulaire du code : la page dit
+ * qu'il faut quitter son قسم pour en rejoindre un autre. Le serveur tient la
+ * règle (`already_in_class`) ; masquer le formulaire n'en est que le reflet.
  */
 function formatDate(iso) {
   const d = new Date(iso);
@@ -193,6 +198,7 @@ export default function Qism() {
                 ))}
               </ul>
               <p className="mt-3 text-sm text-slate-500">{t('qism.hiddenLessons', { count: hiddenByClassCount })}</p>
+              <p className="mt-2 text-sm text-slate-500" data-qism-one-class>{t('qism.oneClassOnly')}</p>
             </>
           ) : (
             <>
@@ -236,40 +242,42 @@ export default function Qism() {
           </section>
         )}
 
-        <section className="glass-card p-5 sm:p-6" data-tour="qism.join">
-          <h2 className="font-semibold text-slate-900">{t('qism.joinTitle')}</h2>
-          <p className="text-sm text-slate-600 mt-1 mb-4">{t('qism.joinBody')}</p>
-          <form onSubmit={handleJoin} noValidate className="space-y-4">
-            <div className="relative">
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3 text-slate-400 pointer-events-none"><KeyRound className="w-5 h-5" /></span>
-              <input
-                id="join-code"
-                name="code"
-                type="text"
-                autoComplete="off"
-                autoCapitalize="characters"
-                spellCheck={false}
-                dir="ltr"
-                value={code}
-                onChange={(e) => setCode(formatCodeInput(e.target.value))}
-                placeholder={t('qism.codePlaceholder')}
-                aria-label={t('qism.codeLabel')}
-                aria-invalid={error ? 'true' : undefined}
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-white font-mono tracking-[0.3em] text-lg text-center text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent"
-              />
-            </div>
-            {error && (
-              <div role="alert" className="flex items-start gap-3 rounded-xl border border-rose-200 bg-rose-50 p-3">
-                <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
-                <p className="text-sm text-rose-800">{error}</p>
+        {studyContext.mode !== 'classroom' && (
+          <section className="glass-card p-5 sm:p-6" data-tour="qism.join" data-qism-join>
+            <h2 className="font-semibold text-slate-900">{t('qism.joinTitle')}</h2>
+            <p className="text-sm text-slate-600 mt-1 mb-4">{t('qism.joinBody')}</p>
+            <form onSubmit={handleJoin} noValidate className="space-y-4">
+              <div className="relative">
+                <span className="absolute left-0 inset-y-0 flex items-center pl-3 text-slate-400 pointer-events-none"><KeyRound className="w-5 h-5" /></span>
+                <input
+                  id="join-code"
+                  name="code"
+                  type="text"
+                  autoComplete="off"
+                  autoCapitalize="characters"
+                  spellCheck={false}
+                  dir="ltr"
+                  value={code}
+                  onChange={(e) => setCode(formatCodeInput(e.target.value))}
+                  placeholder={t('qism.codePlaceholder')}
+                  aria-label={t('qism.codeLabel')}
+                  aria-invalid={error ? 'true' : undefined}
+                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-white font-mono tracking-[0.3em] text-lg text-center text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent"
+                />
               </div>
-            )}
-            <SharingDisclosure />
-            <button type="submit" disabled={pending} data-qism-consent-join className="w-full sm:w-auto px-6 py-3 rounded-xl bg-teal-700 text-white font-semibold hover:bg-teal-800 disabled:opacity-60 disabled:cursor-not-allowed">
-              {pending ? t('qism.joining') : t('qism.consentJoin')}
-            </button>
-          </form>
-        </section>
+              {error && (
+                <div role="alert" className="flex items-start gap-3 rounded-xl border border-rose-200 bg-rose-50 p-3">
+                  <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+                  <p className="text-sm text-rose-800">{error}</p>
+                </div>
+              )}
+              <SharingDisclosure />
+              <button type="submit" disabled={pending} data-qism-consent-join className="w-full sm:w-auto px-6 py-3 rounded-xl bg-teal-700 text-white font-semibold hover:bg-teal-800 disabled:opacity-60 disabled:cursor-not-allowed">
+                {pending ? t('qism.joining') : t('qism.consentJoin')}
+              </button>
+            </form>
+          </section>
+        )}
       </div>
 
       <ConfirmDialog

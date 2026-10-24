@@ -556,8 +556,9 @@ replaced. Authoritative contract:
   a database-configurable, versioned grid of tiers (seats range → price per
   student); the server alone calculates `N × price`, and every subscription
   and every activation code keeps the exact seats and price it was granted.
-  Unique students are counted (a student in two classes of one teacher is one
-  seat); neither the join link nor the join code can bypass capacity; a downgrade blocks additions and
+  Unique students are counted (a student in two classes of one teacher — only
+  rows from before the one-class-per-student rule of 2026-10-24 — is one seat);
+  a student belongs to ONE class at a time and leaves it to join another; neither the join link nor the join code can bypass capacity; a downgrade blocks additions and
   deletes nothing.
 - A teacher plan may **cover** the students of the teacher's classes (Model B);
   the student's own code (Model A) still works; institution licences are

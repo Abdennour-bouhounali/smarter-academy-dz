@@ -13,7 +13,8 @@ use Tests\TestCase;
 
 /**
  * LA CAPACITÉ EN SIÈGES — l'unité de vente est l'élève distinct, jamais la
- * classe. Classes illimitées ; un élève dans deux classes = un siège ; les
+ * classe. Classes illimitées ; un élève dans deux classes (adhésions
+ * antérieures à la règle « une classe par élève ») = un siège ; les
  * liens de classe passent par la même porte ; rien n'est supprimé en
  * dépassement.
  */
@@ -57,14 +58,15 @@ class TeacherCapacityTest extends TestCase
         [$s1, $s2, $s3] = [$this->student(), $this->student(), $this->student()];
         $this->join($s1, $a)->assertCreated();
         $this->join($s2, $a)->assertCreated();
-        $this->join($s2, $b)->assertCreated();   // même élève, deuxième classe
+        // Même élève, deuxième classe : une adhésion d'AVANT la règle « une
+        // classe par élève » (2026-10-24) — elle ne compte qu'un siège.
+        ClassroomMembership::factory()->in($b)->of($s2)->create();
         $this->join($s3, $c)->assertCreated();
 
         $this->withToken($this->tokenOf($teacher))->getJson('/api/v1/teacher/capacity')->assertOk()
             ->assertJsonPath('capacity.current', 3)->assertJsonPath('capacity.remaining', 0)->assertJsonPath('capacity.canAdd', false);
 
-        // À capacité pleine : un élève DÉJÀ assis rejoint encore une classe ; un nouveau est refusé.
-        $this->join($s1, $c)->assertCreated();
+        // À capacité pleine : un nouveau est refusé.
         $this->join($this->student(), $c)->assertStatus(422)->assertJsonPath('reason', 'seats_exhausted');
         $this->assertSame(3, app(TeacherCapacityService::class)->currentStudentCount($teacher->fresh()));
     }
@@ -115,11 +117,12 @@ class TeacherCapacityTest extends TestCase
         $this->withToken($this->tokenOf($teacher))->getJson('/api/v1/teacher/capacity')->assertOk()
             ->assertJsonPath('capacity.limit', 5)->assertJsonPath('capacity.current', 8)->assertJsonPath('capacity.remaining', 0)->assertJsonPath('capacity.overLimit', true);
 
-        // Rien n'a bougé : classes, adhésions. Un nouvel élève est refusé ; un élève déjà assis circule encore.
+        // Rien n'a bougé : classes, adhésions. Un nouvel élève est refusé ; un élève déjà assis garde sa classe.
         $this->assertSame(2, Classroom::ownedBy($teacher)->count());
         $this->assertSame(8, ClassroomMembership::active()->count());
         $this->join($this->student(), $a)->assertStatus(422)->assertJsonPath('reason', 'seats_exhausted');
-        $this->join($students[0], $students[0]->classroomMemberships()->first()->classroom_id === $a->id ? $b : $a)->assertCreated();
+        $this->join($students[0], $students[0]->classroomMemberships()->first()->classroom_id === $a->id ? $b : $a)
+            ->assertStatus(422)->assertJsonPath('reason', 'already_in_class');
         // Et une nouvelle classe reste possible : les classes ne sont pas l'unité de vente.
         $this->grade4am(0);
         $this->withToken($this->tokenOf($teacher))->postJson('/api/v1/teacher/classrooms', ['name' => 'C', 'grade' => '4am'])->assertCreated();
@@ -166,7 +169,7 @@ class TeacherCapacityTest extends TestCase
             ->assertJsonPath('capacity.current', 2);
     }
 
-    public function test_un_eleve_deja_assis_rejoint_une_autre_classe_par_lien_sans_nouveau_siege(): void
+    public function test_changer_de_classe_chez_le_meme_enseignant_libere_puis_reprend_le_siege(): void
     {
         $this->freeSeatsPlan(1);
         $teacher = $this->teacher();
@@ -175,6 +178,10 @@ class TeacherCapacityTest extends TestCase
         $student = $this->student();
         $this->join($student, $a)->assertCreated();
 
-        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'link' => $b->join_link_token])->assertCreated();
+        // Une classe à la fois : il quitte A, son siège se libère, il rejoint B.
+        $link = fn () => $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'link' => $b->join_link_token]);
+        $link()->assertStatus(422)->assertJsonPath('reason', 'already_in_class');
+        $this->withToken($this->tokenOf($student))->postJson("/api/v1/student/classrooms/{$a->id}/leave")->assertOk();
+        $link()->assertCreated();
     }
 }

@@ -101,7 +101,7 @@ student and admin.
 | Table | Key columns | Rules |
 |---|---|---|
 | `classrooms` | `teacher_id`, `name`, `grade` (same code as `users.grade`, e.g. `4am`), `academic_year`, `status` `active\|archived\|suspended`, `join_code` (unique), **`join_link_token`** (unique, 32 base62, born with the class), `join_code_enabled` (**« الانضمام مفتوح » — closes the link AND the code**; historical name), `archived_at` | grade must be allowed by `content.allowed_grades` and exist in `grades`; **classes are not a commercial unit** — a teacher creates as many as they want unless the technical limit `classrooms.max` is configured (null = unlimited) |
-| `classroom_memberships` | `classroom_id`, `student_id`, `status` `active\|left\|removed`, `joined_via` `join_link\|join_code` (`invitation` on historical rows only), `invitation_id` (historical), `removed_by`, **`consented_at`, `consent_version`** | **unique `(classroom_id, student_id)`**: rejoining reactivates the row; only `role = student`; class must be `active`; **joining requires the explicit consent** (see « Consent and what the teacher may read ») |
+| `classroom_memberships` | `classroom_id`, `student_id`, `status` `active\|left\|removed`, `joined_via` `join_link\|join_code` (`invitation` on historical rows only), `invitation_id` (historical), `removed_by`, **`consented_at`, `consent_version`** | **unique `(classroom_id, student_id)`**: rejoining reactivates the row; only `role = student`; class must be `active`; **one class per student** (owner, 2026-10-24): no join while the student has an active membership in another *active* class (`already_in_class`); **joining requires the explicit consent** (see « Consent and what the teacher may read ») |
 | `classroom_invitations` | **historical, read-only** (e-mail invitations, removed 2026-10-01) | kept because old memberships point to it (`invitation_id`); the migration `2026_10_01_000002` revoked the rows still pending; no model, route or service remains |
 | `users.pending_class_join_token` / `pending_class_join_at` | a join the student consented to on the link page **before having an account** | written at registration (`PendingClassJoin::remember`), consumed when the e-mail is verified (`complete`); hidden from every serialization |
 | `classroom_lessons` | `classroom_id`, `lesson_id`, `status` `visible\|hidden`, `created_by`, `updated_by` | **absence of a row = visible**; unique `(classroom_id, lesson_id)` |
@@ -112,8 +112,8 @@ student and admin.
 |---|---|
 | `ClassroomService` | create (limit + allowed grade), update, archive, restore (re-checks the limit), suspend, rotate join code, list, show |
 | `JoinCode` | 6 characters, same unambiguous alphabet as activation codes, unique in the table |
-| `ClassroomMembershipService` | `joinByCode`, **`joinByLink`** (idempotent: an active member gets `alreadyMember: true`, no consent asked, even if joining was closed since), `classroomForLink`, `remove`, `leave`, `confirmConsent`; **both doors end in the same `join()`**; every join takes `consented: true` or fails with `consent_required`; capacity checked **at join, under `DB::transaction` with `lockForUpdate` on the class AND on the teacher row** (so two joins into two different classes of one teacher serialise): the technical per-class limit, then the seat capacity through `TeacherCapacityService` |
-| `TeacherCapacityService` | the **seat capacity**: `seatLimit` (`students_total.max` resolved from the plan / purchased seats / override), `currentStudentCount` (**distinct** active students across the teacher's non-archived classes — a student in two classes is one seat), `remainingSeats`, `isSeated`, `canAddStudent` (an already-seated student never consumes a second seat), `assertCanSeat` → `seats_exhausted`, `summary` |
+| `ClassroomMembershipService` | `joinByCode`, **`joinByLink`** (idempotent: an active member gets `alreadyMember: true`, no consent asked, even if joining was closed since), `classroomForLink`, `remove`, `leave`, `confirmConsent`; **both doors end in the same `join()`**; **`currentClassroomOf($student, except)`** = the active class the student is already an active member of (the one-class rule and the link preview both read it); every join takes `consented: true` or fails with `consent_required`; capacity checked **at join, under `DB::transaction` with `lockForUpdate` on the class AND on the teacher row** (so two joins into two different classes of one teacher serialise): the technical per-class limit, then the seat capacity through `TeacherCapacityService` |
+| `TeacherCapacityService` | the **seat capacity**: `seatLimit` (`students_total.max` resolved from the plan / purchased seats / override), `currentStudentCount` (**distinct** active students across the teacher's non-archived classes — a student in two classes, possible only for memberships from before the one-class rule of 2026-10-24, is one seat), `remainingSeats`, `isSeated`, `canAddStudent` (an already-seated student never consumes a second seat), `assertCanSeat` → `seats_exhausted`, `summary` |
 | `JoinLinkToken` | 32 base62 symbols from `random_int` (CSPRNG, ≈190 bits), derived from nothing (not the id, teacher, code); unique; **stored in clear** like `join_code`, because the teacher must re-read it on the class page and it is semi-public by nature (shared on WhatsApp). Protected by its length, the rate limit, `join_code_enabled` and rotation |
 | `PendingClassJoin` | the join that waits for the verified address: `remember` at registration (valid link of an open class + consent + student, otherwise silently ignored — registration never fails on a stale link; since 2026-10-22 it also gives the student the class's grade when they have none), `complete` in `EmailVerificationController::verify` (re-validates the token; any refusal just clears the wait) |
 | `ClassroomLessonService` | the class's curriculum tree (ميادين → وحدات → دروس) with `publicationStatus`, `tier`, `classStatus`, `effectiveForStudents`; `setStatus`; `bulkSetStatus` (a unit = its lessons repeated) → `{applied, unchanged, failed}` in the `ContentService::bulk()` shape |
@@ -124,7 +124,7 @@ student and admin.
 | `ClassroomInterventionService` | INTERVENE and MEASURE — § 4b |
 | `StudyContextService` | singleton, per-request memo: `{mode, classrooms[], primary, hiddenLessonCodes}` for a student |
 | `StudentCredentials` | « بطاقات الدخول » (2026-10-22): `issue(teacher, classroom, studentIds)` — active class, active members only (one outsider refuses all), a NEW password per student (`generate()`: 4 unambiguous letters + 4 digits, e.g. `kmar4827`), stored hashed, returned ONCE with the email; logs `teacher.student_credentials_issued` (ids only) |
-| `ClassroomException` | closed reasons: `limit_reached`, `grade_not_allowed`, `feature_unavailable`, `class_inactive`, `class_full`, `seats_exhausted`, `already_member`, `not_a_student`, `invalid`, **`joining_closed`** (link only: a valid link of a class that no longer accepts new members; the CODE answers `invalid` there, since six symbols can be guessed and a distinct reason would reveal which exist), `expired`, `revoked`, `not_member`, `lesson_out_of_scope`, `consent_required` → 422 `{reason}`; the client renders Arabic from the reason, never the French message |
+| `ClassroomException` | closed reasons: `limit_reached`, `grade_not_allowed`, `feature_unavailable`, `class_inactive`, `class_full`, `seats_exhausted`, `already_member`, **`already_in_class`** (the student is an active member of another active class — one class per student, 2026-10-24), `not_a_student`, `invalid`, **`joining_closed`** (link only: a valid link of a class that no longer accepts new members; the CODE answers `invalid` there, since six symbols can be guessed and a distinct reason would reveal which exist), `expired`, `revoked`, `not_member`, `lesson_out_of_scope`, `consent_required` → 422 `{reason}`; the client renders Arabic from the reason, never the French message |
 
 Rate limiter `classroom-join` (per user and per IP, registered beside
 `activation-redeem`) guards `POST /student/classrooms/join` (code and link);
@@ -145,6 +145,23 @@ join code  6 symbols in «قسمي» ───────┘  (manual fallback:
   (`PendingClassJoin::remember`, e-mail sign-up), and `ChooseGrade` sends a
   student with a consented pending join back to the link page instead of
   asking (Google sign-up) — `ARCHITECTURE.md` §10.
+- **One class per student** (owner, 2026-10-24). `join()` refuses
+  `already_in_class` when the student is an active member of another
+  **active** class — any teacher, by the code or by the link. The check runs
+  inside the join transaction **after locking the student row**, so two tabs
+  joining two classes cannot both pass. Order: same class first (the link
+  stays idempotent: `alreadyMember: true`), then the other class, then the
+  capacity. A membership in an archived or suspended class does not count
+  (the student no longer sees it in « قسمي » and could not leave it).
+  To change class the student **leaves first**: leaving frees their seat, so
+  moving between two classes of one teacher at exact capacity still works;
+  a teacher already *over* limit (downgrade) blocks the move like any new
+  seat. Rows from before the rule (a student in two classes) are kept, not
+  migrated. The link preview gives a logged-in student
+  `currentClassroomName` (their own class, never another student's), and the
+  link page shows « أنت في قسم آخر » with a link to « قسمي » instead of the
+  consent button; a pending join is dropped, never auto-played.
+  Locked by `ClassroomOneClassTest`.
 - **Closing** (`joinCodeEnabled: false`, « السماح بالانضمام » in الإعدادات)
   refuses new students by both doors; members stay, and a member reopening
   the link is still sent to the class. **Rotating the link**
@@ -261,8 +278,10 @@ vanish when the dialog closes. The email is therefore shown in this gesture's
 response only; no `/teacher` READ returns it (`TeacherPrivacyContractTest` is
 unchanged), and `pages/teacherContract.test.js` allows `.email` in
 `CredentialsDialog.jsx` alone. Locked by `TeacherStudentCredentialsTest`. The
-public join-link preview returns the class name, grade, teacher name and
-`joiningOpen` — never an id, an address or the roster.
+public join-link preview returns the class name, grade, teacher name,
+`joiningOpen`, and — for a logged-in student only — `alreadyMember` and
+`currentClassroomName` (the viewer's OWN current class) — never an id, an
+address or the roster.
 
 **« بطاقات الأولياء » (owner, 2026-10-23).** « التلاميذ » → « بطاقات الأولياء (QR) »
 (`features/teacher/members/ParentCardsDialog.jsx`) →
@@ -323,8 +342,9 @@ Rules, locked by `ClassroomLessonVisibilityTest`:
   decides.
 - Visibility applies to the class's grade. Lessons of other grades keep the
   normal rules.
-- A student in several active classes of that grade sees a lesson if **any**
-  of them shows it (hidden = hidden in all).
+- A student in several active classes of that grade (only rows from before the
+  one-class rule of 2026-10-24) sees a lesson if **any** of them shows it
+  (hidden = hidden in all).
 - A teacher can only hide what is published: showing a lesson never opens
   unpublished content, and hiding never changes `lessons.publication_status`.
   Publication (global) and visibility (per class) are two columns in two
@@ -726,8 +746,9 @@ activation). Metadata, never payment logic.
 Expiry, suspension, cancellation or a smaller plan → the resolver falls back
 (e.g. 30 purchased seats → the free 5) and `overLimit` becomes true. **Nothing
 is deleted or archived.** What over-limit blocks: seating a **new** student
-(join code or join link). A student already seated may still join
-another class; classes may still be created. Existing classes, members,
+(join code or join link). Since 2026-10-24 a student has one class at a
+time, so a seated student no longer joins a second class (`already_in_class`);
+leaving then rejoining counts as a new seat. Classes may still be created. Existing classes, members,
 visibility rows and progress stay readable. A downgrade *request* below the
 current usage is refused up front (`seats_below_usage`); the admin cannot
 activate a capacity below usage either. `SubscriptionLifecycleTest` and
@@ -784,8 +805,8 @@ frontend holds it in `StudyContextContext` (one fetch, `refresh()`).
 | Surface | What it does |
 |---|---|
 | `StudentHome` banner (`ClassContextBanner`) | « أنت تدرس ضمن القسم X مع الأستاذ Y » |
-| `/espace/qism` (« قسمي ») | join by code (LTR input), current classes, leave (confirm: history preserved); shows « انضممت إلى القسم … » when arriving from the link (`location.state.joinedClassroom`) |
-| `/rejoindre/classe/:token` (public, `pages/JoinClassLink.jsx`) | preview → invalid / closed / member (→ قسمي) / consent + join, or consent → register / login → automatic join → قسمي. Built on `AuthShell plain` (one column, no brand panel) |
+| `/espace/qism` (« قسمي ») | join by code (LTR input) **only while independent** — in a class, the form is hidden and « يمكنك أن تكون في قسم واحد فقط… » says to leave first (`data-qism-one-class`); current class, leave (confirm: history preserved); shows « انضممت إلى القسم … » when arriving from the link (`location.state.joinedClassroom`) |
+| `/rejoindre/classe/:token` (public, `pages/JoinClassLink.jsx`) | preview → invalid / closed / member (→ قسمي) / in another class (« أنت في قسم آخر », → قسمي, no consent button) / consent + join, or consent → register / login → automatic join → قسمي. Built on `AuthShell plain` (one column, no brand panel) |
 | `/rejoindre/:token` | old invitation addresses → the same page, « رابط غير صالح » |
 
 After any authentication (`Login`, `Register`, `AuthGoogle`,
