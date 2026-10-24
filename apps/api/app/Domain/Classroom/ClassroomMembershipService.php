@@ -30,6 +30,11 @@ use Illuminate\Support\Facades\DB;
  * ses classes : deux élèves qui rejoignent deux classes au même instant ne
  * franchissent pas la capacité ensemble.
  *
+ * UNE classe par élève : un élève membre actif d'une classe active n'en
+ * rejoint pas une seconde (`already_in_class`) — il quitte d'abord la
+ * sienne. Vérifié ici, sous le verrou de la ligne de l'ÉLÈVE, pour que deux
+ * adhésions simultanées dans deux classes ne passent pas ensemble.
+ *
  * Retirer ou quitter ne touche à RIEN d'autre que la ligne d'adhésion :
  * progression, tentatives, maîtrise, cahier restent à l'élève.
  */
@@ -57,6 +62,21 @@ class ClassroomMembershipService
         }
 
         return $this->join($student, $classroom, ClassroomMembership::VIA_JOIN_CODE, $consented);
+    }
+
+    /**
+     * La classe ACTIVE dont l'élève est déjà membre actif, hors `$except` —
+     * celle qui l'empêche d'en rejoindre une autre. Une adhésion dans une
+     * classe archivée ou suspendue ne compte pas : l'élève ne la voit plus
+     * dans « قسمي » et ne pourrait pas la quitter.
+     */
+    public function currentClassroomOf(User $student, ?int $except = null): ?Classroom
+    {
+        return Classroom::where('status', Classroom::STATUS_ACTIVE)
+            ->when($except !== null, fn ($q) => $q->whereKeyNot($except))
+            ->whereHas('memberships', fn ($q) => $q->where('student_id', $student->id)->active())
+            ->orderByDesc('id')
+            ->first();
     }
 
     /**
@@ -163,6 +183,13 @@ class ClassroomMembershipService
 
             if ($existing !== null && $existing->isActive()) {
                 throw new ClassroomException(ClassroomException::ALREADY_MEMBER, 'Vous êtes déjà dans cette classe.');
+            }
+
+            // Une classe à la fois. Le verrou sur l'élève sérialise ses
+            // adhésions : deux onglets, deux classes, une seule passe.
+            User::whereKey($student->id)->lockForUpdate()->first();
+            if ($this->currentClassroomOf($student, except: $classroom->id) !== null) {
+                throw new ClassroomException(ClassroomException::ALREADY_IN_CLASS, 'Vous êtes déjà dans une autre classe.');
             }
 
             $teacher = $classroom->teacher;

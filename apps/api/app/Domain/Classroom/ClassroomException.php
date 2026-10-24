@@ -25,6 +25,13 @@ class ClassroomException extends DomainException
 
     public const ALREADY_MEMBER = 'already_member';
 
+    /**
+     * L'élève est déjà membre d'une AUTRE classe active : un élève n'a qu'un
+     * قسم à la fois (décision du propriétaire, 2026-10-24). Pour changer, il
+     * quitte d'abord sa classe depuis « قسمي ».
+     */
+    public const ALREADY_IN_CLASS = 'already_in_class';
+
     public const NOT_A_STUDENT = 'not_a_student';
 
     public const INVALID = 'invalid';

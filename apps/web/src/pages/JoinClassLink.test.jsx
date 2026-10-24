@@ -57,6 +57,14 @@ describe('JoinClassLink — ouvrir un lien ne vaut pas consentement', () => {
     expect(goToClass).not.toMatch(/if \(!alreadyMember\)/);
   });
 
+  it('déjà dans un AUTRE قسم : l’avis passe avant le bouton de consentement, et rien ne rejoint seul', () => {
+    const other = src.indexOf('verifiedStudent && preview.currentClassroomName');
+    expect(other).toBeGreaterThan(-1);
+    expect(other).toBeLessThan(src.indexOf("join({ link: linkToken, consent: true })"));
+    const autoEffect = src.slice(src.indexOf('const request = autoJoinRequest('), src.indexOf('/** Le geste du visiteur'));
+    expect(autoEffect.indexOf('preview.currentClassroomName')).toBeLessThan(autoEffect.indexOf('join(request)'));
+  });
+
   it('aucune URL de redirection n’est lue dans la requête (pas de ?next=)', () => {
     expect(src).not.toMatch(/searchParams|useSearchParams|\bnext=/);
   });

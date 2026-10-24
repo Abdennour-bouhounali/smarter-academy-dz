@@ -67,4 +67,22 @@ describe('Qism — rejoindre, c’est consentir', () => {
     const html = render(INDEPENDENT, { pathname: '/espace/qism', state: { joinedClassroom: 'رياضيات 4م2', alreadyMember: true } });
     expect(html).toContain('أنت في هذا القسم بالفعل');
   });
+
+  it('déjà dans un قسم : pas de formulaire du code, et la règle « قسم واحد » est dite', () => {
+    const html = render({
+      mode: 'classroom',
+      primary: { id: 1, name: 'قسم أ', grade: '4am' },
+      hiddenLessonCodes: [],
+      classrooms: [{ id: 1, name: 'قسم أ', grade: '4am', consentRequired: false }],
+    });
+    expect(html).not.toContain('data-qism-join');
+    expect(html).not.toContain('id="join-code"');
+    expect(html).toContain('data-qism-one-class');
+  });
+
+  it('sans قسم : le formulaire du code est là', () => {
+    const html = render(INDEPENDENT);
+    expect(html).toContain('data-qism-join');
+    expect(html).toContain('id="join-code"');
+  });
 });

@@ -43,8 +43,9 @@ class ClassroomMembershipCapacityTest extends TestCase
         $this->withToken($this->tokenOf($s2))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $a->join_code])->assertCreated();
         $this->withToken($this->tokenOf($s3))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $b->join_code])->assertCreated();
 
-        // Un même élève dans deux classes n'occupe qu'un siège.
-        $this->withToken($this->tokenOf($s1))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $b->join_code])->assertCreated();
+        // Un élève n'a qu'une classe : s1 ne rejoint pas B.
+        $this->withToken($this->tokenOf($s1))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $b->join_code])
+            ->assertStatus(422)->assertJsonPath('reason', 'already_in_class');
 
         $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $b->join_code])
             ->assertStatus(422)->assertJsonPath('reason', 'seats_exhausted');
