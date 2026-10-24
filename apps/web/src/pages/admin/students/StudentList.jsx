@@ -1,5 +1,5 @@
 import { getAllGrades } from '@smarter-academy/core';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Users } from 'lucide-react';
@@ -8,6 +8,12 @@ import DataTable from '../../../components/admin/ui/DataTable';
 import StatusBadge from '../../../components/admin/ui/StatusBadge';
 import { FilterBar, SearchInput, SelectFilter, Pagination } from '../../../components/admin/ui/FilterBar';
 import { EmptyState } from '../../../components/admin/ui/states';
+import BulkActionBar from '../../../components/admin/BulkActionBar';
+import PlanActivateControl from '../../../components/admin/commercial/PlanActivateControl';
+import { buildPlanBulkActions } from '../../../components/admin/commercial/bulkPlanActions';
+import { AuthContext } from '../../../context/AuthContext';
+import { useBulkSelection } from '../../../hooks/useBulkSelection';
+import { fetchPlans } from '../../../services/admin/planService';
 import { useAdminResource } from '../../../hooks/useAdminResource';
 import { fetchStudents } from '../../../services/admin/studentService';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
@@ -18,6 +24,9 @@ import { useDebounced } from '../../../hooks/useDebounced';
 // aurait proposé de filtrer sur des classes qui n'existent plus en base.
 // Le `name` vient du catalogue (donnée), il n'est donc pas traduit ici.
 const GRADE_OPTIONS = getAllGrades().map((g) => ({ value: g.id, label: g.name }));
+
+const STUDENT_NOUN = { key: 'student' };
+const nameOf = (s) => [s.firstName, s.lastName].filter(Boolean).join(' ') || s.email;
 
 export default function AdminStudentList() {
   const { t } = useTranslation('admin');
@@ -40,7 +49,32 @@ export default function AdminStudentList() {
     }),
     [debouncedSearch, grade, status, page, sort],
   );
-  const { data, loading, error, reload } = useAdminResource(loader, [loader]);
+  const { data, loading, error, reload, setData } = useAdminResource(loader, [loader]);
+  const { token } = useContext(AuthContext);
+
+  // Les offres ÉLÈVE activables — mêmes règles que le CommercialPanel de la
+  // fiche : actives ou masquées, jamais l'offre par défaut.
+  const [plans, setPlans] = useState([]);
+  useEffect(() => {
+    fetchPlans(token, { type: 'student', perPage: 100 })
+      .then((d) => setPlans((d.plans?.data ?? []).filter((p) => ['active', 'hidden'].includes(p.status) && !p.isDefault)))
+      .catch(() => setPlans([]));
+  }, [token]);
+
+  const rows = data?.students?.data ?? [];
+  const selection = useBulkSelection(rows);
+  const bulkActions = useMemo(() => buildPlanBulkActions({ token, plans, nameOf }), [token, plans]);
+
+  /** Chaque ligne prend l'état que le serveur a donné à SON abonnement. */
+  const patchSubscription = (statusById) => {
+    setData((current) => current && ({
+      ...current,
+      students: {
+        ...current.students,
+        data: current.students.data.map((row) => (row.id in statusById ? { ...row, subscriptionStatus: statusById[row.id] } : row)),
+      },
+    }));
+  };
 
   const setStatusFilter = (next) => {
     const updated = new URLSearchParams(params);
@@ -95,6 +129,18 @@ export default function AdminStudentList() {
           />
         </FilterBar>
 
+        <BulkActionBar
+          count={selection.count}
+          noun={STUDENT_NOUN}
+          actions={bulkActions}
+          selectedRows={selection.selectedRows}
+          onClear={selection.clear}
+          onSelectAllVisible={selection.toggleAll}
+          allSelected={selection.allSelected}
+          visibleCount={selection.visibleCount}
+          onDone={(outcome) => patchSubscription(outcome.statusById ?? {})}
+        />
+
         <DataTable
           columns={[
             {
@@ -132,18 +178,32 @@ export default function AdminStudentList() {
                 </span>
               ),
             },
+            {
+              key: 'activatePlan',
+              label: t('students.columnActivatePlan'),
+              cellClassName: 'min-w-[160px]',
+              render: (s) => (
+                <PlanActivateControl
+                  studentId={s.id}
+                  studentName={nameOf(s)}
+                  plans={plans}
+                  onActivated={(sub) => patchSubscription({ [s.id]: sub?.status ?? null })}
+                />
+              ),
+            },
             { key: 'reportsCount', label: t('students.columnReports'), render: (s) => <Num>{s.reportsCount ?? 0}</Num> },
             { key: 'lastActivityAt', label: t('students.columnLastActivity'), sortKey: 'last_activity_at', render: (s) => <span className="whitespace-nowrap">{formatDate(s.lastActivityAt)}</span> },
             { key: 'createdAt', label: t('students.columnRegistered'), sortKey: 'created_at', render: (s) => <span className="whitespace-nowrap">{formatDate(s.createdAt)}</span> },
           ]}
-          rows={data?.students?.data ?? []}
+          rows={rows}
+          selection={plans.length ? selection : undefined}
           loading={loading}
           error={error}
           onRetry={reload}
           sort={sort}
           onSortChange={setSort}
           labels={L.table}
-          selectionLabel={(row) => L.selectRow([row.firstName, row.lastName].filter(Boolean).join(' ') || row.email)}
+          selectionLabel={(row) => L.selectRow(nameOf(row))}
           empty={<EmptyState icon={Users} title={t('students.emptyTitle')} hint={t('students.emptyHint')} />}
         />
 

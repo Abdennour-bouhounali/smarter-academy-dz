@@ -21,7 +21,7 @@ import SelectionCheckbox from './SelectionCheckbox';
  *
  * La sélection multiple est OPTIONNELLE : sans la prop `selection`, ce tableau
  * rend exactement ce qu'il rendait avant, sans colonne en plus. Les listes qui
- * n'ont pas d'action groupée (élèves, signalements, abonnements) n'ont donc
+ * n'ont pas d'action groupée (signalements, abonnements) n'ont donc
  * rien à changer, et ne gagnent pas une case à cocher qui ne mènerait nulle
  * part.
  */
