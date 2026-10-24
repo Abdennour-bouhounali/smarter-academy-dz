@@ -202,19 +202,34 @@ describe('le branchement des actions groupées', () => {
 
   /**
    * La case à cocher n'apparaît QUE là où une action groupée existe. Les
-   * listes d'élèves, de signalements et d'abonnements n'en ont pas : une case
-   * qui ne mène à rien est une promesse non tenue.
+   * listes de signalements et d'abonnements n'en ont pas : une case qui ne
+   * mène à rien est une promesse non tenue. (Les élèves en ont une depuis
+   * « تفعيل عرض » en lot — voir le test suivant.)
    */
   it('la sélection reste optionnelle dans DataTable', () => {
     const table = read('src/components/admin/ui/DataTable.jsx');
     expect(table).toContain('{selection && (');
 
     for (const page of [
-      'src/pages/admin/students/StudentList.jsx',
       'src/pages/admin/reports/ReportList.jsx',
     ]) {
       expect(read(page), page).not.toContain('selection={');
     }
+  });
+
+  it('la liste des élèves active une offre par ligne ET en lot, par la route unitaire', () => {
+    const page = read('src/pages/admin/students/StudentList.jsx');
+    expect(page).toContain('PlanActivateControl');
+    expect(page).toContain('BulkActionBar');
+    expect(page).toContain('buildPlanBulkActions');
+    // Sans offre activable, aucune case : elle ne mènerait à rien.
+    expect(page).toContain('selection={plans.length ? selection : undefined}');
+
+    // Le lot n'a pas de route à lui : il rappelle le geste unitaire, élève par
+    // élève, pour garder la validation et le journal du serveur.
+    const bulk = read('src/components/admin/commercial/bulkPlanActions.jsx');
+    expect(bulk).toContain("activatePlan(token, 'students', row.id, { planId: plan.id })");
+    expect(bulk).toContain('statusById');
   });
 });
 

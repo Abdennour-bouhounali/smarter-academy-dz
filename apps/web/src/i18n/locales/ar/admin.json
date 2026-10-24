@@ -255,7 +255,21 @@
     "confirmSuspendMessage": "لن يتمكّن التلميذ من تسجيل الدخول.",
     "confirmDisableMessage": "لن يتمكّن التلميذ من تسجيل الدخول، وتُغلق جلساته الجارية.",
     "confirmDataKeptStrong": "لا تُحذف أيّ بيانات تعلّم",
-    "confirmDataKeptRest": "تقدّمه ومحاولاته وتمكّنه محفوظة، وتعود إليه كاملة إذا أُعيد تفعيل الحساب."
+    "confirmDataKeptRest": "تقدّمه ومحاولاته وتمكّنه محفوظة، وتعود إليه كاملة إذا أُعيد تفعيل الحساب.",
+    "columnActivatePlan": "تفعيل عرض",
+    "activatePlanPlaceholder": "تفعيل عرض…",
+    "activatePlanLabel": "تفعيل عرض لـ {{name}}",
+    "confirmActivateOneTitle": "تفعيل «{{plan}}» لـ {{name}}؟",
+    "bulkActivate": "تفعيل «{{plan}}»",
+    "bulkActivateRunning": "تفعيل «{{plan}}»…",
+    "confirmBulkActivateTitle": "تفعيل «{{plan}}» لـ {{counted}}؟",
+    "confirmBulkActivateAction": "تفعيل لـ {{counted}}",
+    "bulkActivateSuccess_zero": "لم يُفعَّل «{{plan}}» لأيّ تلميذ.",
+    "bulkActivateSuccess_one": "تمّ تفعيل «{{plan}}» لـ {{counted}}.",
+    "bulkActivateSuccess_two": "تمّ تفعيل «{{plan}}» لـ {{counted}}.",
+    "bulkActivateSuccess_few": "تمّ تفعيل «{{plan}}» لـ {{counted}}.",
+    "bulkActivateSuccess_many": "تمّ تفعيل «{{plan}}» لـ {{counted}}.",
+    "bulkActivateSuccess_other": "تمّ تفعيل «{{plan}}» لـ {{counted}}."
   },
   "teachers": {
     "metaTitle": "الأساتذة — الإدارة",
@@ -1208,7 +1222,13 @@
       "exercise_two": "تمرينان",
       "exercise_few": "{{count}} تمارين",
       "exercise_many": "{{count}} تمريناً",
-      "exercise_other": "{{count}} تمرين"
+      "exercise_other": "{{count}} تمرين",
+      "student_zero": "لا تلميذ",
+      "student_one": "تلميذ واحد",
+      "student_two": "تلميذان",
+      "student_few": "{{count}} تلاميذ",
+      "student_many": "{{count}} تلميذاً",
+      "student_other": "{{count}} تلميذ"
     },
     "nounOf": {
       "item_zero": "لا عنصر",
@@ -1234,7 +1254,13 @@
       "exercise_two": "تمرينين",
       "exercise_few": "{{count}} تمارين",
       "exercise_many": "{{count}} تمريناً",
-      "exercise_other": "{{count}} تمرين"
+      "exercise_other": "{{count}} تمرين",
+      "student_zero": "لا تلميذ",
+      "student_one": "تلميذ واحد",
+      "student_two": "تلميذين",
+      "student_few": "{{count}} تلاميذ",
+      "student_many": "{{count}} تلميذاً",
+      "student_other": "{{count}} تلميذ"
     },
     "premiumOneDataKept": ": يبقى التقدّم المسجَّل محفوظاً ويعود إلى الظهور عند رجوع الوصول.",
     "premiumOneMessageAfter": "وصول إليه. يبقى المحتوى ظاهراً في الفهرس بإشارة «مدفوع».",
