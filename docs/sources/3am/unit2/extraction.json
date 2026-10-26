@@ -270,7 +270,7 @@
    "kind": "activity",
    "page": 24,
    "section": "أنشطة 2 — تساوي كسرين",
-   "verified": false,
+   "verified": true,
    "text": "يهدف هذا النشاط إلى إثبات الخاصية التالية وعكسها: إذا كان a/b = c/d فإن a × d = b × c . 1) تحقق من الخاصية من أجل a = 3 ، b = 2 ، c = 15 ، d = 10 . 2) نعتبر الأعداد a ، b ، c ، d حيث b ≠ 0 و d ≠ 0 . اكتب الكسرين a/b و c/d بنفس المقام. نفرض أنّ a/b = c/d ماذا تستنتج؟ 3) نفرض الآن a × d = b × c ، بيّن أنّ a/b = c/d .",
    "answer": {
     "1": "3 × 10 = 30 = 2 × 15"
@@ -282,13 +282,13 @@
    "kind": "activity",
    "page": 24,
    "section": "أنشطة 3 — مقارنة كسرين",
-   "verified": false,
+   "verified": true,
    "text": "قارن بين كلّ كسرين بالطريقة المناسبة: 512/497 و 652/783 ، 57/29 و 57/31 ، 209/208 و 208/207 ، 23/20 و 13/12 .",
    "answer": {
     "512/497 > 652/783": true,
     "57/29 > 57/31": true,
     "209/208 < 208/207": true,
-    "23/20 < 13/12": false
+    "23/20 > 13/12": true
    },
    "answerSource": "computed"
   },
@@ -365,7 +365,7 @@
    "kind": "knowledge",
    "page": 26,
    "section": "معارف 3 — مقارنة كسرين",
-   "verified": false,
+   "verified": true,
    "text": "a/b كسر و k عدد غير معدوم: a/b = (a×k)/(b×k) ; a/b = (a÷k)/(b÷k). خاصية الجداء المتصالب: a/b = c/d ⇔ a × d = b × c . خاصية: كسران لهما نفس المقام فأصغرهما هو الكسر ذو البسط الأصغر. قاعدة: لمقارنة كسرين مقاماهما مختلفان، نبدأ بتوحيد المقامين. أمثلة: 30/54 = 5/9 ؛ 7/12 و 11/18 على المقام 36 ؛ 12/156 = 37/481 لأنّ 12 × 481 = 5772 = 37 × 156 ؛ 7/6 < 13/9 .",
    "answer": {
     "12 × 481": 5772,
@@ -409,7 +409,7 @@
    "kind": "method",
    "page": 27,
    "section": "طرائق — مقارنة كسرين (1)",
-   "verified": false,
+   "verified": true,
    "text": "بيّن تساوي الكسرين 132/56 و 33/14 : 33 × 56 = 1848 و 14 × 132 = 1848 فإنّ 132/56 = 33/14 .",
    "answer": {
     "33 × 56": 1848,
@@ -422,7 +422,7 @@
    "kind": "method",
    "page": 27,
    "section": "طرائق — مقارنة كسرين (2)",
-   "verified": false,
+   "verified": true,
    "text": "بحساب ذهني فقط، بيّن أنّ 33215/66317 ≠ 104348/208341 : رقم آحاد 33215 × 208341 هو 5 ورقم آحاد 66317 × 104348 هو 6 ، فالجداءان مختلفان.",
    "answer": {
     "unit digits": [
@@ -437,7 +437,7 @@
    "kind": "method",
    "page": 27,
    "section": "طرائق — مقارنة كسرين (3)",
-   "verified": false,
+   "verified": true,
    "text": "قارن بين الكسرين 122/76 و 54/317 : 122 > 76 فإنّ 122/76 > 1 ؛ 54 < 317 فإنّ 54/317 < 1 ؛ إذن 54/317 < 122/76 ."
   },
   {
@@ -445,7 +445,7 @@
    "kind": "method",
    "page": 27,
    "section": "طرائق — مقارنة كسرين (4)",
-   "verified": false,
+   "verified": true,
    "text": "قارن بين الكسرين 10/3 و 7/4 : 12 مضاعف مشترك للعددين 3 و 4 : 10/3 = 40/12 و 7/4 = 21/12 ؛ 21 < 40 إذن 7/4 < 10/3 .",
    "answer": {
     "10/3 > 7/4": true
@@ -482,7 +482,7 @@
    "kind": "now",
    "page": 27,
    "section": "دورك الآن (p. 27) — 1",
-   "verified": false,
+   "verified": true,
    "text": "ادرس في كل حالة إن كان الكسران متساويين: 2018/2017 و 2017/2016 ، 15/29 و 345/667 ، 10/9 و 7/6 .",
    "answer": {
     "2018/2017 vs 2017/2016": false,
@@ -676,7 +676,7 @@
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 8",
-   "verified": false,
+   "verified": true,
    "text": "تعرّف على الكسور المتساوية ممّا يلي: 21/24 ، 5/2 ، 4/3 ، 7/8 ، 35/14 ، 40/16 .",
    "answer": {
     "equal groups": "ملاحظة: 21/24 = 7/8 ; 5/2 = 35/14 = 40/16"
@@ -688,7 +688,7 @@
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 9",
-   "verified": false,
+   "verified": true,
    "text": "حوّل الكتابات الكسرية التالية إلى كسور: 8/1,5 ، 0,12/7 ، 3,5/1,2 ، 2/1,3 ، 0,08/1,1 ، 13,2/5 ."
   },
   {
@@ -696,7 +696,7 @@
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 10",
-   "verified": false,
+   "verified": true,
    "text": "اختزل الكسور التالية إلى أبسط شكل: 18/27 ، 240/360 ، 72/54 ، 90/135 ، 30/24 ، 15/45 .",
    "answer": {
     "values": [
@@ -723,7 +723,7 @@
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 12",
-   "verified": false,
+   "verified": true,
    "text": "اكتب الكسور التالية بنفس المقام ثم رتّبها تصاعديًا: 7/2 ، 8/6 ، 2/3 ، 7/12 ، 9/2 ، 15/4 ."
   },
   {
@@ -731,7 +731,7 @@
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 13",
-   "verified": false,
+   "verified": true,
    "text": "اكتب الكسور التالية بنفس المقام 180 ثم رتّبها تنازليًا: 4/15 ، 2/9 ، 5/12 ، 1/3 ، 6/15 ، 3/5 ."
   },
   {
@@ -739,7 +739,7 @@
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 14",
-   "verified": false,
+   "verified": true,
    "text": "اكتب كل كسرين بنفس المقام ثم قارن بينهما: 25/7 و 3 ، 7/18 و 11/27 ، 5/12 و 7/6 ، 3/35 و 5/14 ."
   },
   {
@@ -747,15 +747,15 @@
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 15",
-   "verified": false,
-   "text": "ادرس في كل حالة إن كان العددان متساويين: 5/17 و 15/17 ، 2/7 و 14/19 ، 304/127 و 1428/597 ."
+   "verified": true,
+   "text": "ادرس في كل حالة إن كان العددان متساويين: 5/7 و 15/17 ، 2/7 و 14/19 ، 304/127 و 1428/597 ."
   },
   {
    "id": "ex-16",
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 16",
-   "verified": false,
+   "verified": true,
    "text": "تحقّق أنّ: 20 × 21 = 35 × 12 ، ثم جد كسرا مساويا لـ 12/21 وكسرا آخر مساويا لـ 35/21 ."
   },
   {
@@ -763,8 +763,8 @@
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 17",
-   "verified": false,
-   "text": "قارن كل كسرين دون توحيد المقام: 17/18 و 17/17 ، 11/15 و 11/21 ، 64/31 و 8/9 ، 256/288 ."
+   "verified": true,
+   "text": "قارن كل كسرين دون توحيد المقام: 17/18 و 18/17 ، 11/15 و 11/21 ، 64/31 و 17/9 ، 8/9 و 256/288 ."
   },
   {
    "id": "ex-18",
@@ -1274,7 +1274,7 @@
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 55",
-   "verified": false,
+   "verified": true,
    "text": "يستعمل سفيان الحاسبة وهو يؤكد أنّ الكسرين 131836323/318281039 و 22619537/54608393 متساويان. لكن وئام بحساب بسيط، تؤكد أنهما مختلفان. ما رأيك؟ برّر."
   },
   {
@@ -1585,6 +1585,21 @@
  ],
  "discrepancies": [
   {
+   "elementId": "ex-15",
+   "kind": "transcription",
+   "text": "Relu à 260 dpi par L2 : la 1re paire est 5/7 et 15/17 (la transcription de L1 écrivait 5/17). Les trois paires sont NON égales."
+  },
+  {
+   "elementId": "ex-17",
+   "kind": "transcription",
+   "text": "Relu à 260 dpi par L2 : les paires sont 17/18 et 18/17, 11/15 et 11/21, 64/31 et 17/9, 8/9 et 256/288 (ces deux-ci sont ÉGALES) ; la transcription de L1 était brouillée."
+  },
+  {
+   "elementId": "act-3",
+   "kind": "plan-error",
+   "text": "Le plan écrivait 23/20 < 13/12 : 23 × 12 = 276 > 260 = 13 × 20, donc 23/20 > 13/12. Aucune leçon ne reprend ce couple tel quel."
+  },
+  {
    "elementId": "method-9",
    "kind": "misprint",
    "text": "D = 7/3 − 8/15 ÷ 11/20 = 7/3 − 32/33 = 77/33 − 32/33 = 15/11. Le livre écrit « 55/33 − 32/33 = 23/33 » : il a pris 5/3 au lieu de 7/3."
@@ -1820,27 +1835,27 @@
   },
   "ex-8": {
    "lesson": "tasawi-muqaranat-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-12": {
    "lesson": "tasawi-muqaranat-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-13": {
    "lesson": "tasawi-muqaranat-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-14": {
    "lesson": "tasawi-muqaranat-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-15": {
    "lesson": "tasawi-muqaranat-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-16": {
    "lesson": "tasawi-muqaranat-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-17": {
    "lesson": "tasawi-muqaranat-kasrayn",
@@ -1848,11 +1863,11 @@
   },
   "ex-9": {
    "lesson": "tasawi-muqaranat-kasrayn",
-   "module": 0
+   "module": null
   },
   "ex-10": {
    "lesson": "tasawi-muqaranat-kasrayn",
-   "module": 0
+   "module": null
   },
   "ex-11": {
    "lesson": "jam-tarh-kasrayn",

@@ -805,6 +805,68 @@
       "ex-3am-jidaa-adadayn-nisbiyayn-l5-010"
     ]
   },
+  "jidaa-ida-nisbiya": {
+    "1": [
+      "ex-3am-jidaa-ida-nisbiya-l1-001",
+      "ex-3am-jidaa-ida-nisbiya-l1-002",
+      "ex-3am-jidaa-ida-nisbiya-l1-003",
+      "ex-3am-jidaa-ida-nisbiya-l1-004",
+      "ex-3am-jidaa-ida-nisbiya-l1-005",
+      "ex-3am-jidaa-ida-nisbiya-l1-006",
+      "ex-3am-jidaa-ida-nisbiya-l1-007",
+      "ex-3am-jidaa-ida-nisbiya-l1-008",
+      "ex-3am-jidaa-ida-nisbiya-l1-009",
+      "ex-3am-jidaa-ida-nisbiya-l1-010"
+    ],
+    "2": [
+      "ex-3am-jidaa-ida-nisbiya-l2-001",
+      "ex-3am-jidaa-ida-nisbiya-l2-002",
+      "ex-3am-jidaa-ida-nisbiya-l2-003",
+      "ex-3am-jidaa-ida-nisbiya-l2-004",
+      "ex-3am-jidaa-ida-nisbiya-l2-005",
+      "ex-3am-jidaa-ida-nisbiya-l2-006",
+      "ex-3am-jidaa-ida-nisbiya-l2-007",
+      "ex-3am-jidaa-ida-nisbiya-l2-008",
+      "ex-3am-jidaa-ida-nisbiya-l2-009",
+      "ex-3am-jidaa-ida-nisbiya-l2-010"
+    ],
+    "3": [
+      "ex-3am-jidaa-ida-nisbiya-l3-001",
+      "ex-3am-jidaa-ida-nisbiya-l3-002",
+      "ex-3am-jidaa-ida-nisbiya-l3-003",
+      "ex-3am-jidaa-ida-nisbiya-l3-004",
+      "ex-3am-jidaa-ida-nisbiya-l3-005",
+      "ex-3am-jidaa-ida-nisbiya-l3-006",
+      "ex-3am-jidaa-ida-nisbiya-l3-007",
+      "ex-3am-jidaa-ida-nisbiya-l3-008",
+      "ex-3am-jidaa-ida-nisbiya-l3-009",
+      "ex-3am-jidaa-ida-nisbiya-l3-010"
+    ],
+    "4": [
+      "ex-3am-jidaa-ida-nisbiya-l4-001",
+      "ex-3am-jidaa-ida-nisbiya-l4-002",
+      "ex-3am-jidaa-ida-nisbiya-l4-003",
+      "ex-3am-jidaa-ida-nisbiya-l4-004",
+      "ex-3am-jidaa-ida-nisbiya-l4-005",
+      "ex-3am-jidaa-ida-nisbiya-l4-006",
+      "ex-3am-jidaa-ida-nisbiya-l4-007",
+      "ex-3am-jidaa-ida-nisbiya-l4-008",
+      "ex-3am-jidaa-ida-nisbiya-l4-009",
+      "ex-3am-jidaa-ida-nisbiya-l4-010"
+    ],
+    "5": [
+      "ex-3am-jidaa-ida-nisbiya-l5-001",
+      "ex-3am-jidaa-ida-nisbiya-l5-002",
+      "ex-3am-jidaa-ida-nisbiya-l5-003",
+      "ex-3am-jidaa-ida-nisbiya-l5-004",
+      "ex-3am-jidaa-ida-nisbiya-l5-005",
+      "ex-3am-jidaa-ida-nisbiya-l5-006",
+      "ex-3am-jidaa-ida-nisbiya-l5-007",
+      "ex-3am-jidaa-ida-nisbiya-l5-008",
+      "ex-3am-jidaa-ida-nisbiya-l5-009",
+      "ex-3am-jidaa-ida-nisbiya-l5-010"
+    ]
+  },
   "khassiyat-fitaghuras": {
     "1": [
       "ex-3am-khassiyat-fitaghuras-l1-001",
@@ -1361,6 +1423,68 @@
       "ex-3am-tanasub-tamthil-bayani-l5-008",
       "ex-3am-tanasub-tamthil-bayani-l5-009",
       "ex-3am-tanasub-tamthil-bayani-l5-010"
+    ]
+  },
+  "tasawi-muqaranat-kasrayn": {
+    "1": [
+      "ex-3am-tasawi-muqaranat-kasrayn-l1-001",
+      "ex-3am-tasawi-muqaranat-kasrayn-l1-002",
+      "ex-3am-tasawi-muqaranat-kasrayn-l1-003",
+      "ex-3am-tasawi-muqaranat-kasrayn-l1-004",
+      "ex-3am-tasawi-muqaranat-kasrayn-l1-005",
+      "ex-3am-tasawi-muqaranat-kasrayn-l1-006",
+      "ex-3am-tasawi-muqaranat-kasrayn-l1-007",
+      "ex-3am-tasawi-muqaranat-kasrayn-l1-008",
+      "ex-3am-tasawi-muqaranat-kasrayn-l1-009",
+      "ex-3am-tasawi-muqaranat-kasrayn-l1-010"
+    ],
+    "2": [
+      "ex-3am-tasawi-muqaranat-kasrayn-l2-001",
+      "ex-3am-tasawi-muqaranat-kasrayn-l2-002",
+      "ex-3am-tasawi-muqaranat-kasrayn-l2-003",
+      "ex-3am-tasawi-muqaranat-kasrayn-l2-004",
+      "ex-3am-tasawi-muqaranat-kasrayn-l2-005",
+      "ex-3am-tasawi-muqaranat-kasrayn-l2-006",
+      "ex-3am-tasawi-muqaranat-kasrayn-l2-007",
+      "ex-3am-tasawi-muqaranat-kasrayn-l2-008",
+      "ex-3am-tasawi-muqaranat-kasrayn-l2-009",
+      "ex-3am-tasawi-muqaranat-kasrayn-l2-010"
+    ],
+    "3": [
+      "ex-3am-tasawi-muqaranat-kasrayn-l3-001",
+      "ex-3am-tasawi-muqaranat-kasrayn-l3-002",
+      "ex-3am-tasawi-muqaranat-kasrayn-l3-003",
+      "ex-3am-tasawi-muqaranat-kasrayn-l3-004",
+      "ex-3am-tasawi-muqaranat-kasrayn-l3-005",
+      "ex-3am-tasawi-muqaranat-kasrayn-l3-006",
+      "ex-3am-tasawi-muqaranat-kasrayn-l3-007",
+      "ex-3am-tasawi-muqaranat-kasrayn-l3-008",
+      "ex-3am-tasawi-muqaranat-kasrayn-l3-009",
+      "ex-3am-tasawi-muqaranat-kasrayn-l3-010"
+    ],
+    "4": [
+      "ex-3am-tasawi-muqaranat-kasrayn-l4-001",
+      "ex-3am-tasawi-muqaranat-kasrayn-l4-002",
+      "ex-3am-tasawi-muqaranat-kasrayn-l4-003",
+      "ex-3am-tasawi-muqaranat-kasrayn-l4-004",
+      "ex-3am-tasawi-muqaranat-kasrayn-l4-005",
+      "ex-3am-tasawi-muqaranat-kasrayn-l4-006",
+      "ex-3am-tasawi-muqaranat-kasrayn-l4-007",
+      "ex-3am-tasawi-muqaranat-kasrayn-l4-008",
+      "ex-3am-tasawi-muqaranat-kasrayn-l4-009",
+      "ex-3am-tasawi-muqaranat-kasrayn-l4-010"
+    ],
+    "5": [
+      "ex-3am-tasawi-muqaranat-kasrayn-l5-001",
+      "ex-3am-tasawi-muqaranat-kasrayn-l5-002",
+      "ex-3am-tasawi-muqaranat-kasrayn-l5-003",
+      "ex-3am-tasawi-muqaranat-kasrayn-l5-004",
+      "ex-3am-tasawi-muqaranat-kasrayn-l5-005",
+      "ex-3am-tasawi-muqaranat-kasrayn-l5-006",
+      "ex-3am-tasawi-muqaranat-kasrayn-l5-007",
+      "ex-3am-tasawi-muqaranat-kasrayn-l5-008",
+      "ex-3am-tasawi-muqaranat-kasrayn-l5-009",
+      "ex-3am-tasawi-muqaranat-kasrayn-l5-010"
     ]
   },
   "aksiya-talis": {

@@ -139,6 +139,8 @@ import { ORACLE as ORACLE_3AM_NISBA_MIAWIYA_3AM } from './practice-oracle/nisba-
 import { ORACLE as ORACLE_3AM_TANASUB_TAMTHIL_BAYANI } from './practice-oracle/tanasub-tamthil-bayani.mjs';
 import { ORACLE as ORACLE_3AM_MAQLUB_QISMAT_KASRAYN, audit as auditMaqlub } from './practice-oracle/maqlub-qismat-kasrayn.mjs';
 import { ORACLE as ORACLE_3AM_JIDAA_ADADAYN } from './practice-oracle/jidaa-adadayn-nisbiyayn.mjs';
+import { ORACLE as ORACLE_3AM_JIDAA_IDA } from './practice-oracle/jidaa-ida-nisbiya.mjs';
+import { ORACLE as ORACLE_3AM_TASAWI_MUQARANAT_KASRAYN, audit as auditTasawi } from './practice-oracle/tasawi-muqaranat-kasrayn.mjs';
 
 // Toutes les années du cycle moyen (content/practice/<1am…4am>/<leçon>/level-N) : jusqu'au 2026-10-14 seul 4am
 // existait et la racine y était codée en dur — un banc 1AM–3AM aurait échappé à l'oracle sans rien dire.
@@ -303,6 +305,8 @@ const ORACLE = {
   ...ORACLE_3AM_TANASUB_TAMTHIL_BAYANI,
   ...ORACLE_3AM_MAQLUB_QISMAT_KASRAYN,
   ...ORACLE_3AM_JIDAA_ADADAYN,
+  ...ORACLE_3AM_JIDAA_IDA,
+  ...ORACLE_3AM_TASAWI_MUQARANAT_KASRAYN,
 };
 
 /**
@@ -346,6 +350,12 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     const own = bank.filter((b) => b.key.startsWith('ex-3am-maqlub-qismat-kasrayn-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditMaqlub(own)).toEqual([]);
+  });
+
+  it('تساوي كسرين ومقارنتهما (3AM) : relecture LaTeX de chaque QCM (une seule option vraie, la marquée), clés réduites, distracteurs étiquetés MISC-TASAWI-*', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-tasawi-muqaranat-kasrayn-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditTasawi(own)).toEqual([]);
   });
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {

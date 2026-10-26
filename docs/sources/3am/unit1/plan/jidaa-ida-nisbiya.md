@@ -290,3 +290,21 @@ diagonals 1 × (−3) × 9 = 1,5 × (−3) × 6 = −27).
 - Publish (coordinator, guide §11): final `pointsToLearn`, `pointPrerequisites` above, `durationMinutes: 64`, `difficulty: 'متوسط'`,
   `icon: '🤖'`, `textbookRef` fix, status `available`; `challenge.sourceElementId: 'challenge'` in `units_3am › aadad-nisbiya` (its part ①
   is cited here).
+
+
+## 12. Generator notes (2026-10-26)
+
+Deviations from this plan, each minimal and recorded:
+
+1. **`now-11` reads « 85 », not « 50 » — the plan was wrong.** Re-read at 500 dpi: the LAST digit under the brace is an unambiguous 5, so the number of factors is ODD and the sign of P is « − » whatever the first digit is (8, 6 or 0). The extraction (`build-extraction.py`) now says so; the lesson does not use that number (its own `now-11` redesign has 40 and 7 factors, plus the platform's 4-negative product). The cautions about `ex-15`, `ex-24`, `ex-30` (destined to `qismat-nisbiyayn`) and `ex-17` (to `jidaa-adadayn-nisbiyayn`) were NOT needed here: none of them is used by this lesson or its bank.
+2. **Lab `a2`.** The plan wrote « the final stop is 20 whatever the order » AND « at −2 after the first two cards »: the task has two stops. The task field is `at: 2` (the flag −2 is checked after the second card while all four cards must be placed); the final stop (20) is shown in every verdict and is the same in all 24 orders (`logic/robotTrack.test.js`). The mat of a2 is 40 wide (5 × 4 × 2 = 40 is a partial product).
+3. **Lab numbers and shape.** The programme shows `need` slots (≥ 2), six only in the free panel (six 66 px slots do not fit the 414 px lab column at 1024 px with the sidebar open); the distance stepper is ±1 with ±5 chips (a1 needs 12). « لا يمكن » is always clickable (no `aria-disabled`: it answers « جرّب عددًا موجبًا… » before the two trials) and carries `data-ready`.
+4. **« أستعدّ ».** Seven statements instead of six: textbook prep 6 and 9 rewritten (the largest of five negatives; two points symmetric about the origin) plus five of the platform (two products, the opposite of −7, 17 is odd, (−8) + 3). The skills: `jidaa`, `maakus`, `tartib`, `zawji`, `jam`.
+5. **Module 1.** q2 reads the student's OWN two last lines of the record (« 1 و 2 »: the negative cards of the program ending at −24, then at 24) instead of « 0 or 2 accepted » — m4 forces at least two negatives, so the record never holds a 0-negative 24; the follow-up « −24 → 1 or 3 » is the first number of that pair. « أتوقّع القاعدة » is the `predictPrompt` of the brick `adad-salib`, shown after q3.
+6. **Module 3.** S1 is split in three answers (count 3 → sign − → P = −21 by reordering 4 × 25 first); method-1 exercise 3 is cited by a worked line (`METHOD.count`, −24 with five factors).
+7. **Module 4.** Ten steps (the plan's eight, E1 and E6 each followed by their « ماذا تلاحظ؟ » choice). No figure for E1: the abscissas and their images are rows of a batch + a choice about the symmetry.
+8. **Extraction destinations moved** to this lesson's module 4: `ex-13`, `deep-39`, `deep-42`, `deep-44`, `deep-49`, `deep-51` (the other module-`None` elements of the lesson are cited by its bank); every element destined to `jidaa-ida-nisbiya` is now `verified: true`.
+9. **Catalogue.** `textbookRef.pages.activity` is `null`, `method` is `[11, 13]`, `pointPrerequisites` P1–P4 as in §2, `durationMinutes` 64, `icon` 🤖, status `available`; `units_3am › aadad-nisbiya.challenge.sourceElementId: "challenge"` was already set by lesson 1. The final الكفاءات wording is the plan's « proposed final wording » word for word (spaces around `\times`).
+10. **Bank** (50 sheets, 225 questions): 8 `term_exam`, 23 `term_exam_modelled`, 19 `adapted`. The bank author found two errors in the corpus notes of this plan and of the lesson-1 bank: `3am-s1-2` ex 3 prints E = (−10) × (−7) × (+1) × 2 × (−0,5) = **−70**, not −7 (the plan §9 and sibling `jidaa-adadayn-nisbiyayn-l3-007` carry the −7 version); G of `3am-s1-4` ex 1 keeps its factor (−3,12) (negative either way).
+11. **Not run.** `e2e/lesson-route-boundary.mjs` needs the API; the lesson e2e ran with `QA_STUB=1` (the page-tours stub) while the API was down.
+

@@ -504,7 +504,7 @@
    "page": 10,
    "section": "معارف",
    "title": "ضرب عدد نسبي في (−1)",
-   "verified": false,
+   "verified": true,
    "text": "خاصية: جداء عدد نسبي $a$ في $-1$ يعطي نظير العدد $a$. $(-1)\\times a=-a$ و $a\\times(-1)=-a$. ملاحظة: يمكن أن يكون $-a$ سالبا كما يمكن أن يكون موجبا. أمثلة: 1) $6\\times(-1)=-6$. 2) $(-4{,}2)\\times(-1)=4{,}2$. • إذا كان $a=-5$ فإن $-a=5$. • و إذا كان $a=8$ فإن $-a=-8$.",
    "answer": {
     "checks": [
@@ -523,7 +523,7 @@
    "page": 10,
    "section": "معارف",
    "title": "دور ومعنى الإشارة (−)",
-   "verified": false,
+   "verified": true,
    "text": "يمكن للإشارة $(-)$ عدة معان مختلفة وبالتالي تلعب أدوارا مختلفة في الحساب. الإشارة $(-)$ يمكن أن تكون: • رمزا لعملية الطرح • إشارة لعدد نسبي سالب • الإشارة التي تعيّن نظير عدد نسبي. أمثلة: 1) $13-9$ 2) $-4$ 3) $-a$ هو نظير $a$."
   },
   {
@@ -533,7 +533,7 @@
    "page": 10,
    "section": "معارف",
    "title": "جداء عدة أعداد نسبية",
-   "verified": false,
+   "verified": true,
    "text": "خاصية: جداء عدة أعداد نسبية يكون: • موجبا إذا كان عدد العوامل السالبة في الجداء زوجيا. • سالبا إذا كان عدد العوامل السالبة في الجداء فرديا. أمثلة: 1) $3{,}2\\times(-5)\\times4\\times(-2{,}5)\\times(-2)=-320$ ؛ عدد العوامل السالبة هو 3 وهو عدد فردي، إذن الجداء سالب. 2) $3\\times(-2{,}3)\\times(-1{,}5)\\times(-2)\\times(-4)=82{,}8$ ؛ عدد العوامل السالبة هو 4 وهو عدد زوجي، إذن الجداء موجب.",
    "answer": {
     "checks": [
@@ -550,7 +550,7 @@
    "page": 10,
    "section": "معارف",
    "title": "مربع عدد نسبي",
-   "verified": false,
+   "verified": true,
    "text": "قاعدة: مربع عدد نسبي هو عدد موجب دوما. أمثلة: 1) $(+1{,}2)^2=1{,}2\\times1{,}2=1{,}44$ 2) $(-1{,}2)^2=(-1{,}2)\\times(-1{,}2)=+1{,}44$.",
    "answer": {
     "checks": [
@@ -606,7 +606,7 @@
    "page": 11,
    "section": "طرائق",
    "title": "حساب جداء عدة عوامل",
-   "verified": false,
+   "verified": true,
    "text": "تمرين: احسب الجداءين: $A=(+3)\\times(-7)\\times(-0{,}5)\\times(-8)$ ؛ $B=13\\times(-5)\\times(-1)\\times(-3)\\times(-2)$. حل: $A=(+3)\\times(-7)\\times(-0{,}5)\\times(-8)=-84$ ؛ $B=13\\times(-5)\\times(-1)\\times(-3)\\times(-2)=+390$. تعاليق: • نتأكد في البداية أنه لا توجد إلا جداءات. • نقوم بعدّ الإشارات $(-)$ في الجداء. • في العبارة A توجد 3 عوامل سالبة، وهو عدد فردي، إذن، فالعدد A سالب. • نحسب جداء كل المسافات إلى الصفر فنجد: $3\\times7\\times0{,}5\\times8=84$. • في العبارة B توجد 4 عوامل سالبة، وهو عدد زوجي، إذن، فالعدد B موجب. • نحسب جداء كل المسافات إلى الصفر فنجد: $13\\times5\\times1\\times3\\times2=390$. طريقة: لحساب جداء عدة عوامل، نَعُدّ العوامل السالبة، إذا كان عددها فرديا يكون الجداء سالبا و إذا كان عددها زوجيا يكون الجداء موجبا.",
    "answer": {
     "A": "-84",
@@ -621,7 +621,7 @@
    "page": 11,
    "section": "طرائق",
    "title": "حالات خاصة",
-   "verified": false,
+   "verified": true,
    "text": "تمرين: احسب الجداءات التالية: $A=3\\times(-1)$ ، $B=(-1)\\times(-4)$ ، $C=3\\times0$. حل: $A=3\\times(-1)=-3$ ؛ $C=3\\times0=0$ ، $B=(-1)\\times(-4)=4$. تعاليق: • جداء أي عدد نسبي في $(-1)$ يعطي نظير هذا العدد. • جداء أي عدد نسبي في 0 يعطي 0.",
    "answer": {
     "A": "-3",
@@ -636,14 +636,14 @@
    "page": 11,
    "section": "دوري الآن",
    "title": "دوري الآن",
-   "verified": false,
+   "verified": true,
    "text": "ما هي إشارة الجداء في كل حالة مما يلي ؟ أ) $P=(-2)\\times(-2)\\times\\ldots\\times(-2)$ (مجموعة تحتها العبارة « 85 عاملا ») ؛ ب) $B=3\\times(-5)\\times5\\times(-5)\\times5\\times(-5)\\times(-5)$.",
    "answer": {
-    "a": "signe − : 85 facteurs égaux à (−2), 85 est impair (si le nombre était 50 : signe +)",
+    "a": "signe − : 85 facteurs égaux à (−2), 85 est impair (le dernier chiffre 5 est certain : le signe est − pour 85, 65 ou 05)",
     "b": "signe + : 4 facteurs négatifs"
    },
    "answerSource": "computed",
-   "reading": "Le nombre de facteurs sous l’accolade est lu « 85 » à 600 dpi et sur l’image JPEG brute agrandie ×10 (le premier chiffre pourrait être un 0 ou un 6) ; le plan README le lisait « 50 ». La parité décide du signe : à vérifier par jidaa-ida-nisbiya (voir discrepancies). L’ordre des facteurs de B est celui du scan (le produit est commutatif)."
+   "reading": "Le nombre de facteurs sous l’accolade est lu « 85 » à 500 dpi (relu par jidaa-ida-nisbiya, 2026-10-26) : le DERNIER chiffre est sans ambiguïté un 5, donc le nombre est IMPAIR et le signe est « − » quel que soit le premier chiffre (8, 6 ou 0) ; le plan README et le plan de jidaa-ida-nisbiya disaient « 50 » (pair, signe +) : c’était une erreur de lecture. L’ordre des facteurs de B est celui du scan (le produit est commutatif)."
   },
   {
    "id": "know-7",
@@ -652,7 +652,7 @@
    "page": 12,
    "section": "معارف",
    "title": "توزيع الضرب على الجمع أو الطرح",
-   "verified": false,
+   "verified": true,
    "text": "خواص: إذا كانت $a$ ، $b$ ، $k$ أعدادا نسبية فإنّ: • $k(a+b)=ka+kb$ ؛ $k(a-b)=ka-kb$ • $ka+kb=k(a+b)$ ؛ $ka-kb=k(a-b)$. أمثلة: • $-7(a+2)=-7a-14$ • $5b-12b=(5-12)b=-7b$ • $2(a-b)=2a-2b$ • $(-3)\\times a+(-3)\\times b=(-3)(a+b)$.",
    "note": "Le manuel écrit ces propriétés avec des LETTRES (k, a, b) : c’est le territoire de nashr-jabri-3am pour l’écriture littérale ; jidaa-ida-nisbiya ne les emploie que sur des NOMBRES (plan README, boundaries)."
   },
@@ -713,7 +713,7 @@
    "page": 13,
    "section": "طرائق",
    "title": "تنظيم وتبسيط حساب",
-   "verified": false,
+   "verified": true,
    "text": "تمرين: احسب الجداء التالي: $P=(-4)\\times0{,}07\\times(-25)\\times(-12)\\times3\\times(-2)$. حل: $P=4\\times0{,}07\\times25\\times12\\times3\\times2$ ؛ $P=4\\times25\\times0{,}07\\times12\\times6$ ؛ $P=100\\times0{,}07\\times72$ ؛ $P=7\\times72=504$. تعاليق: • لدينا 6 عوامل 4 منها سالبة وبالتالي فإنّ الجداء P عدد موجب. • نقوم بضرب المسافات إلى الصفر. طريقة: لحساب جداء أعداد نسبية يمكننا تغيير ترتيب العوامل دون أن يتغير الجداء.",
    "answer": {
     "P": "504",
@@ -865,7 +865,7 @@
    "page": 14,
    "section": "ضرب الأعداد النسبية",
    "text": "احسب الجداءات التالية: أ) $(-4)\\times(-4)\\times(-3)\\times(-3)$ ؛ ب) $(-0{,}1)\\times(-0{,}38)$ ؛ جـ) $0{,}05\\times(-2{,}5)\\times20\\times(-4)$ ؛ د) $(-0{,}5)\\times17\\times(-2)$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "144",
     "ب": "0,038",
@@ -959,7 +959,7 @@
    "page": 14,
    "section": "ضرب الأعداد النسبية",
    "text": "عيّن إشارة كل من الجداءات التالية، ثم أنجز الحساب: أ) $(-9)\\times(-9)$ ؛ ب) $(-3)\\times(-6)\\times(-9)$ ؛ جـ) $(-2)\\times(-2)\\times(-2)\\times(-2)$ ؛ د) $(-1)\\times(-2)\\times(-3)\\times(-4)\\times(-5)$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "+81",
     "ب": "-162",
@@ -975,7 +975,7 @@
    "page": 14,
    "section": "ضرب الأعداد النسبية",
    "text": "عيّن إشارة كل من الجداءات التالية، ثم أنجز الحساب: أ) $A=6\\times(-2)\\times4\\times(-1)\\times(-3)$ ؛ ب) $B=-5\\times(-3)\\times(-7)\\times4\\times(-0{,}5)$ ؛ جـ) $C=5\\times(-3)\\times0{,}8\\times(-9)\\times(-11)$ ؛ د) $D=-1\\times(+2)\\times(-3)\\times6\\times(-8)$ ؛ هـ) $E=(-2)\\times(-5)\\times(-1)\\times4\\times(-9)$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "A": "-144",
     "B": "+210",
@@ -992,7 +992,7 @@
    "page": 15,
    "section": "ضرب الأعداد النسبية",
    "text": "أنجز الجداءات التالية: أ) $A=(-1)\\times2\\times(-3)\\times4\\times(-5)$ ؛ ب) $B=-1\\times(-2)\\times(-3)\\times(-4)\\times(-5)$ ؛ جـ) $C=1\\times2\\times(-3)\\times(-4)\\times5$ ؛ د) $D=1\\times(-2)\\times3\\times(-4)\\times5$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "A": "-120",
     "B": "-120",
@@ -1008,7 +1008,7 @@
    "page": 15,
    "section": "ضرب الأعداد النسبية",
    "text": "أكمل ملء الفراغات بما يناسب: أ) $(-2)\\times\\ldots\\times4\\times(-5)\\times6=-720$ ؛ ب) $2\\times(-3)\\times4\\times\\ldots\\times(-6)=720$ ؛ جـ) $\\ldots\\times(-3)\\times4\\times5\\times(-6)=-720$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "-3",
     "ب": "5",
@@ -1023,7 +1023,7 @@
    "page": 15,
    "section": "ضرب الأعداد النسبية",
    "text": "جد إشارة كل من الجداءات التالية: أ) $A=(-1)\\times(-2)\\times(-3)\\times\\ldots\\times(-15)$ ؛ ب) $B=(-38)\\times(-39)\\times(-40)\\times\\ldots\\times(-110)$ ؛ جـ) $C=(-25)\\times(-24)\\times(-23)\\times\\ldots\\times(-1)$ ؛ د) $D=(-20)\\times(-19)\\times(-18)\\times\\ldots\\times(-10)$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "A": "- (15 facteurs négatifs)",
     "B": "- (73 facteurs négatifs)",
@@ -1039,7 +1039,7 @@
    "page": 15,
    "section": "ضرب الأعداد النسبية",
    "text": "احسب الجداءات التالية: أ) $A=(-0{,}5)\\times19\\times(-2)$ ؛ ب) $B=(-0{,}1)\\times(-0{,}1)\\times(-0{,}1)\\times(-0{,}1)\\times(-0{,}1)$ ؛ جـ) $C=0{,}05\\times(-2{,}5)\\times20\\times(-4)$ ؛ د) $D=(-6)\\times(-6)\\times(-2)\\times(-2)$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "A": "19",
     "B": "-0,00001",
@@ -1110,7 +1110,7 @@
    "page": 15,
    "section": "ضرب الأعداد النسبية",
    "text": "دون أيّ حساب، أعط إشارة النتيجة في كل عبارة مما يلي: أ) $A=(-6)\\times(-10)\\times(+1{,}8)\\times(-2)$ ؛ ب) $B=(-4{,}5)\\times(-2)\\times(+5{,}5)\\times(-1)\\times(-8)$ ؛ جـ) $C=(+2{,}2)\\times(-0{,}6)\\times(+8)\\times(-2)\\times(-4)$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "A": "- (3 négatifs)",
     "B": "+ (4 négatifs)",
@@ -1142,7 +1142,7 @@
    "page": 15,
    "section": "ضرب الأعداد النسبية",
    "text": "أهرامات الأعداد. انقل ثم أكمل ملء خانات « الهرم » في كل حالة، علما أن محتوى الخانة يساوي جداء ما في الخانتين اللتين تحتها.",
-   "verified": false,
+   "verified": true,
    "figure": "deux pyramides de 4 étages (4-3-2-1 cases) : à gauche, bleue, étage du bas -2 ; +2 ; -2 ; -2 ; à droite, verte, étage du bas -1 ; +1 ; +1 ; -1.",
    "answer": {
     "bleue": [
@@ -1601,7 +1601,7 @@
    "number": 6,
    "page": 17,
    "section": "أؤكّد تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "من أجل كلّ عدد نسبي $a$ ، العدد $-a$ هو:",
    "options": {
     "أ": "عدد سالب",
@@ -1626,7 +1626,7 @@
    "number": 7,
    "page": 17,
    "section": "أؤكّد تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "جداء 116 عاملا كلها تساوي $(-1)$ هو:",
    "options": {
     "أ": "$-116$",
@@ -1742,7 +1742,7 @@
    "number": 12,
    "page": 17,
    "section": "أؤكّد تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "$3\\times(-4{,}7)-13\\times(-4{,}7)$ ... يُكتب على الشكل ...",
    "options": {
     "أ": "$(-4{,}7)\\times(13-3)$",
@@ -1768,7 +1768,7 @@
    "section": "أتعمّق",
    "title": "ثلاثة أعداد جداؤها معلوم",
    "text": "جد ثلاثة أعداد نسبية جداؤها يساوي: أ) $-72$ ؛ ب) $84$ ؛ جـ) $-1$ ؛ د) $-0{,}08$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "2 x (-6) x 6 (ou -3 x 4 x 6, …)",
     "ب": "2 x 6 x 7 (ou -2 x -6 x 7, …)",
@@ -1852,7 +1852,7 @@
    "section": "أتعمّق",
    "title": "إشارة جداء",
    "text": "عيّن إشارة جداء أعداد نسبية إذا علمت أن عدد العوامل السالبة هو ضعف عدد العوامل الموجبة.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "sign": "+ (si aucun facteur n’est nul)",
     "reason": "n_neg = 2 x n_pos est PAIR"
@@ -1905,7 +1905,7 @@
    "section": "أتعمّق",
    "title": "برنامج حساب",
    "text": "إليك برنامجَيْ حساب. البرنامج A: اختر عددا، أعيّن نظيره ثم أطرح 7. البرنامج B: اختر عددا، اضربه في $(-1)$ ثم أضيف $(-7)$. أ) طبّق كلا من البرنامجين على العدد $7{,}1$ ثم على العدد $-9{,}3$. ماذا تلاحظ؟ ب) هل الملاحظة السابقة صحيحة من أجل أي عدد نختاره؟ فسّر إجابتك.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "7,1": {
      "A": "-14,1",
@@ -1944,7 +1944,7 @@
    "section": "أتعمّق",
    "title": "جداء ثلاثة أعداد وجداء أربعة أعداد",
    "text": "أ) قال أيمن: «في جداء ثلاثة أعداد نسبية، إذا استبدلت كل عدد بنظيره، فإن الجداء المحصل عليه هو نظير الأول». ما رأيك في مقولة أيمن؟ اشرح. ب) هل الأمر كذلك بالنسبة إلى جداء أربعة أعداد نسبية؟ تحقق من ذلك.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "vrai : (−a)(−b)(−c) = (−1)³ abc = −abc",
     "ب": "faux : (−a)(−b)(−c)(−d) = (−1)⁴ abcd = abcd (le produit est INCHANGÉ) ; ex. (−2)(−3)(−4)(−5) = 120 = 2·3·4·5"
@@ -2008,7 +2008,7 @@
    "section": "أتعمّق",
    "title": "مربع سحري « ضربي »",
    "text": "1) ما هي القواعد التي تسمح لك بالحصول على مربع سحري « ضربي »؟ 2) أنجز كل الحسابات اللازمة لتتأكد أن المربع التالي مربع سحري « ضربي »: $-2\\,;\\,36\\,;\\,-3$ / $9\\,;\\,6\\,;\\,4$ / $-12\\,;\\,1\\,;\\,-18$.",
-   "verified": false,
+   "verified": true,
    "figure": "grille 3 × 3 : [−2, 36, −3 ; 9, 6, 4 ; −12, 1, −18] (les cases rouges sont −2, 9, 4, 1, −18 ; les autres sont noires).",
    "answer": {
     "constant": "216",
@@ -2091,7 +2091,7 @@
    "section": "أتعمّق",
    "title": "بطريقتين مختلفتين",
    "text": "أنجز بطريقتين مختلفتين الحسابات التالية: أ) $A=(-3)\\times(5-7)$ ؛ ب) $B=5\\times(-4-3)$ ؛ جـ) $C=(-7-2)\\times(-3)$ ؛ د) $D=-3\\times((-4)+(-2))$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "A": "6 = (-3)x(-2) = (-15)+21",
     "B": "-35 = 5x(-7) = -20-15",
@@ -2136,7 +2136,7 @@
    "section": "أتعمّق",
    "title": "على مستقيم مدرّج",
    "text": "1) على مستقيم مدرّج، علّم النقط A ، B ، C ، D ، E التي فواصلها على الترتيب: $-5$ ، $-3{,}5$ ، $-0{,}5$ ، $2$ ، $4$. 2) احسب فواصل النقط $A'$ ، $B'$ ، $C'$ ، $D'$ ، $E'$ التي نحصل عليها بضرب فواصل النقط A ، B ، C ، D ، E في $(-1)$. علّم النقط $A'$ ، $B'$ ، $C'$ ، $D'$ ، $E'$ على المستقيم المدرّج. 3) ما هي الملاحظة التي يمكن تسجيلها حول تموضع هذه النقط على المستقيم المدرّج؟",
-   "verified": false,
+   "verified": true,
    "answer": {
     "abscissae": {
      "A": "-5",
@@ -2269,7 +2269,7 @@
   {
    "elementId": "now-11",
    "kind": "reading",
-   "text": "Le nombre de facteurs sous l’accolade de A = (−2) × (−2) × … × (−2) est lu « 85 » sur le scan (600 dpi et JPEG brut agrandi ×10), le plan README et le plan de jidaa-ida-nisbiya disent « 50 ». La parité décide de tout : 85 facteurs négatifs → signe − ; avec 50 → signe +. À confirmer par jidaa-ida-nisbiya."
+   "text": "Le nombre de facteurs sous l’accolade de A = (−2) × (−2) × … × (−2) est lu « 85 » sur le scan (600 dpi, JPEG brut ×10, puis 500 dpi par jidaa-ida-nisbiya) ; le plan README et le plan de jidaa-ida-nisbiya disaient « 50 ». Confirmé : le dernier chiffre est un 5, le nombre est impair, le signe est − (le plan se trompait). La leçon n’utilise pas ce nombre (elle pose ses propres 40 et 7 facteurs)."
   },
   {
    "elementId": "self-8",
@@ -2354,7 +2354,7 @@
   {
    "elementId": "unit",
    "kind": "scope",
-   "text": "Les éléments de jidaa-ida-nisbiya, qismat-nisbiyayn et de la synthèse sont transcrits aussi fidèlement mais marqués `verified: false` : leur leçon les relira."
+   "text": "Les éléments de qismat-nisbiyayn et de la synthèse sont transcrits aussi fidèlement mais marqués `verified: false` : leur leçon les relira (ceux de jidaa-ida-nisbiya ont été relus le 2026-10-26 : `verified: true`)."
   }
  ],
  "destinations": {
@@ -2567,7 +2567,7 @@
   },
   "ex-13": {
    "lesson": "jidaa-ida-nisbiya",
-   "module": null
+   "module": 4
   },
   "ex-14": {
    "lesson": "jidaa-ida-nisbiya",
@@ -2726,7 +2726,7 @@
   },
   "deep-39": {
    "lesson": "jidaa-ida-nisbiya",
-   "module": null
+   "module": 4
   },
   "deep-40": {
    "lesson": "qismat-nisbiyayn",
@@ -2738,7 +2738,7 @@
   },
   "deep-42": {
    "lesson": "jidaa-ida-nisbiya",
-   "module": null
+   "module": 4
   },
   "deep-43": {
    "lesson": "jidaa-adadayn-nisbiyayn",
@@ -2747,7 +2747,7 @@
   },
   "deep-44": {
    "lesson": "jidaa-ida-nisbiya",
-   "module": null
+   "module": 4
   },
   "deep-45": {
    "lesson": "qismat-nisbiyayn",
@@ -2767,7 +2767,7 @@
   },
   "deep-49": {
    "lesson": "jidaa-ida-nisbiya",
-   "module": null
+   "module": 4
   },
   "deep-50": {
    "lesson": "qismat-nisbiyayn",
@@ -2775,7 +2775,7 @@
   },
   "deep-51": {
    "lesson": "jidaa-ida-nisbiya",
-   "module": null
+   "module": 4
   },
   "deep-52": {
    "lesson": "qismat-nisbiyayn",

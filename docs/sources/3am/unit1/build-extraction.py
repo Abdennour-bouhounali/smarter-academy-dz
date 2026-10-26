@@ -15,7 +15,7 @@ et l'ordre imprimé est l'ordre réel. Chaque item concerné est contrôlé cont
 `reading` / `discrepancies`.
 
 L'unité est générée LEÇON PAR LEÇON (cycle moyen, phase 3). Première leçon : jidaa-adadayn-nisbiyayn (2026-10-25) — ses éléments sont
-relus à 200 dpi deux fois (`verified: True`) ; ceux de jidaa-ida-nisbiya, qismat-nisbiyayn et de la synthèse sont transcrits aussi
+relus à 200 dpi deux fois (`verified: True`) ; ceux de jidaa-ida-nisbiya (relus le 2026-10-26, 500 dpi pour now-11) sont `verified: True` ; ceux de qismat-nisbiyayn et de la synthèse sont transcrits aussi
 fidèlement mais marqués `verified: False` : leur leçon les relira. Modules de jidaa-adadayn-nisbiyayn : 0 أستعدّ · 1 نشاط ·
 2 معارف · 3 طريقة · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي ; `None` = banque d'exercices (la banque la cite).
 
@@ -288,10 +288,10 @@ assert 3 * -1 == -3 and (-1) * (-4) == 4 and 3 * 0 == 0
 
 E.append({'id': 'now-11', 'kind': 'now', 'page': 11, 'section': 'دوري الآن', 'title': 'دوري الآن', 'verified': False,
           'text': 'ما هي إشارة الجداء في كل حالة مما يلي ؟ أ) $P=(-2)\\times(-2)\\times\\ldots\\times(-2)$ (مجموعة تحتها العبارة « 85 عاملا ») ؛ ب) $B=3\\times(-5)\\times5\\times(-5)\\times5\\times(-5)\\times(-5)$.',
-          'answer': {'a': 'signe − : 85 facteurs égaux à (−2), 85 est impair (si le nombre était 50 : signe +)', 'b': 'signe + : 4 facteurs négatifs'},
+          'answer': {'a': 'signe − : 85 facteurs égaux à (−2), 85 est impair (le dernier chiffre 5 est certain : le signe est − pour 85, 65 ou 05)', 'b': 'signe + : 4 facteurs négatifs'},
           'answerSource': 'computed',
-          'reading': 'Le nombre de facteurs sous l’accolade est lu « 85 » à 600 dpi et sur l’image JPEG brute agrandie ×10 (le premier chiffre pourrait être un 0 ou un 6) ; '
-                     'le plan README le lisait « 50 ». La parité décide du signe : à vérifier par jidaa-ida-nisbiya (voir discrepancies). L’ordre des facteurs de B est celui du scan (le produit est commutatif).'})
+          'reading': 'Le nombre de facteurs sous l’accolade est lu « 85 » à 500 dpi (relu par jidaa-ida-nisbiya, 2026-10-26) : le DERNIER chiffre est sans ambiguïté un 5, donc le nombre est IMPAIR et le signe est « − » quel que soit le premier chiffre (8, 6 ou 0) ; '
+                     'le plan README et le plan de jidaa-ida-nisbiya disaient « 50 » (pair, signe +) : c’était une erreur de lecture. L’ordre des facteurs de B est celui du scan (le produit est commutatif).'})
 assert negs(*([-2] * 85)) % 2 == 1 and negs(*([-2] * 50)) % 2 == 0 and negs(3, -5, 5, -5, 5, -5, -5) == 4 and sign_of_product(3, -5, 5, -5, 5, -5, -5) == 1
 
 # ── p. 12 : معارف 7–10 ───────────────────────────────────────────────────────────────────────────
@@ -766,7 +766,7 @@ DEST = {
 }
 for k_, (lesson_, module_) in {
         1: (L1, None), 2: (L1, None), 3: (L1, None), 4: (L1, None), 5: (L2, None), 6: (L1, 4), 7: (L1, None), 8: (L1, None),
-        9: (L2, None), 10: (L2, None), 11: (L2, None), 12: (L2, None), 13: (L2, None), 14: (L2, None), 15: (L3, None), 16: (L3, None),
+        9: (L2, None), 10: (L2, None), 11: (L2, None), 12: (L2, None), 13: (L2, 4), 14: (L2, None), 15: (L3, None), 16: (L3, None),
         17: (L1, 4), 18: (L2, None), 19: (L1, None), 20: (L2, None), 21: (L3, None), 22: (L3, None), 23: (L3, None), 24: (L3, None),
         25: (L3, None), 26: (L3, None), 27: (L3, None), 28: (L3, None), 29: (L1, 4), 30: (L3, None), 31: (L3, None), 32: (L3, None),
         33: (L3, None), 34: (L1, None)}.items():
@@ -774,8 +774,8 @@ for k_, (lesson_, module_) in {
 for k_, lesson_ in {1: L1, 2: L1, 3: L1, 4: L1, 5: L1, 6: L2, 7: L2, 8: L3, 9: L3, 10: L3, 11: L3, 12: L2}.items():
     DEST[f'self-{k_}'] = d(lesson_, 8 if lesson_ == L1 else None)
 for k_, (lesson_, module_) in {
-        35: (L2, None), 36: (L3, None), 37: (L1, 4), 38: (SYN, None), 39: (L2, None), 40: (L3, None), 41: (L3, None), 42: (L2, None), 43: (L1, 4), 44: (L2, None),
-        45: (L3, None), 46: (L2, None), 47: (L3, None), 48: (L3, None), 49: (L2, None), 50: (L3, None), 51: (L2, None), 52: (L3, None)}.items():
+        35: (L2, None), 36: (L3, None), 37: (L1, 4), 38: (SYN, None), 39: (L2, 4), 40: (L3, None), 41: (L3, None), 42: (L2, 4), 43: (L1, 4), 44: (L2, 4),
+        45: (L3, None), 46: (L2, None), 47: (L3, None), 48: (L3, None), 49: (L2, 4), 50: (L3, None), 51: (L2, 4), 52: (L3, None)}.items():
     DEST[f'deep-{k_}'] = d(lesson_, module_)
 DEST['deep-38']['note'] = 'addition seule (cases dont la somme sur chaque côté est 2) : banque de la synthèse (plan README)'
 DEST['deep-37']['note'] = 'contraste produit/somme (4 cas) : أتمرّن de jidaa-adadayn-nisbiyayn (plan E8)'
@@ -792,7 +792,7 @@ DISCREPANCIES = [
     {'elementId': 'prep', 'kind': 'reading', 'text': 'Items 11, 12, 13, 15 imprimés avec le « − » APRÈS les chiffres (« (4-)-(3-) », « 13+7-9+5- », « (5-)+(3-) », « (11 - 8) - 7 ») : rendu RTL qui renverse les opérandes ; lus (−3)−(−4) = 1, −5+9−7+13 = 10, (−3)+(−5) = −8, 7−(8−11) = 10. Chaque lecture est la SEULE qui rende au moins une option imprimée correcte (items 11 et 15 : une seule option juste ; la lecture littérale (11−8)−7 = −4 ne correspond à aucune option).'},
     {'elementId': 'prep', 'kind': 'reading', 'text': 'Item 5 (« température la plus basse ») : aucune donnée à comparer n’est imprimée ; l’item est lu « la plus basse des trois options » (−15 °C). Item 8 : « على مستقيم مدرّج من اليمين إلى اليسار » est ambigu (sens de la droite) ; lu sur la droite usuelle, croissante vers la droite. Items 1–9, 12–13 relus à 220 dpi seulement (leur leçon les relira).'},
     {'elementId': 'know-2', 'kind': 'reading', 'text': 'Chaque exemple est une accolade à DEUX lignes : l’exemple 1 est (−10) × (−3,8) = 38 puis 3 × 7 = 21 (la deuxième ligne illustre le produit de deux positifs) ; l’exemple 2 est (−6) × 3,4 = −20,4 puis 13 × −4 = −52 (écrit sans parenthèses dans le manuel).'},
-    {'elementId': 'now-11', 'kind': 'reading', 'text': 'Le nombre de facteurs sous l’accolade de A = (−2) × (−2) × … × (−2) est lu « 85 » sur le scan (600 dpi et JPEG brut agrandi ×10), le plan README et le plan de jidaa-ida-nisbiya disent « 50 ». La parité décide de tout : 85 facteurs négatifs → signe − ; avec 50 → signe +. À confirmer par jidaa-ida-nisbiya.'},
+    {'elementId': 'now-11', 'kind': 'reading', 'text': 'Le nombre de facteurs sous l’accolade de A = (−2) × (−2) × … × (−2) est lu « 85 » sur le scan (600 dpi, JPEG brut ×10, puis 500 dpi par jidaa-ida-nisbiya) ; le plan README et le plan de jidaa-ida-nisbiya disaient « 50 ». Confirmé : le dernier chiffre est un 5, le nombre est impair, le signe est − (le plan se trompait). La leçon n’utilise pas ce nombre (elle pose ses propres 40 et 7 facteurs).'},
     {'elementId': 'self-8', 'kind': 'reading', 'text': 'Imprimé « (-5) ÷ (-25) » avec les signes après les chiffres sur le scan (rendu RTL) : les options (5 ; −5 ; −20 ; 20) ne conviennent qu’à (−25) ÷ (−5) = 5 ; (−5) ÷ (−25) = 0,2 n’est pas proposé. Clé : أ. Contrairement à self-11 il n’est pas listé dans le plan README ; ajouté ici.'},
     {'elementId': 'self-11', 'kind': 'reading', 'text': 'Imprimé « (-4) ÷ 11 » (signes après les chiffres, rendu RTL) mais les options (11/−4, −11/4, −2,75, 11/4) ne conviennent qu’à 11 ÷ (−4) = −2,75 ; (−4) ÷ 11 = −4/11 ne se trouve pas dans les options. Transcrit 11 ÷ (−4) ; clés أ, ب, جـ.'},
     {'elementId': 'self-12', 'kind': 'reading', 'text': 'Énoncé imprimé « 3 × (4,7-) - 13 × 4,7- » (rendu RTL) lu −4,7 × 13 − (−4,7) × 3 = −47 ; options (−4,7)×(13−3) = −47 (أ), −4,7×13×3 (ب), 10×(−4,7) = −47 (جـ), (−4,7)×(−10) = 47 (د) : clés أ et جـ. Lecture LITTÉRALE possible : 3×(−4,7) − 13×(−4,7) = 47, seule د conviendrait ; la lecture RTL est celle du plan README et rend DEUX bonnes options (le manuel dit « الإجابة أو الإجابات »).'},
@@ -809,7 +809,7 @@ DISCREPANCIES = [
     {'elementId': 'integration', 'kind': 'scope', 'text': 'Deux boîtes de la page 20 : « أدمج تعلّماتي » (amplitudes thermiques sur la Lune, Vénus, Mars ; kelvin ↔ celsius) = élément `integration` ; « وضعية للتقويم » (Fahrenheit) = élément `evaluation`.'},
     {'elementId': 'evaluation', 'kind': 'reading', 'text': 'Le texte dit « de fahrenheit vers le celsius » mais la formule donnée convertit du celsius vers le fahrenheit ; la question 1b demande de l’inverser (rédaction du manuel conservée).'},
     {'elementId': 'method-1', 'kind': 'scope', 'text': 'L’élément est partagé : les exercices 1 et 2 (deux relatifs) + la طريقة → jidaa-adadayn-nisbiyayn ; l’exercice 3 (cinq facteurs, P = −831,6) → jidaa-ida-nisbiya (voir `items`).'},
-    {'elementId': 'unit', 'kind': 'scope', 'text': 'Les éléments de jidaa-ida-nisbiya, qismat-nisbiyayn et de la synthèse sont transcrits aussi fidèlement mais marqués `verified: false` : leur leçon les relira.'},
+    {'elementId': 'unit', 'kind': 'scope', 'text': 'Les éléments de qismat-nisbiyayn et de la synthèse sont transcrits aussi fidèlement mais marqués `verified: false` : leur leçon les relira (ceux de jidaa-ida-nisbiya ont été relus le 2026-10-26 : `verified: true`).'},
 ]
 
 # ── Contrôles de cohérence ──────────────────────────────────────────────────────────────────────
@@ -827,8 +827,11 @@ for e in E:
     if e['id'] in ('opener', 'objectives'): continue
 # règle `verified` : True pour les éléments destinés à jidaa-adadayn-nisbiyayn (et ceux de la page de l'unité), False pour les autres (leur leçon les relit)
 for e in E:
-    if DEST[e['id']]['lesson'] not in (L1, 'unit') and e['id'] not in ('prep', 'method-1', 'challenge'):
+    if DEST[e['id']]['lesson'] not in (L1, L2, 'unit') and e['id'] not in ('prep', 'method-1', 'challenge'):
         e['verified'] = False
+# jidaa-ida-nisbiya (2026-10-26) : les éléments de la leçon sont relus (maths recalculées ci-dessus, now-11 relu à 500 dpi, exercices pp. 14–19 relus par la banque) → vrai.
+for e in E:
+    if DEST[e['id']]['lesson'] == L2: e['verified'] = True
 verified_l1 = [e['id'] for e in E if DEST[e['id']]['lesson'] == L1 and not e.get('verified')]
 
 doc = {

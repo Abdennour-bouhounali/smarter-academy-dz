@@ -94,11 +94,24 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(false);
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'both'), type).toBe(true);
       }
+      // Unité 1 de 3AM, leçon 2 : `robot-track` se mesure par la PRÉDICTION écrite avant « شغّل » (متقدم seul) et par l'ORDRE à choisir.
+      else if (type === 'robot-track') {
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'predict' || tk.kind === 'repeat'), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => tk.at), type).toBe(true);
+      }
       // Unité 2 de 3AM : `gear-crank` se mesure par le NOMBRE DE TÂCHES et par la PRÉDICTION écrite avant de partir (متقدم seul : manivelle bloquée, compteurs voilés).
       else if (type === 'gear-crank') {
         expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
         expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
         expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
+      }
+      // Unité 2 de 3AM, leçon 2 : `shade-match` se mesure par le NOMBRE DE TÂCHES et par le VOILE du mesureur (متقدم seul).
+      else if (type === 'shade-match') {
+        expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
+        expect(advanced.numbers.tasks.every((tk) => tk.veil), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.veil), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'compare'), type).toBe(true);
       }
       // Unité 6 de 3AM : `pin-rails` se mesure par le NOMBRE DE TÂCHES et par les LECTURES sur la droite (متقدم seul).
       else if (type === 'pin-rails') {

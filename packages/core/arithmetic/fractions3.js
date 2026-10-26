@@ -8,6 +8,9 @@
  * Ajouté par la leçon 1 `maqlub-qismat-kasrayn` : `raw`, `valueOf`, `rawTex`, `reciprocal`, `isReciprocalPair`, `divideFractions`,
  * `simplifyBeforeMultiply`, `gearTurns`, `teethFor` (le labo `gear-crank`). Les leçons suivantes de l'unité y ajoutent leurs fonctions (plan README).
  *
+ * Ajouté par la leçon 2 `tasawi-muqaranat-kasrayn` (2026-10-26) : `crossProducts`, `sameFraction`, `compareFractions`, `lcm`, `commonMultiples`, `toDenominator`, `missingTerm`,
+ * `matchNumerator`, `shadeVerdict`, `unitsDigitOfProduct` (le labo `shade-match`).
+ *
  * Importé PAR CHEMIN (`@smarter-academy/core/arithmetic/fractions3.js`), jamais par le barrel du cœur (BUNDLE_BOUNDARIES §3–§4).
  */
 import { rat, parseRat, mul, div, eq, sign } from './powers.js';
@@ -104,5 +107,89 @@ export function teethFor(R, target) {
   if (big(R) <= 0n) throw new Error('un pignon sans dents n\'entraîne rien');
   return mul(valueOf(target), rat(big(R), 1));
 }
+
+/* ── Leçon 2 `tasawi-muqaranat-kasrayn` (2026-10-26) : l'égalité et la comparaison de deux fractions POSITIVES ─────────────────────────────────── */
+
+const lcmB = (a, b) => (a / gcdB(a, b)) * b;
+
+/** Les DEUX produits en croix de a/b et c/d : `left = a × d`, `right = b × c`. Les entrées sont des couples bruts (ou tout ce que `toRaw` lit), dénominateurs > 0. */
+export function crossProducts(p, q) {
+  const x = toRaw(p); const y = toRaw(q);
+  return { left: x.n * y.d, right: x.d * y.n };
+}
+
+/** a/b = c/d ⇔ a × d = b × c (exact, les deux sens ne sont qu'une seule égalité). */
+export function sameFraction(p, q) { const { left, right } = crossProducts(p, q); return left === right; }
+
+/** −1 si p < q, 0 si égaux, 1 si p > q — par les produits en croix (dénominateurs positifs, car `raw` rend le dénominateur positif). */
+export function compareFractions(p, q) {
+  const { left, right } = crossProducts(p, q);
+  return left === right ? 0 : left < right ? -1 : 1;
+}
+
+/** Le plus petit multiple commun non nul de deux naturels. */
+export function lcm(a, b) {
+  const x = abs(big(a)); const y = abs(big(b));
+  if (x === 0n || y === 0n) throw new Error('multiple commun de 0');
+  return lcmB(x, y);
+}
+
+/** Les `count` premiers multiples communs non nuls de b et d : le plus petit, puis ses multiples (le produit b × d en est un). */
+export function commonMultiples(b, d, count = 3) {
+  const m = lcm(b, d);
+  return Array.from({ length: count }, (_, i) => m * BigInt(i + 1));
+}
+
+/** Écrit p = a/b avec le dénominateur D (multiple de b, sinon exception) : `{ k, n, d }` avec n = a × k, d = D, k = D / b. */
+export function toDenominator(p, D) {
+  const { n, d } = toRaw(p);
+  const T = big(D);
+  if (T <= 0n || T % d !== 0n) throw new Error(`${D} n'est pas un multiple de ${d}`);
+  const k = T / d;
+  return Object.freeze({ k, n: n * k, d: T });
+}
+
+/**
+ * Le terme manquant de a/b = c/d. `terms` = [a, b, c, d] avec UN `null` (ou `undefined`). Retourne le rationnel exact (de `powers.js`) ; une division par 0
+ * (b ou d inconnu et l'autre produit nul, ou b = 0 / d = 0 donnés) est refusée (exception).
+ */
+export function missingTerm(terms) {
+  const holes = terms.map((t, i) => (t == null ? i : -1)).filter((i) => i >= 0);
+  if (holes.length !== 1) throw new Error('un seul terme manque');
+  const [a, b, c, d] = terms.map((t) => (t == null ? null : big(t)));
+  const at = holes[0];
+  // a × d = b × c
+  if ((at !== 1 && b === 0n) || (at !== 3 && d === 0n)) throw new Error('dénominateur nul');
+  if (at === 0) return rat(b * c, d);
+  if (at === 1) { if (c === 0n) throw new Error('b indéterminé'); return rat(a * d, c); }
+  if (at === 2) return rat(a * d, b);
+  if (a === 0n) throw new Error('d indéterminé');
+  return rat(b * c, a);
+}
+
+/**
+ * Le labo `shade-match` : la référence a/b est dans un seau, B reçoit d mesures de blanc et c mesures de bleu (c entier ≥ 0). Quel c fait c/d = a/b ?
+ * c = a × d / b : `exact` ⇔ c entier. Sinon `below` = ⌊a·d/b⌋ (trop clair) et `above` = below + 1 (trop foncé). Retourne aussi `value` (le rationnel a·d/b).
+ */
+export function matchNumerator(a, b, d) {
+  const A = big(a); const B = big(b); const D = big(d);
+  if (A < 0n || B <= 0n || D <= 0n) throw new Error('référence ou blanc invalide');
+  const value = rat(A * D, B);
+  const exact = value.d === 1n;
+  const below = (A * D) / B;
+  return Object.freeze({ exact, c: exact ? below : null, below, above: exact ? below : below + 1n, value });
+}
+
+/**
+ * Le verdict d'une dose de bleu : le seau B (c bleus pour d blancs) contre la référence a/b — sur le signe de c × b − a × d.
+ * 'lighter' (c × b < a × d : moins de bleu par blanc), 'match', 'darker'. `gap` = c × b − a × d (BigInt, signé).
+ */
+export function shadeVerdict(a, b, c, d) {
+  const gap = big(c) * big(b) - big(a) * big(d);
+  return { verdict: gap < 0n ? 'lighter' : gap === 0n ? 'match' : 'darker', gap };
+}
+
+/** Le dernier chiffre (l'unité) d'un produit de deux naturels, sans calculer le produit : (a mod 10)(b mod 10) mod 10. */
+export function unitsDigitOfProduct(a, b) { return Number(((big(a) % 10n) * (big(b) % 10n)) % 10n); }
 
 export { sign };

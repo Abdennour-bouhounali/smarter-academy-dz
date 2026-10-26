@@ -2,15 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "jidaa-ida-nisbiya",
-      "grade": "3am",
-      "unit": "aadad-nisbiya",
-      "titleAr": "جداء عدة أعداد نسبية",
-      "kind": "lesson",
-      "trigger": "priorité propriétaire",
-      "via": []
-    },
-    {
       "code": "qismat-nisbiyayn",
       "grade": "3am",
       "unit": "aadad-nisbiya",
@@ -26,15 +17,6 @@
       "titleAr": "أدمج تعلّماتي — الأعداد النسبية",
       "kind": "synthesis",
       "trigger": "unité aadad-nisbiya complète",
-      "via": []
-    },
-    {
-      "code": "tasawi-muqaranat-kasrayn",
-      "grade": "3am",
-      "unit": "kusur-natiqa",
-      "titleAr": "تساوي كسرين ومقارنتهما",
-      "kind": "lesson",
-      "trigger": "priorité propriétaire",
       "via": []
     },
     {

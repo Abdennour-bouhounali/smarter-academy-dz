@@ -810,6 +810,24 @@ export const LEVELS = Object.freeze({
     ] }, ...T('method-1') },
   },
   // ── 3AM, unité 6 « التناسبية » (2026-10-21) ──
+  // LES SIGNES ET L'ORDRE DES CARTES SOUS LA MAIN (robot-track, thème roboticsClub, 3AM unité 1, leçon 2) : un robot part de 1 ; chaque carte multiplie sa position.
+  // مبتدئ (plateforme, le produit courant et les arcs visibles) : m1 placer −1 → −5, m2 une seule carte ramène à 5 (2 → −10, −5 → 25 refusées), m3 les cartes 2, 3, 4
+  // au drapeau −24 (signes à la main : un ou trois négatifs), m4 le drapeau 24 avec au moins deux négatives. متقدم (know-5, ni produit ni arcs avant « شغّل ») : a1 prédire
+  // le côté et la distance d'un programme fixe, a2 ordonner −5, 4, −0,5, 2 pour être à −2 après deux cartes (l'arrêt final reste 20), a3 la carte 3 puis (−1) répétée n fois
+  // (prédire n = 15, puis −3 et 3). Le monde `square` (module 2) est posé par la leçon. Le test des niveaux mesure la paire par la PRÉDICTION écrite avant « شغّل ».
+  'robot-track': {
+    beginner: { numbers: { world: 'track', tasks: [
+      { id: 'm1', flag: '-5', placed: ['5'], tray: ['-1'], need: 2, lock: true },
+      { id: 'm2', flag: '5', placed: ['5', '-1'], tray: ['-1', '2', '-5'], need: 3, lock: true },
+      { id: 'm3', flag: '-24', placed: ['2', '3', '4'], tray: [], need: 3, flip: true },
+      { id: 'm4', flag: '24', placed: ['2', '3', '4'], tray: [], need: 3, flip: true, minNeg: 2 },
+    ] }, ...P },
+    advanced: { numbers: { world: 'track', tasks: [
+      { id: 'a1', kind: 'predict', cards: ['-2', '3', '-1', '-4', '0,5'] },
+      { id: 'a2', flag: '-2', placed: [], tray: ['-5', '4', '-0,5', '2'], need: 4, at: 2 },
+      { id: 'a3', kind: 'repeat', card: '3', unit: '-1', goals: ['-3', '3'], predictN: 15 },
+    ] }, ...T('know-5') },
+  },
   // ── 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » (2026-10-25) ──
   // LA DIVISION PAR UN RAPPORT SOUS LA MAIN (gear-crank, thème bikestand) : la manivelle d'une درّاجة ; une tâche est `{ id, F, R, target, predict? }` (F dents au plateau,
   // R au pignon, target = tours de roue jusqu'au drapeau). مبتدئ (plateforme, compteurs ouverts) : m1 48/24 → 3 (3/2 tour de pédale), m2 24/32 → 6 (8 tours de pédale :
@@ -825,6 +843,20 @@ export const LEVELS = Object.freeze({
       { id: 'a3', F: 30, R: 42, target: '10/3', predict: true }, { id: 'a4a', F: 42, R: 30, target: '1', predict: true },
       { id: 'a4b', F: 30, R: 42, target: '1', predict: true },
     ] }, ...T('know-2') },
+  },
+  // LE NUMÉRATEUR SOUS LA MAIN (shade-match, thème paintshop, 2026-10-26) : la main verse c mesures de bleu dans un seau de d blancs pour égaler (ou comparer) la teinte
+  // d'une référence a/b ; une tâche est `{ id, a, b, d, veil? }` (ou `{ kind: 'compare', a, b, c, d }`). مبتدئ (plateforme, mesureur visible) : s1 3/4 sur 8 → 6, s2 2/3 sur 9 → 6,
+  // s3 3/4 sur 10 → AUCUN entier (7 plus clair, 8 plus foncé). متقدم (method : le manuel compare des fractions « par la méthode qui convient », mesureur VOILÉ jusqu'à l'engagement) :
+  // a1 5/6 sur 18 → 15, a2 4/7 sur 12 → aucun (6 et 7), a3 9/12 sur 8 → 6, a4 compare 7/9 et 10/13. Le monde `equal` (معارف) est posé par la leçon. Le test des niveaux mesure la
+  // paire par le NOMBRE DE TÂCHES et par le VOILE.
+  'shade-match': {
+    beginner: { numbers: { tasks: [
+      { id: 's1', a: 3, b: 4, d: 8 }, { id: 's2', a: 2, b: 3, d: 9 }, { id: 's3', a: 3, b: 4, d: 10 },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', a: 5, b: 6, d: 18, veil: true }, { id: 'a2', a: 4, b: 7, d: 12, veil: true },
+      { id: 'a3', a: 9, b: 12, d: 8, veil: true }, { id: 'a4', kind: 'compare', a: 7, b: 9, c: 10, d: 13, veil: true },
+    ] }, ...T('method-4') },
   },
   // LE POURCENTAGE SOUS LA MAIN (hundred-grid, thème pantry) : un stock coupé en 100 paquets égaux (10 × 10 cases) ; la main PEINT t cases, le panier
   // reçoit t paquets (x × t/100). مبتدئ (plateforme) : 15 % de 240 (la réponse écrite AVANT l'ouverture), le taux qui remplit un panier de 60 sur 150, +15 %

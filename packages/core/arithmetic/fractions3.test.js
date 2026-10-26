@@ -52,3 +52,64 @@ describe('fractions3 — brut, inverse, division', () => {
     expect(() => F.gearTurns(0, 5, 3)).toThrow();
   });
 });
+
+describe('fractions3 — égalité et comparaison (tasawi-muqaranat-kasrayn)', () => {
+  it('les produits en croix décident l\'égalité, dans les deux sens', () => {
+    expect(F.crossProducts(F.raw(3, 4), F.raw(6, 8))).toEqual({ left: 24n, right: 24n });
+    expect(F.sameFraction(F.raw(3, 4), F.raw(6, 8))).toBe(true);
+    expect(F.sameFraction(F.raw(7, 10), F.raw(3, 4))).toBe(false);
+    expect(F.sameFraction(F.raw(2018, 2017), F.raw(2017, 2016))).toBe(false);
+    expect(F.sameFraction(F.raw(336, 609), F.raw(16, 29))).toBe(true);
+    expect(F.sameFraction('5/6', '10/12')).toBe(true);
+  });
+  it('compareFractions : −1, 0, 1 (7/10 < 3/4, 10/13 < 7/9, 11/14 > 7/9)', () => {
+    expect(F.compareFractions(F.raw(7, 10), F.raw(3, 4))).toBe(-1);
+    expect(F.compareFractions(F.raw(3, 4), F.raw(7, 10))).toBe(1);
+    expect(F.compareFractions(F.raw(10, 13), F.raw(7, 9))).toBe(-1);
+    expect(F.compareFractions(F.raw(7, 9), F.raw(11, 14))).toBe(-1);
+    expect(F.compareFractions(F.raw(5, 7), F.raw(5, 7))).toBe(0);
+    expect(F.compareFractions(F.raw(47, 23), F.raw(47, 25))).toBe(1);
+  });
+  it('lcm, multiples communs, écriture sur un dénominateur donné', () => {
+    expect(F.lcm(4, 10)).toBe(20n);
+    expect(F.lcm(12, 18)).toBe(36n);
+    expect(F.commonMultiples(4, 10, 3)).toEqual([20n, 40n, 60n]);
+    expect(() => F.lcm(0, 4)).toThrow();
+    const t = F.toDenominator(F.raw(3, 4), 20);
+    expect([t.k, t.n, t.d]).toEqual([5n, 15n, 20n]);
+    expect(() => F.toDenominator(F.raw(3, 4), 10)).toThrow();
+  });
+  it('le terme manquant : x/16 = 5/8, 4/x = 6/9, 3/4 = x/20 …', () => {
+    expect(ratText(F.missingTerm([null, 16, 5, 8]))).toBe('10');
+    expect(ratText(F.missingTerm([4, null, 6, 9]))).toBe('6');
+    expect(ratText(F.missingTerm([3, 4, null, 20]))).toBe('15');
+    expect(ratText(F.missingTerm([3, 4, 15, null]))).toBe('20');
+    expect(ratText(F.missingTerm([null, 15, 4, 6]))).toBe('10');
+    expect(() => F.missingTerm([1, 2, 3, 4])).toThrow();
+    expect(() => F.missingTerm([null, 0, 5, 8])).toThrow();
+  });
+  it('matchNumerator : 3/4 sur 8 blancs → 6 exact ; 3/4 sur 10 → entre 7 et 8 ; 4/7 sur 12 → entre 6 et 7', () => {
+    expect(F.matchNumerator(3, 4, 8)).toMatchObject({ exact: true, c: 6n });
+    const m = F.matchNumerator(3, 4, 10);
+    expect([m.exact, m.below, m.above, ratText(m.value)]).toEqual([false, 7n, 8n, '15/2']);
+    const n = F.matchNumerator(4, 7, 12);
+    expect([n.exact, n.below, n.above]).toEqual([false, 6n, 7n]);
+    expect(F.matchNumerator(9, 12, 8)).toMatchObject({ exact: true, c: 6n });
+    expect(F.matchNumerator(5, 6, 18)).toMatchObject({ exact: true, c: 15n });
+    expect(() => F.matchNumerator(3, 0, 8)).toThrow();
+  });
+  it('shadeVerdict : 5 plus clair, 6 pile, 7 plus foncé (3/4 sur 8)', () => {
+    expect(F.shadeVerdict(3, 4, 5, 8).verdict).toBe('lighter');
+    expect(F.shadeVerdict(3, 4, 6, 8)).toEqual({ verdict: 'match', gap: 0n });
+    expect(F.shadeVerdict(3, 4, 7, 8).verdict).toBe('darker');
+    expect(F.shadeVerdict(3, 4, 7, 10).verdict).toBe('lighter');
+    expect(F.shadeVerdict(3, 4, 8, 10).verdict).toBe('darker');
+    expect(F.shadeVerdict(7, 9, 10, 13).verdict).toBe('lighter');
+  });
+  it('le chiffre des unités d\'un produit : 3217 × 8133 finit par 1, 5419 × 4826 par 4', () => {
+    expect(F.unitsDigitOfProduct(3217, 8133)).toBe(1);
+    expect(F.unitsDigitOfProduct(5419, 4826)).toBe(4);
+    expect(3217 * 8133 % 10).toBe(1);
+  });
+});
+

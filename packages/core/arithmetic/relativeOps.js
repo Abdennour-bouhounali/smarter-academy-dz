@@ -84,3 +84,36 @@ export function repeatedSum(a, n) {
 export function distributeCheck(k, b) {
   return { left: P.add(P.mul(k, b), P.mul(k, P.neg(b))), right: P.mul(k, 0) };
 }
+
+/* ── Leçon 2 « جداء عدة أعداد نسبية » (jidaa-ida-nisbiya, 2026-10-26) ─────────────────────────────────────────────── */
+
+/** Un facteur peut être un rationnel, un entier ou un texte (« −0,5 »). */
+const asRat = (x) => (typeof x === 'string' ? parseRel(x) : N(x));
+
+/** Le produit exact d'une liste de facteurs (1 pour la liste vide). */
+export function product(list) {
+  return list.reduce((acc, x) => P.mul(acc, asRat(x)), P.rat(1));
+}
+
+/** Le nombre de facteurs strictement négatifs. */
+export const negativesIn = (list) => list.filter((x) => P.sign(asRat(x)) < 0).length;
+
+/** −1 si le nombre de facteurs négatifs est impair, 1 s'il est pair, 0 si un facteur est nul (le produit est nul). */
+export function signByParity(list) {
+  if (list.some((x) => P.sign(asRat(x)) === 0)) return 0;
+  return negativesIn(list) % 2 === 1 ? -1 : 1;
+}
+
+/** Le nombre opposé (le symétrique par rapport à 0) : (−1) × a. */
+export const opposite = (a) => P.mul(P.rat(-1), asRat(a));
+
+/** Le carré a × a : jamais négatif. */
+export const square = (a) => P.mul(asRat(a), asRat(a));
+
+/** Les deux membres de k × a ± k × b = k × (a ± b) (op = '+' ou '-'). */
+export function factorize(k, a, b, op = '+') {
+  const [K, A, B] = [asRat(k), asRat(a), asRat(b)];
+  const inner = op === '-' ? P.sub(A, B) : P.add(A, B);
+  const split = op === '-' ? P.sub(P.mul(K, A), P.mul(K, B)) : P.add(P.mul(K, A), P.mul(K, B));
+  return { split, factored: P.mul(K, inner) };
+}

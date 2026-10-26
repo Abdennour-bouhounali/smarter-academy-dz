@@ -125,8 +125,12 @@ export const MANIPULATION_COMPONENTS = {
   'hundred-grid': lazy(() => import('./proportion/HundredGrid')),
   // 3AM, unité 6 « التناسبية » : la punaise sur sa rainure et la règle sur deux nœuds — du tableau au graphique d'une situation proportionnelle (2026-10-21).
   'pin-rails': lazy(() => import('./proportion/PinRails')),
+  // 3AM, unité 1, 2e leçon : les signes et l'ordre des cartes sous la main — le مسار الروبوت (2026-10-26).
+  'robot-track': lazy(() => import('./operations/RobotTrack')),
   // 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » : la division par un rapport sous la main — la manivelle de la درّاجة (2026-10-25).
   'gear-crank': lazy(() => import('./proportion/GearCrank')),
+  // 3AM, unité 2 : le numérateur sous la main — la machine à teinter (آلة مزج الألوان, 2026-10-26).
+  'shade-match': lazy(() => import('./operations/ShadeMatch')),
   // 2AM, unité 5 « التناسبية » : le nombre qui manque sous la main — les موازين الرابع المتناسب (2026-10-21).
   'fourth-gauges': lazy(() => import('./operations/FourthGauges')),
 };

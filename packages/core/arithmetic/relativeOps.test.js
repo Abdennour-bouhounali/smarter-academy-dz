@@ -50,3 +50,30 @@ describe('relativeOps — le produit', () => {
     }
   });
 });
+
+describe('relativeOps — leçon 2 (plusieurs facteurs)', () => {
+  const t = (r) => R.relText(r);
+  it('product, negativesIn, signByParity', () => {
+    expect(t(R.product(['-2', '3', '-1', '-4', '0,5']))).toBe('−12');
+    expect(R.negativesIn(['-2', '3', '-1', '-4', '0,5'])).toBe(3);
+    expect(R.signByParity(['-2', '3', '-1', '-4', '0,5'])).toBe(-1);
+    expect(R.signByParity(['-2', '-3'])).toBe(1);
+    expect(R.signByParity(['-2', '0', '-3'])).toBe(0);
+    expect(t(R.product([]))).toBe('1');
+  });
+  it('opposite and square', () => {
+    expect(t(R.opposite('-3'))).toBe('3');
+    expect(t(R.opposite('8'))).toBe('−8');
+    expect(t(R.opposite('0'))).toBe('0');
+    expect(t(R.square('-1,5'))).toBe('2,25');
+    expect(t(R.square('1,5'))).toBe('2,25');
+  });
+  it('factorize gives both sides of k×a ± k×b = k×(a ± b)', () => {
+    const f = R.factorize('-4,7', '13', '3', '-');
+    expect(t(f.split)).toBe('−47');
+    expect(t(f.factored)).toBe('−47');
+    const g = R.factorize('-3,2', '7', '3', '+');
+    expect(t(g.split)).toBe('−32');
+    expect(t(g.factored)).toBe('−32');
+  });
+});

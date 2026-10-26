@@ -258,6 +258,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   mallElevator  un مصعد شحن de centre commercial en coupe : des étages au-dessus de la rue et un parking en dessous, et l'écran de
   //                 rediffusion de la caméra de surveillance avec sa ligne du temps (`elevator-reel`)
   mallElevator: { kind: 'objects', shows: 'مصعد مركز تجاري: طوابق فوق الشارع وطوابق مرآب تحته، وشاشة إعادة تسجيل كاميرا المراقبة' },
+  // 3AM, unité 1, 2e leçon (2026-10-26) :
+  //   roboticsClub  le نادي الروبوتيك : un tapis gradué posé au sol (la droite des nombres), le poteau 0 au milieu comme un petit portique-miroir, un
+  //                 robot à roues et ses cartes de programme (`robot-track`)
+  roboticsClub: { kind: 'objects', shows: 'نادي الروبوتيك: مسار مدرّج على الأرض وعمود الصفر في وسطه وروبوت صغير يتبع بطاقات برنامجه' },
   // 3AM, unité 5 (2026-10-21) :
   //   stadium  le مضمار de la cour de l'école : un mur de graduations et deux coureurs (KidFigure, une élève en hijab et un élève), chacun
   //            à la valeur d'un membre d'une égalité ; ils se tiennent sur la même graduation tant que l'égalité est vraie (`equality-lanes`)
@@ -286,6 +290,11 @@ export const VISUAL_THEMES = Object.freeze({
   //              avancent dent par dent, une roue à valve colorée, une manivelle qu'on tourne, un drapeau craie à la distance voulue (à l'échelle) et une
   //              élève (KidFigure, hijab) qui l'attend (`gear-crank`)
   bikestand: { kind: 'objects', shows: 'درّاجة جبلية: دوّاسة وصحن أمامي وترس خلفي وسلسلة وعجلة' },
+  // 3AM, unité 2, leçon 2 (2026-10-26) :
+  //   paintshop  la machine à teinter d'un magasin de peinture de quartier : un bec de laiton au-dessus du seau B et une manette, le seau de référence A
+  //              scellé avec son étiquette et sa pastille, deux grandes pastilles de couleur côte à côte et un mesureur à aiguille « أفتح · أغمق »,
+  //              un élève (KidFigure) au rouleau devant l'esquisse de la fresque (`shade-match`)
+  paintshop: { kind: 'objects', shows: 'آلة مزج الألوان في محلّ الطلاء: دلوان وعلب أبيض ورافعة للأزرق' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

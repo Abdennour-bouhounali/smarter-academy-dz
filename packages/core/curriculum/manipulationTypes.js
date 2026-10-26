@@ -731,6 +731,16 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'لحساب $t\\%$ من عدد نضرب هذا العدد في $\\frac{t}{100}$ ؛ ونحسب نسبة مئوية من المساواة $\\frac{a}{b}=\\frac{t}{100}$ ؛ والزيادة بـ $t\\%$ هي الضرب في $1+\\frac{t}{100}$ والتخفيض هو الضرب في $1-\\frac{t}{100}$',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 3AM, unité 1, 2e leçon (2026-10-26) — le produit de PLUSIEURS nombres relatifs.
+  'robot-track': {
+    // LES SIGNES ET L'ORDRE SOUS LA MAIN : un robot part de 1 sur un tapis gradué ; chaque carte de son programme multiplie sa position. Une carte
+    // positive l'éloigne du poteau 0 du MÊME côté ; une carte négative le fait en plus SAUTER par-dessus le poteau (le symétrique) : × (−1) est le
+    // demi-tour. La main tient le SIGNE de chaque carte (le badge) et l'ORDRE / la PRÉSENCE des cartes (porter, échanger). Le côté d'arrivée ne dépend
+    // que du NOMBRE de demi-tours, jamais de l'ordre ; une carte posée DEUX FOIS (le monde `square`) fait deux demi-tours identiques ou aucun. Chaque
+    // changement du programme est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'إشارة جداء عدة أعداد نسبية غير معدومة سالبة إذا كان عدد عوامله السالبة فرديًا وموجبة إذا كان زوجيًا مهما كان ترتيبها، و $(-1) \\times a = -a$ ، ومربع عدد نسبي لا يكون سالبًا',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » (2026-10-25) — le مقلوب et la division de deux fractions.
   'gear-crank': {
     // LA DIVISION PAR UN RAPPORT SOUS LA MAIN : une درّاجة dont le plateau (F dents) entraîne un pignon (R dents) par la chaîne. La main TOURNE la manivelle ;
@@ -740,6 +750,17 @@ export const MANIPULATION_TYPES = Object.freeze({
     // écrit sa prédiction (une fraction), les compteurs sont voilés jusqu'au lâcher et une prédiction fausse est réfutée par la course. Chaque lâcher est un essai
     // jugé exactement : MANUEL (§6bis). « جرّب أعدادك » : toujours ouvert (12 … 52 dents, un drapeau p/q).
     shows: 'قسمة عدد على كسر هي الضرب في مقلوبه: مقلوب $\\frac{a}{b}$ هو $\\frac{b}{a}$ لأنّ جداءهما $1$ ؛ ودورات الدوّاسة اللازمة لعدد من دورات العجلة تساوي هذا العدد مضروبًا في مقلوب $\\frac{F}{R}$ حيث $F$ و$R$ عدد أسنان الصحن والترس',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » (2026-10-26) — l'égalité et la comparaison de deux fractions (produits en croix).
+  'shade-match': {
+    // LE NUMÉRATEUR SOUS LA MAIN : un seau de référence A (a mesures de bleu pour b de blanc) et un seau B qui reçoit d mesures de blanc ; la main VERSE c mesures de
+    // bleu avec la manette (appui prolongé = une mesure toutes les 0,45 s, un clic = une mesure, « تصريف » en ôte une). La teinte est calculée de la part de bleu
+    // exacte c/(c+d) : à rapports égaux les deux couleurs sont IDENTIQUES ; un mesureur à aiguille penche selon le signe de c × b − a × d (plus clair / plus foncé)
+    // et allume « تطابق » à l'égalité. Quand a × d ÷ b n'est pas entier aucun c ne convient : deux voisins restent de part et d'autre du zéro — les produits en croix
+    // COMPARENT. En متقدم le mesureur est voilé jusqu'à l'engagement (un c, ou « لا يوجد عدد صحيح » avec les deux voisins écrits). Chaque lâcher est un essai
+    // jugé exactement : MANUEL (§6bis). « جرّب أعدادك » : toujours ouvert (a, b, d ∈ 1 … 20).
+    shows: 'الكسران $\\frac{a}{b}$ و $\\frac{c}{d}$ متساويان إذا وفقط إذا كان $a \\times d = b \\times c$ ؛ وإذا كان $a \\times d < b \\times c$ فالأوّل أصغر من الثاني ؛ ولمقارنة كسرين نكتبهما بنفس المقام (مضاعف مشترك للمقامين)',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
   'pin-rails': {

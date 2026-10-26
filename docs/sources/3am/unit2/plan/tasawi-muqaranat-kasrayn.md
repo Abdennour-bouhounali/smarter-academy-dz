@@ -405,3 +405,17 @@ never `packages/core`), re-parses every order chain and checks it sorted, and re
 - [ ] Bank (50) + oracle + JSON entries.
 - [ ] Publish (coordinator, guide §11): `available`, `durationMinutes` ≤ 90, index, export/import, local DB publish, commit, push `dev`,
   progress report.
+
+## Generator notes (2026-10-26)
+
+Deviations from this plan, all minimal:
+
+1. **`act-3` fact.** The plan's list in § 4 says « 23/20 vs 13/12 » is compared; the printed pair is **23/20 > 13/12** (23 × 12 = 276 > 260). The extraction answer key was wrong and is fixed (`DISCREPANCIES`). No lesson content uses that pair as printed.
+2. **Transcription fixes** (re-read at 260 dpi): `ex-15` first pair is **5/7 and 15/17** (not 5/17); `ex-17` pairs are 17/18 and 18/17, 11/15 and 11/21, 64/31 and 17/9, **8/9 and 256/288 (equal)**. All L2 elements are now `verified: True`; `ex-9`, `ex-10`, `ex-17` have destination « bank », the others module 4 (§ 4 table); `ex-9` is cited by `ex-16`'s `cites` in module 4.
+3. **M4 item 5** is two exercises on one step (`ex-15`: which equality follows from 18 × 35 = 21 × 30 — one option only; `ex-16`: x/16 = 5/8 → 10), because one `TextbookExercise` carries one interaction.
+4. **M0**: the prep statements keep the plan's order of keys, but the two rewritten textbook items (`prep` 3, `prep` 5) come last (statements 6 and 7); `prep` 4 (figures) is not reproduced (the bank carries the picture-free equivalent).
+5. **Lab**: `a1`… in متقدم are `veil: true` for every task (the level test measures the pair by the task count and the veil). The impossible commitment writes TWO neighbours (« أقرب عدد أفتح » / « أقرب عدد أغمق ») instead of three fields. The `equal` world finishes when the four buckets are all loaded (the module's first question then asks which matched, so it is not asked twice). LabCoach `lever` sentence slightly shortened (« اضغط الرافعة مطوّلًا لتصبّ، أو انقر مرّة لطلقة واحدة »).
+6. **M1** questions are numeric / tap questions on the student's own releases (6 × 4 and 3 × 8; 3 × 10 vs 7 × 4; 15/20 and 14/20; the other common denominator 40), with the three bricks `jidaa-mutasalib`, `muqarana-mutasalib`, `tawhid-maqamat`.
+7. **Bank**: see EXERCISE_CONTRACT status line. `3am-s3-47` ex 1 and `3am-s1-104` ex 2 are SIGNED in the corpus (a = −3/2, b = −4/3; K = −3/8 − 9/5): kept as `term_exam` with positive fractions; `3am-s1-104` ex 5 (the brothers) was NOT cited because the printed shares sum to more than 1. `deep-55` uses the pair 123456789/987654321 and 12345679/98765432 (the second is exactly 1/8; an 8-digit calculator shows both as 0,12500000).
+8. **Not done / open**: owner questions 1–5 of the unit README are unchanged; the 1AM–3AM « راجع » link of `2am.m1.r08` stays a recall without link (the 2AM lesson is unpublished).
+

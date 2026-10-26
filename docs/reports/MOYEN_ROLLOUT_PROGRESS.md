@@ -319,7 +319,26 @@ modules (62 min, 86 with the three مسائل), bank of 50 sheets (7 `term_exam`
 Catalogue flipped to `available` (durationMinutes 62). Remaining for the coordinator: export / import (guide §11 step 4), commit, push `dev`.
 The plan's deviations are in its « Generator notes » (`docs/sources/3am/unit1/plan/jidaa-adadayn-nisbiyayn.md`).
 
+### Phase 0, entry 2 — `jidaa-ida-nisbiya` « جداء عدة أعداد نسبية » (3AM unit 1, lesson 2, generated 2026-10-26, NOT yet exported / committed)
+
+Second lesson of `aadad-nisbiya`, generated from its plan (`docs/sources/3am/unit1/plan/jidaa-ida-nisbiya.md`, « Generator notes » at its end). New lab `robot-track` « مسار الروبوت »
+(the hand holds the SIGN of each card and the ORDER of a robot's programme on a graduated mat; a negative card makes the robot jump over the zero gate; MANIPULATION_CONTRACT
+§2novetricies), theme `roboticsClub`; `relativeOps.js` grew `product`, `negativesIn`, `signByParity`, `opposite`, `square`, `factorize`. Nine modules (64 min, 88 with the three
+مسائل), bank of 50 sheets (8 `term_exam`, 23 `term_exam_modelled`, 19 `adapted`), eight `MISC-IDA-*`. الكفاءات: the plan's proposed final wording (P1 gains the roles of the sign −, P2 the
+computation and the reordering, P3 `a² = a × a`, P4 numeric distributivity in both directions); the cross-lesson `pointPrerequisites` toward lesson 1. **Plan error found:** `now-11`
+reads 85 (odd), not 50. The extraction elements of the lesson are `verified: true`. Remaining for the coordinator: export / import (guide §11 step 4), commit, push `dev`.
+
 ## Next batch — prompt
+
+### Phase 0, entry 6 — `tasawi-muqaranat-kasrayn` « تساوي كسرين ومقارنتهما » (3AM unit 2, lesson 2, generated 2026-10-26, NOT yet exported / committed)
+
+Second lesson of `kusur-natiqa`, generated from its plan (`docs/sources/3am/unit2/plan/tasawi-muqaranat-kasrayn.md`, « Generator notes » at its end). New lab `shade-match`
+« آلة مزج الألوان » (the hand pours c blue shots into d white to match a reference a/b; a needle judged by the sign of c·b − a·d; when a·d/b is not whole NO integer fits and the
+cross products COMPARE; MANIPULATION_CONTRACT §2octentricies), theme `paintshop`; `fractions3.js` grew `crossProducts`, `sameFraction`, `compareFractions`, `lcm`, `commonMultiples`,
+`toDenominator`, `missingTerm`, `matchNumerator`, `shadeVerdict`, `unitsDigitOfProduct`. Nine modules (63 min, 87 with the three مسائل), bank of 50 sheets (5 `term_exam`, 38
+`term_exam_modelled`, 7 `adapted`), eight `MISC-TASAWI-*`. الكفاءات: P1 gains « وإيجاد حدّ مجهول », P2 and P3 change meaning (plan §2). The extraction elements of L2 were re-read at
+130–260 dpi and set `verified: True` (two transcription errors fixed: `ex-15` 5/7 not 5/17, `ex-17` pairs). Catalogue `available`, `durationMinutes` 63. Browser QA with `QA_STUB=1`
+(the local API was down). Remaining for the coordinator: export / import, commit, push `dev`.
 
 **Superseded on 2026-10-25 for Phase 0:** use the generator prompt in `docs/curriculum/PLAN_3AM_UNITS_1_5.md`. The prompt below
 still applies to the Phase A entries that come after Phase 0.
