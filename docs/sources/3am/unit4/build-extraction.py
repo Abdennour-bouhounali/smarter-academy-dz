@@ -11,8 +11,9 @@ file) ; deuxième : nashr-jabri-3am (2026-10-21, Phase A, #4) — ses éléments
 précisées plus bas (modules : 0 أستعدّ · 1 نشاط (labo area-split, monde plot) · 2 معارف · 3 طريقة (même labo, monde arrows) · 4 أتمرّن ·
 5–7 مسائل · 8 إختبار أولي ; `None` = banque d'exercices). Troisième : qimat-ibara-harfiya (2026-10-26, Phase 0 #15) : prep 1–4, act-4, know-4, method-4, now-61 ①, ex-1…ex-4, self-3, deep-37, deep-39 et ict sont
 relus à 250 dpi (`verified: True`, réponses recalculées avec `Poly` / `Fraction`) ; modules : 0 أستعدّ · 2 معارف · 3 طريقة · 4 أتمرّن. Les éléments de tabsit et de nashr
-sont transcrits avec soin (`verified: True` quand relus à 200 dpi) ; ceux de muqaranat-natiqayn et de la synthèse sont transcrits plus brièvement et marqués
-`verified: False` : leur leçon les relira.
+sont transcrits avec soin (`verified: True` quand relus à 200 dpi) ; quatrième : muqaranat-natiqayn (2026-10-26, Phase 0 #16) : act-5, know-5, method-5, now-61 ②, ex-27…ex-32,
+self-9, self-10 et deep-38 sont relus (`verified: True`) ; modules : 0 أستعدّ · 1 نشاط (labo difference-meter) · 2 معارف · 3 طريقة (même labo, monde race) · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي ;
+ceux de la synthèse sont transcrits plus brièvement et marqués `verified: False` : sa leçon les relira.
 
 FRONTIÈRE ENTRE LES DEUX PREMIÈRES LEÇONS (à écrire une fois) :
   • tabsit-hadhf-aqwas (3am.m5.r01 « تبسيط عبارة جبرية ») = SIMPLIFIER : regrouper les termes semblables (3x + 5x = 8x ; x et x² ne se
@@ -297,7 +298,7 @@ for n_, t in ((16, 'انشر وبسّط كل عبارة مماثلة. ب) اخت
 ex(27, 'قارن بين العددين الناطقين $a$ و $b$ في كل حالة مما يأتي: أ) $a-b=0{,}1$ ؛ ب) $a-b=-\\frac52$ ؛ جـ) $b-a=7$ ؛ د) $b-a=-10^{-2}$ ؛ هـ) $a-b=\\frac25$ ؛ و) $b-a\\geqslant1$.', page=64, section=SEC_C)
 ex(28, 'في كل حالة مما يأتي: أ) $x=12$ و $y=4$ ؛ ب) $x=-5$ و $y=-9$ ؛ جـ) $x=-11$ و $y=7$ ؛ د) $x=3$ و $y=-8$. 1) قارن شفاهيا بين العددين $x$ و $y$ ثم استنتج إشارة $x-y$ دون حسابه. 2) تحقق من إجاباتك من خلال حساب $x-y$ في كل حالة مما سبق.', page=64, section=SEC_C)
 ex(29, '1) أ) احسب باستعمال الآلة الحاسبة $\\frac{53{,}4}{7{,}89}-\\frac{23{,}55}{3{,}48}$. ب) استعمل النتيجة الظاهرة على الشاشة لمقارنة العددين $\\frac{53{,}4}{7{,}89}$ و $\\frac{23{,}55}{3{,}48}$. 2) قارن بين العددين $\\frac{1{,}28}{7}$ و $\\frac{0{,}441}{2{,}4}$ (يمكنك استعمال الحاسبة).', page=64, section=SEC_C)
-ex(30, 'قارن بين العددين الناطقين في كل حالة مما يأتي: أ) $\\frac37$ و $\\frac{13}{28}$ ؛ ب) $-\\frac54$ و $-\\frac{13}{12}$ ؛ جـ) $\\frac73$ و $\\frac{15}{7}$ ؛ د) $\\frac56$ و $-\\frac78$.', page=64, section=SEC_C)
+ex(30, 'قارن بين العددين الناطقين في كل حالة مما يأتي: أ) $\\frac37$ و $\\frac{13}{28}$ ؛ ب) $-\\frac54$ و $-\\frac{13}{12}$ ؛ جـ) $\\frac73$ و $\\frac{15}{7}$ ؛ د) $-\\frac56$ و $-\\frac78$.', page=64, section=SEC_C)
 ex(31, 'طلب الأستاذ من التلاميذ مقارنة العددين $\\frac{25{,}96}{35{,}89}$ و $\\frac{38{,}94}{53{,}89}$ مع السماح باستعمال الآلة الحاسبة. 1) قامت مريم بحساب حاصل القسمة $\\frac{25{,}96}{35{,}89}$ باستعمال الآلة الحاسبة. أ) ما هي النتيجة التي ستظهر على الشاشة؟ ب) ما الذي يجب على مريم فعله بعد ذلك؟ 2) قام يونس بحساب الفرق باستعمال الآلة الحاسبة. أ) ما هي النتيجة التي ستظهر على الشاشة؟ ب) ما الذي يمكن استنتاجه؟ 3) أي الطريقتين أفضل برأيك؟', page=64, section=SEC_C)
 ex(32, 'إليك العبارتين: $B=4x+3$ ؛ $A=5x-4$. 1) حدّد إشارة كل من A و B من أجل: أ) $x=0$ ؛ ب) $x=7$ ؛ جـ) $x=9$. 2) بسّط العبارة $A-B$ ثم استنتج إشارتها من أجل $x>7$. 3) قارن بين A و B من أجل $x>7$.', page=64, section=SEC_C)
 
@@ -407,6 +408,34 @@ E[-1]['reading'] = ('Relu à 250 dpi (2026-10-26) : tableau de 13 lignes x = −
                     'ligne x = 0 : −14 dans les trois colonnes. Le développement de la 5) donne 15x² − 11x − 14. « دوري الآن » : (x + 13)(x − 4) + 27 = (x + 5)(x − 5) à contrôler. '
                     'Le tableur du manuel n’existe pas sur la plateforme : l’idée gardée est « un tableau de valeurs teste en masse, le développement prouve ».')
 
+# ── muqaranat-natiqayn : éléments relus à 130 dpi (pp. 57, 60, 61, 64, 65, 66 ; 2026-10-26, Phase 0 #16) ────────────────────────────────────────────
+_M_READ = {
+    'act-5': 'Relu (2026-10-26) : tableau de cinq paires (a ; b) = (5/7 ; 2/3), (3/4 ; 7/9), (−8/3 ; 5/9), (−1/7 ; −4/9), (−5/3 ; −2/7) ; colonnes « مقارنة a و b » et « إشارة a − b » ; puis « إذا كان a − b … يكون a … من b » (positif, négatif, plus grand, plus petit) et « كيف يصبح الفرق a − b عندما يكون a يساوي b ». Différences : 1/21, −1/36, −29/9, 19/63, −29/21.',
+    'know-5': 'Relu (2026-10-26) : a > b معناه a − b > 0 ; a < b معناه a − b < 0 ; a = b معناه a − b = 0 ; exemples 5/3 − 9/7 = 8/21 > 0 et −13/9 − (−6/5) = −11/45 < 0.',
+    'method-5': 'Relu (2026-10-26) : 14/13 − 8/7 = −6/91 < 0 donc 14/13 < 8/7 ; −5/9 − 3/(−4) = 7/36 > 0 donc −5/9 > 3/(−4) ; remarque : deux rationnels s’écrivent avec le même dénominateur positif puis on ordonne les numérateurs (méthode de la 2AM / de l’unité 2, rappelée et non enseignée).',
+    'ex-27': 'Relu (2026-10-26) : a) a − b = 0,1 ; b) a − b = −5/2 ; c) b − a = 7 ; d) b − a = −10⁻² ; e) a − b = 2/5 ; f) b − a ≥ 1 — ordonner a et b à partir de la différence SEULE.',
+    'ex-28': 'Relu (2026-10-26) : (x ; y) = (12 ; 4), (−5 ; −9), (−11 ; 7), (3 ; −8) : 1) comparer puis déduire le signe de x − y sans le calculer ; 2) vérifier en calculant x − y = 8, 4, −18, 11.',
+    'ex-29': 'Relu (2026-10-26) : 1) a) calculer 53,4/7,89 − 23,55/3,48 à la calculatrice ; b) comparer 53,4/7,89 et 23,55/3,48 ; 2) comparer 1,28/7 et 0,441/2,4. Exact : 53,4/7,89 − 23,55/3,48 = 25/30508 > 0 ; 1,28/7 − 0,441/2,4 = −1/1120.',
+    'ex-30': 'Relu (2026-10-26) : a) 3/7 et 13/28 ; b) −5/4 et −13/12 ; c) 7/3 et 15/7 ; d) −5/6 et −7/8. Différences −1/28, −1/6, 4/21, 1/24 (d) est −5/6 et −7/8, les DEUX négatifs : relu à 300 dpi ; l’ancienne transcription « 5/6 et −7/8 » (différence 41/24) était une erreur de lecture).',
+    'ex-31': 'Relu (2026-10-26) : Maryam divise 25,96/35,89 à la calculatrice ; Younes calcule 25,96/35,89 − 38,94/53,89 ; quelle méthode est la meilleure ? Exact : 14278/19341121 ≈ 0,000738 > 0.',
+    'ex-32': 'Relu (2026-10-26) : A = 5x − 4, B = 4x + 3 ; 1) signe de A et de B en x = 0, 7, 9 (A : −4, 31, 41 ; B : 3, 31, 39) ; 2) simplifier A − B = x − 7 puis en déduire le signe pour x > 7 ; 3) comparer A et B pour x > 7.',
+    'self-9': 'Relu (2026-10-26) : a = π/2, b = π/3 ; a − b = π/6 > 0 donc a > b (sans approcher π).',
+    'self-10': 'Relu (2026-10-26) : comparer 4/13 et 0,91/3 ; 4/13 − 91/300 = 17/3900 > 0.',
+    'deep-38': 'Relu à 130 dpi (2026-10-26) : « أقارن محيطين وأقارن مساحتين » — x est un nombre positif plus petit que 7 ; Fatima : « les deux figures ont toujours le même périmètre » ; Maryam : « les deux figures ont toujours la même aire ». Figure : un rectangle de longueur 7 et de hauteur x, et une figure en L dont la base mesure 7 − x ; les repères de côtés égaux (petits carrés / traits) sont trop fins à cette résolution pour être transcrits avec certitude. La plateforme pose SA propre paire (un rectangle (x + 5) × (x + 1) et un carré de côté x + 3 : périmètres 4x + 12 égaux, aires x² + 6x + 5 et x² + 6x + 9, écart de 4) et cite l’élément.',
+}
+for _e in E:
+    if _e['id'] in _M_READ:
+        _e['verified'] = True
+        _e['reading'] = _M_READ[_e['id']]
+        _e.setdefault('answerSource', 'computed')
+# Recalcul exact (Fraction) des nombres de la leçon et de l’élément.
+assert [F(5, 7) - F(2, 3), F(3, 4) - F(7, 9), F(-8, 3) - F(5, 9), F(-1, 7) - F(-4, 9), F(-5, 3) - F(-2, 7)] == [F(1, 21), F(-1, 36), F(-29, 9), F(19, 63), F(-29, 21)]
+assert [F(x) - F(y) for x, y in [(12, 4), (-5, -9), (-11, 7), (3, -8)]] == [8, 4, -18, 11]
+assert [F(3, 7) - F(13, 28), F(-5, 4) - F(-13, 12), F(7, 3) - F(15, 7), F(-5, 6) - F(-7, 8)] == [F(-1, 28), F(-1, 6), F(4, 21), F(1, 24)]
+assert F('53.4') / F('7.89') - F('23.55') / F('3.48') == F(25, 30508) and F('1.28') / 7 - F('0.441') / F('2.4') == F(-1, 1120)
+assert F('25.96') / F('35.89') - F('38.94') / F('53.89') == F(14278, 19341121) and F(4, 13) - F('0.91') / 3 == F(17, 3900)
+assert (X - n(7)) == (kx(5) - n(4)) - (kx(4) + n(3)) and [(kx(5) - n(4)).at(v) for v in (0, 7, 9)] == [-4, 31, 41] and [(kx(4) + n(3)).at(v) for v in (0, 7, 9)] == [3, 31, 39]
+
 # ── Destinations ────────────────────────────────────────────────────────────────────────────────
 L, N, Q, M, SYN = 'tabsit-hadhf-aqwas', 'nashr-jabri-3am', 'qimat-ibara-harfiya', 'muqaranat-natiqayn', 'wadiya-idmajiya-ibarat-harfiya-3'
 def d(lesson, module=None, **kw): return {'lesson': lesson, 'module': module, **kw}
@@ -417,20 +446,20 @@ DEST = {
     'prep': d(L, 0, items={'5-6-7-8': d(L, 0), '1-2-3-4': d(Q, 0), '9-10-11-12': d(N, 0)}),
     'act-1': d(L, 4, note='APPLICATION (guide §4ter) : le labo `like-terms` (world collect) est l’entrée conçue par la plateforme ; la figure du ℓ et le rectangle de 15 carrés sont posés dans أتمرّن'),
     'act-2': d(L, 4, note='APPLICATION : les trois élèves de l’activité 2 deviennent une comparaison de chaînes de calculs en أتمرّن ; la règle est DÉCOUVERTE d’abord dans le labo world `brackets` (module 3)'),
-    'act-3': d(N, 4, note='APPLICATION (guide §4ter) : l\u2019entrée conçue par la plateforme est le labo `area-split` (monde plot : un terrain de jardin coupé par la main) ; les rectangles ABEF/ABCD et LMPQ du manuel, avec leurs développements ب), sont des exercices d\u2019أتمرّن'), 'act-4': d(Q, 4, note='APPLICATION : un élève développe mal ; UNE valeur (x = 1) concorde, les autres réfutent — le contre-exemple naît d’une erreur'), 'act-5': d(M),
-    'know-1': d(L, 2), 'know-2': d(L, 2), 'know-3': d(N, 2), 'know-4': d(Q, 2), 'know-5': d(M),
+    'act-3': d(N, 4, note='APPLICATION (guide §4ter) : l\u2019entrée conçue par la plateforme est le labo `area-split` (monde plot : un terrain de jardin coupé par la main) ; les rectangles ABEF/ABCD et LMPQ du manuel, avec leurs développements ب), sont des exercices d\u2019أتمرّن'), 'act-4': d(Q, 4, note='APPLICATION : un élève développe mal ; UNE valeur (x = 1) concorde, les autres réfutent — le contre-exemple naît d’une erreur'), 'act-5': d(M, 4, note='APPLICATION (guide §4ter) : les paires du tableau sont assez éloignées pour s’ordonner à l’œil, la différence n’y est pas NÉCESSAIRE ; l’entrée conçue par la plateforme est le labo `difference-meter` (une paire que l’œil ne sépare pas, 0,85 px) ; le tableau devient E1 d’أتمرّن avec d’autres paires'),
+    'know-1': d(L, 2), 'know-2': d(L, 2), 'know-3': d(N, 2), 'know-4': d(Q, 2), 'know-5': d(M, 2),
     'method-1': d(L, 3), 'method-2': d(N, 3), 'method-3': d(N, 3),
     'now-59': d(L, 4, items={'1': d(L, 4), '2': d(N, 4)}),
-    'method-4': d(Q, 3), 'method-5': d(M), 'now-61': d(Q, 4, items={'1': d(Q, 4), '2': d(M, None)}),
+    'method-4': d(Q, 3), 'method-5': d(M, 3), 'now-61': d(Q, 4, items={'1': d(Q, 4), '2': d(M, 4)}),
     **{f'ex-{k}': d(Q, 4) for k in (1, 2, 3, 4)},
     'ex-5': d(L, 4), 'ex-6': d(L, 4), 'ex-7': d(L, 4),
     'ex-8': d(N, 4), 'ex-9': d(N), 'ex-10': d(N), 'ex-11': d(N),
     'ex-12': d(L, 4), 'ex-13': d(L, 4), 'ex-14': d(L, 4),
     'ex-15': d(N, 4), 'ex-16': d(N, 4), **{f'ex-{k}': d(N) for k in (17, 18, 19, 20, 21, 22, 23, 24, 25, 26)},
-    **{f'ex-{k}': d(M) for k in range(27, 33)},
+    **{f'ex-{k}': d(M, 4) for k in range(27, 33)},
     'self-1': d(L, 8), 'self-2': d(L, 8), 'self-3': d(Q, 4, note='cité aussi par le test final de la leçon, mais un seul numéro de module : 4'), 'self-4': d(N), 'self-5': d(N), 'self-6': d(L, 8),
-    'self-7': d(N), 'self-8': d(N), 'self-9': d(M), 'self-10': d(M),
-    'deep-35': d(SYN, None, note='le raisonnement sur trois triangles en x et une aire totale : exercice d\u2019intégration de la synthèse (réaffecté le 2026-10-21)'), 'deep-36': d(L, 5, note='مسألة 1 : محيط مثلث بدلالة x'), 'deep-37': d(Q, 4), 'deep-38': d(M), 'deep-39': d(Q, 4), 'deep-40': d(N),
+    'self-7': d(N), 'self-8': d(N), 'self-9': d(M, 4), 'self-10': d(M, 4),
+    'deep-35': d(SYN, None, note='le raisonnement sur trois triangles en x et une aire totale : exercice d\u2019intégration de la synthèse (réaffecté le 2026-10-21)'), 'deep-36': d(L, 5, note='مسألة 1 : محيط مثلث بدلالة x'), 'deep-37': d(Q, 4), 'deep-38': d(M, 4, note='la paire est REDESSINÉE par la plateforme (rectangle contre carré en x) ; élément cité en E8'), 'deep-39': d(Q, 4), 'deep-40': d(N),
     'deep-41': d(N), 'deep-42': d(N),
     'deep-43': d(L, 4, items={'أ-د': d(L, 4), 'ب-جـ': d(N, 4)}),
     'deep-44': d(N), 'deep-45': d(N), 'deep-46': d(N), 'deep-47': d(SYN, None, note='المربع السحري : des sommes d\u2019expressions en a — la grille n\u2019est lisible qu\u2019en partie (4 cases) : réaffecté à la synthèse le 2026-10-21'),
@@ -455,7 +484,9 @@ DISCREPANCIES = [
     {'elementId': 'know-3', 'kind': 'reading', 'text': 'Relu à 100 dpi (2026-10-21). Les exemples du manuel : 5(x+2) = 5x+10 ; −2x(7 − 1,5x) = −14x + 3x² ; +(7−b) = 7−b ; −(−2x−y) = 2x+y (justifications par (+1)×[…] et (−1)×[…]) ; (2x−3)(−4+x) = 2x² − 11x + 12. La remarque ب (la règle des parenthèses est la distributivité de ±1) est reprise par la plateforme en معارف comme PONT avec la leçon précédente.'},
     {'elementId': 'deep-43', 'kind': 'scope', 'text': 'Éléments partagés : أ et د (simplification, d’une somme) → tabsit-hadhf-aqwas ; ب et جـ (développement) → nashr-jabri-3am.'},
     {'elementId': 'know-3', 'kind': 'scope', 'text': 'La remarque ب du manuel justifie la règle des parenthèses par la distributivité. La leçon tabsit-hadhf-aqwas ne la prouve pas ainsi (elle la fait découvrir par la valeur) ; la distributivité est l’objet de nashr-jabri-3am.'},
-    {'elementId': 'unit', 'kind': 'scope', 'text': 'Les éléments de muqaranat-natiqayn et de la synthèse sont transcrits plus brièvement (verified: false) : leur leçon les relira. Ceux de tabsit-hadhf-aqwas, nashr-jabri-3am et qimat-ibara-harfiya (prep 1–4, act-4, know-4, method-4, now-61 ①, ex-1…ex-4, self-3, deep-37, deep-39, ict) sont relus à 250 dpi (verified: true).'},
+    {'elementId': 'ex-30', 'kind': 'reading', 'text': 'Relu à 300 dpi (2026-10-26) : le cas d) est −5/6 et −7/8 (les deux nombres sont négatifs) ; la transcription initiale « 5/6 et −7/8 » (différence 41/24) était fausse : la bonne différence est −5/6 − (−7/8) = 1/24 > 0.'},
+    {'elementId': 'deep-38', 'kind': 'reading', 'text': 'Relu à 130 dpi : les repères de côtés égaux sont trop fins pour une transcription sûre ; la plateforme pose sa propre paire (E8) et cite l’élément.'},
+    {'elementId': 'unit', 'kind': 'scope', 'text': 'Les éléments de la synthèse sont transcrits plus brièvement (verified: false) : sa leçon les relira. Ceux de muqaranat-natiqayn (act-5, know-5, method-5, now-61 ②, ex-27…ex-32, self-9, self-10, deep-38) sont relus (verified: true, 2026-10-26). Ceux de tabsit-hadhf-aqwas, nashr-jabri-3am et qimat-ibara-harfiya (prep 1–4, act-4, know-4, method-4, now-61 ①, ex-1…ex-4, self-3, deep-37, deep-39, ict) sont relus à 250 dpi (verified: true).'},
 ]
 
 doc = {

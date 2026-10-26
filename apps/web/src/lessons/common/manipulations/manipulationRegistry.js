@@ -141,6 +141,8 @@ export const MANIPULATION_COMPONENTS = {
   'number-line-pegs': lazy(() => import('./operations/NumberLinePegs')),
   // 3AM, unité 2, leçon 5 : le signe prédit, le diviseur retourné, l'ordre des fusions — la لوحة الدمج (2026-10-26).
   'merge-board': lazy(() => import('./operations/MergeBoard')),
+  // 3AM, unité 4, leçon 4 : l'aiguille qui lit une différence — le مقياس الفرق (2026-10-26).
+  'difference-meter': lazy(() => import('./operations/DifferenceMeter')),
   // 2AM, unité 5 « التناسبية » : le nombre qui manque sous la main — les موازين الرابع المتناسب (2026-10-21).
   'fourth-gauges': lazy(() => import('./operations/FourthGauges')),
 };

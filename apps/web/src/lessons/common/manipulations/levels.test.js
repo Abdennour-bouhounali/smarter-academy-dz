@@ -133,6 +133,13 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.every((tk) => tk.kind === 'predict'), type).toBe(true);
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(false);
       }
+      // Unité 4 de 3AM, leçon 4 : `difference-meter` se mesure par le VOLET d'écriture (la différence se ÉCRIT avant de voir l'aiguille) et le RIDEAU (l'ordre se lit sur la différence seule) — متقدم seul.
+      else if (type === 'difference-meter') {
+        expect(advanced.numbers.tasks.filter((tk) => tk.write).length, type).toBeGreaterThanOrEqual(2);
+        expect(advanced.numbers.tasks.some((tk) => tk.curtain), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.write || tk.curtain), type).toBe(false);
+        expect(beginner.numbers.tasks.some((tk) => tk.mustSwap), type).toBe(true);
+      }
       // Unité 2 de 3AM, leçon 5 : `merge-board` se mesure par le NOMBRE DE TÂCHES et par les BARRES CACHÉES (متقدم seul).
       else if (type === 'merge-board') {
         expect(advanced.numbers.tasks.length, type).toBeGreaterThanOrEqual(beginner.numbers.tasks.length);

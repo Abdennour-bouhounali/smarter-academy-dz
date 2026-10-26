@@ -921,6 +921,23 @@ export const LEVELS = Object.freeze({
       { id: 'a4', chain: '4/5 - 3/5 ÷ -9/10 + -2', hidden: true },
     ] }, ...T('method-9') },
   },
+  // L'AIGUILLE QUI LIT UNE DIFFÉRENCE (difference-meter, thème physicslab, 3AM unité 4, leçon 4, 2026-10-26) : une rail de verre graduée porte deux perles a et b ; un galvanomètre à deux sondes lit « rouge MOINS noir » ; la main
+  // BRANCHE chaque sonde (quel nombre est soustrait), lit UNE aiguille et choisit la carte d'ordre. مبتدئ (plateforme, aiguille visible dès que les deux sondes sont branchées) : d1 5/4 et 3/4 (loin l'une de l'autre),
+  // d2 −3/2 et −1/2 (l'aiguille va à GAUCHE ; « بدّل المجسّين » exigé une fois), d3 9/11 et 13/16 (0,85 px : les perles se chevauchent). متقدم (know-5 : « de la différence seule ») : un VOLET couvre l'aiguille tant que la
+  // différence n'est pas ÉCRITE (d4 17/12 et 10/7, d5 −7/6 et −9/8) ; d6 le RIDEAU : seule la carte « a − b = −0,3 » est donnée. Le monde `race` (deux expressions, la main tient x) se pose seul dans la طريقة (`levels={false}`).
+  // Le test des niveaux mesure la paire par le VOLET d'écriture et le RIDEAU (متقدم seul).
+  'difference-meter': {
+    beginner: { numbers: { world: 'rail', tasks: [
+      { id: 'd1', a: '5/4', b: '3/4', range: [-2, 2] },
+      { id: 'd2', a: '-3/2', b: '-1/2', range: [-2, 2], mustSwap: true },
+      { id: 'd3', a: '9/11', b: '13/16', range: [-2, 2] },
+    ] }, ...P },
+    advanced: { numbers: { world: 'rail', tasks: [
+      { id: 'd4', a: '17/12', b: '10/7', range: [-2, 2], write: true },
+      { id: 'd5', a: '-7/6', b: '-9/8', range: [-2, 2], write: true },
+      { id: 'd6', a: '2/5', b: '7/10', range: [-2, 2], curtain: { left: 'a', value: '-0,3' } },
+    ] }, ...T('ex-27') },
+  },
   // LA POSITION D'UNE ÉCRITURE SOUS LA MAIN (number-line-pegs, thème clothesline, 3AM unité 2, leçon 4, 2026-10-26) : la main PORTE une carte d'écriture a/b et l'ACCROCHE sur un حبل gradué ; le vent la fait
   // glisser à son vrai piquet. Une tâche est `{ id, kind?: 'hang' | 'order', cards: ['6/-8', …], range?: [lo, hi] }`. مبتدئ (plateforme, pas 1/12, loupe ×3, « تحقّق » à volonté) : w1 6/(−8), (−3)/4, 3/4,
   // (−9)/(−12) → deux piles ; w2 −7/3, 7/(−3), −14/6, 14/6 (−28 douzièmes ×3, +28) ; w3 −1,5, 2, (−20)/(−8), −3. متقدم (method-10 : ordre par un même dénominateur ; pas 1/48, ni graduation entre les

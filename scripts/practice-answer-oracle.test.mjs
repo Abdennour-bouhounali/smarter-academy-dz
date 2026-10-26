@@ -146,8 +146,10 @@ import { ORACLE as ORACLE_3AM_QISMAT_NISBIYAYN, audit as auditQismat } from './p
 import { ORACLE as ORACLE_3AM_ADAD_NATIQ, audit as auditAdadNatiq } from './practice-oracle/adad-natiq.mjs';
 import { ORACLE as ORACLE_3AM_WADIYA_NISBIYA, audit as auditWadiyaNisbiya } from './practice-oracle/wadiya-idmajiya-aadad-nisbiya.mjs';
 import { ORACLE as ORACLE_3AM_AMALIYAT_NATIQA, audit as auditAmaliyatNatiqa } from './practice-oracle/amaliyat-natiqa.mjs';
+import { ORACLE as ORACLE_3AM_WADIYA_KUSUR, audit as auditWadiyaKusur } from './practice-oracle/wadiya-idmajiya-kusur-natiqa.mjs';
 
 import { ORACLE as ORACLE_3AM_QIMAT, audit as auditQimat } from './practice-oracle/qimat-ibara-harfiya.mjs';
+import { ORACLE as ORACLE_3AM_MUQARANAT, audit as auditMuqaranat } from './practice-oracle/muqaranat-natiqayn.mjs';
 // Toutes les années du cycle moyen (content/practice/<1am…4am>/<leçon>/level-N) : jusqu'au 2026-10-14 seul 4am
 // existait et la racine y était codée en dur — un banc 1AM–3AM aurait échappé à l'oracle sans rien dire.
 const practiceRoot = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice');
@@ -318,7 +320,9 @@ const ORACLE = {
   ...ORACLE_3AM_ADAD_NATIQ,
   ...ORACLE_3AM_WADIYA_NISBIYA,
   ...ORACLE_3AM_QIMAT,
+  ...ORACLE_3AM_MUQARANAT,
   ...ORACLE_3AM_AMALIYAT_NATIQA,
+  ...ORACLE_3AM_WADIYA_KUSUR,
 };
 
 /**
@@ -400,10 +404,22 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     expect(auditAmaliyatNatiqa(own)).toEqual([]);
   });
 
+  it('أدمج تعلّماتي — العمليات على الكسور والأعداد الناطقة (3AM, synthèse) : évaluateur de chaînes importé du banc frère (BigInt, priorités, fraction composée), expressions retapées dont chaque littéral figure dans la feuille (ou est déclaré dérivé), formules A = … relues en LaTeX, QCM à une seule bonne option (valeur, expression, nom, « نعم / لا »), « le plus grand / le plus petit » recalculé, chaque signature et chaque distracteur = valeur EXACTE de l\'erreur MISC-* nommée (NOFLIP, REVERSED, ACROSS, PRIORITY, SYN-KUSUR-WHOLE = f × Tout au lieu de f × Reste, WRONGFRAC, TASAWI-NUMERATORS / DENOMS…)', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-wadiya-idmajiya-kusur-natiqa-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditWadiyaKusur(own)).toEqual([]);
+  });
+
   it('حساب قيمة عبارة حرفية (3AM) : évaluateur exact propre (BigInt, polynômes à plusieurs lettres, π), chaque signature = valeur de la mauvaise lecture, chaque « différent » par un témoin et chaque « égal » par l\'égalité des polynômes développés, QCM à une seule bonne option, énoncés relus, MISC-QIMA-*', () => {
     const own = bank.filter((b) => b.key.startsWith('ex-3am-qimat-ibara-harfiya-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditQimat(own)).toEqual([]);
+  });
+
+  it('مقارنة عددين ناطقين (3AM) : arithmétique exacte propre (BigInt, polynômes, π à 40 chiffres), chaque différence, valeur et coefficient recalculé, chaque QCM = UNE affirmation vraie (cmp, eq, sign, région A > B pour x > c sur 5 valeurs de chaque côté, implication sur une grille de couples (a, b), données indécidables, tous x), chaque distracteur FAUX et étiqueté MISC-MUQ-*, nombres de la formule relus dans le texte, signatures', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-muqaranat-natiqayn-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditMuqaranat(own)).toEqual([]);
   });
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {

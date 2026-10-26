@@ -244,3 +244,15 @@ oracle (import its helper; no new parser) and recomputes every key from the stat
   3. local DB publish (lesson, 9 modules, 50 exercises);
   4. commit, push `dev`;
   5. progress report: unit 2 complete.
+
+## 12. Generator notes (2026-10-26)
+
+Generated INTO the catalogue entry; bank by a helper, lesson by the lead. Changes to the plan:
+- **`durationMinutes` is 30, not 40**: `validate:lessons` computes a synthesis as modules 0 + 7 + 8 (6 + 12 + 12 min), problem tracks excluded; the plan's 40 was a guess.
+- **Final test E2 distractors**: the plan's `1/2` has no named error behind it; replaced by `7/12` (the spent fraction taken for the rest), `5/7` (1 − 2/7, following the ACROSS error of E1) and `11/12` (1 − 1/12, following the product error). E3 gets `7/20` (3/5 of the SPENT fraction) in place of the plan's `3/12 + 5/12` kept as the fourth option; E4 gets `1/3` (spent − gift).
+- **Module 7** is five steps (sorter, three-stage analysis, whole-or-remainder, order of the calculations, the « 3/5 of the whole » counter-check) and the `situation` text carries the `1500 DA` datum, so that module 8 stage 5 needs no new statement; the ordering « cards » are a one-of-four `TapQuestion` (no new component).
+- **Training situation 6** keeps the plan's five answers; the pyramid bonus is its part 4. **Situation 2** shows `x`, `y`, `z` with `y` correct as planned. **Situation 5** uses Sétif and « مدينة أخرى ».
+- **`challenge`** is destined to module 7 (`duplicatedIn` the unit page: the unit card keeps the book's Hisham text until the owner decides, README question 2). `self-8`, `self-12`, `opener` → module 0 (items 1, 6 and the « هل تعلم »), `integration` → 1, `evaluation` → 2, all `verified: True` after re-reading pdf pp. 34 and 37; `deep-*` stay bank-only (`module: None`).
+- **Bank (helper):** 8 `term_exam` (`3am-s1-1` ex 3, `3am-s1-5` ex 5, `3am-s1-3` ex 4, `3am-s1-103` ex 5, `3am-s1-109` ex 5, `1am-s1-100` ex 5, `3am-s1-104` ex 5, `3am-s1-108` ex 5; `3am-s3-56` is NOT used, no row of the table asks for it), 36 `term_exam_modelled`, 6 adapted (`deep-61, 67, 70, 72, 75, 78`; `deep-67` « write a problem » became a choose-the-computation question and one `selfCheck`).
+- The two book misprints (`method-9` 23/33, integration 59/7) appear nowhere in the lesson or the bank.
+

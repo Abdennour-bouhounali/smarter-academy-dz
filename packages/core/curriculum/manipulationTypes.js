@@ -809,6 +809,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'لجمع عددين ناطقين أو طرحهما نحدّد إشارة الناتج ثم نوحّد المقامين؛ وفي الضرب والقسمة تكون الإشارة موجبة إذا تشابهت الإشارتان وسالبة إذا اختلفتا، ونقسم بالضرب في مقلوب القاسم $\\frac{a}{b}\\div\\frac{c}{d}=\\frac{a}{b}\\times\\frac{d}{c}$ ؛ وفي سلسلة حسابات: الأقواس ثم الضرب والقسمة ثم الجمع والطرح',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 3AM, unité 4, leçon 4 (2026-10-26) — comparer par l'aiguille d'une différence.
+  'difference-meter': {
+    // L'AIGUILLE QUI LIT UNE DIFFÉRENCE : sur la rail de verre du labo de physique, deux perles portent les nombres a et b ; un galvanomètre à deux sondes lit « rouge MOINS noir ». La main BRANCHE chaque sonde sur une perle
+    // (c'est elle qui décide quel nombre est soustrait), lit UNE aiguille — à droite, à gauche, sur 0 — puis choisit la carte d'ordre ; « بدّل المجسّين » fait traverser l'aiguille, pas l'ordre. Au niveau متقدم un volet couvre
+    // l'aiguille tant que la différence n'est pas ÉCRITE, et un rideau cache les perles : seule la différence est donnée. Monde `race` : les perles sont les valeurs de deux expressions, la main tient x, l'aiguille lit A − B et la main
+    // remplit une carte d'ordre par région de x. Chaque branchement, lecture, écriture et verdict est un essai jugé exactement : MANUEL §6bis. `difference-meter` n'énonce jamais la règle.
+    shows: 'العدد الأكبر هو الذي يكون الفرق $a-b$ معه موجبًا: $a>b$ معناه $a-b>0$ ، و $a<b$ معناه $a-b<0$ ، و $a=b$ معناه $a-b=0$ ؛ فنعرف الترتيب من إشارة الفرق وحدها، وتبديل العددين يبدّل إشارة الفرق لا الترتيب. ولمقارنة عبارتين $A$ و $B$ نبسّط $A-B$ ثم نعيّن إشارته حسب قيم $x$.',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   'pin-rails': {
     // LA PUNAISE SUR SA RAINURE ET LA RÈGLE SUR DEUX NŒUDS : un tableau de prix devient des points d'un repère — la main GLISSE chaque punaise
     // le long de la rainure de sa colonne jusqu'à son prix (la punaise posée au mauvais prix retombe, le tableau fait foi) puis POSE une règle

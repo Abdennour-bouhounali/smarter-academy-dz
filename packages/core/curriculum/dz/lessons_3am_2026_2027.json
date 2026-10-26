@@ -541,7 +541,7 @@
       "decisionStatus": "draft",
       "titleSource": "textbook",
       "title": "أدمج تعلّماتي — العمليات على الكسور والأعداد الناطقة",
-      "description": "",
+      "description": "وضعية إدماجية (حصّالة مريم: كسور من الكلّ وكسور من الباقي ثم المبلغ الكلّي) تُعبّئ المقلوب وقسمة الكسور والمقارنة والجمع والطرح والأعداد الناطقة، تسبقها ست وضعيات تدريبية.",
       "prerequisites": [],
       "prerequisiteLessonCodes": [
         "maqlub-qismat-kasrayn",
@@ -550,17 +550,34 @@
         "adad-natiq",
         "amaliyat-natiqa"
       ],
-      "pointsToLearn": [],
+      "pointsToLearn": [
+        "حل وضعية إدماجية بتوظيف العمليات على الكسور والأعداد الناطقة: المقلوب والقسمة، المقارنة، الجمع والطرح، وسلاسل الحساب"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "3am_maqlub-qismat-kasrayn_P3",
+          "3am_tasawi-muqaranat-kasrayn_P3",
+          "3am_jam-tarh-kasrayn_P2",
+          "3am_adad-natiq_P3",
+          "3am_amaliyat-natiqa_P4"
+        ]
+      },
       "programmeItems": [],
       "textbookRef": {
         "unit": 2,
         "pages": {
           "integration": [
             36
+          ],
+          "challenge": [
+            22
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 30,
+      "difficulty": "متقدم",
+      "icon": "🐷"
     },
     {
       "code": "quwa-adad-ashara",
@@ -1014,9 +1031,9 @@
         "tasawi-muqaranat-kasrayn"
       ],
       "pointsToLearn": [
-        "الربط بين ترتيب عددين وإشارة فرقهما: $a>b$ يكافئ $a-b>0$",
-        "مقارنة عددين ناطقين بحساب فرقهما وتعيين إشارته",
-        "مقارنة عبارتين حرفيتين بدراسة إشارة الفرق"
+        "الربط بين ترتيب عددين وإشارة فرقهما: $a>b$ معناه $a-b>0$ ، و $a<b$ معناه $a-b<0$ ، و $a=b$ معناه $a-b=0$ ، ومعرفة الترتيب من الفرق وحده",
+        "مقارنة عددين ناطقين (موجبين أو سالبين، بكتابة كسرية أو عشرية) بحساب فرقهما وتعيين إشارته",
+        "مقارنة عبارتين حرفيتين بتبسيط فرقهما وتعيين إشارته حسب قيم $x$ ، مثل $A-B=x-4$ موجب عندما $x>4$"
       ],
       "programmeItems": [
         "3am.m5.r04"
@@ -1038,7 +1055,19 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "pointPrerequisites": {
+        "P2": [
+          "3am_muqaranat-natiqayn_P1",
+          "3am_tasawi-muqaranat-kasrayn_P2"
+        ],
+        "P3": [
+          "3am_muqaranat-natiqayn_P1"
+        ]
+      },
+      "durationMinutes": 64,
+      "difficulty": "متوسط",
+      "icon": "⚖️"
     },
     {
       "code": "wadiya-idmajiya-ibarat-harfiya-3",

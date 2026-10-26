@@ -68,7 +68,7 @@
    "section": "تمهيد (نص تاريخي)",
    "verified": true,
    "text": "تعود الكتابة الكسرية الحالية إلى علماء الحضارة العربية الإسلامية؛ ففي القرن 11 كان أبو الوفاء البوزجاني، الذي يعتبر من أكبر العلماء الذين برعوا في العلوم الفلكية والرياضية، قد عبّر عن نسبة قيمتين بعدد. وفي سنة 1427 أعطى عالم الفلك غياث الدين جمشيد الكاشي تعريفا للكسور العشرية وعرض نظريتها وبيّن كيفية تفكيك كل كسر إلى مجموعة كسور عشرية، كما فضّل طُرقا حسابية حيث شرح أن العمليات على الكسور تؤول إلى عمليات على الأعداد الصحيحة بإستعمال الكسور العشرية.",
-   "reading": "cadre rouge relu à 110 dpi : lisible ; photo : أبو الوفاء البوزجاني (940 – 998 م)."
+   "reading": "cadre rouge relu à 110 dpi : lisible ; photo : أبو الوفاء البوزجاني (940 – 998 م). Relu par la synthèse (2026-10-26) à 110 dpi (pdf p. 34 et 37) : conforme ; réécrit avec d'autres nombres."
   },
   {
    "id": "challenge",
@@ -82,7 +82,8 @@
     "left": "11/60"
    },
    "answerSource": "computed",
-   "note": "1 − 1/4 − 1/5 = 11/20 ; il paie 2/3 du reste : il lui reste 1/3 × 11/20 = 11/60."
+   "note": "1 − 1/4 − 1/5 = 11/20 ; il paie 2/3 du reste : il lui reste 1/3 × 11/20 = 11/60.",
+   "reading": "Relu par la synthèse (2026-10-26) à 110 dpi (pdf p. 34 et 37) : conforme ; réécrit avec d'autres nombres."
   },
   {
    "id": "prep",
@@ -1387,13 +1388,14 @@
    "kind": "qcm",
    "page": 33,
    "section": "أؤكّد تعلّماتي — 8",
-   "verified": false,
+   "verified": true,
    "text": "مقلوب 3/7 + 3/5 يساوي: أ) 13/5 ؛ ب) 35/36 ؛ جـ) 10/3 .",
    "answerSource": "computed",
    "answer": {
     "sum": "36/35",
     "reciprocal": "35/36"
-   }
+   },
+   "reading": "Relu par la synthèse (2026-10-26) à 110 dpi (pdf p. 34 et 37) : conforme ; réécrit avec d'autres nombres."
   },
   {
    "id": "self-9",
@@ -1456,7 +1458,7 @@
    "kind": "qcm",
    "page": 33,
    "section": "أؤكّد تعلّماتي — 12",
-   "verified": false,
+   "verified": true,
    "text": "إذا كان x/y = 2/5 و y/z = 5/3 فإنّ: أ) x/z = 5/6 ؛ ب) x/z = 3/2 ؛ جـ) x/z = 2/3 .",
    "correct": [
     2
@@ -1464,7 +1466,8 @@
    "answer": {
     "x/z": "2/3"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-26) à 110 dpi (pdf p. 34 et 37) : conforme ; réécrit avec d'autres nombres."
   },
   {
    "id": "deep-55",
@@ -1527,12 +1530,13 @@
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 61",
-   "verified": false,
+   "verified": true,
    "text": "احسب مساحة المثلث ABC (AH ارتفاع 3/5 m ، BH = 7/20 m ، HC = 17/15 m).",
    "answer": {
     "area": "89/200"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-26) à 110 dpi (pdf p. 34 et 37) : conforme ; réécrit avec d'autres nombres."
   },
   {
    "id": "deep-62",
@@ -1596,8 +1600,9 @@
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 67",
-   "verified": false,
-   "text": "اكتب مسألة من اختيارك حلها يوافق الحساب التالي: 3/5 × 9 + 7/5 ."
+   "verified": true,
+   "text": "اكتب مسألة من اختيارك حلها يوافق الحساب التالي: 3/5 × 9 + 7/5 .",
+   "reading": "Relu par la synthèse (2026-10-26) à 110 dpi (pdf p. 34 et 37) : conforme ; réécrit avec d'autres nombres."
   },
   {
    "id": "deep-68",
@@ -1622,12 +1627,13 @@
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 70",
-   "verified": false,
+   "verified": true,
    "text": "باع تاجر ثلثي سلعته في شهر جوان، ثم باع ثلاثة أخماس الباقي من السلعة في شهر جويلية، ما هو الكسر الذي يمثّل ما تبقى من السلعة في نهاية شهر جويلية؟",
    "answer": {
     "left": "2/15"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-26) à 110 dpi (pdf p. 34 et 37) : conforme ; réécrit avec d'autres nombres."
   },
   {
    "id": "deep-71",
@@ -1647,13 +1653,14 @@
    "kind": "deep",
    "page": 35,
    "section": "أتعمّق — 72",
-   "verified": false,
+   "verified": true,
    "text": "اشترى 3 أشخاص قطعة أرض، فأخذ الأوّل 2/5 والثاني 3/7 من الأرض وأخذ الثالث 1,5 ha مقابل 45 مليون سنتيم. ما هي مساحة القطعة وكم ثمنها؟",
    "answer": {
     "rest": "6/35",
     "area (ha)": "35/4"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-26) à 110 dpi (pdf p. 34 et 37) : conforme ; réécrit avec d'autres nombres."
   },
   {
    "id": "deep-73",
@@ -1689,12 +1696,13 @@
    "kind": "deep",
    "page": 35,
    "section": "أتعمّق — 75",
-   "verified": false,
+   "verified": true,
    "text": "يُعطي الحليب 5/24 من كتلته قشدة وتُعطي القشدة 1/4 من كتلتها زبدة. ما هو الكسر الذي يمثّل كتلة الزبدة المستخلصة من كتلة الحليب المستعملة؟",
    "answer": {
     "butter": "5/96"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-26) à 110 dpi (pdf p. 34 et 37) : conforme ; réécrit avec d'autres nombres."
   },
   {
    "id": "deep-76",
@@ -1729,8 +1737,9 @@
    "kind": "deep",
    "page": 35,
    "section": "أتعمّق — 78",
-   "verified": false,
-   "text": "بإجراء إحصاء في إحدى المتوسطات، تحصلنا على ما يلي: 400 يملكون هاتفا نقالا ولوحة رقمية؛ 7/30 من التلاميذ لا يملكون هاتفا نقالا؛ 1/6 لا يملكون لوحة رقمية؛ 1/15 لا يملكون هاتفا ولا لوحة. ما هو عدد تلاميذ هذه المتوسطة؟"
+   "verified": true,
+   "text": "بإجراء إحصاء في إحدى المتوسطات، تحصلنا على ما يلي: 400 يملكون هاتفا نقالا ولوحة رقمية؛ 7/30 من التلاميذ لا يملكون هاتفا نقالا؛ 1/6 لا يملكون لوحة رقمية؛ 1/15 لا يملكون هاتفا ولا لوحة. ما هو عدد تلاميذ هذه المتوسطة؟",
+   "reading": "Relu par la synthèse (2026-10-26) à 110 dpi (pdf p. 34 et 37) : conforme ; réécrit avec d'autres nombres."
   },
   {
    "id": "deep-79",
@@ -1767,7 +1776,7 @@
    "kind": "integration",
    "page": 36,
    "section": "أدمج تعلّماتي — وضعية",
-   "verified": false,
+   "verified": true,
    "text": "لتبليط مسبح، قام بنّاء في اليوم الأول بتبليط 1/3 المسبح وفي اليوم الثاني استهلك 3/7 ما تبقى من قطع الآجر وأنهى تبليط المسبح في اليوم الثالث. السند 1: المسبح متوازي مستطيلات: الطول 9/2 m ، العرض 2 m ، الارتفاع 3/2 m . السند 2: سعة صندوقين ممتلئين هي 15 m³ (صناديق: ممتلئ 2/9 ، فارغ 1/3 ، …). المهمة: اكتب مساحة الجزء المبلّط في اليوم الثالث على شكل كسر.",
    "answer": {
     "surface (floor + 4 walls)": "28,5",
@@ -1776,14 +1785,15 @@
     "day 3": "76/7"
    },
    "answerSource": "computed",
-   "note": "« حل مختصر » du livre : 9,5 m² puis 59/7 m² (faute : 3/7 de 19 = 57/7)."
+   "note": "« حل مختصر » du livre : 9,5 m² puis 59/7 m² (faute : 3/7 de 19 = 57/7).",
+   "reading": "Relu par la synthèse (2026-10-26) à 110 dpi (pdf p. 34 et 37) : conforme ; réécrit avec d'autres nombres."
   },
   {
    "id": "evaluation",
    "kind": "evaluation",
    "page": 36,
    "section": "وضعية للتقويم",
-   "verified": false,
+   "verified": true,
    "text": "اقتسم أربعة إخوة مبلغا من المال، أخذ جعفر ثُلث المبلغ ثم أخذ جمال ثلاثة أخماس الباقي بينما اقتسمت الأختان شيماء وهناء ما بقي بالتساوي. 1) من بين الأعداد الثلاثة التالية، ما هو الكسر الذي يمثّل نصيب كل بنت؟ x = (1 − 1/3 − 3/5) ÷ 2 ؛ y = (2/3 − 3/5 × 2/3) × 2 ؛ z = (1 − 1/3 − 3/5 × 2/3) × 1/2 . 2) إذا علمت أنّ المبلغ الذي اقتسمته الأختان هو 900DA ، فما هي حصة جعفر؟",
    "answer": {
     "each girl": "z = 2/15",
@@ -1791,7 +1801,8 @@
     "total": "3375",
     "Jaafar": "1125"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la synthèse (2026-10-26) à 110 dpi (pdf p. 34 et 37) : conforme ; réécrit avec d'autres nombres."
   },
   {
    "id": "ict",
@@ -1922,8 +1933,15 @@
    "module": "page"
   },
   "challenge": {
-   "lesson": "unit",
-   "module": "page"
+   "lesson": "wadiya-idmajiya-kusur-natiqa",
+   "module": 7,
+   "duplicatedIn": [
+    {
+     "lesson": "unit",
+     "module": "page"
+    }
+   ],
+   "note": "tirelire de Meriem (1/3, 1/4, puis 3/5 du reste ; 1500 DA restent -> 9000 DA) ; la carte de l'unité garde le texte du livre (README du plan, question 2)"
   },
   "opener": {
    "lesson": "wadiya-idmajiya-kusur-natiqa",
@@ -2425,11 +2443,11 @@
   },
   "integration": {
    "lesson": "wadiya-idmajiya-kusur-natiqa",
-   "module": null
+   "module": 1
   },
   "evaluation": {
    "lesson": "wadiya-idmajiya-kusur-natiqa",
-   "module": null
+   "module": 2
   },
   "ict": {
    "lesson": "amaliyat-natiqa",

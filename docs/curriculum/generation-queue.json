@@ -2,15 +2,6 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "wadiya-idmajiya-kusur-natiqa",
-      "grade": "3am",
-      "unit": "kusur-natiqa",
-      "titleAr": "أدمج تعلّماتي — العمليات على الكسور والأعداد الناطقة",
-      "kind": "synthesis",
-      "trigger": "unité kusur-natiqa complète",
-      "via": []
-    },
-    {
       "code": "quwa-adad-ashara",
       "grade": "3am",
       "unit": "quwa-nisbiya",
@@ -44,15 +35,6 @@
       "titleAr": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
       "kind": "synthesis",
       "trigger": "unité quwa-nisbiya complète",
-      "via": []
-    },
-    {
-      "code": "muqaranat-natiqayn",
-      "grade": "3am",
-      "unit": "ibarat-harfiya-3",
-      "titleAr": "مقارنة عددين ناطقين",
-      "kind": "lesson",
-      "trigger": "priorité propriétaire",
       "via": []
     },
     {

@@ -316,6 +316,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   arcade  une borne d'arcade du club de l'école : un tableau lumineux où les NOMBRES sont de grosses tuiles arrondies (fraction + barre signée, bleue vers la droite pour +, rouge vers la gauche pour −),
   //           des jetons d'opération, un aimant dessiné qui tient un × ou ÷ à ses voisines, des bulles translucides pour les parenthèses, trois pavés de signe, un garçon (KidFigure, sweat) aux commandes (`merge-board`)
   arcade: { kind: 'objects', shows: 'لوحة ألغاز في خزانة ألعاب بنادي المتوسطة: بلاطات أعداد ومغناطيس وفقاعات' },
+  // 3AM, unité 4, leçon 4 (2026-10-26) :
+  //   physicslab  la paillasse du labo de physique : une rail de verre graduée (zéro doré) avec deux perles de verre, un galvanomètre en laiton (cadran à zéro central, moitié gauche rouge, moitié droite verte)
+  //               et deux fils à sondes, une rouge et une noire ; une élève (KidFigure, hijab) tient les fils (`difference-meter`)
+  physicslab: { kind: 'objects', shows: 'سكّة زجاجية مدرّجة عليها حبّتان ومقياس بإبرة بمجسّين أحمر وأسود في مختبر الفيزياء' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

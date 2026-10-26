@@ -404,8 +404,10 @@
    "page": 57,
    "section": "أنشطة",
    "title": "مقارنة عددين ناطقين",
-   "verified": false,
-   "text": "أ) انقل الجدول المقابل وأكمله (لإتمام العمود الثالث يمكن استعمال مستقيم مدرّج في كل حالة لتعليم النقطة A ذات الفاصلة a، والنقطة B ذات الفاصلة b). الأزواج (a ; b): (5/7 ; 2/3) ، (3/4 ; 7/9) ، (−8/3 ; 5/9) ، (−1/7 ; −4/9) ، (−5/3 ; −2/7). ب) a و b عددان. انقل وأكمل ما يلي بما يناسب (موجبا، سالبا، أكبر، أصغر): « إذا كان $a-b$ ........ يكون $a$ ........ من $b$ » و « إذا كان $a-b$ ........ يكون $a$ ........ من $b$ ». جـ) كيف يصبح الفرق $a-b$ عندما يكون $a$ يساوي $b$؟"
+   "verified": true,
+   "text": "أ) انقل الجدول المقابل وأكمله (لإتمام العمود الثالث يمكن استعمال مستقيم مدرّج في كل حالة لتعليم النقطة A ذات الفاصلة a، والنقطة B ذات الفاصلة b). الأزواج (a ; b): (5/7 ; 2/3) ، (3/4 ; 7/9) ، (−8/3 ; 5/9) ، (−1/7 ; −4/9) ، (−5/3 ; −2/7). ب) a و b عددان. انقل وأكمل ما يلي بما يناسب (موجبا، سالبا، أكبر، أصغر): « إذا كان $a-b$ ........ يكون $a$ ........ من $b$ » و « إذا كان $a-b$ ........ يكون $a$ ........ من $b$ ». جـ) كيف يصبح الفرق $a-b$ عندما يكون $a$ يساوي $b$؟",
+   "reading": "Relu (2026-10-26) : tableau de cinq paires (a ; b) = (5/7 ; 2/3), (3/4 ; 7/9), (−8/3 ; 5/9), (−1/7 ; −4/9), (−5/3 ; −2/7) ; colonnes « مقارنة a و b » et « إشارة a − b » ; puis « إذا كان a − b … يكون a … من b » (positif, négatif, plus grand, plus petit) et « كيف يصبح الفرق a − b عندما يكون a يساوي b ». Différences : 1/21, −1/36, −29/9, 19/63, −29/21.",
+   "answerSource": "computed"
   },
   {
    "id": "know-1",
@@ -527,8 +529,10 @@
    "page": 60,
    "section": "معارف",
    "title": "مقارنة عددين ناطقين",
-   "verified": false,
-   "text": "يمكّن إشارة الفرق $a-b$ من ترتيب العددين $a$ و $b$ : $a>b$ معناه $a-b>0$ ؛ $a<b$ معناه $a-b<0$ ؛ $a=b$ معناه $a-b=0$. أمثلة: $\\frac53-\\frac97=\\frac{8}{21}>0$ فإن $\\frac53>\\frac97$ ؛ $-\\frac{13}{9}-\\left(-\\frac65\\right)=-\\frac{11}{45}<0$ فإن $-\\frac{13}{9}<-\\frac65$."
+   "verified": true,
+   "text": "يمكّن إشارة الفرق $a-b$ من ترتيب العددين $a$ و $b$ : $a>b$ معناه $a-b>0$ ؛ $a<b$ معناه $a-b<0$ ؛ $a=b$ معناه $a-b=0$. أمثلة: $\\frac53-\\frac97=\\frac{8}{21}>0$ فإن $\\frac53>\\frac97$ ؛ $-\\frac{13}{9}-\\left(-\\frac65\\right)=-\\frac{11}{45}<0$ فإن $-\\frac{13}{9}<-\\frac65$.",
+   "reading": "Relu (2026-10-26) : a > b معناه a − b > 0 ; a < b معناه a − b < 0 ; a = b معناه a − b = 0 ; exemples 5/3 − 9/7 = 8/21 > 0 et −13/9 − (−6/5) = −11/45 < 0.",
+   "answerSource": "computed"
   },
   {
    "id": "method-4",
@@ -559,8 +563,10 @@
    "page": 61,
    "section": "طرائق",
    "title": "مقارنة عددين ناطقين",
-   "verified": false,
-   "text": "تمرين: قارن بين العددين بحساب فرقهما في كل حالة: $\\frac{14}{13}$ و $\\frac87$ ؛ $\\frac{-5}{9}$ و $\\frac{3}{-4}$. حل: $\\frac{14}{13}-\\frac87=-\\frac{6}{91}<0$ فإن $\\frac{14}{13}<\\frac87$ ؛ $\\frac{-5}{9}-\\frac{3}{-4}=\\frac{7}{36}>0$ فإن $\\frac{-5}{9}>\\frac{3}{-4}$. ملاحظة: لمقارنة عددين ناطقين يمكن كتابتهما على شكل كسرين لهما نفس المقام الموجب، ثم ترتيبهما حسب ترتيب بسطيهما."
+   "verified": true,
+   "text": "تمرين: قارن بين العددين بحساب فرقهما في كل حالة: $\\frac{14}{13}$ و $\\frac87$ ؛ $\\frac{-5}{9}$ و $\\frac{3}{-4}$. حل: $\\frac{14}{13}-\\frac87=-\\frac{6}{91}<0$ فإن $\\frac{14}{13}<\\frac87$ ؛ $\\frac{-5}{9}-\\frac{3}{-4}=\\frac{7}{36}>0$ فإن $\\frac{-5}{9}>\\frac{3}{-4}$. ملاحظة: لمقارنة عددين ناطقين يمكن كتابتهما على شكل كسرين لهما نفس المقام الموجب، ثم ترتيبهما حسب ترتيب بسطيهما.",
+   "reading": "Relu (2026-10-26) : 14/13 − 8/7 = −6/91 < 0 donc 14/13 < 8/7 ; −5/9 − 3/(−4) = 7/36 > 0 donc −5/9 > 3/(−4) ; remarque : deux rationnels s’écrivent avec le même dénominateur positif puis on ordonne les numérateurs (méthode de la 2AM / de l’unité 2, rappelée et non enseignée).",
+   "answerSource": "computed"
   },
   {
    "id": "now-61",
@@ -994,7 +1000,9 @@
    "page": 64,
    "section": "مقارنة عددين ناطقين",
    "text": "قارن بين العددين الناطقين $a$ و $b$ في كل حالة مما يأتي: أ) $a-b=0{,}1$ ؛ ب) $a-b=-\\frac52$ ؛ جـ) $b-a=7$ ؛ د) $b-a=-10^{-2}$ ؛ هـ) $a-b=\\frac25$ ؛ و) $b-a\\geqslant1$.",
-   "verified": false
+   "verified": true,
+   "reading": "Relu (2026-10-26) : a) a − b = 0,1 ; b) a − b = −5/2 ; c) b − a = 7 ; d) b − a = −10⁻² ; e) a − b = 2/5 ; f) b − a ≥ 1 — ordonner a et b à partir de la différence SEULE.",
+   "answerSource": "computed"
   },
   {
    "id": "ex-28",
@@ -1003,7 +1011,9 @@
    "page": 64,
    "section": "مقارنة عددين ناطقين",
    "text": "في كل حالة مما يأتي: أ) $x=12$ و $y=4$ ؛ ب) $x=-5$ و $y=-9$ ؛ جـ) $x=-11$ و $y=7$ ؛ د) $x=3$ و $y=-8$. 1) قارن شفاهيا بين العددين $x$ و $y$ ثم استنتج إشارة $x-y$ دون حسابه. 2) تحقق من إجاباتك من خلال حساب $x-y$ في كل حالة مما سبق.",
-   "verified": false
+   "verified": true,
+   "reading": "Relu (2026-10-26) : (x ; y) = (12 ; 4), (−5 ; −9), (−11 ; 7), (3 ; −8) : 1) comparer puis déduire le signe de x − y sans le calculer ; 2) vérifier en calculant x − y = 8, 4, −18, 11.",
+   "answerSource": "computed"
   },
   {
    "id": "ex-29",
@@ -1012,7 +1022,9 @@
    "page": 64,
    "section": "مقارنة عددين ناطقين",
    "text": "1) أ) احسب باستعمال الآلة الحاسبة $\\frac{53{,}4}{7{,}89}-\\frac{23{,}55}{3{,}48}$. ب) استعمل النتيجة الظاهرة على الشاشة لمقارنة العددين $\\frac{53{,}4}{7{,}89}$ و $\\frac{23{,}55}{3{,}48}$. 2) قارن بين العددين $\\frac{1{,}28}{7}$ و $\\frac{0{,}441}{2{,}4}$ (يمكنك استعمال الحاسبة).",
-   "verified": false
+   "verified": true,
+   "reading": "Relu (2026-10-26) : 1) a) calculer 53,4/7,89 − 23,55/3,48 à la calculatrice ; b) comparer 53,4/7,89 et 23,55/3,48 ; 2) comparer 1,28/7 et 0,441/2,4. Exact : 53,4/7,89 − 23,55/3,48 = 25/30508 > 0 ; 1,28/7 − 0,441/2,4 = −1/1120.",
+   "answerSource": "computed"
   },
   {
    "id": "ex-30",
@@ -1020,8 +1032,10 @@
    "number": 30,
    "page": 64,
    "section": "مقارنة عددين ناطقين",
-   "text": "قارن بين العددين الناطقين في كل حالة مما يأتي: أ) $\\frac37$ و $\\frac{13}{28}$ ؛ ب) $-\\frac54$ و $-\\frac{13}{12}$ ؛ جـ) $\\frac73$ و $\\frac{15}{7}$ ؛ د) $\\frac56$ و $-\\frac78$.",
-   "verified": false
+   "text": "قارن بين العددين الناطقين في كل حالة مما يأتي: أ) $\\frac37$ و $\\frac{13}{28}$ ؛ ب) $-\\frac54$ و $-\\frac{13}{12}$ ؛ جـ) $\\frac73$ و $\\frac{15}{7}$ ؛ د) $-\\frac56$ و $-\\frac78$.",
+   "verified": true,
+   "reading": "Relu (2026-10-26) : a) 3/7 et 13/28 ; b) −5/4 et −13/12 ; c) 7/3 et 15/7 ; d) −5/6 et −7/8. Différences −1/28, −1/6, 4/21, 1/24 (d) est −5/6 et −7/8, les DEUX négatifs : relu à 300 dpi ; l’ancienne transcription « 5/6 et −7/8 » (différence 41/24) était une erreur de lecture).",
+   "answerSource": "computed"
   },
   {
    "id": "ex-31",
@@ -1030,7 +1044,9 @@
    "page": 64,
    "section": "مقارنة عددين ناطقين",
    "text": "طلب الأستاذ من التلاميذ مقارنة العددين $\\frac{25{,}96}{35{,}89}$ و $\\frac{38{,}94}{53{,}89}$ مع السماح باستعمال الآلة الحاسبة. 1) قامت مريم بحساب حاصل القسمة $\\frac{25{,}96}{35{,}89}$ باستعمال الآلة الحاسبة. أ) ما هي النتيجة التي ستظهر على الشاشة؟ ب) ما الذي يجب على مريم فعله بعد ذلك؟ 2) قام يونس بحساب الفرق باستعمال الآلة الحاسبة. أ) ما هي النتيجة التي ستظهر على الشاشة؟ ب) ما الذي يمكن استنتاجه؟ 3) أي الطريقتين أفضل برأيك؟",
-   "verified": false
+   "verified": true,
+   "reading": "Relu (2026-10-26) : Maryam divise 25,96/35,89 à la calculatrice ; Younes calcule 25,96/35,89 − 38,94/53,89 ; quelle méthode est la meilleure ? Exact : 14278/19341121 ≈ 0,000738 > 0.",
+   "answerSource": "computed"
   },
   {
    "id": "ex-32",
@@ -1039,7 +1055,9 @@
    "page": 64,
    "section": "مقارنة عددين ناطقين",
    "text": "إليك العبارتين: $B=4x+3$ ؛ $A=5x-4$. 1) حدّد إشارة كل من A و B من أجل: أ) $x=0$ ؛ ب) $x=7$ ؛ جـ) $x=9$. 2) بسّط العبارة $A-B$ ثم استنتج إشارتها من أجل $x>7$. 3) قارن بين A و B من أجل $x>7$.",
-   "verified": false
+   "verified": true,
+   "reading": "Relu (2026-10-26) : A = 5x − 4, B = 4x + 3 ; 1) signe de A et de B en x = 0, 7, 9 (A : −4, 31, 41 ; B : 3, 31, 39) ; 2) simplifier A − B = x − 7 puis en déduire le signe pour x > 7 ; 3) comparer A et B pour x > 7.",
+   "answerSource": "computed"
   },
   {
    "id": "self-1",
@@ -1179,9 +1197,11 @@
    "number": 9,
    "page": 65,
    "section": "أؤكّد تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "نضع $a=\\frac12\\pi$ و $b=\\frac13\\pi$. احسب $a-b$ ثم قارن بين $a$ و $b$.",
-   "returnPage": "60 و 61"
+   "returnPage": "60 و 61",
+   "reading": "Relu (2026-10-26) : a = π/2, b = π/3 ; a − b = π/6 > 0 donc a > b (sans approcher π).",
+   "answerSource": "computed"
   },
   {
    "id": "self-10",
@@ -1189,9 +1209,11 @@
    "number": 10,
    "page": 65,
    "section": "أؤكّد تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "قارن بين العددين $\\frac{4}{13}$ و $\\frac{0{,}91}{3}$.",
-   "returnPage": "60 و 61"
+   "returnPage": "60 و 61",
+   "reading": "Relu (2026-10-26) : comparer 4/13 et 0,91/3 ; 4/13 − 91/300 = 17/3900 > 0.",
+   "answerSource": "computed"
   },
   {
    "id": "deep-35",
@@ -1246,7 +1268,9 @@
    "section": "أتعمّق",
    "title": "أقارن محيطين وأقارن مساحتين",
    "text": "$x$ يرمز إلى عدد موجب وأصغر من 7. فاطمة: «الشكلان المرفقان لهما دائما نفس المحيط». مريم: «الشكلان المرفقان لهما دائما نفس المساحة». ما رأيك في هذين التأكيدين؟ مع التبرير.",
-   "verified": false
+   "verified": true,
+   "reading": "Relu à 130 dpi (2026-10-26) : « أقارن محيطين وأقارن مساحتين » — x est un nombre positif plus petit que 7 ; Fatima : « les deux figures ont toujours le même périmètre » ; Maryam : « les deux figures ont toujours la même aire ». Figure : un rectangle de longueur 7 et de hauteur x, et une figure en L dont la base mesure 7 − x ; les repères de côtés égaux (petits carrés / traits) sont trop fins à cette résolution pour être transcrits avec certitude. La plateforme pose SA propre paire (un rectangle (x + 5) × (x + 1) et un carré de côté x + 3 : périmètres 4x + 12 égaux, aires x² + 6x + 5 et x² + 6x + 9, écart de 4) et cite l’élément.",
+   "answerSource": "computed"
   },
   {
    "id": "deep-39",
@@ -1551,9 +1575,19 @@
    "text": "La remarque ب du manuel justifie la règle des parenthèses par la distributivité. La leçon tabsit-hadhf-aqwas ne la prouve pas ainsi (elle la fait découvrir par la valeur) ; la distributivité est l’objet de nashr-jabri-3am."
   },
   {
+   "elementId": "ex-30",
+   "kind": "reading",
+   "text": "Relu à 300 dpi (2026-10-26) : le cas d) est −5/6 et −7/8 (les deux nombres sont négatifs) ; la transcription initiale « 5/6 et −7/8 » (différence 41/24) était fausse : la bonne différence est −5/6 − (−7/8) = 1/24 > 0."
+  },
+  {
+   "elementId": "deep-38",
+   "kind": "reading",
+   "text": "Relu à 130 dpi : les repères de côtés égaux sont trop fins pour une transcription sûre ; la plateforme pose sa propre paire (E8) et cite l’élément."
+  },
+  {
    "elementId": "unit",
    "kind": "scope",
-   "text": "Les éléments de muqaranat-natiqayn et de la synthèse sont transcrits plus brièvement (verified: false) : leur leçon les relira. Ceux de tabsit-hadhf-aqwas, nashr-jabri-3am et qimat-ibara-harfiya (prep 1–4, act-4, know-4, method-4, now-61 ①, ex-1…ex-4, self-3, deep-37, deep-39, ict) sont relus à 250 dpi (verified: true)."
+   "text": "Les éléments de la synthèse sont transcrits plus brièvement (verified: false) : sa leçon les relira. Ceux de muqaranat-natiqayn (act-5, know-5, method-5, now-61 ②, ex-27…ex-32, self-9, self-10, deep-38) sont relus (verified: true, 2026-10-26). Ceux de tabsit-hadhf-aqwas, nashr-jabri-3am et qimat-ibara-harfiya (prep 1–4, act-4, know-4, method-4, now-61 ①, ex-1…ex-4, self-3, deep-37, deep-39, ict) sont relus à 250 dpi (verified: true)."
   }
  ],
  "destinations": {
@@ -1612,7 +1646,8 @@
   },
   "act-5": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4,
+   "note": "APPLICATION (guide §4ter) : les paires du tableau sont assez éloignées pour s’ordonner à l’œil, la différence n’y est pas NÉCESSAIRE ; l’entrée conçue par la plateforme est le labo `difference-meter` (une paire que l’œil ne sépare pas, 0,85 px) ; le tableau devient E1 d’أتمرّن avec d’autres paires"
   },
   "know-1": {
    "lesson": "tabsit-hadhf-aqwas",
@@ -1632,7 +1667,7 @@
   },
   "know-5": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 2
   },
   "method-1": {
    "lesson": "tabsit-hadhf-aqwas",
@@ -1666,7 +1701,7 @@
   },
   "method-5": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 3
   },
   "now-61": {
    "lesson": "qimat-ibara-harfiya",
@@ -1678,7 +1713,7 @@
     },
     "2": {
      "lesson": "muqaranat-natiqayn",
-     "module": null
+     "module": 4
     }
    }
   },
@@ -1788,27 +1823,27 @@
   },
   "ex-27": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "ex-28": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "ex-29": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "ex-30": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "ex-31": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "ex-32": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "self-1": {
    "lesson": "tabsit-hadhf-aqwas",
@@ -1845,11 +1880,11 @@
   },
   "self-9": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "self-10": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4
   },
   "deep-35": {
    "lesson": "wadiya-idmajiya-ibarat-harfiya-3",
@@ -1867,7 +1902,8 @@
   },
   "deep-38": {
    "lesson": "muqaranat-natiqayn",
-   "module": null
+   "module": 4,
+   "note": "la paire est REDESSINÉE par la plateforme (rectangle contre carré en x) ; élément cité en E8"
   },
   "deep-39": {
    "lesson": "qimat-ibara-harfiya",

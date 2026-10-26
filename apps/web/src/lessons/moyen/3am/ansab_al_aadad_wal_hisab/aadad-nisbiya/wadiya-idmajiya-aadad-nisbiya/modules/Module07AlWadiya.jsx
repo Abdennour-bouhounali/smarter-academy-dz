@@ -13,7 +13,7 @@ import { SITUATION, REMARKS } from '../content/textbook';
  * révélées une à une, puis deux décisions de l'élève — le même سلّم avant de comparer, et la chaîne inverse (« نطرح 32 ثم نقسم على 1,8 »). Rien n'est calculé ici :
  * la résolution est le module 8 (évaluation). LP : P1.
  */
-const analysisAsMethod = { exercise: SITUATION.text, source: SITUATION.source, solution: SITUATION.analysis.map((s) => `**${s.label}** : ${s.text}`) };
+const analysisAsMethod = { exercise: SITUATION.text, source: SITUATION.source, solution: SITUATION.analysis.map((s) => `${s.label} : ${s.text}`) };
 const M = (s) => <MathText key={s}>{s}</MathText>;
 
 export default function Module07AlWadiya() {

@@ -549,6 +549,18 @@ DEST['deep-73'] = d(L5, 7); DEST['deep-77'] = d(L5, 7)
 DEST['ict'] = d(L5, 7)
 # ex-41 (pyramide), ex-46 (grille) : la leçon L5 les relit.
 
+# `wadiya-idmajiya-kusur-natiqa` (synthèse, 2026-10-26) : plus AUCUNE destination en attente dans l'unité. Les éléments rendus (modules 0, 1, 2, 7–8) et la banque (module None, `deep-*`).
+for _id, _text in (('self-8', 'prep 1'), ('self-12', 'prep 6')):
+    DEST[_id] = d(S, 0)
+DEST['opener'] = d(S, 0)
+DEST['integration'] = d(S, 1)
+DEST['evaluation'] = d(S, 2)
+DEST['challenge'] = d(S, 7, duplicatedIn=[{'lesson': 'unit', 'module': 'page'}], note='tirelire de Meriem (1/3, 1/4, puis 3/5 du reste ; 1500 DA restent -> 9000 DA) ; la carte de l\'unité garde le texte du livre (README du plan, question 2)')
+_SYN_READ = ' Relu par la synthèse (2026-10-26) à 110 dpi (pdf p. 34 et 37) : conforme ; réécrit avec d\'autres nombres.'
+for _id in ('self-8', 'self-12', 'opener', 'integration', 'evaluation', 'challenge', 'deep-61', 'deep-67', 'deep-70', 'deep-72', 'deep-75', 'deep-78'):
+    _E[_id]['verified'] = True
+    _E[_id]['reading'] = (_E[_id].get('reading', '') + _SYN_READ).strip()
+
 DISCREPANCIES = [
     {'elementId': 'self-9', 'kind': 'ambiguity', 'text': 'Relu à 130 dpi par L4 : 12,2/−7,6 ≈ −1,605 et −5,4/3,17 ≈ −1,703 sont DIFFÉRENTS ; l\'option (جـ) imprimée « −5,4/3,17 > 12,2/−7,6 » est fausse ; seule (أ) « ≠ » est juste (la ligne de la transcription brève était inexacte).'},
     {'elementId': 'ex-27', 'kind': 'transcription', 'text': 'Relu à 230 dpi par L4 : SIX paires (−5/8 et −19/24 ; 7/−15 et −5/12 ; 5,7/42 et 0,7/9 ; −11/16 et −17/24 ; 13/8 et 7/9 ; −18/45 et −14/35 — ces deux-ci sont ÉGAUX) ; ex-28 : 3,7/48,1 = 1,2/15,6 = 1/13 sont ÉGAUX, les deux autres paires non.'},

@@ -243,7 +243,7 @@ describe('1AM–3AM — cartes « قيد الإعداد » (phase 2 du cycle moy
 
   it('porte toutes leurs الكفاءات, avec l’id dérivé `{grade}_{code}_P{n}`', () => {
     const points = early.flatMap((g) => g.chapters.flatMap((c) => c.lessons.flatMap((l) => l.learningPoints.map((lp) => [g.id, l.id, lp]))));
-    expect(points.length).toBe(524); // 523 drafts + the single الكفاءة of the 3AM unit-1 synthesis (2026-10-26)
+    expect(points.length).toBe(525); // 523 drafts + the single الكفاءة of each of the 3AM unit-1 and unit-2 syntheses (2026-10-26)
     for (const [g, code, lp] of points) expect(lp.id).toBe(`${g}_${code}_P${lp.order}`);
   });
 
