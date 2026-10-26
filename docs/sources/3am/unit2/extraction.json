@@ -297,7 +297,7 @@
    "kind": "activity",
    "page": 24,
    "section": "أنشطة 4 — جمع وطرح كسرين",
-   "verified": false,
+   "verified": true,
    "text": "1) ترجم كلّ مساواة باستعمال العمليات والكسور المناسبة (أقراص مقسومة: جمع ثم طرح). 2) استعمل تمثيلا هندسيا بسيطا لحساب: 5/6 − 4/9 ؛ 1/4 + 5/6 . 3) أنجز العمليات التالية: 7/4 − 5/3 ، 5/8 + 11/6 . 4) أعط قاعدة لحساب مجموع أو فرق كسرين مقاماهما مختلفان.",
    "answer": {
     "5/6 − 4/9": "7/18",
@@ -305,7 +305,8 @@
     "7/4 − 5/3": "1/12",
     "5/8 + 11/6": "59/24"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "act-5",
@@ -379,13 +380,14 @@
    "kind": "knowledge",
    "page": 26,
    "section": "معارف 4 — جمع وطرح كسرين",
-   "verified": false,
+   "verified": true,
    "text": "خاصية: a/b + c/b = (a+c)/b و a/b − c/b = (a−c)/b . قاعدة: لجمع أو طرح كسرين مقاماهما مختلفان نكتبهما بنفس المقام. أمثلة: 1/6 + 4/5 = 29/30 ؛ 7/10 − 3/8 = 13/40 .",
    "answer": {
     "1/6 + 4/5": "29/30",
     "7/10 − 3/8": "13/40"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "know-5",
@@ -457,25 +459,27 @@
    "kind": "method",
    "page": 27,
    "section": "طرائق — جمع كسرين (1)",
-   "verified": false,
+   "verified": true,
    "text": "احسب A = 29/18 + 11/18 = 40/18 و B = 5/4 + 31/12 = 15/12 + 31/12 = 46/12 .",
    "answer": {
     "A": "20/9",
     "B": "23/6"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "method-6",
    "kind": "method",
    "page": 27,
    "section": "طرائق — طرح كسرين (2)",
-   "verified": false,
+   "verified": true,
    "text": "احسب C = 8/25 − 4/15 : مضاعفات 25 : 25، 50، 75، 100 ؛ مضاعفات 15 : 15، 30، 45، 60، 75 ؛ 75 مضاعف مشترك: C = 24/75 − 20/75 = 4/75 .",
    "answer": {
     "C": "4/75"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "now-1",
@@ -496,7 +500,7 @@
    "kind": "now",
    "page": 27,
    "section": "دورك الآن (p. 27) — 2",
-   "verified": false,
+   "verified": true,
    "text": "احسب: A = 8/5 − 2/7 ، B = 3 + 1/4 − 3/8 ، C = 5/8 + 7/24 − 1/6 ، D = (4/3 − 2/15) − (3/4 − 1/8) .",
    "answer": {
     "A": "46/35",
@@ -504,7 +508,8 @@
     "C": "3/4",
     "D": "23/40"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "method-7",
@@ -715,8 +720,21 @@
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 11",
-   "verified": false,
-   "text": "أوجد أصغر مضاعف مشترك غير معدوم لـ: 4 و6 ، 5 و8 ، 6 و9 ، 12 و18 ، 25 و12 و16 ، 10 و15 ، 7 و8 ، 14 و21 ."
+   "verified": true,
+   "text": "أوجد أصغر مضاعف مشترك غير معدوم لـ: 4 و6 ، 5 و8 ، 6 و9 ، 12 و18 ، 25 و12 و16 ، 10 و15 ، 7 و8 ، 14 و21 .",
+   "answer": {
+    "lcm": [
+     12,
+     40,
+     18,
+     36,
+     1200,
+     30,
+     56,
+     42
+    ]
+   },
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "ex-12",
@@ -771,32 +789,68 @@
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 18",
-   "verified": false,
-   "text": "احسب ذهنيًا: 1/3 + 1/6 ، 7/4 − 1/2 ، 4/5 + 1/10 ، 1 + 3/4 ، 5 − 1/2 ."
+   "verified": true,
+   "text": "احسب ذهنيًا: 1/3 + 1/6 ، 7/4 − 1/2 ، 4/5 + 1/10 ، 1 + 3/4 ، 5 − 1/2 .",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "ex-19",
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 19",
-   "verified": false,
-   "text": "اكتب كل كسرين بأصغر مقام مشترك: 4/15 و 5/18 ، 9/8 و 5/7 ، 3/14 و 1/12 ، 9/4 و 3/25 …"
+   "verified": true,
+   "text": "اكتب كل كسرين بأصغر مقام مشترك: 4/15 و 5/18 ، 9/8 و 7/6 ، 5/7 و 3/14 ، 1/12 و 9/4 ؛ 5/12 و 3/10 ، 4/21 و 9/14 ، 9/25 و 1/30 ، 4/75 و 3/25 .",
+   "answer": {
+    "smallest common denominators (reading order)": [
+     90,
+     24,
+     14,
+     12,
+     60,
+     42,
+     150,
+     75
+    ]
+   },
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "ex-20",
    "kind": "exercise",
    "page": 30,
    "section": "أوظّف تعلّماتي — 20",
-   "verified": false,
-   "text": "احسب ما يلي ثم اكتب النتيجة على أبسط شكل: 1/8 + 1/10 ، 8/55 + 7/44 ، 5/12 + 3/8 ، 3/5 + 2/15 ، 1/2 + 1/3 + 1/4 + 1/5 …"
+   "verified": true,
+   "text": "احسب ما يلي ثم اكتب النتيجة على أبسط شكل: 1/8 + 1/10 ، 8/55 + 7/44 ، 5/12 + 3/8 ، 3/5 + 2/15 ؛ 1/2 + 1/3 + 1/4 + 1/5 ، 3 + 7/20 + 11/12 ، 5/16 + 3/4 + 7/12 .",
+   "answer": {
+    "1/8 + 1/10": "9/40",
+    "8/55 + 7/44": "67/220",
+    "5/12 + 3/8": "19/24",
+    "3/5 + 2/15": "11/15",
+    "1/2 + 1/3 + 1/4 + 1/5": "77/60",
+    "3 + 7/20 + 11/12": "64/15",
+    "5/16 + 3/4 + 7/12": "79/48"
+   },
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "ex-21",
    "kind": "exercise",
    "page": 31,
    "section": "أوظّف تعلّماتي — 21",
-   "verified": false,
-   "text": "احسب ما يلي، ثم اكتب النتيجة على أبسط شكل: 3/4 − 7/9 ، 85/4 − 11/5 ، 2/11 − 5/33 ، 13/3 − 5/6 ، 3/8 − 1/24 + 11/3 …"
+   "verified": true,
+   "text": "احسب ما يلي، ثم اكتب النتيجة على أبسط شكل: 3/4 − 7/9 ، 85/4 − 11/5 ، 2/11 − 5/33 ، 13/3 − 5/6 ؛ 3/8 − 1/24 + 11/3 ، 3 + 7/27 − 11/18 ، 31/45 − 3/5 + 9/15 .",
+   "answer": {
+    "3/4 − 7/9 (NÉGATIF : −1/36)": "-1/36",
+    "85/4 − 11/5": "381/20",
+    "2/11 − 5/33": "1/33",
+    "13/3 − 5/6": "7/2",
+    "3/8 − 1/24 + 11/3": "4",
+    "3 + 7/27 − 11/18": "143/54",
+    "31/45 − 3/5 + 9/15": "31/45"
+   },
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "ex-22",
@@ -1103,7 +1157,7 @@
    "kind": "qcm",
    "page": 33,
    "section": "أؤكّد تعلّماتي — 2",
-   "verified": false,
+   "verified": true,
    "text": "المجموع 5/18 + 1/12 يساوي: أ) 6/18 ؛ ب) 13/36 ؛ جـ) 6/30 .",
    "options": [
     "6/18",
@@ -1116,14 +1170,15 @@
    "answer": {
     "value": "13/36"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "self-3",
    "kind": "qcm",
    "page": 33,
    "section": "أؤكّد تعلّماتي — 3",
-   "verified": false,
+   "verified": true,
    "text": "العدد 17/24 هو نتيجة: أ) 5/24 + 1/2 ؛ ب) 15/8 − 7/6 ؛ جـ) 10/12 + 7/12 .",
    "options": [
     "5/24 + 1/2",
@@ -1134,7 +1189,8 @@
     0,
     1
    ],
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "self-4",
@@ -1338,8 +1394,13 @@
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 62",
-   "verified": false,
-   "text": "جد العدد x الناقص في المساواة: 87/60 = 1/2 + 1/4 + 1/3 + 1/6 + 1/x ."
+   "verified": true,
+   "text": "جد العدد x الناقص في المساواة: 87/60 = 1/2 + 1/4 + 1/3 + 1/6 + 1/x .",
+   "answer": {
+    "x": 5
+   },
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "deep-63",
@@ -1362,12 +1423,13 @@
    "kind": "deep",
    "page": 34,
    "section": "أتعمّق — 65",
-   "verified": false,
+   "verified": true,
    "text": "ما هي قيمة x التي من أجلها تكون المساواة 3/4 = 2 − 1/5 − 1/x صحيحة؟ x = 6/5 ؛ x = 20/21 ؛ x = 21/20 ؛ x = −6/5 .",
    "answer": {
     "x": "20/21"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "deep-66",
@@ -1461,14 +1523,15 @@
    "kind": "deep",
    "page": 35,
    "section": "أتعمّق — 74",
-   "verified": false,
+   "verified": true,
    "text": "يريد زكرياء شراء دراجة، فدفع الجد 3/8 والأب 2/5 والأمّ 1/8 من ثمنها، ما هي نسبة التخفيض التي يقوم بها التاجر حتى يتمكن زكرياء من شراء هذه الدراجة؟",
    "answer": {
     "paid": "9/10",
     "missing": "1/10"
    },
    "answerSource": "computed",
-   "note": "1 − 3/8 − 2/5 − 1/8 = 1/10 : le complément est 10 % (la question demande la remise)."
+   "note": "1 − 3/8 − 2/5 − 1/8 = 1/10 : le complément est 10 % (la question demande la remise).",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "deep-75",
@@ -1535,12 +1598,15 @@
    "kind": "deep",
    "page": 35,
    "section": "أتعمّق — 80",
-   "verified": false,
-   "text": "للبحث: استعمل قدماء المصريين الكسور التي بسطها 1 وبصورة استثنائية الكسر 2/3 . ومن أجل البحث عن ضعيف كسر بسطه 1 استعملوا الجدول (مثال: ضعف 1/5 هو المجموع 1/3 + 1/15). تحقّق من صحة السطر الثاني …",
+   "verified": true,
+   "text": "للبحث: استعمل قدماء المصريين الكسور التي بسطها 1 وبصورة استثنائية الكسر 2/3 . ومن أجل البحث عن ضعيف كسر بسطه 1 استعملوا الجدول (مثال: ضعف 1/5 هو المجموع 1/3 + 1/15). تحقّق من صحة السطر الثاني، وأوجد العدد الناقص في السطر السادس ثم في السطر السابع. لماذا لم يتضمّن العمود الأول أعدادًا زوجية؟",
    "answer": {
-    "check": "2/5"
+    "check (2nd row)": "2/7",
+    "missing in the 6th row": "1/30 (2/15 = 1/10 + 1/30)",
+    "missing in the 7th row": "1/12 (2/17 = 1/12 + 1/51 + 1/68)"
    },
-   "answerSource": "computed"
+   "answerSource": "computed",
+   "reading": "Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme."
   },
   {
    "id": "integration",
@@ -1584,6 +1650,21 @@
   }
  ],
  "discrepancies": [
+  {
+   "elementId": "ex-21",
+   "kind": "scope",
+   "text": "La 1re différence imprimée, 3/4 − 7/9, est NÉGATIVE (−1/36) : hors frontière de `jam-tarh-kasrayn` (les résultats négatifs sont à `amaliyat-natiqa`) ; la leçon la remplace par une différence positive."
+  },
+  {
+   "elementId": "method-9",
+   "kind": "plan-error",
+   "text": "L'élément `method-9` (L5) et sa solution d'intégration sont des erreurs du manuel : jamais montrés à l'élève (README du plan)."
+  },
+  {
+   "elementId": "deep-80",
+   "kind": "transcription",
+   "text": "Relu à 130 dpi par L3 : la table est 5 : 3, 15 ; 7 : 4, 28 ; 9 : 6, 18 ; 11 : 6, 66 ; 13 : 8, 52, 104 ; 15 : 10, [manque] ; 17 : [manque], 51, 68 ; les deux nombres manquants sont 30 et 12 ; la clé « 2/5 » de la transcription brève était l'exemple de l'énoncé, pas la ligne 2 (2/7 = 1/4 + 1/28)."
+  },
   {
    "elementId": "ex-15",
    "kind": "transcription",
@@ -1875,19 +1956,19 @@
   },
   "ex-18": {
    "lesson": "jam-tarh-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-19": {
    "lesson": "jam-tarh-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-20": {
    "lesson": "jam-tarh-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-21": {
    "lesson": "jam-tarh-kasrayn",
-   "module": null
+   "module": 4
   },
   "ex-22": {
    "lesson": "adad-natiq",
@@ -2155,11 +2236,11 @@
   },
   "deep-62": {
    "lesson": "jam-tarh-kasrayn",
-   "module": null
+   "module": 4
   },
   "deep-65": {
    "lesson": "jam-tarh-kasrayn",
-   "module": null
+   "module": 4
   },
   "deep-80": {
    "lesson": "jam-tarh-kasrayn",

@@ -141,6 +141,8 @@ import { ORACLE as ORACLE_3AM_MAQLUB_QISMAT_KASRAYN, audit as auditMaqlub } from
 import { ORACLE as ORACLE_3AM_JIDAA_ADADAYN } from './practice-oracle/jidaa-adadayn-nisbiyayn.mjs';
 import { ORACLE as ORACLE_3AM_JIDAA_IDA } from './practice-oracle/jidaa-ida-nisbiya.mjs';
 import { ORACLE as ORACLE_3AM_TASAWI_MUQARANAT_KASRAYN, audit as auditTasawi } from './practice-oracle/tasawi-muqaranat-kasrayn.mjs';
+import { ORACLE as ORACLE_3AM_JAM_TARH_KASRAYN, audit as auditJamTarh } from './practice-oracle/jam-tarh-kasrayn.mjs';
+import { ORACLE as ORACLE_3AM_QISMAT_NISBIYAYN, audit as auditQismat } from './practice-oracle/qismat-nisbiyayn.mjs';
 
 // Toutes les années du cycle moyen (content/practice/<1am…4am>/<leçon>/level-N) : jusqu'au 2026-10-14 seul 4am
 // existait et la racine y était codée en dur — un banc 1AM–3AM aurait échappé à l'oracle sans rien dire.
@@ -307,6 +309,8 @@ const ORACLE = {
   ...ORACLE_3AM_JIDAA_ADADAYN,
   ...ORACLE_3AM_JIDAA_IDA,
   ...ORACLE_3AM_TASAWI_MUQARANAT_KASRAYN,
+  ...ORACLE_3AM_JAM_TARH_KASRAYN,
+  ...ORACLE_3AM_QISMAT_NISBIYAYN,
 };
 
 /**
@@ -356,6 +360,18 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     const own = bank.filter((b) => b.key.startsWith('ex-3am-tasawi-muqaranat-kasrayn-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditTasawi(own)).toEqual([]);
+  });
+
+  it('جمع وطرح كسرين (3AM) : relecture LaTeX de chaque QCM et de chaque « احسب » (une seule option vraie, la marquée), ppcm recalculé par force brute, clés réduites, distracteurs étiquetés MISC-JAMTARH-*', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-jam-tarh-kasrayn-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditJamTarh(own)).toEqual([]);
+  });
+
+  it('حاصل قسمة عددين نسبيين (3AM) : évaluateur exact propre (BigInt, priorités, ÷ et □ re-vérifiés par multiplication), arrondis recalculés, QCM à une seule bonne option, signatures et distracteurs = valeur exacte de l\'erreur MISC-QISMA-*', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-qismat-nisbiyayn-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditQismat(own)).toEqual([]);
   });
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {

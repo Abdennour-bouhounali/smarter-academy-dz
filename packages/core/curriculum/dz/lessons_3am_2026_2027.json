@@ -153,14 +153,33 @@
         "أولوية العمليات والأقواس"
       ],
       "prerequisiteLessonCodes": [
-        "jidaa-adadayn-nisbiyayn"
+        "jidaa-adadayn-nisbiyayn",
+        "jidaa-ida-nisbiya"
       ],
       "pointsToLearn": [
-        "ربط القسمة بالضرب: $a\\div b=q$ معناه $b\\times q=a$ مع $b\\neq 0$",
-        "تعيين إشارة حاصل قسمة عددين نسبيين بقاعدة الإشارات",
-        "حساب حاصل قسمة عددين نسبيين ومعرفة أن $\\frac{-a}{b}=\\frac{a}{-b}=-\\frac{a}{b}$",
-        "تنظيم وتبسيط سلسلة حسابات باحترام أولوية العمليات"
+        "ربط القسمة بالضرب: $a \\div b = q$ معناه $b \\times q = a$ مع $b \\neq 0$ ، وإيجاد عامل مجهول في جداء، مثل $(-6) \\times q = 48$ يعطي $q = 48 \\div (-6) = -8$",
+        "تعيين إشارة حاصل قسمة عددين نسبيين بقاعدة الإشارات (موجب إذا كان لهما الإشارة نفسها، وسالب إذا اختلفت إشارتاهما)، وإشارة حاصل قسمة جداءين بعدّ العوامل السالبة",
+        "حساب حاصل قسمة عددين نسبيين (عشريًا أو على شكل كسر حين لا يكون عشريًا)، ومعرفة أنّ $\\frac{-a}{b} = \\frac{a}{-b} = -\\frac{a}{b}$ و $\\frac{-a}{-b} = \\frac{a}{b}$",
+        "تنظيم سلسلة حسابات على الأعداد النسبية وتبسيطها باحترام أولوية العمليات: الأقواس أوّلًا، ثم الضرب والقسمة، ثم الجمع والطرح"
       ],
+      "pointPrerequisites": {
+        "P1": [
+          "3am_jidaa-adadayn-nisbiyayn_P4"
+        ],
+        "P2": [
+          "3am_qismat-nisbiyayn_P1",
+          "3am_jidaa-adadayn-nisbiyayn_P2",
+          "3am_jidaa-ida-nisbiya_P2"
+        ],
+        "P3": [
+          "3am_qismat-nisbiyayn_P1",
+          "3am_qismat-nisbiyayn_P2"
+        ],
+        "P4": [
+          "3am_qismat-nisbiyayn_P3",
+          "3am_jidaa-ida-nisbiya_P2"
+        ]
+      },
       "programmeItems": [
         "3am.m1.r02"
       ],
@@ -181,7 +200,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 64,
+      "difficulty": "متوسط",
+      "icon": "🔐"
     },
     {
       "code": "wadiya-idmajiya-aadad-nisbiya",
@@ -344,10 +366,18 @@
         "jam-tarh-kusur"
       ],
       "pointsToLearn": [
-        "جمع وطرح كسرين لهما نفس المقام",
-        "جمع وطرح كسرين مقاماهما مختلفان بتوحيد المقامات",
-        "اختيار مضاعف مشترك مناسب للمقامين لتبسيط الحساب"
+        "إدراك أنّنا لا نجمع (أو نطرح) إلا أجزاءً من النوع نفسه: كتابة كسرين مقاماهما كيفيان بمقام مشترك هو مضاعف مشترك للمقامين",
+        "جمع وطرح كسرين (أو أكثر) مقاماهما مختلفان بتوحيد المقامات، ومنها عدد طبيعي يُكتب كسرًا، ثم اختزال الناتج",
+        "اختيار أصغر مضاعف مشترك للمقامين (أوّل مضاعف للمقام الأكبر يقبل القسمة على المقام الآخر) لتبسيط الحساب"
       ],
+      "pointPrerequisites": {
+        "P2": [
+          "3am_jam-tarh-kasrayn_P1"
+        ],
+        "P3": [
+          "3am_jam-tarh-kasrayn_P1"
+        ]
+      },
       "programmeItems": [
         "3am.m1.r06"
       ],
@@ -368,7 +398,10 @@
           ]
         }
       },
-      "status": "coming_soon"
+      "status": "available",
+      "durationMinutes": 63,
+      "difficulty": "متوسط",
+      "icon": "🌱"
     },
     {
       "code": "adad-natiq",

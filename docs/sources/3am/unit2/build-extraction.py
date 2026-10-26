@@ -411,6 +411,41 @@ assert F(900) / F(4, 15) == 3375 and F(3375, 3) == 1125
 el('ict', 'ict', 37, 'أوظّف تكنولوجيات الإعلام والاتصال', None, verified=False, missing=True,
    reading='Page 37 du livre ABSENTE du scan (textbook-map.json › scanIssues) : élément non transcrit.')
 
+# ── Leçon 3 `jam-tarh-kasrayn` (2026-10-26) : ses éléments relus à 130–250 dpi (pp. 24, 27, 30, 31, 33, 34, 35) ─────────────────────────────────────
+# Les lignes des exercices 11, 19, 20, 21 sont imprimées en entier : on remplace les « … » de la transcription brève ; les réponses sont CALCULÉES.
+_E = {e['id']: e for e in E}
+_L3_TEXT = {
+    'ex-19': 'اكتب كل كسرين بأصغر مقام مشترك: 4/15 و 5/18 ، 9/8 و 7/6 ، 5/7 و 3/14 ، 1/12 و 9/4 ؛ 5/12 و 3/10 ، 4/21 و 9/14 ، 9/25 و 1/30 ، 4/75 و 3/25 .',
+    'ex-20': 'احسب ما يلي ثم اكتب النتيجة على أبسط شكل: 1/8 + 1/10 ، 8/55 + 7/44 ، 5/12 + 3/8 ، 3/5 + 2/15 ؛ 1/2 + 1/3 + 1/4 + 1/5 ، 3 + 7/20 + 11/12 ، 5/16 + 3/4 + 7/12 .',
+    'ex-21': 'احسب ما يلي، ثم اكتب النتيجة على أبسط شكل: 3/4 − 7/9 ، 85/4 − 11/5 ، 2/11 − 5/33 ، 13/3 − 5/6 ؛ 3/8 − 1/24 + 11/3 ، 3 + 7/27 − 11/18 ، 31/45 − 3/5 + 9/15 .',
+}
+for _k, _t in _L3_TEXT.items():
+    _E[_k]['text'] = _t
+_E['ex-20']['answer'] = {k: frac(v) for k, v in {'1/8 + 1/10': F(1, 8) + F(1, 10), '8/55 + 7/44': F(8, 55) + F(7, 44), '5/12 + 3/8': F(5, 12) + F(3, 8), '3/5 + 2/15': F(3, 5) + F(2, 15),
+                                                '1/2 + 1/3 + 1/4 + 1/5': F(1, 2) + F(1, 3) + F(1, 4) + F(1, 5), '3 + 7/20 + 11/12': 3 + F(7, 20) + F(11, 12), '5/16 + 3/4 + 7/12': F(5, 16) + F(3, 4) + F(7, 12)}.items()}
+_E['ex-20']['answerSource'] = 'computed'
+_E['ex-21']['answer'] = {k: frac(v) for k, v in {'3/4 − 7/9 (NÉGATIF : −1/36)': F(3, 4) - F(7, 9), '85/4 − 11/5': F(85, 4) - F(11, 5), '2/11 − 5/33': F(2, 11) - F(5, 33), '13/3 − 5/6': F(13, 3) - F(5, 6),
+                                                '3/8 − 1/24 + 11/3': F(3, 8) - F(1, 24) + F(11, 3), '3 + 7/27 − 11/18': 3 + F(7, 27) - F(11, 18), '31/45 − 3/5 + 9/15': F(31, 45) - F(3, 5) + F(9, 15)}.items()}
+_E['ex-21']['answerSource'] = 'computed'
+assert F(3, 4) - F(7, 9) == F(-1, 36)   # la 1re différence est NÉGATIVE : amaliyat-natiqa (la leçon la remplace par une différence positive)
+assert [__import__('math').lcm(a, b) for a, b in [(15, 18), (8, 6), (7, 14), (12, 4), (12, 10), (21, 14), (25, 30), (75, 25)]] == [90, 24, 14, 12, 60, 42, 150, 75]
+_E['ex-19']['answer'] = {'smallest common denominators (reading order)': [90, 24, 14, 12, 60, 42, 150, 75]}
+_E['ex-11']['text'] = 'أوجد أصغر مضاعف مشترك غير معدوم لـ: 4 و6 ، 5 و8 ، 6 و9 ، 12 و18 ، 25 و12 و16 ، 10 و15 ، 7 و8 ، 14 و21 .'
+_E['ex-11']['answer'] = {'lcm': [12, 40, 18, 36, 1200, 30, 56, 42]}
+assert [__import__('math').lcm(*t) for t in [(4, 6), (5, 8), (6, 9), (12, 18), (25, 12, 16), (10, 15), (7, 8), (14, 21)]] == [12, 40, 18, 36, 1200, 30, 56, 42]
+# deep-62 : 87/60 = 1/2 + 1/4 + 1/3 + 1/6 + 1/x ; deep-80 : la table (2/n = 1/a + 1/b [+ 1/c]) — les lignes lues à 130 dpi et vérifiées exactement
+assert 1 / (F(87, 60) - F(1, 2) - F(1, 4) - F(1, 3) - F(1, 6)) == 5
+_E['deep-62']['answer'] = {'x': 5}; _E['deep-62']['answerSource'] = 'computed'
+_EGYPT = {5: (3, 15), 7: (4, 28), 9: (6, 18), 11: (6, 66), 13: (8, 52, 104), 15: (10, 30), 17: (12, 51, 68)}
+for _n, _parts in _EGYPT.items():
+    assert sum(F(1, x) for x in _parts) == F(2, _n)
+_E['deep-80']['answer'] = {'check (2nd row)': frac(F(1, 4) + F(1, 28)), 'missing in the 6th row': '1/30 (2/15 = 1/10 + 1/30)', 'missing in the 7th row': '1/12 (2/17 = 1/12 + 1/51 + 1/68)'}
+_E['deep-80']['text'] = ('للبحث: استعمل قدماء المصريين الكسور التي بسطها 1 وبصورة استثنائية الكسر 2/3 . ومن أجل البحث عن ضعيف كسر بسطه 1 استعملوا الجدول (مثال: ضعف 1/5 هو المجموع 1/3 + 1/15). '
+                          'تحقّق من صحة السطر الثاني، وأوجد العدد الناقص في السطر السادس ثم في السطر السابع. لماذا لم يتضمّن العمود الأول أعدادًا زوجية؟')
+for _id in ('act-4', 'know-4', 'method-5', 'method-6', 'now-2', 'ex-11', 'ex-18', 'ex-19', 'ex-20', 'ex-21', 'self-2', 'self-3', 'deep-62', 'deep-65', 'deep-74', 'deep-80'):
+    _E[_id]['verified'] = True
+    _E[_id]['reading'] = (_E[_id].get('reading', '') + ' Relu par la leçon 3 (2026-10-26) à 130 dpi (zooms 250 dpi pour 19–21) : conforme.').strip()
+
 # ── destinations ──────────────────────────────────────────────────────────────────────────────────
 
 
@@ -428,13 +463,13 @@ DEST = {
     'now-1': d(L2, 4), 'now-2': d(L3, 4), 'method-7': d(L5, 3), 'method-8': d(L5, 3), 'method-9': d(L5, 3), 'method-10': d(L4, 3), 'now-3': d(L5, 4),
     'ex-1': d(L1, 4), 'ex-2': d(L1, 4), 'ex-3': d(L5), 'ex-4': d(L1, 4), 'ex-5': d(L1, 4), 'ex-6': d(L1, 4), 'ex-7': d(L1, 4),
     **{f'ex-{n}': d(L2, 4) for n in (8, 12, 13, 14, 15, 16)}, 'ex-17': d(L2), 'ex-9': d(L2), 'ex-10': d(L2), 'ex-11': d(L3, 3),
-    **{f'ex-{n}': d(L3) for n in (18, 19, 20, 21)}, **{f'ex-{n}': d(L4) for n in range(22, 34)},
+    **{f'ex-{n}': d(L3, 4) for n in (18, 19, 20, 21)}, **{f'ex-{n}': d(L4) for n in range(22, 34)},
     **{f'ex-{n}': d(L5) for n in range(34, 55) if n != 34 or True},
     'self-1': d(L1, 8), 'self-7': d(L1, 8), 'self-11': d(L1, 8), 'self-2': d(L3), 'self-3': d(L3), 'self-4': d(L4), 'self-9': d(L4), 'self-10': d(L4),
     'self-5': d(L5), 'self-6': d(L5), 'self-8': d(S, 0), 'self-12': d(S, 0),
     'deep-55': d(L2, 4), 'deep-56': d(L4), 'deep-59': d(L1, 4), 'deep-71': d(L1, 7), 'deep-61': d(S), 'deep-67': d(S), 'deep-70': d(S), 'deep-72': d(S), 'deep-75': d(S), 'deep-78': d(S),
     **{f'deep-{n}': d(L5) for n in (57, 58, 60, 63, 64, 66, 68, 73, 76, 77, 79)},
-    **{f'deep-{n}': d(L3) for n in (62, 65, 80)}, 'deep-74': d(L3, 6), 'deep-69': d(L4),
+    **{f'deep-{n}': d(L3, 4) for n in (62, 65)}, 'deep-80': d(L3), 'deep-74': d(L3, 6), 'deep-69': d(L4),
     'integration': d(S), 'evaluation': d(S), 'ict': d(S),
 }
 for n in range(34, 55):
@@ -442,6 +477,9 @@ for n in range(34, 55):
 # ex-41 (pyramide), ex-46 (grille) : la leçon L5 les relit.
 
 DISCREPANCIES = [
+    {'elementId': 'ex-21', 'kind': 'scope', 'text': 'La 1re différence imprimée, 3/4 − 7/9, est NÉGATIVE (−1/36) : hors frontière de `jam-tarh-kasrayn` (les résultats négatifs sont à `amaliyat-natiqa`) ; la leçon la remplace par une différence positive.'},
+    {'elementId': 'method-9', 'kind': 'plan-error', 'text': "L'élément `method-9` (L5) et sa solution d'intégration sont des erreurs du manuel : jamais montrés à l'élève (README du plan)."},
+    {'elementId': 'deep-80', 'kind': 'transcription', 'text': "Relu à 130 dpi par L3 : la table est 5 : 3, 15 ; 7 : 4, 28 ; 9 : 6, 18 ; 11 : 6, 66 ; 13 : 8, 52, 104 ; 15 : 10, [manque] ; 17 : [manque], 51, 68 ; les deux nombres manquants sont 30 et 12 ; la clé « 2/5 » de la transcription brève était l'exemple de l'énoncé, pas la ligne 2 (2/7 = 1/4 + 1/28)."},
     {'elementId': 'ex-15', 'kind': 'transcription', 'text': 'Relu à 260 dpi par L2 : la 1re paire est 5/7 et 15/17 (la transcription de L1 écrivait 5/17). Les trois paires sont NON égales.'},
     {'elementId': 'ex-17', 'kind': 'transcription', 'text': 'Relu à 260 dpi par L2 : les paires sont 17/18 et 18/17, 11/15 et 11/21, 64/31 et 17/9, 8/9 et 256/288 (ces deux-ci sont ÉGALES) ; la transcription de L1 était brouillée.'},
     {'elementId': 'act-3', 'kind': 'plan-error', 'text': 'Le plan écrivait 23/20 < 13/12 : 23 × 12 = 276 > 260 = 13 × 20, donc 23/20 > 13/12. Aucune leçon ne reprend ce couple tel quel.'},

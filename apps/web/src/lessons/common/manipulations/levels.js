@@ -790,6 +790,20 @@ export const LEVELS = Object.freeze({
       { id: 'a2', kind: 'both', floor: '-6' }, { id: 'a3', r: '-2', floor: '3' }, { id: 'a4', r: '2', floor: '-5' },
     ] }, ...T('know-1') },
   },
+  // LE CODE MANQUANT SOUS LA MAIN (code-lockers, thème libraryLockers, 3AM unité 1, leçon 3, 2026-10-26) : le cadenas d'un casier de la bibliothèque municipale porte une règle « b × ? = a » ;
+  // la main roule les MOLETTES du code (signe + chiffres) et tire la poignée. مبتدئ (plateforme, l'écran multiplie en direct) : m1 (−6) × ? = 48 → −8, m2 9 × ? = −54 → −6, m3 ? × (−7) = −63 → 9
+  // (l'inconnue écrite en premier), m4 (−12) × ? = −60 → 5 (−5 refusé avec 60). متقدم (know-8 : le SIGNE est posé et « ثبّت » pressé avant que les molettes de chiffres se débloquent ; l'écran ne
+  // multiplie qu'après un essai) : a1 (−8) × ? = −2 → 0,25, a2 2,5 × ? = −7,5 → −3, a3 (−0,4) × ? = 1,2 → −3, a4 ? × (−5) = 0 → 0 (l'une ou l'autre signe). Le monde `fraction` (معارف) est posé par la leçon.
+  // Le test des niveaux mesure la paire par le SIGNE POSÉ AVANT les chiffres (commit, متقدم seul) et par le code DÉCIMAL.
+  'code-lockers': {
+    beginner: { numbers: { world: 'lockers', tasks: [
+      { id: 'm1', b: '-6', a: '48' }, { id: 'm2', b: '9', a: '-54' }, { id: 'm3', b: '-7', a: '-63', qFirst: true }, { id: 'm4', b: '-12', a: '-60' },
+    ] }, ...P },
+    advanced: { numbers: { world: 'lockers', tasks: [
+      { id: 'a1', b: '-8', a: '-2', layout: 'dec', commit: true }, { id: 'a2', b: '2,5', a: '-7,5', layout: 'dec', commit: true },
+      { id: 'a3', b: '-0,4', a: '1,2', layout: 'dec', commit: true }, { id: 'a4', b: '-5', a: '0', qFirst: true, layout: 'dec', commit: true },
+    ] }, ...T('know-8') },
+  },
   // ── 2AM, unité 3 « الأعداد النسبية » (2026-10-21) ──
   // LA DISTANCE À ZÉRO SOUS LA MAIN (zero-probe, thème researchBoat) : la main tient la longueur d'un câble qui descend (ou monte)
   // du zéro, le côté est un interrupteur à part, le nombre relatif de B est leur sortie. مبتدئ (plateforme, pas 1) : A=−3 sous le zéro,
@@ -857,6 +871,23 @@ export const LEVELS = Object.freeze({
       { id: 'a1', a: 5, b: 6, d: 18, veil: true }, { id: 'a2', a: 4, b: 7, d: 12, veil: true },
       { id: 'a3', a: 9, b: 12, d: 8, veil: true }, { id: 'a4', kind: 'compare', a: 7, b: 9, c: 10, d: 13, veil: true },
     ] }, ...T('method-4') },
+  },
+  // L'ESPACEMENT SOUS LA MAIN (seed-rake, thème seedbed, 2026-10-26) : la main étire un râteau (espacement 1/N m) sur un حوض de 1 m peint de zones ; une tâche est
+  // `{ id, kind?, terms: [{ p, sub? }], need?, needRefusal?, widest? }`. مبتدئ (plateforme, décomptes visibles) : g1 1/4 + 1/6 (deux espacements et un refus → 5/12), g2 2/3 + 1/5,
+  // g3 3/4 puis 1/6 récolté. متقدم (method-6 : le manuel cherche un multiple commun, râteau BLOQUÉ, on écrit N et le total) : a1 5/6 + 3/8, a2 7/10 − 4/15, a3 1/2 + 1/3 + 1/4,
+  // a4 3/8 + 5/12 « أوسع مسافة ». Le monde `fewest` (معارف) est posé par la leçon. Le test des niveaux mesure la paire par le NOMBRE DE TÂCHES et par la PRÉDICTION.
+  'seed-rake': {
+    beginner: { numbers: { tasks: [
+      { id: 'g1', terms: [{ p: '1/4' }, { p: '1/6' }], need: 2, needRefusal: true },
+      { id: 'g2', terms: [{ p: '2/3' }, { p: '1/5' }] },
+      { id: 'g3', terms: [{ p: '3/4' }, { p: '1/6', sub: true }] },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'predict', terms: [{ p: '5/6' }, { p: '3/8' }] },
+      { id: 'a2', kind: 'predict', terms: [{ p: '7/10' }, { p: '4/15', sub: true }] },
+      { id: 'a3', kind: 'predict', terms: [{ p: '1/2' }, { p: '1/3' }, { p: '1/4' }] },
+      { id: 'a4', kind: 'predict', terms: [{ p: '3/8' }, { p: '5/12' }], widest: true },
+    ] }, ...T('method-6') },
   },
   // LE POURCENTAGE SOUS LA MAIN (hundred-grid, thème pantry) : un stock coupé en 100 paquets égaux (10 × 10 cases) ; la main PEINT t cases, le panier
   // reçoit t paquets (x × t/100). مبتدئ (plateforme) : 15 % de 240 (la réponse écrite AVANT l'ouverture), le taux qui remplit un panier de 60 sur 150, +15 %

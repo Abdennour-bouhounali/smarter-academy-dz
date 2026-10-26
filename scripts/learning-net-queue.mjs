@@ -101,6 +101,12 @@ const OWNER_FIRST_UNITS = ['aadad-nisbiya', 'kusur-natiqa', 'quwa-nisbiya', 'iba
 const ownerStart = queue.length;
 for (const unit of OWNER_FIRST_UNITS) {
   for (const l of LESSONS.filter((x) => x.unit === unit && x.kind !== 'synthesis')) push(l, 'priorité propriétaire');
+  // Une unité dont TOUTES les leçons sont déjà publiées (2026-10-26 : aadad-nisbiya) n'appelle plus `push` : sa synthèse, encore prévue, entre dans la file ici.
+  const syn = (plannedByUnit.get(unit) ?? []).find((l) => l.kind === 'synthesis');
+  if (syn && !done.has(syn.code) && (plannedByUnit.get(unit) ?? []).every((l) => l.kind === 'synthesis' || done.has(l.code))) {
+    done.add(syn.code);
+    queue.push({ code: syn.code, grade: syn.grade, unit: syn.unit, titleAr: syn.titleAr, kind: 'synthesis', trigger: `unité ${syn.unit} complète`, via: [] });
+  }
 }
 phases.push({ grade: 'owner', from: ownerStart, to: queue.length });
 const units4 = UNITS.filter((u) => u.grade === '4am').sort((a, b) => a.number - b.number);

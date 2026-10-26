@@ -262,6 +262,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   roboticsClub  le نادي الروبوتيك : un tapis gradué posé au sol (la droite des nombres), le poteau 0 au milieu comme un petit portique-miroir, un
   //                 robot à roues et ses cartes de programme (`robot-track`)
   roboticsClub: { kind: 'objects', shows: 'نادي الروبوتيك: مسار مدرّج على الأرض وعمود الصفر في وسطه وروبوت صغير يتبع بطاقات برنامجه' },
+  // 3AM, unité 1, 3e leçon (2026-10-26) :
+  //   libraryLockers  le hall de la bibliothèque municipale : un mur de casiers numérotés, étagères de livres, une lampe et l'affiche « الكتاب صديق » ; le casier actif au premier plan
+  //                   avec sa plaque de laiton (la règle), son cadenas à molettes de code et un petit écran vert qui multiplie ; une élève (KidFigure, hijab) au comptoir (`code-lockers`)
+  libraryLockers: { kind: 'objects', shows: 'خزائن الأمانات في المكتبة البلدية: لكل خزانة قفل بعجلات رمز وشاشة صغيرة تضرب الرمز في عدد القفل' },
   // 3AM, unité 5 (2026-10-21) :
   //   stadium  le مضمار de la cour de l'école : un mur de graduations et deux coureurs (KidFigure, une élève en hijab et un élève), chacun
   //            à la valeur d'un membre d'une égalité ; ils se tiennent sur la même graduation tant que l'égalité est vraie (`equality-lanes`)
@@ -295,6 +299,11 @@ export const VISUAL_THEMES = Object.freeze({
   //              scellé avec son étiquette et sa pastille, deux grandes pastilles de couleur côte à côte et un mesureur à aiguille « أفتح · أغمق »,
   //              un élève (KidFigure) au rouleau devant l'esquisse de la fresque (`shade-match`)
   paintshop: { kind: 'objects', shows: 'آلة مزج الألوان في محلّ الطلاء: دلوان وعلب أبيض ورافعة للأزرق' },
+  // 3AM, unité 2, leçon 3 (2026-10-26) :
+  //   seedbed  un حوض غرس d'un jardin d'école de 1 m : une règle en bois le long du bord (0 … 1 m), des zones de cultures peintes à partir de la gauche
+  //            (tomates, piments, oignons) avec leur pancarte, un râteau de jardin dont l'espacement des dents est la variable, des plants dans des cases
+  //            de terre, un second حوض qui glisse dessous quand le total dépasse 1 m, une élève (KidFigure, hijab) à l'arrosoir (`seed-rake`)
+  seedbed: { kind: 'lengths', shows: 'حوض غرس في حديقة المدرسة: مشط زراعي وشتلات ومسطرة متر' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

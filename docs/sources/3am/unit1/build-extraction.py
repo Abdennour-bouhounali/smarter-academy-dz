@@ -771,12 +771,17 @@ for k_, (lesson_, module_) in {
         25: (L3, None), 26: (L3, None), 27: (L3, None), 28: (L3, None), 29: (L1, 4), 30: (L3, None), 31: (L3, None), 32: (L3, None),
         33: (L3, None), 34: (L1, None)}.items():
     DEST[f'ex-{k_}'] = d(lesson_, module_)
+# qismat-nisbiyayn (2026-10-26) : les éléments de la leçon posés en modules (les autres restent la banque, citée par ses fiches) :
+# ex-15, 16, 27, 30 → E1 ; ex-22, 23 → E2 ; ex-24, 25, 26 → E3 ; ex-33 → E6 ; deep-40 → E7 ; deep-41 → E8 ; deep-45 → E9 ; deep-52 → مسألة 2 ; self-8…11 → test (et banque).
+for k_ in (15, 16, 27, 30, 22, 23, 24, 25, 26, 33): DEST[f'ex-{k_}'] = d(L3, 4)
 for k_, lesson_ in {1: L1, 2: L1, 3: L1, 4: L1, 5: L1, 6: L2, 7: L2, 8: L3, 9: L3, 10: L3, 11: L3, 12: L2}.items():
     DEST[f'self-{k_}'] = d(lesson_, 8 if lesson_ == L1 else None)
 for k_, (lesson_, module_) in {
         35: (L2, None), 36: (L3, None), 37: (L1, 4), 38: (SYN, None), 39: (L2, 4), 40: (L3, None), 41: (L3, None), 42: (L2, 4), 43: (L1, 4), 44: (L2, 4),
         45: (L3, None), 46: (L2, None), 47: (L3, None), 48: (L3, None), 49: (L2, 4), 50: (L3, None), 51: (L2, 4), 52: (L3, None)}.items():
     DEST[f'deep-{k_}'] = d(lesson_, module_)
+for k_, m_ in ((40, 4), (41, 4), (45, 4), (52, 6)): DEST[f'deep-{k_}'] = d(L3, m_)
+for k_ in (8, 9, 10, 11): DEST[f'self-{k_}'] = d(L3, 8)
 DEST['deep-38']['note'] = 'addition seule (cases dont la somme sur chaque côté est 2) : banque de la synthèse (plan README)'
 DEST['deep-37']['note'] = 'contraste produit/somme (4 cas) : أتمرّن de jidaa-adadayn-nisbiyayn (plan E8)'
 DEST['deep-43']['note'] = 'vrai/faux : أ et جـ seulement dans la leçon (ب est du 2AM) ; plan E6'
@@ -798,11 +803,11 @@ DISCREPANCIES = [
     {'elementId': 'self-12', 'kind': 'reading', 'text': 'Énoncé imprimé « 3 × (4,7-) - 13 × 4,7- » (rendu RTL) lu −4,7 × 13 − (−4,7) × 3 = −47 ; options (−4,7)×(13−3) = −47 (أ), −4,7×13×3 (ب), 10×(−4,7) = −47 (جـ), (−4,7)×(−10) = 47 (د) : clés أ et جـ. Lecture LITTÉRALE possible : 3×(−4,7) − 13×(−4,7) = 47, seule د conviendrait ; la lecture RTL est celle du plan README et rend DEUX bonnes options (le manuel dit « الإجابة أو الإجابات »).'},
     {'elementId': 'self-4', 'kind': 'reading', 'text': 'L’option أ est imprimée « 92 ، 25 » (virgule typographique à la place du séparateur décimal, à l’envers) : lue 25,92 (la bonne réponse est −25,92, option جـ).'},
     {'elementId': 'deep-40', 'kind': 'reading', 'text': 'ب) −9 + 2 × 8 × 2 − 12 = −70 exige DEUX paires de parenthèses : (−9 + 2 × 8) × (2 − 12) = 7 × (−10) = −70 (recherche exhaustive : la seule façon). أ) (14 − 4) × (6 − 1) = 50 exige aussi deux paires ; جـ) 27 − 2,5 × (8,5 − 4,5) = 17 ; د) (15 − 25) × 2,4 + (7 − 3) × 2 = −16. Le titre « أقواس منسية » laisse entendre un seul couple : lecture du manuel inchangée.'},
-    {'elementId': 'deep-47', 'kind': 'reading', 'text': 'Le scan imprime « 52 » dans la case du milieu de droite ; le carré multiplicatif magique [_,1,_ / 4,−10,x / 5,_,−2] n’existe que pour x = 25 (constante (−10)³ = −1000 ; complété : −50 1 20 / 4 −10 25 / 5 100 −2). Avec 52 aucune complétion n’existe (vérifié). « 52 » est le « 25 » rendu à l’envers (chiffres inversés, même cause que les autres).'},
+    {'elementId': 'deep-47', 'kind': 'reading', 'text': 'Le scan imprime « 52 » dans la case du milieu de droite ; le carré multiplicatif magique [_,1,_ / 4,−10,x / 5,_,−2] n’existe que pour x = 25 (constante (−10)³ = −1000 ; complété : −50 1 20 / 4 −10 25 / 5 100 −2). Avec 52 les lignes et les colonnes peuvent se compléter (−104 1 20 / 4 −10 52 / 5 208 −2, produit −2080) mais les diagonales échouent (20 × (−10) × 5 = −1000) : le carré n’est magique (diagonales comprises) qu’avec 25 (corrigé par qismat-nisbiyayn, 2026-10-26). « 52 » est le « 25 » rendu à l’envers (chiffres inversés, même cause que les autres).'},
     {'elementId': 'deep-45', 'kind': 'reading', 'text': 'Les trois suites sont composées en bidi ; lues de gauche à droite exactement comme imprimées (−243 ; 81 ; … ; 9 ; −3 etc.). Les raisons (−1/3, −1/5, puis ×(−1), ×(−2), ×(−3), ×(−4), ×(−5)) ne rendent les suites cohérentes que dans CET ordre.'},
     {'elementId': 'deep-38', 'kind': 'figure', 'text': 'Le triangle magique est un dessin PÂLE : les six cercles sont à peine visibles ; seule la case « 0 » est lisible et se trouve au milieu du côté gauche. Avec cette position il y a deux solutions (symétriques) ; la lecture est à confirmer par la leçon qui l’emploie (banque de la synthèse).'},
     {'elementId': 'ex-23', 'kind': 'reading', 'text': 'Le signe « − » devant chaque fraction de ب) جـ) د) est extérieur à la fraction : −(−3/+7) = +3/7, −(5/−2) = +5/2, −(+4/−10) = +2/5 ; avec أ) (−9)/(+3) = −3 ce sont les trois quotients positifs (clés ب, جـ, د).'},
-    {'elementId': 'ex-24', 'kind': 'reading', 'text': 'Les opérandes de جـ) et د) sont imprimés avec le « − » après le chiffre et dans les deux sens possibles ; lus (−32)÷(−5) et (−21)÷(−5) (quotients décimaux 6,4 et 4,2). À confirmer par qismat-nisbiyayn.'},
+    {'elementId': 'ex-24', 'kind': 'reading', 'text': 'Les opérandes de جـ) et د) sont imprimés avec le « − » après le chiffre et dans les deux sens possibles ; lus (−32)÷(−5) et (−21)÷(−5) (quotients décimaux 6,4 et 4,2). Confirmé par qismat-nisbiyayn (scan relu à 130 dpi, 2026-10-26).'},
     {'elementId': 'ex-15', 'kind': 'reading', 'text': 'Dans l’énoncé le carré vide □ marque le nombre cherché ; l’ordre imprimé de ب) est « (+40) = (−5) × □ » (résultat à gauche du =).'},
     {'elementId': 'ex-17', 'kind': 'reading', 'text': 'Cibles lues : 32 ; −28 ; −0,25 ; 4,9. Le signe de −28 et de −0,25 est devant le nombre (le scan imprime « 32 ، ب) -28 ، جـ) -0,25 ، د) 4,9 »).'},
     {'elementId': 'ex-30', 'kind': 'reading', 'text': 'Les deux premiers énoncés sont composés en bidi (« (+48) ÷ … = (+8) » et « (+1) = … × (−1,6) ») ; lus ainsi. د) (−7,5) × … = 2,5 donne −1/3 et و) (−12) × … = −0,5 donne 1/24 : des quotients non décimaux (écriture en fraction).'},
@@ -832,6 +837,11 @@ for e in E:
 # jidaa-ida-nisbiya (2026-10-26) : les éléments de la leçon sont relus (maths recalculées ci-dessus, now-11 relu à 500 dpi, exercices pp. 14–19 relus par la banque) → vrai.
 for e in E:
     if DEST[e['id']]['lesson'] == L2: e['verified'] = True
+# qismat-nisbiyayn (2026-10-26) : act-4, know-8…10, method-5, method-6, now-13 relus à 110 dpi (pp. 9, 12, 13) ; ex-15, 16, 21–28, 30–33, self-8…11, deep-36, 45, 47, 48, 50
+# relus à 130–260 dpi par la banque (aucune valeur changée) ; ex-17, ex-18…20 ne sont pas de cette leçon ; ict (p. 21) relu pour la مسألة 3 (nombres redessinés).
+for e in E:
+    if DEST[e['id']]['lesson'] == L3: e['verified'] = True
+    # les éléments partagés (prep, act-4 …) dont une partie seulement est à cette leçon restent comme leur premier destinataire les a laissés
 verified_l1 = [e['id'] for e in E if DEST[e['id']]['lesson'] == L1 and not e.get('verified')]
 
 doc = {

@@ -111,5 +111,41 @@ describe('fractions3 — égalité et comparaison (tasawi-muqaranat-kasrayn)', (
     expect(F.unitsDigitOfProduct(5419, 4826)).toBe(4);
     expect(3217 * 8133 % 10).toBe(1);
   });
+  it('leçon 3 : multiple commun, plus petit multiple commun, méthode des multiples du plus grand', () => {
+    expect(F.isCommonMultiple(12, [4, 6])).toBe(true);
+    expect(F.isCommonMultiple(10, [4, 6])).toBe(false);
+    expect(F.isCommonMultiple(8, [4, 6])).toBe(false);
+    expect(F.smallestCommonMultiple([4, 6])).toBe(12n);
+    expect(F.smallestCommonMultiple([25, 12, 16])).toBe(1200n);
+    const m = F.multiplesUntil(18, 12);
+    expect([m.larger, m.other, m.list, m.lcm]).toEqual([18n, 12n, [18n, 36n], 36n]);
+    expect(F.multiplesUntil(15, 25).list).toEqual([25n, 50n, 75n]);
+    expect(F.multiplesUntil(4, 8).list).toEqual([8n]);
+  });
+  it('leçon 3 : cellsOf — 1/4 sur 1/10 = 2,5 cases (pas entier) ; sur 1/12 = 3', () => {
+    expect(F.cellsOf('1/4', 10)).toMatchObject({ whole: false, count: null });
+    expect(ratText(F.cellsOf('1/4', 10).cells)).toBe('5/2');
+    expect(F.cellsOf('1/4', 12)).toMatchObject({ whole: true, count: 3n });
+    expect(() => F.cellsOf('-1/4', 12)).toThrow();
+  });
+  it('leçon 3 : sumWith — 1/4 + 1/6 : 12 → 3 + 2 = 5 plants, 24 → 10, 10 → bord ; 3/4 − 1/6 sur 12 → 7', () => {
+    const t = [{ p: '1/4' }, { p: '1/6' }];
+    expect(F.sumWith(t, 12)).toMatchObject({ ok: true, counts: [3n, 2n], signed: 5n });
+    expect(ratText(F.sumWith(t, 12).total)).toBe('5/12');
+    expect(F.sumWith(t, 24)).toMatchObject({ ok: true, signed: 10n });
+    expect(F.sumWith(t, 10)).toMatchObject({ ok: false, borderAt: 0, signed: null });
+    expect(F.sumWith(t, 8)).toMatchObject({ ok: false, borderAt: 1 });
+    expect(F.sumWith(t, 6)).toMatchObject({ ok: false, borderAt: 0 });
+    const d = [{ p: '3/4' }, { p: '1/6', sub: true }];
+    expect(F.sumWith(d, 12)).toMatchObject({ ok: true, counts: [9n, 2n], signed: 7n });
+    expect(ratText(F.sumWith(d, 12).total)).toBe('7/12');
+    expect(() => F.sumWith([{ p: '1/6' }, { p: '3/4', sub: true }], 12)).toThrow();
+    expect(F.sumWith([{ p: '5/6' }, { p: '3/8' }], 24).signed).toBe(29n);
+  });
+  it('leçon 3 : widestUnit — 12 pour 4 et 6 ; null au-delà de maxN', () => {
+    expect(F.widestUnit([4, 6])).toBe(12n);
+    expect(F.widestUnit([8, 12])).toBe(24n);
+    expect(F.widestUnit([25, 12], 60)).toBe(null);
+    expect(F.widestUnit([2, 3, 4])).toBe(12n);
+  });
 });
-

@@ -77,3 +77,52 @@ describe('relativeOps — leçon 2 (plusieurs facteurs)', () => {
     expect(t(g.factored)).toBe('−32');
   });
 });
+
+describe('relativeOps — leçon 3 (le quotient)', () => {
+  const t = (r) => R.relText(r);
+  it('divide, missingFactor, quotientSign', () => {
+    expect(t(R.divide('48', '-6'))).toBe('−8');
+    expect(t(R.divide('-0,36', '-0,9'))).toBe('0,4');
+    expect(t(R.divide('4', '-6'))).toBe('−2/3');
+    expect(() => R.divide('3', '0')).toThrow();
+    expect(t(R.missingFactor('-6', '48'))).toBe('−8');
+    expect(t(R.missingFactor('-8', '-2'))).toBe('0,25');
+    expect(R.quotientSign('-6', '3')).toBe(-1);
+    expect(R.quotientSign('-6', '-3')).toBe(1);
+    expect(R.quotientSign('0', '-3')).toBe(0);
+    expect(() => R.quotientSign('2', '0')).toThrow();
+  });
+  it('every quotient inverts the product: b × (a ÷ b) = a', () => {
+    for (const a of ['-99', '-7,5', '0', '4', '12,6']) for (const b of ['-20', '-0,4', '3', '2,5', '7']) {
+      expect(R.sameValue(R.times(b, R.divide(a, b)), a)).toBe(true);
+    }
+  });
+  it('writingsOf: the three writings are one number; −a/−b = a/b', () => {
+    for (const [a, b] of [['2', '3'], ['5', '8'], ['-2', '3'], ['7', '-4']]) {
+      const w = R.writingsOf(a, b);
+      expect(w).toHaveLength(3);
+      expect(w.every((x) => R.sameValue(x.value, w[0].value))).toBe(true);
+      expect(R.sameValue(w[0].value, R.opposite(R.divide(a, b)))).toBe(true);
+    }
+    expect(R.sameValue(R.divide('-2', '-3'), R.divide('2', '3'))).toBe(true);
+    expect(R.sameValue('-4/6', R.divide('4', '-6'))).toBe(true);
+    expect(R.sameValue('2/-3', '-2/3')).toBe(true);
+  });
+  it('isFiniteDecimal: −2/3 is not a decimal, −1/4 is', () => {
+    expect(R.isFiniteDecimal(R.divide('-2', '3'))).toBe(false);
+    expect(R.isFiniteDecimal(R.divide('-1', '4'))).toBe(true);
+  });
+  it('evaluate follows the priorities and writes its steps', () => {
+    expect(t(R.evaluate('5 − (3 × (−4) + 7)').value)).toBe('10');
+    expect(R.evaluate('5 − (3 × (−4) + 7)').steps).toEqual(['5 − (3 × (−4) + 7)', '5 − (−12 + 7)', '5 − (−5)', '10']);
+    expect(t(R.evaluate('(−18) ÷ (2 − 5) + 4 × (−0,5)').value)).toBe('4');
+    expect(t(R.evaluate('20 − 4 × 3').value)).toBe('8');
+    expect(t(R.evaluate('−(2 + 3) × 4').value)).toBe('−20');
+    expect(t(R.evaluate('(9 + 3 × (−5)) ÷ (1 + 2 × (−2))').value)).toBe('2');
+    expect(t(R.evaluate('−7 + 10 − 5').value)).toBe('−2');
+    expect(t(R.evaluate('7 ÷ (−4)').value)).toBe('−1,75');
+    expect(t(R.evaluate('2 ÷ 3').value)).toBe('2/3');
+    expect(() => R.evaluate('4 ÷ (3 − 3)')).toThrow();
+    expect(() => R.evaluate('4 ++')).toThrow();
+  });
+});

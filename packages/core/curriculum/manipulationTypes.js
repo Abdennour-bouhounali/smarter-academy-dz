@@ -741,6 +741,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'إشارة جداء عدة أعداد نسبية غير معدومة سالبة إذا كان عدد عوامله السالبة فرديًا وموجبة إذا كان زوجيًا مهما كان ترتيبها، و $(-1) \\times a = -a$ ، ومربع عدد نسبي لا يكون سالبًا',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 3AM, unité 1, 3e leçon (2026-10-26) — le quotient de deux nombres relatifs.
+  'code-lockers': {
+    // LE CODE MANQUANT SOUS LA MAIN : un casier de la bibliothèque municipale s'ouvre avec le code q qui rend vraie la règle écrite sur sa porte, « b × ? = a ». La main ROULE les molettes du
+    // code (une molette de SIGNE et des molettes de chiffres, ou — en mode fraction — trois signes et deux nombres) et tire la poignée : chaque tirage est un essai jugé exactement (MANUEL §6bis).
+    // L'écran multiplie en direct (b × code) : la définition « a ÷ b est le nombre q tel que b × q = a » EST le mécanisme ; le signe de q se lit sur le refus (même distance, signe faux). Quand
+    // aucun code décimal n'existe, trois écritures (−a/b, a/−b, −(a/b)) ouvrent la même porte ; avec b = 0 aucun code n'ouvre (a ≠ 0) ou tous ouvrent (a = 0). `code-lockers` n'énonce jamais la règle.
+    shows: 'حاصل قسمة $a$ على $b$ ($b \\neq 0$) هو العدد $q$ الذي يحقّق $b \\times q = a$ ؛ موجب إذا كان للعددين الإشارة نفسها وسالب إذا اختلفت إشارتاهما، ومسافته إلى الصفر هي حاصل قسمة المسافتين ؛ و $\\frac{-a}{b} = \\frac{a}{-b} = -\\frac{a}{b}$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » (2026-10-25) — le مقلوب et la division de deux fractions.
   'gear-crank': {
     // LA DIVISION PAR UN RAPPORT SOUS LA MAIN : une درّاجة dont le plateau (F dents) entraîne un pignon (R dents) par la chaîne. La main TOURNE la manivelle ;
@@ -761,6 +770,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     // COMPARENT. En متقدم le mesureur est voilé jusqu'à l'engagement (un c, ou « لا يوجد عدد صحيح » avec les deux voisins écrits). Chaque lâcher est un essai
     // jugé exactement : MANUEL (§6bis). « جرّب أعدادك » : toujours ouvert (a, b, d ∈ 1 … 20).
     shows: 'الكسران $\\frac{a}{b}$ و $\\frac{c}{d}$ متساويان إذا وفقط إذا كان $a \\times d = b \\times c$ ؛ وإذا كان $a \\times d < b \\times c$ فالأوّل أصغر من الثاني ؛ ولمقارنة كسرين نكتبهما بنفس المقام (مضاعف مشترك للمقامين)',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 2 (2026-10-26) — la somme et la différence de deux fractions : le dénominateur commun.
+  'seed-rake': {
+    // L'ESPACEMENT SOUS LA MAIN : un حوض de 1 m, des zones de cultures peintes l'une après l'autre (1/4 puis 1/6…). La main ÉTIRE un râteau : elle tient l'espacement 1/N m ;
+    // « ازرع » plante un plant par case. Un espacement convient ⇔ chaque zone contient un nombre ENTIER de cases (N multiple commun des dénominateurs) ; sinon un plant tombe
+    // sur la frontière de deux zones et rien n'est compté. La somme se lit en plants (5 × 1/12 m) et reste la même pour tout espacement qui convient ; le plus large est le
+    // plus petit multiple commun. Une zone RÉCOLTÉE se retire (différence). En متقدم le râteau est bloqué : on écrit N et la longueur avant de semer. Chaque semis est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'لجمع كسرين أو طرحهما نكتبهما بنفس المقام، وهو مضاعف مشترك للمقامين: $\\frac{1}{4}+\\frac{1}{6}=\\frac{3}{12}+\\frac{2}{12}=\\frac{5}{12}$ ؛ وأصغر مضاعف مشترك يعطي أبسط حساب',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
   'pin-rails': {

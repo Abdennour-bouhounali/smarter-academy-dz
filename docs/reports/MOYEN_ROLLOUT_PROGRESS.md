@@ -328,6 +328,30 @@ Second lesson of `aadad-nisbiya`, generated from its plan (`docs/sources/3am/uni
 computation and the reordering, P3 `a² = a × a`, P4 numeric distributivity in both directions); the cross-lesson `pointPrerequisites` toward lesson 1. **Plan error found:** `now-11`
 reads 85 (odd), not 50. The extraction elements of the lesson are `verified: true`. Remaining for the coordinator: export / import (guide §11 step 4), commit, push `dev`.
 
+### Phase 0, entry 3 — `qismat-nisbiyayn` « حاصل قسمة عددين نسبيين » (3AM unit 1, lesson 3, generated 2026-10-26, NOT yet exported / committed)
+
+Third and last lesson of `aadad-nisbiya`, generated from its plan (`docs/sources/3am/unit1/plan/qismat-nisbiyayn.md`, « Generator notes » = § 12). New lab `code-lockers` « خزائن الأمانات »
+(the hand rolls the CODE of a library locker's combination lock — a sign wheel and digit / fraction wheels — so that `b × ? = a` opens the door; a quotient is the missing factor;
+MANIPULATION_CONTRACT §2quadragies), theme `libraryLockers`; `relativeOps.js` grew `divide`, `missingFactor`, `quotientSign`, `sameValue`, `writingsOf` and `evaluate` (priorities, brackets,
+unary minus, with its steps). Nine modules (64 min, 88 with the three مسائل), bank of 50 sheets (10 `term_exam`, 17 `term_exam_modelled`, 23 `adapted`; 211 questions, 30 `counted: false`), eight
+`MISC-QISMA-*`. الكفاءات: the plan's proposed final wording (P1 gains the missing factor, P2 the quotient of products, P3 the fraction writings, P4 the order of the priorities); cross-lesson
+`pointPrerequisites` toward lessons 1 and 2. Catalogue `available`, `durationMinutes` 64, `prerequisiteLessonCodes` gains `jidaa-ida-nisbiya`. **Findings:** `3am-s1-2` ex 3 prints E = −7 (not −70):
+the sister sheet `jidaa-ida-nisbiya-l3-003` was repaired (E = −7, bounds 1,428 / 1,429) and the notes in `EXERCISE_CONTRACT` and the lesson-2 plan corrected; the elevator-reel verdict
+needs no LRM (islands measured LTR for t = −3 … 3); `learning-net-queue.mjs` now queues the synthesis of a unit whose last lesson is published (`wadiya-idmajiya-aadad-nisbiya` is the
+next lesson of the unit). The extraction elements of the lesson are `verified: True`. Entry bundle 329.4 KB gzip (the catalogue JSON grew; headroom 0.6 KB). Browser QA with `QA_STUB=1` (the local API was
+down), glance 623–820 px at the four tablet / laptop sizes. Remaining for the coordinator: export / import (guide §11 step 4), commit, push `dev`.
+
+### Phase 0, entry 7 — `jam-tarh-kasrayn` « جمع وطرح كسرين » (3AM unit 2, lesson 3, generated 2026-10-26, NOT yet exported / committed)
+
+Third lesson of `kusur-natiqa`, generated from its plan (`docs/sources/3am/unit2/plan/jam-tarh-kasrayn.md`, « Generator notes » at its end). New lab `seed-rake` « مشط الشتلات »
+(the hand stretches a rake: spacing 1/N m over a 1 m bed of crop zones; the sum is read in plants and is the same for every spacing that works; the widest is the smallest
+common multiple; a harvest subtracts; متقدم locks the rake and asks N and the length first; MANIPULATION_CONTRACT §2undequadragies), theme `seedbed`; `fractions3.js` grew
+`isCommonMultiple`, `smallestCommonMultiple`, `multiplesUntil`, `cellsOf`, `zoneEnds`, `sumWith`, `widestUnit`. Nine modules (63 min, 87 with the three مسائل), bank of 50 sheets
+(13 `term_exam`, 30 `term_exam_modelled`, 7 `adapted`), seven `MISC-JAMTARH-*`. الكفاءات: P1 changes meaning, P2 adds the natural number and the reduction, P3 becomes « أصغر مضاعف مشترك »
+(plan § 2). The extraction elements of L3 were re-read at 130–250 dpi and set `verified: True`. Catalogue `available`, `durationMinutes` 63. Browser QA with `QA_STUB=1` (the local API was down),
+glance 501–593 px at the five tablet / laptop sizes. Remaining for the coordinator: export / import, commit, push `dev`; `learning-net-queue.mjs` reports « leçons prévues hors file :
+wadiya-idmajiya-aadad-nisbiya » (the unit 1 lead's synthesis edit), to regenerate at the end.
+
 ## Next batch — prompt
 
 ### Phase 0, entry 6 — `tasawi-muqaranat-kasrayn` « تساوي كسرين ومقارنتهما » (3AM unit 2, lesson 2, generated 2026-10-26, NOT yet exported / committed)

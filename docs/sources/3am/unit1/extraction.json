@@ -435,7 +435,7 @@
    "page": 9,
    "section": "أنشطة",
    "title": "حاصل قسمة أعداد نسبية",
-   "verified": false,
+   "verified": true,
    "text": "نعلم أن $20=4\\times5$ معناه: $20\\div5=4$ و $20\\div4=5$. 1) أكمل ملء الفراغ بالعدد الناقص لكل واحدة من العمليات التالية: أ) $4\\times\\ldots=32$ ، $(-5)\\times\\ldots=60$ ، $7\\times\\ldots=(-28)$ ، $\\ldots\\times(-3)=(-42)$ . ب) اكتب كل واحد من هذه الأعداد الناقصة على شكل كسر. 2) ماذا تلاحظ عن قسمة عددين نسبيين؟ 3) نعتبر العبارة: $Q=\\dfrac{(-3)\\times(-5)\\times2\\times(-1)}{(-1)\\times8\\times5\\times(-5)}$. أ) ما هي إشارة بسط العبارة Q؟ وما هي إشارة المقام؟ ب) استنتج إشارة العبارة Q.",
    "answer": {
     "1a": {
@@ -663,7 +663,7 @@
    "page": 12,
    "section": "معارف",
    "title": "حاصل قسمة عددين نسبيين — قاعدة الإشارات",
-   "verified": false,
+   "verified": true,
    "text": "قاعدة الإشارات: • حاصل قسمة عددين نسبيين لهما نفس الإشارة هو عدد موجب. • حاصل قسمة عددين نسبيين مختلفين في الإشارة هو عدد سالب. انتبه ! حاصل قسمة عددين سالبين هو عدد موجب. ملاحظة: $a$ و $b$ عددان نسبيان، حيث $b\\neq0$ . $\\dfrac{-a}{-b}=\\dfrac{a}{b}$. أمثلة: 1) احسب: $6\\div(-3)$. المقسوم والمقسوم عليه مختلفان في الإشارة، إذن حاصل القسمة سالب. ننجز عملية قسمة المسافتين إلى الصفر: $6\\div3=2$ إذن: $6\\div(-3)=-2$. 2) احسب $\\dfrac{-27}{-9}$. البسط والمقام لهما نفس الإشارة، إذن حاصل القسمة موجب. ننجز عملية قسمة المسافتين إلى الصفر: $\\dfrac{27}{9}=3$ إذن: $\\dfrac{-27}{-9}=3$.",
    "answer": {
     "checks": [
@@ -681,7 +681,7 @@
    "page": 12,
    "section": "معارف",
    "title": "حساب حاصل القسمة",
-   "verified": false,
+   "verified": true,
    "text": "$a$ و $b$ عددان نسبيان، حيث $b\\neq0$ . حاصل قسمة العدد النسبي $a$ على العدد النسبي غير المعدوم $b$ هو العدد $\\dfrac{a}{b}$ الذي يحقق: $\\dfrac{a}{b}\\times b=a$. أمثلة: 1) $\\dfrac{-5}{6}\\times6=-5$ ، حاصل قسمة $-5$ على 6 هو $\\dfrac{-5}{6}$. 2) $\\dfrac{3}{-7}\\times(-7)=3$ ، حاصل قسمة 3 على $-7$ هو $\\dfrac{3}{-7}$.",
    "answer": {
     "checks": [
@@ -698,7 +698,7 @@
    "page": 12,
    "section": "معارف",
    "title": "تنظيم وتبسيط حساب",
-   "verified": false,
+   "verified": true,
    "text": "لإنجاز سلسلة حسابات على الأعداد النسبية بالعمليات الأربع أراعي ما يلي: • احترام قواعد الأولوية التي تعلمتها في السنة الثانية. • أطبق قواعد جمع وطرح الأعداد النسبية بطريقة صحيحة. • أطبق القواعد الجديدة حول ضرب وقسمة الأعداد النسبية. مثال: حساب $A=3-(2\\times(-5)+8)$. حل: نعيّن داخل الأقواس الحسابات التي لها أولوية. داخل الأقواس نحترم أولوية العمليات ونبدأ بالضرب. $A=3-(2\\times(-5)+8)=3-(-2\\times5+8)=3-(-10+8)=3-(-2)=3+2=+5$.",
    "answer": {
     "A": "5"
@@ -728,7 +728,7 @@
    "page": 13,
    "section": "طرائق",
    "title": "تعيين إشارة حاصل قسمة",
-   "verified": false,
+   "verified": true,
    "text": "تمرين: عيّن إشارة حاصل القسمة في كل حالة: $\\dfrac{17}{4}$ ، $\\dfrac{-3}{7}$ ، $\\dfrac{5}{-9}$ ، $\\dfrac{-38}{-23}$. حل: • 17 و 4 موجبان إذن $\\dfrac{17}{4}$ موجب. • $-3$ و 7 مختلفان في الإشارة إذن $\\dfrac{-3}{7}$ سالب. • 5 و $-9$ مختلفان في الإشارة إذن $\\dfrac{5}{-9}$ سالب. • $-38$ و $-23$ سالبان إذن $\\dfrac{-38}{-23}$ موجب. تعاليق: • في كل حالة من الحالات المقابلة نلاحظ إشارتي البسط والمقام. • إذا كان لهما نفس الإشارة، فإن حاصل القسمة موجب. • إذا كانا مختلفين في الإشارة، فحاصل القسمة سالب. ملاحظة: حاصل القسمة يمكن أن يكون عددا غير عشري. مثال: $\\dfrac{-3}{7}$ ، $\\dfrac{5}{-9}$. طريقة: تعيين إشارة حاصل قسمة عددين نسبيين. • إذا كان للعددين نفس الإشارة فإنّ حاصل القسمة موجب. • إذا كان للعددين إشارتان مختلفتان فإن حاصل القسمة سالب.",
    "answer": {
     "17/4": "+",
@@ -745,7 +745,7 @@
    "page": 13,
    "section": "طرائق",
    "title": "حساب حاصل القسمة",
-   "verified": false,
+   "verified": true,
    "text": "تمرين: احسب: $A=-63\\div7$ ؛ $B=-54\\div(-6)$. حل: 1) حساب $A=-63\\div7$. لدينا: A سالب و $63\\div7=9$ ومنه $A=-9$. 2) حساب $B=-54\\div(-6)$. لدينا: B موجب و $54\\div6=9$ ومنه $B=9$. تعاليق: • $(-63)$ و 7 مختلفان في الإشارة وبالتالي فحاصل القسمة سالب. حاصل قسمة المسافتين إلى الصفر هو $63\\div7=9$. • $-54$ و $-6$ سالبان وبالتالي حاصل القسمة موجب. حاصل قسمة المسافتين إلى الصفر هو $54\\div6=9$. قاعدة: لقسمة عدد نسبي على عدد نسبي غير معدوم: 1) نحدد إشارة حاصل القسمة باستعمال قاعدة الإشارات. 2) نجري عملية قسمة المسافتين إلى الصفر.",
    "answer": {
     "A": "-9",
@@ -759,7 +759,7 @@
    "page": 13,
    "section": "دوري الآن",
    "title": "دوري الآن",
-   "verified": false,
+   "verified": true,
    "items": [
     {
      "n": 1,
@@ -1055,7 +1055,7 @@
    "page": 15,
    "section": "ضرب الأعداد النسبية",
    "text": "في كل حالة، اكتب مكان $\\square$ العدد الذي به تتحقق المساواة: أ) $(-6)\\times\\square=-24$ ؛ ب) $(+40)=(-5)\\times\\square$ ؛ جـ) $(-5)\\times\\square=-2$ ؛ د) $(-2{,}5)\\times\\square=7{,}5$ ؛ هـ) $(-4)\\times\\square=10$ ؛ و) $(-0{,}5)\\times\\square=12$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "4",
     "ب": "-8",
@@ -1074,7 +1074,7 @@
    "page": 15,
    "section": "ضرب الأعداد النسبية",
    "text": "أكمل بالعدد المناسب: أ) $(-4)\\times\\square=20$ ؛ ب) $(-13)\\times\\square=-39$ ؛ جـ) $\\square\\times(-7)=-42$ ؛ د) $\\square\\times(-11)=121$ ؛ هـ) $\\square\\times(-3)=-99$ ؛ و) $(-2{,}9)\\times\\square=29$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "-5",
     "ب": "3",
@@ -1195,7 +1195,7 @@
    "page": 15,
    "section": "ضرب الأعداد النسبية",
    "text": "انقل ثم أكمل ملء خانات « الهرم » في كل حالة، علما أن محتوى الخانة يساوي جداء ما في الخانتين اللتين تحتها.",
-   "verified": false,
+   "verified": true,
    "figure": "pyramide bleue (4 étages) : étage du bas  ·  -1  ·  ·  +2 ; étage 3 : ·  +3  · ; étage 2 : -3  · ; sommet vide. Pyramide verte : sommet -2160 ; étage 2 : -24  · ; étage 3 : ·  -6  · ; bas : ·  ·  ·  +5.",
    "answer": {
     "bleue": {
@@ -1244,7 +1244,7 @@
    "page": 16,
    "section": "قسمة الأعداد النسبية",
    "text": "في كل حالة مما يلي، عيّن إشارة حاصل القسمة، دون حساب. أ) $(-3)\\div(-8)$ ؛ ب) $(-4)\\div(-5)$ ؛ جـ) $(+1)\\div(-2)$ ؛ د) $(-3{,}5)\\div(+5{,}2)$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "+",
     "ب": "+",
@@ -1261,7 +1261,7 @@
    "page": 16,
    "section": "قسمة الأعداد النسبية",
    "text": "فيما يلي، انقل كل حاصل قسمة موجب. أ) $\\dfrac{-9}{+3}$ ؛ ب) $-\\dfrac{-3}{+7}$ ؛ جـ) $-\\dfrac{5}{-2}$ ؛ د) $-\\dfrac{+4}{-10}$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "positifs": [
      "ب",
@@ -1285,7 +1285,7 @@
    "page": 16,
    "section": "قسمة الأعداد النسبية",
    "text": "احسب ما يلي: أ) $(-80)\\div(+4)$ ؛ ب) $(-72)\\div(-6)$ ؛ جـ) $(-32)\\div(-5)$ ؛ د) $(-21)\\div(-5)$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "-20",
     "ب": "12",
@@ -1302,7 +1302,7 @@
    "page": 16,
    "section": "قسمة الأعداد النسبية",
    "text": "احسب ما يلي: أ) $(-8)\\div(-4)$ ؛ ب) $(-5)\\div(+10)$ ؛ جـ) $(-15)\\div(-3)$ ؛ د) $20\\div(-5)$ ؛ هـ) $(-45)\\div(-9)$ ؛ و) $(-72)\\div(+8)$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "2",
     "ب": "-0,5",
@@ -1320,7 +1320,7 @@
    "page": 16,
    "section": "قسمة الأعداد النسبية",
    "text": "احسب ما يلي: أ) $-121\\div11$ ؛ ب) $(-56)\\div(-7)$ ؛ جـ) $(-72)\\div(+12)$ ؛ د) $(+48)\\div(-2{,}5)$ ؛ هـ) $(+16)\\div(-0{,}1)$ ؛ و) $-16\\div(-5)$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "-11",
     "ب": "8",
@@ -1338,7 +1338,7 @@
    "page": 16,
    "section": "قسمة الأعداد النسبية",
    "text": "أكمل ملء الفراغ بالعدد المناسب. أ) $(-72)\\div\\ldots=-9$ ؛ ب) $\\ldots\\div(-7)=+5$ ؛ جـ) $(+12)=\\ldots\\div(-3)$ ؛ د) $(-15)\\div\\ldots=+3$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "8",
     "ب": "-35",
@@ -1354,7 +1354,7 @@
    "page": 16,
    "section": "قسمة الأعداد النسبية",
    "text": "اربط بين النتائج المتساوية. العمود الأول: $-12\\div(-10)$ ؛ $(-1)\\div(+1)$ ؛ $(+2)\\div(-0{,}2)$. العمود الثاني: $(-1)\\times(+1)$ ؛ $(30)\\div(-3)$ ؛ $(-12)\\times(-0{,}1)$.",
-   "verified": false,
+   "verified": true,
    "figure": "deux colonnes de trois opérations, chaque élément précédé d’un point bleu ; à relier deux à deux.",
    "answer": {
     "pairs": [
@@ -1398,7 +1398,7 @@
    "page": 16,
    "section": "قسمة الأعداد النسبية",
    "text": "أكمل ملء الفراغ بما يحقق المساواة. أ) $(+48)\\div\\ldots=(+8)$ ؛ ب) $(+1)=\\ldots\\times(-1{,}6)$ ؛ جـ) $15=\\ldots\\times(-5)$ ؛ د) $(-7{,}5)\\times\\ldots=2{,}5$ ؛ هـ) $(-10)\\div\\ldots=4$ ؛ و) $(-12)\\times\\ldots=(-0{,}5)$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "6",
     "ب": "-0,625 (= -5/8)",
@@ -1417,7 +1417,7 @@
    "page": 16,
    "section": "قسمة الأعداد النسبية",
    "text": "أوجد عددين نسبيين حاصل القسمة بينهما: أ) $-2$ ؛ ب) $10$ ؛ جـ) $-0{,}5$ ؛ د) $-1$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "6 et -3 (ou -8 et 4, …)",
     "ب": "-20 et -2 (ou 5 et 0,5, …)",
@@ -1434,7 +1434,7 @@
    "page": 16,
    "section": "ضرب الأعداد النسبية",
    "text": "على مستقيم مدرّج، عيّن: أ) باللون الأحمر، نظير $-7$ ؛ ب) بالأخضر، جداء $-3$ في $6$ ؛ جـ) بالأزرق، حاصل قسمة $-15$ على $3$ ؛ د) بالأسود، مربع $-2$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ (rouge)": "7",
     "ب (vert)": "-18",
@@ -1450,7 +1450,7 @@
    "page": 16,
    "section": "أولوية العمليات",
    "text": "أولوية العمليات. احسب ما يلي: $A=-0{,}5\\times(-2-8)\\times-1{,}7$ ؛ $B=4{,}7-(1-10{,}5)\\times4$ ؛ $C=(7-12)\\div(12-(1+8\\times2))$ ؛ $D=-20+((-3)\\times(-7-3)-16)$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "A": "-8,5",
     "B": "42,7",
@@ -1648,7 +1648,7 @@
    "number": 8,
    "page": 17,
    "section": "أؤكّد تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "$(-25)\\div(-5)$ يساوي ...",
    "options": {
     "أ": "$5$",
@@ -1671,7 +1671,7 @@
    "number": 9,
    "page": 17,
    "section": "أؤكّد تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "إذا كان $x$ عددا نسبيا يحقق: $-10=(-3)\\times x$ فإنّ:",
    "options": {
     "أ": "$x=-7$",
@@ -1693,7 +1693,7 @@
    "number": 10,
    "page": 17,
    "section": "أؤكّد تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "$a$ عدد نسبي سالب، إذن ...",
    "options": {
     "أ": "$a^2$ سالب",
@@ -1717,7 +1717,7 @@
    "number": 11,
    "page": 17,
    "section": "أؤكّد تعلّماتي",
-   "verified": false,
+   "verified": true,
    "text": "$11\\div(-4)$ يُكتب على الشكل ...",
    "options": {
     "أ": "$\\dfrac{11}{-4}$",
@@ -1786,7 +1786,7 @@
    "section": "أتعمّق",
    "title": "أكمل الجمل",
    "text": "أكمل الجمل التالية: أ) $-39$ هو نصف $\\ldots$ ؛ ب) $-39$ هو ثلاثة أمثال $\\ldots$ ؛ جـ) $-39$ هو نظير $\\ldots$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "-78",
     "ب": "-13",
@@ -1867,7 +1867,7 @@
    "section": "أتعمّق",
    "title": "أقواس منسية",
    "text": "في كل حالة مما يلي، انقل العبارة ثم أكمل وضع الأقواس حتى تصبح المساواة محققة. أ) $14-4\\times6-1=50$ ؛ ب) $-9+2\\times8\\times2-12=-70$ ؛ جـ) $27-2{,}5\\times8{,}5-4{,}5=17$ ؛ د) $15-25\\times2{,}4+7-3\\times2=-16$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "(14 - 4) × (6 - 1)",
     "ب": "(-9 + 2 × 8) × (2 - 12)",
@@ -1885,7 +1885,7 @@
    "section": "أتعمّق",
    "title": "إشارة",
    "text": "$a$ هو جداء 24 عددا نسبيا كلها غير معدومة و 23 منها سالبة. $b$ هو جداء 13 عددا نسبيا كلها غير معدومة و 11 منها سالبة. أعط، إن أمكن، إشارة كل من: أ) $a\\times b$ ؛ ب) $\\dfrac{a}{b}$ ؛ جـ) $a^2$ ؛ د) $a+b$ ؛ هـ) $a-b$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "a": "négatif (23 négatifs, impair)",
     "b": "négatif (11 négatifs, impair)",
@@ -1960,7 +1960,7 @@
    "section": "أتعمّق",
    "title": "انتظامات",
    "text": "1) في كل حالة مما يلي، انقل المتتالية، لاحظ الانتظام ثم أكمل كتابة العدد الناقص. أ) $-3\\,;\\,9\\,;\\ldots;\\,81\\,;\\,-243$ ... (مكتوبة في المسطرة: $-243\\,;\\,81\\,;\\ldots\\,;\\,9\\,;\\,-3$) ؛ ب) $120000\\,;\\,-24000\\,;\\ldots\\,;\\,-960\\,;\\,192$ ؛ جـ) $-2\\,;\\,2\\,;\\,-4\\,;\\ldots\\,;\\,-48\\,;\\,240$. 2) بيّن في كل حالة كيفية المرور من عدد إلى الذي يليه.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": {
      "sequence": [
@@ -2038,7 +2038,7 @@
    "section": "أتعمّق",
    "title": "أكمل مربعا سحريا « ضربيا »",
    "text": "أكمل ملء الخانات الفارغة لتحصل على مربع سحري « ضربي ». $[\\ ;\\,1\\,;\\ \\ ]$ / $[4\\,;\\,-10\\,;\\,52]$ / $[5\\,;\\ ;\\,-2]$.",
-   "verified": false,
+   "verified": true,
    "figure": "grille 3 × 3 : ligne 1 [vide, 1, vide] ; ligne 2 [4, −10, 52] ; ligne 3 [5, vide, −2].",
    "answer": {
     "completed (with 25)": [
@@ -2071,7 +2071,7 @@
    "section": "أتعمّق",
    "title": "أكمل بالعدد المناسب",
    "text": "في كل حالة مما يلي، انقل ثم أكمل ملء الفراغ بالعدد المناسب: أ) $(-3)\\times\\ldots=-36$ ؛ ب) $\\ldots\\times5=-16$ ؛ جـ) $(-10)\\times\\ldots=3$ ؛ د) $3\\times\\ldots=-4$ ؛ هـ) $(-6)\\times\\ldots=11$ ؛ و) $(-9)\\times\\ldots=-8$.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "أ": "12",
     "ب": "-16/5 = -3,2",
@@ -2109,7 +2109,7 @@
    "section": "أتعمّق",
    "title": "متساويات عجيبة",
    "text": "① $1-1=9\\times\\ldots$ ؛ ② $2-11=9\\times\\ldots$ ؛ ③ $3-111=9\\times\\ldots$ ؛ ④ $4-1111=9\\times\\ldots$ ؛ … ؛ ⑩ $10-1\\,111\\,111\\,111=9\\times\\ldots$. 1) ما هي الأعداد الناقصة في المتساويات ①، ②، ③، ④، ⑩؟ 2) دون إجراء أية حسابات إضافية، اكتب المتساويات: ⑤، ⑥، ⑦، ⑧، ⑨.",
-   "verified": false,
+   "verified": true,
    "answer": {
     "1": {
      "①": "0",
@@ -2164,7 +2164,7 @@
    "section": "أتعمّق",
    "title": "مخمّنة",
    "text": "برنامج: • اختر عددا. • أضف له العدد الصحيح الذي يليه. • اضرب الناتج في $(-2)$. • أضف 2 إلى الناتج. • قسّم الناتج على $(-4)$. 1) طبّق هذا البرنامج على الأعداد: $10$ ، $-5$ ، $-125$ على التوالي. ما هي المخمنة التي خرجت بها؟ 2) هل يمكن إثبات هذه المخمنة؟",
-   "verified": false,
+   "verified": true,
    "answer": {
     "1": {
      "10": "10",
@@ -2219,7 +2219,7 @@
    "page": 21,
    "section": "أوظّف تكنولوجيات الإعلام والاتصال",
    "title": "الحاسبة والأعداد النسبية",
-   "verified": false,
+   "verified": true,
    "text": "الحاسبة والأعداد النسبية. 1) بالحاسبة أو بدونها: لحساب قيمة العدد $A=\\dfrac{8+3\\times(-4)}{1+2\\times(-1{,}5)}$ قامت ليلى بالضغط على ملامس الحاسبة بالترتيب التالي: [8] [+] [3] [×] [(] [(-)] [4] [)] [÷] [1] [+] [2] [×] [(] [(-)] [1] [,] [5] [)]. 1) هل ستحصل ليلى على النتيجة الصحيحة؟ 2) إذا كان كذلك، حدد هذه النتيجة. وإلا فحدد الخطأ الذي ارتكبته ليلى ثم أعط النتيجة الصحيحة لهذا الحساب. 2) الحساب على الأعداد النسبية بالحاسبة. 1) لمسة الأعداد السالبة: أ) لإجراء حسابات على الأعداد النسبية السالبة نحتاج إلى لمسة جديدة، أين توجد هذه اللمسة؟ ب) لماذا لا نحتاج إلى هذه اللمسة عند إجراء حسابات على الأعداد الموجبة؟ 2) أهمية استعمال الأقواس: أ) احجز على الحاسبة برنامج الحساب الخطي التالي: $(-17)\\times(-42)+(-15)\\times18$. ب) أنجز هذا الحساب باليد. ما هو دور الأقواس في الحساب « المنجز باليد »؟ جـ) هل ترى أنه من الضروري حجز الأقواس التي تظهر في الحساب الذي « نجريه باليد » عندما ننجز هذا الحساب بالحاسبة؟ د) احجز على الحاسبة سلسلة العمليات الخطية التالية: $(-42+17)\\times(15+18)$. هـ) أنجز هذا الحساب باليد. ما هو دور الأقواس في الحساب « المنجز باليد »؟ و) هل ترى أنه من الضروري حجز الأقواس التي تظهر في الحساب الذي « نجريه باليد » عندما ننجز هذا الحساب بالحاسبة؟ ز) ما الذي يمكننا استنتاجه حول استعمال الحاسبة عند إنجاز حسابات باليد أو بالحاسبة؟",
    "figure": "dessin d’une calculatrice ; deux rangées de touches arrondies (8 + 3 × ( (−) 4 ) ÷ puis 1 + 2 × ( (−) 1 , 5 )).",
    "answer": {
@@ -2299,7 +2299,7 @@
   {
    "elementId": "deep-47",
    "kind": "reading",
-   "text": "Le scan imprime « 52 » dans la case du milieu de droite ; le carré multiplicatif magique [_,1,_ / 4,−10,x / 5,_,−2] n’existe que pour x = 25 (constante (−10)³ = −1000 ; complété : −50 1 20 / 4 −10 25 / 5 100 −2). Avec 52 aucune complétion n’existe (vérifié). « 52 » est le « 25 » rendu à l’envers (chiffres inversés, même cause que les autres)."
+   "text": "Le scan imprime « 52 » dans la case du milieu de droite ; le carré multiplicatif magique [_,1,_ / 4,−10,x / 5,_,−2] n’existe que pour x = 25 (constante (−10)³ = −1000 ; complété : −50 1 20 / 4 −10 25 / 5 100 −2). Avec 52 les lignes et les colonnes peuvent se compléter (−104 1 20 / 4 −10 52 / 5 208 −2, produit −2080) mais les diagonales échouent (20 × (−10) × 5 = −1000) : le carré n’est magique (diagonales comprises) qu’avec 25 (corrigé par qismat-nisbiyayn, 2026-10-26). « 52 » est le « 25 » rendu à l’envers (chiffres inversés, même cause que les autres)."
   },
   {
    "elementId": "deep-45",
@@ -2319,7 +2319,7 @@
   {
    "elementId": "ex-24",
    "kind": "reading",
-   "text": "Les opérandes de جـ) et د) sont imprimés avec le « − » après le chiffre et dans les deux sens possibles ; lus (−32)÷(−5) et (−21)÷(−5) (quotients décimaux 6,4 et 4,2). À confirmer par qismat-nisbiyayn."
+   "text": "Les opérandes de جـ) et د) sont imprimés avec le « − » après le chiffre et dans les deux sens possibles ; lus (−32)÷(−5) et (−21)÷(−5) (quotients décimaux 6,4 et 4,2). Confirmé par qismat-nisbiyayn (scan relu à 130 dpi, 2026-10-26)."
   },
   {
    "elementId": "ex-15",
@@ -2575,11 +2575,11 @@
   },
   "ex-15": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 4
   },
   "ex-16": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 4
   },
   "ex-17": {
    "lesson": "jidaa-adadayn-nisbiyayn",
@@ -2603,27 +2603,27 @@
   },
   "ex-22": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 4
   },
   "ex-23": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 4
   },
   "ex-24": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 4
   },
   "ex-25": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 4
   },
   "ex-26": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 4
   },
   "ex-27": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 4
   },
   "ex-28": {
    "lesson": "qismat-nisbiyayn",
@@ -2635,7 +2635,7 @@
   },
   "ex-30": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 4
   },
   "ex-31": {
    "lesson": "qismat-nisbiyayn",
@@ -2647,7 +2647,7 @@
   },
   "ex-33": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 4
   },
   "ex-34": {
    "lesson": "jidaa-adadayn-nisbiyayn",
@@ -2688,19 +2688,19 @@
   },
   "self-8": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 8
   },
   "self-9": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 8
   },
   "self-10": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 8
   },
   "self-11": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 8
   },
   "self-12": {
    "lesson": "jidaa-ida-nisbiya",
@@ -2730,11 +2730,11 @@
   },
   "deep-40": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 4
   },
   "deep-41": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 4
   },
   "deep-42": {
    "lesson": "jidaa-ida-nisbiya",
@@ -2751,7 +2751,7 @@
   },
   "deep-45": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 4
   },
   "deep-46": {
    "lesson": "jidaa-ida-nisbiya",
@@ -2779,7 +2779,7 @@
   },
   "deep-52": {
    "lesson": "qismat-nisbiyayn",
-   "module": null
+   "module": 6
   },
   "integration": {
    "lesson": "wadiya-idmajiya-aadad-nisbiya",

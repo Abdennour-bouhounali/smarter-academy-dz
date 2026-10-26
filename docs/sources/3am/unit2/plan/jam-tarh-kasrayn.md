@@ -402,3 +402,16 @@ multiple » key is minimal and each distractor false). Badges « على منوا
 - [ ] Gates: `npm test`, `validate:lessons`, `check:textbook`, `check:lessons`, `build`.
 - [ ] Bank (50) + oracle + JSON entries.
 - [ ] Publish (guide §11, coordinator).
+
+## Generator notes (2026-10-26)
+
+Deviations from this plan, all minimal:
+
+1. **« Examples » of M2 (`know-4`).** The plan listed `1/6 + 4/5 = 29/30` and `7/10 − 3/8 = 13/40`, which are the book's own examples word for word; the independence rule (CLAUDE.md) forbids copying them, so the lesson uses `2/9 + 5/6 = 19/18` (common denominator 18) and `11/12 − 5/8 = 7/24` (24), both recomputed in `content.test.js`.
+2. **`prep` 6 / 7** are rewritten with other numbers (`4/15 + 2/5 = 2/3`, `5/3 − 7/12 = 13/12`) exactly as § 7 M0 says; `method-5` (the book's 2AM cases) is cited by the « تذكّر — السنة الثانية » box, not by an « أستعدّ » item (the unit's prep test requires a textbook item to be `prep`).
+3. **Destinations (`build-extraction.py`).** L3's elements were re-read at 130 dpi (250 dpi crops for `ex-19`, `ex-20`, `ex-21`) and set `verified: True` with exact asserts; the truncated « … » of `ex-19`/`20`/`21` and `deep-80` were completed from the scan. `ex-18`…`ex-21`, `deep-62`, `deep-65` → module 4 (`ex-19` and `ex-20` are also cited by the bank), `deep-74` → module 6, `deep-80`, `self-2`, `self-3` → the bank. **The first difference printed in `ex-21` is NEGATIVE** (`3/4 − 7/9 = −1/36`): out of scope, recorded in `DISCREPANCIES`. The transcription's `deep-80` key `2/5` was the statement's example, not row 2 (`2/7 = 1/4 + 1/28`).
+4. **Lab.** `seed-rake`: a task done by a plant-kind sequence stays playable (the star « أوسع مسافة؟ » needs two working spacings, which is exactly when g1 is done); `g1` finishes after TWO different working spacings AND one refusal (the module's questions quote the student's own refusal — whichever N and zone). `fewest` (معارف) is a plant-kind task flagged `widest`. The free panel's prediction is drawn dashed and never judged.
+5. **M1 questions** read the student's own events: the refused spacing (cases in the failing zone as « between k and k + 1 » because 1/6-zone cases like 4/3 are not decimals), the first working spacing (plants, length), a second working spacing (same length), the widest (1/12 found).
+6. **LP assessment** (`validate:lessons --strict`): E3 (`5/6 − 3/4`, the common-denominator rewrite) carries P1, E1/E4/E5 P2, E2 P3.
+7. **Bank:** « counted: true » for earlier lessons' steps is impossible (the validator requires every question's learning point to belong to this lesson): `maqlub` / `tasawi` steps of L4–L5 are `counted: false`. See EXERCISE_CONTRACT.
+8. **Open for the owner:** the bank's `3am-s1-2` ex 4 (model 5 ex 2) prints `35 + T = 0` with `T = 1/4`, a corpus error replaced by a true step; README owner questions 1–5 unchanged.

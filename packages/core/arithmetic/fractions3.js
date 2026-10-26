@@ -11,9 +11,12 @@
  * Ajouté par la leçon 2 `tasawi-muqaranat-kasrayn` (2026-10-26) : `crossProducts`, `sameFraction`, `compareFractions`, `lcm`, `commonMultiples`, `toDenominator`, `missingTerm`,
  * `matchNumerator`, `shadeVerdict`, `unitsDigitOfProduct` (le labo `shade-match`).
  *
+ * Ajouté par la leçon 3 `jam-tarh-kasrayn` (2026-10-26) : `isCommonMultiple`, `smallestCommonMultiple`, `multiplesUntil`, `cellsOf`, `sumWith`, `widestUnit`,
+ * `zoneEnds` (le labo `seed-rake`) : sommes et différences de fractions POSITIVES par un dénominateur commun.
+ *
  * Importé PAR CHEMIN (`@smarter-academy/core/arithmetic/fractions3.js`), jamais par le barrel du cœur (BUNDLE_BOUNDARIES §3–§4).
  */
-import { rat, parseRat, mul, div, eq, sign } from './powers.js';
+import { rat, parseRat, mul, div, eq, sign, add, sub } from './powers.js';
 
 const big = (x) => (typeof x === 'bigint' ? x : BigInt(x));
 const abs = (x) => (x < 0n ? -x : x);
@@ -191,5 +194,80 @@ export function shadeVerdict(a, b, c, d) {
 
 /** Le dernier chiffre (l'unité) d'un produit de deux naturels, sans calculer le produit : (a mod 10)(b mod 10) mod 10. */
 export function unitsDigitOfProduct(a, b) { return Number(((big(a) % 10n) * (big(b) % 10n)) % 10n); }
+
+/* ── Leçon 3 `jam-tarh-kasrayn` (2026-10-26) : somme et différence de fractions POSITIVES par un dénominateur commun ─────────────────────────────── */
+
+const posRaw = (x) => { const p = toRaw(x); if (p.n < 0n) throw new Error('fraction négative'); return p; };
+
+/** N est-il un multiple commun (non nul) de tous les dénominateurs `dens` (naturels) ? */
+export function isCommonMultiple(N, dens) {
+  const n = big(N);
+  return n > 0n && dens.every((d) => n % big(d) === 0n);
+}
+
+/** Le plus petit multiple commun non nul d'une liste de dénominateurs (naturels ≥ 1). */
+export function smallestCommonMultiple(dens) {
+  if (!dens.length) throw new Error('aucun dénominateur');
+  return dens.map(big).reduce((m, d) => lcm(m, d));
+}
+
+/**
+ * La méthode du livre pour le plus petit multiple commun de deux dénominateurs : on énumère les multiples du PLUS GRAND jusqu'au premier qui est
+ * divisible par l'autre. Retourne `{ larger, other, list: [bigint…], lcm }` (la liste finit par le plus petit multiple commun).
+ */
+export function multiplesUntil(a, b) {
+  const x = big(a); const y = big(b);
+  if (x <= 0n || y <= 0n) throw new Error('dénominateur invalide');
+  const [larger, other] = x >= y ? [x, y] : [y, x];
+  const list = [];
+  for (let m = larger; ; m += larger) { list.push(m); if (m % other === 0n) return Object.freeze({ larger, other, list, lcm: m }); }
+}
+
+/**
+ * Le nombre de cases de largeur 1/N dans la fraction p (positive) : `{ whole, count, cells }` — `cells` = p × N (rationnel exact), `count` = p × N si entier
+ * (sinon null). Une zone de largeur p est remplie de plants entiers ⇔ `whole`.
+ */
+export function cellsOf(p, N) {
+  const x = posRaw(p); const n = big(N);
+  if (n <= 0n) throw new Error('N doit être ≥ 1');
+  const cells = rat(x.n * n, x.d);
+  const whole = cells.d === 1n;
+  return Object.freeze({ whole, count: whole ? cells.n : null, cells });
+}
+
+/** Les extrémités (rationnels exacts, croissantes depuis 0 sauf une récolte) des zones d'une somme algébrique : `terms` = [{ p, sub? }] ; une zone `sub` retire sa largeur de la fin. */
+export function zoneEnds(terms) {
+  let total = rat(0, 1);
+  const out = [];
+  for (const t of terms) {
+    const w = valueOf(posRaw(t.p));
+    const before = total;
+    total = t.sub ? sub(total, w) : add(total, w);
+    if (sign(total) < 0) throw new Error('résultat négatif : hors de cette leçon');
+    out.push(Object.freeze({ from: t.sub ? total : before, to: t.sub ? before : total, sub: !!t.sub }));
+  }
+  return Object.freeze({ zones: out, total });
+}
+
+/**
+ * Planter à l'espacement 1/N : chaque zone doit contenir un nombre ENTIER de cases. `terms` = [{ p, sub? }] (fractions positives, la dernière zone peut être une
+ * récolte). Retourne `{ ok, counts: [bigint|null…], signed: bigint|null (le nombre net de plants), total (rationnel), borderAt: index de la 1re zone qui tombe en
+ * travers d'une case (ou -1), cells }`. Aucun flottant.
+ */
+export function sumWith(terms, N) {
+  const { zones, total } = zoneEnds(terms);
+  const cells = terms.map((t) => cellsOf(t.p, N));
+  const borderAt = cells.findIndex((c) => !c.whole);
+  const ok = borderAt < 0;
+  let signed = null;
+  if (ok) signed = cells.reduce((acc, c, i) => acc + (terms[i].sub ? -c.count : c.count), 0n);
+  return Object.freeze({ ok, counts: cells.map((c) => c.count), signed, total, borderAt, zones });
+}
+
+/** Le plus petit N ≤ maxN qui convient (le plus large espacement 1/N) ou null : un multiple commun des dénominateurs des zones. */
+export function widestUnit(dens, maxN = 60) {
+  const m = smallestCommonMultiple(dens);
+  return m <= big(maxN) ? m : null;
+}
 
 export { sign };

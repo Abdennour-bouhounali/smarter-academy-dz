@@ -100,6 +100,13 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'predict' || tk.kind === 'repeat'), type).toBe(false);
         expect(advanced.numbers.tasks.some((tk) => tk.at), type).toBe(true);
       }
+      // Unité 1 de 3AM, leçon 3 : `code-lockers` se mesure par le SIGNE POSÉ AVANT les chiffres (« ثبّت », متقدم seul) et par le code DÉCIMAL.
+      else if (type === 'code-lockers') {
+        expect(advanced.numbers.tasks.every((tk) => tk.commit), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.commit), type).toBe(false);
+        expect(advanced.numbers.tasks.every((tk) => tk.layout === 'dec'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.qFirst), type).toBe(true);
+      }
       // Unité 2 de 3AM : `gear-crank` se mesure par le NOMBRE DE TÂCHES et par la PRÉDICTION écrite avant de partir (متقدم seul : manivelle bloquée, compteurs voilés).
       else if (type === 'gear-crank') {
         expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
@@ -112,6 +119,12 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.every((tk) => tk.veil), type).toBe(true);
         expect(beginner.numbers.tasks.some((tk) => tk.veil), type).toBe(false);
         expect(advanced.numbers.tasks.some((tk) => tk.kind === 'compare'), type).toBe(true);
+      }
+      // Unité 2 de 3AM, leçon 3 : `seed-rake` se mesure par le NOMBRE DE TÂCHES et par la PRÉDICTION écrite avant de semer (متقدم seul : râteau bloqué).
+      else if (type === 'seed-rake') {
+        expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
+        expect(advanced.numbers.tasks.every((tk) => tk.kind === 'predict'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(false);
       }
       // Unité 6 de 3AM : `pin-rails` se mesure par le NOMBRE DE TÂCHES et par les LECTURES sur la droite (متقدم seul).
       else if (type === 'pin-rails') {
