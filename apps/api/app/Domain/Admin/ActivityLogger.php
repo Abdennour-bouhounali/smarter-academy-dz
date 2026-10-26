@@ -204,6 +204,11 @@ class ActivityLogger
 
     public const CLASSROOM_MEMBER_SCHOOL_CONSENTED = 'classroom_member.school_consented';
 
+    /** Phase 5 : les rapports figés (type et portée seulement, jamais le contenu). */
+    public const SCHOOL_REPORT_GENERATED = 'school_report.generated';
+
+    public const SCHOOL_REPORT_DELETED = 'school_report.deleted';
+
     /** Suppression définitive d'un compte élève ou enseignant (UserDeletionService). */
     public const USER_DELETED = 'user.deleted';
 

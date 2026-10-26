@@ -1,14 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ClipboardList, GraduationCap, Presentation, School, Users } from 'lucide-react';
+import { GraduationCap, School, Users } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { fetchSchoolOverview } from '../../services/schoolService';
-
-const COMING = [
-  { key: 'reports', icon: ClipboardList },
-  { key: 'meeting', icon: Presentation },
-];
 
 function Figure({ icon: Icon, label, value, hint }) {
   return (
@@ -28,7 +23,6 @@ function Figure({ icon: Icon, label, value, hint }) {
  *
  * Des COMPTES, jamais une moyenne. Les élèves comptés sont ceux qui ont
  * consenti à la lecture de l'établissement — le texte le dit sous le chiffre.
- * Les sections à venir sont annoncées « قيد الإعداد », non cliquables.
  */
 export default function SchoolHome() {
   const { t } = useTranslation('idara');
@@ -74,19 +68,6 @@ export default function SchoolHome() {
         <Figure icon={School} label={t('home.classes')} value={counts.classes} />
         <Figure icon={GraduationCap} label={t('home.teachers')} value={counts.teachers} />
         <Figure icon={Users} label={t('home.students')} value={counts.students} hint={t('home.studentsHint')} />
-      </section>
-
-      <section className="rounded-2xl border border-dashed border-slate-300 bg-white p-6">
-        <h2 className="font-space text-lg font-bold text-slate-900">{t('home.comingTitle')}</h2>
-        <p className="mt-1 font-inter text-sm text-slate-600">{t('home.comingText')}</p>
-        <ul className="mt-4 grid gap-3 md:grid-cols-2">
-          {COMING.map(({ key, icon: Icon }) => (
-            <li key={key} className="flex items-center gap-3 rounded-xl bg-slate-50 p-4 font-inter text-sm text-slate-500" aria-disabled="true">
-              <Icon size={18} aria-hidden="true" />
-              {t(`home.coming.${key}`)}
-            </li>
-          ))}
-        </ul>
       </section>
     </div>
   );

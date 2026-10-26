@@ -7,30 +7,7 @@ import { stateLabel } from '../../lessons/common/components/masteryLabels';
 import MathLabel from '../../lessons/common/components/MathLabel';
 import { fetchLearningMap } from '../../services/schoolService';
 import { card, errorText, field } from '../../features/school/ui';
-
-// Les mêmes couleurs que « التقدّم بالتفصيل » (features/family/ProgressDetail.jsx).
-const STATES = [
-  ['mastered', 'bg-emerald-500'],
-  ['reinforce', 'bg-amber-400'],
-  ['gap', 'bg-rose-500'],
-  ['unassessed', 'bg-slate-300'],
-];
-
-/** Une cellule : la distribution d'UNE classe sur UNE كفاءة — une barre, jamais un pourcentage moyen. */
-function Distribution({ counts, t }) {
-  const total = STATES.reduce((sum, [k]) => sum + (counts?.[k] ?? 0), 0);
-  if (!total) return <span className="font-inter text-xs text-slate-400">{t('common.dash')}</span>;
-  return (
-    <div title={t('map.cellTitle', counts)} data-map-cell>
-      <div className="flex h-3 w-full overflow-hidden rounded-full bg-slate-100" dir="ltr">
-        {STATES.map(([k, color]) => (counts[k] ? <div key={k} className={color} style={{ width: `${(counts[k] / total) * 100}%` }} /> : null))}
-      </div>
-      <p className="mt-1 font-inter text-[11px] text-slate-500" dir="ltr">
-        {STATES.map(([k]) => counts[k] ?? 0).join(' · ')}
-      </p>
-    </div>
-  );
-}
+import Distribution, { STATES } from '../../features/school/Distribution';
 
 /**
  * « الكفاءات » (SCHOOL_ADMIN_SPACE.md §7, phase 4) : chaque كفاءة d'un niveau,
@@ -112,8 +89,8 @@ export default function SchoolLearningMap() {
                         </span>
                       )}
                     </td>
-                    {map.classes.map((c) => <td key={c.id} className="p-3 align-top"><Distribution counts={lp.byClass[String(c.id)]} t={t} /></td>)}
-                    <td className="p-3 align-top"><Distribution counts={lp.total} t={t} /></td>
+                    {map.classes.map((c) => <td key={c.id} className="p-3 align-top"><Distribution counts={lp.byClass[String(c.id)]} /></td>)}
+                    <td className="p-3 align-top"><Distribution counts={lp.total} /></td>
                   </tr>
                 ))}
               </tbody>

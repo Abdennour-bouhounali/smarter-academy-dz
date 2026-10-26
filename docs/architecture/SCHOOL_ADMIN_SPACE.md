@@ -1,11 +1,12 @@
 # « فضاء الإدارة » — the school administration space
 
-> Status (2026-10-26): **Phases 0–4 implemented** — contract, data model, the
+> Status (2026-10-26): **Phases 0–6 implemented** — contract, data model, the
 > `school_admin` role and its gate, the privacy gate `SchoolAccess`, the
 > platform admin's « المؤسسات », the school's STRUCTURE (terms, teachers,
-> classes, students, roster import, login cards) and its TRACKING (the
-> الكفاءات map per class, the student file). Phases 5–7 (reports, meeting view,
-> licence) are `Planned`. The code is the source of truth.
+> classes, students, roster import, login cards), its TRACKING (the الكفاءات
+> map per class, the student file), its REPORTS (frozen snapshots, A4 print,
+> CSV) and the MEETING VIEW. Phase 7 (the school licence) is `Planned`. The
+> code is the source of truth.
 
 A **school** (« المؤسسة », a متوسطة) is a first-class object: its classes, its
 teachers, its students, and one **director** (« المدير ») who manages them,
@@ -151,8 +152,9 @@ Lazy routes, `SchoolLayout`, namespace `idara` on demand. Shared look and helper
 /idara/iidadat     الإعدادات      the three terms                                                       built
 /idara/talamidh/:id ملف التلميذ   the parent's « التقدّم بالتفصيل » (ProgressDetail audience="school")   built (phase 4)
 /idara/kafaat      الكفاءات       each الكفاءة of a grade, class by class, as counts                    built (phase 4)
-/idara/taqarir     التقارير       catalogue, snapshots, print, export                                   Planned (phase 5)
-/idara/ijtimaa/:id وضع الاجتماع   projection, « إخفاء الأسماء »                                        Planned (phase 6)
+/idara/taqarir     التقارير       catalogue (type, scope, term) → frozen snapshot; saved list           built (phase 5)
+/idara/taqarir/:id تقرير          the frozen report: A4 print, CSV, « وضع الاجتماع »                     built (phase 5)
+/idara/ijtimaa/:id وضع الاجتماع   full-screen projection, one slide per screen, « إخفاء الأسماء »       built (phase 6)
 ```
 
 **Classes** (`SchoolClassroomService`). The director creates a class FOR a
@@ -208,6 +210,9 @@ PATCH /school/students/{studentId}/classroom {classroomId}
 POST /school/students/credentials {studentIds[]}  (no-store)
 GET  /school/learning-map[?grade=]   → {grades[], map{grade, classes[{id, name, students}], lessons[{code, title, learningPoints[{code, title, byClass{classId: counts}, total: counts, difficultyScope}]}]}}
 GET  /school/students/{studentId}/progress   → {student{id, firstName, lastName, classroom}, progress}  (404 outside the school)
+GET  /school/reports                 → {reports[{id, type, scope, title, term, schemaVersion, generatedAt}]}  (no payload)
+POST /school/reports {type, scope?, termId?}  → 201 {report{…, school, payload}}
+GET  /school/reports/{id}            DELETE /school/reports/{id}   (404 for another school's report)
 ```
 
 **Tracking (phase 4, `SchoolProgressService`).** It recomputes nothing: it READS
@@ -231,6 +236,57 @@ students the school may read (`consentedMemberships`).
 - Locked by `SchoolProgressTest` (the map equals the engine's rows; a
   non-consented student is absent; no `average`/`mean` key) and the two reads in
   `SchoolPrivacyContractTest`.
+
+**Reports (phase 5, `SchoolReportService`).** A report is FROZEN when the
+director generates it: `school_report_snapshots {school_id, type, scope,
+term_id, title, payload (JSON), schema_version, generated_by, generated_at}`.
+What is printed or projected in a council is what was true that day; a new
+student or a new answer never changes an existing snapshot — the director
+generates a new one. One builder per type, all on the tracking and teacher
+services (nothing recomputes mastery, nothing averages):
+
+| `type` | « » | `scope` | payload |
+|---|---|---|---|
+| `class` | تقرير القسم | classroom id | `classroom {name, gradeName, teacher}`, `students`, `lessons[].learningPoints[].counts`, `studentsToWatch[{id, firstName, lastName, gap, reinforce, mastered}]` (most gaps first) |
+| `grade` | تقرير المستوى | grade code | `map` (the learning map of §6), `hardest` (≤ 10 points whose `difficultyScope` is `class_wide` or `small_group`, most gaps first) |
+| `student` | بطاقة متابعة التلميذ | student id | `{student, progress}` = the student file (no study time) |
+| `school_term` | الحصيلة الفصلية | — | `counts`, and per grade `{classes, students, states (student × الكفاءة counts), hardest ≤ 5}` |
+| `teachers` | نشاط الأساتذة | — | `teachers[{…, facts}]` = `TeacherActivityFacts` (D4) |
+
+- The optional `termId` (a `school_terms` row of the school) LABELS the
+  snapshot (« الفصل 1 — 2026-2027 »); mastery is the state at generation.
+- The server returns codes, numbers and names; the `title` column is the
+  subject's name (class, grade, student, school). Every label is the client's
+  (`idara:reports.*`) — « the API speaks codes ».
+- A snapshot of another school answers 404 (`report_not_found`). Generating and
+  deleting are logged (`school_report.generated|deleted`, type and scope only).
+- **Print**: `pages/school/SchoolReport.jsx` — `[data-school-print]` article,
+  header (school, report, term, « حالة يوم … »), `features/school/reports/reportPrint.css`
+  (A4, margins, « صفحة n / N » in the `@bottom-center` page box, table headers
+  repeated, rows not split); the space's header and the toolbar carry `print:hidden`.
+- **CSV**: built in the browser from the same payload (`reportCsv.js`, pure,
+  tested): one table per type, Arabic headers from the same labels, UTF-8 with a
+  BOM so Excel reads Arabic. No server export endpoint. (Gating behind
+  `reports.export` belongs to the licence, phase 7.)
+- The body is ONE component, `features/school/reports/ReportView.jsx`, for the
+  screen and the paper; the distribution bar is the shared
+  `features/school/Distribution.jsx` (also the learning map).
+
+**Meeting view (phase 6, `pages/school/SchoolMeeting.jsx`).** `/idara/ijtimaa/:id`
+projects a frozen report OUTSIDE the space's shell (like `ChallengeDisplayPage`).
+`features/school/reports/meetingSlides.js` (pure, tested) cuts it into slides —
+a title, then per type: one slide per lesson WITH evidence (a lesson where no
+student has a state is left out of the projection, the printed report stays
+complete), the students to watch, the hardest الكفاءات, one slide per grade,
+the teachers. Keyboard and clicker (`stepForKey`: ←, ↓, PageDown, Space,
+Enter forward — RTL; →, ↑, PageUp back; Escape returns to the report), a
+fullscreen button, and **« إخفاء الأسماء »** — student names become « تلميذ n »
+(teachers « أستاذ n »), ON by default for `grade`, `school_term`, `teachers`
+(wide councils), OFF for a class council. Distributions are drawn large
+(`Distribution size="lg"`).
+
+The director's header shows icon-only links below 1280 px (labels as tooltip
+and accessible name) and the name and « تسجيل الخروج » text from 1536 px.
 
 ## 7. The teacher's side — « مؤسستي » (D4)
 
@@ -259,28 +315,28 @@ The teacher's class shape gains `schoolId`.
 
 | # | Phase | Contents |
 |---|---|---|
-| 5 | Reports | one builder per report type, versioned payload, frozen `school_report_snapshots` per term (`school_terms`), A4 print (`[data-school-print]` portal), CSV/XLSX export behind `reports.export` |
-| 6 | Meeting view | full-screen projection like `ChallengeDisplayPage`, keyboard / clicker, « إخفاء الأسماء » on by default for grade and school reports |
 | 7 | Licence (D1) | `school_licences`, `SchoolCoverage` (allow reason `school_licence`, precedence `activation_code > school_licence > teacher_subscription`), `SchoolCapacityService` — a covered school class stops using its teacher's seats |
-| — | Not planned yet | XLSX roster files (CSV and paste only); a deputy / counselor role (D3) |
+| — | Not planned yet | XLSX roster files (CSV and paste only) and XLSX report export (CSV only); a BEM-readiness report; a deputy / counselor role (D3) |
 
 ## 9. Files
 
-- API: `app/Domain/School/{SchoolAccess,SchoolException,SchoolService,SchoolOverviewService,SchoolTermService,SchoolTeacherService,SchoolClassroomService,SchoolRosterService,SchoolProgressService,TeacherActivityFacts}.php`;
-  `app/Http/Controllers/School/SchoolProgressController.php`;
+- API: `app/Domain/School/{SchoolAccess,SchoolException,SchoolService,SchoolOverviewService,SchoolTermService,SchoolTeacherService,SchoolClassroomService,SchoolRosterService,SchoolProgressService,SchoolReportService,TeacherActivityFacts}.php`;
+  `app/Http/Controllers/School/{SchoolProgressController,SchoolReportController}.php`; `app/Models/SchoolReportSnapshot.php`;
+  migration `2026_10_26_000003_create_school_report_snapshots.php`;
   `ClassroomMembershipService::{admit, enrolBySchool, confirmSchoolConsent}`;
   `app/Models/{School,SchoolStaff,SchoolTeacher,SchoolTerm}.php`; `config/school.php`;
   `app/Http/Controllers/Admin/AdminSchoolController.php`,
   `app/Http/Controllers/School/{SchoolController,SchoolHomeController,SchoolStructureController,SchoolStudentController}.php`,
   `app/Http/Controllers/Teacher/TeacherSchoolController.php`, `StudentClassroomController::schoolConsent`;
   migrations `2026_10_26_000001_create_school_tables.php`, `2026_10_26_000002_add_school_structure.php`.
-- Web: `components/layout/SchoolLayout.jsx`; `pages/school/{SchoolHome,SchoolClassrooms,SchoolTeachers,SchoolStudents,SchoolSettings,SchoolLearningMap,SchoolStudentFile}.jsx`;
+- Web: `components/layout/SchoolLayout.jsx`; `pages/school/{SchoolHome,SchoolClassrooms,SchoolTeachers,SchoolStudents,SchoolSettings,SchoolLearningMap,SchoolStudentFile,SchoolReports,SchoolReport,SchoolMeeting}.jsx`;
+  `features/school/{Distribution.jsx,reports/{ReportView.jsx,reportCsv.js,meetingSlides.js,reportPrint.css}}`;
   `pages/teacher/{TeacherSchoolPage,TeacherSchoolJoin}.jsx`; `features/school/{ui.js,rosterCsv.js,RosterImportDialog.jsx,SchoolCredentialCards.jsx,TeacherFacts.jsx}`;
   `services/schoolService.js`; `i18n/locales/ar/idara.json` (on demand) + `common.apiErrors.idara`,
   `nav.mySchool`, `student.json › qism.sharing.school, qism.schoolConsent.*` (entry);
   `pages/admin/schools/{SchoolList,SchoolDetail}.jsx`, `services/admin/schoolService.js`,
   `admin.json › schools`, `nav.schools`; role landing in `HomeRedirect`, `Login`, `AuthGoogle`, `CompleteName`.
-- Tests: `tests/Feature/{SchoolAdminTest,SchoolPrivacyContractTest,SchoolStructureTest,SchoolRosterTest,SchoolProgressTest}.php`,
-  `tests/Support/SchoolFixtures.php`; `features/school/rosterCsv.test.js`.
+- Tests: `tests/Feature/{SchoolAdminTest,SchoolPrivacyContractTest,SchoolStructureTest,SchoolRosterTest,SchoolProgressTest,SchoolReportTest}.php`,
+  `tests/Support/SchoolFixtures.php`; `features/school/{rosterCsv,reports/reportCsv,reports/meetingSlides}.test.js`.
 - Deployment: `php artisan migrate` (additive migrations, no hand-written SQL).
-  Entry bundle after phase 3: 234.8 KB gzip (budget 245).
+  Entry bundle after phase 6: 235.1 KB gzip (budget 245).

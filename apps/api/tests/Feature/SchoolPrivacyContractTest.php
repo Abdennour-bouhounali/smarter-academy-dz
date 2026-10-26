@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Domain\School\SchoolAccess;
+use App\Domain\School\SchoolReportService;
 use App\Models\Classroom;
 use App\Models\ClassroomMembership;
 use App\Models\School;
@@ -58,6 +59,9 @@ class SchoolPrivacyContractTest extends TestCase
         ClassroomMembership::whereIn('student_id', [$readable->id, $elsewhere->id])
             ->update(['school_consent_at' => now(), 'school_consent_by' => 'student']);
 
+        // Un rapport de classe FIGÉ : il porte des noms d'élèves, jamais une adresse.
+        $report = app(SchoolReportService::class)->generate($director, $school, 'class', (string) $classroom->id, null)->id;
+
         return [
             'school' => $school,
             'director' => $director,
@@ -65,6 +69,7 @@ class SchoolPrivacyContractTest extends TestCase
             'readable' => $readable,
             'notConsented' => $notConsented,
             'elsewhere' => $elsewhere,
+            'report' => $report,
         ];
     }
 
@@ -79,6 +84,8 @@ class SchoolPrivacyContractTest extends TestCase
             'students' => '/api/v1/school/students',
             'learningMap' => '/api/v1/school/learning-map',
             'studentFile' => "/api/v1/school/students/{$s['readable']->id}/progress",
+            'reports' => '/api/v1/school/reports',
+            'classReport' => "/api/v1/school/reports/{$s['report']}",
         ];
     }
 

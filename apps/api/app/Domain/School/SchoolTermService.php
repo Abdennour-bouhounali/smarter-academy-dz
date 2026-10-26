@@ -20,7 +20,7 @@ class SchoolTermService
 {
     public function __construct(private ActivityLogger $logger) {}
 
-    /** @return array<int, array{term: int, startsOn: string, endsOn: string}> */
+    /** @return array<int, array{id: int, term: int, startsOn: string, endsOn: string}> */
     public function list(School $school, string $academicYear): array
     {
         return SchoolTerm::where('school_id', $school->id)
@@ -28,6 +28,7 @@ class SchoolTermService
             ->orderBy('term')
             ->get()
             ->map(fn (SchoolTerm $t) => [
+                'id' => $t->id,
                 'term' => $t->term,
                 'startsOn' => $t->starts_on->format('Y-m-d'),
                 'endsOn' => $t->ends_on->format('Y-m-d'),

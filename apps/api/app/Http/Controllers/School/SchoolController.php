@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
  * et la traduction des refus du domaine.
  *
  *     no_school                     → 403
+ *     report_not_found              → 404
  *     tout autre motif d'établissement ou de classe → 422 {reason}
  */
 abstract class SchoolController extends Controller
@@ -35,7 +36,12 @@ abstract class SchoolController extends Controller
                 'success' => false,
                 'reason' => $e->reason,
                 'message' => $e->getMessage(),
-            ], $e->reason === SchoolException::NO_SCHOOL ? 403 : 422);
+            ], match ($e->reason) {
+                SchoolException::NO_SCHOOL => 403,
+                // Un rapport d'un AUTRE établissement : comme un inconnu.
+                SchoolException::REPORT_NOT_FOUND => 404,
+                default => 422,
+            });
         } catch (ClassroomException $e) {
             return response()->json(['success' => false, 'reason' => $e->reason, 'message' => $e->getMessage()], 422);
         }

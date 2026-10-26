@@ -32,6 +32,12 @@ export const fetchLearningMap = (token, grade) =>
   call(`/school/learning-map${grade ? `?grade=${encodeURIComponent(grade)}` : ''}`, get(token), KEY);
 export const fetchStudentFile = (token, studentId) => call(`/school/students/${encodeURIComponent(studentId)}/progress`, get(token), KEY);
 
+// Côté DIRECTEUR — les rapports figés (phase 5).
+export const fetchReports = (token) => call('/school/reports', get(token), KEY);
+export const generateReport = (token, body) => call('/school/reports', send('POST', token, body), KEY);
+export const fetchReport = (token, id) => call(`/school/reports/${encodeURIComponent(id)}`, get(token), KEY);
+export const deleteReport = (token, id) => call(`/school/reports/${encodeURIComponent(id)}`, send('DELETE', token), KEY);
+
 // Côté ENSEIGNANT — « مؤسستي » (même transport, même catalogue d'erreurs).
 export const fetchMySchool = (token) => call('/teacher/school', get(token), KEY);
 export const previewSchoolLink = (token, linkToken) => call(`/teacher/school-links/${encodeURIComponent(linkToken)}`, get(token), KEY);

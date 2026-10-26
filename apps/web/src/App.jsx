@@ -101,6 +101,9 @@ const SchoolStudents = lazy(() => import('./pages/school/SchoolStudents'));
 const SchoolSettings = lazy(() => import('./pages/school/SchoolSettings'));
 const SchoolLearningMap = lazy(() => import('./pages/school/SchoolLearningMap'));
 const SchoolStudentFile = lazy(() => import('./pages/school/SchoolStudentFile'));
+const SchoolReports = lazy(() => import('./pages/school/SchoolReports'));
+const SchoolReport = lazy(() => import('./pages/school/SchoolReport'));
+const SchoolMeeting = lazy(() => import('./pages/school/SchoolMeeting'));
 // « مؤسستي » : l'établissement vu par l'enseignant, et son lien d'adhésion.
 const TeacherSchoolPage = lazy(() => import('./pages/teacher/TeacherSchoolPage'));
 const TeacherSchoolJoin = lazy(() => import('./pages/teacher/TeacherSchoolJoin'));
@@ -476,6 +479,8 @@ function AppRoutes() {
           la vraie porte est le serveur : /api/v1/school/* derrière can:school
           et une nomination active (SchoolAccess::schoolOf). */}
       <Route path="/idara" element={<ProtectedRoute allowedRoles={['school_admin']} />}>
+        {/* « وضع الاجتماع » : plein écran, hors de la coquille (projecteur). */}
+        <Route path="ijtimaa/:reportId" element={<SchoolMeeting />} />
         <Route element={<SchoolLayout />}>
           <Route index element={<SchoolHome />} />
           <Route path="aqsam" element={<SchoolClassrooms />} />
@@ -483,6 +488,8 @@ function AppRoutes() {
           <Route path="talamidh" element={<SchoolStudents />} />
           <Route path="talamidh/:studentId" element={<SchoolStudentFile />} />
           <Route path="kafaat" element={<SchoolLearningMap />} />
+          <Route path="taqarir" element={<SchoolReports />} />
+          <Route path="taqarir/:reportId" element={<SchoolReport />} />
           <Route path="iidadat" element={<SchoolSettings />} />
         </Route>
       </Route>

@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminClassroomController;
 use App\Http\Controllers\Admin\AdminSchoolController;
 use App\Http\Controllers\School\SchoolHomeController;
 use App\Http\Controllers\School\SchoolProgressController;
+use App\Http\Controllers\School\SchoolReportController;
 use App\Http\Controllers\School\SchoolStructureController;
 use App\Http\Controllers\School\SchoolStudentController;
 use App\Http\Controllers\Teacher\TeacherSchoolController;
@@ -650,6 +651,12 @@ Route::prefix('v1')->group(function () {
             // Phase 4 — le suivi : la carte des الكفاءات, le dossier d'un élève.
             Route::get('/learning-map', [SchoolProgressController::class, 'learningMap']);
             Route::get('/students/{studentId}/progress', [SchoolProgressController::class, 'studentFile'])->whereNumber('studentId');
+
+            // Phase 5 — les rapports figés.
+            Route::get('/reports', [SchoolReportController::class, 'index']);
+            Route::post('/reports', [SchoolReportController::class, 'store'])->middleware('throttle:30,1');
+            Route::get('/reports/{id}', [SchoolReportController::class, 'show'])->whereNumber('id');
+            Route::delete('/reports/{id}', [SchoolReportController::class, 'destroy'])->whereNumber('id');
         });
 
     // Protected routes — admin only

@@ -54,6 +54,11 @@ class SchoolException extends DomainException
     /** Rééditer le mot de passe d'un compte PERSONNEL (non créé par l'établissement). */
     public const NOT_SCHOOL_LOGIN = 'not_school_login';
 
+    /** Phase 5 — un rapport demandé sur un type, une portée ou un trimestre inconnus. */
+    public const INVALID_REPORT = 'invalid_report';
+
+    public const REPORT_NOT_FOUND = 'report_not_found';
+
     /** Un import refusé en bloc (lignes invalides, trop de lignes). */
     public const INVALID_ROSTER = 'invalid_roster';
 
