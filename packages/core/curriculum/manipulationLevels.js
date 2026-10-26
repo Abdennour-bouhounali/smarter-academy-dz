@@ -254,6 +254,10 @@ export const VISUAL_THEMES = Object.freeze({
   //                 câble qui descend ou monte, un drone au-dessus, un robot plongeur dessous, une chercheuse (KidFigure, hijab) sur le
   //                 pont (`zero-probe`)
   researchBoat: { kind: 'objects', shows: 'سفينة بحث في عرض البحر: مسبار ثابت وآخر معلّق بحبل يهبط تحت سطح الماء أو يرتفع فوقه' },
+  // 3AM, unité 1 (2026-10-26) :
+  //   mallElevator  un مصعد شحن de centre commercial en coupe : des étages au-dessus de la rue et un parking en dessous, et l'écran de
+  //                 rediffusion de la caméra de surveillance avec sa ligne du temps (`elevator-reel`)
+  mallElevator: { kind: 'objects', shows: 'مصعد مركز تجاري: طوابق فوق الشارع وطوابق مرآب تحته، وشاشة إعادة تسجيل كاميرا المراقبة' },
   // 3AM, unité 5 (2026-10-21) :
   //   stadium  le مضمار de la cour de l'école : un mur de graduations et deux coureurs (KidFigure, une élève en hijab et un élève), chacun
   //            à la valeur d'un membre d'une égalité ; ils se tiennent sur la même graduation tant que l'égalité est vraie (`equality-lanes`)
@@ -277,6 +281,11 @@ export const VISUAL_THEMES = Object.freeze({
   //   stall  l'étal d'une papeterie de quartier : un repère quadrillé sur une planche de liège, des boîtes de punaises, une règle de laiton, une
   //          vendeuse (KidFigure, hijab) à côté du tableau de prix (`pin-rails`)
   stall: { kind: 'objects', shows: 'دكّان أدوات مدرسية: لوحة فلّين فيها معلم مربّعات ودبابيس ومسطرة من نحاس وبائعة بجانب جدول الأسعار' },
+  // 3AM, unité 2 (2026-10-25) :
+  //   bikestand  la cour de l'école et la درّاجة du نادي : un plateau et un pignon dessinés avec leur VRAI nombre de dents, une chaîne dont les maillons
+  //              avancent dent par dent, une roue à valve colorée, une manivelle qu'on tourne, un drapeau craie à la distance voulue (à l'échelle) et une
+  //              élève (KidFigure, hijab) qui l'attend (`gear-crank`)
+  bikestand: { kind: 'objects', shows: 'درّاجة جبلية: دوّاسة وصحن أمامي وترس خلفي وسلسلة وعجلة' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

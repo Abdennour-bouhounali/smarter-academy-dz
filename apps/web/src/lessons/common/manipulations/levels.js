@@ -776,6 +776,20 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { tasks: [{ left: '3x+2', right: 'x+8' }, { left: '4x-3', right: '2x+7' }] }, ...P },
     advanced: { numbers: { tasks: [{ left: '9x+1', right: '5x-7' }, { left: '-2x+5', right: '3x-10' }, { left: '7x-190', right: '6x+110' }] }, ...T('method-4') },
   },
+  // ── 3AM, unité 1 « الأعداد النسبية » (2026-10-26) ──
+  // LE TEMPS SIGNÉ SOUS LA MAIN (elevator-reel, thème mallElevator) : un ascenseur passe par l'étage 0 à l'instant 0 d'un film, à vitesse r (étages/minute,
+  // signée) ; à l'instant t (signé) il est à l'étage r × t. مبتدئ (plateforme, pas 1, r imposée) : m1 r = −2 → étage −6, m2 r = −2 → étage 4 (le film est
+  // REMBOBINÉ : t = −2), m3 r = 3 → 6, m4 r = 3 → −9. متقدم (know-1, pas 0,5, la main tient AUSSI r) : a1 prédire l'étage de (−3, −2) AVANT de voir (cartes), a2 l'étage −6
+  // en montant PUIS en descendant, a3 r = −2 → 3 (t = −1,5), a4 r = 2 → −5 (t = −2,5). Le test des niveaux mesure la paire par la finesse du pas et la prédiction.
+  'elevator-reel': {
+    beginner: { numbers: { step: '1', tasks: [
+      { id: 'm1', r: '-2', floor: '-6' }, { id: 'm2', r: '-2', floor: '4' }, { id: 'm3', r: '3', floor: '6' }, { id: 'm4', r: '3', floor: '-9' },
+    ] }, ...P },
+    advanced: { numbers: { step: '0,5', tasks: [
+      { id: 'a1', kind: 'predict', r: '-3', t: '-2', options: ['6', '-6', '-5', '1'], key: '6' },
+      { id: 'a2', kind: 'both', floor: '-6' }, { id: 'a3', r: '-2', floor: '3' }, { id: 'a4', r: '2', floor: '-5' },
+    ] }, ...T('know-1') },
+  },
   // ── 2AM, unité 3 « الأعداد النسبية » (2026-10-21) ──
   // LA DISTANCE À ZÉRO SOUS LA MAIN (zero-probe, thème researchBoat) : la main tient la longueur d'un câble qui descend (ou monte)
   // du zéro, le côté est un interrupteur à part, le nombre relatif de B est leur sortie. مبتدئ (plateforme, pas 1) : A=−3 sous le zéro,
@@ -796,6 +810,22 @@ export const LEVELS = Object.freeze({
     ] }, ...T('method-1') },
   },
   // ── 3AM, unité 6 « التناسبية » (2026-10-21) ──
+  // ── 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » (2026-10-25) ──
+  // LA DIVISION PAR UN RAPPORT SOUS LA MAIN (gear-crank, thème bikestand) : la manivelle d'une درّاجة ; une tâche est `{ id, F, R, target, predict? }` (F dents au plateau,
+  // R au pignon, target = tours de roue jusqu'au drapeau). مبتدئ (plateforme, compteurs ouverts) : m1 48/24 → 3 (3/2 tour de pédale), m2 24/32 → 6 (8 tours de pédale :
+  // PLUS que 6), m3 24/32 → 1 (4/3). متقدم (method : le texte du manuel sur la division, prédiction écrite AVANT de partir, compteurs voilés) : a1 36/48 → 9/2, a2 40/24 → 5/2,
+  // a3 30/42 → 10/3, puis a4 : 42/30 → 1 et, la chaîne déplacée, 30/42 → 1. Le monde `reverse` (module 2) est posé par la leçon (`tasks` r1, r2). Le test des niveaux mesure la paire par
+  // le nombre de tâches et par la prédiction demandée.
+  'gear-crank': {
+    beginner: { numbers: { tasks: [
+      { id: 'm1', F: 48, R: 24, target: '3' }, { id: 'm2', F: 24, R: 32, target: '6' }, { id: 'm3', F: 24, R: 32, target: '1' },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', F: 36, R: 48, target: '9/2', predict: true }, { id: 'a2', F: 40, R: 24, target: '5/2', predict: true },
+      { id: 'a3', F: 30, R: 42, target: '10/3', predict: true }, { id: 'a4a', F: 42, R: 30, target: '1', predict: true },
+      { id: 'a4b', F: 30, R: 42, target: '1', predict: true },
+    ] }, ...T('know-2') },
+  },
   // LE POURCENTAGE SOUS LA MAIN (hundred-grid, thème pantry) : un stock coupé en 100 paquets égaux (10 × 10 cases) ; la main PEINT t cases, le panier
   // reçoit t paquets (x × t/100). مبتدئ (plateforme) : 15 % de 240 (la réponse écrite AVANT l'ouverture), le taux qui remplit un panier de 60 sur 150, +15 %
   // de 200 puis −20 % de 250. متقدم (platform + method-2) : 70 % de 75 et 25 % de 32 (taux cherchés), 84 est 60 % de ? (le stock entier), puis la chaîne

@@ -137,6 +137,8 @@ import { ORACLE as ORACLE_3AM_MUADALAT_DARAJAT_ULA } from './practice-oracle/mua
 import { ORACLE as ORACLE_3AM_NASHR_JABRI } from './practice-oracle/nashr-jabri-3am.mjs';
 import { ORACLE as ORACLE_3AM_NISBA_MIAWIYA_3AM } from './practice-oracle/nisba-miawiya-3am.mjs';
 import { ORACLE as ORACLE_3AM_TANASUB_TAMTHIL_BAYANI } from './practice-oracle/tanasub-tamthil-bayani.mjs';
+import { ORACLE as ORACLE_3AM_MAQLUB_QISMAT_KASRAYN, audit as auditMaqlub } from './practice-oracle/maqlub-qismat-kasrayn.mjs';
+import { ORACLE as ORACLE_3AM_JIDAA_ADADAYN } from './practice-oracle/jidaa-adadayn-nisbiyayn.mjs';
 
 // Toutes les années du cycle moyen (content/practice/<1am…4am>/<leçon>/level-N) : jusqu'au 2026-10-14 seul 4am
 // existait et la racine y était codée en dur — un banc 1AM–3AM aurait échappé à l'oracle sans rien dire.
@@ -299,6 +301,8 @@ const ORACLE = {
   ...ORACLE_3AM_NASHR_JABRI,
   ...ORACLE_3AM_NISBA_MIAWIYA_3AM,
   ...ORACLE_3AM_TANASUB_TAMTHIL_BAYANI,
+  ...ORACLE_3AM_MAQLUB_QISMAT_KASRAYN,
+  ...ORACLE_3AM_JIDAA_ADADAYN,
 };
 
 /**
@@ -336,6 +340,12 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     expect(range(13, 488).filter((x) => 402 % x === 12 && 488 % x === 8)).toEqual([15, 30]);
     // « بين 25 و 40 » lu au sens large : trois valeurs ; au sens strict : une seule
     expect(range(25, 40).filter((a) => gcd(a, 15) === 5)).toEqual([25, 35, 40]);
+  });
+
+  it('مقلوب عدد وقسمة كسرين (3AM) : clés irréductibles réduites, QCM à une seule bonne option, distracteurs étiquetés MISC-MAQLUB-*', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-maqlub-qismat-kasrayn-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditMaqlub(own)).toEqual([]);
   });
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {

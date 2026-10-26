@@ -313,6 +313,10 @@ Lessons are generated **along the net, not grade by grade**. `scripts/learning-n
 `docs/curriculum/GENERATION_QUEUE.md` (readable) and `docs/curriculum/generation-queue.json` (machine). Batches take
 the queue's first entries that are still `coming_soon`, in order.
 
+0. **Phase 0 — owner priority** (owner, 2026-10-25). The remaining lessons of the 3AM units 1–5 (`aadad-nisbiya`, `kusur-natiqa`,
+   `quwa-nisbiya`, `ibarat-harfiya-3`, `musawiyat-mutabayinat`, in that order; `OWNER_FIRST_UNITS` in the script) come first, in
+   catalogue order, each synthesis after its unit's last lesson — 20 entries. Each one has a written generation plan
+   (`docs/sources/3am/unit<N>/plan/<code>.md`, index `docs/curriculum/PLAN_3AM_UNITS_1_5.md`) that the generator executes.
 1. **Phase A — what the 4AM student needs NOW** (owner, 2026-10-20). The 4AM students already use the platform, so their
    current needs come first, before lessons they will need later in the year or not at all in 4AM. The 4AM units are taken in
    textbook order (`units_4am › number`, 1 → 14), and their lessons in catalogue order. For each lesson:

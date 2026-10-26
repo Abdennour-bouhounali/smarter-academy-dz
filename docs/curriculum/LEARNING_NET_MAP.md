@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **94** leçons publiées · **176** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **353** liens (312 requires, 31 extends, 10 consolidates) · **96** leçons publiées · **174** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -964,10 +964,10 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | item | المورد المعرفي (نص البرنامج) | leçon d’accueil | repart de |
 |---|---|---|---|
-| `3am.m1.r01` | حساب جداء عددين نسبيين. | `jidaa-adadayn-nisbiyayn` _(prévue)_ | `2am.m4.r05` |
+| `3am.m1.r01` | حساب جداء عددين نسبيين. | `jidaa-adadayn-nisbiyayn` | `2am.m4.r05` |
 | `3am.m1.r02` | حساب حاصل قسمة عددين نسبيين. | `qismat-nisbiyayn` _(prévue)_ | `3am.m1.r01` |
-| `3am.m1.r03` | تعيين مقلوب عدد غير معدوم. | `maqlub-qismat-kasrayn` _(prévue)_ | `3am.m1.r02`، `2am.m1.r07` |
-| `3am.m1.r04` | قسمة كسرين. | `maqlub-qismat-kasrayn` _(prévue)_ | `3am.m1.r03` |
+| `3am.m1.r03` | تعيين مقلوب عدد غير معدوم. | `maqlub-qismat-kasrayn` | `3am.m1.r02`، `2am.m1.r07` |
+| `3am.m1.r04` | قسمة كسرين. | `maqlub-qismat-kasrayn` | `3am.m1.r03` |
 | `3am.m1.r05` | مقارنة كسرين. | `tasawi-muqaranat-kasrayn` _(prévue)_ | يمدّد `2am.m1.r08` |
 | `3am.m1.r06` | جمع وطرح كسرين. | `jam-tarh-kasrayn` _(prévue)_ | يمدّد `2am.m1.r09` |
 | `3am.m1.r07` | التعرّف على العدد الناطق. | `adad-natiq` _(prévue)_ | `3am.m1.r02`، `1am.m5.r01` |
@@ -1292,11 +1292,11 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 
 | # | leçon | statut | items |
 |---:|---|---|---|
-| 1 | `jidaa-adadayn-nisbiyayn` — جداء عددين نسبيين | prévue | `3am.m1.r01` |
+| 1 | `jidaa-adadayn-nisbiyayn` — جداء عددين نسبيين | publiée | `3am.m1.r01` |
 | 2 | `jidaa-ida-nisbiya` — جداء عدة أعداد نسبية | prévue | `3am.m1.r01` |
 | 3 | `qismat-nisbiyayn` — حاصل قسمة عددين نسبيين | prévue | `3am.m1.r02` |
 | 4 | `wadiya-idmajiya-aadad-nisbiya` — أدمج تعلّماتي — الأعداد النسبية | synthèse | — |
-| 5 | `maqlub-qismat-kasrayn` — مقلوب عدد وقسمة كسرين | prévue | `3am.m1.r03` `3am.m1.r04` |
+| 5 | `maqlub-qismat-kasrayn` — مقلوب عدد وقسمة كسرين | publiée | `3am.m1.r03` `3am.m1.r04` |
 | 6 | `tasawi-muqaranat-kasrayn` — تساوي كسرين ومقارنتهما | prévue | `3am.m1.r05` |
 | 7 | `jam-tarh-kasrayn` — جمع وطرح كسرين | prévue | `3am.m1.r06` |
 | 8 | `adad-natiq` — العدد الناطق | prévue | `3am.m1.r07` |

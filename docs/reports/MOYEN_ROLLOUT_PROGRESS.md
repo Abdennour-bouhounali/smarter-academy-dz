@@ -299,7 +299,31 @@ Seven units were seeded and extracted whole: 3AM units 3, 4, 5, 6, 11 (`docs/sou
 - **Next (Phase A):** #11 `haraka-muntazama-sura` + the synthesis `wadiya-idmajiya-tanasubiya-sura` (closes 3AM unit 6), then `qimat-ibara-harfiya`
   (4AM unit 7), `fiat-takrarat`, `mutawassit-mutawazin`, … (`docs/curriculum/GENERATION_QUEUE.md`, run `node scripts/learning-net-queue.mjs`).
 
+## Owner priority — 3AM units 1–5, planned before generation (2026-10-25)
+
+The owner put the remaining 20 entries of the 3AM units 1–5 first (15 lessons + 5 syntheses: الأعداد النسبية, الكسور والأعداد
+الناطقة, القوى, الحساب الحرفي, المساويات والمتباينات). They are « Phase 0 » of the queue (`LEARNING_NET.md` §4bis, `OWNER_FIRST_UNITS` in
+`scripts/learning-net-queue.mjs`). New working method: every entry was PLANNED first, by one Opus planner per unit, with the textbook
+pages read, the net, the exam corpus and the sibling lessons. The plans are `docs/sources/3am/unit<N>/plan/<code>.md`, plus one README
+per unit. The coordinator cross-reviewed them for distinct labs, consistent boundaries and shared maths. Sonnet 5.5 leads then generate
+each lesson FROM its plan, two lanes in parallel, and the coordinator publishes each pair. The index, the pairing, the generator prompt
+and the open owner questions are in `docs/curriculum/PLAN_3AM_UNITS_1_5.md`. Generation has not started; owner question 1 (a unit-3 net
+link) blocks entry #11.
+
+### Phase 0, entry 1 — `jidaa-adadayn-nisbiyayn` « جداء عددين نسبيين » (3AM unit 1, generated 2026-10-26, NOT yet exported / committed)
+
+First lesson of the unit; it seeded `lessons/moyen/3am/ansab_al_aadad_wal_hisab/aadad-nisbiya/_unit/` and the whole-unit extraction
+(`docs/sources/3am/unit1/`, 93 elements, 31 discrepancies). New lab `elevator-reel` « شريط المصعد » (the hand holds the SIGNED TIME of a
+camera replay; MANIPULATION_CONTRACT §2septentricies), new exact module `packages/core/arithmetic/relativeOps.js` (grown by lessons 2–3). Nine
+modules (62 min, 86 with the three مسائل), bank of 50 sheets (7 `term_exam`, 25 `term_exam_modelled`, 18 `adapted`), seven `MISC-JIDAA-*`.
+Catalogue flipped to `available` (durationMinutes 62). Remaining for the coordinator: export / import (guide §11 step 4), commit, push `dev`.
+The plan's deviations are in its « Generator notes » (`docs/sources/3am/unit1/plan/jidaa-adadayn-nisbiyayn.md`).
+
 ## Next batch — prompt
+
+**Superseded on 2026-10-25 for Phase 0:** use the generator prompt in `docs/curriculum/PLAN_3AM_UNITS_1_5.md`. The prompt below
+still applies to the Phase A entries that come after Phase 0.
+
 
 Phase A entries 1–10 are published (see « Batches 5–8 »). The queue now continues at Phase A #11 `haraka-muntazama-sura` (3AM unit 6, whose
 extraction `docs/sources/3am/unit6/` already exists — move its destinations in `build-extraction.py`), then the synthesis

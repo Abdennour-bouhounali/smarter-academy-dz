@@ -3,6 +3,11 @@
  * learning-net-queue — l'ORDRE DE GÉNÉRATION des leçons 1AM–3AM, lu dans le
  * réseau des الكفاءات (décision du propriétaire, 2026-10-13).
  *
+ * Phase 0 — priorité du propriétaire (2026-10-25) : les leçons restantes des
+ * unités 3AM 1–5 (`OWNER_FIRST_UNITS`, dans cet ordre), leçon par leçon dans
+ * l'ordre du catalogue, la synthèse après la dernière leçon de son unité.
+ * Plans par leçon : docs/curriculum/PLAN_3AM_UNITS_1_5.md.
+ *
  * Phase A — « ce dont l'élève de 4AM a besoin MAINTENANT » (propriétaire,
  * 2026-10-20) : les unités 4AM dans l'ordre du manuel (1 → 14), leçon par
  * leçon ; pour chacune, ses prérequis DIRECTS dans les années antérieures
@@ -92,6 +97,12 @@ function newestVersion(id) {
   return later.map((k) => newestVersion(k.to)).sort((a, b) => GRADE_N[b.slice(0, 3)] - GRADE_N[a.slice(0, 3)])[0] ?? id;
 }
 const pos = new Map(LESSONS.map((l, k) => [l.code, k]));
+const OWNER_FIRST_UNITS = ['aadad-nisbiya', 'kusur-natiqa', 'quwa-nisbiya', 'ibarat-harfiya-3', 'musawiyat-mutabayinat'];
+const ownerStart = queue.length;
+for (const unit of OWNER_FIRST_UNITS) {
+  for (const l of LESSONS.filter((x) => x.unit === unit && x.kind !== 'synthesis')) push(l, 'priorité propriétaire');
+}
+phases.push({ grade: 'owner', from: ownerStart, to: queue.length });
 const units4 = UNITS.filter((u) => u.grade === '4am').sort((a, b) => a.number - b.number);
 for (const u of units4) {
   const start = queue.length;
@@ -131,6 +142,8 @@ const lines = [
   '# File de génération des leçons 1AM–3AM',
   '',
   '> **Généré** par `scripts/learning-net-queue.mjs` depuis le réseau des الكفاءات — ne pas éditer à la main.',
+  '> Priorité (propriétaire, 2026-10-25) — **Phase 0** : les leçons restantes des unités 3AM 1–5, plans par leçon dans',
+  '> `docs/curriculum/PLAN_3AM_UNITS_1_5.md`.',
   '> Règle (propriétaire, 2026-10-20) — **Phase A d’abord** : ce dont l’élève de 4AM a besoin MAINTENANT. Les unités 4AM dans',
   '> l’ordre du manuel ; pour chaque leçon, ses prérequis DIRECTS des années antérieures, pris dans l’année la plus récente',
   '> (3AM, sinon 2AM, sinon 1AM). Ensuite (règle du 2026-10-13) : les chaînes complètes des leçons 4AM, de la plus ancienne',
@@ -140,21 +153,27 @@ const lines = [
   `**${queue.length}** leçons à générer (${queue.filter((q) => q.kind === 'synthesis').length} synthèses).`,
   '',
 ];
-const PHASE_TITLE = { '4am': 'Phase B — les chaînes complètes des leçons 4AM', '3am': 'Phase C — depuis les leçons 3AM restantes', '2am': 'Phase D — depuis les leçons 2AM restantes', '1am': 'Phase E — leçons 1AM restantes', isolated: 'Phase F — leçons isolées' };
+const PHASE_TITLE = { owner: 'Phase 0 — priorité du propriétaire : unités 3AM 1–5 (2026-10-25)', '4am': 'Phase B — les chaînes complètes des leçons 4AM', '3am': 'Phase C — depuis les leçons 3AM restantes', '2am': 'Phase D — depuis les leçons 2AM restantes', '1am': 'Phase E — leçons 1AM restantes', isolated: 'Phase F — leçons isolées' };
 const nowPhases = phases.filter((p) => p.grade === 'now');
+const ownerPhase = phases.find((p) => p.grade === 'owner');
+const renderRows = (p) => {
+  lines.push('| # | leçon | السنة | unité | déclenchée par |', '|---:|---|---|---|---|');
+  for (let i = p.from; i < p.to; i += 1) {
+    const q = queue[i];
+    lines.push(`| ${i + 1} | \`${q.code}\` — ${q.titleAr.replace(/\$/g, '')}${q.kind === 'synthesis' ? ' _(synthèse)_' : ''} | ${gradeLabel.get(q.grade)} | \`${q.unit}\` | ${q.trigger === 'isolée' || q.trigger === 'priorité propriétaire' || q.kind === 'synthesis' ? q.trigger : `\`${q.trigger}\``} |`);
+  }
+  lines.push('');
+};
+if (ownerPhase.to > ownerPhase.from) { lines.push(`## ${PHASE_TITLE.owner} (${ownerPhase.to - ownerPhase.from})`, ''); renderRows(ownerPhase); }
 lines.push(`## Phase A — ce dont la 4AM a besoin maintenant, unité par unité (${nowPhases.reduce((n, p) => n + p.to - p.from, 0)})`, '');
-for (const p of phases) {
+for (const p of phases.filter((x) => x.grade !== 'owner')) {
   const head = p.grade === 'now' ? `### Unité 4AM ${p.unit.number} — ${p.unit.titleAr}` : `## ${PHASE_TITLE[p.grade]}`;
   if (p.to === p.from) {
     if (p.grade === 'now') lines.push(`${head} (0) — rien à générer : ses prérequis directs sont publiés ou déjà dans la file.`, '');
     continue;
   }
-  lines.push(`${head} (${p.to - p.from})`, '', '| # | leçon | السنة | unité | déclenchée par |', '|---:|---|---|---|---|');
-  for (let i = p.from; i < p.to; i += 1) {
-    const q = queue[i];
-    lines.push(`| ${i + 1} | \`${q.code}\` — ${q.titleAr.replace(/\$/g, '')}${q.kind === 'synthesis' ? ' _(synthèse)_' : ''} | ${gradeLabel.get(q.grade)} | \`${q.unit}\` | ${q.trigger === 'isolée' || q.kind === 'synthesis' ? q.trigger : `\`${q.trigger}\``} |`);
-  }
-  lines.push('');
+  lines.push(`${head} (${p.to - p.from})`, '');
+  renderRows(p);
 }
 // Renvois en avant : dans une même année, un prérequis dont la leçon d'accueil vient PLUS LOIN dans le manuel.
 // Admis (l'ordre du manuel fait foi), mais la leçon qui le subit doit le rappeler elle-même.
@@ -175,5 +194,5 @@ if (process.argv.includes('--check')) {
 } else {
   writeFileSync(OUT_MD, md);
   writeFileSync(OUT_JSON, json);
-  console.log(`✓ docs/curriculum/GENERATION_QUEUE.md (${queue.length} leçons, now:${nowPhases.reduce((n, p) => n + p.to - p.from, 0)} ${phases.filter((p) => p.grade !== 'now').map((p) => `${p.grade}:${p.to - p.from}`).join(' ')})`);
+  console.log(`✓ docs/curriculum/GENERATION_QUEUE.md (${queue.length} leçons, owner:${ownerPhase.to - ownerPhase.from} now:${nowPhases.reduce((n, p) => n + p.to - p.from, 0)} ${phases.filter((p) => p.grade !== 'now' && p.grade !== 'owner').map((p) => `${p.grade}:${p.to - p.from}`).join(' ')})`);
 }

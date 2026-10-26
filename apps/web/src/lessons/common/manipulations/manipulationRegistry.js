@@ -117,12 +117,16 @@ export const MANIPULATION_COMPONENTS = {
   'equality-lanes': lazy(() => import('./operations/EqualityLanes')),
   // 3AM, unité 5 : le signe d'un terme sous la main — la عبّارة des caisses d'une équation (2026-10-21).
   'term-ferry': lazy(() => import('./algebra/TermFerry')),
+  // 3AM, unité 1 « الأعداد النسبية » : le temps signé sous la main — le شريط المصعد (2026-10-26).
+  'elevator-reel': lazy(() => import('./operations/ElevatorReel')),
   // 2AM, unité 3 « الأعداد النسبية » : la distance à zéro sous la main — le مسبار (2026-10-21).
   'zero-probe': lazy(() => import('./operations/ZeroProbe')),
   // 3AM, unité 6 « التناسبية » : le pourcentage sous la main — l'inconnue est le nombre de cases peintes d'un plateau de 100 (2026-10-21).
   'hundred-grid': lazy(() => import('./proportion/HundredGrid')),
   // 3AM, unité 6 « التناسبية » : la punaise sur sa rainure et la règle sur deux nœuds — du tableau au graphique d'une situation proportionnelle (2026-10-21).
   'pin-rails': lazy(() => import('./proportion/PinRails')),
+  // 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » : la division par un rapport sous la main — la manivelle de la درّاجة (2026-10-25).
+  'gear-crank': lazy(() => import('./proportion/GearCrank')),
   // 2AM, unité 5 « التناسبية » : le nombre qui manque sous la main — les موازين الرابع المتناسب (2026-10-21).
   'fourth-gauges': lazy(() => import('./operations/FourthGauges')),
 };

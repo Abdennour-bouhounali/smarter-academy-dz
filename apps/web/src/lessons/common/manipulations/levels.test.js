@@ -86,6 +86,20 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(new Set(advanced.numbers.tasks.map((tk) => tk.kind)).has('whole'), type).toBe(true);
         expect(advanced.numbers.tasks.some((tk) => tk.carry), type).toBe(true);
       }
+      // Unité 1 de 3AM : `elevator-reel` se mesure par la FINESSE du pas (1 puis 0,5), la PRÉDICTION écrite avant de voir (متقدم seul) et les missions où la main tient aussi la vitesse.
+      else if (type === 'elevator-reel') {
+        const stepOf = (n) => Number(String(n.step).replace(',', '.'));
+        expect(stepOf(advanced.numbers), type).toBeLessThan(stepOf(beginner.numbers));
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'predict'), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'both'), type).toBe(true);
+      }
+      // Unité 2 de 3AM : `gear-crank` se mesure par le NOMBRE DE TÂCHES et par la PRÉDICTION écrite avant de partir (متقدم seul : manivelle bloquée, compteurs voilés).
+      else if (type === 'gear-crank') {
+        expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
+        expect(advanced.numbers.tasks.every((tk) => tk.predict), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.predict), type).toBe(false);
+      }
       // Unité 6 de 3AM : `pin-rails` se mesure par le NOMBRE DE TÂCHES et par les LECTURES sur la droite (متقدم seul).
       else if (type === 'pin-rails') {
         expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);

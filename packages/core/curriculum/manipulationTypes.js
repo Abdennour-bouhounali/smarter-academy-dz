@@ -672,6 +672,16 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'القوة $a^n$ جداء $n$ عاملًا كلّها تساوي $a$ ، وإشارتها سالبة فقط إذا كان $a$ سالبًا و $n$ فرديًا ؛ $a^0 = 1$ و $a^{-n} = \\frac{1}{a^n}$ ؛ و $a^m \\times a^n = a^{m+n}$ و $\\frac{a^m}{a^n} = a^{m-n}$',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 3AM, unité 1 « الأعداد النسبية » (2026-10-26) — le produit de deux nombres relatifs.
+  'elevator-reel': {
+    // LE TEMPS SIGNÉ SOUS LA MAIN : un ascenseur de charge passe par le rez-de-chaussée à l'instant 0 d'un film de surveillance, à vitesse
+    // constante r (étages par minute, SIGNÉE : r < 0 = il descend). À l'instant t (minutes, SIGNÉ : t < 0 = avant son passage) il est à
+    // l'étage r × t. La main tient t (curseur sur la ligne du temps, −/+, flèches) et, en متقدم, le sens et la distance de r (levier, −/+).
+    // Pour t > 0 la cabine suit la somme répétée ; pour t < 0 le film est REMBOBINÉ et la cabine apparaît de l'autre côté de la rue :
+    // (−) × (−) = (+) est un fait du monde. Chaque temps lâché est un essai jugé exactement : MANUEL (§6bis).
+    shows: 'جداء عددين نسبيين لهما الإشارة نفسها موجب، ولهما إشارتان مختلفتان سالب، ومسافته إلى الصفر هي جداء المسافتين إلى الصفر ؛ و $a \\times 0 = 0$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 2AM, unité 3 « الأعداد النسبية » (2026-10-21) — comparer et ranger des relatifs.
   'zero-probe': {
     // LA DISTANCE À ZÉRO SOUS LA MAIN : un capteur A est fixé à un nombre relatif (une altitude en mètres) ; un second capteur B
@@ -719,6 +729,17 @@ export const MANIPULATION_TYPES = Object.freeze({
     // une augmentation AJOUTE t cases aux 100, une diminution en RETIRE t ; une hausse puis une baisse du même t % ne ramène pas au départ. Chaque
     // « انقل » est un essai jugé exactement : MANUEL (§6bis).
     shows: 'لحساب $t\\%$ من عدد نضرب هذا العدد في $\\frac{t}{100}$ ؛ ونحسب نسبة مئوية من المساواة $\\frac{a}{b}=\\frac{t}{100}$ ؛ والزيادة بـ $t\\%$ هي الضرب في $1+\\frac{t}{100}$ والتخفيض هو الضرب في $1-\\frac{t}{100}$',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 2 « العمليات على الكسور والأعداد الناطقة » (2026-10-25) — le مقلوب et la division de deux fractions.
+  'gear-crank': {
+    // LA DIVISION PAR UN RAPPORT SOUS LA MAIN : une درّاجة dont le plateau (F dents) entraîne un pignon (R dents) par la chaîne. La main TOURNE la manivelle ;
+    // la chaîne avance de n dents, la pédale a fait n/F tour, la roue n/R tour. Le drapeau est à des tours de roue donnés (un entier ou une fraction) : combien de
+    // tours de pédale ? Un tour de pédale ne fait faire à la roue que F/R tour, donc la roue demande plus (ou moins) de tours de pédale que de tours de roue :
+    // diviser par F/R, c'est multiplier par R/F — le mouvement inverse échange le plateau et le pignon. En متقدم la manivelle est bloquée tant que l'élève n'a pas
+    // écrit sa prédiction (une fraction), les compteurs sont voilés jusqu'au lâcher et une prédiction fausse est réfutée par la course. Chaque lâcher est un essai
+    // jugé exactement : MANUEL (§6bis). « جرّب أعدادك » : toujours ouvert (12 … 52 dents, un drapeau p/q).
+    shows: 'قسمة عدد على كسر هي الضرب في مقلوبه: مقلوب $\\frac{a}{b}$ هو $\\frac{b}{a}$ لأنّ جداءهما $1$ ؛ ودورات الدوّاسة اللازمة لعدد من دورات العجلة تساوي هذا العدد مضروبًا في مقلوب $\\frac{F}{R}$ حيث $F$ و$R$ عدد أسنان الصحن والترس',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
   'pin-rails': {
