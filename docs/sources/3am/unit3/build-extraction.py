@@ -700,32 +700,36 @@ PREP_REST = '1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-18-19-20-21-22-23-24-25'
 DEST = {
     '_comment': 'elementId → { lesson, module } (ou { notIntegrated: raison }) ; `items` répartit un élément ; une leçon encore coming_soon est une destination EN ATTENTE (check-textbook-coverage.mjs). Modules de quwat-adad-nisbi : 0 أستعدّ · 1 نشاط (lab) · 2 معارف · 3 طريقة · 4 أتمرّن · 5–7 مسائل · 8 إختبار أولي.',
     'objectives': {'lesson': 'unit', 'module': 'page'},
-    'opener': {'lesson': L3, 'module': None},
+    'opener': {'lesson': L3, 'module': None, 'note': 'Ouverture (unité astronomique ≈ 150 millions de km) : NON reprise comme entrée — la plateforme a ses objets (le mur de la foire des sciences) ; citée comme trace dans content/textbook.js.'},
     'challenge': {'lesson': Q, 'module': 5},
     'prep': {'lesson': Q, 'module': 0, 'items': {'16-17': {'lesson': Q, 'module': 0}, PREP_REST: {'lesson': L1, 'module': 0}}},
     'act-1': {'lesson': L1, 'module': 4}, 'act-2': {'lesson': L1, 'module': 2}, 'act-3': {'lesson': L1, 'module': 1},
     'act-4': {'lesson': L2, 'module': 2, 'note': 'Le cahier corrigé en rouge devient les lignes à juger du module 2 (mêmes TYPES d’erreur, autres nombres) ; l’écriture des facteurs n’est pas l’entrée (le train de quwat-adad-nisbi l’a faite).'}, 'act-5': {'lesson': L3, 'module': None},
     'act-6': {'lesson': Q, 'module': 4, 'note': 'APPLICATION (guide §4ter) : le lab de la plateforme est l’entrée conçue ; l’activité du manuel est posée en أتمرّن.'},
     'know-1': {'lesson': L1, 'module': 2}, 'know-2': {'lesson': L1, 'module': 2}, 'know-3': {'lesson': L2, 'module': 2},
-    'know-4': {'lesson': L3, 'module': None}, 'know-5': {'lesson': L3, 'module': None},
+    'know-4': {'lesson': L3, 'module': 2}, 'know-5': {'lesson': L3, 'module': 2},
     'know-6': {'lesson': Q, 'module': 2}, 'know-7': {'lesson': Q, 'module': 2}, 'know-8': {'lesson': Q, 'module': 3},
     'method-43a': {'lesson': L1, 'module': 3}, 'method-43b': {'lesson': L1, 'module': 3}, 'method-43c': {'lesson': L2, 'module': 3},
     'now-43': {'lesson': L2, 'module': 3},
-    'method-45a': {'lesson': L3, 'module': None}, 'method-45b': {'lesson': L3, 'module': None}, 'method-45c': {'lesson': Q, 'module': 3},
-    'now-45': {'lesson': Q, 'module': 3, 'items': {'1': {'lesson': L3, 'module': None}, '2': {'lesson': Q, 'module': 3}}},
+    'method-45a': {'lesson': L3, 'module': 3}, 'method-45b': {'lesson': L3, 'module': 3}, 'method-45c': {'lesson': Q, 'module': 3},
+    'now-45': {'lesson': Q, 'module': 3, 'items': {'1': {'lesson': L3, 'module': 3}, '2': {'lesson': Q, 'module': 3}}},
     **{f'ex-{n}': {'lesson': L1, 'module': 4} for n in range(1, 13)},
     'ex-13': {'lesson': L2, 'module': None, 'note': 'Le libellé (« ألف مليار لألف كتاب », « جزء من المئة لجزء من المليون ») demande le produit 10^m × 10^n ou le rapport 10^m / 10^n : il appartient à qawaid-quwa-ashara, dont la banque l’adapte.'},
     **{f'ex-{n}': {'lesson': L2, 'module': 4} for n in (14, 17, 20, 50, 56)},
     **{f'ex-{n}': {'lesson': L2, 'module': 'practice', 'note': 'banque d’exercices (adaptée)'} for n in (13, 15, 16, 18, 19)},
     'ex-55': {'lesson': L2, 'module': 7},
-    **{f'ex-{n}': {'lesson': L3, 'module': None} for n in (*range(21, 34), 52, 54, 57, 58, 59, 60, 61, 62, 65, 66, 67, 70)},
+    **{f'ex-{n}': {'lesson': L3, 'module': 4} for n in (21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 52, 57, 58, 59)},
+    **{f'ex-{n}': {'lesson': L3, 'module': 'practice', 'note': 'banque d’exercices (adaptée, avec ses propres nombres)'} for n in (32, 33, 54, 60, 65, 66, 67, 70)},
+    'ex-61': {'notIntegrated': 'Pythagore (la distance Soleil–Lune d’un triangle Terre–Lune–Soleil rectangle en Lune, avec des nombres en écriture scientifique) : l’outil appartient à la leçon publiée `khassiyat-fitaghuras` (3AM unité 7, plus loin dans le livre) ; la leçon kitaba-ilmiya-rutba n’en possède ni la propriété ni l’étape géométrique (décision du lead, 2026-10-26 ; adaptation possible plus tard dans la banque de khassiyat-fitaghuras avec l’étape donnée).'},
+    'ex-62': {'notIntegrated': 'Thalès (AE, EB, EC en écriture scientifique, calculer ED) : l’outil est de 4AM (`khassiyat-talis`) ; kitaba-ilmiya-rutba ne possède pas l’étape géométrique (décision du lead, 2026-10-26).'},
     **{f'ex-{n}': {'lesson': Q, 'module': 4} for n in (*range(34, 50), 51, 53)},
     **{f'ex-{n}': {'notIntegrated': 'أتعمّق sur les puissances de 2 / de 8 et le doublement : exclu de la synthèse (MASAIL §14, pas d’أتعمّق dans أدمج تعلّماتي) ; à adapter dans la banque de quwat-adad-nisbi lors d’une passe ultérieure — décision du propriétaire en attente'} for n in (63, 64, 68, 69)},
     **{f'self-{n}': {'lesson': L1, 'module': 8} for n in (1, 2, 3)},
     'self-11': {'lesson': L1, 'module': 4},
     **{f'self-{n}': {'lesson': L2, 'module': 8} for n in (4, 5, 6)},
     **{f'self-{n}': {'lesson': L2, 'module': 'practice'} for n in (7, 8, 9, 10)},
-    **{f'self-{n}': {'lesson': L3, 'module': None} for n in range(12, 22)},
+    **{f'self-{n}': {'lesson': L3, 'module': 8} for n in (12, 14, 19, 20, 21)},
+    **{f'self-{n}': {'lesson': L3, 'module': 'practice'} for n in (13, 15, 16, 17, 18)},
     **{f'self-{n}': {'lesson': Q, 'module': 8} for n in range(22, 26)},
     'integration': {'lesson': SYN, 'module': None},
     'evaluation': {'lesson': SYN, 'module': None},
@@ -769,10 +773,13 @@ DISCREPANCIES = [
     {'elementId': 'unit', 'kind': 'scope', 'text': 'Pages 38–53 complètes. Éléments des leçons non générées transcrits brièvement à 110–170 dpi (verified: false) ; exposants de p. 46–47 et 50–51 à relire par leur leçon.'},
 ]
 
+# 2026-10-26 — kitaba-ilmiya-rutba a RELU à 120–220 dpi les pages 38, 41, 44, 45, 47, 48, 49, 50, 51 : ses éléments sont `verified`.
+READ_L3 = {'opener', 'act-5', 'know-4', 'know-5', 'method-45a', 'method-45b', 'now-45', *{f'ex-{n}' for n in (*range(21, 34), 52, 54, 57, 58, 59, 60, 61, 62, 65, 66, 67, 70)}, *{f'self-{n}' for n in range(12, 22)}}
+
 # 2026-10-26 — qawaid-quwa-ashara a RELU à 130–260 dpi les pages 41, 43, 46, 47, 49, 50 : ses éléments sont `verified`.
 READ_L2 = {'act-4', 'know-3', 'method-43c', 'now-43', 'ex-13', 'ex-14', 'ex-15', 'ex-16', 'ex-17', 'ex-18', 'ex-19', 'ex-20', 'ex-50', 'ex-55', 'ex-56', 'self-4', 'self-5', 'self-6', 'self-7', 'self-8', 'self-9', 'self-10'}
 for e in E:
-    if e['id'] in READ_L2:
+    if e['id'] in READ_L2 or e['id'] in READ_L3:
         e['verified'] = True
 
 doc = {

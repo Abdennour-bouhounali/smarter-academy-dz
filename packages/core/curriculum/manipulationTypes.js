@@ -723,6 +723,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'إذا كان $a<b$ فإنّ $a+c<b+c$ ؛ وإذا كان $c>0$ فإنّ $ac<bc$ ؛ وإذا كان $c<0$ فإنّ $ac>bc$ : نغيّر اتجاه المتباينة فقط عند الضرب (أو القسمة) في عدد سالب تمامًا',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // 3AM, unité 5, leçon « حصر عدد عشري موجب » (2026-10-26) — le tadwir et l'intervalle d'une lecture arrondie.
+  'scoop-scale': {
+    // LA MASSE SOUS LA MAIN : une balance de دكّان العطّار dont l'ÉCRAN arrondit la masse à un rang (le kilo, 0,1 ou 0,01 kg) pendant qu'une bande de
+    // précision écrit la masse exacte. La main VERSE (appui long sur la louche), pince (+1) ou reprend (−1) une pincée : la masse EST le nombre tenu. La commande
+    // « أقلّ (ou أكبر) كمّية que l'écran lit R » oblige à trouver où l'écran bascule ; « سلّم الكيس » est l'essai, refusé avec le voisin en chiffres de l'élève.
+    // Au niveau متقدم un sachet modèle pèse 2/7 kg : une lampe dit plus léger / plus lourd et ne dit jamais « égal ». Chaque dépôt est un essai : MANUEL (§6bis).
+    shows: 'المدوَّر r إلى الرتبة $10^{-k}$ يعني أنّ $r-\\frac{1}{2}\\times10^{-k}\\le x<r+\\frac{1}{2}\\times10^{-k}$ ؛ وحاصل قسمة غير عشري لا تبلغه قيمة مقرّبة بل يُحصَر بينها',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   // 3AM, unité 5 (2026-10-21) — résoudre ax + b = cx + d en traversant les termes avec leur signe, puis en divisant.
   'term-ferry': {
     // LE SIGNE D'UN TERME SOUS LA MAIN : une équation dont la solution est CACHÉE ; chaque membre est une rive, chaque terme une caisse. La
@@ -843,6 +852,15 @@ export const MANIPULATION_TYPES = Object.freeze({
     // volume re-pavent la règle (2 ou 3 colonnes par unité) — la main CHOISIT alors le mode. Une extrémité au milieu d'une plaque, ou le mauvais mode, est refusé avec le calcul. Chaque ruban, prédiction et verdict est un
     // essai jugé exactement : MANUEL §6bis. `unit-ladder` n'énonce jamais la règle avant la phase formelle.
     shows: 'نكتب $10^m \\times 10^n = 10^{m+n}$ و $\\frac{10^m}{10^n} = 10^{m-n}$ و $(10^m)^n = 10^{m \\times n}$ ؛ فعدد الأعمدة بين لوحتين هو الأس، وفي جدول المساحة أو الحجم تُضاعف الأعمدة بمرتين أو ثلاث',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // 3AM, unité 3, leçon 3 (2026-10-26) — l'écriture scientifique, l'encadrement entre deux puissances de 10 et le rang de grandeur lus comme une POSITION sur un slide de décades.
+  'size-ladder': {
+    // LE SLIDE DES DÉCADES : dans le couloir de la foire des sciences, un grand mur porte un slide de barreaux de bois ; chaque barreau va d'une puissance de 10 à la suivante et porte neuf cases entre les graduations 1 … 10
+    // (placées LOGARITHMIQUEMENT). La main tient la POSITION d'une carte de longueur : d'abord son BARREAU (haut / bas), puis sa CASE (gauche / droite), puis l'AIMANT qui la tire vers la graduation entière la plus proche.
+    // Une carte posée sur un mauvais barreau, ou dans une mauvaise case, retombe avec le calcul ; sur son barreau et dans sa case elle s'écrit « a × 10ⁿ ». En متقدم on ÉCRIT a et n avant de suspendre. Chaque dépôt,
+    // saisie, aimant et choix est un essai jugé exactement : MANUEL §6bis. `size-ladder` n'énonce jamais la règle avant la phase formelle.
+    shows: 'نكتب $A=a\\times10^n$ حيث $1\\le a<10$ ، فيكون $10^n\\le A<10^{n+1}$ ؛ ورتبة قدر $A$ هي $a^{\\prime}\\times10^n$ حيث $a^{\\prime}$ مدوّر $a$ إلى الوحدة ؛ ولمقارنة عددين نقارن أسّيهما ثم العددين $a$',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
   'pin-rails': {

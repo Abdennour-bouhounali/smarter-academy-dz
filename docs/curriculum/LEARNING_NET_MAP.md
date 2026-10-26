@@ -4,7 +4,7 @@
 > Contrat et règles : [`docs/architecture/LEARNING_NET.md`](../architecture/LEARNING_NET.md).
 > Données : `packages/core/curriculum/dz/net/`.
 
-**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **110** leçons publiées · **160** leçons prévues (39 unités 1AM–3AM).
+**224** items du programme officiel · **28** مقاطع · **17** fils conceptuels · **354** liens (313 requires, 31 extends, 10 consolidates) · **112** leçons publiées · **158** leçons prévues (39 unités 1AM–3AM).
 
 Légende des liens : `requires` (يتطلّب) — prérequis, lien de révision ; `extends` (يمدّد) — même notion plus loin dans la spirale, la leçon n’enseigne QUE la valeur ajoutée ; `consolidates` (يرسّخ) — le programme répète l’item, la leçon le rappelle sans le reconstruire.
 
@@ -991,8 +991,8 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `3am.m3.r01` | تعيين القوة من الرتبة n للعدد 10. | `quwa-adad-ashara` | `1am.m1.r03` |
 | `3am.m3.r02` | معرفة واستعمال قواعد الحساب على قوى العدد 10. | `qawaid-quwa-ashara` | `3am.m3.r01` |
 | `3am.m3.r03` | كتابة عدد عشري باستعمال قوى 10. | `quwa-adad-ashara` | `3am.m3.r01` |
-| `3am.m3.r04` | تعيين الكتابة العلمية لعدد عشري. | `kitaba-ilmiya-rutba` _(prévue)_ | `3am.m3.r02`، `3am.m3.r03` |
-| `3am.m3.r05` | استعمال الكتابة العلمية لحصر عدد عشري ولإيجاد رتبة مقدار عدد. | `kitaba-ilmiya-rutba` _(prévue)_ | `3am.m3.r04`، يمدّد `1am.m1.r06` |
+| `3am.m3.r04` | تعيين الكتابة العلمية لعدد عشري. | `kitaba-ilmiya-rutba` | `3am.m3.r02`، `3am.m3.r03` |
+| `3am.m3.r05` | استعمال الكتابة العلمية لحصر عدد عشري ولإيجاد رتبة مقدار عدد. | `kitaba-ilmiya-rutba` | `3am.m3.r04`، يمدّد `1am.m1.r06` |
 | `3am.m3.r06` | حساب قوة عدد نسبي. | `quwat-adad-nisbi` | `3am.m1.r01` |
 | `3am.m3.r07` | معرفة قواعد الحساب على قوة عدد نسبي واستعمالها في وضعيات بسيطة. | `quwat-adad-nisbi` | `3am.m3.r06`، `3am.m3.r02` |
 | `3am.m3.r08` | إجراء حساب يتضمّن قوى. | `quwat-adad-nisbi` | `3am.m3.r07`، `2am.m1.r01` |
@@ -1022,7 +1022,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | `3am.m5.r04` | مقارنة عددين ناطقين. | `muqaranat-natiqayn` | يرسّخ `3am.m1.r05` |
 | `3am.m5.r05` | معرفة الخواص المتعلقة بالمساويات (أو المتباينات) والعمليات واستعمالها في وضعيات بسيطة. | `musawiyat-amaliyat` | `2am.m4.r09`، `3am.m1.r01` |
 | `3am.m5.r06` | ترييض مشكلات وحلّها بتوظيف المعادلات من الدرجة الأولى ذات مجهول واحد. | `muadalat-darajat-ula` | `3am.m5.r05`، `3am.m5.r01`، يمدّد `2am.m4.r08` |
-| `3am.m5.x1` | حصر عدد موجب مكتوب في الشكل العشري باستعمال التدوير إلى رتبة معيّنة. _(منهاج 2016)_ | `hasr-adad-ushri` _(prévue)_ | يمدّد `1am.m3.r05` |
+| `3am.m5.x1` | حصر عدد موجب مكتوب في الشكل العشري باستعمال التدوير إلى رتبة معيّنة. _(منهاج 2016)_ | `hasr-adad-ushri` | يمدّد `1am.m3.r05` |
 
 #### المقطع 6 — الانسحاب – الهرم ومخروط الدوران (`3am.m6`, 3 أسابيع)
 
@@ -1305,7 +1305,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 10 | `wadiya-idmajiya-kusur-natiqa` — أدمج تعلّماتي — العمليات على الكسور والأعداد الناطقة | synthèse | — |
 | 11 | `quwa-adad-ashara` — قوى العدد 10 | publiée | `3am.m3.r01` `3am.m3.r03` |
 | 12 | `qawaid-quwa-ashara` — قواعد الحساب على قوى العدد 10 | publiée | `3am.m3.r02` |
-| 13 | `kitaba-ilmiya-rutba` — الكتابة العلمية ورتبة القدر | prévue | `3am.m3.r04` `3am.m3.r05` |
+| 13 | `kitaba-ilmiya-rutba` — الكتابة العلمية ورتبة القدر | publiée | `3am.m3.r04` `3am.m3.r05` |
 | 14 | `quwat-adad-nisbi` — قوة عدد نسبي | publiée | `3am.m3.r06` `3am.m3.r07` `3am.m3.r08` |
 | 15 | `wadiya-idmajiya-quwa-nisbiya` — أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة | synthèse | — |
 | 16 | `tabsit-hadhf-aqwas` — تبسيط عبارة جبرية وحذف الأقواس | publiée | `3am.m5.r01` |
@@ -1315,7 +1315,7 @@ Prérequis venus d’autres fils : `1am.m2.r03`, `1am.m1.r05`, `1am.m2.r05`, `1a
 | 20 | `wadiya-idmajiya-ibarat-harfiya-3` — أدمج تعلّماتي — الحساب الحرفي | synthèse | — |
 | 21 | `musawiyat-amaliyat` — المساويات والعمليات | publiée | `3am.m5.r05` |
 | 22 | `mutabayinat-amaliyat` — المتباينات والعمليات | publiée | `3am.m5.r05` |
-| 23 | `hasr-adad-ushri` — حصر عدد عشري موجب | prévue | `3am.m5.x1` |
+| 23 | `hasr-adad-ushri` — حصر عدد عشري موجب | publiée | `3am.m5.x1` |
 | 24 | `muadalat-darajat-ula` — المعادلات من الدرجة الأولى بمجهول واحد | publiée | `3am.m5.r06` |
 | 25 | `wadiya-idmajiya-musawiyat-mutabayinat` — أدمج تعلّماتي — المساويات – المتباينات – المعادلات | synthèse | — |
 | 26 | `tanasub-tamthil-bayani` — التناسبية والتمثيل البياني | publiée | `3am.m7.r01` |

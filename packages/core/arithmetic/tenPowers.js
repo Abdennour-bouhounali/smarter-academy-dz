@@ -250,4 +250,60 @@ export function divSci(a, b) {
   const sign = den < 0n ? -1n : 1n;
   return { k: norm(num * mult * sign, x.k.e - y.k.e - t), p: x.p - y.p };
 }
+
+/* ── Leçon 3 (الكتابة العلمية ورتبة القدر, 2026-10-26) : écriture scientifique, encadrement, rang de grandeur ─────────────────────────── */
+
+const asDec = (v) => (typeof v === 'string' ? parseDec(v) : v);
+
+/**
+ * L'écriture scientifique d'un décimal non nul : `{ a, n, dec }` avec v = a × 10ⁿ, 1 ≤ |a| < 10 ; `a` est le texte décimal SANS groupes (« 3,52 », signe typographique pour un
+ * négatif), `dec` le même décimal exact. Accepte un décimal `{m, e}` ou un texte lu par `parseDec`.
+ */
+export function scientific(input) {
+  const v = asDec(input);
+  if (!v || v.m === 0n) throw new RangeError('scientific: décimal non nul');
+  const digits = String(abs(v.m));
+  const dec = norm(v.m, -(digits.length - 1));
+  return { a: decText(dec, { group: false }), n: v.e + digits.length - 1, dec };
+}
+/** k × 10ᵖ (k décimal ou texte, p entier) est-elle l'écriture scientifique ? 1 ≤ |k| < 10, k ≠ 0. */
+export function isScientific(k, p) {
+  const d = asDec(typeof k === 'number' ? String(k) : k);
+  if (!d || d.m === 0n || !Number.isInteger(Number(p))) return false;
+  const digits = String(abs(d.m));
+  return d.e === -(digits.length - 1);
+}
+/** n tel que 10ⁿ ≤ v < 10ⁿ⁺¹ (v > 0). */
+export function bracketOf(input) {
+  const v = asDec(input);
+  if (!v || v.m <= 0n) throw new RangeError('bracketOf: décimal strictement positif');
+  return scientific(v).n;
+}
+/** Le chiffre des unités de a (la case de l'échelle : 1 … 9) pour v > 0. */
+export function cellOf(input) {
+  const v = asDec(input);
+  if (!v || v.m <= 0n) throw new RangeError('cellOf: décimal strictement positif');
+  return Number(String(v.m)[0]);
+}
+/**
+ * La rang de grandeur du manuel (v > 0) : a × 10ⁿ → a' × 10ⁿ avec a' = a ARRONDI À L'UNITÉ (demi vers le haut : 2,5 → 3). Si a' = 10 on écrit 1 × 10ⁿ⁺¹ (9,7 × 10³ → 1 × 10⁴).
+ * Retourne `{ a1, n1 }` entiers.
+ */
+export function orderOfMagnitude(input) {
+  const v = asDec(input);
+  if (!v || v.m <= 0n) throw new RangeError('orderOfMagnitude: décimal strictement positif');
+  const digits = String(v.m);
+  const a1 = Number(digits[0]) + (digits.length > 1 && digits[1] >= '5' ? 1 : 0);
+  const n = scientific(v).n;
+  return a1 === 10 ? { a1: 1, n1: n + 1 } : { a1, n1: n };
+}
+/** L'abscisse décimale de v sur l'échelle des décades : n + log₁₀ a (flottant, POUR LE DESSIN seulement — jamais pour un verdict). */
+export function logPos(input) {
+  const v = asDec(input);
+  if (!v || v.m <= 0n) throw new RangeError('logPos: décimal strictement positif');
+  const s = scientific(v);
+  return s.n + Math.log10(Number(s.a.replace(',', '.')));
+}
+/** « 3{,}52\\times10^{5} » (LaTeX) pour a × 10ⁿ ; `n` omis quand n = 0 n'est PAS fait : l'écriture scientifique garde toujours sa puissance. */
+export const sciTex = (aText, n) => `${String(aText).replace('-', '−').replace(/[,.]/, '{,}')}\\times10^{${n}}`;
 export { toDec as sciValue };

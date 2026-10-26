@@ -278,6 +278,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   loom  l'atelier de tissage de Ghardaïa vu de face : un métier à tisser aux deux poutres de bois gravées de graduations, des fils de chaîne entre elles, deux fils de laine
   //         (rouge et bleu) à pompons, un tapis à demi tissé derrière, une élève (KidFigure, hijab) au métier (`loom-threads`)
   loom: { kind: 'objects', shows: 'ورشة نسيج في غرداية: نول بعارضتين مدرّجتين وخيوط صوف حمراء وزرقاء تنزل من العارضة العليا إلى السفلى' },
+  // 3AM, unité 5, leçon « حصر عدد عشري موجب » (2026-10-26) :
+  //   attar  le دكّان العطّار d'un souk : des étagères de bocaux d'épices, un sac de cumin avec sa louche de laiton, une balance numérique dont le grand écran à sept segments ARRONDIT la masse,
+  //          un plateau où un cône d'épice grandit avec la masse, une bande de précision en dessous, une élève (KidFigure, hijab) au comptoir (`scoop-scale`)
+  attar: { kind: 'objects', shows: 'دكّان عطّار: ميزان رقمي يدوِّر الكتلة على شاشته وكيس كمّون ومغرفة نحاسية وشريط دقّة' },
   // 3AM, unité 4 (2026-10-21) :
   //   schoolgarden  le jardin de l'école vu d'en haut : un terrain rectangulaire (pelouse, massif de fleurs, allée dallée) que la
   //                 main coupe en parcelles, et une jardinière (KidFigure, hijab) à son bord (`area-split`)
@@ -332,6 +336,10 @@ export const VISUAL_THEMES = Object.freeze({
   //   tech-bench  l'établi du club de technologie : une longue règle de laiton gravée de colonnes égales, des plaques d'unités émaillées (km … nm) suspendues au-dessus, un cadran de mode (طول / مساحة / حجم),
   //               un ruban de mesure rouge à deux poignées de 44 px ; un élève (KidFigure) à l'établi (`unit-ladder`)
   'tech-bench': { kind: 'objects', shows: 'مسطرة نحاسية مقسّمة إلى أعمدة تتدلّى فوقها لوحات الوحدات وشريط قياس بمقبضين' },
+  // 3AM, unité 3, leçon 3 (2026-10-26) :
+  //   fair-wall  le couloir de la foire des sciences de la متوسطة : un grand mur peint portant un SLIDE de barreaux de bois (un par décade 10ⁿ → 10ⁿ⁺¹, neuf cases logarithmiques), des cartes d'objets avec leur longueur
+  //              sur une étiquette, un aimant ; une élève (KidFigure, hijab) exposante à côté (`size-ladder`)
+  'fair-wall': { kind: 'objects', shows: 'جدار معرض العلوم عليه سلّم من درجات خشبية وبطاقات أطوال ومغناطيس' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

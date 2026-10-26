@@ -116,6 +116,8 @@ export const MANIPULATION_COMPONENTS = {
   // 3AM, unité 5 « المساويات – المتباينات – المعادلات » : le nombre d'une opération sous la main — le مضمار des deux membres (2026-10-21).
   'equality-lanes': lazy(() => import('./operations/EqualityLanes')),
   'loom-threads': lazy(() => import('./algebra/LoomThreads')),
+  // 3AM, unité 5, leçon « حصر عدد عشري موجب » : la masse sous la main — ميزان العطّار dont l'écran arrondit (2026-10-26).
+  'scoop-scale': lazy(() => import('./operations/ScoopScale')),
   // 3AM, unité 5 : le signe d'un terme sous la main — la عبّارة des caisses d'une équation (2026-10-21).
   'term-ferry': lazy(() => import('./algebra/TermFerry')),
   // 3AM, unité 1 « الأعداد النسبية » : le temps signé sous la main — le شريط المصعد (2026-10-26).
@@ -147,6 +149,7 @@ export const MANIPULATION_COMPONENTS = {
   // 3AM, unité 3, leçon 2 : le ruban entre deux plaques d'unités — la مسطرة التحويل (2026-10-26).
   'unit-ladder': lazy(() => import('./operations/UnitLadder')),
   // 3AM, unité 3, leçon 1 : l'exposant de 10 sous la main — la عدسة القوى (2026-10-26).
+  'size-ladder': lazy(() => import('./operations/SizeLadder')),
   'ten-zoom': lazy(() => import('./operations/TenZoom')),
   // 2AM, unité 5 « التناسبية » : le nombre qui manque sous la main — les موازين الرابع المتناسب (2026-10-21).
   'fourth-gauges': lazy(() => import('./operations/FourthGauges')),

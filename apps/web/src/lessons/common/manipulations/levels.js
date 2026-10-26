@@ -784,6 +784,22 @@ export const LEVELS = Object.freeze({
       { id: 'a3', kind: 'reach', a: '2', b: '3', target: ['-1', '-3/2'] },
     ] }, ...T('know-2b') },
   },
+  // LA MASSE SOUS LA MAIN (scoop-scale, thème attar, 3AM unité 5, leçon « حصر عدد عشري موجب », 2026-10-26) : une balance dont l'écran ARRONDIT ; la main verse et pince la masse jusqu'à l'endroit où
+  // l'écran bascule. مبتدئ (plateforme) : t1 la plus petite masse qui se lit 1,3 (écran à 0,1, bande à 0,01 : 1,25), t2 la plus grande (1,34 ; 1,35 se lit 1,4), t3 l'échelle des gros sacs (rang 0) : 1,50 et 2,49 pour « 2 ».
+  // متقدم (act-3, know-3) : écran à 0,01 et bande à 0,001 (5,675 et 5,684 pour 5,68), puis le piège : le sachet modèle pèse 2/7 kg, l'écran donne le gramme (0,285 puis 0,286, la lampe ne dit jamais « égal »).
+  // Le test des niveaux mesure la paire par la FINESSE du rang (0,1 puis 0,01) et par la tâche piège (متقدم seul).
+  'scoop-scale': {
+    beginner: { numbers: { tasks: [
+      { id: 't1', kind: 'least', rank: 1, res: 2, reading: '1,3', start: '1,00' },
+      { id: 't2', kind: 'most', rank: 1, res: 2, reading: '1,3', start: '1,25' },
+      { id: 't3', kind: 'both', rank: 0, res: 2, reading: '2', start: '1,00', coarse: true },
+    ] }, ...P },
+    advanced: { numbers: { tasks: [
+      { id: 'a1', kind: 'least', rank: 2, res: 3, reading: '5,68', start: '5,600' },
+      { id: 'a2', kind: 'most', rank: 2, res: 3, reading: '5,68', start: '5,675' },
+      { id: 'a3', kind: 'trap', rank: 3, res: 3, ref: { a: 2, b: 7 }, start: '0,250' },
+    ] }, ...T('act-3') },
+  },
   // LE SIGNE D'UN TERME SOUS LA MAIN (term-ferry, thème river) : l'équation a une solution CACHÉE ; la main porte chaque caisse (terme) d'une rive à
   // l'autre en choisissant son signe, puis le diviseur. مبتدئ (plateforme) : 3x + 2 = x + 8 (x = 3) puis 4x − 3 = 2x + 7 (x = 5), x se rassemble à gauche.
   // متقدم (طريقة p. 77) : 9x + 1 = 5x − 7 (x = −2), puis −2x + 5 = 3x − 10 (un coefficient NÉGATIF : on divise par −5), puis 7x − 190 = 6x + 110 (x = 300).
@@ -987,6 +1003,24 @@ export const LEVELS = Object.freeze({
       { id: 'u6', path: ['mm', 'm'], mode: 2 },
       { id: 'u7', path: ['m', 'dm'], mode: 3 },
     ] }, ...T('ex-14') },
+  },
+  // LE SLIDE DES DÉCADES (size-ladder, thème fair-wall, 3AM unité 3, leçon 3, 2026-10-26) : la main tient la POSITION d'une carte de longueur sur un mur à barreaux de décades (10ⁿ → 10ⁿ⁺¹, graduations 1 … 10 LOGARITHMIQUES) :
+  // d'abord son BARREAU n, puis sa CASE (la partie entière de a), puis l'AIMANT (arrondi à l'unité : a'). مبتدئ (plateforme, longueurs décimales, l'écriture scientifique s'écrit seule) : c1 le minaret 265 m · c2 un trajet
+  // de 1 950 000 m · c3 une feuille de cahier 0,0001 m (sur le bord gauche du barreau −4) · c4 comparer 0,0006 m et 0,0001 m (même barreau). متقدم (platform + act-5 : écritures NON scientifiques ou autres unités, on ÉCRIT a et n
+  // avant de suspendre) : c5 1 200 km · c6 0,048 × 10⁻³ m · c7 12 742 km · c8 comparer 9,8 × 10⁻⁵ et 1,2 × 10⁻⁴ (deux barreaux). Le test des niveaux mesure la SAISIE préalable (متقدم seul) et les écritures non décimales.
+  'size-ladder': {
+    beginner: { numbers: { discovery: 'order', tasks: [
+      { id: 'c1', kind: 'hang', cards: [{ id: 'minaret', key: 'minaret', given: '265', magnet: true }] },
+      { id: 'c2', kind: 'hang', cards: [{ id: 'bus', key: 'bus', given: '1 950 000', magnet: true }] },
+      { id: 'c3', kind: 'hang', cards: [{ id: 'sheet', key: 'sheet', given: '0,0001', magnet: true }] },
+      { id: 'c4', kind: 'compare', cards: [{ id: 'sugar', key: 'sugar', given: '0,0006' }, { id: 'sheet2', key: 'sheet', given: '0,0001' }] },
+    ] }, ...P },
+    advanced: { numbers: { discovery: 'sci', tasks: [
+      { id: 'c5', kind: 'hang', cards: [{ id: 'coast', key: 'coast', given: '1 200', unit: 'km', typed: true, magnet: true }] },
+      { id: 'c6', kind: 'hang', cards: [{ id: 'hair', key: 'hair', given: '0,048 × 10^-3', typed: true, magnet: true }] },
+      { id: 'c7', kind: 'hang', cards: [{ id: 'earth', key: 'earth', given: '12 742', unit: 'km', typed: true, magnet: true }] },
+      { id: 'c8', kind: 'compare', cards: [{ id: 'cardA', key: 'cardA', given: '9,8 × 10^-5' }, { id: 'cardB', key: 'cardB', given: '1,2 × 10^-4' }] },
+    ] }, ...T('act-5') },
   },
   // LA POSITION D'UNE ÉCRITURE SOUS LA MAIN (number-line-pegs, thème clothesline, 3AM unité 2, leçon 4, 2026-10-26) : la main PORTE une carte d'écriture a/b et l'ACCROCHE sur un حبل gradué ; le vent la fait
   // glisser à son vrai piquet. Une tâche est `{ id, kind?: 'hang' | 'order', cards: ['6/-8', …], range?: [lo, hi] }`. مبتدئ (plateforme, pas 1/12, loupe ×3, « تحقّق » à volonté) : w1 6/(−8), (−3)/4, 3/4,

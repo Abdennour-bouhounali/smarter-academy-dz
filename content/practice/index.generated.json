@@ -867,6 +867,68 @@
       "ex-3am-amaliyat-natiqa-l5-010"
     ]
   },
+  "hasr-adad-ushri": {
+    "1": [
+      "ex-3am-hasr-adad-ushri-l1-001",
+      "ex-3am-hasr-adad-ushri-l1-002",
+      "ex-3am-hasr-adad-ushri-l1-003",
+      "ex-3am-hasr-adad-ushri-l1-004",
+      "ex-3am-hasr-adad-ushri-l1-005",
+      "ex-3am-hasr-adad-ushri-l1-006",
+      "ex-3am-hasr-adad-ushri-l1-007",
+      "ex-3am-hasr-adad-ushri-l1-008",
+      "ex-3am-hasr-adad-ushri-l1-009",
+      "ex-3am-hasr-adad-ushri-l1-010"
+    ],
+    "2": [
+      "ex-3am-hasr-adad-ushri-l2-001",
+      "ex-3am-hasr-adad-ushri-l2-002",
+      "ex-3am-hasr-adad-ushri-l2-003",
+      "ex-3am-hasr-adad-ushri-l2-004",
+      "ex-3am-hasr-adad-ushri-l2-005",
+      "ex-3am-hasr-adad-ushri-l2-006",
+      "ex-3am-hasr-adad-ushri-l2-007",
+      "ex-3am-hasr-adad-ushri-l2-008",
+      "ex-3am-hasr-adad-ushri-l2-009",
+      "ex-3am-hasr-adad-ushri-l2-010"
+    ],
+    "3": [
+      "ex-3am-hasr-adad-ushri-l3-001",
+      "ex-3am-hasr-adad-ushri-l3-002",
+      "ex-3am-hasr-adad-ushri-l3-003",
+      "ex-3am-hasr-adad-ushri-l3-004",
+      "ex-3am-hasr-adad-ushri-l3-005",
+      "ex-3am-hasr-adad-ushri-l3-006",
+      "ex-3am-hasr-adad-ushri-l3-007",
+      "ex-3am-hasr-adad-ushri-l3-008",
+      "ex-3am-hasr-adad-ushri-l3-009",
+      "ex-3am-hasr-adad-ushri-l3-010"
+    ],
+    "4": [
+      "ex-3am-hasr-adad-ushri-l4-001",
+      "ex-3am-hasr-adad-ushri-l4-002",
+      "ex-3am-hasr-adad-ushri-l4-003",
+      "ex-3am-hasr-adad-ushri-l4-004",
+      "ex-3am-hasr-adad-ushri-l4-005",
+      "ex-3am-hasr-adad-ushri-l4-006",
+      "ex-3am-hasr-adad-ushri-l4-007",
+      "ex-3am-hasr-adad-ushri-l4-008",
+      "ex-3am-hasr-adad-ushri-l4-009",
+      "ex-3am-hasr-adad-ushri-l4-010"
+    ],
+    "5": [
+      "ex-3am-hasr-adad-ushri-l5-001",
+      "ex-3am-hasr-adad-ushri-l5-002",
+      "ex-3am-hasr-adad-ushri-l5-003",
+      "ex-3am-hasr-adad-ushri-l5-004",
+      "ex-3am-hasr-adad-ushri-l5-005",
+      "ex-3am-hasr-adad-ushri-l5-006",
+      "ex-3am-hasr-adad-ushri-l5-007",
+      "ex-3am-hasr-adad-ushri-l5-008",
+      "ex-3am-hasr-adad-ushri-l5-009",
+      "ex-3am-hasr-adad-ushri-l5-010"
+    ]
+  },
   "jam-tarh-kasrayn": {
     "1": [
       "ex-3am-jam-tarh-kasrayn-l1-001",
@@ -1113,6 +1175,68 @@
       "ex-3am-khassiyat-fitaghuras-l5-008",
       "ex-3am-khassiyat-fitaghuras-l5-009",
       "ex-3am-khassiyat-fitaghuras-l5-010"
+    ]
+  },
+  "kitaba-ilmiya-rutba": {
+    "1": [
+      "ex-3am-kitaba-ilmiya-rutba-l1-001",
+      "ex-3am-kitaba-ilmiya-rutba-l1-002",
+      "ex-3am-kitaba-ilmiya-rutba-l1-003",
+      "ex-3am-kitaba-ilmiya-rutba-l1-004",
+      "ex-3am-kitaba-ilmiya-rutba-l1-005",
+      "ex-3am-kitaba-ilmiya-rutba-l1-006",
+      "ex-3am-kitaba-ilmiya-rutba-l1-007",
+      "ex-3am-kitaba-ilmiya-rutba-l1-008",
+      "ex-3am-kitaba-ilmiya-rutba-l1-009",
+      "ex-3am-kitaba-ilmiya-rutba-l1-010"
+    ],
+    "2": [
+      "ex-3am-kitaba-ilmiya-rutba-l2-001",
+      "ex-3am-kitaba-ilmiya-rutba-l2-002",
+      "ex-3am-kitaba-ilmiya-rutba-l2-003",
+      "ex-3am-kitaba-ilmiya-rutba-l2-004",
+      "ex-3am-kitaba-ilmiya-rutba-l2-005",
+      "ex-3am-kitaba-ilmiya-rutba-l2-006",
+      "ex-3am-kitaba-ilmiya-rutba-l2-007",
+      "ex-3am-kitaba-ilmiya-rutba-l2-008",
+      "ex-3am-kitaba-ilmiya-rutba-l2-009",
+      "ex-3am-kitaba-ilmiya-rutba-l2-010"
+    ],
+    "3": [
+      "ex-3am-kitaba-ilmiya-rutba-l3-001",
+      "ex-3am-kitaba-ilmiya-rutba-l3-002",
+      "ex-3am-kitaba-ilmiya-rutba-l3-003",
+      "ex-3am-kitaba-ilmiya-rutba-l3-004",
+      "ex-3am-kitaba-ilmiya-rutba-l3-005",
+      "ex-3am-kitaba-ilmiya-rutba-l3-006",
+      "ex-3am-kitaba-ilmiya-rutba-l3-007",
+      "ex-3am-kitaba-ilmiya-rutba-l3-008",
+      "ex-3am-kitaba-ilmiya-rutba-l3-009",
+      "ex-3am-kitaba-ilmiya-rutba-l3-010"
+    ],
+    "4": [
+      "ex-3am-kitaba-ilmiya-rutba-l4-001",
+      "ex-3am-kitaba-ilmiya-rutba-l4-002",
+      "ex-3am-kitaba-ilmiya-rutba-l4-003",
+      "ex-3am-kitaba-ilmiya-rutba-l4-004",
+      "ex-3am-kitaba-ilmiya-rutba-l4-005",
+      "ex-3am-kitaba-ilmiya-rutba-l4-006",
+      "ex-3am-kitaba-ilmiya-rutba-l4-007",
+      "ex-3am-kitaba-ilmiya-rutba-l4-008",
+      "ex-3am-kitaba-ilmiya-rutba-l4-009",
+      "ex-3am-kitaba-ilmiya-rutba-l4-010"
+    ],
+    "5": [
+      "ex-3am-kitaba-ilmiya-rutba-l5-001",
+      "ex-3am-kitaba-ilmiya-rutba-l5-002",
+      "ex-3am-kitaba-ilmiya-rutba-l5-003",
+      "ex-3am-kitaba-ilmiya-rutba-l5-004",
+      "ex-3am-kitaba-ilmiya-rutba-l5-005",
+      "ex-3am-kitaba-ilmiya-rutba-l5-006",
+      "ex-3am-kitaba-ilmiya-rutba-l5-007",
+      "ex-3am-kitaba-ilmiya-rutba-l5-008",
+      "ex-3am-kitaba-ilmiya-rutba-l5-009",
+      "ex-3am-kitaba-ilmiya-rutba-l5-010"
     ]
   },
   "maqlub-qismat-kasrayn": {

@@ -466,3 +466,19 @@ the RANK is asked through `choice` when it matters), `choice` (brackets, yes/no)
   - [ ] `generate:learning-net`;
   - [ ] export/import, local DB publish;
   - [ ] commit, push `dev`.
+
+---
+
+## Generator notes (2026-10-26)
+
+Generated from this plan, INTO its catalogue entry, with the changes below (all minimal; entry point, lab, modules, numbers and bank sources unchanged).
+
+1. **« أستعدّ » priorKnowledge**: four ids (`tadwir-wahda`, `qiyam-muqarraba`, `qisma-ashriya-2am`, `mutabayinat-amaliyat-3am`) instead of two, so each item's `requires` names the skill it measures; items 5–6 are `prep` 13 and 15 (15 corrected to its three printed rows, extraction), `prep` 14 is E4.
+2. **Final-test item 1** listed distractors `17,0 < 17,08 < 17,1` and `17 < 17,08 < 17,1`, which are TRUE inequalities (not between consecutive naturals, but true). Replaced by FALSE ones: `16 < 17,08 < 17`, `17,1 < 17,08 < 18`, `18 < 17,08 < 19`. **Item 5**: `35,7 < 250/7 < 35,8` and `35,71 < … < 35,714` are true too; replaced by `35,72 < … < 35,73`, `35,7 < … < 35,71`, `35,6 < … < 35,7`. Item 4's closed-end distractor stays: it is true for every member of the set but describes a DIFFERENT set (3,65 rounds to 3,7), so the tests use the equivalence criterion there.
+3. **Module 1 Q1**: the distractor « لأنّ 1,25 أكبر من 1,3 » is replaced by « لأنّ الشاشة تأخذ دائمًا العلامة الأعلى » (refuted by his own 1,24 reading 1,2). **Q4 (the 2/7 trap)** is optional: the step counts as done without the advanced level (`done: !!q.d || !hasTrap`).
+4. **Problem 1 part 1**: `24,85 ≤ m ≤ 24,95` (closed) replaced by `24,85 < m < 24,95` as the distractor; the closed form is the unit's recurring mistake and lives in the knowledge map. Problem 2 part 1 distractor `7,0 < c < 7,1` (true) replaced by `7,09 < c < 7,093`.
+5. **Lab**: the LCD digits are ≈ 38 px at the 414 px column of 1024 × 768 (plan: ≥ 44) — the glance (scene 200 px + strip 86 px + one controls row) was the constraint; the strip labels every fifth tick in `trap`; the scoop also pinches by keyboard (Enter / Space); a hold on the PILE removes pinches like the scoop adds them.
+6. **Hold-timer bug** (found by the e2e): `release()` zeroed the direction before a `setState` updater ran, so a tap on the pile ADDED a pinch; the direction is now captured first.
+7. **Bank** (by a helper): L2-001 and L3-001 first used invented numbers under a `term_exam` claim; they now use the scans' own numbers (`3am-s1-113` ex 1: A = −20,59, B = −141,44, C → 0,15; `3am-s1-2` model 5: 10 ÷ 7 bracketed 1,428 < … < 1,429 then rounded 1,4) and `3am-s3-51` ex 2 (9 %). The exam index numbers `3am-s1-2` model 5 ex 1 as entry 3. No 2AM paper is used (README Q4 not granted): 3 `term_exam`, 31 `term_exam_modelled`, 9 `adapted`.
+8. **Extraction** (by a helper): `prep` 14 options printed `9 / 10 / 9,6` (the extraction had them reversed), `prep` 15 is three rows of three options; `now-77-1` keys 8,342 yes, 8,336 yes, 8,345 NO; `ex-62` stays bank-only (cited by `ex-21`'s `cites`).
+9. **Catalogue**: `durationMinutes` 58 (82 with the مسائل), icon ⚖️, difficulty متوسط, `pointPrerequisites` P2 ← P1, P3 ← P2, P4 ← P2, P3 (intra-lesson only).

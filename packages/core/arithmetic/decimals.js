@@ -328,3 +328,77 @@ export function rowGraduation(values) {
   }
   return null;
 }
+
+/* ── Approximations, rounding and bracketing (3AM unit 5, lesson `hasr-adad-ushri`, lab `scoop-scale`, 2026-10-26) ──────────────────────
+ * A rank k is the exponent of 10^-k (k = 0 the unit, 1 the tenth, 2 the hundredth, 3 the thousandth). All BigInt underneath; the values stay
+ * positive `{ n, k }`. `floorAt` / `ceilAt` are the approximations BY DEFECT / BY EXCESS, `roundAt` the rounding (HALF UP: a next digit of 5 or
+ * more rounds up), `roundingInterval` the inverse (every number whose rounding at rank k is r), `quotientDigits` / `quotientBracket` read a
+ * calculator quotient. */
+const scaleTo = (v, k) => (k >= v.k ? big(v.n) * P10(k - v.k) : null);
+const checkRank = (k) => { if (!Number.isInteger(k) || k < 0 || k > MAX_DIGITS) throw new RangeError('decimals: rank out of range'); };
+
+/** The approximation by defect of v at rank k: the greatest multiple of 10^-k that is ≤ v. */
+export function floorAt(v, k) {
+  checkRank(k);
+  if (v.k <= k) return make(toSafe(scaleTo(v, k)), k);
+  return make(toSafe(big(v.n) / P10(v.k - k)), k);
+}
+/** The approximation by excess of v at rank k: the least multiple of 10^-k that is ≥ v (equal to `floorAt` when v is exact at that rank). */
+export function ceilAt(v, k) {
+  checkRank(k);
+  if (v.k <= k) return make(toSafe(scaleTo(v, k)), k);
+  const d = P10(v.k - k);
+  const q = big(v.n) / d;
+  return make(toSafe(big(v.n) % d === 0n ? q : q + 1n), k);
+}
+/** The rounding of v at rank k, half up (the digit after the rank is 5 or more → the upper mark). */
+export function roundAt(v, k) {
+  checkRank(k);
+  if (v.k <= k) return make(toSafe(scaleTo(v, k)), k);
+  const d = P10(v.k - k);
+  const q = big(v.n) / d;
+  return make(toSafe(2n * (big(v.n) % d) >= d ? q + 1n : q), k);
+}
+/**
+ * Every number whose rounding at rank k is r: r − ½·10^-k ≤ x < r + ½·10^-k, written at rank k + 1. The left end is included, the right one is
+ * not; for r = 0 the left end is 0 itself. `r` must be written with at most k decimals.
+ */
+export function roundingInterval(r, k) {
+  checkRank(k + 1);
+  if (r.k > k) throw new RangeError('decimals.roundingInterval: r has more than k decimals');
+  const c = scaleTo(r, k + 1);
+  const lo = c >= 5n ? c - 5n : 0n;
+  return { lo: make(toSafe(lo), k + 1), hi: make(toSafe(c + 5n), k + 1), loIncluded: true, hiIncluded: false };
+}
+/**
+ * The screen of a calculator for a ÷ b (positive integers): `n` significant digits, the last digit ROUNDED (247 ÷ 83 → "2.975903614" although the
+ * digits that follow are 45…), trailing zeros of an exact quotient dropped ("2.5"), a decimal POINT as calculators print it.
+ */
+export function quotientDigits(a, b, n) {
+  if (!Number.isInteger(a) || !Number.isInteger(b) || a < 0 || b < 1 || !Number.isInteger(n) || n < 1 || n > 15) throw new RangeError('decimals.quotientDigits: bad arguments');
+  const A = big(a); const B = big(b);
+  if (A === 0n) return '0';
+  const ip = A / B;
+  let f;
+  if (ip > 0n) f = Math.max(0, n - String(ip).length);
+  else {
+    let z = 0; let r = A;
+    while (r * 10n < B) { r *= 10n; z += 1; }
+    f = z + n;
+  }
+  const num = A * P10(f);
+  const q = num / B;
+  const scaled = 2n * (num % B) >= B ? q + 1n : q;
+  let s = String(scaled).padStart(f + 1, '0');
+  s = f === 0 ? s : `${s.slice(0, s.length - f)}.${s.slice(s.length - f)}`;
+  return s.includes('.') ? s.replace(/0+$/, '').replace(/\.$/, '') : s;
+}
+/** The two consecutive marks of rank k around a ÷ b: `lo` ≤ a/b ≤ `hi`; `exact` when the quotient is a decimal reached at that rank (then lo = hi). */
+export function quotientBracket(a, b, k) {
+  checkRank(k);
+  if (!Number.isInteger(a) || !Number.isInteger(b) || a < 0 || b < 1) throw new RangeError('decimals.quotientBracket: bad arguments');
+  const num = big(a) * P10(k);
+  const lo = num / big(b);
+  const exact = num % big(b) === 0n;
+  return { lo: make(toSafe(lo), k), hi: make(toSafe(exact ? lo : lo + 1n), k), exact };
+}

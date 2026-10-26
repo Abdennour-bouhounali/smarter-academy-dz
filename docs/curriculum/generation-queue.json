@@ -2,30 +2,12 @@
   "_comment": "Généré par scripts/learning-net-queue.mjs — ne pas éditer.",
   "queue": [
     {
-      "code": "kitaba-ilmiya-rutba",
-      "grade": "3am",
-      "unit": "quwa-nisbiya",
-      "titleAr": "الكتابة العلمية ورتبة القدر",
-      "kind": "lesson",
-      "trigger": "priorité propriétaire",
-      "via": []
-    },
-    {
       "code": "wadiya-idmajiya-quwa-nisbiya",
       "grade": "3am",
       "unit": "quwa-nisbiya",
       "titleAr": "أدمج تعلّماتي — القوى ذات أسس نسبية صحيحة",
       "kind": "synthesis",
       "trigger": "unité quwa-nisbiya complète",
-      "via": []
-    },
-    {
-      "code": "hasr-adad-ushri",
-      "grade": "3am",
-      "unit": "musawiyat-mutabayinat",
-      "titleAr": "حصر عدد عشري موجب",
-      "kind": "lesson",
-      "trigger": "priorité propriétaire",
       "via": []
     },
     {

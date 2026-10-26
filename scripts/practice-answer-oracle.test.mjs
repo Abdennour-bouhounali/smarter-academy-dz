@@ -153,7 +153,9 @@ import { ORACLE as ORACLE_3AM_MUQARANAT, audit as auditMuqaranat } from './pract
 import { ORACLE as ORACLE_3AM_WADIYA_HARFIYA, audit as auditWadiyaHarfiya } from './practice-oracle/wadiya-idmajiya-ibarat-harfiya-3.mjs';
 import { ORACLE as ORACLE_3AM_QUWA_ASHARA, audit as auditQuwaAshara } from './practice-oracle/quwa-adad-ashara.mjs';
 import { ORACLE as ORACLE_3AM_QAWAID_ASHARA, audit as auditQawaidAshara } from './practice-oracle/qawaid-quwa-ashara.mjs';
+import { ORACLE as ORACLE_3AM_KITABA_ILMIYA, audit as auditKitabaIlmiya } from './practice-oracle/kitaba-ilmiya-rutba.mjs';
 import { ORACLE as ORACLE_3AM_MUTABAYINAT } from './practice-oracle/mutabayinat-amaliyat.mjs';
+import { ORACLE as ORACLE_3AM_HASR, audit as auditHasr } from './practice-oracle/hasr-adad-ushri.mjs';
 // Toutes les années du cycle moyen (content/practice/<1am…4am>/<leçon>/level-N) : jusqu'au 2026-10-14 seul 4am
 // existait et la racine y était codée en dur — un banc 1AM–3AM aurait échappé à l'oracle sans rien dire.
 const practiceRoot = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice');
@@ -330,7 +332,9 @@ const ORACLE = {
   ...ORACLE_3AM_WADIYA_KUSUR,
   ...ORACLE_3AM_QUWA_ASHARA,
   ...ORACLE_3AM_QAWAID_ASHARA,
+  ...ORACLE_3AM_KITABA_ILMIYA,
   ...ORACLE_3AM_MUTABAYINAT,
+  ...ORACLE_3AM_HASR,
 };
 
 /**
@@ -430,6 +434,12 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     expect(auditQawaidAshara(own)).toEqual([]);
   });
 
+  it('الكتابة العلمية ورتبة القدر (3AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de tenPowers.js), « n tel que 10^n ≤ v < 10^(n+1) » unique, a = v / 10^n dans [1, 10[, rang d\'ordre de grandeur a\' = a arrondi à l\'unité demi vers le haut avec le report a\' = 10 → 1 × 10^(n+1), « c × 10^n = valeur » unique, QCM jugés option par option (sci / br / ord / eq / cmp : exactement une affirmation vraie, la marquée), nombres de l\'énoncé et des options retrouvés dans l\'affirmation retapée, chaque signature ≠ clé (RAQAM = nombre de chiffres, BATR = troncature, QUWA = exposant suivant, recalculés) et chaque distracteur FAUX porteur d\'un MISC-ILMIYA-*', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-kitaba-ilmiya-rutba-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditKitabaIlmiya(own)).toEqual([]);
+  });
+
   it('حساب قيمة عبارة حرفية (3AM) : évaluateur exact propre (BigInt, polynômes à plusieurs lettres, π), chaque signature = valeur de la mauvaise lecture, chaque « différent » par un témoin et chaque « égal » par l\'égalité des polynômes développés, QCM à une seule bonne option, énoncés relus, MISC-QIMA-*', () => {
     const own = bank.filter((b) => b.key.startsWith('ex-3am-qimat-ibara-harfiya-'));
     expect(own.length).toBeGreaterThan(0);
@@ -446,6 +456,12 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
     const own = bank.filter((b) => b.key.startsWith('ex-3am-wadiya-idmajiya-ibarat-harfiya-3-'));
     expect(own.length).toBeGreaterThan(0);
     expect(auditWadiyaHarfiya(own)).toEqual([]);
+  });
+
+  it('حصر عدد عشري موجب (3AM) : rationnels exacts BigInt propres à l\'oracle (aucun import de decimals.js), floor / ceil / round demi supérieur recalculés, quotients par division euclidienne exacte, chaque QCM jugé option par option (une seule vraie, les distracteurs FAUX et étiquetés MISC-TADWIR-*), intervalles d\'arrondi reconstruits par balayage de grille, signatures recalculées par la formule de l\'erreur, écrans de calculatrice et faits des corrigés recalculés', () => {
+    const own = bank.filter((b) => b.key.startsWith('ex-3am-hasr-adad-ushri-'));
+    expect(own.length).toBeGreaterThan(0);
+    expect(auditHasr(own)).toEqual([]);
   });
 
   it('le cas signalé (6 | 120) : « 6 مضاعف للعدد 120 » est faux, seul « لا » est accepté', () => {

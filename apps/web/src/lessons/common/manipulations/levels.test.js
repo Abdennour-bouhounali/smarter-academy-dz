@@ -73,6 +73,13 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(beginner.numbers.tasks.some((tk) => tk.kind === 'band'), type).toBe(false);
         expect(Lin.toNumber(Lin.parseNumber(advanced.numbers.step)), type).toBeLessThan(Lin.toNumber(Lin.parseNumber(beginner.numbers.step)));
       }
+      // Unité 5 de 3AM, leçon 3 : `scoop-scale` se mesure par la FINESSE du rang de l'écran (0,1 puis 0,01 pour les tâches principales) et par la tâche PIÈGE (متقدم seul : 2/7 jamais atteint).
+      else if (type === 'scoop-scale') {
+        const rankOf = (n) => Math.max(...n.tasks.filter((tk) => tk.kind !== 'trap').map((tk) => tk.rank));
+        expect(rankOf(advanced.numbers), type).toBeGreaterThan(rankOf(beginner.numbers));
+        expect(advanced.numbers.tasks.some((tk) => tk.kind === 'trap'), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'trap'), type).toBe(false);
+      }
       // Unité 5 de 3AM : `term-ferry` se mesure par le NOMBRE DE TÂCHES (2 équations, puis 3 dont un coefficient négatif et un grand nombre).
       else if (type === 'term-ferry') expect(advanced.numbers.tasks.length, type).toBeGreaterThan(beginner.numbers.tasks.length);
       // Unité 3 de 2AM : `zero-probe` se mesure par la FINESSE du pas (1 puis 0,1) et le nombre de décimales des nombres à juger.
@@ -168,6 +175,14 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
         expect(advanced.numbers.tasks.every((tk) => tk.mode > 1), type).toBe(true);
         expect(beginner.numbers.tasks.some((tk) => tk.path.length === 3), type).toBe(true);
         expect(advanced.numbers.tasks.some((tk) => tk.path.at(-1) === 'm' && tk.path[0] === 'mm'), type).toBe(true);
+      }
+      // Unité 3 de 3AM, leçon 3 : `size-ladder` se mesure par la SAISIE de a et n avant de suspendre (متقدم seul) et par les écritures qui ne sont pas des décimales simples (k × 10ᵖ, km).
+      else if (type === 'size-ladder') {
+        expect(advanced.numbers.tasks.filter((tk) => tk.cards.every((c) => c.typed || tk.kind === 'compare')).length, type).toBeGreaterThanOrEqual(3);
+        expect(beginner.numbers.tasks.some((tk) => tk.cards.some((c) => c.typed)), type).toBe(false);
+        expect(advanced.numbers.tasks.some((tk) => tk.cards.some((c) => c.unit === 'km' || /×/.test(c.given))), type).toBe(true);
+        expect(beginner.numbers.tasks.every((tk) => tk.cards.every((c) => !c.unit && !/×/.test(c.given))), type).toBe(true);
+        expect(beginner.numbers.tasks.some((tk) => tk.kind === 'compare') && advanced.numbers.tasks.some((tk) => tk.kind === 'compare'), type).toBe(true);
       }
       // Unité 2 de 3AM, leçon 5 : `merge-board` se mesure par le NOMBRE DE TÂCHES et par les BARRES CACHÉES (متقدم seul).
       else if (type === 'merge-board') {

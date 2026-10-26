@@ -155,4 +155,50 @@ describe('tenPowers — leçon 2 : règles, unités, k × 10ᵖ', () => {
     const d = T.divSci({ k: '0,12', p: 0 }, { k: 3, p: 4 });
     expect(T.decText(d.k)).toBe('0,04');
   });
+
+  it('scientific / isScientific / bracketOf / cellOf', () => {
+    expect(T.scientific('352 000')).toMatchObject({ a: '3,52', n: 5 });
+    expect(T.scientific('0,000608')).toMatchObject({ a: '6,08', n: -4 });
+    expect(T.scientific('35,2 × 10^4')).toMatchObject({ a: '3,52', n: 5 });
+    expect(T.scientific('0,048 × 10^-3')).toMatchObject({ a: '4,8', n: -5 });
+    expect(T.scientific('−65 000 000')).toMatchObject({ a: '−6,5', n: 7 });
+    expect(T.scientific('1')).toMatchObject({ a: '1', n: 0 });
+    expect(T.scientific('10')).toMatchObject({ a: '1', n: 1 });
+    expect(T.scientific('9,99 × 10^8')).toMatchObject({ a: '9,99', n: 8 });
+    expect(() => T.scientific('0')).toThrow();
+    expect(T.isScientific('2,65', 2)).toBe(true);
+    expect(T.isScientific('26,5', 1)).toBe(false);
+    expect(T.isScientific('0,72', 5)).toBe(false);
+    expect(T.isScientific('10', 3)).toBe(false);
+    expect(T.isScientific('9,99', 8)).toBe(true);
+    expect(T.isScientific('1', -6)).toBe(true);
+    expect(T.bracketOf('265')).toBe(2);
+    expect(T.bracketOf('0,0001')).toBe(-4);
+    expect(T.bracketOf('1 000')).toBe(3);
+    expect(T.bracketOf('999')).toBe(2);
+    expect(T.bracketOf('0,00099')).toBe(-4);
+    expect(T.cellOf('265')).toBe(2);
+    expect(T.cellOf('0,0006')).toBe(6);
+  });
+  it('orderOfMagnitude : demi vers le haut, retenue 9,7 → 10', () => {
+    expect(T.orderOfMagnitude('265')).toEqual({ a1: 3, n1: 2 });
+    expect(T.orderOfMagnitude('1 950 000')).toEqual({ a1: 2, n1: 6 });
+    expect(T.orderOfMagnitude('0,0001')).toEqual({ a1: 1, n1: -4 });
+    expect(T.orderOfMagnitude('0,000786')).toEqual({ a1: 8, n1: -4 });
+    expect(T.orderOfMagnitude('9,85 × 10^5')).toEqual({ a1: 1, n1: 6 });
+    expect(T.orderOfMagnitude('9,7 × 10^3')).toEqual({ a1: 1, n1: 4 });
+    expect(T.orderOfMagnitude('2,5 × 10^-4')).toEqual({ a1: 3, n1: -4 });
+    expect(T.orderOfMagnitude('2,49 × 10^-4')).toEqual({ a1: 2, n1: -4 });
+    expect(T.orderOfMagnitude('7,62 × 10^9')).toEqual({ a1: 8, n1: 9 });
+    expect(T.orderOfMagnitude('4,5 × 10^1')).toEqual({ a1: 5, n1: 1 });
+  });
+  it('logPos : sur l’échelle des décades, pour le dessin', () => {
+    expect(T.logPos('1000')).toBeCloseTo(3, 12);
+    expect(T.logPos('265')).toBeCloseTo(Math.log10(265), 12);
+    expect(T.logPos('0,0006')).toBeCloseTo(-4 + Math.log10(6), 12);
+  });
+  it('sciTex', () => {
+    expect(T.sciTex('3,52', 5)).toBe('3{,}52\\times10^{5}');
+    expect(T.sciTex('-6,5', -7)).toBe('−6{,}5\\times10^{-7}');
+  });
 });

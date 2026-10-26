@@ -3,6 +3,7 @@ import {
   make, fromSlip, parse, cmp, eq, normalize, format, formatTrim, slipText, slipValueText, fractionOf, fractionText, shift, opExponent, OPERATORS,
   integerPart, countOfExp, rankName, exponentsOf, decomposeDigits, rankTable, decomposition, partName, readFraction, readTail, piecesOf, pow10,
   readAt, decidedAt, verdictAt, minGraduation, firstDifferingRank, paddedText, rowGraduation, GRADUATIONS,
+  floorAt, ceilAt, roundAt, roundingInterval, quotientDigits, quotientBracket,
 } from './decimals.js';
 
 describe('decimals — parse and format are exact and round-trip', () => {
@@ -273,5 +274,80 @@ describe('decimals — the graduated ruler (ruler-compare)', () => {
     expect(rowGraduation(['7,4', '7,04', '7,45', '6,98', '7,405'].map(v))).toBe(3);
     expect(rowGraduation(['2,5', '2,05', '0,75', '2,500', '3'].map(v))).toBe(1);
     expect(rowGraduation([v('1'), v('2')])).toBe(0);
+  });
+});
+
+describe('decimals — approximations, rounding, rounding interval, calculator quotients (hasr-adad-ushri)', () => {
+  const t = (x, k) => formatTrim(x) + (k === undefined ? '' : '');
+  it('known values', () => {
+    expect(format(roundAt(parse('1,25'), 1))).toBe('1,3');
+    expect(format(roundAt(parse('9,8462'), 1))).toBe('9,8');
+    expect(format(roundAt(parse('6,358'), 0))).toBe('6');
+    expect(format(roundAt(parse('7,5'), 0))).toBe('8');
+    expect(format(roundAt(parse('12,49'), 0))).toBe('12');
+    expect(format(floorAt(parse('4,2531'), 2))).toBe('4,25');
+    expect(format(ceilAt(parse('4,2531'), 2))).toBe('4,26');
+    expect(format(ceilAt(parse('6,02'), 0))).toBe('7');
+    const iv = roundingInterval(parse('1,3'), 1);
+    expect([format(iv.lo), format(iv.hi), iv.loIncluded, iv.hiIncluded]).toEqual(['1,25', '1,35', true, false]);
+    expect(format(roundingInterval(parse('15'), 0).lo)).toBe('14,5');
+    expect(format(roundingInterval(parse('0'), 0).lo)).toBe('0,0');
+    expect(quotientDigits(247, 83, 10)).toBe('2.975903614');
+    expect(quotientDigits(46, 6, 10)).toBe('7.666666667');
+    expect(quotientDigits(355, 113, 9)).toBe('3.14159292');
+    expect(quotientDigits(250, 7, 10)).toBe('35.71428571');
+    expect(quotientDigits(5, 2, 10)).toBe('2.5');
+    expect(quotientDigits(2, 7, 10)).toBe('0.2857142857');
+    expect(quotientDigits(1, 8, 10)).toBe('0.125');
+    expect(quotientDigits(8, 1, 10)).toBe('8');
+    const qb = quotientBracket(2, 7, 3);
+    expect([format(qb.lo), format(qb.hi), qb.exact]).toEqual(['0,285', '0,286', false]);
+    const qe = quotientBracket(1, 8, 3);
+    expect([format(qe.lo), format(qe.hi), qe.exact]).toEqual(['0,125', '0,125', true]);
+  });
+  it('sweep: every value of at most 4 decimals below 100 (stepped) at every rank', () => {
+    for (let k = 0; k <= 3; k += 1) {
+      for (let n = 0; n <= 12000; n += 7) {
+        const v = make(n, 2);
+        const w = make(n * 13 % 99991, 4);
+        for (const x of [v, w]) {
+          const f = floorAt(x, k); const c = ceilAt(x, k); const r = roundAt(x, k);
+          expect(cmp(f, x) <= 0 && cmp(x, c) <= 0).toBe(true);
+          const gap = cmp(c, f) === 0 ? 0 : 1;
+          expect(cmp(f, c) <= 0).toBe(true);
+          if (gap) expect(eq(make(f.n + 1, k), c)).toBe(true);
+          expect(eq(r, f) || eq(r, c)).toBe(true);
+          const iv = roundingInterval(r, k);
+          expect(cmp(iv.lo, x) <= 0 && cmp(x, iv.hi) < 0).toBe(true);
+        }
+      }
+    }
+  });
+  it('sweep: a value outside the interval of r does not round to r; the ends behave (lo included, hi excluded)', () => {
+    for (let k = 0; k <= 3; k += 1) {
+      for (let n = 0; n <= 400; n += 1) {
+        const r = make(n, k);
+        const iv = roundingInterval(r, k);
+        expect(eq(roundAt(iv.lo, k), r)).toBe(true);
+        expect(eq(roundAt(iv.hi, k), r)).toBe(false);
+        if (iv.lo.n > 0) expect(eq(roundAt(make(iv.lo.n - 1, iv.lo.k), k), r)).toBe(false);
+        expect(eq(roundAt(make(iv.hi.n - 1, iv.hi.k), k), r)).toBe(true);
+      }
+    }
+  });
+  it('sweep: quotient bracket and screen against exact integer arithmetic', () => {
+    for (let a = 1; a <= 60; a += 1) for (let b = 2; b <= 40; b += 1) for (let k = 0; k <= 3; k += 1) {
+      const qb = quotientBracket(a, b, k);
+      const p = 10 ** k;
+      expect(qb.lo.n).toBe(Math.floor((a * p) / b));
+      expect(qb.exact).toBe((a * p) % b === 0);
+      expect(qb.hi.n).toBe(qb.exact ? qb.lo.n : qb.lo.n + 1);
+      expect(qb.lo.n * b <= a * p && a * p <= qb.hi.n * b).toBe(true);
+    }
+    for (let a = 1; a <= 200; a += 7) for (let b = 2; b <= 99; b += 3) {
+      const s = quotientDigits(a, b, 10);
+      expect(Math.abs(Number(s) - a / b)).toBeLessThan(1e-9 * Math.max(1, a / b));
+      expect(s.replace('.', '').replace(/^0+/, '').length).toBeLessThanOrEqual(10);
+    }
   });
 });

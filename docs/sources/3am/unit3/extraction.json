@@ -75,7 +75,7 @@
    "kind": "aside",
    "page": 38,
    "section": "تمهيد",
-   "verified": false,
+   "verified": true,
    "text": "تأسست نهائيا في سنة 2009 الوحدة الفلكية (UA) والتي توافق المسافة بين الأرض والشمس. هذه المسافة لا تتغير … نُقشت على رخام من طرف الاتحاد الدولي للفلك. هذه المسافة أساسية في الوحدة الفلكية وتتماشى مع جميع الثوابت في النظام الشمسي. تقدر هذه المسافة بـ: 149 597 870,700 Km. ولتبسيط قراءة هذه المسافة نقول أنها تقارب 150 مليون كيلومتر.",
    "reading": "quelques mots masqués par des carrés blancs du scan (ligne 2)",
    "answer": {
@@ -580,7 +580,7 @@
    "page": 41,
    "section": "أنشطة",
    "title": "الكتابة العلمية - رتبة قدر",
-   "verified": false,
+   "verified": true,
    "text": "1) أ) استعمل الآلة الحاسبة لإجراء الجداء: 16 384 × 31 250 . ب) بدون استعمال الآلة الحاسبة، احسب الجداء: 163 840 × 312 500 (يمكنك استعمال نتيجة السؤال السابق). جـ) تحقق من صحة النتيجة باستعمال الآلة الحاسبة. هل وجدت نفس النتيجة؟ 2) يعبّر الجدول الموالي عن المسافة إلى الشمس: المريخ 227,9 × 10^6 Km ؛ عطارد 57 910 000Km ؛ زحل 14,29 × 10^8 Km ؛ الأرض 150 000 000Km ؛ الزهرة 108,2 × 10^5 Km . اقترح كل من أمين وإيمان ونسرين كتابة أخرى للمسافة بين الأرض والشمس. أمين: 150 × 10^6 Km ؛ إيمان: 15 × 10^7 Km ؛ نسرين: 1,5 × 10^8 Km . أ) أيهم على صواب؟ ب) أكتب كُلًا من المسافات المذكورة على الشكل a × 10^n ، حيث a عدد عشري برقم واحد قبل الفاصلة يختلف عن الصفر، ثم رتّب هذه المسافات ترتيبا تصاعديا. 3) استعمل الكتابة العلمية لإعطاء رتبة قدر بالمتر للأشياء التالية: • حبة رمل: 0,00025m . • بكتيريا: 0,2µm (µm تعني ميكرومتر ؛ 1µm = 10^-3 mm). • ذرّة الكربون: 0,14nm (nm تعني نانومتر ؛ 1nm = 10^-6 µm).",
    "reading": "la valeur de الزهرة se lit « 108,2 × 10^5 » sur le scan (la distance réelle est 108,2 × 10^6 km) — voir discrepancies",
    "answer": {
@@ -780,7 +780,7 @@
    "page": 44,
    "section": "معارف",
    "title": "الكتابة العلمية لعدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "تعني الكتابة العلمية لعدد عشري كتابته على الشكل a × 10^n حيث a عدد عشري مكتوب برقم واحد غير معدوم قبل الفاصلة و n عدد صحيح نسبي. ملاحظة: تسمح الكتابة العلمية بقراءة وفهم الأعداد الكبيرة جدا والصغيرة جدا بسهولة. مثال: عبّر عن الأبعاد الموالية بالمتر: • المسافة بين الأرض والقمر 384 400Km • قطر فيروس: 149nm (1 نانومتر، 1nm = 10^-6 mm).",
    "answer": {
     "moon": "3,844 × 10^8 m",
@@ -795,7 +795,7 @@
    "page": 44,
    "section": "معارف",
    "title": "حصر عدد عشري - رتبة قدر عدد",
-   "verified": false,
+   "verified": true,
    "text": "تسمح الكتابة العلمية لعدد عشري بحصره بين قوتين ذات أسين متتاليين. إذا كانت الكتابة العلمية لعدد عشري A هي: a × 10^n فإن 10^n ≤ A < 10^(n+1) ؛ رتبة قَدْر العدد A هي: a' × 10^n حيث a' هو مدور a إلى الوحدة. أمثلة: • المسافة بين المريخ والشمس هي: 227,9 × 10^6 Km ؛ الكتابة العلمية هي 2,279 × 10^8 Km ؛ رتبة قدر هي: 2 × 10^8 Km .",
    "answer": {
     "scientific": "2,279 × 10^8",
@@ -885,7 +885,7 @@
    "page": 45,
    "section": "طرائق",
    "title": "الكتابة العلمية",
-   "verified": false,
+   "verified": true,
    "text": "تمرين: أعط الكتابة العلمية لكل من: A = 352 000 ؛ B = 0,043 . حلّ: الكتابة العلمية للعدد A هي: A = 3,52 × 10^5 . طريقة: • في أي عدد نضرب 3,52 حتى نتحصل على 352 000 ؟ • وكأنه أزحنا الفاصلة نحو اليسار بـ 5 رتب إذن نضرب في 10^5 ويكون 352 000 = 3,52 × 10^5 . • الكتابة العلمية للعدد B هي B = 4,3 × 10^-2 . طريقة: • في أي عدد نضرب 04,3 حتى نحصل على 0,043 ؟ • وكأنه أزحنا الفاصلة نحو اليمين برتبتين إذن نضرب في 10^-2 ويكون 0,043 = 4,3 × 10^-2 .",
    "answer": {
     "A": "3,52 × 10^5",
@@ -900,7 +900,7 @@
    "page": 45,
    "section": "طرائق",
    "title": "رتبة قدر عدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "تمرين: إليك العددين A و B حيث A = 526 000 000 ؛ B = 0,00027 . 1) اكتب كُلًا من A و B كتابة علمية. 2) أعط حصرا لكل من A و B بين قوتين متتاليتين للعدد 10. 3) أعط رتبة قدر لكل من A و B. حلّ: A = 5,26 × 10^8 ؛ B = 2,7 × 10^-4 ؛ 10^8 ≤ A < 10^9 ؛ 10^-4 ≤ B < 10^-3 . • رتبة قدر A هي 5 × 10^8 . • رتبة قدر B هي 3 × 10^-4 . طريقة 1: عندما تكون الكتابة العلمية لعدد A هي a × 10^n فيكون حصر A كالتالي: 10^n ≤ A < 10^(n+1) . طريقة 2: رتبة قدر عدد مكتوب على شكله العلمي a × 10^n هو a' × 10^n حيث a' هو مدوّر a إلى الوحدة.",
    "answer": {
     "A": "5,26 × 10^8",
@@ -1352,7 +1352,7 @@
    "page": 47,
    "section": "أوظّف تعلّماتي",
    "group": "الكتابة العلمية لعدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "انقل وأتمم: 9372 = …. × 10^3 ؛ 0,1375 = …. × 10^-2 ؛ 2376,7 = 23,767 × 10^… ؛ 0,865 = 0,000865 × 10^… .",
    "answer": [
     "9,372",
@@ -1369,7 +1369,7 @@
    "page": 47,
    "section": "أوظّف تعلّماتي",
    "group": "الكتابة العلمية لعدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "اذكر في كل حالة إذا كانت الكتابة كتابة علمية: 15 × 10^4 ؛ 3,236 × 10^-3 ؛ 0,845 × 10^3 ؛ 8,879 × 10^-2 ؛ 9 × 10^10 ؛ 1,85 × 10^6 .",
    "answer": {
     "15 × 10^4": false,
@@ -1388,7 +1388,7 @@
    "page": 47,
    "section": "أوظّف تعلّماتي",
    "group": "الكتابة العلمية لعدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "من بين هذه الأعداد، اذكر المتساوية منها: 0,0145 ؛ 14,5 × 10^-5 ؛ 0,000145 × 10^-4 ؛ 13 500 × 10^-8 ؛ 135 × 10^-7 ؛ 1450 000 × 10^-8 ؛ 1,35 × 10^5 .",
    "reading": "exposants à relire"
   },
@@ -1399,7 +1399,7 @@
    "page": 47,
    "section": "أوظّف تعلّماتي",
    "group": "الكتابة العلمية لعدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "اكتب كل عدد على الشكل a × 10^6 : 267,3 ؛ 9 738 459 ؛ 0,025 × 10^8 ؛ 79,58 × 10^3 − 59,8 × 10^4 ؛ 74 368 × 10^-2 ."
   },
   {
@@ -1409,7 +1409,7 @@
    "page": 47,
    "section": "أوظّف تعلّماتي",
    "group": "الكتابة العلمية لعدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "اكتب على الشكل 68 × 10^n : 68 000 ؛ 6 800 × 10^9 ؛ 0,068 × 10^-4 .",
    "answer": [
     "68 × 10^3",
@@ -1425,7 +1425,7 @@
    "page": 47,
    "section": "أوظّف تعلّماتي",
    "group": "الكتابة العلمية لعدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "أعط كتابة علمية لكل من الأعداد: 397 000 ؛ 0,036 ؛ 985 754 ؛ 0,98 ؛ 843 200 000 ؛ 0,0000253 .",
    "answer": {
     "397000": "3,97 × 10^5",
@@ -1444,7 +1444,7 @@
    "page": 47,
    "section": "أوظّف تعلّماتي",
    "group": "الكتابة العلمية لعدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "صحيح أم خطأ: 16 × 10^3 > 14 × 10^4 ؛ 3,8 × 10^5 > 5,7 × 10^4 ؛ 21 × 10^8 > 1,8 × 10^9 ؛ 4,3 × 10^5 > 0,78 × 10^7 .",
    "answer": [
     false,
@@ -1461,7 +1461,7 @@
    "page": 47,
    "section": "أوظّف تعلّماتي",
    "group": "الكتابة العلمية لعدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "صحيح أم خطأ: 6 × 10^-3 > 5 × 10^-4 ؛ 9,8 × 10^-5 > 5,7 × 10^-4 .",
    "answer": [
     true,
@@ -1476,7 +1476,7 @@
    "page": 47,
    "section": "أوظّف تعلّماتي",
    "group": "الكتابة العلمية لعدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "رتّب الأعداد التالية ترتيبا تصاعديا بعد كتابتها كتابة علمية: 120,04 × 10^2 ؛ 1 × 10^4 ؛ 78,96 × 10^3 ؛ 8354 ؛ 123 897 × 10^-1 ؛ 0,09999 × 10^5 .",
    "answer": [
     "8354",
@@ -1495,7 +1495,7 @@
    "page": 47,
    "section": "أوظّف تعلّماتي",
    "group": "الكتابة العلمية لعدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "احسب واكتب النتيجة كتابة علمية: A = 85,7 × 10^9 + 45 × 10^11 ؛ B = (0,6 × (10^3)^2 × 6 × 10^-4)/(9 × 10^5) .",
    "answer": {
     "A": "4,5857 × 10^12",
@@ -1510,7 +1510,7 @@
    "page": 47,
    "section": "أوظّف تعلّماتي",
    "group": "الكتابة العلمية لعدد عشري",
-   "verified": false,
+   "verified": true,
    "text": "احسب واكتب النتيجة كتابة علمية: A = 2 400 × 8 000 ؛ B = 0,00009 × 0,003 ؛ C = 7 000 × 0,0015 ؛ D = 36 000 000/0,00018 .",
    "answer": {
     "A": "1,92 × 10^7",
@@ -1527,7 +1527,7 @@
    "page": 47,
    "section": "أوظّف تعلّماتي",
    "group": "رتبة قدر والحصر",
-   "verified": false,
+   "verified": true,
    "text": "إليك المسافات الدنيا بالكيلومتر بين الشمس والكواكب التالية: المريخ (Mars) 0,21 × 10^9 Km ؛ عطارد (Mercure) 46 000 000Km ؛ زحل (Saturne) 1350 × 10^6 Km ؛ الأرض (Terre) 14,7 × 10^7 Km ؛ الزهرة (Venus) 1075 × 10^5 Km . اكتب كل مسافة كتابة علمية واحصرها بين قوتين متتاليتين للعدد 10، ثم أعط رتبة قدر لكل منها.",
    "reading": "exposants du tableau lus à 110 dpi",
    "answer": {
@@ -1561,7 +1561,7 @@
    "page": 48,
    "section": "أوظّف تعلّماتي",
    "group": "رتبة قدر والحصر",
-   "verified": false,
+   "verified": true,
    "text": "إليك العددين: A = 0,0039 × 10^-7 ؛ B = 23 678 × 10^15 . أعط رتبة قدر كل من A × B ، A/B .",
    "answer": {
     "AxB": "9 × 10^9",
@@ -2372,7 +2372,7 @@
     44,
     45
    ],
-   "verified": false,
+   "verified": true,
    "question": "الكتابة العلمية لـ 5 200 000 هي ……",
    "options": [
     "52 × 10^5",
@@ -2395,7 +2395,7 @@
     44,
     45
    ],
-   "verified": false,
+   "verified": true,
    "question": "الكتابة العلمية لـ 432,6 × 10^7 هي ……",
    "options": [
     "4,326 × 10^5",
@@ -2417,7 +2417,7 @@
     44,
     45
    ],
-   "verified": false,
+   "verified": true,
    "question": "الكتابة العلمية لـ 0,012 × 10^-3 هي ……",
    "options": [
     "1,2 × 10^-3",
@@ -2439,7 +2439,7 @@
     44,
     45
    ],
-   "verified": false,
+   "verified": true,
    "question": "الكتابة العلمية لـ 6,2 × 10^25 × 5 × 10^-14 هي ……",
    "options": [
     "3,1 × 10^10",
@@ -2461,7 +2461,7 @@
     44,
     45
    ],
-   "verified": false,
+   "verified": true,
    "question": "الكتابة العلمية لـ 23 × 10^-3 - 0,4 × 10^-2 هي ……",
    "options": [
     "1,9 × 10^-3",
@@ -2483,7 +2483,7 @@
     44,
     45
    ],
-   "verified": false,
+   "verified": true,
    "question": "7,19 × 10^-5 هي الكتابة العلمية لـ ……",
    "options": [
     "0,00719",
@@ -2505,7 +2505,7 @@
     44,
     45
    ],
-   "verified": false,
+   "verified": true,
    "question": "2,5 × 10^-1 هي الكتابة العلمية لـ ……",
    "options": [
     "0,025",
@@ -2528,7 +2528,7 @@
     44,
     45
    ],
-   "verified": false,
+   "verified": true,
    "question": "رتبة قَدْر 0,00912 × 10^11 هي ……",
    "options": [
     "9 × 10^14",
@@ -2551,7 +2551,7 @@
     44,
     45
    ],
-   "verified": false,
+   "verified": true,
    "question": "عدد محصور بين 10^-4 و 10^-3 هو ……",
    "options": [
     "0,0035",
@@ -2573,7 +2573,7 @@
     44,
     45
    ],
-   "verified": false,
+   "verified": true,
    "question": "A = 0,56 × 10^-4 ؛ B = 63 × 10^-6 ؛ C = 7,25 × 10^-5",
    "options": [
     "B < C < A",
@@ -2776,7 +2776,7 @@
    "number": 52,
    "page": 50,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "أعط كتابة علمية لكل من الأعداد: A = (3 × 10^2 × 1,8 × 10^-3)/(6 × 10^4) ؛ B = (4 × 10^-2 × 9 × 10^3)/(6 × 10^7 × 12 × (10^3)^2) .",
    "reading": "exposants de B lus à 110 dpi (à relire par kitaba-ilmiya-rutba)",
    "answer": {
@@ -2828,7 +2828,7 @@
    "number": 54,
    "page": 50,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "عبّر بدلالة كتابة علمية عن المقادير التالية: عُمر الأرض: 4,5 مليار سنة. عرض بكتيريا هو 1,5µm (1µm = 0,001mm). عدد سكان الكرة الأرضية هو 7,3 مليار. سرعة الضوء: 300 000 000m/s . انقراض الديناصورات (-65 000 000) سنة. سمك ورقة ألومنيوم: 0,002cm .",
    "answer": [
     "4,5 × 10^9",
@@ -2882,7 +2882,7 @@
    "number": 57,
    "page": 50,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "يدق قلب الإنسان حوالي 75 دقة في الدقيقة. علما أنّ متوسط عمر الإنسان هو 80 سنة؛ ما هو عدد دقات قلب الإنسان خلال حياته؟ أعط النتيجة على شكل كتابة علمية.",
    "answer": "3,1536 × 10^9",
    "answerSource": "computed",
@@ -2894,7 +2894,7 @@
    "number": 58,
    "page": 50,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "يُقدّر عدد المجرات القابلة للرؤية في الكون بـ 100 مليار؛ إذا افترضنا أن مجرة تحتوي على مئة مليار نجمة؛ أعط عدد النجوم القابلة للرؤية في الكون على شكل قوة للعدد 10.",
    "answer": "10^11 × 10^11 = 10^22",
    "answerSource": "computed"
@@ -2905,7 +2905,7 @@
    "number": 59,
    "page": 50,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "يرمش الإنسان بعينيه حوالي 30000 مرة في اليوم. علما أنّ متوسط عمر الانسان هو 80 سنة؛ كم من مرة يرمش الإنسان في حياته؟ اكتب النتيجة كتابة علمية.",
    "answer": "8,76 × 10^8",
    "answerSource": "computed"
@@ -2916,7 +2916,7 @@
    "number": 60,
    "page": 50,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "إليك المعطيات التالية: مساحة الكرة الأرضية حوالي: 5 × 10^8 Km² . مساحة المحيطات حوالي: 35 × 10^7 Km² . مساحة اليابسة حوالي: 150 × 10^6 Km² . ما هي النسبة المئوية من مساحة الكرة الأرضية التي تمثلها: المحيطات؟ اليابسة؟ اشرح لماذا يسمى كوكب الأرض بالكوكب الأزرق؟",
    "answer": {
     "oceans": "70 %",
@@ -2930,7 +2930,7 @@
    "number": 61,
    "page": 50,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "عندما يكون القمر نصف مضاء (بالنظر إليه من الأرض)؛ هذا يعني أن الزاوية (الأرض-القمر-الشمس) تساوي 90°. احسب حينئذ المسافة بين الشمس والقمر بالكيلومتر؟ • المسافة بين الشمس والأرض: 149 597 870Km • المسافة بين الأرض والقمر: 384 400Km .",
    "figure": "مثلث قائم في L (القمر) رؤوسه T (الأرض)، L (القمر)، S (الشمس).",
    "note": "Pythagore (programme 4AM) : SL = √(TS² − TL²) ≈ 149 597 376 km."
@@ -2941,7 +2941,7 @@
    "number": 62,
    "page": 51,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "المستقيمان (AC) و (BD) متوازيان. AE = 4,2 × 10^4 ؛ EB = 3,2 × 10^3 ؛ EC = 6,8 × 10^5 . احسب الطول ED .",
    "figure": "مستقيمان متقاطعان في E ، A و C من جهة، D و B من جهة.",
    "reading": "exposants à relire ; relation de Thalès (programme 4AM) — à trancher par kitaba-ilmiya-rutba"
@@ -2981,7 +2981,7 @@
    "number": 65,
    "page": 51,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "1) مساحة الكرة الأرضية تساوي بالتقريب 510 067 420Km² . تمثل المحيطات 71 % من هذه المساحة؛ ما هي مساحة المحيطات؟ 2) نفرض أن متوسط عمق المحيطات هو 3 800m . أعط قيمة مقربة لحجم المحيطات. 3) يمثل هذا الحجم 97 % من الحجم الكلي للماء الموجود على الأرض؛ ما هو الحجم الكلي للماء الموجود على الأرض؟ 4) أعط تقديرا لحجم قاعة دراسة في مؤسستك؟ كم يلزم من قاعة دراسة لاحتواء كل الكمية الموجودة في الأرض؟",
    "answer": {
     "oceans": "3,621478682 × 10^8 Km²"
@@ -2994,7 +2994,7 @@
    "number": 66,
    "page": 51,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "1) يقطع الضوء في الفراغ وفي الهواء مسافة 299 792 458m/s . احسب بالدقائق المدة التي يستغرقها الضوء لقطع المسافة من الشمس إلى الأرض (149 597 870Km). 2) السنة الضوئية هي المسافة التي يقطعها الضوء خلال سنة. أ) عبّر بالمتر عن سنة ضوئية، باستعمال الكتابة العلمية وبالتدوير إلى رقم واحد بعد الفاصلة. ب) Proxima Centauri هي النجمة الأقرب من المجموعة الشمسية ؛ وهي تقع على مسافة 11,5al (سنة ضوئية) من المجموعة الشمسية. على كم من كيلومتر من المجموعة الشمسية تقع النجمة Proxima Centauri؟",
    "reading": "« 11,5al » lu tel quel (la valeur réelle est ≈ 4,2 al)"
   },
@@ -3004,7 +3004,7 @@
    "number": 67,
    "page": 51,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "في سنة 2009، قُدّرت كمية المعلومات المخزنة في العالم بـ: 800 مليار Gigaoctet ؛ في نهاية سنة 2020 تُقدّر كمية المعلومات المتوقعة للاحتفاظ بـ 45 مرة أكبر من كمية 2009. كم يلزم من قرص صلب ذي سعة 500Go لتخزين معلومات 2020؟ عبّر عن هذه الكمية بكتابة علمية.",
    "answer": "7,2 × 10^10",
    "answerSource": "computed"
@@ -3055,7 +3055,7 @@
    "number": 70,
    "page": 51,
    "section": "أتعمّق",
-   "verified": false,
+   "verified": true,
    "text": "السنة الضوئية (al) هي المسافة التي يقطعها الضوء خلال سنة. سرعة الضوء في الفراغ والهواء هي: 299 792 458m/s . في سنة 2005 لاحظ علماء الفلك انفجار نجمة تقع على بُعد 13 مليار سنة ضوئية من الأرض. عبّر عن هذه المسافة بالكيلومتر.",
    "answer": "1,22905314421344 × 10^23 Km",
    "answerSource": "computed",
@@ -3285,7 +3285,8 @@
   },
   "opener": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": null,
+   "note": "Ouverture (unité astronomique ≈ 150 millions de km) : NON reprise comme entrée — la plateforme a ses objets (le mur de la foire des sciences) ; citée comme trace dans content/textbook.js."
   },
   "challenge": {
    "lesson": "quwat-adad-nisbi",
@@ -3345,11 +3346,11 @@
   },
   "know-4": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 2
   },
   "know-5": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 2
   },
   "know-6": {
    "lesson": "quwat-adad-nisbi",
@@ -3381,11 +3382,11 @@
   },
   "method-45a": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 3
   },
   "method-45b": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 3
   },
   "method-45c": {
    "lesson": "quwat-adad-nisbi",
@@ -3397,7 +3398,7 @@
    "items": {
     "1": {
      "lesson": "kitaba-ilmiya-rutba",
-     "module": null
+     "module": 3
     },
     "2": {
      "lesson": "quwat-adad-nisbi",
@@ -3504,103 +3505,109 @@
   },
   "ex-21": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-22": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-23": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-24": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-25": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-26": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-27": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-28": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-29": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-30": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-31": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
-  },
-  "ex-32": {
-   "lesson": "kitaba-ilmiya-rutba",
-   "module": null
-  },
-  "ex-33": {
-   "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-52": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
-  },
-  "ex-54": {
-   "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-57": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-58": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
   },
   "ex-59": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 4
+  },
+  "ex-32": {
+   "lesson": "kitaba-ilmiya-rutba",
+   "module": "practice",
+   "note": "banque d’exercices (adaptée, avec ses propres nombres)"
+  },
+  "ex-33": {
+   "lesson": "kitaba-ilmiya-rutba",
+   "module": "practice",
+   "note": "banque d’exercices (adaptée, avec ses propres nombres)"
+  },
+  "ex-54": {
+   "lesson": "kitaba-ilmiya-rutba",
+   "module": "practice",
+   "note": "banque d’exercices (adaptée, avec ses propres nombres)"
   },
   "ex-60": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
-  },
-  "ex-61": {
-   "lesson": "kitaba-ilmiya-rutba",
-   "module": null
-  },
-  "ex-62": {
-   "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": "practice",
+   "note": "banque d’exercices (adaptée, avec ses propres nombres)"
   },
   "ex-65": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": "practice",
+   "note": "banque d’exercices (adaptée, avec ses propres nombres)"
   },
   "ex-66": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": "practice",
+   "note": "banque d’exercices (adaptée, avec ses propres nombres)"
   },
   "ex-67": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": "practice",
+   "note": "banque d’exercices (adaptée, avec ses propres nombres)"
   },
   "ex-70": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": "practice",
+   "note": "banque d’exercices (adaptée, avec ses propres nombres)"
+  },
+  "ex-61": {
+   "notIntegrated": "Pythagore (la distance Soleil–Lune d’un triangle Terre–Lune–Soleil rectangle en Lune, avec des nombres en écriture scientifique) : l’outil appartient à la leçon publiée `khassiyat-fitaghuras` (3AM unité 7, plus loin dans le livre) ; la leçon kitaba-ilmiya-rutba n’en possède ni la propriété ni l’étape géométrique (décision du lead, 2026-10-26 ; adaptation possible plus tard dans la banque de khassiyat-fitaghuras avec l’étape donnée)."
+  },
+  "ex-62": {
+   "notIntegrated": "Thalès (AE, EB, EC en écriture scientifique, calculer ED) : l’outil est de 4AM (`khassiyat-talis`) ; kitaba-ilmiya-rutba ne possède pas l’étape géométrique (décision du lead, 2026-10-26)."
   },
   "ex-34": {
    "lesson": "quwat-adad-nisbi",
@@ -3732,43 +3739,43 @@
   },
   "self-12": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
-  },
-  "self-13": {
-   "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 8
   },
   "self-14": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
-  },
-  "self-15": {
-   "lesson": "kitaba-ilmiya-rutba",
-   "module": null
-  },
-  "self-16": {
-   "lesson": "kitaba-ilmiya-rutba",
-   "module": null
-  },
-  "self-17": {
-   "lesson": "kitaba-ilmiya-rutba",
-   "module": null
-  },
-  "self-18": {
-   "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 8
   },
   "self-19": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 8
   },
   "self-20": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 8
   },
   "self-21": {
    "lesson": "kitaba-ilmiya-rutba",
-   "module": null
+   "module": 8
+  },
+  "self-13": {
+   "lesson": "kitaba-ilmiya-rutba",
+   "module": "practice"
+  },
+  "self-15": {
+   "lesson": "kitaba-ilmiya-rutba",
+   "module": "practice"
+  },
+  "self-16": {
+   "lesson": "kitaba-ilmiya-rutba",
+   "module": "practice"
+  },
+  "self-17": {
+   "lesson": "kitaba-ilmiya-rutba",
+   "module": "practice"
+  },
+  "self-18": {
+   "lesson": "kitaba-ilmiya-rutba",
+   "module": "practice"
   },
   "self-22": {
    "lesson": "quwat-adad-nisbi",
